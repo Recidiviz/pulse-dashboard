@@ -10,3 +10,6 @@ The [United States Bureau of Justice Statistics](https://bjs.gov/) published [_R
 We wrote a script to repeatedly request the endpoint behind that tool to create bulk extracts of certain projections of the data set. Those extracts are included here and are totally free for any use you see fit, as long as you provide citation to the underlying study and obey any terms of use on the BJS website. Citation:
 
 Snyder, Howard N., Durose, Matthew R., Cooper, Alexia, and Mulako-Wangota, Joseph. Bureau of Justice Statistics. Generated using the Prisoner Recidivism Analysis Tool - 2005 (PRAT-2005) at http://www.bjs.gov/recidivism_2005_arrest/. (02/04/2016).
+
+## License
+This project is licensed under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
