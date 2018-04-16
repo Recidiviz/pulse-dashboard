@@ -1,0 +1,9 @@
+{
+  "name": "recidiviz.com",
+  "version": "1.0.0",
+  "description": "Real time tracking of recidivism metrics",
+  "main": "index.js",
+  "repository": "git@github.com:Recidiviz/recidiviz.com.git",
+  "author": "Matthew Root <root.matthew@gmail.com>",
+  "license": "GNU General Public License v3"
+}
