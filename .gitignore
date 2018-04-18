@@ -7,6 +7,9 @@ build/
 # Dependency directory
 node_modules/
 
+# Code coverage directory
+coverage/
+
 # Logs
 logs
 *.log

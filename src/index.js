@@ -1,9 +1,14 @@
+/* eslint no-console: 0 */
+
 import React from 'react';
 import ReactDOM from 'react-dom';
+import App from './App';
 
-let document;
+const str = 'ES6';
+console.log('Successfully loaded from bundle.');
+console.log(`Successfully compiled ${str}`);
 
 ReactDOM.render(
-  <h1>Hello, React!</h1>,
+  <App />,
   document.getElementById('app'),
 );

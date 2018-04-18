@@ -2,5 +2,9 @@
   "extends": "airbnb",
   "rules": {
     "react/jsx-filename-extension": ['error', { extensions: ['.js'] }]
+  },
+  "env": {
+    "browser": true,
+    "jest": true
   }
 }

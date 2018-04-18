@@ -5,6 +5,12 @@
     }],
     "react"
   ],
+  "env": {
+    "test": {
+      /* Required because Jest runs in Node and needs CommonJS modules, disabled in prod */
+      "presets": [["env"]]
+    }
+  },
   "plugins": [
     "transform-runtime"
   ]
