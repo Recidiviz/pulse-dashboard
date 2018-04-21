@@ -97,8 +97,12 @@ function toYears(monthCount) {
         y = Math.floor(monthCount / 12),
         result = [];
 
+    inOrAnd = 'in';
     y && result.push('in ' + y + ' ' + getPlural(y, years));
-    m && result.push('in ' + m + ' ' + getPlural(m, months));
+    if (y > 0) {
+        inOrAnd = 'and';
+    }
+    m && result.push(inOrAnd + ' ' + m + ' ' + getPlural(m, months));
     return result.join(', ');
 }
 
