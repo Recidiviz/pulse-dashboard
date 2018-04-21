@@ -5,7 +5,7 @@ module.exports = {
   entry: './src/index.js',
   output: {
     path: path.resolve(__dirname, 'build'),
-    filename: 'bundle.js'
+    filename: 'bundle.js',
   },
   module: {
     rules: [
@@ -19,9 +19,16 @@ module.exports = {
           },
         },
       },
+      {
+        test: /\.css$/,
+        use: [
+          'style-loader',
+          'css-loader',
+        ],
+      },
     ],
   },
   plugins: [
-    new CleanWebpackPlugin(['build'])
-  ]
+    new CleanWebpackPlugin(['build']),
+  ],
 };
