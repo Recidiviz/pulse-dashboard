@@ -1,17 +1,17 @@
 @font-face {
 	font-family: 'nlicons';
-	src:url('../fonts/nlicons/nlicons.eot');
-	src:url('../fonts/nlicons/nlicons.eot?#iefix') format('embedded-opentype'),
-		url('../fonts/nlicons/nlicons.woff') format('woff'),
-		url('../fonts/nlicons/nlicons.ttf') format('truetype'),
-		url('../fonts/nlicons/nlicons.svg#nlicons') format('svg');
+	src:url('../static/fonts/nlicons/nlicons.eot');
+	src:url('../static/fonts/nlicons/nlicons.eot?#iefix') format('embedded-opentype'),
+		url('../static/fonts/nlicons/nlicons.woff') format('woff'),
+		url('../static/fonts/nlicons/nlicons.ttf') format('truetype'),
+		url('../static/fonts/nlicons/nlicons.svg#nlicons') format('svg');
 	font-weight: normal;
 	font-style: normal;
 }
 
 .likelihood-results {
     width: 100%;
-	margin: 0.3em auto 0 auto
+	margin: 0.3em auto 0 auto;
 	line-height: 1.5;
 	font-size: 50px;
     color: #A01B66;
@@ -22,7 +22,7 @@
 /* general style for the form */
 .nl-form {
 	width: 100%;
-	margin: 0.3em auto 0 auto
+	margin: 0.3em auto 0 auto;
 	line-height: 1.5;
 	font-size: 36px;		/*added*/
     color: rgba(0,0,0,.7);	/*added*/
@@ -201,7 +201,7 @@ input:focus::-moz-placeholder {
 	color: rgba(255,255,255,0.2);
 }
 
-input:-ms-input-placeholder {  
+input:-ms-input-placeholder {
 	color: rgba(255,255,255,0.8);
 }
 
