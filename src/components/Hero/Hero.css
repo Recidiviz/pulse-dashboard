@@ -1,0 +1,52 @@
+svg {
+  fill: currentcolor;
+}
+
+.content {
+	position: relative;
+	display: grid;
+	justify-content: center;
+	align-content: center;
+	height: 100vh;
+	overflow: hidden;
+	min-height: 650px;
+	margin: 0 auto;
+}
+
+.content--layout {
+	grid-template-columns: 100%;
+	padding: 3em 0;
+}
+
+.demo-moveout {
+	--color-text: #766e6e;
+	--color-background: #d6d4d3;
+	--color-link: #ffffff;
+	--color-link-hover: #c82222;
+}
+
+.word {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	flex-wrap: wrap;
+	margin: 0;
+	cursor: default;
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	-webkit-tap-highlight-color: rgba(0,0,0,0);
+}
+
+.word--moveout {
+	font-size: 12vw;
+	font-family: 'Squada One', sans-serif;
+	font-weight: 400;
+	color: #c82222;
+	line-height: 0.7;
+	text-transform: uppercase;
+	margin: 0;
+}
