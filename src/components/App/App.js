@@ -2,10 +2,11 @@ import React from 'react';
 
 import Header from '../Header';
 import Hero from '../Hero';
+import Facts from '../Facts';
 
 import './App.css';
 
-import { Organization } from '../../constants';
+import { Organization, RECIDIVIZ_FACTS } from '../../constants';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         title={Organization.NAME}
         description={Organization.DESCRIPTION}
       />
+      <Facts data={RECIDIVIZ_FACTS} />
     </div>
   );
 }
