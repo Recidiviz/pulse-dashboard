@@ -3,7 +3,7 @@ import React from 'react';
 import Header from '../Header';
 import Hero from '../Hero';
 import Facts from '../Facts';
-import RecidivizIntro from '../Recidiviz/RecidivizIntro';
+import Recidiviz from '../Recidiviz';
 
 import './App.css';
 
@@ -22,9 +22,12 @@ function App() {
         description={Organization.DESCRIPTION}
       />
       <Facts data={RECIDIVIZ_FACTS} />
-      {/* TODO: This will be wrapped in a Recidiviz component in next PR */}
       {RecidivizList.map(recidiviz =>
-        <RecidivizIntro description={recidiviz.description} key={recidiviz.type} />)}
+        (<Recidiviz
+          type={recidiviz.type}
+          description={recidiviz.description}
+          key={recidiviz.type}
+        />))}
     </div>
   );
 }
