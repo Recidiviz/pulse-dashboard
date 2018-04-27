@@ -32,17 +32,15 @@ function Facts(props) {
   const factElements = buildFactElements(props.data);
 
   return (
-    <main className="w-100 bt b--black-10 bg-white">
-      <section className="bg-white w-100">
-        <article className="bt b--black-10 black-70 ph3 ph5-ns pv4 pv5-ns">
-          <div className="mw9 center">
-            <div className="cf ph2-ns">
-              {factElements}
-            </div>
+    <section className="bg-white w-100">
+      <article className="bt b--black-10 black-70 ph3 ph5-ns pv4 pv5-ns">
+        <div className="mw9 center">
+          <div className="cf ph2-ns">
+            {factElements}
           </div>
-        </article>
-      </section>
-    </main>
+        </div>
+      </article>
+    </section>
   );
 }
 

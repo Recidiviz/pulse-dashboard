@@ -21,13 +21,16 @@ function App() {
         title={Organization.NAME}
         description={Organization.DESCRIPTION}
       />
-      <Facts data={RECIDIVIZ_FACTS} />
-      {RecidivizList.map(recidiviz =>
-        (<Recidiviz
-          type={recidiviz.type}
-          description={recidiviz.description}
-          key={recidiviz.type}
-        />))}
+      <main className="w-100 bt b--black-10 bg-white">
+        <Facts data={RECIDIVIZ_FACTS} />
+        {RecidivizList.map(recidiviz => (
+          <Recidiviz
+            type={recidiviz.type}
+            description={recidiviz.description}
+            key={recidiviz.type}
+          />
+        ))}
+      </main>
     </div>
   );
 }
