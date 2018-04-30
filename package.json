@@ -19,11 +19,14 @@
     }
   },
   "jest": {
-    "coveragePathIgnorePatterns": ["<rootDir>/src/lib/static/"],
+    "coveragePathIgnorePatterns": [
+      "<rootDir>/src/lib/static/"
+    ],
     "moduleNameMapper": {
       "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/__mocks__/fileMock.js",
       "\\.(css|less)$": "<rootDir>/__mocks__/styleMock.js"
-    }
+    },
+    "setupFiles": ["<rootDir>/src/config/jestSetup.js"]
   },
   "devDependencies": {
     "babel-core": "^6.26.0",
@@ -52,6 +55,10 @@
     "animejs": "^2.2.0",
     "babel-runtime": "^6.26.0",
     "charming": "^2.2.3",
+    "d3": "^5.1.0",
+    "jquery": "^3.3.1",
+    "jquery-ui": "^1.12.1",
+    "jquery-ui-touch-punch": "^0.2.3",
     "prop-types": "^15.6.1",
     "react": "^16.3.2",
     "react-dom": "^16.3.2",
