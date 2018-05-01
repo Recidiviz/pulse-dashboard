@@ -3,6 +3,7 @@ import React from 'react';
 import Header from '../Header';
 import Hero from '../Hero';
 import Facts from '../Facts';
+import Footer from '../Footer';
 import Recidiviz from '../Recidiviz';
 
 import './App.css';
@@ -12,7 +13,7 @@ import RecidivizList from '../../config/recidivizList';
 
 function App() {
   return (
-    <div>
+    <div className="app-container">
       <Header
         title={Organization.NAME}
         contactEmail={Organization.PRIMARY_CONTACT}
@@ -31,6 +32,7 @@ function App() {
           />
         ))}
       </main>
+      <Footer />
     </div>
   );
 }
