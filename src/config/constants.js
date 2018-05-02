@@ -1,9 +1,11 @@
+// TODO: change these keys to be camelcase
 export const Organization = {
   NAME: 'Recidiviz',
   DESCRIPTION: 'a platform for tracking granular recidivism metrics in real time',
   PRIMARY_CONTACT: 'team@recidiviz.com',
 };
 
+// TODO: maybe just move this to RecidivizFacts component rather than having here
 export const RECIDIVIZ_FACTS = [
   '95% of the roughly 2 million inmates in US correctional custody will one day be released.',
   'Depending on who you ask, between 30% and 77% of those prisoners will end up back in prison. The Bureau of Justice Statistics\' most recent study found a 3-year recidivism rate of 67.8% across 30 states.',

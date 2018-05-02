@@ -1,10 +1,10 @@
 @font-face {
 	font-family: 'nlicons';
-	src:url('../static/fonts/nlicons/nlicons.eot');
-	src:url('../static/fonts/nlicons/nlicons.eot?#iefix') format('embedded-opentype'),
-		url('../static/fonts/nlicons/nlicons.woff') format('woff'),
-		url('../static/fonts/nlicons/nlicons.ttf') format('truetype'),
-		url('../static/fonts/nlicons/nlicons.svg#nlicons') format('svg');
+	src:url('../../../../static/fonts/nlicons/nlicons.eot');
+	src:url('../../../../static/fonts/nlicons/nlicons.eot?#iefix') format('embedded-opentype'),
+		url('../../../../static/fonts/nlicons/nlicons.woff') format('woff'),
+		url('../../../../static/fonts/nlicons/nlicons.ttf') format('truetype'),
+		url('../../../../static/fonts/nlicons/nlicons.svg#nlicons') format('svg');
 	font-weight: normal;
 	font-style: normal;
 }
@@ -121,11 +121,11 @@
 	color: #820B4E;
 }
 
-.no-touch .nl-dd ul li:hover {
-	background: rgba(0,0,0,0.05);
+.nl-dd ul li:hover {
+		background-color: rgba(0,0,0,0.05);
 }
 
-.no-touch .nl-dd ul li:hover:active {
+.nl-dd ul li:hover:active {
 	color: #620037;
 }
 
@@ -251,12 +251,12 @@ input:focus::-ms-input-placeholder {
 	background: #69B1A9;
 }
 
-.no-touch .nl-form .nl-submit:hover,
-.no-touch .nl-form .nl-submit:active {
+.nl-form .nl-submit:hover,
+.nl-form .nl-submit:active {
 	background: #69B1A9;
 }
 
-.no-touch .nl-form .nl-submit:hover:before {
+.nl-form .nl-submit:hover:before {
 	background: #58a199;
 }
 

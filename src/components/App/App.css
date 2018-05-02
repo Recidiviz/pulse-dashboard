@@ -5,13 +5,13 @@
 	min-height: 100vh;
 }
 
-.app-container a {
+a {
 	text-decoration: none;
 	color: rgb(85, 26, 139);
 	outline: none;
 }
 
-.app-container a:hover, a:focus {
+a:hover, a:focus {
 	color: #c82222;
 }
 
