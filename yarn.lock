@@ -5497,6 +5497,10 @@ number-is-nan@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/number-is-nan/-/number-is-nan-1.0.1.tgz#097b602b53422a522c1afb8790318336941a011d"
 
+nunito-fontface@^0.7.2:
+  version "0.7.2"
+  resolved "https://registry.yarnpkg.com/nunito-fontface/-/nunito-fontface-0.7.2.tgz#51996ce9edff9e1b4ec7f77d7ff435b99c48497b"
+
 nwmatcher@^1.4.3:
   version "1.4.4"
   resolved "https://registry.yarnpkg.com/nwmatcher/-/nwmatcher-1.4.4.tgz#2285631f34a95f0d0395cd900c96ed39b58f346e"
@@ -7588,10 +7592,6 @@ type-is@~1.6.15, type-is@~1.6.16:
 typedarray@^0.0.6:
   version "0.0.6"
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
-
-typeface-nunito@^0.0.54:
-  version "0.0.54"
-  resolved "https://registry.yarnpkg.com/typeface-nunito/-/typeface-nunito-0.0.54.tgz#5046f24d8d1492ca8fd823896d6e1cdefbe63203"
 
 typeface-squada-one@^0.0.54:
   version "0.0.54"

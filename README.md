@@ -1,11 +1,11 @@
 # recidiviz
-An in-progress effort to visualize recidivism metrics.
+An in-progress effort to visualize criminal justice metrics.
 
 ## Contents
 1. [Development](#development)
 1. [Tooling](#tooling)
-1. [Application Structure](#application structure)
-1. [Data Sources](#data sources)
+1. [Application Structure](#application-structure)
+1. [Data Sources](#data-sources)
 1. [License](#license)
 
 ## Development
@@ -45,7 +45,7 @@ A yarn script is available for starting the development server. This will also a
 
 ```yarn start```
 
-Each time this is run, the `build` directory will be wiped clean. A [bundle analysis](#Bundle analysis) report, found in `build/report.html` will also be generated on each invocation of this script.
+Each time this is run, the `build` directory will be wiped clean. A [bundle analysis](#Bundle-analysis) report, found in `build/report.html`, will also be generated on each invocation of this script.
 
 The development server will remain active until you either close your terminal or shut down the server using `control+c`.
 
@@ -56,7 +56,7 @@ To generate a production build, invoke the following yarn script:
 
 ```yarn build```
 
-Each time this is run, the `build` directory will be wiped clean. A bundle analysis report, found in `build/report.html` will also be generated on each invocation of this script.
+Each time this is run, the `build` directory will be wiped clean. A bundle analysis report, found in `build/report.html`, will also be generated on each invocation of this script.
 
 ### Running the application in production [TODO]
 
@@ -83,7 +83,7 @@ A few points of note about our current webpack configuration which can be found 
 
 1. The app is simple at this point so we specify a single entry point, `src/index.js`, and a single output bundle, `app.bundle.js`. Output is configured to dynamically create bundles based on entry points. If additional bundles are desired, simply add an additional entry point to the `entry` property.
 1. Production bundles and assets will be written to the `build` directory. This directory is wiped clean each time a production build is initiated.
-1. We use `HtmlWebpackPlugin` to dynamically insert generated bundles to `index.html` during production build. For this reason, you won't find any JavaScript bundle references in `src/index.html`. The resulting production version of `index.html` will be written to the `build` directory. If you inspect that file, you'll see the dynamically generated `<script>` tags with our bundle(s).
+1. We use `HtmlWebpackPlugin` to dynamically insert generated bundles to `index.html` during production builds. For this reason, you won't find any JavaScript bundle references in `src/index.html`. The resulting production version of `index.html` will be written to the `build` directory. If you inspect that file, you'll see the dynamically generated `<script>` tags with our bundle(s).
 
 #### Bundle analysis
 We have configured `BundleAnalyzerPlugin` to facilitate bundle analysis. This can be useful for managing bundle bloat or spotting unnecessary dependencies. For convenience, a yarn script has been created to launch the bundle analyzer tool. To run this, execute the following command:
@@ -95,9 +95,9 @@ We have configured `BundleAnalyzerPlugin` to facilitate bundle analysis. This ca
 ### Jest
 [Jest](https://facebook.github.io/jest/) is our testing framework. It provides a friendly testing API, a powerful and easy-to-use mocking functionality, and plenty of speed.
 
-To execute tests, see [Linting & running tests](#linting & running tests).
+To execute tests, see [Linting & running tests](#linting--running-tests).
 
-To add new tests, create a file with the same name as the file your are testing and append the extension `.test.js`. This file should be located in the same directory as the file your are testing.
+To add new tests, create a file with the same name as the file you are testing and append the extension `.test.js`. This file should be located in the same directory as the file you are testing.
 
 For example, if you are testing the `Recidiviz` component which is defined in `Recidiviz.js`, you would add tests in `Recidiviz.test.js`.
 
@@ -106,7 +106,7 @@ See Jest [API](https://facebook.github.io/jest/docs/en/api.html) and [Docs](http
 ### eslint
 [eslint](https://eslint.org/) is a flexible linter for JavaScript. We have configured eslint to adhere to the Airbnb style guides for [Javascript](https://github.com/airbnb/javascript) and [React](https://github.com/airbnb/javascript/tree/master/react), with a few [exceptions](https://github.com/Recidiviz/recidiviz.com/.eslintrc), in addition to the base eslint JS rules.
 
-To run the linter, see [Linting & running tests](#linting & running tests).
+To run the linter, see [Linting & running tests](#linting--running-tests).
 
 We suggest installing a linting package for your preferred code editor that hooks into eslint. This will allow you to get real time feedback on code while you're writing it. We recommend [linter-eslint](https://atom.io/packages/linter-eslint) for Atom.
 
@@ -156,7 +156,7 @@ rather than doing this:
 
 ```import Recidiviz from './Recidiviz/Recidiviz';```
 
-It's common for React components to have one-or-many sub-components. This hierarchy should be reflected in the directory structure. Add sub-component directories within the containing parent component directory. For example:
+It's common for React components to have one or more sub-components. This hierarchy should be reflected in the directory structure. Add sub-component directories within the containing parent component directory. For example:
 
 ```
 /src/components/Recidiviz
@@ -188,13 +188,13 @@ As all code in this directory is intended to be third-party, this directory is i
 Static assets like fonts and images. Place assets in the appropriate sub-directory.
 
 ### data
-Data sets and code for generating them. See [Data Sources](#Data Sources) for more details.
+Data sets and code for generating them. See [Data Sources](#Data-Sources) for more details.
 
 ### build
-Contains production bundles and assets. Automatically populated by [Generating a production build](#generating a production build). This directory will be wiped on each production build or after [running the application locally](#running the application locally).
+Contains production bundles and assets. Automatically populated by [Generating a production build](#generating-a-production-build). This directory will be wiped on each production build or after [running the application locally](#running-the-application-locally).
 
 ### coverage
-Contains code coverage reports which are automaticlaly generated when [running tests](#linting & running tests).
+Contains code coverage reports which are automatically generated when [running tests](#linting--running-tests).
 
 ### __mocks__
 Used to house mock files and functions. Loaded by [Jest](#jest) when running tests.

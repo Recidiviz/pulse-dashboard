@@ -1,10 +1,10 @@
 {
   "name": "recidiviz.com",
   "version": "1.0.0",
-  "description": "Real time tracking of recidivism metrics",
+  "description": "Tracking criminal justice metrics in real time",
   "private": true,
   "repository": "git@github.com:Recidiviz/recidiviz.com.git",
-  "author": "Matthew Root <root.matthew@gmail.com>",
+  "author": "Recidiviz <team@recidiviz.com>",
   "license": "GNU General Public License v3",
   "scripts": {
     "analyze-bundle": "open ./build/report.html",
@@ -62,11 +62,11 @@
     "jquery-ui": "^1.12.1",
     "jquery-ui-touch-punch": "^0.2.3",
     "mustache": "^2.3.0",
+    "nunito-fontface": "^0.7.2",
     "prop-types": "^15.6.1",
     "react": "^16.3.2",
     "react-dom": "^16.3.2",
     "tachyons": "^4.9.1",
-    "typeface-nunito": "^0.0.54",
     "typeface-squada-one": "^0.0.54"
   }
 }

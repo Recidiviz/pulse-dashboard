@@ -1,9 +1,28 @@
+/*
+ * Recidiviz - a platform for tracking granular criminal justice metrics in real time
+ * Copyright (C) 2018 Recidiviz, Inc.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ * ============================================================================
+*/
+
 import React, { Component } from 'react';
 
-import NLForm from '../../../lib/static/nlform';
-import likelihoodSelect from '../../../lib/static/likelihoodSelect';
+import NLForm from '../../../lib/static/js/nlform';
+import likelihoodSelect from '../../../lib/static/js/likelihoodSelect';
 
-import './RecidivizForm.css';
+import '../../../lib/static/css/nlform.css';
 
 const ageOptions = [
   {
@@ -152,8 +171,8 @@ class RecidivizForm extends Component {
             <h1 className="f4 fw6 f1-ns lh-title measure mt0 text-our-gray">Try Your Luck</h1>
 
             <p className="f5 f4-ns lh-copy mt0 text-our-gray">
-              A prisoner&apos;s age, race, gender, and crime tell us something about how likely they
-              are to end up back in prison -- and how quickly.
+              A prisoner&apos;s age, race, gender, and offense tell us something about how likely
+              they are to end up back in prison -- and how quickly.
             </p>
             <div className="pb3">
               <form className="nl-form text-our-gray" id="nl-form-likelihood">I am&nbsp;
