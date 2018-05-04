@@ -175,7 +175,7 @@
                     effectiveness over time.
                 </p>
             </article>
-<!-- Above this line has been converted -->
+
             <article class="cf ph3 ph5-ns pb5 bg-white black-70">
                 <div class="mw9 center pa3 pa5-ns">
                     <article class="pv2 fl w-100">
@@ -366,6 +366,7 @@
         likelihoodSelect(nlformLikelihood);
         stateSelect(nlformState);
     </script>
+    <!-- Above this line has been converted -->
     <script src="./bundle.js"></script>
 </body>
 </html>
