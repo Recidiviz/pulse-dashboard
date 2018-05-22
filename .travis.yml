@@ -1,14 +1,16 @@
 language: node_js
 node_js:
-  - "lts/*"
+- lts/*
 install:
-  - yarn install
+- yarn install
 script:
-  - yarn test && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js
+- yarn test
 after_success:
-  # TODO: Create build and deploy to GAE as part of resolving issue #23
-  # - yarn build
+- cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js
 cache:
   yarn: true
   directories:
-    - "node_modules"
+  - node_modules
+notifications:
+  slack:
+    secure: Ff1xs9XtVXz/S9LEqLvyiSx9oZdDcJiKPl4AFvlNuE6hk2Baekxkyg32jokWZunSePDl09FYpST0f2pK3Zbs1K9LfA0wZGuMESnLWcg+Db8m7R0dDaNXPf4p8eXyqDjxnuRlTGXCWxdkUKn0/Pf5+zaH/OIxKlWtFdy2CrBF7n7sDRlSvubrLSP5SaLqsiIcdw/V7BFDAw8f4eqq6qsCrxwKwq68jgdgxCiXZ48au7n0nDuyEQ+VDolhd/TdMklVHs1sHe1QxDet7hFVGLEAEcQndUw6h+SzPK1DQMKQ+rDvplZPhyaqhR5G6lKksUQYf1MP0cXgBvoGuP3ejoC999bhEZmb3i7PZS2n1b2BOnOrqDbexgFYLqpDmlpGP+Tl/KRo7GMSAKlSbcxX1FQlDEOOcHIp6GZZx6HKnTxT/GGcREHWF03zbRWmJnPXciO2GCWFqFWcsuCpF8AEQHkhLsvvrvBAsoK+E7VPu0Bi+w7gM52OWio9oHY4ily1rzdeY4cB20uc4POgwCV+rXL7W0+dwVYBelh3zLjmm6HRJJDRL8E2Zr5GtcLT7CJrslzI/qNhGYkXOkQ6A3FQTlmXtI8vAW/V4TaJsQIWpwhCUdumuuSlE5i8ZjXb1dKpESM+CMJPgysKmAWxU8MSkvGDjhmsYcL6sRd62V2nCjs0chU=
