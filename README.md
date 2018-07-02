@@ -1,5 +1,5 @@
 # recidiviz
-[![Build Status](https://travis-ci.org/Recidiviz/recidiviz.com.svg?branch=master)](https://travis-ci.org/Recidiviz/recidiviz.com) [![Coverage Status](https://coveralls.io/repos/github/Recidiviz/recidiviz.com/badge.svg?branch=master)](https://coveralls.io/github/Recidiviz/recidiviz.com?branch=master)
+[![Build Status](https://travis-ci.org/Recidiviz/pulse-dashboard.svg?branch=master)](https://travis-ci.org/Recidiviz/pulse-dashboard) [![Coverage Status](https://coveralls.io/repos/github/Recidiviz/pulse-dashboard/badge.svg?branch=master)](https://coveralls.io/github/Recidiviz/pulse-dashboard?branch=master)
 
 An in-progress effort to visualize criminal justice metrics.
 
