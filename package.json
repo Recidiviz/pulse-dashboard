@@ -1,9 +1,9 @@
 {
-  "name": "recidiviz.com",
-  "version": "1.0.0",
-  "description": "Tracking criminal justice metrics in real time",
+  "name": "pulse-dashboard",
+  "version": "0.1.0",
+  "description": "Visualizing criminal justice metrics in real time",
   "private": true,
-  "repository": "git@github.com:Recidiviz/recidiviz.com.git",
+  "repository": "git@github.com:Recidiviz/pulse-dashboard.git",
   "author": "Recidiviz <team@recidiviz.com>",
   "license": "GNU General Public License v3",
   "scripts": {
