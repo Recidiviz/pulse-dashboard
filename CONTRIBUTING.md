@@ -36,7 +36,7 @@ miss out on your help.
 Send any bugs you find our way by filing an issue against one of our
 repositories. Don't overthink picking the repository: if it's related to data
 ingest or calculation, submit it [there](https://github.com/Recidiviz/recidiviz-data/issues).
-If it's related to our website, submit it [here](https://github.com/Recidiviz/recidiviz.com/issues).
+If it's related to our dashboard, submit it [here](https://github.com/Recidiviz/pulse-dashboard/issues).
 
 Please provide as much information as you can to help us reproduce and fix the
 bug. This may include, but is not limited to:
@@ -75,7 +75,7 @@ from you at [team@recidiviz.com](mailto:team@recidiviz.com).
 
 ### Selecting an Issue
 
-Our backlog of tasks is labeled and open for browsing under the [project issues](https://github.com/Recidiviz/recidiviz.com/issues).
+Our backlog of tasks is labeled and open for browsing under the [project issues](https://github.com/Recidiviz/pulse-dashboard/issues).
 All issues which are not currently assigned are open for contribution. Please
 assign an issue to yourself if you intend to submit a pull request soon. If you
 are interested but unsure about contributing to a particular issue, leave a
@@ -97,7 +97,7 @@ where you feel less comfortable or need to learn something new.
 Once you have selected an issue and assigned it to yourself, you will start
 writing the code on an appropriately named branch on your local machine. If you
 are part of the Recidiviz Team, you may push branches directly to the
-`recidiviz/recidiviz.com` remote. Otherwise, you may push branches to a [fork](https://help.github.com/articles/fork-a-repo/)
+`recidiviz/pulse-dashboard` remote. Otherwise, you may push branches to a [fork](https://help.github.com/articles/fork-a-repo/)
 of the repository.
 
 Before issuing a pull request, run our linting and test suite over your changes

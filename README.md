@@ -1,5 +1,5 @@
-# recidiviz
-[![Build Status](https://travis-ci.org/Recidiviz/recidiviz.com.svg?branch=master)](https://travis-ci.org/Recidiviz/recidiviz.com) [![Coverage Status](https://coveralls.io/repos/github/Recidiviz/recidiviz.com/badge.svg?branch=master)](https://coveralls.io/github/Recidiviz/recidiviz.com?branch=master)
+# Pulse Dashboard
+[![Build Status](https://travis-ci.org/Recidiviz/pulse-dashboard.svg?branch=master)](https://travis-ci.org/Recidiviz/pulse-dashboard) [![Coverage Status](https://coveralls.io/repos/github/Recidiviz/pulse-dashboard/badge.svg?branch=master)](https://coveralls.io/github/Recidiviz/pulse-dashboard?branch=master)
 
 An in-progress effort to visualize criminal justice metrics.
 
@@ -15,7 +15,7 @@ An in-progress effort to visualize criminal justice metrics.
 ### Getting set up
 1. Grab the source:
 
-   ```git clone git@github.com:Recidiviz/recidiviz.com.git```
+   ```git clone git@github.com:Recidiviz/pulse-dashboard.git```
 1. Install Yarn package manager:
 
    ```brew install yarn```
@@ -106,7 +106,7 @@ For example, if you are testing the `Recidiviz` component which is defined in `R
 See Jest [API](https://facebook.github.io/jest/docs/en/api.html) and [Docs](https://facebook.github.io/jest/docs/en/getting-started.html) for more information.
 
 ### eslint
-[eslint](https://eslint.org/) is a flexible linter for JavaScript. We have configured eslint to adhere to the Airbnb style guides for [Javascript](https://github.com/airbnb/javascript) and [React](https://github.com/airbnb/javascript/tree/master/react), with a few [exceptions](https://github.com/Recidiviz/recidiviz.com/.eslintrc), in addition to the base eslint JS rules.
+[eslint](https://eslint.org/) is a flexible linter for JavaScript. We have configured eslint to adhere to the Airbnb style guides for [Javascript](https://github.com/airbnb/javascript) and [React](https://github.com/airbnb/javascript/tree/master/react), with a few [exceptions](https://github.com/Recidiviz/pulse-dashboard/.eslintrc), in addition to the base eslint JS rules.
 
 To run the linter, see [Linting & running tests](#linting--running-tests).
 
