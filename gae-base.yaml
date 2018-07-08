@@ -1,0 +1,35 @@
+handlers:
+- url: /
+  secure: always
+  static_files: build/index.html
+  upload: build/index.html
+
+- url: /(.*\.js)
+  secure: always
+  static_files: build/\1
+  upload: build/(.*\.js)
+
+# This should be removed when data is fetched via API instead of bundled with app
+- url: /data
+  secure: always
+  static_dir: data
+  application_readable: true
+
+- url: /fonts
+  secure: always
+  static_dir: build/fonts
+
+# This should be removed when the original recidiviz.com app is replaced with the
+# actual pulse-dashboard application
+- url: /static/images
+  secure: always
+  static_dir: static/images
+
+- url: /images
+  secure: always
+  static_dir: build/images
+
+- url: /.*
+  secure: always
+  redirect_http_response_code: 301
+  script: auto
