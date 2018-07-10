@@ -1,12 +1,24 @@
 language: node_js
 node_js:
 - lts/*
+before_install:
+- openssl aes-256-cbc -K $encrypted_49f5b54eb380_key -iv $encrypted_49f5b54eb380_iv
+  -in recidiviz-gae-api-key.json.enc -out recidiviz-gae-api-key.json -d
 install:
 - yarn install
 script:
 - yarn test
 after_success:
 - cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js
+before_deploy:
+- yarn build
+deploy:
+  provider: gae
+  config: pulse-dashboard-staging.yaml
+  keyfile: recidiviz-gae-api-key.json
+  project: recidiviz-123
+  on: master
+  skip_cleanup: true
 cache:
   yarn: true
   directories:

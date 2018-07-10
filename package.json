@@ -9,6 +9,8 @@
   "scripts": {
     "analyze-bundle": "open ./build/report.html",
     "build": "webpack --mode production",
+    "deploy:prod": "yarn test && yarn build && gcloud app deploy pulse-dashboard-prod.yaml",
+    "deploy:staging": "yarn test && yarn build && gcloud app deploy pulse-dashboard-staging.yaml",
     "start": "webpack-dev-server --mode development --open",
     "test": "eslint src && jest --coverage"
   },
