@@ -19,6 +19,7 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { shallow } from 'enzyme';
 import App from './App';
 
 jest.mock('../../lib/static/js/recidivismSlider.js');
@@ -30,4 +31,31 @@ it('renders the App component', () => {
   const div = document.createElement('div');
   ReactDOM.render(<App />, div);
   ReactDOM.unmountComponentAtNode(div);
+});
+
+describe('<App />', () => {
+  it('renders a <Header /> component', () => {
+    const wrapper = shallow(<App />);
+    expect(wrapper.find('Header').exists()).toBe(true);
+  });
+
+  it('renders a <Hero /> component', () => {
+    const wrapper = shallow(<App />);
+    expect(wrapper.find('Hero').exists()).toBe(true);
+  });
+
+  it('renders a <Facts /> component', () => {
+    const wrapper = shallow(<App />);
+    expect(wrapper.find('Facts').exists()).toBe(true);
+  });
+
+  it('renders 3 Recidiviz components', () => {
+    const wrapper = shallow(<App />);
+    expect(wrapper.find('Recidiviz').length).toBe(3);
+  });
+
+  it('renders a <Footer /> component', () => {
+    const wrapper = shallow(<App />);
+    expect(wrapper.find('Footer').exists()).toBe(true);
+  });
 });
