@@ -42,6 +42,10 @@ To run Jest manually:
 
 ```jest [optional-filepath]```
 
+If you would like to get your TDD on and run Jest in watch mode, you can use:
+
+```yarn test:watch```
+
 ### Running the application locally
 A yarn script is available for starting the development server. This will also automatically open a browser to localhost on the appropriate port.
 
@@ -95,7 +99,7 @@ We have configured `BundleAnalyzerPlugin` to facilitate bundle analysis. This ca
 **Note**: you will need to have either started the development server or executed a production build at least one time for this to work as the `build/report.html` file is generated during either of these actions.
 
 ### Jest
-[Jest](https://facebook.github.io/jest/) is our testing framework. It provides a friendly testing API, a powerful and easy-to-use mocking functionality, and plenty of speed.
+[Jest](https://facebook.github.io/jest/) is our testing framework. It provides a friendly testing API, a powerful and easy-to-use mocking functionality, and plenty of speed. Snapshot testing is also a nice feature but should be used with caution. It is served best as a supplement, rather than a substitute, of a robust set of unit tests that properly describes what a piece of code is intended to do.
 
 To execute tests, see [Linting & running tests](#linting--running-tests).
 
@@ -104,6 +108,12 @@ To add new tests, create a file with the same name as the file you are testing a
 For example, if you are testing the `Recidiviz` component which is defined in `Recidiviz.js`, you would add tests in `Recidiviz.test.js`.
 
 See Jest [API](https://facebook.github.io/jest/docs/en/api.html) and [Docs](https://facebook.github.io/jest/docs/en/getting-started.html) for more information.
+
+### Enzyme
+
+[Enzyme](http://airbnb.io/enzyme/) is a utility for unit testing React components. It's particularly handy for its ability to shallow render a component for isolated testing, fully mount a component to test lifecycle methods, select elements in a variety of ways with ease, and simulate events to test handlers.
+
+See Enzyme [API](http://airbnb.io/enzyme/docs/api/) for more information.
 
 ### eslint
 [eslint](https://eslint.org/) is a flexible linter for JavaScript. We have configured eslint to adhere to the Airbnb style guides for [Javascript](https://github.com/airbnb/javascript) and [React](https://github.com/airbnb/javascript/tree/master/react), with a few [exceptions](https://github.com/Recidiviz/pulse-dashboard/.eslintrc), in addition to the base eslint JS rules.
