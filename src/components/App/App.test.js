@@ -18,7 +18,8 @@
 */
 
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { shallow } from 'enzyme';
+import toJson from 'enzyme-to-json';
 import App from './App';
 
 jest.mock('../../lib/static/js/recidivismSlider.js');
@@ -26,8 +27,34 @@ jest.mock('../../lib/static/js/nlform.js');
 jest.mock('../../lib/static/js/likelihoodSelect.js');
 jest.mock('../../lib/static/js/stateRecidivismRandom.js');
 
-it('renders the App component', () => {
-  const div = document.createElement('div');
-  ReactDOM.render(<App />, div);
-  ReactDOM.unmountComponentAtNode(div);
+describe('<App />', () => {
+  test('renders a <Header /> component', () => {
+    const wrapper = shallow(<App />);
+    expect(wrapper.find('Header').exists()).toBe(true);
+  });
+
+  test('renders a <Hero /> component', () => {
+    const wrapper = shallow(<App />);
+    expect(wrapper.find('Hero').exists()).toBe(true);
+  });
+
+  test('renders a <Facts /> component', () => {
+    const wrapper = shallow(<App />);
+    expect(wrapper.find('Facts').exists()).toBe(true);
+  });
+
+  test('renders 3 Recidiviz components', () => {
+    const wrapper = shallow(<App />);
+    expect(wrapper.find('Recidiviz').length).toBe(3);
+  });
+
+  test('renders a <Footer /> component', () => {
+    const wrapper = shallow(<App />);
+    expect(wrapper.find('Footer').exists()).toBe(true);
+  });
+
+  test('matches saved snapshot', () => {
+    const wrapper = shallow(<App />);
+    expect(toJson(wrapper)).toMatchSnapshot();
+  });
 });
