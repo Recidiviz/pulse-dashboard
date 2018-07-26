@@ -1,2 +1,0 @@
-# Ignore static JS files from legacy version of Recidiviz
-**/src/lib/static/js/*.js
