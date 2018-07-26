@@ -19,15 +19,5 @@
 
 import { configure } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
-import $ from 'jquery';
 
 configure({ adapter: new Adapter() });
-
-global.$ = $;
-global.jQuery = $;
-
-require('jquery-ui/ui/version');
-require('jquery-ui/ui/plugin');
-require('jquery-ui/ui/widget');
-require('jquery-ui/ui/widgets/mouse');
-require('jquery-ui/ui/widgets/slider');
