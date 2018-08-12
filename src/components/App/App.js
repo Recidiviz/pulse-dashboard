@@ -20,15 +20,11 @@
 import React from 'react';
 
 import Header from '../Header';
-import Hero from '../Hero';
-import Facts from '../Facts';
 import Footer from '../Footer';
-import Recidiviz from '../Recidiviz';
 
 import './App.css';
 
 import Organization from '../../config/constants';
-import RecidivizList from '../../config/recidivizList';
 
 function App() {
   return (
@@ -37,21 +33,6 @@ function App() {
         title={Organization.name}
         contactEmail={Organization.primaryContact}
       />
-      <Hero
-        title={Organization.name}
-        description={Organization.description}
-        contactEmail={Organization.primaryContact}
-      />
-      <main className="w-100 bt b--black-10 bg-white">
-        <Facts />
-        {RecidivizList.map(recidiviz => (
-          <Recidiviz
-            type={recidiviz.type}
-            description={recidiviz.description}
-            key={recidiviz.type}
-          />
-        ))}
-      </main>
       <Footer />
     </div>
   );
