@@ -17,29 +17,4 @@
  * ============================================================================
 */
 
-import React from 'react';
-
-import Header from '../Header';
-import Footer from '../Footer';
-import KPIsContainer from '../KPIsContainer';
-import Sidebar from '../Sidebar';
-
-import './App.css';
-
-import Organization from '../../config/constants';
-
-function App() {
-  return (
-    <div className="app-container">
-      <Sidebar />
-      <Header
-        title={Organization.name}
-        contactEmail={Organization.primaryContact}
-      />
-      <KPIsContainer />
-      <Footer />
-    </div>
-  );
-}
-
-export default App;
+export { default } from './KPIsContainer';

@@ -18,33 +18,11 @@
 */
 
 import React from 'react';
-import { shallow } from 'enzyme';
-import toJson from 'enzyme-to-json';
-import App from './App';
 
-describe('<App />', () => {
-  test('renders a <Sidebar /> component', () => {
-    const wrapper = shallow(<App />);
-    expect(wrapper.find('Sidebar').exists()).toBe(true);
-  });
-
-  test('renders a <Header /> component', () => {
-    const wrapper = shallow(<App />);
-    expect(wrapper.find('Header').exists()).toBe(true);
-  });
-
-  test('renders a <KPIsContainer /> component', () => {
-    const wrapper = shallow(<App />);
-    expect(wrapper.find('KPIsContainer').exists()).toBe(true);
-  });
-
-  test('renders a <Footer /> component', () => {
-    const wrapper = shallow(<App />);
-    expect(wrapper.find('Footer').exists()).toBe(true);
-  });
-
-  test('matches saved snapshot', () => {
-    const wrapper = shallow(<App />);
-    expect(toJson(wrapper)).toMatchSnapshot();
-  });
-});
+export default function KPIsContainer() {
+  return (
+    <div>
+      KPIs Container
+    </div>
+  );
+}
