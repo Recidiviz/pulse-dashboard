@@ -8,6 +8,7 @@ exports[`<App /> matches saved snapshot 1`] = `
     contactEmail="team@recidiviz.com"
     title="Recidiviz"
   />
+  <Sidebar />
   <Footer />
 </div>
 `;

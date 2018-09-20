@@ -20,6 +20,7 @@
 import React from 'react';
 
 import Header from '../Header';
+import Sidebar from '../Sidebar';
 import Footer from '../Footer';
 
 import './App.css';
@@ -33,6 +34,7 @@ function App() {
         title={Organization.name}
         contactEmail={Organization.primaryContact}
       />
+      <Sidebar />
       <Footer />
     </div>
   );
