@@ -13,7 +13,6 @@ handlers:
 - url: /data
   secure: always
   static_dir: data
-  application_readable: true
 
 - url: /fonts
   secure: always
