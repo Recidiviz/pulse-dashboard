@@ -10,6 +10,7 @@ exports[`<App /> matches saved snapshot 1`] = `
     title="Recidiviz"
   />
   <KPIsContainer />
+  <ChartsContainer />
   <Footer />
 </div>
 `;

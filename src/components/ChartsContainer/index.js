@@ -17,12 +17,4 @@
 * ============================================================================
 */
 
-import React from 'react';
-
-export default function KPIsContainer() {
-  return (
-    <div>
-      KPIs Container
-    </div>
-  );
-}
+export { default } from './ChartsContainer';

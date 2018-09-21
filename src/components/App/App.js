@@ -19,6 +19,7 @@
 
 import React from 'react';
 
+import ChartsContainer from '../ChartsContainer';
 import Header from '../Header';
 import Footer from '../Footer';
 import KPIsContainer from '../KPIsContainer';
@@ -37,6 +38,7 @@ function App() {
         contactEmail={Organization.primaryContact}
       />
       <KPIsContainer />
+      <ChartsContainer />
       <Footer />
     </div>
   );

@@ -38,6 +38,11 @@ describe('<App />', () => {
     expect(wrapper.find('KPIsContainer').exists()).toBe(true);
   });
 
+  test('renders a <ChartsContainer /> component', () => {
+    const wrapper = shallow(<App />);
+    expect(wrapper.find('ChartsContainer').exists()).toBe(true);
+  });
+
   test('renders a <Footer /> component', () => {
     const wrapper = shallow(<App />);
     expect(wrapper.find('Footer').exists()).toBe(true);

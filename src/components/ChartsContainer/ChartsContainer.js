@@ -19,10 +19,10 @@
 
 import React from 'react';
 
-export default function KPIsContainer() {
+export default function ChartsContainer() {
   return (
     <div>
-      KPIs Container
+      ChartsContainer
     </div>
   );
 }
