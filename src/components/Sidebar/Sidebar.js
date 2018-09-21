@@ -18,12 +18,11 @@
 */
 
 import React from 'react';
-import { shallow } from 'enzyme';
-import Header from './Header';
 
-describe('<Header />', () => {
-  test('renders a div', () => {
-    const wrapper = shallow(<Header title="Office of Bob Loblaw" contactEmail="bob@loblaw.com" />);
-    expect(wrapper.find('header').exists()).toBe(true);
-  });
-});
+export default function Sidebar() {
+  return (
+    <div>
+      Sidebar container
+    </div>
+  );
+}

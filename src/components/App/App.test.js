@@ -23,9 +23,24 @@ import toJson from 'enzyme-to-json';
 import App from './App';
 
 describe('<App />', () => {
+  test('renders a <Sidebar /> component', () => {
+    const wrapper = shallow(<App />);
+    expect(wrapper.find('Sidebar').exists()).toBe(true);
+  });
+
   test('renders a <Header /> component', () => {
     const wrapper = shallow(<App />);
     expect(wrapper.find('Header').exists()).toBe(true);
+  });
+
+  test('renders a <KPIsContainer /> component', () => {
+    const wrapper = shallow(<App />);
+    expect(wrapper.find('KPIsContainer').exists()).toBe(true);
+  });
+
+  test('renders a <ChartsContainer /> component', () => {
+    const wrapper = shallow(<App />);
+    expect(wrapper.find('ChartsContainer').exists()).toBe(true);
   });
 
   test('renders a <Footer /> component', () => {

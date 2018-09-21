@@ -4,10 +4,13 @@ exports[`<App /> matches saved snapshot 1`] = `
 <div
   className="app-container"
 >
+  <Sidebar />
   <Header
     contactEmail="team@recidiviz.com"
     title="Recidiviz"
   />
+  <KPIsContainer />
+  <ChartsContainer />
   <Footer />
 </div>
 `;
