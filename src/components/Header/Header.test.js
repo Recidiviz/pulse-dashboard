@@ -18,11 +18,12 @@
 */
 
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { shallow } from 'enzyme';
 import Header from './Header';
 
-it('renders the Header component', () => {
-  const div = document.createElement('div');
-  ReactDOM.render(<Header title="Office of Bob Loblaw" contactEmail="bob@loblaw.com" />, div);
-  ReactDOM.unmountComponentAtNode(div);
+describe('<Header />', () => {
+  test('renders a div', () => {
+    const wrapper = shallow(<Header title="Office of Bob Loblaw" contactEmail="bob@loblaw.com" />);
+    expect(wrapper.find('header').exists()).toBe(true);
+  });
 });
