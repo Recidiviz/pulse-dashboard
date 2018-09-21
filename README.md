@@ -64,8 +64,6 @@ To generate a production build, invoke the following yarn script:
 
 Each time this is run, the `build` directory will be wiped clean. A bundle analysis report, found in `build/report.html`, will also be generated on each invocation of this script.
 
-### Running the application in production [TODO]
-
 ## Tooling
 
 ### Yarn
@@ -141,10 +139,6 @@ A quick overview of the directory structure and suggestions on where to put diff
 /src
   components/
   config/
-  lib/
-    static/
-      css/
-      js/
 /static
   fonts/
   images/
@@ -188,13 +182,6 @@ For further discussion on React application structure and rationale for the abov
 
 #### src/config
 Application configuration files, shared constants, etc.
-
-#### src/lib
-Third-party code. If you're not writing it, it should probably live here. Individual files should live in the appropriate sub-directory under `lib/static`. If entire libraries are being manually included, they should live in their own directory. It should rarely, if ever, be necessary to manually include an entire third party library. That's what we have [Yarn](#yarn) for!
-
-As all code in this directory is intended to be third-party, this directory is ignored by eslint as it is not our responsibility to maintain third-party code.
-
-**Note:** JS and CSS files from the original version of recidiviz.com live under `lib/static`. This was an intentional choice to prevent having to rewrite that code, much of which was used or extended from third-party code, after implementing linting.
 
 ### static
 Static assets like fonts and images. Place assets in the appropriate sub-directory.
