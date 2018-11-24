@@ -18,36 +18,12 @@
 */
 
 import React from 'react';
+import { shallow } from 'enzyme';
+import HeaderUserInfo from './HeaderUserInfo';
 
-import ChartsContainer from '../ChartsContainer';
-import Header from '../Header';
-import Footer from '../Footer';
-import KPIsContainer from '../KPIsContainer';
-import Sidebar from '../Sidebar';
-
-import './App.css';
-
-import { Application } from '../../config/constants';
-
-function App() {
-  // TODO: Hardcoding this until it's more clear where we'll be storing//fetching users from
-  const user = {
-    name: 'Grace Hopper',
-    organization: 'New York State',
-  };
-
-  return (
-    <div className="app-container">
-      <Sidebar />
-      <Header
-        title={`${Application.name}: ${user.organization} overview`}
-        user={user}
-      />
-      <KPIsContainer />
-      <ChartsContainer />
-      <Footer />
-    </div>
-  );
-}
-
-export default App;
+describe('<HeaderUserInfo />', () => {
+  test('renders a div', () => {
+    const wrapper = shallow(<HeaderUserInfo user={{ name: 'Bob Loblaw' }} />);
+    expect(wrapper.find('div').exists()).toBe(true);
+  });
+});

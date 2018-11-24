@@ -18,36 +18,20 @@
 */
 
 import React from 'react';
+import PropTypes from 'prop-types';
 
-import ChartsContainer from '../ChartsContainer';
-import Header from '../Header';
-import Footer from '../Footer';
-import KPIsContainer from '../KPIsContainer';
-import Sidebar from '../Sidebar';
+const propTypes = {
+  user: PropTypes.shape({
+    name: PropTypes.string,
+  }).isRequired,
+};
 
-import './App.css';
-
-import { Application } from '../../config/constants';
-
-function App() {
-  // TODO: Hardcoding this until it's more clear where we'll be storing//fetching users from
-  const user = {
-    name: 'Grace Hopper',
-    organization: 'New York State',
-  };
-
+export default function HeaderUserInfo(props) {
   return (
-    <div className="app-container">
-      <Sidebar />
-      <Header
-        title={`${Application.name}: ${user.organization} overview`}
-        user={user}
-      />
-      <KPIsContainer />
-      <ChartsContainer />
-      <Footer />
+    <div>
+      {props.user.name}
     </div>
   );
 }
 
-export default App;
+HeaderUserInfo.propTypes = propTypes;
