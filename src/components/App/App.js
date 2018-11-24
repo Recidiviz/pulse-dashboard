@@ -27,14 +27,20 @@ import Sidebar from '../Sidebar';
 
 import './App.css';
 
-import Organization from '../../config/constants';
+import { Application, Organization } from '../../config/constants';
 
 function App() {
+  // TODO: Hardcoding this until it's more clear where we'll be storing//fetching users from
+  const user = {
+    name: 'Grace Hopper',
+    organization: 'New York State',
+  };
+
   return (
     <div className="app-container">
       <Sidebar />
       <Header
-        title={Organization.name}
+        title={`${Application.name}: ${user.organization} overview`}
         contactEmail={Organization.primaryContact}
       />
       <KPIsContainer />

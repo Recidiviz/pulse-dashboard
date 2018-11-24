@@ -17,10 +17,12 @@
  * ============================================================================
 */
 
-const Organization = {
+export const Application = {
+  name: 'Pulse',
+};
+
+export const Organization = {
   name: 'Recidiviz',
   description: 'a platform for tracking granular criminal justice metrics in real time',
   primaryContact: 'team@recidiviz.com',
 };
-
-export default Organization;
