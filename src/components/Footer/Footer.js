@@ -19,7 +19,7 @@
 
 import React from 'react';
 
-import Organization from '../../config/constants';
+import { Organization } from '../../config/constants';
 
 function Footer() {
   return (

@@ -19,10 +19,13 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
+import HeaderUserInfo from './HeaderUserInfo';
 
 const propTypes = {
   title: PropTypes.string.isRequired,
-  contactEmail: PropTypes.string.isRequired,
+  user: PropTypes.shape({
+    name: PropTypes.string,
+  }).isRequired,
 };
 
 function Header(props) {
@@ -33,7 +36,7 @@ function Header(props) {
           <a className="dib f5 f4-ns fw6 mt0 mb1 link black-70" href="/" title="Home">{props.title}</a>
         </div>
         <nav className="db dtc-ns v-mid w-100 tl tr-ns mt2 mt0-ns">
-          <i className="f6 fw6 link black-70 mr2 mr3-m mr4-l dib">In progress. Reach us with questions at <a href={`mailto:${props.contactEmail}`}>{props.contactEmail}</a>.</i>
+          <HeaderUserInfo user={props.user} />
         </nav>
       </div>
     </header>

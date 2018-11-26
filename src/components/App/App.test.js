@@ -19,7 +19,6 @@
 
 import React from 'react';
 import { shallow } from 'enzyme';
-import toJson from 'enzyme-to-json';
 import App from './App';
 
 describe('<App />', () => {
@@ -46,10 +45,5 @@ describe('<App />', () => {
   test('renders a <Footer /> component', () => {
     const wrapper = shallow(<App />);
     expect(wrapper.find('Footer').exists()).toBe(true);
-  });
-
-  test('matches saved snapshot', () => {
-    const wrapper = shallow(<App />);
-    expect(toJson(wrapper)).toMatchSnapshot();
   });
 });

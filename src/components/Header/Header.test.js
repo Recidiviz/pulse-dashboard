@@ -23,7 +23,7 @@ import Header from './Header';
 
 describe('<Header />', () => {
   test('renders a div', () => {
-    const wrapper = shallow(<Header title="Office of Bob Loblaw" contactEmail="bob@loblaw.com" />);
+    const wrapper = shallow(<Header title="Office of Bob Loblaw" user={{ name: 'Bob Loblaw' }} />);
     expect(wrapper.find('header').exists()).toBe(true);
   });
 });

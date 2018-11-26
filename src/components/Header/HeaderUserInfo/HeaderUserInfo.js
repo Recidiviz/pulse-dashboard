@@ -17,12 +17,21 @@
  * ============================================================================
 */
 
-export const Application = {
-  name: 'Pulse',
+import React from 'react';
+import PropTypes from 'prop-types';
+
+const propTypes = {
+  user: PropTypes.shape({
+    name: PropTypes.string,
+  }).isRequired,
 };
 
-export const Organization = {
-  name: 'Recidiviz',
-  description: 'a platform for tracking granular criminal justice metrics in real time',
-  primaryContact: 'team@recidiviz.com',
-};
+export default function HeaderUserInfo(props) {
+  return (
+    <div>
+      {props.user.name}
+    </div>
+  );
+}
+
+HeaderUserInfo.propTypes = propTypes;

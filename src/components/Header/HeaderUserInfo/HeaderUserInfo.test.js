@@ -17,12 +17,13 @@
  * ============================================================================
 */
 
-export const Application = {
-  name: 'Pulse',
-};
+import React from 'react';
+import { shallow } from 'enzyme';
+import HeaderUserInfo from './HeaderUserInfo';
 
-export const Organization = {
-  name: 'Recidiviz',
-  description: 'a platform for tracking granular criminal justice metrics in real time',
-  primaryContact: 'team@recidiviz.com',
-};
+describe('<HeaderUserInfo />', () => {
+  test('renders a div', () => {
+    const wrapper = shallow(<HeaderUserInfo user={{ name: 'Bob Loblaw' }} />);
+    expect(wrapper.find('div').exists()).toBe(true);
+  });
+});
