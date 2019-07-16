@@ -1,0 +1,633 @@
+doctype html
+html
+  head
+    script.
+      !function(){var analytics=window.analytics=window.analytics||[];if(!analytics.initialize)if(analytics.invoked)window.console&&console.error&&console.error("Segment snippet included twice.");else{analytics.invoked=!0;analytics.methods=["trackSubmit","trackClick","trackLink","trackForm","pageview","identify","reset","group","track","ready","alias","debug","page","once","off","on"];analytics.factory=function(t){return function(){var e=Array.prototype.slice.call(arguments);e.unshift(t);analytics.push(e);return analytics}};for(var t=0;t<analytics.methods.length;t++){var e=analytics.methods[t];analytics[e]=analytics.factory(e)}analytics.load=function(t,e){var n=document.createElement("script");n.type="text/javascript";n.async=!0;n.src="https://cdn.segment.com/analytics.js/v1/"+t+"/analytics.min.js";var a=document.getElementsByTagName("script")[0];a.parentNode.insertBefore(n,a);analytics._loadOptions=e};analytics.SNIPPET_VERSION="4.1.0";
+      analytics.load("YDsBLA1staRM3Eg0zXEA3hGnA42teFUe");
+      analytics.page();
+      }}();
+    meta(charset='utf-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1, shrink-to-fit=no')
+    title North Dakota > Program Evaluation
+    style.
+      #loader {
+      transition: all 0.3s ease-in-out;
+      opacity: 1;
+      visibility: visible;
+      position: fixed;
+      height: 100vh;
+      width: 100%;
+      background: #fff;
+      z-index: 90000;
+      }
+      #loader.fadeOut {
+      opacity: 0;
+      visibility: hidden;
+      }
+      .spinner {
+      width: 40px;
+      height: 40px;
+      position: absolute;
+      top: calc(50% - 20px);
+      left: calc(50% - 20px);
+      background-color: #333;
+      border-radius: 100%;
+      -webkit-animation: sk-scaleout 1.0s infinite ease-in-out;
+      animation: sk-scaleout 1.0s infinite ease-in-out;
+      }
+      @-webkit-keyframes sk-scaleout {
+      0% { -webkit-transform: scale(0) }
+      100% {
+      -webkit-transform: scale(1.0);
+      opacity: 0;
+      }
+      }
+      @keyframes sk-scaleout {
+      0% {
+      -webkit-transform: scale(0);
+      transform: scale(0);
+      } 100% {
+      -webkit-transform: scale(1.0);
+      transform: scale(1.0);
+      opacity: 0;
+      }
+      }
+    script(type='text/javascript').
+      REPORT_CARD_GED = {
+      "title": "General Educational Development",
+      "description": "The GED program is a group of educational exams which, when passed, provide certification that the test taker has high-school level academic skills. It is an accredited alternative to a high-school diploma, taught by accredited teachers. A GED certificate can significantly increase opportunity for employment and higher education.",
+      "type": "Educational",
+      "method": "Class instruction",
+      "dosage": "20-22 weeks",
+      "completionRate": "71%",
+      "cost": "$1,500",
+      "firstYearEmployment": "42%",
+      "thirdYearEmployment": "61%",
+      "firstYearReincarceration": "17.5%",
+      "thirdYearReincarceration": "22.1%",
+      "firstYearRevocation": "9.4%",
+      "thirdYearRevocation": "17.2%",
+      }
+      REPORT_CARD_GOOD_THOUGHTS = {
+      "title": "Good Thoughts",
+      "description": "Good Thoughts provides group-based therapy targeted at the mitigation of thinking errors and ambient negativity through careful examination of each student's personal history. Providing students with a safe space to be vulnerable promotes self-awareness and self-worth.",
+      "type": "Treatment",
+      "method": "Group therapy",
+      "dosage": "16 weeks",
+      "completionRate": "63%",
+      "cost": "$1,350",
+      "firstYearEmployment": "46%",
+      "thirdYearEmployment": "55%",
+      "firstYearReincarceration": "13.1%",
+      "thirdYearReincarceration": "14.4%",
+      "firstYearRevocation": "12.9%",
+      "thirdYearRevocation": "15.2%",
+      }
+      REPORT_CARD_PRISON_ENTREPRENEURSHIP = {
+      "title": "Prison Entrepreneurship",
+      "description": "The Prison Entrepreneurship program brings in local business owners to provide guidance on founding a successful venture. Instruction focuses on building the self-confidence and focus necessary to succeed in high-pressure situations. Capstone projects, sponsored by local organizations, provide students the chance to showcase their ideas and skills.",
+      "type": "Vocational",
+      "method": "Class instruction",
+      "dosage": "24 weeks",
+      "completionRate": "78%",
+      "cost": "$1,800",
+      "firstYearEmployment": "52%",
+      "thirdYearEmployment": "60%",
+      "firstYearReincarceration": "14.4%",
+      "thirdYearReincarceration": "16.1%",
+      "firstYearRevocation": "17.3%",
+      "thirdYearRevocation": "21.0%",
+      }
+      REPORT_CARD_ROUGH_RIDERS = {
+      "title": "Rough Rider Industries",
+      "description": "Rough Rider Industries employs incarcerated individuals to produce quality products for commercial and industrial clients. Using high quality machinery in a secure workshop on site, students prepare for careers in a variety of useful trades, and nurture their creativity and relationship building skills.",
+      "type": "Vocational",
+      "method": "Class instruction",
+      "dosage": "Open entry/exit",
+      "completionRate": "68%",
+      "cost": "$2,100",
+      "firstYearEmployment": "65%",
+      "thirdYearEmployment": "71%",
+      "firstYearReincarceration": "13.7%",
+      "thirdYearReincarceration": "18.1%",
+      "firstYearRevocation": "12.3%",
+      "thirdYearRevocation": "17.1%",
+      }
+      REPORT_CARD_WORK_PLACEMENT = {
+      "title": "Work Placement and Consultation",
+      "description": "Work Placement consultants leverage a network of local business partners hoping to hire newly released individuals looking to ensure a stable reentry into their community. A series of converations and exercises help match individuals soon to be released with prospective employers to secure gainful employment.",
+      "type": "Vocational",
+      "method": "One-on-one",
+      "dosage": "Open entry/exit",
+      "completionRate": "N/A",
+      "cost": "$1,750",
+      "firstYearEmployment": "68%",
+      "thirdYearEmployment": "73%",
+      "firstYearReincarceration": "18.3%",
+      "thirdYearReincarceration": "21.8%",
+      "firstYearRevocation": "16.2%",
+      "thirdYearRevocation": "17.7%",
+      }
+      REPORT_CARD_ZERO_TOLERANCE = {
+      "title": "Zero Tolerance for Substance Abuse",
+      "description": "Zero Tolerance for Substance Abuse is a treatment program geared towards the emphasis of both positive and negative feedback to curb the abuse and distribution of hard drugs. Targeted treatment is provided by medical professionals with support from correctional officers to identify and report on counterproductive behaviors.",
+      "type": "Treatment",
+      "method": "One-on-one",
+      "dosage": "Open entry/exit",
+      "completionRate": "N/A",
+      "cost": "$1,600",
+      "firstYearEmployment": "40%",
+      "thirdYearEmployment": "47%",
+      "firstYearReincarceration": "19.9%",
+      "thirdYearReincarceration": "25.5%",
+      "firstYearRevocation": "17.2%",
+      "thirdYearRevocation": "21.5%",
+      }
+      CARDS = {
+      "report-card-program-ged": REPORT_CARD_GED,
+      "report-card-program-good-thoughts": REPORT_CARD_GOOD_THOUGHTS,
+      "report-card-program-prison-entrepreneurship": REPORT_CARD_PRISON_ENTREPRENEURSHIP,
+      "report-card-program-rough-rider": REPORT_CARD_ROUGH_RIDERS,
+      "report-card-program-work-placement": REPORT_CARD_WORK_PLACEMENT,
+      "report-card-program-zero-tolerance": REPORT_CARD_ZERO_TOLERANCE,
+      }
+      function ReplaceContentInContainer(id, content) {
+      var container = document.getElementById(id);
+      container.innerHTML = content;
+      }
+      function LoadReportCard(programId) {
+      card = CARDS[programId];
+      ReplaceContentInContainer("report-card-title", card.title);
+      ReplaceContentInContainer("report-card-description", card.description);
+      ReplaceContentInContainer("report-card-type", card.type);
+      ReplaceContentInContainer("report-card-method", card.method);
+      ReplaceContentInContainer("report-card-dosage", card.dosage);
+      ReplaceContentInContainer("report-card-completion-rate", card.completionRate);
+      ReplaceContentInContainer("report-card-cost", card.cost);
+      ReplaceContentInContainer("report-card-employment-1", card.firstYearEmployment);
+      ReplaceContentInContainer("report-card-employment-3", card.thirdYearEmployment);
+      ReplaceContentInContainer("report-card-reincarceration-1", card.firstYearReincarceration);
+      ReplaceContentInContainer("report-card-reincarceration-3", card.thirdYearReincarceration);
+      ReplaceContentInContainer("report-card-revocation-1", card.firstYearRevocation);
+      ReplaceContentInContainer("report-card-revocation-3", card.thirdYearRevocation);
+      }
+  body.app
+    // @TOC
+    // ===================================================
+    //
+      + @Page Loader
+      + @App Content
+      - #Left Sidebar
+      > $Sidebar Header
+      > $Sidebar Menu
+      - #Main
+      > $Topbar
+      > $App Screen Content
+    // @Page Loader
+    // ===================================================
+    #loader
+      .spinner
+    script.
+      window.addEventListener('load', () => {
+      const loader = document.getElementById('loader');
+      setTimeout(() => {
+      loader.classList.add('fadeOut');
+      }, 300);
+      });
+    // @App Content
+    // ===================================================
+    div
+      // #Left Sidebar ====================
+      .sidebar
+        .sidebar-inner
+          // ### $Sidebar Header ###
+          .sidebar-logo
+            .peers.ai-c.fxw-nw
+              .peer.peer-greed
+                a.sidebar-link.td-n(href='/')
+                  .row(style='height: 65px;')
+                    .peers.ai-c.fxw-nw
+                      .peer
+                        .col-md-3.my-auto.peer
+                          span.logo-icon-holder
+                            i.ti-pulse
+                      .col-md-9.my-auto.peer.peer-greed
+                        h5.lh-1.mB-0.logo-text.c-blue-500 North Dakota
+              .peer
+                .mobile-toggle.sidebar-toggle
+                  a.td-n(href='')
+                    i.ti-arrow-circle-left
+          // ### $Sidebar Menu ###
+          ul.sidebar-menu.scrollable.pos-r
+            li.nav-item.mT-30.active
+              a.sidebar-link(href='snapshots')
+                span.icon-holder
+                  i.c-blue-500.ti-dashboard
+                span.title Snapshots
+            li.nav-item.pL-10
+              a.sidebar-link(href='revocations')
+                span.icon-holder
+                  i.c-brown-500.ti-unlink
+                span.title Revocations
+            li.nav-item.pL-10
+              a.sidebar-link(href='reincarcerations')
+                span.icon-holder
+                  i.c-red-500.ti-reload
+                span.title Reincarcerations
+            li.nav-item.pL-10
+              a.sidebar-link(href='program-evaluation')
+                span.icon-holder
+                  i.c-orange-500.ti-ruler-alt
+                span.title Program Evaluation
+      // #Main ============================
+      .page-container
+        // ### $Topbar ###
+        .header.navbar
+          .header-container
+            ul.nav-left
+              li
+                a#sidebar-toggle.sidebar-toggle(href='javascript:void(0);')
+                  i.ti-menu
+              li(style='padding-left:20px;padding-top:22px;')
+                h5.lh-1.mB-0.logo-text Program Evaluation
+            ul.nav-right
+              li.dropdown
+                a.dropdown-toggle.no-after.peers.fxw-nw.ai-c.lh-1(href='', data-toggle='dropdown')
+                  .peer.mR-10
+                    img.w-2r.bdrs-50p(src=user.picture)
+                  .peer
+                    span.fsz-sm.c-grey-900 #{user.displayName}
+                ul.dropdown-menu.fsz-sm
+                  li
+                    a.d-b.td-n.pY-5.bgcH-grey-100.c-grey-700(href='')
+                      i.ti-settings.mR-10
+                      span Settings
+                  li
+                    a.d-b.td-n.pY-5.bgcH-grey-100.c-grey-700(href='/user')
+                      i.ti-user.mR-10
+                      span Profile
+                  li.divider(role='separator')
+                  li
+                    a.d-b.td-n.pY-5.bgcH-grey-100.c-grey-700(href='/logout')
+                      i.ti-power-off.mR-10
+                      span Logout
+        // ### $App Screen Content ###
+        main.main-content.bgc-grey-100
+          #mainContent
+            .row.gap-20.masonry.pos-r
+              .masonry-sizer.col-md-6
+              .masonry-item.w-100
+                .row.gap-20
+                  // #Waitlist KPI ====================
+                  .col
+                    .layers.bd.bgc-white.p-25
+                      .layer.w-100.mB-10
+                        h6.lh-1 Waitlist additions
+                      .layer.w-100
+                        .peers.ai-sb.fxw-nw
+                          .peer.peer-greed
+                            span#sparklinedash-waitlist-additions
+                          .peer-greed
+                            h2.lh-1 26
+                          .peer
+                            span.d-ib.lh-0.va-m.fw-600.bdrs-10em.pX-15.pY-15.bgc-red-50.c-red-500 +44%
+                      .layer.w-100
+                        .peers.ai-sb.fxw-nw
+                          .peer.peer-greed
+                            small.c-grey-500.fw-600 Last month: 18
+                          .peer
+                            small.c-grey-500.fw-600 Month over month
+                  // #Relapses KPI ====================
+                  .col
+                    .layers.bd.bgc-white.p-25
+                      .layer.w-100.mB-10
+                        h6.lh-1 Behavioral relapses
+                      .layer.w-100
+                        .peers.ai-sb.fxw-nw
+                          .peer.peer-greed
+                            span#sparklinedash-behavioral-relapses
+                          .peer-greed
+                            h2.lh-1 74
+                          .peer
+                            span.d-ib.lh-0.va-m.fw-600.bdrs-10em.pX-15.pY-15.bgc-green-50.c-green-500 -20%
+                      .layer.w-100
+                        .peers.ai-sb.fxw-nw
+                          .peer.peer-greed
+                            small.c-grey-500.fw-600 Last week: 92
+                          .peer
+                            small.c-grey-500.fw-600 Month over month
+                  // #Parole hearings KPI ====================
+                  .col
+                    .layers.bd.bgc-white.p-25
+                      .layer.w-100.mB-10
+                        h6.lh-1 Parole hearing success
+                      .layer.w-100
+                        .peers.ai-sb.fxw-nw
+                          .peer.peer-greed
+                            span#sparklinedash-parole-success
+                          .peer-greed
+                            h2.lh-1 72%
+                          .peer
+                            span.d-ib.lh-0.va-m.fw-600.bdrs-10em.pX-15.pY-15.bgc-green-50.c-green-500 +8%
+                      .layer.w-100
+                        .peers.ai-sb.fxw-nw
+                          .peer.peer-greed
+                            small.c-grey-500.fw-600 Last month: 64%
+                          .peer
+                            small.c-grey-500.fw-600 Month over month
+                  // #Good time KPI ====================
+                  .col
+                    .layers.bd.bgc-white.p-25
+                      .layer.w-100.mB-10
+                        h6.lh-1 Good time days earned
+                      .layer.w-100
+                        .peers.ai-sb.fxw-nw
+                          .peer.peer-greed
+                            span#sparklinedash-good-time
+                          .peer-greed
+                            h2.lh-1 182
+                          .peer
+                            span.d-ib.lh-0.va-m.fw-600.bdrs-10em.pX-15.pY-15.bgc-green-50.c-green-500 +10%
+                      .layer.w-100
+                        .peers.ai-sb.fxw-nw
+                          .peer.peer-greed
+                            small.c-grey-500.fw-600 Last week: 166
+                          .peer
+                            small.c-grey-500.fw-600 Month over month
+              .masonry-item.col-md-6
+                // #Recidivism by program ====================
+                .bd.bgc-white
+                  .layers
+                    .layer.w-100.pX-20.pT-20
+                      h6.lh-1 Recidivism reduction by program participation
+                    .layer.w-100.p-20
+                      canvas#recidivism-by-program-bar-chart(height='220')
+                    .layer.bdT.p-20.w-100
+                      .peers.ai-c.jc-c.gapX-20
+                        .peer
+                          small.c-grey-500.fw-600 Release Cohort
+                          |
+                          |
+                          span.fsz-def.fw-600.mR-10.c-grey-800 2015
+                        .peer.fw-600
+                          small.c-grey-500.fw-600 Follow Up Period
+                          |
+                          |
+                          span.fsz-def.fw-600.mR-10.c-grey-800 3 years
+                        .peer.fw-600
+                          small.c-grey-500.fw-600 Type
+                          |
+                          |
+                          span.fsz-def.fw-600.mR-10.c-grey-800 New offenses, Revocations
+              .masonry-item.col-md-6
+                // #Program cost effectiveness ====================
+                .bd.bgc-white
+                  .layers
+                    .layer.w-100.pX-20.pT-20
+                      h6.lh-1 Program cost effectiveness
+                    .layer.w-100.p-20
+                      canvas#program-cost-effectiveness-bar-chart(height='220')
+                    .layer.bdT.p-20.w-100
+                      .peers.ai-c.jc-c.gapX-20
+                        .peer
+                          small.c-grey-500.fw-600 Release Cohort
+                          |
+                          |
+                          span.fsz-def.fw-600.mR-10.c-grey-800 2015
+                        .peer.fw-600
+                          small.c-grey-500.fw-600 Follow Up Period
+                          |
+                          |
+                          span.fsz-def.fw-600.mR-10.c-grey-800 3 years
+                        .peer.fw-600
+                          small.c-grey-500.fw-600 Type
+                          |
+                          |
+                          span.fsz-def.fw-600.mR-10.c-grey-800 New offenses
+              .masonry-item.col-md-6
+                // #Program report list ====================
+                .bd.bgc-white
+                  .layers
+                    .layer.w-100.pX-20.pT-20.pB-10
+                      h6.lh-1 Program report cards
+                    .layer.bdT.p-20.w-100.program-report-card-list(onclick="javascript:LoadReportCard('report-card-program-ged')")
+                      .peers.ai-c.gapX-20
+                        .peer.peer-greed
+                          span.fsz-def.fw-600.mR-10.c-grey-800 General Educational Development
+                        .peer
+                          span.d-ib.lh-0.va-m.fw-600.bdrs-10em.pX-15.pY-15.bgc-blue-50.c-blue-500 -0.3%
+                        .peer
+                          i.ti-angle-right
+                      .peers.ai-c.gapX-20
+                        .peer
+                          small.c-grey-500.fw-600 Educational
+                        .peer.fw-600
+                          small.c-grey-500.fw-600 Class instruction
+                        .peer.fw-600
+                          small.c-grey-500.fw-600 20-22 weeks
+                    .layer.bdT.p-20.w-100.program-report-card-list(onclick="javascript:LoadReportCard('report-card-program-good-thoughts')")
+                      .peers.ai-c.gapX-20
+                        .peer.peer-greed
+                          span.fsz-def.fw-600.mR-10.c-grey-800 Good Thoughts
+                        .peer
+                          span.d-ib.lh-0.va-m.fw-600.bdrs-10em.pX-15.pY-15.bgc-green-50.c-green-500 -8.0%
+                        .peer
+                          i.ti-angle-right
+                      .peers.ai-c.gapX-20
+                        .peer
+                          small.c-grey-500.fw-600 Treatment
+                        .peer.fw-600
+                          small.c-grey-500.fw-600 Group therapy
+                        .peer.fw-600
+                          small.c-grey-500.fw-600 16 weeks
+                    .layer.bdT.p-20.w-100.program-report-card-list(onclick="javascript:LoadReportCard('report-card-program-prison-entrepreneurship')")
+                      .peers.ai-c.gapX-20
+                        .peer.peer-greed
+                          span.fsz-def.fw-600.mR-10.c-grey-800 Prison Entrepreneurship
+                        .peer
+                          span.d-ib.lh-0.va-m.fw-600.bdrs-10em.pX-15.pY-15.bgc-green-50.c-green-500 -6.3%
+                        .peer
+                          i.ti-angle-right
+                      .peers.ai-c.gapX-20
+                        .peer
+                          small.c-grey-500.fw-600 Vocational
+                        .peer.fw-600
+                          small.c-grey-500.fw-600 Class instruction
+                        .peer.fw-600
+                          small.c-grey-500.fw-600 24 weeks
+                    .layer.bdT.p-20.w-100.program-report-card-list(onclick="javascript:LoadReportCard('report-card-program-rough-rider')")
+                      .peers.ai-c.gapX-20
+                        .peer.peer-greed
+                          span.fsz-def.fw-600.mR-10.c-grey-800 Rough Rider Industries
+                        .peer
+                          span.d-ib.lh-0.va-m.fw-600.bdrs-10em.pX-15.pY-15.bgc-green-50.c-green-500 -4.3%
+                        .peer
+                          i.ti-angle-right
+                      .peers.ai-c.gapX-20
+                        .peer
+                          small.c-grey-500.fw-600 Vocational
+                        .peer.fw-600
+                          small.c-grey-500.fw-600 Class instruction
+                        .peer.fw-600
+                          small.c-grey-500.fw-600 Open entry/exit
+                    .layer.bdT.p-20.w-100.program-report-card-list(onclick="javascript:LoadReportCard('report-card-program-work-placement')")
+                      .peers.ai-c.gapX-20
+                        .peer.peer-greed
+                          span.fsz-def.fw-600.mR-10.c-grey-800 Work Placement
+                        .peer
+                          span.d-ib.lh-0.va-m.fw-600.bdrs-10em.pX-15.pY-15.bgc-blue-50.c-blue-500 -0.6%
+                        .peer
+                          i.ti-angle-right
+                      .peers.ai-c.gapX-20
+                        .peer
+                          small.c-grey-500.fw-600 Vocational
+                        .peer.fw-600
+                          small.c-grey-500.fw-600 One-on-one
+                        .peer.fw-600
+                          small.c-grey-500.fw-600 Open entry/exit
+                    .layer.bdT.p-20.w-100.program-report-card-list(onclick="javascript:LoadReportCard('report-card-program-zero-tolerance')")
+                      .peers.ai-c.gapX-20
+                        .peer.peer-greed
+                          span.fsz-def.fw-600.mR-10.c-grey-800 Zero Tolerance Substance Treatment
+                        .peer
+                          span.d-ib.lh-0.va-m.fw-600.bdrs-10em.pX-15.pY-15.bgc-red-50.c-red-500 +3.1%
+                        .peer
+                          i.ti-angle-right
+                      .peers.ai-c.gapX-20
+                        .peer
+                          small.c-grey-500.fw-600 Treatment
+                        .peer.fw-600
+                          small.c-grey-500.fw-600 One-on-one
+                        .peer.fw-600
+                          small.c-grey-500.fw-600 Open entry/exit
+              // PROGRAM REPORT CARD TEMPLATE
+              .masonry-item.col-md-6
+                .bd.bgc-white
+                  .layers
+                    .layer.w-100.pX-20.pT-20
+                      h6#report-card-title.lh-1 General Educational Development
+                    .layer.w-100.p-20
+                      .peers.ai-c.gapX-20.pB-20
+                        .peer.peer-greed
+                          #report-card-description.mR-10.c-grey-800
+                            | The GED program is a group of educational exams which, when passed, provide certification that the test taker has
+                            | high-school level academic skills. It is an accredited alternative to a high-school diploma, taught by accredited
+                            | teachers. A GED certificate can significantly increase opportunity for employment and higher education.
+                      .peers.ai-c.gapX-20
+                        .peer
+                          small.c-grey-500.fw-600 Type
+                          span#report-card-type.fsz-def.fw-600.mR-10.c-grey-800 Educational
+                        .peer
+                          small.c-grey-500.fw-600 Method
+                          span#report-card-method.fsz-def.fw-600.mR-10.c-grey-800 Class instruction
+                        .peer
+                          small.c-grey-500.fw-600 Dosage
+                          span#report-card-dosage.fsz-def.fw-600.mR-10.c-grey-800 20-22 weeks
+                      .peers.ai-c.gapX-20
+                        .peer
+                          small.c-grey-500.fw-600 Completion rate
+                          span#report-card-completion-rate.fsz-def.fw-600.mR-10.c-blue-800 71%
+                        .peer
+                          small.c-grey-500.fw-600 Cost per person
+                          span#report-card-cost.fsz-def.fw-600.mR-10.c-blue-800 $1,500
+                    .layer.w-100.pX-20
+                      .peers.ai-c.gapX-20.pB-20
+                        .peer.peer-greed
+                          .fsz-def.fw-600.mR-10.c-grey-800 1-year follow-up rates
+                          small.c-grey-500.fw-600
+                            | Averaged from release cohorts 2010-2017 > Compared to control groups of non-participants
+                      .peers.ai-c.gapX-20
+                        .peer
+                          .layer.w-100
+                            .peer
+                              .fsz-def.fw-600.mR-10.c-grey-800 Employment
+                          .layer.w-100.pY-10
+                            .peers.ai-c.gapX-10.pB-20
+                              .peer
+                                #report-card-employment-1.fsz-def.fw-600.mR-10.c-blue-800 42%
+                                small.c-grey-500.fw-600 Participants
+                              .peer
+                                .fsz-def.fw-600.mR-10.c-grey-800 39%
+                                small.c-grey-500.fw-600 Non-participants
+                        .peer
+                          .layer.w-100
+                            .peer
+                              .fsz-def.fw-600.mR-10.c-grey-800 Reincarceration
+                          .layer.w-100.pY-10
+                            .peers.ai-c.gapX-10.pB-20
+                              .peer
+                                #report-card-reincarceration-1.fsz-def.fw-600.mR-10.c-blue-800 17.5%
+                                small.c-grey-500.fw-600 Participants
+                              .peer
+                                .fsz-def.fw-600.mR-10.c-grey-800 17.4%
+                                small.c-grey-500.fw-600 Non-participants
+                        .peer
+                          .layer.w-100
+                            .peer
+                              .fsz-def.fw-600.mR-10.c-grey-800 Parole revocation
+                          .layer.w-100.pY-10
+                            .peers.ai-c.gapX-10.pB-20
+                              .peer
+                                #report-card-revocation-1.fsz-def.fw-600.mR-10.c-blue-800 9.4%
+                                small.c-grey-500.fw-600 Participants
+                              .peer
+                                .fsz-def.fw-600.mR-10.c-grey-800 11.0%
+                                small.c-grey-500.fw-600 Non-participants
+                    .layer.w-100.pX-20
+                      .peers.ai-c.gapX-20.pB-20
+                        .peer.peer-greed
+                          .fsz-def.fw-600.mR-10.c-grey-800 3-year follow-up rates
+                          small.c-grey-500.fw-600
+                            | Averaged from release cohorts 2010-2015 > Compared to control groups of non-participants
+                      .peers.ai-c.gapX-20.pB-20
+                        .peer
+                          .layer.w-100
+                            .peer
+                              .fsz-def.fw-600.mR-10.c-grey-800 Employment
+                          .layer.w-100.pY-10
+                            .peers.ai-c.gapX-10.pB-20
+                              .peer
+                                #report-card-employment-3.fsz-def.fw-600.mR-10.c-blue-800 61%
+                                small.c-grey-500.fw-600 Participants
+                              .peer
+                                .fsz-def.fw-600.mR-10.c-grey-800 54%
+                                small.c-grey-500.fw-600 Non-participants
+                        .peer
+                          .layer.w-100
+                            .peer
+                              .fsz-def.fw-600.mR-10.c-grey-800 Reincarceration
+                          .layer.w-100.pY-10
+                            .peers.ai-c.gapX-10.pB-20
+                              .peer
+                                #report-card-reincarceration-3.fsz-def.fw-600.mR-10.c-blue-800 22.1%
+                                small.c-grey-500.fw-600 Participants
+                              .peer
+                                .fsz-def.fw-600.mR-10.c-grey-800 22.4%
+                                small.c-grey-500.fw-600 Non-participants
+                        .peer
+                          .layer.w-100
+                            .peer
+                              .fsz-def.fw-600.mR-10.c-grey-800 Parole revocation
+                          .layer.w-100.pY-10
+                            .peers.ai-c.gapX-10.pB-20
+                              .peer
+                                #report-card-revocation-3.fsz-def.fw-600.mR-10.c-blue-800 17.2%
+                                small.c-grey-500.fw-600 Participants
+                              .peer
+                                .fsz-def.fw-600.mR-10.c-grey-800 18.7%
+                                small.c-grey-500.fw-600 Non-participants
+        // ### $App Screen Footer ###
+        footer.bdT.ta-c.p-30.lh-0.fsz-sm.c-grey-600
+          span
+            | Copyright © 2019
+            |
+            a(href='https://www.recidiviz.org/', _target='_blank', title='Recidiviz') Recidiviz
+            | .
+            |
+          span
+            | Based on Adminator template designed by
+            |
+            a(href='https://colorlib.com', target='_blank', title='Colorlib') Colorlib
+            | . All rights reserved.
+    script(type='text/javascript', src='vendor.js')
+    script(type='text/javascript', src='bundle.js')

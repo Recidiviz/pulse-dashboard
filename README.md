@@ -1,7 +1,7 @@
 # Pulse Dashboard
 [![Build Status](https://travis-ci.org/Recidiviz/pulse-dashboard.svg?branch=master)](https://travis-ci.org/Recidiviz/pulse-dashboard) [![Coverage Status](https://coveralls.io/repos/github/Recidiviz/pulse-dashboard/badge.svg?branch=master)](https://coveralls.io/github/Recidiviz/pulse-dashboard?branch=master)
 
-An in-progress effort to visualize criminal justice metrics.
+Bringing criminal justice analysis to decision makers to help reduce incarceration.
 
 ## Contents
 1. [Development](#development)
@@ -119,9 +119,6 @@ See Enzyme [API](http://airbnb.io/enzyme/docs/api/) for more information.
 To run the linter, see [Linting & running tests](#linting--running-tests).
 
 We suggest installing a linting package for your preferred code editor that hooks into eslint. This will allow you to get real time feedback on code while you're writing it. We recommend [linter-eslint](https://atom.io/packages/linter-eslint) for Atom.
-
-### husky
-[husky](https://github.com/typicode/husky) is a package that provides easy-to-use Git hooks. These are defined in `package.json` under the `husky` property. We have configured husky to run linting and testing prior to all git commits and pushes using the `pre-commit` and `pre-push` hooks.
 
 ### React
 [React](https://reactjs.org/) is a JavaScript framework for building user interfaces. Unlike some other popular JS frameworks, it focuses exclusively on the view layer and is agnostic as to your choices for other parts of your application.

@@ -1,6 +1,6 @@
-runtime: nodejs8
+runtime: nodejs10
 
-service: pulse-dashboard-prod
+service: default
 
 includes:
 - gae-base.yaml

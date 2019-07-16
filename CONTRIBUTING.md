@@ -14,7 +14,7 @@ impactful, and to keep Recidiviz effective as we grow.
 The Recidiviz project and everyone participating in it are governed by the
 [Recidiviz Code of Conduct](CODE_OF_CONDUCT.md). By contributing, you agree to
 uphold this code and to treat others with dignity and respect. Please report
-unacceptable behavior to [core-team@recidiviz.com](mailto:core-team@recidiviz.com).
+unacceptable behavior to [core-team@recidiviz.org](mailto:core-team@recidiviz.org).
 This is a small group of project leads who will maintain confidentiality.
 
 ## Providing Feedback
@@ -69,7 +69,7 @@ the current functionality
 Please do not submit issues to ask questions about the project or our
 organization, provide general comment, or express concerns. If you are in our
 Slack space, then feel free to reach out there. Otherwise, we'd love to hear
-from you at [team@recidiviz.com](mailto:team@recidiviz.com).
+from you at [team@recidiviz.org](mailto:team@recidiviz.org).
 
 ## Contributing Code
 
