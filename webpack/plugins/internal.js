@@ -32,9 +32,8 @@
 // @Loading Dependencies
 // ---------------------
 
-const
-  manifest = require('../manifest'),
-  webpack  = require('webpack');
+const manifest = require('../manifest');
+const webpack = require('webpack');
 
 
 // ---------------
@@ -42,7 +41,7 @@ const
 // ---------------
 
 const
-  plugins  = [];
+  plugins = [];
 
 plugins.push(
   new webpack.DefinePlugin({
@@ -65,7 +64,7 @@ plugins.push(
     jQuery: 'jquery',
     'window.jQuery': 'jquery',
     Popper: ['popper.js', 'default'],
-  })
+  }),
 );
 
 
@@ -74,27 +73,25 @@ plugins.push(
 // ---------------------------
 
 if (manifest.IS_PRODUCTION) {
-  plugins.push(
-    new webpack.optimize.UglifyJsPlugin({
-      compress: {
-        comparisons   : true,
-        conditionals  : true,
-        dead_code     : true,
-        drop_debugger : true,
-        evaluate      : true,
-        if_return     : true,
-        join_vars     : true,
-        screw_ie8     : true,
-        sequences     : true,
-        unused        : true,
-        warnings      : false,
-      },
+  plugins.push(new webpack.optimize.UglifyJsPlugin({
+    compress: {
+      comparisons: true,
+      conditionals: true,
+      dead_code: true,
+      drop_debugger: true,
+      evaluate: true,
+      if_return: true,
+      join_vars: true,
+      screw_ie8: true,
+      sequences: true,
+      unused: true,
+      warnings: false,
+    },
 
-      output: {
-        comments: false,
-      },
-    })
-  );
+    output: {
+      comments: false,
+    },
+  }));
 }
 
 
@@ -106,7 +103,7 @@ if (manifest.IS_DEVELOPMENT) {
   plugins.push(
     new webpack.NoEmitOnErrorsPlugin(),
     new webpack.NamedModulesPlugin(),
-    new webpack.HotModuleReplacementPlugin()
+    new webpack.HotModuleReplacementPlugin(),
   );
 }
 

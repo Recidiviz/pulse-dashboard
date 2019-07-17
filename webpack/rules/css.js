@@ -32,9 +32,8 @@
 // @Loading Dependencies
 // ---------------------
 
-const
-  manifest          = require('../manifest'),
-  ExtractTextPlugin = require('extract-text-webpack-plugin');
+const manifest = require('../manifest');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 
 // ---------------
@@ -47,8 +46,8 @@ const loaders = [
   {
     loader: 'css-loader',
     options: {
-      sourceMap : manifest.IS_DEVELOPMENT,
-      minimize  : manifest.IS_PRODUCTION,
+      sourceMap: manifest.IS_DEVELOPMENT,
+      minimize: manifest.IS_PRODUCTION,
     },
   },
 ];

@@ -16,9 +16,9 @@
 // =============================================================================
 
 module.exports = [
-  require('./js'),
-  require('./images'),
-  require('./css'),
-  require('./sass'),
-  require('./fonts'),
+  require('./js'), // eslint-disable-line global-require
+  require('./images'), // eslint-disable-line global-require
+  require('./css'), // eslint-disable-line global-require
+  require('./sass'), // eslint-disable-line global-require
+  require('./fonts'), // eslint-disable-line global-require
 ];

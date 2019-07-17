@@ -11,7 +11,7 @@
     "dev": "nodemon ./bin/www",
     "clean": "shx rm -rf ./build",
     "build": "npm run clean && cross-env NODE_ENV=\"production\" webpack",
-    "test": "eslint src"
+    "test": "eslint routes src views webpack app.js"
   },
   "devDependencies": {
     "babel-core": "^6.26.0",

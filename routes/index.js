@@ -15,13 +15,13 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-var express = require('express');
-var secured = require('../src/middleware/secured');
-const { join } = require('path');
-var router = express.Router();
+const express = require('express');
+const secured = require('../src/middleware/secured');
+
+const router = express.Router();
 
 /* GET home page. */
-router.get('/', (req, res, next) => {
+router.get('/', (_, res) => {
   res.render('index');
 });
 

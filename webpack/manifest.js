@@ -41,10 +41,9 @@ const path = require('path');
 // @Environment Holders
 // --------------------
 
-const
-  NODE_ENV       = process.env.NODE_ENV || 'development',
-  IS_DEVELOPMENT = NODE_ENV === 'development',
-  IS_PRODUCTION  = NODE_ENV === 'production';
+const NODE_ENV = process.env.NODE_ENV || 'development';
+const IS_DEVELOPMENT = NODE_ENV === 'development';
+const IS_PRODUCTION = NODE_ENV === 'production';
 
 
 // ------
@@ -61,8 +60,8 @@ const
 
 const
   paths = {
-    src   : dir('../src'),
-    build : dir('../build'),
+    src: dir('../src'),
+    build: dir('../build'),
   };
 
 
@@ -72,9 +71,9 @@ const
 
 const
   outputFiles = {
-    bundle : 'bundle.js',
-    vendor : 'vendor.js',
-    css    : 'style.css',
+    bundle: 'bundle.js',
+    vendor: 'vendor.js',
+    css: 'style.css',
   };
 
 
@@ -84,7 +83,7 @@ const
 
 const
   entries = {
-    js   : 'index.js',
+    js: 'index.js',
   };
 
 
