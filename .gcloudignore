@@ -16,6 +16,12 @@
 # Node.js dependencies:
 node_modules/
 
+# Secrets
+.env
+.env.example
+.env.example.yaml
+recidiviz-gae-api-key.json.enc
+
 # Directories and files that are unnecessary for deployment
 __mocks__/
 archive/
@@ -23,4 +29,3 @@ archive/
 coverage/
 /yarn.lock
 /*.md
-recidiviz-gae-api-key.json.enc

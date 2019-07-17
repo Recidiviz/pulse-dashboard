@@ -1,6 +1,6 @@
-runtime: nodejs8
+runtime: nodejs10
 
-service: pulse-dashboard-staging
+service: default
 
 includes:
 - gae-base.yaml

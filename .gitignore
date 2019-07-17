@@ -11,6 +11,12 @@ node_modules/
 # Code coverage directory
 coverage/
 
+# Secrets
+.env
+.env.yaml
+*-with-secrets.yaml
+src/assets/scripts/metrics/*.json
+
 # Logs
 logs
 *.log

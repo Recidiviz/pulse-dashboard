@@ -1,0 +1,310 @@
+doctype html
+html
+  head
+    script.
+      !function(){var analytics=window.analytics=window.analytics||[];if(!analytics.initialize)if(analytics.invoked)window.console&&console.error&&console.error("Segment snippet included twice.");else{analytics.invoked=!0;analytics.methods=["trackSubmit","trackClick","trackLink","trackForm","pageview","identify","reset","group","track","ready","alias","debug","page","once","off","on"];analytics.factory=function(t){return function(){var e=Array.prototype.slice.call(arguments);e.unshift(t);analytics.push(e);return analytics}};for(var t=0;t<analytics.methods.length;t++){var e=analytics.methods[t];analytics[e]=analytics.factory(e)}analytics.load=function(t,e){var n=document.createElement("script");n.type="text/javascript";n.async=!0;n.src="https://cdn.segment.com/analytics.js/v1/"+t+"/analytics.min.js";var a=document.getElementsByTagName("script")[0];a.parentNode.insertBefore(n,a);analytics._loadOptions=e};analytics.SNIPPET_VERSION="4.1.0";
+      analytics.load("YDsBLA1staRM3Eg0zXEA3hGnA42teFUe");
+      analytics.page();
+      }}();
+    meta(charset='utf-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1, shrink-to-fit=no')
+    title North Dakota > Snapshots
+    style.
+      #loader {
+      transition: all 0.3s ease-in-out;
+      opacity: 1;
+      visibility: visible;
+      position: fixed;
+      height: 100vh;
+      width: 100%;
+      background: #fff;
+      z-index: 90000;
+      }
+      #loader.fadeOut {
+      opacity: 0;
+      visibility: hidden;
+      }
+      .spinner {
+      width: 40px;
+      height: 40px;
+      position: absolute;
+      top: calc(50% - 20px);
+      left: calc(50% - 20px);
+      background-color: #333;
+      border-radius: 100%;
+      -webkit-animation: sk-scaleout 1.0s infinite ease-in-out;
+      animation: sk-scaleout 1.0s infinite ease-in-out;
+      }
+      @-webkit-keyframes sk-scaleout {
+      0% { -webkit-transform: scale(0) }
+      100% {
+      -webkit-transform: scale(1.0);
+      opacity: 0;
+      }
+      }
+      @keyframes sk-scaleout {
+      0% {
+      -webkit-transform: scale(0);
+      transform: scale(0);
+      } 100% {
+      -webkit-transform: scale(1.0);
+      transform: scale(1.0);
+      opacity: 0;
+      }
+      }
+  body.app
+    // @TOC
+    // ===================================================
+    //
+      + @Page Loader
+      + @App Content
+      - #Left Sidebar
+      > $Sidebar Header
+      > $Sidebar Menu
+      - #Main
+      > $Topbar
+      > $App Screen Content
+    // @Page Loader
+    // ===================================================
+    #loader
+      .spinner
+    script.
+      window.addEventListener('load', () => {
+      const loader = document.getElementById('loader');
+      setTimeout(() => {
+      loader.classList.add('fadeOut');
+      }, 300);
+      });
+    // @App Content
+    // ===================================================
+    div
+      // #Left Sidebar ====================
+      .sidebar
+        .sidebar-inner
+          // ### $Sidebar Header ###
+          .sidebar-logo
+            .peers.ai-c.fxw-nw
+              .peer.peer-greed
+                a.sidebar-link.td-n(href='/')
+                  .row(style='height: 65px;')
+                    .peers.ai-c.fxw-nw
+                      .peer
+                        .col-md-3.my-auto.peer
+                          span.logo-icon-holder
+                            i.ti-pulse
+                      .col-md-9.my-auto.peer.peer-greed
+                        h5.lh-1.mB-0.logo-text.c-blue-500 North Dakota
+              .peer
+                .mobile-toggle.sidebar-toggle
+                  a.td-n(href='')
+                    i.ti-arrow-circle-left
+          // ### $Sidebar Menu ###
+          ul.sidebar-menu.scrollable.pos-r
+            li.nav-item.mT-30.active
+              a.sidebar-link(href='snapshots')
+                span.icon-holder
+                  i.c-blue-500.ti-dashboard
+                span.title Snapshots
+            li.nav-item.pL-10
+              a.sidebar-link(href='revocations')
+                span.icon-holder
+                  i.c-brown-500.ti-unlink
+                span.title Revocations
+            li.nav-item.pL-10
+              a.sidebar-link(href='reincarcerations')
+                span.icon-holder
+                  i.c-red-500.ti-reload
+                span.title Reincarcerations
+            li.nav-item.pL-10
+              a.sidebar-link(href='program-evaluation')
+                span.icon-holder
+                  i.c-orange-500.ti-ruler-alt
+                span.title Program Evaluation
+      // #Main ============================
+      .page-container
+        // ### $Topbar ###
+        .header.navbar
+          .header-container
+            ul.nav-left
+              li
+                a#sidebar-toggle.sidebar-toggle(href='javascript:void(0);')
+                  i.ti-menu
+              li(style='padding-left:20px;padding-top:22px;')
+                h5.lh-1.mB-0.logo-text Snapshots
+            ul.nav-right
+              li.dropdown
+                a.dropdown-toggle.no-after.peers.fxw-nw.ai-c.lh-1(href='', data-toggle='dropdown')
+                  .peer.mR-10
+                    img.w-2r.bdrs-50p(src=user.picture)
+                  .peer
+                    span.fsz-sm.c-grey-900 #{user.displayName}
+                ul.dropdown-menu.fsz-sm
+                  li
+                    a.d-b.td-n.pY-5.bgcH-grey-100.c-grey-700(href='')
+                      i.ti-settings.mR-10
+                      span Settings
+                  li
+                    a.d-b.td-n.pY-5.bgcH-grey-100.c-grey-700(href='/user')
+                      i.ti-user.mR-10
+                      span Profile
+                  li.divider(role='separator')
+                  li
+                    a.d-b.td-n.pY-5.bgcH-grey-100.c-grey-700(href='/logout')
+                      i.ti-power-off.mR-10
+                      span Logout
+        // ### $App Screen Content ###
+        main.main-content.bgc-grey-100
+          #mainContent
+            .row.gap-20.masonry.pos-r
+              .masonry-sizer.col-md-6
+              .masonry-item.col-md-6
+                .bd.bgc-white.p-20
+                  .layers
+                    .layer.w-100.pX-20.pT-20
+                      h6.lh-1
+                        | Revocations (supervised population)
+                        span.fa-pull-right
+                          .dropdown.show
+                            a#exportDropdownMenuButton-revocationSnapshot.btn.btn-secondary.btn-sm.dropdown-toggle(href='#', role='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false')
+                              | Export
+                            .dropdown-menu(aria-labelledby='exportDropdownMenuButton-revocationSnapshot')
+                              a#downloadChartAsImage-revocationSnapshot.dropdown-item(href='javascript:void(0);') Export image
+                              a#downloadChartData-revocationSnapshot.dropdown-item(href='javascript:void(0);') Export data
+                    .layer.w-100.pT-20.pX-20
+                      .jc-l.gapX-20.row
+                        .col-md-8
+                          h2.lh-1.c-amber-500 -3.8%
+                          .c-amber-500
+                            | Slight decrease from March to April 2019.
+                            br
+                            | Remains 10 revocations above goal line.
+                    .layer.w-100.p-20
+                      .ai-c.jc-c.gapX-20
+                        .col-md-12
+                          canvas#revocations-snapshot-chart(height='220')
+                    .layer.bdT.p-20.w-100
+                      .jc-c.gapX-20.row
+                        .col-md-9
+                          h6.lh-1 Why?
+                          div
+                            ul.snapshot-why
+                              li.arrow-up
+                                | The technical proportion of revocations increased by
+                                |
+                                span.c-red-500.font-weight-bold 4%
+                              li.arrow-up
+                                | Revocations of Native Americans decreased by
+                                |
+                                span.c-green-500.font-weight-bold 22%
+                        .col-md-3
+                          .fw-600
+                            .c-grey-800.fw-600 Recidivism Type
+                            span.mR-10.c-grey-800.fw-300 Reincarceration
+                          .fw-600.pT-20
+                            .c-grey-800.fw-600 Return Type
+                            span.mR-10.c-grey-800.fw-300 Revocations
+                    #methodologyRevocationSnapshot.layer.bdT.p-20.w-100.accordion
+                      #methodologyHeadingRevocationSnapshot.mb-0
+                        .mb-0
+                          button.btn.btn-link.collapsed.pL-0(type='button', data-toggle='collapse', data-target='#collapseMethodologyRevocationSnapshot', aria-expanded='true', aria-controls='collapseMethodologyRevocationSnapshot')
+                            h6.lh-1.c-blue-500.mb-0 Methodology
+                      #collapseMethodologyRevocationSnapshot.collapse(aria-labelledby='methodologyHeadingRevocationSnapshot', data-parent='#methodologyRevocationSnapshot')
+                        div
+                          ul
+                            li
+                              | Violations include all behavioral violations officially recorded by a supervision officer, including new offenses, technical violations, and absconsion.
+                            li
+                              | Revocations include all instances of a person having any form of supervision revoked for any behavioral violation, and being reincarcerated as a result.
+                            li
+                              | Technical revocations include only those revocations which result only from a technical violation and/or absconsion. If there is a technical violation in addition to a new offense, it is considered a non-technical revocation.
+                            li
+                              a(href='methodology.html', target='_blank') Read more...
+                    .layer.bdT.pT-20.pX-20.w-100
+                      .jc-c.gapX-20.row
+                        .col-md-12.explore-the-data(onclick="location.href='revocations'")
+                          h6.lh-1.c-blue-500
+                            | Dive into the data
+                            i.ti-arrow-right.pull-right
+              .masonry-item.col-md-6
+                .bd.bgc-white.p-20
+                  .layers
+                    .layer.w-100.pX-20.pT-20
+                      h6.lh-1
+                        | Reincarcerations (unsupervised population)
+                        span.fa-pull-right
+                          .dropdown.show
+                            a#exportDropdownMenuButton-recidivismSnapshot.btn.btn-secondary.btn-sm.dropdown-toggle(href='#', role='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false')
+                              | Export
+                            .dropdown-menu(aria-labelledby='exportDropdownMenuButton-recidivismSnapshot')
+                              a#downloadChartAsImage-recidivismSnapshot.dropdown-item(href='javascript:void(0);') Export image
+                              a#downloadChartData-recidivismSnapshot.dropdown-item(href='javascript:void(0);') Export data
+                    .layer.w-100.pT-20.pX-20
+                      .jc-l.gapX-20.row
+                        .col-md-8
+                          h2.lh-1.c-amber-500 -8.82%
+                          .c-amber-500
+                            | Moderate decrease from March to April 2019.
+                            br
+                            | Remains 14 returns above goal line.
+                    .layer.w-100.p-20
+                      .ai-c.jc-c.gapX-20
+                        .col-md-12
+                          canvas#recidivism-snapshot-chart(height='220')
+                    .layer.bdT.p-20.w-100
+                      .jc-c.gapX-20.row
+                        .col-md-9
+                          h6.lh-1 Why?
+                          div
+                            ul.snapshot-why
+                              li.arrow-up
+                                | The ratio of returns to admissions stayed flat at
+                                |
+                                span.c-amber-500.font-weight-bold 27%
+                              li.arrow-up
+                                | Returns of Native Americans decreased by
+                                |
+                                span.c-green-500.font-weight-bold 50%
+                        .col-md-3
+                          .fw-600
+                            .c-grey-800.fw-600 Recidivism Type
+                            span.mR-10.c-grey-800.fw-300 Reincarceration
+                          .fw-600.pT-20
+                            .c-grey-800.fw-600 Return Type
+                            span.mR-10.c-grey-800.fw-300 New offenses
+                    #methodologyRecidivismSnapshot.layer.bdT.p-20.w-100.accordion
+                      #methodologyHeadingRecidivismSnapshot.mb-0
+                        .mb-0
+                          button.btn.btn-link.collapsed.pL-0(type='button', data-toggle='collapse', data-target='#collapseMethodologyRecidivismSnapshot', aria-expanded='true', aria-controls='collapseMethodologyRecidivismSnapshot')
+                            h6.lh-1.c-blue-500.mb-0 Methodology
+                      #collapseMethodologyRecidivismSnapshot.collapse(aria-labelledby='methodologyHeadingRecidivismSnapshot', data-parent='#methodologyRecidivismSnapshot')
+                        div
+                          ul
+                            li
+                              | Total admissions include unique people admitted to any DOCR prison during a particular time frame.
+                            li
+                              | Reincarceration returns include only those admissions which resulted from an incarceration, due to a new offense, of a person who was previously incarcerated in a DOCR prison.
+                            li
+                              | In this case, an admission counts as a reincarceration return if the reincarceration happened within 3 years of the person's most recent release from prison, i.e. a 3-year follow-up period.
+                            li
+                              a(href='methodology.html', target='_blank') Read more...
+                    .layer.bdT.pT-20.pX-20.w-100
+                      .jc-c.gapX-20.row
+                        .col-md-12.explore-the-data(onclick="location.href='reincarcerations'")
+                          h6.lh-1.c-blue-500
+                            | Dive into the data
+                            i.ti-arrow-right.pull-right
+        // ### $App Screen Footer ###
+        footer.bdT.ta-c.p-30.lh-0.fsz-sm.c-grey-600
+          span
+            | Copyright © 2019
+            |
+            a(href='https://www.recidiviz.org/', _target='_blank', title='Recidiviz') Recidiviz
+            | .
+            |
+          span
+            | Based on Adminator template designed by
+            |
+            a(href='https://colorlib.com', target='_blank', title='Colorlib') Colorlib
+            | . All rights reserved.
+    script(type='text/javascript', src='vendor.js')
+    script(type='text/javascript', src='bundle.js')

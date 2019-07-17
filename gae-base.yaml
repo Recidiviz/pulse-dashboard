@@ -1,33 +1,23 @@
 handlers:
-- url: /
-  secure: always
-  static_files: build/index.html
-  upload: build/index.html
 
+# Maps all requests to JS files, e.g. bundle.js, to /build/*.js
 - url: /(.*\.js)
   secure: always
   static_files: build/\1
   upload: build/(.*\.js)
 
-# This should be removed when data is fetched via API instead of bundled with app
-- url: /data
+# Maps all requests to font files to /build/*.woff|ttf
+- url: /(.*\.(woff|ttf))
   secure: always
-  static_dir: data
+  static_files: build/\1
+  upload: build/(.*\.(woff|ttf))
 
-- url: /fonts
+# Maps all requests to files under the /assets folder to the equivalent path under /build/assets
+- url: /assets
   secure: always
-  static_dir: build/fonts
+  static_dir: build/assets
 
-# This should be removed when the original recidiviz.com app is replaced with the
-# actual pulse-dashboard application
-- url: /static/images
-  secure: always
-  static_dir: static/images
-
-- url: /images
-  secure: always
-  static_dir: build/images
-
+# Maps all remaining requests not covered by the above are handled by app route mappings
 - url: /.*
   secure: always
   redirect_http_response_code: 301

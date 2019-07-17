@@ -2,7 +2,8 @@
   "extends": "airbnb",
   "rules": {
     "react/jsx-filename-extension": ['error', { extensions: ['.js'] }],
-    "import/no-extraneous-dependencies": ["error", {"packageDir": './'}]
+    "import/no-extraneous-dependencies": ["error", {"packageDir": './'}],
+    "no-new": 1
   },
   "env": {
     "browser": true,
