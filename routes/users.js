@@ -15,16 +15,17 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-var express = require('express');
-var secured = require('../src/middleware/secured');
-var router = express.Router();
+const express = require('express');
+const secured = require('../src/middleware/secured');
+
+const router = express.Router();
 
 /* GET user profile. */
-router.get('/user', secured(), function (req, res, next) {
+router.get('/user', secured(), (req, res) => {
   const { _raw, _json, ...userProfile } = req.user;
   res.render('user', {
     userProfile: JSON.stringify(userProfile, null, 2),
-    title: 'Profile page'
+    title: 'Profile page',
   });
 });
 

@@ -15,9 +15,8 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-const
-  manifest          = require('../manifest'),
-  ExtractTextPlugin = require('extract-text-webpack-plugin');
+const manifest = require('../manifest');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = new ExtractTextPlugin({
   filename: manifest.outputFiles.css,

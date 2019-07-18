@@ -15,34 +15,40 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-var express = require('express');
-var router = express.Router();
-var passport = require('passport');
-var dotenv = require('dotenv');
-var util = require('util');
-var querystring = require('querystring');
+const express = require('express');
+const passport = require('passport');
+const dotenv = require('dotenv');
+const util = require('util');
+const querystring = require('querystring');
+
+const router = express.Router();
 
 dotenv.config();
 
 // Perform the login, after login Auth0 will redirect to callback
 router.get('/login', passport.authenticate('auth0', {
-  scope: 'openid email profile'
-}), function (req, res) {
+  scope: 'openid email profile',
+}), (req, res) => {
   res.redirect('/');
 });
 
 // Perform the final stage of authentication and redirect to previously requested URL or '/user'
-router.get('/callback', function (req, res, next) {
-  passport.authenticate('auth0', function (err, user, info) {
-    if (err) { return next(err); }
-    if (!user) {
-      console.log('not user!');
-      console.log(info);
-      return res.redirect('/login');
+router.get('/callback', (req, res, next) => {
+  passport.authenticate('auth0', (err, user) => {
+    if (err) {
+      next(err);
+      return;
     }
-    req.logIn(user, function (err) {
-      if (err) { return next(err); }
-      const returnTo = req.session.returnTo;
+    if (!user) {
+      res.redirect('/login');
+      return;
+    }
+    req.logIn(user, (error) => {
+      if (error) {
+        next(error);
+        return;
+      }
+      const { returnTo } = req.session;
       delete req.session.returnTo;
       res.redirect(returnTo || '/snapshots');
     });
@@ -53,19 +59,17 @@ router.get('/callback', function (req, res, next) {
 router.get('/logout', (req, res) => {
   req.logout();
 
-  var returnTo = req.protocol + '://' + req.hostname;
-  var port = req.connection.localPort;
+  let returnTo = `${req.protocol}://${req.hostname}`;
+  const port = req.connection.localPort;
   // Only redirect back to a specific port locally, i.e. localhost:3000.
   // In GAE, the connection local port is not generally accessible so this breaks.
   if (process.env.NODE_ENV !== 'production' && port !== undefined && port !== 80 && port !== 443) {
-    returnTo += ':' + port;
+    returnTo += `:${port}`;
   }
-  var logoutURL = new URL(
-    util.format('https://%s/logout', process.env.AUTH0_DOMAIN)
-  );
-  var searchString = querystring.stringify({
+  const logoutURL = new URL(util.format('https://%s/logout', process.env.AUTH0_DOMAIN));
+  const searchString = querystring.stringify({
     client_id: process.env.AUTH0_CLIENT_ID,
-    returnTo: returnTo
+    returnTo,
   });
   logoutURL.search = searchString;
 

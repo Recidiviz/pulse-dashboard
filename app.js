@@ -15,47 +15,46 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-var express = require('express');
-var path = require('path');
-var logger = require('morgan');
-var cookieParser = require('cookie-parser');
-var session = require('express-session');
-var dotenv = require('dotenv');
-var passport = require('passport');
-var Auth0Strategy = require('passport-auth0');
-var flash = require('connect-flash');
-var userInViews = require('./src/middleware/userInViews');
-var authRouter = require('./routes/auth');
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+const express = require('express');
+const path = require('path');
+const logger = require('morgan');
+const cookieParser = require('cookie-parser');
+const session = require('express-session');
+const dotenv = require('dotenv');
+const passport = require('passport');
+const Auth0Strategy = require('passport-auth0');
+const flash = require('connect-flash');
+const userInViews = require('./src/middleware/userInViews');
+const authRouter = require('./routes/auth');
+const indexRouter = require('./routes/index');
+const usersRouter = require('./routes/users');
 
 dotenv.load();
 
 // Configure Passport to use Auth0
-var strategy = new Auth0Strategy(
+const strategy = new Auth0Strategy(
   {
     domain: process.env.AUTH0_DOMAIN,
     clientID: process.env.AUTH0_CLIENT_ID,
     clientSecret: process.env.AUTH0_CLIENT_SECRET,
-    callbackURL:
-      process.env.AUTH0_CALLBACK_URL || 'http://localhost:3000/callback'
+    callbackURL: process.env.AUTH0_CALLBACK_URL || 'http://localhost:3000/callback',
   },
-  function (accessToken, refreshToken, extraParams, profile, done) {
+  ((accessToken, refreshToken, extraParams, profile, done) =>
     // accessToken is the token to call Auth0 API (not needed in the most cases)
     // extraParams.id_token has the JSON Web Token
     // profile has all the information from the user
-    return done(null, profile);
-  }
+    done(null, profile)
+  ),
 );
 
 passport.use(strategy);
 
 // You can use this section to keep a smaller payload
-passport.serializeUser(function (user, done) {
+passport.serializeUser((user, done) => {
   done(null, user);
 });
 
-passport.deserializeUser(function (user, done) {
+passport.deserializeUser((user, done) => {
   done(null, user);
 });
 
@@ -69,11 +68,11 @@ app.use(logger('dev'));
 app.use(cookieParser());
 
 // config express-session
-var sess = {
+const sess = {
   secret: process.env.SESSION_SECRET,
   cookie: {},
   resave: false,
-  saveUninitialized: true
+  saveUninitialized: true,
 };
 
 if (app.get('env') === 'production') {
@@ -90,7 +89,7 @@ app.use(passport.session());
 app.use(flash());
 
 // Handle auth failure error messages
-app.use(function (req, res, next) {
+app.use((req, res, next) => {
   if (req && req.query && req.query.error) {
     req.flash('error', req.query.error);
   }
@@ -108,7 +107,7 @@ app.use('/', usersRouter);
 app.use(express.static(path.join(__dirname, 'build')));
 
 // Catch 404 and forward to error handler
-app.use(function (req, res, next) {
+app.use((req, res, next) => {
   const err = new Error('Not Found');
   err.status = 404;
   next(err);
@@ -119,24 +118,24 @@ app.use(function (req, res, next) {
 // Development error handler
 // Will print stacktrace
 if (app.get('env') === 'development') {
-  app.use(function (err, req, res, next) {
+  app.use((err, req, res) => {
     res.status(err.status || 500);
     res.render('error', {
       status: err.status,
       message: err.message,
-      error: err
+      error: err,
     });
   });
 }
 
 // Production error handler
 // No stacktraces leaked to user
-app.use(function (err, req, res, next) {
+app.use((err, req, res) => {
   res.status(err.status || 500);
   res.render('error', {
     status: err.status,
     message: err.message,
-    error: {}
+    error: {},
   });
 });
 

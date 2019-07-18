@@ -30,10 +30,9 @@
 // @Loading Dependencies
 // ---------------------
 
-const
-  manifest          = require('../manifest'),
-  path              = require('path'),
-  cssNext           = require('postcss-cssnext');
+const manifest = require('../manifest');
+const path = require('path');
+const cssNext = require('postcss-cssnext');
 
 
 // ---------------
@@ -44,8 +43,8 @@ const loaders = [
   {
     loader: 'css-loader',
     options: {
-      sourceMap : manifest.IS_DEVELOPMENT,
-      minimize  : manifest.IS_PRODUCTION,
+      sourceMap: manifest.IS_DEVELOPMENT,
+      minimize: manifest.IS_PRODUCTION,
     },
   },
   {

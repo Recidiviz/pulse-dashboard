@@ -15,14 +15,13 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-const
-  path              = require('path'),
-  manifest          = require('../manifest'),
-  CopyWebpackPlugin = require('copy-webpack-plugin');
+const path = require('path');
+const manifest = require('../manifest');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = new CopyWebpackPlugin([
   {
-    from : path.join(manifest.paths.src, 'assets/static'),
-    to   : path.join(manifest.paths.build, 'assets/static'),
+    from: path.join(manifest.paths.src, 'assets/static'),
+    to: path.join(manifest.paths.build, 'assets/static'),
   },
 ]);

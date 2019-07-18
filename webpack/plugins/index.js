@@ -16,24 +16,24 @@
 // =============================================================================
 
 const
-  manifest          = require('../manifest');
+  manifest = require('../manifest');
 
 const plugins = [];
 
 plugins.push(
   require('./imageminPlugin'),
-  ...(require('./htmlPlugin')),
-  ...(require('./internal')),
+  ...(require('./htmlPlugin')), // eslint-disable-line global-require
+  ...(require('./internal')), // eslint-disable-line global-require
   require('./caseSensitivePlugin'),
-  require('./extractPlugin')
+  require('./extractPlugin'),
 );
 
 if (manifest.IS_DEVELOPMENT) {
-  plugins.push(require('./dashboardPlugin'));
+  plugins.push(require('./dashboardPlugin')); // eslint-disable-line global-require
 }
 
 if (manifest.IS_PRODUCTION) {
-  plugins.push(require('./copyPlugin'));
+  plugins.push(require('./copyPlugin')); // eslint-disable-line global-require
 }
 
 module.exports = plugins;

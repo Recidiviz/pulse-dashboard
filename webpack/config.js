@@ -31,12 +31,11 @@
 // @Loading Dependencies
 // ---------------------
 
-const
-  path      = require('path'),
-  manifest  = require('./manifest'),
-  devServer = require('./devServer'),
-  rules     = require('./rules'),
-  plugins   = require('./plugins');
+const path = require('path');
+const manifest = require('./manifest');
+const devServer = require('./devServer');
+const rules = require('./rules');
+const plugins = require('./plugins');
 
 
 // ------------------
