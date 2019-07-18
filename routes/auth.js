@@ -16,12 +16,12 @@
 // =============================================================================
 
 const express = require('express');
-
-const router = express.Router();
 const passport = require('passport');
 const dotenv = require('dotenv');
 const util = require('util');
 const querystring = require('querystring');
+
+const router = express.Router();
 
 dotenv.config();
 
