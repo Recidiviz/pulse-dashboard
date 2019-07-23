@@ -9,6 +9,7 @@
   "scripts": {
     "start": "node server.js",
     "build": "react-scripts build",
+    "build-staging": "env-cmd -f .env.development react-scripts build",
     "test": "react-scripts test",
     "spa": "react-scripts start",
     "server": "node server.js",
@@ -33,6 +34,7 @@
     "debug": "~2.6.9",
     "dotenv": "^6.1.0",
     "easy-pie-chart": "^2.1.7",
+    "env-cmd": "^9.0.3",
     "express": "^4.16.4",
     "express-jwt": "^5.3.1",
     "helmet": "^3.18.0",
