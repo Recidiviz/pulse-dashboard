@@ -26,7 +26,10 @@ import {
   recalibrateDatasetsForExplorationChart,
 } from './dynamicData';
 
-import { COLORS } from '../../constants/colors';
+import {
+  COLORS, COLORS_GOOD_BAD, COLORS_STACKED_TWO_VALUES,
+  COLORS_FIVE_VALUES, COLORS_THREE_VALUES, COLORS_FIVE_VALUES_LIGHT,
+} from '../../constants/colors';
 import { configureDownloadButtons } from './downloads';
 
 export default (function () {
@@ -49,16 +52,32 @@ export default (function () {
         labels: ['November', 'December', 'January', 'February', 'March', 'April'],
         datasets: [{
           label: 'Total admissions',
-          borderColor: COLORS['teal-500'],
-          pointBackgroundColor: COLORS['teal-700'],
+          backgroundColor: COLORS['grey-300'],
+          pointBackgroundColor: COLORS_STACKED_TWO_VALUES[0],
+          pointRadius: function(context) {
+             if (context.dataIndex == context.dataset.data.length-1) {
+                return 4;
+             } else {
+                return 0; }
+              },
+          hitRadius: 5,
           fill: false,
+          lineTension: 0,
           borderWidth: 2,
           data: [108, 97, 130, 113, 127, 115],
         }, {
           label: 'Reincarceration returns',
-          borderColor: COLORS['purple-500'],
-          pointBackgroundColor: COLORS['purple-700'],
+          backgroundColor: COLORS['grey-300'],
+          pointBackgroundColor: COLORS_STACKED_TWO_VALUES[1],
+          pointRadius: function(context) {
+             if (context.dataIndex == context.dataset.data.length-1) {
+                return 4;
+             } else {
+                return 0; }
+              },
+          hitRadius: 5,
           fill: false,
+          lineTension: 0,
           borderWidth: 2,
           data: [33, 10, 25, 27, 34, 31],
         }],
@@ -66,11 +85,11 @@ export default (function () {
 
       options: {
         legend: {
-          display: true,
+          display: false,
           position: 'right',
           labels: {
             usePointStyle: true,
-            boxWidth: 20,
+            boxWidth: 5,
           },
         },
         tooltips: {
@@ -82,11 +101,17 @@ export default (function () {
             ticks: {
               autoSkip: false,
             },
+            gridLines: {
+                color: "rgba(0, 0, 0, 0)",
+            },
           }],
           yAxes: [{
             scaleLabel: {
               display: true,
               labelString: 'Counts',
+            },
+            gridLines: {
+                color: "rgba(0, 0, 0, 0)",
             },
           }],
         },
@@ -103,7 +128,7 @@ export default (function () {
 
             drawTime: 'afterDatasetsDraw',
 
-            borderColor: 'red',
+            borderColor: COLORS['red-200'],
             borderWidth: 2,
             borderDash: [2, 2],
             borderDashOffset: 5,
@@ -179,35 +204,56 @@ export default (function () {
         labels: ['November', 'December', 'January', 'February', 'March', 'April'],
         datasets: [{
           label: 'Total revocations',
-          borderColor: COLORS['indigo-500'],
-          pointBackgroundColor: COLORS['indigo-700'],
+          backgroundColor: COLORS['grey-300'],
+          pointBackgroundColor: COLORS_THREE_VALUES[0],
+          pointRadius: function(context) {
+             if (context.dataIndex == context.dataset.data.length-1) {
+                return 4;
+             } else {
+                return 0; }
+              },
           fill: false,
           borderWidth: 2,
+          lineTension: 0,
           data: [40, 48, 60, 44, 54, 52],
-        }, {
-          label: 'Non-Technical revocations',
-          borderColor: COLORS['pink-500'],
-          pointBackgroundColor: COLORS['pink-700'],
+        },{
+          label: 'Technical revocations',
+          backgroundColor: COLORS['grey-300'],
+          pointBackgroundColor: COLORS_THREE_VALUES[1],
+          pointRadius: function(context) {
+             if (context.dataIndex == context.dataset.data.length-1) {
+                return 4;
+             } else {
+                return 0; }
+              },
           fill: false,
+          borderWidth: 2,
+          lineTension: 0,
+          data: [20, 28, 32, 24, 31, 32],
+        },{
+          label: 'Non-Technical revocations',
+          backgroundColor: COLORS['grey-300'],
+          pointBackgroundColor: COLORS_THREE_VALUES[2],
+          pointRadius: function(context) {
+             if (context.dataIndex == context.dataset.data.length-1) {
+                return 4;
+             } else {
+                return 0; }
+              },
+          fill: false,
+          lineTension: 0,
           borderWidth: 2,
           data: [20, 20, 28, 20, 23, 20],
-        }, {
-          label: 'Technical revocations',
-          borderColor: COLORS['teal-500'],
-          pointBackgroundColor: COLORS['teal-700'],
-          fill: false,
-          borderWidth: 2,
-          data: [20, 28, 32, 24, 31, 32],
         }],
       },
 
       options: {
         legend: {
-          display: true,
+          display: false,
           position: 'right',
           labels: {
             usePointStyle: true,
-            boxWidth: 20,
+            boxWidth: 5,
           },
         },
         tooltips: {
@@ -218,10 +264,16 @@ export default (function () {
             ticks: {
               autoSkip: false,
             },
+            gridLines: {
+                color: "rgba(0, 0, 0, 0)",
+            },
           }],
           yAxes: [{
             ticks: {
               beginAtZero: true,
+            },
+            gridLines: {
+                color: "rgba(0, 0, 0, 0)",
             },
             scaleLabel: {
               display: true,
@@ -246,7 +298,7 @@ export default (function () {
 
             drawTime: 'afterDatasetsDraw',
 
-            borderColor: 'red',
+            borderColor: COLORS['red-200'],
             borderWidth: 2,
             borderDash: [2, 2],
             borderDashOffset: 5,
@@ -326,7 +378,6 @@ export default (function () {
       borderColor: COLORS['grey-500'],
       pointBackgroundColor: COLORS['grey-700'],
       fill: false,
-      borderDash: [10, 5],
       borderWidth: 2,
       data: [40, 48, 60, 44, 54, 52],
     };
@@ -344,7 +395,7 @@ export default (function () {
           position: 'bottom',
           labels: {
             usePointStyle: true,
-            boxWidth: 20,
+            boxWidth: 10,
           },
         },
         scales: {
@@ -411,12 +462,6 @@ export default (function () {
         },
       },
     });
-
-    const driverOptions = ['Race', 'RevocationType', 'SupervisionType'];
-    configureDriverRadioButtons(
-      driverOptions, 'revocation', 'revocation_count',
-      revocationDriversChart,
-    );
 
     const exportedStructureCallback = function () {
       return {
@@ -485,20 +530,8 @@ export default (function () {
       data: {
         datasets: [{
           data: [121, 40, 48, 11, 29],
-          backgroundColor: [
-            COLORS['pink-300'],
-            COLORS['teal-300'],
-            COLORS['amber-300'],
-            COLORS['indigo-300'],
-            COLORS['green-300'],
-          ],
-          hoverBackgroundColor: [
-            COLORS['pink-300'],
-            COLORS['teal-300'],
-            COLORS['amber-300'],
-            COLORS['indigo-300'],
-            COLORS['green-300'],
-          ],
+          backgroundColor: COLORS_FIVE_VALUES,
+          hoverBackgroundColor: COLORS_FIVE_VALUES,
         }],
         labels: [
           'New admissions',
@@ -512,6 +545,137 @@ export default (function () {
         responsive: true,
         legend: {
           position: 'right',
+        },
+        tooltips: {
+          callbacks: {
+            label: function(tooltipItem, data) {
+              //get the concerned dataset
+              var dataset = data.datasets[tooltipItem.datasetIndex];
+              //calculate the total of this data set
+              var total = dataset.data.reduce(function(previousValue, currentValue, currentIndex, array) {
+                return previousValue + currentValue;
+              });
+              //get the current items value
+              var currentValue = dataset.data[tooltipItem.index];
+              //calculate the precentage based on the total and current item, also this does a rough rounding to give a whole number
+              var percentage = Math.floor(((currentValue/total) * 100)+0.5);
+
+              return data.labels[tooltipItem.index] + ": " + currentValue + ' (' + percentage + '%)';
+            }
+          }
+        },
+      },
+    });
+  }
+
+  const revocationsBySupervisionTypeBox = document.getElementById('revocations-by-supervision-type-bar-chart');
+
+  if (revocationsBySupervisionTypeBox) {
+    const revocationsBySupervisionTypeBarChartCtx = revocationsBySupervisionTypeBox.getContext('2d');
+
+    new Chart(revocationsBySupervisionTypeBarChartCtx, {
+      type: 'bar',
+      data: {
+        labels: ['November', 'December', 'January', 'February', 'March', 'April'],
+        datasets: [{
+            label: 'Probation',
+            type: 'bar',
+            backgroundColor: COLORS_STACKED_TWO_VALUES[0],
+            data: [9, 10, 12, 10, 17, 16],
+          }, {
+            label: 'Parole',
+            type: 'bar',
+            backgroundColor: COLORS_STACKED_TWO_VALUES[1],
+            data: [31, 38, 48, 34, 37, 36],
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+        legend: {
+          position: 'bottom',
+        },
+        tooltips: {
+          mode: 'index',
+          intersect: false,
+        },
+        scales: {
+          xAxes: [{
+            scaleLabel: {
+              display: true,
+              labelString: 'Month',
+            },
+            stacked: true,
+          }],
+          yAxes: [{
+            scaleLabel: {
+              display: true,
+              labelString: 'Revocation counts',
+            },
+            stacked: true,
+          }],
+        },
+      },
+    });
+  }
+
+  const revocationsByViolationTypeBox = document.getElementById('revocations-by-violation-type-bar-chart');
+
+  if (revocationsByViolationTypeBox) {
+    const revocationsByViolationTypeBarChartCtx = revocationsByViolationTypeBox.getContext('2d');
+
+    new Chart(revocationsByViolationTypeBarChartCtx, {
+      type: 'bar',
+      data: {
+        labels: ['November', 'December', 'January', 'February', 'March', 'April'],
+        datasets: [{
+            label: "Absconsion",
+            backgroundColor: COLORS_FIVE_VALUES[0],
+            data: [9, 10, 12, 10, 17, 16],
+          }, {
+            label: "Felony",
+            backgroundColor: COLORS_FIVE_VALUES[1],
+            data: [31, 38, 48, 34, 37, 36],
+          }, {
+            label: "Misdemeanor",
+            backgroundColor: COLORS_FIVE_VALUES[2],
+            data: [12, 8, 4, 34, 37, 36],
+          }, {
+            label: "Municipal",
+            backgroundColor: COLORS_FIVE_VALUES[3],
+            data: [31, 2, 48, 22, 12, 36],
+          }, {
+            label: "Technical",
+            backgroundColor: COLORS_FIVE_VALUES[4],
+            data: [3, 12, 8, 3, 31, 6],
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+        legend: {
+          position: 'bottom',
+          boxWidth: 10,
+        },
+        tooltips: {
+          mode: 'index',
+          intersect: false,
+        },
+        scales: {
+          xAxes: [{
+            scaleLabel: {
+              display: true,
+              labelString: 'Month',
+            },
+            stacked: true,
+          }],
+          yAxes: [{
+            scaleLabel: {
+              display: true,
+              labelString: 'Revocation counts',
+            },
+            stacked: true,
+          }],
         },
       },
     });
@@ -528,14 +692,14 @@ export default (function () {
         labels: ['#176', '#46', '#143', '#702', '#125', '#139', '#142', '#165'],
         datasets: [{
           label: 'Non-Technical',
-          backgroundColor: COLORS['pink-300'],
-          borderColor: COLORS['pink-300'],
+          backgroundColor: COLORS_STACKED_TWO_VALUES[0],
+          borderColor: COLORS_STACKED_TWO_VALUES[0],
           borderWidth: 1,
           data: [2, 5, 4, 0, 1, 4, 1, 4],
         }, {
           label: 'Technical',
-          backgroundColor: COLORS['teal-300'],
-          borderColor: COLORS['teal-300'],
+          backgroundColor: COLORS_STACKED_TWO_VALUES[1],
+          borderColor: COLORS_STACKED_TWO_VALUES[1],
           borderWidth: 1,
           data: [7, 2, 2, 6, 4, 1, 4, 1],
         }],
@@ -564,6 +728,123 @@ export default (function () {
             },
             stacked: true,
           }],
+        },
+      },
+    });
+  }
+
+  const revocationsByRaceBarChartBox = document.getElementById('revocations-by-race-bar-chart');
+
+  if (revocationsByRaceBarChartBox) {
+    const revocationsByRaceBarChartCtx = revocationsByRaceBarChartBox.getContext('2d');
+
+    new Chart(revocationsByRaceBarChartCtx, {
+      type: 'horizontalBar',
+      data: {
+        labels: ['Revocations', 'ND Population'],
+        datasets: [{
+            label: 'American Indian Alaskan Native',
+            backgroundColor: COLORS_FIVE_VALUES[0],
+            data: [30.0, 5.4],
+          }, {
+            label: 'Asian',
+            backgroundColor: COLORS_FIVE_VALUES[1],
+            data: [0, 1],
+          }, {
+            label: 'Black',
+            backgroundColor: COLORS_FIVE_VALUES[2],
+            data: [5.7, 1.2],
+          }, {
+            label: 'Native Hawaiian Pacific Islander',
+            backgroundColor: COLORS_FIVE_VALUES[3],
+            data: [0, 0.1],
+          }, {
+            label: 'White',
+            backgroundColor: COLORS_FIVE_VALUES[4],
+            data: [57.7, 90],
+          }, {
+            label: 'Other',
+            backgroundColor: COLORS['blue-standard'],
+            data: [6.6, 2.3],
+          },
+        ],
+      },
+      options: {
+        scales: {
+            xAxes: [{
+              scaleLabel: {
+                display: true,
+                labelString: 'Percentage',
+              },
+                stacked: true
+            }],
+            yAxes: [{
+                stacked: true
+            }]
+        },
+        responsive: true,
+        legend: {
+          position: 'bottom',
+        },
+        tooltips: {
+          mode: 'dataset',
+          intersect: true,
+          callbacks: {
+            label: function(tooltipItem, data) {
+              //get the concerned dataset
+              var dataset = data.datasets[tooltipItem.datasetIndex];
+              //get the current items value
+              var currentValue = dataset.data[tooltipItem.index];
+
+              return dataset.label + ": " + currentValue + '% of ' + data.labels[tooltipItem.index];
+            },
+          },
+        },
+      },
+    });
+  }
+
+  const revocationsByGenderBarChartBox = document.getElementById('revocations-by-gender-bar-chart');
+
+  if (revocationsByGenderBarChartBox) {
+    const revocationsByGenderBarChartCtx = revocationsByGenderBarChartBox.getContext('2d');
+
+    new Chart(revocationsByGenderBarChartCtx, {
+      type: 'horizontalBar',
+      data: {
+        labels: ['Revocations this month', 'North Dakota Population', ],
+        datasets: [{
+          label: ['Male'],
+          backgroundColor: COLORS_STACKED_TWO_VALUES[0],
+          borderWidth: 1,
+          data: [75, 51],
+        }, {
+          label: ['Female'],
+          backgroundColor: COLORS_STACKED_TWO_VALUES[1],
+          borderWidth: 1,
+          data: [25, 49],
+        }],
+      },
+      options: {
+        scales: {
+            xAxes: [{
+              scaleLabel: {
+                display: true,
+                labelString: 'Percentage',
+              },
+                stacked: true
+            }],
+            yAxes: [{
+                stacked: true
+            }]
+        },
+        responsive: true,
+        legend: {
+          position: 'top',
+        },
+        tooltips: {
+          mode: 'index',
+          intersect: false,
         },
       },
     });
@@ -796,7 +1077,6 @@ export default (function () {
       borderColor: COLORS['grey-500'],
       pointBackgroundColor: COLORS['grey-700'],
       fill: false,
-      borderDash: [10, 5],
       borderWidth: 2,
       data: [33, 10, 25, 27, 34, 31],
     };
@@ -882,12 +1162,6 @@ export default (function () {
       },
     });
 
-    const driverOptions = ['Race', 'Gender', 'SentenceLength'];
-    configureDriverRadioButtons(
-      driverOptions, 'recidivism', 'admission_count',
-      recidivismDriversChart,
-    );
-
     const exportedStructureCallback = function () {
       return {
         recidivismType: 'reincarceration',
@@ -914,65 +1188,26 @@ export default (function () {
       data: {
         labels: [
           'DWCRC',
-          'FTPFAR',
-          'GFC',
-          'BTC',
-          'NTAD',
-          'FTPMND',
-          'MRCC',
-          'MTPFAR',
           'NDSP',
           'JRCC',
-          'CJ',
-          'LRRP',
-          'MTPMND',
+          'MRCC',
           'TRCC',
+          'County Jails',
+          'Out of State',
         ],
         datasets: [{
-          label: 'Release count',
-          type: 'line',
-          borderColor: COLORS['indigo-500'],
-          pointBackgroundColor: COLORS['indigo-700'],
-          borderWidth: 2,
-          yAxisID: 'y-axis-right',
-          fill: false,
-          data: [
-            41,
-            55,
-            32,
-            216,
-            14,
-            27,
-            155,
-            69,
-            429,
-            330,
-            29,
-            9,
-            27,
-            133,
-          ],
-        }, {
           label: 'Reincarceration rate',
-          backgroundColor: COLORS['pink-300'],
-          borderColor: COLORS['pink-300'],
+          backgroundColor: COLORS['blue-standard'],
           borderWidth: 1,
           yAxisID: 'y-axis-left',
           data: [
             0.12195121951219512,
-            0.16363636363636364,
-            0.1875,
-            0.18981481481481483,
-            0.21428571428571427,
-            0.2222222222222222,
-            0.23225806451612904,
-            0.2898550724637681,
             0.2913752913752914,
             0.29393939393939394,
-            0.3103448275862069,
-            0.3333333333333333,
-            0.3333333333333333,
+            0.23225806451612904,
             0.3458646616541353,
+            0.3103448275862069,
+            0.21428571428571427,
           ],
         }],
       },
@@ -980,7 +1215,7 @@ export default (function () {
       options: {
         responsive: true,
         legend: {
-          display: 'top',
+          display: 'bottom',
         },
         tooltips: {
           mode: 'index',
@@ -1006,18 +1241,85 @@ export default (function () {
               display: true,
               labelString: 'Reincarceration rate',
             },
-          }, {
+          }],
+          xAxes: [{
+            ticks: {
+              autoSkip: false,
+            },
+            scaleLabel: {
+              display: true,
+              labelString: 'Facility',
+            },
+          }],
+        },
+      },
+    });
+  }
+
+  const byTransitionalFacilityBarChartBox = document.getElementById('by-transitional-facility-bar-chart');
+
+  if (byTransitionalFacilityBarChartBox) {
+    const barCtx = byTransitionalFacilityBarChartBox.getContext('2d');
+    byTransitionalFacilityBarChartBox.height = 80;
+
+    new Chart(barCtx, {
+      type: 'bar',
+      data: {
+        labels: [
+          'FTPFAR',
+          'GFC',
+          'BTC',
+          'FTPMND',
+          'MTPFAR',
+          'LRRP',
+          'MTPMND',
+        ],
+        datasets: [{
+          label: 'Reincarceration rate',
+          backgroundColor: COLORS['blue-standard-2'],
+          borderColor: COLORS['blue-standard-2'],
+          borderWidth: 1,
+          yAxisID: 'y-axis-left',
+          data: [
+            0.16363636363636364,
+            0.1875,
+            0.18981481481481483,
+            0.2222222222222222,
+            0.2898550724637681,
+            0.3333333333333333,
+            0.3333333333333333,
+          ],
+        }],
+      },
+
+      options: {
+        responsive: true,
+        legend: {
+          display: 'bottom',
+        },
+        tooltips: {
+          mode: 'index',
+          callbacks: {
+            label(tooltipItems, data) {
+              const { index } = tooltipItems;
+              if (data.datasets[tooltipItems.datasetIndex].label === 'Reincarceration rate') {
+                return `${data.datasets[tooltipItems.datasetIndex].label}: ${(data.datasets[tooltipItems.datasetIndex].data[index] * 100).toFixed(2)}%`;
+              }
+              return `${data.datasets[tooltipItems.datasetIndex].label}: ${(data.datasets[tooltipItems.datasetIndex].data[index])}`;
+            },
+          },
+        },
+        scaleShowValues: true,
+        scales: {
+          yAxes: [{
             ticks: {
               beginAtZero: true,
             },
-            position: 'right',
-            id: 'y-axis-right',
+            position: 'left',
+            id: 'y-axis-left',
             scaleLabel: {
               display: true,
-              labelString: 'Release count',
-            },
-            gridLines: {
-              drawOnChartArea: false, // only want the grid lines for one axis to show up
+              labelString: 'Reincarceration rate',
             },
           }],
           xAxes: [{
@@ -1051,24 +1353,9 @@ export default (function () {
           '48-60',
         ],
         datasets: [{
-          label: 'Release count',
-          type: 'line',
-          borderColor: COLORS['indigo-500'],
-          pointBackgroundColor: COLORS['indigo-700'],
-          borderWidth: 2,
-          yAxisID: 'y-axis-right',
-          fill: false,
-          data: [
-            1172,
-            307,
-            74,
-            36,
-            12,
-          ],
-        }, {
           label: 'Reincarceration rate',
-          backgroundColor: COLORS['pink-300'],
-          borderColor: COLORS['pink-300'],
+          backgroundColor: COLORS['blue-standard'],
+          borderColor: COLORS['blue-standard'],
           borderWidth: 1,
           yAxisID: 'y-axis-left',
           data: [
@@ -1084,7 +1371,7 @@ export default (function () {
       options: {
         responsive: true,
         legend: {
-          display: 'top',
+          display: 'bottom',
         },
         tooltips: {
           mode: 'index',
@@ -1110,19 +1397,6 @@ export default (function () {
               display: true,
               labelString: 'Reincarceration rate',
             },
-          }, {
-            ticks: {
-              beginAtZero: true,
-            },
-            position: 'right',
-            id: 'y-axis-right',
-            scaleLabel: {
-              display: true,
-              labelString: 'Release count',
-            },
-            gridLines: {
-              drawOnChartArea: false, // only want the grid lines for one axis to show up
-            },
           }],
           xAxes: [{
             ticks: {
@@ -1145,28 +1419,26 @@ export default (function () {
     releaseVsAdmissionChartBox.height = 160;
 
     new Chart(releaseVsAdmissionChartCtx, {
-      type: 'line',
+      type: 'bar',
       data: {
         labels: ['November', 'December', 'January', 'February', 'March', 'April'],
         datasets: [{
-          label: 'Total admissions',
-          borderColor: COLORS['teal-500'],
-          pointBackgroundColor: COLORS['teal-700'],
+          label: 'Admissions versus releases',
+          backgroundColor: function(context) {
+             if (context.dataset.data[context.dataIndex] > 0) {
+                return COLORS_GOOD_BAD['bad'];
+             } else {
+                return COLORS_GOOD_BAD['good']; }
+              },
           fill: false,
           borderWidth: 2,
-          data: [108, 97, 130, 113, 127, 115],
-        }, {
-          label: 'Total releases',
-          borderColor: COLORS['purple-500'],
-          pointBackgroundColor: COLORS['purple-700'],
-          fill: false,
-          borderWidth: 2,
-          data: [105, 107, 141, 116, 128, 93],
-        }],
+          data: [3, -10, -11, -3, -1, 22],
+        },
+        ],
       },
       options: {
         legend: {
-          display: true,
+          display: false,
           position: 'right',
           labels: {
             usePointStyle: true,
@@ -1357,19 +1629,19 @@ export default (function () {
     new Chart(recidivismByProgramBarChartCtx, {
       type: 'bar',
       data: {
-        labels: ['GED', 'Good Thoughts', 'Prison Entrepreneurship', 'R.R. Industries', 'Work Placement', 'Zero Tolerance'],
+        labels: ['Program A', 'Program B', 'Program C', 'Program D', 'Program E', 'Program F'],
         datasets: [{
           label: 'New offenses',
-          backgroundColor: COLORS['pink-300'],
-          borderColor: COLORS['pink-300'],
+          backgroundColor: COLORS_STACKED_TWO_VALUES[0],
+          borderColor: COLORS_STACKED_TWO_VALUES[0],
           borderWidth: 1,
-          data: [0.3, 8.0, 6.3, 4.3, 0.6, -3.1],
+          data: [30.3, 38.0, 36.3, 34.3, 30.6, 33.1],
         }, {
           label: 'Revocations',
-          backgroundColor: COLORS['teal-300'],
-          borderColor: COLORS['teal-300'],
+          backgroundColor: COLORS_STACKED_TWO_VALUES[1],
+          borderColor: COLORS_STACKED_TWO_VALUES[1],
           borderWidth: 1,
-          data: [1.5, 3.5, -2.3, 1.6, 1.0, -2.8],
+          data: [10.5, 13.5, 12.3, 11.6, 11.0, 12.8],
         }],
       },
       options: {
@@ -1386,12 +1658,60 @@ export default (function () {
             ticks: {
               autoSkip: false,
             },
+            stacked: true,
           }],
           yAxes: [{
             scaleLabel: {
               display: true,
-              labelString: 'Recidivism rate reductions',
+              labelString: 'Recidivism rate',
             },
+            stacked: true,
+          }],
+        },
+        annotation: {
+          events: ['click'],
+          annotations: [{
+            type: 'line',
+            mode: 'horizontal',
+            value: 45,
+
+            // optional annotation ID (must be unique)
+            id: 'program-recidivism-baseline',
+            scaleID: 'y-axis-0',
+
+            drawTime: 'afterDatasetsDraw',
+
+            borderColor: COLORS['grey-700'],
+            borderWidth: 2,
+            borderDash: [2, 2],
+            borderDashOffset: 5,
+            label: {
+              enabled: false,
+              content: 'State recidivism rate',
+              position: 'center',
+
+              // Background color of label, default below
+              backgroundColor: 'rgba(0,0,0,0.1)',
+
+              fontFamily: 'sans-serif',
+              fontSize: 12,
+              fontStyle: 'bold',
+              fontColor: '#000',
+
+              // Adjustment along x-axis (left-right) of label relative to above
+              // number (can be negative). For horizontal lines positioned left
+              // or right, negative values move the label toward the edge, and
+              // positive values toward the center.
+              xAdjust: 0,
+
+              // Adjustment along y-axis (top-bottom) of label relative to above
+              // number (can be negative). For vertical lines positioned top or
+              // bottom, negative values move the label toward the edge, and
+              // positive values toward the center.
+              yAdjust: 0,
+            },
+
+            onClick(e) { return e; },
           }],
         },
       },
@@ -1406,11 +1726,16 @@ export default (function () {
     new Chart(programCostEffectivenessBarChartCtx, {
       type: 'bar',
       data: {
-        labels: ['GED', 'Good Thoughts', 'Prison Entrepreneurship', 'R.R. Industries', 'Work Placement', 'Zero Tolerance'],
+        labels: ['Program A', 'Program B', 'Program C', 'Program D', 'Program E', 'Program F'],
         datasets: [{
           label: 'Incarceration costs reduced',
-          backgroundColor: COLORS['teal-300'],
-          borderColor: COLORS['teal-300'],
+          backgroundColor: function(context) {
+             if (context.dataset.data[context.dataIndex] < 0) {
+                return COLORS_GOOD_BAD['bad'];
+             } else {
+                return COLORS_GOOD_BAD['good']; }
+              },
+          borderColor: COLORS['grey-300'],
           borderWidth: 1,
           data: [-123600, 704000, 554400, 378400, -122200, -432800],
         }],
@@ -1434,7 +1759,7 @@ export default (function () {
           yAxes: [{
             scaleLabel: {
               display: true,
-              labelString: 'Dollars saved per 100 people',
+              labelString: 'ROI per 100 people',
             },
           }],
         },

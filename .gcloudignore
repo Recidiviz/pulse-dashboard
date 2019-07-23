@@ -16,10 +16,12 @@
 # Node.js dependencies:
 node_modules/
 
-# Secrets
+# Client-side environment variables
 .env
 .env.example
 .env.example.yaml
+
+# Secrets
 recidiviz-gae-api-key.json.enc
 
 # Directories and files that are unnecessary for deployment
