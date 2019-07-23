@@ -1,13 +1,14 @@
 .DS_Store
 .idea/
 .vscode/
+.env
 .env.local
-.env.development.local
 .env.development
-.env.test.local
-.env.test
-.env.production.local
+.env.development.local
 .env.production
+.env.production.local
+.env.test
+.env.test.local
 
 # Production build directory
 build/
