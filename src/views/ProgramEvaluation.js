@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 
 import Loading from "../components/Loading";
-import "../assets/scripts/index.js";
 import "../assets/styles/index.scss";
 import { useAuth0 } from "../react-auth0-spa";
 

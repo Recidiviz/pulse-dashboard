@@ -2,7 +2,6 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 import Loading from "../components/Loading";
-import "../assets/scripts/index.js";
 import "../assets/styles/index.scss";
 import { configureDownloadButtons } from "../assets/scripts/charts/chartJS/downloads";
 import { useAuth0 } from "../react-auth0-spa";
