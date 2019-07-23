@@ -1,0 +1,6 @@
+runtime: nodejs10
+
+service: default
+
+includes:
+- gae-base.yaml
