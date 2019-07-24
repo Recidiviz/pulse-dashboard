@@ -1,23 +1,4 @@
 handlers:
-
-# Maps all requests to JS files, e.g. bundle.js, to /build/*.js
-- url: /(.*\.js)
-  secure: always
-  static_files: build/\1
-  upload: build/(.*\.js)
-
-# Maps all requests to font files to /build/*.woff|ttf
-- url: /(.*\.(woff|ttf))
-  secure: always
-  static_files: build/\1
-  upload: build/(.*\.(woff|ttf))
-
-# Maps all requests to files under the /assets folder to the equivalent path under /build/assets
-- url: /assets
-  secure: always
-  static_dir: build/assets
-
-# Maps all remaining requests not covered by the above are handled by app route mappings
 - url: /.*
   secure: always
   redirect_http_response_code: 301

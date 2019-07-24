@@ -8,15 +8,6 @@ install:
 - yarn install
 script:
 - yarn test
-before_deploy:
-- yarn build
-deploy:
-  provider: gae
-  config: pulse-dashboard-staging.yaml
-  keyfile: recidiviz-gae-api-key.json
-  project: recidiviz-dashboard-staging
-  on: master
-  skip_cleanup: true
 cache:
   yarn: true
   directories:

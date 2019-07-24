@@ -5,9 +5,9 @@ Bringing criminal justice analysis to decision makers to help reduce incarcerati
 
 ## Contents
 1. [Development](#development)
+1. [Deploys](#deploys)
 1. [Tooling](#tooling)
 1. [Application Structure](#application-structure)
-1. [Data Sources](#data-sources)
 1. [License](#license)
 
 ## Development
@@ -27,12 +27,20 @@ Bringing criminal justice analysis to decision makers to help reduce incarcerati
 
 That's it! We suggest installing a linting package for your preferred code editor that hooks into [eslint](#eslint). We recommend [linter-eslint](https://atom.io/packages/linter-eslint) for Atom.
 
+#### Environment variables
+Second and last, set up your environment variables. Copy the `.env.example` file based and set variables accordingly per environment. At the moment, the app is deployed to both staging and production environments. Staging relies on environment variables stored in `.env.development` and production relies on variables in `.env.production`. Local relies on `.env.development.local`.
+
+The build process, as described below, ensures that the proper values are compiled and included in the static bundle at build time, for the right environment.
+
+### Authentication
+The backend API server and most frontend views in the app are authenticated via [Auth0](https://auth0.com/). You can control which views are authenticated by specifying `Route` versus `PrivateRoute` in `src/App.js`. If you are setting this app up completely fresh, you will need to create your own Auth0 account and set the relevant details in `src/auth_config.json` (see `src/auth_config.json.example`). Full instructions on configuring Auth0 can be found in the Auth0 docs.
+
 ### Linting & running tests
 A yarn script is available to run both [eslint](#eslint) and tests via [Jest](#jest):
 
 ```yarn test```
 
-This is the generally advisable way to roll. This task will also be executed prior to any `git commit` or `git push` action using [husky](#husky). Running tests this way will also write code coverage statistics to stdout and the `coverage` directory.
+Running tests this way will also write code coverage statistics to stdout and the `coverage` directory.
 
 To run eslint manually:
 
@@ -47,22 +55,38 @@ If you would like to get your TDD on and run Jest in watch mode, you can use:
 ```yarn test:watch```
 
 ### Running the application locally
-A yarn script is available for starting the development server. This will also automatically open a browser to localhost on the appropriate port.
+A yarn script is available for starting the development servers. The React frontend is served out of port `3000` and the Node/Express badend is served out of port 3001. This will also automatically open a browser to localhost on the appropriate port, pointing to the frontend.
 
-```yarn start```
+```yarn dev```
 
-Each time this is run, the `build` directory will be wiped clean. A [bundle analysis](#Bundle-analysis) report, found in `build/report.html`, will also be generated on each invocation of this script.
+The development servers will remain active until you either close your terminal or shut down the entire setup at once using `control+c`.
 
-The development server will remain active until you either close your terminal or shut down the server using `control+c`.
+**Note:** The development servers do not need to be restarted when source code is modified. The assets will automatically be recompiled and the browser will be refreshed (when there's a frontend change). Thanks, Webpack!
 
-**Note:** The development server does not need to be restarted when source code is modified. The assets will automatically be recompiled and the browser will be refreshed. Thanks, webpack!
+## Deploys
 
-### Generating a production build
-To generate a production build, invoke the following yarn script:
+As noted above, the Dashboard is two components: a React frontend and a Node/Express backend providing a thin API. The app can be run locally, in staging, and in production. Deploying to staging and production are very similar, as described below.
 
-```yarn build```
+### Deploying to staging
 
-Each time this is run, the `build` directory will be wiped clean. A bundle analysis report, found in `build/report.html`, will also be generated on each invocation of this script.
+#### Frontend
+To generate a staging build of the frontend, invoke the following yarn script: `yarn build-staging`.
+
+Each time this is run, the `build` directory will be wiped clean. A [bundle analysis](#Bundle-analysis) report, found in `build/report.html`, will also be generated on each invocation of this script. This will include the appropriate environment variables from `.env.development`.
+
+You should then test this locally by running `firebase serve`: it will run the staging build locally, pointed to the staging API backend--if you also have backend changes, deploy the backend as described in the next subsection. When you're satisfied, deploy the frontend to staging with `firebase deploy -P staging`. Test vigorously on staging before deploying to production.
+
+#### Backend
+Deploy the backend to staging Google App Engine with `gcloud app deploy pulse-dashboard-staging.yaml --project recidiviz-dashboard-staging`. This will upload any updated backend code/configuration to GAE and start the server (GAE runs `npm start` only once the deploy succeeds and is stable). Test vigorously on staging before continuing to production.
+
+### Deploying to production
+Follow the instructions described above, but with different commands for both frontend and backend deploys.
+
+Generate a production build of the frontend with `yarn build`. Test locally with `firebase serve`. Deploy the frontend with `firebase deploy -P production`.
+
+Deploy the backend to production GAE with `gcloud app deploy pulse-dashboard-production.yaml --project recidiviz-dashboard-production`.
+
+Test vigorously! Don't be afraid to rollback the deploy of frontend or backend through the Firebase and GAE consoles.
 
 ## Tooling
 
@@ -77,17 +101,10 @@ If the package is not required in production it should be added as a development
 
 See the [Yarn documentation](https://yarnpkg.com/en/docs) for more details and a full list of commands available via the CLI.
 
-### webpack
-[webpack](https://webpack.js.org/) is a highly-configurable tool for compiling JavaScript modules. We use it to bundle all of our JavaScript, CSS, and static assets for efficient distribution in production.
+### Webpack
+[Webpack](https://webpack.js.org/) is a highly-configurable tool for compiling JavaScript modules. We use it to bundle all of our JavaScript, CSS, and static assets for efficient distribution in production.
 
-webpack has a reputation for being intimidating but don't let that deter you. The core idea of webpack is to specify a set of inputs (file types and locations), indicate how those inputs should be processed (via loaders and plugins), and specify how the resulting output should be generated. Check out the webpack [Getting Started guide](https://webpack.js.org/guides/getting-started/) if you're interested in learning more.
-
-#### Our webpack config
-A few points of note about our current webpack configuration which can be found in `webpack.config.js`:
-
-1. The app is simple at this point so we specify a single entry point, `src/index.js`, and a single output bundle, `app.bundle.js`. Output is configured to dynamically create bundles based on entry points. If additional bundles are desired, simply add an additional entry point to the `entry` property.
-1. Production bundles and assets will be written to the `build` directory. This directory is wiped clean each time a production build is initiated.
-1. We use `HtmlWebpackPlugin` to dynamically insert generated bundles to `index.html` during production builds. For this reason, you won't find any JavaScript bundle references in `src/index.html`. The resulting production version of `index.html` will be written to the `build` directory. If you inspect that file, you'll see the dynamically generated `<script>` tags with our bundle(s).
+Webpack has a reputation for being intimidating but don't let that deter you. The core idea of webpack is to specify a set of inputs (file types and locations), indicate how those inputs should be processed (via loaders and plugins), and specify how the resulting output should be generated. Check out the Webpack [Getting Started guide](https://webpack.js.org/guides/getting-started/) if you're interested in learning more.
 
 #### Bundle analysis
 We have configured `BundleAnalyzerPlugin` to facilitate bundle analysis. This can be useful for managing bundle bloat or spotting unnecessary dependencies. For convenience, a yarn script has been created to launch the bundle analyzer tool. To run this, execute the following command:
@@ -129,81 +146,44 @@ React [documentation](https://reactjs.org/docs/hello-world.html) is very high qu
 A quick overview of the directory structure and suggestions on where to put different things.
 
 ```
-/__mocks__
 /build
-/coverage
-/data
+/public
 /src
+  assets/
   components/
-  config/
+  utils/
+  views/
 /static
   fonts/
   images/
 ```
 ### Application root (/)
-Home to files such as `webpack.config.js` and `package.json` for configuring build, dependencies, etc. Files in the application root are generally not bundled by webpack.
+Home to files such as `server.js`, for running the backend server, and `package.json` for configuring build, dependencies, etc. Files in the application root are generally not bundled by Webpack.
+
+### build
+The bundled, static frontend. This is what gets exposed on the public frontend server.
+
+### public
+These are the raw public assets that form the _website itself_, i.e. `index.html` and the Favicon. When a build is generated, the contents of `src` are combined with the contents of `public` to generate `build`.
 
 ### src
-Application source code. If you're writing it, it should most likely end up here.
+Application frontend source code. If you're writing it, it should most likely end up here.
+
+#### src/assets
+This is where frontend assets should live. JS logic, e.g. for creating exported images and json files of a given visualization, should live in `src/assets/scripts`. Static assets and CSS should live in `src/assets/static` and `src/assets/styles`, respectively.
 
 #### src/components
-All React components should exist under this directory. Each component should have a separate directory. Add an `index.js` file in each component directory that exports the React component:
-
-```export { default } from './Recidiviz';```
-
-This will let you import like so:
-
-```import Recidiviz from './Recidiviz';```
-
-rather than doing this:
-
-```import Recidiviz from './Recidiviz/Recidiviz';```
-
-It's common for React components to have one or more sub-components. This hierarchy should be reflected in the directory structure. Add sub-component directories within the containing parent component directory. For example:
-
-```
-/src/components/Recidiviz
-  Recidiviz.js
-  Recidiviz.test.js
-  Recidiviz.css
-  index.js
-/src/components/Recidiviz/RecidivizSlider
-  RecidivizSlider.js
-  RecidivizSlider.test.js
-  index.js
-```
+All React components should exist under this directory. Charts in particular live under `/components/charts/{subject}`.
 
 Test files and CSS files should also be placed in the component directory.
 
 For further discussion on React application structure and rationale for the above choices, see [this blog post](https://hackernoon.com/the-100-correct-way-to-structure-a-react-app-or-why-theres-no-such-thing-3ede534ef1ed).
 
-#### src/config
+#### src/utils
 Application configuration files, shared constants, etc.
 
-### static
-Static assets like fonts and images. Place assets in the appropriate sub-directory.
-
-### data
-Data sets and code for generating them. See [Data Sources](#Data-Sources) for more details.
-
-### build
-Contains production bundles and assets. Automatically populated by [Generating a production build](#generating-a-production-build). This directory will be wiped on each production build or after [running the application locally](#running-the-application-locally).
-
-### coverage
-Contains code coverage reports which are automatically generated when [running tests](#linting--running-tests).
-
-### __mocks__
-Used to house mock files and functions. Loaded by [Jest](#jest) when running tests.
-
-## Data Sources
-Standardized data sets for tracking recidivism are difficult to come by. Data that we are using for this project can be found in the `/data` directory, grouped by source. Inside each source directory will be scripts for extracting and transforming the data into a suitable format, as well as extracts we have created for the project.
-
-### Bureau of Justice Statistics
-The [United States Bureau of Justice Statistics](https://bjs.gov/) published [_Recidivism Of Prisoners Released In 30 States In 2005: Patterns From 2005 To 2010_](https://www.bjs.gov/index.cfm?ty=pbdetail&iid=4986), which gathered and analyzed data regarding inmates released from prisons in 30 states in 2005 to determine recidivism rates among inmates over the ensuing 5 years. The data is broken down by demographics, sentence history, and criminal offense. The BJS in turn built [a tool for sifting through that data](https://www.bjs.gov/recidivism_2005_arrest/#) to look up recidivism rates for inmates matching certain characteristics.
-
-We wrote a script to repeatedly request the endpoint behind that tool to create bulk extracts of certain projections of the data set. Those extracts are included here and are totally free for any use you see fit, as long as you provide citation to the underlying study and obey any terms of use on the BJS website. Citation:
-
-Snyder, Howard N., Durose, Matthew R., Cooper, Alexia, and Mulako-Wangota, Joseph. Bureau of Justice Statistics. Generated using the Prisoner Recidivism Analysis Tool - 2005 (PRAT-2005) at http://www.bjs.gov/recidivism_2005_arrest/. (02/04/2016).
+### src/views
+This is where individual page layouts are constructed. The main app is configured via `src/App.js` which uses the React Router to route to appropriate views depending on the requested path, e.g. routing the `/revocations` path to `src/views/Revocations.js`.
 
 ## License
 This project is licensed under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.

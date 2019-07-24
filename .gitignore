@@ -1,20 +1,29 @@
 .DS_Store
 .idea/
 .vscode/
+.env
+.env.local
+.env.development
+.env.development.local
+.env.production
+.env.production.local
+.env.test
+.env.test.local
 
 # Production build directory
 build/
+/.firebase
 
 # Dependency directory
 node_modules/
+/.pnp
+.pnp.js
 
 # Code coverage directory
 coverage/
 
 # Secrets
-.env
-.env.yaml
-*-with-secrets.yaml
+auth_config.json
 src/assets/scripts/metrics/*.json
 
 # Logs
