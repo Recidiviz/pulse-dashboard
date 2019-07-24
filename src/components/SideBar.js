@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 
 import * as $ from 'jquery';
+import logo from "../assets/static/images/logo.png";
 
 const SideBar = () => {
 
@@ -33,9 +34,7 @@ const SideBar = () => {
                   <div className="peers ai-c fxw-nw">
                     <div className="peer">
                       <div className="col-md-3 my-auto peer">
-                        <span className="logo-icon-holder">
-                          <i className="ti-pulse" />
-                        </span>
+                        <img className="logo-icon-holder" src={logo} alt="Logo" />
                       </div>
                     </div>
                     <div className="col-md-9 my-auto peer peer-greed">
