@@ -32,6 +32,9 @@ Second and last, set up your environment variables. Copy the `.env.example` file
 
 The build process, as described below, ensures that the proper values are compiled and included in the static bundle at build time, for the right environment.
 
+### Authentication
+The backend API server and most frontend views in the app are authenticated via [Auth0](https://auth0.com/). You can control which views are authenticated by specifying `Route` versus `PrivateRoute` in `src/App.js`. If you are setting this app up completely fresh, you will need to create your own Auth0 account and set the relevant details in `src/auth_config.json` (see `src/auth_config.json.example`). Full instructions on configuring Auth0 can be found in the Auth0 docs.
+
 ### Linting & running tests
 A yarn script is available to run both [eslint](#eslint) and tests via [Jest](#jest):
 
