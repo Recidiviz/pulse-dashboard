@@ -52,6 +52,7 @@
     "perfect-scrollbar": "^1.1.0",
     "popper.js": "^1.12.6",
     "react": "^16.8.6",
+    "react-app-polyfill": "^1.0.1",
     "react-chartjs-2": "^2.7.6",
     "react-dom": "^16.8.6",
     "react-router-dom": "^5.0.0",

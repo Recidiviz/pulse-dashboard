@@ -20,6 +20,13 @@
     </script>
 
     <!--
+      This promise polyfill enables the webcrypto shim polyfill which allows Auth0 to
+      fall back to msCrypto in the absence of the standard crypto in IE11.
+    -->
+    <script src="https://unpkg.com/bluebird"></script>
+    <script src="https://unpkg.com/webcrypto-shim"></script>
+
+    <!--
       manifest.json provides metadata used when your web app is installed on a
       user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
     -->
