@@ -7,9 +7,7 @@ import { useAuth0 } from "../../../react-auth0-spa";
 const RevocationCountByViolationType = () => {
   const [chartLabels, setChartLabels] = useState([]);
   const [absconsionDataPoints, setAbsconsionDataPoints] = useState([]);
-  const [felonyDataPoints, setFelonyDataPoints] = useState([]);
-  const [misdemeanorDataPoints, setMisdemeanorDataPoints] = useState([]);
-  const [municipalDataPoints, setMunicipalDataPoints] = useState([]);
+  const [newOffenseDataPoints, setNewOffenseDataPoints] = useState([]);
   const [technicalDataPoints, setTechnicalDataPoints] = useState([]);
   const { getTokenSilently } = useAuth0();
 
@@ -39,9 +37,7 @@ const RevocationCountByViolationType = () => {
 
       setChartLabels(sorted.map(element => element[0]));
       setAbsconsionDataPoints(sorted.map(element => element[1].absconsion));
-      setFelonyDataPoints(sorted.map(element => element[1].felony));
-      setMisdemeanorDataPoints(sorted.map(element => element[1].misdemeanor));
-      setMunicipalDataPoints(sorted.map(element => element[1].municipal));
+      setNewOffenseDataPoints(sorted.map(element => element[1].new_offense));
       setTechnicalDataPoints(sorted.map(element => element[1].technical));
     } catch (error) {
       console.error(error);
@@ -57,20 +53,12 @@ const RevocationCountByViolationType = () => {
       labels: chartLabels,
       datasets: [{
           label: "Absconsion",
-          backgroundColor: COLORS_FIVE_VALUES[0],
+          backgroundColor: COLORS_FIVE_VALUES[1],
           data: absconsionDataPoints,
         }, {
-          label: "Felony",
-          backgroundColor: COLORS_FIVE_VALUES[1],
-          data: felonyDataPoints,
-        }, {
-          label: "Misdemeanor",
+          label: "New Offense",
           backgroundColor: COLORS_FIVE_VALUES[2],
-          data: misdemeanorDataPoints,
-        }, {
-          label: "Municipal",
-          backgroundColor: COLORS_FIVE_VALUES[3],
-          data: municipalDataPoints,
+          data: newOffenseDataPoints,
         }, {
           label: "Technical",
           backgroundColor: COLORS_FIVE_VALUES[4],
