@@ -59,6 +59,7 @@ const RevocationCountSnapshot = () => {
             return 0;
           }
         },
+        hitRadius: 5,
         fill: false,
         borderWidth: 2,
         lineTension: 0,
@@ -74,6 +75,7 @@ const RevocationCountSnapshot = () => {
             return 0;
           }
         },
+        hitRadius: 5,
         fill: false,
         borderWidth: 2,
         lineTension: 0,
@@ -89,6 +91,7 @@ const RevocationCountSnapshot = () => {
             return 0;
           }
         },
+        hitRadius: 5,
         fill: false,
         lineTension: 0,
         borderWidth: 2,
