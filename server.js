@@ -98,12 +98,12 @@ app.get("/api/external", checkJwt, (req, res) => {
       'April': {probation: 16, parole: 36}
     },
     revocationCountsByMonthByViolationType: {
-      'November': {absconsion: 9, felony: 31, misdemeanor: 12, municipal: 31, technical: 3},
-      'December': {absconsion: 10, felony: 38, misdemeanor: 8, municipal: 2, technical: 12},
-      'January': {absconsion: 12, felony: 48, misdemeanor: 4, municipal: 48, technical: 8},
-      'February': {absconsion: 10, felony: 34, misdemeanor: 34, municipal: 22, technical: 3},
-      'March': {absconsion: 17, felony: 37, misdemeanor: 37, municipal: 12, technical: 31},
-      'April': {absconsion: 16, felony: 36, misdemeanor: 36, municipal: 36, technical: 6},
+      'November': {new_offense:17, absconsion:15,  technical:8},
+      'December': {new_offense:22, absconsion:19,  technical: 7},
+      'January': {new_offense:26, absconsion:24,  technical: 10},
+      'February': {new_offense:17, absconsion:21,  technical: 6},
+      'March': {new_offense:22, absconsion:24,  technical: 8},
+      'April': {new_offense:21, absconsion:23,  technical: 8},
     },
     revocationCountsByOfficer: {
       '176': {technical: 7, nonTechnical: 2},
