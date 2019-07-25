@@ -6,7 +6,8 @@ const helmet = require("helmet");
 const jwt = require("express-jwt");
 const jwksRsa = require("jwks-rsa");
 const { join } = require("path");
-const authConfig = require("./src/auth_config.json");
+const devAuthConfig = require("./src/auth_config_dev.json");
+const productionAuthConfig = require("./src/auth_config_production.json");
 
 const app = express();
 
@@ -14,6 +15,14 @@ app.use(cors());
 
 const port = process.env.PORT || 3001;
 app.set('port', port);
+
+const authEnv = process.env.AUTH_ENV;
+let authConfig = null;
+if (authEnv === 'production') {
+  authConfig = productionAuthConfig;
+} else {
+  authConfig = devAuthConfig;
+}
 
 if (!authConfig.domain || !authConfig.audience) {
   throw new Error(

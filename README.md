@@ -28,12 +28,18 @@ Bringing criminal justice analysis to decision makers to help reduce incarcerati
 That's it! We suggest installing a linting package for your preferred code editor that hooks into [eslint](#eslint). We recommend [linter-eslint](https://atom.io/packages/linter-eslint) for Atom.
 
 #### Environment variables
-Second and last, set up your environment variables. Copy the `.env.example` file based and set variables accordingly per environment. At the moment, the app is deployed to both staging and production environments. Staging relies on environment variables stored in `.env.development` and production relies on variables in `.env.production`. Local relies on `.env.development.local`.
+Second and last, set up your environment variables.
+
+For the frontend: copy the `.env.example` file and set variables accordingly per environment. At the moment, the app is deployed to both staging and production environments. Staging relies on environment variables stored in `.env.development` and production relies on variables in `.env.production`. Local relies on `.env.development.local`.
 
 The build process, as described below, ensures that the proper values are compiled and included in the static bundle at build time, for the right environment.
 
+For the backend: environment variables are managed inside of the Google App Engine yaml files, described below.
+
 ### Authentication
-The backend API server and most frontend views in the app are authenticated via [Auth0](https://auth0.com/). You can control which views are authenticated by specifying `Route` versus `PrivateRoute` in `src/App.js`. If you are setting this app up completely fresh, you will need to create your own Auth0 account and set the relevant details in `src/auth_config.json` (see `src/auth_config.json.example`). Full instructions on configuring Auth0 can be found in the Auth0 docs.
+The backend API server and most frontend views in the app are authenticated via [Auth0](https://auth0.com/). You can control which views are authenticated by specifying `Route` versus `PrivateRoute` in `src/App.js`. If you are setting this app up completely fresh, you will need to create your own Auth0 account and set the relevant details in `src/auth_config_dev.json` and `src/auth_config_production.json`. See `src/auth_config.json.example`.
+
+This setup assumes you have two separate Auth0 tenants, one for lower tiers and one for production. The former should be configured in `auth_config_dev.json` and the latter in `auth_config_production.json`. Which file is loaded and used relies on the `AUTH_ENV` environment variable on the backend and the `REACT_APP_AUTH_ENV` environment variable on the frontend. It is important that the same config file be loaded on the backend and frontend servers in a given tier so that API authentication will work.
 
 ### Linting & running tests
 A yarn script is available to run both [eslint](#eslint) and tests via [Jest](#jest):
@@ -77,14 +83,16 @@ Each time this is run, the `build` directory will be wiped clean. A [bundle anal
 You should then test this locally by running `firebase serve`: it will run the staging build locally, pointed to the staging API backend--if you also have backend changes, deploy the backend as described in the next subsection. When you're satisfied, deploy the frontend to staging with `firebase deploy -P staging`. Test vigorously on staging before deploying to production.
 
 #### Backend
-Deploy the backend to staging Google App Engine with `gcloud app deploy pulse-dashboard-staging.yaml --project recidiviz-dashboard-staging`. This will upload any updated backend code/configuration to GAE and start the server (GAE runs `npm start` only once the deploy succeeds and is stable). Test vigorously on staging before continuing to production.
+We deploy the backend to Google App Engine with configured yaml files. Copy the `gae.yaml.example` file into files named `gae-staging.yaml` and `gae-production.yaml`, and set environment variables accordingly.
+
+Deploy the backend to staging Google App Engine with `gcloud app deploy gae-staging.yaml --project [project_id]`. This will upload any updated backend code/configuration to GAE and start the server (GAE runs `npm start` only once the deploy succeeds and is stable). Test vigorously on staging before continuing to production.
 
 ### Deploying to production
 Follow the instructions described above, but with different commands for both frontend and backend deploys.
 
 Generate a production build of the frontend with `yarn build`. Test locally with `firebase serve`. Deploy the frontend with `firebase deploy -P production`.
 
-Deploy the backend to production GAE with `gcloud app deploy pulse-dashboard-production.yaml --project recidiviz-dashboard-production`.
+Deploy the backend to production GAE with `gcloud app deploy gae-production.yaml --project [project_id]`.
 
 Test vigorously! Don't be afraid to rollback the deploy of frontend or backend through the Firebase and GAE consoles.
 

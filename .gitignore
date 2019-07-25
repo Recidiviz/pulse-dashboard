@@ -24,6 +24,8 @@ coverage/
 
 # Secrets
 auth_config.json
+auth_config*.json
+gae*.yaml
 src/assets/scripts/metrics/*.json
 
 # Logs

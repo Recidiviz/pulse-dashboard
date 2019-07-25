@@ -1,0 +1,9 @@
+runtime: nodejs10
+
+service: default
+
+includes:
+- base-gae-handlers.yaml
+
+env_variables:
+  AUTH_ENV: {AUTH_ENV}
