@@ -45,7 +45,7 @@ const TopBar = (props) => {
             <li className="dropdown">
               <a href="#" onClick={() => loginWithRedirect({appState: { targetUrl: "/snapshots" }})} className="dropdown-toggle no-after peers fxw-nw ai-c lh-1" data-toggle="dropdown">
                 <div className="peer mR-10">
-                  <i class="ti-power-off"></i>
+                  <i className="ti-power-off"></i>
                 </div>
                 <div className="peer">
                   <span className="fsz-sm c-grey-900">Log in</span>
