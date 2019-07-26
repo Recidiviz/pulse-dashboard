@@ -18,7 +18,7 @@ const Home = () => {
             <div className="col-12 text-center">
               <a className="d-b td-n pY-5 bgcH-grey-100 c-grey-700" href="#" onClick={() => loginWithRedirect({appState: { targetUrl: "/snapshots" }})}>
                 <i className="ti-power-off mR-10"></i>
-                <h2>Login to get started</h2>
+                <h2>Log in to get started</h2>
               </a>
             </div>
           )}

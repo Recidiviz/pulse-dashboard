@@ -48,7 +48,7 @@ const TopBar = (props) => {
                   <i class="ti-power-off"></i>
                 </div>
                 <div className="peer">
-                  <span className="fsz-sm c-grey-900">Login</span>
+                  <span className="fsz-sm c-grey-900">Log in</span>
                 </div>
               </a>
             </li>
