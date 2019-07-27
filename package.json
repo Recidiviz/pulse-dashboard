@@ -33,6 +33,7 @@
     "datatables": "^1.10.13",
     "debug": "~2.6.9",
     "dotenv": "^6.1.0",
+    "downloadjs": "^1.4.7",
     "easy-pie-chart": "^2.1.7",
     "env-cmd": "^9.0.3",
     "express": "^4.16.4",

@@ -16,39 +16,17 @@
 // =============================================================================
 
 import { timeStamp } from '../../utils/time';
+import downloadjs from 'downloadjs';
 
 function downloadCanvasImage(canvas, filename) {
-  // create an "off-screen" anchor tag
-  const link = document.createElement('a');
-
-  // the key here is to set the download attribute of the a tag
-  link.download = filename;
-  link.href = canvas.toDataURL('image/png;base64');
-
-  // create a "fake" click-event to trigger the download
-  if (document.createEvent) {
-    const e = document.createEvent('MouseEvents');
-    e.initMouseEvent(
-      'click', true, true, window,
-      0, 0, 0, 0, 0, false, false, false, false, 0, null,
-    );
-
-    link.dispatchEvent(e);
-  } else if (link.fireEvent) {
-    link.fireEvent('onclick');
-  }
+  const data = canvas.toDataURL('image/png;base64');
+  downloadjs(data, filename, 'image/png;base64');
 }
 
 function downloadObjectAsJson(exportObj, exportName) {
   const dataStr = `data:text/json;charset=utf-8,${encodeURIComponent(JSON.stringify(exportObj, null, '\t'))}`;
-
-  const downloadAnchorNode = document.createElement('a');
-  downloadAnchorNode.setAttribute('href', dataStr);
-  downloadAnchorNode.setAttribute('download', `${exportName}.json`);
-  document.body.appendChild(downloadAnchorNode); // required for firefox
-
-  downloadAnchorNode.click();
-  downloadAnchorNode.remove();
+  const filename = `${exportName}.json`;
+  downloadjs(dataStr, filename, 'text/json');
 }
 
 function configureDownloadButtons(
