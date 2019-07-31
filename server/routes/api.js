@@ -84,12 +84,12 @@ function external(req, res) {
       'April': {probation: 16, parole: 36}
     },
     revocationCountsByMonthByViolationType: {
-      'November': {new_offense:17, absconsion:15,  technical:8},
-      'December': {new_offense:22, absconsion:19,  technical: 7},
-      'January': {new_offense:26, absconsion:24,  technical: 10},
-      'February': {new_offense:17, absconsion:21,  technical: 6},
-      'March': {new_offense:22, absconsion:24,  technical: 8},
-      'April': {new_offense:21, absconsion:23,  technical: 8},
+      'November': {newOffense:17, absconsion:15,  technical:8},
+      'December': {newOffense:22, absconsion:19,  technical: 7},
+      'January': {newOffense:26, absconsion:24,  technical: 10},
+      'February': {newOffense:17, absconsion:21,  technical: 6},
+      'March': {newOffense:22, absconsion:24,  technical: 8},
+      'April': {newOffense:21, absconsion:23,  technical: 8},
     },
     revocationCountsByOfficer: {
       '176': {technical: 7, nonTechnical: 2},

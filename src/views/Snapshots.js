@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
 import Loading from "../components/Loading";
@@ -10,7 +10,30 @@ import RevocationCountSnapshot from "../components/charts/snapshots/RevocationCo
 import ReincarcerationCountSnapshot from "../components/charts/snapshots/ReincarcerationCountSnapshot";
 
 const Snapshots = () => {
-  const { loading, user } = useAuth0();
+  const { loading, user, getTokenSilently } = useAuth0();
+  const [apiData, setApiData] = useState({});
+  const [awaitingApi, setAwaitingApi] = useState(true);
+
+  const fetchChartData = async () => {
+    try {
+      const token = await getTokenSilently();
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/external`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+
+      const responseData = await response.json();
+      setApiData(responseData);
+      setAwaitingApi(false);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchChartData();
+  }, []);
 
   if (loading || !user) {
     return <Loading />;
@@ -139,7 +162,7 @@ const Snapshots = () => {
                 <div className="layer w-100 p-20">
                   <div className="ai-c jc-c gapX-20">
                     <div className="col-md-12">
-                      <ReincarcerationCountSnapshot />
+                      <ReincarcerationCountSnapshot admissions={apiData.admissions} reincarcerationCountsByMonth={apiData.reincarcerationCountsByMonth} />
                     </div>
                   </div>
                 </div>

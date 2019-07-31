@@ -2,47 +2,26 @@ import React, { useState, useEffect } from "react";
 
 import { Bar } from 'react-chartjs-2';
 import { COLORS, COLORS_GOOD_BAD } from "../../../assets/scripts/constants/colors";
-import { useAuth0 } from "../../../react-auth0-spa";
 
-const ProgramCostEffectiveness = () => {
+const ProgramCostEffectiveness = (props) => {
   const [chartLabels, setChartLabels] = useState([]);
   const [chartDataPoints, setChartDataPoints] = useState([]);
-  const { getTokenSilently } = useAuth0();
 
-  const processResponse = (responseData) => {
-    const costReductionByProgram = responseData.programCostEffectiveness;
+  const processResponse = () => {
+    const costReductionByProgram = props.programCostEffectiveness;
 
-    var byProgram = [];
+    var sorted = [];
     for (var program in costReductionByProgram) {
-        byProgram.push([program, costReductionByProgram[program]]);
+        sorted.push([program, costReductionByProgram[program]]);
     }
 
-    return byProgram;
+    setChartLabels(sorted.map(element => element[0]));
+    setChartDataPoints(sorted.map(element => element[1]));
   }
 
-  const fetchChartData = async () => {
-    try {
-      const token = await getTokenSilently();
-      // Likely needs to point to app engine URL
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/external`, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      });
-
-      const responseData = await response.json();
-      const sorted = processResponse(responseData);
-
-      setChartLabels(sorted.map(element => element[0]));
-      setChartDataPoints(sorted.map(element => element[1]));
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
   useEffect(() => {
-    fetchChartData();
-  }, []);
+    processResponse();
+  }, [props.programCostEffectiveness]);
 
   return (
     <Bar data={{

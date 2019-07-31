@@ -2,47 +2,26 @@ import React, { useState, useEffect } from "react";
 
 import { Pie } from 'react-chartjs-2';
 import { COLORS_FIVE_VALUES } from "../../../assets/scripts/constants/colors";
-import { useAuth0 } from "../../../react-auth0-spa";
 
-const AdmissionTypeProportions = () => {
+const AdmissionTypeProportions = (props) => {
   const [chartLabels, setChartLabels] = useState([]);
   const [chartDataPoints, setChartDataPoints] = useState([]);
-  const { getTokenSilently } = useAuth0();
 
-  const processResponse = (responseData) => {
-    const countsByAdmissionType = responseData.admissionCountsByType;
+  const processResponse = () => {
+    const countsByAdmissionType = props.admissionCountsByType;
 
-    var sortable = [];
+    var sorted = [];
     for (var admissionType in countsByAdmissionType) {
-        sortable.push([admissionType, countsByAdmissionType[admissionType]]);
+        sorted.push([admissionType, countsByAdmissionType[admissionType]]);
     }
 
-    return sortable;
+    setChartLabels(sorted.map(element => element[0]));
+    setChartDataPoints(sorted.map(element => element[1]));
   }
 
-  const fetchChartData = async () => {
-    try {
-      const token = await getTokenSilently();
-      // Likely needs to point to app engine URL
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/external`, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      });
-
-      const responseData = await response.json();
-      const sorted = processResponse(responseData);
-
-      setChartLabels(sorted.map(element => element[0]));
-      setChartDataPoints(sorted.map(element => element[1]));
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
   useEffect(() => {
-    fetchChartData();
-  }, []);
+    processResponse();
+  }, [props.admissionCountsByType]);
 
   return (
     <Pie data={{

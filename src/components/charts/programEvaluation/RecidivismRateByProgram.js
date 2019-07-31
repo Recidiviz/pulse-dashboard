@@ -2,49 +2,28 @@ import React, { useState, useEffect } from "react";
 
 import { Bar } from 'react-chartjs-2';
 import { COLORS, COLORS_STACKED_TWO_VALUES } from "../../../assets/scripts/constants/colors";
-import { useAuth0 } from "../../../react-auth0-spa";
 
-const RecidivismRateByProgram = () => {
+const RecidivismRateByProgram = (props) => {
   const [chartLabels, setChartLabels] = useState([]);
   const [newOffensesDataPoints, setNewOffensesDataPoints] = useState([]);
   const [revocationDataPoints, setRevocationDataPoints] = useState([]);
-  const { getTokenSilently } = useAuth0();
 
-  const processResponse = (responseData) => {
-    const rateByProgram = responseData.recidivismRateByProgram;
+  const processResponse = () => {
+    const rateByProgram = props.recidivismRateByProgram;
 
-    var byProgram = [];
+    var sorted = [];
     for (var program in rateByProgram) {
-        byProgram.push([program, rateByProgram[program]]);
+        sorted.push([program, rateByProgram[program]]);
     }
 
-    return byProgram;
+    setChartLabels(sorted.map(element => element[0]));
+    setNewOffensesDataPoints(sorted.map(element => element[1].newOffenses));
+    setRevocationDataPoints(sorted.map(element => element[1].revocations));
   }
 
-  const fetchChartData = async () => {
-    try {
-      const token = await getTokenSilently();
-      // Likely needs to point to app engine URL
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/external`, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      });
-
-      const responseData = await response.json();
-      const sorted = processResponse(responseData);
-
-      setChartLabels(sorted.map(element => element[0]));
-      setNewOffensesDataPoints(sorted.map(element => element[1].newOffenses));
-      setRevocationDataPoints(sorted.map(element => element[1].revocations));
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
   useEffect(() => {
-    fetchChartData();
-  }, []);
+    processResponse();
+  }, [props.recidivismRateByProgram]);
 
   return (
     <Bar data={{

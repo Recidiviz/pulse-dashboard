@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 
 import Loading from "../components/Loading";
 import "../assets/styles/index.scss";
@@ -12,9 +12,32 @@ import AdmissionTypeProportions from "../components/charts/revocations/Admission
 import RevocationProportionByRace from "../components/charts/revocations/RevocationProportionByRace";
 
 const Revocations = () => {
-  const { loading, user } = useAuth0();
+  const { loading, user, getTokenSilently } = useAuth0();
+  const [apiData, setApiData] = useState({});
+  const [awaitingApi, setAwaitingApi] = useState(true);
 
-  if (loading || !user) {
+  const fetchChartData = async () => {
+    try {
+      const token = await getTokenSilently();
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/external`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+
+      const responseData = await response.json();
+      setApiData(responseData);
+      setAwaitingApi(false);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchChartData();
+  }, []);
+
+  if (loading || !user || awaitingApi) {
     return <Loading />;
   }
 
@@ -47,7 +70,7 @@ const Revocations = () => {
                 <div className="layer w-100 pX-20 pT-20 row">
                   <div className="col-md-12">
                     <div className="layer w-100 p-20">
-                      <RevocationCountOverTime />
+                      <RevocationCountOverTime revocationCountsByMonth={apiData.revocationCountsByMonth} />
                     </div>
                   </div>
                 </div>
@@ -82,7 +105,7 @@ const Revocations = () => {
                   <h4 className="lh-1">Revocations by supervision type</h4>
                 </div>
                 <div className="layer w-100 p-20">
-                  <RevocationCountBySupervisionType />
+                  <RevocationCountBySupervisionType revocationCountsByMonthBySupervisionType={apiData.revocationCountsByMonthBySupervisionType} />
                 </div>
                 <div className="layer bdT p-20 w-100 accordion" id="methodologyRevocationBySupervisionType">
                   <div className="mb-0" id="methodologyHeadingRevocationBySupervisiontype">
@@ -122,7 +145,7 @@ const Revocations = () => {
                   <h4 className="lh-1">Revocations by violation type</h4>
                 </div>
                 <div className="layer w-100 p-20">
-                  <RevocationCountByViolationType />
+                  <RevocationCountByViolationType revocationCountsByMonthByViolationType={apiData.revocationCountsByMonthByViolationType} />
                 </div>
                 <div className="layer bdT p-20 w-100 accordion" id="methodologyRevocationsByViolationType">
                   <div className="mb-0" id="methodologyHeadingRevocationsByViolationType">
@@ -162,7 +185,7 @@ const Revocations = () => {
                   <h4 className="lh-1">Revocations by officer</h4>
                 </div>
                 <div className="layer w-100 p-20">
-                  <RevocationCountByOfficer />
+                  <RevocationCountByOfficer revocationCountsByOfficer={apiData.revocationCountsByOfficer} />
                 </div>
                 <div className="layer bdT p-20 w-100 accordion" id="methodologyRevocationByOfficer">
                   <div className="mb-0" id="methodologyHeadingRevocationByOfficer">
@@ -202,7 +225,7 @@ const Revocations = () => {
                   <h4 className="lh-1">Admission type proportions</h4>
                 </div>
                 <div className="layer w-100 p-20">
-                  <AdmissionTypeProportions />
+                  <AdmissionTypeProportions admissionCountsByType={apiData.admissionCountsByType} />
                 </div>
                 <div className="layer bdT p-20 w-100 accordion" id="methodologyAdmissionProportions">
                   <div className="mb-0" id="methodologyHeadingAdmissionProportions">
@@ -244,7 +267,7 @@ const Revocations = () => {
                 </div>
                 <div className="layer w-100 pX-20 pT-20 row">
                   <div className="layer w-100 p-20">
-                    <RevocationProportionByRace />
+                    <RevocationProportionByRace revocationProportionByRace={apiData.revocationProportionByRace} />
                   </div>
                 </div>
                 <div className="layer bdT p-20 w-100 accordion" id="methodologyRevocationsByRace">

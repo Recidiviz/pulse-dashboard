@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import Loading from "../components/Loading";
 import "../assets/styles/index.scss";
@@ -113,6 +113,9 @@ const CARDS = {
 }
 
 const ProgramEvaluation = () => {
+  const { loading, user, getTokenSilently } = useAuth0();
+  const [apiData, setApiData] = useState({});
+
   const [reportCardTitle, setReportCardTitle] = useState(REPORT_CARD_A.title);
   const [reportCardDescription, setReportCardDescription] = useState(REPORT_CARD_A.description);
   const [reportCardType, setReportCardType] = useState(REPORT_CARD_A.type);
@@ -144,7 +147,25 @@ const ProgramEvaluation = () => {
     setReportCardRevocation3(card.thirdYearRevocation);
   }
 
-  const { loading, user } = useAuth0();
+  const fetchChartData = async () => {
+    try {
+      const token = await getTokenSilently();
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/external`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+
+      const responseData = await response.json();
+      setApiData(responseData);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchChartData();
+  }, []);
 
   if (loading || !user) {
     return <Loading />;
@@ -154,7 +175,7 @@ const ProgramEvaluation = () => {
     <main className="main-content bgc-grey-100">
       <script src="../../assets/scripts/metrics/programReportCards.js" />
       <div id="mainContent">
-        <h5 class="lh-1 font-weight-bold pB-20">Note: The following charts describe fake programs with fake data.</h5>
+        <h5 className="lh-1 font-weight-bold pB-20">Note: The following charts describe fake programs with fake data.</h5>
 
         <div className="row gap-20 masonry pos-r">
           <div className="masonry-sizer col-md-6" />
@@ -167,7 +188,7 @@ const ProgramEvaluation = () => {
                   <h4 className="lh-1">Recidivism rate for <b>Program A</b> was <b>4.2%</b> below baseline</h4>
                 </div>
                 <div className="layer w-100 p-20">
-                  <RecidivismRateByProgram />
+                  <RecidivismRateByProgram recidivismRateByProgram={apiData.recidivismRateByProgram} />
                 </div>
                 <div className="layer bdT p-20 w-100">
                   <div className="peers ai-c jc-c gapX-20">
@@ -197,7 +218,7 @@ const ProgramEvaluation = () => {
                   <h4 className="lh-1"><b>Program B</b> saved ND <b>$704,000</b> per 100 participants</h4>
                 </div>
                 <div className="layer w-100 p-20">
-                  <ProgramCostEffectiveness />
+                  <ProgramCostEffectiveness programCostEffectiveness={apiData.programCostEffectiveness} />
                 </div>
                 <div className="layer bdT p-20 w-100">
                   <div className="peers ai-c jc-c gapX-20">

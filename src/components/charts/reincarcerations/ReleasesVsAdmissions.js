@@ -2,47 +2,30 @@ import React, { useState, useEffect } from "react";
 
 import { Bar } from 'react-chartjs-2';
 import { COLORS_GOOD_BAD } from "../../../assets/scripts/constants/colors";
-import { useAuth0 } from "../../../react-auth0-spa";
 
-const ReleasesVsAdmissions = () => {
+const ReleasesVsAdmissions = (props) => {
   const [apiMessage, setApiMessage] = useState([]);
-  const { getTokenSilently } = useAuth0();
 
-  const processResponse = (responseData) => {
-    const admissions = responseData.admissions;
-    const releases = responseData.releases;
+  const processResponse = () => {
+    const admissions = props.admissions;
+    const releases = props.releases;
+
+    if (!admissions || !releases) {
+      return;
+    }
 
     const deltas = [];
-
     var i;
     for (i = 0; i < admissions.length; i += 1) {
       deltas[i] = admissions[i] - releases[i];
     }
-    return deltas;
+
+    setApiMessage(deltas);
   }
 
-  const fetchChartData = async () => {
-    try {
-      const token = await getTokenSilently();
-
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/external`, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      });
-
-      const responseData = await response.json();
-      const deltas = processResponse(responseData);
-
-      setApiMessage(deltas);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
   useEffect(() => {
-    fetchChartData();
-  }, []);
+    processResponse();
+  }, [props.admissions, props.releases]);
 
   return (
     <Bar data={{
