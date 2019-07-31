@@ -17,8 +17,7 @@
 node_modules/
 
 # Client-side environment variables
-.env.example
-.env
+.env.frontend.example
 .env.local
 .env.development
 .env.development.local
@@ -26,6 +25,10 @@ node_modules/
 .env.production.local
 .env.test
 .env.test.local
+
+# Local server-side environment variables
+.env.backend.example
+.env
 
 # Secrets
 recidiviz-gae-api-key.json.enc

@@ -13,7 +13,7 @@
     "test": "react-scripts test",
     "spa": "react-scripts start",
     "server": "node server.js",
-    "server:dev": "AUTH_ENV=development nodemon server.js",
+    "server:dev": "nodemon server.js",
     "dev": "npm-run-all --parallel spa server:dev"
   },
   "dependencies": {
@@ -22,8 +22,10 @@
     "@fortawesome/fontawesome-svg-core": "^1.2.17",
     "@fortawesome/free-solid-svg-icons": "^5.8.1",
     "@fortawesome/react-fontawesome": "^0.1.4",
+    "@google-cloud/storage": "^3.0.3",
     "bootstrap": "^4.0.0",
     "bootstrap-datepicker": "^1.7.1",
+    "cache-manager": "^2.10.0",
     "chart.js": "^2.8.0",
     "chartjs-funnel": "^1.0.5",
     "chartjs-plugin-annotation": "^0.5.7",
@@ -32,7 +34,7 @@
     "cors": "^2.8.5",
     "datatables": "^1.10.13",
     "debug": "~2.6.9",
-    "dotenv": "^6.1.0",
+    "dotenv": "^8.0.0",
     "downloadjs": "^1.4.7",
     "easy-pie-chart": "^2.1.7",
     "env-cmd": "^9.0.3",
