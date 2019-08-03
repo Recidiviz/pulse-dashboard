@@ -14,6 +14,7 @@ const ReincarcerationRateByReleaseFacility = (props) => {
     for (var facility in ratesByFacility) {
         sorted.push([facility, ratesByFacility[facility]]);
     }
+    // Sort the facilities in ascending order by rate
     sorted.sort(function(a, b) {
         return a[1] - b[1];
     });
