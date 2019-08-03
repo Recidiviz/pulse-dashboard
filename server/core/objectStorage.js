@@ -12,13 +12,13 @@ const { Storage } = require('@google-cloud/storage');
  * Returns a Promise which will eventually return either an error or the contents of the file as a
  * Buffer of bytes.
  */
-function downloadFile(bucketName, srcFilename) {
+function downloadFile(bucketName, stateCode, srcFilename) {
   const storage = new Storage();
 
   // Returns a Promise that returns a Buffer with the file bytes once the download completes
   return storage
     .bucket(bucketName)
-    .file(srcFilename)
+    .file(`${stateCode}/${srcFilename}`)
     .download();
 }
 

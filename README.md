@@ -163,16 +163,17 @@ React [documentation](https://reactjs.org/docs/hello-world.html) is very high qu
 A quick overview of the directory structure and suggestions on where to put different things.
 
 ```
-/build
-/public
-/src
+/build/
+/public/
+/src/
   assets/
   components/
   utils/
   views/
-/static
-  fonts/
-  images/
+  App.js
+  index.js
+/server/
+server.js
 ```
 ### Application root (/)
 Home to files such as `server.js`, for running the backend server, and `package.json` for configuring build, dependencies, etc. Files in the application root are generally not bundled by Webpack.
@@ -184,7 +185,7 @@ The bundled, static frontend. This is what gets exposed on the public frontend s
 These are the raw public assets that form the _website itself_, i.e. `index.html` and the Favicon. When a build is generated, the contents of `src` are combined with the contents of `public` to generate `build`.
 
 ### src
-Application frontend source code. If you're writing it, it should most likely end up here.
+Application frontend source code. If you're writing it, it should most likely end up here or in `/server` below.
 
 #### src/assets
 This is where frontend assets should live. JS logic, e.g. for creating exported images and json files of a given visualization, should live in `src/assets/scripts`. Static assets and CSS should live in `src/assets/static` and `src/assets/styles`, respectively.
@@ -194,13 +195,20 @@ All React components should exist under this directory. Charts in particular liv
 
 Test files and CSS files should also be placed in the component directory.
 
-For further discussion on React application structure and rationale for the above choices, see [this blog post](https://hackernoon.com/the-100-correct-way-to-structure-a-react-app-or-why-theres-no-such-thing-3ede534ef1ed).
-
 #### src/utils
 Application configuration files, shared constants, etc.
 
-### src/views
+#### src/views
 This is where individual page layouts are constructed. The main app is configured via `src/App.js` which uses the React Router to route to appropriate views depending on the requested path, e.g. routing the `/revocations` path to `src/views/Revocations.js`.
+
+#### src/App.js and src/index.js
+`App.js` is where the primary application view is defined, i.e. the central page layout and the frontend routing. `index.js` is the actual entry point to the frontend, i.e. where the `ReactDOM` is rendered.
+
+### server
+Application backend source code. If you're writing it, it should most likely end up here or in `/src` above.
+
+### server.js
+The actual entry point to the backend, i.e. where the Node/Express server, middleware, and routing are defined.
 
 ## License
 This project is licensed under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.

@@ -3,51 +3,37 @@ import React, { useState, useEffect } from "react";
 import { Line } from 'react-chartjs-2';
 import { configureDownloadButtons } from "../../../assets/scripts/charts/chartJS/downloads";
 import { COLORS, COLORS_STACKED_TWO_VALUES } from "../../../assets/scripts/constants/colors";
-import { useAuth0 } from "../../../react-auth0-spa";
 
-const ReincarcerationCountSnapshot = () => {
+const ReincarcerationCountSnapshot = (props) => {
   const [chartLabels, setChartLabels] = useState([]);
-  const [chartDataPoints, setChartDataPoints] = useState([]);
-  const { getTokenSilently } = useAuth0();
+  const [admissionDataPoints, setAdmissionDataPoints] = useState([]);
+  const [reincarcerationDataPoints, setReincarcerationDataPoints] = useState([]);
 
-  const processResponse = (responseData) => {
-    const countsByMonth = responseData.revocationCountsByMonth;
+  const processResponse = () => {
+    const admissions = props.admissions;
+    const reincarcerationsByMonth = props.reincarcerationCountsByMonth;
 
-    var sortable = [];
-    for (var month in countsByMonth) {
-        sortable.push([month, countsByMonth[month]]);
+    if (!admissions || !reincarcerationsByMonth) {
+      return;
     }
 
-    return sortable;
+    var sorted = [];
+    for (var month in reincarcerationsByMonth) {
+      sorted.push([month, reincarcerationsByMonth[month]]);
+    }
+
+    setChartLabels(sorted.map(element => element[0]));
+    setReincarcerationDataPoints(sorted.map(element => element[1]));
+    setAdmissionDataPoints(admissions);
   }
 
-  const fetchChartData = async () => {
-    try {
-      const token = await getTokenSilently();
-      // Likely needs to point to app engine URL
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/external`, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      });
-
-      const responseData = await response.json();
-      const sorted = processResponse(responseData);
-
-      setChartLabels(sorted.map(element => element[0]));
-      setChartDataPoints(sorted.map(element => element[1]));
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
   useEffect(() => {
-    fetchChartData();
-  }, []);
+    processResponse();
+  }, [props.admissions, props.reincarcerationCountsByMonth]);
 
   const chart =
     <Line id='reincarceration-snapshot-chart' data={{
-      labels: ['November', 'December', 'January', 'February', 'March', 'April'],
+      labels: chartLabels,
       datasets: [{
         label: 'Total admissions',
         backgroundColor: COLORS['grey-300'],
@@ -63,7 +49,7 @@ const ReincarcerationCountSnapshot = () => {
         fill: false,
         lineTension: 0,
         borderWidth: 2,
-        data: [108, 97, 130, 113, 127, 115],
+        data: admissionDataPoints,
       }, {
         label: 'Reincarceration returns',
         backgroundColor: COLORS['grey-300'],
@@ -79,7 +65,7 @@ const ReincarcerationCountSnapshot = () => {
         fill: false,
         lineTension: 0,
         borderWidth: 2,
-        data: [33, 10, 25, 27, 34, 31],
+        data: reincarcerationDataPoints,
       }],
     }}
     options={{

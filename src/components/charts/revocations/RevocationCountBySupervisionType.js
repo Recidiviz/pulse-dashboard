@@ -2,49 +2,28 @@ import React, { useState, useEffect } from "react";
 
 import { Bar } from 'react-chartjs-2';
 import { COLORS_STACKED_TWO_VALUES } from "../../../assets/scripts/constants/colors";
-import { useAuth0 } from "../../../react-auth0-spa";
 
-const RevocationCountBySupervisionType = () => {
+const RevocationCountBySupervisionType = (props) => {
   const [chartLabels, setChartLabels] = useState([]);
   const [paroleDataPoints, setParoleDataPoints] = useState([]);
   const [probationDataPoints, setProbationDataPoints] = useState([]);
-  const { getTokenSilently } = useAuth0();
 
-  const processResponse = (responseData) => {
-    const countsByMonth = responseData.revocationCountsByMonthBySupervisionType;
+  const processResponse = () => {
+    const countsByMonth = props.revocationCountsByMonthBySupervisionType;
 
-    var byMonth = [];
+    var sorted = [];
     for (var month in countsByMonth) {
-        byMonth.push([month, countsByMonth[month]]);
+        sorted.push([month, countsByMonth[month]]);
     }
 
-    return byMonth;
+    setChartLabels(sorted.map(element => element[0]));
+    setParoleDataPoints(sorted.map(element => element[1].parole));
+    setProbationDataPoints(sorted.map(element => element[1].probation));
   }
 
-  const fetchChartData = async () => {
-    try {
-      const token = await getTokenSilently();
-      // Likely needs to point to app engine URL
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/external`, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      });
-
-      const responseData = await response.json();
-      const sorted = processResponse(responseData);
-
-      setChartLabels(sorted.map(element => element[0]));
-      setParoleDataPoints(sorted.map(element => element[1].parole));
-      setProbationDataPoints(sorted.map(element => element[1].probation));
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
   useEffect(() => {
-    fetchChartData();
-  }, []);
+    processResponse();
+  }, [props.revocationCountsByMonthBySupervisionType]);
 
   return (
     <Bar data={{

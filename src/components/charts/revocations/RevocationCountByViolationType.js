@@ -2,51 +2,30 @@ import React, { useState, useEffect } from "react";
 
 import { Bar } from 'react-chartjs-2';
 import { COLORS_FIVE_VALUES } from "../../../assets/scripts/constants/colors";
-import { useAuth0 } from "../../../react-auth0-spa";
 
-const RevocationCountByViolationType = () => {
+const RevocationCountByViolationType = (props) => {
   const [chartLabels, setChartLabels] = useState([]);
   const [absconsionDataPoints, setAbsconsionDataPoints] = useState([]);
   const [newOffenseDataPoints, setNewOffenseDataPoints] = useState([]);
   const [technicalDataPoints, setTechnicalDataPoints] = useState([]);
-  const { getTokenSilently } = useAuth0();
 
-  const processResponse = (responseData) => {
-    const countsByMonth = responseData.revocationCountsByMonthByViolationType;
+  const processResponse = () => {
+    const countsByMonth = props.revocationCountsByMonthByViolationType;
 
-    var byMonth = [];
+    var sorted = [];
     for (var month in countsByMonth) {
-        byMonth.push([month, countsByMonth[month]]);
+        sorted.push([month, countsByMonth[month]]);
     }
 
-    return byMonth;
+    setChartLabels(sorted.map(element => element[0]));
+    setAbsconsionDataPoints(sorted.map(element => element[1].absconsion));
+    setNewOffenseDataPoints(sorted.map(element => element[1].newOffense));
+    setTechnicalDataPoints(sorted.map(element => element[1].technical));
   }
 
-  const fetchChartData = async () => {
-    try {
-      const token = await getTokenSilently();
-      // Likely needs to point to app engine URL
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/external`, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      });
-
-      const responseData = await response.json();
-      const sorted = processResponse(responseData);
-
-      setChartLabels(sorted.map(element => element[0]));
-      setAbsconsionDataPoints(sorted.map(element => element[1].absconsion));
-      setNewOffenseDataPoints(sorted.map(element => element[1].new_offense));
-      setTechnicalDataPoints(sorted.map(element => element[1].technical));
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
   useEffect(() => {
-    fetchChartData();
-  }, []);
+    processResponse();
+  }, [props.revocationCountsByMonthByViolationType]);
 
   return (
     <Bar data={{

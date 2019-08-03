@@ -43,13 +43,14 @@ const FILES_BY_METRIC_TYPE = {
  *   - `fileKey`: a unique key for identifying the metric file, e.g. 'revocations_by_month'
  *   - `contents`: the contents of the file deserialized into JS objects/arrays
  */
-function fetchMetricsFromGCS(metricType) {
+function fetchMetricsFromGCS(stateCode, metricType) {
   const promises = [];
 
   const files = FILES_BY_METRIC_TYPE[metricType];
   files.forEach(function (filename) {
     const fileKey = filename.replace('.json', '');
-    promises.push(objectStorage.downloadFile(BUCKET_NAME, filename).then(function (contents) {
+    promises.push(objectStorage.downloadFile(BUCKET_NAME, stateCode, filename)
+    .then(function (contents) {
       return { fileKey: fileKey, contents: contents };
     }));
   });
@@ -68,10 +69,10 @@ function fetchMetricsFromGCS(metricType) {
  * expired beyond the configured TTL. If not, then fetches the metrics for that type from the
  * appropriate files and invokes the callback only once all files have been retrieved.
  */
-function fetchMetrics(metricType, callback) {
+function fetchMetrics(stateCode, metricType, callback) {
   return memoryCache.wrap(metricType, function (cacheCb) {
       console.log(`Fetching ${metricType} metrics from GCS...`);
-      const metricPromises = fetchMetricsFromGCS(metricType);
+      const metricPromises = fetchMetricsFromGCS(stateCode, metricType);
 
       Promise.all(metricPromises).then(function (allFileContents) {
         console.log(`Fetched all ${metricType} metrics from GCS`);
@@ -98,15 +99,15 @@ function convertDownloadToJson(contents) {
 }
 
 function fetchAdmissionMetrics(callback) {
-  return fetchMetrics('admission', callback);
+  return fetchMetrics('US_ND', 'admission', callback);
 }
 
 function fetchReincarcerationMetrics(callback) {
-  return fetchMetrics('reincarceration', callback);
+  return fetchMetrics('US_ND', 'reincarceration', callback);
 }
 
 function fetchRevocationMetrics(callback) {
-  return fetchMetrics('revocation', callback);
+  return fetchMetrics('US_ND', 'revocation', callback);
 }
 
 module.exports = {
