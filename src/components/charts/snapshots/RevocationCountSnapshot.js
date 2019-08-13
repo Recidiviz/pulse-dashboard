@@ -13,7 +13,7 @@ const RevocationCountSnapshot = (props) => {
 
     var sorted = [];
     for (var month in countsByMonth) {
-        sorted.push([month, countsByMonth[month]]);
+      sorted.push([month, countsByMonth[month]]);
     }
 
     setChartLabels(sorted.map(element => element[0]));
@@ -24,143 +24,114 @@ const RevocationCountSnapshot = (props) => {
     processResponse();
   }, [props.revocationCountsByMonth]);
 
-  const chart =
-    <Line id='revocation-snapshot-chart'  data={{
-      labels: ['November', 'December', 'January', 'February', 'March', 'April'],
-      datasets: [{
-        label: 'Total revocations',
-        backgroundColor: COLORS['grey-300'],
-        pointBackgroundColor: COLORS_THREE_VALUES[0],
-        pointRadius: function(context) {
-          if (context.dataIndex === context.dataset.data.length-1) {
-            return 4;
-          } else {
-            return 0;
-          }
+  const chart = (
+  <Line id='revocation-snapshot-chart'  data={{
+    labels: ["Mar '18",  'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec', "Jan '19", 'Feb', 'Mar'],
+    datasets: [{
+      backgroundColor: COLORS['blue-standard'],
+      pointBackgroundColor: COLORS['blue-standard'],
+      pointRadius: function(context) {
+        if (context.dataIndex === context.dataset.data.length-1) {
+          return 4;
+        } else {
+          return 4;
+        }
+      },
+      hitRadius: 5,
+      fill: false,
+      borderWidth: 2,
+      lineTension: 0,
+      data: [69.3284936, 68.6486486, 66.4884135, 66.730038, 69.2449355, 69.2176871, 66.9921875, 67.1821306, 65.7250471, 68.2600382, 69.61325967, 65.0671785, 47.5308642],
+    },
+    ],
+  }}
+  options={{
+    legend: {
+      display: false,
+      position: 'right',
+      labels: {
+        usePointStyle: true,
+        boxWidth: 5,
+      },
+    },
+    tooltips: {
+      enabled: true,
+      mode: 'x',
+    },
+    scales: {
+      xAxes: [{
+        ticks: {
+          autoSkip: false,
         },
-        hitRadius: 5,
-        fill: false,
-        borderWidth: 2,
-        lineTension: 0,
-        data: [40, 48, 60, 44, 54, 52],
-      },{
-        label: 'Technical revocations',
-        backgroundColor: COLORS['grey-300'],
-        pointBackgroundColor: COLORS_THREE_VALUES[1],
-        pointRadius: function(context) {
-          if (context.dataIndex === context.dataset.data.length-1) {
-            return 4;
-          } else {
-            return 0;
-          }
+        gridLines: {
+          color: "rgba(0, 0, 0, 0)",
         },
-        hitRadius: 5,
-        fill: false,
-        borderWidth: 2,
-        lineTension: 0,
-        data: [20, 28, 32, 24, 31, 32],
-      },{
-        label: 'Non-Technical revocations',
-        backgroundColor: COLORS['grey-300'],
-        pointBackgroundColor: COLORS_THREE_VALUES[2],
-        pointRadius: function(context) {
-          if (context.dataIndex === context.dataset.data.length-1) {
-            return 4;
-          } else {
-            return 0;
-          }
-        },
-        hitRadius: 5,
-        fill: false,
-        lineTension: 0,
-        borderWidth: 2,
-        data: [20, 20, 28, 20, 23, 20],
       }],
-    }}
-    options={{
-      legend: {
-        display: false,
-        position: 'right',
-        labels: {
-          usePointStyle: true,
-          boxWidth: 5,
+      yAxes: [{
+        ticks: {
+          max: 100,
         },
-      },
-      tooltips: {
-        enabled: true,
-        mode: 'x',
-      },
-      scales: {
-        xAxes: [{
-          ticks: {
-            autoSkip: false,
-          },
-          gridLines: {
-              color: "rgba(0, 0, 0, 0)",
-          },
-        }],
-        yAxes: [{
-          scaleLabel: {
-            display: true,
-            labelString: 'Counts',
-          },
-          gridLines: {
-              color: "rgba(0, 0, 0, 0)",
-          },
-        }],
-      },
-      annotation: {
+        scaleLabel: {
+          display: true,
+          labelString: 'Counts',
+        },
+        gridLines: {
+          color: "rgba(0, 0, 0, 0)",
+        },
+      }],
+    },
+    annotation: {
+      drawTime: 'afterDatasetsDraw',
+      events: ['click'],
+
+      // Array of annotation configuration objects
+      // See below for detailed descriptions of the annotation options
+      annotations: [{
+        type: 'line',
+        mode: 'horizontal',
+        value: 75,
+
+        // optional annotation ID (must be unique)
+        id: 'revocation-snapshot-goal-line',
+        scaleID: 'y-axis-0',
+
         drawTime: 'afterDatasetsDraw',
-        events: ['click'],
 
-        // Array of annotation configuration objects
-        // See below for detailed descriptions of the annotation options
-        annotations: [{
-          type: 'line',
-          mode: 'horizontal',
-          value: 42,
+        borderColor: COLORS['red-200'],
+        borderWidth: 2,
+        borderDash: [2, 2],
+        borderDashOffset: 5,
+        label: {
+          enabled: true,
+          content: 'goal: 75%',
+          position: 'right',
 
-          // optional annotation ID (must be unique)
-          id: 'revocation-snapshot-goal-line',
-          scaleID: 'y-axis-0',
+          // Background color of label, default below
+          backgroundColor: 'rgba(0,0,0,0)',
 
-          drawTime: 'afterDatasetsDraw',
+          fontFamily: 'sans-serif',
+          fontSize: 12,
+          fontStyle: 'bold',
+          fontColor: COLORS['red-400'],
 
-          borderColor: COLORS['red-200'],
-          borderWidth: 2,
-          borderDash: [2, 2],
-          borderDashOffset: 5,
-          label: {
-            enabled: false,
-            content: 'Goal',
-            position: 'center',
+          // Adjustment along x-axis (left-right) of label relative to above
+          // number (can be negative). For horizontal lines positioned left
+          // or right, negative values move the label toward the edge, and
+          // positive values toward the center.
+          xAdjust: 0,
 
-            // Background color of label, default below
-            backgroundColor: 'rgba(0,0,0,0.1)',
+          // Adjustment along y-axis (top-bottom) of label relative to above
+          // number (can be negative). For vertical lines positioned top or
+          // bottom, negative values move the label toward the edge, and
+          // positive values toward the center.
+          yAdjust: -15,
+        },
 
-            fontFamily: 'sans-serif',
-            fontSize: 12,
-            fontStyle: 'bold',
-            fontColor: '#000',
-
-            // Adjustment along x-axis (left-right) of label relative to above
-            // number (can be negative). For horizontal lines positioned left
-            // or right, negative values move the label toward the edge, and
-            // positive values toward the center.
-            xAdjust: 0,
-
-            // Adjustment along y-axis (top-bottom) of label relative to above
-            // number (can be negative). For vertical lines positioned top or
-            // bottom, negative values move the label toward the edge, and
-            // positive values toward the center.
-            yAdjust: 0,
-          },
-
-          onClick(e) { return e; },
-        }],
-      },
-    }}
-    />
+        onClick(e) { return e; },
+      }],
+    },
+  }}
+  />);
 
   const exportedStructureCallback = function () {
     return {
@@ -172,10 +143,9 @@ const RevocationCountSnapshot = (props) => {
     };
   };
   configureDownloadButtons('revocation', 'Snapshot', chart.props,
-    document.getElementById('revocation-snapshot-chart'), exportedStructureCallback
-  );
+    document.getElementById('revocation-snapshot-chart'), exportedStructureCallback);
 
-  return (chart);
+return (chart);
 }
 
 export default RevocationCountSnapshot;
