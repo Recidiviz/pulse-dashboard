@@ -7,7 +7,7 @@ import { configureDownloadButtons } from "../assets/scripts/charts/chartJS/downl
 import { useAuth0 } from "../react-auth0-spa";
 
 import SupervisionSuccessSnapshot from "../components/charts/snapshots/SupervisionSuccessSnapshot";
-import ReincarcerationCountSnapshot from "../components/charts/snapshots/ReincarcerationCountSnapshot";
+import RevocationAdmissionsSnapshot from "../components/charts/snapshots/RevocationAdmissionsSnapshot";
 
 const Snapshots = () => {
   const { loading, user, getTokenSilently } = useAuth0();
@@ -70,7 +70,7 @@ const Snapshots = () => {
                     <b style={{ color: '#809AE5' }}>48% of people </b>
                     whose supervision was scheduled to end in March 2019
                     <b style={{ color: '#809AE5' }}> successfully completed their supervision </b>
-                    by that time
+                    by that time.
                   </h4>
                 </div>
                 <div className="layer w-100 p-20">
@@ -134,12 +134,13 @@ const Snapshots = () => {
                   <h4 className="lh-1">
                     <b style={{ color: '#809AE5' }}>56% of prison admissions </b>
                     in March 2019 were due to parole or probation revocations.
+
                   </h4>
                 </div>
                 <div className="layer w-100 p-20">
                   <div className="ai-c jc-c gapX-20">
                     <div className="col-md-12">
-                      <ReincarcerationCountSnapshot admissions={apiData.admissions} reincarcerationCountsByMonth={apiData.reincarcerationCountsByMonth} />
+                      <RevocationAdmissionsSnapshot />
                     </div>
                   </div>
                 </div>
