@@ -6,7 +6,7 @@ import "../assets/styles/index.scss";
 import { configureDownloadButtons } from "../assets/scripts/charts/chartJS/downloads";
 import { useAuth0 } from "../react-auth0-spa";
 
-import RevocationCountSnapshot from "../components/charts/snapshots/RevocationCountSnapshot";
+import SupervisionSuccessSnapshot from "../components/charts/snapshots/SupervisionSuccessSnapshot";
 import ReincarcerationCountSnapshot from "../components/charts/snapshots/ReincarcerationCountSnapshot";
 
 const Snapshots = () => {
@@ -50,8 +50,8 @@ const Snapshots = () => {
             <div className="bd bgc-white p-20">
               <div className="layers">
                 <div className="layer w-100 pX-20 pT-20">
-                  <h4 className="lh-1">
-                    Revocations <b>decreased</b> this month by: <b style={{color: '#DAA520'}}>3.8%</b>
+                  <h6 className="lh-1">
+                    SUCCESSFUL COMPLETION OF SUPERVISION
                     <span className="fa-pull-right">
                       <div className="dropdown show">
                         <a className="btn btn-secondary btn-sm dropdown-toggle" href="#" role="button" id="exportDropdownMenuButton-revocationSnapshot" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -63,44 +63,20 @@ const Snapshots = () => {
                         </div>
                       </div>
                     </span>
-                  </h4>
+                  </h6>
                 </div>
-                <div className="layer w-100 pT-20 pX-20">
-                  <div className="col-md-8">
-                    <div className="c-grey-700 font-weight-bold">Slight decrease from March to April 2019.<br />Remains 10 revocations above goal line.</div>
-                  </div>
+                <div className="layer w-100 pX-20 pT-20">
+                  <h4 className="lh-1">
+                    <b style={{ color: '#809AE5' }}>48% of people </b>
+                    whose supervision was scheduled to end in March 2019
+                    <b style={{ color: '#809AE5' }}> successfully completed their supervision </b>
+                    by that time
+                  </h4>
                 </div>
                 <div className="layer w-100 p-20">
                   <div className="ai-c jc-c gapX-20">
                     <div className="col-md-12">
-                      <RevocationCountSnapshot />
-                    </div>
-                  </div>
-                </div>
-                <div className="layer bdT p-20 w-100">
-                  <div className="jc-c gapX-20 row">
-                    <div className="col-md-9">
-                      <h6 className="lh-1">Why?</h6>
-                      <div>
-                        <ul className="snapshot-why">
-                          <li className="arrow-up">
-                            The technical proportion of revocations increased by <span className="c-red-500 font-weight-bold">4%</span>
-                          </li>
-                          <li className="arrow-up">
-                            Revocations of Native Americans decreased by <span className="c-green-500 font-weight-bold">22%</span>
-                          </li>
-                        </ul>
-                      </div>
-                    </div>
-                    <div className="col-md-3">
-                      <div className="fw-600">
-                        <div className="c-grey-800 fw-600">Recidivism Type</div>
-                        <span className="mR-10 c-grey-800 fw-300">Reincarceration</span>
-                      </div>
-                      <div className="fw-600 pT-20">
-                        <div className="c-grey-800 fw-600">Return Type</div>
-                        <span className="mR-10 c-grey-800 fw-300">Revocations</span>
-                      </div>
+                      <SupervisionSuccessSnapshot />
                     </div>
                   </div>
                 </div>
@@ -134,13 +110,13 @@ const Snapshots = () => {
             </div>
           </div>
 
-          {/* #Reincarceration snapshot ==================== */}
+          {/* #Prison admissions from revocations ==================== */}
           <div className="masonry-item col-md-6">
             <div className="bd bgc-white p-20">
               <div className="layers">
                 <div className="layer w-100 pX-20 pT-20">
-                  <h4 className="lh-1">
-                    Reincarcerations <b>decreased</b> this month by: <b style={{color: '#DAA520'}}>8.82%</b>
+                  <h6 className="lh-1">
+                    PRISON ADMISSIONS DUE TO REVOCATION
                     <span className="fa-pull-right">
                       <div className="dropdown show">
                         <a className="btn btn-secondary btn-sm dropdown-toggle" href="#" role="button" id="exportDropdownMenuButton-reincarcerationSnapshot" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -152,44 +128,18 @@ const Snapshots = () => {
                         </div>
                       </div>
                     </span>
-                  </h4>
+                  </h6>
                 </div>
-                <div className="layer w-100 pT-20 pX-20">
-                  <div className="col-md-8">
-                    <div className="c-grey-700 font-weight-bold">Moderate decrease from March to April 2019.<br />Remains 14 returns above goal line.</div>
-                  </div>
+                <div className="layer w-100 pX-20 pT-20">
+                  <h4 className="lh-1">
+                    <b style={{ color: '#809AE5' }}>56% of prison admissions </b>
+                    in March 2019 were due to parole or probation revocations.
+                  </h4>
                 </div>
                 <div className="layer w-100 p-20">
                   <div className="ai-c jc-c gapX-20">
                     <div className="col-md-12">
                       <ReincarcerationCountSnapshot admissions={apiData.admissions} reincarcerationCountsByMonth={apiData.reincarcerationCountsByMonth} />
-                    </div>
-                  </div>
-                </div>
-                <div className="layer bdT p-20 w-100">
-                  <div className="jc-c gapX-20 row">
-                    <div className="col-md-9">
-                      <h6 className="lh-1">Why?</h6>
-                      <div>
-                        <ul className="snapshot-why">
-                          <li className="arrow-up">
-                            The ratio of returns to admissions stayed flat at <span className="c-amber-500 font-weight-bold">27%</span>
-                          </li>
-                          <li className="arrow-up">
-                            Returns of Native Americans decreased by <span className="c-green-500 font-weight-bold">50%</span>
-                          </li>
-                        </ul>
-                      </div>
-                    </div>
-                    <div className="col-md-3">
-                      <div className="fw-600">
-                        <div className="c-grey-800 fw-600">Recidivism Type</div>
-                        <span className="mR-10 c-grey-800 fw-300">Reincarceration</span>
-                      </div>
-                      <div className="fw-600 pT-20">
-                        <div className="c-grey-800 fw-600">Return Type</div>
-                        <span className="mR-10 c-grey-800 fw-300">New offenses</span>
-                      </div>
                     </div>
                   </div>
                 </div>
