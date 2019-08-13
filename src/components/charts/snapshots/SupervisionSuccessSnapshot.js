@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
 import { Line } from 'react-chartjs-2';
+import { trendlineLinear } from 'chartjs-plugin-trendline';
 import { configureDownloadButtons } from '../../../assets/scripts/charts/chartJS/downloads';
 import { COLORS } from '../../../assets/scripts/constants/colors';
 
@@ -32,15 +33,21 @@ const SupervisionSuccessSnapshot = (props) => {
         labels: ["Mar '18", 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec', "Jan '19", 'Feb', 'Mar'],
         datasets: [{
           backgroundColor: COLORS['blue-standard'],
+          borderColor: COLORS['blue-standard'],
           pointBackgroundColor: COLORS['blue-standard'],
           pointRadius: 4,
           hitRadius: 5,
           fill: false,
-          borderWidth: 2,
+          borderWidth: 1,
           lineTension: 0,
-          data: [69.3284936, 68.6486486, 66.4884135, 66.730038, 69.2449355,
-            69.2176871, 66.9921875, 67.1821306, 65.7250471, 68.2600382,
-            69.61325967, 65.0671785, 47.5308642],
+          data: [69.32, 68.64, 66.48, 66.73, 69.24,
+            69.21, 66.99, 67.18, 65.72, 68.26,
+            69.61, 65.06, 47.53],
+          trendlineLinear: {
+            style: COLORS['yellow-standard'],
+            lineStyle: 'solid',
+            width: 1,
+          },
         },
         ],
       }}
@@ -60,7 +67,14 @@ const SupervisionSuccessSnapshot = (props) => {
         scales: {
           xAxes: [{
             ticks: {
+              fontColor: COLORS['grey-600'],
               autoSkip: false,
+            },
+            scaleLabel: {
+              display: true,
+              labelString: 'Final scheduled month of supervision',
+              fontColor: COLORS['grey-500'],
+              fontStyle: 'bold',
             },
             gridLines: {
               color: '#FFF',
@@ -68,14 +82,17 @@ const SupervisionSuccessSnapshot = (props) => {
           }],
           yAxes: [{
             ticks: {
+              fontColor: COLORS['grey-600'],
               max: 100,
             },
             scaleLabel: {
               display: true,
-              labelString: 'Counts',
+              labelString: '% of people',
+              fontColor: COLORS['grey-500'],
+              fontStyle: 'bold',
             },
             gridLines: {
-              color: '#FFF',
+              color: COLORS['grey-300'],
             },
           }],
         },
@@ -96,7 +113,7 @@ const SupervisionSuccessSnapshot = (props) => {
 
             drawTime: 'afterDatasetsDraw',
 
-            borderColor: COLORS['red-200'],
+            borderColor: COLORS['red-400'],
             borderWidth: 2,
             borderDash: [2, 2],
             borderDashOffset: 5,
@@ -106,7 +123,7 @@ const SupervisionSuccessSnapshot = (props) => {
               position: 'right',
 
               // Background color of label, default below
-              backgroundColor: '#FFF',
+              backgroundColor: 'rgba(0, 0, 0, 0)',
 
               fontFamily: 'sans-serif',
               fontSize: 12,
@@ -123,7 +140,7 @@ const SupervisionSuccessSnapshot = (props) => {
               // number (can be negative). For vertical lines positioned top or
               // bottom, negative values move the label toward the edge, and
               // positive values toward the center.
-              yAdjust: -15,
+              yAdjust: -10,
             },
 
             onClick(e) { return e; },
