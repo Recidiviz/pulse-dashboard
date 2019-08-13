@@ -8,6 +8,8 @@ import { useAuth0 } from "../react-auth0-spa";
 
 import SupervisionSuccessSnapshot from "../components/charts/snapshots/SupervisionSuccessSnapshot";
 import RevocationAdmissionsSnapshot from "../components/charts/snapshots/RevocationAdmissionsSnapshot";
+import LSIRScoreChangeSnapshot from "../components/charts/snapshots/LSIRScoreChangeSnapshot"
+import DaysAtLibertySnapshot from "../components/charts/snapshots/DaysAtLibertySnapshot"
 
 const Snapshots = () => {
   const { loading, user, getTokenSilently } = useAuth0();
@@ -54,12 +56,12 @@ const Snapshots = () => {
                     SUCCESSFUL COMPLETION OF SUPERVISION
                     <span className="fa-pull-right">
                       <div className="dropdown show">
-                        <a className="btn btn-secondary btn-sm dropdown-toggle" href="#" role="button" id="exportDropdownMenuButton-revocationSnapshot" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <a className="btn btn-secondary btn-sm dropdown-toggle" href="#" role="button" id="exportDropdownMenuButton-successfulSupervisionSnapshot" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                           Export
                         </a>
-                        <div className="dropdown-menu" aria-labelledby="exportDropdownMenuButton-revocationSnapshot">
-                          <a className="dropdown-item" id="downloadChartAsImage-revocationSnapshot" href="javascript:void(0);">Export image</a>
-                          <a className="dropdown-item" id="downloadChartData-revocationSnapshot" href="javascript:void(0);">Export data</a>
+                        <div className="dropdown-menu" aria-labelledby="exportDropdownMenuButton-successfulSupervisionSnapshot">
+                          <a className="dropdown-item" id="downloadChartAsImage-successfulSupervisionSnapshott" href="javascript:void(0);">Export image</a>
+                          <a className="dropdown-item" id="downloadChartData-successfulSupervisionSnapshot" href="javascript:void(0);">Export data</a>
                         </div>
                       </div>
                     </span>
@@ -80,32 +82,6 @@ const Snapshots = () => {
                     </div>
                   </div>
                 </div>
-                <div className="layer bdT p-20 w-100 accordion" id="methodologyRevocationSnapshot">
-                  <div className="mb-0" id="methodologyHeadingRevocationSnapshot">
-                    <div className="mb-0">
-                      <button className="btn btn-link collapsed pL-0" type="button" data-toggle="collapse" data-target="#collapseMethodologyRevocationSnapshot" aria-expanded="true" aria-controls="collapseMethodologyRevocationSnapshot">
-                        <h6 className="lh-1 c-blue-500 mb-0">Methodology</h6>
-                      </button>
-                    </div>
-                  </div>
-                  <div id="collapseMethodologyRevocationSnapshot" className="collapse" aria-labelledby="methodologyHeadingRevocationSnapshot" data-parent="#methodologyRevocationSnapshot">
-                    <div>
-                      <ul>
-                        <li>Violations include all behavioral violations officially recorded by a supervision officer, including new offenses, technical violations, and absconsion.</li>
-                        <li>Revocations include all instances of a person having any form of supervision revoked for any behavioral violation, and being reincarcerated as a result.</li>
-                        <li>Technical revocations include only those revocations which result only from a technical violation and/or absconsion. If there is a technical violation in addition to a new offense, it is considered a non-technical revocation.</li>
-                        <li><a href="methodology.html" target="_blank">Read more...</a></li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-                <div className="layer bdT pT-20 pX-20 w-100">
-                  <div className="jc-c gapX-20 row">
-                    <a className="col-md-12 explore-the-data" href="/revocations">
-                      <h6 className="lh-1 c-blue-500">Dive into the data<i className="ti-arrow-right pull-right" /></h6>
-                    </a>
-                  </div>
-                </div>
               </div>
             </div>
           </div>
@@ -117,6 +93,81 @@ const Snapshots = () => {
                 <div className="layer w-100 pX-20 pT-20">
                   <h6 className="lh-1">
                     PRISON ADMISSIONS DUE TO REVOCATION
+                    <span className="fa-pull-right">
+                      <div className="dropdown show">
+                        <a className="btn btn-secondary btn-sm dropdown-toggle" href="#" role="button" id="exportDropdownMenuButton-revocationAdmissionsSnapshot" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          Export
+                        </a>
+                        <div className="dropdown-menu" aria-labelledby="exportDropdownMenuButton-revocationAdmissionsSnapshot">
+                          <a className="dropdown-item" id="downloadChartAsImage-revocationAdmissionsSnapshot" href="javascript:void(0);">Export image</a>
+                          <a className="dropdown-item" id="downloadChartData-revocationAdmissionsSnapshot" href="javascript:void(0);">Export data</a>
+                        </div>
+                      </div>
+                    </span>
+                  </h6>
+                </div>
+                <div className="layer w-100 pX-20 pT-20">
+                  <h4 className="lh-1">
+                    <b style={{ color: '#809AE5' }}>56% of prison admissions </b>
+                    in March 2019 were due to parole or probation revocations.
+                  </h4>
+                </div>
+                <div className="layer w-100 p-40">
+                  <div className="ai-c jc-c gapX-20">
+                    <div className="col-md-12">
+                      <RevocationAdmissionsSnapshot />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* #Change in LSIR scores ==================== */}
+          <div className="masonry-item col-md-6">
+            <div className="bd bgc-white p-20">
+              <div className="layers">
+                <div className="layer w-100 pX-20 pT-20">
+                  <h6 className="lh-1">
+                    AVERAGE CHANGE IN LSIR SCORES
+                    <span className="fa-pull-right">
+                      <div className="dropdown show">
+                        <a className="btn btn-secondary btn-sm dropdown-toggle" href="#" role="button" id="exportDropdownMenuButton-LSIRScoreChangeSnapshot" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          Export
+                        </a>
+                        <div className="dropdown-menu" aria-labelledby="exportDropdownMenuButton-LSIRScoreChangeSnapshot">
+                          <a className="dropdown-item" id="downloadChartAsImage-LSIRScoreChangeSnapshot" href="javascript:void(0);">Export image</a>
+                          <a className="dropdown-item" id="downloadChartData-LSIRScoreChangeSnapshot" href="javascript:void(0);">Export data</a>
+                        </div>
+                      </div>
+                    </span>
+                  </h6>
+                </div>
+                <div className="layer w-100 pX-20 pT-20">
+                  <h4 className="lh-1">
+                    The change in LSIR scores between intake and termination of
+                    supervision has been
+                    <b style={{ color: '#809AE5' }}> trending towards the goal. </b>
+                  </h4>
+                </div>
+                <div className="layer w-100 p-20">
+                  <div className="ai-c jc-c gapX-20">
+                    <div className="col-md-12">
+                      <LSIRScoreChangeSnapshot />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* #Average days at liberty ==================== */}
+          <div className="masonry-item col-md-6">
+            <div className="bd bgc-white p-20">
+              <div className="layers">
+                <div className="layer w-100 pX-20 pT-20">
+                  <h6 className="lh-1">
+                    AVERAGE DAYS AT LIBERTY
                     <span className="fa-pull-right">
                       <div className="dropdown show">
                         <a className="btn btn-secondary btn-sm dropdown-toggle" href="#" role="button" id="exportDropdownMenuButton-reincarcerationSnapshot" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -132,42 +183,16 @@ const Snapshots = () => {
                 </div>
                 <div className="layer w-100 pX-20 pT-20">
                   <h4 className="lh-1">
-                    <b style={{ color: '#809AE5' }}>56% of prison admissions </b>
-                    in March 2019 were due to parole or probation revocations.
-
+                    The average days between release from
+                    incarceration and readmission has been
+                    <b style={{ color: '#809AE5' }}> trending away from the goal.</b>
                   </h4>
                 </div>
                 <div className="layer w-100 p-20">
                   <div className="ai-c jc-c gapX-20">
                     <div className="col-md-12">
-                      <RevocationAdmissionsSnapshot />
+                      <DaysAtLibertySnapshot />
                     </div>
-                  </div>
-                </div>
-                <div className="layer bdT p-20 w-100 accordion" id="methodologyRecidivismSnapshot">
-                  <div className="mb-0" id="methodologyHeadingRecidivismSnapshot">
-                    <div className="mb-0">
-                      <button className="btn btn-link collapsed pL-0" type="button" data-toggle="collapse" data-target="#collapseMethodologyRecidivismSnapshot" aria-expanded="true" aria-controls="collapseMethodologyRecidivismSnapshot">
-                        <h6 className="lh-1 c-blue-500 mb-0">Methodology</h6>
-                      </button>
-                    </div>
-                  </div>
-                  <div id="collapseMethodologyRecidivismSnapshot" className="collapse" aria-labelledby="methodologyHeadingRecidivismSnapshot" data-parent="#methodologyRecidivismSnapshot">
-                    <div>
-                      <ul>
-                        <li>Total admissions include unique people admitted to any DOCR prison during a particular time frame.</li>
-                        <li>Reincarceration returns include only those admissions which resulted from an incarceration, due to a new offense, of a person who was previously incarcerated in a DOCR prison.</li>
-                        <li>In this case, an admission counts as a reincarceration return if the reincarceration happened within 3 years of the person's most recent release from prison, i.e. a 3-year follow-up period.</li>
-                        <li><a href="methodology.html" target="_blank">Read more...</a></li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-                <div className="layer bdT pT-20 pX-20 w-100">
-                  <div className="jc-c gapX-20 row">
-                    <a className="col-md-12 explore-the-data" href="/reincarcerations">
-                      <h6 className="lh-1 c-blue-500">Dive into the data<i className="ti-arrow-right pull-right" /></h6>
-                    </a>
                   </div>
                 </div>
               </div>
