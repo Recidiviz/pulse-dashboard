@@ -4,6 +4,7 @@ import { Line } from 'react-chartjs-2';
 import { trendlineLinear } from 'chartjs-plugin-trendline';
 import { configureDownloadButtons } from '../../../assets/scripts/charts/chartJS/downloads';
 import { COLORS } from '../../../assets/scripts/constants/colors';
+import { monthNamesShortFromNumberList } from '../../../utils/monthConversion';
 
 const LSIRScoreChangeSnapshot = (props) => {
   const [chartLabels, setChartLabels] = useState([]);
@@ -26,11 +27,14 @@ const LSIRScoreChangeSnapshot = (props) => {
     processResponse();
   }, [props.revocationCountsByMonth]);
 
+  const months = [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 1, 2, 3];
+  const monthNamesShort = monthNamesShortFromNumberList(months);
+
   const chart = (
     <Line
       id="lsir-score-change-snapshot-chart"
       data={{
-        labels: ["Mar '18", 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec', "Jan '19", 'Feb', 'Mar'],
+        labels: monthNamesShort,
         datasets: [{
           backgroundColor: COLORS['blue-standard'],
           borderColor: COLORS['blue-standard'],
@@ -162,6 +166,14 @@ const LSIRScoreChangeSnapshot = (props) => {
   };
   configureDownloadButtons('lsir-score-change', 'Snapshot', chart.props,
     document.getElementById('lsir-score-change-snapshot-chart'), exportedStructureCallback);
+
+  const header = document.getElementById('LSIRScoreChangeSnapshot-header');
+
+  if (header) {
+    const str1 = 'The change in LSIR scores between intake and termination of supervision has been';
+    const str2 = "<b style='color:#809AE5'> trending towards the goal. </b>";
+    header.innerHTML = str1.concat(str2);
+  }
 
   return (chart);
 };

@@ -4,6 +4,7 @@ import { Line } from 'react-chartjs-2';
 import { trendlineLinear } from 'chartjs-plugin-trendline';
 import { configureDownloadButtons } from '../../../assets/scripts/charts/chartJS/downloads';
 import { COLORS } from '../../../assets/scripts/constants/colors';
+import { monthNamesShortFromNumberList } from '../../../utils/monthConversion';
 
 const DaysAtLibertySnapshot = (props) => {
   const [chartLabels, setChartLabels] = useState([]);
@@ -26,11 +27,14 @@ const DaysAtLibertySnapshot = (props) => {
     processResponse();
   }, [props.revocationCountsByMonth]);
 
+  const months = [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 1, 2, 3];
+  const monthNamesShort = monthNamesShortFromNumberList(months);
+
   const chart = (
     <Line
       id="days-at-liberty-snapshot-chart"
       data={{
-        labels: ["Mar '18", 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec', "Jan '19", 'Feb', 'Mar'],
+        labels: monthNamesShort,
         datasets: [{
           backgroundColor: COLORS['blue-standard'],
           borderColor: COLORS['blue-standard'],
@@ -162,6 +166,14 @@ const DaysAtLibertySnapshot = (props) => {
   };
   configureDownloadButtons('days-at-liberty', 'Snapshot', chart.props,
     document.getElementById('days-at-liberty-snapshot-chart'), exportedStructureCallback);
+
+  const header = document.getElementById('daysAtLibertySnapshot-header');
+
+  if (header) {
+    const str1 = 'The average days between release from incarceration and readmission has been';
+    const str2 = "<b style='color:#809AE5'> trending away from the goal. </b>";
+    header.innerHTML = str1.concat(str2);
+  }
 
   return (chart);
 };

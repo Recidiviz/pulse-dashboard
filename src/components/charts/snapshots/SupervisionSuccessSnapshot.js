@@ -4,6 +4,7 @@ import { Line } from 'react-chartjs-2';
 import { trendlineLinear } from 'chartjs-plugin-trendline';
 import { configureDownloadButtons } from '../../../assets/scripts/charts/chartJS/downloads';
 import { COLORS } from '../../../assets/scripts/constants/colors';
+import { monthNamesShortFromNumberList, monthNamesFromShortName } from '../../../utils/monthConversion';
 
 const SupervisionSuccessSnapshot = (props) => {
   const [chartLabels, setChartLabels] = useState([]);
@@ -26,11 +27,14 @@ const SupervisionSuccessSnapshot = (props) => {
     processResponse();
   }, [props.revocationCountsByMonth]);
 
+  const months = [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 1, 2, 3];
+  const monthNamesShort = monthNamesShortFromNumberList(months);
+
   const chart = (
     <Line
       id="supervision-success-snapshot-chart"
       data={{
-        labels: ["Mar '18", 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec', "Jan '19", 'Feb', 'Mar'],
+        labels: monthNamesShort,
         datasets: [{
           backgroundColor: COLORS['blue-standard'],
           borderColor: COLORS['blue-standard'],
@@ -162,6 +166,23 @@ const SupervisionSuccessSnapshot = (props) => {
   };
   configureDownloadButtons('supervision-success', 'Snapshot', chart.props,
     document.getElementById('supervision-success-snapshot-chart'), exportedStructureCallback);
+
+  const chartData = chart.props.data.datasets[0].data;
+  const mostRecentValue = chartData[chartData.length - 1];
+
+  const chartDataLabels = chart.props.data.labels;
+  const mostRecentMonth = monthNamesFromShortName(chartDataLabels[chartDataLabels.length - 1]);
+
+  const header = document.getElementById('supervisionSuccessSnapshot-header');
+
+  if (header) {
+    const str1 = "<b style='color:#809AE5'>";
+    const str2 = `${mostRecentValue}`;
+    const str3 = '% of people </b> whose supervision was scheduled to end in ';
+    const str4 = `${mostRecentMonth}`;
+    const str5 = " <b style='color:#809AE5'>successfully completed their supervision </b> by that time.";
+    header.innerHTML = str1.concat(str2, str3, str4, str5);
+  }
 
   return (chart);
 };
