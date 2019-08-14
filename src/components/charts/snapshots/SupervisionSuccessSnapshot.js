@@ -156,13 +156,7 @@ const SupervisionSuccessSnapshot = (props) => {
 
   // TODO: Change this to have export for supervision success data
   const exportedStructureCallback = function exportedStructureCallback() {
-    return {
-      recidivismType: 'reincarceration',
-      returnType: 'revocations',
-      startDate: '2018-11',
-      endDate: '2019-04',
-      series: [],
-    };
+    return {};
   };
   configureDownloadButtons('supervision-success', 'Snapshot', chart.props,
     document.getElementById('supervision-success-snapshot-chart'), exportedStructureCallback);

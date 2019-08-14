@@ -156,19 +156,14 @@ const DaysAtLibertySnapshot = (props) => {
 
   // TODO: Change this to have export for supervision success data
   const exportedStructureCallback = function exportedStructureCallback() {
-    return {
-      recidivismType: 'reincarceration',
-      returnType: 'revocations',
-      startDate: '2018-11',
-      endDate: '2019-04',
-      series: [],
-    };
+    return {};
   };
   configureDownloadButtons('days-at-liberty', 'Snapshot', chart.props,
     document.getElementById('days-at-liberty-snapshot-chart'), exportedStructureCallback);
 
   const header = document.getElementById('daysAtLibertySnapshot-header');
 
+  // TODO: Make trending text dynamic based on goal and slope of trendline
   if (header) {
     const str1 = 'The average days between release from incarceration and readmission has been';
     const str2 = "<b style='color:#809AE5'> trending away from the goal. </b>";

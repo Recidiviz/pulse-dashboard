@@ -155,17 +155,11 @@ const RevocationAdmissionsSnapshot = (props) => {
     />
   );
 
-  // TODO: Change this to have export for supervision success data
+  // TODO: Change this to have export for revocation admissions data
   const exportedStructureCallback = function exportedStructureCallback() {
-    return {
-      recidivismType: 'reincarceration',
-      returnType: 'revocations',
-      startDate: '2018-11',
-      endDate: '2019-04',
-      series: [],
-    };
+    return {};
   };
-  configureDownloadButtons('supervision-success', 'Snapshot', chart.props,
+  configureDownloadButtons('revocation-admissions', 'Snapshot', chart.props,
     document.getElementById('revocation-admissionssnapshot-chart'), exportedStructureCallback);
 
   const chartData = chart.props.data.datasets[0].data;
