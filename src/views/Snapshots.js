@@ -1,15 +1,15 @@
-import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 
-import Loading from "../components/Loading";
-import "../assets/styles/index.scss";
-import { configureDownloadButtons } from "../assets/scripts/charts/chartJS/downloads";
-import { useAuth0 } from "../react-auth0-spa";
+import Loading from '../components/Loading';
+import '../assets/styles/index.scss';
+import { configureDownloadButtons } from '../assets/scripts/charts/chartJS/downloads';
+import { useAuth0 } from '../react-auth0-spa';
 
-import SupervisionSuccessSnapshot from "../components/charts/snapshots/SupervisionSuccessSnapshot";
-import RevocationAdmissionsSnapshot from "../components/charts/snapshots/RevocationAdmissionsSnapshot";
-import LSIRScoreChangeSnapshot from "../components/charts/snapshots/LSIRScoreChangeSnapshot"
-import DaysAtLibertySnapshot from "../components/charts/snapshots/DaysAtLibertySnapshot"
+import SupervisionSuccessSnapshot from '../components/charts/snapshots/SupervisionSuccessSnapshot';
+import RevocationAdmissionsSnapshot from '../components/charts/snapshots/RevocationAdmissionsSnapshot';
+import LSIRScoreChangeSnapshot from '../components/charts/snapshots/LSIRScoreChangeSnapshot'
+import DaysAtLibertySnapshot from '../components/charts/snapshots/DaysAtLibertySnapshot'
 
 const Snapshots = () => {
   const { loading, user, getTokenSilently } = useAuth0();
@@ -21,8 +21,8 @@ const Snapshots = () => {
       const token = await getTokenSilently();
       const response = await fetch(`${process.env.REACT_APP_API_URL}/api/external`, {
         headers: {
-          Authorization: `Bearer ${token}`
-        }
+          Authorization: `Bearer ${token}`,
+        },
       });
 
       const responseData = await response.json();
