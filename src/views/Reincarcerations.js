@@ -4,7 +4,7 @@ import Loading from '../components/Loading';
 import '../assets/styles/index.scss';
 import { useAuth0 } from '../react-auth0-spa';
 
-import ReleasesVsAdmissions from '../components/charts/reincarcerations/ReleasesVsAdmissions';
+import AdmissionsVsReleases from '../components/charts/reincarcerations/AdmissionsVsReleases';
 import ReincarcerationRateByReleaseFacility from '../components/charts/reincarcerations/ReincarcerationRateByReleaseFacility';
 import ReincarcerationRateByTransitionalFacility from '../components/charts/reincarcerations/ReincarcerationRateByTransitionalFacility';
 import ReincarcerationRateByStayLength from '../components/charts/reincarcerations/ReincarcerationRateByStayLength';
@@ -103,18 +103,17 @@ const Reincarcerations = () => {
                   <h4 className="lh-1">The ND facilities <span className="font-weight-bold">grew</span> by <span className="font-weight-bold">22</span> people this month</h4>
                 </div>
                 <div className="layer w-100 p-20">
-                  // TODO: FIX THIS 
-                  <ReleasesVsAdmissions  />
+                  <AdmissionsVsReleases  admissionsVsReleases={apiData.admissions_versus_releases_by_month}/>
                 </div>
-                <div className="layer bdT p-20 w-100 accordion" id="methodologyReleasesVsAdmissions">
-                  <div className="mb-0" id="methodologyHeadingReleasesVsAdmissions">
+                <div className="layer bdT p-20 w-100 accordion" id="methodologyAdmissionsVsReleases">
+                  <div className="mb-0" id="methodologyHeadingAdmissionsVsReleases">
                     <div className="mb-0">
-                      <button className="btn btn-link collapsed pL-0" type="button" data-toggle="collapse" data-target="#collapseMethodologyReleasesVsAdmissions" aria-expanded="true" aria-controls="collapseMethodologyReleasesVsAdmissions">
+                      <button className="btn btn-link collapsed pL-0" type="button" data-toggle="collapse" data-target="#collapseMethodologyAdmissionsVsReleases" aria-expanded="true" aria-controls="collapseMethodologyAdmissionsVsReleases">
                         <h6 className="lh-1 c-blue-500 mb-0">Methodology</h6>
                       </button>
                     </div>
                   </div>
-                  <div id="collapseMethodologyReleasesVsAdmissions" className="collapse" aria-labelledby="methodologyHeadingReleasesVsAdmissions" data-parent="#methodologyReleasesVsAdmissions">
+                  <div id="collapseMethodologyAdmissionsVsReleases" className="collapse" aria-labelledby="methodologyHeadingAdmissionsVsReleases" data-parent="#methodologyAdmissionsVsReleases">
                     <div>
                       <ul>
                         <li>Total admissions include unique people admitted to any DOCR prison during a particular time frame.</li>
