@@ -1,15 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 
-import Loading from '../components/Loading';
-import '../assets/styles/index.scss';
-import { useAuth0 } from '../react-auth0-spa';
+import Loading from "../components/Loading";
+import "../assets/styles/index.scss";
+import { useAuth0 } from "../react-auth0-spa";
 
-import RevocationCountOverTime from '../components/charts/revocations/RevocationCountOverTime';
-import RevocationCountBySupervisionType from '../components/charts/revocations/RevocationCountBySupervisionType';
-import RevocationCountByViolationType from '../components/charts/revocations/RevocationCountByViolationType';
-import RevocationCountByOfficer from '../components/charts/revocations/RevocationCountByOfficer';
-import AdmissionTypeProportions from '../components/charts/revocations/AdmissionTypeProportions';
-import RevocationProportionByRace from '../components/charts/revocations/RevocationProportionByRace';
+import RevocationCountOverTime from "../components/charts/revocations/RevocationCountOverTime";
+import RevocationCountBySupervisionType from "../components/charts/revocations/RevocationCountBySupervisionType";
+import RevocationCountByViolationType from "../components/charts/revocations/RevocationCountByViolationType";
+import RevocationCountByOfficer from "../components/charts/revocations/RevocationCountByOfficer";
+import AdmissionTypeProportions from "../components/charts/revocations/AdmissionTypeProportions";
+import RevocationProportionByRace from "../components/charts/revocations/RevocationProportionByRace";
 
 const Revocations = () => {
   const { loading, user, getTokenSilently } = useAuth0();
@@ -21,8 +21,8 @@ const Revocations = () => {
       const token = await getTokenSilently();
       const response = await fetch(`${process.env.REACT_APP_API_URL}/api/external`, {
         headers: {
-          Authorization: `Bearer ${token}`,
-        },
+          Authorization: `Bearer ${token}`
+        }
       });
 
       const responseData = await response.json();
@@ -53,11 +53,7 @@ const Revocations = () => {
               <div className="layers">
                 <div className="layer w-100 pX-20 pT-20">
                   <h4 className="lh-1">
-                    The
-                    <span className="font-weight-bold">revocation</span>
-                    count this month was
-                    <span className="font-weight-bold">10</span>
-                     over target
+                    The <span className="font-weight-bold">revocation</span> count this month was <span className="font-weight-bold">10</span> over target
                     <span className="fa-pull-right">
                       <div className="dropdown show">
                         <a className="btn btn-secondary btn-sm dropdown-toggle" href="#" role="button" id="exportDropdownMenuButton-revocationDrivers" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -74,9 +70,7 @@ const Revocations = () => {
                 <div className="layer w-100 pX-20 pT-20 row">
                   <div className="col-md-12">
                     <div className="layer w-100 p-20">
-                      <RevocationCountOverTime
-                        revocationCountsByMonth={apiData.revocationCountsByMonth}
-                      />
+                      <RevocationCountOverTime revocationCountsByMonth={apiData.revocationCountsByMonth} />
                     </div>
                   </div>
                 </div>
@@ -111,11 +105,7 @@ const Revocations = () => {
                   <h4 className="lh-1">Revocations by supervision type</h4>
                 </div>
                 <div className="layer w-100 p-20">
-                  <RevocationCountBySupervisionType
-                    revocationCountsByMonthBySupervisionType={
-                      apiData.revocationCountsByMonthBySupervisionType
-                    }
-                  />
+                  <RevocationCountBySupervisionType revocationCountsByMonthBySupervisionType={apiData.revocationCountsByMonthBySupervisionType} />
                 </div>
                 <div className="layer bdT p-20 w-100 accordion" id="methodologyRevocationBySupervisionType">
                   <div className="mb-0" id="methodologyHeadingRevocationBySupervisiontype">
@@ -138,8 +128,7 @@ const Revocations = () => {
                 </div>
                 <div className="layer bdT p-20 w-100">
                   <div className="peers ai-c jc-c gapX-20">
-                    <div className="peer fw-600">
-                      <small className="c-grey-500 fw-600">Period</small>
+                    <div className="peer fw-600"><small className="c-grey-500 fw-600">Period</small>
                       <span className="fsz-def fw-600 mR-10 c-grey-800">Last 60 days</span>
                     </div>
                   </div>
@@ -156,11 +145,7 @@ const Revocations = () => {
                   <h4 className="lh-1">Revocations by violation type</h4>
                 </div>
                 <div className="layer w-100 p-20">
-                  <RevocationCountByViolationType
-                    revocationCountsByMonthByViolationType={
-                      apiData.revocationCountsByMonthByViolationType
-                    }
-                  />
+                  <RevocationCountByViolationType revocationCountsByMonthByViolationType={apiData.revocationCountsByMonthByViolationType} />
                 </div>
                 <div className="layer bdT p-20 w-100 accordion" id="methodologyRevocationsByViolationType">
                   <div className="mb-0" id="methodologyHeadingRevocationsByViolationType">
@@ -183,8 +168,7 @@ const Revocations = () => {
                 </div>
                 <div className="layer bdT p-20 w-100">
                   <div className="peers ai-c jc-c gapX-20">
-                    <div className="peer fw-600">
-                      <small className="c-grey-500 fw-600">Period</small>
+                    <div className="peer fw-600"><small className="c-grey-500 fw-600">Period</small>
                       <span className="fsz-def fw-600 mR-10 c-grey-800">Last 60 days</span>
                     </div>
                   </div>
@@ -201,11 +185,7 @@ const Revocations = () => {
                   <h4 className="lh-1">Revocations by officer</h4>
                 </div>
                 <div className="layer w-100 p-20">
-                  <RevocationCountByOfficer
-                    revocationCountsByOfficer={
-                      apiData.revocationCountsByOfficer
-                    }
-                  />
+                  <RevocationCountByOfficer revocationCountsByOfficer={apiData.revocationCountsByOfficer} />
                 </div>
                 <div className="layer bdT p-20 w-100 accordion" id="methodologyRevocationByOfficer">
                   <div className="mb-0" id="methodologyHeadingRevocationByOfficer">
@@ -287,11 +267,7 @@ const Revocations = () => {
                 </div>
                 <div className="layer w-100 pX-20 pT-20 row">
                   <div className="layer w-100 p-20">
-                    <RevocationProportionByRace
-                      revocationProportionByRace={
-                        apiData.revocationProportionByRace
-                      }
-                    />
+                    <RevocationProportionByRace revocationProportionByRace={apiData.revocationProportionByRace} />
                   </div>
                 </div>
                 <div className="layer bdT p-20 w-100 accordion" id="methodologyRevocationsByRace">
@@ -315,8 +291,7 @@ const Revocations = () => {
                 </div>
                 <div className="layer bdT p-20 w-100">
                   <div className="peers ai-c jc-c gapX-20">
-                    <div className="peer fw-600">
-                      <small className="c-grey-500 fw-600">Period</small>
+                    <div className="peer fw-600"><small className="c-grey-500 fw-600">Period</small>
                       <span className="fsz-def fw-600 mR-10 c-grey-800">Last 60 days</span>
                     </div>
                   </div>
