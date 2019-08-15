@@ -22,12 +22,11 @@ const FILES_BY_METRIC_TYPE = {
   admission: [
     'admissions_by_type_60_days.json',
     'admissions_by_type_by_month.json',
-    'admissions_versus_releases_by_month.json',
   ],
   reincarceration: [
+    'admissions_versus_releases_by_month.json',
     'reincarceration_rate_by_release_facility.json',
     'reincarceration_rate_by_stay_length.json',
-    'reincarceration_rate_by_transitional_facility.json',
     'reincarcerations_by_month.json',
   ],
   revocation: [
@@ -35,6 +34,12 @@ const FILES_BY_METRIC_TYPE = {
     'revocations_by_race_60_days.json',
     'revocations_by_supervision_type_by_month.json',
     'revocations_by_violation_type_by_month.json',
+  ],
+  snapshots: [
+    'admissions_by_type_by_month.json',
+    'average_change_lsi_score_by_month.json',
+    'average_days_at_liberty.json',
+    'supervision_termination_by_type_by_month.json',
   ],
 }
 
@@ -81,6 +86,7 @@ function fetchMetrics(stateCode, metricType, callback) {
         console.log(`Fetched all ${metricType} metrics from GCS`);
         const results = {};
         allFileContents.forEach(function (contents) {
+          console.log(`Fetched contents for fileKey: ${contents.fileKey}`);
           const deserializedFile = convertDownloadToJson(contents.contents);
           results[contents.fileKey] = deserializedFile;
         });
@@ -94,11 +100,15 @@ function fetchMetrics(stateCode, metricType, callback) {
  * Converts the given contents, a Buffer of bytes, into a JS object or array.
  */
 function convertDownloadToJson(contents) {
-  const stringContents = contents.toString();
+  var stringContents = contents.toString();
   if (!stringContents || stringContents.length === 0) {
     return null;
   }
-  return JSON.parse(stringContents);
+  // Converts the newline delimited JSON objects into one JSON array
+  var jsonObjectString = "[" + stringContents.split("\n").join(",");
+  jsonObjectString = jsonObjectString.substring(0, jsonObjectString.length - 1) + "]";
+
+  return JSON.parse(jsonObjectString);
 }
 
 function fetchAdmissionMetrics(callback) {
