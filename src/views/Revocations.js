@@ -19,7 +19,7 @@ const Revocations = () => {
   const fetchChartData = async () => {
     try {
       const token = await getTokenSilently();
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/external`, {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/revocations`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -70,7 +70,7 @@ const Revocations = () => {
                 <div className="layer w-100 pX-20 pT-20 row">
                   <div className="col-md-12">
                     <div className="layer w-100 p-20">
-                      <RevocationCountOverTime revocationCountsByMonth={apiData.revocationCountsByMonth} />
+                      <RevocationCountOverTime revocationCountsByMonth={apiData.revocations_by_month} />
                     </div>
                   </div>
                 </div>
@@ -105,7 +105,7 @@ const Revocations = () => {
                   <h4 className="lh-1">Revocations by supervision type</h4>
                 </div>
                 <div className="layer w-100 p-20">
-                  <RevocationCountBySupervisionType revocationCountsByMonthBySupervisionType={apiData.revocationCountsByMonthBySupervisionType} />
+                  <RevocationCountBySupervisionType revocationCountsByMonthBySupervisionType={apiData.revocations_by_supervision_type_by_month} />
                 </div>
                 <div className="layer bdT p-20 w-100 accordion" id="methodologyRevocationBySupervisionType">
                   <div className="mb-0" id="methodologyHeadingRevocationBySupervisiontype">
@@ -145,7 +145,7 @@ const Revocations = () => {
                   <h4 className="lh-1">Revocations by violation type</h4>
                 </div>
                 <div className="layer w-100 p-20">
-                  <RevocationCountByViolationType revocationCountsByMonthByViolationType={apiData.revocationCountsByMonthByViolationType} />
+                  <RevocationCountByViolationType revocationCountsByMonthByViolationType={apiData.revocations_by_violation_type_by_month} />
                 </div>
                 <div className="layer bdT p-20 w-100 accordion" id="methodologyRevocationsByViolationType">
                   <div className="mb-0" id="methodologyHeadingRevocationsByViolationType">
@@ -225,7 +225,7 @@ const Revocations = () => {
                   <h4 className="lh-1">Admission type proportions</h4>
                 </div>
                 <div className="layer w-100 p-20">
-                  <AdmissionTypeProportions admissionCountsByType={apiData.admissionCountsByType} />
+                  <AdmissionTypeProportions admissionCountsByType={apiData.admissions_by_type_60_days} />
                 </div>
                 <div className="layer bdT p-20 w-100 accordion" id="methodologyAdmissionProportions">
                   <div className="mb-0" id="methodologyHeadingAdmissionProportions">
@@ -267,7 +267,7 @@ const Revocations = () => {
                 </div>
                 <div className="layer w-100 pX-20 pT-20 row">
                   <div className="layer w-100 p-20">
-                    <RevocationProportionByRace revocationProportionByRace={apiData.revocationProportionByRace} />
+                    <RevocationProportionByRace revocationProportionByRace={apiData.revocations_by_race_60_days} />
                   </div>
                 </div>
                 <div className="layer bdT p-20 w-100 accordion" id="methodologyRevocationsByRace">
