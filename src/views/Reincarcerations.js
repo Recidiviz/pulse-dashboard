@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
 
-import Loading from "../components/Loading";
-import "../assets/styles/index.scss";
-import { useAuth0 } from "../react-auth0-spa";
+import Loading from '../components/Loading';
+import '../assets/styles/index.scss';
+import { useAuth0 } from '../react-auth0-spa';
 
-import ReleasesVsAdmissions from "../components/charts/reincarcerations/ReleasesVsAdmissions";
-import ReincarcerationRateByReleaseFacility from "../components/charts/reincarcerations/ReincarcerationRateByReleaseFacility";
-import ReincarcerationRateByTransitionalFacility from "../components/charts/reincarcerations/ReincarcerationRateByTransitionalFacility";
-import ReincarcerationRateByStayLength from "../components/charts/reincarcerations/ReincarcerationRateByStayLength";
-import ReincarcerationCountOverTime from "../components/charts/reincarcerations/ReincarcerationCountOverTime";
+import ReleasesVsAdmissions from '../components/charts/reincarcerations/ReleasesVsAdmissions';
+import ReincarcerationRateByReleaseFacility from '../components/charts/reincarcerations/ReincarcerationRateByReleaseFacility';
+import ReincarcerationRateByTransitionalFacility from '../components/charts/reincarcerations/ReincarcerationRateByTransitionalFacility';
+import ReincarcerationRateByStayLength from '../components/charts/reincarcerations/ReincarcerationRateByStayLength';
+import ReincarcerationCountOverTime from '../components/charts/reincarcerations/ReincarcerationCountOverTime';
 
 const Reincarcerations = () => {
   const { loading, user, getTokenSilently } = useAuth0();
@@ -18,7 +18,7 @@ const Reincarcerations = () => {
   const fetchChartData = async () => {
     try {
       const token = await getTokenSilently();
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/external`, {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/reincarcerations`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -69,7 +69,7 @@ const Reincarcerations = () => {
                 <div className="layer w-100 pX-20 pT-20 row">
                   <div className="col-md-12">
                     <div className="layer w-100 p-20">
-                      <ReincarcerationCountOverTime reincarcerationCountsByMonth={apiData.reincarcerationCountsByMonth} />
+                      <ReincarcerationCountOverTime reincarcerationCountsByMonth={apiData.reincarcerations_by_month} />
                     </div>
                   </div>
                 </div>
@@ -103,7 +103,8 @@ const Reincarcerations = () => {
                   <h4 className="lh-1">The ND facilities <span className="font-weight-bold">grew</span> by <span className="font-weight-bold">22</span> people this month</h4>
                 </div>
                 <div className="layer w-100 p-20">
-                  <ReleasesVsAdmissions admissions={apiData.admissions} releases={apiData.releases} />
+                  // TODO: FIX THIS 
+                  <ReleasesVsAdmissions  />
                 </div>
                 <div className="layer bdT p-20 w-100 accordion" id="methodologyReleasesVsAdmissions">
                   <div className="mb-0" id="methodologyHeadingReleasesVsAdmissions">
@@ -137,7 +138,7 @@ const Reincarcerations = () => {
                 <div className="layer w-100 p-20">
                   <div className="ai-c jc-c gapX-20">
                     <div className="col-md-12">
-                      <ReincarcerationRateByReleaseFacility ratesByReleaseFacility={apiData.ratesByReleaseFacility} />
+                      <ReincarcerationRateByReleaseFacility ratesByReleaseFacility={apiData.reincarceration_rate_by_release_facility} />
                     </div>
                   </div>
                 </div>
@@ -189,7 +190,7 @@ const Reincarcerations = () => {
                 <div className="layer w-100 p-20">
                   <div className="ai-c jc-c gapX-20">
                     <div className="col-md-12">
-                      <ReincarcerationRateByTransitionalFacility ratesByTransitionalFacility={apiData.ratesByTransitionalFacility} />
+                      <ReincarcerationRateByTransitionalFacility ratesByTransitionalFacility={apiData.reincarceration_rate_by_release_facility} />
                     </div>
                   </div>
                 </div>
@@ -239,7 +240,7 @@ const Reincarcerations = () => {
                   <h4 className="lh-1">Reincarceration rate by previous stay length</h4>
                 </div>
                 <div className="layer w-100 p-20">
-                  <ReincarcerationRateByStayLength ratesByStayLength={apiData.ratesByStayLength} />
+                  <ReincarcerationRateByStayLength ratesByStayLength={apiData.reincarceration_rate_by_stay_length} />
                 </div>
                 <div className="layer bdT p-20 w-100 accordion" id="methodologyReincarcerationsByStayLength">
                   <div className="mb-0" id="methodologyHeadingReincarcerationsByStayLength">
