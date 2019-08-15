@@ -7,13 +7,13 @@
  * those files to be quickly reflected in the app without frequent requests to GCS.
  */
 
-var objectStorage = require('./objectStorage');
-var cacheManager = require('cache-manager');
+const cacheManager = require('cache-manager');
+const objectStorage = require('./objectStorage');
 
 const BUCKET_NAME = process.env.METRIC_BUCKET;
-const METRIC_CACHE_TTL_SECONDS = 60 * 60;  // Expire items in the cache after 1 hour
+const METRIC_CACHE_TTL_SECONDS = 60 * 60; // Expire items in the cache after 1 hour
 
-var memoryCache = cacheManager.caching({ store: 'memory', ttl: METRIC_CACHE_TTL_SECONDS });
+const memoryCache = cacheManager.caching({ store: 'memory', ttl: METRIC_CACHE_TTL_SECONDS });
 
 const FILES_BY_METRIC_TYPE = {
   admission: [
@@ -24,16 +24,19 @@ const FILES_BY_METRIC_TYPE = {
   reincarceration: [
     'reincarceration_rate_by_release_facility.json',
     'reincarceration_rate_by_stay_length.json',
-    'reincarceration_rate_by_transitional_facility.json',
     'reincarcerations_by_month.json',
   ],
   revocation: [
+    'average_days_at_liberty.json',
     'revocations_by_month.json',
     'revocations_by_race_60_days.json',
     'revocations_by_supervision_type_by_month.json',
     'revocations_by_violation_type_by_month.json',
   ],
-}
+  supervision: [
+    'supervision_termination_by_type_by_month.json',
+  ],
+};
 
 /**
  * Retrieves all metric files for the given metric type from Google Cloud Storage.
