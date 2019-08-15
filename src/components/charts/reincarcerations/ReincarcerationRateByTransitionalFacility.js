@@ -3,6 +3,8 @@ import React, { useState, useEffect } from "react";
 import { Bar } from 'react-chartjs-2';
 import { COLORS } from "../../../assets/scripts/constants/colors";
 
+const TRANSITIONAL_FACILITIES = ['FTPFAR', 'GFC', 'BTC', 'FTPMND', 'MTPFAR', 'LRRP', 'MTPMND'];
+
 const ReincarcerationRateByTransitionalFacility = (props) => {
   const [chartLabels, setChartLabels] = useState([]);
   const [chartDataPoints, setChartDataPoints] = useState([]);
@@ -11,9 +13,17 @@ const ReincarcerationRateByTransitionalFacility = (props) => {
     const ratesByFacility = props.ratesByTransitionalFacility;
 
     var sorted = [];
-    for (var facility in ratesByFacility) {
-        sorted.push([facility, ratesByFacility[facility]]);
-    }
+    ratesByFacility.forEach(function (data) {
+      const facility = data.release_facility;
+      if (TRANSITIONAL_FACILITIES.includes(facility)) {
+        const recidivismRate = data.recidivism_rate;
+        sorted.push([facility, recidivismRate]);
+      }
+    });
+
+    sorted.sort(function(a, b) {
+        return a[1] - b[1];
+    });
     // Sort the facilities in ascending order by rate
     sorted.sort(function(a, b) {
         return a[1] - b[1];

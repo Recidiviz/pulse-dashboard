@@ -3,8 +3,9 @@ import React, { useState, useEffect } from "react";
 import { Line } from 'react-chartjs-2';
 import { configureDownloadButtons } from "../../../assets/scripts/charts/chartJS/downloads";
 import { COLORS } from "../../../assets/scripts/constants/colors";
+import { monthNamesFromNumberList } from "../../../utils/monthConversion"
 
-const ReincarcerationCountOverTime = props => {
+const ReincarcerationCountOverTime = (props) => {
   const [chartLabels, setChartLabels] = useState([]);
   const [chartDataPoints, setChartDataPoints] = useState([]);
 
@@ -12,12 +13,27 @@ const ReincarcerationCountOverTime = props => {
     const countsByMonth = props.reincarcerationCountsByMonth;
 
     var sorted = [];
-    for (var month in countsByMonth) {
-        sorted.push([month, countsByMonth[month]]);
-    }
+    countsByMonth.forEach(function (data) {
+      const year = data.year;
+      const month = data.month;
+      const returns = data.returns;
+      sorted.push([year, month, returns]);
+    });
 
-    setChartLabels(sorted.map(element => element[0]));
-    setChartDataPoints(sorted.map(element => element[1]));
+    // Sort by month and year
+    sorted.sort(function(a, b) {
+        if (a[0] === b[0]) {
+          return a[1] - b[1];
+        } else {
+          return a[0] - b[0];
+        }
+    });
+
+    // Just display the most recent 6 months
+    sorted = sorted.slice(sorted.length - 6, sorted.length);
+
+    setChartLabels(sorted.map(element => element[1]));
+    setChartDataPoints(sorted.map(element => element[2]));
   }
 
   useEffect(() => {
@@ -26,7 +42,7 @@ const ReincarcerationCountOverTime = props => {
 
   const chart =
     <Line id="reincarceration-drivers-chart" data={{
-      labels: chartLabels,
+      labels:  monthNamesFromNumberList(chartLabels),
       datasets: [{
         label: 'Reincarceration returns',
         borderColor: COLORS['grey-500'],

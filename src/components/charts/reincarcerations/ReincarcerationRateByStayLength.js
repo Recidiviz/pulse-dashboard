@@ -10,10 +10,21 @@ const ReincarcerationRateByStayLength = (props) => {
   const processResponse = () => {
     const ratesByStayLength = props.ratesByStayLength;
 
+    const stayLengthLabels = []
     var sorted = [];
-    for (var stayLength in ratesByStayLength) {
-        sorted.push([stayLength, ratesByStayLength[stayLength]]);
-    }
+    ratesByStayLength.forEach(function (data) {
+      let stayLength = data.stay_length_bucket;
+
+      if (stayLength === '<12') {
+        stayLength = '0-12'
+      } else if (stayLength === '120<') {
+        stayLength = '120+'
+      }
+      
+      const recidivismRate = data.recidivism_rate;
+      sorted.push([stayLength, recidivismRate]);
+    });
+
     sorted.sort(function(a, b) {
         return a[0] - b[0];
     });
