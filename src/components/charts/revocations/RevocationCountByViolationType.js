@@ -45,7 +45,7 @@ const RevocationCountByViolationType = (props) => {
     let sortedYears = Object.keys(overallCounts);
     sortedYears.sort(simpleSort);
 
-    var sorted_arrays = {
+    var violation_arrays = {
       'ABSCONDED': [],
       'FELONY': [],
       'TECHNICAL': [],
@@ -65,7 +65,7 @@ const RevocationCountByViolationType = (props) => {
         monthsLabels.push(i);
         let data = monthsLastYearData[i];
         Object.keys(data).forEach(function (violationType) {
-          sorted_arrays[violationType].push(data[violationType]);
+          violation_arrays[violationType].push(data[violationType]);
         })
       }
     }
@@ -75,20 +75,15 @@ const RevocationCountByViolationType = (props) => {
       monthsLabels.push(month);
       let data = monthsThisYearData[month];
       Object.keys(data).forEach(function (violationType) {
-        sorted_arrays[violationType].push(data[violationType]);
+        violation_arrays[violationType].push(data[violationType]);
       })
     })
 
-    const sorted_absconsion = sorted_arrays['ABSCONDED'];
-    const sorted_new_offense = sorted_arrays['FELONY'];
-    const sorted_technical = sorted_arrays['TECHNICAL'];
-    const sorted_unknown = sorted_arrays['UNKNOWN_VIOLATION_TYPE'];
-
     setChartLabels(monthsLabels);
-    setAbsconsionDataPoints(sorted_absconsion);
-    setNewOffenseDataPoints(sorted_new_offense);
-    setTechnicalDataPoints(sorted_technical);
-    setUnknownDataPoints(sorted_unknown);
+    setAbsconsionDataPoints(violation_arrays['ABSCONDED']);
+    setNewOffenseDataPoints(violation_arrays['FELONY']);
+    setTechnicalDataPoints(violation_arrays['TECHNICAL']);
+    setUnknownDataPoints(violation_arrays['UNKNOWN_VIOLATION_TYPE']);
   }
 
   useEffect(() => {
@@ -112,7 +107,7 @@ const RevocationCountByViolationType = (props) => {
           data: technicalDataPoints,
         }, {
           label: "Unknown Type",
-          backgroundColor: COLORS_FIVE_VALUES[4],
+          backgroundColor: COLORS_FIVE_VALUES[3],
           data: unknownDataPoints,
         },
       ],

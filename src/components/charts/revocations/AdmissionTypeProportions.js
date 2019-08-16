@@ -10,13 +10,26 @@ const AdmissionTypeProportions = (props) => {
   const processResponse = () => {
     const countsByAdmissionType = props.admissionCountsByType;
 
-    var sorted = [];
-    for (var admissionType in countsByAdmissionType) {
-        sorted.push([admissionType, countsByAdmissionType[admissionType]]);
+    const labelStringConversion = {
+      'UNKNOWN_REVOCATION': 'Revocations (Type Unknown)',
+      'NEW_ADMISSION': 'New Admissions',
+      'NON_TECHNICAL': 'Non-Technical Revocations',
+      'TECHNICAL': 'Technical Revocations',
     }
+    const countsByTypeData = []
 
-    setChartLabels(sorted.map(element => element[0]));
-    setChartDataPoints(sorted.map(element => element[1]));
+    countsByAdmissionType.forEach(function (data) {
+      const admissionType = data.admission_type;
+      const count = data.admission_count;
+      countsByTypeData.push([labelStringConversion[admissionType], count])
+    });
+
+    countsByTypeData.sort(function(a, b) {
+      return a[0] - b[0];
+    })
+
+    setChartLabels(countsByTypeData.map(element => element[0]));
+    setChartDataPoints(countsByTypeData.map(element => element[1]));
   }
 
   useEffect(() => {
