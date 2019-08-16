@@ -17,8 +17,8 @@ function responder(res) {
   };
 }
 
-function admissions(req, res) {
-  metricsApi.fetchAdmissionMetrics(responder(res));
+function snapshots(req, res) {
+  metricsApi.fetchSnapshotMetrics(responder(res));
 }
 
 function reincarcerations(req, res) {
@@ -35,7 +35,7 @@ function external(req, res) {
 }
 
 module.exports = {
-  admissions: admissions,
+  snapshots: snapshots,
   external: external,
   reincarcerations: reincarcerations,
   revocations: revocations,

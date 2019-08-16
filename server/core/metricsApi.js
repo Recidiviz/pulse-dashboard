@@ -35,10 +35,10 @@ const FILES_BY_METRIC_TYPE = {
     'revocations_by_supervision_type_by_month.json',
     'revocations_by_violation_type_by_month.json',
   ],
-  snapshots: [
+  snapshot: [
     'admissions_by_type_by_month.json',
     'average_change_lsi_score_by_month.json',
-    'average_days_at_liberty.json',
+    'avg_days_at_liberty_by_month.json',
     'supervision_termination_by_type_by_month.json',
   ],
 }
@@ -111,8 +111,8 @@ function convertDownloadToJson(contents) {
   return JSON.parse(jsonObjectString);
 }
 
-function fetchAdmissionMetrics(callback) {
-  return fetchMetrics('US_ND', 'admission', callback);
+function fetchSnapshotMetrics(callback) {
+  return fetchMetrics('US_ND', 'snapshot', callback);
 }
 
 function fetchExternalMetrics(callback) {
@@ -128,7 +128,7 @@ function fetchRevocationMetrics(callback) {
 }
 
 module.exports = {
-  fetchAdmissionMetrics: fetchAdmissionMetrics,
+  fetchSnapshotMetrics: fetchSnapshotMetrics,
   fetchExternalMetrics: fetchExternalMetrics,
   fetchReincarcerationMetrics: fetchReincarcerationMetrics,
   fetchRevocationMetrics: fetchRevocationMetrics,

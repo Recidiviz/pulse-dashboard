@@ -15,8 +15,8 @@ const METRIC_REFRESH_INTERVAL_MS = 1000 * 60 * 30; // Refresh metrics every 30 m
 /**
  * Performs a refresh of the admission metrics cache, logging success or failure.
  */
-function refreshAdmissionMetrics() {
-  metricsApi.fetchAdmissionMetrics(function (err, data) {
+function refreshSnapshotMetrics() {
+  metricsApi.fetchSnapshotMetrics(function (err, data) {
     if (err) {
       console.log(`Encountered error during scheduled fetch-and-cache of admission metrics: ${err}`)
     } else {
@@ -62,6 +62,6 @@ function executeAndSetInterval(fn, intervalMS) {
     setInterval(fn, intervalMS);
 }
 
-executeAndSetInterval(refreshAdmissionMetrics, METRIC_REFRESH_INTERVAL_MS);
+executeAndSetInterval(refreshSnapshotMetrics, METRIC_REFRESH_INTERVAL_MS);
 executeAndSetInterval(refreshReincarcerationMetrics, METRIC_REFRESH_INTERVAL_MS);
 executeAndSetInterval(refreshRevocationMetrics, METRIC_REFRESH_INTERVAL_MS);
