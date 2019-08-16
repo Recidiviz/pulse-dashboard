@@ -20,7 +20,7 @@ const Snapshots = () => {
   const fetchChartData = async () => {
     try {
       const token = await getTokenSilently();
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/external`, {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/snapshots`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
