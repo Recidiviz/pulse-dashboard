@@ -10,8 +10,9 @@ const ReincarcerationRateByStayLength = (props) => {
   const processResponse = () => {
     const ratesByStayLength = props.ratesByStayLength;
 
-    const stayLengthLabels = []
-    var sorted = [];
+    const stayLengthLabels = ['0-12', '12-24', '24-36', '36-48', '48-60', '60-72', '72-84', '84-96', '96-108', '108-120', '120+'];
+
+    var ratesByStayLengthData = [];
     ratesByStayLength.forEach(function (data) {
       let stayLength = data.stay_length_bucket;
 
@@ -20,17 +21,19 @@ const ReincarcerationRateByStayLength = (props) => {
       } else if (stayLength === '120<') {
         stayLength = '120+'
       }
-      
+
       const recidivismRate = data.recidivism_rate;
-      sorted.push([stayLength, recidivismRate]);
+      ratesByStayLengthData[stayLength] = recidivismRate;
     });
 
-    sorted.sort(function(a, b) {
-        return a[0] - b[0];
-    });
+    const rates = []
 
-    setChartLabels(sorted.map(element => element[0]));
-    setChartDataPoints(sorted.map(element => element[1]));
+    for (var i = 0; i < stayLengthLabels.length; i++) {
+      rates.push(ratesByStayLengthData[stayLengthLabels[i]]);
+    }
+
+    setChartLabels(stayLengthLabels);
+    setChartDataPoints(rates);
   }
 
   useEffect(() => {
