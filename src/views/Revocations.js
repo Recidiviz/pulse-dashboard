@@ -163,7 +163,7 @@ const Revocations = () => {
             </div>
           </div>
 
-          {/* #Revocations by officer ==================== */}
+          {/* TODO: Bring this chart back once the calculation is implemented in PROD #Revocations by officer ====================
           <div className="masonry-item col-md-6">
             <div className="bd bgc-white p-20">
               <div className="layers">
@@ -202,6 +202,7 @@ const Revocations = () => {
               </div>
             </div>
           </div>
+          */}
 
           {/* #Admission type proportions ==================== */}
           <div className="masonry-item col-md-6">
