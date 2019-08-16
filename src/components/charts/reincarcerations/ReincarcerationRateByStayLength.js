@@ -10,9 +10,10 @@ const ReincarcerationRateByStayLength = (props) => {
   const processResponse = () => {
     const ratesByStayLength = props.ratesByStayLength;
 
-    const stayLengthLabels = ['0-12', '12-24', '24-36', '36-48', '48-60', '60-72', '72-84', '84-96', '96-108', '108-120', '120+'];
+    const stayLengthLabels = ['0-12', '12-24', '24-36', '36-48', '48-60',
+      '60-72', '72-84', '84-96', '96-108', '108-120', '120+'];
 
-    var ratesByStayLengthData = [];
+    const ratesByStayLengthData = [];
     ratesByStayLength.forEach(function (data) {
       let stayLength = data.stay_length_bucket;
 
@@ -22,12 +23,10 @@ const ReincarcerationRateByStayLength = (props) => {
         stayLength = '120+'
       }
 
-      const recidivismRate = data.recidivism_rate;
-      ratesByStayLengthData[stayLength] = recidivismRate;
+      ratesByStayLengthData[stayLength] = data.recidivism_rate;
     });
 
     const rates = []
-
     for (var i = 0; i < stayLengthLabels.length; i++) {
       rates.push(ratesByStayLengthData[stayLengthLabels[i]]);
     }
