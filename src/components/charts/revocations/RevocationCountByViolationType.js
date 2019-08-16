@@ -14,12 +14,7 @@ const RevocationCountByViolationType = (props) => {
   const processResponse = () => {
     const countsByMonth = props.revocationCountsByMonthByViolationType;
 
-    var sorted_arrays = {
-      'ABSCONDED': [],
-      'FELONY': [],
-      'TECHNICAL': [],
-      'UNKNOWN_VIOLATION_TYPE': [],
-    }
+    var overallCounts = {}
 
     countsByMonth.forEach(function (data) {
       const year = data.year;
@@ -27,42 +22,73 @@ const RevocationCountByViolationType = (props) => {
       const count = data.revocation_count;
       const violationType = data.violation_type;
 
-      const violationData = [year, month, count];
-
-      if (violationType in sorted_arrays) {
-        const violationArray = sorted_arrays[violationType];
-        violationArray.push(violationData);
+      if (year in overallCounts) {
+        let yearDict = overallCounts[year];
+        if (month in yearDict) {
+          let monthDict = yearDict[month];
+          monthDict[violationType] = count;
+        } else {
+          yearDict[month] = {};
+          yearDict[month][violationType] = count;
+        }
+      } else {
+        overallCounts[year] = {};
+        overallCounts[year][month] = {};
+        overallCounts[year][month][violationType] = count;
       }
     });
 
+    const simpleSort = function(a, b) {
+      return a - b;
+    }
 
-    const sortFunction = function(a, b) {
-        if (a[0] === b[0]) {
-          return a[1] - b[1];
-        } else {
-          return a[0] - b[0];
-        }
-    };
+    let sortedYears = Object.keys(overallCounts);
+    sortedYears.sort(simpleSort);
 
-    Object.keys(sorted_arrays).forEach(function(key) {
-      var array = sorted_arrays[key];
-      // Sort by month and year
-      array.sort(sortFunction);
-      // Just display the most recent 6 months
-      array = array.slice(array.length - 6, array.length);
-      sorted_arrays[key] = array;
-    });
+    var sorted_arrays = {
+      'ABSCONDED': [],
+      'FELONY': [],
+      'TECHNICAL': [],
+      'UNKNOWN_VIOLATION_TYPE': [],
+    }
 
-    let sorted_absconsion = sorted_arrays['ABSCONDED'];
-    let sorted_new_offense = sorted_arrays['FELONY'];
-    let sorted_technical = sorted_arrays['TECHNICAL'];
-    let sorted_unknown = sorted_arrays['UNKNOWN_VIOLATION_TYPE']
+    const monthsLabels = [];
+    const monthsThisYear = Object.keys(overallCounts[sortedYears[sortedYears.length - 1]]);
+    monthsThisYear.sort(simpleSort);
 
-    setChartLabels(sorted_absconsion.map(element => element[1]));
-    setAbsconsionDataPoints(sorted_absconsion.map(element => element[2]));
-    setNewOffenseDataPoints(sorted_new_offense.map(element => element[2]));
-    setTechnicalDataPoints(sorted_technical.map(element => element[2]));
-    setUnknownDataPoints(sorted_unknown.map(element => element[2]));
+    let mostRecentMonth = monthsThisYear[monthsThisYear.length - 1];
+    let firstMonthLastYear = 13 + (mostRecentMonth - 6);
+
+    if (firstMonthLastYear <= 12) {
+      let monthsLastYearData = overallCounts[sortedYears[sortedYears.length - 2]];
+      for (var i = firstMonthLastYear; i <= 12; i++) {
+        monthsLabels.push(i);
+        let data = monthsLastYearData[i];
+        Object.keys(data).forEach(function (violationType) {
+          sorted_arrays[violationType].push(data[violationType]);
+        })
+      }
+    }
+
+    let monthsThisYearData = overallCounts[sortedYears[sortedYears.length - 1]];
+    monthsThisYear.forEach(function (month) {
+      monthsLabels.push(month);
+      let data = monthsThisYearData[month];
+      Object.keys(data).forEach(function (violationType) {
+        sorted_arrays[violationType].push(data[violationType]);
+      })
+    })
+
+    const sorted_absconsion = sorted_arrays['ABSCONDED'];
+    const sorted_new_offense = sorted_arrays['FELONY'];
+    const sorted_technical = sorted_arrays['TECHNICAL'];
+    const sorted_unknown = sorted_arrays['UNKNOWN_VIOLATION_TYPE'];
+
+    setChartLabels(monthsLabels);
+    setAbsconsionDataPoints(sorted_absconsion);
+    setNewOffenseDataPoints(sorted_new_offense);
+    setTechnicalDataPoints(sorted_technical);
+    setUnknownDataPoints(sorted_unknown);
   }
 
   useEffect(() => {
