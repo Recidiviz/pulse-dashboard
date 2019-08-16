@@ -126,13 +126,6 @@ const Revocations = () => {
                     </div>
                   </div>
                 </div>
-                <div className="layer bdT p-20 w-100">
-                  <div className="peers ai-c jc-c gapX-20">
-                    <div className="peer fw-600"><small className="c-grey-500 fw-600">Period</small>
-                      <span className="fsz-def fw-600 mR-10 c-grey-800">Last 60 days</span>
-                    </div>
-                  </div>
-                </div>
               </div>
             </div>
           </div>
@@ -163,13 +156,6 @@ const Revocations = () => {
                         <li>Technical revocations include only those revocations which result only from a technical violation and/or absconsion. If there is a technical violation in addition to a new offense, it is considered a non-technical revocation.</li>
                         <li><a href="methodology.html" target="_blank">Read more...</a></li>
                       </ul>
-                    </div>
-                  </div>
-                </div>
-                <div className="layer bdT p-20 w-100">
-                  <div className="peers ai-c jc-c gapX-20">
-                    <div className="peer fw-600"><small className="c-grey-500 fw-600">Period</small>
-                      <span className="fsz-def fw-600 mR-10 c-grey-800">Last 60 days</span>
                     </div>
                   </div>
                 </div>
