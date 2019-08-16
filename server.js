@@ -54,7 +54,7 @@ const checkJwt = jwt({
   algorithm: ["RS256"]
 });
 
-app.get("/api/admissions", checkJwt, api.admissions);
+app.get("/api/snapshots", api.snapshots);
 app.get("/api/reincarcerations", checkJwt, api.reincarcerations);
 app.get("/api/revocations", checkJwt, api.revocations);
 app.get("/api/external", checkJwt, api.external);
