@@ -37,7 +37,7 @@ const TopBar = (props) => {
           </li>
           )}
           <li style={{paddingLeft: '20px', paddingTop: '22px'}}>
-            <h5 className="lh-1 mB-0 logo-text">{normalizedPath}</h5>
+            <h5 className="lh-1 mB-0 logo-text recidiviz-dark-green-text">{normalizedPath}</h5>
           </li>
         </ul>
         <ul className="nav-right">
