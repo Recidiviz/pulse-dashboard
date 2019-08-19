@@ -8,7 +8,7 @@ import { useAuth0 } from '../react-auth0-spa';
 
 import SupervisionSuccessSnapshot from '../components/charts/snapshots/SupervisionSuccessSnapshot';
 import RevocationAdmissionsSnapshot from '../components/charts/snapshots/RevocationAdmissionsSnapshot';
-import LSIRScoreChangeSnapshot from '../components/charts/snapshots/LSIRScoreChangeSnapshot';
+import LsirScoreChangeSnapshot from '../components/charts/snapshots/LsirScoreChangeSnapshot';
 import DaysAtLibertySnapshot from '../components/charts/snapshots/DaysAtLibertySnapshot';
 
 
@@ -38,7 +38,7 @@ const Snapshots = () => {
     fetchChartData();
   }, []);
 
-  if (loading || !user) {
+  if (loading || !user || awaitingApi) {
     return <Loading />;
   }
 
@@ -48,7 +48,7 @@ const Snapshots = () => {
         <div className="row gap-20 masonry pos-r">
           <div className="masonry-sizer col-md-6" />
 
-          {/* #Revocation snapshot ==================== */}
+          {/* #Successful completion of supervision snapshot ==================== */}
           <div className="masonry-item col-md-6">
             <div className="bd bgc-white p-20">
               <div className="layers">
@@ -61,7 +61,7 @@ const Snapshots = () => {
                           Export
                         </a>
                         <div className="dropdown-menu" aria-labelledby="exportDropdownMenuButton-successfulSupervisionSnapshot">
-                          <a className="dropdown-item" id="downloadChartAsImage-successfulSupervisionSnapshott" href="javascript:void(0);">Export image</a>
+                          <a className="dropdown-item" id="downloadChartAsImage-successfulSupervisionSnapshot" href="javascript:void(0);">Export image</a>
                           <a className="dropdown-item" id="downloadChartData-successfulSupervisionSnapshot" href="javascript:void(0);">Export data</a>
                         </div>
                       </div>
@@ -70,12 +70,15 @@ const Snapshots = () => {
                 </div>
                 <div className="layer w-100 pX-20 pT-20">
                   <h4 className="lh-1" id="supervisionSuccessSnapshot-header">
+                    CONTENT
                   </h4>
                 </div>
                 <div className="layer w-100 p-20">
                   <div className="ai-c jc-c gapX-20">
                     <div className="col-md-12">
-                      <SupervisionSuccessSnapshot />
+                      <SupervisionSuccessSnapshot
+                        supervisionSuccessRates={apiData.supervisionSuccessRates}
+                      />
                     </div>
                   </div>
                 </div>
@@ -105,22 +108,22 @@ const Snapshots = () => {
                 </div>
                 <div className="layer w-100 pX-20 pT-20">
                   <h4 className="lh-1" id="revocationAdmissionsSnapshot-header">
+                    CONTENT
                   </h4>
                 </div>
-                <div className="layer w-100 p-40">
+                <div className="layer w-100 p-20">
                   <div className="ai-c jc-c gapX-20">
                     <div className="col-md-12">
-                      <RevocationAdmissionsSnapshot />
+                      <RevocationAdmissionsSnapshot
+                        revocationAdmissionsByMonth={apiData.revocationAdmissionsByMonth}
+                      />
                     </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
 
-        <div className="row gap-20 masonry pos-r">
-          <div className="masonry-sizer col-md-12" />
           {/* #Average days at liberty ==================== */}
           <div className="masonry-item col-md-6">
             <div className="bd bgc-white p-20">
@@ -142,12 +145,16 @@ const Snapshots = () => {
                   </h6>
                 </div>
                 <div className="layer w-100 pX-20 pT-20">
-                  <h4 className="lh-1" id="daysAtLibertySnapshot-header"/>
+                  <h4 className="lh-1" id="daysAtLibertySnapshot-header">
+                    CONTENT
+                  </h4>
                 </div>
                 <div className="layer w-100 p-20">
                   <div className="ai-c jc-c gapX-20">
                     <div className="col-md-12">
-                      <DaysAtLibertySnapshot />
+                      <DaysAtLibertySnapshot
+                        daysAtLibertyByMonth={apiData.daysAtLibertyByMonth}
+                      />
                     </div>
                   </div>
                 </div>
@@ -164,25 +171,28 @@ const Snapshots = () => {
                     AVERAGE CHANGE IN LSIR SCORES
                     <span className="fa-pull-right">
                       <div className="dropdown show">
-                        <a className="btn btn-secondary btn-sm dropdown-toggle" href="#" role="button" id="exportDropdownMenuButton-LSIRScoreChangeSnapshot" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <a className="btn btn-secondary btn-sm dropdown-toggle" href="#" role="button" id="exportDropdownMenuButton-LsirScoreChangeSnapshot" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                           Export
                         </a>
-                        <div className="dropdown-menu" aria-labelledby="exportDropdownMenuButton-LSIRScoreChangeSnapshot">
-                          <a className="dropdown-item" id="downloadChartAsImage-LSIRScoreChangeSnapshot" href="javascript:void(0);">Export image</a>
-                          <a className="dropdown-item" id="downloadChartData-LSIRScoreChangeSnapshot" href="javascript:void(0);">Export data</a>
+                        <div className="dropdown-menu" aria-labelledby="exportDropdownMenuButton-LsirScoreChangeSnapshot">
+                          <a className="dropdown-item" id="downloadChartAsImage-LsirScoreChangeSnapshot" href="javascript:void(0);">Export image</a>
+                          <a className="dropdown-item" id="downloadChartData-LsirScoreChangeSnapshot" href="javascript:void(0);">Export data</a>
                         </div>
                       </div>
                     </span>
                   </h6>
                 </div>
                 <div className="layer w-100 pX-20 pT-20">
-                  <h4 className="lh-1" id="LSIRScoreChangeSnapshot-header">
+                  <h4 className="lh-1" id="LsirScoreChangeSnapshot-header">
+                    CONTENT
                   </h4>
                 </div>
                 <div className="layer w-100 p-20">
                   <div className="ai-c jc-c gapX-20">
                     <div className="col-md-12">
-                      <LSIRScoreChangeSnapshot />
+                      <LsirScoreChangeSnapshot
+                        lsirScoreChangeByMonth={apiData.lsirScoreChangeByMonth}
+                      />
                     </div>
                   </div>
                 </div>

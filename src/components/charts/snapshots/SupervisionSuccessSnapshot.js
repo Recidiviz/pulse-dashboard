@@ -4,7 +4,7 @@ import { Line } from 'react-chartjs-2';
 import { trendlineLinear } from 'chartjs-plugin-trendline';
 import { configureDownloadButtons } from '../../../assets/scripts/charts/chartJS/downloads';
 import { COLORS } from '../../../assets/scripts/constants/colors';
-import { monthNamesShortFromNumberList, monthNamesFromShortName } from '../../../utils/monthConversion';
+import { monthNamesShortWithYearsFromNumberList, monthNamesFromShortName } from '../../../utils/monthConversion';
 
 const SupervisionSuccessSnapshot = (props) => {
   const [chartLabels, setChartLabels] = useState([]);
@@ -12,7 +12,7 @@ const SupervisionSuccessSnapshot = (props) => {
 
   // TODO: Update this to process supervision success data
   const processResponse = () => {
-    const countsByMonth = props.revocationCountsByMonth;
+    const countsByMonth = props.supervisionSuccessRates;
 
     var sorted = [];
     for (var month in countsByMonth) {
@@ -25,16 +25,16 @@ const SupervisionSuccessSnapshot = (props) => {
 
   useEffect(() => {
     processResponse();
-  }, [props.revocationCountsByMonth]);
+  }, [props.supervisionSuccessRates]);
 
-  const months = [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 1, 2, 3];
-  const monthNamesShort = monthNamesShortFromNumberList(months);
+  // const months = [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 1, 2, 3];
+  // const monthNamesShort = monthNamesShortFromNumberList(months);
 
   const chart = (
     <Line
       id="supervision-success-snapshot-chart"
       data={{
-        labels: monthNamesShort,
+        labels: monthNamesShortWithYearsFromNumberList(chartLabels),
         datasets: [{
           backgroundColor: COLORS['blue-standard'],
           borderColor: COLORS['blue-standard'],
@@ -44,9 +44,7 @@ const SupervisionSuccessSnapshot = (props) => {
           fill: false,
           borderWidth: 1,
           lineTension: 0,
-          data: [69.32, 68.64, 66.48, 66.73, 69.24,
-            69.21, 66.99, 67.18, 65.72, 68.26,
-            69.61, 65.06, 47.53],
+          data: chartDataPoints,
           trendlineLinear: {
             style: COLORS['yellow-standard'],
             lineStyle: 'solid',
@@ -167,16 +165,16 @@ const SupervisionSuccessSnapshot = (props) => {
   const chartDataLabels = chart.props.data.labels;
   const mostRecentMonth = monthNamesFromShortName(chartDataLabels[chartDataLabels.length - 1]);
 
-  const header = document.getElementById('supervisionSuccessSnapshot-header');
-
-  if (header) {
-    const str1 = "<b style='color:#809AE5'>";
-    const str2 = `${mostRecentValue}`;
-    const str3 = '% of people </b> whose supervision was scheduled to end in ';
-    const str4 = `${mostRecentMonth}`;
-    const str5 = " <b style='color:#809AE5'>successfully completed their supervision </b> by that time.";
-    header.innerHTML = str1.concat(str2, str3, str4, str5);
-  }
+  // const header = document.getElementById('supervisionSuccessSnapshot-header');
+  //
+  // if (header) {
+  //   const str1 = "<b style='color:#809AE5'>";
+  //   const str2 = `${mostRecentValue}`;
+  //   const str3 = '% of people </b> whose supervision was scheduled to end in ';
+  //   const str4 = `${mostRecentMonth}`;
+  //   const str5 = " <b style='color:#809AE5'>successfully completed their supervision </b> by that time.";
+  //   header.innerHTML = str1.concat(str2, str3, str4, str5);
+  // }
 
   return (chart);
 };

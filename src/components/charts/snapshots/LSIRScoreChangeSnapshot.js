@@ -4,19 +4,19 @@ import { Line } from 'react-chartjs-2';
 import { trendlineLinear } from 'chartjs-plugin-trendline';
 import { configureDownloadButtons } from '../../../assets/scripts/charts/chartJS/downloads';
 import { COLORS } from '../../../assets/scripts/constants/colors';
-import { monthNamesShortFromNumberList } from '../../../utils/monthConversion';
+import { monthNamesShortWithYearsFromNumberList } from '../../../utils/monthConversion';
 
-const LSIRScoreChangeSnapshot = (props) => {
+const LsirScoreChangeSnapshot = (props) => {
   const [chartLabels, setChartLabels] = useState([]);
   const [chartDataPoints, setChartDataPoints] = useState([]);
 
   // TODO: Update this to process LSIR data
   const processResponse = () => {
-    const countsByMonth = props.revocationCountsByMonth;
+    const changeByMonth = props.lsirScoreChangeByMonth;
 
     var sorted = [];
-    for (var month in countsByMonth) {
-      sorted.push([month, countsByMonth[month]]);
+    for (var month in changeByMonth) {
+      sorted.push([month, changeByMonth[month]]);
     }
 
     setChartLabels(sorted.map((element) => element[0]));
@@ -25,16 +25,13 @@ const LSIRScoreChangeSnapshot = (props) => {
 
   useEffect(() => {
     processResponse();
-  }, [props.revocationCountsByMonth]);
-
-  const months = [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 1, 2, 3];
-  const monthNamesShort = monthNamesShortFromNumberList(months);
+  }, [props.lsirScoreChangeByMonth]);
 
   const chart = (
     <Line
       id="lsir-score-change-snapshot-chart"
       data={{
-        labels: monthNamesShort,
+        labels: monthNamesShortWithYearsFromNumberList(chartLabels),
         datasets: [{
           backgroundColor: COLORS['blue-standard'],
           borderColor: COLORS['blue-standard'],
@@ -44,8 +41,7 @@ const LSIRScoreChangeSnapshot = (props) => {
           fill: false,
           borderWidth: 1,
           lineTension: 0,
-          data: [0.26, 0.40, 0.90, 0.28, 0.42, 0.41, 0.72, -0.09, -0.10, 0.29,
-            -0.44, -0.30, 0.07],
+          data: chartDataPoints,
           trendlineLinear: {
             style: COLORS['yellow-standard'],
             lineStyle: 'solid',
@@ -91,7 +87,7 @@ const LSIRScoreChangeSnapshot = (props) => {
             },
             scaleLabel: {
               display: true,
-              labelString: 'change in LSIR scores',
+              labelString: 'Change in LSIR scores',
               fontColor: COLORS['grey-500'],
               fontStyle: 'bold',
             },
@@ -161,16 +157,16 @@ const LSIRScoreChangeSnapshot = (props) => {
   configureDownloadButtons('lsir-score-change', 'Snapshot', chart.props,
     document.getElementById('lsir-score-change-snapshot-chart'), exportedStructureCallback);
 
-  const header = document.getElementById('LSIRScoreChangeSnapshot-header');
-
-  // TODO: Make trending text dynamic based on goal and slope of trendline
-  if (header) {
-    const str1 = 'The change in LSIR scores between intake and termination of supervision has been';
-    const str2 = "<b style='color:#809AE5'> trending towards the goal. </b>";
-    header.innerHTML = str1.concat(str2);
-  }
+  // const header = document.getElementById('LSIRScoreChangeSnapshot-header');
+  //
+  // // TODO: Make trending text dynamic based on goal and slope of trendline
+  // if (header) {
+  //   const str1 = 'The change in LSIR scores between intake and termination of supervision has been';
+  //   const str2 = "<b style='color:#809AE5'> trending towards the goal. </b>";
+  //   header.innerHTML = str1.concat(str2);
+  // }
 
   return (chart);
 };
 
-export default LSIRScoreChangeSnapshot;
+export default LsirScoreChangeSnapshot;

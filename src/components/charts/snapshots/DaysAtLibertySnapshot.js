@@ -4,7 +4,7 @@ import { Line } from 'react-chartjs-2';
 import { trendlineLinear } from 'chartjs-plugin-trendline';
 import { configureDownloadButtons } from '../../../assets/scripts/charts/chartJS/downloads';
 import { COLORS } from '../../../assets/scripts/constants/colors';
-import { monthNamesShortFromNumberList } from '../../../utils/monthConversion';
+import { monthNamesShortWithYearsFromNumberList } from '../../../utils/monthConversion';
 
 const DaysAtLibertySnapshot = (props) => {
   const [chartLabels, setChartLabels] = useState([]);
@@ -12,7 +12,7 @@ const DaysAtLibertySnapshot = (props) => {
 
   // TODO: Update this to process LSIR data
   const processResponse = () => {
-    const countsByMonth = props.revocationCountsByMonth;
+    const countsByMonth = props.daysAtLibertyByMonth;
 
     var sorted = [];
     for (var month in countsByMonth) {
@@ -25,16 +25,16 @@ const DaysAtLibertySnapshot = (props) => {
 
   useEffect(() => {
     processResponse();
-  }, [props.revocationCountsByMonth]);
+  }, [props.daysAtLibertyByMonth]);
 
-  const months = [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 1, 2, 3];
-  const monthNamesShort = monthNamesShortFromNumberList(months);
+  // const months = [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 1, 2, 3];
+  // const monthNamesShort = monthNamesShortWithYearsFromNumberList(months);
 
   const chart = (
     <Line
       id="days-at-liberty-snapshot-chart"
       data={{
-        labels: monthNamesShort,
+        labels: monthNamesShortWithYearsFromNumberList(chartLabels),
         datasets: [{
           backgroundColor: COLORS['blue-standard'],
           borderColor: COLORS['blue-standard'],
@@ -44,8 +44,7 @@ const DaysAtLibertySnapshot = (props) => {
           fill: false,
           borderWidth: 1,
           lineTension: 0,
-          data: [897.91, 924.41, 818.27, 826.52, 728.31, 656.56, 650.30, 605.83,
-            849.50, 562.70, 629.14, 1030.38, 813.00],
+          data: chartDataPoints,
           trendlineLinear: {
             style: COLORS['yellow-standard'],
             lineStyle: 'solid',
@@ -161,14 +160,14 @@ const DaysAtLibertySnapshot = (props) => {
   configureDownloadButtons('days-at-liberty', 'Snapshot', chart.props,
     document.getElementById('days-at-liberty-snapshot-chart'), exportedStructureCallback);
 
-  const header = document.getElementById('daysAtLibertySnapshot-header');
-
-  // TODO: Make trending text dynamic based on goal and slope of trendline
-  if (header) {
-    const str1 = 'The average days between release from incarceration and readmission has been';
-    const str2 = "<b style='color:#809AE5'> trending away from the goal. </b>";
-    header.innerHTML = str1.concat(str2);
-  }
+  // const header = document.getElementById('daysAtLibertySnapshot-header');
+  //
+  // // TODO: Make trending text dynamic based on goal and slope of trendline
+  // if (header) {
+  //   const str1 = 'The average days between release from incarceration and readmission has been';
+  //   const str2 = "<b style='color:#809AE5'> trending away from the goal. </b>";
+  //   header.innerHTML = str1.concat(str2);
+  // }
 
   return (chart);
 };

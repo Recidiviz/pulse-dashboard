@@ -4,7 +4,7 @@ import { Line } from 'react-chartjs-2';
 import { trendlineLinear } from 'chartjs-plugin-trendline';
 import { configureDownloadButtons } from '../../../assets/scripts/charts/chartJS/downloads';
 import { COLORS } from '../../../assets/scripts/constants/colors';
-import { monthNamesShortFromNumberList, monthNamesFromShortName } from '../../../utils/monthConversion';
+import { monthNamesShortWithYearsFromNumberList, monthNamesFromShortName } from '../../../utils/monthConversion';
 
 
 const RevocationAdmissionsSnapshot = (props) => {
@@ -13,7 +13,7 @@ const RevocationAdmissionsSnapshot = (props) => {
 
   // TODO: Update this to process supervision success data
   const processResponse = () => {
-    const countsByMonth = props.revocationCountsByMonth;
+    const countsByMonth = props.revocationAdmissionsByMonth;
 
     var sorted = [];
     for (var month in countsByMonth) {
@@ -26,16 +26,16 @@ const RevocationAdmissionsSnapshot = (props) => {
 
   useEffect(() => {
     processResponse();
-  }, [props.revocationCountsByMonth]);
+  }, [props.revocationAdmissionsByMonth]);
 
-  const months = [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 1, 2, 3];
-  const monthNamesShort = monthNamesShortFromNumberList(months);
+  // const months = [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 1, 2, 3];
+  // const monthNamesShort = monthNamesShortFromNumberList(months);
 
   const chart = (
     <Line
       id="revocation-admissions-snapshot-chart"
       data={{
-        labels: monthNamesShort,
+        labels: monthNamesShortWithYearsFromNumberList(chartLabels),
         datasets: [{
           backgroundColor: COLORS['blue-standard'],
           borderColor: COLORS['blue-standard'],
@@ -45,8 +45,7 @@ const RevocationAdmissionsSnapshot = (props) => {
           fill: false,
           borderWidth: 1,
           lineTension: 0,
-          data: [50.86, 58.26, 48.97, 50.48, 47.62, 47.06, 52.73,
-            52.67, 45.69, 56.64, 48.89, 47.93, 55.63],
+          data: chartDataPoints,
           trendlineLinear: {
             style: COLORS['yellow-standard'],
             lineStyle: 'solid',
@@ -168,16 +167,16 @@ const RevocationAdmissionsSnapshot = (props) => {
   const chartDataLabels = chart.props.data.labels;
   const mostRecentMonth = monthNamesFromShortName(chartDataLabels[chartDataLabels.length - 1]);
 
-  const header = document.getElementById('revocationAdmissionsSnapshot-header');
-
-  if (header) {
-    const str1 = "<b style='color:#809AE5'>";
-    const str2 = `${mostRecentValue}`;
-    const str3 = '% of prison admissions </b> in ';
-    const str4 = `${mostRecentMonth}`;
-    const str5 = ' were due to parole or probation revocations.';
-    header.innerHTML = str1.concat(str2, str3, str4, str5);
-  }
+  // const header = document.getElementById('revocationAdmissionsSnapshot-header');
+  //
+  // if (header) {
+  //   const str1 = "<b style='color:#809AE5'>";
+  //   const str2 = `${mostRecentValue}`;
+  //   const str3 = '% of prison admissions </b> in ';
+  //   const str4 = `${mostRecentMonth}`;
+  //   const str5 = ' were due to parole or probation revocations.';
+  //   header.innerHTML = str1.concat(str2, str3, str4, str5);
+  // }
 
   return (chart);
 };
