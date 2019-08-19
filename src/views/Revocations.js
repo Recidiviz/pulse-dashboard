@@ -56,7 +56,7 @@ const Revocations = () => {
                     The <span className="font-weight-bold">revocation</span> count this month was <span className="font-weight-bold">10</span> over target
                     <span className="fa-pull-right">
                       <div className="dropdown show">
-                        <a className="btn btn-secondary btn-sm dropdown-toggle recidiviz-light-green-bg" href="#" role="button" id="exportDropdownMenuButton-revocationDrivers" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <a className="btn btn-secondary btn-sm dropdown-toggle" href="#" role="button" id="exportDropdownMenuButton-revocationDrivers" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                           Export
                         </a>
                         <div className="dropdown-menu" aria-labelledby="exportDropdownMenuButton-revocationDrivers">

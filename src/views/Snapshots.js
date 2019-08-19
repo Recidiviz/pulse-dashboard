@@ -54,7 +54,7 @@ const Snapshots = () => {
                     Revocations <b>decreased</b> this month by: <b style={{color: '#DAA520'}}>3.8%</b>
                     <span className="fa-pull-right">
                       <div className="dropdown show">
-                        <a className="btn btn-secondary btn-sm dropdown-toggle recidiviz-light-green-bg" href="#" role="button" id="exportDropdownMenuButton-revocationSnapshot" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <a className="btn btn-secondary btn-sm dropdown-toggle" href="#" role="button" id="exportDropdownMenuButton-revocationSnapshot" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                           Export
                         </a>
                         <div className="dropdown-menu" aria-labelledby="exportDropdownMenuButton-revocationSnapshot">
@@ -143,7 +143,7 @@ const Snapshots = () => {
                     Reincarcerations <b>decreased</b> this month by: <b style={{color: '#DAA520'}}>8.82%</b>
                     <span className="fa-pull-right">
                       <div className="dropdown show">
-                        <a className="btn btn-secondary btn-sm dropdown-toggle recidiviz-light-green-bg" href="#" role="button" id="exportDropdownMenuButton-reincarcerationSnapshot" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <a className="btn btn-secondary btn-sm dropdown-toggle" href="#" role="button" id="exportDropdownMenuButton-reincarcerationSnapshot" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                           Export
                         </a>
                         <div className="dropdown-menu" aria-labelledby="exportDropdownMenuButton-reincarcerationSnapshot">
