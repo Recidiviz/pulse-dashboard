@@ -26,6 +26,27 @@ const monthNamesShortFromNumberList = function monthNamesShortFromNumberList(
   return monthList;
 };
 
+const monthNamesShortWithYearsFromNumberList = function monthNamesShortWithYearsFromNumberList(
+  numberList,
+) {
+  const monthNames = monthNamesShortFromNumberList(numberList);
+
+  if (numberList.length > 12 || numberList[numberList.length - 1] < numberList[0]) {
+    const today = new Date();
+    let year = today.getFullYear();
+
+    for (let i = numberList.length - 1; i >= 0; i -= 1) {
+      if (numberList[i] === 1) {
+        monthNames[i] = monthNames[i].concat(" '", year % 100);
+        year -= 1;
+      } else if (i === 0) {
+        monthNames[i] = monthNames[i].concat(" '", year % 100);
+      }
+    }
+  }
+  return monthNames;
+};
+
 const monthNamesFromShortName = function monthNamesFromShortName(shortName) {
   return MONTH_NAMES[MONTH_NAMES_SHORT.indexOf(shortName)];
 };
@@ -34,5 +55,6 @@ export {
   monthNameFromNumber,
   monthNameShortFromNumber,
   monthNamesShortFromNumberList,
+  monthNamesShortWithYearsFromNumberList,
   monthNamesFromShortName,
 };
