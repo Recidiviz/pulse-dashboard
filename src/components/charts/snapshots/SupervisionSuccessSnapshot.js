@@ -19,7 +19,7 @@ const SupervisionSuccessSnapshot = (props) => {
       sorted.push([month, countsByMonth[month]]);
     }
 
-    setChartLabels(sorted.map((element) => element[0]));
+    setChartLabels(monthNamesShortWithYearsFromNumberList(sorted.map((element) => element[0])));
     setChartDataPoints(sorted.map((element) => element[1]));
   };
 
@@ -34,7 +34,7 @@ const SupervisionSuccessSnapshot = (props) => {
     <Line
       id="supervision-success-snapshot-chart"
       data={{
-        labels: monthNamesShortWithYearsFromNumberList(chartLabels),
+        labels: chartLabels,
         datasets: [{
           backgroundColor: COLORS['blue-standard'],
           borderColor: COLORS['blue-standard'],

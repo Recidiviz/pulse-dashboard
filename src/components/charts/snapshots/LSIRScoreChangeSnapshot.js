@@ -19,7 +19,7 @@ const LsirScoreChangeSnapshot = (props) => {
       sorted.push([month, changeByMonth[month]]);
     }
 
-    setChartLabels(sorted.map((element) => element[0]));
+    setChartLabels(monthNamesShortWithYearsFromNumberList(sorted.map((element) => element[0])));
     setChartDataPoints(sorted.map((element) => element[1]));
   };
 
@@ -31,7 +31,7 @@ const LsirScoreChangeSnapshot = (props) => {
     <Line
       id="lsir-score-change-snapshot-chart"
       data={{
-        labels: monthNamesShortWithYearsFromNumberList(chartLabels),
+        labels: chartLabels,
         datasets: [{
           backgroundColor: COLORS['blue-standard'],
           borderColor: COLORS['blue-standard'],
