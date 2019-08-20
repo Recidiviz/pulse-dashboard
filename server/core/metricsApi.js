@@ -16,9 +16,6 @@ const METRIC_CACHE_TTL_SECONDS = 60 * 60;  // Expire items in the cache after 1 
 var memoryCache = cacheManager.caching({ store: 'memory', ttl: METRIC_CACHE_TTL_SECONDS });
 
 const FILES_BY_METRIC_TYPE = {
-  external: [
-    'external.json',
-  ],
   admission: [
     'admissions_by_type_by_month.json',
   ],
@@ -115,10 +112,6 @@ function fetchSnapshotMetrics(callback) {
   return fetchMetrics('US_ND', 'snapshot', callback);
 }
 
-function fetchExternalMetrics(callback) {
-  return fetchMetrics('US_ND', 'external', callback);
-}
-
 function fetchReincarcerationMetrics(callback) {
   return fetchMetrics('US_ND', 'reincarceration', callback);
 }
@@ -129,7 +122,6 @@ function fetchRevocationMetrics(callback) {
 
 module.exports = {
   fetchSnapshotMetrics: fetchSnapshotMetrics,
-  fetchExternalMetrics: fetchExternalMetrics,
   fetchReincarcerationMetrics: fetchReincarcerationMetrics,
   fetchRevocationMetrics: fetchRevocationMetrics,
 }

@@ -29,15 +29,8 @@ function revocations(req, res) {
   metricsApi.fetchRevocationMetrics(responder(res));
 }
 
-// TODO: Deprecate this once we are ready to switch on the live APIs
-function external(req, res) {
-  metricsApi.fetchExternalMetrics(responder(res));
-}
-
 module.exports = {
   snapshots: snapshots,
-  external: external,
   reincarcerations: reincarcerations,
   revocations: revocations,
-  external: external,
 }
