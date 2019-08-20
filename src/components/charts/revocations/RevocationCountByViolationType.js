@@ -61,7 +61,7 @@ const RevocationCountByViolationType = (props) => {
 
     if (firstMonthLastYear <= 12) {
       let monthsLastYearData = overallCounts[sortedYears[sortedYears.length - 2]];
-      for (var i = firstMonthLastYear; i <= 12; i++) {
+      for (var i = firstMonthLastYear; i <= 12; i += 1) {
         monthsLabels.push(i);
         let data = monthsLastYearData[i];
         Object.keys(data).forEach(function (violationType) {
@@ -71,13 +71,17 @@ const RevocationCountByViolationType = (props) => {
     }
 
     let monthsThisYearData = overallCounts[sortedYears[sortedYears.length - 1]];
-    monthsThisYear.forEach(function (month) {
-      monthsLabels.push(month);
-      let data = monthsThisYearData[month];
+    let startMonth = 1;
+    if (mostRecentMonth > 6) {
+      startMonth = mostRecentMonth - 5;
+    }
+    for (let i = startMonth; i <= mostRecentMonth; i += 1) {
+      monthsLabels.push(i);
+      let data = monthsThisYearData[i];
       Object.keys(data).forEach(function (violationType) {
         violation_arrays[violationType].push(data[violationType]);
       })
-    })
+    }
 
     setChartLabels(monthsLabels);
     setAbsconsionDataPoints(violation_arrays['ABSCONDED']);
