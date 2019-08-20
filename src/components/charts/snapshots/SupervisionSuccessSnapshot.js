@@ -1,16 +1,14 @@
 import React, { useState, useEffect } from 'react';
 
 import { Line } from 'react-chartjs-2';
-import { trendlineLinear } from 'chartjs-plugin-trendline';
 import { configureDownloadButtons } from '../../../assets/scripts/charts/chartJS/downloads';
 import { COLORS } from '../../../assets/scripts/constants/colors';
-import { monthNamesShortWithYearsFromNumberList, monthNamesFromShortName } from '../../../utils/monthConversion';
+import { monthNamesShortWithYearsFromNumberList } from '../../../utils/monthConversion';
 
 const SupervisionSuccessSnapshot = (props) => {
   const [chartLabels, setChartLabels] = useState([]);
   const [chartDataPoints, setChartDataPoints] = useState([]);
 
-  // TODO: Update this to process supervision success data
   const processResponse = () => {
     const countsByMonth = props.supervisionSuccessRates;
 
@@ -27,15 +25,13 @@ const SupervisionSuccessSnapshot = (props) => {
     processResponse();
   }, [props.supervisionSuccessRates]);
 
-  // const months = [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 1, 2, 3];
-  // const monthNamesShort = monthNamesShortFromNumberList(months);
-
   const chart = (
     <Line
       id="supervision-success-snapshot-chart"
       data={{
         labels: chartLabels,
         datasets: [{
+          // TODO: Add custom trendline plugin
           backgroundColor: COLORS['blue-standard'],
           borderColor: COLORS['blue-standard'],
           pointBackgroundColor: COLORS['blue-standard'],
@@ -45,11 +41,6 @@ const SupervisionSuccessSnapshot = (props) => {
           borderWidth: 1,
           lineTension: 0,
           data: chartDataPoints,
-          trendlineLinear: {
-            style: COLORS['yellow-standard'],
-            lineStyle: 'solid',
-            width: 1,
-          },
         },
         ],
       }}
@@ -159,11 +150,11 @@ const SupervisionSuccessSnapshot = (props) => {
   configureDownloadButtons('supervision-success', 'Snapshot', chart.props,
     document.getElementById('supervision-success-snapshot-chart'), exportedStructureCallback);
 
-  const chartData = chart.props.data.datasets[0].data;
-  const mostRecentValue = chartData[chartData.length - 1];
-
-  const chartDataLabels = chart.props.data.labels;
-  const mostRecentMonth = monthNamesFromShortName(chartDataLabels[chartDataLabels.length - 1]);
+  // const chartData = chart.props.data.datasets[0].data;
+  // const mostRecentValue = chartData[chartData.length - 1];
+  //
+  // const chartDataLabels = chart.props.data.labels;
+  // const mostRecentMonth = monthNamesFromShortName(chartDataLabels[chartDataLabels.length - 1]);
 
   // const header = document.getElementById('supervisionSuccessSnapshot-header');
   //

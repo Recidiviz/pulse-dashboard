@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
 import { Line } from 'react-chartjs-2';
-import { trendlineLinear } from 'chartjs-plugin-trendline';
 import { configureDownloadButtons } from '../../../assets/scripts/charts/chartJS/downloads';
 import { COLORS } from '../../../assets/scripts/constants/colors';
 import { monthNamesShortWithYearsFromNumberList } from '../../../utils/monthConversion';
@@ -10,7 +9,6 @@ const LsirScoreChangeSnapshot = (props) => {
   const [chartLabels, setChartLabels] = useState([]);
   const [chartDataPoints, setChartDataPoints] = useState([]);
 
-  // TODO: Update this to process LSIR data
   const processResponse = () => {
     const changeByMonth = props.lsirScoreChangeByMonth;
 
@@ -33,6 +31,7 @@ const LsirScoreChangeSnapshot = (props) => {
       data={{
         labels: chartLabels,
         datasets: [{
+          // TODO: Add custom trendline plugin
           backgroundColor: COLORS['blue-standard'],
           borderColor: COLORS['blue-standard'],
           pointBackgroundColor: COLORS['blue-standard'],
@@ -42,11 +41,6 @@ const LsirScoreChangeSnapshot = (props) => {
           borderWidth: 1,
           lineTension: 0,
           data: chartDataPoints,
-          trendlineLinear: {
-            style: COLORS['yellow-standard'],
-            lineStyle: 'solid',
-            width: 1,
-          },
         },
         ],
       }}

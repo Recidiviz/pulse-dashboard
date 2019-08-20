@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
 import { Line } from 'react-chartjs-2';
-import { trendlineLinear } from 'chartjs-plugin-trendline';
 import { configureDownloadButtons } from '../../../assets/scripts/charts/chartJS/downloads';
 import { COLORS } from '../../../assets/scripts/constants/colors';
 import { monthNamesShortWithYearsFromNumberList } from '../../../utils/monthConversion';
@@ -10,7 +9,6 @@ const DaysAtLibertySnapshot = (props) => {
   const [chartLabels, setChartLabels] = useState([]);
   const [chartDataPoints, setChartDataPoints] = useState([]);
 
-  // TODO: Update this to process LSIR data
   const processResponse = () => {
     const countsByMonth = props.daysAtLibertyByMonth;
 
@@ -27,15 +25,13 @@ const DaysAtLibertySnapshot = (props) => {
     processResponse();
   }, [props.daysAtLibertyByMonth]);
 
-  // const months = [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 1, 2, 3];
-  // const monthNamesShort = monthNamesShortWithYearsFromNumberList(months);
-
   const chart = (
     <Line
       id="days-at-liberty-snapshot-chart"
       data={{
         labels: chartLabels,
         datasets: [{
+          // TODO: Add custom trendline plugin
           backgroundColor: COLORS['blue-standard'],
           borderColor: COLORS['blue-standard'],
           pointBackgroundColor: COLORS['blue-standard'],
