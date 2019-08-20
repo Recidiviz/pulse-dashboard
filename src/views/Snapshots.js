@@ -38,7 +38,7 @@ const Snapshots = () => {
     fetchChartData();
   }, []);
 
-  if (loading || !user || awaitingApi) {
+  if (loading || !user) {
     return <Loading />;
   }
 
