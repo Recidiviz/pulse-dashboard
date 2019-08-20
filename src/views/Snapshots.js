@@ -27,7 +27,7 @@ const Snapshots = () => {
       });
 
       const responseData = await response.json();
-      setApiData(responseData);
+      setApiData(responseData.external);
       setAwaitingApi(false);
     } catch (error) {
       console.error(error);

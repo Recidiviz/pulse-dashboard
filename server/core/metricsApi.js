@@ -16,6 +16,9 @@ const METRIC_CACHE_TTL_SECONDS = 60 * 60;  // Expire items in the cache after 1 
 var memoryCache = cacheManager.caching({ store: 'memory', ttl: METRIC_CACHE_TTL_SECONDS });
 
 const FILES_BY_METRIC_TYPE = {
+  external: [
+    'external.json',
+  ],
   admission: [
     'admissions_by_type_60_days.json',
     'admissions_by_type_by_month.json',
@@ -95,11 +98,15 @@ function convertDownloadToJson(contents) {
   if (!stringContents || stringContents.length === 0) {
     return null;
   }
-  return JSON.parse(contents.toString());
+  return JSON.parse(stringContents);
 }
 
 function fetchAdmissionMetrics(callback) {
   return fetchMetrics('US_ND', 'admission', callback);
+}
+
+function fetchExternalMetrics(callback) {
+  return fetchMetrics('US_ND', 'external', callback);
 }
 
 function fetchReincarcerationMetrics(callback) {
@@ -112,6 +119,7 @@ function fetchRevocationMetrics(callback) {
 
 module.exports = {
   fetchAdmissionMetrics: fetchAdmissionMetrics,
+  fetchExternalMetrics: fetchExternalMetrics,
   fetchReincarcerationMetrics: fetchReincarcerationMetrics,
   fetchRevocationMetrics: fetchRevocationMetrics,
 }
