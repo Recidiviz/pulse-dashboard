@@ -149,9 +149,11 @@ const DaysAtLibertySnapshot = (props) => {
     />
   );
 
-  // TODO: Change this to have export for supervision success data
   const exportedStructureCallback = function exportedStructureCallback() {
-    return {};
+    return {
+      metric: 'average-days-at-liberty-reincarcerations',
+      series: [],
+    };
   };
   configureDownloadButtons('daysAtLiberty', 'Snapshot', chart.props,
     document.getElementById('days-at-liberty-snapshot-chart'), exportedStructureCallback);

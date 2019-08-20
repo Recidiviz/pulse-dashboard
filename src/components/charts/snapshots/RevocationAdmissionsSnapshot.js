@@ -145,9 +145,11 @@ const RevocationAdmissionsSnapshot = (props) => {
     />
   );
 
-  // TODO: Change this to have export for revocation admissions data
   const exportedStructureCallback = function exportedStructureCallback() {
-    return {};
+    return {
+      metric: 'percentage-of-admissions-from-revocations',
+      series: [],
+    };
   };
   configureDownloadButtons('revocationAdmissions', 'Snapshot', chart.props,
     document.getElementById('revocation-admissions-snapshot-chart'), exportedStructureCallback);

@@ -143,10 +143,10 @@ const SupervisionSuccessSnapshot = (props) => {
     />
   );
 
-  // TODO: Change this to have export for supervision success data
   const exportedStructureCallback = function exportedStructureCallback() {
     return {
-      metric: 'supervision-success',
+      metric: 'percentage-successful-supervision-termination',
+      series: [],
     };
   };
 

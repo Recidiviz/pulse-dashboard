@@ -144,9 +144,11 @@ const LsirScoreChangeSnapshot = (props) => {
     />
   );
 
-  // TODO: Change this to have export for LSIR data
   const exportedStructureCallback = function exportedStructureCallback() {
-    return {};
+    return {
+      metric: 'average-change-in-LSIR-score-termination-intake',
+      series: [],
+    };
   };
   configureDownloadButtons('LsirScoreChange', 'Snapshot', chart.props,
     document.getElementById('lsir-score-change-snapshot-chart'), exportedStructureCallback);
