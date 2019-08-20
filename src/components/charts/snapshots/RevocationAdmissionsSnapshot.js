@@ -162,7 +162,7 @@ const RevocationAdmissionsSnapshot = (props) => {
 
   const header = document.getElementById(props.header);
 
-  if (header) {
+  if (header && mostRecentValue && mostRecentMonth) {
     const title = `<b style='color:#809AE5'>${mostRecentValue}% of prison admissions</b> in ${mostRecentMonth} were due to parole or probation revocations.`;
     header.innerHTML = title;
   }
