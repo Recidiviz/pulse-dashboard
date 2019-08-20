@@ -31,7 +31,7 @@ const SupervisionSuccessSnapshot = (props) => {
       data={{
         labels: chartLabels,
         datasets: [{
-          // TODO: Add custom trendline plugin
+          // TODO(51): Add custom trendline plugin
           backgroundColor: COLORS['blue-standard'],
           borderColor: COLORS['blue-standard'],
           pointBackgroundColor: COLORS['blue-standard'],
@@ -145,9 +145,12 @@ const SupervisionSuccessSnapshot = (props) => {
 
   // TODO: Change this to have export for supervision success data
   const exportedStructureCallback = function exportedStructureCallback() {
-    return {};
+    return {
+      metric: 'supervision-success',
+    };
   };
-  configureDownloadButtons('supervision-success', 'Snapshot', chart.props,
+
+  configureDownloadButtons('supervisionSuccess', 'Snapshot', chart.props,
     document.getElementById('supervision-success-snapshot-chart'), exportedStructureCallback);
 
   const chartData = chart.props.data.datasets[0].data;

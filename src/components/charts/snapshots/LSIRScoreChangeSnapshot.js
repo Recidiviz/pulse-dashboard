@@ -31,7 +31,7 @@ const LsirScoreChangeSnapshot = (props) => {
       data={{
         labels: chartLabels,
         datasets: [{
-          // TODO: Add custom trendline plugin
+          // TODO(51): Add custom trendline plugin
           backgroundColor: COLORS['blue-standard'],
           borderColor: COLORS['blue-standard'],
           pointBackgroundColor: COLORS['blue-standard'],
@@ -148,7 +148,7 @@ const LsirScoreChangeSnapshot = (props) => {
   const exportedStructureCallback = function exportedStructureCallback() {
     return {};
   };
-  configureDownloadButtons('lsir-score-change', 'Snapshot', chart.props,
+  configureDownloadButtons('LsirScoreChange', 'Snapshot', chart.props,
     document.getElementById('lsir-score-change-snapshot-chart'), exportedStructureCallback);
 
   const header = document.getElementById(props.header);

@@ -31,7 +31,7 @@ const DaysAtLibertySnapshot = (props) => {
       data={{
         labels: chartLabels,
         datasets: [{
-          // TODO: Add custom trendline plugin
+          // TODO(51): Add custom trendline plugin
           backgroundColor: COLORS['blue-standard'],
           borderColor: COLORS['blue-standard'],
           pointBackgroundColor: COLORS['blue-standard'],
@@ -153,7 +153,7 @@ const DaysAtLibertySnapshot = (props) => {
   const exportedStructureCallback = function exportedStructureCallback() {
     return {};
   };
-  configureDownloadButtons('days-at-liberty', 'Snapshot', chart.props,
+  configureDownloadButtons('daysAtLiberty', 'Snapshot', chart.props,
     document.getElementById('days-at-liberty-snapshot-chart'), exportedStructureCallback);
 
   const header = document.getElementById(props.header);

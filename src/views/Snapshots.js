@@ -8,7 +8,7 @@ import { useAuth0 } from '../react-auth0-spa';
 
 import SupervisionSuccessSnapshot from '../components/charts/snapshots/SupervisionSuccessSnapshot';
 import RevocationAdmissionsSnapshot from '../components/charts/snapshots/RevocationAdmissionsSnapshot';
-import LsirScoreChangeSnapshot from '../components/charts/snapshots/LsirScoreChangeSnapshot';
+import LsirScoreChangeSnapshot from '../components/charts/snapshots/LSIRScoreChangeSnapshot';
 import DaysAtLibertySnapshot from '../components/charts/snapshots/DaysAtLibertySnapshot';
 
 
@@ -57,12 +57,12 @@ const Snapshots = () => {
                     SUCCESSFUL COMPLETION OF SUPERVISION
                     <span className="fa-pull-right">
                       <div className="dropdown show">
-                        <a className="btn btn-secondary btn-sm dropdown-toggle" href="#" role="button" id="exportDropdownMenuButton-successfulSupervisionSnapshot" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <a className="btn btn-secondary btn-sm dropdown-toggle" href="#" role="button" id="exportDropdownMenuButton-supervisionSuccessSnapshot" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                           Export
                         </a>
-                        <div className="dropdown-menu" aria-labelledby="exportDropdownMenuButton-successfulSupervisionSnapshot">
-                          <a className="dropdown-item" id="downloadChartAsImage-successfulSupervisionSnapshot" href="javascript:void(0);">Export image</a>
-                          <a className="dropdown-item" id="downloadChartData-successfulSupervisionSnapshot" href="javascript:void(0);">Export data</a>
+                        <div className="dropdown-menu" aria-labelledby="exportDropdownMenuButton-supervisionSuccesSnapshot">
+                          <a className="dropdown-item" id="downloadChartAsImage-supervisionSuccessSnapshot" href="javascript:void(0);">Export image</a>
+                          <a className="dropdown-item" id="downloadChartData-supervisionSuccessSnapshot" href="javascript:void(0);">Export data</a>
                         </div>
                       </div>
                     </span>
@@ -133,12 +133,12 @@ const Snapshots = () => {
                     AVERAGE DAYS AT LIBERTY
                     <span className="fa-pull-right">
                       <div className="dropdown show">
-                        <a className="btn btn-secondary btn-sm dropdown-toggle" href="#" role="button" id="exportDropdownMenuButton-reincarcerationSnapshot" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <a className="btn btn-secondary btn-sm dropdown-toggle" href="#" role="button" id="exportDropdownMenuButton-daysAtLibertySnapshot" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                           Export
                         </a>
-                        <div className="dropdown-menu" aria-labelledby="exportDropdownMenuButton-reincarcerationSnapshot">
-                          <a className="dropdown-item" id="downloadChartAsImage-reincarcerationSnapshot" href="javascript:void(0);">Export image</a>
-                          <a className="dropdown-item" id="downloadChartData-reincarcerationSnapshot" href="javascript:void(0);">Export data</a>
+                        <div className="dropdown-menu" aria-labelledby="exportDropdownMenuButton-daysAtLibertySnapshot">
+                          <a className="dropdown-item" id="downloadChartAsImage-daysAtLibertySnapshot" href="javascript:void(0);">Export image</a>
+                          <a className="dropdown-item" id="downloadChartData-daysAtLibertySnapshot" href="javascript:void(0);">Export data</a>
                         </div>
                       </div>
                     </span>

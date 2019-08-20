@@ -32,7 +32,7 @@ const RevocationAdmissionsSnapshot = (props) => {
       data={{
         labels: chartLabels,
         datasets: [{
-          // TODO: Add custom trendline plugin
+          // TODO(51): Add custom trendline plugin
           backgroundColor: COLORS['blue-standard'],
           borderColor: COLORS['blue-standard'],
           pointBackgroundColor: COLORS['blue-standard'],
@@ -149,8 +149,8 @@ const RevocationAdmissionsSnapshot = (props) => {
   const exportedStructureCallback = function exportedStructureCallback() {
     return {};
   };
-  configureDownloadButtons('revocation-admissions', 'Snapshot', chart.props,
-    document.getElementById('revocation-admissionssnapshot-chart'), exportedStructureCallback);
+  configureDownloadButtons('revocationAdmissions', 'Snapshot', chart.props,
+    document.getElementById('revocation-admissions-snapshot-chart'), exportedStructureCallback);
 
   const chartData = chart.props.data.datasets[0].data;
   const mostRecentValue = chartData[chartData.length - 1];
