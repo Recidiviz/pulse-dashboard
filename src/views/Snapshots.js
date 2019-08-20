@@ -70,7 +70,6 @@ const Snapshots = () => {
                 </div>
                 <div className="layer w-100 pX-20 pT-20">
                   <h4 className="lh-1" id="supervisionSuccessSnapshot-header">
-                    CONTENT
                   </h4>
                 </div>
                 <div className="layer w-100 p-20">
@@ -78,6 +77,7 @@ const Snapshots = () => {
                     <div className="col-md-12">
                       <SupervisionSuccessSnapshot
                         supervisionSuccessRates={apiData.supervisionSuccessRates}
+                        header="supervisionSuccessSnapshot-header"
                       />
                     </div>
                   </div>
@@ -108,7 +108,6 @@ const Snapshots = () => {
                 </div>
                 <div className="layer w-100 pX-20 pT-20">
                   <h4 className="lh-1" id="revocationAdmissionsSnapshot-header">
-                    CONTENT
                   </h4>
                 </div>
                 <div className="layer w-100 p-20">
@@ -116,6 +115,7 @@ const Snapshots = () => {
                     <div className="col-md-12">
                       <RevocationAdmissionsSnapshot
                         revocationAdmissionsByMonth={apiData.revocationAdmissionsByMonth}
+                        header="revocationAdmissionsSnapshot-header"
                       />
                     </div>
                   </div>
@@ -146,7 +146,6 @@ const Snapshots = () => {
                 </div>
                 <div className="layer w-100 pX-20 pT-20">
                   <h4 className="lh-1" id="daysAtLibertySnapshot-header">
-                    CONTENT
                   </h4>
                 </div>
                 <div className="layer w-100 p-20">
@@ -154,6 +153,7 @@ const Snapshots = () => {
                     <div className="col-md-12">
                       <DaysAtLibertySnapshot
                         daysAtLibertyByMonth={apiData.daysAtLibertyByMonth}
+                        header="daysAtLibertySnapshot-header"
                       />
                     </div>
                   </div>
@@ -184,7 +184,6 @@ const Snapshots = () => {
                 </div>
                 <div className="layer w-100 pX-20 pT-20">
                   <h4 className="lh-1" id="LsirScoreChangeSnapshot-header">
-                    CONTENT
                   </h4>
                 </div>
                 <div className="layer w-100 p-20">
@@ -192,6 +191,7 @@ const Snapshots = () => {
                     <div className="col-md-12">
                       <LsirScoreChangeSnapshot
                         lsirScoreChangeByMonth={apiData.lsirScoreChangeByMonth}
+                        header="LsirScoreChangeSnapshot-header"
                       />
                     </div>
                   </div>

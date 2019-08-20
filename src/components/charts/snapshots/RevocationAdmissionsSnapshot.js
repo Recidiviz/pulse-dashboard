@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Line } from 'react-chartjs-2';
 import { configureDownloadButtons } from '../../../assets/scripts/charts/chartJS/downloads';
 import { COLORS } from '../../../assets/scripts/constants/colors';
-import { monthNamesShortWithYearsFromNumberList } from '../../../utils/monthConversion';
+import { monthNamesShortWithYearsFromNumberList, monthNamesFromShortName } from '../../../utils/monthConversion';
 
 
 const RevocationAdmissionsSnapshot = (props) => {
@@ -152,22 +152,22 @@ const RevocationAdmissionsSnapshot = (props) => {
   configureDownloadButtons('revocation-admissions', 'Snapshot', chart.props,
     document.getElementById('revocation-admissionssnapshot-chart'), exportedStructureCallback);
 
-  // const chartData = chart.props.data.datasets[0].data;
-  // const mostRecentValue = chartData[chartData.length - 1];
-  //
-  // const chartDataLabels = chart.props.data.labels;
-  // const mostRecentMonth = monthNamesFromShortName(chartDataLabels[chartDataLabels.length - 1]);
+  const chartData = chart.props.data.datasets[0].data;
+  const mostRecentValue = chartData[chartData.length - 1];
 
-  // const header = document.getElementById('revocationAdmissionsSnapshot-header');
-  //
-  // if (header) {
-  //   const str1 = "<b style='color:#809AE5'>";
-  //   const str2 = `${mostRecentValue}`;
-  //   const str3 = '% of prison admissions </b> in ';
-  //   const str4 = `${mostRecentMonth}`;
-  //   const str5 = ' were due to parole or probation revocations.';
-  //   header.innerHTML = str1.concat(str2, str3, str4, str5);
-  // }
+  const chartDataLabels = chart.props.data.labels;
+  const mostRecentMonth = monthNamesFromShortName(chartDataLabels[chartDataLabels.length - 1]);
+
+  const header = document.getElementById(props.header);
+
+  if (header) {
+    const str1 = "<b style='color:#809AE5'>";
+    const str2 = `${mostRecentValue}`;
+    const str3 = '% of prison admissions </b> in ';
+    const str4 = `${mostRecentMonth}`;
+    const str5 = ' were due to parole or probation revocations.';
+    header.innerHTML = str1.concat(str2, str3, str4, str5);
+  }
 
   return (chart);
 };

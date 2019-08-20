@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Line } from 'react-chartjs-2';
 import { configureDownloadButtons } from '../../../assets/scripts/charts/chartJS/downloads';
 import { COLORS } from '../../../assets/scripts/constants/colors';
-import { monthNamesShortWithYearsFromNumberList } from '../../../utils/monthConversion';
+import { monthNamesShortWithYearsFromNumberList, monthNamesFromShortName } from '../../../utils/monthConversion';
 
 const SupervisionSuccessSnapshot = (props) => {
   const [chartLabels, setChartLabels] = useState([]);
@@ -150,22 +150,22 @@ const SupervisionSuccessSnapshot = (props) => {
   configureDownloadButtons('supervision-success', 'Snapshot', chart.props,
     document.getElementById('supervision-success-snapshot-chart'), exportedStructureCallback);
 
-  // const chartData = chart.props.data.datasets[0].data;
-  // const mostRecentValue = chartData[chartData.length - 1];
-  //
-  // const chartDataLabels = chart.props.data.labels;
-  // const mostRecentMonth = monthNamesFromShortName(chartDataLabels[chartDataLabels.length - 1]);
+  const chartData = chart.props.data.datasets[0].data;
+  const mostRecentValue = chartData[chartData.length - 1];
 
-  // const header = document.getElementById('supervisionSuccessSnapshot-header');
-  //
-  // if (header) {
-  //   const str1 = "<b style='color:#809AE5'>";
-  //   const str2 = `${mostRecentValue}`;
-  //   const str3 = '% of people </b> whose supervision was scheduled to end in ';
-  //   const str4 = `${mostRecentMonth}`;
-  //   const str5 = " <b style='color:#809AE5'>successfully completed their supervision </b> by that time.";
-  //   header.innerHTML = str1.concat(str2, str3, str4, str5);
-  // }
+  const chartDataLabels = chart.props.data.labels;
+  const mostRecentMonth = monthNamesFromShortName(chartDataLabels[chartDataLabels.length - 1]);
+
+  const header = document.getElementById(props.header);
+
+  if (header) {
+    const str1 = "<b style='color:#809AE5'>";
+    const str2 = `${mostRecentValue}`;
+    const str3 = '% of people </b> whose supervision was scheduled to end in ';
+    const str4 = `${mostRecentMonth}`;
+    const str5 = " <b style='color:#809AE5'>successfully completed their supervision </b> by that time.";
+    header.innerHTML = str1.concat(str2, str3, str4, str5);
+  }
 
   return (chart);
 };
