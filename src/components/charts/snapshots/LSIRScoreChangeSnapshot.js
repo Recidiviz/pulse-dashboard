@@ -17,7 +17,7 @@ const LsirScoreChangeSnapshot = (props) => {
       sorted.push([month, changeByMonth[month]]);
     }
 
-    setChartLabels(monthNamesShortWithYearsFromNumberList(sorted.map((element) => element[0])));
+    setChartLabels(sorted.map((element) => element[0]));
     setChartDataPoints(sorted.map((element) => element[1]));
   };
 

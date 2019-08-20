@@ -18,7 +18,7 @@ const RevocationAdmissionsSnapshot = (props) => {
       sorted.push([month, countsByMonth[month]]);
     }
 
-    setChartLabels(monthNamesShortWithYearsFromNumberList(sorted.map((element) => element[0])));
+    setChartLabels(sorted.map((element) => element[0]));
     setChartDataPoints(sorted.map((element) => element[1]));
   };
 
