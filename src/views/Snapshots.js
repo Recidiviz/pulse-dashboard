@@ -69,7 +69,7 @@ const Snapshots = () => {
                   </h6>
                 </div>
                 <div className="layer w-100 pX-20 pT-20">
-                  <h4 className="lh-1" id="supervisionSuccessSnapshot-header">
+                  <h4 style={{ height: '60px' }} className="lh-1" id="supervisionSuccessSnapshot-header">
                   </h4>
                 </div>
                 <div className="layer w-100 p-20">
@@ -107,7 +107,7 @@ const Snapshots = () => {
                   </h6>
                 </div>
                 <div className="layer w-100 pX-20 pT-20">
-                  <h4 className="lh-1" id="revocationAdmissionsSnapshot-header">
+                  <h4 style={{ height: '60px' }} className="lh-1" id="revocationAdmissionsSnapshot-header">
                   </h4>
                 </div>
                 <div className="layer w-100 p-20">
@@ -145,7 +145,7 @@ const Snapshots = () => {
                   </h6>
                 </div>
                 <div className="layer w-100 pX-20 pT-20">
-                  <h4 className="lh-1" id="daysAtLibertySnapshot-header">
+                  <h4 style={{ height: '60px' }} className="lh-1" id="daysAtLibertySnapshot-header">
                   </h4>
                 </div>
                 <div className="layer w-100 p-20">
@@ -183,7 +183,7 @@ const Snapshots = () => {
                   </h6>
                 </div>
                 <div className="layer w-100 pX-20 pT-20">
-                  <h4 className="lh-1" id="LsirScoreChangeSnapshot-header">
+                  <h4 style={{ height: '60px' }} className="lh-1" id="LsirScoreChangeSnapshot-header">
                   </h4>
                 </div>
                 <div className="layer w-100 p-20">
