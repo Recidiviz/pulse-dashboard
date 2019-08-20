@@ -160,9 +160,8 @@ const DaysAtLibertySnapshot = (props) => {
 
   // TODO: Make trending text dynamic based on goal and slope of trendline
   if (header) {
-    const str1 = 'The average days between release from incarceration and readmission has been';
-    const str2 = "<b style='color:#809AE5'> trending away from the goal. </b>";
-    header.innerHTML = str1.concat(str2);
+    const title = `The average days between release from incarceration and readmission has been <b style='color:#809AE5'>trending away from the goal.</b>`;
+    header.innerHTML = title;
   }
 
   return (chart);

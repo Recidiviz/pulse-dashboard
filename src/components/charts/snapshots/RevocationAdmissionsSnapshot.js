@@ -161,12 +161,8 @@ const RevocationAdmissionsSnapshot = (props) => {
   const header = document.getElementById(props.header);
 
   if (header) {
-    const str1 = "<b style='color:#809AE5'>";
-    const str2 = `${mostRecentValue}`;
-    const str3 = '% of prison admissions </b> in ';
-    const str4 = `${mostRecentMonth}`;
-    const str5 = ' were due to parole or probation revocations.';
-    header.innerHTML = str1.concat(str2, str3, str4, str5);
+    const title = `<b style='color:#809AE5'>${mostRecentValue}% of prison admissions</b> in ${mostRecentMonth} were due to parole or probation revocations.`;
+    header.innerHTML = title;
   }
 
   return (chart);
