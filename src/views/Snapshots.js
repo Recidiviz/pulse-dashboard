@@ -49,7 +49,7 @@ const Snapshots = () => {
           <div className="masonry-sizer col-md-6" />
 
           {/* #Successful completion of supervision snapshot ==================== */}
-          <div className="masonry-item col-md-12">
+          <div className="masonry-item col-md-6">
             <div className="bd bgc-white p-20">
               <div className="layers">
                 <div className="layer w-100 pX-20 pT-20">
@@ -86,9 +86,8 @@ const Snapshots = () => {
             </div>
           </div>
 
-
           {/* #Prison admissions from revocations ==================== */}
-          <div className="masonry-item col-md-12">
+          <div className="masonry-item col-md-6">
             <div className="bd bgc-white p-20">
               <div className="layers">
                 <div className="layer w-100 pX-20 pT-20">
@@ -126,7 +125,7 @@ const Snapshots = () => {
           </div>
 
           {/* #Average days at liberty ==================== */}
-          <div className="masonry-item col-md-12">
+          <div className="masonry-item col-md-6">
             <div className="bd bgc-white p-20">
               <div className="layers">
                 <div className="layer w-100 pX-20 pT-20">
@@ -164,7 +163,7 @@ const Snapshots = () => {
           </div>
 
           {/* #Change in LSIR scores ==================== */}
-          <div className="masonry-item col-md-12">
+          <div className="masonry-item col-md-6">
             <div className="bd bgc-white p-20">
               <div className="layers">
                 <div className="layer w-100 pX-20 pT-20">
