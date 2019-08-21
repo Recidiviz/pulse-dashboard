@@ -27,6 +27,7 @@ const Snapshots = () => {
       });
 
       const responseData = await response.json();
+      console.log(responseData.supervision_termination_by_type_by_month)
       setApiData(responseData);
       setAwaitingApi(false);
     } catch (error) {
@@ -76,7 +77,7 @@ const Snapshots = () => {
                   <div className="ai-c jc-c gapX-20">
                     <div className="col-md-12">
                       <SupervisionSuccessSnapshot
-                        supervisionSuccessRates={apiData.supervisionSuccessRates}
+                        supervisionSuccessRates={apiData.supervision_termination_by_type_by_month}
                         header="supervisionSuccessSnapshot-header"
                       />
                     </div>
@@ -114,7 +115,7 @@ const Snapshots = () => {
                   <div className="ai-c jc-c gapX-20">
                     <div className="col-md-12">
                       <RevocationAdmissionsSnapshot
-                        revocationAdmissionsByMonth={apiData.revocationAdmissionsByMonth}
+                        revocationAdmissionsByMonth={apiData.admissions_by_type_by_month}
                         header="revocationAdmissionsSnapshot-header"
                       />
                     </div>
@@ -152,7 +153,7 @@ const Snapshots = () => {
                   <div className="ai-c jc-c gapX-20">
                     <div className="col-md-12">
                       <DaysAtLibertySnapshot
-                        daysAtLibertyByMonth={apiData.daysAtLibertyByMonth}
+                        daysAtLibertyByMonth={apiData.avg_days_at_liberty_by_month}
                         header="daysAtLibertySnapshot-header"
                       />
                     </div>
@@ -190,7 +191,7 @@ const Snapshots = () => {
                   <div className="ai-c jc-c gapX-20">
                     <div className="col-md-12">
                       <LsirScoreChangeSnapshot
-                        lsirScoreChangeByMonth={apiData.lsirScoreChangeByMonth}
+                        lsirScoreChangeByMonth={apiData.average_change_lsi_score_by_month}
                         header="LsirScoreChangeSnapshot-header"
                       />
                     </div>

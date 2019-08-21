@@ -38,7 +38,7 @@ const FILES_BY_METRIC_TYPE = {
     'avg_days_at_liberty_by_month.json',
     'supervision_termination_by_type_by_month.json',
   ],
-}
+};
 
 /**
  * Retrieves all metric files for the given metric type from Google Cloud Storage.
