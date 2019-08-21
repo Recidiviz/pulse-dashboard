@@ -20,8 +20,8 @@ const Reincarcerations = () => {
       const token = await getTokenSilently();
       const response = await fetch(`${process.env.REACT_APP_API_URL}/api/reincarcerations`, {
         headers: {
-          Authorization: `Bearer ${token}`
-        }
+          Authorization: `Bearer ${token}`,
+        },
       });
 
       const responseData = await response.json();
@@ -51,7 +51,8 @@ const Reincarcerations = () => {
             <div className="bd bgc-white p-20">
               <div className="layers">
                 <div className="layer w-100 pX-20 pT-20">
-                  <h4 style={{ height: '20px' }} className="lh-1" id="reincarcerationDrivers-header">
+                  <h6 className="lh-1">
+                    REINCARCERATIONS BY MONTH
                     <span className="fa-pull-right">
                       <div className="dropdown show">
                         <a className="btn btn-secondary btn-sm dropdown-toggle" href="#" role="button" id="exportDropdownMenuButton-reincarcerationDrivers" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -63,6 +64,10 @@ const Reincarcerations = () => {
                         </div>
                       </div>
                     </span>
+                  </h6>
+                </div>
+                <div className="layer w-100 pX-20 pT-20">
+                  <h4 style={{ height: '20px' }} className="lh-1" id="reincarcerationDrivers-header">
                   </h4>
                 </div>
                 <div className="layer w-100 pX-20 pT-20 row">
@@ -138,12 +143,14 @@ const Reincarcerations = () => {
             <div className="bd bgc-white p-20">
               <div className="layers">
                 <div className="layer w-100 pX-20 pT-20">
-                  <h6 className="lh-1">Reincarceration rate by release facility</h6>
+                  <h4 className="lh-1">Reincarceration rate by release facility</h4>
                 </div>
                 <div className="layer w-100 p-20">
                   <div className="ai-c jc-c gapX-20">
                     <div className="col-md-12">
-                      <ReincarcerationRateByReleaseFacility ratesByReleaseFacility={apiData.reincarceration_rate_by_release_facility} />
+                      <ReincarcerationRateByReleaseFacility
+                        ratesByReleaseFacility={apiData.reincarceration_rate_by_release_facility}
+                      />
                     </div>
                   </div>
                 </div>
@@ -190,7 +197,7 @@ const Reincarcerations = () => {
             <div className="bd bgc-white p-20">
               <div className="layers">
                 <div className="layer w-100 pX-20 pT-20">
-                  <h6 className="lh-1">Reincarceration rate by transitional facility</h6>
+                  <h4 className="lh-1">Reincarceration rate by transitional facility</h4>
                 </div>
                 <div className="layer w-100 p-20">
                   <div className="ai-c jc-c gapX-20">

@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 
 import Loading from '../components/Loading';
 import '../assets/styles/index.scss';
-import { configureDownloadButtons } from '../assets/scripts/charts/chartJS/downloads';
 import { useAuth0 } from '../react-auth0-spa';
 
 import SupervisionSuccessSnapshot from '../components/charts/snapshots/SupervisionSuccessSnapshot';
@@ -27,7 +26,6 @@ const Snapshots = () => {
       });
 
       const responseData = await response.json();
-      console.log(responseData.supervision_termination_by_type_by_month)
       setApiData(responseData);
       setAwaitingApi(false);
     } catch (error) {

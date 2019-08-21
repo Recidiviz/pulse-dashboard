@@ -52,7 +52,8 @@ const Revocations = () => {
             <div className="bd bgc-white p-20">
               <div className="layers">
                 <div className="layer w-100 pX-20 pT-20">
-                  <h4 style={{ height: '20px' }} className="lh-1" id="revocationDrivers-header">
+                  <h6 className="lh-1">
+                    REVOCATIONS BY MONTH
                     <span className="fa-pull-right">
                       <div className="dropdown show">
                         <a className="btn btn-secondary btn-sm dropdown-toggle" href="#" role="button" id="exportDropdownMenuButton-revocationDrivers" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -64,6 +65,10 @@ const Revocations = () => {
                         </div>
                       </div>
                     </span>
+                  </h6>
+                </div>
+                <div className="layer w-100 pX-20 pT-20">
+                  <h4 style={{ height: '20px' }} className="lh-1" id="revocationDrivers-header">
                   </h4>
                 </div>
                 <div className="layer w-100 pX-20 pT-20 row">
