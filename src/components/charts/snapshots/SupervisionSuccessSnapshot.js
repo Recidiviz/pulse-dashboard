@@ -119,7 +119,7 @@ const SupervisionSuccessSnapshot = (props) => {
           annotations: [{
             type: 'line',
             mode: 'horizontal',
-            value: 75,
+            value: 70,
 
             // optional annotation ID (must be unique)
             id: 'supervision-success-snapshot-goal-line',
@@ -133,7 +133,7 @@ const SupervisionSuccessSnapshot = (props) => {
             borderDashOffset: 5,
             label: {
               enabled: true,
-              content: 'goal: 75%',
+              content: 'goal: 70%',
               position: 'right',
 
               // Background color of label, default below
