@@ -43,7 +43,7 @@ const AdmissionsVsReleases = (props) => {
     processResponse();
   }, [props.admissionsVsReleases]);
 
-  return (
+  const chart = (
     <Bar data={{
       labels: monthNamesFromNumberList(chartLabels),
       datasets: [{
@@ -87,6 +87,19 @@ const AdmissionsVsReleases = (props) => {
     }}
     />
   );
-}
+
+  const chartData = chart.props.data.datasets[0].data;
+  const mostRecentValue = chartData[chartData.length - 1];
+  const direction = (mostRecentValue > 0) ? 'grew' : 'shrank';
+
+  const header = document.getElementById(props.header);
+
+  if (header && mostRecentValue) {
+    const title = `The ND facilities <b style='color:#809AE5'>${direction} by ${mostRecentValue} people</b> this month.`;
+    header.innerHTML = title;
+  }
+
+  return chart;
+};
 
 export default AdmissionsVsReleases;

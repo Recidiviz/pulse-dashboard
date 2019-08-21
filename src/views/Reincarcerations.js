@@ -51,8 +51,7 @@ const Reincarcerations = () => {
             <div className="bd bgc-white p-20">
               <div className="layers">
                 <div className="layer w-100 pX-20 pT-20">
-                  <h4 className="lh-1">
-                    The <span className="font-weight-bold">reincarceration</span> count this month was <span className="font-weight-bold">14</span> over target
+                  <h4 style={{ height: '20px' }} className="lh-1" id="reincarcerationDrivers-header">
                     <span className="fa-pull-right">
                       <div className="dropdown show">
                         <a className="btn btn-secondary btn-sm dropdown-toggle" href="#" role="button" id="exportDropdownMenuButton-reincarcerationDrivers" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -69,7 +68,10 @@ const Reincarcerations = () => {
                 <div className="layer w-100 pX-20 pT-20 row">
                   <div className="col-md-12">
                     <div className="layer w-100 p-20">
-                      <ReincarcerationCountOverTime reincarcerationCountsByMonth={apiData.reincarcerations_by_month} />
+                      <ReincarcerationCountOverTime
+                        reincarcerationCountsByMonth={apiData.reincarcerations_by_month}
+                        header="reincarcerationDrivers-header"
+                      />
                     </div>
                   </div>
                 </div>
@@ -100,10 +102,14 @@ const Reincarcerations = () => {
             <div className="bd bgc-white p-20">
               <div className="layers">
                 <div className="layer w-100 pX-20 pT-20">
-                  <h4 className="lh-1">The ND facilities <span className="font-weight-bold">grew</span> by <span className="font-weight-bold">22</span> people this month</h4>
+                  <h4 style={{ height: '20px' }} className="lh-1" id="admissionsVsReleases-header">
+                  </h4>
                 </div>
                 <div className="layer w-100 p-20">
-                  <AdmissionsVsReleases  admissionsVsReleases={apiData.admissions_versus_releases_by_month}/>
+                  <AdmissionsVsReleases
+                    admissionsVsReleases={apiData.admissions_versus_releases_by_month}
+                    header="admissionsVsReleases-header"
+                  />
                 </div>
                 <div className="layer bdT p-20 w-100 accordion" id="methodologyAdmissionsVsReleases">
                   <div className="mb-0" id="methodologyHeadingAdmissionsVsReleases">

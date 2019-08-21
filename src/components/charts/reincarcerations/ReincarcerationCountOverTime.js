@@ -139,6 +139,16 @@ const ReincarcerationCountOverTime = (props) => {
     document.getElementById('reincarceration-drivers-chart'), exportedStructureCallback
   );
 
+  const chartData = chart.props.data.datasets[0].data;
+  const mostRecentValue = chartData[chartData.length - 1];
+
+  const header = document.getElementById(props.header);
+
+  if (header && mostRecentValue) {
+    const title = `There have been <b style='color:#809AE5'>${mostRecentValue} reincarcerations</b> this month so far.`;
+    header.innerHTML = title;
+  }
+
   return (chart);
 }
 
