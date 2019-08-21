@@ -16,9 +16,6 @@ const METRIC_CACHE_TTL_SECONDS = 60 * 60;  // Expire items in the cache after 1 
 var memoryCache = cacheManager.caching({ store: 'memory', ttl: METRIC_CACHE_TTL_SECONDS });
 
 const FILES_BY_METRIC_TYPE = {
-  admission: [
-    'admissions_by_type_by_month.json',
-  ],
   programEval: [
     'cost_effectiveness_by_program.json',
     'recidivism_rate_by_program.json',
@@ -101,13 +98,13 @@ function fetchMetrics(stateCode, metricType, callback) {
  * Converts the given contents, a Buffer of bytes, into a JS object or array.
  */
 function convertDownloadToJson(contents) {
-  var stringContents = contents.toString();
+  const stringContents = contents.toString();
   if (!stringContents || stringContents.length === 0) {
     return null;
   }
   // Converts the newline delimited JSON objects into one JSON array
-  var jsonObjectString = "[" + stringContents.split("\n").join(",");
-  jsonObjectString = jsonObjectString.substring(0, jsonObjectString.length - 1) + "]";
+  let jsonObjectString = '['.concat(stringContents.split('\n').join(','));
+  jsonObjectString = (jsonObjectString.substring(0, jsonObjectString.length - 1)).concat(']');
 
   return JSON.parse(jsonObjectString);
 }
@@ -129,8 +126,8 @@ function fetchProgramEvalMetrics(callback) {
 }
 
 module.exports = {
-  fetchSnapshotMetrics: fetchSnapshotMetrics,
-  fetchReincarcerationMetrics: fetchReincarcerationMetrics,
-  fetchRevocationMetrics: fetchRevocationMetrics,
-  fetchProgramEvalMetrics: fetchProgramEvalMetrics,
-}
+  fetchProgramEvalMetrics,
+  fetchReincarcerationMetrics,
+  fetchRevocationMetrics,
+  fetchSnapshotMetrics,
+};

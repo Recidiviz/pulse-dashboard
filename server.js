@@ -54,10 +54,10 @@ const checkJwt = jwt({
   algorithm: ["RS256"]
 });
 
-app.get("/api/snapshots", checkJwt, api.snapshots);
-app.get("/api/reincarcerations", checkJwt, api.reincarcerations);
-app.get("/api/revocations", checkJwt, api.revocations);
-app.get("/api/programEval", api.programEval)
+app.get('/api/programEval', api.programEval);
+app.get('/api/reincarcerations', checkJwt, api.reincarcerations);
+app.get('/api/revocations', checkJwt, api.revocations);
+app.get('/api/snapshots', checkJwt, api.snapshots);
 
 var server = http.createServer(app);
 
