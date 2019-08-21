@@ -57,6 +57,7 @@ const checkJwt = jwt({
 app.get("/api/snapshots", checkJwt, api.snapshots);
 app.get("/api/reincarcerations", checkJwt, api.reincarcerations);
 app.get("/api/revocations", checkJwt, api.revocations);
+app.get("/api/programEval", api.programEval)
 
 var server = http.createServer(app);
 

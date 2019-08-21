@@ -29,8 +29,13 @@ function revocations(req, res) {
   metricsApi.fetchRevocationMetrics(responder(res));
 }
 
+function programEval(req, res) {
+  metricsApi.fetchProgramEvalMetrics(responder(res));
+}
+
 module.exports = {
   snapshots: snapshots,
   reincarcerations: reincarcerations,
   revocations: revocations,
+  programEval: programEval,
 }

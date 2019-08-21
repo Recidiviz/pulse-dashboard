@@ -19,6 +19,10 @@ const FILES_BY_METRIC_TYPE = {
   admission: [
     'admissions_by_type_by_month.json',
   ],
+  programEval: [
+    'cost_effectiveness_by_program.json',
+    'recidivism_rate_by_program.json',
+  ],
   reincarceration: [
     'admissions_versus_releases_by_month.json',
     'reincarceration_rate_by_release_facility.json',
@@ -120,8 +124,13 @@ function fetchRevocationMetrics(callback) {
   return fetchMetrics('US_ND', 'revocation', callback);
 }
 
+function fetchProgramEvalMetrics(callback) {
+  return fetchMetrics('US_ND', 'programEval', callback);
+}
+
 module.exports = {
   fetchSnapshotMetrics: fetchSnapshotMetrics,
   fetchReincarcerationMetrics: fetchReincarcerationMetrics,
   fetchRevocationMetrics: fetchRevocationMetrics,
+  fetchProgramEvalMetrics: fetchProgramEvalMetrics,
 }
