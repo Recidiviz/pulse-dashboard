@@ -78,7 +78,7 @@ const RevocationCountOverTime = (props) => {
           annotations: [{
             type: 'line',
             mode: 'horizontal',
-            value: 42,
+            value: 40,
 
             // optional annotation ID (must be unique)
             id: 'revocation-drivers-goal-line',
@@ -91,17 +91,17 @@ const RevocationCountOverTime = (props) => {
             borderDash: [2, 2],
             borderDashOffset: 5,
             label: {
-              enabled: false,
-              content: 'Goal',
-              position: 'center',
+              enabled: true,
+              content: 'goal: 40',
+              position: 'right',
 
               // Background color of label, default below
-              backgroundColor: 'rgba(0,0,0,0.1)',
+              backgroundColor: 'rgba(0,0,0,0)',
 
               fontFamily: 'sans-serif',
               fontSize: 12,
               fontStyle: 'bold',
-              fontColor: '#000',
+              fontColor: COLORS['red-400'],
 
               // Adjustment along x-axis (left-right) of label relative to above
               // number (can be negative). For horizontal lines positioned left
@@ -113,7 +113,7 @@ const RevocationCountOverTime = (props) => {
               // number (can be negative). For vertical lines positioned top or
               // bottom, negative values move the label toward the edge, and
               // positive values toward the center.
-              yAdjust: 0,
+              yAdjust: -10,
             },
 
             onClick(e) { return e; },
