@@ -20,8 +20,8 @@ const RevocationAdmissionsSnapshot = (props) => {
         const year = data.year;
         const month = data.month;
         const newAdmissions = parseInt(data.new_admissions);
-        const technicals = parseInt(data.technical);
-        const nonTechnicals = parseInt(data.non_technical);
+        const technicals = parseInt(data.technicals);
+        const nonTechnicals = parseInt(data.non_technicals);
         const unknownRevocations = parseInt(data.unknown_revocations);
         const total = technicals + nonTechnicals + unknownRevocations + newAdmissions;
         const percentRevocations = (100 * (technicals + nonTechnicals + unknownRevocations) / total).toFixed(2);
