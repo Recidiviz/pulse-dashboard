@@ -53,7 +53,7 @@ ul.explore-choices {
 }
 
 .logo-icon-holder {
-  border-radius: 6px;
+  border-radius: 3px;
   display: inline-block;
   font-size: 17px;
   height: 35px;
@@ -76,6 +76,31 @@ ul.explore-choices {
 
 .wide-page-container {
   padding-left: 0px;
+}
+
+.recidiviz-dark-green-text {
+  color: #006C67;
+}
+
+.recidiviz-dark-green-bg {
+  background-color: #005450;
+}
+
+.recidiviz-art-red-bg {
+  background-color: #DE5558;
+}
+
+.recidiviz-art-blue-bg {
+  background-color: #89C1D3;
+}
+
+.recidiviz-light-green-bg {
+  background-color: #25B895 !important;
+  border-color: #25B895 !important;
+}
+
+.recidiviz-grey-bg {
+  background-color: #E0E0DD;
 }
 
 // ul.snapshot-why
