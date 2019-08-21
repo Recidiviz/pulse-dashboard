@@ -11,34 +11,29 @@ const RevocationAdmissionsSnapshot = (props) => {
   const [chartDataPoints, setChartDataPoints] = useState([]);
 
   const processResponse = () => {
-    const countsByMonth = props.revocationAdmissionsByMonth;
+    const { revocationAdmissionsByMonth: countsByMonth } = props;
 
     if (countsByMonth) {
       let sorted = [];
 
-      countsByMonth.forEach(function (data) {
-        const year = data.year;
-        const month = data.month;
-        const newAdmissions = parseInt(data.new_admissions);
-        const technicals = parseInt(data.technicals);
-        const nonTechnicals = parseInt(data.non_technicals);
-        const unknownRevocations = parseInt(data.unknown_revocations);
+      countsByMonth.forEach((data) => {
+        const { year } = data;
+        const { month } = data;
+        const newAdmissions = parseInt(data.new_admissions, 10);
+        const technicals = parseInt(data.technicals, 10);
+        const nonTechnicals = parseInt(data.non_technicals, 10);
+        const unknownRevocations = parseInt(data.unknown_revocations, 10);
         const total = technicals + nonTechnicals + unknownRevocations + newAdmissions;
-        const percentRevocations = (100 * (technicals + nonTechnicals + unknownRevocations) / total).toFixed(2);
+        const revocations = (technicals + nonTechnicals + unknownRevocations);
+        const percentRevocations = (100 * (revocations / total)).toFixed(2);
         sorted.push([year, month, percentRevocations]);
       });
 
       // Sort by month and year
-      sorted.sort(function(a, b) {
-          if (a[0] === b[0]) {
-            return a[1] - b[1];
-          } else {
-            return a[0] - b[0];
-          }
-      });
+      sorted.sort((a, b) => ((a[0] === b[0]) ? (a[1] - b[1]) : (a[0] - b[0])));
 
-      // Just display the most recent 6 months
-      sorted = sorted.slice(sorted.length - 6, sorted.length);
+      // Just display the most recent 13 months
+      sorted = sorted.slice(sorted.length - 13, sorted.length);
 
       setChartLabels(monthNamesShortWithYearsFromNumberList(sorted.map((element) => element[1])));
       setChartDataPoints(sorted.map((element) => element[2]));

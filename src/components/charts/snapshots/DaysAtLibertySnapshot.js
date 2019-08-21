@@ -10,33 +10,27 @@ const DaysAtLibertySnapshot = (props) => {
   const [chartDataPoints, setChartDataPoints] = useState([]);
 
   const processResponse = () => {
-    const countsByMonth = props.daysAtLibertyByMonth;
+    const { daysAtLibertyByMonth } = props;
 
-    var sorted = [];
+    if (daysAtLibertyByMonth) {
+      let sorted = [];
 
-    if (countsByMonth) {
-      countsByMonth.forEach(function (data) {
-        const year = data.year;
-        const month = data.month;
+      daysAtLibertyByMonth.forEach((data) => {
+        const { year } = data;
+        const { month } = data;
         const count = parseFloat(data.avg_liberty).toFixed(2);
         sorted.push([year, month, count]);
       });
 
       // Sort by month and year
-      sorted.sort(function(a, b) {
-          if (a[0] === b[0]) {
-            return a[1] - b[1];
-          } else {
-            return a[0] - b[0];
-          }
-      });
+      sorted.sort((a, b) => ((a[0] === b[0]) ? (a[1] - b[1]) : (a[0] - b[0])));
 
-      // Just display the most recent 6 months
-      sorted = sorted.slice(sorted.length - 6, sorted.length);
+      // Just display the most recent 13 months
+      sorted = sorted.slice(sorted.length - 13, sorted.length);
+
+      setChartLabels(monthNamesShortWithYearsFromNumberList(sorted.map((element) => element[1])));
+      setChartDataPoints(sorted.map((element) => element[2]));
     }
-
-    setChartLabels(monthNamesShortWithYearsFromNumberList(sorted.map((element) => element[1])));
-    setChartDataPoints(sorted.map((element) => element[2]));
   };
 
   useEffect(() => {

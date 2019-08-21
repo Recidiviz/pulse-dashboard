@@ -10,27 +10,24 @@ const LsirScoreChangeSnapshot = (props) => {
   const [chartDataPoints, setChartDataPoints] = useState([]);
 
   const processResponse = () => {
-    const changeByMonth = props.lsirScoreChangeByMonth;
+    const { lsirScoreChangeByMonth: changeByMonth } = props;
 
     if (changeByMonth) {
       let sorted = [];
 
-      changeByMonth.forEach(function (data) {
-        const year = data.termination_year;
-        const month = data.termination_month;
+      changeByMonth.forEach((data) => {
+        const { termination_year: year } = data;
+        const { termination_month: month } = data;
         const change = parseFloat(data.average_change).toFixed(2);
 
         sorted.push([year, month, change]);
       });
 
       // Sort by month and year
-      sorted.sort(function(a, b) {
-          if (a[0] === b[0]) {
-            return a[1] - b[1];
-          } else {
-            return a[0] - b[0];
-          }
-      });
+      sorted.sort((a, b) => ((a[0] === b[0]) ? (a[1] - b[1]) : (a[0] - b[0])));
+
+      // Just display the most recent 13 months
+      sorted = sorted.slice(sorted.length - 13, sorted.length);
 
       setChartLabels(monthNamesShortWithYearsFromNumberList(sorted.map((element) => element[1])));
       setChartDataPoints(sorted.map((element) => element[2]));

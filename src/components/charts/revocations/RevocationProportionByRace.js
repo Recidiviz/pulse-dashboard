@@ -1,15 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 
 import { HorizontalBar } from 'react-chartjs-2';
-import { COLORS_FIVE_VALUES, COLORS } from "../../../assets/scripts/constants/colors";
+import { COLORS_FIVE_VALUES, COLORS } from '../../../assets/scripts/constants/colors';
 
 const labelStringConversion = {
-    'AMERICAN_INDIAN_ALASKAN_NATIVE': 'American Indian Alaskan Native',
-    'ASIAN': 'Asian',
-    'BLACK': 'Black',
-    'NATIVE_HAWAIIAN_PACIFIC_ISLANDER': 'Native Hawaiian Pacific Islander',
-    'WHITE': 'White',
-    'OTHER': 'Other',
+  AMERICAN_INDIAN_ALASKAN_NATIVE: 'American Indian Alaskan Native',
+  ASIAN: 'Asian',
+  BLACK: 'Black',
+  NATIVE_HAWAIIAN_PACIFIC_ISLANDER: 'Native Hawaiian Pacific Islander',
+  WHITE: 'White',
+  OTHER: 'Other',
 };
 
 const ND_RACE_PROPORTIONS = {
@@ -27,44 +27,44 @@ const RevocationProportionByRace = (props) => {
   const [statePopulationProportions, setStateProportions] = useState([]);
 
   const processResponse = () => {
-    const proportionsByRace = props.revocationProportionByRace;
+    const { revocationProportionByRace: proportionsByRace } = props;
 
-    const countsByRaceData = []
-    proportionsByRace.forEach(function (data) {
-      const race = data.race;
-      const count = parseInt(data.revocation_count);
-      countsByRaceData.push([labelStringConversion[race], count])
+    const countsByRaceData = [];
+    proportionsByRace.forEach((data) => {
+      const { race } = data;
+      const count = parseInt(data.revocation_count, 10);
+      countsByRaceData.push([labelStringConversion[race], count]);
     });
 
-    const racesRepresented = countsByRaceData.map(element => element[0])
+    const racesRepresented = countsByRaceData.map((element) => element[0]);
 
-    Object.values(labelStringConversion).forEach((race) =>  {
+    Object.values(labelStringConversion).forEach((race) => {
       if (!racesRepresented.includes(race)) {
         countsByRaceData.push([race, 0]);
       }
     });
 
-    var total = countsByRaceData.map(element => element[1]).reduce(function(previousValue, currentValue, currentIndex, array) {
-      return previousValue + currentValue;
-    });
+    const total = countsByRaceData.map((element) => element[1]).reduce(
+      (previousValue, currentValue) => (previousValue + currentValue),
+    );
 
-    countsByRaceData.sort(function(a, b) {
-      return a[0] - b[0];
-    });
+    // Sort by race alphabetically
+    countsByRaceData.sort((a, b) => a[0].localeCompare(b[0]));
 
-    setChartLabels(countsByRaceData.map(element => element[0]));
-    setChartProportions(countsByRaceData.map(element => (element[1] / total * 100)));
-    setStateProportions(countsByRaceData.map(element => ND_RACE_PROPORTIONS[element[0]]));
-  }
+    setChartLabels(countsByRaceData.map((element) => element[0]));
+    setChartProportions(countsByRaceData.map((element) => (100 * (element[1] / total))));
+    setStateProportions(countsByRaceData.map((element) => ND_RACE_PROPORTIONS[element[0]]));
+  };
 
   useEffect(() => {
     processResponse();
   }, [props.revocationProportionByRace]);
 
   return (
-    <HorizontalBar data={{
-      labels: ['Revocations', 'ND Population'],
-      datasets: [{
+    <HorizontalBar
+      data={{
+        labels: ['Revocations', 'ND Population'],
+        datasets: [{
           label: chartLabels[0],
           backgroundColor: COLORS_FIVE_VALUES[0],
           data: [chartProportions[0], statePopulationProportions[0]],
@@ -89,42 +89,40 @@ const RevocationProportionByRace = (props) => {
           backgroundColor: COLORS['blue-standard'],
           data: [chartProportions[5], statePopulationProportions[5]],
         },
-      ],
-    }}
-    options={{
-      scales: {
+        ],
+      }}
+      options={{
+        scales: {
           xAxes: [{
             scaleLabel: {
               display: true,
               labelString: 'Percentage',
             },
-              stacked: true
+            stacked: true,
           }],
           yAxes: [{
-              stacked: true
-          }]
-      },
-      responsive: true,
-      legend: {
-        position: 'bottom',
-      },
-      tooltips: {
-        mode: 'dataset',
-        intersect: true,
-        callbacks: {
-          label: function(tooltipItem, data) {
-            //get the concerned dataset
-            var dataset = data.datasets[tooltipItem.datasetIndex];
-            //get the current items value
-            var currentValue = dataset.data[tooltipItem.index];
+            stacked: true,
+          }],
+        },
+        responsive: true,
+        legend: {
+          position: 'bottom',
+        },
+        tooltips: {
+          mode: 'dataset',
+          intersect: true,
+          callbacks: {
+            label: (tooltipItem, data) => {
+              const dataset = data.datasets[tooltipItem.datasetIndex];
+              const currentValue = dataset.data[tooltipItem.index];
 
-            return dataset.label + ": " + currentValue.toFixed(2) + '% of ' + data.labels[tooltipItem.index];
+              return dataset.label.concat(': ', currentValue.toFixed(2), '% of ', data.labels[tooltipItem.index]);
+            },
           },
         },
-      },
-    }}
+      }}
     />
   );
-}
+};
 
 export default RevocationProportionByRace;

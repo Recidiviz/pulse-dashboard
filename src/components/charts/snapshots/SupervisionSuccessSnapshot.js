@@ -10,31 +10,32 @@ const SupervisionSuccessSnapshot = (props) => {
   const [chartDataPoints, setChartDataPoints] = useState([]);
 
   const processResponse = () => {
-    const countsByMonth = props.supervisionSuccessRates;
+    const { supervisionSuccessRates: countsByMonth } = props;
 
     if (countsByMonth) {
-      let sorted = [];
+      const today = new Date();
+      const yearNow = today.getFullYear();
+      const monthNow = today.getMonth() + 1;
 
-      countsByMonth.forEach(function (data) {
-        const year = data.projected_year;
-        const month = data.projected_month;
-        const successful = parseInt(data.successful_termination);
-        const revocation = parseInt(data.revocation_termination);
-        const successRate = (100 * successful / (successful + revocation)).toFixed(2);
-        sorted.push([year, month, successRate]);
+      let sorted = [];
+      countsByMonth.forEach((data) => {
+        const { projected_year: year } = data;
+        const { projected_month: month } = data;
+        const successful = parseInt(data.successful_termination, 10);
+        const revocation = parseInt(data.revocation_termination, 10);
+        const successRate = (100 * (successful / (successful + revocation))).toFixed(2);
+
+        // Don't add completion rates for months in the future
+        if (year < yearNow || month <= monthNow) {
+          sorted.push([year, month, successRate]);
+        }
       });
 
       // Sort by month and year
-      sorted.sort(function(a, b) {
-          if (a[0] === b[0]) {
-            return a[1] - b[1];
-          } else {
-            return a[0] - b[0];
-          }
-      });
+      sorted.sort((a, b) => ((a[0] === b[0]) ? (a[1] - b[1]) : (a[0] - b[0])));
 
-      // Just display the most recent 6 months
-      sorted = sorted.slice(sorted.length - 6, sorted.length);
+      // Just display the most recent 13 months
+      sorted = sorted.slice(sorted.length - 13, sorted.length);
 
       setChartLabels(monthNamesShortWithYearsFromNumberList(sorted.map((element) => element[1])));
       setChartDataPoints(sorted.map((element) => element[2]));
