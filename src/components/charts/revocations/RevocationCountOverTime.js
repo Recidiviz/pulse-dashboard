@@ -139,6 +139,19 @@ const RevocationCountOverTime = (props) => {
     document.getElementById('revocation-drivers-chart'), exportedStructureCallback
   );
 
+  const chartData = chart.props.data.datasets[0].data;
+  const mostRecentValue = chartData[chartData.length - 1];
+
+  const chartDataLabels = chart.props.data.labels;
+  const mostRecentMonth = chartDataLabels[chartDataLabels.length - 1];
+
+  const header = document.getElementById(props.header);
+
+  if (header && mostRecentValue && mostRecentMonth) {
+    const title = `There have been <b style='color:#809AE5'>${mostRecentValue} revocations</b> this month so far.`;
+    header.innerHTML = title;
+  }
+
   return (chart);
 }
 

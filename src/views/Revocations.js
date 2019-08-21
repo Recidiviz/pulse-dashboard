@@ -52,8 +52,7 @@ const Revocations = () => {
             <div className="bd bgc-white p-20">
               <div className="layers">
                 <div className="layer w-100 pX-20 pT-20">
-                  <h4 className="lh-1">
-                    The <span className="font-weight-bold">revocation</span> count this month was <span className="font-weight-bold">10</span> over target
+                  <h4 style={{ height: '20px' }} className="lh-1" id="revocationDrivers-header">
                     <span className="fa-pull-right">
                       <div className="dropdown show">
                         <a className="btn btn-secondary btn-sm dropdown-toggle" href="#" role="button" id="exportDropdownMenuButton-revocationDrivers" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -70,7 +69,10 @@ const Revocations = () => {
                 <div className="layer w-100 pX-20 pT-20 row">
                   <div className="col-md-12">
                     <div className="layer w-100 p-20">
-                      <RevocationCountOverTime revocationCountsByMonth={apiData.revocations_by_month} />
+                      <RevocationCountOverTime
+                        revocationCountsByMonth={apiData.revocations_by_month}
+                        header="revocationDrivers-header"
+                      />
                     </div>
                   </div>
                 </div>
