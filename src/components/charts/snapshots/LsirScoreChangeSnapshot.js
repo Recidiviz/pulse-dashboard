@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Line } from 'react-chartjs-2';
 import { configureDownloadButtons } from '../../../assets/scripts/charts/chartJS/downloads';
 import { COLORS } from '../../../assets/scripts/constants/colors';
-import { addYearsToMonthNamesShort } from '../../../utils/monthConversion';
+import { monthNamesShortWithYearsFromNumberList } from '../../../utils/monthConversion';
 
 const LsirScoreChangeSnapshot = (props) => {
   const [chartLabels, setChartLabels] = useState([]);
@@ -12,13 +12,29 @@ const LsirScoreChangeSnapshot = (props) => {
   const processResponse = () => {
     const changeByMonth = props.lsirScoreChangeByMonth;
 
-    var sorted = [];
-    for (var month in changeByMonth) {
-      sorted.push([month, changeByMonth[month]]);
-    }
+    if (changeByMonth) {
+      let sorted = [];
 
-    setChartLabels(addYearsToMonthNamesShort(sorted.map((element) => element[0])));
-    setChartDataPoints(sorted.map((element) => element[1]));
+      changeByMonth.forEach(function (data) {
+        const year = data.termination_year;
+        const month = data.termination_month;
+        const change = parseFloat(data.average_change).toFixed(2);
+
+        sorted.push([year, month, change]);
+      });
+
+      // Sort by month and year
+      sorted.sort(function(a, b) {
+          if (a[0] === b[0]) {
+            return a[1] - b[1];
+          } else {
+            return a[0] - b[0];
+          }
+      });
+
+      setChartLabels(monthNamesShortWithYearsFromNumberList(sorted.map((element) => element[1])));
+      setChartDataPoints(sorted.map((element) => element[2]));
+    }
   };
 
   useEffect(() => {

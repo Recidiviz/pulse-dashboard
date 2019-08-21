@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Line } from 'react-chartjs-2';
 import { configureDownloadButtons } from '../../../assets/scripts/charts/chartJS/downloads';
 import { COLORS } from '../../../assets/scripts/constants/colors';
-import { addYearsToMonthNamesShort, monthNamesFromShortName } from '../../../utils/monthConversion';
+import { monthNamesShortWithYearsFromNumberList, monthNamesFromShortName } from '../../../utils/monthConversion';
 
 const SupervisionSuccessSnapshot = (props) => {
   const [chartLabels, setChartLabels] = useState([]);
@@ -12,13 +12,33 @@ const SupervisionSuccessSnapshot = (props) => {
   const processResponse = () => {
     const countsByMonth = props.supervisionSuccessRates;
 
-    var sorted = [];
-    for (var month in countsByMonth) {
-      sorted.push([month, countsByMonth[month]]);
-    }
+    if (countsByMonth) {
+      let sorted = [];
 
-    setChartLabels(addYearsToMonthNamesShort(sorted.map((element) => element[0])));
-    setChartDataPoints(sorted.map((element) => element[1]));
+      countsByMonth.forEach(function (data) {
+        const year = data.projected_year;
+        const month = data.projected_month;
+        const successful = parseInt(data.successful_termination);
+        const revocation = parseInt(data.revocation_termination);
+        const successRate = (100 * successful / (successful + revocation)).toFixed(2);
+        sorted.push([year, month, successRate]);
+      });
+
+      // Sort by month and year
+      sorted.sort(function(a, b) {
+          if (a[0] === b[0]) {
+            return a[1] - b[1];
+          } else {
+            return a[0] - b[0];
+          }
+      });
+
+      // Just display the most recent 6 months
+      sorted = sorted.slice(sorted.length - 6, sorted.length);
+
+      setChartLabels(monthNamesShortWithYearsFromNumberList(sorted.map((element) => element[1])));
+      setChartDataPoints(sorted.map((element) => element[2]));
+    }
   };
 
   useEffect(() => {

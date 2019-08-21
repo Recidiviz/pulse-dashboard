@@ -20,7 +20,7 @@ const AdmissionTypeProportions = (props) => {
 
     countsByAdmissionType.forEach(function (data) {
       const admissionType = data.admission_type;
-      const count = data.admission_count;
+      const count = parseInt(data.admission_count);
       countsByTypeData.push([labelStringConversion[admissionType], count])
     });
 

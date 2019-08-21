@@ -32,16 +32,24 @@ const RevocationProportionByRace = (props) => {
     const countsByRaceData = []
     proportionsByRace.forEach(function (data) {
       const race = data.race;
-      const count = data.admission_count;
+      const count = parseInt(data.revocation_count);
       countsByRaceData.push([labelStringConversion[race], count])
+    });
+
+    const racesRepresented = countsByRaceData.map(element => element[0])
+
+    Object.values(labelStringConversion).forEach((race) =>  {
+      if (!racesRepresented.includes(race)) {
+        countsByRaceData.push([race, 0]);
+      }
+    });
+
+    var total = countsByRaceData.map(element => element[1]).reduce(function(previousValue, currentValue, currentIndex, array) {
+      return previousValue + currentValue;
     });
 
     countsByRaceData.sort(function(a, b) {
       return a[0] - b[0];
-    })
-
-    var total = countsByRaceData.map(element => element[1]).reduce(function(previousValue, currentValue, currentIndex, array) {
-      return previousValue + currentValue;
     });
 
     setChartLabels(countsByRaceData.map(element => element[0]));
@@ -62,7 +70,7 @@ const RevocationProportionByRace = (props) => {
           data: [chartProportions[0], statePopulationProportions[0]],
         }, {
           label: chartLabels[1],
-          backgroundColor: COLORS_FIVE_VALUES[1],
+          backgroundColor: COLORS_FIVE_VALUES[3],
           data: [chartProportions[1], statePopulationProportions[1]],
         }, {
           label: chartLabels[2],
@@ -74,7 +82,7 @@ const RevocationProportionByRace = (props) => {
           data: [chartProportions[3], statePopulationProportions[3]],
         }, {
           label: chartLabels[4],
-          backgroundColor: COLORS_FIVE_VALUES[3],
+          backgroundColor: COLORS_FIVE_VALUES[1],
           data: [chartProportions[4], statePopulationProportions[4]],
         }, {
           label: chartLabels[5],
