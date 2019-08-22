@@ -69,8 +69,8 @@ const Snapshots = () => {
                   </h6>
                 </div>
                 <div className="layer w-100 pX-20 pT-20">
-                  <h4 style={{ height: '60px' }} className="lh-1" id="supervisionSuccessSnapshot-header">
-                  </h4>
+                  <div className="snapshot-header" id="supervisionSuccessSnapshot-header">
+                  </div>
                 </div>
                 <div className="layer w-100 p-20">
                   <div className="ai-c jc-c gapX-20">
@@ -107,8 +107,8 @@ const Snapshots = () => {
                   </h6>
                 </div>
                 <div className="layer w-100 pX-20 pT-20">
-                  <h4 style={{ height: '60px' }} className="lh-1" id="revocationAdmissionsSnapshot-header">
-                  </h4>
+                  <div className="snapshot-header" id="revocationAdmissionsSnapshot-header">
+                  </div>
                 </div>
                 <div className="layer w-100 p-20">
                   <div className="ai-c jc-c gapX-20">
@@ -145,8 +145,8 @@ const Snapshots = () => {
                   </h6>
                 </div>
                 <div className="layer w-100 pX-20 pT-20">
-                  <h4 style={{ height: '60px' }} className="lh-1" id="daysAtLibertySnapshot-header">
-                  </h4>
+                  <div className="snapshot-header" id="daysAtLibertySnapshot-header">
+                  </div>
                 </div>
                 <div className="layer w-100 p-20">
                   <div className="ai-c jc-c gapX-20">
@@ -183,8 +183,8 @@ const Snapshots = () => {
                   </h6>
                 </div>
                 <div className="layer w-100 pX-20 pT-20">
-                  <h4 style={{ height: '60px' }} className="lh-1" id="LsirScoreChangeSnapshot-header">
-                  </h4>
+                  <div className="snapshot-header" id="LsirScoreChangeSnapshot-header">
+                  </div>
                 </div>
                 <div className="layer w-100 p-20">
                   <div className="ai-c jc-c gapX-20">
