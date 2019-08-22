@@ -12,7 +12,6 @@ import Footer from "./components/Footer";
 import Home from "./views/Home";
 import NotFound from "./views/NotFound";
 import Profile from "./views/Profile";
-import ProgramEvaluation from "./views/ProgramEvaluation";
 import Revocations from "./views/Revocations";
 import Reincarcerations from "./views/Reincarcerations";
 import Snapshots from "./views/Snapshots";
@@ -109,7 +108,6 @@ const App = () => {
                 <PrivateRoute path="/snapshots" component={Snapshots} />
                 <PrivateRoute path="/revocations" component={Revocations} />
                 <PrivateRoute path="/reincarcerations" component={Reincarcerations} />
-                <PrivateRoute path="/program-evaluation" component={ProgramEvaluation} />
                 <PrivateRoute path="/profile" component={Profile} />
                 <PrivateRoute path="/external-api" component={ExternalApi} />
                 <Route component={NotFound} />
