@@ -4,6 +4,7 @@ import { Line } from 'react-chartjs-2';
 import { configureDownloadButtons } from '../../../assets/scripts/charts/chartJS/downloads';
 import { COLORS } from '../../../assets/scripts/constants/colors';
 import { monthNamesShortWithYearsFromNumbers } from '../../../utils/monthConversion';
+import { sortAndFilterMostRecentMonths } from '../../../utils/dataOrganizing';
 
 const LsirScoreChangeSnapshot = (props) => {
   const [chartLabels, setChartLabels] = useState([]);
@@ -13,20 +14,16 @@ const LsirScoreChangeSnapshot = (props) => {
     const { lsirScoreChangeByMonth: changeByMonth } = props;
 
     if (changeByMonth) {
-      let sorted = [];
+      const dataPoints = [];
 
       changeByMonth.forEach((data) => {
         const { termination_year: year, termination_month: month } = data;
         const change = parseFloat(data.average_change).toFixed(2);
 
-        sorted.push([year, month, change]);
+        dataPoints.push([year, month, change]);
       });
 
-      // Sort by month and year
-      sorted.sort((a, b) => ((a[0] === b[0]) ? (a[1] - b[1]) : (a[0] - b[0])));
-
-      // Just display the most recent 13 months
-      sorted = sorted.slice(sorted.length - 13, sorted.length);
+      const sorted = sortAndFilterMostRecentMonths(dataPoints, 13);
 
       setChartLabels(monthNamesShortWithYearsFromNumbers(sorted.map((element) => element[1])));
       setChartDataPoints(sorted.map((element) => element[2]));

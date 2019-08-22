@@ -4,6 +4,7 @@ import { Line } from 'react-chartjs-2';
 import { configureDownloadButtons } from '../../../assets/scripts/charts/chartJS/downloads';
 import { COLORS } from '../../../assets/scripts/constants/colors';
 import { monthNamesShortWithYearsFromNumbers, monthNamesFromShortName } from '../../../utils/monthConversion';
+import { sortAndFilterMostRecentMonths } from '../../../utils/dataOrganizing';
 
 const SupervisionSuccessSnapshot = (props) => {
   const [chartLabels, setChartLabels] = useState([]);
@@ -17,7 +18,7 @@ const SupervisionSuccessSnapshot = (props) => {
       const yearNow = today.getFullYear();
       const monthNow = today.getMonth() + 1;
 
-      let sorted = [];
+      const dataPoints = [];
       countsByMonth.forEach((data) => {
         const { projected_year: year, projected_month: month } = data;
         const successful = parseInt(data.successful_termination, 10);
@@ -26,15 +27,11 @@ const SupervisionSuccessSnapshot = (props) => {
 
         // Don't add completion rates for months in the future
         if (year < yearNow || month <= monthNow) {
-          sorted.push([year, month, successRate]);
+          dataPoints.push([year, month, successRate]);
         }
       });
 
-      // Sort by month and year
-      sorted.sort((a, b) => ((a[0] === b[0]) ? (a[1] - b[1]) : (a[0] - b[0])));
-
-      // Just display the most recent 13 months
-      sorted = sorted.slice(sorted.length - 13, sorted.length);
+      const sorted = sortAndFilterMostRecentMonths(dataPoints, 13);
 
       setChartLabels(monthNamesShortWithYearsFromNumbers(sorted.map((element) => element[1])));
       setChartDataPoints(sorted.map((element) => element[2]));

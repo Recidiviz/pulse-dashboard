@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Bar } from 'react-chartjs-2';
 import { COLORS_GOOD_BAD } from '../../../assets/scripts/constants/colors';
 import { monthNamesFromNumbers } from '../../../utils/monthConversion';
+import { sortAndFilterMostRecentMonths } from '../../../utils/dataOrganizing';
 
 const AdmissionsVsReleases = (props) => {
   const [chartLabels, setChartLabels] = useState([]);
@@ -11,19 +12,15 @@ const AdmissionsVsReleases = (props) => {
   const processResponse = () => {
     const { admissionsVsReleases } = props;
 
-    let sorted = [];
+    const dataPoints = [];
     admissionsVsReleases.forEach((data) => {
       const { year, month, population_change: delta } = data;
-      sorted.push([year, month, delta]);
+      dataPoints.push([year, month, delta]);
     });
 
-    // Sort by month and year
-    sorted.sort((a, b) => ((a[0] === b[0]) ? (a[1] - b[1]) : (a[0] - b[0])));
+    const sorted = sortAndFilterMostRecentMonths(dataPoints, 6);
 
-    // Just display the most recent 6 months
-    sorted = sorted.slice(sorted.length - 6, sorted.length);
-
-    setChartLabels(sorted.map((element) => element[1]));
+    setChartLabels(monthNamesFromNumbers(sorted.map((element) => element[1])));
     setChartDataPoints(sorted.map((element) => element[2]));
   };
 
@@ -34,7 +31,7 @@ const AdmissionsVsReleases = (props) => {
   const chart = (
     <Bar
       data={{
-        labels: monthNamesFromNumbers(chartLabels),
+        labels: chartLabels,
         datasets: [{
           label: 'Admissions versus releases',
           backgroundColor: (context) => {

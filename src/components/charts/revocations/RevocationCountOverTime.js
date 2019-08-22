@@ -4,6 +4,7 @@ import { Line } from 'react-chartjs-2';
 import { configureDownloadButtons } from '../../../assets/scripts/charts/chartJS/downloads';
 import { COLORS } from '../../../assets/scripts/constants/colors';
 import { monthNamesFromNumbers } from '../../../utils/monthConversion';
+import { sortAndFilterMostRecentMonths } from '../../../utils/dataOrganizing';
 
 const RevocationCountOverTime = (props) => {
   const [chartLabels, setChartLabels] = useState([]);
@@ -12,17 +13,13 @@ const RevocationCountOverTime = (props) => {
   const processResponse = () => {
     const { revocationCountsByMonth: countsByMonth } = props;
 
-    let sorted = [];
+    const dataPoints = [];
     countsByMonth.forEach((data) => {
       const { year, month, revocation_count: count } = data;
-      sorted.push([year, month, count]);
+      dataPoints.push([year, month, count]);
     });
 
-    // Sort by month and year
-    sorted.sort((a, b) => ((a[0] === b[0]) ? (a[1] - b[1]) : (a[0] - b[0])));
-
-    // Just display the most recent 6 months
-    sorted = sorted.slice(sorted.length - 6, sorted.length);
+    const sorted = sortAndFilterMostRecentMonths(dataPoints, 6);
 
     setChartLabels(monthNamesFromNumbers(sorted.map((element) => element[1])));
     setChartDataPoints(sorted.map((element) => element[2]));

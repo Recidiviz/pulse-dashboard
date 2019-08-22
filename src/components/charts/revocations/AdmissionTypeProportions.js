@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 import { Pie } from 'react-chartjs-2';
 import { COLORS_FIVE_VALUES } from '../../../assets/scripts/constants/colors';
+import { sortByLabel } from '../../../utils/dataOrganizing';
 
 const AdmissionTypeProportions = (props) => {
   const [chartLabels, setChartLabels] = useState([]);
@@ -17,18 +18,17 @@ const AdmissionTypeProportions = (props) => {
       TECHNICAL: 'Technical Revocations',
     };
 
-    const countsByTypeData = [];
+    const dataPoints = [];
     admissionCountsByType.forEach((data) => {
       const { admission_type: admissionType } = data;
       const count = parseInt(data.admission_count, 10);
-      countsByTypeData.push([labelStringConversion[admissionType], count]);
+      dataPoints.push([labelStringConversion[admissionType], count]);
     });
 
-    // Sort by label
-    countsByTypeData.sort((a, b) => (a[0].localeCompare(b[0])));
+    const sorted = sortByLabel(dataPoints, 0);
 
-    setChartLabels(countsByTypeData.map((element) => element[0]));
-    setChartDataPoints(countsByTypeData.map((element) => element[1]));
+    setChartLabels(sorted.map((element) => element[0]));
+    setChartDataPoints(sorted.map((element) => element[1]));
   };
 
   useEffect(() => {

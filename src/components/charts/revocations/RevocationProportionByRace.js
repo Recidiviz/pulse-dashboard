@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 import { HorizontalBar } from 'react-chartjs-2';
 import { COLORS_FIVE_VALUES, COLORS } from '../../../assets/scripts/constants/colors';
+import { sortByLabel } from '../../../utils/dataOrganizing';
 
 const labelStringConversion = {
   AMERICAN_INDIAN_ALASKAN_NATIVE: 'American Indian Alaskan Native',
@@ -29,31 +30,31 @@ const RevocationProportionByRace = (props) => {
   const processResponse = () => {
     const { revocationProportionByRace: proportionsByRace } = props;
 
-    const countsByRaceData = [];
+    const dataPoints = [];
     proportionsByRace.forEach((data) => {
       const { race } = data;
       const count = parseInt(data.revocation_count, 10);
-      countsByRaceData.push([labelStringConversion[race], count]);
+      dataPoints.push([labelStringConversion[race], count]);
     });
 
-    const racesRepresented = countsByRaceData.map((element) => element[0]);
+    const racesRepresented = dataPoints.map((element) => element[0]);
 
     Object.values(labelStringConversion).forEach((race) => {
       if (!racesRepresented.includes(race)) {
-        countsByRaceData.push([race, 0]);
+        dataPoints.push([race, 0]);
       }
     });
 
-    const total = countsByRaceData.map((element) => element[1]).reduce(
+    const total = dataPoints.map((element) => element[1]).reduce(
       (previousValue, currentValue) => (previousValue + currentValue),
     );
 
     // Sort by race alphabetically
-    countsByRaceData.sort((a, b) => a[0].localeCompare(b[0]));
+    const sorted = sortByLabel(dataPoints, 0);
 
-    setChartLabels(countsByRaceData.map((element) => element[0]));
-    setChartProportions(countsByRaceData.map((element) => (100 * (element[1] / total))));
-    setStateProportions(countsByRaceData.map((element) => ND_RACE_PROPORTIONS[element[0]]));
+    setChartLabels(sorted.map((element) => element[0]));
+    setChartProportions(sorted.map((element) => (100 * (element[1] / total))));
+    setStateProportions(sorted.map((element) => ND_RACE_PROPORTIONS[element[0]]));
   };
 
   useEffect(() => {

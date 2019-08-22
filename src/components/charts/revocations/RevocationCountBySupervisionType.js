@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { Bar } from 'react-chartjs-2';
 import { COLORS_STACKED_TWO_VALUES } from "../../../assets/scripts/constants/colors";
 import { monthNamesFromNumbers } from "../../../utils/monthConversion";
+import { sortAndFilterMostRecentMonths } from '../../../utils/dataOrganizing';
 
 const RevocationCountBySupervisionType = (props) => {
   const [chartLabels, setChartLabels] = useState([]);
@@ -12,28 +13,22 @@ const RevocationCountBySupervisionType = (props) => {
   const processResponse = () => {
     const { revocationCountsByMonthBySupervisionType: countsByMonth } = props;
 
-    let sortedParole = [];
-    let sortedProbation = [];
+    const paroleData = [];
+    const probationData = [];
     countsByMonth.forEach((data) => {
       const {
         year, month, parole_count: paroleCount, probation_count: probationCount,
       } = data;
-      sortedParole.push([year, month, paroleCount]);
-      sortedProbation.push([year, month, probationCount]);
+      paroleData.push([year, month, paroleCount]);
+      probationData.push([year, month, probationCount]);
     });
 
-    // Sorts by month and year
-    const sortFunction = (a, b) => ((a[0] === b[0]) ? (a[1] - b[1]) : (a[0] - b[0]));
-    sortedParole.sort(sortFunction);
-    sortedProbation.sort(sortFunction);
+    const sortedParoleData = sortAndFilterMostRecentMonths(paroleData, 6);
+    const sortedProbationData = sortAndFilterMostRecentMonths(probationData, 6);
 
-    // Just display the most recent 6 months
-    sortedParole = sortedParole.slice(sortedParole.length - 6, sortedParole.length);
-    sortedProbation = sortedProbation.slice(sortedProbation.length - 6, sortedProbation.length);
-
-    setChartLabels(monthNamesFromNumbers(sortedParole.map((element) => element[1])));
-    setParoleDataPoints(sortedParole.map((element) => element[2]));
-    setProbationDataPoints(sortedProbation.map((element) => element[2]));
+    setChartLabels(monthNamesFromNumbers(sortedParoleData.map((element) => element[1])));
+    setParoleDataPoints(sortedParoleData.map((element) => element[2]));
+    setProbationDataPoints(sortedProbationData.map((element) => element[2]));
   };
 
   useEffect(() => {

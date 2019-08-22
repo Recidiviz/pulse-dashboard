@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Bar } from 'react-chartjs-2';
 import { COLORS_FIVE_VALUES } from '../../../assets/scripts/constants/colors';
 import { monthNamesFromNumbers } from '../../../utils/monthConversion';
+import { sortAndFilterMostRecentMonths } from '../../../utils/dataOrganizing';
 
 const RevocationCountByViolationType = (props) => {
   const [chartLabels, setChartLabels] = useState([]);
@@ -14,7 +15,7 @@ const RevocationCountByViolationType = (props) => {
   const processResponse = () => {
     const { revocationCountsByMonthByViolationType: countsByMonth } = props;
 
-    let sorted = [];
+    let dataPoints = [];
     countsByMonth.forEach((data) => {
       const {
         year, month, absconsion_count: absconsionCount,
@@ -29,14 +30,10 @@ const RevocationCountByViolationType = (props) => {
         UNKNOWN_VIOLATION_TYPE: unknownCount,
       };
 
-      sorted.push([year, month, monthDict]);
+      dataPoints.push([year, month, monthDict]);
     });
 
-    // Sort by month and year
-    sorted.sort((a, b) => ((a[0] === b[0]) ? (a[1] - b[1]) : (a[0] - b[0])));
-
-    // Just display the most recent 6 months
-    sorted = sorted.slice(sorted.length - 6, sorted.length);
+    const sorted = sortAndFilterMostRecentMonths(dataPoints, 6);
 
     const monthsLabels = [];
     const violationArrays = {

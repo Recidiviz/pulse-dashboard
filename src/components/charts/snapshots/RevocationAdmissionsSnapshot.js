@@ -4,7 +4,7 @@ import { Line } from 'react-chartjs-2';
 import { configureDownloadButtons } from '../../../assets/scripts/charts/chartJS/downloads';
 import { COLORS } from '../../../assets/scripts/constants/colors';
 import { monthNamesShortWithYearsFromNumbers, monthNamesFromShortName } from '../../../utils/monthConversion';
-
+import { sortAndFilterMostRecentMonths } from '../../../utils/dataOrganizing';
 
 const RevocationAdmissionsSnapshot = (props) => {
   const [chartLabels, setChartLabels] = useState([]);
@@ -14,7 +14,7 @@ const RevocationAdmissionsSnapshot = (props) => {
     const { revocationAdmissionsByMonth: countsByMonth } = props;
 
     if (countsByMonth) {
-      let sorted = [];
+      const dataPoints = [];
 
       countsByMonth.forEach((data) => {
         const { year, month } = data;
@@ -25,14 +25,10 @@ const RevocationAdmissionsSnapshot = (props) => {
         const total = technicals + nonTechnicals + unknownRevocations + newAdmissions;
         const revocations = (technicals + nonTechnicals + unknownRevocations);
         const percentRevocations = (100 * (revocations / total)).toFixed(2);
-        sorted.push([year, month, percentRevocations]);
+        dataPoints.push([year, month, percentRevocations]);
       });
 
-      // Sort by month and year
-      sorted.sort((a, b) => ((a[0] === b[0]) ? (a[1] - b[1]) : (a[0] - b[0])));
-
-      // Just display the most recent 13 months
-      sorted = sorted.slice(sorted.length - 13, sorted.length);
+      const sorted = sortAndFilterMostRecentMonths(dataPoints, 13);
 
       setChartLabels(monthNamesShortWithYearsFromNumbers(sorted.map((element) => element[1])));
       setChartDataPoints(sorted.map((element) => element[2]));
