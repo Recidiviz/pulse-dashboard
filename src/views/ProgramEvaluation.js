@@ -157,7 +157,7 @@ const ProgramEvaluation = () => {
       });
 
       const responseData = await response.json();
-      setApiData(responseData.external);
+      setApiData(responseData);
     } catch (error) {
       console.error(error);
     }

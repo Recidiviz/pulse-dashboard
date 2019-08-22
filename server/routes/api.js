@@ -35,7 +35,6 @@ function snapshots(req, res) {
 
 module.exports = {
   programEval,
-  external: external,
   reincarcerations,
   revocations,
   snapshots,
