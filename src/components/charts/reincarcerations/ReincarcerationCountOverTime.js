@@ -14,9 +14,7 @@ const ReincarcerationCountOverTime = (props) => {
 
     let sorted = [];
     countsByMonth.forEach((data) => {
-      const { year } = data;
-      const { month } = data;
-      const { returns: count } = data;
+      const { year, month, returns: count } = data;
       sorted.push([year, month, count]);
     });
 

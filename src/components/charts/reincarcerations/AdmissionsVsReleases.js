@@ -13,10 +13,7 @@ const AdmissionsVsReleases = (props) => {
 
     let sorted = [];
     admissionsVsReleases.forEach((data) => {
-      const { year } = data;
-      const { month } = data;
-      const { population_change: delta } = data;
-
+      const { year, month, population_change: delta } = data;
       sorted.push([year, month, delta]);
     });
 

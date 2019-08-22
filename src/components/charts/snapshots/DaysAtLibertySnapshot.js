@@ -16,8 +16,7 @@ const DaysAtLibertySnapshot = (props) => {
       let sorted = [];
 
       daysAtLibertyByMonth.forEach((data) => {
-        const { year } = data;
-        const { month } = data;
+        const { year, month } = data;
         const count = parseFloat(data.avg_liberty).toFixed(2);
         sorted.push([year, month, count]);
       });

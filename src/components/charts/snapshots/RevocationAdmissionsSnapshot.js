@@ -17,8 +17,7 @@ const RevocationAdmissionsSnapshot = (props) => {
       let sorted = [];
 
       countsByMonth.forEach((data) => {
-        const { year } = data;
-        const { month } = data;
+        const { year, month } = data;
         const newAdmissions = parseInt(data.new_admissions, 10);
         const technicals = parseInt(data.technicals, 10);
         const nonTechnicals = parseInt(data.non_technicals, 10);

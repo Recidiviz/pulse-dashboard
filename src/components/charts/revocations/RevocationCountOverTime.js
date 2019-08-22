@@ -14,9 +14,7 @@ const RevocationCountOverTime = (props) => {
 
     let sorted = [];
     countsByMonth.forEach((data) => {
-      const { year } = data;
-      const { month } = data;
-      const { revocation_count: count } = data;
+      const { year, month, revocation_count: count } = data;
       sorted.push([year, month, count]);
     });
 

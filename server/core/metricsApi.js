@@ -102,11 +102,16 @@ function convertDownloadToJson(contents) {
   if (!stringContents || stringContents.length === 0) {
     return null;
   }
-  // Converts the newline delimited JSON objects into one JSON array
-  let jsonObjectString = '['.concat(stringContents.split('\n').join(','));
-  jsonObjectString = (jsonObjectString.substring(0, jsonObjectString.length - 1)).concat(']');
 
-  return JSON.parse(jsonObjectString);
+  const jsonObject = [];
+  const splitStrings = stringContents.split('\n');
+  splitStrings.forEach((line) => {
+    if (line) {
+      jsonObject.push(JSON.parse(line));
+    }
+  });
+
+  return jsonObject;
 }
 
 function fetchSnapshotMetrics(callback) {

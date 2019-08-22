@@ -16,12 +16,11 @@ const RevocationCountByViolationType = (props) => {
 
     let sorted = [];
     countsByMonth.forEach((data) => {
-      const { year } = data;
-      const { month } = data;
-      const { absconsion_count: absconsionCount } = data;
-      const { felony_count: felonyCount } = data;
-      const { technical_count: technicalCount } = data;
-      const { unknown_count: unknownCount } = data;
+      const {
+        year, month, absconsion_count: absconsionCount,
+        felony_count: felonyCount, technical_count: technicalCount,
+        unknown_count: unknownCount,
+      } = data;
 
       const monthDict = {
         ABSCONDED: absconsionCount,

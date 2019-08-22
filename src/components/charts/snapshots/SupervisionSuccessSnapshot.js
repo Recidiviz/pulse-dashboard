@@ -19,8 +19,7 @@ const SupervisionSuccessSnapshot = (props) => {
 
       let sorted = [];
       countsByMonth.forEach((data) => {
-        const { projected_year: year } = data;
-        const { projected_month: month } = data;
+        const { projected_year: year, projected_month: month } = data;
         const successful = parseInt(data.successful_termination, 10);
         const revocation = parseInt(data.revocation_termination, 10);
         const successRate = (100 * (successful / (successful + revocation))).toFixed(2);

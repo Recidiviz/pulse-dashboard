@@ -12,13 +12,11 @@ const LsirScoreChangeSnapshot = (props) => {
   const processResponse = () => {
     const { lsirScoreChangeByMonth: changeByMonth } = props;
 
-    var sorted = [];
     if (changeByMonth) {
       let sorted = [];
 
       changeByMonth.forEach((data) => {
-        const { termination_year: year } = data;
-        const { termination_month: month } = data;
+        const { termination_year: year, termination_month: month } = data;
         const change = parseFloat(data.average_change).toFixed(2);
 
         sorted.push([year, month, change]);

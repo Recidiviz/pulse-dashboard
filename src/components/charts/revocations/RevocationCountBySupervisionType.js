@@ -15,11 +15,9 @@ const RevocationCountBySupervisionType = (props) => {
     let sortedParole = [];
     let sortedProbation = [];
     countsByMonth.forEach((data) => {
-      const { year } = data;
-      const { month } = data;
-      const { parole_count: paroleCount } = data;
-      const { probation_count: probationCount } = data;
-
+      const {
+        year, month, parole_count: paroleCount, probation_count: probationCount,
+      } = data;
       sortedParole.push([year, month, paroleCount]);
       sortedProbation.push([year, month, probationCount]);
     });
