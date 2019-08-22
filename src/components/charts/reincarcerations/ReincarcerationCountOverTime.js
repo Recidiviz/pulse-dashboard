@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Line } from 'react-chartjs-2';
 import { configureDownloadButtons } from '../../../assets/scripts/charts/chartJS/downloads';
 import { COLORS } from '../../../assets/scripts/constants/colors';
-import { monthNamesFromNumberList } from '../../../utils/monthConversion';
+import { monthNamesFromNumbers } from '../../../utils/monthConversion';
 
 const ReincarcerationCountOverTime = (props) => {
   const [chartLabels, setChartLabels] = useState([]);
@@ -26,7 +26,7 @@ const ReincarcerationCountOverTime = (props) => {
     // Just display the most recent 6 months
     sorted = sorted.slice(sorted.length - 6, sorted.length);
 
-    setChartLabels(monthNamesFromNumberList(sorted.map((element) => element[1])));
+    setChartLabels(monthNamesFromNumbers(sorted.map((element) => element[1])));
     setChartDataPoints(sorted.map((element) => element[2]));
   };
 

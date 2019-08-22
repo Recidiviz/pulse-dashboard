@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 import { Bar } from 'react-chartjs-2';
 import { COLORS_GOOD_BAD } from '../../../assets/scripts/constants/colors';
-import { monthNamesFromNumberList } from '../../../utils/monthConversion';
+import { monthNamesFromNumbers } from '../../../utils/monthConversion';
 
 const AdmissionsVsReleases = (props) => {
   const [chartLabels, setChartLabels] = useState([]);
@@ -37,7 +37,7 @@ const AdmissionsVsReleases = (props) => {
   const chart = (
     <Bar
       data={{
-        labels: monthNamesFromNumberList(chartLabels),
+        labels: monthNamesFromNumbers(chartLabels),
         datasets: [{
           label: 'Admissions versus releases',
           backgroundColor: (context) => {

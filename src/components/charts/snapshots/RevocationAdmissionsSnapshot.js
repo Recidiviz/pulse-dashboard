@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Line } from 'react-chartjs-2';
 import { configureDownloadButtons } from '../../../assets/scripts/charts/chartJS/downloads';
 import { COLORS } from '../../../assets/scripts/constants/colors';
-import { monthNamesShortWithYearsFromNumberList, monthNamesFromShortName } from '../../../utils/monthConversion';
+import { monthNamesShortWithYearsFromNumbers, monthNamesFromShortName } from '../../../utils/monthConversion';
 
 
 const RevocationAdmissionsSnapshot = (props) => {
@@ -35,7 +35,7 @@ const RevocationAdmissionsSnapshot = (props) => {
       // Just display the most recent 13 months
       sorted = sorted.slice(sorted.length - 13, sorted.length);
 
-      setChartLabels(monthNamesShortWithYearsFromNumberList(sorted.map((element) => element[1])));
+      setChartLabels(monthNamesShortWithYearsFromNumbers(sorted.map((element) => element[1])));
       setChartDataPoints(sorted.map((element) => element[2]));
     }
   };

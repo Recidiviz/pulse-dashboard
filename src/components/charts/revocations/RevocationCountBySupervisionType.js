@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 
 import { Bar } from 'react-chartjs-2';
 import { COLORS_STACKED_TWO_VALUES } from "../../../assets/scripts/constants/colors";
-import { monthNamesFromNumberList } from "../../../utils/monthConversion";
+import { monthNamesFromNumbers } from "../../../utils/monthConversion";
 
 const RevocationCountBySupervisionType = (props) => {
   const [chartLabels, setChartLabels] = useState([]);
@@ -33,7 +33,7 @@ const RevocationCountBySupervisionType = (props) => {
     sortedParole = sortedParole.slice(sortedParole.length - 6, sortedParole.length);
     sortedProbation = sortedProbation.slice(sortedProbation.length - 6, sortedProbation.length);
 
-    setChartLabels(monthNamesFromNumberList(sortedParole.map((element) => element[1])));
+    setChartLabels(monthNamesFromNumbers(sortedParole.map((element) => element[1])));
     setParoleDataPoints(sortedParole.map((element) => element[2]));
     setProbationDataPoints(sortedProbation.map((element) => element[2]));
   };
