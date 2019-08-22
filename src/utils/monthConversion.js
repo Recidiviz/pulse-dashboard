@@ -14,32 +14,44 @@ const monthNameShortFromNumber = function monthNameShortFromNumber(number) {
   return MONTH_NAMES_SHORT[number - 1];
 };
 
-const monthNamesShortFromNumberList = function monthNamesShortFromNumberList(
-  numberList,
+const monthNamesShortFromNumbers = function monthNamesShortFromNumbers(
+  monthNumbers,
 ) {
   const monthList = [];
 
-  numberList.forEach((number) => {
-    monthList.push(MONTH_NAMES_SHORT[number - 1]);
+  monthNumbers.forEach((month) => {
+    monthList.push(MONTH_NAMES_SHORT[month - 1]);
   });
 
   return monthList;
 };
 
-const monthNamesShortWithYearsFromNumberList = function monthNamesShortWithYearsFromNumberList(
-  numberList,
+const monthNamesFromNumbers = function monthNamesFromNumbers(
+  monthNumbers,
 ) {
-  const monthNames = monthNamesShortFromNumberList(numberList);
-  const multipleYears = (numberList.length > 12
-    || numberList[numberList.length - 1] < numberList[0]);
+  const monthList = [];
+
+  monthNumbers.forEach((month) => {
+    monthList.push(MONTH_NAMES[month - 1]);
+  });
+
+  return monthList;
+};
+
+const monthNamesShortWithYearsFromNumbers = function monthNamesShortWithYearsFromNumbers(
+  monthNumbers,
+) {
+  const monthNames = monthNamesShortFromNumbers(monthNumbers);
+  const multipleYears = (monthNumbers.length > 12
+    || monthNumbers[monthNumbers.length - 1] < monthNumbers[0]);
 
   const today = new Date();
   let year = today.getFullYear();
 
-  for (let i = numberList.length - 1; i >= 0; i -= 1) {
+  for (let i = monthNumbers.length - 1; i >= 0; i -= 1) {
     if (i === 0) {
       monthNames[i] = monthNames[i].concat(" '", year % 100);
-    } else if (multipleYears && numberList[i] === 1) {
+    } else if (multipleYears && monthNames[i] === 'Jan') {
       monthNames[i] = monthNames[i].concat(" '", year % 100);
       year -= 1;
     }
@@ -78,7 +90,8 @@ export {
   addYearsToMonthNamesShort,
   monthNameFromNumber,
   monthNameShortFromNumber,
-  monthNamesShortFromNumberList,
-  monthNamesShortWithYearsFromNumberList,
+  monthNamesFromNumbers,
+  monthNamesShortFromNumbers,
+  monthNamesShortWithYearsFromNumbers,
   monthNamesFromShortName,
 };
