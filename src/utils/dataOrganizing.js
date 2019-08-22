@@ -1,3 +1,25 @@
+
+const TRANSITIONAL_FACILITY_FILTERS = {
+  US_ND: ['FTPFAR', 'GFC', 'BTC', 'FTPMND', 'MTPFAR', 'LRRP', 'MTPMND'],
+};
+
+const RELEASE_FACILITY_FILTERS = {
+  US_ND: ['DWCRC', 'MRCC', 'JRCC', 'NDSP', 'TRCC', 'CJ', 'NTAD'],
+};
+
+function filterFacilities(dataPoints, facilityType, stateCode) {
+  const facilityArray = (facilityType === 'TRANSITIONAL' ? TRANSITIONAL_FACILITY_FILTERS[stateCode] : RELEASE_FACILITY_FILTERS[stateCode]);
+
+  const filteredData = []
+  dataPoints.forEach((data) => {
+    if (facilityArray.includes(data[0])) {
+      filteredData.push(data);
+    }
+  });
+
+  return filteredData;
+}
+
 /**
  * Sorts the data points by year and month, ascending.
  * Assumes that the the data is in the format:
@@ -25,6 +47,7 @@ function sortAndFilterMostRecentMonths(unsortedDataPoints, monthCount) {
 }
 
 export {
+  filterFacilities,
   filterMostRecentMonths,
   sortAndFilterMostRecentMonths,
   sortByLabel,

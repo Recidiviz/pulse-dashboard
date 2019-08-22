@@ -71,7 +71,7 @@ const RevocationProportionByRace = (props) => {
           data: [chartProportions[0], statePopulationProportions[0]],
         }, {
           label: chartLabels[1],
-          backgroundColor: COLORS_FIVE_VALUES[3],
+          backgroundColor: COLORS_FIVE_VALUES[1],
           data: [chartProportions[1], statePopulationProportions[1]],
         }, {
           label: chartLabels[2],
@@ -79,11 +79,11 @@ const RevocationProportionByRace = (props) => {
           data: [chartProportions[2], statePopulationProportions[2]],
         }, {
           label: chartLabels[3],
-          backgroundColor: COLORS_FIVE_VALUES[4],
+          backgroundColor: COLORS_FIVE_VALUES[3],
           data: [chartProportions[3], statePopulationProportions[3]],
         }, {
           label: chartLabels[4],
-          backgroundColor: COLORS_FIVE_VALUES[1],
+          backgroundColor: COLORS_FIVE_VALUES[4],
           data: [chartProportions[4], statePopulationProportions[4]],
         }, {
           label: chartLabels[5],

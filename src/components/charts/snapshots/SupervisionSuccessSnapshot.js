@@ -20,13 +20,16 @@ const SupervisionSuccessSnapshot = (props) => {
 
       const dataPoints = [];
       countsByMonth.forEach((data) => {
-        const { projected_year: year, projected_month: month } = data;
+        let { projected_year: year, projected_month: month } = data;
         const successful = parseInt(data.successful_termination, 10);
         const revocation = parseInt(data.revocation_termination, 10);
         const successRate = (100 * (successful / (successful + revocation))).toFixed(2);
 
+        year = parseInt(year, 10);
+        month = parseInt(month, 10);
+
         // Don't add completion rates for months in the future
-        if (year < yearNow || month <= monthNow) {
+        if (year < yearNow || (year === yearNow && month <= monthNow)) {
           dataPoints.push([year, month, successRate]);
         }
       });

@@ -2,8 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 import { Bar } from 'react-chartjs-2';
 import { COLORS } from '../../../assets/scripts/constants/colors';
-
-const TRANSITIONAL_FACILITIES = ['FTPFAR', 'GFC', 'BTC', 'FTPMND', 'MTPFAR', 'LRRP', 'MTPMND'];
+import { filterFacilities } from '../../../utils/dataOrganizing';
 
 const ReincarcerationRateByReleaseFacility = (props) => {
   const [chartLabels, setChartLabels] = useState([]);
@@ -12,17 +11,16 @@ const ReincarcerationRateByReleaseFacility = (props) => {
   const processResponse = () => {
     const { ratesByReleaseFacility: ratesByFacility } = props;
 
-    const sorted = [];
+    let dataPoints = [];
     ratesByFacility.forEach((data) => {
-      const { release_facility: facility } = data;
-      if (!TRANSITIONAL_FACILITIES.includes(facility)) {
-        const { recidivism_rate: recidivismRate } = data;
-        sorted.push([facility, recidivismRate]);
-      }
+      const { release_facility: facility, recidivism_rate: recidivismRate } = data;
+      dataPoints.push([facility, recidivismRate])
     });
 
+    dataPoints = filterFacilities(dataPoints, 'RELEASE', 'US_ND');
+
     // Sort by recidivism rate
-    sorted.sort((a, b) => (a[1] - b[1]));
+    const sorted = dataPoints.sort((a, b) => (a[1] - b[1]));
 
     setChartLabels(sorted.map((element) => element[0]));
     setChartDataPoints(sorted.map((element) => element[1]));

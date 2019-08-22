@@ -18,8 +18,8 @@ const DaysAtLibertySnapshot = (props) => {
 
       daysAtLibertyByMonth.forEach((data) => {
         const { year, month } = data;
-        const count = parseFloat(data.avg_liberty).toFixed(2);
-        dataPoints.push([year, month, count]);
+        const average = parseFloat(data.avg_liberty).toFixed(2);
+        dataPoints.push([year, month, average]);
       });
 
       const sorted = sortAndFilterMostRecentMonths(dataPoints, 13);
