@@ -48,16 +48,16 @@ function configureDownloadButtons(
       const exportData = exportedStructureCallback();
 
       datasets.forEach((dataset) => {
-        const countsByMonth = {};
+        const valueByMonth = {};
         let i = 0;
         dataset.data.forEach((dataPoint) => {
-          countsByMonth[labels[i]] = dataPoint;
+          valueByMonth[labels[i]] = dataPoint;
           i += 1;
         });
 
         exportData.series.push({
           label: dataset.label,
-          countsByMonth,
+          valueByMonth,
         });
       });
 

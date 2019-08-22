@@ -199,6 +199,7 @@ const COLORS = {
   'yellow-a200': '#ffff00',
   'yellow-a400': '#ffea00',
   'yellow-a700': '#ffd600',
+  'yellow-standard': '#ffd75e',
   'amber-50': '#fff8e1',
   'amber-100': '#ffecb3',
   'amber-200': '#ffe082',
@@ -289,43 +290,43 @@ const GREYS = {
 
 // A placeholder color rotator for charts that need to dynamically pick colors
 const COLOR_ROTATION = [
-  '#1B2126',
-  '#6D1E7D',
-  '#FF2454',
-  '#FF7E70',
-  '#FFD75E',
+  '#1b2126',
+  '#6d1e7d',
+  '#ff2454',
+  '#ff7e70',
+  '#ffd75e',
 ];
 
 const COLORS_GOOD_BAD = {
-  'good': '#809AE5',
-  'bad':'#D12249',
+  'good': '#809ae5',
+  'bad':'#d12249',
 };
 
 const COLORS_STACKED_TWO_VALUES = [
-  '#809AE5',
-  '#3F4D62',
+  '#809ae5',
+  '#3f4d62',
 ];
 
 const COLORS_THREE_VALUES = [
-  '#D12249',
-  '#809AE5',
-  '#3F4D62',
+  '#d12249',
+  '#809ae5',
+  '#3f4d62',
 ]
 
 const COLORS_FIVE_VALUES = [
-  '#1B2126',
-  '#6D1E7D',
-  '#FF2454',
-  '#FF7E70',
-  '#FFD75E',
+  '#1b2126',
+  '#6d1e7d',
+  '#ff2454',
+  '#ff7e70',
+  '#ffd75e',
 ];
 
 const COLORS_FIVE_VALUES_LIGHT = [
   '#495259',
-  '#943CA6',
-  '#F86A89',
-  '#FDB0A8',
-  '#FDE394',
+  '#943ca6',
+  '#f86a89',
+  '#fdb0a8',
+  '#fde394',
 ];
 
 export {
