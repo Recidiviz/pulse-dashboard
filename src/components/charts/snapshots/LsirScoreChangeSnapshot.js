@@ -168,7 +168,7 @@ const LsirScoreChangeSnapshot = (props) => {
 
   const header = document.getElementById(props.header);
 
-  // TODO: Make trending text dynamic based on goal and slope of trendline
+  // TODO(52): Make trending text dynamic based on goal and slope of trendline
   if (header) {
     const title = `The change in LSIR scores between intake and termination of supervision has been <b style='color:#809AE5'> trending towards the goal. </b>`;
     header.innerHTML = title;
