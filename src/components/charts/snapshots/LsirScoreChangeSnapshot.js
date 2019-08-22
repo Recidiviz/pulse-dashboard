@@ -12,6 +12,7 @@ const LsirScoreChangeSnapshot = (props) => {
   const processResponse = () => {
     const { lsirScoreChangeByMonth: changeByMonth } = props;
 
+    var sorted = [];
     if (changeByMonth) {
       let sorted = [];
 
