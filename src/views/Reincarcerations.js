@@ -163,7 +163,7 @@ const Reincarcerations = () => {
                   <div id="collapseMethodologyReincarcerationsByFacility" className="collapse" aria-labelledby="methodologyHeadingReincarcerationsByFacility" data-parent="#methodologyReincarcerationsByFacility">
                     <div>
                       <ul>
-                        <li>Reincarceration cohorts include only those admissions which resulted from an incarceration, due to a new offense, of a person who was previously incarcerated in a DOCR prison. The reincarceration must have happened within the noted follow up period directly after their release.</li>
+                        <li>Reincarceration cohorts include all admissions to incarceration of a person who was previously incarcerated in a DOCR prison. The reincarceration must have happened within the noted follow up period directly after their release.</li>
                         <li>Reincarcerations are counted towards the facility where the person was released from, regardless of time spent in various facilities.</li>
                       </ul>
                     </div>
@@ -178,10 +178,6 @@ const Reincarcerations = () => {
                     <div className="peer fw-600">
                       <small className="c-grey-500 fw-600">Follow Up Period</small>
                       <span className="fsz-def fw-600 mR-10 c-grey-800">1 year</span>
-                    </div>
-                    <div className="peer fw-600">
-                      <small className="c-grey-500 fw-600">Type</small>
-                      <span className="fsz-def fw-600 mR-10 c-grey-800">New offenses</span>
                     </div>
                   </div>
                 </div>
@@ -214,7 +210,7 @@ const Reincarcerations = () => {
                   <div id="collapseMethodologyReincarcerationsByFacility" className="collapse" aria-labelledby="methodologyHeadingReincarcerationsByFacility" data-parent="#methodologyReincarcerationsByFacility">
                     <div>
                       <ul>
-                        <li>Reincarceration cohorts include only those admissions which resulted from an incarceration, due to a new offense, of a person who was previously incarcerated in a DOCR prison. The reincarceration must have happened within the noted follow up period directly after their release.</li>
+                        <li>Reincarceration cohorts include all admissions to incarceration of a person who was previously incarcerated in a DOCR prison. The reincarceration must have happened within the noted follow up period directly after their release.</li>
                         <li>Reincarcerations are counted towards the facility where the person was released from, regardless of time spent in various facilities.</li>
                       </ul>
                     </div>
@@ -229,10 +225,6 @@ const Reincarcerations = () => {
                     <div className="peer fw-600">
                       <small className="c-grey-500 fw-600">Follow Up Period</small>
                       <span className="fsz-def fw-600 mR-10 c-grey-800">1 year</span>
-                    </div>
-                    <div className="peer fw-600">
-                      <small className="c-grey-500 fw-600">Type</small>
-                      <span className="fsz-def fw-600 mR-10 c-grey-800">New offenses</span>
                     </div>
                   </div>
                 </div>
@@ -261,7 +253,7 @@ const Reincarcerations = () => {
                   <div id="collapseMethodologyReincarcerationsByStayLength" className="collapse" aria-labelledby="methodologyHeadingReincarcerationsByStayLength" data-parent="#methodologyReincarcerationsByStayLength">
                     <div>
                       <ul>
-                        <li>Reincarceration cohorts include only those admissions which resulted from an incarceration, due to a new offense, of a person who was previously incarcerated in a DOCR prison. The reincarceration must have happened within the noted follow up period directly after their release.</li>
+                        <li>Reincarceration cohorts include all admissions to incarceration of a person who was previously incarcerated in a DOCR prison. The reincarceration must have happened within the noted follow up period directly after their release.</li>
                         <li>Stay length refers to time actually spent incarcerated prior to their most recent release from a DOCR prison. This is bucketed into 12-month windows for sampling.</li>
                       </ul>
                     </div>
@@ -276,10 +268,6 @@ const Reincarcerations = () => {
                     <div className="peer fw-600">
                       <small className="c-grey-500 fw-600">Follow Up Period</small>
                       <span className="fsz-def fw-600 mR-10 c-grey-800">1 year</span>
-                    </div>
-                    <div className="peer fw-600">
-                      <small className="c-grey-500 fw-600">Return Type</small>
-                      <span className="fsz-def fw-600 mR-10 c-grey-800">New offenses</span>
                     </div>
                   </div>
                 </div>

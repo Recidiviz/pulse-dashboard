@@ -123,8 +123,8 @@ const Revocations = () => {
                   <div className="collapse" id="collapseMethodologyRevocationBySupervisionType" aria-labelledby="methodologyHeadingRevocationBySupervisiontype" data-parent="#methodologyRevocationBySupervisionType">
                     <div>
                       <ul>
-                      <li>Revocations include all instances of a person being incarcerated because their supervision was revoked for a behavioral violation.</li>
-                      <li>Violations include all behavioral violations officially recorded by a supervision officer, including new offenses, technical violations, and absconsion.</li>
+                        <li>Revocations include all instances of a person being incarcerated because their supervision was revoked for a behavioral violation.</li>
+                        <li>Violations include all behavioral violations officially recorded by a supervision officer, including new offenses, technical violations, and absconsion.</li>
                       </ul>
                     </div>
                   </div>
@@ -154,10 +154,10 @@ const Revocations = () => {
                   <div className="collapse" id="collapseMethodologyRevocationsByViolationType" aria-labelledby="methodologyHeadingRevocationsByViolationType" data-parent="#methodologyRevocationsByViolationType">
                     <div>
                       <ul>
-                      <li>Revocations include all instances of a person being incarcerated because their supervision was revoked for a behavioral violation.</li>
-                      <li>Violations include all behavioral violations officially recorded by a supervision officer, including new offenses, technical violations, and absconsion.</li>
-                      <li>Violations of "Unknown Type" indicate individuals who were admitted to prison for a supervision revocation where the violation that caused the revocation cannot be determined.</li>
-                      <li>"Technical" revocations include only those revocations which result only from a technical violation. If there is a violation that includes a new offense or an absconsion, it is considered a non-technical revocation.</li>
+                        <li>Revocations include all instances of a person being incarcerated because their supervision was revoked for a behavioral violation.</li>
+                        <li>Violations include all behavioral violations officially recorded by a supervision officer, including new offenses, technical violations, and absconsion.</li>
+                        <li>Violations of "Unknown Type" indicate individuals who were admitted to prison for a supervision revocation where the violation that caused the revocation cannot be determined.</li>
+                        <li>"Technical" revocations include only those revocations which result only from a technical violation. If there is a violation that includes a new offense or an absconsion, it is considered a non-technical revocation.</li>
                       </ul>
                     </div>
                   </div>
@@ -271,8 +271,8 @@ const Revocations = () => {
                   <div className="collapse" id="collapseMethodologyRevocationsByRace" aria-labelledby="methodologyHeadingRevocationsByRace" data-parent="#methodologyRevocationsByRace">
                     <div>
                       <ul>
-                      <li>Revocations include all instances of a person being incarcerated because their supervision was revoked for a behavioral violation.</li>
-                      <li>The race proportions for the population of North Dakota were taken from the U.S. Census Bureau.</li>
+                        <li>Revocations include all instances of a person being incarcerated because their supervision was revoked for a behavioral violation.</li>
+                        <li>The race proportions for the population of North Dakota were taken from the U.S. Census Bureau.</li>
                       </ul>
                     </div>
                   </div>

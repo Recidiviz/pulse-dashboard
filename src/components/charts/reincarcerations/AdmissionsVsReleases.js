@@ -66,7 +66,7 @@ const AdmissionsVsReleases = (props) => {
           yAxes: [{
             scaleLabel: {
               display: true,
-              labelString: 'Counts',
+              labelString: 'Admissions versus releases',
             },
           }],
         },
