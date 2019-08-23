@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 
 import { Bar } from 'react-chartjs-2';
 import { COLORS_STACKED_TWO_VALUES } from "../../../assets/scripts/constants/colors";
-import { monthNamesFromNumbers } from "../../../utils/monthConversion";
+import { monthNamesWithYearsFromNumbers } from "../../../utils/monthConversion";
 import { sortAndFilterMostRecentMonths } from '../../../utils/dataOrganizing';
 
 const RevocationCountBySupervisionType = (props) => {
@@ -26,7 +26,9 @@ const RevocationCountBySupervisionType = (props) => {
     const sortedParoleData = sortAndFilterMostRecentMonths(paroleData, 6);
     const sortedProbationData = sortAndFilterMostRecentMonths(probationData, 6);
 
-    setChartLabels(monthNamesFromNumbers(sortedParoleData.map((element) => element[1])));
+    setChartLabels(monthNamesWithYearsFromNumbers(sortedParoleData.map(
+      (element) => element[1],
+    ), false));
     setParoleDataPoints(sortedParoleData.map((element) => element[2]));
     setProbationDataPoints(sortedProbationData.map((element) => element[2]));
   };

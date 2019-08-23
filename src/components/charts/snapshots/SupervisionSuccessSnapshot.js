@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Line } from 'react-chartjs-2';
 import { configureDownloadButtons } from '../../../assets/scripts/charts/chartJS/downloads';
 import { COLORS } from '../../../assets/scripts/constants/colors';
-import { monthNamesShortWithYearsFromNumbers, monthNamesFromShortName } from '../../../utils/monthConversion';
+import { monthNamesWithYearsFromNumbers, monthNamesFromShortName } from '../../../utils/monthConversion';
 import { sortAndFilterMostRecentMonths } from '../../../utils/dataOrganizing';
 
 const SupervisionSuccessSnapshot = (props) => {
@@ -36,7 +36,7 @@ const SupervisionSuccessSnapshot = (props) => {
 
       const sorted = sortAndFilterMostRecentMonths(dataPoints, 13);
 
-      setChartLabels(monthNamesShortWithYearsFromNumbers(sorted.map((element) => element[1])));
+      setChartLabels(monthNamesWithYearsFromNumbers(sorted.map((element) => element[1]), true));
       setChartDataPoints(sorted.map((element) => element[2]));
     }
   };

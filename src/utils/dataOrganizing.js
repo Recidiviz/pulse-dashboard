@@ -7,6 +7,11 @@ const RELEASE_FACILITY_FILTERS = {
   US_ND: ['DWCRC', 'MRCC', 'JRCC', 'NDSP', 'TRCC', 'CJ', 'NTAD'],
 };
 
+/**
+ * Filters data points to only include the list of facilities corresponding to
+ * the given `facilityType` and `stateCode`. Assumes the data is in the format:
+ * [facilityName, dataValue]
+ */
 function filterFacilities(dataPoints, facilityType, stateCode) {
   const facilityArray = (facilityType === 'TRANSITIONAL' ? TRANSITIONAL_FACILITY_FILTERS[stateCode] : RELEASE_FACILITY_FILTERS[stateCode]);
 
@@ -29,6 +34,11 @@ function sortByYearAndMonth(dataPoints) {
   return dataPoints.sort((a, b) => ((a[0] === b[0]) ? (a[1] - b[1]) : (a[0] - b[0])));
 }
 
+/**
+ * Sorts the data points by labels, ascending alphabetic order.
+ *  -`labelIndex`: The index in the dataPoint array that contains the label
+ *    to sort on
+ */
 function sortByLabel(dataPoints, labelIndex) {
   return dataPoints.sort((a, b) => (a[labelIndex].localeCompare(b[labelIndex])));
 }

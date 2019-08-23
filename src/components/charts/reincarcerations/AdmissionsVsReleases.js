@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 import { Bar } from 'react-chartjs-2';
 import { COLORS_GOOD_BAD } from '../../../assets/scripts/constants/colors';
-import { monthNamesFromNumbers } from '../../../utils/monthConversion';
+import { monthNamesWithYearsFromNumbers } from '../../../utils/monthConversion';
 import { sortAndFilterMostRecentMonths } from '../../../utils/dataOrganizing';
 
 const AdmissionsVsReleases = (props) => {
@@ -20,7 +20,7 @@ const AdmissionsVsReleases = (props) => {
 
     const sorted = sortAndFilterMostRecentMonths(dataPoints, 6);
 
-    setChartLabels(monthNamesFromNumbers(sorted.map((element) => element[1])));
+    setChartLabels(monthNamesWithYearsFromNumbers(sorted.map((element) => element[1]), false));
     setChartDataPoints(sorted.map((element) => element[2]));
   };
 

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 import { Bar } from 'react-chartjs-2';
 import { COLORS_FIVE_VALUES } from '../../../assets/scripts/constants/colors';
-import { monthNamesFromNumbers } from '../../../utils/monthConversion';
+import { monthNamesWithYearsFromNumbers } from '../../../utils/monthConversion';
 import { sortAndFilterMostRecentMonths } from '../../../utils/dataOrganizing';
 
 const RevocationCountByViolationType = (props) => {
@@ -51,7 +51,7 @@ const RevocationCountByViolationType = (props) => {
       });
     }
 
-    setChartLabels(monthNamesFromNumbers(monthsLabels));
+    setChartLabels(monthNamesWithYearsFromNumbers(monthsLabels, false));
     setAbsconsionDataPoints(violationArrays.ABSCONDED);
     setNewOffenseDataPoints(violationArrays.FELONY);
     setTechnicalDataPoints(violationArrays.TECHNICAL);
