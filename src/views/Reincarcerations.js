@@ -93,7 +93,6 @@ const Reincarcerations = () => {
                       <ul>
                         <li>Total admissions include unique people admitted to any DOCR prison during a particular time frame.</li>
                         <li>Sentence length refers to the maximum sentence length that the person received in response to the offense that led to the reincarceration.</li>
-                        <li><a href="methodology.html" target="_blank">Read more...</a></li>
                       </ul>
                     </div>
                   </div>
@@ -129,7 +128,6 @@ const Reincarcerations = () => {
                       <ul>
                         <li>Total admissions include unique people admitted to any DOCR prison during a particular time frame.</li>
                         <li>Total releases include unique people released from any DOCR prison, to either a term of supervision or total freedom, during a particular time frame.</li>
-                        <li><a href="methodology.html" target="_blank">Read more...</a></li>
                       </ul>
                     </div>
                   </div>
@@ -167,7 +165,6 @@ const Reincarcerations = () => {
                       <ul>
                         <li>Reincarceration cohorts include only those admissions which resulted from an incarceration, due to a new offense, of a person who was previously incarcerated in a DOCR prison. The reincarceration must have happened within the noted follow up period directly after their release.</li>
                         <li>Reincarcerations are counted towards the facility where the person was released from, regardless of time spent in various facilities.</li>
-                        <li><a href="methodology.html" target="_blank">Read more...</a></li>
                       </ul>
                     </div>
                   </div>
@@ -219,7 +216,6 @@ const Reincarcerations = () => {
                       <ul>
                         <li>Reincarceration cohorts include only those admissions which resulted from an incarceration, due to a new offense, of a person who was previously incarcerated in a DOCR prison. The reincarceration must have happened within the noted follow up period directly after their release.</li>
                         <li>Reincarcerations are counted towards the facility where the person was released from, regardless of time spent in various facilities.</li>
-                        <li><a href="methodology.html" target="_blank">Read more...</a></li>
                       </ul>
                     </div>
                   </div>
@@ -267,7 +263,6 @@ const Reincarcerations = () => {
                       <ul>
                         <li>Reincarceration cohorts include only those admissions which resulted from an incarceration, due to a new offense, of a person who was previously incarcerated in a DOCR prison. The reincarceration must have happened within the noted follow up period directly after their release.</li>
                         <li>Stay length refers to time actually spent incarcerated prior to their most recent release from a DOCR prison. This is bucketed into 12-month windows for sampling.</li>
-                        <li><a href="methodology.html" target="_blank">Read more...</a></li>
                       </ul>
                     </div>
                   </div>

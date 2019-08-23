@@ -95,7 +95,6 @@ const Revocations = () => {
                         <li>Violations include all behavioral violations officially recorded by a supervision officer, including new offenses, technical violations, and absconsion.</li>
                         <li>Revocations include all instances of a person having any form of supervision revoked for any behavioral violation, and being reincarcerated as a result.</li>
                         <li>Technical revocations include only those revocations which result only from a technical violation and/or absconsion. If there is a technical violation in addition to a new offense, it is considered a non-technical revocation.</li>
-                        <li><a href="methodology.html" target="_blank">Read more...</a></li>
                       </ul>
                     </div>
                   </div>
@@ -128,7 +127,6 @@ const Revocations = () => {
                         <li>Violations include all behavioral violations officially recorded by a supervision officer, including new offenses, technical violations, and absconsion.</li>
                         <li>Revocations include all instances of a person having any form of supervision revoked for any behavioral violation, and being reincarcerated as a result.</li>
                         <li>Technical revocations include only those revocations which result only from a technical violation and/or absconsion. If there is a technical violation in addition to a new offense, it is considered a non-technical revocation.</li>
-                        <li><a href="methodology.html" target="_blank">Read more...</a></li>
                       </ul>
                     </div>
                   </div>
@@ -161,7 +159,6 @@ const Revocations = () => {
                         <li>Violations include all behavioral violations officially recorded by a supervision officer, including new offenses, technical violations, and absconsion.</li>
                         <li>Revocations include all instances of a person having any form of supervision revoked for any behavioral violation, and being reincarcerated as a result.</li>
                         <li>Technical revocations include only those revocations which result only from a technical violation and/or absconsion. If there is a technical violation in addition to a new offense, it is considered a non-technical revocation.</li>
-                        <li><a href="methodology.html" target="_blank">Read more...</a></li>
                       </ul>
                     </div>
                   </div>
@@ -235,7 +232,6 @@ const Revocations = () => {
                         <li>New admissions include unique people admitted to any DOCR prison during a particular time frame, regardless of whether they were previously incarcerated.</li>
                         <li>Revocations include all instances of a person having any form of supervision revoked for any behavioral violation, and being reincarcerated as a result.</li>
                         <li>Technical revocations include only those revocations which result only from a technical violation and/or absconsion. If there is a technical violation in addition to a new offense, it is considered a non-technical revocation.</li>
-                        <li><a href="methodology.html" target="_blank">Read more...</a></li>
                       </ul>
                     </div>
                   </div>
@@ -278,7 +274,6 @@ const Revocations = () => {
                         <li>Violations include all behavioral violations officially recorded by a supervision officer, including new offenses, technical violations, and absconsion.</li>
                         <li>Revocations include all instances of a person having any form of supervision revoked for any behavioral violation, and being reincarcerated as a result.</li>
                         <li>Technical revocations include only those revocations which result only from a technical violation and/or absconsion. If there is a technical violation in addition to a new offense, it is considered a non-technical revocation.</li>
-                        <li><a href="methodology.html" target="_blank">Read more...</a></li>
                       </ul>
                     </div>
                   </div>
