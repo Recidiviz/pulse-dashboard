@@ -5,10 +5,17 @@ import { configureDownloadButtons } from '../../../assets/scripts/charts/chartJS
 import { COLORS } from '../../../assets/scripts/constants/colors';
 import { monthNamesWithYearsFromNumbers } from '../../../utils/monthConversion';
 import { sortAndFilterMostRecentMonths } from '../../../utils/dataOrganizing';
+import { slopeOfTrendline, trendlineData } from '../../../utils/trendline';
 
 const DaysAtLibertySnapshot = (props) => {
   const [chartLabels, setChartLabels] = useState([]);
   const [chartDataPoints, setChartDataPoints] = useState([]);
+
+  const GOAL = {
+    aimingHigher: true,
+    value: 1095,
+    label: '1095 days (3 years)',
+  };
 
   const processResponse = () => {
     const { daysAtLibertyByMonth } = props;
@@ -39,21 +46,26 @@ const DaysAtLibertySnapshot = (props) => {
       data={{
         labels: chartLabels,
         datasets: [{
-          // TODO(51): Add custom trendline plugin
+          label: 'data',
           backgroundColor: COLORS['blue-standard'],
           borderColor: COLORS['blue-standard'],
           pointBackgroundColor: COLORS['blue-standard'],
           pointRadius: 4,
           hitRadius: 5,
           fill: false,
-          borderWidth: 1,
+          borderWidth: 2,
           lineTension: 0,
           data: chartDataPoints,
-          trendlineLinear: {
-            style: COLORS['yellow-standard'],
-            lineStyle: 'solid',
-            width: 1,
-          },
+        }, {
+          label: 'trendline',
+          backgroundColor: COLORS['blue-standard-light'],
+          borderColor: COLORS['blue-standard-light'],
+          fill: false,
+          pointRadius: 0,
+          hitRadius: 0,
+          borderWidth: 1.5,
+          lineTension: 0,
+          data: trendlineData(chartDataPoints),
         },
         ],
       }}
@@ -68,7 +80,13 @@ const DaysAtLibertySnapshot = (props) => {
         },
         tooltips: {
           enabled: true,
-          mode: 'x',
+          mode: 'point',
+          callbacks: {
+            label: (tooltipItem) => {
+              if (tooltipItem.datasetIndex > 0) return '';
+              return tooltipItem.yLabel;
+            },
+          },
         },
         scales: {
           xAxes: [{
@@ -94,7 +112,7 @@ const DaysAtLibertySnapshot = (props) => {
             },
             scaleLabel: {
               display: true,
-              labelString: '# of days',
+              labelString: 'Number of days at liberty',
               fontColor: COLORS['grey-500'],
               fontStyle: 'bold',
             },
@@ -112,7 +130,7 @@ const DaysAtLibertySnapshot = (props) => {
           annotations: [{
             type: 'line',
             mode: 'horizontal',
-            value: 1095,
+            value: GOAL.value,
 
             // optional annotation ID (must be unique)
             id: 'days-at-liberty-snapshot-goal-line',
@@ -120,13 +138,13 @@ const DaysAtLibertySnapshot = (props) => {
 
             drawTime: 'afterDatasetsDraw',
 
-            borderColor: COLORS['red-400'],
+            borderColor: COLORS['red-standard'],
             borderWidth: 2,
             borderDash: [2, 2],
             borderDashOffset: 5,
             label: {
               enabled: true,
-              content: 'goal: 1095 days (3 years)',
+              content: 'goal: '.concat(GOAL.label),
               position: 'right',
 
               // Background color of label, default below
@@ -135,7 +153,7 @@ const DaysAtLibertySnapshot = (props) => {
               fontFamily: 'sans-serif',
               fontSize: 12,
               fontStyle: 'bold',
-              fontColor: COLORS['red-400'],
+              fontColor: COLORS['red-standard'],
 
               // Adjustment along x-axis (left-right) of label relative to above
               // number (can be negative). For horizontal lines positioned left
@@ -167,10 +185,18 @@ const DaysAtLibertySnapshot = (props) => {
     document.getElementById('days-at-liberty-snapshot-chart'), exportedStructureCallback);
 
   const header = document.getElementById(props.header);
+  const trendlineValues = chart.props.data.datasets[1].data;
+  const trendlineSlope = slopeOfTrendline(trendlineValues);
+  let trendText = '';
 
-  // TODO: Make trending text dynamic based on goal and slope of trendline
+  if (GOAL.aimingHigher) {
+    trendText = (trendlineSlope > 0) ? 'towards the goal' : 'away from the goal';
+  } else {
+    trendText = (trendlineSlope < 0) ? 'towards the goal' : 'away from the goal';
+  }
+
   if (header) {
-    const title = `The average days between release from incarceration and readmission has been <b style='color:#809AE5'>trending away from the goal.</b>`;
+    const title = `The average days between release from incarceration and readmission has been <b style='color:#809AE5'>trending ${trendText}.</b>`;
     header.innerHTML = title;
   }
 
