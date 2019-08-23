@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
 
-import Loading from "../components/Loading";
-import "../assets/styles/index.scss";
-import { useAuth0 } from "../react-auth0-spa";
+import Loading from '../components/Loading';
+import '../assets/styles/index.scss';
+import { useAuth0 } from '../react-auth0-spa';
 
-import ReleasesVsAdmissions from "../components/charts/reincarcerations/ReleasesVsAdmissions";
-import ReincarcerationRateByReleaseFacility from "../components/charts/reincarcerations/ReincarcerationRateByReleaseFacility";
-import ReincarcerationRateByTransitionalFacility from "../components/charts/reincarcerations/ReincarcerationRateByTransitionalFacility";
-import ReincarcerationRateByStayLength from "../components/charts/reincarcerations/ReincarcerationRateByStayLength";
-import ReincarcerationCountOverTime from "../components/charts/reincarcerations/ReincarcerationCountOverTime";
+import AdmissionsVsReleases from '../components/charts/reincarcerations/AdmissionsVsReleases';
+import ReincarcerationRateByReleaseFacility from '../components/charts/reincarcerations/ReincarcerationRateByReleaseFacility';
+import ReincarcerationRateByTransitionalFacility from '../components/charts/reincarcerations/ReincarcerationRateByTransitionalFacility';
+import ReincarcerationRateByStayLength from '../components/charts/reincarcerations/ReincarcerationRateByStayLength';
+import ReincarcerationCountOverTime from '../components/charts/reincarcerations/ReincarcerationCountOverTime';
 
 const Reincarcerations = () => {
   const { loading, user, getTokenSilently } = useAuth0();
@@ -18,14 +18,14 @@ const Reincarcerations = () => {
   const fetchChartData = async () => {
     try {
       const token = await getTokenSilently();
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/external`, {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/reincarcerations`, {
         headers: {
-          Authorization: `Bearer ${token}`
-        }
+          Authorization: `Bearer ${token}`,
+        },
       });
 
       const responseData = await response.json();
-      setApiData(responseData.external);
+      setApiData(responseData);
       setAwaitingApi(false);
     } catch (error) {
       console.error(error);
@@ -51,8 +51,8 @@ const Reincarcerations = () => {
             <div className="bd bgc-white p-20">
               <div className="layers">
                 <div className="layer w-100 pX-20 pT-20">
-                  <h4 className="lh-1">
-                    The <span className="font-weight-bold">reincarceration</span> count this month was <span className="font-weight-bold">14</span> over target
+                  <h6 className="lh-1">
+                    REINCARCERATIONS BY MONTH
                     <span className="fa-pull-right">
                       <div className="dropdown show">
                         <a className="btn btn-secondary btn-sm dropdown-toggle" href="#" role="button" id="exportDropdownMenuButton-reincarcerationDrivers" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -64,12 +64,19 @@ const Reincarcerations = () => {
                         </div>
                       </div>
                     </span>
+                  </h6>
+                </div>
+                <div className="layer w-100 pX-20 pT-20">
+                  <h4 style={{ height: '20px' }} className="lh-1" id="reincarcerationDrivers-header">
                   </h4>
                 </div>
                 <div className="layer w-100 pX-20 pT-20 row">
                   <div className="col-md-12">
                     <div className="layer w-100 p-20">
-                      <ReincarcerationCountOverTime reincarcerationCountsByMonth={apiData.reincarcerationCountsByMonth} />
+                      <ReincarcerationCountOverTime
+                        reincarcerationCountsByMonth={apiData.reincarcerations_by_month}
+                        header="reincarcerationDrivers-header"
+                      />
                     </div>
                   </div>
                 </div>
@@ -84,9 +91,7 @@ const Reincarcerations = () => {
                   <div id="collapseMethodologyRecidivismDriver" className="collapse" aria-labelledby="methodologyHeadingRecidivismDriver" data-parent="#methodologyRecidivismDriver">
                     <div>
                       <ul>
-                        <li>Total admissions include unique people admitted to any DOCR prison during a particular time frame.</li>
-                        <li>Sentence length refers to the maximum sentence length that the person received in response to the offense that led to the reincarceration.</li>
-                        <li><a href="methodology.html" target="_blank">Read more...</a></li>
+                        <li>An admission to prison counts as a reincarceration if the person has been incarcerated previously and if they were released from their last incarceration within 10 years of the date of the new admission.</li>
                       </ul>
                     </div>
                   </div>
@@ -100,25 +105,29 @@ const Reincarcerations = () => {
             <div className="bd bgc-white p-20">
               <div className="layers">
                 <div className="layer w-100 pX-20 pT-20">
-                  <h4 className="lh-1">The ND facilities <span className="font-weight-bold">grew</span> by <span className="font-weight-bold">22</span> people this month</h4>
+                  <h4 style={{ height: '20px' }} className="lh-1" id="admissionsVsReleases-header">
+                  </h4>
                 </div>
                 <div className="layer w-100 p-20">
-                  <ReleasesVsAdmissions admissions={apiData.admissions} releases={apiData.releases} />
+                  <AdmissionsVsReleases
+                    admissionsVsReleases={apiData.admissions_versus_releases_by_month}
+                    header="admissionsVsReleases-header"
+                  />
                 </div>
-                <div className="layer bdT p-20 w-100 accordion" id="methodologyReleasesVsAdmissions">
-                  <div className="mb-0" id="methodologyHeadingReleasesVsAdmissions">
+                <div className="layer bdT p-20 w-100 accordion" id="methodologyAdmissionsVsReleases">
+                  <div className="mb-0" id="methodologyHeadingAdmissionsVsReleases">
                     <div className="mb-0">
-                      <button className="btn btn-link collapsed pL-0" type="button" data-toggle="collapse" data-target="#collapseMethodologyReleasesVsAdmissions" aria-expanded="true" aria-controls="collapseMethodologyReleasesVsAdmissions">
+                      <button className="btn btn-link collapsed pL-0" type="button" data-toggle="collapse" data-target="#collapseMethodologyAdmissionsVsReleases" aria-expanded="true" aria-controls="collapseMethodologyAdmissionsVsReleases">
                         <h6 className="lh-1 c-blue-500 mb-0">Methodology</h6>
                       </button>
                     </div>
                   </div>
-                  <div id="collapseMethodologyReleasesVsAdmissions" className="collapse" aria-labelledby="methodologyHeadingReleasesVsAdmissions" data-parent="#methodologyReleasesVsAdmissions">
+                  <div id="collapseMethodologyAdmissionsVsReleases" className="collapse" aria-labelledby="methodologyHeadingAdmissionsVsReleases" data-parent="#methodologyAdmissionsVsReleases">
                     <div>
                       <ul>
-                        <li>Total admissions include unique people admitted to any DOCR prison during a particular time frame.</li>
-                        <li>Total releases include unique people released from any DOCR prison, to either a term of supervision or total freedom, during a particular time frame.</li>
-                        <li><a href="methodology.html" target="_blank">Read more...</a></li>
+                        <li>"Admissions versus releases" is the difference between the number of people who were admitted to DOCR prisons and the number of people who were released from DOCR prisons during a particular time frame.</li>
+                        <li>Admissions include unique people admitted to any DOCR prison during a particular time frame.</li>
+                        <li>Releases include unique people released from any DOCR prison, to either a term of supervision or because they served their sentence, during a particular time frame.</li>
                       </ul>
                     </div>
                   </div>
@@ -132,12 +141,14 @@ const Reincarcerations = () => {
             <div className="bd bgc-white p-20">
               <div className="layers">
                 <div className="layer w-100 pX-20 pT-20">
-                  <h6 className="lh-1">Reincarceration rate by release facility</h6>
+                  <h4 className="lh-1">Reincarceration rate by release facility</h4>
                 </div>
                 <div className="layer w-100 p-20">
                   <div className="ai-c jc-c gapX-20">
                     <div className="col-md-12">
-                      <ReincarcerationRateByReleaseFacility ratesByReleaseFacility={apiData.ratesByReleaseFacility} />
+                      <ReincarcerationRateByReleaseFacility
+                        ratesByReleaseFacility={apiData.reincarceration_rate_by_release_facility}
+                      />
                     </div>
                   </div>
                 </div>
@@ -152,9 +163,8 @@ const Reincarcerations = () => {
                   <div id="collapseMethodologyReincarcerationsByFacility" className="collapse" aria-labelledby="methodologyHeadingReincarcerationsByFacility" data-parent="#methodologyReincarcerationsByFacility">
                     <div>
                       <ul>
-                        <li>Reincarceration cohorts include only those admissions which resulted from an incarceration, due to a new offense, of a person who was previously incarcerated in a DOCR prison. The reincarceration must have happened within the noted follow up period directly after their release.</li>
+                        <li>Reincarceration cohorts include all admissions to incarceration of a person who was previously incarcerated in a DOCR prison. The reincarceration must have happened within the noted follow up period directly after their release.</li>
                         <li>Reincarcerations are counted towards the facility where the person was released from, regardless of time spent in various facilities.</li>
-                        <li><a href="methodology.html" target="_blank">Read more...</a></li>
                       </ul>
                     </div>
                   </div>
@@ -168,10 +178,6 @@ const Reincarcerations = () => {
                     <div className="peer fw-600">
                       <small className="c-grey-500 fw-600">Follow Up Period</small>
                       <span className="fsz-def fw-600 mR-10 c-grey-800">1 year</span>
-                    </div>
-                    <div className="peer fw-600">
-                      <small className="c-grey-500 fw-600">Type</small>
-                      <span className="fsz-def fw-600 mR-10 c-grey-800">New offenses</span>
                     </div>
                   </div>
                 </div>
@@ -184,12 +190,12 @@ const Reincarcerations = () => {
             <div className="bd bgc-white p-20">
               <div className="layers">
                 <div className="layer w-100 pX-20 pT-20">
-                  <h6 className="lh-1">Reincarceration rate by transitional facility</h6>
+                  <h4 className="lh-1">Reincarceration rate by transitional facility</h4>
                 </div>
                 <div className="layer w-100 p-20">
                   <div className="ai-c jc-c gapX-20">
                     <div className="col-md-12">
-                      <ReincarcerationRateByTransitionalFacility ratesByTransitionalFacility={apiData.ratesByTransitionalFacility} />
+                      <ReincarcerationRateByTransitionalFacility ratesByTransitionalFacility={apiData.reincarceration_rate_by_release_facility} />
                     </div>
                   </div>
                 </div>
@@ -204,9 +210,8 @@ const Reincarcerations = () => {
                   <div id="collapseMethodologyReincarcerationsByFacility" className="collapse" aria-labelledby="methodologyHeadingReincarcerationsByFacility" data-parent="#methodologyReincarcerationsByFacility">
                     <div>
                       <ul>
-                        <li>Reincarceration cohorts include only those admissions which resulted from an incarceration, due to a new offense, of a person who was previously incarcerated in a DOCR prison. The reincarceration must have happened within the noted follow up period directly after their release.</li>
+                        <li>Reincarceration cohorts include all admissions to incarceration of a person who was previously incarcerated in a DOCR prison. The reincarceration must have happened within the noted follow up period directly after their release.</li>
                         <li>Reincarcerations are counted towards the facility where the person was released from, regardless of time spent in various facilities.</li>
-                        <li><a href="methodology.html" target="_blank">Read more...</a></li>
                       </ul>
                     </div>
                   </div>
@@ -220,10 +225,6 @@ const Reincarcerations = () => {
                     <div className="peer fw-600">
                       <small className="c-grey-500 fw-600">Follow Up Period</small>
                       <span className="fsz-def fw-600 mR-10 c-grey-800">1 year</span>
-                    </div>
-                    <div className="peer fw-600">
-                      <small className="c-grey-500 fw-600">Type</small>
-                      <span className="fsz-def fw-600 mR-10 c-grey-800">New offenses</span>
                     </div>
                   </div>
                 </div>
@@ -239,7 +240,7 @@ const Reincarcerations = () => {
                   <h4 className="lh-1">Reincarceration rate by previous stay length</h4>
                 </div>
                 <div className="layer w-100 p-20">
-                  <ReincarcerationRateByStayLength ratesByStayLength={apiData.ratesByStayLength} />
+                  <ReincarcerationRateByStayLength ratesByStayLength={apiData.reincarceration_rate_by_stay_length} />
                 </div>
                 <div className="layer bdT p-20 w-100 accordion" id="methodologyReincarcerationsByStayLength">
                   <div className="mb-0" id="methodologyHeadingReincarcerationsByStayLength">
@@ -252,9 +253,8 @@ const Reincarcerations = () => {
                   <div id="collapseMethodologyReincarcerationsByStayLength" className="collapse" aria-labelledby="methodologyHeadingReincarcerationsByStayLength" data-parent="#methodologyReincarcerationsByStayLength">
                     <div>
                       <ul>
-                        <li>Reincarceration cohorts include only those admissions which resulted from an incarceration, due to a new offense, of a person who was previously incarcerated in a DOCR prison. The reincarceration must have happened within the noted follow up period directly after their release.</li>
+                        <li>Reincarceration cohorts include all admissions to incarceration of a person who was previously incarcerated in a DOCR prison. The reincarceration must have happened within the noted follow up period directly after their release.</li>
                         <li>Stay length refers to time actually spent incarcerated prior to their most recent release from a DOCR prison. This is bucketed into 12-month windows for sampling.</li>
-                        <li><a href="methodology.html" target="_blank">Read more...</a></li>
                       </ul>
                     </div>
                   </div>
@@ -268,10 +268,6 @@ const Reincarcerations = () => {
                     <div className="peer fw-600">
                       <small className="c-grey-500 fw-600">Follow Up Period</small>
                       <span className="fsz-def fw-600 mR-10 c-grey-800">1 year</span>
-                    </div>
-                    <div className="peer fw-600">
-                      <small className="c-grey-500 fw-600">Return Type</small>
-                      <span className="fsz-def fw-600 mR-10 c-grey-800">New offenses</span>
                     </div>
                   </div>
                 </div>

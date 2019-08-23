@@ -3,22 +3,30 @@ import React, { useState, useEffect } from 'react';
 import { Line } from 'react-chartjs-2';
 import { configureDownloadButtons } from '../../../assets/scripts/charts/chartJS/downloads';
 import { COLORS } from '../../../assets/scripts/constants/colors';
-import { addYearsToMonthNamesShort } from '../../../utils/monthConversion';
+import { monthNamesWithYearsFromNumbers } from '../../../utils/monthConversion';
+import { sortAndFilterMostRecentMonths } from '../../../utils/dataOrganizing';
 
 const DaysAtLibertySnapshot = (props) => {
   const [chartLabels, setChartLabels] = useState([]);
   const [chartDataPoints, setChartDataPoints] = useState([]);
 
   const processResponse = () => {
-    const countsByMonth = props.daysAtLibertyByMonth;
+    const { daysAtLibertyByMonth } = props;
 
-    var sorted = [];
-    for (var month in countsByMonth) {
-      sorted.push([month, countsByMonth[month]]);
+    if (daysAtLibertyByMonth) {
+      const dataPoints = [];
+
+      daysAtLibertyByMonth.forEach((data) => {
+        const { year, month } = data;
+        const average = parseFloat(data.avg_liberty).toFixed(2);
+        dataPoints.push([year, month, average]);
+      });
+
+      const sorted = sortAndFilterMostRecentMonths(dataPoints, 13);
+
+      setChartLabels(monthNamesWithYearsFromNumbers(sorted.map((element) => element[1]), true));
+      setChartDataPoints(sorted.map((element) => element[2]));
     }
-
-    setChartLabels(addYearsToMonthNamesShort(sorted.map((element) => element[0])));
-    setChartDataPoints(sorted.map((element) => element[1]));
   };
 
   useEffect(() => {

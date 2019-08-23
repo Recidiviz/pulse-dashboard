@@ -1,15 +1,26 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 
 import { HorizontalBar } from 'react-chartjs-2';
-import { COLORS_FIVE_VALUES, COLORS } from "../../../assets/scripts/constants/colors";
+import { COLORS_FIVE_VALUES, COLORS } from '../../../assets/scripts/constants/colors';
+import { sortByLabel } from '../../../utils/dataOrganizing';
+
+const labelStringConversion = {
+  AMERICAN_INDIAN_ALASKAN_NATIVE: 'American Indian Alaskan Native',
+  ASIAN: 'Asian',
+  BLACK: 'Black',
+  NATIVE_HAWAIIAN_PACIFIC_ISLANDER: 'Native Hawaiian Pacific Islander',
+  WHITE: 'White',
+  OTHER: 'Other',
+};
 
 const ND_RACE_PROPORTIONS = {
-  'American Indian Alaskan Native': 5.4,
-  'Asian': 1,
-  'Black': 1.2,
-  'White': 90,
-  'Other': 2.3,
-}
+  'American Indian Alaskan Native': 5.5,
+  'Asian': 1.8,
+  'Black': 3.4,
+  'Native Hawaiian Pacific Islander': 0.1,
+  'White': 87.0,
+  'Other': 2.2,
+};
 
 const RevocationProportionByRace = (props) => {
   const [chartLabels, setChartLabels] = useState([]);
@@ -17,26 +28,44 @@ const RevocationProportionByRace = (props) => {
   const [statePopulationProportions, setStateProportions] = useState([]);
 
   const processResponse = () => {
-    const proportionsByRace = props.revocationProportionByRace;
+    const { revocationProportionByRace: proportionsByRace } = props;
 
-    var sorted = [];
-    for (var race in proportionsByRace) {
-        sorted.push([race, proportionsByRace[race]]);
-    }
+    const dataPoints = [];
+    proportionsByRace.forEach((data) => {
+      const { race } = data;
+      const count = parseInt(data.revocation_count, 10);
+      dataPoints.push([labelStringConversion[race], count]);
+    });
 
-    setChartLabels(sorted.map(element => element[0]));
-    setChartProportions(sorted.map(element => element[1]));
-    setStateProportions(sorted.map(element => ND_RACE_PROPORTIONS[element[0]]));
-  }
+    const racesRepresented = dataPoints.map((element) => element[0]);
+
+    Object.values(labelStringConversion).forEach((race) => {
+      if (!racesRepresented.includes(race)) {
+        dataPoints.push([race, 0]);
+      }
+    });
+
+    const total = dataPoints.map((element) => element[1]).reduce(
+      (previousValue, currentValue) => (previousValue + currentValue),
+    );
+
+    // Sort by race alphabetically
+    const sorted = sortByLabel(dataPoints, 0);
+
+    setChartLabels(sorted.map((element) => element[0]));
+    setChartProportions(sorted.map((element) => (100 * (element[1] / total))));
+    setStateProportions(sorted.map((element) => ND_RACE_PROPORTIONS[element[0]]));
+  };
 
   useEffect(() => {
     processResponse();
   }, [props.revocationProportionByRace]);
 
   return (
-    <HorizontalBar data={{
-      labels: ['Revocations', 'ND Population'],
-      datasets: [{
+    <HorizontalBar
+      data={{
+        labels: ['Revocations', 'ND Population'],
+        datasets: [{
           label: chartLabels[0],
           backgroundColor: COLORS_FIVE_VALUES[0],
           data: [chartProportions[0], statePopulationProportions[0]],
@@ -61,42 +90,40 @@ const RevocationProportionByRace = (props) => {
           backgroundColor: COLORS['blue-standard'],
           data: [chartProportions[5], statePopulationProportions[5]],
         },
-      ],
-    }}
-    options={{
-      scales: {
+        ],
+      }}
+      options={{
+        scales: {
           xAxes: [{
             scaleLabel: {
               display: true,
               labelString: 'Percentage',
             },
-              stacked: true
+            stacked: true,
           }],
           yAxes: [{
-              stacked: true
-          }]
-      },
-      responsive: true,
-      legend: {
-        position: 'bottom',
-      },
-      tooltips: {
-        mode: 'dataset',
-        intersect: true,
-        callbacks: {
-          label: function(tooltipItem, data) {
-            //get the concerned dataset
-            var dataset = data.datasets[tooltipItem.datasetIndex];
-            //get the current items value
-            var currentValue = dataset.data[tooltipItem.index];
+            stacked: true,
+          }],
+        },
+        responsive: true,
+        legend: {
+          position: 'bottom',
+        },
+        tooltips: {
+          mode: 'dataset',
+          intersect: true,
+          callbacks: {
+            label: (tooltipItem, data) => {
+              const dataset = data.datasets[tooltipItem.datasetIndex];
+              const currentValue = dataset.data[tooltipItem.index];
 
-            return dataset.label + ": " + currentValue + '% of ' + data.labels[tooltipItem.index];
+              return dataset.label.concat(': ', currentValue.toFixed(2), '% of ', data.labels[tooltipItem.index]);
+            },
           },
         },
-      },
-    }}
+      }}
     />
   );
-}
+};
 
 export default RevocationProportionByRace;

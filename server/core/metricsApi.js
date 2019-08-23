@@ -16,27 +16,30 @@ const METRIC_CACHE_TTL_SECONDS = 60 * 60;  // Expire items in the cache after 1 
 var memoryCache = cacheManager.caching({ store: 'memory', ttl: METRIC_CACHE_TTL_SECONDS });
 
 const FILES_BY_METRIC_TYPE = {
-  external: [
-    'external.json',
-  ],
-  admission: [
-    'admissions_by_type_60_days.json',
-    'admissions_by_type_by_month.json',
-    'admissions_versus_releases_by_month.json',
+  programEval: [
+    'cost_effectiveness_by_program.json',
+    'recidivism_rate_by_program.json',
   ],
   reincarceration: [
+    'admissions_versus_releases_by_month.json',
     'reincarceration_rate_by_release_facility.json',
     'reincarceration_rate_by_stay_length.json',
-    'reincarceration_rate_by_transitional_facility.json',
     'reincarcerations_by_month.json',
   ],
   revocation: [
+    'admissions_by_type_60_days.json',
     'revocations_by_month.json',
     'revocations_by_race_60_days.json',
     'revocations_by_supervision_type_by_month.json',
     'revocations_by_violation_type_by_month.json',
   ],
-}
+  snapshot: [
+    'admissions_by_type_by_month.json',
+    'average_change_lsir_score_by_month.json',
+    'avg_days_at_liberty_by_month.json',
+    'supervision_termination_by_type_by_month.json',
+  ],
+};
 
 /**
  * Retrieves all metric files for the given metric type from Google Cloud Storage.
@@ -81,6 +84,7 @@ function fetchMetrics(stateCode, metricType, callback) {
         console.log(`Fetched all ${metricType} metrics from GCS`);
         const results = {};
         allFileContents.forEach(function (contents) {
+          console.log(`Fetched contents for fileKey: ${contents.fileKey}`);
           const deserializedFile = convertDownloadToJson(contents.contents);
           results[contents.fileKey] = deserializedFile;
         });
@@ -98,15 +102,20 @@ function convertDownloadToJson(contents) {
   if (!stringContents || stringContents.length === 0) {
     return null;
   }
-  return JSON.parse(stringContents);
+
+  const jsonObject = [];
+  const splitStrings = stringContents.split('\n');
+  splitStrings.forEach((line) => {
+    if (line) {
+      jsonObject.push(JSON.parse(line));
+    }
+  });
+
+  return jsonObject;
 }
 
-function fetchAdmissionMetrics(callback) {
-  return fetchMetrics('US_ND', 'admission', callback);
-}
-
-function fetchExternalMetrics(callback) {
-  return fetchMetrics('US_ND', 'external', callback);
+function fetchSnapshotMetrics(callback) {
+  return fetchMetrics('US_ND', 'snapshot', callback);
 }
 
 function fetchReincarcerationMetrics(callback) {
@@ -117,9 +126,13 @@ function fetchRevocationMetrics(callback) {
   return fetchMetrics('US_ND', 'revocation', callback);
 }
 
-module.exports = {
-  fetchAdmissionMetrics: fetchAdmissionMetrics,
-  fetchExternalMetrics: fetchExternalMetrics,
-  fetchReincarcerationMetrics: fetchReincarcerationMetrics,
-  fetchRevocationMetrics: fetchRevocationMetrics,
+function fetchProgramEvalMetrics(callback) {
+  return fetchMetrics('US_ND', 'programEval', callback);
 }
+
+module.exports = {
+  fetchProgramEvalMetrics,
+  fetchReincarcerationMetrics,
+  fetchRevocationMetrics,
+  fetchSnapshotMetrics,
+};

@@ -13,14 +13,15 @@ var metricsApi = require('./metricsApi');
 const METRIC_REFRESH_INTERVAL_MS = 1000 * 60 * 30; // Refresh metrics every 30 minutes
 
 /**
- * Performs a refresh of the admission metrics cache, logging success or failure.
+ * Performs a refresh of the program evaluation metrics cache, logging success or failure.
  */
-function refreshAdmissionMetrics() {
-  metricsApi.fetchAdmissionMetrics(function (err, data) {
+function refreshProgramEvalMetrics() {
+  metricsApi.fetchProgramEvalMetrics(function (err, data) {
     if (err) {
-      console.log(`Encountered error during scheduled fetch-and-cache of admission metrics: ${err}`)
+      console.log(`Encountered error during scheduled fetch-and-cache
+        of program evaluation metrics: ${err}`)
     } else {
-      console.log("Executed scheduled fetch-and-cache of admission metrics");
+      console.log("Executed scheduled fetch-and-cache of program evaluation metrics");
     }
   });
 }
@@ -54,6 +55,19 @@ function refreshRevocationMetrics() {
 }
 
 /**
+ * Performs a refresh of the snapshot metrics cache, logging success or failure.
+ */
+function refreshSnapshotMetrics() {
+  metricsApi.fetchSnapshotMetrics(function (err, data) {
+    if (err) {
+      console.log(`Encountered error during scheduled fetch-and-cache of snapshot metrics: ${err}`)
+    } else {
+      console.log("Executed scheduled fetch-and-cache of snapshot metrics");
+    }
+  });
+}
+
+/**
  * A convenience method for scheduling a task to execute on an infinite schedule, but invoking the
  * first execution now instead of waiting the initial interval.
  */
@@ -62,6 +76,7 @@ function executeAndSetInterval(fn, intervalMS) {
     setInterval(fn, intervalMS);
 }
 
-executeAndSetInterval(refreshAdmissionMetrics, METRIC_REFRESH_INTERVAL_MS);
+executeAndSetInterval(refreshProgramEvalMetrics, METRIC_REFRESH_INTERVAL_MS);
 executeAndSetInterval(refreshReincarcerationMetrics, METRIC_REFRESH_INTERVAL_MS);
 executeAndSetInterval(refreshRevocationMetrics, METRIC_REFRESH_INTERVAL_MS);
+executeAndSetInterval(refreshSnapshotMetrics, METRIC_REFRESH_INTERVAL_MS);

@@ -2,7 +2,7 @@
  * Route handlers for calls to our Metrics API, to be mapped to app routes in server.js.
  */
 
-const metricsApi = require("../core/metricsApi");
+const metricsApi = require('../core/metricsApi');
 
 /**
  * A callback which returns either either an error payload or a data payload.
@@ -17,8 +17,8 @@ function responder(res) {
   };
 }
 
-function admissions(req, res) {
-  metricsApi.fetchAdmissionMetrics(responder(res));
+function programEval(req, res) {
+  metricsApi.fetchProgramEvalMetrics(responder(res));
 }
 
 function reincarcerations(req, res) {
@@ -29,15 +29,13 @@ function revocations(req, res) {
   metricsApi.fetchRevocationMetrics(responder(res));
 }
 
-// TODO: Deprecate this once we are ready to switch on the live APIs
-function external(req, res) {
-  metricsApi.fetchExternalMetrics(responder(res));
+function snapshots(req, res) {
+  metricsApi.fetchSnapshotMetrics(responder(res));
 }
 
 module.exports = {
-  admissions: admissions,
-  external: external,
-  reincarcerations: reincarcerations,
-  revocations: revocations,
-  external: external,
-}
+  programEval,
+  reincarcerations,
+  revocations,
+  snapshots,
+};

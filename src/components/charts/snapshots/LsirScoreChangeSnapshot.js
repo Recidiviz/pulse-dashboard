@@ -3,22 +3,31 @@ import React, { useState, useEffect } from 'react';
 import { Line } from 'react-chartjs-2';
 import { configureDownloadButtons } from '../../../assets/scripts/charts/chartJS/downloads';
 import { COLORS } from '../../../assets/scripts/constants/colors';
-import { addYearsToMonthNamesShort } from '../../../utils/monthConversion';
+import { monthNamesWithYearsFromNumbers } from '../../../utils/monthConversion';
+import { sortAndFilterMostRecentMonths } from '../../../utils/dataOrganizing';
 
 const LsirScoreChangeSnapshot = (props) => {
   const [chartLabels, setChartLabels] = useState([]);
   const [chartDataPoints, setChartDataPoints] = useState([]);
 
   const processResponse = () => {
-    const changeByMonth = props.lsirScoreChangeByMonth;
+    const { lsirScoreChangeByMonth: changeByMonth } = props;
 
-    var sorted = [];
-    for (var month in changeByMonth) {
-      sorted.push([month, changeByMonth[month]]);
+    if (changeByMonth) {
+      const dataPoints = [];
+
+      changeByMonth.forEach((data) => {
+        const { termination_year: year, termination_month: month } = data;
+        const change = parseFloat(data.average_change).toFixed(2);
+
+        dataPoints.push([year, month, change]);
+      });
+
+      const sorted = sortAndFilterMostRecentMonths(dataPoints, 13);
+
+      setChartLabels(monthNamesWithYearsFromNumbers(sorted.map((element) => element[1]), true));
+      setChartDataPoints(sorted.map((element) => element[2]));
     }
-
-    setChartLabels(addYearsToMonthNamesShort(sorted.map((element) => element[0])));
-    setChartDataPoints(sorted.map((element) => element[1]));
   };
 
   useEffect(() => {
@@ -155,9 +164,9 @@ const LsirScoreChangeSnapshot = (props) => {
 
   const header = document.getElementById(props.header);
 
-  // TODO: Make trending text dynamic based on goal and slope of trendline
+  // TODO(52): Make trending text dynamic based on goal and slope of trendline
   if (header) {
-    const title = `The change in LSIR scores between intake and termination of supervision has been <b style='color:#809AE5'> trending towards the goal. </b>`;
+    const title = `The average change in LSIR scores between intake and termination of supervision has been <b style='color:#809AE5'> trending towards the goal. </b>`;
     header.innerHTML = title;
   }
 

@@ -11,14 +11,18 @@ const RecidivismRateByProgram = (props) => {
   const processResponse = () => {
     const rateByProgram = props.recidivismRateByProgram;
 
-    var sorted = [];
-    for (var program in rateByProgram) {
-        sorted.push([program, rateByProgram[program]]);
-    }
+    if (rateByProgram) {
+      // Only one element in this JSON array
+      const ratesByProgram = rateByProgram[0];
+      var sorted = [];
+      for (var program in ratesByProgram) {
+          sorted.push([program, ratesByProgram[program]]);
+      }
 
-    setChartLabels(sorted.map(element => element[0]));
-    setNewOffensesDataPoints(sorted.map(element => element[1].newOffenses));
-    setRevocationDataPoints(sorted.map(element => element[1].revocations));
+      setChartLabels(sorted.map(element => element[0]));
+      setNewOffensesDataPoints(sorted.map(element => element[1].newOffenses));
+      setRevocationDataPoints(sorted.map(element => element[1].revocations));
+    }
   }
 
   useEffect(() => {

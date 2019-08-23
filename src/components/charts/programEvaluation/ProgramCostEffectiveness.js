@@ -8,15 +8,19 @@ const ProgramCostEffectiveness = (props) => {
   const [chartDataPoints, setChartDataPoints] = useState([]);
 
   const processResponse = () => {
-    const costReductionByProgram = props.programCostEffectiveness;
+    let costReductionByProgram = props.programCostEffectiveness;
 
-    var sorted = [];
-    for (var program in costReductionByProgram) {
-        sorted.push([program, costReductionByProgram[program]]);
+    if (costReductionByProgram) {
+      // Only one element in this JSON array
+      costReductionByProgram = costReductionByProgram[0];
+      var sorted = [];
+      for (var program in costReductionByProgram) {
+          sorted.push([program, costReductionByProgram[program]]);
+      }
+
+      setChartLabels(sorted.map(element => element[0]));
+      setChartDataPoints(sorted.map(element => element[1]));
     }
-
-    setChartLabels(sorted.map(element => element[0]));
-    setChartDataPoints(sorted.map(element => element[1]));
   }
 
   useEffect(() => {
@@ -25,7 +29,7 @@ const ProgramCostEffectiveness = (props) => {
 
   return (
     <Bar data={{
-      labels: ['Program A', 'Program B', 'Program C', 'Program D', 'Program E', 'Program F'],
+      labels: chartLabels,
       datasets: [{
         label: 'Incarceration costs reduced',
         backgroundColor: function(context) {
@@ -36,7 +40,7 @@ const ProgramCostEffectiveness = (props) => {
             },
         borderColor: COLORS['grey-300'],
         borderWidth: 1,
-        data: [-123600, 704000, 554400, 378400, -122200, -432800],
+        data: chartDataPoints,
       }],
     }}
     options={{

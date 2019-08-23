@@ -317,16 +317,16 @@ const COLORS_FIVE_VALUES = [
   '#1b2126',
   '#6d1e7d',
   '#ff2454',
-  '#ff7e70',
   '#ffd75e',
+  '#ff7e70',
 ];
 
 const COLORS_FIVE_VALUES_LIGHT = [
   '#495259',
   '#943ca6',
   '#f86a89',
-  '#fdb0a8',
   '#fde394',
+  '#fdb0a8',
 ];
 
 export {

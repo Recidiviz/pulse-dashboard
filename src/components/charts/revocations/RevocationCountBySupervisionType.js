@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 
 import { Bar } from 'react-chartjs-2';
 import { COLORS_STACKED_TWO_VALUES } from "../../../assets/scripts/constants/colors";
+import { monthNamesWithYearsFromNumbers } from "../../../utils/monthConversion";
+import { sortAndFilterMostRecentMonths } from '../../../utils/dataOrganizing';
 
 const RevocationCountBySupervisionType = (props) => {
   const [chartLabels, setChartLabels] = useState([]);
@@ -9,26 +11,37 @@ const RevocationCountBySupervisionType = (props) => {
   const [probationDataPoints, setProbationDataPoints] = useState([]);
 
   const processResponse = () => {
-    const countsByMonth = props.revocationCountsByMonthBySupervisionType;
+    const { revocationCountsByMonthBySupervisionType: countsByMonth } = props;
 
-    var sorted = [];
-    for (var month in countsByMonth) {
-        sorted.push([month, countsByMonth[month]]);
-    }
+    const paroleData = [];
+    const probationData = [];
+    countsByMonth.forEach((data) => {
+      const {
+        year, month, parole_count: paroleCount, probation_count: probationCount,
+      } = data;
+      paroleData.push([year, month, paroleCount]);
+      probationData.push([year, month, probationCount]);
+    });
 
-    setChartLabels(sorted.map(element => element[0]));
-    setParoleDataPoints(sorted.map(element => element[1].parole));
-    setProbationDataPoints(sorted.map(element => element[1].probation));
-  }
+    const sortedParoleData = sortAndFilterMostRecentMonths(paroleData, 6);
+    const sortedProbationData = sortAndFilterMostRecentMonths(probationData, 6);
+
+    setChartLabels(monthNamesWithYearsFromNumbers(sortedParoleData.map(
+      (element) => element[1],
+    ), false));
+    setParoleDataPoints(sortedParoleData.map((element) => element[2]));
+    setProbationDataPoints(sortedProbationData.map((element) => element[2]));
+  };
 
   useEffect(() => {
     processResponse();
   }, [props.revocationCountsByMonthBySupervisionType]);
 
   return (
-    <Bar data={{
-      labels: chartLabels,
-      datasets: [{
+    <Bar
+      data={{
+        labels: chartLabels,
+        datasets: [{
           label: 'Probation',
           type: 'bar',
           backgroundColor: COLORS_STACKED_TWO_VALUES[0],
@@ -39,36 +52,36 @@ const RevocationCountBySupervisionType = (props) => {
           backgroundColor: COLORS_STACKED_TWO_VALUES[1],
           data: paroleDataPoints,
         },
-      ],
-    }}
-    options={{
-      responsive: true,
-      legend: {
-        position: 'bottom',
-      },
-      tooltips: {
-        mode: 'index',
-        intersect: false,
-      },
-      scales: {
-        xAxes: [{
-          scaleLabel: {
-            display: true,
-            labelString: 'Month',
-          },
-          stacked: true,
-        }],
-        yAxes: [{
-          scaleLabel: {
-            display: true,
-            labelString: 'Revocation counts',
-          },
-          stacked: true,
-        }],
-      },
-    }}
+        ],
+      }}
+      options={{
+        responsive: true,
+        legend: {
+          position: 'bottom',
+        },
+        tooltips: {
+          mode: 'index',
+          intersect: false,
+        },
+        scales: {
+          xAxes: [{
+            scaleLabel: {
+              display: true,
+              labelString: 'Month',
+            },
+            stacked: true,
+          }],
+          yAxes: [{
+            scaleLabel: {
+              display: true,
+              labelString: 'Revocation counts',
+            },
+            stacked: true,
+          }],
+        },
+      }}
     />
   );
-}
+};
 
 export default RevocationCountBySupervisionType;

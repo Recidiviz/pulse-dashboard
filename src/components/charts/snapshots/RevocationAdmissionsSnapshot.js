@@ -3,23 +3,36 @@ import React, { useState, useEffect } from 'react';
 import { Line } from 'react-chartjs-2';
 import { configureDownloadButtons } from '../../../assets/scripts/charts/chartJS/downloads';
 import { COLORS } from '../../../assets/scripts/constants/colors';
-import { addYearsToMonthNamesShort, monthNamesFromShortName } from '../../../utils/monthConversion';
-
+import { monthNamesWithYearsFromNumbers, monthNamesFromShortName } from '../../../utils/monthConversion';
+import { sortAndFilterMostRecentMonths } from '../../../utils/dataOrganizing';
 
 const RevocationAdmissionsSnapshot = (props) => {
   const [chartLabels, setChartLabels] = useState([]);
   const [chartDataPoints, setChartDataPoints] = useState([]);
 
   const processResponse = () => {
-    const countsByMonth = props.revocationAdmissionsByMonth;
+    const { revocationAdmissionsByMonth: countsByMonth } = props;
 
-    var sorted = [];
-    for (var month in countsByMonth) {
-      sorted.push([month, countsByMonth[month]]);
+    if (countsByMonth) {
+      const dataPoints = [];
+
+      countsByMonth.forEach((data) => {
+        const { year, month } = data;
+        const newAdmissions = parseInt(data.new_admissions, 10);
+        const technicals = parseInt(data.technicals, 10);
+        const nonTechnicals = parseInt(data.non_technicals, 10);
+        const unknownRevocations = parseInt(data.unknown_revocations, 10);
+        const total = technicals + nonTechnicals + unknownRevocations + newAdmissions;
+        const revocations = (technicals + nonTechnicals + unknownRevocations);
+        const percentRevocations = (100 * (revocations / total)).toFixed(2);
+        dataPoints.push([year, month, percentRevocations]);
+      });
+
+      const sorted = sortAndFilterMostRecentMonths(dataPoints, 13);
+
+      setChartLabels(monthNamesWithYearsFromNumbers(sorted.map((element) => element[1]), true));
+      setChartDataPoints(sorted.map((element) => element[2]));
     }
-
-    setChartLabels(addYearsToMonthNamesShort(sorted.map((element) => element[0])));
-    setChartDataPoints(sorted.map((element) => element[1]));
   };
 
   useEffect(() => {

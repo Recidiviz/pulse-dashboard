@@ -150,14 +150,14 @@ const ProgramEvaluation = () => {
   const fetchChartData = async () => {
     try {
       const token = await getTokenSilently();
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/external`, {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/programEval`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
       });
 
       const responseData = await response.json();
-      setApiData(responseData.external);
+      setApiData(responseData);
     } catch (error) {
       console.error(error);
     }
@@ -188,7 +188,7 @@ const ProgramEvaluation = () => {
                   <h4 className="lh-1">Recidivism rate for <b>Program A</b> was <b>4.2%</b> below baseline</h4>
                 </div>
                 <div className="layer w-100 p-20">
-                  <RecidivismRateByProgram recidivismRateByProgram={apiData.recidivismRateByProgram} />
+                  <RecidivismRateByProgram recidivismRateByProgram={apiData.recidivism_rate_by_program} />
                 </div>
                 <div className="layer bdT p-20 w-100">
                   <div className="peers ai-c jc-c gapX-20">
@@ -218,7 +218,7 @@ const ProgramEvaluation = () => {
                   <h4 className="lh-1"><b>Program B</b> saved ND <b>$704,000</b> per 100 participants</h4>
                 </div>
                 <div className="layer w-100 p-20">
-                  <ProgramCostEffectiveness programCostEffectiveness={apiData.programCostEffectiveness} />
+                  <ProgramCostEffectiveness programCostEffectiveness={apiData.cost_effectiveness_by_program} />
                 </div>
                 <div className="layer bdT p-20 w-100">
                   <div className="peers ai-c jc-c gapX-20">

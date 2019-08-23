@@ -3,22 +3,42 @@ import React, { useState, useEffect } from 'react';
 import { Line } from 'react-chartjs-2';
 import { configureDownloadButtons } from '../../../assets/scripts/charts/chartJS/downloads';
 import { COLORS } from '../../../assets/scripts/constants/colors';
-import { addYearsToMonthNamesShort, monthNamesFromShortName } from '../../../utils/monthConversion';
+import { monthNamesWithYearsFromNumbers, monthNamesFromShortName } from '../../../utils/monthConversion';
+import { sortAndFilterMostRecentMonths } from '../../../utils/dataOrganizing';
 
 const SupervisionSuccessSnapshot = (props) => {
   const [chartLabels, setChartLabels] = useState([]);
   const [chartDataPoints, setChartDataPoints] = useState([]);
 
   const processResponse = () => {
-    const countsByMonth = props.supervisionSuccessRates;
+    const { supervisionSuccessRates: countsByMonth } = props;
 
-    var sorted = [];
-    for (var month in countsByMonth) {
-      sorted.push([month, countsByMonth[month]]);
+    if (countsByMonth) {
+      const today = new Date();
+      const yearNow = today.getFullYear();
+      const monthNow = today.getMonth() + 1;
+
+      const dataPoints = [];
+      countsByMonth.forEach((data) => {
+        let { projected_year: year, projected_month: month } = data;
+        const successful = parseInt(data.successful_termination, 10);
+        const revocation = parseInt(data.revocation_termination, 10);
+        const successRate = (100 * (successful / (successful + revocation))).toFixed(2);
+
+        year = parseInt(year, 10);
+        month = parseInt(month, 10);
+
+        // Don't add completion rates for months in the future
+        if (year < yearNow || (year === yearNow && month <= monthNow)) {
+          dataPoints.push([year, month, successRate]);
+        }
+      });
+
+      const sorted = sortAndFilterMostRecentMonths(dataPoints, 13);
+
+      setChartLabels(monthNamesWithYearsFromNumbers(sorted.map((element) => element[1]), true));
+      setChartDataPoints(sorted.map((element) => element[2]));
     }
-
-    setChartLabels(addYearsToMonthNamesShort(sorted.map((element) => element[0])));
-    setChartDataPoints(sorted.map((element) => element[1]));
   };
 
   useEffect(() => {
@@ -98,7 +118,7 @@ const SupervisionSuccessSnapshot = (props) => {
           annotations: [{
             type: 'line',
             mode: 'horizontal',
-            value: 75,
+            value: 70,
 
             // optional annotation ID (must be unique)
             id: 'supervision-success-snapshot-goal-line',
@@ -112,7 +132,7 @@ const SupervisionSuccessSnapshot = (props) => {
             borderDashOffset: 5,
             label: {
               enabled: true,
-              content: 'goal: 75%',
+              content: 'goal: 70%',
               position: 'right',
 
               // Background color of label, default below
@@ -162,7 +182,7 @@ const SupervisionSuccessSnapshot = (props) => {
   const header = document.getElementById(props.header);
 
   if (header && mostRecentValue && mostRecentMonth) {
-    const title = `<b style='color:#809AE5'>${mostRecentValue}% of people</b> whose supervision was scheduled to end in ${mostRecentMonth} <b style='color:#809AE5'>successfully completed their supervision </b> by that time.`;
+    const title = `<b style='color:#809AE5'>${mostRecentValue}% of people</b> whose supervision was scheduled to end in ${mostRecentMonth} <b style='color:#809AE5'>successfully completed their supervision without revocation.</b>`;
     header.innerHTML = title;
   }
 
