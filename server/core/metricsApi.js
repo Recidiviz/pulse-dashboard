@@ -35,7 +35,7 @@ const FILES_BY_METRIC_TYPE = {
   ],
   snapshot: [
     'admissions_by_type_by_month.json',
-    'average_change_lsi_score_by_month.json',
+    'average_change_lsir_score_by_month.json',
     'avg_days_at_liberty_by_month.json',
     'supervision_termination_by_type_by_month.json',
   ],

@@ -190,7 +190,7 @@ const Snapshots = () => {
                   <div className="ai-c jc-c gapX-20">
                     <div className="col-md-12">
                       <LsirScoreChangeSnapshot
-                        lsirScoreChangeByMonth={apiData.average_change_lsi_score_by_month}
+                        lsirScoreChangeByMonth={apiData.average_change_lsir_score_by_month}
                         header="LsirScoreChangeSnapshot-header"
                       />
                     </div>
