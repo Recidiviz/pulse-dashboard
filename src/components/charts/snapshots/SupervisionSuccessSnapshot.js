@@ -182,7 +182,7 @@ const SupervisionSuccessSnapshot = (props) => {
   const header = document.getElementById(props.header);
 
   if (header && mostRecentValue && mostRecentMonth) {
-    const title = `<b style='color:#809AE5'>${mostRecentValue}% of people</b> whose supervision was scheduled to end in ${mostRecentMonth} <b style='color:#809AE5'>successfully completed their supervision </b> by that time.`;
+    const title = `<b style='color:#809AE5'>${mostRecentValue}% of people</b> whose supervision was scheduled to end in ${mostRecentMonth} <b style='color:#809AE5'>successfully completed their supervision without revocation.</b>`;
     header.innerHTML = title;
   }
 

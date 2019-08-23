@@ -91,8 +91,7 @@ const Reincarcerations = () => {
                   <div id="collapseMethodologyRecidivismDriver" className="collapse" aria-labelledby="methodologyHeadingRecidivismDriver" data-parent="#methodologyRecidivismDriver">
                     <div>
                       <ul>
-                        <li>Total admissions include unique people admitted to any DOCR prison during a particular time frame.</li>
-                        <li>Sentence length refers to the maximum sentence length that the person received in response to the offense that led to the reincarceration.</li>
+                        <li>An admission to prison counts as a reincarceration if the person has been incarcerated previously and if they were released from their last incarceration within 10 years of the date of the new admission.</li>
                       </ul>
                     </div>
                   </div>
@@ -126,8 +125,9 @@ const Reincarcerations = () => {
                   <div id="collapseMethodologyAdmissionsVsReleases" className="collapse" aria-labelledby="methodologyHeadingAdmissionsVsReleases" data-parent="#methodologyAdmissionsVsReleases">
                     <div>
                       <ul>
-                        <li>Total admissions include unique people admitted to any DOCR prison during a particular time frame.</li>
-                        <li>Total releases include unique people released from any DOCR prison, to either a term of supervision or total freedom, during a particular time frame.</li>
+                        <li>"Admissions versus releases" is the difference between the number of people who were admitted to DOCR prisons and the number of people who were released from DOCR prisons during a particular time frame.</li>
+                        <li>Admissions include unique people admitted to any DOCR prison during a particular time frame.</li>
+                        <li>Releases include unique people released from any DOCR prison, to either a term of supervision or because they served their sentence, during a particular time frame.</li>
                       </ul>
                     </div>
                   </div>

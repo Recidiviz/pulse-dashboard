@@ -12,7 +12,7 @@ const AdmissionTypeProportions = (props) => {
     const { admissionCountsByType } = props;
 
     const labelStringConversion = {
-      UNKNOWN_REVOCATION: 'Revocations (Type Unknown)',
+      UNKNOWN_REVOCATION: 'Revocations (Unknown Type)',
       NEW_ADMISSION: 'New Admissions',
       NON_TECHNICAL: 'Non-Technical Revocations',
       TECHNICAL: 'Technical Revocations',

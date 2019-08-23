@@ -59,6 +59,9 @@ const ReincarcerationCountOverTime = (props) => {
             },
           }],
           yAxes: [{
+            ticks: {
+              min: 0,
+            },
             scaleLabel: {
               display: true,
               labelString: 'Reincarceration count',
