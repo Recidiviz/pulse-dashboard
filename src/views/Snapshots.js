@@ -171,19 +171,19 @@ const Snapshots = () => {
                     AVERAGE CHANGE IN LSIR SCORES
                     <span className="fa-pull-right">
                       <div className="dropdown show">
-                        <a className="btn btn-secondary btn-sm dropdown-toggle" href="#" role="button" id="exportDropdownMenuButton-LsirScoreChangeSnapshot" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <a className="btn btn-secondary btn-sm dropdown-toggle" href="#" role="button" id="exportDropdownMenuButton-lsirScoreChangeSnapshot" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                           Export
                         </a>
-                        <div className="dropdown-menu" aria-labelledby="exportDropdownMenuButton-LsirScoreChangeSnapshot">
-                          <a className="dropdown-item" id="downloadChartAsImage-LsirScoreChangeSnapshot" href="javascript:void(0);">Export image</a>
-                          <a className="dropdown-item" id="downloadChartData-LsirScoreChangeSnapshot" href="javascript:void(0);">Export data</a>
+                        <div className="dropdown-menu" aria-labelledby="exportDropdownMenuButton-lsirScoreChangeSnapshot">
+                          <a className="dropdown-item" id="downloadChartAsImage-lsirScoreChangeSnapshot" href="javascript:void(0);">Export image</a>
+                          <a className="dropdown-item" id="downloadChartData-lsirScoreChangeSnapshot" href="javascript:void(0);">Export data</a>
                         </div>
                       </div>
                     </span>
                   </h6>
                 </div>
                 <div className="layer w-100 pX-20 pT-20">
-                  <div className="snapshot-header" id="LsirScoreChangeSnapshot-header">
+                  <div className="snapshot-header" id="lsirScoreChangeSnapshot-header">
                   </div>
                 </div>
                 <div className="layer w-100 p-20">
@@ -191,7 +191,7 @@ const Snapshots = () => {
                     <div className="col-md-12">
                       <LsirScoreChangeSnapshot
                         lsirScoreChangeByMonth={apiData.average_change_lsir_score_by_month}
-                        header="LsirScoreChangeSnapshot-header"
+                        header="lsirScoreChangeSnapshot-header"
                       />
                     </div>
                   </div>

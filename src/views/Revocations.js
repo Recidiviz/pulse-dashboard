@@ -156,8 +156,8 @@ const Revocations = () => {
                       <ul>
                         <li>Revocations include all instances of a person being incarcerated because their supervision was revoked for a behavioral violation.</li>
                         <li>Violations include all behavioral violations officially recorded by a supervision officer, including new offenses, technical violations, and absconsion.</li>
-                        <li>Violations of "Unknown Type" indicate individuals who were admitted to prison for a supervision revocation where the violation that caused the revocation cannot be determined.</li>
-                        <li>"Technical" revocations include only those revocations which result only from a technical violation. If there is a violation that includes a new offense or an absconsion, it is considered a non-technical revocation.</li>
+                        <li>Violations of "Unknown Type" indicate individuals who were admitted to prison for a supervision revocation where the violation that caused the revocation cannot yet be determined.</li>
+                        <li>"Technical" revocations include only those revocations which result solely from a technical violation. If there is a violation that includes a new offense or an absconsion, it is considered a non-technical revocation.</li>
                       </ul>
                     </div>
                   </div>
@@ -228,10 +228,10 @@ const Revocations = () => {
                   <div id="collapseMethodologyAdmissionProportions" className="collapse" aria-labelledby="methodologyHeadingRevocationByOfficer" data-parent="#methodologyAdmissionProportions">
                     <div>
                       <ul>
-                        <li>New admissions include unique people admitted to any DOCR prison during a particular time frame, regardless of whether they were previously incarcerated.</li>
+                        <li>New admissions include unique people admitted to any DOCR facility during a particular time frame, regardless of whether they were previously incarcerated.</li>
                         <li>Revocations include all instances of a person being incarcerated because their supervision was revoked for a behavioral violation.</li>
-                        <li>"Technical Revocations" include only those revocations which result only from a technical violation. If there is a violation that includes a new offense or an absconsion, it is considered a "Non-Technical Revocation".</li>
-                        <li>Revocations of "Unknown Type" indicate individuals who were admitted to prison for a supervision revocation where the violation that caused the revocation cannot be determined.</li>
+                        <li>"Technical Revocations" include only those revocations which result solely from a technical violation. If there is a violation that includes a new offense or an absconsion, it is considered a "Non-Technical Revocation".</li>
+                        <li>Revocations of "Unknown Type" indicate individuals who were admitted to prison for a supervision revocation where the violation that caused the revocation cannot yet be determined.</li>
                       </ul>
                     </div>
                   </div>
@@ -239,8 +239,10 @@ const Revocations = () => {
                 <div className="layer bdT p-20 w-100">
                   <div className="peers ai-c jc-c gapX-20">
                     <div className="peer fw-600">
-                      <small className="c-grey-500 fw-600">Period</small>
-                      <span className="fsz-def fw-600 mR-10 c-grey-800">Last 60 days</span>
+                      <span className="fsz-def fw-600 mR-10 c-grey-800">
+                        <small className="c-grey-500 fw-600">Period </small>
+                        Last 60 days
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -279,8 +281,11 @@ const Revocations = () => {
                 </div>
                 <div className="layer bdT p-20 w-100">
                   <div className="peers ai-c jc-c gapX-20">
-                    <div className="peer fw-600"><small className="c-grey-500 fw-600">Period</small>
-                      <span className="fsz-def fw-600 mR-10 c-grey-800">Last 60 days</span>
+                    <div className="peer fw-600">
+                      <span className="fsz-def fw-600 mR-10 c-grey-800">
+                        <small className="c-grey-500 fw-600">Period </small>
+                        Last 60 days
+                      </span>
                     </div>
                   </div>
                 </div>
