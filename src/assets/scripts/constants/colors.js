@@ -31,6 +31,7 @@ const COLORS = {
   'red-a200': '#ff5252',
   'red-a400': '#ff1744',
   'red-a700': '#d50000',
+  'red-standard': '#d12249',
   'pink-50': '#fce4ec',
   'pink-100': '#f8bbd0',
   'pink-200': '#f48fb1',
@@ -274,6 +275,7 @@ const COLORS = {
   'blue-grey-900': '#263238',
   'blue-standard': '#809AE5',
   'blue-standard-2': '#3F4D62',
+  'blue-standard-light': 'rgba(63, 77, 98, .7)',
 };
 
 const GREYS = {
@@ -311,7 +313,7 @@ const COLORS_THREE_VALUES = [
   '#d12249',
   '#809ae5',
   '#3f4d62',
-]
+];
 
 const COLORS_FIVE_VALUES = [
   '#1b2126',
