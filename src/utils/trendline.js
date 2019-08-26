@@ -64,6 +64,7 @@ function generateTrendlineDataset(chartDataPoints, lineColor) {
     fill: false,
     pointRadius: 0,
     hitRadius: 0,
+    hoverRadius: 0,
     borderWidth: 1.5,
     lineTension: 0,
     data: trendlineData(chartDataPoints),
@@ -83,8 +84,25 @@ function slopeOfTrendline(trendlineValues) {
   return (lastValue - firstValue) / trendlineValues.length;
 }
 
+/**
+ * Returns the string value for a tooltip that excludes information about
+ * trendline data points.
+ * Appends the `units` string to the data yLabel value if provided.
+ */
+function getTooltipWithoutTrendline(tooltipItem, data, units) {
+  const { label } = data.datasets[tooltipItem.datasetIndex];
+  if (label === 'trendline') return '';
+  let tooltipLabel = (tooltipItem.yLabel).toString();
+  if (units) {
+    tooltipLabel = tooltipLabel.concat(units);
+  }
+
+  return tooltipLabel;
+}
+
 export {
   generateTrendlineDataset,
+  getTooltipWithoutTrendline,
   slopeOfTrendline,
   trendlineData,
 };

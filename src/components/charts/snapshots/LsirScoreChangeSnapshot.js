@@ -5,7 +5,7 @@ import { configureDownloadButtons } from '../../../assets/scripts/charts/chartJS
 import { COLORS } from '../../../assets/scripts/constants/colors';
 import { monthNamesWithYearsFromNumbers } from '../../../utils/monthConversion';
 import { sortAndFilterMostRecentMonths } from '../../../utils/dataOrganizing';
-import { slopeOfTrendline, generateTrendlineDataset } from '../../../utils/trendline';
+import { slopeOfTrendline, generateTrendlineDataset, getTooltipWithoutTrendline } from '../../../utils/trendline';
 import { getGoalForChart } from '../../../utils/metricGoal';
 
 const LsirScoreChangeSnapshot = (props) => {
@@ -70,10 +70,7 @@ const LsirScoreChangeSnapshot = (props) => {
           enabled: true,
           mode: 'point',
           callbacks: {
-            label: (tooltipItem) => {
-              if (tooltipItem.datasetIndex > 0) return '';
-              return tooltipItem.yLabel;
-            },
+            label: (tooltipItem, data) => (getTooltipWithoutTrendline(tooltipItem, data)),
           },
         },
         scales: {

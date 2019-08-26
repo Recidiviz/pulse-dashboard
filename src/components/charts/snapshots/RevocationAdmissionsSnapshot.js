@@ -5,7 +5,7 @@ import { configureDownloadButtons } from '../../../assets/scripts/charts/chartJS
 import { COLORS } from '../../../assets/scripts/constants/colors';
 import { monthNamesWithYearsFromNumbers, monthNamesFromShortName } from '../../../utils/monthConversion';
 import { sortAndFilterMostRecentMonths } from '../../../utils/dataOrganizing';
-import { generateTrendlineDataset } from '../../../utils/trendline';
+import { generateTrendlineDataset, getTooltipWithoutTrendline } from '../../../utils/trendline';
 import { getGoalForChart } from '../../../utils/metricGoal';
 
 const RevocationAdmissionsSnapshot = (props) => {
@@ -75,10 +75,7 @@ const RevocationAdmissionsSnapshot = (props) => {
           enabled: true,
           mode: 'point',
           callbacks: {
-            label: (tooltipItem) => {
-              if (tooltipItem.datasetIndex > 0) return '';
-              return tooltipItem.yLabel + '%';
-            },
+            label: (tooltipItem, data) => (getTooltipWithoutTrendline(tooltipItem, data, '%')),
           },
         },
         scales: {
