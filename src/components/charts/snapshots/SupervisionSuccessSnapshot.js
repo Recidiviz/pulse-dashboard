@@ -5,17 +5,14 @@ import { configureDownloadButtons } from '../../../assets/scripts/charts/chartJS
 import { COLORS } from '../../../assets/scripts/constants/colors';
 import { monthNamesWithYearsFromNumbers, monthNamesFromShortName } from '../../../utils/monthConversion';
 import { sortAndFilterMostRecentMonths } from '../../../utils/dataOrganizing';
-import { trendlineData } from '../../../utils/trendline';
+import { generateTrendlineDataset } from '../../../utils/trendline';
+import { getGoalForChart } from '../../../utils/metricGoal';
 
 const SupervisionSuccessSnapshot = (props) => {
   const [chartLabels, setChartLabels] = useState([]);
   const [chartDataPoints, setChartDataPoints] = useState([]);
 
-  const GOAL = {
-    aimingHigher: true,
-    value: 70,
-    label: '70%',
-  };
+  const GOAL = getGoalForChart('US_ND', 'supervision-success-snapshot-chart');
 
   const processResponse = () => {
     const { supervisionSuccessRates: countsByMonth } = props;
@@ -68,17 +65,7 @@ const SupervisionSuccessSnapshot = (props) => {
           borderWidth: 2,
           lineTension: 0,
           data: chartDataPoints,
-        }, {
-          label: 'trendline',
-          backgroundColor: COLORS['blue-standard-light'],
-          borderColor: COLORS['blue-standard-light'],
-          fill: false,
-          pointRadius: 0,
-          hitRadius: 0,
-          borderWidth: 1.5,
-          lineTension: 0,
-          data: trendlineData(chartDataPoints),
-        },
+        }, generateTrendlineDataset(chartDataPoints, COLORS['blue-standard-light']),
         ],
       }}
       options={{

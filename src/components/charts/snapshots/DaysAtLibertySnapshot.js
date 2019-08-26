@@ -5,17 +5,14 @@ import { configureDownloadButtons } from '../../../assets/scripts/charts/chartJS
 import { COLORS } from '../../../assets/scripts/constants/colors';
 import { monthNamesWithYearsFromNumbers } from '../../../utils/monthConversion';
 import { sortAndFilterMostRecentMonths } from '../../../utils/dataOrganizing';
-import { slopeOfTrendline, trendlineData } from '../../../utils/trendline';
+import { slopeOfTrendline, generateTrendlineDataset } from '../../../utils/trendline';
+import { getGoalForChart } from '../../../utils/metricGoal';
 
 const DaysAtLibertySnapshot = (props) => {
   const [chartLabels, setChartLabels] = useState([]);
   const [chartDataPoints, setChartDataPoints] = useState([]);
 
-  const GOAL = {
-    aimingHigher: true,
-    value: 1095,
-    label: '1095 days (3 years)',
-  };
+  const GOAL = getGoalForChart('US_ND', 'days-at-liberty-snapshot-chart');
 
   const processResponse = () => {
     const { daysAtLibertyByMonth } = props;
@@ -56,17 +53,7 @@ const DaysAtLibertySnapshot = (props) => {
           borderWidth: 2,
           lineTension: 0,
           data: chartDataPoints,
-        }, {
-          label: 'trendline',
-          backgroundColor: COLORS['blue-standard-light'],
-          borderColor: COLORS['blue-standard-light'],
-          fill: false,
-          pointRadius: 0,
-          hitRadius: 0,
-          borderWidth: 1.5,
-          lineTension: 0,
-          data: trendlineData(chartDataPoints),
-        },
+        }, generateTrendlineDataset(chartDataPoints, COLORS['blue-standard-light']),
         ],
       }}
       options={{
@@ -189,7 +176,7 @@ const DaysAtLibertySnapshot = (props) => {
   const trendlineSlope = slopeOfTrendline(trendlineValues);
   let trendText = '';
 
-  if (GOAL.aimingHigher) {
+  if (GOAL.isUpward) {
     trendText = (trendlineSlope > 0) ? 'towards the goal' : 'away from the goal';
   } else {
     trendText = (trendlineSlope < 0) ? 'towards the goal' : 'away from the goal';

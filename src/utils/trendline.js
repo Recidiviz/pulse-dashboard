@@ -56,6 +56,20 @@ function trendlineData(dataPoints) {
   return trendlineValues;
 }
 
+function generateTrendlineDataset(chartDataPoints, lineColor) {
+  return {
+    label: 'trendline',
+    backgroundColor: lineColor,
+    borderColor: lineColor,
+    fill: false,
+    pointRadius: 0,
+    hitRadius: 0,
+    borderWidth: 1.5,
+    lineTension: 0,
+    data: trendlineData(chartDataPoints),
+  };
+}
+
 /**
  * Returns the slope of the linear trendline with the given values.
  */
@@ -70,6 +84,7 @@ function slopeOfTrendline(trendlineValues) {
 }
 
 export {
+  generateTrendlineDataset,
   slopeOfTrendline,
   trendlineData,
 };
