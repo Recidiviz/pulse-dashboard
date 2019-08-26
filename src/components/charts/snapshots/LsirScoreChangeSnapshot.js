@@ -5,8 +5,8 @@ import { configureDownloadButtons } from '../../../assets/scripts/charts/chartJS
 import { COLORS } from '../../../assets/scripts/constants/colors';
 import { monthNamesWithYearsFromNumbers } from '../../../utils/monthConversion';
 import { sortAndFilterMostRecentMonths } from '../../../utils/dataOrganizing';
-import { slopeOfTrendline, generateTrendlineDataset, getTooltipWithoutTrendline } from '../../../utils/trendline';
-import { getGoalForChart } from '../../../utils/metricGoal';
+import { generateTrendlineDataset, getTooltipWithoutTrendline } from '../../../utils/trendline';
+import { getGoalForChart, trendlineGoalText } from '../../../utils/metricGoal';
 
 const LsirScoreChangeSnapshot = (props) => {
   const [chartLabels, setChartLabels] = useState([]);
@@ -171,17 +171,10 @@ const LsirScoreChangeSnapshot = (props) => {
 
   const header = document.getElementById(props.header);
   const trendlineValues = chart.props.data.datasets[1].data;
-  const trendlineSlope = slopeOfTrendline(trendlineValues);
-  let trendText = '';
-
-  if (GOAL.isUpward) {
-    trendText = (trendlineSlope > 0) ? 'towards the goal' : 'away from the goal';
-  } else {
-    trendText = (trendlineSlope < 0) ? 'towards the goal' : 'away from the goal';
-  }
+  const trendlineText = trendlineGoalText(trendlineValues, GOAL);
 
   if (header) {
-    const title = `The average change in LSIR scores between intake and termination of supervision has been <b style='color:#809AE5'> trending ${trendText}. </b>`;
+    const title = `The average change in LSIR scores between intake and termination of supervision has been <b style='color:#809AE5'> trending ${trendlineText}. </b>`;
     header.innerHTML = title;
   }
 

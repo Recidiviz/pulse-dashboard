@@ -1,3 +1,5 @@
+import { trendlineSlope } from './trendline';
+
 const GOALS = {
   US_ND: {
     'days-at-liberty-snapshot-chart': {
@@ -34,6 +36,26 @@ function getGoalForChart(stateCode, chartName) {
   return new Goal(goalDict.isUpward, goalDict.value, goalDict.label);
 }
 
+/**
+ * Returns the string value describing whether the data is trending towards
+ * or away from the goal.
+ */
+function trendlineGoalText(trendlineValues, goal) {
+  const towards = 'towards the goal';
+  const away = 'away from the goal';
+  const slopeOfTrendline = trendlineSlope(trendlineValues);
+  let trendlineText = '';
+
+  if (goal.isUpward) {
+    trendlineText = (slopeOfTrendline > 0) ? towards : away;
+  } else {
+    trendlineText = (slopeOfTrendline < 0) ? towards : away;
+  }
+
+  return trendlineText;
+}
+
 export {
-  getGoalForChart
+  getGoalForChart,
+  trendlineGoalText,
 };

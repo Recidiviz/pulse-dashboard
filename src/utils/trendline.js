@@ -74,7 +74,7 @@ function generateTrendlineDataset(chartDataPoints, lineColor) {
 /**
  * Returns the slope of the linear trendline with the given values.
  */
-function slopeOfTrendline(trendlineValues) {
+function trendlineSlope(trendlineValues) {
   if (!trendlineValues) {
     return 0;
   }
@@ -103,6 +103,6 @@ function getTooltipWithoutTrendline(tooltipItem, data, units) {
 export {
   generateTrendlineDataset,
   getTooltipWithoutTrendline,
-  slopeOfTrendline,
+  trendlineSlope,
   trendlineData,
 };
