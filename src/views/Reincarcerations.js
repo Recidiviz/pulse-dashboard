@@ -125,9 +125,9 @@ const Reincarcerations = () => {
                   <div id="collapseMethodologyAdmissionsVsReleases" className="collapse" aria-labelledby="methodologyHeadingAdmissionsVsReleases" data-parent="#methodologyAdmissionsVsReleases">
                     <div>
                       <ul>
-                        <li>"Admissions versus releases" is the difference between the number of people who were admitted to DOCR prisons and the number of people who were released from DOCR prisons during a particular time frame.</li>
-                        <li>Admissions include unique people admitted to any DOCR prison during a particular time frame.</li>
-                        <li>Releases include unique people released from any DOCR prison, whether released to a term of supervision or not, during a particular time frame.</li>
+                        <li>"Admissions versus releases" is the difference between the number of people who were admitted to DOCR facilities and the number of people who were released from DOCR facilities during a particular time frame.</li>
+                        <li>Admissions include unique people admitted to any DOCR facility during a particular time frame.</li>
+                        <li>Releases include unique people released from any DOCR facility, whether released to a term of supervision or not, during a particular time frame.</li>
                       </ul>
                     </div>
                   </div>
@@ -163,7 +163,7 @@ const Reincarcerations = () => {
                   <div id="collapseMethodologyReincarcerationsByReleaseFacility" className="collapse" aria-labelledby="methodologyHeadingReincarcerationsByReleaseFacility" data-parent="#methodologyReincarcerationsByReleaseFacility">
                     <div>
                       <ul>
-                        <li>Reincarceration cohorts include all admissions to incarceration of a person who was previously incarcerated in a DOCR prison. The reincarceration must have happened within the noted follow up period directly after their release.</li>
+                        <li>Reincarceration cohorts include all admissions to incarceration of a person who was previously incarcerated in a DOCR facility. The reincarceration must have happened within the noted follow up period directly after their release.</li>
                         <li>Reincarcerations are counted towards the facility where the person was released from, regardless of time spent in various facilities.</li>
                       </ul>
                     </div>
@@ -214,7 +214,7 @@ const Reincarcerations = () => {
                   <div id="collapseMethodologyReincarcerationsByTransitionalFacility" className="collapse" aria-labelledby="methodologyHeadingReincarcerationsByTransitionalFacility" data-parent="#methodologyReincarcerationsByTransitionalFacility">
                     <div>
                       <ul>
-                        <li>Reincarceration cohorts include all admissions to incarceration of a person who was previously incarcerated in a DOCR prison. The reincarceration must have happened within the noted follow up period directly after their release.</li>
+                        <li>Reincarceration cohorts include all admissions to incarceration of a person who was previously incarcerated in a DOCR facility. The reincarceration must have happened within the noted follow up period directly after their release.</li>
                         <li>Reincarcerations are counted towards the facility where the person was released from, regardless of time spent in various facilities.</li>
                       </ul>
                     </div>
@@ -261,8 +261,8 @@ const Reincarcerations = () => {
                   <div id="collapseMethodologyReincarcerationsByStayLength" className="collapse" aria-labelledby="methodologyHeadingReincarcerationsByStayLength" data-parent="#methodologyReincarcerationsByStayLength">
                     <div>
                       <ul>
-                        <li>Reincarceration cohorts include all admissions to incarceration of a person who was previously incarcerated in a DOCR prison. The reincarceration must have happened within the noted follow up period directly after their release.</li>
-                        <li>Stay length refers to time actually spent incarcerated prior to their most recent release from a DOCR prison. This is bucketed into 12-month windows for sampling.</li>
+                        <li>Reincarceration cohorts include all admissions to incarceration of a person who was previously incarcerated in a DOCR facility. The reincarceration must have happened within the noted follow up period directly after their release.</li>
+                        <li>Stay length refers to time actually spent incarcerated prior to their most recent release from a DOCR facility. This is bucketed into 12-month windows for sampling.</li>
                       </ul>
                     </div>
                   </div>

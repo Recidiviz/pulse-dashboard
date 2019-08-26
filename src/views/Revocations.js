@@ -228,7 +228,7 @@ const Revocations = () => {
                   <div id="collapseMethodologyAdmissionProportions" className="collapse" aria-labelledby="methodologyHeadingRevocationByOfficer" data-parent="#methodologyAdmissionProportions">
                     <div>
                       <ul>
-                        <li>New admissions include unique people admitted to any DOCR prison during a particular time frame, regardless of whether they were previously incarcerated.</li>
+                        <li>New admissions include unique people admitted to any DOCR facility during a particular time frame, regardless of whether they were previously incarcerated.</li>
                         <li>Revocations include all instances of a person being incarcerated because their supervision was revoked for a behavioral violation.</li>
                         <li>"Technical Revocations" include only those revocations which result solely from a technical violation. If there is a violation that includes a new offense or an absconsion, it is considered a "Non-Technical Revocation".</li>
                         <li>Revocations of "Unknown Type" indicate individuals who were admitted to prison for a supervision revocation where the violation that caused the revocation cannot yet be determined.</li>
