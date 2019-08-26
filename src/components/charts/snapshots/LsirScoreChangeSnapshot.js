@@ -166,7 +166,7 @@ const LsirScoreChangeSnapshot = (props) => {
       series: [],
     };
   };
-  configureDownloadButtons('LsirScoreChange', 'Snapshot', chart.props,
+  configureDownloadButtons('lsirScoreChange', 'Snapshot', chart.props,
     document.getElementById('lsir-score-change-snapshot-chart'), exportedStructureCallback);
 
   const header = document.getElementById(props.header);

@@ -127,7 +127,7 @@ const Reincarcerations = () => {
                       <ul>
                         <li>"Admissions versus releases" is the difference between the number of people who were admitted to DOCR prisons and the number of people who were released from DOCR prisons during a particular time frame.</li>
                         <li>Admissions include unique people admitted to any DOCR prison during a particular time frame.</li>
-                        <li>Releases include unique people released from any DOCR prison, to either a term of supervision or because they served their sentence, during a particular time frame.</li>
+                        <li>Releases include unique people released from any DOCR prison, whether released to a term of supervision or not, during a particular time frame.</li>
                       </ul>
                     </div>
                   </div>
@@ -152,15 +152,15 @@ const Reincarcerations = () => {
                     </div>
                   </div>
                 </div>
-                <div className="layer bdT p-20 w-100 accordion" id="methodologyReincarcerationsByFacility">
-                  <div className="mb-0" id="methodologyHeadingReincarcerationsByFacility">
+                <div className="layer bdT p-20 w-100 accordion" id="methodologyReincarcerationsByReleaseFacility">
+                  <div className="mb-0" id="methodologyHeadingReincarcerationsByReleaseFacility">
                     <div className="mb-0">
-                      <button className="btn btn-link collapsed pL-0" type="button" data-toggle="collapse" data-target="#collapseMethodologyReincarcerationsByFacility" aria-expanded="true" aria-controls="collapseMethodologyReincarcerationsByFacility">
+                      <button className="btn btn-link collapsed pL-0" type="button" data-toggle="collapse" data-target="#collapseMethodologyReincarcerationsByReleaseFacility" aria-expanded="true" aria-controls="collapseMethodologyReincarcerationsByReleaseFacility">
                         <h6 className="lh-1 c-blue-500 mb-0">Methodology</h6>
                       </button>
                     </div>
                   </div>
-                  <div id="collapseMethodologyReincarcerationsByFacility" className="collapse" aria-labelledby="methodologyHeadingReincarcerationsByFacility" data-parent="#methodologyReincarcerationsByFacility">
+                  <div id="collapseMethodologyReincarcerationsByReleaseFacility" className="collapse" aria-labelledby="methodologyHeadingReincarcerationsByReleaseFacility" data-parent="#methodologyReincarcerationsByReleaseFacility">
                     <div>
                       <ul>
                         <li>Reincarceration cohorts include all admissions to incarceration of a person who was previously incarcerated in a DOCR prison. The reincarceration must have happened within the noted follow up period directly after their release.</li>
@@ -172,12 +172,16 @@ const Reincarcerations = () => {
                 <div className="layer bdT p-20 w-100">
                   <div className="peers ai-c jc-c gapX-20">
                     <div className="peer">
-                      <small className="c-grey-500 fw-600">Release Cohort</small>
-                      <span className="fsz-def fw-600 mR-10 c-grey-800">2017</span>
+                      <span className="fsz-def fw-600 mR-10 c-grey-800">
+                        <small className="c-grey-500 fw-600">Release Cohort </small>
+                        2017
+                      </span>
                     </div>
                     <div className="peer fw-600">
-                      <small className="c-grey-500 fw-600">Follow Up Period</small>
-                      <span className="fsz-def fw-600 mR-10 c-grey-800">1 year</span>
+                      <span className="fsz-def fw-600 mR-10 c-grey-800">
+                        <small className="c-grey-500 fw-600">Follow Up Period </small>
+                        1 year
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -199,15 +203,15 @@ const Reincarcerations = () => {
                     </div>
                   </div>
                 </div>
-                <div className="layer bdT p-20 w-100 accordion" id="methodologyReincarcerationsByFacility">
-                  <div className="mb-0" id="methodologyHeadingReincarcerationsByFacility">
+                <div className="layer bdT p-20 w-100 accordion" id="methodologyReincarcerationsByTransitionalFacility">
+                  <div className="mb-0" id="methodologyHeadingReincarcerationsByTransitionalFacility">
                     <div className="mb-0">
-                      <button className="btn btn-link collapsed pL-0" type="button" data-toggle="collapse" data-target="#collapseMethodologyReincarcerationsByFacility" aria-expanded="true" aria-controls="collapseMethodologyReincarcerationsByFacility">
+                      <button className="btn btn-link collapsed pL-0" type="button" data-toggle="collapse" data-target="#collapseMethodologyReincarcerationsByTransitionalFacility" aria-expanded="true" aria-controls="collapseMethodologyReincarcerationsByTransitionalFacility">
                         <h6 className="lh-1 c-blue-500 mb-0">Methodology</h6>
                       </button>
                     </div>
                   </div>
-                  <div id="collapseMethodologyReincarcerationsByFacility" className="collapse" aria-labelledby="methodologyHeadingReincarcerationsByFacility" data-parent="#methodologyReincarcerationsByFacility">
+                  <div id="collapseMethodologyReincarcerationsByTransitionalFacility" className="collapse" aria-labelledby="methodologyHeadingReincarcerationsByTransitionalFacility" data-parent="#methodologyReincarcerationsByTransitionalFacility">
                     <div>
                       <ul>
                         <li>Reincarceration cohorts include all admissions to incarceration of a person who was previously incarcerated in a DOCR prison. The reincarceration must have happened within the noted follow up period directly after their release.</li>
@@ -219,12 +223,16 @@ const Reincarcerations = () => {
                 <div className="layer bdT p-20 w-100">
                   <div className="peers ai-c jc-c gapX-20">
                     <div className="peer">
-                      <small className="c-grey-500 fw-600">Release Cohort</small>
-                      <span className="fsz-def fw-600 mR-10 c-grey-800">2017</span>
+                      <span className="fsz-def fw-600 mR-10 c-grey-800">
+                        <small className="c-grey-500 fw-600">Release Cohort </small>
+                        2017
+                      </span>
                     </div>
                     <div className="peer fw-600">
-                      <small className="c-grey-500 fw-600">Follow Up Period</small>
-                      <span className="fsz-def fw-600 mR-10 c-grey-800">1 year</span>
+                      <span className="fsz-def fw-600 mR-10 c-grey-800">
+                        <small className="c-grey-500 fw-600">Follow Up Period </small>
+                        1 year
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -262,12 +270,16 @@ const Reincarcerations = () => {
                 <div className="layer bdT p-20 w-100">
                   <div className="peers ai-c jc-c gapX-20">
                     <div className="peer">
-                      <small className="c-grey-500 fw-600">Release Cohort</small>
-                      <span className="fsz-def fw-600 mR-10 c-grey-800">2017</span>
+                      <span className="fsz-def fw-600 mR-10 c-grey-800">
+                        <small className="c-grey-500 fw-600">Release Cohort </small>
+                        2017
+                      </span>
                     </div>
                     <div className="peer fw-600">
-                      <small className="c-grey-500 fw-600">Follow Up Period</small>
-                      <span className="fsz-def fw-600 mR-10 c-grey-800">1 year</span>
+                      <span className="fsz-def fw-600 mR-10 c-grey-800">
+                        <small className="c-grey-500 fw-600">Follow Up Period </small>
+                        1 year
+                      </span>
                     </div>
                   </div>
                 </div>
