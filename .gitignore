@@ -38,5 +38,4 @@ yarn-debug.log*
 yarn-error.log*
 
 # Package files
-package.json
 package-lock.json
