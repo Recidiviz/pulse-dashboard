@@ -18,19 +18,23 @@ function responder(res) {
 }
 
 function programEval(req, res) {
-  metricsApi.fetchProgramEvalMetrics(responder(res));
+  const { isDemo } = req.query;
+  metricsApi.fetchProgramEvalMetrics(isDemo, responder(res));
 }
 
 function reincarcerations(req, res) {
-  metricsApi.fetchReincarcerationMetrics(responder(res));
+  const { isDemo } = req.query;
+  metricsApi.fetchReincarcerationMetrics(isDemo, responder(res));
 }
 
 function revocations(req, res) {
-  metricsApi.fetchRevocationMetrics(responder(res));
+  const { isDemo } = req.query;
+  metricsApi.fetchRevocationMetrics(isDemo, responder(res));
 }
 
 function snapshots(req, res) {
-  metricsApi.fetchSnapshotMetrics(responder(res));
+  const { isDemo } = req.query;
+  metricsApi.fetchSnapshotMetrics(isDemo, responder(res));
 }
 
 module.exports = {

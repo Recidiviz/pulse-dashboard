@@ -76,7 +76,7 @@ function executeAndSetInterval(fn, intervalMS) {
     setInterval(fn, intervalMS);
 }
 
-executeAndSetInterval(refreshProgramEvalMetrics, METRIC_REFRESH_INTERVAL_MS);
-executeAndSetInterval(refreshReincarcerationMetrics, METRIC_REFRESH_INTERVAL_MS);
-executeAndSetInterval(refreshRevocationMetrics, METRIC_REFRESH_INTERVAL_MS);
-executeAndSetInterval(refreshSnapshotMetrics, METRIC_REFRESH_INTERVAL_MS);
+// executeAndSetInterval(refreshProgramEvalMetrics, METRIC_REFRESH_INTERVAL_MS);
+// executeAndSetInterval(refreshReincarcerationMetrics, METRIC_REFRESH_INTERVAL_MS);
+// executeAndSetInterval(refreshRevocationMetrics, METRIC_REFRESH_INTERVAL_MS);
+// executeAndSetInterval(refreshSnapshotMetrics, METRIC_REFRESH_INTERVAL_MS);

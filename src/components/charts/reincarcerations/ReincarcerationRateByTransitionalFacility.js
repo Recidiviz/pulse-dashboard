@@ -13,11 +13,18 @@ const ReincarcerationRateByTransitionalFacility = (props) => {
 
     let dataPoints = [];
     ratesByFacility.forEach((data) => {
-      const { release_facility: facility, recidivism_rate: recidivismRate } = data;
-      dataPoints.push([facility, recidivismRate])
+      const {
+        release_facility: facility,
+        recidivism_rate: recidivismRate,
+        state_code: stateCode,
+      } = data;
+      dataPoints.push([facility, recidivismRate, stateCode]);
     });
 
-    dataPoints = filterFacilities(dataPoints, 'TRANSITIONAL', 'US_ND');
+    if (dataPoints.length > 0) {
+      const stateCode = dataPoints[0][2];
+      dataPoints = filterFacilities(dataPoints, 'TRANSITIONAL', stateCode);
+    }
 
     // Sort by recidivism rate
     const sorted = dataPoints.sort((a, b) => (a[1] - b[1]));
