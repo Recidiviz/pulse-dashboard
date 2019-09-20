@@ -40,8 +40,18 @@ const AdmissionTypeProportions = (props) => {
       data={{
         datasets: [{
           data: chartDataPoints,
-          backgroundColor: COLORS_FIVE_VALUES,
-          hoverBackgroundColor: COLORS_FIVE_VALUES,
+          backgroundColor: [
+            COLORS_FIVE_VALUES[1],
+            COLORS_FIVE_VALUES[0],
+            COLORS_FIVE_VALUES[3],
+            COLORS_FIVE_VALUES[2],
+          ],
+          hoverBackgroundColor: [
+            COLORS_FIVE_VALUES[1],
+            COLORS_FIVE_VALUES[0],
+            COLORS_FIVE_VALUES[3],
+            COLORS_FIVE_VALUES[2],
+          ],
         }],
         labels: chartLabels,
       }}

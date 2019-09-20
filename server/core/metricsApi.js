@@ -27,6 +27,8 @@ const FILES_BY_METRIC_TYPE = {
     'reincarcerations_by_month.json',
   ],
   revocation: [
+    'revocations_by_county_60_days.json',
+    'revocations_by_officer_60_days.json',
     'admissions_by_type_60_days.json',
     'revocations_by_month.json',
     'revocations_by_race_60_days.json',
