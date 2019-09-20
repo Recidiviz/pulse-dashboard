@@ -14,7 +14,6 @@ const fs = require('fs');
 const path = require('path');
 const util = require('util');
 
-const IS_DEMO = (process.env.IS_DEMO === 'true');
 const BUCKET_NAME = process.env.METRIC_BUCKET;
 const METRIC_CACHE_TTL_SECONDS = 60 * 60;  // Expire items in the cache after 1 hour
 
@@ -148,19 +147,19 @@ function convertDownloadToJson(contents) {
 }
 
 function fetchSnapshotMetrics(isDemo, callback) {
-  return fetchMetrics('US_ND', 'snapshot', IS_DEMO, callback);
+  return fetchMetrics('US_ND', 'snapshot', isDemo, callback);
 }
 
 function fetchReincarcerationMetrics(isDemo, callback) {
-  return fetchMetrics('US_ND', 'reincarceration', IS_DEMO, callback);
+  return fetchMetrics('US_ND', 'reincarceration', isDemo, callback);
 }
 
 function fetchRevocationMetrics(isDemo, callback) {
-  return fetchMetrics('US_ND', 'revocation', IS_DEMO, callback);
+  return fetchMetrics('US_ND', 'revocation', isDemo, callback);
 }
 
 function fetchProgramEvalMetrics(isDemo, callback) {
-  return fetchMetrics('US_ND', 'programEval', IS_DEMO, callback);
+  return fetchMetrics('US_ND', 'programEval', isDemo, callback);
 }
 
 module.exports = {

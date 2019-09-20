@@ -4,6 +4,8 @@
 
 const metricsApi = require('../core/metricsApi');
 
+const IS_DEMO = (process.env.IS_DEMO === 'true');
+
 /**
  * A callback which returns either either an error payload or a data payload.
  */
@@ -18,23 +20,19 @@ function responder(res) {
 }
 
 function programEval(req, res) {
-  const { isDemo } = req.query;
-  metricsApi.fetchProgramEvalMetrics(isDemo, responder(res));
+  metricsApi.fetchProgramEvalMetrics(IS_DEMO, responder(res));
 }
 
 function reincarcerations(req, res) {
-  const { isDemo } = req.query;
-  metricsApi.fetchReincarcerationMetrics(isDemo, responder(res));
+  metricsApi.fetchReincarcerationMetrics(IS_DEMO, responder(res));
 }
 
 function revocations(req, res) {
-  const { isDemo } = req.query;
-  metricsApi.fetchRevocationMetrics(isDemo, responder(res));
+  metricsApi.fetchRevocationMetrics(IS_DEMO, responder(res));
 }
 
 function snapshots(req, res) {
-  const { isDemo } = req.query;
-  metricsApi.fetchSnapshotMetrics(isDemo, responder(res));
+  metricsApi.fetchSnapshotMetrics(IS_DEMO, responder(res));
 }
 
 module.exports = {
