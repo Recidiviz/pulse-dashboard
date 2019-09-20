@@ -10,13 +10,14 @@
 
 var metricsApi = require('./metricsApi');
 
+const IS_DEMO = (process.env.IS_DEMO === 'true');
 const METRIC_REFRESH_INTERVAL_MS = 1000 * 60 * 30; // Refresh metrics every 30 minutes
 
 /**
  * Performs a refresh of the program evaluation metrics cache, logging success or failure.
  */
 function refreshProgramEvalMetrics() {
-  metricsApi.fetchProgramEvalMetrics(function (err, data) {
+  metricsApi.fetchProgramEvalMetrics(IS_DEMO, function (err, data) {
     if (err) {
       console.log(`Encountered error during scheduled fetch-and-cache
         of program evaluation metrics: ${err}`)
@@ -30,7 +31,7 @@ function refreshProgramEvalMetrics() {
  * Performs a refresh of the reincarceration metrics cache, logging success or failure.
  */
 function refreshReincarcerationMetrics() {
-  metricsApi.fetchReincarcerationMetrics(function (err, data) {
+  metricsApi.fetchReincarcerationMetrics(IS_DEMO, function (err, data) {
     if (err) {
       console.log(`Encountered error during scheduled fetch-and-cache
         of reincarceration metrics: ${err}`)
@@ -44,7 +45,7 @@ function refreshReincarcerationMetrics() {
  * Performs a refresh of the revocation metrics cache, logging success or failure.
  */
 function refreshRevocationMetrics() {
-  metricsApi.fetchRevocationMetrics(function (err, data) {
+  metricsApi.fetchRevocationMetrics(IS_DEMO, function (err, data) {
     if (err) {
       console.log(`Encountered error during scheduled fetch-and-cache
         of revocation metrics: ${err}`)
@@ -58,7 +59,7 @@ function refreshRevocationMetrics() {
  * Performs a refresh of the snapshot metrics cache, logging success or failure.
  */
 function refreshSnapshotMetrics() {
-  metricsApi.fetchSnapshotMetrics(function (err, data) {
+  metricsApi.fetchSnapshotMetrics(IS_DEMO, function (err, data) {
     if (err) {
       console.log(`Encountered error during scheduled fetch-and-cache of snapshot metrics: ${err}`)
     } else {
@@ -76,7 +77,9 @@ function executeAndSetInterval(fn, intervalMS) {
     setInterval(fn, intervalMS);
 }
 
-executeAndSetInterval(refreshProgramEvalMetrics, METRIC_REFRESH_INTERVAL_MS);
-executeAndSetInterval(refreshReincarcerationMetrics, METRIC_REFRESH_INTERVAL_MS);
-executeAndSetInterval(refreshRevocationMetrics, METRIC_REFRESH_INTERVAL_MS);
-executeAndSetInterval(refreshSnapshotMetrics, METRIC_REFRESH_INTERVAL_MS);
+if (!IS_DEMO) {
+  executeAndSetInterval(refreshProgramEvalMetrics, METRIC_REFRESH_INTERVAL_MS);
+  executeAndSetInterval(refreshReincarcerationMetrics, METRIC_REFRESH_INTERVAL_MS);
+  executeAndSetInterval(refreshRevocationMetrics, METRIC_REFRESH_INTERVAL_MS);
+  executeAndSetInterval(refreshSnapshotMetrics, METRIC_REFRESH_INTERVAL_MS);
+}

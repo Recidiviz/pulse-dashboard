@@ -44,6 +44,7 @@ Expected backend environment variables include:
 * `AUTH_ENV` - a string indicating the "auth environment" used to point to the correct Auth0 tenant. Either "development" or "production". Must match the frontend `REACT_APP_AUTH_ENV` variable.
 * `GOOGLE_APPLICATION_CREDENTIALS` - a relative path pointing to the JSON file containing the credentials of the service account used to communicate with Google Cloud Storage, for metric retrieval.
 * `METRIC_BUCKET` - the name of the Google Cloud Storage bucket where the metrics reside.
+* `IS_DEMO` (OPTIONAL) - whether or not to run the backend in demo mode, which will retrieve static fixture data from the `server/core/demoData` directory instead of pulling data from dynamic, live sources. This should only be set when running locally and should be provided through the command line, e.g. `IS_DEMO=true yarn dev`.
 
 ### Authentication
 The backend API server and most frontend views in the app are authenticated via [Auth0](https://auth0.com/). You can control which views are authenticated by specifying `Route` versus `PrivateRoute` in `src/App.js`. If you are setting this app up completely fresh, you will need to create your own Auth0 account and set the relevant details in `src/auth_config_dev.json` and `src/auth_config_production.json`. See `src/auth_config.json.example`.
@@ -77,6 +78,12 @@ A yarn script is available for starting the development servers. The React front
 The development servers will remain active until you either close your terminal or shut down the entire setup at once using `control+c`.
 
 **Note:** The development servers do not need to be restarted when source code is modified. The assets will automatically be recompiled and the browser will be refreshed (when there's a frontend change). Thanks, Webpack!
+
+### Demo mode
+
+When running locally, you can run the app in demo mode to point the app to static data contained in `server/core/demoData`. This is useful for debugging issues that materialize under specific data circumstances, for demonstrating the tool without exposing real data, and other use cases.
+
+You can launch in demo mode locally by setting the `IS_DEMO` environment variable to true, e.g. `IS_DEMO=true yarn dev`.
 
 ## Deploys
 

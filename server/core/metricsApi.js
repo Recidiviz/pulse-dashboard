@@ -10,10 +10,15 @@
 var objectStorage = require('./objectStorage');
 var cacheManager = require('cache-manager');
 
+const fs = require('fs');
+const path = require('path');
+const util = require('util');
+
 const BUCKET_NAME = process.env.METRIC_BUCKET;
 const METRIC_CACHE_TTL_SECONDS = 60 * 60;  // Expire items in the cache after 1 hour
 
 var memoryCache = cacheManager.caching({ store: 'memory', ttl: METRIC_CACHE_TTL_SECONDS });
+const asyncReadFile = util.promisify(fs.readFile);
 
 const FILES_BY_METRIC_TYPE = {
   programEval: [
@@ -66,6 +71,20 @@ function fetchMetricsFromGCS(stateCode, metricType) {
   return promises;
 }
 
+function fetchMetricsFromLocal(stateCode, metricType) {
+  const promises = [];
+
+  const files = FILES_BY_METRIC_TYPE[metricType];
+  files.forEach((filename) => {
+    const fileKey = filename.replace('.json', '');
+    const filePath = path.resolve(__dirname, `./demoData/${filename}`);
+
+    promises.push(asyncReadFile(filePath).then((contents) => ({ fileKey, contents })));
+  });
+
+  return promises;
+}
+
 /**
  * Retrieves the metrics for the given metric type and passes them into the given callback.
  *
@@ -76,14 +95,27 @@ function fetchMetricsFromGCS(stateCode, metricType) {
  * First checks the cache to see if the metrics with the given type are already in memory and not
  * expired beyond the configured TTL. If not, then fetches the metrics for that type from the
  * appropriate files and invokes the callback only once all files have been retrieved.
+ *
+ * If we are in demo mode, then fetches the files from a static directory, /server/core/demoData/.
+ * Otherwise, fetches from Google Cloud Storage.
  */
-function fetchMetrics(stateCode, metricType, callback) {
+function fetchMetrics(stateCode, metricType, isDemo, callback) {
   return memoryCache.wrap(metricType, function (cacheCb) {
-      console.log(`Fetching ${metricType} metrics from GCS...`);
-      const metricPromises = fetchMetricsFromGCS(stateCode, metricType);
+      let fetcher = null;
+      let source = null;
+      if (isDemo) {
+        source = 'local';
+        fetcher = fetchMetricsFromLocal;
+      } else {
+        source = 'GCS';
+        fetcher = fetchMetricsFromGCS;
+      }
+
+      console.log(`Fetching ${metricType} metrics from ${source}...`);
+      const metricPromises = fetcher(stateCode, metricType);
 
       Promise.all(metricPromises).then(function (allFileContents) {
-        console.log(`Fetched all ${metricType} metrics from GCS`);
+        console.log(`Fetched all ${metricType} metrics from ${source}`);
         const results = {};
         allFileContents.forEach(function (contents) {
           console.log(`Fetched contents for fileKey: ${contents.fileKey}`);
@@ -116,20 +148,20 @@ function convertDownloadToJson(contents) {
   return jsonObject;
 }
 
-function fetchSnapshotMetrics(callback) {
-  return fetchMetrics('US_ND', 'snapshot', callback);
+function fetchSnapshotMetrics(isDemo, callback) {
+  return fetchMetrics('US_ND', 'snapshot', isDemo, callback);
 }
 
-function fetchReincarcerationMetrics(callback) {
-  return fetchMetrics('US_ND', 'reincarceration', callback);
+function fetchReincarcerationMetrics(isDemo, callback) {
+  return fetchMetrics('US_ND', 'reincarceration', isDemo, callback);
 }
 
-function fetchRevocationMetrics(callback) {
-  return fetchMetrics('US_ND', 'revocation', callback);
+function fetchRevocationMetrics(isDemo, callback) {
+  return fetchMetrics('US_ND', 'revocation', isDemo, callback);
 }
 
-function fetchProgramEvalMetrics(callback) {
-  return fetchMetrics('US_ND', 'programEval', callback);
+function fetchProgramEvalMetrics(isDemo, callback) {
+  return fetchMetrics('US_ND', 'programEval', isDemo, callback);
 }
 
 module.exports = {

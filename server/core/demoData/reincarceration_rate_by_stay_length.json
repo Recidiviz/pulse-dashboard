@@ -1,0 +1,11 @@
+{"state_code":"US_DEMO","release_cohort":"2017","follow_up_period":"1","recidivism_rate":0.13,"stay_length_bucket":"120\u003c"}
+{"state_code":"US_DEMO","release_cohort":"2017","follow_up_period":"1","recidivism_rate":0.18,"stay_length_bucket":"60-72"}
+{"state_code":"US_DEMO","release_cohort":"2017","follow_up_period":"1","recidivism_rate":0.15,"stay_length_bucket":"36-48"}
+{"state_code":"US_DEMO","release_cohort":"2017","follow_up_period":"1","recidivism_rate":0.12,"stay_length_bucket":"72-84"}
+{"state_code":"US_DEMO","release_cohort":"2017","follow_up_period":"1","recidivism_rate":0.09,"stay_length_bucket":"108-120"}
+{"state_code":"US_DEMO","release_cohort":"2017","follow_up_period":"1","recidivism_rate":0,"stay_length_bucket":"96-108"}
+{"state_code":"US_DEMO","release_cohort":"2017","follow_up_period":"1","recidivism_rate":0,"stay_length_bucket":"84-96"}
+{"state_code":"US_DEMO","release_cohort":"2017","follow_up_period":"1","recidivism_rate":0.26,"stay_length_bucket":"12-24"}
+{"state_code":"US_DEMO","release_cohort":"2017","follow_up_period":"1","recidivism_rate":0.24,"stay_length_bucket":"\u003c12"}
+{"state_code":"US_DEMO","release_cohort":"2017","follow_up_period":"1","recidivism_rate":0.11,"stay_length_bucket":"24-36"}
+{"state_code":"US_DEMO","release_cohort":"2017","follow_up_period":"1","recidivism_rate":0.12,"stay_length_bucket":"48-60"}

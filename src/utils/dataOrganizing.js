@@ -1,10 +1,12 @@
 
 const TRANSITIONAL_FACILITY_FILTERS = {
   US_ND: ['FTPFAR', 'GFC', 'BTC', 'FTPMND', 'MTPFAR', 'LRRP', 'MTPMND'],
+  US_DEMO: ['GHI', 'PQR', 'VWX'],
 };
 
 const RELEASE_FACILITY_FILTERS = {
   US_ND: ['DWCRC', 'MRCC', 'JRCC', 'NDSP', 'TRCC', 'CJ', 'NTAD'],
+  US_DEMO: ['ABC', 'DEF', 'JKL', 'MNO', 'STU', 'YZ'],
 };
 
 /**

@@ -1,0 +1,4 @@
+{"state_code":"US_DEMO","admission_type":"UNKNOWN_REVOCATION","admission_count":"23"}
+{"state_code":"US_DEMO","admission_type":"NEW_ADMISSION","admission_count":"97"}
+{"state_code":"US_DEMO","admission_type":"TECHNICAL","admission_count":"12"}
+{"state_code":"US_DEMO","admission_type":"NON_TECHNICAL","admission_count":"61"}
