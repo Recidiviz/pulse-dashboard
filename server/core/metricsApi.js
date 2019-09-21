@@ -7,17 +7,16 @@
  * those files to be quickly reflected in the app without frequent requests to GCS.
  */
 
-var objectStorage = require('./objectStorage');
-var cacheManager = require('cache-manager');
-
+const cacheManager = require('cache-manager');
 const fs = require('fs');
 const path = require('path');
 const util = require('util');
+const objectStorage = require('./objectStorage');
 
 const BUCKET_NAME = process.env.METRIC_BUCKET;
-const METRIC_CACHE_TTL_SECONDS = 60 * 60;  // Expire items in the cache after 1 hour
+const METRIC_CACHE_TTL_SECONDS = 60 * 60; // Expire items in the cache after 1 hour
 
-var memoryCache = cacheManager.caching({ store: 'memory', ttl: METRIC_CACHE_TTL_SECONDS });
+const memoryCache = cacheManager.caching({ store: 'memory', ttl: METRIC_CACHE_TTL_SECONDS });
 const asyncReadFile = util.promisify(fs.readFile);
 
 const FILES_BY_METRIC_TYPE = {
@@ -49,6 +48,26 @@ const FILES_BY_METRIC_TYPE = {
 };
 
 /**
+ * Converts the given contents, a Buffer of bytes, into a JS object or array.
+ */
+function convertDownloadToJson(contents) {
+  const stringContents = contents.toString();
+  if (!stringContents || stringContents.length === 0) {
+    return null;
+  }
+
+  const jsonObject = [];
+  const splitStrings = stringContents.split('\n');
+  splitStrings.forEach((line) => {
+    if (line) {
+      jsonObject.push(JSON.parse(line));
+    }
+  });
+
+  return jsonObject;
+}
+
+/**
  * Retrieves all metric files for the given metric type from Google Cloud Storage.
  *
  * Returns a list of Promises, one per metric file for the given type, where each Promise will
@@ -60,12 +79,10 @@ function fetchMetricsFromGCS(stateCode, metricType) {
   const promises = [];
 
   const files = FILES_BY_METRIC_TYPE[metricType];
-  files.forEach(function (filename) {
+  files.forEach((filename) => {
     const fileKey = filename.replace('.json', '');
     promises.push(objectStorage.downloadFile(BUCKET_NAME, stateCode, filename)
-    .then(function (contents) {
-      return { fileKey: fileKey, contents: contents };
-    }));
+      .then((contents) => ({ fileKey, contents })));
   });
 
   return promises;
@@ -100,52 +117,32 @@ function fetchMetricsFromLocal(stateCode, metricType) {
  * Otherwise, fetches from Google Cloud Storage.
  */
 function fetchMetrics(stateCode, metricType, isDemo, callback) {
-  return memoryCache.wrap(metricType, function (cacheCb) {
-      let fetcher = null;
-      let source = null;
-      if (isDemo) {
-        source = 'local';
-        fetcher = fetchMetricsFromLocal;
-      } else {
-        source = 'GCS';
-        fetcher = fetchMetricsFromGCS;
-      }
-
-      console.log(`Fetching ${metricType} metrics from ${source}...`);
-      const metricPromises = fetcher(stateCode, metricType);
-
-      Promise.all(metricPromises).then(function (allFileContents) {
-        console.log(`Fetched all ${metricType} metrics from ${source}`);
-        const results = {};
-        allFileContents.forEach(function (contents) {
-          console.log(`Fetched contents for fileKey: ${contents.fileKey}`);
-          const deserializedFile = convertDownloadToJson(contents.contents);
-          results[contents.fileKey] = deserializedFile;
-        });
-
-        cacheCb(null, results);
-      });
-  }, callback);
-}
-
-/**
- * Converts the given contents, a Buffer of bytes, into a JS object or array.
- */
-function convertDownloadToJson(contents) {
-  const stringContents = contents.toString();
-  if (!stringContents || stringContents.length === 0) {
-    return null;
-  }
-
-  const jsonObject = [];
-  const splitStrings = stringContents.split('\n');
-  splitStrings.forEach((line) => {
-    if (line) {
-      jsonObject.push(JSON.parse(line));
+  return memoryCache.wrap(metricType, (cacheCb) => {
+    let fetcher = null;
+    let source = null;
+    if (isDemo) {
+      source = 'local';
+      fetcher = fetchMetricsFromLocal;
+    } else {
+      source = 'GCS';
+      fetcher = fetchMetricsFromGCS;
     }
-  });
 
-  return jsonObject;
+    console.log(`Fetching ${metricType} metrics from ${source}...`);
+    const metricPromises = fetcher(stateCode, metricType);
+
+    Promise.all(metricPromises).then((allFileContents) => {
+      console.log(`Fetched all ${metricType} metrics from ${source}`);
+      const results = {};
+      allFileContents.forEach((contents) => {
+        console.log(`Fetched contents for fileKey: ${contents.fileKey}`);
+        const deserializedFile = convertDownloadToJson(contents.contents);
+        results[contents.fileKey] = deserializedFile;
+      });
+
+      cacheCb(null, results);
+    });
+  }, callback);
 }
 
 function fetchSnapshotMetrics(isDemo, callback) {

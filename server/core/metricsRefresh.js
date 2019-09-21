@@ -8,7 +8,7 @@
  * trigger a refresh. Note that the metric caches do not reset the TTL on reads, so this is okay.
  */
 
-var metricsApi = require('./metricsApi');
+const metricsApi = require('./metricsApi');
 
 const IS_DEMO = (process.env.IS_DEMO === 'true');
 const METRIC_REFRESH_INTERVAL_MS = 1000 * 60 * 30; // Refresh metrics every 30 minutes
@@ -17,12 +17,12 @@ const METRIC_REFRESH_INTERVAL_MS = 1000 * 60 * 30; // Refresh metrics every 30 m
  * Performs a refresh of the program evaluation metrics cache, logging success or failure.
  */
 function refreshProgramEvalMetrics() {
-  metricsApi.fetchProgramEvalMetrics(IS_DEMO, function (err, data) {
+  metricsApi.fetchProgramEvalMetrics(IS_DEMO, (err, data) => {
     if (err) {
       console.log(`Encountered error during scheduled fetch-and-cache
-        of program evaluation metrics: ${err}`)
+        of program evaluation metrics: ${err}`);
     } else {
-      console.log("Executed scheduled fetch-and-cache of program evaluation metrics");
+      console.log('Executed scheduled fetch-and-cache of program evaluation metrics');
     }
   });
 }
@@ -31,12 +31,12 @@ function refreshProgramEvalMetrics() {
  * Performs a refresh of the reincarceration metrics cache, logging success or failure.
  */
 function refreshReincarcerationMetrics() {
-  metricsApi.fetchReincarcerationMetrics(IS_DEMO, function (err, data) {
+  metricsApi.fetchReincarcerationMetrics(IS_DEMO, (err, data) => {
     if (err) {
       console.log(`Encountered error during scheduled fetch-and-cache
         of reincarceration metrics: ${err}`)
     } else {
-      console.log("Executed scheduled fetch-and-cache of reincarceration metrics");
+      console.log('Executed scheduled fetch-and-cache of reincarceration metrics');
     }
   });
 }
@@ -45,12 +45,12 @@ function refreshReincarcerationMetrics() {
  * Performs a refresh of the revocation metrics cache, logging success or failure.
  */
 function refreshRevocationMetrics() {
-  metricsApi.fetchRevocationMetrics(IS_DEMO, function (err, data) {
+  metricsApi.fetchRevocationMetrics(IS_DEMO, (err, data) => {
     if (err) {
       console.log(`Encountered error during scheduled fetch-and-cache
-        of revocation metrics: ${err}`)
+        of revocation metrics: ${err}`);
     } else {
-      console.log("Executed scheduled fetch-and-cache of revocation metrics");
+      console.log('Executed scheduled fetch-and-cache of revocation metrics');
     }
   });
 }
@@ -59,11 +59,11 @@ function refreshRevocationMetrics() {
  * Performs a refresh of the snapshot metrics cache, logging success or failure.
  */
 function refreshSnapshotMetrics() {
-  metricsApi.fetchSnapshotMetrics(IS_DEMO, function (err, data) {
+  metricsApi.fetchSnapshotMetrics(IS_DEMO, (err, data) => {
     if (err) {
-      console.log(`Encountered error during scheduled fetch-and-cache of snapshot metrics: ${err}`)
+      console.log(`Encountered error during scheduled fetch-and-cache of snapshot metrics: ${err}`);
     } else {
-      console.log("Executed scheduled fetch-and-cache of snapshot metrics");
+      console.log('Executed scheduled fetch-and-cache of snapshot metrics');
     }
   });
 }
@@ -73,8 +73,8 @@ function refreshSnapshotMetrics() {
  * first execution now instead of waiting the initial interval.
  */
 function executeAndSetInterval(fn, intervalMS) {
-    fn();
-    setInterval(fn, intervalMS);
+  fn();
+  setInterval(fn, intervalMS);
 }
 
 if (!IS_DEMO) {

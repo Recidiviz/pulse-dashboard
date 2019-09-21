@@ -1,16 +1,16 @@
-require("dotenv").config()
-const express = require("express");
-const cors = require("cors");
-const http = require("http");
-const morgan = require("morgan");
-const helmet = require("helmet");
-const jwt = require("express-jwt");
-const jwksRsa = require("jwks-rsa");
-const { join } = require("path");
-const devAuthConfig = require("./src/auth_config_dev.json");
-const productionAuthConfig = require("./src/auth_config_production.json");
-const api = require("./server/routes/api");
-const refresh = require("./server/core/metricsRefresh");
+require('dotenv').config()
+const express = require('express');
+const cors = require('cors');
+const http = require('http');
+const morgan = require('morgan');
+const helmet = require('helmet');
+const jwt = require('express-jwt');
+const jwksRsa = require('jwks-rsa');
+const { join } = require('path');
+const devAuthConfig = require('./src/auth_config_dev.json');
+const productionAuthConfig = require('./src/auth_config_production.json');
+const api = require('./server/routes/api');
+const refresh = require('./server/core/metricsRefresh');
 
 const app = express();
 
@@ -29,11 +29,11 @@ if (authEnv === 'production') {
 
 if (!authConfig.domain || !authConfig.audience) {
   throw new Error(
-    "Please make sure that auth_config.json is in place and populated"
+    'Please make sure that auth_config.json is in place and populated',
   );
 }
 
-app.use(morgan("dev"));
+app.use(morgan('dev'));
 app.use(helmet());
 
 if (app.get('env') === 'production') {
@@ -46,12 +46,12 @@ const checkJwt = jwt({
     cache: true,
     rateLimit: true,
     jwksRequestsPerMinute: 5,
-    jwksUri: `https://${authConfig.domain}/.well-known/jwks.json`
+    jwksUri: `https://${authConfig.domain}/.well-known/jwks.json`,
   }),
 
   audience: authConfig.audience,
   issuer: `https://${authConfig.domain}/`,
-  algorithm: ["RS256"]
+  algorithm: ['RS256'],
 });
 
 app.get('/api/programEval', checkJwt, api.programEval);
@@ -59,7 +59,7 @@ app.get('/api/reincarcerations', checkJwt, api.reincarcerations);
 app.get('/api/revocations', checkJwt, api.revocations);
 app.get('/api/snapshots', checkJwt, api.snapshots);
 
-var server = http.createServer(app);
+const server = http.createServer(app);
 
 /**
  * Event listener for HTTP server "error" event.
@@ -69,18 +69,18 @@ function onError(error) {
     throw error;
   }
 
-  var bind = typeof port === 'string'
-    ? 'Pipe ' + port
-    : 'Port ' + port;
+  const bind = typeof port === 'string'
+    ? `Pipe ${port}`
+    : `Port ${port}`;
 
   // handle specific listen errors with friendly messages
   switch (error.code) {
     case 'EACCES':
-      console.error(bind + ' requires elevated privileges');
+      console.error(`${bind} requires elevated privileges`);
       process.exit(1);
       break;
     case 'EADDRINUSE':
-      console.error(bind + ' is already in use');
+      console.error(`${bind} is already in use`);
       process.exit(1);
       break;
     default:
@@ -91,12 +91,12 @@ function onError(error) {
 /**
  * Event listener for HTTP server "listening" event.
  */
-function onListening () {
-  var addr = server.address();
-  var bind = typeof addr === 'string'
-    ? 'pipe ' + addr
-    : 'port ' + addr.port;
-  console.log('Listening on ' + bind);
+function onListening() {
+  const addr = server.address();
+  const bind = typeof addr === 'string'
+    ? `pipe ${addr}`
+    : `port ${addr.port}`;
+  console.log(`Listening on ${bind}`);
 }
 
 server.listen(port, () => console.log(`Server listening on port ${port}`));
