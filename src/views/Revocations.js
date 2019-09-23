@@ -302,7 +302,7 @@ const Revocations = () => {
                 </div>
                 <div className="layer w-100 pX-20 pT-20 row">
                   <div className="layer w-100 p-20">
-                    <RevocationProportionByRace revocationProportionByRace={apiData.revocations_by_race_60_days} />
+                    <RevocationProportionByRace revocationProportionByRace={apiData.revocations_by_race_and_ethnicity_60_days} />
                   </div>
                 </div>
                 <div className="layer bdT p-20 w-100 accordion" id="methodologyRevocationsByRace">

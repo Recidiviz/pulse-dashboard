@@ -8,6 +8,7 @@ const labelStringConversion = {
   AMERICAN_INDIAN_ALASKAN_NATIVE: 'American Indian Alaskan Native',
   ASIAN: 'Asian',
   BLACK: 'Black',
+  HISPANIC: 'Hispanic',
   NATIVE_HAWAIIAN_PACIFIC_ISLANDER: 'Native Hawaiian Pacific Islander',
   WHITE: 'White',
   OTHER: 'Other',
@@ -17,9 +18,10 @@ const ND_RACE_PROPORTIONS = {
   'American Indian Alaskan Native': 5.5,
   'Asian': 1.8,
   'Black': 3.4,
+  'Hispanic': 3.9,
   'Native Hawaiian Pacific Islander': 0.1,
-  'White': 87.0,
-  'Other': 2.2,
+  'White': 84.0,
+  'Other': 1.3,
 };
 
 const RevocationProportionByRace = (props) => {
@@ -32,7 +34,7 @@ const RevocationProportionByRace = (props) => {
 
     const dataPoints = [];
     proportionsByRace.forEach((data) => {
-      const { race } = data;
+      const { race_or_ethnicity: race } = data;
       const count = parseInt(data.revocation_count, 10);
       dataPoints.push([labelStringConversion[race], count]);
     });
@@ -87,8 +89,12 @@ const RevocationProportionByRace = (props) => {
           data: [chartProportions[4], statePopulationProportions[4]],
         }, {
           label: chartLabels[5],
-          backgroundColor: COLORS['blue-standard'],
+          backgroundColor: COLORS['blue-standard-2'],
           data: [chartProportions[5], statePopulationProportions[5]],
+        }, {
+          label: chartLabels[6],
+          backgroundColor: COLORS['blue-standard'],
+          data: [chartProportions[6], statePopulationProportions[6]],
         },
         ],
       }}
