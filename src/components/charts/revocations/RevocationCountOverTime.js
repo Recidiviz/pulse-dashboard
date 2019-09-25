@@ -143,7 +143,7 @@ const RevocationCountOverTime = (props) => {
     });
 
   configureDownloadButtons('revocation', 'Drivers', chart.props,
-    document.getElementById('revocation-drivers-chart'), exportedStructureCallback);
+    document.getElementById('revocation-counts-by-month-chart'), exportedStructureCallback);
 
   const chartData = chart.props.data.datasets[0].data;
   const mostRecentValue = chartData[chartData.length - 1];

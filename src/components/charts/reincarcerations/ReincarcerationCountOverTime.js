@@ -143,7 +143,7 @@ const ReincarcerationCountOverTime = (props) => {
     });
 
   configureDownloadButtons('reincarceration', 'Drivers', chart.props,
-    document.getElementById('reincarceration-drivers-chart'), exportedStructureCallback);
+    document.getElementById('reincarceration-counts-by-month-chart'), exportedStructureCallback);
 
   const chartData = chart.props.data.datasets[0].data;
   const mostRecentValue = chartData[chartData.length - 1];
