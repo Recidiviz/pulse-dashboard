@@ -56,12 +56,12 @@ const Revocations = () => {
                     REVOCATIONS BY MONTH
                     <span className="fa-pull-right">
                       <div className="dropdown show">
-                        <a className="btn btn-secondary btn-sm dropdown-toggle" href="#" role="button" id="exportDropdownMenuButton-revocationCountsByMonth" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <a className="btn btn-secondary btn-sm dropdown-toggle" href="#" role="button" id="exportDropdownMenuButton-revocationDrivers" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                           Export
                         </a>
-                        <div className="dropdown-menu" aria-labelledby="exportDropdownMenuButton-revocationCountsByMonth">
-                          <a className="dropdown-item" id="downloadChartAsImage-revocationCountsByMonth" href="javascript:void(0);">Export image</a>
-                          <a className="dropdown-item" id="downloadChartData-revocationCountsByMonth" href="javascript:void(0);">Export data</a>
+                        <div className="dropdown-menu" aria-labelledby="exportDropdownMenuButton-revocationDrivers">
+                          <a className="dropdown-item" id="downloadChartAsImage-revocationDrivers" href="javascript:void(0);">Export image</a>
+                          <a className="dropdown-item" id="downloadChartData-revocationDrivers" href="javascript:void(0);">Export data</a>
                         </div>
                       </div>
                     </span>

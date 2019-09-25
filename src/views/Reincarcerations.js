@@ -54,12 +54,12 @@ const Reincarcerations = () => {
                     REINCARCERATIONS BY MONTH
                     <span className="fa-pull-right">
                       <div className="dropdown show">
-                        <a className="btn btn-secondary btn-sm dropdown-toggle" href="#" role="button" id="exportDropdownMenuButton-reincarcerationCountsByMonth" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <a className="btn btn-secondary btn-sm dropdown-toggle" href="#" role="button" id="exportDropdownMenuButton-reincarcerationDrivers" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                           Export
                         </a>
-                        <div className="dropdown-menu" aria-labelledby="exportDropdownMenuButton-reincarcerationCountsByMonth">
-                          <a className="dropdown-item" id="downloadChartAsImage-reincarcerationCountsByMonth" href="javascript:void(0);">Export image</a>
-                          <a className="dropdown-item" id="downloadChartData-reincarcerationCountsByMonth" href="javascript:void(0);">Export data</a>
+                        <div className="dropdown-menu" aria-labelledby="exportDropdownMenuButton-reincarcerationDrivers">
+                          <a className="dropdown-item" id="downloadChartAsImage-reincarcerationDrivers" href="javascript:void(0);">Export image</a>
+                          <a className="dropdown-item" id="downloadChartData-reincarcerationDrivers" href="javascript:void(0);">Export data</a>
                         </div>
                       </div>
                     </span>
