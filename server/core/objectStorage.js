@@ -23,5 +23,5 @@ function downloadFile(bucketName, stateCode, srcFilename) {
 }
 
 module.exports = {
-  downloadFile: downloadFile
-}
+  downloadFile,
+};
