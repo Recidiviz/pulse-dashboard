@@ -3,16 +3,22 @@ import React, { useState, useEffect } from 'react';
 import { Line } from 'react-chartjs-2';
 import { configureDownloadButtons } from '../../../assets/scripts/charts/chartJS/downloads';
 import { COLORS } from '../../../assets/scripts/constants/colors';
-import { monthNamesWithYearsFromNumbers, monthNamesFromShortName } from '../../../utils/monthConversion';
+import { monthNamesWithYearsFromNumbers } from '../../../utils/monthConversion';
 import { sortAndFilterMostRecentMonths } from '../../../utils/dataOrganizing';
 import { generateTrendlineDataset, getTooltipWithoutTrendline } from '../../../utils/trendline';
-import { getGoalForChart } from '../../../utils/metricGoal';
+import {
+  getGoalForChart, getMinForGoalAndData, getMaxForGoalAndData, trendlineGoalText,
+  goalLabelContentString,
+} from '../../../utils/metricGoal';
 
 const RevocationAdmissionsSnapshot = (props) => {
   const [chartLabels, setChartLabels] = useState([]);
   const [chartDataPoints, setChartDataPoints] = useState([]);
+  const [chartMinValue, setChartMinValue] = useState();
+  const [chartMaxValue, setChartMaxValue] = useState();
 
   const GOAL = getGoalForChart('US_ND', 'revocation-admissions-snapshot-chart');
+  const stepSize = 10;
 
   const processResponse = () => {
     const { revocationAdmissionsByMonth: countsByMonth } = props;
@@ -29,13 +35,18 @@ const RevocationAdmissionsSnapshot = (props) => {
         const total = technicals + nonTechnicals + unknownRevocations + newAdmissions;
         const revocations = (technicals + nonTechnicals + unknownRevocations);
         const percentRevocations = (100 * (revocations / total)).toFixed(2);
-        dataPoints.push([year, month, percentRevocations]);
+        dataPoints.push({ year, month, percentRevocations });
       });
 
       const sorted = sortAndFilterMostRecentMonths(dataPoints, 13);
+      const chartDataValues = sorted.map((element) => element.percentRevocations);
+      const min = getMinForGoalAndData(GOAL.value, chartDataValues, stepSize);
+      const max = getMaxForGoalAndData(GOAL.value, chartDataValues, stepSize);
 
-      setChartLabels(monthNamesWithYearsFromNumbers(sorted.map((element) => element[1]), true));
-      setChartDataPoints(sorted.map((element) => element[2]));
+      setChartLabels(monthNamesWithYearsFromNumbers(sorted.map((element) => element.month), true));
+      setChartDataPoints(chartDataValues);
+      setChartMinValue(min);
+      setChartMaxValue(max);
     }
   };
 
@@ -97,8 +108,9 @@ const RevocationAdmissionsSnapshot = (props) => {
           yAxes: [{
             ticks: {
               fontColor: COLORS['grey-600'],
-              min: 30,
-              max: 100,
+              min: chartMinValue,
+              max: chartMaxValue,
+              stepSize,
             },
             scaleLabel: {
               display: true,
@@ -134,7 +146,7 @@ const RevocationAdmissionsSnapshot = (props) => {
             borderDashOffset: 5,
             label: {
               enabled: true,
-              content: 'goal: '.concat(GOAL.label),
+              content: goalLabelContentString(GOAL),
               position: 'right',
 
               // Background color of label, default below
@@ -174,16 +186,12 @@ const RevocationAdmissionsSnapshot = (props) => {
   configureDownloadButtons('revocationAdmissions', 'Snapshot', chart.props,
     document.getElementById('revocation-admissions-snapshot-chart'), exportedStructureCallback);
 
-  const chartData = chart.props.data.datasets[0].data;
-  const mostRecentValue = chartData[chartData.length - 1];
-
-  const chartDataLabels = chart.props.data.labels;
-  const mostRecentMonth = monthNamesFromShortName(chartDataLabels[chartDataLabels.length - 1]);
-
   const header = document.getElementById(props.header);
+  const trendlineValues = chart.props.data.datasets[1].data;
+  const trendlineText = trendlineGoalText(trendlineValues, GOAL);
 
-  if (header && mostRecentValue && mostRecentMonth) {
-    const title = `<b style='color:#809AE5'>${mostRecentValue}% of prison admissions</b> in ${mostRecentMonth} were due to parole or probation revocations.`;
+  if (header) {
+    const title = `The percent of prison admissions due to revocations of probation and parole has been <b style='color:#809AE5'>trending ${trendlineText}.</b>`;
     header.innerHTML = title;
   }
 

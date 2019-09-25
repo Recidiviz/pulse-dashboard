@@ -30,7 +30,7 @@ const RevocationCountByViolationType = (props) => {
         UNKNOWN_VIOLATION_TYPE: unknownCount,
       };
 
-      dataPoints.push([year, month, monthDict]);
+      dataPoints.push({ year, month, monthDict });
     });
 
     const sorted = sortAndFilterMostRecentMonths(dataPoints, 6);
@@ -44,8 +44,8 @@ const RevocationCountByViolationType = (props) => {
     };
 
     for (let i = 0; i < 6; i += 1) {
-      monthsLabels.push(sorted[i][1]);
-      const data = sorted[i][2];
+      monthsLabels.push(sorted[i].month);
+      const data = sorted[i].monthDict;
       Object.keys(data).forEach((violationType) => {
         violationArrays[violationType].push(data[violationType]);
       });

@@ -15,13 +15,13 @@ const AdmissionsVsReleases = (props) => {
     const dataPoints = [];
     admissionsVsReleases.forEach((data) => {
       const { year, month, population_change: delta } = data;
-      dataPoints.push([year, month, delta]);
+      dataPoints.push({ year, month, delta });
     });
 
     const sorted = sortAndFilterMostRecentMonths(dataPoints, 6);
 
-    setChartLabels(monthNamesWithYearsFromNumbers(sorted.map((element) => element[1]), false));
-    setChartDataPoints(sorted.map((element) => element[2]));
+    setChartLabels(monthNamesWithYearsFromNumbers(sorted.map((element) => element.month), false));
+    setChartDataPoints(sorted.map((element) => element.delta));
   };
 
   useEffect(() => {

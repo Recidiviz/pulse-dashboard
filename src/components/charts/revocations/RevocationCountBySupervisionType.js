@@ -19,18 +19,18 @@ const RevocationCountBySupervisionType = (props) => {
       const {
         year, month, parole_count: paroleCount, probation_count: probationCount,
       } = data;
-      paroleData.push([year, month, paroleCount]);
-      probationData.push([year, month, probationCount]);
+      paroleData.push({ year, month, paroleCount });
+      probationData.push({ year, month, probationCount });
     });
 
     const sortedParoleData = sortAndFilterMostRecentMonths(paroleData, 6);
     const sortedProbationData = sortAndFilterMostRecentMonths(probationData, 6);
 
     setChartLabels(monthNamesWithYearsFromNumbers(sortedParoleData.map(
-      (element) => element[1],
+      (element) => element.month,
     ), false));
-    setParoleDataPoints(sortedParoleData.map((element) => element[2]));
-    setProbationDataPoints(sortedProbationData.map((element) => element[2]));
+    setParoleDataPoints(sortedParoleData.map((element) => element.paroleCount));
+    setProbationDataPoints(sortedProbationData.map((element) => element.probationCount));
   };
 
   useEffect(() => {

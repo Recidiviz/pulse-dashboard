@@ -5,10 +5,16 @@ import { configureDownloadButtons } from '../../../assets/scripts/charts/chartJS
 import { COLORS } from '../../../assets/scripts/constants/colors';
 import { monthNamesWithYearsFromNumbers } from '../../../utils/monthConversion';
 import { sortAndFilterMostRecentMonths } from '../../../utils/dataOrganizing';
+import { getGoalForChart, getMaxForGoalAndData, goalLabelContentString } from '../../../utils/metricGoal';
 
 const ReincarcerationCountOverTime = (props) => {
   const [chartLabels, setChartLabels] = useState([]);
   const [chartDataPoints, setChartDataPoints] = useState([]);
+  const [chartMinValue, setChartMinValue] = useState();
+  const [chartMaxValue, setChartMaxValue] = useState();
+
+  const GOAL = getGoalForChart('US_ND', 'reincarceration-counts-by-month-chart');
+  const stepSize = 10;
 
   const processResponse = () => {
     const { reincarcerationCountsByMonth: countsByMonth } = props;
@@ -16,13 +22,17 @@ const ReincarcerationCountOverTime = (props) => {
     const dataPoints = [];
     countsByMonth.forEach((data) => {
       const { year, month, returns: count } = data;
-      dataPoints.push([year, month, count]);
+      dataPoints.push({ year, month, count });
     });
 
     const sorted = sortAndFilterMostRecentMonths(dataPoints, 6);
+    const chartDataValues = (sorted.map((element) => element.count));
+    const max = getMaxForGoalAndData(GOAL.value, chartDataValues, stepSize);
 
-    setChartLabels(monthNamesWithYearsFromNumbers(sorted.map((element) => element[1]), false));
-    setChartDataPoints(sorted.map((element) => element[2]));
+    setChartLabels(monthNamesWithYearsFromNumbers(sorted.map((element) => element.month), false));
+    setChartDataPoints(chartDataValues);
+    setChartMinValue(0);
+    setChartMaxValue(max);
   };
 
   useEffect(() => {
@@ -31,7 +41,7 @@ const ReincarcerationCountOverTime = (props) => {
 
   const chart = (
     <Line
-      id="reincarceration-drivers-chart"
+      id="reincarceration-counts-by-month-chart"
       data={{
         labels: chartLabels,
         datasets: [{
@@ -60,7 +70,9 @@ const ReincarcerationCountOverTime = (props) => {
           }],
           yAxes: [{
             ticks: {
-              min: 0,
+              min: chartMinValue,
+              max: chartMaxValue,
+              stepSize,
             },
             scaleLabel: {
               display: true,
@@ -76,21 +88,21 @@ const ReincarcerationCountOverTime = (props) => {
           annotations: [{
             type: 'line',
             mode: 'horizontal',
-            value: 40,
+            value: GOAL.value,
 
             // optional annotation ID (must be unique)
-            id: 'recidivism-drivers-goal-line',
+            id: 'reincarceration-counts-by-month-goal-line',
             scaleID: 'y-axis-0',
 
             drawTime: 'afterDatasetsDraw',
 
-            borderColor: 'red',
+            borderColor: COLORS['red-standard'],
             borderWidth: 2,
             borderDash: [2, 2],
             borderDashOffset: 5,
             label: {
               enabled: true,
-              content: 'goal: 40',
+              content: goalLabelContentString(GOAL),
               position: 'right',
 
               // Background color of label, default below
@@ -99,7 +111,7 @@ const ReincarcerationCountOverTime = (props) => {
               fontFamily: 'sans-serif',
               fontSize: 12,
               fontStyle: 'bold',
-              fontColor: COLORS['red-400'],
+              fontColor: COLORS['red-standard'],
 
               // Adjustment along x-axis (left-right) of label relative to above
               // number (can be negative). For horizontal lines positioned left

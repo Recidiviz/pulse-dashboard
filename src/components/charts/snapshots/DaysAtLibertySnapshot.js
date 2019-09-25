@@ -6,13 +6,19 @@ import { COLORS } from '../../../assets/scripts/constants/colors';
 import { monthNamesWithYearsFromNumbers } from '../../../utils/monthConversion';
 import { sortAndFilterMostRecentMonths } from '../../../utils/dataOrganizing';
 import { generateTrendlineDataset, getTooltipWithoutTrendline } from '../../../utils/trendline';
-import { getGoalForChart, trendlineGoalText } from '../../../utils/metricGoal';
+import {
+  getGoalForChart, getMinForGoalAndData, getMaxForGoalAndData, trendlineGoalText,
+  goalLabelContentString,
+} from '../../../utils/metricGoal';
 
 const DaysAtLibertySnapshot = (props) => {
   const [chartLabels, setChartLabels] = useState([]);
   const [chartDataPoints, setChartDataPoints] = useState([]);
+  const [chartMinValue, setChartMinValue] = useState();
+  const [chartMaxValue, setChartMaxValue] = useState();
 
   const GOAL = getGoalForChart('US_ND', 'days-at-liberty-snapshot-chart');
+  const stepSize = 200;
 
   const processResponse = () => {
     const { daysAtLibertyByMonth } = props;
@@ -23,13 +29,18 @@ const DaysAtLibertySnapshot = (props) => {
       daysAtLibertyByMonth.forEach((data) => {
         const { year, month } = data;
         const average = parseFloat(data.avg_liberty).toFixed(2);
-        dataPoints.push([year, month, average]);
+        dataPoints.push({ year, month, average });
       });
 
       const sorted = sortAndFilterMostRecentMonths(dataPoints, 13);
+      const chartDataValues = sorted.map((element) => element.average);
+      const min = getMinForGoalAndData(GOAL.value, chartDataValues, stepSize);
+      const max = getMaxForGoalAndData(GOAL.value, chartDataValues, stepSize);
 
-      setChartLabels(monthNamesWithYearsFromNumbers(sorted.map((element) => element[1]), true));
-      setChartDataPoints(sorted.map((element) => element[2]));
+      setChartLabels(monthNamesWithYearsFromNumbers(sorted.map((element) => element.month), true));
+      setChartDataPoints(chartDataValues);
+      setChartMinValue(min);
+      setChartMaxValue(max);
     }
   };
 
@@ -91,8 +102,9 @@ const DaysAtLibertySnapshot = (props) => {
           yAxes: [{
             ticks: {
               fontColor: COLORS['grey-600'],
-              min: 500,
-              max: 1200,
+              min: chartMinValue,
+              max: chartMaxValue,
+              stepSize,
             },
             scaleLabel: {
               display: true,
@@ -128,7 +140,7 @@ const DaysAtLibertySnapshot = (props) => {
             borderDashOffset: 5,
             label: {
               enabled: true,
-              content: 'goal: '.concat(GOAL.label),
+              content: goalLabelContentString(GOAL),
               position: 'right',
 
               // Background color of label, default below

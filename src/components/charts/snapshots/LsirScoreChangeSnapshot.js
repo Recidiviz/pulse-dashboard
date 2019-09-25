@@ -6,13 +6,19 @@ import { COLORS } from '../../../assets/scripts/constants/colors';
 import { monthNamesWithYearsFromNumbers } from '../../../utils/monthConversion';
 import { sortAndFilterMostRecentMonths } from '../../../utils/dataOrganizing';
 import { generateTrendlineDataset, getTooltipWithoutTrendline } from '../../../utils/trendline';
-import { getGoalForChart, trendlineGoalText } from '../../../utils/metricGoal';
+import {
+  getGoalForChart, getMinForGoalAndData, getMaxForGoalAndData, trendlineGoalText,
+  goalLabelContentString,
+} from '../../../utils/metricGoal';
 
 const LsirScoreChangeSnapshot = (props) => {
   const [chartLabels, setChartLabels] = useState([]);
   const [chartDataPoints, setChartDataPoints] = useState([]);
+  const [chartMinValue, setChartMinValue] = useState();
+  const [chartMaxValue, setChartMaxValue] = useState();
 
   const GOAL = getGoalForChart('US_ND', 'lsir-score-change-snapshot-chart');
+  const stepSize = 0.5;
 
   const processResponse = () => {
     const { lsirScoreChangeByMonth: changeByMonth } = props;
@@ -24,13 +30,18 @@ const LsirScoreChangeSnapshot = (props) => {
         const { termination_year: year, termination_month: month } = data;
         const change = parseFloat(data.average_change).toFixed(2);
 
-        dataPoints.push([year, month, change]);
+        dataPoints.push({ year, month, change });
       });
 
       const sorted = sortAndFilterMostRecentMonths(dataPoints, 13);
+      const chartDataValues = sorted.map((element) => element.change);
+      const min = getMinForGoalAndData(GOAL.value, chartDataValues, stepSize);
+      const max = getMaxForGoalAndData(GOAL.value, chartDataValues, stepSize);
 
-      setChartLabels(monthNamesWithYearsFromNumbers(sorted.map((element) => element[1]), true));
-      setChartDataPoints(sorted.map((element) => element[2]));
+      setChartLabels(monthNamesWithYearsFromNumbers(sorted.map((element) => element.month), true));
+      setChartDataPoints(chartDataValues);
+      setChartMinValue(min);
+      setChartMaxValue(max);
     }
   };
 
@@ -92,8 +103,9 @@ const LsirScoreChangeSnapshot = (props) => {
           yAxes: [{
             ticks: {
               fontColor: COLORS['grey-600'],
-              min: -1.5,
-              max: 1.5,
+              min: chartMinValue,
+              max: chartMaxValue,
+              stepSize,
             },
             scaleLabel: {
               display: true,
@@ -129,7 +141,7 @@ const LsirScoreChangeSnapshot = (props) => {
             borderDashOffset: 5,
             label: {
               enabled: true,
-              content: 'goal: '.concat(GOAL.label),
+              content: goalLabelContentString(GOAL),
               position: 'right',
 
               // Background color of label, default below
@@ -174,7 +186,7 @@ const LsirScoreChangeSnapshot = (props) => {
   const trendlineText = trendlineGoalText(trendlineValues, GOAL);
 
   if (header) {
-    const title = `The average change in LSIR scores between intake and termination of supervision has been <b style='color:#809AE5'> trending ${trendlineText}. </b>`;
+    const title = `The average change in LSIR scores between first reassessment and termination of supervision has been <b style='color:#809AE5'> trending ${trendlineText}. </b>`;
     header.innerHTML = title;
   }
 

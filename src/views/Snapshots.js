@@ -38,18 +38,17 @@ const Snapshots = () => {
     fetchChartData();
   }, []);
 
-  if (loading || !user) {
+  if (loading || !user || awaitingApi) {
     return <Loading />;
   }
 
   return (
     <main className="main-content bgc-grey-100">
       <div id="mainContent">
-        <div className="row gap-20 masonry pos-r">
-          <div className="masonry-sizer col-md-6" />
+        <div className="row gap-20 pos-r">
 
           {/* #Successful completion of supervision snapshot ==================== */}
-          <div className="masonry-item col-md-6">
+          <div className="col-md-6">
             <div className="bd bgc-white p-20">
               <div className="layers">
                 <div className="layer w-100 pX-20 pT-20">
@@ -82,12 +81,37 @@ const Snapshots = () => {
                     </div>
                   </div>
                 </div>
+                <div className="layer bdT p-20 w-100 accordion" id="methodologySupervisionSuccessSnapshot">
+                  <div className="mb-0" id="methodologyHeadingSupervisionSuccessSnapshot">
+                    <div className="mb-0">
+                      <button className="btn btn-link collapsed pL-0" type="button" data-toggle="collapse" data-target="#collapseMethodologySupervisionSuccessSnapshot" aria-expanded="true" aria-controls="collapseMethodologySupervisionSuccessSnapshot">
+                        <h6 className="lh-1 c-blue-500 mb-0">Methodology</h6>
+                      </button>
+                    </div>
+                  </div>
+                  <div className="collapse" id="collapseMethodologySupervisionSuccessSnapshot" aria-labelledby="methodologyHeadingSupervisionSuccessSnapshot" data-parent="#methodologySupervisionSuccessSnapshot">
+                    <div>
+                      <ul>
+                        <li>
+                        A supervision is considered successfully completed
+                        if the individual was discharged from supervision or if
+                        their supervision period expired.
+                        </li>
+                        <li>
+                        Unsuccessful completions of supervision occur when the
+                        supervision ends due to absconsion, a revocation, or a
+                        suspension.
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
 
           {/* #Prison admissions from revocations ==================== */}
-          <div className="masonry-item col-md-6">
+          <div className="col-md-6">
             <div className="bd bgc-white p-20">
               <div className="layers">
                 <div className="layer w-100 pX-20 pT-20">
@@ -120,12 +144,36 @@ const Snapshots = () => {
                     </div>
                   </div>
                 </div>
+                <div className="layer bdT p-20 w-100 accordion" id="methodologyRevocationAdmissionsSnapshot">
+                  <div className="mb-0" id="methodologyHeadingRevocationAdmissionsSnapshot">
+                    <div className="mb-0">
+                      <button className="btn btn-link collapsed pL-0" type="button" data-toggle="collapse" data-target="#collapseMethodologyRevocationAdmissionsSnapshot" aria-expanded="true" aria-controls="collapseMethodologyRevocationAdmissionsSnapshot">
+                        <h6 className="lh-1 c-blue-500 mb-0">Methodology</h6>
+                      </button>
+                    </div>
+                  </div>
+                  <div className="collapse" id="collapseMethodologyRevocationAdmissionsSnapshot" aria-labelledby="methodologyHeadingRevocationAdmissionsSnapshot" data-parent="#methodologyRevocationAdmissionsSnapshot">
+                    <div>
+                      <ul>
+                        <li>
+                        This is a measurement of the percent of admissions to
+                        North Dakota prisons that were due to parole or probation revocations.
+                        </li>
+                        <li>
+                        Revocations include all instances of a person being
+                        incarcerated because their supervision was revoked for
+                        a behavioral violation.
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
 
           {/* #Average days at liberty ==================== */}
-          <div className="masonry-item col-md-6">
+          <div className="col-md-6">
             <div className="bd bgc-white p-20">
               <div className="layers">
                 <div className="layer w-100 pX-20 pT-20">
@@ -158,12 +206,37 @@ const Snapshots = () => {
                     </div>
                   </div>
                 </div>
+                <div className="layer bdT p-20 w-100 accordion" id="methodologyDaysAtLibertySnapshot">
+                  <div className="mb-0" id="methodologyHeadingDaysAtLibertySnapshot">
+                    <div className="mb-0">
+                      <button className="btn btn-link collapsed pL-0" type="button" data-toggle="collapse" data-target="#collapseMethodologyDaysAtLibertySnapshot" aria-expanded="true" aria-controls="collapseMethodologyDaysAtLibertySnapshot">
+                        <h6 className="lh-1 c-blue-500 mb-0">Methodology</h6>
+                      </button>
+                    </div>
+                  </div>
+                  <div className="collapse" id="collapseMethodologyDaysAtLibertySnapshot" aria-labelledby="methodologyHeadingDaysAtLibertySnapshot" data-parent="#methodologyDaysAtLibertySnapshot">
+                    <div>
+                      <ul>
+                        <li>
+                        An individual&apos;s days at liberty are the number of
+                        days between release from incarceration and readmission
+                        for someone who was reincarcerated in a given month.
+                        </li>
+                        <li>
+                        An admission to prison counts as a reincarceration if
+                        the person has been incarcerated previously in a North
+                        Dakota prison.
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
 
           {/* #Change in LSIR scores ==================== */}
-          <div className="masonry-item col-md-6">
+          <div className="col-md-6">
             <div className="bd bgc-white p-20">
               <div className="layers">
                 <div className="layer w-100 pX-20 pT-20">
@@ -193,6 +266,27 @@ const Snapshots = () => {
                         lsirScoreChangeByMonth={apiData.average_change_lsir_score_by_month}
                         header="lsirScoreChangeSnapshot-header"
                       />
+                    </div>
+                  </div>
+                </div>
+                <div className="layer bdT p-20 w-100 accordion" id="methodologyLsirScoreChangeSnapshot">
+                  <div className="mb-0" id="methodologyHeadingLsirScoreChangeSnapshot">
+                    <div className="mb-0">
+                      <button className="btn btn-link collapsed pL-0" type="button" data-toggle="collapse" data-target="#collapseMethodologyLsirScoreChangeSnapshot" aria-expanded="true" aria-controls="collapseMethodologyLsirScoreChangeSnapshot">
+                        <h6 className="lh-1 c-blue-500 mb-0">Methodology</h6>
+                      </button>
+                    </div>
+                  </div>
+                  <div className="collapse" id="collapseMethodologyLsirScoreChangeSnapshot" aria-labelledby="methodologyHeadingLsirScoreChangeSnapshot" data-parent="#methodologyLsirScoreChangeSnapshot">
+                    <div>
+                      <ul>
+                        <li>
+                        This is the average of the differences between the first
+                        reassessment score and the termination assessment score
+                        for all individuals whose supervision was scheduled to
+                        end in a given month.
+                        </li>
+                      </ul>
                     </div>
                   </div>
                 </div>
