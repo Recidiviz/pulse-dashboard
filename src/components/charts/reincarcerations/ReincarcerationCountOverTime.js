@@ -151,7 +151,7 @@ const ReincarcerationCountOverTime = (props) => {
   const header = document.getElementById(props.header);
 
   if (header && mostRecentValue) {
-    const title = `There have been <b style='color:#809AE5'>${mostRecentValue} reincarcerations</b> this month so far.`;
+    const title = `There have been <b style='color:#809AE5'>${mostRecentValue} reincarcerations</b> to a DOCR facility this month so far.`;
     header.innerHTML = title;
   }
 

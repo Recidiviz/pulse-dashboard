@@ -94,13 +94,13 @@ const Snapshots = () => {
                       <ul>
                         <li>
                         A supervision is considered successfully completed
-                        if the individual was discharged from supervision or if
-                        their supervision period expired.
+                        if the individual was discharged from supervision positively
+                        or if their supervision period expired.
                         </li>
                         <li>
                         Unsuccessful completions of supervision occur when the
                         supervision ends due to absconsion, a revocation, or a
-                        suspension.
+                        negative termination.
                         </li>
                       </ul>
                     </div>
