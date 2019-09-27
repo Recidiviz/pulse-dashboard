@@ -42,8 +42,8 @@ function sortByYearAndMonth(dataPoints) {
  *  -`labelIndex`: The index in the dataPoint array that contains the label
  *    to sort on
  */
-function sortByLabel(dataPoints, labelIndex) {
-  return dataPoints.sort((a, b) => (a[labelIndex].localeCompare(b[labelIndex])));
+function sortByLabel(dataPoints, labelKey) {
+  return dataPoints.sort((a, b) => (a[labelKey].localeCompare(b[labelKey])));
 }
 
 function filterMostRecentMonths(dataPoints, monthCount) {

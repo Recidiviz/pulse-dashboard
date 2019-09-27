@@ -27,74 +27,115 @@ const ND_RACE_PROPORTIONS = {
 const RevocationProportionByRace = (props) => {
   const [chartLabels, setChartLabels] = useState([]);
   const [chartProportions, setChartProportions] = useState([]);
-  const [statePopulationProportions, setStateProportions] = useState([]);
+  const [statePopulationProportions, setStatePopulationProportions] = useState([]);
+  const [stateSupervisionProportions, setStateSupervisionProportions] = useState([]);
 
   const processResponse = () => {
-    const { revocationProportionByRace: proportionsByRace } = props;
+    const { revocationProportionByRace } = props;
+    const { supervisionPopulationByRace } = props;
 
-    const dataPoints = [];
-    proportionsByRace.forEach((data) => {
+    const revocationDataPoints = [];
+    revocationProportionByRace.forEach((data) => {
       const { race_or_ethnicity: race } = data;
       const count = parseInt(data.revocation_count, 10);
-      dataPoints.push([labelStringConversion[race], count]);
+      revocationDataPoints.push({ race: labelStringConversion[race], count });
     });
 
-    const racesRepresented = dataPoints.map((element) => element[0]);
+    const supervisionDataPoints = [];
+    supervisionPopulationByRace.forEach((data) => {
+      const { race_or_ethnicity: race } = data;
+      const count = parseInt(data.count, 10);
+      supervisionDataPoints.push({ race: labelStringConversion[race], count });
+    });
+
+    const racesRepresentedRevocations = revocationDataPoints.map((element) => element.race);
+    const racesRepresentedSupervision = supervisionDataPoints.map((element) => element.race);
 
     Object.values(labelStringConversion).forEach((race) => {
-      if (!racesRepresented.includes(race)) {
-        dataPoints.push([race, 0]);
+      if (!racesRepresentedRevocations.includes(race)) {
+        revocationDataPoints.push({ race, count: 0 });
+      }
+
+      if (!racesRepresentedSupervision.includes(race)) {
+        supervisionDataPoints.push({ race, count: 0 });
       }
     });
 
-    const total = dataPoints.map((element) => element[1]).reduce(
-      (previousValue, currentValue) => (previousValue + currentValue),
-    );
+    function totalSum(dataPoints) {
+      return dataPoints.map((element) => element.count).reduce(
+        (previousValue, currentValue) => (previousValue + currentValue),
+      );
+    }
+
+    const totalRevocations = totalSum(revocationDataPoints);
+    const totalSupervisionPopulation = totalSum(supervisionDataPoints);
 
     // Sort by race alphabetically
-    const sorted = sortByLabel(dataPoints, 0);
+    const sortedRevocationDataPoints = sortByLabel(revocationDataPoints, 'race');
+    const sortedSupervisionDataPoints = sortByLabel(supervisionDataPoints, 'race');
 
-    setChartLabels(sorted.map((element) => element[0]));
-    setChartProportions(sorted.map((element) => (100 * (element[1] / total))));
-    setStateProportions(sorted.map((element) => ND_RACE_PROPORTIONS[element[0]]));
+    setChartLabels(sortedRevocationDataPoints.map((element) => element.race));
+    setChartProportions(sortedRevocationDataPoints.map(
+      (element) => (100 * (element.count / totalRevocations)),
+    ));
+    setStatePopulationProportions(sortedRevocationDataPoints.map(
+      (element) => ND_RACE_PROPORTIONS[element.race],
+    ));
+    setStateSupervisionProportions(sortedSupervisionDataPoints.map(
+      (element) => (100 * (element.count / totalSupervisionPopulation)),
+    ));
   };
 
   useEffect(() => {
     processResponse();
-  }, [props.revocationProportionByRace]);
+  }, [props.revocationProportionByRace, props.supervisionPopulationByRace]);
 
   return (
     <HorizontalBar
       data={{
-        labels: ['Revocations', 'ND Population'],
+        labels: ['Revocations', 'Supervision Population', 'ND Population'],
         datasets: [{
           label: chartLabels[0],
           backgroundColor: COLORS_FIVE_VALUES[0],
-          data: [chartProportions[0], statePopulationProportions[0]],
+          data: [
+            chartProportions[0], stateSupervisionProportions[0], statePopulationProportions[0],
+          ],
         }, {
           label: chartLabels[1],
           backgroundColor: COLORS_FIVE_VALUES[1],
-          data: [chartProportions[1], statePopulationProportions[1]],
+          data: [
+            chartProportions[1], stateSupervisionProportions[1], statePopulationProportions[1],
+          ],
         }, {
           label: chartLabels[2],
           backgroundColor: COLORS_FIVE_VALUES[2],
-          data: [chartProportions[2], statePopulationProportions[2]],
+          data: [
+            chartProportions[2], stateSupervisionProportions[2], statePopulationProportions[2],
+          ],
         }, {
           label: chartLabels[3],
           backgroundColor: COLORS_FIVE_VALUES[3],
-          data: [chartProportions[3], statePopulationProportions[3]],
+          data: [
+            chartProportions[3], stateSupervisionProportions[3], statePopulationProportions[3],
+          ],
         }, {
           label: chartLabels[4],
           backgroundColor: COLORS_FIVE_VALUES[4],
-          data: [chartProportions[4], statePopulationProportions[4]],
+          data: [
+            chartProportions[4], stateSupervisionProportions[4], statePopulationProportions[4],
+          ],
         }, {
           label: chartLabels[5],
           backgroundColor: COLORS['blue-standard-2'],
-          data: [chartProportions[5], statePopulationProportions[5]],
+          data: [
+            chartProportions[5], stateSupervisionProportions[5], statePopulationProportions[5],
+          ],
         }, {
           label: chartLabels[6],
           backgroundColor: COLORS['blue-standard'],
-          data: [chartProportions[6], statePopulationProportions[6]],
+          data: [
+            chartProportions[6], stateSupervisionProportions[6], statePopulationProportions[6],
+          ],
         },
         ],
       }}

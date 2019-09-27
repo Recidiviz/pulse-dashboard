@@ -41,27 +41,6 @@ const App = () => {
 
   // TODO: Replace this jQuery with actual React Masonry and toggle components
   useEffect(() => {
-    new Masonry('.masonry', {
-      itemSelector: '.masonry-item',
-      columnWidth: '.masonry-sizer',
-      percentPosition: true,
-    });
-
-    // Reinitialize masonry inside each panel after a collapsible accordion is expanded or collapsed
-    $('.accordion').each(function () {
-      const $this = $(this);
-
-      $this.on('shown.bs.collapse hidden.bs.collapse', () => {
-        if ($('.masonry').length > 0) {
-          new Masonry('.masonry', {
-            itemSelector: '.masonry-item',
-            columnWidth: '.masonry-sizer',
-            percentPosition: true,
-          });
-        }
-      });
-    });
-
     // ٍSidebar Toggle
     $('.sidebar-toggle').on('click', (e) => {
       toggleCollapsed();

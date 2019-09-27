@@ -160,9 +160,8 @@ const Snapshots = () => {
                         North Dakota prisons that were due to parole or probation revocations.
                         </li>
                         <li>
-                        Revocations include all instances of a person being
-                        incarcerated because their supervision was revoked for
-                        a behavioral violation.
+                        Revocations count all people who were incarcerated
+                        because their supervision was revoked.
                         </li>
                       </ul>
                     </div>

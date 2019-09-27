@@ -74,7 +74,7 @@ const RevocationCountBySupervisionType = (props) => {
           yAxes: [{
             scaleLabel: {
               display: true,
-              labelString: 'Revocation counts',
+              labelString: 'Revocation count',
             },
             stacked: true,
           }],

@@ -22,13 +22,13 @@ const AdmissionTypeProportions = (props) => {
     admissionCountsByType.forEach((data) => {
       const { admission_type: admissionType } = data;
       const count = parseInt(data.admission_count, 10);
-      dataPoints.push([labelStringConversion[admissionType], count]);
+      dataPoints.push({ type: labelStringConversion[admissionType], count });
     });
 
-    const sorted = sortByLabel(dataPoints, 0);
+    const sorted = sortByLabel(dataPoints, 'type');
 
-    setChartLabels(sorted.map((element) => element[0]));
-    setChartDataPoints(sorted.map((element) => element[1]));
+    setChartLabels(sorted.map((element) => element.type));
+    setChartDataPoints(sorted.map((element) => element.count));
   };
 
   useEffect(() => {
