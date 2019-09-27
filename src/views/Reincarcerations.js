@@ -97,7 +97,7 @@ const Reincarcerations = () => {
                         </li>
                         <li>
                         Reincarcerations are included regardless of when the initial incarceration
-                        took place. There is no upper bound on the follow up period in this chart.
+                        took place. There is no upper bound on the follow up period in this metric.
                         </li>
                       </ul>
                     </div>
