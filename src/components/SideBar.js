@@ -1,10 +1,9 @@
-import React, { useEffect } from "react";
+import React, { useEffect } from 'react';
 
 import * as $ from 'jquery';
-import logo from "../assets/static/images/logo.png";
+import logo from '../assets/static/images/logo.png';
 
 const SideBar = () => {
-
   // TODO: Replace this jQuery with an actual React NavLinks
   useEffect(() => {
     // Sidebar Activity Class
@@ -26,7 +25,7 @@ const SideBar = () => {
     <div className="sidebar">
       <div className="sidebar-inner">
         {/* ### $Sidebar Header ### */}
-        <div className="sidebar-logo" style={{height: '65px'}}>
+        <div className="sidebar-logo" style={{ height: '65px' }}>
           <div className="peers ai-c fxw-nw">
             <div className="peer peer-greed">
               <a className="sidebar-link td-n" href="https://www.recidiviz.org/">
@@ -81,6 +80,6 @@ const SideBar = () => {
       </div>
     </div>
   );
-}
+};
 
 export default SideBar;

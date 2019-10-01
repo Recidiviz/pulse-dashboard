@@ -1,28 +1,27 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 
-import { useAuth0 } from "../react-auth0-spa";
-import { capitalizeWords, replaceAll } from "../assets/scripts/utils/strings";
+import { useAuth0 } from '../react-auth0-spa';
+import { capitalizeWords, replaceAll } from '../assets/scripts/utils/strings';
 
 const TopBar = (props) => {
   const noDash = replaceAll(props.pathname, '-', ' ');
   let noSlash = replaceAll(noDash, '/', '');
   if (!noSlash) {
-    noSlash = "Home";
+    noSlash = 'Home';
   }
   const normalizedPath = capitalizeWords(noSlash);
 
   const [isOpen, setIsOpen] = useState(false);
-  const { user, isAuthenticated, loginWithRedirect, logout } = useAuth0();
+  const {
+    user, isAuthenticated, loginWithRedirect, logout,
+  } = useAuth0();
   const toggle = () => setIsOpen(!isOpen);
 
-  const logoutWithRedirect = () =>
-    logout({
-      returnTo: window.location.origin
-    });
+  const logoutWithRedirect = () => logout({ returnTo: window.location.origin });
 
-  let navBarClass = "header navbar";
+  let navBarClass = 'header navbar';
   if (!isAuthenticated) {
-    navBarClass = "header wide-navbar";
+    navBarClass = 'header wide-navbar';
   }
 
   return (
@@ -36,16 +35,16 @@ const TopBar = (props) => {
             </a>
           </li>
           )}
-          <li style={{paddingLeft: '20px', paddingTop: '22px'}}>
+          <li style={{ paddingLeft: '20px', paddingTop: '22px' }}>
             <h5 className="lh-1 mB-0 logo-text recidiviz-dark-green-text">{normalizedPath}</h5>
           </li>
         </ul>
         <ul className="nav-right">
           {!isAuthenticated && (
             <li className="dropdown">
-              <a href="#" onClick={() => loginWithRedirect({appState: { targetUrl: "/snapshots" }})} className="dropdown-toggle no-after peers fxw-nw ai-c lh-1" data-toggle="dropdown">
+              <a href="#" onClick={() => loginWithRedirect({ appState: { targetUrl: '/snapshots' } })} className="dropdown-toggle no-after peers fxw-nw ai-c lh-1" data-toggle="dropdown">
                 <div className="peer mR-10">
-                  <i className="ti-power-off"></i>
+                  <i className="ti-power-off" />
                 </div>
                 <div className="peer">
                   <span className="fsz-sm c-grey-900">Log in</span>
@@ -84,6 +83,6 @@ const TopBar = (props) => {
       </div>
     </div>
   );
-}
+};
 
 export default TopBar;

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 
 import Loading from '../components/Loading';
 import '../assets/styles/index.scss';
@@ -66,8 +66,7 @@ const Reincarcerations = () => {
                   </h6>
                 </div>
                 <div className="layer w-100 pX-20 pT-20">
-                  <h4 style={{ height: '20px' }} className="lh-1" id="reincarcerationCountsByMonth-header">
-                  </h4>
+                  <h4 style={{ height: '20px' }} className="lh-1" id="reincarcerationCountsByMonth-header" />
                 </div>
                 <div className="layer w-100 pX-20 pT-20 row">
                   <div className="col-md-12">
@@ -112,8 +111,7 @@ const Reincarcerations = () => {
             <div className="bd bgc-white p-20">
               <div className="layers">
                 <div className="layer w-100 pX-20 pT-20">
-                  <h4 style={{ height: '20px' }} className="lh-1" id="admissionsVsReleases-header">
-                  </h4>
+                  <h4 style={{ height: '20px' }} className="lh-1" id="admissionsVsReleases-header" />
                 </div>
                 <div className="layer w-100 p-20">
                   <AdmissionsVsReleases
@@ -132,9 +130,19 @@ const Reincarcerations = () => {
                   <div id="collapseMethodologyAdmissionsVsReleases" className="collapse" aria-labelledby="methodologyHeadingAdmissionsVsReleases" data-parent="#methodologyAdmissionsVsReleases">
                     <div>
                       <ul>
-                        <li>"Admissions versus releases" is the difference between the number of people who were admitted to DOCR facilities and the number of people who were released from DOCR facilities during a particular time frame.</li>
-                        <li>Admissions include unique people admitted to any DOCR facility during a particular time frame.</li>
-                        <li>Releases include unique people released from any DOCR facility, whether released to a term of supervision or not, during a particular time frame.</li>
+                        <li>
+                          "Admissions versus releases" is the difference between the number of
+                          people who were admitted to DOCR facilities and the number of people who
+                          were released from DOCR facilities during a particular time frame.
+                        </li>
+                        <li>
+                          Admissions include unique people admitted to any DOCR facility during a
+                          particular time frame.
+                        </li>
+                        <li>
+                          Releases include unique people released from any DOCR facility, whether
+                          released to a term of supervision or not, during a particular time frame.
+                        </li>
                       </ul>
                     </div>
                   </div>
@@ -170,8 +178,16 @@ const Reincarcerations = () => {
                   <div id="collapseMethodologyReincarcerationsByReleaseFacility" className="collapse" aria-labelledby="methodologyHeadingReincarcerationsByReleaseFacility" data-parent="#methodologyReincarcerationsByReleaseFacility">
                     <div>
                       <ul>
-                        <li>Reincarceration cohorts include all admissions to incarceration of a person who was previously incarcerated in a DOCR facility. The reincarceration must have happened within the noted follow up period directly after their release.</li>
-                        <li>Reincarcerations are counted towards the facility where the person was released from, regardless of time spent in various facilities.</li>
+                        <li>
+                          Reincarceration cohorts include all admissions to incarceration of a
+                          person who was previously incarcerated in a DOCR facility. The
+                          reincarceration must have happened within the noted follow up period
+                          directly after their release.
+                        </li>
+                        <li>
+                          Reincarcerations are counted towards the facility where the person was
+                          released from, regardless of time spent in various facilities.
+                        </li>
                       </ul>
                     </div>
                   </div>
@@ -206,7 +222,11 @@ const Reincarcerations = () => {
                 <div className="layer w-100 p-20">
                   <div className="ai-c jc-c gapX-20">
                     <div className="col-md-12">
-                      <ReincarcerationRateByTransitionalFacility ratesByTransitionalFacility={apiData.reincarceration_rate_by_release_facility} />
+                      <ReincarcerationRateByTransitionalFacility
+                        ratesByTransitionalFacility={
+                          apiData.reincarceration_rate_by_release_facility
+                        }
+                      />
                     </div>
                   </div>
                 </div>
@@ -221,8 +241,16 @@ const Reincarcerations = () => {
                   <div id="collapseMethodologyReincarcerationsByTransitionalFacility" className="collapse" aria-labelledby="methodologyHeadingReincarcerationsByTransitionalFacility" data-parent="#methodologyReincarcerationsByTransitionalFacility">
                     <div>
                       <ul>
-                        <li>Reincarceration cohorts include all admissions to incarceration of a person who was previously incarcerated in a DOCR facility. The reincarceration must have happened within the noted follow up period directly after their release.</li>
-                        <li>Reincarcerations are counted towards the facility where the person was released from, regardless of time spent in various facilities.</li>
+                        <li>
+                          Reincarceration cohorts include all admissions to incarceration of a
+                          person who was previously incarcerated in a DOCR facility. The
+                          reincarceration must have happened within the noted follow up period
+                          directly after their release.
+                        </li>
+                        <li>
+                          Reincarcerations are counted towards the facility where the person was
+                          released from, regardless of time spent in various facilities.
+                        </li>
                       </ul>
                     </div>
                   </div>
@@ -255,7 +283,9 @@ const Reincarcerations = () => {
                   <h4 className="lh-1">Reincarceration rate by previous stay length</h4>
                 </div>
                 <div className="layer w-100 p-20">
-                  <ReincarcerationRateByStayLength ratesByStayLength={apiData.reincarceration_rate_by_stay_length} />
+                  <ReincarcerationRateByStayLength
+                    ratesByStayLength={apiData.reincarceration_rate_by_stay_length}
+                  />
                 </div>
                 <div className="layer bdT p-20 w-100 accordion" id="methodologyReincarcerationsByStayLength">
                   <div className="mb-0" id="methodologyHeadingReincarcerationsByStayLength">
@@ -268,8 +298,17 @@ const Reincarcerations = () => {
                   <div id="collapseMethodologyReincarcerationsByStayLength" className="collapse" aria-labelledby="methodologyHeadingReincarcerationsByStayLength" data-parent="#methodologyReincarcerationsByStayLength">
                     <div>
                       <ul>
-                        <li>Reincarceration cohorts include all admissions to incarceration of a person who was previously incarcerated in a DOCR facility. The reincarceration must have happened within the noted follow up period directly after their release.</li>
-                        <li>Stay length refers to time actually spent incarcerated prior to their most recent release from a DOCR facility. This is bucketed into 12-month windows for sampling.</li>
+                        <li>
+                          Reincarceration cohorts include all admissions to incarceration of a
+                          person who was previously incarcerated in a DOCR facility. The
+                          reincarceration must have happened within the noted follow up period
+                          directly after their release.
+                        </li>
+                        <li>
+                          Stay length refers to time actually spent incarcerated prior to their most
+                          recent release from a DOCR facility. This is bucketed into 12-month
+                          windows for sampling.
+                        </li>
                       </ul>
                     </div>
                   </div>

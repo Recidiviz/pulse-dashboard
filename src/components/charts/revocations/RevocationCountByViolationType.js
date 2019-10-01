@@ -15,7 +15,7 @@ const RevocationCountByViolationType = (props) => {
   const processResponse = () => {
     const { revocationCountsByMonthByViolationType: countsByMonth } = props;
 
-    let dataPoints = [];
+    const dataPoints = [];
     countsByMonth.forEach((data) => {
       const {
         year, month, absconsion_count: absconsionCount,

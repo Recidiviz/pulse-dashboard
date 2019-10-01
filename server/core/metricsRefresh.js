@@ -34,7 +34,7 @@ function refreshReincarcerationMetrics() {
   metricsApi.fetchReincarcerationMetrics(IS_DEMO, (err, data) => {
     if (err) {
       console.log(`Encountered error during scheduled fetch-and-cache
-        of reincarceration metrics: ${err}`)
+        of reincarceration metrics: ${err}`);
     } else {
       console.log('Executed scheduled fetch-and-cache of reincarceration metrics');
     }

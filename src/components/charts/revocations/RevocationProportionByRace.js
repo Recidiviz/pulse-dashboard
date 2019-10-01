@@ -16,12 +16,12 @@ const labelStringConversion = {
 
 const ND_RACE_PROPORTIONS = {
   'American Indian Alaskan Native': 5.5,
-  'Asian': 1.8,
-  'Black': 3.4,
-  'Hispanic': 3.9,
+  Asian: 1.8,
+  Black: 3.4,
+  Hispanic: 3.9,
   'Native Hawaiian Pacific Islander': 0.1,
-  'White': 84.0,
-  'Other': 1.3,
+  White: 84.0,
+  Other: 1.3,
 };
 
 const RevocationProportionByRace = (props) => {

@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 
 import { Bar } from 'react-chartjs-2';
-import { COLORS_STACKED_TWO_VALUES } from "../../../assets/scripts/constants/colors";
-import { monthNamesWithYearsFromNumbers } from "../../../utils/monthConversion";
+import { COLORS_STACKED_TWO_VALUES } from '../../../assets/scripts/constants/colors';
+import { monthNamesWithYearsFromNumbers } from '../../../utils/monthConversion';
 import { sortAndFilterMostRecentMonths } from '../../../utils/dataOrganizing';
 
 const RevocationCountBySupervisionType = (props) => {

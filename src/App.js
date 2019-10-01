@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-dom';
+import {
+  BrowserRouter as Router, Redirect, Route, Switch,
+} from 'react-router-dom';
 
 import * as $ from 'jquery';
-import Masonry from 'masonry-layout';
 
 import PrivateRoute from './components/PrivateRoute';
 import Loading from './components/Loading';
@@ -15,9 +16,8 @@ import Profile from './views/Profile';
 import Revocations from './views/Revocations';
 import Reincarcerations from './views/Reincarcerations';
 import Snapshots from './views/Snapshots';
-import ExternalApi from './views/ExternalApi';
 import { useAuth0 } from './react-auth0-spa';
-import './assets/scripts/index.js';
+import './assets/scripts/index';
 
 // styles
 import './assets/styles/index.scss';
@@ -40,7 +40,7 @@ const App = () => {
     }
   }
 
-  // TODO: Replace this jQuery with actual React Masonry and toggle components
+  // TODO: Replace this jQuery with actual React toggle components
   useEffect(() => {
     // ٍSidebar Toggle
     $('.sidebar-toggle').on('click', (e) => {
@@ -49,7 +49,7 @@ const App = () => {
     });
 
     /**
-     * Wait untill sidebar fully toggled (animated in/out)
+     * Wait until sidebar fully toggled (animated in/out)
      * then trigger window resize event in order to recalculate
      * masonry layout widths and gutters.
      */
@@ -91,7 +91,6 @@ const App = () => {
                 <PrivateRoute path="/revocations" component={Revocations} />
                 <PrivateRoute path="/reincarcerations" component={Reincarcerations} />
                 <PrivateRoute path="/profile" component={Profile} />
-                <PrivateRoute path="/external-api" component={ExternalApi} />
                 <Route component={NotFound} />
               </Switch>
               <Footer />

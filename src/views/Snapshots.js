@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
 
 import Loading from '../components/Loading';
 import '../assets/styles/index.scss';
-import { configureDownloadButtons } from '../assets/scripts/charts/chartJS/downloads';
 import { useAuth0 } from '../react-auth0-spa';
 
 import SupervisionSuccessSnapshot from '../components/charts/snapshots/SupervisionSuccessSnapshot';
@@ -68,8 +66,7 @@ const Snapshots = () => {
                   </h6>
                 </div>
                 <div className="layer w-100 pX-20 pT-20">
-                  <div className="snapshot-header" id="supervisionSuccessSnapshot-header">
-                  </div>
+                  <div className="snapshot-header" id="supervisionSuccessSnapshot-header" />
                 </div>
                 <div className="layer w-100 p-20">
                   <div className="ai-c jc-c gapX-20">
@@ -131,8 +128,7 @@ const Snapshots = () => {
                   </h6>
                 </div>
                 <div className="layer w-100 pX-20 pT-20">
-                  <div className="snapshot-header" id="revocationAdmissionsSnapshot-header">
-                  </div>
+                  <div className="snapshot-header" id="revocationAdmissionsSnapshot-header" />
                 </div>
                 <div className="layer w-100 p-20">
                   <div className="ai-c jc-c gapX-20">
@@ -192,8 +188,7 @@ const Snapshots = () => {
                   </h6>
                 </div>
                 <div className="layer w-100 pX-20 pT-20">
-                  <div className="snapshot-header" id="daysAtLibertySnapshot-header">
-                  </div>
+                  <div className="snapshot-header" id="daysAtLibertySnapshot-header" />
                 </div>
                 <div className="layer w-100 p-20">
                   <div className="ai-c jc-c gapX-20">
@@ -255,8 +250,7 @@ const Snapshots = () => {
                   </h6>
                 </div>
                 <div className="layer w-100 pX-20 pT-20">
-                  <div className="snapshot-header" id="lsirScoreChangeSnapshot-header">
-                  </div>
+                  <div className="snapshot-header" id="lsirScoreChangeSnapshot-header" />
                 </div>
                 <div className="layer w-100 p-20">
                   <div className="ai-c jc-c gapX-20">

@@ -1,16 +1,16 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 
-import Loading from "../components/Loading";
-import "../assets/styles/index.scss";
-import { useAuth0 } from "../react-auth0-spa";
+import Loading from '../components/Loading';
+import '../assets/styles/index.scss';
+import { useAuth0 } from '../react-auth0-spa';
 
-import RevocationCountOverTime from "../components/charts/revocations/RevocationCountOverTime";
-import RevocationCountBySupervisionType from "../components/charts/revocations/RevocationCountBySupervisionType";
-import RevocationCountByViolationType from "../components/charts/revocations/RevocationCountByViolationType";
-import RevocationCountByOfficer from "../components/charts/revocations/RevocationCountByOfficer";
-import AdmissionTypeProportions from "../components/charts/revocations/AdmissionTypeProportions";
-import RevocationProportionByRace from "../components/charts/revocations/RevocationProportionByRace";
-import RevocationsByCounty from "../components/charts/revocations/RevocationsByCounty";
+import RevocationCountOverTime from '../components/charts/revocations/RevocationCountOverTime';
+import RevocationCountBySupervisionType from '../components/charts/revocations/RevocationCountBySupervisionType';
+import RevocationCountByViolationType from '../components/charts/revocations/RevocationCountByViolationType';
+import RevocationCountByOfficer from '../components/charts/revocations/RevocationCountByOfficer';
+import AdmissionTypeProportions from '../components/charts/revocations/AdmissionTypeProportions';
+import RevocationProportionByRace from '../components/charts/revocations/RevocationProportionByRace';
+import RevocationsByCounty from '../components/charts/revocations/RevocationsByCounty';
 
 const Revocations = () => {
   const { loading, user, getTokenSilently } = useAuth0();
@@ -22,8 +22,8 @@ const Revocations = () => {
       const token = await getTokenSilently();
       const response = await fetch(`${process.env.REACT_APP_API_URL}/api/revocations`, {
         headers: {
-          Authorization: `Bearer ${token}`
-        }
+          Authorization: `Bearer ${token}`,
+        },
       });
 
       const responseData = await response.json();
@@ -68,8 +68,7 @@ const Revocations = () => {
                   </h6>
                 </div>
                 <div className="layer w-100 pX-20 pT-20">
-                  <h4 style={{ height: '20px' }} className="lh-1" id="revocationCountsByMonth-header">
-                  </h4>
+                  <h4 style={{ height: '20px' }} className="lh-1" id="revocationCountsByMonth-header" />
                 </div>
                 <div className="layer w-100 pX-20 pT-20 row">
                   <div className="col-md-12">
@@ -92,8 +91,15 @@ const Revocations = () => {
                   <div id="collapseMethodologyRevocationCountsByMonth" className="collapse" aria-labelledby="methodologyHeadingRevocationCountsByMonth" data-parent="#methodologyRevocationCountsByMonth">
                     <div>
                       <ul>
-                        <li>Revocation counts include the number of people who were incarcerated because their supervision was revoked.</li>
-                        <li>Violations include all behavioral violations officially recorded by a supervision officer, including new offenses, technical violations, and absconsion.</li>
+                        <li>
+                          Revocation counts include the number of people who were incarcerated
+                          because their supervision was revoked.
+                        </li>
+                        <li>
+                          Violations include all behavioral violations officially recorded by a
+                          supervision officer, including new offenses, technical violations, and
+                          absconsion.
+                        </li>
                       </ul>
                     </div>
                   </div>
@@ -110,7 +116,11 @@ const Revocations = () => {
                   <h4 className="lh-1">Revocations by supervision type</h4>
                 </div>
                 <div className="layer w-100 p-20">
-                  <RevocationCountBySupervisionType revocationCountsByMonthBySupervisionType={apiData.revocations_by_supervision_type_by_month} />
+                  <RevocationCountBySupervisionType
+                    revocationCountsByMonthBySupervisionType={
+                      apiData.revocations_by_supervision_type_by_month
+                    }
+                  />
                 </div>
                 <div className="layer bdT p-20 w-100 accordion" id="methodologyRevocationBySupervisionType">
                   <div className="mb-0" id="methodologyHeadingRevocationBySupervisiontype">
@@ -123,8 +133,15 @@ const Revocations = () => {
                   <div className="collapse" id="collapseMethodologyRevocationBySupervisionType" aria-labelledby="methodologyHeadingRevocationBySupervisiontype" data-parent="#methodologyRevocationBySupervisionType">
                     <div>
                       <ul>
-                        <li>Revocation counts include the number of people who were incarcerated because their supervision was revoked.</li>
-                        <li>Violations include all behavioral violations officially recorded by a supervision officer, including new offenses, technical violations, and absconsion.</li>
+                        <li>
+                          Revocation counts include the number of people who were incarcerated
+                          because their supervision was revoked.
+                        </li>
+                        <li>
+                          Violations include all behavioral violations officially recorded by a
+                          supervision officer, including new offenses, technical violations, and
+                          absconsion.
+                        </li>
                       </ul>
                     </div>
                   </div>
@@ -141,7 +158,11 @@ const Revocations = () => {
                   <h4 className="lh-1">Revocations by violation type</h4>
                 </div>
                 <div className="layer w-100 p-20">
-                  <RevocationCountByViolationType revocationCountsByMonthByViolationType={apiData.revocations_by_violation_type_by_month} />
+                  <RevocationCountByViolationType
+                    revocationCountsByMonthByViolationType={
+                      apiData.revocations_by_violation_type_by_month
+                    }
+                  />
                 </div>
                 <div className="layer bdT p-20 w-100 accordion" id="methodologyRevocationsByViolationType">
                   <div className="mb-0" id="methodologyHeadingRevocationsByViolationType">
@@ -154,10 +175,25 @@ const Revocations = () => {
                   <div className="collapse" id="collapseMethodologyRevocationsByViolationType" aria-labelledby="methodologyHeadingRevocationsByViolationType" data-parent="#methodologyRevocationsByViolationType">
                     <div>
                       <ul>
-                        <li>Revocation counts include the number of people who were incarcerated because their supervision was revoked.</li>
-                        <li>Violations include all behavioral violations officially recorded by a supervision officer, including new offenses, technical violations, and absconsion.</li>
-                        <li>Violations of "Unknown Type" indicate individuals who were admitted to prison for a supervision revocation where the violation that caused the revocation cannot yet be determined.</li>
-                        <li>"Technical" revocations include only those revocations which result solely from a technical violation. If there is a violation that includes a new offense or an absconsion, it is considered a non-technical revocation.</li>
+                        <li>
+                          Revocation counts include the number of people who were incarcerated
+                          because their supervision was revoked.
+                        </li>
+                        <li>
+                          Violations include all behavioral violations officially recorded by a
+                          supervision officer, including new offenses, technical violations, and
+                          absconsion.
+                        </li>
+                        <li>
+                          Violations of "Unknown Type" indicate individuals who were admitted to
+                          prison for a supervision revocation where the violation that caused the
+                          revocation cannot yet be determined.
+                        </li>
+                        <li>
+                          "Technical" revocations include only those revocations which result solely
+                          from a technical violation. If there is a violation that includes a new
+                          offense or an absconsion, it is considered a non-technical revocation.
+                        </li>
                       </ul>
                     </div>
                   </div>
@@ -175,7 +211,9 @@ const Revocations = () => {
                 </div>
                 <div className="layer w-100 pX-20 pT-20 row">
                   <div className="layer w-100 p-20">
-                  <RevocationsByCounty revocationsByCounty={apiData.revocations_by_county_60_days} />
+                    <RevocationsByCounty
+                      revocationsByCounty={apiData.revocations_by_county_60_days}
+                    />
                   </div>
                 </div>
                 <div className="layer bdT p-20 w-100 accordion" id="methodologyRevocationsByCounty">
@@ -189,9 +227,19 @@ const Revocations = () => {
                   <div className="collapse" id="collapseMethodologyRevocationsByCounty" aria-labelledby="methodologyHeadingRevocationsByCounty" data-parent="#methodologyRevocationsByCounty">
                     <div>
                       <ul>
-                        <li>Revocation counts include the number of people who were incarcerated because their supervision was revoked.</li>
-                        <li>Revocations are attributed to the county where the person&apos;s supervision was terminated.</li>
-                        <li>Revocations are included based on the date that the person&apos;s supervision was officially revoked, not the date of the causal violation or offense.</li>
+                        <li>
+                          Revocation counts include the number of people who were incarcerated
+                          because their supervision was revoked.
+                        </li>
+                        <li>
+                          Revocations are attributed to the county where the person&apos;s
+                          supervision was terminated.
+                        </li>
+                        <li>
+                          Revocations are included based on the date that the person&apos;s
+                          supervision was officially revoked, not the date of the causal violation
+                          or offense.
+                        </li>
                       </ul>
                     </div>
                   </div>
@@ -218,7 +266,9 @@ const Revocations = () => {
                   <h4 className="lh-1">Revocations by officer</h4>
                 </div>
                 <div className="layer w-100 p-20">
-                  <RevocationCountByOfficer revocationCountsByOfficer={apiData.revocations_by_officer_60_days} />
+                  <RevocationCountByOfficer
+                    revocationCountsByOfficer={apiData.revocations_by_officer_60_days}
+                  />
                 </div>
                 <div className="layer bdT p-20 w-100 accordion" id="methodologyRevocationByOfficer">
                   <div className="mb-0" id="methodologyHeadingRevocationByOfficer">
@@ -231,9 +281,19 @@ const Revocations = () => {
                   <div id="collapseMethodologyRevocationByOfficer" className="collapse" aria-labelledby="methodologyHeadingRevocationByOfficer" data-parent="#methodologyRevocationByOfficer">
                     <div>
                       <ul>
-                        <li>This chart lists the 10 officers with the highest revocation counts in the state over the period.</li>
-                        <li>Revocations are counted towards an officer if that officer is flagged as the terminating officer at the time of a person&apos;s revocation.</li>
-                        <li>Revocations are included based on the date that the person&apos;s supervision was officially revoked, not the date of the causal violation or offense.</li>
+                        <li>
+                          This chart lists the 10 officers with the highest revocation counts in the
+                          state over the period.
+                        </li>
+                        <li>
+                          Revocations are counted towards an officer if that officer is flagged as
+                          the terminating officer at the time of a person&apos;s revocation.
+                        </li>
+                        <li>
+                          Revocations are included based on the date that the person&apos;s
+                          supervision was officially revoked, not the date of the causal violation
+                          or offense.
+                        </li>
                       </ul>
                     </div>
                   </div>
@@ -258,7 +318,9 @@ const Revocations = () => {
                   <h4 className="lh-1">Admission type proportions</h4>
                 </div>
                 <div className="layer w-100 p-20">
-                  <AdmissionTypeProportions admissionCountsByType={apiData.admissions_by_type_60_days} />
+                  <AdmissionTypeProportions
+                    admissionCountsByType={apiData.admissions_by_type_60_days}
+                  />
                 </div>
                 <div className="layer bdT p-20 w-100 accordion" id="methodologyAdmissionProportions">
                   <div className="mb-0" id="methodologyHeadingAdmissionProportions">
@@ -271,10 +333,25 @@ const Revocations = () => {
                   <div id="collapseMethodologyAdmissionProportions" className="collapse" aria-labelledby="methodologyHeadingRevocationByOfficer" data-parent="#methodologyAdmissionProportions">
                     <div>
                       <ul>
-                        <li>New admissions include unique people admitted to any DOCR facility during a particular time frame, regardless of whether they were previously incarcerated.</li>
-                        <li>Revocations counts include the number of people incarcerated because their supervision period was revoked for a behavioral violation.</li>
-                        <li>"Technical Revocations" include only those revocations which result solely from a technical violation. If there is a violation that includes a new offense or an absconsion, it is considered a "Non-Technical Revocation".</li>
-                        <li>Revocations of "Unknown Type" indicate individuals who were admitted to prison for a supervision revocation where the violation that caused the revocation cannot yet be determined.</li>
+                        <li>
+                          New admissions include unique people admitted to any DOCR facility during
+                          a particular time frame, regardless of whether they were previously
+                          incarcerated.
+                        </li>
+                        <li>
+                          Revocations counts include the number of people incarcerated because their
+                          supervision period was revoked for a behavioral violation.
+                        </li>
+                        <li>
+                          "Technical Revocations" include only those revocations which result solely
+                          from a technical violation. If there is a violation that includes a new
+                          offense or an absconsion, it is considered a "Non-Technical Revocation".
+                        </li>
+                        <li>
+                          Revocations of "Unknown Type" indicate individuals who were admitted to
+                          prison for a supervision revocation where the violation that caused the
+                          revocation cannot yet be determined.
+                        </li>
                       </ul>
                     </div>
                   </div>
@@ -322,9 +399,18 @@ const Revocations = () => {
                   <div className="collapse" id="collapseMethodologyRevocationsByRace" aria-labelledby="methodologyHeadingRevocationsByRace" data-parent="#methodologyRevocationsByRace">
                     <div>
                       <ul>
-                        <li>Revocation counts include the number of people who were incarcerated because their supervision was revoked.</li>
-                        <li>The supervision population counts people on probation or parole in North Dakota at any point during the time period.</li>
-                        <li>The race proportions for the population of North Dakota were taken from the U.S. Census Bureau.</li>
+                        <li>
+                          Revocation counts include the number of people who were incarcerated
+                          because their supervision was revoked.
+                        </li>
+                        <li>
+                          The supervision population counts people on probation or parole in North
+                          Dakota at any point during the time period.
+                        </li>
+                        <li>
+                          The race proportions for the population of North Dakota were taken from
+                          the U.S. Census Bureau.
+                        </li>
                       </ul>
                     </div>
                   </div>

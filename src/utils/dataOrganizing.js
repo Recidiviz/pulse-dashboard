@@ -17,7 +17,7 @@ const RELEASE_FACILITY_FILTERS = {
 function filterFacilities(dataPoints, facilityType, stateCode) {
   const facilityArray = (facilityType === 'TRANSITIONAL' ? TRANSITIONAL_FACILITY_FILTERS[stateCode] : RELEASE_FACILITY_FILTERS[stateCode]);
 
-  const filteredData = []
+  const filteredData = [];
   dataPoints.forEach((data) => {
     if (facilityArray.includes(data[0])) {
       filteredData.push(data);
