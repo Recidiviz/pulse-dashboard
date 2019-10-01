@@ -17,8 +17,6 @@
 
 import '../styles/index.scss';
 
-import './masonry';
-import './metrics';
 import './charts';
 import './popover';
 import './scrollbar';

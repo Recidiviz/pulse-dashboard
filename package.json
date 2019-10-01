@@ -18,7 +18,6 @@
   },
   "dependencies": {
     "@auth0/auth0-spa-js": "^1.0.2",
-    "@danielfarrell/bootstrap-combobox": "^1.1.8",
     "@fortawesome/fontawesome-svg-core": "^1.2.17",
     "@fortawesome/free-solid-svg-icons": "^5.8.1",
     "@fortawesome/react-fontawesome": "^0.1.4",
@@ -48,7 +47,6 @@
     "highlight.js": "^9.15.6",
     "http-errors": "~1.6.2",
     "jquery": "^3.2.1",
-    "jquery-sparkline": "^2.4.0",
     "jwks-rsa": "^1.4.0",
     "lodash": "^4.17.4",
     "lokijs": "^1.5.6",

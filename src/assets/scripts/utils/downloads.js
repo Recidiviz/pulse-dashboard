@@ -15,8 +15,8 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import { timeStamp } from '../../utils/time';
 import downloadjs from 'downloadjs';
+import { timeStamp } from './time';
 
 function downloadCanvasImage(canvas, filename) {
   const data = canvas.toDataURL('image/png;base64');

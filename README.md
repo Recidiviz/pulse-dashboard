@@ -195,7 +195,7 @@ These are the raw public assets that form the _website itself_, i.e. `index.html
 Application frontend source code. If you're writing it, it should most likely end up here or in `/server` below.
 
 #### src/assets
-This is where frontend assets should live. JS logic, e.g. for creating exported images and json files of a given visualization, should live in `src/assets/scripts`. Static assets and CSS should live in `src/assets/static` and `src/assets/styles`, respectively.
+This is where frontend assets should live. JS logic, e.g. for creating exported images and json files of a given visualization, should live in `src/assets/scripts`. Static assets and style sheets should live in `src/assets/static` and `src/assets/styles`, respectively.
 
 #### src/components
 All React components should exist under this directory. Charts in particular live under `/components/charts/{subject}`.

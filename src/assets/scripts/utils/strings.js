@@ -16,7 +16,7 @@
 // =============================================================================
 
 function capitalizeWords(str) {
-  return str.replace(/\w\S*/g, text => text.charAt(0).toUpperCase() + text.substr(1).toLowerCase());
+  return str.replace(/\w\S*/g, (text) => text.charAt(0).toUpperCase() + text.substr(1).toLowerCase());
 }
 
 function nullSafeToLowerCase(str) {

@@ -1,4 +1,4 @@
-require('dotenv').config()
+require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const http = require('http');
@@ -6,11 +6,9 @@ const morgan = require('morgan');
 const helmet = require('helmet');
 const jwt = require('express-jwt');
 const jwksRsa = require('jwks-rsa');
-const { join } = require('path');
 const devAuthConfig = require('./src/auth_config_dev.json');
 const productionAuthConfig = require('./src/auth_config_production.json');
 const api = require('./server/routes/api');
-const refresh = require('./server/core/metricsRefresh');
 
 const app = express();
 

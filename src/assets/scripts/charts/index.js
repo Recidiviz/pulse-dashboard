@@ -1,5 +1,5 @@
 // Recidiviz - a data platform for criminal justice reform
-// Copyright (C) 2018 Recidiviz, Inc.
+// Copyright (C) 2019 Recidiviz, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -15,5 +15,10 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import './chartJS';
-import './sparkline';
+import Chart from 'chart.js';
+import ChartAnnotationsPlugin from 'chartjs-plugin-annotation';
+
+export default (function () {
+  // Extras required for our Chart.js configuration
+  Chart.plugins.register(ChartAnnotationsPlugin);
+}());

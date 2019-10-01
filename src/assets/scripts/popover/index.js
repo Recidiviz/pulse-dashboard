@@ -19,15 +19,7 @@ import * as $ from 'jquery';
 import 'bootstrap';
 
 export default (function () {
-  // ------------------------------------------------------
-  // @Popover
-  // ------------------------------------------------------
-
+  // Enable popover and tooltip Bootstrap functionality, e.g. for methodology accordions
   $('[data-toggle="popover"]').popover();
-
-  // ------------------------------------------------------
-  // @Tooltips
-  // ------------------------------------------------------
-
   $('[data-toggle="tooltip"]').tooltip();
 }());
