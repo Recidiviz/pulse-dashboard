@@ -1,41 +1,42 @@
-import React, { useEffect, useState } from "react";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import React, { useEffect, useState } from 'react';
+import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-dom';
 
 import * as $ from 'jquery';
 import Masonry from 'masonry-layout';
 
-import PrivateRoute from "./components/PrivateRoute";
-import Loading from "./components/Loading";
-import SideBar from "./components/SideBar";
-import TopBar from "./components/TopBar";
-import Footer from "./components/Footer";
-import Home from "./views/Home";
-import NotFound from "./views/NotFound";
-import Profile from "./views/Profile";
-import Revocations from "./views/Revocations";
-import Reincarcerations from "./views/Reincarcerations";
-import Snapshots from "./views/Snapshots";
-import ExternalApi from "./views/ExternalApi";
-import { useAuth0 } from "./react-auth0-spa";
-import "./assets/scripts/index.js";
+import PrivateRoute from './components/PrivateRoute';
+import Loading from './components/Loading';
+import SideBar from './components/SideBar';
+import TopBar from './components/TopBar';
+import Footer from './components/Footer';
+import Home from './views/Home';
+import NotFound from './views/NotFound';
+import Profile from './views/Profile';
+import Revocations from './views/Revocations';
+import Reincarcerations from './views/Reincarcerations';
+import Snapshots from './views/Snapshots';
+import ExternalApi from './views/ExternalApi';
+import { useAuth0 } from './react-auth0-spa';
+import './assets/scripts/index.js';
 
 // styles
-import "./assets/styles/index.scss";
+import './assets/styles/index.scss';
 
 // fontawesome
-import initFontAwesome from "./utils/initFontAwesome";
+import initFontAwesome from './utils/initFontAwesome';
+
 initFontAwesome();
 
 const App = () => {
-  const [sideBarCollapsed, setSideBarCollapsed] = useState("");
+  const [sideBarCollapsed, setSideBarCollapsed] = useState('');
   const { loading, isAuthenticated } = useAuth0();
 
   function toggleCollapsed() {
-    const currentlyCollapsed = sideBarCollapsed === "is-collapsed";
+    const currentlyCollapsed = sideBarCollapsed === 'is-collapsed';
     if (currentlyCollapsed) {
-      setSideBarCollapsed("");
+      setSideBarCollapsed('');
     } else {
-      setSideBarCollapsed("is-collapsed");
+      setSideBarCollapsed('is-collapsed');
     }
   }
 
@@ -64,9 +65,9 @@ const App = () => {
     return <Loading />;
   }
 
-  let containerClass = "wide-page-container";
+  let containerClass = 'wide-page-container';
   if (isAuthenticated) {
-    containerClass = "page-container";
+    containerClass = 'page-container';
   }
 
   return (
@@ -83,7 +84,9 @@ const App = () => {
             <div className={containerClass}>
               <TopBar pathname={window.location.pathname} />
               <Switch>
-                <Route path="/" exact component={Home} />
+                <Route exact path="/">
+                  {isAuthenticated ? <Redirect to="/snapshots" /> : <Home />}
+                </Route>
                 <PrivateRoute path="/snapshots" component={Snapshots} />
                 <PrivateRoute path="/revocations" component={Revocations} />
                 <PrivateRoute path="/reincarcerations" component={Reincarcerations} />
