@@ -1,3 +1,20 @@
+// Recidiviz - a data platform for criminal justice reform
+// Copyright (C) 2019 Recidiviz, Inc.
+//
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <https://www.gnu.org/licenses/>.
+// =============================================================================
+
 REPORT_CARD_GED = {
   "title": "Program A",
   "description": "This program is a group of educational exams which, when passed, provide certification that the test taker has high-school level academic skills. It is an accredited alternative to a high-school diploma, taught by accredited teachers. A GED certificate can significantly increase opportunity for employment and higher education.",
