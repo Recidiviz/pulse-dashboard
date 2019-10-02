@@ -34,7 +34,8 @@ const SupervisionSuccessSnapshot = (props) => {
   const [chartMinValue, setChartMinValue] = useState();
   const [chartMaxValue, setChartMaxValue] = useState();
 
-  const GOAL = getGoalForChart('US_ND', 'supervision-success-snapshot-chart');
+  const chartId = 'supervisionSuccessSnapshot';
+  const GOAL = getGoalForChart('US_ND', chartId);
   const stepSize = 10;
 
   const processResponse = () => {
@@ -79,7 +80,7 @@ const SupervisionSuccessSnapshot = (props) => {
 
   const chart = (
     <Line
-      id="supervision-success-snapshot-chart"
+      id={chartId}
       data={{
         labels: chartLabels,
         datasets: [{
@@ -158,7 +159,7 @@ const SupervisionSuccessSnapshot = (props) => {
             value: GOAL.value,
 
             // optional annotation ID (must be unique)
-            id: 'supervision-success-snapshot-goal-line',
+            id: 'supervisionSuccessSnapshotGoalLine',
             scaleID: 'y-axis-0',
 
             drawTime: 'afterDatasetsDraw',
@@ -202,13 +203,14 @@ const SupervisionSuccessSnapshot = (props) => {
 
   const exportedStructureCallback = function exportedStructureCallback() {
     return {
-      metric: 'percentage-successful-supervision-termination',
+      metric: 'Percentage of successful completion of supervision',
       series: [],
     };
   };
 
-  configureDownloadButtons('supervisionSuccess', 'Snapshot', chart.props,
-    document.getElementById('supervision-success-snapshot-chart'), exportedStructureCallback);
+  configureDownloadButtons(chartId, chart.props.data.datasets,
+    chart.props.data.labels, document.getElementById(chartId),
+    exportedStructureCallback);
 
   const header = document.getElementById(props.header);
   const trendlineValues = chart.props.data.datasets[1].data;

@@ -27,6 +27,9 @@ import { geoAlbersUsa } from 'd3-geo';
 import { scaleLinear } from 'd3-scale';
 import geographyObject from '../../../assets/static/maps/us_nd.json';
 import { COLORS } from '../../../assets/scripts/constants/colors';
+import { configureDownloadButtons } from '../../../assets/scripts/utils/downloads';
+
+const chartId = 'revocationsByCounty';
 
 const centerNDLong = -100.5;
 const centerNDLat = 47.3;
@@ -82,6 +85,21 @@ class RevocationsByCounty extends Component {
   }
 
   componentDidMount() {
+    const exportedStructureCallback = () => (
+      {
+        metric: 'Revocations by county',
+        series: [],
+      });
+
+    const downloadableDataFormat = [{
+      data: Object.values(this.chartDataPoints),
+      label: 'revocationsByCounty',
+    }];
+
+    configureDownloadButtons(chartId, downloadableDataFormat,
+      Object.keys(this.chartDataPoints),
+      document.getElementById(chartId), exportedStructureCallback);
+
     setTimeout(() => {
       ReactTooltip.rebuild();
     }, 100);
@@ -89,7 +107,7 @@ class RevocationsByCounty extends Component {
 
   render() {
     return (
-      <div className="map-container">
+      <div className="map-container" id={chartId}>
         <ComposableMap
           projection={geoAlbersUsa}
           projectionConfig={{ scale: 1000 }}
@@ -126,9 +144,9 @@ class RevocationsByCounty extends Component {
                       outline: 'none',
                     },
                     pressed: {
-                      fill: colorForCounty(this.chartDataPoints,
-                        this.revocationsByCounty,
-                        geography.properties.NAME),
+                      fill: '#CFD8DC',
+                      stroke: COLORS['grey-700'],
+                      strokeWidth: 0.2,
                       outline: 'none',
                     },
                   }}

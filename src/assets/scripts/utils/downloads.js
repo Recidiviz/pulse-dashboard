@@ -30,38 +30,38 @@ function downloadObjectAsJson(exportObj, exportName) {
 }
 
 function configureDownloadButtons(
-  moduleType, viewType, chart, chartBox,
+  chartId, chartDatasets, chartLabels, chartBox,
   exportedStructureCallback,
 ) {
-  const downloadChartAsImageButton = document.getElementById(`downloadChartAsImage-${moduleType}${viewType}`);
+  const downloadChartAsImageButton = document.getElementById(`downloadChartAsImage-${chartId}`);
   if (downloadChartAsImageButton) {
     downloadChartAsImageButton.onclick = function downloadChartImage() {
-      downloadCanvasImage(chartBox, `${moduleType}-${viewType.toLowerCase()}-${timeStamp()}.png`);
+      downloadCanvasImage(chartBox, `${chartId}-${timeStamp()}.png`);
     };
   }
 
-  const downloadChartDataButton = document.getElementById(`downloadChartData-${moduleType}${viewType}`);
+  const downloadChartDataButton = document.getElementById(`downloadChartData-${chartId}`);
   if (downloadChartDataButton) {
     downloadChartDataButton.onclick = function downloadChartData() {
-      const { datasets, labels } = chart.data;
-
       const exportData = exportedStructureCallback();
 
-      datasets.forEach((dataset) => {
-        const valueByMonth = {};
-        let i = 0;
-        dataset.data.forEach((dataPoint) => {
-          valueByMonth[labels[i]] = dataPoint;
-          i += 1;
-        });
+      chartDatasets.forEach((dataset) => {
+        if (dataset.label !== 'trendline') {
+          const values = {};
+          let i = 0;
+          dataset.data.forEach((dataPoint) => {
+            values[chartLabels[i]] = dataPoint;
+            i += 1;
+          });
 
-        exportData.series.push({
-          label: dataset.label,
-          valueByMonth,
-        });
+          exportData.series.push({
+            label: dataset.label,
+            values,
+          });
+        }
       });
 
-      const filename = `${moduleType}-${viewType.toLowerCase()}-${timeStamp()}`;
+      const filename = `${chartId}-${timeStamp()}`;
       downloadObjectAsJson(exportData, filename);
     };
   }

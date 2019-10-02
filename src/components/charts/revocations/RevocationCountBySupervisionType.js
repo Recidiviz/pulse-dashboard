@@ -21,11 +21,14 @@ import { Bar } from 'react-chartjs-2';
 import { COLORS_STACKED_TWO_VALUES } from '../../../assets/scripts/constants/colors';
 import { monthNamesWithYearsFromNumbers } from '../../../utils/monthConversion';
 import { sortAndFilterMostRecentMonths } from '../../../utils/dataOrganizing';
+import { configureDownloadButtons } from '../../../assets/scripts/utils/downloads';
 
 const RevocationCountBySupervisionType = (props) => {
   const [chartLabels, setChartLabels] = useState([]);
   const [paroleDataPoints, setParoleDataPoints] = useState([]);
   const [probationDataPoints, setProbationDataPoints] = useState([]);
+
+  const chartId = 'revocationsBySupervisionType';
 
   const processResponse = () => {
     const { revocationCountsByMonthBySupervisionType: countsByMonth } = props;
@@ -54,8 +57,9 @@ const RevocationCountBySupervisionType = (props) => {
     processResponse();
   }, [props.revocationCountsByMonthBySupervisionType]);
 
-  return (
+  const chart = (
     <Bar
+      id={chartId}
       data={{
         labels: chartLabels,
         datasets: [{
@@ -99,6 +103,18 @@ const RevocationCountBySupervisionType = (props) => {
       }}
     />
   );
+
+  const exportedStructureCallback = () => (
+    {
+      metric: 'Revocation counts by supervision type',
+      series: [],
+    });
+
+  configureDownloadButtons(chartId, chart.props.data.datasets,
+    chart.props.data.labels, document.getElementById(chartId),
+    exportedStructureCallback);
+
+  return chart;
 };
 
 export default RevocationCountBySupervisionType;

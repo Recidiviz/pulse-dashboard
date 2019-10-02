@@ -34,7 +34,8 @@ const LsirScoreChangeSnapshot = (props) => {
   const [chartMinValue, setChartMinValue] = useState();
   const [chartMaxValue, setChartMaxValue] = useState();
 
-  const GOAL = getGoalForChart('US_ND', 'lsir-score-change-snapshot-chart');
+  const chartId = 'lsirScoreChangeSnapshot';
+  const GOAL = getGoalForChart('US_ND', chartId);
   const stepSize = 0.5;
 
   const processResponse = () => {
@@ -68,7 +69,7 @@ const LsirScoreChangeSnapshot = (props) => {
 
   const chart = (
     <Line
-      id="lsir-score-change-snapshot-chart"
+      id={chartId}
       data={{
         labels: chartLabels,
         datasets: [{
@@ -147,7 +148,7 @@ const LsirScoreChangeSnapshot = (props) => {
             value: GOAL.value,
 
             // optional annotation ID (must be unique)
-            id: 'lsir-score-change-snapshot-goal-line',
+            id: 'lsirScoreChangeSnapshotGoalLine',
             scaleID: 'y-axis-0',
 
             drawTime: 'afterDatasetsDraw',
@@ -191,12 +192,13 @@ const LsirScoreChangeSnapshot = (props) => {
 
   const exportedStructureCallback = function exportedStructureCallback() {
     return {
-      metric: 'average-change-in-LSIR-score-termination-intake',
+      metric: 'Average change in LSIR score between termination and first reassessment',
       series: [],
     };
   };
-  configureDownloadButtons('lsirScoreChange', 'Snapshot', chart.props,
-    document.getElementById('lsir-score-change-snapshot-chart'), exportedStructureCallback);
+  configureDownloadButtons(chartId, chart.props.data.datasets,
+    chart.props.data.labels, document.getElementById(chartId),
+    exportedStructureCallback);
 
   const header = document.getElementById(props.header);
   const trendlineValues = chart.props.data.datasets[1].data;

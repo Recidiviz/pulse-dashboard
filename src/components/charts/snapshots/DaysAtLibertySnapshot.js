@@ -34,7 +34,8 @@ const DaysAtLibertySnapshot = (props) => {
   const [chartMinValue, setChartMinValue] = useState();
   const [chartMaxValue, setChartMaxValue] = useState();
 
-  const GOAL = getGoalForChart('US_ND', 'days-at-liberty-snapshot-chart');
+  const chartId = 'daysAtLibertySnapshot';
+  const GOAL = getGoalForChart('US_ND', chartId);
   const stepSize = 200;
 
   const processResponse = () => {
@@ -67,7 +68,7 @@ const DaysAtLibertySnapshot = (props) => {
 
   const chart = (
     <Line
-      id="days-at-liberty-snapshot-chart"
+      id={chartId}
       data={{
         labels: chartLabels,
         datasets: [{
@@ -146,7 +147,7 @@ const DaysAtLibertySnapshot = (props) => {
             value: GOAL.value,
 
             // optional annotation ID (must be unique)
-            id: 'days-at-liberty-snapshot-goal-line',
+            id: 'daysAtLibertySnapshotGoalLine',
             scaleID: 'y-axis-0',
 
             drawTime: 'afterDatasetsDraw',
@@ -190,12 +191,13 @@ const DaysAtLibertySnapshot = (props) => {
 
   const exportedStructureCallback = function exportedStructureCallback() {
     return {
-      metric: 'average-days-at-liberty-reincarcerations',
+      metric: 'Average days at liberty',
       series: [],
     };
   };
-  configureDownloadButtons('daysAtLiberty', 'Snapshot', chart.props,
-    document.getElementById('days-at-liberty-snapshot-chart'), exportedStructureCallback);
+  configureDownloadButtons(chartId, chart.props.data.datasets,
+    chart.props.data.labels, document.getElementById(chartId),
+    exportedStructureCallback);
 
   const header = document.getElementById(props.header);
   const trendlineValues = chart.props.data.datasets[1].data;

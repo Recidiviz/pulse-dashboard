@@ -30,7 +30,8 @@ const RevocationCountOverTime = (props) => {
   const [chartMinValue, setChartMinValue] = useState();
   const [chartMaxValue, setChartMaxValue] = useState();
 
-  const GOAL = getGoalForChart('US_ND', 'revocation-counts-by-month-chart');
+  const chartId = 'revocationCountsByMonth';
+  const GOAL = getGoalForChart('US_ND', chartId);
   const stepSize = 10;
 
   const processResponse = () => {
@@ -58,7 +59,7 @@ const RevocationCountOverTime = (props) => {
 
   const chart = (
     <Line
-      id="revocation-counts-by-month-chart"
+      id={chartId}
       data={{
         labels: chartLabels,
         datasets: [{
@@ -108,7 +109,7 @@ const RevocationCountOverTime = (props) => {
             value: GOAL.value,
 
             // optional annotation ID (must be unique)
-            id: 'revocation-counts-by-month-goal-line',
+            id: 'revocationCountsByMonthGoalLine',
             scaleID: 'y-axis-0',
 
             drawTime: 'afterDatasetsDraw',
@@ -152,15 +153,13 @@ const RevocationCountOverTime = (props) => {
 
   const exportedStructureCallback = () => (
     {
-      recidivismType: 'reincarceration',
-      returnType: 'revocations',
-      startDate: '2018-11',
-      endDate: '2019-04',
+      metric: 'Revocation counts by month',
       series: [],
     });
 
-  configureDownloadButtons('revocation', 'Drivers', chart.props,
-    document.getElementById('revocation-counts-by-month-chart'), exportedStructureCallback);
+  configureDownloadButtons(chartId, chart.props.data.datasets,
+    chart.props.data.labels, document.getElementById(chartId),
+    exportedStructureCallback);
 
   const chartData = chart.props.data.datasets[0].data;
   const mostRecentValue = chartData[chartData.length - 1];

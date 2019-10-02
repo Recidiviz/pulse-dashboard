@@ -21,6 +21,7 @@ import { Bar } from 'react-chartjs-2';
 import { COLORS_FIVE_VALUES } from '../../../assets/scripts/constants/colors';
 import { monthNamesWithYearsFromNumbers } from '../../../utils/monthConversion';
 import { sortAndFilterMostRecentMonths } from '../../../utils/dataOrganizing';
+import { configureDownloadButtons } from '../../../assets/scripts/utils/downloads';
 
 const RevocationCountByViolationType = (props) => {
   const [chartLabels, setChartLabels] = useState([]);
@@ -28,6 +29,8 @@ const RevocationCountByViolationType = (props) => {
   const [newOffenseDataPoints, setNewOffenseDataPoints] = useState([]);
   const [technicalDataPoints, setTechnicalDataPoints] = useState([]);
   const [unknownDataPoints, setUnknownDataPoints] = useState([]);
+
+  const chartId = 'revocationsByViolationType';
 
   const processResponse = () => {
     const { revocationCountsByMonthByViolationType: countsByMonth } = props;
@@ -79,8 +82,9 @@ const RevocationCountByViolationType = (props) => {
     processResponse();
   }, [props.revocationCountsByMonthByViolationType]);
 
-  return (
+  const chart = (
     <Bar
+      id={chartId}
       data={{
         labels: chartLabels,
         datasets: [{
@@ -131,6 +135,18 @@ const RevocationCountByViolationType = (props) => {
       }}
     />
   );
+
+  const exportedStructureCallback = () => (
+    {
+      metric: 'Revocation counts by violation type',
+      series: [],
+    });
+
+  configureDownloadButtons(chartId, chart.props.data.datasets,
+    chart.props.data.labels, document.getElementById(chartId),
+    exportedStructureCallback);
+
+  return chart;
 };
 
 export default RevocationCountByViolationType;

@@ -83,7 +83,7 @@ const Snapshots = () => {
                   </h6>
                 </div>
                 <div className="layer w-100 pX-20 pT-20">
-                  <div className="snapshot-header" id="supervisionSuccessSnapshot-header" />
+                  <div className="dynamic-chart-header" id="supervisionSuccessSnapshot-header" />
                 </div>
                 <div className="layer w-100 p-20">
                   <div className="ai-c jc-c gapX-20">
@@ -145,7 +145,7 @@ const Snapshots = () => {
                   </h6>
                 </div>
                 <div className="layer w-100 pX-20 pT-20">
-                  <div className="snapshot-header" id="revocationAdmissionsSnapshot-header" />
+                  <div className="dynamic-chart-header" id="revocationAdmissionsSnapshot-header" />
                 </div>
                 <div className="layer w-100 p-20">
                   <div className="ai-c jc-c gapX-20">
@@ -205,7 +205,7 @@ const Snapshots = () => {
                   </h6>
                 </div>
                 <div className="layer w-100 pX-20 pT-20">
-                  <div className="snapshot-header" id="daysAtLibertySnapshot-header" />
+                  <div className="dynamic-chart-header" id="daysAtLibertySnapshot-header" />
                 </div>
                 <div className="layer w-100 p-20">
                   <div className="ai-c jc-c gapX-20">
@@ -267,7 +267,7 @@ const Snapshots = () => {
                   </h6>
                 </div>
                 <div className="layer w-100 pX-20 pT-20">
-                  <div className="snapshot-header" id="lsirScoreChangeSnapshot-header" />
+                  <div className="dynamic-chart-header" id="lsirScoreChangeSnapshot-header" />
                 </div>
                 <div className="layer w-100 p-20">
                   <div className="ai-c jc-c gapX-20">

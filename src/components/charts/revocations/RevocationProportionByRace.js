@@ -20,6 +20,7 @@ import React, { useState, useEffect } from 'react';
 import { HorizontalBar } from 'react-chartjs-2';
 import { COLORS_FIVE_VALUES, COLORS } from '../../../assets/scripts/constants/colors';
 import { sortByLabel } from '../../../utils/dataOrganizing';
+import { configureDownloadButtons } from '../../../assets/scripts/utils/downloads';
 
 const labelStringConversion = {
   AMERICAN_INDIAN_ALASKAN_NATIVE: 'American Indian Alaskan Native',
@@ -43,9 +44,11 @@ const ND_RACE_PROPORTIONS = {
 
 const RevocationProportionByRace = (props) => {
   const [chartLabels, setChartLabels] = useState([]);
-  const [chartProportions, setChartProportions] = useState([]);
+  const [revocationProportions, setRevocationProportions] = useState([]);
   const [statePopulationProportions, setStatePopulationProportions] = useState([]);
   const [stateSupervisionProportions, setStateSupervisionProportions] = useState([]);
+  const [revocationCounts, setRevocationCounts] = useState([]);
+  const [stateSupervisionCounts, setStateSupervisionCounts] = useState([]);
 
   const processResponse = () => {
     const { revocationProportionByRace } = props;
@@ -92,14 +95,20 @@ const RevocationProportionByRace = (props) => {
     const sortedSupervisionDataPoints = sortByLabel(supervisionDataPoints, 'race');
 
     setChartLabels(sortedRevocationDataPoints.map((element) => element.race));
-    setChartProportions(sortedRevocationDataPoints.map(
+    setRevocationProportions(sortedRevocationDataPoints.map(
       (element) => (100 * (element.count / totalRevocations)),
     ));
-    setStatePopulationProportions(sortedRevocationDataPoints.map(
-      (element) => ND_RACE_PROPORTIONS[element.race],
+    setRevocationCounts(sortedRevocationDataPoints.map(
+      (element) => (element.count),
     ));
     setStateSupervisionProportions(sortedSupervisionDataPoints.map(
       (element) => (100 * (element.count / totalSupervisionPopulation)),
+    ));
+    setStateSupervisionCounts(sortedSupervisionDataPoints.map(
+      (element) => (element.count),
+    ));
+    setStatePopulationProportions(sortedRevocationDataPoints.map(
+      (element) => ND_RACE_PROPORTIONS[element.race],
     ));
   };
 
@@ -107,51 +116,52 @@ const RevocationProportionByRace = (props) => {
     processResponse();
   }, [props.revocationProportionByRace, props.supervisionPopulationByRace]);
 
-  return (
+  const chart = (
     <HorizontalBar
+      id="revocationsByRace"
       data={{
         labels: ['Revocations', 'Supervision Population', 'ND Population'],
         datasets: [{
           label: chartLabels[0],
           backgroundColor: COLORS_FIVE_VALUES[0],
           data: [
-            chartProportions[0], stateSupervisionProportions[0], statePopulationProportions[0],
+            revocationProportions[0], stateSupervisionProportions[0], statePopulationProportions[0],
           ],
         }, {
           label: chartLabels[1],
           backgroundColor: COLORS_FIVE_VALUES[1],
           data: [
-            chartProportions[1], stateSupervisionProportions[1], statePopulationProportions[1],
+            revocationProportions[1], stateSupervisionProportions[1], statePopulationProportions[1],
           ],
         }, {
           label: chartLabels[2],
           backgroundColor: COLORS_FIVE_VALUES[2],
           data: [
-            chartProportions[2], stateSupervisionProportions[2], statePopulationProportions[2],
+            revocationProportions[2], stateSupervisionProportions[2], statePopulationProportions[2],
           ],
         }, {
           label: chartLabels[3],
           backgroundColor: COLORS_FIVE_VALUES[3],
           data: [
-            chartProportions[3], stateSupervisionProportions[3], statePopulationProportions[3],
+            revocationProportions[3], stateSupervisionProportions[3], statePopulationProportions[3],
           ],
         }, {
           label: chartLabels[4],
           backgroundColor: COLORS_FIVE_VALUES[4],
           data: [
-            chartProportions[4], stateSupervisionProportions[4], statePopulationProportions[4],
+            revocationProportions[4], stateSupervisionProportions[4], statePopulationProportions[4],
           ],
         }, {
           label: chartLabels[5],
           backgroundColor: COLORS['blue-standard-2'],
           data: [
-            chartProportions[5], stateSupervisionProportions[5], statePopulationProportions[5],
+            revocationProportions[5], stateSupervisionProportions[5], statePopulationProportions[5],
           ],
         }, {
           label: chartLabels[6],
           backgroundColor: COLORS['blue-standard'],
           data: [
-            chartProportions[6], stateSupervisionProportions[6], statePopulationProportions[6],
+            revocationProportions[6], stateSupervisionProportions[6], statePopulationProportions[6],
           ],
         },
         ],
@@ -177,17 +187,44 @@ const RevocationProportionByRace = (props) => {
           mode: 'dataset',
           intersect: true,
           callbacks: {
+            title: (tooltipItem, data) => {
+              const dataset = data.datasets[tooltipItem[0].datasetIndex];
+              return dataset.label;
+            },
             label: (tooltipItem, data) => {
               const dataset = data.datasets[tooltipItem.datasetIndex];
               const currentValue = dataset.data[tooltipItem.index];
 
-              return dataset.label.concat(': ', currentValue.toFixed(2), '% of ', data.labels[tooltipItem.index]);
+              let datasetCounts = [];
+              if (data.labels[tooltipItem.index] === 'Revocations') {
+                datasetCounts = revocationCounts;
+              } else if (data.labels[tooltipItem.index] === 'Supervision Population') {
+                datasetCounts = stateSupervisionCounts;
+              } else {
+                return ''.concat(currentValue.toFixed(2), '% of ',
+                  data.labels[tooltipItem.index]);
+              }
+
+              return ''.concat(currentValue.toFixed(2), '% of ',
+                data.labels[tooltipItem.index], ' (', datasetCounts[tooltipItem.datasetIndex], ')');
             },
           },
         },
       }}
     />
   );
+
+  const exportedStructureCallback = () => (
+    {
+      metric: 'Revocations by race',
+      series: [],
+    });
+
+  configureDownloadButtons('revocationsByRace', chart.props.data.datasets,
+    chart.props.data.labels, document.getElementById('revocationsByRace'),
+    exportedStructureCallback);
+
+  return chart;
 };
 
 export default RevocationProportionByRace;

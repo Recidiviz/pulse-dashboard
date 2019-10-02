@@ -19,6 +19,7 @@ import React, { useState, useEffect } from 'react';
 
 import { Bar } from 'react-chartjs-2';
 import { COLORS_FIVE_VALUES } from '../../../assets/scripts/constants/colors';
+import { configureDownloadButtons } from '../../../assets/scripts/utils/downloads';
 
 const RevocationCountByOfficer = (props) => {
   const [chartLabels, setChartLabels] = useState([]);
@@ -26,6 +27,8 @@ const RevocationCountByOfficer = (props) => {
   const [newOffenseDataPoints, setNewOffenseDataPoints] = useState([]);
   const [technicalDataPoints, setTechnicalDataPoints] = useState([]);
   const [unknownDataPoints, setUnknownDataPoints] = useState([]);
+
+  const chartId = 'revocationsByOfficer';
 
   const processResponse = () => {
     const { revocationCountsByOfficer } = props;
@@ -70,7 +73,9 @@ const RevocationCountByOfficer = (props) => {
     const sortedDataPoints = dataPoints.sort((a, b) => (
       b.overallRevocationCount - a.overallRevocationCount));
 
-    for (let i = 0; i < 10; i += 1) {
+    const officerCount = (sortedDataPoints.length > 10) ? 10 : sortedDataPoints.length;
+
+    for (let i = 0; i < officerCount; i += 1) {
       officerLabels.push(sortedDataPoints[i].officerID);
       const data = sortedDataPoints[i].violationsByType;
       Object.keys(data).forEach((violationType) => {
@@ -89,8 +94,9 @@ const RevocationCountByOfficer = (props) => {
     processResponse();
   }, [props.revocationCountsByOfficer]);
 
-  return (
+  const chart = (
     <Bar
+      id={chartId}
       data={{
         labels: chartLabels,
         datasets: [{
@@ -147,6 +153,18 @@ const RevocationCountByOfficer = (props) => {
       }}
     />
   );
+
+  const exportedStructureCallback = () => (
+    {
+      metric: 'Revocation counts by officer',
+      series: [],
+    });
+
+  configureDownloadButtons(chartId, chart.props.data.datasets,
+    chart.props.data.labels, document.getElementById(chartId),
+    exportedStructureCallback);
+
+  return chart;
 };
 
 

@@ -20,32 +20,32 @@ import { trendlineSlope } from './trendline';
 // TODO(75): Retrieve these dynamically using the API
 const GOALS = {
   US_ND: {
-    'days-at-liberty-snapshot-chart': {
+    daysAtLibertySnapshot: {
       isUpward: true,
       value: 1095,
       label: '1095 days (3 years)',
     },
-    'lsir-score-change-snapshot-chart': {
+    lsirScoreChangeSnapshot: {
       isUpward: false,
       value: -1,
       label: '-1.0',
     },
-    'reincarceration-counts-by-month-chart': {
-      isUpward: false,
-      value: 30,
-      label: '30%',
-    },
-    'revocation-admissions-snapshot-chart': {
-      isUpward: false,
-      value: 35,
-      label: '35%',
-    },
-    'revocation-counts-by-month-chart': {
+    reincarcerationCountsByMonth: {
       isUpward: false,
       value: 30,
       label: '30',
     },
-    'supervision-success-snapshot-chart': {
+    revocationAdmissionsSnapshot: {
+      isUpward: false,
+      value: 35,
+      label: '35%',
+    },
+    revocationCountsByMonth: {
+      isUpward: false,
+      value: 30,
+      label: '30',
+    },
+    supervisionSuccessSnapshot: {
       isUpward: true,
       value: 75,
       label: '75%',
@@ -59,8 +59,8 @@ function Goal(isUpward, value, label) {
   this.label = label;
 }
 
-function getGoalForChart(stateCode, chartName) {
-  const goalDict = GOALS[stateCode][chartName];
+function getGoalForChart(stateCode, chartId) {
+  const goalDict = GOALS[stateCode][chartId];
   return new Goal(goalDict.isUpward, goalDict.value, goalDict.label);
 }
 

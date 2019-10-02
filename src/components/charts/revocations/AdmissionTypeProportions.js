@@ -20,10 +20,13 @@ import React, { useState, useEffect } from 'react';
 import { Pie } from 'react-chartjs-2';
 import { COLORS_FIVE_VALUES } from '../../../assets/scripts/constants/colors';
 import { sortByLabel } from '../../../utils/dataOrganizing';
+import { configureDownloadButtons } from '../../../assets/scripts/utils/downloads';
 
 const AdmissionTypeProportions = (props) => {
   const [chartLabels, setChartLabels] = useState([]);
   const [chartDataPoints, setChartDataPoints] = useState([]);
+
+  const chartId = 'admissionTypeProportions';
 
   const processResponse = () => {
     const { admissionCountsByType } = props;
@@ -52,8 +55,9 @@ const AdmissionTypeProportions = (props) => {
     processResponse();
   }, [props.admissionCountsByType]);
 
-  return (
+  const chart = (
     <Pie
+      id={chartId}
       data={{
         datasets: [{
           data: chartDataPoints,
@@ -89,13 +93,25 @@ const AdmissionTypeProportions = (props) => {
               const currentValue = dataset.data[tooltipItem.index];
               const percentage = ((currentValue / total) * 100).toFixed(2);
 
-              return (data.labels[tooltipItem.index]).concat(': ', currentValue, ' (', percentage, '%)');
+              return (data.labels[tooltipItem.index]).concat(': ', percentage, '% (', currentValue, ')');
             },
           },
         },
       }}
     />
   );
+
+  const exportedStructureCallback = () => (
+    {
+      metric: 'Admissions by type',
+      series: [],
+    });
+
+  configureDownloadButtons(chartId, chart.props.data.datasets,
+    chart.props.data.labels, document.getElementById(chartId),
+    exportedStructureCallback);
+
+  return chart;
 };
 
 export default AdmissionTypeProportions;

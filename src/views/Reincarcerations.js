@@ -63,7 +63,7 @@ const Reincarcerations = () => {
         <div className="row gap-20 pos-r">
 
           {/* #Reincarcerations by month chart ==================== */}
-          <div className="col-md-12">
+          <div className="col-md-6">
             <div className="bd bgc-white p-20">
               <div className="layers">
                 <div className="layer w-100 pX-20 pT-20">
@@ -71,21 +71,21 @@ const Reincarcerations = () => {
                     REINCARCERATIONS BY MONTH
                     <span className="fa-pull-right">
                       <div className="dropdown show">
-                        <a className="btn btn-secondary btn-sm dropdown-toggle" href="#" role="button" id="exportDropdownMenuButton-reincarcerationDrivers" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <a className="btn btn-secondary btn-sm dropdown-toggle" href="#" role="button" id="exportDropdownMenuButton-reincarcerationCountsByMonth" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                           Export
                         </a>
-                        <div className="dropdown-menu" aria-labelledby="exportDropdownMenuButton-reincarcerationDrivers">
-                          <a className="dropdown-item" id="downloadChartAsImage-reincarcerationDrivers" href="javascript:void(0);">Export image</a>
-                          <a className="dropdown-item" id="downloadChartData-reincarcerationDrivers" href="javascript:void(0);">Export data</a>
+                        <div className="dropdown-menu" aria-labelledby="exportDropdownMenuButton-reincarcerationCountsByMonth">
+                          <a className="dropdown-item" id="downloadChartAsImage-reincarcerationCountsByMonth" href="javascript:void(0);">Export image</a>
+                          <a className="dropdown-item" id="downloadChartData-reincarcerationCountsByMonth" href="javascript:void(0);">Export data</a>
                         </div>
                       </div>
                     </span>
                   </h6>
                 </div>
                 <div className="layer w-100 pX-20 pT-20">
-                  <h4 style={{ height: '20px' }} className="lh-1" id="reincarcerationCountsByMonth-header" />
+                  <h4 style={{ height: '20px' }} className="dynamic-chart-header" id="reincarcerationCountsByMonth-header" />
                 </div>
-                <div className="layer w-100 pX-20 pT-20 row">
+                <div className="layer w-100 pX-20 pT-30 row">
                   <div className="col-md-12">
                     <div className="layer w-100 p-20">
                       <ReincarcerationCountOverTime
@@ -107,13 +107,14 @@ const Reincarcerations = () => {
                     <div>
                       <ul>
                         <li>
-                        An admission to prison counts as a reincarceration if
-                        the person has been incarcerated previously in a North
-                        Dakota prison.
+                          An admission to prison counts as a reincarceration if
+                          the person has been incarcerated previously in a North
+                          Dakota prison.
                         </li>
                         <li>
-                        Reincarcerations are included regardless of when the initial incarceration
-                        took place. There is no upper bound on the follow up period in this metric.
+                          Reincarcerations are included regardless of when the initial incarceration
+                          took place. There is no upper bound on the follow up period in
+                          this metric.
                         </li>
                       </ul>
                     </div>
@@ -124,11 +125,27 @@ const Reincarcerations = () => {
           </div>
 
           {/* #Releases vs admissions ==================== */}
-          <div className="col-md-12">
+          <div className="col-md-6">
             <div className="bd bgc-white p-20">
               <div className="layers">
                 <div className="layer w-100 pX-20 pT-20">
-                  <h4 style={{ height: '20px' }} className="lh-1" id="admissionsVsReleases-header" />
+                  <h6 className="lh-1">
+                    ADMISSIONS VERSUS RELEASES
+                    <span className="fa-pull-right">
+                      <div className="dropdown show">
+                        <a className="btn btn-secondary btn-sm dropdown-toggle" href="#" role="button" id="exportDropdownMenuButton-admissionsVsReleases" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          Export
+                        </a>
+                        <div className="dropdown-menu" aria-labelledby="exportDropdownMenuButton-admissionsVsReleases">
+                          <a className="dropdown-item" id="downloadChartAsImage-admissionsVsReleases" href="javascript:void(0);">Export image</a>
+                          <a className="dropdown-item" id="downloadChartData-admissionsVsReleases" href="javascript:void(0);">Export data</a>
+                        </div>
+                      </div>
+                    </span>
+                  </h6>
+                </div>
+                <div className="layer w-100 pX-20 pT-20">
+                  <h4 style={{ height: '20px' }} className="dynamic-chart-header" id="admissionsVsReleases-header" />
                 </div>
                 <div className="layer w-100 p-20">
                   <AdmissionsVsReleases
@@ -169,11 +186,24 @@ const Reincarcerations = () => {
           </div>
 
           {/* #Reincarcerations by release facility ==================== */}
-          <div className="col-md-12">
+          <div className="col-md-6">
             <div className="bd bgc-white p-20">
               <div className="layers">
                 <div className="layer w-100 pX-20 pT-20">
-                  <h4 className="lh-1">Reincarceration rate by release facility</h4>
+                  <h6 className="lh-1">
+                    REINCARCERATION RATE BY RELEASE FACILITY
+                    <span className="fa-pull-right">
+                      <div className="dropdown show">
+                        <a className="btn btn-secondary btn-sm dropdown-toggle" href="#" role="button" id="exportDropdownMenuButton-reincarcerationRateByReleaseFacility" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          Export
+                        </a>
+                        <div className="dropdown-menu" aria-labelledby="exportDropdownMenuButton-reincarcerationRateByReleaseFacility">
+                          <a className="dropdown-item" id="downloadChartAsImage-reincarcerationRateByReleaseFacility" href="javascript:void(0);">Export image</a>
+                          <a className="dropdown-item" id="downloadChartData-reincarcerationRateByReleaseFacility" href="javascript:void(0);">Export data</a>
+                        </div>
+                      </div>
+                    </span>
+                  </h6>
                 </div>
                 <div className="layer w-100 p-20">
                   <div className="ai-c jc-c gapX-20">
@@ -184,15 +214,15 @@ const Reincarcerations = () => {
                     </div>
                   </div>
                 </div>
-                <div className="layer bdT p-20 w-100 accordion" id="methodologyReincarcerationsByReleaseFacility">
-                  <div className="mb-0" id="methodologyHeadingReincarcerationsByReleaseFacility">
+                <div className="layer bdT p-20 w-100 accordion" id="methodologyReincarcerationRateByReleaseFacility">
+                  <div className="mb-0" id="methodologyHeadingReincarcerationRateByReleaseFacility">
                     <div className="mb-0">
-                      <button className="btn btn-link collapsed pL-0" type="button" data-toggle="collapse" data-target="#collapseMethodologyReincarcerationsByReleaseFacility" aria-expanded="true" aria-controls="collapseMethodologyReincarcerationsByReleaseFacility">
+                      <button className="btn btn-link collapsed pL-0" type="button" data-toggle="collapse" data-target="#collapseMethodologyReincarcerationRateByReleaseFacility" aria-expanded="true" aria-controls="collapseMethodologyReincarcerationRateByReleaseFacility">
                         <h6 className="lh-1 c-blue-500 mb-0">Methodology</h6>
                       </button>
                     </div>
                   </div>
-                  <div id="collapseMethodologyReincarcerationsByReleaseFacility" className="collapse" aria-labelledby="methodologyHeadingReincarcerationsByReleaseFacility" data-parent="#methodologyReincarcerationsByReleaseFacility">
+                  <div id="collapseMethodologyReincarcerationRateByReleaseFacility" className="collapse" aria-labelledby="methodologyHeadingReincarcerationRateByReleaseFacility" data-parent="#methodologyReincarcerationRateByReleaseFacility">
                     <div>
                       <ul>
                         <li>
@@ -230,11 +260,24 @@ const Reincarcerations = () => {
           </div>
 
           {/* #Reincarcerations by transitional facility ==================== */}
-          <div className="col-md-12">
+          <div className="col-md-6">
             <div className="bd bgc-white p-20">
               <div className="layers">
                 <div className="layer w-100 pX-20 pT-20">
-                  <h4 className="lh-1">Reincarceration rate by transitional facility</h4>
+                  <h6 className="lh-1">
+                    REINCARCERATION RATE BY TRANSITIONAL FACILITY
+                    <span className="fa-pull-right">
+                      <div className="dropdown show">
+                        <a className="btn btn-secondary btn-sm dropdown-toggle" href="#" role="button" id="exportDropdownMenuButton-reincarcerationRateByTransitionalFacility" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          Export
+                        </a>
+                        <div className="dropdown-menu" aria-labelledby="exportDropdownMenuButton-reincarcerationRateByTransitionalFacility">
+                          <a className="dropdown-item" id="downloadChartAsImage-reincarcerationRateByTransitionalFacility" href="javascript:void(0);">Export image</a>
+                          <a className="dropdown-item" id="downloadChartData-reincarcerationRateByTransitionalFacility" href="javascript:void(0);">Export data</a>
+                        </div>
+                      </div>
+                    </span>
+                  </h6>
                 </div>
                 <div className="layer w-100 p-20">
                   <div className="ai-c jc-c gapX-20">
@@ -247,15 +290,15 @@ const Reincarcerations = () => {
                     </div>
                   </div>
                 </div>
-                <div className="layer bdT p-20 w-100 accordion" id="methodologyReincarcerationsByTransitionalFacility">
-                  <div className="mb-0" id="methodologyHeadingReincarcerationsByTransitionalFacility">
+                <div className="layer bdT p-20 w-100 accordion" id="methodologyReincarcerationRateByTransitionalFacility">
+                  <div className="mb-0" id="methodologyHeadingReincarcerationRateByTransitionalFacility">
                     <div className="mb-0">
-                      <button className="btn btn-link collapsed pL-0" type="button" data-toggle="collapse" data-target="#collapseMethodologyReincarcerationsByTransitionalFacility" aria-expanded="true" aria-controls="collapseMethodologyReincarcerationsByTransitionalFacility">
+                      <button className="btn btn-link collapsed pL-0" type="button" data-toggle="collapse" data-target="#collapseMethodologyReincarcerationRateByTransitionalFacility" aria-expanded="true" aria-controls="collapseMethodologyReincarcerationRateByTransitionalFacility">
                         <h6 className="lh-1 c-blue-500 mb-0">Methodology</h6>
                       </button>
                     </div>
                   </div>
-                  <div id="collapseMethodologyReincarcerationsByTransitionalFacility" className="collapse" aria-labelledby="methodologyHeadingReincarcerationsByTransitionalFacility" data-parent="#methodologyReincarcerationsByTransitionalFacility">
+                  <div id="collapseMethodologyReincarcerationRateByTransitionalFacility" className="collapse" aria-labelledby="methodologyHeadingReincarcerationRateByTransitionalFacility" data-parent="#methodologyReincarcerationRateByTransitionalFacility">
                     <div>
                       <ul>
                         <li>
@@ -293,26 +336,39 @@ const Reincarcerations = () => {
           </div>
 
           {/* #Reincarcerations by previous stay length ==================== */}
-          <div className="col-md-12">
+          <div className="col-md-6">
             <div className="bd bgc-white p-20">
               <div className="layers">
                 <div className="layer w-100 pX-20 pT-20">
-                  <h4 className="lh-1">Reincarceration rate by previous stay length</h4>
+                  <h6 className="lh-1">
+                    REINCARCERATION RATE BY PREVIOUS STAY LENGTH
+                    <span className="fa-pull-right">
+                      <div className="dropdown show">
+                        <a className="btn btn-secondary btn-sm dropdown-toggle" href="#" role="button" id="exportDropdownMenuButton-reincarcerationRateByStayLength" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          Export
+                        </a>
+                        <div className="dropdown-menu" aria-labelledby="exportDropdownMenuButton-reincarcerationRateByStayLength">
+                          <a className="dropdown-item" id="downloadChartAsImage-reincarcerationRateByStayLength" href="javascript:void(0);">Export image</a>
+                          <a className="dropdown-item" id="downloadChartData-reincarcerationRateByStayLength" href="javascript:void(0);">Export data</a>
+                        </div>
+                      </div>
+                    </span>
+                  </h6>
                 </div>
                 <div className="layer w-100 p-20">
                   <ReincarcerationRateByStayLength
                     ratesByStayLength={apiData.reincarceration_rate_by_stay_length}
                   />
                 </div>
-                <div className="layer bdT p-20 w-100 accordion" id="methodologyReincarcerationsByStayLength">
-                  <div className="mb-0" id="methodologyHeadingReincarcerationsByStayLength">
+                <div className="layer bdT p-20 w-100 accordion" id="methodologyReincarcerationRateByStayLength">
+                  <div className="mb-0" id="methodologyHeadingReincarcerationRateByStayLength">
                     <div className="mb-0">
-                      <button className="btn btn-link collapsed pL-0" type="button" data-toggle="collapse" data-target="#collapseMethodologyReincarcerationsByStayLength" aria-expanded="true" aria-controls="collapseMethodologyReincarcerationsByStayLength">
+                      <button className="btn btn-link collapsed pL-0" type="button" data-toggle="collapse" data-target="#collapseMethodologyReincarcerationRateByStayLength" aria-expanded="true" aria-controls="collapseMethodologyReincarcerationRateByStayLength">
                         <h6 className="lh-1 c-blue-500 mb-0">Methodology</h6>
                       </button>
                     </div>
                   </div>
-                  <div id="collapseMethodologyReincarcerationsByStayLength" className="collapse" aria-labelledby="methodologyHeadingReincarcerationsByStayLength" data-parent="#methodologyReincarcerationsByStayLength">
+                  <div id="collapseMethodologyReincarcerationRateByStayLength" className="collapse" aria-labelledby="methodologyHeadingReincarcerationRateByStayLength" data-parent="#methodologyReincarcerationRateByStayLength">
                     <div>
                       <ul>
                         <li>
