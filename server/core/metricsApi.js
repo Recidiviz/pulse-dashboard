@@ -50,12 +50,14 @@ const FILES_BY_METRIC_TYPE = {
   revocation: [
     'revocations_by_county_60_days.json',
     'revocations_by_officer_60_days.json',
+    'revocations_by_site_id_60_days.json',
     'admissions_by_type_60_days.json',
     'revocations_by_month.json',
     'revocations_by_race_and_ethnicity_60_days.json',
     'revocations_by_supervision_type_by_month.json',
     'revocations_by_violation_type_by_month.json',
     'supervision_population_by_race_and_ethnicity_60_days.json',
+    'site_offices.json',
   ],
   snapshot: [
     'admissions_by_type_by_month.json',

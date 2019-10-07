@@ -28,6 +28,7 @@ import RevocationCountByOfficer from '../components/charts/revocations/Revocatio
 import AdmissionTypeProportions from '../components/charts/revocations/AdmissionTypeProportions';
 import RevocationProportionByRace from '../components/charts/revocations/RevocationProportionByRace';
 import RevocationsByCounty from '../components/charts/revocations/RevocationsByCounty';
+import RevocationsByOffice from '../components/charts/revocations/RevocationsByOffice';
 
 const Revocations = () => {
   const { loading, user, getTokenSilently } = useAuth0();
@@ -171,9 +172,9 @@ const Revocations = () => {
                           supervision was terminated.
                         </li>
                         <li>
-                          Revocations are included based on the date that the person&apos;s
-                          supervision was officially revoked, not the date of the causal violation
-                          or offense.
+                          Revocations are included based on the date that the person
+                          was admitted to a DOCR facility because their supervision
+                          was revoked, not the date of the causal violation or offense.
                         </li>
                       </ul>
                     </div>
@@ -186,6 +187,171 @@ const Revocations = () => {
                         <small className="c-grey-500 fw-600">Period </small>
                         Last 60 days
                       </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* #Revocations by P&P office chart ==================== */}
+          <div className="masonry-item col-md-6">
+            <div className="bd bgc-white p-20">
+              <div className="layers">
+                <div className="layer w-100 pX-20 pT-20">
+                  <h6 className="lh-1">
+                    REVOCATIONS BY P&P OFFICE
+                    <span className="fa-pull-right">
+                      <div className="dropdown show">
+                        <a className="btn btn-secondary btn-sm dropdown-toggle" href="#" role="button" id="exportDropdownMenuButton-revocationsByOffice" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          Export
+                        </a>
+                        <div className="dropdown-menu" aria-labelledby="exportDropdownMenuButton-revocationsByOffice">
+                          <a className="dropdown-item" id="downloadChartData-revocationsByOffice" href="javascript:void(0);">Export data</a>
+                        </div>
+                      </div>
+                    </span>
+                  </h6>
+                </div>
+                <div className="layer w-100 pX-20 pT-40 row">
+                  <div className="layer w-100 p-20">
+                    <RevocationsByOffice
+                      revocationsByOffice={apiData.revocations_by_site_id_60_days}
+                      officeData={apiData.site_offices}
+                      officerDropdownId="showOfficersOfOffice"
+                    />
+                  </div>
+                </div>
+                <div className="layer bdT p-20 w-100 accordion" id="methodologyRevocationsByOffice">
+                  <div className="mb-0" id="methodologyHeadingsRevocationsByOffice">
+                    <div className="mb-0">
+                      <button className="btn btn-link collapsed pL-0" type="button" data-toggle="collapse" data-target="#collapseMethodologyRevocationsByOffice" aria-expanded="true" aria-controls="collapseMethodologyRevocationsByOffice">
+                        <h6 className="lh-1 c-blue-500 mb-0">Methodology</h6>
+                      </button>
+                    </div>
+                  </div>
+                  <div className="collapse" id="collapseMethodologyRevocationsByOffice" aria-labelledby="methodologyHeadingRevocationsByOffice" data-parent="#methodologyRevocationsByOffice">
+                    <div>
+                      <ul>
+                        <li>
+                          Revocation counts include the number of people who were incarcerated
+                          because their supervision was revoked.
+                        </li>
+                        <li>
+                          Revocations are attributed to the site of the
+                          terminating officer at the time of a person&apos;s revocation.
+                        </li>
+                        <li>
+                          Revocations are included based on the date that the person
+                          was admitted to a DOCR facility because their supervision
+                          was revoked, not the date of the causal violation or offense.
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+                <div className="layer bdT p-20 w-100">
+                  <div className="peers ai-c jc-c gapX-20">
+                    <div className="peer fw-600">
+                      <span className="fsz-def fw-600 mR-10 c-grey-800">
+                        <small className="c-grey-500 fw-600">Period </small>
+                        Last 60 days
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* #Revocations by officer id ==================== */}
+          <div className="col-md-6">
+            <div className="bd bgc-white p-20">
+              <div className="layers">
+                <div className="layer w-100 pX-20 pT-20">
+                  <h6 className="lh-1">
+                    REVOCATIONS BY OFFICER
+                    <span className="fa-pull-right">
+                      <div className="dropdown show">
+                        <a className="btn btn-secondary btn-sm dropdown-toggle" href="#" role="button" id="exportDropdownMenuButton-revocationsByOfficer" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          Export
+                        </a>
+                        <div className="dropdown-menu" aria-labelledby="exportDropdownMenuButton-revocationsByOfficer">
+                          <a className="dropdown-item" id="downloadChartAsImage-revocationsByOfficer" href="javascript:void(0);">Export image</a>
+                          <a className="dropdown-item" id="downloadChartData-revocationsByOfficer" href="javascript:void(0);">Export data</a>
+                        </div>
+                      </div>
+                    </span>
+                  </h6>
+                </div>
+                <div className="layer p-20 w-100">
+                  <span className="fa-pull-left">
+                    <div className="dropdown show">
+                      <a className="btn btn-secondary btn-sm dropdown-toggle" href="javascript:void(0);" role="button" id="showOfficersOfOffice" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        SITE NAME
+                      </a>
+                      <div className="dropdown-menu" aria-labelledby="showOfficersOfOffice" id="showOfficersOfOfficeMenu">
+                        <a className="dropdown-item" id="showOfficersOfOffice-All-Officers" href="javascript:void(0);">All Officers</a>
+                        <a className="dropdown-item" id="showOfficersOfOffice-Beulah" href="javascript:void(0);">Beulah</a>
+                        <a className="dropdown-item" id="showOfficersOfOffice-Bismarck" href="javascript:void(0);">Bismarck</a>
+                        <a className="dropdown-item" id="showOfficersOfOffice-Bottineau" href="javascript:void(0);">Bottineau</a>
+                        <a className="dropdown-item" id="showOfficersOfOffice-Devils-Lake" href="javascript:void(0);">Devils Lake</a>
+                        <a className="dropdown-item" id="showOfficersOfOffice-Dickinson" href="javascript:void(0);">Dickinson</a>
+                        <a className="dropdown-item" id="showOfficersOfOffice-Fargo" href="javascript:void(0);">Fargo</a>
+                        <a className="dropdown-item" id="showOfficersOfOffice-Grafton" href="javascript:void(0);">Grafton</a>
+                        <a className="dropdown-item" id="showOfficersOfOffice-Grand-Forks" href="javascript:void(0);">Grand Forks</a>
+                        <a className="dropdown-item" id="showOfficersOfOffice-Jamestown" href="javascript:void(0);">Jamestown</a>
+                        <a className="dropdown-item" id="showOfficersOfOffice-Mandan" href="javascript:void(0);">Mandan</a>
+                        <a className="dropdown-item" id="showOfficersOfOffice-Minot" href="javascript:void(0);">Minot</a>
+                        <a className="dropdown-item" id="showOfficersOfOffice-Oakes" href="javascript:void(0);">Oakes</a>
+                        <a className="dropdown-item" id="showOfficersOfOffice-Rolla" href="javascript:void(0);">Rolla</a>
+                        <a className="dropdown-item" id="showOfficersOfOffice-Wahpeton" href="javascript:void(0);">Wahpeton</a>
+                        <a className="dropdown-item" id="showOfficersOfOffice-Washburn" href="javascript:void(0);">Washburn</a>
+                        <a className="dropdown-item" id="showOfficersOfOffice-Williston" href="javascript:void(0);">Williston</a>
+                      </div>
+                    </div>
+                  </span>
+                </div>
+                <div className="layer w-100 p-20">
+                  <RevocationCountByOfficer
+                    revocationCountsByOfficer={apiData.revocations_by_officer_60_days}
+                    officeData={apiData.site_offices}
+                    dropdownId="showOfficersOfOffice"
+                  />
+                </div>
+                <div className="layer bdT p-20 w-100 accordion" id="methodologyRevocationByOfficer">
+                  <div className="mb-0" id="methodologyHeadingRevocationByOfficer">
+                    <div className="mb-0">
+                      <button className="btn btn-link collapsed pL-0" type="button" data-toggle="collapse" data-target="#collapseMethodologyRevocationByOfficer" aria-expanded="true" aria-controls="collapseMethodologyRevocationByOfficer">
+                        <h6 className="lh-1 c-blue-500 mb-0">Methodology</h6>
+                      </button>
+                    </div>
+                  </div>
+                  <div id="collapseMethodologyRevocationByOfficer" className="collapse" aria-labelledby="methodologyHeadingRevocationByOfficer" data-parent="#methodologyRevocationByOfficer">
+                    <div>
+                      <ul>
+                        <li>
+                          This chart lists the 10 officers with the highest revocation counts in the
+                          state over the period.
+                        </li>
+                        <li>
+                          Revocations are counted towards an officer if that officer is flagged as
+                          the terminating officer at the time of a person&apos;s revocation.
+                        </li>
+                        <li>
+                          Revocations are included based on the date that the person
+                          was admitted to a DOCR facility because their supervision
+                          was revoked, not the date of the causal violation or offense.
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+                <div className="layer bdT p-20 w-100">
+                  <div className="peers ai-c jc-c gapX-20">
+                    <div className="peer fw-600">
+                      <small className="c-grey-500 fw-600">Period </small>
+                      <span className="fsz-def fw-600 mR-10 c-grey-800">Last 60 days</span>
                     </div>
                   </div>
                 </div>
@@ -304,71 +470,6 @@ const Revocations = () => {
                           offense or an absconsion, it is considered a non-technical revocation.
                         </li>
                       </ul>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* #Revocations by officer id ==================== */}
-          <div className="col-md-6">
-            <div className="bd bgc-white p-20">
-              <div className="layers">
-                <div className="layer w-100 pX-20 pT-20">
-                  <h6 className="lh-1">
-                    REVOCATIONS BY OFFICER
-                    <span className="fa-pull-right">
-                      <div className="dropdown show">
-                        <a className="btn btn-secondary btn-sm dropdown-toggle" href="#" role="button" id="exportDropdownMenuButton-revocationsByOfficer" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                          Export
-                        </a>
-                        <div className="dropdown-menu" aria-labelledby="exportDropdownMenuButton-revocationsByOfficer">
-                          <a className="dropdown-item" id="downloadChartAsImage-revocationsByOfficer" href="javascript:void(0);">Export image</a>
-                          <a className="dropdown-item" id="downloadChartData-revocationsByOfficer" href="javascript:void(0);">Export data</a>
-                        </div>
-                      </div>
-                    </span>
-                  </h6>
-                </div>
-                <div className="layer w-100 p-20">
-                  <RevocationCountByOfficer
-                    revocationCountsByOfficer={apiData.revocations_by_officer_60_days}
-                  />
-                </div>
-                <div className="layer bdT p-20 w-100 accordion" id="methodologyRevocationByOfficer">
-                  <div className="mb-0" id="methodologyHeadingRevocationByOfficer">
-                    <div className="mb-0">
-                      <button className="btn btn-link collapsed pL-0" type="button" data-toggle="collapse" data-target="#collapseMethodologyRevocationByOfficer" aria-expanded="true" aria-controls="collapseMethodologyRevocationByOfficer">
-                        <h6 className="lh-1 c-blue-500 mb-0">Methodology</h6>
-                      </button>
-                    </div>
-                  </div>
-                  <div id="collapseMethodologyRevocationByOfficer" className="collapse" aria-labelledby="methodologyHeadingRevocationByOfficer" data-parent="#methodologyRevocationByOfficer">
-                    <div>
-                      <ul>
-                        <li>
-                          This chart lists the 10 officers with the highest revocation counts in the
-                          state over the period.
-                        </li>
-                        <li>
-                          Revocations are counted towards an officer if that officer is flagged as
-                          the terminating officer at the time of a person&apos;s revocation.
-                        </li>
-                        <li>
-                          Revocations are included based on the date that the person&apos;s
-                          supervision was officially revoked, not the date of the causal violation
-                          or offense.
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-                <div className="layer bdT p-20 w-100">
-                  <div className="peers ai-c jc-c gapX-20">
-                    <div className="peer fw-600">
-                      <small className="c-grey-500 fw-600">Period </small>
-                      <span className="fsz-def fw-600 mR-10 c-grey-800">Last 60 days</span>
                     </div>
                   </div>
                 </div>

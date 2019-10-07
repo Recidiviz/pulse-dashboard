@@ -27,6 +27,7 @@ import {
   getGoalForChart, getMinForGoalAndData, getMaxForGoalAndData, trendlineGoalText,
   goalLabelContentString,
 } from '../../../utils/metricGoal';
+import { toInt } from '../../../utils/variableConversion';
 
 const SupervisionSuccessSnapshot = (props) => {
   const [chartLabels, setChartLabels] = useState([]);
@@ -49,12 +50,12 @@ const SupervisionSuccessSnapshot = (props) => {
       const dataPoints = [];
       countsByMonth.forEach((data) => {
         let { projected_year: year, projected_month: month } = data;
-        const successful = parseInt(data.successful_termination, 10);
-        const revocation = parseInt(data.revocation_termination, 10);
+        const successful = toInt(data.successful_termination);
+        const revocation = toInt(data.revocation_termination);
         const successRate = (100 * (successful / (successful + revocation))).toFixed(2);
 
-        year = parseInt(year, 10);
-        month = parseInt(month, 10);
+        year = toInt(year);
+        month = toInt(month);
 
         // Don't add completion rates for months in the future
         if (year < yearNow || (year === yearNow && month <= monthNow)) {

@@ -28,6 +28,7 @@ import { scaleLinear } from 'd3-scale';
 import geographyObject from '../../../assets/static/maps/us_nd.json';
 import { COLORS } from '../../../assets/scripts/constants/colors';
 import { configureDownloadButtons } from '../../../assets/scripts/utils/downloads';
+import { toHumanReadable, toInt } from '../../../utils/variableConversion';
 
 const chartId = 'revocationsByCounty';
 
@@ -36,7 +37,7 @@ const centerNDLat = 47.3;
 
 function countyNameFromCode(stateCode, countyCode) {
   let newCountyName = countyCode.replace(stateCode.concat('_'), '');
-  newCountyName = newCountyName.replace('_', ' ');
+  newCountyName = toHumanReadable(newCountyName);
   return newCountyName;
 }
 
@@ -72,7 +73,7 @@ class RevocationsByCounty extends Component {
         revocation_count: revocationCount,
       } = data;
 
-      const revocationCountNum = parseInt(revocationCount, 10);
+      const revocationCountNum = toInt(revocationCount);
 
       if (countyCode !== 'UNKNOWN_COUNTY') {
         if (revocationCountNum > this.maxValue) {

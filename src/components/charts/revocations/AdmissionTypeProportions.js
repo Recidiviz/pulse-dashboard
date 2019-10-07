@@ -21,6 +21,7 @@ import { Pie } from 'react-chartjs-2';
 import { COLORS_FIVE_VALUES } from '../../../assets/scripts/constants/colors';
 import { sortByLabel } from '../../../utils/dataOrganizing';
 import { configureDownloadButtons } from '../../../assets/scripts/utils/downloads';
+import { toInt } from '../../../utils/variableConversion';
 
 const AdmissionTypeProportions = (props) => {
   const [chartLabels, setChartLabels] = useState([]);
@@ -41,7 +42,7 @@ const AdmissionTypeProportions = (props) => {
     const dataPoints = [];
     admissionCountsByType.forEach((data) => {
       const { admission_type: admissionType } = data;
-      const count = parseInt(data.admission_count, 10);
+      const count = toInt(data.admission_count);
       dataPoints.push({ type: labelStringConversion[admissionType], count });
     });
 

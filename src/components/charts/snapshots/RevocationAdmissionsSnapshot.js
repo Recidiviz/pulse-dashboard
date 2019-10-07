@@ -27,6 +27,7 @@ import {
   getGoalForChart, getMinForGoalAndData, getMaxForGoalAndData, trendlineGoalText,
   goalLabelContentString,
 } from '../../../utils/metricGoal';
+import { toInt } from '../../../utils/variableConversion';
 
 const RevocationAdmissionsSnapshot = (props) => {
   const [chartLabels, setChartLabels] = useState([]);
@@ -46,10 +47,10 @@ const RevocationAdmissionsSnapshot = (props) => {
 
       countsByMonth.forEach((data) => {
         const { year, month } = data;
-        const newAdmissions = parseInt(data.new_admissions, 10);
-        const technicals = parseInt(data.technicals, 10);
-        const nonTechnicals = parseInt(data.non_technicals, 10);
-        const unknownRevocations = parseInt(data.unknown_revocations, 10);
+        const newAdmissions = toInt(data.new_admissions);
+        const technicals = toInt(data.technicals);
+        const nonTechnicals = toInt(data.non_technicals);
+        const unknownRevocations = toInt(data.unknown_revocations);
         const total = technicals + nonTechnicals + unknownRevocations + newAdmissions;
         const revocations = (technicals + nonTechnicals + unknownRevocations);
         const percentRevocations = (100 * (revocations / total)).toFixed(2);

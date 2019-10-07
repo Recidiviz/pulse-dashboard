@@ -112,7 +112,7 @@ const AdmissionsVsReleases = (props) => {
   const header = document.getElementById(props.header);
 
   if (header && mostRecentValue) {
-    const title = `The ND facilities <b style='color:#809AE5'>${direction} by ${mostRecentValue} people</b> this month.`;
+    const title = `The ND facilities <b style='color:#809AE5'>${direction} by ${Math.abs(mostRecentValue)} people</b> this month.`;
     header.innerHTML = title;
   }
 

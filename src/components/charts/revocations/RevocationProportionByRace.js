@@ -21,6 +21,7 @@ import { HorizontalBar } from 'react-chartjs-2';
 import { COLORS_FIVE_VALUES, COLORS } from '../../../assets/scripts/constants/colors';
 import { sortByLabel } from '../../../utils/dataOrganizing';
 import { configureDownloadButtons } from '../../../assets/scripts/utils/downloads';
+import { toInt } from '../../../utils/variableConversion';
 
 const labelStringConversion = {
   AMERICAN_INDIAN_ALASKAN_NATIVE: 'American Indian Alaskan Native',
@@ -57,14 +58,14 @@ const RevocationProportionByRace = (props) => {
     const revocationDataPoints = [];
     revocationProportionByRace.forEach((data) => {
       const { race_or_ethnicity: race } = data;
-      const count = parseInt(data.revocation_count, 10);
+      const count = toInt(data.revocation_count, 10);
       revocationDataPoints.push({ race: labelStringConversion[race], count });
     });
 
     const supervisionDataPoints = [];
     supervisionPopulationByRace.forEach((data) => {
       const { race_or_ethnicity: race } = data;
-      const count = parseInt(data.count, 10);
+      const count = toInt(data.count);
       supervisionDataPoints.push({ race: labelStringConversion[race], count });
     });
 
@@ -174,6 +175,10 @@ const RevocationProportionByRace = (props) => {
               labelString: 'Percentage',
             },
             stacked: true,
+            ticks: {
+              min: 0,
+              max: 100,
+            },
           }],
           yAxes: [{
             stacked: true,
