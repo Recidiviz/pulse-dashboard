@@ -24,7 +24,6 @@ import {
   Markers,
   Marker,
 } from 'react-simple-maps';
-import ReactTooltip from 'react-tooltip';
 import { geoAlbersUsa } from 'd3-geo';
 import { scaleLinear } from 'd3-scale';
 import geographyObject from '../../../assets/static/maps/us_nd.json';
@@ -57,19 +56,19 @@ function radiusOfMarker(office, maxValue) {
  * the center of the marker circle, given the location of the title, the
  * length of the office name, and the number of revocations.
  */
-function xOffsetForOfficeTitle(office) {
+function xOffsetForOfficeTitle(office, markerRadius) {
   const offsetPerRevocationDigit = 10;
   const offsetForParenthesis = 15;
   const offsetForNameLetter = 8;
   const digitsInRevocations = office.revocationCount.toString().length;
   const revLabelOffset = offsetPerRevocationDigit * digitsInRevocations + offsetForParenthesis;
   if (office.titleSide === 'left') {
-    return (-1 * office.revocationCount)
+    return (-1 * markerRadius)
       - (office.officeName.length * offsetForNameLetter) - revLabelOffset;
   }
 
   if (office.titleSide === 'right') {
-    return office.revocationCount
+    return markerRadius
      + (office.officeName.length * offsetForNameLetter) + revLabelOffset;
   }
 
@@ -80,15 +79,15 @@ function xOffsetForOfficeTitle(office) {
  * Returns how far the title should be offset (in pixels) along the y-axis from
  * the center of the marker circle given the location of the title.
  */
-function yOffsetForOfficeTitle(office) {
+function yOffsetForOfficeTitle(office, markerRadius) {
   const offsetForBottomLabels = 25;
   const offsetForAllLables = 10;
   if (office.titleSide === 'bottom') {
-    return office.revocationCount + offsetForBottomLabels;
+    return markerRadius + offsetForBottomLabels;
   }
 
   if (office.titleSide === 'top') {
-    return -1 * office.revocationCount - offsetForAllLables;
+    return -1 * markerRadius - offsetForAllLables;
   }
 
   return offsetForAllLables;
@@ -202,10 +201,6 @@ class RevocationsByOffice extends Component {
     configureDownloadButtons(chartId, downloadableDataFormat,
       Object.keys(this.chartDataPoints),
       document.getElementById(chartId), exportedStructureCallback);
-
-    setTimeout(() => {
-      ReactTooltip.rebuild();
-    }, 100);
   }
 
   render() {
@@ -271,8 +266,8 @@ class RevocationsByOffice extends Component {
                   />
                   <text
                     textAnchor="middle"
-                    x={xOffsetForOfficeTitle(office)}
-                    y={yOffsetForOfficeTitle(office)}
+                    x={xOffsetForOfficeTitle(office, radiusOfMarker(office, this.maxValue))}
+                    y={yOffsetForOfficeTitle(office, radiusOfMarker(office, this.maxValue))}
                     style={{
                       fontFamily: 'Roboto, sans-serif',
                       fontSize: '175%',
@@ -287,7 +282,6 @@ class RevocationsByOffice extends Component {
             </Markers>
           </ZoomableGroup>
         </ComposableMap>
-        <ReactTooltip />
       </div>
     );
   }

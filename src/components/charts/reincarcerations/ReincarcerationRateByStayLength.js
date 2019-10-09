@@ -67,8 +67,7 @@ const ReincarcerationRateByStayLength = (props) => {
         datasets: [{
           label: 'Reincarceration rate',
           backgroundColor: COLORS['blue-standard'],
-          borderColor: COLORS['blue-standard'],
-          borderWidth: 1,
+          hoverBackgroundColor: COLORS['blue-standard'],
           yAxisID: 'y-axis-left',
           data: chartDataPoints,
         }],
@@ -79,6 +78,7 @@ const ReincarcerationRateByStayLength = (props) => {
           display: false,
         },
         tooltips: {
+          backgroundColor: COLORS['grey-800-light'],
           mode: 'index',
           callbacks: {
             label(tooltipItems, data) {

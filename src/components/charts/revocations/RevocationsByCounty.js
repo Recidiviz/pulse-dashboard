@@ -50,13 +50,19 @@ function revocationCountForCounty(chartDataPoints, countyName) {
   return 0;
 }
 
-function colorForCounty(chartDataPoints, countsByCounty, countyName, maxValue) {
+function colorForCounty(chartDataPoints, countsByCounty, countyName, maxValue, useDark) {
   const countyScale = scaleLinear()
     .domain([0, maxValue / 8, maxValue])
     .range(['#F5F6F7', '#9FB1E3', COLORS['blue-standard-2']]);
 
+  const darkCountyScale = scaleLinear()
+    .domain([0, maxValue / 8, maxValue])
+    .range(['#CCD1DE', '#8897C4', '#1F2A3B']);
+
   const revocationsForCounty = revocationCountForCounty(chartDataPoints, countyName);
-  return countyScale(revocationsForCounty);
+  const color = (useDark)
+    ? darkCountyScale(revocationsForCounty) : countyScale(revocationsForCounty);
+  return color;
 }
 
 class RevocationsByCounty extends Component {
@@ -133,13 +139,16 @@ class RevocationsByCounty extends Component {
                       fill: colorForCounty(this.chartDataPoints,
                         this.revocationsByCounty,
                         geography.properties.NAME,
-                        this.maxValue),
+                        this.maxValue, false),
                       stroke: COLORS['grey-700'],
                       strokeWidth: 0.2,
                       outline: 'none',
                     },
                     hover: {
-                      fill: '#CFD8DC',
+                      fill: colorForCounty(this.chartDataPoints,
+                        this.revocationsByCounty,
+                        geography.properties.NAME,
+                        this.maxValue, true),
                       stroke: COLORS['grey-700'],
                       strokeWidth: 0.2,
                       outline: 'none',

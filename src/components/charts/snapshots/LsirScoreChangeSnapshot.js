@@ -77,6 +77,8 @@ const LsirScoreChangeSnapshot = (props) => {
           backgroundColor: COLORS['blue-standard'],
           borderColor: COLORS['blue-standard'],
           pointBackgroundColor: COLORS['blue-standard'],
+          pointHoverBackgroundColor: COLORS['blue-standard'],
+          pointHoverBorderColor: COLORS['blue-standard'],
           pointRadius: 4,
           hitRadius: 5,
           fill: false,
@@ -96,6 +98,7 @@ const LsirScoreChangeSnapshot = (props) => {
           },
         },
         tooltips: {
+          backgroundColor: COLORS['grey-800-light'],
           enabled: true,
           mode: 'point',
           callbacks: {

@@ -18,7 +18,7 @@
 import React, { useState, useEffect } from 'react';
 import * as $ from 'jquery';
 import { Bar } from 'react-chartjs-2';
-import { COLORS_FIVE_VALUES } from '../../../assets/scripts/constants/colors';
+import { COLORS, COLORS_FIVE_VALUES } from '../../../assets/scripts/constants/colors';
 import { configureDownloadButtons } from '../../../assets/scripts/utils/downloads';
 import { toHtmlFriendly, toHumanReadable, toInt } from '../../../utils/variableConversion';
 
@@ -178,18 +178,26 @@ const RevocationCountByOfficer = (props) => {
         datasets: [{
           label: 'Absconsion',
           backgroundColor: COLORS_FIVE_VALUES[0],
+          hoverBackgroundColor: COLORS_FIVE_VALUES[0],
+          hoverBorderColor: COLORS_FIVE_VALUES[0],
           data: absconsionDataPoints,
         }, {
           label: 'New Offense',
           backgroundColor: COLORS_FIVE_VALUES[1],
+          hoverBackgroundColor: COLORS_FIVE_VALUES[1],
+          hoverBorderColor: COLORS_FIVE_VALUES[1],
           data: newOffenseDataPoints,
         }, {
           label: 'Technical',
           backgroundColor: COLORS_FIVE_VALUES[2],
+          hoverBackgroundColor: COLORS_FIVE_VALUES[2],
+          hoverBorderColor: COLORS_FIVE_VALUES[2],
           data: technicalDataPoints,
         }, {
           label: 'Unknown Type',
           backgroundColor: COLORS_FIVE_VALUES[3],
+          hoverBackgroundColor: COLORS_FIVE_VALUES[3],
+          hoverBorderColor: COLORS_FIVE_VALUES[3],
           data: unknownDataPoints,
         },
         ],
@@ -201,6 +209,7 @@ const RevocationCountByOfficer = (props) => {
           boxWidth: 10,
         },
         tooltips: {
+          backgroundColor: COLORS['grey-800-light'],
           mode: 'index',
           intersect: false,
           callbacks: {

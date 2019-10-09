@@ -64,8 +64,11 @@ const RevocationCountOverTime = (props) => {
         labels: chartLabels,
         datasets: [{
           label: 'Total',
+          backgroundColor: COLORS['grey-500'],
           borderColor: COLORS['grey-500'],
-          pointBackgroundColor: COLORS['grey-700'],
+          pointBackgroundColor: COLORS['grey-500'],
+          pointHoverBackgroundColor: COLORS['grey-500'],
+          pointHoverBorderColor: COLORS['grey-500'],
           fill: false,
           borderWidth: 2,
           data: chartDataPoints,
@@ -99,6 +102,7 @@ const RevocationCountOverTime = (props) => {
           }],
         },
         tooltips: {
+          backgroundColor: COLORS['grey-800-light'],
           mode: 'x',
         },
         annotation: {

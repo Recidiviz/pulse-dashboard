@@ -125,42 +125,56 @@ const RevocationProportionByRace = (props) => {
         datasets: [{
           label: chartLabels[0],
           backgroundColor: COLORS_FIVE_VALUES[0],
+          hoverBackgroundColor: COLORS_FIVE_VALUES[0],
+          hoverBorderColor: COLORS_FIVE_VALUES[0],
           data: [
             revocationProportions[0], stateSupervisionProportions[0], statePopulationProportions[0],
           ],
         }, {
           label: chartLabels[1],
           backgroundColor: COLORS_FIVE_VALUES[1],
+          hoverBackgroundColor: COLORS_FIVE_VALUES[1],
+          hoverBorderColor: COLORS_FIVE_VALUES[1],
           data: [
             revocationProportions[1], stateSupervisionProportions[1], statePopulationProportions[1],
           ],
         }, {
           label: chartLabels[2],
           backgroundColor: COLORS_FIVE_VALUES[2],
+          hoverBackgroundColor: COLORS_FIVE_VALUES[2],
+          hoverBorderColor: COLORS_FIVE_VALUES[2],
           data: [
             revocationProportions[2], stateSupervisionProportions[2], statePopulationProportions[2],
           ],
         }, {
           label: chartLabels[3],
           backgroundColor: COLORS_FIVE_VALUES[3],
+          hoverBackgroundColor: COLORS_FIVE_VALUES[3],
+          hoverBorderColor: COLORS_FIVE_VALUES[3],
           data: [
             revocationProportions[3], stateSupervisionProportions[3], statePopulationProportions[3],
           ],
         }, {
           label: chartLabels[4],
           backgroundColor: COLORS_FIVE_VALUES[4],
+          hoverBackgroundColor: COLORS_FIVE_VALUES[4],
+          hoverBorderColor: COLORS_FIVE_VALUES[4],
           data: [
             revocationProportions[4], stateSupervisionProportions[4], statePopulationProportions[4],
           ],
         }, {
           label: chartLabels[5],
           backgroundColor: COLORS['blue-standard-2'],
+          hoverBackgroundColor: COLORS['blue-standard-2'],
+          hoverBorderColor: COLORS['blue-standard-2'],
           data: [
             revocationProportions[5], stateSupervisionProportions[5], statePopulationProportions[5],
           ],
         }, {
           label: chartLabels[6],
           backgroundColor: COLORS['blue-standard'],
+          hoverBackgroundColor: COLORS['blue-standard'],
+          hoverBorderColor: COLORS['blue-standard'],
           data: [
             revocationProportions[6], stateSupervisionProportions[6], statePopulationProportions[6],
           ],
@@ -189,6 +203,7 @@ const RevocationProportionByRace = (props) => {
           position: 'bottom',
         },
         tooltips: {
+          backgroundColor: COLORS['grey-800-light'],
           mode: 'dataset',
           intersect: true,
           callbacks: {

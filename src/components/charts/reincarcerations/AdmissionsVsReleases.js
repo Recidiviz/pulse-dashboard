@@ -18,7 +18,7 @@
 import React, { useState, useEffect } from 'react';
 
 import { Bar } from 'react-chartjs-2';
-import { COLORS_GOOD_BAD } from '../../../assets/scripts/constants/colors';
+import { COLORS, COLORS_GOOD_BAD } from '../../../assets/scripts/constants/colors';
 import { monthNamesWithYearsFromNumbers } from '../../../utils/monthConversion';
 import { sortAndFilterMostRecentMonths } from '../../../utils/dataOrganizing';
 import { configureDownloadButtons } from '../../../assets/scripts/utils/downloads';
@@ -26,6 +26,7 @@ import { configureDownloadButtons } from '../../../assets/scripts/utils/download
 const AdmissionsVsReleases = (props) => {
   const [chartLabels, setChartLabels] = useState([]);
   const [chartDataPoints, setChartDataPoints] = useState([]);
+  const [chartColors, setChartColors] = useState([]);
 
   const chartId = 'admissionsVsReleases';
 
@@ -40,8 +41,18 @@ const AdmissionsVsReleases = (props) => {
 
     const sorted = sortAndFilterMostRecentMonths(dataPoints, 6);
 
+    const colorsForValues = [];
+    sorted.forEach((dataPoint) => {
+      if (dataPoint.delta > 0) {
+        colorsForValues.push([COLORS_GOOD_BAD.bad]);
+      } else {
+        colorsForValues.push([COLORS_GOOD_BAD.good]);
+      }
+    });
+
     setChartLabels(monthNamesWithYearsFromNumbers(sorted.map((element) => element.month), false));
     setChartDataPoints(sorted.map((element) => element.delta));
+    setChartColors(colorsForValues);
   };
 
   useEffect(() => {
@@ -55,14 +66,9 @@ const AdmissionsVsReleases = (props) => {
         labels: chartLabels,
         datasets: [{
           label: 'Admissions versus releases',
-          backgroundColor: (context) => {
-            if (context.dataset.data[context.dataIndex] > 0) {
-              return COLORS_GOOD_BAD.bad;
-            }
-            return COLORS_GOOD_BAD.good;
-          },
+          backgroundColor: chartColors,
+          hoverBackgroundColor: chartColors,
           fill: false,
-          borderWidth: 2,
           data: chartDataPoints,
         }],
       }}
@@ -76,6 +82,7 @@ const AdmissionsVsReleases = (props) => {
           },
         },
         tooltips: {
+          backgroundColor: COLORS['grey-800-light'],
           mode: 'x',
         },
         scales: {

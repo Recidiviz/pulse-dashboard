@@ -262,6 +262,7 @@ const COLORS = {
   'grey-600': '#757575',
   'grey-700': '#616161',
   'grey-800': '#424242',
+  'grey-800-light': 'rgba(66, 66, 66, 0.95)',
   'grey-900': '#212121',
   'blue-grey-50': '#eceff1',
   'blue-grey-100': '#cfd8dc',
