@@ -50,7 +50,7 @@ function configureDownloadButtons(
           const values = {};
           let i = 0;
           dataset.data.forEach((dataPoint) => {
-            values[chartLabels[i]] = dataPoint;
+            values[chartLabels[i]] = Number(dataPoint);
             i += 1;
           });
 
