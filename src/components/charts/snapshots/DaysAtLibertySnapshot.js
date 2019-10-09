@@ -41,25 +41,23 @@ const DaysAtLibertySnapshot = (props) => {
   const processResponse = () => {
     const { daysAtLibertyByMonth } = props;
 
+    const dataPoints = [];
     if (daysAtLibertyByMonth) {
-      const dataPoints = [];
-
       daysAtLibertyByMonth.forEach((data) => {
         const { year, month } = data;
         const average = parseFloat(data.avg_liberty).toFixed(2);
         dataPoints.push({ year, month, average });
       });
-
-      const sorted = sortAndFilterMostRecentMonths(dataPoints, 13);
-      const chartDataValues = sorted.map((element) => element.average);
-      const min = getMinForGoalAndData(GOAL.value, chartDataValues, stepSize);
-      const max = getMaxForGoalAndData(GOAL.value, chartDataValues, stepSize);
-
-      setChartLabels(monthNamesWithYearsFromNumbers(sorted.map((element) => element.month), true));
-      setChartDataPoints(chartDataValues);
-      setChartMinValue(min);
-      setChartMaxValue(max);
     }
+    const sorted = sortAndFilterMostRecentMonths(dataPoints, 13);
+    const chartDataValues = sorted.map((element) => element.average);
+    const min = getMinForGoalAndData(GOAL.value, chartDataValues, stepSize);
+    const max = getMaxForGoalAndData(GOAL.value, chartDataValues, stepSize);
+
+    setChartLabels(monthNamesWithYearsFromNumbers(sorted.map((element) => element.month), true));
+    setChartDataPoints(chartDataValues);
+    setChartMinValue(min);
+    setChartMaxValue(max);
   };
 
   useEffect(() => {

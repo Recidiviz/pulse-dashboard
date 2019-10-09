@@ -20,7 +20,7 @@ import React, { useState, useEffect } from 'react';
 import { Bar } from 'react-chartjs-2';
 import { COLORS, COLORS_STACKED_TWO_VALUES } from '../../../assets/scripts/constants/colors';
 import { monthNamesWithYearsFromNumbers } from '../../../utils/monthConversion';
-import { sortAndFilterMostRecentMonths } from '../../../utils/dataOrganizing';
+import { sortFilterAndSupplementMostRecentMonths } from '../../../utils/dataOrganizing';
 import { configureDownloadButtons } from '../../../assets/scripts/utils/downloads';
 
 const RevocationCountBySupervisionType = (props) => {
@@ -35,16 +35,18 @@ const RevocationCountBySupervisionType = (props) => {
 
     const paroleData = [];
     const probationData = [];
-    countsByMonth.forEach((data) => {
-      const {
-        year, month, parole_count: paroleCount, probation_count: probationCount,
-      } = data;
-      paroleData.push({ year, month, paroleCount });
-      probationData.push({ year, month, probationCount });
-    });
+    if (countsByMonth) {
+      countsByMonth.forEach((data) => {
+        const {
+          year, month, parole_count: paroleCount, probation_count: probationCount,
+        } = data;
+        paroleData.push({ year, month, paroleCount });
+        probationData.push({ year, month, probationCount });
+      });
+    }
 
-    const sortedParoleData = sortAndFilterMostRecentMonths(paroleData, 6);
-    const sortedProbationData = sortAndFilterMostRecentMonths(probationData, 6);
+    const sortedParoleData = sortFilterAndSupplementMostRecentMonths(paroleData, 6, 'paroleCount', 0);
+    const sortedProbationData = sortFilterAndSupplementMostRecentMonths(probationData, 6, 'probationCount', 0);
 
     setChartLabels(monthNamesWithYearsFromNumbers(sortedParoleData.map(
       (element) => element.month,

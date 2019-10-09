@@ -20,7 +20,7 @@ import React, { useState, useEffect } from 'react';
 import { Bar } from 'react-chartjs-2';
 import { COLORS, COLORS_GOOD_BAD } from '../../../assets/scripts/constants/colors';
 import { monthNamesWithYearsFromNumbers } from '../../../utils/monthConversion';
-import { sortAndFilterMostRecentMonths } from '../../../utils/dataOrganizing';
+import { sortFilterAndSupplementMostRecentMonths } from '../../../utils/dataOrganizing';
 import { configureDownloadButtons } from '../../../assets/scripts/utils/downloads';
 
 const AdmissionsVsReleases = (props) => {
@@ -34,12 +34,13 @@ const AdmissionsVsReleases = (props) => {
     const { admissionsVsReleases } = props;
 
     const dataPoints = [];
-    admissionsVsReleases.forEach((data) => {
-      const { year, month, population_change: delta } = data;
-      dataPoints.push({ year, month, delta });
-    });
-
-    const sorted = sortAndFilterMostRecentMonths(dataPoints, 6);
+    if (admissionsVsReleases) {
+      admissionsVsReleases.forEach((data) => {
+        const { year, month, population_change: delta } = data;
+        dataPoints.push({ year, month, delta });
+      });
+    }
+    const sorted = sortFilterAndSupplementMostRecentMonths(dataPoints, 6, 'delta', 0);
 
     const colorsForValues = [];
     sorted.forEach((dataPoint) => {
@@ -114,12 +115,18 @@ const AdmissionsVsReleases = (props) => {
 
   const chartData = chart.props.data.datasets[0].data;
   const mostRecentValue = chartData[chartData.length - 1];
-  const direction = (mostRecentValue > 0) ? 'grew' : 'shrank';
 
   const header = document.getElementById(props.header);
 
-  if (header && mostRecentValue) {
-    const title = `The ND facilities <b style='color:#809AE5'>${direction} by ${Math.abs(mostRecentValue)} people</b> this month.`;
+  if (header && (mostRecentValue !== null)) {
+    let title = '';
+    if (mostRecentValue === 0) {
+      title = `The ND facilities <b style='color:#809AE5'> have not changed in size</b> this month.`;
+    } else {
+      const direction = (mostRecentValue > 0) ? 'grew' : 'shrank';
+      title = `The ND facilities <b style='color:#809AE5'>${direction} by ${Math.abs(mostRecentValue)} people</b> this month.`;
+    }
+
     header.innerHTML = title;
   }
 

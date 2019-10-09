@@ -111,44 +111,48 @@ const RevocationCountByOfficer = (props) => {
     const offices = {};
     const officeIds = [];
 
-    officeData.forEach((office) => {
-      const {
-        site_id: officeId,
-        site_name: officeName,
-      } = office;
+    if (officeData) {
+      officeData.forEach((office) => {
+        const {
+          site_id: officeId,
+          site_name: officeName,
+        } = office;
 
-      offices[officeId] = toHtmlFriendly(officeName);
-      officeIds.push(officeId);
-    });
+        offices[officeId] = toHtmlFriendly(officeName);
+        officeIds.push(officeId);
+      });
+    }
 
     const dataPoints = {};
-    revocationCountsByOfficer.forEach((data) => {
-      const {
-        officer_external_id: officerIDRaw, absconsion_count: absconsionCount,
-        felony_count: felonyCount, technical_count: technicalCount,
-        unknown_count: unknownCount, site_id: officeId,
-      } = data;
+    if (revocationCountsByOfficer) {
+      revocationCountsByOfficer.forEach((data) => {
+        const {
+          officer_external_id: officerIDRaw, absconsion_count: absconsionCount,
+          felony_count: felonyCount, technical_count: technicalCount,
+          unknown_count: unknownCount, site_id: officeId,
+        } = data;
 
-      const violationsByType = {
-        ABSCONDED: toInt(absconsionCount),
-        FELONY: toInt(felonyCount),
-        TECHNICAL: toInt(technicalCount),
-        UNKNOWN_VIOLATION_TYPE: toInt(unknownCount),
-      };
+        const violationsByType = {
+          ABSCONDED: toInt(absconsionCount),
+          FELONY: toInt(felonyCount),
+          TECHNICAL: toInt(technicalCount),
+          UNKNOWN_VIOLATION_TYPE: toInt(unknownCount),
+        };
 
-      let officeName = offices[toInt(officeId)];
-      if (officeName && officerIDRaw !== 'OFFICER_UNKNOWN') {
-        officeName = toHtmlFriendly(officeName);
-        const officerId = toInt(officerIDRaw);
-        if (dataPoints[officeName] == null) {
-          dataPoints[officeName] = [];
+        let officeName = offices[toInt(officeId)];
+        if (officeName && officerIDRaw !== 'OFFICER_UNKNOWN') {
+          officeName = toHtmlFriendly(officeName);
+          const officerId = toInt(officerIDRaw);
+          if (dataPoints[officeName] == null) {
+            dataPoints[officeName] = [];
+          }
+          dataPoints[officeName].push({
+            officerId,
+            violationsByType,
+          });
         }
-        dataPoints[officeName].push({
-          officerId,
-          violationsByType,
-        });
-      }
-    });
+      });
+    }
 
     // Disable any office name from the dropdown menu if there is no data
     // for that office

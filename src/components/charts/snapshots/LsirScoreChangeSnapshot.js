@@ -41,26 +41,25 @@ const LsirScoreChangeSnapshot = (props) => {
   const processResponse = () => {
     const { lsirScoreChangeByMonth: changeByMonth } = props;
 
+    const dataPoints = [];
     if (changeByMonth) {
-      const dataPoints = [];
-
       changeByMonth.forEach((data) => {
         const { termination_year: year, termination_month: month } = data;
         const change = parseFloat(data.average_change).toFixed(2);
 
         dataPoints.push({ year, month, change });
       });
-
-      const sorted = sortAndFilterMostRecentMonths(dataPoints, 13);
-      const chartDataValues = sorted.map((element) => element.change);
-      const min = getMinForGoalAndData(GOAL.value, chartDataValues, stepSize);
-      const max = getMaxForGoalAndData(GOAL.value, chartDataValues, stepSize);
-
-      setChartLabels(monthNamesWithYearsFromNumbers(sorted.map((element) => element.month), true));
-      setChartDataPoints(chartDataValues);
-      setChartMinValue(min);
-      setChartMaxValue(max);
     }
+
+    const sorted = sortAndFilterMostRecentMonths(dataPoints, 13);
+    const chartDataValues = sorted.map((element) => element.change);
+    const min = getMinForGoalAndData(GOAL.value, chartDataValues, stepSize);
+    const max = getMaxForGoalAndData(GOAL.value, chartDataValues, stepSize);
+
+    setChartLabels(monthNamesWithYearsFromNumbers(sorted.map((element) => element.month), true));
+    setChartDataPoints(chartDataValues);
+    setChartMinValue(min);
+    setChartMaxValue(max);
   };
 
   useEffect(() => {

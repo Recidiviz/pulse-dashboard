@@ -72,23 +72,26 @@ class RevocationsByCounty extends Component {
     this.revocationsByCounty = this.props.revocationsByCounty;
     this.chartDataPoints = {};
     this.maxValue = -1e100;
-    this.revocationsByCounty.forEach((data) => {
-      const {
-        state_code: stateCode,
-        county_code: countyCode,
-        revocation_count: revocationCount,
-      } = data;
 
-      const revocationCountNum = toInt(revocationCount);
+    if (this.revocationsByCounty) {
+      this.revocationsByCounty.forEach((data) => {
+        const {
+          state_code: stateCode,
+          county_code: countyCode,
+          revocation_count: revocationCount,
+        } = data;
 
-      if (countyCode !== 'UNKNOWN_COUNTY') {
-        if (revocationCountNum > this.maxValue) {
-          this.maxValue = revocationCountNum;
+        const revocationCountNum = toInt(revocationCount);
+
+        if (countyCode !== 'UNKNOWN_COUNTY') {
+          if (revocationCountNum > this.maxValue) {
+            this.maxValue = revocationCountNum;
+          }
+          const standardCountyName = countyNameFromCode(stateCode, countyCode);
+          this.chartDataPoints[standardCountyName] = revocationCountNum;
         }
-        const standardCountyName = countyNameFromCode(stateCode, countyCode);
-        this.chartDataPoints[standardCountyName] = revocationCountNum;
-      }
-    });
+      });
+    }
   }
 
   componentDidMount() {

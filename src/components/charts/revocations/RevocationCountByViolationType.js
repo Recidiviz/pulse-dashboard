@@ -20,7 +20,7 @@ import React, { useState, useEffect } from 'react';
 import { Bar } from 'react-chartjs-2';
 import { COLORS, COLORS_FIVE_VALUES } from '../../../assets/scripts/constants/colors';
 import { monthNamesWithYearsFromNumbers } from '../../../utils/monthConversion';
-import { sortAndFilterMostRecentMonths } from '../../../utils/dataOrganizing';
+import { sortFilterAndSupplementMostRecentMonths } from '../../../utils/dataOrganizing';
 import { configureDownloadButtons } from '../../../assets/scripts/utils/downloads';
 
 const RevocationCountByViolationType = (props) => {
@@ -36,25 +36,33 @@ const RevocationCountByViolationType = (props) => {
     const { revocationCountsByMonthByViolationType: countsByMonth } = props;
 
     const dataPoints = [];
-    countsByMonth.forEach((data) => {
-      const {
-        year, month, absconsion_count: absconsionCount,
-        felony_count: felonyCount, technical_count: technicalCount,
-        unknown_count: unknownCount,
-      } = data;
+    if (countsByMonth) {
+      countsByMonth.forEach((data) => {
+        const {
+          year, month, absconsion_count: absconsionCount,
+          felony_count: felonyCount, technical_count: technicalCount,
+          unknown_count: unknownCount,
+        } = data;
 
-      const monthDict = {
-        ABSCONDED: absconsionCount,
-        FELONY: felonyCount,
-        TECHNICAL: technicalCount,
-        UNKNOWN_VIOLATION_TYPE: unknownCount,
-      };
+        const monthDict = {
+          ABSCONDED: absconsionCount,
+          FELONY: felonyCount,
+          TECHNICAL: technicalCount,
+          UNKNOWN_VIOLATION_TYPE: unknownCount,
+        };
 
-      dataPoints.push({ year, month, monthDict });
-    });
+        dataPoints.push({ year, month, monthDict });
+      });
+    }
 
-    const sorted = sortAndFilterMostRecentMonths(dataPoints, 6);
+    const emptyMonthDict = {
+      ABSCONDED: 0,
+      FELONY: 0,
+      TECHNICAL: 0,
+      UNKNOWN_VIOLATION_TYPE: 0,
+    };
 
+    const sorted = sortFilterAndSupplementMostRecentMonths(dataPoints, 6, 'monthDict', emptyMonthDict);
     const monthsLabels = [];
     const violationArrays = {
       ABSCONDED: [],

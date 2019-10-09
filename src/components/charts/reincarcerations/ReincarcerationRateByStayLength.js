@@ -34,17 +34,19 @@ const ReincarcerationRateByStayLength = (props) => {
       '60-72', '72-84', '84-96', '96-108', '108-120', '120+'];
 
     const ratesByStayLengthData = [];
-    ratesByStayLength.forEach((data) => {
-      let { stay_length_bucket: stayLength } = data;
+    if (ratesByStayLength) {
+      ratesByStayLength.forEach((data) => {
+        let { stay_length_bucket: stayLength } = data;
 
-      if (stayLength === '<12') {
-        stayLength = '0-12';
-      } else if (stayLength === '120<') {
-        stayLength = '120+';
-      }
+        if (stayLength === '<12') {
+          stayLength = '0-12';
+        } else if (stayLength === '120<') {
+          stayLength = '120+';
+        }
 
-      ratesByStayLengthData[stayLength] = data.recidivism_rate;
-    });
+        ratesByStayLengthData[stayLength] = data.recidivism_rate;
+      });
+    }
 
     const rates = [];
     for (let i = 0; i < stayLengthLabels.length; i += 1) {

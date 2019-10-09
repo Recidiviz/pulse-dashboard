@@ -115,53 +115,57 @@ class RevocationsByOffice extends Component {
     this.officeIds = [];
     this.maxValue = -1e100;
 
-    // Load office metadata
-    this.officeData.forEach((officeData) => {
-      const {
-        site_id: officeId,
-        site_name: name,
-        long: longValue,
-        lat: latValue,
-        title_side: titleSideValue,
-      } = officeData;
+    if (this.officeData) {
+      // Load office metadata
+      this.officeData.forEach((officeData) => {
+        const {
+          site_id: officeId,
+          site_name: name,
+          long: longValue,
+          lat: latValue,
+          title_side: titleSideValue,
+        } = officeData;
 
-      const office = {
-        officeName: name,
-        coordinates: [longValue, latValue],
-        titleSide: titleSideValue,
-      };
+        const office = {
+          officeName: name,
+          coordinates: [longValue, latValue],
+          titleSide: titleSideValue,
+        };
 
-      this.offices[officeId] = office;
-      this.officeIds.push(officeId);
-    });
+        this.offices[officeId] = office;
+        this.officeIds.push(officeId);
+      });
+    }
 
     // Load revocation data for each office
     this.chartDataPoints = [];
     this.officeIdsWithData = [];
-    this.revocationsByOffice.forEach((data) => {
-      const {
-        site_id: officeId,
-        absconsion_count: absconsionCount,
-        felony_count: felonyCount,
-        technical_count: technicalCount,
-        unknown_count: unknownCount,
-      } = data;
+    if (this.revocationsByOffice) {
+      this.revocationsByOffice.forEach((data) => {
+        const {
+          site_id: officeId,
+          absconsion_count: absconsionCount,
+          felony_count: felonyCount,
+          technical_count: technicalCount,
+          unknown_count: unknownCount,
+        } = data;
 
-      const revocationCountNum = toInt(absconsionCount)
-        + toInt(felonyCount) + toInt(technicalCount) + toInt(unknownCount);
-      const officeIdInt = toInt(officeId);
-      const office = this.offices[officeIdInt];
-      if (office) {
-        office.revocationCount = revocationCountNum;
-        office.officerDropdownItemId = `${this.officerDropdownId}-${toHtmlFriendly(office.officeName)}`;
-        this.chartDataPoints.push(office);
-        this.officeIdsWithData.push(officeIdInt);
+        const revocationCountNum = toInt(absconsionCount)
+          + toInt(felonyCount) + toInt(technicalCount) + toInt(unknownCount);
+        const officeIdInt = toInt(officeId);
+        const office = this.offices[officeIdInt];
+        if (office) {
+          office.revocationCount = revocationCountNum;
+          office.officerDropdownItemId = `${this.officerDropdownId}-${toHtmlFriendly(office.officeName)}`;
+          this.chartDataPoints.push(office);
+          this.officeIdsWithData.push(officeIdInt);
 
-        if (office.revocationCount > this.maxValue) {
-          this.maxValue = office.revocationCount;
+          if (office.revocationCount > this.maxValue) {
+            this.maxValue = office.revocationCount;
+          }
         }
-      }
-    });
+      });
+    }
 
     // Set the revocation count to 0 for offices without data
     const officeIdsWithoutData = this.officeIds.filter((value) => (

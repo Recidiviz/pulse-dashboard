@@ -56,18 +56,22 @@ const RevocationProportionByRace = (props) => {
     const { supervisionPopulationByRace } = props;
 
     const revocationDataPoints = [];
-    revocationProportionByRace.forEach((data) => {
-      const { race_or_ethnicity: race } = data;
-      const count = toInt(data.revocation_count, 10);
-      revocationDataPoints.push({ race: labelStringConversion[race], count });
-    });
+    if (revocationProportionByRace) {
+      revocationProportionByRace.forEach((data) => {
+        const { race_or_ethnicity: race } = data;
+        const count = toInt(data.revocation_count, 10);
+        revocationDataPoints.push({ race: labelStringConversion[race], count });
+      });
+    }
 
     const supervisionDataPoints = [];
-    supervisionPopulationByRace.forEach((data) => {
-      const { race_or_ethnicity: race } = data;
-      const count = toInt(data.count);
-      supervisionDataPoints.push({ race: labelStringConversion[race], count });
-    });
+    if (supervisionPopulationByRace) {
+      supervisionPopulationByRace.forEach((data) => {
+        const { race_or_ethnicity: race } = data;
+        const count = toInt(data.count);
+        supervisionDataPoints.push({ race: labelStringConversion[race], count });
+      });
+    }
 
     const racesRepresentedRevocations = revocationDataPoints.map((element) => element.race);
     const racesRepresentedSupervision = supervisionDataPoints.map((element) => element.race);

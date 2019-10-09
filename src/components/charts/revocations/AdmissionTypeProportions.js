@@ -40,11 +40,17 @@ const AdmissionTypeProportions = (props) => {
     };
 
     const dataPoints = [];
-    admissionCountsByType.forEach((data) => {
-      const { admission_type: admissionType } = data;
-      const count = toInt(data.admission_count);
-      dataPoints.push({ type: labelStringConversion[admissionType], count });
-    });
+    if (admissionCountsByType) {
+      admissionCountsByType.forEach((data) => {
+        const { admission_type: admissionType } = data;
+        const count = toInt(data.admission_count);
+        dataPoints.push({ type: labelStringConversion[admissionType], count });
+      });
+    } else {
+      Object.values(labelStringConversion).forEach((type) => {
+        dataPoints.push({ type, count: 0 });
+      });
+    }
 
     const sorted = sortByLabel(dataPoints, 'type');
 

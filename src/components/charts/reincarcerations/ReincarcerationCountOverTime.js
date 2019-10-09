@@ -21,7 +21,7 @@ import { Line } from 'react-chartjs-2';
 import { configureDownloadButtons } from '../../../assets/scripts/utils/downloads';
 import { COLORS } from '../../../assets/scripts/constants/colors';
 import { monthNamesWithYearsFromNumbers } from '../../../utils/monthConversion';
-import { sortAndFilterMostRecentMonths } from '../../../utils/dataOrganizing';
+import { sortFilterAndSupplementMostRecentMonths } from '../../../utils/dataOrganizing';
 import { getGoalForChart, getMaxForGoalAndData, goalLabelContentString } from '../../../utils/metricGoal';
 
 const ReincarcerationCountOverTime = (props) => {
@@ -38,12 +38,14 @@ const ReincarcerationCountOverTime = (props) => {
     const { reincarcerationCountsByMonth: countsByMonth } = props;
 
     const dataPoints = [];
-    countsByMonth.forEach((data) => {
-      const { year, month, returns: count } = data;
-      dataPoints.push({ year, month, count });
-    });
+    if (countsByMonth) {
+      countsByMonth.forEach((data) => {
+        const { year, month, returns: count } = data;
+        dataPoints.push({ year, month, count });
+      });
+    }
 
-    const sorted = sortAndFilterMostRecentMonths(dataPoints, 6);
+    const sorted = sortFilterAndSupplementMostRecentMonths(dataPoints, 6, 'count', 0);
     const chartDataValues = (sorted.map((element) => element.count));
     const max = getMaxForGoalAndData(GOAL.value, chartDataValues, stepSize);
 
@@ -170,7 +172,7 @@ const ReincarcerationCountOverTime = (props) => {
 
   const header = document.getElementById(props.header);
 
-  if (header && mostRecentValue) {
+  if (header && (mostRecentValue !== null)) {
     const title = `There have been <b style='color:#809AE5'>${mostRecentValue} reincarcerations</b> to a DOCR facility this month so far.`;
     header.innerHTML = title;
   }

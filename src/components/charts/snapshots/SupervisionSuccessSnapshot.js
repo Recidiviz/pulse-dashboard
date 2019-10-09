@@ -42,12 +42,12 @@ const SupervisionSuccessSnapshot = (props) => {
   const processResponse = () => {
     const { supervisionSuccessRates: countsByMonth } = props;
 
-    if (countsByMonth) {
-      const today = new Date();
-      const yearNow = today.getFullYear();
-      const monthNow = today.getMonth() + 1;
+    const today = new Date();
+    const yearNow = today.getFullYear();
+    const monthNow = today.getMonth() + 1;
 
-      const dataPoints = [];
+    const dataPoints = [];
+    if (countsByMonth) {
       countsByMonth.forEach((data) => {
         let { projected_year: year, projected_month: month } = data;
         const successful = toInt(data.successful_termination);
@@ -62,17 +62,16 @@ const SupervisionSuccessSnapshot = (props) => {
           dataPoints.push({ year, month, successRate });
         }
       });
-
-      const sorted = sortAndFilterMostRecentMonths(dataPoints, 13);
-      const chartDataValues = (sorted.map((element) => element.successRate));
-      const min = getMinForGoalAndData(GOAL.value, chartDataValues, stepSize);
-      const max = getMaxForGoalAndData(GOAL.value, chartDataValues, stepSize);
-
-      setChartLabels(monthNamesWithYearsFromNumbers(sorted.map((element) => element.month), true));
-      setChartDataPoints(chartDataValues);
-      setChartMinValue(min);
-      setChartMaxValue(max);
     }
+    const sorted = sortAndFilterMostRecentMonths(dataPoints, 13);
+    const chartDataValues = (sorted.map((element) => element.successRate));
+    const min = getMinForGoalAndData(GOAL.value, chartDataValues, stepSize);
+    const max = getMaxForGoalAndData(GOAL.value, chartDataValues, stepSize);
+
+    setChartLabels(monthNamesWithYearsFromNumbers(sorted.map((element) => element.month), true));
+    setChartDataPoints(chartDataValues);
+    setChartMinValue(min);
+    setChartMaxValue(max);
   };
 
   useEffect(() => {
