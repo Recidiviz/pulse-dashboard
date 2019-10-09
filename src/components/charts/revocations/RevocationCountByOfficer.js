@@ -101,9 +101,10 @@ const RevocationCountByOfficer = (props) => {
       downloadableDataFormat = [];
     }
 
+    const convertValuesToNumbers = false;
     configureDownloadButtons(chartId, downloadableDataFormat,
       chart.props.data.labels, document.getElementById(chartId),
-      exportedStructureCallback);
+      exportedStructureCallback, convertValuesToNumbers);
   }
 
   const processResponse = () => {

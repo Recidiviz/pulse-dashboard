@@ -202,9 +202,11 @@ class RevocationsByOffice extends Component {
       label: chartId,
     }];
 
+    const convertValuesToNumbers = false;
     configureDownloadButtons(chartId, downloadableDataFormat,
       Object.keys(this.chartDataPoints),
-      document.getElementById(chartId), exportedStructureCallback);
+      document.getElementById(chartId), exportedStructureCallback,
+      convertValuesToNumbers);
   }
 
   render() {

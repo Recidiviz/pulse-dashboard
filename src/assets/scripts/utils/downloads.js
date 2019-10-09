@@ -31,7 +31,7 @@ function downloadObjectAsJson(exportObj, exportName) {
 
 function configureDownloadButtons(
   chartId, chartDatasets, chartLabels, chartBox,
-  exportedStructureCallback,
+  exportedStructureCallback, convertValuesToNumbers,
 ) {
   const downloadChartAsImageButton = document.getElementById(`downloadChartAsImage-${chartId}`);
   if (downloadChartAsImageButton) {
@@ -50,7 +50,11 @@ function configureDownloadButtons(
           const values = {};
           let i = 0;
           dataset.data.forEach((dataPoint) => {
-            values[chartLabels[i]] = Number(dataPoint);
+            if (convertValuesToNumbers === undefined || convertValuesToNumbers) {
+              values[chartLabels[i]] = Number(dataPoint);
+            } else {
+              values[chartLabels[i]] = dataPoint;
+            }
             i += 1;
           });
 
