@@ -189,12 +189,14 @@ class RevocationsByOffice extends Component {
       });
 
     const revocationsByOffice = [];
+    const officeNames = [];
     this.chartDataPoints.forEach((data) => {
       const {
         officeName,
         revocationCount,
       } = data;
-      revocationsByOffice.push({ officeName, revocationCount });
+      revocationsByOffice.push(revocationCount);
+      officeNames.push(officeName);
     });
 
     const downloadableDataFormat = [{
@@ -202,11 +204,9 @@ class RevocationsByOffice extends Component {
       label: chartId,
     }];
 
-    const convertValuesToNumbers = false;
     configureDownloadButtons(chartId, downloadableDataFormat,
-      Object.keys(this.chartDataPoints),
-      document.getElementById(chartId), exportedStructureCallback,
-      convertValuesToNumbers);
+      officeNames,
+      document.getElementById(chartId), exportedStructureCallback);
   }
 
   render() {

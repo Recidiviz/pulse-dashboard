@@ -91,19 +91,36 @@ const RevocationCountByOfficer = (props) => {
         series: [],
       });
 
+    const officerIds = [];
     let downloadableDataFormat = [];
-    if (chartData[visibleOffice]) {
+    if (visibleOffice === 'All-Officers') {
+      const allOfficeData = [];
+      Object.keys(chartData).forEach((office) => {
+        Object.values(chartData[office]).forEach((officer) => {
+          allOfficeData.push(officer);
+          officerIds.push(officer.officerId);
+        });
+      });
+      downloadableDataFormat = [{
+        data: allOfficeData,
+        label: chartId,
+      }];
+    } else if (chartData[visibleOffice]) {
       downloadableDataFormat = [{
         data: Object.values(chartData[visibleOffice]),
         label: chartId,
       }];
+
+      Object.values(chartData[visibleOffice]).forEach((officer) => {
+        officerIds.push(officer.officerId);
+      });
     } else {
       downloadableDataFormat = [];
     }
 
     const convertValuesToNumbers = false;
     configureDownloadButtons(chartId, downloadableDataFormat,
-      chart.props.data.labels, document.getElementById(chartId),
+      officerIds, document.getElementById(chartId),
       exportedStructureCallback, convertValuesToNumbers);
   }
 
