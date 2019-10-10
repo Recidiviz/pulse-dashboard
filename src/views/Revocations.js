@@ -105,12 +105,17 @@ const Revocations = () => {
                       <ul>
                         <li>
                           Revocation counts include the number of people who were incarcerated
-                          because their supervision was revoked.
+                          in a DOCR facility because their supervision was revoked.
                         </li>
                         <li>
-                          Violations include all behavioral violations officially recorded by a
-                          supervision officer, including new offenses, technical violations, and
-                          absconsion.
+                          Revocations are included based on the date that the person
+                          was admitted to a DOCR facility because their supervision
+                          was revoked, not the date of the causal violation or offense.
+                        </li>
+                        <li>
+                          Violations include all violations of supervision conditions
+                          that resulted in revocation, which are new offenses,
+                          technical violations, and absconsion.
                         </li>
                       </ul>
                     </div>
@@ -159,7 +164,7 @@ const Revocations = () => {
                       <ul>
                         <li>
                           Revocation counts include the number of people who were incarcerated
-                          because their supervision was revoked.
+                          in a DOCR facility because their supervision was revoked.
                         </li>
                         <li>
                           Revocations are attributed to the county where the person&apos;s
@@ -229,7 +234,7 @@ const Revocations = () => {
                       <ul>
                         <li>
                           Revocation counts include the number of people who were incarcerated
-                          because their supervision was revoked.
+                          in a DOCR facility because their supervision was revoked.
                         </li>
                         <li>
                           Revocations are attributed to the site of the
@@ -325,10 +330,6 @@ const Revocations = () => {
                     <div>
                       <ul>
                         <li>
-                          This chart lists the 10 officers with the highest revocation counts in the
-                          state over the period.
-                        </li>
-                        <li>
                           Revocations are counted towards an officer if that officer is flagged as
                           the terminating officer at the time of a person&apos;s revocation.
                         </li>
@@ -392,12 +393,17 @@ const Revocations = () => {
                       <ul>
                         <li>
                           Revocation counts include the number of people who were incarcerated
-                          because their supervision was revoked.
+                          in a DOCR facility because their supervision was revoked.
                         </li>
                         <li>
-                          Violations include all behavioral violations officially recorded by a
-                          supervision officer, including new offenses, technical violations, and
-                          absconsion.
+                          Revocations are included based on the date that the person
+                          was admitted to a DOCR facility because their supervision
+                          was revoked, not the date of the causal violation or offense.
+                        </li>
+                        <li>
+                          Violations include all violations of supervision conditions
+                          that resulted in revocation, which are new offenses,
+                          technical violations, and absconsion.
                         </li>
                       </ul>
                     </div>
@@ -446,12 +452,12 @@ const Revocations = () => {
                       <ul>
                         <li>
                           Revocation counts include the number of people who were incarcerated
-                          because their supervision was revoked.
+                          in a DOCR facility because their supervision was revoked.
                         </li>
                         <li>
-                          Violations include all behavioral violations officially recorded by a
-                          supervision officer, including new offenses, technical violations, and
-                          absconsion.
+                          Violations include all violations of supervision conditions
+                          that resulted in revocation, which are new offenses,
+                          technical violations, and absconsion.
                         </li>
                         <li>
                           Violations of "Unknown Type" indicate individuals who were admitted to
@@ -462,6 +468,11 @@ const Revocations = () => {
                           "Technical" revocations include only those revocations which result solely
                           from a technical violation. If there is a violation that includes a new
                           offense or an absconsion, it is considered a non-technical revocation.
+                        </li>
+                        <li>
+                          Revocations are included based on the date that the person
+                          was admitted to a DOCR facility because their supervision
+                          was revoked, not the date of the causal violation or offense.
                         </li>
                       </ul>
                     </div>
@@ -514,7 +525,7 @@ const Revocations = () => {
                         </li>
                         <li>
                           Revocation counts include the number of people who were incarcerated
-                          because their supervision was revoked.
+                          in a DOCR facility because their supervision was revoked.
                         </li>
                         <li>
                           "Technical Revocations" include only those revocations which result solely
@@ -588,7 +599,7 @@ const Revocations = () => {
                       <ul>
                         <li>
                           Revocation counts include the number of people who were incarcerated
-                          because their supervision was revoked.
+                          in a DOCR facility because their supervision was revoked.
                         </li>
                         <li>
                           The supervision population counts people on probation or parole in North
