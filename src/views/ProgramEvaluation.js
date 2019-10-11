@@ -15,14 +15,15 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 
-import Loading from "../components/Loading";
-import "../assets/styles/index.scss";
-import { useAuth0 } from "../react-auth0-spa";
+import Loading from '../components/Loading';
+import '../assets/styles/index.scss';
+import { useAuth0 } from '../react-auth0-spa';
+import { callMetricsApi, awaitingResults } from '../utils/metricsClient';
 
-import RecidivismRateByProgram from "../components/charts/programEvaluation/RecidivismRateByProgram";
-import ProgramCostEffectiveness from "../components/charts/programEvaluation/ProgramCostEffectiveness";
+import RecidivismRateByProgram from '../components/charts/programEvaluation/RecidivismRateByProgram';
+import ProgramCostEffectiveness from '../components/charts/programEvaluation/ProgramCostEffectiveness';
 
 const REPORT_CARD_A = {
   "title": "Program A",
@@ -121,17 +122,18 @@ const REPORT_CARD_F = {
 }
 
 const CARDS = {
-  "report-card-program-a": REPORT_CARD_A,
-  "report-card-program-b": REPORT_CARD_B,
-  "report-card-program-c": REPORT_CARD_C,
-  "report-card-program-d": REPORT_CARD_D,
-  "report-card-program-e": REPORT_CARD_E,
-  "report-card-program-f": REPORT_CARD_F,
+  'report-card-program-a': REPORT_CARD_A,
+  'report-card-program-b': REPORT_CARD_B,
+  'report-card-program-c': REPORT_CARD_C,
+  'report-card-program-d': REPORT_CARD_D,
+  'report-card-program-e': REPORT_CARD_E,
+  'report-card-program-f': REPORT_CARD_F,
 }
 
 const ProgramEvaluation = () => {
   const { loading, user, getTokenSilently } = useAuth0();
   const [apiData, setApiData] = useState({});
+  const [awaitingApi, setAwaitingApi] = useState(true);
 
   const [reportCardTitle, setReportCardTitle] = useState(REPORT_CARD_A.title);
   const [reportCardDescription, setReportCardDescription] = useState(REPORT_CARD_A.description);
@@ -166,15 +168,9 @@ const ProgramEvaluation = () => {
 
   const fetchChartData = async () => {
     try {
-      const token = await getTokenSilently();
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/programEval`, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      });
-
-      const responseData = await response.json();
+      const responseData = await callMetricsApi('programEval', getTokenSilently);
       setApiData(responseData);
+      setAwaitingApi(false);
     } catch (error) {
       console.error(error);
     }
@@ -184,7 +180,7 @@ const ProgramEvaluation = () => {
     fetchChartData();
   }, []);
 
-  if (loading || !user) {
+  if (awaitingResults(loading, user, awaitingApi)) {
     return <Loading />;
   }
 

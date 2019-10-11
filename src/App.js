@@ -27,6 +27,7 @@ import Loading from './components/Loading';
 import SideBar from './components/SideBar';
 import TopBar from './components/TopBar';
 import Footer from './components/Footer';
+import { canShowAuthenticatedView } from './utils/viewAuthentication';
 import Home from './views/Home';
 import NotFound from './views/NotFound';
 import Profile from './views/Profile';
@@ -83,7 +84,7 @@ const App = () => {
   }
 
   let containerClass = 'wide-page-container';
-  if (isAuthenticated) {
+  if (canShowAuthenticatedView(isAuthenticated)) {
     containerClass = 'page-container';
   }
 
@@ -95,14 +96,14 @@ const App = () => {
           <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
           <title>North Dakota</title>
           <div>
-            {isAuthenticated && (
+            {canShowAuthenticatedView(isAuthenticated) && (
             <SideBar />
             )}
             <div className={containerClass}>
               <TopBar pathname={window.location.pathname} />
               <Switch>
                 <Route exact path="/">
-                  {isAuthenticated ? <Redirect to="/snapshots" /> : <Home />}
+                  {canShowAuthenticatedView(isAuthenticated) ? <Redirect to="/snapshots" /> : <Home />}
                 </Route>
                 <PrivateRoute path="/snapshots" component={Snapshots} />
                 <PrivateRoute path="/revocations" component={Revocations} />

@@ -20,6 +20,7 @@ import React, { useState, useEffect } from 'react';
 import Loading from '../components/Loading';
 import '../assets/styles/index.scss';
 import { useAuth0 } from '../react-auth0-spa';
+import { callMetricsApi, awaitingResults } from '../utils/metricsClient';
 
 import AdmissionsVsReleases from '../components/charts/reincarcerations/AdmissionsVsReleases';
 import ReincarcerationRateByReleaseFacility from '../components/charts/reincarcerations/ReincarcerationRateByReleaseFacility';
@@ -34,14 +35,7 @@ const Reincarcerations = () => {
 
   const fetchChartData = async () => {
     try {
-      const token = await getTokenSilently();
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/reincarcerations`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      const responseData = await response.json();
+      const responseData = await callMetricsApi('reincarcerations', getTokenSilently);
       setApiData(responseData);
       setAwaitingApi(false);
     } catch (error) {
@@ -53,7 +47,7 @@ const Reincarcerations = () => {
     fetchChartData();
   }, []);
 
-  if (loading || !user || awaitingApi) {
+  if (awaitingResults(loading, user, awaitingApi)) {
     return <Loading />;
   }
 
