@@ -82,7 +82,7 @@ The development servers will remain active until you either close your terminal 
 
 ### Demo mode
 
-When running locally, you can run the app in demo mode to point the app to static data contained in `server/core/demoData`. This is useful for debugging issues that materialize under specific data circumstances, for demonstrating the tool without exposing real data, and other use cases.
+When running locally, you can run the app in demo mode to point the app to static data contained in `server/core/demoData`. This is useful for debugging issues that materialize under specific data circumstances, for demonstrating the tool without exposing real data, for development when you don't have Internet access, and other use cases.
 
 You can launch in demo mode locally via: `./run_in_demo_mode.sh`
 
