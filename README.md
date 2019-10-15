@@ -35,6 +35,7 @@ For the frontend: copy the `.env.frontend.example` file and set variables accord
 Expected frontend environment variables include:
 * `REACT_APP_API_URL` - the base URL of the backend API server.
 * `REACT_APP_AUTH_ENV` - a string indicating the "auth environment" used to point to the correct Auth0 tenant. Either "development" or "production". Must match the backend `AUTH_ENV` variable.
+* `REACT_APP_IS_DEMO (OPTIONAL)` - whether or not to run the frontend in demo mode, which will run the app without requiring authentication. This should only be set when running locally and should be provided through the command line, along with the backend sibling below. To run the app in demo mode, use the following command: `./run_in_demo_mode.sh`
 
 The build process, as described below, ensures that the proper values are compiled and included in the static bundle at build time, for the right environment.
 
@@ -44,7 +45,7 @@ Expected backend environment variables include:
 * `AUTH_ENV` - a string indicating the "auth environment" used to point to the correct Auth0 tenant. Either "development" or "production". Must match the frontend `REACT_APP_AUTH_ENV` variable.
 * `GOOGLE_APPLICATION_CREDENTIALS` - a relative path pointing to the JSON file containing the credentials of the service account used to communicate with Google Cloud Storage, for metric retrieval.
 * `METRIC_BUCKET` - the name of the Google Cloud Storage bucket where the metrics reside.
-* `IS_DEMO` (OPTIONAL) - whether or not to run the backend in demo mode, which will retrieve static fixture data from the `server/core/demoData` directory instead of pulling data from dynamic, live sources. This should only be set when running locally and should be provided through the command line, e.g. `IS_DEMO=true yarn dev`.
+* `IS_DEMO` (OPTIONAL) - whether or not to run the backend in demo mode, which will retrieve static fixture data from the `server/core/demoData` directory instead of pulling data from dynamic, live sources. This should only be set when running locally and should be provided through the command line, along with the frontend sibling above. To run the app in demo mode, use the following command: `./run_in_demo_mode.sh`
 
 ### Authentication
 The backend API server and most frontend views in the app are authenticated via [Auth0](https://auth0.com/). You can control which views are authenticated by specifying `Route` versus `PrivateRoute` in `src/App.js`. If you are setting this app up completely fresh, you will need to create your own Auth0 account and set the relevant details in `src/auth_config_dev.json` and `src/auth_config_production.json`. See `src/auth_config.json.example`.
@@ -71,7 +72,7 @@ If you would like to get your TDD on and run Jest in watch mode, you can use:
 ```yarn test:watch```
 
 ### Running the application locally
-A yarn script is available for starting the development servers. The React frontend is served out of port `3000` and the Node/Express badend is served out of port 3001. This will also automatically open a browser to localhost on the appropriate port, pointing to the frontend.
+A yarn script is available for starting the development servers. The React frontend is served out of port `3000` and the Node/Express backend is served out of port 3001. This will also automatically open a browser to localhost on the appropriate port, pointing to the frontend.
 
 ```yarn dev```
 
@@ -81,9 +82,11 @@ The development servers will remain active until you either close your terminal 
 
 ### Demo mode
 
-When running locally, you can run the app in demo mode to point the app to static data contained in `server/core/demoData`. This is useful for debugging issues that materialize under specific data circumstances, for demonstrating the tool without exposing real data, and other use cases.
+When running locally, you can run the app in demo mode to point the app to static data contained in `server/core/demoData`. This is useful for debugging issues that materialize under specific data circumstances, for demonstrating the tool without exposing real data, for development when you don't have Internet access, and other use cases.
 
-You can launch in demo mode locally by setting the `IS_DEMO` environment variable to true, e.g. `IS_DEMO=true yarn dev`.
+You can launch in demo mode locally via: `./run_in_demo_mode.sh`
+
+Running via that command is important because environment variables are required for both the frontend and backend servers. Running with only one or the other in demo mode produces a fairly broken experience.
 
 ## Deploys
 

@@ -21,8 +21,9 @@
  */
 
 const metricsApi = require('../core/metricsApi');
+const demoMode = require('../utils/demoMode');
 
-const IS_DEMO = (process.env.IS_DEMO === 'true');
+const isDemoMode = demoMode.isDemoMode();
 
 /**
  * A callback which returns either either an error payload or a data payload.
@@ -38,19 +39,19 @@ function responder(res) {
 }
 
 function programEval(req, res) {
-  metricsApi.fetchProgramEvalMetrics(IS_DEMO, responder(res));
+  metricsApi.fetchProgramEvalMetrics(isDemoMode, responder(res));
 }
 
 function reincarcerations(req, res) {
-  metricsApi.fetchReincarcerationMetrics(IS_DEMO, responder(res));
+  metricsApi.fetchReincarcerationMetrics(isDemoMode, responder(res));
 }
 
 function revocations(req, res) {
-  metricsApi.fetchRevocationMetrics(IS_DEMO, responder(res));
+  metricsApi.fetchRevocationMetrics(isDemoMode, responder(res));
 }
 
 function snapshots(req, res) {
-  metricsApi.fetchSnapshotMetrics(IS_DEMO, responder(res));
+  metricsApi.fetchSnapshotMetrics(isDemoMode, responder(res));
 }
 
 module.exports = {

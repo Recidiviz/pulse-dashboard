@@ -34,6 +34,8 @@ app.use(cors());
 const port = process.env.PORT || 3001;
 app.set('port', port);
 
+const isDemoMode = (process.env.IS_DEMO === 'true');
+
 const authEnv = process.env.AUTH_ENV;
 let authConfig = null;
 if (authEnv === 'production') {
@@ -56,7 +58,7 @@ if (app.get('env') === 'production') {
   app.set('trust proxy', true);
 }
 
-const checkJwt = jwt({
+let checkJwt = jwt({
   secret: jwksRsa.expressJwtSecret({
     cache: true,
     rateLimit: true,
@@ -68,6 +70,10 @@ const checkJwt = jwt({
   issuer: `https://${authConfig.domain}/`,
   algorithm: ['RS256'],
 });
+
+if (isDemoMode) {
+  checkJwt = function (req, res, next) { next(); };
+}
 
 app.get('/api/programEval', checkJwt, api.programEval);
 app.get('/api/reincarcerations', checkJwt, api.reincarcerations);

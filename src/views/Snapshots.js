@@ -20,12 +20,12 @@ import React, { useState, useEffect } from 'react';
 import Loading from '../components/Loading';
 import '../assets/styles/index.scss';
 import { useAuth0 } from '../react-auth0-spa';
+import { callMetricsApi, awaitingResults } from '../utils/metricsClient';
 
 import SupervisionSuccessSnapshot from '../components/charts/snapshots/SupervisionSuccessSnapshot';
 import RevocationAdmissionsSnapshot from '../components/charts/snapshots/RevocationAdmissionsSnapshot';
 import LsirScoreChangeSnapshot from '../components/charts/snapshots/LsirScoreChangeSnapshot';
 import DaysAtLibertySnapshot from '../components/charts/snapshots/DaysAtLibertySnapshot';
-
 
 const Snapshots = () => {
   const { loading, user, getTokenSilently } = useAuth0();
@@ -34,14 +34,7 @@ const Snapshots = () => {
 
   const fetchChartData = async () => {
     try {
-      const token = await getTokenSilently();
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/snapshots`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      const responseData = await response.json();
+      const responseData = await callMetricsApi('snapshots', getTokenSilently);
       setApiData(responseData);
       setAwaitingApi(false);
     } catch (error) {
@@ -53,7 +46,7 @@ const Snapshots = () => {
     fetchChartData();
   }, []);
 
-  if (loading || !user || awaitingApi) {
+  if (awaitingResults(loading, user, awaitingApi)) {
     return <Loading />;
   }
 

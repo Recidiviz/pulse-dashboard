@@ -36,12 +36,14 @@ import {
 } from 'reactstrap';
 
 import { useAuth0 } from '../react-auth0-spa';
+import { canShowAuthenticatedView } from '../utils/viewAuthentication';
 
 const NavBar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const {
     user, isAuthenticated, loginWithRedirect, logout,
   } = useAuth0();
+
   const toggle = () => setIsOpen(!isOpen);
 
   const logoutWithRedirect = () => logout({ returnTo: window.location.origin });
@@ -84,7 +86,7 @@ const NavBar = () => {
                   Reincarcerations
                 </NavLink>
               </NavItem>
-              {isAuthenticated && (
+              {canShowAuthenticatedView(isAuthenticated) && (
                 <NavItem>
                   <NavLink
                     tag={RouterNavLink}
@@ -98,7 +100,7 @@ const NavBar = () => {
               )}
             </Nav>
             <Nav className="d-none d-md-block" navbar>
-              {!isAuthenticated && (
+              {!canShowAuthenticatedView(isAuthenticated) && (
                 <NavItem>
                   <Button
                     id="qsLoginBtn"
@@ -110,7 +112,7 @@ const NavBar = () => {
                   </Button>
                 </NavItem>
               )}
-              {isAuthenticated && (
+              {canShowAuthenticatedView(isAuthenticated) && (
                 <UncontrolledDropdown nav inNavbar>
                   <DropdownToggle nav caret id="profileDropDown">
                     <img
@@ -142,7 +144,7 @@ const NavBar = () => {
                 </UncontrolledDropdown>
               )}
             </Nav>
-            {!isAuthenticated && (
+            {!canShowAuthenticatedView(isAuthenticated) && (
               <Nav className="d-md-none" navbar>
                 <NavItem>
                   <Button
@@ -156,7 +158,7 @@ const NavBar = () => {
                 </NavItem>
               </Nav>
             )}
-            {isAuthenticated && (
+            {canShowAuthenticatedView(isAuthenticated) && (
               <Nav
                 className="d-md-none justify-content-between"
                 navbar

@@ -18,14 +18,16 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Route } from 'react-router-dom';
+
 import { useAuth0 } from '../react-auth0-spa';
+import { canShowAuthenticatedView, isDemoMode } from '../utils/viewAuthentication';
 
 const PrivateRoute = ({ component: Component, path, ...rest }) => {
   const { isAuthenticated, loginWithRedirect } = useAuth0();
 
   useEffect(() => {
     const fn = async () => {
-      if (!isAuthenticated) {
+      if (!canShowAuthenticatedView(isAuthenticated)) {
         await loginWithRedirect({
           appState: { targetUrl: path },
         });
@@ -34,9 +36,10 @@ const PrivateRoute = ({ component: Component, path, ...rest }) => {
     fn();
   }, [isAuthenticated, loginWithRedirect, path]);
 
-  if (!isAuthenticated) return null;
+  if (!canShowAuthenticatedView(isAuthenticated)) return null;
 
-  const render = (props) => (isAuthenticated === true ? <Component {...props} /> : null);
+  const render = (props) => (isAuthenticated === true || isDemoMode() === true
+    ? <Component {...props} /> : null);
   return <Route path={path} render={render} {...rest} />;
 };
 

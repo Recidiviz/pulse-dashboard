@@ -26,15 +26,17 @@
  */
 
 const metricsApi = require('./metricsApi');
+const demoMode = require('../utils/demoMode');
 
-const IS_DEMO = (process.env.IS_DEMO === 'true');
+const isDemoMode = demoMode.isDemoMode();
+
 const METRIC_REFRESH_INTERVAL_MS = 1000 * 60 * 30; // Refresh metrics every 30 minutes
 
 /**
  * Performs a refresh of the program evaluation metrics cache, logging success or failure.
  */
 function refreshProgramEvalMetrics() {
-  metricsApi.fetchProgramEvalMetrics(IS_DEMO, (err, data) => {
+  metricsApi.fetchProgramEvalMetrics(isDemoMode, (err, data) => {
     if (err) {
       console.log(`Encountered error during scheduled fetch-and-cache
         of program evaluation metrics: ${err}`);
@@ -48,7 +50,7 @@ function refreshProgramEvalMetrics() {
  * Performs a refresh of the reincarceration metrics cache, logging success or failure.
  */
 function refreshReincarcerationMetrics() {
-  metricsApi.fetchReincarcerationMetrics(IS_DEMO, (err, data) => {
+  metricsApi.fetchReincarcerationMetrics(isDemoMode, (err, data) => {
     if (err) {
       console.log(`Encountered error during scheduled fetch-and-cache
         of reincarceration metrics: ${err}`);
@@ -62,7 +64,7 @@ function refreshReincarcerationMetrics() {
  * Performs a refresh of the revocation metrics cache, logging success or failure.
  */
 function refreshRevocationMetrics() {
-  metricsApi.fetchRevocationMetrics(IS_DEMO, (err, data) => {
+  metricsApi.fetchRevocationMetrics(isDemoMode, (err, data) => {
     if (err) {
       console.log(`Encountered error during scheduled fetch-and-cache
         of revocation metrics: ${err}`);
@@ -76,7 +78,7 @@ function refreshRevocationMetrics() {
  * Performs a refresh of the snapshot metrics cache, logging success or failure.
  */
 function refreshSnapshotMetrics() {
-  metricsApi.fetchSnapshotMetrics(IS_DEMO, (err, data) => {
+  metricsApi.fetchSnapshotMetrics(isDemoMode, (err, data) => {
     if (err) {
       console.log(`Encountered error during scheduled fetch-and-cache of snapshot metrics: ${err}`);
     } else {
@@ -94,7 +96,7 @@ function executeAndSetInterval(fn, intervalMS) {
   setInterval(fn, intervalMS);
 }
 
-if (!IS_DEMO) {
+if (!isDemoMode) {
   executeAndSetInterval(refreshProgramEvalMetrics, METRIC_REFRESH_INTERVAL_MS);
   executeAndSetInterval(refreshReincarcerationMetrics, METRIC_REFRESH_INTERVAL_MS);
   executeAndSetInterval(refreshRevocationMetrics, METRIC_REFRESH_INTERVAL_MS);
