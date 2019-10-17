@@ -610,6 +610,15 @@ const Revocations = () => {
                           The race proportions for the population of North Dakota were taken from
                           the U.S. Census Bureau.
                         </li>
+                        <li>
+                          If an individual has more than one race or ethnicity
+                          recorded from different data systems, then they are
+                          counted once for each unique race and ethnicity. This
+                          means that the total count in this chart may be
+                          larger than the total number of individuals it
+                          describes. This does not apply to the ND Population
+                          values.
+                        </li>
                       </ul>
                     </div>
                   </div>
