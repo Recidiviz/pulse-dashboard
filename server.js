@@ -75,7 +75,7 @@ if (isDemoMode) {
   checkJwt = function (req, res, next) { next(); };
 }
 
-app.get('/api/programEval', checkJwt, api.programEval);
+app.get('/api/programEvaluation/us_nd/freeThroughRecovery', checkJwt, api.freeThroughRecovery);
 app.get('/api/reincarcerations', checkJwt, api.reincarcerations);
 app.get('/api/revocations', checkJwt, api.revocations);
 app.get('/api/snapshots', checkJwt, api.snapshots);

@@ -18,32 +18,34 @@
 import React, { useState, useEffect } from 'react';
 
 import { HorizontalBar } from 'react-chartjs-2';
-import { COLORS_FIVE_VALUES, COLORS } from '../../../assets/scripts/constants/colors';
-import { sortByLabel } from '../../../utils/dataOrganizing';
-import { configureDownloadButtons } from '../../../assets/scripts/utils/downloads';
-import { raceValueToHumanReadable, toInt } from '../../../utils/variableConversion';
+import { COLORS_FIVE_VALUES, COLORS } from '../../../../../assets/scripts/constants/colors';
+import { sortByLabel } from '../../../../../utils/dataOrganizing';
+import { configureDownloadButtons } from '../../../../../assets/scripts/utils/downloads';
+import { raceValueToHumanReadable, toInt } from '../../../../../utils/variableConversion';
 
-const RevocationProportionByRace = (props) => {
+const FtrReferralsByRace = (props) => {
   const [chartLabels, setChartLabels] = useState([]);
-  const [revocationProportions, setRevocationProportions] = useState([]);
-  const [statePopulationProportions, setStatePopulationProportions] = useState([]);
+  const [ftrReferralProportions, setFtrReferralProportions] = useState([]);
   const [stateSupervisionProportions, setStateSupervisionProportions] = useState([]);
-  const [revocationCounts, setRevocationCounts] = useState([]);
+  const [statePopulationProportions, setStatePopulationProportions] = useState([]);
+  const [ftrReferralCounts, setFtrReferralCounts] = useState([]);
   const [stateSupervisionCounts, setStateSupervisionCounts] = useState([]);
+
+  const chartId = 'ftrReferralsByRace';
 
   const processResponse = () => {
     const {
-      revocationProportionByRace,
+      ftrReferralsByRace,
       supervisionPopulationByRace,
       statePopulationByRace,
     } = props;
 
-    const revocationDataPoints = [];
-    if (revocationProportionByRace) {
-      revocationProportionByRace.forEach((data) => {
+    const ftrReferralDataPoints = [];
+    if (ftrReferralsByRace) {
+      ftrReferralsByRace.forEach((data) => {
         const { race_or_ethnicity: race } = data;
-        const count = toInt(data.revocation_count, 10);
-        revocationDataPoints.push({ race: raceValueToHumanReadable(race), count });
+        const count = toInt(data.count, 10);
+        ftrReferralDataPoints.push({ race: raceValueToHumanReadable(race), count });
       });
     }
 
@@ -65,13 +67,13 @@ const RevocationProportionByRace = (props) => {
       });
     }
 
-    const racesRepresentedRevocations = revocationDataPoints.map((element) => element.race);
+    const racesRepresentedFtrReferrals = ftrReferralDataPoints.map((element) => element.race);
     const racesRepresentedSupervision = supervisionDataPoints.map((element) => element.race);
 
     stateCensusDataPoints.forEach((raceGroup) => {
       const { race } = raceGroup;
-      if (!racesRepresentedRevocations.includes(race)) {
-        revocationDataPoints.push({ race, count: 0 });
+      if (!racesRepresentedFtrReferrals.includes(race)) {
+        ftrReferralDataPoints.push({ race, count: 0 });
       }
 
       if (!racesRepresentedSupervision.includes(race)) {
@@ -85,19 +87,19 @@ const RevocationProportionByRace = (props) => {
       );
     }
 
-    const totalRevocations = totalSum(revocationDataPoints);
+    const totalFtrReferrals = totalSum(ftrReferralDataPoints);
     const totalSupervisionPopulation = totalSum(supervisionDataPoints);
 
     // Sort by race alphabetically
-    const sortedRevocationDataPoints = sortByLabel(revocationDataPoints, 'race');
+    const sortedFtrReferralsDataPoints = sortByLabel(ftrReferralDataPoints, 'race');
     const sortedSupervisionDataPoints = sortByLabel(supervisionDataPoints, 'race');
     const sortedStateCensusDataPoints = sortByLabel(stateCensusDataPoints, 'race');
 
-    setChartLabels(sortedRevocationDataPoints.map((element) => element.race));
-    setRevocationProportions(sortedRevocationDataPoints.map(
-      (element) => (100 * (element.count / totalRevocations)),
+    setChartLabels(sortedFtrReferralsDataPoints.map((element) => element.race));
+    setFtrReferralProportions(sortedFtrReferralsDataPoints.map(
+      (element) => (100 * (element.count / totalFtrReferrals)),
     ));
-    setRevocationCounts(sortedRevocationDataPoints.map(
+    setFtrReferralCounts(sortedFtrReferralsDataPoints.map(
       (element) => (element.count),
     ));
     setStateSupervisionProportions(sortedSupervisionDataPoints.map(
@@ -113,20 +115,22 @@ const RevocationProportionByRace = (props) => {
 
   useEffect(() => {
     processResponse();
-  }, [props.revocationProportionByRace, props.supervisionPopulationByRace]);
+  }, [props.ftrReferralsByRace, props.supervisionPopulationByRace]);
 
   const chart = (
     <HorizontalBar
-      id="revocationsByRace"
+      id={chartId}
       data={{
-        labels: ['Revocations', 'Supervision Population', 'ND Population'],
+        labels: ['Referrals', 'Supervision Population', 'ND Population'],
         datasets: [{
           label: chartLabels[0],
           backgroundColor: COLORS_FIVE_VALUES[0],
           hoverBackgroundColor: COLORS_FIVE_VALUES[0],
           hoverBorderColor: COLORS_FIVE_VALUES[0],
           data: [
-            revocationProportions[0], stateSupervisionProportions[0], statePopulationProportions[0],
+            ftrReferralProportions[0],
+            stateSupervisionProportions[0],
+            statePopulationProportions[0],
           ],
         }, {
           label: chartLabels[1],
@@ -134,7 +138,9 @@ const RevocationProportionByRace = (props) => {
           hoverBackgroundColor: COLORS_FIVE_VALUES[1],
           hoverBorderColor: COLORS_FIVE_VALUES[1],
           data: [
-            revocationProportions[1], stateSupervisionProportions[1], statePopulationProportions[1],
+            ftrReferralProportions[1],
+            stateSupervisionProportions[1],
+            statePopulationProportions[1],
           ],
         }, {
           label: chartLabels[2],
@@ -142,7 +148,9 @@ const RevocationProportionByRace = (props) => {
           hoverBackgroundColor: COLORS_FIVE_VALUES[2],
           hoverBorderColor: COLORS_FIVE_VALUES[2],
           data: [
-            revocationProportions[2], stateSupervisionProportions[2], statePopulationProportions[2],
+            ftrReferralProportions[2],
+            stateSupervisionProportions[2],
+            statePopulationProportions[2],
           ],
         }, {
           label: chartLabels[3],
@@ -150,7 +158,9 @@ const RevocationProportionByRace = (props) => {
           hoverBackgroundColor: COLORS_FIVE_VALUES[3],
           hoverBorderColor: COLORS_FIVE_VALUES[3],
           data: [
-            revocationProportions[3], stateSupervisionProportions[3], statePopulationProportions[3],
+            ftrReferralProportions[3],
+            stateSupervisionProportions[3],
+            statePopulationProportions[3],
           ],
         }, {
           label: chartLabels[4],
@@ -158,7 +168,9 @@ const RevocationProportionByRace = (props) => {
           hoverBackgroundColor: COLORS_FIVE_VALUES[4],
           hoverBorderColor: COLORS_FIVE_VALUES[4],
           data: [
-            revocationProportions[4], stateSupervisionProportions[4], statePopulationProportions[4],
+            ftrReferralProportions[4],
+            stateSupervisionProportions[4],
+            statePopulationProportions[4],
           ],
         }, {
           label: chartLabels[5],
@@ -166,7 +178,9 @@ const RevocationProportionByRace = (props) => {
           hoverBackgroundColor: COLORS['blue-standard-2'],
           hoverBorderColor: COLORS['blue-standard-2'],
           data: [
-            revocationProportions[5], stateSupervisionProportions[5], statePopulationProportions[5],
+            ftrReferralProportions[5],
+            stateSupervisionProportions[5],
+            statePopulationProportions[5],
           ],
         }, {
           label: chartLabels[6],
@@ -174,7 +188,9 @@ const RevocationProportionByRace = (props) => {
           hoverBackgroundColor: COLORS['blue-standard'],
           hoverBorderColor: COLORS['blue-standard'],
           data: [
-            revocationProportions[6], stateSupervisionProportions[6], statePopulationProportions[6],
+            ftrReferralProportions[6],
+            stateSupervisionProportions[6],
+            statePopulationProportions[6],
           ],
         },
         ],
@@ -214,8 +230,8 @@ const RevocationProportionByRace = (props) => {
               const currentValue = dataset.data[tooltipItem.index];
 
               let datasetCounts = [];
-              if (data.labels[tooltipItem.index] === 'Revocations') {
-                datasetCounts = revocationCounts;
+              if (data.labels[tooltipItem.index] === 'Referrals') {
+                datasetCounts = ftrReferralCounts;
               } else if (data.labels[tooltipItem.index] === 'Supervision Population') {
                 datasetCounts = stateSupervisionCounts;
               } else {
@@ -234,15 +250,15 @@ const RevocationProportionByRace = (props) => {
 
   const exportedStructureCallback = () => (
     {
-      metric: 'Revocations by race',
+      metric: 'FTR Referrals by Race',
       series: [],
     });
 
-  configureDownloadButtons('revocationsByRace', chart.props.data.datasets,
-    chart.props.data.labels, document.getElementById('revocationsByRace'),
+  configureDownloadButtons(chartId, chart.props.data.datasets,
+    chart.props.data.labels, document.getElementById(chartId),
     exportedStructureCallback);
 
   return chart;
 };
 
-export default RevocationProportionByRace;
+export default FtrReferralsByRace;

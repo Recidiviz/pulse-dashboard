@@ -31,6 +31,7 @@ import { canShowAuthenticatedView } from './utils/viewAuthentication';
 import Home from './views/Home';
 import NotFound from './views/NotFound';
 import Profile from './views/Profile';
+import FreeThroughRecovery from './views/FreeThroughRecovery';
 import Revocations from './views/Revocations';
 import Reincarcerations from './views/Reincarcerations';
 import Snapshots from './views/Snapshots';
@@ -108,6 +109,7 @@ const App = () => {
                 <PrivateRoute path="/snapshots" component={Snapshots} />
                 <PrivateRoute path="/revocations" component={Revocations} />
                 <PrivateRoute path="/reincarcerations" component={Reincarcerations} />
+                <PrivateRoute path="/programEvaluation/freeThroughRecovery" component={FreeThroughRecovery} />
                 <PrivateRoute path="/profile" component={Profile} />
                 <Route component={NotFound} />
               </Switch>

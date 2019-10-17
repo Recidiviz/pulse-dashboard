@@ -129,7 +129,7 @@ const LsirScoreChangeSnapshot = (props) => {
             },
             scaleLabel: {
               display: true,
-              labelString: 'Change in LSIR scores',
+              labelString: 'Change in LSI-R scores',
               fontColor: COLORS['grey-500'],
               fontStyle: 'bold',
             },
@@ -194,7 +194,7 @@ const LsirScoreChangeSnapshot = (props) => {
 
   const exportedStructureCallback = function exportedStructureCallback() {
     return {
-      metric: 'Average change in LSIR score between termination and first reassessment',
+      metric: 'Average change in LSI-R score between termination and first reassessment',
       series: [],
     };
   };
@@ -207,7 +207,7 @@ const LsirScoreChangeSnapshot = (props) => {
   const trendlineText = trendlineGoalText(trendlineValues, GOAL);
 
   if (header) {
-    const title = `The average change in LSIR scores between first reassessment and termination of supervision has been <b style='color:#809AE5'> trending ${trendlineText}. </b>`;
+    const title = `The average change in LSI-R scores between first reassessment and termination of supervision has been <b style='color:#809AE5'> trending ${trendlineText}. </b>`;
     header.innerHTML = title;
   }
 

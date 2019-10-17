@@ -15,6 +15,32 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
+const genderLabelStringConversion = {
+  FEMALE: 'Female',
+  MALE: 'Male',
+  TRANS: 'Trans',
+  TRANS_FEMALE: 'Trans Female',
+  TRANS_MALE: 'Trans Male',
+};
+
+const raceLabelStringConversion = {
+  AMERICAN_INDIAN_ALASKAN_NATIVE: 'American Indian Alaskan Native',
+  ASIAN: 'Asian',
+  BLACK: 'Black',
+  HISPANIC: 'Hispanic',
+  NATIVE_HAWAIIAN_PACIFIC_ISLANDER: 'Native Hawaiian Pacific Islander',
+  WHITE: 'White',
+  OTHER: 'Other',
+};
+
+function genderValueToHumanReadable(genderValue) {
+  return genderLabelStringConversion[genderValue];
+}
+
+function raceValueToHumanReadable(raceValue) {
+  return raceLabelStringConversion[raceValue];
+}
+
 function toHtmlFriendly(string) {
   return string.replace(' ', '-');
 }
@@ -30,6 +56,8 @@ function toInt(nonInt) {
 }
 
 export {
+  genderValueToHumanReadable,
+  raceValueToHumanReadable,
   toHtmlFriendly,
   toHumanReadable,
   toInt,

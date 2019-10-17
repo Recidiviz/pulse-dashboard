@@ -33,15 +33,15 @@ const isDemoMode = demoMode.isDemoMode();
 const METRIC_REFRESH_INTERVAL_MS = 1000 * 60 * 30; // Refresh metrics every 30 minutes
 
 /**
- * Performs a refresh of the program evaluation metrics cache, logging success or failure.
+ * Performs a refresh of the free through recovery metrics cache, logging success or failure.
  */
-function refreshProgramEvalMetrics() {
-  metricsApi.fetchProgramEvalMetrics(isDemoMode, (err, data) => {
+function refreshFreeThroughRecoveryMetrics() {
+  metricsApi.fetchFreeThroughRecoveryMetrics(isDemoMode, (err, data) => {
     if (err) {
       console.log(`Encountered error during scheduled fetch-and-cache
-        of program evaluation metrics: ${err}`);
+        of Free Through Recovery metrics: ${err}`);
     } else {
-      console.log('Executed scheduled fetch-and-cache of program evaluation metrics');
+      console.log('Executed scheduled fetch-and-cache of Free Through Recovery metrics');
     }
   });
 }
@@ -97,7 +97,7 @@ function executeAndSetInterval(fn, intervalMS) {
 }
 
 if (!isDemoMode) {
-  executeAndSetInterval(refreshProgramEvalMetrics, METRIC_REFRESH_INTERVAL_MS);
+  executeAndSetInterval(refreshFreeThroughRecoveryMetrics, METRIC_REFRESH_INTERVAL_MS);
   executeAndSetInterval(refreshReincarcerationMetrics, METRIC_REFRESH_INTERVAL_MS);
   executeAndSetInterval(refreshRevocationMetrics, METRIC_REFRESH_INTERVAL_MS);
   executeAndSetInterval(refreshSnapshotMetrics, METRIC_REFRESH_INTERVAL_MS);

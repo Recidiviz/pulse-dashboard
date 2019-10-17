@@ -38,8 +38,8 @@ function responder(res) {
   };
 }
 
-function programEval(req, res) {
-  metricsApi.fetchProgramEvalMetrics(isDemoMode, responder(res));
+function freeThroughRecovery(req, res) {
+  metricsApi.fetchFreeThroughRecoveryMetrics(isDemoMode, responder(res));
 }
 
 function reincarcerations(req, res) {
@@ -55,7 +55,7 @@ function snapshots(req, res) {
 }
 
 module.exports = {
-  programEval,
+  freeThroughRecovery,
   reincarcerations,
   revocations,
   snapshots,

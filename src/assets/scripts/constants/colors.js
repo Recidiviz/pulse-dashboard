@@ -301,13 +301,18 @@ const COLOR_ROTATION = [
 ];
 
 const COLORS_GOOD_BAD = {
-  'good': '#809ae5',
-  'bad':'#d12249',
+  good: '#809ae5',
+  bad: '#d12249',
 };
 
 const COLORS_STACKED_TWO_VALUES = [
   '#809ae5',
   '#3f4d62',
+];
+
+const COLORS_STACKED_TWO_VALUES_ALT = [
+  '#FF2454',
+  '#FFD75E',
 ];
 
 const COLORS_THREE_VALUES = [
@@ -338,6 +343,7 @@ export {
   COLOR_ROTATION,
   COLORS_GOOD_BAD,
   COLORS_STACKED_TWO_VALUES,
+  COLORS_STACKED_TWO_VALUES_ALT,
   COLORS_THREE_VALUES,
   COLORS_FIVE_VALUES,
   COLORS_FIVE_VALUES_LIGHT,

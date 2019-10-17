@@ -581,8 +581,9 @@ const Revocations = () => {
                       revocationProportionByRace={
                         apiData.revocations_by_race_and_ethnicity_60_days}
                       supervisionPopulationByRace={
-                        apiData.supervision_population_by_race_and_ethnicity_60_days
-                      }
+                        apiData.supervision_population_by_race_and_ethnicity_60_days}
+                      statePopulationByRace={
+                        apiData.race_proportions}
                     />
                   </div>
                 </div>

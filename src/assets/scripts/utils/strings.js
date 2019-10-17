@@ -35,8 +35,35 @@ function normalizeLabel(str) {
   return capitalizeWords(label);
 }
 
+function normalizeAppPathToTitle(str) {
+  let updatedString = str;
+
+  while (updatedString.indexOf('/', 1) !== -1) {
+    const nextSlash = updatedString.indexOf('/', 1);
+    updatedString = updatedString.substring(nextSlash);
+  }
+
+  const noSlash = replaceAll(updatedString, '/', '');
+  if (!noSlash) {
+    return null;
+  }
+
+  const capitalLetters = noSlash.match(/[A-Z]/g);
+  let noSlashWithSpaces = '';
+  for (let i = 0; i < noSlash.length; i += 1) {
+    const char = noSlash.charAt(i);
+    if (capitalLetters && capitalLetters.includes(char)) {
+      noSlashWithSpaces = noSlashWithSpaces.concat(' ');
+    }
+    noSlashWithSpaces = noSlashWithSpaces.concat(char);
+  }
+
+  return capitalizeWords(noSlashWithSpaces);
+}
+
 export {
   capitalizeWords,
+  normalizeAppPathToTitle,
   nullSafeToLowerCase,
   replaceAll,
   normalizeLabel,

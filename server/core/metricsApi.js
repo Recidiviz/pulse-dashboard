@@ -37,9 +37,17 @@ const memoryCache = cacheManager.caching({ store: 'memory', ttl: METRIC_CACHE_TT
 const asyncReadFile = util.promisify(fs.readFile);
 
 const FILES_BY_METRIC_TYPE = {
-  programEval: [
-    'cost_effectiveness_by_program.json',
-    'recidivism_rate_by_program.json',
+  freeThroughRecovery: [
+    'ftr_referrals_by_month.json',
+    'ftr_referrals_by_age_60_days.json',
+    'ftr_referrals_by_gender_60_days.json',
+    'ftr_referrals_by_lsir_60_days.json',
+    'ftr_referrals_by_race_and_ethnicity_60_days.json',
+    'race_proportions.json',
+    'supervision_population_by_age_60_days.json',
+    'supervision_population_by_gender_60_days.json',
+    'supervision_population_by_lsir_60_days.json',
+    'supervision_population_by_race_and_ethnicity_60_days.json',
   ],
   reincarceration: [
     'admissions_versus_releases_by_month.json',
@@ -52,6 +60,7 @@ const FILES_BY_METRIC_TYPE = {
     'revocations_by_officer_60_days.json',
     'revocations_by_site_id_60_days.json',
     'admissions_by_type_60_days.json',
+    'race_proportions.json',
     'revocations_by_month.json',
     'revocations_by_race_and_ethnicity_60_days.json',
     'revocations_by_supervision_type_by_month.json',
@@ -114,7 +123,7 @@ function fetchMetricsFromLocal(stateCode, metricType) {
   const files = FILES_BY_METRIC_TYPE[metricType];
   files.forEach((filename) => {
     const fileKey = filename.replace('.json', '');
-    const filePath = path.resolve(__dirname, `./demoData/${filename}`);
+    const filePath = path.resolve(__dirname, `./demo_data/${filename}`);
 
     promises.push(asyncReadFile(filePath).then((contents) => ({ fileKey, contents })));
   });
@@ -133,7 +142,7 @@ function fetchMetricsFromLocal(stateCode, metricType) {
  * expired beyond the configured TTL. If not, then fetches the metrics for that type from the
  * appropriate files and invokes the callback only once all files have been retrieved.
  *
- * If we are in demo mode, then fetches the files from a static directory, /server/core/demoData/.
+ * If we are in demo mode, then fetches the files from a static directory, /server/core/demo_data/.
  * Otherwise, fetches from Google Cloud Storage.
  */
 function fetchMetrics(stateCode, metricType, isDemo, callback) {
@@ -177,12 +186,12 @@ function fetchRevocationMetrics(isDemo, callback) {
   return fetchMetrics('US_ND', 'revocation', isDemo, callback);
 }
 
-function fetchProgramEvalMetrics(isDemo, callback) {
-  return fetchMetrics('US_ND', 'programEval', isDemo, callback);
+function fetchFreeThroughRecoveryMetrics(isDemo, callback) {
+  return fetchMetrics('US_ND', 'freeThroughRecovery', isDemo, callback);
 }
 
 module.exports = {
-  fetchProgramEvalMetrics,
+  fetchFreeThroughRecoveryMetrics,
   fetchReincarcerationMetrics,
   fetchRevocationMetrics,
   fetchSnapshotMetrics,

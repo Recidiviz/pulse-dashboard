@@ -239,13 +239,13 @@ const Snapshots = () => {
             </div>
           </div>
 
-          {/* #Change in LSIR scores ==================== */}
+          {/* #Change in LSI-R scores ==================== */}
           <div className="col-md-6">
             <div className="bd bgc-white p-20">
               <div className="layers">
                 <div className="layer w-100 pX-20 pT-20">
                   <h6 className="lh-1">
-                    AVERAGE CHANGE IN LSIR SCORES
+                    AVERAGE CHANGE IN LSI-R SCORES
                     <span className="fa-pull-right">
                       <div className="dropdown show">
                         <a className="btn btn-secondary btn-sm dropdown-toggle" href="#" role="button" id="exportDropdownMenuButton-lsirScoreChangeSnapshot" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
