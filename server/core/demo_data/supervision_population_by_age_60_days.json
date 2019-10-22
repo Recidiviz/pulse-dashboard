@@ -1,5 +1,5 @@
-{"state_code":"US_DEMO","age":"<25","count":"55"}
-{"state_code":"US_DEMO","age":"25-29","count":"24"}
-{"state_code":"US_DEMO","age":"30-34","count":"70"}
-{"state_code":"US_DEMO","age":"35-39","count":"80"}
-{"state_code":"US_DEMO","age":"40<","count":"33"}
+{"state_code":"US_DEMO","age_bucket":"0-24","count":"55"}
+{"state_code":"US_DEMO","age_bucket":"25-29","count":"24"}
+{"state_code":"US_DEMO","age_bucket":"30-34","count":"70"}
+{"state_code":"US_DEMO","age_bucket":"35-39","count":"80"}
+{"state_code":"US_DEMO","age_bucket":"40+","count":"33"}

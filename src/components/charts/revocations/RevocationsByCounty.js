@@ -130,9 +130,9 @@ class RevocationsByCounty extends Component {
         >
           <ZoomableGroup center={[centerNDLong, centerNDLat]} zoom={7} disablePanning>
             <Geographies geography={geographyObject}>
-              {(geographies, projection) => geographies.map((geography, i) => (
+              {(geographies, projection) => geographies.map((geography) => (
                 <Geography
-                  key={i}
+                  key={geography.properties.NAME}
                   data-tip={geography.properties.NAME
                     + ': '.concat(revocationCountForCounty(this.chartDataPoints, geography.properties.NAME))}
                   geography={geography}

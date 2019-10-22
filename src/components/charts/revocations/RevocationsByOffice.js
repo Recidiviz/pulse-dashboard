@@ -24,6 +24,7 @@ import {
   Markers,
   Marker,
 } from 'react-simple-maps';
+import ReactTooltip from 'react-tooltip';
 import { geoAlbersUsa } from 'd3-geo';
 import { scaleLinear } from 'd3-scale';
 import geographyObject from '../../../assets/static/maps/us_nd.json';
@@ -42,8 +43,8 @@ const centerNDLat = 47.3;
  * will have a marker with the radius size of `maxMarkerRadius`.
  */
 function radiusOfMarker(office, maxValue) {
-  const minMarkerRadius = 3;
-  const maxMarkerRadius = 25;
+  const minMarkerRadius = 10;
+  const maxMarkerRadius = 35;
   const officeScale = scaleLinear()
     .domain([0, maxValue])
     .range([minMarkerRadius, maxMarkerRadius]);
@@ -51,50 +52,8 @@ function radiusOfMarker(office, maxValue) {
   return officeScale(office.revocationCount);
 }
 
-/**
- * Returns how far the title should be offset (in pixels) along the x-axis from
- * the center of the marker circle, given the location of the title, the
- * length of the office name, and the number of revocations.
- */
-function xOffsetForOfficeTitle(office, markerRadius) {
-  const offsetPerRevocationDigit = 10;
-  const offsetForParenthesis = 15;
-  const offsetForNameLetter = 8;
-  const digitsInRevocations = office.revocationCount.toString().length;
-  const revLabelOffset = offsetPerRevocationDigit * digitsInRevocations + offsetForParenthesis;
-  if (office.titleSide === 'left') {
-    return (-1 * markerRadius)
-      - (office.officeName.length * offsetForNameLetter) - revLabelOffset;
-  }
-
-  if (office.titleSide === 'right') {
-    return markerRadius
-     + (office.officeName.length * offsetForNameLetter) + revLabelOffset;
-  }
-
-  return 0;
-}
-
-/**
- * Returns how far the title should be offset (in pixels) along the y-axis from
- * the center of the marker circle given the location of the title.
- */
-function yOffsetForOfficeTitle(office, markerRadius) {
-  const offsetForBottomLabels = 25;
-  const offsetForAllLables = 10;
-  if (office.titleSide === 'bottom') {
-    return markerRadius + offsetForBottomLabels;
-  }
-
-  if (office.titleSide === 'top') {
-    return -1 * markerRadius - offsetForAllLables;
-  }
-
-  return offsetForAllLables;
-}
-
 function colorForMarker(office) {
-  return (office.revocationCount > 0) ? COLORS['red-standard'] : COLORS['grey-600'];
+  return (office.revocationCount > 0) ? COLORS['red-standard'] : COLORS['grey-400'];
 }
 
 const officeClicked = (office) => {
@@ -207,6 +166,10 @@ class RevocationsByOffice extends Component {
     configureDownloadButtons(chartId, downloadableDataFormat,
       officeNames,
       document.getElementById(chartId), exportedStructureCallback);
+
+    setTimeout(() => {
+      ReactTooltip.rebuild();
+    }, 100);
   }
 
   render() {
@@ -224,9 +187,9 @@ class RevocationsByOffice extends Component {
         >
           <ZoomableGroup center={[centerNDLong, centerNDLat]} zoom={8.2} disablePanning>
             <Geographies geography={geographyObject}>
-              {(geographies, projection) => geographies.map((geography, i) => (
+              {(geographies, projection) => geographies.map((geography) => (
                 <Geography
-                  key={i}
+                  key={geography.properties.NAME}
                   geography={geography}
                   projection={projection}
                   style={{
@@ -254,10 +217,10 @@ class RevocationsByOffice extends Component {
               }
             </Geographies>
             <Markers>
-              {this.chartDataPoints.map((office, i) => (
+              {this.chartDataPoints.map((office) => (
                 <Marker
                   onClick={officeClicked}
-                  key={i}
+                  key={office.officeName}
                   marker={office}
                   style={{
                     default: { fill: colorForMarker(office) },
@@ -266,28 +229,17 @@ class RevocationsByOffice extends Component {
                   }}
                 >
                   <circle
+                    data-tip={office.officeName.concat(': ', office.revocationCount)}
                     cx={0}
                     cy={0}
                     r={radiusOfMarker(office, this.maxValue)}
                   />
-                  <text
-                    textAnchor="middle"
-                    x={xOffsetForOfficeTitle(office, radiusOfMarker(office, this.maxValue))}
-                    y={yOffsetForOfficeTitle(office, radiusOfMarker(office, this.maxValue))}
-                    style={{
-                      fontFamily: 'Roboto, sans-serif',
-                      fontSize: '175%',
-                      fontWeight: '900',
-                      fill: '#607D8B',
-                    }}
-                  >
-                    {office.officeName.concat(' (', office.revocationCount, ')')}
-                  </text>
                 </Marker>
               ))}
             </Markers>
           </ZoomableGroup>
         </ComposableMap>
+        <ReactTooltip />
       </div>
     );
   }
