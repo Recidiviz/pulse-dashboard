@@ -28,7 +28,7 @@ import RevocationCountByViolationType from '../components/charts/revocations/Rev
 import RevocationCountByOfficer from '../components/charts/revocations/RevocationCountByOfficer';
 import AdmissionTypeProportions from '../components/charts/revocations/AdmissionTypeProportions';
 import RevocationProportionByRace from '../components/charts/revocations/RevocationProportionByRace';
-import RevocationsByCounty from '../components/charts/revocations/RevocationsByCounty';
+import RevocationRateByCounty from '../components/charts/revocations/RevocationRateByCounty';
 import RevocationsByOffice from '../components/charts/revocations/RevocationsByOffice';
 
 const Revocations = () => {
@@ -131,35 +131,30 @@ const Revocations = () => {
               <div className="layers">
                 <div className="layer w-100 pX-20 pT-20">
                   <h6 className="lh-1">
-                    REVOCATIONS BY COUNTY
-                    <span className="fa-pull-right">
-                      <div className="dropdown show">
-                        <a className="btn btn-secondary btn-sm dropdown-toggle" href="#" role="button" id="exportDropdownMenuButton-revocationsByCounty" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                          Export
-                        </a>
-                        <div className="dropdown-menu" aria-labelledby="exportDropdownMenuButton-revocationsByCounty">
-                          <a className="dropdown-item" id="downloadChartData-revocationsByCounty" href="javascript:void(0);">Export data</a>
-                        </div>
-                      </div>
-                    </span>
+                    REVOCATION RATE BY COUNTY OF RESIDENCE
                   </h6>
+                </div>
+                <div className="layer w-100 pX-20 pT-20">
+                  <h4 style={{ height: '20px' }} className="dynamic-chart-header" id="revocationRateByCounty-header">
+                  The revocation rate for individuals in <b style={{ color: '#809AE5'}}>McIntosh County</b> was <b style={{ color: '#809AE5'}}>16% higher</b> than the average for North Dakota.
+                  </h4>
                 </div>
                 <div className="layer w-100 pX-20 pT-20 row">
                   <div className="layer w-100 p-20">
-                    <RevocationsByCounty
-                      revocationsByCounty={apiData.revocations_by_county_60_days}
+                    <RevocationRateByCounty
+                      revocationRateByCounty={apiData.revocation_rate_by_county_60_days}
                     />
                   </div>
                 </div>
-                <div className="layer bdT p-20 w-100 accordion" id="methodologyRevocationsByCounty">
-                  <div className="mb-0" id="methodologyHeadingsRevocationsByCounty">
+                <div className="layer bdT p-20 w-100 accordion" id="methodologyRevocationRateByCounty">
+                  <div className="mb-0" id="methodologyHeadingsRevocationRateByCounty">
                     <div className="mb-0">
-                      <button className="btn btn-link collapsed pL-0" type="button" data-toggle="collapse" data-target="#collapseMethodologyRevocationsByCounty" aria-expanded="true" aria-controls="collapseMethodologyRevocationsByCounty">
+                      <button className="btn btn-link collapsed pL-0" type="button" data-toggle="collapse" data-target="#collapseMethodologyRevocationRateByCounty" aria-expanded="true" aria-controls="collapseMethodologyRevocationRateByCounty">
                         <h6 className="lh-1 c-blue-500 mb-0">Methodology</h6>
                       </button>
                     </div>
                   </div>
-                  <div className="collapse" id="collapseMethodologyRevocationsByCounty" aria-labelledby="methodologyHeadingRevocationsByCounty" data-parent="#methodologyRevocationsByCounty">
+                  <div className="collapse" id="collapseMethodologyRevocationRateByCounty" aria-labelledby="methodologyHeadingRevocationRateByCounty" data-parent="#methodologyRevocationRateByCounty">
                     <div>
                       <ul>
                         <li>

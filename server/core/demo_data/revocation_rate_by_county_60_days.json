@@ -1,0 +1,16 @@
+{"state_code":"US_DEMO","county_code":"US_DEMO_BENSON","revocation_rate":"0.01515151515", "revocation_count": "1", "population_count": "66"}
+{"state_code":"US_DEMO","county_code":"US_DEMO_BOTTINEAU","revocation_rate":"0.03448275862", "revocation_count": "1", "population_count": "29"}
+{"state_code":"US_DEMO","county_code":"US_DEMO_BURLEIGH","revocation_rate":"0.02599179207", "revocation_count": 	"38", "population_count": "1462"}
+{"state_code":"US_DEMO","county_code":"US_DEMO_CASS","revocation_rate":"0.008102633356", "revocation_count": "12", "population_count": "1481"}
+{"state_code":"US_DEMO","county_code":"US_DEMO_GRAND_FORKS","revocation_rate":"0.006165228113", "revocation_count": "5", "population_count": "811"}
+{"state_code":"US_DEMO","county_code":"US_DEMO_GRIGGS","revocation_rate":"0.08333333333", "revocation_count": "1", "population_count": "12"}
+{"state_code":"US_DEMO","county_code":"US_DEMO_MCINTOSH","revocation_rate":"0.1666666667", "revocation_count": "1", "population_count": "6"}
+{"state_code":"US_DEMO","county_code":"US_DEMO_MCKENZIE","revocation_rate":"0.007751937984", "revocation_count": "1", "population_count": "129"}
+{"state_code":"US_DEMO","county_code":"US_DEMO_MORTON","revocation_rate":"0.01538461538", "revocation_count": "6", "population_count": "390"}
+{"state_code":"US_DEMO","county_code":"US_DEMO_MOUNTRAIL","revocation_rate":"0.01123595506", "revocation_count": "1", "population_count": "89"}
+{"state_code":"US_DEMO","county_code":"US_DEMO_PEMBINA","revocation_rate":"0.02040816327", "revocation_count": "1", "population_count": "49"}
+{"state_code":"US_DEMO","county_code":"US_DEMO_RAMSEY","revocation_rate":"0.02112676056", "revocation_count": "3", "population_count": "142"}
+{"state_code":"US_DEMO","county_code":"US_DEMO_ROLETTE","revocation_rate":"0.01587301587", "revocation_count": "2", "population_count": "126"}
+{"state_code":"US_DEMO","county_code":"US_DEMO_SIOUX","revocation_rate":"0.0303030303", "revocation_count": "1", "population_count": "33"}
+{"state_code":"US_DEMO","county_code":"US_DEMO_STARK","revocation_rate":"0.009287925697", "revocation_count": "3", "population_count": "323"}
+{"state_code":"US_DEMO","county_code":"US_DEMO_WARD","revocation_rate":"0.01126760563", "revocation_count": "8", "population_count": "710"}
