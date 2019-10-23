@@ -163,12 +163,14 @@ const Revocations = () => {
                     <div>
                       <ul>
                         <li>
-                          Revocation counts include the number of people who were incarcerated
-                          in a DOCR facility because their supervision was revoked.
+                          Revocation rates are calculated as the number of people who were
+                          incarcerated in a DOCR facility for a revocation during the
+                          time period over the total number of people on probation or parole
+                          at any point during the time period.
                         </li>
                         <li>
-                          Revocations are attributed to the county where the person&apos;s
-                          supervision was terminated.
+                          The county of residence for a person is determined by their last
+                          known address that is not a DOCR facility or a P&P office.
                         </li>
                         <li>
                           Revocations are included based on the date that the person
