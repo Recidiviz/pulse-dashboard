@@ -56,7 +56,6 @@ const FILES_BY_METRIC_TYPE = {
   ],
   revocation: [
     'revocation_rate_by_county_60_days.json',
-    'revocations_by_county_60_days.json',
     'revocations_by_officer_60_days.json',
     'revocations_by_site_id_60_days.json',
     'admissions_by_type_60_days.json',
