@@ -2,12 +2,12 @@
 
 Welcome and thank you for contributing to Recidiviz! We believe that our mission
 is critical to the long-term health of society. All contributions help to
-realize the goal of a more effective criminal justice system.
+realize the goal of a more fair and effective criminal justice system.
 
 _From little things big things grow_. No contribution is minor.
 
 The following are some brief guidelines to help make your experience smooth and
-impactful, and to keep Recidiviz effective as we grow.
+impactful, and to keep Recidiviz healthy as we grow.
 
 ## Code of Conduct
 
@@ -24,7 +24,7 @@ Personally Identifiable Information (PII) of any kind, as part of your filed
 issue, be it bug, feature request, or otherwise. If you would like to share
 such data as part of conveying your issue, and are permitted to do so, reach out
 to our team without submitting private information, and request a direct contact
-to communicate securely with.
+with whom to securely communicate.
 
 **Note #2**: If you feel that you cannot meet any of the suggested requirements
 for reporting bugs or feature requests below, err on the side of reporting them
@@ -34,12 +34,11 @@ miss out on your help.
 ### Reporting Bugs
 
 Send any bugs you find our way by filing an issue against one of our
-repositories. Don't overthink picking the repository: if it's related to data
-ingest or calculation, submit it [there](https://github.com/Recidiviz/recidiviz-data/issues).
-If it's related to our dashboard, submit it [here](https://github.com/Recidiviz/pulse-dashboard/issues).
+repositories.
 
 Please provide as much information as you can to help us reproduce and fix the
-bug. This may include, but is not limited to:
+bug. We have issue templates from which to choose when filing new issues.
+Generally, they require:
 
 * A concise title and clear description of the bug and how it manifests
 * Precise, ordered steps to reproduce it
@@ -55,14 +54,13 @@ We welcome any and all feature requests! Submit these by filing an issue, again
 to what you believe to be the right repository.
 
 Provide as much information as you can to help us consider and prioritize the
-feature. This may include, but is not limited to:
+feature. Again, we have issue templates to help. They include:
 
 * A concise title and clear description of the suggested feature
 * Why you believe it would be valuable, and the impact you believe it would
 provide
 * If a change in existing functionality, why you believe this is advantageous to
 the current functionality
-* A description of what data might be required to power the feature
 
 ### Questions, Comments, Concerns
 
@@ -81,16 +79,18 @@ assign an issue to yourself if you intend to submit a pull request soon. If you
 are interested but unsure about contributing to a particular issue, leave a
 comment on that issue.
 
-In general, you will find that our issues are separated into horizontal type,
-e.g. `feature` or `bug`. Take a look at the code and consider jumping first
-into an area where you feel more comfortable, and then perhaps into an area
-where you feel less comfortable or need to learn something new.
+In general, you will find that our issues are separated into vertical
+functionality, e.g. `Subject: Snapshots`, and also into horizontal type,
+e.g. `Type: Feature` or `Type: Bug`. Take a look at the code and consider
+jumping first into an area where you feel more comfortable, and then perhaps
+into an area where you feel less comfortable or need to learn something new.
 
 ### Doing the Work
 
 **tl;dr:**
 1. Work on a feature branch
-1. [Run linting and tests often](README.md#linting--running-tests)
+1. Test your change manually by running the app locally
+1. [Run linting and tests often](README.md)
 1. Ensure your change has test coverage (_ideally complete coverage_)
 1. Submit a descriptive pull request
 
@@ -101,7 +101,7 @@ are part of the Recidiviz Team, you may push branches directly to the
 of the repository.
 
 Before issuing a pull request, run our linting and test suite over your changes
-to ensure no regression, as described in [our Readme](README.md#linting--running-tests).
+to ensure no regression, as described in [our Readme](README.md).
 
 These same commands will be run by our continuous integration (CI) suite and
 your pull request will be "built against" automatically to show whether it
@@ -115,7 +115,7 @@ When you are passing linting and testing locally and are satisfied with the
 current state of your work, submit a pull request against `master`. However,
 you can also submit Work In Progress ("WIP") pull requests to gather early
 feedback if you believe it would be helpful. If you do so, please format the
-title as "WIP: My title here."
+title as "WIP: My title here" and place the PR in a "Draft" state via Github's UI.
 
 Make sure the pull request description explicitly lists everything that the work
 does, and references any issues it contributes to.
@@ -150,5 +150,5 @@ The linting configuration should adhere to this style guide and help you follow
 it automatically. You can use support for warning suppression if you find it
 necessary, but this may be argued against during code review.
 
-You should also ensure you follow the outlined [application structure](README.md#application-structure),
+You should also ensure you follow the outlined [application structure](README.md),
 though exceptions may be made here as well, as long as they are made explicit.
