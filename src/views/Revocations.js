@@ -125,19 +125,24 @@ const Revocations = () => {
             </div>
           </div>
 
-          {/* #Revocations by county chart ==================== */}
+          {/* #Revocation rate by county chart ==================== */}
           <div className="col-md-6">
             <div className="bd bgc-white p-20">
               <div className="layers">
                 <div className="layer w-100 pX-20 pT-20">
                   <h6 className="lh-1">
                     REVOCATION RATE BY COUNTY OF RESIDENCE
+                    <span className="fa-pull-right">
+                      <div className="dropdown show">
+                        <a className="btn btn-secondary btn-sm dropdown-toggle" href="#" role="button" id="exportDropdownMenuButton-revocationRateByCounty" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          Export
+                        </a>
+                        <div className="dropdown-menu" aria-labelledby="exportDropdownMenuButton-revocationRateByCounty">
+                          <a className="dropdown-item" id="downloadChartData-revocationRateByCounty" href="javascript:void(0);">Export data</a>
+                        </div>
+                      </div>
+                    </span>
                   </h6>
-                </div>
-                <div className="layer w-100 pX-20 pT-20">
-                  <h4 style={{ height: '20px' }} className="dynamic-chart-header" id="revocationRateByCounty-header">
-                  The revocation rate for individuals in <b style={{ color: '#809AE5'}}>McIntosh County</b> was <b style={{ color: '#809AE5'}}>16% higher</b> than the average for North Dakota.
-                  </h4>
                 </div>
                 <div className="layer w-100 pX-20 pT-20 row">
                   <div className="layer w-100 p-20">
