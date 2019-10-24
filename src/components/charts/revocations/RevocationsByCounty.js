@@ -24,22 +24,16 @@ import {
 } from 'react-simple-maps';
 import ReactTooltip from 'react-tooltip';
 import { geoAlbersUsa } from 'd3-geo';
-import { scaleLinear } from 'd3-scale';
 import geographyObject from '../../../assets/static/maps/us_nd.json';
 import { COLORS } from '../../../assets/scripts/constants/colors';
 import { configureDownloadButtons } from '../../../assets/scripts/utils/downloads';
-import { toHumanReadable, toInt } from '../../../utils/variableConversion';
+import { toInt } from '../../../utils/variableConversion';
+import { colorForValue, countyNameFromCode } from '../../../utils/choroplethUtils';
 
 const chartId = 'revocationsByCounty';
 
 const centerNDLong = -100.5;
 const centerNDLat = 47.3;
-
-function countyNameFromCode(stateCode, countyCode) {
-  let newCountyName = countyCode.replace(stateCode.concat('_'), '');
-  newCountyName = toHumanReadable(newCountyName);
-  return newCountyName;
-}
 
 function revocationCountForCounty(chartDataPoints, countyName) {
   const revocationsForCounty = chartDataPoints[countyName.toUpperCase()];
@@ -48,21 +42,6 @@ function revocationCountForCounty(chartDataPoints, countyName) {
   }
 
   return 0;
-}
-
-function colorForCounty(chartDataPoints, countsByCounty, countyName, maxValue, useDark) {
-  const countyScale = scaleLinear()
-    .domain([0, maxValue / 8, maxValue])
-    .range(['#F5F6F7', '#9FB1E3', COLORS['blue-standard-2']]);
-
-  const darkCountyScale = scaleLinear()
-    .domain([0, maxValue / 8, maxValue])
-    .range(['#CCD1DE', '#8897C4', '#1F2A3B']);
-
-  const revocationsForCounty = revocationCountForCounty(chartDataPoints, countyName);
-  const color = (useDark)
-    ? darkCountyScale(revocationsForCounty) : countyScale(revocationsForCounty);
-  return color;
 }
 
 class RevocationsByCounty extends Component {
@@ -139,19 +118,21 @@ class RevocationsByCounty extends Component {
                   projection={projection}
                   style={{
                     default: {
-                      fill: colorForCounty(this.chartDataPoints,
-                        this.revocationsByCounty,
+                      fill: colorForValue(
+                        revocationCountForCounty(this.chartDataPoints, geography.properties.NAME),
                         geography.properties.NAME,
-                        this.maxValue, false),
+                        this.maxValue, false,
+                      ),
                       stroke: COLORS['grey-700'],
                       strokeWidth: 0.2,
                       outline: 'none',
                     },
                     hover: {
-                      fill: colorForCounty(this.chartDataPoints,
-                        this.revocationsByCounty,
+                      fill: colorForValue(
+                        revocationCountForCounty(this.chartDataPoints, geography.properties.NAME),
                         geography.properties.NAME,
-                        this.maxValue, true),
+                        this.maxValue, true,
+                      ),
                       stroke: COLORS['grey-700'],
                       strokeWidth: 0.2,
                       outline: 'none',

@@ -24,22 +24,15 @@ import {
 } from 'react-simple-maps';
 import ReactTooltip from 'react-tooltip';
 import { geoAlbersUsa } from 'd3-geo';
-import { scaleLinear } from 'd3-scale';
 import geographyObject from '../../../assets/static/maps/us_nd.json';
 import { COLORS } from '../../../assets/scripts/constants/colors';
 import { configureDownloadButtons } from '../../../assets/scripts/utils/downloads';
-import { toHumanReadable } from '../../../utils/variableConversion';
+import { colorForValue, countyNameFromCode } from '../../../utils/choroplethUtils';
 
 const chartId = 'revocationRateByCounty';
 
 const centerNDLong = -100.5;
 const centerNDLat = 47.3;
-
-function countyNameFromCode(stateCode, countyCode) {
-  let newCountyName = countyCode.replace(stateCode.concat('_'), '');
-  newCountyName = toHumanReadable(newCountyName);
-  return newCountyName;
-}
 
 function revocationRateForCounty(chartDataPoints, countyName) {
   const revocationRate = chartDataPoints[countyName.toUpperCase()];
@@ -53,25 +46,10 @@ function revocationRateForCounty(chartDataPoints, countyName) {
 function valueCountsForCounty(officeValues, countyName) {
   const officeNumbers = officeValues[countyName.toUpperCase()];
   if (officeNumbers) {
-    return officeNumbers.revocationCount.concat('/', officeNumbers.populationCount);
+    return `${officeNumbers.revocationCount}/${officeNumbers.populationCount}`;
   }
 
   return '0/0';
-}
-
-function colorForCounty(chartDataPoints, countyName, maxValue, useDark) {
-  const countyScale = scaleLinear()
-    .domain([0, maxValue / 8, maxValue])
-    .range(['#F5F6F7', '#9FB1E3', COLORS['blue-standard-2']]);
-
-  const darkCountyScale = scaleLinear()
-    .domain([0, maxValue / 8, maxValue])
-    .range(['#CCD1DE', '#8897C4', '#1F2A3B']);
-
-  const revocationRate = revocationRateForCounty(chartDataPoints, countyName);
-  const color = (useDark)
-    ? darkCountyScale(revocationRate) : countyScale(revocationRate);
-  return color;
 }
 
 class RevocationsByCounty extends Component {
@@ -93,7 +71,7 @@ class RevocationsByCounty extends Component {
           revocation_rate: revocationRate,
         } = data;
 
-        const revocationRateNum = Number(revocationRate);
+        const revocationRateNum = 100 * Number(revocationRate);
 
         if (countyCode !== 'UNKNOWN_COUNTY') {
           if (revocationRateNum > this.maxValue) {
@@ -150,22 +128,24 @@ class RevocationsByCounty extends Component {
                   key={geography.properties.NAME}
                   data-tip={geography.properties.NAME
                     + ': '.concat(revocationRateForCounty(this.chartDataPoints, geography.properties.NAME),
-                  ' (', valueCountsForCounty(this.officeValues, geography.properties.NAME), ')')}
+                      '% (', valueCountsForCounty(this.officeValues, geography.properties.NAME), ')')}
                   geography={geography}
                   projection={projection}
                   style={{
                     default: {
-                      fill: colorForCounty(this.chartDataPoints,
-                        geography.properties.NAME,
-                        this.maxValue, false),
+                      fill: colorForValue(
+                        revocationRateForCounty(this.chartDataPoints, geography.properties.NAME),
+                        this.maxValue, false,
+                      ),
                       stroke: COLORS['grey-700'],
                       strokeWidth: 0.2,
                       outline: 'none',
                     },
                     hover: {
-                      fill: colorForCounty(this.chartDataPoints,
-                        geography.properties.NAME,
-                        this.maxValue, true),
+                      fill: colorForValue(
+                        revocationRateForCounty(this.chartDataPoints, geography.properties.NAME),
+                        this.maxValue, true,
+                      ),
                       stroke: COLORS['grey-700'],
                       strokeWidth: 0.2,
                       outline: 'none',
