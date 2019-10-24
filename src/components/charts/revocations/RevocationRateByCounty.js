@@ -27,47 +27,61 @@ import { geoAlbersUsa } from 'd3-geo';
 import geographyObject from '../../../assets/static/maps/us_nd.json';
 import { COLORS } from '../../../assets/scripts/constants/colors';
 import { configureDownloadButtons } from '../../../assets/scripts/utils/downloads';
-import { toInt } from '../../../utils/variableConversion';
 import { colorForValue, countyNameFromCode } from '../../../utils/choroplethUtils';
 
-const chartId = 'revocationsByCounty';
+const chartId = 'revocationRateByCounty';
 
 const centerNDLong = -100.5;
 const centerNDLat = 47.3;
 
-function revocationCountForCounty(chartDataPoints, countyName) {
-  const revocationsForCounty = chartDataPoints[countyName.toUpperCase()];
-  if (revocationsForCounty) {
-    return revocationsForCounty;
+function revocationRateForCounty(chartDataPoints, countyName) {
+  const revocationRate = chartDataPoints[countyName.toUpperCase()];
+  if (revocationRate) {
+    return revocationRate.toFixed(2);
   }
 
   return 0;
+}
+
+function valueCountsForCounty(officeValues, countyName) {
+  const officeNumbers = officeValues[countyName.toUpperCase()];
+  if (officeNumbers) {
+    return `${officeNumbers.revocationCount}/${officeNumbers.populationCount}`;
+  }
+
+  return '0/0';
 }
 
 class RevocationsByCounty extends Component {
   constructor(props) {
     super(props);
     this.props = props;
-    this.revocationsByCounty = this.props.revocationsByCounty;
+    this.revocationRateByCounty = this.props.revocationRateByCounty;
     this.chartDataPoints = {};
+    this.officeValues = {};
     this.maxValue = -1e100;
 
-    if (this.revocationsByCounty) {
-      this.revocationsByCounty.forEach((data) => {
+    if (this.revocationRateByCounty) {
+      this.revocationRateByCounty.forEach((data) => {
         const {
           state_code: stateCode,
           county_code: countyCode,
           revocation_count: revocationCount,
+          population_count: populationCount,
+          revocation_rate: revocationRate,
         } = data;
 
-        const revocationCountNum = toInt(revocationCount);
+        const revocationRateNum = 100 * Number(revocationRate);
 
         if (countyCode !== 'UNKNOWN_COUNTY') {
-          if (revocationCountNum > this.maxValue) {
-            this.maxValue = revocationCountNum;
+          if (revocationRateNum > this.maxValue) {
+            this.maxValue = revocationRateNum;
           }
           const standardCountyName = countyNameFromCode(stateCode, countyCode);
-          this.chartDataPoints[standardCountyName] = revocationCountNum;
+          this.chartDataPoints[standardCountyName] = revocationRateNum;
+          this.officeValues[standardCountyName] = {
+            revocationCount, populationCount,
+          };
         }
       });
     }
@@ -76,13 +90,13 @@ class RevocationsByCounty extends Component {
   componentDidMount() {
     const exportedStructureCallback = () => (
       {
-        metric: 'Revocations by county',
+        metric: 'Revocation rate by county of residence',
         series: [],
       });
 
     const downloadableDataFormat = [{
       data: Object.values(this.chartDataPoints),
-      label: 'revocationsByCounty',
+      label: chartId,
     }];
 
     configureDownloadButtons(chartId, downloadableDataFormat,
@@ -113,14 +127,14 @@ class RevocationsByCounty extends Component {
                 <Geography
                   key={geography.properties.NAME}
                   data-tip={geography.properties.NAME
-                    + ': '.concat(revocationCountForCounty(this.chartDataPoints, geography.properties.NAME))}
+                    + ': '.concat(revocationRateForCounty(this.chartDataPoints, geography.properties.NAME),
+                      '% (', valueCountsForCounty(this.officeValues, geography.properties.NAME), ')')}
                   geography={geography}
                   projection={projection}
                   style={{
                     default: {
                       fill: colorForValue(
-                        revocationCountForCounty(this.chartDataPoints, geography.properties.NAME),
-                        geography.properties.NAME,
+                        revocationRateForCounty(this.chartDataPoints, geography.properties.NAME),
                         this.maxValue, false,
                       ),
                       stroke: COLORS['grey-700'],
@@ -129,8 +143,7 @@ class RevocationsByCounty extends Component {
                     },
                     hover: {
                       fill: colorForValue(
-                        revocationCountForCounty(this.chartDataPoints, geography.properties.NAME),
-                        geography.properties.NAME,
+                        revocationRateForCounty(this.chartDataPoints, geography.properties.NAME),
                         this.maxValue, true,
                       ),
                       stroke: COLORS['grey-700'],

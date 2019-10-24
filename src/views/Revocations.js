@@ -28,7 +28,7 @@ import RevocationCountByViolationType from '../components/charts/revocations/Rev
 import RevocationCountByOfficer from '../components/charts/revocations/RevocationCountByOfficer';
 import AdmissionTypeProportions from '../components/charts/revocations/AdmissionTypeProportions';
 import RevocationProportionByRace from '../components/charts/revocations/RevocationProportionByRace';
-import RevocationsByCounty from '../components/charts/revocations/RevocationsByCounty';
+import RevocationRateByCounty from '../components/charts/revocations/RevocationRateByCounty';
 import RevocationsByOffice from '../components/charts/revocations/RevocationsByOffice';
 
 const Revocations = () => {
@@ -125,20 +125,20 @@ const Revocations = () => {
             </div>
           </div>
 
-          {/* #Revocations by county chart ==================== */}
+          {/* #Revocation rate by county chart ==================== */}
           <div className="col-md-6">
             <div className="bd bgc-white p-20">
               <div className="layers">
                 <div className="layer w-100 pX-20 pT-20">
                   <h6 className="lh-1">
-                    REVOCATIONS BY COUNTY
+                    REVOCATION RATE BY COUNTY OF RESIDENCE
                     <span className="fa-pull-right">
                       <div className="dropdown show">
-                        <a className="btn btn-secondary btn-sm dropdown-toggle" href="#" role="button" id="exportDropdownMenuButton-revocationsByCounty" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <a className="btn btn-secondary btn-sm dropdown-toggle" href="#" role="button" id="exportDropdownMenuButton-revocationRateByCounty" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                           Export
                         </a>
-                        <div className="dropdown-menu" aria-labelledby="exportDropdownMenuButton-revocationsByCounty">
-                          <a className="dropdown-item" id="downloadChartData-revocationsByCounty" href="javascript:void(0);">Export data</a>
+                        <div className="dropdown-menu" aria-labelledby="exportDropdownMenuButton-revocationRateByCounty">
+                          <a className="dropdown-item" id="downloadChartData-revocationRateByCounty" href="javascript:void(0);">Export data</a>
                         </div>
                       </div>
                     </span>
@@ -146,29 +146,31 @@ const Revocations = () => {
                 </div>
                 <div className="layer w-100 pX-20 pT-20 row">
                   <div className="layer w-100 p-20">
-                    <RevocationsByCounty
-                      revocationsByCounty={apiData.revocations_by_county_60_days}
+                    <RevocationRateByCounty
+                      revocationRateByCounty={apiData.revocation_rate_by_county_60_days}
                     />
                   </div>
                 </div>
-                <div className="layer bdT p-20 w-100 accordion" id="methodologyRevocationsByCounty">
-                  <div className="mb-0" id="methodologyHeadingsRevocationsByCounty">
+                <div className="layer bdT p-20 w-100 accordion" id="methodologyRevocationRateByCounty">
+                  <div className="mb-0" id="methodologyHeadingsRevocationRateByCounty">
                     <div className="mb-0">
-                      <button className="btn btn-link collapsed pL-0" type="button" data-toggle="collapse" data-target="#collapseMethodologyRevocationsByCounty" aria-expanded="true" aria-controls="collapseMethodologyRevocationsByCounty">
+                      <button className="btn btn-link collapsed pL-0" type="button" data-toggle="collapse" data-target="#collapseMethodologyRevocationRateByCounty" aria-expanded="true" aria-controls="collapseMethodologyRevocationRateByCounty">
                         <h6 className="lh-1 c-blue-500 mb-0">Methodology</h6>
                       </button>
                     </div>
                   </div>
-                  <div className="collapse" id="collapseMethodologyRevocationsByCounty" aria-labelledby="methodologyHeadingRevocationsByCounty" data-parent="#methodologyRevocationsByCounty">
+                  <div className="collapse" id="collapseMethodologyRevocationRateByCounty" aria-labelledby="methodologyHeadingRevocationRateByCounty" data-parent="#methodologyRevocationRateByCounty">
                     <div>
                       <ul>
                         <li>
-                          Revocation counts include the number of people who were incarcerated
-                          in a DOCR facility because their supervision was revoked.
+                          Revocation rates are calculated as the number of people who were
+                          incarcerated in a DOCR facility for a revocation during the
+                          time period over the total number of people on probation or parole
+                          at any point during the time period.
                         </li>
                         <li>
-                          Revocations are attributed to the county where the person&apos;s
-                          supervision was terminated.
+                          The county of residence for a person is determined by their last
+                          known address that is not a DOCR facility or a P&P office.
                         </li>
                         <li>
                           Revocations are included based on the date that the person
