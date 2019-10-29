@@ -31,6 +31,8 @@ const RevocationProportionByRace = (props) => {
   const [revocationCounts, setRevocationCounts] = useState([]);
   const [stateSupervisionCounts, setStateSupervisionCounts] = useState([]);
 
+  const chartId = 'revocationsByRace';
+
   const processResponse = () => {
     const {
       revocationProportionByRace,
@@ -117,7 +119,7 @@ const RevocationProportionByRace = (props) => {
 
   const chart = (
     <HorizontalBar
-      id="revocationsByRace"
+      id={chartId}
       data={{
         labels: ['Revocations', 'Supervision Population', 'ND Population'],
         datasets: [{
@@ -238,9 +240,9 @@ const RevocationProportionByRace = (props) => {
       series: [],
     });
 
-  configureDownloadButtons('revocationsByRace', chart.props.data.datasets,
-    chart.props.data.labels, document.getElementById('revocationsByRace'),
-    exportedStructureCallback);
+  configureDownloadButtons(chartId, 'REVOCATIONS BY RACE - 60 DAYS',
+    chart.props.data.datasets, chart.props.data.labels,
+    document.getElementById('revocationsByRace'), exportedStructureCallback);
 
   return chart;
 };

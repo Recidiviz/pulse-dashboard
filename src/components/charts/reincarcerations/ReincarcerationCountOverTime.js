@@ -162,7 +162,7 @@ const ReincarcerationCountOverTime = (props) => {
       series: [],
     });
 
-  configureDownloadButtons(chartId,
+  configureDownloadButtons(chartId, 'REINCARCERATIONS BY MONTH',
     chart.props.data.datasets, chart.props.data.labels,
     document.getElementById(chartId),
     exportedStructureCallback);

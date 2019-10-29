@@ -198,7 +198,7 @@ const LsirScoreChangeSnapshot = (props) => {
       series: [],
     };
   };
-  configureDownloadButtons(chartId, chart.props.data.datasets,
+  configureDownloadButtons(chartId, 'LSI-R SCORE CHANGES (AVERAGE)', chart.props.data.datasets,
     chart.props.data.labels, document.getElementById(chartId),
     exportedStructureCallback);
 

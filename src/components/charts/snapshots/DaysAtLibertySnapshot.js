@@ -196,7 +196,7 @@ const DaysAtLibertySnapshot = (props) => {
       series: [],
     };
   };
-  configureDownloadButtons(chartId, chart.props.data.datasets,
+  configureDownloadButtons(chartId, 'DAYS AT LIBERTY (AVERAGE)', chart.props.data.datasets,
     chart.props.data.labels, document.getElementById(chartId),
     exportedStructureCallback);
 

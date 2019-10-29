@@ -18,8 +18,23 @@
 import downloadjs from 'downloadjs';
 import { timeStamp } from './time';
 
-function downloadCanvasImage(canvas, filename) {
-  const data = canvas.toDataURL('image/png;base64');
+function downloadCanvasImage(canvas, filename, chartTitle) {
+  const topPadding = 100;
+  const temporaryCanvas = document.createElement('canvas');
+  temporaryCanvas.width = canvas.width;
+  temporaryCanvas.height = canvas.height + topPadding;
+
+  // Fill the canvas with a white background and the original image
+  const destinationCtx = temporaryCanvas.getContext('2d');
+  destinationCtx.fillStyle = '#FFFFFF';
+  destinationCtx.fillRect(0, 0, canvas.width, canvas.height + topPadding);
+  destinationCtx.fillStyle = '#616161';
+  destinationCtx.textAlign = 'center';
+  destinationCtx.font = '30px Helvetica Neue';
+  destinationCtx.fillText(chartTitle, canvas.width / 2, topPadding / 2);
+  destinationCtx.drawImage(canvas, 0, topPadding);
+
+  const data = temporaryCanvas.toDataURL('image/png;base64');
   downloadjs(data, filename, 'image/png;base64');
 }
 
@@ -30,13 +45,13 @@ function downloadObjectAsJson(exportObj, exportName) {
 }
 
 function configureDownloadButtons(
-  chartId, chartDatasets, chartLabels, chartBox,
+  chartId, chartTitle, chartDatasets, chartLabels, chartBox,
   exportedStructureCallback, convertValuesToNumbers,
 ) {
   const downloadChartAsImageButton = document.getElementById(`downloadChartAsImage-${chartId}`);
   if (downloadChartAsImageButton) {
     downloadChartAsImageButton.onclick = function downloadChartImage() {
-      downloadCanvasImage(chartBox, `${chartId}-${timeStamp()}.png`);
+      downloadCanvasImage(chartBox, `${chartId}-${timeStamp()}.png`, chartTitle);
     };
   }
 

@@ -45,7 +45,7 @@ const SideBar = () => {
         <div className="sidebar-logo" style={{ height: '65px' }}>
           <div className="peers ai-c fxw-nw">
             <div className="peer peer-greed">
-              <a className="sidebar-link td-n" href="https://www.recidiviz.org/">
+              <a className="sidebar-link td-n" href="/">
                 <div className="peers ai-c fxw-nw pT-15">
                   <div className="peer">
                     <div className="col-md-3 my-auto peer">
@@ -53,7 +53,7 @@ const SideBar = () => {
                     </div>
                   </div>
                   <div className="col-md-9 my-auto peer peer-greed">
-                    <h5 className="lh-1 mB-0 logo-text recidiviz-dark-green-text">North Dakota</h5>
+                    <h5 className="lh-1 mB-0 logo-text recidiviz-dark-green-text">Dashboard</h5>
                   </div>
                 </div>
               </a>

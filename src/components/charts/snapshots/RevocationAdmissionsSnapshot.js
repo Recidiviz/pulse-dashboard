@@ -204,7 +204,7 @@ const RevocationAdmissionsSnapshot = (props) => {
       series: [],
     };
   };
-  configureDownloadButtons(chartId, chart.props.data.datasets,
+  configureDownloadButtons(chartId, 'PRISON ADMISSIONS DUE TO REVOCATION', chart.props.data.datasets,
     chart.props.data.labels, document.getElementById(chartId),
     exportedStructureCallback);
 

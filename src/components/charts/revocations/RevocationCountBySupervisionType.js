@@ -117,9 +117,9 @@ const RevocationCountBySupervisionType = (props) => {
       series: [],
     });
 
-  configureDownloadButtons(chartId, chart.props.data.datasets,
-    chart.props.data.labels, document.getElementById(chartId),
-    exportedStructureCallback);
+  configureDownloadButtons(chartId, 'REVOCATIONS BY SUPERVISION TYPE',
+    chart.props.data.datasets, chart.props.data.labels,
+    document.getElementById(chartId), exportedStructureCallback);
 
   return chart;
 };

@@ -20,6 +20,7 @@ import React, { useState } from 'react';
 import { useAuth0 } from '../react-auth0-spa';
 import { capitalizeWords, normalizeAppPathToTitle, replaceAll } from '../assets/scripts/utils/strings';
 import { canShowAuthenticatedView, isDemoMode, getDemoUser } from '../utils/viewAuthentication';
+import { getUserStateCode } from '../utils/user';
 
 const TopBar = (props) => {
   let normalizedPath = normalizeAppPathToTitle(props.pathname);
@@ -82,7 +83,8 @@ const TopBar = (props) => {
                   <img className="w-2r bdrs-50p" src={displayUser.picture} alt="" />
                 </div>
                 <div className="peer">
-                  <span className="fsz-sm c-grey-900">{displayUser.name}</span>
+                  <li className="fsz-sm c-grey-900">{displayUser.name}</li>
+                  <li className="fsz-sm pT-3 c-grey-600">{getUserStateCode(displayUser)}</li>
                 </div>
               </a>
               <ul className="dropdown-menu fsz-sm">

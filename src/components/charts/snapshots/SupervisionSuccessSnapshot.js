@@ -211,7 +211,7 @@ const SupervisionSuccessSnapshot = (props) => {
     };
   };
 
-  configureDownloadButtons(chartId, chart.props.data.datasets,
+  configureDownloadButtons(chartId, 'SUCCESSFUL COMPLETION OF SUPERVISION', chart.props.data.datasets,
     chart.props.data.labels, document.getElementById(chartId),
     exportedStructureCallback);
 

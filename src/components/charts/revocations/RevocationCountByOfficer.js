@@ -118,9 +118,12 @@ const RevocationCountByOfficer = (props) => {
       downloadableDataFormat = [];
     }
 
+    const officeReadable = toHumanReadable(visibleOffice).toUpperCase();
+    const chartTitle = `REVOCATIONS BY OFFICER - ${officeReadable} - 60 DAYS`;
+
     const convertValuesToNumbers = false;
-    configureDownloadButtons(chartId, downloadableDataFormat,
-      officerIds, document.getElementById(chartId),
+    configureDownloadButtons(chartId, chartTitle,
+      downloadableDataFormat, officerIds, document.getElementById(chartId),
       exportedStructureCallback, convertValuesToNumbers);
   }
 

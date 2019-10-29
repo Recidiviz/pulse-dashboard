@@ -163,8 +163,8 @@ class RevocationsByOffice extends Component {
       label: chartId,
     }];
 
-    configureDownloadButtons(chartId, downloadableDataFormat,
-      officeNames,
+    configureDownloadButtons(chartId, 'REVOCATIONS BY P&P OFFICE - 60 DAYS',
+      downloadableDataFormat, officeNames,
       document.getElementById(chartId), exportedStructureCallback);
 
     setTimeout(() => {

@@ -124,9 +124,9 @@ const ReincarcerationRateByReleaseFacility = (props) => {
       series: [],
     });
 
-  configureDownloadButtons(chartId, chart.props.data.datasets,
-    chart.props.data.labels, document.getElementById(chartId),
-    exportedStructureCallback);
+  configureDownloadButtons(chartId, 'REINCARCERATION RATE BY RELEASE FACILITY',
+    chart.props.data.datasets, chart.props.data.labels,
+    document.getElementById(chartId), exportedStructureCallback);
 
   return chart;
 };

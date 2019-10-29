@@ -194,9 +194,9 @@ const FtrReferralsByAge = (props) => {
       series: [],
     });
 
-  configureDownloadButtons(chartId, chart.props.data.datasets,
-    chart.props.data.labels, document.getElementById(chartId),
-    exportedStructureCallback);
+  configureDownloadButtons(chartId, 'FTR REFERRALS BY AGE - 60 DAYS',
+    chart.props.data.datasets, chart.props.data.labels,
+    document.getElementById(chartId), exportedStructureCallback);
 
   return chart;
 };

@@ -125,7 +125,7 @@ const AdmissionTypeProportions = (props) => {
       series: [],
     });
 
-  configureDownloadButtons(chartId, chart.props.data.datasets,
+  configureDownloadButtons(chartId, 'ADMISSIONS BY TYPE - 60 DAYS', chart.props.data.datasets,
     chart.props.data.labels, document.getElementById(chartId),
     exportedStructureCallback);
 

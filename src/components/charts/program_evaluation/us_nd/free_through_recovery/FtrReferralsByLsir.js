@@ -177,9 +177,9 @@ const FtrReferralsByLsir = (props) => {
       series: [],
     });
 
-  configureDownloadButtons(chartId, chart.props.data.datasets,
-    chart.props.data.labels, document.getElementById(chartId),
-    exportedStructureCallback);
+  configureDownloadButtons(chartId, 'FTR REFERRALS BY LSI-R - 60 DAYS',
+    chart.props.data.datasets, chart.props.data.labels,
+    document.getElementById(chartId), exportedStructureCallback);
 
   return chart;
 };
