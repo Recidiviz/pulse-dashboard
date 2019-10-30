@@ -16,6 +16,7 @@
 // =============================================================================
 
 import downloadjs from 'downloadjs';
+import * as csvExport from 'jsonexport/dist';
 import { timeStamp } from './time';
 
 function downloadCanvasImage(canvas, filename, chartTitle) {
@@ -36,6 +37,19 @@ function downloadCanvasImage(canvas, filename, chartTitle) {
 
   const data = temporaryCanvas.toDataURL('image/png;base64');
   downloadjs(data, filename, 'image/png;base64');
+}
+
+function downloadObjectAsCsv(exportObj, exportName) {
+  const options = {
+    mapHeaders: (header) => header.replace(/label|values./, ''),
+  };
+
+  csvExport(exportObj.series, options, (err, csv) => {
+    if (err) throw err;
+    const dataStr = `data:text/csv;charset=utf-8,${csv}`;
+    const filename = `${exportName}.csv`;
+    downloadjs(dataStr, filename, 'text/plain');
+  });
 }
 
 function downloadObjectAsJson(exportObj, exportName) {
@@ -81,13 +95,14 @@ function configureDownloadButtons(
       });
 
       const filename = `${chartId}-${timeStamp()}`;
-      downloadObjectAsJson(exportData, filename);
+      downloadObjectAsCsv(exportData, filename);
     };
   }
 }
 
 export {
   downloadCanvasImage,
+  downloadObjectAsCsv,
   downloadObjectAsJson,
   configureDownloadButtons,
 };

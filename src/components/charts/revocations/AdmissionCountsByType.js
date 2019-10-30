@@ -23,11 +23,11 @@ import { sortByLabel } from '../../../utils/dataOrganizing';
 import { configureDownloadButtons } from '../../../assets/scripts/utils/downloads';
 import { toInt } from '../../../utils/variableConversion';
 
-const AdmissionTypeProportions = (props) => {
+const AdmissionCountsByType = (props) => {
   const [chartLabels, setChartLabels] = useState([]);
   const [chartDataPoints, setChartDataPoints] = useState([]);
 
-  const chartId = 'admissionTypeProportions';
+  const chartId = 'admissionCountsByType';
 
   const processResponse = () => {
     const { admissionCountsByType } = props;
@@ -67,6 +67,7 @@ const AdmissionTypeProportions = (props) => {
       id={chartId}
       data={{
         datasets: [{
+          label: 'Admission count',
           data: chartDataPoints,
           // Note: these colors are intentionally set in this order so that
           // the colors for technical and unknown revocations match those of
@@ -132,4 +133,4 @@ const AdmissionTypeProportions = (props) => {
   return chart;
 };
 
-export default AdmissionTypeProportions;
+export default AdmissionCountsByType;

@@ -96,7 +96,7 @@ class RevocationsByCounty extends Component {
 
     const downloadableDataFormat = [{
       data: Object.values(this.chartDataPoints),
-      label: chartId,
+      label: 'Revocation rate',
     }];
 
     configureDownloadButtons(chartId,

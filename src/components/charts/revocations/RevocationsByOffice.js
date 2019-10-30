@@ -160,7 +160,7 @@ class RevocationsByOffice extends Component {
 
     const downloadableDataFormat = [{
       data: revocationsByOffice,
-      label: chartId,
+      label: 'Revocation count',
     }];
 
     configureDownloadButtons(chartId, 'REVOCATIONS BY P&P OFFICE - 60 DAYS',

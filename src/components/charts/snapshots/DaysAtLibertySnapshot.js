@@ -70,7 +70,7 @@ const DaysAtLibertySnapshot = (props) => {
       data={{
         labels: chartLabels,
         datasets: [{
-          label: 'data',
+          label: 'Days at liberty (average)',
           backgroundColor: COLORS['blue-standard'],
           borderColor: COLORS['blue-standard'],
           pointBackgroundColor: COLORS['blue-standard'],

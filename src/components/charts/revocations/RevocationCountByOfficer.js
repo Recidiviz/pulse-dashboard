@@ -34,14 +34,16 @@ const RevocationCountByOfficer = (props) => {
   const chartId = 'revocationsByOfficer';
 
   /**
-   * Sets the labels and data points of the chart to display the values for the
-   * officers in the given `visibleOffice`.
+   * Organizes the labels and data points so the chart can display the values
+   * for the officers in the given `visibleOffice`.
    * `dataPoints` must be a dictionary where the office names are the keys,
    * and the values are arrays of dictionaries with values for the following keys:
    *    - officerID
    *    - violationsByType
+   * Returns an array of officer ID labels and a dictionary of data points for
+   * each violation type.
    */
-  function setDataForVisibleOffice(dataPoints, visibleOffice) {
+  function getDataForVisibleOffice(dataPoints, visibleOffice) {
     const officerLabels = [];
     const officerViolationCountsByType = {
       ABSCONDED: [],
@@ -58,21 +60,37 @@ const RevocationCountByOfficer = (props) => {
           visibleOfficeData.push(officerData);
         });
       });
-      setDisplayOfficerIds(false);
     } else {
       visibleOfficeData = dataPoints[visibleOffice];
-      setDisplayOfficerIds(true);
     }
 
-    const sortedDataPoints = visibleOfficeData.sort((a, b) => (
-      a.officerId - b.officerId));
+    if (visibleOfficeData) {
+      const sortedDataPoints = visibleOfficeData.sort((a, b) => (
+        a.officerId - b.officerId));
 
-    for (let i = 0; i < sortedDataPoints.length; i += 1) {
-      officerLabels.push(sortedDataPoints[i].officerId);
-      const revocationCountsByType = sortedDataPoints[i].violationsByType;
-      Object.keys(revocationCountsByType).forEach((violationType) => {
-        officerViolationCountsByType[violationType].push(revocationCountsByType[violationType]);
-      });
+      for (let i = 0; i < sortedDataPoints.length; i += 1) {
+        officerLabels.push(sortedDataPoints[i].officerId);
+        const revocationCountsByType = sortedDataPoints[i].violationsByType;
+        Object.keys(revocationCountsByType).forEach((violationType) => {
+          officerViolationCountsByType[violationType].push(revocationCountsByType[violationType]);
+        });
+      }
+    }
+
+    return { officerLabels, officerViolationCountsByType };
+  }
+
+  /**
+   * Sets the labels and data points of the chart to display the values for the
+   * officers in the given `visibleOffice`.
+   */
+  function setDataForVisibleOffice(
+    officerLabels, officerViolationCountsByType, visibleOffice,
+  ) {
+    if (visibleOffice === 'All-Officers') {
+      setDisplayOfficerIds(false);
+    } else {
+      setDisplayOfficerIds(true);
     }
 
     setvisibleOfficeName(visibleOffice);
@@ -83,7 +101,9 @@ const RevocationCountByOfficer = (props) => {
     setUnknownDataPoints(officerViolationCountsByType.UNKNOWN_VIOLATION_TYPE);
   }
 
-  function configureDownloads(chart, chartData, visibleOffice) {
+  function configureDownloads(
+    officerLabels, officerViolationCountsByType, visibleOffice,
+  ) {
     const exportedStructureCallback = () => (
       {
         office: visibleOffice,
@@ -91,39 +111,32 @@ const RevocationCountByOfficer = (props) => {
         series: [],
       });
 
-    const officerIds = [];
-    let downloadableDataFormat = [];
-    if (visibleOffice === 'All-Officers') {
-      const allOfficeData = [];
-      Object.keys(chartData).forEach((office) => {
-        Object.values(chartData[office]).forEach((officer) => {
-          allOfficeData.push(officer);
-          officerIds.push(officer.officerId);
-        });
-      });
-      downloadableDataFormat = [{
-        data: allOfficeData,
-        label: chartId,
-      }];
-    } else if (chartData[visibleOffice]) {
-      downloadableDataFormat = [{
-        data: Object.values(chartData[visibleOffice]),
-        label: chartId,
-      }];
+    const downloadableDataFormat = [
+      {
+        label: 'Absconsion',
+        data: officerViolationCountsByType.ABSCONDED,
+      },
+      {
+        label: 'New Offense',
+        data: officerViolationCountsByType.FELONY,
+      },
+      {
+        label: 'Technical',
+        data: officerViolationCountsByType.TECHNICAL,
+      },
+      {
+        label: 'Unknown Type',
+        data: officerViolationCountsByType.UNKNOWN_VIOLATION_TYPE,
+      },
+    ];
 
-      Object.values(chartData[visibleOffice]).forEach((officer) => {
-        officerIds.push(officer.officerId);
-      });
-    } else {
-      downloadableDataFormat = [];
-    }
-
+    const humanReadableOfficerLabels = officerLabels.map((element) => `Officer ${element}`);
     const officeReadable = toHumanReadable(visibleOffice).toUpperCase();
     const chartTitle = `REVOCATIONS BY OFFICER - ${officeReadable} - 60 DAYS`;
 
     const convertValuesToNumbers = false;
     configureDownloadButtons(chartId, chartTitle,
-      downloadableDataFormat, officerIds, document.getElementById(chartId),
+      downloadableDataFormat, humanReadableOfficerLabels, document.getElementById(chartId),
       exportedStructureCallback, convertValuesToNumbers);
   }
 
@@ -186,7 +199,11 @@ const RevocationCountByOfficer = (props) => {
     // Show data for the first office name that has data
     const visibleOffice = 'All-Officers';
     dataPoints[visibleOffice] = [];
-    setDataForVisibleOffice(dataPoints, visibleOffice);
+    const {
+      officerLabels, officerViolationCountsByType,
+    } = getDataForVisibleOffice(dataPoints, visibleOffice);
+    setDataForVisibleOffice(officerLabels, officerViolationCountsByType, visibleOffice);
+    configureDownloads(officerLabels, officerViolationCountsByType, visibleOffice);
     setAllChartData(dataPoints);
   };
 
@@ -267,11 +284,12 @@ const RevocationCountByOfficer = (props) => {
     />
   );
 
-  configureDownloads(chart, allChartData, visibleOfficeName);
-
   const processDatasetChange = (officeName) => {
-    setDataForVisibleOffice(allChartData, officeName);
-    configureDownloads(chart, allChartData, officeName);
+    const {
+      officerLabels, officerViolationCountsByType,
+    } = getDataForVisibleOffice(allChartData, officeName);
+    setDataForVisibleOffice(officerLabels, officerViolationCountsByType, officeName);
+    configureDownloads(officerLabels, officerViolationCountsByType, officeName);
   };
 
   // Set the dropdown toggle text to be the visible office name

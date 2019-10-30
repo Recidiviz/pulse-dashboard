@@ -47,6 +47,7 @@
     "highlight.js": "^9.15.6",
     "http-errors": "~1.6.2",
     "jquery": "^3.2.1",
+    "jsonexport": "^2.4.1",
     "jwks-rsa": "^1.4.0",
     "lodash": "^4.17.4",
     "lokijs": "^1.5.6",
