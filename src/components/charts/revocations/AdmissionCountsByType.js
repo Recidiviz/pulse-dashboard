@@ -67,7 +67,7 @@ const AdmissionCountsByType = (props) => {
       id={chartId}
       data={{
         datasets: [{
-          label: 'Count',
+          label: 'Admission count',
           data: chartDataPoints,
           // Note: these colors are intentionally set in this order so that
           // the colors for technical and unknown revocations match those of

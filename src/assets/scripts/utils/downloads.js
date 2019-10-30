@@ -16,7 +16,7 @@
 // =============================================================================
 
 import downloadjs from 'downloadjs';
-import * as jsonexport from 'jsonexport/dist';
+import * as csvExport from 'jsonexport/dist';
 import { timeStamp } from './time';
 
 function downloadCanvasImage(canvas, filename, chartTitle) {
@@ -40,14 +40,11 @@ function downloadCanvasImage(canvas, filename, chartTitle) {
 }
 
 function downloadObjectAsCsv(exportObj, exportName) {
-  const jsonString = JSON.stringify(exportObj.series);
-  const jsonObj = [JSON.parse(jsonString)];
-
   const options = {
     mapHeaders: (header) => header.replace(/label|values./, ''),
   };
 
-  jsonexport(jsonObj, options, (err, csv) => {
+  csvExport(exportObj.series, options, (err, csv) => {
     if (err) throw err;
     const dataStr = `data:text/csv;charset=utf-8,${csv}`;
     const filename = `${exportName}.csv`;
