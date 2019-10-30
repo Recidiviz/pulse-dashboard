@@ -78,7 +78,7 @@ const RevocationAdmissionsSnapshot = (props) => {
       data={{
         labels: chartLabels,
         datasets: [{
-          label: 'data',
+          label: 'Percent of prison admissions from revocations',
           backgroundColor: COLORS['blue-standard'],
           borderColor: COLORS['blue-standard'],
           pointBackgroundColor: COLORS['blue-standard'],

@@ -72,7 +72,7 @@ const LsirScoreChangeSnapshot = (props) => {
       data={{
         labels: chartLabels,
         datasets: [{
-          label: 'data',
+          label: 'LSI-R score changes (average)',
           backgroundColor: COLORS['blue-standard'],
           borderColor: COLORS['blue-standard'],
           pointBackgroundColor: COLORS['blue-standard'],

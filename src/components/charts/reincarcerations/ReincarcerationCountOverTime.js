@@ -65,6 +65,7 @@ const ReincarcerationCountOverTime = (props) => {
       data={{
         labels: chartLabels,
         datasets: [{
+          label: 'Reincarceration count',
           backgroundColor: COLORS['grey-500'],
           borderColor: COLORS['grey-500'],
           pointBackgroundColor: COLORS['grey-500'],

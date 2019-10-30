@@ -65,7 +65,7 @@ const RevocationCountOverTime = (props) => {
       data={{
         labels: chartLabels,
         datasets: [{
-          label: 'Total',
+          label: 'Revocation count',
           backgroundColor: COLORS['grey-500'],
           borderColor: COLORS['grey-500'],
           pointBackgroundColor: COLORS['grey-500'],

@@ -26,7 +26,7 @@ import RevocationCountOverTime from '../components/charts/revocations/Revocation
 import RevocationCountBySupervisionType from '../components/charts/revocations/RevocationCountBySupervisionType';
 import RevocationCountByViolationType from '../components/charts/revocations/RevocationCountByViolationType';
 import RevocationCountByOfficer from '../components/charts/revocations/RevocationCountByOfficer';
-import AdmissionTypeProportions from '../components/charts/revocations/AdmissionTypeProportions';
+import AdmissionCountsByType from '../components/charts/revocations/AdmissionCountsByType';
 import RevocationProportionByRace from '../components/charts/revocations/RevocationProportionByRace';
 import RevocationRateByCounty from '../components/charts/revocations/RevocationRateByCounty';
 import RevocationsByOffice from '../components/charts/revocations/RevocationsByOffice';
@@ -493,31 +493,31 @@ const Revocations = () => {
                     ADMISSIONS BY TYPE
                     <span className="fa-pull-right">
                       <div className="dropdown show">
-                        <a className="btn btn-secondary btn-sm dropdown-toggle" href="#" role="button" id="exportDropdownMenuButton-admissionTypeProportions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <a className="btn btn-secondary btn-sm dropdown-toggle" href="#" role="button" id="exportDropdownMenuButton-admissionCountsByType" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                           Export
                         </a>
-                        <div className="dropdown-menu" aria-labelledby="exportDropdownMenuButton-admissionTypeProportions">
-                          <a className="dropdown-item" id="downloadChartAsImage-admissionTypeProportions" href="javascript:void(0);">Export image</a>
-                          <a className="dropdown-item" id="downloadChartData-admissionTypeProportions" href="javascript:void(0);">Export data</a>
+                        <div className="dropdown-menu" aria-labelledby="exportDropdownMenuButton-admissionCountsByType">
+                          <a className="dropdown-item" id="downloadChartAsImage-admissionCountsByType" href="javascript:void(0);">Export image</a>
+                          <a className="dropdown-item" id="downloadChartData-admissionCountsByType" href="javascript:void(0);">Export data</a>
                         </div>
                       </div>
                     </span>
                   </h6>
                 </div>
                 <div className="layer w-100 p-20">
-                  <AdmissionTypeProportions
+                  <AdmissionCountsByType
                     admissionCountsByType={apiData.admissions_by_type_60_days}
                   />
                 </div>
-                <div className="layer bdT p-20 w-100 accordion" id="methodologyAdmissionTypeProportions">
-                  <div className="mb-0" id="methodologyHeadingAdmissionTypeProportions">
+                <div className="layer bdT p-20 w-100 accordion" id="methodologyAdmissionCountsByType">
+                  <div className="mb-0" id="methodologyHeadingAdmissionCountsByType">
                     <div className="mb-0">
-                      <button className="btn btn-link collapsed pL-0" type="button" data-toggle="collapse" data-target="#collapseMethodologyAdmissionTypeProportions" aria-expanded="true" aria-controls="collapseMethodologyAdmissionTypeProportions">
+                      <button className="btn btn-link collapsed pL-0" type="button" data-toggle="collapse" data-target="#collapseMethodologyAdmissionCountsByType" aria-expanded="true" aria-controls="collapseMethodologyAdmissionCountsByType">
                         <h6 className="lh-1 c-blue-500 mb-0">Methodology</h6>
                       </button>
                     </div>
                   </div>
-                  <div id="collapseMethodologyAdmissionTypeProportions" className="collapse" aria-labelledby="methodologyHeadingRevocationByOfficer" data-parent="#methodologyAdmissionTypeProportions">
+                  <div id="collapseMethodologyAdmissionCountsByType" className="collapse" aria-labelledby="methodologyHeadingRevocationByOfficer" data-parent="#methodologyAdmissionCountsByType">
                     <div>
                       <ul>
                         <li>

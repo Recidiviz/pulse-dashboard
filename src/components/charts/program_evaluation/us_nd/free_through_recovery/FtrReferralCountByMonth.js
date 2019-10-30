@@ -57,7 +57,7 @@ const FtrReferralCountByMonth = (props) => {
       data={{
         labels: chartLabels,
         datasets: [{
-          label: 'Total',
+          label: 'Referral count',
           backgroundColor: COLORS['grey-500'],
           borderColor: COLORS['grey-500'],
           pointBackgroundColor: COLORS['grey-500'],

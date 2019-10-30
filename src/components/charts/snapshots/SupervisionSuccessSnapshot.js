@@ -84,7 +84,7 @@ const SupervisionSuccessSnapshot = (props) => {
       data={{
         labels: chartLabels,
         datasets: [{
-          label: 'data',
+          label: 'Supervision success rate',
           backgroundColor: COLORS['blue-standard'],
           borderColor: COLORS['blue-standard'],
           pointBackgroundColor: COLORS['blue-standard'],
