@@ -1,4 +1,4 @@
-{"state_code":"US_DEMO","site_id":1,"site_name":"Bismarck","long":-100.745186,"lat":46.812513,"title_side":"top"}
+{"state_code":"US_DEMO","site_id":1,"site_name":"Bismarck","long":-100.545186,"lat":46.812513,"title_side":"top"}
 {"state_code":"US_DEMO","site_id":2,"site_name":"Jamestown","long":-98.708340,"lat":46.901152,"title_side":"bottom"}
 {"state_code":"US_DEMO","site_id":3,"site_name":"Minot","long":-101.317666,"lat":48.234138,"title_side":"bottom"}
 {"state_code":"US_DEMO","site_id":4,"site_name":"Fargo","long":-96.835261,"lat":46.870340,"title_side":"bottom"}
@@ -10,7 +10,7 @@
 {"state_code":"US_DEMO","site_id":10,"site_name":"Williston","long":-103.612105,"lat":48.156118,"title_side":"bottom"}
 {"state_code":"US_DEMO","site_id":11,"site_name":"Dickinson","long":-102.785458,"lat":46.880403,"title_side":"bottom"}
 {"state_code":"US_DEMO","site_id":12,"site_name":"Grafton","long":-97.405384,"lat":48.417929,"title_side":"top"}
-{"state_code":"US_DEMO","site_id":13,"site_name":"Mandan","long":-100.295054,"lat":46.679802,"title_side":"bottom"}
+{"state_code":"US_DEMO","site_id":13,"site_name":"Mandan","long":-100.8939375,"lat":46.8263071,"title_side":"bottom"}
 {"state_code":"US_DEMO","site_id":14,"site_name":"Bottineau","long":-100.445800,"lat":48.826567,"title_side":"left"}
 {"state_code":"US_DEMO","site_id":15,"site_name":"Oakes","long":-98.093554,"lat":46.140153,"title_side":"top"}
 {"state_code":"US_DEMO","site_id":16,"site_name":"Beulah","long":-101.785210,"lat":47.260616,"title_side":"left"}

@@ -138,6 +138,11 @@ class RevocationsByOffice extends Component {
         this.chartDataPoints.push(office);
       }
     });
+
+    // Sort descending by revocationCount so that offices with fewer revocations
+    // will be on top
+    this.chartDataPoints = this.chartDataPoints.sort((a, b) => (
+      b.revocationCount - a.revocationCount));
   }
 
   componentDidMount() {
@@ -223,7 +228,11 @@ class RevocationsByOffice extends Component {
                   key={office.officeName}
                   marker={office}
                   style={{
-                    default: { fill: colorForMarker(office) },
+                    default: {
+                      fill: colorForMarker(office),
+                      stroke: '#F5F6F7',
+                      strokeWidth: '3',
+                    },
                     hover: { fill: COLORS['blue-standard'] },
                     pressed: { fill: COLORS['blue-standard'] },
                   }}

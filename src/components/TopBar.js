@@ -15,26 +15,24 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React, { useState } from 'react';
+import React from 'react';
 
 import { useAuth0 } from '../react-auth0-spa';
-import { capitalizeWords, normalizeAppPathToTitle, replaceAll } from '../assets/scripts/utils/strings';
+import { normalizeAppPathToTitle } from '../assets/scripts/utils/strings';
 import { canShowAuthenticatedView, isDemoMode, getDemoUser } from '../utils/viewAuthentication';
 import { getUserStateCode } from '../utils/user';
 
 const TopBar = (props) => {
-  let normalizedPath = normalizeAppPathToTitle(props.pathname);
+  const { pathname } = props;
+  let normalizedPath = normalizeAppPathToTitle(pathname);
 
   if (!normalizedPath) {
     normalizedPath = 'Snapshots';
   }
 
-  const [isOpen, setIsOpen] = useState(false);
   const {
     user, isAuthenticated, loginWithRedirect, logout,
   } = useAuth0();
-
-  const toggle = () => setIsOpen(!isOpen);
 
   const logoutWithRedirect = () => logout({ returnTo: window.location.origin });
 
@@ -83,8 +81,8 @@ const TopBar = (props) => {
                   <img className="w-2r bdrs-50p" src={displayUser.picture} alt="" />
                 </div>
                 <div className="peer">
-                  <li className="fsz-sm c-grey-900">{displayUser.name}</li>
-                  <li className="fsz-sm pT-3 c-grey-600">{getUserStateCode(displayUser)}</li>
+                  <ul className="fsz-sm c-grey-900">{displayUser.name}</ul>
+                  <ul className="fsz-sm pT-3 c-grey-600">{getUserStateCode(displayUser)}</ul>
                 </div>
               </a>
               <ul className="dropdown-menu fsz-sm">

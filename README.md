@@ -35,6 +35,7 @@ For the frontend: copy the `.env.frontend.example` file and set variables accord
 Expected frontend environment variables include:
 * `REACT_APP_API_URL` - the base URL of the backend API server.
 * `REACT_APP_AUTH_ENV` - a string indicating the "auth environment" used to point to the correct Auth0 tenant. Either "development" or "production". Must match the backend `AUTH_ENV` variable.
+* `REACT_APP_FEEDBACK_URL` - the URL of the Recidiviz Dashboard Feedback form. 
 * `REACT_APP_IS_DEMO (OPTIONAL)` - whether or not to run the frontend in demo mode, which will run the app without requiring authentication. This should only be set when running locally and should be provided through the command line, along with the backend sibling below. To run the app in demo mode, use the following command: `./run_in_demo_mode.sh`
 
 The build process, as described below, ensures that the proper values are compiled and included in the static bundle at build time, for the right environment.

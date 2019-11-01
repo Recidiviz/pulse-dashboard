@@ -32,7 +32,6 @@
     .sidebar-inner {
       .sidebar-logo {
         border-bottom: 1px solid transparent;
-        padding: 0;
 
         a {
           .logo {
@@ -75,7 +74,6 @@
       .sidebar-inner {
         .sidebar-logo {
           border-bottom: 1px solid $border-color;
-          padding: 0 20px;
         }
 
         .sidebar-menu {
@@ -128,8 +126,8 @@
   border-bottom: 1px solid $border-color;
   border-right: 1px solid $border-color;
   line-height: 0;
-  padding: 0 20px;
   transition: all 0.2s ease;
+  padding-left: 4px;
 
   a {
     display: inline-block;
@@ -178,6 +176,7 @@
   overflow: auto;
   padding: 0;
   position: relative;
+  padding-left: 4px;
 
   .dropdown-toggle::after {
     display: none;
@@ -190,11 +189,16 @@
       content: '';
       display: block;
       height: 8px;
-      left: -4px;
+      left: -8px;
       position: absolute;
       top: calc(50% - 4px);
       width: 8px;
     }
+  }
+
+  .bottom-item {
+    bottom: 0px;
+    position: absolute;
   }
 
   li {
@@ -329,7 +333,6 @@
       .sidebar-inner {
         .sidebar-logo {
           border-bottom: 1px solid transparent;
-          padding: 0;
         }
 
         .sidebar-menu {
@@ -365,7 +368,6 @@
         .sidebar-inner {
           .sidebar-logo {
             border-bottom: 1px solid $border-color;
-            padding: 0 20px;
           }
 
           .sidebar-menu {
@@ -401,14 +403,6 @@
       .sidebar-inner {
         .sidebar-logo {
           border-bottom: 1px solid $border-color;
-          padding: 0 20px;
-
-          > a {
-            .logo {
-              background-position: center left;
-              width: 150px;
-            }
-          }
         }
 
         .sidebar-menu {

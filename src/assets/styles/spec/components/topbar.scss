@@ -126,6 +126,15 @@
     .nav-right {
       float: right;
 
+      .dropdown {
+        .dropdown-toggle {
+          ul {
+            margin-left: 0px;
+            padding-left: 0px;
+          }
+        }
+      }
+
       .dropdown-menu {
         left: auto;
         right: 0;

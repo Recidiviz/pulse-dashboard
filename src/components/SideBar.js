@@ -101,6 +101,14 @@ const SideBar = () => {
               <span className="title">Free Through Recovery</span>
             </a>
           </li>
+          <li className="bottom-item">
+            <a className="sidebar-link" id="feedback-link" href={process.env.REACT_APP_FEEDBACK_URL} target="_blank" rel="noopener noreferrer">
+              <span className="icon-holder">
+                <i className="c-grey-700 ti-comment" />
+              </span>
+              <span className="title">Feedback</span>
+            </a>
+          </li>
         </ul>
       </div>
     </div>
