@@ -46,9 +46,16 @@ function downloadObjectAsCsv(exportObj, exportName) {
 
   csvExport(exportObj.series, options, (err, csv) => {
     if (err) throw err;
-    const dataStr = `data:text/csv;charset=utf-8,${csv}`;
     const filename = `${exportName}.csv`;
-    downloadjs(dataStr, filename, 'text/plain');
+
+    if (navigator.msSaveBlob) { // User is on Windows
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      navigator.msSaveBlob(blob, filename);
+    } else {
+      const encodedCsv = encodeURIComponent(csv);
+      const dataStr = `data:text/csv;charset=utf-8,${encodedCsv}`;
+      downloadjs(dataStr, filename, 'text/csv');
+    }
   });
 }
 
