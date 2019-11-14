@@ -15,8 +15,8 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 import { scaleLinear } from 'd3-scale';
-import { toHumanReadable } from './variableConversion';
-import { COLORS } from '../assets/scripts/constants/colors';
+import { toHumanReadable } from '../transforms/labels';
+import { COLORS } from '../../assets/scripts/constants/colors';
 
 function colorForValue(value, maxValue, useDark) {
   const scale = scaleLinear()

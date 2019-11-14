@@ -24,11 +24,12 @@ import {
 } from 'react-simple-maps';
 import ReactTooltip from 'react-tooltip';
 import { geoAlbersUsa } from 'd3-geo';
-import geographyObject from '../../../assets/static/maps/us_nd.json';
+
 import { COLORS } from '../../../assets/scripts/constants/colors';
 import { configureDownloadButtons } from '../../../assets/scripts/utils/downloads';
-import { toInt } from '../../../utils/variableConversion';
-import { colorForValue, countyNameFromCode } from '../../../utils/choroplethUtils';
+import geographyObject from '../../../assets/static/maps/us_nd.json';
+import { colorForValue, countyNameFromCode } from '../../../utils/charts/choropleth';
+import { toInt } from '../../../utils/transforms/labels';
 
 const chartId = 'revocationsByCounty';
 

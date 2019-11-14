@@ -16,12 +16,14 @@
 // =============================================================================
 
 import React, { useState, useEffect } from 'react';
-
 import { Bar } from 'react-chartjs-2';
-import { COLORS_STACKED_TWO_VALUES_ALT, COLORS } from '../../../../../assets/scripts/constants/colors';
-import { sortByLabel } from '../../../../../utils/dataOrganizing';
+
+import {
+  COLORS_STACKED_TWO_VALUES_ALT, COLORS,
+} from '../../../../../assets/scripts/constants/colors';
 import { configureDownloadButtons } from '../../../../../assets/scripts/utils/downloads';
-import { genderValueToHumanReadable, toInt } from '../../../../../utils/variableConversion';
+import { sortByLabel } from '../../../../../utils/transforms/datasets';
+import { genderValueToHumanReadable, toInt } from '../../../../../utils/transforms/labels';
 
 const FtrReferralsByGender = (props) => {
   const [chartLabels, setChartLabels] = useState([]);
