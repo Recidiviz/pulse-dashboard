@@ -22,10 +22,11 @@ import '../assets/styles/index.scss';
 import { useAuth0 } from '../react-auth0-spa';
 import { callMetricsApi, awaitingResults } from '../utils/metricsClient';
 
-import SupervisionSuccessSnapshot from '../components/charts/snapshots/SupervisionSuccessSnapshot';
-import RevocationAdmissionsSnapshot from '../components/charts/snapshots/RevocationAdmissionsSnapshot';
-import LsirScoreChangeSnapshot from '../components/charts/snapshots/LsirScoreChangeSnapshot';
 import DaysAtLibertySnapshot from '../components/charts/snapshots/DaysAtLibertySnapshot';
+import LsirScoreChangeSnapshot from '../components/charts/snapshots/LsirScoreChangeSnapshot';
+import RevocationAdmissionsSnapshot
+  from '../components/charts/snapshots/RevocationAdmissionsSnapshot';
+import SupervisionSuccessSnapshot from '../components/charts/snapshots/SupervisionSuccessSnapshot';
 
 const Snapshots = () => {
   const { loading, user, getTokenSilently } = useAuth0();

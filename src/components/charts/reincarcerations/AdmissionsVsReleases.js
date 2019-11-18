@@ -16,12 +16,12 @@
 // =============================================================================
 
 import React, { useState, useEffect } from 'react';
-
 import { Bar } from 'react-chartjs-2';
+
 import { COLORS, COLORS_GOOD_BAD } from '../../../assets/scripts/constants/colors';
-import { monthNamesWithYearsFromNumbers } from '../../../utils/monthConversion';
-import { sortFilterAndSupplementMostRecentMonths } from '../../../utils/dataOrganizing';
 import { configureDownloadButtons } from '../../../assets/scripts/utils/downloads';
+import { sortFilterAndSupplementMostRecentMonths } from '../../../utils/transforms/datasets';
+import { monthNamesWithYearsFromNumbers } from '../../../utils/transforms/months';
 
 const AdmissionsVsReleases = (props) => {
   const [chartLabels, setChartLabels] = useState([]);

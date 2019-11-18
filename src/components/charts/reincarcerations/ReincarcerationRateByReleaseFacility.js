@@ -16,11 +16,11 @@
 // =============================================================================
 
 import React, { useState, useEffect } from 'react';
-
 import { Bar } from 'react-chartjs-2';
+
 import { COLORS } from '../../../assets/scripts/constants/colors';
-import { filterFacilities } from '../../../utils/dataOrganizing';
 import { configureDownloadButtons } from '../../../assets/scripts/utils/downloads';
+import { filterFacilities } from '../../../utils/transforms/datasets';
 
 const ReincarcerationRateByReleaseFacility = (props) => {
   const [chartLabels, setChartLabels] = useState([]);

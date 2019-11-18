@@ -16,17 +16,19 @@
 // =============================================================================
 
 import React, { useState, useEffect } from 'react';
-
 import { Line } from 'react-chartjs-2';
-import { configureDownloadButtons } from '../../../assets/scripts/utils/downloads';
+
 import { COLORS } from '../../../assets/scripts/constants/colors';
-import { monthNamesWithYearsFromNumbers } from '../../../utils/monthConversion';
-import { sortAndFilterMostRecentMonths } from '../../../utils/dataOrganizing';
-import { generateTrendlineDataset, getTooltipWithoutTrendline } from '../../../utils/trendline';
+import { configureDownloadButtons } from '../../../assets/scripts/utils/downloads';
 import {
   getGoalForChart, getMinForGoalAndData, getMaxForGoalAndData, trendlineGoalText,
   goalLabelContentString,
-} from '../../../utils/metricGoal';
+} from '../../../utils/charts/metricGoal';
+import {
+  generateTrendlineDataset, getTooltipWithoutTrendline,
+} from '../../../utils/charts/trendline';
+import { sortAndFilterMostRecentMonths } from '../../../utils/transforms/datasets';
+import { monthNamesWithYearsFromNumbers } from '../../../utils/transforms/months';
 
 const LsirScoreChangeSnapshot = (props) => {
   const [chartLabels, setChartLabels] = useState([]);

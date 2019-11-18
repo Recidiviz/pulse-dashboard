@@ -22,11 +22,14 @@ import '../assets/styles/index.scss';
 import { useAuth0 } from '../react-auth0-spa';
 import { callMetricsApi, awaitingResults } from '../utils/metricsClient';
 
-import RevocationCountOverTime from '../components/charts/revocations/RevocationCountOverTime';
-import RevocationCountBySupervisionType from '../components/charts/revocations/RevocationCountBySupervisionType';
-import RevocationCountByViolationType from '../components/charts/revocations/RevocationCountByViolationType';
+import AdmissionCountsByType
+  from '../components/charts/revocations/AdmissionCountsByType';
 import RevocationCountByOfficer from '../components/charts/revocations/RevocationCountByOfficer';
-import AdmissionCountsByType from '../components/charts/revocations/AdmissionCountsByType';
+import RevocationCountBySupervisionType
+  from '../components/charts/revocations/RevocationCountBySupervisionType';
+import RevocationCountByViolationType
+  from '../components/charts/revocations/RevocationCountByViolationType';
+import RevocationCountOverTime from '../components/charts/revocations/RevocationCountOverTime';
 import RevocationProportionByRace from '../components/charts/revocations/RevocationProportionByRace';
 import RevocationRateByCounty from '../components/charts/revocations/RevocationRateByCounty';
 import RevocationsByOffice from '../components/charts/revocations/RevocationsByOffice';

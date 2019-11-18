@@ -16,12 +16,12 @@
 // =============================================================================
 
 import React, { useState, useEffect } from 'react';
-
 import { HorizontalBar } from 'react-chartjs-2';
+
 import { COLORS_FIVE_VALUES, COLORS } from '../../../assets/scripts/constants/colors';
-import { sortByLabel } from '../../../utils/dataOrganizing';
 import { configureDownloadButtons } from '../../../assets/scripts/utils/downloads';
-import { raceValueToHumanReadable, toInt } from '../../../utils/variableConversion';
+import { sortByLabel } from '../../../utils/transforms/datasets';
+import { raceValueToHumanReadable, toInt } from '../../../utils/transforms/labels';
 
 const RevocationProportionByRace = (props) => {
   const [chartLabels, setChartLabels] = useState([]);

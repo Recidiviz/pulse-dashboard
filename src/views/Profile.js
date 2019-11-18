@@ -19,8 +19,8 @@ import React from 'react';
 import { Container, Row, Col } from 'reactstrap';
 import Loading from '../components/Loading';
 import { useAuth0 } from '../react-auth0-spa';
-import { getDemoUser, isDemoMode } from '../utils/viewAuthentication';
-import { getUserStateCode } from '../utils/user';
+import { getUserStateCode } from '../utils/authentication/user';
+import { getDemoUser, isDemoMode } from '../utils/authentication/viewAuthentication';
 
 const Profile = () => {
   const { loading, user } = useAuth0();

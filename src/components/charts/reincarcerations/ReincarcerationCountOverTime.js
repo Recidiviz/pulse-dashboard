@@ -16,13 +16,16 @@
 // =============================================================================
 
 import React, { useState, useEffect } from 'react';
-
 import { Line } from 'react-chartjs-2';
-import { configureDownloadButtons } from '../../../assets/scripts/utils/downloads';
+
 import { COLORS } from '../../../assets/scripts/constants/colors';
-import { monthNamesWithYearsFromNumbers } from '../../../utils/monthConversion';
-import { sortFilterAndSupplementMostRecentMonths } from '../../../utils/dataOrganizing';
-import { getGoalForChart, getMaxForGoalAndData, goalLabelContentString } from '../../../utils/metricGoal';
+import { configureDownloadButtons } from '../../../assets/scripts/utils/downloads';
+import {
+  getGoalForChart, getMaxForGoalAndData, goalLabelContentString,
+} from '../../../utils/charts/metricGoal';
+import { sortFilterAndSupplementMostRecentMonths } from '../../../utils/transforms/datasets';
+import { monthNamesWithYearsFromNumbers } from '../../../utils/transforms/months';
+
 
 const ReincarcerationCountOverTime = (props) => {
   const [chartLabels, setChartLabels] = useState([]);

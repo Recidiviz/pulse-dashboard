@@ -18,9 +18,10 @@
 import React, { useState, useEffect } from 'react';
 import * as $ from 'jquery';
 import { Bar } from 'react-chartjs-2';
+
 import { COLORS, COLORS_FIVE_VALUES } from '../../../assets/scripts/constants/colors';
 import { configureDownloadButtons } from '../../../assets/scripts/utils/downloads';
-import { toHtmlFriendly, toHumanReadable, toInt } from '../../../utils/variableConversion';
+import { toHtmlFriendly, toHumanReadable, toInt } from '../../../utils/transforms/labels';
 
 const RevocationCountByOfficer = (props) => {
   const [chartLabels, setChartLabels] = useState([]);

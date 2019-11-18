@@ -21,11 +21,16 @@ import '../assets/styles/index.scss';
 import { useAuth0 } from '../react-auth0-spa';
 import { callMetricsApi, awaitingResults } from '../utils/metricsClient';
 
-import FtrReferralCountByMonth from '../components/charts/program_evaluation/us_nd/free_through_recovery/FtrReferralCountByMonth';
-import FtrReferralsByRace from '../components/charts/program_evaluation/us_nd/free_through_recovery/FtrReferralsByRace';
-import FtrReferralsByGender from '../components/charts/program_evaluation/us_nd/free_through_recovery/FtrReferralsByGender';
-import FtrReferralsByAge from '../components/charts/program_evaluation/us_nd/free_through_recovery/FtrReferralsByAge';
-import FtrReferralsByLsir from '../components/charts/program_evaluation/us_nd/free_through_recovery/FtrReferralsByLsir';
+import FtrReferralCountByMonth
+  from '../components/charts/program_evaluation/us_nd/free_through_recovery/FtrReferralCountByMonth';
+import FtrReferralsByAge
+  from '../components/charts/program_evaluation/us_nd/free_through_recovery/FtrReferralsByAge';
+import FtrReferralsByGender
+  from '../components/charts/program_evaluation/us_nd/free_through_recovery/FtrReferralsByGender';
+import FtrReferralsByLsir
+  from '../components/charts/program_evaluation/us_nd/free_through_recovery/FtrReferralsByLsir';
+import FtrReferralsByRace
+  from '../components/charts/program_evaluation/us_nd/free_through_recovery/FtrReferralsByRace';
 
 const FreeThroughRecovery = () => {
   const { loading, user, getTokenSilently } = useAuth0();

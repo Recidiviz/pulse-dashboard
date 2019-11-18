@@ -16,12 +16,12 @@
 // =============================================================================
 
 import React, { useState, useEffect } from 'react';
-
 import { Pie } from 'react-chartjs-2';
+
 import { COLORS, COLORS_FIVE_VALUES } from '../../../assets/scripts/constants/colors';
-import { sortByLabel } from '../../../utils/dataOrganizing';
 import { configureDownloadButtons } from '../../../assets/scripts/utils/downloads';
-import { toInt } from '../../../utils/variableConversion';
+import { sortByLabel } from '../../../utils/transforms/datasets';
+import { toInt } from '../../../utils/transforms/labels';
 
 const AdmissionCountsByType = (props) => {
   const [chartLabels, setChartLabels] = useState([]);

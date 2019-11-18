@@ -20,7 +20,7 @@ import PropTypes from 'prop-types';
 import { Route } from 'react-router-dom';
 
 import { useAuth0 } from '../react-auth0-spa';
-import { canShowAuthenticatedView, isDemoMode } from '../utils/viewAuthentication';
+import { canShowAuthenticatedView, isDemoMode } from '../utils/authentication/viewAuthentication';
 
 const PrivateRoute = ({ component: Component, path, ...rest }) => {
   const { isAuthenticated, loginWithRedirect } = useAuth0();

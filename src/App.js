@@ -21,20 +21,20 @@ import {
 } from 'react-router-dom';
 
 import * as $ from 'jquery';
+import { useAuth0 } from './react-auth0-spa';
 
-import PrivateRoute from './components/PrivateRoute';
+import Footer from './components/Footer';
 import Loading from './components/Loading';
+import PrivateRoute from './components/PrivateRoute';
 import SideBar from './components/SideBar';
 import TopBar from './components/TopBar';
-import Footer from './components/Footer';
-import { canShowAuthenticatedView } from './utils/viewAuthentication';
+import { canShowAuthenticatedView } from './utils/authentication/viewAuthentication';
+import FreeThroughRecovery from './views/FreeThroughRecovery';
 import NotFound from './views/NotFound';
 import Profile from './views/Profile';
-import FreeThroughRecovery from './views/FreeThroughRecovery';
-import Revocations from './views/Revocations';
 import Reincarcerations from './views/Reincarcerations';
+import Revocations from './views/Revocations';
 import Snapshots from './views/Snapshots';
-import { useAuth0 } from './react-auth0-spa';
 import './assets/scripts/index';
 
 // styles

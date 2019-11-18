@@ -23,8 +23,10 @@ import { useAuth0 } from '../react-auth0-spa';
 import { callMetricsApi, awaitingResults } from '../utils/metricsClient';
 
 import AdmissionsVsReleases from '../components/charts/reincarcerations/AdmissionsVsReleases';
-import ReincarcerationRateByStayLength from '../components/charts/reincarcerations/ReincarcerationRateByStayLength';
-import ReincarcerationCountOverTime from '../components/charts/reincarcerations/ReincarcerationCountOverTime';
+import ReincarcerationCountOverTime
+  from '../components/charts/reincarcerations/ReincarcerationCountOverTime';
+import ReincarcerationRateByStayLength
+  from '../components/charts/reincarcerations/ReincarcerationRateByStayLength';
 
 const Reincarcerations = () => {
   const { loading, user, getTokenSilently } = useAuth0();
