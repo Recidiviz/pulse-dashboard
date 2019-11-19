@@ -15,38 +15,8 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-const STATE_NAME_BY_CODE = {
-  us_mo: 'Missouri',
-  us_nd: 'North Dakota',
-  recidiviz: 'Recidiviz',
-};
-
-const METADATA_NAMESPACE = 'https://dashboard.recidiviz.org/';
-
-function getUserAppMetadata(user) {
-  const appMetadataKey = `${METADATA_NAMESPACE}app_metadata`;
-  return user[appMetadataKey];
+function isDemoMode() {
+  return process.env.REACT_APP_IS_DEMO === 'true';
 }
 
-function getUserStateCode(user) {
-  const appMetadata = getUserAppMetadata(user);
-  if (!appMetadata) {
-    throw Error('No app_metadata available for user');
-  }
-
-  const stateCode = appMetadata.state_code;
-  if (stateCode) {
-    return stateCode;
-  }
-  throw Error('No state code set for user');
-}
-
-function getUserStateName(user) {
-  const stateCode = getUserStateCode(user);
-  return STATE_NAME_BY_CODE[stateCode];
-}
-
-export {
-  getUserStateCode,
-  getUserStateName,
-};
+export default isDemoMode;

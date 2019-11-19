@@ -19,9 +19,10 @@ import React from 'react';
 
 import { useAuth0 } from '../react-auth0-spa';
 import { normalizeAppPathToTitle } from '../assets/scripts/utils/strings';
+import isDemoMode from '../utils/authentication/demoMode';
 import { getUserStateName } from '../utils/authentication/user';
 import {
-  canShowAuthenticatedView, isDemoMode, getDemoUser,
+  canShowAuthenticatedView, getDemoUser,
 } from '../utils/authentication/viewAuthentication';
 
 const TopBar = (props) => {

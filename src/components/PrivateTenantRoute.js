@@ -21,10 +21,15 @@ import { Route } from 'react-router-dom';
 
 import { useAuth0 } from '../react-auth0-spa';
 import isDemoMode from '../utils/authentication/demoMode';
-import { canShowAuthenticatedView } from '../utils/authentication/viewAuthentication';
+import { getUserStateCode } from '../utils/authentication/user';
+import {
+  canShowAuthenticatedView, isViewAvailableForUserState
+} from '../utils/authentication/viewAuthentication';
+import { getComponentForStateView } from '../views/stateViews';
+import NotFound from '../views/NotFound';
 
-const PrivateRoute = ({ component: Component, path, ...rest }) => {
-  const { isAuthenticated, loginWithRedirect } = useAuth0();
+const PrivateTenantRoute = ({ path, ...rest }) => {
+  const { isAuthenticated, loginWithRedirect, user } = useAuth0();
 
   useEffect(() => {
     const fn = async () => {
@@ -37,20 +42,30 @@ const PrivateRoute = ({ component: Component, path, ...rest }) => {
     fn();
   }, [isAuthenticated, loginWithRedirect, path]);
 
-  if (!canShowAuthenticatedView(isAuthenticated)) return null;
+  if (!canShowAuthenticatedView(isAuthenticated)) {
+    return null;
+  }
 
-  const render = (props) => (isAuthenticated === true || isDemoMode() === true
-    ? <Component {...props} /> : null);
+  let render = null;
+  if (!isViewAvailableForUserState(user, path)) {
+    // If the user is authenticated but trying to access a view not available for their state, 404
+    render = NotFound;
+  } else {
+    // Else, grab the correct component for that view for their state and send them to it
+    const stateCode = getUserStateCode(user);
+    const Component = getComponentForStateView(stateCode, path);
+    render = (props) => (isAuthenticated === true || isDemoMode() === true
+      ? <Component {...props} /> : null);
+  }
+
   return <Route path={path} render={render} {...rest} />;
 };
 
-PrivateRoute.propTypes = {
-  component: PropTypes.oneOfType([PropTypes.element, PropTypes.func])
-    .isRequired,
+PrivateTenantRoute.propTypes = {
   path: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.arrayOf(PropTypes.string),
   ]).isRequired,
 };
 
-export default PrivateRoute;
+export default PrivateTenantRoute;

@@ -15,9 +15,9 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-function isDemoMode() {
-  return process.env.REACT_APP_IS_DEMO === 'true';
-}
+import isDemoMode from './demoMode';
+import { getUserStateCode } from './user';
+import { getAvailableViewsForState } from '../../views/stateViews';
 
 function getDemoUser() {
   return {
@@ -35,8 +35,27 @@ function canShowAuthenticatedView(isAuthenticated) {
   return isAuthenticated || isDemoMode();
 }
 
+/**
+ * Returns whether or not the view with the given name is available for the given user, based on
+ * their state.
+ */
+function isViewAvailableForUserState(user, view) {
+  const stateCode = getUserStateCode(user);
+
+  // TODO: get the correct state for a Recidiviz user based on current session
+  const normalizedCode = (stateCode === 'recidiviz') ? 'us_nd' : stateCode.toLowerCase();
+
+  const permittedViews = getAvailableViewsForState(normalizedCode);
+  if (!permittedViews) {
+    // State is not present in permissions yet
+    return false;
+  }
+
+  return permittedViews.includes(view.toLowerCase());
+}
+
 export {
-  isDemoMode,
   getDemoUser,
   canShowAuthenticatedView,
+  isViewAvailableForUserState,
 };

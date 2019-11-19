@@ -15,7 +15,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import { isDemoMode } from './authentication/viewAuthentication';
+import isDemoMode from './authentication/demoMode';
 
 /**
  * An asynchronous function that returns a promise which will eventually return the results from
