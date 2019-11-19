@@ -80,6 +80,9 @@ app.get('/api/:stateCode/reincarcerations', checkJwt, api.reincarcerations);
 app.get('/api/:stateCode/revocations', checkJwt, api.revocations);
 app.get('/api/:stateCode/snapshots', checkJwt, api.snapshots);
 
+// Starts the background task for refresh metrics regularly
+require('./server/core/metricsRefresh');
+
 const server = http.createServer(app);
 
 /**
