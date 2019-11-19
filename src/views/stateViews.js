@@ -15,17 +15,17 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import FreeThroughRecovery from './FreeThroughRecovery';
-import Reincarcerations from './Reincarcerations';
-import Revocations from './Revocations';
-import Snapshots from './Snapshots';
+import UsNdFreeThroughRecovery from './tenants/us_nd/FreeThroughRecovery';
+import UsNdReincarcerations from './tenants/us_nd/Reincarcerations';
+import UsNdRevocations from './tenants/us_nd/Revocations';
+import UsNdSnapshots from './tenants/us_nd/Snapshots';
 
 const STATE_VIEW_COMPONENTS = {
   us_nd: {
-    '/programevaluation/freethroughrecovery': FreeThroughRecovery,
-    '/reincarcerations': Reincarcerations,
-    '/revocations': Revocations,
-    '/snapshots': Snapshots,
+    '/programevaluation/freethroughrecovery': UsNdFreeThroughRecovery,
+    '/reincarcerations': UsNdReincarcerations,
+    '/revocations': UsNdRevocations,
+    '/snapshots': UsNdSnapshots,
   },
 };
 

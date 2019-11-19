@@ -17,13 +17,15 @@
 
 import React, { useState, useEffect } from 'react';
 
-import Loading from '../components/Loading';
-import '../assets/styles/index.scss';
-import { useAuth0 } from '../react-auth0-spa';
-import { callMetricsApi, awaitingResults } from '../utils/metricsClient';
+import Loading from '../../../components/Loading';
+import '../../../assets/styles/index.scss';
+import { useAuth0 } from '../../../react-auth0-spa';
+import { callMetricsApi, awaitingResults } from '../../../utils/metricsClient';
 
-import RecidivismRateByProgram from '../components/charts/program_evaluation/RecidivismRateByProgram';
-import ProgramCostEffectiveness from '../components/charts/program_evaluation/ProgramCostEffectiveness';
+import RecidivismRateByProgram
+  from '../../../components/charts/program_evaluation/RecidivismRateByProgram';
+import ProgramCostEffectiveness
+  from '../../../components/charts/program_evaluation/ProgramCostEffectiveness';
 
 const REPORT_CARD_A = {
   "title": "Program A",
