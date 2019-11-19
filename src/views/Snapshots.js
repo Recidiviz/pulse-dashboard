@@ -35,7 +35,7 @@ const Snapshots = () => {
 
   const fetchChartData = async () => {
     try {
-      const responseData = await callMetricsApi('snapshots', getTokenSilently);
+      const responseData = await callMetricsApi('us_nd/snapshots', getTokenSilently);
       setApiData(responseData);
       setAwaitingApi(false);
     } catch (error) {

@@ -19,7 +19,7 @@ import React from 'react';
 import { Container, Row, Col } from 'reactstrap';
 import Loading from '../components/Loading';
 import { useAuth0 } from '../react-auth0-spa';
-import { getUserStateCode } from '../utils/authentication/user';
+import { getUserStateName } from '../utils/authentication/user';
 import { getDemoUser, isDemoMode } from '../utils/authentication/viewAuthentication';
 
 const Profile = () => {
@@ -49,7 +49,7 @@ const Profile = () => {
             <Col md>
               <h2>{displayUser.name}</h2>
               <p className="lead text-muted">{displayUser.email}</p>
-              <p className="lead text-muted">{getUserStateCode(displayUser)}</p>
+              <p className="lead text-muted">{getUserStateName(displayUser)}</p>
             </Col>
           </Row>
         </Container>

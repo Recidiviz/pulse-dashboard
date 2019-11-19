@@ -145,7 +145,8 @@ function fetchMetricsFromLocal(stateCode, metricType) {
  * Otherwise, fetches from Google Cloud Storage.
  */
 function fetchMetrics(stateCode, metricType, isDemo, callback) {
-  return memoryCache.wrap(metricType, (cacheCb) => {
+  const cacheKey = `${stateCode}-${metricType}`;
+  return memoryCache.wrap(cacheKey, (cacheCb) => {
     let fetcher = null;
     let source = null;
     if (isDemo) {
@@ -156,11 +157,11 @@ function fetchMetrics(stateCode, metricType, isDemo, callback) {
       fetcher = fetchMetricsFromGCS;
     }
 
-    console.log(`Fetching ${metricType} metrics from ${source}...`);
-    const metricPromises = fetcher(stateCode, metricType);
+    console.log(`Fetching ${metricType} metrics for state ${stateCode} from ${source}...`);
+    const metricPromises = fetcher(stateCode.toUpperCase(), metricType);
 
     Promise.all(metricPromises).then((allFileContents) => {
-      console.log(`Fetched all ${metricType} metrics from ${source}`);
+      console.log(`Fetched all ${metricType} metrics for state ${stateCode} from ${source}`);
       const results = {};
       allFileContents.forEach((contents) => {
         console.log(`Fetched contents for fileKey: ${contents.fileKey}`);
@@ -173,20 +174,20 @@ function fetchMetrics(stateCode, metricType, isDemo, callback) {
   }, callback);
 }
 
-function fetchSnapshotMetrics(isDemo, callback) {
-  return fetchMetrics('US_ND', 'snapshot', isDemo, callback);
+function fetchSnapshotMetrics(isDemo, stateCode, callback) {
+  return fetchMetrics(stateCode, 'snapshot', isDemo, callback);
 }
 
-function fetchReincarcerationMetrics(isDemo, callback) {
-  return fetchMetrics('US_ND', 'reincarceration', isDemo, callback);
+function fetchReincarcerationMetrics(isDemo, stateCode, callback) {
+  return fetchMetrics(stateCode, 'reincarceration', isDemo, callback);
 }
 
-function fetchRevocationMetrics(isDemo, callback) {
-  return fetchMetrics('US_ND', 'revocation', isDemo, callback);
+function fetchRevocationMetrics(isDemo, stateCode, callback) {
+  return fetchMetrics(stateCode, 'revocation', isDemo, callback);
 }
 
-function fetchFreeThroughRecoveryMetrics(isDemo, callback) {
-  return fetchMetrics('US_ND', 'freeThroughRecovery', isDemo, callback);
+function fetchFreeThroughRecoveryMetrics(isDemo, stateCode, callback) {
+  return fetchMetrics(stateCode, 'freeThroughRecovery', isDemo, callback);
 }
 
 module.exports = {

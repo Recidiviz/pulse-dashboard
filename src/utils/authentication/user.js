@@ -18,14 +18,25 @@
 const STATE_CODE_BY_DOMAIN = {
   'recidiviz.org': 'Recidiviz',
   'nd.gov': 'North Dakota',
+  'mo.gov': 'Missouri',
 };
 
-function getUserStateCode(user) {
+function getUserStateName(user) {
+  // TODO(XXXX): Replace with a lookup based on state_code, or place this directly in the metadata
   const emailSplit = user.email.split('@');
   const domain = emailSplit[emailSplit.length - 1].toLowerCase();
   return STATE_CODE_BY_DOMAIN[domain];
 }
 
+function getUserStateCode(user) {
+  const stateCode = user.app_metadata.state_code;
+  if (stateCode) {
+    return stateCode;
+  }
+  throw Error('No state code set for user');
+}
+
 export {
+  getUserStateName,
   getUserStateCode,
 };

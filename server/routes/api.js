@@ -39,19 +39,19 @@ function responder(res) {
 }
 
 function freeThroughRecovery(req, res) {
-  metricsApi.fetchFreeThroughRecoveryMetrics(isDemoMode, responder(res));
+  metricsApi.fetchFreeThroughRecoveryMetrics(isDemoMode, req.params.stateCode, responder(res));
 }
 
 function reincarcerations(req, res) {
-  metricsApi.fetchReincarcerationMetrics(isDemoMode, responder(res));
+  metricsApi.fetchReincarcerationMetrics(isDemoMode, req.params.stateCode, responder(res));
 }
 
 function revocations(req, res) {
-  metricsApi.fetchRevocationMetrics(isDemoMode, responder(res));
+  metricsApi.fetchRevocationMetrics(isDemoMode, req.params.stateCode, responder(res));
 }
 
 function snapshots(req, res) {
-  metricsApi.fetchSnapshotMetrics(isDemoMode, responder(res));
+  metricsApi.fetchSnapshotMetrics(isDemoMode, req.params.stateCode, responder(res));
 }
 
 module.exports = {

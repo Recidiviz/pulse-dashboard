@@ -35,7 +35,7 @@ const Reincarcerations = () => {
 
   const fetchChartData = async () => {
     try {
-      const responseData = await callMetricsApi('reincarcerations', getTokenSilently);
+      const responseData = await callMetricsApi('us_nd/reincarcerations', getTokenSilently);
       setApiData(responseData);
       setAwaitingApi(false);
     } catch (error) {

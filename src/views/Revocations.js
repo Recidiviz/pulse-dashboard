@@ -41,7 +41,7 @@ const Revocations = () => {
 
   const fetchChartData = async () => {
     try {
-      const responseData = await callMetricsApi('revocations', getTokenSilently);
+      const responseData = await callMetricsApi('us_nd/revocations', getTokenSilently);
       setApiData(responseData);
       setAwaitingApi(false);
     } catch (error) {
