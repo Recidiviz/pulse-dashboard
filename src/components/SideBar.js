@@ -20,7 +20,9 @@ import React, { useEffect } from 'react';
 import * as $ from 'jquery';
 import logo from '../assets/static/images/logo.png';
 
+import StateSelector from './StateSelector';
 import { useAuth0 } from '../react-auth0-spa';
+import { isRecidivizUser } from '../utils/authentication/user';
 import { isViewAvailableForUserState } from '../utils/authentication/viewAuthentication';
 
 const SideBar = () => {
@@ -117,6 +119,12 @@ const SideBar = () => {
               </span>
               <span className="title">Free Through Recovery</span>
             </a>
+          </li>
+          )}
+
+          {isRecidivizUser(user) && (
+          <li className="nav-item pL-20" style={{ maxWidth: '75%' }}>
+            <StateSelector />
           </li>
           )}
 

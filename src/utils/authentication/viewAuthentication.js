@@ -17,7 +17,7 @@
 
 import isDemoMode from './demoMode';
 import { getUserStateCode } from './user';
-import { getAvailableViewsForState } from '../../views/stateViews';
+import { getAvailableViewsForState, getCurrentState } from '../../views/stateViews';
 
 function getDemoUser() {
   return {
@@ -41,9 +41,7 @@ function canShowAuthenticatedView(isAuthenticated) {
  */
 function isViewAvailableForUserState(user, view) {
   const stateCode = getUserStateCode(user);
-
-  // TODO: get the correct state for a Recidiviz user based on current session
-  const normalizedCode = (stateCode === 'recidiviz') ? 'us_nd' : stateCode.toLowerCase();
+  const normalizedCode = (stateCode === 'recidiviz') ? getCurrentState() : stateCode.toLowerCase();
 
   const permittedViews = getAvailableViewsForState(normalizedCode);
   if (!permittedViews) {

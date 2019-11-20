@@ -20,6 +20,8 @@ import UsNdReincarcerations from './tenants/us_nd/Reincarcerations';
 import UsNdRevocations from './tenants/us_nd/Revocations';
 import UsNdSnapshots from './tenants/us_nd/Snapshots';
 
+import UsMoSnapshots from './tenants/us_mo/Snapshots';
+
 const STATE_VIEW_COMPONENTS = {
   us_nd: {
     '/programevaluation/freethroughrecovery': UsNdFreeThroughRecovery,
@@ -27,7 +29,19 @@ const STATE_VIEW_COMPONENTS = {
     '/revocations': UsNdRevocations,
     '/snapshots': UsNdSnapshots,
   },
+  us_mo: {
+    '/snapshots': UsMoSnapshots,
+  },
 };
+
+function getAvailableStates() {
+  return Object.keys(STATE_VIEW_COMPONENTS);
+}
+
+function getFirstAvailableState() {
+  const stateCodes = getAvailableStates();
+  return stateCodes.sort()[0];
+}
 
 function getAvailableViewsForState(stateCode) {
   const views = STATE_VIEW_COMPONENTS[stateCode.toLowerCase()];
@@ -37,9 +51,22 @@ function getAvailableViewsForState(stateCode) {
   return Object.keys(views);
 }
 
+const CURRENT_STATE_IN_SESSION = 'recidivizUserCurrentStateInSession';
+
+function getCurrentState() {
+  const fromStorage = sessionStorage.getItem(CURRENT_STATE_IN_SESSION);
+  if (!fromStorage) {
+    return getFirstAvailableState();
+  }
+  return fromStorage.toLowerCase();
+}
+
+function setCurrentState(stateCode) {
+  sessionStorage.setItem(CURRENT_STATE_IN_SESSION, stateCode.toLowerCase());
+}
+
 function getComponentForStateView(stateCode, view) {
-  // TODO: get the correct state for a Recidiviz user based on current session
-  const normalizedCode = (stateCode === 'recidiviz') ? 'us_nd' : stateCode.toLowerCase();
+  const normalizedCode = (stateCode === 'recidiviz') ? getCurrentState() : stateCode.toLowerCase();
 
   const stateComponents = STATE_VIEW_COMPONENTS[normalizedCode];
   if (!stateComponents) {
@@ -56,6 +83,10 @@ function getComponentForStateView(stateCode, view) {
 }
 
 export {
+  getAvailableStates,
+  getFirstAvailableState,
   getAvailableViewsForState,
   getComponentForStateView,
+  getCurrentState,
+  setCurrentState,
 };

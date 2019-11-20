@@ -28,6 +28,10 @@ function getUserAppMetadata(user) {
   return user[appMetadataKey];
 }
 
+function getStateNameForCode(stateCode) {
+  return STATE_NAME_BY_CODE[stateCode];
+}
+
 function getUserStateCode(user) {
   const appMetadata = getUserAppMetadata(user);
   if (!appMetadata) {
@@ -43,10 +47,17 @@ function getUserStateCode(user) {
 
 function getUserStateName(user) {
   const stateCode = getUserStateCode(user);
-  return STATE_NAME_BY_CODE[stateCode];
+  return getStateNameForCode(stateCode);
+}
+
+function isRecidivizUser(user) {
+  const stateCode = getUserStateCode(user);
+  return stateCode.toLowerCase() === 'recidiviz';
 }
 
 export {
+  getStateNameForCode,
   getUserStateCode,
   getUserStateName,
+  isRecidivizUser,
 };
