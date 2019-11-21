@@ -23,15 +23,26 @@ const STATE_NAME_BY_CODE = {
 
 const METADATA_NAMESPACE = 'https://dashboard.recidiviz.org/';
 
+/**
+ * Returns the Auth0 app_metadata for the given user id token.
+ */
 function getUserAppMetadata(user) {
   const appMetadataKey = `${METADATA_NAMESPACE}app_metadata`;
   return user[appMetadataKey];
 }
 
+/**
+ * Returns the human-readable state name for the given state code,
+ * e.g. getStateNameForCode('us_nd') = 'North Dakota'
+ */
 function getStateNameForCode(stateCode) {
-  return STATE_NAME_BY_CODE[stateCode];
+  return STATE_NAME_BY_CODE[stateCode.toLowerCase()];
 }
 
+/**
+ * Returns the state code of the authorized state for the given user.
+ * For Recidiviz users, this will be 'recidiviz'.
+ */
 function getUserStateCode(user) {
   const appMetadata = getUserAppMetadata(user);
   if (!appMetadata) {
@@ -45,11 +56,17 @@ function getUserStateCode(user) {
   throw Error('No state code set for user');
 }
 
+/**
+ * Returns the human-readable state name for the authorized state code for the given usere.
+ */
 function getUserStateName(user) {
   const stateCode = getUserStateCode(user);
   return getStateNameForCode(stateCode);
 }
 
+/**
+ * Returns whether or not the given user is a Recidiviz user, i.e. has access to all states.
+ */
 function isRecidivizUser(user) {
   const stateCode = getUserStateCode(user);
   return stateCode.toLowerCase() === 'recidiviz';

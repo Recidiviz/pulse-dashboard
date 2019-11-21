@@ -19,22 +19,28 @@ import React, { useState } from 'react';
 import Select from 'react-select';
 
 import { getStateNameForCode } from '../utils/authentication/user';
-import { getAvailableStates, getCurrentState, setCurrentState } from '../views/stateViews';
+import {
+  getAvailableStates,
+  getCurrentStateForRecidivizUsers,
+  setCurrentStateForRecidivizUsers,
+} from '../views/stateViews';
 
 const StateSelector = () => {
-  // Prepare state selector for Recidiviz users
   const availableStateCodes = getAvailableStates();
   const availableStates = availableStateCodes.map(
     (code) => ({ value: code, label: getStateNameForCode(code) }),
   );
 
   const [selectedState, setSelectedState] = useState(
-    { value: getCurrentState(), label: getStateNameForCode(getCurrentState()) },
+    {
+      value: getCurrentStateForRecidivizUsers(),
+      label: getStateNameForCode(getCurrentStateForRecidivizUsers()),
+    },
   );
 
   const selectState = (selectedOption) => {
     const stateCode = selectedOption.value.toLowerCase();
-    setCurrentState(stateCode);
+    setCurrentStateForRecidivizUsers(stateCode);
     setSelectedState({ value: stateCode, label: getStateNameForCode(stateCode) });
     // Refresh the entire page
     window.location.reload(false);

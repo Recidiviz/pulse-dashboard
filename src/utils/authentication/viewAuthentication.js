@@ -17,8 +17,13 @@
 
 import isDemoMode from './demoMode';
 import { getUserStateCode } from './user';
-import { getAvailableViewsForState, getCurrentState } from '../../views/stateViews';
+import {
+  getAvailableViewsForState, getCurrentStateForRecidivizUsers,
+} from '../../views/stateViews';
 
+/**
+ * Returns an artificial Auth0 id token for a fake/demo user.
+ */
 function getDemoUser() {
   return {
     picture: 'https://ui-avatars.com/api/?name=Demo+Jones&background=0D8ABC&color=fff&rounded=true',
@@ -41,7 +46,8 @@ function canShowAuthenticatedView(isAuthenticated) {
  */
 function isViewAvailableForUserState(user, view) {
   const stateCode = getUserStateCode(user);
-  const normalizedCode = (stateCode === 'recidiviz') ? getCurrentState() : stateCode.toLowerCase();
+  const normalizedCode = (stateCode === 'recidiviz')
+    ? getCurrentStateForRecidivizUsers() : stateCode.toLowerCase();
 
   const permittedViews = getAvailableViewsForState(normalizedCode);
   if (!permittedViews) {

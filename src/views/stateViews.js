@@ -23,26 +23,35 @@ import UsNdSnapshots from './tenants/us_nd/Snapshots';
 import UsMoSnapshots from './tenants/us_mo/Snapshots';
 
 const STATE_VIEW_COMPONENTS = {
+  us_mo: {
+    '/snapshots': UsMoSnapshots,
+  },
   us_nd: {
     '/programevaluation/freethroughrecovery': UsNdFreeThroughRecovery,
     '/reincarcerations': UsNdReincarcerations,
     '/revocations': UsNdRevocations,
     '/snapshots': UsNdSnapshots,
   },
-  us_mo: {
-    '/snapshots': UsMoSnapshots,
-  },
 };
 
+/**
+ * Returns the list of states which are available to view data for.
+ */
 function getAvailableStates() {
-  return Object.keys(STATE_VIEW_COMPONENTS);
+  return Object.keys(STATE_VIEW_COMPONENTS).sort();
 }
 
+/**
+ * Returns the first available state in ABC order.
+ */
 function getFirstAvailableState() {
   const stateCodes = getAvailableStates();
-  return stateCodes.sort()[0];
+  return stateCodes[0];
 }
 
+/**
+ * Returns the list of views that are available for the given state.
+ */
 function getAvailableViewsForState(stateCode) {
   const views = STATE_VIEW_COMPONENTS[stateCode.toLowerCase()];
   if (!views) {
@@ -53,7 +62,11 @@ function getAvailableViewsForState(stateCode) {
 
 const CURRENT_STATE_IN_SESSION = 'recidivizUserCurrentStateInSession';
 
-function getCurrentState() {
+/*
+ * For Recidiviz users, returns the current state that should be viewed. This is retrieved from
+ * the sessionStorage cache if already set. Otherwise, picks the first available state in ABC order.
+ */
+function getCurrentStateForRecidivizUsers() {
   const fromStorage = sessionStorage.getItem(CURRENT_STATE_IN_SESSION);
   if (!fromStorage) {
     return getFirstAvailableState();
@@ -61,12 +74,23 @@ function getCurrentState() {
   return fromStorage.toLowerCase();
 }
 
-function setCurrentState(stateCode) {
+/**
+ * For Recidiviz users, sets the current state that should be viewed in the sessionStorage cache.
+ */
+function setCurrentStateForRecidivizUsers(stateCode) {
   sessionStorage.setItem(CURRENT_STATE_IN_SESSION, stateCode.toLowerCase());
 }
 
+/**
+ * For the given state code and view, returns the actual React component that should be rendered.
+ * For example, both North Dakota and Missouri have "Snapshots" views, but they have unique
+ * components to allow for different visualizations.
+ * Throw an error if the given state is not available, or if the given view is not available for
+ * the state.
+ */
 function getComponentForStateView(stateCode, view) {
-  const normalizedCode = (stateCode === 'recidiviz') ? getCurrentState() : stateCode.toLowerCase();
+  const normalizedCode = (stateCode === 'recidiviz')
+    ? getCurrentStateForRecidivizUsers() : stateCode.toLowerCase();
 
   const stateComponents = STATE_VIEW_COMPONENTS[normalizedCode];
   if (!stateComponents) {
@@ -87,6 +111,6 @@ export {
   getFirstAvailableState,
   getAvailableViewsForState,
   getComponentForStateView,
-  getCurrentState,
-  setCurrentState,
+  getCurrentStateForRecidivizUsers,
+  setCurrentStateForRecidivizUsers,
 };

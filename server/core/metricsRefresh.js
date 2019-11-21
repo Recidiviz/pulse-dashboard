@@ -31,7 +31,10 @@ const demoMode = require('../utils/demoMode');
 const isDemoMode = demoMode.isDemoMode();
 
 const METRIC_REFRESH_INTERVAL_MS = 1000 * 60 * 30; // Refresh metrics every 30 minutes
-const CACHED_STATE_CODES = ['US_ND'];
+const CACHED_STATE_CODES = [
+  'US_MO',
+  'US_ND',
+];
 
 /**
  * Performs a refresh of the free through recovery metrics cache, logging success or failure.
