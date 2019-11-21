@@ -75,10 +75,13 @@ if (isDemoMode) {
   checkJwt = function (req, res, next) { next(); };
 }
 
-app.get('/api/programEvaluation/us_nd/freeThroughRecovery', checkJwt, api.freeThroughRecovery);
-app.get('/api/reincarcerations', checkJwt, api.reincarcerations);
-app.get('/api/revocations', checkJwt, api.revocations);
-app.get('/api/snapshots', checkJwt, api.snapshots);
+app.get('/api/:stateCode/programEvaluation/freeThroughRecovery', checkJwt, api.freeThroughRecovery);
+app.get('/api/:stateCode/reincarcerations', checkJwt, api.reincarcerations);
+app.get('/api/:stateCode/revocations', checkJwt, api.revocations);
+app.get('/api/:stateCode/snapshots', checkJwt, api.snapshots);
+
+// Starts the background task for refresh metrics regularly
+require('./server/core/metricsRefresh');
 
 const server = http.createServer(app);
 

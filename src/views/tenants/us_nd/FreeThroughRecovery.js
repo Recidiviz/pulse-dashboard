@@ -16,21 +16,21 @@
 // =============================================================================
 
 import React, { useState, useEffect } from 'react';
-import Loading from '../components/Loading';
-import '../assets/styles/index.scss';
-import { useAuth0 } from '../react-auth0-spa';
-import { callMetricsApi, awaitingResults } from '../utils/metricsClient';
+import Loading from '../../../components/Loading';
+import '../../../assets/styles/index.scss';
+import { useAuth0 } from '../../../react-auth0-spa';
+import { callMetricsApi, awaitingResults } from '../../../utils/metricsClient';
 
 import FtrReferralCountByMonth
-  from '../components/charts/program_evaluation/us_nd/free_through_recovery/FtrReferralCountByMonth';
+  from '../../../components/charts/program_evaluation/us_nd/free_through_recovery/FtrReferralCountByMonth';
 import FtrReferralsByAge
-  from '../components/charts/program_evaluation/us_nd/free_through_recovery/FtrReferralsByAge';
+  from '../../../components/charts/program_evaluation/us_nd/free_through_recovery/FtrReferralsByAge';
 import FtrReferralsByGender
-  from '../components/charts/program_evaluation/us_nd/free_through_recovery/FtrReferralsByGender';
+  from '../../../components/charts/program_evaluation/us_nd/free_through_recovery/FtrReferralsByGender';
 import FtrReferralsByLsir
-  from '../components/charts/program_evaluation/us_nd/free_through_recovery/FtrReferralsByLsir';
+  from '../../../components/charts/program_evaluation/us_nd/free_through_recovery/FtrReferralsByLsir';
 import FtrReferralsByRace
-  from '../components/charts/program_evaluation/us_nd/free_through_recovery/FtrReferralsByRace';
+  from '../../../components/charts/program_evaluation/us_nd/free_through_recovery/FtrReferralsByRace';
 
 const FreeThroughRecovery = () => {
   const { loading, user, getTokenSilently } = useAuth0();
@@ -39,7 +39,7 @@ const FreeThroughRecovery = () => {
 
   const fetchChartData = async () => {
     try {
-      const responseData = await callMetricsApi('programEvaluation/us_nd/freeThroughRecovery', getTokenSilently);
+      const responseData = await callMetricsApi('us_nd/programEvaluation/freeThroughRecovery', getTokenSilently);
       setApiData(responseData);
       setAwaitingApi(false);
     } catch (error) {

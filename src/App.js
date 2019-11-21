@@ -26,15 +26,12 @@ import { useAuth0 } from './react-auth0-spa';
 import Footer from './components/Footer';
 import Loading from './components/Loading';
 import PrivateRoute from './components/PrivateRoute';
+import PrivateTenantRoute from './components/PrivateTenantRoute';
 import SideBar from './components/SideBar';
 import TopBar from './components/TopBar';
 import { canShowAuthenticatedView } from './utils/authentication/viewAuthentication';
-import FreeThroughRecovery from './views/FreeThroughRecovery';
 import NotFound from './views/NotFound';
 import Profile from './views/Profile';
-import Reincarcerations from './views/Reincarcerations';
-import Revocations from './views/Revocations';
-import Snapshots from './views/Snapshots';
 import './assets/scripts/index';
 
 // styles
@@ -105,10 +102,10 @@ const App = () => {
                 <Route exact path="/">
                   {<Redirect to="/snapshots" />}
                 </Route>
-                <PrivateRoute path="/snapshots" component={Snapshots} />
-                <PrivateRoute path="/revocations" component={Revocations} />
-                <PrivateRoute path="/reincarcerations" component={Reincarcerations} />
-                <PrivateRoute path="/programEvaluation/freeThroughRecovery" component={FreeThroughRecovery} />
+                <PrivateTenantRoute path="/snapshots" />
+                <PrivateTenantRoute path="/revocations" />
+                <PrivateTenantRoute path="/reincarcerations" />
+                <PrivateTenantRoute path="/programEvaluation/freeThroughRecovery" />
                 <PrivateRoute path="/profile" component={Profile} />
                 <Route component={NotFound} />
               </Switch>

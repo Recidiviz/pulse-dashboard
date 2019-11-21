@@ -31,18 +31,24 @@ const demoMode = require('../utils/demoMode');
 const isDemoMode = demoMode.isDemoMode();
 
 const METRIC_REFRESH_INTERVAL_MS = 1000 * 60 * 30; // Refresh metrics every 30 minutes
+const CACHED_STATE_CODES = [
+  'US_MO',
+  'US_ND',
+];
 
 /**
  * Performs a refresh of the free through recovery metrics cache, logging success or failure.
  */
 function refreshFreeThroughRecoveryMetrics() {
-  metricsApi.fetchFreeThroughRecoveryMetrics(isDemoMode, (err, data) => {
-    if (err) {
-      console.log(`Encountered error during scheduled fetch-and-cache
-        of Free Through Recovery metrics: ${err}`);
-    } else {
-      console.log('Executed scheduled fetch-and-cache of Free Through Recovery metrics');
-    }
+  CACHED_STATE_CODES.forEach((stateCode) => {
+    metricsApi.fetchFreeThroughRecoveryMetrics(isDemoMode, stateCode, (err, data) => {
+      if (err) {
+        console.log(`Encountered error during scheduled fetch-and-cache
+          of Free Through Recovery metrics for ${stateCode}: ${err}`);
+      } else {
+        console.log(`Executed scheduled fetch-and-cache of Free Through Recovery metrics for ${stateCode}`);
+      }
+    });
   });
 }
 
@@ -50,13 +56,15 @@ function refreshFreeThroughRecoveryMetrics() {
  * Performs a refresh of the reincarceration metrics cache, logging success or failure.
  */
 function refreshReincarcerationMetrics() {
-  metricsApi.fetchReincarcerationMetrics(isDemoMode, (err, data) => {
-    if (err) {
-      console.log(`Encountered error during scheduled fetch-and-cache
-        of reincarceration metrics: ${err}`);
-    } else {
-      console.log('Executed scheduled fetch-and-cache of reincarceration metrics');
-    }
+  CACHED_STATE_CODES.forEach((stateCode) => {
+    metricsApi.fetchReincarcerationMetrics(isDemoMode, stateCode, (err, data) => {
+      if (err) {
+        console.log(`Encountered error during scheduled fetch-and-cache
+          of reincarceration metrics for ${stateCode}: ${err}`);
+      } else {
+        console.log(`Executed scheduled fetch-and-cache of reincarceration metrics for ${stateCode}`);
+      }
+    });
   });
 }
 
@@ -64,13 +72,15 @@ function refreshReincarcerationMetrics() {
  * Performs a refresh of the revocation metrics cache, logging success or failure.
  */
 function refreshRevocationMetrics() {
-  metricsApi.fetchRevocationMetrics(isDemoMode, (err, data) => {
-    if (err) {
-      console.log(`Encountered error during scheduled fetch-and-cache
-        of revocation metrics: ${err}`);
-    } else {
-      console.log('Executed scheduled fetch-and-cache of revocation metrics');
-    }
+  CACHED_STATE_CODES.forEach((stateCode) => {
+    metricsApi.fetchRevocationMetrics(isDemoMode, stateCode, (err, data) => {
+      if (err) {
+        console.log(`Encountered error during scheduled fetch-and-cache
+          of revocation metrics for ${stateCode}: ${err}`);
+      } else {
+        console.log(`Executed scheduled fetch-and-cache of revocation metrics for ${stateCode}`);
+      }
+    });
   });
 }
 
@@ -78,12 +88,15 @@ function refreshRevocationMetrics() {
  * Performs a refresh of the snapshot metrics cache, logging success or failure.
  */
 function refreshSnapshotMetrics() {
-  metricsApi.fetchSnapshotMetrics(isDemoMode, (err, data) => {
-    if (err) {
-      console.log(`Encountered error during scheduled fetch-and-cache of snapshot metrics: ${err}`);
-    } else {
-      console.log('Executed scheduled fetch-and-cache of snapshot metrics');
-    }
+  CACHED_STATE_CODES.forEach((stateCode) => {
+    metricsApi.fetchSnapshotMetrics(isDemoMode, stateCode, (err, data) => {
+      if (err) {
+        console.log(`Encountered error during scheduled fetch-and-cache
+          of snapshot metrics for ${stateCode}: ${err}`);
+      } else {
+        console.log(`Executed scheduled fetch-and-cache of snapshot metrics for ${stateCode}`);
+      }
+    });
   });
 }
 

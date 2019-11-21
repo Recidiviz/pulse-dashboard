@@ -15,17 +15,66 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-const STATE_CODE_BY_DOMAIN = {
-  'recidiviz.org': 'Recidiviz',
-  'nd.gov': 'North Dakota',
+const STATE_NAME_BY_CODE = {
+  us_mo: 'Missouri',
+  us_nd: 'North Dakota',
+  recidiviz: 'Recidiviz',
 };
 
+const METADATA_NAMESPACE = 'https://dashboard.recidiviz.org/';
+
+/**
+ * Returns the Auth0 app_metadata for the given user id token.
+ */
+function getUserAppMetadata(user) {
+  const appMetadataKey = `${METADATA_NAMESPACE}app_metadata`;
+  return user[appMetadataKey];
+}
+
+/**
+ * Returns the human-readable state name for the given state code,
+ * e.g. getStateNameForCode('us_nd') = 'North Dakota'
+ */
+function getStateNameForCode(stateCode) {
+  return STATE_NAME_BY_CODE[stateCode.toLowerCase()];
+}
+
+/**
+ * Returns the state code of the authorized state for the given user.
+ * For Recidiviz users, this will be 'recidiviz'.
+ */
 function getUserStateCode(user) {
-  const emailSplit = user.email.split('@');
-  const domain = emailSplit[emailSplit.length - 1].toLowerCase();
-  return STATE_CODE_BY_DOMAIN[domain];
+  const appMetadata = getUserAppMetadata(user);
+  if (!appMetadata) {
+    throw Error('No app_metadata available for user');
+  }
+
+  const stateCode = appMetadata.state_code;
+  if (stateCode) {
+    return stateCode;
+  }
+  throw Error('No state code set for user');
+}
+
+/**
+ * Returns the human-readable state name for the authorized state code for the given usere.
+ */
+function getUserStateName(user) {
+  const stateCode = getUserStateCode(user);
+  return getStateNameForCode(stateCode);
+}
+
+/**
+ * Returns whether or not the given user is a Recidiviz user, i.e. has access to all states.
+ */
+function isRecidivizUser(user) {
+  const stateCode = getUserStateCode(user);
+  return stateCode.toLowerCase() === 'recidiviz';
 }
 
 export {
+  getStateNameForCode,
   getUserStateCode,
+  getUserStateName,
+  isRecidivizUser,
 };

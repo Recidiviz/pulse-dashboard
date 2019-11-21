@@ -17,16 +17,16 @@
 
 import React, { useState, useEffect } from 'react';
 
-import Loading from '../components/Loading';
-import '../assets/styles/index.scss';
-import { useAuth0 } from '../react-auth0-spa';
-import { callMetricsApi, awaitingResults } from '../utils/metricsClient';
+import Loading from '../../../components/Loading';
+import '../../../assets/styles/index.scss';
+import { useAuth0 } from '../../../react-auth0-spa';
+import { callMetricsApi, awaitingResults } from '../../../utils/metricsClient';
 
-import AdmissionsVsReleases from '../components/charts/reincarcerations/AdmissionsVsReleases';
+import AdmissionsVsReleases from '../../../components/charts/reincarcerations/AdmissionsVsReleases';
 import ReincarcerationCountOverTime
-  from '../components/charts/reincarcerations/ReincarcerationCountOverTime';
+  from '../../../components/charts/reincarcerations/ReincarcerationCountOverTime';
 import ReincarcerationRateByStayLength
-  from '../components/charts/reincarcerations/ReincarcerationRateByStayLength';
+  from '../../../components/charts/reincarcerations/ReincarcerationRateByStayLength';
 
 const Reincarcerations = () => {
   const { loading, user, getTokenSilently } = useAuth0();
@@ -35,7 +35,7 @@ const Reincarcerations = () => {
 
   const fetchChartData = async () => {
     try {
-      const responseData = await callMetricsApi('reincarcerations', getTokenSilently);
+      const responseData = await callMetricsApi('us_nd/reincarcerations', getTokenSilently);
       setApiData(responseData);
       setAwaitingApi(false);
     } catch (error) {

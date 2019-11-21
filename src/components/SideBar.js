@@ -20,7 +20,12 @@ import React, { useEffect } from 'react';
 import * as $ from 'jquery';
 import logo from '../assets/static/images/logo.png';
 
+import { useAuth0 } from '../react-auth0-spa';
+import { isViewAvailableForUserState } from '../utils/authentication/viewAuthentication';
+
 const SideBar = () => {
+  const { user } = useAuth0();
+
   // TODO: Replace this jQuery with an actual React NavLinks
   useEffect(() => {
     // Sidebar Activity Class
@@ -67,8 +72,11 @@ const SideBar = () => {
             </div>
           </div>
         </div>
+
         {/* ### $Sidebar Menu ### */}
         <ul className="sidebar-menu scrollable pos-r">
+
+          {isViewAvailableForUserState(user, '/snapshots') && (
           <li className="nav-item mT-30 active">
             <a className="sidebar-link" href="/snapshots">
               <span className="icon-holder">
@@ -77,6 +85,9 @@ const SideBar = () => {
               <span className="title">Snapshots</span>
             </a>
           </li>
+          )}
+
+          {isViewAvailableForUserState(user, '/revocations') && (
           <li className="nav-item">
             <a className="sidebar-link" href="/revocations">
               <span className="icon-holder">
@@ -85,6 +96,9 @@ const SideBar = () => {
               <span className="title">Revocations</span>
             </a>
           </li>
+          )}
+
+          {isViewAvailableForUserState(user, '/reincarcerations') && (
           <li className="nav-item">
             <a className="sidebar-link" href="/reincarcerations">
               <span className="icon-holder">
@@ -93,6 +107,9 @@ const SideBar = () => {
               <span className="title">Reincarcerations</span>
             </a>
           </li>
+          )}
+
+          {isViewAvailableForUserState(user, '/programevaluation/freethroughrecovery') && (
           <li className="nav-item">
             <a className="sidebar-link" href="/programEvaluation/freeThroughRecovery">
               <span className="icon-holder">
@@ -101,6 +118,8 @@ const SideBar = () => {
               <span className="title">Free Through Recovery</span>
             </a>
           </li>
+          )}
+
           <li className="bottom-item">
             <a className="sidebar-link" id="feedback-link" href={process.env.REACT_APP_FEEDBACK_URL} target="_blank" rel="noopener noreferrer">
               <span className="icon-holder">

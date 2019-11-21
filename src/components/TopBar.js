@@ -19,9 +19,10 @@ import React from 'react';
 
 import { useAuth0 } from '../react-auth0-spa';
 import { normalizeAppPathToTitle } from '../assets/scripts/utils/strings';
-import { getUserStateCode } from '../utils/authentication/user';
+import isDemoMode from '../utils/authentication/demoMode';
+import { getUserStateName } from '../utils/authentication/user';
 import {
-  canShowAuthenticatedView, isDemoMode, getDemoUser,
+  canShowAuthenticatedView, getDemoUser,
 } from '../utils/authentication/viewAuthentication';
 
 const TopBar = (props) => {
@@ -84,7 +85,7 @@ const TopBar = (props) => {
                 </div>
                 <div className="peer">
                   <ul className="fsz-sm c-grey-900">{displayUser.name}</ul>
-                  <ul className="fsz-sm pT-3 c-grey-600">{getUserStateCode(displayUser)}</ul>
+                  <ul className="fsz-sm pT-3 c-grey-600">{getUserStateName(displayUser)}</ul>
                 </div>
               </a>
               <ul className="dropdown-menu fsz-sm">

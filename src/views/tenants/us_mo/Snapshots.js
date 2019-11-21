@@ -17,16 +17,17 @@
 
 import React, { useState, useEffect } from 'react';
 
-import Loading from '../components/Loading';
-import '../assets/styles/index.scss';
-import { useAuth0 } from '../react-auth0-spa';
-import { callMetricsApi, awaitingResults } from '../utils/metricsClient';
+import Loading from '../../../components/Loading';
+import '../../../assets/styles/index.scss';
+import { useAuth0 } from '../../../react-auth0-spa';
+import { callMetricsApi, awaitingResults } from '../../../utils/metricsClient';
 
-import DaysAtLibertySnapshot from '../components/charts/snapshots/DaysAtLibertySnapshot';
-import LsirScoreChangeSnapshot from '../components/charts/snapshots/LsirScoreChangeSnapshot';
+import DaysAtLibertySnapshot from '../../../components/charts/snapshots/DaysAtLibertySnapshot';
+import LsirScoreChangeSnapshot from '../../../components/charts/snapshots/LsirScoreChangeSnapshot';
 import RevocationAdmissionsSnapshot
-  from '../components/charts/snapshots/RevocationAdmissionsSnapshot';
-import SupervisionSuccessSnapshot from '../components/charts/snapshots/SupervisionSuccessSnapshot';
+  from '../../../components/charts/snapshots/RevocationAdmissionsSnapshot';
+import SupervisionSuccessSnapshot
+  from '../../../components/charts/snapshots/SupervisionSuccessSnapshot';
 
 const Snapshots = () => {
   const { loading, user, getTokenSilently } = useAuth0();
@@ -35,7 +36,7 @@ const Snapshots = () => {
 
   const fetchChartData = async () => {
     try {
-      const responseData = await callMetricsApi('snapshots', getTokenSilently);
+      const responseData = await callMetricsApi('us_mo/snapshots', getTokenSilently);
       setApiData(responseData);
       setAwaitingApi(false);
     } catch (error) {
@@ -164,131 +165,11 @@ const Snapshots = () => {
                       <ul>
                         <li>
                         This is a measurement of the percent of admissions to
-                        North Dakota prisons that were due to parole or probation revocations.
+                        Missouri prisons that were due to parole or probation revocations.
                         </li>
                         <li>
                         Revocations count all people who were incarcerated
                         because their supervision was revoked.
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* #Average days at liberty ==================== */}
-          <div className="col-md-6">
-            <div className="bd bgc-white p-20">
-              <div className="layers">
-                <div className="layer w-100 pX-20 pT-20">
-                  <h6 className="lh-1">
-                    DAYS AT LIBERTY (AVERAGE)
-                    <span className="fa-pull-right">
-                      <div className="dropdown show">
-                        <a className="btn btn-secondary btn-sm dropdown-toggle" href="#" role="button" id="exportDropdownMenuButton-daysAtLibertySnapshot" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                          Export
-                        </a>
-                        <div className="dropdown-menu" aria-labelledby="exportDropdownMenuButton-daysAtLibertySnapshot">
-                          <a className="dropdown-item" id="downloadChartAsImage-daysAtLibertySnapshot" href="javascript:void(0);">Export image</a>
-                          <a className="dropdown-item" id="downloadChartData-daysAtLibertySnapshot" href="javascript:void(0);">Export data</a>
-                        </div>
-                      </div>
-                    </span>
-                  </h6>
-                </div>
-                <div className="layer w-100 pX-20 pT-20">
-                  <div className="dynamic-chart-header" id="daysAtLibertySnapshot-header" />
-                </div>
-                <div className="layer w-100 p-20">
-                  <div className="ai-c jc-c gapX-20">
-                    <div className="col-md-12">
-                      <DaysAtLibertySnapshot
-                        daysAtLibertyByMonth={apiData.avg_days_at_liberty_by_month}
-                        header="daysAtLibertySnapshot-header"
-                      />
-                    </div>
-                  </div>
-                </div>
-                <div className="layer bdT p-20 w-100 accordion" id="methodologyDaysAtLibertySnapshot">
-                  <div className="mb-0" id="methodologyHeadingDaysAtLibertySnapshot">
-                    <div className="mb-0">
-                      <button className="btn btn-link collapsed pL-0" type="button" data-toggle="collapse" data-target="#collapseMethodologyDaysAtLibertySnapshot" aria-expanded="true" aria-controls="collapseMethodologyDaysAtLibertySnapshot">
-                        <h6 className="lh-1 c-blue-500 mb-0">Methodology</h6>
-                      </button>
-                    </div>
-                  </div>
-                  <div className="collapse" id="collapseMethodologyDaysAtLibertySnapshot" aria-labelledby="methodologyHeadingDaysAtLibertySnapshot" data-parent="#methodologyDaysAtLibertySnapshot">
-                    <div>
-                      <ul>
-                        <li>
-                        An individual&apos;s days at liberty are the number of
-                        days between release from incarceration and readmission
-                        for someone who was reincarcerated in a given month.
-                        </li>
-                        <li>
-                        An admission to prison counts as a reincarceration if
-                        the person has been incarcerated previously in a North
-                        Dakota prison.
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* #Change in LSI-R scores ==================== */}
-          <div className="col-md-6">
-            <div className="bd bgc-white p-20">
-              <div className="layers">
-                <div className="layer w-100 pX-20 pT-20">
-                  <h6 className="lh-1">
-                    LSI-R SCORE CHANGES (AVERAGE)
-                    <span className="fa-pull-right">
-                      <div className="dropdown show">
-                        <a className="btn btn-secondary btn-sm dropdown-toggle" href="#" role="button" id="exportDropdownMenuButton-lsirScoreChangeSnapshot" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                          Export
-                        </a>
-                        <div className="dropdown-menu" aria-labelledby="exportDropdownMenuButton-lsirScoreChangeSnapshot">
-                          <a className="dropdown-item" id="downloadChartAsImage-lsirScoreChangeSnapshot" href="javascript:void(0);">Export image</a>
-                          <a className="dropdown-item" id="downloadChartData-lsirScoreChangeSnapshot" href="javascript:void(0);">Export data</a>
-                        </div>
-                      </div>
-                    </span>
-                  </h6>
-                </div>
-                <div className="layer w-100 pX-20 pT-20">
-                  <div className="dynamic-chart-header" id="lsirScoreChangeSnapshot-header" />
-                </div>
-                <div className="layer w-100 p-20">
-                  <div className="ai-c jc-c gapX-20">
-                    <div className="col-md-12">
-                      <LsirScoreChangeSnapshot
-                        lsirScoreChangeByMonth={apiData.average_change_lsir_score_by_month}
-                        header="lsirScoreChangeSnapshot-header"
-                      />
-                    </div>
-                  </div>
-                </div>
-                <div className="layer bdT p-20 w-100 accordion" id="methodologyLsirScoreChangeSnapshot">
-                  <div className="mb-0" id="methodologyHeadingLsirScoreChangeSnapshot">
-                    <div className="mb-0">
-                      <button className="btn btn-link collapsed pL-0" type="button" data-toggle="collapse" data-target="#collapseMethodologyLsirScoreChangeSnapshot" aria-expanded="true" aria-controls="collapseMethodologyLsirScoreChangeSnapshot">
-                        <h6 className="lh-1 c-blue-500 mb-0">Methodology</h6>
-                      </button>
-                    </div>
-                  </div>
-                  <div className="collapse" id="collapseMethodologyLsirScoreChangeSnapshot" aria-labelledby="methodologyHeadingLsirScoreChangeSnapshot" data-parent="#methodologyLsirScoreChangeSnapshot">
-                    <div>
-                      <ul>
-                        <li>
-                        This is the average of the differences between the first
-                        reassessment score and the termination assessment score
-                        for all individuals whose supervision was scheduled to
-                        end in a given month.
                         </li>
                       </ul>
                     </div>

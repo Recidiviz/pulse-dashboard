@@ -17,22 +17,27 @@
 
 import React, { useState, useEffect } from 'react';
 
-import Loading from '../components/Loading';
-import '../assets/styles/index.scss';
-import { useAuth0 } from '../react-auth0-spa';
-import { callMetricsApi, awaitingResults } from '../utils/metricsClient';
+import Loading from '../../../components/Loading';
+import '../../../assets/styles/index.scss';
+import { useAuth0 } from '../../../react-auth0-spa';
+import { callMetricsApi, awaitingResults } from '../../../utils/metricsClient';
 
 import AdmissionCountsByType
-  from '../components/charts/revocations/AdmissionCountsByType';
-import RevocationCountByOfficer from '../components/charts/revocations/RevocationCountByOfficer';
+  from '../../../components/charts/revocations/AdmissionCountsByType';
+import RevocationCountByOfficer
+  from '../../../components/charts/revocations/RevocationCountByOfficer';
 import RevocationCountBySupervisionType
-  from '../components/charts/revocations/RevocationCountBySupervisionType';
+  from '../../../components/charts/revocations/RevocationCountBySupervisionType';
 import RevocationCountByViolationType
-  from '../components/charts/revocations/RevocationCountByViolationType';
-import RevocationCountOverTime from '../components/charts/revocations/RevocationCountOverTime';
-import RevocationProportionByRace from '../components/charts/revocations/RevocationProportionByRace';
-import RevocationRateByCounty from '../components/charts/revocations/RevocationRateByCounty';
-import RevocationsByOffice from '../components/charts/revocations/RevocationsByOffice';
+  from '../../../components/charts/revocations/RevocationCountByViolationType';
+import RevocationCountOverTime
+  from '../../../components/charts/revocations/RevocationCountOverTime';
+import RevocationProportionByRace
+  from '../../../components/charts/revocations/RevocationProportionByRace';
+import RevocationRateByCounty
+  from '../../../components/charts/revocations/RevocationRateByCounty';
+import RevocationsByOffice
+  from '../../../components/charts/revocations/RevocationsByOffice';
 
 const Revocations = () => {
   const { loading, user, getTokenSilently } = useAuth0();
@@ -41,7 +46,7 @@ const Revocations = () => {
 
   const fetchChartData = async () => {
     try {
-      const responseData = await callMetricsApi('revocations', getTokenSilently);
+      const responseData = await callMetricsApi('us_nd/revocations', getTokenSilently);
       setApiData(responseData);
       setAwaitingApi(false);
     } catch (error) {
