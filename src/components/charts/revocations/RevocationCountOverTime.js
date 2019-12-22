@@ -23,6 +23,10 @@ import { configureDownloadButtons } from '../../../assets/scripts/utils/download
 import {
   getGoalForChart, getMaxForGoalAndData, goalLabelContentString,
 } from '../../../utils/charts/metricGoal';
+import {
+  toggleLabel, getMonthCountFromTimeWindowToggle, updateTooltipForMetricType,
+  filterDatasetBySupervisionType, filterDatasetByDistrict,
+} from '../../../utils/charts/toggles';
 import { sortFilterAndSupplementMostRecentMonths } from '../../../utils/transforms/datasets';
 import { monthNamesWithYearsFromNumbers } from '../../../utils/transforms/months';
 
@@ -39,16 +43,36 @@ const RevocationCountOverTime = (props) => {
   const processResponse = () => {
     const { revocationCountsByMonth: countsByMonth } = props;
 
+    let filteredCountsByMonth = filterDatasetBySupervisionType(
+      countsByMonth, props.supervisionType,
+      ['state_code', 'year', 'month', 'district'], ['revocation_count', 'total_supervision_count'],
+    );
+
+    filteredCountsByMonth = filterDatasetByDistrict(
+      filteredCountsByMonth, props.district,
+      ['state_code', 'year', 'month'], ['revocation_count', 'total_supervision_count'],
+    );
+
     const dataPoints = [];
-    if (countsByMonth) {
-      countsByMonth.forEach((data) => {
-        const { year, month, revocation_count: count } = data;
-        dataPoints.push({ year, month, count });
+    if (filteredCountsByMonth) {
+      filteredCountsByMonth.forEach((data) => {
+        const {
+          year, month, revocation_count: revocationCount, total_supervision_count: supervisionCount,
+        } = data;
+
+        if (props.metricType === 'counts') {
+          const value = revocationCount;
+          dataPoints.push({ year, month, value });
+        } else if (props.metricType === 'rates') {
+          const value = (100 * (revocationCount / supervisionCount)).toFixed(2);
+          dataPoints.push({ year, month, value });
+        }
       });
     }
 
-    const sorted = sortFilterAndSupplementMostRecentMonths(dataPoints, 6, 'count', 0);
-    const chartDataValues = (sorted.map((element) => element.count));
+    const months = getMonthCountFromTimeWindowToggle(props.timeWindow);
+    const sorted = sortFilterAndSupplementMostRecentMonths(dataPoints, months, 'value', 0);
+    const chartDataValues = (sorted.map((element) => element.value));
     const max = getMaxForGoalAndData(GOAL.value, chartDataValues, stepSize);
 
     setChartLabels(monthNamesWithYearsFromNumbers(sorted.map((element) => element.month), false));
@@ -57,9 +81,69 @@ const RevocationCountOverTime = (props) => {
     setChartMaxValue(max);
   };
 
+  function goalLineIfApplicable() {
+    const { metricType, supervisionType, district } = props;
+    if (metricType === 'counts' && supervisionType === 'all' && district === 'all') {
+      return {
+        events: ['click'],
+        annotations: [{
+          type: 'line',
+          mode: 'horizontal',
+          value: GOAL.value,
+
+          // optional annotation ID (must be unique)
+          id: 'revocationCountsByMonthGoalLine',
+          scaleID: 'y-axis-0',
+
+          drawTime: 'afterDatasetsDraw',
+
+          borderColor: COLORS['red-standard'],
+          borderWidth: 2,
+          borderDash: [2, 2],
+          borderDashOffset: 5,
+          label: {
+            enabled: true,
+            content: goalLabelContentString(GOAL),
+            position: 'right',
+
+            // Background color of label, default below
+            backgroundColor: 'rgba(0,0,0,0)',
+
+            fontFamily: 'sans-serif',
+            fontSize: 12,
+            fontStyle: 'bold',
+            fontColor: COLORS['red-standard'],
+
+            // Adjustment along x-axis (left-right) of label relative to above
+            // number (can be negative). For horizontal lines positioned left
+            // or right, negative values move the label toward the edge, and
+            // positive values toward the center.
+            xAdjust: 0,
+
+            // Adjustment along y-axis (top-bottom) of label relative to above
+            // number (can be negative). For vertical lines positioned top or
+            // bottom, negative values move the label toward the edge, and
+            // positive values toward the center.
+            yAdjust: -10,
+          },
+
+          onClick(e) { return e; },
+        }],
+      };
+    }
+
+    return null;
+  }
+
   useEffect(() => {
     processResponse();
-  }, [props.revocationCountsByMonth]);
+  }, [
+    props.revocationCountsByMonth,
+    props.metricType,
+    props.timeWindow,
+    props.supervisionType,
+    props.district,
+  ]);
 
   const chart = (
     <Line
@@ -67,7 +151,10 @@ const RevocationCountOverTime = (props) => {
       data={{
         labels: chartLabels,
         datasets: [{
-          label: 'Revocation count',
+          label: toggleLabel(
+            { counts: 'Revocation count', rates: 'Revocation rate' },
+            props.metricType,
+          ),
           backgroundColor: COLORS['grey-500'],
           borderColor: COLORS['grey-500'],
           pointBackgroundColor: COLORS['grey-500'],
@@ -88,73 +175,25 @@ const RevocationCountOverTime = (props) => {
           },
         },
         scales: {
-          xAxes: [{
-            ticks: {
-              autoSkip: false,
-            },
-          }],
           yAxes: [{
-            ticks: {
-              min: chartMinValue,
-              max: chartMaxValue,
-              stepSize,
-            },
+            // ticks: toggleYAxisTicks(props.metricType, chartMinValue, chartMaxValue, stepSize),
             scaleLabel: {
               display: true,
-              labelString: 'Revocation count',
+              labelString: toggleLabel(
+                { counts: 'Revocation count', rates: 'Revocation rate' },
+                props.metricType,
+              ),
             },
           }],
         },
         tooltips: {
           backgroundColor: COLORS['grey-800-light'],
           mode: 'x',
+          callbacks: {
+            label: (tooltipItem, data) => updateTooltipForMetricType(props.metricType, tooltipItem, data),
+          },
         },
-        annotation: {
-          events: ['click'],
-          annotations: [{
-            type: 'line',
-            mode: 'horizontal',
-            value: GOAL.value,
-
-            // optional annotation ID (must be unique)
-            id: 'revocationCountsByMonthGoalLine',
-            scaleID: 'y-axis-0',
-
-            drawTime: 'afterDatasetsDraw',
-
-            borderColor: COLORS['red-standard'],
-            borderWidth: 2,
-            borderDash: [2, 2],
-            borderDashOffset: 5,
-            label: {
-              enabled: true,
-              content: goalLabelContentString(GOAL),
-              position: 'right',
-
-              // Background color of label, default below
-              backgroundColor: 'rgba(0,0,0,0)',
-
-              fontFamily: 'sans-serif',
-              fontSize: 12,
-              fontStyle: 'bold',
-              fontColor: COLORS['red-standard'],
-
-              // Adjustment along x-axis (left-right) of label relative to above
-              // number (can be negative). For horizontal lines positioned left
-              // or right, negative values move the label toward the edge, and
-              // positive values toward the center.
-              xAdjust: 0,
-
-              // Adjustment along y-axis (top-bottom) of label relative to above
-              // number (can be negative). For vertical lines positioned top or
-              // bottom, negative values move the label toward the edge, and
-              // positive values toward the center.
-              yAdjust: -10,
-            },
-
-            onClick(e) { return e; },
-          }],
-        },
+        annotation: goalLineIfApplicable(),
       }}
     />
   );

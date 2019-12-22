@@ -21,6 +21,7 @@ import Loading from '../../../components/Loading';
 import '../../../assets/styles/index.scss';
 import { useAuth0 } from '../../../react-auth0-spa';
 import { callMetricsApi, awaitingResults } from '../../../utils/metricsClient';
+import { getPeriodLabelFromTimeWindowToggle } from '../../../utils/charts/toggles';
 
 import AdmissionCountsByType
   from '../../../components/charts/revocations/AdmissionCountsByType';
@@ -39,10 +40,17 @@ import RevocationRateByCounty
 import RevocationsByOffice
   from '../../../components/charts/revocations/RevocationsByOffice';
 
+import ToggleBar from '../../../components/toggles/ToggleBar';
+import * as ToggleDefaults from '../../../components/toggles/ToggleDefaults';
+
 const Revocations = () => {
   const { loading, user, getTokenSilently } = useAuth0();
   const [apiData, setApiData] = useState({});
   const [awaitingApi, setAwaitingApi] = useState(true);
+  const [chartMetricType, setChartMetricType] = useState(ToggleDefaults.metricType);
+  const [chartTimeWindow, setChartTimeWindow] = useState(ToggleDefaults.timeWindow);
+  const [chartSupervisionType, setChartSupervisionType] = useState(ToggleDefaults.supervisionType);
+  const [chartDistrict, setChartDistrict] = useState(ToggleDefaults.district);
 
   const fetchChartData = async () => {
     try {
@@ -65,6 +73,15 @@ const Revocations = () => {
   return (
     <main className="main-content bgc-grey-100">
       <div id="mainContent">
+
+        <ToggleBar
+          setChartMetricType={setChartMetricType}
+          setChartTimeWindow={setChartTimeWindow}
+          setChartSupervisionType={setChartSupervisionType}
+          setChartDistrict={setChartDistrict}
+          availableDistricts={['beulah', 'bismarck', 'bottineau', 'devils-lake', 'dickson', 'fargo', 'grafton', 'grand-forks', 'jamestown', 'mandan', 'minot', 'oakes', 'rolla', 'washburn', 'wahpeton', 'williston']}
+        />
+
         <div className="row gap-20 pos-r">
 
           {/* #Revocation counts by month chart ==================== */}
@@ -94,6 +111,10 @@ const Revocations = () => {
                   <div className="col-md-12">
                     <div className="layer w-100 p-20">
                       <RevocationCountOverTime
+                        metricType={chartMetricType}
+                        timeWindow={chartTimeWindow}
+                        supervisionType={chartSupervisionType}
+                        district={chartDistrict}
                         revocationCountsByMonth={apiData.revocations_by_month}
                         header="revocationCountsByMonth-header"
                       />
@@ -155,6 +176,8 @@ const Revocations = () => {
                 <div className="layer w-100 pX-20 pT-20 row">
                   <div className="layer w-100 p-20">
                     <RevocationRateByCounty
+                      metricType={chartMetricType}
+                      timeWindow={chartTimeWindow}
                       revocationRateByCounty={apiData.revocation_rate_by_county_60_days}
                     />
                   </div>
@@ -194,7 +217,7 @@ const Revocations = () => {
                     <div className="peer fw-600">
                       <span className="fsz-def fw-600 mR-10 c-grey-800">
                         <small className="c-grey-500 fw-600">Period </small>
-                        Last 60 days
+                        {getPeriodLabelFromTimeWindowToggle(chartTimeWindow)}
                       </span>
                     </div>
                   </div>
@@ -225,6 +248,9 @@ const Revocations = () => {
                 <div className="layer w-100 pX-20 pT-40 row">
                   <div className="layer w-100 p-20">
                     <RevocationsByOffice
+                      metricType={chartMetricType}
+                      timeWindow={chartTimeWindow}
+                      supervisionType={chartSupervisionType}
                       revocationsByOffice={apiData.revocations_by_site_id_60_days}
                       officeData={apiData.site_offices}
                       officerDropdownId="showOfficersOfOffice"
@@ -264,7 +290,7 @@ const Revocations = () => {
                     <div className="peer fw-600">
                       <span className="fsz-def fw-600 mR-10 c-grey-800">
                         <small className="c-grey-500 fw-600">Period </small>
-                        Last 60 days
+                        {getPeriodLabelFromTimeWindowToggle(chartTimeWindow)}
                       </span>
                     </div>
                   </div>
@@ -323,6 +349,9 @@ const Revocations = () => {
                 </div>
                 <div className="layer w-100 p-20">
                   <RevocationCountByOfficer
+                    metricType={chartMetricType}
+                    timeWindow={chartTimeWindow}
+                    supervisionType={chartSupervisionType}
                     revocationCountsByOfficer={apiData.revocations_by_officer_60_days}
                     officeData={apiData.site_offices}
                     dropdownId="showOfficersOfOffice"
@@ -356,7 +385,9 @@ const Revocations = () => {
                   <div className="peers ai-c jc-c gapX-20">
                     <div className="peer fw-600">
                       <small className="c-grey-500 fw-600">Period </small>
-                      <span className="fsz-def fw-600 mR-10 c-grey-800">Last 60 days</span>
+                      <span className="fsz-def fw-600 mR-10 c-grey-800">
+                        {getPeriodLabelFromTimeWindowToggle(chartTimeWindow)}
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -386,6 +417,9 @@ const Revocations = () => {
                 </div>
                 <div className="layer w-100 p-20">
                   <RevocationCountBySupervisionType
+                    metricType={chartMetricType}
+                    timeWindow={chartTimeWindow}
+                    district={chartDistrict}
                     revocationCountsByMonthBySupervisionType={
                     apiData.revocations_by_supervision_type_by_month}
                   />
@@ -445,6 +479,10 @@ const Revocations = () => {
                 </div>
                 <div className="layer w-100 p-20">
                   <RevocationCountByViolationType
+                    metricType={chartMetricType}
+                    timeWindow={chartTimeWindow}
+                    supervisionType={chartSupervisionType}
+                    district={chartDistrict}
                     revocationCountsByMonthByViolationType={
                     apiData.revocations_by_violation_type_by_month}
                   />
@@ -514,6 +552,9 @@ const Revocations = () => {
                 </div>
                 <div className="layer w-100 p-20">
                   <AdmissionCountsByType
+                    metricType={chartMetricType}
+                    timeWindow={chartTimeWindow}
+                    district={chartDistrict}
                     admissionCountsByType={apiData.admissions_by_type_60_days}
                   />
                 </div>
@@ -556,7 +597,7 @@ const Revocations = () => {
                     <div className="peer fw-600">
                       <span className="fsz-def fw-600 mR-10 c-grey-800">
                         <small className="c-grey-500 fw-600">Period </small>
-                        Last 60 days
+                        {getPeriodLabelFromTimeWindowToggle(chartTimeWindow)}
                       </span>
                     </div>
                   </div>
@@ -588,6 +629,10 @@ const Revocations = () => {
                 <div className="layer w-100 pX-20 pT-20 row">
                   <div className="layer w-100 p-20">
                     <RevocationProportionByRace
+                      metricType={chartMetricType}
+                      timeWindow={chartTimeWindow}
+                      supervisionType={chartSupervisionType}
+                      district={chartDistrict}
                       revocationProportionByRace={
                         apiData.revocations_by_race_and_ethnicity_60_days}
                       supervisionPopulationByRace={
@@ -638,7 +683,7 @@ const Revocations = () => {
                     <div className="peer fw-600">
                       <span className="fsz-def fw-600 mR-10 c-grey-800">
                         <small className="c-grey-500 fw-600">Period </small>
-                        Last 60 days
+                        {getPeriodLabelFromTimeWindowToggle(chartTimeWindow)}
                       </span>
                     </div>
                   </div>

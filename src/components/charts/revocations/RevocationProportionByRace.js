@@ -16,10 +16,13 @@
 // =============================================================================
 
 import React, { useState, useEffect } from 'react';
-import { HorizontalBar } from 'react-chartjs-2';
+import { Bar, HorizontalBar } from 'react-chartjs-2';
 
 import { COLORS_FIVE_VALUES, COLORS } from '../../../assets/scripts/constants/colors';
 import { configureDownloadButtons } from '../../../assets/scripts/utils/downloads';
+import {
+  filterDatasetBySupervisionType, filterDatasetByDistrict, filterDatasetByTimeWindow,
+} from '../../../utils/charts/toggles';
 import { sortByLabel } from '../../../utils/transforms/datasets';
 import { raceValueToHumanReadable, toInt } from '../../../utils/transforms/labels';
 
@@ -40,9 +43,41 @@ const RevocationProportionByRace = (props) => {
       statePopulationByRace,
     } = props;
 
+    let filteredRevocationProportions = filterDatasetBySupervisionType(
+      revocationProportionByRace, props.supervisionType,
+      ['state_code', 'time_window', 'race_or_ethnicity', 'district'],
+      ['revocation_count'],
+    );
+
+    filteredRevocationProportions = filterDatasetByDistrict(
+      filteredRevocationProportions, props.district,
+      ['state_code', 'time_window', 'race_or_ethnicity'],
+      ['revocation_count'],
+    );
+
+    let filteredSupervisionPopulation = filterDatasetBySupervisionType(
+      supervisionPopulationByRace, props.supervisionType,
+      ['state_code', 'time_window', 'race_or_ethnicity', 'district'],
+      ['count'],
+    );
+
+    filteredSupervisionPopulation = filterDatasetByDistrict(
+      filteredSupervisionPopulation, props.district,
+      ['state_code', 'time_window', 'race_or_ethnicity'],
+      ['count'],
+    );
+
+    const revocationProportionByRaceAndTime = filterDatasetByTimeWindow(
+      filteredRevocationProportions, props.timeWindow,
+    );
+
+    const supervisionPopulationByRaceAndTime = filterDatasetByTimeWindow(
+      filteredSupervisionPopulation, props.timeWindow,
+    );
+
     const revocationDataPoints = [];
-    if (revocationProportionByRace) {
-      revocationProportionByRace.forEach((data) => {
+    if (revocationProportionByRaceAndTime) {
+      revocationProportionByRaceAndTime.forEach((data) => {
         const { race_or_ethnicity: race } = data;
         const count = toInt(data.revocation_count, 10);
         revocationDataPoints.push({ race: raceValueToHumanReadable(race), count });
@@ -50,8 +85,8 @@ const RevocationProportionByRace = (props) => {
     }
 
     const supervisionDataPoints = [];
-    if (supervisionPopulationByRace) {
-      supervisionPopulationByRace.forEach((data) => {
+    if (supervisionPopulationByRaceAndTime) {
+      supervisionPopulationByRaceAndTime.forEach((data) => {
         const { race_or_ethnicity: race } = data;
         const count = toInt(data.count);
         supervisionDataPoints.push({ race: raceValueToHumanReadable(race), count });
@@ -115,9 +150,16 @@ const RevocationProportionByRace = (props) => {
 
   useEffect(() => {
     processResponse();
-  }, [props.revocationProportionByRace, props.supervisionPopulationByRace]);
+  }, [
+    props.revocationProportionByRace,
+    props.supervisionPopulationByRace,
+    props.metricType,
+    props.timeWindow,
+    props.supervisionType,
+    props.district,
+  ]);
 
-  const chart = (
+  const ratesChart = (
     <HorizontalBar
       id={chartId}
       data={{
@@ -128,7 +170,9 @@ const RevocationProportionByRace = (props) => {
           hoverBackgroundColor: COLORS_FIVE_VALUES[0],
           hoverBorderColor: COLORS_FIVE_VALUES[0],
           data: [
-            revocationProportions[0], stateSupervisionProportions[0], statePopulationProportions[0],
+            revocationProportions[0],
+            stateSupervisionProportions[0],
+            statePopulationProportions[0],
           ],
         }, {
           label: chartLabels[1],
@@ -136,7 +180,9 @@ const RevocationProportionByRace = (props) => {
           hoverBackgroundColor: COLORS_FIVE_VALUES[1],
           hoverBorderColor: COLORS_FIVE_VALUES[1],
           data: [
-            revocationProportions[1], stateSupervisionProportions[1], statePopulationProportions[1],
+            revocationProportions[1],
+            stateSupervisionProportions[1],
+            statePopulationProportions[1],
           ],
         }, {
           label: chartLabels[2],
@@ -144,7 +190,9 @@ const RevocationProportionByRace = (props) => {
           hoverBackgroundColor: COLORS_FIVE_VALUES[2],
           hoverBorderColor: COLORS_FIVE_VALUES[2],
           data: [
-            revocationProportions[2], stateSupervisionProportions[2], statePopulationProportions[2],
+            revocationProportions[2],
+            stateSupervisionProportions[2],
+            statePopulationProportions[2],
           ],
         }, {
           label: chartLabels[3],
@@ -152,7 +200,9 @@ const RevocationProportionByRace = (props) => {
           hoverBackgroundColor: COLORS_FIVE_VALUES[3],
           hoverBorderColor: COLORS_FIVE_VALUES[3],
           data: [
-            revocationProportions[3], stateSupervisionProportions[3], statePopulationProportions[3],
+            revocationProportions[3],
+            stateSupervisionProportions[3],
+            statePopulationProportions[3],
           ],
         }, {
           label: chartLabels[4],
@@ -160,7 +210,9 @@ const RevocationProportionByRace = (props) => {
           hoverBackgroundColor: COLORS_FIVE_VALUES[4],
           hoverBorderColor: COLORS_FIVE_VALUES[4],
           data: [
-            revocationProportions[4], stateSupervisionProportions[4], statePopulationProportions[4],
+            revocationProportions[4],
+            stateSupervisionProportions[4],
+            statePopulationProportions[4],
           ],
         }, {
           label: chartLabels[5],
@@ -168,7 +220,9 @@ const RevocationProportionByRace = (props) => {
           hoverBackgroundColor: COLORS['blue-standard-2'],
           hoverBorderColor: COLORS['blue-standard-2'],
           data: [
-            revocationProportions[5], stateSupervisionProportions[5], statePopulationProportions[5],
+            revocationProportions[5],
+            stateSupervisionProportions[5],
+            statePopulationProportions[5],
           ],
         }, {
           label: chartLabels[6],
@@ -176,7 +230,9 @@ const RevocationProportionByRace = (props) => {
           hoverBackgroundColor: COLORS['blue-standard'],
           hoverBorderColor: COLORS['blue-standard'],
           data: [
-            revocationProportions[6], stateSupervisionProportions[6], statePopulationProportions[6],
+            revocationProportions[6],
+            stateSupervisionProportions[6],
+            statePopulationProportions[6],
           ],
         },
         ],
@@ -234,17 +290,119 @@ const RevocationProportionByRace = (props) => {
     />
   );
 
+  const countsChart = (
+    <Bar
+      id={chartId}
+      data={{
+        labels: ['Revocation Counts', 'Supervision Population'],
+        datasets: [{
+          label: chartLabels[0],
+          backgroundColor: COLORS_FIVE_VALUES[0],
+          hoverBackgroundColor: COLORS_FIVE_VALUES[0],
+          hoverBorderColor: COLORS_FIVE_VALUES[0],
+          data: [
+            revocationCounts[0],
+            stateSupervisionCounts[0],
+          ],
+        }, {
+          label: chartLabels[1],
+          backgroundColor: COLORS_FIVE_VALUES[1],
+          hoverBackgroundColor: COLORS_FIVE_VALUES[1],
+          hoverBorderColor: COLORS_FIVE_VALUES[1],
+          data: [
+            revocationCounts[1],
+            stateSupervisionCounts[1],
+          ],
+        }, {
+          label: chartLabels[2],
+          backgroundColor: COLORS_FIVE_VALUES[2],
+          hoverBackgroundColor: COLORS_FIVE_VALUES[2],
+          hoverBorderColor: COLORS_FIVE_VALUES[2],
+          data: [
+            revocationCounts[2],
+            stateSupervisionCounts[2],
+          ],
+        }, {
+          label: chartLabels[3],
+          backgroundColor: COLORS_FIVE_VALUES[3],
+          hoverBackgroundColor: COLORS_FIVE_VALUES[3],
+          hoverBorderColor: COLORS_FIVE_VALUES[3],
+          data: [
+            revocationCounts[3],
+            stateSupervisionCounts[3],
+          ],
+        }, {
+          label: chartLabels[4],
+          backgroundColor: COLORS_FIVE_VALUES[4],
+          hoverBackgroundColor: COLORS_FIVE_VALUES[4],
+          hoverBorderColor: COLORS_FIVE_VALUES[4],
+          data: [
+            revocationCounts[4],
+            stateSupervisionCounts[4],
+          ],
+        }, {
+          label: chartLabels[5],
+          backgroundColor: COLORS['blue-standard-2'],
+          hoverBackgroundColor: COLORS['blue-standard-2'],
+          hoverBorderColor: COLORS['blue-standard-2'],
+          data: [
+            revocationCounts[5],
+            stateSupervisionCounts[5],
+          ],
+        }, {
+          label: chartLabels[6],
+          backgroundColor: COLORS['blue-standard'],
+          hoverBackgroundColor: COLORS['blue-standard'],
+          hoverBorderColor: COLORS['blue-standard'],
+          data: [
+            revocationCounts[6],
+            stateSupervisionCounts[6],
+          ],
+        },
+        ],
+      }}
+      options={{
+        responsive: true,
+        legend: {
+          position: 'bottom',
+        },
+        tooltips: {
+          mode: 'index',
+          intersect: false,
+        },
+        scales: {
+          xAxes: [{
+            ticks: {
+              autoSkip: false,
+            },
+          }],
+          yAxes: [{
+            scaleLabel: {
+              display: true,
+              labelString: 'Revocation counts',
+            },
+          }],
+        },
+      }}
+    />
+  );
+
   const exportedStructureCallback = () => (
     {
       metric: 'Revocations by race',
       series: [],
     });
 
+  let activeChart = countsChart;
+  if (props.metricType === 'rates') {
+    activeChart = ratesChart;
+  }
+
   configureDownloadButtons(chartId, 'REVOCATIONS BY RACE - 60 DAYS',
-    chart.props.data.datasets, chart.props.data.labels,
+    activeChart.props.data.datasets, activeChart.props.data.labels,
     document.getElementById('revocationsByRace'), exportedStructureCallback);
 
-  return chart;
+  return activeChart;
 };
 
 export default RevocationProportionByRace;

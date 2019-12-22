@@ -20,6 +20,10 @@ import { Bar } from 'react-chartjs-2';
 
 import { COLORS, COLORS_STACKED_TWO_VALUES } from '../../../assets/scripts/constants/colors';
 import { configureDownloadButtons } from '../../../assets/scripts/utils/downloads';
+import {
+  toggleLabel, getMonthCountFromTimeWindowToggle, updateTooltipForMetricType,
+  filterDatasetByDistrict,
+} from '../../../utils/charts/toggles';
 import { sortFilterAndSupplementMostRecentMonths } from '../../../utils/transforms/datasets';
 import { monthNamesWithYearsFromNumbers } from '../../../utils/transforms/months';
 
@@ -33,31 +37,56 @@ const RevocationCountBySupervisionType = (props) => {
   const processResponse = () => {
     const { revocationCountsByMonthBySupervisionType: countsByMonth } = props;
 
+    const filteredCountsByMonth = filterDatasetByDistrict(
+      countsByMonth, props.district,
+      ['state_code', 'year', 'month'], ['probation_count', 'parole_count'],
+    );
+
     const paroleData = [];
     const probationData = [];
-    if (countsByMonth) {
-      countsByMonth.forEach((data) => {
+    if (filteredCountsByMonth) {
+      filteredCountsByMonth.forEach((data) => {
         const {
           year, month, parole_count: paroleCount, probation_count: probationCount,
         } = data;
-        paroleData.push({ year, month, paroleCount });
-        probationData.push({ year, month, probationCount });
+
+        const paroleCountNum = Number(paroleCount);
+        const probationCountNum = Number(probationCount);
+
+        if (props.metricType === 'counts') {
+          paroleData.push({ year, month, paroleValue: paroleCountNum });
+          probationData.push({ year, month, probationValue: probationCountNum });
+        } else if (props.metricType === 'rates') {
+          const paroleValue = (100 * (paroleCountNum / (paroleCountNum + probationCountNum)))
+            .toFixed(2);
+          const probationValue = (100 * (probationCountNum / (paroleCountNum + probationCountNum)))
+            .toFixed(2);
+
+          paroleData.push({ year, month, paroleValue });
+          probationData.push({ year, month, probationValue });
+        }
       });
     }
 
-    const sortedParoleData = sortFilterAndSupplementMostRecentMonths(paroleData, 6, 'paroleCount', 0);
-    const sortedProbationData = sortFilterAndSupplementMostRecentMonths(probationData, 6, 'probationCount', 0);
+    const months = getMonthCountFromTimeWindowToggle(props.timeWindow);
+    const sortedParoleData = sortFilterAndSupplementMostRecentMonths(paroleData, months, 'paroleValue', 0);
+    const sortedProbationData = sortFilterAndSupplementMostRecentMonths(probationData, months, 'probationValue', 0);
 
     setChartLabels(monthNamesWithYearsFromNumbers(sortedParoleData.map(
       (element) => element.month,
     ), false));
-    setParoleDataPoints(sortedParoleData.map((element) => element.paroleCount));
-    setProbationDataPoints(sortedProbationData.map((element) => element.probationCount));
+    setParoleDataPoints(sortedParoleData.map((element) => element.paroleValue));
+    setProbationDataPoints(sortedProbationData.map((element) => element.probationValue));
   };
 
   useEffect(() => {
     processResponse();
-  }, [props.revocationCountsByMonthBySupervisionType]);
+  }, [
+    props.revocationCountsByMonthBySupervisionType,
+    props.metricType,
+    props.timeWindow,
+    props.district,
+  ]);
 
   const chart = (
     <Bar
@@ -90,6 +119,9 @@ const RevocationCountBySupervisionType = (props) => {
           backgroundColor: COLORS['grey-800-light'],
           mode: 'index',
           intersect: false,
+          callbacks: {
+            label: (tooltipItem, data) => updateTooltipForMetricType(props.metricType, tooltipItem, data),
+          },
         },
         scales: {
           xAxes: [{
@@ -100,9 +132,15 @@ const RevocationCountBySupervisionType = (props) => {
             stacked: true,
           }],
           yAxes: [{
+            // ticks: props.metricType === 'rates' ? {
+            //   max: 100,
+            // } : {},
             scaleLabel: {
               display: true,
-              labelString: 'Revocation count',
+              labelString: toggleLabel(
+                { counts: 'Revocation count', rates: 'Percentage of revocations' },
+                props.metricType,
+              ),
             },
             stacked: true,
           }],

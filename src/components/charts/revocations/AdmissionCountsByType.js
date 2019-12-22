@@ -16,10 +16,11 @@
 // =============================================================================
 
 import React, { useState, useEffect } from 'react';
-import { Pie } from 'react-chartjs-2';
+import { Bar, Pie } from 'react-chartjs-2';
 
 import { COLORS, COLORS_FIVE_VALUES } from '../../../assets/scripts/constants/colors';
 import { configureDownloadButtons } from '../../../assets/scripts/utils/downloads';
+import { filterDatasetByDistrict, filterDatasetByTimeWindow } from '../../../utils/charts/toggles';
 import { sortByLabel } from '../../../utils/transforms/datasets';
 import { toInt } from '../../../utils/transforms/labels';
 
@@ -29,19 +30,28 @@ const AdmissionCountsByType = (props) => {
 
   const chartId = 'admissionCountsByType';
 
+  const labelStringConversion = {
+    UNKNOWN_REVOCATION: 'Revocations (Unknown Type)',
+    NEW_ADMISSION: 'New Admissions',
+    NON_TECHNICAL: 'Non-Technical Revocations',
+    TECHNICAL: 'Technical Revocations',
+  };
+
   const processResponse = () => {
     const { admissionCountsByType } = props;
 
-    const labelStringConversion = {
-      UNKNOWN_REVOCATION: 'Revocations (Unknown Type)',
-      NEW_ADMISSION: 'New Admissions',
-      NON_TECHNICAL: 'Non-Technical Revocations',
-      TECHNICAL: 'Technical Revocations',
-    };
+    const filteredAdmissionCounts = filterDatasetByDistrict(
+      admissionCountsByType, props.district,
+      ['state_code', 'admission_type', 'time_window'], ['admission_count'],
+    );
+
+    const admissionCountsByTypeAndTime = filterDatasetByTimeWindow(
+      filteredAdmissionCounts, props.timeWindow,
+    );
 
     const dataPoints = [];
-    if (admissionCountsByType) {
-      admissionCountsByType.forEach((data) => {
+    if (admissionCountsByTypeAndTime) {
+      admissionCountsByTypeAndTime.forEach((data) => {
         const { admission_type: admissionType } = data;
         const count = toInt(data.admission_count);
         dataPoints.push({ type: labelStringConversion[admissionType], count });
@@ -58,11 +68,14 @@ const AdmissionCountsByType = (props) => {
     setChartDataPoints(sorted.map((element) => element.count));
   };
 
-  useEffect(() => {
-    processResponse();
-  }, [props.admissionCountsByType]);
+  const chartColors = [
+    COLORS_FIVE_VALUES[1],
+    COLORS_FIVE_VALUES[0],
+    COLORS_FIVE_VALUES[3],
+    COLORS_FIVE_VALUES[2],
+  ];
 
-  const chart = (
+  const ratesChart = (
     <Pie
       id={chartId}
       data={{
@@ -72,24 +85,9 @@ const AdmissionCountsByType = (props) => {
           // Note: these colors are intentionally set in this order so that
           // the colors for technical and unknown revocations match those of
           // the other charts on this page
-          backgroundColor: [
-            COLORS_FIVE_VALUES[1],
-            COLORS_FIVE_VALUES[0],
-            COLORS_FIVE_VALUES[3],
-            COLORS_FIVE_VALUES[2],
-          ],
-          hoverBackgroundColor: [
-            COLORS_FIVE_VALUES[1],
-            COLORS_FIVE_VALUES[0],
-            COLORS_FIVE_VALUES[3],
-            COLORS_FIVE_VALUES[2],
-          ],
-          hoverBorderColor: [
-            COLORS_FIVE_VALUES[1],
-            COLORS_FIVE_VALUES[0],
-            COLORS_FIVE_VALUES[3],
-            COLORS_FIVE_VALUES[2],
-          ],
+          backgroundColor: chartColors,
+          hoverBackgroundColor: chartColors,
+          hoverBorderColor: chartColors,
           hoverBorderWidth: 0.5,
         }],
         labels: chartLabels,
@@ -120,17 +118,95 @@ const AdmissionCountsByType = (props) => {
     />
   );
 
+  const countsChart = (
+    <Bar
+      id={chartId}
+      data={{
+        labels: ['Admission Counts'],
+        datasets: [{
+          label: chartLabels[0],
+          backgroundColor: chartColors[0],
+          hoverBackgroundColor: chartColors[0],
+          hoverBorderColor: chartColors[0],
+          data: [
+            chartDataPoints[0],
+          ],
+        }, {
+          label: chartLabels[1],
+          backgroundColor: chartColors[1],
+          hoverBackgroundColor: chartColors[1],
+          hoverBorderColor: chartColors[1],
+          data: [
+            chartDataPoints[1],
+          ],
+        }, {
+          label: chartLabels[2],
+          backgroundColor: chartColors[2],
+          hoverBackgroundColor: chartColors[2],
+          hoverBorderColor: chartColors[2],
+          data: [
+            chartDataPoints[2],
+          ],
+        }, {
+          label: chartLabels[3],
+          backgroundColor: chartColors[3],
+          hoverBackgroundColor: chartColors[3],
+          hoverBorderColor: chartColors[3],
+          data: [
+            chartDataPoints[3],
+          ],
+        }],
+      }}
+      options={{
+        responsive: true,
+        legend: {
+          position: 'right',
+        },
+        tooltips: {
+          mode: 'index',
+          intersect: false,
+        },
+        scales: {
+          xAxes: [{
+            ticks: {
+              autoSkip: false,
+            },
+          }],
+          yAxes: [{
+            scaleLabel: {
+              display: true,
+              labelString: 'Admission counts',
+            },
+          }],
+        },
+      }}
+    />
+  );
+
   const exportedStructureCallback = () => (
     {
       metric: 'Admissions by type',
       series: [],
     });
 
-  configureDownloadButtons(chartId, 'ADMISSIONS BY TYPE - 60 DAYS', chart.props.data.datasets,
-    chart.props.data.labels, document.getElementById(chartId),
-    exportedStructureCallback);
+  let activeChart = countsChart;
+  if (props.metricType === 'rates') {
+    activeChart = ratesChart;
+  }
 
-  return chart;
+  useEffect(() => {
+    processResponse();
+    configureDownloadButtons(chartId, 'ADMISSIONS BY TYPE - 60 DAYS', activeChart.props.data.datasets,
+      activeChart.props.data.labels, document.getElementById(chartId),
+      exportedStructureCallback);
+  }, [
+    props.admissionCountsByType,
+    props.metricType,
+    props.timeWindow,
+    props.district,
+  ]);
+
+  return activeChart;
 };
 
 export default AdmissionCountsByType;

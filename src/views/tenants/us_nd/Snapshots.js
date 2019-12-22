@@ -29,10 +29,17 @@ import RevocationAdmissionsSnapshot
 import SupervisionSuccessSnapshot
   from '../../../components/charts/snapshots/SupervisionSuccessSnapshot';
 
+import ToggleBar from '../../../components/toggles/ToggleBar';
+import * as ToggleDefaults from '../../../components/toggles/ToggleDefaults';
+
 const Snapshots = () => {
   const { loading, user, getTokenSilently } = useAuth0();
   const [apiData, setApiData] = useState({});
   const [awaitingApi, setAwaitingApi] = useState(true);
+  const [chartMetricType, setChartMetricType] = useState(ToggleDefaults.metricType);
+  const [chartTimeWindow, setChartTimeWindow] = useState(ToggleDefaults.timeWindow);
+  const [chartSupervisionType, setChartSupervisionType] = useState(ToggleDefaults.supervisionType);
+  const [chartDistrict, setChartDistrict] = useState(ToggleDefaults.district);
 
   const fetchChartData = async () => {
     try {
@@ -55,6 +62,15 @@ const Snapshots = () => {
   return (
     <main className="main-content bgc-grey-100">
       <div id="mainContent">
+
+        <ToggleBar
+          setChartMetricType={setChartMetricType}
+          setChartTimeWindow={setChartTimeWindow}
+          setChartSupervisionType={setChartSupervisionType}
+          setChartDistrict={setChartDistrict}
+          availableDistricts={['beulah', 'bismarck', 'bottineau', 'devils-lake', 'dickson', 'fargo', 'grafton', 'grand-forks', 'jamestown', 'mandan', 'minot', 'oakes', 'rolla', 'washburn', 'wahpeton', 'williston']}
+        />
+
         <div className="row gap-20 pos-r">
 
           {/* #Successful completion of supervision snapshot ==================== */}
@@ -206,6 +222,9 @@ const Snapshots = () => {
                   <div className="ai-c jc-c gapX-20">
                     <div className="col-md-12">
                       <DaysAtLibertySnapshot
+                        timeWindow={chartTimeWindow}
+                        supervisionType={chartSupervisionType}
+                        district={chartDistrict}
                         daysAtLibertyByMonth={apiData.avg_days_at_liberty_by_month}
                         header="daysAtLibertySnapshot-header"
                       />

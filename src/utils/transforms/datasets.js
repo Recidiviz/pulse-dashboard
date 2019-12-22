@@ -30,7 +30,8 @@ const RELEASE_FACILITY_FILTERS = {
  * [facilityName, dataValue]
  */
 function filterFacilities(dataPoints, facilityType, stateCode) {
-  const facilityArray = (facilityType === 'TRANSITIONAL' ? TRANSITIONAL_FACILITY_FILTERS[stateCode] : RELEASE_FACILITY_FILTERS[stateCode]);
+  const facilityArray = (facilityType === 'TRANSITIONAL'
+    ? TRANSITIONAL_FACILITY_FILTERS[stateCode] : RELEASE_FACILITY_FILTERS[stateCode]);
 
   const filteredData = [];
   dataPoints.forEach((data) => {
@@ -94,7 +95,11 @@ function addEmptyMonthsToData(dataPoints, monthCount, valueKey, emptyValue) {
 
   const newDataPoints = dataPoints;
   for (let i = thisMonth - (monthCount - 1); i <= thisMonth; i += 1) {
-    const month = (i === 0) ? 12 : ((i + 12) % 12);
+    // This bizarre math avoids a JS quirk with modulo operations on negative numbers.
+    // https://web.archive.org/web/20090717035140if_/javascript.about.com/od/problemsolving/a/modulobug.htm
+    const remainder = ((i % 12) + 12) % 12;
+
+    const month = (remainder === 0) ? 12 : remainder;
     const year = (i <= 0) ? (thisYear - 1) : thisYear;
 
     if (!representedMonths[year] || !representedMonths[year][month]) {

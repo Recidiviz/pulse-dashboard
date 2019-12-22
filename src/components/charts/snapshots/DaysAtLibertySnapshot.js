@@ -25,9 +25,12 @@ import {
   goalLabelContentString,
 } from '../../../utils/charts/metricGoal';
 import {
+  getMonthCountFromTimeWindowToggle, filterDatasetBySupervisionType, filterDatasetByDistrict,
+} from '../../../utils/charts/toggles';
+import {
   generateTrendlineDataset, getTooltipWithoutTrendline,
 } from '../../../utils/charts/trendline';
-import { sortAndFilterMostRecentMonths } from '../../../utils/transforms/datasets';
+import { sortFilterAndSupplementMostRecentMonths } from '../../../utils/transforms/datasets';
 import { monthNamesWithYearsFromNumbers } from '../../../utils/transforms/months';
 
 const DaysAtLibertySnapshot = (props) => {
@@ -43,15 +46,27 @@ const DaysAtLibertySnapshot = (props) => {
   const processResponse = () => {
     const { daysAtLibertyByMonth } = props;
 
+    let filteredDaysByMonth = filterDatasetBySupervisionType(
+      daysAtLibertyByMonth, props.supervisionType,
+      ['state_code', 'year', 'month', 'district'], ['returns', 'avg_liberty'],
+    );
+
+    filteredDaysByMonth = filterDatasetByDistrict(
+      filteredDaysByMonth, props.district,
+      ['state_code', 'year', 'month'], ['returns', 'avg_liberty'],
+    );
+
     const dataPoints = [];
-    if (daysAtLibertyByMonth) {
-      daysAtLibertyByMonth.forEach((data) => {
+    if (filteredDaysByMonth) {
+      filteredDaysByMonth.forEach((data) => {
         const { year, month } = data;
         const average = parseFloat(data.avg_liberty).toFixed(2);
         dataPoints.push({ year, month, average });
       });
     }
-    const sorted = sortAndFilterMostRecentMonths(dataPoints, 13);
+
+    const months = getMonthCountFromTimeWindowToggle(props.timeWindow);
+    const sorted = sortFilterAndSupplementMostRecentMonths(dataPoints, months, 'average', '0.0');
     const chartDataValues = sorted.map((element) => element.average);
     const min = getMinForGoalAndData(GOAL.value, chartDataValues, stepSize);
     const max = getMaxForGoalAndData(GOAL.value, chartDataValues, stepSize);
@@ -62,9 +77,72 @@ const DaysAtLibertySnapshot = (props) => {
     setChartMaxValue(max);
   };
 
+  function goalLineIfApplicable() {
+    const { supervisionType, district } = props;
+    if (supervisionType === 'all' && district === 'all') {
+      return {
+        drawTime: 'afterDatasetsDraw',
+        events: ['click'],
+
+        // Array of annotation configuration objects
+        // See below for detailed descriptions of the annotation options
+        annotations: [{
+          type: 'line',
+          mode: 'horizontal',
+          value: GOAL.value,
+
+          // optional annotation ID (must be unique)
+          id: 'daysAtLibertySnapshotGoalLine',
+          scaleID: 'y-axis-0',
+
+          drawTime: 'afterDatasetsDraw',
+
+          borderColor: COLORS['red-standard'],
+          borderWidth: 2,
+          borderDash: [2, 2],
+          borderDashOffset: 5,
+          label: {
+            enabled: true,
+            content: goalLabelContentString(GOAL),
+            position: 'right',
+
+            // Background color of label, default below
+            backgroundColor: 'rgba(0, 0, 0, 0)',
+
+            fontFamily: 'sans-serif',
+            fontSize: 12,
+            fontStyle: 'bold',
+            fontColor: COLORS['red-standard'],
+
+            // Adjustment along x-axis (left-right) of label relative to above
+            // number (can be negative). For horizontal lines positioned left
+            // or right, negative values move the label toward the edge, and
+            // positive values toward the center.
+            xAdjust: 0,
+
+            // Adjustment along y-axis (top-bottom) of label relative to above
+            // number (can be negative). For vertical lines positioned top or
+            // bottom, negative values move the label toward the edge, and
+            // positive values toward the center.
+            yAdjust: -10,
+          },
+
+          onClick(e) { return e; },
+        }],
+      };
+    }
+
+    return null;
+  }
+
   useEffect(() => {
     processResponse();
-  }, [props.daysAtLibertyByMonth]);
+  }, [
+    props.daysAtLibertyByMonth,
+    props.timeWindow,
+    props.supervisionType,
+    props.district,
+  ]);
 
   const chart = (
     <Line
@@ -108,7 +186,6 @@ const DaysAtLibertySnapshot = (props) => {
           xAxes: [{
             ticks: {
               fontColor: COLORS['grey-600'],
-              autoSkip: false,
             },
             scaleLabel: {
               display: true,
@@ -123,9 +200,9 @@ const DaysAtLibertySnapshot = (props) => {
           yAxes: [{
             ticks: {
               fontColor: COLORS['grey-600'],
-              min: chartMinValue,
-              max: chartMaxValue,
-              stepSize,
+              // min: chartMinValue,
+              // max: chartMaxValue,
+              // stepSize,
             },
             scaleLabel: {
               display: true,
@@ -138,56 +215,7 @@ const DaysAtLibertySnapshot = (props) => {
             },
           }],
         },
-        annotation: {
-          drawTime: 'afterDatasetsDraw',
-          events: ['click'],
-
-          // Array of annotation configuration objects
-          // See below for detailed descriptions of the annotation options
-          annotations: [{
-            type: 'line',
-            mode: 'horizontal',
-            value: GOAL.value,
-
-            // optional annotation ID (must be unique)
-            id: 'daysAtLibertySnapshotGoalLine',
-            scaleID: 'y-axis-0',
-
-            drawTime: 'afterDatasetsDraw',
-
-            borderColor: COLORS['red-standard'],
-            borderWidth: 2,
-            borderDash: [2, 2],
-            borderDashOffset: 5,
-            label: {
-              enabled: true,
-              content: goalLabelContentString(GOAL),
-              position: 'right',
-
-              // Background color of label, default below
-              backgroundColor: 'rgba(0, 0, 0, 0)',
-
-              fontFamily: 'sans-serif',
-              fontSize: 12,
-              fontStyle: 'bold',
-              fontColor: COLORS['red-standard'],
-
-              // Adjustment along x-axis (left-right) of label relative to above
-              // number (can be negative). For horizontal lines positioned left
-              // or right, negative values move the label toward the edge, and
-              // positive values toward the center.
-              xAdjust: 0,
-
-              // Adjustment along y-axis (top-bottom) of label relative to above
-              // number (can be negative). For vertical lines positioned top or
-              // bottom, negative values move the label toward the edge, and
-              // positive values toward the center.
-              yAdjust: -10,
-            },
-
-            onClick(e) { return e; },
-          }],
-        },
+        annotation: goalLineIfApplicable(),
       }}
     />
   );

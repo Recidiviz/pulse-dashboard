@@ -37,24 +37,60 @@ const chartId = 'revocationsByOffice';
 const centerNDLong = -100.5;
 const centerNDLat = 47.3;
 
+const TIME_WINDOWS = ['1m', '3m', '6m', '1y', '3y'];
+
+function getOfficeDataValue(office, metricType, timeWindow, supervisionType) {
+  const supervisionTypeKey = supervisionType.toLowerCase();
+  if (metricType === 'counts') {
+    if (supervisionTypeKey === 'all') {
+      return office.revocationValues[timeWindow].parole.revocationCount + office.revocationValues[timeWindow].probation.revocationCount;
+    }
+    return office.revocationValues[timeWindow][supervisionTypeKey].revocationCount;
+  }
+
+  if (supervisionType === 'all') {
+    const paroleCount = office.revocationValues[timeWindow].parole.revocationCount;
+    const probationCount = office.revocationValues[timeWindow].probation.revocationCount;
+    const { supervisionCount } = office.revocationValues[timeWindow].probation;
+
+    return (100 * ((paroleCount + probationCount) / supervisionCount)).toFixed(2);
+  }
+  return office.revocationValues[timeWindow][supervisionTypeKey].revocationRate;
+}
+
 /**
  * Returns the radius pixel size for the marker of the given office.
- * The size of the markers are distributed a linear scale given the revocation
- * count of the offices, where the office with the highest number of revocations
- * will have a marker with the radius size of `maxMarkerRadius`.
+ * The size of the markers are distributed a linear scale given the revocation count or
+ * rate of the offices, where the office with the highest number or percentage of
+ * revocations will have a marker with the radius size of `maxMarkerRadius`.
  */
-function radiusOfMarker(office, maxValue) {
+function radiusOfMarker(office, maxValues, metricType, timeWindow, supervisionType) {
   const minMarkerRadius = 10;
   const maxMarkerRadius = 35;
+
+  const maxValue = metricType === 'counts'
+    ? maxValues[timeWindow].count : maxValues[timeWindow].rate;
+
   const officeScale = scaleLinear()
     .domain([0, maxValue])
     .range([minMarkerRadius, maxMarkerRadius]);
 
-  return officeScale(office.revocationCount);
+  return officeScale(getOfficeDataValue(office, metricType, timeWindow, supervisionType));
 }
 
-function colorForMarker(office) {
-  return (office.revocationCount > 0) ? COLORS['red-standard'] : COLORS['grey-400'];
+function toggleTooltip(office, metricType, timeWindow, supervisionType) {
+  const value = getOfficeDataValue(office, metricType, timeWindow, supervisionType);
+  if (metricType === 'counts') {
+    return `${office.officeName}: ${value}`;
+  }
+
+  return `${office.officeName}: ${value}%`;
+}
+
+function colorForMarker(office, metricType, timeWindow, supervisionType) {
+  const value = getOfficeDataValue(office, metricType, timeWindow, supervisionType);
+
+  return value > 0 ? COLORS['red-standard'] : COLORS['grey-400'];
 }
 
 const officeClicked = (office) => {
@@ -64,16 +100,87 @@ const officeClicked = (office) => {
   }
 };
 
+function sortChartDataPoints(dataPoints, metricType, timeWindow, supervisionType) {
+  return dataPoints.sort((a, b) => (getOfficeDataValue(b, metricType, timeWindow, supervisionType)
+    - getOfficeDataValue(a, metricType, timeWindow, supervisionType)));
+}
+
 class RevocationsByOffice extends Component {
   constructor(props) {
     super(props);
     this.props = props;
+
+    this.initializeChartData = this.initializeChartData.bind(this);
+    this.initializeChartData();
+  }
+
+  componentDidMount() {
+    this.initializeChartData();
+
+    const exportedStructureCallback = () => (
+      {
+        metric: 'Revocations by P&P office',
+        series: [],
+      });
+
+    const revocationsByOffice = [];
+    const officeNames = [];
+    this.chartDataPoints.forEach((data) => {
+      const {
+        officeName,
+        revocationCount,
+        revocationRate,
+      } = data;
+
+      officeNames.push(officeName);
+      if (this.props.metricType === 'counts') {
+        revocationsByOffice.push(revocationCount);
+      } else if (this.props.metricType === 'rates') {
+        revocationsByOffice.push(revocationRate);
+      }
+    });
+
+    const downloadableDataFormat = [{
+      data: revocationsByOffice,
+      label: 'Revocation count',
+    }];
+
+    configureDownloadButtons(chartId, 'REVOCATIONS BY P&P OFFICE - 60 DAYS',
+      downloadableDataFormat, officeNames,
+      document.getElementById(chartId), exportedStructureCallback);
+
+    setTimeout(() => {
+      ReactTooltip.rebuild();
+    }, 100);
+  }
+
+  setEmptyOfficeData(office) {
+    TIME_WINDOWS.forEach((window) => {
+      office.revocationValues[window] = {
+        parole: {
+          revocationCount: 0, supervisionCount: 0, revocationRate: 0.00,
+        },
+        probation: {
+          revocationCount: 0, supervisionCount: 0, revocationRate: 0.00,
+        },
+      };
+    });
+    office.officerDropdownItemId = `${this.officerDropdownId}-${toHtmlFriendly(office.officeName)}`;
+  }
+
+  initializeChartData() {
     this.officeData = this.props.officeData;
     this.revocationsByOffice = this.props.revocationsByOffice;
     this.officerDropdownId = this.props.officerDropdownId;
     this.offices = {};
     this.officeIds = [];
-    this.maxValue = -1e100;
+    this.maxValues = {
+      '1m': { count: -1e100, rate: -1e100 },
+      '3m': { count: -1e100, rate: -1e100 },
+      '6m': { count: -1e100, rate: -1e100 },
+      '1y': { count: -1e100, rate: -1e100 },
+      '3y': { count: -1e100, rate: -1e100 },
+    };
 
     if (this.officeData) {
       // Load office metadata
@@ -90,6 +197,7 @@ class RevocationsByOffice extends Component {
           officeName: name,
           coordinates: [longValue, latValue],
           titleSide: titleSideValue,
+          revocationValues: {},
         };
 
         this.offices[officeId] = office;
@@ -108,20 +216,47 @@ class RevocationsByOffice extends Component {
           felony_count: felonyCount,
           technical_count: technicalCount,
           unknown_count: unknownCount,
+          total_supervision_count: supervisionCount,
+          time_window: timeWindow,
+          supervision_type: supervisionType,
         } = data;
 
         const revocationCountNum = toInt(absconsionCount)
           + toInt(felonyCount) + toInt(technicalCount) + toInt(unknownCount);
         const officeIdInt = toInt(officeId);
         const office = this.offices[officeIdInt];
-        if (office) {
-          office.revocationCount = revocationCountNum;
-          office.officerDropdownItemId = `${this.officerDropdownId}-${toHtmlFriendly(office.officeName)}`;
-          this.chartDataPoints.push(office);
-          this.officeIdsWithData.push(officeIdInt);
 
-          if (office.revocationCount > this.maxValue) {
-            this.maxValue = office.revocationCount;
+        const supervisionTypeKey = supervisionType.toLowerCase();
+        if (office) {
+          const revocationCount = revocationCountNum;
+          const revocationRate = (100 * (revocationCountNum / supervisionCount));
+          const revocationRateFixed = revocationRate.toFixed(2);
+
+          office.officerDropdownItemId = `${this.officerDropdownId}-${toHtmlFriendly(office.officeName)}`;
+
+          if (!office.revocationValues[timeWindow]) {
+            office.revocationValues[timeWindow] = {};
+          }
+          if (!office.revocationValues[timeWindow][supervisionTypeKey]) {
+            office.revocationValues[timeWindow][supervisionTypeKey] = {};
+          }
+
+          office.revocationValues[timeWindow][supervisionTypeKey] = {
+            revocationCount,
+            supervisionCount,
+            revocationRate: revocationRateFixed,
+          };
+
+          if (!this.officeIdsWithData.includes(officeIdInt)) {
+            this.chartDataPoints.push(office);
+            this.officeIdsWithData.push(officeIdInt);
+          }
+
+          if (revocationCount > this.maxValues[timeWindow].count) {
+            this.maxValues[timeWindow].count = office.revocationValues[timeWindow][supervisionTypeKey].revocationCount;
+          }
+          if (revocationRate > this.maxValues[timeWindow].rate) {
+            this.maxValues[timeWindow].rate = office.revocationValues[timeWindow][supervisionTypeKey].revocationRate;
           }
         }
       });
@@ -134,48 +269,15 @@ class RevocationsByOffice extends Component {
     officeIdsWithoutData.forEach((officeId) => {
       const office = this.offices[officeId];
       if (office) {
-        office.revocationCount = 0;
-        office.officerDropdownItemId = `${this.officerDropdownId}-${toHtmlFriendly(office.officeName)}`;
+        this.setEmptyOfficeData(office);
         this.chartDataPoints.push(office);
       }
     });
 
     // Sort descending by revocationCount so that offices with fewer revocations
     // will be on top
-    this.chartDataPoints = this.chartDataPoints.sort((a, b) => (
-      b.revocationCount - a.revocationCount));
-  }
-
-  componentDidMount() {
-    const exportedStructureCallback = () => (
-      {
-        metric: 'Revocations by P&P office',
-        series: [],
-      });
-
-    const revocationsByOffice = [];
-    const officeNames = [];
-    this.chartDataPoints.forEach((data) => {
-      const {
-        officeName,
-        revocationCount,
-      } = data;
-      revocationsByOffice.push(revocationCount);
-      officeNames.push(officeName);
-    });
-
-    const downloadableDataFormat = [{
-      data: revocationsByOffice,
-      label: 'Revocation count',
-    }];
-
-    configureDownloadButtons(chartId, 'REVOCATIONS BY P&P OFFICE - 60 DAYS',
-      downloadableDataFormat, officeNames,
-      document.getElementById(chartId), exportedStructureCallback);
-
-    setTimeout(() => {
-      ReactTooltip.rebuild();
-    }, 100);
+    const { metricType, timeWindow, supervisionType } = this.props;
+    sortChartDataPoints(this.chartDataPoints, metricType, timeWindow, supervisionType);
   }
 
   render() {
@@ -230,7 +332,7 @@ class RevocationsByOffice extends Component {
                   marker={office}
                   style={{
                     default: {
-                      fill: colorForMarker(office),
+                      fill: colorForMarker(office, this.props.metricType, this.props.timeWindow, this.props.supervisionType),
                       stroke: '#F5F6F7',
                       strokeWidth: '3',
                     },
@@ -239,10 +341,10 @@ class RevocationsByOffice extends Component {
                   }}
                 >
                   <circle
-                    data-tip={office.officeName.concat(': ', office.revocationCount)}
+                    data-tip={toggleTooltip(office, this.props.metricType, this.props.timeWindow, this.props.supervisionType)}
                     cx={0}
                     cy={0}
-                    r={radiusOfMarker(office, this.maxValue)}
+                    r={radiusOfMarker(office, this.maxValues, this.props.metricType, this.props.timeWindow, this.props.supervisionType)}
                   />
                 </Marker>
               ))}
