@@ -17,16 +17,24 @@
 
 import React from 'react';
 
-function toTitleCase(str) {
-  return str.replace(
-    /\w\S*/g,
-    (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase(),
-  );
+function properName(name, replaceLa) {
+  if (replaceLa) {
+    return (`${name.replace(/[^\s\-\']+[\s\-\']*/g, (word) => word.charAt(0).toUpperCase() + word.substr(1).toLowerCase())
+      .replace(/\b(Van|De|Der|Da|Von)\b/g, (nobiliaryParticle) => nobiliaryParticle.toLowerCase())
+      .replace(/Mc(.)/g, (match, letter3) => `Mc${letter3.toUpperCase()}`)
+      .replace(/La(.)/g, (match, letter3) => `La${letter3.toUpperCase()}`)
+    }`);
+  }
+
+  return (`${name.replace(/[^\s\-\']+[\s\-\']*/g, (word) => word.charAt(0).toUpperCase() + word.substr(1).toLowerCase())
+    .replace(/\b(Van|De|Der|Da|Von)\b/g, (nobiliaryParticle) => nobiliaryParticle.toLowerCase())
+    .replace(/Mc(.)/g, (match, letter3) => `Mc${letter3.toUpperCase()}`)
+  }`);
 }
 
-function normalizeDistrictName(district) {
-  const normalized = district.replace('-', ' ');
-  return toTitleCase(normalized);
+function normalizeDistrictName(district, replaceLa) {
+  const normalized = district.replace(/-/g, ' ');
+  return properName(normalized, replaceLa);
 }
 
 class DistrictToggle extends React.Component {
@@ -44,15 +52,15 @@ class DistrictToggle extends React.Component {
   }
 
   DistrictOption(props) {
-    return <option value={props.value}>{normalizeDistrictName(props.value)}</option>
+    return <option value={props.value}>{normalizeDistrictName(props.value, props.replaceLa)}</option>
   }
 
   DistrictList() {
-    const { districts } = this.props;
+    const { districts, replaceLa } = this.props;
     districts.sort();
 
     const districtOptions = districts.map(
-      (district) => <this.DistrictOption key={district} value={district} />,
+      (district) => <this.DistrictOption key={district} value={district} replaceLa={replaceLa} />,
     );
     return (
       <select id="district-toggle" className="form-control" onChange={this.handleChange}>

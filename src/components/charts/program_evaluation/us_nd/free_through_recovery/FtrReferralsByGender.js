@@ -22,6 +22,10 @@ import {
   COLORS_STACKED_TWO_VALUES_ALT, COLORS,
 } from '../../../../../assets/scripts/constants/colors';
 import { configureDownloadButtons } from '../../../../../assets/scripts/utils/downloads';
+import {
+  filterDatasetBySupervisionType, filterDatasetByDistrict, filterDatasetByTimeWindow,
+} from '../../../../../utils/charts/toggles';
+import { tooltipForCountChart, tooltipForRateChart } from '../../../../../utils/charts/tooltips';
 import { sortByLabel } from '../../../../../utils/transforms/datasets';
 import { genderValueToHumanReadable, toInt } from '../../../../../utils/transforms/labels';
 
@@ -38,9 +42,35 @@ const FtrReferralsByGender = (props) => {
     const { ftrReferralsByGender } = props;
     const { supervisionPopulationByGender } = props;
 
+    let filteredFtrReferrals = filterDatasetBySupervisionType(
+      ftrReferralsByGender, props.supervisionType,
+      ['state_code', 'time_window', 'gender', 'district'], ['count'],
+    );
+
+    filteredFtrReferrals = filterDatasetByDistrict(
+      filteredFtrReferrals, props.district,
+      ['state_code', 'time_window', 'gender'], ['count'],
+    );
+
+    filteredFtrReferrals = filterDatasetByTimeWindow(filteredFtrReferrals, props.timeWindow);
+
+    let filteredSupervisionPopulation = filterDatasetBySupervisionType(
+      supervisionPopulationByGender, props.supervisionType,
+      ['state_code', 'time_window', 'gender', 'district'], ['count'],
+    );
+
+    filteredSupervisionPopulation = filterDatasetByDistrict(
+      filteredSupervisionPopulation, props.district,
+      ['state_code', 'time_window', 'gender'], ['count'],
+    );
+
+    filteredSupervisionPopulation = filterDatasetByTimeWindow(
+      filteredSupervisionPopulation, props.timeWindow,
+    );
+
     const ftrReferralDataPoints = [];
-    if (ftrReferralsByGender) {
-      ftrReferralsByGender.forEach((data) => {
+    if (filteredFtrReferrals) {
+      filteredFtrReferrals.forEach((data) => {
         let { gender } = data;
         gender = genderValueToHumanReadable(gender);
         const count = toInt(data.count, 10);
@@ -49,8 +79,8 @@ const FtrReferralsByGender = (props) => {
     }
 
     const supervisionDataPoints = [];
-    if (supervisionPopulationByGender) {
-      supervisionPopulationByGender.forEach((data) => {
+    if (filteredSupervisionPopulation) {
+      filteredSupervisionPopulation.forEach((data) => {
         const { gender } = data;
         const count = toInt(data.count);
         supervisionDataPoints.push({ gender, count });
@@ -93,9 +123,75 @@ const FtrReferralsByGender = (props) => {
   }, [
     props.ftrReferralsByGender,
     props.supervisionPopulationByGender,
+    props.metricType,
+    props.timeWindow,
+    props.supervisionType,
+    props.district,
   ]);
 
-  const chart = (
+  const countsChart = (
+    <Bar
+      id={chartId}
+      data={{
+        labels: chartLabels,
+        datasets: [
+          {
+            label: 'Referrals',
+            backgroundColor: COLORS['blue-standard'],
+            hoverBackgroundColor: COLORS['blue-standard'],
+            yAxisID: 'y-axis-left',
+            data: ftrReferralCounts,
+          },
+          {
+            label: 'Supervision Population',
+            backgroundColor: COLORS['blue-standard-2'],
+            hoverBackgroundColor: COLORS['blue-standard-2'],
+            yAxisID: 'y-axis-left',
+            data: stateSupervisionCounts,
+          },
+        ],
+      }}
+      options={{
+        responsive: true,
+        legend: {
+          display: true,
+          position: 'bottom',
+        },
+        tooltips: {
+          backgroundColor: COLORS['grey-800-light'],
+          mode: 'index',
+          callbacks: tooltipForCountChart(ftrReferralCounts, 'Referral', stateSupervisionCounts, 'Supervision'),
+        },
+        scaleShowValues: true,
+        scales: {
+          yAxes: [{
+            stacked: false,
+            ticks: {
+              beginAtZero: true,
+            },
+            position: 'left',
+            id: 'y-axis-left',
+            scaleLabel: {
+              display: true,
+              labelString: 'Count',
+            },
+          }],
+          xAxes: [{
+            stacked: false,
+            ticks: {
+              autoSkip: false,
+            },
+            scaleLabel: {
+              display: true,
+              labelString: 'Gender',
+            },
+          }],
+        },
+      }}
+    />
+  );
+
+  const ratesChart = (
     <Bar
       id={chartId}
       data={{
@@ -146,33 +242,16 @@ const FtrReferralsByGender = (props) => {
           backgroundColor: COLORS['grey-800-light'],
           mode: 'dataset',
           intersect: true,
-          callbacks: {
-            title: (tooltipItem, data) => {
-              const dataset = data.datasets[tooltipItem[0].datasetIndex];
-              return dataset.label;
-            },
-            label: (tooltipItem, data) => {
-              const dataset = data.datasets[tooltipItem.datasetIndex];
-              const currentValue = dataset.data[tooltipItem.index];
-
-              let datasetCounts = [];
-              if (data.labels[tooltipItem.index] === 'Referrals') {
-                datasetCounts = ftrReferralCounts;
-              } else if (data.labels[tooltipItem.index] === 'Supervision Population') {
-                datasetCounts = stateSupervisionCounts;
-              } else {
-                return ''.concat(currentValue.toFixed(2), '% of ',
-                  data.labels[tooltipItem.index]);
-              }
-
-              return ''.concat(currentValue.toFixed(2), '% of ',
-                data.labels[tooltipItem.index], ' (', datasetCounts[tooltipItem.datasetIndex], ')');
-            },
-          },
+          callbacks: tooltipForRateChart(),
         },
       }}
     />
   );
+
+  let activeChart = countsChart;
+  if (props.metricType === 'rates') {
+    activeChart = ratesChart;
+  }
 
   const exportedStructureCallback = () => (
     {
@@ -181,10 +260,10 @@ const FtrReferralsByGender = (props) => {
     });
 
   configureDownloadButtons(chartId, 'FTR REFERRALS BY GENDER - 60 DAYS',
-    chart.props.data.datasets, chart.props.data.labels,
+    activeChart.props.data.datasets, activeChart.props.data.labels,
     document.getElementById(chartId), exportedStructureCallback);
 
-  return chart;
+  return activeChart;
 };
 
 export default FtrReferralsByGender;

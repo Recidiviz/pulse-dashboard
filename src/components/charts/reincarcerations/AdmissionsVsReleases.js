@@ -20,7 +20,12 @@ import { Bar } from 'react-chartjs-2';
 
 import { COLORS, COLORS_GOOD_BAD } from '../../../assets/scripts/constants/colors';
 import { configureDownloadButtons } from '../../../assets/scripts/utils/downloads';
+import {
+  toggleLabel, getMonthCountFromTimeWindowToggle, updateTooltipForMetricType,
+  filterDatasetByDistrict,
+} from '../../../utils/charts/toggles';
 import { sortFilterAndSupplementMostRecentMonths } from '../../../utils/transforms/datasets';
+import { toInt } from '../../../utils/transforms/labels';
 import { monthNamesWithYearsFromNumbers } from '../../../utils/transforms/months';
 
 const AdmissionsVsReleases = (props) => {
@@ -33,18 +38,37 @@ const AdmissionsVsReleases = (props) => {
   const processResponse = () => {
     const { admissionsVsReleases } = props;
 
+    const filteredAdmissionsVsReleases = filterDatasetByDistrict(
+      admissionsVsReleases, props.district,
+      ['state_code', 'year', 'month'], ['population_change', 'month_end_population'],
+    );
+
     const dataPoints = [];
-    if (admissionsVsReleases) {
-      admissionsVsReleases.forEach((data) => {
-        const { year, month, population_change: delta } = data;
-        dataPoints.push({ year, month, delta });
+    if (filteredAdmissionsVsReleases) {
+      filteredAdmissionsVsReleases.forEach((data) => {
+        const { year, month } = data;
+        const delta = toInt(data.population_change);
+        const monthEndPopulation = toInt(data.month_end_population);
+
+        if (props.metricType === 'counts') {
+          const value = delta;
+          dataPoints.push({ year, month, value });
+        } else if (props.metricType === 'rates') {
+          let value = 100.00;
+          if (monthEndPopulation !== 0) {
+            value = (100 * (delta / monthEndPopulation)).toFixed(2);
+          }
+          dataPoints.push({ year, month, value });
+        }
       });
     }
-    const sorted = sortFilterAndSupplementMostRecentMonths(dataPoints, 6, 'delta', 0);
+
+    const months = getMonthCountFromTimeWindowToggle(props.timeWindow);
+    const sorted = sortFilterAndSupplementMostRecentMonths(dataPoints, months, 'value', 0);
 
     const colorsForValues = [];
     sorted.forEach((dataPoint) => {
-      if (dataPoint.delta > 0) {
+      if (dataPoint.value > 0) {
         colorsForValues.push([COLORS_GOOD_BAD.bad]);
       } else {
         colorsForValues.push([COLORS_GOOD_BAD.good]);
@@ -52,13 +76,18 @@ const AdmissionsVsReleases = (props) => {
     });
 
     setChartLabels(monthNamesWithYearsFromNumbers(sorted.map((element) => element.month), false));
-    setChartDataPoints(sorted.map((element) => element.delta));
+    setChartDataPoints(sorted.map((element) => element.value));
     setChartColors(colorsForValues);
   };
 
   useEffect(() => {
     processResponse();
-  }, [props.admissionsVsReleases]);
+  }, [
+    props.admissionsVsReleases,
+    props.metricType,
+    props.timeWindow,
+    props.district,
+  ]);
 
   const chart = (
     <Bar
@@ -66,7 +95,13 @@ const AdmissionsVsReleases = (props) => {
       data={{
         labels: chartLabels,
         datasets: [{
-          label: 'Admissions versus releases',
+          label: toggleLabel(
+            {
+              counts: 'Admissions versus releases',
+              rates: 'Percent change in incarcerated population',
+            },
+            props.metricType,
+          ),
           backgroundColor: chartColors,
           hoverBackgroundColor: chartColors,
           fill: false,
@@ -85,17 +120,26 @@ const AdmissionsVsReleases = (props) => {
         tooltips: {
           backgroundColor: COLORS['grey-800-light'],
           mode: 'x',
+          callbacks: {
+            label: (tooltipItem, data) => updateTooltipForMetricType(props.metricType, tooltipItem, data),
+          },
         },
         scales: {
           xAxes: [{
             ticks: {
-              autoSkip: false,
+              autoSkip: true,
             },
           }],
           yAxes: [{
             scaleLabel: {
               display: true,
-              labelString: 'Admissions versus releases',
+              labelString: toggleLabel(
+                {
+                  counts: 'Admissions versus releases',
+                  rates: 'Percent change in incarcerated population',
+                },
+                props.metricType,
+              ),
             },
           }],
         },

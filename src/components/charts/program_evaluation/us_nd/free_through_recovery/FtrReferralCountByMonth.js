@@ -20,7 +20,12 @@ import { Line } from 'react-chartjs-2';
 
 import { COLORS } from '../../../../../assets/scripts/constants/colors';
 import { configureDownloadButtons } from '../../../../../assets/scripts/utils/downloads';
+import {
+  toggleLabel, getMonthCountFromTimeWindowToggle, updateTooltipForMetricType,
+  filterDatasetBySupervisionType, filterDatasetByDistrict,
+} from '../../../../../utils/charts/toggles';
 import { sortFilterAndSupplementMostRecentMonths } from '../../../../../utils/transforms/datasets';
+import { toInt } from '../../../../../utils/transforms/labels';
 import { monthNamesWithYearsFromNumbers } from '../../../../../utils/transforms/months';
 
 const FtrReferralCountByMonth = (props) => {
@@ -32,16 +37,36 @@ const FtrReferralCountByMonth = (props) => {
   const processResponse = () => {
     const { ftrReferralCountByMonth: countsByMonth } = props;
 
+    let filteredCountsByMonth = filterDatasetBySupervisionType(
+      countsByMonth, props.supervisionType,
+      ['state_code', 'year', 'month', 'district'], ['count', 'total_supervision_count'],
+    );
+
+    filteredCountsByMonth = filterDatasetByDistrict(
+      filteredCountsByMonth, props.district,
+      ['state_code', 'year', 'month'], ['count', 'total_supervision_count'],
+    );
+
     const dataPoints = [];
-    if (countsByMonth) {
-      countsByMonth.forEach((data) => {
-        const { year, month, count } = data;
-        dataPoints.push({ year, month, count });
+    if (filteredCountsByMonth) {
+      filteredCountsByMonth.forEach((data) => {
+        const { year, month } = data;
+        const referralCount = toInt(data.count);
+        const supervisionCount = toInt(data.total_supervision_count);
+
+        if (props.metricType === 'counts') {
+          const value = referralCount;
+          dataPoints.push({ year, month, value });
+        } else if (props.metricType === 'rates') {
+          const value = (100 * (referralCount / supervisionCount)).toFixed(2);
+          dataPoints.push({ year, month, value });
+        }
       });
     }
 
-    const sorted = sortFilterAndSupplementMostRecentMonths(dataPoints, 6, 'count', 0);
-    const chartDataValues = (sorted.map((element) => element.count));
+    const months = getMonthCountFromTimeWindowToggle(props.timeWindow);
+    const sorted = sortFilterAndSupplementMostRecentMonths(dataPoints, months, 'value', 0);
+    const chartDataValues = (sorted.map((element) => element.value));
 
     setChartLabels(monthNamesWithYearsFromNumbers(sorted.map((element) => element.month), false));
     setChartDataPoints(chartDataValues);
@@ -49,7 +74,13 @@ const FtrReferralCountByMonth = (props) => {
 
   useEffect(() => {
     processResponse();
-  }, [props.ftrReferralCountByMonth]);
+  }, [
+    props.ftrReferralCountByMonth,
+    props.metricType,
+    props.timeWindow,
+    props.supervisionType,
+    props.district,
+  ]);
 
   const chart = (
     <Line
@@ -57,7 +88,10 @@ const FtrReferralCountByMonth = (props) => {
       data={{
         labels: chartLabels,
         datasets: [{
-          label: 'Referral count',
+          label: toggleLabel(
+            { counts: 'Referral count', rates: 'Referral rate' },
+            props.metricType,
+          ),
           backgroundColor: COLORS['grey-500'],
           borderColor: COLORS['grey-500'],
           pointBackgroundColor: COLORS['grey-500'],
@@ -80,7 +114,7 @@ const FtrReferralCountByMonth = (props) => {
         scales: {
           xAxes: [{
             ticks: {
-              autoSkip: false,
+              autoSkip: true,
             },
           }],
           yAxes: [{
@@ -89,13 +123,19 @@ const FtrReferralCountByMonth = (props) => {
             },
             scaleLabel: {
               display: true,
-              labelString: 'Referral count',
+              labelString: toggleLabel(
+                { counts: 'Referral count', rates: 'Referral rate' },
+                props.metricType,
+              ),
             },
           }],
         },
         tooltips: {
           backgroundColor: COLORS['grey-800-light'],
           mode: 'x',
+          callbacks: {
+            label: (tooltipItem, data) => updateTooltipForMetricType(props.metricType, tooltipItem, data),
+          },
         },
       }}
     />

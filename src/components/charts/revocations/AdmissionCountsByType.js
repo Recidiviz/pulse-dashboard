@@ -40,18 +40,18 @@ const AdmissionCountsByType = (props) => {
   const processResponse = () => {
     const { admissionCountsByType } = props;
 
-    const filteredAdmissionCounts = filterDatasetByDistrict(
+    let filteredAdmissionCounts = filterDatasetByDistrict(
       admissionCountsByType, props.district,
       ['state_code', 'admission_type', 'time_window'], ['admission_count'],
     );
 
-    const admissionCountsByTypeAndTime = filterDatasetByTimeWindow(
+    filteredAdmissionCounts = filterDatasetByTimeWindow(
       filteredAdmissionCounts, props.timeWindow,
     );
 
     const dataPoints = [];
-    if (admissionCountsByTypeAndTime) {
-      admissionCountsByTypeAndTime.forEach((data) => {
+    if (filteredAdmissionCounts) {
+      filteredAdmissionCounts.forEach((data) => {
         const { admission_type: admissionType } = data;
         const count = toInt(data.admission_count);
         dataPoints.push({ type: labelStringConversion[admissionType], count });

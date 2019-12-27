@@ -21,21 +21,26 @@ import { Bar } from 'react-chartjs-2';
 import { COLORS } from '../../../assets/scripts/constants/colors';
 import { configureDownloadButtons } from '../../../assets/scripts/utils/downloads';
 
+import { filterDatasetByDistrictExplicitAll } from '../../../utils/charts/toggles';
+
 const ReincarcerationRateByStayLength = (props) => {
   const [chartLabels, setChartLabels] = useState([]);
   const [chartDataPoints, setChartDataPoints] = useState([]);
 
   const chartId = 'reincarcerationRateByStayLength';
+  const stayLengthLabels = ['0-12', '12-24', '24-36', '36-48', '48-60',
+    '60-72', '72-84', '84-96', '96-108', '108-120', '120+'];
 
   const processResponse = () => {
     const { ratesByStayLength } = props;
 
-    const stayLengthLabels = ['0-12', '12-24', '24-36', '36-48', '48-60',
-      '60-72', '72-84', '84-96', '96-108', '108-120', '120+'];
+    const filteredRatesByStayLength = filterDatasetByDistrictExplicitAll(
+      ratesByStayLength, props.district,
+    );
 
     const ratesByStayLengthData = [];
-    if (ratesByStayLength) {
-      ratesByStayLength.forEach((data) => {
+    if (filteredRatesByStayLength) {
+      filteredRatesByStayLength.forEach((data) => {
         let { stay_length_bucket: stayLength } = data;
 
         if (stayLength === '<12') {
@@ -59,7 +64,10 @@ const ReincarcerationRateByStayLength = (props) => {
 
   useEffect(() => {
     processResponse();
-  }, [props.ratesByStayLength]);
+  }, [
+    props.ratesByStayLength,
+    props.district,
+  ]);
 
   const chart = (
     <Bar

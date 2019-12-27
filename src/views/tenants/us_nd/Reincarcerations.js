@@ -28,10 +28,16 @@ import ReincarcerationCountOverTime
 import ReincarcerationRateByStayLength
   from '../../../components/charts/reincarcerations/ReincarcerationRateByStayLength';
 
+import ToggleBar from '../../../components/toggles/ToggleBar';
+import * as ToggleDefaults from '../../../components/toggles/ToggleDefaults';
+
 const Reincarcerations = () => {
   const { loading, user, getTokenSilently } = useAuth0();
   const [apiData, setApiData] = useState({});
   const [awaitingApi, setAwaitingApi] = useState(true);
+  const [chartMetricType, setChartMetricType] = useState(ToggleDefaults.metricType);
+  const [chartTimeWindow, setChartTimeWindow] = useState(ToggleDefaults.timeWindow);
+  const [chartDistrict, setChartDistrict] = useState(ToggleDefaults.district);
 
   const fetchChartData = async () => {
     try {
@@ -54,6 +60,15 @@ const Reincarcerations = () => {
   return (
     <main className="main-content bgc-grey-100">
       <div id="mainContent">
+
+        <ToggleBar
+          setChartMetricType={setChartMetricType}
+          setChartTimeWindow={setChartTimeWindow}
+          setChartDistrict={setChartDistrict}
+          availableDistricts={['adams-county', 'barnes-county', 'benson-county', 'billson-county', 'bottineau-county', 'bowman-county', 'burke-county', 'burleigh-county', 'cass-county', 'cavalier-county', 'dickey-county', 'divide-county', 'dunn-county', 'eddy-county', 'emmons-county', 'foster-county', 'golden-valley-county', 'grand-forks-county', 'grant-county', 'griggs-county', 'hettinger-county', 'kidder-county', 'laMoure-county', 'logan-county', 'mcHenry-county', 'mcIntosh-county', 'mcKenzie-county', 'mcLean-county', 'mercer-county', 'morton-county', 'mountrail-county', 'nelson-county', 'oliver-county', 'pembina-county', 'pierce-county', 'ramsey-county', 'ransom-county', 'renville-county', 'richland-county', 'rolette-county', 'sargent-county', 'sheridan-county', 'sioux-county', 'slope-county', 'stark-county', 'steele-county', 'stutsman-county', 'towner-county', 'traill-county', 'walsh-county', 'ward-county', 'wells-county', 'williams-county']}
+          replaceLa={true}
+        />
+
         <div className="row gap-20 pos-r">
 
           {/* #Reincarcerations by month chart ==================== */}
@@ -83,6 +98,9 @@ const Reincarcerations = () => {
                   <div className="col-md-12">
                     <div className="layer w-100 p-20">
                       <ReincarcerationCountOverTime
+                        metricType={chartMetricType}
+                        timeWindow={chartTimeWindow}
+                        district={chartDistrict}
                         reincarcerationCountsByMonth={apiData.reincarcerations_by_month}
                         header="reincarcerationCountsByMonth-header"
                       />
@@ -143,6 +161,9 @@ const Reincarcerations = () => {
                 </div>
                 <div className="layer w-100 p-20">
                   <AdmissionsVsReleases
+                    metricType={chartMetricType}
+                    timeWindow={chartTimeWindow}
+                    district={chartDistrict}
                     admissionsVsReleases={apiData.admissions_versus_releases_by_month}
                     header="admissionsVsReleases-header"
                   />
@@ -201,6 +222,7 @@ const Reincarcerations = () => {
                 </div>
                 <div className="layer w-100 p-20">
                   <ReincarcerationRateByStayLength
+                    district={chartDistrict}
                     ratesByStayLength={apiData.reincarceration_rate_by_stay_length}
                   />
                 </div>

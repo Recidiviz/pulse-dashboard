@@ -27,23 +27,33 @@ const ToggleBar = (props) => (
     <div className="col-md-12">
       <div className="bd bgc-white p-20">
         <div className="row">
+          {props.setChartMetricType && (
           <div className="col-md-2">
             <MetricTypeToggle onMetricTypeUpdate={props.setChartMetricType} />
           </div>
+          )}
+
+          {props.setChartTimeWindow && (
           <div className="col-md-4">
             <TimeWindowToggle onTimeUpdate={props.setChartTimeWindow} />
           </div>
+          )}
 
+          {props.setChartSupervisionType && (
           <div className="col-md-3">
             <SupervisionTypeToggle onSupervisionTypeUpdate={props.setChartSupervisionType} />
           </div>
+          )}
 
+          {props.setChartDistrict && (
           <div className="col-md-2">
             <DistrictToggle
               districts={props.availableDistricts}
               onDistrictUpdate={props.setChartDistrict}
+              replaceLa={props.replaceLa}
             />
           </div>
+          )}
         </div>
       </div>
     </div>

@@ -20,6 +20,7 @@ import Loading from '../../../components/Loading';
 import '../../../assets/styles/index.scss';
 import { useAuth0 } from '../../../react-auth0-spa';
 import { callMetricsApi, awaitingResults } from '../../../utils/metricsClient';
+import { getPeriodLabelFromTimeWindowToggle } from '../../../utils/charts/toggles';
 
 import FtrReferralCountByMonth
   from '../../../components/charts/program_evaluation/us_nd/free_through_recovery/FtrReferralCountByMonth';
@@ -32,10 +33,17 @@ import FtrReferralsByLsir
 import FtrReferralsByRace
   from '../../../components/charts/program_evaluation/us_nd/free_through_recovery/FtrReferralsByRace';
 
+import ToggleBar from '../../../components/toggles/ToggleBar';
+import * as ToggleDefaults from '../../../components/toggles/ToggleDefaults';
+
 const FreeThroughRecovery = () => {
   const { loading, user, getTokenSilently } = useAuth0();
   const [apiData, setApiData] = useState({});
   const [awaitingApi, setAwaitingApi] = useState(true);
+  const [chartMetricType, setChartMetricType] = useState(ToggleDefaults.metricType);
+  const [chartTimeWindow, setChartTimeWindow] = useState(ToggleDefaults.timeWindow);
+  const [chartSupervisionType, setChartSupervisionType] = useState(ToggleDefaults.supervisionType);
+  const [chartDistrict, setChartDistrict] = useState(ToggleDefaults.district);
 
   const fetchChartData = async () => {
     try {
@@ -58,6 +66,15 @@ const FreeThroughRecovery = () => {
   return (
     <main className="main-content bgc-grey-100">
       <div id="mainContent">
+
+        <ToggleBar
+          setChartMetricType={setChartMetricType}
+          setChartTimeWindow={setChartTimeWindow}
+          setChartSupervisionType={setChartSupervisionType}
+          setChartDistrict={setChartDistrict}
+          availableDistricts={['beulah', 'bismarck', 'bottineau', 'devils-lake', 'dickson', 'fargo', 'grafton', 'grand-forks', 'jamestown', 'mandan', 'minot', 'oakes', 'rolla', 'washburn', 'wahpeton', 'williston']}
+        />
+
         <div className="row gap-20 pos-r">
 
           {/* #FTR referral counts by month chart ==================== */}
@@ -87,6 +104,10 @@ const FreeThroughRecovery = () => {
                   <div className="col-md-12">
                     <div className="layer w-100 p-20">
                       <FtrReferralCountByMonth
+                        metricType={chartMetricType}
+                        timeWindow={chartTimeWindow}
+                        supervisionType={chartSupervisionType}
+                        district={chartDistrict}
                         ftrReferralCountByMonth={apiData.ftr_referrals_by_month}
                         header="ftrReferralCountByMonth-header"
                       />
@@ -144,6 +165,10 @@ const FreeThroughRecovery = () => {
                 <div className="layer w-100 pX-20 pT-20 row">
                   <div className="layer w-100 p-20">
                     <FtrReferralsByRace
+                      metricType={chartMetricType}
+                      timeWindow={chartTimeWindow}
+                      supervisionType={chartSupervisionType}
+                      district={chartDistrict}
                       ftrReferralsByRace={
                         apiData.ftr_referrals_by_race_and_ethnicity_60_days}
                       supervisionPopulationByRace={
@@ -192,7 +217,7 @@ const FreeThroughRecovery = () => {
                     <div className="peer fw-600">
                       <span className="fsz-def fw-600 mR-10 c-grey-800">
                         <small className="c-grey-500 fw-600">Period </small>
-                        Last 60 days
+                        {getPeriodLabelFromTimeWindowToggle(chartTimeWindow)}
                       </span>
                     </div>
                   </div>
@@ -224,6 +249,10 @@ const FreeThroughRecovery = () => {
                 <div className="layer w-100 pX-20 pT-20 row">
                   <div className="layer w-100 p-20">
                     <FtrReferralsByLsir
+                      metricType={chartMetricType}
+                      timeWindow={chartTimeWindow}
+                      supervisionType={chartSupervisionType}
+                      district={chartDistrict}
                       ftrReferralsByLsir={
                         apiData.ftr_referrals_by_lsir_60_days}
                       supervisionPopulationByLsir={
@@ -266,7 +295,7 @@ const FreeThroughRecovery = () => {
                     <div className="peer fw-600">
                       <span className="fsz-def fw-600 mR-10 c-grey-800">
                         <small className="c-grey-500 fw-600">Period </small>
-                        Last 60 days
+                        {getPeriodLabelFromTimeWindowToggle(chartTimeWindow)}
                       </span>
                     </div>
                   </div>
@@ -298,6 +327,10 @@ const FreeThroughRecovery = () => {
                 <div className="layer w-100 pX-20 pT-20 row">
                   <div className="layer w-100 p-20">
                     <FtrReferralsByGender
+                      metricType={chartMetricType}
+                      timeWindow={chartTimeWindow}
+                      supervisionType={chartSupervisionType}
+                      district={chartDistrict}
                       ftrReferralsByGender={
                         apiData.ftr_referrals_by_gender_60_days}
                       supervisionPopulationByGender={
@@ -336,7 +369,7 @@ const FreeThroughRecovery = () => {
                     <div className="peer fw-600">
                       <span className="fsz-def fw-600 mR-10 c-grey-800">
                         <small className="c-grey-500 fw-600">Period </small>
-                        Last 60 days
+                        {getPeriodLabelFromTimeWindowToggle(chartTimeWindow)}
                       </span>
                     </div>
                   </div>
@@ -368,6 +401,10 @@ const FreeThroughRecovery = () => {
                 <div className="layer w-100 pX-20 pT-20 row">
                   <div className="layer w-100 p-20">
                     <FtrReferralsByAge
+                      metricType={chartMetricType}
+                      timeWindow={chartTimeWindow}
+                      supervisionType={chartSupervisionType}
+                      district={chartDistrict}
                       ftrReferralsByAge={
                         apiData.ftr_referrals_by_age_60_days}
                       supervisionPopulationByAge={
@@ -406,7 +443,7 @@ const FreeThroughRecovery = () => {
                     <div className="peer fw-600">
                       <span className="fsz-def fw-600 mR-10 c-grey-800">
                         <small className="c-grey-500 fw-600">Period </small>
-                        Last 60 days
+                        {getPeriodLabelFromTimeWindowToggle(chartTimeWindow)}
                       </span>
                     </div>
                   </div>

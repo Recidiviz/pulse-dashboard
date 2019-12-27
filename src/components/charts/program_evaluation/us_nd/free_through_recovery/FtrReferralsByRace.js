@@ -16,10 +16,14 @@
 // =============================================================================
 
 import React, { useState, useEffect } from 'react';
-import { HorizontalBar } from 'react-chartjs-2';
+import { Bar, HorizontalBar } from 'react-chartjs-2';
 
 import { COLORS_FIVE_VALUES, COLORS } from '../../../../../assets/scripts/constants/colors';
 import { configureDownloadButtons } from '../../../../../assets/scripts/utils/downloads';
+import {
+  filterDatasetBySupervisionType, filterDatasetByDistrict, filterDatasetByTimeWindow,
+} from '../../../../../utils/charts/toggles';
+import { tooltipForCountChart, tooltipForRateChart } from '../../../../../utils/charts/tooltips';
 import { sortByLabel } from '../../../../../utils/transforms/datasets';
 import { raceValueToHumanReadable, toInt } from '../../../../../utils/transforms/labels';
 
@@ -40,9 +44,35 @@ const FtrReferralsByRace = (props) => {
       statePopulationByRace,
     } = props;
 
+    let filteredFtrReferrals = filterDatasetBySupervisionType(
+      ftrReferralsByRace, props.supervisionType,
+      ['state_code', 'time_window', 'race_or_ethnicity', 'district'], ['count'],
+    );
+
+    filteredFtrReferrals = filterDatasetByDistrict(
+      filteredFtrReferrals, props.district,
+      ['state_code', 'time_window', 'race_or_ethnicity'], ['count'],
+    );
+
+    filteredFtrReferrals = filterDatasetByTimeWindow(filteredFtrReferrals, props.timeWindow);
+
+    let filteredSupervisionPopulation = filterDatasetBySupervisionType(
+      supervisionPopulationByRace, props.supervisionType,
+      ['state_code', 'time_window', 'race_or_ethnicity', 'district'], ['count'],
+    );
+
+    filteredSupervisionPopulation = filterDatasetByDistrict(
+      filteredSupervisionPopulation, props.district,
+      ['state_code', 'time_window', 'race_or_ethnicity'], ['count'],
+    );
+
+    filteredSupervisionPopulation = filterDatasetByTimeWindow(
+      filteredSupervisionPopulation, props.timeWindow,
+    );
+
     const ftrReferralDataPoints = [];
-    if (ftrReferralsByRace) {
-      ftrReferralsByRace.forEach((data) => {
+    if (filteredFtrReferrals) {
+      filteredFtrReferrals.forEach((data) => {
         const { race_or_ethnicity: race } = data;
         const count = toInt(data.count, 10);
         ftrReferralDataPoints.push({ race: raceValueToHumanReadable(race), count });
@@ -50,8 +80,8 @@ const FtrReferralsByRace = (props) => {
     }
 
     const supervisionDataPoints = [];
-    if (supervisionPopulationByRace) {
-      supervisionPopulationByRace.forEach((data) => {
+    if (filteredSupervisionPopulation) {
+      filteredSupervisionPopulation.forEach((data) => {
         const { race_or_ethnicity: race } = data;
         const count = toInt(data.count);
         supervisionDataPoints.push({ race: raceValueToHumanReadable(race), count });
@@ -115,9 +145,78 @@ const FtrReferralsByRace = (props) => {
 
   useEffect(() => {
     processResponse();
-  }, [props.ftrReferralsByRace, props.supervisionPopulationByRace]);
+  }, [
+    props.ftrReferralsByRace,
+    props.supervisionPopulationByRace,
+    props.metricType,
+    props.timeWindow,
+    props.supervisionType,
+    props.district,
+  ]);
 
-  const chart = (
+  const countsChart = (
+    <Bar
+      id={chartId}
+      data={{
+        labels: chartLabels,
+        datasets: [
+          {
+            label: 'Referrals',
+            backgroundColor: COLORS['blue-standard'],
+            hoverBackgroundColor: COLORS['blue-standard'],
+            yAxisID: 'y-axis-left',
+            data: ftrReferralCounts,
+          },
+          {
+            label: 'Supervision Population',
+            backgroundColor: COLORS['blue-standard-2'],
+            hoverBackgroundColor: COLORS['blue-standard-2'],
+            yAxisID: 'y-axis-left',
+            data: stateSupervisionCounts,
+          },
+        ],
+      }}
+      options={{
+        responsive: true,
+        legend: {
+          display: true,
+          position: 'bottom',
+        },
+        tooltips: {
+          backgroundColor: COLORS['grey-800-light'],
+          mode: 'index',
+          callbacks: tooltipForCountChart(ftrReferralCounts, 'Referral', stateSupervisionCounts, 'Supervision'),
+        },
+        scaleShowValues: true,
+        scales: {
+          yAxes: [{
+            stacked: false,
+            ticks: {
+              beginAtZero: true,
+            },
+            position: 'left',
+            id: 'y-axis-left',
+            scaleLabel: {
+              display: true,
+              labelString: 'Count',
+            },
+          }],
+          xAxes: [{
+            stacked: false,
+            ticks: {
+              autoSkip: false,
+            },
+            scaleLabel: {
+              display: true,
+              labelString: 'Race and Ethnicity',
+            },
+          }],
+        },
+      }}
+    />
+  );
+
+  const ratesChart = (
     <HorizontalBar
       id={chartId}
       data={{
@@ -220,33 +319,16 @@ const FtrReferralsByRace = (props) => {
           backgroundColor: COLORS['grey-800-light'],
           mode: 'dataset',
           intersect: true,
-          callbacks: {
-            title: (tooltipItem, data) => {
-              const dataset = data.datasets[tooltipItem[0].datasetIndex];
-              return dataset.label;
-            },
-            label: (tooltipItem, data) => {
-              const dataset = data.datasets[tooltipItem.datasetIndex];
-              const currentValue = dataset.data[tooltipItem.index];
-
-              let datasetCounts = [];
-              if (data.labels[tooltipItem.index] === 'Referrals') {
-                datasetCounts = ftrReferralCounts;
-              } else if (data.labels[tooltipItem.index] === 'Supervision Population') {
-                datasetCounts = stateSupervisionCounts;
-              } else {
-                return ''.concat(currentValue.toFixed(2), '% of ',
-                  data.labels[tooltipItem.index]);
-              }
-
-              return ''.concat(currentValue.toFixed(2), '% of ',
-                data.labels[tooltipItem.index], ' (', datasetCounts[tooltipItem.datasetIndex], ')');
-            },
-          },
+          callbacks: tooltipForRateChart(),
         },
       }}
     />
   );
+
+  let activeChart = countsChart;
+  if (props.metricType === 'rates') {
+    activeChart = ratesChart;
+  }
 
   const exportedStructureCallback = () => (
     {
@@ -255,10 +337,10 @@ const FtrReferralsByRace = (props) => {
     });
 
   configureDownloadButtons(chartId, 'FTR REFERRALS BY RACE - 60 DAYS',
-    chart.props.data.datasets, chart.props.data.labels,
+    activeChart.props.data.datasets, activeChart.props.data.labels,
     document.getElementById(chartId), exportedStructureCallback);
 
-  return chart;
+  return activeChart;
 };
 
 export default FtrReferralsByRace;

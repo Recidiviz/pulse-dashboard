@@ -100,6 +100,10 @@ const Snapshots = () => {
                   <div className="ai-c jc-c gapX-20">
                     <div className="col-md-12">
                       <SupervisionSuccessSnapshot
+                        metricType={chartMetricType}
+                        timeWindow={chartTimeWindow}
+                        supervisionType={chartSupervisionType}
+                        district={chartDistrict}
                         supervisionSuccessRates={apiData.supervision_termination_by_type_by_month}
                         header="supervisionSuccessSnapshot-header"
                       />
@@ -162,6 +166,9 @@ const Snapshots = () => {
                   <div className="ai-c jc-c gapX-20">
                     <div className="col-md-12">
                       <RevocationAdmissionsSnapshot
+                        metricType={chartMetricType}
+                        timeWindow={chartTimeWindow}
+                        district={chartDistrict}
                         revocationAdmissionsByMonth={apiData.admissions_by_type_by_month}
                         header="revocationAdmissionsSnapshot-header"
                       />
@@ -223,7 +230,6 @@ const Snapshots = () => {
                     <div className="col-md-12">
                       <DaysAtLibertySnapshot
                         timeWindow={chartTimeWindow}
-                        supervisionType={chartSupervisionType}
                         district={chartDistrict}
                         daysAtLibertyByMonth={apiData.avg_days_at_liberty_by_month}
                         header="daysAtLibertySnapshot-header"
@@ -287,6 +293,9 @@ const Snapshots = () => {
                   <div className="ai-c jc-c gapX-20">
                     <div className="col-md-12">
                       <LsirScoreChangeSnapshot
+                        timeWindow={chartTimeWindow}
+                        supervisionType={chartSupervisionType}
+                        district={chartDistrict}
                         lsirScoreChangeByMonth={apiData.average_change_lsir_score_by_month}
                         header="lsirScoreChangeSnapshot-header"
                       />

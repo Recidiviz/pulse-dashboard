@@ -25,7 +25,7 @@ import {
   goalLabelContentString,
 } from '../../../utils/charts/metricGoal';
 import {
-  getMonthCountFromTimeWindowToggle, filterDatasetBySupervisionType, filterDatasetByDistrict,
+  getMonthCountFromTimeWindowToggle, filterDatasetByDistrictExplicitAll,
 } from '../../../utils/charts/toggles';
 import {
   generateTrendlineDataset, getTooltipWithoutTrendline,
@@ -46,14 +46,8 @@ const DaysAtLibertySnapshot = (props) => {
   const processResponse = () => {
     const { daysAtLibertyByMonth } = props;
 
-    let filteredDaysByMonth = filterDatasetBySupervisionType(
-      daysAtLibertyByMonth, props.supervisionType,
-      ['state_code', 'year', 'month', 'district'], ['returns', 'avg_liberty'],
-    );
-
-    filteredDaysByMonth = filterDatasetByDistrict(
-      filteredDaysByMonth, props.district,
-      ['state_code', 'year', 'month'], ['returns', 'avg_liberty'],
+    const filteredDaysByMonth = filterDatasetByDistrictExplicitAll(
+      daysAtLibertyByMonth, props.district,
     );
 
     const dataPoints = [];
@@ -78,8 +72,8 @@ const DaysAtLibertySnapshot = (props) => {
   };
 
   function goalLineIfApplicable() {
-    const { supervisionType, district } = props;
-    if (supervisionType === 'all' && district === 'all') {
+    const { district } = props;
+    if (district === 'all') {
       return {
         drawTime: 'afterDatasetsDraw',
         events: ['click'],
@@ -140,7 +134,6 @@ const DaysAtLibertySnapshot = (props) => {
   }, [
     props.daysAtLibertyByMonth,
     props.timeWindow,
-    props.supervisionType,
     props.district,
   ]);
 
