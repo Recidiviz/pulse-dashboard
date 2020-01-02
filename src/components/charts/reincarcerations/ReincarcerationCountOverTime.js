@@ -21,11 +21,11 @@ import { Line } from 'react-chartjs-2';
 import { COLORS } from '../../../assets/scripts/constants/colors';
 import { configureDownloadButtons } from '../../../assets/scripts/utils/downloads';
 import {
-  getGoalForChart, getMaxForGoalAndData, goalLabelContentString,
+  getGoalForChart, getMaxForGoalAndData, chartAnnotationForGoal,
 } from '../../../utils/charts/metricGoal';
 import {
   toggleLabel, getMonthCountFromTimeWindowToggle, updateTooltipForMetricType,
-  filterDatasetByDistrict,
+  filterDatasetByDistrict, canDisplayGoal,
 } from '../../../utils/charts/toggles';
 import { sortFilterAndSupplementMostRecentMonths } from '../../../utils/transforms/datasets';
 import { toInt } from '../../../utils/transforms/labels';
@@ -82,56 +82,9 @@ const ReincarcerationCountOverTime = (props) => {
   };
 
   function goalLineIfApplicable() {
-    const { metricType, district } = props;
-    if (metricType === 'counts' && district === 'all') {
-      return {
-        events: ['click'],
-        annotations: [{
-          type: 'line',
-          mode: 'horizontal',
-          value: GOAL.value,
-
-          // optional annotation ID (must be unique)
-          id: 'reincarcerationCountsByMonthGoalLine',
-          scaleID: 'y-axis-0',
-
-          drawTime: 'afterDatasetsDraw',
-
-          borderColor: COLORS['red-standard'],
-          borderWidth: 2,
-          borderDash: [2, 2],
-          borderDashOffset: 5,
-          label: {
-            enabled: true,
-            content: goalLabelContentString(GOAL),
-            position: 'right',
-
-            // Background color of label, default below
-            backgroundColor: 'rgba(0,0,0,0)',
-
-            fontFamily: 'sans-serif',
-            fontSize: 12,
-            fontStyle: 'bold',
-            fontColor: COLORS['red-standard'],
-
-            // Adjustment along x-axis (left-right) of label relative to above
-            // number (can be negative). For horizontal lines positioned left
-            // or right, negative values move the label toward the edge, and
-            // positive values toward the center.
-            xAdjust: 0,
-
-            // Adjustment along y-axis (top-bottom) of label relative to above
-            // number (can be negative). For vertical lines positioned top or
-            // bottom, negative values move the label toward the edge, and
-            // positive values toward the center.
-            yAdjust: -10,
-          },
-
-          onClick(e) { return e; },
-        }],
-      };
+    if (canDisplayGoal(GOAL, props)) {
+      return chartAnnotationForGoal(GOAL, 'reincarcerationCountsByMonthGoalLine', {});
     }
-
     return null;
   }
 
@@ -151,10 +104,7 @@ const ReincarcerationCountOverTime = (props) => {
         labels: chartLabels,
         datasets: [{
           label: toggleLabel(
-            {
-              counts: 'Reincarceration count',
-              rates: 'Percent of admissions that are reincarcerations',
-            },
+            { counts: 'Reincarceration admissions', rates: 'Percentage from reincarcerations' },
             props.metricType,
           ),
           backgroundColor: COLORS['grey-500'],

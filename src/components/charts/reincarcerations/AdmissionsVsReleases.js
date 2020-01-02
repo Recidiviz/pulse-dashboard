@@ -54,9 +54,17 @@ const AdmissionsVsReleases = (props) => {
           const value = delta;
           dataPoints.push({ year, month, value });
         } else if (props.metricType === 'rates') {
+          // For rates, the value is the delta value over the size of the population at the end of
+          // the previous month. If the population in question was 0, then we set the value to
+          // either positive 100% (if the delta is positive) or a negative 100% (if the delta is
+          // negative) or 0% (if there was no change at all).
           let value = 100.00;
           if (monthEndPopulation !== 0) {
             value = (100 * (delta / monthEndPopulation)).toFixed(2);
+          } else if (delta < 0) {
+            value = -100.00;
+          } else if (delta === 0) {
+            value = 0;
           }
           dataPoints.push({ year, month, value });
         }

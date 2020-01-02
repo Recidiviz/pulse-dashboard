@@ -162,6 +162,20 @@ function filterDatasetBySupervisionTypeExplicitAll(dataset, supervisionType) {
   return filterDatasetByToggleFiltersExplicitAll(dataset, { supervision_type: supervisionType });
 }
 
+function canDisplayGoal(goal, currentToggleStates) {
+  let canDisplay = true;
+  if (currentToggleStates.metricType && goal.metricType) {
+    canDisplay = canDisplay && goal.metricType === currentToggleStates.metricType;
+  }
+  if (currentToggleStates.supervisionType) {
+    canDisplay = canDisplay && currentToggleStates.supervisionType.toUpperCase() === 'ALL';
+  }
+  if (currentToggleStates.district) {
+    canDisplay = canDisplay && currentToggleStates.district.toUpperCase() === 'ALL';
+  }
+  return canDisplay;
+}
+
 export {
   toggleLabel,
   toggleYAxisTicks,
@@ -175,4 +189,5 @@ export {
   filterDatasetByToggleFiltersExplicitAll,
   filterDatasetByDistrictExplicitAll,
   filterDatasetBySupervisionTypeExplicitAll,
+  canDisplayGoal,
 };

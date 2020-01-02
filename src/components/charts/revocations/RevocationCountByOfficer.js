@@ -23,6 +23,7 @@ import { COLORS, COLORS_FIVE_VALUES } from '../../../assets/scripts/constants/co
 import { configureDownloadButtons } from '../../../assets/scripts/utils/downloads';
 import {
   toggleLabel, filterDatasetBySupervisionType, filterDatasetByTimeWindow,
+  updateTooltipForMetricType,
 } from '../../../utils/charts/toggles';
 import { toHtmlFriendly, toHumanReadable, toInt } from '../../../utils/transforms/labels';
 
@@ -306,6 +307,7 @@ const RevocationCountByOfficer = (props) => {
           intersect: false,
           callbacks: {
             title: (tooltipItem) => ('Officer '.concat(tooltipItem[0].label)),
+            label: (tooltipItem, data) => updateTooltipForMetricType(props.metricType, tooltipItem, data),
           },
         },
         scales: {
@@ -323,7 +325,7 @@ const RevocationCountByOfficer = (props) => {
             scaleLabel: {
               display: true,
               labelString: toggleLabel(
-                { counts: 'Revocation count', rates: 'Percentage of revocations' },
+                { counts: 'Revocation count', rates: 'Percentage' },
                 props.metricType,
               ),
             },

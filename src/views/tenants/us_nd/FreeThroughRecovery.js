@@ -130,9 +130,17 @@ const FreeThroughRecovery = () => {
                           referred to Free Through Recovery.
                         </li>
                         <li>
+                          Referral rates are the number of people referred to Free Through
+                          Recovery over the number of people on supervision in a month.
+                        </li>
+                        <li>
                           Referrals are included based on the date the person
                           was referred to the program, regardless of when or if
                           they began participating in Free Through Recovery.
+                        </li>
+                        <li>
+                          Referrals are attributed to the P&P office of a supervised
+                          individual’s current supervising officer.
                         </li>
                       </ul>
                     </div>
@@ -198,6 +206,15 @@ const FreeThroughRecovery = () => {
                           Dakota at any point during the time period.
                         </li>
                         <li>
+                          If a supervision type and/or a P&P office is selected,
+                          the referral and supervision populations will only count
+                          individuals meeting the selected criteria.
+                        </li>
+                        <li>
+                          A referral is attributed to the P&P office of the referred
+                          individual&apos;s current supervising officer.
+                        </li>
+                        <li>
                           The race proportions for the population of North Dakota were taken from
                           the U.S. Census Bureau.
                         </li>
@@ -205,8 +222,8 @@ const FreeThroughRecovery = () => {
                           If an individual has more than one race or ethnicity recorded
                           from different data systems, then they are counted once for
                           each unique race and ethnicity. This means that the total count
-                          in this chart may be larger than the total number of individuals it describes.
-                          This does not apply to the ND Population values.
+                          in this chart may be larger than the total number of individuals
+                          it describes. This does not apply to the ND Population values.
                         </li>
                       </ul>
                     </div>
@@ -286,6 +303,15 @@ const FreeThroughRecovery = () => {
                           or parole in North Dakota at any point during the time
                           period.
                         </li>
+                        <li>
+                          If a supervision type and/or a P&P office is selected,
+                          the referral and supervision populations will only count
+                          individuals meeting the selected criteria.
+                        </li>
+                        <li>
+                          A referral is attributed to the P&P office of the referred
+                          individual&apos;s current supervising officer.
+                        </li>
                       </ul>
                     </div>
                   </div>
@@ -360,6 +386,15 @@ const FreeThroughRecovery = () => {
                           probation or parole in North Dakota at any point
                           during the time period.
                         </li>
+                        <li>
+                          If a supervision type and/or a P&P office is selected,
+                          the referral and supervision populations will only count
+                          individuals meeting the selected criteria.
+                        </li>
+                        <li>
+                          A referral is attributed to the P&P office of the referred
+                          individual&apos;s current supervising officer.
+                        </li>
                       </ul>
                     </div>
                   </div>
@@ -433,6 +468,15 @@ const FreeThroughRecovery = () => {
                           The supervision population counts people on
                           probation or parole in North Dakota at any point
                           during the time period.
+                        </li>
+                        <li>
+                          If a supervision type and/or a P&P office is selected,
+                          the referral and supervision populations will only count
+                          individuals meeting the selected criteria.
+                        </li>
+                        <li>
+                          A referral is attributed to the P&P office of the referred
+                          individual&apos;s current supervising officer.
                         </li>
                       </ul>
                     </div>

@@ -319,7 +319,29 @@ const FtrReferralsByRace = (props) => {
           backgroundColor: COLORS['grey-800-light'],
           mode: 'dataset',
           intersect: true,
-          callbacks: tooltipForRateChart(),
+          callbacks: {
+            title: (tooltipItem, data) => {
+              const dataset = data.datasets[tooltipItem[0].datasetIndex];
+              return dataset.label;
+            },
+            label: (tooltipItem, data) => {
+              const dataset = data.datasets[tooltipItem.datasetIndex];
+              const currentValue = dataset.data[tooltipItem.index];
+
+              let datasetCounts = [];
+              if (data.labels[tooltipItem.index] === 'Referrals') {
+                datasetCounts = ftrReferralCounts;
+              } else if (data.labels[tooltipItem.index] === 'Supervision Population') {
+                datasetCounts = stateSupervisionCounts;
+              } else {
+                return ''.concat(currentValue.toFixed(2), '% of ',
+                  data.labels[tooltipItem.index]);
+              }
+
+              return ''.concat(currentValue.toFixed(2), '% of ',
+                data.labels[tooltipItem.index], ' (', datasetCounts[tooltipItem.datasetIndex], ')');
+            },
+          },
         },
       }}
     />

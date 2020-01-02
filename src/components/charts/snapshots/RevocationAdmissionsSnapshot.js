@@ -25,11 +25,11 @@ import { toInt } from '../../../utils/transforms/labels';
 import { monthNamesWithYearsFromNumbers } from '../../../utils/transforms/months';
 import {
   getGoalForChart, getMinForGoalAndData, getMaxForGoalAndData, trendlineGoalText,
-  goalLabelContentString,
+  chartAnnotationForGoal,
 } from '../../../utils/charts/metricGoal';
 import {
   getMonthCountFromTimeWindowToggle, filterDatasetByDistrict, updateTooltipForMetricType,
-  toggleLabel,
+  toggleLabel, canDisplayGoal,
 } from '../../../utils/charts/toggles';
 import { generateTrendlineDataset } from '../../../utils/charts/trendline';
 
@@ -91,61 +91,34 @@ const RevocationAdmissionsSnapshot = (props) => {
   };
 
   function goalLineIfApplicable() {
-    const { metricType, district } = props;
-    if (metricType === 'rates' && district === 'all') {
-      return {
-        drawTime: 'afterDatasetsDraw',
-        events: ['click'],
-
-        // Array of annotation configuration objects
-        // See below for detailed descriptions of the annotation options
-        annotations: [{
-          type: 'line',
-          mode: 'horizontal',
-          value: GOAL.value,
-
-          // optional annotation ID (must be unique)
-          id: 'revocationAdmissionsSnapshotGoalLine',
-          scaleID: 'y-axis-0',
-
-          drawTime: 'afterDatasetsDraw',
-
-          borderColor: COLORS['red-standard'],
-          borderWidth: 2,
-          borderDash: [2, 2],
-          borderDashOffset: 5,
-          label: {
-            enabled: true,
-            content: goalLabelContentString(GOAL),
-            position: 'right',
-
-            // Background color of label, default below
-            backgroundColor: 'rgba(0, 0, 0, 0)',
-
-            fontFamily: 'sans-serif',
-            fontSize: 12,
-            fontStyle: 'bold',
-            fontColor: COLORS['red-standard'],
-
-            // Adjustment along x-axis (left-right) of label relative to above
-            // number (can be negative). For horizontal lines positioned left
-            // or right, negative values move the label toward the edge, and
-            // positive values toward the center.
-            xAdjust: 0,
-
-            // Adjustment along y-axis (top-bottom) of label relative to above
-            // number (can be negative). For vertical lines positioned top or
-            // bottom, negative values move the label toward the edge, and
-            // positive values toward the center.
-            yAdjust: 10,
-          },
-
-          onClick(e) { return e; },
-        }],
-      };
+    if (canDisplayGoal(GOAL, props)) {
+      return chartAnnotationForGoal(GOAL, 'revocationAdmissionsSnapshotGoalLine', { yAdjust: 10 });
     }
-
     return null;
+  }
+
+  function datasetsWithTrendlineIfApplicable() {
+    const datasets = [{
+      label: toggleLabel(
+        { counts: 'Revocation admissions', rates: 'Percentage from revocations' },
+        props.metricType,
+      ),
+      backgroundColor: COLORS['blue-standard'],
+      borderColor: COLORS['blue-standard'],
+      pointBackgroundColor: COLORS['blue-standard'],
+      pointHoverBackgroundColor: COLORS['blue-standard'],
+      pointHoverBorderColor: COLORS['blue-standard'],
+      pointRadius: 4,
+      hitRadius: 5,
+      fill: false,
+      borderWidth: 2,
+      lineTension: 0,
+      data: chartDataPoints,
+    }];
+    if (canDisplayGoal(GOAL, props)) {
+      datasets.push(generateTrendlineDataset(chartDataPoints, COLORS['blue-standard-light']));
+    }
+    return datasets;
   }
 
   useEffect(() => {
@@ -162,27 +135,7 @@ const RevocationAdmissionsSnapshot = (props) => {
       id={chartId}
       data={{
         labels: chartLabels,
-        datasets: [{
-          label: toggleLabel(
-            {
-              counts: 'Prison admissions from revocations',
-              rates: 'Percent of prison admissions from revocations',
-            },
-            props.metricType,
-          ),
-          backgroundColor: COLORS['blue-standard'],
-          borderColor: COLORS['blue-standard'],
-          pointBackgroundColor: COLORS['blue-standard'],
-          pointHoverBackgroundColor: COLORS['blue-standard'],
-          pointHoverBorderColor: COLORS['blue-standard'],
-          pointRadius: 4,
-          hitRadius: 5,
-          fill: false,
-          borderWidth: 2,
-          lineTension: 0,
-          data: chartDataPoints,
-        }, generateTrendlineDataset(chartDataPoints, COLORS['blue-standard-light']),
-        ],
+        datasets: datasetsWithTrendlineIfApplicable(),
       }}
       options={{
         legend: {
@@ -226,7 +179,10 @@ const RevocationAdmissionsSnapshot = (props) => {
             },
             scaleLabel: {
               display: true,
-              labelString: '% of admissions',
+              labelString: toggleLabel(
+                { counts: 'Revocation admissions', rates: '% of admissions' },
+                props.metricType,
+              ),
               fontColor: COLORS['grey-500'],
               fontStyle: 'bold',
             },
@@ -251,10 +207,11 @@ const RevocationAdmissionsSnapshot = (props) => {
     exportedStructureCallback);
 
   const header = document.getElementById(props.header);
-  const trendlineValues = chart.props.data.datasets[1].data;
-  const trendlineText = trendlineGoalText(trendlineValues, GOAL);
 
-  if (header) {
+  if (header && canDisplayGoal(GOAL, props)) {
+    const trendlineValues = chart.props.data.datasets[1].data;
+    const trendlineText = trendlineGoalText(trendlineValues, GOAL);
+
     const title = `The percent of prison admissions due to revocations of probation and parole has been <b style='color:#809AE5'>trending ${trendlineText}.</b>`;
     header.innerHTML = title;
   }

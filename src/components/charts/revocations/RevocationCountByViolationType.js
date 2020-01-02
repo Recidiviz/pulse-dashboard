@@ -188,7 +188,7 @@ const RevocationCountByViolationType = (props) => {
             scaleLabel: {
               display: true,
               labelString: toggleLabel(
-                { counts: 'Revocation count', rates: 'Percentage of revocations' },
+                { counts: 'Revocation count', rates: 'Percentage' },
                 props.metricType,
               ),
             },

@@ -146,6 +146,22 @@ const Revocations = () => {
                           that resulted in revocation, which are new offenses,
                           technical violations, and absconsion.
                         </li>
+                        <li>
+                          Revocation rates are calculated as the number of people who were
+                          incarcerated in a DOCR facility for a revocation during the time
+                          period divided by the total number of people on probation or parole
+                          at any point during the time period.
+                        </li>
+                        <li>
+                          When a supervision type and/or parole office is selected, the
+                          revocation rate is the number of people with revocations fitting
+                          the selected criteria divided by the total number of people fitting
+                          the selected criteria.
+                        </li>
+                        <li>
+                          Revocations are attributed to the site of the
+                          terminating officer at the time of a person&apos;s revocation.
+                        </li>
                       </ul>
                     </div>
                   </div>
@@ -377,6 +393,10 @@ const Revocations = () => {
                           was admitted to a DOCR facility because their supervision
                           was revoked, not the date of the causal violation or offense.
                         </li>
+                        <li>
+                          The revocation rate refers to the percent of an officer’s total
+                          revocation count caused by each violation type.
+                        </li>
                       </ul>
                     </div>
                   </div>
@@ -436,8 +456,13 @@ const Revocations = () => {
                     <div>
                       <ul>
                         <li>
-                          Revocation counts include the number of people who were incarcerated
-                          in a DOCR facility because their supervision was revoked.
+                          Revocations count people who were incarcerated in a DOCR facility
+                          because their supervision was revocation.
+                        </li>
+                        <li>
+                          Percentage shows the percent of revocations in a month associated
+                          with individuals on parole and the percent associated with
+                          individuals on probation.
                         </li>
                         <li>
                           Revocations are included based on the date that the person
@@ -501,6 +526,10 @@ const Revocations = () => {
                         <li>
                           Revocation counts include the number of people who were incarcerated
                           in a DOCR facility because their supervision was revoked.
+                        </li>
+                        <li>
+                          Percentage is the percent of revocations in a given month caused by
+                          each violation type.
                         </li>
                         <li>
                           Violations include all violations of supervision conditions
@@ -658,8 +687,20 @@ const Revocations = () => {
                           in a DOCR facility because their supervision was revoked.
                         </li>
                         <li>
-                          The supervision population counts people on probation or parole in North
-                          Dakota at any point during the time period.
+                          “Supervision Population” refers to individuals meeting the criteria
+                          selected up top. At its most general, this is all individuals on
+                          parole or Probation in North Dakota at any point during this time
+                          period.
+                        </li>
+                        <li>
+                          If a supervision type (parole or probation) is selected, revocation
+                          and supervision population will only count individuals meeting that
+                          criteria.
+                        </li>
+                        <li>
+                          If a P&P office is selected, revocations and the supervision
+                          population will only count individuals currently assigned, or with
+                          a terminating officer at time of revocation, from that office.
                         </li>
                         <li>
                           The race proportions for the population of North Dakota were taken from

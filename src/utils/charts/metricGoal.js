@@ -15,6 +15,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
+import { COLORS } from '../../assets/scripts/constants/colors';
 import { trendlineSlope } from './trendline';
 
 // TODO(75): Retrieve these dynamically using the API
@@ -24,44 +25,51 @@ const GOALS = {
       isUpward: true,
       value: 1095,
       label: '1095 days (3 years)',
+      metricType: null,
     },
     lsirScoreChangeSnapshot: {
       isUpward: false,
       value: -1,
       label: '-1.0',
+      metricType: null,
     },
     reincarcerationCountsByMonth: {
       isUpward: false,
       value: 30,
       label: '30',
+      metricType: 'counts',
     },
     revocationAdmissionsSnapshot: {
       isUpward: false,
       value: 35,
       label: '35%',
+      metricType: 'rates',
     },
     revocationCountsByMonth: {
       isUpward: false,
       value: 30,
       label: '30',
+      metricType: 'counts',
     },
     supervisionSuccessSnapshot: {
       isUpward: true,
       value: 75,
       label: '75%',
+      metricType: 'rates',
     },
   },
 };
 
-function Goal(isUpward, value, label) {
+function Goal(isUpward, value, label, metricType) {
   this.isUpward = isUpward;
   this.value = value;
   this.label = label;
+  this.metricType = metricType;
 }
 
 function getGoalForChart(stateCode, chartId) {
   const goalDict = GOALS[stateCode][chartId];
-  return new Goal(goalDict.isUpward, goalDict.value, goalDict.label);
+  return new Goal(goalDict.isUpward, goalDict.value, goalDict.label, goalDict.metricType);
 }
 
 function goalLabelContentString(goal) {
@@ -115,10 +123,64 @@ function getMaxForGoalAndData(goalValue, dataPoints, stepSize) {
   return (maxValue + stepSize) + (stepSize - (maxValue % stepSize));
 }
 
+function chartAnnotationForGoal(goal, annotationId, overrides) {
+  return {
+    drawTime: 'afterDatasetsDraw',
+    events: ['click'],
+
+    // Array of annotation configuration objects
+    // See below for detailed descriptions of the annotation options
+    annotations: [{
+      type: overrides.type || 'line',
+      mode: overrides.mode || 'horizontal',
+      value: goal.value,
+
+      // optional annotation ID (must be unique)
+      id: annotationId,
+      scaleID: 'y-axis-0',
+
+      drawTime: 'afterDatasetsDraw',
+
+      borderColor: COLORS['red-standard'],
+      borderWidth: 2,
+      borderDash: [2, 2],
+      borderDashOffset: 5,
+      label: {
+        enabled: true,
+        content: goalLabelContentString(goal),
+        position: overrides.position || 'right',
+
+        // Background color of label, default below
+        backgroundColor: 'rgba(0, 0, 0, 0)',
+
+        fontFamily: 'sans-serif',
+        fontSize: 12,
+        fontStyle: 'bold',
+        fontColor: COLORS['red-standard'],
+
+        // Adjustment along x-axis (left-right) of label relative to above
+        // number (can be negative). For horizontal lines positioned left
+        // or right, negative values move the label toward the edge, and
+        // positive values toward the center.
+        xAdjust: overrides.xAdjust || 0,
+
+        // Adjustment along y-axis (top-bottom) of label relative to above
+        // number (can be negative). For vertical lines positioned top or
+        // bottom, negative values move the label toward the edge, and
+        // positive values toward the center.
+        yAdjust: overrides.yAdjust || -10,
+      },
+
+      onClick(e) { return e; },
+    }],
+  };
+}
+
 export {
   getGoalForChart,
   getMaxForGoalAndData,
   getMinForGoalAndData,
   goalLabelContentString,
   trendlineGoalText,
+  chartAnnotationForGoal,
 };

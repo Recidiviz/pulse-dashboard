@@ -187,12 +187,12 @@ const Snapshots = () => {
                     <div>
                       <ul>
                         <li>
-                        This is a measurement of the percent of admissions to
-                        North Dakota prisons that were due to parole or probation revocations.
+                          This is a measurement of the percent of admissions to
+                          North Dakota prisons that were due to revocations of supervision.
                         </li>
                         <li>
-                        Revocations count all people who were incarcerated
-                        because their supervision was revoked.
+                          Revocations in a given month count people who were incarcerated
+                          in that month because their supervision was revoked.
                         </li>
                       </ul>
                     </div>

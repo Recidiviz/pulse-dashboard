@@ -22,12 +22,11 @@ import { COLORS } from '../../../assets/scripts/constants/colors';
 import { configureDownloadButtons } from '../../../assets/scripts/utils/downloads';
 import {
   getGoalForChart, getMinForGoalAndData, getMaxForGoalAndData, trendlineGoalText,
-  goalLabelContentString,
+  chartAnnotationForGoal,
 } from '../../../utils/charts/metricGoal';
 import {
-  getMonthCountFromTimeWindowToggle,
-  filterDatasetBySupervisionTypeExplicitAll,
-  filterDatasetByDistrictExplicitAll,
+  getMonthCountFromTimeWindowToggle, filterDatasetBySupervisionTypeExplicitAll,
+  filterDatasetByDistrictExplicitAll, canDisplayGoal,
 } from '../../../utils/charts/toggles';
 import {
   generateTrendlineDataset, getTooltipWithoutTrendline,
@@ -79,61 +78,31 @@ const LsirScoreChangeSnapshot = (props) => {
   };
 
   function goalLineIfApplicable() {
-    const { supervisionType, district } = props;
-    if (supervisionType === 'all' && district === 'all') {
-      return {
-        drawTime: 'afterDatasetsDraw',
-        events: ['click'],
-
-        // Array of annotation configuration objects
-        // See below for detailed descriptions of the annotation options
-        annotations: [{
-          type: 'line',
-          mode: 'horizontal',
-          value: GOAL.value,
-
-          // optional annotation ID (must be unique)
-          id: 'lsirScoreChangeSnapshotGoalLine',
-          scaleID: 'y-axis-0',
-
-          drawTime: 'afterDatasetsDraw',
-
-          borderColor: COLORS['red-standard'],
-          borderWidth: 2,
-          borderDash: [2, 2],
-          borderDashOffset: 5,
-          label: {
-            enabled: true,
-            content: goalLabelContentString(GOAL),
-            position: 'right',
-
-            // Background color of label, default below
-            backgroundColor: 'rgba(0, 0, 0, 0)',
-
-            fontFamily: 'sans-serif',
-            fontSize: 12,
-            fontStyle: 'bold',
-            fontColor: COLORS['red-standard'],
-
-            // Adjustment along x-axis (left-right) of label relative to above
-            // number (can be negative). For horizontal lines positioned left
-            // or right, negative values move the label toward the edge, and
-            // positive values toward the center.
-            xAdjust: 0,
-
-            // Adjustment along y-axis (top-bottom) of label relative to above
-            // number (can be negative). For vertical lines positioned top or
-            // bottom, negative values move the label toward the edge, and
-            // positive values toward the center.
-            yAdjust: 10,
-          },
-
-          onClick(e) { return e; },
-        }],
-      };
+    if (canDisplayGoal(GOAL, props)) {
+      return chartAnnotationForGoal(GOAL, 'lsirScoreChangeSnapshotGoalLine', { yAdjust: 10 });
     }
-
     return null;
+  }
+
+  function datasetsWithTrendlineIfApplicable() {
+    const datasets = [{
+      label: 'LSI-R score changes (average)',
+      backgroundColor: COLORS['blue-standard'],
+      borderColor: COLORS['blue-standard'],
+      pointBackgroundColor: COLORS['blue-standard'],
+      pointHoverBackgroundColor: COLORS['blue-standard'],
+      pointHoverBorderColor: COLORS['blue-standard'],
+      pointRadius: 4,
+      hitRadius: 5,
+      fill: false,
+      borderWidth: 2,
+      lineTension: 0,
+      data: chartDataPoints,
+    }];
+    if (canDisplayGoal(GOAL, props)) {
+      datasets.push(generateTrendlineDataset(chartDataPoints, COLORS['blue-standard-light']));
+    }
+    return datasets;
   }
 
   useEffect(() => {
@@ -150,21 +119,7 @@ const LsirScoreChangeSnapshot = (props) => {
       id={chartId}
       data={{
         labels: chartLabels,
-        datasets: [{
-          label: 'LSI-R score changes (average)',
-          backgroundColor: COLORS['blue-standard'],
-          borderColor: COLORS['blue-standard'],
-          pointBackgroundColor: COLORS['blue-standard'],
-          pointHoverBackgroundColor: COLORS['blue-standard'],
-          pointHoverBorderColor: COLORS['blue-standard'],
-          pointRadius: 4,
-          hitRadius: 5,
-          fill: false,
-          borderWidth: 2,
-          lineTension: 0,
-          data: chartDataPoints,
-        }, generateTrendlineDataset(chartDataPoints, COLORS['blue-standard-light']),
-        ],
+        datasets: datasetsWithTrendlineIfApplicable(),
       }}
       options={{
         legend: {
@@ -233,10 +188,11 @@ const LsirScoreChangeSnapshot = (props) => {
     exportedStructureCallback);
 
   const header = document.getElementById(props.header);
-  const trendlineValues = chart.props.data.datasets[1].data;
-  const trendlineText = trendlineGoalText(trendlineValues, GOAL);
 
-  if (header) {
+  if (header && canDisplayGoal(GOAL, props)) {
+    const trendlineValues = chart.props.data.datasets[1].data;
+    const trendlineText = trendlineGoalText(trendlineValues, GOAL);
+
     const title = `The average change in LSI-R scores between first reassessment and termination of supervision has been <b style='color:#809AE5'> trending ${trendlineText}. </b>`;
     header.innerHTML = title;
   }
