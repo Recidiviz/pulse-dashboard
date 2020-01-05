@@ -17,6 +17,7 @@
 
 import { COLORS } from '../../assets/scripts/constants/colors';
 import { trendlineSlope } from './trendline';
+import { canDisplayGoal } from './toggles';
 
 // TODO(75): Retrieve these dynamically using the API
 const GOALS = {

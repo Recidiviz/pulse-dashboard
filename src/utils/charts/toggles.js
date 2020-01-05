@@ -33,15 +33,49 @@ function toggleLabel(labelsByToggle, toggledValue) {
   return 'No label found';
 }
 
-function toggleYAxisTicks(metricType, chartMinValue, chartMaxValue, stepSize) {
-  if (metricType === 'counts') {
+function toggleYAxisTicksFor(desiredMetricType, currentMetricType, minValue, maxValue, stepSize) {
+  if (currentMetricType === desiredMetricType) {
     return {
-      min: chartMinValue,
-      max: chartMaxValue,
+      min: minValue,
+      max: maxValue,
       stepSize,
     };
   }
-  return {};
+
+  return {
+    min: undefined,
+    max: undefined,
+    stepSize: undefined,
+  };
+}
+
+function toggleYAxisTicksAdditionalOptions(
+  desiredMetricType, currentMetricType, minValue, maxValue, stepSize, otherOptions,
+) {
+  const ticks = toggleYAxisTicksFor(
+    desiredMetricType, currentMetricType, minValue, maxValue, stepSize,
+  );
+
+  for (let key in Object.keys(otherOptions)) {
+    ticks[key] = otherOptions[key];
+  }
+  return ticks;
+}
+
+function toggleYAxisTicksStackedRateBasicCount(metricType, maxCount) {
+  if (metricType === 'rates') {
+    return {
+      min: 0,
+      max: 100,
+      stepSize: 20,
+    };
+  }
+
+  return {
+    min: 0,
+    max: maxCount,
+    stepSize: undefined,
+  };
 }
 
 function getMonthCountFromTimeWindowToggle(toggledValue) {
@@ -178,7 +212,9 @@ function canDisplayGoal(goal, currentToggleStates) {
 
 export {
   toggleLabel,
-  toggleYAxisTicks,
+  toggleYAxisTicksFor,
+  toggleYAxisTicksAdditionalOptions,
+  toggleYAxisTicksStackedRateBasicCount,
   getMonthCountFromTimeWindowToggle,
   getPeriodLabelFromTimeWindowToggle,
   updateTooltipForMetricType,

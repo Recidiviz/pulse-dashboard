@@ -129,7 +129,9 @@ const AdmissionsVsReleases = (props) => {
           backgroundColor: COLORS['grey-800-light'],
           mode: 'x',
           callbacks: {
-            label: (tooltipItem, data) => updateTooltipForMetricType(props.metricType, tooltipItem, data),
+            label: (tooltipItem, data) => updateTooltipForMetricType(
+              props.metricType, tooltipItem, data,
+            ),
           },
         },
         scales: {

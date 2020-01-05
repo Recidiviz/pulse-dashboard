@@ -25,7 +25,7 @@ import {
 } from '../../../utils/charts/metricGoal';
 import {
   toggleLabel, getMonthCountFromTimeWindowToggle, updateTooltipForMetricType,
-  filterDatasetBySupervisionType, filterDatasetByDistrict, canDisplayGoal,
+  filterDatasetBySupervisionType, filterDatasetByDistrict, canDisplayGoal, toggleYAxisTicksFor,
 } from '../../../utils/charts/toggles';
 import { sortFilterAndSupplementMostRecentMonths } from '../../../utils/transforms/datasets';
 import { monthNamesWithYearsFromNumbers } from '../../../utils/transforms/months';
@@ -129,21 +129,26 @@ const RevocationCountOverTime = (props) => {
         },
         scales: {
           yAxes: [{
-            // ticks: toggleYAxisTicks(props.metricType, chartMinValue, chartMaxValue, stepSize),
+            ticks: toggleYAxisTicksFor(
+              'counts', props.metricType, chartMinValue, chartMaxValue, stepSize,
+            ),
             scaleLabel: {
               display: true,
               labelString: toggleLabel(
-                { counts: 'Revocation count', rates: 'Revocation rate' },
+                { counts: 'Revocation count', rates: 'Percentage' },
                 props.metricType,
               ),
             },
+            stacked: true,
           }],
         },
         tooltips: {
           backgroundColor: COLORS['grey-800-light'],
           mode: 'x',
           callbacks: {
-            label: (tooltipItem, data) => updateTooltipForMetricType(props.metricType, tooltipItem, data),
+            label: (tooltipItem, data) => updateTooltipForMetricType(
+              props.metricType, tooltipItem, data,
+            ),
           },
         },
         annotation: goalLineIfApplicable(),

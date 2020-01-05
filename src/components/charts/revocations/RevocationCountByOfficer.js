@@ -23,7 +23,7 @@ import { COLORS, COLORS_FIVE_VALUES } from '../../../assets/scripts/constants/co
 import { configureDownloadButtons } from '../../../assets/scripts/utils/downloads';
 import {
   toggleLabel, filterDatasetBySupervisionType, filterDatasetByTimeWindow,
-  updateTooltipForMetricType,
+  updateTooltipForMetricType, toggleYAxisTicksStackedRateBasicCount,
 } from '../../../utils/charts/toggles';
 import { toHtmlFriendly, toHumanReadable, toInt } from '../../../utils/transforms/labels';
 
@@ -307,7 +307,9 @@ const RevocationCountByOfficer = (props) => {
           intersect: false,
           callbacks: {
             title: (tooltipItem) => ('Officer '.concat(tooltipItem[0].label)),
-            label: (tooltipItem, data) => updateTooltipForMetricType(props.metricType, tooltipItem, data),
+            label: (tooltipItem, data) => updateTooltipForMetricType(
+              props.metricType, tooltipItem, data,
+            ),
           },
         },
         scales: {
@@ -330,9 +332,7 @@ const RevocationCountByOfficer = (props) => {
               ),
             },
             stacked: true,
-            // ticks: {
-            //   stepSize: 1,
-            // },
+            ticks: toggleYAxisTicksStackedRateBasicCount(props.metricType, undefined),
           }],
         },
       }}

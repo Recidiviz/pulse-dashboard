@@ -22,7 +22,7 @@ import { COLORS, COLORS_FIVE_VALUES } from '../../../assets/scripts/constants/co
 import { configureDownloadButtons } from '../../../assets/scripts/utils/downloads';
 import {
   toggleLabel, getMonthCountFromTimeWindowToggle, updateTooltipForMetricType,
-  filterDatasetBySupervisionType, filterDatasetByDistrict,
+  filterDatasetBySupervisionType, filterDatasetByDistrict, toggleYAxisTicksStackedRateBasicCount,
 } from '../../../utils/charts/toggles';
 import { sortFilterAndSupplementMostRecentMonths } from '../../../utils/transforms/datasets';
 import { monthNamesWithYearsFromNumbers } from '../../../utils/transforms/months';
@@ -167,7 +167,9 @@ const RevocationCountByViolationType = (props) => {
           mode: 'index',
           intersect: false,
           callbacks: {
-            label: (tooltipItem, data) => updateTooltipForMetricType(props.metricType, tooltipItem, data),
+            label: (tooltipItem, data) => updateTooltipForMetricType(
+              props.metricType, tooltipItem, data,
+            ),
           },
         },
         scales: {
@@ -179,12 +181,7 @@ const RevocationCountByViolationType = (props) => {
             stacked: true,
           }],
           yAxes: [{
-            // ticks: props.metricType === 'rates' ? {
-            //   max: 100,
-            // } : {},
-            ticks: {
-              max: 100,
-            },
+            ticks: toggleYAxisTicksStackedRateBasicCount(props.metricType, undefined),
             scaleLabel: {
               display: true,
               labelString: toggleLabel(

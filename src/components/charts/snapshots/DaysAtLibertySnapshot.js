@@ -149,9 +149,9 @@ const DaysAtLibertySnapshot = (props) => {
           yAxes: [{
             ticks: {
               fontColor: COLORS['grey-600'],
-              // min: chartMinValue,
-              // max: chartMaxValue,
-              // stepSize,
+              min: chartMinValue,
+              max: chartMaxValue,
+              stepSize,
             },
             scaleLabel: {
               display: true,

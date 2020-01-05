@@ -25,7 +25,7 @@ import {
 } from '../../../utils/charts/metricGoal';
 import {
   toggleLabel, getMonthCountFromTimeWindowToggle, updateTooltipForMetricType,
-  filterDatasetByDistrict, canDisplayGoal,
+  filterDatasetByDistrict, canDisplayGoal, toggleYAxisTicksFor,
 } from '../../../utils/charts/toggles';
 import { sortFilterAndSupplementMostRecentMonths } from '../../../utils/transforms/datasets';
 import { toInt } from '../../../utils/transforms/labels';
@@ -133,11 +133,9 @@ const ReincarcerationCountOverTime = (props) => {
             },
           }],
           yAxes: [{
-            ticks: {
-              // min: chartMinValue,
-              // max: chartMaxValue,
-              // stepSize,
-            },
+            ticks: toggleYAxisTicksFor(
+              'counts', props.metricType, chartMinValue, chartMaxValue, stepSize,
+            ),
             scaleLabel: {
               display: true,
               labelString: toggleLabel(

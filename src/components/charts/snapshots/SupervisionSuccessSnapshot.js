@@ -29,7 +29,7 @@ import {
 } from '../../../utils/charts/metricGoal';
 import {
   getMonthCountFromTimeWindowToggle, filterDatasetBySupervisionType, filterDatasetByDistrict,
-  updateTooltipForMetricType, toggleLabel, canDisplayGoal,
+  updateTooltipForMetricType, toggleLabel, canDisplayGoal, toggleYAxisTicksAdditionalOptions,
 } from '../../../utils/charts/toggles';
 import { generateTrendlineDataset } from '../../../utils/charts/trendline';
 
@@ -163,7 +163,9 @@ const SupervisionSuccessSnapshot = (props) => {
           enabled: true,
           mode: 'point',
           callbacks: {
-            label: (tooltipItem, data) => updateTooltipForMetricType(props.metricType, tooltipItem, data),
+            label: (tooltipItem, data) => updateTooltipForMetricType(
+              props.metricType, tooltipItem, data,
+            ),
           },
         },
         scales: {
@@ -183,12 +185,10 @@ const SupervisionSuccessSnapshot = (props) => {
             },
           }],
           yAxes: [{
-            ticks: {
-              fontColor: COLORS['grey-600'],
-              // min: chartMinValue,
-              // max: chartMaxValue,
-              // stepSize,
-            },
+            ticks: toggleYAxisTicksAdditionalOptions(
+              'rates', props.metricType, chartMinValue, chartMaxValue, stepSize,
+              { fontColor: COLORS['grey-600'] },
+            ),
             scaleLabel: {
               display: true,
               labelString: toggleLabel(
