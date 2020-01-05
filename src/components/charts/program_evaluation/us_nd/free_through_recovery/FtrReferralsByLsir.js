@@ -178,6 +178,8 @@ const FtrReferralsByLsir = (props) => {
             stacked: false,
             ticks: {
               beginAtZero: true,
+              min: undefined,
+              max: undefined,
             },
             position: 'left',
             id: 'y-axis-left',
@@ -266,6 +268,8 @@ const FtrReferralsByLsir = (props) => {
             stacked: true,
             ticks: {
               beginAtZero: true,
+              min: 0,
+              max: 100,
             },
             position: 'left',
             id: 'y-axis-left',

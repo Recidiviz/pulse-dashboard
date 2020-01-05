@@ -16,6 +16,7 @@
 // =============================================================================
 
 import React, { useState, useEffect } from 'react';
+import * as $ from 'jquery';
 
 import Loading from '../../../components/Loading';
 import '../../../assets/styles/index.scss';
@@ -38,6 +39,10 @@ const Reincarcerations = () => {
   const [chartMetricType, setChartMetricType] = useState(ToggleDefaults.metricType);
   const [chartTimeWindow, setChartTimeWindow] = useState(ToggleDefaults.timeWindow);
   const [chartDistrict, setChartDistrict] = useState(ToggleDefaults.district);
+
+  $(() => {
+    $('[data-toggle="tooltip"]').tooltip();
+  });
 
   const fetchChartData = async () => {
     try {
@@ -207,6 +212,9 @@ const Reincarcerations = () => {
                 <div className="layer w-100 pX-20 pT-20">
                   <h6 className="lh-1">
                     REINCARCERATION RATE BY PREVIOUS STAY LENGTH
+                    {(chartMetricType !== 'rates' || (chartTimeWindow !== '3y' && chartTimeWindow !== '1y')) && (
+                      <span className="pL-10 c-orange-500 ti-alert" data-toggle="tooltip" data-placement="bottom" title="This graph is showing the reincarceration rate by previous stay length with the follow up period noted below. It cannot show this metric as a count. It also cannot show follow up periods under 1 year." />
+                    )}
                     <span className="fa-pull-right">
                       <div className="dropdown show">
                         <a className="btn btn-secondary btn-sm dropdown-toggle" href="#" role="button" id="exportDropdownMenuButton-reincarcerationRateByStayLength" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

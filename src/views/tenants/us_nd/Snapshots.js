@@ -16,6 +16,7 @@
 // =============================================================================
 
 import React, { useState, useEffect } from 'react';
+import * as $ from 'jquery';
 
 import Loading from '../../../components/Loading';
 import '../../../assets/styles/index.scss';
@@ -40,6 +41,10 @@ const Snapshots = () => {
   const [chartTimeWindow, setChartTimeWindow] = useState(ToggleDefaults.timeWindow);
   const [chartSupervisionType, setChartSupervisionType] = useState(ToggleDefaults.supervisionType);
   const [chartDistrict, setChartDistrict] = useState(ToggleDefaults.district);
+
+  $(() => {
+    $('[data-toggle="tooltip"]').tooltip();
+  });
 
   const fetchChartData = async () => {
     try {
@@ -146,6 +151,9 @@ const Snapshots = () => {
                 <div className="layer w-100 pX-20 pT-20">
                   <h6 className="lh-1">
                     PRISON ADMISSIONS DUE TO REVOCATION
+                    {chartSupervisionType !== 'all' && (
+                      <span className="pL-10 c-orange-500 ti-alert" data-toggle="tooltip" data-placement="bottom" title="This graph is showing all individuals on supervision. It doesn’t support showing only individuals on probation or only individuals on parole." />
+                    )}
                     <span className="fa-pull-right">
                       <div className="dropdown show">
                         <a className="btn btn-secondary btn-sm dropdown-toggle" href="#" role="button" id="exportDropdownMenuButton-revocationAdmissionsSnapshot" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -209,6 +217,9 @@ const Snapshots = () => {
                 <div className="layer w-100 pX-20 pT-20">
                   <h6 className="lh-1">
                     DAYS AT LIBERTY (AVERAGE)
+                    {chartMetricType !== 'counts' && (
+                      <span className="pL-10 c-orange-500 ti-alert" data-toggle="tooltip" data-placement="bottom" title="This graph is showing average days at liberty. It does not support showing this metric as a rate." />
+                    )}
                     <span className="fa-pull-right">
                       <div className="dropdown show">
                         <a className="btn btn-secondary btn-sm dropdown-toggle" href="#" role="button" id="exportDropdownMenuButton-daysAtLibertySnapshot" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -273,6 +284,9 @@ const Snapshots = () => {
                 <div className="layer w-100 pX-20 pT-20">
                   <h6 className="lh-1">
                     LSI-R SCORE CHANGES (AVERAGE)
+                    {chartMetricType !== 'counts' && (
+                      <span className="pL-10 c-orange-500 ti-alert" data-toggle="tooltip" data-placement="bottom" title="This graph is showing average LSI-R score change. It does not support showing this metric as a rate." />
+                    )}
                     <span className="fa-pull-right">
                       <div className="dropdown show">
                         <a className="btn btn-secondary btn-sm dropdown-toggle" href="#" role="button" id="exportDropdownMenuButton-lsirScoreChangeSnapshot" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

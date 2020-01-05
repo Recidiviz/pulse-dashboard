@@ -168,6 +168,8 @@ const FtrReferralsByGender = (props) => {
             stacked: false,
             ticks: {
               beginAtZero: true,
+              min: undefined,
+              max: undefined,
             },
             position: 'left',
             id: 'y-axis-left',
@@ -221,10 +223,6 @@ const FtrReferralsByGender = (props) => {
         scales: {
           xAxes: [{
             stacked: true,
-            ticks: {
-              min: 0,
-              max: 100,
-            },
           }],
           yAxes: [{
             scaleLabel: {
@@ -232,6 +230,10 @@ const FtrReferralsByGender = (props) => {
               labelString: 'Percentage',
             },
             stacked: true,
+            ticks: {
+              min: 0,
+              max: 100,
+            },
           }],
         },
         responsive: true,

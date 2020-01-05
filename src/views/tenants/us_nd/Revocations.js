@@ -16,6 +16,7 @@
 // =============================================================================
 
 import React, { useState, useEffect } from 'react';
+import * as $ from 'jquery';
 
 import Loading from '../../../components/Loading';
 import '../../../assets/styles/index.scss';
@@ -51,6 +52,10 @@ const Revocations = () => {
   const [chartTimeWindow, setChartTimeWindow] = useState(ToggleDefaults.timeWindow);
   const [chartSupervisionType, setChartSupervisionType] = useState(ToggleDefaults.supervisionType);
   const [chartDistrict, setChartDistrict] = useState(ToggleDefaults.district);
+
+  $(() => {
+    $('[data-toggle="tooltip"]').tooltip();
+  });
 
   const fetchChartData = async () => {
     try {
@@ -422,6 +427,9 @@ const Revocations = () => {
                 <div className="layer w-100 pX-20 pT-20">
                   <h6 className="lh-1">
                     REVOCATIONS BY SUPERVISION TYPE
+                    {chartSupervisionType !== 'all' && (
+                      <span className="pL-10 c-orange-500 ti-alert" data-toggle="tooltip" data-placement="bottom" title="This graph is showing all individuals on supervision. It doesn’t support showing only individuals on probation or only individuals on parole." />
+                    )}
                     <span className="fa-pull-right">
                       <div className="dropdown show">
                         <a className="btn btn-secondary btn-sm dropdown-toggle" href="#" role="button" id="exportDropdownMenuButton-revocationsBySupervisionType" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -566,6 +574,9 @@ const Revocations = () => {
                 <div className="layer w-100 pX-20 pT-20">
                   <h6 className="lh-1">
                     ADMISSIONS BY TYPE
+                    {chartSupervisionType !== 'all' && (
+                      <span className="pL-10 c-orange-500 ti-alert" data-toggle="tooltip" data-placement="bottom" title="This graph is showing all admission types regardless of supervision type. It doesn’t support showing only individuals on probation or only individuals on parole." />
+                    )}
                     <span className="fa-pull-right">
                       <div className="dropdown show">
                         <a className="btn btn-secondary btn-sm dropdown-toggle" href="#" role="button" id="exportDropdownMenuButton-admissionCountsByType" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
