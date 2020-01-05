@@ -205,6 +205,12 @@ const FtrReferralsByRace = (props) => {
             stacked: false,
             ticks: {
               autoSkip: false,
+              callback(value, index, values) {
+                if (value.length > 12) {
+                  return `${value.substr(0, 12)}...`; // Truncate
+                }
+                return value;
+              },
             },
             scaleLabel: {
               display: true,
