@@ -30,6 +30,7 @@ import {
 import {
   getMonthCountFromTimeWindowToggle, filterDatasetBySupervisionType, filterDatasetByDistrict,
   updateTooltipForMetricType, toggleLabel, canDisplayGoal, toggleYAxisTicksAdditionalOptions,
+  centerSingleMonthDatasetIfNecessary,
 } from '../../../utils/charts/toggles';
 import { generateTrendlineDataset } from '../../../utils/charts/trendline';
 
@@ -94,8 +95,10 @@ const SupervisionSuccessSnapshot = (props) => {
     const chartDataValues = (sorted.map((element) => element.value));
     const min = getMinForGoalAndData(GOAL.value, chartDataValues, stepSize);
     const max = getMaxForGoalAndData(GOAL.value, chartDataValues, stepSize);
+    const monthNames = monthNamesWithYearsFromNumbers(sorted.map((element) => element.month), true);
 
-    setChartLabels(monthNamesWithYearsFromNumbers(sorted.map((element) => element.month), true));
+    centerSingleMonthDatasetIfNecessary(chartDataValues, monthNames);
+    setChartLabels(monthNames);
     setChartDataPoints(chartDataValues);
     setChartMinValue(min);
     setChartMaxValue(max);

@@ -26,7 +26,7 @@ import {
 } from '../../../utils/charts/metricGoal';
 import {
   getMonthCountFromTimeWindowToggle, filterDatasetBySupervisionTypeExplicitAll,
-  filterDatasetByDistrictExplicitAll, canDisplayGoal,
+  filterDatasetByDistrictExplicitAll, canDisplayGoal, centerSingleMonthDatasetIfNecessary,
 } from '../../../utils/charts/toggles';
 import {
   generateTrendlineDataset, getTooltipWithoutTrendline,
@@ -70,8 +70,10 @@ const LsirScoreChangeSnapshot = (props) => {
     const chartDataValues = sorted.map((element) => element.change);
     const min = getMinForGoalAndData(GOAL.value, chartDataValues, stepSize);
     const max = getMaxForGoalAndData(GOAL.value, chartDataValues, stepSize);
+    const monthNames = monthNamesWithYearsFromNumbers(sorted.map((element) => element.month), true);
 
-    setChartLabels(monthNamesWithYearsFromNumbers(sorted.map((element) => element.month), true));
+    centerSingleMonthDatasetIfNecessary(chartDataValues, monthNames);
+    setChartLabels(monthNames);
     setChartDataPoints(chartDataValues);
     setChartMinValue(min);
     setChartMaxValue(max);

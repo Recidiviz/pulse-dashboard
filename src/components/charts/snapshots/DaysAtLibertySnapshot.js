@@ -26,6 +26,7 @@ import {
 } from '../../../utils/charts/metricGoal';
 import {
   getMonthCountFromTimeWindowToggle, filterDatasetByDistrictExplicitAll, canDisplayGoal,
+  centerSingleMonthDatasetIfNecessary,
 } from '../../../utils/charts/toggles';
 import {
   generateTrendlineDataset, getTooltipWithoutTrendline,
@@ -64,8 +65,10 @@ const DaysAtLibertySnapshot = (props) => {
     const chartDataValues = sorted.map((element) => element.average);
     const min = getMinForGoalAndData(GOAL.value, chartDataValues, stepSize);
     const max = getMaxForGoalAndData(GOAL.value, chartDataValues, stepSize);
+    const monthNames = monthNamesWithYearsFromNumbers(sorted.map((element) => element.month), true);
 
-    setChartLabels(monthNamesWithYearsFromNumbers(sorted.map((element) => element.month), true));
+    centerSingleMonthDatasetIfNecessary(chartDataValues, monthNames);
+    setChartLabels(monthNames);
     setChartDataPoints(chartDataValues);
     setChartMinValue(min);
     setChartMaxValue(max);

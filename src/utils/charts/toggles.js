@@ -210,6 +210,17 @@ function canDisplayGoal(goal, currentToggleStates) {
   return canDisplay;
 }
 
+function centerSingleMonthDatasetIfNecessary(dataValues, labels) {
+  if (dataValues.length === 1) {
+    dataValues.unshift(null);
+    dataValues.push(null);
+  }
+  if (labels.length === 1) {
+    labels.unshift('');
+    labels.push('');
+  }
+}
+
 export {
   toggleLabel,
   toggleYAxisTicksFor,
@@ -226,4 +237,5 @@ export {
   filterDatasetByDistrictExplicitAll,
   filterDatasetBySupervisionTypeExplicitAll,
   canDisplayGoal,
+  centerSingleMonthDatasetIfNecessary,
 };

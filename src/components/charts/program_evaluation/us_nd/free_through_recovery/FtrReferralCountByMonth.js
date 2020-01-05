@@ -22,7 +22,7 @@ import { COLORS } from '../../../../../assets/scripts/constants/colors';
 import { configureDownloadButtons } from '../../../../../assets/scripts/utils/downloads';
 import {
   toggleLabel, getMonthCountFromTimeWindowToggle, updateTooltipForMetricType,
-  filterDatasetBySupervisionType, filterDatasetByDistrict,
+  filterDatasetBySupervisionType, filterDatasetByDistrict, centerSingleMonthDatasetIfNecessary,
 } from '../../../../../utils/charts/toggles';
 import { sortFilterAndSupplementMostRecentMonths } from '../../../../../utils/transforms/datasets';
 import { toInt } from '../../../../../utils/transforms/labels';
@@ -67,8 +67,10 @@ const FtrReferralCountByMonth = (props) => {
     const months = getMonthCountFromTimeWindowToggle(props.timeWindow);
     const sorted = sortFilterAndSupplementMostRecentMonths(dataPoints, months, 'value', 0);
     const chartDataValues = (sorted.map((element) => element.value));
+    const monthNames = monthNamesWithYearsFromNumbers(sorted.map((element) => element.month), false);
 
-    setChartLabels(monthNamesWithYearsFromNumbers(sorted.map((element) => element.month), false));
+    centerSingleMonthDatasetIfNecessary(chartDataValues, monthNames);
+    setChartLabels(monthNames);
     setChartDataPoints(chartDataValues);
   };
 
