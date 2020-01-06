@@ -93,13 +93,6 @@ function colorForMarker(office, metricType, timeWindow, supervisionType) {
   return value > 0 ? COLORS['red-standard'] : COLORS['grey-400'];
 }
 
-const officeClicked = (office) => {
-  const officeDropdownItem = document.getElementById(office.officerDropdownItemId);
-  if (officeDropdownItem) {
-    officeDropdownItem.click();
-  }
-};
-
 function sortChartDataPoints(dataPoints, metricType, timeWindow, supervisionType) {
   return dataPoints.sort((a, b) => (getOfficeDataValue(b, metricType, timeWindow, supervisionType)
     - getOfficeDataValue(a, metricType, timeWindow, supervisionType)));
@@ -165,7 +158,7 @@ class RevocationsByOffice extends Component {
         },
       };
     });
-    office.officerDropdownItemId = `${this.officerDropdownId}-${toHtmlFriendly(office.officeName)}`;
+    office.officerDropdownItemId = `${this.officerDropdownId}-${toHtmlFriendly(office.officeName).toLowerCase()}`;
   }
 
   initializeChartData() {
@@ -232,7 +225,7 @@ class RevocationsByOffice extends Component {
           const revocationRate = (100 * (revocationCountNum / supervisionCount));
           const revocationRateFixed = revocationRate.toFixed(2);
 
-          office.officerDropdownItemId = `${this.officerDropdownId}-${toHtmlFriendly(office.officeName)}`;
+          office.officerDropdownItemId = `${this.officerDropdownId}-${toHtmlFriendly(office.officeName).toLowerCase()}`;
 
           if (!office.revocationValues[timeWindow]) {
             office.revocationValues[timeWindow] = {};
@@ -327,7 +320,6 @@ class RevocationsByOffice extends Component {
             <Markers>
               {this.chartDataPoints.map((office) => (
                 <Marker
-                  onClick={officeClicked}
                   key={office.officeName}
                   marker={office}
                   style={{

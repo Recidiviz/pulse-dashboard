@@ -52,7 +52,7 @@ class DistrictToggle extends React.Component {
   }
 
   DistrictOption(props) {
-    return <option value={props.value}>{normalizeDistrictName(props.value, props.replaceLa)}</option>
+    return <option id={`district-toggle-${props.value}`} value={props.value}>{normalizeDistrictName(props.value, props.replaceLa)}</option>
   }
 
   DistrictList() {

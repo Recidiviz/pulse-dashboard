@@ -33,8 +33,6 @@ const RevocationCountByOfficer = (props) => {
   const [newOffenseDataPoints, setNewOffenseDataPoints] = useState([]);
   const [technicalDataPoints, setTechnicalDataPoints] = useState([]);
   const [unknownDataPoints, setUnknownDataPoints] = useState([]);
-  const [allChartData, setAllChartData] = useState({});
-  const [visibleOfficeName, setVisibleOfficeName] = useState('');
   const [displayOfficerIds, setDisplayOfficerIds] = useState(true);
   const chartId = 'revocationsByOfficer';
 
@@ -59,7 +57,7 @@ const RevocationCountByOfficer = (props) => {
 
     let visibleOfficeData = [];
 
-    if (visibleOffice === 'All-Officers') {
+    if (visibleOffice === 'all') {
       Object.keys(dataPoints).forEach((office) => {
         dataPoints[office].forEach((officerData) => {
           visibleOfficeData.push(officerData);
@@ -92,13 +90,12 @@ const RevocationCountByOfficer = (props) => {
   function setDataForVisibleOffice(
     officerLabels, officerViolationCountsByType, visibleOffice,
   ) {
-    if (visibleOffice === 'All-Officers') {
+    if (visibleOffice === 'all') {
       setDisplayOfficerIds(false);
     } else {
       setDisplayOfficerIds(true);
     }
 
-    setVisibleOfficeName(visibleOffice);
     setChartLabels(officerLabels);
     setAbsconsionDataPoints(officerViolationCountsByType.ABSCONDED);
     setNewOffenseDataPoints(officerViolationCountsByType.FELONY);
@@ -145,16 +142,8 @@ const RevocationCountByOfficer = (props) => {
       exportedStructureCallback, convertValuesToNumbers);
   }
 
-  const processDatasetChange = (officeName) => {
-    const {
-      officerLabels, officerViolationCountsByType,
-    } = getDataForVisibleOffice(allChartData, officeName);
-    setDataForVisibleOffice(officerLabels, officerViolationCountsByType, officeName);
-    configureDownloads(officerLabels, officerViolationCountsByType, officeName);
-  };
-
   const processResponse = () => {
-    const { revocationCountsByOfficer, officeData, dropdownId } = props;
+    const { revocationCountsByOfficer, officeData } = props;
     const offices = {};
     const officeIds = [];
 
@@ -165,7 +154,7 @@ const RevocationCountByOfficer = (props) => {
           site_name: officeName,
         } = office;
 
-        offices[officeId] = toHtmlFriendly(officeName);
+        offices[officeId] = toHtmlFriendly(officeName).toLowerCase();
         officeIds.push(officeId);
       });
     }
@@ -202,7 +191,7 @@ const RevocationCountByOfficer = (props) => {
 
         let officeName = offices[toInt(officeId)];
         if (officeName && officerIDRaw !== 'OFFICER_UNKNOWN') {
-          officeName = toHtmlFriendly(officeName);
+          officeName = toHtmlFriendly(officeName).toLowerCase();
           const officerId = toInt(officerIDRaw);
           if (dataPoints[officeName] == null) {
             dataPoints[officeName] = [];
@@ -229,38 +218,23 @@ const RevocationCountByOfficer = (props) => {
       });
     }
 
-    // Disable any office name from the dropdown menu if there is no data
-    // for that office
-    Object.values(offices).forEach((officeName) => {
-      if (!dataPoints[officeName]) {
-        $(`#${dropdownId}-${officeName}`).addClass('disabled');
-      }
-    });
-
-    // Show data for the first office name that has data
-    const previousVisibleOffice = visibleOfficeName;
-    const visibleOffice = 'All-Officers';
-    dataPoints[visibleOffice] = [];
+    const visibleOffice = props.district;
     const {
       officerLabels, officerViolationCountsByType,
     } = getDataForVisibleOffice(dataPoints, visibleOffice);
     setDataForVisibleOffice(officerLabels, officerViolationCountsByType, visibleOffice);
     configureDownloads(officerLabels, officerViolationCountsByType, visibleOffice);
-    setAllChartData(dataPoints);
-
-    if (previousVisibleOffice) {
-      const {
-        officerLabels, officerViolationCountsByType,
-      } = getDataForVisibleOffice(dataPoints, previousVisibleOffice);
-      setDataForVisibleOffice(officerLabels, officerViolationCountsByType, previousVisibleOffice);
-      configureDownloads(officerLabels, officerViolationCountsByType, previousVisibleOffice);
-      setAllChartData(dataPoints);
-    }
   };
 
   useEffect(() => {
     processResponse();
-  }, [props.revocationCountsByOfficer, props.metricType, props.timeWindow, props.supervisionType]);
+  }, [
+    props.revocationCountsByOfficer,
+    props.metricType,
+    props.timeWindow,
+    props.supervisionType,
+    props.district,
+  ]);
 
   const chart = (
     <Bar
@@ -338,28 +312,6 @@ const RevocationCountByOfficer = (props) => {
       }}
     />
   );
-
-  // Set the dropdown toggle text to be the visible office name
-  $(`#${props.dropdownId}`).text(toHumanReadable(visibleOfficeName));
-
-  Object.keys(allChartData).forEach((officeName) => {
-    const dropdownItemId = `${props.dropdownId}-${officeName}`;
-    const dropdownItem = document.getElementById(dropdownItemId);
-    if (dropdownItem) {
-      // Configure the callback for each dropdown item to change the visible dataset
-      dropdownItem.onclick = function changeDataset() {
-        processDatasetChange(officeName);
-      };
-
-      // Set the active dropdown item to be the visible office name
-      if (officeName === visibleOfficeName) {
-        $(`#${dropdownItemId}`).addClass('active');
-      } else {
-        $(`#${dropdownItemId}`).removeClass('active');
-      }
-    }
-  });
-
 
   return chart;
 };

@@ -274,7 +274,7 @@ const Revocations = () => {
                       supervisionType={chartSupervisionType}
                       revocationsByOffice={apiData.revocations_by_site_id_60_days}
                       officeData={apiData.site_offices}
-                      officerDropdownId="showOfficersOfOffice"
+                      officerDropdownId="district-toggle"
                     />
                   </div>
                 </div>
@@ -340,42 +340,14 @@ const Revocations = () => {
                     </span>
                   </h6>
                 </div>
-                <div className="layer p-20 w-100">
-                  <span className="fa-pull-left">
-                    <div className="dropdown show">
-                      <a className="btn btn-secondary btn-sm dropdown-toggle" href="javascript:void(0);" role="button" id="showOfficersOfOffice" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        SITE NAME
-                      </a>
-                      <div className="dropdown-menu" aria-labelledby="showOfficersOfOffice" id="showOfficersOfOfficeMenu">
-                        <a className="dropdown-item" id="showOfficersOfOffice-All-Officers" href="javascript:void(0);">All Officers</a>
-                        <a className="dropdown-item" id="showOfficersOfOffice-Beulah" href="javascript:void(0);">Beulah</a>
-                        <a className="dropdown-item" id="showOfficersOfOffice-Bismarck" href="javascript:void(0);">Bismarck</a>
-                        <a className="dropdown-item" id="showOfficersOfOffice-Bottineau" href="javascript:void(0);">Bottineau</a>
-                        <a className="dropdown-item" id="showOfficersOfOffice-Devils-Lake" href="javascript:void(0);">Devils Lake</a>
-                        <a className="dropdown-item" id="showOfficersOfOffice-Dickinson" href="javascript:void(0);">Dickinson</a>
-                        <a className="dropdown-item" id="showOfficersOfOffice-Fargo" href="javascript:void(0);">Fargo</a>
-                        <a className="dropdown-item" id="showOfficersOfOffice-Grafton" href="javascript:void(0);">Grafton</a>
-                        <a className="dropdown-item" id="showOfficersOfOffice-Grand-Forks" href="javascript:void(0);">Grand Forks</a>
-                        <a className="dropdown-item" id="showOfficersOfOffice-Jamestown" href="javascript:void(0);">Jamestown</a>
-                        <a className="dropdown-item" id="showOfficersOfOffice-Mandan" href="javascript:void(0);">Mandan</a>
-                        <a className="dropdown-item" id="showOfficersOfOffice-Minot" href="javascript:void(0);">Minot</a>
-                        <a className="dropdown-item" id="showOfficersOfOffice-Oakes" href="javascript:void(0);">Oakes</a>
-                        <a className="dropdown-item" id="showOfficersOfOffice-Rolla" href="javascript:void(0);">Rolla</a>
-                        <a className="dropdown-item" id="showOfficersOfOffice-Wahpeton" href="javascript:void(0);">Wahpeton</a>
-                        <a className="dropdown-item" id="showOfficersOfOffice-Washburn" href="javascript:void(0);">Washburn</a>
-                        <a className="dropdown-item" id="showOfficersOfOffice-Williston" href="javascript:void(0);">Williston</a>
-                      </div>
-                    </div>
-                  </span>
-                </div>
                 <div className="layer w-100 p-20">
                   <RevocationCountByOfficer
                     metricType={chartMetricType}
                     timeWindow={chartTimeWindow}
                     supervisionType={chartSupervisionType}
+                    district={chartDistrict}
                     revocationCountsByOfficer={apiData.revocations_by_officer_60_days}
                     officeData={apiData.site_offices}
-                    dropdownId="showOfficersOfOffice"
                   />
                 </div>
                 <div className="layer bdT p-20 w-100 accordion" id="methodologyRevocationByOfficer">
