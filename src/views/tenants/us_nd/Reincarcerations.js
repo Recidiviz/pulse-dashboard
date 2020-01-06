@@ -97,20 +97,16 @@ const Reincarcerations = () => {
                   </h6>
                 </div>
                 <div className="layer w-100 pX-20 pT-20">
-                  <h4 style={{ height: '20px' }} className="dynamic-chart-header" id="reincarcerationCountsByMonth-header" />
+                  <div className="dynamic-chart-header" id="reincarcerationCountsByMonth-header" />
                 </div>
-                <div className="layer w-100 pX-20 pT-30 row">
-                  <div className="col-md-12">
-                    <div className="layer w-100 p-20">
-                      <ReincarcerationCountOverTime
-                        metricType={chartMetricType}
-                        timeWindow={chartTimeWindow}
-                        district={chartDistrict}
-                        reincarcerationCountsByMonth={apiData.reincarcerations_by_month}
-                        header="reincarcerationCountsByMonth-header"
-                      />
-                    </div>
-                  </div>
+                <div className="layer w-100 p-20">
+                  <ReincarcerationCountOverTime
+                    metricType={chartMetricType}
+                    timeWindow={chartTimeWindow}
+                    district={chartDistrict}
+                    reincarcerationCountsByMonth={apiData.reincarcerations_by_month}
+                    header="reincarcerationCountsByMonth-header"
+                  />
                 </div>
                 <div className="layer bdT p-20 w-100 accordion" id="methodologyReincarcerationCountsByMonth">
                   <div className="mb-0" id="methodologyHeadingReincarcerationCountsByMonth">
@@ -162,7 +158,7 @@ const Reincarcerations = () => {
                   </h6>
                 </div>
                 <div className="layer w-100 pX-20 pT-20">
-                  <h4 style={{ height: '20px' }} className="dynamic-chart-header" id="admissionsVsReleases-header" />
+                  <div className="dynamic-chart-header" id="admissionsVsReleases-header" />
                 </div>
                 <div className="layer w-100 p-20">
                   <AdmissionsVsReleases

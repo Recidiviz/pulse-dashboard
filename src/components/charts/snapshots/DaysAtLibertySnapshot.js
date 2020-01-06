@@ -190,6 +190,8 @@ const DaysAtLibertySnapshot = (props) => {
 
     const title = `The average days between release from incarceration and readmission has been <b style='color:#809AE5'>trending ${trendlineText}.</b>`;
     header.innerHTML = title;
+  } else if (header) {
+    header.innerHTML = '';
   }
 
   return (chart);

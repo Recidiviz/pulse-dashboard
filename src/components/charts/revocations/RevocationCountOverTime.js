@@ -176,9 +176,11 @@ const RevocationCountOverTime = (props) => {
 
   const header = document.getElementById(props.header);
 
-  if (header && (mostRecentValue !== null)) {
+  if (header && mostRecentValue !== null && canDisplayGoal(GOAL, props)) {
     const title = `There have been <b style='color:#809AE5'>${mostRecentValue} revocations</b> that led to incarceration in a DOCR facility this month so far.`;
     header.innerHTML = title;
+  } else if (header) {
+    header.innerHTML = '';
   }
 
   return (chart);

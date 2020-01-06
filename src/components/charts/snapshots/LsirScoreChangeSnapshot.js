@@ -197,6 +197,8 @@ const LsirScoreChangeSnapshot = (props) => {
 
     const title = `The average change in LSI-R scores between first reassessment and termination of supervision has been <b style='color:#809AE5'> trending ${trendlineText}. </b>`;
     header.innerHTML = title;
+  } else if (header) {
+    header.innerHTML = '';
   }
 
   return (chart);

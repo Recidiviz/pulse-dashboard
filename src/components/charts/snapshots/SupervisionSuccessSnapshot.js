@@ -230,6 +230,8 @@ const SupervisionSuccessSnapshot = (props) => {
 
     const title = `The rate of successful completion of supervision has been <b style='color:#809AE5'>trending ${trendlineText}.</b>`;
     header.innerHTML = title;
+  } else if (header) {
+    header.innerHTML = '';
   }
 
   return (chart);

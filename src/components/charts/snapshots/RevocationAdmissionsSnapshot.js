@@ -217,6 +217,8 @@ const RevocationAdmissionsSnapshot = (props) => {
 
     const title = `The percent of prison admissions due to revocations of probation and parole has been <b style='color:#809AE5'>trending ${trendlineText}.</b>`;
     header.innerHTML = title;
+  } else if (header) {
+    header.innerHTML = '';
   }
 
   return (chart);

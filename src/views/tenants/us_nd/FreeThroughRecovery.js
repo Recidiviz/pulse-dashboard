@@ -83,7 +83,7 @@ const FreeThroughRecovery = () => {
               <div className="layers">
                 <div className="layer w-100 pX-20 pT-20">
                   <h6 className="lh-1">
-                    FTR REFERRAL COUNT BY MONTH
+                    FTR REFERRALS BY MONTH
                     <span className="fa-pull-right">
                       <div className="dropdown show">
                         <a className="btn btn-secondary btn-sm dropdown-toggle" href="#" role="button" id="exportDropdownMenuButton-ftrReferralCountByMonth" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -98,21 +98,17 @@ const FreeThroughRecovery = () => {
                   </h6>
                 </div>
                 <div className="layer w-100 pX-20 pT-20">
-                  <h4 style={{ height: '20px' }} className="dynamic-chart-header" id="ftrReferralCountByMonth-header" />
+                  <div className="dynamic-chart-header" id="ftrReferralCountByMonth-header" />
                 </div>
-                <div className="layer w-100 pX-20 pT-20 row">
-                  <div className="col-md-12">
-                    <div className="layer w-100 p-20">
-                      <FtrReferralCountByMonth
-                        metricType={chartMetricType}
-                        timeWindow={chartTimeWindow}
-                        supervisionType={chartSupervisionType}
-                        district={chartDistrict}
-                        ftrReferralCountByMonth={apiData.ftr_referrals_by_month}
-                        header="ftrReferralCountByMonth-header"
-                      />
-                    </div>
-                  </div>
+                <div className="layer w-100 p-20">
+                  <FtrReferralCountByMonth
+                    metricType={chartMetricType}
+                    timeWindow={chartTimeWindow}
+                    supervisionType={chartSupervisionType}
+                    district={chartDistrict}
+                    ftrReferralCountByMonth={apiData.ftr_referrals_by_month}
+                    header="ftrReferralCountByMonth-header"
+                  />
                 </div>
                 <div className="layer bdT p-20 w-100 accordion" id="methodologyFtrReferralCountByMonth">
                   <div className="mb-0" id="methodologyHeadingFtrReferralCountByMonth">

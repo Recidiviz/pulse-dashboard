@@ -110,21 +110,17 @@ const Revocations = () => {
                   </h6>
                 </div>
                 <div className="layer w-100 pX-20 pT-20">
-                  <h4 style={{ height: '20px' }} className="dynamic-chart-header" id="revocationCountsByMonth-header" />
+                  <div className="dynamic-chart-header" id="revocationCountsByMonth-header" />
                 </div>
-                <div className="layer w-100 pX-20 pT-20 row">
-                  <div className="col-md-12">
-                    <div className="layer w-100 p-20">
-                      <RevocationCountOverTime
-                        metricType={chartMetricType}
-                        timeWindow={chartTimeWindow}
-                        supervisionType={chartSupervisionType}
-                        district={chartDistrict}
-                        revocationCountsByMonth={apiData.revocations_by_month}
-                        header="revocationCountsByMonth-header"
-                      />
-                    </div>
-                  </div>
+                <div className="layer w-100 p-20">
+                  <RevocationCountOverTime
+                    metricType={chartMetricType}
+                    timeWindow={chartTimeWindow}
+                    supervisionType={chartSupervisionType}
+                    district={chartDistrict}
+                    revocationCountsByMonth={apiData.revocations_by_month}
+                    header="revocationCountsByMonth-header"
+                  />
                 </div>
                 <div className="layer bdT p-20 w-100 accordion" id="methodologyRevocationCountsByMonth">
                   <div className="mb-0" id="methodologyHeadingRevocationCountsByMonth">
