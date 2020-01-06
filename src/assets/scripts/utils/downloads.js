@@ -76,11 +76,22 @@ function configureDataDownloadButton(
       if (dataset.label !== 'trendline') {
         const values = {};
         let i = 0;
+        let currentYear = '';
+
         dataset.data.forEach((dataPoint) => {
+          let csvLabel = chartLabels[i];
+          const currentLabelParts = chartLabels[i].split(' ');
+          if (currentLabelParts.length > 1 && currentLabelParts[1] !== currentYear) {
+            currentYear = currentLabelParts[1];
+          }
+          if (currentLabelParts.length === 1 && currentYear.length > 1) {
+            csvLabel = `${csvLabel} ${currentYear}`;
+          }
+
           if (convertValuesToNumbers === undefined || convertValuesToNumbers) {
-            values[chartLabels[i]] = Number(dataPoint);
+            values[csvLabel] = Number(dataPoint);
           } else {
-            values[chartLabels[i]] = dataPoint;
+            values[csvLabel] = dataPoint;
           }
           i += 1;
         });
