@@ -83,7 +83,6 @@ function sortAndFilterMostRecentMonths(unsortedDataPoints, monthCount) {
 function addEmptyMonthsToData(dataPoints, monthCount, valueKey, emptyValue) {
   const now = new Date();
   const thisMonth = now.getMonth() + 1;
-  const thisYear = now.getFullYear();
 
   const representedMonths = {};
   dataPoints.forEach((monthData) => {
@@ -93,14 +92,16 @@ function addEmptyMonthsToData(dataPoints, monthCount, valueKey, emptyValue) {
     representedMonths[monthData.year][monthData.month] = true;
   });
 
-  const newDataPoints = dataPoints;
+  const newDataPoints = [...dataPoints];
   for (let i = thisMonth - (monthCount - 1); i <= thisMonth; i += 1) {
     // This bizarre math avoids a JS quirk with modulo operations on negative numbers.
     // https://web.archive.org/web/20090717035140if_/javascript.about.com/od/problemsolving/a/modulobug.htm
     const remainder = ((i % 12) + 12) % 12;
-
     const month = (remainder === 0) ? 12 : remainder;
-    const year = (i <= 0) ? (thisYear - 1) : thisYear;
+
+    const monthsAgo = new Date(now.getTime());
+    monthsAgo.setMonth(now.getMonth() + i - 1);
+    const year = monthsAgo.getFullYear();
 
     if (!representedMonths[year] || !representedMonths[year][month]) {
       const monthData = {
