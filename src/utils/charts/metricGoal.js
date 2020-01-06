@@ -124,6 +124,13 @@ function getMaxForGoalAndData(goalValue, dataPoints, stepSize) {
   return (maxValue + stepSize) + (stepSize - (maxValue % stepSize));
 }
 
+function getMaxForGoalAndDataIfGoalDisplayable(goal, dataPoints, stepSize, toggleStates) {
+  if (canDisplayGoal(goal, toggleStates)) {
+    return getMaxForGoalAndData(goal.value, dataPoints, stepSize);
+  }
+  return Math.max(...dataPoints);
+}
+
 function chartAnnotationForGoal(goal, annotationId, overrides) {
   return {
     drawTime: 'afterDatasetsDraw',
@@ -181,6 +188,7 @@ export {
   getGoalForChart,
   getMaxForGoalAndData,
   getMinForGoalAndData,
+  getMaxForGoalAndDataIfGoalDisplayable,
   goalLabelContentString,
   trendlineGoalText,
   chartAnnotationForGoal,

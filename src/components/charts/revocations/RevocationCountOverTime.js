@@ -21,7 +21,7 @@ import { Line } from 'react-chartjs-2';
 import { COLORS } from '../../../assets/scripts/constants/colors';
 import { configureDownloadButtons } from '../../../assets/scripts/utils/downloads';
 import {
-  getGoalForChart, getMaxForGoalAndData, chartAnnotationForGoal,
+  getGoalForChart, getMaxForGoalAndDataIfGoalDisplayable, chartAnnotationForGoal,
 } from '../../../utils/charts/metricGoal';
 import {
   toggleLabel, getMonthCountFromTimeWindowToggle, updateTooltipForMetricType,
@@ -74,8 +74,10 @@ const RevocationCountOverTime = (props) => {
     const months = getMonthCountFromTimeWindowToggle(props.timeWindow);
     const sorted = sortFilterAndSupplementMostRecentMonths(dataPoints, months, 'value', 0);
     const chartDataValues = (sorted.map((element) => element.value));
-    const max = getMaxForGoalAndData(GOAL.value, chartDataValues, stepSize);
-    const monthNames = monthNamesWithYearsFromNumbers(sorted.map((element) => element.month), false);
+    const max = getMaxForGoalAndDataIfGoalDisplayable(GOAL, chartDataValues, stepSize, props);
+    const monthNames = monthNamesWithYearsFromNumbers(
+      sorted.map((element) => element.month), false,
+    );
 
     centerSingleMonthDatasetIfNecessary(chartDataValues, monthNames);
     setChartLabels(monthNames);
