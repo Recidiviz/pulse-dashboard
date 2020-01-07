@@ -144,7 +144,7 @@ const LsirScoreChangeSnapshot = (props) => {
           xAxes: [{
             ticks: {
               fontColor: COLORS['grey-600'],
-              autoSkip: false,
+              autoSkip: true,
             },
             scaleLabel: {
               display: true,
@@ -187,7 +187,7 @@ const LsirScoreChangeSnapshot = (props) => {
   };
   configureDownloadButtons(chartId, 'LSI-R SCORE CHANGES (AVERAGE)', chart.props.data.datasets,
     chart.props.data.labels, document.getElementById(chartId),
-    exportedStructureCallback);
+    exportedStructureCallback, true, true);
 
   const header = document.getElementById(props.header);
 

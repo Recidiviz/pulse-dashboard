@@ -109,42 +109,15 @@ class RevocationsByOffice extends Component {
 
   componentDidMount() {
     this.initializeChartData();
-
-    const exportedStructureCallback = () => (
-      {
-        metric: 'Revocations by P&P office',
-        series: [],
-      });
-
-    const revocationsByOffice = [];
-    const officeNames = [];
-    this.chartDataPoints.forEach((data) => {
-      const {
-        officeName,
-        revocationCount,
-        revocationRate,
-      } = data;
-
-      officeNames.push(officeName);
-      if (this.props.metricType === 'counts') {
-        revocationsByOffice.push(revocationCount);
-      } else if (this.props.metricType === 'rates') {
-        revocationsByOffice.push(revocationRate);
-      }
-    });
-
-    const downloadableDataFormat = [{
-      data: revocationsByOffice,
-      label: 'Revocation count',
-    }];
-
-    configureDownloadButtons(chartId, 'REVOCATIONS BY P&P OFFICE - 60 DAYS',
-      downloadableDataFormat, officeNames,
-      document.getElementById(chartId), exportedStructureCallback);
+    this.reconfigureExports();
 
     setTimeout(() => {
       ReactTooltip.rebuild();
     }, 100);
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    this.reconfigureExports();
   }
 
   setEmptyOfficeData(office) {
@@ -159,6 +132,35 @@ class RevocationsByOffice extends Component {
       };
     });
     office.officerDropdownItemId = `${this.officerDropdownId}-${toHtmlFriendly(office.officeName).toLowerCase()}`;
+  }
+
+  reconfigureExports() {
+    const exportedStructureCallback = () => (
+      {
+        metric: 'Revocations by P&P office',
+        series: [],
+      });
+
+    const revocationsByOffice = [];
+    const officeNames = [];
+    this.chartDataPoints.forEach((data) => {
+      const { officeName } = data;
+      const officeDataValue = getOfficeDataValue(
+        data, this.props.metricType, this.props.timeWindow, this.props.supervisionType,
+      );
+
+      officeNames.push(officeName);
+      revocationsByOffice.push(officeDataValue);
+    });
+
+    const downloadableDataFormat = [{
+      data: revocationsByOffice,
+      label: 'Revocation count',
+    }];
+
+    configureDownloadButtons(chartId, 'REVOCATIONS BY P&P OFFICE - 60 DAYS',
+      downloadableDataFormat, officeNames,
+      document.getElementById(chartId), exportedStructureCallback);
   }
 
   initializeChartData() {

@@ -183,22 +183,23 @@ const AdmissionCountsByType = (props) => {
     />
   );
 
+  let activeChart = countsChart;
+  if (props.metricType === 'rates') {
+    activeChart = ratesChart;
+  }
+
   const exportedStructureCallback = () => (
     {
       metric: 'Admissions by type',
       series: [],
     });
 
-  let activeChart = countsChart;
-  if (props.metricType === 'rates') {
-    activeChart = ratesChart;
-  }
+  configureDownloadButtons(chartId, 'ADMISSIONS BY TYPE - 60 DAYS', activeChart.props.data.datasets,
+    activeChart.props.data.labels, document.getElementById(chartId),
+    exportedStructureCallback);
 
   useEffect(() => {
     processResponse();
-    configureDownloadButtons(chartId, 'ADMISSIONS BY TYPE - 60 DAYS', activeChart.props.data.datasets,
-      activeChart.props.data.labels, document.getElementById(chartId),
-      exportedStructureCallback);
   }, [
     props.admissionCountsByType,
     props.metricType,

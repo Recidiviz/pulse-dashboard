@@ -220,7 +220,7 @@ const SupervisionSuccessSnapshot = (props) => {
 
   configureDownloadButtons(chartId, 'SUCCESSFUL COMPLETION OF SUPERVISION', chart.props.data.datasets,
     chart.props.data.labels, document.getElementById(chartId),
-    exportedStructureCallback);
+    exportedStructureCallback, true, true);
 
   const header = document.getElementById(props.header);
 

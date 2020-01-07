@@ -180,7 +180,7 @@ const DaysAtLibertySnapshot = (props) => {
   };
   configureDownloadButtons(chartId, 'DAYS AT LIBERTY (AVERAGE)', chart.props.data.datasets,
     chart.props.data.labels, document.getElementById(chartId),
-    exportedStructureCallback);
+    exportedStructureCallback, true, true);
 
   const header = document.getElementById(props.header);
 

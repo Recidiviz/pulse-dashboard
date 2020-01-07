@@ -67,7 +67,8 @@ function downloadObjectAsJson(exportObj, exportName) {
 }
 
 function configureDataDownloadButton(
-  chartId, chartDatasets, chartLabels, exportedStructureCallback, convertValuesToNumbers,
+  chartId, chartDatasets, chartLabels, exportedStructureCallback,
+  convertValuesToNumbers, handleTimeStringLabels,
 ) {
   return function downloadChartData() {
     const exportData = exportedStructureCallback();
@@ -80,12 +81,14 @@ function configureDataDownloadButton(
 
         dataset.data.forEach((dataPoint) => {
           let csvLabel = chartLabels[i];
-          const currentLabelParts = chartLabels[i].split(' ');
-          if (currentLabelParts.length > 1 && currentLabelParts[1] !== currentYear) {
-            currentYear = currentLabelParts[1];
-          }
-          if (currentLabelParts.length === 1 && currentYear.length > 1) {
-            csvLabel = `${csvLabel} ${currentYear}`;
+          if (handleTimeStringLabels) {
+            const currentLabelParts = chartLabels[i].split(' ');
+            if (currentLabelParts.length > 1 && currentLabelParts[1] !== currentYear) {
+              currentYear = currentLabelParts[1];
+            }
+            if (currentLabelParts.length === 1 && currentYear.length > 1) {
+              csvLabel = `${csvLabel} ${currentYear}`;
+            }
           }
 
           if (convertValuesToNumbers === undefined || convertValuesToNumbers) {
@@ -110,7 +113,7 @@ function configureDataDownloadButton(
 
 function configureDownloadButtons(
   chartId, chartTitle, chartDatasets, chartLabels, chartBox,
-  exportedStructureCallback, convertValuesToNumbers,
+  exportedStructureCallback, convertValuesToNumbers, handleTimeStringLabels,
 ) {
   const downloadChartAsImageButton = document.getElementById(`downloadChartAsImage-${chartId}`);
   if (downloadChartAsImageButton) {
@@ -122,14 +125,15 @@ function configureDownloadButtons(
   const downloadChartDataButton = document.getElementById(`downloadChartData-${chartId}`);
   if (downloadChartDataButton) {
     downloadChartDataButton.onclick = configureDataDownloadButton(
-      chartId, chartDatasets, chartLabels, exportedStructureCallback, convertValuesToNumbers,
+      chartId, chartDatasets, chartLabels, exportedStructureCallback,
+      convertValuesToNumbers, handleTimeStringLabels,
     );
   }
 }
 
 function configureDownloadButtonsRegularElement(
   chartId, chartTitle, chartDatasets, chartLabels, chartBox,
-  exportedStructureCallback, convertValuesToNumbers,
+  exportedStructureCallback, convertValuesToNumbers, handleTimeStringLabels,
 ) {
   const downloadChartAsImageButton = document.getElementById(`downloadChartAsImage-${chartId}`);
   if (downloadChartAsImageButton) {
@@ -143,7 +147,8 @@ function configureDownloadButtonsRegularElement(
   const downloadChartDataButton = document.getElementById(`downloadChartData-${chartId}`);
   if (downloadChartDataButton) {
     downloadChartDataButton.onclick = configureDataDownloadButton(
-      chartId, chartDatasets, chartLabels, exportedStructureCallback, convertValuesToNumbers,
+      chartId, chartDatasets, chartLabels, exportedStructureCallback,
+      convertValuesToNumbers, handleTimeStringLabels,
     );
   }
 }
