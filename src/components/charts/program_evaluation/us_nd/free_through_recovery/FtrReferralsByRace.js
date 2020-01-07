@@ -364,7 +364,7 @@ const FtrReferralsByRace = (props) => {
       series: [],
     });
 
-  configureDownloadButtons(chartId, 'FTR REFERRALS BY RACE - 60 DAYS',
+  configureDownloadButtons(chartId, 'FTR REFERRALS BY RACE',
     activeChart.props.data.datasets, activeChart.props.data.labels,
     document.getElementById(chartId), exportedStructureCallback);
 

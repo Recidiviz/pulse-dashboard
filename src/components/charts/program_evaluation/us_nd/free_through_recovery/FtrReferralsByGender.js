@@ -261,7 +261,7 @@ const FtrReferralsByGender = (props) => {
       series: [],
     });
 
-  configureDownloadButtons(chartId, 'FTR REFERRALS BY GENDER - 60 DAYS',
+  configureDownloadButtons(chartId, 'FTR REFERRALS BY GENDER',
     activeChart.props.data.datasets, activeChart.props.data.labels,
     document.getElementById(chartId), exportedStructureCallback);
 

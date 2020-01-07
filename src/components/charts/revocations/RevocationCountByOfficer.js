@@ -134,7 +134,7 @@ const RevocationCountByOfficer = (props) => {
 
     const humanReadableOfficerLabels = officerLabels.map((element) => `Officer ${element}`);
     const officeReadable = toHumanReadable(visibleOffice).toUpperCase();
-    const chartTitle = `REVOCATIONS BY OFFICER - ${officeReadable} - 60 DAYS`;
+    const chartTitle = `REVOCATIONS BY OFFICER - ${officeReadable}`;
 
     const convertValuesToNumbers = false;
     configureDownloadButtons(chartId, chartTitle,

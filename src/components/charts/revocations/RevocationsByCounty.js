@@ -86,7 +86,7 @@ class RevocationsByCounty extends Component {
       label: 'revocationsByCounty',
     }];
 
-    configureDownloadButtons(chartId, 'REVOCATIONS BY COUNTY - 60 DAYS',
+    configureDownloadButtons(chartId, 'REVOCATIONS BY COUNTY',
       downloadableDataFormat,
       Object.keys(this.chartDataPoints),
       document.getElementById(chartId), exportedStructureCallback);

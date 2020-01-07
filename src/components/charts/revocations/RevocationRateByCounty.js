@@ -101,7 +101,7 @@ class RevocationsByCounty extends Component {
     }];
 
     configureDownloadButtons(chartId,
-      'REVOCATION RATE BY COUNTY OF RESIDENCE - 60 DAYS',
+      'REVOCATION RATE BY COUNTY OF RESIDENCE',
       downloadableDataFormat,
       Object.keys(this.chartDataPoints),
       document.getElementById(chartId), exportedStructureCallback);

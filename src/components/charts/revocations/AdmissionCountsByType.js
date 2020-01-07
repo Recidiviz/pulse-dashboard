@@ -194,7 +194,7 @@ const AdmissionCountsByType = (props) => {
       series: [],
     });
 
-  configureDownloadButtons(chartId, 'ADMISSIONS BY TYPE - 60 DAYS', activeChart.props.data.datasets,
+  configureDownloadButtons(chartId, 'ADMISSIONS BY TYPE', activeChart.props.data.datasets,
     activeChart.props.data.labels, document.getElementById(chartId),
     exportedStructureCallback);
 

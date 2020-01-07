@@ -304,7 +304,7 @@ const FtrReferralsByLsir = (props) => {
       series: [],
     });
 
-  configureDownloadButtons(chartId, 'FTR REFERRALS BY LSI-R - 60 DAYS',
+  configureDownloadButtons(chartId, 'FTR REFERRALS BY LSI-R',
     activeChart.props.data.datasets, activeChart.props.data.labels,
     document.getElementById(chartId), exportedStructureCallback);
 

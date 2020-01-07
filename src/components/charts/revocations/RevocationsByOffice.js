@@ -158,7 +158,7 @@ class RevocationsByOffice extends Component {
       label: 'Revocation count',
     }];
 
-    configureDownloadButtons(chartId, 'REVOCATIONS BY P&P OFFICE - 60 DAYS',
+    configureDownloadButtons(chartId, 'REVOCATIONS BY P&P OFFICE',
       downloadableDataFormat, officeNames,
       document.getElementById(chartId), exportedStructureCallback);
   }

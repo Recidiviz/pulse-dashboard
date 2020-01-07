@@ -398,7 +398,7 @@ const RevocationProportionByRace = (props) => {
     activeChart = ratesChart;
   }
 
-  configureDownloadButtons(chartId, 'REVOCATIONS BY RACE - 60 DAYS',
+  configureDownloadButtons(chartId, 'REVOCATIONS BY RACE',
     activeChart.props.data.datasets, activeChart.props.data.labels,
     document.getElementById('revocationsByRace'), exportedStructureCallback);
 
