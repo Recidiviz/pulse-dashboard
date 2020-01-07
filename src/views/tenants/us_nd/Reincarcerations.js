@@ -234,8 +234,9 @@ const Reincarcerations = () => {
                   <div className="peers ai-c jc-c gapX-20">
                     <div className="peer">
                       <span className="fsz-def fw-600 mR-10 c-grey-800">
+                        /* TODO(138): Make the release cohort year dynamic ==================== */
                         <small className="c-grey-500 fw-600">Release Cohort </small>
-                        2017
+                        2018
                       </span>
                     </div>
                     <div className="peer fw-600">
