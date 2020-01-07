@@ -217,8 +217,8 @@ const Snapshots = () => {
                 <div className="layer w-100 pX-20 pT-20">
                   <h6 className="lh-1">
                     DAYS AT LIBERTY (AVERAGE)
-                    {chartMetricType !== 'counts' && (
-                      <span className="pL-10 c-orange-500 ti-alert" data-toggle="tooltip" data-placement="bottom" title="This graph is showing average days at liberty. It does not support showing this metric as a rate." />
+                    {(chartMetricType !== 'counts' || chartSupervisionType !== 'all') && (
+                      <span className="pL-10 c-orange-500 ti-alert" data-toggle="tooltip" data-placement="bottom" title="This graph is showing average days at liberty. It does not support showing this metric as a rate. It also doesn’t support showing only individuals on probation or only individuals on parole as it is not supervision-focused." />
                     )}
                     <span className="fa-pull-right">
                       <div className="dropdown show">
