@@ -400,7 +400,7 @@ const RevocationProportionByRace = (props) => {
 
   configureDownloadButtons(chartId, 'REVOCATIONS BY RACE',
     activeChart.props.data.datasets, activeChart.props.data.labels,
-    document.getElementById('revocationsByRace'), exportedStructureCallback);
+    document.getElementById('revocationsByRace'), exportedStructureCallback, props);
 
   return activeChart;
 };

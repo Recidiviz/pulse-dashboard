@@ -125,7 +125,7 @@ const ReincarcerationRateByTransitionalFacility = (props) => {
 
   configureDownloadButtons(chartId, 'REINCARCERATION RATE BY TRANSITIONAL FACILITY',
     chart.props.data.datasets, chart.props.data.labels,
-    document.getElementById(chartId), exportedStructureCallback);
+    document.getElementById(chartId), exportedStructureCallback, props);
 
   return chart;
 };

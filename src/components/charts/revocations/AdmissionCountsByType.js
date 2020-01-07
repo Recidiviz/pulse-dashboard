@@ -196,7 +196,7 @@ const AdmissionCountsByType = (props) => {
 
   configureDownloadButtons(chartId, 'ADMISSIONS BY TYPE', activeChart.props.data.datasets,
     activeChart.props.data.labels, document.getElementById(chartId),
-    exportedStructureCallback);
+    exportedStructureCallback, props);
 
   useEffect(() => {
     processResponse();

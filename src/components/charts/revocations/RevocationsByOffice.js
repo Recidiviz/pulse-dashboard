@@ -160,7 +160,7 @@ class RevocationsByOffice extends Component {
 
     configureDownloadButtons(chartId, 'REVOCATIONS BY P&P OFFICE',
       downloadableDataFormat, officeNames,
-      document.getElementById(chartId), exportedStructureCallback);
+      document.getElementById(chartId), exportedStructureCallback, this.props);
   }
 
   initializeChartData() {

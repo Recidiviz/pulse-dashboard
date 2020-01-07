@@ -132,7 +132,7 @@ const ReincarcerationRateByStayLength = (props) => {
 
   configureDownloadButtons(chartId, 'REINCARCERATION RATE BY PREVIOUS STAY LENGTH',
     chart.props.data.datasets, chart.props.data.labels,
-    document.getElementById(chartId), exportedStructureCallback);
+    document.getElementById(chartId), exportedStructureCallback, props);
 
   return chart;
 };

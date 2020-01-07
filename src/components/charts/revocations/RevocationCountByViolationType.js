@@ -204,7 +204,7 @@ const RevocationCountByViolationType = (props) => {
 
   configureDownloadButtons(chartId, 'REVOCATIONS BY VIOLATION TYPE',
     chart.props.data.datasets, chart.props.data.labels,
-    document.getElementById(chartId), exportedStructureCallback, true, true);
+    document.getElementById(chartId), exportedStructureCallback, props, true, true);
 
   return chart;
 };

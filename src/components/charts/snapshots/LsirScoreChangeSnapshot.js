@@ -187,7 +187,7 @@ const LsirScoreChangeSnapshot = (props) => {
   };
   configureDownloadButtons(chartId, 'LSI-R SCORE CHANGES (AVERAGE)', chart.props.data.datasets,
     chart.props.data.labels, document.getElementById(chartId),
-    exportedStructureCallback, true, true);
+    exportedStructureCallback, props, true, true);
 
   const header = document.getElementById(props.header);
 

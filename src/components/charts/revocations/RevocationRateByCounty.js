@@ -104,7 +104,7 @@ class RevocationsByCounty extends Component {
       'REVOCATION RATE BY COUNTY OF RESIDENCE',
       downloadableDataFormat,
       Object.keys(this.chartDataPoints),
-      document.getElementById(chartId), exportedStructureCallback);
+      document.getElementById(chartId), exportedStructureCallback, this.props);
 
     setTimeout(() => {
       ReactTooltip.rebuild();

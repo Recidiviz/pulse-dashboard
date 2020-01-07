@@ -89,7 +89,7 @@ class RevocationsByCounty extends Component {
     configureDownloadButtons(chartId, 'REVOCATIONS BY COUNTY',
       downloadableDataFormat,
       Object.keys(this.chartDataPoints),
-      document.getElementById(chartId), exportedStructureCallback);
+      document.getElementById(chartId), exportedStructureCallback, props);
 
     setTimeout(() => {
       ReactTooltip.rebuild();

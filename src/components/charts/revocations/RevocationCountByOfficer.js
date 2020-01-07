@@ -139,7 +139,7 @@ const RevocationCountByOfficer = (props) => {
     const convertValuesToNumbers = false;
     configureDownloadButtons(chartId, chartTitle,
       downloadableDataFormat, humanReadableOfficerLabels, document.getElementById(chartId),
-      exportedStructureCallback, convertValuesToNumbers);
+      exportedStructureCallback, props, convertValuesToNumbers);
   }
 
   const processResponse = () => {
