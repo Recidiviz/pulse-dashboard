@@ -116,6 +116,8 @@ const Snapshots = () => {
                 <div className="layer w-100 p-20">
                   <div className="ai-c jc-c gapX-20">
                     <div className="col-md-12">
+                      { /* TODO(XXX): Figure out why map will not show when delegated to by the Chart.js
+                      chart. Then we can just encapsulate this logic inside of a single component. */ }
                       {geoViewEnabledSCOS === false && (
                         <SupervisionSuccessSnapshot
                           metricType={chartMetricType}
@@ -133,6 +135,7 @@ const Snapshots = () => {
                           metricType={chartMetricType}
                           timeWindow={chartTimeWindow}
                           supervisionType={chartSupervisionType}
+                          keyedByOffice={true}
                           officeData={apiData.site_offices}
                           dataPointsByOffice={apiData.supervision_termination_by_type_over_time_window}
                           numeratorKeys={['revocation_termination']}
@@ -224,6 +227,7 @@ const Snapshots = () => {
                           chartTitle="PRISON ADMISSIONS DUE TO REVOCATION"
                           metricType={chartMetricType}
                           timeWindow={chartTimeWindow}
+                          keyedByOffice={true}
                           officeData={apiData.site_offices}
                           dataPointsByOffice={apiData.admissions_by_type_over_time_window}
                           numeratorKeys={['technicals', 'non_technicals', 'unknown_revocations']}
@@ -381,6 +385,7 @@ const Snapshots = () => {
                           metricType="counts"
                           timeWindow={chartTimeWindow}
                           supervisionType={chartSupervisionType}
+                          keyedByOffice={true}
                           officeData={apiData.site_offices}
                           dataPointsByOffice={apiData.average_change_lsir_score_over_time_window}
                           numeratorKeys={['average_change']}

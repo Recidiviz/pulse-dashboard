@@ -32,7 +32,7 @@ import { COLORS } from '../../assets/scripts/constants/colors';
 import { configureDownloadButtons } from '../../assets/scripts/utils/downloads';
 import geographyObject from '../../assets/static/maps/us_nd.json';
 import { colorForValue } from '../../utils/charts/choropleth';
-import { toHtmlFriendly, toInt } from '../../utils/transforms/labels';
+import { toHtmlFriendly } from '../../utils/transforms/labels';
 
 const minMarkerRadius = 10;
 const maxMarkerRadius = 35;
@@ -48,6 +48,15 @@ function normalizedSupervisionTypeKey(supervisionType) {
     return 'none';
   }
   return supervisionType.toLowerCase();
+}
+
+function normalizedCountyName(geographyNameForCounty) {
+  return `${toHtmlFriendly(geographyNameForCounty).toLowerCase()}-county`;
+}
+
+function getOfficeForCounty(offices, geographyNameForCounty) {
+  const countyName = normalizedCountyName(geographyNameForCounty);
+  return offices[countyName];
 }
 
 function getOfficeDataValue(office, metricType, timeWindow, supervisionType) {
@@ -106,7 +115,11 @@ function radiusOfMarker(office, maxValues, metricType, timeWindow, supervisionTy
 }
 
 function toggleTooltip(office, metricType, timeWindow, supervisionType) {
-  const value = getOfficeDataValue(office, metricType, timeWindow, supervisionType);
+  let value = 0;
+  if (office) {
+    value = getOfficeDataValue(office, metricType, timeWindow, supervisionType);
+  }
+
   if (metricType === 'counts') {
     return `${office.officeName}: ${value}`;
   }
@@ -114,12 +127,31 @@ function toggleTooltip(office, metricType, timeWindow, supervisionType) {
   return `${office.officeName}: ${value}%`;
 }
 
-function colorForMarker(office, maxValues, metricType, timeWindow, supervisionType) {
+function toggleTooltipForCounty(offices, geographyNameForCounty, metricType, timeWindow, supervisionType) {
+  const countyName = normalizedCountyName(geographyNameForCounty);
+  const office = offices[countyName];
+
+  let value = 0;
+  if (office) {
+    value = getOfficeDataValue(office, metricType, timeWindow, supervisionType);
+  }
+
+  if (metricType === 'counts') {
+    return `${geographyNameForCounty}: ${value}`;
+  }
+  return `${geographyNameForCounty}: ${value}%`;
+}
+
+function colorForMarker(office, maxValues, metricType, timeWindow, supervisionType, useDarkMode) {
   const supervisionTypeKey = normalizedSupervisionTypeKey(supervisionType);
-  const dataValue = getOfficeDataValue(office, metricType, timeWindow, supervisionType);
+
+  let dataValue = 0;
+  if (office) {
+    dataValue = getOfficeDataValue(office, metricType, timeWindow, supervisionType);
+  }
   const maxValue = relatedMaxValue(maxValues, metricType, timeWindow, supervisionTypeKey);
 
-  return colorForValue(Math.abs(dataValue), maxValue, true);
+  return colorForValue(Math.abs(dataValue), maxValue, useDarkMode);
 }
 
 function sortChartDataPoints(dataPoints, metricType, timeWindow, supervisionType) {
@@ -208,7 +240,7 @@ class GeoViewTimeChart extends Component {
     this.initializeMaxValues();
 
     if (this.officeData) {
-      // Load office metadata
+      // Load office metadata from explicit dataset
       this.officeData.forEach((officeData) => {
         const {
           site_name: name,
@@ -227,6 +259,23 @@ class GeoViewTimeChart extends Component {
         const officeNameKey = normalizedOfficeKey(name);
         this.offices[officeNameKey] = office;
         this.officeKeys.push(officeNameKey);
+      });
+    } else {
+      // Load office metadata from district labels provided in the value dataset
+      this.dataPointsByOffice.forEach((data) => {
+        const { district } = data;
+
+        const officeNameKey = normalizedOfficeKey(district);
+        const office = this.offices[officeNameKey];
+        if (!office) {
+          const newOffice = {
+            officeName: district,
+            dataValues: {},
+          };
+
+          this.offices[officeNameKey] = newOffice;
+          this.officeKeys.push(officeNameKey);
+        }
       });
     }
 
@@ -317,73 +366,126 @@ class GeoViewTimeChart extends Component {
   }
 
   render() {
+    if (this.props.keyedByOffice) {
+      // Show a choropleth map with colored, sized circles for P&P offices
+      return (
+        <div className="map-container">
+          <ComposableMap
+            projection={geoAlbersUsa}
+            projectionConfig={{ scale: 1000 }}
+            width={980}
+            height={580}
+            style={{
+              width: '100%',
+              height: 'auto',
+            }}
+          >
+            <ZoomableGroup center={[this.props.centerLong, this.props.centerLat]} zoom={8.2}>
+              <Geographies geography={geographyObject}>
+                {(geographies, projection) => geographies.map((geography) => (
+                  <Geography
+                    key={geography.properties.NAME}
+                    geography={geography}
+                    projection={projection}
+                    style={{
+                      default: {
+                        fill: '#F5F6F7',
+                        stroke: COLORS['grey-300'],
+                        strokeWidth: 0.2,
+                        outline: 'none',
+                      },
+                      hover: {
+                        fill: '#F5F6F7',
+                        stroke: COLORS['grey-300'],
+                        strokeWidth: 0.2,
+                        outline: 'none',
+                      },
+                      pressed: {
+                        fill: '#F5F6F7',
+                        stroke: COLORS['grey-300'],
+                        strokeWidth: 0.2,
+                        outline: 'none',
+                      },
+                    }}
+                  />
+                ))
+                }
+              </Geographies>
+              <Markers>
+                {this.chartDataPoints.map((office) => (
+                  <Marker
+                    key={office.officeName}
+                    marker={office}
+                    style={{
+                      default: {
+                        fill: colorForMarker(office, this.maxValues, this.props.metricType, this.props.timeWindow, this.props.supervisionType, false),
+                        stroke: '#F5F6F7',
+                        strokeWidth: '3',
+                      },
+                      hover: { fill: COLORS['blue-standard'] },
+                      pressed: { fill: COLORS['blue-standard'] },
+                    }}
+                  >
+                    <circle
+                      data-tip={toggleTooltip(office, this.props.metricType, this.props.timeWindow, this.props.supervisionType)}
+                      cx={0}
+                      cy={0}
+                      r={radiusOfMarker(office, this.maxValues, this.props.metricType, this.props.timeWindow, this.props.supervisionType)}
+                    />
+                  </Marker>
+                ))}
+              </Markers>
+            </ZoomableGroup>
+          </ComposableMap>
+          <ReactTooltip />
+        </div>
+      );
+    }
+
+    // Show just a regular choropleth, with no circles for offices
     return (
-      <div className="map-container">
+      <div className="map-container" id={this.props.chartId}>
         <ComposableMap
           projection={geoAlbersUsa}
           projectionConfig={{ scale: 1000 }}
           width={980}
-          height={580}
+          height={500}
           style={{
             width: '100%',
             height: 'auto',
           }}
         >
-          <ZoomableGroup center={[this.props.centerLong, this.props.centerLat]} zoom={8.2}>
-            <Geographies geography={geographyObject}>
+          <ZoomableGroup center={[this.props.centerLong, this.props.centerLat]} zoom={7} disablePanning>
+            <Geographies geography={geographyObject} disableOptimization>
               {(geographies, projection) => geographies.map((geography) => (
                 <Geography
                   key={geography.properties.NAME}
+                  data-tip={toggleTooltipForCounty(this.offices, geography.properties.NAME, this.props.metricType, this.props.timeWindow, this.props.supervisionType)}
                   geography={geography}
                   projection={projection}
                   style={{
                     default: {
-                      fill: '#F5F6F7',
-                      stroke: COLORS['grey-300'],
+                      fill: colorForMarker(getOfficeForCounty(this.offices, geography.properties.NAME), this.maxValues, this.props.metricType, this.props.timeWindow, this.props.supervisionType, false),
+                      stroke: COLORS['grey-700'],
                       strokeWidth: 0.2,
                       outline: 'none',
                     },
                     hover: {
-                      fill: '#F5F6F7',
-                      stroke: COLORS['grey-300'],
+                      fill: colorForMarker(getOfficeForCounty(this.offices, geography.properties.NAME), this.maxValues, this.props.metricType, this.props.timeWindow, this.props.supervisionType, true),
+                      stroke: COLORS['grey-700'],
                       strokeWidth: 0.2,
                       outline: 'none',
                     },
                     pressed: {
-                      fill: '#F5F6F7',
-                      stroke: COLORS['grey-300'],
+                      fill: '#CFD8DC',
+                      stroke: COLORS['grey-700'],
                       strokeWidth: 0.2,
                       outline: 'none',
                     },
                   }}
                 />
-              ))
-              }
-            </Geographies>
-            <Markers>
-              {this.chartDataPoints.map((office) => (
-                <Marker
-                  key={office.officeName}
-                  marker={office}
-                  style={{
-                    default: {
-                      fill: colorForMarker(office, this.maxValues, this.props.metricType, this.props.timeWindow, this.props.supervisionType),
-                      stroke: '#F5F6F7',
-                      strokeWidth: '3',
-                    },
-                    hover: { fill: COLORS['blue-standard'] },
-                    pressed: { fill: COLORS['blue-standard'] },
-                  }}
-                >
-                  <circle
-                    data-tip={toggleTooltip(office, this.props.metricType, this.props.timeWindow, this.props.supervisionType)}
-                    cx={0}
-                    cy={0}
-                    r={radiusOfMarker(office, this.maxValues, this.props.metricType, this.props.timeWindow, this.props.supervisionType)}
-                  />
-                </Marker>
               ))}
-            </Markers>
+            </Geographies>
           </ZoomableGroup>
         </ComposableMap>
         <ReactTooltip />

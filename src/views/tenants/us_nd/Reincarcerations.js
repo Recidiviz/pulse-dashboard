@@ -28,7 +28,9 @@ import ReincarcerationCountOverTime
   from '../../../components/charts/reincarcerations/ReincarcerationCountOverTime';
 import ReincarcerationRateByStayLength
   from '../../../components/charts/reincarcerations/ReincarcerationRateByStayLength';
+import GeoViewTimeChart from '../../../components/charts/GeoViewTimeChart';
 
+import GeoViewToggle from '../../../components/toggles/GeoViewToggle';
 import ToggleBar from '../../../components/toggles/ToggleBar';
 import * as ToggleDefaults from '../../../components/toggles/ToggleDefaults';
 
@@ -39,6 +41,8 @@ const Reincarcerations = () => {
   const [chartMetricType, setChartMetricType] = useState(ToggleDefaults.metricType);
   const [chartTimeWindow, setChartTimeWindow] = useState(ToggleDefaults.timeWindow);
   const [chartDistrict, setChartDistrict] = useState(ToggleDefaults.district);
+  const [geoViewEnabledRCOT, setGeoViewEnabledRCOT] = useState(ToggleDefaults.geoView);
+  const [geoViewEnabledAVR, setGeoViewEnabledAVR] = useState(ToggleDefaults.geoView);
 
   $(() => {
     $('[data-toggle="tooltip"]').tooltip();
@@ -89,24 +93,47 @@ const Reincarcerations = () => {
                           Export
                         </a>
                         <div className="dropdown-menu" aria-labelledby="exportDropdownMenuButton-reincarcerationCountsByMonth">
-                          <a className="dropdown-item" id="downloadChartAsImage-reincarcerationCountsByMonth" href="javascript:void(0);">Export image</a>
+                          {geoViewEnabledRCOT === false && (
+                            <a className="dropdown-item" id="downloadChartAsImage-reincarcerationCountsByMonth" href="javascript:void(0);">Export image</a>
+                          )}
                           <a className="dropdown-item" id="downloadChartData-reincarcerationCountsByMonth" href="javascript:void(0);">Export data</a>
                         </div>
                       </div>
                     </span>
                   </h6>
                 </div>
+                <div className="layer w-100 pX-20 pT-10">
+                  <GeoViewToggle setGeoViewEnabled={setGeoViewEnabledRCOT} />
+                </div>
                 <div className="layer w-100 pX-20 pT-20">
-                  <div className="dynamic-chart-header" id="reincarcerationCountsByMonth-header" />
+                  {geoViewEnabledRCOT === false && (
+                    <div className="dynamic-chart-header" id="reincarcerationCountsByMonth-header" />
+                  )}
                 </div>
                 <div className="layer w-100 p-20">
-                  <ReincarcerationCountOverTime
-                    metricType={chartMetricType}
-                    timeWindow={chartTimeWindow}
-                    district={chartDistrict}
-                    reincarcerationCountsByMonth={apiData.reincarcerations_by_month}
-                    header="reincarcerationCountsByMonth-header"
-                  />
+                  {geoViewEnabledRCOT === false && (
+                    <ReincarcerationCountOverTime
+                      metricType={chartMetricType}
+                      timeWindow={chartTimeWindow}
+                      district={chartDistrict}
+                      reincarcerationCountsByMonth={apiData.reincarcerations_by_month}
+                      header="reincarcerationCountsByMonth-header"
+                    />
+                  )}
+                  {geoViewEnabledRCOT === true && (
+                    <GeoViewTimeChart
+                      chartId="reincarcerationCountsByMonth"
+                      chartTitle="REINCARCERATIONS BY MONTH"
+                      metricType={chartMetricType}
+                      timeWindow={chartTimeWindow}
+                      keyedByOffice={false}
+                      dataPointsByOffice={apiData.reincarcerations_over_time_window}
+                      numeratorKeys={['returns']}
+                      denominatorKeys={['total_admissions']}
+                      centerLat={47.3}
+                      centerLong={-100.5}
+                    />
+                  )}
                 </div>
                 <div className="layer bdT p-20 w-100 accordion" id="methodologyReincarcerationCountsByMonth">
                   <div className="mb-0" id="methodologyHeadingReincarcerationCountsByMonth">
@@ -150,24 +177,47 @@ const Reincarcerations = () => {
                           Export
                         </a>
                         <div className="dropdown-menu" aria-labelledby="exportDropdownMenuButton-admissionsVsReleases">
-                          <a className="dropdown-item" id="downloadChartAsImage-admissionsVsReleases" href="javascript:void(0);">Export image</a>
+                          {geoViewEnabledAVR === false && (
+                            <a className="dropdown-item" id="downloadChartAsImage-admissionsVsReleases" href="javascript:void(0);">Export image</a>
+                          )}
                           <a className="dropdown-item" id="downloadChartData-admissionsVsReleases" href="javascript:void(0);">Export data</a>
                         </div>
                       </div>
                     </span>
                   </h6>
                 </div>
+                <div className="layer w-100 pX-20 pT-10">
+                  <GeoViewToggle setGeoViewEnabled={setGeoViewEnabledAVR} />
+                </div>
                 <div className="layer w-100 pX-20 pT-20">
-                  <div className="dynamic-chart-header" id="admissionsVsReleases-header" />
+                  {geoViewEnabledAVR === false && (
+                    <div className="dynamic-chart-header" id="admissionsVsReleases-header" />
+                  )}
                 </div>
                 <div className="layer w-100 p-20">
-                  <AdmissionsVsReleases
-                    metricType={chartMetricType}
-                    timeWindow={chartTimeWindow}
-                    district={chartDistrict}
-                    admissionsVsReleases={apiData.admissions_versus_releases_by_month}
-                    header="admissionsVsReleases-header"
-                  />
+                  {geoViewEnabledAVR === false && (
+                    <AdmissionsVsReleases
+                      metricType={chartMetricType}
+                      timeWindow={chartTimeWindow}
+                      district={chartDistrict}
+                      admissionsVsReleases={apiData.admissions_versus_releases_by_month}
+                      header="admissionsVsReleases-header"
+                    />
+                  )}
+                  {geoViewEnabledAVR === true && (
+                    <GeoViewTimeChart
+                      chartId="admissionsVsReleases"
+                      chartTitle="ADMISSIONS VERSUS RELEASES"
+                      metricType={chartMetricType}
+                      timeWindow={chartTimeWindow}
+                      keyedByOffice={false}
+                      dataPointsByOffice={apiData.admissions_versus_releases_over_time_window}
+                      numeratorKeys={['population_change']}
+                      denominatorKeys={['month_end_population']}
+                      centerLat={47.3}
+                      centerLong={-100.5}
+                    />
+                  )}
                 </div>
                 <div className="layer bdT p-20 w-100 accordion" id="methodologyAdmissionsVsReleases">
                   <div className="mb-0" id="methodologyHeadingAdmissionsVsReleases">

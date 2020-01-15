@@ -47,7 +47,7 @@
 {"state_code":"US_DEMO","year":"2017","month":"1","population_change":"1","month_end_population":"47","district":"stutsman-county"}
 {"state_code":"US_DEMO","year":"2017","month":"1","population_change":"0","month_end_population":"7","district":"towner-county"}
 {"state_code":"US_DEMO","year":"2017","month":"1","population_change":"0","month_end_population":"40","district":"traill-county"}
-{"state_code":"US_DEMO","year":"2017","month":"1","population_change":"0","month_end_population":"30","district":"walsh-county,"}
+{"state_code":"US_DEMO","year":"2017","month":"1","population_change":"0","month_end_population":"30","district":"walsh-county"}
 {"state_code":"US_DEMO","year":"2017","month":"1","population_change":"0","month_end_population":"10","district":"ward-county"}
 {"state_code":"US_DEMO","year":"2017","month":"1","population_change":"0","month_end_population":"4","district":"wells-county"}
 {"state_code":"US_DEMO","year":"2017","month":"1","population_change":"0","month_end_population":"29","district":"williams-county"}
@@ -100,7 +100,7 @@
 {"state_code":"US_DEMO","year":"2017","month":"2","population_change":"0","month_end_population":"4","district":"stutsman-county"}
 {"state_code":"US_DEMO","year":"2017","month":"2","population_change":"1","month_end_population":"96","district":"towner-county"}
 {"state_code":"US_DEMO","year":"2017","month":"2","population_change":"0","month_end_population":"2","district":"traill-county"}
-{"state_code":"US_DEMO","year":"2017","month":"2","population_change":"1","month_end_population":"7","district":"walsh-county,"}
+{"state_code":"US_DEMO","year":"2017","month":"2","population_change":"1","month_end_population":"7","district":"walsh-county"}
 {"state_code":"US_DEMO","year":"2017","month":"2","population_change":"0","month_end_population":"51","district":"ward-county"}
 {"state_code":"US_DEMO","year":"2017","month":"2","population_change":"0","month_end_population":"43","district":"wells-county"}
 {"state_code":"US_DEMO","year":"2017","month":"2","population_change":"0","month_end_population":"153","district":"williams-county"}
@@ -153,7 +153,7 @@
 {"state_code":"US_DEMO","year":"2017","month":"3","population_change":"0","month_end_population":"38","district":"stutsman-county"}
 {"state_code":"US_DEMO","year":"2017","month":"3","population_change":"0","month_end_population":"27","district":"towner-county"}
 {"state_code":"US_DEMO","year":"2017","month":"3","population_change":"0","month_end_population":"18","district":"traill-county"}
-{"state_code":"US_DEMO","year":"2017","month":"3","population_change":"0","month_end_population":"14","district":"walsh-county,"}
+{"state_code":"US_DEMO","year":"2017","month":"3","population_change":"0","month_end_population":"14","district":"walsh-county"}
 {"state_code":"US_DEMO","year":"2017","month":"3","population_change":"0","month_end_population":"73","district":"ward-county"}
 {"state_code":"US_DEMO","year":"2017","month":"3","population_change":"0","month_end_population":"28","district":"wells-county"}
 {"state_code":"US_DEMO","year":"2017","month":"3","population_change":"0","month_end_population":"25","district":"williams-county"}
@@ -206,7 +206,7 @@
 {"state_code":"US_DEMO","year":"2017","month":"4","population_change":"0","month_end_population":"31","district":"stutsman-county"}
 {"state_code":"US_DEMO","year":"2017","month":"4","population_change":"0","month_end_population":"50","district":"towner-county"}
 {"state_code":"US_DEMO","year":"2017","month":"4","population_change":"0","month_end_population":"5","district":"traill-county"}
-{"state_code":"US_DEMO","year":"2017","month":"4","population_change":"0","month_end_population":"15","district":"walsh-county,"}
+{"state_code":"US_DEMO","year":"2017","month":"4","population_change":"0","month_end_population":"15","district":"walsh-county"}
 {"state_code":"US_DEMO","year":"2017","month":"4","population_change":"0","month_end_population":"4","district":"ward-county"}
 {"state_code":"US_DEMO","year":"2017","month":"4","population_change":"0","month_end_population":"19","district":"wells-county"}
 {"state_code":"US_DEMO","year":"2017","month":"4","population_change":"0","month_end_population":"13","district":"williams-county"}
@@ -259,7 +259,7 @@
 {"state_code":"US_DEMO","year":"2017","month":"5","population_change":"0","month_end_population":"12","district":"stutsman-county"}
 {"state_code":"US_DEMO","year":"2017","month":"5","population_change":"0","month_end_population":"8","district":"towner-county"}
 {"state_code":"US_DEMO","year":"2017","month":"5","population_change":"0","month_end_population":"4","district":"traill-county"}
-{"state_code":"US_DEMO","year":"2017","month":"5","population_change":"0","month_end_population":"24","district":"walsh-county,"}
+{"state_code":"US_DEMO","year":"2017","month":"5","population_change":"0","month_end_population":"24","district":"walsh-county"}
 {"state_code":"US_DEMO","year":"2017","month":"5","population_change":"0","month_end_population":"38","district":"ward-county"}
 {"state_code":"US_DEMO","year":"2017","month":"5","population_change":"0","month_end_population":"33","district":"wells-county"}
 {"state_code":"US_DEMO","year":"2017","month":"5","population_change":"0","month_end_population":"18","district":"williams-county"}
@@ -312,7 +312,7 @@
 {"state_code":"US_DEMO","year":"2017","month":"6","population_change":"0","month_end_population":"31","district":"stutsman-county"}
 {"state_code":"US_DEMO","year":"2017","month":"6","population_change":"0","month_end_population":"6","district":"towner-county"}
 {"state_code":"US_DEMO","year":"2017","month":"6","population_change":"-2","month_end_population":"31","district":"traill-county"}
-{"state_code":"US_DEMO","year":"2017","month":"6","population_change":"0","month_end_population":"59","district":"walsh-county,"}
+{"state_code":"US_DEMO","year":"2017","month":"6","population_change":"0","month_end_population":"59","district":"walsh-county"}
 {"state_code":"US_DEMO","year":"2017","month":"6","population_change":"-1","month_end_population":"13","district":"ward-county"}
 {"state_code":"US_DEMO","year":"2017","month":"6","population_change":"0","month_end_population":"12","district":"wells-county"}
 {"state_code":"US_DEMO","year":"2017","month":"6","population_change":"0","month_end_population":"34","district":"williams-county"}
@@ -365,7 +365,7 @@
 {"state_code":"US_DEMO","year":"2017","month":"7","population_change":"0","month_end_population":"138","district":"stutsman-county"}
 {"state_code":"US_DEMO","year":"2017","month":"7","population_change":"0","month_end_population":"19","district":"towner-county"}
 {"state_code":"US_DEMO","year":"2017","month":"7","population_change":"0","month_end_population":"22","district":"traill-county"}
-{"state_code":"US_DEMO","year":"2017","month":"7","population_change":"0","month_end_population":"25","district":"walsh-county,"}
+{"state_code":"US_DEMO","year":"2017","month":"7","population_change":"0","month_end_population":"25","district":"walsh-county"}
 {"state_code":"US_DEMO","year":"2017","month":"7","population_change":"0","month_end_population":"10","district":"ward-county"}
 {"state_code":"US_DEMO","year":"2017","month":"7","population_change":"0","month_end_population":"56","district":"wells-county"}
 {"state_code":"US_DEMO","year":"2017","month":"7","population_change":"0","month_end_population":"29","district":"williams-county"}
@@ -418,7 +418,7 @@
 {"state_code":"US_DEMO","year":"2017","month":"8","population_change":"-1","month_end_population":"32","district":"stutsman-county"}
 {"state_code":"US_DEMO","year":"2017","month":"8","population_change":"0","month_end_population":"16","district":"towner-county"}
 {"state_code":"US_DEMO","year":"2017","month":"8","population_change":"0","month_end_population":"0","district":"traill-county"}
-{"state_code":"US_DEMO","year":"2017","month":"8","population_change":"-1","month_end_population":"18","district":"walsh-county,"}
+{"state_code":"US_DEMO","year":"2017","month":"8","population_change":"-1","month_end_population":"18","district":"walsh-county"}
 {"state_code":"US_DEMO","year":"2017","month":"8","population_change":"-1","month_end_population":"146","district":"ward-county"}
 {"state_code":"US_DEMO","year":"2017","month":"8","population_change":"-1","month_end_population":"46","district":"wells-county"}
 {"state_code":"US_DEMO","year":"2017","month":"8","population_change":"0","month_end_population":"85","district":"williams-county"}
@@ -471,7 +471,7 @@
 {"state_code":"US_DEMO","year":"2017","month":"9","population_change":"0","month_end_population":"21","district":"stutsman-county"}
 {"state_code":"US_DEMO","year":"2017","month":"9","population_change":"0","month_end_population":"11","district":"towner-county"}
 {"state_code":"US_DEMO","year":"2017","month":"9","population_change":"0","month_end_population":"30","district":"traill-county"}
-{"state_code":"US_DEMO","year":"2017","month":"9","population_change":"0","month_end_population":"35","district":"walsh-county,"}
+{"state_code":"US_DEMO","year":"2017","month":"9","population_change":"0","month_end_population":"35","district":"walsh-county"}
 {"state_code":"US_DEMO","year":"2017","month":"9","population_change":"0","month_end_population":"54","district":"ward-county"}
 {"state_code":"US_DEMO","year":"2017","month":"9","population_change":"0","month_end_population":"15","district":"wells-county"}
 {"state_code":"US_DEMO","year":"2017","month":"9","population_change":"0","month_end_population":"25","district":"williams-county"}
@@ -524,7 +524,7 @@
 {"state_code":"US_DEMO","year":"2017","month":"10","population_change":"0","month_end_population":"51","district":"stutsman-county"}
 {"state_code":"US_DEMO","year":"2017","month":"10","population_change":"0","month_end_population":"33","district":"towner-county"}
 {"state_code":"US_DEMO","year":"2017","month":"10","population_change":"0","month_end_population":"37","district":"traill-county"}
-{"state_code":"US_DEMO","year":"2017","month":"10","population_change":"0","month_end_population":"15","district":"walsh-county,"}
+{"state_code":"US_DEMO","year":"2017","month":"10","population_change":"0","month_end_population":"15","district":"walsh-county"}
 {"state_code":"US_DEMO","year":"2017","month":"10","population_change":"0","month_end_population":"40","district":"ward-county"}
 {"state_code":"US_DEMO","year":"2017","month":"10","population_change":"0","month_end_population":"19","district":"wells-county"}
 {"state_code":"US_DEMO","year":"2017","month":"10","population_change":"0","month_end_population":"95","district":"williams-county"}
@@ -577,7 +577,7 @@
 {"state_code":"US_DEMO","year":"2017","month":"11","population_change":"0","month_end_population":"5","district":"stutsman-county"}
 {"state_code":"US_DEMO","year":"2017","month":"11","population_change":"0","month_end_population":"7","district":"towner-county"}
 {"state_code":"US_DEMO","year":"2017","month":"11","population_change":"-1","month_end_population":"22","district":"traill-county"}
-{"state_code":"US_DEMO","year":"2017","month":"11","population_change":"0","month_end_population":"45","district":"walsh-county,"}
+{"state_code":"US_DEMO","year":"2017","month":"11","population_change":"0","month_end_population":"45","district":"walsh-county"}
 {"state_code":"US_DEMO","year":"2017","month":"11","population_change":"-1","month_end_population":"30","district":"ward-county"}
 {"state_code":"US_DEMO","year":"2017","month":"11","population_change":"0","month_end_population":"27","district":"wells-county"}
 {"state_code":"US_DEMO","year":"2017","month":"11","population_change":"-1","month_end_population":"34","district":"williams-county"}
@@ -630,7 +630,7 @@
 {"state_code":"US_DEMO","year":"2017","month":"12","population_change":"0","month_end_population":"59","district":"stutsman-county"}
 {"state_code":"US_DEMO","year":"2017","month":"12","population_change":"0","month_end_population":"62","district":"towner-county"}
 {"state_code":"US_DEMO","year":"2017","month":"12","population_change":"0","month_end_population":"128","district":"traill-county"}
-{"state_code":"US_DEMO","year":"2017","month":"12","population_change":"-1","month_end_population":"51","district":"walsh-county,"}
+{"state_code":"US_DEMO","year":"2017","month":"12","population_change":"-1","month_end_population":"51","district":"walsh-county"}
 {"state_code":"US_DEMO","year":"2017","month":"12","population_change":"0","month_end_population":"30","district":"ward-county"}
 {"state_code":"US_DEMO","year":"2017","month":"12","population_change":"0","month_end_population":"7","district":"wells-county"}
 {"state_code":"US_DEMO","year":"2017","month":"12","population_change":"0","month_end_population":"12","district":"williams-county"}
@@ -683,7 +683,7 @@
 {"state_code":"US_DEMO","year":"2018","month":"1","population_change":"0","month_end_population":"161","district":"stutsman-county"}
 {"state_code":"US_DEMO","year":"2018","month":"1","population_change":"0","month_end_population":"40","district":"towner-county"}
 {"state_code":"US_DEMO","year":"2018","month":"1","population_change":"0","month_end_population":"21","district":"traill-county"}
-{"state_code":"US_DEMO","year":"2018","month":"1","population_change":"0","month_end_population":"5","district":"walsh-county,"}
+{"state_code":"US_DEMO","year":"2018","month":"1","population_change":"0","month_end_population":"5","district":"walsh-county"}
 {"state_code":"US_DEMO","year":"2018","month":"1","population_change":"0","month_end_population":"2","district":"ward-county"}
 {"state_code":"US_DEMO","year":"2018","month":"1","population_change":"0","month_end_population":"3","district":"wells-county"}
 {"state_code":"US_DEMO","year":"2018","month":"1","population_change":"0","month_end_population":"53","district":"williams-county"}
@@ -736,7 +736,7 @@
 {"state_code":"US_DEMO","year":"2018","month":"2","population_change":"1","month_end_population":"25","district":"stutsman-county"}
 {"state_code":"US_DEMO","year":"2018","month":"2","population_change":"0","month_end_population":"47","district":"towner-county"}
 {"state_code":"US_DEMO","year":"2018","month":"2","population_change":"0","month_end_population":"79","district":"traill-county"}
-{"state_code":"US_DEMO","year":"2018","month":"2","population_change":"0","month_end_population":"16","district":"walsh-county,"}
+{"state_code":"US_DEMO","year":"2018","month":"2","population_change":"0","month_end_population":"16","district":"walsh-county"}
 {"state_code":"US_DEMO","year":"2018","month":"2","population_change":"0","month_end_population":"8","district":"ward-county"}
 {"state_code":"US_DEMO","year":"2018","month":"2","population_change":"0","month_end_population":"74","district":"wells-county"}
 {"state_code":"US_DEMO","year":"2018","month":"2","population_change":"0","month_end_population":"37","district":"williams-county"}
@@ -789,7 +789,7 @@
 {"state_code":"US_DEMO","year":"2018","month":"3","population_change":"0","month_end_population":"15","district":"stutsman-county"}
 {"state_code":"US_DEMO","year":"2018","month":"3","population_change":"0","month_end_population":"6","district":"towner-county"}
 {"state_code":"US_DEMO","year":"2018","month":"3","population_change":"0","month_end_population":"18","district":"traill-county"}
-{"state_code":"US_DEMO","year":"2018","month":"3","population_change":"0","month_end_population":"24","district":"walsh-county,"}
+{"state_code":"US_DEMO","year":"2018","month":"3","population_change":"0","month_end_population":"24","district":"walsh-county"}
 {"state_code":"US_DEMO","year":"2018","month":"3","population_change":"0","month_end_population":"16","district":"ward-county"}
 {"state_code":"US_DEMO","year":"2018","month":"3","population_change":"0","month_end_population":"5","district":"wells-county"}
 {"state_code":"US_DEMO","year":"2018","month":"3","population_change":"0","month_end_population":"8","district":"williams-county"}
@@ -842,7 +842,7 @@
 {"state_code":"US_DEMO","year":"2018","month":"4","population_change":"0","month_end_population":"1","district":"stutsman-county"}
 {"state_code":"US_DEMO","year":"2018","month":"4","population_change":"0","month_end_population":"9","district":"towner-county"}
 {"state_code":"US_DEMO","year":"2018","month":"4","population_change":"0","month_end_population":"9","district":"traill-county"}
-{"state_code":"US_DEMO","year":"2018","month":"4","population_change":"0","month_end_population":"27","district":"walsh-county,"}
+{"state_code":"US_DEMO","year":"2018","month":"4","population_change":"0","month_end_population":"27","district":"walsh-county"}
 {"state_code":"US_DEMO","year":"2018","month":"4","population_change":"0","month_end_population":"16","district":"ward-county"}
 {"state_code":"US_DEMO","year":"2018","month":"4","population_change":"0","month_end_population":"3","district":"wells-county"}
 {"state_code":"US_DEMO","year":"2018","month":"4","population_change":"0","month_end_population":"19","district":"williams-county"}
@@ -895,7 +895,7 @@
 {"state_code":"US_DEMO","year":"2018","month":"5","population_change":"0","month_end_population":"5","district":"stutsman-county"}
 {"state_code":"US_DEMO","year":"2018","month":"5","population_change":"0","month_end_population":"30","district":"towner-county"}
 {"state_code":"US_DEMO","year":"2018","month":"5","population_change":"0","month_end_population":"67","district":"traill-county"}
-{"state_code":"US_DEMO","year":"2018","month":"5","population_change":"0","month_end_population":"9","district":"walsh-county,"}
+{"state_code":"US_DEMO","year":"2018","month":"5","population_change":"0","month_end_population":"9","district":"walsh-county"}
 {"state_code":"US_DEMO","year":"2018","month":"5","population_change":"0","month_end_population":"51","district":"ward-county"}
 {"state_code":"US_DEMO","year":"2018","month":"5","population_change":"1","month_end_population":"36","district":"wells-county"}
 {"state_code":"US_DEMO","year":"2018","month":"5","population_change":"0","month_end_population":"47","district":"williams-county"}
@@ -948,7 +948,7 @@
 {"state_code":"US_DEMO","year":"2018","month":"6","population_change":"0","month_end_population":"19","district":"stutsman-county"}
 {"state_code":"US_DEMO","year":"2018","month":"6","population_change":"-1","month_end_population":"77","district":"towner-county"}
 {"state_code":"US_DEMO","year":"2018","month":"6","population_change":"0","month_end_population":"44","district":"traill-county"}
-{"state_code":"US_DEMO","year":"2018","month":"6","population_change":"0","month_end_population":"87","district":"walsh-county,"}
+{"state_code":"US_DEMO","year":"2018","month":"6","population_change":"0","month_end_population":"87","district":"walsh-county"}
 {"state_code":"US_DEMO","year":"2018","month":"6","population_change":"0","month_end_population":"11","district":"ward-county"}
 {"state_code":"US_DEMO","year":"2018","month":"6","population_change":"0","month_end_population":"23","district":"wells-county"}
 {"state_code":"US_DEMO","year":"2018","month":"6","population_change":"0","month_end_population":"80","district":"williams-county"}
@@ -1001,7 +1001,7 @@
 {"state_code":"US_DEMO","year":"2018","month":"7","population_change":"-1","month_end_population":"20","district":"stutsman-county"}
 {"state_code":"US_DEMO","year":"2018","month":"7","population_change":"0","month_end_population":"5","district":"towner-county"}
 {"state_code":"US_DEMO","year":"2018","month":"7","population_change":"0","month_end_population":"9","district":"traill-county"}
-{"state_code":"US_DEMO","year":"2018","month":"7","population_change":"-1","month_end_population":"74","district":"walsh-county,"}
+{"state_code":"US_DEMO","year":"2018","month":"7","population_change":"-1","month_end_population":"74","district":"walsh-county"}
 {"state_code":"US_DEMO","year":"2018","month":"7","population_change":"0","month_end_population":"38","district":"ward-county"}
 {"state_code":"US_DEMO","year":"2018","month":"7","population_change":"0","month_end_population":"20","district":"wells-county"}
 {"state_code":"US_DEMO","year":"2018","month":"7","population_change":"0","month_end_population":"23","district":"williams-county"}
@@ -1054,7 +1054,7 @@
 {"state_code":"US_DEMO","year":"2018","month":"8","population_change":"0","month_end_population":"124","district":"stutsman-county"}
 {"state_code":"US_DEMO","year":"2018","month":"8","population_change":"0","month_end_population":"8","district":"towner-county"}
 {"state_code":"US_DEMO","year":"2018","month":"8","population_change":"0","month_end_population":"4","district":"traill-county"}
-{"state_code":"US_DEMO","year":"2018","month":"8","population_change":"0","month_end_population":"49","district":"walsh-county,"}
+{"state_code":"US_DEMO","year":"2018","month":"8","population_change":"0","month_end_population":"49","district":"walsh-county"}
 {"state_code":"US_DEMO","year":"2018","month":"8","population_change":"-1","month_end_population":"23","district":"ward-county"}
 {"state_code":"US_DEMO","year":"2018","month":"8","population_change":"0","month_end_population":"4","district":"wells-county"}
 {"state_code":"US_DEMO","year":"2018","month":"8","population_change":"0","month_end_population":"16","district":"williams-county"}
@@ -1107,7 +1107,7 @@
 {"state_code":"US_DEMO","year":"2018","month":"9","population_change":"0","month_end_population":"20","district":"stutsman-county"}
 {"state_code":"US_DEMO","year":"2018","month":"9","population_change":"0","month_end_population":"5","district":"towner-county"}
 {"state_code":"US_DEMO","year":"2018","month":"9","population_change":"0","month_end_population":"11","district":"traill-county"}
-{"state_code":"US_DEMO","year":"2018","month":"9","population_change":"0","month_end_population":"20","district":"walsh-county,"}
+{"state_code":"US_DEMO","year":"2018","month":"9","population_change":"0","month_end_population":"20","district":"walsh-county"}
 {"state_code":"US_DEMO","year":"2018","month":"9","population_change":"0","month_end_population":"7","district":"ward-county"}
 {"state_code":"US_DEMO","year":"2018","month":"9","population_change":"-1","month_end_population":"2","district":"wells-county"}
 {"state_code":"US_DEMO","year":"2018","month":"9","population_change":"0","month_end_population":"164","district":"williams-county"}
@@ -1160,7 +1160,7 @@
 {"state_code":"US_DEMO","year":"2018","month":"10","population_change":"0","month_end_population":"21","district":"stutsman-county"}
 {"state_code":"US_DEMO","year":"2018","month":"10","population_change":"0","month_end_population":"29","district":"towner-county"}
 {"state_code":"US_DEMO","year":"2018","month":"10","population_change":"0","month_end_population":"3","district":"traill-county"}
-{"state_code":"US_DEMO","year":"2018","month":"10","population_change":"0","month_end_population":"25","district":"walsh-county,"}
+{"state_code":"US_DEMO","year":"2018","month":"10","population_change":"0","month_end_population":"25","district":"walsh-county"}
 {"state_code":"US_DEMO","year":"2018","month":"10","population_change":"0","month_end_population":"38","district":"ward-county"}
 {"state_code":"US_DEMO","year":"2018","month":"10","population_change":"-2","month_end_population":"48","district":"wells-county"}
 {"state_code":"US_DEMO","year":"2018","month":"10","population_change":"0","month_end_population":"19","district":"williams-county"}
@@ -1213,7 +1213,7 @@
 {"state_code":"US_DEMO","year":"2018","month":"11","population_change":"0","month_end_population":"14","district":"stutsman-county"}
 {"state_code":"US_DEMO","year":"2018","month":"11","population_change":"0","month_end_population":"23","district":"towner-county"}
 {"state_code":"US_DEMO","year":"2018","month":"11","population_change":"0","month_end_population":"14","district":"traill-county"}
-{"state_code":"US_DEMO","year":"2018","month":"11","population_change":"0","month_end_population":"17","district":"walsh-county,"}
+{"state_code":"US_DEMO","year":"2018","month":"11","population_change":"0","month_end_population":"17","district":"walsh-county"}
 {"state_code":"US_DEMO","year":"2018","month":"11","population_change":"0","month_end_population":"23","district":"ward-county"}
 {"state_code":"US_DEMO","year":"2018","month":"11","population_change":"1","month_end_population":"16","district":"wells-county"}
 {"state_code":"US_DEMO","year":"2018","month":"11","population_change":"0","month_end_population":"4","district":"williams-county"}
@@ -1266,7 +1266,7 @@
 {"state_code":"US_DEMO","year":"2018","month":"12","population_change":"0","month_end_population":"67","district":"stutsman-county"}
 {"state_code":"US_DEMO","year":"2018","month":"12","population_change":"0","month_end_population":"8","district":"towner-county"}
 {"state_code":"US_DEMO","year":"2018","month":"12","population_change":"1","month_end_population":"7","district":"traill-county"}
-{"state_code":"US_DEMO","year":"2018","month":"12","population_change":"0","month_end_population":"16","district":"walsh-county,"}
+{"state_code":"US_DEMO","year":"2018","month":"12","population_change":"0","month_end_population":"16","district":"walsh-county"}
 {"state_code":"US_DEMO","year":"2018","month":"12","population_change":"0","month_end_population":"10","district":"ward-county"}
 {"state_code":"US_DEMO","year":"2018","month":"12","population_change":"0","month_end_population":"40","district":"wells-county"}
 {"state_code":"US_DEMO","year":"2018","month":"12","population_change":"0","month_end_population":"46","district":"williams-county"}
@@ -1319,7 +1319,7 @@
 {"state_code":"US_DEMO","year":"2019","month":"1","population_change":"1","month_end_population":"10","district":"stutsman-county"}
 {"state_code":"US_DEMO","year":"2019","month":"1","population_change":"0","month_end_population":"10","district":"towner-county"}
 {"state_code":"US_DEMO","year":"2019","month":"1","population_change":"0","month_end_population":"18","district":"traill-county"}
-{"state_code":"US_DEMO","year":"2019","month":"1","population_change":"0","month_end_population":"35","district":"walsh-county,"}
+{"state_code":"US_DEMO","year":"2019","month":"1","population_change":"0","month_end_population":"35","district":"walsh-county"}
 {"state_code":"US_DEMO","year":"2019","month":"1","population_change":"0","month_end_population":"23","district":"ward-county"}
 {"state_code":"US_DEMO","year":"2019","month":"1","population_change":"0","month_end_population":"39","district":"wells-county"}
 {"state_code":"US_DEMO","year":"2019","month":"1","population_change":"0","month_end_population":"47","district":"williams-county"}
@@ -1372,7 +1372,7 @@
 {"state_code":"US_DEMO","year":"2019","month":"2","population_change":"0","month_end_population":"57","district":"stutsman-county"}
 {"state_code":"US_DEMO","year":"2019","month":"2","population_change":"0","month_end_population":"5","district":"towner-county"}
 {"state_code":"US_DEMO","year":"2019","month":"2","population_change":"0","month_end_population":"16","district":"traill-county"}
-{"state_code":"US_DEMO","year":"2019","month":"2","population_change":"0","month_end_population":"61","district":"walsh-county,"}
+{"state_code":"US_DEMO","year":"2019","month":"2","population_change":"0","month_end_population":"61","district":"walsh-county"}
 {"state_code":"US_DEMO","year":"2019","month":"2","population_change":"0","month_end_population":"62","district":"ward-county"}
 {"state_code":"US_DEMO","year":"2019","month":"2","population_change":"0","month_end_population":"38","district":"wells-county"}
 {"state_code":"US_DEMO","year":"2019","month":"2","population_change":"0","month_end_population":"67","district":"williams-county"}
@@ -1425,7 +1425,7 @@
 {"state_code":"US_DEMO","year":"2019","month":"3","population_change":"1","month_end_population":"17","district":"stutsman-county"}
 {"state_code":"US_DEMO","year":"2019","month":"3","population_change":"0","month_end_population":"25","district":"towner-county"}
 {"state_code":"US_DEMO","year":"2019","month":"3","population_change":"0","month_end_population":"4","district":"traill-county"}
-{"state_code":"US_DEMO","year":"2019","month":"3","population_change":"0","month_end_population":"50","district":"walsh-county,"}
+{"state_code":"US_DEMO","year":"2019","month":"3","population_change":"0","month_end_population":"50","district":"walsh-county"}
 {"state_code":"US_DEMO","year":"2019","month":"3","population_change":"1","month_end_population":"27","district":"ward-county"}
 {"state_code":"US_DEMO","year":"2019","month":"3","population_change":"1","month_end_population":"66","district":"wells-county"}
 {"state_code":"US_DEMO","year":"2019","month":"3","population_change":"3","month_end_population":"43","district":"williams-county"}
@@ -1478,7 +1478,7 @@
 {"state_code":"US_DEMO","year":"2019","month":"4","population_change":"1","month_end_population":"43","district":"stutsman-county"}
 {"state_code":"US_DEMO","year":"2019","month":"4","population_change":"1","month_end_population":"61","district":"towner-county"}
 {"state_code":"US_DEMO","year":"2019","month":"4","population_change":"0","month_end_population":"2","district":"traill-county"}
-{"state_code":"US_DEMO","year":"2019","month":"4","population_change":"0","month_end_population":"5","district":"walsh-county,"}
+{"state_code":"US_DEMO","year":"2019","month":"4","population_change":"0","month_end_population":"5","district":"walsh-county"}
 {"state_code":"US_DEMO","year":"2019","month":"4","population_change":"1","month_end_population":"17","district":"ward-county"}
 {"state_code":"US_DEMO","year":"2019","month":"4","population_change":"0","month_end_population":"43","district":"wells-county"}
 {"state_code":"US_DEMO","year":"2019","month":"4","population_change":"0","month_end_population":"77","district":"williams-county"}
@@ -1531,7 +1531,7 @@
 {"state_code":"US_DEMO","year":"2019","month":"5","population_change":"0","month_end_population":"21","district":"stutsman-county"}
 {"state_code":"US_DEMO","year":"2019","month":"5","population_change":"0","month_end_population":"57","district":"towner-county"}
 {"state_code":"US_DEMO","year":"2019","month":"5","population_change":"0","month_end_population":"18","district":"traill-county"}
-{"state_code":"US_DEMO","year":"2019","month":"5","population_change":"0","month_end_population":"0","district":"walsh-county,"}
+{"state_code":"US_DEMO","year":"2019","month":"5","population_change":"0","month_end_population":"0","district":"walsh-county"}
 {"state_code":"US_DEMO","year":"2019","month":"5","population_change":"0","month_end_population":"60","district":"ward-county"}
 {"state_code":"US_DEMO","year":"2019","month":"5","population_change":"-1","month_end_population":"49","district":"wells-county"}
 {"state_code":"US_DEMO","year":"2019","month":"5","population_change":"0","month_end_population":"20","district":"williams-county"}
@@ -1584,7 +1584,7 @@
 {"state_code":"US_DEMO","year":"2019","month":"6","population_change":"0","month_end_population":"42","district":"stutsman-county"}
 {"state_code":"US_DEMO","year":"2019","month":"6","population_change":"0","month_end_population":"18","district":"towner-county"}
 {"state_code":"US_DEMO","year":"2019","month":"6","population_change":"0","month_end_population":"2","district":"traill-county"}
-{"state_code":"US_DEMO","year":"2019","month":"6","population_change":"0","month_end_population":"72","district":"walsh-county,"}
+{"state_code":"US_DEMO","year":"2019","month":"6","population_change":"0","month_end_population":"72","district":"walsh-county"}
 {"state_code":"US_DEMO","year":"2019","month":"6","population_change":"0","month_end_population":"22","district":"ward-county"}
 {"state_code":"US_DEMO","year":"2019","month":"6","population_change":"1","month_end_population":"35","district":"wells-county"}
 {"state_code":"US_DEMO","year":"2019","month":"6","population_change":"0","month_end_population":"12","district":"williams-county"}
@@ -1637,7 +1637,7 @@
 {"state_code":"US_DEMO","year":"2019","month":"7","population_change":"0","month_end_population":"38","district":"stutsman-county"}
 {"state_code":"US_DEMO","year":"2019","month":"7","population_change":"0","month_end_population":"47","district":"towner-county"}
 {"state_code":"US_DEMO","year":"2019","month":"7","population_change":"0","month_end_population":"7","district":"traill-county"}
-{"state_code":"US_DEMO","year":"2019","month":"7","population_change":"0","month_end_population":"10","district":"walsh-county,"}
+{"state_code":"US_DEMO","year":"2019","month":"7","population_change":"0","month_end_population":"10","district":"walsh-county"}
 {"state_code":"US_DEMO","year":"2019","month":"7","population_change":"0","month_end_population":"2","district":"ward-county"}
 {"state_code":"US_DEMO","year":"2019","month":"7","population_change":"1","month_end_population":"7","district":"wells-county"}
 {"state_code":"US_DEMO","year":"2019","month":"7","population_change":"2","month_end_population":"35","district":"williams-county"}
@@ -1690,7 +1690,7 @@
 {"state_code":"US_DEMO","year":"2019","month":"8","population_change":"0","month_end_population":"4","district":"stutsman-county"}
 {"state_code":"US_DEMO","year":"2019","month":"8","population_change":"0","month_end_population":"19","district":"towner-county"}
 {"state_code":"US_DEMO","year":"2019","month":"8","population_change":"0","month_end_population":"51","district":"traill-county"}
-{"state_code":"US_DEMO","year":"2019","month":"8","population_change":"0","month_end_population":"22","district":"walsh-county,"}
+{"state_code":"US_DEMO","year":"2019","month":"8","population_change":"0","month_end_population":"22","district":"walsh-county"}
 {"state_code":"US_DEMO","year":"2019","month":"8","population_change":"0","month_end_population":"14","district":"ward-county"}
 {"state_code":"US_DEMO","year":"2019","month":"8","population_change":"0","month_end_population":"1","district":"wells-county"}
 {"state_code":"US_DEMO","year":"2019","month":"8","population_change":"0","month_end_population":"12","district":"williams-county"}
@@ -1743,7 +1743,7 @@
 {"state_code":"US_DEMO","year":"2019","month":"9","population_change":"0","month_end_population":"18","district":"stutsman-county"}
 {"state_code":"US_DEMO","year":"2019","month":"9","population_change":"0","month_end_population":"25","district":"towner-county"}
 {"state_code":"US_DEMO","year":"2019","month":"9","population_change":"1","month_end_population":"1","district":"traill-county"}
-{"state_code":"US_DEMO","year":"2019","month":"9","population_change":"0","month_end_population":"10","district":"walsh-county,"}
+{"state_code":"US_DEMO","year":"2019","month":"9","population_change":"0","month_end_population":"10","district":"walsh-county"}
 {"state_code":"US_DEMO","year":"2019","month":"9","population_change":"0","month_end_population":"83","district":"ward-county"}
 {"state_code":"US_DEMO","year":"2019","month":"9","population_change":"0","month_end_population":"5","district":"wells-county"}
 {"state_code":"US_DEMO","year":"2019","month":"9","population_change":"0","month_end_population":"21","district":"williams-county"}
@@ -1796,7 +1796,7 @@
 {"state_code":"US_DEMO","year":"2019","month":"10","population_change":"0","month_end_population":"39","district":"stutsman-county"}
 {"state_code":"US_DEMO","year":"2019","month":"10","population_change":"0","month_end_population":"16","district":"towner-county"}
 {"state_code":"US_DEMO","year":"2019","month":"10","population_change":"0","month_end_population":"0","district":"traill-county"}
-{"state_code":"US_DEMO","year":"2019","month":"10","population_change":"0","month_end_population":"93","district":"walsh-county,"}
+{"state_code":"US_DEMO","year":"2019","month":"10","population_change":"0","month_end_population":"93","district":"walsh-county"}
 {"state_code":"US_DEMO","year":"2019","month":"10","population_change":"0","month_end_population":"13","district":"ward-county"}
 {"state_code":"US_DEMO","year":"2019","month":"10","population_change":"1","month_end_population":"5","district":"wells-county"}
 {"state_code":"US_DEMO","year":"2019","month":"10","population_change":"0","month_end_population":"26","district":"williams-county"}
@@ -1849,7 +1849,7 @@
 {"state_code":"US_DEMO","year":"2019","month":"11","population_change":"0","month_end_population":"39","district":"stutsman-county"}
 {"state_code":"US_DEMO","year":"2019","month":"11","population_change":"0","month_end_population":"11","district":"towner-county"}
 {"state_code":"US_DEMO","year":"2019","month":"11","population_change":"0","month_end_population":"28","district":"traill-county"}
-{"state_code":"US_DEMO","year":"2019","month":"11","population_change":"-1","month_end_population":"11","district":"walsh-county,"}
+{"state_code":"US_DEMO","year":"2019","month":"11","population_change":"-1","month_end_population":"11","district":"walsh-county"}
 {"state_code":"US_DEMO","year":"2019","month":"11","population_change":"0","month_end_population":"95","district":"ward-county"}
 {"state_code":"US_DEMO","year":"2019","month":"11","population_change":"0","month_end_population":"1","district":"wells-county"}
 {"state_code":"US_DEMO","year":"2019","month":"11","population_change":"0","month_end_population":"56","district":"williams-county"}
@@ -1902,7 +1902,7 @@
 {"state_code":"US_DEMO","year":"2019","month":"12","population_change":"0","month_end_population":"84","district":"stutsman-county"}
 {"state_code":"US_DEMO","year":"2019","month":"12","population_change":"0","month_end_population":"8","district":"towner-county"}
 {"state_code":"US_DEMO","year":"2019","month":"12","population_change":"0","month_end_population":"8","district":"traill-county"}
-{"state_code":"US_DEMO","year":"2019","month":"12","population_change":"0","month_end_population":"34","district":"walsh-county,"}
+{"state_code":"US_DEMO","year":"2019","month":"12","population_change":"0","month_end_population":"34","district":"walsh-county"}
 {"state_code":"US_DEMO","year":"2019","month":"12","population_change":"0","month_end_population":"1","district":"ward-county"}
 {"state_code":"US_DEMO","year":"2019","month":"12","population_change":"0","month_end_population":"84","district":"wells-county"}
 {"state_code":"US_DEMO","year":"2019","month":"12","population_change":"0","month_end_population":"24","district":"williams-county"}

@@ -110,8 +110,8 @@ const FreeThroughRecovery = () => {
                     <div className="dynamic-chart-header" id="ftrReferralCountByMonth-header" />
                   )}
                 </div>
-                // TODO(XXX): Figure out why map will nott show when delegated to by the Chart.js
-                // chart. Then we can just encapsulate this logic inside of a single component.
+                { /* TODO(XXX): Figure out why map will not show when delegated to by the Chart.js
+                chart. Then we can just encapsulate this logic inside of a single component. */ }
                 <div className="layer w-100 p-20">
                   {geoViewEnabledRCOT === false && (
                     <FtrReferralCountByMonth
@@ -130,6 +130,7 @@ const FreeThroughRecovery = () => {
                       metricType={chartMetricType}
                       timeWindow={chartTimeWindow}
                       supervisionType={chartSupervisionType}
+                      keyedByOffice={true}
                       officeData={apiData.site_offices}
                       dataPointsByOffice={apiData.ftr_referrals_over_time_window}
                       numeratorKeys={['count']}

@@ -53,8 +53,10 @@ const FILES_BY_METRIC_TYPE = {
   ],
   reincarceration: [
     'admissions_versus_releases_by_month.json',
+    'admissions_versus_releases_over_time_window.json',
     'reincarceration_rate_by_stay_length.json',
     'reincarcerations_by_month.json',
+    'reincarcerations_over_time_window.json',
   ],
   revocation: [
     'revocation_rate_by_county_60_days.json',

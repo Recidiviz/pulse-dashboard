@@ -122,8 +122,8 @@ const Revocations = () => {
                     <div className="dynamic-chart-header" id="revocationCountsByMonth-header" />
                   )}
                 </div>
-                // TODO(XXX): Figure out why map will nott show when delegated to by the Chart.js
-                // chart. Then we can just encapsulate this logic inside of a single component.
+                { /* TODO(XXX): Figure out why map will not show when delegated to by the Chart.js
+                chart. Then we can just encapsulate this logic inside of a single component. */ }
                 <div className="layer w-100 p-20">
                   {geoViewEnabledRCOT === false && (
                     <RevocationCountOverTime
@@ -144,6 +144,7 @@ const Revocations = () => {
                       metricType={chartMetricType}
                       timeWindow={chartTimeWindow}
                       supervisionType={chartSupervisionType}
+                      keyedByOffice={true}
                       officeData={apiData.site_offices}
                       dataPointsByOffice={apiData.revocations_over_time_window}
                       numeratorKeys={['revocation_count']}

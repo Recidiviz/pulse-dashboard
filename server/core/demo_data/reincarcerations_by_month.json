@@ -47,7 +47,7 @@
 {"state_code":"US_DEMO","year":"2017","month":"1","returns":"0","total_admissions":"2","district":"stutsman-county"}
 {"state_code":"US_DEMO","year":"2017","month":"1","returns":"0","total_admissions":"3","district":"towner-county"}
 {"state_code":"US_DEMO","year":"2017","month":"1","returns":"1","total_admissions":"1","district":"traill-county"}
-{"state_code":"US_DEMO","year":"2017","month":"1","returns":"0","total_admissions":"2","district":"walsh-county,"}
+{"state_code":"US_DEMO","year":"2017","month":"1","returns":"0","total_admissions":"2","district":"walsh-county"}
 {"state_code":"US_DEMO","year":"2017","month":"1","returns":"1","total_admissions":"0","district":"ward-county"}
 {"state_code":"US_DEMO","year":"2017","month":"1","returns":"0","total_admissions":"4","district":"wells-county"}
 {"state_code":"US_DEMO","year":"2017","month":"1","returns":"0","total_admissions":"4","district":"williams-county"}
@@ -100,7 +100,7 @@
 {"state_code":"US_DEMO","year":"2017","month":"2","returns":"1","total_admissions":"3","district":"stutsman-county"}
 {"state_code":"US_DEMO","year":"2017","month":"2","returns":"1","total_admissions":"1","district":"towner-county"}
 {"state_code":"US_DEMO","year":"2017","month":"2","returns":"1","total_admissions":"2","district":"traill-county"}
-{"state_code":"US_DEMO","year":"2017","month":"2","returns":"1","total_admissions":"0","district":"walsh-county,"}
+{"state_code":"US_DEMO","year":"2017","month":"2","returns":"1","total_admissions":"0","district":"walsh-county"}
 {"state_code":"US_DEMO","year":"2017","month":"2","returns":"1","total_admissions":"1","district":"ward-county"}
 {"state_code":"US_DEMO","year":"2017","month":"2","returns":"2","total_admissions":"4","district":"wells-county"}
 {"state_code":"US_DEMO","year":"2017","month":"2","returns":"1","total_admissions":"3","district":"williams-county"}
@@ -153,7 +153,7 @@
 {"state_code":"US_DEMO","year":"2017","month":"3","returns":"1","total_admissions":"1","district":"stutsman-county"}
 {"state_code":"US_DEMO","year":"2017","month":"3","returns":"2","total_admissions":"1","district":"towner-county"}
 {"state_code":"US_DEMO","year":"2017","month":"3","returns":"1","total_admissions":"4","district":"traill-county"}
-{"state_code":"US_DEMO","year":"2017","month":"3","returns":"0","total_admissions":"1","district":"walsh-county,"}
+{"state_code":"US_DEMO","year":"2017","month":"3","returns":"0","total_admissions":"1","district":"walsh-county"}
 {"state_code":"US_DEMO","year":"2017","month":"3","returns":"1","total_admissions":"2","district":"ward-county"}
 {"state_code":"US_DEMO","year":"2017","month":"3","returns":"1","total_admissions":"2","district":"wells-county"}
 {"state_code":"US_DEMO","year":"2017","month":"3","returns":"1","total_admissions":"4","district":"williams-county"}
@@ -206,7 +206,7 @@
 {"state_code":"US_DEMO","year":"2017","month":"4","returns":"0","total_admissions":"1","district":"stutsman-county"}
 {"state_code":"US_DEMO","year":"2017","month":"4","returns":"0","total_admissions":"1","district":"towner-county"}
 {"state_code":"US_DEMO","year":"2017","month":"4","returns":"0","total_admissions":"1","district":"traill-county"}
-{"state_code":"US_DEMO","year":"2017","month":"4","returns":"3","total_admissions":"0","district":"walsh-county,"}
+{"state_code":"US_DEMO","year":"2017","month":"4","returns":"3","total_admissions":"0","district":"walsh-county"}
 {"state_code":"US_DEMO","year":"2017","month":"4","returns":"1","total_admissions":"2","district":"ward-county"}
 {"state_code":"US_DEMO","year":"2017","month":"4","returns":"2","total_admissions":"1","district":"wells-county"}
 {"state_code":"US_DEMO","year":"2017","month":"4","returns":"0","total_admissions":"1","district":"williams-county"}
@@ -259,7 +259,7 @@
 {"state_code":"US_DEMO","year":"2017","month":"5","returns":"3","total_admissions":"2","district":"stutsman-county"}
 {"state_code":"US_DEMO","year":"2017","month":"5","returns":"1","total_admissions":"3","district":"towner-county"}
 {"state_code":"US_DEMO","year":"2017","month":"5","returns":"2","total_admissions":"4","district":"traill-county"}
-{"state_code":"US_DEMO","year":"2017","month":"5","returns":"1","total_admissions":"1","district":"walsh-county,"}
+{"state_code":"US_DEMO","year":"2017","month":"5","returns":"1","total_admissions":"1","district":"walsh-county"}
 {"state_code":"US_DEMO","year":"2017","month":"5","returns":"0","total_admissions":"0","district":"ward-county"}
 {"state_code":"US_DEMO","year":"2017","month":"5","returns":"0","total_admissions":"2","district":"wells-county"}
 {"state_code":"US_DEMO","year":"2017","month":"5","returns":"0","total_admissions":"5","district":"williams-county"}
@@ -312,7 +312,7 @@
 {"state_code":"US_DEMO","year":"2017","month":"6","returns":"1","total_admissions":"2","district":"stutsman-county"}
 {"state_code":"US_DEMO","year":"2017","month":"6","returns":"0","total_admissions":"1","district":"towner-county"}
 {"state_code":"US_DEMO","year":"2017","month":"6","returns":"1","total_admissions":"3","district":"traill-county"}
-{"state_code":"US_DEMO","year":"2017","month":"6","returns":"0","total_admissions":"1","district":"walsh-county,"}
+{"state_code":"US_DEMO","year":"2017","month":"6","returns":"0","total_admissions":"1","district":"walsh-county"}
 {"state_code":"US_DEMO","year":"2017","month":"6","returns":"1","total_admissions":"1","district":"ward-county"}
 {"state_code":"US_DEMO","year":"2017","month":"6","returns":"0","total_admissions":"0","district":"wells-county"}
 {"state_code":"US_DEMO","year":"2017","month":"6","returns":"1","total_admissions":"3","district":"williams-county"}
@@ -365,7 +365,7 @@
 {"state_code":"US_DEMO","year":"2017","month":"7","returns":"0","total_admissions":"3","district":"stutsman-county"}
 {"state_code":"US_DEMO","year":"2017","month":"7","returns":"0","total_admissions":"1","district":"towner-county"}
 {"state_code":"US_DEMO","year":"2017","month":"7","returns":"3","total_admissions":"1","district":"traill-county"}
-{"state_code":"US_DEMO","year":"2017","month":"7","returns":"0","total_admissions":"0","district":"walsh-county,"}
+{"state_code":"US_DEMO","year":"2017","month":"7","returns":"0","total_admissions":"0","district":"walsh-county"}
 {"state_code":"US_DEMO","year":"2017","month":"7","returns":"0","total_admissions":"0","district":"ward-county"}
 {"state_code":"US_DEMO","year":"2017","month":"7","returns":"2","total_admissions":"4","district":"wells-county"}
 {"state_code":"US_DEMO","year":"2017","month":"7","returns":"1","total_admissions":"1","district":"williams-county"}
@@ -418,7 +418,7 @@
 {"state_code":"US_DEMO","year":"2017","month":"8","returns":"2","total_admissions":"3","district":"stutsman-county"}
 {"state_code":"US_DEMO","year":"2017","month":"8","returns":"3","total_admissions":"6","district":"towner-county"}
 {"state_code":"US_DEMO","year":"2017","month":"8","returns":"1","total_admissions":"0","district":"traill-county"}
-{"state_code":"US_DEMO","year":"2017","month":"8","returns":"0","total_admissions":"2","district":"walsh-county,"}
+{"state_code":"US_DEMO","year":"2017","month":"8","returns":"0","total_admissions":"2","district":"walsh-county"}
 {"state_code":"US_DEMO","year":"2017","month":"8","returns":"0","total_admissions":"2","district":"ward-county"}
 {"state_code":"US_DEMO","year":"2017","month":"8","returns":"0","total_admissions":"1","district":"wells-county"}
 {"state_code":"US_DEMO","year":"2017","month":"8","returns":"4","total_admissions":"1","district":"williams-county"}
@@ -471,7 +471,7 @@
 {"state_code":"US_DEMO","year":"2017","month":"9","returns":"3","total_admissions":"1","district":"stutsman-county"}
 {"state_code":"US_DEMO","year":"2017","month":"9","returns":"2","total_admissions":"2","district":"towner-county"}
 {"state_code":"US_DEMO","year":"2017","month":"9","returns":"1","total_admissions":"2","district":"traill-county"}
-{"state_code":"US_DEMO","year":"2017","month":"9","returns":"1","total_admissions":"0","district":"walsh-county,"}
+{"state_code":"US_DEMO","year":"2017","month":"9","returns":"1","total_admissions":"0","district":"walsh-county"}
 {"state_code":"US_DEMO","year":"2017","month":"9","returns":"1","total_admissions":"1","district":"ward-county"}
 {"state_code":"US_DEMO","year":"2017","month":"9","returns":"0","total_admissions":"6","district":"wells-county"}
 {"state_code":"US_DEMO","year":"2017","month":"9","returns":"1","total_admissions":"1","district":"williams-county"}
@@ -524,7 +524,7 @@
 {"state_code":"US_DEMO","year":"2017","month":"10","returns":"0","total_admissions":"2","district":"stutsman-county"}
 {"state_code":"US_DEMO","year":"2017","month":"10","returns":"0","total_admissions":"0","district":"towner-county"}
 {"state_code":"US_DEMO","year":"2017","month":"10","returns":"1","total_admissions":"1","district":"traill-county"}
-{"state_code":"US_DEMO","year":"2017","month":"10","returns":"0","total_admissions":"1","district":"walsh-county,"}
+{"state_code":"US_DEMO","year":"2017","month":"10","returns":"0","total_admissions":"1","district":"walsh-county"}
 {"state_code":"US_DEMO","year":"2017","month":"10","returns":"0","total_admissions":"0","district":"ward-county"}
 {"state_code":"US_DEMO","year":"2017","month":"10","returns":"1","total_admissions":"0","district":"wells-county"}
 {"state_code":"US_DEMO","year":"2017","month":"10","returns":"1","total_admissions":"2","district":"williams-county"}
@@ -577,7 +577,7 @@
 {"state_code":"US_DEMO","year":"2017","month":"11","returns":"0","total_admissions":"1","district":"stutsman-county"}
 {"state_code":"US_DEMO","year":"2017","month":"11","returns":"1","total_admissions":"3","district":"towner-county"}
 {"state_code":"US_DEMO","year":"2017","month":"11","returns":"0","total_admissions":"1","district":"traill-county"}
-{"state_code":"US_DEMO","year":"2017","month":"11","returns":"1","total_admissions":"0","district":"walsh-county,"}
+{"state_code":"US_DEMO","year":"2017","month":"11","returns":"1","total_admissions":"0","district":"walsh-county"}
 {"state_code":"US_DEMO","year":"2017","month":"11","returns":"0","total_admissions":"3","district":"ward-county"}
 {"state_code":"US_DEMO","year":"2017","month":"11","returns":"1","total_admissions":"5","district":"wells-county"}
 {"state_code":"US_DEMO","year":"2017","month":"11","returns":"0","total_admissions":"3","district":"williams-county"}
@@ -630,7 +630,7 @@
 {"state_code":"US_DEMO","year":"2017","month":"12","returns":"0","total_admissions":"1","district":"stutsman-county"}
 {"state_code":"US_DEMO","year":"2017","month":"12","returns":"0","total_admissions":"0","district":"towner-county"}
 {"state_code":"US_DEMO","year":"2017","month":"12","returns":"0","total_admissions":"1","district":"traill-county"}
-{"state_code":"US_DEMO","year":"2017","month":"12","returns":"1","total_admissions":"2","district":"walsh-county,"}
+{"state_code":"US_DEMO","year":"2017","month":"12","returns":"1","total_admissions":"2","district":"walsh-county"}
 {"state_code":"US_DEMO","year":"2017","month":"12","returns":"2","total_admissions":"3","district":"ward-county"}
 {"state_code":"US_DEMO","year":"2017","month":"12","returns":"1","total_admissions":"1","district":"wells-county"}
 {"state_code":"US_DEMO","year":"2017","month":"12","returns":"0","total_admissions":"4","district":"williams-county"}
@@ -683,7 +683,7 @@
 {"state_code":"US_DEMO","year":"2018","month":"1","returns":"0","total_admissions":"1","district":"stutsman-county"}
 {"state_code":"US_DEMO","year":"2018","month":"1","returns":"2","total_admissions":"1","district":"towner-county"}
 {"state_code":"US_DEMO","year":"2018","month":"1","returns":"1","total_admissions":"0","district":"traill-county"}
-{"state_code":"US_DEMO","year":"2018","month":"1","returns":"3","total_admissions":"8","district":"walsh-county,"}
+{"state_code":"US_DEMO","year":"2018","month":"1","returns":"3","total_admissions":"8","district":"walsh-county"}
 {"state_code":"US_DEMO","year":"2018","month":"1","returns":"1","total_admissions":"10","district":"ward-county"}
 {"state_code":"US_DEMO","year":"2018","month":"1","returns":"0","total_admissions":"1","district":"wells-county"}
 {"state_code":"US_DEMO","year":"2018","month":"1","returns":"2","total_admissions":"2","district":"williams-county"}
@@ -736,7 +736,7 @@
 {"state_code":"US_DEMO","year":"2018","month":"2","returns":"0","total_admissions":"1","district":"stutsman-county"}
 {"state_code":"US_DEMO","year":"2018","month":"2","returns":"1","total_admissions":"5","district":"towner-county"}
 {"state_code":"US_DEMO","year":"2018","month":"2","returns":"0","total_admissions":"4","district":"traill-county"}
-{"state_code":"US_DEMO","year":"2018","month":"2","returns":"0","total_admissions":"6","district":"walsh-county,"}
+{"state_code":"US_DEMO","year":"2018","month":"2","returns":"0","total_admissions":"6","district":"walsh-county"}
 {"state_code":"US_DEMO","year":"2018","month":"2","returns":"0","total_admissions":"1","district":"ward-county"}
 {"state_code":"US_DEMO","year":"2018","month":"2","returns":"0","total_admissions":"3","district":"wells-county"}
 {"state_code":"US_DEMO","year":"2018","month":"2","returns":"0","total_admissions":"1","district":"williams-county"}
@@ -789,7 +789,7 @@
 {"state_code":"US_DEMO","year":"2018","month":"3","returns":"1","total_admissions":"5","district":"stutsman-county"}
 {"state_code":"US_DEMO","year":"2018","month":"3","returns":"0","total_admissions":"1","district":"towner-county"}
 {"state_code":"US_DEMO","year":"2018","month":"3","returns":"0","total_admissions":"5","district":"traill-county"}
-{"state_code":"US_DEMO","year":"2018","month":"3","returns":"1","total_admissions":"3","district":"walsh-county,"}
+{"state_code":"US_DEMO","year":"2018","month":"3","returns":"1","total_admissions":"3","district":"walsh-county"}
 {"state_code":"US_DEMO","year":"2018","month":"3","returns":"1","total_admissions":"3","district":"ward-county"}
 {"state_code":"US_DEMO","year":"2018","month":"3","returns":"1","total_admissions":"5","district":"wells-county"}
 {"state_code":"US_DEMO","year":"2018","month":"3","returns":"1","total_admissions":"3","district":"williams-county"}
@@ -842,7 +842,7 @@
 {"state_code":"US_DEMO","year":"2018","month":"4","returns":"2","total_admissions":"2","district":"stutsman-county"}
 {"state_code":"US_DEMO","year":"2018","month":"4","returns":"2","total_admissions":"4","district":"towner-county"}
 {"state_code":"US_DEMO","year":"2018","month":"4","returns":"1","total_admissions":"2","district":"traill-county"}
-{"state_code":"US_DEMO","year":"2018","month":"4","returns":"0","total_admissions":"1","district":"walsh-county,"}
+{"state_code":"US_DEMO","year":"2018","month":"4","returns":"0","total_admissions":"1","district":"walsh-county"}
 {"state_code":"US_DEMO","year":"2018","month":"4","returns":"1","total_admissions":"0","district":"ward-county"}
 {"state_code":"US_DEMO","year":"2018","month":"4","returns":"0","total_admissions":"5","district":"wells-county"}
 {"state_code":"US_DEMO","year":"2018","month":"4","returns":"1","total_admissions":"3","district":"williams-county"}
@@ -895,7 +895,7 @@
 {"state_code":"US_DEMO","year":"2018","month":"5","returns":"2","total_admissions":"0","district":"stutsman-county"}
 {"state_code":"US_DEMO","year":"2018","month":"5","returns":"0","total_admissions":"0","district":"towner-county"}
 {"state_code":"US_DEMO","year":"2018","month":"5","returns":"1","total_admissions":"3","district":"traill-county"}
-{"state_code":"US_DEMO","year":"2018","month":"5","returns":"0","total_admissions":"3","district":"walsh-county,"}
+{"state_code":"US_DEMO","year":"2018","month":"5","returns":"0","total_admissions":"3","district":"walsh-county"}
 {"state_code":"US_DEMO","year":"2018","month":"5","returns":"0","total_admissions":"3","district":"ward-county"}
 {"state_code":"US_DEMO","year":"2018","month":"5","returns":"1","total_admissions":"3","district":"wells-county"}
 {"state_code":"US_DEMO","year":"2018","month":"5","returns":"0","total_admissions":"1","district":"williams-county"}
@@ -948,7 +948,7 @@
 {"state_code":"US_DEMO","year":"2018","month":"6","returns":"2","total_admissions":"1","district":"stutsman-county"}
 {"state_code":"US_DEMO","year":"2018","month":"6","returns":"2","total_admissions":"0","district":"towner-county"}
 {"state_code":"US_DEMO","year":"2018","month":"6","returns":"0","total_admissions":"2","district":"traill-county"}
-{"state_code":"US_DEMO","year":"2018","month":"6","returns":"0","total_admissions":"1","district":"walsh-county,"}
+{"state_code":"US_DEMO","year":"2018","month":"6","returns":"0","total_admissions":"1","district":"walsh-county"}
 {"state_code":"US_DEMO","year":"2018","month":"6","returns":"0","total_admissions":"1","district":"ward-county"}
 {"state_code":"US_DEMO","year":"2018","month":"6","returns":"0","total_admissions":"1","district":"wells-county"}
 {"state_code":"US_DEMO","year":"2018","month":"6","returns":"2","total_admissions":"5","district":"williams-county"}
@@ -1001,7 +1001,7 @@
 {"state_code":"US_DEMO","year":"2018","month":"7","returns":"0","total_admissions":"3","district":"stutsman-county"}
 {"state_code":"US_DEMO","year":"2018","month":"7","returns":"0","total_admissions":"3","district":"towner-county"}
 {"state_code":"US_DEMO","year":"2018","month":"7","returns":"0","total_admissions":"2","district":"traill-county"}
-{"state_code":"US_DEMO","year":"2018","month":"7","returns":"2","total_admissions":"0","district":"walsh-county,"}
+{"state_code":"US_DEMO","year":"2018","month":"7","returns":"2","total_admissions":"0","district":"walsh-county"}
 {"state_code":"US_DEMO","year":"2018","month":"7","returns":"1","total_admissions":"1","district":"ward-county"}
 {"state_code":"US_DEMO","year":"2018","month":"7","returns":"0","total_admissions":"6","district":"wells-county"}
 {"state_code":"US_DEMO","year":"2018","month":"7","returns":"0","total_admissions":"2","district":"williams-county"}
@@ -1054,7 +1054,7 @@
 {"state_code":"US_DEMO","year":"2018","month":"8","returns":"0","total_admissions":"6","district":"stutsman-county"}
 {"state_code":"US_DEMO","year":"2018","month":"8","returns":"0","total_admissions":"3","district":"towner-county"}
 {"state_code":"US_DEMO","year":"2018","month":"8","returns":"0","total_admissions":"3","district":"traill-county"}
-{"state_code":"US_DEMO","year":"2018","month":"8","returns":"0","total_admissions":"3","district":"walsh-county,"}
+{"state_code":"US_DEMO","year":"2018","month":"8","returns":"0","total_admissions":"3","district":"walsh-county"}
 {"state_code":"US_DEMO","year":"2018","month":"8","returns":"2","total_admissions":"4","district":"ward-county"}
 {"state_code":"US_DEMO","year":"2018","month":"8","returns":"2","total_admissions":"2","district":"wells-county"}
 {"state_code":"US_DEMO","year":"2018","month":"8","returns":"1","total_admissions":"2","district":"williams-county"}
@@ -1107,7 +1107,7 @@
 {"state_code":"US_DEMO","year":"2018","month":"9","returns":"0","total_admissions":"1","district":"stutsman-county"}
 {"state_code":"US_DEMO","year":"2018","month":"9","returns":"0","total_admissions":"2","district":"towner-county"}
 {"state_code":"US_DEMO","year":"2018","month":"9","returns":"1","total_admissions":"6","district":"traill-county"}
-{"state_code":"US_DEMO","year":"2018","month":"9","returns":"0","total_admissions":"1","district":"walsh-county,"}
+{"state_code":"US_DEMO","year":"2018","month":"9","returns":"0","total_admissions":"1","district":"walsh-county"}
 {"state_code":"US_DEMO","year":"2018","month":"9","returns":"0","total_admissions":"0","district":"ward-county"}
 {"state_code":"US_DEMO","year":"2018","month":"9","returns":"0","total_admissions":"1","district":"wells-county"}
 {"state_code":"US_DEMO","year":"2018","month":"9","returns":"0","total_admissions":"1","district":"williams-county"}
@@ -1160,7 +1160,7 @@
 {"state_code":"US_DEMO","year":"2018","month":"10","returns":"0","total_admissions":"3","district":"stutsman-county"}
 {"state_code":"US_DEMO","year":"2018","month":"10","returns":"0","total_admissions":"0","district":"towner-county"}
 {"state_code":"US_DEMO","year":"2018","month":"10","returns":"1","total_admissions":"0","district":"traill-county"}
-{"state_code":"US_DEMO","year":"2018","month":"10","returns":"2","total_admissions":"3","district":"walsh-county,"}
+{"state_code":"US_DEMO","year":"2018","month":"10","returns":"2","total_admissions":"3","district":"walsh-county"}
 {"state_code":"US_DEMO","year":"2018","month":"10","returns":"0","total_admissions":"1","district":"ward-county"}
 {"state_code":"US_DEMO","year":"2018","month":"10","returns":"1","total_admissions":"1","district":"wells-county"}
 {"state_code":"US_DEMO","year":"2018","month":"10","returns":"0","total_admissions":"2","district":"williams-county"}
@@ -1213,7 +1213,7 @@
 {"state_code":"US_DEMO","year":"2018","month":"11","returns":"1","total_admissions":"3","district":"stutsman-county"}
 {"state_code":"US_DEMO","year":"2018","month":"11","returns":"0","total_admissions":"2","district":"towner-county"}
 {"state_code":"US_DEMO","year":"2018","month":"11","returns":"1","total_admissions":"4","district":"traill-county"}
-{"state_code":"US_DEMO","year":"2018","month":"11","returns":"3","total_admissions":"3","district":"walsh-county,"}
+{"state_code":"US_DEMO","year":"2018","month":"11","returns":"3","total_admissions":"3","district":"walsh-county"}
 {"state_code":"US_DEMO","year":"2018","month":"11","returns":"2","total_admissions":"1","district":"ward-county"}
 {"state_code":"US_DEMO","year":"2018","month":"11","returns":"0","total_admissions":"1","district":"wells-county"}
 {"state_code":"US_DEMO","year":"2018","month":"11","returns":"1","total_admissions":"2","district":"williams-county"}
@@ -1266,7 +1266,7 @@
 {"state_code":"US_DEMO","year":"2018","month":"12","returns":"0","total_admissions":"3","district":"stutsman-county"}
 {"state_code":"US_DEMO","year":"2018","month":"12","returns":"0","total_admissions":"2","district":"towner-county"}
 {"state_code":"US_DEMO","year":"2018","month":"12","returns":"2","total_admissions":"0","district":"traill-county"}
-{"state_code":"US_DEMO","year":"2018","month":"12","returns":"3","total_admissions":"6","district":"walsh-county,"}
+{"state_code":"US_DEMO","year":"2018","month":"12","returns":"3","total_admissions":"6","district":"walsh-county"}
 {"state_code":"US_DEMO","year":"2018","month":"12","returns":"2","total_admissions":"0","district":"ward-county"}
 {"state_code":"US_DEMO","year":"2018","month":"12","returns":"0","total_admissions":"1","district":"wells-county"}
 {"state_code":"US_DEMO","year":"2018","month":"12","returns":"0","total_admissions":"4","district":"williams-county"}
@@ -1319,7 +1319,7 @@
 {"state_code":"US_DEMO","year":"2019","month":"1","returns":"1","total_admissions":"2","district":"stutsman-county"}
 {"state_code":"US_DEMO","year":"2019","month":"1","returns":"0","total_admissions":"0","district":"towner-county"}
 {"state_code":"US_DEMO","year":"2019","month":"1","returns":"1","total_admissions":"1","district":"traill-county"}
-{"state_code":"US_DEMO","year":"2019","month":"1","returns":"4","total_admissions":"4","district":"walsh-county,"}
+{"state_code":"US_DEMO","year":"2019","month":"1","returns":"4","total_admissions":"4","district":"walsh-county"}
 {"state_code":"US_DEMO","year":"2019","month":"1","returns":"0","total_admissions":"7","district":"ward-county"}
 {"state_code":"US_DEMO","year":"2019","month":"1","returns":"1","total_admissions":"0","district":"wells-county"}
 {"state_code":"US_DEMO","year":"2019","month":"1","returns":"1","total_admissions":"0","district":"williams-county"}
@@ -1372,7 +1372,7 @@
 {"state_code":"US_DEMO","year":"2019","month":"2","returns":"2","total_admissions":"0","district":"stutsman-county"}
 {"state_code":"US_DEMO","year":"2019","month":"2","returns":"2","total_admissions":"3","district":"towner-county"}
 {"state_code":"US_DEMO","year":"2019","month":"2","returns":"1","total_admissions":"2","district":"traill-county"}
-{"state_code":"US_DEMO","year":"2019","month":"2","returns":"0","total_admissions":"0","district":"walsh-county,"}
+{"state_code":"US_DEMO","year":"2019","month":"2","returns":"0","total_admissions":"0","district":"walsh-county"}
 {"state_code":"US_DEMO","year":"2019","month":"2","returns":"1","total_admissions":"0","district":"ward-county"}
 {"state_code":"US_DEMO","year":"2019","month":"2","returns":"1","total_admissions":"2","district":"wells-county"}
 {"state_code":"US_DEMO","year":"2019","month":"2","returns":"1","total_admissions":"2","district":"williams-county"}
@@ -1425,7 +1425,7 @@
 {"state_code":"US_DEMO","year":"2019","month":"3","returns":"1","total_admissions":"1","district":"stutsman-county"}
 {"state_code":"US_DEMO","year":"2019","month":"3","returns":"1","total_admissions":"2","district":"towner-county"}
 {"state_code":"US_DEMO","year":"2019","month":"3","returns":"0","total_admissions":"1","district":"traill-county"}
-{"state_code":"US_DEMO","year":"2019","month":"3","returns":"2","total_admissions":"3","district":"walsh-county,"}
+{"state_code":"US_DEMO","year":"2019","month":"3","returns":"2","total_admissions":"3","district":"walsh-county"}
 {"state_code":"US_DEMO","year":"2019","month":"3","returns":"0","total_admissions":"1","district":"ward-county"}
 {"state_code":"US_DEMO","year":"2019","month":"3","returns":"1","total_admissions":"0","district":"wells-county"}
 {"state_code":"US_DEMO","year":"2019","month":"3","returns":"1","total_admissions":"3","district":"williams-county"}
@@ -1478,7 +1478,7 @@
 {"state_code":"US_DEMO","year":"2019","month":"4","returns":"2","total_admissions":"2","district":"stutsman-county"}
 {"state_code":"US_DEMO","year":"2019","month":"4","returns":"0","total_admissions":"1","district":"towner-county"}
 {"state_code":"US_DEMO","year":"2019","month":"4","returns":"2","total_admissions":"1","district":"traill-county"}
-{"state_code":"US_DEMO","year":"2019","month":"4","returns":"1","total_admissions":"1","district":"walsh-county,"}
+{"state_code":"US_DEMO","year":"2019","month":"4","returns":"1","total_admissions":"1","district":"walsh-county"}
 {"state_code":"US_DEMO","year":"2019","month":"4","returns":"1","total_admissions":"3","district":"ward-county"}
 {"state_code":"US_DEMO","year":"2019","month":"4","returns":"1","total_admissions":"0","district":"wells-county"}
 {"state_code":"US_DEMO","year":"2019","month":"4","returns":"2","total_admissions":"1","district":"williams-county"}
@@ -1531,7 +1531,7 @@
 {"state_code":"US_DEMO","year":"2019","month":"5","returns":"0","total_admissions":"2","district":"stutsman-county"}
 {"state_code":"US_DEMO","year":"2019","month":"5","returns":"0","total_admissions":"0","district":"towner-county"}
 {"state_code":"US_DEMO","year":"2019","month":"5","returns":"0","total_admissions":"0","district":"traill-county"}
-{"state_code":"US_DEMO","year":"2019","month":"5","returns":"1","total_admissions":"4","district":"walsh-county,"}
+{"state_code":"US_DEMO","year":"2019","month":"5","returns":"1","total_admissions":"4","district":"walsh-county"}
 {"state_code":"US_DEMO","year":"2019","month":"5","returns":"0","total_admissions":"0","district":"ward-county"}
 {"state_code":"US_DEMO","year":"2019","month":"5","returns":"0","total_admissions":"3","district":"wells-county"}
 {"state_code":"US_DEMO","year":"2019","month":"5","returns":"0","total_admissions":"0","district":"williams-county"}
@@ -1584,7 +1584,7 @@
 {"state_code":"US_DEMO","year":"2019","month":"6","returns":"0","total_admissions":"1","district":"stutsman-county"}
 {"state_code":"US_DEMO","year":"2019","month":"6","returns":"0","total_admissions":"3","district":"towner-county"}
 {"state_code":"US_DEMO","year":"2019","month":"6","returns":"2","total_admissions":"1","district":"traill-county"}
-{"state_code":"US_DEMO","year":"2019","month":"6","returns":"1","total_admissions":"2","district":"walsh-county,"}
+{"state_code":"US_DEMO","year":"2019","month":"6","returns":"1","total_admissions":"2","district":"walsh-county"}
 {"state_code":"US_DEMO","year":"2019","month":"6","returns":"0","total_admissions":"0","district":"ward-county"}
 {"state_code":"US_DEMO","year":"2019","month":"6","returns":"1","total_admissions":"0","district":"wells-county"}
 {"state_code":"US_DEMO","year":"2019","month":"6","returns":"0","total_admissions":"1","district":"williams-county"}
@@ -1637,7 +1637,7 @@
 {"state_code":"US_DEMO","year":"2019","month":"7","returns":"1","total_admissions":"2","district":"stutsman-county"}
 {"state_code":"US_DEMO","year":"2019","month":"7","returns":"0","total_admissions":"0","district":"towner-county"}
 {"state_code":"US_DEMO","year":"2019","month":"7","returns":"0","total_admissions":"3","district":"traill-county"}
-{"state_code":"US_DEMO","year":"2019","month":"7","returns":"0","total_admissions":"1","district":"walsh-county,"}
+{"state_code":"US_DEMO","year":"2019","month":"7","returns":"0","total_admissions":"1","district":"walsh-county"}
 {"state_code":"US_DEMO","year":"2019","month":"7","returns":"1","total_admissions":"3","district":"ward-county"}
 {"state_code":"US_DEMO","year":"2019","month":"7","returns":"1","total_admissions":"1","district":"wells-county"}
 {"state_code":"US_DEMO","year":"2019","month":"7","returns":"1","total_admissions":"0","district":"williams-county"}
@@ -1690,7 +1690,7 @@
 {"state_code":"US_DEMO","year":"2019","month":"8","returns":"0","total_admissions":"4","district":"stutsman-county"}
 {"state_code":"US_DEMO","year":"2019","month":"8","returns":"0","total_admissions":"1","district":"towner-county"}
 {"state_code":"US_DEMO","year":"2019","month":"8","returns":"0","total_admissions":"0","district":"traill-county"}
-{"state_code":"US_DEMO","year":"2019","month":"8","returns":"1","total_admissions":"0","district":"walsh-county,"}
+{"state_code":"US_DEMO","year":"2019","month":"8","returns":"1","total_admissions":"0","district":"walsh-county"}
 {"state_code":"US_DEMO","year":"2019","month":"8","returns":"1","total_admissions":"2","district":"ward-county"}
 {"state_code":"US_DEMO","year":"2019","month":"8","returns":"0","total_admissions":"2","district":"wells-county"}
 {"state_code":"US_DEMO","year":"2019","month":"8","returns":"1","total_admissions":"1","district":"williams-county"}
@@ -1743,7 +1743,7 @@
 {"state_code":"US_DEMO","year":"2019","month":"9","returns":"1","total_admissions":"2","district":"stutsman-county"}
 {"state_code":"US_DEMO","year":"2019","month":"9","returns":"0","total_admissions":"5","district":"towner-county"}
 {"state_code":"US_DEMO","year":"2019","month":"9","returns":"0","total_admissions":"3","district":"traill-county"}
-{"state_code":"US_DEMO","year":"2019","month":"9","returns":"1","total_admissions":"1","district":"walsh-county,"}
+{"state_code":"US_DEMO","year":"2019","month":"9","returns":"1","total_admissions":"1","district":"walsh-county"}
 {"state_code":"US_DEMO","year":"2019","month":"9","returns":"0","total_admissions":"0","district":"ward-county"}
 {"state_code":"US_DEMO","year":"2019","month":"9","returns":"0","total_admissions":"5","district":"wells-county"}
 {"state_code":"US_DEMO","year":"2019","month":"9","returns":"3","total_admissions":"1","district":"williams-county"}
