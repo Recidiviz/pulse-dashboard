@@ -40,7 +40,9 @@ import RevocationRateByCounty
   from '../../../components/charts/revocations/RevocationRateByCounty';
 import RevocationsByOffice
   from '../../../components/charts/revocations/RevocationsByOffice';
+import GeoViewTimeChart from '../../../components/charts/GeoViewTimeChart';
 
+import GeoViewToggle from '../../../components/toggles/GeoViewToggle';
 import ToggleBar from '../../../components/toggles/ToggleBar';
 import * as ToggleDefaults from '../../../components/toggles/ToggleDefaults';
 
@@ -52,6 +54,7 @@ const Revocations = () => {
   const [chartTimeWindow, setChartTimeWindow] = useState(ToggleDefaults.timeWindow);
   const [chartSupervisionType, setChartSupervisionType] = useState(ToggleDefaults.supervisionType);
   const [chartDistrict, setChartDistrict] = useState(ToggleDefaults.district);
+  const [geoViewEnabledRCOT, setGeoViewEnabledRCOT] = useState(ToggleDefaults.geoView);
 
   $(() => {
     $('[data-toggle="tooltip"]').tooltip();
@@ -102,25 +105,53 @@ const Revocations = () => {
                           Export
                         </a>
                         <div className="dropdown-menu" aria-labelledby="exportDropdownMenuButton-revocationCountsByMonth">
-                          <a className="dropdown-item" id="downloadChartAsImage-revocationCountsByMonth" href="javascript:void(0);">Export image</a>
+                          {geoViewEnabledRCOT === false && (
+                            <a className="dropdown-item" id="downloadChartAsImage-revocationCountsByMonth" href="javascript:void(0);">Export image</a>
+                          )}
                           <a className="dropdown-item" id="downloadChartData-revocationCountsByMonth" href="javascript:void(0);">Export data</a>
                         </div>
                       </div>
                     </span>
                   </h6>
                 </div>
-                <div className="layer w-100 pX-20 pT-20">
-                  <div className="dynamic-chart-header" id="revocationCountsByMonth-header" />
+                <div className="layer w-100 pX-20 pT-10">
+                  <GeoViewToggle setGeoViewEnabled={setGeoViewEnabledRCOT} />
                 </div>
+                <div className="layer w-100 pX-20 pT-20">
+                  {geoViewEnabledRCOT === false && (
+                    <div className="dynamic-chart-header" id="revocationCountsByMonth-header" />
+                  )}
+                </div>
+                // TODO(XXX): Figure out why map will nott show when delegated to by the Chart.js
+                // chart. Then we can just encapsulate this logic inside of a single component.
                 <div className="layer w-100 p-20">
-                  <RevocationCountOverTime
-                    metricType={chartMetricType}
-                    timeWindow={chartTimeWindow}
-                    supervisionType={chartSupervisionType}
-                    district={chartDistrict}
-                    revocationCountsByMonth={apiData.revocations_by_month}
-                    header="revocationCountsByMonth-header"
-                  />
+                  {geoViewEnabledRCOT === false && (
+                    <RevocationCountOverTime
+                      metricType={chartMetricType}
+                      timeWindow={chartTimeWindow}
+                      supervisionType={chartSupervisionType}
+                      district={chartDistrict}
+                      geoView={geoViewEnabledRCOT}
+                      officeData={apiData.site_offices}
+                      revocationCountsByMonth={apiData.revocations_by_month}
+                      header="revocationCountsByMonth-header"
+                    />
+                  )}
+                  {geoViewEnabledRCOT === true && (
+                    <GeoViewTimeChart
+                      chartId="revocationCountsByMonth"
+                      chartTitle="REVOCATIONS BY MONTH"
+                      metricType={chartMetricType}
+                      timeWindow={chartTimeWindow}
+                      supervisionType={chartSupervisionType}
+                      officeData={apiData.site_offices}
+                      dataPointsByOffice={apiData.revocations_over_time_window}
+                      numeratorKeys={['revocation_count']}
+                      denominatorKeys={['total_supervision_count']}
+                      centerLat={47.3}
+                      centerLong={-100.5}
+                    />
+                  )}
                 </div>
                 <div className="layer bdT p-20 w-100 accordion" id="methodologyRevocationCountsByMonth">
                   <div className="mb-0" id="methodologyHeadingRevocationCountsByMonth">

@@ -32,7 +32,9 @@ import FtrReferralsByLsir
   from '../../../components/charts/program_evaluation/us_nd/free_through_recovery/FtrReferralsByLsir';
 import FtrReferralsByRace
   from '../../../components/charts/program_evaluation/us_nd/free_through_recovery/FtrReferralsByRace';
+import GeoViewTimeChart from '../../../components/charts/GeoViewTimeChart';
 
+import GeoViewToggle from '../../../components/toggles/GeoViewToggle';
 import ToggleBar from '../../../components/toggles/ToggleBar';
 import * as ToggleDefaults from '../../../components/toggles/ToggleDefaults';
 
@@ -44,6 +46,7 @@ const FreeThroughRecovery = () => {
   const [chartTimeWindow, setChartTimeWindow] = useState(ToggleDefaults.timeWindow);
   const [chartSupervisionType, setChartSupervisionType] = useState(ToggleDefaults.supervisionType);
   const [chartDistrict, setChartDistrict] = useState(ToggleDefaults.district);
+  const [geoViewEnabledRCOT, setGeoViewEnabledRCOT] = useState(ToggleDefaults.geoView);
 
   const fetchChartData = async () => {
     try {
@@ -90,25 +93,51 @@ const FreeThroughRecovery = () => {
                           Export
                         </a>
                         <div className="dropdown-menu" aria-labelledby="exportDropdownMenuButton-ftrReferralCountByMonth">
-                          <a className="dropdown-item" id="downloadChartAsImage-ftrReferralCountByMonth" href="javascript:void(0);">Export image</a>
+                          {geoViewEnabledRCOT === false && (
+                            <a className="dropdown-item" id="downloadChartAsImage-ftrReferralCountByMonth" href="javascript:void(0);">Export image</a>
+                          )}
                           <a className="dropdown-item" id="downloadChartData-ftrReferralCountByMonth" href="javascript:void(0);">Export data</a>
                         </div>
                       </div>
                     </span>
                   </h6>
                 </div>
-                <div className="layer w-100 pX-20 pT-20">
-                  <div className="dynamic-chart-header" id="ftrReferralCountByMonth-header" />
+                <div className="layer w-100 pX-20 pT-10">
+                  <GeoViewToggle setGeoViewEnabled={setGeoViewEnabledRCOT} />
                 </div>
+                <div className="layer w-100 pX-20 pT-20">
+                  {geoViewEnabledRCOT === false && (
+                    <div className="dynamic-chart-header" id="ftrReferralCountByMonth-header" />
+                  )}
+                </div>
+                // TODO(XXX): Figure out why map will nott show when delegated to by the Chart.js
+                // chart. Then we can just encapsulate this logic inside of a single component.
                 <div className="layer w-100 p-20">
-                  <FtrReferralCountByMonth
-                    metricType={chartMetricType}
-                    timeWindow={chartTimeWindow}
-                    supervisionType={chartSupervisionType}
-                    district={chartDistrict}
-                    ftrReferralCountByMonth={apiData.ftr_referrals_by_month}
-                    header="ftrReferralCountByMonth-header"
-                  />
+                  {geoViewEnabledRCOT === false && (
+                    <FtrReferralCountByMonth
+                      metricType={chartMetricType}
+                      timeWindow={chartTimeWindow}
+                      supervisionType={chartSupervisionType}
+                      district={chartDistrict}
+                      ftrReferralCountByMonth={apiData.ftr_referrals_by_month}
+                      header="ftrReferralCountByMonth-header"
+                    />
+                  )}
+                  {geoViewEnabledRCOT === true && (
+                    <GeoViewTimeChart
+                      chartId="ftrReferralCountByMonth"
+                      chartTitle="FTR REFERRALS BY MONTH"
+                      metricType={chartMetricType}
+                      timeWindow={chartTimeWindow}
+                      supervisionType={chartSupervisionType}
+                      officeData={apiData.site_offices}
+                      dataPointsByOffice={apiData.ftr_referrals_over_time_window}
+                      numeratorKeys={['count']}
+                      denominatorKeys={['total_supervision_count']}
+                      centerLat={47.3}
+                      centerLong={-100.5}
+                    />
+                  )}
                 </div>
                 <div className="layer bdT p-20 w-100 accordion" id="methodologyFtrReferralCountByMonth">
                   <div className="mb-0" id="methodologyHeadingFtrReferralCountByMonth">

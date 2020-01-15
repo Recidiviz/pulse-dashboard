@@ -19,10 +19,12 @@ const metricType = 'counts';
 const timeWindow = '1y';
 const supervisionType = 'all';
 const district = 'all';
+const geoView = false;
 
 export {
   metricType,
   timeWindow,
   supervisionType,
   district,
+  geoView,
 };

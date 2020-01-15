@@ -29,7 +29,9 @@ import RevocationAdmissionsSnapshot
   from '../../../components/charts/snapshots/RevocationAdmissionsSnapshot';
 import SupervisionSuccessSnapshot
   from '../../../components/charts/snapshots/SupervisionSuccessSnapshot';
+import GeoViewTimeChart from '../../../components/charts/GeoViewTimeChart';
 
+import GeoViewToggle from '../../../components/toggles/GeoViewToggle';
 import ToggleBar from '../../../components/toggles/ToggleBar';
 import * as ToggleDefaults from '../../../components/toggles/ToggleDefaults';
 
@@ -41,6 +43,9 @@ const Snapshots = () => {
   const [chartTimeWindow, setChartTimeWindow] = useState(ToggleDefaults.timeWindow);
   const [chartSupervisionType, setChartSupervisionType] = useState(ToggleDefaults.supervisionType);
   const [chartDistrict, setChartDistrict] = useState(ToggleDefaults.district);
+  const [geoViewEnabledSCOS, setGeoViewEnabledSCOS] = useState(ToggleDefaults.geoView);
+  const [geoViewEnabledPDTR, setGeoViewEnabledPDTR] = useState(ToggleDefaults.geoView);
+  const [geoViewEnabledALSI, setGeoViewEnabledALSI] = useState(ToggleDefaults.geoView);
 
   $(() => {
     $('[data-toggle="tooltip"]').tooltip();
@@ -91,27 +96,51 @@ const Snapshots = () => {
                           Export
                         </a>
                         <div className="dropdown-menu" aria-labelledby="exportDropdownMenuButton-supervisionSuccesSnapshot">
-                          <a className="dropdown-item" id="downloadChartAsImage-supervisionSuccessSnapshot" href="javascript:void(0);">Export image</a>
+                          {geoViewEnabledSCOS === false && (
+                            <a className="dropdown-item" id="downloadChartAsImage-supervisionSuccessSnapshot" href="javascript:void(0);">Export image</a>
+                          )}
                           <a className="dropdown-item" id="downloadChartData-supervisionSuccessSnapshot" href="javascript:void(0);">Export data</a>
                         </div>
                       </div>
                     </span>
                   </h6>
                 </div>
+                <div className="layer w-100 pX-20 pT-10">
+                  <GeoViewToggle setGeoViewEnabled={setGeoViewEnabledSCOS} />
+                </div>
                 <div className="layer w-100 pX-20 pT-20">
-                  <div className="dynamic-chart-header" id="supervisionSuccessSnapshot-header" />
+                  {geoViewEnabledSCOS === false && (
+                    <div className="dynamic-chart-header" id="supervisionSuccessSnapshot-header" />
+                  )}
                 </div>
                 <div className="layer w-100 p-20">
                   <div className="ai-c jc-c gapX-20">
                     <div className="col-md-12">
-                      <SupervisionSuccessSnapshot
-                        metricType={chartMetricType}
-                        timeWindow={chartTimeWindow}
-                        supervisionType={chartSupervisionType}
-                        district={chartDistrict}
-                        supervisionSuccessRates={apiData.supervision_termination_by_type_by_month}
-                        header="supervisionSuccessSnapshot-header"
-                      />
+                      {geoViewEnabledSCOS === false && (
+                        <SupervisionSuccessSnapshot
+                          metricType={chartMetricType}
+                          timeWindow={chartTimeWindow}
+                          supervisionType={chartSupervisionType}
+                          district={chartDistrict}
+                          supervisionSuccessRates={apiData.supervision_termination_by_type_by_month}
+                          header="supervisionSuccessSnapshot-header"
+                        />
+                      )}
+                      {geoViewEnabledSCOS === true && (
+                        <GeoViewTimeChart
+                          chartId="supervisionSuccessSnapshot"
+                          chartTitle="SUCCESSFUL COMPLETION OF SUPERVISION"
+                          metricType={chartMetricType}
+                          timeWindow={chartTimeWindow}
+                          supervisionType={chartSupervisionType}
+                          officeData={apiData.site_offices}
+                          dataPointsByOffice={apiData.supervision_termination_by_type_over_time_window}
+                          numeratorKeys={['revocation_termination']}
+                          denominatorKeys={['revocation_termination', 'successful_termination']}
+                          centerLat={47.3}
+                          centerLong={-100.5}
+                        />
+                      )}
                     </div>
                   </div>
                 </div>
@@ -160,26 +189,49 @@ const Snapshots = () => {
                           Export
                         </a>
                         <div className="dropdown-menu" aria-labelledby="exportDropdownMenuButton-revocationAdmissionsSnapshot">
-                          <a className="dropdown-item" id="downloadChartAsImage-revocationAdmissionsSnapshot" href="javascript:void(0);">Export image</a>
+                          {geoViewEnabledPDTR === false && (
+                            <a className="dropdown-item" id="downloadChartAsImage-revocationAdmissionsSnapshot" href="javascript:void(0);">Export image</a>
+                          )}
                           <a className="dropdown-item" id="downloadChartData-revocationAdmissionsSnapshot" href="javascript:void(0);">Export data</a>
                         </div>
                       </div>
                     </span>
                   </h6>
                 </div>
+                <div className="layer w-100 pX-20 pT-10">
+                  <GeoViewToggle setGeoViewEnabled={setGeoViewEnabledPDTR} />
+                </div>
                 <div className="layer w-100 pX-20 pT-20">
-                  <div className="dynamic-chart-header" id="revocationAdmissionsSnapshot-header" />
+                  {geoViewEnabledPDTR === false && (
+                    <div className="dynamic-chart-header" id="revocationAdmissionsSnapshot-header" />
+                  )}
                 </div>
                 <div className="layer w-100 p-20">
                   <div className="ai-c jc-c gapX-20">
                     <div className="col-md-12">
-                      <RevocationAdmissionsSnapshot
-                        metricType={chartMetricType}
-                        timeWindow={chartTimeWindow}
-                        district={chartDistrict}
-                        revocationAdmissionsByMonth={apiData.admissions_by_type_by_month}
-                        header="revocationAdmissionsSnapshot-header"
-                      />
+                      {geoViewEnabledPDTR === false && (
+                        <RevocationAdmissionsSnapshot
+                          metricType={chartMetricType}
+                          timeWindow={chartTimeWindow}
+                          district={chartDistrict}
+                          revocationAdmissionsByMonth={apiData.admissions_by_type_by_month}
+                          header="revocationAdmissionsSnapshot-header"
+                        />
+                      )}
+                      {geoViewEnabledPDTR === true && (
+                        <GeoViewTimeChart
+                          chartId="revocationAdmissionsSnapshot"
+                          chartTitle="PRISON ADMISSIONS DUE TO REVOCATION"
+                          metricType={chartMetricType}
+                          timeWindow={chartTimeWindow}
+                          officeData={apiData.site_offices}
+                          dataPointsByOffice={apiData.admissions_by_type_over_time_window}
+                          numeratorKeys={['technicals', 'non_technicals', 'unknown_revocations']}
+                          denominatorKeys={['technicals', 'non_technicals', 'unknown_revocations', 'new_admissions']}
+                          centerLat={47.3}
+                          centerLong={-100.5}
+                        />
+                      )}
                     </div>
                   </div>
                 </div>
@@ -293,26 +345,50 @@ const Snapshots = () => {
                           Export
                         </a>
                         <div className="dropdown-menu" aria-labelledby="exportDropdownMenuButton-lsirScoreChangeSnapshot">
-                          <a className="dropdown-item" id="downloadChartAsImage-lsirScoreChangeSnapshot" href="javascript:void(0);">Export image</a>
+                          {geoViewEnabledALSI === false && (
+                            <a className="dropdown-item" id="downloadChartAsImage-lsirScoreChangeSnapshot" href="javascript:void(0);">Export image</a>
+                          )}
                           <a className="dropdown-item" id="downloadChartData-lsirScoreChangeSnapshot" href="javascript:void(0);">Export data</a>
                         </div>
                       </div>
                     </span>
                   </h6>
                 </div>
+                <div className="layer w-100 pX-20 pT-10">
+                  <GeoViewToggle setGeoViewEnabled={setGeoViewEnabledALSI} />
+                </div>
                 <div className="layer w-100 pX-20 pT-20">
-                  <div className="dynamic-chart-header" id="lsirScoreChangeSnapshot-header" />
+                  {geoViewEnabledALSI === false && (
+                    <div className="dynamic-chart-header" id="lsirScoreChangeSnapshot-header" />
+                  )}
                 </div>
                 <div className="layer w-100 p-20">
                   <div className="ai-c jc-c gapX-20">
                     <div className="col-md-12">
-                      <LsirScoreChangeSnapshot
-                        timeWindow={chartTimeWindow}
-                        supervisionType={chartSupervisionType}
-                        district={chartDistrict}
-                        lsirScoreChangeByMonth={apiData.average_change_lsir_score_by_month}
-                        header="lsirScoreChangeSnapshot-header"
-                      />
+                      {geoViewEnabledALSI === false && (
+                        <LsirScoreChangeSnapshot
+                          timeWindow={chartTimeWindow}
+                          supervisionType={chartSupervisionType}
+                          district={chartDistrict}
+                          lsirScoreChangeByMonth={apiData.average_change_lsir_score_by_month}
+                          header="lsirScoreChangeSnapshot-header"
+                        />
+                      )}
+                      {geoViewEnabledALSI === true && (
+                        <GeoViewTimeChart
+                          chartId="lsirScoreChangeSnapshot"
+                          chartTitle="LSI-R SCORE CHANGES (AVERAGE)"
+                          metricType="counts"
+                          timeWindow={chartTimeWindow}
+                          supervisionType={chartSupervisionType}
+                          officeData={apiData.site_offices}
+                          dataPointsByOffice={apiData.average_change_lsir_score_over_time_window}
+                          numeratorKeys={['average_change']}
+                          denominatorKeys={[]}
+                          centerLat={47.3}
+                          centerLong={-100.5}
+                        />
+                      )}
                     </div>
                   </div>
                 </div>

@@ -18,6 +18,7 @@
 import React, { useState, useEffect } from 'react';
 import { Line } from 'react-chartjs-2';
 
+import GeoViewTimeChart from '../GeoViewTimeChart';
 import { COLORS } from '../../../assets/scripts/constants/colors';
 import { configureDownloadButtons } from '../../../assets/scripts/utils/downloads';
 import {
@@ -30,6 +31,9 @@ import {
 } from '../../../utils/charts/toggles';
 import { sortFilterAndSupplementMostRecentMonths } from '../../../utils/transforms/datasets';
 import { monthNamesWithYearsFromNumbers } from '../../../utils/transforms/months';
+
+const centerNDLong = -100.5;
+const centerNDLat = 47.3;
 
 const RevocationCountOverTime = (props) => {
   const [chartLabels, setChartLabels] = useState([]);
@@ -161,6 +165,26 @@ const RevocationCountOverTime = (props) => {
     />
   );
 
+  // const geoChart = (
+  //   <GeoViewTimeChart
+  //     chartId={chartId}
+  //     chartTitle="REVOCATIONS BY MONTH"
+  //     metricType={props.metricType}
+  //     timeWindow={props.timeWindow}
+  //     supervisionType={props.supervisionType}
+  //     officeData={props.officeData}
+  //     dataPointsByOffice={props.revocationCountsByMonth}
+  //     numeratorKey="revocation_count"
+  //     denominatorKey="total_supervision_count"
+  //     centerLat={centerNDLat}
+  //     centerLong={centerNDLong}
+  //   />
+  // );
+  //
+  // if (props.geoView === true) {
+  //   return geoChart;
+  // }
+
   const exportedStructureCallback = () => (
     {
       metric: 'Revocation counts by month',
@@ -183,7 +207,7 @@ const RevocationCountOverTime = (props) => {
     header.innerHTML = '';
   }
 
-  return (chart);
+  return chart;
 };
 
 export default RevocationCountOverTime;

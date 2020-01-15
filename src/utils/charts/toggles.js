@@ -197,6 +197,10 @@ function filterDatasetBySupervisionTypeExplicitAll(dataset, supervisionType) {
 }
 
 function canDisplayGoal(goal, currentToggleStates) {
+  if (currentToggleStates.geoView) {
+    return false;
+  }
+
   let canDisplay = true;
   if (currentToggleStates.metricType && goal.metricType) {
     canDisplay = canDisplay && goal.metricType === currentToggleStates.metricType;
