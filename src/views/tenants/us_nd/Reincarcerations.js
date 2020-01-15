@@ -258,7 +258,7 @@ const Reincarcerations = () => {
                 <div className="layer w-100 pX-20 pT-20">
                   <h6 className="lh-1">
                     REINCARCERATION RATE BY PREVIOUS STAY LENGTH
-                    {(chartMetricType !== 'rates' || (chartTimeWindow !== '3y' && chartTimeWindow !== '1y')) && (
+                    {(chartMetricType !== 'rates' || (chartTimeWindow !== '36' && chartTimeWindow !== '12')) && (
                       <span className="pL-10 c-orange-500 ti-alert" data-toggle="tooltip" data-placement="bottom" title="This graph is showing the reincarceration rate by previous stay length with the follow up period noted below. It cannot show this metric as a count. It also cannot show follow up periods under 1 year." />
                     )}
                     <span className="fa-pull-right">

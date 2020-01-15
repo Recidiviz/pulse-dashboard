@@ -16,7 +16,7 @@
 // =============================================================================
 
 const metricType = 'counts';
-const timeWindow = '1y';
+const timeWindow = '12';
 const supervisionType = 'all';
 const district = 'all';
 const geoView = false;

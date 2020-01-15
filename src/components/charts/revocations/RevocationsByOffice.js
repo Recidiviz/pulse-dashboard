@@ -37,7 +37,7 @@ const chartId = 'revocationsByOffice';
 const centerNDLong = -100.5;
 const centerNDLat = 47.3;
 
-const TIME_WINDOWS = ['1m', '3m', '6m', '1y', '3y'];
+const TIME_WINDOWS = ['1', '3', '6', '12', '36'];
 
 function getOfficeDataValue(office, metricType, timeWindow, supervisionType) {
   const supervisionTypeKey = supervisionType.toLowerCase();
@@ -170,11 +170,11 @@ class RevocationsByOffice extends Component {
     this.offices = {};
     this.officeIds = [];
     this.maxValues = {
-      '1m': { count: -1e100, rate: -1e100 },
-      '3m': { count: -1e100, rate: -1e100 },
-      '6m': { count: -1e100, rate: -1e100 },
-      '1y': { count: -1e100, rate: -1e100 },
-      '3y': { count: -1e100, rate: -1e100 },
+      '1': { count: -1e100, rate: -1e100 },
+      '3': { count: -1e100, rate: -1e100 },
+      '6': { count: -1e100, rate: -1e100 },
+      '12': { count: -1e100, rate: -1e100 },
+      '36': { count: -1e100, rate: -1e100 },
     };
 
     if (this.officeData) {

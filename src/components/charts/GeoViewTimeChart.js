@@ -37,7 +37,7 @@ import { toHtmlFriendly } from '../../utils/transforms/labels';
 const minMarkerRadius = 10;
 const maxMarkerRadius = 35;
 
-const TIME_WINDOWS = ['1m', '3m', '6m', '1y', '3y'];
+const TIME_WINDOWS = ['1', '3', '6', '12', '36'];
 
 function normalizedOfficeKey(officeName) {
   return toHtmlFriendly(officeName).toLowerCase();

@@ -21,7 +21,7 @@ class TimeWindowToggle extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedOption: '1y',
+      selectedOption: '12',
     };
     this.handleChange = this.handleChange.bind(this);
   }
@@ -44,8 +44,8 @@ class TimeWindowToggle extends React.Component {
             <input
               type="radio"
               name="time-window"
-              value="3y"
-              checked={this.state.selectedOption === '3y'}
+              value="36"
+              checked={this.state.selectedOption === '36'}
               onChange={this.handleChange}
               className="form-check-input"
             />
@@ -58,8 +58,8 @@ class TimeWindowToggle extends React.Component {
             <input
               type="radio"
               name="time-window"
-              value="1y"
-              checked={this.state.selectedOption === '1y'}
+              value="12"
+              checked={this.state.selectedOption === '12'}
               onChange={this.handleChange}
               className="form-check-input"
             />
@@ -72,8 +72,8 @@ class TimeWindowToggle extends React.Component {
             <input
               type="radio"
               name="time-window"
-              value="6m"
-              checked={this.state.selectedOption === '6m'}
+              value="6"
+              checked={this.state.selectedOption === '6'}
               onChange={this.handleChange}
               className="form-check-input"
             />
@@ -86,8 +86,8 @@ class TimeWindowToggle extends React.Component {
             <input
               type="radio"
               name="time-window"
-              value="3m"
-              checked={this.state.selectedOption === '3m'}
+              value="3"
+              checked={this.state.selectedOption === '3'}
               onChange={this.handleChange}
               className="form-check-input"
             />
@@ -100,8 +100,8 @@ class TimeWindowToggle extends React.Component {
             <input
               type="radio"
               name="time-window"
-              value="1m"
-              checked={this.state.selectedOption === '1m'}
+              value="1"
+              checked={this.state.selectedOption === '1'}
               onChange={this.handleChange}
               className="form-check-input"
             />

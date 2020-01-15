@@ -17,14 +17,6 @@
 
 import { getTooltipWithoutTrendline } from './trendline';
 
-const monthsPerTimeWindow = {
-  '3y': 36,
-  '1y': 12,
-  '6m': 6,
-  '3m': 3,
-  '1m': 1,
-};
-
 function toggleLabel(labelsByToggle, toggledValue) {
   if (labelsByToggle[toggledValue]) {
     return labelsByToggle[toggledValue];
@@ -79,7 +71,7 @@ function toggleYAxisTicksStackedRateBasicCount(metricType, maxCount) {
 }
 
 function getMonthCountFromTimeWindowToggle(toggledValue) {
-  return monthsPerTimeWindow[toggledValue];
+  return Number(toggledValue);
 }
 
 function getPeriodLabelFromTimeWindowToggle(toggledValue) {
