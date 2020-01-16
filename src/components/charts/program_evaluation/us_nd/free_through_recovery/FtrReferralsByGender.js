@@ -23,7 +23,8 @@ import {
 } from '../../../../../assets/scripts/constants/colors';
 import { configureDownloadButtons } from '../../../../../assets/scripts/utils/downloads';
 import {
-  filterDatasetBySupervisionType, filterDatasetByDistrict, filterDatasetByTimeWindow,
+  filterDatasetBySupervisionType, filterDatasetByDistrict,
+  filterDatasetByTimeWindow,
 } from '../../../../../utils/charts/toggles';
 import { tooltipForCountChart, tooltipForRateChart } from '../../../../../utils/charts/tooltips';
 import { sortByLabel } from '../../../../../utils/transforms/datasets';
@@ -44,24 +45,20 @@ const FtrReferralsByGender = (props) => {
 
     let filteredFtrReferrals = filterDatasetBySupervisionType(
       ftrReferralsByGender, props.supervisionType,
-      ['state_code', 'time_window', 'gender', 'district'], ['count'],
     );
 
     filteredFtrReferrals = filterDatasetByDistrict(
       filteredFtrReferrals, props.district,
-      ['state_code', 'time_window', 'gender'], ['count'],
     );
 
     filteredFtrReferrals = filterDatasetByTimeWindow(filteredFtrReferrals, props.timeWindow);
 
     let filteredSupervisionPopulation = filterDatasetBySupervisionType(
       supervisionPopulationByGender, props.supervisionType,
-      ['state_code', 'time_window', 'gender', 'district'], ['count'],
     );
 
     filteredSupervisionPopulation = filterDatasetByDistrict(
       filteredSupervisionPopulation, props.district,
-      ['state_code', 'time_window', 'gender'], ['count'],
     );
 
     filteredSupervisionPopulation = filterDatasetByTimeWindow(

@@ -26,8 +26,8 @@ import {
 } from '../../../utils/charts/metricGoal';
 import {
   toggleLabel, getMonthCountFromTimeWindowToggle, updateTooltipForMetricType,
-  filterDatasetBySupervisionType, filterDatasetByDistrict, canDisplayGoal, toggleYAxisTicksFor,
-  centerSingleMonthDatasetIfNecessary,
+  filterDatasetBySupervisionType, filterDatasetByDistrict, canDisplayGoal,
+  toggleYAxisTicksFor, centerSingleMonthDatasetIfNecessary,
 } from '../../../utils/charts/toggles';
 import { sortFilterAndSupplementMostRecentMonths } from '../../../utils/transforms/datasets';
 import { monthNamesWithYearsFromNumbers } from '../../../utils/transforms/months';
@@ -50,12 +50,10 @@ const RevocationCountOverTime = (props) => {
 
     let filteredCountsByMonth = filterDatasetBySupervisionType(
       countsByMonth, props.supervisionType,
-      ['state_code', 'year', 'month', 'district'], ['revocation_count', 'total_supervision_count'],
     );
 
     filteredCountsByMonth = filterDatasetByDistrict(
       filteredCountsByMonth, props.district,
-      ['state_code', 'year', 'month'], ['revocation_count', 'total_supervision_count'],
     );
 
     const dataPoints = [];

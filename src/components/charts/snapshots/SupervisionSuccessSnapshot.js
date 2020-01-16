@@ -28,9 +28,9 @@ import {
   chartAnnotationForGoal,
 } from '../../../utils/charts/metricGoal';
 import {
-  getMonthCountFromTimeWindowToggle, filterDatasetBySupervisionType, filterDatasetByDistrict,
-  updateTooltipForMetricType, toggleLabel, canDisplayGoal, toggleYAxisTicksAdditionalOptions,
-  centerSingleMonthDatasetIfNecessary,
+  getMonthCountFromTimeWindowToggle, filterDatasetBySupervisionType,
+  filterDatasetByDistrict, updateTooltipForMetricType, toggleLabel, canDisplayGoal,
+  toggleYAxisTicksAdditionalOptions, centerSingleMonthDatasetIfNecessary,
 } from '../../../utils/charts/toggles';
 import { generateTrendlineDataset } from '../../../utils/charts/trendline';
 
@@ -49,14 +49,10 @@ const SupervisionSuccessSnapshot = (props) => {
 
     let filteredCountsByMonth = filterDatasetBySupervisionType(
       countsByMonth, props.supervisionType,
-      ['state_code', 'projected_year', 'projected_month', 'district'],
-      ['successful_termination', 'revocation_termination'],
     );
 
     filteredCountsByMonth = filterDatasetByDistrict(
       filteredCountsByMonth, props.district,
-      ['state_code', 'projected_year', 'projected_month'],
-      ['successful_termination', 'revocation_termination'],
     );
 
     const today = new Date();

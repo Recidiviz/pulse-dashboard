@@ -25,7 +25,8 @@ import {
 } from '../../../utils/charts/metricGoal';
 import {
   toggleLabel, getMonthCountFromTimeWindowToggle, updateTooltipForMetricType,
-  filterDatasetByDistrict, canDisplayGoal, toggleYAxisTicksFor, centerSingleMonthDatasetIfNecessary,
+  filterDatasetByDistrict, canDisplayGoal, toggleYAxisTicksFor,
+  centerSingleMonthDatasetIfNecessary,
 } from '../../../utils/charts/toggles';
 import { sortFilterAndSupplementMostRecentMonths } from '../../../utils/transforms/datasets';
 import { toInt } from '../../../utils/transforms/labels';
@@ -47,7 +48,6 @@ const ReincarcerationCountOverTime = (props) => {
 
     const filteredCountsByMonth = filterDatasetByDistrict(
       countsByMonth, props.district,
-      ['state_code', 'year', 'month'], ['returns', 'total_admissions'],
     );
 
     const dataPoints = [];

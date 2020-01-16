@@ -318,3 +318,23 @@
 {"state_code":"US_DEMO","admission_type":"NON_TECHNICAL","admission_count":"22","time_window":"36","district":"bottineau"}
 {"state_code":"US_DEMO","admission_type":"NON_TECHNICAL","admission_count":"6","time_window":"36","district":"oakes"}
 {"state_code":"US_DEMO","admission_type":"NON_TECHNICAL","admission_count":"73","time_window":"36","district":"beulah"}
+{"state_code": "US_DEMO", "district": "ALL", "admission_type": "NEW_ADMISSION", "time_window": "1", "admission_count": "38"}
+{"state_code": "US_DEMO", "district": "ALL", "admission_type": "NEW_ADMISSION", "time_window": "3", "admission_count": "97"}
+{"state_code": "US_DEMO", "district": "ALL", "admission_type": "NEW_ADMISSION", "time_window": "6", "admission_count": "203"}
+{"state_code": "US_DEMO", "district": "ALL", "admission_type": "NEW_ADMISSION", "time_window": "12", "admission_count": "386"}
+{"state_code": "US_DEMO", "district": "ALL", "admission_type": "NEW_ADMISSION", "time_window": "36", "admission_count": "1000"}
+{"state_code": "US_DEMO", "district": "ALL", "admission_type": "UNKNOWN_REVOCATION", "time_window": "1", "admission_count": "4"}
+{"state_code": "US_DEMO", "district": "ALL", "admission_type": "UNKNOWN_REVOCATION", "time_window": "3", "admission_count": "23"}
+{"state_code": "US_DEMO", "district": "ALL", "admission_type": "UNKNOWN_REVOCATION", "time_window": "6", "admission_count": "40"}
+{"state_code": "US_DEMO", "district": "ALL", "admission_type": "UNKNOWN_REVOCATION", "time_window": "12", "admission_count": "75"}
+{"state_code": "US_DEMO", "district": "ALL", "admission_type": "UNKNOWN_REVOCATION", "time_window": "36", "admission_count": "208"}
+{"state_code": "US_DEMO", "district": "ALL", "admission_type": "NON_TECHNICAL", "time_window": "1", "admission_count": "19"}
+{"state_code": "US_DEMO", "district": "ALL", "admission_type": "NON_TECHNICAL", "time_window": "3", "admission_count": "61"}
+{"state_code": "US_DEMO", "district": "ALL", "admission_type": "NON_TECHNICAL", "time_window": "6", "admission_count": "122"}
+{"state_code": "US_DEMO", "district": "ALL", "admission_type": "NON_TECHNICAL", "time_window": "12", "admission_count": "199"}
+{"state_code": "US_DEMO", "district": "ALL", "admission_type": "NON_TECHNICAL", "time_window": "36", "admission_count": "403"}
+{"state_code": "US_DEMO", "district": "ALL", "admission_type": "TECHNICAL", "time_window": "1", "admission_count": "5"}
+{"state_code": "US_DEMO", "district": "ALL", "admission_type": "TECHNICAL", "time_window": "3", "admission_count": "12"}
+{"state_code": "US_DEMO", "district": "ALL", "admission_type": "TECHNICAL", "time_window": "6", "admission_count": "21"}
+{"state_code": "US_DEMO", "district": "ALL", "admission_type": "TECHNICAL", "time_window": "12", "admission_count": "55"}
+{"state_code": "US_DEMO", "district": "ALL", "admission_type": "TECHNICAL", "time_window": "36", "admission_count": "148"}

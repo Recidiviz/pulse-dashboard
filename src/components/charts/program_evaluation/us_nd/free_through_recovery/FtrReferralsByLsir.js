@@ -21,7 +21,8 @@ import { Bar } from 'react-chartjs-2';
 import { COLORS, COLORS_FIVE_VALUES } from '../../../../../assets/scripts/constants/colors';
 import { configureDownloadButtons } from '../../../../../assets/scripts/utils/downloads';
 import {
-  filterDatasetBySupervisionType, filterDatasetByDistrict, filterDatasetByTimeWindow,
+  filterDatasetBySupervisionType, filterDatasetByDistrict,
+  filterDatasetByTimeWindow,
 } from '../../../../../utils/charts/toggles';
 import { tooltipForCountChart, tooltipForRateChart } from '../../../../../utils/charts/tooltips';
 import { toInt } from '../../../../../utils/transforms/labels';
@@ -42,24 +43,20 @@ const FtrReferralsByLsir = (props) => {
 
     let filteredFtrReferrals = filterDatasetBySupervisionType(
       ftrReferralsByLsir, props.supervisionType,
-      ['state_code', 'time_window', 'lsir_score', 'district'], ['count'],
     );
 
     filteredFtrReferrals = filterDatasetByDistrict(
       filteredFtrReferrals, props.district,
-      ['state_code', 'time_window', 'lsir_score'], ['count'],
     );
 
     filteredFtrReferrals = filterDatasetByTimeWindow(filteredFtrReferrals, props.timeWindow);
 
     let filteredSupervisionPopulation = filterDatasetBySupervisionType(
       supervisionPopulationByLsir, props.supervisionType,
-      ['state_code', 'time_window', 'lsir_score', 'district'], ['count'],
     );
 
     filteredSupervisionPopulation = filterDatasetByDistrict(
       filteredSupervisionPopulation, props.district,
-      ['state_code', 'time_window', 'lsir_score'], ['count'],
     );
 
     filteredSupervisionPopulation = filterDatasetByTimeWindow(

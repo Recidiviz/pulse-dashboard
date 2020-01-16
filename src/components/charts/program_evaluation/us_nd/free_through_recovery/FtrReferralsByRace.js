@@ -21,9 +21,10 @@ import { Bar, HorizontalBar } from 'react-chartjs-2';
 import { COLORS_FIVE_VALUES, COLORS } from '../../../../../assets/scripts/constants/colors';
 import { configureDownloadButtons } from '../../../../../assets/scripts/utils/downloads';
 import {
-  filterDatasetBySupervisionType, filterDatasetByDistrict, filterDatasetByTimeWindow,
+  filterDatasetBySupervisionType, filterDatasetByDistrict,
+  filterDatasetByTimeWindow,
 } from '../../../../../utils/charts/toggles';
-import { tooltipForCountChart, tooltipForRateChart } from '../../../../../utils/charts/tooltips';
+import { tooltipForCountChart } from '../../../../../utils/charts/tooltips';
 import { sortByLabel } from '../../../../../utils/transforms/datasets';
 import { raceValueToHumanReadable, toInt } from '../../../../../utils/transforms/labels';
 
@@ -46,24 +47,20 @@ const FtrReferralsByRace = (props) => {
 
     let filteredFtrReferrals = filterDatasetBySupervisionType(
       ftrReferralsByRace, props.supervisionType,
-      ['state_code', 'time_window', 'race_or_ethnicity', 'district'], ['count'],
     );
 
     filteredFtrReferrals = filterDatasetByDistrict(
       filteredFtrReferrals, props.district,
-      ['state_code', 'time_window', 'race_or_ethnicity'], ['count'],
     );
 
     filteredFtrReferrals = filterDatasetByTimeWindow(filteredFtrReferrals, props.timeWindow);
 
     let filteredSupervisionPopulation = filterDatasetBySupervisionType(
       supervisionPopulationByRace, props.supervisionType,
-      ['state_code', 'time_window', 'race_or_ethnicity', 'district'], ['count'],
     );
 
     filteredSupervisionPopulation = filterDatasetByDistrict(
       filteredSupervisionPopulation, props.district,
-      ['state_code', 'time_window', 'race_or_ethnicity'], ['count'],
     );
 
     filteredSupervisionPopulation = filterDatasetByTimeWindow(

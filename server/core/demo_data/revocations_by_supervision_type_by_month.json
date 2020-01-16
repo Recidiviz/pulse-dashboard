@@ -526,3 +526,36 @@
 {"state_code":"US_DEMO","year":"2018","month":"3","probation_count":"1","parole_count":"1","district":"bottineau"}
 {"state_code":"US_DEMO","year":"2018","month":"3","probation_count":"2","parole_count":"1","district":"oakes"}
 {"state_code":"US_DEMO","year":"2018","month":"3","probation_count":"4","parole_count":"0","district":"beulah"}
+{"state_code": "US_DEMO", "district": "ALL", "year": "2017", "month": "2", "probation_count": "38", "parole_count": "22"}
+{"state_code": "US_DEMO", "district": "ALL", "year": "2019", "month": "3", "probation_count": "41", "parole_count": "25"}
+{"state_code": "US_DEMO", "district": "ALL", "year": "2017", "month": "12", "probation_count": "37", "parole_count": "21"}
+{"state_code": "US_DEMO", "district": "ALL", "year": "2019", "month": "6", "probation_count": "22", "parole_count": "25"}
+{"state_code": "US_DEMO", "district": "ALL", "year": "2017", "month": "10", "probation_count": "51", "parole_count": "27"}
+{"state_code": "US_DEMO", "district": "ALL", "year": "2018", "month": "8", "probation_count": "31", "parole_count": "17"}
+{"state_code": "US_DEMO", "district": "ALL", "year": "2018", "month": "1", "probation_count": "32", "parole_count": "30"}
+{"state_code": "US_DEMO", "district": "ALL", "year": "2019", "month": "1", "probation_count": "27", "parole_count": "31"}
+{"state_code": "US_DEMO", "district": "ALL", "year": "2019", "month": "2", "probation_count": "31", "parole_count": "27"}
+{"state_code": "US_DEMO", "district": "ALL", "year": "2019", "month": "7", "probation_count": "20", "parole_count": "28"}
+{"state_code": "US_DEMO", "district": "ALL", "year": "2018", "month": "11", "probation_count": "31", "parole_count": "22"}
+{"state_code": "US_DEMO", "district": "ALL", "year": "2019", "month": "9", "probation_count": "12", "parole_count": "10"}
+{"state_code": "US_DEMO", "district": "ALL", "year": "2019", "month": "8", "probation_count": "24", "parole_count": "19"}
+{"state_code": "US_DEMO", "district": "ALL", "year": "2018", "month": "4", "probation_count": "39", "parole_count": "27"}
+{"state_code": "US_DEMO", "district": "ALL", "year": "2017", "month": "8", "probation_count": "33", "parole_count": "28"}
+{"state_code": "US_DEMO", "district": "ALL", "year": "2017", "month": "9", "probation_count": "31", "parole_count": "19"}
+{"state_code": "US_DEMO", "district": "ALL", "year": "2018", "month": "9", "probation_count": "33", "parole_count": "23"}
+{"state_code": "US_DEMO", "district": "ALL", "year": "2017", "month": "1", "probation_count": "47", "parole_count": "30"}
+{"state_code": "US_DEMO", "district": "ALL", "year": "2018", "month": "6", "probation_count": "37", "parole_count": "20"}
+{"state_code": "US_DEMO", "district": "ALL", "year": "2017", "month": "4", "probation_count": "52", "parole_count": "23"}
+{"state_code": "US_DEMO", "district": "ALL", "year": "2019", "month": "5", "probation_count": "43", "parole_count": "14"}
+{"state_code": "US_DEMO", "district": "ALL", "year": "2018", "month": "7", "probation_count": "30", "parole_count": "19"}
+{"state_code": "US_DEMO", "district": "ALL", "year": "2017", "month": "3", "probation_count": "51", "parole_count": "42"}
+{"state_code": "US_DEMO", "district": "ALL", "year": "2017", "month": "7", "probation_count": "60", "parole_count": "30"}
+{"state_code": "US_DEMO", "district": "ALL", "year": "2018", "month": "10", "probation_count": "33", "parole_count": "18"}
+{"state_code": "US_DEMO", "district": "ALL", "year": "2018", "month": "5", "probation_count": "59", "parole_count": "21"}
+{"state_code": "US_DEMO", "district": "ALL", "year": "2017", "month": "11", "probation_count": "21", "parole_count": "24"}
+{"state_code": "US_DEMO", "district": "ALL", "year": "2018", "month": "12", "probation_count": "30", "parole_count": "36"}
+{"state_code": "US_DEMO", "district": "ALL", "year": "2019", "month": "4", "probation_count": "44", "parole_count": "30"}
+{"state_code": "US_DEMO", "district": "ALL", "year": "2017", "month": "6", "probation_count": "31", "parole_count": "27"}
+{"state_code": "US_DEMO", "district": "ALL", "year": "2018", "month": "2", "probation_count": "25", "parole_count": "36"}
+{"state_code": "US_DEMO", "district": "ALL", "year": "2017", "month": "5", "probation_count": "35", "parole_count": "31"}
+{"state_code": "US_DEMO", "district": "ALL", "year": "2018", "month": "3", "probation_count": "40", "parole_count": "29"}

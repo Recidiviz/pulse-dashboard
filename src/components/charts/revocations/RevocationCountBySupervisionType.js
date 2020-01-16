@@ -39,7 +39,6 @@ const RevocationCountBySupervisionType = (props) => {
 
     const filteredCountsByMonth = filterDatasetByDistrict(
       countsByMonth, props.district,
-      ['state_code', 'year', 'month'], ['probation_count', 'parole_count'],
     );
 
     const paroleData = [];

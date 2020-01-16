@@ -25,8 +25,8 @@ import {
   chartAnnotationForGoal,
 } from '../../../utils/charts/metricGoal';
 import {
-  getMonthCountFromTimeWindowToggle, filterDatasetBySupervisionTypeExplicitAll,
-  filterDatasetByDistrictExplicitAll, canDisplayGoal, centerSingleMonthDatasetIfNecessary,
+  getMonthCountFromTimeWindowToggle, filterDatasetBySupervisionType,
+  filterDatasetByDistrict, canDisplayGoal, centerSingleMonthDatasetIfNecessary,
 } from '../../../utils/charts/toggles';
 import {
   generateTrendlineDataset, getTooltipWithoutTrendline,
@@ -47,11 +47,11 @@ const LsirScoreChangeSnapshot = (props) => {
   const processResponse = () => {
     const { lsirScoreChangeByMonth: changeByMonth } = props;
 
-    let filteredChangeByMonth = filterDatasetBySupervisionTypeExplicitAll(
+    let filteredChangeByMonth = filterDatasetBySupervisionType(
       changeByMonth, props.supervisionType,
     );
 
-    filteredChangeByMonth = filterDatasetByDistrictExplicitAll(
+    filteredChangeByMonth = filterDatasetByDistrict(
       filteredChangeByMonth, props.district,
     );
 

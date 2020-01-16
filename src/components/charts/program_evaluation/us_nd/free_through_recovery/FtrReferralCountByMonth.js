@@ -22,7 +22,8 @@ import { COLORS } from '../../../../../assets/scripts/constants/colors';
 import { configureDownloadButtons } from '../../../../../assets/scripts/utils/downloads';
 import {
   toggleLabel, getMonthCountFromTimeWindowToggle, updateTooltipForMetricType,
-  filterDatasetBySupervisionType, filterDatasetByDistrict, centerSingleMonthDatasetIfNecessary,
+  filterDatasetBySupervisionType, filterDatasetByDistrict,
+  centerSingleMonthDatasetIfNecessary,
 } from '../../../../../utils/charts/toggles';
 import { sortFilterAndSupplementMostRecentMonths } from '../../../../../utils/transforms/datasets';
 import { toInt } from '../../../../../utils/transforms/labels';
@@ -39,12 +40,10 @@ const FtrReferralCountByMonth = (props) => {
 
     let filteredCountsByMonth = filterDatasetBySupervisionType(
       countsByMonth, props.supervisionType,
-      ['state_code', 'year', 'month', 'district'], ['count', 'total_supervision_count'],
     );
 
     filteredCountsByMonth = filterDatasetByDistrict(
       filteredCountsByMonth, props.district,
-      ['state_code', 'year', 'month'], ['count', 'total_supervision_count'],
     );
 
     const dataPoints = [];

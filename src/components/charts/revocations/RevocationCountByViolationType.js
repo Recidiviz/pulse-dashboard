@@ -22,7 +22,8 @@ import { COLORS, COLORS_FIVE_VALUES } from '../../../assets/scripts/constants/co
 import { configureDownloadButtons } from '../../../assets/scripts/utils/downloads';
 import {
   toggleLabel, getMonthCountFromTimeWindowToggle, updateTooltipForMetricType,
-  filterDatasetBySupervisionType, filterDatasetByDistrict, toggleYAxisTicksStackedRateBasicCount,
+  filterDatasetBySupervisionType, filterDatasetByDistrict,
+  toggleYAxisTicksStackedRateBasicCount,
 } from '../../../utils/charts/toggles';
 import { sortFilterAndSupplementMostRecentMonths } from '../../../utils/transforms/datasets';
 import { monthNamesWithYearsFromNumbers } from '../../../utils/transforms/months';
@@ -41,14 +42,10 @@ const RevocationCountByViolationType = (props) => {
 
     let filteredCountsByMonth = filterDatasetBySupervisionType(
       countsByMonth, props.supervisionType,
-      ['state_code', 'year', 'month', 'district'],
-      ['absconsion_count', 'felony_count', 'technical_count', 'unknown_count'],
     );
 
     filteredCountsByMonth = filterDatasetByDistrict(
       filteredCountsByMonth, props.district,
-      ['state_code', 'year', 'month'],
-      ['absconsion_count', 'felony_count', 'technical_count', 'unknown_count'],
     );
 
     const dataPoints = [];

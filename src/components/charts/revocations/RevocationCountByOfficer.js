@@ -161,8 +161,6 @@ const RevocationCountByOfficer = (props) => {
 
     const revocationCountsByOfficerAndSupervisionType = filterDatasetBySupervisionType(
       revocationCountsByOfficer, props.supervisionType.toUpperCase(),
-      ['state_code', 'time_window', 'officer_external_id', 'site_id'],
-      ['absconsion_count', 'felony_count', 'technical_count', 'unknown_count'],
     );
 
     const revocationCountsByOfficerAndTime = filterDatasetByTimeWindow(

@@ -105,87 +105,23 @@ function updateTooltipForMetricType(metricType, tooltipItem, data) {
   return label;
 }
 
-function createKeyFromElements(dataPoint, keyElements) {
-  const dataElements = [];
-  keyElements.forEach((element) => {
-    dataElements.push(dataPoint[element]);
-  });
-
-  return dataElements.join('-');
-}
-
-function copyDataFieldsForKeyElements(dataPoint, keyElements) {
-  const updatedDataPoint = {};
-  keyElements.forEach((element) => {
-    updatedDataPoint[element] = dataPoint[element];
-  });
-  return updatedDataPoint;
-}
-
-function filterDatasetByToggleFilters(dataset, toggleFilters, keyElements, valuesToCount) {
-  let filteredDataset = [];
-  const toggleKey = Object.keys(toggleFilters)[0];
-  const toggleValue = toggleFilters[toggleKey].toUpperCase();
-
-  if (toggleValue !== 'ALL') {
-    filteredDataset = dataset
-      .filter((element) => element[toggleKey].toUpperCase() === toggleValue);
-  } else {
-    const groupedByKey = {};
-    dataset.forEach((data) => {
-      const key = createKeyFromElements(data, keyElements);
-      if (!groupedByKey[key]) {
-        groupedByKey[key] = [];
-      }
-      groupedByKey[key].push(data);
-    });
-
-    Object.keys(groupedByKey).forEach((groupKey) => {
-      const groupedDataPoints = groupedByKey[groupKey];
-      const updatedDataPoint = copyDataFieldsForKeyElements(groupedDataPoints[0], keyElements);
-
-      valuesToCount.forEach((key) => {
-        updatedDataPoint[key] = groupedDataPoints.reduce(
-          (a, b) => Number(a) + (Number(b[key]) || 0), 0,
-        );
-      });
-
-      filteredDataset.push(updatedDataPoint);
-    });
-  }
-
-  return filteredDataset;
-}
-
-function filterDatasetByDistrict(dataset, district, keyElements, valuesToCount) {
-  return filterDatasetByToggleFilters(
-    dataset, { district }, keyElements, valuesToCount,
-  );
-}
-
-function filterDatasetBySupervisionType(dataset, supervisionType, keyElements, valuesToCount) {
-  return filterDatasetByToggleFilters(
-    dataset, { supervision_type: supervisionType }, keyElements, valuesToCount,
-  );
-}
-
 function filterDatasetByTimeWindow(dataset, timeWindow) {
   return dataset.filter((element) => element.time_window === timeWindow);
 }
 
-function filterDatasetByToggleFiltersExplicitAll(dataset, toggleFilters) {
+function filterDatasetByToggleFilters(dataset, toggleFilters) {
   const toggleKey = Object.keys(toggleFilters)[0];
   const toggleValue = toggleFilters[toggleKey].toUpperCase();
 
   return dataset.filter((element) => element[toggleKey].toUpperCase() === toggleValue);
 }
 
-function filterDatasetByDistrictExplicitAll(dataset, district) {
-  return filterDatasetByToggleFiltersExplicitAll(dataset, { district });
+function filterDatasetByDistrict(dataset, district) {
+  return filterDatasetByToggleFilters(dataset, { district });
 }
 
-function filterDatasetBySupervisionTypeExplicitAll(dataset, supervisionType) {
-  return filterDatasetByToggleFiltersExplicitAll(dataset, { supervision_type: supervisionType });
+function filterDatasetBySupervisionType(dataset, supervisionType) {
+  return filterDatasetByToggleFilters(dataset, { supervision_type: supervisionType });
 }
 
 function canDisplayGoal(goal, currentToggleStates) {
@@ -207,6 +143,7 @@ function canDisplayGoal(goal, currentToggleStates) {
 }
 
 function centerSingleMonthDatasetIfNecessary(dataValues, labels) {
+  // Places empty, invisible data points on either side of the single datapoint to center it
   if (dataValues.length === 1) {
     dataValues.unshift(null);
     dataValues.push(null);
@@ -225,13 +162,9 @@ export {
   getMonthCountFromTimeWindowToggle,
   getPeriodLabelFromTimeWindowToggle,
   updateTooltipForMetricType,
-  filterDatasetByToggleFilters,
+  filterDatasetByTimeWindow,
   filterDatasetByDistrict,
   filterDatasetBySupervisionType,
-  filterDatasetByTimeWindow,
-  filterDatasetByToggleFiltersExplicitAll,
-  filterDatasetByDistrictExplicitAll,
-  filterDatasetBySupervisionTypeExplicitAll,
   canDisplayGoal,
   centerSingleMonthDatasetIfNecessary,
 };

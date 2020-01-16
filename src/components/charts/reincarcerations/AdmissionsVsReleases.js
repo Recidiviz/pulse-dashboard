@@ -40,7 +40,6 @@ const AdmissionsVsReleases = (props) => {
 
     const filteredAdmissionsVsReleases = filterDatasetByDistrict(
       admissionsVsReleases, props.district,
-      ['state_code', 'year', 'month'], ['population_change', 'month_end_population'],
     );
 
     const dataPoints = [];

@@ -49,8 +49,6 @@ const RevocationAdmissionsSnapshot = (props) => {
 
     const filteredCountsByMonth = filterDatasetByDistrict(
       countsByMonth, props.district,
-      ['state_code', 'year', 'month'],
-      ['new_admissions', 'technicals', 'non_technicals', 'unknown_revocations'],
     );
 
     const dataPoints = [];

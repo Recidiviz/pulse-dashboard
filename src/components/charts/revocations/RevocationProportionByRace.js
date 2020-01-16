@@ -21,7 +21,8 @@ import { Bar, HorizontalBar } from 'react-chartjs-2';
 import { COLORS_FIVE_VALUES, COLORS } from '../../../assets/scripts/constants/colors';
 import { configureDownloadButtons } from '../../../assets/scripts/utils/downloads';
 import {
-  filterDatasetBySupervisionType, filterDatasetByDistrict, filterDatasetByTimeWindow,
+  filterDatasetBySupervisionType, filterDatasetByDistrict,
+  filterDatasetByTimeWindow,
 } from '../../../utils/charts/toggles';
 import { sortByLabel } from '../../../utils/transforms/datasets';
 import { raceValueToHumanReadable, toInt } from '../../../utils/transforms/labels';
@@ -45,26 +46,18 @@ const RevocationProportionByRace = (props) => {
 
     let filteredRevocationProportions = filterDatasetBySupervisionType(
       revocationProportionByRace, props.supervisionType,
-      ['state_code', 'time_window', 'race_or_ethnicity', 'district'],
-      ['revocation_count'],
     );
 
     filteredRevocationProportions = filterDatasetByDistrict(
       filteredRevocationProportions, props.district,
-      ['state_code', 'time_window', 'race_or_ethnicity'],
-      ['revocation_count'],
     );
 
     let filteredSupervisionPopulation = filterDatasetBySupervisionType(
       supervisionPopulationByRace, props.supervisionType,
-      ['state_code', 'time_window', 'race_or_ethnicity', 'district'],
-      ['count'],
     );
 
     filteredSupervisionPopulation = filterDatasetByDistrict(
       filteredSupervisionPopulation, props.district,
-      ['state_code', 'time_window', 'race_or_ethnicity'],
-      ['count'],
     );
 
     const revocationProportionByRaceAndTime = filterDatasetByTimeWindow(

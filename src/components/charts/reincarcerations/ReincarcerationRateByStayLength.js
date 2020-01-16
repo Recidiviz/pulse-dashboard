@@ -21,7 +21,7 @@ import { Bar } from 'react-chartjs-2';
 import { COLORS } from '../../../assets/scripts/constants/colors';
 import { configureDownloadButtons } from '../../../assets/scripts/utils/downloads';
 
-import { filterDatasetByDistrictExplicitAll } from '../../../utils/charts/toggles';
+import { filterDatasetByDistrict } from '../../../utils/charts/toggles';
 
 const ReincarcerationRateByStayLength = (props) => {
   const [chartLabels, setChartLabels] = useState([]);
@@ -34,7 +34,7 @@ const ReincarcerationRateByStayLength = (props) => {
   const processResponse = () => {
     const { ratesByStayLength } = props;
 
-    const filteredRatesByStayLength = filterDatasetByDistrictExplicitAll(
+    const filteredRatesByStayLength = filterDatasetByDistrict(
       ratesByStayLength, props.district,
     );
 

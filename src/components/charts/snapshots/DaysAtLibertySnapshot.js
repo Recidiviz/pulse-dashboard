@@ -25,7 +25,7 @@ import {
   chartAnnotationForGoal,
 } from '../../../utils/charts/metricGoal';
 import {
-  getMonthCountFromTimeWindowToggle, filterDatasetByDistrictExplicitAll, canDisplayGoal,
+  getMonthCountFromTimeWindowToggle, filterDatasetByDistrict, canDisplayGoal,
   centerSingleMonthDatasetIfNecessary,
 } from '../../../utils/charts/toggles';
 import {
@@ -47,7 +47,7 @@ const DaysAtLibertySnapshot = (props) => {
   const processResponse = () => {
     const { daysAtLibertyByMonth } = props;
 
-    const filteredDaysByMonth = filterDatasetByDistrictExplicitAll(
+    const filteredDaysByMonth = filterDatasetByDistrict(
       daysAtLibertyByMonth, props.district,
     );
 

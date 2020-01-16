@@ -1747,3 +1747,36 @@
 {"state_code":"US_DEMO","year":"2019","month":"9","returns":"0","total_admissions":"0","district":"ward-county"}
 {"state_code":"US_DEMO","year":"2019","month":"9","returns":"0","total_admissions":"5","district":"wells-county"}
 {"state_code":"US_DEMO","year":"2019","month":"9","returns":"3","total_admissions":"1","district":"williams-county"}
+{"state_code": "US_DEMO", "district": "ALL", "year": "2017", "month": "1", "returns": "51", "total_admissions": "145"}
+{"state_code": "US_DEMO", "district": "ALL", "year": "2017", "month": "2", "returns": "39", "total_admissions": "132"}
+{"state_code": "US_DEMO", "district": "ALL", "year": "2017", "month": "3", "returns": "70", "total_admissions": "126"}
+{"state_code": "US_DEMO", "district": "ALL", "year": "2017", "month": "4", "returns": "38", "total_admissions": "107"}
+{"state_code": "US_DEMO", "district": "ALL", "year": "2017", "month": "5", "returns": "41", "total_admissions": "105"}
+{"state_code": "US_DEMO", "district": "ALL", "year": "2017", "month": "6", "returns": "44", "total_admissions": "128"}
+{"state_code": "US_DEMO", "district": "ALL", "year": "2017", "month": "7", "returns": "61", "total_admissions": "139"}
+{"state_code": "US_DEMO", "district": "ALL", "year": "2017", "month": "8", "returns": "62", "total_admissions": "114"}
+{"state_code": "US_DEMO", "district": "ALL", "year": "2017", "month": "9", "returns": "42", "total_admissions": "95"}
+{"state_code": "US_DEMO", "district": "ALL", "year": "2017", "month": "10", "returns": "53", "total_admissions": "100"}
+{"state_code": "US_DEMO", "district": "ALL", "year": "2017", "month": "11", "returns": "25", "total_admissions": "86"}
+{"state_code": "US_DEMO", "district": "ALL", "year": "2017", "month": "12", "returns": "30", "total_admissions": "101"}
+{"state_code": "US_DEMO", "district": "ALL", "year": "2018", "month": "1", "returns": "53", "total_admissions": "121"}
+{"state_code": "US_DEMO", "district": "ALL", "year": "2018", "month": "2", "returns": "20", "total_admissions": "122"}
+{"state_code": "US_DEMO", "district": "ALL", "year": "2018", "month": "3", "returns": "50", "total_admissions": "104"}
+{"state_code": "US_DEMO", "district": "ALL", "year": "2018", "month": "4", "returns": "41", "total_admissions": "119"}
+{"state_code": "US_DEMO", "district": "ALL", "year": "2018", "month": "5", "returns": "49", "total_admissions": "105"}
+{"state_code": "US_DEMO", "district": "ALL", "year": "2018", "month": "6", "returns": "35", "total_admissions": "138"}
+{"state_code": "US_DEMO", "district": "ALL", "year": "2018", "month": "7", "returns": "31", "total_admissions": "138"}
+{"state_code": "US_DEMO", "district": "ALL", "year": "2018", "month": "8", "returns": "32", "total_admissions": "133"}
+{"state_code": "US_DEMO", "district": "ALL", "year": "2018", "month": "9", "returns": "34", "total_admissions": "108"}
+{"state_code": "US_DEMO", "district": "ALL", "year": "2018", "month": "10", "returns": "54", "total_admissions": "106"}
+{"state_code": "US_DEMO", "district": "ALL", "year": "2018", "month": "11", "returns": "54", "total_admissions": "146"}
+{"state_code": "US_DEMO", "district": "ALL", "year": "2018", "month": "12", "returns": "47", "total_admissions": "123"}
+{"state_code": "US_DEMO", "district": "ALL", "year": "2019", "month": "1", "returns": "45", "total_admissions": "105"}
+{"state_code": "US_DEMO", "district": "ALL", "year": "2019", "month": "2", "returns": "42", "total_admissions": "107"}
+{"state_code": "US_DEMO", "district": "ALL", "year": "2019", "month": "3", "returns": "61", "total_admissions": "119"}
+{"state_code": "US_DEMO", "district": "ALL", "year": "2019", "month": "4", "returns": "60", "total_admissions": "121"}
+{"state_code": "US_DEMO", "district": "ALL", "year": "2019", "month": "5", "returns": "33", "total_admissions": "120"}
+{"state_code": "US_DEMO", "district": "ALL", "year": "2019", "month": "6", "returns": "33", "total_admissions": "104"}
+{"state_code": "US_DEMO", "district": "ALL", "year": "2019", "month": "7", "returns": "51", "total_admissions": "135"}
+{"state_code": "US_DEMO", "district": "ALL", "year": "2019", "month": "8", "returns": "23", "total_admissions": "130"}
+{"state_code": "US_DEMO", "district": "ALL", "year": "2019", "month": "9", "returns": "29", "total_admissions": "102"}

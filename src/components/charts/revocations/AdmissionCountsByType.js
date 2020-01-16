@@ -20,7 +20,9 @@ import { Bar, Pie } from 'react-chartjs-2';
 
 import { COLORS, COLORS_FIVE_VALUES } from '../../../assets/scripts/constants/colors';
 import { configureDownloadButtons } from '../../../assets/scripts/utils/downloads';
-import { filterDatasetByDistrict, filterDatasetByTimeWindow } from '../../../utils/charts/toggles';
+import {
+  filterDatasetByDistrict, filterDatasetByTimeWindow,
+} from '../../../utils/charts/toggles';
 import { sortByLabel } from '../../../utils/transforms/datasets';
 import { toInt } from '../../../utils/transforms/labels';
 
@@ -42,7 +44,6 @@ const AdmissionCountsByType = (props) => {
 
     let filteredAdmissionCounts = filterDatasetByDistrict(
       admissionCountsByType, props.district,
-      ['state_code', 'admission_type', 'time_window'], ['admission_count'],
     );
 
     filteredAdmissionCounts = filterDatasetByTimeWindow(
