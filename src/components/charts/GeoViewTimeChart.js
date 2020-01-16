@@ -62,34 +62,15 @@ function getOfficeForCounty(offices, geographyNameForCounty) {
 function getOfficeDataValue(office, metricType, timeWindow, supervisionType) {
   const supervisionTypeKey = normalizedSupervisionTypeKey(supervisionType);
   if (metricType === 'counts') {
-    if (supervisionTypeKey === 'all') {
-      return office.dataValues[timeWindow].parole.numerator + office.dataValues[timeWindow].probation.numerator;
-    }
     return office.dataValues[timeWindow][supervisionTypeKey].numerator;
   }
 
-  if (supervisionTypeKey === 'all') {
-    const paroleCount = office.dataValues[timeWindow].parole.numerator;
-    const probationCount = office.dataValues[timeWindow].probation.numerator;
-    const paroleDenominator = office.dataValues[timeWindow].parole.denominator;
-    const probationDenominator = office.dataValues[timeWindow].probation.denominator;
-
-    return (100 * ((paroleCount + probationCount) / (paroleDenominator + probationDenominator)))
-      .toFixed(2);
-  }
   return office.dataValues[timeWindow][supervisionTypeKey].rate;
 }
 
 function relatedMaxValue(maxValues, metricType, timeWindow, supervisionTypeKey) {
-  let maxValue = 0;
   const valueKey = metricType === 'counts' ? 'numerator' : 'rate';
-  if (supervisionTypeKey === 'all') {
-    // TODO re-test this once all is made explicit
-    maxValue = maxValues[timeWindow].parole[valueKey] + maxValues[timeWindow].probation[valueKey];
-  } else {
-    maxValue = maxValues[timeWindow][supervisionTypeKey][valueKey];
-  }
-  return maxValue;
+  return maxValues[timeWindow][supervisionTypeKey][valueKey];
 }
 
 /**
@@ -127,7 +108,9 @@ function toggleTooltip(office, metricType, timeWindow, supervisionType) {
   return `${office.officeName}: ${value}%`;
 }
 
-function toggleTooltipForCounty(offices, geographyNameForCounty, metricType, timeWindow, supervisionType) {
+function toggleTooltipForCounty(
+  offices, geographyNameForCounty, metricType, timeWindow, supervisionType,
+) {
   const countyName = normalizedCountyName(geographyNameForCounty);
   const office = offices[countyName];
 
@@ -184,8 +167,8 @@ class GeoViewTimeChart extends Component {
   setEmptyOfficeData(office) {
     TIME_WINDOWS.forEach((window) => {
       office.dataValues[window] = {
-        // Add all here?
         none: { numerator: 0, denominator: 0, rate: 0.00 },
+        all: { numerator: 0, denominator: 0, rate: 0.00 },
         parole: { numerator: 0, denominator: 0, rate: 0.00 },
         probation: { numerator: 0, denominator: 0, rate: 0.00 },
       };
@@ -226,6 +209,7 @@ class GeoViewTimeChart extends Component {
     TIME_WINDOWS.forEach((timeWindow) => {
       this.maxValues[timeWindow] = {
         none: { numerator: -1e100, rate: -1e100 },
+        all: { numerator: -1e100, rate: -1e100 },
         parole: { numerator: -1e100, rate: -1e100 },
         probation: { numerator: -1e100, rate: -1e100 },
       }
@@ -297,6 +281,7 @@ class GeoViewTimeChart extends Component {
           if (!office.dataValues[timeWindow]) {
             office.dataValues[timeWindow] = {
               none: { numerator: 0, denominator: 0, rate: 0.00 },
+              all: { numerator: 0, denominator: 0, rate: 0.00 },
               parole: { numerator: 0, denominator: 0, rate: 0.00 },
               probation: { numerator: 0, denominator: 0, rate: 0.00 },
             };
@@ -418,7 +403,7 @@ class GeoViewTimeChart extends Component {
                     marker={office}
                     style={{
                       default: {
-                        fill: colorForMarker(office, this.maxValues, this.props.metricType, this.props.timeWindow, this.props.supervisionType, false),
+                        fill: colorForMarker(office, this.maxValues, this.props.metricType, this.props.timeWindow, this.props.supervisionType, true),
                         stroke: '#F5F6F7',
                         strokeWidth: '3',
                       },

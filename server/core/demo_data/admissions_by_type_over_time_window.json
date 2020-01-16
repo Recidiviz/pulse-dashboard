@@ -78,8 +78,3 @@
 {"state_code": "US_DEMO", "new_admissions": "77", "technicals": "7", "non_technicals": "25", "unknown_revocations": "2", "time_window": "36", "district": "bottineau"}
 {"state_code": "US_DEMO", "new_admissions": "22", "technicals": "1", "non_technicals": "137", "unknown_revocations": "4", "time_window": "36", "district": "oakes"}
 {"state_code": "US_DEMO", "new_admissions": "179", "technicals": "20", "non_technicals": "19", "unknown_revocations": "3", "time_window": "36", "district": "beulah"}
-{"state_code": "US_DEMO", "district": "ALL", "time_window": "1", "new_admissions": "67", "technicals": "16", "non_technicals": "23", "unknown_revocations": "5"}
-{"state_code": "US_DEMO", "district": "ALL", "time_window": "3", "new_admissions": "155", "technicals": "42", "non_technicals": "65", "unknown_revocations": "9"}
-{"state_code": "US_DEMO", "district": "ALL", "time_window": "6", "new_admissions": "308", "technicals": "75", "non_technicals": "141", "unknown_revocations": "16"}
-{"state_code": "US_DEMO", "district": "ALL", "time_window": "12", "new_admissions": "598", "technicals": "140", "non_technicals": "265", "unknown_revocations": "29"}
-{"state_code": "US_DEMO", "district": "ALL", "time_window": "36", "new_admissions": "1200", "technicals": "421", "non_technicals": "609", "unknown_revocations": "48"}

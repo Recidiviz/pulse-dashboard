@@ -263,8 +263,3 @@
 {"state_code": "US_DEMO", "population_change": "-2", "month_end_population": "31", "time_window": "36", "district": "ward-county"}
 {"state_code": "US_DEMO", "population_change": "0", "month_end_population": "4", "time_window": "36", "district": "wells-county"}
 {"state_code": "US_DEMO", "population_change": "1", "month_end_population": "37", "time_window": "36", "district": "williams-county"}
-{"state_code": "US_DEMO", "district": "ALL", "time_window": "1", "population_change": "5", "month_end_population": "1703"}
-{"state_code": "US_DEMO", "district": "ALL", "time_window": "3", "population_change": "9", "month_end_population": "1686"}
-{"state_code": "US_DEMO", "district": "ALL", "time_window": "6", "population_change": "36", "month_end_population": "1669"}
-{"state_code": "US_DEMO", "district": "ALL", "time_window": "12", "population_change": "75", "month_end_population": "1591"}
-{"state_code": "US_DEMO", "district": "ALL", "time_window": "36", "population_change": "39", "month_end_population": "1649"}
