@@ -41,6 +41,29 @@ function toggleYAxisTicksFor(desiredMetricType, currentMetricType, minValue, max
   };
 }
 
+function toggleYAxisTicksBasedOnGoal(
+  canDisplayChartGoal, minValue, maxValue, stepSize, otherOptions,
+) {
+  let ticks = {
+    min: undefined,
+    max: undefined,
+    stepSize: undefined,
+  };
+
+  if (canDisplayChartGoal) {
+    ticks = {
+      min: minValue,
+      max: maxValue,
+      stepSize,
+    };
+  }
+
+  for (let key in Object.keys(otherOptions)) {
+    ticks[key] = otherOptions[key];
+  }
+  return ticks;
+}
+
 function toggleYAxisTicksAdditionalOptions(
   desiredMetricType, currentMetricType, minValue, maxValue, stepSize, otherOptions,
 ) {
@@ -157,6 +180,7 @@ function centerSingleMonthDatasetIfNecessary(dataValues, labels) {
 export {
   toggleLabel,
   toggleYAxisTicksFor,
+  toggleYAxisTicksBasedOnGoal,
   toggleYAxisTicksAdditionalOptions,
   toggleYAxisTicksStackedRateBasicCount,
   getMonthCountFromTimeWindowToggle,

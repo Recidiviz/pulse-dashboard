@@ -28,8 +28,8 @@ import {
   chartAnnotationForGoal,
 } from '../../../utils/charts/metricGoal';
 import {
-  getMonthCountFromTimeWindowToggle, filterDatasetByDistrict, updateTooltipForMetricType,
-  toggleLabel, canDisplayGoal, toggleYAxisTicksAdditionalOptions,
+  getMonthCountFromTimeWindowToggle, filterDatasetByDistrict, filterDatasetBySupervisionType,
+  updateTooltipForMetricType, toggleLabel, canDisplayGoal, toggleYAxisTicksBasedOnGoal,
   centerSingleMonthDatasetIfNecessary,
 } from '../../../utils/charts/toggles';
 import { generateTrendlineDataset } from '../../../utils/charts/trendline';
@@ -47,24 +47,53 @@ const RevocationAdmissionsSnapshot = (props) => {
   const processResponse = () => {
     const { revocationAdmissionsByMonth: countsByMonth } = props;
 
-    const filteredCountsByMonth = filterDatasetByDistrict(
-      countsByMonth, props.district,
+    // For this chart specifically, we want the denominator for rates to be the total admission
+    // count in a given month across all supervision types and districts, while the numerator
+    // remains scoped to the selected supervision type and/or district, if selected.
+    let filteredCountsForAll = filterDatasetBySupervisionType(countsByMonth, 'ALL');
+    filteredCountsForAll = filterDatasetByDistrict(filteredCountsForAll, 'ALL');
+    const totalPrisonAdmissionsByYearAndMonth = {};
+
+    filteredCountsForAll.forEach((data) => {
+      const { year, month } = data;
+      const newAdmissions = toInt(data.new_admissions);
+      const technicals = toInt(data.technicals);
+      const nonTechnicals = toInt(data.non_technicals);
+      const unknownRevocations = toInt(data.unknown_revocations);
+      const total = technicals + nonTechnicals + unknownRevocations + newAdmissions;
+
+      if (!totalPrisonAdmissionsByYearAndMonth[year]) {
+        totalPrisonAdmissionsByYearAndMonth[year] = {};
+        totalPrisonAdmissionsByYearAndMonth[year][month] = total;
+      } else if (!totalPrisonAdmissionsByYearAndMonth[year][month]) {
+        totalPrisonAdmissionsByYearAndMonth[year][month] = total;
+      } else {
+        totalPrisonAdmissionsByYearAndMonth[year][month] += total;
+      }
+    });
+
+    // Proceed with normal data filtering and processing
+    let filteredCountsByMonth = filterDatasetBySupervisionType(
+      countsByMonth, props.supervisionType,
+    );
+
+    filteredCountsByMonth = filterDatasetByDistrict(
+      filteredCountsByMonth, props.district,
     );
 
     const dataPoints = [];
     if (filteredCountsByMonth) {
       filteredCountsByMonth.forEach((data) => {
         const { year, month } = data;
-        const newAdmissions = toInt(data.new_admissions);
         const technicals = toInt(data.technicals);
         const nonTechnicals = toInt(data.non_technicals);
         const unknownRevocations = toInt(data.unknown_revocations);
-        const total = technicals + nonTechnicals + unknownRevocations + newAdmissions;
         const revocations = (technicals + nonTechnicals + unknownRevocations);
 
         let percentRevocations = 0.00;
-        if (total !== 0) {
-          percentRevocations = (100 * (revocations / total)).toFixed(2);
+        const totalAdmissionsForYearAndMonth = totalPrisonAdmissionsByYearAndMonth[year][month];
+        if (totalAdmissionsForYearAndMonth !== 0) {
+          percentRevocations = (100 * (revocations / totalAdmissionsForYearAndMonth)).toFixed(2);
         }
 
         if (props.metricType === 'counts') {
@@ -128,6 +157,7 @@ const RevocationAdmissionsSnapshot = (props) => {
     props.revocationAdmissionsByMonth,
     props.metricType,
     props.timeWindow,
+    props.supervisionType,
     props.district,
   ]);
 
@@ -174,8 +204,8 @@ const RevocationAdmissionsSnapshot = (props) => {
             },
           }],
           yAxes: [{
-            ticks: toggleYAxisTicksAdditionalOptions(
-              'rates', props.metricType, chartMinValue, chartMaxValue, stepSize,
+            ticks: toggleYAxisTicksBasedOnGoal(
+              canDisplayGoal(GOAL, props), chartMinValue, chartMaxValue, stepSize,
               { fontColor: COLORS['grey-600'] },
             ),
             scaleLabel: {

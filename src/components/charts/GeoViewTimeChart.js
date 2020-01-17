@@ -32,6 +32,7 @@ import { COLORS } from '../../assets/scripts/constants/colors';
 import { configureDownloadButtons } from '../../assets/scripts/utils/downloads';
 import geographyObject from '../../assets/static/maps/us_nd.json';
 import { colorForValue } from '../../utils/charts/choropleth';
+import { filterDatasetByDistrict } from '../../utils/charts/toggles';
 import { toHtmlFriendly } from '../../utils/transforms/labels';
 
 const minMarkerRadius = 10;
@@ -217,8 +218,12 @@ class GeoViewTimeChart extends Component {
   }
 
   initializeChartData() {
-    this.officeData = this.props.officeData;
-    this.dataPointsByOffice = this.props.dataPointsByOffice;
+    const {
+      officeData, dataPointsByOffice, numeratorKeys, denominatorKeys, shareDenominatorAcrossRates,
+    } = this.props;
+
+    this.officeData = officeData;
+    this.dataPointsByOffice = dataPointsByOffice;
     this.offices = {};
     this.officeKeys = [];
     this.initializeMaxValues();
@@ -263,6 +268,26 @@ class GeoViewTimeChart extends Component {
       });
     }
 
+    // If configured as such, calculate a denominator summed across the ALL-district datapoints,
+    // to be shared for all rate calculations
+    const totalDenominatorByTimeWindow = {};
+    if (shareDenominatorAcrossRates) {
+      this.dataPointsByOffice.forEach((data) => {
+        const { time_window: timeWindow } = data;
+
+        let denominator = 0;
+        denominatorKeys.forEach((key) => {
+          denominator += Number(data[key] || 0);
+        });
+
+        if (!totalDenominatorByTimeWindow[timeWindow]) {
+          totalDenominatorByTimeWindow[timeWindow] = denominator;
+        } else {
+          totalDenominatorByTimeWindow[timeWindow] += denominator;
+        }
+      });
+    }
+
     // Load data for each office
     this.chartDataPoints = [];
     this.officeKeysWithData = [];
@@ -290,24 +315,26 @@ class GeoViewTimeChart extends Component {
             office.dataValues[timeWindow][supervisionTypeKey] = {};
           }
 
-          const numeratorKeysToSum = this.props.numeratorKeys;
           let numerator = 0;
-          numeratorKeysToSum.forEach((key) => {
+          numeratorKeys.forEach((key) => {
             numerator += Number(data[key] || 0);
           });
 
-          const denominatorKeysToSum = this.props.denominatorKeys;
           let denominator = 0;
-          denominatorKeysToSum.forEach((key) => {
+          denominatorKeys.forEach((key) => {
             denominator += Number(data[key] || 0);
           });
 
-          if (numerator === 0 || (denominator === 0 && denominatorKeysToSum.length > 0)) {
+          if (shareDenominatorAcrossRates) {
+            denominator = totalDenominatorByTimeWindow[timeWindow];
+          }
+
+          if (numerator === 0 || (denominator === 0 && denominatorKeys.length > 0)) {
             return;
           }
 
           let rate = 0.0;
-          if (denominatorKeysToSum.length > 0) {
+          if (denominatorKeys.length > 0) {
             rate = (100 * (numerator / denominator));
           }
           const rateFixed = rate.toFixed(2);
@@ -351,7 +378,11 @@ class GeoViewTimeChart extends Component {
   }
 
   render() {
-    if (this.props.keyedByOffice) {
+    const {
+      metricType, timeWindow, supervisionType, keyedByOffice, centerLong, centerLat, chartId,
+    } = this.props;
+
+    if (keyedByOffice) {
       // Show a choropleth map with colored, sized circles for P&P offices
       return (
         <div className="map-container">
@@ -365,7 +396,7 @@ class GeoViewTimeChart extends Component {
               height: 'auto',
             }}
           >
-            <ZoomableGroup center={[this.props.centerLong, this.props.centerLat]} zoom={8.2}>
+            <ZoomableGroup center={[centerLong, centerLat]} zoom={8.2}>
               <Geographies geography={geographyObject}>
                 {(geographies, projection) => geographies.map((geography) => (
                   <Geography
@@ -403,7 +434,7 @@ class GeoViewTimeChart extends Component {
                     marker={office}
                     style={{
                       default: {
-                        fill: colorForMarker(office, this.maxValues, this.props.metricType, this.props.timeWindow, this.props.supervisionType, true),
+                        fill: colorForMarker(office, this.maxValues, metricType, timeWindow, supervisionType, true),
                         stroke: '#F5F6F7',
                         strokeWidth: '3',
                       },
@@ -412,10 +443,10 @@ class GeoViewTimeChart extends Component {
                     }}
                   >
                     <circle
-                      data-tip={toggleTooltip(office, this.props.metricType, this.props.timeWindow, this.props.supervisionType)}
+                      data-tip={toggleTooltip(office, metricType, timeWindow, supervisionType)}
                       cx={0}
                       cy={0}
-                      r={radiusOfMarker(office, this.maxValues, this.props.metricType, this.props.timeWindow, this.props.supervisionType)}
+                      r={radiusOfMarker(office, this.maxValues, metricType, timeWindow, supervisionType)}
                     />
                   </Marker>
                 ))}
@@ -429,7 +460,7 @@ class GeoViewTimeChart extends Component {
 
     // Show just a regular choropleth, with no circles for offices
     return (
-      <div className="map-container" id={this.props.chartId}>
+      <div className="map-container" id={chartId}>
         <ComposableMap
           projection={geoAlbersUsa}
           projectionConfig={{ scale: 1000 }}
@@ -440,23 +471,23 @@ class GeoViewTimeChart extends Component {
             height: 'auto',
           }}
         >
-          <ZoomableGroup center={[this.props.centerLong, this.props.centerLat]} zoom={7} disablePanning>
+          <ZoomableGroup center={[centerLong, centerLat]} zoom={7} disablePanning>
             <Geographies geography={geographyObject} disableOptimization>
               {(geographies, projection) => geographies.map((geography) => (
                 <Geography
                   key={geography.properties.NAME}
-                  data-tip={toggleTooltipForCounty(this.offices, geography.properties.NAME, this.props.metricType, this.props.timeWindow, this.props.supervisionType)}
+                  data-tip={toggleTooltipForCounty(this.offices, geography.properties.NAME, metricType, timeWindow, supervisionType)}
                   geography={geography}
                   projection={projection}
                   style={{
                     default: {
-                      fill: colorForMarker(getOfficeForCounty(this.offices, geography.properties.NAME), this.maxValues, this.props.metricType, this.props.timeWindow, this.props.supervisionType, false),
+                      fill: colorForMarker(getOfficeForCounty(this.offices, geography.properties.NAME), this.maxValues, metricType, timeWindow, supervisionType, false),
                       stroke: COLORS['grey-700'],
                       strokeWidth: 0.2,
                       outline: 'none',
                     },
                     hover: {
-                      fill: colorForMarker(getOfficeForCounty(this.offices, geography.properties.NAME), this.maxValues, this.props.metricType, this.props.timeWindow, this.props.supervisionType, true),
+                      fill: colorForMarker(getOfficeForCounty(this.offices, geography.properties.NAME), this.maxValues, metricType, timeWindow, supervisionType, true),
                       stroke: COLORS['grey-700'],
                       strokeWidth: 0.2,
                       outline: 'none',

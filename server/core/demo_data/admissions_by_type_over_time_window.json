@@ -1,80 +1,240 @@
-{"state_code": "US_DEMO", "new_admissions": "5", "technicals": "0", "non_technicals": "1", "unknown_revocations": "0", "time_window": "1", "district": "bismarck"}
-{"state_code": "US_DEMO", "new_admissions": "8", "technicals": "1", "non_technicals": "2", "unknown_revocations": "1", "time_window": "1", "district": "jamestown"}
-{"state_code": "US_DEMO", "new_admissions": "1", "technicals": "1", "non_technicals": "3", "unknown_revocations": "0", "time_window": "1", "district": "minot"}
-{"state_code": "US_DEMO", "new_admissions": "17", "technicals": "0", "non_technicals": "1", "unknown_revocations": "0", "time_window": "1", "district": "fargo"}
-{"state_code": "US_DEMO", "new_admissions": "1", "technicals": "2", "non_technicals": "0", "unknown_revocations": "1", "time_window": "1", "district": "grand-forks"}
-{"state_code": "US_DEMO", "new_admissions": "0", "technicals": "0", "non_technicals": "3", "unknown_revocations": "0", "time_window": "1", "district": "devils-lake"}
-{"state_code": "US_DEMO", "new_admissions": "0", "technicals": "2", "non_technicals": "0", "unknown_revocations": "0", "time_window": "1", "district": "wahpeton"}
-{"state_code": "US_DEMO", "new_admissions": "3", "technicals": "0", "non_technicals": "3", "unknown_revocations": "2", "time_window": "1", "district": "rolla"}
-{"state_code": "US_DEMO", "new_admissions": "3", "technicals": "0", "non_technicals": "1", "unknown_revocations": "0", "time_window": "1", "district": "washburn"}
-{"state_code": "US_DEMO", "new_admissions": "1", "technicals": "2", "non_technicals": "1", "unknown_revocations": "1", "time_window": "1", "district": "williston"}
-{"state_code": "US_DEMO", "new_admissions": "10", "technicals": "0", "non_technicals": "1", "unknown_revocations": "0", "time_window": "1", "district": "dickson"}
-{"state_code": "US_DEMO", "new_admissions": "6", "technicals": "3", "non_technicals": "1", "unknown_revocations": "0", "time_window": "1", "district": "grafton"}
-{"state_code": "US_DEMO", "new_admissions": "2", "technicals": "1", "non_technicals": "2", "unknown_revocations": "0", "time_window": "1", "district": "mandan"}
-{"state_code": "US_DEMO", "new_admissions": "3", "technicals": "1", "non_technicals": "1", "unknown_revocations": "0", "time_window": "1", "district": "bottineau"}
-{"state_code": "US_DEMO", "new_admissions": "3", "technicals": "2", "non_technicals": "2", "unknown_revocations": "0", "time_window": "1", "district": "oakes"}
-{"state_code": "US_DEMO", "new_admissions": "4", "technicals": "1", "non_technicals": "1", "unknown_revocations": "0", "time_window": "1", "district": "beulah"}
-{"state_code": "US_DEMO", "new_admissions": "9", "technicals": "2", "non_technicals": "2", "unknown_revocations": "1", "time_window": "3", "district": "bismarck"}
-{"state_code": "US_DEMO", "new_admissions": "0", "technicals": "1", "non_technicals": "4", "unknown_revocations": "0", "time_window": "3", "district": "jamestown"}
-{"state_code": "US_DEMO", "new_admissions": "16", "technicals": "4", "non_technicals": "1", "unknown_revocations": "1", "time_window": "3", "district": "minot"}
-{"state_code": "US_DEMO", "new_admissions": "21", "technicals": "4", "non_technicals": "2", "unknown_revocations": "0", "time_window": "3", "district": "fargo"}
-{"state_code": "US_DEMO", "new_admissions": "3", "technicals": "1", "non_technicals": "3", "unknown_revocations": "1", "time_window": "3", "district": "grand-forks"}
-{"state_code": "US_DEMO", "new_admissions": "4", "technicals": "1", "non_technicals": "4", "unknown_revocations": "0", "time_window": "3", "district": "devils-lake"}
-{"state_code": "US_DEMO", "new_admissions": "11", "technicals": "5", "non_technicals": "1", "unknown_revocations": "0", "time_window": "3", "district": "wahpeton"}
-{"state_code": "US_DEMO", "new_admissions": "8", "technicals": "3", "non_technicals": "9", "unknown_revocations": "0", "time_window": "3", "district": "rolla"}
-{"state_code": "US_DEMO", "new_admissions": "5", "technicals": "1", "non_technicals": "13", "unknown_revocations": "2", "time_window": "3", "district": "washburn"}
-{"state_code": "US_DEMO", "new_admissions": "12", "technicals": "1", "non_technicals": "5", "unknown_revocations": "0", "time_window": "3", "district": "williston"}
-{"state_code": "US_DEMO", "new_admissions": "10", "technicals": "0", "non_technicals": "5", "unknown_revocations": "2", "time_window": "3", "district": "dickson"}
-{"state_code": "US_DEMO", "new_admissions": "8", "technicals": "3", "non_technicals": "1", "unknown_revocations": "0", "time_window": "3", "district": "grafton"}
-{"state_code": "US_DEMO", "new_admissions": "9", "technicals": "1", "non_technicals": "2", "unknown_revocations": "0", "time_window": "3", "district": "mandan"}
-{"state_code": "US_DEMO", "new_admissions": "9", "technicals": "6", "non_technicals": "1", "unknown_revocations": "0", "time_window": "3", "district": "bottineau"}
-{"state_code": "US_DEMO", "new_admissions": "5", "technicals": "6", "non_technicals": "4", "unknown_revocations": "2", "time_window": "3", "district": "oakes"}
-{"state_code": "US_DEMO", "new_admissions": "25", "technicals": "3", "non_technicals": "8", "unknown_revocations": "0", "time_window": "3", "district": "beulah"}
-{"state_code": "US_DEMO", "new_admissions": "15", "technicals": "5", "non_technicals": "27", "unknown_revocations": "0", "time_window": "6", "district": "bismarck"}
-{"state_code": "US_DEMO", "new_admissions": "6", "technicals": "1", "non_technicals": "10", "unknown_revocations": "2", "time_window": "6", "district": "jamestown"}
-{"state_code": "US_DEMO", "new_admissions": "15", "technicals": "5", "non_technicals": "2", "unknown_revocations": "0", "time_window": "6", "district": "minot"}
-{"state_code": "US_DEMO", "new_admissions": "35", "technicals": "8", "non_technicals": "4", "unknown_revocations": "1", "time_window": "6", "district": "fargo"}
-{"state_code": "US_DEMO", "new_admissions": "1", "technicals": "0", "non_technicals": "27", "unknown_revocations": "1", "time_window": "6", "district": "grand-forks"}
-{"state_code": "US_DEMO", "new_admissions": "5", "technicals": "19", "non_technicals": "3", "unknown_revocations": "1", "time_window": "6", "district": "devils-lake"}
-{"state_code": "US_DEMO", "new_admissions": "3", "technicals": "1", "non_technicals": "10", "unknown_revocations": "0", "time_window": "6", "district": "wahpeton"}
-{"state_code": "US_DEMO", "new_admissions": "10", "technicals": "6", "non_technicals": "8", "unknown_revocations": "1", "time_window": "6", "district": "rolla"}
-{"state_code": "US_DEMO", "new_admissions": "6", "technicals": "5", "non_technicals": "8", "unknown_revocations": "1", "time_window": "6", "district": "washburn"}
-{"state_code": "US_DEMO", "new_admissions": "44", "technicals": "8", "non_technicals": "7", "unknown_revocations": "0", "time_window": "6", "district": "williston"}
-{"state_code": "US_DEMO", "new_admissions": "48", "technicals": "7", "non_technicals": "10", "unknown_revocations": "2", "time_window": "6", "district": "dickson"}
-{"state_code": "US_DEMO", "new_admissions": "72", "technicals": "2", "non_technicals": "0", "unknown_revocations": "1", "time_window": "6", "district": "grafton"}
-{"state_code": "US_DEMO", "new_admissions": "10", "technicals": "2", "non_technicals": "5", "unknown_revocations": "1", "time_window": "6", "district": "mandan"}
-{"state_code": "US_DEMO", "new_admissions": "7", "technicals": "6", "non_technicals": "13", "unknown_revocations": "1", "time_window": "6", "district": "bottineau"}
-{"state_code": "US_DEMO", "new_admissions": "23", "technicals": "0", "non_technicals": "5", "unknown_revocations": "2", "time_window": "6", "district": "oakes"}
-{"state_code": "US_DEMO", "new_admissions": "8", "technicals": "0", "non_technicals": "2", "unknown_revocations": "2", "time_window": "6", "district": "beulah"}
-{"state_code": "US_DEMO", "new_admissions": "28", "technicals": "25", "non_technicals": "24", "unknown_revocations": "0", "time_window": "12", "district": "bismarck"}
-{"state_code": "US_DEMO", "new_admissions": "12", "technicals": "4", "non_technicals": "37", "unknown_revocations": "4", "time_window": "12", "district": "jamestown"}
-{"state_code": "US_DEMO", "new_admissions": "134", "technicals": "8", "non_technicals": "3", "unknown_revocations": "1", "time_window": "12", "district": "minot"}
-{"state_code": "US_DEMO", "new_admissions": "18", "technicals": "13", "non_technicals": "7", "unknown_revocations": "1", "time_window": "12", "district": "fargo"}
-{"state_code": "US_DEMO", "new_admissions": "4", "technicals": "23", "non_technicals": "11", "unknown_revocations": "2", "time_window": "12", "district": "grand-forks"}
-{"state_code": "US_DEMO", "new_admissions": "54", "technicals": "0", "non_technicals": "27", "unknown_revocations": "1", "time_window": "12", "district": "devils-lake"}
-{"state_code": "US_DEMO", "new_admissions": "14", "technicals": "6", "non_technicals": "43", "unknown_revocations": "1", "time_window": "12", "district": "wahpeton"}
-{"state_code": "US_DEMO", "new_admissions": "21", "technicals": "16", "non_technicals": "25", "unknown_revocations": "3", "time_window": "12", "district": "rolla"}
-{"state_code": "US_DEMO", "new_admissions": "10", "technicals": "15", "non_technicals": "10", "unknown_revocations": "1", "time_window": "12", "district": "washburn"}
-{"state_code": "US_DEMO", "new_admissions": "26", "technicals": "0", "non_technicals": "10", "unknown_revocations": "2", "time_window": "12", "district": "williston"}
-{"state_code": "US_DEMO", "new_admissions": "23", "technicals": "1", "non_technicals": "5", "unknown_revocations": "2", "time_window": "12", "district": "dickson"}
-{"state_code": "US_DEMO", "new_admissions": "33", "technicals": "1", "non_technicals": "6", "unknown_revocations": "7", "time_window": "12", "district": "grafton"}
-{"state_code": "US_DEMO", "new_admissions": "44", "technicals": "4", "non_technicals": "10", "unknown_revocations": "0", "time_window": "12", "district": "mandan"}
-{"state_code": "US_DEMO", "new_admissions": "44", "technicals": "6", "non_technicals": "8", "unknown_revocations": "2", "time_window": "12", "district": "bottineau"}
-{"state_code": "US_DEMO", "new_admissions": "49", "technicals": "8", "non_technicals": "16", "unknown_revocations": "2", "time_window": "12", "district": "oakes"}
-{"state_code": "US_DEMO", "new_admissions": "84", "technicals": "10", "non_technicals": "23", "unknown_revocations": "0", "time_window": "12", "district": "beulah"}
-{"state_code": "US_DEMO", "new_admissions": "6", "technicals": "2", "non_technicals": "44", "unknown_revocations": "1", "time_window": "36", "district": "bismarck"}
-{"state_code": "US_DEMO", "new_admissions": "46", "technicals": "45", "non_technicals": "2", "unknown_revocations": "6", "time_window": "36", "district": "jamestown"}
-{"state_code": "US_DEMO", "new_admissions": "8", "technicals": "63", "non_technicals": "30", "unknown_revocations": "3", "time_window": "36", "district": "minot"}
-{"state_code": "US_DEMO", "new_admissions": "45", "technicals": "29", "non_technicals": "30", "unknown_revocations": "1", "time_window": "36", "district": "fargo"}
-{"state_code": "US_DEMO", "new_admissions": "161", "technicals": "23", "non_technicals": "2", "unknown_revocations": "7", "time_window": "36", "district": "grand-forks"}
-{"state_code": "US_DEMO", "new_admissions": "3", "technicals": "32", "non_technicals": "42", "unknown_revocations": "3", "time_window": "36", "district": "devils-lake"}
-{"state_code": "US_DEMO", "new_admissions": "115", "technicals": "2", "non_technicals": "43", "unknown_revocations": "0", "time_window": "36", "district": "wahpeton"}
-{"state_code": "US_DEMO", "new_admissions": "44", "technicals": "3", "non_technicals": "5", "unknown_revocations": "0", "time_window": "36", "district": "rolla"}
-{"state_code": "US_DEMO", "new_admissions": "171", "technicals": "17", "non_technicals": "10", "unknown_revocations": "6", "time_window": "36", "district": "washburn"}
-{"state_code": "US_DEMO", "new_admissions": "24", "technicals": "104", "non_technicals": "52", "unknown_revocations": "1", "time_window": "36", "district": "williston"}
-{"state_code": "US_DEMO", "new_admissions": "21", "technicals": "53", "non_technicals": "68", "unknown_revocations": "7", "time_window": "36", "district": "dickson"}
-{"state_code": "US_DEMO", "new_admissions": "13", "technicals": "11", "non_technicals": "96", "unknown_revocations": "2", "time_window": "36", "district": "grafton"}
-{"state_code": "US_DEMO", "new_admissions": "265", "technicals": "9", "non_technicals": "4", "unknown_revocations": "2", "time_window": "36", "district": "mandan"}
-{"state_code": "US_DEMO", "new_admissions": "77", "technicals": "7", "non_technicals": "25", "unknown_revocations": "2", "time_window": "36", "district": "bottineau"}
-{"state_code": "US_DEMO", "new_admissions": "22", "technicals": "1", "non_technicals": "137", "unknown_revocations": "4", "time_window": "36", "district": "oakes"}
-{"state_code": "US_DEMO", "new_admissions": "179", "technicals": "20", "non_technicals": "19", "unknown_revocations": "3", "time_window": "36", "district": "beulah"}
+{"state_code": "US_DEMO", "new_admissions": "4", "technicals": "0", "non_technicals": "0", "unknown_revocations": "0", "time_window": "1", "district": "bismarck", "supervision_type": "PAROLE"}
+{"state_code": "US_DEMO", "new_admissions": "1", "technicals": "0", "non_technicals": "1", "unknown_revocations": "0", "time_window": "1", "district": "bismarck", "supervision_type": "PROBATION"}
+{"state_code": "US_DEMO", "new_admissions": "4", "technicals": "1", "non_technicals": "0", "unknown_revocations": "1", "time_window": "1", "district": "jamestown", "supervision_type": "PAROLE"}
+{"state_code": "US_DEMO", "new_admissions": "4", "technicals": "0", "non_technicals": "2", "unknown_revocations": "0", "time_window": "1", "district": "jamestown", "supervision_type": "PROBATION"}
+{"state_code": "US_DEMO", "new_admissions": "0", "technicals": "0", "non_technicals": "2", "unknown_revocations": "0", "time_window": "1", "district": "minot", "supervision_type": "PAROLE"}
+{"state_code": "US_DEMO", "new_admissions": "1", "technicals": "1", "non_technicals": "1", "unknown_revocations": "0", "time_window": "1", "district": "minot", "supervision_type": "PROBATION"}
+{"state_code": "US_DEMO", "new_admissions": "2", "technicals": "0", "non_technicals": "1", "unknown_revocations": "0", "time_window": "1", "district": "fargo", "supervision_type": "PAROLE"}
+{"state_code": "US_DEMO", "new_admissions": "15", "technicals": "0", "non_technicals": "0", "unknown_revocations": "0", "time_window": "1", "district": "fargo", "supervision_type": "PROBATION"}
+{"state_code": "US_DEMO", "new_admissions": "1", "technicals": "2", "non_technicals": "0", "unknown_revocations": "0", "time_window": "1", "district": "grand-forks", "supervision_type": "PAROLE"}
+{"state_code": "US_DEMO", "new_admissions": "0", "technicals": "0", "non_technicals": "0", "unknown_revocations": "1", "time_window": "1", "district": "grand-forks", "supervision_type": "PROBATION"}
+{"state_code": "US_DEMO", "new_admissions": "0", "technicals": "0", "non_technicals": "1", "unknown_revocations": "0", "time_window": "1", "district": "devils-lake", "supervision_type": "PAROLE"}
+{"state_code": "US_DEMO", "new_admissions": "0", "technicals": "0", "non_technicals": "2", "unknown_revocations": "0", "time_window": "1", "district": "devils-lake", "supervision_type": "PROBATION"}
+{"state_code": "US_DEMO", "new_admissions": "0", "technicals": "0", "non_technicals": "0", "unknown_revocations": "0", "time_window": "1", "district": "wahpeton", "supervision_type": "PAROLE"}
+{"state_code": "US_DEMO", "new_admissions": "0", "technicals": "2", "non_technicals": "0", "unknown_revocations": "0", "time_window": "1", "district": "wahpeton", "supervision_type": "PROBATION"}
+{"state_code": "US_DEMO", "new_admissions": "1", "technicals": "0", "non_technicals": "1", "unknown_revocations": "0", "time_window": "1", "district": "rolla", "supervision_type": "PAROLE"}
+{"state_code": "US_DEMO", "new_admissions": "2", "technicals": "0", "non_technicals": "2", "unknown_revocations": "2", "time_window": "1", "district": "rolla", "supervision_type": "PROBATION"}
+{"state_code": "US_DEMO", "new_admissions": "1", "technicals": "0", "non_technicals": "0", "unknown_revocations": "0", "time_window": "1", "district": "washburn", "supervision_type": "PAROLE"}
+{"state_code": "US_DEMO", "new_admissions": "2", "technicals": "0", "non_technicals": "1", "unknown_revocations": "0", "time_window": "1", "district": "washburn", "supervision_type": "PROBATION"}
+{"state_code": "US_DEMO", "new_admissions": "1", "technicals": "2", "non_technicals": "0", "unknown_revocations": "1", "time_window": "1", "district": "williston", "supervision_type": "PAROLE"}
+{"state_code": "US_DEMO", "new_admissions": "0", "technicals": "0", "non_technicals": "1", "unknown_revocations": "0", "time_window": "1", "district": "williston", "supervision_type": "PROBATION"}
+{"state_code": "US_DEMO", "new_admissions": "2", "technicals": "0", "non_technicals": "0", "unknown_revocations": "0", "time_window": "1", "district": "dickson", "supervision_type": "PAROLE"}
+{"state_code": "US_DEMO", "new_admissions": "8", "technicals": "0", "non_technicals": "1", "unknown_revocations": "0", "time_window": "1", "district": "dickson", "supervision_type": "PROBATION"}
+{"state_code": "US_DEMO", "new_admissions": "2", "technicals": "1", "non_technicals": "0", "unknown_revocations": "0", "time_window": "1", "district": "grafton", "supervision_type": "PAROLE"}
+{"state_code": "US_DEMO", "new_admissions": "4", "technicals": "2", "non_technicals": "1", "unknown_revocations": "0", "time_window": "1", "district": "grafton", "supervision_type": "PROBATION"}
+{"state_code": "US_DEMO", "new_admissions": "2", "technicals": "1", "non_technicals": "2", "unknown_revocations": "0", "time_window": "1", "district": "mandan", "supervision_type": "PAROLE"}
+{"state_code": "US_DEMO", "new_admissions": "0", "technicals": "0", "non_technicals": "0", "unknown_revocations": "0", "time_window": "1", "district": "mandan", "supervision_type": "PROBATION"}
+{"state_code": "US_DEMO", "new_admissions": "1", "technicals": "1", "non_technicals": "1", "unknown_revocations": "0", "time_window": "1", "district": "bottineau", "supervision_type": "PAROLE"}
+{"state_code": "US_DEMO", "new_admissions": "2", "technicals": "0", "non_technicals": "0", "unknown_revocations": "0", "time_window": "1", "district": "bottineau", "supervision_type": "PROBATION"}
+{"state_code": "US_DEMO", "new_admissions": "1", "technicals": "2", "non_technicals": "0", "unknown_revocations": "0", "time_window": "1", "district": "oakes", "supervision_type": "PAROLE"}
+{"state_code": "US_DEMO", "new_admissions": "2", "technicals": "0", "non_technicals": "2", "unknown_revocations": "0", "time_window": "1", "district": "oakes", "supervision_type": "PROBATION"}
+{"state_code": "US_DEMO", "new_admissions": "2", "technicals": "0", "non_technicals": "0", "unknown_revocations": "0", "time_window": "1", "district": "beulah", "supervision_type": "PAROLE"}
+{"state_code": "US_DEMO", "new_admissions": "2", "technicals": "1", "non_technicals": "1", "unknown_revocations": "0", "time_window": "1", "district": "beulah", "supervision_type": "PROBATION"}
+{"state_code": "US_DEMO", "new_admissions": "6", "technicals": "2", "non_technicals": "0", "unknown_revocations": "0", "time_window": "3", "district": "bismarck", "supervision_type": "PAROLE"}
+{"state_code": "US_DEMO", "new_admissions": "3", "technicals": "0", "non_technicals": "2", "unknown_revocations": "1", "time_window": "3", "district": "bismarck", "supervision_type": "PROBATION"}
+{"state_code": "US_DEMO", "new_admissions": "0", "technicals": "0", "non_technicals": "2", "unknown_revocations": "0", "time_window": "3", "district": "jamestown", "supervision_type": "PAROLE"}
+{"state_code": "US_DEMO", "new_admissions": "0", "technicals": "1", "non_technicals": "2", "unknown_revocations": "0", "time_window": "3", "district": "jamestown", "supervision_type": "PROBATION"}
+{"state_code": "US_DEMO", "new_admissions": "11", "technicals": "2", "non_technicals": "0", "unknown_revocations": "1", "time_window": "3", "district": "minot", "supervision_type": "PAROLE"}
+{"state_code": "US_DEMO", "new_admissions": "5", "technicals": "2", "non_technicals": "1", "unknown_revocations": "0", "time_window": "3", "district": "minot", "supervision_type": "PROBATION"}
+{"state_code": "US_DEMO", "new_admissions": "12", "technicals": "1", "non_technicals": "2", "unknown_revocations": "0", "time_window": "3", "district": "fargo", "supervision_type": "PAROLE"}
+{"state_code": "US_DEMO", "new_admissions": "9", "technicals": "3", "non_technicals": "0", "unknown_revocations": "0", "time_window": "3", "district": "fargo", "supervision_type": "PROBATION"}
+{"state_code": "US_DEMO", "new_admissions": "2", "technicals": "0", "non_technicals": "2", "unknown_revocations": "0", "time_window": "3", "district": "grand-forks", "supervision_type": "PAROLE"}
+{"state_code": "US_DEMO", "new_admissions": "1", "technicals": "1", "non_technicals": "1", "unknown_revocations": "1", "time_window": "3", "district": "grand-forks", "supervision_type": "PROBATION"}
+{"state_code": "US_DEMO", "new_admissions": "2", "technicals": "1", "non_technicals": "1", "unknown_revocations": "0", "time_window": "3", "district": "devils-lake", "supervision_type": "PAROLE"}
+{"state_code": "US_DEMO", "new_admissions": "2", "technicals": "0", "non_technicals": "3", "unknown_revocations": "0", "time_window": "3", "district": "devils-lake", "supervision_type": "PROBATION"}
+{"state_code": "US_DEMO", "new_admissions": "1", "technicals": "3", "non_technicals": "1", "unknown_revocations": "0", "time_window": "3", "district": "wahpeton", "supervision_type": "PAROLE"}
+{"state_code": "US_DEMO", "new_admissions": "10", "technicals": "2", "non_technicals": "0", "unknown_revocations": "0", "time_window": "3", "district": "wahpeton", "supervision_type": "PROBATION"}
+{"state_code": "US_DEMO", "new_admissions": "4", "technicals": "1", "non_technicals": "6", "unknown_revocations": "0", "time_window": "3", "district": "rolla", "supervision_type": "PAROLE"}
+{"state_code": "US_DEMO", "new_admissions": "4", "technicals": "2", "non_technicals": "3", "unknown_revocations": "0", "time_window": "3", "district": "rolla", "supervision_type": "PROBATION"}
+{"state_code": "US_DEMO", "new_admissions": "3", "technicals": "0", "non_technicals": "4", "unknown_revocations": "2", "time_window": "3", "district": "washburn", "supervision_type": "PAROLE"}
+{"state_code": "US_DEMO", "new_admissions": "2", "technicals": "1", "non_technicals": "9", "unknown_revocations": "0", "time_window": "3", "district": "washburn", "supervision_type": "PROBATION"}
+{"state_code": "US_DEMO", "new_admissions": "7", "technicals": "0", "non_technicals": "2", "unknown_revocations": "0", "time_window": "3", "district": "williston", "supervision_type": "PAROLE"}
+{"state_code": "US_DEMO", "new_admissions": "5", "technicals": "1", "non_technicals": "3", "unknown_revocations": "0", "time_window": "3", "district": "williston", "supervision_type": "PROBATION"}
+{"state_code": "US_DEMO", "new_admissions": "9", "technicals": "0", "non_technicals": "2", "unknown_revocations": "2", "time_window": "3", "district": "dickson", "supervision_type": "PAROLE"}
+{"state_code": "US_DEMO", "new_admissions": "1", "technicals": "0", "non_technicals": "3", "unknown_revocations": "0", "time_window": "3", "district": "dickson", "supervision_type": "PROBATION"}
+{"state_code": "US_DEMO", "new_admissions": "6", "technicals": "2", "non_technicals": "0", "unknown_revocations": "0", "time_window": "3", "district": "grafton", "supervision_type": "PAROLE"}
+{"state_code": "US_DEMO", "new_admissions": "2", "technicals": "1", "non_technicals": "1", "unknown_revocations": "0", "time_window": "3", "district": "grafton", "supervision_type": "PROBATION"}
+{"state_code": "US_DEMO", "new_admissions": "5", "technicals": "0", "non_technicals": "2", "unknown_revocations": "0", "time_window": "3", "district": "mandan", "supervision_type": "PAROLE"}
+{"state_code": "US_DEMO", "new_admissions": "4", "technicals": "1", "non_technicals": "0", "unknown_revocations": "0", "time_window": "3", "district": "mandan", "supervision_type": "PROBATION"}
+{"state_code": "US_DEMO", "new_admissions": "2", "technicals": "2", "non_technicals": "1", "unknown_revocations": "0", "time_window": "3", "district": "bottineau", "supervision_type": "PAROLE"}
+{"state_code": "US_DEMO", "new_admissions": "7", "technicals": "4", "non_technicals": "0", "unknown_revocations": "0", "time_window": "3", "district": "bottineau", "supervision_type": "PROBATION"}
+{"state_code": "US_DEMO", "new_admissions": "2", "technicals": "4", "non_technicals": "1", "unknown_revocations": "0", "time_window": "3", "district": "oakes", "supervision_type": "PAROLE"}
+{"state_code": "US_DEMO", "new_admissions": "3", "technicals": "2", "non_technicals": "3", "unknown_revocations": "2", "time_window": "3", "district": "oakes", "supervision_type": "PROBATION"}
+{"state_code": "US_DEMO", "new_admissions": "16", "technicals": "1", "non_technicals": "4", "unknown_revocations": "0", "time_window": "3", "district": "beulah", "supervision_type": "PAROLE"}
+{"state_code": "US_DEMO", "new_admissions": "9", "technicals": "2", "non_technicals": "4", "unknown_revocations": "0", "time_window": "3", "district": "beulah", "supervision_type": "PROBATION"}
+{"state_code": "US_DEMO", "new_admissions": "7", "technicals": "3", "non_technicals": "4", "unknown_revocations": "0", "time_window": "6", "district": "bismarck", "supervision_type": "PAROLE"}
+{"state_code": "US_DEMO", "new_admissions": "8", "technicals": "2", "non_technicals": "23", "unknown_revocations": "0", "time_window": "6", "district": "bismarck", "supervision_type": "PROBATION"}
+{"state_code": "US_DEMO", "new_admissions": "5", "technicals": "1", "non_technicals": "7", "unknown_revocations": "0", "time_window": "6", "district": "jamestown", "supervision_type": "PAROLE"}
+{"state_code": "US_DEMO", "new_admissions": "1", "technicals": "0", "non_technicals": "3", "unknown_revocations": "2", "time_window": "6", "district": "jamestown", "supervision_type": "PROBATION"}
+{"state_code": "US_DEMO", "new_admissions": "13", "technicals": "4", "non_technicals": "2", "unknown_revocations": "0", "time_window": "6", "district": "minot", "supervision_type": "PAROLE"}
+{"state_code": "US_DEMO", "new_admissions": "2", "technicals": "1", "non_technicals": "0", "unknown_revocations": "0", "time_window": "6", "district": "minot", "supervision_type": "PROBATION"}
+{"state_code": "US_DEMO", "new_admissions": "17", "technicals": "6", "non_technicals": "3", "unknown_revocations": "0", "time_window": "6", "district": "fargo", "supervision_type": "PAROLE"}
+{"state_code": "US_DEMO", "new_admissions": "18", "technicals": "2", "non_technicals": "1", "unknown_revocations": "1", "time_window": "6", "district": "fargo", "supervision_type": "PROBATION"}
+{"state_code": "US_DEMO", "new_admissions": "1", "technicals": "0", "non_technicals": "17", "unknown_revocations": "1", "time_window": "6", "district": "grand-forks", "supervision_type": "PAROLE"}
+{"state_code": "US_DEMO", "new_admissions": "0", "technicals": "0", "non_technicals": "10", "unknown_revocations": "0", "time_window": "6", "district": "grand-forks", "supervision_type": "PROBATION"}
+{"state_code": "US_DEMO", "new_admissions": "4", "technicals": "3", "non_technicals": "2", "unknown_revocations": "0", "time_window": "6", "district": "devils-lake", "supervision_type": "PAROLE"}
+{"state_code": "US_DEMO", "new_admissions": "1", "technicals": "16", "non_technicals": "1", "unknown_revocations": "1", "time_window": "6", "district": "devils-lake", "supervision_type": "PROBATION"}
+{"state_code": "US_DEMO", "new_admissions": "1", "technicals": "0", "non_technicals": "7", "unknown_revocations": "0", "time_window": "6", "district": "wahpeton", "supervision_type": "PAROLE"}
+{"state_code": "US_DEMO", "new_admissions": "2", "technicals": "1", "non_technicals": "3", "unknown_revocations": "0", "time_window": "6", "district": "wahpeton", "supervision_type": "PROBATION"}
+{"state_code": "US_DEMO", "new_admissions": "5", "technicals": "1", "non_technicals": "5", "unknown_revocations": "0", "time_window": "6", "district": "rolla", "supervision_type": "PAROLE"}
+{"state_code": "US_DEMO", "new_admissions": "5", "technicals": "5", "non_technicals": "3", "unknown_revocations": "1", "time_window": "6", "district": "rolla", "supervision_type": "PROBATION"}
+{"state_code": "US_DEMO", "new_admissions": "4", "technicals": "2", "non_technicals": "6", "unknown_revocations": "1", "time_window": "6", "district": "washburn", "supervision_type": "PAROLE"}
+{"state_code": "US_DEMO", "new_admissions": "2", "technicals": "3", "non_technicals": "2", "unknown_revocations": "0", "time_window": "6", "district": "washburn", "supervision_type": "PROBATION"}
+{"state_code": "US_DEMO", "new_admissions": "9", "technicals": "3", "non_technicals": "2", "unknown_revocations": "0", "time_window": "6", "district": "williston", "supervision_type": "PAROLE"}
+{"state_code": "US_DEMO", "new_admissions": "35", "technicals": "5", "non_technicals": "5", "unknown_revocations": "0", "time_window": "6", "district": "williston", "supervision_type": "PROBATION"}
+{"state_code": "US_DEMO", "new_admissions": "25", "technicals": "5", "non_technicals": "6", "unknown_revocations": "0", "time_window": "6", "district": "dickson", "supervision_type": "PAROLE"}
+{"state_code": "US_DEMO", "new_admissions": "23", "technicals": "2", "non_technicals": "4", "unknown_revocations": "2", "time_window": "6", "district": "dickson", "supervision_type": "PROBATION"}
+{"state_code": "US_DEMO", "new_admissions": "66", "technicals": "2", "non_technicals": "0", "unknown_revocations": "1", "time_window": "6", "district": "grafton", "supervision_type": "PAROLE"}
+{"state_code": "US_DEMO", "new_admissions": "6", "technicals": "0", "non_technicals": "0", "unknown_revocations": "0", "time_window": "6", "district": "grafton", "supervision_type": "PROBATION"}
+{"state_code": "US_DEMO", "new_admissions": "9", "technicals": "0", "non_technicals": "2", "unknown_revocations": "0", "time_window": "6", "district": "mandan", "supervision_type": "PAROLE"}
+{"state_code": "US_DEMO", "new_admissions": "1", "technicals": "2", "non_technicals": "3", "unknown_revocations": "1", "time_window": "6", "district": "mandan", "supervision_type": "PROBATION"}
+{"state_code": "US_DEMO", "new_admissions": "4", "technicals": "3", "non_technicals": "9", "unknown_revocations": "0", "time_window": "6", "district": "bottineau", "supervision_type": "PAROLE"}
+{"state_code": "US_DEMO", "new_admissions": "3", "technicals": "3", "non_technicals": "4", "unknown_revocations": "1", "time_window": "6", "district": "bottineau", "supervision_type": "PROBATION"}
+{"state_code": "US_DEMO", "new_admissions": "8", "technicals": "0", "non_technicals": "2", "unknown_revocations": "0", "time_window": "6", "district": "oakes", "supervision_type": "PAROLE"}
+{"state_code": "US_DEMO", "new_admissions": "15", "technicals": "0", "non_technicals": "3", "unknown_revocations": "2", "time_window": "6", "district": "oakes", "supervision_type": "PROBATION"}
+{"state_code": "US_DEMO", "new_admissions": "5", "technicals": "0", "non_technicals": "2", "unknown_revocations": "0", "time_window": "6", "district": "beulah", "supervision_type": "PAROLE"}
+{"state_code": "US_DEMO", "new_admissions": "3", "technicals": "0", "non_technicals": "0", "unknown_revocations": "2", "time_window": "6", "district": "beulah", "supervision_type": "PROBATION"}
+{"state_code": "US_DEMO", "new_admissions": "5", "technicals": "17", "non_technicals": "18", "unknown_revocations": "0", "time_window": "12", "district": "bismarck", "supervision_type": "PAROLE"}
+{"state_code": "US_DEMO", "new_admissions": "23", "technicals": "8", "non_technicals": "6", "unknown_revocations": "0", "time_window": "12", "district": "bismarck", "supervision_type": "PROBATION"}
+{"state_code": "US_DEMO", "new_admissions": "10", "technicals": "1", "non_technicals": "9", "unknown_revocations": "1", "time_window": "12", "district": "jamestown", "supervision_type": "PAROLE"}
+{"state_code": "US_DEMO", "new_admissions": "2", "technicals": "3", "non_technicals": "28", "unknown_revocations": "3", "time_window": "12", "district": "jamestown", "supervision_type": "PROBATION"}
+{"state_code": "US_DEMO", "new_admissions": "23", "technicals": "1", "non_technicals": "2", "unknown_revocations": "1", "time_window": "12", "district": "minot", "supervision_type": "PAROLE"}
+{"state_code": "US_DEMO", "new_admissions": "111", "technicals": "7", "non_technicals": "1", "unknown_revocations": "0", "time_window": "12", "district": "minot", "supervision_type": "PROBATION"}
+{"state_code": "US_DEMO", "new_admissions": "17", "technicals": "4", "non_technicals": "6", "unknown_revocations": "0", "time_window": "12", "district": "fargo", "supervision_type": "PAROLE"}
+{"state_code": "US_DEMO", "new_admissions": "1", "technicals": "9", "non_technicals": "1", "unknown_revocations": "1", "time_window": "12", "district": "fargo", "supervision_type": "PROBATION"}
+{"state_code": "US_DEMO", "new_admissions": "2", "technicals": "14", "non_technicals": "3", "unknown_revocations": "2", "time_window": "12", "district": "grand-forks", "supervision_type": "PAROLE"}
+{"state_code": "US_DEMO", "new_admissions": "2", "technicals": "9", "non_technicals": "8", "unknown_revocations": "0", "time_window": "12", "district": "grand-forks", "supervision_type": "PROBATION"}
+{"state_code": "US_DEMO", "new_admissions": "35", "technicals": "0", "non_technicals": "3", "unknown_revocations": "1", "time_window": "12", "district": "devils-lake", "supervision_type": "PAROLE"}
+{"state_code": "US_DEMO", "new_admissions": "19", "technicals": "0", "non_technicals": "24", "unknown_revocations": "0", "time_window": "12", "district": "devils-lake", "supervision_type": "PROBATION"}
+{"state_code": "US_DEMO", "new_admissions": "9", "technicals": "5", "non_technicals": "8", "unknown_revocations": "1", "time_window": "12", "district": "wahpeton", "supervision_type": "PAROLE"}
+{"state_code": "US_DEMO", "new_admissions": "5", "technicals": "1", "non_technicals": "35", "unknown_revocations": "0", "time_window": "12", "district": "wahpeton", "supervision_type": "PROBATION"}
+{"state_code": "US_DEMO", "new_admissions": "9", "technicals": "3", "non_technicals": "7", "unknown_revocations": "2", "time_window": "12", "district": "rolla", "supervision_type": "PAROLE"}
+{"state_code": "US_DEMO", "new_admissions": "12", "technicals": "13", "non_technicals": "18", "unknown_revocations": "1", "time_window": "12", "district": "rolla", "supervision_type": "PROBATION"}
+{"state_code": "US_DEMO", "new_admissions": "3", "technicals": "13", "non_technicals": "8", "unknown_revocations": "1", "time_window": "12", "district": "washburn", "supervision_type": "PAROLE"}
+{"state_code": "US_DEMO", "new_admissions": "7", "technicals": "2", "non_technicals": "2", "unknown_revocations": "0", "time_window": "12", "district": "washburn", "supervision_type": "PROBATION"}
+{"state_code": "US_DEMO", "new_admissions": "14", "technicals": "0", "non_technicals": "4", "unknown_revocations": "0", "time_window": "12", "district": "williston", "supervision_type": "PAROLE"}
+{"state_code": "US_DEMO", "new_admissions": "12", "technicals": "0", "non_technicals": "6", "unknown_revocations": "2", "time_window": "12", "district": "williston", "supervision_type": "PROBATION"}
+{"state_code": "US_DEMO", "new_admissions": "4", "technicals": "0", "non_technicals": "3", "unknown_revocations": "2", "time_window": "12", "district": "dickson", "supervision_type": "PAROLE"}
+{"state_code": "US_DEMO", "new_admissions": "19", "technicals": "1", "non_technicals": "2", "unknown_revocations": "0", "time_window": "12", "district": "dickson", "supervision_type": "PROBATION"}
+{"state_code": "US_DEMO", "new_admissions": "11", "technicals": "1", "non_technicals": "4", "unknown_revocations": "5", "time_window": "12", "district": "grafton", "supervision_type": "PAROLE"}
+{"state_code": "US_DEMO", "new_admissions": "22", "technicals": "0", "non_technicals": "2", "unknown_revocations": "2", "time_window": "12", "district": "grafton", "supervision_type": "PROBATION"}
+{"state_code": "US_DEMO", "new_admissions": "12", "technicals": "2", "non_technicals": "8", "unknown_revocations": "0", "time_window": "12", "district": "mandan", "supervision_type": "PAROLE"}
+{"state_code": "US_DEMO", "new_admissions": "32", "technicals": "2", "non_technicals": "2", "unknown_revocations": "0", "time_window": "12", "district": "mandan", "supervision_type": "PROBATION"}
+{"state_code": "US_DEMO", "new_admissions": "42", "technicals": "2", "non_technicals": "2", "unknown_revocations": "0", "time_window": "12", "district": "bottineau", "supervision_type": "PAROLE"}
+{"state_code": "US_DEMO", "new_admissions": "2", "technicals": "4", "non_technicals": "6", "unknown_revocations": "2", "time_window": "12", "district": "bottineau", "supervision_type": "PROBATION"}
+{"state_code": "US_DEMO", "new_admissions": "10", "technicals": "2", "non_technicals": "3", "unknown_revocations": "0", "time_window": "12", "district": "oakes", "supervision_type": "PAROLE"}
+{"state_code": "US_DEMO", "new_admissions": "39", "technicals": "6", "non_technicals": "13", "unknown_revocations": "2", "time_window": "12", "district": "oakes", "supervision_type": "PROBATION"}
+{"state_code": "US_DEMO", "new_admissions": "30", "technicals": "1", "non_technicals": "14", "unknown_revocations": "0", "time_window": "12", "district": "beulah", "supervision_type": "PAROLE"}
+{"state_code": "US_DEMO", "new_admissions": "54", "technicals": "9", "non_technicals": "9", "unknown_revocations": "0", "time_window": "12", "district": "beulah", "supervision_type": "PROBATION"}
+{"state_code": "US_DEMO", "new_admissions": "1", "technicals": "0", "non_technicals": "9", "unknown_revocations": "1", "time_window": "36", "district": "bismarck", "supervision_type": "PAROLE"}
+{"state_code": "US_DEMO", "new_admissions": "5", "technicals": "2", "non_technicals": "35", "unknown_revocations": "0", "time_window": "36", "district": "bismarck", "supervision_type": "PROBATION"}
+{"state_code": "US_DEMO", "new_admissions": "12", "technicals": "28", "non_technicals": "2", "unknown_revocations": "1", "time_window": "36", "district": "jamestown", "supervision_type": "PAROLE"}
+{"state_code": "US_DEMO", "new_admissions": "34", "technicals": "17", "non_technicals": "0", "unknown_revocations": "5", "time_window": "36", "district": "jamestown", "supervision_type": "PROBATION"}
+{"state_code": "US_DEMO", "new_admissions": "5", "technicals": "22", "non_technicals": "23", "unknown_revocations": "2", "time_window": "36", "district": "minot", "supervision_type": "PAROLE"}
+{"state_code": "US_DEMO", "new_admissions": "3", "technicals": "41", "non_technicals": "7", "unknown_revocations": "1", "time_window": "36", "district": "minot", "supervision_type": "PROBATION"}
+{"state_code": "US_DEMO", "new_admissions": "40", "technicals": "26", "non_technicals": "17", "unknown_revocations": "0", "time_window": "36", "district": "fargo", "supervision_type": "PAROLE"}
+{"state_code": "US_DEMO", "new_admissions": "5", "technicals": "3", "non_technicals": "13", "unknown_revocations": "1", "time_window": "36", "district": "fargo", "supervision_type": "PROBATION"}
+{"state_code": "US_DEMO", "new_admissions": "41", "technicals": "21", "non_technicals": "0", "unknown_revocations": "3", "time_window": "36", "district": "grand-forks", "supervision_type": "PAROLE"}
+{"state_code": "US_DEMO", "new_admissions": "120", "technicals": "2", "non_technicals": "2", "unknown_revocations": "4", "time_window": "36", "district": "grand-forks", "supervision_type": "PROBATION"}
+{"state_code": "US_DEMO", "new_admissions": "2", "technicals": "30", "non_technicals": "9", "unknown_revocations": "2", "time_window": "36", "district": "devils-lake", "supervision_type": "PAROLE"}
+{"state_code": "US_DEMO", "new_admissions": "1", "technicals": "2", "non_technicals": "33", "unknown_revocations": "1", "time_window": "36", "district": "devils-lake", "supervision_type": "PROBATION"}
+{"state_code": "US_DEMO", "new_admissions": "8", "technicals": "2", "non_technicals": "31", "unknown_revocations": "0", "time_window": "36", "district": "wahpeton", "supervision_type": "PAROLE"}
+{"state_code": "US_DEMO", "new_admissions": "107", "technicals": "0", "non_technicals": "12", "unknown_revocations": "0", "time_window": "36", "district": "wahpeton", "supervision_type": "PROBATION"}
+{"state_code": "US_DEMO", "new_admissions": "11", "technicals": "2", "non_technicals": "1", "unknown_revocations": "0", "time_window": "36", "district": "rolla", "supervision_type": "PAROLE"}
+{"state_code": "US_DEMO", "new_admissions": "33", "technicals": "1", "non_technicals": "4", "unknown_revocations": "0", "time_window": "36", "district": "rolla", "supervision_type": "PROBATION"}
+{"state_code": "US_DEMO", "new_admissions": "123", "technicals": "12", "non_technicals": "4", "unknown_revocations": "3", "time_window": "36", "district": "washburn", "supervision_type": "PAROLE"}
+{"state_code": "US_DEMO", "new_admissions": "48", "technicals": "5", "non_technicals": "6", "unknown_revocations": "3", "time_window": "36", "district": "washburn", "supervision_type": "PROBATION"}
+{"state_code": "US_DEMO", "new_admissions": "19", "technicals": "6", "non_technicals": "35", "unknown_revocations": "0", "time_window": "36", "district": "williston", "supervision_type": "PAROLE"}
+{"state_code": "US_DEMO", "new_admissions": "5", "technicals": "98", "non_technicals": "17", "unknown_revocations": "1", "time_window": "36", "district": "williston", "supervision_type": "PROBATION"}
+{"state_code": "US_DEMO", "new_admissions": "5", "technicals": "48", "non_technicals": "21", "unknown_revocations": "5", "time_window": "36", "district": "dickson", "supervision_type": "PAROLE"}
+{"state_code": "US_DEMO", "new_admissions": "16", "technicals": "5", "non_technicals": "47", "unknown_revocations": "2", "time_window": "36", "district": "dickson", "supervision_type": "PROBATION"}
+{"state_code": "US_DEMO", "new_admissions": "12", "technicals": "3", "non_technicals": "23", "unknown_revocations": "0", "time_window": "36", "district": "grafton", "supervision_type": "PAROLE"}
+{"state_code": "US_DEMO", "new_admissions": "1", "technicals": "8", "non_technicals": "73", "unknown_revocations": "2", "time_window": "36", "district": "grafton", "supervision_type": "PROBATION"}
+{"state_code": "US_DEMO", "new_admissions": "200", "technicals": "5", "non_technicals": "3", "unknown_revocations": "0", "time_window": "36", "district": "mandan", "supervision_type": "PAROLE"}
+{"state_code": "US_DEMO", "new_admissions": "65", "technicals": "4", "non_technicals": "1", "unknown_revocations": "2", "time_window": "36", "district": "mandan", "supervision_type": "PROBATION"}
+{"state_code": "US_DEMO", "new_admissions": "58", "technicals": "6", "non_technicals": "6", "unknown_revocations": "0", "time_window": "36", "district": "bottineau", "supervision_type": "PAROLE"}
+{"state_code": "US_DEMO", "new_admissions": "19", "technicals": "1", "non_technicals": "19", "unknown_revocations": "2", "time_window": "36", "district": "bottineau", "supervision_type": "PROBATION"}
+{"state_code": "US_DEMO", "new_admissions": "20", "technicals": "0", "non_technicals": "36", "unknown_revocations": "2", "time_window": "36", "district": "oakes", "supervision_type": "PAROLE"}
+{"state_code": "US_DEMO", "new_admissions": "2", "technicals": "1", "non_technicals": "101", "unknown_revocations": "2", "time_window": "36", "district": "oakes", "supervision_type": "PROBATION"}
+{"state_code": "US_DEMO", "new_admissions": "167", "technicals": "15", "non_technicals": "10", "unknown_revocations": "1", "time_window": "36", "district": "beulah", "supervision_type": "PAROLE"}
+{"state_code": "US_DEMO", "new_admissions": "12", "technicals": "5", "non_technicals": "9", "unknown_revocations": "2", "time_window": "36", "district": "beulah", "supervision_type": "PROBATION"}
+{"supervision_type": "ALL", "district": "bismarck", "state_code": "US_DEMO", "time_window": "1", "new_admissions": "5", "technicals": "0", "non_technicals": "1", "unknown_revocations": "0"}
+{"supervision_type": "ALL", "district": "jamestown", "state_code": "US_DEMO", "time_window": "1", "new_admissions": "8", "technicals": "1", "non_technicals": "2", "unknown_revocations": "1"}
+{"supervision_type": "ALL", "district": "minot", "state_code": "US_DEMO", "time_window": "1", "new_admissions": "1", "technicals": "1", "non_technicals": "3", "unknown_revocations": "0"}
+{"supervision_type": "ALL", "district": "fargo", "state_code": "US_DEMO", "time_window": "1", "new_admissions": "17", "technicals": "0", "non_technicals": "1", "unknown_revocations": "0"}
+{"supervision_type": "ALL", "district": "grand-forks", "state_code": "US_DEMO", "time_window": "1", "new_admissions": "1", "technicals": "2", "non_technicals": "0", "unknown_revocations": "1"}
+{"supervision_type": "ALL", "district": "devils-lake", "state_code": "US_DEMO", "time_window": "1", "new_admissions": "0", "technicals": "0", "non_technicals": "3", "unknown_revocations": "0"}
+{"supervision_type": "ALL", "district": "wahpeton", "state_code": "US_DEMO", "time_window": "1", "new_admissions": "0", "technicals": "2", "non_technicals": "0", "unknown_revocations": "0"}
+{"supervision_type": "ALL", "district": "rolla", "state_code": "US_DEMO", "time_window": "1", "new_admissions": "3", "technicals": "0", "non_technicals": "3", "unknown_revocations": "2"}
+{"supervision_type": "ALL", "district": "washburn", "state_code": "US_DEMO", "time_window": "1", "new_admissions": "3", "technicals": "0", "non_technicals": "1", "unknown_revocations": "0"}
+{"supervision_type": "ALL", "district": "williston", "state_code": "US_DEMO", "time_window": "1", "new_admissions": "1", "technicals": "2", "non_technicals": "1", "unknown_revocations": "1"}
+{"supervision_type": "ALL", "district": "dickson", "state_code": "US_DEMO", "time_window": "1", "new_admissions": "10", "technicals": "0", "non_technicals": "1", "unknown_revocations": "0"}
+{"supervision_type": "ALL", "district": "grafton", "state_code": "US_DEMO", "time_window": "1", "new_admissions": "6", "technicals": "3", "non_technicals": "1", "unknown_revocations": "0"}
+{"supervision_type": "ALL", "district": "mandan", "state_code": "US_DEMO", "time_window": "1", "new_admissions": "2", "technicals": "1", "non_technicals": "2", "unknown_revocations": "0"}
+{"supervision_type": "ALL", "district": "bottineau", "state_code": "US_DEMO", "time_window": "1", "new_admissions": "3", "technicals": "1", "non_technicals": "1", "unknown_revocations": "0"}
+{"supervision_type": "ALL", "district": "oakes", "state_code": "US_DEMO", "time_window": "1", "new_admissions": "3", "technicals": "2", "non_technicals": "2", "unknown_revocations": "0"}
+{"supervision_type": "ALL", "district": "beulah", "state_code": "US_DEMO", "time_window": "1", "new_admissions": "4", "technicals": "1", "non_technicals": "1", "unknown_revocations": "0"}
+{"supervision_type": "ALL", "district": "bismarck", "state_code": "US_DEMO", "time_window": "3", "new_admissions": "9", "technicals": "2", "non_technicals": "2", "unknown_revocations": "1"}
+{"supervision_type": "ALL", "district": "jamestown", "state_code": "US_DEMO", "time_window": "3", "new_admissions": "0", "technicals": "1", "non_technicals": "4", "unknown_revocations": "0"}
+{"supervision_type": "ALL", "district": "minot", "state_code": "US_DEMO", "time_window": "3", "new_admissions": "16", "technicals": "4", "non_technicals": "1", "unknown_revocations": "1"}
+{"supervision_type": "ALL", "district": "fargo", "state_code": "US_DEMO", "time_window": "3", "new_admissions": "21", "technicals": "4", "non_technicals": "2", "unknown_revocations": "0"}
+{"supervision_type": "ALL", "district": "grand-forks", "state_code": "US_DEMO", "time_window": "3", "new_admissions": "3", "technicals": "1", "non_technicals": "3", "unknown_revocations": "1"}
+{"supervision_type": "ALL", "district": "devils-lake", "state_code": "US_DEMO", "time_window": "3", "new_admissions": "4", "technicals": "1", "non_technicals": "4", "unknown_revocations": "0"}
+{"supervision_type": "ALL", "district": "wahpeton", "state_code": "US_DEMO", "time_window": "3", "new_admissions": "11", "technicals": "5", "non_technicals": "1", "unknown_revocations": "0"}
+{"supervision_type": "ALL", "district": "rolla", "state_code": "US_DEMO", "time_window": "3", "new_admissions": "8", "technicals": "3", "non_technicals": "9", "unknown_revocations": "0"}
+{"supervision_type": "ALL", "district": "washburn", "state_code": "US_DEMO", "time_window": "3", "new_admissions": "5", "technicals": "1", "non_technicals": "13", "unknown_revocations": "2"}
+{"supervision_type": "ALL", "district": "williston", "state_code": "US_DEMO", "time_window": "3", "new_admissions": "12", "technicals": "1", "non_technicals": "5", "unknown_revocations": "0"}
+{"supervision_type": "ALL", "district": "dickson", "state_code": "US_DEMO", "time_window": "3", "new_admissions": "10", "technicals": "0", "non_technicals": "5", "unknown_revocations": "2"}
+{"supervision_type": "ALL", "district": "grafton", "state_code": "US_DEMO", "time_window": "3", "new_admissions": "8", "technicals": "3", "non_technicals": "1", "unknown_revocations": "0"}
+{"supervision_type": "ALL", "district": "mandan", "state_code": "US_DEMO", "time_window": "3", "new_admissions": "9", "technicals": "1", "non_technicals": "2", "unknown_revocations": "0"}
+{"supervision_type": "ALL", "district": "bottineau", "state_code": "US_DEMO", "time_window": "3", "new_admissions": "9", "technicals": "6", "non_technicals": "1", "unknown_revocations": "0"}
+{"supervision_type": "ALL", "district": "oakes", "state_code": "US_DEMO", "time_window": "3", "new_admissions": "5", "technicals": "6", "non_technicals": "4", "unknown_revocations": "2"}
+{"supervision_type": "ALL", "district": "beulah", "state_code": "US_DEMO", "time_window": "3", "new_admissions": "25", "technicals": "3", "non_technicals": "8", "unknown_revocations": "0"}
+{"supervision_type": "ALL", "district": "bismarck", "state_code": "US_DEMO", "time_window": "6", "new_admissions": "15", "technicals": "5", "non_technicals": "27", "unknown_revocations": "0"}
+{"supervision_type": "ALL", "district": "jamestown", "state_code": "US_DEMO", "time_window": "6", "new_admissions": "6", "technicals": "1", "non_technicals": "10", "unknown_revocations": "2"}
+{"supervision_type": "ALL", "district": "minot", "state_code": "US_DEMO", "time_window": "6", "new_admissions": "15", "technicals": "5", "non_technicals": "2", "unknown_revocations": "0"}
+{"supervision_type": "ALL", "district": "fargo", "state_code": "US_DEMO", "time_window": "6", "new_admissions": "35", "technicals": "8", "non_technicals": "4", "unknown_revocations": "1"}
+{"supervision_type": "ALL", "district": "grand-forks", "state_code": "US_DEMO", "time_window": "6", "new_admissions": "1", "technicals": "0", "non_technicals": "27", "unknown_revocations": "1"}
+{"supervision_type": "ALL", "district": "devils-lake", "state_code": "US_DEMO", "time_window": "6", "new_admissions": "5", "technicals": "19", "non_technicals": "3", "unknown_revocations": "1"}
+{"supervision_type": "ALL", "district": "wahpeton", "state_code": "US_DEMO", "time_window": "6", "new_admissions": "3", "technicals": "1", "non_technicals": "10", "unknown_revocations": "0"}
+{"supervision_type": "ALL", "district": "rolla", "state_code": "US_DEMO", "time_window": "6", "new_admissions": "10", "technicals": "6", "non_technicals": "8", "unknown_revocations": "1"}
+{"supervision_type": "ALL", "district": "washburn", "state_code": "US_DEMO", "time_window": "6", "new_admissions": "6", "technicals": "5", "non_technicals": "8", "unknown_revocations": "1"}
+{"supervision_type": "ALL", "district": "williston", "state_code": "US_DEMO", "time_window": "6", "new_admissions": "44", "technicals": "8", "non_technicals": "7", "unknown_revocations": "0"}
+{"supervision_type": "ALL", "district": "dickson", "state_code": "US_DEMO", "time_window": "6", "new_admissions": "48", "technicals": "7", "non_technicals": "10", "unknown_revocations": "2"}
+{"supervision_type": "ALL", "district": "grafton", "state_code": "US_DEMO", "time_window": "6", "new_admissions": "72", "technicals": "2", "non_technicals": "0", "unknown_revocations": "1"}
+{"supervision_type": "ALL", "district": "mandan", "state_code": "US_DEMO", "time_window": "6", "new_admissions": "10", "technicals": "2", "non_technicals": "5", "unknown_revocations": "1"}
+{"supervision_type": "ALL", "district": "bottineau", "state_code": "US_DEMO", "time_window": "6", "new_admissions": "7", "technicals": "6", "non_technicals": "13", "unknown_revocations": "1"}
+{"supervision_type": "ALL", "district": "oakes", "state_code": "US_DEMO", "time_window": "6", "new_admissions": "23", "technicals": "0", "non_technicals": "5", "unknown_revocations": "2"}
+{"supervision_type": "ALL", "district": "beulah", "state_code": "US_DEMO", "time_window": "6", "new_admissions": "8", "technicals": "0", "non_technicals": "2", "unknown_revocations": "2"}
+{"supervision_type": "ALL", "district": "bismarck", "state_code": "US_DEMO", "time_window": "12", "new_admissions": "28", "technicals": "25", "non_technicals": "24", "unknown_revocations": "0"}
+{"supervision_type": "ALL", "district": "jamestown", "state_code": "US_DEMO", "time_window": "12", "new_admissions": "12", "technicals": "4", "non_technicals": "37", "unknown_revocations": "4"}
+{"supervision_type": "ALL", "district": "minot", "state_code": "US_DEMO", "time_window": "12", "new_admissions": "134", "technicals": "8", "non_technicals": "3", "unknown_revocations": "1"}
+{"supervision_type": "ALL", "district": "fargo", "state_code": "US_DEMO", "time_window": "12", "new_admissions": "18", "technicals": "13", "non_technicals": "7", "unknown_revocations": "1"}
+{"supervision_type": "ALL", "district": "grand-forks", "state_code": "US_DEMO", "time_window": "12", "new_admissions": "4", "technicals": "23", "non_technicals": "11", "unknown_revocations": "2"}
+{"supervision_type": "ALL", "district": "devils-lake", "state_code": "US_DEMO", "time_window": "12", "new_admissions": "54", "technicals": "0", "non_technicals": "27", "unknown_revocations": "1"}
+{"supervision_type": "ALL", "district": "wahpeton", "state_code": "US_DEMO", "time_window": "12", "new_admissions": "14", "technicals": "6", "non_technicals": "43", "unknown_revocations": "1"}
+{"supervision_type": "ALL", "district": "rolla", "state_code": "US_DEMO", "time_window": "12", "new_admissions": "21", "technicals": "16", "non_technicals": "25", "unknown_revocations": "3"}
+{"supervision_type": "ALL", "district": "washburn", "state_code": "US_DEMO", "time_window": "12", "new_admissions": "10", "technicals": "15", "non_technicals": "10", "unknown_revocations": "1"}
+{"supervision_type": "ALL", "district": "williston", "state_code": "US_DEMO", "time_window": "12", "new_admissions": "26", "technicals": "0", "non_technicals": "10", "unknown_revocations": "2"}
+{"supervision_type": "ALL", "district": "dickson", "state_code": "US_DEMO", "time_window": "12", "new_admissions": "23", "technicals": "1", "non_technicals": "5", "unknown_revocations": "2"}
+{"supervision_type": "ALL", "district": "grafton", "state_code": "US_DEMO", "time_window": "12", "new_admissions": "33", "technicals": "1", "non_technicals": "6", "unknown_revocations": "7"}
+{"supervision_type": "ALL", "district": "mandan", "state_code": "US_DEMO", "time_window": "12", "new_admissions": "44", "technicals": "4", "non_technicals": "10", "unknown_revocations": "0"}
+{"supervision_type": "ALL", "district": "bottineau", "state_code": "US_DEMO", "time_window": "12", "new_admissions": "44", "technicals": "6", "non_technicals": "8", "unknown_revocations": "2"}
+{"supervision_type": "ALL", "district": "oakes", "state_code": "US_DEMO", "time_window": "12", "new_admissions": "49", "technicals": "8", "non_technicals": "16", "unknown_revocations": "2"}
+{"supervision_type": "ALL", "district": "beulah", "state_code": "US_DEMO", "time_window": "12", "new_admissions": "84", "technicals": "10", "non_technicals": "23", "unknown_revocations": "0"}
+{"supervision_type": "ALL", "district": "bismarck", "state_code": "US_DEMO", "time_window": "36", "new_admissions": "6", "technicals": "2", "non_technicals": "44", "unknown_revocations": "1"}
+{"supervision_type": "ALL", "district": "jamestown", "state_code": "US_DEMO", "time_window": "36", "new_admissions": "46", "technicals": "45", "non_technicals": "2", "unknown_revocations": "6"}
+{"supervision_type": "ALL", "district": "minot", "state_code": "US_DEMO", "time_window": "36", "new_admissions": "8", "technicals": "63", "non_technicals": "30", "unknown_revocations": "3"}
+{"supervision_type": "ALL", "district": "fargo", "state_code": "US_DEMO", "time_window": "36", "new_admissions": "45", "technicals": "29", "non_technicals": "30", "unknown_revocations": "1"}
+{"supervision_type": "ALL", "district": "grand-forks", "state_code": "US_DEMO", "time_window": "36", "new_admissions": "161", "technicals": "23", "non_technicals": "2", "unknown_revocations": "7"}
+{"supervision_type": "ALL", "district": "devils-lake", "state_code": "US_DEMO", "time_window": "36", "new_admissions": "3", "technicals": "32", "non_technicals": "42", "unknown_revocations": "3"}
+{"supervision_type": "ALL", "district": "wahpeton", "state_code": "US_DEMO", "time_window": "36", "new_admissions": "115", "technicals": "2", "non_technicals": "43", "unknown_revocations": "0"}
+{"supervision_type": "ALL", "district": "rolla", "state_code": "US_DEMO", "time_window": "36", "new_admissions": "44", "technicals": "3", "non_technicals": "5", "unknown_revocations": "0"}
+{"supervision_type": "ALL", "district": "washburn", "state_code": "US_DEMO", "time_window": "36", "new_admissions": "171", "technicals": "17", "non_technicals": "10", "unknown_revocations": "6"}
+{"supervision_type": "ALL", "district": "williston", "state_code": "US_DEMO", "time_window": "36", "new_admissions": "24", "technicals": "104", "non_technicals": "52", "unknown_revocations": "1"}
+{"supervision_type": "ALL", "district": "dickson", "state_code": "US_DEMO", "time_window": "36", "new_admissions": "21", "technicals": "53", "non_technicals": "68", "unknown_revocations": "7"}
+{"supervision_type": "ALL", "district": "grafton", "state_code": "US_DEMO", "time_window": "36", "new_admissions": "13", "technicals": "11", "non_technicals": "96", "unknown_revocations": "2"}
+{"supervision_type": "ALL", "district": "mandan", "state_code": "US_DEMO", "time_window": "36", "new_admissions": "265", "technicals": "9", "non_technicals": "4", "unknown_revocations": "2"}
+{"supervision_type": "ALL", "district": "bottineau", "state_code": "US_DEMO", "time_window": "36", "new_admissions": "77", "technicals": "7", "non_technicals": "25", "unknown_revocations": "2"}
+{"supervision_type": "ALL", "district": "oakes", "state_code": "US_DEMO", "time_window": "36", "new_admissions": "22", "technicals": "1", "non_technicals": "137", "unknown_revocations": "4"}
+{"supervision_type": "ALL", "district": "beulah", "state_code": "US_DEMO", "time_window": "36", "new_admissions": "179", "technicals": "20", "non_technicals": "19", "unknown_revocations": "3"}

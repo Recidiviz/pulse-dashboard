@@ -183,9 +183,6 @@ const Snapshots = () => {
                 <div className="layer w-100 pX-20 pT-20">
                   <h6 className="lh-1">
                     PRISON ADMISSIONS DUE TO REVOCATION
-                    {chartSupervisionType !== 'all' && (
-                      <span className="pL-10 c-orange-500 ti-alert" data-toggle="tooltip" data-placement="bottom" title="This graph is showing all individuals on supervision. It doesn’t support showing only individuals on probation or only individuals on parole." />
-                    )}
                     <span className="fa-pull-right">
                       <div className="dropdown show">
                         <a className="btn btn-secondary btn-sm dropdown-toggle" href="#" role="button" id="exportDropdownMenuButton-revocationAdmissionsSnapshot" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -216,6 +213,7 @@ const Snapshots = () => {
                         <RevocationAdmissionsSnapshot
                           metricType={chartMetricType}
                           timeWindow={chartTimeWindow}
+                          supervisionType={chartSupervisionType}
                           district={chartDistrict}
                           revocationAdmissionsByMonth={apiData.admissions_by_type_by_month}
                           header="revocationAdmissionsSnapshot-header"
@@ -227,7 +225,9 @@ const Snapshots = () => {
                           chartTitle="PRISON ADMISSIONS DUE TO REVOCATION"
                           metricType={chartMetricType}
                           timeWindow={chartTimeWindow}
-                          keyedByOffice={true}
+                          supervisionType={chartSupervisionType}
+                          keyedByOffice
+                          shareDenominatorAcrossRates
                           officeData={apiData.site_offices}
                           dataPointsByOffice={apiData.admissions_by_type_over_time_window}
                           numeratorKeys={['technicals', 'non_technicals', 'unknown_revocations']}
@@ -257,6 +257,14 @@ const Snapshots = () => {
                         <li>
                           Revocations in a given month count people who were incarcerated
                           in that month because their supervision was revoked.
+                        </li>
+                        <li>
+                          When a specific district and/or supervision type is selected, the rate
+                          metric is defined as the number of revocation admissions from that
+                          district and/or supervision type divided by the total number of admissions
+                          across all districts and supervision types within the same time period.
+                          Simply put, it is equal to the percentage of total admisssions caused by
+                          revocations matching the given filters.
                         </li>
                       </ul>
                     </div>
