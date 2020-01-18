@@ -17,7 +17,7 @@
 
 import React, { useState } from 'react';
 
-import { toTitleCase, toHumanReadable, toInt } from '../../../utils/transforms/labels';
+import { humanReadableTitleCase, toInt } from '../../../utils/transforms/labels';
 
 const CASES_PER_PAGE = 15;
 const VIOLATION_SEVERITY = [
@@ -52,7 +52,7 @@ const CaseTable = (props) => {
     if (!label) {
       return '';
     }
-    return toTitleCase(toHumanReadable(label));
+    return humanReadableTitleCase(label);
   };
 
   const indexOf = (element, array) => {

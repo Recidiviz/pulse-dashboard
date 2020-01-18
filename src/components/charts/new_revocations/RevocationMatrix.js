@@ -16,6 +16,7 @@
 // =============================================================================
 
 import React, { useState, useEffect } from 'react';
+import ExportMenu from '../ExportMenu';
 
 import { toInt } from '../../../utils/transforms/labels';
 
@@ -28,7 +29,9 @@ const VIOLATION_TYPES = [
   ['MISDEMEANOR', 'Misdemeanor'],
   ['FELONY', 'Felony'],
 ];
+
 const VIOLATION_COUNTS = ['1', '2', '3', '4', '5', '6', '7', '8'];
+const violationCountLabel = (count) => (count === '8' ? '8+' : count);
 
 const RevocationMatrix = (props) => {
   const isFiltered = props.filters.violationType || props.filters.reportedViolations;
@@ -38,15 +41,15 @@ const RevocationMatrix = (props) => {
 
   const processResponse = () => {
     const matrix = props.data.reduce(
-      (result, { violation_type, reported_violations, total_revocations }) => {
-        if (!result[violation_type]) {
-          return { ...result, [violation_type]: { [reported_violations]: toInt(total_revocations) } };
+      (result, { violation_type: violationType, reported_violations: reportedViolations, total_revocations: totalRevocations }) => {
+        if (!result[violationType]) {
+          return { ...result, [violationType]: { [reportedViolations]: toInt(totalRevocations) } };
         }
         return {
           ...result,
-          [violation_type]: {
-            ...result[violation_type],
-            [reported_violations]: (result[violation_type][reported_violations] || 0) + (toInt(total_revocations) || 0)
+          [violationType]: {
+            ...result[violationType],
+            [reportedViolations]: (result[violationType][reportedViolations] || 0) + (toInt(totalRevocations) || 0)
           }
         }
       }, {},
@@ -62,6 +65,20 @@ const RevocationMatrix = (props) => {
   useEffect(() => {
     processResponse();
   }, [props.data]);
+
+  const exportableMatrixData = () => {
+    const datasets = [];
+    Object.keys(dataMatrix).forEach((rowLabel) => {
+      const dataset = { label: rowLabel, data: [] };
+      const rowValues = dataMatrix[rowLabel] || {};
+      VIOLATION_COUNTS.forEach((columnLabel) => {
+        dataset.data.push(rowValues[columnLabel] || 0);
+      });
+
+      datasets.push(dataset);
+    });
+    return datasets;
+  };
 
   const isSelected = (violationType, reportedViolations) => {
     return props.filters.violationType === violationType &&
@@ -149,17 +166,27 @@ const RevocationMatrix = (props) => {
 
   return (
     <div className="revocation-matrix">
-      <h4>Revocations to prison from probation and parole</h4>
-      <div className="d-f">
-        <div className="y-label">
+      <h4>
+        Revocations to prison from probation and parole
+        <ExportMenu
+          chartId="revocationMatrix"
+          regularElement
+          elementDatasets={exportableMatrixData()}
+          elementLabels={VIOLATION_COUNTS.map((count) => violationCountLabel(count))}
+          metricTitle="Revocations to prison from probation and parole"
+        />
+      </h4>
+      <div id="revocationMatrix" className="d-f">
+        <div className="y-label" data-html2canvas-ignore>
           Most severe violation reported during supervision term
         </div>
         <div className={`matrix ${isFiltered ? 'is-filtered' : ''}`}>
           <div className="violation-counts">
             <span className="empty-cell" />
             {VIOLATION_COUNTS.map((count, i) => (
-              <span key={i} className="violation-column">{count}</span>
+              <span key={i} className="violation-column">{violationCountLabel(count)}</span>
             ))}
+            <span className="violation-sum-column top-right-total">Total</span>
           </div>
           {VIOLATION_TYPES.map(renderRow)}
           <div className="violation-sum-row">

@@ -16,6 +16,7 @@
 // =============================================================================
 
 import downloadjs from 'downloadjs';
+import html2canvas from 'html2canvas';
 import * as csvExport from 'jsonexport/dist';
 import { timeStamp } from './time';
 
@@ -65,6 +66,37 @@ function downloadObjectAsJson(exportObj, exportName) {
   downloadjs(dataStr, filename, 'text/json');
 }
 
+function configureDataDownloadButton(
+  chartId, chartDatasets, chartLabels, exportedStructureCallback, convertValuesToNumbers,
+) {
+  return function downloadChartData() {
+    const exportData = exportedStructureCallback();
+
+    chartDatasets.forEach((dataset) => {
+      if (dataset.label !== 'trendline') {
+        const values = {};
+        let i = 0;
+        dataset.data.forEach((dataPoint) => {
+          if (convertValuesToNumbers === undefined || convertValuesToNumbers) {
+            values[chartLabels[i]] = Number(dataPoint);
+          } else {
+            values[chartLabels[i]] = dataPoint;
+          }
+          i += 1;
+        });
+
+        exportData.series.push({
+          label: dataset.label,
+          values,
+        });
+      }
+    });
+
+    const filename = `${chartId}-${timeStamp()}`;
+    downloadObjectAsCsv(exportData, filename);
+  };
+}
+
 function configureDownloadButtons(
   chartId, chartTitle, chartDatasets, chartLabels, chartBox,
   exportedStructureCallback, convertValuesToNumbers,
@@ -78,32 +110,30 @@ function configureDownloadButtons(
 
   const downloadChartDataButton = document.getElementById(`downloadChartData-${chartId}`);
   if (downloadChartDataButton) {
-    downloadChartDataButton.onclick = function downloadChartData() {
-      const exportData = exportedStructureCallback();
+    downloadChartDataButton.onclick = configureDataDownloadButton(
+      chartId, chartDatasets, chartLabels, exportedStructureCallback, convertValuesToNumbers,
+    );
+  }
+}
 
-      chartDatasets.forEach((dataset) => {
-        if (dataset.label !== 'trendline') {
-          const values = {};
-          let i = 0;
-          dataset.data.forEach((dataPoint) => {
-            if (convertValuesToNumbers === undefined || convertValuesToNumbers) {
-              values[chartLabels[i]] = Number(dataPoint);
-            } else {
-              values[chartLabels[i]] = dataPoint;
-            }
-            i += 1;
-          });
-
-          exportData.series.push({
-            label: dataset.label,
-            values,
-          });
-        }
+function configureDownloadButtonsRegularElement(
+  chartId, chartTitle, chartDatasets, chartLabels, chartBox,
+  exportedStructureCallback, convertValuesToNumbers,
+) {
+  const downloadChartAsImageButton = document.getElementById(`downloadChartAsImage-${chartId}`);
+  if (downloadChartAsImageButton) {
+    downloadChartAsImageButton.onclick = function downloadChartImage() {
+      html2canvas(document.getElementById(chartId)).then((canvas) => {
+        downloadCanvasImage(canvas, `${chartId}-${timeStamp()}.png`, chartTitle);
       });
-
-      const filename = `${chartId}-${timeStamp()}`;
-      downloadObjectAsCsv(exportData, filename);
     };
+  }
+
+  const downloadChartDataButton = document.getElementById(`downloadChartData-${chartId}`);
+  if (downloadChartDataButton) {
+    downloadChartDataButton.onclick = configureDataDownloadButton(
+      chartId, chartDatasets, chartLabels, exportedStructureCallback, convertValuesToNumbers,
+    );
   }
 }
 
@@ -112,4 +142,5 @@ export {
   downloadObjectAsCsv,
   downloadObjectAsJson,
   configureDownloadButtons,
+  configureDownloadButtonsRegularElement,
 };

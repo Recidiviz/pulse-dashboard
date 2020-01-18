@@ -62,6 +62,10 @@ function toTitleCase(str) {
   );
 }
 
+function humanReadableTitleCase(str) {
+  return toTitleCase(toHumanReadable(str));
+}
+
 export {
   genderValueToHumanReadable,
   raceValueToHumanReadable,
@@ -69,4 +73,5 @@ export {
   toHumanReadable,
   toInt,
   toTitleCase,
+  humanReadableTitleCase,
 };

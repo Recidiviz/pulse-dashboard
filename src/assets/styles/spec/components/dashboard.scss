@@ -19,7 +19,7 @@
 }
 
 .revocations-time-graph {
-  height: 150px;
+  height: 180px;
 }
 
 .revocation-matrix {
@@ -112,6 +112,13 @@
 
     .violation-sum-column {
       margin-left: 40px;
+    }
+
+    .top-right-total {
+      color: #b9c2d0;
+      font-size: 14px;
+      font-weight: 600;
+      font-style: italic;
     }
 
     .violation-sum {

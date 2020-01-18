@@ -17,22 +17,28 @@
 
 import React, { useState, useEffect } from 'react';
 import { Bar } from 'react-chartjs-2';
+import ExportMenu from '../ExportMenu';
 
 import { COLORS } from '../../../assets/scripts/constants/colors';
-import { toInt } from '../../../utils/transforms/labels';
+import { toInt, humanReadableTitleCase } from '../../../utils/transforms/labels';
+
+const chartId = 'revocationsByViolationType';
 
 const RevocationsByViolation = (props) => {
   const [chartLabels, setChartLabels] = useState([]);
   const [chartDataPoints, setChartDataPoints] = useState([]);
 
   const processResponse = () => {
-    const violationToCount = props.data.reduce((result, { violation_observed, total_violations }) => {
-      return { ...result, [violation_observed]: (result[violation_observed] || 0) + (toInt(total_violations) || 0) };
-    }, {});
+    const violationToCount = props.data.reduce(
+      (result, { violation_observed: violationObserved, total_violations: totalViolations }) => {
+        return { ...result, [violationObserved]: (result[violationObserved] || 0) + (toInt(totalViolations) || 0) };
+      }, {},
+    );
 
     const labels = Object.keys(violationToCount);
-    const dataPoints = labels.map((violation) => violationToCount[violation])
-    setChartLabels(labels);
+    const displayLabels = labels.map((label) => humanReadableTitleCase(label));
+    const dataPoints = labels.map((violation) => violationToCount[violation]);
+    setChartLabels(displayLabels);
     setChartDataPoints(dataPoints);
   }
 
@@ -40,48 +46,61 @@ const RevocationsByViolation = (props) => {
     processResponse();
   }, [props.data]);
 
+  const chart = (
+    <Bar
+      id={chartId}
+      data={{
+        labels: chartLabels,
+        datasets: [{
+          label: 'Revocations',
+          backgroundColor: COLORS['orange-500'],
+          hoverBackgroundColor: COLORS['orange-500'],
+          hoverBorderColor: COLORS['orange-500'],
+          data: chartDataPoints,
+        }],
+      }}
+      options={{
+        legend: {
+          display: false,
+        },
+        responsive: true,
+        scales: {
+          xAxes: [{
+            scaleLabel: {
+              display: true,
+              labelString: 'Violation type',
+            },
+            stacked: true,
+          }],
+          yAxes: [{
+            scaleLabel: {
+              display: true,
+              labelString: '# of revocations',
+            },
+            stacked: true,
+          }],
+        },
+        tooltips: {
+          backgroundColor: COLORS['grey-800-light'],
+          mode: 'index',
+          intersect: false,
+        },
+      }}
+    />
+  );
+
   return (
     <div>
-      <h4>Revocations by violation type</h4>
-      <Bar
-        data={{
-          labels: chartLabels,
-          datasets: [{
-            label: 'Violation',
-            backgroundColor: COLORS['orange-500'],
-            hoverBackgroundColor: COLORS['orange-500'],
-            hoverBorderColor: COLORS['orange-500'],
-            data: chartDataPoints,
-          }],
-        }}
-        options={{
-          legend: {
-            display: false,
-          },
-          responsive: true,
-          scales: {
-            xAxes: [{
-              scaleLabel: {
-                display: true,
-                labelString: 'Violation type',
-              },
-              stacked: true,
-            }],
-            yAxes: [{
-              scaleLabel: {
-                display: true,
-                labelString: '# of revocations',
-              },
-              stacked: true,
-            }],
-          },
-          tooltips: {
-            backgroundColor: COLORS['grey-800-light'],
-            mode: 'index',
-            intersect: false,
-          },
-        }}
-      />
+      <h4 className="pB-20">
+        Revocations by violation type
+        <ExportMenu
+          chartId={chartId}
+          chart={chart}
+          metricTitle="Revocations by violation type"
+        />
+      </h4>
+
+      {chart}
     </div>
   );
 };

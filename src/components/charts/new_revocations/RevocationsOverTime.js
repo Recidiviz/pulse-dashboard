@@ -17,9 +17,9 @@
 
 import React, { useState, useEffect } from 'react';
 import { Line } from 'react-chartjs-2';
+import ExportMenu from '../ExportMenu';
 
 import { COLORS } from '../../../assets/scripts/constants/colors';
-import { configureDownloadButtons } from '../../../assets/scripts/utils/downloads';
 import { sortFilterAndSupplementMostRecentMonths } from '../../../utils/transforms/datasets';
 import { toInt } from '../../../utils/transforms/labels';
 import { monthNamesWithYearsFromNumbers } from '../../../utils/transforms/months';
@@ -28,16 +28,18 @@ const RevocationsOverTime = (props) => {
   const [chartLabels, setChartLabels] = useState([]);
   const [chartDataPoints, setChartDataPoints] = useState([]);
 
-  const chartId = 'RevocationsOverTime';
+  const chartId = 'revocationsOverTime';
 
   const processResponse = () => {
     if (!props.data) {
       return;
     }
 
-    const yearAndMonthToCount = props.data.reduce((result, { year, month, total_revocations }) => {
-      return { ...result, [`${year}:${month}`]: (result[`${year}:${month}`] || 0) + (toInt(total_revocations) || 0) };
-    }, {});
+    const yearAndMonthToCount = props.data.reduce(
+      (result, { year, month, total_revocations: totalRevocations }) => {
+        return { ...result, [`${year}:${month}`]: (result[`${year}:${month}`] || 0) + (toInt(totalRevocations) || 0) };
+      }, {},
+    );
     const chartData = Object.entries(yearAndMonthToCount).map(([yearAndMonth, count]) => {
       const [year, month] = yearAndMonth.split(':');
       return { year, month, count };
@@ -54,11 +56,6 @@ const RevocationsOverTime = (props) => {
     processResponse();
   }, [props.data]);
 
-  const exportedStructureCallback = () => ({
-    metric: 'Revocations over time',
-    series: [],
-  });
-
   const datasets = [{
     label: 'Revocations',
     borderColor: COLORS['light-blue-500'],
@@ -69,41 +66,53 @@ const RevocationsOverTime = (props) => {
     data: chartDataPoints,
   }];
 
-  configureDownloadButtons(chartId, 'REVOCATIONS OVER TIME', datasets, chartLabels,
-    document.getElementById(chartId), exportedStructureCallback);
+  const chart = (
+    <Line
+      id={chartId}
+      data={{
+        labels: chartLabels,
+        datasets,
+      }}
+      options={{
+        maintainAspectRatio: false,
+        responsive: true,
+        legend: {
+          display: false,
+        },
+        scales: {
+          xAxes: [{
+            ticks: {
+              autoSkip: false,
+            },
+          }],
+          yAxes: [{
+            scaleLabel: {
+              display: true,
+              labelString: '# of revocations',
+            },
+          }],
+        },
+        tooltips: {
+          backgroundColor: COLORS['grey-800-light'],
+          mode: 'x',
+        },
+      }}
+    />
+  );
 
   return (
-    <div className="revocations-time-graph">
-      <Line
-        id={chartId}
-        data={{
-          labels: chartLabels,
-          datasets,
-        }}
-        options={{
-          maintainAspectRatio: false,
-          legend: {
-            display: false,
-          },
-          scales: {
-            xAxes: [{
-              ticks: {
-                autoSkip: false,
-              },
-            }],
-            yAxes: [{
-              scaleLabel: {
-                display: true,
-                labelString: '# of revocations',
-              },
-            }],
-          },
-          tooltips: {
-            backgroundColor: COLORS['grey-800-light'],
-            mode: 'x',
-          },
-        }}
-      />
+    <div>
+      <h4 className="pB-20">
+        Revocations over time
+        <ExportMenu
+          chartId={chartId}
+          chart={chart}
+          metricTitle="Revocations over time"
+        />
+      </h4>
+      <div className="chart-container" style={{ position: 'relative', height: '180px' }}>
+        {chart}
+      </div>
     </div>
   );
 };

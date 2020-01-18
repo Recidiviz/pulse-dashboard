@@ -132,6 +132,22 @@ const Revocations = () => {
     });
   };
 
+  const applyDistrictAndSupervisionTypeFilters = (data) => {
+    return data.filter((item) => {
+      if (filters.district) {
+        if (!nullSafeComparison(item.district, filters.district)) {
+          return false;
+        }
+      }
+      if (filters.supervisionType) {
+        if (!nullSafeComparison(item.supervision_type, filters.supervisionType)) {
+          return false;
+        }
+      }
+      return true;
+    });
+  };
+
   const applyMatrixFilters = (data) => {
     return data.filter((item) => {
       if (filters.violationType) {
@@ -184,6 +200,7 @@ const Revocations = () => {
         return (
           <RevocationsByDistrict
             data={applyAllFilters(apiData.revocations_matrix_distribution_by_district)}
+            supervisionPopulation={applyDistrictAndSupervisionTypeFilters(apiData.revocations_matrix_supervision_distribution_by_district)}
           />
         );
     }
@@ -219,7 +236,6 @@ const Revocations = () => {
         </div>
       </div>
       <div className="bgc-white p-20 m-20">
-        <h4>Revocations over time</h4>
         <RevocationCountOverTime
           data={applyAllFilters(apiData.revocations_matrix_by_month)}
         />
