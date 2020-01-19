@@ -15,13 +15,17 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React from 'react';
+import React, { useState } from 'react';
 
 import {
   configureDownloadButtons, configureDownloadButtonsRegularElement,
 } from '../../assets/scripts/utils/downloads';
+import { chartIdToInfo } from '../../utils/charts/info';
 
 const ExportMenu = (props) => {
+  const [showAdditionalInfo, setShowAdditionalInfo] = useState(false);
+  const additionalInfo = chartIdToInfo[props.chartId] || [];
+
   const menuSpan = (
     <span className="fa-pull-right">
       <div className="dropdown show">
@@ -29,12 +33,38 @@ const ExportMenu = (props) => {
           ...
         </a>
         <div className="dropdown-menu dropdown-menu-right" aria-labelledby={`exportDropdownMenuButton-${props.chartId}`}>
+          <a className="dropdown-item" href="javascript:void(0);" onClick={() => toggleAdditionalInfoModal()}>Additional info</a>
           <a className="dropdown-item" id={`downloadChartAsImage-${props.chartId}`} href="javascript:void(0);">Export image</a>
           <a className="dropdown-item" id={`downloadChartData-${props.chartId}`} href="javascript:void(0);">Export data</a>
         </div>
       </div>
+      {showAdditionalInfo &&
+        <div className="modal-container p-20">
+          <h5>About this chart</h5>
+          {additionalInfo.length > 0 ? (
+            <ul>
+              {additionalInfo.map((info, i) =>
+                <li key={i} className="mY-20" >
+                  {info}
+                </li>
+              )}
+            </ul>
+          ) : (
+            <p>
+              There is no additional information for this chart.
+            </p>
+          )}
+          <div className="ta-r">
+            <button className="btn btn-link" onClick={() => toggleAdditionalInfoModal()}>Close</button>
+          </div>
+        </div>
+      }
     </span>
   );
+
+  function toggleAdditionalInfoModal() {
+    setShowAdditionalInfo(!showAdditionalInfo);
+  }
 
   const exportedStructureCallback = () => (
     {

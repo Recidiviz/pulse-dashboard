@@ -22,8 +22,12 @@
   height: 180px;
 }
 
+.matrix-container {
+  width: 890px;
+}
+
 .revocation-matrix {
-  min-width: 850px;
+  width: 850px;
 
   .y-label, .x-label {
     text-align: center;
@@ -130,14 +134,13 @@
 }
 
 .matrix-explanation {
-  width: 400px;
-
   p {
     font-size: 14px;
   }
 
   .example-icon-container {
-    flex: 0 0 100px;
+    flex: 0 0 85px;
+    margin-right: 20px;
   }
 
   .example-violation-total {
@@ -156,7 +159,8 @@
     display: inline-block;
     background: white;
     border-radius: 25px;
-    padding: 0 12px;
+    width: 100%;
+    text-align: center;
     border: 1px solid rgb(240, 113, 50);
     color: rgb(240, 113, 50);
     line-height: 24px;

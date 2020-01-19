@@ -32,6 +32,11 @@
 
     height: $header-height;
 
+    .lantern-logo {
+      height: $header-height/2;
+      margin: $header-height/4;
+    }
+
     .nav-left,
     .nav-right {
       list-style: none;

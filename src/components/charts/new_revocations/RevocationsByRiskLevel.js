@@ -20,14 +20,9 @@ import { Bar } from 'react-chartjs-2';
 import ExportMenu from '../ExportMenu';
 
 import { COLORS } from '../../../assets/scripts/constants/colors';
-import { toInt, humanReadableTitleCase } from '../../../utils/transforms/labels';
-
-const RISK_LEVEL_TO_LABEL = {
-  LOW: 'Low',
-  MODERATE: 'Moderate',
-  HIGH: 'High',
-  VERY_HIGH: 'Very high',
-};
+import {
+  toInt, humanReadableTitleCase, riskLevelValuetoLabel
+} from '../../../utils/transforms/labels';
 
 const chartId = 'revocationsByRiskLevel';
 
@@ -42,9 +37,9 @@ const RevocationsByRiskLevel = (props) => {
       }, {},
     );
 
-    const labels = Object.values(RISK_LEVEL_TO_LABEL);
+    const labels = Object.values(riskLevelValuetoLabel);
     const displayLabels = labels.map((label) => humanReadableTitleCase(label));
-    const dataPoints = Object.keys(RISK_LEVEL_TO_LABEL).map((riskLevel) => riskLevelToCount[riskLevel])
+    const dataPoints = Object.keys(riskLevelValuetoLabel).map((riskLevel) => riskLevelToCount[riskLevel])
     setChartLabels(displayLabels);
     setChartDataPoints(dataPoints);
   }

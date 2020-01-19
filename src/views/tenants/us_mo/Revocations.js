@@ -240,15 +240,15 @@ const Revocations = () => {
           data={applyAllFilters(apiData.revocations_matrix_by_month)}
         />
       </div>
-      <div className="d-f">
-        <div className="bgc-white p-20 m-20">
+      <div className="d-f m-20">
+        <div className="matrix-container bgc-white p-20 mR-20">
           <RevocationMatrix
             data={applyTopLevelFilters(apiData.revocations_matrix_cells)}
             filters={filters}
             updateFilters={updateFilters}
           />
         </div>
-        <div className="matrix-explanation bgc-white p-20 m-20">
+        <div className="matrix-explanation bgc-white p-20">
           <h4>Using this chart</h4>
           <p className="fw-600">
             This chart shows the number of people revoked to prison from
