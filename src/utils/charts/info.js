@@ -16,24 +16,56 @@
 // =============================================================================
 
 const chartIdToInfo = {
-  "revocationMatrix": [
-    "This is a measurement of the percent of admissions to Missouri prisons that were due to parole or probation revocations.",
-    "Revocations count all people who were incarcerated because their supervision was revoked.",
+  revocationMatrix: [
+    'This chart shows the number of people revoked to prison from probation and parole, broken down by their most severe violation and the number of violation reports filed before revocation.',
+    'Revocations count all people who were incarcerated in a DOC-operated facility because their supervision was revoked.',
+    'Revocations are included based on the date that the person was admitted to a DOC facility because their supervision was revoked, not the date of the causal violation or offense.',
+    'Each individual number in the chart has been deduplicated by person. However, a person can be counted in multiple numbers in the chart if they had multiple distinct terms of supervision that ended in revocation in the measurement window.',
+    'The y-axis shows the "most severe" violation recorded during the person\'s term of supervision, where severity is ordered as follows: Felony, Misdemeanor, Absconsion, Municipal, Substance Abuse, Technical Violation.',
+    'The x-axis shows the number of violation reports and/or notices of citation that were officially filed prior to the revocation, including the final one which led to the revocation taking place.',
+    'Clicking on a violation type label along the y-axis will filter all other charts and tables in the view to only display information which also included that violation type as its most severe.',
+    'Clicking on a specific cell in the chart will filter all other charts by both the most severe violation and also the number of violation reports or notices of citation filed.',
   ],
-  "revocationsOverTime": [
+  revocationsOverTime: [
+    'This chart shows the number of people revoked to prison from probation and parole by month.',
+    'Revocations count all people who were incarcerated in a DOC-operated facility because their supervision was revoked.',
+    'Revocations are included based on the date that the person was admitted to a DOC facility because their supervision was revoked, not the date of the causal violation or offense.',
+    'Each month in the chart has been deduplicated by person. However, a person can be counted in multiple months in the chart if they had multiple distinct terms of supervision that ended in revocation in the measurement window.',
   ],
-  "revocationsByDistrict": [
+  revocationsByDistrict: [
+    'This chart shows the number of people revoked to prison from probation and parole, broken down by the district that they were being supervised in at the time of revocation.',
+    'The chart can be toggled to show either revocation counts or revocation rates. The revocation rate is defined as the number of revocations that occurred within that district divided by the number of people supervised within that district at some point in the course of the measurement window.',
+    'Revocations count all people who were incarcerated in a DOC-operated facility because their supervision was revoked.',
+    'Revocations are included based on the date that the person was admitted to a DOC facility because their supervision was revoked, not the date of the causal violation or offense.',
+    'Each district in the chart has been deduplicated by person. However, a person can be counted in multiple districts in the chart if they had multiple distinct terms of supervision that ended in revocation in the measurement window.',
   ],
-  "revocationsByGender": [
+  revocationsByGender: [
+    'This chart shows the number of people revoked to prison from probation and parole, broken down by both gender and risk level, as determined by recorded assessments from the Ohio Risk Assessment System (ORAS).',
+    'If an individual has more than one gender recorded from different ingested data tables, then they are counted towards the gender from the particular ingested data table which is considered to be closest to a "source of truth."',
+    'Revocations count all people who were incarcerated in a DOC-operated facility because their supervision was revoked.',
+    'Revocations are included based on the date that the person was admitted to a DOC facility because their supervision was revoked, not the date of the causal violation or offense.',
+    'Each risk level and gender combination in the chart has been deduplicated by person. However, a person can be counted in multiple such combinations if they had multiple distinct terms of supervision that ended in revocation in the measurement window.',
   ],
-  "revocationsByRace": [
+  revocationsByRace: [
+    'This chart shows the number of people revoked to prison from probation and parole, broken down by both race and risk level, as determined by recorded assessments from the Ohio Risk Assessment System (ORAS).',
+    'If an individual has more than one race or ethnicity recorded from different ingested data tables, then they are counted once for each unique race and ethnicity. This means that the total count in this chart may be larger than the total number of individuals it describes.',
+    'Revocations count all people who were incarcerated in a DOC-operated facility because their supervision was revoked.',
+    'Revocations are included based on the date that the person was admitted to a DOC facility because their supervision was revoked, not the date of the causal violation or offense.',
+    'Each risk level and race combination in the chart has been deduplicated by person. However, a person can be counted in multiple such combinations if they had multiple distinct terms of supervision that ended in revocation in the measurement window.',
   ],
-  "revocationsByRiskLevel": [
+  revocationsByRiskLevel: [
+    'This chart shows the number of people revoked to prison from probation and parole, broken down by risk level, as determined by recorded assessments from the Ohio Risk Assessment System (ORAS).',
+    'Revocations count all people who were incarcerated in a DOC-operated facility because their supervision was revoked.',
+    'Revocations are included based on the date that the person was admitted to a DOC facility because their supervision was revoked, not the date of the causal violation or offense.',
+    'Each risk level in the chart has been deduplicated by person. However, a person can be counted in multiple risk levels if they had multiple distinct terms of supervision that ended in revocation in the measurement window.',
   ],
-  "revocationsByViolationType": [
+  revocationsByViolationType: [
+    'This chart shows the relative frequency of each type of violation for individuals who were revoked to prison, over the measurement window.',
+    'This is calculated by looking at all notices of citation and violation reports filed for these individuals during that time period, counting the number of times each type of violation was reported, and dividing this by the total number of reported violations.',
+    'If multiple conditions violated are listed on one report or one notice of citation, they are all counted.',
   ],
-}
+};
 
 export {
-  chartIdToInfo
-}
+  chartIdToInfo,
+};

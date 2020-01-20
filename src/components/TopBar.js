@@ -25,7 +25,8 @@ import { getUserStateCode, getUserStateName } from '../utils/authentication/user
 import {
   canShowAuthenticatedView, getDemoUser,
 } from '../utils/authentication/viewAuthentication';
-import { hasSideBar, isLanternState } from '../views/stateViews';
+import { hasSideBar } from '../utils/layout/filters';
+import { isLanternState } from '../views/stateViews';
 
 const TopBar = (props) => {
   const { pathname } = props;
@@ -38,7 +39,7 @@ const TopBar = (props) => {
   const {
     user, isAuthenticated, loginWithRedirect, logout,
   } = useAuth0();
-  const stateCode = getUserStateCode(user)
+  const stateCode = getUserStateCode(user);
 
   const logoutWithRedirect = () => logout({ returnTo: window.location.origin });
 
