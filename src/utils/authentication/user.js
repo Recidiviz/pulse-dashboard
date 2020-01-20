@@ -16,8 +16,6 @@
 // =============================================================================
 import isDemoMode from './demoMode';
 
-import isDemoMode from './demoMode';
-
 const STATE_NAME_BY_CODE = {
   us_mo: 'Missouri',
   us_nd: 'North Dakota',
