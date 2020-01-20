@@ -27,8 +27,7 @@ import UsMoSnapshots from './tenants/us_mo/Snapshots';
 
 const STATE_VIEW_COMPONENTS = {
   us_mo: {
-    '/snapshots': UsMoSnapshots,
-    '/revocations': UsMoRevocations
+    '/': UsMoRevocations
   },
   us_nd: {
     '/programevaluation/freethroughrecovery': UsNdFreeThroughRecovery,
@@ -38,12 +37,15 @@ const STATE_VIEW_COMPONENTS = {
   },
 };
 
-const LANTERN_STATE_CODES = ['recidiviz', 'us_mo'];
+const LANTERN_STATE_CODES = ['us_mo'];
 
 /**
  * Returns whether the given stateCode is a lantern state
  */
 function isLanternState(stateCode) {
+  if (stateCode === 'recidiviz') {
+    stateCode = getCurrentStateForRecidivizUsers()
+  }
   return LANTERN_STATE_CODES.includes(stateCode);
 }
 

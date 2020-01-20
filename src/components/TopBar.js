@@ -56,7 +56,9 @@ const TopBar = (props) => {
     <div className={navBarClass}>
       <div className="header-container">
         {isLanternState(stateCode) ? (
-          <img className="lantern-logo" src={lanternLogo} alt="Lantern" />
+          <a href="/">
+            <img className="lantern-logo" src={lanternLogo} alt="Lantern" />
+          </a>
         ) : (
           <ul className="nav-left">
             {canShowAuthenticatedView(isAuthenticated) && (

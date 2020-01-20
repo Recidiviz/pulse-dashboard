@@ -32,7 +32,7 @@ import TopBar from './components/TopBar';
 import { getUserStateCode } from './utils/authentication/user';
 import NotFound from './views/NotFound';
 import Profile from './views/Profile';
-import { hasSideBar } from './views/stateViews';
+import { hasSideBar, isLanternState } from './views/stateViews';
 import './assets/scripts/index';
 
 // styles
@@ -102,7 +102,11 @@ const App = () => {
               <TopBar pathname={window.location.pathname} />
               <Switch>
                 <Route exact path="/">
-                  {<Redirect to="/snapshots" />}
+                  {isLanternState(stateCode) ? (
+                    <PrivateTenantRoute path="/" />
+                  ) : (
+                    <Redirect to="/snapshots" />
+                  )}
                 </Route>
                 <PrivateTenantRoute path="/snapshots" />
                 <PrivateTenantRoute path="/revocations" />
