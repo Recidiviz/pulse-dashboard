@@ -23,9 +23,8 @@
 }
 
 .matrix-container {
-  width: 890px;
+  flex: 2 1 0;
 }
-
 .revocation-matrix {
   width: 850px;
 
@@ -134,6 +133,8 @@
 }
 
 .matrix-explanation {
+  flex: 1 1 0;
+
   p {
     font-size: 14px;
   }
