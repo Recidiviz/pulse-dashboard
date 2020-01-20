@@ -14,6 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
+import isDemoMode from './demoMode';
 
 const STATE_NAME_BY_CODE = {
   us_mo: 'Missouri',
@@ -44,6 +45,10 @@ function getStateNameForCode(stateCode) {
  * For Recidiviz users, this will be 'recidiviz'.
  */
 function getUserStateCode(user) {
+  if (isDemoMode()) {
+    return 'recidiviz';
+  }
+
   const appMetadata = getUserAppMetadata(user);
   if (!appMetadata) {
     throw Error('No app_metadata available for user');

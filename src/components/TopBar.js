@@ -19,11 +19,13 @@ import React from 'react';
 
 import { useAuth0 } from '../react-auth0-spa';
 import { normalizeAppPathToTitle } from '../assets/scripts/utils/strings';
+import lanternLogo from '../assets/static/images/lantern_logo.png';
 import isDemoMode from '../utils/authentication/demoMode';
-import { getUserStateName } from '../utils/authentication/user';
+import { getUserStateCode, getUserStateName } from '../utils/authentication/user';
 import {
   canShowAuthenticatedView, getDemoUser,
 } from '../utils/authentication/viewAuthentication';
+import { hasSideBar, isLanternState } from '../views/stateViews';
 
 const TopBar = (props) => {
   const { pathname } = props;
@@ -36,12 +38,13 @@ const TopBar = (props) => {
   const {
     user, isAuthenticated, loginWithRedirect, logout,
   } = useAuth0();
+  const stateCode = getUserStateCode(user)
 
   const logoutWithRedirect = () => logout({ returnTo: window.location.origin });
 
-  let navBarClass = 'header navbar';
-  if (!canShowAuthenticatedView(isAuthenticated)) {
-    navBarClass = 'header wide-navbar';
+  let navBarClass = 'header wide-navbar';
+  if (hasSideBar(stateCode, isAuthenticated)) {
+    navBarClass = 'header navbar';
   }
 
   let displayUser = user;
@@ -52,18 +55,24 @@ const TopBar = (props) => {
   return (
     <div className={navBarClass}>
       <div className="header-container">
-        <ul className="nav-left">
-          {canShowAuthenticatedView(isAuthenticated) && (
-          <li>
-            <a id="sidebar-toggle" className="sidebar-toggle" href="javascript:void(0);">
-              <i className="ti-menu" />
-            </a>
-          </li>
-          )}
-          <li style={{ paddingLeft: '20px', paddingTop: '22px' }}>
-            <h5 className="lh-1 mB-0 logo-text recidiviz-dark-green-text">{normalizedPath}</h5>
-          </li>
-        </ul>
+        {isLanternState(stateCode) ? (
+          <a href="/">
+            <img className="lantern-logo" src={lanternLogo} alt="Lantern" />
+          </a>
+        ) : (
+          <ul className="nav-left">
+            {canShowAuthenticatedView(isAuthenticated) && (
+            <li>
+              <a id="sidebar-toggle" className="sidebar-toggle" href="javascript:void(0);">
+                <i className="ti-menu" />
+              </a>
+            </li>
+            )}
+            <li style={{ paddingLeft: '20px', paddingTop: '22px' }}>
+              <h5 className="lh-1 mB-0 logo-text recidiviz-dark-green-text">{normalizedPath}</h5>
+            </li>
+          </ul>
+        )}
         <ul className="nav-right">
           {!canShowAuthenticatedView(isAuthenticated) && (
             <li className="dropdown">

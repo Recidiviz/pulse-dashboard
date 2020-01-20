@@ -15,7 +15,14 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-const genderLabelStringConversion = {
+const riskLevelValuetoLabel = {
+  LOW: 'Low',
+  MODERATE: 'Moderate',
+  HIGH: 'High',
+  VERY_HIGH: 'Very high',
+};
+
+const genderValuetoLabel = {
   FEMALE: 'Female',
   MALE: 'Male',
   TRANS: 'Trans',
@@ -23,7 +30,7 @@ const genderLabelStringConversion = {
   TRANS_MALE: 'Trans Male',
 };
 
-const raceLabelStringConversion = {
+const raceValuetoLabel = {
   AMERICAN_INDIAN_ALASKAN_NATIVE: 'American Indian Alaskan Native',
   ASIAN: 'Asian',
   BLACK: 'Black',
@@ -34,11 +41,11 @@ const raceLabelStringConversion = {
 };
 
 function genderValueToHumanReadable(genderValue) {
-  return genderLabelStringConversion[genderValue];
+  return genderValuetoLabel[genderValue];
 }
 
 function raceValueToHumanReadable(raceValue) {
-  return raceLabelStringConversion[raceValue];
+  return raceValuetoLabel[raceValue];
 }
 
 function toHtmlFriendly(string) {
@@ -55,10 +62,24 @@ function toInt(nonInt) {
   return parseInt(nonInt, 10);
 }
 
+function toTitleCase(str) {
+  return str.replace(
+    /\w\S*/g,
+    (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase(),
+  );
+}
+
+function humanReadableTitleCase(str) {
+  return toTitleCase(toHumanReadable(str));
+}
+
 export {
+  riskLevelValuetoLabel,
   genderValueToHumanReadable,
   raceValueToHumanReadable,
   toHtmlFriendly,
   toHumanReadable,
   toInt,
+  toTitleCase,
+  humanReadableTitleCase,
 };

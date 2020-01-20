@@ -29,9 +29,10 @@ import PrivateRoute from './components/PrivateRoute';
 import PrivateTenantRoute from './components/PrivateTenantRoute';
 import SideBar from './components/SideBar';
 import TopBar from './components/TopBar';
-import { canShowAuthenticatedView } from './utils/authentication/viewAuthentication';
+import { getUserStateCode } from './utils/authentication/user';
 import NotFound from './views/NotFound';
 import Profile from './views/Profile';
+import { hasSideBar, isLanternState } from './views/stateViews';
 import './assets/scripts/index';
 
 // styles
@@ -44,7 +45,8 @@ initFontAwesome();
 
 const App = () => {
   const [sideBarCollapsed, setSideBarCollapsed] = useState('');
-  const { loading, isAuthenticated } = useAuth0();
+  const { user, loading, isAuthenticated} = useAuth0();
+  const stateCode = getUserStateCode(user);
 
   function toggleCollapsed() {
     const currentlyCollapsed = sideBarCollapsed === 'is-collapsed';
@@ -81,7 +83,7 @@ const App = () => {
   }
 
   let containerClass = 'wide-page-container';
-  if (canShowAuthenticatedView(isAuthenticated)) {
+  if (hasSideBar(stateCode, isAuthenticated)) {
     containerClass = 'page-container';
   }
 
@@ -93,14 +95,18 @@ const App = () => {
           <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
           <title>Recidiviz Dashboard</title>
           <div>
-            {canShowAuthenticatedView(isAuthenticated) && (
+            {hasSideBar(stateCode, isAuthenticated) && (
             <SideBar />
             )}
             <div className={containerClass}>
               <TopBar pathname={window.location.pathname} />
               <Switch>
                 <Route exact path="/">
-                  {<Redirect to="/snapshots" />}
+                  {isLanternState(stateCode) ? (
+                    <PrivateTenantRoute path="/" />
+                  ) : (
+                    <Redirect to="/snapshots" />
+                  )}
                 </Route>
                 <PrivateTenantRoute path="/snapshots" />
                 <PrivateTenantRoute path="/revocations" />

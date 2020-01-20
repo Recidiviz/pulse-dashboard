@@ -54,9 +54,14 @@ function snapshots(req, res) {
   metricsApi.fetchSnapshotMetrics(isDemoMode, req.params.stateCode, responder(res));
 }
 
+function newRevocations(req, res) {
+  metricsApi.fetchNewRevocationMetrics(isDemoMode, req.params.stateCode, responder(res));
+}
+
 module.exports = {
   freeThroughRecovery,
   reincarcerations,
   revocations,
   snapshots,
+  newRevocations,
 };

@@ -15,16 +15,19 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
+import { canShowAuthenticatedView } from '../utils/authentication/viewAuthentication';
+
 import UsNdFreeThroughRecovery from './tenants/us_nd/FreeThroughRecovery';
 import UsNdReincarcerations from './tenants/us_nd/Reincarcerations';
 import UsNdRevocations from './tenants/us_nd/Revocations';
 import UsNdSnapshots from './tenants/us_nd/Snapshots';
 
+import UsMoRevocations from './tenants/us_mo/Revocations';
 import UsMoSnapshots from './tenants/us_mo/Snapshots';
 
 const STATE_VIEW_COMPONENTS = {
   us_mo: {
-    '/snapshots': UsMoSnapshots,
+    '/': UsMoRevocations
   },
   us_nd: {
     '/programevaluation/freethroughrecovery': UsNdFreeThroughRecovery,
@@ -33,6 +36,26 @@ const STATE_VIEW_COMPONENTS = {
     '/snapshots': UsNdSnapshots,
   },
 };
+
+const LANTERN_STATE_CODES = ['us_mo'];
+
+/**
+ * Returns whether the given stateCode is a lantern state
+ */
+function isLanternState(stateCode) {
+  if (stateCode === 'recidiviz') {
+    stateCode = getCurrentStateForRecidivizUsers()
+  }
+  return LANTERN_STATE_CODES.includes(stateCode);
+}
+
+/**
+ * Returns, based on the stateCode and if the user is authenticated,
+ * if the view has a side bar
+ */
+function hasSideBar(stateCode, isAuthenticated) {
+  return !isLanternState(stateCode) && canShowAuthenticatedView(isAuthenticated);
+}
 
 /**
  * Returns the list of states which are available to view data for.
@@ -107,6 +130,8 @@ function getComponentForStateView(stateCode, view) {
 }
 
 export {
+  hasSideBar,
+  isLanternState,
   getAvailableStates,
   getFirstAvailableState,
   getAvailableViewsForState,

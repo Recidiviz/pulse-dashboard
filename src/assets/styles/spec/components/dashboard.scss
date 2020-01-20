@@ -1,0 +1,234 @@
+.dashboard {
+  padding-top: 65px;
+  padding-bottom: 5px;
+}
+
+.top-level-filters {
+  background: white;
+  border-bottom: 1px solid $border-color;
+
+  .top-level-filter {
+    width: 33%;
+    padding: 20px 40px;
+    border-right: 1px solid $border-color;
+
+    &:last-child {
+      border-right: 0;
+    }
+  }
+}
+
+.revocations-time-graph {
+  height: 180px;
+}
+
+.matrix-container {
+  flex: 2 1 0;
+}
+.revocation-matrix {
+  width: 850px;
+
+  .y-label, .x-label {
+    text-align: center;
+  }
+  .y-label {
+    margin-right: 40px;
+    writing-mode: tb-rl;
+    transform: rotate(-180deg);
+  }
+  .x-label {
+    margin-top: 20px;
+  }
+
+  .matrix {
+    .violation-type-label, .empty-cell {
+      display: inline-block;
+      width: 100px;
+      margin-right: 20px;
+    }
+
+    .violation-column, .cell {
+      display: inline-block;
+      width: 70px;
+      text-align: center;
+    }
+
+    .cell {
+      background:
+        linear-gradient($border-color, $border-color) no-repeat center/1px 100%,
+        linear-gradient($border-color, $border-color) no-repeat center/100% 1px;
+    }
+
+    .violation-row {
+      position: relative;
+      line-height: 70px;
+
+      .violation-type-label {
+        text-align: right;
+
+        button {
+          background: white;
+          border-radius: 25px;
+          padding: 0 12px;
+          border: 1px solid rgb(240, 113, 50);
+          color: rgb(240, 113, 50);
+          line-height: 24px;
+          font-size: 12px;
+          font-weight: 600;
+        }
+      }
+
+      &.is-selected .violation-type-label button {
+        background: rgb(240, 113, 50);
+        color: white;
+      }
+
+      .total-revocations {
+        background: transparent;
+        border: 0;
+        padding: 0;
+        font-weight: 600;
+      }
+    }
+
+    &.is-filtered {
+      .total-revocations {
+        opacity: 0.2;
+
+        &.is-selected {
+          opacity: 1;
+        }
+      }
+
+      .is-selected .total-revocations {
+        opacity: 1;
+      }
+    }
+
+    .violation-counts {
+      margin-bottom: 20px;
+    }
+
+    .violation-sum-row {
+      margin-top: 10px;
+    }
+
+    .violation-sum-column {
+      margin-left: 40px;
+    }
+
+    .top-right-total {
+      color: #b9c2d0;
+      font-size: 14px;
+      font-weight: 600;
+      font-style: italic;
+    }
+
+    .violation-sum {
+      color: rgb(247, 176, 50);
+      font-size: 16px;
+      font-weight: 600;
+    }
+  }
+}
+
+.matrix-explanation {
+  flex: 1 1 0;
+
+  p {
+    font-size: 14px;
+  }
+
+  .example-icon-container {
+    flex: 0 0 85px;
+    margin-right: 20px;
+  }
+
+  .example-violation-total {
+    width: 50px;
+    height: 50px;
+    line-height: 50px;
+    text-align: center;
+    border-radius: 25px;
+    background: rgb(240, 113, 50);
+    color: white;
+    font-weight: 600;
+    margin-left: 20px;
+  }
+
+  .example-violation-type {
+    display: inline-block;
+    background: white;
+    border-radius: 25px;
+    width: 100%;
+    text-align: center;
+    border: 1px solid rgb(240, 113, 50);
+    color: rgb(240, 113, 50);
+    line-height: 24px;
+    font-size: 12px;
+    font-weight: 600;
+  }
+}
+
+.static-charts {
+  .chart-type-labels {
+    width: 130px;
+    border-right: 1px solid $border-color;
+
+    .chart-type-label {
+      padding: 0;
+      background: transparent;
+      border: 0;
+      border-bottom: 2px solid transparent;
+      color: rgb(162, 169, 174);
+      text-transform: uppercase;
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 20px;
+
+      &.selected {
+        color: rgb(39, 128, 194);
+        border-color: rgb(39, 128, 194);
+      }
+    }
+  }
+
+  .selected-chart {
+    flex: 1;
+  }
+}
+
+.case-table {
+  table {
+    width: 100%;
+  }
+
+  tr {
+    border-bottom: 1px solid $border-color;
+  }
+
+  th {
+    text-transform: uppercase;
+    font-size: 16px;
+    padding: 10px 0 10px 20px;
+    max-width: 100px;
+  }
+
+  td {
+    padding: 10px 0 10px 20px;
+  }
+
+  .table-navigation {
+    text-align: right;
+    padding: 20px 40px;
+    text-transform: uppercase;
+    font-size: 12px;
+    font-weight: 600;
+
+    button {
+      background: transparent;
+      border: 0;
+      color: inherit;
+    }
+  }
+}

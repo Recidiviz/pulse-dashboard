@@ -79,6 +79,7 @@ app.get('/api/:stateCode/programEvaluation/freeThroughRecovery', checkJwt, api.f
 app.get('/api/:stateCode/reincarcerations', checkJwt, api.reincarcerations);
 app.get('/api/:stateCode/revocations', checkJwt, api.revocations);
 app.get('/api/:stateCode/snapshots', checkJwt, api.snapshots);
+app.get('/api/:stateCode/newRevocations', checkJwt, api.newRevocations);
 
 // Starts the background task for refresh metrics regularly
 require('./server/core/metricsRefresh');
