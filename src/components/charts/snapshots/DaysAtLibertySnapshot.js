@@ -25,7 +25,7 @@ import {
   chartAnnotationForGoal,
 } from '../../../utils/charts/metricGoal';
 import {
-  getMonthCountFromTimeWindowToggle, filterDatasetByDistrict, canDisplayGoal,
+  getMonthCountFromTimeWindowToggle, canDisplayGoal,
   centerSingleMonthDatasetIfNecessary,
 } from '../../../utils/charts/toggles';
 import {
@@ -47,13 +47,9 @@ const DaysAtLibertySnapshot = (props) => {
   const processResponse = () => {
     const { daysAtLibertyByMonth } = props;
 
-    const filteredDaysByMonth = filterDatasetByDistrict(
-      daysAtLibertyByMonth, props.district,
-    );
-
     const dataPoints = [];
-    if (filteredDaysByMonth) {
-      filteredDaysByMonth.forEach((data) => {
+    if (daysAtLibertyByMonth) {
+      daysAtLibertyByMonth.forEach((data) => {
         const { year, month } = data;
         const average = parseFloat(data.avg_liberty).toFixed(2);
         dataPoints.push({ year, month, average });
@@ -107,7 +103,6 @@ const DaysAtLibertySnapshot = (props) => {
   }, [
     props.daysAtLibertyByMonth,
     props.timeWindow,
-    props.district,
   ]);
 
   const chart = (

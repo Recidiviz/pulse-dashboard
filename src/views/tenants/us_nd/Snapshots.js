@@ -281,8 +281,8 @@ const Snapshots = () => {
                 <div className="layer w-100 pX-20 pT-20">
                   <h6 className="lh-1">
                     DAYS AT LIBERTY (AVERAGE)
-                    {(chartMetricType !== 'counts' || chartSupervisionType !== 'all') && (
-                      <span className="pL-10 c-orange-500 ti-alert" data-toggle="tooltip" data-placement="bottom" title="This graph is showing average days at liberty. It does not support showing this metric as a rate. It also doesn’t support showing only individuals on probation or only individuals on parole as it is not supervision-focused." />
+                    {(chartMetricType !== 'counts' || chartSupervisionType !== 'all' || chartDistrict !== 'all') && (
+                      <span className="pL-10 c-orange-500 ti-alert" data-toggle="tooltip" data-placement="bottom" title="This graph is showing average days at liberty for all reincarcerated individuals. It does not support showing this metric as a rate. As individuals can be reincarcerated after completing supervision, this chart also does not support showing information only about a certain office or individuals on a certain type of supervision." />
                     )}
                     <span className="fa-pull-right">
                       <div className="dropdown show">
@@ -305,7 +305,6 @@ const Snapshots = () => {
                     <div className="col-md-12">
                       <DaysAtLibertySnapshot
                         timeWindow={chartTimeWindow}
-                        district={chartDistrict}
                         daysAtLibertyByMonth={apiData.avg_days_at_liberty_by_month}
                         header="daysAtLibertySnapshot-header"
                       />

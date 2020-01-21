@@ -156,6 +156,14 @@ const Reincarcerations = () => {
                           took place. There is no upper bound on the follow up period in
                           this metric.
                         </li>
+                        <li>
+                          In rate mode, this shows the percent of all admissions in the month that
+                          were reincarcerations.
+                        </li>
+                        <li>
+                          A location choice narrows down information to only reincarcerations of
+                          individuals who lived in that location prior to reincarceration.
+                        </li>
                       </ul>
                     </div>
                   </div>
@@ -243,6 +251,22 @@ const Reincarcerations = () => {
                           Releases include unique people released from any DOCR facility, whether
                           released to a term of supervision or not, during a particular time frame.
                         </li>
+                        <li>
+                          In rate mode, this shows the percent change in facility size since the
+                          previous month. For July, this would be calculated as (Admissions in
+                          July - Releases in July) / (Facility size on June 30th).
+                        </li>
+                        <li>
+                          A location choice narrows down information to only reincarcerations of
+                          individuals who lived in that location prior to reincarceration.
+                        </li>
+                        <li>
+                          If the facility size is ever 0 in a month and there is an admission in
+                          the next month, the rate is shown as a 100% increase. This may occur, for
+                          example, if a county is selected that prior to a given month had no
+                          individuals but someone from that county was incarcerated in the given
+                          month.
+                        </li>
                       </ul>
                     </div>
                   </div>
@@ -258,8 +282,8 @@ const Reincarcerations = () => {
                 <div className="layer w-100 pX-20 pT-20">
                   <h6 className="lh-1">
                     REINCARCERATION RATE BY PREVIOUS STAY LENGTH
-                    {(chartMetricType !== 'rates' || (chartTimeWindow !== '36' && chartTimeWindow !== '12')) && (
-                      <span className="pL-10 c-orange-500 ti-alert" data-toggle="tooltip" data-placement="bottom" title="This graph is showing the reincarceration rate by previous stay length with the follow up period noted below. It cannot show this metric as a count. It also cannot show follow up periods under 1 year." />
+                    {(chartMetricType !== 'rates' || (chartTimeWindow !== '12')) && (
+                      <span className="pL-10 c-orange-500 ti-alert" data-toggle="tooltip" data-placement="bottom" title="This graph is showing the reincarceration rate by previous stay length with the follow up period noted below. It cannot show this metric as a count. It also does not show follow up periods other than 1 year." />
                     )}
                     <span className="fa-pull-right">
                       <div className="dropdown show">
@@ -301,6 +325,10 @@ const Reincarcerations = () => {
                           Stay length refers to time actually spent incarcerated prior to their most
                           recent release from a DOCR facility. This is bucketed into 12-month
                           windows for sampling.
+                        </li>
+                        <li>
+                          A location choice narrows down information to only reincarcerations of
+                          individuals who lived in that location prior to reincarceration.
                         </li>
                       </ul>
                     </div>

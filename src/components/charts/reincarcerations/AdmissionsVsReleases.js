@@ -102,13 +102,7 @@ const AdmissionsVsReleases = (props) => {
       data={{
         labels: chartLabels,
         datasets: [{
-          label: toggleLabel(
-            {
-              counts: 'Admissions versus releases',
-              rates: 'Percent change in incarcerated population',
-            },
-            props.metricType,
-          ),
+          label: 'Change in facility size',
           backgroundColor: chartColors,
           hoverBackgroundColor: chartColors,
           fill: false,
@@ -145,7 +139,7 @@ const AdmissionsVsReleases = (props) => {
               labelString: toggleLabel(
                 {
                   counts: 'Admissions versus releases',
-                  rates: 'Percent change in incarcerated population',
+                  rates: '% change in facility size',
                 },
                 props.metricType,
               ),
@@ -171,16 +165,18 @@ const AdmissionsVsReleases = (props) => {
 
   const header = document.getElementById(props.header);
 
-  if (header && (mostRecentValue !== null)) {
+  if (header && mostRecentValue !== null && props.district.toUpperCase() === 'ALL') {
     let title = '';
     if (mostRecentValue === 0) {
-      title = `The ND facilities <b style='color:#809AE5'> have not changed in size</b> this month.`;
+      title = 'The ND facilities <b style=\'color:#809AE5\'> have not changed in size</b> this month.';
     } else {
       const direction = (mostRecentValue > 0) ? 'grew' : 'shrank';
       title = `The ND facilities <b style='color:#809AE5'>${direction} by ${Math.abs(mostRecentValue)} people</b> this month.`;
     }
 
     header.innerHTML = title;
+  } else if (header) {
+    header.innerHTML = '';
   }
 
   return chart;
