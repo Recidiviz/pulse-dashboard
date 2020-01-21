@@ -425,8 +425,8 @@ const Revocations = () => {
                 <div className="layer w-100 pX-20 pT-20">
                   <h6 className="lh-1">
                     ADMISSIONS BY TYPE
-                    {chartSupervisionType !== 'all' && (
-                      <span className="pL-10 c-orange-500 ti-alert" data-toggle="tooltip" data-placement="bottom" title="This graph is showing all admission types regardless of supervision type. It doesn’t support showing only individuals on probation or only individuals on parole." />
+                    {((chartSupervisionType !== 'all' || chartDistrict !== 'all') && chartMetricType === 'rates') && (
+                      <span className="pL-10 c-orange-500 ti-alert" data-toggle="tooltip" data-placement="bottom" title="This graph is showing both non-revocation admissions to prison and admissions due to revocation from both parole and probation. We cannot show percentages of admissions broken down by supervision type or district because non-revocation admissions to prison cannot be broken down along those dimensions." />
                     )}
                     <span className="fa-pull-right">
                       <div className="dropdown show">
@@ -444,6 +444,7 @@ const Revocations = () => {
                 <div className="layer w-100 p-20">
                   <AdmissionCountsByType
                     metricType={chartMetricType}
+                    supervisionType={chartSupervisionType}
                     timeWindow={chartTimeWindow}
                     district={chartDistrict}
                     admissionCountsByType={apiData.admissions_by_type_60_days}

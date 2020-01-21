@@ -21,7 +21,7 @@ import { Bar, Pie } from 'react-chartjs-2';
 import { COLORS, COLORS_FIVE_VALUES } from '../../../assets/scripts/constants/colors';
 import { configureDownloadButtons } from '../../../assets/scripts/utils/downloads';
 import {
-  filterDatasetByDistrict, filterDatasetByTimeWindow,
+  filterDatasetByDistrict, filterDatasetBySupervisionType, filterDatasetByTimeWindow,
 } from '../../../utils/charts/toggles';
 import { sortByLabel } from '../../../utils/transforms/datasets';
 import { toInt } from '../../../utils/transforms/labels';
@@ -42,8 +42,20 @@ const AdmissionCountsByType = (props) => {
   const processResponse = () => {
     const { admissionCountsByType } = props;
 
+    // This chart does not support district or supervision type breakdowns for rates, only counts
+    let filterDistrict = 'all';
+    let filterSupervisionType = 'all';
+    if (props.metricType === 'counts') {
+      filterDistrict = props.district;
+      filterSupervisionType = props.supervisionType;
+    }
+
     let filteredAdmissionCounts = filterDatasetByDistrict(
-      admissionCountsByType, props.district,
+      admissionCountsByType, filterDistrict,
+    );
+
+    filteredAdmissionCounts = filterDatasetBySupervisionType(
+      filteredAdmissionCounts, filterSupervisionType,
     );
 
     filteredAdmissionCounts = filterDatasetByTimeWindow(
@@ -204,6 +216,7 @@ const AdmissionCountsByType = (props) => {
   }, [
     props.admissionCountsByType,
     props.metricType,
+    props.supervisionType,
     props.timeWindow,
     props.district,
   ]);
