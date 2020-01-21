@@ -15,19 +15,16 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import { canShowAuthenticatedView } from '../utils/authentication/viewAuthentication';
-
 import UsNdFreeThroughRecovery from './tenants/us_nd/FreeThroughRecovery';
 import UsNdReincarcerations from './tenants/us_nd/Reincarcerations';
 import UsNdRevocations from './tenants/us_nd/Revocations';
 import UsNdSnapshots from './tenants/us_nd/Snapshots';
 
 import UsMoRevocations from './tenants/us_mo/Revocations';
-import UsMoSnapshots from './tenants/us_mo/Snapshots';
 
 const STATE_VIEW_COMPONENTS = {
   us_mo: {
-    '/': UsMoRevocations
+    '/revocations': UsMoRevocations,
   },
   us_nd: {
     '/programevaluation/freethroughrecovery': UsNdFreeThroughRecovery,
@@ -37,25 +34,12 @@ const STATE_VIEW_COMPONENTS = {
   },
 };
 
+const STATE_LANDING_VIEWS = {
+  us_mo: '/revocations',
+  us_nd: '/snapshots',
+};
+
 const LANTERN_STATE_CODES = ['us_mo'];
-
-/**
- * Returns whether the given stateCode is a lantern state
- */
-function isLanternState(stateCode) {
-  if (stateCode === 'recidiviz') {
-    stateCode = getCurrentStateForRecidivizUsers()
-  }
-  return LANTERN_STATE_CODES.includes(stateCode);
-}
-
-/**
- * Returns, based on the stateCode and if the user is authenticated,
- * if the view has a side bar
- */
-function hasSideBar(stateCode, isAuthenticated) {
-  return !isLanternState(stateCode) && canShowAuthenticatedView(isAuthenticated);
-}
 
 /**
  * Returns the list of states which are available to view data for.
@@ -129,12 +113,35 @@ function getComponentForStateView(stateCode, view) {
   return component;
 }
 
+/**
+ * Returns whether the given stateCode is a lantern state
+ */
+function isLanternState(stateCode) {
+  let normalizedStateCode = stateCode;
+  if (stateCode === 'recidiviz') {
+    normalizedStateCode = getCurrentStateForRecidivizUsers();
+  }
+  return LANTERN_STATE_CODES.includes(normalizedStateCode);
+}
+
+/**
+ * Returns what should be the landing view, i.e. what you first see after login
+ * or when you navigate to '/', for a given state.
+ */
+function getLandingViewForState(stateCode) {
+  let normalizedStateCode = stateCode;
+  if (stateCode === 'recidiviz') {
+    normalizedStateCode = getCurrentStateForRecidivizUsers();
+  }
+  return STATE_LANDING_VIEWS[normalizedStateCode] || '/';
+}
+
 export {
-  hasSideBar,
   isLanternState,
   getAvailableStates,
   getFirstAvailableState,
   getAvailableViewsForState,
+  getLandingViewForState,
   getComponentForStateView,
   getCurrentStateForRecidivizUsers,
   setCurrentStateForRecidivizUsers,

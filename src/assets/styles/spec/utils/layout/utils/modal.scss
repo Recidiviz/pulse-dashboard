@@ -2,7 +2,7 @@
   position: fixed;
   display: block;
   width: 600px;
-  height: auto;
+  max-height: 400px;
   background: white;
   border: 1px solid $border-color;
   top: 20%;

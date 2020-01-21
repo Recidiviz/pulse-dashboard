@@ -47,7 +47,6 @@ const CHARGE_CATEGORIES = [
   { value: 'GENERAL', label: 'General' },
   { value: 'SEX_OFFENSE', label: 'Sex offense' },
   { value: 'DOMESTIC_VIOLENCE', label: 'Domestic Violence' },
-  { value: 'SIS', label: 'SIS/SES' },
 ];
 const SUPERVISION_TYPES = [
   { value: '', label: 'All' },

@@ -38,16 +38,17 @@ const ExportMenu = (props) => {
           <a className="dropdown-item" id={`downloadChartData-${props.chartId}`} href="javascript:void(0);">Export data</a>
         </div>
       </div>
-      {showAdditionalInfo &&
-        <div className="modal-container p-20">
+
+      {showAdditionalInfo && (
+        <div className="modal-container overflow-auto p-20">
           <h5>About this chart</h5>
           {additionalInfo.length > 0 ? (
             <ul>
-              {additionalInfo.map((info, i) =>
-                <li key={i} className="mY-20" >
+              {additionalInfo.map((info, i) => (
+                <li key={i} className="mY-20">
                   {info}
                 </li>
-              )}
+              ))}
             </ul>
           ) : (
             <p>
@@ -58,7 +59,7 @@ const ExportMenu = (props) => {
             <button className="btn btn-link" onClick={() => toggleAdditionalInfoModal()}>Close</button>
           </div>
         </div>
-      }
+      )}
     </span>
   );
 

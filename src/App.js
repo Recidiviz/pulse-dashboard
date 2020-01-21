@@ -30,9 +30,10 @@ import PrivateTenantRoute from './components/PrivateTenantRoute';
 import SideBar from './components/SideBar';
 import TopBar from './components/TopBar';
 import { getUserStateCode } from './utils/authentication/user';
+import { hasSideBar } from './utils/layout/filters';
 import NotFound from './views/NotFound';
 import Profile from './views/Profile';
-import { hasSideBar, isLanternState } from './views/stateViews';
+import { getLandingViewForState } from './views/stateViews';
 import './assets/scripts/index';
 
 // styles
@@ -45,7 +46,7 @@ initFontAwesome();
 
 const App = () => {
   const [sideBarCollapsed, setSideBarCollapsed] = useState('');
-  const { user, loading, isAuthenticated} = useAuth0();
+  const { user, loading, isAuthenticated } = useAuth0();
   const stateCode = getUserStateCode(user);
 
   function toggleCollapsed() {
@@ -102,11 +103,7 @@ const App = () => {
               <TopBar pathname={window.location.pathname} />
               <Switch>
                 <Route exact path="/">
-                  {isLanternState(stateCode) ? (
-                    <PrivateTenantRoute path="/" />
-                  ) : (
-                    <Redirect to="/snapshots" />
-                  )}
+                  <Redirect to={getLandingViewForState(stateCode)} />
                 </Route>
                 <PrivateTenantRoute path="/snapshots" />
                 <PrivateTenantRoute path="/revocations" />

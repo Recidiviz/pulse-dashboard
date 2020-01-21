@@ -88,7 +88,6 @@ const CaseTable = (props) => {
           <tr>
             <th>State ID</th>
             <th>District</th>
-            <th>Supervisor</th>
             <th>Officer</th>
             <th>Risk level</th>
             <th>Officer rec.</th>
@@ -100,7 +99,6 @@ const CaseTable = (props) => {
             <tr key={i}>
               <td>{details.state_id}</td>
               <td>{details.district}</td>
-              <td>{details.supervisor}</td>
               <td>{details.officer}</td>
               <td>{normalizeLabel(details.risk_level)}</td>
               <td>{normalizeLabel(details.officer_recommendation)}</td>
