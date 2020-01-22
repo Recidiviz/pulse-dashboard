@@ -18,6 +18,7 @@
 import React, { useState, useEffect } from 'react';
 import ExportMenu from '../ExportMenu';
 
+import { getPeriodLabelFromMetricPeriodMonthsToggle } from '../../../utils/charts/toggles';
 import { toInt } from '../../../utils/transforms/labels';
 
 // These can also be defined from the data
@@ -64,7 +65,10 @@ const RevocationMatrix = (props) => {
 
   useEffect(() => {
     processResponse();
-  }, [props.data]);
+  }, [
+    props.data,
+    props.metricPeriodMonths,
+  ]);
 
   const exportableMatrixData = () => {
     const datasets = [];
@@ -176,6 +180,9 @@ const RevocationMatrix = (props) => {
           metricTitle="Revocations to prison from probation and parole"
         />
       </h4>
+      <h6>
+        {getPeriodLabelFromMetricPeriodMonthsToggle(props.metricPeriodMonths)}
+      </h6>
       <div id="revocationMatrix" className="d-f">
         <div className="y-label" data-html2canvas-ignore>
           Most severe violation reported during supervision term

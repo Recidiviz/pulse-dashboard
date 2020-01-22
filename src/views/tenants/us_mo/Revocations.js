@@ -42,6 +42,15 @@ import CaseTable
 
 import { toInt } from '../../../utils/transforms/labels';
 
+const METRIC_PERIODS = [
+  { value: '36', label: '3 years' },
+  { value: '12', label: '1 year' },
+  { value: '6', label: '6 months' },
+  { value: '3', label: '3 months' },
+  { value: '1', label: '1 month' },
+];
+const DEFAULT_METRIC_PERIOD = '12';
+
 const CHARGE_CATEGORIES = [
   { value: '', label: 'All' },
   { value: 'GENERAL', label: 'General' },
@@ -64,7 +73,7 @@ const Revocations = () => {
   const [awaitingApi, setAwaitingApi] = useState(true);
 
   const [districts, setDistricts] = useState([]);
-  const [filters, setFilters] = useState({});
+  const [filters, setFilters] = useState({ metricPeriodMonths: DEFAULT_METRIC_PERIOD });
   const [selectedChart, setSelectedChart] = useState('District');
 
 
@@ -110,35 +119,25 @@ const Revocations = () => {
     return a.toLowerCase() === b.toLowerCase();
   };
 
-  const applyTopLevelFilters = (data) => {
+  const applyTopLevelFilters = (data, skippedFilters) => {
+    const toSkip = skippedFilters || [];
     return data.filter((item) => {
-      if (filters.district) {
+      if (filters.metricPeriodMonths && !toSkip.includes('metricPeriodMonths')) {
+        if (!nullSafeComparison(item.metric_period_months, filters.metricPeriodMonths)) {
+          return false;
+        }
+      }
+      if (filters.district && !toSkip.includes('district')) {
         if (!nullSafeComparison(item.district, filters.district)) {
           return false;
         }
       }
-      if (filters.chargeCategory) {
+      if (filters.chargeCategory && !toSkip.includes('chargeCategory')) {
         if (!nullSafeComparison(item.charge_category, filters.chargeCategory)) {
           return false;
         }
       }
-      if (filters.supervisionType) {
-        if (!nullSafeComparison(item.supervision_type, filters.supervisionType)) {
-          return false;
-        }
-      }
-      return true;
-    });
-  };
-
-  const applyDistrictAndSupervisionTypeFilters = (data) => {
-    return data.filter((item) => {
-      if (filters.district) {
-        if (!nullSafeComparison(item.district, filters.district)) {
-          return false;
-        }
-      }
-      if (filters.supervisionType) {
+      if (filters.supervisionType && !toSkip.includes('supervisionType')) {
         if (!nullSafeComparison(item.supervision_type, filters.supervisionType)) {
           return false;
         }
@@ -163,8 +162,8 @@ const Revocations = () => {
     });
   };
 
-  const applyAllFilters = (data) => {
-    let filteredData = applyTopLevelFilters(data);
+  const applyAllFilters = (data, skippedFilters) => {
+    let filteredData = applyTopLevelFilters(data, skippedFilters);
     filteredData = applyMatrixFilters(filteredData);
     return filteredData;
   };
@@ -175,31 +174,36 @@ const Revocations = () => {
         return (
           <RevocationsByRiskLevel
             data={applyAllFilters(apiData.revocations_matrix_distribution_by_risk_level)}
+            metricPeriodMonths={filters.metricPeriodMonths}
           />
         );
       case 'Violation':
         return (
           <RevocationsByViolation
             data={applyAllFilters(apiData.revocations_matrix_distribution_by_violation)}
+            metricPeriodMonths={filters.metricPeriodMonths}
           />
         );
       case 'Gender':
         return (
           <RevocationsByGender
             data={applyAllFilters(apiData.revocations_matrix_distribution_by_gender)}
+            metricPeriodMonths={filters.metricPeriodMonths}
           />
         );
       case 'Race':
         return (
           <RevocationsByRace
             data={applyAllFilters(apiData.revocations_matrix_distribution_by_race)}
+            metricPeriodMonths={filters.metricPeriodMonths}
           />
         );
       default:
         return (
           <RevocationsByDistrict
             data={applyAllFilters(apiData.revocations_matrix_distribution_by_district)}
-            supervisionPopulation={applyDistrictAndSupervisionTypeFilters(apiData.revocations_matrix_supervision_distribution_by_district)}
+            supervisionPopulation={applyAllFilters(apiData.revocations_matrix_supervision_distribution_by_district, ['chargeCategory'])}
+            metricPeriodMonths={filters.metricPeriodMonths}
           />
         );
     }
@@ -212,6 +216,14 @@ const Revocations = () => {
   return (
     <main className="dashboard bgc-grey-100">
       <div className="top-level-filters d-f">
+        <div className="top-level-filter">
+          <h4>Time Window</h4>
+          <Select
+            options={METRIC_PERIODS}
+            onChange={(option) => updateFilters({ metricPeriodMonths: option.value })}
+            value={METRIC_PERIODS.filter((option) => option.value === filters.metricPeriodMonths)}
+          />
+        </div>
         <div className="top-level-filter">
           <h4>District</h4>
           <Select
@@ -236,7 +248,8 @@ const Revocations = () => {
       </div>
       <div className="bgc-white p-20 m-20">
         <RevocationCountOverTime
-          data={applyAllFilters(apiData.revocations_matrix_by_month)}
+          data={applyAllFilters(apiData.revocations_matrix_by_month, ['metricPeriodMonths'])}
+          metricPeriodMonths={filters.metricPeriodMonths}
         />
       </div>
       <div className="d-f m-20">
@@ -245,6 +258,7 @@ const Revocations = () => {
             data={applyTopLevelFilters(apiData.revocations_matrix_cells)}
             filters={filters}
             updateFilters={updateFilters}
+            metricPeriodMonths={filters.metricPeriodMonths}
           />
         </div>
         <div className="matrix-explanation bgc-white p-20">
