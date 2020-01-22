@@ -21,15 +21,18 @@ import { Line } from 'react-chartjs-2';
 import { COLORS } from '../../../assets/scripts/constants/colors';
 import { configureDownloadButtons } from '../../../assets/scripts/utils/downloads';
 import { toInt } from '../../../utils/transforms/labels';
-import { sortAndFilterMostRecentMonths } from '../../../utils/transforms/datasets';
+import { sortFilterAndSupplementMostRecentMonths } from '../../../utils/transforms/datasets';
 import { monthNamesWithYearsFromNumbers } from '../../../utils/transforms/months';
 import {
   getGoalForChart, getMinForGoalAndData, getMaxForGoalAndData, trendlineGoalText,
-  goalLabelContentString,
+  chartAnnotationForGoal,
 } from '../../../utils/charts/metricGoal';
 import {
-  generateTrendlineDataset, getTooltipWithoutTrendline,
-} from '../../../utils/charts/trendline';
+  getMonthCountFromTimeWindowToggle, filterDatasetBySupervisionType,
+  filterDatasetByDistrict, updateTooltipForMetricType, toggleLabel, canDisplayGoal,
+  toggleYAxisTicksAdditionalOptions, centerSingleMonthDatasetIfNecessary,
+} from '../../../utils/charts/toggles';
+import { generateTrendlineDataset } from '../../../utils/charts/trendline';
 
 const SupervisionSuccessSnapshot = (props) => {
   const [chartLabels, setChartLabels] = useState([]);
@@ -44,62 +47,106 @@ const SupervisionSuccessSnapshot = (props) => {
   const processResponse = () => {
     const { supervisionSuccessRates: countsByMonth } = props;
 
+    let filteredCountsByMonth = filterDatasetBySupervisionType(
+      countsByMonth, props.supervisionType,
+    );
+
+    filteredCountsByMonth = filterDatasetByDistrict(
+      filteredCountsByMonth, props.district,
+    );
+
     const today = new Date();
     const yearNow = today.getFullYear();
     const monthNow = today.getMonth() + 1;
 
     const dataPoints = [];
-    if (countsByMonth) {
-      countsByMonth.forEach((data) => {
+    if (filteredCountsByMonth) {
+      filteredCountsByMonth.forEach((data) => {
         let { projected_year: year, projected_month: month } = data;
         const successful = toInt(data.successful_termination);
         const revocation = toInt(data.revocation_termination);
-        const successRate = (100 * (successful / (successful + revocation))).toFixed(2);
+
+        let successRate = 0.00;
+        if (successful + revocation !== 0) {
+          successRate = (100 * (successful / (successful + revocation))).toFixed(2);
+        }
 
         year = toInt(year);
         month = toInt(month);
 
         // Don't add completion rates for months in the future
         if (year < yearNow || (year === yearNow && month <= monthNow)) {
-          dataPoints.push({ year, month, successRate });
+          if (props.metricType === 'counts') {
+            dataPoints.push({ year, month, value: successful });
+          } else if (props.metricType === 'rates') {
+            dataPoints.push({ year, month, value: successRate });
+          }
         }
       });
     }
-    const sorted = sortAndFilterMostRecentMonths(dataPoints, 13);
-    const chartDataValues = (sorted.map((element) => element.successRate));
+    const months = getMonthCountFromTimeWindowToggle(props.timeWindow);
+    const sorted = sortFilterAndSupplementMostRecentMonths(
+      dataPoints, months, 'value', '0',
+    );
+    const chartDataValues = (sorted.map((element) => element.value));
     const min = getMinForGoalAndData(GOAL.value, chartDataValues, stepSize);
     const max = getMaxForGoalAndData(GOAL.value, chartDataValues, stepSize);
+    const monthNames = monthNamesWithYearsFromNumbers(sorted.map((element) => element.month), true);
 
-    setChartLabels(monthNamesWithYearsFromNumbers(sorted.map((element) => element.month), true));
+    centerSingleMonthDatasetIfNecessary(chartDataValues, monthNames);
+    setChartLabels(monthNames);
     setChartDataPoints(chartDataValues);
     setChartMinValue(min);
     setChartMaxValue(max);
   };
 
+  function goalLineIfApplicable() {
+    if (canDisplayGoal(GOAL, props)) {
+      return chartAnnotationForGoal(GOAL, 'supervisionSuccessSnapshotGoalLine', { yAdjust: 10 });
+    }
+    return null;
+  }
+
+  function datasetsWithTrendlineIfApplicable() {
+    const datasets = [{
+      label: toggleLabel(
+        { counts: 'Successful completions', rates: 'Success rate' },
+        props.metricType,
+      ),
+      backgroundColor: COLORS['blue-standard'],
+      borderColor: COLORS['blue-standard'],
+      pointBackgroundColor: COLORS['blue-standard'],
+      pointHoverBackgroundColor: COLORS['blue-standard'],
+      pointHoverBorderColor: COLORS['blue-standard'],
+      pointRadius: 4,
+      hitRadius: 5,
+      fill: false,
+      borderWidth: 2,
+      lineTension: 0,
+      data: chartDataPoints,
+    }];
+    if (canDisplayGoal(GOAL, props)) {
+      datasets.push(generateTrendlineDataset(chartDataPoints, COLORS['blue-standard-light']));
+    }
+    return datasets;
+  }
+
   useEffect(() => {
     processResponse();
-  }, [props.supervisionSuccessRates]);
+  }, [
+    props.supervisionSuccessRates,
+    props.metricType,
+    props.timeWindow,
+    props.supervisionType,
+    props.district,
+  ]);
 
   const chart = (
     <Line
       id={chartId}
       data={{
         labels: chartLabels,
-        datasets: [{
-          label: 'Supervision success rate',
-          backgroundColor: COLORS['blue-standard'],
-          borderColor: COLORS['blue-standard'],
-          pointBackgroundColor: COLORS['blue-standard'],
-          pointHoverBackgroundColor: COLORS['blue-standard'],
-          pointHoverBorderColor: COLORS['blue-standard'],
-          pointRadius: 4,
-          hitRadius: 5,
-          fill: false,
-          borderWidth: 2,
-          lineTension: 0,
-          data: chartDataPoints,
-        }, generateTrendlineDataset(chartDataPoints, COLORS['blue-standard-light']),
-        ],
+        datasets: datasetsWithTrendlineIfApplicable(),
       }}
       options={{
         legend: {
@@ -115,14 +162,16 @@ const SupervisionSuccessSnapshot = (props) => {
           enabled: true,
           mode: 'point',
           callbacks: {
-            label: (tooltipItem, data) => (getTooltipWithoutTrendline(tooltipItem, data, '%')),
+            label: (tooltipItem, data) => updateTooltipForMetricType(
+              props.metricType, tooltipItem, data,
+            ),
           },
         },
         scales: {
           xAxes: [{
             ticks: {
               fontColor: COLORS['grey-600'],
-              autoSkip: false,
+              autoSkip: true,
             },
             scaleLabel: {
               display: true,
@@ -135,15 +184,16 @@ const SupervisionSuccessSnapshot = (props) => {
             },
           }],
           yAxes: [{
-            ticks: {
-              fontColor: COLORS['grey-600'],
-              min: chartMinValue,
-              max: chartMaxValue,
-              stepSize,
-            },
+            ticks: toggleYAxisTicksAdditionalOptions(
+              'rates', props.metricType, chartMinValue, chartMaxValue, stepSize,
+              { fontColor: COLORS['grey-600'] },
+            ),
             scaleLabel: {
               display: true,
-              labelString: '% of people',
+              labelString: toggleLabel(
+                { counts: 'Successful completions', rates: '% of people' },
+                props.metricType,
+              ),
               fontColor: COLORS['grey-500'],
               fontStyle: 'bold',
             },
@@ -152,56 +202,7 @@ const SupervisionSuccessSnapshot = (props) => {
             },
           }],
         },
-        annotation: {
-          drawTime: 'afterDatasetsDraw',
-          events: ['click'],
-
-          // Array of annotation configuration objects
-          // See below for detailed descriptions of the annotation options
-          annotations: [{
-            type: 'line',
-            mode: 'horizontal',
-            value: GOAL.value,
-
-            // optional annotation ID (must be unique)
-            id: 'supervisionSuccessSnapshotGoalLine',
-            scaleID: 'y-axis-0',
-
-            drawTime: 'afterDatasetsDraw',
-
-            borderColor: COLORS['red-standard'],
-            borderWidth: 2,
-            borderDash: [2, 2],
-            borderDashOffset: 5,
-            label: {
-              enabled: true,
-              content: goalLabelContentString(GOAL),
-              position: 'right',
-
-              // Background color of label, default below
-              backgroundColor: 'rgba(0, 0, 0, 0)',
-
-              fontFamily: 'sans-serif',
-              fontSize: 12,
-              fontStyle: 'bold',
-              fontColor: COLORS['red-standard'],
-
-              // Adjustment along x-axis (left-right) of label relative to above
-              // number (can be negative). For horizontal lines positioned left
-              // or right, negative values move the label toward the edge, and
-              // positive values toward the center.
-              xAdjust: 0,
-
-              // Adjustment along y-axis (top-bottom) of label relative to above
-              // number (can be negative). For vertical lines positioned top or
-              // bottom, negative values move the label toward the edge, and
-              // positive values toward the center.
-              yAdjust: -10,
-            },
-
-            onClick(e) { return e; },
-          }],
-        },
+        annotation: goalLineIfApplicable(),
       }}
     />
   );
@@ -215,15 +216,18 @@ const SupervisionSuccessSnapshot = (props) => {
 
   configureDownloadButtons(chartId, 'SUCCESSFUL COMPLETION OF SUPERVISION', chart.props.data.datasets,
     chart.props.data.labels, document.getElementById(chartId),
-    exportedStructureCallback);
+    exportedStructureCallback, props, true, true);
 
   const header = document.getElementById(props.header);
-  const trendlineValues = chart.props.data.datasets[1].data;
-  const trendlineText = trendlineGoalText(trendlineValues, GOAL);
 
-  if (header) {
+  if (header && canDisplayGoal(GOAL, props)) {
+    const trendlineValues = chart.props.data.datasets[1].data;
+    const trendlineText = trendlineGoalText(trendlineValues, GOAL);
+
     const title = `The rate of successful completion of supervision has been <b style='color:#809AE5'>trending ${trendlineText}.</b>`;
     header.innerHTML = title;
+  } else if (header) {
+    header.innerHTML = '';
   }
 
   return (chart);

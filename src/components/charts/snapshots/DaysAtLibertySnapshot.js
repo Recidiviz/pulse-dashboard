@@ -22,12 +22,16 @@ import { COLORS } from '../../../assets/scripts/constants/colors';
 import { configureDownloadButtons } from '../../../assets/scripts/utils/downloads';
 import {
   getGoalForChart, getMinForGoalAndData, getMaxForGoalAndData, trendlineGoalText,
-  goalLabelContentString,
+  chartAnnotationForGoal,
 } from '../../../utils/charts/metricGoal';
+import {
+  getMonthCountFromTimeWindowToggle, canDisplayGoal,
+  centerSingleMonthDatasetIfNecessary,
+} from '../../../utils/charts/toggles';
 import {
   generateTrendlineDataset, getTooltipWithoutTrendline,
 } from '../../../utils/charts/trendline';
-import { sortAndFilterMostRecentMonths } from '../../../utils/transforms/datasets';
+import { sortFilterAndSupplementMostRecentMonths } from '../../../utils/transforms/datasets';
 import { monthNamesWithYearsFromNumbers } from '../../../utils/transforms/months';
 
 const DaysAtLibertySnapshot = (props) => {
@@ -51,41 +55,62 @@ const DaysAtLibertySnapshot = (props) => {
         dataPoints.push({ year, month, average });
       });
     }
-    const sorted = sortAndFilterMostRecentMonths(dataPoints, 13);
+
+    const months = getMonthCountFromTimeWindowToggle(props.timeWindow);
+    const sorted = sortFilterAndSupplementMostRecentMonths(dataPoints, months, 'average', '0.0');
     const chartDataValues = sorted.map((element) => element.average);
     const min = getMinForGoalAndData(GOAL.value, chartDataValues, stepSize);
     const max = getMaxForGoalAndData(GOAL.value, chartDataValues, stepSize);
+    const monthNames = monthNamesWithYearsFromNumbers(sorted.map((element) => element.month), true);
 
-    setChartLabels(monthNamesWithYearsFromNumbers(sorted.map((element) => element.month), true));
+    centerSingleMonthDatasetIfNecessary(chartDataValues, monthNames);
+    setChartLabels(monthNames);
     setChartDataPoints(chartDataValues);
     setChartMinValue(min);
     setChartMaxValue(max);
   };
 
+  function goalLineIfApplicable() {
+    if (canDisplayGoal(GOAL, props)) {
+      return chartAnnotationForGoal(GOAL, 'daysAtLibertySnapshotGoalLine', {});
+    }
+    return null;
+  }
+
+  function datasetsWithTrendlineIfApplicable() {
+    const datasets = [{
+      label: 'Days at liberty (average)',
+      backgroundColor: COLORS['blue-standard'],
+      borderColor: COLORS['blue-standard'],
+      pointBackgroundColor: COLORS['blue-standard'],
+      pointHoverBackgroundColor: COLORS['blue-standard'],
+      pointHoverBorderColor: COLORS['blue-standard'],
+      pointRadius: 4,
+      hitRadius: 5,
+      fill: false,
+      borderWidth: 2,
+      lineTension: 0,
+      data: chartDataPoints,
+    }];
+    if (canDisplayGoal(GOAL, props)) {
+      datasets.push(generateTrendlineDataset(chartDataPoints, COLORS['blue-standard-light']));
+    }
+    return datasets;
+  }
+
   useEffect(() => {
     processResponse();
-  }, [props.daysAtLibertyByMonth]);
+  }, [
+    props.daysAtLibertyByMonth,
+    props.timeWindow,
+  ]);
 
   const chart = (
     <Line
       id={chartId}
       data={{
         labels: chartLabels,
-        datasets: [{
-          label: 'Days at liberty (average)',
-          backgroundColor: COLORS['blue-standard'],
-          borderColor: COLORS['blue-standard'],
-          pointBackgroundColor: COLORS['blue-standard'],
-          pointHoverBackgroundColor: COLORS['blue-standard'],
-          pointHoverBorderColor: COLORS['blue-standard'],
-          pointRadius: 4,
-          hitRadius: 5,
-          fill: false,
-          borderWidth: 2,
-          lineTension: 0,
-          data: chartDataPoints,
-        }, generateTrendlineDataset(chartDataPoints, COLORS['blue-standard-light']),
-        ],
+        datasets: datasetsWithTrendlineIfApplicable(),
       }}
       options={{
         legend: {
@@ -108,7 +133,6 @@ const DaysAtLibertySnapshot = (props) => {
           xAxes: [{
             ticks: {
               fontColor: COLORS['grey-600'],
-              autoSkip: false,
             },
             scaleLabel: {
               display: true,
@@ -138,56 +162,7 @@ const DaysAtLibertySnapshot = (props) => {
             },
           }],
         },
-        annotation: {
-          drawTime: 'afterDatasetsDraw',
-          events: ['click'],
-
-          // Array of annotation configuration objects
-          // See below for detailed descriptions of the annotation options
-          annotations: [{
-            type: 'line',
-            mode: 'horizontal',
-            value: GOAL.value,
-
-            // optional annotation ID (must be unique)
-            id: 'daysAtLibertySnapshotGoalLine',
-            scaleID: 'y-axis-0',
-
-            drawTime: 'afterDatasetsDraw',
-
-            borderColor: COLORS['red-standard'],
-            borderWidth: 2,
-            borderDash: [2, 2],
-            borderDashOffset: 5,
-            label: {
-              enabled: true,
-              content: goalLabelContentString(GOAL),
-              position: 'right',
-
-              // Background color of label, default below
-              backgroundColor: 'rgba(0, 0, 0, 0)',
-
-              fontFamily: 'sans-serif',
-              fontSize: 12,
-              fontStyle: 'bold',
-              fontColor: COLORS['red-standard'],
-
-              // Adjustment along x-axis (left-right) of label relative to above
-              // number (can be negative). For horizontal lines positioned left
-              // or right, negative values move the label toward the edge, and
-              // positive values toward the center.
-              xAdjust: 0,
-
-              // Adjustment along y-axis (top-bottom) of label relative to above
-              // number (can be negative). For vertical lines positioned top or
-              // bottom, negative values move the label toward the edge, and
-              // positive values toward the center.
-              yAdjust: -10,
-            },
-
-            onClick(e) { return e; },
-          }],
-        },
+        annotation: goalLineIfApplicable(),
       }}
     />
   );
@@ -200,15 +175,18 @@ const DaysAtLibertySnapshot = (props) => {
   };
   configureDownloadButtons(chartId, 'DAYS AT LIBERTY (AVERAGE)', chart.props.data.datasets,
     chart.props.data.labels, document.getElementById(chartId),
-    exportedStructureCallback);
+    exportedStructureCallback, props, true, true);
 
   const header = document.getElementById(props.header);
-  const trendlineValues = chart.props.data.datasets[1].data;
-  const trendlineText = trendlineGoalText(trendlineValues, GOAL);
 
-  if (header) {
+  if (header && canDisplayGoal(GOAL, props)) {
+    const trendlineValues = chart.props.data.datasets[1].data;
+    const trendlineText = trendlineGoalText(trendlineValues, GOAL);
+
     const title = `The average days between release from incarceration and readmission has been <b style='color:#809AE5'>trending ${trendlineText}.</b>`;
     header.innerHTML = title;
+  } else if (header) {
+    header.innerHTML = '';
   }
 
   return (chart);

@@ -21,9 +21,15 @@ import { Line } from 'react-chartjs-2';
 import { COLORS } from '../../../assets/scripts/constants/colors';
 import { configureDownloadButtons } from '../../../assets/scripts/utils/downloads';
 import {
-  getGoalForChart, getMaxForGoalAndData, goalLabelContentString,
+  getGoalForChart, getMaxForGoalAndDataIfGoalDisplayable, chartAnnotationForGoal,
 } from '../../../utils/charts/metricGoal';
+import {
+  toggleLabel, getMonthCountFromTimeWindowToggle, updateTooltipForMetricType,
+  filterDatasetByDistrict, canDisplayGoal, toggleYAxisTicksFor,
+  centerSingleMonthDatasetIfNecessary,
+} from '../../../utils/charts/toggles';
 import { sortFilterAndSupplementMostRecentMonths } from '../../../utils/transforms/datasets';
+import { toInt } from '../../../utils/transforms/labels';
 import { monthNamesWithYearsFromNumbers } from '../../../utils/transforms/months';
 
 
@@ -40,27 +46,58 @@ const ReincarcerationCountOverTime = (props) => {
   const processResponse = () => {
     const { reincarcerationCountsByMonth: countsByMonth } = props;
 
+    const filteredCountsByMonth = filterDatasetByDistrict(
+      countsByMonth, props.district,
+    );
+
     const dataPoints = [];
-    if (countsByMonth) {
-      countsByMonth.forEach((data) => {
-        const { year, month, returns: count } = data;
-        dataPoints.push({ year, month, count });
+    if (filteredCountsByMonth) {
+      filteredCountsByMonth.forEach((data) => {
+        const { year, month } = data;
+        const returnCount = toInt(data.returns);
+        const admissionCount = toInt(data.total_admissions);
+
+        if (props.metricType === 'counts') {
+          const value = returnCount;
+          dataPoints.push({ year, month, value });
+        } else if (props.metricType === 'rates') {
+          let value = 0.00;
+          if (admissionCount !== 0) {
+            value = (100 * (returnCount / admissionCount)).toFixed(2);
+          }
+          dataPoints.push({ year, month, value });
+        }
       });
     }
 
-    const sorted = sortFilterAndSupplementMostRecentMonths(dataPoints, 6, 'count', 0);
-    const chartDataValues = (sorted.map((element) => element.count));
-    const max = getMaxForGoalAndData(GOAL.value, chartDataValues, stepSize);
+    const months = getMonthCountFromTimeWindowToggle(props.timeWindow);
+    const sorted = sortFilterAndSupplementMostRecentMonths(dataPoints, months, 'value', 0);
+    const chartDataValues = (sorted.map((element) => element.value));
+    const max = getMaxForGoalAndDataIfGoalDisplayable(GOAL, chartDataValues, stepSize, props);
+    const monthNames = monthNamesWithYearsFromNumbers(sorted.map((element) => element.month), false);
 
-    setChartLabels(monthNamesWithYearsFromNumbers(sorted.map((element) => element.month), false));
+    centerSingleMonthDatasetIfNecessary(chartDataValues, monthNames);
+    setChartLabels(monthNames);
     setChartDataPoints(chartDataValues);
     setChartMinValue(0);
     setChartMaxValue(max);
   };
 
+  function goalLineIfApplicable() {
+    if (canDisplayGoal(GOAL, props)) {
+      return chartAnnotationForGoal(GOAL, 'reincarcerationCountsByMonthGoalLine', {});
+    }
+    return null;
+  }
+
   useEffect(() => {
     processResponse();
-  }, [props.reincarcerationCountsByMonth]);
+  }, [
+    props.reincarcerationCountsByMonth,
+    props.metricType,
+    props.timeWindow,
+    props.district,
+  ]);
 
   const chart = (
     <Line
@@ -68,7 +105,10 @@ const ReincarcerationCountOverTime = (props) => {
       data={{
         labels: chartLabels,
         datasets: [{
-          label: 'Reincarceration count',
+          label: toggleLabel(
+            { counts: 'Reincarceration admissions', rates: 'Percentage from reincarcerations' },
+            props.metricType,
+          ),
           backgroundColor: COLORS['grey-500'],
           borderColor: COLORS['grey-500'],
           pointBackgroundColor: COLORS['grey-500'],
@@ -91,71 +131,33 @@ const ReincarcerationCountOverTime = (props) => {
         scales: {
           xAxes: [{
             ticks: {
-              autoSkip: false,
+              autoSkip: true,
             },
           }],
           yAxes: [{
-            ticks: {
-              min: chartMinValue,
-              max: chartMaxValue,
-              stepSize,
-            },
+            ticks: toggleYAxisTicksFor(
+              'counts', props.metricType, chartMinValue, chartMaxValue, stepSize,
+            ),
             scaleLabel: {
               display: true,
-              labelString: 'Reincarceration count',
+              labelString: toggleLabel(
+                {
+                  counts: 'Reincarceration count',
+                  rates: 'Percent of admissions',
+                },
+                props.metricType,
+              ),
             },
           }],
         },
         tooltips: {
           backgroundColor: COLORS['grey-800-light'],
           mode: 'x',
+          callbacks: {
+            label: (tooltipItem, data) => updateTooltipForMetricType(props.metricType, tooltipItem, data),
+          },
         },
-        annotation: {
-          events: ['click'],
-          annotations: [{
-            type: 'line',
-            mode: 'horizontal',
-            value: GOAL.value,
-
-            // optional annotation ID (must be unique)
-            id: 'reincarcerationCountsByMonthGoalLine',
-            scaleID: 'y-axis-0',
-
-            drawTime: 'afterDatasetsDraw',
-
-            borderColor: COLORS['red-standard'],
-            borderWidth: 2,
-            borderDash: [2, 2],
-            borderDashOffset: 5,
-            label: {
-              enabled: true,
-              content: goalLabelContentString(GOAL),
-              position: 'right',
-
-              // Background color of label, default below
-              backgroundColor: 'rgba(0,0,0,0)',
-
-              fontFamily: 'sans-serif',
-              fontSize: 12,
-              fontStyle: 'bold',
-              fontColor: COLORS['red-standard'],
-
-              // Adjustment along x-axis (left-right) of label relative to above
-              // number (can be negative). For horizontal lines positioned left
-              // or right, negative values move the label toward the edge, and
-              // positive values toward the center.
-              xAdjust: 0,
-
-              // Adjustment along y-axis (top-bottom) of label relative to above
-              // number (can be negative). For vertical lines positioned top or
-              // bottom, negative values move the label toward the edge, and
-              // positive values toward the center.
-              yAdjust: -10,
-            },
-
-            onClick(e) { return e; },
-          }],
-        },
+        annotation: goalLineIfApplicable(),
       }}
     />
   );
@@ -169,16 +171,18 @@ const ReincarcerationCountOverTime = (props) => {
   configureDownloadButtons(chartId, 'REINCARCERATIONS BY MONTH',
     chart.props.data.datasets, chart.props.data.labels,
     document.getElementById(chartId),
-    exportedStructureCallback);
+    exportedStructureCallback, props, true, true);
 
   const chartData = chart.props.data.datasets[0].data;
   const mostRecentValue = chartData[chartData.length - 1];
 
   const header = document.getElementById(props.header);
 
-  if (header && (mostRecentValue !== null)) {
+  if (header && mostRecentValue !== null && canDisplayGoal(GOAL, props)) {
     const title = `There have been <b style='color:#809AE5'>${mostRecentValue} reincarcerations</b> to a DOCR facility this month so far.`;
     header.innerHTML = title;
+  } else if (header) {
+    header.innerHTML = '';
   }
 
   return (chart);

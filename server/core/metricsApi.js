@@ -39,6 +39,7 @@ const asyncReadFile = util.promisify(fs.readFile);
 const FILES_BY_METRIC_TYPE = {
   freeThroughRecovery: [
     'ftr_referrals_by_month.json',
+    'ftr_referrals_over_time_window.json',
     'ftr_referrals_by_age_60_days.json',
     'ftr_referrals_by_gender_60_days.json',
     'ftr_referrals_by_lsir_60_days.json',
@@ -48,11 +49,14 @@ const FILES_BY_METRIC_TYPE = {
     'supervision_population_by_gender_60_days.json',
     'supervision_population_by_lsir_60_days.json',
     'supervision_population_by_race_and_ethnicity_60_days.json',
+    'site_offices.json',
   ],
   reincarceration: [
     'admissions_versus_releases_by_month.json',
+    'admissions_versus_releases_over_time_window.json',
     'reincarceration_rate_by_stay_length.json',
     'reincarcerations_by_month.json',
+    'reincarcerations_over_time_window.json',
   ],
   revocation: [
     'revocation_rate_by_county_60_days.json',
@@ -61,6 +65,7 @@ const FILES_BY_METRIC_TYPE = {
     'admissions_by_type_60_days.json',
     'race_proportions.json',
     'revocations_by_month.json',
+    'revocations_over_time_window.json',
     'revocations_by_race_and_ethnicity_60_days.json',
     'revocations_by_supervision_type_by_month.json',
     'revocations_by_violation_type_by_month.json',
@@ -69,9 +74,13 @@ const FILES_BY_METRIC_TYPE = {
   ],
   snapshot: [
     'admissions_by_type_by_month.json',
+    'admissions_by_type_over_time_window.json',
     'average_change_lsir_score_by_month.json',
+    'average_change_lsir_score_over_time_window.json',
     'avg_days_at_liberty_by_month.json',
     'supervision_termination_by_type_by_month.json',
+    'supervision_termination_by_type_over_time_window.json',
+    'site_offices.json',
   ],
   newRevocation: [
     'revocations_matrix_by_month.json',

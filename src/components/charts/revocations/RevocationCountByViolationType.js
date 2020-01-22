@@ -20,6 +20,11 @@ import { Bar } from 'react-chartjs-2';
 
 import { COLORS, COLORS_FIVE_VALUES } from '../../../assets/scripts/constants/colors';
 import { configureDownloadButtons } from '../../../assets/scripts/utils/downloads';
+import {
+  toggleLabel, getMonthCountFromTimeWindowToggle, updateTooltipForMetricType,
+  filterDatasetBySupervisionType, filterDatasetByDistrict,
+  toggleYAxisTicksStackedRateBasicCount,
+} from '../../../utils/charts/toggles';
 import { sortFilterAndSupplementMostRecentMonths } from '../../../utils/transforms/datasets';
 import { monthNamesWithYearsFromNumbers } from '../../../utils/transforms/months';
 
@@ -35,23 +40,42 @@ const RevocationCountByViolationType = (props) => {
   const processResponse = () => {
     const { revocationCountsByMonthByViolationType: countsByMonth } = props;
 
+    let filteredCountsByMonth = filterDatasetBySupervisionType(
+      countsByMonth, props.supervisionType,
+    );
+
+    filteredCountsByMonth = filterDatasetByDistrict(
+      filteredCountsByMonth, props.district,
+    );
+
     const dataPoints = [];
-    if (countsByMonth) {
-      countsByMonth.forEach((data) => {
+    if (filteredCountsByMonth) {
+      filteredCountsByMonth.forEach((data) => {
         const {
           year, month, absconsion_count: absconsionCount,
           felony_count: felonyCount, technical_count: technicalCount,
           unknown_count: unknownCount,
         } = data;
 
-        const monthDict = {
+        const monthCounts = {
           ABSCONDED: absconsionCount,
           FELONY: felonyCount,
           TECHNICAL: technicalCount,
           UNKNOWN_VIOLATION_TYPE: unknownCount,
         };
+        const totalCount = Number(absconsionCount) + Number(felonyCount) + Number(technicalCount) + Number(unknownCount);
 
-        dataPoints.push({ year, month, monthDict });
+        if (props.metricType === 'counts') {
+          dataPoints.push({ year, month, monthDict: monthCounts });
+        } else if (props.metricType === 'rates') {
+          const monthRates = {};
+          Object.keys(monthCounts).forEach((key) => {
+            const count = monthCounts[key];
+            monthRates[key] = (100 * (count / totalCount)).toFixed(2);
+          });
+
+          dataPoints.push({ year, month, monthDict: monthRates });
+        }
       });
     }
 
@@ -62,7 +86,8 @@ const RevocationCountByViolationType = (props) => {
       UNKNOWN_VIOLATION_TYPE: 0,
     };
 
-    const sorted = sortFilterAndSupplementMostRecentMonths(dataPoints, 6, 'monthDict', emptyMonthDict);
+    const months = getMonthCountFromTimeWindowToggle(props.timeWindow);
+    const sorted = sortFilterAndSupplementMostRecentMonths(dataPoints, months, 'monthDict', emptyMonthDict);
     const monthsLabels = [];
     const violationArrays = {
       ABSCONDED: [],
@@ -71,7 +96,7 @@ const RevocationCountByViolationType = (props) => {
       UNKNOWN_VIOLATION_TYPE: [],
     };
 
-    for (let i = 0; i < 6; i += 1) {
+    for (let i = 0; i < months; i += 1) {
       monthsLabels.push(sorted[i].month);
       const data = sorted[i].monthDict;
       Object.keys(data).forEach((violationType) => {
@@ -88,7 +113,13 @@ const RevocationCountByViolationType = (props) => {
 
   useEffect(() => {
     processResponse();
-  }, [props.revocationCountsByMonthByViolationType]);
+  }, [
+    props.revocationCountsByMonthByViolationType,
+    props.metricType,
+    props.timeWindow,
+    props.supervisionType,
+    props.district,
+  ]);
 
   const chart = (
     <Bar
@@ -132,6 +163,11 @@ const RevocationCountByViolationType = (props) => {
           backgroundColor: COLORS['grey-800-light'],
           mode: 'index',
           intersect: false,
+          callbacks: {
+            label: (tooltipItem, data) => updateTooltipForMetricType(
+              props.metricType, tooltipItem, data,
+            ),
+          },
         },
         scales: {
           xAxes: [{
@@ -142,9 +178,13 @@ const RevocationCountByViolationType = (props) => {
             stacked: true,
           }],
           yAxes: [{
+            ticks: toggleYAxisTicksStackedRateBasicCount(props.metricType, undefined),
             scaleLabel: {
               display: true,
-              labelString: 'Revocation count',
+              labelString: toggleLabel(
+                { counts: 'Revocation count', rates: 'Percentage' },
+                props.metricType,
+              ),
             },
             stacked: true,
           }],
@@ -161,7 +201,7 @@ const RevocationCountByViolationType = (props) => {
 
   configureDownloadButtons(chartId, 'REVOCATIONS BY VIOLATION TYPE',
     chart.props.data.datasets, chart.props.data.labels,
-    document.getElementById(chartId), exportedStructureCallback);
+    document.getElementById(chartId), exportedStructureCallback, props, true, true);
 
   return chart;
 };

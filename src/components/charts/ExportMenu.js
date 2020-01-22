@@ -76,11 +76,11 @@ const ExportMenu = (props) => {
   if (props.regularElement) {
     configureDownloadButtonsRegularElement(props.chartId, props.metricTitle,
       props.elementDatasets, props.elementLabels,
-      document.getElementById(props.chartId), exportedStructureCallback);
+      document.getElementById(props.chartId), exportedStructureCallback, {});
   } else {
     configureDownloadButtons(props.chartId, props.metricTitle,
       props.chart.props.data.datasets, props.chart.props.data.labels,
-      document.getElementById(props.chartId), exportedStructureCallback);
+      document.getElementById(props.chartId), exportedStructureCallback, {});
   }
 
   return menuSpan;

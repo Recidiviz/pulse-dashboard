@@ -16,6 +16,7 @@
 // =============================================================================
 
 import React, { useState, useEffect } from 'react';
+import * as $ from 'jquery';
 
 import Loading from '../../../components/Loading';
 import '../../../assets/styles/index.scss';
@@ -28,11 +29,27 @@ import RevocationAdmissionsSnapshot
   from '../../../components/charts/snapshots/RevocationAdmissionsSnapshot';
 import SupervisionSuccessSnapshot
   from '../../../components/charts/snapshots/SupervisionSuccessSnapshot';
+import GeoViewTimeChart from '../../../components/charts/GeoViewTimeChart';
+
+import GeoViewToggle from '../../../components/toggles/GeoViewToggle';
+import ToggleBar from '../../../components/toggles/ToggleBar';
+import * as ToggleDefaults from '../../../components/toggles/ToggleDefaults';
 
 const Snapshots = () => {
   const { loading, user, getTokenSilently } = useAuth0();
   const [apiData, setApiData] = useState({});
   const [awaitingApi, setAwaitingApi] = useState(true);
+  const [chartMetricType, setChartMetricType] = useState(ToggleDefaults.metricType);
+  const [chartTimeWindow, setChartTimeWindow] = useState(ToggleDefaults.timeWindow);
+  const [chartSupervisionType, setChartSupervisionType] = useState(ToggleDefaults.supervisionType);
+  const [chartDistrict, setChartDistrict] = useState(ToggleDefaults.district);
+  const [geoViewEnabledSCOS, setGeoViewEnabledSCOS] = useState(ToggleDefaults.geoView);
+  const [geoViewEnabledPDTR, setGeoViewEnabledPDTR] = useState(ToggleDefaults.geoView);
+  const [geoViewEnabledALSI, setGeoViewEnabledALSI] = useState(ToggleDefaults.geoView);
+
+  $(() => {
+    $('[data-toggle="tooltip"]').tooltip();
+  });
 
   const fetchChartData = async () => {
     try {
@@ -55,6 +72,15 @@ const Snapshots = () => {
   return (
     <main className="main-content bgc-grey-100">
       <div id="mainContent">
+
+        <ToggleBar
+          setChartMetricType={setChartMetricType}
+          setChartTimeWindow={setChartTimeWindow}
+          setChartSupervisionType={setChartSupervisionType}
+          setChartDistrict={setChartDistrict}
+          availableDistricts={['beulah', 'bismarck', 'bottineau', 'devils-lake', 'dickson', 'fargo', 'grafton', 'grand-forks', 'jamestown', 'mandan', 'minot', 'oakes', 'rolla', 'washburn', 'wahpeton', 'williston']}
+        />
+
         <div className="row gap-20 pos-r">
 
           {/* #Successful completion of supervision snapshot ==================== */}
@@ -70,23 +96,54 @@ const Snapshots = () => {
                           Export
                         </a>
                         <div className="dropdown-menu" aria-labelledby="exportDropdownMenuButton-supervisionSuccesSnapshot">
-                          <a className="dropdown-item" id="downloadChartAsImage-supervisionSuccessSnapshot" href="javascript:void(0);">Export image</a>
+                          {geoViewEnabledSCOS === false && (
+                            <a className="dropdown-item" id="downloadChartAsImage-supervisionSuccessSnapshot" href="javascript:void(0);">Export image</a>
+                          )}
                           <a className="dropdown-item" id="downloadChartData-supervisionSuccessSnapshot" href="javascript:void(0);">Export data</a>
                         </div>
                       </div>
                     </span>
                   </h6>
                 </div>
+                <div className="layer w-100 pX-20 pT-10">
+                  <GeoViewToggle setGeoViewEnabled={setGeoViewEnabledSCOS} />
+                </div>
                 <div className="layer w-100 pX-20 pT-20">
-                  <div className="dynamic-chart-header" id="supervisionSuccessSnapshot-header" />
+                  {geoViewEnabledSCOS === false && (
+                    <div className="dynamic-chart-header" id="supervisionSuccessSnapshot-header" />
+                  )}
                 </div>
                 <div className="layer w-100 p-20">
                   <div className="ai-c jc-c gapX-20">
                     <div className="col-md-12">
-                      <SupervisionSuccessSnapshot
-                        supervisionSuccessRates={apiData.supervision_termination_by_type_by_month}
-                        header="supervisionSuccessSnapshot-header"
-                      />
+                      { /* TODO(XXX): Figure out why map will not show when delegated to by the Chart.js
+                      chart. Then we can just encapsulate this logic inside of a single component. */ }
+                      {geoViewEnabledSCOS === false && (
+                        <SupervisionSuccessSnapshot
+                          metricType={chartMetricType}
+                          timeWindow={chartTimeWindow}
+                          supervisionType={chartSupervisionType}
+                          district={chartDistrict}
+                          supervisionSuccessRates={apiData.supervision_termination_by_type_by_month}
+                          header="supervisionSuccessSnapshot-header"
+                        />
+                      )}
+                      {geoViewEnabledSCOS === true && (
+                        <GeoViewTimeChart
+                          chartId="supervisionSuccessSnapshot"
+                          chartTitle="SUCCESSFUL COMPLETION OF SUPERVISION"
+                          metricType={chartMetricType}
+                          timeWindow={chartTimeWindow}
+                          supervisionType={chartSupervisionType}
+                          keyedByOffice={true}
+                          officeData={apiData.site_offices}
+                          dataPointsByOffice={apiData.supervision_termination_by_type_over_time_window}
+                          numeratorKeys={['revocation_termination']}
+                          denominatorKeys={['revocation_termination', 'successful_termination']}
+                          centerLat={47.3}
+                          centerLong={-100.5}
+                        />
+                      )}
                     </div>
                   </div>
                 </div>
@@ -132,23 +189,53 @@ const Snapshots = () => {
                           Export
                         </a>
                         <div className="dropdown-menu" aria-labelledby="exportDropdownMenuButton-revocationAdmissionsSnapshot">
-                          <a className="dropdown-item" id="downloadChartAsImage-revocationAdmissionsSnapshot" href="javascript:void(0);">Export image</a>
+                          {geoViewEnabledPDTR === false && (
+                            <a className="dropdown-item" id="downloadChartAsImage-revocationAdmissionsSnapshot" href="javascript:void(0);">Export image</a>
+                          )}
                           <a className="dropdown-item" id="downloadChartData-revocationAdmissionsSnapshot" href="javascript:void(0);">Export data</a>
                         </div>
                       </div>
                     </span>
                   </h6>
                 </div>
+                <div className="layer w-100 pX-20 pT-10">
+                  <GeoViewToggle setGeoViewEnabled={setGeoViewEnabledPDTR} />
+                </div>
                 <div className="layer w-100 pX-20 pT-20">
-                  <div className="dynamic-chart-header" id="revocationAdmissionsSnapshot-header" />
+                  {geoViewEnabledPDTR === false && (
+                    <div className="dynamic-chart-header" id="revocationAdmissionsSnapshot-header" />
+                  )}
                 </div>
                 <div className="layer w-100 p-20">
                   <div className="ai-c jc-c gapX-20">
                     <div className="col-md-12">
-                      <RevocationAdmissionsSnapshot
-                        revocationAdmissionsByMonth={apiData.admissions_by_type_by_month}
-                        header="revocationAdmissionsSnapshot-header"
-                      />
+                      {geoViewEnabledPDTR === false && (
+                        <RevocationAdmissionsSnapshot
+                          metricType={chartMetricType}
+                          timeWindow={chartTimeWindow}
+                          supervisionType={chartSupervisionType}
+                          district={chartDistrict}
+                          revocationAdmissionsByMonth={apiData.admissions_by_type_by_month}
+                          header="revocationAdmissionsSnapshot-header"
+                        />
+                      )}
+                      {geoViewEnabledPDTR === true && (
+                        <GeoViewTimeChart
+                          chartId="revocationAdmissionsSnapshot"
+                          chartTitle="PRISON ADMISSIONS DUE TO REVOCATION"
+                          metricType={chartMetricType}
+                          timeWindow={chartTimeWindow}
+                          supervisionType={chartSupervisionType}
+                          keyedByOffice
+                          shareDenominatorAcrossRates
+                          officeData={apiData.site_offices}
+                          dataPointsByOffice={apiData.admissions_by_type_over_time_window}
+                          numeratorKeys={['technicals', 'non_technicals', 'unknown_revocations']}
+                          denominatorKeys={['technicals', 'non_technicals', 'unknown_revocations', 'new_admissions']}
+                          centerLat={47.3}
+                          centerLong={-100.5}
+                        />
+                      )}
                     </div>
                   </div>
                 </div>
@@ -164,12 +251,20 @@ const Snapshots = () => {
                     <div>
                       <ul>
                         <li>
-                        This is a measurement of the percent of admissions to
-                        North Dakota prisons that were due to parole or probation revocations.
+                          This is a measurement of the percent of admissions to
+                          North Dakota prisons that were due to revocations of supervision.
                         </li>
                         <li>
-                        Revocations count all people who were incarcerated
-                        because their supervision was revoked.
+                          Revocations in a given month count people who were incarcerated
+                          in that month because their supervision was revoked.
+                        </li>
+                        <li>
+                          When a specific district and/or supervision type is selected, the rate
+                          metric is defined as the number of revocation admissions from that
+                          district and/or supervision type divided by the total number of admissions
+                          across all districts and supervision types within the same time period.
+                          Simply put, it is equal to the percentage of total admisssions caused by
+                          revocations matching the given filters.
                         </li>
                       </ul>
                     </div>
@@ -186,6 +281,9 @@ const Snapshots = () => {
                 <div className="layer w-100 pX-20 pT-20">
                   <h6 className="lh-1">
                     DAYS AT LIBERTY (AVERAGE)
+                    {(chartMetricType !== 'counts' || chartSupervisionType !== 'all' || chartDistrict !== 'all') && (
+                      <span className="pL-10 c-orange-500 ti-alert" data-toggle="tooltip" data-placement="bottom" title="This graph is showing average days at liberty for all reincarcerated individuals. It does not support showing this metric as a rate. As individuals can be reincarcerated after completing supervision, this chart also does not support showing information only about a certain office or individuals on a certain type of supervision." />
+                    )}
                     <span className="fa-pull-right">
                       <div className="dropdown show">
                         <a className="btn btn-secondary btn-sm dropdown-toggle" href="#" role="button" id="exportDropdownMenuButton-daysAtLibertySnapshot" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -206,6 +304,7 @@ const Snapshots = () => {
                   <div className="ai-c jc-c gapX-20">
                     <div className="col-md-12">
                       <DaysAtLibertySnapshot
+                        timeWindow={chartTimeWindow}
                         daysAtLibertyByMonth={apiData.avg_days_at_liberty_by_month}
                         header="daysAtLibertySnapshot-header"
                       />
@@ -248,29 +347,60 @@ const Snapshots = () => {
                 <div className="layer w-100 pX-20 pT-20">
                   <h6 className="lh-1">
                     LSI-R SCORE CHANGES (AVERAGE)
+                    {chartMetricType !== 'counts' && (
+                      <span className="pL-10 c-orange-500 ti-alert" data-toggle="tooltip" data-placement="bottom" title="This graph is showing average LSI-R score change. It does not support showing this metric as a rate." />
+                    )}
                     <span className="fa-pull-right">
                       <div className="dropdown show">
                         <a className="btn btn-secondary btn-sm dropdown-toggle" href="#" role="button" id="exportDropdownMenuButton-lsirScoreChangeSnapshot" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                           Export
                         </a>
                         <div className="dropdown-menu" aria-labelledby="exportDropdownMenuButton-lsirScoreChangeSnapshot">
-                          <a className="dropdown-item" id="downloadChartAsImage-lsirScoreChangeSnapshot" href="javascript:void(0);">Export image</a>
+                          {geoViewEnabledALSI === false && (
+                            <a className="dropdown-item" id="downloadChartAsImage-lsirScoreChangeSnapshot" href="javascript:void(0);">Export image</a>
+                          )}
                           <a className="dropdown-item" id="downloadChartData-lsirScoreChangeSnapshot" href="javascript:void(0);">Export data</a>
                         </div>
                       </div>
                     </span>
                   </h6>
                 </div>
+                <div className="layer w-100 pX-20 pT-10">
+                  <GeoViewToggle setGeoViewEnabled={setGeoViewEnabledALSI} />
+                </div>
                 <div className="layer w-100 pX-20 pT-20">
-                  <div className="dynamic-chart-header" id="lsirScoreChangeSnapshot-header" />
+                  {geoViewEnabledALSI === false && (
+                    <div className="dynamic-chart-header" id="lsirScoreChangeSnapshot-header" />
+                  )}
                 </div>
                 <div className="layer w-100 p-20">
                   <div className="ai-c jc-c gapX-20">
                     <div className="col-md-12">
-                      <LsirScoreChangeSnapshot
-                        lsirScoreChangeByMonth={apiData.average_change_lsir_score_by_month}
-                        header="lsirScoreChangeSnapshot-header"
-                      />
+                      {geoViewEnabledALSI === false && (
+                        <LsirScoreChangeSnapshot
+                          timeWindow={chartTimeWindow}
+                          supervisionType={chartSupervisionType}
+                          district={chartDistrict}
+                          lsirScoreChangeByMonth={apiData.average_change_lsir_score_by_month}
+                          header="lsirScoreChangeSnapshot-header"
+                        />
+                      )}
+                      {geoViewEnabledALSI === true && (
+                        <GeoViewTimeChart
+                          chartId="lsirScoreChangeSnapshot"
+                          chartTitle="LSI-R SCORE CHANGES (AVERAGE)"
+                          metricType="counts"
+                          timeWindow={chartTimeWindow}
+                          supervisionType={chartSupervisionType}
+                          keyedByOffice={true}
+                          officeData={apiData.site_offices}
+                          dataPointsByOffice={apiData.average_change_lsir_score_over_time_window}
+                          numeratorKeys={['average_change']}
+                          denominatorKeys={[]}
+                          centerLat={47.3}
+                          centerLong={-100.5}
+                        />
+                      )}
                     </div>
                   </div>
                 </div>

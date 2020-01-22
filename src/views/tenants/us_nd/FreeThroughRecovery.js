@@ -20,6 +20,7 @@ import Loading from '../../../components/Loading';
 import '../../../assets/styles/index.scss';
 import { useAuth0 } from '../../../react-auth0-spa';
 import { callMetricsApi, awaitingResults } from '../../../utils/metricsClient';
+import { getPeriodLabelFromTimeWindowToggle } from '../../../utils/charts/toggles';
 
 import FtrReferralCountByMonth
   from '../../../components/charts/program_evaluation/us_nd/free_through_recovery/FtrReferralCountByMonth';
@@ -31,11 +32,21 @@ import FtrReferralsByLsir
   from '../../../components/charts/program_evaluation/us_nd/free_through_recovery/FtrReferralsByLsir';
 import FtrReferralsByRace
   from '../../../components/charts/program_evaluation/us_nd/free_through_recovery/FtrReferralsByRace';
+import GeoViewTimeChart from '../../../components/charts/GeoViewTimeChart';
+
+import GeoViewToggle from '../../../components/toggles/GeoViewToggle';
+import ToggleBar from '../../../components/toggles/ToggleBar';
+import * as ToggleDefaults from '../../../components/toggles/ToggleDefaults';
 
 const FreeThroughRecovery = () => {
   const { loading, user, getTokenSilently } = useAuth0();
   const [apiData, setApiData] = useState({});
   const [awaitingApi, setAwaitingApi] = useState(true);
+  const [chartMetricType, setChartMetricType] = useState(ToggleDefaults.metricType);
+  const [chartTimeWindow, setChartTimeWindow] = useState(ToggleDefaults.timeWindow);
+  const [chartSupervisionType, setChartSupervisionType] = useState(ToggleDefaults.supervisionType);
+  const [chartDistrict, setChartDistrict] = useState(ToggleDefaults.district);
+  const [geoViewEnabledRCOT, setGeoViewEnabledRCOT] = useState(ToggleDefaults.geoView);
 
   const fetchChartData = async () => {
     try {
@@ -58,6 +69,15 @@ const FreeThroughRecovery = () => {
   return (
     <main className="main-content bgc-grey-100">
       <div id="mainContent">
+
+        <ToggleBar
+          setChartMetricType={setChartMetricType}
+          setChartTimeWindow={setChartTimeWindow}
+          setChartSupervisionType={setChartSupervisionType}
+          setChartDistrict={setChartDistrict}
+          availableDistricts={['beulah', 'bismarck', 'bottineau', 'devils-lake', 'dickson', 'fargo', 'grafton', 'grand-forks', 'jamestown', 'mandan', 'minot', 'oakes', 'rolla', 'washburn', 'wahpeton', 'williston']}
+        />
+
         <div className="row gap-20 pos-r">
 
           {/* #FTR referral counts by month chart ==================== */}
@@ -66,32 +86,59 @@ const FreeThroughRecovery = () => {
               <div className="layers">
                 <div className="layer w-100 pX-20 pT-20">
                   <h6 className="lh-1">
-                    FTR REFERRAL COUNT BY MONTH
+                    FTR REFERRALS BY MONTH
                     <span className="fa-pull-right">
                       <div className="dropdown show">
                         <a className="btn btn-secondary btn-sm dropdown-toggle" href="#" role="button" id="exportDropdownMenuButton-ftrReferralCountByMonth" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                           Export
                         </a>
                         <div className="dropdown-menu" aria-labelledby="exportDropdownMenuButton-ftrReferralCountByMonth">
-                          <a className="dropdown-item" id="downloadChartAsImage-ftrReferralCountByMonth" href="javascript:void(0);">Export image</a>
+                          {geoViewEnabledRCOT === false && (
+                            <a className="dropdown-item" id="downloadChartAsImage-ftrReferralCountByMonth" href="javascript:void(0);">Export image</a>
+                          )}
                           <a className="dropdown-item" id="downloadChartData-ftrReferralCountByMonth" href="javascript:void(0);">Export data</a>
                         </div>
                       </div>
                     </span>
                   </h6>
                 </div>
-                <div className="layer w-100 pX-20 pT-20">
-                  <h4 style={{ height: '20px' }} className="dynamic-chart-header" id="ftrReferralCountByMonth-header" />
+                <div className="layer w-100 pX-20 pT-10">
+                  <GeoViewToggle setGeoViewEnabled={setGeoViewEnabledRCOT} />
                 </div>
-                <div className="layer w-100 pX-20 pT-20 row">
-                  <div className="col-md-12">
-                    <div className="layer w-100 p-20">
-                      <FtrReferralCountByMonth
-                        ftrReferralCountByMonth={apiData.ftr_referrals_by_month}
-                        header="ftrReferralCountByMonth-header"
-                      />
-                    </div>
-                  </div>
+                <div className="layer w-100 pX-20 pT-20">
+                  {geoViewEnabledRCOT === false && (
+                    <div className="dynamic-chart-header" id="ftrReferralCountByMonth-header" />
+                  )}
+                </div>
+                { /* TODO(XXX): Figure out why map will not show when delegated to by the Chart.js
+                chart. Then we can just encapsulate this logic inside of a single component. */ }
+                <div className="layer w-100 p-20">
+                  {geoViewEnabledRCOT === false && (
+                    <FtrReferralCountByMonth
+                      metricType={chartMetricType}
+                      timeWindow={chartTimeWindow}
+                      supervisionType={chartSupervisionType}
+                      district={chartDistrict}
+                      ftrReferralCountByMonth={apiData.ftr_referrals_by_month}
+                      header="ftrReferralCountByMonth-header"
+                    />
+                  )}
+                  {geoViewEnabledRCOT === true && (
+                    <GeoViewTimeChart
+                      chartId="ftrReferralCountByMonth"
+                      chartTitle="FTR REFERRALS BY MONTH"
+                      metricType={chartMetricType}
+                      timeWindow={chartTimeWindow}
+                      supervisionType={chartSupervisionType}
+                      keyedByOffice={true}
+                      officeData={apiData.site_offices}
+                      dataPointsByOffice={apiData.ftr_referrals_over_time_window}
+                      numeratorKeys={['count']}
+                      denominatorKeys={['total_supervision_count']}
+                      centerLat={47.3}
+                      centerLong={-100.5}
+                    />
+                  )}
                 </div>
                 <div className="layer bdT p-20 w-100 accordion" id="methodologyFtrReferralCountByMonth">
                   <div className="mb-0" id="methodologyHeadingFtrReferralCountByMonth">
@@ -109,9 +156,17 @@ const FreeThroughRecovery = () => {
                           referred to Free Through Recovery.
                         </li>
                         <li>
+                          Referral rates are the number of people referred to Free Through
+                          Recovery over the number of people on supervision in a month.
+                        </li>
+                        <li>
                           Referrals are included based on the date the person
                           was referred to the program, regardless of when or if
                           they began participating in Free Through Recovery.
+                        </li>
+                        <li>
+                          Referrals are attributed to the P&P office of a supervised
+                          individual’s current supervising officer.
                         </li>
                       </ul>
                     </div>
@@ -144,6 +199,10 @@ const FreeThroughRecovery = () => {
                 <div className="layer w-100 pX-20 pT-20 row">
                   <div className="layer w-100 p-20">
                     <FtrReferralsByRace
+                      metricType={chartMetricType}
+                      timeWindow={chartTimeWindow}
+                      supervisionType={chartSupervisionType}
+                      district={chartDistrict}
                       ftrReferralsByRace={
                         apiData.ftr_referrals_by_race_and_ethnicity_60_days}
                       supervisionPopulationByRace={
@@ -173,6 +232,15 @@ const FreeThroughRecovery = () => {
                           Dakota at any point during the time period.
                         </li>
                         <li>
+                          If a supervision type and/or a P&P office is selected,
+                          the referral and supervision populations will only count
+                          individuals meeting the selected criteria.
+                        </li>
+                        <li>
+                          A referral is attributed to the P&P office of the referred
+                          individual&apos;s current supervising officer.
+                        </li>
+                        <li>
                           The race proportions for the population of North Dakota were taken from
                           the U.S. Census Bureau.
                         </li>
@@ -180,8 +248,8 @@ const FreeThroughRecovery = () => {
                           If an individual has more than one race or ethnicity recorded
                           from different data systems, then they are counted once for
                           each unique race and ethnicity. This means that the total count
-                          in this chart may be larger than the total number of individuals it describes.
-                          This does not apply to the ND Population values.
+                          in this chart may be larger than the total number of individuals
+                          it describes. This does not apply to the ND Population values.
                         </li>
                       </ul>
                     </div>
@@ -192,7 +260,7 @@ const FreeThroughRecovery = () => {
                     <div className="peer fw-600">
                       <span className="fsz-def fw-600 mR-10 c-grey-800">
                         <small className="c-grey-500 fw-600">Period </small>
-                        Last 60 days
+                        {getPeriodLabelFromTimeWindowToggle(chartTimeWindow)}
                       </span>
                     </div>
                   </div>
@@ -224,6 +292,10 @@ const FreeThroughRecovery = () => {
                 <div className="layer w-100 pX-20 pT-20 row">
                   <div className="layer w-100 p-20">
                     <FtrReferralsByLsir
+                      metricType={chartMetricType}
+                      timeWindow={chartTimeWindow}
+                      supervisionType={chartSupervisionType}
+                      district={chartDistrict}
                       ftrReferralsByLsir={
                         apiData.ftr_referrals_by_lsir_60_days}
                       supervisionPopulationByLsir={
@@ -257,6 +329,15 @@ const FreeThroughRecovery = () => {
                           or parole in North Dakota at any point during the time
                           period.
                         </li>
+                        <li>
+                          If a supervision type and/or a P&P office is selected,
+                          the referral and supervision populations will only count
+                          individuals meeting the selected criteria.
+                        </li>
+                        <li>
+                          A referral is attributed to the P&P office of the referred
+                          individual&apos;s current supervising officer.
+                        </li>
                       </ul>
                     </div>
                   </div>
@@ -266,7 +347,7 @@ const FreeThroughRecovery = () => {
                     <div className="peer fw-600">
                       <span className="fsz-def fw-600 mR-10 c-grey-800">
                         <small className="c-grey-500 fw-600">Period </small>
-                        Last 60 days
+                        {getPeriodLabelFromTimeWindowToggle(chartTimeWindow)}
                       </span>
                     </div>
                   </div>
@@ -298,6 +379,10 @@ const FreeThroughRecovery = () => {
                 <div className="layer w-100 pX-20 pT-20 row">
                   <div className="layer w-100 p-20">
                     <FtrReferralsByGender
+                      metricType={chartMetricType}
+                      timeWindow={chartTimeWindow}
+                      supervisionType={chartSupervisionType}
+                      district={chartDistrict}
                       ftrReferralsByGender={
                         apiData.ftr_referrals_by_gender_60_days}
                       supervisionPopulationByGender={
@@ -327,6 +412,15 @@ const FreeThroughRecovery = () => {
                           probation or parole in North Dakota at any point
                           during the time period.
                         </li>
+                        <li>
+                          If a supervision type and/or a P&P office is selected,
+                          the referral and supervision populations will only count
+                          individuals meeting the selected criteria.
+                        </li>
+                        <li>
+                          A referral is attributed to the P&P office of the referred
+                          individual&apos;s current supervising officer.
+                        </li>
                       </ul>
                     </div>
                   </div>
@@ -336,7 +430,7 @@ const FreeThroughRecovery = () => {
                     <div className="peer fw-600">
                       <span className="fsz-def fw-600 mR-10 c-grey-800">
                         <small className="c-grey-500 fw-600">Period </small>
-                        Last 60 days
+                        {getPeriodLabelFromTimeWindowToggle(chartTimeWindow)}
                       </span>
                     </div>
                   </div>
@@ -368,6 +462,10 @@ const FreeThroughRecovery = () => {
                 <div className="layer w-100 pX-20 pT-20 row">
                   <div className="layer w-100 p-20">
                     <FtrReferralsByAge
+                      metricType={chartMetricType}
+                      timeWindow={chartTimeWindow}
+                      supervisionType={chartSupervisionType}
+                      district={chartDistrict}
                       ftrReferralsByAge={
                         apiData.ftr_referrals_by_age_60_days}
                       supervisionPopulationByAge={
@@ -397,6 +495,15 @@ const FreeThroughRecovery = () => {
                           probation or parole in North Dakota at any point
                           during the time period.
                         </li>
+                        <li>
+                          If a supervision type and/or a P&P office is selected,
+                          the referral and supervision populations will only count
+                          individuals meeting the selected criteria.
+                        </li>
+                        <li>
+                          A referral is attributed to the P&P office of the referred
+                          individual&apos;s current supervising officer.
+                        </li>
                       </ul>
                     </div>
                   </div>
@@ -406,7 +513,7 @@ const FreeThroughRecovery = () => {
                     <div className="peer fw-600">
                       <span className="fsz-def fw-600 mR-10 c-grey-800">
                         <small className="c-grey-500 fw-600">Period </small>
-                        Last 60 days
+                        {getPeriodLabelFromTimeWindowToggle(chartTimeWindow)}
                       </span>
                     </div>
                   </div>

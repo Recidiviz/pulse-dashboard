@@ -20,16 +20,19 @@ import { Line } from 'react-chartjs-2';
 
 import { COLORS } from '../../../assets/scripts/constants/colors';
 import { configureDownloadButtons } from '../../../assets/scripts/utils/downloads';
-import { sortAndFilterMostRecentMonths } from '../../../utils/transforms/datasets';
+import { sortFilterAndSupplementMostRecentMonths } from '../../../utils/transforms/datasets';
 import { toInt } from '../../../utils/transforms/labels';
 import { monthNamesWithYearsFromNumbers } from '../../../utils/transforms/months';
 import {
   getGoalForChart, getMinForGoalAndData, getMaxForGoalAndData, trendlineGoalText,
-  goalLabelContentString,
+  chartAnnotationForGoal,
 } from '../../../utils/charts/metricGoal';
 import {
-  generateTrendlineDataset, getTooltipWithoutTrendline,
-} from '../../../utils/charts/trendline';
+  getMonthCountFromTimeWindowToggle, filterDatasetByDistrict, filterDatasetBySupervisionType,
+  updateTooltipForMetricType, toggleLabel, canDisplayGoal, toggleYAxisTicksBasedOnGoal,
+  centerSingleMonthDatasetIfNecessary,
+} from '../../../utils/charts/toggles';
+import { generateTrendlineDataset } from '../../../utils/charts/trendline';
 
 const RevocationAdmissionsSnapshot = (props) => {
   const [chartLabels, setChartLabels] = useState([]);
@@ -44,56 +47,126 @@ const RevocationAdmissionsSnapshot = (props) => {
   const processResponse = () => {
     const { revocationAdmissionsByMonth: countsByMonth } = props;
 
+    // For this chart specifically, we want the denominator for rates to be the total admission
+    // count in a given month across all supervision types and districts, while the numerator
+    // remains scoped to the selected supervision type and/or district, if selected.
+    let filteredCountsForAll = filterDatasetBySupervisionType(countsByMonth, 'ALL');
+    filteredCountsForAll = filterDatasetByDistrict(filteredCountsForAll, 'ALL');
+    const totalPrisonAdmissionsByYearAndMonth = {};
+
+    filteredCountsForAll.forEach((data) => {
+      const { year, month } = data;
+      const newAdmissions = toInt(data.new_admissions);
+      const technicals = toInt(data.technicals);
+      const nonTechnicals = toInt(data.non_technicals);
+      const unknownRevocations = toInt(data.unknown_revocations);
+      const total = technicals + nonTechnicals + unknownRevocations + newAdmissions;
+
+      if (!totalPrisonAdmissionsByYearAndMonth[year]) {
+        totalPrisonAdmissionsByYearAndMonth[year] = {};
+        totalPrisonAdmissionsByYearAndMonth[year][month] = total;
+      } else if (!totalPrisonAdmissionsByYearAndMonth[year][month]) {
+        totalPrisonAdmissionsByYearAndMonth[year][month] = total;
+      } else {
+        totalPrisonAdmissionsByYearAndMonth[year][month] += total;
+      }
+    });
+
+    // Proceed with normal data filtering and processing
+    let filteredCountsByMonth = filterDatasetBySupervisionType(
+      countsByMonth, props.supervisionType,
+    );
+
+    filteredCountsByMonth = filterDatasetByDistrict(
+      filteredCountsByMonth, props.district,
+    );
+
     const dataPoints = [];
-    if (countsByMonth) {
-      countsByMonth.forEach((data) => {
+    if (filteredCountsByMonth) {
+      filteredCountsByMonth.forEach((data) => {
         const { year, month } = data;
-        const newAdmissions = toInt(data.new_admissions);
         const technicals = toInt(data.technicals);
         const nonTechnicals = toInt(data.non_technicals);
         const unknownRevocations = toInt(data.unknown_revocations);
-        const total = technicals + nonTechnicals + unknownRevocations + newAdmissions;
         const revocations = (technicals + nonTechnicals + unknownRevocations);
-        const percentRevocations = (100 * (revocations / total)).toFixed(2);
-        dataPoints.push({ year, month, percentRevocations });
+
+        let percentRevocations = 0.00;
+        const totalAdmissionsForYearAndMonth = totalPrisonAdmissionsByYearAndMonth[year][month];
+        if (totalAdmissionsForYearAndMonth !== 0) {
+          percentRevocations = (100 * (revocations / totalAdmissionsForYearAndMonth)).toFixed(2);
+        }
+
+        if (props.metricType === 'counts') {
+          dataPoints.push({ year, month, value: revocations });
+        } else if (props.metricType === 'rates') {
+          dataPoints.push({ year, month, value: percentRevocations });
+        }
       });
     }
 
-    const sorted = sortAndFilterMostRecentMonths(dataPoints, 13);
-    const chartDataValues = sorted.map((element) => element.percentRevocations);
+    const months = getMonthCountFromTimeWindowToggle(props.timeWindow);
+    const sorted = sortFilterAndSupplementMostRecentMonths(
+      dataPoints, months, 'value', '0',
+    );
+    const chartDataValues = sorted.map((element) => element.value);
     const min = getMinForGoalAndData(GOAL.value, chartDataValues, stepSize);
     const max = getMaxForGoalAndData(GOAL.value, chartDataValues, stepSize);
+    const monthNames = monthNamesWithYearsFromNumbers(sorted.map((element) => element.month), true);
 
-    setChartLabels(monthNamesWithYearsFromNumbers(sorted.map((element) => element.month), true));
+    centerSingleMonthDatasetIfNecessary(chartDataValues, monthNames);
+    setChartLabels(monthNames);
     setChartDataPoints(chartDataValues);
     setChartMinValue(min);
     setChartMaxValue(max);
   };
 
+  function goalLineIfApplicable() {
+    if (canDisplayGoal(GOAL, props)) {
+      return chartAnnotationForGoal(GOAL, 'revocationAdmissionsSnapshotGoalLine', { yAdjust: 10 });
+    }
+    return null;
+  }
+
+  function datasetsWithTrendlineIfApplicable() {
+    const datasets = [{
+      label: toggleLabel(
+        { counts: 'Revocation admissions', rates: 'Percentage from revocations' },
+        props.metricType,
+      ),
+      backgroundColor: COLORS['blue-standard'],
+      borderColor: COLORS['blue-standard'],
+      pointBackgroundColor: COLORS['blue-standard'],
+      pointHoverBackgroundColor: COLORS['blue-standard'],
+      pointHoverBorderColor: COLORS['blue-standard'],
+      pointRadius: 4,
+      hitRadius: 5,
+      fill: false,
+      borderWidth: 2,
+      lineTension: 0,
+      data: chartDataPoints,
+    }];
+    if (canDisplayGoal(GOAL, props)) {
+      datasets.push(generateTrendlineDataset(chartDataPoints, COLORS['blue-standard-light']));
+    }
+    return datasets;
+  }
+
   useEffect(() => {
     processResponse();
-  }, [props.revocationAdmissionsByMonth]);
+  }, [
+    props.revocationAdmissionsByMonth,
+    props.metricType,
+    props.timeWindow,
+    props.supervisionType,
+    props.district,
+  ]);
 
   const chart = (
     <Line
       id={chartId}
       data={{
         labels: chartLabels,
-        datasets: [{
-          label: 'Percent of prison admissions from revocations',
-          backgroundColor: COLORS['blue-standard'],
-          borderColor: COLORS['blue-standard'],
-          pointBackgroundColor: COLORS['blue-standard'],
-          pointHoverBackgroundColor: COLORS['blue-standard'],
-          pointHoverBorderColor: COLORS['blue-standard'],
-          pointRadius: 4,
-          hitRadius: 5,
-          fill: false,
-          borderWidth: 2,
-          lineTension: 0,
-          data: chartDataPoints,
-        }, generateTrendlineDataset(chartDataPoints, COLORS['blue-standard-light']),
-        ],
+        datasets: datasetsWithTrendlineIfApplicable(),
       }}
       options={{
         legend: {
@@ -109,14 +182,16 @@ const RevocationAdmissionsSnapshot = (props) => {
           enabled: true,
           mode: 'point',
           callbacks: {
-            label: (tooltipItem, data) => (getTooltipWithoutTrendline(tooltipItem, data, '%')),
+            label: (tooltipItem, data) => updateTooltipForMetricType(
+              props.metricType, tooltipItem, data,
+            ),
           },
         },
         scales: {
           xAxes: [{
             ticks: {
               fontColor: COLORS['grey-600'],
-              autoSkip: false,
+              autoSkip: true,
             },
             scaleLabel: {
               display: true,
@@ -129,15 +204,16 @@ const RevocationAdmissionsSnapshot = (props) => {
             },
           }],
           yAxes: [{
-            ticks: {
-              fontColor: COLORS['grey-600'],
-              min: chartMinValue,
-              max: chartMaxValue,
-              stepSize,
-            },
+            ticks: toggleYAxisTicksBasedOnGoal(
+              canDisplayGoal(GOAL, props), chartMinValue, chartMaxValue, stepSize,
+              { fontColor: COLORS['grey-600'] },
+            ),
             scaleLabel: {
               display: true,
-              labelString: '% of admissions',
+              labelString: toggleLabel(
+                { counts: 'Revocation admissions', rates: '% of admissions' },
+                props.metricType,
+              ),
               fontColor: COLORS['grey-500'],
               fontStyle: 'bold',
             },
@@ -146,56 +222,7 @@ const RevocationAdmissionsSnapshot = (props) => {
             },
           }],
         },
-        annotation: {
-          drawTime: 'afterDatasetsDraw',
-          events: ['click'],
-
-          // Array of annotation configuration objects
-          // See below for detailed descriptions of the annotation options
-          annotations: [{
-            type: 'line',
-            mode: 'horizontal',
-            value: GOAL.value,
-
-            // optional annotation ID (must be unique)
-            id: 'revocationAdmissionsSnapshotGoalLine',
-            scaleID: 'y-axis-0',
-
-            drawTime: 'afterDatasetsDraw',
-
-            borderColor: COLORS['red-standard'],
-            borderWidth: 2,
-            borderDash: [2, 2],
-            borderDashOffset: 5,
-            label: {
-              enabled: true,
-              content: goalLabelContentString(GOAL),
-              position: 'right',
-
-              // Background color of label, default below
-              backgroundColor: 'rgba(0, 0, 0, 0)',
-
-              fontFamily: 'sans-serif',
-              fontSize: 12,
-              fontStyle: 'bold',
-              fontColor: COLORS['red-standard'],
-
-              // Adjustment along x-axis (left-right) of label relative to above
-              // number (can be negative). For horizontal lines positioned left
-              // or right, negative values move the label toward the edge, and
-              // positive values toward the center.
-              xAdjust: 0,
-
-              // Adjustment along y-axis (top-bottom) of label relative to above
-              // number (can be negative). For vertical lines positioned top or
-              // bottom, negative values move the label toward the edge, and
-              // positive values toward the center.
-              yAdjust: 10,
-            },
-
-            onClick(e) { return e; },
-          }],
-        },
+        annotation: goalLineIfApplicable(),
       }}
     />
   );
@@ -208,15 +235,18 @@ const RevocationAdmissionsSnapshot = (props) => {
   };
   configureDownloadButtons(chartId, 'PRISON ADMISSIONS DUE TO REVOCATION', chart.props.data.datasets,
     chart.props.data.labels, document.getElementById(chartId),
-    exportedStructureCallback);
+    exportedStructureCallback, props, true, true);
 
   const header = document.getElementById(props.header);
-  const trendlineValues = chart.props.data.datasets[1].data;
-  const trendlineText = trendlineGoalText(trendlineValues, GOAL);
 
-  if (header) {
+  if (header && canDisplayGoal(GOAL, props)) {
+    const trendlineValues = chart.props.data.datasets[1].data;
+    const trendlineText = trendlineGoalText(trendlineValues, GOAL);
+
     const title = `The percent of prison admissions due to revocations of probation and parole has been <b style='color:#809AE5'>trending ${trendlineText}.</b>`;
     header.innerHTML = title;
+  } else if (header) {
+    header.innerHTML = '';
   }
 
   return (chart);

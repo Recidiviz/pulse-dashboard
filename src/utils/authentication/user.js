@@ -42,7 +42,8 @@ function getStateNameForCode(stateCode) {
 
 /**
  * Returns the state code of the authorized state for the given user.
- * For Recidiviz users, this will be 'recidiviz'.
+ * For Recidiviz users, this will be 'recidiviz'. In demo mode, all users can be considered
+ * Recidiviz users since no data is exposed.
  */
 function getUserStateCode(user) {
   if (isDemoMode()) {

@@ -49,7 +49,7 @@ function canShowAuthenticatedView(isAuthenticated) {
  */
 function isViewAvailableForUserState(user, view) {
   const stateCode = getUserStateCode(user);
-  const normalizedCode = (stateCode === 'recidiviz')
+  const normalizedCode = (stateCode.toLowerCase() === 'recidiviz')
     ? getCurrentStateForRecidivizUsers() : stateCode.toLowerCase();
 
   const permittedViews = getAvailableViewsForState(normalizedCode);
