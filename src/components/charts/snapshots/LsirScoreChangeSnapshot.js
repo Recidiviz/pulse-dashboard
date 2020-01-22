@@ -25,7 +25,7 @@ import {
   chartAnnotationForGoal,
 } from '../../../utils/charts/metricGoal';
 import {
-  getMonthCountFromTimeWindowToggle, filterDatasetBySupervisionType,
+  getMonthCountFromMetricPeriodMonthsToggle, filterDatasetBySupervisionType,
   filterDatasetByDistrict, canDisplayGoal, centerSingleMonthDatasetIfNecessary,
 } from '../../../utils/charts/toggles';
 import {
@@ -65,7 +65,7 @@ const LsirScoreChangeSnapshot = (props) => {
       });
     }
 
-    const months = getMonthCountFromTimeWindowToggle(props.timeWindow);
+    const months = getMonthCountFromMetricPeriodMonthsToggle(props.metricPeriodMonths);
     const sorted = sortFilterAndSupplementMostRecentMonths(dataPoints, months, 'change', '0.0');
     const chartDataValues = sorted.map((element) => element.change);
     const min = getMinForGoalAndData(GOAL.value, chartDataValues, stepSize);
@@ -111,7 +111,7 @@ const LsirScoreChangeSnapshot = (props) => {
     processResponse();
   }, [
     props.lsirScoreChangeByMonth,
-    props.timeWindow,
+    props.metricPeriodMonths,
     props.supervisionType,
     props.district,
   ]);

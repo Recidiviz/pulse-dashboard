@@ -25,7 +25,7 @@ import {
   chartAnnotationForGoal,
 } from '../../../utils/charts/metricGoal';
 import {
-  getMonthCountFromTimeWindowToggle, canDisplayGoal,
+  getMonthCountFromMetricPeriodMonthsToggle, canDisplayGoal,
   centerSingleMonthDatasetIfNecessary,
 } from '../../../utils/charts/toggles';
 import {
@@ -56,7 +56,7 @@ const DaysAtLibertySnapshot = (props) => {
       });
     }
 
-    const months = getMonthCountFromTimeWindowToggle(props.timeWindow);
+    const months = getMonthCountFromMetricPeriodMonthsToggle(props.metricPeriodMonths);
     const sorted = sortFilterAndSupplementMostRecentMonths(dataPoints, months, 'average', '0.0');
     const chartDataValues = sorted.map((element) => element.average);
     const min = getMinForGoalAndData(GOAL.value, chartDataValues, stepSize);
@@ -102,7 +102,7 @@ const DaysAtLibertySnapshot = (props) => {
     processResponse();
   }, [
     props.daysAtLibertyByMonth,
-    props.timeWindow,
+    props.metricPeriodMonths,
   ]);
 
   const chart = (

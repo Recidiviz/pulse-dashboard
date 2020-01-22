@@ -40,7 +40,7 @@ const Snapshots = () => {
   const [apiData, setApiData] = useState({});
   const [awaitingApi, setAwaitingApi] = useState(true);
   const [chartMetricType, setChartMetricType] = useState(ToggleDefaults.metricType);
-  const [chartTimeWindow, setChartTimeWindow] = useState(ToggleDefaults.timeWindow);
+  const [chartMetricPeriodMonths, setChartMetricPeriodMonths] = useState(ToggleDefaults.metricPeriodMonths);
   const [chartSupervisionType, setChartSupervisionType] = useState(ToggleDefaults.supervisionType);
   const [chartDistrict, setChartDistrict] = useState(ToggleDefaults.district);
   const [geoViewEnabledSCOS, setGeoViewEnabledSCOS] = useState(ToggleDefaults.geoView);
@@ -75,7 +75,7 @@ const Snapshots = () => {
 
         <ToggleBar
           setChartMetricType={setChartMetricType}
-          setChartTimeWindow={setChartTimeWindow}
+          setChartMetricPeriodMonths={setChartMetricPeriodMonths}
           setChartSupervisionType={setChartSupervisionType}
           setChartDistrict={setChartDistrict}
           availableDistricts={['beulah', 'bismarck', 'bottineau', 'devils-lake', 'dickson', 'fargo', 'grafton', 'grand-forks', 'jamestown', 'mandan', 'minot', 'oakes', 'rolla', 'washburn', 'wahpeton', 'williston']}
@@ -121,7 +121,7 @@ const Snapshots = () => {
                       {geoViewEnabledSCOS === false && (
                         <SupervisionSuccessSnapshot
                           metricType={chartMetricType}
-                          timeWindow={chartTimeWindow}
+                          metricPeriodMonths={chartMetricPeriodMonths}
                           supervisionType={chartSupervisionType}
                           district={chartDistrict}
                           supervisionSuccessRates={apiData.supervision_termination_by_type_by_month}
@@ -133,7 +133,7 @@ const Snapshots = () => {
                           chartId="supervisionSuccessSnapshot"
                           chartTitle="SUCCESSFUL COMPLETION OF SUPERVISION"
                           metricType={chartMetricType}
-                          timeWindow={chartTimeWindow}
+                          metricPeriodMonths={chartMetricPeriodMonths}
                           supervisionType={chartSupervisionType}
                           keyedByOffice={true}
                           officeData={apiData.site_offices}
@@ -212,7 +212,7 @@ const Snapshots = () => {
                       {geoViewEnabledPDTR === false && (
                         <RevocationAdmissionsSnapshot
                           metricType={chartMetricType}
-                          timeWindow={chartTimeWindow}
+                          metricPeriodMonths={chartMetricPeriodMonths}
                           supervisionType={chartSupervisionType}
                           district={chartDistrict}
                           revocationAdmissionsByMonth={apiData.admissions_by_type_by_month}
@@ -224,7 +224,7 @@ const Snapshots = () => {
                           chartId="revocationAdmissionsSnapshot"
                           chartTitle="PRISON ADMISSIONS DUE TO REVOCATION"
                           metricType={chartMetricType}
-                          timeWindow={chartTimeWindow}
+                          metricPeriodMonths={chartMetricPeriodMonths}
                           supervisionType={chartSupervisionType}
                           keyedByOffice
                           shareDenominatorAcrossRates
@@ -304,7 +304,7 @@ const Snapshots = () => {
                   <div className="ai-c jc-c gapX-20">
                     <div className="col-md-12">
                       <DaysAtLibertySnapshot
-                        timeWindow={chartTimeWindow}
+                        metricPeriodMonths={chartMetricPeriodMonths}
                         daysAtLibertyByMonth={apiData.avg_days_at_liberty_by_month}
                         header="daysAtLibertySnapshot-header"
                       />
@@ -378,7 +378,7 @@ const Snapshots = () => {
                     <div className="col-md-12">
                       {geoViewEnabledALSI === false && (
                         <LsirScoreChangeSnapshot
-                          timeWindow={chartTimeWindow}
+                          metricPeriodMonths={chartMetricPeriodMonths}
                           supervisionType={chartSupervisionType}
                           district={chartDistrict}
                           lsirScoreChangeByMonth={apiData.average_change_lsir_score_by_month}
@@ -390,7 +390,7 @@ const Snapshots = () => {
                           chartId="lsirScoreChangeSnapshot"
                           chartTitle="LSI-R SCORE CHANGES (AVERAGE)"
                           metricType="counts"
-                          timeWindow={chartTimeWindow}
+                          metricPeriodMonths={chartMetricPeriodMonths}
                           supervisionType={chartSupervisionType}
                           keyedByOffice={true}
                           officeData={apiData.site_offices}

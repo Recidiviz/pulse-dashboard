@@ -21,7 +21,7 @@ import { Bar } from 'react-chartjs-2';
 import { COLORS, COLORS_GOOD_BAD } from '../../../assets/scripts/constants/colors';
 import { configureDownloadButtons } from '../../../assets/scripts/utils/downloads';
 import {
-  toggleLabel, getMonthCountFromTimeWindowToggle, updateTooltipForMetricType,
+  toggleLabel, getMonthCountFromMetricPeriodMonthsToggle, updateTooltipForMetricType,
   filterDatasetByDistrict,
 } from '../../../utils/charts/toggles';
 import { sortFilterAndSupplementMostRecentMonths } from '../../../utils/transforms/datasets';
@@ -70,7 +70,7 @@ const AdmissionsVsReleases = (props) => {
       });
     }
 
-    const months = getMonthCountFromTimeWindowToggle(props.timeWindow);
+    const months = getMonthCountFromMetricPeriodMonthsToggle(props.metricPeriodMonths);
     const sorted = sortFilterAndSupplementMostRecentMonths(dataPoints, months, 'value', 0);
 
     const colorsForValues = [];
@@ -92,7 +92,7 @@ const AdmissionsVsReleases = (props) => {
   }, [
     props.admissionsVsReleases,
     props.metricType,
-    props.timeWindow,
+    props.metricPeriodMonths,
     props.district,
   ]);
 

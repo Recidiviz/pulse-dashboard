@@ -22,7 +22,7 @@ import { Bar } from 'react-chartjs-2';
 import { COLORS, COLORS_FIVE_VALUES } from '../../../assets/scripts/constants/colors';
 import { configureDownloadButtons } from '../../../assets/scripts/utils/downloads';
 import {
-  toggleLabel, filterDatasetBySupervisionType, filterDatasetByTimeWindow,
+  toggleLabel, filterDatasetBySupervisionType, filterDatasetByMetricPeriodMonths,
   updateTooltipForMetricType, toggleYAxisTicksStackedRateBasicCount,
 } from '../../../utils/charts/toggles';
 import { toHtmlFriendly, toHumanReadable, toInt } from '../../../utils/transforms/labels';
@@ -163,8 +163,8 @@ const RevocationCountByOfficer = (props) => {
       revocationCountsByOfficer, props.supervisionType.toUpperCase(),
     );
 
-    const revocationCountsByOfficerAndTime = filterDatasetByTimeWindow(
-      revocationCountsByOfficerAndSupervisionType, props.timeWindow,
+    const revocationCountsByOfficerAndTime = filterDatasetByMetricPeriodMonths(
+      revocationCountsByOfficerAndSupervisionType, props.metricPeriodMonths,
     );
 
     const dataPoints = {};
@@ -229,7 +229,7 @@ const RevocationCountByOfficer = (props) => {
   }, [
     props.revocationCountsByOfficer,
     props.metricType,
-    props.timeWindow,
+    props.metricPeriodMonths,
     props.supervisionType,
     props.district,
   ]);

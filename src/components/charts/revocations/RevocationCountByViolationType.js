@@ -21,7 +21,7 @@ import { Bar } from 'react-chartjs-2';
 import { COLORS, COLORS_FIVE_VALUES } from '../../../assets/scripts/constants/colors';
 import { configureDownloadButtons } from '../../../assets/scripts/utils/downloads';
 import {
-  toggleLabel, getMonthCountFromTimeWindowToggle, updateTooltipForMetricType,
+  toggleLabel, getMonthCountFromMetricPeriodMonthsToggle, updateTooltipForMetricType,
   filterDatasetBySupervisionType, filterDatasetByDistrict,
   toggleYAxisTicksStackedRateBasicCount,
 } from '../../../utils/charts/toggles';
@@ -86,7 +86,7 @@ const RevocationCountByViolationType = (props) => {
       UNKNOWN_VIOLATION_TYPE: 0,
     };
 
-    const months = getMonthCountFromTimeWindowToggle(props.timeWindow);
+    const months = getMonthCountFromMetricPeriodMonthsToggle(props.metricPeriodMonths);
     const sorted = sortFilterAndSupplementMostRecentMonths(dataPoints, months, 'monthDict', emptyMonthDict);
     const monthsLabels = [];
     const violationArrays = {
@@ -116,7 +116,7 @@ const RevocationCountByViolationType = (props) => {
   }, [
     props.revocationCountsByMonthByViolationType,
     props.metricType,
-    props.timeWindow,
+    props.metricPeriodMonths,
     props.supervisionType,
     props.district,
   ]);

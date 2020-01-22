@@ -24,7 +24,7 @@ import {
   getGoalForChart, getMaxForGoalAndDataIfGoalDisplayable, chartAnnotationForGoal,
 } from '../../../utils/charts/metricGoal';
 import {
-  toggleLabel, getMonthCountFromTimeWindowToggle, updateTooltipForMetricType,
+  toggleLabel, getMonthCountFromMetricPeriodMonthsToggle, updateTooltipForMetricType,
   filterDatasetByDistrict, canDisplayGoal, toggleYAxisTicksFor,
   centerSingleMonthDatasetIfNecessary,
 } from '../../../utils/charts/toggles';
@@ -70,7 +70,7 @@ const ReincarcerationCountOverTime = (props) => {
       });
     }
 
-    const months = getMonthCountFromTimeWindowToggle(props.timeWindow);
+    const months = getMonthCountFromMetricPeriodMonthsToggle(props.metricPeriodMonths);
     const sorted = sortFilterAndSupplementMostRecentMonths(dataPoints, months, 'value', 0);
     const chartDataValues = (sorted.map((element) => element.value));
     const max = getMaxForGoalAndDataIfGoalDisplayable(GOAL, chartDataValues, stepSize, props);
@@ -95,7 +95,7 @@ const ReincarcerationCountOverTime = (props) => {
   }, [
     props.reincarcerationCountsByMonth,
     props.metricType,
-    props.timeWindow,
+    props.metricPeriodMonths,
     props.district,
   ]);
 

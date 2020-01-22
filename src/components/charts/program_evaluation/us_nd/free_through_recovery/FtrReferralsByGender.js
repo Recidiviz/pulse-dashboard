@@ -24,7 +24,7 @@ import {
 import { configureDownloadButtons } from '../../../../../assets/scripts/utils/downloads';
 import {
   filterDatasetBySupervisionType, filterDatasetByDistrict,
-  filterDatasetByTimeWindow,
+  filterDatasetByMetricPeriodMonths,
 } from '../../../../../utils/charts/toggles';
 import { tooltipForCountChart, tooltipForRateChart } from '../../../../../utils/charts/tooltips';
 import { sortByLabel } from '../../../../../utils/transforms/datasets';
@@ -51,7 +51,7 @@ const FtrReferralsByGender = (props) => {
       filteredFtrReferrals, props.district,
     );
 
-    filteredFtrReferrals = filterDatasetByTimeWindow(filteredFtrReferrals, props.timeWindow);
+    filteredFtrReferrals = filterDatasetByMetricPeriodMonths(filteredFtrReferrals, props.metricPeriodMonths);
 
     let filteredSupervisionPopulation = filterDatasetBySupervisionType(
       supervisionPopulationByGender, props.supervisionType,
@@ -61,8 +61,8 @@ const FtrReferralsByGender = (props) => {
       filteredSupervisionPopulation, props.district,
     );
 
-    filteredSupervisionPopulation = filterDatasetByTimeWindow(
-      filteredSupervisionPopulation, props.timeWindow,
+    filteredSupervisionPopulation = filterDatasetByMetricPeriodMonths(
+      filteredSupervisionPopulation, props.metricPeriodMonths,
     );
 
     const ftrReferralDataPoints = [];
@@ -121,7 +121,7 @@ const FtrReferralsByGender = (props) => {
     props.ftrReferralsByGender,
     props.supervisionPopulationByGender,
     props.metricType,
-    props.timeWindow,
+    props.metricPeriodMonths,
     props.supervisionType,
     props.district,
   ]);

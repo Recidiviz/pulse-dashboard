@@ -22,7 +22,7 @@ import { COLORS_FIVE_VALUES, COLORS } from '../../../assets/scripts/constants/co
 import { configureDownloadButtons } from '../../../assets/scripts/utils/downloads';
 import {
   filterDatasetBySupervisionType, filterDatasetByDistrict,
-  filterDatasetByTimeWindow,
+  filterDatasetByMetricPeriodMonths,
 } from '../../../utils/charts/toggles';
 import { sortByLabel } from '../../../utils/transforms/datasets';
 import { raceValueToHumanReadable, toInt } from '../../../utils/transforms/labels';
@@ -60,12 +60,12 @@ const RevocationProportionByRace = (props) => {
       filteredSupervisionPopulation, props.district,
     );
 
-    const revocationProportionByRaceAndTime = filterDatasetByTimeWindow(
-      filteredRevocationProportions, props.timeWindow,
+    const revocationProportionByRaceAndTime = filterDatasetByMetricPeriodMonths(
+      filteredRevocationProportions, props.metricPeriodMonths,
     );
 
-    const supervisionPopulationByRaceAndTime = filterDatasetByTimeWindow(
-      filteredSupervisionPopulation, props.timeWindow,
+    const supervisionPopulationByRaceAndTime = filterDatasetByMetricPeriodMonths(
+      filteredSupervisionPopulation, props.metricPeriodMonths,
     );
 
     const revocationDataPoints = [];
@@ -147,7 +147,7 @@ const RevocationProportionByRace = (props) => {
     props.revocationProportionByRace,
     props.supervisionPopulationByRace,
     props.metricType,
-    props.timeWindow,
+    props.metricPeriodMonths,
     props.supervisionType,
     props.district,
   ]);

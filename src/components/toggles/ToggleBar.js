@@ -20,7 +20,7 @@ import React from 'react';
 import DistrictToggle from './DistrictToggle';
 import MetricTypeToggle from './MetricTypeToggle';
 import SupervisionTypeToggle from './SupervisionTypeToggle';
-import TimeWindowToggle from './TimeWindowToggle';
+import MetricPeriodToggle from './MetricPeriodToggle';
 
 const ToggleBar = (props) => (
   <div className="row gap-20">
@@ -34,9 +34,9 @@ const ToggleBar = (props) => (
           </div>
           )}
 
-          {props.setChartTimeWindow && (
+          {props.setChartMetricPeriodMonths && (
           <div className="col-md-4">
-            <TimeWindowToggle onTimeUpdate={props.setChartTimeWindow} />
+            <MetricPeriodToggle onMetricPeriodMonthsUpdate={props.setChartMetricPeriodMonths} />
           </div>
           )}
 

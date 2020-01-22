@@ -28,7 +28,7 @@ import {
   chartAnnotationForGoal,
 } from '../../../utils/charts/metricGoal';
 import {
-  getMonthCountFromTimeWindowToggle, filterDatasetBySupervisionType,
+  getMonthCountFromMetricPeriodMonthsToggle, filterDatasetBySupervisionType,
   filterDatasetByDistrict, updateTooltipForMetricType, toggleLabel, canDisplayGoal,
   toggleYAxisTicksAdditionalOptions, centerSingleMonthDatasetIfNecessary,
 } from '../../../utils/charts/toggles';
@@ -84,7 +84,7 @@ const SupervisionSuccessSnapshot = (props) => {
         }
       });
     }
-    const months = getMonthCountFromTimeWindowToggle(props.timeWindow);
+    const months = getMonthCountFromMetricPeriodMonthsToggle(props.metricPeriodMonths);
     const sorted = sortFilterAndSupplementMostRecentMonths(
       dataPoints, months, 'value', '0',
     );
@@ -136,7 +136,7 @@ const SupervisionSuccessSnapshot = (props) => {
   }, [
     props.supervisionSuccessRates,
     props.metricType,
-    props.timeWindow,
+    props.metricPeriodMonths,
     props.supervisionType,
     props.district,
   ]);

@@ -21,7 +21,7 @@ import { Bar, Pie } from 'react-chartjs-2';
 import { COLORS, COLORS_FIVE_VALUES } from '../../../assets/scripts/constants/colors';
 import { configureDownloadButtons } from '../../../assets/scripts/utils/downloads';
 import {
-  filterDatasetByDistrict, filterDatasetBySupervisionType, filterDatasetByTimeWindow,
+  filterDatasetByDistrict, filterDatasetBySupervisionType, filterDatasetByMetricPeriodMonths,
 } from '../../../utils/charts/toggles';
 import { sortByLabel } from '../../../utils/transforms/datasets';
 import { toInt } from '../../../utils/transforms/labels';
@@ -48,7 +48,7 @@ const AdmissionCountsByType = (props) => {
     // new admissions admission count where supervision type and district both equal ALL
     let filteredForNewAdmission = filterDatasetBySupervisionType(admissionCountsByType, 'ALL');
     filteredForNewAdmission = filterDatasetByDistrict(filteredForNewAdmission, 'ALL');
-    filteredForNewAdmission = filterDatasetByTimeWindow(filteredForNewAdmission, props.timeWindow);
+    filteredForNewAdmission = filterDatasetByMetricPeriodMonths(filteredForNewAdmission, props.metricPeriodMonths);
 
     filteredForNewAdmission.forEach((data) => {
       const { admission_type: admissionType } = data;
@@ -77,8 +77,8 @@ const AdmissionCountsByType = (props) => {
       filteredAdmissionCounts, filterSupervisionType,
     );
 
-    filteredAdmissionCounts = filterDatasetByTimeWindow(
-      filteredAdmissionCounts, props.timeWindow,
+    filteredAdmissionCounts = filterDatasetByMetricPeriodMonths(
+      filteredAdmissionCounts, props.metricPeriodMonths,
     );
 
     if (filteredAdmissionCounts) {
@@ -239,7 +239,7 @@ const AdmissionCountsByType = (props) => {
     props.admissionCountsByType,
     props.metricType,
     props.supervisionType,
-    props.timeWindow,
+    props.metricPeriodMonths,
     props.district,
   ]);
 

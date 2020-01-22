@@ -21,7 +21,7 @@ import { Bar } from 'react-chartjs-2';
 import { COLORS, COLORS_STACKED_TWO_VALUES } from '../../../assets/scripts/constants/colors';
 import { configureDownloadButtons } from '../../../assets/scripts/utils/downloads';
 import {
-  toggleLabel, getMonthCountFromTimeWindowToggle, updateTooltipForMetricType,
+  toggleLabel, getMonthCountFromMetricPeriodMonthsToggle, updateTooltipForMetricType,
   filterDatasetByDistrict, toggleYAxisTicksStackedRateBasicCount,
 } from '../../../utils/charts/toggles';
 import { sortFilterAndSupplementMostRecentMonths } from '../../../utils/transforms/datasets';
@@ -67,7 +67,7 @@ const RevocationCountBySupervisionType = (props) => {
       });
     }
 
-    const months = getMonthCountFromTimeWindowToggle(props.timeWindow);
+    const months = getMonthCountFromMetricPeriodMonthsToggle(props.metricPeriodMonths);
     const sortedParoleData = sortFilterAndSupplementMostRecentMonths(paroleData, months, 'paroleValue', 0);
     const sortedProbationData = sortFilterAndSupplementMostRecentMonths(probationData, months, 'probationValue', 0);
 
@@ -83,7 +83,7 @@ const RevocationCountBySupervisionType = (props) => {
   }, [
     props.revocationCountsByMonthBySupervisionType,
     props.metricType,
-    props.timeWindow,
+    props.metricPeriodMonths,
     props.district,
   ]);
 

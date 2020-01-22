@@ -39,7 +39,7 @@ const Reincarcerations = () => {
   const [apiData, setApiData] = useState({});
   const [awaitingApi, setAwaitingApi] = useState(true);
   const [chartMetricType, setChartMetricType] = useState(ToggleDefaults.metricType);
-  const [chartTimeWindow, setChartTimeWindow] = useState(ToggleDefaults.timeWindow);
+  const [chartMetricPeriodMonths, setChartMetricPeriodMonths] = useState(ToggleDefaults.metricPeriodMonths);
   const [chartDistrict, setChartDistrict] = useState(ToggleDefaults.district);
   const [geoViewEnabledRCOT, setGeoViewEnabledRCOT] = useState(ToggleDefaults.geoView);
   const [geoViewEnabledAVR, setGeoViewEnabledAVR] = useState(ToggleDefaults.geoView);
@@ -72,7 +72,7 @@ const Reincarcerations = () => {
 
         <ToggleBar
           setChartMetricType={setChartMetricType}
-          setChartTimeWindow={setChartTimeWindow}
+          setChartMetricPeriodMonths={setChartMetricPeriodMonths}
           setChartDistrict={setChartDistrict}
           availableDistricts={['adams-county', 'barnes-county', 'benson-county', 'billson-county', 'bottineau-county', 'bowman-county', 'burke-county', 'burleigh-county', 'cass-county', 'cavalier-county', 'dickey-county', 'divide-county', 'dunn-county', 'eddy-county', 'emmons-county', 'foster-county', 'golden-valley-county', 'grand-forks-county', 'grant-county', 'griggs-county', 'hettinger-county', 'kidder-county', 'laMoure-county', 'logan-county', 'mcHenry-county', 'mcIntosh-county', 'mcKenzie-county', 'mcLean-county', 'mercer-county', 'morton-county', 'mountrail-county', 'nelson-county', 'oliver-county', 'pembina-county', 'pierce-county', 'ramsey-county', 'ransom-county', 'renville-county', 'richland-county', 'rolette-county', 'sargent-county', 'sheridan-county', 'sioux-county', 'slope-county', 'stark-county', 'steele-county', 'stutsman-county', 'towner-county', 'traill-county', 'walsh-county', 'ward-county', 'wells-county', 'williams-county']}
           replaceLa={true}
@@ -114,7 +114,7 @@ const Reincarcerations = () => {
                   {geoViewEnabledRCOT === false && (
                     <ReincarcerationCountOverTime
                       metricType={chartMetricType}
-                      timeWindow={chartTimeWindow}
+                      metricPeriodMonths={chartMetricPeriodMonths}
                       district={chartDistrict}
                       reincarcerationCountsByMonth={apiData.reincarcerations_by_month}
                       header="reincarcerationCountsByMonth-header"
@@ -125,7 +125,7 @@ const Reincarcerations = () => {
                       chartId="reincarcerationCountsByMonth"
                       chartTitle="REINCARCERATIONS BY MONTH"
                       metricType={chartMetricType}
-                      timeWindow={chartTimeWindow}
+                      metricPeriodMonths={chartMetricPeriodMonths}
                       keyedByOffice={false}
                       dataPointsByOffice={apiData.reincarcerations_over_time_window}
                       numeratorKeys={['returns']}
@@ -211,7 +211,7 @@ const Reincarcerations = () => {
                   {geoViewEnabledAVR === false && (
                     <AdmissionsVsReleases
                       metricType={chartMetricType}
-                      timeWindow={chartTimeWindow}
+                      metricPeriodMonths={chartMetricPeriodMonths}
                       district={chartDistrict}
                       admissionsVsReleases={apiData.admissions_versus_releases_by_month}
                       header="admissionsVsReleases-header"
@@ -222,7 +222,7 @@ const Reincarcerations = () => {
                       chartId="admissionsVsReleases"
                       chartTitle="ADMISSIONS VERSUS RELEASES"
                       metricType={chartMetricType}
-                      timeWindow={chartTimeWindow}
+                      metricPeriodMonths={chartMetricPeriodMonths}
                       keyedByOffice={false}
                       dataPointsByOffice={apiData.admissions_versus_releases_over_time_window}
                       numeratorKeys={['population_change']}
@@ -287,7 +287,7 @@ const Reincarcerations = () => {
                 <div className="layer w-100 pX-20 pT-20">
                   <h6 className="lh-1">
                     REINCARCERATION RATE BY PREVIOUS STAY LENGTH
-                    {(chartMetricType !== 'rates' || (chartTimeWindow !== '12')) && (
+                    {(chartMetricType !== 'rates' || (chartMetricPeriodMonths !== '12')) && (
                       <span className="pL-10 c-orange-500 ti-alert" data-toggle="tooltip" data-placement="bottom" title="This graph is showing the reincarceration rate by previous stay length with the follow up period noted below. It cannot show this metric as a count. It also does not show follow up periods other than 1 year." />
                     )}
                     <span className="fa-pull-right">
