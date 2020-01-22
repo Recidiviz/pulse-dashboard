@@ -38,11 +38,7 @@ const RevocationProportionByRace = (props) => {
   const chartId = 'revocationsByRace';
 
   const processResponse = () => {
-    const {
-      revocationProportionByRace,
-      supervisionPopulationByRace,
-      statePopulationByRace,
-    } = props;
+    const { revocationProportionByRace, statePopulationByRace } = props;
 
     let filteredRevocationProportions = filterDatasetBySupervisionType(
       revocationProportionByRace, props.supervisionType,
@@ -52,37 +48,26 @@ const RevocationProportionByRace = (props) => {
       filteredRevocationProportions, props.district,
     );
 
-    let filteredSupervisionPopulation = filterDatasetBySupervisionType(
-      supervisionPopulationByRace, props.supervisionType,
-    );
-
-    filteredSupervisionPopulation = filterDatasetByDistrict(
-      filteredSupervisionPopulation, props.district,
-    );
-
     const revocationProportionByRaceAndTime = filterDatasetByMetricPeriodMonths(
       filteredRevocationProportions, props.metricPeriodMonths,
     );
 
-    const supervisionPopulationByRaceAndTime = filterDatasetByMetricPeriodMonths(
-      filteredSupervisionPopulation, props.metricPeriodMonths,
-    );
-
     const revocationDataPoints = [];
+    const supervisionDataPoints = [];
+
     if (revocationProportionByRaceAndTime) {
       revocationProportionByRaceAndTime.forEach((data) => {
         const { race_or_ethnicity: race } = data;
-        const count = toInt(data.revocation_count, 10);
-        revocationDataPoints.push({ race: raceValueToHumanReadable(race), count });
-      });
-    }
 
-    const supervisionDataPoints = [];
-    if (supervisionPopulationByRaceAndTime) {
-      supervisionPopulationByRaceAndTime.forEach((data) => {
-        const { race_or_ethnicity: race } = data;
-        const count = toInt(data.count);
-        supervisionDataPoints.push({ race: raceValueToHumanReadable(race), count });
+        const revocationCount = toInt(data.revocation_count, 10);
+        revocationDataPoints.push(
+          { race: raceValueToHumanReadable(race), count: revocationCount },
+        );
+
+        const totalSupervisionPopulation = toInt(data.total_supervision_count);
+        supervisionDataPoints.push(
+          { race: raceValueToHumanReadable(race), count: totalSupervisionPopulation },
+        );
       });
     }
 
@@ -145,7 +130,6 @@ const RevocationProportionByRace = (props) => {
     processResponse();
   }, [
     props.revocationProportionByRace,
-    props.supervisionPopulationByRace,
     props.metricType,
     props.metricPeriodMonths,
     props.supervisionType,

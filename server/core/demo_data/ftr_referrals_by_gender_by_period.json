@@ -1,510 +1,510 @@
-{"state_code":"US_DEMO","gender":"FEMALE","count":"7","metric_period_months":"1","supervision_type":"PAROLE","district":"bismarck"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"2","metric_period_months":"1","supervision_type":"PAROLE","district":"jamestown"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"1","metric_period_months":"1","supervision_type":"PAROLE","district":"minot"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"5","metric_period_months":"1","supervision_type":"PAROLE","district":"fargo"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"0","metric_period_months":"1","supervision_type":"PAROLE","district":"grand-forks"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"4","metric_period_months":"1","supervision_type":"PAROLE","district":"devils-lake"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"1","metric_period_months":"1","supervision_type":"PAROLE","district":"wahpeton"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"4","metric_period_months":"1","supervision_type":"PAROLE","district":"rolla"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"0","metric_period_months":"1","supervision_type":"PAROLE","district":"washburn"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"1","metric_period_months":"1","supervision_type":"PAROLE","district":"williston"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"1","metric_period_months":"1","supervision_type":"PAROLE","district":"dickson"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"1","metric_period_months":"1","supervision_type":"PAROLE","district":"grafton"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"2","metric_period_months":"1","supervision_type":"PAROLE","district":"mandan"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"0","metric_period_months":"1","supervision_type":"PAROLE","district":"bottineau"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"2","metric_period_months":"1","supervision_type":"PAROLE","district":"oakes"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"2","metric_period_months":"1","supervision_type":"PAROLE","district":"beulah"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"0","metric_period_months":"1","supervision_type":"PROBATION","district":"bismarck"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"1","metric_period_months":"1","supervision_type":"PROBATION","district":"jamestown"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"3","metric_period_months":"1","supervision_type":"PROBATION","district":"minot"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"0","metric_period_months":"1","supervision_type":"PROBATION","district":"fargo"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"2","metric_period_months":"1","supervision_type":"PROBATION","district":"grand-forks"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"0","metric_period_months":"1","supervision_type":"PROBATION","district":"devils-lake"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"4","metric_period_months":"1","supervision_type":"PROBATION","district":"wahpeton"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"1","metric_period_months":"1","supervision_type":"PROBATION","district":"rolla"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"2","metric_period_months":"1","supervision_type":"PROBATION","district":"washburn"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"2","metric_period_months":"1","supervision_type":"PROBATION","district":"williston"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"0","metric_period_months":"1","supervision_type":"PROBATION","district":"dickson"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"3","metric_period_months":"1","supervision_type":"PROBATION","district":"grafton"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"2","metric_period_months":"1","supervision_type":"PROBATION","district":"mandan"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"1","metric_period_months":"1","supervision_type":"PROBATION","district":"bottineau"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"1","metric_period_months":"1","supervision_type":"PROBATION","district":"oakes"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"0","metric_period_months":"1","supervision_type":"PROBATION","district":"beulah"}
-{"state_code":"US_DEMO","gender":"MALE","count":"0","metric_period_months":"1","supervision_type":"PAROLE","district":"bismarck"}
-{"state_code":"US_DEMO","gender":"MALE","count":"2","metric_period_months":"1","supervision_type":"PAROLE","district":"jamestown"}
-{"state_code":"US_DEMO","gender":"MALE","count":"1","metric_period_months":"1","supervision_type":"PAROLE","district":"minot"}
-{"state_code":"US_DEMO","gender":"MALE","count":"1","metric_period_months":"1","supervision_type":"PAROLE","district":"fargo"}
-{"state_code":"US_DEMO","gender":"MALE","count":"1","metric_period_months":"1","supervision_type":"PAROLE","district":"grand-forks"}
-{"state_code":"US_DEMO","gender":"MALE","count":"1","metric_period_months":"1","supervision_type":"PAROLE","district":"devils-lake"}
-{"state_code":"US_DEMO","gender":"MALE","count":"0","metric_period_months":"1","supervision_type":"PAROLE","district":"wahpeton"}
-{"state_code":"US_DEMO","gender":"MALE","count":"1","metric_period_months":"1","supervision_type":"PAROLE","district":"rolla"}
-{"state_code":"US_DEMO","gender":"MALE","count":"0","metric_period_months":"1","supervision_type":"PAROLE","district":"washburn"}
-{"state_code":"US_DEMO","gender":"MALE","count":"0","metric_period_months":"1","supervision_type":"PAROLE","district":"williston"}
-{"state_code":"US_DEMO","gender":"MALE","count":"0","metric_period_months":"1","supervision_type":"PAROLE","district":"dickson"}
-{"state_code":"US_DEMO","gender":"MALE","count":"0","metric_period_months":"1","supervision_type":"PAROLE","district":"grafton"}
-{"state_code":"US_DEMO","gender":"MALE","count":"0","metric_period_months":"1","supervision_type":"PAROLE","district":"mandan"}
-{"state_code":"US_DEMO","gender":"MALE","count":"0","metric_period_months":"1","supervision_type":"PAROLE","district":"bottineau"}
-{"state_code":"US_DEMO","gender":"MALE","count":"0","metric_period_months":"1","supervision_type":"PAROLE","district":"oakes"}
-{"state_code":"US_DEMO","gender":"MALE","count":"0","metric_period_months":"1","supervision_type":"PAROLE","district":"beulah"}
-{"state_code":"US_DEMO","gender":"MALE","count":"1","metric_period_months":"1","supervision_type":"PROBATION","district":"bismarck"}
-{"state_code":"US_DEMO","gender":"MALE","count":"3","metric_period_months":"1","supervision_type":"PROBATION","district":"jamestown"}
-{"state_code":"US_DEMO","gender":"MALE","count":"1","metric_period_months":"1","supervision_type":"PROBATION","district":"minot"}
-{"state_code":"US_DEMO","gender":"MALE","count":"0","metric_period_months":"1","supervision_type":"PROBATION","district":"fargo"}
-{"state_code":"US_DEMO","gender":"MALE","count":"1","metric_period_months":"1","supervision_type":"PROBATION","district":"grand-forks"}
-{"state_code":"US_DEMO","gender":"MALE","count":"1","metric_period_months":"1","supervision_type":"PROBATION","district":"devils-lake"}
-{"state_code":"US_DEMO","gender":"MALE","count":"3","metric_period_months":"1","supervision_type":"PROBATION","district":"wahpeton"}
-{"state_code":"US_DEMO","gender":"MALE","count":"2","metric_period_months":"1","supervision_type":"PROBATION","district":"rolla"}
-{"state_code":"US_DEMO","gender":"MALE","count":"1","metric_period_months":"1","supervision_type":"PROBATION","district":"washburn"}
-{"state_code":"US_DEMO","gender":"MALE","count":"2","metric_period_months":"1","supervision_type":"PROBATION","district":"williston"}
-{"state_code":"US_DEMO","gender":"MALE","count":"0","metric_period_months":"1","supervision_type":"PROBATION","district":"dickson"}
-{"state_code":"US_DEMO","gender":"MALE","count":"29","metric_period_months":"1","supervision_type":"PROBATION","district":"grafton"}
-{"state_code":"US_DEMO","gender":"MALE","count":"1","metric_period_months":"1","supervision_type":"PROBATION","district":"mandan"}
-{"state_code":"US_DEMO","gender":"MALE","count":"0","metric_period_months":"1","supervision_type":"PROBATION","district":"bottineau"}
-{"state_code":"US_DEMO","gender":"MALE","count":"2","metric_period_months":"1","supervision_type":"PROBATION","district":"oakes"}
-{"state_code":"US_DEMO","gender":"MALE","count":"6","metric_period_months":"1","supervision_type":"PROBATION","district":"beulah"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"14","metric_period_months":"3","supervision_type":"PAROLE","district":"bismarck"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"7","metric_period_months":"3","supervision_type":"PAROLE","district":"jamestown"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"5","metric_period_months":"3","supervision_type":"PAROLE","district":"minot"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"15","metric_period_months":"3","supervision_type":"PAROLE","district":"fargo"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"3","metric_period_months":"3","supervision_type":"PAROLE","district":"grand-forks"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"5","metric_period_months":"3","supervision_type":"PAROLE","district":"devils-lake"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"24","metric_period_months":"3","supervision_type":"PAROLE","district":"wahpeton"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"8","metric_period_months":"3","supervision_type":"PAROLE","district":"rolla"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"0","metric_period_months":"3","supervision_type":"PAROLE","district":"washburn"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"4","metric_period_months":"3","supervision_type":"PAROLE","district":"williston"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"9","metric_period_months":"3","supervision_type":"PAROLE","district":"dickson"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"4","metric_period_months":"3","supervision_type":"PAROLE","district":"grafton"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"14","metric_period_months":"3","supervision_type":"PAROLE","district":"mandan"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"18","metric_period_months":"3","supervision_type":"PAROLE","district":"bottineau"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"4","metric_period_months":"3","supervision_type":"PAROLE","district":"oakes"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"8","metric_period_months":"3","supervision_type":"PAROLE","district":"beulah"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"0","metric_period_months":"3","supervision_type":"PROBATION","district":"bismarck"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"2","metric_period_months":"3","supervision_type":"PROBATION","district":"jamestown"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"0","metric_period_months":"3","supervision_type":"PROBATION","district":"minot"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"0","metric_period_months":"3","supervision_type":"PROBATION","district":"fargo"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"0","metric_period_months":"3","supervision_type":"PROBATION","district":"grand-forks"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"0","metric_period_months":"3","supervision_type":"PROBATION","district":"devils-lake"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"0","metric_period_months":"3","supervision_type":"PROBATION","district":"wahpeton"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"1","metric_period_months":"3","supervision_type":"PROBATION","district":"rolla"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"1","metric_period_months":"3","supervision_type":"PROBATION","district":"washburn"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"1","metric_period_months":"3","supervision_type":"PROBATION","district":"williston"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"0","metric_period_months":"3","supervision_type":"PROBATION","district":"dickson"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"0","metric_period_months":"3","supervision_type":"PROBATION","district":"grafton"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"0","metric_period_months":"3","supervision_type":"PROBATION","district":"mandan"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"1","metric_period_months":"3","supervision_type":"PROBATION","district":"bottineau"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"0","metric_period_months":"3","supervision_type":"PROBATION","district":"oakes"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"0","metric_period_months":"3","supervision_type":"PROBATION","district":"beulah"}
-{"state_code":"US_DEMO","gender":"MALE","count":"10","metric_period_months":"3","supervision_type":"PAROLE","district":"bismarck"}
-{"state_code":"US_DEMO","gender":"MALE","count":"22","metric_period_months":"3","supervision_type":"PAROLE","district":"jamestown"}
-{"state_code":"US_DEMO","gender":"MALE","count":"10","metric_period_months":"3","supervision_type":"PAROLE","district":"minot"}
-{"state_code":"US_DEMO","gender":"MALE","count":"3","metric_period_months":"3","supervision_type":"PAROLE","district":"fargo"}
-{"state_code":"US_DEMO","gender":"MALE","count":"4","metric_period_months":"3","supervision_type":"PAROLE","district":"grand-forks"}
-{"state_code":"US_DEMO","gender":"MALE","count":"15","metric_period_months":"3","supervision_type":"PAROLE","district":"devils-lake"}
-{"state_code":"US_DEMO","gender":"MALE","count":"3","metric_period_months":"3","supervision_type":"PAROLE","district":"wahpeton"}
-{"state_code":"US_DEMO","gender":"MALE","count":"3","metric_period_months":"3","supervision_type":"PAROLE","district":"rolla"}
-{"state_code":"US_DEMO","gender":"MALE","count":"11","metric_period_months":"3","supervision_type":"PAROLE","district":"washburn"}
-{"state_code":"US_DEMO","gender":"MALE","count":"3","metric_period_months":"3","supervision_type":"PAROLE","district":"williston"}
-{"state_code":"US_DEMO","gender":"MALE","count":"2","metric_period_months":"3","supervision_type":"PAROLE","district":"dickson"}
-{"state_code":"US_DEMO","gender":"MALE","count":"2","metric_period_months":"3","supervision_type":"PAROLE","district":"grafton"}
-{"state_code":"US_DEMO","gender":"MALE","count":"9","metric_period_months":"3","supervision_type":"PAROLE","district":"mandan"}
-{"state_code":"US_DEMO","gender":"MALE","count":"6","metric_period_months":"3","supervision_type":"PAROLE","district":"bottineau"}
-{"state_code":"US_DEMO","gender":"MALE","count":"2","metric_period_months":"3","supervision_type":"PAROLE","district":"oakes"}
-{"state_code":"US_DEMO","gender":"MALE","count":"20","metric_period_months":"3","supervision_type":"PAROLE","district":"beulah"}
-{"state_code":"US_DEMO","gender":"MALE","count":"1","metric_period_months":"3","supervision_type":"PROBATION","district":"bismarck"}
-{"state_code":"US_DEMO","gender":"MALE","count":"6","metric_period_months":"3","supervision_type":"PROBATION","district":"jamestown"}
-{"state_code":"US_DEMO","gender":"MALE","count":"4","metric_period_months":"3","supervision_type":"PROBATION","district":"minot"}
-{"state_code":"US_DEMO","gender":"MALE","count":"3","metric_period_months":"3","supervision_type":"PROBATION","district":"fargo"}
-{"state_code":"US_DEMO","gender":"MALE","count":"2","metric_period_months":"3","supervision_type":"PROBATION","district":"grand-forks"}
-{"state_code":"US_DEMO","gender":"MALE","count":"7","metric_period_months":"3","supervision_type":"PROBATION","district":"devils-lake"}
-{"state_code":"US_DEMO","gender":"MALE","count":"5","metric_period_months":"3","supervision_type":"PROBATION","district":"wahpeton"}
-{"state_code":"US_DEMO","gender":"MALE","count":"3","metric_period_months":"3","supervision_type":"PROBATION","district":"rolla"}
-{"state_code":"US_DEMO","gender":"MALE","count":"5","metric_period_months":"3","supervision_type":"PROBATION","district":"washburn"}
-{"state_code":"US_DEMO","gender":"MALE","count":"3","metric_period_months":"3","supervision_type":"PROBATION","district":"williston"}
-{"state_code":"US_DEMO","gender":"MALE","count":"17","metric_period_months":"3","supervision_type":"PROBATION","district":"dickson"}
-{"state_code":"US_DEMO","gender":"MALE","count":"1","metric_period_months":"3","supervision_type":"PROBATION","district":"grafton"}
-{"state_code":"US_DEMO","gender":"MALE","count":"7","metric_period_months":"3","supervision_type":"PROBATION","district":"mandan"}
-{"state_code":"US_DEMO","gender":"MALE","count":"7","metric_period_months":"3","supervision_type":"PROBATION","district":"bottineau"}
-{"state_code":"US_DEMO","gender":"MALE","count":"3","metric_period_months":"3","supervision_type":"PROBATION","district":"oakes"}
-{"state_code":"US_DEMO","gender":"MALE","count":"3","metric_period_months":"3","supervision_type":"PROBATION","district":"beulah"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"3","metric_period_months":"6","supervision_type":"PAROLE","district":"bismarck"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"25","metric_period_months":"6","supervision_type":"PAROLE","district":"jamestown"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"8","metric_period_months":"6","supervision_type":"PAROLE","district":"minot"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"14","metric_period_months":"6","supervision_type":"PAROLE","district":"fargo"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"14","metric_period_months":"6","supervision_type":"PAROLE","district":"grand-forks"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"4","metric_period_months":"6","supervision_type":"PAROLE","district":"devils-lake"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"14","metric_period_months":"6","supervision_type":"PAROLE","district":"wahpeton"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"2","metric_period_months":"6","supervision_type":"PAROLE","district":"rolla"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"0","metric_period_months":"6","supervision_type":"PAROLE","district":"washburn"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"26","metric_period_months":"6","supervision_type":"PAROLE","district":"williston"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"2","metric_period_months":"6","supervision_type":"PAROLE","district":"dickson"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"12","metric_period_months":"6","supervision_type":"PAROLE","district":"grafton"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"31","metric_period_months":"6","supervision_type":"PAROLE","district":"mandan"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"1","metric_period_months":"6","supervision_type":"PAROLE","district":"bottineau"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"7","metric_period_months":"6","supervision_type":"PAROLE","district":"oakes"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"8","metric_period_months":"6","supervision_type":"PAROLE","district":"beulah"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"1","metric_period_months":"6","supervision_type":"PROBATION","district":"bismarck"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"1","metric_period_months":"6","supervision_type":"PROBATION","district":"jamestown"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"13","metric_period_months":"6","supervision_type":"PROBATION","district":"minot"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"4","metric_period_months":"6","supervision_type":"PROBATION","district":"fargo"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"12","metric_period_months":"6","supervision_type":"PROBATION","district":"grand-forks"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"2","metric_period_months":"6","supervision_type":"PROBATION","district":"devils-lake"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"11","metric_period_months":"6","supervision_type":"PROBATION","district":"wahpeton"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"5","metric_period_months":"6","supervision_type":"PROBATION","district":"rolla"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"6","metric_period_months":"6","supervision_type":"PROBATION","district":"washburn"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"10","metric_period_months":"6","supervision_type":"PROBATION","district":"williston"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"14","metric_period_months":"6","supervision_type":"PROBATION","district":"dickson"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"3","metric_period_months":"6","supervision_type":"PROBATION","district":"grafton"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"9","metric_period_months":"6","supervision_type":"PROBATION","district":"mandan"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"2","metric_period_months":"6","supervision_type":"PROBATION","district":"bottineau"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"9","metric_period_months":"6","supervision_type":"PROBATION","district":"oakes"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"3","metric_period_months":"6","supervision_type":"PROBATION","district":"beulah"}
-{"state_code":"US_DEMO","gender":"MALE","count":"14","metric_period_months":"6","supervision_type":"PAROLE","district":"bismarck"}
-{"state_code":"US_DEMO","gender":"MALE","count":"7","metric_period_months":"6","supervision_type":"PAROLE","district":"jamestown"}
-{"state_code":"US_DEMO","gender":"MALE","count":"13","metric_period_months":"6","supervision_type":"PAROLE","district":"minot"}
-{"state_code":"US_DEMO","gender":"MALE","count":"31","metric_period_months":"6","supervision_type":"PAROLE","district":"fargo"}
-{"state_code":"US_DEMO","gender":"MALE","count":"28","metric_period_months":"6","supervision_type":"PAROLE","district":"grand-forks"}
-{"state_code":"US_DEMO","gender":"MALE","count":"2","metric_period_months":"6","supervision_type":"PAROLE","district":"devils-lake"}
-{"state_code":"US_DEMO","gender":"MALE","count":"14","metric_period_months":"6","supervision_type":"PAROLE","district":"wahpeton"}
-{"state_code":"US_DEMO","gender":"MALE","count":"41","metric_period_months":"6","supervision_type":"PAROLE","district":"rolla"}
-{"state_code":"US_DEMO","gender":"MALE","count":"4","metric_period_months":"6","supervision_type":"PAROLE","district":"washburn"}
-{"state_code":"US_DEMO","gender":"MALE","count":"4","metric_period_months":"6","supervision_type":"PAROLE","district":"williston"}
-{"state_code":"US_DEMO","gender":"MALE","count":"35","metric_period_months":"6","supervision_type":"PAROLE","district":"dickson"}
-{"state_code":"US_DEMO","gender":"MALE","count":"6","metric_period_months":"6","supervision_type":"PAROLE","district":"grafton"}
-{"state_code":"US_DEMO","gender":"MALE","count":"28","metric_period_months":"6","supervision_type":"PAROLE","district":"mandan"}
-{"state_code":"US_DEMO","gender":"MALE","count":"7","metric_period_months":"6","supervision_type":"PAROLE","district":"bottineau"}
-{"state_code":"US_DEMO","gender":"MALE","count":"5","metric_period_months":"6","supervision_type":"PAROLE","district":"oakes"}
-{"state_code":"US_DEMO","gender":"MALE","count":"24","metric_period_months":"6","supervision_type":"PAROLE","district":"beulah"}
-{"state_code":"US_DEMO","gender":"MALE","count":"8","metric_period_months":"6","supervision_type":"PROBATION","district":"bismarck"}
-{"state_code":"US_DEMO","gender":"MALE","count":"20","metric_period_months":"6","supervision_type":"PROBATION","district":"jamestown"}
-{"state_code":"US_DEMO","gender":"MALE","count":"3","metric_period_months":"6","supervision_type":"PROBATION","district":"minot"}
-{"state_code":"US_DEMO","gender":"MALE","count":"13","metric_period_months":"6","supervision_type":"PROBATION","district":"fargo"}
-{"state_code":"US_DEMO","gender":"MALE","count":"5","metric_period_months":"6","supervision_type":"PROBATION","district":"grand-forks"}
-{"state_code":"US_DEMO","gender":"MALE","count":"3","metric_period_months":"6","supervision_type":"PROBATION","district":"devils-lake"}
-{"state_code":"US_DEMO","gender":"MALE","count":"21","metric_period_months":"6","supervision_type":"PROBATION","district":"wahpeton"}
-{"state_code":"US_DEMO","gender":"MALE","count":"1","metric_period_months":"6","supervision_type":"PROBATION","district":"rolla"}
-{"state_code":"US_DEMO","gender":"MALE","count":"3","metric_period_months":"6","supervision_type":"PROBATION","district":"washburn"}
-{"state_code":"US_DEMO","gender":"MALE","count":"4","metric_period_months":"6","supervision_type":"PROBATION","district":"williston"}
-{"state_code":"US_DEMO","gender":"MALE","count":"4","metric_period_months":"6","supervision_type":"PROBATION","district":"dickson"}
-{"state_code":"US_DEMO","gender":"MALE","count":"6","metric_period_months":"6","supervision_type":"PROBATION","district":"grafton"}
-{"state_code":"US_DEMO","gender":"MALE","count":"12","metric_period_months":"6","supervision_type":"PROBATION","district":"mandan"}
-{"state_code":"US_DEMO","gender":"MALE","count":"20","metric_period_months":"6","supervision_type":"PROBATION","district":"bottineau"}
-{"state_code":"US_DEMO","gender":"MALE","count":"2","metric_period_months":"6","supervision_type":"PROBATION","district":"oakes"}
-{"state_code":"US_DEMO","gender":"MALE","count":"20","metric_period_months":"6","supervision_type":"PROBATION","district":"beulah"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"99","metric_period_months":"12","supervision_type":"PAROLE","district":"bismarck"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"5","metric_period_months":"12","supervision_type":"PAROLE","district":"jamestown"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"36","metric_period_months":"12","supervision_type":"PAROLE","district":"minot"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"48","metric_period_months":"12","supervision_type":"PAROLE","district":"fargo"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"9","metric_period_months":"12","supervision_type":"PAROLE","district":"grand-forks"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"21","metric_period_months":"12","supervision_type":"PAROLE","district":"devils-lake"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"3","metric_period_months":"12","supervision_type":"PAROLE","district":"wahpeton"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"4","metric_period_months":"12","supervision_type":"PAROLE","district":"rolla"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"16","metric_period_months":"12","supervision_type":"PAROLE","district":"washburn"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"37","metric_period_months":"12","supervision_type":"PAROLE","district":"williston"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"16","metric_period_months":"12","supervision_type":"PAROLE","district":"dickson"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"65","metric_period_months":"12","supervision_type":"PAROLE","district":"grafton"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"3","metric_period_months":"12","supervision_type":"PAROLE","district":"mandan"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"19","metric_period_months":"12","supervision_type":"PAROLE","district":"bottineau"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"1","metric_period_months":"12","supervision_type":"PAROLE","district":"oakes"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"9","metric_period_months":"12","supervision_type":"PAROLE","district":"beulah"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"6","metric_period_months":"12","supervision_type":"PROBATION","district":"bismarck"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"7","metric_period_months":"12","supervision_type":"PROBATION","district":"jamestown"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"8","metric_period_months":"12","supervision_type":"PROBATION","district":"minot"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"5","metric_period_months":"12","supervision_type":"PROBATION","district":"fargo"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"8","metric_period_months":"12","supervision_type":"PROBATION","district":"grand-forks"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"3","metric_period_months":"12","supervision_type":"PROBATION","district":"devils-lake"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"5","metric_period_months":"12","supervision_type":"PROBATION","district":"wahpeton"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"1","metric_period_months":"12","supervision_type":"PROBATION","district":"rolla"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"3","metric_period_months":"12","supervision_type":"PROBATION","district":"washburn"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"18","metric_period_months":"12","supervision_type":"PROBATION","district":"williston"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"10","metric_period_months":"12","supervision_type":"PROBATION","district":"dickson"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"1","metric_period_months":"12","supervision_type":"PROBATION","district":"grafton"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"2","metric_period_months":"12","supervision_type":"PROBATION","district":"mandan"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"5","metric_period_months":"12","supervision_type":"PROBATION","district":"bottineau"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"13","metric_period_months":"12","supervision_type":"PROBATION","district":"oakes"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"7","metric_period_months":"12","supervision_type":"PROBATION","district":"beulah"}
-{"state_code":"US_DEMO","gender":"MALE","count":"0","metric_period_months":"12","supervision_type":"PAROLE","district":"bismarck"}
-{"state_code":"US_DEMO","gender":"MALE","count":"0","metric_period_months":"12","supervision_type":"PAROLE","district":"jamestown"}
-{"state_code":"US_DEMO","gender":"MALE","count":"0","metric_period_months":"12","supervision_type":"PAROLE","district":"minot"}
-{"state_code":"US_DEMO","gender":"MALE","count":"0","metric_period_months":"12","supervision_type":"PAROLE","district":"fargo"}
-{"state_code":"US_DEMO","gender":"MALE","count":"0","metric_period_months":"12","supervision_type":"PAROLE","district":"grand-forks"}
-{"state_code":"US_DEMO","gender":"MALE","count":"2","metric_period_months":"12","supervision_type":"PAROLE","district":"devils-lake"}
-{"state_code":"US_DEMO","gender":"MALE","count":"0","metric_period_months":"12","supervision_type":"PAROLE","district":"wahpeton"}
-{"state_code":"US_DEMO","gender":"MALE","count":"0","metric_period_months":"12","supervision_type":"PAROLE","district":"rolla"}
-{"state_code":"US_DEMO","gender":"MALE","count":"0","metric_period_months":"12","supervision_type":"PAROLE","district":"washburn"}
-{"state_code":"US_DEMO","gender":"MALE","count":"0","metric_period_months":"12","supervision_type":"PAROLE","district":"williston"}
-{"state_code":"US_DEMO","gender":"MALE","count":"0","metric_period_months":"12","supervision_type":"PAROLE","district":"dickson"}
-{"state_code":"US_DEMO","gender":"MALE","count":"0","metric_period_months":"12","supervision_type":"PAROLE","district":"grafton"}
-{"state_code":"US_DEMO","gender":"MALE","count":"0","metric_period_months":"12","supervision_type":"PAROLE","district":"mandan"}
-{"state_code":"US_DEMO","gender":"MALE","count":"0","metric_period_months":"12","supervision_type":"PAROLE","district":"bottineau"}
-{"state_code":"US_DEMO","gender":"MALE","count":"0","metric_period_months":"12","supervision_type":"PAROLE","district":"oakes"}
-{"state_code":"US_DEMO","gender":"MALE","count":"0","metric_period_months":"12","supervision_type":"PAROLE","district":"beulah"}
-{"state_code":"US_DEMO","gender":"MALE","count":"81","metric_period_months":"12","supervision_type":"PROBATION","district":"bismarck"}
-{"state_code":"US_DEMO","gender":"MALE","count":"24","metric_period_months":"12","supervision_type":"PROBATION","district":"jamestown"}
-{"state_code":"US_DEMO","gender":"MALE","count":"69","metric_period_months":"12","supervision_type":"PROBATION","district":"minot"}
-{"state_code":"US_DEMO","gender":"MALE","count":"48","metric_period_months":"12","supervision_type":"PROBATION","district":"fargo"}
-{"state_code":"US_DEMO","gender":"MALE","count":"118","metric_period_months":"12","supervision_type":"PROBATION","district":"grand-forks"}
-{"state_code":"US_DEMO","gender":"MALE","count":"74","metric_period_months":"12","supervision_type":"PROBATION","district":"devils-lake"}
-{"state_code":"US_DEMO","gender":"MALE","count":"59","metric_period_months":"12","supervision_type":"PROBATION","district":"wahpeton"}
-{"state_code":"US_DEMO","gender":"MALE","count":"31","metric_period_months":"12","supervision_type":"PROBATION","district":"rolla"}
-{"state_code":"US_DEMO","gender":"MALE","count":"5","metric_period_months":"12","supervision_type":"PROBATION","district":"washburn"}
-{"state_code":"US_DEMO","gender":"MALE","count":"76","metric_period_months":"12","supervision_type":"PROBATION","district":"williston"}
-{"state_code":"US_DEMO","gender":"MALE","count":"1","metric_period_months":"12","supervision_type":"PROBATION","district":"dickson"}
-{"state_code":"US_DEMO","gender":"MALE","count":"17","metric_period_months":"12","supervision_type":"PROBATION","district":"grafton"}
-{"state_code":"US_DEMO","gender":"MALE","count":"22","metric_period_months":"12","supervision_type":"PROBATION","district":"mandan"}
-{"state_code":"US_DEMO","gender":"MALE","count":"94","metric_period_months":"12","supervision_type":"PROBATION","district":"bottineau"}
-{"state_code":"US_DEMO","gender":"MALE","count":"39","metric_period_months":"12","supervision_type":"PROBATION","district":"oakes"}
-{"state_code":"US_DEMO","gender":"MALE","count":"55","metric_period_months":"12","supervision_type":"PROBATION","district":"beulah"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"10","metric_period_months":"36","supervision_type":"PAROLE","district":"bismarck"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"37","metric_period_months":"36","supervision_type":"PAROLE","district":"jamestown"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"2","metric_period_months":"36","supervision_type":"PAROLE","district":"minot"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"154","metric_period_months":"36","supervision_type":"PAROLE","district":"fargo"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"20","metric_period_months":"36","supervision_type":"PAROLE","district":"grand-forks"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"14","metric_period_months":"36","supervision_type":"PAROLE","district":"devils-lake"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"10","metric_period_months":"36","supervision_type":"PAROLE","district":"wahpeton"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"8","metric_period_months":"36","supervision_type":"PAROLE","district":"rolla"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"3","metric_period_months":"36","supervision_type":"PAROLE","district":"washburn"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"7","metric_period_months":"36","supervision_type":"PAROLE","district":"williston"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"81","metric_period_months":"36","supervision_type":"PAROLE","district":"dickson"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"63","metric_period_months":"36","supervision_type":"PAROLE","district":"grafton"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"32","metric_period_months":"36","supervision_type":"PAROLE","district":"mandan"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"71","metric_period_months":"36","supervision_type":"PAROLE","district":"bottineau"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"26","metric_period_months":"36","supervision_type":"PAROLE","district":"oakes"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"16","metric_period_months":"36","supervision_type":"PAROLE","district":"beulah"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"36","metric_period_months":"36","supervision_type":"PROBATION","district":"bismarck"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"24","metric_period_months":"36","supervision_type":"PROBATION","district":"jamestown"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"68","metric_period_months":"36","supervision_type":"PROBATION","district":"minot"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"33","metric_period_months":"36","supervision_type":"PROBATION","district":"fargo"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"72","metric_period_months":"36","supervision_type":"PROBATION","district":"grand-forks"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"5","metric_period_months":"36","supervision_type":"PROBATION","district":"devils-lake"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"32","metric_period_months":"36","supervision_type":"PROBATION","district":"wahpeton"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"33","metric_period_months":"36","supervision_type":"PROBATION","district":"rolla"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"26","metric_period_months":"36","supervision_type":"PROBATION","district":"washburn"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"146","metric_period_months":"36","supervision_type":"PROBATION","district":"williston"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"18","metric_period_months":"36","supervision_type":"PROBATION","district":"dickson"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"14","metric_period_months":"36","supervision_type":"PROBATION","district":"grafton"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"59","metric_period_months":"36","supervision_type":"PROBATION","district":"mandan"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"37","metric_period_months":"36","supervision_type":"PROBATION","district":"bottineau"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"16","metric_period_months":"36","supervision_type":"PROBATION","district":"oakes"}
-{"state_code":"US_DEMO","gender":"FEMALE","count":"1","metric_period_months":"36","supervision_type":"PROBATION","district":"beulah"}
-{"state_code":"US_DEMO","gender":"MALE","count":"77","metric_period_months":"36","supervision_type":"PAROLE","district":"bismarck"}
-{"state_code":"US_DEMO","gender":"MALE","count":"2","metric_period_months":"36","supervision_type":"PAROLE","district":"jamestown"}
-{"state_code":"US_DEMO","gender":"MALE","count":"37","metric_period_months":"36","supervision_type":"PAROLE","district":"minot"}
-{"state_code":"US_DEMO","gender":"MALE","count":"5","metric_period_months":"36","supervision_type":"PAROLE","district":"fargo"}
-{"state_code":"US_DEMO","gender":"MALE","count":"26","metric_period_months":"36","supervision_type":"PAROLE","district":"grand-forks"}
-{"state_code":"US_DEMO","gender":"MALE","count":"84","metric_period_months":"36","supervision_type":"PAROLE","district":"devils-lake"}
-{"state_code":"US_DEMO","gender":"MALE","count":"64","metric_period_months":"36","supervision_type":"PAROLE","district":"wahpeton"}
-{"state_code":"US_DEMO","gender":"MALE","count":"13","metric_period_months":"36","supervision_type":"PAROLE","district":"rolla"}
-{"state_code":"US_DEMO","gender":"MALE","count":"67","metric_period_months":"36","supervision_type":"PAROLE","district":"washburn"}
-{"state_code":"US_DEMO","gender":"MALE","count":"21","metric_period_months":"36","supervision_type":"PAROLE","district":"williston"}
-{"state_code":"US_DEMO","gender":"MALE","count":"15","metric_period_months":"36","supervision_type":"PAROLE","district":"dickson"}
-{"state_code":"US_DEMO","gender":"MALE","count":"3","metric_period_months":"36","supervision_type":"PAROLE","district":"grafton"}
-{"state_code":"US_DEMO","gender":"MALE","count":"67","metric_period_months":"36","supervision_type":"PAROLE","district":"mandan"}
-{"state_code":"US_DEMO","gender":"MALE","count":"27","metric_period_months":"36","supervision_type":"PAROLE","district":"bottineau"}
-{"state_code":"US_DEMO","gender":"MALE","count":"4","metric_period_months":"36","supervision_type":"PAROLE","district":"oakes"}
-{"state_code":"US_DEMO","gender":"MALE","count":"59","metric_period_months":"36","supervision_type":"PAROLE","district":"beulah"}
-{"state_code":"US_DEMO","gender":"MALE","count":"71","metric_period_months":"36","supervision_type":"PROBATION","district":"bismarck"}
-{"state_code":"US_DEMO","gender":"MALE","count":"483","metric_period_months":"36","supervision_type":"PROBATION","district":"jamestown"}
-{"state_code":"US_DEMO","gender":"MALE","count":"138","metric_period_months":"36","supervision_type":"PROBATION","district":"minot"}
-{"state_code":"US_DEMO","gender":"MALE","count":"41","metric_period_months":"36","supervision_type":"PROBATION","district":"fargo"}
-{"state_code":"US_DEMO","gender":"MALE","count":"15","metric_period_months":"36","supervision_type":"PROBATION","district":"grand-forks"}
-{"state_code":"US_DEMO","gender":"MALE","count":"20","metric_period_months":"36","supervision_type":"PROBATION","district":"devils-lake"}
-{"state_code":"US_DEMO","gender":"MALE","count":"141","metric_period_months":"36","supervision_type":"PROBATION","district":"wahpeton"}
-{"state_code":"US_DEMO","gender":"MALE","count":"121","metric_period_months":"36","supervision_type":"PROBATION","district":"rolla"}
-{"state_code":"US_DEMO","gender":"MALE","count":"131","metric_period_months":"36","supervision_type":"PROBATION","district":"washburn"}
-{"state_code":"US_DEMO","gender":"MALE","count":"29","metric_period_months":"36","supervision_type":"PROBATION","district":"williston"}
-{"state_code":"US_DEMO","gender":"MALE","count":"219","metric_period_months":"36","supervision_type":"PROBATION","district":"dickson"}
-{"state_code":"US_DEMO","gender":"MALE","count":"10","metric_period_months":"36","supervision_type":"PROBATION","district":"grafton"}
-{"state_code":"US_DEMO","gender":"MALE","count":"191","metric_period_months":"36","supervision_type":"PROBATION","district":"mandan"}
-{"state_code":"US_DEMO","gender":"MALE","count":"22","metric_period_months":"36","supervision_type":"PROBATION","district":"bottineau"}
-{"state_code":"US_DEMO","gender":"MALE","count":"126","metric_period_months":"36","supervision_type":"PROBATION","district":"oakes"}
-{"state_code":"US_DEMO","gender":"MALE","count":"143","metric_period_months":"36","supervision_type":"PROBATION","district":"beulah"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "bismarck", "gender": "MALE", "metric_period_months": "1", "count": "1"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "jamestown", "gender": "MALE", "metric_period_months": "1", "count": "5"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "minot", "gender": "MALE", "metric_period_months": "1", "count": "2"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "fargo", "gender": "MALE", "metric_period_months": "1", "count": "1"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "grand-forks", "gender": "MALE", "metric_period_months": "1", "count": "2"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "devils-lake", "gender": "MALE", "metric_period_months": "1", "count": "2"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "wahpeton", "gender": "MALE", "metric_period_months": "1", "count": "3"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "rolla", "gender": "MALE", "metric_period_months": "1", "count": "3"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "washburn", "gender": "MALE", "metric_period_months": "1", "count": "1"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "williston", "gender": "MALE", "metric_period_months": "1", "count": "2"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "dickson", "gender": "MALE", "metric_period_months": "1", "count": "0"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "grafton", "gender": "MALE", "metric_period_months": "1", "count": "29"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "mandan", "gender": "MALE", "metric_period_months": "1", "count": "1"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "bottineau", "gender": "MALE", "metric_period_months": "1", "count": "0"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "oakes", "gender": "MALE", "metric_period_months": "1", "count": "2"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "beulah", "gender": "MALE", "metric_period_months": "1", "count": "6"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "bismarck", "gender": "MALE", "metric_period_months": "3", "count": "11"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "jamestown", "gender": "MALE", "metric_period_months": "3", "count": "28"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "minot", "gender": "MALE", "metric_period_months": "3", "count": "14"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "fargo", "gender": "MALE", "metric_period_months": "3", "count": "6"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "grand-forks", "gender": "MALE", "metric_period_months": "3", "count": "6"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "devils-lake", "gender": "MALE", "metric_period_months": "3", "count": "22"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "wahpeton", "gender": "MALE", "metric_period_months": "3", "count": "8"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "rolla", "gender": "MALE", "metric_period_months": "3", "count": "6"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "washburn", "gender": "MALE", "metric_period_months": "3", "count": "16"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "williston", "gender": "MALE", "metric_period_months": "3", "count": "6"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "dickson", "gender": "MALE", "metric_period_months": "3", "count": "19"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "grafton", "gender": "MALE", "metric_period_months": "3", "count": "3"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "mandan", "gender": "MALE", "metric_period_months": "3", "count": "16"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "bottineau", "gender": "MALE", "metric_period_months": "3", "count": "13"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "oakes", "gender": "MALE", "metric_period_months": "3", "count": "5"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "beulah", "gender": "MALE", "metric_period_months": "3", "count": "23"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "bismarck", "gender": "MALE", "metric_period_months": "6", "count": "22"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "jamestown", "gender": "MALE", "metric_period_months": "6", "count": "27"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "minot", "gender": "MALE", "metric_period_months": "6", "count": "16"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "fargo", "gender": "MALE", "metric_period_months": "6", "count": "44"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "grand-forks", "gender": "MALE", "metric_period_months": "6", "count": "33"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "devils-lake", "gender": "MALE", "metric_period_months": "6", "count": "5"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "wahpeton", "gender": "MALE", "metric_period_months": "6", "count": "35"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "rolla", "gender": "MALE", "metric_period_months": "6", "count": "42"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "washburn", "gender": "MALE", "metric_period_months": "6", "count": "7"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "williston", "gender": "MALE", "metric_period_months": "6", "count": "8"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "dickson", "gender": "MALE", "metric_period_months": "6", "count": "39"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "grafton", "gender": "MALE", "metric_period_months": "6", "count": "12"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "mandan", "gender": "MALE", "metric_period_months": "6", "count": "40"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "bottineau", "gender": "MALE", "metric_period_months": "6", "count": "27"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "oakes", "gender": "MALE", "metric_period_months": "6", "count": "7"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "beulah", "gender": "MALE", "metric_period_months": "6", "count": "44"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "bismarck", "gender": "MALE", "metric_period_months": "12", "count": "81"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "jamestown", "gender": "MALE", "metric_period_months": "12", "count": "24"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "minot", "gender": "MALE", "metric_period_months": "12", "count": "69"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "fargo", "gender": "MALE", "metric_period_months": "12", "count": "48"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "grand-forks", "gender": "MALE", "metric_period_months": "12", "count": "118"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "devils-lake", "gender": "MALE", "metric_period_months": "12", "count": "76"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "wahpeton", "gender": "MALE", "metric_period_months": "12", "count": "59"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "rolla", "gender": "MALE", "metric_period_months": "12", "count": "31"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "washburn", "gender": "MALE", "metric_period_months": "12", "count": "5"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "williston", "gender": "MALE", "metric_period_months": "12", "count": "76"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "dickson", "gender": "MALE", "metric_period_months": "12", "count": "1"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "grafton", "gender": "MALE", "metric_period_months": "12", "count": "17"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "mandan", "gender": "MALE", "metric_period_months": "12", "count": "22"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "bottineau", "gender": "MALE", "metric_period_months": "12", "count": "94"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "oakes", "gender": "MALE", "metric_period_months": "12", "count": "39"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "beulah", "gender": "MALE", "metric_period_months": "12", "count": "55"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "bismarck", "gender": "MALE", "metric_period_months": "36", "count": "148"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "jamestown", "gender": "MALE", "metric_period_months": "36", "count": "485"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "minot", "gender": "MALE", "metric_period_months": "36", "count": "175"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "fargo", "gender": "MALE", "metric_period_months": "36", "count": "46"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "grand-forks", "gender": "MALE", "metric_period_months": "36", "count": "41"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "devils-lake", "gender": "MALE", "metric_period_months": "36", "count": "104"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "wahpeton", "gender": "MALE", "metric_period_months": "36", "count": "205"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "rolla", "gender": "MALE", "metric_period_months": "36", "count": "134"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "washburn", "gender": "MALE", "metric_period_months": "36", "count": "198"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "williston", "gender": "MALE", "metric_period_months": "36", "count": "50"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "dickson", "gender": "MALE", "metric_period_months": "36", "count": "234"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "grafton", "gender": "MALE", "metric_period_months": "36", "count": "13"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "mandan", "gender": "MALE", "metric_period_months": "36", "count": "258"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "bottineau", "gender": "MALE", "metric_period_months": "36", "count": "49"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "oakes", "gender": "MALE", "metric_period_months": "36", "count": "130"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "beulah", "gender": "MALE", "metric_period_months": "36", "count": "202"}
-{"state_code": "US_DEMO", "district": "ALL", "supervision_type": "PAROLE", "gender": "MALE", "metric_period_months": "1", "count": "7"}
-{"state_code": "US_DEMO", "district": "ALL", "supervision_type": "PROBATION", "gender": "MALE", "metric_period_months": "1", "count": "53"}
-{"state_code": "US_DEMO", "district": "ALL", "supervision_type": "PAROLE", "gender": "MALE", "metric_period_months": "3", "count": "125"}
-{"state_code": "US_DEMO", "district": "ALL", "supervision_type": "PROBATION", "gender": "MALE", "metric_period_months": "3", "count": "77"}
-{"state_code": "US_DEMO", "district": "ALL", "supervision_type": "PAROLE", "gender": "MALE", "metric_period_months": "6", "count": "263"}
-{"state_code": "US_DEMO", "district": "ALL", "supervision_type": "PROBATION", "gender": "MALE", "metric_period_months": "6", "count": "145"}
-{"state_code": "US_DEMO", "district": "ALL", "supervision_type": "PAROLE", "gender": "MALE", "metric_period_months": "12", "count": "2"}
-{"state_code": "US_DEMO", "district": "ALL", "supervision_type": "PROBATION", "gender": "MALE", "metric_period_months": "12", "count": "813"}
-{"state_code": "US_DEMO", "district": "ALL", "supervision_type": "PAROLE", "gender": "MALE", "metric_period_months": "36", "count": "571"}
-{"state_code": "US_DEMO", "district": "ALL", "supervision_type": "PROBATION", "gender": "MALE", "metric_period_months": "36", "count": "1901"}
-{"state_code": "US_DEMO", "district": "ALL", "supervision_type": "ALL", "gender": "MALE", "metric_period_months": "1", "count": "60"}
-{"state_code": "US_DEMO", "district": "ALL", "supervision_type": "ALL", "gender": "MALE", "metric_period_months": "3", "count": "202"}
-{"state_code": "US_DEMO", "district": "ALL", "supervision_type": "ALL", "gender": "MALE", "metric_period_months": "6", "count": "408"}
-{"state_code": "US_DEMO", "district": "ALL", "supervision_type": "ALL", "gender": "MALE", "metric_period_months": "12", "count": "815"}
-{"state_code": "US_DEMO", "district": "ALL", "supervision_type": "ALL", "gender": "MALE", "metric_period_months": "36", "count": "2472"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "bismarck", "gender": "FEMALE", "metric_period_months": "1", "count": "7"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "jamestown", "gender": "FEMALE", "metric_period_months": "1", "count": "3"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "minot", "gender": "FEMALE", "metric_period_months": "1", "count": "4"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "fargo", "gender": "FEMALE", "metric_period_months": "1", "count": "5"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "grand-forks", "gender": "FEMALE", "metric_period_months": "1", "count": "2"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "devils-lake", "gender": "FEMALE", "metric_period_months": "1", "count": "4"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "wahpeton", "gender": "FEMALE", "metric_period_months": "1", "count": "5"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "rolla", "gender": "FEMALE", "metric_period_months": "1", "count": "5"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "washburn", "gender": "FEMALE", "metric_period_months": "1", "count": "2"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "williston", "gender": "FEMALE", "metric_period_months": "1", "count": "3"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "dickson", "gender": "FEMALE", "metric_period_months": "1", "count": "1"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "grafton", "gender": "FEMALE", "metric_period_months": "1", "count": "4"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "mandan", "gender": "FEMALE", "metric_period_months": "1", "count": "4"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "bottineau", "gender": "FEMALE", "metric_period_months": "1", "count": "1"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "oakes", "gender": "FEMALE", "metric_period_months": "1", "count": "3"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "beulah", "gender": "FEMALE", "metric_period_months": "1", "count": "2"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "bismarck", "gender": "FEMALE", "metric_period_months": "3", "count": "14"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "jamestown", "gender": "FEMALE", "metric_period_months": "3", "count": "9"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "minot", "gender": "FEMALE", "metric_period_months": "3", "count": "5"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "fargo", "gender": "FEMALE", "metric_period_months": "3", "count": "15"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "grand-forks", "gender": "FEMALE", "metric_period_months": "3", "count": "3"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "devils-lake", "gender": "FEMALE", "metric_period_months": "3", "count": "5"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "wahpeton", "gender": "FEMALE", "metric_period_months": "3", "count": "24"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "rolla", "gender": "FEMALE", "metric_period_months": "3", "count": "9"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "washburn", "gender": "FEMALE", "metric_period_months": "3", "count": "1"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "williston", "gender": "FEMALE", "metric_period_months": "3", "count": "5"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "dickson", "gender": "FEMALE", "metric_period_months": "3", "count": "9"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "grafton", "gender": "FEMALE", "metric_period_months": "3", "count": "4"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "mandan", "gender": "FEMALE", "metric_period_months": "3", "count": "14"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "bottineau", "gender": "FEMALE", "metric_period_months": "3", "count": "19"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "oakes", "gender": "FEMALE", "metric_period_months": "3", "count": "4"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "beulah", "gender": "FEMALE", "metric_period_months": "3", "count": "8"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "bismarck", "gender": "FEMALE", "metric_period_months": "6", "count": "4"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "jamestown", "gender": "FEMALE", "metric_period_months": "6", "count": "26"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "minot", "gender": "FEMALE", "metric_period_months": "6", "count": "21"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "fargo", "gender": "FEMALE", "metric_period_months": "6", "count": "18"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "grand-forks", "gender": "FEMALE", "metric_period_months": "6", "count": "26"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "devils-lake", "gender": "FEMALE", "metric_period_months": "6", "count": "6"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "wahpeton", "gender": "FEMALE", "metric_period_months": "6", "count": "25"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "rolla", "gender": "FEMALE", "metric_period_months": "6", "count": "7"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "washburn", "gender": "FEMALE", "metric_period_months": "6", "count": "6"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "williston", "gender": "FEMALE", "metric_period_months": "6", "count": "36"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "dickson", "gender": "FEMALE", "metric_period_months": "6", "count": "16"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "grafton", "gender": "FEMALE", "metric_period_months": "6", "count": "15"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "mandan", "gender": "FEMALE", "metric_period_months": "6", "count": "40"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "bottineau", "gender": "FEMALE", "metric_period_months": "6", "count": "3"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "oakes", "gender": "FEMALE", "metric_period_months": "6", "count": "16"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "beulah", "gender": "FEMALE", "metric_period_months": "6", "count": "11"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "bismarck", "gender": "FEMALE", "metric_period_months": "12", "count": "105"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "jamestown", "gender": "FEMALE", "metric_period_months": "12", "count": "12"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "minot", "gender": "FEMALE", "metric_period_months": "12", "count": "44"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "fargo", "gender": "FEMALE", "metric_period_months": "12", "count": "53"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "grand-forks", "gender": "FEMALE", "metric_period_months": "12", "count": "17"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "devils-lake", "gender": "FEMALE", "metric_period_months": "12", "count": "24"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "wahpeton", "gender": "FEMALE", "metric_period_months": "12", "count": "8"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "rolla", "gender": "FEMALE", "metric_period_months": "12", "count": "5"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "washburn", "gender": "FEMALE", "metric_period_months": "12", "count": "19"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "williston", "gender": "FEMALE", "metric_period_months": "12", "count": "55"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "dickson", "gender": "FEMALE", "metric_period_months": "12", "count": "26"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "grafton", "gender": "FEMALE", "metric_period_months": "12", "count": "66"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "mandan", "gender": "FEMALE", "metric_period_months": "12", "count": "5"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "bottineau", "gender": "FEMALE", "metric_period_months": "12", "count": "24"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "oakes", "gender": "FEMALE", "metric_period_months": "12", "count": "14"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "beulah", "gender": "FEMALE", "metric_period_months": "12", "count": "16"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "bismarck", "gender": "FEMALE", "metric_period_months": "36", "count": "46"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "jamestown", "gender": "FEMALE", "metric_period_months": "36", "count": "61"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "minot", "gender": "FEMALE", "metric_period_months": "36", "count": "70"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "fargo", "gender": "FEMALE", "metric_period_months": "36", "count": "187"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "grand-forks", "gender": "FEMALE", "metric_period_months": "36", "count": "92"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "devils-lake", "gender": "FEMALE", "metric_period_months": "36", "count": "19"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "wahpeton", "gender": "FEMALE", "metric_period_months": "36", "count": "42"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "rolla", "gender": "FEMALE", "metric_period_months": "36", "count": "41"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "washburn", "gender": "FEMALE", "metric_period_months": "36", "count": "29"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "williston", "gender": "FEMALE", "metric_period_months": "36", "count": "153"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "dickson", "gender": "FEMALE", "metric_period_months": "36", "count": "99"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "grafton", "gender": "FEMALE", "metric_period_months": "36", "count": "77"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "mandan", "gender": "FEMALE", "metric_period_months": "36", "count": "91"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "bottineau", "gender": "FEMALE", "metric_period_months": "36", "count": "108"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "oakes", "gender": "FEMALE", "metric_period_months": "36", "count": "42"}
-{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "beulah", "gender": "FEMALE", "metric_period_months": "36", "count": "17"}
-{"state_code": "US_DEMO", "district": "ALL", "supervision_type": "PAROLE", "gender": "FEMALE", "metric_period_months": "1", "count": "33"}
-{"state_code": "US_DEMO", "district": "ALL", "supervision_type": "PROBATION", "gender": "FEMALE", "metric_period_months": "1", "count": "22"}
-{"state_code": "US_DEMO", "district": "ALL", "supervision_type": "PAROLE", "gender": "FEMALE", "metric_period_months": "3", "count": "142"}
-{"state_code": "US_DEMO", "district": "ALL", "supervision_type": "PROBATION", "gender": "FEMALE", "metric_period_months": "3", "count": "6"}
-{"state_code": "US_DEMO", "district": "ALL", "supervision_type": "PAROLE", "gender": "FEMALE", "metric_period_months": "6", "count": "171"}
-{"state_code": "US_DEMO", "district": "ALL", "supervision_type": "PROBATION", "gender": "FEMALE", "metric_period_months": "6", "count": "105"}
-{"state_code": "US_DEMO", "district": "ALL", "supervision_type": "PAROLE", "gender": "FEMALE", "metric_period_months": "12", "count": "391"}
-{"state_code": "US_DEMO", "district": "ALL", "supervision_type": "PROBATION", "gender": "FEMALE", "metric_period_months": "12", "count": "102"}
-{"state_code": "US_DEMO", "district": "ALL", "supervision_type": "PAROLE", "gender": "FEMALE", "metric_period_months": "36", "count": "554"}
-{"state_code": "US_DEMO", "district": "ALL", "supervision_type": "PROBATION", "gender": "FEMALE", "metric_period_months": "36", "count": "620"}
-{"state_code": "US_DEMO", "district": "ALL", "supervision_type": "ALL", "gender": "FEMALE", "metric_period_months": "1", "count": "55"}
-{"state_code": "US_DEMO", "district": "ALL", "supervision_type": "ALL", "gender": "FEMALE", "metric_period_months": "3", "count": "148"}
-{"state_code": "US_DEMO", "district": "ALL", "supervision_type": "ALL", "gender": "FEMALE", "metric_period_months": "6", "count": "276"}
-{"state_code": "US_DEMO", "district": "ALL", "supervision_type": "ALL", "gender": "FEMALE", "metric_period_months": "12", "count": "493"}
-{"state_code": "US_DEMO", "district": "ALL", "supervision_type": "ALL", "gender": "FEMALE", "metric_period_months": "36", "count": "1174"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "7", "metric_period_months": "1", "supervision_type": "PAROLE", "district": "bismarck", "total_supervision_count": "6"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "2", "metric_period_months": "1", "supervision_type": "PAROLE", "district": "jamestown", "total_supervision_count": "6"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "1", "metric_period_months": "1", "supervision_type": "PAROLE", "district": "minot", "total_supervision_count": "56"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "5", "metric_period_months": "1", "supervision_type": "PAROLE", "district": "fargo", "total_supervision_count": "6"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "0", "metric_period_months": "1", "supervision_type": "PAROLE", "district": "grand-forks", "total_supervision_count": "19"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "4", "metric_period_months": "1", "supervision_type": "PAROLE", "district": "devils-lake", "total_supervision_count": "13"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "1", "metric_period_months": "1", "supervision_type": "PAROLE", "district": "wahpeton", "total_supervision_count": "31"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "4", "metric_period_months": "1", "supervision_type": "PAROLE", "district": "rolla", "total_supervision_count": "2"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "0", "metric_period_months": "1", "supervision_type": "PAROLE", "district": "washburn", "total_supervision_count": "12"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "1", "metric_period_months": "1", "supervision_type": "PAROLE", "district": "williston", "total_supervision_count": "2"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "1", "metric_period_months": "1", "supervision_type": "PAROLE", "district": "dickson", "total_supervision_count": "5"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "1", "metric_period_months": "1", "supervision_type": "PAROLE", "district": "grafton", "total_supervision_count": "28"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "2", "metric_period_months": "1", "supervision_type": "PAROLE", "district": "mandan", "total_supervision_count": "9"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "0", "metric_period_months": "1", "supervision_type": "PAROLE", "district": "bottineau", "total_supervision_count": "36"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "2", "metric_period_months": "1", "supervision_type": "PAROLE", "district": "oakes", "total_supervision_count": "13"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "2", "metric_period_months": "1", "supervision_type": "PAROLE", "district": "beulah", "total_supervision_count": "11"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "0", "metric_period_months": "1", "supervision_type": "PROBATION", "district": "bismarck", "total_supervision_count": "72"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "1", "metric_period_months": "1", "supervision_type": "PROBATION", "district": "jamestown", "total_supervision_count": "93"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "3", "metric_period_months": "1", "supervision_type": "PROBATION", "district": "minot", "total_supervision_count": "90"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "0", "metric_period_months": "1", "supervision_type": "PROBATION", "district": "fargo", "total_supervision_count": "14"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "2", "metric_period_months": "1", "supervision_type": "PROBATION", "district": "grand-forks", "total_supervision_count": "36"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "0", "metric_period_months": "1", "supervision_type": "PROBATION", "district": "devils-lake", "total_supervision_count": "156"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "4", "metric_period_months": "1", "supervision_type": "PROBATION", "district": "wahpeton", "total_supervision_count": "264"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "1", "metric_period_months": "1", "supervision_type": "PROBATION", "district": "rolla", "total_supervision_count": "194"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "2", "metric_period_months": "1", "supervision_type": "PROBATION", "district": "washburn", "total_supervision_count": "241"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "2", "metric_period_months": "1", "supervision_type": "PROBATION", "district": "williston", "total_supervision_count": "15"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "0", "metric_period_months": "1", "supervision_type": "PROBATION", "district": "dickson", "total_supervision_count": "24"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "3", "metric_period_months": "1", "supervision_type": "PROBATION", "district": "grafton", "total_supervision_count": "220"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "2", "metric_period_months": "1", "supervision_type": "PROBATION", "district": "mandan", "total_supervision_count": "308"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "1", "metric_period_months": "1", "supervision_type": "PROBATION", "district": "bottineau", "total_supervision_count": "99"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "1", "metric_period_months": "1", "supervision_type": "PROBATION", "district": "oakes", "total_supervision_count": "315"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "0", "metric_period_months": "1", "supervision_type": "PROBATION", "district": "beulah", "total_supervision_count": "9"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "0", "metric_period_months": "1", "supervision_type": "PAROLE", "district": "bismarck", "total_supervision_count": "113"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "2", "metric_period_months": "1", "supervision_type": "PAROLE", "district": "jamestown", "total_supervision_count": "70"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "1", "metric_period_months": "1", "supervision_type": "PAROLE", "district": "minot", "total_supervision_count": "84"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "1", "metric_period_months": "1", "supervision_type": "PAROLE", "district": "fargo", "total_supervision_count": "55"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "1", "metric_period_months": "1", "supervision_type": "PAROLE", "district": "grand-forks", "total_supervision_count": "72"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "1", "metric_period_months": "1", "supervision_type": "PAROLE", "district": "devils-lake", "total_supervision_count": "82"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "0", "metric_period_months": "1", "supervision_type": "PAROLE", "district": "wahpeton", "total_supervision_count": "74"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "1", "metric_period_months": "1", "supervision_type": "PAROLE", "district": "rolla", "total_supervision_count": "25"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "0", "metric_period_months": "1", "supervision_type": "PAROLE", "district": "washburn", "total_supervision_count": "124"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "0", "metric_period_months": "1", "supervision_type": "PAROLE", "district": "williston", "total_supervision_count": "75"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "0", "metric_period_months": "1", "supervision_type": "PAROLE", "district": "dickson", "total_supervision_count": "33"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "0", "metric_period_months": "1", "supervision_type": "PAROLE", "district": "grafton", "total_supervision_count": "36"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "0", "metric_period_months": "1", "supervision_type": "PAROLE", "district": "mandan", "total_supervision_count": "182"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "0", "metric_period_months": "1", "supervision_type": "PAROLE", "district": "bottineau", "total_supervision_count": "81"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "0", "metric_period_months": "1", "supervision_type": "PAROLE", "district": "oakes", "total_supervision_count": "21"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "0", "metric_period_months": "1", "supervision_type": "PAROLE", "district": "beulah", "total_supervision_count": "188"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "1", "metric_period_months": "1", "supervision_type": "PROBATION", "district": "bismarck", "total_supervision_count": "307"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "3", "metric_period_months": "1", "supervision_type": "PROBATION", "district": "jamestown", "total_supervision_count": "361"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "1", "metric_period_months": "1", "supervision_type": "PROBATION", "district": "minot", "total_supervision_count": "413"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "0", "metric_period_months": "1", "supervision_type": "PROBATION", "district": "fargo", "total_supervision_count": "17"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "1", "metric_period_months": "1", "supervision_type": "PROBATION", "district": "grand-forks", "total_supervision_count": "26"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "1", "metric_period_months": "1", "supervision_type": "PROBATION", "district": "devils-lake", "total_supervision_count": "403"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "3", "metric_period_months": "1", "supervision_type": "PROBATION", "district": "wahpeton", "total_supervision_count": "268"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "2", "metric_period_months": "1", "supervision_type": "PROBATION", "district": "rolla", "total_supervision_count": "104"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "1", "metric_period_months": "1", "supervision_type": "PROBATION", "district": "washburn", "total_supervision_count": "19"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "2", "metric_period_months": "1", "supervision_type": "PROBATION", "district": "williston", "total_supervision_count": "132"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "0", "metric_period_months": "1", "supervision_type": "PROBATION", "district": "dickson", "total_supervision_count": "110"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "29", "metric_period_months": "1", "supervision_type": "PROBATION", "district": "grafton", "total_supervision_count": "72"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "1", "metric_period_months": "1", "supervision_type": "PROBATION", "district": "mandan", "total_supervision_count": "162"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "0", "metric_period_months": "1", "supervision_type": "PROBATION", "district": "bottineau", "total_supervision_count": "232"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "2", "metric_period_months": "1", "supervision_type": "PROBATION", "district": "oakes", "total_supervision_count": "125"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "6", "metric_period_months": "1", "supervision_type": "PROBATION", "district": "beulah", "total_supervision_count": "43"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "14", "metric_period_months": "3", "supervision_type": "PAROLE", "district": "bismarck", "total_supervision_count": "100"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "7", "metric_period_months": "3", "supervision_type": "PAROLE", "district": "jamestown", "total_supervision_count": "43"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "5", "metric_period_months": "3", "supervision_type": "PAROLE", "district": "minot", "total_supervision_count": "205"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "15", "metric_period_months": "3", "supervision_type": "PAROLE", "district": "fargo", "total_supervision_count": "53"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "3", "metric_period_months": "3", "supervision_type": "PAROLE", "district": "grand-forks", "total_supervision_count": "67"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "5", "metric_period_months": "3", "supervision_type": "PAROLE", "district": "devils-lake", "total_supervision_count": "13"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "24", "metric_period_months": "3", "supervision_type": "PAROLE", "district": "wahpeton", "total_supervision_count": "52"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "8", "metric_period_months": "3", "supervision_type": "PAROLE", "district": "rolla", "total_supervision_count": "66"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "0", "metric_period_months": "3", "supervision_type": "PAROLE", "district": "washburn", "total_supervision_count": "226"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "4", "metric_period_months": "3", "supervision_type": "PAROLE", "district": "williston", "total_supervision_count": "61"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "9", "metric_period_months": "3", "supervision_type": "PAROLE", "district": "dickson", "total_supervision_count": "16"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "4", "metric_period_months": "3", "supervision_type": "PAROLE", "district": "grafton", "total_supervision_count": "51"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "14", "metric_period_months": "3", "supervision_type": "PAROLE", "district": "mandan", "total_supervision_count": "33"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "18", "metric_period_months": "3", "supervision_type": "PAROLE", "district": "bottineau", "total_supervision_count": "132"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "4", "metric_period_months": "3", "supervision_type": "PAROLE", "district": "oakes", "total_supervision_count": "21"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "8", "metric_period_months": "3", "supervision_type": "PAROLE", "district": "beulah", "total_supervision_count": "32"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "0", "metric_period_months": "3", "supervision_type": "PROBATION", "district": "bismarck", "total_supervision_count": "161"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "2", "metric_period_months": "3", "supervision_type": "PROBATION", "district": "jamestown", "total_supervision_count": "39"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "0", "metric_period_months": "3", "supervision_type": "PROBATION", "district": "minot", "total_supervision_count": "13"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "0", "metric_period_months": "3", "supervision_type": "PROBATION", "district": "fargo", "total_supervision_count": "150"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "0", "metric_period_months": "3", "supervision_type": "PROBATION", "district": "grand-forks", "total_supervision_count": "74"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "0", "metric_period_months": "3", "supervision_type": "PROBATION", "district": "devils-lake", "total_supervision_count": "79"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "0", "metric_period_months": "3", "supervision_type": "PROBATION", "district": "wahpeton", "total_supervision_count": "84"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "1", "metric_period_months": "3", "supervision_type": "PROBATION", "district": "rolla", "total_supervision_count": "309"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "1", "metric_period_months": "3", "supervision_type": "PROBATION", "district": "washburn", "total_supervision_count": "16"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "1", "metric_period_months": "3", "supervision_type": "PROBATION", "district": "williston", "total_supervision_count": "5"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "0", "metric_period_months": "3", "supervision_type": "PROBATION", "district": "dickson", "total_supervision_count": "87"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "0", "metric_period_months": "3", "supervision_type": "PROBATION", "district": "grafton", "total_supervision_count": "55"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "0", "metric_period_months": "3", "supervision_type": "PROBATION", "district": "mandan", "total_supervision_count": "181"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "1", "metric_period_months": "3", "supervision_type": "PROBATION", "district": "bottineau", "total_supervision_count": "44"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "0", "metric_period_months": "3", "supervision_type": "PROBATION", "district": "oakes", "total_supervision_count": "69"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "0", "metric_period_months": "3", "supervision_type": "PROBATION", "district": "beulah", "total_supervision_count": "140"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "10", "metric_period_months": "3", "supervision_type": "PAROLE", "district": "bismarck", "total_supervision_count": "151"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "22", "metric_period_months": "3", "supervision_type": "PAROLE", "district": "jamestown", "total_supervision_count": "102"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "10", "metric_period_months": "3", "supervision_type": "PAROLE", "district": "minot", "total_supervision_count": "211"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "3", "metric_period_months": "3", "supervision_type": "PAROLE", "district": "fargo", "total_supervision_count": "291"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "4", "metric_period_months": "3", "supervision_type": "PAROLE", "district": "grand-forks", "total_supervision_count": "87"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "15", "metric_period_months": "3", "supervision_type": "PAROLE", "district": "devils-lake", "total_supervision_count": "107"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "3", "metric_period_months": "3", "supervision_type": "PAROLE", "district": "wahpeton", "total_supervision_count": "181"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "3", "metric_period_months": "3", "supervision_type": "PAROLE", "district": "rolla", "total_supervision_count": "41"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "11", "metric_period_months": "3", "supervision_type": "PAROLE", "district": "washburn", "total_supervision_count": "135"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "3", "metric_period_months": "3", "supervision_type": "PAROLE", "district": "williston", "total_supervision_count": "614"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "2", "metric_period_months": "3", "supervision_type": "PAROLE", "district": "dickson", "total_supervision_count": "382"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "2", "metric_period_months": "3", "supervision_type": "PAROLE", "district": "grafton", "total_supervision_count": "87"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "9", "metric_period_months": "3", "supervision_type": "PAROLE", "district": "mandan", "total_supervision_count": "552"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "6", "metric_period_months": "3", "supervision_type": "PAROLE", "district": "bottineau", "total_supervision_count": "437"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "2", "metric_period_months": "3", "supervision_type": "PAROLE", "district": "oakes", "total_supervision_count": "130"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "20", "metric_period_months": "3", "supervision_type": "PAROLE", "district": "beulah", "total_supervision_count": "88"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "1", "metric_period_months": "3", "supervision_type": "PROBATION", "district": "bismarck", "total_supervision_count": "31"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "6", "metric_period_months": "3", "supervision_type": "PROBATION", "district": "jamestown", "total_supervision_count": "13"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "4", "metric_period_months": "3", "supervision_type": "PROBATION", "district": "minot", "total_supervision_count": "25"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "3", "metric_period_months": "3", "supervision_type": "PROBATION", "district": "fargo", "total_supervision_count": "35"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "2", "metric_period_months": "3", "supervision_type": "PROBATION", "district": "grand-forks", "total_supervision_count": "66"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "7", "metric_period_months": "3", "supervision_type": "PROBATION", "district": "devils-lake", "total_supervision_count": "34"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "5", "metric_period_months": "3", "supervision_type": "PROBATION", "district": "wahpeton", "total_supervision_count": "196"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "3", "metric_period_months": "3", "supervision_type": "PROBATION", "district": "rolla", "total_supervision_count": "8"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "5", "metric_period_months": "3", "supervision_type": "PROBATION", "district": "washburn", "total_supervision_count": "78"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "3", "metric_period_months": "3", "supervision_type": "PROBATION", "district": "williston", "total_supervision_count": "64"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "17", "metric_period_months": "3", "supervision_type": "PROBATION", "district": "dickson", "total_supervision_count": "7"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "1", "metric_period_months": "3", "supervision_type": "PROBATION", "district": "grafton", "total_supervision_count": "34"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "7", "metric_period_months": "3", "supervision_type": "PROBATION", "district": "mandan", "total_supervision_count": "16"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "7", "metric_period_months": "3", "supervision_type": "PROBATION", "district": "bottineau", "total_supervision_count": "60"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "3", "metric_period_months": "3", "supervision_type": "PROBATION", "district": "oakes", "total_supervision_count": "13"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "3", "metric_period_months": "3", "supervision_type": "PROBATION", "district": "beulah", "total_supervision_count": "105"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "3", "metric_period_months": "6", "supervision_type": "PAROLE", "district": "bismarck", "total_supervision_count": "26"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "25", "metric_period_months": "6", "supervision_type": "PAROLE", "district": "jamestown", "total_supervision_count": "15"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "8", "metric_period_months": "6", "supervision_type": "PAROLE", "district": "minot", "total_supervision_count": "67"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "14", "metric_period_months": "6", "supervision_type": "PAROLE", "district": "fargo", "total_supervision_count": "74"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "14", "metric_period_months": "6", "supervision_type": "PAROLE", "district": "grand-forks", "total_supervision_count": "228"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "4", "metric_period_months": "6", "supervision_type": "PAROLE", "district": "devils-lake", "total_supervision_count": "207"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "14", "metric_period_months": "6", "supervision_type": "PAROLE", "district": "wahpeton", "total_supervision_count": "81"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "2", "metric_period_months": "6", "supervision_type": "PAROLE", "district": "rolla", "total_supervision_count": "141"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "0", "metric_period_months": "6", "supervision_type": "PAROLE", "district": "washburn", "total_supervision_count": "15"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "26", "metric_period_months": "6", "supervision_type": "PAROLE", "district": "williston", "total_supervision_count": "6"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "2", "metric_period_months": "6", "supervision_type": "PAROLE", "district": "dickson", "total_supervision_count": "12"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "12", "metric_period_months": "6", "supervision_type": "PAROLE", "district": "grafton", "total_supervision_count": "168"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "31", "metric_period_months": "6", "supervision_type": "PAROLE", "district": "mandan", "total_supervision_count": "109"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "1", "metric_period_months": "6", "supervision_type": "PAROLE", "district": "bottineau", "total_supervision_count": "185"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "7", "metric_period_months": "6", "supervision_type": "PAROLE", "district": "oakes", "total_supervision_count": "68"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "8", "metric_period_months": "6", "supervision_type": "PAROLE", "district": "beulah", "total_supervision_count": "93"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "1", "metric_period_months": "6", "supervision_type": "PROBATION", "district": "bismarck", "total_supervision_count": "34"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "1", "metric_period_months": "6", "supervision_type": "PROBATION", "district": "jamestown", "total_supervision_count": "107"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "13", "metric_period_months": "6", "supervision_type": "PROBATION", "district": "minot", "total_supervision_count": "72"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "4", "metric_period_months": "6", "supervision_type": "PROBATION", "district": "fargo", "total_supervision_count": "68"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "12", "metric_period_months": "6", "supervision_type": "PROBATION", "district": "grand-forks", "total_supervision_count": "31"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "2", "metric_period_months": "6", "supervision_type": "PROBATION", "district": "devils-lake", "total_supervision_count": "90"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "11", "metric_period_months": "6", "supervision_type": "PROBATION", "district": "wahpeton", "total_supervision_count": "215"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "5", "metric_period_months": "6", "supervision_type": "PROBATION", "district": "rolla", "total_supervision_count": "236"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "6", "metric_period_months": "6", "supervision_type": "PROBATION", "district": "washburn", "total_supervision_count": "101"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "10", "metric_period_months": "6", "supervision_type": "PROBATION", "district": "williston", "total_supervision_count": "60"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "14", "metric_period_months": "6", "supervision_type": "PROBATION", "district": "dickson", "total_supervision_count": "67"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "3", "metric_period_months": "6", "supervision_type": "PROBATION", "district": "grafton", "total_supervision_count": "9"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "9", "metric_period_months": "6", "supervision_type": "PROBATION", "district": "mandan", "total_supervision_count": "32"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "2", "metric_period_months": "6", "supervision_type": "PROBATION", "district": "bottineau", "total_supervision_count": "57"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "9", "metric_period_months": "6", "supervision_type": "PROBATION", "district": "oakes", "total_supervision_count": "45"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "3", "metric_period_months": "6", "supervision_type": "PROBATION", "district": "beulah", "total_supervision_count": "83"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "14", "metric_period_months": "6", "supervision_type": "PAROLE", "district": "bismarck", "total_supervision_count": "632"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "7", "metric_period_months": "6", "supervision_type": "PAROLE", "district": "jamestown", "total_supervision_count": "75"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "13", "metric_period_months": "6", "supervision_type": "PAROLE", "district": "minot", "total_supervision_count": "297"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "31", "metric_period_months": "6", "supervision_type": "PAROLE", "district": "fargo", "total_supervision_count": "569"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "28", "metric_period_months": "6", "supervision_type": "PAROLE", "district": "grand-forks", "total_supervision_count": "1"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "2", "metric_period_months": "6", "supervision_type": "PAROLE", "district": "devils-lake", "total_supervision_count": "19"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "14", "metric_period_months": "6", "supervision_type": "PAROLE", "district": "wahpeton", "total_supervision_count": "99"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "41", "metric_period_months": "6", "supervision_type": "PAROLE", "district": "rolla", "total_supervision_count": "442"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "4", "metric_period_months": "6", "supervision_type": "PAROLE", "district": "washburn", "total_supervision_count": "756"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "4", "metric_period_months": "6", "supervision_type": "PAROLE", "district": "williston", "total_supervision_count": "9"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "35", "metric_period_months": "6", "supervision_type": "PAROLE", "district": "dickson", "total_supervision_count": "108"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "6", "metric_period_months": "6", "supervision_type": "PAROLE", "district": "grafton", "total_supervision_count": "169"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "28", "metric_period_months": "6", "supervision_type": "PAROLE", "district": "mandan", "total_supervision_count": "261"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "7", "metric_period_months": "6", "supervision_type": "PAROLE", "district": "bottineau", "total_supervision_count": "231"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "5", "metric_period_months": "6", "supervision_type": "PAROLE", "district": "oakes", "total_supervision_count": "187"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "24", "metric_period_months": "6", "supervision_type": "PAROLE", "district": "beulah", "total_supervision_count": "68"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "8", "metric_period_months": "6", "supervision_type": "PROBATION", "district": "bismarck", "total_supervision_count": "31"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "20", "metric_period_months": "6", "supervision_type": "PROBATION", "district": "jamestown", "total_supervision_count": "67"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "3", "metric_period_months": "6", "supervision_type": "PROBATION", "district": "minot", "total_supervision_count": "94"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "13", "metric_period_months": "6", "supervision_type": "PROBATION", "district": "fargo", "total_supervision_count": "13"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "5", "metric_period_months": "6", "supervision_type": "PROBATION", "district": "grand-forks", "total_supervision_count": "57"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "3", "metric_period_months": "6", "supervision_type": "PROBATION", "district": "devils-lake", "total_supervision_count": "36"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "21", "metric_period_months": "6", "supervision_type": "PROBATION", "district": "wahpeton", "total_supervision_count": "85"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "1", "metric_period_months": "6", "supervision_type": "PROBATION", "district": "rolla", "total_supervision_count": "23"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "3", "metric_period_months": "6", "supervision_type": "PROBATION", "district": "washburn", "total_supervision_count": "45"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "4", "metric_period_months": "6", "supervision_type": "PROBATION", "district": "williston", "total_supervision_count": "28"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "4", "metric_period_months": "6", "supervision_type": "PROBATION", "district": "dickson", "total_supervision_count": "102"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "6", "metric_period_months": "6", "supervision_type": "PROBATION", "district": "grafton", "total_supervision_count": "13"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "12", "metric_period_months": "6", "supervision_type": "PROBATION", "district": "mandan", "total_supervision_count": "19"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "20", "metric_period_months": "6", "supervision_type": "PROBATION", "district": "bottineau", "total_supervision_count": "27"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "2", "metric_period_months": "6", "supervision_type": "PROBATION", "district": "oakes", "total_supervision_count": "40"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "20", "metric_period_months": "6", "supervision_type": "PROBATION", "district": "beulah", "total_supervision_count": "16"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "99", "metric_period_months": "12", "supervision_type": "PAROLE", "district": "bismarck", "total_supervision_count": "47"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "5", "metric_period_months": "12", "supervision_type": "PAROLE", "district": "jamestown", "total_supervision_count": "307"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "36", "metric_period_months": "12", "supervision_type": "PAROLE", "district": "minot", "total_supervision_count": "162"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "48", "metric_period_months": "12", "supervision_type": "PAROLE", "district": "fargo", "total_supervision_count": "51"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "9", "metric_period_months": "12", "supervision_type": "PAROLE", "district": "grand-forks", "total_supervision_count": "28"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "21", "metric_period_months": "12", "supervision_type": "PAROLE", "district": "devils-lake", "total_supervision_count": "55"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "3", "metric_period_months": "12", "supervision_type": "PAROLE", "district": "wahpeton", "total_supervision_count": "93"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "4", "metric_period_months": "12", "supervision_type": "PAROLE", "district": "rolla", "total_supervision_count": "30"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "16", "metric_period_months": "12", "supervision_type": "PAROLE", "district": "washburn", "total_supervision_count": "3"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "37", "metric_period_months": "12", "supervision_type": "PAROLE", "district": "williston", "total_supervision_count": "35"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "16", "metric_period_months": "12", "supervision_type": "PAROLE", "district": "dickson", "total_supervision_count": "243"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "65", "metric_period_months": "12", "supervision_type": "PAROLE", "district": "grafton", "total_supervision_count": "233"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "3", "metric_period_months": "12", "supervision_type": "PAROLE", "district": "mandan", "total_supervision_count": "162"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "19", "metric_period_months": "12", "supervision_type": "PAROLE", "district": "bottineau", "total_supervision_count": "22"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "1", "metric_period_months": "12", "supervision_type": "PAROLE", "district": "oakes", "total_supervision_count": "11"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "9", "metric_period_months": "12", "supervision_type": "PAROLE", "district": "beulah", "total_supervision_count": "24"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "6", "metric_period_months": "12", "supervision_type": "PROBATION", "district": "bismarck", "total_supervision_count": "32"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "7", "metric_period_months": "12", "supervision_type": "PROBATION", "district": "jamestown", "total_supervision_count": "67"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "8", "metric_period_months": "12", "supervision_type": "PROBATION", "district": "minot", "total_supervision_count": "225"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "5", "metric_period_months": "12", "supervision_type": "PROBATION", "district": "fargo", "total_supervision_count": "74"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "8", "metric_period_months": "12", "supervision_type": "PROBATION", "district": "grand-forks", "total_supervision_count": "79"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "3", "metric_period_months": "12", "supervision_type": "PROBATION", "district": "devils-lake", "total_supervision_count": "136"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "5", "metric_period_months": "12", "supervision_type": "PROBATION", "district": "wahpeton", "total_supervision_count": "232"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "1", "metric_period_months": "12", "supervision_type": "PROBATION", "district": "rolla", "total_supervision_count": "16"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "3", "metric_period_months": "12", "supervision_type": "PROBATION", "district": "washburn", "total_supervision_count": "144"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "18", "metric_period_months": "12", "supervision_type": "PROBATION", "district": "williston", "total_supervision_count": "196"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "10", "metric_period_months": "12", "supervision_type": "PROBATION", "district": "dickson", "total_supervision_count": "166"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "1", "metric_period_months": "12", "supervision_type": "PROBATION", "district": "grafton", "total_supervision_count": "18"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "2", "metric_period_months": "12", "supervision_type": "PROBATION", "district": "mandan", "total_supervision_count": "43"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "5", "metric_period_months": "12", "supervision_type": "PROBATION", "district": "bottineau", "total_supervision_count": "17"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "13", "metric_period_months": "12", "supervision_type": "PROBATION", "district": "oakes", "total_supervision_count": "4"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "7", "metric_period_months": "12", "supervision_type": "PROBATION", "district": "beulah", "total_supervision_count": "45"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "0", "metric_period_months": "12", "supervision_type": "PAROLE", "district": "bismarck", "total_supervision_count": "130"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "0", "metric_period_months": "12", "supervision_type": "PAROLE", "district": "jamestown", "total_supervision_count": "1"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "0", "metric_period_months": "12", "supervision_type": "PAROLE", "district": "minot", "total_supervision_count": "45"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "0", "metric_period_months": "12", "supervision_type": "PAROLE", "district": "fargo", "total_supervision_count": "341"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "0", "metric_period_months": "12", "supervision_type": "PAROLE", "district": "grand-forks", "total_supervision_count": "56"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "2", "metric_period_months": "12", "supervision_type": "PAROLE", "district": "devils-lake", "total_supervision_count": "10"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "0", "metric_period_months": "12", "supervision_type": "PAROLE", "district": "wahpeton", "total_supervision_count": "493"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "0", "metric_period_months": "12", "supervision_type": "PAROLE", "district": "rolla", "total_supervision_count": "3"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "0", "metric_period_months": "12", "supervision_type": "PAROLE", "district": "washburn", "total_supervision_count": "201"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "0", "metric_period_months": "12", "supervision_type": "PAROLE", "district": "williston", "total_supervision_count": "97"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "0", "metric_period_months": "12", "supervision_type": "PAROLE", "district": "dickson", "total_supervision_count": "194"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "0", "metric_period_months": "12", "supervision_type": "PAROLE", "district": "grafton", "total_supervision_count": "74"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "0", "metric_period_months": "12", "supervision_type": "PAROLE", "district": "mandan", "total_supervision_count": "117"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "0", "metric_period_months": "12", "supervision_type": "PAROLE", "district": "bottineau", "total_supervision_count": "103"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "0", "metric_period_months": "12", "supervision_type": "PAROLE", "district": "oakes", "total_supervision_count": "573"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "0", "metric_period_months": "12", "supervision_type": "PAROLE", "district": "beulah", "total_supervision_count": "15"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "81", "metric_period_months": "12", "supervision_type": "PROBATION", "district": "bismarck", "total_supervision_count": "205"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "24", "metric_period_months": "12", "supervision_type": "PROBATION", "district": "jamestown", "total_supervision_count": "361"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "69", "metric_period_months": "12", "supervision_type": "PROBATION", "district": "minot", "total_supervision_count": "10"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "48", "metric_period_months": "12", "supervision_type": "PROBATION", "district": "fargo", "total_supervision_count": "140"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "118", "metric_period_months": "12", "supervision_type": "PROBATION", "district": "grand-forks", "total_supervision_count": "203"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "74", "metric_period_months": "12", "supervision_type": "PROBATION", "district": "devils-lake", "total_supervision_count": "30"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "59", "metric_period_months": "12", "supervision_type": "PROBATION", "district": "wahpeton", "total_supervision_count": "92"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "31", "metric_period_months": "12", "supervision_type": "PROBATION", "district": "rolla", "total_supervision_count": "85"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "5", "metric_period_months": "12", "supervision_type": "PROBATION", "district": "washburn", "total_supervision_count": "83"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "76", "metric_period_months": "12", "supervision_type": "PROBATION", "district": "williston", "total_supervision_count": "12"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "1", "metric_period_months": "12", "supervision_type": "PROBATION", "district": "dickson", "total_supervision_count": "248"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "17", "metric_period_months": "12", "supervision_type": "PROBATION", "district": "grafton", "total_supervision_count": "480"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "22", "metric_period_months": "12", "supervision_type": "PROBATION", "district": "mandan", "total_supervision_count": "36"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "94", "metric_period_months": "12", "supervision_type": "PROBATION", "district": "bottineau", "total_supervision_count": "71"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "39", "metric_period_months": "12", "supervision_type": "PROBATION", "district": "oakes", "total_supervision_count": "28"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "55", "metric_period_months": "12", "supervision_type": "PROBATION", "district": "beulah", "total_supervision_count": "191"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "10", "metric_period_months": "36", "supervision_type": "PAROLE", "district": "bismarck", "total_supervision_count": "258"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "37", "metric_period_months": "36", "supervision_type": "PAROLE", "district": "jamestown", "total_supervision_count": "203"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "2", "metric_period_months": "36", "supervision_type": "PAROLE", "district": "minot", "total_supervision_count": "16"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "154", "metric_period_months": "36", "supervision_type": "PAROLE", "district": "fargo", "total_supervision_count": "65"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "20", "metric_period_months": "36", "supervision_type": "PAROLE", "district": "grand-forks", "total_supervision_count": "178"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "14", "metric_period_months": "36", "supervision_type": "PAROLE", "district": "devils-lake", "total_supervision_count": "58"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "10", "metric_period_months": "36", "supervision_type": "PAROLE", "district": "wahpeton", "total_supervision_count": "7"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "8", "metric_period_months": "36", "supervision_type": "PAROLE", "district": "rolla", "total_supervision_count": "192"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "3", "metric_period_months": "36", "supervision_type": "PAROLE", "district": "washburn", "total_supervision_count": "94"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "7", "metric_period_months": "36", "supervision_type": "PAROLE", "district": "williston", "total_supervision_count": "149"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "81", "metric_period_months": "36", "supervision_type": "PAROLE", "district": "dickson", "total_supervision_count": "81"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "63", "metric_period_months": "36", "supervision_type": "PAROLE", "district": "grafton", "total_supervision_count": "55"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "32", "metric_period_months": "36", "supervision_type": "PAROLE", "district": "mandan", "total_supervision_count": "31"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "71", "metric_period_months": "36", "supervision_type": "PAROLE", "district": "bottineau", "total_supervision_count": "149"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "26", "metric_period_months": "36", "supervision_type": "PAROLE", "district": "oakes", "total_supervision_count": "20"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "16", "metric_period_months": "36", "supervision_type": "PAROLE", "district": "beulah", "total_supervision_count": "8"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "36", "metric_period_months": "36", "supervision_type": "PROBATION", "district": "bismarck", "total_supervision_count": "74"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "24", "metric_period_months": "36", "supervision_type": "PROBATION", "district": "jamestown", "total_supervision_count": "48"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "68", "metric_period_months": "36", "supervision_type": "PROBATION", "district": "minot", "total_supervision_count": "29"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "33", "metric_period_months": "36", "supervision_type": "PROBATION", "district": "fargo", "total_supervision_count": "173"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "72", "metric_period_months": "36", "supervision_type": "PROBATION", "district": "grand-forks", "total_supervision_count": "68"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "5", "metric_period_months": "36", "supervision_type": "PROBATION", "district": "devils-lake", "total_supervision_count": "120"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "32", "metric_period_months": "36", "supervision_type": "PROBATION", "district": "wahpeton", "total_supervision_count": "63"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "33", "metric_period_months": "36", "supervision_type": "PROBATION", "district": "rolla", "total_supervision_count": "206"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "26", "metric_period_months": "36", "supervision_type": "PROBATION", "district": "washburn", "total_supervision_count": "101"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "146", "metric_period_months": "36", "supervision_type": "PROBATION", "district": "williston", "total_supervision_count": "22"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "18", "metric_period_months": "36", "supervision_type": "PROBATION", "district": "dickson", "total_supervision_count": "3"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "14", "metric_period_months": "36", "supervision_type": "PROBATION", "district": "grafton", "total_supervision_count": "163"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "59", "metric_period_months": "36", "supervision_type": "PROBATION", "district": "mandan", "total_supervision_count": "42"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "37", "metric_period_months": "36", "supervision_type": "PROBATION", "district": "bottineau", "total_supervision_count": "114"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "16", "metric_period_months": "36", "supervision_type": "PROBATION", "district": "oakes", "total_supervision_count": "255"}
+{"state_code": "US_DEMO", "gender": "FEMALE", "count": "1", "metric_period_months": "36", "supervision_type": "PROBATION", "district": "beulah", "total_supervision_count": "59"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "77", "metric_period_months": "36", "supervision_type": "PAROLE", "district": "bismarck", "total_supervision_count": "157"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "2", "metric_period_months": "36", "supervision_type": "PAROLE", "district": "jamestown", "total_supervision_count": "154"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "37", "metric_period_months": "36", "supervision_type": "PAROLE", "district": "minot", "total_supervision_count": "171"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "5", "metric_period_months": "36", "supervision_type": "PAROLE", "district": "fargo", "total_supervision_count": "71"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "26", "metric_period_months": "36", "supervision_type": "PAROLE", "district": "grand-forks", "total_supervision_count": "1"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "84", "metric_period_months": "36", "supervision_type": "PAROLE", "district": "devils-lake", "total_supervision_count": "10"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "64", "metric_period_months": "36", "supervision_type": "PAROLE", "district": "wahpeton", "total_supervision_count": "2"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "13", "metric_period_months": "36", "supervision_type": "PAROLE", "district": "rolla", "total_supervision_count": "58"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "67", "metric_period_months": "36", "supervision_type": "PAROLE", "district": "washburn", "total_supervision_count": "45"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "21", "metric_period_months": "36", "supervision_type": "PAROLE", "district": "williston", "total_supervision_count": "49"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "15", "metric_period_months": "36", "supervision_type": "PAROLE", "district": "dickson", "total_supervision_count": "55"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "3", "metric_period_months": "36", "supervision_type": "PAROLE", "district": "grafton", "total_supervision_count": "14"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "67", "metric_period_months": "36", "supervision_type": "PAROLE", "district": "mandan", "total_supervision_count": "209"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "27", "metric_period_months": "36", "supervision_type": "PAROLE", "district": "bottineau", "total_supervision_count": "35"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "4", "metric_period_months": "36", "supervision_type": "PAROLE", "district": "oakes", "total_supervision_count": "3"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "59", "metric_period_months": "36", "supervision_type": "PAROLE", "district": "beulah", "total_supervision_count": "187"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "71", "metric_period_months": "36", "supervision_type": "PROBATION", "district": "bismarck", "total_supervision_count": "373"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "483", "metric_period_months": "36", "supervision_type": "PROBATION", "district": "jamestown", "total_supervision_count": "249"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "138", "metric_period_months": "36", "supervision_type": "PROBATION", "district": "minot", "total_supervision_count": "155"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "41", "metric_period_months": "36", "supervision_type": "PROBATION", "district": "fargo", "total_supervision_count": "317"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "15", "metric_period_months": "36", "supervision_type": "PROBATION", "district": "grand-forks", "total_supervision_count": "123"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "20", "metric_period_months": "36", "supervision_type": "PROBATION", "district": "devils-lake", "total_supervision_count": "448"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "141", "metric_period_months": "36", "supervision_type": "PROBATION", "district": "wahpeton", "total_supervision_count": "79"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "121", "metric_period_months": "36", "supervision_type": "PROBATION", "district": "rolla", "total_supervision_count": "47"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "131", "metric_period_months": "36", "supervision_type": "PROBATION", "district": "washburn", "total_supervision_count": "70"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "29", "metric_period_months": "36", "supervision_type": "PROBATION", "district": "williston", "total_supervision_count": "140"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "219", "metric_period_months": "36", "supervision_type": "PROBATION", "district": "dickson", "total_supervision_count": "540"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "10", "metric_period_months": "36", "supervision_type": "PROBATION", "district": "grafton", "total_supervision_count": "3"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "191", "metric_period_months": "36", "supervision_type": "PROBATION", "district": "mandan", "total_supervision_count": "257"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "22", "metric_period_months": "36", "supervision_type": "PROBATION", "district": "bottineau", "total_supervision_count": "86"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "126", "metric_period_months": "36", "supervision_type": "PROBATION", "district": "oakes", "total_supervision_count": "777"}
+{"state_code": "US_DEMO", "gender": "MALE", "count": "143", "metric_period_months": "36", "supervision_type": "PROBATION", "district": "beulah", "total_supervision_count": "21"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "bismarck", "gender": "MALE", "metric_period_months": "1", "count": "1", "total_supervision_count": "420"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "jamestown", "gender": "MALE", "metric_period_months": "1", "count": "5", "total_supervision_count": "431"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "minot", "gender": "MALE", "metric_period_months": "1", "count": "2", "total_supervision_count": "497"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "fargo", "gender": "MALE", "metric_period_months": "1", "count": "1", "total_supervision_count": "72"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "grand-forks", "gender": "MALE", "metric_period_months": "1", "count": "2", "total_supervision_count": "98"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "devils-lake", "gender": "MALE", "metric_period_months": "1", "count": "2", "total_supervision_count": "485"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "wahpeton", "gender": "MALE", "metric_period_months": "1", "count": "3", "total_supervision_count": "342"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "rolla", "gender": "MALE", "metric_period_months": "1", "count": "3", "total_supervision_count": "129"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "washburn", "gender": "MALE", "metric_period_months": "1", "count": "1", "total_supervision_count": "143"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "williston", "gender": "MALE", "metric_period_months": "1", "count": "2", "total_supervision_count": "207"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "dickson", "gender": "MALE", "metric_period_months": "1", "count": "0", "total_supervision_count": "143"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "grafton", "gender": "MALE", "metric_period_months": "1", "count": "29", "total_supervision_count": "108"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "mandan", "gender": "MALE", "metric_period_months": "1", "count": "1", "total_supervision_count": "344"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "bottineau", "gender": "MALE", "metric_period_months": "1", "count": "0", "total_supervision_count": "313"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "oakes", "gender": "MALE", "metric_period_months": "1", "count": "2", "total_supervision_count": "146"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "beulah", "gender": "MALE", "metric_period_months": "1", "count": "6", "total_supervision_count": "231"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "bismarck", "gender": "MALE", "metric_period_months": "3", "count": "11", "total_supervision_count": "182"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "jamestown", "gender": "MALE", "metric_period_months": "3", "count": "28", "total_supervision_count": "115"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "minot", "gender": "MALE", "metric_period_months": "3", "count": "14", "total_supervision_count": "236"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "fargo", "gender": "MALE", "metric_period_months": "3", "count": "6", "total_supervision_count": "326"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "grand-forks", "gender": "MALE", "metric_period_months": "3", "count": "6", "total_supervision_count": "153"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "devils-lake", "gender": "MALE", "metric_period_months": "3", "count": "22", "total_supervision_count": "141"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "wahpeton", "gender": "MALE", "metric_period_months": "3", "count": "8", "total_supervision_count": "377"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "rolla", "gender": "MALE", "metric_period_months": "3", "count": "6", "total_supervision_count": "49"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "washburn", "gender": "MALE", "metric_period_months": "3", "count": "16", "total_supervision_count": "213"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "williston", "gender": "MALE", "metric_period_months": "3", "count": "6", "total_supervision_count": "678"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "dickson", "gender": "MALE", "metric_period_months": "3", "count": "19", "total_supervision_count": "389"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "grafton", "gender": "MALE", "metric_period_months": "3", "count": "3", "total_supervision_count": "121"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "mandan", "gender": "MALE", "metric_period_months": "3", "count": "16", "total_supervision_count": "568"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "bottineau", "gender": "MALE", "metric_period_months": "3", "count": "13", "total_supervision_count": "497"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "oakes", "gender": "MALE", "metric_period_months": "3", "count": "5", "total_supervision_count": "143"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "beulah", "gender": "MALE", "metric_period_months": "3", "count": "23", "total_supervision_count": "193"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "bismarck", "gender": "MALE", "metric_period_months": "6", "count": "22", "total_supervision_count": "663"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "jamestown", "gender": "MALE", "metric_period_months": "6", "count": "27", "total_supervision_count": "142"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "minot", "gender": "MALE", "metric_period_months": "6", "count": "16", "total_supervision_count": "391"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "fargo", "gender": "MALE", "metric_period_months": "6", "count": "44", "total_supervision_count": "582"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "grand-forks", "gender": "MALE", "metric_period_months": "6", "count": "33", "total_supervision_count": "58"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "devils-lake", "gender": "MALE", "metric_period_months": "6", "count": "5", "total_supervision_count": "55"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "wahpeton", "gender": "MALE", "metric_period_months": "6", "count": "35", "total_supervision_count": "184"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "rolla", "gender": "MALE", "metric_period_months": "6", "count": "42", "total_supervision_count": "465"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "washburn", "gender": "MALE", "metric_period_months": "6", "count": "7", "total_supervision_count": "801"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "williston", "gender": "MALE", "metric_period_months": "6", "count": "8", "total_supervision_count": "37"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "dickson", "gender": "MALE", "metric_period_months": "6", "count": "39", "total_supervision_count": "210"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "grafton", "gender": "MALE", "metric_period_months": "6", "count": "12", "total_supervision_count": "182"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "mandan", "gender": "MALE", "metric_period_months": "6", "count": "40", "total_supervision_count": "280"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "bottineau", "gender": "MALE", "metric_period_months": "6", "count": "27", "total_supervision_count": "258"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "oakes", "gender": "MALE", "metric_period_months": "6", "count": "7", "total_supervision_count": "227"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "beulah", "gender": "MALE", "metric_period_months": "6", "count": "44", "total_supervision_count": "84"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "bismarck", "gender": "MALE", "metric_period_months": "12", "count": "81", "total_supervision_count": "335"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "jamestown", "gender": "MALE", "metric_period_months": "12", "count": "24", "total_supervision_count": "362"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "minot", "gender": "MALE", "metric_period_months": "12", "count": "69", "total_supervision_count": "55"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "fargo", "gender": "MALE", "metric_period_months": "12", "count": "48", "total_supervision_count": "481"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "grand-forks", "gender": "MALE", "metric_period_months": "12", "count": "118", "total_supervision_count": "259"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "devils-lake", "gender": "MALE", "metric_period_months": "12", "count": "76", "total_supervision_count": "40"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "wahpeton", "gender": "MALE", "metric_period_months": "12", "count": "59", "total_supervision_count": "585"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "rolla", "gender": "MALE", "metric_period_months": "12", "count": "31", "total_supervision_count": "88"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "washburn", "gender": "MALE", "metric_period_months": "12", "count": "5", "total_supervision_count": "284"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "williston", "gender": "MALE", "metric_period_months": "12", "count": "76", "total_supervision_count": "109"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "dickson", "gender": "MALE", "metric_period_months": "12", "count": "1", "total_supervision_count": "442"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "grafton", "gender": "MALE", "metric_period_months": "12", "count": "17", "total_supervision_count": "554"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "mandan", "gender": "MALE", "metric_period_months": "12", "count": "22", "total_supervision_count": "153"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "bottineau", "gender": "MALE", "metric_period_months": "12", "count": "94", "total_supervision_count": "174"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "oakes", "gender": "MALE", "metric_period_months": "12", "count": "39", "total_supervision_count": "601"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "beulah", "gender": "MALE", "metric_period_months": "12", "count": "55", "total_supervision_count": "206"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "bismarck", "gender": "MALE", "metric_period_months": "36", "count": "148", "total_supervision_count": "530"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "jamestown", "gender": "MALE", "metric_period_months": "36", "count": "485", "total_supervision_count": "403"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "minot", "gender": "MALE", "metric_period_months": "36", "count": "175", "total_supervision_count": "326"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "fargo", "gender": "MALE", "metric_period_months": "36", "count": "46", "total_supervision_count": "388"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "grand-forks", "gender": "MALE", "metric_period_months": "36", "count": "41", "total_supervision_count": "124"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "devils-lake", "gender": "MALE", "metric_period_months": "36", "count": "104", "total_supervision_count": "458"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "wahpeton", "gender": "MALE", "metric_period_months": "36", "count": "205", "total_supervision_count": "81"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "rolla", "gender": "MALE", "metric_period_months": "36", "count": "134", "total_supervision_count": "105"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "washburn", "gender": "MALE", "metric_period_months": "36", "count": "198", "total_supervision_count": "115"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "williston", "gender": "MALE", "metric_period_months": "36", "count": "50", "total_supervision_count": "189"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "dickson", "gender": "MALE", "metric_period_months": "36", "count": "234", "total_supervision_count": "595"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "grafton", "gender": "MALE", "metric_period_months": "36", "count": "13", "total_supervision_count": "17"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "mandan", "gender": "MALE", "metric_period_months": "36", "count": "258", "total_supervision_count": "466"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "bottineau", "gender": "MALE", "metric_period_months": "36", "count": "49", "total_supervision_count": "121"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "oakes", "gender": "MALE", "metric_period_months": "36", "count": "130", "total_supervision_count": "780"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "beulah", "gender": "MALE", "metric_period_months": "36", "count": "202", "total_supervision_count": "208"}
+{"state_code": "US_DEMO", "district": "ALL", "supervision_type": "PAROLE", "gender": "MALE", "metric_period_months": "1", "count": "7", "total_supervision_count": "1315"}
+{"state_code": "US_DEMO", "district": "ALL", "supervision_type": "PROBATION", "gender": "MALE", "metric_period_months": "1", "count": "53", "total_supervision_count": "2794"}
+{"state_code": "US_DEMO", "district": "ALL", "supervision_type": "PAROLE", "gender": "MALE", "metric_period_months": "3", "count": "125", "total_supervision_count": "3596"}
+{"state_code": "US_DEMO", "district": "ALL", "supervision_type": "PROBATION", "gender": "MALE", "metric_period_months": "3", "count": "77", "total_supervision_count": "785"}
+{"state_code": "US_DEMO", "district": "ALL", "supervision_type": "PAROLE", "gender": "MALE", "metric_period_months": "6", "count": "263", "total_supervision_count": "3923"}
+{"state_code": "US_DEMO", "district": "ALL", "supervision_type": "PROBATION", "gender": "MALE", "metric_period_months": "6", "count": "145", "total_supervision_count": "696"}
+{"state_code": "US_DEMO", "district": "ALL", "supervision_type": "PAROLE", "gender": "MALE", "metric_period_months": "12", "count": "2", "total_supervision_count": "2453"}
+{"state_code": "US_DEMO", "district": "ALL", "supervision_type": "PROBATION", "gender": "MALE", "metric_period_months": "12", "count": "813", "total_supervision_count": "2275"}
+{"state_code": "US_DEMO", "district": "ALL", "supervision_type": "PAROLE", "gender": "MALE", "metric_period_months": "36", "count": "571", "total_supervision_count": "1221"}
+{"state_code": "US_DEMO", "district": "ALL", "supervision_type": "PROBATION", "gender": "MALE", "metric_period_months": "36", "count": "1901", "total_supervision_count": "3685"}
+{"state_code": "US_DEMO", "district": "ALL", "supervision_type": "ALL", "gender": "MALE", "metric_period_months": "1", "count": "60", "total_supervision_count": "4109"}
+{"state_code": "US_DEMO", "district": "ALL", "supervision_type": "ALL", "gender": "MALE", "metric_period_months": "3", "count": "202", "total_supervision_count": "4381"}
+{"state_code": "US_DEMO", "district": "ALL", "supervision_type": "ALL", "gender": "MALE", "metric_period_months": "6", "count": "408", "total_supervision_count": "4619"}
+{"state_code": "US_DEMO", "district": "ALL", "supervision_type": "ALL", "gender": "MALE", "metric_period_months": "12", "count": "815", "total_supervision_count": "4728"}
+{"state_code": "US_DEMO", "district": "ALL", "supervision_type": "ALL", "gender": "MALE", "metric_period_months": "36", "count": "2472", "total_supervision_count": "4906"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "bismarck", "gender": "FEMALE", "metric_period_months": "1", "count": "7", "total_supervision_count": "78"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "jamestown", "gender": "FEMALE", "metric_period_months": "1", "count": "3", "total_supervision_count": "99"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "minot", "gender": "FEMALE", "metric_period_months": "1", "count": "4", "total_supervision_count": "146"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "fargo", "gender": "FEMALE", "metric_period_months": "1", "count": "5", "total_supervision_count": "20"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "grand-forks", "gender": "FEMALE", "metric_period_months": "1", "count": "2", "total_supervision_count": "55"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "devils-lake", "gender": "FEMALE", "metric_period_months": "1", "count": "4", "total_supervision_count": "169"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "wahpeton", "gender": "FEMALE", "metric_period_months": "1", "count": "5", "total_supervision_count": "295"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "rolla", "gender": "FEMALE", "metric_period_months": "1", "count": "5", "total_supervision_count": "196"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "washburn", "gender": "FEMALE", "metric_period_months": "1", "count": "2", "total_supervision_count": "253"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "williston", "gender": "FEMALE", "metric_period_months": "1", "count": "3", "total_supervision_count": "17"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "dickson", "gender": "FEMALE", "metric_period_months": "1", "count": "1", "total_supervision_count": "29"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "grafton", "gender": "FEMALE", "metric_period_months": "1", "count": "4", "total_supervision_count": "248"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "mandan", "gender": "FEMALE", "metric_period_months": "1", "count": "4", "total_supervision_count": "317"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "bottineau", "gender": "FEMALE", "metric_period_months": "1", "count": "1", "total_supervision_count": "135"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "oakes", "gender": "FEMALE", "metric_period_months": "1", "count": "3", "total_supervision_count": "328"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "beulah", "gender": "FEMALE", "metric_period_months": "1", "count": "2", "total_supervision_count": "20"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "bismarck", "gender": "FEMALE", "metric_period_months": "3", "count": "14", "total_supervision_count": "261"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "jamestown", "gender": "FEMALE", "metric_period_months": "3", "count": "9", "total_supervision_count": "82"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "minot", "gender": "FEMALE", "metric_period_months": "3", "count": "5", "total_supervision_count": "218"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "fargo", "gender": "FEMALE", "metric_period_months": "3", "count": "15", "total_supervision_count": "203"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "grand-forks", "gender": "FEMALE", "metric_period_months": "3", "count": "3", "total_supervision_count": "141"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "devils-lake", "gender": "FEMALE", "metric_period_months": "3", "count": "5", "total_supervision_count": "92"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "wahpeton", "gender": "FEMALE", "metric_period_months": "3", "count": "24", "total_supervision_count": "136"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "rolla", "gender": "FEMALE", "metric_period_months": "3", "count": "9", "total_supervision_count": "375"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "washburn", "gender": "FEMALE", "metric_period_months": "3", "count": "1", "total_supervision_count": "242"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "williston", "gender": "FEMALE", "metric_period_months": "3", "count": "5", "total_supervision_count": "66"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "dickson", "gender": "FEMALE", "metric_period_months": "3", "count": "9", "total_supervision_count": "103"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "grafton", "gender": "FEMALE", "metric_period_months": "3", "count": "4", "total_supervision_count": "106"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "mandan", "gender": "FEMALE", "metric_period_months": "3", "count": "14", "total_supervision_count": "214"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "bottineau", "gender": "FEMALE", "metric_period_months": "3", "count": "19", "total_supervision_count": "176"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "oakes", "gender": "FEMALE", "metric_period_months": "3", "count": "4", "total_supervision_count": "90"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "beulah", "gender": "FEMALE", "metric_period_months": "3", "count": "8", "total_supervision_count": "172"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "bismarck", "gender": "FEMALE", "metric_period_months": "6", "count": "4", "total_supervision_count": "60"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "jamestown", "gender": "FEMALE", "metric_period_months": "6", "count": "26", "total_supervision_count": "122"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "minot", "gender": "FEMALE", "metric_period_months": "6", "count": "21", "total_supervision_count": "139"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "fargo", "gender": "FEMALE", "metric_period_months": "6", "count": "18", "total_supervision_count": "142"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "grand-forks", "gender": "FEMALE", "metric_period_months": "6", "count": "26", "total_supervision_count": "259"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "devils-lake", "gender": "FEMALE", "metric_period_months": "6", "count": "6", "total_supervision_count": "297"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "wahpeton", "gender": "FEMALE", "metric_period_months": "6", "count": "25", "total_supervision_count": "296"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "rolla", "gender": "FEMALE", "metric_period_months": "6", "count": "7", "total_supervision_count": "377"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "washburn", "gender": "FEMALE", "metric_period_months": "6", "count": "6", "total_supervision_count": "116"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "williston", "gender": "FEMALE", "metric_period_months": "6", "count": "36", "total_supervision_count": "66"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "dickson", "gender": "FEMALE", "metric_period_months": "6", "count": "16", "total_supervision_count": "79"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "grafton", "gender": "FEMALE", "metric_period_months": "6", "count": "15", "total_supervision_count": "177"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "mandan", "gender": "FEMALE", "metric_period_months": "6", "count": "40", "total_supervision_count": "141"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "bottineau", "gender": "FEMALE", "metric_period_months": "6", "count": "3", "total_supervision_count": "242"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "oakes", "gender": "FEMALE", "metric_period_months": "6", "count": "16", "total_supervision_count": "113"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "beulah", "gender": "FEMALE", "metric_period_months": "6", "count": "11", "total_supervision_count": "176"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "bismarck", "gender": "FEMALE", "metric_period_months": "12", "count": "105", "total_supervision_count": "79"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "jamestown", "gender": "FEMALE", "metric_period_months": "12", "count": "12", "total_supervision_count": "374"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "minot", "gender": "FEMALE", "metric_period_months": "12", "count": "44", "total_supervision_count": "387"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "fargo", "gender": "FEMALE", "metric_period_months": "12", "count": "53", "total_supervision_count": "125"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "grand-forks", "gender": "FEMALE", "metric_period_months": "12", "count": "17", "total_supervision_count": "107"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "devils-lake", "gender": "FEMALE", "metric_period_months": "12", "count": "24", "total_supervision_count": "191"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "wahpeton", "gender": "FEMALE", "metric_period_months": "12", "count": "8", "total_supervision_count": "325"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "rolla", "gender": "FEMALE", "metric_period_months": "12", "count": "5", "total_supervision_count": "46"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "washburn", "gender": "FEMALE", "metric_period_months": "12", "count": "19", "total_supervision_count": "147"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "williston", "gender": "FEMALE", "metric_period_months": "12", "count": "55", "total_supervision_count": "231"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "dickson", "gender": "FEMALE", "metric_period_months": "12", "count": "26", "total_supervision_count": "409"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "grafton", "gender": "FEMALE", "metric_period_months": "12", "count": "66", "total_supervision_count": "251"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "mandan", "gender": "FEMALE", "metric_period_months": "12", "count": "5", "total_supervision_count": "205"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "bottineau", "gender": "FEMALE", "metric_period_months": "12", "count": "24", "total_supervision_count": "39"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "oakes", "gender": "FEMALE", "metric_period_months": "12", "count": "14", "total_supervision_count": "15"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "beulah", "gender": "FEMALE", "metric_period_months": "12", "count": "16", "total_supervision_count": "69"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "bismarck", "gender": "FEMALE", "metric_period_months": "36", "count": "46", "total_supervision_count": "332"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "jamestown", "gender": "FEMALE", "metric_period_months": "36", "count": "61", "total_supervision_count": "251"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "minot", "gender": "FEMALE", "metric_period_months": "36", "count": "70", "total_supervision_count": "45"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "fargo", "gender": "FEMALE", "metric_period_months": "36", "count": "187", "total_supervision_count": "238"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "grand-forks", "gender": "FEMALE", "metric_period_months": "36", "count": "92", "total_supervision_count": "246"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "devils-lake", "gender": "FEMALE", "metric_period_months": "36", "count": "19", "total_supervision_count": "178"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "wahpeton", "gender": "FEMALE", "metric_period_months": "36", "count": "42", "total_supervision_count": "70"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "rolla", "gender": "FEMALE", "metric_period_months": "36", "count": "41", "total_supervision_count": "398"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "washburn", "gender": "FEMALE", "metric_period_months": "36", "count": "29", "total_supervision_count": "195"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "williston", "gender": "FEMALE", "metric_period_months": "36", "count": "153", "total_supervision_count": "171"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "dickson", "gender": "FEMALE", "metric_period_months": "36", "count": "99", "total_supervision_count": "84"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "grafton", "gender": "FEMALE", "metric_period_months": "36", "count": "77", "total_supervision_count": "218"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "mandan", "gender": "FEMALE", "metric_period_months": "36", "count": "91", "total_supervision_count": "73"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "bottineau", "gender": "FEMALE", "metric_period_months": "36", "count": "108", "total_supervision_count": "263"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "oakes", "gender": "FEMALE", "metric_period_months": "36", "count": "42", "total_supervision_count": "275"}
+{"state_code": "US_DEMO", "supervision_type": "ALL", "district": "beulah", "gender": "FEMALE", "metric_period_months": "36", "count": "17", "total_supervision_count": "67"}
+{"state_code": "US_DEMO", "district": "ALL", "supervision_type": "PAROLE", "gender": "FEMALE", "metric_period_months": "1", "count": "33", "total_supervision_count": "255"}
+{"state_code": "US_DEMO", "district": "ALL", "supervision_type": "PROBATION", "gender": "FEMALE", "metric_period_months": "1", "count": "22", "total_supervision_count": "2150"}
+{"state_code": "US_DEMO", "district": "ALL", "supervision_type": "PAROLE", "gender": "FEMALE", "metric_period_months": "3", "count": "142", "total_supervision_count": "1171"}
+{"state_code": "US_DEMO", "district": "ALL", "supervision_type": "PROBATION", "gender": "FEMALE", "metric_period_months": "3", "count": "6", "total_supervision_count": "1506"}
+{"state_code": "US_DEMO", "district": "ALL", "supervision_type": "PAROLE", "gender": "FEMALE", "metric_period_months": "6", "count": "171", "total_supervision_count": "1495"}
+{"state_code": "US_DEMO", "district": "ALL", "supervision_type": "PROBATION", "gender": "FEMALE", "metric_period_months": "6", "count": "105", "total_supervision_count": "1307"}
+{"state_code": "US_DEMO", "district": "ALL", "supervision_type": "PAROLE", "gender": "FEMALE", "metric_period_months": "12", "count": "391", "total_supervision_count": "1506"}
+{"state_code": "US_DEMO", "district": "ALL", "supervision_type": "PROBATION", "gender": "FEMALE", "metric_period_months": "12", "count": "102", "total_supervision_count": "1494"}
+{"state_code": "US_DEMO", "district": "ALL", "supervision_type": "PAROLE", "gender": "FEMALE", "metric_period_months": "36", "count": "554", "total_supervision_count": "1564"}
+{"state_code": "US_DEMO", "district": "ALL", "supervision_type": "PROBATION", "gender": "FEMALE", "metric_period_months": "36", "count": "620", "total_supervision_count": "1540"}
+{"state_code": "US_DEMO", "district": "ALL", "supervision_type": "ALL", "gender": "FEMALE", "metric_period_months": "1", "count": "55", "total_supervision_count": "2405"}
+{"state_code": "US_DEMO", "district": "ALL", "supervision_type": "ALL", "gender": "FEMALE", "metric_period_months": "3", "count": "148", "total_supervision_count": "2677"}
+{"state_code": "US_DEMO", "district": "ALL", "supervision_type": "ALL", "gender": "FEMALE", "metric_period_months": "6", "count": "276", "total_supervision_count": "2802"}
+{"state_code": "US_DEMO", "district": "ALL", "supervision_type": "ALL", "gender": "FEMALE", "metric_period_months": "12", "count": "493", "total_supervision_count": "3000"}
+{"state_code": "US_DEMO", "district": "ALL", "supervision_type": "ALL", "gender": "FEMALE", "metric_period_months": "36", "count": "1174", "total_supervision_count": "3104"}

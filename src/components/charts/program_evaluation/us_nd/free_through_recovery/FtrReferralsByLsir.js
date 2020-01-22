@@ -39,7 +39,6 @@ const FtrReferralsByLsir = (props) => {
 
   const processResponse = () => {
     const { ftrReferralsByLsir } = props;
-    const { supervisionPopulationByLsir } = props;
 
     let filteredFtrReferrals = filterDatasetBySupervisionType(
       ftrReferralsByLsir, props.supervisionType,
@@ -49,47 +48,34 @@ const FtrReferralsByLsir = (props) => {
       filteredFtrReferrals, props.district,
     );
 
-    filteredFtrReferrals = filterDatasetByMetricPeriodMonths(filteredFtrReferrals, props.metricPeriodMonths);
-
-    let filteredSupervisionPopulation = filterDatasetBySupervisionType(
-      supervisionPopulationByLsir, props.supervisionType,
-    );
-
-    filteredSupervisionPopulation = filterDatasetByDistrict(
-      filteredSupervisionPopulation, props.district,
-    );
-
-    filteredSupervisionPopulation = filterDatasetByMetricPeriodMonths(
-      filteredSupervisionPopulation, props.metricPeriodMonths,
+    filteredFtrReferrals = filterDatasetByMetricPeriodMonths(
+      filteredFtrReferrals, props.metricPeriodMonths,
     );
 
     let totalFtrReferrals = 0;
+    let totalSupervisionPopulation = 0;
     const ftrReferralDataPoints = {};
+    const supervisionDataPoints = {};
+
     if (filteredFtrReferrals) {
       filteredFtrReferrals.forEach((data) => {
         const { lsir_score: lsir } = data;
-        const count = toInt(data.count, 10);
+
+        const referralCount = toInt(data.count, 10);
 
         if (!ftrReferralDataPoints[lsir]) {
           ftrReferralDataPoints[lsir] = 0;
         }
-        ftrReferralDataPoints[lsir] += count;
-        totalFtrReferrals += count;
-      });
-    }
+        ftrReferralDataPoints[lsir] += referralCount;
+        totalFtrReferrals += referralCount;
 
-    let totalSupervisionPopulation = 0;
-    const supervisionDataPoints = {};
-    if (filteredSupervisionPopulation) {
-      filteredSupervisionPopulation.forEach((data) => {
-        const { lsir_score: lsir } = data;
-        const count = toInt(data.count);
+        const supervisionCount = toInt(data.total_supervision_count);
 
         if (!supervisionDataPoints[lsir]) {
           supervisionDataPoints[lsir] = 0;
         }
-        supervisionDataPoints[lsir] += count;
-        totalSupervisionPopulation += count;
+        supervisionDataPoints[lsir] += supervisionCount;
+        totalSupervisionPopulation += supervisionCount;
       });
     }
 
@@ -129,7 +115,6 @@ const FtrReferralsByLsir = (props) => {
     processResponse();
   }, [
     props.ftrReferralsByLsir,
-    props.supervisionPopulationByLsir,
     props.metricType,
     props.metricPeriodMonths,
     props.supervisionType,

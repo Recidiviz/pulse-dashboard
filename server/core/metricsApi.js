@@ -45,10 +45,6 @@ const FILES_BY_METRIC_TYPE = {
     'ftr_referrals_by_lsir_by_period.json',
     'ftr_referrals_by_race_and_ethnicity_by_period.json',
     'race_proportions.json',
-    'supervision_population_by_age_60_days.json',
-    'supervision_population_by_gender_60_days.json',
-    'supervision_population_by_lsir_60_days.json',
-    'supervision_population_by_race_and_ethnicity_60_days.json',
     'site_offices.json',
   ],
   reincarceration: [
@@ -68,7 +64,6 @@ const FILES_BY_METRIC_TYPE = {
     'revocations_by_race_and_ethnicity_by_period.json',
     'revocations_by_supervision_type_by_month.json',
     'revocations_by_violation_type_by_month.json',
-    'supervision_population_by_race_and_ethnicity_60_days.json',
     'site_offices.json',
   ],
   snapshot: [

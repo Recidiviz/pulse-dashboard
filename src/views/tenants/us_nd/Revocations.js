@@ -527,10 +527,7 @@ const Revocations = () => {
                       district={chartDistrict}
                       revocationProportionByRace={
                         apiData.revocations_by_race_and_ethnicity_by_period}
-                      supervisionPopulationByRace={
-                        apiData.supervision_population_by_race_and_ethnicity_60_days}
-                      statePopulationByRace={
-                        apiData.race_proportions}
+                      statePopulationByRace={apiData.race_proportions}
                     />
                   </div>
                 </div>

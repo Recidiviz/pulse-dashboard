@@ -39,11 +39,7 @@ const FtrReferralsByRace = (props) => {
   const chartId = 'ftrReferralsByRace';
 
   const processResponse = () => {
-    const {
-      ftrReferralsByRace,
-      supervisionPopulationByRace,
-      statePopulationByRace,
-    } = props;
+    const { ftrReferralsByRace, statePopulationByRace } = props;
 
     let filteredFtrReferrals = filterDatasetBySupervisionType(
       ftrReferralsByRace, props.supervisionType,
@@ -53,35 +49,26 @@ const FtrReferralsByRace = (props) => {
       filteredFtrReferrals, props.district,
     );
 
-    filteredFtrReferrals = filterDatasetByMetricPeriodMonths(filteredFtrReferrals, props.metricPeriodMonths);
-
-    let filteredSupervisionPopulation = filterDatasetBySupervisionType(
-      supervisionPopulationByRace, props.supervisionType,
-    );
-
-    filteredSupervisionPopulation = filterDatasetByDistrict(
-      filteredSupervisionPopulation, props.district,
-    );
-
-    filteredSupervisionPopulation = filterDatasetByMetricPeriodMonths(
-      filteredSupervisionPopulation, props.metricPeriodMonths,
+    filteredFtrReferrals = filterDatasetByMetricPeriodMonths(
+      filteredFtrReferrals, props.metricPeriodMonths,
     );
 
     const ftrReferralDataPoints = [];
+    const supervisionDataPoints = [];
+
     if (filteredFtrReferrals) {
       filteredFtrReferrals.forEach((data) => {
         const { race_or_ethnicity: race } = data;
-        const count = toInt(data.count, 10);
-        ftrReferralDataPoints.push({ race: raceValueToHumanReadable(race), count });
-      });
-    }
 
-    const supervisionDataPoints = [];
-    if (filteredSupervisionPopulation) {
-      filteredSupervisionPopulation.forEach((data) => {
-        const { race_or_ethnicity: race } = data;
-        const count = toInt(data.count);
-        supervisionDataPoints.push({ race: raceValueToHumanReadable(race), count });
+        const referralCount = toInt(data.count, 10);
+        ftrReferralDataPoints.push(
+          { race: raceValueToHumanReadable(race), count: referralCount },
+        );
+
+        const supervisionCount = toInt(data.total_supervision_count);
+        supervisionDataPoints.push(
+          { race: raceValueToHumanReadable(race), count: supervisionCount },
+        );
       });
     }
 
@@ -144,7 +131,6 @@ const FtrReferralsByRace = (props) => {
     processResponse();
   }, [
     props.ftrReferralsByRace,
-    props.supervisionPopulationByRace,
     props.metricType,
     props.metricPeriodMonths,
     props.supervisionType,

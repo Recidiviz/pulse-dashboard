@@ -204,8 +204,6 @@ const FreeThroughRecovery = () => {
                       supervisionType={chartSupervisionType}
                       district={chartDistrict}
                       ftrReferralsByRace={apiData.ftr_referrals_by_race_and_ethnicity_by_period}
-                      supervisionPopulationByRace={
-                        apiData.supervision_population_by_race_and_ethnicity_60_days}
                       statePopulationByRace={apiData.race_proportions}
                     />
                   </div>
@@ -295,7 +293,6 @@ const FreeThroughRecovery = () => {
                       supervisionType={chartSupervisionType}
                       district={chartDistrict}
                       ftrReferralsByLsir={apiData.ftr_referrals_by_lsir_by_period}
-                      supervisionPopulationByLsir={apiData.supervision_population_by_lsir_60_days}
                     />
                   </div>
                 </div>
@@ -379,8 +376,6 @@ const FreeThroughRecovery = () => {
                       supervisionType={chartSupervisionType}
                       district={chartDistrict}
                       ftrReferralsByGender={apiData.ftr_referrals_by_gender_by_period}
-                      supervisionPopulationByGender={
-                        apiData.supervision_population_by_gender_60_days}
                     />
                   </div>
                 </div>
@@ -460,7 +455,6 @@ const FreeThroughRecovery = () => {
                       supervisionType={chartSupervisionType}
                       district={chartDistrict}
                       ftrReferralsByAge={apiData.ftr_referrals_by_age_by_period}
-                      supervisionPopulationByAge={apiData.supervision_population_by_age_60_days}
                     />
                   </div>
                 </div>

@@ -41,7 +41,6 @@ const FtrReferralsByGender = (props) => {
 
   const processResponse = () => {
     const { ftrReferralsByGender } = props;
-    const { supervisionPopulationByGender } = props;
 
     let filteredFtrReferrals = filterDatasetBySupervisionType(
       ftrReferralsByGender, props.supervisionType,
@@ -51,36 +50,23 @@ const FtrReferralsByGender = (props) => {
       filteredFtrReferrals, props.district,
     );
 
-    filteredFtrReferrals = filterDatasetByMetricPeriodMonths(filteredFtrReferrals, props.metricPeriodMonths);
-
-    let filteredSupervisionPopulation = filterDatasetBySupervisionType(
-      supervisionPopulationByGender, props.supervisionType,
-    );
-
-    filteredSupervisionPopulation = filterDatasetByDistrict(
-      filteredSupervisionPopulation, props.district,
-    );
-
-    filteredSupervisionPopulation = filterDatasetByMetricPeriodMonths(
-      filteredSupervisionPopulation, props.metricPeriodMonths,
+    filteredFtrReferrals = filterDatasetByMetricPeriodMonths(
+      filteredFtrReferrals, props.metricPeriodMonths,
     );
 
     const ftrReferralDataPoints = [];
+    const supervisionDataPoints = [];
+
     if (filteredFtrReferrals) {
       filteredFtrReferrals.forEach((data) => {
         let { gender } = data;
         gender = genderValueToHumanReadable(gender);
-        const count = toInt(data.count, 10);
-        ftrReferralDataPoints.push({ gender, count });
-      });
-    }
 
-    const supervisionDataPoints = [];
-    if (filteredSupervisionPopulation) {
-      filteredSupervisionPopulation.forEach((data) => {
-        const { gender } = data;
-        const count = toInt(data.count);
-        supervisionDataPoints.push({ gender, count });
+        const referralCount = toInt(data.count, 10);
+        ftrReferralDataPoints.push({ gender, count: referralCount });
+
+        const totalSupervisionPopulation = toInt(data.total_supervision_count);
+        supervisionDataPoints.push({ gender, count: totalSupervisionPopulation });
       });
     }
 
@@ -119,7 +105,6 @@ const FtrReferralsByGender = (props) => {
     processResponse();
   }, [
     props.ftrReferralsByGender,
-    props.supervisionPopulationByGender,
     props.metricType,
     props.metricPeriodMonths,
     props.supervisionType,

@@ -39,7 +39,6 @@ const FtrReferralsByAge = (props) => {
 
   const processResponse = () => {
     const { ftrReferralsByAge } = props;
-    const { supervisionPopulationByAge } = props;
 
     let filteredFtrReferrals = filterDatasetBySupervisionType(
       ftrReferralsByAge, props.supervisionType,
@@ -53,20 +52,11 @@ const FtrReferralsByAge = (props) => {
       filteredFtrReferrals, props.metricPeriodMonths,
     );
 
-    let filteredSupervisionPopulation = filterDatasetBySupervisionType(
-      supervisionPopulationByAge, props.supervisionType,
-    );
-
-    filteredSupervisionPopulation = filterDatasetByDistrict(
-      filteredSupervisionPopulation, props.district,
-    );
-
-    filteredSupervisionPopulation = filterDatasetByMetricPeriodMonths(
-      filteredSupervisionPopulation, props.metricPeriodMonths,
-    );
-
     let totalFtrReferrals = 0;
+    let totalSupervisionPopulation = 0;
     const ftrReferralDataPoints = {};
+    const supervisionDataPoints = {};
+
     if (filteredFtrReferrals) {
       filteredFtrReferrals.forEach((data) => {
         let { age_bucket: age } = data;
@@ -77,33 +67,21 @@ const FtrReferralsByAge = (props) => {
           age = '40 and over';
         }
 
-        const count = toInt(data.count, 10);
+        const referralCount = toInt(data.count, 10);
+
         if (!ftrReferralDataPoints[age]) {
           ftrReferralDataPoints[age] = 0;
         }
-        ftrReferralDataPoints[age] += count;
-        totalFtrReferrals += count;
-      });
-    }
+        ftrReferralDataPoints[age] += referralCount;
+        totalFtrReferrals += referralCount;
 
-    let totalSupervisionPopulation = 0;
-    const supervisionDataPoints = {};
-    if (filteredSupervisionPopulation) {
-      filteredSupervisionPopulation.forEach((data) => {
-        let { age_bucket: age } = data;
+        const totalSupervisionCount = toInt(data.total_supervision_count);
 
-        if (age === '0-24') {
-          age = 'Under 25';
-        } else if (age === '40+') {
-          age = '40 and over';
-        }
-
-        const count = toInt(data.count);
         if (!supervisionDataPoints[age]) {
           supervisionDataPoints[age] = 0;
         }
-        supervisionDataPoints[age] += count;
-        totalSupervisionPopulation += count;
+        supervisionDataPoints[age] += totalSupervisionCount;
+        totalSupervisionPopulation += totalSupervisionCount;
       });
     }
 
@@ -143,7 +121,6 @@ const FtrReferralsByAge = (props) => {
     processResponse();
   }, [
     props.ftrReferralsByAge,
-    props.supervisionPopulationByAge,
     props.metricType,
     props.metricPeriodMonths,
     props.supervisionType,
