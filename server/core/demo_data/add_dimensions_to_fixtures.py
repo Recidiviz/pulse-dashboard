@@ -21,8 +21,8 @@ toggle capability that lets us break visualizations down along a new dimension.
 
 Example usage: python add_dimension_to_fixtures.py \
 --dimension_label supervision_type -dv PAROLE -dv PROBATION -sp count \
---in_file ftr_referrals_by_race_and_ethnicity_60_days.json \
---out_file ftr_referrals_by_race_and_ethnicity_60_days_updated.json
+--in_file ftr_referrals_by_race_and_ethnicity_by_period.json \
+--out_file ftr_referrals_by_race_and_ethnicity_by_period_updated.json
 
 This call would parse the given input file, and for each row in the file create two rows in the
 output file, each with the additional field of `supervision_type`, one with a value of `PAROLE` and
@@ -56,7 +56,7 @@ the `randomize_among_dimensions` function below to specify the range you want to
 
 Another philosophical point to make explicit is that each invocation of the script is totally
 separate from all other invocations and does not make use of any context. So if you have two fixture
-files, say `supervision_population_by_age_60_days` and `supervision_population_by_gender_60_days`,
+files, say `supervision_population_by_age_by_period` and `supervision_population_by_gender_by_period`,
 which should have dimensional breakdowns that sum to the same overall amounts (the overall size of
 the supervision population), this tool will not help achieve that.
 """
