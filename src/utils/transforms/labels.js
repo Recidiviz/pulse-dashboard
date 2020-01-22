@@ -73,6 +73,25 @@ function humanReadableTitleCase(str) {
   return toTitleCase(toHumanReadable(str));
 }
 
+/*
+ * Returns the officer id from the canonical id format, '123: Firstname Lastname'.
+ */
+function numberFromOfficerId(officerId) {
+  // This works even for the described format, correctly parsing out 123
+  return toInt(officerId);
+}
+
+/*
+ * Returns the officer name from the canonical id format, '123: Firstname Lastname'.
+ */
+function nameFromOfficerId(officerId) {
+  const parts = officerId.split(':');
+  if (parts.length === 1) {
+    return officerId;
+  }
+  return parts[1].trim();
+}
+
 export {
   riskLevelValuetoLabel,
   genderValueToHumanReadable,
@@ -82,4 +101,6 @@ export {
   toInt,
   toTitleCase,
   humanReadableTitleCase,
+  numberFromOfficerId,
+  nameFromOfficerId,
 };
