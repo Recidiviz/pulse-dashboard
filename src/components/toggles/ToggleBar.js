@@ -23,7 +23,8 @@ import SupervisionTypeToggle from './SupervisionTypeToggle';
 import TimeWindowToggle from './TimeWindowToggle';
 
 const ToggleBar = (props) => (
-  <div className="row gap-20 sticky-top">
+  <div className="row gap-20">
+    {/* Figure out how to make sticky top work without hiding the dropdown */}
     <div className="col-md-12">
       <div className="bd bgc-white p-20">
         <div className="row">

@@ -164,6 +164,11 @@ const Reincarcerations = () => {
                           A location choice narrows down information to only reincarcerations of
                           individuals who lived in that location prior to reincarceration.
                         </li>
+                        <li>
+                          Selecting a location while in rate mode calculates the percentage of
+                          prison admissions in a month from that location that were
+                          reincarcerations.
+                        </li>
                       </ul>
                     </div>
                   </div>
