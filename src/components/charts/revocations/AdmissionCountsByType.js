@@ -42,6 +42,25 @@ const AdmissionCountsByType = (props) => {
   const processResponse = () => {
     const { admissionCountsByType } = props;
 
+    const dataPoints = [];
+
+    // For this chart specifically, we want the new admissions total to always be equal to the
+    // new admissions admission count where supervision type and district both equal ALL
+    let filteredForNewAdmission = filterDatasetBySupervisionType(admissionCountsByType, 'ALL');
+    filteredForNewAdmission = filterDatasetByDistrict(filteredForNewAdmission, 'ALL');
+    filteredForNewAdmission = filterDatasetByTimeWindow(filteredForNewAdmission, props.timeWindow);
+
+    filteredForNewAdmission.forEach((data) => {
+      const { admission_type: admissionType } = data;
+      const count = toInt(data.admission_count);
+
+      if (admissionType.toLowerCase() !== 'new_admission') {
+        return;
+      }
+
+      dataPoints.push({ type: labelStringConversion[admissionType], count });
+    });
+
     // This chart does not support district or supervision type breakdowns for rates, only counts
     let filterDistrict = 'all';
     let filterSupervisionType = 'all';
@@ -62,11 +81,14 @@ const AdmissionCountsByType = (props) => {
       filteredAdmissionCounts, props.timeWindow,
     );
 
-    const dataPoints = [];
     if (filteredAdmissionCounts) {
       filteredAdmissionCounts.forEach((data) => {
         const { admission_type: admissionType } = data;
         const count = toInt(data.admission_count);
+
+        if (admissionType.toLowerCase() === 'new_admission') {
+          return;
+        }
         dataPoints.push({ type: labelStringConversion[admissionType], count });
       });
     } else {
