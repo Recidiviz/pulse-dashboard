@@ -25,7 +25,7 @@ import {
   getGoalForChart, getMaxForGoalAndDataIfGoalDisplayable, chartAnnotationForGoal,
 } from '../../../utils/charts/metricGoal';
 import {
-  toggleLabel, getMonthCountFromTimeWindowToggle, updateTooltipForMetricType,
+  toggleLabel, getMonthCountFromMetricPeriodMonthsToggle, updateTooltipForMetricType,
   filterDatasetBySupervisionType, filterDatasetByDistrict, canDisplayGoal,
   toggleYAxisTicksFor, centerSingleMonthDatasetIfNecessary,
 } from '../../../utils/charts/toggles';
@@ -73,7 +73,7 @@ const RevocationCountOverTime = (props) => {
       });
     }
 
-    const months = getMonthCountFromTimeWindowToggle(props.timeWindow);
+    const months = getMonthCountFromMetricPeriodMonthsToggle(props.metricPeriodMonths);
     const sorted = sortFilterAndSupplementMostRecentMonths(dataPoints, months, 'value', 0);
     const chartDataValues = (sorted.map((element) => element.value));
     const max = getMaxForGoalAndDataIfGoalDisplayable(GOAL, chartDataValues, stepSize, props);
@@ -100,7 +100,7 @@ const RevocationCountOverTime = (props) => {
   }, [
     props.revocationCountsByMonth,
     props.metricType,
-    props.timeWindow,
+    props.metricPeriodMonths,
     props.supervisionType,
     props.district,
   ]);
@@ -162,26 +162,6 @@ const RevocationCountOverTime = (props) => {
       }}
     />
   );
-
-  // const geoChart = (
-  //   <GeoViewTimeChart
-  //     chartId={chartId}
-  //     chartTitle="REVOCATIONS BY MONTH"
-  //     metricType={props.metricType}
-  //     timeWindow={props.timeWindow}
-  //     supervisionType={props.supervisionType}
-  //     officeData={props.officeData}
-  //     dataPointsByOffice={props.revocationCountsByMonth}
-  //     numeratorKey="revocation_count"
-  //     denominatorKey="total_supervision_count"
-  //     centerLat={centerNDLat}
-  //     centerLong={centerNDLong}
-  //   />
-  // );
-  //
-  // if (props.geoView === true) {
-  //   return geoChart;
-  // }
 
   const exportedStructureCallback = () => (
     {

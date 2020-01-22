@@ -17,7 +17,7 @@
 
 import React from 'react';
 
-class TimeWindowToggle extends React.Component {
+class MetricPeriodToggle extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -32,8 +32,8 @@ class TimeWindowToggle extends React.Component {
       selectedOption: value,
     });
 
-    const { onTimeUpdate } = this.props;
-    onTimeUpdate(value);
+    const { onMetricPeriodMonthsUpdate } = this.props;
+    onMetricPeriodMonthsUpdate(value);
   }
 
   render() {
@@ -113,4 +113,4 @@ class TimeWindowToggle extends React.Component {
   }
 }
 
-export default TimeWindowToggle;
+export default MetricPeriodToggle;

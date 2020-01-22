@@ -22,7 +22,7 @@ import { COLORS, COLORS_FIVE_VALUES } from '../../../../../assets/scripts/consta
 import { configureDownloadButtons } from '../../../../../assets/scripts/utils/downloads';
 import {
   filterDatasetBySupervisionType, filterDatasetByDistrict,
-  filterDatasetByTimeWindow,
+  filterDatasetByMetricPeriodMonths,
 } from '../../../../../utils/charts/toggles';
 import { tooltipForCountChart, tooltipForRateChart } from '../../../../../utils/charts/tooltips';
 import { toInt } from '../../../../../utils/transforms/labels';
@@ -49,7 +49,7 @@ const FtrReferralsByLsir = (props) => {
       filteredFtrReferrals, props.district,
     );
 
-    filteredFtrReferrals = filterDatasetByTimeWindow(filteredFtrReferrals, props.timeWindow);
+    filteredFtrReferrals = filterDatasetByMetricPeriodMonths(filteredFtrReferrals, props.metricPeriodMonths);
 
     let filteredSupervisionPopulation = filterDatasetBySupervisionType(
       supervisionPopulationByLsir, props.supervisionType,
@@ -59,8 +59,8 @@ const FtrReferralsByLsir = (props) => {
       filteredSupervisionPopulation, props.district,
     );
 
-    filteredSupervisionPopulation = filterDatasetByTimeWindow(
-      filteredSupervisionPopulation, props.timeWindow,
+    filteredSupervisionPopulation = filterDatasetByMetricPeriodMonths(
+      filteredSupervisionPopulation, props.metricPeriodMonths,
     );
 
     let totalFtrReferrals = 0;
@@ -131,7 +131,7 @@ const FtrReferralsByLsir = (props) => {
     props.ftrReferralsByLsir,
     props.supervisionPopulationByLsir,
     props.metricType,
-    props.timeWindow,
+    props.metricPeriodMonths,
     props.supervisionType,
     props.district,
   ]);

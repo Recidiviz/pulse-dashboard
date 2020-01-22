@@ -28,7 +28,7 @@ import {
   chartAnnotationForGoal,
 } from '../../../utils/charts/metricGoal';
 import {
-  getMonthCountFromTimeWindowToggle, filterDatasetByDistrict, filterDatasetBySupervisionType,
+  getMonthCountFromMetricPeriodMonthsToggle, filterDatasetByDistrict, filterDatasetBySupervisionType,
   updateTooltipForMetricType, toggleLabel, canDisplayGoal, toggleYAxisTicksBasedOnGoal,
   centerSingleMonthDatasetIfNecessary,
 } from '../../../utils/charts/toggles';
@@ -104,7 +104,7 @@ const RevocationAdmissionsSnapshot = (props) => {
       });
     }
 
-    const months = getMonthCountFromTimeWindowToggle(props.timeWindow);
+    const months = getMonthCountFromMetricPeriodMonthsToggle(props.metricPeriodMonths);
     const sorted = sortFilterAndSupplementMostRecentMonths(
       dataPoints, months, 'value', '0',
     );
@@ -156,7 +156,7 @@ const RevocationAdmissionsSnapshot = (props) => {
   }, [
     props.revocationAdmissionsByMonth,
     props.metricType,
-    props.timeWindow,
+    props.metricPeriodMonths,
     props.supervisionType,
     props.district,
   ]);

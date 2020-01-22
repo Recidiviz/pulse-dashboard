@@ -26,8 +26,8 @@ function configureFilename(chartId, toggleStates) {
   if (toggleStates.metricType) {
     filename = filename.concat('-', toggleStates.metricType);
   }
-  if (toggleStates.timeWindow) {
-    filename = filename.concat('-', toggleStates.timeWindow);
+  if (toggleStates.metricPeriodMonths) {
+    filename = filename.concat('-', toggleStates.metricPeriodMonths);
   }
   if (toggleStates.supervisionType) {
     filename = filename.concat('-', toggleStates.supervisionType);

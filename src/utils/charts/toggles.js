@@ -93,12 +93,12 @@ function toggleYAxisTicksStackedRateBasicCount(metricType, maxCount) {
   };
 }
 
-function getMonthCountFromTimeWindowToggle(toggledValue) {
+function getMonthCountFromMetricPeriodMonthsToggle(toggledValue) {
   return Number(toggledValue);
 }
 
-function getPeriodLabelFromTimeWindowToggle(toggledValue) {
-  const months = getMonthCountFromTimeWindowToggle(toggledValue);
+function getPeriodLabelFromMetricPeriodMonthsToggle(toggledValue) {
+  const months = getMonthCountFromMetricPeriodMonthsToggle(toggledValue);
 
   const startDate = new Date();
   startDate.setMonth(startDate.getMonth() - (months - 1));
@@ -128,8 +128,8 @@ function updateTooltipForMetricType(metricType, tooltipItem, data) {
   return label;
 }
 
-function filterDatasetByTimeWindow(dataset, timeWindow) {
-  return dataset.filter((element) => element.time_window === timeWindow);
+function filterDatasetByMetricPeriodMonths(dataset, metricPeriodMonths) {
+  return dataset.filter((element) => element.metric_period_months === metricPeriodMonths);
 }
 
 function filterDatasetByToggleFilters(dataset, toggleFilters) {
@@ -183,10 +183,10 @@ export {
   toggleYAxisTicksBasedOnGoal,
   toggleYAxisTicksAdditionalOptions,
   toggleYAxisTicksStackedRateBasicCount,
-  getMonthCountFromTimeWindowToggle,
-  getPeriodLabelFromTimeWindowToggle,
+  getMonthCountFromMetricPeriodMonthsToggle,
+  getPeriodLabelFromMetricPeriodMonthsToggle,
   updateTooltipForMetricType,
-  filterDatasetByTimeWindow,
+  filterDatasetByMetricPeriodMonths,
   filterDatasetByDistrict,
   filterDatasetBySupervisionType,
   canDisplayGoal,

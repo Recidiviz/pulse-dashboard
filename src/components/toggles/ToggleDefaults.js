@@ -16,14 +16,14 @@
 // =============================================================================
 
 const metricType = 'counts';
-const timeWindow = '12';
+const metricPeriodMonths = '12';
 const supervisionType = 'all';
 const district = 'all';
 const geoView = false;
 
 export {
   metricType,
-  timeWindow,
+  metricPeriodMonths,
   supervisionType,
   district,
   geoView,

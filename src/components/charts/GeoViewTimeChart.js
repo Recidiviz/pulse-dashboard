@@ -32,13 +32,12 @@ import { COLORS } from '../../assets/scripts/constants/colors';
 import { configureDownloadButtons } from '../../assets/scripts/utils/downloads';
 import geographyObject from '../../assets/static/maps/us_nd.json';
 import { colorForValue } from '../../utils/charts/choropleth';
-import { filterDatasetByDistrict } from '../../utils/charts/toggles';
 import { toHtmlFriendly } from '../../utils/transforms/labels';
 
 const minMarkerRadius = 10;
 const maxMarkerRadius = 35;
 
-const TIME_WINDOWS = ['1', '3', '6', '12', '36'];
+const METRIC_PERIODS = ['1', '3', '6', '12', '36'];
 
 function normalizedOfficeKey(officeName) {
   return toHtmlFriendly(officeName).toLowerCase();
@@ -60,18 +59,18 @@ function getOfficeForCounty(offices, geographyNameForCounty) {
   return offices[countyName];
 }
 
-function getOfficeDataValue(office, metricType, timeWindow, supervisionType) {
+function getOfficeDataValue(office, metricType, metricPeriodMonths, supervisionType) {
   const supervisionTypeKey = normalizedSupervisionTypeKey(supervisionType);
   if (metricType === 'counts') {
-    return office.dataValues[timeWindow][supervisionTypeKey].numerator;
+    return office.dataValues[metricPeriodMonths][supervisionTypeKey].numerator;
   }
 
-  return office.dataValues[timeWindow][supervisionTypeKey].rate;
+  return office.dataValues[metricPeriodMonths][supervisionTypeKey].rate;
 }
 
-function relatedMaxValue(maxValues, metricType, timeWindow, supervisionTypeKey) {
+function relatedMaxValue(maxValues, metricType, metricPeriodMonths, supervisionTypeKey) {
   const valueKey = metricType === 'counts' ? 'numerator' : 'rate';
-  return maxValues[timeWindow][supervisionTypeKey][valueKey];
+  return maxValues[metricPeriodMonths][supervisionTypeKey][valueKey];
 }
 
 /**
@@ -80,15 +79,15 @@ function relatedMaxValue(maxValues, metricType, timeWindow, supervisionTypeKey) 
  * rate of the offices, where the office with the highest number or percentage of
  * numerator events will have a marker with the radius size of `maxMarkerRadius`.
  */
-function radiusOfMarker(office, maxValues, metricType, timeWindow, supervisionType) {
+function radiusOfMarker(office, maxValues, metricType, metricPeriodMonths, supervisionType) {
   const supervisionTypeKey = normalizedSupervisionTypeKey(supervisionType);
-  const maxValue = relatedMaxValue(maxValues, metricType, timeWindow, supervisionTypeKey);
+  const maxValue = relatedMaxValue(maxValues, metricType, metricPeriodMonths, supervisionTypeKey);
 
   const officeScale = scaleLinear()
     .domain([0, maxValue])
     .range([minMarkerRadius, maxMarkerRadius]);
 
-  const dataValue = getOfficeDataValue(office, metricType, timeWindow, supervisionType);
+  const dataValue = getOfficeDataValue(office, metricType, metricPeriodMonths, supervisionType);
   // We use the absolute value so that the radius is tied to distance away from 0.
   // An alternative to consider is making the domain of the scale the minimum value, but this fits
   // the only negative value use case we have right now: LSIR Score Change, where large negative
@@ -96,10 +95,10 @@ function radiusOfMarker(office, maxValues, metricType, timeWindow, supervisionTy
   return officeScale(Math.abs(dataValue));
 }
 
-function toggleTooltip(office, metricType, timeWindow, supervisionType) {
+function toggleTooltip(office, metricType, metricPeriodMonths, supervisionType) {
   let value = 0;
   if (office) {
-    value = getOfficeDataValue(office, metricType, timeWindow, supervisionType);
+    value = getOfficeDataValue(office, metricType, metricPeriodMonths, supervisionType);
   }
 
   if (metricType === 'counts') {
@@ -110,14 +109,14 @@ function toggleTooltip(office, metricType, timeWindow, supervisionType) {
 }
 
 function toggleTooltipForCounty(
-  offices, geographyNameForCounty, metricType, timeWindow, supervisionType,
+  offices, geographyNameForCounty, metricType, metricPeriodMonths, supervisionType,
 ) {
   const countyName = normalizedCountyName(geographyNameForCounty);
   const office = offices[countyName];
 
   let value = 0;
   if (office) {
-    value = getOfficeDataValue(office, metricType, timeWindow, supervisionType);
+    value = getOfficeDataValue(office, metricType, metricPeriodMonths, supervisionType);
   }
 
   if (metricType === 'counts') {
@@ -126,21 +125,24 @@ function toggleTooltipForCounty(
   return `${geographyNameForCounty}: ${value}%`;
 }
 
-function colorForMarker(office, maxValues, metricType, timeWindow, supervisionType, useDarkMode) {
+function colorForMarker(
+  office, maxValues, metricType, metricPeriodMonths, supervisionType, useDarkMode,
+) {
   const supervisionTypeKey = normalizedSupervisionTypeKey(supervisionType);
 
   let dataValue = 0;
   if (office) {
-    dataValue = getOfficeDataValue(office, metricType, timeWindow, supervisionType);
+    dataValue = getOfficeDataValue(office, metricType, metricPeriodMonths, supervisionType);
   }
-  const maxValue = relatedMaxValue(maxValues, metricType, timeWindow, supervisionTypeKey);
+  const maxValue = relatedMaxValue(maxValues, metricType, metricPeriodMonths, supervisionTypeKey);
 
   return colorForValue(Math.abs(dataValue), maxValue, useDarkMode);
 }
 
-function sortChartDataPoints(dataPoints, metricType, timeWindow, supervisionType) {
-  return dataPoints.sort((a, b) => (getOfficeDataValue(b, metricType, timeWindow, supervisionType)
-    - getOfficeDataValue(a, metricType, timeWindow, supervisionType)));
+function sortChartDataPoints(dataPoints, metricType, metricPeriodMonths, supervisionType) {
+  return dataPoints.sort((a, b) => (
+    getOfficeDataValue(b, metricType, metricPeriodMonths, supervisionType)
+    - getOfficeDataValue(a, metricType, metricPeriodMonths, supervisionType)));
 }
 
 class GeoViewTimeChart extends Component {
@@ -166,8 +168,8 @@ class GeoViewTimeChart extends Component {
   }
 
   setEmptyOfficeData(office) {
-    TIME_WINDOWS.forEach((window) => {
-      office.dataValues[window] = {
+    METRIC_PERIODS.forEach((metricPeriodMonths) => {
+      office.dataValues[metricPeriodMonths] = {
         none: { numerator: 0, denominator: 0, rate: 0.00 },
         all: { numerator: 0, denominator: 0, rate: 0.00 },
         parole: { numerator: 0, denominator: 0, rate: 0.00 },
@@ -188,7 +190,7 @@ class GeoViewTimeChart extends Component {
     this.chartDataPoints.forEach((data) => {
       const { officeName } = data;
       const officeDataValue = getOfficeDataValue(
-        data, this.props.metricType, this.props.timeWindow, this.props.supervisionType,
+        data, this.props.metricType, this.props.metricPeriodMonths, this.props.supervisionType,
       );
 
       officeNames.push(officeName);
@@ -207,8 +209,8 @@ class GeoViewTimeChart extends Component {
 
   initializeMaxValues() {
     this.maxValues = {};
-    TIME_WINDOWS.forEach((timeWindow) => {
-      this.maxValues[timeWindow] = {
+    METRIC_PERIODS.forEach((metricPeriodMonths) => {
+      this.maxValues[metricPeriodMonths] = {
         none: { numerator: -1e100, rate: -1e100 },
         all: { numerator: -1e100, rate: -1e100 },
         parole: { numerator: -1e100, rate: -1e100 },
@@ -270,20 +272,20 @@ class GeoViewTimeChart extends Component {
 
     // If configured as such, calculate a denominator summed across the ALL-district datapoints,
     // to be shared for all rate calculations
-    const totalDenominatorByTimeWindow = {};
+    const totalDenominatorByMetricPeriod = {};
     if (shareDenominatorAcrossRates) {
       this.dataPointsByOffice.forEach((data) => {
-        const { time_window: timeWindow } = data;
+        const { metric_period_months: metricPeriodMonths } = data;
 
         let denominator = 0;
         denominatorKeys.forEach((key) => {
           denominator += Number(data[key] || 0);
         });
 
-        if (!totalDenominatorByTimeWindow[timeWindow]) {
-          totalDenominatorByTimeWindow[timeWindow] = denominator;
+        if (!totalDenominatorByMetricPeriod[metricPeriodMonths]) {
+          totalDenominatorByMetricPeriod[metricPeriodMonths] = denominator;
         } else {
-          totalDenominatorByTimeWindow[timeWindow] += denominator;
+          totalDenominatorByMetricPeriod[metricPeriodMonths] += denominator;
         }
       });
     }
@@ -295,7 +297,7 @@ class GeoViewTimeChart extends Component {
       this.dataPointsByOffice.forEach((data) => {
         const {
           district,
-          time_window: timeWindow,
+          metric_period_months: metricPeriodMonths,
           supervision_type: supervisionType,
         } = data;
         const supervisionTypeKey = normalizedSupervisionTypeKey(supervisionType);
@@ -303,16 +305,16 @@ class GeoViewTimeChart extends Component {
         const officeNameKey = normalizedOfficeKey(district);
         const office = this.offices[officeNameKey];
         if (office) {
-          if (!office.dataValues[timeWindow]) {
-            office.dataValues[timeWindow] = {
+          if (!office.dataValues[metricPeriodMonths]) {
+            office.dataValues[metricPeriodMonths] = {
               none: { numerator: 0, denominator: 0, rate: 0.00 },
               all: { numerator: 0, denominator: 0, rate: 0.00 },
               parole: { numerator: 0, denominator: 0, rate: 0.00 },
               probation: { numerator: 0, denominator: 0, rate: 0.00 },
             };
           }
-          if (!office.dataValues[timeWindow][supervisionTypeKey]) {
-            office.dataValues[timeWindow][supervisionTypeKey] = {};
+          if (!office.dataValues[metricPeriodMonths][supervisionTypeKey]) {
+            office.dataValues[metricPeriodMonths][supervisionTypeKey] = {};
           }
 
           let numerator = 0;
@@ -326,7 +328,7 @@ class GeoViewTimeChart extends Component {
           });
 
           if (shareDenominatorAcrossRates) {
-            denominator = totalDenominatorByTimeWindow[timeWindow];
+            denominator = totalDenominatorByMetricPeriod[metricPeriodMonths];
           }
 
           if (numerator === 0 || (denominator === 0 && denominatorKeys.length > 0)) {
@@ -339,7 +341,7 @@ class GeoViewTimeChart extends Component {
           }
           const rateFixed = rate.toFixed(2);
 
-          office.dataValues[timeWindow][supervisionTypeKey] = {
+          office.dataValues[metricPeriodMonths][supervisionTypeKey] = {
             numerator,
             denominator,
             rate: rateFixed,
@@ -351,11 +353,11 @@ class GeoViewTimeChart extends Component {
           }
 
           const numeratorAbs = Math.abs(numerator);
-          if (numeratorAbs > this.maxValues[timeWindow][supervisionTypeKey].numerator) {
-            this.maxValues[timeWindow][supervisionTypeKey].numerator = numeratorAbs;
+          if (numeratorAbs > this.maxValues[metricPeriodMonths][supervisionTypeKey].numerator) {
+            this.maxValues[metricPeriodMonths][supervisionTypeKey].numerator = numeratorAbs;
           }
-          if (rate > this.maxValues[timeWindow][supervisionTypeKey].rate) {
-            this.maxValues[timeWindow][supervisionTypeKey].rate = rate;
+          if (rate > this.maxValues[metricPeriodMonths][supervisionTypeKey].rate) {
+            this.maxValues[metricPeriodMonths][supervisionTypeKey].rate = rate;
           }
         }
       });
@@ -373,13 +375,14 @@ class GeoViewTimeChart extends Component {
       }
     });
 
-    const { metricType, timeWindow, supervisionType } = this.props;
-    sortChartDataPoints(this.chartDataPoints, metricType, timeWindow, supervisionType);
+    const { metricType, metricPeriodMonths, supervisionType } = this.props;
+    sortChartDataPoints(this.chartDataPoints, metricType, metricPeriodMonths, supervisionType);
   }
 
   render() {
     const {
-      metricType, timeWindow, supervisionType, keyedByOffice, centerLong, centerLat, chartId,
+      metricType, metricPeriodMonths, supervisionType,
+      keyedByOffice, centerLong, centerLat, chartId,
     } = this.props;
 
     if (keyedByOffice) {
@@ -434,7 +437,7 @@ class GeoViewTimeChart extends Component {
                     marker={office}
                     style={{
                       default: {
-                        fill: colorForMarker(office, this.maxValues, metricType, timeWindow, supervisionType, true),
+                        fill: colorForMarker(office, this.maxValues, metricType, metricPeriodMonths, supervisionType, true),
                         stroke: '#F5F6F7',
                         strokeWidth: '3',
                       },
@@ -443,10 +446,10 @@ class GeoViewTimeChart extends Component {
                     }}
                   >
                     <circle
-                      data-tip={toggleTooltip(office, metricType, timeWindow, supervisionType)}
+                      data-tip={toggleTooltip(office, metricType, metricPeriodMonths, supervisionType)}
                       cx={0}
                       cy={0}
-                      r={radiusOfMarker(office, this.maxValues, metricType, timeWindow, supervisionType)}
+                      r={radiusOfMarker(office, this.maxValues, metricType, metricPeriodMonths, supervisionType)}
                     />
                   </Marker>
                 ))}
@@ -476,18 +479,18 @@ class GeoViewTimeChart extends Component {
               {(geographies, projection) => geographies.map((geography) => (
                 <Geography
                   key={geography.properties.NAME}
-                  data-tip={toggleTooltipForCounty(this.offices, geography.properties.NAME, metricType, timeWindow, supervisionType)}
+                  data-tip={toggleTooltipForCounty(this.offices, geography.properties.NAME, metricType, metricPeriodMonths, supervisionType)}
                   geography={geography}
                   projection={projection}
                   style={{
                     default: {
-                      fill: colorForMarker(getOfficeForCounty(this.offices, geography.properties.NAME), this.maxValues, metricType, timeWindow, supervisionType, false),
+                      fill: colorForMarker(getOfficeForCounty(this.offices, geography.properties.NAME), this.maxValues, metricType, metricPeriodMonths, supervisionType, false),
                       stroke: COLORS['grey-700'],
                       strokeWidth: 0.2,
                       outline: 'none',
                     },
                     hover: {
-                      fill: colorForMarker(getOfficeForCounty(this.offices, geography.properties.NAME), this.maxValues, metricType, timeWindow, supervisionType, true),
+                      fill: colorForMarker(getOfficeForCounty(this.offices, geography.properties.NAME), this.maxValues, metricType, metricPeriodMonths, supervisionType, true),
                       stroke: COLORS['grey-700'],
                       strokeWidth: 0.2,
                       outline: 'none',

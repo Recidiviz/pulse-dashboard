@@ -21,7 +21,7 @@ import { Line } from 'react-chartjs-2';
 import { COLORS } from '../../../../../assets/scripts/constants/colors';
 import { configureDownloadButtons } from '../../../../../assets/scripts/utils/downloads';
 import {
-  toggleLabel, getMonthCountFromTimeWindowToggle, updateTooltipForMetricType,
+  toggleLabel, getMonthCountFromMetricPeriodMonthsToggle, updateTooltipForMetricType,
   filterDatasetBySupervisionType, filterDatasetByDistrict,
   centerSingleMonthDatasetIfNecessary,
 } from '../../../../../utils/charts/toggles';
@@ -63,7 +63,7 @@ const FtrReferralCountByMonth = (props) => {
       });
     }
 
-    const months = getMonthCountFromTimeWindowToggle(props.timeWindow);
+    const months = getMonthCountFromMetricPeriodMonthsToggle(props.metricPeriodMonths);
     const sorted = sortFilterAndSupplementMostRecentMonths(dataPoints, months, 'value', 0);
     const chartDataValues = (sorted.map((element) => element.value));
     const monthNames = monthNamesWithYearsFromNumbers(sorted.map((element) => element.month), false);
@@ -78,7 +78,7 @@ const FtrReferralCountByMonth = (props) => {
   }, [
     props.ftrReferralCountByMonth,
     props.metricType,
-    props.timeWindow,
+    props.metricPeriodMonths,
     props.supervisionType,
     props.district,
   ]);
