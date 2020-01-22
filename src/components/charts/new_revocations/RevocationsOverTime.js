@@ -20,6 +20,9 @@ import { Line } from 'react-chartjs-2';
 import ExportMenu from '../ExportMenu';
 
 import { COLORS } from '../../../assets/scripts/constants/colors';
+import {
+  getMonthCountFromMetricPeriodMonthsToggle, getTrailingLabelFromMetricPeriodMonthsToggle,
+} from '../../../utils/charts/toggles';
 import { sortFilterAndSupplementMostRecentMonths } from '../../../utils/transforms/datasets';
 import { toInt } from '../../../utils/transforms/labels';
 import { monthNamesWithYearsFromNumbers } from '../../../utils/transforms/months';
@@ -35,7 +38,9 @@ const RevocationsOverTime = (props) => {
       return;
     }
 
-    const yearAndMonthToCount = props.data.reduce(
+    const { data: countsByMonth } = props;
+
+    const yearAndMonthToCount = countsByMonth.reduce(
       (result, { year, month, total_revocations: totalRevocations }) => {
         return { ...result, [`${year}:${month}`]: (result[`${year}:${month}`] || 0) + (toInt(totalRevocations) || 0) };
       }, {},
@@ -45,7 +50,8 @@ const RevocationsOverTime = (props) => {
       return { year, month, count };
     });
 
-    const sortedChartData = sortFilterAndSupplementMostRecentMonths(chartData, 6, 'count', 0);
+    const months = getMonthCountFromMetricPeriodMonthsToggle(props.metricPeriodMonths);
+    const sortedChartData = sortFilterAndSupplementMostRecentMonths(chartData, months, 'count', 0);
     const labels = monthNamesWithYearsFromNumbers(sortedChartData.map((element) => element.month), false)
     const dataPoints = (sortedChartData.map((element) => element.count));
     setChartLabels(labels);
@@ -54,7 +60,10 @@ const RevocationsOverTime = (props) => {
 
   useEffect(() => {
     processResponse();
-  }, [props.data]);
+  }, [
+    props.data,
+    props.metricPeriodMonths,
+  ]);
 
   const datasets = [{
     label: 'Revocations',
@@ -90,6 +99,9 @@ const RevocationsOverTime = (props) => {
               display: true,
               labelString: '# of revocations',
             },
+            ticks: {
+              min: 0,
+            },
           }],
         },
         tooltips: {
@@ -102,7 +114,7 @@ const RevocationsOverTime = (props) => {
 
   return (
     <div>
-      <h4 className="pB-20">
+      <h4>
         Revocations over time
         <ExportMenu
           chartId={chartId}
@@ -110,6 +122,10 @@ const RevocationsOverTime = (props) => {
           metricTitle="Revocations over time"
         />
       </h4>
+      <h6 className="pB-20">
+        {getTrailingLabelFromMetricPeriodMonthsToggle(props.metricPeriodMonths)}
+      </h6>
+
       <div className="chart-container" style={{ position: 'relative', height: '180px' }}>
         {chart}
       </div>

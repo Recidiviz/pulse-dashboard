@@ -32,9 +32,6 @@ import {
 import { sortFilterAndSupplementMostRecentMonths } from '../../../utils/transforms/datasets';
 import { monthNamesWithYearsFromNumbers } from '../../../utils/transforms/months';
 
-const centerNDLong = -100.5;
-const centerNDLat = 47.3;
-
 const RevocationCountOverTime = (props) => {
   const [chartLabels, setChartLabels] = useState([]);
   const [chartDataPoints, setChartDataPoints] = useState([]);

@@ -17,11 +17,12 @@
 
 import React, { useState, useEffect } from 'react';
 import { Bar } from 'react-chartjs-2';
-import ExportMenu from '../ExportMenu';
-
 import * as $ from 'jquery';
 
+import ExportMenu from '../ExportMenu';
+
 import { COLORS } from '../../../assets/scripts/constants/colors';
+import { getTrailingLabelFromMetricPeriodMonthsToggle } from '../../../utils/charts/toggles';
 import { toInt } from '../../../utils/transforms/labels';
 
 const chartId = 'revocationsByDistrict';
@@ -70,6 +71,7 @@ const RevocationsByDistrict = (props) => {
     processResponse();
   }, [
     props.data,
+    props.metricPeriodMonths,
     countModeEnabled,
   ]);
 
@@ -131,7 +133,7 @@ const RevocationsByDistrict = (props) => {
 
   return (
     <div>
-      <h4 className="pB-20">
+      <h4>
         Revocations by district
         <ExportMenu
           chartId={chartId}
@@ -139,6 +141,9 @@ const RevocationsByDistrict = (props) => {
           metricTitle="Revocations by district"
         />
       </h4>
+      <h6 className="pB-20">
+        {getTrailingLabelFromMetricPeriodMonthsToggle(props.metricPeriodMonths)}
+      </h6>
 
       <div id="modeButtons" className="pB-20 btn-group btn-group-toggle" data-toggle="buttons">
         <label id="countModeButton" className="btn btn-sm btn-outline-primary active">

@@ -20,6 +20,7 @@ import { Bar } from 'react-chartjs-2';
 import ExportMenu from '../ExportMenu';
 
 import { COLORS } from '../../../assets/scripts/constants/colors';
+import { getTrailingLabelFromMetricPeriodMonthsToggle } from '../../../utils/charts/toggles';
 import { toInt } from '../../../utils/transforms/labels';
 
 const CHART_LABELS = ['Overall', 'Low Risk', 'Moderate Risk', 'High Risk', 'Very High Risk'];
@@ -50,7 +51,7 @@ const RevocationsByRace = (props) => {
 
   useEffect(() => {
     processResponse();
-  }, [props.data]);
+  }, [props.data, props.metricPeriodMonths]);
 
   const chart = (
     <Bar
@@ -128,7 +129,7 @@ const RevocationsByRace = (props) => {
 
   return (
     <div>
-      <h4 className="pB-20">
+      <h4>
         Revocations by race
         <ExportMenu
           chartId={chartId}
@@ -136,6 +137,9 @@ const RevocationsByRace = (props) => {
           metricTitle="Revocations by race"
         />
       </h4>
+      <h6 className="pB-20">
+        {getTrailingLabelFromMetricPeriodMonthsToggle(props.metricPeriodMonths)}
+      </h6>
 
       {chart}
     </div>

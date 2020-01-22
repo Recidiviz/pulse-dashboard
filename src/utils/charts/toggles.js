@@ -107,6 +107,16 @@ function getPeriodLabelFromMetricPeriodMonthsToggle(toggledValue) {
   return `${startDate.toLocaleDateString()} to present`;
 }
 
+function getTrailingLabelFromMetricPeriodMonthsToggle(toggledValue) {
+  if (toggledValue === '1') {
+    return 'Last 30 days';
+  }
+  if (toggledValue === '3' || toggledValue === '6' || toggledValue === '12') {
+    return `Last ${toggledValue} months`;
+  }
+  return `Last ${parseInt(toggledValue, 10) / 12} years`;
+}
+
 function updateTooltipForMetricType(metricType, tooltipItem, data) {
   let label = data.datasets[tooltipItem.datasetIndex].label || '';
 
@@ -185,6 +195,7 @@ export {
   toggleYAxisTicksStackedRateBasicCount,
   getMonthCountFromMetricPeriodMonthsToggle,
   getPeriodLabelFromMetricPeriodMonthsToggle,
+  getTrailingLabelFromMetricPeriodMonthsToggle,
   updateTooltipForMetricType,
   filterDatasetByMetricPeriodMonths,
   filterDatasetByDistrict,
