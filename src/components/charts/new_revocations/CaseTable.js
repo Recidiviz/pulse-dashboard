@@ -17,7 +17,7 @@
 
 import React, { useState } from 'react';
 
-import { humanReadableTitleCase, toInt } from '../../../utils/transforms/labels';
+import { humanReadableTitleCase, toInt, nameFromOfficerId } from '../../../utils/transforms/labels';
 
 const CASES_PER_PAGE = 15;
 const VIOLATION_SEVERITY = [
@@ -99,7 +99,7 @@ const CaseTable = (props) => {
             <tr key={i}>
               <td>{details.state_id}</td>
               <td>{details.district}</td>
-              <td>{details.officer}</td>
+              <td>{nameFromOfficerId(details.officer)}</td>
               <td>{normalizeLabel(details.risk_level)}</td>
               <td>{normalizeLabel(details.officer_recommendation)}</td>
               <td>{parseViolationRecord(details.violation_record)}</td>

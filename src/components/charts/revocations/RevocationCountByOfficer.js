@@ -16,7 +16,6 @@
 // =============================================================================
 
 import React, { useState, useEffect } from 'react';
-import * as $ from 'jquery';
 import { Bar } from 'react-chartjs-2';
 
 import { COLORS, COLORS_FIVE_VALUES } from '../../../assets/scripts/constants/colors';
@@ -25,7 +24,9 @@ import {
   toggleLabel, filterDatasetBySupervisionType, filterDatasetByMetricPeriodMonths,
   updateTooltipForMetricType, toggleYAxisTicksStackedRateBasicCount,
 } from '../../../utils/charts/toggles';
-import { toHtmlFriendly, toHumanReadable, toInt } from '../../../utils/transforms/labels';
+import {
+  toHtmlFriendly, toHumanReadable, toInt, numberFromOfficerId,
+} from '../../../utils/transforms/labels';
 
 const RevocationCountByOfficer = (props) => {
   const [chartLabels, setChartLabels] = useState([]);
@@ -190,7 +191,7 @@ const RevocationCountByOfficer = (props) => {
         let officeName = offices[toInt(officeId)];
         if (officeName && officerIDRaw !== 'OFFICER_UNKNOWN') {
           officeName = toHtmlFriendly(officeName).toLowerCase();
-          const officerId = toInt(officerIDRaw);
+          const officerId = numberFromOfficerId(officerIDRaw);
           if (dataPoints[officeName] == null) {
             dataPoints[officeName] = [];
           }
