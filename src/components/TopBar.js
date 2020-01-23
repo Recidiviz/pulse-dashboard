@@ -39,12 +39,31 @@ const TopBar = (props) => {
   const {
     user, isAuthenticated, loginWithRedirect, logout,
   } = useAuth0();
-  const stateCode = getUserStateCode(user);
 
   const logoutWithRedirect = () => logout({ returnTo: window.location.origin });
 
+  // This lets us retrieve the state code for the user only after we have authenticated
+  const shouldLoadSidebar = (authenticated) => {
+    if (!authenticated) {
+      return false;
+    }
+
+    const stateCode = getUserStateCode(user);
+    return hasSideBar(stateCode, authenticated);
+  };
+
+  // This lets us retrieve the state code for the user only after we have authenticated
+  const shouldLoadLanternLogo = (authenticated) => {
+    if (!authenticated) {
+      return false;
+    }
+
+    const stateCode = getUserStateCode(user);
+    return isLanternState(stateCode);
+  };
+
   let navBarClass = 'header wide-navbar';
-  if (hasSideBar(stateCode, isAuthenticated)) {
+  if (shouldLoadSidebar(isAuthenticated)) {
     navBarClass = 'header navbar';
   }
 
@@ -56,7 +75,7 @@ const TopBar = (props) => {
   return (
     <div className={navBarClass}>
       <div className="header-container">
-        {isLanternState(stateCode) ? (
+        {shouldLoadLanternLogo(isAuthenticated) ? (
           <a href="/">
             <img className="lantern-logo" src={lanternLogo} alt="Lantern" />
           </a>

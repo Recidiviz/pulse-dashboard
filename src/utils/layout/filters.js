@@ -23,7 +23,7 @@ import { isLanternState } from '../../views/stateViews';
  * if the view has a side bar.
  */
 function hasSideBar(stateCode, isAuthenticated) {
-  return !isLanternState(stateCode) && canShowAuthenticatedView(isAuthenticated);
+  return canShowAuthenticatedView(isAuthenticated) && !isLanternState(stateCode);
 }
 
 export {

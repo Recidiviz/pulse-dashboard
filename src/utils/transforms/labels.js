@@ -17,7 +17,7 @@
 
 const riskLevelValuetoLabel = {
   LOW: 'Low',
-  MODERATE: 'Moderate',
+  MEDIUM: 'Moderate',
   HIGH: 'High',
   VERY_HIGH: 'Very high',
 };
@@ -85,6 +85,10 @@ function numberFromOfficerId(officerId) {
  * Returns the officer name from the canonical id format, '123: Firstname Lastname'.
  */
 function nameFromOfficerId(officerId) {
+  if (!officerId) {
+    return '';
+  }
+
   const parts = officerId.split(':');
   if (parts.length === 1) {
     return officerId;

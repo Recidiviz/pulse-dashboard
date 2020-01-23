@@ -24,7 +24,7 @@ import { getTrailingLabelFromMetricPeriodMonthsToggle } from '../../../utils/cha
 import { toInt } from '../../../utils/transforms/labels';
 
 const CHART_LABELS = ['Overall', 'Low Risk', 'Moderate Risk', 'High Risk', 'Very High Risk'];
-const RISK_LEVELS = ['LOW', 'MODERATE', 'HIGH', 'VERY_HIGH'];
+const RISK_LEVELS = ['LOW', 'MEDIUM', 'HIGH', 'VERY_HIGH'];
 const RACES = ['WHITE', 'BLACK', 'HISPANIC', 'ASIAN', 'NATIVE_AMERICAN', 'PACIFIC_ISLANDER'];
 
 const chartId = 'revocationsByRace';
