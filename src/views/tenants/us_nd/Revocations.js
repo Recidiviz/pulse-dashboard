@@ -142,7 +142,7 @@ const Revocations = () => {
                       supervisionType={chartSupervisionType}
                       keyedByOffice={true}
                       officeData={apiData.site_offices}
-                      dataPointsByOffice={apiData.revocations_over_time_window}
+                      dataPointsByOffice={apiData.revocations_by_period}
                       numeratorKeys={['revocation_count']}
                       denominatorKeys={['total_supervision_count']}
                       centerLat={47.3}

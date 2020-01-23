@@ -137,7 +137,7 @@ const Snapshots = () => {
                           supervisionType={chartSupervisionType}
                           keyedByOffice={true}
                           officeData={apiData.site_offices}
-                          dataPointsByOffice={apiData.supervision_termination_by_type_over_time_window}
+                          dataPointsByOffice={apiData.supervision_termination_by_type_by_period}
                           numeratorKeys={['revocation_termination']}
                           denominatorKeys={['revocation_termination', 'successful_termination']}
                           centerLat={47.3}
@@ -229,7 +229,7 @@ const Snapshots = () => {
                           keyedByOffice
                           shareDenominatorAcrossRates
                           officeData={apiData.site_offices}
-                          dataPointsByOffice={apiData.admissions_by_type_over_time_window}
+                          dataPointsByOffice={apiData.admissions_by_type_by_period}
                           numeratorKeys={['technicals', 'non_technicals', 'unknown_revocations']}
                           denominatorKeys={['technicals', 'non_technicals', 'unknown_revocations', 'new_admissions']}
                           centerLat={47.3}
@@ -394,7 +394,7 @@ const Snapshots = () => {
                           supervisionType={chartSupervisionType}
                           keyedByOffice={true}
                           officeData={apiData.site_offices}
-                          dataPointsByOffice={apiData.average_change_lsir_score_over_time_window}
+                          dataPointsByOffice={apiData.average_change_lsir_score_by_period}
                           numeratorKeys={['average_change']}
                           denominatorKeys={[]}
                           centerLat={47.3}
