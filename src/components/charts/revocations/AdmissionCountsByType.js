@@ -48,17 +48,13 @@ const AdmissionCountsByType = (props) => {
     // new admissions admission count where supervision type and district both equal ALL
     let filteredForNewAdmission = filterDatasetBySupervisionType(admissionCountsByType, 'ALL');
     filteredForNewAdmission = filterDatasetByDistrict(filteredForNewAdmission, 'ALL');
-    filteredForNewAdmission = filterDatasetByMetricPeriodMonths(filteredForNewAdmission, props.metricPeriodMonths);
+    filteredForNewAdmission = filterDatasetByMetricPeriodMonths(
+      filteredForNewAdmission, props.metricPeriodMonths,
+    );
 
     filteredForNewAdmission.forEach((data) => {
-      const { admission_type: admissionType } = data;
-      const count = toInt(data.admission_count);
-
-      if (admissionType.toLowerCase() !== 'new_admission') {
-        return;
-      }
-
-      dataPoints.push({ type: labelStringConversion[admissionType], count });
+      const newAdmissions = toInt(data.new_admissions);
+      dataPoints.push({ type: labelStringConversion.NEW_ADMISSION, count: newAdmissions });
     });
 
     // This chart does not support district or supervision type breakdowns for rates, only counts
@@ -83,13 +79,16 @@ const AdmissionCountsByType = (props) => {
 
     if (filteredAdmissionCounts) {
       filteredAdmissionCounts.forEach((data) => {
-        const { admission_type: admissionType } = data;
-        const count = toInt(data.admission_count);
+        const technicals = toInt(data.technicals);
+        dataPoints.push({ type: labelStringConversion.TECHNICAL, count: technicals });
 
-        if (admissionType.toLowerCase() === 'new_admission') {
-          return;
-        }
-        dataPoints.push({ type: labelStringConversion[admissionType], count });
+        const nonTechnicals = toInt(data.non_technicals);
+        dataPoints.push({ type: labelStringConversion.NON_TECHNICAL, count: nonTechnicals });
+
+        const unknownRevocations = toInt(data.unknown_revocations);
+        dataPoints.push(
+          { type: labelStringConversion.UNKNOWN_REVOCATION, count: unknownRevocations },
+        );
       });
     } else {
       Object.values(labelStringConversion).forEach((type) => {
@@ -212,6 +211,9 @@ const AdmissionCountsByType = (props) => {
               display: true,
               labelString: 'Admission counts',
             },
+            ticks: {
+              min: 0,
+            }
           }],
         },
       }}

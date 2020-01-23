@@ -127,7 +127,7 @@ const Reincarcerations = () => {
                       metricType={chartMetricType}
                       metricPeriodMonths={chartMetricPeriodMonths}
                       keyedByOffice={false}
-                      dataPointsByOffice={apiData.reincarcerations_over_time_window}
+                      dataPointsByOffice={apiData.reincarcerations_by_period}
                       numeratorKeys={['returns']}
                       denominatorKeys={['total_admissions']}
                       centerLat={47.3}
@@ -224,7 +224,7 @@ const Reincarcerations = () => {
                       metricType={chartMetricType}
                       metricPeriodMonths={chartMetricPeriodMonths}
                       keyedByOffice={false}
-                      dataPointsByOffice={apiData.admissions_versus_releases_over_time_window}
+                      dataPointsByOffice={apiData.admissions_versus_releases_by_period}
                       numeratorKeys={['population_change']}
                       denominatorKeys={['month_end_population']}
                       centerLat={47.3}

@@ -132,7 +132,7 @@ const FreeThroughRecovery = () => {
                       supervisionType={chartSupervisionType}
                       keyedByOffice={true}
                       officeData={apiData.site_offices}
-                      dataPointsByOffice={apiData.ftr_referrals_over_time_window}
+                      dataPointsByOffice={apiData.ftr_referrals_by_period}
                       numeratorKeys={['count']}
                       denominatorKeys={['total_supervision_count']}
                       centerLat={47.3}
