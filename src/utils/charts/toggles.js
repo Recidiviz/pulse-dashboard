@@ -109,7 +109,7 @@ function getPeriodLabelFromMetricPeriodMonthsToggle(toggledValue) {
 
 function getTrailingLabelFromMetricPeriodMonthsToggle(toggledValue) {
   if (toggledValue === '1') {
-    return 'Last 30 days';
+    return 'Current month';
   }
   if (toggledValue === '3' || toggledValue === '6' || toggledValue === '12') {
     return `Last ${toggledValue} months`;

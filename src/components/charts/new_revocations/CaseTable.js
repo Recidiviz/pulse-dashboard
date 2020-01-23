@@ -26,6 +26,12 @@ const VIOLATION_SEVERITY = [
   'fel', 'misd', 'absc', 'muni', 'subs', 'tech',
 ];
 
+const unknownStyle = {
+  fontStyle: 'italic',
+  fontSize: '13px',
+  color: '#b9c2d0', // A light grey (grey-500 in COLORS.js)
+};
+
 const CaseTable = (props) => {
   const [index, setIndex] = useState(0);
 
@@ -53,11 +59,13 @@ const CaseTable = (props) => {
     ? (beginning + CASES_PER_PAGE) : data.length;
   const page = caseLoad.slice(beginning, end);
 
-  const normalizeLabel = (label) => {
-    if (!label) {
-      return '';
+  const normalizeLabel = (label) => (label ? humanReadableTitleCase(label) : '');
+  const nullSafeLabel = (label) => label || 'Unknown';
+  const nullSafeCell = (label) => {
+    if (label) {
+      return <td>{label}</td>;
     }
-    return humanReadableTitleCase(label);
+    return <td style={unknownStyle}>{nullSafeLabel(label)}</td>;
   };
 
   const indexOf = (element, array) => {
@@ -103,11 +111,11 @@ const CaseTable = (props) => {
           {page.map((details, i) => (
             <tr key={i}>
               <td>{details.state_id}</td>
-              <td>{details.district}</td>
-              <td>{nameFromOfficerId(details.officer)}</td>
-              <td>{riskLevelValuetoLabel[details.risk_level] || ''}</td>
-              <td>{normalizeLabel(details.officer_recommendation)}</td>
-              <td>{parseViolationRecord(details.violation_record)}</td>
+              {nullSafeCell(details.district)}
+              {nullSafeCell(nameFromOfficerId(details.officer))}
+              {nullSafeCell(riskLevelValuetoLabel[details.risk_level])}
+              {nullSafeCell(normalizeLabel(details.officer_recommendation))}
+              {nullSafeCell(parseViolationRecord(details.violation_record))}
             </tr>
           ))}
         </tbody>

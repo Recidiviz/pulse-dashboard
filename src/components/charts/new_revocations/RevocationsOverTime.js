@@ -22,6 +22,7 @@ import ExportMenu from '../ExportMenu';
 import { COLORS } from '../../../assets/scripts/constants/colors';
 import {
   getMonthCountFromMetricPeriodMonthsToggle, getTrailingLabelFromMetricPeriodMonthsToggle,
+  centerSingleMonthDatasetIfNecessary,
 } from '../../../utils/charts/toggles';
 import { sortFilterAndSupplementMostRecentMonths } from '../../../utils/transforms/datasets';
 import { toInt } from '../../../utils/transforms/labels';
@@ -54,6 +55,8 @@ const RevocationsOverTime = (props) => {
     const sortedChartData = sortFilterAndSupplementMostRecentMonths(chartData, months, 'count', 0);
     const labels = monthNamesWithYearsFromNumbers(sortedChartData.map((element) => element.month), false)
     const dataPoints = (sortedChartData.map((element) => element.count));
+
+    centerSingleMonthDatasetIfNecessary(dataPoints, labels);
     setChartLabels(labels);
     setChartDataPoints(dataPoints);
   };
