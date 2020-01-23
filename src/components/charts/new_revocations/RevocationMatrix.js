@@ -26,7 +26,7 @@ const VIOLATION_TYPES = [
   ['TECHNICAL', 'Technical'],
   ['SUBSTANCE_ABUSE', 'Subs. Use'],
   ['MUNICIPAL', 'Municipal'],
-  ['ABSCONSION', 'Absconsion'],
+  ['ABSCONDED', 'Absconsion'],
   ['MISDEMEANOR', 'Misdemeanor'],
   ['FELONY', 'Felony'],
 ];
@@ -102,7 +102,7 @@ const RevocationMatrix = (props) => {
     const matrixRow = dataMatrix[violationType];
     const cellCount = matrixRow === undefined ? 0 : matrixRow[violationCount] || 0;
 
-    const minRadius = 15;
+    const minRadius = 25;
     const maxRadius = 50;
     const ratio = maxRevocations > 0 ? (cellCount / maxRevocations) : 0;
     const radius = Math.max(minRadius, Math.ceil(ratio * maxRadius));
@@ -119,7 +119,7 @@ const RevocationMatrix = (props) => {
       width: '100%',
       height: '100%',
       borderRadius: Math.ceil(radius / 2),
-      color: ratio > 0.4 ? 'white' : 'rgba(240, 113, 50)',
+      color: ratio >= 0.5 ? 'white' : 'rgba(240, 113, 50)',
     };
 
     return (

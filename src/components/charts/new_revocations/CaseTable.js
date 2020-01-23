@@ -17,7 +17,9 @@
 
 import React, { useState } from 'react';
 
-import { humanReadableTitleCase, toInt, nameFromOfficerId } from '../../../utils/transforms/labels';
+import {
+  humanReadableTitleCase, toInt, nameFromOfficerId, riskLevelValuetoLabel,
+} from '../../../utils/transforms/labels';
 
 const CASES_PER_PAGE = 15;
 const VIOLATION_SEVERITY = [
@@ -38,8 +40,11 @@ const CaseTable = (props) => {
     if (toInt(a.district) > toInt(b.district)) return 1;
     if (toInt(a.district) < toInt(b.district)) return -1;
 
-    if (a.officer.toLowerCase() > b.officer.toLowerCase()) return 1;
-    if (a.officer.toLowerCase() < b.officer.toLowerCase()) return -1;
+    const aOfficer = a.officer || '';
+    const bOfficer = b.officer || '';
+
+    if (aOfficer.toLowerCase() > bOfficer.toLowerCase()) return 1;
+    if (aOfficer.toLowerCase() < bOfficer.toLowerCase()) return -1;
     return 0;
   });
 
@@ -100,7 +105,7 @@ const CaseTable = (props) => {
               <td>{details.state_id}</td>
               <td>{details.district}</td>
               <td>{nameFromOfficerId(details.officer)}</td>
-              <td>{normalizeLabel(details.risk_level)}</td>
+              <td>{riskLevelValuetoLabel[details.risk_level] || ''}</td>
               <td>{normalizeLabel(details.officer_recommendation)}</td>
               <td>{parseViolationRecord(details.violation_record)}</td>
             </tr>

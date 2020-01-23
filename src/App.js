@@ -47,7 +47,6 @@ initFontAwesome();
 const App = () => {
   const [sideBarCollapsed, setSideBarCollapsed] = useState('');
   const { user, loading, isAuthenticated } = useAuth0();
-  const stateCode = getUserStateCode(user);
 
   function toggleCollapsed() {
     const currentlyCollapsed = sideBarCollapsed === 'is-collapsed';
@@ -83,8 +82,18 @@ const App = () => {
     return <Loading />;
   }
 
+  // This lets us retrieve the state code for the user only after we have authenticated
+  const shouldLoadSidebar = (authenticated) => {
+    if (!authenticated) {
+      return false;
+    }
+
+    const stateCode = getUserStateCode(user);
+    return hasSideBar(stateCode, authenticated);
+  };
+
   let containerClass = 'wide-page-container';
-  if (hasSideBar(stateCode, isAuthenticated)) {
+  if (shouldLoadSidebar(isAuthenticated)) {
     containerClass = 'page-container';
   }
 
@@ -96,14 +105,14 @@ const App = () => {
           <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
           <title>Recidiviz Dashboard</title>
           <div>
-            {hasSideBar(stateCode, isAuthenticated) && (
+            {shouldLoadSidebar(isAuthenticated) && (
             <SideBar />
             )}
             <div className={containerClass}>
               <TopBar pathname={window.location.pathname} />
               <Switch>
                 <Route exact path="/">
-                  <Redirect to={getLandingViewForState(stateCode)} />
+                  <Redirect to="/revocations" />
                 </Route>
                 <PrivateTenantRoute path="/snapshots" />
                 <PrivateTenantRoute path="/revocations" />
