@@ -18,7 +18,9 @@
 import React, { useState, useEffect } from 'react';
 import ExportMenu from '../ExportMenu';
 
-import { getPeriodLabelFromMetricPeriodMonthsToggle } from '../../../utils/charts/toggles';
+import {
+  getPeriodLabelFromMetricPeriodMonthsToggle, getTrailingLabelFromMetricPeriodMonthsToggle
+} from '../../../utils/charts/toggles';
 import { toInt } from '../../../utils/transforms/labels';
 
 // These can also be defined from the data
@@ -181,7 +183,7 @@ const RevocationMatrix = (props) => {
         />
       </h4>
       <h6>
-        {getPeriodLabelFromMetricPeriodMonthsToggle(props.metricPeriodMonths)}
+        {`${getTrailingLabelFromMetricPeriodMonthsToggle(props.metricPeriodMonths)} (${getPeriodLabelFromMetricPeriodMonthsToggle(props.metricPeriodMonths)})`}
       </h6>
       <div id="revocationMatrix" className="d-f">
         <div className="y-label" data-html2canvas-ignore>
