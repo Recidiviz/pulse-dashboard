@@ -32,26 +32,60 @@ const chartId = 'revocationsByGender';
 const RevocationsByGender = (props) => {
   const [chartDataPoints, setChartDataPoints] = useState([]);
 
-  const getRiskLevelArrayForGender = (forGender) => RISK_LEVELS.map((riskLevel) => (
+  const getRevocationsForRiskLevel = (forGender) => RISK_LEVELS.map((riskLevel) => (
     props.data
       .filter(({ gender, risk_level: dataRiskLevel }) => gender === forGender && dataRiskLevel === riskLevel)
       .reduce((result, { population_count: populationCount }) => result += toInt(populationCount), 0)
   ));
 
+  const getSupervisionCountsForRiskLevel = (forGender) => RISK_LEVELS.map((riskLevel) => (
+    props.data
+      .filter(({ gender, risk_level: dataRiskLevel }) => gender === forGender && dataRiskLevel === riskLevel)
+      .reduce((result, { total_supervision_count: totalSupervisionCount }) => result += toInt(totalSupervisionCount), 0)
+  ));
+
+  const getRate = (revocations, supervisionCount) => {
+    if (!revocations || !supervisionCount) {
+      return '0.00';
+    }
+
+    return (100 * (revocations / supervisionCount)).toFixed(2);
+  };
+
   const processResponse = () => {
-    const genderToCount = props.data.reduce(
+    const revocationsByGender = props.data.reduce(
       (result, { gender, population_count: populationCount }) => {
         return { ...result, [gender]: (result[gender] || 0) + (toInt(populationCount) || 0) };
       }, {},
     );
 
-    const dataPoints = GENDERS.map((gender) => [genderToCount[gender], ...getRiskLevelArrayForGender(gender)]);
+    const supervisionCountsByGender = props.data.reduce(
+      (result, { gender, total_supervision_count: totalSupervisionCount }) => {
+        return { ...result, [gender]: (result[gender] || 0) + (toInt(totalSupervisionCount) || 0) };
+      }, {},
+    );
+
+    const revocations = GENDERS.map((gender) => [revocationsByGender[gender], ...getRevocationsForRiskLevel(gender)]);
+    const supervisionCounts = GENDERS.map((gender) => [supervisionCountsByGender[gender], ...getSupervisionCountsForRiskLevel(gender)]);
+
+    const dataPoints = [];
+    for (let i = 0; i < revocations.length; i += 1) {
+      dataPoints.push([]);
+      for (let j = 0; j < revocations[i].length; j += 1) {
+        const rate = getRate(revocations[i][j], supervisionCounts[i][j]);
+        dataPoints[i].push(rate);
+      }
+    }
+
     setChartDataPoints(dataPoints);
-  }
+  };
 
   useEffect(() => {
     processResponse();
-  }, [props.data, props.metricPeriodMonths]);
+  }, [
+    props.data,
+    props.metricPeriodMonths,
+  ]);
 
   const chart = (
     <Bar
@@ -87,7 +121,7 @@ const RevocationsByGender = (props) => {
           yAxes: [{
             scaleLabel: {
               display: true,
-              labelString: '# of revocations',
+              labelString: 'revocation rate',
             },
             ticks: {
               beginAtZero: true,
