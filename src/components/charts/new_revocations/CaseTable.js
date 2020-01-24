@@ -17,6 +17,10 @@
 
 import React, { useState } from 'react';
 
+import ExportMenu from '../ExportMenu';
+
+import { COLORS } from '../../../assets/scripts/constants/colors';
+import { getTrailingLabelFromMetricPeriodMonthsToggle } from '../../../utils/charts/toggles';
 import {
   humanReadableTitleCase, toInt, nameFromOfficerId, riskLevelValuetoLabel,
 } from '../../../utils/transforms/labels';
@@ -29,8 +33,10 @@ const VIOLATION_SEVERITY = [
 const unknownStyle = {
   fontStyle: 'italic',
   fontSize: '13px',
-  color: '#b9c2d0', // A light grey (grey-500 in COLORS.js)
+  color: COLORS['grey-500'],
 };
+
+const chartId = 'filteredCaseTable';
 
 const CaseTable = (props) => {
   const [index, setIndex] = useState(0);
@@ -96,6 +102,17 @@ const CaseTable = (props) => {
 
   return (
     <div className="case-table">
+      <h4>
+        Filtered cases
+        <ExportMenu
+          chartId={chartId}
+          shouldExport={false}
+        />
+      </h4>
+      <h6 className="pB-20">
+        {getTrailingLabelFromMetricPeriodMonthsToggle(props.metricPeriodMonths)}
+      </h6>
+
       <table>
         <thead>
           <tr>
