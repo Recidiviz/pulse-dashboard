@@ -34,8 +34,12 @@ const ExportMenu = (props) => {
         </a>
         <div className="dropdown-menu dropdown-menu-right" aria-labelledby={`exportDropdownMenuButton-${props.chartId}`}>
           <a className="dropdown-item" href="javascript:void(0);" onClick={() => toggleAdditionalInfoModal()}>Additional info</a>
-          <a className="dropdown-item" id={`downloadChartAsImage-${props.chartId}`} href="javascript:void(0);">Export image</a>
-          <a className="dropdown-item" id={`downloadChartData-${props.chartId}`} href="javascript:void(0);">Export data</a>
+          {(props.shouldExport === undefined || props.shouldExport === true) && (
+            <a className="dropdown-item" id={`downloadChartAsImage-${props.chartId}`} href="javascript:void(0);">Export image</a>
+          )}
+          {(props.shouldExport === undefined || props.shouldExport === true) && (
+            <a className="dropdown-item" id={`downloadChartData-${props.chartId}`} href="javascript:void(0);">Export data</a>
+          )}
         </div>
       </div>
 
@@ -67,20 +71,22 @@ const ExportMenu = (props) => {
     setShowAdditionalInfo(!showAdditionalInfo);
   }
 
-  const exportedStructureCallback = () => (
-    {
-      metric: props.metricTitle,
-      series: [],
-    });
+  if ((props.shouldExport === undefined || props.shouldExport === true)) {
+    const exportedStructureCallback = () => (
+      {
+        metric: props.metricTitle,
+        series: [],
+      });
 
-  if (props.regularElement) {
-    configureDownloadButtonsRegularElement(props.chartId, props.metricTitle,
-      props.elementDatasets, props.elementLabels,
-      document.getElementById(props.chartId), exportedStructureCallback, {});
-  } else {
-    configureDownloadButtons(props.chartId, props.metricTitle,
-      props.chart.props.data.datasets, props.chart.props.data.labels,
-      document.getElementById(props.chartId), exportedStructureCallback, {});
+    if (props.regularElement) {
+      configureDownloadButtonsRegularElement(props.chartId, props.metricTitle,
+        props.elementDatasets, props.elementLabels,
+        document.getElementById(props.chartId), exportedStructureCallback, {});
+    } else {
+      configureDownloadButtons(props.chartId, props.metricTitle,
+        props.chart.props.data.datasets, props.chart.props.data.labels,
+        document.getElementById(props.chartId), exportedStructureCallback, {});
+    }
   }
 
   return menuSpan;

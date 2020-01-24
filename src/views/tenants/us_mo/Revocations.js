@@ -201,9 +201,10 @@ const Revocations = () => {
       default:
         return (
           <RevocationsByDistrict
-            data={applyAllFilters(apiData.revocations_matrix_distribution_by_district)}
-            supervisionPopulation={applyAllFilters(apiData.revocations_matrix_supervision_distribution_by_district, ['chargeCategory'])}
+            data={applyAllFilters(apiData.revocations_matrix_distribution_by_district, ['district'])}
+            supervisionPopulation={applyAllFilters(apiData.revocations_matrix_supervision_distribution_by_district, ['chargeCategory', 'district'])}
             metricPeriodMonths={filters.metricPeriodMonths}
+            currentDistrict={filters.district}
           />
         );
     }
@@ -308,9 +309,10 @@ const Revocations = () => {
           {renderSelectedChart()}
         </div>
       </div>
-      <div className="bgc-white m-20">
+      <div className="bgc-white m-20 p-20">
         <CaseTable
           data={applyAllFilters(apiData.revocations_matrix_filtered_caseload)}
+          metricPeriodMonths={filters.metricPeriodMonths}
         />
       </div>
     </main>

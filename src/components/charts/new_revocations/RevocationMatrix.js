@@ -209,7 +209,7 @@ const RevocationMatrix = (props) => {
         </div>
       </div>
       <div className="x-label">
-        Number of violation reports and notices of citations filled
+        Number of violation reports and notices of citations filed
       </div>
     </div>
   );

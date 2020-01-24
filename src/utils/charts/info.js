@@ -64,6 +64,14 @@ const chartIdToInfo = {
     'This is calculated by looking at all notices of citation and violation reports filed for these individuals during that time period, counting the number of times each type of violation was reported, and dividing this by the total number of reported violations.',
     'If multiple conditions violated are listed on one report or one notice of citation, they are all counted.',
   ],
+  filteredCaseTable: [
+    'This table shows all cases which correspond to the data points in the revocation matrix above. That is, each case listed below corresponds to a particular period of supervision that ended in a revocation.',
+    'This table is filtered by the filters at the top of the page. Only cases matching all selected filters will be displayed in this table.',
+    'This table is also filtered by the row or cell selections in the matrix view above. Only cases matching the selected row or cell will be displayed in this table.',
+    'The cases are sorted first by district, and second by officer.',
+    'The violations listed in the Violation Record column are ordered by severity.',
+    'The Officer Recommendation displays the most severe recommendation that was made over the course of the period of supervision.',
+  ],
 };
 
 export {

@@ -22,12 +22,15 @@ import * as $ from 'jquery';
 import ExportMenu from '../ExportMenu';
 
 import { COLORS } from '../../../assets/scripts/constants/colors';
-import { getTrailingLabelFromMetricPeriodMonthsToggle } from '../../../utils/charts/toggles';
+import {
+  getTrailingLabelFromMetricPeriodMonthsToggle, toggleLabel,
+} from '../../../utils/charts/toggles';
 import { toInt } from '../../../utils/transforms/labels';
 
 const chartId = 'revocationsByDistrict';
 
 const RevocationsByDistrict = (props) => {
+  const [nonDisplayedLabels, setNonDisplayedLabels] = useState([]);
   const [chartLabels, setChartLabels] = useState([]);
   const [chartDataPoints, setChartDataPoints] = useState([]);
   const [countModeEnabled, setCountModeEnabled] = useState(true);
@@ -45,20 +48,26 @@ const RevocationsByDistrict = (props) => {
       }, {},
     );
 
-    const labels = Object.keys(districtToCount);
-    const displayLabels = labels.map((label) => `District ${label}`);
+    const getRate = (district) => (100 * (districtToCount[district] / supervisionDistributions[district])).toFixed(2);
 
-    let dataPoints = [];
+    // Sort bars by decreasing count or rate
+    let sorted = [];
     if (countModeEnabled) {
-      dataPoints = labels.map((district) => districtToCount[district]);
+      sorted = Object.entries(districtToCount).sort((a, b) => b[1] - a[1]);
     } else {
-      dataPoints = labels.map(
-        (district) => (100 * (districtToCount[district] / supervisionDistributions[district])).toFixed(2),
-      );
+      sorted = Object.entries(districtToCount)
+        .map((entry) => [entry[0], getRate(entry[0])])
+        .sort((a, b) => b[1] - a[1]);
     }
 
-    setChartLabels(displayLabels);
-    setChartDataPoints(dataPoints);
+    const sortedDataPoints = sorted.map((entry) => entry[1]);
+    setChartDataPoints(sortedDataPoints);
+
+    const sortedLabels = sorted.map((entry) => entry[0]);
+    setNonDisplayedLabels(sortedLabels);
+
+    const sortedDisplayLabels = sortedLabels.map((label) => `District ${label}`);
+    setChartLabels(sortedDisplayLabels);
   };
 
   // TODO: Replace this jQuery usage with a more React-friendly approach
@@ -72,17 +81,23 @@ const RevocationsByDistrict = (props) => {
   }, [
     props.data,
     props.metricPeriodMonths,
+    props.currentDistrict,
     countModeEnabled,
   ]);
 
-  // TODO: Replace this with the toggles.js functionality when merged in the other PR
-  function toggleLabel(labelsByToggle, toggledValue) {
-    if (labelsByToggle[toggledValue]) {
-      return labelsByToggle[toggledValue];
+  // This sets bar color to light-blue-500 when it's the current district, or orange-500 otherwise
+  const highlightCurrentDistrict = () => {
+    const colors = [];
+    for (let i = 0; i < nonDisplayedLabels.length; i += 1) {
+      if (props.currentDistrict
+        && props.currentDistrict.toLowerCase() === nonDisplayedLabels[i].toLowerCase()) {
+        colors.push(COLORS['light-blue-500']);
+      } else {
+        colors.push(COLORS['orange-500']);
+      }
     }
-
-    return 'No label found';
-  }
+    return colors;
+  };
 
   const chart = (
     <Bar
@@ -93,9 +108,9 @@ const RevocationsByDistrict = (props) => {
           label: toggleLabel({
             counts: 'Revocations', rates: 'Revocation rate',
           }, countModeEnabled ? 'counts' : 'rates'),
-          backgroundColor: COLORS['orange-500'],
-          hoverBackgroundColor: COLORS['orange-500'],
-          hoverBorderColor: COLORS['orange-500'],
+          backgroundColor: highlightCurrentDistrict(),
+          hoverBackgroundColor: highlightCurrentDistrict(),
+          hoverBorderColor: highlightCurrentDistrict(),
           data: chartDataPoints,
         }],
       }}
