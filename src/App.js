@@ -33,6 +33,7 @@ import { getUserStateCode } from './utils/authentication/user';
 import { hasSideBar } from './utils/layout/filters';
 import NotFound from './views/NotFound';
 import Profile from './views/Profile';
+import VerificationNeeded from './views/VerificationNeeded';
 import { getLandingViewForState } from './views/stateViews';
 import './assets/scripts/index';
 
@@ -119,6 +120,7 @@ const App = () => {
                 <PrivateTenantRoute path="/reincarcerations" />
                 <PrivateTenantRoute path="/programEvaluation/freeThroughRecovery" />
                 <PrivateRoute path="/profile" component={Profile} />
+                <Route path="/verify" component={VerificationNeeded} />
                 <Route component={NotFound} />
               </Switch>
               <Footer />
