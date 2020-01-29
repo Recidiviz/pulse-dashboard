@@ -42,7 +42,7 @@ class GeoViewToggle extends React.Component {
     return (
       <form>
         <div className="btn-group-toggle">
-          <label className="btn btn-secondary active">
+          <label className="btn btn-sm btn-secondary active">
             <input
               type="checkbox"
               name="geo-view-enabled"

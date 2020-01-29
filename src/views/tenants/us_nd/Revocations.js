@@ -96,7 +96,10 @@ const Revocations = () => {
                   <h6 className="lh-1">
                     REVOCATIONS BY MONTH
                     <span className="fa-pull-right">
-                      <div className="dropdown show">
+                      <div className="geo-view-button pR-10">
+                        <GeoViewToggle setGeoViewEnabled={setGeoViewEnabledRCOT} />
+                      </div>
+                      <div className="dropdown show export-button">
                         <a className="btn btn-secondary btn-sm dropdown-toggle" href="#" role="button" id="exportDropdownMenuButton-revocationCountsByMonth" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                           Export
                         </a>
@@ -109,9 +112,6 @@ const Revocations = () => {
                       </div>
                     </span>
                   </h6>
-                </div>
-                <div className="layer w-100 pX-20 pT-10">
-                  <GeoViewToggle setGeoViewEnabled={setGeoViewEnabledRCOT} />
                 </div>
                 <div className="layer w-100 pX-20 pT-20">
                   {geoViewEnabledRCOT === false && (

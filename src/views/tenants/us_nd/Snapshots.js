@@ -91,7 +91,10 @@ const Snapshots = () => {
                   <h6 className="lh-1">
                     SUCCESSFUL COMPLETION OF SUPERVISION
                     <span className="fa-pull-right">
-                      <div className="dropdown show">
+                      <div className="geo-view-button pR-10">
+                        <GeoViewToggle setGeoViewEnabled={setGeoViewEnabledSCOS} />
+                      </div>
+                      <div className="dropdown show export-button">
                         <a className="btn btn-secondary btn-sm dropdown-toggle" href="#" role="button" id="exportDropdownMenuButton-supervisionSuccessSnapshot" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                           Export
                         </a>
@@ -104,9 +107,6 @@ const Snapshots = () => {
                       </div>
                     </span>
                   </h6>
-                </div>
-                <div className="layer w-100 pX-20 pT-10">
-                  <GeoViewToggle setGeoViewEnabled={setGeoViewEnabledSCOS} />
                 </div>
                 <div className="layer w-100 pX-20 pT-20">
                   {geoViewEnabledSCOS === false && (
@@ -184,7 +184,10 @@ const Snapshots = () => {
                   <h6 className="lh-1">
                     PRISON ADMISSIONS DUE TO REVOCATION
                     <span className="fa-pull-right">
-                      <div className="dropdown show">
+                      <div className="geo-view-button pR-10">
+                        <GeoViewToggle setGeoViewEnabled={setGeoViewEnabledPDTR} />
+                      </div>
+                      <div className="dropdown show export-button">
                         <a className="btn btn-secondary btn-sm dropdown-toggle" href="#" role="button" id="exportDropdownMenuButton-revocationAdmissionsSnapshot" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                           Export
                         </a>
@@ -197,9 +200,6 @@ const Snapshots = () => {
                       </div>
                     </span>
                   </h6>
-                </div>
-                <div className="layer w-100 pX-20 pT-10">
-                  <GeoViewToggle setGeoViewEnabled={setGeoViewEnabledPDTR} />
                 </div>
                 <div className="layer w-100 pX-20 pT-20">
                   {geoViewEnabledPDTR === false && (
@@ -351,7 +351,10 @@ const Snapshots = () => {
                       <span className="pL-10 c-orange-500 ti-alert" data-toggle="tooltip" data-placement="bottom" title="This graph is showing average LSI-R score change. It does not support showing this metric as a rate." />
                     )}
                     <span className="fa-pull-right">
-                      <div className="dropdown show">
+                      <div className="geo-view-button pR-10">
+                        <GeoViewToggle setGeoViewEnabled={setGeoViewEnabledALSI} />
+                      </div>
+                      <div className="dropdown show export-button">
                         <a className="btn btn-secondary btn-sm dropdown-toggle" href="#" role="button" id="exportDropdownMenuButton-lsirScoreChangeSnapshot" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                           Export
                         </a>
@@ -364,9 +367,6 @@ const Snapshots = () => {
                       </div>
                     </span>
                   </h6>
-                </div>
-                <div className="layer w-100 pX-20 pT-10">
-                  <GeoViewToggle setGeoViewEnabled={setGeoViewEnabledALSI} />
                 </div>
                 <div className="layer w-100 pX-20 pT-20">
                   {geoViewEnabledALSI === false && (

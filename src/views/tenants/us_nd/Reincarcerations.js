@@ -88,7 +88,10 @@ const Reincarcerations = () => {
                   <h6 className="lh-1">
                     REINCARCERATIONS BY MONTH
                     <span className="fa-pull-right">
-                      <div className="dropdown show">
+                      <div className="geo-view-button pR-10">
+                        <GeoViewToggle setGeoViewEnabled={setGeoViewEnabledRCOT} />
+                      </div>
+                      <div className="dropdown show export-button">
                         <a className="btn btn-secondary btn-sm dropdown-toggle" href="#" role="button" id="exportDropdownMenuButton-reincarcerationCountsByMonth" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                           Export
                         </a>
@@ -101,9 +104,6 @@ const Reincarcerations = () => {
                       </div>
                     </span>
                   </h6>
-                </div>
-                <div className="layer w-100 pX-20 pT-10">
-                  <GeoViewToggle setGeoViewEnabled={setGeoViewEnabledRCOT} />
                 </div>
                 <div className="layer w-100 pX-20 pT-20">
                   {geoViewEnabledRCOT === false && (
@@ -185,7 +185,10 @@ const Reincarcerations = () => {
                   <h6 className="lh-1">
                     ADMISSIONS VERSUS RELEASES
                     <span className="fa-pull-right">
-                      <div className="dropdown show">
+                      <div className="geo-view-button pR-10">
+                        <GeoViewToggle setGeoViewEnabled={setGeoViewEnabledAVR} />
+                      </div>
+                      <div className="dropdown show export-button">
                         <a className="btn btn-secondary btn-sm dropdown-toggle" href="#" role="button" id="exportDropdownMenuButton-admissionsVsReleases" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                           Export
                         </a>
@@ -198,9 +201,6 @@ const Reincarcerations = () => {
                       </div>
                     </span>
                   </h6>
-                </div>
-                <div className="layer w-100 pX-20 pT-10">
-                  <GeoViewToggle setGeoViewEnabled={setGeoViewEnabledAVR} />
                 </div>
                 <div className="layer w-100 pX-20 pT-20">
                   {geoViewEnabledAVR === false && (
