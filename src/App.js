@@ -94,8 +94,8 @@ const App = () => {
   };
 
   // This lets us retrieve the state code for the user only after we have authenticated
-  const getLandingView = () => {
-    if (!isAuthenticated) {
+  const getLandingView = (authenticated) => {
+    if (!authenticated) {
       return '/revocations';
     }
 
@@ -123,7 +123,7 @@ const App = () => {
               <TopBar pathname={window.location.pathname} />
               <Switch>
                 <Route exact path="/">
-                  <Redirect to={getLandingView()} />
+                  <Redirect to={getLandingView(isAuthenticated)} />
                 </Route>
                 <PrivateTenantRoute path="/snapshots" />
                 <PrivateTenantRoute path="/revocations" />
