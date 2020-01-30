@@ -93,6 +93,16 @@ const App = () => {
     return hasSideBar(stateCode, authenticated);
   };
 
+  // This lets us retrieve the state code for the user only after we have authenticated
+  const getLandingView = (authenticated) => {
+    if (!authenticated) {
+      return '/revocations';
+    }
+
+    const stateCode = getUserStateCode(user);
+    return getLandingViewForState(stateCode);
+  };
+
   let containerClass = 'wide-page-container';
   if (shouldLoadSidebar(isAuthenticated)) {
     containerClass = 'page-container';
@@ -113,7 +123,7 @@ const App = () => {
               <TopBar pathname={window.location.pathname} />
               <Switch>
                 <Route exact path="/">
-                  <Redirect to="/revocations" />
+                  <Redirect to={getLandingView(isAuthenticated)} />
                 </Route>
                 <PrivateTenantRoute path="/snapshots" />
                 <PrivateTenantRoute path="/revocations" />
