@@ -62,7 +62,7 @@ const TopBar = (props) => {
     return isLanternState(stateCode);
   };
 
-  let navBarClass = 'header wide-navbar';
+  let navBarClass = 'header navbar wide-navbar';
   if (shouldLoadSidebar(isAuthenticated)) {
     navBarClass = 'header navbar';
   }

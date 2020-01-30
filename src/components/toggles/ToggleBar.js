@@ -22,8 +22,14 @@ import MetricTypeToggle from './MetricTypeToggle';
 import SupervisionTypeToggle from './SupervisionTypeToggle';
 import MetricPeriodToggle from './MetricPeriodToggle';
 
+const TOGGLE_STYLE = {
+  zIndex: 700,
+  position: 'sticky',
+  top: 55,
+};
+
 const ToggleBar = (props) => (
-  <div className="row gap-20">
+  <div className="row gap-20 pB-10" style={TOGGLE_STYLE}>
     {/* Figure out how to make sticky top work without hiding the dropdown */}
     <div className="col-md-12">
       <div className="bd bgc-white p-20">
