@@ -74,6 +74,7 @@ const Reincarcerations = () => {
           setChartMetricType={setChartMetricType}
           setChartMetricPeriodMonths={setChartMetricPeriodMonths}
           setChartDistrict={setChartDistrict}
+          districtOffices={apiData.site_offices}
           availableDistricts={['adams-county', 'barnes-county', 'benson-county', 'billson-county', 'bottineau-county', 'bowman-county', 'burke-county', 'burleigh-county', 'cass-county', 'cavalier-county', 'dickey-county', 'divide-county', 'dunn-county', 'eddy-county', 'emmons-county', 'foster-county', 'golden-valley-county', 'grand-forks-county', 'grant-county', 'griggs-county', 'hettinger-county', 'kidder-county', 'laMoure-county', 'logan-county', 'mcHenry-county', 'mcIntosh-county', 'mcKenzie-county', 'mcLean-county', 'mercer-county', 'morton-county', 'mountrail-county', 'nelson-county', 'oliver-county', 'pembina-county', 'pierce-county', 'ramsey-county', 'ransom-county', 'renville-county', 'richland-county', 'rolette-county', 'sargent-county', 'sheridan-county', 'sioux-county', 'slope-county', 'stark-county', 'steele-county', 'stutsman-county', 'towner-county', 'traill-county', 'walsh-county', 'ward-county', 'wells-county', 'williams-county']}
           replaceLa={true}
         />

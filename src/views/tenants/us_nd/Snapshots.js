@@ -78,6 +78,7 @@ const Snapshots = () => {
           setChartMetricPeriodMonths={setChartMetricPeriodMonths}
           setChartSupervisionType={setChartSupervisionType}
           setChartDistrict={setChartDistrict}
+          districtOffices={apiData.site_offices}
           availableDistricts={['beulah', 'bismarck', 'bottineau', 'devils-lake', 'dickson', 'fargo', 'grafton', 'grand-forks', 'jamestown', 'mandan', 'minot', 'oakes', 'rolla', 'washburn', 'wahpeton', 'williston']}
         />
 

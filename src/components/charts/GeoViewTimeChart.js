@@ -234,13 +234,16 @@ class GeoViewTimeChart extends Component {
       // Load office metadata from explicit dataset
       this.officeData.forEach((officeData) => {
         const {
+          district,
           site_name: name,
           long: longValue,
           lat: latValue,
           title_side: titleSideValue,
         } = officeData;
+        const districtId = String(district);
 
         const office = {
+          district: districtId,
           officeName: name,
           coordinates: [longValue, latValue],
           titleSide: titleSideValue,
@@ -248,7 +251,7 @@ class GeoViewTimeChart extends Component {
         };
 
         const officeNameKey = normalizedOfficeKey(name);
-        this.offices[officeNameKey] = office;
+        this.offices[districtId] = office;
         this.officeKeys.push(officeNameKey);
       });
     } else {
@@ -300,10 +303,19 @@ class GeoViewTimeChart extends Component {
           metric_period_months: metricPeriodMonths,
           supervision_type: supervisionType,
         } = data;
+        const districtId = String(district);
+
+        // The API response providing data to this geo view chart might include rows with
+        // district=ALL, e.g. if the response is shared with a non-geo chart. Skip over these rows.
+        if (districtId.toUpperCase() === 'ALL') {
+          return;
+        }
+
+        const { officeName } = this.offices[districtId];
+        const officeNameKey = normalizedOfficeKey(officeName);
         const supervisionTypeKey = normalizedSupervisionTypeKey(supervisionType);
 
-        const officeNameKey = normalizedOfficeKey(district);
-        const office = this.offices[officeNameKey];
+        const office = this.offices[districtId];
         if (office) {
           if (!office.dataValues[metricPeriodMonths]) {
             office.dataValues[metricPeriodMonths] = {

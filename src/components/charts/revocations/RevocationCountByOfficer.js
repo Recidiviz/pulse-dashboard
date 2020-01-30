@@ -91,7 +91,7 @@ const RevocationCountByOfficer = (props) => {
   function setDataForVisibleOffice(
     officerLabels, officerViolationCountsByType, visibleOffice,
   ) {
-    if (visibleOffice === 'all') {
+    if (visibleOffice.toLowerCase() === 'all') {
       setDisplayOfficerIds(false);
     } else {
       setDisplayOfficerIds(true);
@@ -151,7 +151,7 @@ const RevocationCountByOfficer = (props) => {
     if (officeData) {
       officeData.forEach((office) => {
         const {
-          site_id: officeId,
+          district: officeId,
           site_name: officeName,
         } = office;
 
@@ -172,7 +172,7 @@ const RevocationCountByOfficer = (props) => {
     if (revocationCountsByOfficerAndTime) {
       revocationCountsByOfficerAndTime.forEach((data) => {
         const {
-          officer_external_id: officerIDRaw, site_id: officeId,
+          officer_external_id: officerIDRaw, district: officeId,
         } = data;
 
         const absconsionCount = toInt(data.absconsion_count);
@@ -188,16 +188,15 @@ const RevocationCountByOfficer = (props) => {
         };
         const totalCount = absconsionCount + felonyCount + technicalCount + unknownCount;
 
-        let officeName = offices[toInt(officeId)];
+        const officeName = offices[toInt(officeId)];
         if (officeName && officerIDRaw !== 'OFFICER_UNKNOWN') {
-          officeName = toHtmlFriendly(officeName).toLowerCase();
           const officerId = numberFromOfficerId(officerIDRaw);
-          if (dataPoints[officeName] == null) {
-            dataPoints[officeName] = [];
+          if (dataPoints[officeId] == null) {
+            dataPoints[officeId] = [];
           }
 
           if (props.metricType === 'counts') {
-            dataPoints[officeName].push({
+            dataPoints[officeId].push({
               officerId,
               violationsByType: violationCountsByType,
             });
@@ -208,7 +207,7 @@ const RevocationCountByOfficer = (props) => {
               violationRatesByType[key] = (100 * (count / totalCount)).toFixed(2);
             });
 
-            dataPoints[officeName].push({
+            dataPoints[officeId].push({
               officerId,
               violationsByType: violationRatesByType,
             });
@@ -220,7 +219,7 @@ const RevocationCountByOfficer = (props) => {
     const visibleOffice = props.district;
     const {
       officerLabels, officerViolationCountsByType,
-    } = getDataForVisibleOffice(dataPoints, visibleOffice);
+    } = getDataForVisibleOffice(dataPoints, String(visibleOffice));
     setDataForVisibleOffice(officerLabels, officerViolationCountsByType, visibleOffice);
     configureDownloads(officerLabels, officerViolationCountsByType, visibleOffice);
   };

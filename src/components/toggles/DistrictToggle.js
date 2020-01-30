@@ -52,19 +52,28 @@ class DistrictToggle extends React.Component {
   }
 
   DistrictOption(props) {
-    return <option id={`district-toggle-${props.value}`} value={props.value}>{normalizeDistrictName(props.value, props.replaceLa)}</option>
+    return <option id={`district-toggle-${props.value}`} value={props.value}>{normalizeDistrictName(props.display, props.replaceLa)}</option>
   }
 
   DistrictList() {
-    const { districts, replaceLa } = this.props;
+    const { districts, replaceLa, districtOffices } = this.props;
     districts.sort();
 
-    const districtOptions = districts.map(
-      (district) => <this.DistrictOption key={district} value={district} replaceLa={replaceLa} />,
-    );
+    let districtOptions = [];
+    if (districtOffices) {
+      const sortedOffices = districtOffices.sort((a, b) => (a.site_name.localeCompare(b.site_name)));
+      districtOptions = sortedOffices.map(
+        (district) => <this.DistrictOption key={district.district} value={district.district} display={district.site_name} replaceLa={replaceLa} />,
+      );
+    } else {
+      districtOptions = districts.map(
+        (district) => <this.DistrictOption key={district} value={district} display={district} replaceLa={replaceLa} />,
+      );
+    }
+
     return (
       <select id="district-toggle" className="form-control" onChange={this.handleChange}>
-        <this.DistrictOption key="all" value="all" />
+        <this.DistrictOption key="all" value="all" display="All" />
         {districtOptions}
       </select>
     );

@@ -146,7 +146,7 @@ function filterDatasetByToggleFilters(dataset, toggleFilters) {
   const toggleKey = Object.keys(toggleFilters)[0];
   const toggleValue = toggleFilters[toggleKey].toUpperCase();
 
-  return dataset.filter((element) => element[toggleKey].toUpperCase() === toggleValue);
+  return dataset.filter((element) => String(element[toggleKey]).toUpperCase() === String(toggleValue));
 }
 
 function filterDatasetByDistrict(dataset, district) {

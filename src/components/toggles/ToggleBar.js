@@ -55,6 +55,7 @@ const ToggleBar = (props) => (
           {props.setChartDistrict && (
           <div className="col-md-2">
             <DistrictToggle
+              districtOffices={props.districtOffices}
               districts={props.availableDistricts}
               onDistrictUpdate={props.setChartDistrict}
               replaceLa={props.replaceLa}
