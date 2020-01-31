@@ -74,7 +74,8 @@ const Reincarcerations = () => {
           setChartMetricType={setChartMetricType}
           setChartMetricPeriodMonths={setChartMetricPeriodMonths}
           setChartDistrict={setChartDistrict}
-          availableDistricts={['adams-county', 'barnes-county', 'benson-county', 'billson-county', 'bottineau-county', 'bowman-county', 'burke-county', 'burleigh-county', 'cass-county', 'cavalier-county', 'dickey-county', 'divide-county', 'dunn-county', 'eddy-county', 'emmons-county', 'foster-county', 'golden-valley-county', 'grand-forks-county', 'grant-county', 'griggs-county', 'hettinger-county', 'kidder-county', 'laMoure-county', 'logan-county', 'mcHenry-county', 'mcIntosh-county', 'mcKenzie-county', 'mcLean-county', 'mercer-county', 'morton-county', 'mountrail-county', 'nelson-county', 'oliver-county', 'pembina-county', 'pierce-county', 'ramsey-county', 'ransom-county', 'renville-county', 'richland-county', 'rolette-county', 'sargent-county', 'sheridan-county', 'sioux-county', 'slope-county', 'stark-county', 'steele-county', 'stutsman-county', 'towner-county', 'traill-county', 'walsh-county', 'ward-county', 'wells-county', 'williams-county']}
+          stateCode="US_ND"
+          availableDistricts={['US_ND_ADAMS', 'US_ND_BARNES', 'US_ND_BENSON', 'US_ND_BILLSON', 'US_ND_BOTTINEAU', 'US_ND_BOWMAN', 'US_ND_BURKE', 'US_ND_BURLEIGH', 'US_ND_CASS', 'US_ND_CAVALIER', 'US_ND_DICKEY', 'US_ND_DIVIDE', 'US_ND_DUNN', 'US_ND_EDDY', 'US_ND_EMMONS', 'US_ND_FOSTER', 'US_ND_GOLDEN VALLEY', 'US_ND_GRAND FORKS', 'US_ND_GRANT', 'US_ND_GRIGGS', 'US_ND_HETTINGER', 'US_ND_KIDDER', 'US_ND_LAMOURE', 'US_ND_LOGAN', 'US_ND_MCHENRY', 'US_ND_MCINTOSH', 'US_ND_MCKENZIE', 'US_ND_MCLEAN', 'US_ND_MERCER', 'US_ND_MORTON', 'US_ND_MOUNTRAIL', 'US_ND_NELSON', 'US_ND_OLIVER', 'US_ND_PEMBINA', 'US_ND_PIERCE', 'US_ND_RAMSEY', 'US_ND_RANSOM', 'US_ND_RENVILLE', 'US_ND_RICHLAND', 'US_ND_ROLETTE', 'US_ND_SARGENT', 'US_ND_SHERIDAN', 'US_ND_SIOUX', 'US_ND_SLOPE', 'US_ND_STARK', 'US_ND_STEELE', 'US_ND_STUTSMAN', 'US_ND_TOWNER', 'US_ND_TRAILL', 'US_ND_WALSH', 'US_ND_WARD', 'US_ND_WELLS', 'US_ND_WILLIAMS']}
           replaceLa={true}
         />
 
@@ -127,6 +128,7 @@ const Reincarcerations = () => {
                       metricType={chartMetricType}
                       metricPeriodMonths={chartMetricPeriodMonths}
                       keyedByOffice={false}
+                      stateCode="us_nd"
                       dataPointsByOffice={apiData.reincarcerations_by_period}
                       numeratorKeys={['returns']}
                       denominatorKeys={['total_admissions']}
@@ -224,6 +226,7 @@ const Reincarcerations = () => {
                       metricType={chartMetricType}
                       metricPeriodMonths={chartMetricPeriodMonths}
                       keyedByOffice={false}
+                      stateCode="us_nd"
                       dataPointsByOffice={apiData.admissions_versus_releases_by_period}
                       numeratorKeys={['population_change']}
                       denominatorKeys={['month_end_population']}

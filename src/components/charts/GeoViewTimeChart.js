@@ -40,7 +40,18 @@ const maxMarkerRadius = 35;
 const METRIC_PERIODS = ['1', '3', '6', '12', '36'];
 
 function normalizedOfficeKey(officeName) {
-  return toHtmlFriendly(officeName).toLowerCase();
+  let normalized = toHtmlFriendly(officeName).toLowerCase();
+  normalized = normalized.replace(/-/g, '_');
+
+  return normalized;
+}
+
+function normalizedDistrictId(district) {
+  let normalized = String(district).toLowerCase();
+  normalized = normalized.replace(/-/g, '_');
+  normalized = normalized.replace(/ /g, '_');
+
+  return normalized;
 }
 
 function normalizedSupervisionTypeKey(supervisionType) {
@@ -50,17 +61,27 @@ function normalizedSupervisionTypeKey(supervisionType) {
   return supervisionType.toLowerCase();
 }
 
-function normalizedCountyName(geographyNameForCounty) {
-  return `${toHtmlFriendly(geographyNameForCounty).toLowerCase()}-county`;
+function normalizedCountyName(geographyNameForCounty, stateCode) {
+  let normalized = String(geographyNameForCounty).toLowerCase();
+  normalized = normalized.replace(/ /g, '_');
+  return `${stateCode}_${normalized}`;
 }
 
-function getOfficeForCounty(offices, geographyNameForCounty) {
-  const countyName = normalizedCountyName(geographyNameForCounty);
+function getOfficeForCounty(offices, geographyNameForCounty, stateCode) {
+  const countyName = normalizedCountyName(geographyNameForCounty, stateCode);
   return offices[countyName];
 }
 
 function getOfficeDataValue(office, metricType, metricPeriodMonths, supervisionType) {
   const supervisionTypeKey = normalizedSupervisionTypeKey(supervisionType);
+
+  if (!office.dataValues[metricPeriodMonths]) {
+    return 0;
+  }
+  if (!office.dataValues[metricPeriodMonths][supervisionTypeKey]) {
+    return 0;
+  }
+
   if (metricType === 'counts') {
     return office.dataValues[metricPeriodMonths][supervisionTypeKey].numerator;
   }
@@ -109,9 +130,9 @@ function toggleTooltip(office, metricType, metricPeriodMonths, supervisionType) 
 }
 
 function toggleTooltipForCounty(
-  offices, geographyNameForCounty, metricType, metricPeriodMonths, supervisionType,
+  offices, geographyNameForCounty, metricType, metricPeriodMonths, supervisionType, stateCode,
 ) {
-  const countyName = normalizedCountyName(geographyNameForCounty);
+  const countyName = normalizedCountyName(geographyNameForCounty, stateCode);
   const office = offices[countyName];
 
   let value = 0;
@@ -234,13 +255,16 @@ class GeoViewTimeChart extends Component {
       // Load office metadata from explicit dataset
       this.officeData.forEach((officeData) => {
         const {
+          district,
           site_name: name,
           long: longValue,
           lat: latValue,
           title_side: titleSideValue,
         } = officeData;
+        const districtId = normalizedDistrictId(district);
 
         const office = {
+          district: districtId,
           officeName: name,
           coordinates: [longValue, latValue],
           titleSide: titleSideValue,
@@ -248,7 +272,7 @@ class GeoViewTimeChart extends Component {
         };
 
         const officeNameKey = normalizedOfficeKey(name);
-        this.offices[officeNameKey] = office;
+        this.offices[districtId] = office;
         this.officeKeys.push(officeNameKey);
       });
     } else {
@@ -300,10 +324,19 @@ class GeoViewTimeChart extends Component {
           metric_period_months: metricPeriodMonths,
           supervision_type: supervisionType,
         } = data;
+        const districtId = normalizedDistrictId(district);
+
+        // The API response providing data to this geo view chart might include rows with
+        // district=ALL, e.g. if the response is shared with a non-geo chart. Skip over these rows.
+        if (districtId === 'all') {
+          return;
+        }
+
+        const { officeName } = this.offices[districtId];
+        const officeNameKey = normalizedOfficeKey(officeName);
         const supervisionTypeKey = normalizedSupervisionTypeKey(supervisionType);
 
-        const officeNameKey = normalizedOfficeKey(district);
-        const office = this.offices[officeNameKey];
+        const office = this.offices[districtId];
         if (office) {
           if (!office.dataValues[metricPeriodMonths]) {
             office.dataValues[metricPeriodMonths] = {
@@ -382,7 +415,7 @@ class GeoViewTimeChart extends Component {
   render() {
     const {
       metricType, metricPeriodMonths, supervisionType,
-      keyedByOffice, centerLong, centerLat, chartId,
+      keyedByOffice, centerLong, centerLat, chartId, stateCode,
     } = this.props;
 
     if (keyedByOffice) {
@@ -479,18 +512,18 @@ class GeoViewTimeChart extends Component {
               {(geographies, projection) => geographies.map((geography) => (
                 <Geography
                   key={geography.properties.NAME}
-                  data-tip={toggleTooltipForCounty(this.offices, geography.properties.NAME, metricType, metricPeriodMonths, supervisionType)}
+                  data-tip={toggleTooltipForCounty(this.offices, geography.properties.NAME, metricType, metricPeriodMonths, supervisionType, stateCode)}
                   geography={geography}
                   projection={projection}
                   style={{
                     default: {
-                      fill: colorForMarker(getOfficeForCounty(this.offices, geography.properties.NAME), this.maxValues, metricType, metricPeriodMonths, supervisionType, false),
+                      fill: colorForMarker(getOfficeForCounty(this.offices, geography.properties.NAME, stateCode), this.maxValues, metricType, metricPeriodMonths, supervisionType, false),
                       stroke: COLORS['grey-700'],
                       strokeWidth: 0.2,
                       outline: 'none',
                     },
                     hover: {
-                      fill: colorForMarker(getOfficeForCounty(this.offices, geography.properties.NAME), this.maxValues, metricType, metricPeriodMonths, supervisionType, true),
+                      fill: colorForMarker(getOfficeForCounty(this.offices, geography.properties.NAME, stateCode), this.maxValues, metricType, metricPeriodMonths, supervisionType, true),
                       stroke: COLORS['grey-700'],
                       strokeWidth: 0.2,
                       outline: 'none',

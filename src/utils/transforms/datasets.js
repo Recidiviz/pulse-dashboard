@@ -50,7 +50,7 @@ function filterFacilities(dataPoints, facilityType, stateCode) {
  */
 function sortByYearAndMonth(dataPoints) {
   return dataPoints.sort((a, b) => (
-    (a.year === b.year) ? (a.month - b.month) : (a.year - b.year)));
+    (Number(a.year) === Number(b.year)) ? (Number(a.month) - Number(b.month)) : (Number(a.year) - Number(b.year))));
 }
 
 /**

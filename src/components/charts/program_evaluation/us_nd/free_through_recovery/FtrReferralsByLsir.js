@@ -59,7 +59,7 @@ const FtrReferralsByLsir = (props) => {
 
     if (filteredFtrReferrals) {
       filteredFtrReferrals.forEach((data) => {
-        const { lsir_score: lsir } = data;
+        const { assessment_score_bucket: lsir } = data;
 
         const referralCount = toInt(data.count, 10);
 
