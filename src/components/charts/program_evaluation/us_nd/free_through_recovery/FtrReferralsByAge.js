@@ -35,7 +35,8 @@ const FtrReferralsByAge = (props) => {
   const [stateSupervisionCounts, setStateSupervisionCounts] = useState([]);
 
   const chartId = 'ftrReferralsByAge';
-  const ageBucketLabels = ['Under 25', '25-29', '30-34', '35-39', '40 and over'];
+  const ageBucketLabels = ['<25', '25-29', '30-34', '35-39', '40<'];
+  const ageBucketDisplayLabels = ['Under 25', '25-29', '30-34', '35-39', '40 and over'];
 
   const processResponse = () => {
     const { ftrReferralsByAge } = props;
@@ -110,7 +111,7 @@ const FtrReferralsByAge = (props) => {
       }
     }
 
-    setChartLabels(ageBucketLabels);
+    setChartLabels(ageBucketDisplayLabels);
     setFtrReferralCounts(referralsByAgeCounts);
     setFtrReferralProportions(referralsByAgeProportions);
     setStateSupervisionCounts(supervisionByAgeCounts);

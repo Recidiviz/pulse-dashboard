@@ -74,6 +74,14 @@ function getOfficeForCounty(offices, geographyNameForCounty, stateCode) {
 
 function getOfficeDataValue(office, metricType, metricPeriodMonths, supervisionType) {
   const supervisionTypeKey = normalizedSupervisionTypeKey(supervisionType);
+
+  if (!office.dataValues[metricPeriodMonths]) {
+    return 0;
+  }
+  if (!office.dataValues[metricPeriodMonths][supervisionTypeKey]) {
+    return 0;
+  }
+
   if (metricType === 'counts') {
     return office.dataValues[metricPeriodMonths][supervisionTypeKey].numerator;
   }
