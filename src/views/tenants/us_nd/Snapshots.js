@@ -139,7 +139,7 @@ const Snapshots = () => {
                           keyedByOffice={true}
                           officeData={apiData.site_offices}
                           dataPointsByOffice={apiData.supervision_termination_by_type_by_period}
-                          numeratorKeys={['revocation_termination']}
+                          numeratorKeys={['successful_termination']}
                           denominatorKeys={['revocation_termination', 'successful_termination']}
                           centerLat={47.3}
                           centerLong={-100.5}
