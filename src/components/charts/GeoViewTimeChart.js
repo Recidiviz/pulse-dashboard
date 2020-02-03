@@ -332,7 +332,7 @@ class GeoViewTimeChart extends Component {
           return;
         }
 
-        // The API responses included data points for a district not in the list of site offices
+        // The API response included data points for a district not in the list of site offices
         if (!this.offices[districtId]) {
           return;
         }
