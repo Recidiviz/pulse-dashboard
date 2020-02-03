@@ -100,7 +100,7 @@ function addEmptyMonthsToData(dataPoints, monthCount, valueKey, emptyValue) {
     const month = (remainder === 0) ? 12 : remainder;
 
     const monthsAgo = new Date(now.getTime());
-    monthsAgo.setMonth(now.getMonth() + i - 1);
+    monthsAgo.setMonth(now.getMonth() + i - 2);
     const year = monthsAgo.getFullYear();
 
     if (!representedMonths[year] || !representedMonths[year][month]) {
