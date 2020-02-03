@@ -91,6 +91,9 @@ const Snapshots = () => {
                 <div className="layer w-100 pX-20 pT-20">
                   <h6 className="lh-1">
                     SUCCESSFUL COMPLETION OF SUPERVISION
+                    {chartDistrict !== 'all' && (
+                      <span className="pL-10 c-orange-500 ti-alert" data-toggle="tooltip" data-placement="bottom" title="Filtering this graph by a specific office requires knowing the officer that was assigned to historical periods of supervision. Because the Docstars data system does not currently keep a full historical record of officer assignments, we cannot track this measurement by office prior to when we first began ingesting data from DOCR." />
+                    )}
                     <span className="fa-pull-right">
                       <div className="geo-view-button pR-10">
                         <GeoViewToggle setGeoViewEnabled={setGeoViewEnabledSCOS} />
@@ -350,6 +353,9 @@ const Snapshots = () => {
                     LSI-R SCORE CHANGES (AVERAGE)
                     {chartMetricType !== 'counts' && (
                       <span className="pL-10 c-orange-500 ti-alert" data-toggle="tooltip" data-placement="bottom" title="This graph is showing average LSI-R score change. It does not support showing this metric as a rate." />
+                    )}
+                    {chartDistrict !== 'all' && (
+                      <span className="pL-10 c-orange-500 ti-alert" data-toggle="tooltip" data-placement="bottom" title="Filtering this graph by a specific office requires knowing the officer that was assigned to historical periods of supervision. Because the Docstars data system does not currently keep a full historical record of officer assignments, we cannot track this measurement by office prior to when we first began ingesting data from DOCR." />
                     )}
                     <span className="fa-pull-right">
                       <div className="geo-view-button pR-10">
