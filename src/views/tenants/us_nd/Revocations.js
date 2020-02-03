@@ -481,6 +481,12 @@ const Revocations = () => {
                           prison for a supervision revocation where the violation that caused the
                           revocation cannot yet be determined.
                         </li>
+                        <li>
+                          Because new admissions are counted irrespective of any relationship to
+                          community supervision but the revocation admission types are directly
+                          related to supervision, filtering this chart by supervision type or by
+                          office impacts only the revocation admission counts.
+                        </li>
                       </ul>
                     </div>
                   </div>
