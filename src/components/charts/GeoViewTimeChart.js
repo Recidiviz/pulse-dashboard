@@ -423,6 +423,10 @@ class GeoViewTimeChart extends Component {
       keyedByOffice, centerLong, centerLat, chartId, stateCode,
     } = this.props;
 
+    const sortedDataPoints = sortChartDataPoints(
+      this.chartDataPoints, metricType, metricPeriodMonths, supervisionType,
+    );
+
     if (keyedByOffice) {
       // Show a choropleth map with colored, sized circles for P&P offices
       return (
@@ -469,7 +473,7 @@ class GeoViewTimeChart extends Component {
                 }
               </Geographies>
               <Markers>
-                {this.chartDataPoints.map((office) => (
+                {sortedDataPoints.map((office) => (
                   <Marker
                     key={office.officeName}
                     marker={office}
