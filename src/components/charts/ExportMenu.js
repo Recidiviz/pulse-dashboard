@@ -15,7 +15,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React, { useState } from 'react';
+import React from 'react';
 
 import {
   configureDownloadButtons, configureDownloadButtonsRegularElement,
@@ -23,8 +23,9 @@ import {
 import { chartIdToInfo } from '../../utils/charts/info';
 
 const ExportMenu = (props) => {
-  const [showAdditionalInfo, setShowAdditionalInfo] = useState(false);
   const additionalInfo = chartIdToInfo[props.chartId] || [];
+
+  const modalId = `additionalInfoModal-${props.chartId}`;
 
   const menuSpan = (
     <span className="fa-pull-right">
@@ -33,7 +34,7 @@ const ExportMenu = (props) => {
           ...
         </a>
         <div className="dropdown-menu dropdown-menu-right" aria-labelledby={`exportDropdownMenuButton-${props.chartId}`}>
-          <a className="dropdown-item" href="javascript:void(0);" onClick={() => toggleAdditionalInfoModal()}>Additional info</a>
+          <a className="dropdown-item" href="javascript:void(0);" data-toggle="modal" data-target={`#${modalId}`}>Additional info</a>
           {(props.shouldExport === undefined || props.shouldExport === true) && (
             <a className="dropdown-item" id={`downloadChartAsImage-${props.chartId}`} href="javascript:void(0);">Export image</a>
           )}
@@ -43,33 +44,40 @@ const ExportMenu = (props) => {
         </div>
       </div>
 
-      {showAdditionalInfo && (
-        <div className="modal-container overflow-auto p-20">
-          <h5>About this chart</h5>
-          {additionalInfo.length > 0 ? (
-            <ul>
-              {additionalInfo.map((info, i) => (
-                <li key={i} className="mY-20">
-                  {info}
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <p>
-              There is no additional information for this chart.
-            </p>
-          )}
-          <div className="ta-r">
-            <button className="btn btn-link" onClick={() => toggleAdditionalInfoModal()}>Close</button>
+      <div id={modalId} className="modal fade" tabIndex="-1" role="dialog" aria-hidden="true">
+        <div className="modal-dialog modal-dialog-centered" role="document">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h5 className="modal-title">About this chart</h5>
+              <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div className="modal-body">
+              {additionalInfo.length > 0 ? (
+                <p>
+                  <ul>
+                    {additionalInfo.map((info, i) => (
+                      <li key={i}>
+                        {info}
+                      </li>
+                    ))}
+                  </ul>
+                </p>
+              ) : (
+                <p>
+                  There is no additional information for this chart.
+                </p>
+              )}
+            </div>
+            <div className="modal-footer">
+              <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
           </div>
         </div>
-      )}
+      </div>
     </span>
   );
-
-  function toggleAdditionalInfoModal() {
-    setShowAdditionalInfo(!showAdditionalInfo);
-  }
 
   if ((props.shouldExport === undefined || props.shouldExport === true)) {
     const exportedStructureCallback = () => (
