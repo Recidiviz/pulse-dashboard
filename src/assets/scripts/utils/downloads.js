@@ -159,7 +159,10 @@ function configureDownloadButtonsRegularElement(
   const downloadChartAsImageButton = document.getElementById(`downloadChartAsImage-${chartId}`);
   if (downloadChartAsImageButton) {
     downloadChartAsImageButton.onclick = function downloadChartImage() {
-      html2canvas(document.getElementById(chartId)).then((canvas) => {
+      const element = document.getElementById(chartId);
+      // Setting the Y-scroll position fixes a bug that causes the image to be cut off when scrolled
+      // partially down the page, without changing the user's actual scroll position
+      html2canvas(element, { scrollY: -window.scrollY }).then((canvas) => {
         downloadCanvasImage(canvas, `${chartId}-${timeStamp()}.png`, chartTitle);
       });
     };
