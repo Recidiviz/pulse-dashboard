@@ -65,6 +65,12 @@ const SUPERVISION_TYPES = [
   // { value: 'DUAL_SUPERVISION', label: 'Dual supervision' },
 ];
 
+const TOGGLE_STYLE = {
+  zIndex: 700,
+  position: 'sticky',
+  top: 65,
+};
+
 const CHARTS = ['District', 'Risk level', 'Violation', 'Gender', 'Race'];
 
 const Revocations = () => {
@@ -216,7 +222,7 @@ const Revocations = () => {
 
   return (
     <main className="dashboard bgc-grey-100">
-      <div className="top-level-filters d-f">
+      <div className="top-level-filters d-f" style={TOGGLE_STYLE}>
         <div className="top-level-filter">
           <h4>Time Window</h4>
           <Select
