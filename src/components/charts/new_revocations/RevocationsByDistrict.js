@@ -23,7 +23,7 @@ import ExportMenu from '../ExportMenu';
 
 import { COLORS } from '../../../assets/scripts/constants/colors';
 import {
-  getTrailingLabelFromMetricPeriodMonthsToggle, toggleLabel,
+  getTrailingLabelFromMetricPeriodMonthsToggle, toggleLabel, updateTooltipForMetricType,
 } from '../../../utils/charts/toggles';
 import { toInt } from '../../../utils/transforms/labels';
 
@@ -135,6 +135,11 @@ const RevocationsByDistrict = (props) => {
               }, countModeEnabled ? 'counts' : 'rates'),
             },
             stacked: true,
+            callbacks: {
+              label: (tooltipItem, data) => updateTooltipForMetricType(
+                countModeEnabled ? 'counts' : 'rates', tooltipItem, data,
+              ),
+            },
           }],
         },
         tooltips: {

@@ -20,7 +20,9 @@ import { Bar } from 'react-chartjs-2';
 import ExportMenu from '../ExportMenu';
 
 import { COLORS } from '../../../assets/scripts/constants/colors';
-import { getTrailingLabelFromMetricPeriodMonthsToggle } from '../../../utils/charts/toggles';
+import {
+  getTrailingLabelFromMetricPeriodMonthsToggle, standardTooltipForRateMetric,
+} from '../../../utils/charts/toggles';
 import { toInt } from '../../../utils/transforms/labels';
 
 const CHART_LABELS = ['Overall', 'Low Risk', 'Moderate Risk', 'High Risk', 'Very High Risk'];
@@ -119,12 +121,13 @@ const RevocationsByGender = (props) => {
             },
           }],
           yAxes: [{
+            ticks: {
+              beginAtZero: true,
+              max: 100,
+            },
             scaleLabel: {
               display: true,
               labelString: 'revocation rate',
-            },
-            ticks: {
-              beginAtZero: true,
             },
           }],
         },
@@ -132,6 +135,9 @@ const RevocationsByGender = (props) => {
           backgroundColor: COLORS['grey-800-light'],
           mode: 'index',
           intersect: false,
+          callbacks: {
+            label: (tooltipItem, data) => standardTooltipForRateMetric(tooltipItem, data),
+          },
         },
       }}
     />

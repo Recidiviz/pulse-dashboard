@@ -117,12 +117,8 @@ function getTrailingLabelFromMetricPeriodMonthsToggle(toggledValue) {
   return `Last ${parseInt(toggledValue, 10) / 12} years`;
 }
 
-function updateTooltipForMetricType(metricType, tooltipItem, data) {
+function standardTooltipForCountMetric(tooltipItem, data) {
   let label = data.datasets[tooltipItem.datasetIndex].label || '';
-
-  if (metricType === 'rates') {
-    return `${label}: ${getTooltipWithoutTrendline(tooltipItem, data, '%')}`;
-  }
 
   // The below logic is the default tooltip logic for ChartJS 2
   if (label) {
@@ -136,6 +132,19 @@ function updateTooltipForMetricType(metricType, tooltipItem, data) {
   }
 
   return label;
+}
+
+function standardTooltipForRateMetric(tooltipItem, data) {
+  const label = data.datasets[tooltipItem.datasetIndex].label || '';
+  return `${label}: ${getTooltipWithoutTrendline(tooltipItem, data, '%')}`;
+}
+
+function updateTooltipForMetricType(metricType, tooltipItem, data) {
+  if (metricType === 'rates') {
+    return standardTooltipForRateMetric(tooltipItem, data);
+  }
+
+  return standardTooltipForCountMetric(tooltipItem, data);
 }
 
 function filterDatasetByMetricPeriodMonths(dataset, metricPeriodMonths) {
@@ -196,6 +205,8 @@ export {
   getMonthCountFromMetricPeriodMonthsToggle,
   getPeriodLabelFromMetricPeriodMonthsToggle,
   getTrailingLabelFromMetricPeriodMonthsToggle,
+  standardTooltipForCountMetric,
+  standardTooltipForRateMetric,
   updateTooltipForMetricType,
   filterDatasetByMetricPeriodMonths,
   filterDatasetByDistrict,
