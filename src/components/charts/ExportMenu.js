@@ -55,15 +55,13 @@ const ExportMenu = (props) => {
             </div>
             <div className="modal-body">
               {additionalInfo.length > 0 ? (
-                <p>
-                  <ul>
-                    {additionalInfo.map((info, i) => (
-                      <li key={i}>
-                        {info}
-                      </li>
-                    ))}
-                  </ul>
-                </p>
+                <ul>
+                  {additionalInfo.map((info, i) => (
+                    <li key={i}>
+                      {info}
+                    </li>
+                  ))}
+                </ul>
               ) : (
                 <p>
                   There is no additional information for this chart.
