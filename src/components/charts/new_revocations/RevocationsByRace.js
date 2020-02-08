@@ -20,7 +20,9 @@ import { Bar } from 'react-chartjs-2';
 import ExportMenu from '../ExportMenu';
 
 import { COLORS } from '../../../assets/scripts/constants/colors';
-import { getTrailingLabelFromMetricPeriodMonthsToggle } from '../../../utils/charts/toggles';
+import {
+  getTrailingLabelFromMetricPeriodMonthsToggle, standardTooltipForRateMetric,
+} from '../../../utils/charts/toggles';
 import { toInt } from '../../../utils/transforms/labels';
 
 const CHART_LABELS = ['Overall', 'Low Risk', 'Moderate Risk', 'High Risk', 'Very High Risk'];
@@ -32,26 +34,59 @@ const chartId = 'revocationsByRace';
 const RevocationsByRace = (props) => {
   const [chartDataPoints, setChartDataPoints] = useState([]);
 
-  const getRiskLevelArrayForRace = (forRace) => RISK_LEVELS.map((riskLevel) => (
+  const getRevocationsForRiskLevel = (forRace) => RISK_LEVELS.map((riskLevel) => (
     props.data
       .filter(({ race, risk_level: dataRiskLevel }) => race === forRace && dataRiskLevel === riskLevel)
       .reduce((result, { population_count: populationCount }) => result += toInt(populationCount), 0)
   ));
 
+  const getSupervisionCountsForRiskLevel = (forRace) => RISK_LEVELS.map((riskLevel) => (
+    props.data
+      .filter(({ race, risk_level: dataRiskLevel }) => race === forRace && dataRiskLevel === riskLevel)
+      .reduce((result, { total_supervision_count: totalSupervisionCount }) => result += toInt(totalSupervisionCount), 0)
+  ));
+
   const processResponse = () => {
-    const raceToCount = props.data.reduce(
+    const revocationsByRace = props.data.reduce(
       (result, { race, population_count: populationCount }) => {
         return { ...result, [race]: (result[race] || 0) + (toInt(populationCount) || 0) };
       }, {},
     );
 
-    const dataPoints = RACES.map((race) => [raceToCount[race], ...getRiskLevelArrayForRace(race)]);
+    const supervisionCountsByRace = props.data.reduce(
+      (result, { race, total_supervision_count: totalSupervisionCount }) => {
+        return { ...result, [race]: (result[race] || 0) + (toInt(totalSupervisionCount) || 0) };
+      }, {},
+    );
+
+    const getRate = (revocations, supervisionCount) => {
+      if (!revocations || !supervisionCount) {
+        return '0.00';
+      }
+
+      return (100 * (revocations / supervisionCount)).toFixed(2);
+    };
+
+    const revocations = RACES.map((race) => [revocationsByRace[race], ...getRevocationsForRiskLevel(race)]);
+    const supervisionCounts = RACES.map((race) => [supervisionCountsByRace[race], ...getSupervisionCountsForRiskLevel(race)]);
+
+    const dataPoints = [];
+    for (let i = 0; i < revocations.length; i += 1) {
+      dataPoints.push([]);
+      for (let j = 0; j < revocations[i].length; j += 1) {
+        const rate = getRate(revocations[i][j], supervisionCounts[i][j]);
+        dataPoints[i].push(rate);
+      }
+    }
     setChartDataPoints(dataPoints);
   };
 
   useEffect(() => {
     processResponse();
-  }, [props.data, props.metricPeriodMonths]);
+  }, [
+    props.data,
+    props.metricPeriodMonths,
+  ]);
 
   const chart = (
     <Bar
@@ -109,12 +144,12 @@ const RevocationsByRace = (props) => {
             },
           }],
           yAxes: [{
-            scaleLabel: {
-              display: true,
-              labelString: '# of revocations',
-            },
             ticks: {
               beginAtZero: true,
+            },
+            scaleLabel: {
+              display: true,
+              labelString: 'revocation rate',
             },
           }],
         },
@@ -122,6 +157,9 @@ const RevocationsByRace = (props) => {
           backgroundColor: COLORS['grey-800-light'],
           mode: 'index',
           intersect: false,
+          callbacks: {
+            label: (tooltipItem, data) => standardTooltipForRateMetric(tooltipItem, data),
+          },
         },
       }}
     />

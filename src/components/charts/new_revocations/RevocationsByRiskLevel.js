@@ -20,9 +20,11 @@ import { Bar } from 'react-chartjs-2';
 import ExportMenu from '../ExportMenu';
 
 import { COLORS } from '../../../assets/scripts/constants/colors';
-import { getTrailingLabelFromMetricPeriodMonthsToggle } from '../../../utils/charts/toggles';
 import {
-  toInt, humanReadableTitleCase, riskLevelValuetoLabel
+  getTrailingLabelFromMetricPeriodMonthsToggle, standardTooltipForRateMetric,
+} from '../../../utils/charts/toggles';
+import {
+  toInt, humanReadableTitleCase, riskLevelValuetoLabel,
 } from '../../../utils/transforms/labels';
 
 const chartId = 'revocationsByRiskLevel';
@@ -32,22 +34,42 @@ const RevocationsByRiskLevel = (props) => {
   const [chartDataPoints, setChartDataPoints] = useState([]);
 
   const processResponse = () => {
-    const riskLevelToCount = props.data.reduce(
+    const revocationsByRiskLevel = props.data.reduce(
       (result, { risk_level: riskLevel, population_count: populationCount }) => {
         return { ...result, [riskLevel]: (result[riskLevel] || 0) + (toInt(populationCount) || 0) };
       }, {},
     );
 
+    const supervisionCountsByRiskLevel = props.data.reduce(
+      (result, { risk_level: riskLevel, total_supervision_count: totalSupervisionCount }) => {
+        return { ...result, [riskLevel]: (result[riskLevel] || 0) + (toInt(totalSupervisionCount) || 0) };
+      }, {},
+    );
+
+    const getRate = (riskLevel) => {
+      const revocations = revocationsByRiskLevel[riskLevel];
+      const supervisionCount = supervisionCountsByRiskLevel[riskLevel];
+
+      if (!revocations || !supervisionCount) {
+        return '0.00';
+      }
+
+      return (100 * (revocations / supervisionCount)).toFixed(2);
+    };
+
     const labels = Object.values(riskLevelValuetoLabel);
     const displayLabels = labels.map((label) => humanReadableTitleCase(label));
-    const dataPoints = Object.keys(riskLevelValuetoLabel).map((riskLevel) => riskLevelToCount[riskLevel])
+    const dataPoints = Object.keys(riskLevelValuetoLabel).map((riskLevel) => getRate(riskLevel));
     setChartLabels(displayLabels);
     setChartDataPoints(dataPoints);
-  }
+  };
 
   useEffect(() => {
     processResponse();
-  }, [props.data, props.metricPeriodMonths]);
+  }, [
+    props.data,
+    props.metricPeriodMonths,
+  ]);
 
   const chart = (
     <Bar
@@ -55,7 +77,7 @@ const RevocationsByRiskLevel = (props) => {
       data={{
         labels: chartLabels,
         datasets: [{
-          label: 'Revocations',
+          label: 'Revocation rate',
           backgroundColor: COLORS['orange-500'],
           hoverBackgroundColor: COLORS['orange-500'],
           hoverBorderColor: COLORS['orange-500'],
@@ -76,9 +98,12 @@ const RevocationsByRiskLevel = (props) => {
             stacked: true,
           }],
           yAxes: [{
+            ticks: {
+              beginAtZero: true,
+            },
             scaleLabel: {
               display: true,
-              labelString: '# of revocations',
+              labelString: 'revocation rate',
             },
             stacked: true,
           }],
@@ -87,6 +112,9 @@ const RevocationsByRiskLevel = (props) => {
           backgroundColor: COLORS['grey-800-light'],
           mode: 'index',
           intersect: false,
+          callbacks: {
+            label: (tooltipItem, data) => standardTooltipForRateMetric(tooltipItem, data),
+          },
         },
       }}
     />

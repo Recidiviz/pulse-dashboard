@@ -49,14 +49,20 @@ const METRIC_PERIODS = [
   { value: '3', label: '3 months' },
   { value: '1', label: '1 month' },
 ];
+
 const DEFAULT_METRIC_PERIOD = '12';
 
 const CHARGE_CATEGORIES = [
-  { value: '', label: 'All' },
+  { value: 'All', label: 'All' },
   { value: 'GENERAL', label: 'General' },
-  { value: 'SEX_OFFENSE', label: 'Sex offense' },
+  { value: 'SEX_OFFENDER', label: 'Sex offense' },
   { value: 'DOMESTIC_VIOLENCE', label: 'Domestic Violence' },
 ];
+
+// TODO: Determine if we want to continue to explicitly provide charge_category=ALL or treat it
+// like supervision type where ALL is a summation of other rows
+const DEFAULT_CHARGE_CATEGORY = 'ALL';
+
 const SUPERVISION_TYPES = [
   { value: '', label: 'All' },
   { value: 'PROBATION', label: 'Probation' },
@@ -79,7 +85,9 @@ const Revocations = () => {
   const [awaitingApi, setAwaitingApi] = useState(true);
 
   const [districts, setDistricts] = useState([]);
-  const [filters, setFilters] = useState({ metricPeriodMonths: DEFAULT_METRIC_PERIOD });
+  const [filters, setFilters] = useState(
+    { metricPeriodMonths: DEFAULT_METRIC_PERIOD, chargeCategory: DEFAULT_CHARGE_CATEGORY },
+  );
   const [selectedChart, setSelectedChart] = useState('District');
 
 
@@ -90,7 +98,9 @@ const Revocations = () => {
       setAwaitingApi(false);
 
       const districtValues = [
-        ...new Set(responseData.revocations_matrix_cells.map((item) => item.district)),
+        ...new Set(responseData.revocations_matrix_cells
+          .map((item) => item.district)
+          .filter((district) => district.toLowerCase() !== 'all')),
       ];
       const districtsFromResponse = [
         { value: '', label: 'All districts' },
@@ -125,7 +135,7 @@ const Revocations = () => {
     return a.toLowerCase() === b.toLowerCase();
   };
 
-  const applyTopLevelFilters = (data, skippedFilters) => {
+  const applyTopLevelFilters = (data, skippedFilters, treatCategoryAllAsAbsent) => {
     const toSkip = skippedFilters || [];
     return data.filter((item) => {
       if (filters.metricPeriodMonths && !toSkip.includes('metricPeriodMonths')) {
@@ -138,7 +148,8 @@ const Revocations = () => {
           return false;
         }
       }
-      if (filters.chargeCategory && !toSkip.includes('chargeCategory')) {
+      if (filters.chargeCategory && !toSkip.includes('chargeCategory')
+        && !(treatCategoryAllAsAbsent && filters.chargeCategory.toLowerCase() === 'all')) {
         if (!nullSafeComparison(item.charge_category, filters.chargeCategory)) {
           return false;
         }
@@ -168,8 +179,8 @@ const Revocations = () => {
     });
   };
 
-  const applyAllFilters = (data, skippedFilters) => {
-    let filteredData = applyTopLevelFilters(data, skippedFilters);
+  const applyAllFilters = (data, skippedFilters, treatCategoryAllAsAbsent) => {
+    let filteredData = applyTopLevelFilters(data, skippedFilters, treatCategoryAllAsAbsent);
     filteredData = applyMatrixFilters(filteredData);
     return filteredData;
   };
@@ -208,7 +219,7 @@ const Revocations = () => {
         return (
           <RevocationsByDistrict
             data={applyAllFilters(apiData.revocations_matrix_distribution_by_district, ['district'])}
-            supervisionPopulation={applyAllFilters(apiData.revocations_matrix_supervision_distribution_by_district, ['chargeCategory', 'district'])}
+            supervisionPopulation={applyAllFilters(apiData.revocations_matrix_supervision_distribution_by_district, ['district'])}
             metricPeriodMonths={filters.metricPeriodMonths}
             currentDistrict={filters.district}
           />
@@ -317,7 +328,7 @@ const Revocations = () => {
       </div>
       <div className="bgc-white m-20 p-20">
         <CaseTable
-          data={applyAllFilters(apiData.revocations_matrix_filtered_caseload)}
+          data={applyAllFilters(apiData.revocations_matrix_filtered_caseload, [], true)}
           metricPeriodMonths={filters.metricPeriodMonths}
         />
       </div>

@@ -23,7 +23,7 @@ import ExportMenu from '../ExportMenu';
 
 import { COLORS } from '../../../assets/scripts/constants/colors';
 import {
-  getTrailingLabelFromMetricPeriodMonthsToggle, toggleLabel,
+  getTrailingLabelFromMetricPeriodMonthsToggle, toggleLabel, updateTooltipForMetricType,
 } from '../../../utils/charts/toggles';
 import { toInt } from '../../../utils/transforms/labels';
 
@@ -41,12 +41,16 @@ const RevocationsByDistrict = (props) => {
         return { ...result, [district]: (result[district] || 0) + (toInt(populationCount) || 0) };
       }, {},
     );
+    // Explicitly remove the All district, if provided, for this by-district chart
+    delete districtToCount.ALL;
 
     const supervisionDistributions = props.supervisionPopulation.reduce(
       (result, { district, total_population: totalPopulation }) => {
         return { ...result, [district]: (result[district] || 0) + (toInt(totalPopulation) || 0) };
       }, {},
     );
+    // Explicitly remove the All district, if provided, for this by-district chart
+    delete supervisionDistributions.ALL;
 
     const getRate = (district) => (100 * (districtToCount[district] / supervisionDistributions[district])).toFixed(2);
 
@@ -135,6 +139,11 @@ const RevocationsByDistrict = (props) => {
               }, countModeEnabled ? 'counts' : 'rates'),
             },
             stacked: true,
+            callbacks: {
+              label: (tooltipItem, data) => updateTooltipForMetricType(
+                countModeEnabled ? 'counts' : 'rates', tooltipItem, data,
+              ),
+            },
           }],
         },
         tooltips: {
