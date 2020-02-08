@@ -123,7 +123,6 @@ const RevocationsByGender = (props) => {
           yAxes: [{
             ticks: {
               beginAtZero: true,
-              max: 100,
             },
             scaleLabel: {
               display: true,

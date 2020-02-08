@@ -98,7 +98,9 @@ const Revocations = () => {
       setAwaitingApi(false);
 
       const districtValues = [
-        ...new Set(responseData.revocations_matrix_cells.map((item) => item.district)),
+        ...new Set(responseData.revocations_matrix_cells
+          .map((item) => item.district)
+          .filter((district) => district.toLowerCase() !== 'all')),
       ];
       const districtsFromResponse = [
         { value: '', label: 'All districts' },
@@ -217,7 +219,7 @@ const Revocations = () => {
         return (
           <RevocationsByDistrict
             data={applyAllFilters(apiData.revocations_matrix_distribution_by_district, ['district'])}
-            supervisionPopulation={applyAllFilters(apiData.revocations_matrix_supervision_distribution_by_district, ['chargeCategory', 'district'])}
+            supervisionPopulation={applyAllFilters(apiData.revocations_matrix_supervision_distribution_by_district, ['district'])}
             metricPeriodMonths={filters.metricPeriodMonths}
             currentDistrict={filters.district}
           />

@@ -100,7 +100,6 @@ const RevocationsByRiskLevel = (props) => {
           yAxes: [{
             ticks: {
               beginAtZero: true,
-              max: 100,
             },
             scaleLabel: {
               display: true,
