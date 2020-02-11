@@ -81,6 +81,12 @@ app.get('/api/:stateCode/revocations', checkJwt, api.revocations);
 app.get('/api/:stateCode/snapshots', checkJwt, api.snapshots);
 app.get('/api/:stateCode/newRevocations', checkJwt, api.newRevocations);
 
+// An App Engine-specific API for handling warmup requests on new instance initialization
+app.get('/_ah/warmup', (req, res) => {
+  // The server automatically launches initialization of the metric cache, so nothing is needed here
+  console.log('Responding to warmup request...');
+});
+
 // Starts the background task for refresh metrics regularly
 require('./server/core/metricsRefresh');
 
