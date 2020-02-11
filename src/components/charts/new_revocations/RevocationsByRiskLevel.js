@@ -21,7 +21,7 @@ import ExportMenu from '../ExportMenu';
 
 import { COLORS } from '../../../assets/scripts/constants/colors';
 import {
-  getTrailingLabelFromMetricPeriodMonthsToggle, standardTooltipForRateMetric,
+  getTrailingLabelFromMetricPeriodMonthsToggle, tooltipForRateMetricWithCounts,
 } from '../../../utils/charts/toggles';
 import {
   toInt, humanReadableTitleCase, riskLevelValuetoLabel,
@@ -32,6 +32,8 @@ const chartId = 'revocationsByRiskLevel';
 const RevocationsByRiskLevel = (props) => {
   const [chartLabels, setChartLabels] = useState([]);
   const [chartDataPoints, setChartDataPoints] = useState([]);
+  const [numeratorCounts, setNumeratorCounts] = useState([]);
+  const [denominatorCounts, setDenominatorCounts] = useState([]);
 
   const processResponse = () => {
     const revocationsByRiskLevel = props.data.reduce(
@@ -62,6 +64,15 @@ const RevocationsByRiskLevel = (props) => {
     const dataPoints = Object.keys(riskLevelValuetoLabel).map((riskLevel) => getRate(riskLevel));
     setChartLabels(displayLabels);
     setChartDataPoints(dataPoints);
+
+    const numerators = Object.keys(riskLevelValuetoLabel).map(
+      (riskLevel) => revocationsByRiskLevel[riskLevel],
+    );
+    const denominators = Object.keys(riskLevelValuetoLabel).map(
+      (riskLevel) => supervisionCountsByRiskLevel[riskLevel],
+    );
+    setNumeratorCounts(numerators);
+    setDenominatorCounts(denominators);
   };
 
   useEffect(() => {
@@ -113,7 +124,7 @@ const RevocationsByRiskLevel = (props) => {
           mode: 'index',
           intersect: false,
           callbacks: {
-            label: (tooltipItem, data) => standardTooltipForRateMetric(tooltipItem, data),
+            label: (tooltipItem, data) => tooltipForRateMetricWithCounts(tooltipItem, data, numeratorCounts, denominatorCounts),
           },
         },
       }}

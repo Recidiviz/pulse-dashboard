@@ -21,7 +21,7 @@ import ExportMenu from '../ExportMenu';
 
 import { COLORS } from '../../../assets/scripts/constants/colors';
 import {
-  getTrailingLabelFromMetricPeriodMonthsToggle, standardTooltipForRateMetric,
+  getTrailingLabelFromMetricPeriodMonthsToggle, tooltipForRateMetricWithNestedCounts,
 } from '../../../utils/charts/toggles';
 import { toInt } from '../../../utils/transforms/labels';
 
@@ -33,6 +33,8 @@ const chartId = 'revocationsByRace';
 
 const RevocationsByRace = (props) => {
   const [chartDataPoints, setChartDataPoints] = useState([]);
+  const [numeratorCounts, setNumeratorCounts] = useState([]);
+  const [denominatorCounts, setDenominatorCounts] = useState([]);
 
   const getRevocationsForRiskLevel = (forRace) => RISK_LEVELS.map((riskLevel) => (
     props.data
@@ -79,6 +81,8 @@ const RevocationsByRace = (props) => {
       }
     }
     setChartDataPoints(dataPoints);
+    setNumeratorCounts(revocations);
+    setDenominatorCounts(supervisionCounts);
   };
 
   useEffect(() => {
@@ -158,7 +162,7 @@ const RevocationsByRace = (props) => {
           mode: 'index',
           intersect: false,
           callbacks: {
-            label: (tooltipItem, data) => standardTooltipForRateMetric(tooltipItem, data),
+            label: (tooltipItem, data) => tooltipForRateMetricWithNestedCounts(tooltipItem, data, numeratorCounts, denominatorCounts),
           },
         },
       }}
