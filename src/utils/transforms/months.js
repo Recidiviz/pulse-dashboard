@@ -48,8 +48,9 @@ const monthNamesWithYearsFromNumbers = function monthNamesShortWithYearsFromNumb
   monthNumbers, abbreviated,
 ) {
   const monthNames = monthNamesFromNumbers(monthNumbers, abbreviated);
-  const multipleYears = (monthNumbers.length > 12
-    || monthNumbers[monthNumbers.length - 1] < monthNumbers[0]);
+  const monthNumbersNormalized = monthNumbers.map((month) => Number(month));
+  const multipleYears = (monthNumbersNormalized.length > 12
+    || monthNumbersNormalized[monthNumbersNormalized.length - 1] < monthNumbersNormalized[0]);
   const january = abbreviated ? 'Jan' : 'January';
 
   const today = new Date();

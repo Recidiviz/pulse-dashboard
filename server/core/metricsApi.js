@@ -159,6 +159,8 @@ function fetchMetricsFromLocal(stateCode, metricType) {
  * Otherwise, fetches from Google Cloud Storage.
  */
 function fetchMetrics(stateCode, metricType, isDemo, callback) {
+  console.log(`Handling call to fetch ${metricType} metrics for state ${stateCode}...`);
+
   const cacheKey = `${stateCode}-${metricType}`;
   return memoryCache.wrap(cacheKey, (cacheCb) => {
     let fetcher = null;
@@ -175,7 +177,6 @@ function fetchMetrics(stateCode, metricType, isDemo, callback) {
     const metricPromises = fetcher(stateCode.toUpperCase(), metricType);
 
     Promise.all(metricPromises).then((allFileContents) => {
-      console.log(`Fetched all ${metricType} metrics for state ${stateCode} from ${source}`);
       const results = {};
       allFileContents.forEach((contents) => {
         console.log(`Fetched contents for fileKey: ${contents.fileKey}`);
@@ -183,6 +184,7 @@ function fetchMetrics(stateCode, metricType, isDemo, callback) {
         results[contents.fileKey] = deserializedFile;
       });
 
+      console.log(`Fetched all ${metricType} metrics for state ${stateCode} from ${source}`);
       cacheCb(null, results);
     });
   }, callback);

@@ -61,7 +61,7 @@ const CHARGE_CATEGORIES = [
 
 // TODO: Determine if we want to continue to explicitly provide charge_category=ALL or treat it
 // like supervision type where ALL is a summation of other rows
-const DEFAULT_CHARGE_CATEGORY = 'ALL';
+const DEFAULT_CHARGE_CATEGORY = 'All';
 
 const SUPERVISION_TYPES = [
   { value: '', label: 'All' },
@@ -70,6 +70,8 @@ const SUPERVISION_TYPES = [
   // TODO: Enable dual supervision filtering when supported in calculation methodology
   // { value: 'DUAL_SUPERVISION', label: 'Dual supervision' },
 ];
+
+const DEFAULT_DISTRICT = 'All';
 
 const TOGGLE_STYLE = {
   zIndex: 700,
@@ -86,7 +88,11 @@ const Revocations = () => {
 
   const [districts, setDistricts] = useState([]);
   const [filters, setFilters] = useState(
-    { metricPeriodMonths: DEFAULT_METRIC_PERIOD, chargeCategory: DEFAULT_CHARGE_CATEGORY },
+    {
+      metricPeriodMonths: DEFAULT_METRIC_PERIOD,
+      chargeCategory: DEFAULT_CHARGE_CATEGORY,
+      district: DEFAULT_DISTRICT,
+    },
   );
   const [selectedChart, setSelectedChart] = useState('District');
 
@@ -103,7 +109,7 @@ const Revocations = () => {
           .filter((district) => district.toLowerCase() !== 'all')),
       ];
       const districtsFromResponse = [
-        { value: '', label: 'All districts' },
+        { value: 'All', label: 'All districts' },
         ...districtValues.map((district) => ({ value: district, label: district })),
       ];
       districtsFromResponse.sort((a, b) => a.label - b.label);
@@ -143,7 +149,8 @@ const Revocations = () => {
           return false;
         }
       }
-      if (filters.district && !toSkip.includes('district')) {
+      if (filters.district && !toSkip.includes('district')
+        && !(treatCategoryAllAsAbsent && filters.district.toLowerCase() === 'all')) {
         if (!nullSafeComparison(item.district, filters.district)) {
           return false;
         }

@@ -30,17 +30,20 @@ const demoMode = require('../utils/demoMode');
 
 const isDemoMode = demoMode.isDemoMode();
 
-const METRIC_REFRESH_INTERVAL_MS = 1000 * 60 * 30; // Refresh metrics every 30 minutes
-const CACHED_STATE_CODES = [
-  'US_MO',
-  'US_ND',
-];
+const METRIC_REFRESH_INTERVAL_MS = 1000 * 60 * 5; // Refresh metrics every 5 minutes
+const CACHED_STATE_CODES = {
+  freeThroughRecovery: ['US_ND'],
+  reincarcerations: ['US_ND'],
+  revocations: ['US_ND'],
+  snapshots: ['US_ND'],
+  newRevocations: ['US_MO'],
+};
 
 /**
  * Performs a refresh of the free through recovery metrics cache, logging success or failure.
  */
 function refreshFreeThroughRecoveryMetrics() {
-  CACHED_STATE_CODES.forEach((stateCode) => {
+  CACHED_STATE_CODES.freeThroughRecovery.forEach((stateCode) => {
     metricsApi.fetchFreeThroughRecoveryMetrics(isDemoMode, stateCode, (err, data) => {
       if (err) {
         console.log(`Encountered error during scheduled fetch-and-cache
@@ -56,7 +59,7 @@ function refreshFreeThroughRecoveryMetrics() {
  * Performs a refresh of the reincarceration metrics cache, logging success or failure.
  */
 function refreshReincarcerationMetrics() {
-  CACHED_STATE_CODES.forEach((stateCode) => {
+  CACHED_STATE_CODES.reincarcerations.forEach((stateCode) => {
     metricsApi.fetchReincarcerationMetrics(isDemoMode, stateCode, (err, data) => {
       if (err) {
         console.log(`Encountered error during scheduled fetch-and-cache
@@ -72,7 +75,7 @@ function refreshReincarcerationMetrics() {
  * Performs a refresh of the revocation metrics cache, logging success or failure.
  */
 function refreshRevocationMetrics() {
-  CACHED_STATE_CODES.forEach((stateCode) => {
+  CACHED_STATE_CODES.revocations.forEach((stateCode) => {
     metricsApi.fetchRevocationMetrics(isDemoMode, stateCode, (err, data) => {
       if (err) {
         console.log(`Encountered error during scheduled fetch-and-cache
@@ -88,13 +91,29 @@ function refreshRevocationMetrics() {
  * Performs a refresh of the snapshot metrics cache, logging success or failure.
  */
 function refreshSnapshotMetrics() {
-  CACHED_STATE_CODES.forEach((stateCode) => {
+  CACHED_STATE_CODES.snapshots.forEach((stateCode) => {
     metricsApi.fetchSnapshotMetrics(isDemoMode, stateCode, (err, data) => {
       if (err) {
         console.log(`Encountered error during scheduled fetch-and-cache
           of snapshot metrics for ${stateCode}: ${err}`);
       } else {
         console.log(`Executed scheduled fetch-and-cache of snapshot metrics for ${stateCode}`);
+      }
+    });
+  });
+}
+
+/**
+ * Performs a refresh of the new revocations metrics cache, logging success or failure.
+ */
+function refreshNewRevocationsMetrics() {
+  CACHED_STATE_CODES.newRevocations.forEach((stateCode) => {
+    metricsApi.fetchNewRevocationMetrics(isDemoMode, stateCode, (err, data) => {
+      if (err) {
+        console.log(`Encountered error during scheduled fetch-and-cache
+          of new revocation metrics for ${stateCode}: ${err}`);
+      } else {
+        console.log(`Executed scheduled fetch-and-cache of new revocation metrics for ${stateCode}`);
       }
     });
   });
@@ -114,4 +133,5 @@ if (!isDemoMode) {
   executeAndSetInterval(refreshReincarcerationMetrics, METRIC_REFRESH_INTERVAL_MS);
   executeAndSetInterval(refreshRevocationMetrics, METRIC_REFRESH_INTERVAL_MS);
   executeAndSetInterval(refreshSnapshotMetrics, METRIC_REFRESH_INTERVAL_MS);
+  executeAndSetInterval(refreshNewRevocationsMetrics, METRIC_REFRESH_INTERVAL_MS);
 }
