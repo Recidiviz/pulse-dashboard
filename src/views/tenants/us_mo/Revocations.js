@@ -108,11 +108,13 @@ const Revocations = () => {
           .map((item) => item.district)
           .filter((district) => district.toLowerCase() !== 'all')),
       ];
+      districtValues.sort();
+
       const districtsFromResponse = [
         { value: 'All', label: 'All districts' },
         ...districtValues.map((district) => ({ value: district, label: district })),
       ];
-      districtsFromResponse.sort((a, b) => a.label - b.label);
+
       setDistricts(districtsFromResponse);
     } catch (error) {
       console.error(error);
