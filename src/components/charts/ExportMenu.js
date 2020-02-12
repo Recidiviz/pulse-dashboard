@@ -57,9 +57,10 @@ const ExportMenu = (props) => {
               {additionalInfo.length > 0 ? (
                 <ul>
                   {additionalInfo.map((info, i) => (
-                    <li key={i}>
-                      {info}
-                    </li>
+                    <div key={i}>
+                      <h6>{info.header}</h6>
+                      <p>{info.body}</p>
+                    </div>
                   ))}
                 </ul>
               ) : (
