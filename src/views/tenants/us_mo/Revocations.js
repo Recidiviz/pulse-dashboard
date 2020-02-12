@@ -55,7 +55,7 @@ const DEFAULT_METRIC_PERIOD = '12';
 const CHARGE_CATEGORIES = [
   { value: 'All', label: 'All' },
   { value: 'GENERAL', label: 'General' },
-  { value: 'SEX_OFFENDER', label: 'Sex offense' },
+  { value: 'SEX_OFFENDER', label: 'Sex Offense' },
   { value: 'DOMESTIC_VIOLENCE', label: 'Domestic Violence' },
 ];
 
