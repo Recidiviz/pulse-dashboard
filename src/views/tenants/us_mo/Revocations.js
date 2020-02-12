@@ -244,7 +244,7 @@ const Revocations = () => {
     <main className="dashboard bgc-grey-100">
       <div className="top-level-filters d-f" style={TOGGLE_STYLE}>
         <div className="top-level-filter">
-          <h4>Time Window</h4>
+          <h4>Time Period</h4>
           <Select
             options={METRIC_PERIODS}
             onChange={(option) => updateFilters({ metricPeriodMonths: option.value })}

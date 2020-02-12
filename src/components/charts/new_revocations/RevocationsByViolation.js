@@ -71,7 +71,7 @@ const RevocationsByViolation = (props) => {
           xAxes: [{
             scaleLabel: {
               display: true,
-              labelString: 'Violation type and condition violated',
+              labelString: 'Violation type and condition violated (blue is technical, yellow is law)',
             },
             stacked: true,
           }],

@@ -118,7 +118,7 @@ const CaseTable = (props) => {
   return (
     <div className="case-table">
       <h4>
-        Filtered cases
+        Revoked individuals
         <ExportMenu
           chartId={chartId}
           shouldExport={false}
@@ -131,7 +131,7 @@ const CaseTable = (props) => {
       <table>
         <thead>
           <tr>
-            <th>State ID</th>
+            <th>DOC ID</th>
             <th>District</th>
             <th>Officer</th>
             <th>Risk level</th>

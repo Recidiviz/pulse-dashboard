@@ -38,7 +38,7 @@ const chartIdToInfo = {
   revocationMatrix: [
     {
       header: 'What this chart shows',
-      body: `This chart plots all people who were revoked to prison during the time window
+      body: `This chart plots all people who were revoked to prison during the time period
         selected by the user, according to their most serious violation and the number of
         violation reports and notices of citation filed within 6 months before the revocation.
         The user can select the time period for revocations included in the chart by using the
@@ -59,9 +59,9 @@ const chartIdToInfo = {
       header: 'Number of violation reports and notices of citation filed',
       body: `This is determined by counting the total number of violation reports and notices of
         citation that were filed within 6 months before the revocation. For example, if a person
-        had one violation report and one notice of citation during [X lookback period], they would
-        be in the “2” column. This is so even if the violation report listed several types of
-        violations or conditions violated.`,
+        had one violation report and one notice of citation during the 6 months before the
+        revocation, they would be in the “2” column. This is so even if the violation report listed
+        several types of violations or conditions violated.`,
     },
     {
       header: 'Who is included',
@@ -80,9 +80,11 @@ const chartIdToInfo = {
     {
       header: 'What the count chart shows',
       body: `This chart shows the total number of people revoked to prison from each district
-        during the time window selected on the revocation plot above. The districts are positioned
+        during the time period selected on the revocation plot above. The districts are positioned
         in descending order from left to right, with the district with the highest number of people
-        revoked at the left.`,
+        revoked at the left. If a person’s district is unknown (meaning they were not under active
+        supervision in any district at the time of revocation), they are not included in the
+        district counts or rates.`,
     },
     {
       header: 'What the rate chart shows',
@@ -113,8 +115,8 @@ const chartIdToInfo = {
         divided by the total number of people of that risk level. We define risk level based only
         on the Community Supervision Screening Tool and/or the Community Supervision Tool
         (if relevant) and no other assessment (i.e., Prison Intake Tool). Those without Community
-        Supervision Screening Tool/Community Supervision Tool scores are counted in the no risk
-        assessment category.`,
+        Supervision Screening Tool/Community Supervision Tool scores are counted in the Unassessed
+        category.`,
     },
     {
       header: 'Who is included',
@@ -147,14 +149,13 @@ const chartIdToInfo = {
     {
       header: 'What this chart shows',
       body: `This chart shows the relative frequency of each type of violation for people who were
-        revoked to prison, looking back within 6 months before the revocation. This is calculated as
-        the total number of times each type of violation was reported on all notices of citation and
-        violation reports filed during that period, divided by the total number of violations
-        reported on all notices of citation and violation reports filed during that period. For this
-        chart, if multiple violations are listed on one report or notice of citation, they are all
-        counted. The blue bars represent the different categories of conditions violated that
-        constitute technical violations. The yellow bars represent different categories of laws
-        violations.`,
+        revoked to prison, looking back over a period 6 months before the revocation. This is
+        calculated as the total number of times each type of violation was reported on all notices
+        of citation and violation reports filed during that period, divided by the total number of
+        notices of citation and violation reports filed during that period. For this chart, if
+        multiple violations are listed on one report or notice of citation, they are all counted.
+        The blue bars represent the different categories of conditions violated that constitute
+        technical violations. The yellow bars represent different categories of law violations.`,
     },
     {
       header: 'Who is included',
@@ -175,7 +176,11 @@ const chartIdToInfo = {
       body: `This chart compares the revocation rates for women and men, overall and broken out by
         risk level. Gender and risk level specific revocation rates are calculated as the number of
         women (or men) revoked of a given risk level divided by the total number of women (or men)
-        of the same risk level within the population.`,
+        of the same risk level within the supervised population. Risk level is defined based only
+        on the Community Supervision Screening Tool and/or the Community Supervision Tool (if
+        relevant) and no other assessment (i.e., Prison Intake Tool). Those without Community
+        Supervision Screening Tool/Community Supervision Tool scores are counted in the Unassessed
+        category.`,
     },
     {
       header: 'Who is included',
@@ -211,7 +216,10 @@ const chartIdToInfo = {
         and broken out by risk level. Race or ethnicity and risk level specific revocation rates are
         calculated as the number of people of a given race or ethnicity and of a given risk level
         who were revoked divided by the total number of people of that race or ethnicity and of that
-        risk level within the population.`,
+        risk level within the population. Risk level is defined based only on the Community
+        Supervision Screening Tool and/or the Community Supervision Tool (if relevant) and no other
+        assessment (i.e., Prison Intake Tool). Those without Community Supervision Screening
+        Tool/Community Supervision Tool scores are counted in the Unassessed category.`,
     },
     {
       header: 'Who is included',
