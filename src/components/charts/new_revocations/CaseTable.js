@@ -20,7 +20,9 @@ import React, { useState } from 'react';
 import ExportMenu from '../ExportMenu';
 
 import { COLORS } from '../../../assets/scripts/constants/colors';
-import { getTrailingLabelFromMetricPeriodMonthsToggle } from '../../../utils/charts/toggles';
+import {
+  getTrailingLabelFromMetricPeriodMonthsToggle, getPeriodLabelFromMetricPeriodMonthsToggle,
+} from '../../../utils/charts/toggles';
 import {
   humanReadableTitleCase, nameFromOfficerId, riskLevelValuetoLabel,
 } from '../../../utils/transforms/labels';
@@ -116,20 +118,20 @@ const CaseTable = (props) => {
   return (
     <div className="case-table">
       <h4>
-        Filtered cases
+        Revoked individuals
         <ExportMenu
           chartId={chartId}
           shouldExport={false}
         />
       </h4>
       <h6 className="pB-20">
-        {getTrailingLabelFromMetricPeriodMonthsToggle(props.metricPeriodMonths)}
+        {`${getTrailingLabelFromMetricPeriodMonthsToggle(props.metricPeriodMonths)} (${getPeriodLabelFromMetricPeriodMonthsToggle(props.metricPeriodMonths)})`}
       </h6>
 
       <table>
         <thead>
           <tr>
-            <th>State ID</th>
+            <th>DOC ID</th>
             <th>District</th>
             <th>Officer</th>
             <th>Risk level</th>

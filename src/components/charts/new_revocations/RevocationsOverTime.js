@@ -100,7 +100,7 @@ const RevocationsOverTime = (props) => {
           yAxes: [{
             scaleLabel: {
               display: true,
-              labelString: '# of revocations',
+              labelString: 'Number of people revoked to prison',
             },
             ticks: {
               min: 0,
@@ -118,11 +118,11 @@ const RevocationsOverTime = (props) => {
   return (
     <div>
       <h4>
-        Revocations over time
+        Number of people revoked to prison per month
         <ExportMenu
           chartId={chartId}
           chart={chart}
-          metricTitle="Revocations over time"
+          metricTitle="People revoked to prison by month"
         />
       </h4>
       <h6 className="pB-20">
