@@ -21,7 +21,8 @@ import ExportMenu from '../ExportMenu';
 
 import { COLORS } from '../../../assets/scripts/constants/colors';
 import {
-  getTrailingLabelFromMetricPeriodMonthsToggle, standardTooltipForRateMetric,
+  getTrailingLabelFromMetricPeriodMonthsToggle, getPeriodLabelFromMetricPeriodMonthsToggle,
+  tooltipForRateMetricWithCounts,
 } from '../../../utils/charts/toggles';
 import {
   toInt, humanReadableTitleCase, riskLevelValuetoLabel,
@@ -32,6 +33,8 @@ const chartId = 'revocationsByRiskLevel';
 const RevocationsByRiskLevel = (props) => {
   const [chartLabels, setChartLabels] = useState([]);
   const [chartDataPoints, setChartDataPoints] = useState([]);
+  const [numeratorCounts, setNumeratorCounts] = useState([]);
+  const [denominatorCounts, setDenominatorCounts] = useState([]);
 
   const processResponse = () => {
     const revocationsByRiskLevel = props.data.reduce(
@@ -62,6 +65,15 @@ const RevocationsByRiskLevel = (props) => {
     const dataPoints = Object.keys(riskLevelValuetoLabel).map((riskLevel) => getRate(riskLevel));
     setChartLabels(displayLabels);
     setChartDataPoints(dataPoints);
+
+    const numerators = Object.keys(riskLevelValuetoLabel).map(
+      (riskLevel) => revocationsByRiskLevel[riskLevel],
+    );
+    const denominators = Object.keys(riskLevelValuetoLabel).map(
+      (riskLevel) => supervisionCountsByRiskLevel[riskLevel],
+    );
+    setNumeratorCounts(numerators);
+    setDenominatorCounts(denominators);
   };
 
   useEffect(() => {
@@ -103,7 +115,7 @@ const RevocationsByRiskLevel = (props) => {
             },
             scaleLabel: {
               display: true,
-              labelString: 'revocation rate',
+              labelString: 'Revocation rate',
             },
             stacked: true,
           }],
@@ -113,7 +125,7 @@ const RevocationsByRiskLevel = (props) => {
           mode: 'index',
           intersect: false,
           callbacks: {
-            label: (tooltipItem, data) => standardTooltipForRateMetric(tooltipItem, data),
+            label: (tooltipItem, data) => tooltipForRateMetricWithCounts(tooltipItem, data, numeratorCounts, denominatorCounts),
           },
         },
       }}
@@ -123,15 +135,15 @@ const RevocationsByRiskLevel = (props) => {
   return (
     <div>
       <h4>
-        Revocations by risk level
+        Revocation rates by risk level
         <ExportMenu
           chartId={chartId}
           chart={chart}
-          metricTitle="Revocations by risk level"
+          metricTitle="Revocation rates by risk level"
         />
       </h4>
       <h6 className="pB-20">
-        {getTrailingLabelFromMetricPeriodMonthsToggle(props.metricPeriodMonths)}
+        {`${getTrailingLabelFromMetricPeriodMonthsToggle(props.metricPeriodMonths)} (${getPeriodLabelFromMetricPeriodMonthsToggle(props.metricPeriodMonths)})`}
       </h6>
 
       {chart}

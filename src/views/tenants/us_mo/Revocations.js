@@ -55,7 +55,7 @@ const DEFAULT_METRIC_PERIOD = '12';
 const CHARGE_CATEGORIES = [
   { value: 'All', label: 'All' },
   { value: 'GENERAL', label: 'General' },
-  { value: 'SEX_OFFENDER', label: 'Sex offense' },
+  { value: 'SEX_OFFENDER', label: 'Sex Offense' },
   { value: 'DOMESTIC_VIOLENCE', label: 'Domestic Violence' },
 ];
 
@@ -108,11 +108,13 @@ const Revocations = () => {
           .map((item) => item.district)
           .filter((district) => district.toLowerCase() !== 'all')),
       ];
+      districtValues.sort();
+
       const districtsFromResponse = [
         { value: 'All', label: 'All districts' },
         ...districtValues.map((district) => ({ value: district, label: district })),
       ];
-      districtsFromResponse.sort((a, b) => a.label - b.label);
+
       setDistricts(districtsFromResponse);
     } catch (error) {
       console.error(error);
@@ -242,7 +244,7 @@ const Revocations = () => {
     <main className="dashboard bgc-grey-100">
       <div className="top-level-filters d-f" style={TOGGLE_STYLE}>
         <div className="top-level-filter">
-          <h4>Time Window</h4>
+          <h4>Time Period</h4>
           <Select
             options={METRIC_PERIODS}
             onChange={(option) => updateFilters({ metricPeriodMonths: option.value })}
@@ -257,7 +259,7 @@ const Revocations = () => {
           />
         </div>
         <div className="top-level-filter">
-          <h4>Charge Category</h4>
+          <h4>Supervision Level</h4>
           <Select
             options={CHARGE_CATEGORIES}
             onChange={(option) => updateFilters({ chargeCategory: option.value })}
@@ -288,10 +290,15 @@ const Revocations = () => {
         </div>
         <div className="matrix-explanation bgc-white p-20">
           <h4>Using this chart</h4>
-          <p className="fw-600">
-            This chart shows the number of people revoked to prison from
-            probation and parole, broken down by their most severe violation
-            and the number of violation reports filed before revocation.
+          <p className="fw-300">
+            This chart plots all people who were revoked to prison during the selected time period,
+            according to their most serious violation and the total number of violation reports and
+            notices of citation filed within 6 months before revocation.
+          </p>
+          <p className="fw-300">
+            The numbers inside the bubbles represent the number of people who were revoked, whose
+            most serious violation matches the violation at the head of that row, and who have the
+            number of prior violations at the head of that column.
           </p>
           <div className="d-f mT-20">
             <div className="example-icon-container">
@@ -300,8 +307,8 @@ const Revocations = () => {
               </div>
             </div>
             <p className="fs-i fw-600">
-              Click on a bubble to filter the dashboard by that set of
-              revocations
+              Click on a bubble to filter all charts on this dashboard to the group of
+              people who are in that bubble. Click the bubble again to undo the selection.
             </p>
           </div>
           <div className="d-f mT-20">
@@ -311,7 +318,8 @@ const Revocations = () => {
               </div>
             </div>
             <p className="fs-i fw-600">
-              Click on the violation to filter the dashboard by that violation.
+              Click on a row label to filter all charts on this dashboard to the group
+              of people who are in that row. Click the label again to undo the selection.
             </p>
           </div>
         </div>

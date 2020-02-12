@@ -139,6 +139,34 @@ function standardTooltipForRateMetric(tooltipItem, data) {
   return `${label}: ${getTooltipWithoutTrendline(tooltipItem, data, '%')}`;
 }
 
+function tooltipForRateMetricWithCounts(tooltipItem, data, numerators, denominators) {
+  const { datasetIndex, index: dataPointIndex } = tooltipItem;
+  const label = data.datasets[datasetIndex].label || '';
+
+  const numerator = numerators[dataPointIndex];
+  const denominator = denominators[dataPointIndex];
+  let appendedCounts = '';
+  if (numerator !== undefined && denominator !== undefined) {
+    appendedCounts = ` (${numerator}/${denominator})`;
+  }
+
+  return `${label}: ${getTooltipWithoutTrendline(tooltipItem, data, '%')}${appendedCounts}`;
+}
+
+function tooltipForRateMetricWithNestedCounts(tooltipItem, data, numerators, denominators) {
+  const { datasetIndex, index: dataPointIndex } = tooltipItem;
+  const label = data.datasets[datasetIndex].label || '';
+
+  const numerator = numerators[datasetIndex][dataPointIndex];
+  const denominator = denominators[datasetIndex][dataPointIndex];
+  let appendedCounts = '';
+  if (numerator !== undefined && denominator !== undefined) {
+    appendedCounts = ` (${numerator}/${denominator})`;
+  }
+
+  return `${label}: ${getTooltipWithoutTrendline(tooltipItem, data, '%')}${appendedCounts}`;
+}
+
 function updateTooltipForMetricType(metricType, tooltipItem, data) {
   if (metricType === 'rates') {
     return standardTooltipForRateMetric(tooltipItem, data);
@@ -207,6 +235,8 @@ export {
   getTrailingLabelFromMetricPeriodMonthsToggle,
   standardTooltipForCountMetric,
   standardTooltipForRateMetric,
+  tooltipForRateMetricWithCounts,
+  tooltipForRateMetricWithNestedCounts,
   updateTooltipForMetricType,
   filterDatasetByMetricPeriodMonths,
   filterDatasetByDistrict,

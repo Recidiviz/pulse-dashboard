@@ -23,7 +23,8 @@ import ExportMenu from '../ExportMenu';
 
 import { COLORS } from '../../../assets/scripts/constants/colors';
 import {
-  getTrailingLabelFromMetricPeriodMonthsToggle, toggleLabel, updateTooltipForMetricType,
+  getTrailingLabelFromMetricPeriodMonthsToggle, getPeriodLabelFromMetricPeriodMonthsToggle,
+  toggleLabel, updateTooltipForMetricType,
 } from '../../../utils/charts/toggles';
 import { toInt } from '../../../utils/transforms/labels';
 
@@ -69,9 +70,7 @@ const RevocationsByDistrict = (props) => {
 
     const sortedLabels = sorted.map((entry) => entry[0]);
     setNonDisplayedLabels(sortedLabels);
-
-    const sortedDisplayLabels = sortedLabels.map((label) => `District ${label}`);
-    setChartLabels(sortedDisplayLabels);
+    setChartLabels(sortedLabels);
   };
 
   // TODO: Replace this jQuery usage with a more React-friendly approach
@@ -135,21 +134,21 @@ const RevocationsByDistrict = (props) => {
             scaleLabel: {
               display: true,
               labelString: toggleLabel({
-                counts: '# of revocations', rates: 'revocation rate',
+                counts: 'Number of people revoked', rates: 'Revocation rate',
               }, countModeEnabled ? 'counts' : 'rates'),
             },
             stacked: true,
-            callbacks: {
-              label: (tooltipItem, data) => updateTooltipForMetricType(
-                countModeEnabled ? 'counts' : 'rates', tooltipItem, data,
-              ),
-            },
           }],
         },
         tooltips: {
           backgroundColor: COLORS['grey-800-light'],
           mode: 'index',
           intersect: false,
+          callbacks: {
+            label: (tooltipItem, data) => updateTooltipForMetricType(
+              countModeEnabled ? 'counts' : 'rates', tooltipItem, data,
+            ),
+          },
         },
       }}
     />
@@ -166,7 +165,7 @@ const RevocationsByDistrict = (props) => {
         />
       </h4>
       <h6 className="pB-20">
-        {getTrailingLabelFromMetricPeriodMonthsToggle(props.metricPeriodMonths)}
+        {`${getTrailingLabelFromMetricPeriodMonthsToggle(props.metricPeriodMonths)} (${getPeriodLabelFromMetricPeriodMonthsToggle(props.metricPeriodMonths)})`}
       </h6>
 
       <div id="modeButtons" className="pB-20 btn-group btn-group-toggle" data-toggle="buttons">

@@ -21,7 +21,8 @@ import ExportMenu from '../ExportMenu';
 
 import { COLORS } from '../../../assets/scripts/constants/colors';
 import {
-  getTrailingLabelFromMetricPeriodMonthsToggle, standardTooltipForRateMetric,
+  getTrailingLabelFromMetricPeriodMonthsToggle, getPeriodLabelFromMetricPeriodMonthsToggle,
+  tooltipForRateMetricWithNestedCounts,
 } from '../../../utils/charts/toggles';
 import { toInt } from '../../../utils/transforms/labels';
 
@@ -33,6 +34,8 @@ const chartId = 'revocationsByRace';
 
 const RevocationsByRace = (props) => {
   const [chartDataPoints, setChartDataPoints] = useState([]);
+  const [numeratorCounts, setNumeratorCounts] = useState([]);
+  const [denominatorCounts, setDenominatorCounts] = useState([]);
 
   const getRevocationsForRiskLevel = (forRace) => RISK_LEVELS.map((riskLevel) => (
     props.data
@@ -79,6 +82,8 @@ const RevocationsByRace = (props) => {
       }
     }
     setChartDataPoints(dataPoints);
+    setNumeratorCounts(revocations);
+    setDenominatorCounts(supervisionCounts);
   };
 
   useEffect(() => {
@@ -140,7 +145,7 @@ const RevocationsByRace = (props) => {
           xAxes: [{
             scaleLabel: {
               display: true,
-              labelString: 'Race',
+              labelString: 'Race/ethnicity and risk level',
             },
           }],
           yAxes: [{
@@ -149,7 +154,7 @@ const RevocationsByRace = (props) => {
             },
             scaleLabel: {
               display: true,
-              labelString: 'revocation rate',
+              labelString: 'Revocation rate',
             },
           }],
         },
@@ -158,7 +163,7 @@ const RevocationsByRace = (props) => {
           mode: 'index',
           intersect: false,
           callbacks: {
-            label: (tooltipItem, data) => standardTooltipForRateMetric(tooltipItem, data),
+            label: (tooltipItem, data) => tooltipForRateMetricWithNestedCounts(tooltipItem, data, numeratorCounts, denominatorCounts),
           },
         },
       }}
@@ -168,15 +173,15 @@ const RevocationsByRace = (props) => {
   return (
     <div>
       <h4>
-        Revocations by race
+        Revocation rates by race/ethnicity and risk level
         <ExportMenu
           chartId={chartId}
           chart={chart}
-          metricTitle="Revocations by race"
+          metricTitle="Revocation rates by race/ethnicity and risk level"
         />
       </h4>
       <h6 className="pB-20">
-        {getTrailingLabelFromMetricPeriodMonthsToggle(props.metricPeriodMonths)}
+        {`${getTrailingLabelFromMetricPeriodMonthsToggle(props.metricPeriodMonths)} (${getPeriodLabelFromMetricPeriodMonthsToggle(props.metricPeriodMonths)})`}
       </h6>
 
       {chart}

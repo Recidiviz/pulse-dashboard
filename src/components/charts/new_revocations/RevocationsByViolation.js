@@ -20,7 +20,9 @@ import { Bar } from 'react-chartjs-2';
 import ExportMenu from '../ExportMenu';
 
 import { COLORS } from '../../../assets/scripts/constants/colors';
-import { getTrailingLabelFromMetricPeriodMonthsToggle } from '../../../utils/charts/toggles';
+import {
+  getTrailingLabelFromMetricPeriodMonthsToggle, getPeriodLabelFromMetricPeriodMonthsToggle,
+} from '../../../utils/charts/toggles';
 import { toInt, humanReadableTitleCase } from '../../../utils/transforms/labels';
 
 const chartId = 'revocationsByViolationType';
@@ -69,14 +71,14 @@ const RevocationsByViolation = (props) => {
           xAxes: [{
             scaleLabel: {
               display: true,
-              labelString: 'Violation type',
+              labelString: 'Violation type and condition violated',
             },
             stacked: true,
           }],
           yAxes: [{
             scaleLabel: {
               display: true,
-              labelString: '# of revocations',
+              labelString: 'Percent of total reported violations',
             },
             stacked: true,
           }],
@@ -93,15 +95,15 @@ const RevocationsByViolation = (props) => {
   return (
     <div>
       <h4>
-        Revocations by violation type
+        Distribution of violation types
         <ExportMenu
           chartId={chartId}
           chart={chart}
-          metricTitle="Revocations by violation type"
+          metricTitle="Distribution of violation types"
         />
       </h4>
       <h6 className="pB-20">
-        {getTrailingLabelFromMetricPeriodMonthsToggle(props.metricPeriodMonths)}
+        {`${getTrailingLabelFromMetricPeriodMonthsToggle(props.metricPeriodMonths)} (${getPeriodLabelFromMetricPeriodMonthsToggle(props.metricPeriodMonths)})`}
       </h6>
 
       {chart}

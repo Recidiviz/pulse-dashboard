@@ -19,7 +19,7 @@ import React, { useState, useEffect } from 'react';
 import ExportMenu from '../ExportMenu';
 
 import {
-  getPeriodLabelFromMetricPeriodMonthsToggle, getTrailingLabelFromMetricPeriodMonthsToggle
+  getPeriodLabelFromMetricPeriodMonthsToggle, getTrailingLabelFromMetricPeriodMonthsToggle,
 } from '../../../utils/charts/toggles';
 import { toInt } from '../../../utils/transforms/labels';
 
@@ -173,21 +173,24 @@ const RevocationMatrix = (props) => {
   return (
     <div className="revocation-matrix">
       <h4>
-        Revocations to prison from probation and parole
+        People revoked to prison by violation history
         <ExportMenu
           chartId="revocationMatrix"
           regularElement
           elementDatasets={exportableMatrixData()}
           elementLabels={VIOLATION_COUNTS.map((count) => violationCountLabel(count))}
-          metricTitle="Revocations to prison from probation and parole"
+          metricTitle="People revoked to prison by violation history"
         />
       </h4>
       <h6>
         {`${getTrailingLabelFromMetricPeriodMonthsToggle(props.metricPeriodMonths)} (${getPeriodLabelFromMetricPeriodMonthsToggle(props.metricPeriodMonths)})`}
       </h6>
+      <div className="x-label pY-30">
+        Number of violation reports and notices of citations (filed within 6 months before the revocation)
+      </div>
       <div id="revocationMatrix" className="d-f">
         <div className="y-label" data-html2canvas-ignore>
-          Most severe violation reported during supervision term
+          Most severe violation reported (within 6 months before the revocation)
         </div>
         <div className={`matrix ${isFiltered ? 'is-filtered' : ''}`}>
           <div className="violation-counts">
@@ -207,9 +210,6 @@ const RevocationMatrix = (props) => {
             ))}
           </div>
         </div>
-      </div>
-      <div className="x-label">
-        Number of violation reports and notices of citations filed
       </div>
     </div>
   );

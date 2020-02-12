@@ -20,9 +20,11 @@ import React, { useState } from 'react';
 import ExportMenu from '../ExportMenu';
 
 import { COLORS } from '../../../assets/scripts/constants/colors';
-import { getTrailingLabelFromMetricPeriodMonthsToggle } from '../../../utils/charts/toggles';
 import {
-  humanReadableTitleCase, toInt, nameFromOfficerId, riskLevelValuetoLabel,
+  getTrailingLabelFromMetricPeriodMonthsToggle, getPeriodLabelFromMetricPeriodMonthsToggle,
+} from '../../../utils/charts/toggles';
+import {
+  humanReadableTitleCase, nameFromOfficerId, riskLevelValuetoLabel,
 } from '../../../utils/transforms/labels';
 
 const CASES_PER_PAGE = 15;
@@ -47,16 +49,29 @@ const CaseTable = (props) => {
 
   const { data } = props;
 
-  // Sort case load first by district (ascending), second by officer name (ascending)
+  // Sort case load first by district, second by officer name, third by person id (all ascending)
   const caseLoad = data.sort((a, b) => {
-    if (toInt(a.district) > toInt(b.district)) return 1;
-    if (toInt(a.district) < toInt(b.district)) return -1;
+    // Sort by district, with undefined districts to the bottom
+    if (!a.district && b.district) return 1;
+    if (!b.district && a.district) return -1;
+
+    if (String(a.district) > String(b.district)) return 1;
+    if (String(a.district) < String(b.district)) return -1;
 
     const aOfficer = a.officer || '';
     const bOfficer = b.officer || '';
 
+    // Sort by officer, with undefined officers to the bottom
+    if (!aOfficer && bOfficer) return 1;
+    if (!bOfficer && aOfficer) return -1;
+
     if (aOfficer.toLowerCase() > bOfficer.toLowerCase()) return 1;
     if (aOfficer.toLowerCase() < bOfficer.toLowerCase()) return -1;
+
+    // Sort by person external id
+    if (String(a.state_id) > String(b.state_id)) return 1;
+    if (String(a.state_id) < String(b.state_id)) return -1;
+
     return 0;
   });
 
@@ -103,20 +118,20 @@ const CaseTable = (props) => {
   return (
     <div className="case-table">
       <h4>
-        Filtered cases
+        Revoked individuals
         <ExportMenu
           chartId={chartId}
           shouldExport={false}
         />
       </h4>
       <h6 className="pB-20">
-        {getTrailingLabelFromMetricPeriodMonthsToggle(props.metricPeriodMonths)}
+        {`${getTrailingLabelFromMetricPeriodMonthsToggle(props.metricPeriodMonths)} (${getPeriodLabelFromMetricPeriodMonthsToggle(props.metricPeriodMonths)})`}
       </h6>
 
       <table>
         <thead>
           <tr>
-            <th>State ID</th>
+            <th>DOC ID</th>
             <th>District</th>
             <th>Officer</th>
             <th>Risk level</th>
