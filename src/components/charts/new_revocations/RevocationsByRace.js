@@ -173,11 +173,11 @@ const RevocationsByRace = (props) => {
   return (
     <div>
       <h4>
-        Revocation rates by race and risk level
+        Revocation rates by race/ethnicity and risk level
         <ExportMenu
           chartId={chartId}
           chart={chart}
-          metricTitle="Revocation rates by race and risk level"
+          metricTitle="Revocation rates by race/ethnicity and risk level"
         />
       </h4>
       <h6 className="pB-20">
