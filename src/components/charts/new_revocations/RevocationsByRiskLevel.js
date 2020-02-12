@@ -21,7 +21,8 @@ import ExportMenu from '../ExportMenu';
 
 import { COLORS } from '../../../assets/scripts/constants/colors';
 import {
-  getTrailingLabelFromMetricPeriodMonthsToggle, tooltipForRateMetricWithCounts,
+  getTrailingLabelFromMetricPeriodMonthsToggle, getPeriodLabelFromMetricPeriodMonthsToggle,
+  tooltipForRateMetricWithCounts,
 } from '../../../utils/charts/toggles';
 import {
   toInt, humanReadableTitleCase, riskLevelValuetoLabel,
@@ -114,7 +115,7 @@ const RevocationsByRiskLevel = (props) => {
             },
             scaleLabel: {
               display: true,
-              labelString: 'revocation rate',
+              labelString: 'Revocation rate',
             },
             stacked: true,
           }],
@@ -134,15 +135,15 @@ const RevocationsByRiskLevel = (props) => {
   return (
     <div>
       <h4>
-        Revocations by risk level
+        Revocation rates by risk level
         <ExportMenu
           chartId={chartId}
           chart={chart}
-          metricTitle="Revocations by risk level"
+          metricTitle="Revocation rates by risk level"
         />
       </h4>
       <h6 className="pB-20">
-        {getTrailingLabelFromMetricPeriodMonthsToggle(props.metricPeriodMonths)}
+        {`${getTrailingLabelFromMetricPeriodMonthsToggle(props.metricPeriodMonths)} (${getPeriodLabelFromMetricPeriodMonthsToggle(props.metricPeriodMonths)})`}
       </h6>
 
       {chart}
