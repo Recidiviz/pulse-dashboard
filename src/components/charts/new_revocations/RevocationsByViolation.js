@@ -22,28 +22,91 @@ import ExportMenu from '../ExportMenu';
 import { COLORS } from '../../../assets/scripts/constants/colors';
 import {
   getTrailingLabelFromMetricPeriodMonthsToggle, getPeriodLabelFromMetricPeriodMonthsToggle,
+  tooltipForRateMetricWithCounts,
 } from '../../../utils/charts/toggles';
-import { toInt, humanReadableTitleCase } from '../../../utils/transforms/labels';
+import {
+  toInt, technicalViolationTypes, lawViolationTypes, violationTypeToLabel,
+} from '../../../utils/transforms/labels';
 
 const chartId = 'revocationsByViolationType';
 
 const RevocationsByViolation = (props) => {
   const [chartLabels, setChartLabels] = useState([]);
   const [chartDataPoints, setChartDataPoints] = useState([]);
+  const [numeratorCounts, setNumeratorCounts] = useState([]);
+  const [denominatorCounts, setDenominatorCounts] = useState([]);
 
   const processResponse = () => {
     const violationToCount = props.data.reduce(
-      (result, { violation_observed: violationObserved, total_violations: totalViolations }) => {
-        return { ...result, [violationObserved]: (result[violationObserved] || 0) + (toInt(totalViolations) || 0) };
+      (result, {
+        absconded_count: abscondedCount,
+        association_count: associationCount,
+        directive_count: directiveCount,
+        employment_count: employmentCount,
+        felony_count: felonyCount,
+        intervention_fee_count: interventionFeeCount,
+        misdemeanor_count: misdemeanorCount,
+        municipal_count: municipalCount,
+        residency_count: residencyCount,
+        special_count: specialCount,
+        substance_count: substanceCount,
+        supervision_strategy_count: supervisionStrategyCount,
+        travel_count: travelCount,
+        weapon_count: weaponCount,
+        violation_count: violationCount,
+      }) => {
+        return {
+          ...result,
+          abscondedCount: (result.abscondedCount || 0) + (toInt(abscondedCount) || 0),
+          associationCount: (result.associationCount || 0) + (toInt(associationCount) || 0),
+          directiveCount: (result.directiveCount || 0) + (toInt(directiveCount) || 0),
+          employmentCount: (result.employmentCount || 0) + (toInt(employmentCount) || 0),
+          felonyCount: (result.felonyCount || 0) + (toInt(felonyCount) || 0),
+          interventionFeeCount: (result.interventionFeeCount || 0) + (toInt(interventionFeeCount) || 0),
+          misdemeanorCount: (result.misdemeanorCount || 0) + (toInt(misdemeanorCount) || 0),
+          municipalCount: (result.municipalCount || 0) + (toInt(municipalCount) || 0),
+          residencyCount: (result.residencyCount || 0) + (toInt(residencyCount) || 0),
+          specialCount: (result.specialCount || 0) + (toInt(specialCount) || 0),
+          substanceCount: (result.substanceCount || 0) + (toInt(substanceCount) || 0),
+          supervisionStrategyCount: (result.supervisionStrategyCount || 0) + (toInt(supervisionStrategyCount) || 0),
+          travelCount: (result.travelCount || 0) + (toInt(travelCount) || 0),
+          weaponCount: (result.weaponCount || 0) + (toInt(weaponCount) || 0),
+          violationCount: (result.violationCount || 0) + (toInt(violationCount) || 0),
+        };
       }, {},
     );
 
-    const labels = Object.keys(violationToCount);
-    const displayLabels = labels.map((label) => humanReadableTitleCase(label));
-    const dataPoints = labels.map((violation) => violationToCount[violation]);
-    setChartLabels(displayLabels);
+    const totalViolationCount = toInt(violationToCount.violationCount) || 0;
+
+    const violationTypeFrequency = (type) => {
+      if (!totalViolationCount) {
+        return (0.0).toFixed(2);
+      }
+      return (100 * (violationToCount[type] / totalViolationCount)).toFixed(2);
+    };
+
+    const violationTypeKeys = technicalViolationTypes.concat(lawViolationTypes);
+    const labels = violationTypeKeys.map((type) => violationTypeToLabel[type]);
+    const dataPoints = violationTypeKeys.map((type) => violationTypeFrequency(type));
+
+    setChartLabels(labels);
     setChartDataPoints(dataPoints);
-  }
+
+    setNumeratorCounts(violationTypeKeys.map((type) => violationToCount[type]));
+    setDenominatorCounts(violationTypeKeys.map((_) => totalViolationCount));
+  };
+
+  // This sets bar color to light-blue-500 when it's a technical violation, orange when it's law
+  const colorTechnicalAndLaw = () => {
+    const colors = [];
+    for (let i = 0; i < technicalViolationTypes.length; i += 1) {
+      colors.push(COLORS['light-blue-500']);
+    }
+    for (let i = 0; i < lawViolationTypes.length; i += 1) {
+      colors.push(COLORS['orange-500']);
+    }
+    return colors;
+  };
 
   useEffect(() => {
     processResponse();
@@ -56,9 +119,9 @@ const RevocationsByViolation = (props) => {
         labels: chartLabels,
         datasets: [{
           label: 'Revocations',
-          backgroundColor: COLORS['orange-500'],
-          hoverBackgroundColor: COLORS['orange-500'],
-          hoverBorderColor: COLORS['orange-500'],
+          backgroundColor: colorTechnicalAndLaw(),
+          hoverBackgroundColor: colorTechnicalAndLaw(),
+          hoverBorderColor: colorTechnicalAndLaw(),
           data: chartDataPoints,
         }],
       }}
@@ -81,12 +144,18 @@ const RevocationsByViolation = (props) => {
               labelString: 'Percent of total reported violations',
             },
             stacked: true,
+            ticks: {
+              min: 0,
+            },
           }],
         },
         tooltips: {
           backgroundColor: COLORS['grey-800-light'],
           mode: 'index',
           intersect: false,
+          callbacks: {
+            label: (tooltipItem, data) => tooltipForRateMetricWithCounts(tooltipItem, data, numeratorCounts, denominatorCounts),
+          },
         },
       }}
     />
@@ -95,11 +164,11 @@ const RevocationsByViolation = (props) => {
   return (
     <div>
       <h4>
-        Distribution of violation types
+        Relative frequency of violation types
         <ExportMenu
           chartId={chartId}
           chart={chart}
-          metricTitle="Distribution of violation types"
+          metricTitle="Relative frequency of violation types"
         />
       </h4>
       <h6 className="pB-20">

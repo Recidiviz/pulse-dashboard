@@ -40,6 +40,32 @@ const raceValuetoLabel = {
   OTHER: 'Other',
 };
 
+const technicalViolationTypes = [
+  'travelCount', 'residencyCount', 'employmentCount', 'associationCount', 'directiveCount',
+  'supervisionStrategyCount', 'interventionFeeCount', 'specialCount',
+];
+
+const lawViolationTypes = [
+  'substanceCount', 'municipalCount', 'abscondedCount', 'misdemeanorCount', 'felonyCount',
+];
+
+const violationTypeToLabel = {
+  abscondedCount: 'Absconsion',
+  associationCount: 'Association',
+  directiveCount: 'Report / Directives',
+  employmentCount: 'Employment',
+  felonyCount: 'Felony',
+  interventionFeeCount: 'Intervention Fees',
+  misdemeanorCount: 'Misdemeanor',
+  municipalCount: 'Municipal',
+  residencyCount: 'Residency',
+  specialCount: 'Special Conditions',
+  substanceCount: 'Substance Use',
+  supervisionStrategyCount: 'Supervision Strategies',
+  travelCount: 'Travel',
+  weaponCount: 'Weapons',
+};
+
 function genderValueToHumanReadable(genderValue) {
   return genderValuetoLabel[genderValue];
 }
@@ -98,6 +124,9 @@ function nameFromOfficerId(officerId) {
 
 export {
   riskLevelValuetoLabel,
+  violationTypeToLabel,
+  technicalViolationTypes,
+  lawViolationTypes,
   genderValueToHumanReadable,
   raceValueToHumanReadable,
   toHtmlFriendly,
