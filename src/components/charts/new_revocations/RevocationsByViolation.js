@@ -78,7 +78,7 @@ const RevocationsByViolation = (props) => {
 
     const totalViolationCount = toInt(violationToCount.violationCount) || 0;
 
-    const violationTypeDistribution = (type) => {
+    const violationTypeFrequency = (type) => {
       if (!totalViolationCount) {
         return (0.0).toFixed(2);
       }
@@ -87,7 +87,7 @@ const RevocationsByViolation = (props) => {
 
     const violationTypeKeys = technicalViolationTypes.concat(lawViolationTypes);
     const labels = violationTypeKeys.map((type) => violationTypeToLabel[type]);
-    const dataPoints = violationTypeKeys.map((type) => violationTypeDistribution(type));
+    const dataPoints = violationTypeKeys.map((type) => violationTypeFrequency(type));
 
     setChartLabels(labels);
     setChartDataPoints(dataPoints);
