@@ -16,6 +16,7 @@
 // =============================================================================
 
 const riskLevelValuetoLabel = {
+  NOT_ASSESSED: 'Not Assessed',
   LOW: 'Low',
   MEDIUM: 'Moderate',
   HIGH: 'High',
