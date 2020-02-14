@@ -165,7 +165,7 @@ const AdmissionsVsReleases = (props) => {
 
   const header = document.getElementById(props.header);
 
-  if (header && mostRecentValue !== null && props.district.toUpperCase() === 'ALL') {
+  if (header && mostRecentValue !== null && props.metricType === 'counts' && props.district.toUpperCase() === 'ALL') {
     let title = '';
     if (mostRecentValue === 0) {
       title = 'The ND facilities <b style=\'color:#809AE5\'> have not changed in size</b> this month.';

@@ -369,12 +369,12 @@ class GeoViewTimeChart extends Component {
             denominator = totalDenominatorByMetricPeriod[metricPeriodMonths];
           }
 
-          if (numerator === 0 || (denominator === 0 && denominatorKeys.length > 0)) {
+          if (numerator === 0 && (denominator === 0 && denominatorKeys.length > 0)) {
             return;
           }
 
           let rate = 0.0;
-          if (denominatorKeys.length > 0) {
+          if (denominator !== 0 && denominatorKeys.length > 0) {
             rate = (100 * (numerator / denominator));
           }
           const rateFixed = rate.toFixed(2);

@@ -293,6 +293,7 @@ const RevocationCountByOfficer = (props) => {
             stacked: true,
             ticks: {
               display: displayOfficerIds,
+              autoSkip: false,
             },
           }],
           yAxes: [{
