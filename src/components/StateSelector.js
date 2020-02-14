@@ -18,29 +18,33 @@
 import React, { useState } from 'react';
 import Select from 'react-select';
 
-import { getStateNameForCode } from '../utils/authentication/user';
+import { getStateNameForCode, isRecidivizUser, isLanternUser } from '../utils/authentication/user';
 import {
-  getAvailableStates,
-  getCurrentStateForRecidivizUsers,
-  setCurrentStateForRecidivizUsers,
+  getAvailableStatesForAdminUser,
+  getCurrentStateForAdminUsers,
+  setCurrentStateForAdminUsers,
 } from '../views/stateViews';
 
-const StateSelector = () => {
-  const availableStateCodes = getAvailableStates();
+const StateSelector = (props) => {
+  const { user } = props;
+  const recidivizUser = isRecidivizUser(user);
+  const lanternUser = isLanternUser(user);
+
+  const availableStateCodes = getAvailableStatesForAdminUser(recidivizUser, lanternUser);
   const availableStates = availableStateCodes.map(
     (code) => ({ value: code, label: getStateNameForCode(code) }),
   );
 
   const [selectedState, setSelectedState] = useState(
     {
-      value: getCurrentStateForRecidivizUsers(),
-      label: getStateNameForCode(getCurrentStateForRecidivizUsers()),
+      value: getCurrentStateForAdminUsers(isRecidivizUser, isLanternUser),
+      label: getStateNameForCode(getCurrentStateForAdminUsers(isRecidivizUser, isLanternUser)),
     },
   );
 
   const selectState = (selectedOption) => {
     const stateCode = selectedOption.value.toLowerCase();
-    setCurrentStateForRecidivizUsers(stateCode);
+    setCurrentStateForAdminUsers(stateCode);
     setSelectedState({ value: stateCode, label: getStateNameForCode(stateCode) });
     // Refresh the entire page
     window.location.reload(false);

@@ -20,7 +20,7 @@ import { Container, Row, Col } from 'reactstrap';
 import Loading from '../components/Loading';
 import { useAuth0 } from '../react-auth0-spa';
 import isDemoMode from '../utils/authentication/demoMode';
-import { getUserStateName, isRecidivizUser } from '../utils/authentication/user';
+import { getUserStateName, isAdminUser } from '../utils/authentication/user';
 import { getDemoUser } from '../utils/authentication/viewAuthentication';
 import StateSelector from '../components/StateSelector';
 
@@ -52,10 +52,10 @@ const Profile = () => {
               <h2>{displayUser.name}</h2>
               <p className="lead text-muted">{displayUser.email}</p>
               <p className="lead text-muted">{getUserStateName(displayUser)}</p>
-              {isRecidivizUser(user) && (
+              {isAdminUser(user) && (
               <div style={{ maxWidth: '33%' }}>
                 <p className="lead text-muted">Current view state:</p>
-                <StateSelector />
+                <StateSelector user={user} />
               </div>
               )}
             </Col>
