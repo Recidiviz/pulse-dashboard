@@ -26,8 +26,8 @@ import {
 } from '../../../utils/charts/toggles';
 import { toInt } from '../../../utils/transforms/labels';
 
-const CHART_LABELS = ['Overall', 'Low Risk', 'Moderate Risk', 'High Risk', 'Very High Risk'];
-const RISK_LEVELS = ['LOW', 'MEDIUM', 'HIGH', 'VERY_HIGH'];
+const CHART_LABELS = ['Overall', 'Not Assessed', 'Low Risk', 'Moderate Risk', 'High Risk', 'Very High Risk'];
+const RISK_LEVELS = ['NOT_ASSESSED', 'LOW', 'MEDIUM', 'HIGH', 'VERY_HIGH'];
 const GENDERS = ['FEMALE', 'MALE'];
 
 const chartId = 'revocationsByGender';
