@@ -19,6 +19,7 @@ import isDemoMode from './demoMode';
 const STATE_NAME_BY_CODE = {
   us_mo: 'Missouri',
   us_nd: 'North Dakota',
+  lantern: 'Lantern',
   recidiviz: 'Recidiviz',
 };
 
@@ -71,6 +72,14 @@ function getUserStateName(user) {
 }
 
 /**
+ * Returns whether or not the given user is a Lantern user, i.e. has access to all Lantern states.
+ */
+function isLanternUser(user) {
+  const stateCode = getUserStateCode(user);
+  return stateCode.toLowerCase() === 'lantern';
+}
+
+/**
  * Returns whether or not the given user is a Recidiviz user, i.e. has access to all states.
  */
 function isRecidivizUser(user) {
@@ -78,9 +87,18 @@ function isRecidivizUser(user) {
   return stateCode.toLowerCase() === 'recidiviz';
 }
 
+/**
+ * Returns whether or not the given user is an admin user, i.e. has access to multiple states.
+ */
+function isAdminUser(user) {
+  return isRecidivizUser(user) || isLanternUser(user);
+}
+
 export {
   getStateNameForCode,
   getUserStateCode,
   getUserStateName,
+  isLanternUser,
   isRecidivizUser,
+  isAdminUser,
 };

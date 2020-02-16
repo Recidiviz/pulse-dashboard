@@ -41,19 +41,55 @@ const STATE_LANDING_VIEWS = {
 
 const LANTERN_STATE_CODES = ['us_mo'];
 
+const ADMIN_STATE_CODES = ['recidiviz', 'lantern'];
+
 /**
- * Returns the list of states which are available to view data for.
+ * Returns the list of states which are available to view data for, across the entire app.
  */
 function getAvailableStates() {
   return Object.keys(STATE_VIEW_COMPONENTS).sort();
 }
 
 /**
- * Returns the first available state in ABC order.
+ * Returns the list of states which are accessible to admin users to view data for.
  */
-function getFirstAvailableState() {
-  const stateCodes = getAvailableStates();
-  return stateCodes[0];
+function getAvailableStatesForAdminUser(isRecidivizUser, isLanternUser) {
+  if (isRecidivizUser) {
+    return getAvailableStates();
+  }
+  if (isLanternUser) {
+    return LANTERN_STATE_CODES;
+  }
+
+  // This function should only be called for admin users who have access to multiple states
+  return [];
+}
+
+/**
+ * Returns the first available state in ABC order from among the available states
+ * for this type of admin user.
+ */
+function getFirstAvailableState(isRecidivizUser, isLanternUser) {
+  if (isRecidivizUser) {
+    const stateCodes = getAvailableStates();
+    return stateCodes[0];
+  }
+  if (isLanternUser) {
+    return LANTERN_STATE_CODES[0];
+  }
+
+  // This function should only be called for admin users who have access to multiple states
+  return null;
+}
+
+/**
+ * Returns the first available state in ABC order from among the available states
+ * for this type of admin user.
+ */
+function getFirstAvailableStateFromStateCode(stateCode) {
+  const isRecidivizUser = stateCode.toLowerCase() === 'recidiviz';
+  const isLanternUser = stateCode.toLowerCase() === 'lantern';
+  return getFirstAvailableState(isRecidivizUser, isLanternUser);
 }
 
 /**
@@ -67,24 +103,43 @@ function getAvailableViewsForState(stateCode) {
   return Object.keys(views);
 }
 
-const CURRENT_STATE_IN_SESSION = 'recidivizUserCurrentStateInSession';
+/**
+ * Returns whether the given "state code" is indicative of an admin user.
+ */
+function isAdminStateCode(stateCode) {
+  return ADMIN_STATE_CODES.includes(stateCode.toLowerCase());
+}
+
+const CURRENT_STATE_IN_SESSION = 'adminUserCurrentStateInSession';
 
 /*
- * For Recidiviz users, returns the current state that should be viewed. This is retrieved from
+ * For admin users, returns the current state that should be viewed. This is retrieved from
  * the sessionStorage cache if already set. Otherwise, picks the first available state in ABC order.
  */
-function getCurrentStateForRecidivizUsers() {
+function getCurrentStateForAdminUsersFromStateCode(stateCode) {
   const fromStorage = sessionStorage.getItem(CURRENT_STATE_IN_SESSION);
   if (!fromStorage) {
-    return getFirstAvailableState();
+    return getFirstAvailableStateFromStateCode(stateCode);
+  }
+  return fromStorage.toLowerCase();
+}
+
+/*
+ * For admin users, returns the current state that should be viewed. This is retrieved from
+ * the sessionStorage cache if already set. Otherwise, picks the first available state in ABC order.
+ */
+function getCurrentStateForAdminUsers(isRecidivizUser, isLanternUser) {
+  const fromStorage = sessionStorage.getItem(CURRENT_STATE_IN_SESSION);
+  if (!fromStorage) {
+    return getFirstAvailableState(isRecidivizUser, isLanternUser);
   }
   return fromStorage.toLowerCase();
 }
 
 /**
- * For Recidiviz users, sets the current state that should be viewed in the sessionStorage cache.
+ * For admin users, sets the current state that should be viewed in the sessionStorage cache.
  */
-function setCurrentStateForRecidivizUsers(stateCode) {
+function setCurrentStateForAdminUsers(stateCode) {
   sessionStorage.setItem(CURRENT_STATE_IN_SESSION, stateCode.toLowerCase());
 }
 
@@ -96,8 +151,8 @@ function setCurrentStateForRecidivizUsers(stateCode) {
  * the state.
  */
 function getComponentForStateView(stateCode, view) {
-  const normalizedCode = (stateCode === 'recidiviz')
-    ? getCurrentStateForRecidivizUsers() : stateCode.toLowerCase();
+  const normalizedCode = isAdminStateCode(stateCode)
+    ? getCurrentStateForAdminUsersFromStateCode(stateCode) : stateCode.toLowerCase();
 
   const stateComponents = STATE_VIEW_COMPONENTS[normalizedCode];
   if (!stateComponents) {
@@ -114,12 +169,12 @@ function getComponentForStateView(stateCode, view) {
 }
 
 /**
- * Returns whether the given stateCode is a lantern state
+ * Returns whether the given stateCode is a Lantern state.
  */
 function isLanternState(stateCode) {
   let normalizedStateCode = stateCode;
-  if (stateCode === 'recidiviz') {
-    normalizedStateCode = getCurrentStateForRecidivizUsers();
+  if (isAdminStateCode(stateCode)) {
+    normalizedStateCode = getCurrentStateForAdminUsersFromStateCode(stateCode);
   }
   return LANTERN_STATE_CODES.includes(normalizedStateCode);
 }
@@ -130,8 +185,8 @@ function isLanternState(stateCode) {
  */
 function getLandingViewForState(stateCode) {
   let normalizedStateCode = stateCode;
-  if (stateCode === 'recidiviz') {
-    normalizedStateCode = getCurrentStateForRecidivizUsers();
+  if (isAdminStateCode(stateCode)) {
+    normalizedStateCode = getCurrentStateForAdminUsersFromStateCode(stateCode);
   }
   return STATE_LANDING_VIEWS[normalizedStateCode] || '/';
 }
@@ -139,10 +194,12 @@ function getLandingViewForState(stateCode) {
 export {
   isLanternState,
   getAvailableStates,
-  getFirstAvailableState,
+  getAvailableStatesForAdminUser,
   getAvailableViewsForState,
   getLandingViewForState,
   getComponentForStateView,
-  getCurrentStateForRecidivizUsers,
-  setCurrentStateForRecidivizUsers,
+  getCurrentStateForAdminUsers,
+  getCurrentStateForAdminUsersFromStateCode,
+  setCurrentStateForAdminUsers,
+  isAdminStateCode,
 };

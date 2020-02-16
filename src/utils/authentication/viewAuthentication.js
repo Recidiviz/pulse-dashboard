@@ -18,7 +18,7 @@
 import isDemoMode from './demoMode';
 import { getUserStateCode } from './user';
 import {
-  getAvailableViewsForState, getCurrentStateForRecidivizUsers,
+  getAvailableViewsForState, getCurrentStateForAdminUsersFromStateCode, isAdminStateCode,
 } from '../../views/stateViews';
 
 /**
@@ -49,8 +49,8 @@ function canShowAuthenticatedView(isAuthenticated) {
  */
 function isViewAvailableForUserState(user, view) {
   const stateCode = getUserStateCode(user);
-  const normalizedCode = (stateCode.toLowerCase() === 'recidiviz')
-    ? getCurrentStateForRecidivizUsers() : stateCode.toLowerCase();
+  const normalizedCode = isAdminStateCode(stateCode)
+    ? getCurrentStateForAdminUsersFromStateCode(stateCode) : stateCode.toLowerCase();
 
   const permittedViews = getAvailableViewsForState(normalizedCode);
   if (!permittedViews) {
