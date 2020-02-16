@@ -207,6 +207,9 @@ const Revocations = () => {
                 <div className="layer w-100 pX-20 pT-20">
                   <h6 className="lh-1">
                     REVOCATIONS BY OFFICER
+                    {chartDistrict === 'all' && (
+                      <span className="pL-10 c-orange-500 ti-alert" data-toggle="tooltip" data-placement="bottom" title="Exporting this chart as an image will not include officer IDs unless a specific P&P office is selected from the Explore bar." />
+                    )}
                     <span className="fa-pull-right">
                       <div className="dropdown show">
                         <a className="btn btn-secondary btn-sm dropdown-toggle" href="#" role="button" id="exportDropdownMenuButton-revocationsByOfficer" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
