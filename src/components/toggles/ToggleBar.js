@@ -16,6 +16,7 @@
 // =============================================================================
 
 import React from 'react';
+import Sticky from 'react-sticky-fill';
 
 import DistrictToggle from './DistrictToggle';
 import MetricTypeToggle from './MetricTypeToggle';
@@ -24,49 +25,49 @@ import MetricPeriodToggle from './MetricPeriodToggle';
 
 const TOGGLE_STYLE = {
   zIndex: 700,
-  position: 'sticky',
   top: 55,
 };
 
 const ToggleBar = (props) => (
-  <div className="row gap-20 pB-10" style={TOGGLE_STYLE}>
-    {/* Figure out how to make sticky top work without hiding the dropdown */}
-    <div className="col-md-12">
-      <div className="bd bgc-white p-20">
-        <div className="row">
-          {props.setChartMetricType && (
-          <div className="col-md-2">
-            <MetricTypeToggle onMetricTypeUpdate={props.setChartMetricType} />
-          </div>
-          )}
+  <Sticky style={TOGGLE_STYLE}>
+    <div className="row gap-20 pB-10">
+      <div className="col-md-12">
+        <div className="bd bgc-white p-20">
+          <div className="row">
+            {props.setChartMetricType && (
+            <div className="col-md-2">
+              <MetricTypeToggle onMetricTypeUpdate={props.setChartMetricType} />
+            </div>
+            )}
 
-          {props.setChartMetricPeriodMonths && (
-          <div className="col-md-4">
-            <MetricPeriodToggle onMetricPeriodMonthsUpdate={props.setChartMetricPeriodMonths} />
-          </div>
-          )}
+            {props.setChartMetricPeriodMonths && (
+            <div className="col-md-4">
+              <MetricPeriodToggle onMetricPeriodMonthsUpdate={props.setChartMetricPeriodMonths} />
+            </div>
+            )}
 
-          {props.setChartSupervisionType && (
-          <div className="col-md-3">
-            <SupervisionTypeToggle onSupervisionTypeUpdate={props.setChartSupervisionType} />
-          </div>
-          )}
+            {props.setChartSupervisionType && (
+            <div className="col-md-3">
+              <SupervisionTypeToggle onSupervisionTypeUpdate={props.setChartSupervisionType} />
+            </div>
+            )}
 
-          {props.setChartDistrict && (
-          <div className="col-md-2">
-            <DistrictToggle
-              districtOffices={props.districtOffices}
-              districts={props.availableDistricts}
-              onDistrictUpdate={props.setChartDistrict}
-              stateCode={props.stateCode}
-              replaceLa={props.replaceLa}
-            />
+            {props.setChartDistrict && (
+            <div className="col-md-2">
+              <DistrictToggle
+                districtOffices={props.districtOffices}
+                districts={props.availableDistricts}
+                onDistrictUpdate={props.setChartDistrict}
+                stateCode={props.stateCode}
+                replaceLa={props.replaceLa}
+              />
+            </div>
+            )}
           </div>
-          )}
         </div>
       </div>
     </div>
-  </div>
+  </Sticky>
 );
 
 export default ToggleBar;

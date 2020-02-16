@@ -17,6 +17,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Select from 'react-select';
+import Sticky from 'react-sticky-fill';
 
 import Loading from '../../../components/Loading';
 import '../../../assets/styles/index.scss';
@@ -75,7 +76,6 @@ const DEFAULT_DISTRICT = 'All';
 
 const TOGGLE_STYLE = {
   zIndex: 700,
-  position: 'sticky',
   top: 65,
 };
 
@@ -242,37 +242,39 @@ const Revocations = () => {
 
   return (
     <main className="dashboard bgc-grey-100">
-      <div className="top-level-filters d-f" style={TOGGLE_STYLE}>
-        <div className="top-level-filter">
-          <h4>Time Period</h4>
-          <Select
-            options={METRIC_PERIODS}
-            onChange={(option) => updateFilters({ metricPeriodMonths: option.value })}
-            value={METRIC_PERIODS.filter((option) => option.value === filters.metricPeriodMonths)}
-          />
+      <Sticky style={TOGGLE_STYLE}>
+        <div className="top-level-filters d-f">
+          <div className="top-level-filter">
+            <h4>Time Period</h4>
+            <Select
+              options={METRIC_PERIODS}
+              onChange={(option) => updateFilters({ metricPeriodMonths: option.value })}
+              value={METRIC_PERIODS.filter((option) => option.value === filters.metricPeriodMonths)}
+            />
+          </div>
+          <div className="top-level-filter">
+            <h4>District</h4>
+            <Select
+              options={districts}
+              onChange={(option) => updateFilters({ district: option.value })}
+            />
+          </div>
+          <div className="top-level-filter">
+            <h4>Supervision Level</h4>
+            <Select
+              options={CHARGE_CATEGORIES}
+              onChange={(option) => updateFilters({ chargeCategory: option.value })}
+            />
+          </div>
+          <div className="top-level-filter">
+            <h4>Supervision Type</h4>
+            <Select
+              options={SUPERVISION_TYPES}
+              onChange={(option) => updateFilters({ supervisionType: option.value })}
+            />
+          </div>
         </div>
-        <div className="top-level-filter">
-          <h4>District</h4>
-          <Select
-            options={districts}
-            onChange={(option) => updateFilters({ district: option.value })}
-          />
-        </div>
-        <div className="top-level-filter">
-          <h4>Supervision Level</h4>
-          <Select
-            options={CHARGE_CATEGORIES}
-            onChange={(option) => updateFilters({ chargeCategory: option.value })}
-          />
-        </div>
-        <div className="top-level-filter">
-          <h4>Supervision Type</h4>
-          <Select
-            options={SUPERVISION_TYPES}
-            onChange={(option) => updateFilters({ supervisionType: option.value })}
-          />
-        </div>
-      </div>
+      </Sticky>
       <div className="bgc-white p-20 m-20">
         <RevocationCountOverTime
           data={applyAllFilters(apiData.revocations_matrix_by_month, ['metricPeriodMonths'])}
