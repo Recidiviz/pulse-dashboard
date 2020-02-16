@@ -175,6 +175,16 @@ function updateTooltipForMetricType(metricType, tooltipItem, data) {
   return standardTooltipForCountMetric(tooltipItem, data);
 }
 
+function updateTooltipForMetricTypeWithCounts(
+  metricType, tooltipItem, data, numerators, denominators,
+) {
+  if (metricType === 'rates') {
+    return tooltipForRateMetricWithCounts(tooltipItem, data, numerators, denominators);
+  }
+
+  return standardTooltipForCountMetric(tooltipItem, data);
+}
+
 function filterDatasetByMetricPeriodMonths(dataset, metricPeriodMonths) {
   return dataset.filter((element) => element.metric_period_months === metricPeriodMonths);
 }
@@ -238,6 +248,7 @@ export {
   tooltipForRateMetricWithCounts,
   tooltipForRateMetricWithNestedCounts,
   updateTooltipForMetricType,
+  updateTooltipForMetricTypeWithCounts,
   filterDatasetByMetricPeriodMonths,
   filterDatasetByDistrict,
   filterDatasetBySupervisionType,
