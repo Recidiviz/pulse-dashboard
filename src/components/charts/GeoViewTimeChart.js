@@ -495,7 +495,7 @@ class GeoViewTimeChart extends Component {
                       marker={office}
                       style={{
                         default: {
-                          fill: colorForMarker(office, this.maxValues, metricType, metricPeriodMonths, supervisionType, true),
+                          fill: colorForMarker(office, this.maxValues, metricType, metricPeriodMonths, supervisionType, true, possibleNegativeValues),
                           stroke: '#F5F6F7',
                           strokeWidth: '3',
                         },
