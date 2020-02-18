@@ -161,7 +161,7 @@ function toggleTooltipForCounty(
 }
 
 function colorForMarker(
-  office, maxValues, metricType, metricPeriodMonths, supervisionType, useDarkMode,
+  office, maxValues, metricType, metricPeriodMonths, supervisionType, useDarkMode, possibleNegative,
 ) {
   const supervisionTypeKey = normalizedSupervisionTypeKey(supervisionType);
 
@@ -171,7 +171,7 @@ function colorForMarker(
   }
   const maxValue = relatedMaxValue(maxValues, metricType, metricPeriodMonths, supervisionTypeKey);
 
-  return colorForValue(Math.abs(dataValue), maxValue, useDarkMode);
+  return colorForValue(dataValue, maxValue, useDarkMode, possibleNegative);
 }
 
 function sortChartDataPoints(dataPoints, metricType, metricPeriodMonths, supervisionType) {
@@ -435,6 +435,7 @@ class GeoViewTimeChart extends Component {
     const {
       metricType, metricPeriodMonths, supervisionType,
       keyedByOffice, centerLong, centerLat, chartId, stateCode,
+      possibleNegativeValues,
     } = this.props;
 
     const sortedDataPoints = sortChartDataPoints(
@@ -543,13 +544,13 @@ class GeoViewTimeChart extends Component {
                     projection={projection}
                     style={{
                       default: {
-                        fill: colorForMarker(getOfficeForCounty(this.offices, geography.properties.NAME, stateCode), this.maxValues, metricType, metricPeriodMonths, supervisionType, false),
+                        fill: colorForMarker(getOfficeForCounty(this.offices, geography.properties.NAME, stateCode), this.maxValues, metricType, metricPeriodMonths, supervisionType, false, possibleNegativeValues),
                         stroke: COLORS['grey-700'],
                         strokeWidth: 0.2,
                         outline: 'none',
                       },
                       hover: {
-                        fill: colorForMarker(getOfficeForCounty(this.offices, geography.properties.NAME, stateCode), this.maxValues, metricType, metricPeriodMonths, supervisionType, true),
+                        fill: colorForMarker(getOfficeForCounty(this.offices, geography.properties.NAME, stateCode), this.maxValues, metricType, metricPeriodMonths, supervisionType, true, possibleNegativeValues),
                         stroke: COLORS['grey-700'],
                         strokeWidth: 0.2,
                         outline: 'none',
