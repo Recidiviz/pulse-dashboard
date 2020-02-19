@@ -226,6 +226,7 @@ const Reincarcerations = () => {
                       metricType={chartMetricType}
                       metricPeriodMonths={chartMetricPeriodMonths}
                       keyedByOffice={false}
+                      possibleNegativeValues
                       stateCode="us_nd"
                       dataPointsByOffice={apiData.admissions_versus_releases_by_period}
                       numeratorKeys={['population_change']}
