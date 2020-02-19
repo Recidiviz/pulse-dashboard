@@ -208,7 +208,7 @@ const Revocations = () => {
                   <h6 className="lh-1">
                     REVOCATIONS BY OFFICER
                     {chartDistrict === 'all' && (
-                      <span className="pL-10 c-orange-500 ti-alert" data-toggle="tooltip" data-placement="bottom" title="Exporting this chart as an image will not include officer IDs unless a specific P&P office is selected from the Explore bar." />
+                      <span className="pL-10 toggle-alert ti-alert" data-toggle="tooltip" data-placement="bottom" title="Exporting this chart as an image will not include officer IDs unless a specific P&P office is selected from the Explore bar." />
                     )}
                     <span className="fa-pull-right">
                       <div className="dropdown show">
@@ -283,7 +283,7 @@ const Revocations = () => {
                   <h6 className="lh-1">
                     REVOCATIONS BY SUPERVISION TYPE
                     {chartSupervisionType !== 'all' && (
-                      <span className="pL-10 c-orange-500 ti-alert" data-toggle="tooltip" data-placement="bottom" title="This graph is showing all individuals on supervision. It doesn’t support showing only individuals on probation or only individuals on parole." />
+                      <span className="pL-10 toggle-alert ti-alert" data-toggle="tooltip" data-placement="bottom" title="This graph is showing all individuals on supervision. It doesn’t support showing only individuals on probation or only individuals on parole." />
                     )}
                     <span className="fa-pull-right">
                       <div className="dropdown show">
@@ -430,7 +430,7 @@ const Revocations = () => {
                   <h6 className="lh-1">
                     ADMISSIONS BY TYPE
                     {((chartSupervisionType !== 'all' || chartDistrict !== 'all') && chartMetricType === 'rates') && (
-                      <span className="pL-10 c-orange-500 ti-alert" data-toggle="tooltip" data-placement="bottom" title="This graph is showing both non-revocation admissions to prison and admissions due to revocation from both parole and probation. We cannot show percentages of admissions broken down by supervision type or district because non-revocation admissions to prison cannot be broken down along those dimensions." />
+                      <span className="pL-10 toggle-alert ti-alert" data-toggle="tooltip" data-placement="bottom" title="This graph is showing both non-revocation admissions to prison and admissions due to revocation from both parole and probation. We cannot show percentages of admissions broken down by supervision type or district because non-revocation admissions to prison cannot be broken down along those dimensions." />
                     )}
                     <span className="fa-pull-right">
                       <div className="dropdown show">
