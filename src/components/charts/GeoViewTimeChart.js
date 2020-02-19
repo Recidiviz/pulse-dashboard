@@ -39,6 +39,20 @@ const maxMarkerRadius = 35;
 
 const METRIC_PERIODS = ['1', '3', '6', '12', '36'];
 
+const RATIO_CONTAINER_OUTER_STYLE = {
+  position: 'relative',
+  height: 0,
+  paddingBottom: '50%',
+};
+
+const RATIO_CONTAINER_INNER_STYLE = {
+  position: 'absolute',
+  top: 0,
+  left: 0,
+  right: 0,
+  bottom: 0,
+};
+
 function normalizedOfficeKey(officeName) {
   let normalized = toHtmlFriendly(officeName).toLowerCase();
   normalized = normalized.replace(/-/g, '_');
@@ -147,7 +161,7 @@ function toggleTooltipForCounty(
 }
 
 function colorForMarker(
-  office, maxValues, metricType, metricPeriodMonths, supervisionType, useDarkMode,
+  office, maxValues, metricType, metricPeriodMonths, supervisionType, useDarkMode, possibleNegative,
 ) {
   const supervisionTypeKey = normalizedSupervisionTypeKey(supervisionType);
 
@@ -157,7 +171,7 @@ function colorForMarker(
   }
   const maxValue = relatedMaxValue(maxValues, metricType, metricPeriodMonths, supervisionTypeKey);
 
-  return colorForValue(Math.abs(dataValue), maxValue, useDarkMode);
+  return colorForValue(dataValue, maxValue, useDarkMode, possibleNegative);
 }
 
 function sortChartDataPoints(dataPoints, metricType, metricPeriodMonths, supervisionType) {
@@ -421,6 +435,7 @@ class GeoViewTimeChart extends Component {
     const {
       metricType, metricPeriodMonths, supervisionType,
       keyedByOffice, centerLong, centerLat, chartId, stateCode,
+      possibleNegativeValues,
     } = this.props;
 
     const sortedDataPoints = sortChartDataPoints(
@@ -430,126 +445,130 @@ class GeoViewTimeChart extends Component {
     if (keyedByOffice) {
       // Show a choropleth map with colored, sized circles for P&P offices
       return (
-        <div className="map-container">
-          <ComposableMap
-            projection={geoAlbersUsa}
-            projectionConfig={{ scale: 1000 }}
-            width={980}
-            height={580}
-            style={{
-              width: '100%',
-              height: 'auto',
-            }}
-          >
-            <ZoomableGroup center={[centerLong, centerLat]} zoom={8.2}>
-              <Geographies geography={geographyObject}>
-                {(geographies, projection) => geographies.map((geography) => (
-                  <Geography
-                    key={geography.properties.NAME}
-                    geography={geography}
-                    projection={projection}
-                    style={{
-                      default: {
-                        fill: '#F5F6F7',
-                        stroke: COLORS['grey-300'],
-                        strokeWidth: 0.2,
-                        outline: 'none',
-                      },
-                      hover: {
-                        fill: '#F5F6F7',
-                        stroke: COLORS['grey-300'],
-                        strokeWidth: 0.2,
-                        outline: 'none',
-                      },
-                      pressed: {
-                        fill: '#F5F6F7',
-                        stroke: COLORS['grey-300'],
-                        strokeWidth: 0.2,
-                        outline: 'none',
-                      },
-                    }}
-                  />
-                ))
-                }
-              </Geographies>
-              <Markers>
-                {sortedDataPoints.map((office) => (
-                  <Marker
-                    key={office.officeName}
-                    marker={office}
-                    style={{
-                      default: {
-                        fill: colorForMarker(office, this.maxValues, metricType, metricPeriodMonths, supervisionType, true),
-                        stroke: '#F5F6F7',
-                        strokeWidth: '3',
-                      },
-                      hover: { fill: COLORS['blue-standard'] },
-                      pressed: { fill: COLORS['blue-standard'] },
-                    }}
-                  >
-                    <circle
-                      data-tip={toggleTooltip(office, metricType, metricPeriodMonths, supervisionType)}
-                      cx={0}
-                      cy={0}
-                      r={radiusOfMarker(office, this.maxValues, metricType, metricPeriodMonths, supervisionType)}
+        <div className="map-container" style={RATIO_CONTAINER_OUTER_STYLE}>
+          <div style={RATIO_CONTAINER_INNER_STYLE}>
+            <ComposableMap
+              projection={geoAlbersUsa}
+              projectionConfig={{ scale: 1000 }}
+              width={980}
+              height={580}
+              style={{
+                width: '100%',
+                height: 'auto',
+              }}
+            >
+              <ZoomableGroup center={[centerLong, centerLat]} zoom={8.2}>
+                <Geographies geography={geographyObject}>
+                  {(geographies, projection) => geographies.map((geography) => (
+                    <Geography
+                      key={geography.properties.NAME}
+                      geography={geography}
+                      projection={projection}
+                      style={{
+                        default: {
+                          fill: '#F5F6F7',
+                          stroke: COLORS['grey-300'],
+                          strokeWidth: 0.2,
+                          outline: 'none',
+                        },
+                        hover: {
+                          fill: '#F5F6F7',
+                          stroke: COLORS['grey-300'],
+                          strokeWidth: 0.2,
+                          outline: 'none',
+                        },
+                        pressed: {
+                          fill: '#F5F6F7',
+                          stroke: COLORS['grey-300'],
+                          strokeWidth: 0.2,
+                          outline: 'none',
+                        },
+                      }}
                     />
-                  </Marker>
-                ))}
-              </Markers>
-            </ZoomableGroup>
-          </ComposableMap>
-          <ReactTooltip />
+                  ))
+                  }
+                </Geographies>
+                <Markers>
+                  {sortedDataPoints.map((office) => (
+                    <Marker
+                      key={office.officeName}
+                      marker={office}
+                      style={{
+                        default: {
+                          fill: colorForMarker(office, this.maxValues, metricType, metricPeriodMonths, supervisionType, true, possibleNegativeValues),
+                          stroke: '#F5F6F7',
+                          strokeWidth: '3',
+                        },
+                        hover: { fill: COLORS['blue-standard'] },
+                        pressed: { fill: COLORS['blue-standard'] },
+                      }}
+                    >
+                      <circle
+                        data-tip={toggleTooltip(office, metricType, metricPeriodMonths, supervisionType)}
+                        cx={0}
+                        cy={0}
+                        r={radiusOfMarker(office, this.maxValues, metricType, metricPeriodMonths, supervisionType)}
+                      />
+                    </Marker>
+                  ))}
+                </Markers>
+              </ZoomableGroup>
+            </ComposableMap>
+            <ReactTooltip />
+          </div>
         </div>
       );
     }
 
     // Show just a regular choropleth, with no circles for offices
     return (
-      <div className="map-container" id={chartId}>
-        <ComposableMap
-          projection={geoAlbersUsa}
-          projectionConfig={{ scale: 1000 }}
-          width={980}
-          height={500}
-          style={{
-            width: '100%',
-            height: 'auto',
-          }}
-        >
-          <ZoomableGroup center={[centerLong, centerLat]} zoom={7} disablePanning>
-            <Geographies geography={geographyObject} disableOptimization>
-              {(geographies, projection) => geographies.map((geography) => (
-                <Geography
-                  key={geography.properties.NAME}
-                  data-tip={toggleTooltipForCounty(this.offices, geography.properties.NAME, metricType, metricPeriodMonths, supervisionType, stateCode)}
-                  geography={geography}
-                  projection={projection}
-                  style={{
-                    default: {
-                      fill: colorForMarker(getOfficeForCounty(this.offices, geography.properties.NAME, stateCode), this.maxValues, metricType, metricPeriodMonths, supervisionType, false),
-                      stroke: COLORS['grey-700'],
-                      strokeWidth: 0.2,
-                      outline: 'none',
-                    },
-                    hover: {
-                      fill: colorForMarker(getOfficeForCounty(this.offices, geography.properties.NAME, stateCode), this.maxValues, metricType, metricPeriodMonths, supervisionType, true),
-                      stroke: COLORS['grey-700'],
-                      strokeWidth: 0.2,
-                      outline: 'none',
-                    },
-                    pressed: {
-                      fill: '#CFD8DC',
-                      stroke: COLORS['grey-700'],
-                      strokeWidth: 0.2,
-                      outline: 'none',
-                    },
-                  }}
-                />
-              ))}
-            </Geographies>
-          </ZoomableGroup>
-        </ComposableMap>
-        <ReactTooltip />
+      <div id={chartId} className="map-container" style={RATIO_CONTAINER_OUTER_STYLE}>
+        <div style={RATIO_CONTAINER_INNER_STYLE}>
+          <ComposableMap
+            projection={geoAlbersUsa}
+            projectionConfig={{ scale: 1000 }}
+            width={980}
+            height={500}
+            style={{
+              width: '100%',
+              height: 'auto',
+            }}
+          >
+            <ZoomableGroup center={[centerLong, centerLat]} zoom={7} disablePanning>
+              <Geographies geography={geographyObject} disableOptimization>
+                {(geographies, projection) => geographies.map((geography) => (
+                  <Geography
+                    key={geography.properties.NAME}
+                    data-tip={toggleTooltipForCounty(this.offices, geography.properties.NAME, metricType, metricPeriodMonths, supervisionType, stateCode)}
+                    geography={geography}
+                    projection={projection}
+                    style={{
+                      default: {
+                        fill: colorForMarker(getOfficeForCounty(this.offices, geography.properties.NAME, stateCode), this.maxValues, metricType, metricPeriodMonths, supervisionType, false, possibleNegativeValues),
+                        stroke: COLORS['grey-700'],
+                        strokeWidth: 0.2,
+                        outline: 'none',
+                      },
+                      hover: {
+                        fill: colorForMarker(getOfficeForCounty(this.offices, geography.properties.NAME, stateCode), this.maxValues, metricType, metricPeriodMonths, supervisionType, true, possibleNegativeValues),
+                        stroke: COLORS['grey-700'],
+                        strokeWidth: 0.2,
+                        outline: 'none',
+                      },
+                      pressed: {
+                        fill: '#CFD8DC',
+                        stroke: COLORS['grey-700'],
+                        strokeWidth: 0.2,
+                        outline: 'none',
+                      },
+                    }}
+                  />
+                ))}
+              </Geographies>
+            </ZoomableGroup>
+          </ComposableMap>
+          <ReactTooltip />
+        </div>
       </div>
     );
   }
