@@ -92,7 +92,7 @@ const Snapshots = () => {
                   <h6 className="lh-1">
                     SUCCESSFUL COMPLETION OF SUPERVISION
                     {chartDistrict !== 'all' && (
-                      <span className="pL-10 c-orange-500 ti-alert" data-toggle="tooltip" data-placement="bottom" title="Filtering this graph by a specific office requires knowing the officer that was assigned to historical periods of supervision. Because the Docstars data system does not currently keep a full historical record of officer assignments, we cannot track this measurement by office prior to when we first began ingesting data from DOCR." />
+                      <span className="pL-10 toggle-alert ti-alert" data-toggle="tooltip" data-placement="bottom" title="Filtering this graph by a specific office requires knowing the officer that was assigned to historical periods of supervision. Because the Docstars data system does not currently keep a full historical record of officer assignments, we cannot track this measurement by office prior to when we first began ingesting data from DOCR." />
                     )}
                     <span className="fa-pull-right">
                       <div className="geo-view-button pR-10">
@@ -286,7 +286,7 @@ const Snapshots = () => {
                   <h6 className="lh-1">
                     DAYS AT LIBERTY (AVERAGE)
                     {(chartMetricType !== 'counts' || chartSupervisionType !== 'all' || chartDistrict !== 'all') && (
-                      <span className="pL-10 c-orange-500 ti-alert" data-toggle="tooltip" data-placement="bottom" title="This graph is showing average days at liberty for all reincarcerated individuals. It does not support showing this metric as a rate. As individuals can be reincarcerated after completing supervision, this chart also does not support showing information only about a certain office or individuals on a certain type of supervision." />
+                      <span className="pL-10 toggle-alert ti-alert" data-toggle="tooltip" data-placement="bottom" title="This graph is showing average days at liberty for all reincarcerated individuals. It does not support showing this metric as a rate. As individuals can be reincarcerated after completing supervision, this chart also does not support showing information only about a certain office or individuals on a certain type of supervision." />
                     )}
                     <span className="fa-pull-right">
                       <div className="dropdown show">
@@ -352,10 +352,10 @@ const Snapshots = () => {
                   <h6 className="lh-1">
                     LSI-R SCORE CHANGES (AVERAGE)
                     {chartMetricType !== 'counts' && (
-                      <span className="pL-10 c-orange-500 ti-alert" data-toggle="tooltip" data-placement="bottom" title="This graph is showing average LSI-R score change. It does not support showing this metric as a rate." />
+                      <span className="pL-10 toggle-alert ti-alert" data-toggle="tooltip" data-placement="bottom" title="This graph is showing average LSI-R score change. It does not support showing this metric as a rate." />
                     )}
                     {chartDistrict !== 'all' && (
-                      <span className="pL-10 c-orange-500 ti-alert" data-toggle="tooltip" data-placement="bottom" title="Filtering this graph by a specific office requires knowing the officer that was assigned to historical periods of supervision. Because the Docstars data system does not currently keep a full historical record of officer assignments, we cannot track this measurement by office prior to when we first began ingesting data from DOCR." />
+                      <span className="pL-10 toggle-alert ti-alert" data-toggle="tooltip" data-placement="bottom" title="Filtering this graph by a specific office requires knowing the officer that was assigned to historical periods of supervision. Because the Docstars data system does not currently keep a full historical record of officer assignments, we cannot track this measurement by office prior to when we first began ingesting data from DOCR." />
                     )}
                     <span className="fa-pull-right">
                       <div className="geo-view-button pR-10">
