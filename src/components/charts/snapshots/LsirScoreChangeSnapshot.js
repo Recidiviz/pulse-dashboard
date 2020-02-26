@@ -195,7 +195,7 @@ const LsirScoreChangeSnapshot = (props) => {
     const trendlineValues = chart.props.data.datasets[1].data;
     const trendlineText = trendlineGoalText(trendlineValues, GOAL);
 
-    const title = `The average change in LSI-R scores between first reassessment and termination of supervision has been <b style='color:#809AE5'> trending ${trendlineText}. </b>`;
+    const title = `The average change in LSI-R scores between first reassessment and termination of supervision has been <span class='fs-block header-highlight'>trending ${trendlineText}.</span>`;
     header.innerHTML = title;
   } else if (header) {
     header.innerHTML = '';

@@ -123,22 +123,7 @@ ul.explore-choices {
   color: #F44336;
 }
 
-// ul.snapshot-why
-// {
-// 	list-style-type: none;
-// }
-//
-// ul.snapshot-why li
-// {
-// 	text-indent: -1.4em;
-// }
-//
-// ul.snapshot-why li:before
-// {
-// 	font-family: bullets;
-// 	float: left;
-// 	width: 1.4em;
-// }
-//
-// ul.snapshot-why li.arrow-up:before { content: "\e627" !important; }
-// ul.snapshot-why li.arrow-down:before { content: "\e62a" !important; }
+.header-highlight {
+  color: #809AE5;
+  font-weight: bolder;
+}

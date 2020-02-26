@@ -179,7 +179,7 @@ const ReincarcerationCountOverTime = (props) => {
   const header = document.getElementById(props.header);
 
   if (header && mostRecentValue !== null && canDisplayGoal(GOAL, props)) {
-    const title = `There have been <b style='color:#809AE5'>${mostRecentValue} reincarcerations</b> to a DOCR facility this month so far.`;
+    const title = `There have been <span class='fs-block header-highlight'>${mostRecentValue} reincarcerations</span> to a DOCR facility this month so far.`;
     header.innerHTML = title;
   } else if (header) {
     header.innerHTML = '';
