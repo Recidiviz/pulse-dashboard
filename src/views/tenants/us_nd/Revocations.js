@@ -121,7 +121,7 @@ const Revocations = () => {
                 </div>
                 { /* TODO(XXX): Figure out why map will not show when delegated to by the Chart.js
                 chart. Then we can just encapsulate this logic inside of a single component. */ }
-                <div className="layer w-100 p-20">
+                <div className="layer w-100 p-20 fs-block">
                   {geoViewEnabledRCOT === false && (
                     <RevocationCountOverTime
                       metricType={chartMetricType}
@@ -223,7 +223,7 @@ const Revocations = () => {
                     </span>
                   </h6>
                 </div>
-                <div className="layer w-100 p-20">
+                <div className="layer w-100 p-20 fs-block">
                   <RevocationCountByOfficer
                     metricType={chartMetricType}
                     metricPeriodMonths={chartMetricPeriodMonths}
@@ -298,7 +298,7 @@ const Revocations = () => {
                     </span>
                   </h6>
                 </div>
-                <div className="layer w-100 p-20">
+                <div className="layer w-100 p-20 fs-block">
                   <RevocationCountBySupervisionType
                     metricType={chartMetricType}
                     metricPeriodMonths={chartMetricPeriodMonths}
@@ -365,7 +365,7 @@ const Revocations = () => {
                     </span>
                   </h6>
                 </div>
-                <div className="layer w-100 p-20">
+                <div className="layer w-100 p-20 fs-block">
                   <RevocationCountByViolationType
                     metricType={chartMetricType}
                     metricPeriodMonths={chartMetricPeriodMonths}
@@ -445,7 +445,7 @@ const Revocations = () => {
                     </span>
                   </h6>
                 </div>
-                <div className="layer w-100 p-20">
+                <div className="layer w-100 p-20 fs-block">
                   <AdmissionCountsByType
                     metricType={chartMetricType}
                     supervisionType={chartSupervisionType}
@@ -529,7 +529,7 @@ const Revocations = () => {
                   </h6>
                 </div>
                 <div className="layer w-100 pX-20 pT-20 row">
-                  <div className="layer w-100 p-20">
+                  <div className="layer w-100 p-20 fs-block">
                     <RevocationProportionByRace
                       metricType={chartMetricType}
                       metricPeriodMonths={chartMetricPeriodMonths}

@@ -129,7 +129,7 @@ const RevocationsOverTime = (props) => {
         {getTrailingLabelFromMetricPeriodMonthsToggle(props.metricPeriodMonths)}
       </h6>
 
-      <div className="chart-container" style={{ position: 'relative', height: '180px' }}>
+      <div className="chart-container fs-block" style={{ position: 'relative', height: '180px' }}>
         {chart}
       </div>
     </div>

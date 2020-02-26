@@ -192,7 +192,7 @@ const RevocationMatrix = (props) => {
         <div className="y-label" data-html2canvas-ignore>
           Most severe violation reported (within 6 months before the revocation)
         </div>
-        <div className={`matrix ${isFiltered ? 'is-filtered' : ''}`}>
+        <div className={`matrix ${isFiltered ? 'is-filtered' : ''} fs-block`}>
           <div className="violation-counts">
             <span className="empty-cell" />
             {VIOLATION_COUNTS.map((count, i) => (

@@ -146,7 +146,9 @@ const RevocationsByRiskLevel = (props) => {
         {`${getTrailingLabelFromMetricPeriodMonthsToggle(props.metricPeriodMonths)} (${getPeriodLabelFromMetricPeriodMonthsToggle(props.metricPeriodMonths)})`}
       </h6>
 
-      {chart}
+      <div className="fs-block">
+        {chart}
+      </div>
     </div>
   );
 };

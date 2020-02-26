@@ -119,7 +119,7 @@ const Snapshots = () => {
                 </div>
                 <div className="layer w-100 p-20">
                   <div className="ai-c jc-c gapX-20">
-                    <div className="col-md-12">
+                    <div className="col-md-12 fs-block">
                       { /* TODO(XXX): Figure out why map will not show when delegated to by the Chart.js
                       chart. Then we can just encapsulate this logic inside of a single component. */ }
                       {geoViewEnabledSCOS === false && (
@@ -212,7 +212,7 @@ const Snapshots = () => {
                 </div>
                 <div className="layer w-100 p-20">
                   <div className="ai-c jc-c gapX-20">
-                    <div className="col-md-12">
+                    <div className="col-md-12 fs-block">
                       {geoViewEnabledPDTR === false && (
                         <RevocationAdmissionsSnapshot
                           metricType={chartMetricType}
@@ -306,7 +306,7 @@ const Snapshots = () => {
                 </div>
                 <div className="layer w-100 p-20">
                   <div className="ai-c jc-c gapX-20">
-                    <div className="col-md-12">
+                    <div className="col-md-12 fs-block">
                       <DaysAtLibertySnapshot
                         metricPeriodMonths={chartMetricPeriodMonths}
                         daysAtLibertyByMonth={apiData.avg_days_at_liberty_by_month}
@@ -382,7 +382,7 @@ const Snapshots = () => {
                 </div>
                 <div className="layer w-100 p-20">
                   <div className="ai-c jc-c gapX-20">
-                    <div className="col-md-12">
+                    <div className="col-md-12 fs-block">
                       {geoViewEnabledALSI === false && (
                         <LsirScoreChangeSnapshot
                           metricPeriodMonths={chartMetricPeriodMonths}
