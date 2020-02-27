@@ -20,12 +20,13 @@ import { Line } from 'react-chartjs-2';
 import ExportMenu from '../ExportMenu';
 
 import { COLORS } from '../../../assets/scripts/constants/colors';
+import { labelCurrentMonth, currentMonthBox } from '../../../utils/charts/currentSpan';
 import {
   getMonthCountFromMetricPeriodMonthsToggle, getTrailingLabelFromMetricPeriodMonthsToggle,
   centerSingleMonthDatasetIfNecessary,
 } from '../../../utils/charts/toggles';
 import { sortFilterAndSupplementMostRecentMonths } from '../../../utils/transforms/datasets';
-import { toInt, labelCurrentMonth } from '../../../utils/transforms/labels';
+import { toInt } from '../../../utils/transforms/labels';
 import { monthNamesWithYearsFromNumbers } from '../../../utils/transforms/months';
 
 const RevocationsOverTime = (props) => {
@@ -95,7 +96,6 @@ const RevocationsOverTime = (props) => {
           xAxes: [{
             ticks: {
               autoSkip: false,
-              callback: labelCurrentMonth,
             },
           }],
           yAxes: [{
@@ -111,7 +111,11 @@ const RevocationsOverTime = (props) => {
         tooltips: {
           backgroundColor: COLORS['grey-800-light'],
           mode: 'x',
+          callbacks: {
+            title: (tooltipItem) => labelCurrentMonth(tooltipItem, chartLabels),
+          },
         },
+        annotation: currentMonthBox('currentMonthBoxRevocationsOverTime', chartLabels),
       }}
     />
   );
