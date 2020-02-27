@@ -90,9 +90,9 @@ const RevocationsByRiskLevel = (props) => {
         labels: chartLabels,
         datasets: [{
           label: 'Revocation rate',
-          backgroundColor: COLORS['orange-500'],
-          hoverBackgroundColor: COLORS['orange-500'],
-          hoverBorderColor: COLORS['orange-500'],
+          backgroundColor: COLORS['lantern-orange'],
+          hoverBackgroundColor: COLORS['lantern-orange'],
+          hoverBorderColor: COLORS['lantern-orange'],
           data: chartDataPoints,
         }],
       }}

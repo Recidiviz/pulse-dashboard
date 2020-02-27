@@ -100,10 +100,10 @@ const RevocationsByViolation = (props) => {
   const colorTechnicalAndLaw = () => {
     const colors = [];
     for (let i = 0; i < technicalViolationTypes.length; i += 1) {
-      colors.push(COLORS['light-blue-500']);
+      colors.push(COLORS['lantern-light-blue']);
     }
     for (let i = 0; i < lawViolationTypes.length; i += 1) {
-      colors.push(COLORS['orange-500']);
+      colors.push(COLORS['lantern-orange']);
     }
     return colors;
   };
