@@ -100,10 +100,10 @@ const RevocationsByViolation = (props) => {
   const colorTechnicalAndLaw = () => {
     const colors = [];
     for (let i = 0; i < technicalViolationTypes.length; i += 1) {
-      colors.push(COLORS['light-blue-500']);
+      colors.push(COLORS['lantern-light-blue']);
     }
     for (let i = 0; i < lawViolationTypes.length; i += 1) {
-      colors.push(COLORS['orange-500']);
+      colors.push(COLORS['lantern-orange']);
     }
     return colors;
   };
@@ -118,7 +118,7 @@ const RevocationsByViolation = (props) => {
       data={{
         labels: chartLabels,
         datasets: [{
-          label: 'Revocations',
+          label: 'Proportion of violations',
           backgroundColor: colorTechnicalAndLaw(),
           hoverBackgroundColor: colorTechnicalAndLaw(),
           hoverBorderColor: colorTechnicalAndLaw(),
@@ -130,6 +130,7 @@ const RevocationsByViolation = (props) => {
           display: false,
         },
         responsive: true,
+        maintainAspectRatio: false,
         scales: {
           xAxes: [{
             scaleLabel: {
@@ -175,7 +176,7 @@ const RevocationsByViolation = (props) => {
         {`${getTrailingLabelFromMetricPeriodMonthsToggle(props.metricPeriodMonths)} (${getPeriodLabelFromMetricPeriodMonthsToggle(props.metricPeriodMonths)})`}
       </h6>
 
-      <div className="fs-block">
+      <div className="static-chart-container fs-block">
         {chart}
       </div>
     </div>

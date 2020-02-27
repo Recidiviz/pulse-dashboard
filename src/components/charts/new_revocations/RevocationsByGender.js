@@ -101,15 +101,15 @@ const RevocationsByGender = (props) => {
         labels: CHART_LABELS,
         datasets: [{
           label: 'Women',
-          backgroundColor: COLORS['light-blue-500'],
-          hoverBackgroundColor: COLORS['light-blue-500'],
-          hoverBorderColor: COLORS['light-blue-500'],
+          backgroundColor: COLORS['lantern-light-blue'],
+          hoverBackgroundColor: COLORS['lantern-light-blue'],
+          hoverBorderColor: COLORS['lantern-light-blue'],
           data: chartDataPoints[0],
         }, {
           label: 'Men',
-          backgroundColor: COLORS['orange-500'],
-          hoverBackgroundColor: COLORS['orange-500'],
-          hoverBorderColor: COLORS['orange-500'],
+          backgroundColor: COLORS['lantern-orange'],
+          hoverBackgroundColor: COLORS['lantern-orange'],
+          hoverBorderColor: COLORS['lantern-orange'],
           data: chartDataPoints[1],
         }],
       }}
@@ -118,6 +118,7 @@ const RevocationsByGender = (props) => {
           position: 'bottom',
         },
         responsive: true,
+        maintainAspectRatio: false,
         scales: {
           xAxes: [{
             scaleLabel: {
@@ -161,7 +162,7 @@ const RevocationsByGender = (props) => {
         {`${getTrailingLabelFromMetricPeriodMonthsToggle(props.metricPeriodMonths)} (${getPeriodLabelFromMetricPeriodMonthsToggle(props.metricPeriodMonths)})`}
       </h6>
 
-      <div className="fs-block">
+      <div className="static-chart-container fs-block">
         {chart}
       </div>
     </div>

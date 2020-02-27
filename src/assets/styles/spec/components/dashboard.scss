@@ -70,8 +70,8 @@
           background: white;
           border-radius: 25px;
           padding: 0 12px;
-          border: 1px solid rgb(240, 113, 50);
-          color: rgb(240, 113, 50);
+          border: 1px solid rgb(92, 56, 77);
+          color: rgb(92, 56, 77);
           line-height: 24px;
           font-size: 12px;
           font-weight: 600;
@@ -79,7 +79,7 @@
       }
 
       &.is-selected .violation-type-label button {
-        background: rgb(240, 113, 50);
+        background: rgb(92, 56, 77);
         color: white;
       }
 
@@ -125,7 +125,7 @@
     }
 
     .violation-sum {
-      color: rgb(247, 176, 50);
+      color: #8B2D21;
       font-size: 16px;
       font-weight: 600;
     }
@@ -150,7 +150,7 @@
     line-height: 50px;
     text-align: center;
     border-radius: 25px;
-    background: rgb(240, 113, 50);
+    background: rgb(92, 56, 77);
     color: white;
     font-weight: 600;
     margin-left: 20px;
@@ -162,8 +162,8 @@
     border-radius: 25px;
     width: 100%;
     text-align: center;
-    border: 1px solid rgb(240, 113, 50);
-    color: rgb(240, 113, 50);
+    border: 1px solid rgb(92, 56, 77);
+    color: rgb(92, 56, 77);
     line-height: 24px;
     font-size: 12px;
     font-weight: 600;
@@ -203,6 +203,13 @@
   .selected-chart {
     flex: 1;
   }
+}
+
+.static-chart-container {
+  position: relative;
+  margin: auto;
+  height: 60vh;
+  width: 80vw;
 }
 
 .case-table {

@@ -99,9 +99,9 @@ const RevocationsByDistrict = (props) => {
     for (let i = 0; i < chartLabels.length; i += 1) {
       if (props.currentDistrict
         && props.currentDistrict.toLowerCase() === chartLabels[i].toLowerCase()) {
-        colors.push(COLORS['light-blue-500']);
+        colors.push(COLORS['lantern-light-blue']);
       } else {
-        colors.push(COLORS['orange-500']);
+        colors.push(COLORS['lantern-orange']);
       }
     }
     return colors;
@@ -127,6 +127,7 @@ const RevocationsByDistrict = (props) => {
           display: false,
         },
         responsive: true,
+        maintainAspectRatio: false,
         scales: {
           xAxes: [{
             scaleLabel: {
@@ -184,7 +185,7 @@ const RevocationsByDistrict = (props) => {
         </label>
       </div>
 
-      <div className="fs-block">
+      <div className="static-chart-container fs-block">
         {chart}
       </div>
     </div>

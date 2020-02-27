@@ -19,7 +19,7 @@ import React, { useState, useEffect } from 'react';
 import { Bar } from 'react-chartjs-2';
 import ExportMenu from '../ExportMenu';
 
-import { COLORS } from '../../../assets/scripts/constants/colors';
+import { COLORS, COLORS_LANTERN_SET } from '../../../assets/scripts/constants/colors';
 import {
   getTrailingLabelFromMetricPeriodMonthsToggle, getPeriodLabelFromMetricPeriodMonthsToggle,
   tooltipForRateMetricWithNestedCounts,
@@ -100,39 +100,39 @@ const RevocationsByRace = (props) => {
         labels: CHART_LABELS,
         datasets: [{
           label: 'Caucasian',
-          backgroundColor: COLORS['light-blue-600'],
-          hoverBackgroundColor: COLORS['light-blue-600'],
-          hoverBorderColor: COLORS['light-blue-600'],
+          backgroundColor: COLORS_LANTERN_SET[0],
+          hoverBackgroundColor: COLORS_LANTERN_SET[0],
+          hoverBorderColor: COLORS_LANTERN_SET[0],
           data: chartDataPoints[0],
         }, {
           label: 'African American',
-          backgroundColor: COLORS['light-blue-500'],
-          hoverBackgroundColor: COLORS['light-blue-500'],
-          hoverBorderColor: COLORS['light-blue-500'],
+          backgroundColor: COLORS_LANTERN_SET[1],
+          hoverBackgroundColor: COLORS_LANTERN_SET[1],
+          hoverBorderColor: COLORS_LANTERN_SET[1],
           data: chartDataPoints[1],
         }, {
           label: 'Hispanic',
-          backgroundColor: COLORS['light-blue-400'],
-          hoverBackgroundColor: COLORS['light-blue-400'],
-          hoverBorderColor: COLORS['light-blue-400'],
+          backgroundColor: COLORS_LANTERN_SET[2],
+          hoverBackgroundColor: COLORS_LANTERN_SET[2],
+          hoverBorderColor: COLORS_LANTERN_SET[2],
           data: chartDataPoints[2],
         }, {
           label: 'Asian',
-          backgroundColor: COLORS['light-blue-300'],
-          hoverBackgroundColor: COLORS['light-blue-300'],
-          hoverBorderColor: COLORS['light-blue-300'],
+          backgroundColor: COLORS_LANTERN_SET[3],
+          hoverBackgroundColor: COLORS_LANTERN_SET[3],
+          hoverBorderColor: COLORS_LANTERN_SET[3],
           data: chartDataPoints[3],
         }, {
           label: 'Native American',
-          backgroundColor: COLORS['light-blue-200'],
-          hoverBackgroundColor: COLORS['light-blue-200'],
-          hoverBorderColor: COLORS['light-blue-200'],
+          backgroundColor: COLORS_LANTERN_SET[4],
+          hoverBackgroundColor: COLORS_LANTERN_SET[4],
+          hoverBorderColor: COLORS_LANTERN_SET[4],
           data: chartDataPoints[4],
         }, {
           label: 'Pacific Islander',
-          backgroundColor: COLORS['light-blue-100'],
-          hoverBackgroundColor: COLORS['light-blue-100'],
-          hoverBorderColor: COLORS['light-blue-100'],
+          backgroundColor: COLORS_LANTERN_SET[5],
+          hoverBackgroundColor: COLORS_LANTERN_SET[5],
+          hoverBorderColor: COLORS_LANTERN_SET[5],
           data: chartDataPoints[5],
         }],
       }}
@@ -141,6 +141,7 @@ const RevocationsByRace = (props) => {
           position: 'bottom',
         },
         responsive: true,
+        maintainAspectRatio: false,
         scales: {
           xAxes: [{
             scaleLabel: {
@@ -184,7 +185,7 @@ const RevocationsByRace = (props) => {
         {`${getTrailingLabelFromMetricPeriodMonthsToggle(props.metricPeriodMonths)} (${getPeriodLabelFromMetricPeriodMonthsToggle(props.metricPeriodMonths)})`}
       </h6>
 
-      <div className="fs-block">
+      <div className="static-chart-container fs-block">
         {chart}
       </div>
     </div>

@@ -18,6 +18,7 @@
 import React, { useState, useEffect } from 'react';
 import ExportMenu from '../ExportMenu';
 
+import { COLORS } from '../../../assets/scripts/constants/colors';
 import {
   getPeriodLabelFromMetricPeriodMonthsToggle, getTrailingLabelFromMetricPeriodMonthsToggle,
 } from '../../../utils/charts/toggles';
@@ -117,11 +118,11 @@ const RevocationMatrix = (props) => {
       lineHeight: `${radius}px`,
     };
     const cellStyle = {
-      background: `rgba(240, 113, 50, ${ratio})`,
+      background: `rgba(92, 56, 77, ${ratio})`,
       width: '100%',
       height: '100%',
       borderRadius: Math.ceil(radius / 2),
-      color: ratio >= 0.5 ? 'white' : 'rgba(240, 113, 50)',
+      color: ratio >= 0.5 ? COLORS.white : COLORS['lantern-eggplant'],
     };
 
     return (
@@ -186,11 +187,11 @@ const RevocationMatrix = (props) => {
         {`${getTrailingLabelFromMetricPeriodMonthsToggle(props.metricPeriodMonths)} (${getPeriodLabelFromMetricPeriodMonthsToggle(props.metricPeriodMonths)})`}
       </h6>
       <div className="x-label pY-30">
-        Number of violation reports and notices of citations (filed within 6 months before the revocation)
+        Number of violation reports and notices of citations (filed within 12 months before the revocation)
       </div>
       <div id="revocationMatrix" className="d-f">
         <div className="y-label" data-html2canvas-ignore>
-          Most severe violation reported (within 6 months before the revocation)
+          Most severe violation reported (within 12 months before the revocation)
         </div>
         <div className={`matrix ${isFiltered ? 'is-filtered' : ''} fs-block`}>
           <div className="violation-counts">

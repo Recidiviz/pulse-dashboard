@@ -20,6 +20,7 @@ import { Line } from 'react-chartjs-2';
 import ExportMenu from '../ExportMenu';
 
 import { COLORS } from '../../../assets/scripts/constants/colors';
+import { labelCurrentMonth, currentMonthBox } from '../../../utils/charts/currentSpan';
 import {
   getMonthCountFromMetricPeriodMonthsToggle, getTrailingLabelFromMetricPeriodMonthsToggle,
   centerSingleMonthDatasetIfNecessary,
@@ -70,8 +71,8 @@ const RevocationsOverTime = (props) => {
 
   const datasets = [{
     label: 'Revocations',
-    borderColor: COLORS['light-blue-500'],
-    pointBackgroundColor: COLORS['light-blue-500'],
+    borderColor: COLORS['lantern-light-blue'],
+    pointBackgroundColor: COLORS['lantern-light-blue'],
     fill: false,
     lineTension: 0,
     borderWidth: 2,
@@ -110,7 +111,11 @@ const RevocationsOverTime = (props) => {
         tooltips: {
           backgroundColor: COLORS['grey-800-light'],
           mode: 'x',
+          callbacks: {
+            title: (tooltipItem) => labelCurrentMonth(tooltipItem, chartLabels),
+          },
         },
+        annotation: currentMonthBox('currentMonthBoxRevocationsOverTime', chartLabels),
       }}
     />
   );

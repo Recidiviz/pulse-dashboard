@@ -90,9 +90,9 @@ const RevocationsByRiskLevel = (props) => {
         labels: chartLabels,
         datasets: [{
           label: 'Revocation rate',
-          backgroundColor: COLORS['orange-500'],
-          hoverBackgroundColor: COLORS['orange-500'],
-          hoverBorderColor: COLORS['orange-500'],
+          backgroundColor: COLORS['lantern-orange'],
+          hoverBackgroundColor: COLORS['lantern-orange'],
+          hoverBorderColor: COLORS['lantern-orange'],
           data: chartDataPoints,
         }],
       }}
@@ -101,6 +101,7 @@ const RevocationsByRiskLevel = (props) => {
           display: false,
         },
         responsive: true,
+        maintainAspectRatio: false,
         scales: {
           xAxes: [{
             scaleLabel: {
@@ -146,7 +147,7 @@ const RevocationsByRiskLevel = (props) => {
         {`${getTrailingLabelFromMetricPeriodMonthsToggle(props.metricPeriodMonths)} (${getPeriodLabelFromMetricPeriodMonthsToggle(props.metricPeriodMonths)})`}
       </h6>
 
-      <div className="fs-block">
+      <div className="static-chart-container fs-block">
         {chart}
       </div>
     </div>

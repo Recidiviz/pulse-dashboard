@@ -23,6 +23,12 @@ const MONTH_NAMES_ABBREVIATED = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
   'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
 ];
 
+const getCurrentMonthName = function getCurrentMonthName() {
+  const now = new Date();
+  const thisMonth = now.getMonth();
+  return MONTH_NAMES[thisMonth];
+};
+
 const monthNameFromNumber = function monthNameFromNumber(number) {
   return MONTH_NAMES[number - 1];
 };
@@ -83,6 +89,7 @@ const monthNamesFromShortName = function monthNamesFromShortName(shortName) {
 };
 
 export {
+  getCurrentMonthName,
   monthNameFromNumber,
   monthNameFromNumberAbbreviated,
   monthNamesFromNumbers,
