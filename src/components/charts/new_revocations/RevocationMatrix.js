@@ -18,6 +18,7 @@
 import React, { useState, useEffect } from 'react';
 import ExportMenu from '../ExportMenu';
 
+import { COLORS } from '../../../assets/scripts/constants/colors';
 import {
   getPeriodLabelFromMetricPeriodMonthsToggle, getTrailingLabelFromMetricPeriodMonthsToggle,
 } from '../../../utils/charts/toggles';
@@ -117,11 +118,11 @@ const RevocationMatrix = (props) => {
       lineHeight: `${radius}px`,
     };
     const cellStyle = {
-      background: `rgba(240, 113, 50, ${ratio})`,
+      background: `rgba(92, 56, 77, ${ratio})`,
       width: '100%',
       height: '100%',
       borderRadius: Math.ceil(radius / 2),
-      color: ratio >= 0.5 ? 'white' : 'rgba(240, 113, 50)',
+      color: ratio >= 0.5 ? COLORS.white : COLORS['lantern-eggplant'],
     };
 
     return (

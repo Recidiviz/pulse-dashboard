@@ -15,6 +15,8 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
+import { getCurrentMonthName } from './months';
+
 const riskLevelValuetoLabel = {
   NOT_ASSESSED: 'Not Assessed',
   LOW: 'Low',
@@ -123,6 +125,17 @@ function nameFromOfficerId(officerId) {
   return parts[1].trim();
 }
 
+function labelCurrentMonth(value, index, values) {
+  const onlyMonthInSet = !values[0] && !values[values.length - 1] && index === 1;
+  const lastMonthInSet = index === values.length - 1;
+
+  const currentMonth = getCurrentMonthName();
+  if ((lastMonthInSet || onlyMonthInSet) && value.startsWith(currentMonth)) {
+    return `${value} (now)`;
+  }
+  return value;
+}
+
 export {
   riskLevelValuetoLabel,
   violationTypeToLabel,
@@ -137,4 +150,5 @@ export {
   humanReadableTitleCase,
   numberFromOfficerId,
   nameFromOfficerId,
+  labelCurrentMonth,
 };

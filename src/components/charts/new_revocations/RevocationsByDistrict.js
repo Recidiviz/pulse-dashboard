@@ -99,9 +99,9 @@ const RevocationsByDistrict = (props) => {
     for (let i = 0; i < chartLabels.length; i += 1) {
       if (props.currentDistrict
         && props.currentDistrict.toLowerCase() === chartLabels[i].toLowerCase()) {
-        colors.push(COLORS['light-blue-500']);
+        colors.push(COLORS['lantern-light-blue']);
       } else {
-        colors.push(COLORS['orange-500']);
+        colors.push(COLORS['lantern-orange']);
       }
     }
     return colors;

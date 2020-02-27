@@ -277,6 +277,11 @@ const COLORS = {
   'blue-standard': '#809AE5',
   'blue-standard-2': '#3F4D62',
   'blue-standard-light': 'rgba(63, 77, 98, .7)',
+  'lantern-orange': '#F07132',
+  'lantern-light-blue': '#03A9F4',
+  'lantern-eggplant': '#5C384D',
+  'lantern-burnt-orange': '#8B2D21',
+  'lantern-blue': '#182B5E',
 };
 
 const GREYS = {
@@ -337,6 +342,15 @@ const COLORS_FIVE_VALUES_LIGHT = [
   '#fdb0a8',
 ];
 
+const COLORS_LANTERN_SET = [
+  '#F07132',
+  '#03A9F4',
+  '#5C384D',
+  '#8B2D21',
+  '#182B5E',
+  '#0E2C16',
+];
+
 export {
   COLORS,
   GREYS,
@@ -347,4 +361,5 @@ export {
   COLORS_THREE_VALUES,
   COLORS_FIVE_VALUES,
   COLORS_FIVE_VALUES_LIGHT,
+  COLORS_LANTERN_SET,
 };

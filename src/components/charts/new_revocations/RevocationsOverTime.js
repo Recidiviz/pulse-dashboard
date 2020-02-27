@@ -25,7 +25,7 @@ import {
   centerSingleMonthDatasetIfNecessary,
 } from '../../../utils/charts/toggles';
 import { sortFilterAndSupplementMostRecentMonths } from '../../../utils/transforms/datasets';
-import { toInt } from '../../../utils/transforms/labels';
+import { toInt, labelCurrentMonth } from '../../../utils/transforms/labels';
 import { monthNamesWithYearsFromNumbers } from '../../../utils/transforms/months';
 
 const RevocationsOverTime = (props) => {
@@ -70,8 +70,8 @@ const RevocationsOverTime = (props) => {
 
   const datasets = [{
     label: 'Revocations',
-    borderColor: COLORS['light-blue-500'],
-    pointBackgroundColor: COLORS['light-blue-500'],
+    borderColor: COLORS['lantern-light-blue'],
+    pointBackgroundColor: COLORS['lantern-light-blue'],
     fill: false,
     lineTension: 0,
     borderWidth: 2,
@@ -95,6 +95,7 @@ const RevocationsOverTime = (props) => {
           xAxes: [{
             ticks: {
               autoSkip: false,
+              callback: labelCurrentMonth,
             },
           }],
           yAxes: [{
