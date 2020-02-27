@@ -40,7 +40,7 @@ const chartIdToInfo = {
       header: 'What this chart shows',
       body: `This chart plots all people who were revoked to prison during the time period
         selected by the user, according to their most serious violation and the number of
-        violation reports and notices of citation filed within 6 months before the revocation.
+        violation reports and notices of citation filed within 12 months before the revocation.
         The user can select the time period for revocations included in the chart by using the
         drop down menu in the upper left hand corner of the page.`,
     },
@@ -48,7 +48,7 @@ const chartIdToInfo = {
       header: 'Most serious violation',
       body: `Violations are listed in order of severity, starting with the least serious violation
         in the top row. A person's most serious violation is calculated by looking back at all
-        violation reports and notices of citation filed within 6 months before the revocation and
+        violation reports and notices of citation filed within 12 months before the revocation and
         identifying the most serious violation listed in those reports. The most serious violation
         determines what row a person is placed in, regardless of whether it was the most recent
         violation. For example, if a person had one misdemeanor violation, then two technical
@@ -58,8 +58,8 @@ const chartIdToInfo = {
     {
       header: 'Number of violation reports and notices of citation filed',
       body: `This is determined by counting the total number of violation reports and notices of
-        citation that were filed within 6 months before the revocation. For example, if a person
-        had one violation report and one notice of citation during the 6 months before the
+        citation that were filed within 12 months before the revocation. For example, if a person
+        had one violation report and one notice of citation during the 12 months before the
         revocation, they would be in the “2” column. This is so even if the violation report listed
         several types of violations or conditions violated.`,
     },
@@ -140,7 +140,7 @@ const chartIdToInfo = {
         violation was a technical, divided by the total number of people whose most serious
         violation was a technical, including those who were not revoked. In calculating the number
         of people who were not revoked whose most serious violation was a technical, we look back
-        for the same 6 month period as used to determine most serious violation in the revocations
+        for the same 12 month period as used to determine most serious violation in the revocations
         plot, from either the current date (if the person is still on supervision) or the date that
         the person was discharged from supervision.`,
     },
@@ -149,7 +149,7 @@ const chartIdToInfo = {
     {
       header: 'What this chart shows',
       body: `This chart shows the relative frequency of each type of violation for people who were
-        revoked to prison, looking back over a period 6 months before the revocation. This is
+        revoked to prison, looking back over a period 12 months before the revocation. This is
         calculated as the total number of times each type of violation was reported on all notices
         of citation and violation reports filed during that period, divided by the total number of
         notices of citation and violation reports filed during that period. For this chart, if
@@ -204,7 +204,7 @@ const chartIdToInfo = {
         violation was a technical, divided by the total number of people whose most serious
         violation was a technical, including those who were not revoked. In calculating the number
         of people who were not revoked whose most serious violation was a technical, we look back
-        for the same 6 month period as used to determine most serious violation in the revocations
+        for the same 12 month period as used to determine most serious violation in the revocations
         plot, from either the current date (if the person is still on supervision) or the date that
         the person was discharged from supervision.`,
     },
@@ -243,7 +243,7 @@ const chartIdToInfo = {
         violation was a technical, divided by the total number of people whose most serious
         violation was a technical, including those who were not revoked. In calculating the number
         of people who were not revoked whose most serious violation was a technical, we look back
-        for the same 6 month period as used to determine most serious violation in the revocations
+        for the same 12 month period as used to determine most serious violation in the revocations
         plot, from either the current date (if the person is still on supervision) or the date that
         the person was discharged from supervision.`,
     },
