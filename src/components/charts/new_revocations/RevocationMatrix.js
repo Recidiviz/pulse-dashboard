@@ -187,11 +187,11 @@ const RevocationMatrix = (props) => {
         {`${getTrailingLabelFromMetricPeriodMonthsToggle(props.metricPeriodMonths)} (${getPeriodLabelFromMetricPeriodMonthsToggle(props.metricPeriodMonths)})`}
       </h6>
       <div className="x-label pY-30">
-        Number of violation reports and notices of citations (filed within 6 months before the revocation)
+        Number of violation reports and notices of citations (filed within 12 months before the revocation)
       </div>
       <div id="revocationMatrix" className="d-f">
         <div className="y-label" data-html2canvas-ignore>
-          Most severe violation reported (within 6 months before the revocation)
+          Most severe violation reported (within 12 months before the revocation)
         </div>
         <div className={`matrix ${isFiltered ? 'is-filtered' : ''} fs-block`}>
           <div className="violation-counts">

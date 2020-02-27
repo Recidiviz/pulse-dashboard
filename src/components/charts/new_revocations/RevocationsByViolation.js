@@ -118,7 +118,7 @@ const RevocationsByViolation = (props) => {
       data={{
         labels: chartLabels,
         datasets: [{
-          label: 'Revocations',
+          label: 'Proportion of violations',
           backgroundColor: colorTechnicalAndLaw(),
           hoverBackgroundColor: colorTechnicalAndLaw(),
           hoverBorderColor: colorTechnicalAndLaw(),
