@@ -130,6 +130,7 @@ const RevocationsByViolation = (props) => {
           display: false,
         },
         responsive: true,
+        maintainAspectRatio: false,
         scales: {
           xAxes: [{
             scaleLabel: {
@@ -175,7 +176,7 @@ const RevocationsByViolation = (props) => {
         {`${getTrailingLabelFromMetricPeriodMonthsToggle(props.metricPeriodMonths)} (${getPeriodLabelFromMetricPeriodMonthsToggle(props.metricPeriodMonths)})`}
       </h6>
 
-      <div className="fs-block">
+      <div className="static-chart-container fs-block">
         {chart}
       </div>
     </div>

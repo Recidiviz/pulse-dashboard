@@ -118,6 +118,7 @@ const RevocationsByGender = (props) => {
           position: 'bottom',
         },
         responsive: true,
+        maintainAspectRatio: false,
         scales: {
           xAxes: [{
             scaleLabel: {
@@ -161,7 +162,7 @@ const RevocationsByGender = (props) => {
         {`${getTrailingLabelFromMetricPeriodMonthsToggle(props.metricPeriodMonths)} (${getPeriodLabelFromMetricPeriodMonthsToggle(props.metricPeriodMonths)})`}
       </h6>
 
-      <div className="fs-block">
+      <div className="static-chart-container fs-block">
         {chart}
       </div>
     </div>
