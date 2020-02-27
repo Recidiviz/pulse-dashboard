@@ -184,7 +184,9 @@ const RevocationsByDistrict = (props) => {
         </label>
       </div>
 
-      {chart}
+      <div className="fs-block">
+        {chart}
+      </div>
     </div>
   );
 };

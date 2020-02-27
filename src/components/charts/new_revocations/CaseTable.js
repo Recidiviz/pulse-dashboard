@@ -139,7 +139,7 @@ const CaseTable = (props) => {
             <th>Violation record</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody className="fs-block">
           {page.map((details, i) => (
             <tr key={i}>
               <td>{details.state_id}</td>
@@ -153,7 +153,7 @@ const CaseTable = (props) => {
         </tbody>
       </table>
       {props.data.length > CASES_PER_PAGE && (
-        <div className="table-navigation">
+        <div className="table-navigation fs-block">
           {beginning !== 0 &&
             <button onClick={(e) => updatePage(-1)}>&#10094;</button>
           }

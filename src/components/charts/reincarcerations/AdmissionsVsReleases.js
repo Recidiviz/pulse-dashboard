@@ -168,10 +168,10 @@ const AdmissionsVsReleases = (props) => {
   if (header && mostRecentValue !== null && props.metricType === 'counts' && props.district.toUpperCase() === 'ALL') {
     let title = '';
     if (mostRecentValue === 0) {
-      title = 'The ND facilities <b style=\'color:#809AE5\'> have not changed in size</b> this month.';
+      title = 'The ND facilities <span class=\'fs-block header-highlight\'> have not changed in size</span> this month.';
     } else {
       const direction = (mostRecentValue > 0) ? 'grew' : 'shrank';
-      title = `The ND facilities <b style='color:#809AE5'>${direction} by ${Math.abs(mostRecentValue)} people</b> this month.`;
+      title = `The ND facilities <span class='fs-block header-highlight'>${direction} by ${Math.abs(mostRecentValue)} people</span> this month.`;
     }
 
     header.innerHTML = title;

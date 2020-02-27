@@ -183,7 +183,7 @@ const DaysAtLibertySnapshot = (props) => {
     const trendlineValues = chart.props.data.datasets[1].data;
     const trendlineText = trendlineGoalText(trendlineValues, GOAL);
 
-    const title = `The average days between release from incarceration and readmission has been <b style='color:#809AE5'>trending ${trendlineText}.</b>`;
+    const title = `The average days between release from incarceration and readmission has been <span class='fs-block header-highlight'>trending ${trendlineText}.</span>`;
     header.innerHTML = title;
   } else if (header) {
     header.innerHTML = '';

@@ -113,7 +113,7 @@ const FreeThroughRecovery = () => {
                 </div>
                 { /* TODO(XXX): Figure out why map will not show when delegated to by the Chart.js
                 chart. Then we can just encapsulate this logic inside of a single component. */ }
-                <div className="layer w-100 p-20">
+                <div className="layer w-100 p-20 fs-block">
                   {geoViewEnabledRCOT === false && (
                     <FtrReferralCountByMonth
                       metricType={chartMetricType}
@@ -198,7 +198,7 @@ const FreeThroughRecovery = () => {
                   </h6>
                 </div>
                 <div className="layer w-100 pX-20 pT-20 row">
-                  <div className="layer w-100 p-20">
+                  <div className="layer w-100 p-20 fs-block">
                     <FtrReferralsByRace
                       metricType={chartMetricType}
                       metricPeriodMonths={chartMetricPeriodMonths}
@@ -287,7 +287,7 @@ const FreeThroughRecovery = () => {
                   </h6>
                 </div>
                 <div className="layer w-100 pX-20 pT-20 row">
-                  <div className="layer w-100 p-20">
+                  <div className="layer w-100 p-20 fs-block">
                     <FtrReferralsByLsir
                       metricType={chartMetricType}
                       metricPeriodMonths={chartMetricPeriodMonths}
@@ -370,7 +370,7 @@ const FreeThroughRecovery = () => {
                   </h6>
                 </div>
                 <div className="layer w-100 pX-20 pT-20 row">
-                  <div className="layer w-100 p-20">
+                  <div className="layer w-100 p-20 fs-block">
                     <FtrReferralsByGender
                       metricType={chartMetricType}
                       metricPeriodMonths={chartMetricPeriodMonths}
@@ -449,7 +449,7 @@ const FreeThroughRecovery = () => {
                   </h6>
                 </div>
                 <div className="layer w-100 pX-20 pT-20 row">
-                  <div className="layer w-100 p-20">
+                  <div className="layer w-100 p-20 fs-block">
                     <FtrReferralsByAge
                       metricType={chartMetricType}
                       metricPeriodMonths={chartMetricPeriodMonths}

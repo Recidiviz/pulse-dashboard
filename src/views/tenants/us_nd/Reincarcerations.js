@@ -111,7 +111,7 @@ const Reincarcerations = () => {
                     <div className="dynamic-chart-header" id="reincarcerationCountsByMonth-header" />
                   )}
                 </div>
-                <div className="layer w-100 p-20">
+                <div className="layer w-100 p-20 fs-block">
                   {geoViewEnabledRCOT === false && (
                     <ReincarcerationCountOverTime
                       metricType={chartMetricType}
@@ -209,7 +209,7 @@ const Reincarcerations = () => {
                     <div className="dynamic-chart-header" id="admissionsVsReleases-header" />
                   )}
                 </div>
-                <div className="layer w-100 p-20">
+                <div className="layer w-100 p-20 fs-block">
                   {geoViewEnabledAVR === false && (
                     <AdmissionsVsReleases
                       metricType={chartMetricType}
@@ -307,7 +307,7 @@ const Reincarcerations = () => {
                     </span>
                   </h6>
                 </div>
-                <div className="layer w-100 p-20">
+                <div className="layer w-100 p-20 fs-block">
                   <ReincarcerationRateByStayLength
                     district={chartDistrict}
                     ratesByStayLength={apiData.reincarceration_rate_by_stay_length}
