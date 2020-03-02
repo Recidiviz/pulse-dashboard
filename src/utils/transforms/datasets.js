@@ -82,6 +82,8 @@ function sortAndFilterMostRecentMonths(unsortedDataPoints, monthCount) {
  */
 function addEmptyMonthsToData(dataPoints, monthCount, valueKey, emptyValue) {
   const now = new Date();
+  const nowYear = now.getYear();
+  const nowMonth = now.getMonth();
   const thisMonth = now.getMonth() + 1;
 
   const representedMonths = {};
@@ -100,10 +102,11 @@ function addEmptyMonthsToData(dataPoints, monthCount, valueKey, emptyValue) {
     const month = (remainder === 0) ? 12 : remainder;
 
     const monthsAgo = new Date(now.getTime());
-    monthsAgo.setMonth(now.getMonth() + i - 2);
+    monthsAgo.setMonth(nowMonth + i - 2);
     const year = monthsAgo.getFullYear();
 
-    if (!representedMonths[year] || !representedMonths[year][month]) {
+    if ((!representedMonths[year] || !representedMonths[year][month])
+      && year <= nowYear && month <= nowMonth) {
       const monthData = {
         year: year.toString(),
         month: month.toString(),
