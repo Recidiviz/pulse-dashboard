@@ -15,7 +15,6 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import { canShowAuthenticatedView } from '../authentication/viewAuthentication';
 import { isLanternState } from '../../views/stateViews';
 
 /**
@@ -23,7 +22,7 @@ import { isLanternState } from '../../views/stateViews';
  * if the view has a side bar.
  */
 function hasSideBar(stateCode, isAuthenticated) {
-  return canShowAuthenticatedView(isAuthenticated) && !isLanternState(stateCode);
+  return isAuthenticated && !isLanternState(stateCode);
 }
 
 export {

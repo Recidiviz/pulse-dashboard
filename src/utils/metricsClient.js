@@ -15,20 +15,15 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import isDemoMode from './authentication/demoMode';
-
 /**
  * An asynchronous function that returns a promise which will eventually return the results from
  * invoking the given API endpoint. Takes in the |endpoint| as a string and the |getTokenSilently|
- * function, which will be used to authenticate the client against the API, if we are not in demo
- * mode where authentication is not required.
+ * function, which will be used to authenticate the client against the API.
  */
 async function callMetricsApi(endpoint, getTokenSilently) {
   try {
-    let token = '';
-    if (!isDemoMode()) {
-      token = await getTokenSilently();
-    }
+    const token = await getTokenSilently();
+
     const response = await fetch(`${process.env.REACT_APP_API_URL}/api/${endpoint}`, {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -46,10 +41,10 @@ async function callMetricsApi(endpoint, getTokenSilently) {
 /**
  * A convenience function returning whether or not the client is still awaiting what it needs to
  * display results to the user. We are ready if we are no longer loading the view, if we are no
- * longer awaiting the API, and if we either have an authenticated user or we are in demo mode.
+ * longer awaiting the API, and if we have an authenticated user.
  */
 function awaitingResults(loading, user, awaitingApi) {
-  return loading || (!user && !isDemoMode()) || awaitingApi;
+  return loading || !user || awaitingApi;
 }
 
 export {

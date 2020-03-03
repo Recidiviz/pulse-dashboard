@@ -15,7 +15,6 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import isDemoMode from './demoMode';
 import { getUserStateCode } from './user';
 import {
   getAvailableViewsForState, getCurrentStateForAdminUsersFromStateCode, isAdminStateCode,
@@ -33,14 +32,6 @@ function getDemoUser() {
       state_code: 'RECIDIVIZ',
     },
   };
-}
-
-/**
- * A view that requires authentication can be shown if the user is authenticated
- * or if we are in demo mode.
- */
-function canShowAuthenticatedView(isAuthenticated) {
-  return isAuthenticated || isDemoMode();
 }
 
 /**
@@ -63,6 +54,5 @@ function isViewAvailableForUserState(user, view) {
 
 export {
   getDemoUser,
-  canShowAuthenticatedView,
   isViewAvailableForUserState,
 };

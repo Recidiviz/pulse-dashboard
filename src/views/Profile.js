@@ -19,20 +19,13 @@ import React from 'react';
 import { Container, Row, Col } from 'reactstrap';
 import Loading from '../components/Loading';
 import { useAuth0 } from '../react-auth0-spa';
-import isDemoMode from '../utils/authentication/demoMode';
 import { getUserStateName, isAdminUser } from '../utils/authentication/user';
-import { getDemoUser } from '../utils/authentication/viewAuthentication';
 import StateSelector from '../components/StateSelector';
 
 const Profile = () => {
   const { loading, user } = useAuth0();
 
-  let displayUser = user;
-  if (isDemoMode()) {
-    displayUser = getDemoUser();
-  }
-
-  if (loading || (!user && !isDemoMode())) {
+  if (loading || !user) {
     return <Loading />;
   }
 
@@ -43,15 +36,15 @@ const Profile = () => {
           <Row className="align-items-center profile-header mb-5 text-center text-md-left">
             <Col md={2}>
               <img
-                src={displayUser.picture}
+                src={user.picture}
                 alt="Profile"
                 className="rounded-circle img-fluid profile-picture mb-3 mb-md-0"
               />
             </Col>
             <Col md>
-              <h2>{displayUser.name}</h2>
-              <p className="lead text-muted">{displayUser.email}</p>
-              <p className="lead text-muted">{getUserStateName(displayUser)}</p>
+              <h2>{user.name}</h2>
+              <p className="lead text-muted">{user.email}</p>
+              <p className="lead text-muted">{getUserStateName(user)}</p>
               {isAdminUser(user) && (
               <div style={{ maxWidth: '33%' }}>
                 <p className="lead text-muted">Current view state:</p>

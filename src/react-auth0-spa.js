@@ -1,8 +1,20 @@
 import React, { useState, useEffect, useContext } from "react";
 import createAuth0Client from "@auth0/auth0-spa-js";
+import isDemoMode from './utils/authentication/demoMode';
+import { getDemoUser } from './utils/authentication/viewAuthentication';
 
 const DEFAULT_REDIRECT_CALLBACK = () =>
   window.history.replaceState({}, document.title, window.location.pathname);
+
+const overrideIfDemoMode = (Auth0ContextValue) => {
+  if (!isDemoMode()) return;
+
+  return Object.assign(Auth0ContextValue, {
+    isAuthenticated: true,
+    user: getDemoUser(),
+    getTokenSilently: () => ''
+  });
+};
 
 export const Auth0Context = React.createContext();
 export const useAuth0 = () => useContext(Auth0Context);
@@ -64,21 +76,26 @@ export const Auth0Provider = ({
     setIsAuthenticated(true);
     setUser(user);
   };
+
+  const contextValue = {
+    isAuthenticated,
+    user,
+    loading,
+    popupOpen,
+    loginWithPopup,
+    handleRedirectCallback,
+    getIdTokenClaims: (...p) => auth0Client.getIdTokenClaims(...p),
+    loginWithRedirect: (...p) => auth0Client.loginWithRedirect(...p),
+    getTokenSilently: (...p) => auth0Client.getTokenSilently(...p),
+    getTokenWithPopup: (...p) => auth0Client.getTokenWithPopup(...p),
+    logout: (...p) => auth0Client.logout(...p)
+  };
+
+  overrideIfDemoMode(contextValue);
+
   return (
     <Auth0Context.Provider
-      value={{
-        isAuthenticated,
-        user,
-        loading,
-        popupOpen,
-        loginWithPopup,
-        handleRedirectCallback,
-        getIdTokenClaims: (...p) => auth0Client.getIdTokenClaims(...p),
-        loginWithRedirect: (...p) => auth0Client.loginWithRedirect(...p),
-        getTokenSilently: (...p) => auth0Client.getTokenSilently(...p),
-        getTokenWithPopup: (...p) => auth0Client.getTokenWithPopup(...p),
-        logout: (...p) => auth0Client.logout(...p)
-      }}
+      value={contextValue}
     >
       {children}
     </Auth0Context.Provider>

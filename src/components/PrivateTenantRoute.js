@@ -20,11 +20,8 @@ import PropTypes from 'prop-types';
 import { Route } from 'react-router-dom';
 
 import { useAuth0 } from '../react-auth0-spa';
-import isDemoMode from '../utils/authentication/demoMode';
 import { getUserStateCode } from '../utils/authentication/user';
-import {
-  canShowAuthenticatedView, isViewAvailableForUserState
-} from '../utils/authentication/viewAuthentication';
+import { isViewAvailableForUserState } from '../utils/authentication/viewAuthentication';
 import { getComponentForStateView } from '../views/stateViews';
 import NotFound from '../views/NotFound';
 
@@ -33,7 +30,7 @@ const PrivateTenantRoute = ({ path, ...rest }) => {
 
   useEffect(() => {
     const fn = async () => {
-      if (!canShowAuthenticatedView(isAuthenticated)) {
+      if (!isAuthenticated) {
         await loginWithRedirect({
           appState: { targetUrl: path },
         });
@@ -42,9 +39,7 @@ const PrivateTenantRoute = ({ path, ...rest }) => {
     fn();
   }, [isAuthenticated, loginWithRedirect, path]);
 
-  if (!canShowAuthenticatedView(isAuthenticated)) {
-    return null;
-  }
+  if (!isAuthenticated) return null;
 
   let render = null;
   if (!isViewAvailableForUserState(user, path)) {
@@ -54,8 +49,7 @@ const PrivateTenantRoute = ({ path, ...rest }) => {
     // Else, grab the correct component for that view for their state and send them to it
     const stateCode = getUserStateCode(user);
     const Component = getComponentForStateView(stateCode, path);
-    render = (props) => (isAuthenticated === true || isDemoMode() === true
-      ? <Component {...props} /> : null);
+    render = (props) => isAuthenticated === true ? <Component {...props} /> : null;
   }
 
   return <Route path={path} render={render} {...rest} />;
