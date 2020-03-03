@@ -20,11 +20,7 @@ import React from 'react';
 import { useAuth0 } from '../react-auth0-spa';
 import { normalizeAppPathToTitle } from '../assets/scripts/utils/strings';
 import lanternLogo from '../assets/static/images/lantern_logo.png';
-import isDemoMode from '../utils/authentication/demoMode';
 import { getUserStateCode, getUserStateName } from '../utils/authentication/user';
-import {
-  canShowAuthenticatedView, getDemoUser,
-} from '../utils/authentication/viewAuthentication';
 import { hasSideBar } from '../utils/layout/filters';
 import { isLanternState } from '../views/stateViews';
 
@@ -67,11 +63,6 @@ const TopBar = (props) => {
     navBarClass = 'header navbar';
   }
 
-  let displayUser = user;
-  if (isDemoMode()) {
-    displayUser = getDemoUser();
-  }
-
   return (
     <div className={navBarClass}>
       <div className="header-container">
@@ -81,7 +72,7 @@ const TopBar = (props) => {
           </a>
         ) : (
           <ul className="nav-left">
-            {canShowAuthenticatedView(isAuthenticated) && (
+            {isAuthenticated && (
             <li>
               <a id="sidebar-toggle" className="sidebar-toggle" href="javascript:void(0);">
                 <i className="ti-menu" />
@@ -94,7 +85,7 @@ const TopBar = (props) => {
           </ul>
         )}
         <ul className="nav-right">
-          {!canShowAuthenticatedView(isAuthenticated) && (
+          {!isAuthenticated && (
             <li className="dropdown">
               <a href="#" onClick={() => loginWithRedirect({ appState: { targetUrl: '/snapshots' } })} className="dropdown-toggle no-after peers fxw-nw ai-c lh-1" data-toggle="dropdown">
                 <div className="peer mR-10">
@@ -106,15 +97,15 @@ const TopBar = (props) => {
               </a>
             </li>
           )}
-          {canShowAuthenticatedView(isAuthenticated) && (
+          {isAuthenticated && (
             <li className="dropdown">
               <a href="#" className="dropdown-toggle no-after peers fxw-nw ai-c lh-1" data-toggle="dropdown">
                 <div className="peer mR-10">
-                  <img className="w-2r bdrs-50p" src={displayUser.picture} alt="" />
+                  <img className="w-2r bdrs-50p" src={user.picture} alt="" />
                 </div>
                 <div className="peer">
-                  <ul className="fsz-sm c-grey-900">{displayUser.name}</ul>
-                  <ul className="fsz-sm pT-3 c-grey-600">{getUserStateName(displayUser)}</ul>
+                  <ul className="fsz-sm c-grey-900">{user.name}</ul>
+                  <ul className="fsz-sm pT-3 c-grey-600">{getUserStateName(user)}</ul>
                 </div>
               </a>
               <ul className="dropdown-menu fsz-sm">
