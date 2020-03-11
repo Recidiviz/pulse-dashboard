@@ -257,6 +257,7 @@ const Revocations = () => {
             <Select
               options={districts}
               onChange={(option) => updateFilters({ district: option.value })}
+              defaultValue={{ value: 'All', label: 'All districts' }}
             />
           </div>
           <div className="top-level-filter">
@@ -264,6 +265,7 @@ const Revocations = () => {
             <Select
               options={CHARGE_CATEGORIES}
               onChange={(option) => updateFilters({ chargeCategory: option.value })}
+              defaultValue={CHARGE_CATEGORIES[0]}
             />
           </div>
           <div className="top-level-filter">
@@ -271,6 +273,7 @@ const Revocations = () => {
             <Select
               options={SUPERVISION_TYPES}
               onChange={(option) => updateFilters({ supervisionType: option.value })}
+              defaultValue={SUPERVISION_TYPES[0]}
             />
           </div>
         </div>
