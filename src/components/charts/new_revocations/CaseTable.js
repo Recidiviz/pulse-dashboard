@@ -15,7 +15,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 import ExportMenu from '../ExportMenu';
 
@@ -42,12 +42,29 @@ const chartId = 'filteredCaseTable';
 
 const CaseTable = (props) => {
   const [index, setIndex] = useState(0);
+  const [countData, setCountData] = useState(0);
 
   const updatePage = (change) => {
-    setIndex(index + change);
+    (beginning === 0) ? setIndex(1) : setIndex(index + change);
   };
 
+  const prevCount = usePrevious(countData);
+
+  function usePrevious(value) {
+    const ref = useRef();
+
+    useEffect(() => {
+      ref.current = value;
+    }, [value]);
+
+    return ref.current;
+  }
+
   const { data } = props;
+  useEffect(() => {
+    setCountData(props.data.length);
+  });
+
 
   // Sort case load first by district, second by officer name, third by person id (all ascending)
   const caseLoad = data.sort((a, b) => {
@@ -75,7 +92,8 @@ const CaseTable = (props) => {
     return 0;
   });
 
-  const beginning = index * CASES_PER_PAGE;
+
+  const beginning = (countData !== prevCount) ? 0 : index * CASES_PER_PAGE ;
   const end = beginning + CASES_PER_PAGE < data.length
     ? (beginning + CASES_PER_PAGE) : data.length;
   const page = caseLoad.slice(beginning, end);
@@ -127,7 +145,6 @@ const CaseTable = (props) => {
       <h6 className="pB-20">
         {`${getTrailingLabelFromMetricPeriodMonthsToggle(props.metricPeriodMonths)} (${getPeriodLabelFromMetricPeriodMonthsToggle(props.metricPeriodMonths)})`}
       </h6>
-
       <table>
         <thead>
           <tr>
