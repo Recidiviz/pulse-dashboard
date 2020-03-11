@@ -253,3 +253,8 @@
     }
   }
 }
+@media screen and (max-width: 1024px) {
+  .top-level-filters .top-level-filter h4 {
+    min-height: 60%;
+  }
+}
