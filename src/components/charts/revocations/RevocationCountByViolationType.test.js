@@ -22,6 +22,16 @@ import { getBarChartDefinition } from './RevocationCountByViolationType';
 const fs = require('fs');
 const path = require('path');
 
+/**
+ * Function that modifies a snapshotted definition to conform to minor changes made since snapshot was created.
+ */
+const modifyExpectedDefinition = (expectedDefinition) => {
+  // Ensure numbers are always numbers and not stringified numbers
+  expectedDefinition.data.datasets.forEach(dataset => {
+    dataset.data = dataset.data.map(val => Number(val));
+  });
+};
+
 describe('getBarChartDefinition', () => {
   const data = readJsonLinesFile(
       path.join(__dirname, 'test_data/RevocationCountByViolationType/revocations_by_violation_type_by_month.json')
@@ -42,6 +52,8 @@ describe('getBarChartDefinition', () => {
             path.join(__dirname, 'test_data/RevocationCountByViolationType/snapshots', fileName),
             'utf8'
         ));
+
+        modifyExpectedDefinition(expectedDefinition);
 
         let definition = getBarChartDefinition(Object.assign(filters, {revocationCountsByMonthByViolationType: data}));
 

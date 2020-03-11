@@ -22,6 +22,22 @@ import { getBarChartDefinition } from './RevocationCountBySupervisionType';
 const fs = require('fs');
 const path = require('path');
 
+/**
+ * Function that modifies a snapshotted definition to conform to minor changes made since snapshot was created.
+ */
+const modifyExpectedDefinition = (expectedDefinition) => {
+  expectedDefinition.data.datasets.forEach(dataset => {
+    delete dataset['type'];
+  });
+  
+  expectedDefinition.options.legend.boxWidth = 10;
+
+  // Ensure numbers are always numbers and not stringified numbers
+  expectedDefinition.data.datasets.forEach(dataset => {
+    dataset.data = dataset.data.map(val => Number(val));
+  });
+};
+
 describe('getBarChartDefinition', () => {
   const data = readJsonLinesFile(
       path.join(__dirname, 'test_data/RevocationCountBySupervisionType/revocations_by_supervision_type_by_month.json')
@@ -42,6 +58,8 @@ describe('getBarChartDefinition', () => {
             path.join(__dirname, 'test_data/RevocationCountBySupervisionType/snapshots', fileName),
             'utf8'
         ));
+
+        modifyExpectedDefinition(expectedDefinition);
 
         let definition = getBarChartDefinition(
             Object.assign(filters, {revocationCountsByMonthBySupervisionType: data})
