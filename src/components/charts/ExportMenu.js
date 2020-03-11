@@ -53,21 +53,23 @@ const ExportMenu = (props) => {
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
-            <div className="modal-body">
-              {additionalInfo.length > 0 ? (
-                <ul>
-                  {additionalInfo.map((info, i) => (
-                    <div key={i}>
-                      <h6>{info.header}</h6>
-                      <p>{info.body}</p>
-                    </div>
-                  ))}
-                </ul>
-              ) : (
-                <p>
-                  There is no additional information for this chart.
-                </p>
-              )}
+            <div className="modal-overflow">
+              <div className="modal-body">
+                {additionalInfo.length > 0 ? (
+                  <ul>
+                    {additionalInfo.map((info, i) => (
+                      <div key={i}>
+                        <h6>{info.header}</h6>
+                        <p>{info.body}</p>
+                      </div>
+                    ))}
+                  </ul>
+                ) : (
+                    <p>
+                      There is no additional information for this chart.
+                    </p>
+                  )}
+              </div>
             </div>
             <div className="modal-footer">
               <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
