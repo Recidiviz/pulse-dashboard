@@ -1,0 +1,172 @@
+{
+  "id": "revocationsBySupervisionType",
+  "data": {
+    "labels": [
+      "April '17",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December",
+      "January '18",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December",
+      "January '19",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December",
+      "January '20",
+      "February",
+      "March"
+    ],
+    "datasets": [
+      {
+        "label": "Probation",
+        "type": "bar",
+        "backgroundColor": "#809ae5",
+        "hoverBackgroundColor": "#809ae5",
+        "hoverBorderColor": "#809ae5",
+        "data": [
+          "69.33",
+          "53.03",
+          "53.45",
+          "66.67",
+          "54.10",
+          "62.00",
+          "65.38",
+          "46.67",
+          "63.79",
+          "51.61",
+          "40.98",
+          "57.97",
+          "59.09",
+          "73.75",
+          "64.91",
+          "61.22",
+          "64.58",
+          "58.93",
+          "64.71",
+          "58.49",
+          "45.45",
+          "46.55",
+          "53.45",
+          "62.12",
+          "59.46",
+          "75.44",
+          "46.81",
+          "41.67",
+          "55.81",
+          "54.55",
+          "61.04",
+          "63.33",
+          "54.84",
+          "69.33",
+          "53.03",
+          "53.45"
+        ]
+      },
+      {
+        "label": "Parole",
+        "type": "bar",
+        "backgroundColor": "#3f4d62",
+        "hoverBackgroundColor": "#3f4d62",
+        "hoverBorderColor": "#3f4d62",
+        "data": [
+          "30.67",
+          "46.97",
+          "46.55",
+          "33.33",
+          "45.90",
+          "38.00",
+          "34.62",
+          "53.33",
+          "36.21",
+          "48.39",
+          "59.02",
+          "42.03",
+          "40.91",
+          "26.25",
+          "35.09",
+          "38.78",
+          "35.42",
+          "41.07",
+          "35.29",
+          "41.51",
+          "54.55",
+          "53.45",
+          "46.55",
+          "37.88",
+          "40.54",
+          "24.56",
+          "53.19",
+          "58.33",
+          "44.19",
+          "45.45",
+          "38.96",
+          "36.67",
+          "45.16",
+          "30.67",
+          "46.97",
+          "46.55"
+        ]
+      }
+    ]
+  },
+  "options": {
+    "responsive": true,
+    "legend": {
+      "position": "bottom"
+    },
+    "tooltips": {
+      "backgroundColor": "rgba(66, 66, 66, 0.95)",
+      "mode": "index",
+      "intersect": false,
+      "callbacks": {}
+    },
+    "scales": {
+      "xAxes": [
+        {
+          "scaleLabel": {
+            "display": true,
+            "labelString": "Month"
+          },
+          "stacked": true
+        }
+      ],
+      "yAxes": [
+        {
+          "ticks": {
+            "min": 0,
+            "max": 100,
+            "stepSize": 20
+          },
+          "scaleLabel": {
+            "display": true,
+            "labelString": "Percentage"
+          },
+          "stacked": true
+        }
+      ]
+    }
+  }
+}

@@ -27,59 +27,113 @@ import {
 import { sortFilterAndSupplementMostRecentMonths } from '../../../utils/transforms/datasets';
 import { monthNamesWithYearsFromNumbers } from '../../../utils/transforms/months';
 
-const RevocationCountBySupervisionType = (props) => {
-  const [chartLabels, setChartLabels] = useState([]);
-  const [paroleDataPoints, setParoleDataPoints] = useState([]);
-  const [probationDataPoints, setProbationDataPoints] = useState([]);
-
+export const getBarChartDefinition = (props) => {
   const chartId = 'revocationsBySupervisionType';
 
-  const processResponse = () => {
-    const { revocationCountsByMonthBySupervisionType: countsByMonth } = props;
+  const { revocationCountsByMonthBySupervisionType: countsByMonth } = props;
 
-    const filteredCountsByMonth = filterDatasetByDistrict(
-      countsByMonth, props.district,
-    );
+  const filteredCountsByMonth = filterDatasetByDistrict(
+    countsByMonth, props.district,
+  );
 
-    const paroleData = [];
-    const probationData = [];
-    if (filteredCountsByMonth) {
-      filteredCountsByMonth.forEach((data) => {
-        const {
-          year, month, parole_count: paroleCount, probation_count: probationCount,
-        } = data;
+  const paroleData = [];
+  const probationData = [];
+  if (filteredCountsByMonth) {
+    filteredCountsByMonth.forEach((data) => {
+      const {
+        year, month, parole_count: paroleCount, probation_count: probationCount,
+      } = data;
 
-        const paroleCountNum = Number(paroleCount);
-        const probationCountNum = Number(probationCount);
+      const paroleCountNum = Number(paroleCount);
+      const probationCountNum = Number(probationCount);
 
-        if (props.metricType === 'counts') {
-          paroleData.push({ year, month, paroleValue: paroleCountNum });
-          probationData.push({ year, month, probationValue: probationCountNum });
-        } else if (props.metricType === 'rates') {
-          const paroleValue = (100 * (paroleCountNum / (paroleCountNum + probationCountNum)))
-            .toFixed(2);
-          const probationValue = (100 * (probationCountNum / (paroleCountNum + probationCountNum)))
-            .toFixed(2);
+      if (props.metricType === 'counts') {
+        paroleData.push({ year, month, paroleValue: paroleCountNum });
+        probationData.push({ year, month, probationValue: probationCountNum });
+      } else if (props.metricType === 'rates') {
+        const paroleValue = (100 * (paroleCountNum / (paroleCountNum + probationCountNum)))
+          .toFixed(2);
+        const probationValue = (100 * (probationCountNum / (paroleCountNum + probationCountNum)))
+          .toFixed(2);
 
-          paroleData.push({ year, month, paroleValue });
-          probationData.push({ year, month, probationValue });
-        }
-      });
+        paroleData.push({ year, month, paroleValue });
+        probationData.push({ year, month, probationValue });
+      }
+    });
+  }
+
+  const months = getMonthCountFromMetricPeriodMonthsToggle(props.metricPeriodMonths);
+  const sortedParoleData = sortFilterAndSupplementMostRecentMonths(paroleData, months, 'paroleValue', 0);
+  const sortedProbationData = sortFilterAndSupplementMostRecentMonths(probationData, months, 'probationValue', 0);
+
+  const chartLabels = monthNamesWithYearsFromNumbers(sortedParoleData.map((element) => element.month), false);
+  const paroleDataPoints = sortedParoleData.map((element) => element.paroleValue);
+  const probationDataPoints = sortedProbationData.map((element) => element.probationValue);
+
+  return {
+    id: chartId,
+    data: {
+      labels: chartLabels,
+      datasets: [{
+        label: 'Probation',
+        type: 'bar',
+        backgroundColor: COLORS_STACKED_TWO_VALUES[0],
+        hoverBackgroundColor: COLORS_STACKED_TWO_VALUES[0],
+        hoverBorderColor: COLORS_STACKED_TWO_VALUES[0],
+        data: probationDataPoints,
+      }, {
+        label: 'Parole',
+        type: 'bar',
+        backgroundColor: COLORS_STACKED_TWO_VALUES[1],
+        hoverBackgroundColor: COLORS_STACKED_TWO_VALUES[1],
+        hoverBorderColor: COLORS_STACKED_TWO_VALUES[1],
+        data: paroleDataPoints,
+      }],
+    },
+    options: {
+      responsive: true,
+      legend: {
+        position: 'bottom',
+      },
+      tooltips: {
+        backgroundColor: COLORS['grey-800-light'],
+        mode: 'index',
+        intersect: false,
+        callbacks: {
+          label: (tooltipItem, data) => updateTooltipForMetricType(
+            props.metricType, tooltipItem, data,
+          ),
+        },
+      },
+      scales: {
+        xAxes: [{
+          scaleLabel: {
+            display: true,
+            labelString: 'Month',
+          },
+          stacked: true,
+        }],
+        yAxes: [{
+          ticks: toggleYAxisTicksStackedRateBasicCount(props.metricType, undefined),
+          scaleLabel: {
+            display: true,
+            labelString: toggleLabel(
+              { counts: 'Revocation count', rates: 'Percentage' },
+              props.metricType,
+            ),
+          },
+          stacked: true,
+        }],
+      },
     }
-
-    const months = getMonthCountFromMetricPeriodMonthsToggle(props.metricPeriodMonths);
-    const sortedParoleData = sortFilterAndSupplementMostRecentMonths(paroleData, months, 'paroleValue', 0);
-    const sortedProbationData = sortFilterAndSupplementMostRecentMonths(probationData, months, 'probationValue', 0);
-
-    setChartLabels(monthNamesWithYearsFromNumbers(sortedParoleData.map(
-      (element) => element.month,
-    ), false));
-    setParoleDataPoints(sortedParoleData.map((element) => element.paroleValue));
-    setProbationDataPoints(sortedProbationData.map((element) => element.probationValue));
   };
+}
+
+const RevocationCountBySupervisionType = (props) => {
+  const [chartDefinition, setChartDefinition] = useState(null);
 
   useEffect(() => {
-    processResponse();
+    setChartDefinition(getBarChartDefinition(props));
   }, [
     props.revocationCountsByMonthBySupervisionType,
     props.metricType,
@@ -87,66 +141,9 @@ const RevocationCountBySupervisionType = (props) => {
     props.district,
   ]);
 
-  const chart = (
-    <Bar
-      id={chartId}
-      data={{
-        labels: chartLabels,
-        datasets: [{
-          label: 'Probation',
-          type: 'bar',
-          backgroundColor: COLORS_STACKED_TWO_VALUES[0],
-          hoverBackgroundColor: COLORS_STACKED_TWO_VALUES[0],
-          hoverBorderColor: COLORS_STACKED_TWO_VALUES[0],
-          data: probationDataPoints,
-        }, {
-          label: 'Parole',
-          type: 'bar',
-          backgroundColor: COLORS_STACKED_TWO_VALUES[1],
-          hoverBackgroundColor: COLORS_STACKED_TWO_VALUES[1],
-          hoverBorderColor: COLORS_STACKED_TWO_VALUES[1],
-          data: paroleDataPoints,
-        },
-        ],
-      }}
-      options={{
-        responsive: true,
-        legend: {
-          position: 'bottom',
-        },
-        tooltips: {
-          backgroundColor: COLORS['grey-800-light'],
-          mode: 'index',
-          intersect: false,
-          callbacks: {
-            label: (tooltipItem, data) => updateTooltipForMetricType(
-              props.metricType, tooltipItem, data,
-            ),
-          },
-        },
-        scales: {
-          xAxes: [{
-            scaleLabel: {
-              display: true,
-              labelString: 'Month',
-            },
-            stacked: true,
-          }],
-          yAxes: [{
-            ticks: toggleYAxisTicksStackedRateBasicCount(props.metricType, undefined),
-            scaleLabel: {
-              display: true,
-              labelString: toggleLabel(
-                { counts: 'Revocation count', rates: 'Percentage' },
-                props.metricType,
-              ),
-            },
-            stacked: true,
-          }],
-        },
-      }}
-    />
-  );
+  if (!chartDefinition) return null;
+
+  const chart = <Bar { ...chartDefinition } />;
 
   const exportedStructureCallback = () => (
     {
@@ -154,9 +151,9 @@ const RevocationCountBySupervisionType = (props) => {
       series: [],
     });
 
-  configureDownloadButtons(chartId, 'REVOCATIONS BY SUPERVISION TYPE',
+  configureDownloadButtons(chartDefinition.chartId, 'REVOCATIONS BY SUPERVISION TYPE',
     chart.props.data.datasets, chart.props.data.labels,
-    document.getElementById(chartId), exportedStructureCallback, props, true, true);
+    document.getElementById(chartDefinition.chartId), exportedStructureCallback, props, true, true);
 
   return chart;
 };
