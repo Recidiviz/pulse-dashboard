@@ -178,6 +178,11 @@
   }
 }
 
+.modal-overflow {
+  overflow-y: auto;
+  max-height: 300px;
+}
+
 .static-charts {
   .chart-type-labels {
     width: 130px;
