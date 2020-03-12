@@ -252,9 +252,21 @@
       color: inherit;
     }
   }
+  .separation-column {
+    display: none;
+  }
 }
 @media screen and (max-width: 1024px) {
   .top-level-filters .top-level-filter h4 {
     min-height: 60%;
   }
+
+  .case-table .separation-column {
+    display: block;
+  }
+  .case-table .long-title {
+    word-break: break-all;
+    word-wrap: break-word;
+  }
+
 }
