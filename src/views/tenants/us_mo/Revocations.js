@@ -53,6 +53,8 @@ const METRIC_PERIODS = [
 
 const DEFAULT_METRIC_PERIOD = '12';
 
+const DEFAULT_BASE_DISTRICT = { value: 'All', label: 'All districts' };
+
 const CHARGE_CATEGORIES = [
   { value: 'All', label: 'All' },
   { value: 'GENERAL', label: 'General' },
@@ -111,7 +113,7 @@ const Revocations = () => {
       districtValues.sort();
 
       const districtsFromResponse = [
-        { value: 'All', label: 'All districts' },
+        DEFAULT_BASE_DISTRICT,
         ...districtValues.map((district) => ({ value: district, label: district })),
       ];
 
@@ -257,7 +259,7 @@ const Revocations = () => {
             <Select
               options={districts}
               onChange={(option) => updateFilters({ district: option.value })}
-              defaultValue={{ value: 'All', label: 'All districts' }}
+              defaultValue={DEFAULT_BASE_DISTRICT}
             />
           </div>
           <div className="top-level-filter">
