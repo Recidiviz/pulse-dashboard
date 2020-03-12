@@ -139,7 +139,7 @@ function configureDownloadButtons(
   const downloadChartAsImageButton = document.getElementById(`downloadChartAsImage-${chartId}`);
   if (downloadChartAsImageButton) {
     downloadChartAsImageButton.onclick = function downloadChartImage() {
-      downloadCanvasImage(chartBox, `${filename}.png`, chartTitle);
+      downloadCanvasImage(chartBox || document.getElementById(chartId), `${filename}.png`, chartTitle);
     };
   }
 

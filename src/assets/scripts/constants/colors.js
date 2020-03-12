@@ -342,6 +342,16 @@ const COLORS_FIVE_VALUES_LIGHT = [
   '#fdb0a8',
 ];
 
+const COLORS_SEVEN_VALUES = [
+  '#1b2126',
+  '#6d1e7d',
+  '#ff2454',
+  '#ffd75e',
+  '#8299e4',
+  '#ff7e70',
+  '#3e4c63',
+];
+
 const COLORS_LANTERN_SET = [
   '#F07132',
   '#03A9F4',
@@ -361,5 +371,6 @@ export {
   COLORS_THREE_VALUES,
   COLORS_FIVE_VALUES,
   COLORS_FIVE_VALUES_LIGHT,
+  COLORS_SEVEN_VALUES,
   COLORS_LANTERN_SET,
 };

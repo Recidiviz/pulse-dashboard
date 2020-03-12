@@ -22,9 +22,11 @@ import { COLORS_FIVE_VALUES } from '../../../assets/scripts/constants/colors';
 import { configureDownloadButtons } from '../../../assets/scripts/utils/downloads';
 import { getChartDefinition } from './Shared';
 
+const chartId = 'revocationsByViolationType';
+
 export const getBarChartDefinition = (props) => {
   return getChartDefinition({
-    chartId: 'revocationsByViolationType',
+    chartId,
     countsByMonth: props.revocationCountsByMonthByViolationType,
     metricType: props.metricType,
     numMonths: props.metricPeriodMonths,
@@ -38,6 +40,7 @@ export const getBarChartDefinition = (props) => {
       {key: 'technical_count', label: 'Technical'},
       {key: 'unknown_count', label: 'Unknown Type'}
     ],
+    yAxisLabel: props.metricType === 'counts' ? 'Revocation count' : 'Percentage',
     barColorPalette: COLORS_FIVE_VALUES
   });
 };
@@ -65,9 +68,9 @@ const RevocationCountByViolationType = (props) => {
       series: [],
     });
 
-  configureDownloadButtons(chartDefinition.chartId, 'REVOCATIONS BY VIOLATION TYPE',
+  configureDownloadButtons(chartId, 'REVOCATIONS BY VIOLATION TYPE',
     chart.props.data.datasets, chart.props.data.labels,
-    document.getElementById(chartDefinition.chartId), exportedStructureCallback, props, true, true);
+    document.getElementById(chartId), exportedStructureCallback, props, true, true);
 
   return chart;
 };

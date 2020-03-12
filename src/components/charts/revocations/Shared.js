@@ -16,6 +16,7 @@ export const getChartDefinition = ({
     numMonths,
     filters,
     bars,
+    yAxisLabel,
     barColorPalette
 }) => {
   // TODO(jon): Try to streamline this function more.
@@ -116,7 +117,7 @@ export const getChartDefinition = ({
           scaleLabel: {
             display: true,
             labelString: toggleLabel(
-                {counts: 'Revocation count', rates: 'Percentage'},
+                {[metricType]: yAxisLabel},
                 metricType,
             ),
           },
