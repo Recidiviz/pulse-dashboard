@@ -15,7 +15,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useLayoutEffect, useRef } from 'react';
 import Select from 'react-select';
 import Sticky from 'react-sticky-fill';
 
@@ -122,10 +122,49 @@ const Revocations = () => {
       console.error(error);
     }
   };
+  const separate = useRef();
 
   useEffect(() => {
     fetchChartData();
   }, []);
+
+  useLayoutEffect(() => {
+    window.addEventListener('scroll', handlerTopLevel);
+
+    return () => window.removeEventListener('scroll', handlerTopLevel)
+  }, );
+
+  let timeout = null;
+
+  const handlerTopLevel = () => {
+    if (timeout) {
+      return;
+    }
+
+    timeout = setTimeout(function() {
+      if (window.pageYOffset > 0) {
+        let x = document.body.getElementsByClassName('title-level');
+        for (let i = 0; i < x.length; i++) {
+          x[i].classList.add('top-level-filters-title');
+          x[i].parentNode.classList.add('top-level-active');
+          x[i].parentNode.classList.add('d-f');
+          x[i].parentNode.classList.add('align-items-center');
+        }
+        separate.current.style.display='block';
+      } else {
+        let x = document.body.getElementsByClassName('title-level');
+        for (let i = 0; i < x.length; i++) {
+          x[i].classList.remove('top-level-filters-title');
+          x[i].parentNode.classList.remove('top-level-active');
+          x[i].parentNode.classList.remove('d-f');
+          x[i].parentNode.classList.remove('align-items-center');
+        }
+        separate.current.style.display='none';
+      }
+
+      timeout = null;
+    }, 100);
+  };
 
   const updateFilters = (newFilters) => {
     setFilters({ ...filters, ...newFilters });
@@ -247,32 +286,36 @@ const Revocations = () => {
       <Sticky style={TOGGLE_STYLE}>
         <div className="top-level-filters d-f">
           <div className="top-level-filter">
-            <h4>Time Period</h4>
+            <h4 className="title-level">Time <br ref={separate} className="separate-filter-title"/>Period</h4>
             <Select
+              className="select-align"
               options={METRIC_PERIODS}
               onChange={(option) => updateFilters({ metricPeriodMonths: option.value })}
               value={METRIC_PERIODS.filter((option) => option.value === filters.metricPeriodMonths)}
             />
           </div>
           <div className="top-level-filter">
-            <h4>District</h4>
+            <h4 className="title-level">District</h4>
             <Select
+              className="select-align"
               options={districts}
               onChange={(option) => updateFilters({ district: option.value })}
               defaultValue={DEFAULT_BASE_DISTRICT}
             />
           </div>
           <div className="top-level-filter">
-            <h4>Supervision Level</h4>
+            <h4 className="title-level">Supervision Level</h4>
             <Select
+              className="select-align"
               options={CHARGE_CATEGORIES}
               onChange={(option) => updateFilters({ chargeCategory: option.value })}
               defaultValue={CHARGE_CATEGORIES[0]}
             />
           </div>
           <div className="top-level-filter">
-            <h4>Supervision Type</h4>
+            <h4 className="title-level">Supervision Type</h4>
             <Select
+              className="select-align"
               options={SUPERVISION_TYPES}
               onChange={(option) => updateFilters({ supervisionType: option.value })}
               defaultValue={SUPERVISION_TYPES[0]}

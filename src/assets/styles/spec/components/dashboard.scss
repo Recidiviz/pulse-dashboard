@@ -16,6 +16,17 @@
       border-right: 0;
     }
   }
+  .top-level-filters-title {
+    margin-right: 11px;
+    float: left;
+    width: 25%;
+    text-align: justify;
+    font-size: 0.9rem;
+    flex-shrink: 0;
+  }
+  .select-align {
+    flex-grow: 1;
+  }
 }
 
 .revocations-time-graph {
@@ -260,6 +271,27 @@
   .top-level-filters .top-level-filter h4 {
     min-height: 60%;
   }
+  .top-level-filters .top-level-filters-title {
+    font-size: 0.6rem;
+  }
+}
+@media screen and (max-width: 1680px) {
+  .top-level-filters .top-level-filters-title {
+    margin-right: 11px;
+    min-height: 40% !important;
+  }
+}
+.top-level-active {
+  padding: 12px 14px !important;
+}
+
+@media screen and (max-width: 1420px) {
+  .top-level-filters .top-level-filters-title {
+    font-size: 0.65rem;
+  }
+}
+.separate-filter-title {
+  display: none;
 
   .case-table .separation-column {
     display: block;
@@ -269,4 +301,10 @@
     word-wrap: break-word;
   }
 
+}
+
+@media screen and (max-width: 960px) {
+  .top-level-filters .top-level-filters-title {
+    font-size: 0.5rem;
+  }
 }
