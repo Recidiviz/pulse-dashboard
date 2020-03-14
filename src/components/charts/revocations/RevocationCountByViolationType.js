@@ -20,7 +20,7 @@ import { Bar } from 'react-chartjs-2';
 
 import { COLORS_FIVE_VALUES } from '../../../assets/scripts/constants/colors';
 import { configureDownloadButtons } from '../../../assets/scripts/utils/downloads';
-import { getChartDefinition } from './Shared';
+import { getChartDefinition } from './BarCharts';
 
 const chartId = 'revocationsByViolationType';
 

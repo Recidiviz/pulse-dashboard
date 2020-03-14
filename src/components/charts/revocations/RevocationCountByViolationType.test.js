@@ -16,6 +16,7 @@
 // =============================================================================
 
 import { readJsonLinesFile } from '../../../utils/testing';
+import { testGetBarChartDefinitionAgainstSnapshots } from './test_utils/snapshotTesting'
 
 import { getBarChartDefinition } from './RevocationCountByViolationType';
 
@@ -32,40 +33,13 @@ const modifyExpectedDefinition = (expectedDefinition) => {
   });
 };
 
-describe('getBarChartDefinition', () => {
-  const data = readJsonLinesFile(
-      path.join(__dirname, 'test_data/RevocationCountByViolationType/revocations_by_violation_type_by_month.json')
-  );
+const data = readJsonLinesFile(
+    path.join(__dirname, 'test_data/RevocationCountByViolationType/revocations_by_violation_type_by_month.json')
+);
 
-  test('produces the expected chart definitions for all snapshotted scenarios', () => {
-    fs.readdirSync(path.join(__dirname, 'test_data/RevocationCountByViolationType/snapshots')).forEach(fileName => {
-      try {
-        const filters = fileName.slice(0, 0 - '.json'.length).split('|').reduce((filters, part) => {
-          const [name, value] = part.split(':');
-
-          filters[name] = value;
-
-          return filters;
-        }, {});
-
-        const expectedDefinition = JSON.parse(fs.readFileSync(
-            path.join(__dirname, 'test_data/RevocationCountByViolationType/snapshots', fileName),
-            'utf8'
-        ));
-
-        modifyExpectedDefinition(expectedDefinition);
-
-        let definition = getBarChartDefinition(Object.assign(filters, {revocationCountsByMonthByViolationType: data}));
-
-        // serialize and deserialize to effectively ignore embedded functions for now (less critical than the data)
-        definition = JSON.parse(JSON.stringify(definition));
-        
-        expect(definition).toEqual(expectedDefinition);
-      } catch (e) {
-        console.log(`Error for snapshot in ${fileName}`);
-
-        throw e;
-      }
-    });
-  });
-});
+testGetBarChartDefinitionAgainstSnapshots(
+    path.join(__dirname, 'test_data/RevocationCountByViolationType/snapshots'),
+    getBarChartDefinition,
+    {revocationCountsByMonthByViolationType: data},
+    modifyExpectedDefinition,
+);

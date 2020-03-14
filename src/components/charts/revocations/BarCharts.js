@@ -19,7 +19,7 @@ export const getChartDefinition = ({
     yAxisLabel,
     barColorPalette
 }) => {
-  // TODO(jon): Try to streamline this function more.
+  // TODO(233): Try to streamline this function more.
   let filteredCountsByMonth = countsByMonth.filter(entry => {
     for (const key in filters) {
       if (String(entry[key]).toUpperCase() !== String(filters[key].toUpperCase())) return false;

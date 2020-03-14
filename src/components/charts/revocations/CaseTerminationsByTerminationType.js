@@ -20,7 +20,7 @@ import { Bar } from 'react-chartjs-2';
 
 import { COLORS_SEVEN_VALUES } from '../../../assets/scripts/constants/colors';
 import { configureDownloadButtons } from '../../../assets/scripts/utils/downloads';
-import { getChartDefinition } from './Shared';
+import { getChartDefinition } from './BarCharts';
 
 const chartId = 'caseTerminationsByTerminationType';
 
@@ -40,7 +40,8 @@ export const getBarChartDefinition = (props) => {
       {key: 'suspension', label: 'Suspension'},
       {key: 'discharge', label: 'Discharge'},
       {key: 'expiration', label: 'Expiration'},
-      {key: 'death', label: 'Death'}
+      {key: 'death', label: 'Death'},
+      {key: 'other', label: 'Other'}
     ],
     yAxisLabel: props.metricType === 'counts' ? 'Case terminations' : 'Percentage',
     barColorPalette: COLORS_SEVEN_VALUES

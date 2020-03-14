@@ -469,10 +469,10 @@ const Revocations = () => {
                           cases, each case termination will be counted in the chart.
                         </li>
                         <li>
-                          Case terminations are included based on termination date in DocStars.
+                          Case terminations are included based on termination date in Docstars.
                         </li>
                         <li>
-                          Revocations are included based on a termination type of revocation in DocStars. Unlike other
+                          Revocations are included based on a termination type of revocation in Docstars. Unlike other
                           revocation counts, this chart <span className="font-weight-bold">does not</span> only examine
                           revocations resulting in admission to a DOCR facility.
                         </li>
@@ -480,10 +480,11 @@ const Revocations = () => {
                           Absconsion is all cases terminated with termination code 13. Revocation is all cases
                           terminated with code 9 or 10. Suspension is cases terminated with code 3 or 6. Discharge is
                           cases terminated with code 1, 2, 5, 8, 12, 15, 16, 17, or 18. Expiration is cases terminated
-                          with code 4, 7, 19, or 20. Death is cases terminated with code 11.
+                          with code 4, 7, 19, or 20. Death is cases terminated with code 11. Other is cases terminated
+                          ith code 14.
                         </li>
                         <li>
-                          Case terminations are attributed to the P&P office of the terminating officer in DocStars.
+                          Case terminations are attributed to the P&P office of the terminating officer in Docstars.
                         </li>
                       </ul>
                     </div>

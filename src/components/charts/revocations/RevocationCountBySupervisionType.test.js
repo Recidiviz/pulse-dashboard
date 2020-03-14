@@ -18,6 +18,7 @@
 import { readJsonLinesFile } from '../../../utils/testing';
 
 import { getBarChartDefinition } from './RevocationCountBySupervisionType';
+import { testGetBarChartDefinitionAgainstSnapshots } from './test_utils/snapshotTesting'
 
 const fs = require('fs');
 const path = require('path');
@@ -38,42 +39,13 @@ const modifyExpectedDefinition = (expectedDefinition) => {
   });
 };
 
-describe('getBarChartDefinition', () => {
-  const data = readJsonLinesFile(
-      path.join(__dirname, 'test_data/RevocationCountBySupervisionType/revocations_by_supervision_type_by_month.json')
-  );
+const data = readJsonLinesFile(
+    path.join(__dirname, 'test_data/RevocationCountBySupervisionType/revocations_by_supervision_type_by_month.json')
+);
 
-  test('produces the expected chart definitions for all snapshotted scenarios', () => {
-    fs.readdirSync(path.join(__dirname, 'test_data/RevocationCountBySupervisionType/snapshots')).forEach(fileName => {
-      try {
-        const filters = fileName.slice(0, 0 - '.json'.length).split('|').reduce((filters, part) => {
-          const [name, value] = part.split(':');
-
-          filters[name] = value;
-
-          return filters;
-        }, {});
-
-        const expectedDefinition = JSON.parse(fs.readFileSync(
-            path.join(__dirname, 'test_data/RevocationCountBySupervisionType/snapshots', fileName),
-            'utf8'
-        ));
-
-        modifyExpectedDefinition(expectedDefinition);
-
-        let definition = getBarChartDefinition(
-            Object.assign(filters, {revocationCountsByMonthBySupervisionType: data})
-        );
-
-        // serialize and deserialize to effectively ignore embedded functions for now (less critical than the data)
-        definition = JSON.parse(JSON.stringify(definition));
-        
-        expect(definition).toEqual(expectedDefinition);
-      } catch (e) {
-        console.log(`Error for snapshot in ${fileName}`);
-
-        throw e;
-      }
-    });
-  });
-});
+testGetBarChartDefinitionAgainstSnapshots(
+    path.join(__dirname, 'test_data/RevocationCountBySupervisionType/snapshots'),
+    getBarChartDefinition,
+    {revocationCountsByMonthBySupervisionType: data},
+    modifyExpectedDefinition,
+);
