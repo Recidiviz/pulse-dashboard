@@ -481,7 +481,7 @@ const Revocations = () => {
                           terminated with code 9 or 10. Suspension is cases terminated with code 3 or 6. Discharge is
                           cases terminated with code 1, 2, 5, 8, 12, 15, 16, 17, or 18. Expiration is cases terminated
                           with code 4, 7, 19, or 20. Death is cases terminated with code 11. Other is cases terminated
-                          ith code 14.
+                          with code 14.
                         </li>
                         <li>
                           Case terminations are attributed to the P&P office of the terminating officer in Docstars.
