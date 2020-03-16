@@ -27,7 +27,7 @@ import {
 } from '../../../utils/charts/toggles';
 import { sortFilterAndSupplementMostRecentMonths } from '../../../utils/transforms/datasets';
 import { toInt } from '../../../utils/transforms/labels';
-import { monthNamesWithYearsFromNumbers } from '../../../utils/transforms/months';
+import { monthNamesAllWithYearsFromNumbers } from '../../../utils/transforms/months';
 
 const RevocationsOverTime = (props) => {
   const [chartLabels, setChartLabels] = useState([]);
@@ -54,7 +54,7 @@ const RevocationsOverTime = (props) => {
 
     const months = getMonthCountFromMetricPeriodMonthsToggle(props.metricPeriodMonths);
     const sortedChartData = sortFilterAndSupplementMostRecentMonths(chartData, months, 'count', 0);
-    const labels = monthNamesWithYearsFromNumbers(sortedChartData.map((element) => element.month), false)
+    const labels = monthNamesAllWithYearsFromNumbers(sortedChartData.map((element) => element.month), false)
     const dataPoints = (sortedChartData.map((element) => element.count));
 
     centerSingleMonthDatasetIfNecessary(dataPoints, labels);

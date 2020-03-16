@@ -50,9 +50,7 @@ const monthNamesFromNumbers = function monthNamesFromNumbers(
   return monthList;
 };
 
-const monthNamesWithYearsFromNumbers = function monthNamesShortWithYearsFromNumbers(
-  monthNumbers, abbreviated,
-) {
+const monthNamesWithYears = function monthNamesWithyears(monthNumbers, abbreviated, allMonths) {
   const monthNames = monthNamesFromNumbers(monthNumbers, abbreviated);
   const monthNumbersNormalized = monthNumbers.map((month) => Number(month));
   const multipleYears = (monthNumbersNormalized.length > 12
@@ -68,9 +66,23 @@ const monthNamesWithYearsFromNumbers = function monthNamesShortWithYearsFromNumb
     } else if (multipleYears && monthNames[i] === january) {
       monthNames[i] = monthNames[i].concat(" '", year % 100);
       year -= 1;
+    } else if (allMonths) {
+      monthNames[i] = monthNames[i].concat(" '", year % 100);
     }
   }
   return monthNames;
+};
+
+const monthNamesWithYearsFromNumbers = function monthNamesShortWithYearsFromNumbers(
+  monthNumbers, abbreviated,
+) {
+  return monthNamesWithYears(monthNumbers, abbreviated, false);
+};
+
+const monthNamesAllWithYearsFromNumbers = function monthNamesShortWithYearsFromNumbers(
+  monthNumbers, abbreviated,
+) {
+  return monthNamesWithYears(monthNumbers, abbreviated, true);
 };
 
 const monthNamesFromShortName = function monthNamesFromShortName(shortName) {
@@ -94,5 +106,6 @@ export {
   monthNameFromNumberAbbreviated,
   monthNamesFromNumbers,
   monthNamesWithYearsFromNumbers,
+  monthNamesAllWithYearsFromNumbers,
   monthNamesFromShortName,
 };
