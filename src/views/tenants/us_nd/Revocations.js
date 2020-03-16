@@ -41,6 +41,7 @@ import GeoViewTimeChart from '../../../components/charts/GeoViewTimeChart';
 import GeoViewToggle from '../../../components/toggles/GeoViewToggle';
 import ToggleBar from '../../../components/toggles/ToggleBar';
 import * as ToggleDefaults from '../../../components/toggles/ToggleDefaults';
+import PageTemplate from './PageTemplate';
 
 const Revocations = () => {
   const { loading, user, getTokenSilently } = useAuth0();
@@ -74,537 +75,535 @@ const Revocations = () => {
     return <Loading />;
   }
 
+  const toggleBar = (
+    <ToggleBar
+      setChartMetricType={setChartMetricType}
+      setChartMetricPeriodMonths={setChartMetricPeriodMonths}
+      setChartSupervisionType={setChartSupervisionType}
+      setChartDistrict={setChartDistrict}
+      districtOffices={apiData.site_offices}
+      availableDistricts={['beulah', 'bismarck', 'bottineau', 'devils-lake', 'dickson', 'fargo', 'grafton', 'grand-forks', 'jamestown', 'mandan', 'minot', 'oakes', 'rolla', 'washburn', 'wahpeton', 'williston']}
+    />
+  );
+
   return (
-    <main className="main-content bgc-grey-100">
-      <div id="mainContent">
-
-        <ToggleBar
-          setChartMetricType={setChartMetricType}
-          setChartMetricPeriodMonths={setChartMetricPeriodMonths}
-          setChartSupervisionType={setChartSupervisionType}
-          setChartDistrict={setChartDistrict}
-          districtOffices={apiData.site_offices}
-          availableDistricts={['beulah', 'bismarck', 'bottineau', 'devils-lake', 'dickson', 'fargo', 'grafton', 'grand-forks', 'jamestown', 'mandan', 'minot', 'oakes', 'rolla', 'washburn', 'wahpeton', 'williston']}
-        />
-
-        <div className="row gap-20 pos-r">
-
-          {/* #Revocation counts by month chart ==================== */}
-          <div className="col-md-6">
-            <div className="bd bgc-white p-20">
-              <div className="layers">
-                <div className="layer w-100 pX-20 pT-20">
-                  <h6 className="lh-1">
-                    REVOCATIONS BY MONTH
-                    <span className="fa-pull-right">
-                      <div className="geo-view-button pR-10">
-                        <GeoViewToggle setGeoViewEnabled={setGeoViewEnabledRCOT} />
-                      </div>
-                      <div className="dropdown show export-button">
-                        <a className="btn btn-secondary btn-sm dropdown-toggle" href="#" role="button" id="exportDropdownMenuButton-revocationCountsByMonth" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                          Export
-                        </a>
-                        <div className="dropdown-menu" aria-labelledby="exportDropdownMenuButton-revocationCountsByMonth">
-                          {geoViewEnabledRCOT === false && (
-                            <a className="dropdown-item" id="downloadChartAsImage-revocationCountsByMonth" href="javascript:void(0);">Export image</a>
-                          )}
-                          <a className="dropdown-item" id="downloadChartData-revocationCountsByMonth" href="javascript:void(0);">Export data</a>
-                        </div>
-                      </div>
-                    </span>
-                  </h6>
-                </div>
-                <div className="layer w-100 pX-20 pT-20">
-                  {geoViewEnabledRCOT === false && (
-                    <div className="dynamic-chart-header" id="revocationCountsByMonth-header" />
-                  )}
-                </div>
-                { /* TODO(XXX): Figure out why map will not show when delegated to by the Chart.js
-                chart. Then we can just encapsulate this logic inside of a single component. */ }
-                <div className="layer w-100 p-20 fs-block">
-                  {geoViewEnabledRCOT === false && (
-                    <RevocationCountOverTime
-                      metricType={chartMetricType}
-                      metricPeriodMonths={chartMetricPeriodMonths}
-                      supervisionType={chartSupervisionType}
-                      district={chartDistrict}
-                      geoView={geoViewEnabledRCOT}
-                      officeData={apiData.site_offices}
-                      revocationCountsByMonth={apiData.revocations_by_month}
-                      header="revocationCountsByMonth-header"
-                    />
-                  )}
-                  {geoViewEnabledRCOT === true && (
-                    <GeoViewTimeChart
-                      chartId="revocationCountsByMonth"
-                      chartTitle="REVOCATIONS BY MONTH"
-                      metricType={chartMetricType}
-                      metricPeriodMonths={chartMetricPeriodMonths}
-                      supervisionType={chartSupervisionType}
-                      keyedByOffice={true}
-                      officeData={apiData.site_offices}
-                      dataPointsByOffice={apiData.revocations_by_period}
-                      numeratorKeys={['revocation_count']}
-                      denominatorKeys={['total_supervision_count']}
-                      centerLat={47.3}
-                      centerLong={-100.5}
-                    />
-                  )}
-                </div>
-                <div className="layer bdT p-20 w-100 accordion" id="methodologyRevocationCountsByMonth">
-                  <div className="mb-0" id="methodologyHeadingRevocationCountsByMonth">
-                    <div className="mb-0">
-                      <button className="btn btn-link collapsed pL-0" type="button" data-toggle="collapse" data-target="#collapseMethodologyRevocationCountsByMonth" aria-expanded="true" aria-controls="collapseMethodologyRevocationCountsByMonth">
-                        <h6 className="lh-1 c-blue-500 mb-0">Methodology</h6>
-                      </button>
+    <PageTemplate toggleBar={toggleBar}>
+      <React.Fragment>
+        {/* #Revocation counts by month chart ==================== */}
+        <div className="col-md-6">
+          <div className="bd bgc-white p-20">
+            <div className="layers">
+              <div className="layer w-100 pX-20 pT-20">
+                <h6 className="lh-1">
+                  REVOCATIONS BY MONTH
+                  <span className="fa-pull-right">
+                    <div className="geo-view-button pR-10">
+                      <GeoViewToggle setGeoViewEnabled={setGeoViewEnabledRCOT} />
                     </div>
-                  </div>
-                  <div id="collapseMethodologyRevocationCountsByMonth" className="collapse" aria-labelledby="methodologyHeadingRevocationCountsByMonth" data-parent="#methodologyRevocationCountsByMonth">
-                    <div>
-                      <ul>
-                        <li>
-                          Revocation counts include the number of people who were incarcerated
-                          in a DOCR facility because their supervision was revoked.
-                        </li>
-                        <li>
-                          Revocations are included based on the date that the person
-                          was admitted to a DOCR facility because their supervision
-                          was revoked, not the date of the causal violation or offense.
-                        </li>
-                        <li>
-                          Violations include all violations of supervision conditions
-                          that resulted in revocation, which are new offenses,
-                          technical violations, and absconsion.
-                        </li>
-                        <li>
-                          Revocation rates are calculated as the number of people who were
-                          incarcerated in a DOCR facility for a revocation during the time
-                          period divided by the total number of people on probation or parole
-                          at any point during the time period.
-                        </li>
-                        <li>
-                          When a supervision type and/or parole office is selected, the
-                          revocation rate is the number of people with revocations fitting
-                          the selected criteria divided by the total number of people fitting
-                          the selected criteria.
-                        </li>
-                        <li>
-                          Revocations are attributed to the site of the
-                          terminating officer at the time of a person&apos;s revocation.
-                        </li>
-                      </ul>
+                    <div className="dropdown show export-button">
+                      <a className="btn btn-secondary btn-sm dropdown-toggle" href="#" role="button" id="exportDropdownMenuButton-revocationCountsByMonth" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Export
+                      </a>
+                      <div className="dropdown-menu" aria-labelledby="exportDropdownMenuButton-revocationCountsByMonth">
+                        {geoViewEnabledRCOT === false && (
+                          <a className="dropdown-item" id="downloadChartAsImage-revocationCountsByMonth" href="javascript:void(0);">Export image</a>
+                        )}
+                        <a className="dropdown-item" id="downloadChartData-revocationCountsByMonth" href="javascript:void(0);">Export data</a>
+                      </div>
                     </div>
-                  </div>
-                </div>
+                  </span>
+                </h6>
               </div>
-            </div>
-          </div>
-
-          {/* #Revocations by officer id ==================== */}
-          <div className="col-md-6">
-            <div className="bd bgc-white p-20">
-              <div className="layers">
-                <div className="layer w-100 pX-20 pT-20">
-                  <h6 className="lh-1">
-                    REVOCATIONS BY OFFICER
-                    {chartDistrict === 'all' && (
-                      <span className="pL-10 toggle-alert ti-alert" data-toggle="tooltip" data-placement="bottom" title="Exporting this chart as an image will not include officer IDs unless a specific P&P office is selected from the Explore bar." />
-                    )}
-                    <span className="fa-pull-right">
-                      <div className="dropdown show">
-                        <a className="btn btn-secondary btn-sm dropdown-toggle" href="#" role="button" id="exportDropdownMenuButton-revocationsByOfficer" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                          Export
-                        </a>
-                        <div className="dropdown-menu" aria-labelledby="exportDropdownMenuButton-revocationsByOfficer">
-                          <a className="dropdown-item" id="downloadChartAsImage-revocationsByOfficer" href="javascript:void(0);">Export image</a>
-                          <a className="dropdown-item" id="downloadChartData-revocationsByOfficer" href="javascript:void(0);">Export data</a>
-                        </div>
-                      </div>
-                    </span>
-                  </h6>
-                </div>
-                <div className="layer w-100 p-20 fs-block">
-                  <RevocationCountByOfficer
+              <div className="layer w-100 pX-20 pT-20">
+                {geoViewEnabledRCOT === false && (
+                  <div className="dynamic-chart-header" id="revocationCountsByMonth-header" />
+                )}
+              </div>
+              { /* TODO(XXX): Figure out why map will not show when delegated to by the Chart.js
+              chart. Then we can just encapsulate this logic inside of a single component. */ }
+              <div className="layer w-100 p-20 fs-block">
+                {geoViewEnabledRCOT === false && (
+                  <RevocationCountOverTime
                     metricType={chartMetricType}
                     metricPeriodMonths={chartMetricPeriodMonths}
                     supervisionType={chartSupervisionType}
                     district={chartDistrict}
-                    revocationCountsByOfficer={apiData.revocations_by_officer_by_period}
+                    geoView={geoViewEnabledRCOT}
                     officeData={apiData.site_offices}
+                    revocationCountsByMonth={apiData.revocations_by_month}
+                    header="revocationCountsByMonth-header"
                   />
-                </div>
-                <div className="layer bdT p-20 w-100 accordion" id="methodologyRevocationByOfficer">
-                  <div className="mb-0" id="methodologyHeadingRevocationByOfficer">
-                    <div className="mb-0">
-                      <button className="btn btn-link collapsed pL-0" type="button" data-toggle="collapse" data-target="#collapseMethodologyRevocationByOfficer" aria-expanded="true" aria-controls="collapseMethodologyRevocationByOfficer">
-                        <h6 className="lh-1 c-blue-500 mb-0">Methodology</h6>
-                      </button>
-                    </div>
-                  </div>
-                  <div id="collapseMethodologyRevocationByOfficer" className="collapse" aria-labelledby="methodologyHeadingRevocationByOfficer" data-parent="#methodologyRevocationByOfficer">
-                    <div>
-                      <ul>
-                        <li>
-                          Revocations are counted towards an officer if that officer is flagged as
-                          the terminating officer at the time of a person&apos;s revocation.
-                        </li>
-                        <li>
-                          Revocations are included based on the date that the person
-                          was admitted to a DOCR facility because their supervision
-                          was revoked, not the date of the causal violation or offense.
-                        </li>
-                        <li>
-                          The revocation rate refers to the percent of an officer’s total
-                          revocation count caused by each violation type.
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-                <div className="layer bdT p-20 w-100">
-                  <div className="peers ai-c jc-c gapX-20">
-                    <div className="peer fw-600">
-                      <small className="c-grey-500 fw-600">Period </small>
-                      <span className="fsz-def fw-600 mR-10 c-grey-800">
-                        {getPeriodLabelFromMetricPeriodMonthsToggle(chartMetricPeriodMonths)}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* #Revocations by supervision type ==================== */}
-          <div className="col-md-6">
-            <div className="bd bgc-white p-20">
-              <div className="layers">
-                <div className="layer w-100 pX-20 pT-20">
-                  <h6 className="lh-1">
-                    REVOCATIONS BY SUPERVISION TYPE
-                    {chartSupervisionType !== 'all' && (
-                      <span className="pL-10 toggle-alert ti-alert" data-toggle="tooltip" data-placement="bottom" title="This graph is showing all individuals on supervision. It doesn’t support showing only individuals on probation or only individuals on parole." />
-                    )}
-                    <span className="fa-pull-right">
-                      <div className="dropdown show">
-                        <a className="btn btn-secondary btn-sm dropdown-toggle" href="#" role="button" id="exportDropdownMenuButton-revocationsBySupervisionType" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                          Export
-                        </a>
-                        <div className="dropdown-menu" aria-labelledby="exportDropdownMenuButton-revocationsBySupervisionType">
-                          <a className="dropdown-item" id="downloadChartAsImage-revocationsBySupervisionType" href="javascript:void(0);">Export image</a>
-                          <a className="dropdown-item" id="downloadChartData-revocationsBySupervisionType" href="javascript:void(0);">Export data</a>
-                        </div>
-                      </div>
-                    </span>
-                  </h6>
-                </div>
-                <div className="layer w-100 p-20 fs-block">
-                  <RevocationCountBySupervisionType
-                    metricType={chartMetricType}
-                    metricPeriodMonths={chartMetricPeriodMonths}
-                    district={chartDistrict}
-                    revocationCountsByMonthBySupervisionType={
-                    apiData.revocations_by_supervision_type_by_month}
-                  />
-                </div>
-                <div className="layer bdT p-20 w-100 accordion" id="methodologyRevocationsBySupervisionType">
-                  <div className="mb-0" id="methodologyHeadingRevocationsBySupervisiontype">
-                    <div className="mb-0">
-                      <button className="btn btn-link collapsed pL-0" type="button" data-toggle="collapse" data-target="#collapseMethodologyRevocationsBySupervisionType" aria-expanded="true" aria-controls="collapseMethodologyRevocationsBySupervisionType">
-                        <h6 className="lh-1 c-blue-500 mb-0">Methodology</h6>
-                      </button>
-                    </div>
-                  </div>
-                  <div className="collapse" id="collapseMethodologyRevocationsBySupervisionType" aria-labelledby="methodologyHeadingRevocationsBySupervisiontype" data-parent="#methodologyRevocationsBySupervisionType">
-                    <div>
-                      <ul>
-                        <li>
-                          Revocations count people who were incarcerated in a DOCR facility
-                          because their supervision was revocation.
-                        </li>
-                        <li>
-                          Percentage shows the percent of revocations in a month associated
-                          with individuals on parole and the percent associated with
-                          individuals on probation.
-                        </li>
-                        <li>
-                          Revocations are included based on the date that the person
-                          was admitted to a DOCR facility because their supervision
-                          was revoked, not the date of the causal violation or offense.
-                        </li>
-                        <li>
-                          Violations include all violations of supervision conditions
-                          that resulted in revocation, which are new offenses,
-                          technical violations, and absconsion.
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* #Revocations by violation type ==================== */}
-          <div className="col-md-6">
-            <div className="bd bgc-white p-20">
-              <div className="layers">
-                <div className="layer w-100 pX-20 pT-20">
-                  <h6 className="lh-1">
-                    REVOCATIONS BY VIOLATION TYPE
-                    <span className="fa-pull-right">
-                      <div className="dropdown show">
-                        <a className="btn btn-secondary btn-sm dropdown-toggle" href="#" role="button" id="exportDropdownMenuButton-revocationsByViolationType" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                          Export
-                        </a>
-                        <div className="dropdown-menu" aria-labelledby="exportDropdownMenuButton-revocationsByViolationType">
-                          <a className="dropdown-item" id="downloadChartAsImage-revocationsByViolationType" href="javascript:void(0);">Export image</a>
-                          <a className="dropdown-item" id="downloadChartData-revocationsByViolationType" href="javascript:void(0);">Export data</a>
-                        </div>
-                      </div>
-                    </span>
-                  </h6>
-                </div>
-                <div className="layer w-100 p-20 fs-block">
-                  <RevocationCountByViolationType
+                )}
+                {geoViewEnabledRCOT === true && (
+                  <GeoViewTimeChart
+                    chartId="revocationCountsByMonth"
+                    chartTitle="REVOCATIONS BY MONTH"
                     metricType={chartMetricType}
                     metricPeriodMonths={chartMetricPeriodMonths}
                     supervisionType={chartSupervisionType}
-                    district={chartDistrict}
-                    revocationCountsByMonthByViolationType={
-                    apiData.revocations_by_violation_type_by_month}
+                    keyedByOffice={true}
+                    officeData={apiData.site_offices}
+                    dataPointsByOffice={apiData.revocations_by_period}
+                    numeratorKeys={['revocation_count']}
+                    denominatorKeys={['total_supervision_count']}
+                    centerLat={47.3}
+                    centerLong={-100.5}
                   />
-                </div>
-                <div className="layer bdT p-20 w-100 accordion" id="methodologyRevocationsByViolationType">
-                  <div className="mb-0" id="methodologyHeadingRevocationsByViolationType">
-                    <div className="mb-0">
-                      <button className="btn btn-link collapsed pL-0" type="button" data-toggle="collapse" data-target="#collapseMethodologyRevocationsByViolationType" aria-expanded="true" aria-controls="collapseMethodologyRevocationsByViolationType">
-                        <h6 className="lh-1 c-blue-500 mb-0">Methodology</h6>
-                      </button>
-                    </div>
-                  </div>
-                  <div className="collapse" id="collapseMethodologyRevocationsByViolationType" aria-labelledby="methodologyHeadingRevocationsByViolationType" data-parent="#methodologyRevocationsByViolationType">
-                    <div>
-                      <ul>
-                        <li>
-                          Revocation counts include the number of people who were incarcerated
-                          in a DOCR facility because their supervision was revoked.
-                        </li>
-                        <li>
-                          Percentage is the percent of revocations in a given month caused by
-                          each violation type.
-                        </li>
-                        <li>
-                          Violations include all violations of supervision conditions
-                          that resulted in revocation, which are new offenses,
-                          technical violations, and absconsion.
-                        </li>
-                        <li>
-                          Violations of "Unknown Type" indicate individuals who were admitted to
-                          prison for a supervision revocation where the violation that caused the
-                          revocation cannot yet be determined.
-                        </li>
-                        <li>
-                          "Technical" revocations include only those revocations which result solely
-                          from a technical violation. If there is a violation that includes a new
-                          offense or an absconsion, it is considered a non-technical revocation.
-                        </li>
-                        <li>
-                          Revocations are included based on the date that the person
-                          was admitted to a DOCR facility because their supervision
-                          was revoked, not the date of the causal violation or offense.
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
+                )}
               </div>
-            </div>
-          </div>
-
-          {/* #Admission type proportions ==================== */}
-          <div className="col-md-6">
-            <div className="bd bgc-white p-20">
-              <div className="layers">
-                <div className="layer w-100 pX-20 pT-20">
-                  <h6 className="lh-1">
-                    ADMISSIONS BY TYPE
-                    {((chartSupervisionType !== 'all' || chartDistrict !== 'all') && chartMetricType === 'rates') && (
-                      <span className="pL-10 toggle-alert ti-alert" data-toggle="tooltip" data-placement="bottom" title="This graph is showing both non-revocation admissions to prison and admissions due to revocation from both parole and probation. We cannot show percentages of admissions broken down by supervision type or district because non-revocation admissions to prison cannot be broken down along those dimensions." />
-                    )}
-                    <span className="fa-pull-right">
-                      <div className="dropdown show">
-                        <a className="btn btn-secondary btn-sm dropdown-toggle" href="#" role="button" id="exportDropdownMenuButton-admissionCountsByType" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                          Export
-                        </a>
-                        <div className="dropdown-menu" aria-labelledby="exportDropdownMenuButton-admissionCountsByType">
-                          <a className="dropdown-item" id="downloadChartAsImage-admissionCountsByType" href="javascript:void(0);">Export image</a>
-                          <a className="dropdown-item" id="downloadChartData-admissionCountsByType" href="javascript:void(0);">Export data</a>
-                        </div>
-                      </div>
-                    </span>
-                  </h6>
-                </div>
-                <div className="layer w-100 p-20 fs-block">
-                  <AdmissionCountsByType
-                    metricType={chartMetricType}
-                    supervisionType={chartSupervisionType}
-                    metricPeriodMonths={chartMetricPeriodMonths}
-                    district={chartDistrict}
-                    admissionCountsByType={apiData.admissions_by_type_by_period}
-                  />
-                </div>
-                <div className="layer bdT p-20 w-100 accordion" id="methodologyAdmissionCountsByType">
-                  <div className="mb-0" id="methodologyHeadingAdmissionCountsByType">
-                    <div className="mb-0">
-                      <button className="btn btn-link collapsed pL-0" type="button" data-toggle="collapse" data-target="#collapseMethodologyAdmissionCountsByType" aria-expanded="true" aria-controls="collapseMethodologyAdmissionCountsByType">
-                        <h6 className="lh-1 c-blue-500 mb-0">Methodology</h6>
-                      </button>
-                    </div>
-                  </div>
-                  <div id="collapseMethodologyAdmissionCountsByType" className="collapse" aria-labelledby="methodologyHeadingRevocationByOfficer" data-parent="#methodologyAdmissionCountsByType">
-                    <div>
-                      <ul>
-                        <li>
-                          New admissions include unique people admitted to any DOCR facility during
-                          a particular time frame, regardless of whether they were previously
-                          incarcerated.
-                        </li>
-                        <li>
-                          Revocation counts include the number of people who were incarcerated
-                          in a DOCR facility because their supervision was revoked.
-                        </li>
-                        <li>
-                          "Technical Revocations" include only those revocations which result solely
-                          from a technical violation. If there is a violation that includes a new
-                          offense or an absconsion, it is considered a "Non-Technical Revocation".
-                        </li>
-                        <li>
-                          Revocations of "Unknown Type" indicate individuals who were admitted to
-                          prison for a supervision revocation where the violation that caused the
-                          revocation cannot yet be determined.
-                        </li>
-                        <li>
-                          Because new admissions are counted irrespective of any relationship to
-                          community supervision but the revocation admission types are directly
-                          related to supervision, filtering this chart by supervision type or by
-                          office impacts only the revocation admission counts.
-                        </li>
-                      </ul>
-                    </div>
+              <div className="layer bdT p-20 w-100 accordion" id="methodologyRevocationCountsByMonth">
+                <div className="mb-0" id="methodologyHeadingRevocationCountsByMonth">
+                  <div className="mb-0">
+                    <button className="btn btn-link collapsed pL-0" type="button" data-toggle="collapse" data-target="#collapseMethodologyRevocationCountsByMonth" aria-expanded="true" aria-controls="collapseMethodologyRevocationCountsByMonth">
+                      <h6 className="lh-1 c-blue-500 mb-0">Methodology</h6>
+                    </button>
                   </div>
                 </div>
-                <div className="layer bdT p-20 w-100">
-                  <div className="peers ai-c jc-c gapX-20">
-                    <div className="peer fw-600">
-                      <span className="fsz-def fw-600 mR-10 c-grey-800">
-                        <small className="c-grey-500 fw-600">Period </small>
-                        {getPeriodLabelFromMetricPeriodMonthsToggle(chartMetricPeriodMonths)}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* #Revocations by race chart ==================== */}
-          <div className="col-md-6">
-            <div className="bd bgc-white p-20">
-              <div className="layers">
-                <div className="layer w-100 pX-20 pT-20">
-                  <h6 className="lh-1">
-                    REVOCATIONS BY RACE
-                    <span className="fa-pull-right">
-                      <div className="dropdown show">
-                        <a className="btn btn-secondary btn-sm dropdown-toggle" href="#" role="button" id="exportDropdownMenuButton-revocationsByRace" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                          Export
-                        </a>
-                        <div className="dropdown-menu" aria-labelledby="exportDropdownMenuButton-revocationsByRace">
-                          <a className="dropdown-item" id="downloadChartAsImage-revocationsByRace" href="javascript:void(0);">Export image</a>
-                          <a className="dropdown-item" id="downloadChartData-revocationsByRace" href="javascript:void(0);">Export data</a>
-                        </div>
-                      </div>
-                    </span>
-                  </h6>
-                </div>
-                <div className="layer w-100 pX-20 pT-20 row">
-                  <div className="layer w-100 p-20 fs-block">
-                    <RevocationProportionByRace
-                      metricType={chartMetricType}
-                      metricPeriodMonths={chartMetricPeriodMonths}
-                      supervisionType={chartSupervisionType}
-                      district={chartDistrict}
-                      revocationProportionByRace={
-                        apiData.revocations_by_race_and_ethnicity_by_period}
-                      statePopulationByRace={apiData.race_proportions}
-                    />
-                  </div>
-                </div>
-                <div className="layer bdT p-20 w-100 accordion" id="methodologyRevocationsByRace">
-                  <div className="mb-0" id="methodologyHeadingsRevocationsByRace">
-                    <div className="mb-0">
-                      <button className="btn btn-link collapsed pL-0" type="button" data-toggle="collapse" data-target="#collapseMethodologyRevocationsByRace" aria-expanded="true" aria-controls="collapseMethodologyRevocationsByRace">
-                        <h6 className="lh-1 c-blue-500 mb-0">Methodology</h6>
-                      </button>
-                    </div>
-                  </div>
-                  <div className="collapse" id="collapseMethodologyRevocationsByRace" aria-labelledby="methodologyHeadingRevocationsByRace" data-parent="#methodologyRevocationsByRace">
-                    <div>
-                      <ul>
-                        <li>
-                          Revocation counts include the number of people who were incarcerated
-                          in a DOCR facility because their supervision was revoked.
-                        </li>
-                        <li>
-                          “Supervision Population” refers to individuals meeting the criteria
-                          selected up top. At its most general, this is all individuals on
-                          parole or Probation in North Dakota at any point during this time
-                          period.
-                        </li>
-                        <li>
-                          If a supervision type (parole or probation) is selected, revocation
-                          and supervision population will only count individuals meeting that
-                          criteria.
-                        </li>
-                        <li>
-                          If a P&P office is selected, revocations and the supervision
-                          population will only count individuals currently assigned, or with
-                          a terminating officer at time of revocation, from that office.
-                        </li>
-                        <li>
-                          The race proportions for the population of North Dakota were taken from
-                          the U.S. Census Bureau.
-                        </li>
-                        <li>
-                          If an individual has more than one race or ethnicity
-                          recorded from different data systems, then they are
-                          counted once for each unique race and ethnicity. This
-                          means that the total count in this chart may be
-                          larger than the total number of individuals it
-                          describes. This does not apply to the ND Population
-                          values.
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-                <div className="layer bdT p-20 w-100">
-                  <div className="peers ai-c jc-c gapX-20">
-                    <div className="peer fw-600">
-                      <span className="fsz-def fw-600 mR-10 c-grey-800">
-                        <small className="c-grey-500 fw-600">Period </small>
-                        {getPeriodLabelFromMetricPeriodMonthsToggle(chartMetricPeriodMonths)}
-                      </span>
-                    </div>
+                <div id="collapseMethodologyRevocationCountsByMonth" className="collapse" aria-labelledby="methodologyHeadingRevocationCountsByMonth" data-parent="#methodologyRevocationCountsByMonth">
+                  <div>
+                    <ul>
+                      <li>
+                        Revocation counts include the number of people who were incarcerated
+                        in a DOCR facility because their supervision was revoked.
+                      </li>
+                      <li>
+                        Revocations are included based on the date that the person
+                        was admitted to a DOCR facility because their supervision
+                        was revoked, not the date of the causal violation or offense.
+                      </li>
+                      <li>
+                        Violations include all violations of supervision conditions
+                        that resulted in revocation, which are new offenses,
+                        technical violations, and absconsion.
+                      </li>
+                      <li>
+                        Revocation rates are calculated as the number of people who were
+                        incarcerated in a DOCR facility for a revocation during the time
+                        period divided by the total number of people on probation or parole
+                        at any point during the time period.
+                      </li>
+                      <li>
+                        When a supervision type and/or parole office is selected, the
+                        revocation rate is the number of people with revocations fitting
+                        the selected criteria divided by the total number of people fitting
+                        the selected criteria.
+                      </li>
+                      <li>
+                        Revocations are attributed to the site of the
+                        terminating officer at the time of a person&apos;s revocation.
+                      </li>
+                    </ul>
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-    </main>
+
+        {/* #Revocations by officer id ==================== */}
+        <div className="col-md-6">
+          <div className="bd bgc-white p-20">
+            <div className="layers">
+              <div className="layer w-100 pX-20 pT-20">
+                <h6 className="lh-1">
+                  REVOCATIONS BY OFFICER
+                  {chartDistrict === 'all' && (
+                    <span className="pL-10 toggle-alert ti-alert" data-toggle="tooltip" data-placement="bottom" title="Exporting this chart as an image will not include officer IDs unless a specific P&P office is selected from the Explore bar." />
+                  )}
+                  <span className="fa-pull-right">
+                    <div className="dropdown show">
+                      <a className="btn btn-secondary btn-sm dropdown-toggle" href="#" role="button" id="exportDropdownMenuButton-revocationsByOfficer" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Export
+                      </a>
+                      <div className="dropdown-menu" aria-labelledby="exportDropdownMenuButton-revocationsByOfficer">
+                        <a className="dropdown-item" id="downloadChartAsImage-revocationsByOfficer" href="javascript:void(0);">Export image</a>
+                        <a className="dropdown-item" id="downloadChartData-revocationsByOfficer" href="javascript:void(0);">Export data</a>
+                      </div>
+                    </div>
+                  </span>
+                </h6>
+              </div>
+              <div className="layer w-100 p-20 fs-block">
+                <RevocationCountByOfficer
+                  metricType={chartMetricType}
+                  metricPeriodMonths={chartMetricPeriodMonths}
+                  supervisionType={chartSupervisionType}
+                  district={chartDistrict}
+                  revocationCountsByOfficer={apiData.revocations_by_officer_by_period}
+                  officeData={apiData.site_offices}
+                />
+              </div>
+              <div className="layer bdT p-20 w-100 accordion" id="methodologyRevocationByOfficer">
+                <div className="mb-0" id="methodologyHeadingRevocationByOfficer">
+                  <div className="mb-0">
+                    <button className="btn btn-link collapsed pL-0" type="button" data-toggle="collapse" data-target="#collapseMethodologyRevocationByOfficer" aria-expanded="true" aria-controls="collapseMethodologyRevocationByOfficer">
+                      <h6 className="lh-1 c-blue-500 mb-0">Methodology</h6>
+                    </button>
+                  </div>
+                </div>
+                <div id="collapseMethodologyRevocationByOfficer" className="collapse" aria-labelledby="methodologyHeadingRevocationByOfficer" data-parent="#methodologyRevocationByOfficer">
+                  <div>
+                    <ul>
+                      <li>
+                        Revocations are counted towards an officer if that officer is flagged as
+                        the terminating officer at the time of a person&apos;s revocation.
+                      </li>
+                      <li>
+                        Revocations are included based on the date that the person
+                        was admitted to a DOCR facility because their supervision
+                        was revoked, not the date of the causal violation or offense.
+                      </li>
+                      <li>
+                        The revocation rate refers to the percent of an officer’s total
+                        revocation count caused by each violation type.
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div className="layer bdT p-20 w-100">
+                <div className="peers ai-c jc-c gapX-20">
+                  <div className="peer fw-600">
+                    <small className="c-grey-500 fw-600">Period </small>
+                    <span className="fsz-def fw-600 mR-10 c-grey-800">
+                      {getPeriodLabelFromMetricPeriodMonthsToggle(chartMetricPeriodMonths)}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* #Revocations by supervision type ==================== */}
+        <div className="col-md-6">
+          <div className="bd bgc-white p-20">
+            <div className="layers">
+              <div className="layer w-100 pX-20 pT-20">
+                <h6 className="lh-1">
+                  REVOCATIONS BY SUPERVISION TYPE
+                  {chartSupervisionType !== 'all' && (
+                    <span className="pL-10 toggle-alert ti-alert" data-toggle="tooltip" data-placement="bottom" title="This graph is showing all individuals on supervision. It doesn’t support showing only individuals on probation or only individuals on parole." />
+                  )}
+                  <span className="fa-pull-right">
+                    <div className="dropdown show">
+                      <a className="btn btn-secondary btn-sm dropdown-toggle" href="#" role="button" id="exportDropdownMenuButton-revocationsBySupervisionType" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Export
+                      </a>
+                      <div className="dropdown-menu" aria-labelledby="exportDropdownMenuButton-revocationsBySupervisionType">
+                        <a className="dropdown-item" id="downloadChartAsImage-revocationsBySupervisionType" href="javascript:void(0);">Export image</a>
+                        <a className="dropdown-item" id="downloadChartData-revocationsBySupervisionType" href="javascript:void(0);">Export data</a>
+                      </div>
+                    </div>
+                  </span>
+                </h6>
+              </div>
+              <div className="layer w-100 p-20 fs-block">
+                <RevocationCountBySupervisionType
+                  metricType={chartMetricType}
+                  metricPeriodMonths={chartMetricPeriodMonths}
+                  district={chartDistrict}
+                  revocationCountsByMonthBySupervisionType={
+                  apiData.revocations_by_supervision_type_by_month}
+                />
+              </div>
+              <div className="layer bdT p-20 w-100 accordion" id="methodologyRevocationsBySupervisionType">
+                <div className="mb-0" id="methodologyHeadingRevocationsBySupervisiontype">
+                  <div className="mb-0">
+                    <button className="btn btn-link collapsed pL-0" type="button" data-toggle="collapse" data-target="#collapseMethodologyRevocationsBySupervisionType" aria-expanded="true" aria-controls="collapseMethodologyRevocationsBySupervisionType">
+                      <h6 className="lh-1 c-blue-500 mb-0">Methodology</h6>
+                    </button>
+                  </div>
+                </div>
+                <div className="collapse" id="collapseMethodologyRevocationsBySupervisionType" aria-labelledby="methodologyHeadingRevocationsBySupervisiontype" data-parent="#methodologyRevocationsBySupervisionType">
+                  <div>
+                    <ul>
+                      <li>
+                        Revocations count people who were incarcerated in a DOCR facility
+                        because their supervision was revocation.
+                      </li>
+                      <li>
+                        Percentage shows the percent of revocations in a month associated
+                        with individuals on parole and the percent associated with
+                        individuals on probation.
+                      </li>
+                      <li>
+                        Revocations are included based on the date that the person
+                        was admitted to a DOCR facility because their supervision
+                        was revoked, not the date of the causal violation or offense.
+                      </li>
+                      <li>
+                        Violations include all violations of supervision conditions
+                        that resulted in revocation, which are new offenses,
+                        technical violations, and absconsion.
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* #Revocations by violation type ==================== */}
+        <div className="col-md-6">
+          <div className="bd bgc-white p-20">
+            <div className="layers">
+              <div className="layer w-100 pX-20 pT-20">
+                <h6 className="lh-1">
+                  REVOCATIONS BY VIOLATION TYPE
+                  <span className="fa-pull-right">
+                    <div className="dropdown show">
+                      <a className="btn btn-secondary btn-sm dropdown-toggle" href="#" role="button" id="exportDropdownMenuButton-revocationsByViolationType" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Export
+                      </a>
+                      <div className="dropdown-menu" aria-labelledby="exportDropdownMenuButton-revocationsByViolationType">
+                        <a className="dropdown-item" id="downloadChartAsImage-revocationsByViolationType" href="javascript:void(0);">Export image</a>
+                        <a className="dropdown-item" id="downloadChartData-revocationsByViolationType" href="javascript:void(0);">Export data</a>
+                      </div>
+                    </div>
+                  </span>
+                </h6>
+              </div>
+              <div className="layer w-100 p-20 fs-block">
+                <RevocationCountByViolationType
+                  metricType={chartMetricType}
+                  metricPeriodMonths={chartMetricPeriodMonths}
+                  supervisionType={chartSupervisionType}
+                  district={chartDistrict}
+                  revocationCountsByMonthByViolationType={
+                  apiData.revocations_by_violation_type_by_month}
+                />
+              </div>
+              <div className="layer bdT p-20 w-100 accordion" id="methodologyRevocationsByViolationType">
+                <div className="mb-0" id="methodologyHeadingRevocationsByViolationType">
+                  <div className="mb-0">
+                    <button className="btn btn-link collapsed pL-0" type="button" data-toggle="collapse" data-target="#collapseMethodologyRevocationsByViolationType" aria-expanded="true" aria-controls="collapseMethodologyRevocationsByViolationType">
+                      <h6 className="lh-1 c-blue-500 mb-0">Methodology</h6>
+                    </button>
+                  </div>
+                </div>
+                <div className="collapse" id="collapseMethodologyRevocationsByViolationType" aria-labelledby="methodologyHeadingRevocationsByViolationType" data-parent="#methodologyRevocationsByViolationType">
+                  <div>
+                    <ul>
+                      <li>
+                        Revocation counts include the number of people who were incarcerated
+                        in a DOCR facility because their supervision was revoked.
+                      </li>
+                      <li>
+                        Percentage is the percent of revocations in a given month caused by
+                        each violation type.
+                      </li>
+                      <li>
+                        Violations include all violations of supervision conditions
+                        that resulted in revocation, which are new offenses,
+                        technical violations, and absconsion.
+                      </li>
+                      <li>
+                        Violations of "Unknown Type" indicate individuals who were admitted to
+                        prison for a supervision revocation where the violation that caused the
+                        revocation cannot yet be determined.
+                      </li>
+                      <li>
+                        "Technical" revocations include only those revocations which result solely
+                        from a technical violation. If there is a violation that includes a new
+                        offense or an absconsion, it is considered a non-technical revocation.
+                      </li>
+                      <li>
+                        Revocations are included based on the date that the person
+                        was admitted to a DOCR facility because their supervision
+                        was revoked, not the date of the causal violation or offense.
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* #Admission type proportions ==================== */}
+        <div className="col-md-6">
+          <div className="bd bgc-white p-20">
+            <div className="layers">
+              <div className="layer w-100 pX-20 pT-20">
+                <h6 className="lh-1">
+                  ADMISSIONS BY TYPE
+                  {((chartSupervisionType !== 'all' || chartDistrict !== 'all') && chartMetricType === 'rates') && (
+                    <span className="pL-10 toggle-alert ti-alert" data-toggle="tooltip" data-placement="bottom" title="This graph is showing both non-revocation admissions to prison and admissions due to revocation from both parole and probation. We cannot show percentages of admissions broken down by supervision type or district because non-revocation admissions to prison cannot be broken down along those dimensions." />
+                  )}
+                  <span className="fa-pull-right">
+                    <div className="dropdown show">
+                      <a className="btn btn-secondary btn-sm dropdown-toggle" href="#" role="button" id="exportDropdownMenuButton-admissionCountsByType" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Export
+                      </a>
+                      <div className="dropdown-menu" aria-labelledby="exportDropdownMenuButton-admissionCountsByType">
+                        <a className="dropdown-item" id="downloadChartAsImage-admissionCountsByType" href="javascript:void(0);">Export image</a>
+                        <a className="dropdown-item" id="downloadChartData-admissionCountsByType" href="javascript:void(0);">Export data</a>
+                      </div>
+                    </div>
+                  </span>
+                </h6>
+              </div>
+              <div className="layer w-100 p-20 fs-block">
+                <AdmissionCountsByType
+                  metricType={chartMetricType}
+                  supervisionType={chartSupervisionType}
+                  metricPeriodMonths={chartMetricPeriodMonths}
+                  district={chartDistrict}
+                  admissionCountsByType={apiData.admissions_by_type_by_period}
+                />
+              </div>
+              <div className="layer bdT p-20 w-100 accordion" id="methodologyAdmissionCountsByType">
+                <div className="mb-0" id="methodologyHeadingAdmissionCountsByType">
+                  <div className="mb-0">
+                    <button className="btn btn-link collapsed pL-0" type="button" data-toggle="collapse" data-target="#collapseMethodologyAdmissionCountsByType" aria-expanded="true" aria-controls="collapseMethodologyAdmissionCountsByType">
+                      <h6 className="lh-1 c-blue-500 mb-0">Methodology</h6>
+                    </button>
+                  </div>
+                </div>
+                <div id="collapseMethodologyAdmissionCountsByType" className="collapse" aria-labelledby="methodologyHeadingRevocationByOfficer" data-parent="#methodologyAdmissionCountsByType">
+                  <div>
+                    <ul>
+                      <li>
+                        New admissions include unique people admitted to any DOCR facility during
+                        a particular time frame, regardless of whether they were previously
+                        incarcerated.
+                      </li>
+                      <li>
+                        Revocation counts include the number of people who were incarcerated
+                        in a DOCR facility because their supervision was revoked.
+                      </li>
+                      <li>
+                        "Technical Revocations" include only those revocations which result solely
+                        from a technical violation. If there is a violation that includes a new
+                        offense or an absconsion, it is considered a "Non-Technical Revocation".
+                      </li>
+                      <li>
+                        Revocations of "Unknown Type" indicate individuals who were admitted to
+                        prison for a supervision revocation where the violation that caused the
+                        revocation cannot yet be determined.
+                      </li>
+                      <li>
+                        Because new admissions are counted irrespective of any relationship to
+                        community supervision but the revocation admission types are directly
+                        related to supervision, filtering this chart by supervision type or by
+                        office impacts only the revocation admission counts.
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div className="layer bdT p-20 w-100">
+                <div className="peers ai-c jc-c gapX-20">
+                  <div className="peer fw-600">
+                    <span className="fsz-def fw-600 mR-10 c-grey-800">
+                      <small className="c-grey-500 fw-600">Period </small>
+                      {getPeriodLabelFromMetricPeriodMonthsToggle(chartMetricPeriodMonths)}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* #Revocations by race chart ==================== */}
+        <div className="col-md-6">
+          <div className="bd bgc-white p-20">
+            <div className="layers">
+              <div className="layer w-100 pX-20 pT-20">
+                <h6 className="lh-1">
+                  REVOCATIONS BY RACE
+                  <span className="fa-pull-right">
+                    <div className="dropdown show">
+                      <a className="btn btn-secondary btn-sm dropdown-toggle" href="#" role="button" id="exportDropdownMenuButton-revocationsByRace" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Export
+                      </a>
+                      <div className="dropdown-menu" aria-labelledby="exportDropdownMenuButton-revocationsByRace">
+                        <a className="dropdown-item" id="downloadChartAsImage-revocationsByRace" href="javascript:void(0);">Export image</a>
+                        <a className="dropdown-item" id="downloadChartData-revocationsByRace" href="javascript:void(0);">Export data</a>
+                      </div>
+                    </div>
+                  </span>
+                </h6>
+              </div>
+              <div className="layer w-100 pX-20 pT-20 row">
+                <div className="layer w-100 p-20 fs-block">
+                  <RevocationProportionByRace
+                    metricType={chartMetricType}
+                    metricPeriodMonths={chartMetricPeriodMonths}
+                    supervisionType={chartSupervisionType}
+                    district={chartDistrict}
+                    revocationProportionByRace={
+                      apiData.revocations_by_race_and_ethnicity_by_period}
+                    statePopulationByRace={apiData.race_proportions}
+                  />
+                </div>
+              </div>
+              <div className="layer bdT p-20 w-100 accordion" id="methodologyRevocationsByRace">
+                <div className="mb-0" id="methodologyHeadingsRevocationsByRace">
+                  <div className="mb-0">
+                    <button className="btn btn-link collapsed pL-0" type="button" data-toggle="collapse" data-target="#collapseMethodologyRevocationsByRace" aria-expanded="true" aria-controls="collapseMethodologyRevocationsByRace">
+                      <h6 className="lh-1 c-blue-500 mb-0">Methodology</h6>
+                    </button>
+                  </div>
+                </div>
+                <div className="collapse" id="collapseMethodologyRevocationsByRace" aria-labelledby="methodologyHeadingRevocationsByRace" data-parent="#methodologyRevocationsByRace">
+                  <div>
+                    <ul>
+                      <li>
+                        Revocation counts include the number of people who were incarcerated
+                        in a DOCR facility because their supervision was revoked.
+                      </li>
+                      <li>
+                        “Supervision Population” refers to individuals meeting the criteria
+                        selected up top. At its most general, this is all individuals on
+                        parole or Probation in North Dakota at any point during this time
+                        period.
+                      </li>
+                      <li>
+                        If a supervision type (parole or probation) is selected, revocation
+                        and supervision population will only count individuals meeting that
+                        criteria.
+                      </li>
+                      <li>
+                        If a P&P office is selected, revocations and the supervision
+                        population will only count individuals currently assigned, or with
+                        a terminating officer at time of revocation, from that office.
+                      </li>
+                      <li>
+                        The race proportions for the population of North Dakota were taken from
+                        the U.S. Census Bureau.
+                      </li>
+                      <li>
+                        If an individual has more than one race or ethnicity
+                        recorded from different data systems, then they are
+                        counted once for each unique race and ethnicity. This
+                        means that the total count in this chart may be
+                        larger than the total number of individuals it
+                        describes. This does not apply to the ND Population
+                        values.
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div className="layer bdT p-20 w-100">
+                <div className="peers ai-c jc-c gapX-20">
+                  <div className="peer fw-600">
+                    <span className="fsz-def fw-600 mR-10 c-grey-800">
+                      <small className="c-grey-500 fw-600">Period </small>
+                      {getPeriodLabelFromMetricPeriodMonthsToggle(chartMetricPeriodMonths)}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </React.Fragment>
+    </PageTemplate>
   );
 };
 
