@@ -37,7 +37,6 @@
   flex: 2 1 0;
 }
 .revocation-matrix {
-  width: 850px;
 
   .y-label, .x-label {
     text-align: center;
@@ -46,11 +45,14 @@
     margin-right: 40px;
     writing-mode: tb-rl;
     transform: rotate(-180deg);
+    flex-shrink: 0;
   }
   .x-label {
     margin-top: 20px;
   }
-
+  .matrix {
+    flex-grow: 1;
+  }
   .matrix {
     .violation-type-label, .empty-cell {
       display: inline-block;
@@ -60,7 +62,7 @@
 
     .violation-column, .cell {
       display: inline-block;
-      width: 70px;
+      width: 10%;
       text-align: center;
     }
 
@@ -68,6 +70,7 @@
       background:
         linear-gradient($border-color, $border-color) no-repeat center/1px 100%,
         linear-gradient($border-color, $border-color) no-repeat center/100% 1px;
+      width: 10%;
     }
 
     .violation-row {
@@ -140,6 +143,26 @@
       font-size: 16px;
       font-weight: 600;
     }
+  }
+}
+@media screen and (max-width: 1350px) {
+  .container-all-charts {
+    display: block !important;
+    width: 98%;
+  }
+  .revocation-matrix .matrix-content {
+    overflow-x: auto;
+    overflow-y: hidden;
+
+    .matrix-chart-container {
+      width: 910px;
+    }
+  }
+  .matrix-explanation {
+    margin-right: 20px;
+  }
+  .matrix-container {
+    margin-bottom: 20px;
   }
 }
 
@@ -271,6 +294,10 @@
   .top-level-filters .top-level-filter h4 {
     min-height: 60%;
   }
+  .revocation-matrix .matrix .cell,
+  .revocation-matrix .matrix .violation-column {
+    width: 10%;
+  }
   .top-level-filters .top-level-filters-title {
     font-size: 0.6rem;
   }
@@ -302,6 +329,13 @@
   }
 
 }
+@media screen and (max-width: 1868px) {
+  .revocation-matrix .matrix .cell,
+  .revocation-matrix .matrix .violation-column {
+    width: 9%;
+  }
+}
+
 
 @media screen and (max-width: 960px) {
   .top-level-filters .top-level-filters-title {

@@ -329,14 +329,14 @@ const Revocations = () => {
           metricPeriodMonths={filters.metricPeriodMonths}
         />
       </div>
-      <div className="d-f m-20">
-        <div className="matrix-container bgc-white p-20 mR-20">
-          <RevocationMatrix
-            data={applyTopLevelFilters(apiData.revocations_matrix_cells)}
-            filters={filters}
-            updateFilters={updateFilters}
-            metricPeriodMonths={filters.metricPeriodMonths}
-          />
+      <div className="d-f m-20 container-all-charts">
+          <div className="matrix-container bgc-white p-20 mR-20">
+            <RevocationMatrix
+              data={applyTopLevelFilters(apiData.revocations_matrix_cells)}
+              filters={filters}
+              updateFilters={updateFilters}
+              metricPeriodMonths={filters.metricPeriodMonths}
+            />
         </div>
         <div className="matrix-explanation bgc-white p-20">
           <h4>Using this chart</h4>
