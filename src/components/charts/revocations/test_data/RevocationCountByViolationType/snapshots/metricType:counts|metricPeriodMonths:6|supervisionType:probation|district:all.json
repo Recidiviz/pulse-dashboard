@@ -1,0 +1,107 @@
+{
+  "id": "revocationsByViolationType",
+  "data": {
+    "labels": [
+      "October '19",
+      "November",
+      "December",
+      "January '20",
+      "February",
+      "March"
+    ],
+    "datasets": [
+      {
+        "label": "Absconsion",
+        "backgroundColor": "#1b2126",
+        "hoverBackgroundColor": "#1b2126",
+        "hoverBorderColor": "#1b2126",
+        "data": [
+          "10",
+          "15",
+          "6",
+          "5",
+          "13",
+          "9"
+        ]
+      },
+      {
+        "label": "New Offense",
+        "backgroundColor": "#6d1e7d",
+        "hoverBackgroundColor": "#6d1e7d",
+        "hoverBorderColor": "#6d1e7d",
+        "data": [
+          "19",
+          "15",
+          "13",
+          "2",
+          "7",
+          "4"
+        ]
+      },
+      {
+        "label": "Technical",
+        "backgroundColor": "#ff2454",
+        "hoverBackgroundColor": "#ff2454",
+        "hoverBorderColor": "#ff2454",
+        "data": [
+          "6",
+          "4",
+          "1",
+          "7",
+          "1",
+          "5"
+        ]
+      },
+      {
+        "label": "Unknown Type",
+        "backgroundColor": "#ffd75e",
+        "hoverBackgroundColor": "#ffd75e",
+        "hoverBorderColor": "#ffd75e",
+        "data": [
+          "0",
+          "1",
+          "1",
+          "0",
+          "0",
+          "3"
+        ]
+      }
+    ]
+  },
+  "options": {
+    "responsive": true,
+    "legend": {
+      "position": "bottom",
+      "boxWidth": 10
+    },
+    "tooltips": {
+      "backgroundColor": "rgba(66, 66, 66, 0.95)",
+      "mode": "index",
+      "intersect": false,
+      "callbacks": {}
+    },
+    "scales": {
+      "xAxes": [
+        {
+          "scaleLabel": {
+            "display": true,
+            "labelString": "Month"
+          },
+          "stacked": true
+        }
+      ],
+      "yAxes": [
+        {
+          "ticks": {
+            "min": 0
+          },
+          "scaleLabel": {
+            "display": true,
+            "labelString": "Revocation count"
+          },
+          "stacked": true
+        }
+      ]
+    }
+  }
+}

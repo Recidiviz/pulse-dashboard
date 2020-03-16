@@ -1,0 +1,139 @@
+{
+  "id": "revocationsByViolationType",
+  "data": {
+    "labels": [
+      "April '19",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December",
+      "January '20",
+      "February",
+      "March"
+    ],
+    "datasets": [
+      {
+        "label": "Absconsion",
+        "backgroundColor": "#1b2126",
+        "hoverBackgroundColor": "#1b2126",
+        "hoverBorderColor": "#1b2126",
+        "data": [
+          "8.33",
+          "30.43",
+          "46.15",
+          "66.67",
+          "38.89",
+          "22.22",
+          "28.57",
+          "42.86",
+          "28.57",
+          "35.71",
+          "61.90",
+          "42.86"
+        ]
+      },
+      {
+        "label": "New Offense",
+        "backgroundColor": "#6d1e7d",
+        "hoverBackgroundColor": "#6d1e7d",
+        "hoverBorderColor": "#6d1e7d",
+        "data": [
+          "66.67",
+          "30.43",
+          "46.15",
+          "16.67",
+          "55.56",
+          "22.22",
+          "54.29",
+          "42.86",
+          "61.90",
+          "14.29",
+          "33.33",
+          "19.05"
+        ]
+      },
+      {
+        "label": "Technical",
+        "backgroundColor": "#ff2454",
+        "hoverBackgroundColor": "#ff2454",
+        "hoverBorderColor": "#ff2454",
+        "data": [
+          "25.00",
+          "34.78",
+          "7.69",
+          "16.67",
+          "0.00",
+          "22.22",
+          "17.14",
+          "11.43",
+          "4.76",
+          "50.00",
+          "4.76",
+          "23.81"
+        ]
+      },
+      {
+        "label": "Unknown Type",
+        "backgroundColor": "#ffd75e",
+        "hoverBackgroundColor": "#ffd75e",
+        "hoverBorderColor": "#ffd75e",
+        "data": [
+          "0.00",
+          "4.35",
+          "0.00",
+          "0.00",
+          "5.56",
+          "33.33",
+          "0.00",
+          "2.86",
+          "4.76",
+          "0.00",
+          "0.00",
+          "14.29"
+        ]
+      }
+    ]
+  },
+  "options": {
+    "responsive": true,
+    "legend": {
+      "position": "bottom",
+      "boxWidth": 10
+    },
+    "tooltips": {
+      "backgroundColor": "rgba(66, 66, 66, 0.95)",
+      "mode": "index",
+      "intersect": false,
+      "callbacks": {}
+    },
+    "scales": {
+      "xAxes": [
+        {
+          "scaleLabel": {
+            "display": true,
+            "labelString": "Month"
+          },
+          "stacked": true
+        }
+      ],
+      "yAxes": [
+        {
+          "ticks": {
+            "min": 0,
+            "max": 100,
+            "stepSize": 20
+          },
+          "scaleLabel": {
+            "display": true,
+            "labelString": "Percentage"
+          },
+          "stacked": true
+        }
+      ]
+    }
+  }
+}

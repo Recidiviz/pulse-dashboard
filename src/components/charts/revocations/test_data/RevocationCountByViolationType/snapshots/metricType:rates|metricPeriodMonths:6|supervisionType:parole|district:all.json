@@ -1,0 +1,109 @@
+{
+  "id": "revocationsByViolationType",
+  "data": {
+    "labels": [
+      "October '19",
+      "November",
+      "December",
+      "January '20",
+      "February",
+      "March"
+    ],
+    "datasets": [
+      {
+        "label": "Absconsion",
+        "backgroundColor": "#1b2126",
+        "hoverBackgroundColor": "#1b2126",
+        "hoverBorderColor": "#1b2126",
+        "data": [
+          "18.18",
+          "13.04",
+          "59.09",
+          "31.25",
+          "4.55",
+          "43.33"
+        ]
+      },
+      {
+        "label": "New Offense",
+        "backgroundColor": "#6d1e7d",
+        "hoverBackgroundColor": "#6d1e7d",
+        "hoverBorderColor": "#6d1e7d",
+        "data": [
+          "22.73",
+          "26.09",
+          "9.09",
+          "43.75",
+          "59.09",
+          "50.00"
+        ]
+      },
+      {
+        "label": "Technical",
+        "backgroundColor": "#ff2454",
+        "hoverBackgroundColor": "#ff2454",
+        "hoverBorderColor": "#ff2454",
+        "data": [
+          "40.91",
+          "52.17",
+          "27.27",
+          "25.00",
+          "31.82",
+          "3.33"
+        ]
+      },
+      {
+        "label": "Unknown Type",
+        "backgroundColor": "#ffd75e",
+        "hoverBackgroundColor": "#ffd75e",
+        "hoverBorderColor": "#ffd75e",
+        "data": [
+          "18.18",
+          "8.70",
+          "4.55",
+          "0.00",
+          "4.55",
+          "3.33"
+        ]
+      }
+    ]
+  },
+  "options": {
+    "responsive": true,
+    "legend": {
+      "position": "bottom",
+      "boxWidth": 10
+    },
+    "tooltips": {
+      "backgroundColor": "rgba(66, 66, 66, 0.95)",
+      "mode": "index",
+      "intersect": false,
+      "callbacks": {}
+    },
+    "scales": {
+      "xAxes": [
+        {
+          "scaleLabel": {
+            "display": true,
+            "labelString": "Month"
+          },
+          "stacked": true
+        }
+      ],
+      "yAxes": [
+        {
+          "ticks": {
+            "min": 0,
+            "max": 100,
+            "stepSize": 20
+          },
+          "scaleLabel": {
+            "display": true,
+            "labelString": "Percentage"
+          },
+          "stacked": true
+        }
+      ]
+    }
+  }
+}

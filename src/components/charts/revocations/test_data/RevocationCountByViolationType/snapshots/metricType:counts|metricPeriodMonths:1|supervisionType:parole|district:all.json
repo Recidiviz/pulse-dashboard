@@ -1,0 +1,82 @@
+{
+  "id": "revocationsByViolationType",
+  "data": {
+    "labels": [
+      "March '20"
+    ],
+    "datasets": [
+      {
+        "label": "Absconsion",
+        "backgroundColor": "#1b2126",
+        "hoverBackgroundColor": "#1b2126",
+        "hoverBorderColor": "#1b2126",
+        "data": [
+          "13"
+        ]
+      },
+      {
+        "label": "New Offense",
+        "backgroundColor": "#6d1e7d",
+        "hoverBackgroundColor": "#6d1e7d",
+        "hoverBorderColor": "#6d1e7d",
+        "data": [
+          "15"
+        ]
+      },
+      {
+        "label": "Technical",
+        "backgroundColor": "#ff2454",
+        "hoverBackgroundColor": "#ff2454",
+        "hoverBorderColor": "#ff2454",
+        "data": [
+          "1"
+        ]
+      },
+      {
+        "label": "Unknown Type",
+        "backgroundColor": "#ffd75e",
+        "hoverBackgroundColor": "#ffd75e",
+        "hoverBorderColor": "#ffd75e",
+        "data": [
+          "1"
+        ]
+      }
+    ]
+  },
+  "options": {
+    "responsive": true,
+    "legend": {
+      "position": "bottom",
+      "boxWidth": 10
+    },
+    "tooltips": {
+      "backgroundColor": "rgba(66, 66, 66, 0.95)",
+      "mode": "index",
+      "intersect": false,
+      "callbacks": {}
+    },
+    "scales": {
+      "xAxes": [
+        {
+          "scaleLabel": {
+            "display": true,
+            "labelString": "Month"
+          },
+          "stacked": true
+        }
+      ],
+      "yAxes": [
+        {
+          "ticks": {
+            "min": 0
+          },
+          "scaleLabel": {
+            "display": true,
+            "labelString": "Revocation count"
+          },
+          "stacked": true
+        }
+      ]
+    }
+  }
+}

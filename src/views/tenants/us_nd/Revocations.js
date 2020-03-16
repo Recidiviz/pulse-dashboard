@@ -26,6 +26,8 @@ import { getPeriodLabelFromMetricPeriodMonthsToggle } from '../../../utils/chart
 
 import AdmissionCountsByType
   from '../../../components/charts/revocations/AdmissionCountsByType';
+import CaseTerminationsByTerminationType
+  from '../../../components/charts/revocations/CaseTerminationsByTerminationType';
 import RevocationCountByOfficer
   from '../../../components/charts/revocations/RevocationCountByOfficer';
 import RevocationCountBySupervisionType
@@ -413,6 +415,76 @@ const Revocations = () => {
                         Revocations are included based on the date that the person
                         was admitted to a DOCR facility because their supervision
                         was revoked, not the date of the causal violation or offense.
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* #Case terminations by termination type ==================== */}
+        <div className="col-md-6">
+          <div className="bd bgc-white p-20">
+            <div className="layers">
+              <div className="layer w-100 pX-20 pT-20">
+                <h6 className="lh-1">
+                  CASE TERMINATIONS BY TERMINATION TYPE
+                  <span className="fa-pull-right">
+                    <div className="dropdown show">
+                      <a className="btn btn-secondary btn-sm dropdown-toggle" href="#" role="button" id="exportDropdownMenuButton-caseTerminationsByTerminationType" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Export
+                      </a>
+                      <div className="dropdown-menu" aria-labelledby="exportDropdownMenuButton-caseTerminationsByTerminationType">
+                        <a className="dropdown-item" id="downloadChartAsImage-caseTerminationsByTerminationType" href="javascript:void(0);">Export image</a>
+                        <a className="dropdown-item" id="downloadChartData-caseTerminationsByTerminationType" href="javascript:void(0);">Export data</a>
+                      </div>
+                    </div>
+                  </span>
+                </h6>
+              </div>
+              <div className="layer w-100 p-20 fs-block">
+                <CaseTerminationsByTerminationType
+                  metricType={chartMetricType}
+                  metricPeriodMonths={chartMetricPeriodMonths}
+                  supervisionType={chartSupervisionType}
+                  district={chartDistrict}
+                  caseTerminationCountsByMonthByTerminationType={apiData.case_terminations_by_type_by_month}
+                />
+              </div>
+              <div className="layer bdT p-20 w-100 accordion" id="methodologyCaseTerminationsByTerminationType">
+                <div className="mb-0" id="methodologyHeadingCaseTerminationsByTerminationType">
+                  <div className="mb-0">
+                    <button className="btn btn-link collapsed pL-0" type="button" data-toggle="collapse" data-target="#collapseMethodologyCaseTerminationsByTerminationType" aria-expanded="true" aria-controls="collapseMethodologyCaseTerminationsByTerminationType">
+                      <h6 className="lh-1 c-blue-500 mb-0">Methodology</h6>
+                    </button>
+                  </div>
+                </div>
+                <div className="collapse" id="collapseMethodologyCaseTerminationsByTerminationType" aria-labelledby="methodologyHeadingCaseTerminationsByTerminationType" data-parent="#methodologyCaseTerminationsByTerminationType">
+                  <div>
+                    <ul>
+                      <li>
+                        This chart includes counts based on case, not person. If a person on supervision has multiple
+                        cases, each case termination will be counted in the chart.
+                      </li>
+                      <li>
+                        Case terminations are included based on termination date in Docstars.
+                      </li>
+                      <li>
+                        Revocations are included based on a termination type of revocation in Docstars. Unlike other
+                        revocation counts, this chart <span className="font-weight-bold">does not</span> only examine
+                        revocations resulting in admission to a DOCR facility.
+                      </li>
+                      <li>
+                        Absconsion is all cases terminated with termination code 13. Revocation is all cases
+                        terminated with code 9 or 10. Suspension is cases terminated with code 3 or 6. Discharge is
+                        cases terminated with code 1, 2, 5, 8, 12, 15, 16, 17, or 18. Expiration is cases terminated
+                        with code 4, 7, 19, or 20. Death is cases terminated with code 11. Other is cases terminated
+                        with code 14.
+                      </li>
+                      <li>
+                        Case terminations are attributed to the P&P office of the terminating officer in Docstars.
                       </li>
                     </ul>
                   </div>
