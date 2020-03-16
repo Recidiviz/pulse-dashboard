@@ -34,6 +34,7 @@ import GeoViewTimeChart from '../../../components/charts/GeoViewTimeChart';
 import GeoViewToggle from '../../../components/toggles/GeoViewToggle';
 import ToggleBar from '../../../components/toggles/ToggleBar';
 import * as ToggleDefaults from '../../../components/toggles/ToggleDefaults';
+import PageTemplate from './PageTemplate';
 
 const Snapshots = () => {
   const { loading, user, getTokenSilently } = useAuth0();
@@ -69,375 +70,373 @@ const Snapshots = () => {
     return <Loading />;
   }
 
+  const toggleBar = (
+    <ToggleBar
+      setChartMetricType={setChartMetricType}
+      setChartMetricPeriodMonths={setChartMetricPeriodMonths}
+      setChartSupervisionType={setChartSupervisionType}
+      setChartDistrict={setChartDistrict}
+      districtOffices={apiData.site_offices}
+      availableDistricts={['beulah', 'bismarck', 'bottineau', 'devils-lake', 'dickson', 'fargo', 'grafton', 'grand-forks', 'jamestown', 'mandan', 'minot', 'oakes', 'rolla', 'washburn', 'wahpeton', 'williston']}
+    />
+  );
+
   return (
-    <main className="main-content bgc-grey-100">
-      <div id="mainContent">
-
-        <ToggleBar
-          setChartMetricType={setChartMetricType}
-          setChartMetricPeriodMonths={setChartMetricPeriodMonths}
-          setChartSupervisionType={setChartSupervisionType}
-          setChartDistrict={setChartDistrict}
-          districtOffices={apiData.site_offices}
-          availableDistricts={['beulah', 'bismarck', 'bottineau', 'devils-lake', 'dickson', 'fargo', 'grafton', 'grand-forks', 'jamestown', 'mandan', 'minot', 'oakes', 'rolla', 'washburn', 'wahpeton', 'williston']}
-        />
-
-        <div className="row gap-20 pos-r">
-
-          {/* #Successful completion of supervision snapshot ==================== */}
-          <div className="col-md-6">
-            <div className="bd bgc-white p-20">
-              <div className="layers">
-                <div className="layer w-100 pX-20 pT-20">
-                  <h6 className="lh-1">
-                    SUCCESSFUL COMPLETION OF SUPERVISION
-                    {chartDistrict !== 'all' && (
-                      <span className="pL-10 toggle-alert ti-alert" data-toggle="tooltip" data-placement="bottom" title="Filtering this graph by a specific office requires knowing the officer that was assigned to historical periods of supervision. Because the Docstars data system does not currently keep a full historical record of officer assignments, we cannot track this measurement by office prior to when we first began ingesting data from DOCR." />
-                    )}
-                    <span className="fa-pull-right">
-                      <div className="geo-view-button pR-10">
-                        <GeoViewToggle setGeoViewEnabled={setGeoViewEnabledSCOS} />
-                      </div>
-                      <div className="dropdown show export-button">
-                        <a className="btn btn-secondary btn-sm dropdown-toggle" href="#" role="button" id="exportDropdownMenuButton-supervisionSuccessSnapshot" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                          Export
-                        </a>
-                        <div className="dropdown-menu" aria-labelledby="exportDropdownMenuButton-supervisionSuccesSnapshot">
-                          {geoViewEnabledSCOS === false && (
-                            <a className="dropdown-item" id="downloadChartAsImage-supervisionSuccessSnapshot" href="javascript:void(0);">Export image</a>
-                          )}
-                          <a className="dropdown-item" id="downloadChartData-supervisionSuccessSnapshot" href="javascript:void(0);">Export data</a>
-                        </div>
-                      </div>
-                    </span>
-                  </h6>
-                </div>
-                <div className="layer w-100 pX-20 pT-20">
-                  {geoViewEnabledSCOS === false && (
-                    <div className="dynamic-chart-header" id="supervisionSuccessSnapshot-header" />
+    <PageTemplate toggleBar={toggleBar}>
+      <React.Fragment>
+        {/* #Successful completion of supervision snapshot ==================== */}
+        <div className="col-md-6">
+          <div className="bd bgc-white p-20">
+            <div className="layers">
+              <div className="layer w-100 pX-20 pT-20">
+                <h6 className="lh-1">
+                  SUCCESSFUL COMPLETION OF SUPERVISION
+                  {chartDistrict !== 'all' && (
+                    <span className="pL-10 toggle-alert ti-alert" data-toggle="tooltip" data-placement="bottom" title="Filtering this graph by a specific office requires knowing the officer that was assigned to historical periods of supervision. Because the Docstars data system does not currently keep a full historical record of officer assignments, we cannot track this measurement by office prior to when we first began ingesting data from DOCR." />
                   )}
-                </div>
-                <div className="layer w-100 p-20">
-                  <div className="ai-c jc-c gapX-20">
-                    <div className="col-md-12 fs-block">
-                      { /* TODO(XXX): Figure out why map will not show when delegated to by the Chart.js
-                      chart. Then we can just encapsulate this logic inside of a single component. */ }
-                      {geoViewEnabledSCOS === false && (
-                        <SupervisionSuccessSnapshot
-                          metricType={chartMetricType}
-                          metricPeriodMonths={chartMetricPeriodMonths}
-                          supervisionType={chartSupervisionType}
-                          district={chartDistrict}
-                          supervisionSuccessRates={apiData.supervision_termination_by_type_by_month}
-                          header="supervisionSuccessSnapshot-header"
-                        />
-                      )}
-                      {geoViewEnabledSCOS === true && (
-                        <GeoViewTimeChart
-                          chartId="supervisionSuccessSnapshot"
-                          chartTitle="SUCCESSFUL COMPLETION OF SUPERVISION"
-                          metricType={chartMetricType}
-                          metricPeriodMonths={chartMetricPeriodMonths}
-                          supervisionType={chartSupervisionType}
-                          keyedByOffice={true}
-                          officeData={apiData.site_offices}
-                          dataPointsByOffice={apiData.supervision_termination_by_type_by_period}
-                          numeratorKeys={['successful_termination']}
-                          denominatorKeys={['revocation_termination', 'successful_termination']}
-                          centerLat={47.3}
-                          centerLong={-100.5}
-                        />
-                      )}
+                  <span className="fa-pull-right">
+                    <div className="geo-view-button pR-10">
+                      <GeoViewToggle setGeoViewEnabled={setGeoViewEnabledSCOS} />
                     </div>
-                  </div>
-                </div>
-                <div className="layer bdT p-20 w-100 accordion" id="methodologySupervisionSuccessSnapshot">
-                  <div className="mb-0" id="methodologyHeadingSupervisionSuccessSnapshot">
-                    <div className="mb-0">
-                      <button className="btn btn-link collapsed pL-0" type="button" data-toggle="collapse" data-target="#collapseMethodologySupervisionSuccessSnapshot" aria-expanded="true" aria-controls="collapseMethodologySupervisionSuccessSnapshot">
-                        <h6 className="lh-1 c-blue-500 mb-0">Methodology</h6>
-                      </button>
+                    <div className="dropdown show export-button">
+                      <a className="btn btn-secondary btn-sm dropdown-toggle" href="#" role="button" id="exportDropdownMenuButton-supervisionSuccessSnapshot" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Export
+                      </a>
+                      <div className="dropdown-menu" aria-labelledby="exportDropdownMenuButton-supervisionSuccesSnapshot">
+                        {geoViewEnabledSCOS === false && (
+                          <a className="dropdown-item" id="downloadChartAsImage-supervisionSuccessSnapshot" href="javascript:void(0);">Export image</a>
+                        )}
+                        <a className="dropdown-item" id="downloadChartData-supervisionSuccessSnapshot" href="javascript:void(0);">Export data</a>
+                      </div>
                     </div>
-                  </div>
-                  <div className="collapse" id="collapseMethodologySupervisionSuccessSnapshot" aria-labelledby="methodologyHeadingSupervisionSuccessSnapshot" data-parent="#methodologySupervisionSuccessSnapshot">
-                    <div>
-                      <ul>
-                        <li>
-                        A supervision is considered successfully completed
-                        if the individual was discharged from supervision positively
-                        or if their supervision period expired.
-                        </li>
-                        <li>
-                        Unsuccessful completions of supervision occur when the
-                        supervision ends due to absconsion, a revocation, or a
-                        negative termination.
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
+                  </span>
+                </h6>
               </div>
-            </div>
-          </div>
-
-          {/* #Prison admissions from revocations ==================== */}
-          <div className="col-md-6">
-            <div className="bd bgc-white p-20">
-              <div className="layers">
-                <div className="layer w-100 pX-20 pT-20">
-                  <h6 className="lh-1">
-                    PRISON ADMISSIONS DUE TO REVOCATION
-                    <span className="fa-pull-right">
-                      <div className="geo-view-button pR-10">
-                        <GeoViewToggle setGeoViewEnabled={setGeoViewEnabledPDTR} />
-                      </div>
-                      <div className="dropdown show export-button">
-                        <a className="btn btn-secondary btn-sm dropdown-toggle" href="#" role="button" id="exportDropdownMenuButton-revocationAdmissionsSnapshot" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                          Export
-                        </a>
-                        <div className="dropdown-menu" aria-labelledby="exportDropdownMenuButton-revocationAdmissionsSnapshot">
-                          {geoViewEnabledPDTR === false && (
-                            <a className="dropdown-item" id="downloadChartAsImage-revocationAdmissionsSnapshot" href="javascript:void(0);">Export image</a>
-                          )}
-                          <a className="dropdown-item" id="downloadChartData-revocationAdmissionsSnapshot" href="javascript:void(0);">Export data</a>
-                        </div>
-                      </div>
-                    </span>
-                  </h6>
-                </div>
-                <div className="layer w-100 pX-20 pT-20">
-                  {geoViewEnabledPDTR === false && (
-                    <div className="dynamic-chart-header" id="revocationAdmissionsSnapshot-header" />
-                  )}
-                </div>
-                <div className="layer w-100 p-20">
-                  <div className="ai-c jc-c gapX-20">
-                    <div className="col-md-12 fs-block">
-                      {geoViewEnabledPDTR === false && (
-                        <RevocationAdmissionsSnapshot
-                          metricType={chartMetricType}
-                          metricPeriodMonths={chartMetricPeriodMonths}
-                          supervisionType={chartSupervisionType}
-                          district={chartDistrict}
-                          revocationAdmissionsByMonth={apiData.admissions_by_type_by_month}
-                          header="revocationAdmissionsSnapshot-header"
-                        />
-                      )}
-                      {geoViewEnabledPDTR === true && (
-                        <GeoViewTimeChart
-                          chartId="revocationAdmissionsSnapshot"
-                          chartTitle="PRISON ADMISSIONS DUE TO REVOCATION"
-                          metricType={chartMetricType}
-                          metricPeriodMonths={chartMetricPeriodMonths}
-                          supervisionType={chartSupervisionType}
-                          keyedByOffice
-                          shareDenominatorAcrossRates
-                          officeData={apiData.site_offices}
-                          dataPointsByOffice={apiData.admissions_by_type_by_period}
-                          numeratorKeys={['technicals', 'non_technicals', 'unknown_revocations']}
-                          denominatorKeys={['technicals', 'non_technicals', 'unknown_revocations', 'new_admissions']}
-                          centerLat={47.3}
-                          centerLong={-100.5}
-                        />
-                      )}
-                    </div>
-                  </div>
-                </div>
-                <div className="layer bdT p-20 w-100 accordion" id="methodologyRevocationAdmissionsSnapshot">
-                  <div className="mb-0" id="methodologyHeadingRevocationAdmissionsSnapshot">
-                    <div className="mb-0">
-                      <button className="btn btn-link collapsed pL-0" type="button" data-toggle="collapse" data-target="#collapseMethodologyRevocationAdmissionsSnapshot" aria-expanded="true" aria-controls="collapseMethodologyRevocationAdmissionsSnapshot">
-                        <h6 className="lh-1 c-blue-500 mb-0">Methodology</h6>
-                      </button>
-                    </div>
-                  </div>
-                  <div className="collapse" id="collapseMethodologyRevocationAdmissionsSnapshot" aria-labelledby="methodologyHeadingRevocationAdmissionsSnapshot" data-parent="#methodologyRevocationAdmissionsSnapshot">
-                    <div>
-                      <ul>
-                        <li>
-                          This is a measurement of the percent of admissions to
-                          North Dakota prisons that were due to revocations of supervision.
-                        </li>
-                        <li>
-                          Revocations in a given month count people who were incarcerated
-                          in that month because their supervision was revoked.
-                        </li>
-                        <li>
-                          When a specific district and/or supervision type is selected, the rate
-                          metric is defined as the number of revocation admissions from that
-                          district and/or supervision type divided by the total number of admissions
-                          across all districts and supervision types within the same time period.
-                          Simply put, it is equal to the percentage of total admisssions caused by
-                          revocations matching the given filters.
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
+              <div className="layer w-100 pX-20 pT-20">
+                {geoViewEnabledSCOS === false && (
+                  <div className="dynamic-chart-header" id="supervisionSuccessSnapshot-header" />
+                )}
               </div>
-            </div>
-          </div>
-
-          {/* #Average days at liberty ==================== */}
-          <div className="col-md-6">
-            <div className="bd bgc-white p-20">
-              <div className="layers">
-                <div className="layer w-100 pX-20 pT-20">
-                  <h6 className="lh-1">
-                    DAYS AT LIBERTY (AVERAGE)
-                    {(chartMetricType !== 'counts' || chartSupervisionType !== 'all' || chartDistrict !== 'all') && (
-                      <span className="pL-10 toggle-alert ti-alert" data-toggle="tooltip" data-placement="bottom" title="This graph is showing average days at liberty for all reincarcerated individuals. It does not support showing this metric as a rate. As individuals can be reincarcerated after completing supervision, this chart also does not support showing information only about a certain office or individuals on a certain type of supervision." />
-                    )}
-                    <span className="fa-pull-right">
-                      <div className="dropdown show">
-                        <a className="btn btn-secondary btn-sm dropdown-toggle" href="#" role="button" id="exportDropdownMenuButton-daysAtLibertySnapshot" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                          Export
-                        </a>
-                        <div className="dropdown-menu" aria-labelledby="exportDropdownMenuButton-daysAtLibertySnapshot">
-                          <a className="dropdown-item" id="downloadChartAsImage-daysAtLibertySnapshot" href="javascript:void(0);">Export image</a>
-                          <a className="dropdown-item" id="downloadChartData-daysAtLibertySnapshot" href="javascript:void(0);">Export data</a>
-                        </div>
-                      </div>
-                    </span>
-                  </h6>
-                </div>
-                <div className="layer w-100 pX-20 pT-20">
-                  <div className="dynamic-chart-header" id="daysAtLibertySnapshot-header" />
-                </div>
-                <div className="layer w-100 p-20">
-                  <div className="ai-c jc-c gapX-20">
-                    <div className="col-md-12 fs-block">
-                      <DaysAtLibertySnapshot
+              <div className="layer w-100 p-20">
+                <div className="ai-c jc-c gapX-20">
+                  <div className="col-md-12 fs-block">
+                    { /* TODO(XXX): Figure out why map will not show when delegated to by the Chart.js
+                    chart. Then we can just encapsulate this logic inside of a single component. */ }
+                    {geoViewEnabledSCOS === false && (
+                      <SupervisionSuccessSnapshot
+                        metricType={chartMetricType}
                         metricPeriodMonths={chartMetricPeriodMonths}
-                        daysAtLibertyByMonth={apiData.avg_days_at_liberty_by_month}
-                        header="daysAtLibertySnapshot-header"
+                        supervisionType={chartSupervisionType}
+                        district={chartDistrict}
+                        supervisionSuccessRates={apiData.supervision_termination_by_type_by_month}
+                        header="supervisionSuccessSnapshot-header"
                       />
-                    </div>
-                  </div>
-                </div>
-                <div className="layer bdT p-20 w-100 accordion" id="methodologyDaysAtLibertySnapshot">
-                  <div className="mb-0" id="methodologyHeadingDaysAtLibertySnapshot">
-                    <div className="mb-0">
-                      <button className="btn btn-link collapsed pL-0" type="button" data-toggle="collapse" data-target="#collapseMethodologyDaysAtLibertySnapshot" aria-expanded="true" aria-controls="collapseMethodologyDaysAtLibertySnapshot">
-                        <h6 className="lh-1 c-blue-500 mb-0">Methodology</h6>
-                      </button>
-                    </div>
-                  </div>
-                  <div className="collapse" id="collapseMethodologyDaysAtLibertySnapshot" aria-labelledby="methodologyHeadingDaysAtLibertySnapshot" data-parent="#methodologyDaysAtLibertySnapshot">
-                    <div>
-                      <ul>
-                        <li>
-                        An individual&apos;s days at liberty are the number of
-                        days between release from incarceration and readmission
-                        for someone who was reincarcerated in a given month.
-                        </li>
-                        <li>
-                        An admission to prison counts as a reincarceration if
-                        the person has been incarcerated previously in a North
-                        Dakota prison.
-                        </li>
-                      </ul>
-                    </div>
+                    )}
+                    {geoViewEnabledSCOS === true && (
+                      <GeoViewTimeChart
+                        chartId="supervisionSuccessSnapshot"
+                        chartTitle="SUCCESSFUL COMPLETION OF SUPERVISION"
+                        metricType={chartMetricType}
+                        metricPeriodMonths={chartMetricPeriodMonths}
+                        supervisionType={chartSupervisionType}
+                        keyedByOffice={true}
+                        officeData={apiData.site_offices}
+                        dataPointsByOffice={apiData.supervision_termination_by_type_by_period}
+                        numeratorKeys={['successful_termination']}
+                        denominatorKeys={['revocation_termination', 'successful_termination']}
+                        centerLat={47.3}
+                        centerLong={-100.5}
+                      />
+                    )}
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
-
-          {/* #Change in LSI-R scores ==================== */}
-          <div className="col-md-6">
-            <div className="bd bgc-white p-20">
-              <div className="layers">
-                <div className="layer w-100 pX-20 pT-20">
-                  <h6 className="lh-1">
-                    LSI-R SCORE CHANGES (AVERAGE)
-                    {chartMetricType !== 'counts' && (
-                      <span className="pL-10 toggle-alert ti-alert" data-toggle="tooltip" data-placement="bottom" title="This graph is showing average LSI-R score change. It does not support showing this metric as a rate." />
-                    )}
-                    {chartDistrict !== 'all' && (
-                      <span className="pL-10 toggle-alert ti-alert" data-toggle="tooltip" data-placement="bottom" title="Filtering this graph by a specific office requires knowing the officer that was assigned to historical periods of supervision. Because the Docstars data system does not currently keep a full historical record of officer assignments, we cannot track this measurement by office prior to when we first began ingesting data from DOCR." />
-                    )}
-                    <span className="fa-pull-right">
-                      <div className="geo-view-button pR-10">
-                        <GeoViewToggle setGeoViewEnabled={setGeoViewEnabledALSI} />
-                      </div>
-                      <div className="dropdown show export-button">
-                        <a className="btn btn-secondary btn-sm dropdown-toggle" href="#" role="button" id="exportDropdownMenuButton-lsirScoreChangeSnapshot" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                          Export
-                        </a>
-                        <div className="dropdown-menu" aria-labelledby="exportDropdownMenuButton-lsirScoreChangeSnapshot">
-                          {geoViewEnabledALSI === false && (
-                            <a className="dropdown-item" id="downloadChartAsImage-lsirScoreChangeSnapshot" href="javascript:void(0);">Export image</a>
-                          )}
-                          <a className="dropdown-item" id="downloadChartData-lsirScoreChangeSnapshot" href="javascript:void(0);">Export data</a>
-                        </div>
-                      </div>
-                    </span>
-                  </h6>
-                </div>
-                <div className="layer w-100 pX-20 pT-20">
-                  {geoViewEnabledALSI === false && (
-                    <div className="dynamic-chart-header" id="lsirScoreChangeSnapshot-header" />
-                  )}
-                </div>
-                <div className="layer w-100 p-20">
-                  <div className="ai-c jc-c gapX-20">
-                    <div className="col-md-12 fs-block">
-                      {geoViewEnabledALSI === false && (
-                        <LsirScoreChangeSnapshot
-                          metricPeriodMonths={chartMetricPeriodMonths}
-                          supervisionType={chartSupervisionType}
-                          district={chartDistrict}
-                          lsirScoreChangeByMonth={apiData.average_change_lsir_score_by_month}
-                          header="lsirScoreChangeSnapshot-header"
-                        />
-                      )}
-                      {geoViewEnabledALSI === true && (
-                        <GeoViewTimeChart
-                          chartId="lsirScoreChangeSnapshot"
-                          chartTitle="LSI-R SCORE CHANGES (AVERAGE)"
-                          metricType="counts"
-                          metricPeriodMonths={chartMetricPeriodMonths}
-                          supervisionType={chartSupervisionType}
-                          keyedByOffice={true}
-                          officeData={apiData.site_offices}
-                          dataPointsByOffice={apiData.average_change_lsir_score_by_period}
-                          numeratorKeys={['average_change']}
-                          denominatorKeys={[]}
-                          centerLat={47.3}
-                          centerLong={-100.5}
-                        />
-                      )}
-                    </div>
+              <div className="layer bdT p-20 w-100 accordion" id="methodologySupervisionSuccessSnapshot">
+                <div className="mb-0" id="methodologyHeadingSupervisionSuccessSnapshot">
+                  <div className="mb-0">
+                    <button className="btn btn-link collapsed pL-0" type="button" data-toggle="collapse" data-target="#collapseMethodologySupervisionSuccessSnapshot" aria-expanded="true" aria-controls="collapseMethodologySupervisionSuccessSnapshot">
+                      <h6 className="lh-1 c-blue-500 mb-0">Methodology</h6>
+                    </button>
                   </div>
                 </div>
-                <div className="layer bdT p-20 w-100 accordion" id="methodologyLsirScoreChangeSnapshot">
-                  <div className="mb-0" id="methodologyHeadingLsirScoreChangeSnapshot">
-                    <div className="mb-0">
-                      <button className="btn btn-link collapsed pL-0" type="button" data-toggle="collapse" data-target="#collapseMethodologyLsirScoreChangeSnapshot" aria-expanded="true" aria-controls="collapseMethodologyLsirScoreChangeSnapshot">
-                        <h6 className="lh-1 c-blue-500 mb-0">Methodology</h6>
-                      </button>
-                    </div>
-                  </div>
-                  <div className="collapse" id="collapseMethodologyLsirScoreChangeSnapshot" aria-labelledby="methodologyHeadingLsirScoreChangeSnapshot" data-parent="#methodologyLsirScoreChangeSnapshot">
-                    <div>
-                      <ul>
-                        <li>
-                        This is the average of the differences between the first
-                        reassessment score and the termination assessment score
-                        for all individuals whose supervision was scheduled to
-                        end in a given month.
-                        </li>
-                      </ul>
-                    </div>
+                <div className="collapse" id="collapseMethodologySupervisionSuccessSnapshot" aria-labelledby="methodologyHeadingSupervisionSuccessSnapshot" data-parent="#methodologySupervisionSuccessSnapshot">
+                  <div>
+                    <ul>
+                      <li>
+                      A supervision is considered successfully completed
+                      if the individual was discharged from supervision positively
+                      or if their supervision period expired.
+                      </li>
+                      <li>
+                      Unsuccessful completions of supervision occur when the
+                      supervision ends due to absconsion, a revocation, or a
+                      negative termination.
+                      </li>
+                    </ul>
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-    </main>
+
+        {/* #Prison admissions from revocations ==================== */}
+        <div className="col-md-6">
+          <div className="bd bgc-white p-20">
+            <div className="layers">
+              <div className="layer w-100 pX-20 pT-20">
+                <h6 className="lh-1">
+                  PRISON ADMISSIONS DUE TO REVOCATION
+                  <span className="fa-pull-right">
+                    <div className="geo-view-button pR-10">
+                      <GeoViewToggle setGeoViewEnabled={setGeoViewEnabledPDTR} />
+                    </div>
+                    <div className="dropdown show export-button">
+                      <a className="btn btn-secondary btn-sm dropdown-toggle" href="#" role="button" id="exportDropdownMenuButton-revocationAdmissionsSnapshot" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Export
+                      </a>
+                      <div className="dropdown-menu" aria-labelledby="exportDropdownMenuButton-revocationAdmissionsSnapshot">
+                        {geoViewEnabledPDTR === false && (
+                          <a className="dropdown-item" id="downloadChartAsImage-revocationAdmissionsSnapshot" href="javascript:void(0);">Export image</a>
+                        )}
+                        <a className="dropdown-item" id="downloadChartData-revocationAdmissionsSnapshot" href="javascript:void(0);">Export data</a>
+                      </div>
+                    </div>
+                  </span>
+                </h6>
+              </div>
+              <div className="layer w-100 pX-20 pT-20">
+                {geoViewEnabledPDTR === false && (
+                  <div className="dynamic-chart-header" id="revocationAdmissionsSnapshot-header" />
+                )}
+              </div>
+              <div className="layer w-100 p-20">
+                <div className="ai-c jc-c gapX-20">
+                  <div className="col-md-12 fs-block">
+                    {geoViewEnabledPDTR === false && (
+                      <RevocationAdmissionsSnapshot
+                        metricType={chartMetricType}
+                        metricPeriodMonths={chartMetricPeriodMonths}
+                        supervisionType={chartSupervisionType}
+                        district={chartDistrict}
+                        revocationAdmissionsByMonth={apiData.admissions_by_type_by_month}
+                        header="revocationAdmissionsSnapshot-header"
+                      />
+                    )}
+                    {geoViewEnabledPDTR === true && (
+                      <GeoViewTimeChart
+                        chartId="revocationAdmissionsSnapshot"
+                        chartTitle="PRISON ADMISSIONS DUE TO REVOCATION"
+                        metricType={chartMetricType}
+                        metricPeriodMonths={chartMetricPeriodMonths}
+                        supervisionType={chartSupervisionType}
+                        keyedByOffice
+                        shareDenominatorAcrossRates
+                        officeData={apiData.site_offices}
+                        dataPointsByOffice={apiData.admissions_by_type_by_period}
+                        numeratorKeys={['technicals', 'non_technicals', 'unknown_revocations']}
+                        denominatorKeys={['technicals', 'non_technicals', 'unknown_revocations', 'new_admissions']}
+                        centerLat={47.3}
+                        centerLong={-100.5}
+                      />
+                    )}
+                  </div>
+                </div>
+              </div>
+              <div className="layer bdT p-20 w-100 accordion" id="methodologyRevocationAdmissionsSnapshot">
+                <div className="mb-0" id="methodologyHeadingRevocationAdmissionsSnapshot">
+                  <div className="mb-0">
+                    <button className="btn btn-link collapsed pL-0" type="button" data-toggle="collapse" data-target="#collapseMethodologyRevocationAdmissionsSnapshot" aria-expanded="true" aria-controls="collapseMethodologyRevocationAdmissionsSnapshot">
+                      <h6 className="lh-1 c-blue-500 mb-0">Methodology</h6>
+                    </button>
+                  </div>
+                </div>
+                <div className="collapse" id="collapseMethodologyRevocationAdmissionsSnapshot" aria-labelledby="methodologyHeadingRevocationAdmissionsSnapshot" data-parent="#methodologyRevocationAdmissionsSnapshot">
+                  <div>
+                    <ul>
+                      <li>
+                        This is a measurement of the percent of admissions to
+                        North Dakota prisons that were due to revocations of supervision.
+                      </li>
+                      <li>
+                        Revocations in a given month count people who were incarcerated
+                        in that month because their supervision was revoked.
+                      </li>
+                      <li>
+                        When a specific district and/or supervision type is selected, the rate
+                        metric is defined as the number of revocation admissions from that
+                        district and/or supervision type divided by the total number of admissions
+                        across all districts and supervision types within the same time period.
+                        Simply put, it is equal to the percentage of total admisssions caused by
+                        revocations matching the given filters.
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* #Average days at liberty ==================== */}
+        <div className="col-md-6">
+          <div className="bd bgc-white p-20">
+            <div className="layers">
+              <div className="layer w-100 pX-20 pT-20">
+                <h6 className="lh-1">
+                  DAYS AT LIBERTY (AVERAGE)
+                  {(chartMetricType !== 'counts' || chartSupervisionType !== 'all' || chartDistrict !== 'all') && (
+                    <span className="pL-10 toggle-alert ti-alert" data-toggle="tooltip" data-placement="bottom" title="This graph is showing average days at liberty for all reincarcerated individuals. It does not support showing this metric as a rate. As individuals can be reincarcerated after completing supervision, this chart also does not support showing information only about a certain office or individuals on a certain type of supervision." />
+                  )}
+                  <span className="fa-pull-right">
+                    <div className="dropdown show">
+                      <a className="btn btn-secondary btn-sm dropdown-toggle" href="#" role="button" id="exportDropdownMenuButton-daysAtLibertySnapshot" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Export
+                      </a>
+                      <div className="dropdown-menu" aria-labelledby="exportDropdownMenuButton-daysAtLibertySnapshot">
+                        <a className="dropdown-item" id="downloadChartAsImage-daysAtLibertySnapshot" href="javascript:void(0);">Export image</a>
+                        <a className="dropdown-item" id="downloadChartData-daysAtLibertySnapshot" href="javascript:void(0);">Export data</a>
+                      </div>
+                    </div>
+                  </span>
+                </h6>
+              </div>
+              <div className="layer w-100 pX-20 pT-20">
+                <div className="dynamic-chart-header" id="daysAtLibertySnapshot-header" />
+              </div>
+              <div className="layer w-100 p-20">
+                <div className="ai-c jc-c gapX-20">
+                  <div className="col-md-12 fs-block">
+                    <DaysAtLibertySnapshot
+                      metricPeriodMonths={chartMetricPeriodMonths}
+                      daysAtLibertyByMonth={apiData.avg_days_at_liberty_by_month}
+                      header="daysAtLibertySnapshot-header"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div className="layer bdT p-20 w-100 accordion" id="methodologyDaysAtLibertySnapshot">
+                <div className="mb-0" id="methodologyHeadingDaysAtLibertySnapshot">
+                  <div className="mb-0">
+                    <button className="btn btn-link collapsed pL-0" type="button" data-toggle="collapse" data-target="#collapseMethodologyDaysAtLibertySnapshot" aria-expanded="true" aria-controls="collapseMethodologyDaysAtLibertySnapshot">
+                      <h6 className="lh-1 c-blue-500 mb-0">Methodology</h6>
+                    </button>
+                  </div>
+                </div>
+                <div className="collapse" id="collapseMethodologyDaysAtLibertySnapshot" aria-labelledby="methodologyHeadingDaysAtLibertySnapshot" data-parent="#methodologyDaysAtLibertySnapshot">
+                  <div>
+                    <ul>
+                      <li>
+                      An individual&apos;s days at liberty are the number of
+                      days between release from incarceration and readmission
+                      for someone who was reincarcerated in a given month.
+                      </li>
+                      <li>
+                      An admission to prison counts as a reincarceration if
+                      the person has been incarcerated previously in a North
+                      Dakota prison.
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* #Change in LSI-R scores ==================== */}
+        <div className="col-md-6">
+          <div className="bd bgc-white p-20">
+            <div className="layers">
+              <div className="layer w-100 pX-20 pT-20">
+                <h6 className="lh-1">
+                  LSI-R SCORE CHANGES (AVERAGE)
+                  {chartMetricType !== 'counts' && (
+                    <span className="pL-10 toggle-alert ti-alert" data-toggle="tooltip" data-placement="bottom" title="This graph is showing average LSI-R score change. It does not support showing this metric as a rate." />
+                  )}
+                  {chartDistrict !== 'all' && (
+                    <span className="pL-10 toggle-alert ti-alert" data-toggle="tooltip" data-placement="bottom" title="Filtering this graph by a specific office requires knowing the officer that was assigned to historical periods of supervision. Because the Docstars data system does not currently keep a full historical record of officer assignments, we cannot track this measurement by office prior to when we first began ingesting data from DOCR." />
+                  )}
+                  <span className="fa-pull-right">
+                    <div className="geo-view-button pR-10">
+                      <GeoViewToggle setGeoViewEnabled={setGeoViewEnabledALSI} />
+                    </div>
+                    <div className="dropdown show export-button">
+                      <a className="btn btn-secondary btn-sm dropdown-toggle" href="#" role="button" id="exportDropdownMenuButton-lsirScoreChangeSnapshot" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Export
+                      </a>
+                      <div className="dropdown-menu" aria-labelledby="exportDropdownMenuButton-lsirScoreChangeSnapshot">
+                        {geoViewEnabledALSI === false && (
+                          <a className="dropdown-item" id="downloadChartAsImage-lsirScoreChangeSnapshot" href="javascript:void(0);">Export image</a>
+                        )}
+                        <a className="dropdown-item" id="downloadChartData-lsirScoreChangeSnapshot" href="javascript:void(0);">Export data</a>
+                      </div>
+                    </div>
+                  </span>
+                </h6>
+              </div>
+              <div className="layer w-100 pX-20 pT-20">
+                {geoViewEnabledALSI === false && (
+                  <div className="dynamic-chart-header" id="lsirScoreChangeSnapshot-header" />
+                )}
+              </div>
+              <div className="layer w-100 p-20">
+                <div className="ai-c jc-c gapX-20">
+                  <div className="col-md-12 fs-block">
+                    {geoViewEnabledALSI === false && (
+                      <LsirScoreChangeSnapshot
+                        metricPeriodMonths={chartMetricPeriodMonths}
+                        supervisionType={chartSupervisionType}
+                        district={chartDistrict}
+                        lsirScoreChangeByMonth={apiData.average_change_lsir_score_by_month}
+                        header="lsirScoreChangeSnapshot-header"
+                      />
+                    )}
+                    {geoViewEnabledALSI === true && (
+                      <GeoViewTimeChart
+                        chartId="lsirScoreChangeSnapshot"
+                        chartTitle="LSI-R SCORE CHANGES (AVERAGE)"
+                        metricType="counts"
+                        metricPeriodMonths={chartMetricPeriodMonths}
+                        supervisionType={chartSupervisionType}
+                        keyedByOffice={true}
+                        officeData={apiData.site_offices}
+                        dataPointsByOffice={apiData.average_change_lsir_score_by_period}
+                        numeratorKeys={['average_change']}
+                        denominatorKeys={[]}
+                        centerLat={47.3}
+                        centerLong={-100.5}
+                      />
+                    )}
+                  </div>
+                </div>
+              </div>
+              <div className="layer bdT p-20 w-100 accordion" id="methodologyLsirScoreChangeSnapshot">
+                <div className="mb-0" id="methodologyHeadingLsirScoreChangeSnapshot">
+                  <div className="mb-0">
+                    <button className="btn btn-link collapsed pL-0" type="button" data-toggle="collapse" data-target="#collapseMethodologyLsirScoreChangeSnapshot" aria-expanded="true" aria-controls="collapseMethodologyLsirScoreChangeSnapshot">
+                      <h6 className="lh-1 c-blue-500 mb-0">Methodology</h6>
+                    </button>
+                  </div>
+                </div>
+                <div className="collapse" id="collapseMethodologyLsirScoreChangeSnapshot" aria-labelledby="methodologyHeadingLsirScoreChangeSnapshot" data-parent="#methodologyLsirScoreChangeSnapshot">
+                  <div>
+                    <ul>
+                      <li>
+                      This is the average of the differences between the first
+                      reassessment score and the termination assessment score
+                      for all individuals whose supervision was scheduled to
+                      end in a given month.
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </React.Fragment>
+    </PageTemplate>
   );
 };
 

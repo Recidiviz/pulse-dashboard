@@ -1,0 +1,16 @@
+#importantNotesBarHeading span {
+  font-size: 0.8em;
+  margin-left: 8px;
+}
+
+.collapsed #importantNotesBarHeading .ti-angle-down {
+  display: none;
+}
+
+#importantNotesBarHeading .ti-angle-right {
+  display: none;
+}
+
+.collapsed #importantNotesBarHeading .ti-angle-right {
+  display: inline;
+}
