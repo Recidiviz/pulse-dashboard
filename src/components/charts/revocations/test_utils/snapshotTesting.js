@@ -42,8 +42,8 @@ export const testGetBarChartDefinitionAgainstSnapshots = (
     test('produces the expected chart definitions for all snapshotted scenarios', () => {
       fs.readdirSync(snapshotsDir).forEach(fileName => {
         try {
-          const filters = fileName.slice(0, 0 - '.json'.length).split('|').reduce((filters, part) => {
-            const [name, value] = part.split(':');
+          const filters = fileName.slice(0, 0 - '.json'.length).split('_').reduce((filters, part) => {
+            const [name, value] = part.split('-');
 
             filters[name] = value;
 
