@@ -18,6 +18,8 @@
 const fs = require('fs');
 const path = require('path');
 
+const AdmZip = require('adm-zip');
+
 export const testGetBarChartDefinitionAgainstSnapshots = (
     snapshotsDir,
     getBarChartDefinition,
@@ -40,6 +42,11 @@ export const testGetBarChartDefinitionAgainstSnapshots = (
     });
 
     test('produces the expected chart definitions for all snapshotted scenarios', () => {
+      if (fs.existsSync(`${snapshotsDir}.zip`)) {
+        const zip = new AdmZip(`${snapshotsDir}.zip`);
+        zip.extractAllTo(path.join(snapshotsDir, '..'));
+      }
+
       fs.readdirSync(snapshotsDir).forEach(fileName => {
         try {
           const filters = fileName.slice(0, 0 - '.json'.length).split('_').reduce((filters, part) => {
@@ -52,7 +59,7 @@ export const testGetBarChartDefinitionAgainstSnapshots = (
 
           const expectedDefinition = JSON.parse(fs.readFileSync(path.join(snapshotsDir, fileName), 'utf8'));
 
-          modifyExpectedDefinition(expectedDefinition);
+          if (modifyExpectedDefinition) modifyExpectedDefinition(expectedDefinition);
 
           let definition = getBarChartDefinition(Object.assign(filters, argumentsOtherThanFilters));
 

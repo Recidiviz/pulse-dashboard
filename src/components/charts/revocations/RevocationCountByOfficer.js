@@ -28,13 +28,13 @@ import {
   toHtmlFriendly, toHumanReadable, toInt, numberFromOfficerId,
 } from '../../../utils/transforms/labels';
 
-const RevocationCountByOfficer = (props) => {
-  const [chartLabels, setChartLabels] = useState([]);
-  const [absconsionDataPoints, setAbsconsionDataPoints] = useState([]);
-  const [newOffenseDataPoints, setNewOffenseDataPoints] = useState([]);
-  const [technicalDataPoints, setTechnicalDataPoints] = useState([]);
-  const [unknownDataPoints, setUnknownDataPoints] = useState([]);
-  const [displayOfficerIds, setDisplayOfficerIds] = useState(true);
+export const getBarChartDefinition = (props) => {
+  let chartLabels;
+  let absconsionDataPoints;
+  let newOffenseDataPoints;
+  let technicalDataPoints;
+  let unknownDataPoints;
+  let displayOfficerIds = true;
   const chartId = 'revocationsByOfficer';
 
   /**
@@ -92,16 +92,16 @@ const RevocationCountByOfficer = (props) => {
     officerLabels, officerViolationCountsByType, visibleOffice,
   ) {
     if (visibleOffice.toLowerCase() === 'all') {
-      setDisplayOfficerIds(false);
+      displayOfficerIds = false
     } else {
-      setDisplayOfficerIds(true);
+      displayOfficerIds = true;
     }
 
-    setChartLabels(officerLabels);
-    setAbsconsionDataPoints(officerViolationCountsByType.ABSCONDED);
-    setNewOffenseDataPoints(officerViolationCountsByType.FELONY);
-    setTechnicalDataPoints(officerViolationCountsByType.TECHNICAL);
-    setUnknownDataPoints(officerViolationCountsByType.UNKNOWN_VIOLATION_TYPE);
+    chartLabels = officerLabels;
+    absconsionDataPoints = officerViolationCountsByType.ABSCONDED;
+    newOffenseDataPoints = officerViolationCountsByType.FELONY;
+    technicalDataPoints = officerViolationCountsByType.TECHNICAL;
+    unknownDataPoints = officerViolationCountsByType.UNKNOWN_VIOLATION_TYPE;
   }
 
   function configureDownloads(
@@ -143,78 +143,76 @@ const RevocationCountByOfficer = (props) => {
       exportedStructureCallback, props, convertValuesToNumbers);
   }
 
-  const processResponse = () => {
-    const { revocationCountsByOfficer, officeData } = props;
-    const offices = {};
-    const officeIds = [];
+  const { revocationCountsByOfficer, officeData } = props;
+  const offices = {};
+  const officeIds = [];
 
-    if (officeData) {
-      officeData.forEach((office) => {
-        const {
-          district: officeId,
-          site_name: officeName,
-        } = office;
+  if (officeData) {
+    officeData.forEach((office) => {
+      const {
+        district: officeId,
+        site_name: officeName,
+      } = office;
 
-        offices[officeId] = toHtmlFriendly(officeName).toLowerCase();
-        officeIds.push(officeId);
-      });
-    }
+      offices[officeId] = toHtmlFriendly(officeName).toLowerCase();
+      officeIds.push(officeId);
+    });
+  }
 
-    const revocationCountsByOfficerAndSupervisionType = filterDatasetBySupervisionType(
-      revocationCountsByOfficer, props.supervisionType.toUpperCase(),
-    );
+  const revocationCountsByOfficerAndSupervisionType = filterDatasetBySupervisionType(
+    revocationCountsByOfficer, props.supervisionType.toUpperCase(),
+  );
 
-    const revocationCountsByOfficerAndTime = filterDatasetByMetricPeriodMonths(
-      revocationCountsByOfficerAndSupervisionType, props.metricPeriodMonths,
-    );
+  const revocationCountsByOfficerAndTime = filterDatasetByMetricPeriodMonths(
+    revocationCountsByOfficerAndSupervisionType, props.metricPeriodMonths,
+  );
 
-    const dataPoints = {};
-    if (revocationCountsByOfficerAndTime) {
-      revocationCountsByOfficerAndTime.forEach((data) => {
-        const {
-          officer_external_id: officerIDRaw, district: officeId,
-        } = data;
+  const dataPoints = {};
+  if (revocationCountsByOfficerAndTime) {
+    revocationCountsByOfficerAndTime.forEach((data) => {
+      const {
+        officer_external_id: officerIDRaw, district: officeId,
+      } = data;
 
-        const absconsionCount = toInt(data.absconsion_count);
-        const felonyCount = toInt(data.felony_count);
-        const technicalCount = toInt(data.technical_count);
-        const unknownCount = toInt(data.unknown_count);
+      const absconsionCount = toInt(data.absconsion_count);
+      const felonyCount = toInt(data.felony_count);
+      const technicalCount = toInt(data.technical_count);
+      const unknownCount = toInt(data.unknown_count);
 
-        const violationCountsByType = {
-          ABSCONDED: absconsionCount,
-          FELONY: felonyCount,
-          TECHNICAL: technicalCount,
-          UNKNOWN_VIOLATION_TYPE: unknownCount,
-        };
-        const totalCount = absconsionCount + felonyCount + technicalCount + unknownCount;
+      const violationCountsByType = {
+        ABSCONDED: absconsionCount,
+        FELONY: felonyCount,
+        TECHNICAL: technicalCount,
+        UNKNOWN_VIOLATION_TYPE: unknownCount,
+      };
+      const totalCount = absconsionCount + felonyCount + technicalCount + unknownCount;
 
-        const officeName = offices[toInt(officeId)];
-        if (officeName && officerIDRaw !== 'OFFICER_UNKNOWN') {
-          const officerId = numberFromOfficerId(officerIDRaw);
-          if (dataPoints[officeId] == null) {
-            dataPoints[officeId] = [];
-          }
-
-          if (props.metricType === 'counts') {
-            dataPoints[officeId].push({
-              officerId,
-              violationsByType: violationCountsByType,
-            });
-          } else if (props.metricType === 'rates') {
-            const violationRatesByType = {};
-            Object.keys(violationCountsByType).forEach((key) => {
-              const count = violationCountsByType[key];
-              violationRatesByType[key] = (100 * (count / totalCount)).toFixed(2);
-            });
-
-            dataPoints[officeId].push({
-              officerId,
-              violationsByType: violationRatesByType,
-            });
-          }
+      const officeName = offices[toInt(officeId)];
+      if (officeName && officerIDRaw !== 'OFFICER_UNKNOWN') {
+        const officerId = numberFromOfficerId(officerIDRaw);
+        if (dataPoints[officeId] == null) {
+          dataPoints[officeId] = [];
         }
-      });
-    }
+
+        if (props.metricType === 'counts') {
+          dataPoints[officeId].push({
+            officerId,
+            violationsByType: violationCountsByType,
+          });
+        } else if (props.metricType === 'rates') {
+          const violationRatesByType = {};
+          Object.keys(violationCountsByType).forEach((key) => {
+            const count = violationCountsByType[key];
+            violationRatesByType[key] = (100 * (count / totalCount)).toFixed(2);
+          });
+
+          dataPoints[officeId].push({
+            officerId,
+            violationsByType: violationRatesByType,
+          });
+        }
+      }
+    });
 
     const visibleOffice = props.district;
     const {
@@ -224,8 +222,90 @@ const RevocationCountByOfficer = (props) => {
     configureDownloads(officerLabels, officerViolationCountsByType, visibleOffice);
   };
 
+  return {
+    id: chartId,
+    redraw: true, // This forces a redraw of the entire chart on every change
+    data: {
+      labels: chartLabels,
+      datasets: [{
+        label: 'Absconsion',
+        backgroundColor: COLORS_FIVE_VALUES[0],
+        hoverBackgroundColor: COLORS_FIVE_VALUES[0],
+        hoverBorderColor: COLORS_FIVE_VALUES[0],
+        data: absconsionDataPoints,
+      }, {
+        label: 'New Offense',
+        backgroundColor: COLORS_FIVE_VALUES[1],
+        hoverBackgroundColor: COLORS_FIVE_VALUES[1],
+        hoverBorderColor: COLORS_FIVE_VALUES[1],
+        data: newOffenseDataPoints,
+      }, {
+        label: 'Technical',
+        backgroundColor: COLORS_FIVE_VALUES[2],
+        hoverBackgroundColor: COLORS_FIVE_VALUES[2],
+        hoverBorderColor: COLORS_FIVE_VALUES[2],
+        data: technicalDataPoints,
+      }, {
+        label: 'Unknown Type',
+        backgroundColor: COLORS_FIVE_VALUES[3],
+        hoverBackgroundColor: COLORS_FIVE_VALUES[3],
+        hoverBorderColor: COLORS_FIVE_VALUES[3],
+        data: unknownDataPoints,
+      }],
+    },
+    options: {
+      responsive: true,
+      legend: {
+        position: 'bottom',
+        boxWidth: 10,
+      },
+      tooltips: {
+        backgroundColor: COLORS['grey-800-light'],
+        mode: 'index',
+        intersect: false,
+        callbacks: {
+          title: (tooltipItem) => ('Officer '.concat(tooltipItem[0].label)),
+          label: (tooltipItem, data) => updateTooltipForMetricType(
+              props.metricType, tooltipItem, data,
+          ),
+        },
+      },
+      scales: {
+        xAxes: [{
+          scaleLabel: {
+            display: true,
+            labelString: 'Officer ID',
+          },
+          stacked: true,
+          ticks: {
+            display: displayOfficerIds,
+            autoSkip: false,
+          },
+        }],
+        yAxes: [{
+          scaleLabel: {
+            display: true,
+            labelString: toggleLabel(
+                {counts: 'Revocation count', rates: 'Percentage'},
+                props.metricType,
+            ),
+          },
+          stacked: true,
+          ticks: toggleYAxisTicksStackedRateBasicCount(props.metricType, undefined),
+        }],
+      },
+    }
+  };
+};
+
+
+const RevocationCountByOfficer = (props) => {
+  const [chartDefinition, setChartDefinition] = useState(null);
+
+  window.props = props;
+
   useEffect(() => {
-    processResponse();
+    setChartDefinition(getBarChartDefinition(props));
   }, [
     props.revocationCountsByOfficer,
     props.metricType,
@@ -234,86 +314,10 @@ const RevocationCountByOfficer = (props) => {
     props.district,
   ]);
 
-  const chart = (
-    <Bar
-      id={chartId}
-      redraw // This forces a redraw of the entire chart on every change
-      data={{
-        labels: chartLabels,
-        datasets: [{
-          label: 'Absconsion',
-          backgroundColor: COLORS_FIVE_VALUES[0],
-          hoverBackgroundColor: COLORS_FIVE_VALUES[0],
-          hoverBorderColor: COLORS_FIVE_VALUES[0],
-          data: absconsionDataPoints,
-        }, {
-          label: 'New Offense',
-          backgroundColor: COLORS_FIVE_VALUES[1],
-          hoverBackgroundColor: COLORS_FIVE_VALUES[1],
-          hoverBorderColor: COLORS_FIVE_VALUES[1],
-          data: newOffenseDataPoints,
-        }, {
-          label: 'Technical',
-          backgroundColor: COLORS_FIVE_VALUES[2],
-          hoverBackgroundColor: COLORS_FIVE_VALUES[2],
-          hoverBorderColor: COLORS_FIVE_VALUES[2],
-          data: technicalDataPoints,
-        }, {
-          label: 'Unknown Type',
-          backgroundColor: COLORS_FIVE_VALUES[3],
-          hoverBackgroundColor: COLORS_FIVE_VALUES[3],
-          hoverBorderColor: COLORS_FIVE_VALUES[3],
-          data: unknownDataPoints,
-        },
-        ],
-      }}
-      options={{
-        responsive: true,
-        legend: {
-          position: 'bottom',
-          boxWidth: 10,
-        },
-        tooltips: {
-          backgroundColor: COLORS['grey-800-light'],
-          mode: 'index',
-          intersect: false,
-          callbacks: {
-            title: (tooltipItem) => ('Officer '.concat(tooltipItem[0].label)),
-            label: (tooltipItem, data) => updateTooltipForMetricType(
-              props.metricType, tooltipItem, data,
-            ),
-          },
-        },
-        scales: {
-          xAxes: [{
-            scaleLabel: {
-              display: true,
-              labelString: 'Officer ID',
-            },
-            stacked: true,
-            ticks: {
-              display: displayOfficerIds,
-              autoSkip: false,
-            },
-          }],
-          yAxes: [{
-            scaleLabel: {
-              display: true,
-              labelString: toggleLabel(
-                { counts: 'Revocation count', rates: 'Percentage' },
-                props.metricType,
-              ),
-            },
-            stacked: true,
-            ticks: toggleYAxisTicksStackedRateBasicCount(props.metricType, undefined),
-          }],
-        },
-      }}
-    />
-  );
+  if (!chartDefinition) return null;
 
-  return chart;
-};
+  return <Bar { ...chartDefinition } />;
+}
 
 
 export default RevocationCountByOfficer;
