@@ -21,30 +21,12 @@
 
 import { readJsonLinesFile } from '../../../../utils/testing';
 
-// import * as revocationCountBySupervisionType from '../RevocationCountBySupervisionType';
-// import * as revocationCountByViolationType from '../RevocationCountByViolationType';
 import * as revocationCountByOfficer from '../RevocationCountByOfficer';
 
 const fs = require('fs');
 const path = require('path');
 
 const charts = [
-  // {
-  //   dir: 'RevocationCountBySupervisionType',
-  //   chartDefinitionFn: revocationCountBySupervisionType.getBarChartDefinition,
-  //   sampleData: readJsonLinesFile(
-  //       path.join(__dirname, 'RevocationCountBySupervisionType/revocations_by_supervision_type_by_month.json')
-  //   ),
-  //   dataArg: 'revocationCountsByMonthBySupervisionType'
-  // },
-  // {
-  //   dir: 'RevocationCountByViolationType',
-  //   chartDefinitionFn: revocationCountByViolationType.getBarChartDefinition,
-  //   sampleData: readJsonLinesFile(
-  //       path.join(__dirname, 'RevocationCountByViolationType/revocations_by_violation_type_by_month.json')
-  //   ),
-  //   dataArg: 'revocationCountsByMonthByViolationType'
-  // },
   {
     dir: 'RevocationCountByOfficer',
     chartDefinitionFn: revocationCountByOfficer.getBarChartDefinition,
