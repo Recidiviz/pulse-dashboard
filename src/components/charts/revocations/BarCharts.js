@@ -217,7 +217,7 @@ export const getPerOfficerChartDefinition = (props) => {
   }
 
   function configureDownloads(
-    officerLabels, officerViolationCountsByType, visibleOffice,
+    officerLabels, officerViolationCountsByType, offices, visibleOffice,
   ) {
     const exportedStructureCallback = () => (
       {
@@ -232,7 +232,13 @@ export const getPerOfficerChartDefinition = (props) => {
     }));
 
     const humanReadableOfficerLabels = officerLabels.map((element) => `Officer ${element}`);
-    const officeReadable = toHumanReadable(visibleOffice).toUpperCase();
+    let officeReadable = toHumanReadable(visibleOffice).toUpperCase();
+    if (officeReadable !== 'ALL') {
+      const officeName = offices[toInt(visibleOffice)];
+      if (officeName) {
+        officeReadable = toHumanReadable(officeName).toUpperCase();
+      }
+    }
     const chartTitle = `${exportLabel.toUpperCase()} - ${officeReadable}`;
 
     const convertValuesToNumbers = false;
@@ -310,7 +316,7 @@ export const getPerOfficerChartDefinition = (props) => {
       officerLabels, officerViolationCountsByType,
     } = getDataForVisibleOffice(dataPoints, String(visibleOffice));
     setDataForVisibleOffice(officerLabels, officerViolationCountsByType, visibleOffice);
-    configureDownloads(officerLabels, officerViolationCountsByType, visibleOffice);
+    configureDownloads(officerLabels, officerViolationCountsByType, offices, visibleOffice);
   };
 
   return {
