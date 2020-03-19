@@ -35,16 +35,16 @@ export const getBarChartDefinition = (props) => {
       supervision_type: props.supervisionType,
     },
     bars: [
-      {key: 'absconsion', label: 'Absconsion'},
-      {key: 'revocation', label: 'Revocation'},
-      {key: 'suspension', label: 'Suspension'},
-      {key: 'discharge', label: 'Discharge'},
-      {key: 'expiration', label: 'Expiration'},
-      {key: 'death', label: 'Death'},
-      {key: 'other', label: 'Other'}
+      { key: 'absconsion', label: 'Absconsion' },
+      { key: 'revocation', label: 'Revocation' },
+      { key: 'suspension', label: 'Suspension' },
+      { key: 'discharge', label: 'Discharge' },
+      { key: 'expiration', label: 'Expiration' },
+      { key: 'death', label: 'Death' },
+      { key: 'other', label: 'Other' },
     ],
     yAxisLabel: props.metricType === 'counts' ? 'Case terminations' : 'Percentage',
-    barColorPalette: COLORS_SEVEN_VALUES
+    barColorPalette: COLORS_SEVEN_VALUES,
   });
 };
 
@@ -63,7 +63,7 @@ const CaseTerminationsByTerminationType = (props) => {
 
   if (!chartDefinition) return null;
 
-  const chart = <Bar { ...chartDefinition } />;
+  const chart = <Bar {...chartDefinition} />;
 
   const exportedStructureCallback = () => (
     {

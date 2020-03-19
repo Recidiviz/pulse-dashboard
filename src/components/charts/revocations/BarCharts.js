@@ -1,10 +1,25 @@
-import React, { useState, useEffect } from 'react';
-import { Bar } from 'react-chartjs-2';
+// Recidiviz - a data platform for criminal justice reform
+// Copyright (C) 2020 Recidiviz, Inc.
+//
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <https://www.gnu.org/licenses/>.
+// =============================================================================
 
 import { COLORS } from '../../../assets/scripts/constants/colors';
 import {
   toggleLabel, filterDatasetBySupervisionType, filterDatasetByMetricPeriodMonths,
-  getMonthCountFromMetricPeriodMonthsToggle, updateTooltipForMetricType, toggleYAxisTicksStackedRateBasicCount,
+  getMonthCountFromMetricPeriodMonthsToggle, updateTooltipForMetricType,
+  toggleYAxisTicksStackedRateBasicCount,
 } from '../../../utils/charts/toggles';
 import { sortFilterAndSupplementMostRecentMonths } from '../../../utils/transforms/datasets';
 import { monthNamesWithYearsFromNumbers } from '../../../utils/transforms/months';
@@ -14,17 +29,17 @@ import {
 import { configureDownloadButtons } from '../../../assets/scripts/utils/downloads';
 
 export const getPerMonthChartDefinition = ({
-    chartId,
-    countsByMonth,
-    metricType,
-    numMonths,
-    filters,
-    bars,
-    yAxisLabel,
-    barColorPalette
+  chartId,
+  countsByMonth,
+  metricType,
+  numMonths,
+  filters,
+  bars,
+  yAxisLabel,
+  barColorPalette,
 }) => {
   // TODO(233): Try to streamline this function more.
-  let filteredCountsByMonth = countsByMonth.filter(entry => {
+  const filteredCountsByMonth = countsByMonth.filter((entry) => {
     for (const key in filters) {
       if (String(entry[key]).toUpperCase() !== String(filters[key].toUpperCase())) return false;
     }
@@ -38,8 +53,8 @@ export const getPerMonthChartDefinition = ({
       const { year, month } = data;
 
       const monthCounts = bars
-          .map(bar => bar.key)
-          .reduce((monthCounts, key) => Object.assign(monthCounts, {[key]: Number(data[key])}), {});
+        .map((bar) => bar.key)
+        .reduce((monthCounts, key) => Object.assign(monthCounts, { [key]: Number(data[key]) }), {});
 
       const totalCount = Object.values(monthCounts).reduce((total, val) => total + Number(val), 0);
 
@@ -57,16 +72,17 @@ export const getPerMonthChartDefinition = ({
     });
   }
 
-  const emptyMonthDict =
-      bars.map(bar => bar.key).reduce((monthCounts, key) => Object.assign(monthCounts, {[key]: 0}), {});
+  const emptyMonthDict = bars
+    .map((bar) => bar.key)
+    .reduce((monthCounts, key) => Object.assign(monthCounts, { [key]: 0 }), {});
 
   const months = getMonthCountFromMetricPeriodMonthsToggle(numMonths);
   const sorted = sortFilterAndSupplementMostRecentMonths(dataPoints, months, 'monthDict', emptyMonthDict);
   const monthsLabels = [];
 
   const dataArrays = bars
-      .map(bar => bar.key)
-      .reduce((monthCounts, key) => Object.assign(monthCounts, {[key]: []}), {});
+    .map((bar) => bar.key)
+    .reduce((monthCounts, key) => Object.assign(monthCounts, { [key]: [] }), {});
 
   for (let i = 0; i < months; i += 1) {
     monthsLabels.push(sorted[i].month);
@@ -104,7 +120,7 @@ export const getPerMonthChartDefinition = ({
         intersect: false,
         callbacks: {
           label: (tooltipItem, data) => updateTooltipForMetricType(
-              metricType, tooltipItem, data,
+            metricType, tooltipItem, data,
           ),
         },
       },
@@ -121,15 +137,15 @@ export const getPerMonthChartDefinition = ({
           scaleLabel: {
             display: true,
             labelString: toggleLabel(
-                {[metricType]: yAxisLabel},
-                metricType,
+              { [metricType]: yAxisLabel },
+              metricType,
             ),
           },
           stacked: true,
         }],
-      }
-    }
-  }
+      },
+    },
+  };
 };
 
 export const getPerOfficerChartDefinition = (props) => {
@@ -145,7 +161,7 @@ export const getPerOfficerChartDefinition = (props) => {
     officeData,
     bars,
     yAxisLabel,
-    barColorPalette
+    barColorPalette,
   } = props;
 
   let chartLabels;
@@ -165,8 +181,8 @@ export const getPerOfficerChartDefinition = (props) => {
     const officerLabels = [];
 
     const officerViolationCountsByType = bars
-      .map(bar => bar.key)
-      .reduce((counts, key) => Object.assign(counts, {[key]: []}), {});
+      .map((bar) => bar.key)
+      .reduce((counts, key) => Object.assign(counts, { [key]: [] }), {});
 
     let visibleOfficeData = [];
 
@@ -206,7 +222,7 @@ export const getPerOfficerChartDefinition = (props) => {
     officerLabels, officerViolationCountsByType, visibleOffice,
   ) {
     if (visibleOffice.toLowerCase() === 'all') {
-      displayOfficerIds = false
+      displayOfficerIds = false;
     } else {
       displayOfficerIds = true;
     }
@@ -226,7 +242,7 @@ export const getPerOfficerChartDefinition = (props) => {
         series: [],
       });
 
-    const downloadableDataFormat = bars.map(bar => ({
+    const downloadableDataFormat = bars.map((bar) => ({
       label: bar.label,
       data: officerViolationCountsByType[bar.key],
     }));
@@ -279,10 +295,11 @@ export const getPerOfficerChartDefinition = (props) => {
       } = data;
 
       const violationCountsByType = bars
-        .map(bar => bar.key)
-        .reduce((counts, key) => Object.assign(counts, {[key]: toInt(data[key])}), {});
+        .map((bar) => bar.key)
+        .reduce((counts, key) => Object.assign(counts, { [key]: toInt(data[key]) }), {});
 
-      const totalCount = Object.values(violationCountsByType).reduce((total, val) => total + val, 0);
+      const totalCount = Object.values(violationCountsByType)
+        .reduce((total, val) => total + val, 0);
 
       const officeName = offices[toInt(officeId)];
 
@@ -317,7 +334,7 @@ export const getPerOfficerChartDefinition = (props) => {
     } = getDataForVisibleOffice(dataPoints, String(visibleOffice));
     setDataForVisibleOffice(officerLabels, officerViolationCountsByType, visibleOffice);
     configureDownloads(officerLabels, officerViolationCountsByType, offices, visibleOffice);
-  };
+  }
 
   return {
     id: chartId,
@@ -330,7 +347,7 @@ export const getPerOfficerChartDefinition = (props) => {
         hoverBackgroundColor: barColorPalette[i],
         hoverBorderColor: barColorPalette[i],
         data: allDataPoints[bar.key],
-      }))
+      })),
     },
     options: {
       responsive: true,
@@ -345,7 +362,7 @@ export const getPerOfficerChartDefinition = (props) => {
         callbacks: {
           title: (tooltipItem) => ('Officer '.concat(tooltipItem[0].label)),
           label: (tooltipItem, data) => updateTooltipForMetricType(
-              metricType, tooltipItem, data,
+            metricType, tooltipItem, data,
           ),
         },
       },
@@ -365,14 +382,14 @@ export const getPerOfficerChartDefinition = (props) => {
           scaleLabel: {
             display: true,
             labelString: toggleLabel(
-                {[metricType]: yAxisLabel},
-                metricType,
+              { [metricType]: yAxisLabel },
+              metricType,
             ),
           },
           stacked: true,
           ticks: toggleYAxisTicksStackedRateBasicCount(metricType, undefined),
         }],
       },
-    }
+    },
   };
-}
+};
