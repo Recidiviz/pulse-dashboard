@@ -35,13 +35,13 @@ export const getBarChartDefinition = (props) => {
       supervision_type: props.supervisionType,
     },
     bars: [
-      {key: 'absconsion_count', label: 'Absconsion'},
-      {key: 'felony_count', label: 'New Offense'},
-      {key: 'technical_count', label: 'Technical'},
-      {key: 'unknown_count', label: 'Unknown Type'}
+      { key: 'absconsion_count', label: 'Absconsion' },
+      { key: 'felony_count', label: 'New Offense' },
+      { key: 'technical_count', label: 'Technical' },
+      { key: 'unknown_count', label: 'Unknown Type' },
     ],
     yAxisLabel: props.metricType === 'counts' ? 'Revocation count' : 'Percentage',
-    barColorPalette: COLORS_FIVE_VALUES
+    barColorPalette: COLORS_FIVE_VALUES,
   });
 };
 
@@ -60,7 +60,7 @@ const RevocationCountByViolationType = (props) => {
 
   if (!chartDefinition) return null;
 
-  const chart = <Bar { ...chartDefinition } />;
+  const chart = <Bar {...chartDefinition} />;
 
   const exportedStructureCallback = () => (
     {
