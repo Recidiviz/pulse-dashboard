@@ -23,6 +23,7 @@
     "@fortawesome/react-fontawesome": "^0.1.4",
     "@google-cloud/storage": "^3.0.3",
     "acorn": "^6.0.7",
+    "adm-zip": "^0.4.14",
     "bootstrap": "^4.0.0",
     "bootstrap-datepicker": "^1.7.1",
     "cache-manager": "^2.10.0",
