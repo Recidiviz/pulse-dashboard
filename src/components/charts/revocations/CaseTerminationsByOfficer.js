@@ -19,21 +19,20 @@ import React, { useState, useEffect } from 'react';
 import { Bar } from 'react-chartjs-2';
 
 import { COLORS_SEVEN_VALUES } from '../../../assets/scripts/constants/colors';
-import { configureDownloadButtons } from '../../../assets/scripts/utils/downloads';
-import { getPerMonthChartDefinition } from './BarCharts';
+import { getPerOfficerChartDefinition } from './BarCharts';
 
-const chartId = 'caseTerminationsByTerminationType';
+const chartId = 'caseTerminationsByOfficer';
 
 export const getBarChartDefinition = (props) => {
-  return getPerMonthChartDefinition({
+  return getPerOfficerChartDefinition({
     chartId,
-    countsByMonth: props.caseTerminationCountsByMonthByTerminationType,
+    exportLabel: 'Case terminations by officer',
+    countsPerPeriodPerOfficer: props.terminationCountsByOfficer,
+    officeData: props.officeData,
     metricType: props.metricType,
-    numMonths: props.metricPeriodMonths,
-    filters: {
-      district: props.district,
-      supervision_type: props.supervisionType,
-    },
+    metricPeriodMonths: props.metricPeriodMonths,
+    supervisionType: props.supervisionType,
+    district: props.district,
     bars: [
       {key: 'absconsion', label: 'Absconsion'},
       {key: 'revocation', label: 'Revocation'},
@@ -48,13 +47,13 @@ export const getBarChartDefinition = (props) => {
   });
 };
 
-const CaseTerminationsByTerminationType = (props) => {
+const CaseTerminationsByOfficer = (props) => {
   const [chartDefinition, setChartDefinition] = useState(null);
 
   useEffect(() => {
     setChartDefinition(getBarChartDefinition(props));
   }, [
-    props.revocationCountsByMonthByViolationType,
+    props.revocationCountsByOfficer,
     props.metricType,
     props.metricPeriodMonths,
     props.supervisionType,
@@ -63,19 +62,8 @@ const CaseTerminationsByTerminationType = (props) => {
 
   if (!chartDefinition) return null;
 
-  const chart = <Bar { ...chartDefinition } />;
+  return <Bar { ...chartDefinition } />;
+}
 
-  const exportedStructureCallback = () => (
-    {
-      metric: 'Case termination counts by termination type',
-      series: [],
-    });
 
-  configureDownloadButtons(chartId, 'CASE TERMINATIONS BY TERMINATION TYPE',
-    chart.props.data.datasets, chart.props.data.labels,
-    document.getElementById(chartId), exportedStructureCallback, props, true, true);
-
-  return chart;
-};
-
-export default CaseTerminationsByTerminationType;
+export default CaseTerminationsByOfficer;

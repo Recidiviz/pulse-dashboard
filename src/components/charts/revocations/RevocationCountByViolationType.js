@@ -20,12 +20,12 @@ import { Bar } from 'react-chartjs-2';
 
 import { COLORS_FIVE_VALUES } from '../../../assets/scripts/constants/colors';
 import { configureDownloadButtons } from '../../../assets/scripts/utils/downloads';
-import { getChartDefinition } from './BarCharts';
+import { getPerMonthChartDefinition } from './BarCharts';
 
 const chartId = 'revocationsByViolationType';
 
 export const getBarChartDefinition = (props) => {
-  return getChartDefinition({
+  return getPerMonthChartDefinition({
     chartId,
     countsByMonth: props.revocationCountsByMonthByViolationType,
     metricType: props.metricType,
