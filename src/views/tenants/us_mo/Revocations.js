@@ -70,7 +70,6 @@ const SUPERVISION_TYPES = [
   { value: 'All', label: 'All' },
   { value: 'PROBATION', label: 'Probation' },
   { value: 'PAROLE', label: 'Parole' },
-  // TODO: Enable dual supervision filtering when supported in calculation methodology
   { value: 'DUAL', label: 'Dual Supervision' },
 ];
 
