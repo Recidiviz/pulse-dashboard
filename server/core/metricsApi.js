@@ -59,6 +59,7 @@ const FILES_BY_METRIC_TYPE = {
     'revocations_by_site_id_by_period.json',
     'admissions_by_type_by_period.json',
     'case_terminations_by_type_by_month.json',
+    'case_terminations_by_type_by_officer_by_period.json',
     'race_proportions.json',
     'revocations_by_month.json',
     'revocations_by_period.json',

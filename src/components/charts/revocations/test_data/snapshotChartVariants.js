@@ -21,28 +21,24 @@
 
 import { readJsonLinesFile } from '../../../../utils/testing';
 
-import * as revocationCountBySupervisionType from '../RevocationCountBySupervisionType';
-import * as revocationCountByViolationType from '../RevocationCountByViolationType';
+import * as revocationCountByOfficer from '../RevocationCountByOfficer';
 
 const fs = require('fs');
 const path = require('path');
 
 const charts = [
   {
-    dir: 'RevocationCountBySupervisionType',
-    chartDefinitionFn: revocationCountBySupervisionType.getBarChartDefinition,
+    dir: 'RevocationCountByOfficer',
+    chartDefinitionFn: revocationCountByOfficer.getBarChartDefinition,
     sampleData: readJsonLinesFile(
-        path.join(__dirname, 'RevocationCountBySupervisionType/revocations_by_supervision_type_by_month.json')
+        path.join(__dirname, 'RevocationCountByOfficer/revocations_by_officer_by_period.json')
     ),
-    dataArg: 'revocationCountsByMonthBySupervisionType'
-  },
-  {
-    dir: 'RevocationCountByViolationType',
-    chartDefinitionFn: revocationCountByViolationType.getBarChartDefinition,
-    sampleData: readJsonLinesFile(
-        path.join(__dirname, 'RevocationCountByViolationType/revocations_by_violation_type_by_month.json')
-    ),
-    dataArg: 'revocationCountsByMonthByViolationType'
+    dataArg: 'revocationCountsByOfficer',
+    otherArgs: {
+      officeData: readJsonLinesFile(
+          path.join(__dirname, 'RevocationCountByOfficer/site_offices.json')
+      )
+    }
   }
 ];
 
@@ -93,9 +89,11 @@ test('run', () => {
 
   charts.forEach(chart => {
     allCombos.forEach(combo => {
-      const result = chart.chartDefinitionFn(Object.assign(combo, {[chart.dataArg]: chart.sampleData}));
+      const result = chart.chartDefinitionFn(
+          Object.assign(combo, {[chart.dataArg]: chart.sampleData}, chart.otherArgs || {})
+      );
 
       writeDefinition(chart, combo, result);
     });
-  })
+  });
 });

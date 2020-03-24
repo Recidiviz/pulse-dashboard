@@ -20,13 +20,12 @@ import { Bar } from 'react-chartjs-2';
 
 import { COLORS_STACKED_TWO_VALUES } from '../../../assets/scripts/constants/colors';
 import { configureDownloadButtons } from '../../../assets/scripts/utils/downloads';
-import { getChartDefinition } from './BarCharts';
+import { getPerMonthChartDefinition } from './BarCharts';
 
 const chartId = 'revocationsBySupervisionType';
 
 export const getBarChartDefinition = (props) => {
-  window.revocationCountsByMonthBySupervisionType = props.revocationCountsByMonthBySupervisionType
-  return getChartDefinition({
+  return getPerMonthChartDefinition({
     chartId,
     countsByMonth: props.revocationCountsByMonthBySupervisionType,
     metricType: props.metricType,
@@ -35,11 +34,11 @@ export const getBarChartDefinition = (props) => {
       district: props.district,
     },
     bars: [
-      {key: 'probation_count', label: 'Probation'},
-      {key: 'parole_count', label: 'Parole'},
+      { key: 'probation_count', label: 'Probation' },
+      { key: 'parole_count', label: 'Parole' },
     ],
     yAxisLabel: props.metricType === 'counts' ? 'Revocation count' : 'Percentage',
-    barColorPalette: COLORS_STACKED_TWO_VALUES
+    barColorPalette: COLORS_STACKED_TWO_VALUES,
   });
 };
 
@@ -58,7 +57,7 @@ const RevocationCountBySupervisionType = (props) => {
 
   if (!chartDefinition) return null;
 
-  const chart = <Bar { ...chartDefinition } />;
+  const chart = <Bar {...chartDefinition} />;
 
   const exportedStructureCallback = () => (
     {

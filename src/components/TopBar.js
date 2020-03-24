@@ -29,7 +29,7 @@ const TopBar = (props) => {
   let normalizedPath = normalizeAppPathToTitle(pathname);
 
   if (!normalizedPath) {
-    normalizedPath = 'Snapshots';
+    normalizedPath = '';
   }
 
   const {
