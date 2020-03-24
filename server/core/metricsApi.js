@@ -28,7 +28,7 @@ const cacheManager = require('cache-manager');
 const fs = require('fs');
 const path = require('path');
 const util = require('util');
-const { unzipSync } = require('zlib');
+const { unzip } = require('zlib');
 const objectStorage = require('./objectStorage');
 
 const BUCKET_NAME = process.env.METRIC_BUCKET;
@@ -36,6 +36,7 @@ const METRIC_CACHE_TTL_SECONDS = 60 * 60; // Expire items in the cache after 1 h
 
 const memoryCache = cacheManager.caching({ store: 'memory', ttl: METRIC_CACHE_TTL_SECONDS });
 const asyncReadFile = util.promisify(fs.readFile);
+const doUnzip = util.promisify(unzip);
 
 const FILES_BY_METRIC_TYPE = {
   freeThroughRecovery: [
@@ -92,23 +93,7 @@ const FILES_BY_METRIC_TYPE = {
   ],
 };
 
-/**
- * Converts the given contents, a Buffer of bytes, into a JS object or array.
- */
-function convertDownloadToJson(contents, contentsWrappedInArray) {
-  let contentString = '';
-  const contentBytes = contentsWrappedInArray ? contents[0] : contents;
-  try {
-    console.log('Attempting decompression of contents...');
-    const unzippedBuffer = unzipSync(contentBytes);
-    contentString = unzippedBuffer.toString();
-  } catch (error) {
-    console.error('An error occurred during decompression, assuming already decompressed...',
-      error);
-    contentString = contents;
-  }
-  const stringContents = contentString.toString();
-
+function convertUnzippedBufferToJson(stringContents) {
   if (!stringContents || stringContents.length === 0) {
     return null;
   }
@@ -122,6 +107,24 @@ function convertDownloadToJson(contents, contentsWrappedInArray) {
   });
 
   return jsonObject;
+}
+
+/**
+ * Converts the given contents, a Buffer of bytes, into a JS object or array.
+ */
+function convertDownloadToJson(fileKey, contents, contentsWrappedInArray) {
+  const contentBytes = contentsWrappedInArray ? contents[0] : contents;
+
+  return doUnzip(contentBytes)
+    .then((unzippedBuffer) => {
+      const contentString = unzippedBuffer.toString();
+      return { fileKey, contents: convertUnzippedBufferToJson(contentString) };
+    })
+    .catch((error) => {
+      console.error('An error occurred during decompression, assuming already decompressed...',
+        error);
+      return { fileKey, contents: convertUnzippedBufferToJson(contents) };
+    });
 }
 
 /**
@@ -190,13 +193,15 @@ function fetchMetrics(stateCode, metricType, isDemo, callback) {
 
     console.log(`Fetching ${metricType} metrics for state ${stateCode} from ${source}...`);
     const metricPromises = fetcher(stateCode.toUpperCase(), metricType);
+    const fullPromises = metricPromises
+      .map((metricPromise) => metricPromise
+        .then((contents) => convertDownloadToJson(contents.fileKey, contents.contents, source === 'GCS')));
 
-    Promise.all(metricPromises).then((allFileContents) => {
+    Promise.all(fullPromises).then((allFileContents) => {
       const results = {};
       allFileContents.forEach((contents) => {
         console.log(`Fetched contents for fileKey: ${contents.fileKey}`);
-        const deserializedFile = convertDownloadToJson(contents.contents, source === 'GCS');
-        results[contents.fileKey] = deserializedFile;
+        results[contents.fileKey] = contents.contents;
       });
 
       console.log(`Fetched all ${metricType} metrics for state ${stateCode} from ${source}`);
