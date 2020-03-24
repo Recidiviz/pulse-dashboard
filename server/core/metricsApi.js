@@ -95,16 +95,19 @@ const FILES_BY_METRIC_TYPE = {
 /**
  * Converts the given contents, a Buffer of bytes, into a JS object or array.
  */
-function convertDownloadToJson(contents) {
-  let contentBuffer = '';
+function convertDownloadToJson(contents, contentsWrappedInArray) {
+  let contentString = '';
+  const contentBytes = contentsWrappedInArray ? contents[0] : contents;
   try {
     console.log('Attempting decompression of contents...');
-    contentBuffer = unzipSync(contents);
+    const unzippedBuffer = unzipSync(contentBytes);
+    contentString = unzippedBuffer.toString();
   } catch (error) {
-    console.error('An error occurred during decompression, assuming already decompressed...');
-    contentBuffer = contents;
+    console.error('An error occurred during decompression, assuming already decompressed...',
+      error);
+    contentString = contents;
   }
-  const stringContents = contentBuffer.toString();
+  const stringContents = contentString.toString();
 
   if (!stringContents || stringContents.length === 0) {
     return null;
@@ -192,7 +195,7 @@ function fetchMetrics(stateCode, metricType, isDemo, callback) {
       const results = {};
       allFileContents.forEach((contents) => {
         console.log(`Fetched contents for fileKey: ${contents.fileKey}`);
-        const deserializedFile = convertDownloadToJson(contents.contents);
+        const deserializedFile = convertDownloadToJson(contents.contents, source === 'GCS');
         results[contents.fileKey] = deserializedFile;
       });
 

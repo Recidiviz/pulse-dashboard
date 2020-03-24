@@ -30,7 +30,7 @@ const demoMode = require('../utils/demoMode');
 
 const isDemoMode = demoMode.isDemoMode();
 
-const METRIC_REFRESH_INTERVAL_MS = 1000 * 60 * 5; // Refresh metrics every 5 minutes
+const METRIC_REFRESH_INTERVAL_MS = 1000 * 60 * 15; // Refresh metrics every 15 minutes
 const CACHED_STATE_CODES = {
   freeThroughRecovery: ['US_ND'],
   reincarcerations: ['US_ND'],
