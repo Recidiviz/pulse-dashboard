@@ -67,14 +67,14 @@ const CHARGE_CATEGORIES = [
 const DEFAULT_CHARGE_CATEGORY = 'All';
 
 const SUPERVISION_TYPES = [
-  { value: '', label: 'All' },
+  { value: 'All', label: 'All' },
   { value: 'PROBATION', label: 'Probation' },
   { value: 'PAROLE', label: 'Parole' },
-  // TODO: Enable dual supervision filtering when supported in calculation methodology
-  // { value: 'DUAL_SUPERVISION', label: 'Dual supervision' },
+  { value: 'DUAL', label: 'Dual Supervision' },
 ];
 
 const DEFAULT_DISTRICT = 'All';
+const DEFAULT_SUPERVISION_TYPE = 'All';
 
 const TOGGLE_STYLE = {
   zIndex: 700,
@@ -94,6 +94,7 @@ const Revocations = () => {
       metricPeriodMonths: DEFAULT_METRIC_PERIOD,
       chargeCategory: DEFAULT_CHARGE_CATEGORY,
       district: DEFAULT_DISTRICT,
+      supervisionType: DEFAULT_SUPERVISION_TYPE,
     },
   );
   const [selectedChart, setSelectedChart] = useState('District');
@@ -204,7 +205,8 @@ const Revocations = () => {
           return false;
         }
       }
-      if (filters.supervisionType && !toSkip.includes('supervisionType')) {
+      if (filters.supervisionType && !toSkip.includes('supervisionType')
+          && !(treatCategoryAllAsAbsent && filters.supervisionType.toLowerCase() === 'all')) {
         if (!nullSafeComparison(item.supervision_type, filters.supervisionType)) {
           return false;
         }
