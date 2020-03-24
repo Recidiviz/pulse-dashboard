@@ -93,6 +93,9 @@ const FILES_BY_METRIC_TYPE = {
   ],
 };
 
+/**
+ * Deserializes the given Json Lines string into a JS object or array.
+ */
 function convertUnzippedBufferToJson(stringContents) {
   if (!stringContents || stringContents.length === 0) {
     return null;
@@ -110,13 +113,15 @@ function convertUnzippedBufferToJson(stringContents) {
 }
 
 /**
- * Converts the given contents, a Buffer of bytes, into a JS object or array.
+ * Returns a Promise that will decompress the given contents, a Buffer of bytes, if they are
+ * compressed, and return a JS object or array.
  */
 function convertDownloadToJson(fileKey, contents, contentsWrappedInArray) {
   const contentBytes = contentsWrappedInArray ? contents[0] : contents;
 
   return doUnzip(contentBytes)
     .then((unzippedBuffer) => {
+      console.log('Decompressed file...');
       const contentString = unzippedBuffer.toString();
       return { fileKey, contents: convertUnzippedBufferToJson(contentString) };
     })
