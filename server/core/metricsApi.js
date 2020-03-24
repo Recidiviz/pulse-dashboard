@@ -28,6 +28,7 @@ const cacheManager = require('cache-manager');
 const fs = require('fs');
 const path = require('path');
 const util = require('util');
+const { unzipSync } = require('zlib');
 const objectStorage = require('./objectStorage');
 
 const BUCKET_NAME = process.env.METRIC_BUCKET;
@@ -95,7 +96,16 @@ const FILES_BY_METRIC_TYPE = {
  * Converts the given contents, a Buffer of bytes, into a JS object or array.
  */
 function convertDownloadToJson(contents) {
-  const stringContents = contents.toString();
+  let contentBuffer = '';
+  try {
+    console.log('Attempting decompression of contents...');
+    contentBuffer = unzipSync(contents);
+  } catch (error) {
+    console.error('An error occurred during decompression, assuming already decompressed...');
+    contentBuffer = contents;
+  }
+  const stringContents = contentBuffer.toString();
+
   if (!stringContents || stringContents.length === 0) {
     return null;
   }
