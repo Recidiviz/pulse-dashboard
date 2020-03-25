@@ -17,11 +17,8 @@ const parseViolationRecord = (recordLabel) => {
   }
 
   const recordParts = recordLabel.split(';');
-  const records = recordParts.map((recordPart) => {
-    const number = recordPart[0];
-    const abbreviation = recordPart.substring(1);
-    return { number, abbreviation };
-  });
+  const recordPartRegex = /(?<number>\d+)(?<abbreviation>\w+)/;
+  const records = recordParts.map((recordPart) => recordPart.match(recordPartRegex).groups);
   records.sort((a, b) => indexOf(a.abbreviation, VIOLATION_SEVERITY)
     - indexOf(b.abbreviation, VIOLATION_SEVERITY));
 

@@ -11,5 +11,9 @@ describe('parseViolationRecord function', () => {
     expect(parseViolationRecord('')).toBe('');
     expect(parseViolationRecord(null)).toBe('');
   });
-  test.todo('handles multi-digit violation counts');
+  test('handles multi-digit violation counts', () => {
+    const rawInput = '1fel;13muni;400subs';
+    const expectedOutput = '1 fel, 13 muni, 400 subs';
+    expect(parseViolationRecord(rawInput)).toBe(expectedOutput);
+  });
 });
