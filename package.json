@@ -91,9 +91,6 @@
   "resolutions": {
     "serialize-javascript": "^2.1.1"
   },
-  "eslintConfig": {
-    "extends": "react-app"
-  },
   "browserslist": {
     "production": [
       ">0.2%",
