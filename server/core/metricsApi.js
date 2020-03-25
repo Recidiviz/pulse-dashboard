@@ -128,7 +128,7 @@ function convertDownloadToJson(fileKey, contents, contentsWrappedInArray) {
     .catch((error) => {
       console.error('An error occurred during decompression, assuming already decompressed...',
         error);
-      return { fileKey, contents: convertUnzippedBufferToJson(contents) };
+      return { fileKey, contents: convertUnzippedBufferToJson(contents.toString()) };
     });
 }
 
