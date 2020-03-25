@@ -40,7 +40,7 @@ const ImportantNotesBar = (props) => {
                data-parent="#importantNotesBar">
             <div className="bdT mT-10 pT-10">
               {importantNotes.map((note, i) => (
-                <p>
+                <p key={i}>
                   <span className="font-weight-bold">{note.header}: </span>
                   {note.body}
                 </p>
