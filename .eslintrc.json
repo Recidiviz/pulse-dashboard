@@ -1,5 +1,5 @@
 {
-  "extends": ["react-app", "airbnb"],
+  "extends": ["react-app", "airbnb", "plugin:prettier/recommended"],
   "rules": {
     "react/jsx-filename-extension": ["error", { "extensions": [".js"] }],
     "import/no-extraneous-dependencies": ["error", {"packageDir": "./"}],
