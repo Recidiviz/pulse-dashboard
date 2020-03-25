@@ -49,6 +49,25 @@ const FreeThroughRecovery = () => {
   const [chartDistrict, setChartDistrict] = useState(ToggleDefaults.district);
   const [geoViewEnabledRCOT, setGeoViewEnabledRCOT] = useState(ToggleDefaults.geoView);
 
+  const importantNotes = [
+    {
+      header: 'FTR REFERRALS',
+      body: `Unless noted otherwise, the charts on this page count all people with a completed FTR
+      referral based on the date of that referral. The number and characteristics of people who
+      actually enroll in the program may differ slightly, as not all people who are referred are
+      admitted.`,
+    },
+    {
+      header: 'DATA PULLED FROM ELITE & DOCSTARS',
+      body: `Data in the dashboard is updated nightly using information pulled from Elite and
+      Docstars.`,
+    },
+    {
+      header: 'LEARN MORE',
+      body: 'Click on "Methodology" for more information on the calculations behind that chart.',
+    },
+  ];
+
   const fetchChartData = async () => {
     try {
       const responseData = await callMetricsApi('us_nd/programEvaluation/freeThroughRecovery', getTokenSilently);
@@ -79,8 +98,11 @@ const FreeThroughRecovery = () => {
   );
 
   return (
-    <PageTemplate toggleBar={toggleBar}>
-      <React.Fragment>
+    <PageTemplate
+      toggleBar={toggleBar}
+      importantNotes={importantNotes}
+    >
+      <>
         {/* #FTR referral counts by month chart ==================== */}
         <div className="col-md-6">
           <div className="bd bgc-white p-20">
@@ -506,7 +528,7 @@ const FreeThroughRecovery = () => {
             </div>
           </div>
         </div>
-      </React.Fragment>
+      </>
     </PageTemplate>
   );
 };
