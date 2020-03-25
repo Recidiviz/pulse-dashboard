@@ -57,6 +57,37 @@ const Revocations = () => {
   const [chartDistrict, setChartDistrict] = useState(ToggleDefaults.district);
   const [geoViewEnabledRCOT, setGeoViewEnabledRCOT] = useState(ToggleDefaults.geoView);
 
+  const importantNotes = [
+    {
+      header: 'PERSON-BASED COUNTING',
+      body: `Unless noted otherwise, counts in this dashboard are based on people: the number of
+      people admitted to prison because of a revocation, the number of people an officer was
+      supervising who had a revocation resulting in a return to prison, and so on.`,
+    },
+    {
+      header: 'REVOCATIONS TO DOCR FACILITY',
+      body: `Unless noted otherwise, "revocation" refers only to revocations resulting in
+      incarceration at a DOCR facility. Revocations resulting in continuation of supervision, a
+      county jail sentence, or termination of supervision are not considered. In addition,
+      revocations are counted only when an individual’s admittance to a facility is documented in
+      Elite as a revocation. Individuals who have their supervision terminated due to revocation
+      (resulting in incarceration) but are admitted back into the system with the code
+      "new admission" are not included in revocation counts.
+
+      However, in case termination charts, all cases terminated via revocation as noted in Docstars
+      are included whether or not they result in incarceration.`,
+    },
+    {
+      header: 'DATA PULLED FROM ELITE & DOCSTARS',
+      body: `Data in the dashboard is updated nightly using information pulled from Elite and
+      Docstars.`,
+    },
+    {
+      header: 'LEARN MORE',
+      body: 'Click on "Methodology" for more information on the calculations behind that chart.',
+    },
+  ];
+
   $(() => {
     $('[data-toggle="tooltip"]').tooltip();
   });
@@ -91,8 +122,11 @@ const Revocations = () => {
   );
 
   return (
-    <PageTemplate toggleBar={toggleBar}>
-      <React.Fragment>
+    <PageTemplate
+      toggleBar={toggleBar}
+      importantNotes={importantNotes}
+    >
+      <>
         {/* #Revocation counts by month chart ==================== */}
         <div className="col-md-6">
           <div className="bd bgc-white p-20">
@@ -167,30 +201,31 @@ const Revocations = () => {
                   <div>
                     <ul>
                       <li>
-                        Revocation counts include the number of people who were incarcerated
-                        in a DOCR facility because their supervision was revoked.
+                        Revocations are included based on when the person was admitted to a DOCR
+                        facility, not when the violation, offense, or revocation occurred.
                       </li>
                       <li>
-                        Revocations are included based on the date that the person
-                        was admitted to a DOCR facility because their supervision
-                        was revoked, not the date of the causal violation or offense.
+                        When &quot;rate&quot; is selected, the chart shows the percent of the total
+                        supervised population incarcerated due to supervision revocation. For the
+                        percent of cases closed via revocation, see the
+                        &quot;Case terminations by month&quot; chart.
                       </li>
                       <li>
-                        Violations include all violations of supervision conditions
-                        that resulted in revocation, which are new offenses,
-                        technical violations, and absconsion.
+                        When a supervision type and/or office is selected, the rate is the number of
+                        people with revocations who match the selected filters divided by the total
+                        number of people on supervision who also match the selected filters.
                       </li>
                       <li>
-                        Revocation rates are calculated as the number of people who were
-                        incarcerated in a DOCR facility for a revocation during the time
-                        period divided by the total number of people on probation or parole
-                        at any point during the time period.
+                        Revocations are considered probation revocations or parole revocations based
+                        on the DOCR admission reason. Because only one reason can be selected, an
+                        individual&apos;s revocation will count only towards EITHER parole or
+                        probation even if they were on both parole and probation prior to
+                        incarceration.
                       </li>
                       <li>
-                        When a supervision type and/or parole office is selected, the
-                        revocation rate is the number of people with revocations fitting
-                        the selected criteria divided by the total number of people fitting
-                        the selected criteria.
+                        Revocations are attributed to the site of the terminating officer on the
+                        revocation in Docstars. Revocation admissions that can&apos;t be matched to
+                        a supervision case are not attributed to an office.
                       </li>
                       <li>
                         Revocations are attributed to the site of the
@@ -251,6 +286,11 @@ const Revocations = () => {
                       <li>
                         Revocations are counted towards an officer if that officer is flagged as
                         the terminating officer at the time of a person&apos;s revocation.
+                      </li>
+                      <li>
+                        When an individual has multiple violation types leading to revocation, we
+                        display only the most severe violation. New offenses are considered more
+                        severe than absconsions, which are considered more severe than technicals.
                       </li>
                       <li>
                         Revocations are included based on the date that the person
@@ -323,23 +363,27 @@ const Revocations = () => {
                   <div>
                     <ul>
                       <li>
-                        Revocations count people who were incarcerated in a DOCR facility
-                        because their supervision was revocation.
+                        Percentage shows the percent of revocations in a month associated with
+                        individuals on parole versus the percent associated with individuals on
+                        probation.
                       </li>
                       <li>
-                        Percentage shows the percent of revocations in a month associated
-                        with individuals on parole and the percent associated with
-                        individuals on probation.
+                        Revocations are included based on the date that the person was admitted to a
+                        DOCR facility because their supervision was revoked, not the date of the
+                        causal violation or offense.
                       </li>
                       <li>
-                        Revocations are included based on the date that the person
-                        was admitted to a DOCR facility because their supervision
-                        was revoked, not the date of the causal violation or offense.
+                        Revocations are considered probation revocations or parole revocations based
+                        on the DOCR admission reason. Because only one reason can be selected, an
+                        individual&apos;s revocation will count only towards EITHER parole or
+                        probation even if they were on both parole and probation prior to
+                        incarceration.
                       </li>
                       <li>
-                        Violations include all violations of supervision conditions
-                        that resulted in revocation, which are new offenses,
-                        technical violations, and absconsion.
+                        Filtering by office counts revocation admissions linked to supervision
+                        revocations where the terminating officer is in the selected office.
+                        Revocation admissions that can&apos;t be matched to a supervision case are
+                        not attributed to an office.
                       </li>
                     </ul>
                   </div>
@@ -391,32 +435,43 @@ const Revocations = () => {
                   <div>
                     <ul>
                       <li>
-                        Revocation counts include the number of people who were incarcerated
-                        in a DOCR facility because their supervision was revoked.
+                        Revocations are included based on the date that the person was admitted to
+                        a DOCR facility because their supervision was revoked, not the date of the
+                        supervision case closure or causal violation or offense.
                       </li>
                       <li>
-                        Percentage is the percent of revocations in a given month caused by
-                        each violation type.
+                        Revocation counts include the number of people who were incarcerated in a
+                        DOCR facility because their supervision was revoked.
                       </li>
                       <li>
-                        Violations include all violations of supervision conditions
-                        that resulted in revocation, which are new offenses,
-                        technical violations, and absconsion.
+                        Percentage is the percent of revocations in a given month caused by each
+                        violation type.
                       </li>
                       <li>
-                        Violations of "Unknown Type" indicate individuals who were admitted to
-                        prison for a supervision revocation where the violation that caused the
-                        revocation cannot yet be determined.
+                        When an individual has multiple violation types leading to revocation, we
+                        display only the most severe violation. New offenses are considered more
+                        severe than absconsions, which are considered more severe than technicals.
                       </li>
                       <li>
-                        "Technical" revocations include only those revocations which result solely
-                        from a technical violation. If there is a violation that includes a new
-                        offense or an absconsion, it is considered a non-technical revocation.
+                        Violations of &quot;Unknown Type&quot; indicate individuals who were
+                        admitted to prison for a supervision revocation where the violation that
+                        caused the revocation cannot yet be determined. Revocation admissions are
+                        linked to supervision cases closed via revocation within 90 days of the
+                        admission. Revocation admissions without a supervision case closed via
+                        revocation in this window will always be considered of
+                        &quot;Unknown Type.&quot;
                       </li>
                       <li>
-                        Revocations are included based on the date that the person
-                        was admitted to a DOCR facility because their supervision
-                        was revoked, not the date of the causal violation or offense.
+                        Revocations are attributed to the site of the terminating officer on the
+                        revocation in Docstars. Revocation admissions that can&apos;t be matched to
+                        a supervision case are not attributed to an office.
+                      </li>
+                      <li>
+                        Revocations are considered probation revocations or parole revocations based
+                        on the DOCR admission reason. Because only one reason can be selected, an
+                        individual&apos;s revocation will count only towards EITHER parole or
+                        probation even if they were on both parole and probation prior to
+                        incarceration.
                       </li>
                     </ul>
                   </div>
@@ -613,29 +668,46 @@ const Revocations = () => {
                   <div>
                     <ul>
                       <li>
-                        New admissions include unique people admitted to any DOCR facility during
-                        a particular time frame, regardless of whether they were previously
-                        incarcerated.
+                        Admissions include people admitted to DOCR facilities during a particular
+                        time frame, regardless of whether they were previously incarcerated.
+                        Transfers, periods of temporary custody, returns from escape and/or
+                        erroneous releases are not considered admissions.
                       </li>
                       <li>
-                        Revocation counts include the number of people who were incarcerated
-                        in a DOCR facility because their supervision was revoked.
+                        Prison admissions are categorized as probation revocations, parole
+                        revocations, or new admissions. New admissions are admissions resulting from
+                        a reason other than revocation.
                       </li>
                       <li>
-                        "Technical Revocations" include only those revocations which result solely
-                        from a technical violation. If there is a violation that includes a new
-                        offense or an absconsion, it is considered a "Non-Technical Revocation".
+                        &quot;Technical Revocations&quot; include only those revocations which
+                        result solely from a technical violation. If there is a violation that
+                        includes a new offense or an absconsion, it is considered a
+                        &quot;Non-Technical Revocation&quot;.
                       </li>
                       <li>
-                        Revocations of "Unknown Type" indicate individuals who were admitted to
-                        prison for a supervision revocation where the violation that caused the
-                        revocation cannot yet be determined.
+                        Revocations of &quot;Unknown Type&quot; indicate individuals who were
+                        admitted to prison for a supervision revocation where the violation that
+                        caused the revocation cannot yet be determined. Revocation admissions are
+                        linked to supervision cases closed via revocation within 90 days of the
+                        admission. Revocation admissions without a supervision case closed via
+                        revocation in this window will always be considered of
+                        &quot;Unknown Type.&quot;
                       </li>
                       <li>
-                        Because new admissions are counted irrespective of any relationship to
-                        community supervision but the revocation admission types are directly
-                        related to supervision, filtering this chart by supervision type or by
-                        office impacts only the revocation admission counts.
+                        Filtering the chart by supervision type and/or P&P office impacts only the
+                        revocation admission counts. New admissions include individuals not
+                        previously on supervision and thus cannot be filtered by office or
+                        supervision type.
+                      </li>
+                      <li>
+                        Revocations are attributed to the site of the terminating officer on the
+                        revocation in Docstars. Revocation admissions that can&apos;t be matched to
+                        a supervision case are not attributed to an office.
+                      </li>
+                      <li>
+                        Revocations are considered either probation revocations or parole
+                        revocations based on the DOCR admission reason; a revocation cannot be
+                        categorized as both.
                       </li>
                     </ul>
                   </div>
@@ -700,37 +772,35 @@ const Revocations = () => {
                   <div>
                     <ul>
                       <li>
-                        Revocation counts include the number of people who were incarcerated
-                        in a DOCR facility because their supervision was revoked.
+                        The &quot;Supervision Population&quot; refers to individuals meeting the
+                        criteria selected up top. At its most general, this is all individuals on
+                        parole or probation in North Dakota at any point during this time period.
                       </li>
                       <li>
-                        “Supervision Population” refers to individuals meeting the criteria
-                        selected up top. At its most general, this is all individuals on
-                        parole or Probation in North Dakota at any point during this time
-                        period.
+                        Revocation counts include the number of people who were incarcerated in a
+                        DOCR facility because their supervision was revoked.
                       </li>
                       <li>
-                        If a supervision type (parole or probation) is selected, revocation
-                        and supervision population will only count individuals meeting that
-                        criteria.
+                        If a supervision type (parole or probation) is selected, the revocation and
+                        supervision populations will only count individuals meeting that criteria.
+                        Revocations are classified as either a parole revocation or a probation
+                        revocation based on the admission reason. Individuals can, however, appear
+                        in both the parole supervision population and the probation supervision
+                        population if they have both parole & probation active supervision cases.
                       </li>
                       <li>
-                        If a P&P office is selected, revocations and the supervision
-                        population will only count individuals currently assigned, or with
-                        a terminating officer at time of revocation, from that office.
+                        If a P&P office is selected, the supervision population and the revocation
+                        count will only include individuals currently assigned to or terminated by
+                        an officer from that office.
                       </li>
                       <li>
-                        The race proportions for the population of North Dakota were taken from
-                        the U.S. Census Bureau.
+                        Source of race proportions in ND: US Census Bureau.
                       </li>
                       <li>
-                        If an individual has more than one race or ethnicity
-                        recorded from different data systems, then they are
-                        counted once for each unique race and ethnicity. This
-                        means that the total count in this chart may be
-                        larger than the total number of individuals it
-                        describes. This does not apply to the ND Population
-                        values.
+                        If an individual has more than one race or ethnicity recorded from different
+                        data systems, they are counted once for each unique race and ethnicity.
+                        This means that the total count in this chart may be larger than the total
+                        number of individuals it describes.
                       </li>
                     </ul>
                   </div>
@@ -749,7 +819,7 @@ const Revocations = () => {
             </div>
           </div>
         </div>
-      </React.Fragment>
+      </>
     </PageTemplate>
   );
 };

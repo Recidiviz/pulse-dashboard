@@ -48,6 +48,39 @@ const Snapshots = () => {
   const [geoViewEnabledPDTR, setGeoViewEnabledPDTR] = useState(ToggleDefaults.geoView);
   const [geoViewEnabledALSI, setGeoViewEnabledALSI] = useState(ToggleDefaults.geoView);
 
+  const importantNotes = [
+    {
+      header: 'PERSON-BASED COUNTING',
+      body: `Unless noted otherwise, counts in this dashboard are based on people, not cases.
+
+      Some individuals may have multiple cases over time. Those people will be counted
+      towards all metrics for which at least one case is relevant. For example, if one
+      person has a case that expires and a second case that ends in revocation a month
+      later, that person would be counted towards both successful termination in the first
+      month and revocation in the second.`,
+    },
+    {
+      header: 'REVOCATIONS TO DOCR FACILITY',
+      body: `Unless noted otherwise, "revocation" refers only to revocations resulting in
+      incarceration at a DOCR facility. Revocations resulting in continuation of
+      supervision, a county jail sentence, or termination of supervision are not considered.
+      In addition, revocations are counted only when an individual's admittance to a
+      facility is documented in Elite as a revocation. Individuals who have their
+      supervision terminated due to revocation (resulting in incarceration) but are admitted
+      back into the system with the code "new admission" are not included in
+      revocation counts.`,
+    },
+    {
+      header: 'DATA PULLED FROM ELITE & DOCSTARS',
+      body: `Data in the dashboard is updated nightly using information pulled from Elite and
+      Docstars.`,
+    },
+    {
+      header: 'LEARN MORE',
+      body: 'Click on "Methodology" for more information on the calculations behind that chart.',
+    },
+  ];
+
   $(() => {
     $('[data-toggle="tooltip"]').tooltip();
   });
@@ -82,8 +115,11 @@ const Snapshots = () => {
   );
 
   return (
-    <PageTemplate toggleBar={toggleBar}>
-      <React.Fragment>
+    <PageTemplate
+      toggleBar={toggleBar}
+      importantNotes={importantNotes}
+    >
+      <>
         {/* #Successful completion of supervision snapshot ==================== */}
         <div className="col-md-6">
           <div className="bd bgc-white p-20">
@@ -172,6 +208,21 @@ const Snapshots = () => {
                       supervision ends due to absconsion, a revocation, or a
                       negative termination.
                       </li>
+                      <li>
+                      Deaths, suspensions, and &quot;other&quot; terminations are excluded from
+                      these calculations because they&apos;re neither &quot;successful&quot; nor
+                      &quot;unsuccessful&quot;.
+                      </li>
+                      <li>
+                      Individuals are counted in their month of projected completion, even if
+                      terminated earlier. Individuals who have not yet completed supervision by
+                      their projected termination date are excluded.
+                      </li>
+                      <li>
+                      While on supervision, individuals are attributed to the office of their
+                      current supervising officer. Following supervision, individuals are attributed
+                      to the office of the officer who terminated their supervision.
+                      </li>
                     </ul>
                   </div>
                 </div>
@@ -255,20 +306,24 @@ const Snapshots = () => {
                   <div>
                     <ul>
                       <li>
-                        This is a measurement of the percent of admissions to
-                        North Dakota prisons that were due to revocations of supervision.
+                        Prison admissions include individuals who are newly incarcerated in DOCR
+                        facilities. Transfers, periods of temporary custody, returns from escape
+                        and/or erroneous releases are not considered admissions.
                       </li>
                       <li>
-                        Revocations in a given month count people who were incarcerated
-                        in that month because their supervision was revoked.
+                        Prison admissions are categorized as probation revocations, parole
+                        revocations, or new admissions. New admissions are admissions for a reason
+                        other than revocation.
                       </li>
                       <li>
-                        When a specific district and/or supervision type is selected, the rate
-                        metric is defined as the number of revocation admissions from that
-                        district and/or supervision type divided by the total number of admissions
-                        across all districts and supervision types within the same time period.
-                        Simply put, it is equal to the percentage of total admisssions caused by
-                        revocations matching the given filters.
+                        Selecting an office or supervision type narrows down revocations to be
+                        revocations from that office and/or supervision type.
+                      </li>
+                      <li>
+                        &quot;Rate&quot; displays the percent of all admissions that occurred by
+                        supervision revocation. When a supervision type and/or office is selected,
+                        the chart displays the percent of all admissions that were revocations from
+                        that office and/or supervision type.
                       </li>
                     </ul>
                   </div>
@@ -423,10 +478,16 @@ const Snapshots = () => {
                   <div>
                     <ul>
                       <li>
-                      This is the average of the differences between the first
-                      reassessment score and the termination assessment score
-                      for all individuals whose supervision was scheduled to
-                      end in a given month.
+                        For all individuals ending supervision in a given month who have at least 3
+                        LSI-R assessments (initial assessment, first re-assessment, and terminating
+                        assessment), this is the average of the differences between the first
+                        reassessment score and the termination assessment score.
+                      </li>
+                      <li>
+                        Individuals are included regardless of termination reason.
+                      </li>
+                      <li>
+                        Individuals are linked to the office of their terminating officer.
                       </li>
                     </ul>
                   </div>
@@ -435,7 +496,7 @@ const Snapshots = () => {
             </div>
           </div>
         </div>
-      </React.Fragment>
+      </>
     </PageTemplate>
   );
 };

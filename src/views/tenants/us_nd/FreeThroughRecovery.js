@@ -49,6 +49,25 @@ const FreeThroughRecovery = () => {
   const [chartDistrict, setChartDistrict] = useState(ToggleDefaults.district);
   const [geoViewEnabledRCOT, setGeoViewEnabledRCOT] = useState(ToggleDefaults.geoView);
 
+  const importantNotes = [
+    {
+      header: 'FTR REFERRALS',
+      body: `Unless noted otherwise, the charts on this page count all people with a completed FTR
+      referral based on the date of that referral. The number and characteristics of people who
+      actually enroll in the program may differ slightly, as not all people who are referred are
+      admitted.`,
+    },
+    {
+      header: 'DATA PULLED FROM ELITE & DOCSTARS',
+      body: `Data in the dashboard is updated nightly using information pulled from Elite and
+      Docstars.`,
+    },
+    {
+      header: 'LEARN MORE',
+      body: 'Click on "Methodology" for more information on the calculations behind that chart.',
+    },
+  ];
+
   const fetchChartData = async () => {
     try {
       const responseData = await callMetricsApi('us_nd/programEvaluation/freeThroughRecovery', getTokenSilently);
@@ -79,8 +98,11 @@ const FreeThroughRecovery = () => {
   );
 
   return (
-    <PageTemplate toggleBar={toggleBar}>
-      <React.Fragment>
+    <PageTemplate
+      toggleBar={toggleBar}
+      importantNotes={importantNotes}
+    >
+      <>
         {/* #FTR referral counts by month chart ==================== */}
         <div className="col-md-6">
           <div className="bd bgc-white p-20">
@@ -169,6 +191,11 @@ const FreeThroughRecovery = () => {
                         Referrals are attributed to the P&P office of a supervised
                         individual’s current supervising officer.
                       </li>
+                      <li>
+                        Individuals on both parole and probation will count towards either
+                        selection. As a result, parole FTR referrals and probation FTR referrals may
+                        sum to more than the total number of FTR referrals.
+                      </li>
                     </ul>
                   </div>
                 </div>
@@ -248,6 +275,17 @@ const FreeThroughRecovery = () => {
                         in this chart may be larger than the total number of individuals
                         it describes. This does not apply to the ND Population values.
                       </li>
+                      <li>
+                        Individuals on both parole and probation will count towards either
+                        selection. As a result, parole FTR referrals and probation FTR referrals may
+                        sum to more than the total number of FTR referrals.
+                      </li>
+                      <li>
+                        If an individual has more than one race or ethnicity recorded from different
+                        data systems, they are counted once for each unique race and ethnicity.
+                        This means that the total count in this chart may be larger than the total
+                        number of individuals it describes.
+                      </li>
                     </ul>
                   </div>
                 </div>
@@ -309,27 +347,30 @@ const FreeThroughRecovery = () => {
                   <div>
                     <ul>
                       <li>
-                        Each person’s LSI-R score is based off of the most
-                        recent LSI-R assessment performed for that person.
+                        Each person&apos;s LSI-R score is based off of the most recent LSI-R
+                        assessment performed for that person prior to the referral date.
                       </li>
                       <li>
-                        The referral population counts people who were
-                        referred to Free Through Recovery at any point during
-                        the time period.
+                        The referral population counts people who were referred to Free Through
+                        Recovery at any point during the time period.
                       </li>
                       <li>
-                        The supervision population counts people on probation
-                        or parole in North Dakota at any point during the time
-                        period.
+                        The supervision population counts people on probation or parole in
+                        North Dakota at any point during the time period.
                       </li>
                       <li>
-                        If a supervision type and/or a P&P office is selected,
-                        the referral and supervision populations will only count
-                        individuals meeting the selected criteria.
+                        If a supervision type and/or a P&P office is selected, the referral and
+                        supervision populations will only include individuals who fit the selected
+                        filters.
                       </li>
                       <li>
                         A referral is attributed to the P&P office of the referred
                         individual&apos;s current supervising officer.
+                      </li>
+                      <li>
+                        Individuals on both parole and probation will count towards either
+                        selection. As a result, parole FTR referrals and probation FTR referrals may
+                        sum to more than the total number of FTR referrals.
                       </li>
                     </ul>
                   </div>
@@ -410,6 +451,11 @@ const FreeThroughRecovery = () => {
                         A referral is attributed to the P&P office of the referred
                         individual&apos;s current supervising officer.
                       </li>
+                      <li>
+                        Individuals on both parole and probation will count towards either
+                        selection. As a result, parole FTR referrals and probation FTR referrals may
+                        sum to more than the total number of FTR referrals.
+                      </li>
                     </ul>
                   </div>
                 </div>
@@ -489,6 +535,15 @@ const FreeThroughRecovery = () => {
                         A referral is attributed to the P&P office of the referred
                         individual&apos;s current supervising officer.
                       </li>
+                      <li>
+                        Individuals on both parole and probation will count towards either
+                        selection. As a result, parole FTR referrals and probation FTR referrals may
+                        sum to more than the total number of FTR referrals.
+                      </li>
+                      <li>
+                        Individuals are sorted into age buckets by their age on the date of the
+                        FTR referral.
+                      </li>
                     </ul>
                   </div>
                 </div>
@@ -506,7 +561,7 @@ const FreeThroughRecovery = () => {
             </div>
           </div>
         </div>
-      </React.Fragment>
+      </>
     </PageTemplate>
   );
 };

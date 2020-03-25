@@ -20,20 +20,19 @@ import '../../../assets/styles/index.scss';
 import ImportantNotesBar from './ImportantNotesBar';
 
 
-const PageTemplate = ({ toggleBar, children }) => (
+const PageTemplate = ({ toggleBar, importantNotes, children }) => (
   <main className="main-content bgc-grey-100">
     <div id="mainContent">
 
       {toggleBar}
 
       <div className="row gap-20 pos-r">
-        <ImportantNotesBar />
+        <ImportantNotesBar importantNotes={importantNotes} />
 
         {children}
       </div>
     </div>
   </main>
 );
-
 
 export default PageTemplate;

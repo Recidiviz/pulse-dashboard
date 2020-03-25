@@ -45,6 +45,33 @@ const Reincarcerations = () => {
   const [geoViewEnabledRCOT, setGeoViewEnabledRCOT] = useState(ToggleDefaults.geoView);
   const [geoViewEnabledAVR, setGeoViewEnabledAVR] = useState(ToggleDefaults.geoView);
 
+  const importantNotes = [
+    {
+      header: 'REINCARCERATION',
+      body: `For the purposes of this dashboard, reincarceration is the incarceration of someone in
+      a North Dakota DOCR facility who has previously been incarcerated in a North Dakota DOCR
+      facility no matter how much time has passed. A revocation is also a reincarceration for a
+      formerly incarcerated individual, but not for an individual whose supervision revocation
+      results in transfer from probation to a DOCR facility. An individual can also be
+      reincarcerated following successful supervision termination, which would count towards
+      reincarceration metrics but not revocation metrics. For example, if someone is incarcerated,
+      released on parole, completes parole, and then a year later is incarcerated for a new crime,
+      that incarceration is a reincarceration but not a revocation.
+
+      We do not have data on incarceration in county jails or in other states. As a result, our
+      reincarceration calculations consider only incarceration in North Dakota DOCR facilities.`,
+    },
+    {
+      header: 'DATA PULLED FROM ELITE & DOCSTARS',
+      body: `Data in the dashboard is updated nightly using information pulled from Elite and
+      Docstars.`,
+    },
+    {
+      header: 'LEARN MORE',
+      body: 'Click on "Methodology" for more information on the calculations behind that chart.',
+    },
+  ];
+
   $(() => {
     $('[data-toggle="tooltip"]').tooltip();
   });
@@ -66,7 +93,7 @@ const Reincarcerations = () => {
   if (awaitingResults(loading, user, awaitingApi)) {
     return <Loading />;
   }
-  
+
   const toggleBar = (
     <ToggleBar
       setChartMetricType={setChartMetricType}
@@ -79,9 +106,11 @@ const Reincarcerations = () => {
   );
 
   return (
-    <PageTemplate toggleBar={toggleBar}>
-      <React.Fragment>
-
+    <PageTemplate
+      toggleBar={toggleBar}
+      importantNotes={importantNotes}
+    >
+      <>
         {/* #Reincarcerations by month chart ==================== */}
         <div className="col-md-6">
           <div className="bd bgc-white p-20">
@@ -166,6 +195,18 @@ const Reincarcerations = () => {
                       <li>
                         A location choice narrows down information to only reincarcerations of
                         individuals who lived in that location prior to reincarceration.
+                      </li>
+                      <li>
+                        County of residence is determined by an individual&apos;s most recent home
+                        address. If the most recent address is that of a ND DOCR facility or parole
+                        and probation office, the last known non-incarcerated address is used.
+                      </li>
+                      <li>
+                        Just over 40% of people with known reincarcerations are not included in the
+                        map view or in selections by county of residence. For approximately 28% of
+                        people, this is because there is no known non-incarcerated address. For
+                        approximately 13% of people, this is because the last known non-incarcerated
+                        address is outside of North Dakota.
                       </li>
                       <li>
                         Selecting a location while in rate mode calculates the percentage of
@@ -277,6 +318,18 @@ const Reincarcerations = () => {
                         individuals but someone from that county was incarcerated in the given
                         month.
                       </li>
+                      <li>
+                        County of residence is determined by an individual&apos;s most recent home
+                        address. If the most recent address is that of a ND DOCR facility or parole
+                        and probation office, the last known non-incarcerated address is used.
+                      </li>
+                      <li>
+                        Just over 40% of people with known reincarcerations are not included in the
+                        map view or in selections by county of residence. For approximately 28% of
+                        people, this is because there is no known non-incarcerated address. For
+                        approximately 13% of people, this is because the last known non-incarcerated
+                        address is outside of North Dakota.
+                      </li>
                     </ul>
                   </div>
                 </div>
@@ -326,10 +379,14 @@ const Reincarcerations = () => {
                   <div>
                     <ul>
                       <li>
-                        Reincarceration cohorts include all admissions to incarceration of a
-                        person who was previously incarcerated in a DOCR facility. The
-                        reincarceration must have happened within the noted follow up period
-                        directly after their release.
+                        Release cohorts include all people released from a DOCR facility in the
+                        specified year.
+                      </li>
+                      <li>
+                        The follow up period starts from the date an individual is released from a
+                        DOCR facility. If they are released twice within the release cohort year,
+                        the follow up period starts from the first release: the second period of
+                        incarceration adds to the reincarceration count for the cohort.
                       </li>
                       <li>
                         Stay length refers to time actually spent incarcerated prior to their most
@@ -337,8 +394,16 @@ const Reincarcerations = () => {
                         windows for sampling.
                       </li>
                       <li>
-                        A location choice narrows down information to only reincarcerations of
-                        individuals who lived in that location prior to reincarceration.
+                        County of residence is determined by an individual&apos;s most recent home
+                        address. If the most recent address is that of a ND DOCR facility or parole
+                        and probation office, the last known non-incarcerated address is used.
+                      </li>
+                      <li>
+                        Just over 40% of people with known reincarcerations are not included in the
+                        map view or in selections by county of residence. For approximately 28% of
+                        people, this is because there is no known non-incarcerated address. For
+                        approximately 13% of people, this is because the last known non-incarcerated
+                        address is outside of North Dakota.
                       </li>
                     </ul>
                   </div>
@@ -364,7 +429,7 @@ const Reincarcerations = () => {
             </div>
           </div>
         </div>
-      </React.Fragment>
+      </>
     </PageTemplate>
   );
 };
