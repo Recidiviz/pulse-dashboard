@@ -197,6 +197,18 @@ const Reincarcerations = () => {
                         individuals who lived in that location prior to reincarceration.
                       </li>
                       <li>
+                        County of residence is determined by an individual&apos;s most recent home
+                        address. If the most recent address is that of a ND DOCR facility or parole
+                        and probation office, the last known non-incarcerated address is used.
+                      </li>
+                      <li>
+                        Just over 40% of people with known reincarcerations are not included in the
+                        map view or in selections by county of residence. For approximately 28% of
+                        people, this is because there is no known non-incarcerated address. For
+                        approximately 13% of people, this is because the last known non-incarcerated
+                        address is outside of North Dakota.
+                      </li>
+                      <li>
                         Selecting a location while in rate mode calculates the percentage of
                         prison admissions in a month from that location that were
                         reincarcerations.
@@ -306,6 +318,18 @@ const Reincarcerations = () => {
                         individuals but someone from that county was incarcerated in the given
                         month.
                       </li>
+                      <li>
+                        County of residence is determined by an individual&apos;s most recent home
+                        address. If the most recent address is that of a ND DOCR facility or parole
+                        and probation office, the last known non-incarcerated address is used.
+                      </li>
+                      <li>
+                        Just over 40% of people with known reincarcerations are not included in the
+                        map view or in selections by county of residence. For approximately 28% of
+                        people, this is because there is no known non-incarcerated address. For
+                        approximately 13% of people, this is because the last known non-incarcerated
+                        address is outside of North Dakota.
+                      </li>
                     </ul>
                   </div>
                 </div>
@@ -355,10 +379,14 @@ const Reincarcerations = () => {
                   <div>
                     <ul>
                       <li>
-                        Reincarceration cohorts include all admissions to incarceration of a
-                        person who was previously incarcerated in a DOCR facility. The
-                        reincarceration must have happened within the noted follow up period
-                        directly after their release.
+                        Release cohorts include all people released from a DOCR facility in the
+                        specified year.
+                      </li>
+                      <li>
+                        The follow up period starts from the date an individual is released from a
+                        DOCR facility. If they are released twice within the release cohort year,
+                        the follow up period starts from the first release: the second period of
+                        incarceration adds to the reincarceration count for the cohort.
                       </li>
                       <li>
                         Stay length refers to time actually spent incarcerated prior to their most
@@ -366,8 +394,16 @@ const Reincarcerations = () => {
                         windows for sampling.
                       </li>
                       <li>
-                        A location choice narrows down information to only reincarcerations of
-                        individuals who lived in that location prior to reincarceration.
+                        County of residence is determined by an individual&apos;s most recent home
+                        address. If the most recent address is that of a ND DOCR facility or parole
+                        and probation office, the last known non-incarcerated address is used.
+                      </li>
+                      <li>
+                        Just over 40% of people with known reincarcerations are not included in the
+                        map view or in selections by county of residence. For approximately 28% of
+                        people, this is because there is no known non-incarcerated address. For
+                        approximately 13% of people, this is because the last known non-incarcerated
+                        address is outside of North Dakota.
                       </li>
                     </ul>
                   </div>
