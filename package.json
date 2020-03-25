@@ -68,7 +68,7 @@
     "react-chartjs-2": "^2.7.6",
     "react-dom": "^16.8.6",
     "react-router-dom": "^5.0.0",
-    "react-scripts": "3.0.1",
+    "react-scripts": "3.4.1",
     "react-select": "^3.0.8",
     "react-simple-maps": "^0.12.1",
     "react-sticky-fill": "^0.8.4",
