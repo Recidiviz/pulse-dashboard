@@ -4,6 +4,7 @@ node_js:
 before_install:
   - openssl aes-256-cbc -K $encrypted_5eba242c1a3d_key -iv $encrypted_5eba242c1a3d_iv
     -in recidiviz-dashboard-gae-key.json.enc -out recidiviz-dashboard-gae-key.json -d
+  - ./travis-setup.sh
 install:
   - yarn install
 script:
