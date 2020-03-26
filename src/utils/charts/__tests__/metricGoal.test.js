@@ -14,8 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-import React from 'react';
-import { render } from '@testing-library/react';
+
 import '@testing-library/jest-dom/extend-expect';
 
 import * as metricGoal from '../metricGoal';
