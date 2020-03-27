@@ -84,7 +84,8 @@
     "node-sass": "4.12.0",
     "nodemon": "^1.19.0",
     "enzyme": "^3.11.0",
-    "enzyme-adapter-react-16": "^1.15.2"
+    "enzyme-adapter-react-16": "^1.15.2",
+    "timekeeper": "^2.2.0"
   },
   "resolutions": {
     "serialize-javascript": "^2.1.1"
