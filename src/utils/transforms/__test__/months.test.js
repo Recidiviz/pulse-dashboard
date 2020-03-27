@@ -14,10 +14,10 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-import React from 'react';
+
 import '@testing-library/jest-dom/extend-expect';
-import * as monthMethods from '../months';
 import tk from 'timekeeper';
+import * as monthMethods from '../months';
 
 describe('test for file months', () => {
   const monthNumbers =  ["4", "5", "6", "7", "8", "9", "10", "11", "12", "1", "2", "3"];
@@ -251,20 +251,9 @@ describe('test for file months', () => {
   });
 
   it('month names all with years from wrong numbers', () => {
-    const testData = ["4", "5", "6", "7", "13", "-1", "2", "3", "4"];
-    const expectedData = [
-      "Apr '19",
-      "May '19",
-      "Jun '19",
-      "Jul '19",
-      undefined,
-      undefined,
-      "Feb '20",
-      "Mar '20",
-      "Apr '20"
-    ];
-    const monthNamesLongArray = monthMethods.monthNamesAllWithYearsFromNumbers(testData, true, false);
-    expect(monthNamesLongArray).toEqual(expectedData);
+    const testData = ['4', '5', '6', '7', '13', '-1', '2', '3', '4'];
+    expect(() => {
+      monthMethods.monthNamesAllWithYearsFromNumbers(testData, true, false);
+    }).toThrow();
   });
-
 });
