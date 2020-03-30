@@ -116,9 +116,9 @@ describe('test for tooltips', () => {
     const tooltipEmptyTitle = callback.title(tooltipItem, dataEmpty);
     expect(tooltipEmptyTitle).toBe(undefined);
 
-    const tooltipEmptyLabel = callback.label(tooltipItem[0], dataEmpty);
-    expect(tooltipEmptyLabel).toEqual(': 0');
-
+    expect(() => {
+      callback.label(tooltipItem[0], dataEmpty);
+    }).toThrow();
   });
 
   it('tooltip for rate chart', () => {
