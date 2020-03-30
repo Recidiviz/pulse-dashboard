@@ -96,7 +96,7 @@ To run eslint manually:
 
 `eslint .`
 
-> **Note**: we are gradually adding linting enforement to our existing code, so not everything may be subject to linting yet. Refer to the [ignore file](https://github.com/Recidiviz/pulse-dashboard/.eslintignore) for details. While this transition is underway, if you are adding new files or substantially rewriting existing ones, you are encouraged to whitelist them for linting by updating the configuration file.
+> **Note**: we are gradually adding linting enforcement to our existing code, so not everything may be subject to linting yet. Refer to the [ignore file](https://github.com/Recidiviz/pulse-dashboard/.eslintignore) for details. While this transition is underway, if you are adding new files or substantially rewriting existing ones, you are encouraged to whitelist them for linting by updating the configuration file.
 
 ### Running the application locally
 
