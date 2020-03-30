@@ -1,0 +1,7 @@
+node_modules/
+build/
+
+# comment next line to lint everything
+*
+# whitelist files/directories for linting. eventually everything will be linted and these can be removed
+!server.js

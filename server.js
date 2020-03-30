@@ -15,30 +15,30 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-require('dotenv').config();
-const express = require('express');
-const cors = require('cors');
-const http = require('http');
-const morgan = require('morgan');
-const helmet = require('helmet');
-const jwt = require('express-jwt');
-const jwksRsa = require('jwks-rsa');
-const devAuthConfig = require('./src/auth_config_dev.json');
-const productionAuthConfig = require('./src/auth_config_production.json');
-const api = require('./server/routes/api');
+require("dotenv").config();
+const express = require("express");
+const cors = require("cors");
+const http = require("http");
+const morgan = require("morgan");
+const helmet = require("helmet");
+const jwt = require("express-jwt");
+const jwksRsa = require("jwks-rsa");
+const devAuthConfig = require("./src/auth_config_dev.json");
+const productionAuthConfig = require("./src/auth_config_production.json");
+const api = require("./server/routes/api");
 
 const app = express();
 
 app.use(cors());
 
 const port = process.env.PORT || 3001;
-app.set('port', port);
+app.set("port", port);
 
-const isDemoMode = (process.env.IS_DEMO === 'true');
+const isDemoMode = process.env.IS_DEMO === "true";
 
 const authEnv = process.env.AUTH_ENV;
 let authConfig = null;
-if (authEnv === 'production') {
+if (authEnv === "production") {
   authConfig = productionAuthConfig;
 } else {
   authConfig = devAuthConfig;
@@ -46,16 +46,16 @@ if (authEnv === 'production') {
 
 if (!authConfig.domain || !authConfig.audience) {
   throw new Error(
-    'Please make sure that auth_config.json is in place and populated',
+    "Please make sure that auth_config.json is in place and populated"
   );
 }
 
-app.use(morgan('dev'));
+app.use(morgan("dev"));
 app.use(helmet());
 
-if (app.get('env') === 'production') {
+if (app.get("env") === "production") {
   // This is required to avoid "Unable to verify authorization request state" with Auth0
-  app.set('trust proxy', true);
+  app.set("trust proxy", true);
 }
 
 let checkJwt = jwt({
@@ -68,27 +68,34 @@ let checkJwt = jwt({
 
   audience: authConfig.audience,
   issuer: `https://${authConfig.domain}/`,
-  algorithm: ['RS256'],
+  algorithm: ["RS256"],
 });
 
 if (isDemoMode) {
-  checkJwt = function (req, res, next) { next(); };
+  checkJwt = (req, res, next) => {
+    next();
+  };
 }
 
-app.get('/api/:stateCode/programEvaluation/freeThroughRecovery', checkJwt, api.freeThroughRecovery);
-app.get('/api/:stateCode/reincarcerations', checkJwt, api.reincarcerations);
-app.get('/api/:stateCode/revocations', checkJwt, api.revocations);
-app.get('/api/:stateCode/snapshots', checkJwt, api.snapshots);
-app.get('/api/:stateCode/newRevocations', checkJwt, api.newRevocations);
+app.get(
+  "/api/:stateCode/programEvaluation/freeThroughRecovery",
+  checkJwt,
+  api.freeThroughRecovery
+);
+app.get("/api/:stateCode/reincarcerations", checkJwt, api.reincarcerations);
+app.get("/api/:stateCode/revocations", checkJwt, api.revocations);
+app.get("/api/:stateCode/snapshots", checkJwt, api.snapshots);
+app.get("/api/:stateCode/newRevocations", checkJwt, api.newRevocations);
 
 // An App Engine-specific API for handling warmup requests on new instance initialization
-app.get('/_ah/warmup', (req, res) => {
+app.get("/_ah/warmup", () => {
   // The server automatically launches initialization of the metric cache, so nothing is needed here
-  console.log('Responding to warmup request...');
+  // eslint-disable-next-line no-console
+  console.log("Responding to warmup request...");
 });
 
 // Starts the background task for refresh metrics regularly
-require('./server/core/metricsRefresh');
+require("./server/core/metricsRefresh");
 
 const server = http.createServer(app);
 
@@ -96,21 +103,21 @@ const server = http.createServer(app);
  * Event listener for HTTP server "error" event.
  */
 function onError(error) {
-  if (error.syscall !== 'listen') {
+  if (error.syscall !== "listen") {
     throw error;
   }
 
-  const bind = typeof port === 'string'
-    ? `Pipe ${port}`
-    : `Port ${port}`;
+  const bind = typeof port === "string" ? `Pipe ${port}` : `Port ${port}`;
 
   // handle specific listen errors with friendly messages
   switch (error.code) {
-    case 'EACCES':
+    case "EACCES":
+      // eslint-disable-next-line no-console
       console.error(`${bind} requires elevated privileges`);
       process.exit(1);
       break;
-    case 'EADDRINUSE':
+    case "EADDRINUSE":
+      // eslint-disable-next-line no-console
       console.error(`${bind} is already in use`);
       process.exit(1);
       break;
@@ -124,12 +131,12 @@ function onError(error) {
  */
 function onListening() {
   const addr = server.address();
-  const bind = typeof addr === 'string'
-    ? `pipe ${addr}`
-    : `port ${addr.port}`;
+  const bind = typeof addr === "string" ? `pipe ${addr}` : `port ${addr.port}`;
+  // eslint-disable-next-line no-console
   console.log(`Listening on ${bind}`);
 }
 
+// eslint-disable-next-line no-console
 server.listen(port, () => console.log(`Server listening on port ${port}`));
-server.on('error', onError);
-server.on('listening', onListening);
+server.on("error", onError);
+server.on("listening", onListening);

@@ -1,17 +1,17 @@
 language: node_js
 node_js:
-- lts/*
+  - lts/*
 before_install:
-- openssl aes-256-cbc -K $encrypted_5eba242c1a3d_key -iv $encrypted_5eba242c1a3d_iv
-  -in recidiviz-dashboard-gae-key.json.enc -out recidiviz-dashboard-gae-key.json -d
+  - ./travis-setup.sh
 install:
-- yarn install
+  - yarn install
 script:
-- yarn test
+  - yarn test
+  - yarn lint
 cache:
   yarn: true
   directories:
-  - node_modules
+    - node_modules
 notifications:
   slack:
     secure: xdEE3sa61p6k+DzmUoJBglIxIbX9Q9OirZZU8n6a823t4zsSeiTmCS/0t5Uayx+tNa30zZ689twFlKxR/juq8NqMTbR0TCOg7jfeA2f1hH1Wm/1J5c826N5fN6f2Nc9qMLRpeLuAnLklRSolAyE1n+1XSsMCBBIX+apurvNGFOfoqJmcEBkWezLXM0pILbmEG3OOTALbSIA9Fyw9AYWOAByeykfMU0mq7dyjIme3ACW0IiYh4qH18LotopwGifrQ+XSBvYqAAZ4U7HXb33KeXJoJBQIFtvJTHtqGXixoaLXoMmpU8R7jrqSGopR/XGJ9XDJkgKOOFMDgopsyzzxNPWqwZBrjLgXlMUb4iC9QYCMRDmz4MIqA5sVmUsxhdOJKRlbBY7zsCbsJHR3Mbp5SXNLvv9zT+Pd63vV5qcjmm/nVumdlt/rrlYbzgPIYHHnoO8huXaJI6ROx7KeQDmf/TEL85Ei/sKdPoaSqsfd4LK9AlB1mjdPHBVKp7BZjbfaaRNUG8a9qq91FnaUvIbdouTkBIs0JiENGB3Owd9G3M4FLacPklmk40gSYazV6z61N/bZLn6ATaQgFdKRL5SR3S5KT1vKi0MomHxVhiowkNWemuCFIcyFpmf6StzMm0HE+OIver1HV8/eyy1Httc31xohPPKt4/CBGPKdZLrKiBPM=
