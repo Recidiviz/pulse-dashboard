@@ -18,12 +18,12 @@
 const chartIdToInfo = {
   revocationsOverTime: [
     {
-      header: 'What this chart shows',
+      header: "What this chart shows",
       body: `This chart displays the total number of people who were admitted to prison during
         each month because their supervision was revoked by the parole board or the court.`,
     },
     {
-      header: 'Who is included',
+      header: "Who is included",
       body: `This chart includes only people who were revoked to prison. Counts do not include (1)
         people who were revoked to termination or to a new form of supervision (i.e., SIS to SES);
         (2) people who were admitted to prison for reasons aside from revocation, such as treatment
@@ -37,7 +37,7 @@ const chartIdToInfo = {
   ],
   revocationMatrix: [
     {
-      header: 'What this chart shows',
+      header: "What this chart shows",
       body: `This chart plots all people who were revoked to prison during the time period
         selected by the user, according to their most serious violation and the number of
         violation reports and notices of citation filed within 12 months before the revocation.
@@ -45,7 +45,7 @@ const chartIdToInfo = {
         drop down menu in the upper left hand corner of the page.`,
     },
     {
-      header: 'Most serious violation',
+      header: "Most serious violation",
       body: `Violations are listed in order of severity, starting with the least serious violation
         in the top row. A person's most serious violation is calculated by looking back at all
         violation reports and notices of citation filed within 12 months before the revocation and
@@ -56,7 +56,7 @@ const chartIdToInfo = {
         placed in the misdemeanor row because misdemeanor is their most serious violation.`,
     },
     {
-      header: 'Number of violation reports and notices of citation filed',
+      header: "Number of violation reports and notices of citation filed",
       body: `This is determined by counting the total number of violation reports and notices of
         citation that were filed within 12 months before the revocation. For example, if a person
         had one violation report and one notice of citation during the 12 months before the
@@ -64,7 +64,7 @@ const chartIdToInfo = {
         several types of violations or conditions violated.`,
     },
     {
-      header: 'Who is included',
+      header: "Who is included",
       body: `This chart includes only people who were revoked to prison. It does not include
         (1) people who were revoked to termination or to a new form of supervision
         (i.e., SIS to SES); (2) people who were admitted to prison for reasons aside from
@@ -78,7 +78,7 @@ const chartIdToInfo = {
   ],
   revocationsByDistrict: [
     {
-      header: 'What the count chart shows',
+      header: "What the count chart shows",
       body: `This chart shows the total number of people revoked to prison from each district
         during the time period selected on the revocation plot above. The districts are positioned
         in descending order from left to right, with the district with the highest number of people
@@ -87,7 +87,7 @@ const chartIdToInfo = {
         district counts or rates.`,
     },
     {
-      header: 'What the rate chart shows',
+      header: "What the rate chart shows",
       body: `This chart shows the revocation rate in each district over the past 30 days.
         Revocation rate is defined as the number of people revoked from that district divided by
         the total supervised population within that district. The districts are positioned in
@@ -95,7 +95,7 @@ const chartIdToInfo = {
         at the left.`,
     },
     {
-      header: 'Who is included',
+      header: "Who is included",
       body: `This chart includes only people who were revoked to prison. Counts do not include (1)
         people who were revoked to termination or to a new form of supervision (i.e., SIS to SES);
         (2) people who were admitted to prison for reasons aside from revocation, such as treatment
@@ -109,7 +109,7 @@ const chartIdToInfo = {
   ],
   revocationsByRiskLevel: [
     {
-      header: 'What this chart shows',
+      header: "What this chart shows",
       body: `This chart shows the revocation rate for each risk level group. This is calculated as
         the number of people of each risk level who were revoked during the selected time period
         divided by the total number of people of that risk level. We define risk level based only
@@ -119,7 +119,7 @@ const chartIdToInfo = {
         category.`,
     },
     {
-      header: 'Who is included',
+      header: "Who is included",
       body: `This chart includes only people who were revoked to prison. Counts do not include (1)
         people who were revoked to termination or to a new form of supervision (i.e., SIS to SES);
         (2) people who were admitted to prison for reasons aside from revocation, such as treatment
@@ -131,7 +131,7 @@ const chartIdToInfo = {
         population in District 2.`,
     },
     {
-      header: 'Filtering by violation history',
+      header: "Filtering by violation history",
       body: `If the user has filtered the page by clicking on a specific violation type
         (i.e., technical) or bubble (i.e., technical, 3) within the revocation plot, this chart
         will show revocation rates for people with the selected violation history by risk level.
@@ -147,7 +147,7 @@ const chartIdToInfo = {
   ],
   revocationsByViolationType: [
     {
-      header: 'What this chart shows',
+      header: "What this chart shows",
       body: `This chart shows the relative frequency of each type of violation for people who were
         revoked to prison, looking back over a period 12 months before the revocation. This is
         calculated as the total number of times each type of violation was reported on all notices
@@ -158,7 +158,7 @@ const chartIdToInfo = {
         technical violations. The yellow bars represent different categories of law violations.`,
     },
     {
-      header: 'Who is included',
+      header: "Who is included",
       body: `This chart includes only violation records for people who were revoked to prison.
         Counts do not include (1) people who were revoked to termination or to a new form of
         supervision (i.e., SIS to SES); (2) people who were admitted to prison for reasons aside
@@ -172,7 +172,7 @@ const chartIdToInfo = {
   ],
   revocationsByGender: [
     {
-      header: 'What the count chart shows',
+      header: "What the count chart shows",
       body: `This chart compares the revocation rates for women and men, overall and broken out by
         risk level. Gender and risk level specific revocation rates are calculated as the number of
         women (or men) revoked of a given risk level divided by the total number of women (or men)
@@ -183,7 +183,7 @@ const chartIdToInfo = {
         category.`,
     },
     {
-      header: 'Who is included',
+      header: "Who is included",
       body: `This chart includes only people who were revoked to prison. Counts do not include (1)
         people who were revoked to termination or to a new form of supervision (i.e., SIS to SES);
         (2) people who were admitted to prison for reasons aside from revocation, such as treatment
@@ -195,7 +195,7 @@ const chartIdToInfo = {
         population in District 2.`,
     },
     {
-      header: 'Filtering by violation history',
+      header: "Filtering by violation history",
       body: `If the user has filtered the page by clicking on a specific violation type
         (i.e., technical) or bubble (i.e., technical, 3) within the revocation plot, this chart
         will show revocation rates for people with the selected violation history by risk level.
@@ -211,7 +211,7 @@ const chartIdToInfo = {
   ],
   revocationsByRace: [
     {
-      header: 'What the count chart shows',
+      header: "What the count chart shows",
       body: `This chart compares the revocation rates for people of each race/ethnicity, overall
         and broken out by risk level. Race or ethnicity and risk level specific revocation rates are
         calculated as the number of people of a given race or ethnicity and of a given risk level
@@ -222,7 +222,7 @@ const chartIdToInfo = {
         Tool/Community Supervision Tool scores are counted in the Unassessed category.`,
     },
     {
-      header: 'Who is included',
+      header: "Who is included",
       body: `This chart includes only people who were revoked to prison. Counts do not include (1)
         people who were revoked to termination or to a new form of supervision (i.e., SIS to SES);
         (2) people who were admitted to prison for reasons aside from revocation, such as treatment
@@ -234,7 +234,7 @@ const chartIdToInfo = {
         population in District 2.`,
     },
     {
-      header: 'Filtering by violation history',
+      header: "Filtering by violation history",
       body: `If the user has filtered the page by clicking on a specific violation type
         (i.e., technical) or bubble (i.e., technical, 3) within the revocation plot, this chart
         will show revocation rates for people with the selected violation history by risk level.
@@ -250,7 +250,7 @@ const chartIdToInfo = {
   ],
   filteredCaseTable: [
     {
-      header: 'What this list includes',
+      header: "What this list includes",
       body: `This is a list of people who fall within the filters that have been selected on the
         page. In the default landing view, this includes all people who have been revoked to prison
         during the time period selected in the revocations plot. If the user has selected a
@@ -262,6 +262,4 @@ const chartIdToInfo = {
   ],
 };
 
-export {
-  chartIdToInfo,
-};
+export default chartIdToInfo;

@@ -15,89 +15,118 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import '@testing-library/jest-dom/extend-expect';
+import "@testing-library/jest-dom/extend-expect";
 
-import * as metricGoal from '../metricGoal';
+import * as metricGoal from "../metricGoal";
 
 const FIRST_GOAL = {
-    isUpward: false,
-    value: 30,
-    label: '30',
-    metricType: 'counts',
+  isUpward: false,
+  value: 30,
+  label: "30",
+  metricType: "counts",
 };
 
 const SECOND_GOAL = {
-    isUpward: true,
-    value: 75,
-    label: '75%',
-    metricType: 'rates',
-}
+  isUpward: true,
+  value: 75,
+  label: "75%",
+  metricType: "rates",
+};
 
 it("get goal for chart", () => {
-    const { isUpward, value, label, metricType } = metricGoal.getGoalForChart("US_ND", "reincarcerationCountsByMonth");
+  const { isUpward, value, label, metricType } = metricGoal.getGoalForChart(
+    "US_ND",
+    "reincarcerationCountsByMonth"
+  );
 
-    expect(isUpward).toBe(false);
-    expect(value).toBe(30);
-    expect(label).toBe("30");
-    expect(metricType).toBe("counts");
-})
+  expect(isUpward).toBe(false);
+  expect(value).toBe(30);
+  expect(label).toBe("30");
+  expect(metricType).toBe("counts");
+});
 
 it("get goal label content string", () => {
-    const goalLabel = metricGoal.goalLabelContentString(FIRST_GOAL);
+  const goalLabel = metricGoal.goalLabelContentString(FIRST_GOAL);
 
-    expect(goalLabel).toMatch('goal: ');
-})
+  expect(goalLabel).toMatch("goal: ");
+});
 
 it("data is trending towards to goal", () => {
-    const trendlineValues = [1, 2, 3, 4, 5];
-    const trendlineText = metricGoal.trendlineGoalText(trendlineValues, SECOND_GOAL);
+  const trendlineValues = [1, 2, 3, 4, 5];
+  const trendlineText = metricGoal.trendlineGoalText(
+    trendlineValues,
+    SECOND_GOAL
+  );
 
-    expect(trendlineText).toBe("towards the goal");
-})
+  expect(trendlineText).toBe("towards the goal");
+});
 
 it("data is trending away from goal", () => {
-    const trendlineValues = [10, 2, 3, 4, 5];
-    const trendlineText = metricGoal.trendlineGoalText(trendlineValues, SECOND_GOAL);
+  const trendlineValues = [10, 2, 3, 4, 5];
+  const trendlineText = metricGoal.trendlineGoalText(
+    trendlineValues,
+    SECOND_GOAL
+  );
 
-    expect(trendlineText).toBe("away from the goal");
-})
+  expect(trendlineText).toBe("away from the goal");
+});
 
 it("min for goal and data", () => {
-    const goalValue = 32;
-    const dataPoints = [5, 7, 9, 16, 34, 14];
-    const stepSize = 4;
+  const goalValue = 32;
+  const dataPoints = [5, 7, 9, 16, 34, 14];
+  const stepSize = 4;
 
-    const minForGoalAndData = metricGoal.getMinForGoalAndData(goalValue, dataPoints, stepSize);
+  const minForGoalAndData = metricGoal.getMinForGoalAndData(
+    goalValue,
+    dataPoints,
+    stepSize
+  );
 
-    expect(minForGoalAndData).toBe(0);
-})
+  expect(minForGoalAndData).toBe(0);
+});
 
 it("max for goal and data", () => {
-    const goalValue = 16;
-    const dataPoints = [2, 7, 3, 5, 26, 9];
-    const stepSize = 3;
+  const goalValue = 16;
+  const dataPoints = [2, 7, 3, 5, 26, 9];
+  const stepSize = 3;
 
-    const minForGoalAndData = metricGoal.getMaxForGoalAndData(goalValue, dataPoints, stepSize);
+  const minForGoalAndData = metricGoal.getMaxForGoalAndData(
+    goalValue,
+    dataPoints,
+    stepSize
+  );
 
-    expect(minForGoalAndData).toBe(30);
-})
+  expect(minForGoalAndData).toBe(30);
+});
 
 it("min for goal and data randomized", () => {
-    const goalValue = Math.floor(Math.random() * 35);
-    const dataPoints = Array.from({ length: 40 }, () => Math.floor(Math.random() * 40));
-    const stepSize = Math.floor(Math.random() * 10);
+  const goalValue = Math.floor(Math.random() * 35);
+  const dataPoints = Array.from({ length: 40 }, () =>
+    Math.floor(Math.random() * 40)
+  );
+  const stepSize = Math.floor(Math.random() * 10);
 
-    const minForGoalAndData = metricGoal.getMinForGoalAndData(goalValue, dataPoints, stepSize);
+  const minForGoalAndData = metricGoal.getMinForGoalAndData(
+    goalValue,
+    dataPoints,
+    stepSize
+  );
 
-    expect(minForGoalAndData).toBeNumber();
-})
+  expect(minForGoalAndData).toBeNumber();
+});
 
 it("max for goal and data randomized", () => {
-    const goalValue = Math.floor(Math.random() * 35);
-    const dataPoints = Array.from({ length: 40 }, () => Math.floor(Math.random() * 40));
-    const stepSize = Math.floor(Math.random() * 10);
+  const goalValue = Math.floor(Math.random() * 35);
+  const dataPoints = Array.from({ length: 40 }, () =>
+    Math.floor(Math.random() * 40)
+  );
+  const stepSize = Math.floor(Math.random() * 10);
 
-    const maxForGoalAndData = metricGoal.getMaxForGoalAndData(goalValue, dataPoints, stepSize);
+  const maxForGoalAndData = metricGoal.getMaxForGoalAndData(
+    goalValue,
+    dataPoints,
+    stepSize
+  );
 
-    expect(maxForGoalAndData).toBeNumber();
-})
+  expect(maxForGoalAndData).toBeNumber();
+});

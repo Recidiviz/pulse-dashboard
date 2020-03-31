@@ -20,7 +20,7 @@ import React from 'react';
 import {
   configureDownloadButtons, configureDownloadButtonsRegularElement,
 } from '../../assets/scripts/utils/downloads';
-import { chartIdToInfo } from '../../utils/charts/info';
+import chartIdToInfo from '../../utils/charts/info';
 
 const ExportMenu = (props) => {
   const additionalInfo = chartIdToInfo[props.chartId] || [];
