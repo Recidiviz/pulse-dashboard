@@ -58,7 +58,7 @@ function toggleYAxisTicksBasedOnGoal(
     };
   }
 
-  for (let key in Object.keys(otherOptions)) {
+  for (let key of Object.keys(otherOptions)) {
     ticks[key] = otherOptions[key];
   }
   return ticks;
@@ -71,7 +71,7 @@ function toggleYAxisTicksAdditionalOptions(
     desiredMetricType, currentMetricType, minValue, maxValue, stepSize,
   );
 
-  for (let key in Object.keys(otherOptions)) {
+  for (let key of Object.keys(otherOptions)) {
     ticks[key] = otherOptions[key];
   }
   return ticks;
@@ -104,7 +104,7 @@ function getPeriodLabelFromMetricPeriodMonthsToggle(toggledValue) {
   startDate.setMonth(startDate.getMonth() - (months - 1));
   startDate.setDate(1);
 
-  return `${startDate.toLocaleDateString()} to present`;
+  return `${startDate.toLocaleDateString('en-US')} to present`;
 }
 
 function getTrailingLabelFromMetricPeriodMonthsToggle(toggledValue) {
