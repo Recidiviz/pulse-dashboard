@@ -9,3 +9,5 @@ public/
 !server.js
 !src/utils/charts/__tests__/metricGoal.test.js
 !src/utils/charts/info.js
+
+!src/utils/charts/__tests__/choropleth.test.js
