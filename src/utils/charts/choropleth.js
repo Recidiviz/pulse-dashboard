@@ -64,6 +64,9 @@ function colorForValue(value, maxValue, useDark, possibleNegative) {
 }
 
 function countyNameFromCode(stateCode, countyCode) {
+  if (!stateCode || !countyCode) {
+    return undefined;
+  }
   let newCountyName = countyCode.replace(stateCode.concat('_'), '');
   newCountyName = toHumanReadable(newCountyName);
   return newCountyName;
