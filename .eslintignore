@@ -8,6 +8,7 @@ public/
 # whitelist files/directories for linting. eventually everything will be linted and these can be removed
 !server.js
 !src/utils/charts/__tests__/metricGoal.test.js
+!src/utils/charts/__tests__/currentSpan.test.js
 !src/utils/charts/info.js
 
 !src/utils/charts/__tests__/choropleth.test.js
