@@ -124,7 +124,6 @@ function refreshNewRevocationsMetrics() {
  * first execution now instead of waiting the initial interval.
  */
 function executeAndSetInterval(fn, intervalMS) {
-  fn();
   setInterval(fn, intervalMS);
 }
 

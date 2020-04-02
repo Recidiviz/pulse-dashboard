@@ -20,6 +20,10 @@ import { Bar } from 'react-chartjs-2';
 import * as $ from 'jquery';
 
 import ExportMenu from '../ExportMenu';
+import Loading from '../../Loading';
+
+import { useAuth0 } from '../../../react-auth0-spa';
+import { callMetricsApi, awaitingResults } from '../../../utils/metricsClient';
 
 import { COLORS } from '../../../assets/scripts/constants/colors';
 import {
@@ -37,8 +41,41 @@ const RevocationsByDistrict = (props) => {
   const [denominatorCounts, setDenominatorCounts] = useState([]);
   const [countModeEnabled, setCountModeEnabled] = useState(true);
 
+  const { loading, user, getTokenSilently } = useAuth0();
+  const [revocationApiData, setRevocationApiData] = useState({});
+  const [supervisionApiData, setSupervisionApiData] = useState({});
+  const [awaitingApi, setAwaitingApi] = useState(true);
+
+  const fetchChartData = async () => {
+    try {
+      const revocationResponseData = await callMetricsApi(
+        'us_mo/newRevocations/revocations_matrix_distribution_by_district', getTokenSilently,
+      );
+      setRevocationApiData(revocationResponseData.revocations_matrix_distribution_by_district);
+
+      const supervisionResponseData = await callMetricsApi(
+        'us_mo/newRevocations/revocations_matrix_supervision_distribution_by_district', getTokenSilently,
+      );
+      setSupervisionApiData(supervisionResponseData.revocations_matrix_supervision_distribution_by_district);
+
+      setAwaitingApi(false);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const processResponse = () => {
-    const districtToCount = props.data.reduce(
+    if (awaitingApi || (!revocationApiData && !supervisionApiData)) {
+      return;
+    }
+    const filteredRevocationData = props.dataFilter(
+      revocationApiData, props.skippedFilters, props.treatCategoryAllAsAbsent,
+    );
+    const filteredSupervisionData = props.dataFilter(
+      supervisionApiData, props.skippedFilters, props.treatCategoryAllAsAbsent,
+    );
+
+    const districtToCount = filteredRevocationData.reduce(
       (result, { district, population_count: populationCount }) => {
         return { ...result, [district]: (result[district] || 0) + (toInt(populationCount) || 0) };
       }, {},
@@ -46,7 +83,7 @@ const RevocationsByDistrict = (props) => {
     // Explicitly remove the All district, if provided, for this by-district chart
     delete districtToCount.ALL;
 
-    const supervisionDistributions = props.supervisionPopulation.reduce(
+    const supervisionDistributions = filteredSupervisionData.reduce(
       (result, { district, total_population: totalPopulation }) => {
         return { ...result, [district]: (result[district] || 0) + (toInt(totalPopulation) || 0) };
       }, {},
@@ -85,9 +122,16 @@ const RevocationsByDistrict = (props) => {
   });
 
   useEffect(() => {
+    fetchChartData();
+  }, []);
+
+  useEffect(() => {
     processResponse();
   }, [
-    props.data,
+    awaitingApi,
+    revocationApiData,
+    supervisionApiData,
+    props.filterStates,
     props.metricPeriodMonths,
     props.currentDistrict,
     countModeEnabled,
@@ -159,6 +203,10 @@ const RevocationsByDistrict = (props) => {
       }}
     />
   );
+
+  if (awaitingResults(loading, user, awaitingApi)) {
+    return <Loading />;
+  }
 
   return (
     <div>

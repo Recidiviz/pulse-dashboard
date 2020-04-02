@@ -18,6 +18,10 @@
 import React, { useState, useEffect } from 'react';
 import { Bar } from 'react-chartjs-2';
 import ExportMenu from '../ExportMenu';
+import Loading from '../../Loading';
+
+import { useAuth0 } from '../../../react-auth0-spa';
+import { callMetricsApi, awaitingResults } from '../../../utils/metricsClient';
 
 import { COLORS } from '../../../assets/scripts/constants/colors';
 import {
@@ -36,8 +40,31 @@ const RevocationsByViolation = (props) => {
   const [numeratorCounts, setNumeratorCounts] = useState([]);
   const [denominatorCounts, setDenominatorCounts] = useState([]);
 
+  const { loading, user, getTokenSilently } = useAuth0();
+  const [apiData, setApiData] = useState({});
+  const [awaitingApi, setAwaitingApi] = useState(true);
+
+  const fetchChartData = async () => {
+    try {
+      const responseData = await callMetricsApi(
+        'us_mo/newRevocations/revocations_matrix_distribution_by_violation', getTokenSilently,
+      );
+      setApiData(responseData.revocations_matrix_distribution_by_violation);
+      setAwaitingApi(false);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const processResponse = () => {
-    const violationToCount = props.data.reduce(
+    if (awaitingApi || !apiData) {
+      return;
+    }
+    const filteredData = props.dataFilter(
+      apiData, props.skippedFilters, props.treatCategoryAllAsAbsent,
+    );
+
+    const violationToCount = filteredData.reduce(
       (result, {
         absconded_count: abscondedCount,
         association_count: associationCount,
@@ -109,8 +136,17 @@ const RevocationsByViolation = (props) => {
   };
 
   useEffect(() => {
+    fetchChartData();
+  }, []);
+
+  useEffect(() => {
     processResponse();
-  }, [props.data, props.metricPeriodMonths]);
+  }, [
+    apiData,
+    awaitingApi,
+    props.filterStates,
+    props.metricPeriodMonths,
+  ]);
 
   const chart = (
     <Bar
@@ -161,6 +197,10 @@ const RevocationsByViolation = (props) => {
       }}
     />
   );
+
+  if (awaitingResults(loading, user, awaitingApi)) {
+    return <Loading />;
+  }
 
   return (
     <div>

@@ -58,10 +58,17 @@ function newRevocations(req, res) {
   metricsApi.fetchNewRevocationMetrics(isDemoMode, req.params.stateCode, responder(res));
 }
 
+function newRevocationFile(req, res) {
+  metricsApi.fetchNewRevocationFile(
+    isDemoMode, req.params.stateCode, req.params.file, responder(res),
+  );
+}
+
 module.exports = {
   freeThroughRecovery,
   reincarcerations,
   revocations,
   snapshots,
   newRevocations,
+  newRevocationFile,
 };
