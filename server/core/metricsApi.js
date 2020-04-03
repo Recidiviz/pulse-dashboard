@@ -184,6 +184,8 @@ function fetchMetrics(stateCode, metricType, file, isDemo, callback) {
   const cacheKey = `${stateCode}-${metricType}-${file}`;
   console.log(`Handling call to fetch ${cacheKey} metrics...`);
 
+  // TODO: This caching approach means we are caching at both the file and metric type level,
+  // so if there's any mixing and matching we may consume double the memory.
   return memoryCache.wrap(cacheKey, (cacheCb) => {
     let fetcher = null;
     let source = null;

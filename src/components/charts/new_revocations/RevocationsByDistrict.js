@@ -43,29 +43,25 @@ const RevocationsByDistrict = (props) => {
 
   const { loading, user, getTokenSilently } = useAuth0();
   const [revocationApiData, setRevocationApiData] = useState({});
+  const [awaitingRevocationApi, setAwaitingRevocationApi] = useState(true);
   const [supervisionApiData, setSupervisionApiData] = useState({});
-  const [awaitingApi, setAwaitingApi] = useState(true);
+  const [awaitingSupervisionApi, setAwaitingSupervisionApi] = useState(true);
 
-  const fetchChartData = async () => {
+  const fetchChartData = async (file, setter, setAwaiting) => {
     try {
-      const revocationResponseData = await callMetricsApi(
-        'us_mo/newRevocations/revocations_matrix_distribution_by_district', getTokenSilently,
+      const responseData = await callMetricsApi(
+        `us_mo/newRevocations/${file}`, getTokenSilently,
       );
-      setRevocationApiData(revocationResponseData.revocations_matrix_distribution_by_district);
-
-      const supervisionResponseData = await callMetricsApi(
-        'us_mo/newRevocations/revocations_matrix_supervision_distribution_by_district', getTokenSilently,
-      );
-      setSupervisionApiData(supervisionResponseData.revocations_matrix_supervision_distribution_by_district);
-
-      setAwaitingApi(false);
+      setter(responseData[file]);
+      setAwaiting(false);
     } catch (error) {
       console.error(error);
     }
   };
 
   const processResponse = () => {
-    if (awaitingApi || (!revocationApiData && !supervisionApiData)) {
+    if (awaitingRevocationApi || awaitingSupervisionApi
+      || (!revocationApiData && !supervisionApiData)) {
       return;
     }
     const filteredRevocationData = props.dataFilter(
@@ -122,13 +118,24 @@ const RevocationsByDistrict = (props) => {
   });
 
   useEffect(() => {
-    fetchChartData();
+    fetchChartData(
+      'revocations_matrix_distribution_by_district', setRevocationApiData, setAwaitingRevocationApi,
+    );
+  }, []);
+
+  useEffect(() => {
+    fetchChartData(
+      'revocations_matrix_supervision_distribution_by_district',
+      setSupervisionApiData,
+      setAwaitingSupervisionApi,
+    );
   }, []);
 
   useEffect(() => {
     processResponse();
   }, [
-    awaitingApi,
+    awaitingRevocationApi,
+    awaitingSupervisionApi,
     revocationApiData,
     supervisionApiData,
     props.filterStates,
@@ -204,7 +211,8 @@ const RevocationsByDistrict = (props) => {
     />
   );
 
-  if (awaitingResults(loading, user, awaitingApi)) {
+  if (awaitingResults(loading, user, awaitingRevocationApi)
+    || awaitingResults(loading, user, awaitingSupervisionApi)) {
     return <Loading />;
   }
 
