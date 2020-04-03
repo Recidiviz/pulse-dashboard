@@ -104,7 +104,6 @@ const Revocations = () => {
       const responseData = await callMetricsApi(
         'us_mo/newRevocations/revocations_matrix_cells', getTokenSilently,
       );
-      setAwaitingApi(false);
 
       const districtValues = [
         ...new Set(responseData.revocations_matrix_cells
@@ -119,6 +118,7 @@ const Revocations = () => {
       ];
 
       setDistricts(districtsFromResponse);
+      setAwaitingApi(false);
     } catch (error) {
       console.error(error);
     }
