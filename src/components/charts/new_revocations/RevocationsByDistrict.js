@@ -23,7 +23,7 @@ import ExportMenu from '../ExportMenu';
 import Loading from '../../Loading';
 
 import { useAuth0 } from '../../../react-auth0-spa';
-import { callMetricsApi, awaitingResults } from '../../../utils/metricsClient';
+import { fetchChartData, awaitingResults } from '../../../utils/metricsClient';
 
 import { COLORS } from '../../../assets/scripts/constants/colors';
 import {
@@ -46,18 +46,6 @@ const RevocationsByDistrict = (props) => {
   const [awaitingRevocationApi, setAwaitingRevocationApi] = useState(true);
   const [supervisionApiData, setSupervisionApiData] = useState({});
   const [awaitingSupervisionApi, setAwaitingSupervisionApi] = useState(true);
-
-  const fetchChartData = async (file, setter, setAwaiting) => {
-    try {
-      const responseData = await callMetricsApi(
-        `us_mo/newRevocations/${file}`, getTokenSilently,
-      );
-      setter(responseData[file]);
-      setAwaiting(false);
-    } catch (error) {
-      console.error(error);
-    }
-  };
 
   const processResponse = () => {
     if (awaitingRevocationApi || awaitingSupervisionApi
@@ -119,15 +107,15 @@ const RevocationsByDistrict = (props) => {
 
   useEffect(() => {
     fetchChartData(
-      'revocations_matrix_distribution_by_district', setRevocationApiData, setAwaitingRevocationApi,
+      'us_mo', 'newRevocations', 'revocations_matrix_distribution_by_district',
+      setRevocationApiData, setAwaitingRevocationApi, getTokenSilently,
     );
   }, []);
 
   useEffect(() => {
     fetchChartData(
-      'revocations_matrix_supervision_distribution_by_district',
-      setSupervisionApiData,
-      setAwaitingSupervisionApi,
+      'us_mo', 'newRevocations', 'revocations_matrix_supervision_distribution_by_district',
+      setSupervisionApiData, setAwaitingSupervisionApi, getTokenSilently,
     );
   }, []);
 

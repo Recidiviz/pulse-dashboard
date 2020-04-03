@@ -21,7 +21,7 @@ import ExportMenu from '../ExportMenu';
 import Loading from '../../Loading';
 
 import { useAuth0 } from '../../../react-auth0-spa';
-import { callMetricsApi, awaitingResults } from '../../../utils/metricsClient';
+import { fetchChartData, awaitingResults } from '../../../utils/metricsClient';
 
 import { COLORS } from '../../../assets/scripts/constants/colors';
 import { labelCurrentMonth, currentMonthBox } from '../../../utils/charts/currentSpan';
@@ -42,18 +42,6 @@ const RevocationsOverTime = (props) => {
   const { loading, user, getTokenSilently } = useAuth0();
   const [apiData, setApiData] = useState({});
   const [awaitingApi, setAwaitingApi] = useState(true);
-
-  const fetchChartData = async () => {
-    try {
-      const responseData = await callMetricsApi(
-        'us_mo/newRevocations/revocations_matrix_by_month', getTokenSilently,
-      );
-      setApiData(responseData.revocations_matrix_by_month);
-      setAwaitingApi(false);
-    } catch (error) {
-      console.error(error);
-    }
-  };
 
   const processResponse = () => {
     if (awaitingApi || !apiData) {
@@ -84,7 +72,10 @@ const RevocationsOverTime = (props) => {
   };
 
   useEffect(() => {
-    fetchChartData();
+    fetchChartData(
+      'us_mo', 'newRevocations', 'revocations_matrix_by_month',
+      setApiData, setAwaitingApi, getTokenSilently,
+    );
   }, []);
 
   useEffect(() => {
