@@ -38,7 +38,7 @@ class SupervisionTypeToggle extends React.Component {
 
   render() {
     return (
-      <form>
+      <form data-testid="supervisionTypeToggle">
         <div className="form-check">
           <label>
             <input

@@ -38,7 +38,7 @@ class MetricPeriodToggle extends React.Component {
 
   render() {
     return (
-      <form>
+      <form data-testid="metricPeriodToggle">
         <div className="form-check form-check-inline">
           <label>
             <input

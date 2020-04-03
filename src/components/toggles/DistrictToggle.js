@@ -86,7 +86,7 @@ class DistrictToggle extends React.Component {
 
   render() {
     return (
-      <form>
+      <form data-testid="districtToggle">
         <this.DistrictList />
       </form>
     );
