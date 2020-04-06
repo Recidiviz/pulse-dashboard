@@ -4,7 +4,8 @@
     "react/jsx-filename-extension": ["error", { "extensions": [".js"] }],
     "import/no-extraneous-dependencies": ["error", { "packageDir": "./" }],
     "no-new": 1,
-    "react/jsx-props-no-spreading": 0
+    "react/jsx-props-no-spreading": 0,
+    "func-names": 0
   },
   "env": {
     "browser": true,
