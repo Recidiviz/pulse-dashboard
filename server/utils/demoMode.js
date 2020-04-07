@@ -20,7 +20,7 @@
  */
 
 function isDemoMode() {
-  return process.env.IS_DEMO === 'true';
+  return process.env.IS_DEMO === "true";
 }
 
 module.exports = {

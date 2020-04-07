@@ -22,7 +22,7 @@
  * auth configuration in environment variables as described in the README.
  */
 
-const { Storage } = require('@google-cloud/storage');
+const { Storage } = require("@google-cloud/storage");
 
 /**
  * Asynchronously downloads the file in the given bucket with the given file name.
