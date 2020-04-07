@@ -32,8 +32,11 @@ const objectStorage = require('./objectStorage');
 
 const BUCKET_NAME = process.env.METRIC_BUCKET;
 const METRIC_CACHE_TTL_SECONDS = 60 * 60; // Expire items in the cache after 1 hour
+const METRIC_REFRESH_SECONDS = 60 * 10;
 
-const memoryCache = cacheManager.caching({ store: 'memory', ttl: METRIC_CACHE_TTL_SECONDS });
+const memoryCache = cacheManager.caching(
+  { store: 'memory', ttl: METRIC_CACHE_TTL_SECONDS, refreshThreshold: METRIC_REFRESH_SECONDS },
+);
 const asyncReadFile = util.promisify(fs.readFile);
 
 const FILES_BY_METRIC_TYPE = {
@@ -184,8 +187,6 @@ function fetchMetrics(stateCode, metricType, file, isDemo, callback) {
   const cacheKey = `${stateCode}-${metricType}-${file}`;
   console.log(`Handling call to fetch ${cacheKey} metrics...`);
 
-  // TODO: This caching approach means we are caching at both the file and metric type level,
-  // so if there's any mixing and matching we may consume double the memory.
   return memoryCache.wrap(cacheKey, (cacheCb) => {
     let fetcher = null;
     let source = null;
@@ -197,18 +198,18 @@ function fetchMetrics(stateCode, metricType, file, isDemo, callback) {
       fetcher = fetchMetricsFromGCS;
     }
 
-    console.log(`Fetching ${metricType} metrics for state ${stateCode} from ${source}...`);
+    console.log(`Fetching ${cacheKey} metrics from ${source}...`);
     const metricPromises = fetcher(stateCode.toUpperCase(), metricType, file);
 
     Promise.all(metricPromises).then((allFileContents) => {
       const results = {};
       allFileContents.forEach((contents) => {
-        console.log(`Fetched contents for fileKey: ${contents.fileKey}`);
+        console.log(`Fetched contents for fileKey ${contents.fileKey}`);
         const deserializedFile = convertDownloadToJson(contents.contents);
         results[contents.fileKey] = deserializedFile;
       });
 
-      console.log(`Fetched all ${metricType} metrics for state ${stateCode} from ${source}`);
+      console.log(`Fetched all ${cacheKey} metrics from ${source}`);
       cacheCb(null, results);
     });
   }, callback);

@@ -99,9 +99,6 @@ app.get("/_ah/warmup", () => {
   console.log("Responding to warmup request...");
 });
 
-// Starts the background task for refresh metrics regularly
-require("./server/core/metricsRefresh");
-
 const server = http.createServer(app);
 
 /**
