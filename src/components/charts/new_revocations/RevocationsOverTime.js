@@ -78,6 +78,8 @@ const RevocationsOverTime = (props) => {
     borderWidth: 2,
     data: chartDataPoints,
   }];
+  const maxElement = Math.max.apply(Math, chartDataPoints);
+  const maxValue = maxElement <= 3 ? 5 : maxElement;
 
   const chart = (
     <Line
@@ -105,6 +107,12 @@ const RevocationsOverTime = (props) => {
             },
             ticks: {
               min: 0,
+              callback(value) {
+                if (value % 1 === 0) {
+                  return value;
+                }
+              },
+              suggestedMax: maxValue,
             },
           }],
         },
