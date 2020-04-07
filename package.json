@@ -76,7 +76,8 @@
     "react-tooltip": "^3.11.1",
     "reactstrap": "^8.0.0",
     "skycons": "^1.0.0",
-    "typescript": "^3.8.3"
+    "typescript": "^3.8.3",
+    "jest-environment-jsdom-sixteen": "^1.0.3"
   },
   "devDependencies": {
     "@testing-library/dom": "^7.0.4",

@@ -9,6 +9,7 @@ public/
 !server.js
 !src/components/toggles/__tests__/MetricPeriodToggle.test.js
 !src/components/toggles/__tests__/MetricTypeToggle.test.js
+!src/components/toggles/__tests__/SupervisionTypeToggle.test.js
 !src/components/toggles/__tests__/ToggleBar.test.js
 !src/utils/charts/info.js
 !src/utils/charts/__tests__/choropleth.test.js
