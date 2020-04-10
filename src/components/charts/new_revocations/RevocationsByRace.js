@@ -18,6 +18,10 @@
 import React, { useState, useEffect } from 'react';
 import { Bar } from 'react-chartjs-2';
 import ExportMenu from '../ExportMenu';
+import Loading from '../../Loading';
+
+import { useAuth0 } from '../../../react-auth0-spa';
+import { fetchChartData, awaitingResults } from '../../../utils/metricsClient';
 
 import { COLORS, COLORS_LANTERN_SET } from '../../../assets/scripts/constants/colors';
 import {
@@ -37,26 +41,37 @@ const RevocationsByRace = (props) => {
   const [numeratorCounts, setNumeratorCounts] = useState([]);
   const [denominatorCounts, setDenominatorCounts] = useState([]);
 
-  const getRevocationsForRiskLevel = (forRace) => RISK_LEVELS.map((riskLevel) => (
-    props.data
+  const { loading, user, getTokenSilently } = useAuth0();
+  const [apiData, setApiData] = useState({});
+  const [awaitingApi, setAwaitingApi] = useState(true);
+
+  const getRevocationsForRiskLevel = (forRace, filteredData) => RISK_LEVELS.map((riskLevel) => (
+    filteredData
       .filter(({ race, risk_level: dataRiskLevel }) => race === forRace && dataRiskLevel === riskLevel)
       .reduce((result, { population_count: populationCount }) => result += toInt(populationCount), 0)
   ));
 
-  const getSupervisionCountsForRiskLevel = (forRace) => RISK_LEVELS.map((riskLevel) => (
-    props.data
+  const getSupervisionCountsForRiskLevel = (forRace, filteredData) => RISK_LEVELS.map((riskLevel) => (
+    filteredData
       .filter(({ race, risk_level: dataRiskLevel }) => race === forRace && dataRiskLevel === riskLevel)
       .reduce((result, { total_supervision_count: totalSupervisionCount }) => result += toInt(totalSupervisionCount), 0)
   ));
 
   const processResponse = () => {
-    const revocationsByRace = props.data.reduce(
+    if (awaitingApi || !apiData) {
+      return;
+    }
+    const filteredData = props.dataFilter(
+      apiData, props.skippedFilters, props.treatCategoryAllAsAbsent,
+    );
+
+    const revocationsByRace = filteredData.reduce(
       (result, { race, population_count: populationCount }) => {
         return { ...result, [race]: (result[race] || 0) + (toInt(populationCount) || 0) };
       }, {},
     );
 
-    const supervisionCountsByRace = props.data.reduce(
+    const supervisionCountsByRace = filteredData.reduce(
       (result, { race, total_supervision_count: totalSupervisionCount }) => {
         return { ...result, [race]: (result[race] || 0) + (toInt(totalSupervisionCount) || 0) };
       }, {},
@@ -70,8 +85,8 @@ const RevocationsByRace = (props) => {
       return (100 * (revocations / supervisionCount)).toFixed(2);
     };
 
-    const revocations = RACES.map((race) => [revocationsByRace[race], ...getRevocationsForRiskLevel(race)]);
-    const supervisionCounts = RACES.map((race) => [supervisionCountsByRace[race], ...getSupervisionCountsForRiskLevel(race)]);
+    const revocations = RACES.map((race) => [revocationsByRace[race], ...getRevocationsForRiskLevel(race, filteredData)]);
+    const supervisionCounts = RACES.map((race) => [supervisionCountsByRace[race], ...getSupervisionCountsForRiskLevel(race, filteredData)]);
 
     const dataPoints = [];
     for (let i = 0; i < revocations.length; i += 1) {
@@ -87,9 +102,18 @@ const RevocationsByRace = (props) => {
   };
 
   useEffect(() => {
+    fetchChartData(
+      'us_mo', 'newRevocations', 'revocations_matrix_distribution_by_race',
+      setApiData, setAwaitingApi, getTokenSilently,
+    );
+  }, []);
+
+  useEffect(() => {
     processResponse();
   }, [
-    props.data,
+    apiData,
+    awaitingApi,
+    props.filterStates,
     props.metricPeriodMonths,
   ]);
 
@@ -170,6 +194,10 @@ const RevocationsByRace = (props) => {
       }}
     />
   );
+
+  if (awaitingResults(loading, user, awaitingApi)) {
+    return <Loading />;
+  }
 
   return (
     <div>

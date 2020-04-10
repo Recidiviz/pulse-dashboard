@@ -38,6 +38,19 @@ async function callMetricsApi(endpoint, getTokenSilently) {
   }
 }
 
+const fetchChartData = async (stateCode, metricType, file,
+    setApiResponse, setAwaitingFlag, getTokenSilently) => {
+  try {
+    const responseData = await callMetricsApi(
+      `${stateCode.toLowerCase()}/${metricType}/${file}`, getTokenSilently,
+    );
+    setApiResponse(responseData[file]);
+    setAwaitingFlag(false);
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 /**
  * A convenience function returning whether or not the client is still awaiting what it needs to
  * display results to the user. We are ready if we are no longer loading the view, if we are no
@@ -49,5 +62,6 @@ function awaitingResults(loading, user, awaitingApi) {
 
 export {
   callMetricsApi,
+  fetchChartData,
   awaitingResults,
 };

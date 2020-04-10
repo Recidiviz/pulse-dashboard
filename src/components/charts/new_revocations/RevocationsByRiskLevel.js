@@ -18,6 +18,10 @@
 import React, { useState, useEffect } from 'react';
 import { Bar } from 'react-chartjs-2';
 import ExportMenu from '../ExportMenu';
+import Loading from '../../Loading';
+
+import { useAuth0 } from '../../../react-auth0-spa';
+import { fetchChartData, awaitingResults } from '../../../utils/metricsClient';
 
 import { COLORS } from '../../../assets/scripts/constants/colors';
 import {
@@ -36,14 +40,25 @@ const RevocationsByRiskLevel = (props) => {
   const [numeratorCounts, setNumeratorCounts] = useState([]);
   const [denominatorCounts, setDenominatorCounts] = useState([]);
 
+  const { loading, user, getTokenSilently } = useAuth0();
+  const [apiData, setApiData] = useState({});
+  const [awaitingApi, setAwaitingApi] = useState(true);
+
   const processResponse = () => {
-    const revocationsByRiskLevel = props.data.reduce(
+    if (awaitingApi || !apiData) {
+      return;
+    }
+    const filteredData = props.dataFilter(
+      apiData, props.skippedFilters, props.treatCategoryAllAsAbsent,
+    );
+
+    const revocationsByRiskLevel = filteredData.reduce(
       (result, { risk_level: riskLevel, population_count: populationCount }) => {
         return { ...result, [riskLevel]: (result[riskLevel] || 0) + (toInt(populationCount) || 0) };
       }, {},
     );
 
-    const supervisionCountsByRiskLevel = props.data.reduce(
+    const supervisionCountsByRiskLevel = filteredData.reduce(
       (result, { risk_level: riskLevel, total_supervision_count: totalSupervisionCount }) => {
         return { ...result, [riskLevel]: (result[riskLevel] || 0) + (toInt(totalSupervisionCount) || 0) };
       }, {},
@@ -77,9 +92,18 @@ const RevocationsByRiskLevel = (props) => {
   };
 
   useEffect(() => {
+    fetchChartData(
+      'us_mo', 'newRevocations', 'revocations_matrix_distribution_by_risk_level',
+      setApiData, setAwaitingApi, getTokenSilently,
+    );
+  }, []);
+
+  useEffect(() => {
     processResponse();
   }, [
-    props.data,
+    apiData,
+    awaitingApi,
+    props.filterStates,
     props.metricPeriodMonths,
   ]);
 
@@ -132,6 +156,10 @@ const RevocationsByRiskLevel = (props) => {
       }}
     />
   );
+
+  if (awaitingResults(loading, user, awaitingApi)) {
+    return <Loading />;
+  }
 
   return (
     <div>

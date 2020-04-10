@@ -18,6 +18,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 
 import ExportMenu from '../ExportMenu';
+import Loading from '../../Loading';
+
+import { useAuth0 } from '../../../react-auth0-spa';
+import { fetchChartData, awaitingResults } from '../../../utils/metricsClient';
 
 import { COLORS } from '../../../assets/scripts/constants/colors';
 import parseViolationRecord from '../../../utils/charts/parseViolationRecord';
@@ -42,10 +46,23 @@ const CaseTable = (props) => {
   const [index, setIndex] = useState(0);
   const [countData, setCountData] = useState(0);
 
+  const { loading, user, getTokenSilently } = useAuth0();
+  const [apiData, setApiData] = useState({});
+  const [awaitingApi, setAwaitingApi] = useState(true);
+
+  useEffect(() => {
+    fetchChartData(
+      'us_mo', 'newRevocations', 'revocations_matrix_filtered_caseload',
+      setApiData, setAwaitingApi, getTokenSilently,
+    );
+  }, []);
+
   const updatePage = (change) => {
     (beginning === 0) ? setIndex(1) : setIndex(index + change);
   };
 
+  // TODO: After moving the API call inside this component, the pagination protections are not
+  // working exactly as intended. We are relying on the commented safe-guard near the end only.
   const prevCount = usePrevious(countData);
 
   function usePrevious(value) {
@@ -58,14 +75,20 @@ const CaseTable = (props) => {
     return ref.current;
   }
 
-  const { data } = props;
   useEffect(() => {
-    setCountData(props.data.length);
+    setCountData(apiData.length);
   });
 
+  if (awaitingResults(loading, user, awaitingApi)) {
+    return <Loading />;
+  }
+
+  const filteredData = props.dataFilter(
+    apiData, props.skippedFilters, props.treatCategoryAllAsAbsent,
+  );
 
   // Sort case load first by district, second by officer name, third by person id (all ascending)
-  const caseLoad = data.sort((a, b) => {
+  const caseLoad = filteredData.sort((a, b) => {
     // Sort by district, with undefined districts to the bottom
     if (!a.district && b.district) return 1;
     if (!b.district && a.district) return -1;
@@ -90,10 +113,16 @@ const CaseTable = (props) => {
     return 0;
   });
 
+  let beginning = (countData !== prevCount) ? 0 : index * CASES_PER_PAGE ;
+  let end = beginning + CASES_PER_PAGE < filteredData.length
+    ? (beginning + CASES_PER_PAGE) : filteredData.length;
 
-  const beginning = (countData !== prevCount) ? 0 : index * CASES_PER_PAGE ;
-  const end = beginning + CASES_PER_PAGE < data.length
-    ? (beginning + CASES_PER_PAGE) : data.length;
+  // Extra safe-guard against non-sensical pagination results
+  if (beginning >= end) {
+    beginning = 0;
+    end = beginning + CASES_PER_PAGE;
+  }
+
   const page = caseLoad.slice(beginning, end);
 
   const normalizeLabel = (label) => (label ? humanReadableTitleCase(label) : '');
@@ -141,13 +170,13 @@ const CaseTable = (props) => {
           ))}
         </tbody>
       </table>
-      {props.data.length > CASES_PER_PAGE && (
+      {filteredData.length > CASES_PER_PAGE && (
         <div className="table-navigation fs-block">
           {beginning !== 0 &&
             <button onClick={(e) => updatePage(-1)}>&#10094;</button>
           }
-          Showing {beginning + 1} {beginning + 1 !== end && <> - {end} </>} of {props.data.length}
-          {end < props.data.length &&
+          Showing {beginning + 1} {beginning + 1 !== end && <> - {end} </>} of {filteredData.length}
+          {end < filteredData.length &&
             <button onClick={(e) => updatePage(1)}>&#10095;</button>
           }
         </div>

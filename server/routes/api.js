@@ -20,8 +20,8 @@
  * in server.js.
  */
 
-const metricsApi = require('../core/metricsApi');
-const demoMode = require('../utils/demoMode');
+const metricsApi = require("../core/metricsApi");
+const demoMode = require("../utils/demoMode");
 
 const isDemoMode = demoMode.isDemoMode();
 
@@ -38,24 +38,55 @@ function responder(res) {
   };
 }
 
+// TODO: Generalize this API to take in the metric type and file as request parameters in all calls
+
 function freeThroughRecovery(req, res) {
-  metricsApi.fetchFreeThroughRecoveryMetrics(isDemoMode, req.params.stateCode, responder(res));
+  metricsApi.fetchFreeThroughRecoveryMetrics(
+    isDemoMode,
+    req.params.stateCode,
+    responder(res)
+  );
 }
 
 function reincarcerations(req, res) {
-  metricsApi.fetchReincarcerationMetrics(isDemoMode, req.params.stateCode, responder(res));
+  metricsApi.fetchReincarcerationMetrics(
+    isDemoMode,
+    req.params.stateCode,
+    responder(res)
+  );
 }
 
 function revocations(req, res) {
-  metricsApi.fetchRevocationMetrics(isDemoMode, req.params.stateCode, responder(res));
+  metricsApi.fetchRevocationMetrics(
+    isDemoMode,
+    req.params.stateCode,
+    responder(res)
+  );
 }
 
 function snapshots(req, res) {
-  metricsApi.fetchSnapshotMetrics(isDemoMode, req.params.stateCode, responder(res));
+  metricsApi.fetchSnapshotMetrics(
+    isDemoMode,
+    req.params.stateCode,
+    responder(res)
+  );
 }
 
 function newRevocations(req, res) {
-  metricsApi.fetchNewRevocationMetrics(isDemoMode, req.params.stateCode, responder(res));
+  metricsApi.fetchNewRevocationMetrics(
+    isDemoMode,
+    req.params.stateCode,
+    responder(res)
+  );
+}
+
+function newRevocationFile(req, res) {
+  metricsApi.fetchNewRevocationFile(
+    isDemoMode,
+    req.params.stateCode,
+    req.params.file,
+    responder(res)
+  );
 }
 
 module.exports = {
@@ -64,4 +95,5 @@ module.exports = {
   revocations,
   snapshots,
   newRevocations,
+  newRevocationFile,
 };

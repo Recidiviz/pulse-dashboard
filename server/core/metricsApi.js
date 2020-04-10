@@ -32,8 +32,11 @@ const objectStorage = require('./objectStorage');
 
 const BUCKET_NAME = process.env.METRIC_BUCKET;
 const METRIC_CACHE_TTL_SECONDS = 60 * 60; // Expire items in the cache after 1 hour
+const METRIC_REFRESH_SECONDS = 60 * 10;
 
-const memoryCache = cacheManager.caching({ store: 'memory', ttl: METRIC_CACHE_TTL_SECONDS });
+const memoryCache = cacheManager.caching(
+  { store: 'memory', ttl: METRIC_CACHE_TTL_SECONDS, refreshThreshold: METRIC_REFRESH_SECONDS },
+);
 const asyncReadFile = util.promisify(fs.readFile);
 
 const FILES_BY_METRIC_TYPE = {
@@ -111,6 +114,20 @@ function convertDownloadToJson(contents) {
   return jsonObject;
 }
 
+function filesForMetricType(metricType, file) {
+  const files = FILES_BY_METRIC_TYPE[metricType];
+
+  if (file) {
+    const normalizedFile = `${file}.json`;
+    if (files.indexOf(normalizedFile) > -1) {
+      return [normalizedFile];
+    }
+    throw new Error(`Metric file ${normalizedFile} not registered for metric type ${metricType}`);
+  }
+
+  return files;
+}
+
 /**
  * Retrieves all metric files for the given metric type from Google Cloud Storage.
  *
@@ -118,11 +135,13 @@ function convertDownloadToJson(contents) {
  * eventually return either an error or an object with two keys:
  *   - `fileKey`: a unique key for identifying the metric file, e.g. 'revocations_by_month'
  *   - `contents`: the contents of the file deserialized into JS objects/arrays
+ *   - `file`: (optional) a specific metric file under this metric type to request. If absent,
+ *             requests all files for the given metric type.
  */
-function fetchMetricsFromGCS(stateCode, metricType) {
+function fetchMetricsFromGCS(stateCode, metricType, file) {
   const promises = [];
 
-  const files = FILES_BY_METRIC_TYPE[metricType];
+  const files = filesForMetricType(metricType, file);
   files.forEach((filename) => {
     const fileKey = filename.replace('.json', '');
     promises.push(objectStorage.downloadFile(BUCKET_NAME, stateCode, filename)
@@ -132,10 +151,14 @@ function fetchMetricsFromGCS(stateCode, metricType) {
   return promises;
 }
 
-function fetchMetricsFromLocal(stateCode, metricType) {
+/**
+ * This is a parallel to fetchMetricsFromGCS, but instead fetches metric files from the local
+ * file system.
+ */
+function fetchMetricsFromLocal(stateCode, metricType, file) {
   const promises = [];
 
-  const files = FILES_BY_METRIC_TYPE[metricType];
+  const files = filesForMetricType(metricType, file);
   files.forEach((filename) => {
     const fileKey = filename.replace('.json', '');
     const filePath = path.resolve(__dirname, `./demo_data/${filename}`);
@@ -160,10 +183,10 @@ function fetchMetricsFromLocal(stateCode, metricType) {
  * If we are in demo mode, then fetches the files from a static directory, /server/core/demo_data/.
  * Otherwise, fetches from Google Cloud Storage.
  */
-function fetchMetrics(stateCode, metricType, isDemo, callback) {
-  console.log(`Handling call to fetch ${metricType} metrics for state ${stateCode}...`);
+function fetchMetrics(stateCode, metricType, file, isDemo, callback) {
+  const cacheKey = `${stateCode}-${metricType}-${file}`;
+  console.log(`Handling call to fetch ${cacheKey} metrics...`);
 
-  const cacheKey = `${stateCode}-${metricType}`;
   return memoryCache.wrap(cacheKey, (cacheCb) => {
     let fetcher = null;
     let source = null;
@@ -175,41 +198,45 @@ function fetchMetrics(stateCode, metricType, isDemo, callback) {
       fetcher = fetchMetricsFromGCS;
     }
 
-    console.log(`Fetching ${metricType} metrics for state ${stateCode} from ${source}...`);
-    const metricPromises = fetcher(stateCode.toUpperCase(), metricType);
+    console.log(`Fetching ${cacheKey} metrics from ${source}...`);
+    const metricPromises = fetcher(stateCode.toUpperCase(), metricType, file);
 
     Promise.all(metricPromises).then((allFileContents) => {
       const results = {};
       allFileContents.forEach((contents) => {
-        console.log(`Fetched contents for fileKey: ${contents.fileKey}`);
+        console.log(`Fetched contents for fileKey ${contents.fileKey}`);
         const deserializedFile = convertDownloadToJson(contents.contents);
         results[contents.fileKey] = deserializedFile;
       });
 
-      console.log(`Fetched all ${metricType} metrics for state ${stateCode} from ${source}`);
+      console.log(`Fetched all ${cacheKey} metrics from ${source}`);
       cacheCb(null, results);
     });
   }, callback);
 }
 
 function fetchSnapshotMetrics(isDemo, stateCode, callback) {
-  return fetchMetrics(stateCode, 'snapshot', isDemo, callback);
+  return fetchMetrics(stateCode, 'snapshot', null, isDemo, callback);
 }
 
 function fetchReincarcerationMetrics(isDemo, stateCode, callback) {
-  return fetchMetrics(stateCode, 'reincarceration', isDemo, callback);
+  return fetchMetrics(stateCode, 'reincarceration', null, isDemo, callback);
 }
 
 function fetchRevocationMetrics(isDemo, stateCode, callback) {
-  return fetchMetrics(stateCode, 'revocation', isDemo, callback);
+  return fetchMetrics(stateCode, 'revocation', null, isDemo, callback);
 }
 
 function fetchFreeThroughRecoveryMetrics(isDemo, stateCode, callback) {
-  return fetchMetrics(stateCode, 'freeThroughRecovery', isDemo, callback);
+  return fetchMetrics(stateCode, 'freeThroughRecovery', null, isDemo, callback);
 }
 
 function fetchNewRevocationMetrics(isDemo, stateCode, callback) {
-  return fetchMetrics(stateCode, 'newRevocation', isDemo, callback);
+  return fetchMetrics(stateCode, 'newRevocation', null, isDemo, callback);
+}
+
+function fetchNewRevocationFile(isDemo, stateCode, file, callback) {
+  return fetchMetrics(stateCode, 'newRevocation', file, isDemo, callback);
 }
 
 module.exports = {
@@ -218,4 +245,5 @@ module.exports = {
   fetchRevocationMetrics,
   fetchSnapshotMetrics,
   fetchNewRevocationMetrics,
+  fetchNewRevocationFile,
 };

@@ -85,7 +85,6 @@ const CHARTS = ['District', 'Risk level', 'Violation', 'Gender', 'Race'];
 
 const Revocations = () => {
   const { loading, user, getTokenSilently } = useAuth0();
-  const [apiData, setApiData] = useState({});
   const [awaitingApi, setAwaitingApi] = useState(true);
 
   const [districts, setDistricts] = useState([]);
@@ -102,9 +101,9 @@ const Revocations = () => {
 
   const fetchChartData = async () => {
     try {
-      const responseData = await callMetricsApi('us_mo/newRevocations', getTokenSilently);
-      setApiData(responseData);
-      setAwaitingApi(false);
+      const responseData = await callMetricsApi(
+        'us_mo/newRevocations/revocations_matrix_cells', getTokenSilently,
+      );
 
       const districtValues = [
         ...new Set(responseData.revocations_matrix_cells
@@ -119,6 +118,7 @@ const Revocations = () => {
       ];
 
       setDistricts(districtsFromResponse);
+      setAwaitingApi(false);
     } catch (error) {
       console.error(error);
     }
@@ -237,46 +237,68 @@ const Revocations = () => {
     return filteredData;
   };
 
+  const riskLevelChart = (
+    <RevocationsByRiskLevel
+      dataFilter={applyAllFilters}
+      filterStates={filters}
+      metricPeriodMonths={filters.metricPeriodMonths}
+    />
+  );
+
+  const violationChart = (
+    <RevocationsByViolation
+      dataFilter={applyAllFilters}
+      filterStates={filters}
+      metricPeriodMonths={filters.metricPeriodMonths}
+    />
+  );
+
+  const genderChart = (
+    <RevocationsByGender
+      dataFilter={applyAllFilters}
+      filterStates={filters}
+      metricPeriodMonths={filters.metricPeriodMonths}
+    />
+  );
+
+  const raceChart = (
+    <RevocationsByRace
+      dataFilter={applyAllFilters}
+      filterStates={filters}
+      metricPeriodMonths={filters.metricPeriodMonths}
+    />
+  );
+
+  const districtChart = (
+    <RevocationsByDistrict
+      dataFilter={applyAllFilters}
+      skippedFilters={['district']}
+      filterStates={filters}
+      metricPeriodMonths={filters.metricPeriodMonths}
+      currentDistrict={filters.district}
+    />
+  );
+
+  // This will ensure that we proactively load each chart component and their data now, but only
+  // display the selected chart
+  const conditionallyHide = (selectedChart, chartName, chartComponent, index) => {
+    const shouldBeHidden = selectedChart !== chartName;
+    const divStyle = shouldBeHidden ? {display: 'none'} : {};
+    return (
+      <div key={index} style={divStyle}>
+        {chartComponent}
+      </div>
+    );
+  }
+
   const renderSelectedChart = () => {
-    switch (selectedChart) {
-      case 'Risk level':
-        return (
-          <RevocationsByRiskLevel
-            data={applyAllFilters(apiData.revocations_matrix_distribution_by_risk_level)}
-            metricPeriodMonths={filters.metricPeriodMonths}
-          />
-        );
-      case 'Violation':
-        return (
-          <RevocationsByViolation
-            data={applyAllFilters(apiData.revocations_matrix_distribution_by_violation)}
-            metricPeriodMonths={filters.metricPeriodMonths}
-          />
-        );
-      case 'Gender':
-        return (
-          <RevocationsByGender
-            data={applyAllFilters(apiData.revocations_matrix_distribution_by_gender)}
-            metricPeriodMonths={filters.metricPeriodMonths}
-          />
-        );
-      case 'Race':
-        return (
-          <RevocationsByRace
-            data={applyAllFilters(apiData.revocations_matrix_distribution_by_race)}
-            metricPeriodMonths={filters.metricPeriodMonths}
-          />
-        );
-      default:
-        return (
-          <RevocationsByDistrict
-            data={applyAllFilters(apiData.revocations_matrix_distribution_by_district, ['district'])}
-            supervisionPopulation={applyAllFilters(apiData.revocations_matrix_supervision_distribution_by_district, ['district'])}
-            metricPeriodMonths={filters.metricPeriodMonths}
-            currentDistrict={filters.district}
-          />
-        );
-    }
+    return [
+      conditionallyHide(selectedChart, 'Risk level', riskLevelChart, 0),
+      conditionallyHide(selectedChart, 'Violation', violationChart, 1),
+      conditionallyHide(selectedChart, 'Gender', genderChart, 2),
+      conditionallyHide(selectedChart, 'Race', raceChart, 3),
+      conditionallyHide(selectedChart, 'District', districtChart, 4),
+    ];
   };
 
   if (awaitingResults(loading, user, awaitingApi)) {
@@ -327,14 +349,17 @@ const Revocations = () => {
       </Sticky>
       <div className="bgc-white p-20 m-20">
         <RevocationCountOverTime
-          data={applyAllFilters(apiData.revocations_matrix_by_month, ['metricPeriodMonths'])}
+          dataFilter={applyAllFilters}
+          skippedFilters={['metricPeriodMonths']}
+          filterStates={filters}
           metricPeriodMonths={filters.metricPeriodMonths}
         />
       </div>
       <div className="d-f m-20 container-all-charts">
           <div className="matrix-container bgc-white p-20 mR-20">
             <RevocationMatrix
-              data={applyTopLevelFilters(apiData.revocations_matrix_cells)}
+              dataFilter={applyTopLevelFilters}
+              filterStates={filters}
               filters={filters}
               updateFilters={updateFilters}
               metricPeriodMonths={filters.metricPeriodMonths}
@@ -395,7 +420,9 @@ const Revocations = () => {
       </div>
       <div className="bgc-white m-20 p-20">
         <CaseTable
-          data={applyAllFilters(apiData.revocations_matrix_filtered_caseload, [], true)}
+          dataFilter={applyAllFilters}
+          treatCategoryAllAsAbsent={true}
+          filterStates={filters}
           metricPeriodMonths={filters.metricPeriodMonths}
         />
       </div>

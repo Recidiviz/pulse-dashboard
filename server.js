@@ -86,6 +86,11 @@ app.get("/api/:stateCode/reincarcerations", checkJwt, api.reincarcerations);
 app.get("/api/:stateCode/revocations", checkJwt, api.revocations);
 app.get("/api/:stateCode/snapshots", checkJwt, api.snapshots);
 app.get("/api/:stateCode/newRevocations", checkJwt, api.newRevocations);
+app.get(
+  "/api/:stateCode/newRevocations/:file",
+  checkJwt,
+  api.newRevocationFile
+);
 
 // An App Engine-specific API for handling warmup requests on new instance initialization
 app.get("/_ah/warmup", () => {
@@ -93,9 +98,6 @@ app.get("/_ah/warmup", () => {
   // eslint-disable-next-line no-console
   console.log("Responding to warmup request...");
 });
-
-// Starts the background task for refresh metrics regularly
-require("./server/core/metricsRefresh");
 
 const server = http.createServer(app);
 

@@ -7,6 +7,9 @@ public/
 
 # whitelist files/directories for linting. eventually everything will be linted and these can be removed
 !server.js
+!server/core/objectStorage.js
+!server/routes/*.js
+!server/utils/*.js
 !src/components/toggles/__tests__/MetricPeriodToggle.test.js
 !src/components/toggles/__tests__/MetricTypeToggle.test.js
 !src/components/toggles/__tests__/SupervisionTypeToggle.test.js

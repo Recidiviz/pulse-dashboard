@@ -18,6 +18,10 @@
 import React, { useState, useEffect } from 'react';
 import { Line } from 'react-chartjs-2';
 import ExportMenu from '../ExportMenu';
+import Loading from '../../Loading';
+
+import { useAuth0 } from '../../../react-auth0-spa';
+import { fetchChartData, awaitingResults } from '../../../utils/metricsClient';
 
 import { COLORS } from '../../../assets/scripts/constants/colors';
 import { labelCurrentMonth, currentMonthBox } from '../../../utils/charts/currentSpan';
@@ -29,20 +33,25 @@ import { sortFilterAndSupplementMostRecentMonths } from '../../../utils/transfor
 import { toInt } from '../../../utils/transforms/labels';
 import { monthNamesAllWithYearsFromNumbers } from '../../../utils/transforms/months';
 
+const chartId = 'revocationsOverTime';
+
 const RevocationsOverTime = (props) => {
   const [chartLabels, setChartLabels] = useState([]);
   const [chartDataPoints, setChartDataPoints] = useState([]);
 
-  const chartId = 'revocationsOverTime';
+  const { loading, user, getTokenSilently } = useAuth0();
+  const [apiData, setApiData] = useState({});
+  const [awaitingApi, setAwaitingApi] = useState(true);
 
   const processResponse = () => {
-    if (!props.data) {
+    if (awaitingApi || !apiData) {
       return;
     }
+    const filteredData = props.dataFilter(
+      apiData, props.skippedFilters, props.treatCategoryAllAsAbsent,
+    );
 
-    const { data: countsByMonth } = props;
-
-    const yearAndMonthToCount = countsByMonth.reduce(
+    const yearAndMonthToCount = filteredData.reduce(
       (result, { year, month, total_revocations: totalRevocations }) => {
         return { ...result, [`${year}:${month}`]: (result[`${year}:${month}`] || 0) + (toInt(totalRevocations) || 0) };
       }, {},
@@ -63,9 +72,18 @@ const RevocationsOverTime = (props) => {
   };
 
   useEffect(() => {
+    fetchChartData(
+      'us_mo', 'newRevocations', 'revocations_matrix_by_month',
+      setApiData, setAwaitingApi, getTokenSilently,
+    );
+  }, []);
+
+  useEffect(() => {
     processResponse();
   }, [
-    props.data,
+    apiData,
+    awaitingApi,
+    props.filterStates,
     props.metricPeriodMonths,
   ]);
 
@@ -127,6 +145,10 @@ const RevocationsOverTime = (props) => {
       }}
     />
   );
+
+  if (awaitingResults(loading, user, awaitingApi)) {
+    return <Loading />;
+  }
 
   return (
     <div>

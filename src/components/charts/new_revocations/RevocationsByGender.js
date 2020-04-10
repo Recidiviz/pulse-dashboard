@@ -18,6 +18,10 @@
 import React, { useState, useEffect } from 'react';
 import { Bar } from 'react-chartjs-2';
 import ExportMenu from '../ExportMenu';
+import Loading from '../../Loading';
+
+import { useAuth0 } from '../../../react-auth0-spa';
+import { fetchChartData, awaitingResults } from '../../../utils/metricsClient';
 
 import { COLORS } from '../../../assets/scripts/constants/colors';
 import {
@@ -37,14 +41,18 @@ const RevocationsByGender = (props) => {
   const [numeratorCounts, setNumeratorCounts] = useState([]);
   const [denominatorCounts, setDenominatorCounts] = useState([]);
 
-  const getRevocationsForRiskLevel = (forGender) => RISK_LEVELS.map((riskLevel) => (
-    props.data
+  const { loading, user, getTokenSilently } = useAuth0();
+  const [apiData, setApiData] = useState({});
+  const [awaitingApi, setAwaitingApi] = useState(true);
+
+  const getRevocationsForRiskLevel = (forGender, filteredData) => RISK_LEVELS.map((riskLevel) => (
+    filteredData
       .filter(({ gender, risk_level: dataRiskLevel }) => gender === forGender && dataRiskLevel === riskLevel)
       .reduce((result, { population_count: populationCount }) => result += toInt(populationCount), 0)
   ));
 
-  const getSupervisionCountsForRiskLevel = (forGender) => RISK_LEVELS.map((riskLevel) => (
-    props.data
+  const getSupervisionCountsForRiskLevel = (forGender, filteredData) => RISK_LEVELS.map((riskLevel) => (
+    filteredData
       .filter(({ gender, risk_level: dataRiskLevel }) => gender === forGender && dataRiskLevel === riskLevel)
       .reduce((result, { total_supervision_count: totalSupervisionCount }) => result += toInt(totalSupervisionCount), 0)
   ));
@@ -58,20 +66,27 @@ const RevocationsByGender = (props) => {
   };
 
   const processResponse = () => {
-    const revocationsByGender = props.data.reduce(
+    if (awaitingApi || !apiData) {
+      return;
+    }
+    const filteredData = props.dataFilter(
+      apiData, props.skippedFilters, props.treatCategoryAllAsAbsent,
+    );
+
+    const revocationsByGender = filteredData.reduce(
       (result, { gender, population_count: populationCount }) => {
         return { ...result, [gender]: (result[gender] || 0) + (toInt(populationCount) || 0) };
       }, {},
     );
 
-    const supervisionCountsByGender = props.data.reduce(
+    const supervisionCountsByGender = filteredData.reduce(
       (result, { gender, total_supervision_count: totalSupervisionCount }) => {
         return { ...result, [gender]: (result[gender] || 0) + (toInt(totalSupervisionCount) || 0) };
       }, {},
     );
 
-    const revocations = GENDERS.map((gender) => [revocationsByGender[gender], ...getRevocationsForRiskLevel(gender)]);
-    const supervisionCounts = GENDERS.map((gender) => [supervisionCountsByGender[gender], ...getSupervisionCountsForRiskLevel(gender)]);
+    const revocations = GENDERS.map((gender) => [revocationsByGender[gender], ...getRevocationsForRiskLevel(gender, filteredData)]);
+    const supervisionCounts = GENDERS.map((gender) => [supervisionCountsByGender[gender], ...getSupervisionCountsForRiskLevel(gender, filteredData)]);
 
     const dataPoints = [];
     for (let i = 0; i < revocations.length; i += 1) {
@@ -88,9 +103,18 @@ const RevocationsByGender = (props) => {
   };
 
   useEffect(() => {
+    fetchChartData(
+      'us_mo', 'newRevocations', 'revocations_matrix_distribution_by_gender',
+      setApiData, setAwaitingApi, getTokenSilently,
+    );
+  }, []);
+
+  useEffect(() => {
     processResponse();
   }, [
-    props.data,
+    apiData,
+    awaitingApi,
+    props.filterStates,
     props.metricPeriodMonths,
   ]);
 
@@ -147,6 +171,10 @@ const RevocationsByGender = (props) => {
       }}
     />
   );
+
+  if (awaitingResults(loading, user, awaitingApi)) {
+    return <Loading />;
+  }
 
   return (
     <div>

@@ -17,6 +17,10 @@
 
 import React, { useState, useEffect } from 'react';
 import ExportMenu from '../ExportMenu';
+import Loading from '../../Loading';
+
+import { useAuth0 } from '../../../react-auth0-spa';
+import { fetchChartData, awaitingResults } from '../../../utils/metricsClient';
 
 import { COLORS } from '../../../assets/scripts/constants/colors';
 import {
@@ -38,13 +42,26 @@ const VIOLATION_COUNTS = ['1', '2', '3', '4', '5', '6', '7', '8'];
 const violationCountLabel = (count) => (count === '8' ? '8+' : count);
 
 const RevocationMatrix = (props) => {
+  const { loading, user, getTokenSilently } = useAuth0();
+  const [apiData, setApiData] = useState({});
+  const [filteredData, setFilteredData] = useState({});
+  const [awaitingApi, setAwaitingApi] = useState(true);
+
   const isFiltered = props.filters.violationType || props.filters.reportedViolations;
 
   const [dataMatrix, setDataMatrix] = useState();
   const [maxRevocations, setMaxRevocations] = useState();
 
   const processResponse = () => {
-    const matrix = props.data.reduce(
+    if (awaitingApi || !apiData) {
+      return;
+    }
+    const filteredData = props.dataFilter(
+      apiData, props.skippedFilters, props.treatCategoryAllAsAbsent,
+    );
+    setFilteredData(filteredData);
+
+    const matrix = filteredData.reduce(
       (result, { violation_type: violationType, reported_violations: reportedViolations, total_revocations: totalRevocations }) => {
         if (!result[violationType]) {
           return { ...result, [violationType]: { [reportedViolations]: toInt(totalRevocations) } };
@@ -67,9 +84,19 @@ const RevocationMatrix = (props) => {
   };
 
   useEffect(() => {
+    fetchChartData(
+      'us_mo', 'newRevocations', 'revocations_matrix_cells',
+      setApiData, setAwaitingApi, getTokenSilently,
+    );
+  }, []);
+
+  useEffect(() => {
     processResponse();
   }, [
-    props.data,
+    apiData,
+    filteredData,
+    awaitingApi,
+    props.filterStates,
     props.metricPeriodMonths,
   ]);
 
@@ -163,12 +190,16 @@ const RevocationMatrix = (props) => {
   };
 
   const reportedViolationsSum = (count) => {
-    const items = props.data.filter((item) => item.reported_violations === count);
+    const items = filteredData.filter((item) => item.reported_violations === count);
     return items.reduce((sum, item) => sum += toInt(item.total_revocations), 0);
   };
 
   if (!dataMatrix) {
     return null;
+  }
+
+  if (awaitingResults(loading, user, awaitingApi)) {
+    return <Loading />;
   }
 
   return (
