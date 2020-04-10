@@ -94,7 +94,6 @@ const RevocationMatrix = (props) => {
     processResponse();
   }, [
     apiData,
-    filteredData,
     awaitingApi,
     props.filterStates,
     props.metricPeriodMonths,
