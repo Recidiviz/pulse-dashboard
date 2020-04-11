@@ -53,6 +53,7 @@
     "highlight.js": "^9.15.6",
     "html2canvas": "^1.0.0-rc.5",
     "http-errors": "~1.6.2",
+    "jest-environment-jsdom-sixteen": "^1.0.3",
     "jquery": "^3.2.1",
     "jsonexport": "^2.4.1",
     "jwks-rsa": "^1.4.0",
@@ -69,6 +70,7 @@
     "react-app-polyfill": "^1.0.1",
     "react-chartjs-2": "^2.7.6",
     "react-dom": "^16.9.0",
+    "react-render-in-browser": "^1.1.1",
     "react-router-dom": "^5.0.0",
     "react-scripts": "3.4.1",
     "react-select": "^3.0.8",
@@ -78,8 +80,7 @@
     "react-tooltip": "^3.11.1",
     "reactstrap": "^8.0.0",
     "skycons": "^1.0.0",
-    "typescript": "^3.8.3",
-    "jest-environment-jsdom-sixteen": "^1.0.3"
+    "typescript": "^3.8.3"
   },
   "devDependencies": {
     "@testing-library/dom": "^7.0.4",

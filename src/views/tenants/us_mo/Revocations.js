@@ -16,6 +16,7 @@
 // =============================================================================
 
 import React, { useState, useEffect, useLayoutEffect, useRef } from 'react';
+import RenderInBrowser from 'react-render-in-browser';
 import Select from 'react-select';
 import Sticky from 'react-sticky-fill';
 
@@ -291,7 +292,7 @@ const Revocations = () => {
     );
   }
 
-  const renderSelectedChart = () => {
+  const renderSelectedChartSimultaneousLoad = () => {
     return [
       conditionallyHide(selectedChart, 'Risk level', riskLevelChart, 0),
       conditionallyHide(selectedChart, 'Violation', violationChart, 1),
@@ -300,6 +301,39 @@ const Revocations = () => {
       conditionallyHide(selectedChart, 'District', districtChart, 4),
     ];
   };
+
+  const renderSelectedChartSingularLoad = () => {
+    switch (selectedChart) {
+      case 'Risk level':
+        return riskLevelChart;
+      case 'Violation':
+        return violationChart;
+      case 'Gender':
+        return genderChart;
+      case 'Race':
+        return raceChart;
+      default:
+        return districtChart;
+    }
+  };
+
+  // IE11 has intermittent issues loading all of these charts simultaneously, most of the time
+  // returning errors of "Script7002: XMLHttpRequest: Network Error 0x2eff..."
+  // For IE users, we render each chart only when selected.
+  // For other users, we render each chart simultaneously so that toggling feels instant.
+  const renderSelectedChart = () => {
+    return (
+      <>
+        <RenderInBrowser except ie>
+          {renderSelectedChartSimultaneousLoad()}
+        </RenderInBrowser>
+
+        <RenderInBrowser ie only>
+          {renderSelectedChartSingularLoad()}
+        </RenderInBrowser>
+      </>
+    );
+  }
 
   if (awaitingResults(loading, user, awaitingApi)) {
     return <Loading />;
