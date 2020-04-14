@@ -90,11 +90,16 @@ const ExportMenu = (props) => {
     if (props.regularElement) {
       configureDownloadButtonsRegularElement(props.chartId, props.metricTitle,
         props.elementDatasets, props.elementLabels,
-        document.getElementById(props.chartId), exportedStructureCallback, {});
+        document.getElementById(props.chartId), exportedStructureCallback,
+        props.filters, undefined, undefined, props.timeWindowDescription, true);
     } else {
-      configureDownloadButtons(props.chartId, props.metricTitle,
-        props.chart.props.data.datasets, props.chart.props.data.labels,
-        document.getElementById(props.chartId), exportedStructureCallback, {});
+      configureDownloadButtons(props.chartId,
+        props.metricTitle,
+        props.chart.props.data.datasets,
+        props.chart.props.data.labels,
+        document.getElementById(props.chartId),
+        exportedStructureCallback,
+        props.filters, undefined, undefined, props.timeWindowDescription, true);
     }
   }
 

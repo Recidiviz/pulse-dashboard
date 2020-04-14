@@ -212,6 +212,8 @@ const RevocationsByDistrict = (props) => {
           chartId={chartId}
           chart={chart}
           metricTitle="Revocations by district"
+          timeWindowDescription={`${getTrailingLabelFromMetricPeriodMonthsToggle(props.metricPeriodMonths)} (${getPeriodLabelFromMetricPeriodMonthsToggle(props.metricPeriodMonths)})`}
+          filters={props.filterStates}
         />
       </h4>
       <h6 className="pB-20">

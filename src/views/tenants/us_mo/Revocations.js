@@ -394,7 +394,6 @@ const Revocations = () => {
             <RevocationMatrix
               dataFilter={applyTopLevelFilters}
               filterStates={filters}
-              filters={filters}
               updateFilters={updateFilters}
               metricPeriodMonths={filters.metricPeriodMonths}
             />

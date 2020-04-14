@@ -47,7 +47,7 @@ const RevocationMatrix = (props) => {
   const [filteredData, setFilteredData] = useState({});
   const [awaitingApi, setAwaitingApi] = useState(true);
 
-  const isFiltered = props.filters.violationType || props.filters.reportedViolations;
+  const isFiltered = props.filterStates.violationType || props.filterStates.reportedViolations;
 
   const [dataMatrix, setDataMatrix] = useState();
   const [maxRevocations, setMaxRevocations] = useState();
@@ -114,8 +114,8 @@ const RevocationMatrix = (props) => {
   };
 
   const isSelected = (violationType, reportedViolations) => {
-    return props.filters.violationType === violationType &&
-      props.filters.reportedViolations === reportedViolations;
+    return props.filterStates.violationType === violationType &&
+      props.filterStates.reportedViolations === reportedViolations;
   };
 
   const toggleFilter = (violationType, reportedViolations) => {
@@ -211,6 +211,8 @@ const RevocationMatrix = (props) => {
           elementDatasets={exportableMatrixData()}
           elementLabels={VIOLATION_COUNTS.map((count) => violationCountLabel(count))}
           metricTitle="People revoked to prison by violation history"
+          timeWindowDescription={`${getTrailingLabelFromMetricPeriodMonthsToggle(props.metricPeriodMonths)} (${getPeriodLabelFromMetricPeriodMonthsToggle(props.metricPeriodMonths)})`}
+          filters={props.filterStates}
         />
       </h4>
       <h6>
