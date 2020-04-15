@@ -144,7 +144,7 @@ const Revocations = () => {
     }
 
     timeout = setTimeout(function() {
-      if (window.pageYOffset > 0) {
+      if (window.pageYOffset > 60) {
         let x = document.body.getElementsByClassName('title-level');
         for (let i = 0; i < x.length; i++) {
           x[i].classList.add('top-level-filters-title');
@@ -153,7 +153,7 @@ const Revocations = () => {
           x[i].parentNode.classList.add('align-items-center');
         }
         separate.current.style.display='block';
-      } else {
+      } else if (window.pageYOffset < 5 ) {
         let x = document.body.getElementsByClassName('title-level');
         for (let i = 0; i < x.length; i++) {
           x[i].classList.remove('top-level-filters-title');
