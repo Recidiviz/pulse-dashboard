@@ -145,8 +145,8 @@ function setCurrentStateForAdminUsers(stateCode) {
 
 /**
  * For the given state code and view, returns the actual React component that should be rendered.
- * For example, both North Dakota and Missouri have "Snapshots" views, but they have unique
- * components to allow for different visualizations.
+ * For example, two states could have "Snapshots" views, but they might have unique components to
+ * allow for different visualizations.
  * Throw an error if the given state is not available, or if the given view is not available for
  * the state.
  */
