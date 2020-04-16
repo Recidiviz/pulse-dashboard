@@ -18,7 +18,7 @@
 import React from 'react';
 
 import {
-  configureDownloadButtons, configureDownloadButtonsRegularElement,
+  downloadChartAsImage, downloadChartAsData, downloadHtmlElementAsImage, downloadHtmlElementAsData,
 } from '../../assets/scripts/utils/downloads';
 import chartIdToInfo from '../../utils/charts/info';
 
@@ -27,7 +27,13 @@ const ExportMenu = (props) => {
 
   const modalId = `additionalInfoModal-${props.chartId}`;
 
-  const menuSpan = (
+  const exportedStructureCallback = () => (
+    {
+      metric: props.metricTitle,
+      series: [],
+    });
+
+  return (
     <span className="fa-pull-right">
       <div className="dropdown show">
         <a href="#" role="button" id={`exportDropdownMenuButton-${props.chartId}`} data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -35,11 +41,33 @@ const ExportMenu = (props) => {
         </a>
         <div className="dropdown-menu dropdown-menu-right" aria-labelledby={`exportDropdownMenuButton-${props.chartId}`}>
           <a className="dropdown-item" href="javascript:void(0);" data-toggle="modal" data-target={`#${modalId}`}>Additional info</a>
-          {(props.shouldExport === undefined || props.shouldExport === true) && (
-            <a className="dropdown-item" id={`downloadChartAsImage-${props.chartId}`} href="javascript:void(0);">Export image</a>
+          {(props.shouldExport === undefined || props.shouldExport === true) && props.regularElement === undefined && (
+            <a className="dropdown-item" href="javascript:void(0);" onClick={() => downloadChartAsImage(
+              props.chartId, props.metricTitle, props.chart.props.data.datasets,
+              props.chart.props.data.labels, exportedStructureCallback, props.filters,
+              undefined, undefined, props.timeWindowDescription, true
+            )}>Export image</a>
           )}
-          {(props.shouldExport === undefined || props.shouldExport === true) && (
-            <a className="dropdown-item" id={`downloadChartData-${props.chartId}`} href="javascript:void(0);">Export data</a>
+          {(props.shouldExport === undefined || props.shouldExport === true) && props.regularElement === undefined && (
+            <a className="dropdown-item" href="javascript:void(0);" onClick={() => downloadChartAsData(
+              props.chartId, props.metricTitle, props.chart.props.data.datasets,
+              props.chart.props.data.labels, exportedStructureCallback, props.filters,
+              undefined, undefined, props.timeWindowDescription, true
+            )}>Export data</a>
+          )}
+          {(props.shouldExport === undefined || props.shouldExport === true) && props.regularElement && (
+            <a className="dropdown-item" href="javascript:void(0);" onClick={() => downloadHtmlElementAsImage(
+              props.chartId, props.metricTitle,props.elementDatasets, props.elementLabels,
+              exportedStructureCallback, props.filters, undefined, undefined,
+              props.timeWindowDescription, true
+            )}>Export image</a>
+          )}
+          {(props.shouldExport === undefined || props.shouldExport === true) && props.regularElement && (
+            <a className="dropdown-item" href="javascript:void(0);" onClick={() => downloadHtmlElementAsData(
+              props.chartId, props.metricTitle,props.elementDatasets, props.elementLabels,
+              exportedStructureCallback, props.filters, undefined, undefined,
+              props.timeWindowDescription, true
+            )}>Export data</a>
           )}
         </div>
       </div>
@@ -79,31 +107,6 @@ const ExportMenu = (props) => {
       </div>
     </span>
   );
-
-  if ((props.shouldExport === undefined || props.shouldExport === true)) {
-    const exportedStructureCallback = () => (
-      {
-        metric: props.metricTitle,
-        series: [],
-      });
-
-    if (props.regularElement) {
-      configureDownloadButtonsRegularElement(props.chartId, props.metricTitle,
-        props.elementDatasets, props.elementLabels,
-        document.getElementById(props.chartId), exportedStructureCallback,
-        props.filters, undefined, undefined, props.timeWindowDescription, true);
-    } else {
-      configureDownloadButtons(props.chartId,
-        props.metricTitle,
-        props.chart.props.data.datasets,
-        props.chart.props.data.labels,
-        document.getElementById(props.chartId),
-        exportedStructureCallback,
-        props.filters, undefined, undefined, props.timeWindowDescription, true);
-    }
-  }
-
-  return menuSpan;
 };
 
 export default ExportMenu;
