@@ -51,7 +51,7 @@
     "express-jwt": "^5.3.1",
     "helmet": "^3.21.2",
     "highlight.js": "^9.15.6",
-    "html2canvas": "^1.0.0-rc.5",
+    "html2canvas": "=1.0.0-rc.1",
     "http-errors": "~1.6.2",
     "jest-environment-jsdom-sixteen": "^1.0.3",
     "jquery": "^3.2.1",
