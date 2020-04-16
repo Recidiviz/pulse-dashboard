@@ -23,6 +23,11 @@ import infoAboutChart from '../../../utils/charts/info';
 import JSZip from 'jszip';
 import { toTitleCase, toHumanReadable } from '../../../utils/transforms/labels';
 
+// Functions for flowing through browser-specific download functionality
+// https://stackoverflow.com/questions/9847580/how-to-detect-safari-chrome-ie-firefox-and-opera-browser
+const isIE = /*@cc_on!@*/false || !!document.documentMode;
+const isEdge = !isIE && !!window.StyleMedia;
+
 function configureFilename(chartId, toggleStates, shouldZipDownload) {
   let filename = `${chartId}-${timeStamp()}`;
   if (shouldZipDownload) {
@@ -152,7 +157,7 @@ function downloadObjectAsCsv(exportObj, exportName, shouldZipDownload) {
     if (err) throw err;
     const filename = `${exportName}.csv`;
 
-    if (navigator.msSaveBlob && !shouldZipDownload) { // User is on Windows
+    if ((isIE || isEdge) && !shouldZipDownload) { // User is on Windows
       const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
       navigator.msSaveBlob(blob, filename);
     } else { // User is not on Windows
@@ -291,9 +296,8 @@ function downloadHtmlElementAsImage(
   convertValuesToNumbers, handleTimeStringLabels, timeWindowDescription, shouldZipDownload
 ) {
   const element = document.getElementById(chartId);
-  // Setting the Y-scroll position fixes a bug that causes the image to be cut off when scrolled
-  // partially down the page, without changing the user's actual scroll position
-  html2canvas(element, { scrollY: -window.scrollY }).then((canvas) => {
+
+  html2canvas(element, {}).then((canvas) => {
     configureImageDownload(
       canvas, `${chartId}-${timeStamp()}.png`, chartTitle, toggleStates, chartId,
       timeWindowDescription, shouldZipDownload
