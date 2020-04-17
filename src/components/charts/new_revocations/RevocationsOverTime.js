@@ -16,7 +16,7 @@
 // =============================================================================
 
 import React, { useState, useEffect } from 'react';
-import { Line } from 'react-chartjs-2';
+import { Bar, Line } from 'react-chartjs-2';
 import ExportMenu from '../ExportMenu';
 import Loading from '../../Loading';
 
@@ -95,61 +95,84 @@ const RevocationsOverTime = (props) => {
     lineTension: 0,
     borderWidth: 2,
     data: chartDataPoints,
+    backgroundColor: COLORS['lantern-light-blue'],
+    hoverBackgroundColor: COLORS['lantern-light-blue'],
+    hoverBorderColor: COLORS['lantern-light-blue']
   }];
   const maxElement = Math.max.apply(Math, chartDataPoints);
   const maxValue = maxElement <= 3 ? 5 : maxElement;
 
-  const chart = (
+  const options = {
+    maintainAspectRatio: false,
+    responsive: true,
+    legend: {
+      display: false,
+    },
+    scales: {
+      xAxes: [{
+        ticks: {
+          autoSkip: false,
+        },
+      }],
+      yAxes: [{
+        scaleLabel: {
+          display: true,
+          labelString: 'People revoked',
+        },
+        ticks: {
+          min: 0,
+          callback(value) {
+            if (value % 1 === 0) {
+              return value;
+            }
+          },
+          suggestedMax: maxValue,
+        },
+      }],
+    },
+    tooltips: {
+      backgroundColor: COLORS['grey-800-light'],
+      mode: 'x',
+      callbacks: {
+        title: (tooltipItem) => labelCurrentMonth(tooltipItem, chartLabels),
+      },
+    },
+    annotation: currentMonthBox('currentMonthBoxRevocationsOverTime', chartLabels),
+  };
+
+  const countZero = chartDataPoints.filter(item => item === 0).length;
+
+  const lineChart  = (
     <Line
       id={chartId}
       data={{
         labels: chartLabels,
         datasets,
       }}
-      options={{
-        maintainAspectRatio: false,
-        responsive: true,
-        legend: {
-          display: false,
-        },
-        scales: {
-          xAxes: [{
-            ticks: {
-              autoSkip: false,
-            },
-          }],
-          yAxes: [{
-            scaleLabel: {
-              display: true,
-              labelString: 'People revoked',
-            },
-            ticks: {
-              min: 0,
-              callback(value) {
-                if (value % 1 === 0) {
-                  return value;
-                }
-              },
-              suggestedMax: maxValue,
-            },
-          }],
-        },
-        tooltips: {
-          backgroundColor: COLORS['grey-800-light'],
-          mode: 'x',
-          callbacks: {
-            title: (tooltipItem) => labelCurrentMonth(tooltipItem, chartLabels),
-          },
-        },
-        annotation: currentMonthBox('currentMonthBoxRevocationsOverTime', chartLabels),
-      }}
+      options={options}
     />
   );
+  let barOptions = options;
+  barOptions.scales.xAxes[0].ticks.barThickness = 'flex';
+  barOptions.scales.xAxes[0].barPercentage = 0.08;
+
+  const barChart = (
+    <Bar
+      id={chartId}
+      width={50}
+      data={{
+        labels: chartLabels,
+        datasets
+      }}
+      options={barOptions}
+    />
+  );
+
 
   if (awaitingResults(loading, user, awaitingApi)) {
     return <Loading />;
   }
-
+  const chart = countZero > 2 ? barChart : lineChart;
   return (
     <div>
       <h4>
