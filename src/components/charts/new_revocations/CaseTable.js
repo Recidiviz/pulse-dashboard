@@ -29,7 +29,7 @@ import {
   getTrailingLabelFromMetricPeriodMonthsToggle, getPeriodLabelFromMetricPeriodMonthsToggle,
 } from '../../../utils/charts/toggles';
 import {
-  humanReadableTitleCase, nameFromOfficerId, riskLevelValuetoLabel,
+  humanReadableTitleCase, nameFromOfficerId, riskLevelValuetoLabel, toTitleCase
 } from '../../../utils/transforms/labels';
 
 const CASES_PER_PAGE = 15;
@@ -134,6 +134,19 @@ const CaseTable = (props) => {
     return <td style={unknownStyle}>{nullSafeLabel(label)}</td>;
   };
 
+  const labels = ['DOC ID', 'District', 'Officer', 'Risk level', 'Officer Recommendation', 'Violation record'];
+
+  const tableData = filteredData === undefined ? [] : filteredData.map((record) => {
+      let obj = { data: [] };
+      obj.data.push(record.state_id);
+      obj.data.push(record.district);
+      obj.data.push(nameFromOfficerId(record.officer));
+      obj.data.push(humanReadableTitleCase(record.risk_level));
+      obj.data.push(toTitleCase(record.officer_recommendation));
+      obj.data.push(parseViolationRecord(record.violation_record));
+      return obj;
+    });
+
   return (
     <div className="case-table">
       <h4>
@@ -141,6 +154,12 @@ const CaseTable = (props) => {
         <ExportMenu
           chartId={chartId}
           shouldExport={false}
+          tableData={tableData}
+          metricTitle="Revoked individuals"
+          isTable={true}
+          tableLabels={labels}
+          timeWindowDescription={`${getTrailingLabelFromMetricPeriodMonthsToggle(props.metricPeriodMonths)} (${getPeriodLabelFromMetricPeriodMonthsToggle(props.metricPeriodMonths)})`}
+          filters={props.filterStates}
         />
       </h4>
       <h6 className="pB-20">

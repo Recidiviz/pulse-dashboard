@@ -69,6 +69,13 @@ const ExportMenu = (props) => {
               props.timeWindowDescription, true
             )}>Export data</a>
           )}
+          {(props.isTable) && props.regularElement === undefined && (
+            <a className="dropdown-item" href="javascript:void(0);" onClick={() => downloadHtmlElementAsData(
+              props.chartId, props.metricTitle, props.tableData, props.tableLabels, exportedStructureCallback,
+              props.filters, undefined, undefined, props.timeWindowDescription,
+              true, props.isTable
+            )}>Export data</a>
+          )}
         </div>
       </div>
 
