@@ -282,6 +282,7 @@ const COLORS = {
   'lantern-eggplant': '#5C384D',
   'lantern-burnt-orange': '#8B2D21',
   'lantern-blue': '#182B5E',
+  'lantern-dark-blue': '#002C42',
 };
 
 const GREYS = {
