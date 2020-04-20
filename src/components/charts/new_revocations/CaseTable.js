@@ -138,12 +138,12 @@ const CaseTable = (props) => {
 
   const tableData = filteredData === undefined ? [] : filteredData.map((record) => {
       let obj = { data: [] };
-      obj.data.push(record.state_id);
-      obj.data.push(record.district);
-      obj.data.push(nameFromOfficerId(record.officer));
-      obj.data.push(humanReadableTitleCase(record.risk_level));
-      obj.data.push(toTitleCase(record.officer_recommendation));
-      obj.data.push(parseViolationRecord(record.violation_record));
+      obj.data.push(nullSafeLabel(record.state_id));
+      obj.data.push(nullSafeLabel(record.district));
+      obj.data.push(nullSafeLabel(nameFromOfficerId(record.officer)));
+      obj.data.push(nullSafeLabel(riskLevelValuetoLabel[record.risk_level]));
+      obj.data.push(nullSafeLabel(normalizeLabel(record.officer_recommendation)));
+      obj.data.push(nullSafeLabel(parseViolationRecord(record.violation_record)));
       return obj;
     });
 
