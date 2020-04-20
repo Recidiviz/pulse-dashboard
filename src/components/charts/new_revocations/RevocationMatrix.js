@@ -144,11 +144,11 @@ const RevocationMatrix = (props) => {
       lineHeight: `${radius}px`,
     };
     const cellStyle = {
-      background: `rgba(92, 56, 77, ${ratio})`,
+      background: `rgba(0, 44, 66, ${ratio})`,  // lantern-dark-blue with opacity
       width: '100%',
       height: '100%',
       borderRadius: Math.ceil(radius / 2),
-      color: ratio >= 0.5 ? COLORS.white : COLORS['lantern-eggplant'],
+      color: ratio >= 0.5 ? COLORS.white : COLORS['lantern-dark-blue'],
     };
 
     return (
