@@ -172,7 +172,9 @@ const RevocationsOverTime = (props) => {
   if (awaitingResults(loading, user, awaitingApi)) {
     return <Loading />;
   }
-  const chart = countZero > 2 ? barChart : lineChart;
+
+  // If at least a third of all points are 0, show bar chart. Otherwise, show line chart.
+  const chart = (countZero / props.metricPeriodMonths) >= 0.33 ? barChart : lineChart;
   return (
     <div>
       <h4>
