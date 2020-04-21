@@ -24,6 +24,7 @@ import { useAuth0 } from '../../../react-auth0-spa';
 import { fetchChartData, awaitingResults } from '../../../utils/metricsClient';
 
 import { COLORS } from '../../../assets/scripts/constants/colors';
+import { axisCallbackForPercentage } from '../../../utils/charts/axis';
 import {
   getTrailingLabelFromMetricPeriodMonthsToggle, getPeriodLabelFromMetricPeriodMonthsToggle,
   tooltipForRateMetricWithCounts,
@@ -137,10 +138,11 @@ const RevocationsByRiskLevel = (props) => {
           yAxes: [{
             ticks: {
               beginAtZero: true,
+              callback: axisCallbackForPercentage(),
             },
             scaleLabel: {
               display: true,
-              labelString: 'Percent revoked (out of total number in risk level)',
+              labelString: 'Percent revoked',
             },
             stacked: true,
           }],
