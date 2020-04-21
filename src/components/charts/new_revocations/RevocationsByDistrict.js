@@ -26,6 +26,7 @@ import { useAuth0 } from '../../../react-auth0-spa';
 import { fetchChartData, awaitingResults } from '../../../utils/metricsClient';
 
 import { COLORS } from '../../../assets/scripts/constants/colors';
+import { axisCallbackForMetricType } from '../../../utils/charts/axis';
 import {
   getTrailingLabelFromMetricPeriodMonthsToggle, getPeriodLabelFromMetricPeriodMonthsToggle,
   toggleLabel, updateTooltipForMetricTypeWithCounts,
@@ -183,6 +184,9 @@ const RevocationsByDistrict = (props) => {
               }, countModeEnabled ? 'counts' : 'rates'),
             },
             stacked: true,
+            ticks: {
+              callback: axisCallbackForMetricType(!countModeEnabled),
+            }
           }],
         },
         tooltips: {

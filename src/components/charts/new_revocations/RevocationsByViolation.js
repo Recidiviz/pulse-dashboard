@@ -24,6 +24,7 @@ import { useAuth0 } from '../../../react-auth0-spa';
 import { fetchChartData, awaitingResults } from '../../../utils/metricsClient';
 
 import { COLORS } from '../../../assets/scripts/constants/colors';
+import { axisCallbackForPercentage } from '../../../utils/charts/axis';
 import {
   getTrailingLabelFromMetricPeriodMonthsToggle, getPeriodLabelFromMetricPeriodMonthsToggle,
   tooltipForRateMetricWithCounts,
@@ -174,6 +175,7 @@ const RevocationsByViolation = (props) => {
             stacked: true,
             ticks: {
               min: 0,
+              callback: axisCallbackForPercentage(),
             },
           }],
         },
