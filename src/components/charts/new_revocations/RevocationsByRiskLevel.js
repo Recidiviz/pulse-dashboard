@@ -140,7 +140,7 @@ const RevocationsByRiskLevel = (props) => {
             },
             scaleLabel: {
               display: true,
-              labelString: 'Revocation rate',
+              labelString: 'Percent revoked (out of total number in risk level)',
             },
             stacked: true,
           }],
@@ -164,11 +164,11 @@ const RevocationsByRiskLevel = (props) => {
   return (
     <div>
       <h4>
-        Revocation rates by risk level
+        Percent revoked by risk level
         <ExportMenu
           chartId={chartId}
           chart={chart}
-          metricTitle="Revocation rates by risk level"
+          metricTitle="Percent revoked by risk level"
           timeWindowDescription={`${getTrailingLabelFromMetricPeriodMonthsToggle(props.metricPeriodMonths)} (${getPeriodLabelFromMetricPeriodMonthsToggle(props.metricPeriodMonths)})`}
           filters={props.filterStates}
         />

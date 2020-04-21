@@ -403,7 +403,8 @@ const Revocations = () => {
           <p className="fw-300">
             This chart plots all people who were revoked to prison during the selected time period,
             according to their most serious violation and the total number of violation reports and
-            notices of citation filed within 12 months before revocation.
+            notices of citation that were filed within one year prior to the last reported violation
+            before the person was revoked. (See methodology for more details.)
           </p>
           <p className="fw-300">
             The numbers inside the bubbles represent the number of people who were revoked, whose
