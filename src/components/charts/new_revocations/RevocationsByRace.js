@@ -179,7 +179,7 @@ const RevocationsByRace = (props) => {
             },
             scaleLabel: {
               display: true,
-              labelString: 'Revocation rate',
+              labelString: 'Percent revoked (out of total number in race/ethnicity and risk level)',
             },
           }],
         },
@@ -202,11 +202,11 @@ const RevocationsByRace = (props) => {
   return (
     <div>
       <h4>
-        Revocation rates by race/ethnicity and risk level
+        Percent revoked by race/ethnicity and risk level
         <ExportMenu
           chartId={chartId}
           chart={chart}
-          metricTitle="Revocation rates by race/ethnicity and risk level"
+          metricTitle="Percent revoked by race/ethnicity and risk level"
           timeWindowDescription={`${getTrailingLabelFromMetricPeriodMonthsToggle(props.metricPeriodMonths)} (${getPeriodLabelFromMetricPeriodMonthsToggle(props.metricPeriodMonths)})`}
           filters={props.filterStates}
         />
