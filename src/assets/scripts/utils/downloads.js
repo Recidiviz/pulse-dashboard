@@ -23,6 +23,11 @@ import infoAboutChart from '../../../utils/charts/info';
 import JSZip from 'jszip';
 import { toTitleCase, toHumanReadable } from '../../../utils/transforms/labels';
 
+// Functions for flowing through browser-specific download functionality
+// https://stackoverflow.com/questions/9847580/how-to-detect-safari-chrome-ie-firefox-and-opera-browser
+const isIE = /*@cc_on!@*/false || !!document.documentMode;
+const isEdge = !isIE && !!window.StyleMedia;
+
 function configureFilename(chartId, toggleStates, shouldZipDownload) {
   let filename = `${chartId}-${timeStamp()}`;
   if (shouldZipDownload) {
@@ -152,10 +157,10 @@ function downloadObjectAsCsv(exportObj, exportName, shouldZipDownload) {
     if (err) throw err;
     const filename = `${exportName}.csv`;
 
-    if (navigator.msSaveBlob) { // User is on Windows
+    if ((isIE || isEdge) && !shouldZipDownload) { // User is on Windows
       const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
       navigator.msSaveBlob(blob, filename);
-    } else {
+    } else { // User is not on Windows
       const encodedCsv = encodeURIComponent(csv);
       const dataStr = `data:text/csv;charset=utf-8,${encodedCsv}`;
       obj.name = filename;
@@ -166,6 +171,9 @@ function downloadObjectAsCsv(exportObj, exportName, shouldZipDownload) {
       }
     }
   });
+
+  // We don't need to worry about Windows or not here,
+  // because the downstream zip download works across browsers
   return obj;
 }
 
@@ -177,7 +185,7 @@ function downloadObjectAsJson(exportObj, exportName) {
 
 function configureDataDownloadButton(
   chartId, chartDatasets, chartLabels, exportedStructureCallback, toggleStates,
-  convertValuesToNumbers, handleTimeStringLabels, chartTitle, timeWindowDescription, shouldZipDownload
+  convertValuesToNumbers, handleTimeStringLabels, chartTitle, timeWindowDescription, shouldZipDownload, isTable
 ) {
   return function downloadChartData() {
     const exportData = exportedStructureCallback();
@@ -200,7 +208,7 @@ function configureDataDownloadButton(
             }
           }
 
-          if (convertValuesToNumbers === undefined || convertValuesToNumbers) {
+          if ((convertValuesToNumbers === undefined || convertValuesToNumbers) && !isNaN(Number(dataPoint))) {
             values[csvLabel] = Number(dataPoint);
           } else {
             values[csvLabel] = dataPoint;
@@ -208,10 +216,12 @@ function configureDataDownloadButton(
           i += 1;
         });
 
-        exportData.series.push({
-          label: dataset.label,
-          values,
-        });
+        let obj = {};
+        if (!isTable) {
+          obj.label = dataset.label;
+        }
+        obj.values = values;
+        exportData.series.push(obj);
       }
     });
 
@@ -227,6 +237,7 @@ function configureDataDownloadButton(
 
   };
 }
+
 function configureImageDownload(canvas, filename, chartTitle, toggleStates, chartId, timeWindowDescription, shouldZipDownload) {
   if (shouldZipDownload) {
     const methodologyFile = downloadMethodologyFile(chartId, chartTitle, timeWindowDescription, toggleStates);
@@ -236,14 +247,14 @@ function configureImageDownload(canvas, filename, chartTitle, toggleStates, char
   } else {
     downloadCanvasImage(canvas, filename, chartTitle);
   }
-
 }
+
 function configureDownloadButtons(
   chartId, chartTitle, chartDatasets, chartLabels, chartBox,
   exportedStructureCallback, toggleStates, convertValuesToNumbers, handleTimeStringLabels, timeWindowDescription, shouldZipDownload
 ) {
-  const filename = configureFilename(chartId, toggleStates, shouldZipDownload);
 
+  const filename = configureFilename(chartId, toggleStates, shouldZipDownload);
   const downloadChartAsImageButton = document.getElementById(`downloadChartAsImage-${chartId}`);
   if (downloadChartAsImageButton) {
     downloadChartAsImageButton.onclick = function downloadChartImage() {
@@ -260,29 +271,51 @@ function configureDownloadButtons(
   }
 }
 
-function configureDownloadButtonsRegularElement(
-  chartId, chartTitle, chartDatasets, chartLabels, chartBox,
-  exportedStructureCallback, toggleStates, convertValuesToNumbers, handleTimeStringLabels, timeWindowDescription, shouldZipDownload
+function downloadChartAsImage(
+  chartId, chartTitle, chartDatasets, chartLabels, exportedStructureCallback, toggleStates,
+  convertValuesToNumbers, handleTimeStringLabels, timeWindowDescription, shouldZipDownload
 ) {
-  const downloadChartAsImageButton = document.getElementById(`downloadChartAsImage-${chartId}`);
-  if (downloadChartAsImageButton) {
-    downloadChartAsImageButton.onclick = function downloadChartImage() {
-      const element = document.getElementById(chartId);
-      // Setting the Y-scroll position fixes a bug that causes the image to be cut off when scrolled
-      // partially down the page, without changing the user's actual scroll position
-      html2canvas(element, { scrollY: -window.scrollY }).then((canvas) => {
-        configureImageDownload(canvas, `${chartId}-${timeStamp()}.png`, chartTitle, toggleStates, chartId, timeWindowDescription, shouldZipDownload);
-      });
-    };
-  }
+  const filename = configureFilename(chartId, toggleStates, shouldZipDownload);
+  configureImageDownload(
+    document.getElementById(chartId), `${filename}.png`, chartTitle, toggleStates, chartId,
+    timeWindowDescription, shouldZipDownload
+  );
+}
 
-  const downloadChartDataButton = document.getElementById(`downloadChartData-${chartId}`);
-  if (downloadChartDataButton) {
-    downloadChartDataButton.onclick = configureDataDownloadButton(
-      chartId, chartDatasets, chartLabels, exportedStructureCallback, toggleStates,
-      convertValuesToNumbers, handleTimeStringLabels, chartTitle, timeWindowDescription, shouldZipDownload
+function downloadChartAsData(
+  chartId, chartTitle, chartDatasets, chartLabels, exportedStructureCallback, toggleStates,
+  convertValuesToNumbers, handleTimeStringLabels, timeWindowDescription, shouldZipDownload
+) {
+  const downloadChartData = configureDataDownloadButton(
+    chartId, chartDatasets, chartLabels, exportedStructureCallback, toggleStates,
+    convertValuesToNumbers, handleTimeStringLabels, chartTitle, timeWindowDescription, shouldZipDownload
+  );
+  downloadChartData();
+}
+
+function downloadHtmlElementAsImage(
+  chartId, chartTitle, chartDatasets, chartLabels, exportedStructureCallback, toggleStates,
+  convertValuesToNumbers, handleTimeStringLabels, timeWindowDescription, shouldZipDownload
+) {
+  const element = document.getElementById(chartId);
+
+  html2canvas(element, {}).then((canvas) => {
+    configureImageDownload(
+      canvas, `${chartId}-${timeStamp()}.png`, chartTitle, toggleStates, chartId,
+      timeWindowDescription, shouldZipDownload
     );
-  }
+  });
+}
+
+function downloadHtmlElementAsData(
+  chartId, chartTitle, chartDatasets, chartLabels, exportedStructureCallback, toggleStates,
+  convertValuesToNumbers, handleTimeStringLabels, timeWindowDescription, shouldZipDownload, isTable
+) {
+  const downloadChartData = configureDataDownloadButton(
+    chartId, chartDatasets, chartLabels, exportedStructureCallback, toggleStates,
+    convertValuesToNumbers, handleTimeStringLabels, chartTitle, timeWindowDescription, shouldZipDownload, isTable
+  );
+  downloadChartData();
 }
 
 export {
@@ -290,5 +323,8 @@ export {
   downloadObjectAsCsv,
   downloadObjectAsJson,
   configureDownloadButtons,
-  configureDownloadButtonsRegularElement,
+  downloadChartAsImage,
+  downloadChartAsData,
+  downloadHtmlElementAsImage,
+  downloadHtmlElementAsData,
 };

@@ -24,6 +24,7 @@ import { useAuth0 } from '../../../react-auth0-spa';
 import { fetchChartData, awaitingResults } from '../../../utils/metricsClient';
 
 import { COLORS } from '../../../assets/scripts/constants/colors';
+import { axisCallbackForPercentage } from '../../../utils/charts/axis';
 import {
   getTrailingLabelFromMetricPeriodMonthsToggle, getPeriodLabelFromMetricPeriodMonthsToggle,
   tooltipForRateMetricWithNestedCounts,
@@ -153,10 +154,11 @@ const RevocationsByGender = (props) => {
           yAxes: [{
             ticks: {
               beginAtZero: true,
+              callback: axisCallbackForPercentage(),
             },
             scaleLabel: {
               display: true,
-              labelString: 'Revocation rate',
+              labelString: 'Percent revoked',
             },
           }],
         },
@@ -179,11 +181,11 @@ const RevocationsByGender = (props) => {
   return (
     <div>
       <h4>
-        Revocation rates by gender and risk level
+        Percent revoked by gender and risk level
         <ExportMenu
           chartId={chartId}
           chart={chart}
-          metricTitle="Revocation rates by gender and risk level"
+          metricTitle="Percent revoked by gender and risk level"
           timeWindowDescription={`${getTrailingLabelFromMetricPeriodMonthsToggle(props.metricPeriodMonths)} (${getPeriodLabelFromMetricPeriodMonthsToggle(props.metricPeriodMonths)})`}
           filters={props.filterStates}
         />

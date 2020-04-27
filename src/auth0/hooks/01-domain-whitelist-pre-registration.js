@@ -19,7 +19,7 @@
 module.exports = function (user, context, cb) {
   var response = {};
 
-  const whitelist = ['recidiviz.org', 'nd.gov']; //authorized domains
+  const whitelist = []; //add authorized domains here
   const userHasAccess = whitelist.some(
     function (domain) {
       const emailSplit = user.email.split('@');
