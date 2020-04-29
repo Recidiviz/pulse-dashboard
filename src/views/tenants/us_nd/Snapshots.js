@@ -153,39 +153,35 @@ const Snapshots = () => {
                   <div className="dynamic-chart-header" id="supervisionSuccessSnapshot-header" />
                 )}
               </div>
-              <div className="layer w-100 p-20">
-                <div className="ai-c jc-c gapX-20">
-                  <div className="col-md-12 fs-block">
-                    { /* TODO(XXX): Figure out why map will not show when delegated to by the Chart.js
+              <div className="layer w-100 p-20 fs-block">
+                { /* TODO(XXX): Figure out why map will not show when delegated to by the Chart.js
                     chart. Then we can just encapsulate this logic inside of a single component. */ }
-                    {geoViewEnabledSCOS === false && (
-                      <SupervisionSuccessSnapshot
-                        metricType={chartMetricType}
-                        metricPeriodMonths={chartMetricPeriodMonths}
-                        supervisionType={chartSupervisionType}
-                        district={chartDistrict}
-                        supervisionSuccessRates={apiData.supervision_termination_by_type_by_month}
-                        header="supervisionSuccessSnapshot-header"
-                      />
-                    )}
-                    {geoViewEnabledSCOS === true && (
-                      <GeoViewTimeChart
-                        chartId="supervisionSuccessSnapshot"
-                        chartTitle="SUCCESSFUL COMPLETION OF SUPERVISION"
-                        metricType={chartMetricType}
-                        metricPeriodMonths={chartMetricPeriodMonths}
-                        supervisionType={chartSupervisionType}
-                        keyedByOffice={true}
-                        officeData={apiData.site_offices}
-                        dataPointsByOffice={apiData.supervision_termination_by_type_by_period}
-                        numeratorKeys={['successful_termination']}
-                        denominatorKeys={['revocation_termination', 'successful_termination']}
-                        centerLat={47.3}
-                        centerLong={-100.5}
-                      />
-                    )}
-                  </div>
-                </div>
+                {geoViewEnabledSCOS === false && (
+                  <SupervisionSuccessSnapshot
+                    metricType={chartMetricType}
+                    metricPeriodMonths={chartMetricPeriodMonths}
+                    supervisionType={chartSupervisionType}
+                    district={chartDistrict}
+                    supervisionSuccessRates={apiData.supervision_termination_by_type_by_month}
+                    header="supervisionSuccessSnapshot-header"
+                  />
+                )}
+                {geoViewEnabledSCOS === true && (
+                  <GeoViewTimeChart
+                    chartId="supervisionSuccessSnapshot"
+                    chartTitle="SUCCESSFUL COMPLETION OF SUPERVISION"
+                    metricType={chartMetricType}
+                    metricPeriodMonths={chartMetricPeriodMonths}
+                    supervisionType={chartSupervisionType}
+                    keyedByOffice={true}
+                    officeData={apiData.site_offices}
+                    dataPointsByOffice={apiData.supervision_termination_by_type_by_period}
+                    numeratorKeys={['successful_termination']}
+                    denominatorKeys={['revocation_termination', 'successful_termination']}
+                    centerLat={47.3}
+                    centerLong={-100.5}
+                  />
+                )}
               </div>
               <div className="layer bdT p-20 w-100 accordion" id="methodologySupervisionSuccessSnapshot">
                 <div className="mb-0" id="methodologyHeadingSupervisionSuccessSnapshot">
@@ -199,29 +195,29 @@ const Snapshots = () => {
                   <div>
                     <ul>
                       <li>
-                      A supervision is considered successfully completed
-                      if the individual was discharged from supervision positively
-                      or if their supervision period expired.
+                        A supervision is considered successfully completed
+                        if the individual was discharged from supervision positively
+                        or if their supervision period expired.
                       </li>
                       <li>
-                      Unsuccessful completions of supervision occur when the
-                      supervision ends due to absconsion, a revocation, or a
-                      negative termination.
+                        Unsuccessful completions of supervision occur when the
+                        supervision ends due to absconsion, a revocation, or a
+                        negative termination.
                       </li>
                       <li>
-                      Deaths, suspensions, and &quot;other&quot; terminations are excluded from
-                      these calculations because they&apos;re neither &quot;successful&quot; nor
-                      &quot;unsuccessful&quot;.
+                        Deaths, suspensions, and &quot;other&quot; terminations are excluded from
+                        these calculations because they&apos;re neither &quot;successful&quot; nor
+                        &quot;unsuccessful&quot;.
                       </li>
                       <li>
-                      Individuals are counted in their month of projected completion, even if
-                      terminated earlier. Individuals who have not yet completed supervision by
-                      their projected termination date are excluded.
+                        Individuals are counted in their month of projected completion, even if
+                        terminated earlier. Individuals who have not yet completed supervision by
+                        their projected termination date are excluded.
                       </li>
                       <li>
-                      While on supervision, individuals are attributed to the office of their
-                      current supervising officer. Following supervision, individuals are attributed
-                      to the office of the officer who terminated their supervision.
+                        While on supervision, individuals are attributed to the office of their
+                        current supervising officer. Following supervision, individuals are attributed
+                        to the office of the officer who terminated their supervision.
                       </li>
                     </ul>
                   </div>
@@ -261,38 +257,34 @@ const Snapshots = () => {
                   <div className="dynamic-chart-header" id="revocationAdmissionsSnapshot-header" />
                 )}
               </div>
-              <div className="layer w-100 p-20">
-                <div className="ai-c jc-c gapX-20">
-                  <div className="col-md-12 fs-block">
-                    {geoViewEnabledPDTR === false && (
-                      <RevocationAdmissionsSnapshot
-                        metricType={chartMetricType}
-                        metricPeriodMonths={chartMetricPeriodMonths}
-                        supervisionType={chartSupervisionType}
-                        district={chartDistrict}
-                        revocationAdmissionsByMonth={apiData.admissions_by_type_by_month}
-                        header="revocationAdmissionsSnapshot-header"
-                      />
-                    )}
-                    {geoViewEnabledPDTR === true && (
-                      <GeoViewTimeChart
-                        chartId="revocationAdmissionsSnapshot"
-                        chartTitle="PRISON ADMISSIONS DUE TO REVOCATION"
-                        metricType={chartMetricType}
-                        metricPeriodMonths={chartMetricPeriodMonths}
-                        supervisionType={chartSupervisionType}
-                        keyedByOffice
-                        shareDenominatorAcrossRates
-                        officeData={apiData.site_offices}
-                        dataPointsByOffice={apiData.admissions_by_type_by_period}
-                        numeratorKeys={['technicals', 'non_technicals', 'unknown_revocations']}
-                        denominatorKeys={['technicals', 'non_technicals', 'unknown_revocations', 'new_admissions']}
-                        centerLat={47.3}
-                        centerLong={-100.5}
-                      />
-                    )}
-                  </div>
-                </div>
+              <div className="layer w-100 p-20 fs-block">
+                {geoViewEnabledPDTR === false && (
+                  <RevocationAdmissionsSnapshot
+                    metricType={chartMetricType}
+                    metricPeriodMonths={chartMetricPeriodMonths}
+                    supervisionType={chartSupervisionType}
+                    district={chartDistrict}
+                    revocationAdmissionsByMonth={apiData.admissions_by_type_by_month}
+                    header="revocationAdmissionsSnapshot-header"
+                  />
+                )}
+                {geoViewEnabledPDTR === true && (
+                  <GeoViewTimeChart
+                    chartId="revocationAdmissionsSnapshot"
+                    chartTitle="PRISON ADMISSIONS DUE TO REVOCATION"
+                    metricType={chartMetricType}
+                    metricPeriodMonths={chartMetricPeriodMonths}
+                    supervisionType={chartSupervisionType}
+                    keyedByOffice
+                    shareDenominatorAcrossRates
+                    officeData={apiData.site_offices}
+                    dataPointsByOffice={apiData.admissions_by_type_by_period}
+                    numeratorKeys={['technicals', 'non_technicals', 'unknown_revocations']}
+                    denominatorKeys={['technicals', 'non_technicals', 'unknown_revocations', 'new_admissions']}
+                    centerLat={47.3}
+                    centerLong={-100.5}
+                  />
+                )}
               </div>
               <div className="layer bdT p-20 w-100 accordion" id="methodologyRevocationAdmissionsSnapshot">
                 <div className="mb-0" id="methodologyHeadingRevocationAdmissionsSnapshot">
@@ -382,14 +374,14 @@ const Snapshots = () => {
                   <div>
                     <ul>
                       <li>
-                      An individual&apos;s days at liberty are the number of
-                      days between release from incarceration and readmission
-                      for someone who was reincarcerated in a given month.
+                        An individual&apos;s days at liberty are the number of
+                        days between release from incarceration and readmission
+                        for someone who was reincarcerated in a given month.
                       </li>
                       <li>
-                      An admission to prison counts as a reincarceration if
-                      the person has been incarcerated previously in a North
-                      Dakota prison.
+                        An admission to prison counts as a reincarceration if
+                        the person has been incarcerated previously in a North
+                        Dakota prison.
                       </li>
                     </ul>
                   </div>
@@ -435,36 +427,32 @@ const Snapshots = () => {
                   <div className="dynamic-chart-header" id="lsirScoreChangeSnapshot-header" />
                 )}
               </div>
-              <div className="layer w-100 p-20">
-                <div className="ai-c jc-c gapX-20">
-                  <div className="col-md-12 fs-block">
-                    {geoViewEnabledALSI === false && (
-                      <LsirScoreChangeSnapshot
-                        metricPeriodMonths={chartMetricPeriodMonths}
-                        supervisionType={chartSupervisionType}
-                        district={chartDistrict}
-                        lsirScoreChangeByMonth={apiData.average_change_lsir_score_by_month}
-                        header="lsirScoreChangeSnapshot-header"
-                      />
-                    )}
-                    {geoViewEnabledALSI === true && (
-                      <GeoViewTimeChart
-                        chartId="lsirScoreChangeSnapshot"
-                        chartTitle="LSI-R SCORE CHANGES (AVERAGE)"
-                        metricType="counts"
-                        metricPeriodMonths={chartMetricPeriodMonths}
-                        supervisionType={chartSupervisionType}
-                        keyedByOffice={true}
-                        officeData={apiData.site_offices}
-                        dataPointsByOffice={apiData.average_change_lsir_score_by_period}
-                        numeratorKeys={['average_change']}
-                        denominatorKeys={[]}
-                        centerLat={47.3}
-                        centerLong={-100.5}
-                      />
-                    )}
-                  </div>
-                </div>
+              <div className="layer w-100 p-20 fs-block">
+                {geoViewEnabledALSI === false && (
+                  <LsirScoreChangeSnapshot
+                    metricPeriodMonths={chartMetricPeriodMonths}
+                    supervisionType={chartSupervisionType}
+                    district={chartDistrict}
+                    lsirScoreChangeByMonth={apiData.average_change_lsir_score_by_month}
+                    header="lsirScoreChangeSnapshot-header"
+                  />
+                )}
+                {geoViewEnabledALSI === true && (
+                  <GeoViewTimeChart
+                    chartId="lsirScoreChangeSnapshot"
+                    chartTitle="LSI-R SCORE CHANGES (AVERAGE)"
+                    metricType="counts"
+                    metricPeriodMonths={chartMetricPeriodMonths}
+                    supervisionType={chartSupervisionType}
+                    keyedByOffice={true}
+                    officeData={apiData.site_offices}
+                    dataPointsByOffice={apiData.average_change_lsir_score_by_period}
+                    numeratorKeys={['average_change']}
+                    denominatorKeys={[]}
+                    centerLat={47.3}
+                    centerLong={-100.5}
+                  />
+                )}
               </div>
               <div className="layer bdT p-20 w-100 accordion" id="methodologyLsirScoreChangeSnapshot">
                 <div className="mb-0" id="methodologyHeadingLsirScoreChangeSnapshot">
