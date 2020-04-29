@@ -143,9 +143,7 @@ const Revocations = () => {
                         Export
                       </a>
                       <div className="dropdown-menu" aria-labelledby="exportDropdownMenuButton-revocationCountsByMonth">
-                        {geoViewEnabledRCOT === false && (
-                          <a className="dropdown-item" id="downloadChartAsImage-revocationCountsByMonth" href="javascript:void(0);">Export image</a>
-                        )}
+                        <a className="dropdown-item" id={`${setGeoViewEnabledRCOT ? 'downloadHtmlElementAsImage' : 'downloadChartAsImage'}-revocationCountsByMonth`} href="javascript:void(0);">Export image</a>
                         <a className="dropdown-item" id="downloadChartData-revocationCountsByMonth" href="javascript:void(0);">Export data</a>
                       </div>
                     </div>
@@ -348,7 +346,7 @@ const Revocations = () => {
                   metricPeriodMonths={chartMetricPeriodMonths}
                   district={chartDistrict}
                   revocationCountsByMonthBySupervisionType={
-                  apiData.revocations_by_supervision_type_by_month}
+                    apiData.revocations_by_supervision_type_by_month}
                 />
               </div>
               <div className="layer bdT p-20 w-100 accordion" id="methodologyRevocationsBySupervisionType">
@@ -420,7 +418,7 @@ const Revocations = () => {
                   supervisionType={chartSupervisionType}
                   district={chartDistrict}
                   revocationCountsByMonthByViolationType={
-                  apiData.revocations_by_violation_type_by_month}
+                    apiData.revocations_by_violation_type_by_month}
                 />
               </div>
               <div className="layer bdT p-20 w-100 accordion" id="methodologyRevocationsByViolationType">

@@ -139,9 +139,7 @@ const Snapshots = () => {
                         Export
                       </a>
                       <div className="dropdown-menu" aria-labelledby="exportDropdownMenuButton-supervisionSuccesSnapshot">
-                        {geoViewEnabledSCOS === false && (
-                          <a className="dropdown-item" id="downloadChartAsImage-supervisionSuccessSnapshot" href="javascript:void(0);">Export image</a>
-                        )}
+                        <a className="dropdown-item" id={`${geoViewEnabledSCOS ? 'downloadHtmlElementAsImage' : 'downloadChartAsImage'}-supervisionSuccessSnapshot`} href="javascript:void(0);">Export image</a>
                         <a className="dropdown-item" id="downloadChartData-supervisionSuccessSnapshot" href="javascript:void(0);">Export data</a>
                       </div>
                     </div>
@@ -199,29 +197,29 @@ const Snapshots = () => {
                   <div>
                     <ul>
                       <li>
-                      A supervision is considered successfully completed
-                      if the individual was discharged from supervision positively
-                      or if their supervision period expired.
+                        A supervision is considered successfully completed
+                        if the individual was discharged from supervision positively
+                        or if their supervision period expired.
                       </li>
                       <li>
-                      Unsuccessful completions of supervision occur when the
-                      supervision ends due to absconsion, a revocation, or a
-                      negative termination.
+                        Unsuccessful completions of supervision occur when the
+                        supervision ends due to absconsion, a revocation, or a
+                        negative termination.
                       </li>
                       <li>
-                      Deaths, suspensions, and &quot;other&quot; terminations are excluded from
-                      these calculations because they&apos;re neither &quot;successful&quot; nor
-                      &quot;unsuccessful&quot;.
+                        Deaths, suspensions, and &quot;other&quot; terminations are excluded from
+                        these calculations because they&apos;re neither &quot;successful&quot; nor
+                        &quot;unsuccessful&quot;.
                       </li>
                       <li>
-                      Individuals are counted in their month of projected completion, even if
-                      terminated earlier. Individuals who have not yet completed supervision by
-                      their projected termination date are excluded.
+                        Individuals are counted in their month of projected completion, even if
+                        terminated earlier. Individuals who have not yet completed supervision by
+                        their projected termination date are excluded.
                       </li>
                       <li>
-                      While on supervision, individuals are attributed to the office of their
-                      current supervising officer. Following supervision, individuals are attributed
-                      to the office of the officer who terminated their supervision.
+                        While on supervision, individuals are attributed to the office of their
+                        current supervising officer. Following supervision, individuals are attributed
+                        to the office of the officer who terminated their supervision.
                       </li>
                     </ul>
                   </div>
@@ -247,9 +245,7 @@ const Snapshots = () => {
                         Export
                       </a>
                       <div className="dropdown-menu" aria-labelledby="exportDropdownMenuButton-revocationAdmissionsSnapshot">
-                        {geoViewEnabledPDTR === false && (
-                          <a className="dropdown-item" id="downloadChartAsImage-revocationAdmissionsSnapshot" href="javascript:void(0);">Export image</a>
-                        )}
+                        <a className="dropdown-item" id={`${setGeoViewEnabledPDTR ? 'downloadHtmlElementAsImage' : 'downloadChartAsImage'}-revocationAdmissionsSnapshot`} href="javascript:void(0);">Export image</a>
                         <a className="dropdown-item" id="downloadChartData-revocationAdmissionsSnapshot" href="javascript:void(0);">Export data</a>
                       </div>
                     </div>
@@ -382,14 +378,14 @@ const Snapshots = () => {
                   <div>
                     <ul>
                       <li>
-                      An individual&apos;s days at liberty are the number of
-                      days between release from incarceration and readmission
-                      for someone who was reincarcerated in a given month.
+                        An individual&apos;s days at liberty are the number of
+                        days between release from incarceration and readmission
+                        for someone who was reincarcerated in a given month.
                       </li>
                       <li>
-                      An admission to prison counts as a reincarceration if
-                      the person has been incarcerated previously in a North
-                      Dakota prison.
+                        An admission to prison counts as a reincarceration if
+                        the person has been incarcerated previously in a North
+                        Dakota prison.
                       </li>
                     </ul>
                   </div>
@@ -421,9 +417,7 @@ const Snapshots = () => {
                         Export
                       </a>
                       <div className="dropdown-menu" aria-labelledby="exportDropdownMenuButton-lsirScoreChangeSnapshot">
-                        {geoViewEnabledALSI === false && (
-                          <a className="dropdown-item" id="downloadChartAsImage-lsirScoreChangeSnapshot" href="javascript:void(0);">Export image</a>
-                        )}
+                        <a className="dropdown-item" id={`${setGeoViewEnabledALSI ? 'downloadHtmlElementAsImage' : 'downloadChartAsImage'}-lsirScoreChangeSnapshot`} href="javascript:void(0);">Export image</a>
                         <a className="dropdown-item" id="downloadChartData-lsirScoreChangeSnapshot" href="javascript:void(0);">Export data</a>
                       </div>
                     </div>

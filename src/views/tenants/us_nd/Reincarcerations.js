@@ -127,9 +127,7 @@ const Reincarcerations = () => {
                         Export
                       </a>
                       <div className="dropdown-menu" aria-labelledby="exportDropdownMenuButton-reincarcerationCountsByMonth">
-                        {geoViewEnabledRCOT === false && (
-                          <a className="dropdown-item" id="downloadChartAsImage-reincarcerationCountsByMonth" href="javascript:void(0);">Export image</a>
-                        )}
+                        <a className="dropdown-item" id={`${geoViewEnabledRCOT ? 'downloadHtmlElementAsImage' : 'downloadChartAsImage'}-reincarcerationCountsByMonth`} href="javascript:void(0);">Export image</a>
                         <a className="dropdown-item" id="downloadChartData-reincarcerationCountsByMonth" href="javascript:void(0);">Export data</a>
                       </div>
                     </div>
@@ -237,9 +235,7 @@ const Reincarcerations = () => {
                         Export
                       </a>
                       <div className="dropdown-menu" aria-labelledby="exportDropdownMenuButton-admissionsVsReleases">
-                        {geoViewEnabledAVR === false && (
-                          <a className="dropdown-item" id="downloadChartAsImage-admissionsVsReleases" href="javascript:void(0);">Export image</a>
-                        )}
+                        <a className="dropdown-item" id={`${geoViewEnabledAVR ? 'downloadHtmlElementAsImage' : 'downloadChartAsImage'}-admissionsVsReleases`} href="javascript:void(0);">Export image</a>
                         <a className="dropdown-item" id="downloadChartData-admissionsVsReleases" href="javascript:void(0);">Export data</a>
                       </div>
                     </div>

@@ -119,9 +119,7 @@ const FreeThroughRecovery = () => {
                         Export
                       </a>
                       <div className="dropdown-menu" aria-labelledby="exportDropdownMenuButton-ftrReferralCountByMonth">
-                        {geoViewEnabledRCOT === false && (
-                          <a className="dropdown-item" id="downloadChartAsImage-ftrReferralCountByMonth" href="javascript:void(0);">Export image</a>
-                        )}
+                        <a className="dropdown-item" id={`${geoViewEnabledRCOT ? 'downloadHtmlElementAsImage' : 'downloadChartAsImage'}-ftrReferralCountByMonth`} href="javascript:void(0);">Export image</a>
                         <a className="dropdown-item" id="downloadChartData-ftrReferralCountByMonth" href="javascript:void(0);">Export data</a>
                       </div>
                     </div>

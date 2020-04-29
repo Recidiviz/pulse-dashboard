@@ -445,7 +445,7 @@ class GeoViewTimeChart extends Component {
     if (keyedByOffice) {
       // Show a choropleth map with colored, sized circles for P&P offices
       return (
-        <div className="map-container" style={RATIO_CONTAINER_OUTER_STYLE}>
+        <div id={chartId} className="map-container" style={RATIO_CONTAINER_OUTER_STYLE}>
           <div style={RATIO_CONTAINER_INNER_STYLE}>
             <ComposableMap
               projection={geoAlbersUsa}
