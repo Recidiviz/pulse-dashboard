@@ -151,39 +151,35 @@ const Snapshots = () => {
                   <div className="dynamic-chart-header" id="supervisionSuccessSnapshot-header" />
                 )}
               </div>
-              <div className="layer w-100 p-20">
-                <div className="ai-c jc-c gapX-20">
-                  <div className="col-md-12 fs-block">
-                    { /* TODO(XXX): Figure out why map will not show when delegated to by the Chart.js
+              <div className="layer w-100 p-20 fs-block">
+                { /* TODO(XXX): Figure out why map will not show when delegated to by the Chart.js
                     chart. Then we can just encapsulate this logic inside of a single component. */ }
-                    {geoViewEnabledSCOS === false && (
-                      <SupervisionSuccessSnapshot
-                        metricType={chartMetricType}
-                        metricPeriodMonths={chartMetricPeriodMonths}
-                        supervisionType={chartSupervisionType}
-                        district={chartDistrict}
-                        supervisionSuccessRates={apiData.supervision_termination_by_type_by_month}
-                        header="supervisionSuccessSnapshot-header"
-                      />
-                    )}
-                    {geoViewEnabledSCOS === true && (
-                      <GeoViewTimeChart
-                        chartId="supervisionSuccessSnapshot"
-                        chartTitle="SUCCESSFUL COMPLETION OF SUPERVISION"
-                        metricType={chartMetricType}
-                        metricPeriodMonths={chartMetricPeriodMonths}
-                        supervisionType={chartSupervisionType}
-                        keyedByOffice={true}
-                        officeData={apiData.site_offices}
-                        dataPointsByOffice={apiData.supervision_termination_by_type_by_period}
-                        numeratorKeys={['successful_termination']}
-                        denominatorKeys={['revocation_termination', 'successful_termination']}
-                        centerLat={47.3}
-                        centerLong={-100.5}
-                      />
-                    )}
-                  </div>
-                </div>
+                {geoViewEnabledSCOS === false && (
+                  <SupervisionSuccessSnapshot
+                    metricType={chartMetricType}
+                    metricPeriodMonths={chartMetricPeriodMonths}
+                    supervisionType={chartSupervisionType}
+                    district={chartDistrict}
+                    supervisionSuccessRates={apiData.supervision_termination_by_type_by_month}
+                    header="supervisionSuccessSnapshot-header"
+                  />
+                )}
+                {geoViewEnabledSCOS === true && (
+                  <GeoViewTimeChart
+                    chartId="supervisionSuccessSnapshot"
+                    chartTitle="SUCCESSFUL COMPLETION OF SUPERVISION"
+                    metricType={chartMetricType}
+                    metricPeriodMonths={chartMetricPeriodMonths}
+                    supervisionType={chartSupervisionType}
+                    keyedByOffice={true}
+                    officeData={apiData.site_offices}
+                    dataPointsByOffice={apiData.supervision_termination_by_type_by_period}
+                    numeratorKeys={['successful_termination']}
+                    denominatorKeys={['revocation_termination', 'successful_termination']}
+                    centerLat={47.3}
+                    centerLong={-100.5}
+                  />
+                )}
               </div>
               <div className="layer bdT p-20 w-100 accordion" id="methodologySupervisionSuccessSnapshot">
                 <div className="mb-0" id="methodologyHeadingSupervisionSuccessSnapshot">
@@ -257,38 +253,34 @@ const Snapshots = () => {
                   <div className="dynamic-chart-header" id="revocationAdmissionsSnapshot-header" />
                 )}
               </div>
-              <div className="layer w-100 p-20">
-                <div className="ai-c jc-c gapX-20">
-                  <div className="col-md-12 fs-block">
-                    {geoViewEnabledPDTR === false && (
-                      <RevocationAdmissionsSnapshot
-                        metricType={chartMetricType}
-                        metricPeriodMonths={chartMetricPeriodMonths}
-                        supervisionType={chartSupervisionType}
-                        district={chartDistrict}
-                        revocationAdmissionsByMonth={apiData.admissions_by_type_by_month}
-                        header="revocationAdmissionsSnapshot-header"
-                      />
-                    )}
-                    {geoViewEnabledPDTR === true && (
-                      <GeoViewTimeChart
-                        chartId="revocationAdmissionsSnapshot"
-                        chartTitle="PRISON ADMISSIONS DUE TO REVOCATION"
-                        metricType={chartMetricType}
-                        metricPeriodMonths={chartMetricPeriodMonths}
-                        supervisionType={chartSupervisionType}
-                        keyedByOffice
-                        shareDenominatorAcrossRates
-                        officeData={apiData.site_offices}
-                        dataPointsByOffice={apiData.admissions_by_type_by_period}
-                        numeratorKeys={['technicals', 'non_technicals', 'unknown_revocations']}
-                        denominatorKeys={['technicals', 'non_technicals', 'unknown_revocations', 'new_admissions']}
-                        centerLat={47.3}
-                        centerLong={-100.5}
-                      />
-                    )}
-                  </div>
-                </div>
+              <div className="layer w-100 p-20 fs-block">
+                {geoViewEnabledPDTR === false && (
+                  <RevocationAdmissionsSnapshot
+                    metricType={chartMetricType}
+                    metricPeriodMonths={chartMetricPeriodMonths}
+                    supervisionType={chartSupervisionType}
+                    district={chartDistrict}
+                    revocationAdmissionsByMonth={apiData.admissions_by_type_by_month}
+                    header="revocationAdmissionsSnapshot-header"
+                  />
+                )}
+                {geoViewEnabledPDTR === true && (
+                  <GeoViewTimeChart
+                    chartId="revocationAdmissionsSnapshot"
+                    chartTitle="PRISON ADMISSIONS DUE TO REVOCATION"
+                    metricType={chartMetricType}
+                    metricPeriodMonths={chartMetricPeriodMonths}
+                    supervisionType={chartSupervisionType}
+                    keyedByOffice
+                    shareDenominatorAcrossRates
+                    officeData={apiData.site_offices}
+                    dataPointsByOffice={apiData.admissions_by_type_by_period}
+                    numeratorKeys={['technicals', 'non_technicals', 'unknown_revocations']}
+                    denominatorKeys={['technicals', 'non_technicals', 'unknown_revocations', 'new_admissions']}
+                    centerLat={47.3}
+                    centerLong={-100.5}
+                  />
+                )}
               </div>
               <div className="layer bdT p-20 w-100 accordion" id="methodologyRevocationAdmissionsSnapshot">
                 <div className="mb-0" id="methodologyHeadingRevocationAdmissionsSnapshot">
@@ -429,36 +421,32 @@ const Snapshots = () => {
                   <div className="dynamic-chart-header" id="lsirScoreChangeSnapshot-header" />
                 )}
               </div>
-              <div className="layer w-100 p-20">
-                <div className="ai-c jc-c gapX-20">
-                  <div className="col-md-12 fs-block">
-                    {geoViewEnabledALSI === false && (
-                      <LsirScoreChangeSnapshot
-                        metricPeriodMonths={chartMetricPeriodMonths}
-                        supervisionType={chartSupervisionType}
-                        district={chartDistrict}
-                        lsirScoreChangeByMonth={apiData.average_change_lsir_score_by_month}
-                        header="lsirScoreChangeSnapshot-header"
-                      />
-                    )}
-                    {geoViewEnabledALSI === true && (
-                      <GeoViewTimeChart
-                        chartId="lsirScoreChangeSnapshot"
-                        chartTitle="LSI-R SCORE CHANGES (AVERAGE)"
-                        metricType="counts"
-                        metricPeriodMonths={chartMetricPeriodMonths}
-                        supervisionType={chartSupervisionType}
-                        keyedByOffice={true}
-                        officeData={apiData.site_offices}
-                        dataPointsByOffice={apiData.average_change_lsir_score_by_period}
-                        numeratorKeys={['average_change']}
-                        denominatorKeys={[]}
-                        centerLat={47.3}
-                        centerLong={-100.5}
-                      />
-                    )}
-                  </div>
-                </div>
+              <div className="layer w-100 p-20 fs-block">
+                {geoViewEnabledALSI === false && (
+                  <LsirScoreChangeSnapshot
+                    metricPeriodMonths={chartMetricPeriodMonths}
+                    supervisionType={chartSupervisionType}
+                    district={chartDistrict}
+                    lsirScoreChangeByMonth={apiData.average_change_lsir_score_by_month}
+                    header="lsirScoreChangeSnapshot-header"
+                  />
+                )}
+                {geoViewEnabledALSI === true && (
+                  <GeoViewTimeChart
+                    chartId="lsirScoreChangeSnapshot"
+                    chartTitle="LSI-R SCORE CHANGES (AVERAGE)"
+                    metricType="counts"
+                    metricPeriodMonths={chartMetricPeriodMonths}
+                    supervisionType={chartSupervisionType}
+                    keyedByOffice={true}
+                    officeData={apiData.site_offices}
+                    dataPointsByOffice={apiData.average_change_lsir_score_by_period}
+                    numeratorKeys={['average_change']}
+                    denominatorKeys={[]}
+                    centerLat={47.3}
+                    centerLong={-100.5}
+                  />
+                )}
               </div>
               <div className="layer bdT p-20 w-100 accordion" id="methodologyLsirScoreChangeSnapshot">
                 <div className="mb-0" id="methodologyHeadingLsirScoreChangeSnapshot">
