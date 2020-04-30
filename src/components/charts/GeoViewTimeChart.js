@@ -450,8 +450,8 @@ class GeoViewTimeChart extends Component {
             <ComposableMap
               projection={geoAlbersUsa}
               projectionConfig={{ scale: 1000 }}
-              width={980}
-              height={580}
+              width={1100}
+              height={570}
               style={{
                 width: '100%',
                 height: 'auto',

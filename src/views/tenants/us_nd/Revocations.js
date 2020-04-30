@@ -143,7 +143,12 @@ const Revocations = () => {
                         Export
                       </a>
                       <div className="dropdown-menu" aria-labelledby="exportDropdownMenuButton-revocationCountsByMonth">
-                        <a className="dropdown-item" id={`${setGeoViewEnabledRCOT ? 'downloadHtmlElementAsImage' : 'downloadChartAsImage'}-revocationCountsByMonth`} href="javascript:void(0);">Export image</a>
+                        {geoViewEnabledRCOT === false && (
+                          <a className="dropdown-item" id="downloadChartAsImage-revocationCountsByMonth" href="javascript:void(0);">Export image</a>
+                        )}
+                        {geoViewEnabledRCOT === true && (
+                          <a className="dropdown-item" id="downloadHtmlElementAsImage-revocationCountsByMonth" href="javascript:void(0);">Export image</a>
+                        )}
                         <a className="dropdown-item" id="downloadChartData-revocationCountsByMonth" href="javascript:void(0);">Export data</a>
                       </div>
                     </div>

@@ -139,7 +139,12 @@ const Snapshots = () => {
                         Export
                       </a>
                       <div className="dropdown-menu" aria-labelledby="exportDropdownMenuButton-supervisionSuccesSnapshot">
-                        <a className="dropdown-item" id={`${geoViewEnabledSCOS ? 'downloadHtmlElementAsImage' : 'downloadChartAsImage'}-supervisionSuccessSnapshot`} href="javascript:void(0);">Export image</a>
+                        {geoViewEnabledSCOS === false && (
+                          <a className="dropdown-item" id="downloadChartAsImage-supervisionSuccessSnapshot" href="javascript:void(0);">Export image</a>
+                        )}
+                        {geoViewEnabledSCOS === true && (
+                          <a className="dropdown-item" id="downloadHtmlElementAsImage-supervisionSuccessSnapshot" href="javascript:void(0);">Export image</a>
+                        )}
                         <a className="dropdown-item" id="downloadChartData-supervisionSuccessSnapshot" href="javascript:void(0);">Export data</a>
                       </div>
                     </div>
@@ -241,7 +246,12 @@ const Snapshots = () => {
                         Export
                       </a>
                       <div className="dropdown-menu" aria-labelledby="exportDropdownMenuButton-revocationAdmissionsSnapshot">
-                        <a className="dropdown-item" id={`${setGeoViewEnabledPDTR ? 'downloadHtmlElementAsImage' : 'downloadChartAsImage'}-revocationAdmissionsSnapshot`} href="javascript:void(0);">Export image</a>
+                        {geoViewEnabledPDTR === false && (
+                          <a className="dropdown-item" id="downloadChartAsImage-revocationAdmissionsSnapshot" href="javascript:void(0);">Export image</a>
+                        )}
+                        {geoViewEnabledPDTR === true && (
+                          <a className="dropdown-item" id="downloadHtmlElementAsImage-revocationAdmissionsSnapshot" href="javascript:void(0);">Export image</a>
+                        )}
                         <a className="dropdown-item" id="downloadChartData-revocationAdmissionsSnapshot" href="javascript:void(0);">Export data</a>
                       </div>
                     </div>
@@ -409,7 +419,12 @@ const Snapshots = () => {
                         Export
                       </a>
                       <div className="dropdown-menu" aria-labelledby="exportDropdownMenuButton-lsirScoreChangeSnapshot">
-                        <a className="dropdown-item" id={`${setGeoViewEnabledALSI ? 'downloadHtmlElementAsImage' : 'downloadChartAsImage'}-lsirScoreChangeSnapshot`} href="javascript:void(0);">Export image</a>
+                        {geoViewEnabledALSI === false && (
+                          <a className="dropdown-item" id="downloadChartAsImage-lsirScoreChangeSnapshot" href="javascript:void(0);">Export image</a>
+                        )}
+                        {geoViewEnabledALSI === true && (
+                          <a className="dropdown-item" id="downloadHtmlElementAsImage-lsirScoreChangeSnapshot" href="javascript:void(0);">Export image</a>
+                        )}
                         <a className="dropdown-item" id="downloadChartData-lsirScoreChangeSnapshot" href="javascript:void(0);">Export data</a>
                       </div>
                     </div>

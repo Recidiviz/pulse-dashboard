@@ -127,7 +127,12 @@ const Reincarcerations = () => {
                         Export
                       </a>
                       <div className="dropdown-menu" aria-labelledby="exportDropdownMenuButton-reincarcerationCountsByMonth">
-                        <a className="dropdown-item" id={`${geoViewEnabledRCOT ? 'downloadHtmlElementAsImage' : 'downloadChartAsImage'}-reincarcerationCountsByMonth`} href="javascript:void(0);">Export image</a>
+                        {geoViewEnabledRCOT === false && (
+                          <a className="dropdown-item" id="downloadChartAsImage-reincarcerationCountsByMonth" href="javascript:void(0);">Export image</a>
+                        )}
+                        {geoViewEnabledRCOT === true && (
+                          <a className="dropdown-item" id="downloadHtmlElementAsImage-reincarcerationCountsByMonth" href="javascript:void(0);">Export image</a>
+                        )}
                         <a className="dropdown-item" id="downloadChartData-reincarcerationCountsByMonth" href="javascript:void(0);">Export data</a>
                       </div>
                     </div>
@@ -235,7 +240,12 @@ const Reincarcerations = () => {
                         Export
                       </a>
                       <div className="dropdown-menu" aria-labelledby="exportDropdownMenuButton-admissionsVsReleases">
-                        <a className="dropdown-item" id={`${geoViewEnabledAVR ? 'downloadHtmlElementAsImage' : 'downloadChartAsImage'}-admissionsVsReleases`} href="javascript:void(0);">Export image</a>
+                        {geoViewEnabledAVR === false && (
+                          <a className="dropdown-item" id="downloadChartAsImage-admissionsVsReleases" href="javascript:void(0);">Export image</a>
+                        )}
+                        {geoViewEnabledAVR === true && (
+                          <a className="dropdown-item" id="downloadHtmlElementAsImage-admissionsVsReleases" href="javascript:void(0);">Export image</a>
+                        )}
                         <a className="dropdown-item" id="downloadChartData-admissionsVsReleases" href="javascript:void(0);">Export data</a>
                       </div>
                     </div>
