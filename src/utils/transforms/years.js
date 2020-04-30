@@ -1,9 +1,9 @@
 import moment from "moment";
 
-function getYearFromNow(yearDifference = 0) {
+export function getYearFromNow(yearDifference = 0) {
   return moment().add(yearDifference, "years").format("YYYY");
 }
 
-export {
+export default {
   getYearFromNow,
 };
