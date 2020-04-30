@@ -105,7 +105,7 @@ const FreeThroughRecovery = () => {
       <>
         {/* #FTR referral counts by month chart ==================== */}
         <div className="col-md-6">
-          <div className="bd bgc-white p-20">
+          <div className="bd bgc-white p-20 h-100p">
             <div className="layers">
               <div className="layer w-100 pX-20 pT-20">
                 <h6 className="lh-1">
@@ -206,7 +206,7 @@ const FreeThroughRecovery = () => {
 
         {/* #FTR Referrals by Race chart ==================== */}
         <div className="col-md-6">
-          <div className="bd bgc-white p-20">
+          <div className="bd bgc-white p-20 h-100p">
             <div className="layers">
               <div className="layer w-100 pX-20 pT-20">
                 <h6 className="lh-1">
@@ -306,7 +306,7 @@ const FreeThroughRecovery = () => {
 
         {/* #FTR Referrals by LSI-R chart ==================== */}
         <div className="col-md-6">
-          <div className="bd bgc-white p-20">
+          <div className="bd bgc-white p-20 h-100p">
             <div className="layers">
               <div className="layer w-100 pX-20 pT-20">
                 <h6 className="lh-1">
@@ -392,7 +392,7 @@ const FreeThroughRecovery = () => {
 
         {/* #FTR Referrals by Gender chart ==================== */}
         <div className="col-md-6">
-          <div className="bd bgc-white p-20">
+          <div className="bd bgc-white p-20 h-100p">
             <div className="layers">
               <div className="layer w-100 pX-20 pT-20">
                 <h6 className="lh-1">
@@ -476,7 +476,7 @@ const FreeThroughRecovery = () => {
 
         {/* #FTR Referrals by Age chart ==================== */}
         <div className="col-md-6">
-          <div className="bd bgc-white p-20">
+          <div className="bd bgc-white p-20 h-100p">
             <div className="layers">
               <div className="layer w-100 pX-20 pT-20">
                 <h6 className="lh-1">

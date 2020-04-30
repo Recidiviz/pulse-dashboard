@@ -113,7 +113,7 @@ const Reincarcerations = () => {
       <>
         {/* #Reincarcerations by month chart ==================== */}
         <div className="col-md-6">
-          <div className="bd bgc-white p-20">
+          <div className="bd bgc-white p-20 h-100p">
             <div className="layers">
               <div className="layer w-100 pX-20 pT-20">
                 <h6 className="lh-1">
@@ -223,7 +223,7 @@ const Reincarcerations = () => {
 
         {/* #Releases vs admissions ==================== */}
         <div className="col-md-6">
-          <div className="bd bgc-white p-20">
+          <div className="bd bgc-white p-20 h-100p">
             <div className="layers">
               <div className="layer w-100 pX-20 pT-20">
                 <h6 className="lh-1">
@@ -340,7 +340,7 @@ const Reincarcerations = () => {
 
         {/* #Reincarcerations by previous stay length ==================== */}
         <div className="col-md-6">
-          <div className="bd bgc-white p-20">
+          <div className="bd bgc-white p-20 h-100p">
             <div className="layers">
               <div className="layer w-100 pX-20 pT-20">
                 <h6 className="lh-1">

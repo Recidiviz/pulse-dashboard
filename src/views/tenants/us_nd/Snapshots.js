@@ -122,7 +122,7 @@ const Snapshots = () => {
       <>
         {/* #Successful completion of supervision snapshot ==================== */}
         <div className="col-md-6">
-          <div className="bd bgc-white p-20">
+          <div className="bd bgc-white p-20 h-100p">
             <div className="layers">
               <div className="layer w-100 pX-20 pT-20">
                 <h6 className="lh-1">
@@ -229,7 +229,7 @@ const Snapshots = () => {
 
         {/* #Prison admissions from revocations ==================== */}
         <div className="col-md-6">
-          <div className="bd bgc-white p-20">
+          <div className="bd bgc-white p-20 h-100p">
             <div className="layers">
               <div className="layer w-100 pX-20 pT-20">
                 <h6 className="lh-1">
@@ -327,7 +327,7 @@ const Snapshots = () => {
 
         {/* #Average days at liberty ==================== */}
         <div className="col-md-6">
-          <div className="bd bgc-white p-20">
+          <div className="bd bgc-white p-20 h-100p">
             <div className="layers">
               <div className="layer w-100 pX-20 pT-20">
                 <h6 className="lh-1">
@@ -393,7 +393,7 @@ const Snapshots = () => {
 
         {/* #Change in LSI-R scores ==================== */}
         <div className="col-md-6">
-          <div className="bd bgc-white p-20">
+          <div className="bd bgc-white p-20 h-100p">
             <div className="layers">
               <div className="layer w-100 pX-20 pT-20">
                 <h6 className="lh-1">

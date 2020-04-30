@@ -129,7 +129,7 @@ const Revocations = () => {
       <>
         {/* #Revocation counts by month chart ==================== */}
         <div className="col-md-6">
-          <div className="bd bgc-white p-20">
+          <div className="bd bgc-white p-20 h-100p">
             <div className="layers">
               <div className="layer w-100 pX-20 pT-20">
                 <h6 className="lh-1">
@@ -241,7 +241,7 @@ const Revocations = () => {
 
         {/* #Revocations by officer id ==================== */}
         <div className="col-md-6">
-          <div className="bd bgc-white p-20">
+          <div className="bd bgc-white p-20 h-100p">
             <div className="layers">
               <div className="layer w-100 pX-20 pT-20">
                 <h6 className="lh-1">
@@ -321,7 +321,7 @@ const Revocations = () => {
 
         {/* #Revocations by supervision type ==================== */}
         <div className="col-md-6">
-          <div className="bd bgc-white p-20">
+          <div className="bd bgc-white p-20 h-100p">
             <div className="layers">
               <div className="layer w-100 pX-20 pT-20">
                 <h6 className="lh-1">
@@ -395,7 +395,7 @@ const Revocations = () => {
 
         {/* #Revocations by violation type ==================== */}
         <div className="col-md-6">
-          <div className="bd bgc-white p-20">
+          <div className="bd bgc-white p-20 h-100p">
             <div className="layers">
               <div className="layer w-100 pX-20 pT-20">
                 <h6 className="lh-1">
@@ -483,7 +483,7 @@ const Revocations = () => {
 
         {/* #Case terminations by termination type ==================== */}
         <div className="col-md-6">
-          <div className="bd bgc-white p-20">
+          <div className="bd bgc-white p-20 h-100p">
             <div className="layers">
               <div className="layer w-100 pX-20 pT-20">
                 <h6 className="lh-1">
@@ -553,7 +553,7 @@ const Revocations = () => {
 
         {/* #Case terminations by officer ==================== */}
         <div className="col-md-6">
-          <div className="bd bgc-white p-20">
+          <div className="bd bgc-white p-20 h-100p">
             <div className="layers">
               <div className="layer w-100 pX-20 pT-20">
                 <h6 className="lh-1">
@@ -626,7 +626,7 @@ const Revocations = () => {
 
         {/* #Admission type proportions ==================== */}
         <div className="col-md-6">
-          <div className="bd bgc-white p-20">
+          <div className="bd bgc-white p-20 h-100p">
             <div className="layers">
               <div className="layer w-100 pX-20 pT-20">
                 <h6 className="lh-1">
@@ -729,7 +729,7 @@ const Revocations = () => {
 
         {/* #Revocations by race chart ==================== */}
         <div className="col-md-6">
-          <div className="bd bgc-white p-20">
+          <div className="bd bgc-white p-20 h-100p">
             <div className="layers">
               <div className="layer w-100 pX-20 pT-20">
                 <h6 className="lh-1">
