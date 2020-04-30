@@ -22,7 +22,7 @@ import Loading from '../../../components/Loading';
 import '../../../assets/styles/index.scss';
 import { useAuth0 } from '../../../react-auth0-spa';
 import { callMetricsApi, awaitingResults } from '../../../utils/metricsClient';
-import { getYearFromNow } from '../../../assets/scripts/utils/time'
+import { getYearFromNow } from '../../../utils/transforms/years'
 
 import AdmissionsVsReleases from '../../../components/charts/reincarcerations/AdmissionsVsReleases';
 import ReincarcerationCountOverTime

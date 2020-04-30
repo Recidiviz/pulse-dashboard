@@ -46,12 +46,7 @@ function getMonthsBetween(startDateValue, endDateValue) {
   return months;
 }
 
-function getYearFromNow(count = 0) {
-  return moment().add(count, 'years').format('YYYY');
-}
-
 export {
   timeStamp,
   getMonthsBetween,
-  getYearFromNow,
 };
