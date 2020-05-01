@@ -94,7 +94,7 @@ function getViolation(toggleStates) {
   if (toggleStates.reportedViolations !== undefined || toggleStates.violationType !== undefined || toggleStates.reportedViolations !== "" || toggleStates.violationType !== ""  ) {
     str += "- ";
     if (toggleStates.reportedViolations !== undefined && toggleStates.reportedViolations !== "") {
-      str += toggleStates.reportedViolations + " violations or notices of citations, ";
+      str += toggleStates.reportedViolations + " violations or notices of citation, ";
     }
     if (toggleStates.violationType !== undefined && toggleStates.violationType !== "") {
       str += "Most severe: " +  toHumanReadable(toTitleCase(toggleStates.violationType.toLowerCase()));

@@ -50,7 +50,11 @@ number of violations would be determined by looking over the period of February 
 February 1, 2017. This methodology negates the lag time between the last violation report and the
 court's decision to revoke, and therefore gives a fuller picture of a person's behavioral record
 leading up to the decision to recommend revocation. Reports filed after the revocation are not
-included, since they were presumptively irrelevant to the revocation.`,
+included, since they were presumptively irrelevant to the revocation. These violation counts
+account for all types of violation reports, including supplementals. Hence, if a person had three
+initial violation reports and one supplemental report, they would be counted as having four
+violations. They would be categorized according to the most severe violation reported in all of
+these reports, regardless of whether it was in the initial report or supplemental report.`,
     },
     {
       header: "Most serious violation",
@@ -163,7 +167,7 @@ is still on supervision) or the date that the person was discharged from supervi
 group. The blue bars represent the different categories of conditions violated that constitute
 technical violations. The yellow bars represent different categories of law violations. This is
 calculated as follows: The total number of violation reports or notices of citation upon which each
-type of violation appears, divided by the total number of violation reports or notices of citations
+type of violation appears, divided by the total number of violation reports or notices of citation
 filed. Violation counts include all reported violations filed within one year of a person's last
 violation before they were revoked. For this chart only, if multiple violation types are listed on
 one violation report or notice of citation, they are all counted. For example, if a single notice of
@@ -277,6 +281,13 @@ different set of filters, this list will automatically repopulate to match whate
 the user has selected. For example, if the user has selected "District 2" and "Probation" from
 the drop down menus at the top of the screen, this list would automatically update to
 include only people from the probation population in District 2.`,
+    },
+    {
+      header: "District",
+      body: `The district within which a person was under supervision during their last active
+supervision period prior to revocation. For a small percentage of individuals (approx. 4–8 percent),
+the district and officer are unknown. This happens when the individual was not associated with an
+active supervision period at any point within the two years prior to the revocation.`,
     },
     {
       header: "Officer",
