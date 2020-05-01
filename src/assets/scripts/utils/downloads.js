@@ -16,7 +16,6 @@
 // =============================================================================
 
 import downloadjs from 'downloadjs';
-import html2canvas from 'html2canvas';
 import * as csvExport from 'jsonexport/dist';
 import { timeStamp } from './time';
 import infoAboutChart from '../../../utils/charts/info';
@@ -309,7 +308,7 @@ function downloadHtmlElementAsImage(
 ) {
   const element = document.getElementById(chartId);
 
-  html2canvas(element, {}).then((canvas) => {
+  window.html2canvas(element, {}).then((canvas) => {
     configureImageDownload(
       canvas, `${chartId}-${timeStamp()}.png`, chartTitle, toggleStates, chartId,
       timeWindowDescription, shouldZipDownload
