@@ -63,7 +63,9 @@ function sortByLabel(dataPoints, labelKey) {
 }
 
 function filterMostRecentMonths(dataPoints, monthCount) {
-  return dataPoints.slice(dataPoints.length - monthCount, dataPoints.length);
+  const result = dataPoints.slice(dataPoints.length - monthCount, dataPoints.length);
+  if (result.length < monthCount) throw new NotValidDatasetError();
+  return result;
 }
 
 /**
@@ -135,6 +137,8 @@ function sortFilterAndSupplementMostRecentMonths(
   return filterMostRecentMonths(sortedData, monthCount);
 }
 
+class NotValidDatasetError extends Error { }
+
 export {
   filterFacilities,
   filterMostRecentMonths,
@@ -142,4 +146,5 @@ export {
   sortAndFilterMostRecentMonths,
   sortByLabel,
   sortByYearAndMonth,
+  NotValidDatasetError,
 };

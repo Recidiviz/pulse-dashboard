@@ -20,7 +20,10 @@ import { Line } from 'react-chartjs-2';
 
 import { COLORS } from '../../../assets/scripts/constants/colors';
 import { configureDownloadButtons } from '../../../assets/scripts/utils/downloads';
-import { sortFilterAndSupplementMostRecentMonths } from '../../../utils/transforms/datasets';
+import {
+  sortFilterAndSupplementMostRecentMonths,
+  NotValidDatasetError
+} from '../../../utils/transforms/datasets';
 import { toInt } from '../../../utils/transforms/labels';
 import { monthNamesWithYearsFromNumbers } from '../../../utils/transforms/months';
 import {
@@ -39,85 +42,92 @@ const RevocationAdmissionsSnapshot = (props) => {
   const [chartDataPoints, setChartDataPoints] = useState([]);
   const [chartMinValue, setChartMinValue] = useState();
   const [chartMaxValue, setChartMaxValue] = useState();
+  const [isErrorVisible, setErrorVisibility] = useState(false);
 
   const chartId = 'revocationAdmissionsSnapshot';
   const GOAL = getGoalForChart('US_ND', chartId);
   const stepSize = 10;
 
   const processResponse = () => {
-    const { revocationAdmissionsByMonth: countsByMonth } = props;
+    try {
+      const { revocationAdmissionsByMonth: countsByMonth } = props;
 
-    // For this chart specifically, we want the denominator for rates to be the total admission
-    // count in a given month across all supervision types and districts, while the numerator
-    // remains scoped to the selected supervision type and/or district, if selected.
-    let filteredCountsForAll = filterDatasetBySupervisionType(countsByMonth, 'ALL');
-    filteredCountsForAll = filterDatasetByDistrict(filteredCountsForAll, 'ALL');
-    const totalPrisonAdmissionsByYearAndMonth = {};
+      // For this chart specifically, we want the denominator for rates to be the total admission
+      // count in a given month across all supervision types and districts, while the numerator
+      // remains scoped to the selected supervision type and/or district, if selected.
+      let filteredCountsForAll = filterDatasetBySupervisionType(countsByMonth, 'ALL');
+      filteredCountsForAll = filterDatasetByDistrict(filteredCountsForAll, 'ALL');
+      const totalPrisonAdmissionsByYearAndMonth = {};
 
-    filteredCountsForAll.forEach((data) => {
-      const { year, month } = data;
-      const newAdmissions = toInt(data.new_admissions);
-      const technicals = toInt(data.technicals);
-      const nonTechnicals = toInt(data.non_technicals);
-      const unknownRevocations = toInt(data.unknown_revocations);
-      const total = technicals + nonTechnicals + unknownRevocations + newAdmissions;
-
-      if (!totalPrisonAdmissionsByYearAndMonth[year]) {
-        totalPrisonAdmissionsByYearAndMonth[year] = {};
-        totalPrisonAdmissionsByYearAndMonth[year][month] = total;
-      } else if (!totalPrisonAdmissionsByYearAndMonth[year][month]) {
-        totalPrisonAdmissionsByYearAndMonth[year][month] = total;
-      } else {
-        totalPrisonAdmissionsByYearAndMonth[year][month] += total;
-      }
-    });
-
-    // Proceed with normal data filtering and processing
-    let filteredCountsByMonth = filterDatasetBySupervisionType(
-      countsByMonth, props.supervisionType,
-    );
-
-    filteredCountsByMonth = filterDatasetByDistrict(
-      filteredCountsByMonth, props.district,
-    );
-
-    const dataPoints = [];
-    if (filteredCountsByMonth) {
-      filteredCountsByMonth.forEach((data) => {
+      filteredCountsForAll.forEach((data) => {
         const { year, month } = data;
+        const newAdmissions = toInt(data.new_admissions);
         const technicals = toInt(data.technicals);
         const nonTechnicals = toInt(data.non_technicals);
         const unknownRevocations = toInt(data.unknown_revocations);
-        const revocations = (technicals + nonTechnicals + unknownRevocations);
+        const total = technicals + nonTechnicals + unknownRevocations + newAdmissions;
 
-        let percentRevocations = 0.00;
-        const totalAdmissionsForYearAndMonth = totalPrisonAdmissionsByYearAndMonth[year][month];
-        if (totalAdmissionsForYearAndMonth !== 0) {
-          percentRevocations = (100 * (revocations / totalAdmissionsForYearAndMonth)).toFixed(2);
-        }
-
-        if (props.metricType === 'counts') {
-          dataPoints.push({ year, month, value: revocations });
-        } else if (props.metricType === 'rates') {
-          dataPoints.push({ year, month, value: percentRevocations });
+        if (!totalPrisonAdmissionsByYearAndMonth[year]) {
+          totalPrisonAdmissionsByYearAndMonth[year] = {};
+          totalPrisonAdmissionsByYearAndMonth[year][month] = total;
+        } else if (!totalPrisonAdmissionsByYearAndMonth[year][month]) {
+          totalPrisonAdmissionsByYearAndMonth[year][month] = total;
+        } else {
+          totalPrisonAdmissionsByYearAndMonth[year][month] += total;
         }
       });
+
+      // Proceed with normal data filtering and processing
+      let filteredCountsByMonth = filterDatasetBySupervisionType(
+        countsByMonth, props.supervisionType,
+      );
+
+      filteredCountsByMonth = filterDatasetByDistrict(
+        filteredCountsByMonth, props.district,
+      );
+
+      const dataPoints = [];
+      if (filteredCountsByMonth) {
+        filteredCountsByMonth.forEach((data) => {
+          const { year, month } = data;
+          const technicals = toInt(data.technicals);
+          const nonTechnicals = toInt(data.non_technicals);
+          const unknownRevocations = toInt(data.unknown_revocations);
+          const revocations = (technicals + nonTechnicals + unknownRevocations);
+
+          let percentRevocations = 0.00;
+          const totalAdmissionsForYearAndMonth = totalPrisonAdmissionsByYearAndMonth[year][month];
+          if (totalAdmissionsForYearAndMonth !== 0) {
+            percentRevocations = (100 * (revocations / totalAdmissionsForYearAndMonth)).toFixed(2);
+          }
+
+          if (props.metricType === 'counts') {
+            dataPoints.push({ year, month, value: revocations });
+          } else if (props.metricType === 'rates') {
+            dataPoints.push({ year, month, value: percentRevocations });
+          }
+        });
+      }
+
+      const months = getMonthCountFromMetricPeriodMonthsToggle(props.metricPeriodMonths);
+      const sorted = sortFilterAndSupplementMostRecentMonths(
+        dataPoints, months, 'value', '0',
+      );
+      const chartDataValues = sorted.map((element) => element.value);
+      const min = getMinForGoalAndData(GOAL.value, chartDataValues, stepSize);
+      const max = getMaxForGoalAndData(GOAL.value, chartDataValues, stepSize);
+      const monthNames = monthNamesWithYearsFromNumbers(sorted.map((element) => element.month), true);
+
+      centerSingleMonthDatasetIfNecessary(chartDataValues, monthNames);
+      setChartLabels(monthNames);
+      setChartDataPoints(chartDataValues);
+      setChartMinValue(min);
+      setChartMaxValue(max);
+    } catch (ex) {
+      if (ex instanceof NotValidDatasetError) {
+        setErrorVisibility(true)
+      }
     }
-
-    const months = getMonthCountFromMetricPeriodMonthsToggle(props.metricPeriodMonths);
-    const sorted = sortFilterAndSupplementMostRecentMonths(
-      dataPoints, months, 'value', '0',
-    );
-    const chartDataValues = sorted.map((element) => element.value);
-    const min = getMinForGoalAndData(GOAL.value, chartDataValues, stepSize);
-    const max = getMaxForGoalAndData(GOAL.value, chartDataValues, stepSize);
-    const monthNames = monthNamesWithYearsFromNumbers(sorted.map((element) => element.month), true);
-
-    centerSingleMonthDatasetIfNecessary(chartDataValues, monthNames);
-    setChartLabels(monthNames);
-    setChartDataPoints(chartDataValues);
-    setChartMinValue(min);
-    setChartMaxValue(max);
   };
 
   function goalLineIfApplicable() {
@@ -236,6 +246,15 @@ const RevocationAdmissionsSnapshot = (props) => {
   configureDownloadButtons(chartId, 'PRISON ADMISSIONS DUE TO REVOCATION', chart.props.data.datasets,
     chart.props.data.labels, document.getElementById(chartId),
     exportedStructureCallback, props, true, true);
+
+  if (isErrorVisible) {
+    return (
+      <div>
+        Encountered an error processing the data points for this chart with the selected filters applied.
+        Please contact <a href="mailto:support@recidiviz.org">support@recidiviz.org</a> for assistance.
+      </div>
+    );
+  }
 
   const header = document.getElementById(props.header);
 

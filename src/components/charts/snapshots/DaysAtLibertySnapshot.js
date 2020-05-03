@@ -31,7 +31,10 @@ import {
 import {
   generateTrendlineDataset, getTooltipWithoutTrendline,
 } from '../../../utils/charts/trendline';
-import { sortFilterAndSupplementMostRecentMonths } from '../../../utils/transforms/datasets';
+import {
+  sortFilterAndSupplementMostRecentMonths,
+  NotValidDatasetError
+} from '../../../utils/transforms/datasets';
 import { monthNamesWithYearsFromNumbers } from '../../../utils/transforms/months';
 
 const DaysAtLibertySnapshot = (props) => {
@@ -39,35 +42,42 @@ const DaysAtLibertySnapshot = (props) => {
   const [chartDataPoints, setChartDataPoints] = useState([]);
   const [chartMinValue, setChartMinValue] = useState();
   const [chartMaxValue, setChartMaxValue] = useState();
+  const [isErrorVisible, setErrorVisibility] = useState(false);
 
   const chartId = 'daysAtLibertySnapshot';
   const GOAL = getGoalForChart('US_ND', chartId);
   const stepSize = 200;
 
   const processResponse = () => {
-    const { daysAtLibertyByMonth } = props;
+    try {
+      const { daysAtLibertyByMonth } = props;
 
-    const dataPoints = [];
-    if (daysAtLibertyByMonth) {
-      daysAtLibertyByMonth.forEach((data) => {
-        const { year, month } = data;
-        const average = parseFloat(data.avg_liberty).toFixed(2);
-        dataPoints.push({ year, month, average });
-      });
+      const dataPoints = [];
+      if (daysAtLibertyByMonth) {
+        daysAtLibertyByMonth.forEach((data) => {
+          const { year, month } = data;
+          const average = parseFloat(data.avg_liberty).toFixed(2);
+          dataPoints.push({ year, month, average });
+        });
+      }
+
+      const months = getMonthCountFromMetricPeriodMonthsToggle(props.metricPeriodMonths);
+      const sorted = sortFilterAndSupplementMostRecentMonths(dataPoints, months, 'average', '0.0');
+      const chartDataValues = sorted.map((element) => element.average);
+      const min = getMinForGoalAndData(GOAL.value, chartDataValues, stepSize);
+      const max = getMaxForGoalAndData(GOAL.value, chartDataValues, stepSize);
+      const monthNames = monthNamesWithYearsFromNumbers(sorted.map((element) => element.month), true);
+
+      centerSingleMonthDatasetIfNecessary(chartDataValues, monthNames);
+      setChartLabels(monthNames);
+      setChartDataPoints(chartDataValues);
+      setChartMinValue(min);
+      setChartMaxValue(max);
+    } catch (ex) {
+      if (ex instanceof NotValidDatasetError) {
+        setErrorVisibility(true)
+      }
     }
-
-    const months = getMonthCountFromMetricPeriodMonthsToggle(props.metricPeriodMonths);
-    const sorted = sortFilterAndSupplementMostRecentMonths(dataPoints, months, 'average', '0.0');
-    const chartDataValues = sorted.map((element) => element.average);
-    const min = getMinForGoalAndData(GOAL.value, chartDataValues, stepSize);
-    const max = getMaxForGoalAndData(GOAL.value, chartDataValues, stepSize);
-    const monthNames = monthNamesWithYearsFromNumbers(sorted.map((element) => element.month), true);
-
-    centerSingleMonthDatasetIfNecessary(chartDataValues, monthNames);
-    setChartLabels(monthNames);
-    setChartDataPoints(chartDataValues);
-    setChartMinValue(min);
-    setChartMaxValue(max);
   };
 
   function goalLineIfApplicable() {
@@ -176,6 +186,15 @@ const DaysAtLibertySnapshot = (props) => {
   configureDownloadButtons(chartId, 'DAYS AT LIBERTY (AVERAGE)', chart.props.data.datasets,
     chart.props.data.labels, document.getElementById(chartId),
     exportedStructureCallback, props, true, true);
+
+  if (isErrorVisible) {
+    return (
+      <div>
+        Encountered an error processing the data points for this chart with the selected filters applied.
+        Please contact <a href="mailto:support@recidiviz.org">support@recidiviz.org</a> for assistance.
+      </div>
+    );
+  }
 
   const header = document.getElementById(props.header);
 

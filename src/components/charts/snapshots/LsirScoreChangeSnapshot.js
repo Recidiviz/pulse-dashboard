@@ -31,7 +31,10 @@ import {
 import {
   generateTrendlineDataset, getTooltipWithoutTrendline,
 } from '../../../utils/charts/trendline';
-import { sortFilterAndSupplementMostRecentMonths } from '../../../utils/transforms/datasets';
+import {
+  sortFilterAndSupplementMostRecentMonths,
+  NotValidDatasetError,
+} from '../../../utils/transforms/datasets';
 import { monthNamesWithYearsFromNumbers } from '../../../utils/transforms/months';
 
 const LsirScoreChangeSnapshot = (props) => {
@@ -39,44 +42,51 @@ const LsirScoreChangeSnapshot = (props) => {
   const [chartDataPoints, setChartDataPoints] = useState([]);
   const [chartMinValue, setChartMinValue] = useState();
   const [chartMaxValue, setChartMaxValue] = useState();
+  const [isErrorVisible, setErrorVisibility] = useState(false);
 
   const chartId = 'lsirScoreChangeSnapshot';
   const GOAL = getGoalForChart('US_ND', chartId);
   const stepSize = 0.5;
 
   const processResponse = () => {
-    const { lsirScoreChangeByMonth: changeByMonth } = props;
+    try {
+      const { lsirScoreChangeByMonth: changeByMonth } = props;
 
-    let filteredChangeByMonth = filterDatasetBySupervisionType(
-      changeByMonth, props.supervisionType,
-    );
+      let filteredChangeByMonth = filterDatasetBySupervisionType(
+        changeByMonth, props.supervisionType,
+      );
 
-    filteredChangeByMonth = filterDatasetByDistrict(
-      filteredChangeByMonth, props.district,
-    );
+      filteredChangeByMonth = filterDatasetByDistrict(
+        filteredChangeByMonth, props.district,
+      );
 
-    const dataPoints = [];
-    if (filteredChangeByMonth) {
-      filteredChangeByMonth.forEach((data) => {
-        const { termination_year: year, termination_month: month } = data;
-        const change = parseFloat(data.average_change).toFixed(2);
+      const dataPoints = [];
+      if (filteredChangeByMonth) {
+        filteredChangeByMonth.forEach((data) => {
+          const { termination_year: year, termination_month: month } = data;
+          const change = parseFloat(data.average_change).toFixed(2);
 
-        dataPoints.push({ year, month, change });
-      });
+          dataPoints.push({ year, month, change });
+        });
+      }
+
+      const months = getMonthCountFromMetricPeriodMonthsToggle(props.metricPeriodMonths);
+      const sorted = sortFilterAndSupplementMostRecentMonths(dataPoints, months, 'change', '0.0');
+      const chartDataValues = sorted.map((element) => element.change);
+      const min = getMinForGoalAndData(GOAL.value, chartDataValues, stepSize);
+      const max = getMaxForGoalAndData(GOAL.value, chartDataValues, stepSize);
+      const monthNames = monthNamesWithYearsFromNumbers(sorted.map((element) => element.month), true);
+
+      centerSingleMonthDatasetIfNecessary(chartDataValues, monthNames);
+      setChartLabels(monthNames);
+      setChartDataPoints(chartDataValues);
+      setChartMinValue(min);
+      setChartMaxValue(max);
+    } catch (ex) {
+      if (ex instanceof NotValidDatasetError) {
+        setErrorVisibility(true)
+      }
     }
-
-    const months = getMonthCountFromMetricPeriodMonthsToggle(props.metricPeriodMonths);
-    const sorted = sortFilterAndSupplementMostRecentMonths(dataPoints, months, 'change', '0.0');
-    const chartDataValues = sorted.map((element) => element.change);
-    const min = getMinForGoalAndData(GOAL.value, chartDataValues, stepSize);
-    const max = getMaxForGoalAndData(GOAL.value, chartDataValues, stepSize);
-    const monthNames = monthNamesWithYearsFromNumbers(sorted.map((element) => element.month), true);
-
-    centerSingleMonthDatasetIfNecessary(chartDataValues, monthNames);
-    setChartLabels(monthNames);
-    setChartDataPoints(chartDataValues);
-    setChartMinValue(min);
-    setChartMaxValue(max);
   };
 
   function goalLineIfApplicable() {
@@ -188,6 +198,15 @@ const LsirScoreChangeSnapshot = (props) => {
   configureDownloadButtons(chartId, 'LSI-R SCORE CHANGES (AVERAGE)', chart.props.data.datasets,
     chart.props.data.labels, document.getElementById(chartId),
     exportedStructureCallback, props, true, true);
+
+  if (isErrorVisible) {
+    return (
+      <div>
+        Encountered an error processing the data points for this chart with the selected filters applied.
+        Please contact <a href="mailto:support@recidiviz.org">support@recidiviz.org</a> for assistance.
+      </div>
+    );
+  }
 
   const header = document.getElementById(props.header);
 
