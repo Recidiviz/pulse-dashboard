@@ -142,6 +142,9 @@ const Snapshots = () => {
                         {geoViewEnabledSCOS === false && (
                           <a className="dropdown-item" id="downloadChartAsImage-supervisionSuccessSnapshot" href="javascript:void(0);">Export image</a>
                         )}
+                        {geoViewEnabledSCOS === true && (
+                          <a className="dropdown-item" id="downloadHtmlElementAsImage-supervisionSuccessSnapshot" href="javascript:void(0);">Export image</a>
+                        )}
                         <a className="dropdown-item" id="downloadChartData-supervisionSuccessSnapshot" href="javascript:void(0);">Export data</a>
                       </div>
                     </div>
@@ -245,6 +248,9 @@ const Snapshots = () => {
                       <div className="dropdown-menu" aria-labelledby="exportDropdownMenuButton-revocationAdmissionsSnapshot">
                         {geoViewEnabledPDTR === false && (
                           <a className="dropdown-item" id="downloadChartAsImage-revocationAdmissionsSnapshot" href="javascript:void(0);">Export image</a>
+                        )}
+                        {geoViewEnabledPDTR === true && (
+                          <a className="dropdown-item" id="downloadHtmlElementAsImage-revocationAdmissionsSnapshot" href="javascript:void(0);">Export image</a>
                         )}
                         <a className="dropdown-item" id="downloadChartData-revocationAdmissionsSnapshot" href="javascript:void(0);">Export data</a>
                       </div>
@@ -415,6 +421,9 @@ const Snapshots = () => {
                       <div className="dropdown-menu" aria-labelledby="exportDropdownMenuButton-lsirScoreChangeSnapshot">
                         {geoViewEnabledALSI === false && (
                           <a className="dropdown-item" id="downloadChartAsImage-lsirScoreChangeSnapshot" href="javascript:void(0);">Export image</a>
+                        )}
+                        {geoViewEnabledALSI === true && (
+                          <a className="dropdown-item" id="downloadHtmlElementAsImage-lsirScoreChangeSnapshot" href="javascript:void(0);">Export image</a>
                         )}
                         <a className="dropdown-item" id="downloadChartData-lsirScoreChangeSnapshot" href="javascript:void(0);">Export data</a>
                       </div>
