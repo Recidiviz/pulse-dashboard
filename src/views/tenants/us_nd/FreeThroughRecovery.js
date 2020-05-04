@@ -122,6 +122,9 @@ const FreeThroughRecovery = () => {
                         {geoViewEnabledRCOT === false && (
                           <a className="dropdown-item" id="downloadChartAsImage-ftrReferralCountByMonth" href="javascript:void(0);">Export image</a>
                         )}
+                        {geoViewEnabledRCOT === true && (
+                          <a className="dropdown-item" id="downloadHtmlElementAsImage-ftrReferralCountByMonth" href="javascript:void(0);">Export image</a>
+                        )}
                         <a className="dropdown-item" id="downloadChartData-ftrReferralCountByMonth" href="javascript:void(0);">Export data</a>
                       </div>
                     </div>
