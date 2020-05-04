@@ -18,3 +18,5 @@ public/
 !src/utils/charts/__tests__/choropleth.test.js
 !src/utils/charts/__tests__/currentSpan.test.js
 !src/utils/charts/__tests__/metricGoal.test.js
+!src/utils/transforms/years.js
+!src/utils/transforms/__tests__/years.test.js

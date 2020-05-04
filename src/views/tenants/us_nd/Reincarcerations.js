@@ -22,6 +22,7 @@ import Loading from '../../../components/Loading';
 import '../../../assets/styles/index.scss';
 import { useAuth0 } from '../../../react-auth0-spa';
 import { callMetricsApi, awaitingResults } from '../../../utils/metricsClient';
+import { getYearFromNow } from '../../../utils/transforms/years'
 
 import AdmissionsVsReleases from '../../../components/charts/reincarcerations/AdmissionsVsReleases';
 import ReincarcerationCountOverTime
@@ -421,7 +422,7 @@ const Reincarcerations = () => {
                     <span className="fsz-def fw-600 mR-10 c-grey-800">
                       {/* TODO(138): Make the release cohort year dynamic ================ */}
                       <small className="c-grey-500 fw-600">Release Cohort </small>
-                      2018
+                      {getYearFromNow(-2)}
                     </span>
                   </div>
                   <div className="peer fw-600">
