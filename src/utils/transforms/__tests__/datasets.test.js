@@ -18,36 +18,39 @@ import React from 'react';
 import tk from 'timekeeper';
 import '@testing-library/jest-dom/extend-expect';
 
-import { sortByYearAndMonth,
+import {
+  sortByYearAndMonth,
   sortByLabel,
   filterMostRecentMonths,
   filterFacilities,
   sortAndFilterMostRecentMonths,
-  sortFilterAndSupplementMostRecentMonths } from '../datasets';
+  sortFilterAndSupplementMostRecentMonths,
+  NotValidDatasetError,
+} from '../datasets';
 
 const data = [
-  { year: '2019', month: '5',  count: 1702 },
-  { year: '2017', month: '2',  count: 2405 },
+  { year: '2019', month: '5', count: 1702 },
+  { year: '2017', month: '2', count: 2405 },
   { year: '2017', month: '10', count: 1701 },
-  { year: '2017', month: '4',  count: 1702 },
-  { year: '2017', month: '7',  count: 1709 },
+  { year: '2017', month: '4', count: 1702 },
+  { year: '2017', month: '7', count: 1709 },
   { year: '2018', month: '11', count: 1704 },
-  { year: '2017', month: '9',  count: 1707 }
+  { year: '2017', month: '9', count: 1707 }
 ];
 
-const mountCount = 12;
+const monthCount = 12;
 
 describe('test datasets', () => {
   it('sort  data by year and month', () => {
     let sortData = sortByYearAndMonth(data);
     const sortingData = [
-      { year: '2017', month: '2',  count: 2405 },
-      { year: '2017', month: '4',  count: 1702 },
-      { year: '2017', month: '7',  count: 1709 },
-      { year: '2017', month: '9',  count: 1707 },
+      { year: '2017', month: '2', count: 2405 },
+      { year: '2017', month: '4', count: 1702 },
+      { year: '2017', month: '7', count: 1709 },
+      { year: '2017', month: '9', count: 1707 },
       { year: '2017', month: '10', count: 1701 },
       { year: '2018', month: '11', count: 1704 },
-      { year: '2019', month: '5',  count: 1702 }
+      { year: '2019', month: '5', count: 1702 }
     ];
     expect(sortData).toEqual(sortingData);
     expect(sortData.length).toEqual(sortingData.length);
@@ -57,10 +60,10 @@ describe('test datasets', () => {
 
   it('sort by label', () => {
     const dataSortLabel = [
-      {count: 3,  label: 'b'},
-      {count: 40, label: 'a'},
-      {count: 20, label: 's'},
-      {count: 12, label: 'd'}
+      { count: 3, label: 'b' },
+      { count: 40, label: 'a' },
+      { count: 20, label: 's' },
+      { count: 12, label: 'd' }
     ];
 
     const dataAfterTestSortLabel = [
@@ -75,48 +78,56 @@ describe('test datasets', () => {
     expect(dataAfterSort.length).toBe(4);
   });
 
-  it('filter most recent months' , () => {
+  it('filter most recent months', () => {
     const filtersData = [
       { year: '2019', month: '4', count: 1704 },
-      { year: '2019', month: '5',  count: 1702 },
-      { year: '2019', month: '6',  count: 1707 },
+      { year: '2019', month: '5', count: 1702 },
+      { year: '2019', month: '6', count: 1707 },
       { year: '2019', month: '7', count: 1701 },
       { year: '2019', month: '8', count: 1704 },
-      { year: '2019', month: '9',  count: 1702 },
-      { year: '2019', month: '10',  count: 1707 },
+      { year: '2019', month: '9', count: 1702 },
+      { year: '2019', month: '10', count: 1707 },
       { year: '2019', month: '11', count: 1701 },
       { year: '2019', month: '12', count: 1704 },
-      { year: '2020', month: '1',  count: 1702 },
-      { year: '2020', month: '2',  count: 1702 },
-      { year: '2020', month: '3',  count: 1702 }
+      { year: '2020', month: '1', count: 1702 },
+      { year: '2020', month: '2', count: 1702 },
+      { year: '2020', month: '3', count: 1702 }
     ];
-    const dataForTest  = [
-      { year: '2019', month: '1',  count: 1709 },
-      { year: '2019', month: '2',  count: 1707 },
+    const dataForTest = [
+      { year: '2019', month: '1', count: 1709 },
+      { year: '2019', month: '2', count: 1707 },
       { year: '2019', month: '3', count: 1701 },
       { year: '2019', month: '4', count: 1704 },
-      { year: '2019', month: '5',  count: 1702 },
-      { year: '2019', month: '6',  count: 1707 },
+      { year: '2019', month: '5', count: 1702 },
+      { year: '2019', month: '6', count: 1707 },
       { year: '2019', month: '7', count: 1701 },
       { year: '2019', month: '8', count: 1704 },
-      { year: '2019', month: '9',  count: 1702 },
-      { year: '2019', month: '10',  count: 1707 },
+      { year: '2019', month: '9', count: 1702 },
+      { year: '2019', month: '10', count: 1707 },
       { year: '2019', month: '11', count: 1701 },
       { year: '2019', month: '12', count: 1704 },
-      { year: '2020', month: '1',  count: 1702 },
-      { year: '2020', month: '2',  count: 1702 },
-      { year: '2020', month: '3',  count: 1702 }
+      { year: '2020', month: '1', count: 1702 },
+      { year: '2020', month: '2', count: 1702 },
+      { year: '2020', month: '3', count: 1702 }
     ];
 
-    let newData = filterMostRecentMonths(dataForTest, mountCount);
+    let newData = filterMostRecentMonths(dataForTest, monthCount);
     expect(newData).toEqual(filtersData);
     expect(newData.length).toBe(12);
+  });
+
+  it('throw error if most recent months dataset is not valid', () => {
+    const given = data;
+
+    expect(() => {
+      filterMostRecentMonths(given, monthCount)
+    }).toThrowError(NotValidDatasetError);
   });
 
   it('sort filter and supplement most recent months', () => {
     const emptyValue = 0;
     const valueKey = 'count';
-    const dataFiltersSupplementMostRecentMonth =  [
+    const dataFiltersSupplementMostRecentMonth = [
       { year: '2019', month: '2', count: 0 },
       { year: '2019', month: '3', count: 0 },
       { year: '2019', month: '4', count: 0 },
@@ -131,10 +142,10 @@ describe('test datasets', () => {
       { year: '2020', month: '1', count: 0 }
     ];
 
-    const  testDate = new Date('2020-01-14T11:01:58.135Z');
+    const testDate = new Date('2020-01-14T11:01:58.135Z');
     tk.freeze(testDate);
 
-    const dataAfterFiltersByMethod = sortFilterAndSupplementMostRecentMonths(data, mountCount, valueKey, emptyValue);
+    const dataAfterFiltersByMethod = sortFilterAndSupplementMostRecentMonths(data, monthCount, valueKey, emptyValue);
     expect(dataAfterFiltersByMethod).toEqual(dataFiltersSupplementMostRecentMonth);
   });
 
@@ -150,33 +161,33 @@ describe('test datasets', () => {
       ['PQRD', 123],
       ['VWXC', 150]
     ];
-    const dataAfterFilterFacilities =  [['GHI', 10], ['PQR', 50], ['VWX', 89]];
+    const dataAfterFilterFacilities = [['GHI', 10], ['PQR', 50], ['VWX', 89]];
 
-    const dataAfterText = filterFacilities(dataForTestFilterFacilities, 'TRANSITIONAL', 'US_DEMO' );
+    const dataAfterText = filterFacilities(dataForTestFilterFacilities, 'TRANSITIONAL', 'US_DEMO');
     expect(dataAfterText).toEqual(dataAfterFilterFacilities);
     expect(dataAfterText.length).toBe(3);
   });
 
   it('sort and filter most recent months', () => {
-    const dataFilterMostRecentMonth =  [
+    const dataFilterMostRecentMonth = [
       { year: '2019', month: '10', count: 0 },
-      { year: '2019', month: '5',  count: 1702 },
+      { year: '2019', month: '5', count: 1702 },
       { year: '2019', month: '11', count: 0 },
-      { year: '2019', month: '7',  count: 0 },
-      { year: '2019', month: '2',  count: 0 },
-      { year: '2019', month: '9',  count: 0 },
-      { year: '2019', month: '8',  count: 0 },
-      { year: '2019', month: '6',  count: 0 },
-      { year: '2019', month: '4',  count: 0 },
-      { year: '2019', month: '3',  count: 0 },
+      { year: '2019', month: '7', count: 0 },
+      { year: '2019', month: '2', count: 0 },
+      { year: '2019', month: '9', count: 0 },
+      { year: '2019', month: '8', count: 0 },
+      { year: '2019', month: '6', count: 0 },
+      { year: '2019', month: '4', count: 0 },
+      { year: '2019', month: '3', count: 0 },
       { year: '2019', month: '12', count: 0 },
-      { year: '2019', month: '1',  count: 0 },
-      { year: '2020', month: '3',  count: 0 },
-      { year: '2020', month: '1',  count: 0 },
-      { year: '2020', month: '2',  count: 0 }
+      { year: '2019', month: '1', count: 0 },
+      { year: '2020', month: '3', count: 0 },
+      { year: '2020', month: '1', count: 0 },
+      { year: '2020', month: '2', count: 0 }
     ];
-    const dataAfterTest = sortAndFilterMostRecentMonths(dataFilterMostRecentMonth, mountCount);
-    const dataExpectedAfterTest =  [
+    const dataAfterTest = sortAndFilterMostRecentMonths(dataFilterMostRecentMonth, monthCount);
+    const dataExpectedAfterTest = [
       { year: '2019', month: '4', count: 0 },
       { year: '2019', month: '5', count: 1702 },
       { year: '2019', month: '6', count: 0 },
