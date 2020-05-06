@@ -17,7 +17,9 @@
 
 import React, { useState, useEffect } from 'react';
 import { Bar } from 'react-chartjs-2';
+import pattern from 'patternomaly';
 import ExportMenu from '../ExportMenu';
+import WarningIcon from '../WarningIcon';
 import Loading from '../../Loading';
 
 import { useAuth0 } from '../../../react-auth0-spa';
@@ -26,7 +28,13 @@ import { fetchChartData, awaitingResults } from '../../../utils/metricsClient';
 import { COLORS } from '../../../assets/scripts/constants/colors';
 import { axisCallbackForPercentage } from '../../../utils/charts/axis';
 import {
-  getTrailingLabelFromMetricPeriodMonthsToggle, getPeriodLabelFromMetricPeriodMonthsToggle,
+  isDenominatorStatisticallySignificant,
+  isDenominatorsMatrixStatisticallySignificant,
+  tooltipForFooterWithCounts,
+} from '../../../utils/charts/significantStatistics';
+import {
+  getTrailingLabelFromMetricPeriodMonthsToggle,
+  getPeriodLabelFromMetricPeriodMonthsToggle,
   tooltipForRateMetricWithCounts,
 } from '../../../utils/charts/toggles';
 import {
@@ -44,6 +52,8 @@ const RevocationsByRiskLevel = (props) => {
   const { loading, user, getTokenSilently } = useAuth0();
   const [apiData, setApiData] = useState({});
   const [awaitingApi, setAwaitingApi] = useState(true);
+
+  const showWarning = !isDenominatorsMatrixStatisticallySignificant(denominatorCounts);
 
   const processResponse = () => {
     if (awaitingApi || !apiData) {
@@ -108,6 +118,15 @@ const RevocationsByRiskLevel = (props) => {
     props.metricPeriodMonths,
   ]);
 
+  const backgroundColor = ({ dataIndex, dataset, datasetIndex }) => {
+    const color = COLORS['lantern-orange'];
+    if (isDenominatorStatisticallySignificant(denominatorCounts[dataIndex])) {
+      return color;
+    } else {
+      return pattern.draw('diagonal-right-left', color, '#ffffff', 5);
+    }
+  }
+
   const chart = (
     <Bar
       id={chartId}
@@ -115,9 +134,7 @@ const RevocationsByRiskLevel = (props) => {
         labels: chartLabels,
         datasets: [{
           label: 'Revocation rate',
-          backgroundColor: COLORS['lantern-orange'],
-          hoverBackgroundColor: COLORS['lantern-orange'],
-          hoverBorderColor: COLORS['lantern-orange'],
+          backgroundColor: backgroundColor,
           data: chartDataPoints,
         }],
       }}
@@ -149,10 +166,12 @@ const RevocationsByRiskLevel = (props) => {
         },
         tooltips: {
           backgroundColor: COLORS['grey-800-light'],
+          footerFontSize: 9,
           mode: 'index',
           intersect: false,
           callbacks: {
             label: (tooltipItem, data) => tooltipForRateMetricWithCounts(tooltipItem, data, numeratorCounts, denominatorCounts),
+            footer: (tooltipItem) => tooltipForFooterWithCounts(tooltipItem, denominatorCounts),
           },
         },
       }}
@@ -167,6 +186,7 @@ const RevocationsByRiskLevel = (props) => {
     <div>
       <h4>
         Percent revoked by risk level
+        {showWarning === true && <WarningIcon />}
         <ExportMenu
           chartId={chartId}
           chart={chart}
