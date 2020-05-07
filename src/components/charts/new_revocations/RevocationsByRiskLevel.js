@@ -118,7 +118,7 @@ const RevocationsByRiskLevel = (props) => {
     props.metricPeriodMonths,
   ]);
 
-  const backgroundColor = ({ dataIndex, dataset, datasetIndex }) => {
+  const barBackgroundColor = ({ dataIndex, datasetIndex }) => {
     const color = COLORS['lantern-orange'];
     if (isDenominatorStatisticallySignificant(denominatorCounts[dataIndex])) {
       return color;
@@ -134,7 +134,7 @@ const RevocationsByRiskLevel = (props) => {
         labels: chartLabels,
         datasets: [{
           label: 'Revocation rate',
-          backgroundColor: backgroundColor,
+          backgroundColor: barBackgroundColor,
           data: chartDataPoints,
         }],
       }}

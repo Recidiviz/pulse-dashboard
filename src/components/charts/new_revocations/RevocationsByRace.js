@@ -28,7 +28,7 @@ import { COLORS, COLORS_LANTERN_SET } from '../../../assets/scripts/constants/co
 import { axisCallbackForPercentage } from '../../../utils/charts/axis';
 import {
   generateLabelsWithCustomColors,
-  getBackgroundColor,
+  getBarBackgroundColor,
   isDenominatorsMatrixStatisticallySignificant,
   tooltipForFooterWithNestedCounts,
 } from '../../../utils/charts/significantStatistics';
@@ -130,7 +130,7 @@ const RevocationsByRace = (props) => {
 
   const generateDataset = (label, index) => ({
     label: label,
-    backgroundColor: getBackgroundColor(COLORS_LANTERN_SET[index], denominatorCounts),
+    backgroundColor: getBarBackgroundColor(COLORS_LANTERN_SET[index], denominatorCounts),
     data: chartDataPoints[index],
   });
 

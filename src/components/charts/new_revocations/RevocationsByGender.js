@@ -28,7 +28,7 @@ import { COLORS } from '../../../assets/scripts/constants/colors';
 import { axisCallbackForPercentage } from '../../../utils/charts/axis';
 import {
   generateLabelsWithCustomColors,
-  getBackgroundColor,
+  getBarBackgroundColor,
   isDenominatorsMatrixStatisticallySignificant,
   tooltipForFooterWithNestedCounts,
 } from '../../../utils/charts/significantStatistics';
@@ -136,7 +136,7 @@ const RevocationsByGender = (props) => {
 
   const generateDataset = (label, index) => ({
     label: label,
-    backgroundColor: getBackgroundColor(colors[index], denominatorCounts),
+    backgroundColor: getBarBackgroundColor(colors[index], denominatorCounts),
     data: chartDataPoints[index],
   });
 

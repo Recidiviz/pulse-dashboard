@@ -15,60 +15,65 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import { Chart } from 'react-chartjs-2';
-import pattern from 'patternomaly';
+import pattern from "patternomaly";
+import { Chart } from "react-chartjs-2";
 
-function isDenominatorStatisticallySignificant(denomintor = 0) {
-  return denomintor === 0 || denomintor >= 100;
+function isDenominatorStatisticallySignificant(denominator = 0) {
+  return denominator === 0 || denominator >= 100;
 }
 
 function isDenominatorsMatrixStatisticallySignificant(denominatorsMatrix) {
-  return !denominatorsMatrix.flat().some(d => !isDenominatorStatisticallySignificant(d));
+  return ![]
+    .concat(...denominatorsMatrix)
+    .some((d) => !isDenominatorStatisticallySignificant(d));
 }
 
-function getBackgroundColor(color, denominators) {
-  return ({ dataIndex, dataset, datasetIndex }) => {
-    if (isDenominatorStatisticallySignificant(denominators[datasetIndex][dataIndex])) {
+function getBarBackgroundColor(color, denominators) {
+  const shadingSize = 5;
+
+  return ({ datasetIndex: i, dataIndex: j }) => {
+    if (isDenominatorStatisticallySignificant(denominators[i][j])) {
       return color;
-    } else {
-      return pattern.draw('diagonal-right-left', color, '#ffffff', 5);
     }
-  }
+    return pattern.draw("diagonal-right-left", color, "#ffffff", shadingSize);
+  };
 }
 
 function tooltipForFooterWithCounts([{ index }], denominators) {
   if (isDenominatorStatisticallySignificant(denominators[index])) {
-    return '';
-  } else {
-    return '* indicates low confidence due to small sample size';
+    return "";
   }
+  return "* indicates low confidence due to small sample size";
 }
 
 function tooltipForFooterWithNestedCounts([{ index }], denominatorCounts) {
-  if (denominatorCounts.some(denominators => !isDenominatorStatisticallySignificant(denominators[index]))) {
-    return '* indicates low confidence due to small sample size';
-  } else {
-    return '';
+  const isStatisticsImplicit = denominatorCounts.some(
+    (denominators) =>
+      !isDenominatorStatisticallySignificant(denominators[index])
+  );
+
+  if (isStatisticsImplicit) {
+    return "* indicates low confidence due to small sample size";
   }
+  return "";
 }
 
 /**
- * Hack function for regenerate legend labels with custom colors
- * because if chart bar is not statistically significant we should
- * change color (add line shading) and after that chart do not know
- * which color is right (with line shading or not).
+ * A hacky function to regenerate legend labels with custom colors.
+ * If a chart bar is not statistically significant we should change its color/pattern (i.e. add line shading).
+ * But labels/legends were generated ahead of time so the chart needs to be told to re-render them.
  */
 function generateLabelsWithCustomColors(chart, colors) {
   return Chart.defaults.global.legend.labels
     .generateLabels(chart)
-    .map((label, i) => ({ ...label, fillStyle: colors[i] }))
+    .map((label, i) => ({ ...label, fillStyle: colors[i] }));
 }
 
 export {
   generateLabelsWithCustomColors,
-  getBackgroundColor,
+  getBarBackgroundColor,
   isDenominatorStatisticallySignificant,
   isDenominatorsMatrixStatisticallySignificant,
   tooltipForFooterWithCounts,
   tooltipForFooterWithNestedCounts,
-}
+};

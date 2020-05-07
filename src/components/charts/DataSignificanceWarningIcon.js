@@ -16,20 +16,20 @@
 // =============================================================================
 
 import React from "react";
-import PropTypes from "prop-types";
-import ReactTooltip from "react-tooltip";
+import WarningIcon from "./WarningIcon";
 
-const WarningIcon = ({ tooltipText }) => (
-  <>
-    &nbsp;
-    <span data-tip data-for="warningTooltip" className="ti-alert" />
-    <ReactTooltip id="warningTooltip">{tooltipText}</ReactTooltip>
-  </>
-);
+const DataSignificanceWarningIcon = () => {
+  const text = (
+    <>
+      Some categories in this chart may not be statistically significant
+      <br />
+      due to having a sample size smaller than 100.
+      <br />
+      Those categories are represented with line shading.
+    </>
+  );
 
-WarningIcon.propTypes = {
-  tooltipText: PropTypes.oneOfType([PropTypes.string, PropTypes.node])
-    .isRequired,
+  return <WarningIcon tooltipText={text} />;
 };
 
-export default WarningIcon;
+export default DataSignificanceWarningIcon;

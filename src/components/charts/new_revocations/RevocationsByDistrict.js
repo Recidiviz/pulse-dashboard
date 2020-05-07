@@ -144,7 +144,7 @@ const RevocationsByDistrict = (props) => {
     countModeEnabled,
   ]);
 
-  const backgroundColor = ({ dataIndex, dataset, datasetIndex }) => {
+  const barBackgroundColor = ({ dataIndex, dataset, datasetIndex }) => {
     let color = (props.currentDistrict && props.currentDistrict.toLowerCase() === chartLabels[dataIndex].toLowerCase())
       ? COLORS['lantern-light-blue']
       : COLORS['lantern-orange']
@@ -165,7 +165,7 @@ const RevocationsByDistrict = (props) => {
           label: toggleLabel({
             counts: 'Revocations', rates: 'Revocation rate',
           }, countModeEnabled ? 'counts' : 'rates'),
-          backgroundColor: backgroundColor,
+          backgroundColor: barBackgroundColor,
           data: chartDataPoints,
         }],
       }}
