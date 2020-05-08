@@ -18,7 +18,9 @@
 import React, { useState, useEffect } from 'react';
 import { Bar } from 'react-chartjs-2';
 import * as $ from 'jquery';
+import pattern from 'patternomaly';
 
+import DataSignificanceWarningIcon from '../DataSignificanceWarningIcon';
 import ExportMenu from '../ExportMenu';
 import Loading from '../../Loading';
 
@@ -28,8 +30,15 @@ import { fetchChartData, awaitingResults } from '../../../utils/metricsClient';
 import { COLORS } from '../../../assets/scripts/constants/colors';
 import { axisCallbackForMetricType } from '../../../utils/charts/axis';
 import {
-  getTrailingLabelFromMetricPeriodMonthsToggle, getPeriodLabelFromMetricPeriodMonthsToggle,
-  toggleLabel, updateTooltipForMetricTypeWithCounts,
+  isDenominatorStatisticallySignificant,
+  isDenominatorsMatrixStatisticallySignificant,
+  tooltipForFooterWithCounts,
+} from '../../../utils/charts/significantStatistics';
+import {
+  getTrailingLabelFromMetricPeriodMonthsToggle,
+  getPeriodLabelFromMetricPeriodMonthsToggle,
+  toggleLabel,
+  updateTooltipForMetricTypeWithCounts,
 } from '../../../utils/charts/toggles';
 import { toInt } from '../../../utils/transforms/labels';
 
@@ -47,6 +56,8 @@ const RevocationsByDistrict = (props) => {
   const [awaitingRevocationApi, setAwaitingRevocationApi] = useState(true);
   const [supervisionApiData, setSupervisionApiData] = useState({});
   const [awaitingSupervisionApi, setAwaitingSupervisionApi] = useState(true);
+
+  const showWarning = !isDenominatorsMatrixStatisticallySignificant(denominatorCounts);
 
   const processResponse = () => {
     if (awaitingRevocationApi || awaitingSupervisionApi
@@ -133,19 +144,17 @@ const RevocationsByDistrict = (props) => {
     countModeEnabled,
   ]);
 
-  // This sets bar color to light-blue-500 when it's the current district, or orange-500 otherwise
-  const highlightCurrentDistrict = () => {
-    const colors = [];
-    for (let i = 0; i < chartLabels.length; i += 1) {
-      if (props.currentDistrict
-        && props.currentDistrict.toLowerCase() === chartLabels[i].toLowerCase()) {
-        colors.push(COLORS['lantern-light-blue']);
-      } else {
-        colors.push(COLORS['lantern-orange']);
-      }
+  const barBackgroundColor = ({ dataIndex, dataset, datasetIndex }) => {
+    let color = (props.currentDistrict && props.currentDistrict.toLowerCase() === chartLabels[dataIndex].toLowerCase())
+      ? COLORS['lantern-light-blue']
+      : COLORS['lantern-orange']
+
+    if (!countModeEnabled && !isDenominatorStatisticallySignificant(denominatorCounts[dataIndex])) {
+      color = pattern.draw('diagonal-right-left', color, '#ffffff', 5);
     }
-    return colors;
-  };
+
+    return color
+  }
 
   const chart = (
     <Bar
@@ -156,9 +165,7 @@ const RevocationsByDistrict = (props) => {
           label: toggleLabel({
             counts: 'Revocations', rates: 'Revocation rate',
           }, countModeEnabled ? 'counts' : 'rates'),
-          backgroundColor: highlightCurrentDistrict(),
-          hoverBackgroundColor: highlightCurrentDistrict(),
-          hoverBorderColor: highlightCurrentDistrict(),
+          backgroundColor: barBackgroundColor,
           data: chartDataPoints,
         }],
       }}
@@ -191,12 +198,14 @@ const RevocationsByDistrict = (props) => {
         },
         tooltips: {
           backgroundColor: COLORS['grey-800-light'],
+          footerFontSize: 9,
           mode: 'index',
           intersect: false,
           callbacks: {
             label: (tooltipItem, data) => updateTooltipForMetricTypeWithCounts(
               countModeEnabled ? 'counts' : 'rates', tooltipItem, data, numeratorCounts, denominatorCounts
             ),
+            footer: (tooltipItem) => !countModeEnabled && tooltipForFooterWithCounts(tooltipItem, denominatorCounts),
           },
         },
       }}
@@ -212,6 +221,7 @@ const RevocationsByDistrict = (props) => {
     <div>
       <h4>
         Revocations by district
+        {countModeEnabled === false && showWarning === true && <DataSignificanceWarningIcon />}
         <ExportMenu
           chartId={chartId}
           chart={chart}

@@ -10,13 +10,17 @@ public/
 !server/core/objectStorage.js
 !server/routes/*.js
 !server/utils/*.js
+!src/components/charts/DataSignificanceWarningIcon.js
+!src/components/charts/WarningIcon.js
 !src/components/toggles/__tests__/MetricPeriodToggle.test.js
 !src/components/toggles/__tests__/MetricTypeToggle.test.js
 !src/components/toggles/__tests__/SupervisionTypeToggle.test.js
 !src/components/toggles/__tests__/ToggleBar.test.js
 !src/utils/charts/info.js
+!src/utils/charts/significantStatistics.js
 !src/utils/charts/__tests__/choropleth.test.js
 !src/utils/charts/__tests__/currentSpan.test.js
 !src/utils/charts/__tests__/metricGoal.test.js
+!src/utils/charts/__tests__/significantStatistics.test.js
 !src/utils/transforms/years.js
 !src/utils/transforms/__tests__/years.test.js
