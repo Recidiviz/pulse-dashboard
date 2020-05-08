@@ -49,7 +49,7 @@ function SortableIcon({ order }) {
     case "desc":
       return <i className="fa fa-sort-down" />;
     default:
-      return null;
+      return <i className="fa fa-unsorted op-50p" />;
   }
 }
 

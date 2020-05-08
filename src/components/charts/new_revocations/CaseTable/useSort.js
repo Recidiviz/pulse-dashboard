@@ -17,14 +17,22 @@
 
 import { useState } from "react";
 import { nameFromOfficerId } from "../../../../utils/transforms/labels";
+import { violationRecordComparator } from "../../../../utils/charts/violationRecord";
 
-const riskLevelPriority = {
-  NOT_ASSESSED: 0,
-  LOW: 1,
-  MEDIUM: 2,
-  HIGH: 3,
-  VERY_HIGH: 4,
-};
+const RISK_LEVEL_PRIORITY = [
+  "NOT_ASSESSED",
+  "LOW",
+  "MEDIUM",
+  "HIGH",
+  "VERY_HIGH",
+];
+
+const OFFICER_RECOMENDATION_PRIORITY = [
+  "CITATION",
+  "CONTINUATION",
+  "REVOCATION",
+  "WARNING",
+];
 
 function useSort() {
   const [sort, setSort] = useState({});
@@ -67,28 +75,67 @@ function useSort() {
     if (!aOfficer && bOfficer) return 1;
     if (!bOfficer && aOfficer) return -1;
 
-    if (sort.field === "officer") {
-      if (aOfficer.toLowerCase() > bOfficer.toLowerCase()) return 1;
-      if (aOfficer.toLowerCase() < bOfficer.toLowerCase()) return -1;
-    }
-
-    if (sort.field === "risk_level") {
-      if (riskLevelPriority[a2.risk_level] > riskLevelPriority[b2.risk_level])
-        return 1;
-      if (riskLevelPriority[a2.risk_level] < riskLevelPriority[b2.risk_level])
-        return -1;
-    }
-
     // Sort by district, with undefined districts to the bottom
     if (!a2.district && b2.district) return 1;
     if (!b2.district && a2.district) return -1;
 
-    if (String(a2.district) > String(b2.district)) return 1;
-    if (String(a2.district) < String(b2.district)) return -1;
+    if (sort.order) {
+      // Sort by person external id
+      if (sort.field === "state_id") {
+        if (parseInt(a2.state_id, 10) > parseInt(b2.state_id, 10)) return 1;
+        if (parseInt(a2.state_id, 10) < parseInt(b2.state_id, 10)) return -1;
+      }
 
-    // Sort by person external id
-    if (String(a2.state_id) > String(b2.state_id)) return 1;
-    if (String(a2.state_id) < String(b2.state_id)) return -1;
+      // Sort by district
+      if (sort.field === "district") {
+        if (a2.district.padStart(2, "0") > b2.district.padStart(2, "0"))
+          return 1;
+        if (a2.district.padStart(2, "0") < b2.district.padStart(2, "0"))
+          return -1;
+      }
+
+      // Sort by officer
+      if (sort.field === "officer") {
+        if (aOfficer.toLowerCase() > bOfficer.toLowerCase()) return 1;
+        if (aOfficer.toLowerCase() < bOfficer.toLowerCase()) return -1;
+      }
+
+      // Sort by risk level
+      if (sort.field === "risk_level") {
+        if (
+          RISK_LEVEL_PRIORITY.indexOf(a2.risk_level) >
+          RISK_LEVEL_PRIORITY.indexOf(b2.risk_level)
+        )
+          return 1;
+        if (
+          RISK_LEVEL_PRIORITY.indexOf(a2.risk_level) <
+          RISK_LEVEL_PRIORITY.indexOf(b2.risk_level)
+        )
+          return -1;
+      }
+
+      // Sort by officer recommendation
+      if (sort.field === "officer_recommendation") {
+        if (
+          OFFICER_RECOMENDATION_PRIORITY.indexOf(a2.officer_recommendation) >
+          OFFICER_RECOMENDATION_PRIORITY.indexOf(b2.officer_recommendation)
+        )
+          return 1;
+        if (
+          OFFICER_RECOMENDATION_PRIORITY.indexOf(a2.officer_recommendation) <
+          OFFICER_RECOMENDATION_PRIORITY.indexOf(b2.officer_recommendation)
+        )
+          return -1;
+      }
+
+      if (sort.field === "violation_record") {
+        const result = violationRecordComparator(
+          a2.violation_record,
+          b2.violation_record
+        );
+        if (result !== 0) return result;
+      }
+    }
 
     return 0;
   }

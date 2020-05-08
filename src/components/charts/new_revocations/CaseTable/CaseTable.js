@@ -34,11 +34,11 @@ import {
 } from "../../../../utils/metricsClient";
 
 import { COLORS } from "../../../../assets/scripts/constants/colors";
-import parseViolationRecord from "../../../../utils/charts/parseViolationRecord";
 import {
   getTrailingLabelFromMetricPeriodMonthsToggle,
   getPeriodLabelFromMetricPeriodMonthsToggle,
 } from "../../../../utils/charts/toggles";
+import { parseAndFormatViolationRecord } from "../../../../utils/charts/violationRecord";
 import {
   humanReadableTitleCase,
   nameFromOfficerId,
@@ -150,7 +150,7 @@ const CaseTable = ({
       nullSafeLabel(nameFromOfficerId(record.officer)),
       nullSafeLabel(riskLevelValuetoLabel[record.risk_level]),
       nullSafeLabel(normalizeLabel(record.officer_recommendation)),
-      nullSafeLabel(parseViolationRecord(record.violation_record)),
+      nullSafeLabel(parseAndFormatViolationRecord(record.violation_record)),
     ],
   }));
 
@@ -160,6 +160,14 @@ const CaseTable = ({
   const periodLabel = getPeriodLabelFromMetricPeriodMonthsToggle(
     metricPeriodMonths
   );
+
+  const sortableProps = (field) => ({
+    order: getOrder(field),
+    onClick: () => {
+      toggleOrder(field);
+      setIndex(0);
+    },
+  });
 
   return (
     <div className="case-table">
@@ -180,32 +188,28 @@ const CaseTable = ({
       <table>
         <thead>
           <tr>
-            <th>DOC ID</th>
-            <th>District</th>
             <th>
-              <Sortable
-                order={getOrder("officer")}
-                onClick={() => {
-                  toggleOrder("officer");
-                  setIndex(0);
-                }}
-              >
-                Officer
+              <Sortable {...sortableProps("state_id")}>DOC ID</Sortable>
+            </th>
+            <th>
+              <Sortable {...sortableProps("district")}>District</Sortable>
+            </th>
+            <th>
+              <Sortable {...sortableProps("officer")}>Officer</Sortable>
+            </th>
+            <th>
+              <Sortable {...sortableProps("risk_level")}>Risk level</Sortable>
+            </th>
+            <th className="long-title">
+              <Sortable {...sortableProps("officer_recommendation")}>
+                Officer Recommendation
               </Sortable>
             </th>
             <th>
-              <Sortable
-                order={getOrder("risk_level")}
-                onClick={() => {
-                  toggleOrder("risk_level");
-                  setIndex(0);
-                }}
-              >
-                Risk level
+              <Sortable {...sortableProps("violation_record")}>
+                Violation record
               </Sortable>
             </th>
-            <th className="long-title">Officer Recommendation</th>
-            <th>Violation record</th>
           </tr>
         </thead>
         <tbody className="fs-block">
@@ -218,7 +222,9 @@ const CaseTable = ({
               {nullSafeCell(nameFromOfficerId(details.officer))}
               {nullSafeCell(riskLevelValuetoLabel[details.risk_level])}
               {nullSafeCell(normalizeLabel(details.officer_recommendation))}
-              {nullSafeCell(parseViolationRecord(details.violation_record))}
+              {nullSafeCell(
+                parseAndFormatViolationRecord(details.violation_record)
+              )}
             </tr>
           ))}
         </tbody>
@@ -239,17 +245,22 @@ CaseTable.defaultProps = {
   skippedFilters: [],
 };
 
+const metricPeriodMonthsType = PropTypes.oneOfType([
+  PropTypes.string,
+  PropTypes.number,
+]);
+
 CaseTable.propTypes = {
   dataFilter: PropTypes.func.isRequired,
-  filterStates: PropTypes.objectOf({
-    metricPeriodMonths: PropTypes.string,
+  filterStates: PropTypes.shape({
+    metricPeriodMonths: metricPeriodMonthsType.isRequired,
     chargeCategory: PropTypes.string,
     district: PropTypes.string,
     supervisionType: PropTypes.string,
   }).isRequired,
   skippedFilters: PropTypes.arrayOf(PropTypes.string),
   treatCategoryAllAsAbsent: PropTypes.bool.isRequired,
-  metricPeriodMonths: PropTypes.number.isRequired,
+  metricPeriodMonths: metricPeriodMonthsType.isRequired,
 };
 
 export default CaseTable;
