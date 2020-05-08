@@ -17,6 +17,8 @@
 
 import React, { useState, useEffect } from 'react';
 import { Bar } from 'react-chartjs-2';
+
+import DataSignificanceWarningIcon from '../DataSignificanceWarningIcon';
 import ExportMenu from '../ExportMenu';
 import Loading from '../../Loading';
 
@@ -26,7 +28,14 @@ import { fetchChartData, awaitingResults } from '../../../utils/metricsClient';
 import { COLORS, COLORS_LANTERN_SET } from '../../../assets/scripts/constants/colors';
 import { axisCallbackForPercentage } from '../../../utils/charts/axis';
 import {
-  getTrailingLabelFromMetricPeriodMonthsToggle, getPeriodLabelFromMetricPeriodMonthsToggle,
+  generateLabelsWithCustomColors,
+  getBarBackgroundColor,
+  isDenominatorsMatrixStatisticallySignificant,
+  tooltipForFooterWithNestedCounts,
+} from '../../../utils/charts/significantStatistics';
+import {
+  getTrailingLabelFromMetricPeriodMonthsToggle,
+  getPeriodLabelFromMetricPeriodMonthsToggle,
   tooltipForRateMetricWithNestedCounts,
 } from '../../../utils/charts/toggles';
 import { toInt } from '../../../utils/transforms/labels';
@@ -57,6 +66,8 @@ const RevocationsByRace = (props) => {
       .filter(({ race, risk_level: dataRiskLevel }) => race === forRace && dataRiskLevel === riskLevel)
       .reduce((result, { total_supervision_count: totalSupervisionCount }) => result += toInt(totalSupervisionCount), 0)
   ));
+
+  const showWarning = !isDenominatorsMatrixStatisticallySignificant(denominatorCounts);
 
   const processResponse = () => {
     if (awaitingApi || !apiData) {
@@ -118,52 +129,32 @@ const RevocationsByRace = (props) => {
     props.metricPeriodMonths,
   ]);
 
+  const generateDataset = (label, index) => ({
+    label: label,
+    backgroundColor: getBarBackgroundColor(COLORS_LANTERN_SET[index], denominatorCounts),
+    data: chartDataPoints[index],
+  });
+
   const chart = (
     <Bar
       id={chartId}
       data={{
         labels: CHART_LABELS,
-        datasets: [{
-          label: 'Caucasian',
-          backgroundColor: COLORS_LANTERN_SET[0],
-          hoverBackgroundColor: COLORS_LANTERN_SET[0],
-          hoverBorderColor: COLORS_LANTERN_SET[0],
-          data: chartDataPoints[0],
-        }, {
-          label: 'African American',
-          backgroundColor: COLORS_LANTERN_SET[1],
-          hoverBackgroundColor: COLORS_LANTERN_SET[1],
-          hoverBorderColor: COLORS_LANTERN_SET[1],
-          data: chartDataPoints[1],
-        }, {
-          label: 'Hispanic',
-          backgroundColor: COLORS_LANTERN_SET[2],
-          hoverBackgroundColor: COLORS_LANTERN_SET[2],
-          hoverBorderColor: COLORS_LANTERN_SET[2],
-          data: chartDataPoints[2],
-        }, {
-          label: 'Asian',
-          backgroundColor: COLORS_LANTERN_SET[3],
-          hoverBackgroundColor: COLORS_LANTERN_SET[3],
-          hoverBorderColor: COLORS_LANTERN_SET[3],
-          data: chartDataPoints[3],
-        }, {
-          label: 'Native American',
-          backgroundColor: COLORS_LANTERN_SET[4],
-          hoverBackgroundColor: COLORS_LANTERN_SET[4],
-          hoverBorderColor: COLORS_LANTERN_SET[4],
-          data: chartDataPoints[4],
-        }, {
-          label: 'Pacific Islander',
-          backgroundColor: COLORS_LANTERN_SET[5],
-          hoverBackgroundColor: COLORS_LANTERN_SET[5],
-          hoverBorderColor: COLORS_LANTERN_SET[5],
-          data: chartDataPoints[5],
-        }],
+        datasets: [
+          generateDataset('Caucasian', 0),
+          generateDataset('African American', 1),
+          generateDataset('Hispanic', 2),
+          generateDataset('Asian', 3),
+          generateDataset('Native American', 4),
+          generateDataset('Pacific Islander', 5),
+        ],
       }}
       options={{
         legend: {
           position: 'bottom',
+          labels: {
+            generateLabels: (chart) => generateLabelsWithCustomColors(chart, COLORS_LANTERN_SET)
+          }
         },
         responsive: true,
         maintainAspectRatio: false,
@@ -187,10 +178,12 @@ const RevocationsByRace = (props) => {
         },
         tooltips: {
           backgroundColor: COLORS['grey-800-light'],
+          footerFontSize: 9,
           mode: 'index',
           intersect: false,
           callbacks: {
             label: (tooltipItem, data) => tooltipForRateMetricWithNestedCounts(tooltipItem, data, numeratorCounts, denominatorCounts),
+            footer: (tooltipItem) => tooltipForFooterWithNestedCounts(tooltipItem, denominatorCounts),
           },
         },
       }}
@@ -205,6 +198,7 @@ const RevocationsByRace = (props) => {
     <div>
       <h4>
         Percent revoked by race/ethnicity and risk level
+        {showWarning === true && <DataSignificanceWarningIcon />}
         <ExportMenu
           chartId={chartId}
           chart={chart}

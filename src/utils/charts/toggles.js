@@ -16,6 +16,7 @@
 // =============================================================================
 
 import { getTooltipWithoutTrendline } from './trendline';
+import { isDenominatorStatisticallySignificant } from './significantStatistics';
 
 function toggleLabel(labelsByToggle, toggledValue) {
   if (labelsByToggle[toggledValue]) {
@@ -149,8 +150,9 @@ function tooltipForRateMetricWithCounts(tooltipItem, data, numerators, denominat
   if (numerator !== undefined && denominator !== undefined) {
     appendedCounts = ` (${numerator}/${denominator})`;
   }
+  const cue = isDenominatorStatisticallySignificant(denominator) ? '' : ' *'
 
-  return `${label}: ${getTooltipWithoutTrendline(tooltipItem, data, '%')}${appendedCounts}`;
+  return `${label}: ${getTooltipWithoutTrendline(tooltipItem, data, '%')}${appendedCounts}${cue}`;
 }
 
 function tooltipForRateMetricWithNestedCounts(tooltipItem, data, numerators, denominators) {
@@ -163,8 +165,9 @@ function tooltipForRateMetricWithNestedCounts(tooltipItem, data, numerators, den
   if (numerator !== undefined && denominator !== undefined) {
     appendedCounts = ` (${numerator}/${denominator})`;
   }
+  const cue = isDenominatorStatisticallySignificant(denominator) ? '' : ' *'
 
-  return `${label}: ${getTooltipWithoutTrendline(tooltipItem, data, '%')}${appendedCounts}`;
+  return `${label}: ${getTooltipWithoutTrendline(tooltipItem, data, '%')}${appendedCounts}${cue}`;
 }
 
 function updateTooltipForMetricType(metricType, tooltipItem, data) {
