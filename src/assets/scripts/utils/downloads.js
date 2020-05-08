@@ -48,7 +48,7 @@ function configureFilename(chartId, toggleStates, shouldZipDownload) {
   return filename;
 }
 
-function downloadCanvasImage(canvas, filename, chartTitle, shouldZipDownload) {
+function downloadCanvasImage(canvas, filename, chartTitle, toggleStates, shouldZipDownload) {
   const topPadding = 100;
   const temporaryCanvas = document.createElement('canvas');
   temporaryCanvas.width = canvas.width;
@@ -62,6 +62,14 @@ function downloadCanvasImage(canvas, filename, chartTitle, shouldZipDownload) {
   destinationCtx.textAlign = 'center';
   destinationCtx.font = '30px Helvetica Neue';
   destinationCtx.fillText(chartTitle, canvas.width / 2, topPadding / 2);
+
+  if (toggleStates) {
+    destinationCtx.fillStyle = '#B8B8B8';
+    destinationCtx.textAlign = 'center';
+    destinationCtx.font = '13px Helvetica Neue';
+    destinationCtx.fillText(`Applied filters: ${formatFilters(toggleStates)}`, canvas.width / 2, topPadding - 20);
+  }
+
   destinationCtx.drawImage(canvas, 0, topPadding);
 
   const data = temporaryCanvas.toDataURL('image/png;base64');
@@ -110,7 +118,7 @@ function downloadMethodologyFile(chartId, chartTitle, timeWindowDescription, tog
     `Chart: ${chartTitle}
 Dates: ${timeWindowDescription}
 Applied filters:
-- ${getFilterValue(toggleStates.metricPeriodMonths, "months", "month")}, ${getFilterValue(toggleStates.district, "districts", "District: ")}, ${getFilterValue(toggleStates.chargeCategory, "supervision levels", "Supervision level: ")}, ${getFilterValue(toggleStates.supervisionType, "supervision types", "Supervision type: ")}\n`;
+- ${formatFilters(toggleStates)}\n`;
   text += getViolation(toggleStates);
   text += `Export Date: ${startDate.toLocaleDateString('en-US')}
  \r\n`;
@@ -125,6 +133,15 @@ Applied filters:
     data: text,
     type: "binary"
   };
+}
+
+function formatFilters(toggleStates) {
+  return [
+    getFilterValue(toggleStates.metricPeriodMonths, "months", "month"),
+    getFilterValue(toggleStates.district, "districts", "District: "),
+    getFilterValue(toggleStates.chargeCategory, "supervision levels", "Supervision level: "),
+    getFilterValue(toggleStates.supervisionType, "supervision types", "Supervision type: ")
+  ].join(", ");
 }
 
 function downloadZipFile(files, zipFilename) {
@@ -240,7 +257,7 @@ function configureDataDownloadButton(
 function configureImageDownload(canvas, filename, chartTitle, toggleStates, chartId, timeWindowDescription, shouldZipDownload) {
   if (shouldZipDownload) {
     const methodologyFile = downloadMethodologyFile(chartId, chartTitle, timeWindowDescription, toggleStates);
-    const imageFile = downloadCanvasImage(canvas, filename, chartTitle, shouldZipDownload);
+    const imageFile = downloadCanvasImage(canvas, filename, chartTitle, toggleStates, shouldZipDownload);
     const files = [methodologyFile, imageFile];
     downloadZipFile(files, "export_image.zip");
   } else {
