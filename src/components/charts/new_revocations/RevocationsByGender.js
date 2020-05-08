@@ -17,8 +17,9 @@
 
 import React, { useState, useEffect } from 'react';
 import { Bar } from 'react-chartjs-2';
+
+import DataSignificanceWarningIcon from '../DataSignificanceWarningIcon';
 import ExportMenu from '../ExportMenu';
-import WarningIcon from '../WarningIcon';
 import Loading from '../../Loading';
 
 import { useAuth0 } from '../../../react-auth0-spa';
@@ -199,7 +200,7 @@ const RevocationsByGender = (props) => {
     <div>
       <h4>
         Percent revoked by gender and risk level
-        {showWarning === true && <WarningIcon />}
+        {showWarning === true && <DataSignificanceWarningIcon />}
         <ExportMenu
           chartId={chartId}
           chart={chart}

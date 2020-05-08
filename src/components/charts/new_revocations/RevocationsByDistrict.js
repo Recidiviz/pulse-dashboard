@@ -20,8 +20,8 @@ import { Bar } from 'react-chartjs-2';
 import * as $ from 'jquery';
 import pattern from 'patternomaly';
 
+import DataSignificanceWarningIcon from '../DataSignificanceWarningIcon';
 import ExportMenu from '../ExportMenu';
-import WarningIcon from '../WarningIcon';
 import Loading from '../../Loading';
 
 import { useAuth0 } from '../../../react-auth0-spa';
@@ -221,7 +221,7 @@ const RevocationsByDistrict = (props) => {
     <div>
       <h4>
         Revocations by district
-        {countModeEnabled === false && showWarning === true && <WarningIcon />}
+        {countModeEnabled === false && showWarning === true && <DataSignificanceWarningIcon />}
         <ExportMenu
           chartId={chartId}
           chart={chart}
