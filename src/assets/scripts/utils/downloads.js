@@ -20,7 +20,7 @@ import * as csvExport from 'jsonexport/dist';
 import { timeStamp } from './time';
 import infoAboutChart from '../../../utils/charts/info';
 import JSZip from 'jszip';
-import { toTitleCase, toHumanReadable } from '../../../utils/transforms/labels';
+import { humanReadableTitleCase } from '../../../utils/transforms/labels';
 
 // Functions for flowing through browser-specific download functionality
 // https://stackoverflow.com/questions/9847580/how-to-detect-safari-chrome-ie-firefox-and-opera-browser
@@ -83,7 +83,7 @@ function getFilterValue(filterValue, descriptionPlural, descriptionOne) {
   } else if (parseInt(filterValue) === 1 && (descriptionOne === "month")) {
     str = filterValue + " " + descriptionOne;
   } else {
-    str = descriptionOne + toHumanReadable(toTitleCase(filterValue.toLowerCase()));
+    str = descriptionOne + humanReadableTitleCase(filterValue.toLowerCase());
   }
   return str;
 }
@@ -96,7 +96,7 @@ function getViolation(toggleStates) {
       str += toggleStates.reportedViolations + " violations or notices of citation, ";
     }
     if (toggleStates.violationType !== undefined && toggleStates.violationType !== "") {
-      str += "Most severe: " + toHumanReadable(toTitleCase(toggleStates.violationType.toLowerCase()));
+      str += "Most severe: " + humanReadableTitleCase(toggleStates.violationType.toLowerCase());
     }
     return (str !== "- ") ? str + "\n" : "";
   }
@@ -146,6 +146,7 @@ function downloadZipFile(files, zipFilename) {
     downloadjs(content, zipFilename);
   });
 }
+
 function downloadObjectAsCsv(exportObj, exportName, shouldZipDownload) {
   const options = {
     mapHeaders: (header) => header.replace(/label|values./, ''),
