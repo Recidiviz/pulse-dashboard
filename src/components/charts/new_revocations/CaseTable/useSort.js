@@ -16,8 +16,8 @@
 // =============================================================================
 
 import { useState } from "react";
+import { compareViolationRecords } from "../../../../utils/charts/violationRecord";
 import { nameFromOfficerId } from "../../../../utils/transforms/labels";
-import { violationRecordComparator } from "../../../../utils/charts/violationRecord";
 
 const RISK_LEVEL_PRIORITY = [
   "NOT_ASSESSED",
@@ -28,11 +28,61 @@ const RISK_LEVEL_PRIORITY = [
 ];
 
 const OFFICER_RECOMENDATION_PRIORITY = [
-  "CITATION",
-  "CONTINUATION",
-  "REVOCATION",
   "WARNING",
+  "CONTINUATION",
+  "CITATION",
+  "REVOCATION",
 ];
+
+function comparePersonExternalIds(a, b) {
+  if (parseInt(a, 10) > parseInt(b, 10)) return 1;
+  if (parseInt(a, 10) < parseInt(b, 10)) return -1;
+  return 0;
+}
+
+function compareDistricts(a, b) {
+  if (a.padStart(2, "0") > b.padStart(2, "0")) return 1;
+  if (a.padStart(2, "0") < b.padStart(2, "0")) return -1;
+  return 0;
+}
+
+function compareOfficers(a, b) {
+  const aOfficer = nameFromOfficerId(a.officer || "");
+  const bOfficer = nameFromOfficerId(b.officer || "");
+
+  if (!aOfficer && bOfficer) return 1;
+  if (!bOfficer && aOfficer) return -1;
+
+  if (aOfficer.toLowerCase() > bOfficer.toLowerCase()) return 1;
+  if (aOfficer.toLowerCase() < bOfficer.toLowerCase()) return -1;
+  return 0;
+}
+
+function compareRiskLevel(a, b) {
+  if (RISK_LEVEL_PRIORITY.indexOf(a) > RISK_LEVEL_PRIORITY.indexOf(b)) {
+    return 1;
+  }
+  if (RISK_LEVEL_PRIORITY.indexOf(a) < RISK_LEVEL_PRIORITY.indexOf(b)) {
+    return -1;
+  }
+  return 0;
+}
+
+function compareOffecerRecomendations(a, b) {
+  if (
+    OFFICER_RECOMENDATION_PRIORITY.indexOf(a) >
+    OFFICER_RECOMENDATION_PRIORITY.indexOf(b)
+  ) {
+    return 1;
+  }
+  if (
+    OFFICER_RECOMENDATION_PRIORITY.indexOf(a) <
+    OFFICER_RECOMENDATION_PRIORITY.indexOf(b)
+  ) {
+    return -1;
+  }
+  return 0;
+}
 
 function useSort() {
   const [sort, setSort] = useState({});
@@ -68,76 +118,31 @@ function useSort() {
   function comparator(a1, b1) {
     const [a2, b2] = sort.order === "desc" ? [b1, a1] : [a1, b1];
 
-    const aOfficer = nameFromOfficerId(a2.officer || "");
-    const bOfficer = nameFromOfficerId(b2.officer || "");
-
-    // Sort by officer, with undefined officers to the bottom
-    if (!aOfficer && bOfficer) return 1;
-    if (!bOfficer && aOfficer) return -1;
-
-    // Sort by district, with undefined districts to the bottom
-    if (!a2.district && b2.district) return 1;
-    if (!b2.district && a2.district) return -1;
-
-    if (sort.order) {
-      // Sort by person external id
-      if (sort.field === "state_id") {
-        if (parseInt(a2.state_id, 10) > parseInt(b2.state_id, 10)) return 1;
-        if (parseInt(a2.state_id, 10) < parseInt(b2.state_id, 10)) return -1;
-      }
-
-      // Sort by district
-      if (sort.field === "district") {
-        if (a2.district.padStart(2, "0") > b2.district.padStart(2, "0"))
-          return 1;
-        if (a2.district.padStart(2, "0") < b2.district.padStart(2, "0"))
-          return -1;
-      }
-
-      // Sort by officer
-      if (sort.field === "officer") {
-        if (aOfficer.toLowerCase() > bOfficer.toLowerCase()) return 1;
-        if (aOfficer.toLowerCase() < bOfficer.toLowerCase()) return -1;
-      }
-
-      // Sort by risk level
-      if (sort.field === "risk_level") {
-        if (
-          RISK_LEVEL_PRIORITY.indexOf(a2.risk_level) >
-          RISK_LEVEL_PRIORITY.indexOf(b2.risk_level)
-        )
-          return 1;
-        if (
-          RISK_LEVEL_PRIORITY.indexOf(a2.risk_level) <
-          RISK_LEVEL_PRIORITY.indexOf(b2.risk_level)
-        )
-          return -1;
-      }
-
-      // Sort by officer recommendation
-      if (sort.field === "officer_recommendation") {
-        if (
-          OFFICER_RECOMENDATION_PRIORITY.indexOf(a2.officer_recommendation) >
-          OFFICER_RECOMENDATION_PRIORITY.indexOf(b2.officer_recommendation)
-        )
-          return 1;
-        if (
-          OFFICER_RECOMENDATION_PRIORITY.indexOf(a2.officer_recommendation) <
-          OFFICER_RECOMENDATION_PRIORITY.indexOf(b2.officer_recommendation)
-        )
-          return -1;
-      }
-
-      if (sort.field === "violation_record") {
-        const result = violationRecordComparator(
+    return (
+      (sort.field === "state_id" &&
+        comparePersonExternalIds(a2.state_id, b2.state_id)) ||
+      (sort.field === "district" &&
+        compareDistricts(a2.district, b2.district)) ||
+      (sort.field === "offecer" && compareDistricts(a2.officer, b2.officer)) ||
+      (sort.field === "risk_level" &&
+        compareRiskLevel(a2.risk_level, b2.risk_level)) ||
+      (sort.field === "officer_recommendation" &&
+        compareOffecerRecomendations(
+          a2.officer_recommendation,
+          b2.officer_recommendation
+        )) ||
+      (sort.field === "violation_record" &&
+        compareViolationRecords(
           a2.violation_record,
-          b2.violation_record
-        );
-        if (result !== 0) return result;
-      }
-    }
-
-    return 0;
+          b2.violation_record,
+          sort.order
+        )) ||
+      // default sorts
+      compareDistricts(a2.district, b2.district) ||
+      compareOfficers(a2.officer, b2.officer) ||
+      comparePersonExternalIds(a2.state_id, b2.state_id) ||
+      0
+    );
   }
 
   return {

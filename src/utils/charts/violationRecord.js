@@ -26,9 +26,11 @@ function parseViolationRecord(recordLabel = "") {
     return [];
   }
 
-  return recordLabel
-    .split(";")
-    .map((recordPart) => recordPart.match(recordPartRegex).groups);
+  return recordLabel.split(";").map((recordPart) => {
+    const record = recordPart.match(recordPartRegex).groups;
+    record.number = parseInt(record.number, 0);
+    return record;
+  });
 }
 
 export function sumViolationRecords(records) {
@@ -39,9 +41,9 @@ export const violationComparator = (a, b) =>
   VIOLATION_SEVERITY.indexOf(a.abbreviation) -
   VIOLATION_SEVERITY.indexOf(b.abbreviation);
 
-export function violationRecordComparator(aRecordLabel, bRecordLabel) {
-  const aRecords = parseViolationRecord(aRecordLabel).sort(violationComparator);
-  const bRecords = parseViolationRecord(bRecordLabel).sort(violationComparator);
+export function compareViolationRecords(aRecordLabel, bRecordLabel, order) {
+  const aRecords = parseViolationRecord(aRecordLabel);
+  const bRecords = parseViolationRecord(bRecordLabel);
 
   const aSum = sumViolationRecords(aRecords);
   const bSum = sumViolationRecords(bRecords);
@@ -49,24 +51,19 @@ export function violationRecordComparator(aRecordLabel, bRecordLabel) {
   if (aSum > bSum) return 1;
   if (aSum < bSum) return -1;
 
-  for (let i = 0; i < aRecords.length; i += 1) {
-    const aRecord = aRecords[i];
-    const bRecord = bRecords[i];
+  for (let i = VIOLATION_SEVERITY.length - 1; i >= 0; i -= 1) {
+    const violationSeverity = VIOLATION_SEVERITY[i];
 
-    if (
-      VIOLATION_SEVERITY.indexOf(aRecord.abbreviation) >
-      VIOLATION_SEVERITY.indexOf(bRecord.abbreviation)
-    ) {
-      return 1;
+    const aRecord = aRecords.find((r) => r.abbreviation === violationSeverity);
+    const bRecord = bRecords.find((r) => r.abbreviation === violationSeverity);
+
+    if (aRecord && !bRecord) return order === "desc" ? -1 : 1;
+    if (!aRecord && bRecord) return order === "desc" ? 1 : -1;
+
+    if (aRecord && bRecord) {
+      if (aRecord.number > bRecord.number) return order === "desc" ? -1 : 1;
+      if (aRecord.number < bRecord.number) return order === "desc" ? 1 : -1;
     }
-    if (
-      VIOLATION_SEVERITY.indexOf(aRecord.abbreviation) <
-      VIOLATION_SEVERITY.indexOf(bRecord.abbreviation)
-    ) {
-      return -1;
-    }
-    if (aRecord.number > bRecord.number) return 1;
-    if (aRecord.number < bRecord.number) return -1;
   }
 
   return 0;

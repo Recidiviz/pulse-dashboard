@@ -15,7 +15,10 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import { parseAndFormatViolationRecord } from "../violationRecord";
+import {
+  parseAndFormatViolationRecord,
+  compareViolationRecords,
+} from "../violationRecord";
 
 describe("parseAndFormatViolationRecord function", () => {
   test("reformats semicolon-separated strings", () => {
@@ -32,5 +35,19 @@ describe("parseAndFormatViolationRecord function", () => {
     const rawInput = "1fel;13muni;400subs";
     const expectedOutput = "1 fel, 13 muni, 400 subs";
     expect(parseAndFormatViolationRecord(rawInput)).toBe(expectedOutput);
+  });
+});
+
+describe("compareViolationRecords function", () => {
+  test("compares violation records by asc", () => {
+    const given = ["1misd;1tech", "2absc", "3fel", "1fel;1muni", "2muni"];
+    given.sort((a, b) => compareViolationRecords(a, b, "asc"));
+    expect(given).toEqual([
+      "2absc",
+      "1fel;1muni",
+      "2muni",
+      "1misd;1tech",
+      "3fel",
+    ]);
   });
 });
