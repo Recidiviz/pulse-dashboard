@@ -61,6 +61,7 @@ const CHARGE_CATEGORIES = [
   { value: 'GENERAL', label: 'General' },
   { value: 'SEX_OFFENDER', label: 'Sex Offense' },
   { value: 'DOMESTIC_VIOLENCE', label: 'Domestic Violence' },
+  { value: 'SERIOUS_MENTAL_ILLNESS', label: 'Serious Mental Illness' },
 ];
 
 // TODO: Determine if we want to continue to explicitly provide charge_category=ALL or treat it
