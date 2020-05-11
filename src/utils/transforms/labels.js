@@ -76,12 +76,12 @@ function raceValueToHumanReadable(raceValue) {
 }
 
 function toHtmlFriendly(string) {
-  return string.replace(' ', '-');
+  return string.replace(/ /g, '-');
 }
 
 function toHumanReadable(string) {
-  let newString = string.replace('-', ' ');
-  newString = newString.replace('_', ' ');
+  let newString = string.replace(/-/g, ' ');
+  newString = newString.replace(/_/g, ' ');
   return newString;
 }
 
