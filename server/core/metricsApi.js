@@ -46,6 +46,7 @@ const FILES_BY_METRIC_TYPE = {
     'ftr_referrals_by_age_by_period.json',
     'ftr_referrals_by_gender_by_period.json',
     'ftr_referrals_by_lsir_by_period.json',
+    'ftr_referrals_by_participation_status.json',
     'ftr_referrals_by_race_and_ethnicity_by_period.json',
     'race_proportions.json',
     'site_offices.json',

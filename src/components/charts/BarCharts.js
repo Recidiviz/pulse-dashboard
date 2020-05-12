@@ -15,18 +15,18 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import { COLORS } from '../../../assets/scripts/constants/colors';
+import { COLORS } from '../../assets/scripts/constants/colors';
 import {
   toggleLabel, filterDatasetBySupervisionType, filterDatasetByMetricPeriodMonths,
   getMonthCountFromMetricPeriodMonthsToggle, updateTooltipForMetricType,
   toggleYAxisTicksStackedRateBasicCount,
-} from '../../../utils/charts/toggles';
-import { sortFilterAndSupplementMostRecentMonths } from '../../../utils/transforms/datasets';
-import { monthNamesWithYearsFromNumbers } from '../../../utils/transforms/months';
+} from '../../utils/charts/toggles';
+import { sortFilterAndSupplementMostRecentMonths } from '../../utils/transforms/datasets';
+import { monthNamesWithYearsFromNumbers } from '../../utils/transforms/months';
 import {
   toHtmlFriendly, toHumanReadable, toInt, numberFromOfficerId,
-} from '../../../utils/transforms/labels';
-import { configureDownloadButtons } from '../../../assets/scripts/utils/downloads';
+} from '../../utils/transforms/labels';
+import { configureDownloadButtons } from '../../assets/scripts/utils/downloads';
 
 export const getPerMonthChartDefinition = ({
   chartId,
