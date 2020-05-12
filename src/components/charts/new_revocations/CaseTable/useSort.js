@@ -35,53 +35,47 @@ const OFFICER_RECOMENDATION_PRIORITY = [
 ];
 
 function comparePersonExternalIds(a, b) {
-  if (parseInt(a, 10) > parseInt(b, 10)) return 1;
-  if (parseInt(a, 10) < parseInt(b, 10)) return -1;
+  if (!a && b) return 1;
+  if (a && !b) return -1;
+
+  if (String(a) > String(b)) return 1;
+  if (String(a) < String(b)) return -1;
+
   return 0;
 }
 
 function compareDistricts(a, b) {
-  if (a.padStart(2, "0") > b.padStart(2, "0")) return 1;
-  if (a.padStart(2, "0") < b.padStart(2, "0")) return -1;
+  if (!a && b) return 1;
+  if (!b && a) return -1;
+
+  if (String(a) > String(b)) return 1;
+  if (String(a) < String(b)) return -1;
+
   return 0;
 }
 
 function compareOfficers(a, b) {
-  const aOfficer = nameFromOfficerId(a.officer || "");
-  const bOfficer = nameFromOfficerId(b.officer || "");
+  const aOfficer = nameFromOfficerId(a);
+  const bOfficer = nameFromOfficerId(b);
 
   if (!aOfficer && bOfficer) return 1;
   if (!bOfficer && aOfficer) return -1;
 
   if (aOfficer.toLowerCase() > bOfficer.toLowerCase()) return 1;
   if (aOfficer.toLowerCase() < bOfficer.toLowerCase()) return -1;
+
   return 0;
 }
 
 function compareRiskLevel(a, b) {
-  if (RISK_LEVEL_PRIORITY.indexOf(a) > RISK_LEVEL_PRIORITY.indexOf(b)) {
-    return 1;
-  }
-  if (RISK_LEVEL_PRIORITY.indexOf(a) < RISK_LEVEL_PRIORITY.indexOf(b)) {
-    return -1;
-  }
-  return 0;
+  return RISK_LEVEL_PRIORITY.indexOf(a) - RISK_LEVEL_PRIORITY.indexOf(b);
 }
 
-function compareOffecerRecomendations(a, b) {
-  if (
-    OFFICER_RECOMENDATION_PRIORITY.indexOf(a) >
+function compareOfficerRecomendations(a, b) {
+  return (
+    OFFICER_RECOMENDATION_PRIORITY.indexOf(a) -
     OFFICER_RECOMENDATION_PRIORITY.indexOf(b)
-  ) {
-    return 1;
-  }
-  if (
-    OFFICER_RECOMENDATION_PRIORITY.indexOf(a) <
-    OFFICER_RECOMENDATION_PRIORITY.indexOf(b)
-  ) {
-    return -1;
-  }
-  return 0;
+  );
 }
 
 function useSort() {
@@ -123,11 +117,11 @@ function useSort() {
         comparePersonExternalIds(a2.state_id, b2.state_id)) ||
       (sort.field === "district" &&
         compareDistricts(a2.district, b2.district)) ||
-      (sort.field === "offecer" && compareDistricts(a2.officer, b2.officer)) ||
+      (sort.field === "officer" && compareOfficers(a2.officer, b2.officer)) ||
       (sort.field === "risk_level" &&
         compareRiskLevel(a2.risk_level, b2.risk_level)) ||
       (sort.field === "officer_recommendation" &&
-        compareOffecerRecomendations(
+        compareOfficerRecomendations(
           a2.officer_recommendation,
           b2.officer_recommendation
         )) ||
