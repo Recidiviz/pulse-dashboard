@@ -12,6 +12,7 @@ public/
 !server/utils/*.js
 !src/components/charts/DataSignificanceWarningIcon.js
 !src/components/charts/WarningIcon.js
+!src/components/program_evaluation/us_nd/FtrReferralsByParticipationStatus.js
 !src/components/toggles/__tests__/MetricPeriodToggle.test.js
 !src/components/toggles/__tests__/MetricTypeToggle.test.js
 !src/components/toggles/__tests__/SupervisionTypeToggle.test.js

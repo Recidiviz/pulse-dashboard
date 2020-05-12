@@ -19,7 +19,7 @@ import React, { useState, useEffect } from 'react';
 import { Bar } from 'react-chartjs-2';
 
 import { COLORS_FIVE_VALUES } from '../../../assets/scripts/constants/colors';
-import { getPerOfficerChartDefinition } from './BarCharts';
+import { getPerOfficerChartDefinition } from '../BarCharts';
 
 const chartId = 'revocationsByOfficer';
 

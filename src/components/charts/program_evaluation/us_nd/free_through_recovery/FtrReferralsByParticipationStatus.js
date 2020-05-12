@@ -1,5 +1,5 @@
 // Recidiviz - a data platform for criminal justice reform
-// Copyright (C) 2019 Recidiviz, Inc.
+// Copyright (C) 2020 Recidiviz, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -18,16 +18,23 @@
 import React, { useState, useEffect } from 'react';
 import { Bar } from 'react-chartjs-2';
 
-import { COLORS_FIVE_VALUES } from '../../../assets/scripts/constants/colors';
-import { configureDownloadButtons } from '../../../assets/scripts/utils/downloads';
-import { getPerMonthChartDefinition } from '../BarCharts';
+import { COLORS_FIVE_VALUES } from '../../../../../assets/scripts/constants/colors';
+import { configureDownloadButtons } from '../../../../../assets/scripts/utils/downloads';
+import { getPerMonthChartDefinition } from '../../../BarCharts';
 
-const chartId = 'revocationsByViolationType';
+const chartId = 'ftrReferralsByParticipationStatus';
+
+const chartColors = [
+  COLORS_FIVE_VALUES[0],
+  COLORS_FIVE_VALUES[1],
+  COLORS_FIVE_VALUES[2],
+  COLORS_FIVE_VALUES[3],
+];
 
 export const getBarChartDefinition = (props) => {
   return getPerMonthChartDefinition({
     chartId,
-    countsByMonth: props.revocationCountsByMonthByViolationType,
+    countsByMonth: props.ftrReferralsByParticipationStatus,
     metricType: props.metricType,
     numMonths: props.metricPeriodMonths,
     filters: {
@@ -35,23 +42,23 @@ export const getBarChartDefinition = (props) => {
       supervision_type: props.supervisionType,
     },
     bars: [
-      { key: 'absconsion_count', label: 'Absconsion' },
-      { key: 'felony_count', label: 'New Offense' },
-      { key: 'technical_count', label: 'Technical' },
-      { key: 'unknown_count', label: 'Unknown Type' },
+      { key: 'pending', label: 'Pending' },
+      { key: 'in_progress', label: 'In Progress' },
+      { key: 'denied', label: 'Denied' },
+      { key: 'discharged', label: 'Discharged' },
     ],
-    yAxisLabel: props.metricType === 'counts' ? 'Revocation count' : 'Percentage',
-    barColorPalette: COLORS_FIVE_VALUES,
+    yAxisLabel: props.metricType === 'counts' ? 'Count' : 'Percentage',
+    barColorPalette: chartColors,
   });
 };
 
-const RevocationCountByViolationType = (props) => {
+const FtrReferralsByParticipationStatus = (props) => {
   const [chartDefinition, setChartDefinition] = useState(null);
 
   useEffect(() => {
     setChartDefinition(getBarChartDefinition(props));
   }, [
-    props.revocationCountsByMonthByViolationType,
+    props.ftrReferralsByParticipationStatus,
     props.metricType,
     props.metricPeriodMonths,
     props.supervisionType,
@@ -64,15 +71,15 @@ const RevocationCountByViolationType = (props) => {
 
   const exportedStructureCallback = () => (
     {
-      metric: 'Revocation counts by violation type',
+      metric: 'FTR Referrals by Participation Status',
       series: [],
     });
 
-  configureDownloadButtons(chartId, 'REVOCATIONS BY VIOLATION TYPE',
+  configureDownloadButtons(chartId, 'FTR REFERRALS BY PARTICIPATION STATUS',
     chart.props.data.datasets, chart.props.data.labels,
     document.getElementById(chartId), exportedStructureCallback, props, true, true);
 
   return chart;
 };
 
-export default RevocationCountByViolationType;
+export default FtrReferralsByParticipationStatus;
