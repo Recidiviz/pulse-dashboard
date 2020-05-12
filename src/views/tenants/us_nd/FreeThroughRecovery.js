@@ -252,30 +252,37 @@ const FreeThroughRecovery = () => {
                   <div>
                     <ul>
                       <li>
-                        Each person&apos;s participation status is determined based on their current
-                        status as of...
+                        This chart conveys information about the current participation status
+                        (pending, denied, in progress, or discharged) of individuals who have been
+                        referred to Free Through Recovery.
                       </li>
                       <li>
-                        The referral population counts people who were referred to Free Through
-                        Recovery at any point during the time period.
+                        Individuals who have been referred multiple times are counted for each
+                        referral, with their participation status being specific to a given
+                        referral. For example, an individual may be referred to FTR and denied,
+                        have their situation change, be referred again, be accepted, and currently
+                        be enrolled in Free Through Recovery. This would count as one denied status
+                        in the month of the first referral and one in progress status in the month
+                        of the second referral.
                       </li>
                       <li>
-                        The supervision population counts people on probation or parole in
-                        North Dakota at any point during the time period.
-                      </li>
-                      <li>
-                        If a supervision type and/or a P&P office is selected, the referral and
-                        supervision populations will only include individuals who fit the selected
-                        filters.
-                      </li>
-                      <li>
-                        A referral is attributed to the P&P office of the referred
-                        individual&apos;s current supervising officer.
+                        Referrals are attributed to the P&P office of a supervised individual&apos;s
+                        current supervising officer.
                       </li>
                       <li>
                         Individuals on both parole and probation will count towards either
-                        selection. As a result, parole FTR referrals and probation FTR referrals may
-                        sum to more than the total number of FTR referrals.
+                        selection. As a result, parole FTR referrals and probation FTR referrals
+                        may sum to more than the total number of FTR referrals.
+                      </li>
+                      <li>
+                        When rate is selected, this chart will show what percent of referrals in
+                        each month are currently pending, what percent were denied, what percent
+                        led to participation now in progress, and what percent of referrals led to
+                        participation that has now culminated (i.e. the individual referred has
+                        been discharged from Free Through Recovery).
+                      </li>
+                      <li>
+                        There is no data prior to the program beginning in January 2018.
                       </li>
                     </ul>
                   </div>
