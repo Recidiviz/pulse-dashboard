@@ -63,7 +63,10 @@ technical, substance use, municipal offense, absconsion, misdemeanor, felony. Th
 violation determines what row a person is placed in, regardless of whether it was the most recent
 violation. For example, if a person had one misdemeanor violation, then two technical violations,
 then one substance use violation, and then they were revoked, they would be placed in the
-misdemeanor row because a misdemeanor is their most serious violation.`,
+misdemeanor row because a misdemeanor is their most serious violation. For the purpose of this chart,
+the violation category of "escape" is combined with absconding, since escape violations are
+relatively rare. Escape is listed separately in the violation record column of the
+"Individuals revoked" table at the bottom of the page.`,
     },
     {
       header: "Number of violation reports and notices of citation filed",
