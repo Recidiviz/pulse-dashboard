@@ -122,7 +122,7 @@ function getViolation(toggleStates) {
       str += toggleStates.reportedViolations + " violations or notices of citation, ";
     }
     if (toggleStates.violationType !== undefined && toggleStates.violationType !== "") {
-      str += "Most severe: " + humanReadableTitleCase(toggleStates.violationType.toLowerCase());
+      str += "Most severe violation: " + humanReadableTitleCase(toggleStates.violationType.toLowerCase());
     }
     return str;
   }
