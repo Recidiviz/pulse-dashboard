@@ -271,6 +271,16 @@
     font-size: 16px;
     padding: 10px 0 10px 20px;
     width: 15%;
+
+    button {
+      background: transparent;
+      border: 0;
+      text-transform: inherit;
+      font-size: inherit;
+      font: inherit;
+      color: inherit;
+      padding: 0;
+    }
   }
 
   td {
