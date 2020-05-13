@@ -122,7 +122,7 @@ function getViolation(toggleStates) {
       str += toggleStates.reportedViolations + " violations or notices of citation, ";
     }
     if (toggleStates.violationType !== undefined && toggleStates.violationType !== "") {
-      str += "Most severe: " + toHumanReadable(toTitleCase(toggleStates.violationType.toLowerCase()));
+      str += "Most severe violation: " + toHumanReadable(toTitleCase(toggleStates.violationType.toLowerCase()));
     }
     return str;
   }
@@ -141,9 +141,10 @@ function downloadMethodologyFile(chartId, chartTitle, timeWindowDescription, tog
   text += `- ${filters}\r\n`;
 
   if (violation) {
-    text += `- ${violation}\r\n\r\n`;
+    text += `- ${violation}\r\n`;
   }
 
+  text += "\r\n";
   text += `Export Date: ${exportDate}\r\n`;
 
   infoChart.map((chart) => {
