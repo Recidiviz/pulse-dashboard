@@ -16,7 +16,7 @@
 // =============================================================================
 import React from 'react';
 import '@testing-library/jest-dom/extend-expect';
-import * as labelsMethods from './labels';
+import * as labelsMethods from '../labels';
 
 describe('test label', () => {
 
@@ -38,6 +38,11 @@ describe('test label', () => {
  it('to Html friendly', () => {
    const dataAfterTest = labelsMethods.toHtmlFriendly('Los Angeles');
    expect(dataAfterTest.toString()).toEqual('Los-Angeles');
+ });
+
+ it('to Html friendly with multiple spaces', () => {
+   const dataAfterTest = labelsMethods.toHtmlFriendly('Los Angeles California');
+   expect(dataAfterTest.toString()).toEqual('Los-Angeles-California');
  });
 
  it('to human readable', () => {
@@ -63,8 +68,20 @@ describe('test label', () => {
    expect(dataErrorAfterTest).toEqual('');
  });
 
- it('human readable title case', () => {
-   const dataForTesting = 'SAN FRANCISCO CALIFORNIA';
+ it('human readable title case with underscores', () => {
+   const dataForTesting = 'SAN_FRANCISCO_CALIFORNIA';
+   const dataAfterTest = labelsMethods.humanReadableTitleCase(dataForTesting);
+   expect(dataAfterTest).toEqual('San Francisco California');
+ });
+
+ it('human readable title case with hyphens', () => {
+   const dataForTesting = 'SAN-FRANCISCO-CALIFORNIA';
+   const dataAfterTest = labelsMethods.humanReadableTitleCase(dataForTesting);
+   expect(dataAfterTest).toEqual('San Francisco California');
+ });
+
+ it('human readable title case with a mix of punctuation', () => {
+   const dataForTesting = 'SAN_FRANCISCO-CALIFORNIA';
    const dataAfterTest = labelsMethods.humanReadableTitleCase(dataForTesting);
    expect(dataAfterTest).toEqual('San Francisco California');
  });

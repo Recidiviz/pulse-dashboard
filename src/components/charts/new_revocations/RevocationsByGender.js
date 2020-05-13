@@ -17,6 +17,8 @@
 
 import React, { useState, useEffect } from 'react';
 import { Bar } from 'react-chartjs-2';
+
+import DataSignificanceWarningIcon from '../DataSignificanceWarningIcon';
 import ExportMenu from '../ExportMenu';
 import Loading from '../../Loading';
 
@@ -26,7 +28,14 @@ import { fetchChartData, awaitingResults } from '../../../utils/metricsClient';
 import { COLORS } from '../../../assets/scripts/constants/colors';
 import { axisCallbackForPercentage } from '../../../utils/charts/axis';
 import {
-  getTrailingLabelFromMetricPeriodMonthsToggle, getPeriodLabelFromMetricPeriodMonthsToggle,
+  generateLabelsWithCustomColors,
+  getBarBackgroundColor,
+  isDenominatorsMatrixStatisticallySignificant,
+  tooltipForFooterWithNestedCounts,
+} from '../../../utils/charts/significantStatistics';
+import {
+  getTrailingLabelFromMetricPeriodMonthsToggle,
+  getPeriodLabelFromMetricPeriodMonthsToggle,
   tooltipForRateMetricWithNestedCounts,
 } from '../../../utils/charts/toggles';
 import { toInt } from '../../../utils/transforms/labels';
@@ -45,6 +54,8 @@ const RevocationsByGender = (props) => {
   const { loading, user, getTokenSilently } = useAuth0();
   const [apiData, setApiData] = useState({});
   const [awaitingApi, setAwaitingApi] = useState(true);
+
+  const showWarning = !isDenominatorsMatrixStatisticallySignificant(denominatorCounts);
 
   const getRevocationsForRiskLevel = (forGender, filteredData) => RISK_LEVELS.map((riskLevel) => (
     filteredData
@@ -119,28 +130,33 @@ const RevocationsByGender = (props) => {
     props.metricPeriodMonths,
   ]);
 
+  const colors = [
+    COLORS['lantern-light-blue'],
+    COLORS['lantern-orange'],
+  ]
+
+  const generateDataset = (label, index) => ({
+    label: label,
+    backgroundColor: getBarBackgroundColor(colors[index], denominatorCounts),
+    data: chartDataPoints[index],
+  });
+
   const chart = (
     <Bar
       id={chartId}
       data={{
         labels: CHART_LABELS,
-        datasets: [{
-          label: 'Women',
-          backgroundColor: COLORS['lantern-light-blue'],
-          hoverBackgroundColor: COLORS['lantern-light-blue'],
-          hoverBorderColor: COLORS['lantern-light-blue'],
-          data: chartDataPoints[0],
-        }, {
-          label: 'Men',
-          backgroundColor: COLORS['lantern-orange'],
-          hoverBackgroundColor: COLORS['lantern-orange'],
-          hoverBorderColor: COLORS['lantern-orange'],
-          data: chartDataPoints[1],
-        }],
+        datasets: [
+          generateDataset('Women', 0),
+          generateDataset('Men', 1),
+        ],
       }}
       options={{
         legend: {
           position: 'bottom',
+          labels: {
+            generateLabels: (chart) => generateLabelsWithCustomColors(chart, colors)
+          }
         },
         responsive: true,
         maintainAspectRatio: false,
@@ -164,10 +180,12 @@ const RevocationsByGender = (props) => {
         },
         tooltips: {
           backgroundColor: COLORS['grey-800-light'],
+          footerFontSize: 9,
           mode: 'index',
           intersect: false,
           callbacks: {
             label: (tooltipItem, data) => tooltipForRateMetricWithNestedCounts(tooltipItem, data, numeratorCounts, denominatorCounts),
+            footer: (tooltipItem) => tooltipForFooterWithNestedCounts(tooltipItem, denominatorCounts),
           },
         },
       }}
@@ -182,6 +200,7 @@ const RevocationsByGender = (props) => {
     <div>
       <h4>
         Percent revoked by gender and risk level
+        {showWarning === true && <DataSignificanceWarningIcon />}
         <ExportMenu
           chartId={chartId}
           chart={chart}
