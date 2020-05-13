@@ -40,7 +40,7 @@ import RevocationsByGender
 import RevocationsByRace
   from '../../../components/charts/new_revocations/RevocationsByRace';
 import CaseTable
-  from '../../../components/charts/new_revocations/CaseTable';
+  from '../../../components/charts/new_revocations/CaseTable/CaseTable';
 
 import { toInt } from '../../../utils/transforms/labels';
 
@@ -135,7 +135,7 @@ const Revocations = () => {
     window.addEventListener('scroll', handlerTopLevel);
 
     return () => window.removeEventListener('scroll', handlerTopLevel)
-  }, );
+  });
 
   let timeout = null;
 
@@ -144,7 +144,7 @@ const Revocations = () => {
       return;
     }
 
-    timeout = setTimeout(function() {
+    timeout = setTimeout(function () {
       if (window.pageYOffset > 60) {
         let x = document.body.getElementsByClassName('title-level');
         for (let i = 0; i < x.length; i++) {
@@ -153,8 +153,8 @@ const Revocations = () => {
           x[i].parentNode.classList.add('d-f');
           x[i].parentNode.classList.add('align-items-center');
         }
-        separate.current.style.display='block';
-      } else if (window.pageYOffset < 5 ) {
+        separate.current.style.display = 'block';
+      } else if (window.pageYOffset < 5) {
         let x = document.body.getElementsByClassName('title-level');
         for (let i = 0; i < x.length; i++) {
           x[i].classList.remove('top-level-filters-title');
@@ -162,7 +162,7 @@ const Revocations = () => {
           x[i].parentNode.classList.remove('d-f');
           x[i].parentNode.classList.remove('align-items-center');
         }
-        separate.current.style.display='none';
+        separate.current.style.display = 'none';
       }
 
       timeout = null;
@@ -208,7 +208,7 @@ const Revocations = () => {
         }
       }
       if (filters.supervisionType && !toSkip.includes('supervisionType')
-          && !(treatCategoryAllAsAbsent && filters.supervisionType.toLowerCase() === 'all')) {
+        && !(treatCategoryAllAsAbsent && filters.supervisionType.toLowerCase() === 'all')) {
         if (!nullSafeComparison(item.supervision_type, filters.supervisionType)) {
           return false;
         }
@@ -285,7 +285,7 @@ const Revocations = () => {
   // display the selected chart
   const conditionallyHide = (selectedChart, chartName, chartComponent, index) => {
     const shouldBeHidden = selectedChart !== chartName;
-    const divStyle = shouldBeHidden ? {display: 'none'} : {};
+    const divStyle = shouldBeHidden ? { display: 'none' } : {};
     return (
       <div key={index} style={divStyle}>
         {chartComponent}
@@ -345,7 +345,7 @@ const Revocations = () => {
       <Sticky style={TOGGLE_STYLE}>
         <div className="top-level-filters d-f">
           <div className="top-level-filter">
-            <h4 className="title-level">Time <br ref={separate} className="separate-filter-title"/>Period</h4>
+            <h4 className="title-level">Time <br ref={separate} className="separate-filter-title" />Period</h4>
             <Select
               className="select-align"
               options={METRIC_PERIODS}
@@ -391,13 +391,13 @@ const Revocations = () => {
         />
       </div>
       <div className="d-f m-20 container-all-charts">
-          <div className="matrix-container bgc-white p-20 mR-20">
-            <RevocationMatrix
-              dataFilter={applyTopLevelFilters}
-              filterStates={filters}
-              updateFilters={updateFilters}
-              metricPeriodMonths={filters.metricPeriodMonths}
-            />
+        <div className="matrix-container bgc-white p-20 mR-20">
+          <RevocationMatrix
+            dataFilter={applyTopLevelFilters}
+            filterStates={filters}
+            updateFilters={updateFilters}
+            metricPeriodMonths={filters.metricPeriodMonths}
+          />
         </div>
         <div className="matrix-explanation bgc-white p-20">
           <h4>Using this chart</h4>
