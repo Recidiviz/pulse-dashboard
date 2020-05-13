@@ -27,13 +27,6 @@ const RISK_LEVEL_PRIORITY = [
   "VERY_HIGH",
 ];
 
-const OFFICER_RECOMENDATION_PRIORITY = [
-  "WARNING",
-  "CONTINUATION",
-  "CITATION",
-  "REVOCATION",
-];
-
 function comparePersonExternalIds(a, b) {
   if (!a && b) return 1;
   if (a && !b) return -1;
@@ -72,10 +65,13 @@ function compareRiskLevel(a, b) {
 }
 
 function compareOfficerRecomendations(a, b) {
-  return (
-    OFFICER_RECOMENDATION_PRIORITY.indexOf(a) -
-    OFFICER_RECOMENDATION_PRIORITY.indexOf(b)
-  );
+  if (!a && b) return 1;
+  if (!b && a) return -1;
+
+  if (String(a) > String(b)) return 1;
+  if (String(a) < String(b)) return -1;
+
+  return 0;
 }
 
 function useSort() {
