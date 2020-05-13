@@ -12,12 +12,13 @@ public/
 !server/utils/*.js
 !src/components/charts/DataSignificanceWarningIcon.js
 !src/components/charts/WarningIcon.js
-!src/components/charts/new_revocations/Chips.js
+!src/components/charts/new_revocations/Chip.js
 !src/components/program_evaluation/us_nd/FtrReferralsByParticipationStatus.js
 !src/components/toggles/__tests__/MetricPeriodToggle.test.js
 !src/components/toggles/__tests__/MetricTypeToggle.test.js
 !src/components/toggles/__tests__/SupervisionTypeToggle.test.js
 !src/components/toggles/__tests__/ToggleBar.test.js
+!src/hooks/useTopBarShrinking.js
 !src/utils/charts/info.js
 !src/utils/charts/significantStatistics.js
 !src/utils/charts/__tests__/choropleth.test.js

@@ -25,7 +25,6 @@ const useTopBarShrinking = () => {
     const handler = () => {
       cancelAnimationFrame(frame.current);
       frame.current = requestAnimationFrame(() => {
-        console.log(window.pageYOffset);
         if (!isTopBarShrinking && window.pageYOffset > 50) {
           setIsTopBarShrinking(true);
         } else if (isTopBarShrinking && window.pageYOffset < 5) {
@@ -37,7 +36,7 @@ const useTopBarShrinking = () => {
 
     window.addEventListener("scroll", handler, {
       capture: false,
-      passive: true
+      passive: true,
     });
 
     return () => {
