@@ -48,8 +48,8 @@ function configureFilename(chartId, toggleStates, shouldZipDownload) {
   return filename;
 }
 
-function downloadCanvasImage(canvas, filename, chartTitle, shouldZipDownload) {
-  const topPadding = 100;
+function downloadCanvasImage(canvas, filename, chartTitle, toggleStates, shouldZipDownload) {
+  const topPadding = 120;
   const temporaryCanvas = document.createElement('canvas');
   temporaryCanvas.width = canvas.width;
   temporaryCanvas.height = canvas.height + topPadding;
@@ -61,7 +61,16 @@ function downloadCanvasImage(canvas, filename, chartTitle, shouldZipDownload) {
   destinationCtx.fillStyle = '#616161';
   destinationCtx.textAlign = 'center';
   destinationCtx.font = '30px Helvetica Neue';
-  destinationCtx.fillText(chartTitle, canvas.width / 2, topPadding / 2);
+  destinationCtx.fillText(chartTitle, canvas.width / 2, 50);
+
+  if (toggleStates) {
+    destinationCtx.fillStyle = '#B8B8B8';
+    destinationCtx.textAlign = 'center';
+    destinationCtx.font = '16px Helvetica Neue';
+    destinationCtx.fillText(`Applied filters: ${getFilters(toggleStates)}`, canvas.width / 2, topPadding - 40);
+    destinationCtx.fillText(getViolation(toggleStates), canvas.width / 2, topPadding - 20);
+  }
+
   destinationCtx.drawImage(canvas, 0, topPadding);
 
   const data = temporaryCanvas.toDataURL('image/png;base64');
@@ -77,49 +86,73 @@ function downloadCanvasImage(canvas, filename, chartTitle, shouldZipDownload) {
 }
 
 function getFilterValue(filterValue, descriptionPlural, descriptionOne) {
-  let str = '';
-  if (filterValue === "All" || ((parseInt(filterValue) === 12 || parseInt(filterValue) === 36 || parseInt(filterValue) === 6 || parseInt(filterValue) === 3) && (descriptionOne === "month"))) {
-    str = filterValue + " " + descriptionPlural;
+  if (
+    filterValue === "All" ||
+    ((parseInt(filterValue) === 12 ||
+     parseInt(filterValue) === 36 ||
+     parseInt(filterValue) === 6 ||
+     parseInt(filterValue) === 3) &&
+     (descriptionOne === "month"))) {
+    return filterValue + " " + descriptionPlural;
   } else if (parseInt(filterValue) === 1 && (descriptionOne === "month")) {
-    str = filterValue + " " + descriptionOne;
+    return filterValue + " " + descriptionOne;
   } else {
-    str = descriptionOne + humanReadableTitleCase(filterValue.toLowerCase());
+    return descriptionOne + humanReadableTitleCase(filterValue.toLowerCase());
   }
-  return str;
+}
+
+function getFilters(toggleStates) {
+  return [
+    getFilterValue(toggleStates.metricPeriodMonths, "months", "month"),
+    getFilterValue(toggleStates.district, "districts", "District: "),
+    getFilterValue(toggleStates.chargeCategory, "supervision levels", "Supervision level: "),
+    getFilterValue(toggleStates.supervisionType, "supervision types", "Supervision type: ")
+  ].join(", ");
 }
 
 function getViolation(toggleStates) {
-  let str = '';
-  if (toggleStates.reportedViolations !== undefined || toggleStates.violationType !== undefined || toggleStates.reportedViolations !== "" || toggleStates.violationType !== "") {
-    str += "- ";
+  let str = "";
+  if (
+    toggleStates.reportedViolations !== undefined ||
+    toggleStates.violationType !== undefined ||
+    toggleStates.reportedViolations !== "" ||
+    toggleStates.violationType !== ""
+  ) {
     if (toggleStates.reportedViolations !== undefined && toggleStates.reportedViolations !== "") {
       str += toggleStates.reportedViolations + " violations or notices of citation, ";
     }
     if (toggleStates.violationType !== undefined && toggleStates.violationType !== "") {
-      str += "Most severe: " + humanReadableTitleCase(toggleStates.violationType.toLowerCase());
+      str += "Most severe violation: " + humanReadableTitleCase(toggleStates.violationType.toLowerCase());
     }
-    return (str !== "- ") ? str + "\n" : "";
+    return str;
   }
 }
 
 function downloadMethodologyFile(chartId, chartTitle, timeWindowDescription, toggleStates) {
-  let infoChart = infoAboutChart[chartId];
-  infoChart = infoChart === undefined ? [] : infoChart;
-  const startDate = new Date();
-  let text =
-    `Chart: ${chartTitle}
-Dates: ${timeWindowDescription}
-Applied filters:
-- ${getFilterValue(toggleStates.metricPeriodMonths, "months", "month")}, ${getFilterValue(toggleStates.district, "districts", "District: ")}, ${getFilterValue(toggleStates.chargeCategory, "supervision levels", "Supervision level: ")}, ${getFilterValue(toggleStates.supervisionType, "supervision types", "Supervision type: ")}\n`;
-  text += getViolation(toggleStates);
-  text += `Export Date: ${startDate.toLocaleDateString('en-US')}
- \r\n`;
+  const filename = "methodology.txt";
+  const infoChart = infoAboutChart[chartId] || [];
+  const exportDate = new Date().toLocaleDateString('en-US');
+  const filters = getFilters(toggleStates);
+  const violation = getViolation(toggleStates);
+
+  let text = `Chart: ${chartTitle}\r\n`;
+  text += `Dates: ${timeWindowDescription}\r\n`;
+  text += `Applied filters:\r\n`;
+  text += `- ${filters}\r\n`;
+
+  if (violation) {
+    text += `- ${violation}\r\n`;
+  }
+
+  text += "\r\n";
+  text += `Export Date: ${exportDate}\r\n`;
+
   infoChart.map((chart) => {
     text += chart.header + "\r\n";
     text += chart.body + "\r\n";
     text += "\r\n";
   });
-  const filename = "methodology.txt";
+
   return {
     name: filename,
     data: text,
@@ -241,7 +274,7 @@ function configureDataDownloadButton(
 function configureImageDownload(canvas, filename, chartTitle, toggleStates, chartId, timeWindowDescription, shouldZipDownload) {
   if (shouldZipDownload) {
     const methodologyFile = downloadMethodologyFile(chartId, chartTitle, timeWindowDescription, toggleStates);
-    const imageFile = downloadCanvasImage(canvas, filename, chartTitle, shouldZipDownload);
+    const imageFile = downloadCanvasImage(canvas, filename, chartTitle, toggleStates, shouldZipDownload);
     const files = [methodologyFile, imageFile];
     downloadZipFile(files, "export_image.zip");
   } else {
