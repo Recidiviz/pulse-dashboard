@@ -17,11 +17,14 @@ public/
 !src/components/toggles/__tests__/MetricTypeToggle.test.js
 !src/components/toggles/__tests__/SupervisionTypeToggle.test.js
 !src/components/toggles/__tests__/ToggleBar.test.js
+!src/components/charts/new_revocations/CaseTable/**/*.js
 !src/utils/charts/info.js
 !src/utils/charts/significantStatistics.js
+!src/utils/charts/violationRecord.js
 !src/utils/charts/__tests__/choropleth.test.js
 !src/utils/charts/__tests__/currentSpan.test.js
 !src/utils/charts/__tests__/metricGoal.test.js
 !src/utils/charts/__tests__/significantStatistics.test.js
+!src/utils/charts/__tests__/violationRecord.test.js
 !src/utils/transforms/years.js
 !src/utils/transforms/__tests__/years.test.js
