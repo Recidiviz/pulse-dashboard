@@ -15,17 +15,17 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import { useEffect, useRef, useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 
 const useTopBarShrinking = () => {
   const [isTopBarShrinking, setIsTopBarShrinking] = useState(false);
 
   const frame = useRef(0);
-  useEffect(() => {
+  useLayoutEffect(() => {
     const handler = () => {
       cancelAnimationFrame(frame.current);
       frame.current = requestAnimationFrame(() => {
-        if (!isTopBarShrinking && window.pageYOffset > 50) {
+        if (!isTopBarShrinking && window.pageYOffset > 60) {
           setIsTopBarShrinking(true);
         } else if (isTopBarShrinking && window.pageYOffset < 5) {
           setIsTopBarShrinking(false);
