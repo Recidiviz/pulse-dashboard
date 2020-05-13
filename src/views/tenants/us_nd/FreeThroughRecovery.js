@@ -30,6 +30,8 @@ import FtrReferralsByGender
   from '../../../components/charts/program_evaluation/us_nd/free_through_recovery/FtrReferralsByGender';
 import FtrReferralsByLsir
   from '../../../components/charts/program_evaluation/us_nd/free_through_recovery/FtrReferralsByLsir';
+import FtrReferralsByParticipationStatus
+  from '../../../components/charts/program_evaluation/us_nd/free_through_recovery/FtrReferralsByParticipationStatus';
 import FtrReferralsByRace
   from '../../../components/charts/program_evaluation/us_nd/free_through_recovery/FtrReferralsByRace';
 import GeoViewTimeChart from '../../../components/charts/GeoViewTimeChart';
@@ -200,6 +202,99 @@ const FreeThroughRecovery = () => {
                         sum to more than the total number of FTR referrals.
                       </li>
                     </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* #FTR Referrals by Participation Status chart ==================== */}
+        <div className="col-md-6">
+          <div className="bd bgc-white p-20">
+            <div className="layers">
+              <div className="layer w-100 pX-20 pT-20">
+                <h6 className="lh-1">
+                  FTR REFERRALS BY PARTICIPATION STATUS
+                  <span className="fa-pull-right">
+                    <div className="dropdown show">
+                      <a className="btn btn-secondary btn-sm dropdown-toggle" href="#" role="button" id="exportDropdownMenuButton-ftrReferralsByParticipationStatus" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Export
+                      </a>
+                      <div className="dropdown-menu" aria-labelledby="exportDropdownMenuButton-ftrReferralsByParticipationStatus">
+                        <a className="dropdown-item" id="downloadChartAsImage-ftrReferralsByParticipationStatus" href="javascript:void(0);">Export image</a>
+                        <a className="dropdown-item" id="downloadChartData-ftrReferralsByParticipationStatus" href="javascript:void(0);">Export data</a>
+                      </div>
+                    </div>
+                  </span>
+                </h6>
+              </div>
+              <div className="layer w-100 pX-20 pT-20 row">
+                <div className="layer w-100 p-20 fs-block">
+                  <FtrReferralsByParticipationStatus
+                    metricType={chartMetricType}
+                    metricPeriodMonths={chartMetricPeriodMonths}
+                    supervisionType={chartSupervisionType}
+                    district={chartDistrict}
+                    ftrReferralsByParticipationStatus={apiData.ftr_referrals_by_participation_status}
+                  />
+                </div>
+              </div>
+              <div className="layer bdT p-20 w-100 accordion" id="methodologyFtrReferralsByParticipationStatus">
+                <div className="mb-0" id="methodologyHeadingsFtrReferralsByParticipationStatus">
+                  <div className="mb-0">
+                    <button className="btn btn-link collapsed pL-0" type="button" data-toggle="collapse" data-target="#collapseMethodologyFtrReferralsByParticipationStatus" aria-expanded="true" aria-controls="collapseMethodologyFtrReferralsByParticipationStatus">
+                      <h6 className="lh-1 c-blue-500 mb-0">Methodology</h6>
+                    </button>
+                  </div>
+                </div>
+                <div className="collapse" id="collapseMethodologyFtrReferralsByParticipationStatus" aria-labelledby="methodologyHeadingFtrReferralsByParticipationStatus" data-parent="#methodologyFtrReferralsByParticipationStatus">
+                  <div>
+                    <ul>
+                      <li>
+                        This chart conveys information about the current participation status
+                        (pending, denied, in progress, or discharged) of individuals who have been
+                        referred to Free Through Recovery.
+                      </li>
+                      <li>
+                        Individuals who have been referred multiple times are counted for each
+                        referral, with their participation status being specific to a given
+                        referral. For example, an individual may be referred to FTR and denied,
+                        have their situation change, be referred again, be accepted, and currently
+                        be enrolled in Free Through Recovery. This would count as one denied status
+                        in the month of the first referral and one in progress status in the month
+                        of the second referral.
+                      </li>
+                      <li>
+                        Referrals are attributed to the P&P office of a supervised individual&apos;s
+                        current supervising officer.
+                      </li>
+                      <li>
+                        Individuals on both parole and probation will count towards either
+                        selection. As a result, parole FTR referrals and probation FTR referrals
+                        may sum to more than the total number of FTR referrals.
+                      </li>
+                      <li>
+                        When rate is selected, this chart will show what percent of referrals in
+                        each month are currently pending, what percent were denied, what percent
+                        led to participation now in progress, and what percent of referrals led to
+                        participation that has now culminated (i.e. the individual referred has
+                        been discharged from Free Through Recovery).
+                      </li>
+                      <li>
+                        There is no data prior to the program beginning in January 2018.
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div className="layer bdT p-20 w-100">
+                <div className="peers ai-c jc-c gapX-20">
+                  <div className="peer fw-600">
+                    <span className="fsz-def fw-600 mR-10 c-grey-800">
+                      <small className="c-grey-500 fw-600">Period </small>
+                      {getPeriodLabelFromMetricPeriodMonthsToggle(chartMetricPeriodMonths)}
+                    </span>
                   </div>
                 </div>
               </div>

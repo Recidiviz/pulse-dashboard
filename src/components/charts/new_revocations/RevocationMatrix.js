@@ -193,6 +193,8 @@ const RevocationMatrix = (props) => {
     return items.reduce((sum, item) => sum += toInt(item.total_revocations), 0);
   };
 
+  const violationsSum = () => filteredData.flat().reduce((sum, item) => sum + toInt(item.total_revocations), 0);
+
   if (!dataMatrix) {
     return null;
   }
@@ -239,9 +241,12 @@ const RevocationMatrix = (props) => {
               <span className="empty-cell"/>
               {VIOLATION_COUNTS.map((count, i) => (
                 <span key={i} className="violation-column violation-sum">
-                {reportedViolationsSum(count)}
-              </span>
+                  {reportedViolationsSum(count)}
+                </span>
               ))}
+              <span className="violation-sum-column violation-sum bottom-right-total">
+                {violationsSum()}
+              </span>
             </div>
           </div>
         </div>
