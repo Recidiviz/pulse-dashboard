@@ -15,7 +15,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React, { useState, useEffect, useLayoutEffect, useRef } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import RenderInBrowser from 'react-render-in-browser';
 import Select from 'react-select';
 import Sticky from 'react-sticky-fill';
@@ -24,6 +24,8 @@ import Loading from '../../../components/Loading';
 import '../../../assets/styles/index.scss';
 import { useAuth0 } from '../../../react-auth0-spa';
 import { callMetricsApi, awaitingResults } from '../../../utils/metricsClient';
+import { matrixViolationTypeToLabel, toInt, violationCountLabel } from '../../../utils/transforms/labels';
+import useTopBarShrinking from '../../../hooks/useTopBarShrinking'
 
 import RevocationMatrix
   from '../../../components/charts/new_revocations/RevocationMatrix';
@@ -41,8 +43,8 @@ import RevocationsByRace
   from '../../../components/charts/new_revocations/RevocationsByRace';
 import CaseTable
   from '../../../components/charts/new_revocations/CaseTable';
-
-import { toInt } from '../../../utils/transforms/labels';
+import Chip
+  from '../../../components/charts/new_revocations/Chip';
 
 const METRIC_PERIODS = [
   { value: '36', label: '3 years' },
@@ -100,7 +102,6 @@ const Revocations = () => {
   );
   const [selectedChart, setSelectedChart] = useState('District');
 
-
   const fetchChartData = async () => {
     try {
       const responseData = await callMetricsApi(
@@ -125,49 +126,18 @@ const Revocations = () => {
       console.error(error);
     }
   };
-  const separate = useRef();
 
   useEffect(() => {
     fetchChartData();
   }, []);
 
-  useLayoutEffect(() => {
-    window.addEventListener('scroll', handlerTopLevel);
-
-    return () => window.removeEventListener('scroll', handlerTopLevel)
-  }, );
-
-  let timeout = null;
-
-  const handlerTopLevel = () => {
-    if (timeout) {
-      return;
-    }
-
-    timeout = setTimeout(function() {
-      if (window.pageYOffset > 60) {
-        let x = document.body.getElementsByClassName('title-level');
-        for (let i = 0; i < x.length; i++) {
-          x[i].classList.add('top-level-filters-title');
-          x[i].parentNode.classList.add('top-level-active');
-          x[i].parentNode.classList.add('d-f');
-          x[i].parentNode.classList.add('align-items-center');
-        }
-        separate.current.style.display='block';
-      } else if (window.pageYOffset < 5 ) {
-        let x = document.body.getElementsByClassName('title-level');
-        for (let i = 0; i < x.length; i++) {
-          x[i].classList.remove('top-level-filters-title');
-          x[i].parentNode.classList.remove('top-level-active');
-          x[i].parentNode.classList.remove('d-f');
-          x[i].parentNode.classList.remove('align-items-center');
-        }
-        separate.current.style.display='none';
-      }
-
-      timeout = null;
-    }, 100);
-  };
+  const isTopBarShrinking = useTopBarShrinking();
+  const topLevelFilterClassName = isTopBarShrinking
+    ? "top-level-filter top-level-active d-f align-items-center"
+    : "top-level-filter";
+  const titleLevelClassName = isTopBarShrinking
+    ? "title-level top-level-filters-title"
+    : "title-level";
 
   const updateFilters = (newFilters) => {
     setFilters({ ...filters, ...newFilters });
@@ -303,6 +273,21 @@ const Revocations = () => {
     ];
   };
 
+  const formattedMatrixFilters = useMemo(() => {
+    const parts = [];
+    if (filters.violationType) {
+      parts.push(matrixViolationTypeToLabel[filters.violationType]);
+    }
+    if (filters.reportedViolations) {
+      parts.push(`${violationCountLabel(filters.reportedViolations)} violations`);
+    }
+    return parts.join(", ");
+  }, [
+    filters.violationType,
+    filters.reportedViolations
+  ]);
+
+
   const renderSelectedChartSingularLoad = () => {
     switch (selectedChart) {
       case 'Risk level':
@@ -344,8 +329,10 @@ const Revocations = () => {
     <main className="dashboard bgc-grey-100">
       <Sticky style={TOGGLE_STYLE}>
         <div className="top-level-filters d-f">
-          <div className="top-level-filter">
-            <h4 className="title-level">Time <br ref={separate} className="separate-filter-title"/>Period</h4>
+          <div className={topLevelFilterClassName}>
+            <h4 className={titleLevelClassName}>
+              Time <br style={{ display: isTopBarShrinking ? "block" : "none" }} /> Period
+            </h4>
             <Select
               className="select-align"
               options={METRIC_PERIODS}
@@ -353,8 +340,8 @@ const Revocations = () => {
               value={METRIC_PERIODS.filter((option) => option.value === filters.metricPeriodMonths)}
             />
           </div>
-          <div className="top-level-filter">
-            <h4 className="title-level">District</h4>
+          <div className={topLevelFilterClassName}>
+            <h4 className={titleLevelClassName}>District</h4>
             <Select
               className="select-align"
               options={districts}
@@ -362,8 +349,8 @@ const Revocations = () => {
               defaultValue={DEFAULT_BASE_DISTRICT}
             />
           </div>
-          <div className="top-level-filter">
-            <h4 className="title-level">Supervision Level</h4>
+          <div className={topLevelFilterClassName}>
+            <h4 className={titleLevelClassName}>Supervision Level</h4>
             <Select
               className="select-align"
               options={CHARGE_CATEGORIES}
@@ -371,8 +358,8 @@ const Revocations = () => {
               defaultValue={CHARGE_CATEGORIES[0]}
             />
           </div>
-          <div className="top-level-filter">
-            <h4 className="title-level">Supervision Type</h4>
+          <div className={topLevelFilterClassName}>
+            <h4 className={titleLevelClassName}>Supervision Type</h4>
             <Select
               className="select-align"
               options={SUPERVISION_TYPES}
@@ -381,6 +368,20 @@ const Revocations = () => {
             />
           </div>
         </div>
+        {formattedMatrixFilters && (
+          <div className="top-level-filters pre-top-level-filters">
+            <div className={topLevelFilterClassName}>
+              <h4 className={titleLevelClassName}>Additional filters</h4>
+              {/* <span>Clear All</span> */}
+              <Chip
+                label={formattedMatrixFilters}
+                onDelete={() => {
+                  updateFilters({ violationType: "", reportedViolations: "" })
+                }}
+              />
+            </div>
+          </div>
+        )}
       </Sticky>
       <div className="bgc-white p-20 m-20">
         <RevocationCountOverTime

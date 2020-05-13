@@ -9,6 +9,7 @@
 
   .top-level-filter {
     width: 33%;
+    flex-basis: 100%;
     padding: 20px 40px;
     border-right: 1px solid $border-color;
 
@@ -25,9 +26,71 @@
     flex-shrink: 0;
     transition: 0.25s
   }
+
   .select-align {
     flex-grow: 1;
   }
+
+  .chip {
+    $color: #235781;
+
+    display: inline-flex;
+    height: 32px;
+    border: 1px solid $color;
+    padding: 4px 16px;
+    border-radius: 24px;
+
+    .label {
+      margin: 0;
+      color: $color;
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .delete {
+      padding: 0;
+      margin-left: 12px;
+      margin-top: 1px;
+      border: none;
+      background: transparent;
+      color: $color;
+    }
+  }
+
+  .top-level-active {
+    padding: 12px 14px !important;
+
+    .chip {
+      height: 28px;
+      padding: 3px 12px;
+      border-radius: 24px;
+
+      .delete {
+        margin-left: 12px;
+        margin-top: 1px;
+      }
+    }
+  }
+
+  &.pre-top-level-filters {
+    .top-level-filter {
+      display: inline-flex;
+      width: 100%;
+      padding: 10px 40px;
+
+      .title-level {
+        width: 180px;
+      }
+
+      &.top-level-active {
+        .title-level {
+          margin-top: 6px;
+          width: 100px;
+        }
+      }
+    }
+  }
+
 }
 
 .revocations-time-graph {
@@ -308,9 +371,6 @@
     margin-right: 11px;
     min-height: 40% !important;
   }
-}
-.top-level-active {
-  padding: 12px 14px !important;
 }
 
 @media screen and (max-width: 1420px) {

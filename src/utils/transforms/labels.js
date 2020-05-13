@@ -41,6 +41,16 @@ const raceValuetoLabel = {
   OTHER: 'Other',
 };
 
+// These can also be defined from the data
+const matrixViolationTypeToLabel = {
+  TECHNICAL: "Technical",
+  SUBSTANCE_ABUSE: "Subs. Use",
+  MUNICIPAL: "Municipal",
+  ABSCONDED: "Absconsion",
+  MISDEMEANOR: "Midemeanor",
+  FELONY: "Felony",
+};
+
 const technicalViolationTypes = [
   'travelCount', 'residencyCount', 'employmentCount', 'associationCount', 'directiveCount',
   'supervisionStrategyCount', 'interventionFeeCount', 'specialCount',
@@ -123,11 +133,14 @@ function nameFromOfficerId(officerId) {
   return parts[1].trim();
 }
 
+const violationCountLabel = (count) => (count === '8' ? '8+' : count);
+
 export {
   riskLevelValuetoLabel,
   violationTypeToLabel,
   technicalViolationTypes,
   lawViolationTypes,
+  matrixViolationTypeToLabel,
   genderValueToHumanReadable,
   raceValueToHumanReadable,
   toHtmlFriendly,
@@ -137,4 +150,5 @@ export {
   humanReadableTitleCase,
   numberFromOfficerId,
   nameFromOfficerId,
+  violationCountLabel,
 };

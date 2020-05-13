@@ -26,20 +26,9 @@ import { COLORS } from '../../../assets/scripts/constants/colors';
 import {
   getPeriodLabelFromMetricPeriodMonthsToggle, getTrailingLabelFromMetricPeriodMonthsToggle,
 } from '../../../utils/charts/toggles';
-import { toInt } from '../../../utils/transforms/labels';
-
-// These can also be defined from the data
-const VIOLATION_TYPES = [
-  ['TECHNICAL', 'Technical'],
-  ['SUBSTANCE_ABUSE', 'Subs. Use'],
-  ['MUNICIPAL', 'Municipal'],
-  ['ABSCONDED', 'Absconsion'],
-  ['MISDEMEANOR', 'Misdemeanor'],
-  ['FELONY', 'Felony'],
-];
+import { matrixViolationTypeToLabel, toInt, violationCountLabel } from '../../../utils/transforms/labels';
 
 const VIOLATION_COUNTS = ['1', '2', '3', '4', '5', '6', '7', '8'];
-const violationCountLabel = (count) => (count === '8' ? '8+' : count);
 
 const RevocationMatrix = (props) => {
   const { loading, user, getTokenSilently } = useAuth0();
@@ -234,7 +223,7 @@ const RevocationMatrix = (props) => {
               ))}
               <span className="violation-sum-column top-right-total">Total</span>
             </div>
-            {VIOLATION_TYPES.map(renderRow)}
+            {Object.entries(matrixViolationTypeToLabel).map(renderRow)}
             <div className="violation-sum-row">
               <span className="empty-cell"/>
               {VIOLATION_COUNTS.map((count, i) => (
