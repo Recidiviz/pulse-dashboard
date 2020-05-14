@@ -41,7 +41,6 @@ const raceValuetoLabel = {
   OTHER: 'Other',
 };
 
-// These can also be defined from the data
 const matrixViolationTypeToLabel = {
   TECHNICAL: "Technical",
   SUBSTANCE_ABUSE: "Subs. Use",

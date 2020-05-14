@@ -78,13 +78,16 @@
       padding: 10px 40px;
 
       .title-level {
-        width: 180px;
+        width: auto;
+        margin-right: 20px;
       }
 
       &.top-level-active {
+        padding: 8px 10px !important;
+
         .title-level {
           margin-top: 6px;
-          width: 100px;
+          margin-bottom: 6px;
         }
       }
     }
