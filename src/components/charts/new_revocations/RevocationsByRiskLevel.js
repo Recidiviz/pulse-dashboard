@@ -133,7 +133,7 @@ const RevocationsByRiskLevel = (props) => {
       data={{
         labels: chartLabels,
         datasets: [{
-          label: 'Revocation rate',
+          label: 'Percent revoked',
           backgroundColor: barBackgroundColor,
           data: chartDataPoints,
         }],
