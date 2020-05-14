@@ -209,6 +209,10 @@
       font-size: 16px;
       font-weight: 600;
     }
+
+    .bottom-right-total {
+      font-weight: 900;
+    }
   }
 }
 @media screen and (max-width: 1350px) {
@@ -332,6 +336,16 @@
     font-size: 16px;
     padding: 10px 0 10px 20px;
     width: 15%;
+
+    button {
+      background: transparent;
+      border: 0;
+      text-transform: inherit;
+      font-size: inherit;
+      font: inherit;
+      color: inherit;
+      padding: 0;
+    }
   }
 
   td {

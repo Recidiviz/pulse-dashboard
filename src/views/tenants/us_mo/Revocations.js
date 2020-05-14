@@ -42,7 +42,7 @@ import RevocationsByGender
 import RevocationsByRace
   from '../../../components/charts/new_revocations/RevocationsByRace';
 import CaseTable
-  from '../../../components/charts/new_revocations/CaseTable';
+  from '../../../components/charts/new_revocations/CaseTable/CaseTable';
 import Chip
   from '../../../components/charts/new_revocations/Chip';
 
@@ -178,7 +178,7 @@ const Revocations = () => {
         }
       }
       if (filters.supervisionType && !toSkip.includes('supervisionType')
-          && !(treatCategoryAllAsAbsent && filters.supervisionType.toLowerCase() === 'all')) {
+        && !(treatCategoryAllAsAbsent && filters.supervisionType.toLowerCase() === 'all')) {
         if (!nullSafeComparison(item.supervision_type, filters.supervisionType)) {
           return false;
         }
@@ -255,7 +255,7 @@ const Revocations = () => {
   // display the selected chart
   const conditionallyHide = (selectedChart, chartName, chartComponent, index) => {
     const shouldBeHidden = selectedChart !== chartName;
-    const divStyle = shouldBeHidden ? {display: 'none'} : {};
+    const divStyle = shouldBeHidden ? { display: 'none' } : {};
     return (
       <div key={index} style={divStyle}>
         {chartComponent}
@@ -392,13 +392,13 @@ const Revocations = () => {
         />
       </div>
       <div className="d-f m-20 container-all-charts">
-          <div className="matrix-container bgc-white p-20 mR-20">
-            <RevocationMatrix
-              dataFilter={applyTopLevelFilters}
-              filterStates={filters}
-              updateFilters={updateFilters}
-              metricPeriodMonths={filters.metricPeriodMonths}
-            />
+        <div className="matrix-container bgc-white p-20 mR-20">
+          <RevocationMatrix
+            dataFilter={applyTopLevelFilters}
+            filterStates={filters}
+            updateFilters={updateFilters}
+            metricPeriodMonths={filters.metricPeriodMonths}
+          />
         </div>
         <div className="matrix-explanation bgc-white p-20">
           <h4>Using this chart</h4>

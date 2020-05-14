@@ -1,5 +1,5 @@
 // Recidiviz - a data platform for criminal justice reform
-// Copyright (C) 2019 Recidiviz, Inc.
+// Copyright (C) 2020 Recidiviz, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -15,12 +15,25 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React from 'react';
+import React from "react";
 
-const Footer = () => (
-  <footer className="bdT ta-c p-30 lh-0 fsz-sm c-grey-600">
-    <span>© 2020 <a href="https://www.recidiviz.org/" _target="_blank" title="Recidiviz">Recidiviz</a>. All Rights Reserved.</span>
-  </footer>
-);
+import { render } from "@testing-library/react";
+import "@testing-library/jest-dom/extend-expect";
+import Pagination from "../Pagination";
 
-export default Footer;
+describe("test for component CaseTablePaging", () => {
+  const updatePage = jest.fn();
+
+  it("displays initial label", async () => {
+    const { getByText } = render(
+      <Pagination
+        beginning={0}
+        end={15}
+        total={1000}
+        onUpdatePage={updatePage}
+      />
+    );
+
+    expect(getByText("Showing 1-15 of 1000")).toBeInTheDocument();
+  });
+});

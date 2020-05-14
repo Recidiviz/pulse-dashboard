@@ -1,5 +1,5 @@
 // Recidiviz - a data platform for criminal justice reform
-// Copyright (C) 2019 Recidiviz, Inc.
+// Copyright (C) 2020 Recidiviz, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -15,12 +15,16 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React from 'react';
+import { useEffect, useRef } from "react";
 
-const Footer = () => (
-  <footer className="bdT ta-c p-30 lh-0 fsz-sm c-grey-600">
-    <span>© 2020 <a href="https://www.recidiviz.org/" _target="_blank" title="Recidiviz">Recidiviz</a>. All Rights Reserved.</span>
-  </footer>
-);
+function usePrevious(value) {
+  const ref = useRef();
 
-export default Footer;
+  useEffect(() => {
+    ref.current = value;
+  }, [value]);
+
+  return ref.current;
+}
+
+export default usePrevious;
