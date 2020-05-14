@@ -15,24 +15,43 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React from 'react';
-import '../../../assets/styles/index.scss';
-import ImportantNotesBar from './ImportantNotesBar';
+import React from "react";
+import PropTypes from "prop-types";
+import ImportantNotesBar from "./ImportantNotesBar";
 
+import "../../../assets/styles/index.scss";
 
-const PageTemplate = ({ toggleBar, importantNotes, children }) => (
+const PageTemplate = ({ children, importantNotes, toggleBar }) => (
   <main className="main-content bgc-grey-100">
     <div id="mainContent">
-
       {toggleBar}
 
       <div className="row gap-20 pos-r">
-        <ImportantNotesBar importantNotes={importantNotes} />
+        {importantNotes.length !== 0 && (
+          <ImportantNotesBar importantNotes={importantNotes} />
+        )}
 
         {children}
       </div>
     </div>
   </main>
 );
+
+PageTemplate.defaultProps = {
+  children: undefined,
+  importantNotes: [],
+  toggleBar: undefined,
+};
+
+PageTemplate.propTypes = {
+  children: PropTypes.node,
+  importantNotes: PropTypes.arrayOf(
+    PropTypes.shape({
+      header: PropTypes.string.isRequired,
+      body: PropTypes.string.isRequired,
+    }).isRequired
+  ),
+  toggleBar: PropTypes.node,
+};
 
 export default PageTemplate;

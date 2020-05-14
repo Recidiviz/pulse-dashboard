@@ -19,6 +19,7 @@ import UsNdFreeThroughRecovery from './tenants/us_nd/FreeThroughRecovery';
 import UsNdReincarcerations from './tenants/us_nd/Reincarcerations';
 import UsNdRevocations from './tenants/us_nd/Revocations';
 import UsNdSnapshots from './tenants/us_nd/Snapshots';
+import UsNdCommunityGoals from './tenants/us_nd/community/Goals';
 
 import UsMoRevocations from './tenants/us_mo/Revocations';
 
@@ -31,6 +32,7 @@ const STATE_VIEW_COMPONENTS = {
     '/reincarcerations': UsNdReincarcerations,
     '/revocations': UsNdRevocations,
     '/snapshots': UsNdSnapshots,
+    '/community/goals': UsNdCommunityGoals,
   },
 };
 

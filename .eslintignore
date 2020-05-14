@@ -17,6 +17,9 @@ public/
 !src/components/toggles/__tests__/MetricTypeToggle.test.js
 !src/components/toggles/__tests__/SupervisionTypeToggle.test.js
 !src/components/toggles/__tests__/ToggleBar.test.js
+!src/components/charts/ChartCard.js
+!src/components/charts/TenantExportMenu.js
+!src/components/charts/MetholodgyCollapse.js
 !src/components/charts/new_revocations/CaseTable/**/*.js
 !src/utils/charts/info.js
 !src/utils/charts/significantStatistics.js
@@ -26,5 +29,8 @@ public/
 !src/utils/charts/__tests__/metricGoal.test.js
 !src/utils/charts/__tests__/significantStatistics.test.js
 !src/utils/charts/__tests__/violationRecord.test.js
+!src/utils/logger.js
 !src/utils/transforms/years.js
 !src/utils/transforms/__tests__/years.test.js
+!src/views/tenants/us_nd/community/Goals.js
+!src/views/tenants/us_nd/PageTemplate.js
