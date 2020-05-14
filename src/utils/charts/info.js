@@ -63,10 +63,7 @@ technical, substance use, municipal offense, absconsion, misdemeanor, felony. Th
 violation determines what row a person is placed in, regardless of whether it was the most recent
 violation. For example, if a person had one misdemeanor violation, then two technical violations,
 then one substance use violation, and then they were revoked, they would be placed in the
-misdemeanor row because a misdemeanor is their most serious violation. For the purpose of this chart,
-the violation category of "escape" is combined with absconding, since escape violations are
-relatively rare. Escape is listed separately in the violation record column of the
-"Individuals revoked" table at the bottom of the page.`,
+misdemeanor row because a misdemeanor is their most serious violation.`,
     },
     {
       header: "Number of violation reports and notices of citation filed",
@@ -103,10 +100,10 @@ supervision in any district within 2 years prior to the revocation), they are no
 district counts or rates.`,
     },
     {
-      header: "What the rate chart shows",
-      body: `This chart shows the revocation rate in each district. Revocation rate is defined as
-the number of people revoked from that district in the selected time period divided by the total
-supervised population within that district during the same time period. The districts are
+      header: "What the percentage chart shows",
+      body: `This chart shows the percentage of people revoked in each district. Percent revoked is
+defined as the number of people revoked from that district in the selected time period divided by
+the total supervised population within that district during the same time period. The districts are
 positioned in descending order from left to right, with the district with the highest revocation
 rate at the left. If a person’s district is unknown (meaning they were not under active
 supervision in any district within 2 years prior to the revocation), they are not included in the
