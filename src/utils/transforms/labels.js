@@ -46,7 +46,7 @@ const matrixViolationTypeToLabel = {
   SUBSTANCE_ABUSE: "Subs. Use",
   MUNICIPAL: "Municipal",
   ABSCONDED: "Absconsion",
-  MISDEMEANOR: "Midemeanor",
+  MISDEMEANOR: "Misdemeanor",
   FELONY: "Felony",
 };
 
