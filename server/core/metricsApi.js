@@ -93,7 +93,6 @@ const FILES_BY_METRIC_TYPE = {
     'revocations_matrix_filtered_caseload.json',
     'revocations_matrix_supervision_distribution_by_district.json',
   ],
-  // new files
   communityGoals: [
     'admissions_by_type_by_month.json',
     'admissions_by_type_by_period.json',
@@ -101,6 +100,23 @@ const FILES_BY_METRIC_TYPE = {
     'average_change_lsir_score_by_period.json',
     'revocations_by_month.json',
     'revocations_by_period.json',
+    'supervision_termination_by_type_by_month.json',
+    'supervision_termination_by_type_by_period.json',
+    'site_offices.json',
+  ],
+  communityExplore: [
+    'admissions_by_type_by_month.json',
+    'admissions_by_type_by_period.json',
+    'average_change_lsir_score_by_month.json',
+    'average_change_lsir_score_by_period.json',
+    'case_terminations_by_type_by_month.json',
+    'case_terminations_by_type_by_officer_by_period.json',
+    'revocations_by_month.json',
+    'revocations_by_officer_by_period.json',
+    'revocations_by_period.json',
+    'revocations_by_race_and_ethnicity_by_period.json',
+    'revocations_by_supervision_type_by_month.json',
+    'revocations_by_violation_type_by_month.json',
     'supervision_termination_by_type_by_month.json',
     'supervision_termination_by_type_by_period.json',
     'site_offices.json',
@@ -256,6 +272,10 @@ function fetchCommunityGoals(isDemo, stateCode, callback) {
   return fetchMetrics(stateCode, 'communityGoals', null, isDemo, callback);
 }
 
+function fetchCommunityExplore(isDemo, stateCode, callback) {
+  return fetchMetrics(stateCode, 'communityExplore', null, isDemo, callback);
+}
+
 module.exports = {
   fetchFreeThroughRecoveryMetrics,
   fetchReincarcerationMetrics,
@@ -264,4 +284,5 @@ module.exports = {
   fetchNewRevocationMetrics,
   fetchNewRevocationFile,
   fetchCommunityGoals,
+  fetchCommunityExplore,
 };

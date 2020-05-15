@@ -18,14 +18,13 @@
 import React from "react";
 import WarningIcon from "./WarningIcon";
 
-const DataSignificanceWarningIcon = () => {
+const OfficerIdWarningIcon = () => {
   const text = `
-      Some categories in this chart may not be statistically significant
-      due to having a sample size smaller than 100.
-      Those categories are represented with line shading.
+      Exporting this chart as an image will not include officer IDs
+      unless a specific P&P office is selected from the Explore bar.
   `;
 
-  return <WarningIcon tooltipText={text} />;
+  return <WarningIcon tooltipText={text} className="pL-10 toggle-alert" />;
 };
 
-export default DataSignificanceWarningIcon;
+export default OfficerIdWarningIcon;

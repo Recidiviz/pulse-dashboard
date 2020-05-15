@@ -12,7 +12,10 @@ public/
 !server/utils/*.js
 !src/components/charts/ChartCard.js
 !src/components/charts/DataSignificanceWarningIcon.js
-!src/components/charts/MetholodgyCollapse.js
+!src/components/charts/Methodology.js
+!src/components/charts/MethodologyCollapse.js
+!src/components/charts/OfficerIdWarningIcon.js
+!src/components/charts/PeriodLabel.js
 !src/components/charts/TenantExportMenu.js
 !src/components/charts/WarningIcon.js
 !src/components/charts/new_revocations/CaseTable/**/*.js
@@ -21,7 +24,9 @@ public/
 !src/components/toggles/__tests__/MetricTypeToggle.test.js
 !src/components/toggles/__tests__/SupervisionTypeToggle.test.js
 !src/components/toggles/__tests__/ToggleBar.test.js
+!src/hooks/useChartData.js
 !src/utils/charts/info.js
+!src/utils/charts/methodologies.js
 !src/utils/charts/significantStatistics.js
 !src/utils/charts/violationRecord.js
 !src/utils/charts/__tests__/choropleth.test.js
@@ -32,5 +37,5 @@ public/
 !src/utils/logger.js
 !src/utils/transforms/years.js
 !src/utils/transforms/__tests__/years.test.js
-!src/views/tenants/us_nd/community/Goals.js
+!src/views/tenants/us_nd/community/**/*.js
 !src/views/tenants/us_nd/PageTemplate.js

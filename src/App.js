@@ -132,6 +132,7 @@ const App = () => {
 
                 {/* start new routes without links */}
                 <PrivateTenantRoute path="/community/goals" />
+                <PrivateTenantRoute path="/community/explore" />
                 {/* end new routes without links */}
 
                 <PrivateRoute path="/profile" component={Profile} />

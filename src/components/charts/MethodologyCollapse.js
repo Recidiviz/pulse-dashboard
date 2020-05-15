@@ -15,11 +15,13 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React, { useState } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 
-const MetholodgyCollapse = ({ children }) => {
-  const [id] = useState(`_${Math.random().toString(36).substr(2, 9)}`);
+import { toTitleCase } from "../../utils/transforms/labels";
+
+const MethodologyCollapse = ({ children, chartId }) => {
+  const id = toTitleCase(chartId);
 
   return (
     <div className="layer bdT p-20 w-100 accordion" id={`methodology${id}`}>
@@ -49,8 +51,9 @@ const MetholodgyCollapse = ({ children }) => {
   );
 };
 
-MetholodgyCollapse.propTypes = {
+MethodologyCollapse.propTypes = {
+  chartId: PropTypes.string.isRequired,
   children: PropTypes.node.isRequired,
 };
 
-export default MetholodgyCollapse;
+export default MethodologyCollapse;

@@ -16,16 +16,23 @@
 // =============================================================================
 
 import React from "react";
-import WarningIcon from "./WarningIcon";
+import PropTypes from "prop-types";
 
-const DataSignificanceWarningIcon = () => {
-  const text = `
-      Some categories in this chart may not be statistically significant
-      due to having a sample size smaller than 100.
-      Those categories are represented with line shading.
-  `;
+import MethodologyCollapse from "./MethodologyCollapse";
+import methodologies from "../../utils/charts/methodologies";
 
-  return <WarningIcon tooltipText={text} />;
+function Methodology({ chartId }) {
+  const methodology = methodologies[chartId];
+
+  if (!methodology) return null;
+
+  return (
+    <MethodologyCollapse chartId={chartId}>{methodology}</MethodologyCollapse>
+  );
+}
+
+Methodology.propTypes = {
+  chartId: PropTypes.string.isRequired,
 };
 
-export default DataSignificanceWarningIcon;
+export default Methodology;

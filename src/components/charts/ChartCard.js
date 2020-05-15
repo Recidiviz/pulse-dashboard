@@ -80,7 +80,8 @@ ChartCard.defaultProps = {
 ChartCard.propTypes = {
   chart: PropTypes.node.isRequired,
   chartId: PropTypes.string.isRequired,
-  chartTitle: PropTypes.string.isRequired,
+  chartTitle: PropTypes.oneOfType([PropTypes.string, PropTypes.node])
+    .isRequired,
   footer: PropTypes.node,
   geoChart: PropTypes.node,
   hasExport: PropTypes.bool,
