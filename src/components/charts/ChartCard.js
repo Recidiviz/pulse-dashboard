@@ -21,10 +21,17 @@ import PropTypes from "prop-types";
 import TenantExportMenu from "./TenantExportMenu";
 import GeoViewToggle from "../toggles/GeoViewToggle";
 
-const ChartCard = ({ chart, chartId, chartTitle, footer, mapChart }) => {
+const ChartCard = ({
+  chart,
+  chartId,
+  chartTitle,
+  hasExport,
+  footer,
+  geoChart,
+}) => {
   const [geoViewEnabled, setGeoViewEnabled] = useState(false);
-  const isMapViewAvailable = !!mapChart;
 
+  const isGeoViewAvailable = !!geoChart;
   const chartType = geoViewEnabled ? "svg" : "canvas";
 
   return (
@@ -35,13 +42,15 @@ const ChartCard = ({ chart, chartId, chartTitle, footer, mapChart }) => {
             <h6 className="lh-1">
               {chartTitle}
               <span className="fa-pull-right">
-                {isMapViewAvailable && (
+                {isGeoViewAvailable && (
                   <div className="geo-view-button pR-10">
                     <GeoViewToggle setGeoViewEnabled={setGeoViewEnabled} />
                   </div>
                 )}
 
-                <TenantExportMenu chartId={chartId} chartType={chartType} />
+                {hasExport === true && (
+                  <TenantExportMenu chartId={chartId} chartType={chartType} />
+                )}
               </span>
             </h6>
           </div>
@@ -52,7 +61,7 @@ const ChartCard = ({ chart, chartId, chartTitle, footer, mapChart }) => {
           </div>
 
           <div className="layer w-100 p-20 fs-block">
-            {isMapViewAvailable && geoViewEnabled ? mapChart : chart}
+            {isGeoViewAvailable && geoViewEnabled ? geoChart : chart}
           </div>
 
           {footer}
@@ -63,8 +72,9 @@ const ChartCard = ({ chart, chartId, chartTitle, footer, mapChart }) => {
 };
 
 ChartCard.defaultProps = {
-  mapChart: undefined,
   footer: undefined,
+  geoChart: undefined,
+  hasExport: true,
 };
 
 ChartCard.propTypes = {
@@ -72,7 +82,8 @@ ChartCard.propTypes = {
   chartId: PropTypes.string.isRequired,
   chartTitle: PropTypes.string.isRequired,
   footer: PropTypes.node,
-  mapChart: PropTypes.node,
+  geoChart: PropTypes.node,
+  hasExport: PropTypes.bool,
 };
 
 export default ChartCard;

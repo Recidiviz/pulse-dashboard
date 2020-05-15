@@ -93,6 +93,18 @@ const FILES_BY_METRIC_TYPE = {
     'revocations_matrix_filtered_caseload.json',
     'revocations_matrix_supervision_distribution_by_district.json',
   ],
+  // new files
+  communityGoals: [
+    'admissions_by_type_by_month.json',
+    'admissions_by_type_by_period.json',
+    'average_change_lsir_score_by_month.json',
+    'average_change_lsir_score_by_period.json',
+    'revocations_by_month.json',
+    'revocations_by_period.json',
+    'supervision_termination_by_type_by_month.json',
+    'supervision_termination_by_type_by_period.json',
+    'site_offices.json',
+  ]
 };
 
 /**
@@ -240,6 +252,10 @@ function fetchNewRevocationFile(isDemo, stateCode, file, callback) {
   return fetchMetrics(stateCode, 'newRevocation', file, isDemo, callback);
 }
 
+function fetchCommunityGoals(isDemo, stateCode, callback) {
+  return fetchMetrics(stateCode, 'communityGoals', null, isDemo, callback);
+}
+
 module.exports = {
   fetchFreeThroughRecoveryMetrics,
   fetchReincarcerationMetrics,
@@ -247,4 +263,5 @@ module.exports = {
   fetchSnapshotMetrics,
   fetchNewRevocationMetrics,
   fetchNewRevocationFile,
+  fetchCommunityGoals,
 };

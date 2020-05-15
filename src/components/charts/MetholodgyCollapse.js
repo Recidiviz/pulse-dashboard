@@ -15,37 +15,33 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 
-import { toTitleCase } from "../../utils/transforms/labels";
+const MetholodgyCollapse = ({ children }) => {
+  const [id] = useState(`_${Math.random().toString(36).substr(2, 9)}`);
 
-const MetholodgyCollapse = ({ children, chartId }) => {
-  const capitalizedChartId = toTitleCase(chartId);
   return (
-    <div
-      className="layer bdT p-20 w-100 accordion"
-      id={`methodology${capitalizedChartId}`}
-    >
-      <div className="mb-0" id={`methodologyHeading${capitalizedChartId}`}>
+    <div className="layer bdT p-20 w-100 accordion" id={`methodology${id}`}>
+      <div className="mb-0" id={`methodologyHeading${id}`}>
         <div className="mb-0">
           <button
             className="btn btn-link collapsed pL-0"
             type="button"
             data-toggle="collapse"
-            data-target={`#collapseMethodology${capitalizedChartId}`}
+            data-target={`#collapseMethodology${id}`}
             aria-expanded="true"
-            aria-controls={`collapseMethodology${capitalizedChartId}`}
+            aria-controls={`collapseMethodology${id}`}
           >
             <h6 className="lh-1 c-blue-500 mb-0">Methodology</h6>
           </button>
         </div>
       </div>
       <div
-        id={`collapseMethodology${capitalizedChartId}`}
+        id={`collapseMethodology${id}`}
         className="collapse"
-        aria-labelledby={`methodologyHeading${capitalizedChartId}`}
-        data-parent={`#methodology${capitalizedChartId}`}
+        aria-labelledby={`methodologyHeading${id}`}
+        data-parent={`#methodology${id}`}
       >
         {children}
       </div>
@@ -55,7 +51,6 @@ const MetholodgyCollapse = ({ children, chartId }) => {
 
 MetholodgyCollapse.propTypes = {
   children: PropTypes.node.isRequired,
-  chartId: PropTypes.string.isRequired,
 };
 
 export default MetholodgyCollapse;

@@ -91,6 +91,7 @@ app.get(
   checkJwt,
   api.newRevocationFile
 );
+app.get("/api/:stateCode/community/goals", checkJwt, api.communityGoals);
 
 // An App Engine-specific API for handling warmup requests on new instance initialization
 app.get("/_ah/warmup", () => {

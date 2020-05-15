@@ -23,6 +23,9 @@ import ChartCard from "../../../../components/charts/ChartCard";
 import GeoViewTimeChart from "../../../../components/charts/GeoViewTimeChart";
 import MetholodgyCollapse from "../../../../components/charts/MetholodgyCollapse";
 import RevocationCountOverTime from "../../../../components/charts/revocations/RevocationCountOverTime";
+import LsirScoreChangeSnapshot from "../../../../components/charts/snapshots/LsirScoreChangeSnapshot";
+import RevocationAdmissionsSnapshot from "../../../../components/charts/snapshots/RevocationAdmissionsSnapshot";
+import SupervisionSuccessSnapshot from "../../../../components/charts/snapshots/SupervisionSuccessSnapshot";
 // eslint-disable-next-line import/no-cycle
 import { useAuth0 } from "../../../../react-auth0-spa";
 import {
@@ -30,6 +33,12 @@ import {
   awaitingResults,
 } from "../../../../utils/metricsClient";
 import logger from "../../../../utils/logger";
+
+const metrics = {
+  district: "all",
+  metricPeriodMonths: "36",
+  supervisionType: "all",
+};
 
 const CommunityGoals = () => {
   const { loading, user, getTokenSilently } = useAuth0();
@@ -39,7 +48,7 @@ const CommunityGoals = () => {
   const fetchChartData = useCallback(async () => {
     try {
       const responseData = await callMetricsApi(
-        "us_nd/revocations",
+        "us_nd/community/goals",
         getTokenSilently
       );
       setApiData(responseData);
@@ -64,23 +73,23 @@ const CommunityGoals = () => {
         chartTitle="REVOCATIONS BY MONTH"
         chart={
           <RevocationCountOverTime
-            metricType="count"
-            metricPeriodMonths="12"
-            supervisionType="all"
-            district="all"
+            metricType="counts"
+            metricPeriodMonths={metrics.metricPeriodMonths}
+            supervisionType={metrics.supervisionType}
+            district={metrics.district}
             geoView={false}
             officeData={apiData.site_offices}
             revocationCountsByMonth={apiData.revocations_by_month}
             header="revocationCountsByMonth-header"
           />
         }
-        mapChart={
+        geoChart={
           <GeoViewTimeChart
             chartId="revocationCountsByMonth"
             chartTitle="REVOCATIONS BY MONTH"
-            metricType="count"
-            metricPeriodMonths="12"
-            supervisionType="all"
+            metricType="counts"
+            metricPeriodMonths={metrics.metricPeriodMonths}
+            supervisionType={metrics.supervisionType}
             keyedByOffice
             officeData={apiData.site_offices}
             dataPointsByOffice={apiData.revocations_by_period}
@@ -91,7 +100,7 @@ const CommunityGoals = () => {
           />
         }
         footer={
-          <MetholodgyCollapse chartId="revocationCountsByMonth">
+          <MetholodgyCollapse>
             <div>
               <ul>
                 <li>
@@ -128,6 +137,203 @@ const CommunityGoals = () => {
                 <li>
                   Revocations are attributed to the site of the terminating
                   officer at the time of a person&apos;s revocation.
+                </li>
+              </ul>
+            </div>
+          </MetholodgyCollapse>
+        }
+      />
+
+      <ChartCard
+        chartId="supervisionSuccessSnapshot"
+        chartTitle="SUCCESSFUL COMPLETION OF SUPERVISION"
+        chart={
+          <SupervisionSuccessSnapshot
+            metricType="rates"
+            metricPeriodMonths={metrics.metricPeriodMonths}
+            supervisionType={metrics.supervisionType}
+            district={metrics.district}
+            supervisionSuccessRates={
+              apiData.supervision_termination_by_type_by_month
+            }
+            header="supervisionSuccessSnapshot-header"
+          />
+        }
+        geoChart={
+          <GeoViewTimeChart
+            chartId="supervisionSuccessSnapshot"
+            chartTitle="SUCCESSFUL COMPLETION OF SUPERVISION"
+            metricType="rates"
+            metricPeriodMonths={metrics.metricPeriodMonths}
+            supervisionType={metrics.supervisionType}
+            keyedByOffice
+            officeData={apiData.site_offices}
+            dataPointsByOffice={
+              apiData.supervision_termination_by_type_by_period
+            }
+            numeratorKeys={["successful_termination"]}
+            denominatorKeys={[
+              "revocation_termination",
+              "successful_termination",
+            ]}
+            centerLat={47.3}
+            centerLong={-100.5}
+          />
+        }
+        footer={
+          <MetholodgyCollapse>
+            <div>
+              <ul>
+                <li>
+                  A supervision is considered successfully completed if the
+                  individual was discharged from supervision positively or if
+                  their supervision period expired.
+                </li>
+                <li>
+                  Unsuccessful completions of supervision occur when the
+                  supervision ends due to absconsion, a revocation, or a
+                  negative termination.
+                </li>
+                <li>
+                  Deaths, suspensions, and &quot;other&quot; terminations are
+                  excluded from these calculations because they&apos;re neither
+                  &quot;successful&quot; nor &quot;unsuccessful&quot;.
+                </li>
+                <li>
+                  Individuals are counted in their month of projected
+                  completion, even if terminated earlier. Individuals who have
+                  not yet completed supervision by their projected termination
+                  date are excluded.
+                </li>
+                <li>
+                  While on supervision, individuals are attributed to the office
+                  of their current supervising officer. Following supervision,
+                  individuals are attributed to the office of the officer who
+                  terminated their supervision.
+                </li>
+              </ul>
+            </div>
+          </MetholodgyCollapse>
+        }
+      />
+
+      <ChartCard
+        chartId="lsirScoreChangeSnapshot"
+        chartTitle="LSI-R SCORE CHANGES (AVERAGE)"
+        chart={
+          <LsirScoreChangeSnapshot
+            metricPeriodMonths={metrics.metricPeriodMonths}
+            supervisionType={metrics.supervisionType}
+            district={metrics.district}
+            lsirScoreChangeByMonth={apiData.average_change_lsir_score_by_month}
+            header="lsirScoreChangeSnapshot-header"
+          />
+        }
+        geoChart={
+          <GeoViewTimeChart
+            chartId="lsirScoreChangeSnapshot"
+            chartTitle="LSI-R SCORE CHANGES (AVERAGE)"
+            metricType="counts"
+            metricPeriodMonths={metrics.metricPeriodMonths}
+            supervisionType={metrics.supervisionType}
+            keyedByOffice
+            officeData={apiData.site_offices}
+            dataPointsByOffice={apiData.average_change_lsir_score_by_period}
+            numeratorKeys={["average_change"]}
+            denominatorKeys={[]}
+            centerLat={47.3}
+            centerLong={-100.5}
+          />
+        }
+        footer={
+          <MetholodgyCollapse>
+            <div>
+              <ul>
+                <li>
+                  For all individuals ending supervision in a given month who
+                  have at least 3 LSI-R assessments (initial assessment, first
+                  re-assessment, and terminating assessment), this is the
+                  average of the differences between the first reassessment
+                  score and the termination assessment score.
+                </li>
+                <li>
+                  Individuals are included regardless of termination reason.
+                </li>
+                <li>
+                  Individuals are linked to the office of their terminating
+                  officer.
+                </li>
+              </ul>
+            </div>
+          </MetholodgyCollapse>
+        }
+      />
+
+      <ChartCard
+        chartId="revocationAdmissionsSnapshot"
+        chartTitle="PRISON ADMISSIONS DUE TO REVOCATION"
+        chart={
+          <RevocationAdmissionsSnapshot
+            metricType="rates"
+            metricPeriodMonths={metrics.metricPeriodMonths}
+            supervisionType={metrics.supervisionType}
+            district={metrics.district}
+            revocationAdmissionsByMonth={apiData.admissions_by_type_by_month}
+            header="revocationAdmissionsSnapshot-header"
+          />
+        }
+        geoChart={
+          <GeoViewTimeChart
+            chartId="revocationAdmissionsSnapshot"
+            chartTitle="PRISON ADMISSIONS DUE TO REVOCATION"
+            metricType="rates"
+            metricPeriodMonths={metrics.metricPeriodMonths}
+            supervisionType={metrics.supervisionType}
+            keyedByOffice
+            shareDenominatorAcrossRates
+            officeData={apiData.site_offices}
+            dataPointsByOffice={apiData.admissions_by_type_by_period}
+            numeratorKeys={[
+              "technicals",
+              "non_technicals",
+              "unknown_revocations",
+            ]}
+            denominatorKeys={[
+              "technicals",
+              "non_technicals",
+              "unknown_revocations",
+              "new_admissions",
+            ]}
+            centerLat={47.3}
+            centerLong={-100.5}
+          />
+        }
+        footer={
+          <MetholodgyCollapse>
+            <div>
+              <ul>
+                <li>
+                  Prison admissions include individuals who are newly
+                  incarcerated in DOCR facilities. Transfers, periods of
+                  temporary custody, returns from escape and/or erroneous
+                  releases are not considered admissions.
+                </li>
+                <li>
+                  Prison admissions are categorized as probation revocations,
+                  parole revocations, or new admissions. New admissions are
+                  admissions for a reason other than revocation.
+                </li>
+                <li>
+                  Selecting an office or supervision type narrows down
+                  revocations to be revocations from that office and/or
+                  supervision type.
+                </li>
+                <li>
+                  &quot;Rate&quot; displays the percent of all admissions that
+                  occurred by supervision revocation. When a supervision type
+                  and/or office is selected, the chart displays the percent of
+                  all admissions that were revocations from that office and/or
+                  supervision type.
                 </li>
               </ul>
             </div>
