@@ -126,6 +126,15 @@ const FILES_BY_METRIC_TYPE = {
     'reincarcerations_by_month.json',
     'reincarcerations_by_period.json',
   ],
+  facilitiesExplore: [
+    'admissions_by_type_by_period.json',
+    'admissions_versus_releases_by_month.json',
+    'admissions_versus_releases_by_period.json',
+    'avg_days_at_liberty_by_month.json',
+    'reincarceration_rate_by_stay_length.json',
+    'reincarcerations_by_month.json',
+    'reincarcerations_by_period.json',
+  ],
 };
 
 /**
@@ -285,6 +294,10 @@ function fetchFacilitiesGoals(isDemo, stateCode, callback) {
   return fetchMetrics(stateCode, 'facilitiesGoals', null, isDemo, callback);
 }
 
+function fetchFacilitiesExplore(isDemo, stateCode, callback) {
+  return fetchMetrics(stateCode, 'facilitiesExplore', null, isDemo, callback);
+}
+
 module.exports = {
   fetchFreeThroughRecoveryMetrics,
   fetchReincarcerationMetrics,
@@ -295,4 +308,5 @@ module.exports = {
   fetchCommunityGoals,
   fetchCommunityExplore,
   fetchFacilitiesGoals,
+  fetchFacilitiesExplore,
 };

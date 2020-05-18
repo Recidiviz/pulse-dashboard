@@ -450,6 +450,95 @@ const methodologies = {
       </ul>
     </div>
   ),
+
+  admissionsVsReleases: (
+    <div>
+      <ul>
+        <li>
+          &quot;Admissions versus releases&quot; is the difference between the
+          number of people who were admitted to DOCR facilities and the number
+          of people who were released from DOCR facilities during a particular
+          time frame.
+        </li>
+        <li>
+          Admissions include unique people admitted to any DOCR facility during
+          a particular time frame.
+        </li>
+        <li>
+          Releases include unique people released from any DOCR facility,
+          whether released to a term of supervision or not, during a particular
+          time frame.
+        </li>
+        <li>
+          In rate mode, this shows the percent change in facility size since the
+          previous month. For July, this would be calculated as (Admissions in
+          July - Releases in July) / (Facility size on June 30th).
+        </li>
+        <li>
+          A location choice narrows down information to only reincarcerations of
+          individuals who lived in that location prior to reincarceration.
+        </li>
+        <li>
+          If the facility size is ever 0 in a month and there is an admission in
+          the next month, the rate is shown as a 100% increase. This may occur,
+          for example, if a county is selected that prior to a given month had
+          no individuals but someone from that county was incarcerated in the
+          given month.
+        </li>
+        <li>
+          County of residence is determined by an individual&apos;s most recent
+          home address. If the most recent address is that of a ND DOCR facility
+          or parole and probation office, the last known non-incarcerated
+          address is used.
+        </li>
+        <li>
+          Just over 40% of people with known reincarcerations are not included
+          in the map view or in selections by county of residence. For
+          approximately 28% of people, this is because there is no known
+          non-incarcerated address. For approximately 13% of people, this is
+          because the last known non-incarcerated address is outside of North
+          Dakota.
+        </li>
+      </ul>
+    </div>
+  ),
+
+  reincarcerationRateByStayLength: (
+    <div>
+      <ul>
+        <li>
+          Release cohorts include all people released from a DOCR facility in
+          the specified year.
+        </li>
+        <li>
+          The follow up period starts from the date an individual is released
+          from a DOCR facility. If they are released twice within the release
+          cohort year, the follow up period starts from the first release: the
+          second period of incarceration adds to the reincarceration count for
+          the cohort.
+        </li>
+        <li>
+          Stay length refers to time actually spent incarcerated prior to their
+          most recent release from a DOCR facility. This is bucketed into
+          12-month windows for sampling.
+        </li>
+        <li>
+          County of residence is determined by an individual&apos;s most recent
+          home address. If the most recent address is that of a ND DOCR facility
+          or parole and probation office, the last known non-incarcerated
+          address is used.
+        </li>
+        <li>
+          Just over 40% of people with known reincarcerations are not included
+          in the map view or in selections by county of residence. For
+          approximately 28% of people, this is because there is no known
+          non-incarcerated address. For approximately 13% of people, this is
+          because the last known non-incarcerated address is outside of North
+          Dakota.
+        </li>
+      </ul>
+    </div>
+  ),
 };
 
 export default methodologies;
