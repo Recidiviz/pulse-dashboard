@@ -120,7 +120,12 @@ const FILES_BY_METRIC_TYPE = {
     'supervision_termination_by_type_by_month.json',
     'supervision_termination_by_type_by_period.json',
     'site_offices.json',
-  ]
+  ],
+  facilitiesGoals: [
+    'avg_days_at_liberty_by_month.json',
+    'reincarcerations_by_month.json',
+    'reincarcerations_by_period.json',
+  ],
 };
 
 /**
@@ -276,6 +281,10 @@ function fetchCommunityExplore(isDemo, stateCode, callback) {
   return fetchMetrics(stateCode, 'communityExplore', null, isDemo, callback);
 }
 
+function fetchFacilitiesGoals(isDemo, stateCode, callback) {
+  return fetchMetrics(stateCode, 'facilitiesGoals', null, isDemo, callback);
+}
+
 module.exports = {
   fetchFreeThroughRecoveryMetrics,
   fetchReincarcerationMetrics,
@@ -285,4 +294,5 @@ module.exports = {
   fetchNewRevocationFile,
   fetchCommunityGoals,
   fetchCommunityExplore,
+  fetchFacilitiesGoals,
 };

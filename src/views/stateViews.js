@@ -21,6 +21,7 @@ import UsNdRevocations from './tenants/us_nd/Revocations';
 import UsNdSnapshots from './tenants/us_nd/Snapshots';
 import UsNdCommunityGoals from './tenants/us_nd/community/Goals';
 import UsNdCommunityExplore from './tenants/us_nd/community/Explore';
+import UsNdFacilitiesGoals from './tenants/us_nd/facilities/Goals';
 
 import UsMoRevocations from './tenants/us_mo/Revocations';
 
@@ -35,6 +36,7 @@ const STATE_VIEW_COMPONENTS = {
     '/snapshots': UsNdSnapshots,
     '/community/goals': UsNdCommunityGoals,
     '/community/explore': UsNdCommunityExplore,
+    '/facilities/goals': UsNdFacilitiesGoals,
   },
 };
 

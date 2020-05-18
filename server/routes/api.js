@@ -105,6 +105,14 @@ function communityExplore(req, res) {
   );
 }
 
+function facilitiesGoals(req, res) {
+  metricsApi.fetchFacilitiesGoals(
+    isDemoMode,
+    req.params.stateCode,
+    responder(res)
+  );
+}
+
 module.exports = {
   freeThroughRecovery,
   reincarcerations,
@@ -114,4 +122,5 @@ module.exports = {
   newRevocationFile,
   communityGoals,
   communityExplore,
+  facilitiesGoals,
 };

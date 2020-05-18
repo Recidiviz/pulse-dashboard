@@ -391,6 +391,65 @@ const methodologies = {
       </ul>
     </div>
   ),
+
+  daysAtLibertySnapshot: (
+    <div>
+      <ul>
+        <li>
+          An individual&apos;s days at liberty are the number of days between
+          release from incarceration and readmission for someone who was
+          reincarcerated in a given month.
+        </li>
+        <li>
+          An admission to prison counts as a reincarceration if the person has
+          been incarcerated previously in a North Dakota prison.
+        </li>
+      </ul>
+    </div>
+  ),
+
+  reincarcerationCountsByMonth: (
+    <div>
+      <ul>
+        <li>
+          An admission to prison counts as a reincarceration if the person has
+          been incarcerated previously in a North Dakota prison.
+        </li>
+        <li>
+          Reincarcerations are included regardless of when the initial
+          incarceration took place. There is no upper bound on the follow up
+          period in this metric.
+        </li>
+        <li>
+          In rate mode, this shows the percent of all admissions in the month
+          that were reincarcerations.
+        </li>
+        <li>
+          A location choice narrows down information to only reincarcerations of
+          individuals who lived in that location prior to reincarceration.
+        </li>
+        <li>
+          County of residence is determined by an individual&apos;s most recent
+          home address. If the most recent address is that of a ND DOCR facility
+          or parole and probation office, the last known non-incarcerated
+          address is used.
+        </li>
+        <li>
+          Just over 40% of people with known reincarcerations are not included
+          in the map view or in selections by county of residence. For
+          approximately 28% of people, this is because there is no known
+          non-incarcerated address. For approximately 13% of people, this is
+          because the last known non-incarcerated address is outside of North
+          Dakota.
+        </li>
+        <li>
+          Selecting a location while in rate mode calculates the percentage of
+          prison admissions in a month from that location that were
+          reincarcerations.
+        </li>
+      </ul>
+    </div>
+  ),
 };
 
 export default methodologies;
