@@ -34,6 +34,26 @@ import * as ToggleDefaults from "../../../../components/toggles/ToggleDefaults";
 // eslint-disable-next-line import/no-cycle
 import useChartData from "../../../../hooks/useChartData";
 
+const importantNotes = [
+  {
+    header: "FTR REFERRALS",
+    body: `Unless noted otherwise, the charts on this page count all people with a completed FTR
+      referral based on the date of that referral. The number and characteristics of people who
+      actually enroll in the program may differ slightly, as not all people who are referred are
+      admitted.`,
+  },
+  {
+    header: "DATA PULLED FROM ELITE & DOCSTARS",
+    body: `Data in the dashboard is updated nightly using information pulled from Elite and
+      Docstars.`,
+  },
+  {
+    header: "LEARN MORE",
+    body:
+      'Click on "Methodology" for more information on the calculations behind that chart.',
+  },
+];
+
 const ProgrammingExplore = () => {
   const { apiData, isLoading } = useChartData("us_nd/programming/explore");
   const [metricType, setMetricType] = useState(ToggleDefaults.metricType);
@@ -78,7 +98,7 @@ const ProgrammingExplore = () => {
   );
 
   return (
-    <PageTemplate toggleBar={toggleBar}>
+    <PageTemplate importantNotes={importantNotes} toggleBar={toggleBar}>
       <ChartCard
         chartId="ftrReferralCountByMonth"
         chartTitle="FTR REFERRALS BY MONTH"

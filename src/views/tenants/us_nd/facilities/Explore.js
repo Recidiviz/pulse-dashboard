@@ -61,6 +61,34 @@ const getReincarcerationRateByStayLengthFooter = () => (
   </div>
 );
 
+const importantNotes = [
+  {
+    header: "REINCARCERATION",
+    body: `For the purposes of this dashboard, reincarceration is the incarceration of someone in
+      a North Dakota DOCR facility who has previously been incarcerated in a North Dakota DOCR
+      facility no matter how much time has passed. A revocation is also a reincarceration for a
+      formerly incarcerated individual, but not for an individual whose supervision revocation
+      results in transfer from probation to a DOCR facility. An individual can also be
+      reincarcerated following successful supervision termination, which would count towards
+      reincarceration metrics but not revocation metrics. For example, if someone is incarcerated,
+      released on parole, completes parole, and then a year later is incarcerated for a new crime,
+      that incarceration is a reincarceration but not a revocation.
+
+      We do not have data on incarceration in county jails or in other states. As a result, our
+      reincarceration calculations consider only incarceration in North Dakota DOCR facilities.`,
+  },
+  {
+    header: "DATA PULLED FROM ELITE & DOCSTARS",
+    body: `Data in the dashboard is updated nightly using information pulled from Elite and
+      Docstars.`,
+  },
+  {
+    header: "LEARN MORE",
+    body:
+      'Click on "Methodology" for more information on the calculations behind that chart.',
+  },
+];
+
 const FacilitiesExplore = () => {
   const { apiData, isLoading } = useChartData("us_nd/facilities/explore");
   const [metricType, setMetricType] = useState(ToggleDefaults.metricType);
@@ -139,7 +167,7 @@ const FacilitiesExplore = () => {
   );
 
   return (
-    <PageTemplate toggleBar={toggleBar}>
+    <PageTemplate importantNotes={importantNotes} toggleBar={toggleBar}>
       <ChartCard
         chartId="reincarcerationCountsByMonth"
         chartTitle="REINCARCERATIONS BY MONTH"
