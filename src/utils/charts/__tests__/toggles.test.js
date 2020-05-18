@@ -35,7 +35,7 @@ describe('test for file toggles', () => {
     labels: ['Not Assessed', 'Low', 'Moderate', 'High', 'Very High'],
     datasets: [
       {
-        label: 'Revocation rate',
+        label: 'Percent revoked',
         backgroundColor: '#F07132',
         hoverBackgroundColor: '#F07132',
         hoverBorderColor: '#F07132',
@@ -355,12 +355,12 @@ describe('test for file toggles', () => {
 
   it('tooltip for rate metric with counts', () => {
     const tooltipWithCount = toggleMethods.tooltipForRateMetricWithCounts(tooltipItemRate, dataMetric, numbers, denominators);
-    expect(tooltipWithCount).toBe("Revocation rate: 10.56% (19/180)");
+    expect(tooltipWithCount).toBe("Percent revoked: 10.56% (19/180)");
   });
 
   it('tooltip for rate metric with nested counts', () => {
     const tooltipTest = toggleMethods.tooltipForRateMetricWithNestedCounts(tooltipItemRate, dataMetric, numbers, denominators);
-    expect(tooltipTest).toBe('Revocation rate: 10.56%');
+    expect(tooltipTest).toBe('Percent revoked: 10.56%');
   });
 
   it('update tooltip for metric type', () => {
@@ -376,7 +376,7 @@ describe('test for file toggles', () => {
     expect(tooltipTestCount).toBe('Referral count: 49');
 
     const tooltipTestForRate = toggleMethods.updateTooltipForMetricTypeWithCounts('rates', tooltipItemRate, dataMetric, numbers, denominators);
-    expect(tooltipTestForRate).toBe('Revocation rate: 10.56% (19/180)');
+    expect(tooltipTestForRate).toBe('Percent revoked: 10.56% (19/180)');
   });
 
   it('filter dataset by metric period months', () => {

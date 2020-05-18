@@ -163,7 +163,7 @@ const RevocationsByDistrict = (props) => {
         labels: chartLabels,
         datasets: [{
           label: toggleLabel({
-            counts: 'Revocations', rates: 'Revocation rate',
+            counts: 'Revocations', rates: 'Percent revoked',
           }, countModeEnabled ? 'counts' : 'rates'),
           backgroundColor: barBackgroundColor,
           data: chartDataPoints,
@@ -187,7 +187,7 @@ const RevocationsByDistrict = (props) => {
             scaleLabel: {
               display: true,
               labelString: toggleLabel({
-                counts: 'Number of people revoked', rates: 'Revocation rate',
+                counts: 'Number of people revoked', rates: 'Percent revoked',
               }, countModeEnabled ? 'counts' : 'rates'),
             },
             stacked: true,
@@ -241,7 +241,7 @@ const RevocationsByDistrict = (props) => {
         </label>
         <label id="rateModeButton" className="btn btn-sm btn-outline-primary">
           <input type="radio" name="modes" id="rateMode" value="rates" autoComplete="off" />
-          Revocation rate
+          Percent revoked
         </label>
       </div>
 
