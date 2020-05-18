@@ -96,6 +96,7 @@ const CommunityExplore = () => {
             supervisionType={supervisionType}
             district={district}
             geoView={false}
+            disableGoal
             officeData={apiData.site_offices}
             revocationCountsByMonth={apiData.revocations_by_month}
           />
@@ -156,6 +157,7 @@ const CommunityExplore = () => {
             metricPeriodMonths={metricPeriodMonths}
             supervisionType={supervisionType}
             district={district}
+            disableGoal
             revocationAdmissionsByMonth={apiData.admissions_by_type_by_month}
           />
         }
@@ -277,6 +279,7 @@ const CommunityExplore = () => {
             metricPeriodMonths={metricPeriodMonths}
             supervisionType={supervisionType}
             district={district}
+            disableGoal
             supervisionSuccessRates={
               apiData.supervision_termination_by_type_by_month
             }
@@ -357,6 +360,7 @@ const CommunityExplore = () => {
             metricPeriodMonths={metricPeriodMonths}
             supervisionType={supervisionType}
             district={district}
+            disableGoal
             lsirScoreChangeByMonth={apiData.average_change_lsir_score_by_month}
           />
         }

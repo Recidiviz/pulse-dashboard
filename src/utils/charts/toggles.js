@@ -207,20 +207,24 @@ function filterDatasetBySupervisionType(dataset, supervisionType) {
   return filterDatasetByToggleFilters(dataset, { supervision_type: supervisionType });
 }
 
-function canDisplayGoal(goal, currentToggleStates) {
-  if (currentToggleStates.geoView) {
+function canDisplayGoal(goal, chartProps) {
+  if (chartProps.disableGoal === true) {
+    return false;
+  }
+
+  if (chartProps.geoView) {
     return false;
   }
 
   let canDisplay = true;
-  if (currentToggleStates.metricType && goal.metricType) {
-    canDisplay = canDisplay && goal.metricType === currentToggleStates.metricType;
+  if (chartProps.metricType && goal.metricType) {
+    canDisplay = canDisplay && goal.metricType === chartProps.metricType;
   }
-  if (currentToggleStates.supervisionType) {
-    canDisplay = canDisplay && currentToggleStates.supervisionType.toUpperCase() === 'ALL';
+  if (chartProps.supervisionType) {
+    canDisplay = canDisplay && chartProps.supervisionType.toUpperCase() === 'ALL';
   }
-  if (currentToggleStates.district) {
-    canDisplay = canDisplay && currentToggleStates.district.toUpperCase() === 'ALL';
+  if (chartProps.district) {
+    canDisplay = canDisplay && chartProps.district.toUpperCase() === 'ALL';
   }
   return canDisplay;
 }
