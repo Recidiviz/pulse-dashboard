@@ -22,8 +22,8 @@ import Loading from "../../../../components/Loading";
 import ChartCard from "../../../../components/charts/ChartCard";
 import GeoViewTimeChart from "../../../../components/charts/GeoViewTimeChart";
 import Methodology from "../../../../components/charts/Methodology";
-import OfficerIdWarningIcon from "../../../../components/charts/OfficerIdWarningIcon";
 import PeriodLabel from "../../../../components/charts/PeriodLabel";
+import WarningIcon from "../../../../components/charts/WarningIcon";
 import RevocationCountByOfficer from "../../../../components/charts/revocations/RevocationCountByOfficer";
 import AdmissionCountsByType from "../../../../components/charts/revocations/AdmissionCountsByType";
 import CaseTerminationsByOfficer from "../../../../components/charts/revocations/CaseTerminationsByOfficer";
@@ -126,7 +126,12 @@ const CommunityExplore = () => {
         chartTitle={
           <>
             REVOCATIONS BY OFFICER
-            {district === "all" && <OfficerIdWarningIcon />}
+            {district === "all" && (
+              <WarningIcon
+                tooltipText="Exporting this chart as an image will not include officer IDs unless a specific P&P office is selected from the Explore bar."
+                className="pL-10 toggle-alert"
+              />
+            )}
           </>
         }
         chart={
@@ -214,7 +219,17 @@ const CommunityExplore = () => {
       <ChartCard
         key="revocationsBySupervisionType"
         chartId="revocationsBySupervisionType"
-        chartTitle="REVOCATIONS BY SUPERVISION TYPE"
+        chartTitle={
+          <>
+            REVOCATIONS BY SUPERVISION TYPE
+            {supervisionType !== "all" && (
+              <WarningIcon
+                tooltipText="This graph is showing all individuals on supervision. It doesn’t support showing only individuals on probation or only individuals on parole."
+                className="pL-10 toggle-alert"
+              />
+            )}
+          </>
+        }
         chart={
           <RevocationCountBySupervisionType
             metricType={metricType}
@@ -272,7 +287,17 @@ const CommunityExplore = () => {
       <ChartCard
         key="supervisionSuccessSnapshot"
         chartId="supervisionSuccessSnapshot"
-        chartTitle="SUCCESSFUL COMPLETION OF SUPERVISION"
+        chartTitle={
+          <>
+            SUCCESSFUL COMPLETION OF SUPERVISION
+            {district !== "all" && (
+              <WarningIcon
+                tooltipText="Filtering this graph by a specific office requires knowing the officer that was assigned to historical periods of supervision. Because the Docstars data system does not currently keep a full historical record of officer assignments, we cannot track this measurement by office prior to when we first began ingesting data from DOCR."
+                className="pL-10 toggle-alert"
+              />
+            )}
+          </>
+        }
         chart={
           <SupervisionSuccessSnapshot
             metricType={metricType}
@@ -333,7 +358,12 @@ const CommunityExplore = () => {
         chartTitle={
           <>
             CASE TERMINATIONS BY OFFICER
-            {district === "all" && <OfficerIdWarningIcon />}
+            {district === "all" && (
+              <WarningIcon
+                tooltipText="Exporting this chart as an image will not include officer IDs unless a specific P&P office is selected from the Explore bar."
+                className="pL-10 toggle-alert"
+              />
+            )}
           </>
         }
         chart={
@@ -354,7 +384,23 @@ const CommunityExplore = () => {
       <ChartCard
         key="lsirScoreChangeSnapshot"
         chartId="lsirScoreChangeSnapshot"
-        chartTitle="LSI-R SCORE CHANGES (AVERAGE)"
+        chartTitle={
+          <>
+            LSI-R SCORE CHANGES (AVERAGE)
+            {metricType !== "counts" && (
+              <WarningIcon
+                tooltipText="This graph is showing average LSI-R score change. It does not support showing this metric as a rate."
+                className="pL-10 toggle-alert"
+              />
+            )}
+            {district !== "all" && (
+              <WarningIcon
+                tooltipText="Filtering this graph by a specific office requires knowing the officer that was assigned to historical periods of supervision. Because the Docstars data system does not currently keep a full historical record of officer assignments, we cannot track this measurement by office prior to when we first began ingesting data from DOCR."
+                className="pL-10 toggle-alert"
+              />
+            )}
+          </>
+        }
         chart={
           <LsirScoreChangeSnapshot
             metricPeriodMonths={metricPeriodMonths}

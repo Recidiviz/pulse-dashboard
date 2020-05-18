@@ -40,6 +40,7 @@ import * as ToggleDefaults from "../../../../components/toggles/ToggleDefaults";
 // eslint-disable-next-line import/no-cycle
 import useChartData from "../../../../hooks/useChartData";
 import { getYearFromNow } from "../../../../utils/transforms/years";
+import WarningIcon from "../../../../components/charts/WarningIcon";
 
 const getReincarcerationRateByStayLengthFooter = () => (
   <div className="layer bdT p-20 w-100">
@@ -234,7 +235,17 @@ const CommunityExplore = () => {
 
       <ChartCard
         chartId="reincarcerationRateByStayLength"
-        chartTitle="REINCARCERATION RATE BY PREVIOUS STAY LENGTH"
+        chartTitle={
+          <>
+            REINCARCERATION RATE BY PREVIOUS STAY LENGTH
+            {(metricType !== "rates" || metricPeriodMonths !== "12") && (
+              <WarningIcon
+                tooltipText="This graph is showing the reincarceration rate by previous stay length with the follow up period noted below. It cannot show this metric as a count. It also does not show follow up periods other than 1 year."
+                className="pL-10 toggle-alert"
+              />
+            )}
+          </>
+        }
         chart={
           <ReincarcerationRateByStayLength
             district={district}
