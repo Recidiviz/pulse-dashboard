@@ -230,7 +230,18 @@ const CommunityExplore = () => {
       <ChartCard
         key="admissionCountsByType"
         chartId="admissionCountsByType"
-        chartTitle="ADMISSIONS BY TYPE"
+        chartTitle={
+          <>
+            ADMISSIONS BY TYPE
+            {(supervisionType !== "all" || district !== "all") &&
+              metricType === "rates" && (
+                <WarningIcon
+                  tooltipText="This graph is showing both non-revocation admissions to prison and admissions due to revocation from both parole and probation. We cannot show percentages of admissions broken down by supervision type or district because non-revocation admissions to prison cannot be broken down along those dimensions."
+                  className="pL-10 toggle-alert"
+                />
+              )}
+          </>
+        }
         chart={
           <AdmissionCountsByType
             metricType={metricType}
