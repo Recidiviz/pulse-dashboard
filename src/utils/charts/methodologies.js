@@ -539,6 +539,216 @@ const methodologies = {
       </ul>
     </div>
   ),
+
+  ftrReferralCountByMonth: (
+    <div>
+      <ul>
+        <li>
+          Referral counts include the number of people who were referred to Free
+          Through Recovery.
+        </li>
+        <li>
+          Referral rates are the number of people referred to Free Through
+          Recovery over the number of people on supervision in a month.
+        </li>
+        <li>
+          Referrals are included based on the date the person was referred to
+          the program, regardless of when or if they began participating in Free
+          Through Recovery.
+        </li>
+        <li>
+          Referrals are attributed to the P&P office of a supervised
+          individual’s current supervising officer.
+        </li>
+        <li>
+          Individuals on both parole and probation will count towards either
+          selection. As a result, parole FTR referrals and probation FTR
+          referrals may sum to more than the total number of FTR referrals.
+        </li>
+      </ul>
+    </div>
+  ),
+
+  ftrReferralsByParticipationStatus: (
+    <div>
+      <ul>
+        <li>
+          This chart conveys information about the current participation status
+          (pending, denied, in progress, or discharged) of individuals who have
+          been referred to Free Through Recovery.
+        </li>
+        <li>
+          Individuals who have been referred multiple times are counted for each
+          referral, with their participation status being specific to a given
+          referral. For example, an individual may be referred to FTR and
+          denied, have their situation change, be referred again, be accepted,
+          and currently be enrolled in Free Through Recovery. This would count
+          as one denied status in the month of the first referral and one in
+          progress status in the month of the second referral.
+        </li>
+        <li>
+          Referrals are attributed to the P&P office of a supervised
+          individual&apos;s current supervising officer.
+        </li>
+        <li>
+          Individuals on both parole and probation will count towards either
+          selection. As a result, parole FTR referrals and probation FTR
+          referrals may sum to more than the total number of FTR referrals.
+        </li>
+        <li>
+          When rate is selected, this chart will show what percent of referrals
+          in each month are currently pending, what percent were denied, what
+          percent led to participation now in progress, and what percent of
+          referrals led to participation that has now culminated (i.e. the
+          individual referred has been discharged from Free Through Recovery).
+        </li>
+        <li>
+          There is no data prior to the program beginning in January 2018.
+        </li>
+      </ul>
+    </div>
+  ),
+
+  ftrReferralsByRace: (
+    <div>
+      <ul>
+        <li>
+          The referral population counts people who were referred to Free
+          Through Recovery at any point during the time period.
+        </li>
+        <li>
+          The supervision population counts people on probation or parole in
+          North Dakota at any point during the time period.
+        </li>
+        <li>
+          If a supervision type and/or a P&P office is selected, the referral
+          and supervision populations will only count individuals meeting the
+          selected criteria.
+        </li>
+        <li>
+          A referral is attributed to the P&P office of the referred
+          individual&apos;s current supervising officer.
+        </li>
+        <li>
+          The race proportions for the population of North Dakota were taken
+          from the U.S. Census Bureau.
+        </li>
+        <li>
+          If an individual has more than one race or ethnicity recorded from
+          different data systems, then they are counted once for each unique
+          race and ethnicity. This means that the total count in this chart may
+          be larger than the total number of individuals it describes. This does
+          not apply to the ND Population values.
+        </li>
+        <li>
+          Individuals on both parole and probation will count towards either
+          selection. As a result, parole FTR referrals and probation FTR
+          referrals may sum to more than the total number of FTR referrals.
+        </li>
+        <li>
+          If an individual has more than one race or ethnicity recorded from
+          different data systems, they are counted once for each unique race and
+          ethnicity. This means that the total count in this chart may be larger
+          than the total number of individuals it describes.
+        </li>
+      </ul>
+    </div>
+  ),
+
+  ftrReferralsByLsir: (
+    <div>
+      <ul>
+        <li>
+          Each person&apos;s LSI-R score is based off of the most recent LSI-R
+          assessment performed for that person prior to the referral date.
+        </li>
+        <li>
+          The referral population counts people who were referred to Free
+          Through Recovery at any point during the time period.
+        </li>
+        <li>
+          The supervision population counts people on probation or parole in
+          North Dakota at any point during the time period.
+        </li>
+        <li>
+          If a supervision type and/or a P&P office is selected, the referral
+          and supervision populations will only include individuals who fit the
+          selected filters.
+        </li>
+        <li>
+          A referral is attributed to the P&P office of the referred
+          individual&apos;s current supervising officer.
+        </li>
+        <li>
+          Individuals on both parole and probation will count towards either
+          selection. As a result, parole FTR referrals and probation FTR
+          referrals may sum to more than the total number of FTR referrals.
+        </li>
+      </ul>
+    </div>
+  ),
+
+  ftrReferralsByGender: (
+    <div>
+      <ul>
+        <li>
+          The referral population counts people who were referred to Free
+          Through Recovery at any point during the time period.
+        </li>
+        <li>
+          The supervision population counts people on probation or parole in
+          North Dakota at any point during the time period.
+        </li>
+        <li>
+          If a supervision type and/or a P&P office is selected, the referral
+          and supervision populations will only count individuals meeting the
+          selected criteria.
+        </li>
+        <li>
+          A referral is attributed to the P&P office of the referred
+          individual&apos;s current supervising officer.
+        </li>
+        <li>
+          Individuals on both parole and probation will count towards either
+          selection. As a result, parole FTR referrals and probation FTR
+          referrals may sum to more than the total number of FTR referrals.
+        </li>
+      </ul>
+    </div>
+  ),
+
+  ftrReferralsByAge: (
+    <div>
+      <ul>
+        <li>
+          The referral population counts people who were referred to Free
+          Through Recovery at any point during the time period.
+        </li>
+        <li>
+          The supervision population counts people on probation or parole in
+          North Dakota at any point during the time period.
+        </li>
+        <li>
+          If a supervision type and/or a P&P office is selected, the referral
+          and supervision populations will only count individuals meeting the
+          selected criteria.
+        </li>
+        <li>
+          A referral is attributed to the P&P office of the referred
+          individual&apos;s current supervising officer.
+        </li>
+        <li>
+          Individuals on both parole and probation will count towards either
+          selection. As a result, parole FTR referrals and probation FTR
+          referrals may sum to more than the total number of FTR referrals.
+        </li>
+        <li>
+          Individuals are sorted into age buckets by their age on the date of
+          the FTR referral.
+        </li>
+      </ul>
+    </div>
+  ),
 };
 
 export default methodologies;

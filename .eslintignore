@@ -39,4 +39,5 @@ public/
 !src/utils/transforms/__tests__/years.test.js
 !src/views/tenants/us_nd/community/**/*.js
 !src/views/tenants/us_nd/facilities/**/*.js
+!src/views/tenants/us_nd/programming/**/*.js
 !src/views/tenants/us_nd/PageTemplate.js

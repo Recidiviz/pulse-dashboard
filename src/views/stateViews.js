@@ -23,6 +23,7 @@ import UsNdCommunityGoals from './tenants/us_nd/community/Goals';
 import UsNdCommunityExplore from './tenants/us_nd/community/Explore';
 import UsNdFacilitiesGoals from './tenants/us_nd/facilities/Goals';
 import UsNdFacilitiesExplore from './tenants/us_nd/facilities/Explore';
+import UsNdProgrammingExplore from './tenants/us_nd/programming/Explore';
 
 import UsMoRevocations from './tenants/us_mo/Revocations';
 
@@ -39,6 +40,7 @@ const STATE_VIEW_COMPONENTS = {
     '/community/explore': UsNdCommunityExplore,
     '/facilities/goals': UsNdFacilitiesGoals,
     '/facilities/explore': UsNdFacilitiesExplore,
+    '/programming/explore': UsNdProgrammingExplore,
   },
 };
 

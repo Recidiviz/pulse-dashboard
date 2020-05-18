@@ -121,6 +121,14 @@ function facilitiesExplore(req, res) {
   );
 }
 
+function programmingExplore(req, res) {
+  metricsApi.fetchProgrammingExplore(
+    isDemoMode,
+    req.params.stateCode,
+    responder(res)
+  );
+}
+
 module.exports = {
   freeThroughRecovery,
   reincarcerations,
@@ -132,4 +140,5 @@ module.exports = {
   communityExplore,
   facilitiesGoals,
   facilitiesExplore,
+  programmingExplore,
 };

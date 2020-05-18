@@ -71,7 +71,7 @@ const FacilitiesGoals = () => {
           <GeoViewTimeChart
             chartId="reincarcerationCountsByMonth"
             chartTitle="REINCARCERATIONS BY MONTH"
-            metricType={metrics.metricType}
+            metricType="counts"
             metricPeriodMonths={metrics.metricPeriodMonths}
             keyedByOffice={false}
             stateCode="us_nd"

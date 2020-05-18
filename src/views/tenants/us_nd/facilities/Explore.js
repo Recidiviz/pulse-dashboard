@@ -30,6 +30,7 @@ import ChartCard from "../../../../components/charts/ChartCard";
 import GeoViewTimeChart from "../../../../components/charts/GeoViewTimeChart";
 import Methodology from "../../../../components/charts/Methodology";
 import PeriodLabel from "../../../../components/charts/PeriodLabel";
+import WarningIcon from "../../../../components/charts/WarningIcon";
 import AdmissionsVsReleases from "../../../../components/charts/reincarcerations/AdmissionsVsReleases";
 import ReincarcerationCountOverTime from "../../../../components/charts/reincarcerations/ReincarcerationCountOverTime";
 import ReincarcerationRateByStayLength from "../../../../components/charts/reincarcerations/ReincarcerationRateByStayLength";
@@ -40,7 +41,6 @@ import * as ToggleDefaults from "../../../../components/toggles/ToggleDefaults";
 // eslint-disable-next-line import/no-cycle
 import useChartData from "../../../../hooks/useChartData";
 import { getYearFromNow } from "../../../../utils/transforms/years";
-import WarningIcon from "../../../../components/charts/WarningIcon";
 
 const getReincarcerationRateByStayLengthFooter = () => (
   <div className="layer bdT p-20 w-100">
@@ -61,7 +61,7 @@ const getReincarcerationRateByStayLengthFooter = () => (
   </div>
 );
 
-const CommunityExplore = () => {
+const FacilitiesExplore = () => {
   const { apiData, isLoading } = useChartData("us_nd/facilities/explore");
   const [metricType, setMetricType] = useState(ToggleDefaults.metricType);
   const [metricPeriodMonths, setMetricPeriodMonths] = useState(
@@ -263,4 +263,4 @@ const CommunityExplore = () => {
   );
 };
 
-export default CommunityExplore;
+export default FacilitiesExplore;
