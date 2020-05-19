@@ -15,13 +15,6 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-/**
- * Do not really understand what to do with ADMISSIONS BY TYPE chart's district filter.
- * Now it does not support distrcits for facilities explore.
- * And I saw in the PRD comments that you said about DAYS AT LIBERTY chart.
- * Should this graph has ability to be filtered by district?
- */
-
 import React, { useState } from "react";
 
 import PageTemplate from "../PageTemplate";
