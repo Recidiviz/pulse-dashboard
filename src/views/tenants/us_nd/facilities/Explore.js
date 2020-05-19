@@ -200,7 +200,17 @@ const FacilitiesExplore = () => {
 
       <ChartCard
         chartId="daysAtLibertySnapshot"
-        chartTitle="DAYS AT LIBERTY (AVERAGE)"
+        chartTitle={
+          <>
+            DAYS AT LIBERTY (AVERAGE)
+            {(metricType !== "counts" || district !== "all") && (
+              <WarningIcon
+                tooltipText="This graph is showing average days at liberty for all reincarcerated individuals. It does not support showing this metric as a rate. As individuals can be reincarcerated after completing supervision, this chart also does not support showing information only about a certain office or individuals on a certain type of supervision."
+                className="pL-10 toggle-alert"
+              />
+            )}
+          </>
+        }
         chart={
           <DaysAtLibertySnapshot
             metricPeriodMonths={metricPeriodMonths}
@@ -243,13 +253,23 @@ const FacilitiesExplore = () => {
 
       <ChartCard
         chartId="admissionCountsByType"
-        chartTitle="ADMISSIONS BY TYPE"
+        chartTitle={
+          <>
+            ADMISSIONS BY TYPE
+            {district !== "all" && (
+              <WarningIcon
+                tooltipText="This graph is showing both non-revocation admissions to prison and admissions due to revocation from both parole and probation. We cannot show percentages of admissions broken down by supervision type or district because non-revocation admissions to prison cannot be broken down along those dimensions."
+                className="pL-10 toggle-alert"
+              />
+            )}
+          </>
+        }
         chart={
           <AdmissionCountsByType
             metricType={metricType}
             supervisionType="all"
             metricPeriodMonths={metricPeriodMonths}
-            district={district}
+            district="all"
             admissionCountsByType={apiData.admissions_by_type_by_period}
           />
         }
