@@ -205,7 +205,7 @@ const FacilitiesExplore = () => {
             DAYS AT LIBERTY (AVERAGE)
             {(metricType !== "counts" || district !== "all") && (
               <WarningIcon
-                tooltipText="This graph is showing average days at liberty for all reincarcerated individuals. It does not support showing this metric as a rate. As individuals can be reincarcerated after completing supervision, this chart also does not support showing information only about a certain office or individuals on a certain type of supervision."
+                tooltipText="This graph is showing average days at liberty for all reincarcerated individuals. It does not support showing this metric as a rate. This chart does not yet support filtering by district of residence."
                 className="pL-10 toggle-alert"
               />
             )}

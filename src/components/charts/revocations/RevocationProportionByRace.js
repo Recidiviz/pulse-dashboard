@@ -246,8 +246,7 @@ const RevocationProportionByRace = (props) => {
             },
             label: (tooltipItem, data) => {
               const dataset = data.datasets[tooltipItem.datasetIndex];
-              // TODO: now it is hotfix, but currentValue for some reason is undefined
-              const currentValue = dataset.data[tooltipItem.index] || 0;
+              const currentValue = dataset.data[tooltipItem.index];
 
               let datasetCounts = [];
               if (data.labels[tooltipItem.index] === 'Revocations') {
