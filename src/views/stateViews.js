@@ -32,10 +32,6 @@ const STATE_VIEW_COMPONENTS = {
     '/revocations': UsMoRevocations,
   },
   us_nd: {
-    '/programevaluation/freethroughrecovery': UsNdFreeThroughRecovery,
-    '/reincarcerations': UsNdReincarcerations,
-    '/revocations': UsNdRevocations,
-    '/snapshots': UsNdSnapshots,
     '/community/goals': UsNdCommunityGoals,
     '/community/explore': UsNdCommunityExplore,
     '/facilities/goals': UsNdFacilitiesGoals,
@@ -46,7 +42,7 @@ const STATE_VIEW_COMPONENTS = {
 
 const STATE_LANDING_VIEWS = {
   us_mo: '/revocations',
-  us_nd: '/snapshots',
+  us_nd: '/community/goals',
 };
 
 const LANTERN_STATE_CODES = ['us_mo'];

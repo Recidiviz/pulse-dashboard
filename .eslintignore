@@ -11,7 +11,7 @@ public/
 !server/routes/*.js
 !server/utils/*.js
 !src/App.js
-!src/components/SideBar.js
+!src/components/SideBar/**/*.js
 !src/components/TopBar.js
 !src/components/charts/ChartCard.js
 !src/components/charts/DataSignificanceWarningIcon.js

@@ -1,5 +1,5 @@
 // Recidiviz - a data platform for criminal justice reform
-// Copyright (C) 2019 Recidiviz, Inc.
+// Copyright (C) 2020 Recidiviz, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -15,9 +15,23 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import '../styles/index.scss';
+import React from "react";
 
-import './charts';
-import './popover';
-import './scrollbar';
-import './utils';
+const SideBarFeedback = () => (
+  <li className="bottom-item">
+    <a
+      className="sidebar-link"
+      id="feedback-link"
+      href={process.env.REACT_APP_FEEDBACK_URL}
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      <span className="icon-holder">
+        <i className="c-grey-700 ti-comment" />
+      </span>
+      <span className="title">Feedback</span>
+    </a>
+  </li>
+);
+
+export default SideBarFeedback;

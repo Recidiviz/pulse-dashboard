@@ -50,6 +50,10 @@
               display: none;
             }
           }
+
+          .sidebar-link::before {
+            display: none;
+          }
         }
 
         li {
@@ -84,6 +88,7 @@
               }
             }
           }
+
 
           li {
             &.dropdown {
@@ -362,10 +367,14 @@
           overflow-x: hidden;
 
           > li {
-            > a {
+            > div {
               .title {
                 display: none;
               }
+            }
+
+            .sidebar-link::before {
+              display: none;
             }
           }
 
@@ -395,7 +404,7 @@
 
           .sidebar-menu {
             > li {
-              > a {
+              > div {
                 .title {
                   display: inline-block;
                 }
@@ -430,7 +439,7 @@
 
         .sidebar-menu {
           > li {
-            > a {
+            > div {
               .title {
                 display: inline-block;
               }

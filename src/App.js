@@ -28,8 +28,9 @@ import { useAuth0 } from "./react-auth0-spa";
 import Footer from "./components/Footer";
 import Loading from "./components/Loading";
 import PrivateRoute from "./components/PrivateRoute";
+import PrivateTenantRedirect from "./components/PrivateTenantRedirect";
 import PrivateTenantRoute from "./components/PrivateTenantRoute";
-import SideBar from "./components/SideBar";
+import SideBar from "./components/sidebar/SideBar";
 import TopBar from "./components/TopBar";
 import { getUserStateCode } from "./utils/authentication/user";
 import { isViewAvailableForUserState } from "./utils/authentication/viewAuthentication";
@@ -117,18 +118,26 @@ const App = () => {
                 <Route exact path="/">
                   <Redirect to={getLandingView(isAuthenticated)} />
                 </Route>
-                <PrivateTenantRoute path="/snapshots" />
-                <PrivateTenantRoute path="/revocations" />
-                <PrivateTenantRoute path="/reincarcerations" />
-                <PrivateTenantRoute path="/programEvaluation/freeThroughRecovery" />
 
-                {/* start new routes without links */}
-                <PrivateTenantRoute path="/community/goals" />
-                <PrivateTenantRoute path="/community/explore" />
-                <PrivateTenantRoute path="/facilities/goals" />
-                <PrivateTenantRoute path="/facilities/explore" />
-                <PrivateTenantRoute path="/programming/explore" />
-                {/* end new routes without links */}
+                <PrivateTenantRoute code="us_mo" path="/revocations" />
+                <PrivateTenantRoute code="us_nd" path="/community/goals" />
+                <PrivateTenantRoute code="us_nd" path="/community/explore" />
+                <PrivateTenantRoute code="us_nd" path="/facilities/goals" />
+                <PrivateTenantRoute code="us_nd" path="/facilities/explore" />
+                <PrivateTenantRoute code="us_nd" path="/programming/explore" />
+
+                <PrivateTenantRedirect
+                  from="/snapshots"
+                  to="/community/goals"
+                />
+                <PrivateTenantRedirect
+                  from="/reincarcerations"
+                  to="/facilities/goals"
+                />
+                <PrivateTenantRedirect
+                  from="/programEvaluation/freeThroughRecovery"
+                  to="/programming/explore"
+                />
 
                 <PrivateRoute path="/profile" component={Profile} />
                 <Route path="/verify" component={VerificationNeeded} />

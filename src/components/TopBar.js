@@ -55,7 +55,7 @@ const TopBar = ({ pathname, toggleSidebar }) => {
     return isLanternState(stateCode);
   };
 
-  const isWideHeader = shouldLoadSidebar(isAuthenticated);
+  const isWideHeader = !shouldLoadSidebar(isAuthenticated);
 
   return (
     <div className={`header navbar ${isWideHeader ? "wide-navbar" : ""}`}>

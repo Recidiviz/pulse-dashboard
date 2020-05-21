@@ -73,7 +73,7 @@
     "react-chartjs-2": "^2.7.6",
     "react-dom": "^16.9.0",
     "react-render-in-browser": "^1.1.1",
-    "react-router-dom": "^5.0.0",
+    "react-router-dom": "^5.1.0",
     "react-scripts": "3.4.1",
     "react-select": "^3.0.8",
     "react-simple-maps": "^0.12.1",
