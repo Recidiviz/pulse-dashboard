@@ -1,5 +1,5 @@
 // Recidiviz - a data platform for criminal justice reform
-// Copyright (C) 2019 Recidiviz, Inc.
+// Copyright (C) 2020 Recidiviz, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -15,26 +15,23 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React from 'react';
+import React from "react";
+import PropTypes from "prop-types";
 
-import { useAuth0 } from '../react-auth0-spa';
-import { normalizeAppPathToTitle } from '../assets/scripts/utils/strings';
-import lanternLogo from '../assets/static/images/lantern_logo.png';
-import { getUserStateCode, getUserStateName } from '../utils/authentication/user';
-import { hasSideBar } from '../utils/layout/filters';
-import { isLanternState } from '../views/stateViews';
+import { useAuth0 } from "../react-auth0-spa";
+import { normalizeAppPathToTitle } from "../assets/scripts/utils/strings";
+import lanternLogo from "../assets/static/images/lantern_logo.png";
+import {
+  getUserStateCode,
+  getUserStateName,
+} from "../utils/authentication/user";
+import { hasSideBar } from "../utils/layout/filters";
+import { isLanternState } from "../views/stateViews";
 
-const TopBar = (props) => {
-  const { pathname } = props;
-  let normalizedPath = normalizeAppPathToTitle(pathname);
+const TopBar = ({ pathname, toggleSidebar }) => {
+  const { user, isAuthenticated, loginWithRedirect, logout } = useAuth0();
 
-  if (!normalizedPath) {
-    normalizedPath = '';
-  }
-
-  const {
-    user, isAuthenticated, loginWithRedirect, logout,
-  } = useAuth0();
+  const normalizedPath = normalizeAppPathToTitle(pathname) || "";
 
   const logoutWithRedirect = () => logout({ returnTo: window.location.origin });
 
@@ -58,13 +55,10 @@ const TopBar = (props) => {
     return isLanternState(stateCode);
   };
 
-  let navBarClass = 'header navbar wide-navbar';
-  if (shouldLoadSidebar(isAuthenticated)) {
-    navBarClass = 'header navbar';
-  }
+  const isWideHeader = shouldLoadSidebar(isAuthenticated);
 
   return (
-    <div className={navBarClass}>
+    <div className={`header navbar ${isWideHeader ? "wide-navbar" : ""}`}>
       <div className="header-container">
         {shouldLoadLanternLogo(isAuthenticated) ? (
           <a href="/">
@@ -73,21 +67,36 @@ const TopBar = (props) => {
         ) : (
           <ul className="nav-left">
             {isAuthenticated && (
-            <li>
-              <a id="sidebar-toggle" className="sidebar-toggle" href="javascript:void(0);">
-                <i className="ti-menu" />
-              </a>
-            </li>
+              <li>
+                <button
+                  type="button"
+                  id="sidebar-toggle"
+                  className="sidebar-toggle bds-n"
+                  onClick={toggleSidebar}
+                >
+                  <i className="ti-menu" />
+                </button>
+              </li>
             )}
-            <li style={{ paddingLeft: '20px', paddingTop: '22px' }}>
-              <h5 className="lh-1 mB-0 logo-text recidiviz-dark-green-text">{normalizedPath}</h5>
+            <li style={{ paddingLeft: "20px", paddingTop: "22px" }}>
+              <h5 className="lh-1 mB-0 logo-text recidiviz-dark-green-text">
+                {normalizedPath}
+              </h5>
             </li>
           </ul>
         )}
         <ul className="nav-right">
           {!isAuthenticated && (
             <li className="dropdown">
-              <a href="#" onClick={() => loginWithRedirect({ appState: { targetUrl: '/snapshots' } })} className="dropdown-toggle no-after peers fxw-nw ai-c lh-1" data-toggle="dropdown">
+              <a
+                href="?"
+                onClick={(event) => {
+                  event.preventDefault();
+                  loginWithRedirect({ appState: { targetUrl: "/snapshots" } });
+                }}
+                className="dropdown-toggle no-after peers fxw-nw ai-c lh-1"
+                data-toggle="dropdown"
+              >
                 <div className="peer mR-10">
                   <i className="ti-power-off" />
                 </div>
@@ -99,25 +108,38 @@ const TopBar = (props) => {
           )}
           {isAuthenticated && (
             <li className="dropdown">
-              <a href="#" className="dropdown-toggle no-after peers fxw-nw ai-c lh-1" data-toggle="dropdown">
+              <a
+                href="?"
+                className="dropdown-toggle no-after peers fxw-nw ai-c lh-1"
+                data-toggle="dropdown"
+              >
                 <div className="peer mR-10">
                   <img className="w-2r bdrs-50p" src={user.picture} alt="" />
                 </div>
                 <div className="peer">
                   <ul className="fsz-sm c-grey-900">{user.name}</ul>
-                  <ul className="fsz-sm pT-3 c-grey-600">{getUserStateName(user)}</ul>
+                  <ul className="fsz-sm pT-3 c-grey-600">
+                    {getUserStateName(user)}
+                  </ul>
                 </div>
               </a>
               <ul className="dropdown-menu fsz-sm">
                 <li>
-                  <a href="/profile" className="d-b td-n pY-5 bgcH-grey-100 c-grey-700">
+                  <a
+                    href="/profile"
+                    className="d-b td-n pY-5 bgcH-grey-100 c-grey-700"
+                  >
                     <i className="ti-user mR-10" />
                     <span>Profile</span>
                   </a>
                 </li>
                 <li role="separator" className="divider" />
                 <li>
-                  <a className="d-b td-n pY-5 bgcH-grey-100 c-grey-700" href="#" onClick={() => logoutWithRedirect({})}>
+                  <a
+                    href="?"
+                    className="d-b td-n pY-5 bgcH-grey-100 c-grey-700"
+                    onClick={() => logoutWithRedirect({})}
+                  >
                     <i className="ti-power-off mR-10" />
                     <span>Logout</span>
                   </a>
@@ -129,6 +151,11 @@ const TopBar = (props) => {
       </div>
     </div>
   );
+};
+
+TopBar.propTypes = {
+  pathname: PropTypes.string.isRequired,
+  toggleSidebar: PropTypes.func.isRequired,
 };
 
 export default TopBar;

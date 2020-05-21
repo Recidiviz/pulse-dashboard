@@ -1,5 +1,5 @@
 // Recidiviz - a data platform for criminal justice reform
-// Copyright (C) 2019 Recidiviz, Inc.
+// Copyright (C) 2020 Recidiviz, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -15,69 +15,50 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React, { useEffect, useState } from 'react';
+import React, { useState } from "react";
 import {
-  BrowserRouter as Router, Redirect, Route, Switch,
-} from 'react-router-dom';
+  BrowserRouter as Router,
+  Redirect,
+  Route,
+  Switch,
+} from "react-router-dom";
 
-import * as $ from 'jquery';
-import { useAuth0 } from './react-auth0-spa';
+import { useAuth0 } from "./react-auth0-spa";
 
-import Footer from './components/Footer';
-import Loading from './components/Loading';
-import PrivateRoute from './components/PrivateRoute';
-import PrivateTenantRoute from './components/PrivateTenantRoute';
-import SideBar from './components/SideBar';
-import TopBar from './components/TopBar';
-import { getUserStateCode } from './utils/authentication/user';
-import { hasSideBar } from './utils/layout/filters';
-import NotFound from './views/NotFound';
-import Profile from './views/Profile';
-import VerificationNeeded from './views/VerificationNeeded';
-import { getLandingViewForState } from './views/stateViews';
-import './assets/scripts/index';
+import Footer from "./components/Footer";
+import Loading from "./components/Loading";
+import PrivateRoute from "./components/PrivateRoute";
+import PrivateTenantRoute from "./components/PrivateTenantRoute";
+import SideBar from "./components/SideBar";
+import TopBar from "./components/TopBar";
+import { getUserStateCode } from "./utils/authentication/user";
+import { isViewAvailableForUserState } from "./utils/authentication/viewAuthentication";
+import { hasSideBar } from "./utils/layout/filters";
+import NotFound from "./views/NotFound";
+import Profile from "./views/Profile";
+import VerificationNeeded from "./views/VerificationNeeded";
+import { getLandingViewForState } from "./views/stateViews";
+import "./assets/scripts/index";
 
 // styles
-import './assets/styles/index.scss';
+import "./assets/styles/index.scss";
 
 // fontawesome
-import initFontAwesome from './utils/initFontAwesome';
+import initFontAwesome from "./utils/initFontAwesome";
 
 initFontAwesome();
 
 const App = () => {
-  const [sideBarCollapsed, setSideBarCollapsed] = useState('');
   const { user, loading, isAuthenticated } = useAuth0();
+  const [isSideBarCollapsed, setIsSideBarCollapsed] = useState(false);
 
-  function toggleCollapsed() {
-    const currentlyCollapsed = sideBarCollapsed === 'is-collapsed';
-    if (currentlyCollapsed) {
-      setSideBarCollapsed('');
+  function toggleSidebar() {
+    if (isSideBarCollapsed) {
+      setIsSideBarCollapsed(false);
     } else {
-      setSideBarCollapsed('is-collapsed');
+      setIsSideBarCollapsed(true);
     }
   }
-
-  // TODO: Replace this jQuery with actual React toggle components
-  useEffect(() => {
-    // ٍSidebar Toggle
-    $('.sidebar-toggle').on('click', (e) => {
-      toggleCollapsed();
-      e.preventDefault();
-    });
-
-    /**
-     * Wait until sidebar fully toggled (animated in/out)
-     * then trigger window resize event in order to recalculate
-     * masonry layout widths and gutters.
-     */
-    $('#sidebar-toggle').click((e) => {
-      e.preventDefault();
-      setTimeout(() => {
-        window.dispatchEvent(window.EVENT);
-      }, 300);
-    });
-  });
 
   if (loading) {
     return <Loading />;
@@ -96,31 +77,42 @@ const App = () => {
   // This lets us retrieve the state code for the user only after we have authenticated
   const getLandingView = (authenticated) => {
     if (!authenticated) {
-      return '/revocations';
+      return "/revocations";
     }
 
     const stateCode = getUserStateCode(user);
     return getLandingViewForState(stateCode);
   };
 
-  let containerClass = 'wide-page-container';
+  let containerClass = "wide-page-container";
   if (shouldLoadSidebar(isAuthenticated)) {
-    containerClass = 'page-container';
+    containerClass = "page-container";
   }
+
+  const isUrlEnabled = (url) => isViewAvailableForUserState(user, url);
 
   return (
     <Router>
-      <div id="app" className={sideBarCollapsed}>
+      <div id="app" className={isSideBarCollapsed ? "is-collapsed" : ""}>
         <div>
           <meta charSet="utf-8" />
-          <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+          <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1, shrink-to-fit=no"
+          />
           <title>Recidiviz Dashboard</title>
           <div>
             {shouldLoadSidebar(isAuthenticated) && (
-            <SideBar />
+              <SideBar
+                isUrlEnabled={isUrlEnabled}
+                toggleSidebar={toggleSidebar}
+              />
             )}
             <div className={containerClass}>
-              <TopBar pathname={window.location.pathname} />
+              <TopBar
+                pathname={window.location.pathname}
+                toggleSidebar={toggleSidebar}
+              />
               <Switch>
                 <Route exact path="/">
                   <Redirect to={getLandingView(isAuthenticated)} />

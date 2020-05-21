@@ -60,34 +60,34 @@ export default (function () {
   });
 
   // Sidebar Activity Class
-  const sidebarLinks = $('.sidebar').find('.sidebar-link');
+  // const sidebarLinks = $('.sidebar').find('.sidebar-link');
 
-  sidebarLinks
-    .each((index, el) => {
-      $(el).removeClass('active');
-    })
-    .filter(function () {
-      const href = $(this).attr('href');
-      const pattern = href[0] === '/' ? href.substr(1) : href;
-      return pattern === (window.location.pathname).substr(1);
-    })
-    .addClass('active');
+  // sidebarLinks
+  //   .each((index, el) => {
+  //     $(el).removeClass('active');
+  //   })
+  //   .filter(function () {
+  //     const href = $(this).attr('href');
+  //     const pattern = href[0] === '/' ? href.substr(1) : href;
+  //     return pattern === (window.location.pathname).substr(1);
+  //   })
+  //   .addClass('active');
 
   // ٍSidebar Toggle
-  $('.sidebar-toggle').on('click', (e) => {
-    $('.app').toggleClass('is-collapsed');
-    e.preventDefault();
-  });
+  // $('.sidebar-toggle').on('click', (e) => {
+  //   $('.app').toggleClass('is-collapsed');
+  //   e.preventDefault();
+  // });
 
   /**
    * Wait untill sidebar fully toggled (animated in/out)
    * then trigger window resize event in order to recalculate
    * masonry layout widths and gutters.
    */
-  $('#sidebar-toggle').click((e) => {
-    e.preventDefault();
-    setTimeout(() => {
-      window.dispatchEvent(window.EVENT);
-    }, 300);
-  });
+  // $('#sidebar-toggle').click((e) => {
+  //   e.preventDefault();
+  //   setTimeout(() => {
+  //     window.dispatchEvent(window.EVENT);
+  //   }, 300);
+  // });
 }());

@@ -45,7 +45,7 @@
         overflow-x: hidden;
 
         > li {
-          > a {
+          > div {
             .title {
               display: none;
             }
@@ -78,7 +78,7 @@
 
         .sidebar-menu {
           > li {
-            > a {
+            > div {
               .title {
                 display: inline-block;
               }
@@ -182,7 +182,10 @@
     display: none;
   }
 
-  .sidebar-link {
+  .sidebar-group {
+    padding-top: 0;
+    padding-bottom: 0;
+
     &.active::before {
       background: $md-blue-500;
       border-radius: 50%;
@@ -193,6 +196,26 @@
       position: absolute;
       top: calc(50% - 4px);
       width: 8px;
+    }
+  }
+
+  .sidebar-link {
+    font-size: 13px;
+    margin-left: 34px;
+    color: #72777a;
+    transition: none;
+
+    &:hover {
+      font-weight: bold;
+    }
+
+    &.active {
+      font-weight: bold;
+
+      &::before {
+        margin-left: -14px;
+        font-family: "themify"; font-weight: bold; content: "\e649";
+      }
     }
   }
 
@@ -218,7 +241,7 @@
       }
 
       &.open {
-        > a {
+        > div {
           color: $default-dark;
 
           .icon-holder {
@@ -244,7 +267,7 @@
       }
     }
 
-    a {
+    div {
       color: $default-text-color;
       transition: all 0.3s ease;
 
@@ -275,7 +298,7 @@
           width: 100%;
 
           > li {
-            > a {
+            > div {
               display: block;
               padding: 10px 15px;
 
@@ -287,7 +310,7 @@
             }
 
             &.active {
-              a {
+              div {
                 color: $default-dark;
               }
             }
@@ -296,7 +319,7 @@
       }
     }
 
-    > a {
+    > div {
       display: block;
       font-size: 15px;
       font-weight: 500;

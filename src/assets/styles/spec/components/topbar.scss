@@ -47,7 +47,7 @@
       > li {
         float: left;
 
-        > a {
+        > a, button {
           color: $default-text-color;
           display: block;
           line-height: $header-height;
