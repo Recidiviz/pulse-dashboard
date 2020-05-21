@@ -330,17 +330,7 @@ const CommunityExplore = () => {
       <ChartCard
         key="supervisionSuccessSnapshot"
         chartId="supervisionSuccessSnapshot"
-        chartTitle={
-          <>
-            SUCCESSFUL COMPLETION OF SUPERVISION
-            {district !== "all" && (
-              <WarningIcon
-                tooltipText="Filtering this graph by a specific office requires knowing the officer that was assigned to historical periods of supervision. Because the Docstars data system does not currently keep a full historical record of officer assignments, we cannot track this measurement by office prior to when we first began ingesting data from DOCR."
-                className="pL-10 toggle-alert"
-              />
-            )}
-          </>
-        }
+        chartTitle="SUCCESSFUL COMPLETION OF SUPERVISION"
         chart={
           <SupervisionSuccessSnapshot
             metricType={metricType}
@@ -433,12 +423,6 @@ const CommunityExplore = () => {
             {metricType !== "counts" && (
               <WarningIcon
                 tooltipText="This graph is showing average LSI-R score change. It does not support showing this metric as a rate."
-                className="pL-10 toggle-alert"
-              />
-            )}
-            {district !== "all" && (
-              <WarningIcon
-                tooltipText="Filtering this graph by a specific office requires knowing the officer that was assigned to historical periods of supervision. Because the Docstars data system does not currently keep a full historical record of officer assignments, we cannot track this measurement by office prior to when we first began ingesting data from DOCR."
                 className="pL-10 toggle-alert"
               />
             )}

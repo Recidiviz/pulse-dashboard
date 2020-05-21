@@ -111,6 +111,7 @@ const FILES_BY_METRIC_TYPE = {
     'average_change_lsir_score_by_period.json',
     'case_terminations_by_type_by_month.json',
     'case_terminations_by_type_by_officer_by_period.json',
+    'race_proportions.json',
     'revocations_by_month.json',
     'revocations_by_officer_by_period.json',
     'revocations_by_period.json',
