@@ -24,11 +24,11 @@ import SideBarGroup from "./SideBarGroup";
 import SideBarLink from "./SideBarLink";
 import SideBarMenu from "./SideBarMenu";
 
-const SideBar = ({ toggleSidebar }) => {
+const SideBar = ({ toggleSideBar }) => {
   return (
     <div className="sidebar">
       <div className="sidebar-inner">
-        <SideBarHeader toggleSidebar={toggleSidebar} />
+        <SideBarHeader toggleSideBar={toggleSideBar} />
         <SideBarMenu>
           <SideBarGroup
             key="Community"
@@ -64,7 +64,7 @@ const SideBar = ({ toggleSidebar }) => {
 };
 
 SideBar.propTypes = {
-  toggleSidebar: PropTypes.func.isRequired,
+  toggleSideBar: PropTypes.func.isRequired,
 };
 
 export default SideBar;

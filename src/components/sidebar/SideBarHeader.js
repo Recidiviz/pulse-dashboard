@@ -21,7 +21,7 @@ import { Link } from "react-router-dom";
 
 import logo from "../../assets/static/images/logo.png";
 
-const SideBarHeader = ({ toggleSidebar }) => (
+const SideBarHeader = ({ toggleSideBar }) => (
   <div className="sidebar-logo" style={{ height: "65px" }}>
     <div className="peers ai-c fxw-nw">
       <div className="peer peer-greed">
@@ -44,7 +44,7 @@ const SideBarHeader = ({ toggleSidebar }) => (
         <button
           type="button"
           className="mobile-toggle sidebar-toggle bds-n"
-          onClick={toggleSidebar}
+          onClick={toggleSideBar}
         >
           <div className="td-n" style={{ cursor: "pointer" }}>
             <i className="ti-arrow-circle-left" />
@@ -56,7 +56,7 @@ const SideBarHeader = ({ toggleSidebar }) => (
 );
 
 SideBarHeader.propTypes = {
-  toggleSidebar: PropTypes.func.isRequired,
+  toggleSideBar: PropTypes.func.isRequired,
 };
 
 export default SideBarHeader;

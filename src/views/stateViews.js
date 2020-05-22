@@ -24,12 +24,11 @@ import UsNdCommunityExplore from './tenants/us_nd/community/Explore';
 import UsNdFacilitiesGoals from './tenants/us_nd/facilities/Goals';
 import UsNdFacilitiesExplore from './tenants/us_nd/facilities/Explore';
 import UsNdProgrammingExplore from './tenants/us_nd/programming/Explore';
-
-import UsMoRevocations from './tenants/us_mo/Revocations';
+import UsMoRevocations from './tenants/us_mo/community/Revocations';
 
 const STATE_VIEW_COMPONENTS = {
   us_mo: {
-    '/revocations': UsMoRevocations,
+    '/community/revocations': UsMoRevocations,
   },
   us_nd: {
     '/community/goals': UsNdCommunityGoals,
@@ -41,8 +40,20 @@ const STATE_VIEW_COMPONENTS = {
 };
 
 const STATE_LANDING_VIEWS = {
-  us_mo: '/revocations',
+  us_mo: '/community/revocations',
   us_nd: '/community/goals',
+};
+
+const REDIRECTS = {
+  us_mo: {
+    '/revocations': '/community/revocations',
+  },
+  us_nd: {
+    '/snapshots': '/community/goals',
+    '/revocations': '/community/goals',
+    '/reincarcerations': '/facilities/goals',
+    '/programEvaluation/freeThroughRecovery': '/programming/explore',
+  },
 };
 
 const LANTERN_STATE_CODES = ['us_mo'];
@@ -197,12 +208,17 @@ function getLandingViewForState(stateCode) {
   return STATE_LANDING_VIEWS[normalizedStateCode] || '/';
 }
 
+function getRedirectedViewForState(view, stateCode) {
+  return REDIRECTS[stateCode.toLowerCase()][view] || '/';
+}
+
 export {
   isLanternState,
   getAvailableStates,
   getAvailableStatesForAdminUser,
   getAvailableViewsForState,
   getLandingViewForState,
+  getRedirectedViewForState,
   getComponentForStateView,
   getCurrentStateForAdminUsers,
   getCurrentStateForAdminUsersFromStateCode,

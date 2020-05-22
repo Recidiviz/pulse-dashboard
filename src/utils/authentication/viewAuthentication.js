@@ -17,7 +17,10 @@
 
 import { getUserStateCode } from './user';
 import {
-  getAvailableViewsForState, getCurrentStateForAdminUsersFromStateCode, isAdminStateCode,
+  getAvailableViewsForState,
+  getCurrentStateForAdminUsersFromStateCode,
+  getRedirectedViewForState,
+  isAdminStateCode,
 } from '../../views/stateViews';
 
 /**
@@ -34,16 +37,20 @@ function getDemoUser() {
   };
 }
 
+function getNormalizedCode(user) {
+  const stateCode = getUserStateCode(user);
+  return isAdminStateCode(stateCode)
+    ? getCurrentStateForAdminUsersFromStateCode(stateCode) : stateCode.toLowerCase();
+}
+
 /**
  * Returns whether or not the view with the given name is available for the given user, based on
  * their state.
  */
 function isViewAvailableForUserState(user, view) {
-  const stateCode = getUserStateCode(user);
-  const normalizedCode = isAdminStateCode(stateCode)
-    ? getCurrentStateForAdminUsersFromStateCode(stateCode) : stateCode.toLowerCase();
-
+  const normalizedCode = getNormalizedCode(user);
   const permittedViews = getAvailableViewsForState(normalizedCode);
+
   if (!permittedViews) {
     // State is not present in permissions yet
     return false;
@@ -52,7 +59,13 @@ function isViewAvailableForUserState(user, view) {
   return permittedViews.includes(view.toLowerCase());
 }
 
+function getRedirectedView(user, view) {
+  const normalizedCode = getNormalizedCode(user);
+  return getRedirectedViewForState(view, normalizedCode);
+}
+
 export {
   getDemoUser,
+  getRedirectedView,
   isViewAvailableForUserState,
 };

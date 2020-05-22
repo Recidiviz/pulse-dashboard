@@ -1,5 +1,5 @@
 // Recidiviz - a data platform for criminal justice reform
-// Copyright (C) 2019 Recidiviz, Inc.
+// Copyright (C) 2020 Recidiviz, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -20,31 +20,32 @@ import RenderInBrowser from 'react-render-in-browser';
 import Select from 'react-select';
 import Sticky from 'react-sticky-fill';
 
-import Loading from '../../../components/Loading';
-import '../../../assets/styles/index.scss';
-import { useAuth0 } from '../../../react-auth0-spa';
-import { callMetricsApi, awaitingResults } from '../../../utils/metricsClient';
-import { matrixViolationTypeToLabel, toInt, violationCountLabel } from '../../../utils/transforms/labels';
-import useTopBarShrinking from '../../../hooks/useTopBarShrinking'
+import Loading from '../../../../components/Loading';
+import '../../../../assets/styles/index.scss';
+// import '../../../../assets/styles/index.scss';
+import { useAuth0 } from '../../../../react-auth0-spa';
+import { callMetricsApi, awaitingResults } from '../../../../utils/metricsClient';
+import { matrixViolationTypeToLabel, toInt, violationCountLabel } from '../../../../utils/transforms/labels';
+import useTopBarShrinking from '../../../../hooks/useTopBarShrinking'
 
 import RevocationMatrix
-  from '../../../components/charts/new_revocations/RevocationMatrix';
+  from '../../../../components/charts/new_revocations/RevocationMatrix';
 import RevocationCountOverTime
-  from '../../../components/charts/new_revocations/RevocationsOverTime';
+  from '../../../../components/charts/new_revocations/RevocationsOverTime';
 import RevocationsByDistrict
-  from '../../../components/charts/new_revocations/RevocationsByDistrict';
+  from '../../../../components/charts/new_revocations/RevocationsByDistrict';
 import RevocationsByRiskLevel
-  from '../../../components/charts/new_revocations/RevocationsByRiskLevel';
+  from '../../../../components/charts/new_revocations/RevocationsByRiskLevel';
 import RevocationsByViolation
-  from '../../../components/charts/new_revocations/RevocationsByViolation';
+  from '../../../../components/charts/new_revocations/RevocationsByViolation';
 import RevocationsByGender
-  from '../../../components/charts/new_revocations/RevocationsByGender';
+  from '../../../../components/charts/new_revocations/RevocationsByGender';
 import RevocationsByRace
-  from '../../../components/charts/new_revocations/RevocationsByRace';
+  from '../../../../components/charts/new_revocations/RevocationsByRace';
 import CaseTable
-  from '../../../components/charts/new_revocations/CaseTable/CaseTable';
+  from '../../../../components/charts/new_revocations/CaseTable/CaseTable';
 import Chip
-  from '../../../components/charts/new_revocations/Chip';
+  from '../../../../components/charts/new_revocations/Chip';
 
 const METRIC_PERIODS = [
   { value: '36', label: '3 years' },

@@ -15,7 +15,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React, { useState } from "react";
+import React from "react";
 import {
   BrowserRouter as Router,
   Redirect,
@@ -31,10 +31,11 @@ import PrivateRoute from "./components/PrivateRoute";
 import PrivateTenantRedirect from "./components/PrivateTenantRedirect";
 import PrivateTenantRoute from "./components/PrivateTenantRoute";
 import SideBar from "./components/sidebar/SideBar";
-import TopBar from "./components/TopBar";
+import TopBar from "./components/topbar/TopBar";
+import useLayout from "./hooks/useLayout";
+import useSideBar from "./hooks/useSideBar";
 import { getUserStateCode } from "./utils/authentication/user";
 import { isViewAvailableForUserState } from "./utils/authentication/viewAuthentication";
-import { hasSideBar } from "./utils/layout/filters";
 import NotFound from "./views/NotFound";
 import Profile from "./views/Profile";
 import VerificationNeeded from "./views/VerificationNeeded";
@@ -51,44 +52,24 @@ initFontAwesome();
 
 const App = () => {
   const { user, loading, isAuthenticated } = useAuth0();
-  const [isSideBarCollapsed, setIsSideBarCollapsed] = useState(false);
-
-  function toggleSidebar() {
-    if (isSideBarCollapsed) {
-      setIsSideBarCollapsed(false);
-    } else {
-      setIsSideBarCollapsed(true);
-    }
-  }
+  const { isWide } = useLayout();
+  const { isSideBarCollapsed, toggleSideBar } = useSideBar();
 
   if (loading) {
     return <Loading />;
   }
 
   // This lets us retrieve the state code for the user only after we have authenticated
-  const shouldLoadSidebar = (authenticated) => {
-    if (!authenticated) {
-      return false;
-    }
-
-    const stateCode = getUserStateCode(user);
-    return hasSideBar(stateCode, authenticated);
-  };
-
-  // This lets us retrieve the state code for the user only after we have authenticated
   const getLandingView = (authenticated) => {
     if (!authenticated) {
-      return "/revocations";
+      return "/community/revocations";
     }
 
     const stateCode = getUserStateCode(user);
     return getLandingViewForState(stateCode);
   };
 
-  let containerClass = "wide-page-container";
-  if (shouldLoadSidebar(isAuthenticated)) {
-    containerClass = "page-container";
-  }
+  const containerClass = isWide ? "wide-page-container" : "page-container";
 
   const isUrlEnabled = (url) => isViewAvailableForUserState(user, url);
 
@@ -103,41 +84,29 @@ const App = () => {
           />
           <title>Recidiviz Dashboard</title>
           <div>
-            {shouldLoadSidebar(isAuthenticated) && (
+            {!isWide && (
               <SideBar
                 isUrlEnabled={isUrlEnabled}
-                toggleSidebar={toggleSidebar}
+                toggleSideBar={toggleSideBar}
               />
             )}
             <div className={containerClass}>
-              <TopBar
-                pathname={window.location.pathname}
-                toggleSidebar={toggleSidebar}
-              />
+              <TopBar toggleSideBar={toggleSideBar} />
+
               <Switch>
-                <Route exact path="/">
-                  <Redirect to={getLandingView(isAuthenticated)} />
-                </Route>
+                <Redirect exact from="/" to={getLandingView(isAuthenticated)} />
 
-                <PrivateTenantRoute code="us_mo" path="/revocations" />
-                <PrivateTenantRoute code="us_nd" path="/community/goals" />
-                <PrivateTenantRoute code="us_nd" path="/community/explore" />
-                <PrivateTenantRoute code="us_nd" path="/facilities/goals" />
-                <PrivateTenantRoute code="us_nd" path="/facilities/explore" />
-                <PrivateTenantRoute code="us_nd" path="/programming/explore" />
+                <PrivateTenantRedirect from="/snapshots" />
+                <PrivateTenantRedirect from="/revocations" />
+                <PrivateTenantRedirect from="/reincarcerations" />
+                <PrivateTenantRedirect from="/programEvaluation/freeThroughRecovery" />
 
-                <PrivateTenantRedirect
-                  from="/snapshots"
-                  to="/community/goals"
-                />
-                <PrivateTenantRedirect
-                  from="/reincarcerations"
-                  to="/facilities/goals"
-                />
-                <PrivateTenantRedirect
-                  from="/programEvaluation/freeThroughRecovery"
-                  to="/programming/explore"
-                />
+                <PrivateTenantRoute path="/community/revocations" />
+                <PrivateTenantRoute path="/community/goals" />
+                <PrivateTenantRoute path="/community/explore" />
+                <PrivateTenantRoute path="/facilities/goals" />
+                <PrivateTenantRoute path="/facilities/explore" />
+                <PrivateTenantRoute path="/programming/explore" />
 
                 <PrivateRoute path="/profile" component={Profile} />
                 <Route path="/verify" component={VerificationNeeded} />

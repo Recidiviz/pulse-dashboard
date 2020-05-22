@@ -15,15 +15,14 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React, { useEffect } from 'react';
-import PropTypes from 'prop-types';
-import { Redirect } from 'react-router-dom';
+import React, { useEffect } from "react";
+import PropTypes from "prop-types";
+import { Redirect } from "react-router-dom";
 
-import { useAuth0 } from '../react-auth0-spa';
-import { getUserStateCode } from '../utils/authentication/user';
-import { isViewAvailableForUserState } from '../utils/authentication/viewAuthentication';
+import { useAuth0 } from "../react-auth0-spa";
+import { getRedirectedView } from "../utils/authentication/viewAuthentication";
 
-const PrivateTenantRedirect = ({ from, to, ...rest }) => {
+const PrivateTenantRedirect = ({ from, ...rest }) => {
   const { isAuthenticated, loginWithRedirect, user } = useAuth0();
 
   useEffect(() => {
@@ -39,18 +38,12 @@ const PrivateTenantRedirect = ({ from, to, ...rest }) => {
 
   if (!isAuthenticated) return null;
 
-  const stateCode = getUserStateCode(user);
-
-  if (isViewAvailableForUserState(user, from)) {
-    return <Redirect from={from} to={to} {...rest} />
-  } else {
-    return null;
-  }
+  const to = getRedirectedView(user, from);
+  return <Redirect from={from} to={to} {...rest} />;
 };
 
 PrivateTenantRedirect.propTypes = {
   from: PropTypes.string.isRequired,
-  to: PropTypes.string.isRequired,
 };
 
 export default PrivateTenantRedirect;
