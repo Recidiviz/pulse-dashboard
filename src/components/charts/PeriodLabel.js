@@ -16,16 +16,25 @@
 // =============================================================================
 
 import React from "react";
-import WarningIcon from "./WarningIcon";
+import PropTypes from "prop-types";
 
-const DataSignificanceWarningIcon = () => {
-  const text = `
-      Some categories in this chart may not be statistically significant
-      due to having a sample size smaller than 100.
-      Those categories are represented with line shading.
-  `;
+import { getPeriodLabelFromMetricPeriodMonthsToggle } from "../../utils/charts/toggles";
 
-  return <WarningIcon tooltipText={text} />;
+const PeriodLabel = ({ metricPeriodMonths }) => (
+  <div className="layer bdT p-20 w-100">
+    <div className="peers ai-c jc-c gapX-20">
+      <div className="peer fw-600">
+        <small className="c-grey-500 fw-600">Period </small>
+        <span className="fsz-def fw-600 mR-10 c-grey-800">
+          {getPeriodLabelFromMetricPeriodMonthsToggle(metricPeriodMonths)}
+        </span>
+      </div>
+    </div>
+  </div>
+);
+
+PeriodLabel.propTypes = {
+  metricPeriodMonths: PropTypes.string.isRequired,
 };
 
-export default DataSignificanceWarningIcon;
+export default PeriodLabel;

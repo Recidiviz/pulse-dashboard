@@ -15,17 +15,9 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React from "react";
-import WarningIcon from "./WarningIcon";
+/* eslint-disable no-console */
 
-const DataSignificanceWarningIcon = () => {
-  const text = `
-      Some categories in this chart may not be statistically significant
-      due to having a sample size smaller than 100.
-      Those categories are represented with line shading.
-  `;
-
-  return <WarningIcon tooltipText={text} />;
+export default {
+  log: console.log,
+  error: console.error,
 };
-
-export default DataSignificanceWarningIcon;

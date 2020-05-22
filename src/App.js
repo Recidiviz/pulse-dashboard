@@ -129,6 +129,15 @@ const App = () => {
                 <PrivateTenantRoute path="/revocations" />
                 <PrivateTenantRoute path="/reincarcerations" />
                 <PrivateTenantRoute path="/programEvaluation/freeThroughRecovery" />
+
+                {/* start new routes without links */}
+                <PrivateTenantRoute path="/community/goals" />
+                <PrivateTenantRoute path="/community/explore" />
+                <PrivateTenantRoute path="/facilities/goals" />
+                <PrivateTenantRoute path="/facilities/explore" />
+                <PrivateTenantRoute path="/programming/explore" />
+                {/* end new routes without links */}
+
                 <PrivateRoute path="/profile" component={Profile} />
                 <Route path="/verify" component={VerificationNeeded} />
                 <Route component={NotFound} />
