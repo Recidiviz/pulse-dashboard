@@ -89,6 +89,46 @@ function newRevocationFile(req, res) {
   );
 }
 
+function communityGoals(req, res) {
+  metricsApi.fetchCommunityGoals(
+    isDemoMode,
+    req.params.stateCode,
+    responder(res)
+  );
+}
+
+function communityExplore(req, res) {
+  metricsApi.fetchCommunityExplore(
+    isDemoMode,
+    req.params.stateCode,
+    responder(res)
+  );
+}
+
+function facilitiesGoals(req, res) {
+  metricsApi.fetchFacilitiesGoals(
+    isDemoMode,
+    req.params.stateCode,
+    responder(res)
+  );
+}
+
+function facilitiesExplore(req, res) {
+  metricsApi.fetchFacilitiesExplore(
+    isDemoMode,
+    req.params.stateCode,
+    responder(res)
+  );
+}
+
+function programmingExplore(req, res) {
+  metricsApi.fetchProgrammingExplore(
+    isDemoMode,
+    req.params.stateCode,
+    responder(res)
+  );
+}
+
 module.exports = {
   freeThroughRecovery,
   reincarcerations,
@@ -96,4 +136,9 @@ module.exports = {
   snapshots,
   newRevocations,
   newRevocationFile,
+  communityGoals,
+  communityExplore,
+  facilitiesGoals,
+  facilitiesExplore,
+  programmingExplore,
 };

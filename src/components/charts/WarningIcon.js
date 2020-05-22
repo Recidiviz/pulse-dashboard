@@ -19,17 +19,27 @@ import React from "react";
 import PropTypes from "prop-types";
 import ReactTooltip from "react-tooltip";
 
-const WarningIcon = ({ tooltipText }) => (
-  <>
-    &nbsp;
-    <span data-tip data-for="warningTooltip" className="ti-alert" />
-    <ReactTooltip id="warningTooltip">{tooltipText}</ReactTooltip>
-  </>
-);
+const WarningIcon = ({ tooltipText, className }) => {
+  const id = `_${Math.random().toString(36).substr(2, 9)}`;
+
+  return (
+    <>
+      &nbsp;
+      <span data-tip data-for={id} className={`ti-alert ${className}`} />
+      <ReactTooltip id={id} effect="solid">
+        {tooltipText}
+      </ReactTooltip>
+    </>
+  );
+};
+
+WarningIcon.defaultProps = {
+  className: "",
+};
 
 WarningIcon.propTypes = {
-  tooltipText: PropTypes.oneOfType([PropTypes.string, PropTypes.node])
-    .isRequired,
+  tooltipText: PropTypes.string.isRequired,
+  className: PropTypes.string,
 };
 
 export default WarningIcon;

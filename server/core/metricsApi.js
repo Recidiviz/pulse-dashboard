@@ -93,6 +93,60 @@ const FILES_BY_METRIC_TYPE = {
     'revocations_matrix_filtered_caseload.json',
     'revocations_matrix_supervision_distribution_by_district.json',
   ],
+  communityGoals: [
+    'admissions_by_type_by_month.json',
+    'admissions_by_type_by_period.json',
+    'average_change_lsir_score_by_month.json',
+    'average_change_lsir_score_by_period.json',
+    'revocations_by_month.json',
+    'revocations_by_period.json',
+    'supervision_termination_by_type_by_month.json',
+    'supervision_termination_by_type_by_period.json',
+    'site_offices.json',
+  ],
+  communityExplore: [
+    'admissions_by_type_by_month.json',
+    'admissions_by_type_by_period.json',
+    'average_change_lsir_score_by_month.json',
+    'average_change_lsir_score_by_period.json',
+    'case_terminations_by_type_by_month.json',
+    'case_terminations_by_type_by_officer_by_period.json',
+    'race_proportions.json',
+    'revocations_by_month.json',
+    'revocations_by_officer_by_period.json',
+    'revocations_by_period.json',
+    'revocations_by_race_and_ethnicity_by_period.json',
+    'revocations_by_supervision_type_by_month.json',
+    'revocations_by_violation_type_by_month.json',
+    'supervision_termination_by_type_by_month.json',
+    'supervision_termination_by_type_by_period.json',
+    'site_offices.json',
+  ],
+  facilitiesGoals: [
+    'avg_days_at_liberty_by_month.json',
+    'reincarcerations_by_month.json',
+    'reincarcerations_by_period.json',
+  ],
+  facilitiesExplore: [
+    'admissions_by_type_by_period.json',
+    'admissions_versus_releases_by_month.json',
+    'admissions_versus_releases_by_period.json',
+    'avg_days_at_liberty_by_month.json',
+    'reincarceration_rate_by_stay_length.json',
+    'reincarcerations_by_month.json',
+    'reincarcerations_by_period.json',
+  ],
+  programmingExplore: [
+    'ftr_referrals_by_age_by_period.json',
+    'ftr_referrals_by_gender_by_period.json',
+    'ftr_referrals_by_lsir_by_period.json',
+    'ftr_referrals_by_month.json',
+    'ftr_referrals_by_participation_status.json',
+    'ftr_referrals_by_period.json',
+    'ftr_referrals_by_race_and_ethnicity_by_period.json',
+    'race_proportions.json',
+    'site_offices.json',
+  ],
 };
 
 /**
@@ -240,6 +294,26 @@ function fetchNewRevocationFile(isDemo, stateCode, file, callback) {
   return fetchMetrics(stateCode, 'newRevocation', file, isDemo, callback);
 }
 
+function fetchCommunityGoals(isDemo, stateCode, callback) {
+  return fetchMetrics(stateCode, 'communityGoals', null, isDemo, callback);
+}
+
+function fetchCommunityExplore(isDemo, stateCode, callback) {
+  return fetchMetrics(stateCode, 'communityExplore', null, isDemo, callback);
+}
+
+function fetchFacilitiesGoals(isDemo, stateCode, callback) {
+  return fetchMetrics(stateCode, 'facilitiesGoals', null, isDemo, callback);
+}
+
+function fetchFacilitiesExplore(isDemo, stateCode, callback) {
+  return fetchMetrics(stateCode, 'facilitiesExplore', null, isDemo, callback);
+}
+
+function fetchProgrammingExplore(isDemo, stateCode, callback) {
+  return fetchMetrics(stateCode, 'programmingExplore', null, isDemo, callback);
+}
+
 module.exports = {
   fetchFreeThroughRecoveryMetrics,
   fetchReincarcerationMetrics,
@@ -247,4 +321,9 @@ module.exports = {
   fetchSnapshotMetrics,
   fetchNewRevocationMetrics,
   fetchNewRevocationFile,
+  fetchCommunityGoals,
+  fetchCommunityExplore,
+  fetchFacilitiesGoals,
+  fetchFacilitiesExplore,
+  fetchProgrammingExplore,
 };
