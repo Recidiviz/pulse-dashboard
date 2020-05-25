@@ -15,10 +15,6 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import UsNdFreeThroughRecovery from './tenants/us_nd/FreeThroughRecovery';
-import UsNdReincarcerations from './tenants/us_nd/Reincarcerations';
-import UsNdRevocations from './tenants/us_nd/Revocations';
-import UsNdSnapshots from './tenants/us_nd/Snapshots';
 import UsNdCommunityGoals from './tenants/us_nd/community/Goals';
 import UsNdCommunityExplore from './tenants/us_nd/community/Explore';
 import UsNdFacilitiesGoals from './tenants/us_nd/facilities/Goals';
@@ -32,10 +28,6 @@ const STATE_VIEW_COMPONENTS = {
     '/revocations': UsMoRevocations,
   },
   us_nd: {
-    '/programevaluation/freethroughrecovery': UsNdFreeThroughRecovery,
-    '/reincarcerations': UsNdReincarcerations,
-    '/revocations': UsNdRevocations,
-    '/snapshots': UsNdSnapshots,
     '/community/goals': UsNdCommunityGoals,
     '/community/explore': UsNdCommunityExplore,
     '/facilities/goals': UsNdFacilitiesGoals,

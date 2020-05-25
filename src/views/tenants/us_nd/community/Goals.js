@@ -22,10 +22,10 @@ import Loading from "../../../../components/Loading";
 import ChartCard from "../../../../components/charts/ChartCard";
 import GeoViewTimeChart from "../../../../components/charts/GeoViewTimeChart";
 import Methodology from "../../../../components/charts/Methodology";
-import RevocationCountOverTime from "../../../../components/charts/revocations/RevocationCountOverTime";
-import LsirScoreChangeSnapshot from "../../../../components/charts/snapshots/LsirScoreChangeSnapshot";
-import RevocationAdmissionsSnapshot from "../../../../components/charts/snapshots/RevocationAdmissionsSnapshot";
-import SupervisionSuccessSnapshot from "../../../../components/charts/snapshots/SupervisionSuccessSnapshot";
+import LsirScoreChangeSnapshot from "../../../../components/charts/community/LsirScoreChangeSnapshot";
+import RevocationAdmissionsSnapshot from "../../../../components/charts/community/RevocationAdmissionsSnapshot";
+import RevocationCountOverTime from "../../../../components/charts/community/RevocationCountOverTime";
+import SupervisionSuccessSnapshot from "../../../../components/charts/community/SupervisionSuccessSnapshot";
 // eslint-disable-next-line import/no-cycle
 import useChartData from "../../../../hooks/useChartData";
 

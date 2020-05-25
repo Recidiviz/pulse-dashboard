@@ -17,10 +17,9 @@
 
 import React, { useState, useEffect } from 'react';
 import { Bar } from 'react-chartjs-2';
-
-import { COLORS_FIVE_VALUES } from '../../../../../assets/scripts/constants/colors';
-import { configureDownloadButtons } from '../../../../../assets/scripts/utils/downloads';
-import { getPerMonthChartDefinition } from '../../../BarCharts';
+import { COLORS_FIVE_VALUES } from '../../../assets/scripts/constants/colors';
+import { configureDownloadButtons } from '../../../assets/scripts/utils/downloads';
+import { getPerMonthChartDefinition } from '../BarCharts';
 
 const chartId = 'ftrReferralsByParticipationStatus';
 
