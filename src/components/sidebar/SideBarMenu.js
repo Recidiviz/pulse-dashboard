@@ -19,7 +19,7 @@ import React from "react";
 import PropTypes from "prop-types";
 
 const SideBarMenu = ({ children }) => (
-  <ul className="sidebar-menu scrollable pos-r mT-30">{children}</ul>
+  <ul className="sidebar-menu scrollable pos-r pT-30">{children}</ul>
 );
 
 SideBarMenu.propTypes = {

@@ -12,6 +12,9 @@
 // @Sidebar
 // ---------------------------------------------------------
 
+@import '../../assets/styles/spec/settings/index';
+@import '../../assets/styles/spec/tools/index';
+
 .sidebar {
   background-color: $default-white;
   bottom: 0;
@@ -51,7 +54,7 @@
             }
           }
 
-          .sidebar-link::before {
+          .active.sidebar-link::before {
             display: none;
           }
         }
@@ -103,6 +106,10 @@
               }
             }
           }
+
+          .sidebar-link.active::before {
+            display: inline-block !important;
+          }
         }
       }
     }
@@ -153,6 +160,7 @@
     float: right;
     font-size: 18px;
     line-height: calc(#{$header-height} - 1px);
+    background-color: transparent;
 
     a {
       color: $default-text-color;
@@ -424,6 +432,10 @@
                 }
               }
             }
+
+            .sidebar-link.active::before {
+              display: inline-block !important;
+            }
           }
         }
       }
@@ -458,6 +470,10 @@
                 display: block !important;
               }
             }
+          }
+
+          .sidebar-link.active::before {
+            display: inline-block !important;
           }
         }
       }

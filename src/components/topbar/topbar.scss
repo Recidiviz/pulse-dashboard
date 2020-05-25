@@ -8,6 +8,9 @@
 // @Topbar
 // ---------------------------------------------------------
 
+@import '../../assets/styles/spec/settings/index';
+@import '../../assets/styles/spec/tools/index';
+
 .header {
   background-color: $default-white;
   border-bottom: 1px solid $border-color;
@@ -53,6 +56,7 @@
           line-height: $header-height;
           min-height: $header-height;
           padding: 0 15px;
+          background-color: transparent;
           transition: all 0.2s ease-in-out;
 
           i {

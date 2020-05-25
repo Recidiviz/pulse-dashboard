@@ -22,7 +22,7 @@ import { Link } from "react-router-dom";
 import logo from "../../assets/static/images/logo.png";
 
 const SideBarHeader = ({ toggleSideBar }) => (
-  <div className="sidebar-logo" style={{ height: "65px" }}>
+  <div className="sidebar-logo" style={{ height: "66px" }}>
     <div className="peers ai-c fxw-nw">
       <div className="peer peer-greed">
         <Link className="sidebar-link td-n" to="/">

@@ -21,7 +21,7 @@ import { Link } from "react-router-dom";
 
 import { getUserStateName } from "../../utils/authentication/user";
 
-const TopBarForAuthenticatedUser = ({ user, onLogout }) => (
+const TopBarUserMenuForAuthenticatedUser = ({ user, onLogout }) => (
   <li className="dropdown">
     <a
       href="?"
@@ -58,7 +58,7 @@ const TopBarForAuthenticatedUser = ({ user, onLogout }) => (
   </li>
 );
 
-TopBarForAuthenticatedUser.propTypes = {
+TopBarUserMenuForAuthenticatedUser.propTypes = {
   user: PropTypes.shape({
     name: PropTypes.string.isRequired,
     picture: PropTypes.string,
@@ -66,4 +66,4 @@ TopBarForAuthenticatedUser.propTypes = {
   onLogout: PropTypes.func.isRequired,
 };
 
-export default TopBarForAuthenticatedUser;
+export default TopBarUserMenuForAuthenticatedUser;

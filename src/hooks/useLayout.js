@@ -21,7 +21,7 @@ import { hasSideBar } from "../utils/layout/filters";
 import { isLanternState } from "../views/stateViews";
 
 function checkIsLantern(user, isAuthenticated) {
-  if (!isAuthenticated) {
+  if (!user || !isAuthenticated) {
     return false;
   }
 
@@ -30,8 +30,7 @@ function checkIsLantern(user, isAuthenticated) {
 }
 
 function checkIsWide(user, isAuthenticated) {
-  // This lets us retrieve the state code for the user only after we have authenticated
-  if (!isAuthenticated) {
+  if (!user || !isAuthenticated) {
     return false;
   }
 
@@ -41,7 +40,7 @@ function checkIsWide(user, isAuthenticated) {
   return isWideTopBar;
 }
 
-function useTopBar() {
+function useLayout() {
   const { user, isAuthenticated } = useAuth0();
 
   const isLantern = checkIsLantern(user, isAuthenticated);
@@ -50,4 +49,4 @@ function useTopBar() {
   return { isLantern, isWide };
 }
 
-export default useTopBar;
+export default useLayout;

@@ -20,14 +20,13 @@ import RenderInBrowser from 'react-render-in-browser';
 import Select from 'react-select';
 import Sticky from 'react-sticky-fill';
 
-import Loading from '../../../../components/Loading';
 import '../../../../assets/styles/index.scss';
-// import '../../../../assets/styles/index.scss';
 import { useAuth0 } from '../../../../react-auth0-spa';
 import { callMetricsApi, awaitingResults } from '../../../../utils/metricsClient';
 import { matrixViolationTypeToLabel, toInt, violationCountLabel } from '../../../../utils/transforms/labels';
 import useTopBarShrinking from '../../../../hooks/useTopBarShrinking'
 
+import Loading from '../../../../components/Loading';
 import RevocationMatrix
   from '../../../../components/charts/new_revocations/RevocationMatrix';
 import RevocationCountOverTime

@@ -19,24 +19,22 @@ import React, { useCallback } from "react";
 import PropTypes from "prop-types";
 import { useLocation } from "react-router-dom";
 
-import { useAuth0 } from "../../react-auth0-spa";
-import { normalizeAppPathToTitle } from "../../assets/scripts/utils/strings";
-
+import TopBarHamburgerMenu from "./TopBarHamburgerMenu";
 import TopBarLayout from "./TopBarLayout";
 import TopBarLogo from "./TopBarLogo";
-import TopBarForGuest from "./TopBarForGuest";
-import TopBarForAuthenticatedUser from "./TopBarForAuthenticatedUser";
 import TopBarTitle from "./TopBarTitle";
-import TopBarHamburgerMenu from "./TopBarHamburgerMenu";
+import TopBarUserMenuForGuest from "./TopBarUserMenuForGuest";
+import TopBarUserMenuForAuthenticatedUser from "./TopBarUserMenuForAuthenticatedUser";
 
 import useLayout from "../../hooks/useLayout";
+import { useAuth0 } from "../../react-auth0-spa";
+
+import "./topbar.scss";
 
 const TopBar = ({ toggleSideBar }) => {
   const { user, isAuthenticated, loginWithRedirect, logout } = useAuth0();
   const location = useLocation();
   const { isLantern, isWide } = useLayout();
-
-  const normalizedPath = normalizeAppPathToTitle(location.pathname) || "";
 
   const onLogin = useCallback(
     () => loginWithRedirect({ appState: { targetUrl: "/community/goals" } }),
@@ -55,14 +53,14 @@ const TopBar = ({ toggleSideBar }) => {
       ) : (
         <ul className="nav-left">
           {isAuthenticated && <TopBarHamburgerMenu onClick={toggleSideBar} />}
-          <TopBarTitle title={normalizedPath} />
+          <TopBarTitle pathname={location.pathname} />
         </ul>
       )}
       <ul className="nav-right">
         {isAuthenticated ? (
-          <TopBarForAuthenticatedUser user={user} onLogout={onLogout} />
+          <TopBarUserMenuForAuthenticatedUser user={user} onLogout={onLogout} />
         ) : (
-          <TopBarForGuest onLogin={onLogin} />
+          <TopBarUserMenuForGuest onLogin={onLogin} />
         )}
       </ul>
     </TopBarLayout>
