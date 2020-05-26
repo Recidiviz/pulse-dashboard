@@ -21,6 +21,7 @@ import Select from 'react-select';
 import Sticky from 'react-sticky-fill';
 
 import Loading from '../../../components/Loading';
+import RangePicker from '../../../components/range-picker/RangePicker';
 import '../../../assets/styles/index.scss';
 import { useAuth0 } from '../../../react-auth0-spa';
 import { callMetricsApi, awaitingResults } from '../../../utils/metricsClient';
@@ -328,60 +329,63 @@ const Revocations = () => {
   return (
     <main className="dashboard bgc-grey-100">
       <Sticky style={TOGGLE_STYLE}>
-        <div className="top-level-filters d-f">
-          <div className={topLevelFilterClassName}>
-            <h4 className={titleLevelClassName}>
-              Time <br style={{ display: isTopBarShrinking ? "block" : "none" }} /> Period
-            </h4>
-            <Select
-              className="select-align"
-              options={METRIC_PERIODS}
-              onChange={(option) => updateFilters({ metricPeriodMonths: option.value })}
-              value={METRIC_PERIODS.filter((option) => option.value === filters.metricPeriodMonths)}
-            />
-          </div>
-          <div className={topLevelFilterClassName}>
-            <h4 className={titleLevelClassName}>District</h4>
-            <Select
-              className="select-align"
-              options={districts}
-              onChange={(option) => updateFilters({ district: option.value })}
-              defaultValue={DEFAULT_BASE_DISTRICT}
-            />
-          </div>
-          <div className={topLevelFilterClassName}>
-            <h4 className={titleLevelClassName}>Supervision Level</h4>
-            <Select
-              className="select-align"
-              options={CHARGE_CATEGORIES}
-              onChange={(option) => updateFilters({ chargeCategory: option.value })}
-              defaultValue={CHARGE_CATEGORIES[0]}
-            />
-          </div>
-          <div className={topLevelFilterClassName}>
-            <h4 className={titleLevelClassName}>Supervision Type</h4>
-            <Select
-              className="select-align"
-              options={SUPERVISION_TYPES}
-              onChange={(option) => updateFilters({ supervisionType: option.value })}
-              defaultValue={SUPERVISION_TYPES[0]}
-            />
-          </div>
-        </div>
-        {formattedMatrixFilters && (
-          <div className="top-level-filters pre-top-level-filters">
+        <>
+          <div className="top-level-filters d-f">
             <div className={topLevelFilterClassName}>
-              <h4 className={titleLevelClassName}>Additional filters</h4>
-              {/* <span>Clear All</span> */}
-              <Chip
-                label={formattedMatrixFilters}
-                onDelete={() => {
-                  updateFilters({ violationType: "", reportedViolations: "" })
-                }}
+              <h4 className={titleLevelClassName}>
+                Time <br style={{ display: isTopBarShrinking ? "block" : "none" }} /> Period
+              </h4>
+              <RangePicker />
+              {/* <Select
+                className="select-align"
+                options={METRIC_PERIODS}
+                onChange={(option) => updateFilters({ metricPeriodMonths: option.value })}
+                value={METRIC_PERIODS.filter((option) => option.value === filters.metricPeriodMonths)}
+              /> */}
+            </div>
+            <div className={topLevelFilterClassName}>
+              <h4 className={titleLevelClassName}>District</h4>
+              <Select
+                className="select-align"
+                options={districts}
+                onChange={(option) => updateFilters({ district: option.value })}
+                defaultValue={DEFAULT_BASE_DISTRICT}
+              />
+            </div>
+            <div className={topLevelFilterClassName}>
+              <h4 className={titleLevelClassName}>Supervision Level</h4>
+              <Select
+                className="select-align"
+                options={CHARGE_CATEGORIES}
+                onChange={(option) => updateFilters({ chargeCategory: option.value })}
+                defaultValue={CHARGE_CATEGORIES[0]}
+              />
+            </div>
+            <div className={topLevelFilterClassName}>
+              <h4 className={titleLevelClassName}>Supervision Type</h4>
+              <Select
+                className="select-align"
+                options={SUPERVISION_TYPES}
+                onChange={(option) => updateFilters({ supervisionType: option.value })}
+                defaultValue={SUPERVISION_TYPES[0]}
               />
             </div>
           </div>
-        )}
+          {formattedMatrixFilters && (
+            <div className="top-level-filters pre-top-level-filters">
+              <div className={topLevelFilterClassName}>
+                <h4 className={titleLevelClassName}>Additional filters</h4>
+                {/* <span>Clear All</span> */}
+                <Chip
+                  label={formattedMatrixFilters}
+                  onDelete={() => {
+                    updateFilters({ violationType: "", reportedViolations: "" })
+                  }}
+                />
+              </div>
+            </div>
+          )}
+        </>
       </Sticky>
       <div className="bgc-white p-20 m-20">
         <RevocationCountOverTime

@@ -21,6 +21,7 @@ public/
 !src/components/charts/new_revocations/CaseTable/**/*.js
 !src/components/charts/new_revocations/Chip.js
 !src/components/program_evaluation/us_nd/FtrReferralsByParticipationStatus.js
+!src/components/range-picker/**/*.js
 !src/components/toggles/__tests__/MetricPeriodToggle.test.js
 !src/components/toggles/__tests__/MetricTypeToggle.test.js
 !src/components/toggles/__tests__/SupervisionTypeToggle.test.js
