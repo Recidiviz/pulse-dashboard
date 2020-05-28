@@ -45,14 +45,17 @@ const TopBarUserMenuForAuthenticatedUser = ({ user, onLogout }) => (
       </li>
       <li role="separator" className="divider" />
       <li>
+        {/* The href below must be '#' to allow Auth0 to log out successfully. */}
+        {/* eslint-disable jsx-a11y/anchor-is-valid */}
         <a
-          href="?"
+          href="#"
           className="d-b td-n pY-5 bgcH-grey-100 c-grey-700"
           onClick={onLogout}
         >
           <i className="ti-power-off mR-10" />
           <span>Logout</span>
         </a>
+        {/* eslint-enable */}
       </li>
     </ul>
   </li>
