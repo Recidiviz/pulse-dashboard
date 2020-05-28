@@ -1,5 +1,5 @@
 // Recidiviz - a data platform for criminal justice reform
-// Copyright (C) 2019 Recidiviz, Inc.
+// Copyright (C) 2020 Recidiviz, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -15,9 +15,21 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import '../styles/index.scss';
+import React from "react";
+import PropTypes from "prop-types";
+import { NavLink } from "react-router-dom";
 
-import './charts';
-import './popover';
-import './scrollbar';
-import './utils';
+const SideBarLink = ({ name, url }) => (
+  <li className="nav-item">
+    <NavLink to={url} className="sidebar-link" activeClassName="active">
+      {name}
+    </NavLink>
+  </li>
+);
+
+SideBarLink.propTypes = {
+  name: PropTypes.string.isRequired,
+  url: PropTypes.string.isRequired,
+};
+
+export default SideBarLink;

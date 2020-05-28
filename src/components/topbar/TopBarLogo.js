@@ -1,5 +1,5 @@
 // Recidiviz - a data platform for criminal justice reform
-// Copyright (C) 2019 Recidiviz, Inc.
+// Copyright (C) 2020 Recidiviz, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -15,9 +15,15 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import '../styles/index.scss';
+import React from "react";
+import { Link } from "react-router-dom";
 
-import './charts';
-import './popover';
-import './scrollbar';
-import './utils';
+import lanternLogo from "../../assets/static/images/lantern_logo.png";
+
+const TopBarLogo = () => (
+  <Link to="/">
+    <img className="lantern-logo" src={lanternLogo} alt="Lantern" />
+  </Link>
+);
+
+export default TopBarLogo;
