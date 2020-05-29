@@ -1,5 +1,5 @@
 // Recidiviz - a data platform for criminal justice reform
-// Copyright (C) 2019 Recidiviz, Inc.
+// Copyright (C) 2020 Recidiviz, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -15,9 +15,34 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import '../styles/index.scss';
+import React from "react";
+import PropTypes from "prop-types";
 
-import './charts';
-import './popover';
-import './scrollbar';
-import './utils';
+const TopBarForGuest = ({ onLogin }) => (
+  <ul className="nav-right">
+    <li className="dropdown">
+      <a
+        href="?"
+        onClick={(event) => {
+          event.preventDefault();
+          onLogin();
+        }}
+        className="dropdown-toggle no-after peers fxw-nw ai-c lh-1"
+        data-toggle="dropdown"
+      >
+        <div className="peer mR-10">
+          <i className="ti-power-off" />
+        </div>
+        <div className="peer">
+          <span className="fsz-sm c-grey-900">Log in</span>
+        </div>
+      </a>
+    </li>
+  </ul>
+);
+
+TopBarForGuest.propTypes = {
+  onLogin: PropTypes.func.isRequired,
+};
+
+export default TopBarForGuest;
