@@ -72,6 +72,12 @@
             }
           }
         }
+
+        #feedback-link {
+          .title {
+            display: none;
+          }
+        }
       }
     }
 
@@ -109,6 +115,12 @@
 
           .sidebar-link.active::before {
             display: inline-block !important;
+          }
+
+          #feedback-link {
+            .title {
+              display: inline-block;
+            }
           }
         }
       }
@@ -240,8 +252,16 @@
   }
 
   .bottom-item {
-    bottom: 0px;
+    bottom: 10px;
     position: absolute;
+
+    #feedback-link {
+      .title {
+        margin-left: 20px;
+        font-size: 15px;
+        font-weight: 500;
+      }
+    }
   }
 
   li {
@@ -389,6 +409,12 @@
 
             .sidebar-link::before {
               display: none;
+            }
+
+            #feedback-link {
+              .title {
+                display: none;
+              }
             }
           }
 
