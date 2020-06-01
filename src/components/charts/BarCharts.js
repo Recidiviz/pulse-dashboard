@@ -92,7 +92,7 @@ export const getPerMonthChartDefinition = ({
     });
   }
 
-  const chartLabels = monthNamesWithYearsFromNumbers(monthsLabels, false);
+  const chartLabels = monthNamesWithYearsFromNumbers(monthsLabels, true);
 
   const datasets = bars.map((bar, i) => ({
     label: bar.label,

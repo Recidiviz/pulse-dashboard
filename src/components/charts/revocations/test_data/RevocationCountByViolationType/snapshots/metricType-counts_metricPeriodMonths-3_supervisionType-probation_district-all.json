@@ -2,9 +2,9 @@
   "id": "revocationsByViolationType",
   "data": {
     "labels": [
-      "January '20",
-      "February",
-      "March"
+      "Jan '20",
+      "Feb",
+      "Mar"
     ],
     "datasets": [
       {

@@ -75,7 +75,7 @@ const RevocationCountOverTime = (props) => {
     const chartDataValues = (sorted.map((element) => element.value));
     const max = getMaxForGoalAndDataIfGoalDisplayable(GOAL, chartDataValues, stepSize, props);
     const monthNames = monthNamesWithYearsFromNumbers(
-      sorted.map((element) => element.month), false,
+      sorted.map((element) => element.month), true,
     );
 
     centerSingleMonthDatasetIfNecessary(chartDataValues, monthNames);
@@ -166,7 +166,7 @@ const RevocationCountOverTime = (props) => {
       series: [],
     });
 
-  configureDownloadButtons(chartId, 'REVOCATIONS BY MONTH',
+  configureDownloadButtons(chartId, 'REVOCATION ADMISSIONS BY MONTH',
     chart.props.data.datasets, chart.props.data.labels,
     document.getElementById(chartId), exportedStructureCallback, props, true, true);
 
