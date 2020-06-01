@@ -2,12 +2,12 @@
   "id": "revocationsByViolationType",
   "data": {
     "labels": [
-      "October '19",
-      "November",
-      "December",
-      "January '20",
-      "February",
-      "March"
+      "Oct '19",
+      "Nov",
+      "Dec",
+      "Jan '20",
+      "Feb",
+      "Mar"
     ],
     "datasets": [
       {
