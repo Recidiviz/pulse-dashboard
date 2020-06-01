@@ -2,18 +2,18 @@
   "id": "revocationsBySupervisionType",
   "data": {
     "labels": [
-      "April '19",
+      "Apr '19",
       "May",
-      "June",
-      "July",
-      "August",
-      "September",
-      "October",
-      "November",
-      "December",
-      "January '20",
-      "February",
-      "March"
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
+      "Jan '20",
+      "Feb",
+      "Mar"
     ],
     "datasets": [
       {

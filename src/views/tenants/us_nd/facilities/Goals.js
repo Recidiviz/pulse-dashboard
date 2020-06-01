@@ -26,6 +26,7 @@ import DaysAtLibertySnapshot from "../../../../components/charts/snapshots/DaysA
 // eslint-disable-next-line import/no-cycle
 import useChartData from "../../../../hooks/useChartData";
 import ReincarcerationCountOverTime from "../../../../components/charts/reincarcerations/ReincarcerationCountOverTime";
+import MethodologyCollapse from "../../../../components/charts/MethodologyCollapse";
 
 const metrics = {
   district: "all",
@@ -82,7 +83,24 @@ const FacilitiesGoals = () => {
             centerLong={-100.5}
           />
         }
-        footer={<Methodology chartId="reincarcerationCountsByMonth" />}
+        footer={
+          <MethodologyCollapse chartId="reincarcerationCountsByMonth">
+            <div>
+              <ul>
+                <li>
+                  An admission to prison counts as a reincarceration if the
+                  person has been incarcerated previously in a North Dakota
+                  prison.
+                </li>
+                <li>
+                  Reincarcerations are included regardless of when the initial
+                  incarceration took place. There is no upper bound on the
+                  follow up period in this metric.
+                </li>
+              </ul>
+            </div>
+          </MethodologyCollapse>
+        }
       />
     </PageTemplate>
   );
