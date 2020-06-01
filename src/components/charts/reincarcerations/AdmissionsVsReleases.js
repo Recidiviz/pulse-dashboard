@@ -82,7 +82,7 @@ const AdmissionsVsReleases = (props) => {
       }
     });
 
-    setChartLabels(monthNamesWithYearsFromNumbers(sorted.map((element) => element.month), false));
+    setChartLabels(monthNamesWithYearsFromNumbers(sorted.map((element) => element.month), true));
     setChartDataPoints(sorted.map((element) => element.value));
     setChartColors(colorsForValues);
   };

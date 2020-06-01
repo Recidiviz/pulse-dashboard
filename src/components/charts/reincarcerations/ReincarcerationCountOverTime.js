@@ -74,7 +74,7 @@ const ReincarcerationCountOverTime = (props) => {
     const sorted = sortFilterAndSupplementMostRecentMonths(dataPoints, months, 'value', 0);
     const chartDataValues = (sorted.map((element) => element.value));
     const max = getMaxForGoalAndDataIfGoalDisplayable(GOAL, chartDataValues, stepSize, props);
-    const monthNames = monthNamesWithYearsFromNumbers(sorted.map((element) => element.month), false);
+    const monthNames = monthNamesWithYearsFromNumbers(sorted.map((element) => element.month), true);
 
     centerSingleMonthDatasetIfNecessary(chartDataValues, monthNames);
     setChartLabels(monthNames);
