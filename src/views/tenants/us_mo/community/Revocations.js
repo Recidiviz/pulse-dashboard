@@ -350,7 +350,7 @@ const Revocations = () => {
             />
           </div>
           <div className={topLevelFilterClassName}>
-            <h4 className={titleLevelClassName}>Supervision Level</h4>
+            <h4 className={titleLevelClassName}>Case Type</h4>
             <Select
               className="select-align"
               options={CHARGE_CATEGORIES}
