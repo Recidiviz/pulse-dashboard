@@ -54,6 +54,23 @@ const methodologies = {
     </div>
   ),
 
+  revocationCountsByMonthGoal: (
+    <div>
+      <ul>
+        <li>
+          Revocations are included based on when the person was admitted to a
+          DOCR facility, not when the violation, offense, or revocation
+          occurred.
+        </li>
+        <li>
+          Revocations are attributed to the site of the terminating officer on
+          the revocation in Docstars. Revocation admissions that can&apos;t be
+          matched to a supervision case are not attributed to an office.
+        </li>
+      </ul>
+    </div>
+  ),
+
   supervisionSuccessSnapshot: (
     <div>
       <ul>
@@ -130,6 +147,23 @@ const methodologies = {
           revocations where the terminating officer is in the selected office.
           Revocation admissions that can&apos;t be matched to a supervision case
           are not attributed to an office.
+        </li>
+      </ul>
+    </div>
+  ),
+
+  revocationAdmissionsSnapshotGoal: (
+    <div>
+      <ul>
+        <li>
+          Prison admissions include individuals who are newly incarcerated in
+          DOCR facilities. Transfers, periods of temporary custody, returns from
+          escape and/or erroneous releases are not considered admissions.
+        </li>
+        <li>
+          Prison admissions are categorized as probation revocations, parole
+          revocations, or new admissions. Revocation admissions are those
+          admissions documented as probation revocations or parole revocations.
         </li>
       </ul>
     </div>
@@ -432,6 +466,22 @@ const methodologies = {
           Selecting a location while in rate mode calculates the percentage of
           prison admissions in a month from that location that were
           reincarcerations.
+        </li>
+      </ul>
+    </div>
+  ),
+
+  reincarcerationCountsByMonthGoal: (
+    <div>
+      <ul>
+        <li>
+          An admission to prison counts as a reincarceration if the person has
+          been incarcerated previously in a North Dakota prison.
+        </li>
+        <li>
+          Reincarcerations are included regardless of when the initial
+          incarceration took place. There is no upper bound on the follow up
+          period in this metric.
         </li>
       </ul>
     </div>
