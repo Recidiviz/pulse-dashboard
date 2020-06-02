@@ -22,11 +22,11 @@ import Loading from "../../../../components/Loading";
 import ChartCard from "../../../../components/charts/ChartCard";
 import GeoViewTimeChart from "../../../../components/charts/GeoViewTimeChart";
 import Methodology from "../../../../components/charts/Methodology";
+import PeriodLabel from "../../../../components/charts/PeriodLabel";
 import DaysAtLibertySnapshot from "../../../../components/charts/snapshots/DaysAtLibertySnapshot";
 // eslint-disable-next-line import/no-cycle
 import useChartData from "../../../../hooks/useChartData";
 import ReincarcerationCountOverTime from "../../../../components/charts/reincarcerations/ReincarcerationCountOverTime";
-import MethodologyCollapse from "../../../../components/charts/MethodologyCollapse";
 
 const metrics = {
   district: "all",
@@ -83,23 +83,12 @@ const FacilitiesGoals = () => {
             centerLong={-100.5}
           />
         }
-        footer={
-          <MethodologyCollapse chartId="reincarcerationCountsByMonth">
-            <div>
-              <ul>
-                <li>
-                  An admission to prison counts as a reincarceration if the
-                  person has been incarcerated previously in a North Dakota
-                  prison.
-                </li>
-                <li>
-                  Reincarcerations are included regardless of when the initial
-                  incarceration took place. There is no upper bound on the
-                  follow up period in this metric.
-                </li>
-              </ul>
-            </div>
-          </MethodologyCollapse>
+        footer={<Methodology chartId="reincarcerationCountsByMonthGoal" />}
+        geoFooter={
+          <>
+            <Methodology chartId="reincarcerationCountsByMonthGoal" />
+            <PeriodLabel metricPeriodMonths={metrics.metricPeriodMonths} />
+          </>
         }
       />
     </PageTemplate>
