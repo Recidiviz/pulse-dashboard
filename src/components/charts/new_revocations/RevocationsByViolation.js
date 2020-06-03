@@ -30,7 +30,7 @@ import {
   tooltipForRateMetricWithCounts,
 } from '../../../utils/charts/toggles';
 import {
-  toInt, technicalViolationTypes, lawViolationTypes, violationTypeToLabel,
+  toInt, technicalViolationTypes, lawViolationTypes, violationTypeToLabel, allViolationTypes
 } from '../../../utils/transforms/labels';
 
 const chartId = 'revocationsByViolationType';
@@ -101,28 +101,24 @@ const RevocationsByViolation = (props) => {
       return (100 * (violationToCount[type] / totalViolationCount)).toFixed(2);
     };
 
-    const violationTypeKeys = technicalViolationTypes.concat(lawViolationTypes);
-    const labels = violationTypeKeys.map((type) => violationTypeToLabel[type]);
-    const dataPoints = violationTypeKeys.map((type) => violationTypeFrequency(type));
+    const labels = allViolationTypes.map((type) => violationTypeToLabel[type]);
+    const dataPoints = allViolationTypes.map((type) => violationTypeFrequency(type));
 
     setChartLabels(labels);
     setChartDataPoints(dataPoints);
 
-    setNumeratorCounts(violationTypeKeys.map((type) => violationToCount[type]));
-    setDenominatorCounts(violationTypeKeys.map((_) => totalViolationCount));
+    setNumeratorCounts(allViolationTypes.map((type) => violationToCount[type]));
+    setDenominatorCounts(allViolationTypes.map((_) => totalViolationCount));
   };
 
   // This sets bar color to light-blue-500 when it's a technical violation, orange when it's law
-  const colorTechnicalAndLaw = () => {
-    const colors = [];
-    for (let i = 0; i < technicalViolationTypes.length; i += 1) {
-      colors.push(COLORS['lantern-light-blue']);
+  const colorTechnicalAndLaw = () => allViolationTypes.map(violationType => {
+    if (technicalViolationTypes.includes(violationType)) {
+      return COLORS['lantern-light-blue'];
+    } else {
+      return COLORS['lantern-orange'];
     }
-    for (let i = 0; i < lawViolationTypes.length; i += 1) {
-      colors.push(COLORS['lantern-orange']);
-    }
-    return colors;
-  };
+  })
 
   useEffect(() => {
     fetchChartData(
