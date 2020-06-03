@@ -22,7 +22,7 @@ import Loading from "../../../../components/Loading";
 import ChartCard from "../../../../components/charts/ChartCard";
 import GeoViewTimeChart from "../../../../components/charts/GeoViewTimeChart";
 import Methodology from "../../../../components/charts/Methodology";
-import MethodologyCollapse from "../../../../components/charts/MethodologyCollapse";
+import PeriodLabel from "../../../../components/charts/PeriodLabel";
 import RevocationCountOverTime from "../../../../components/charts/revocations/RevocationCountOverTime";
 import LsirScoreChangeSnapshot from "../../../../components/charts/snapshots/LsirScoreChangeSnapshot";
 import RevocationAdmissionsSnapshot from "../../../../components/charts/snapshots/RevocationAdmissionsSnapshot";
@@ -76,24 +76,12 @@ const CommunityGoals = () => {
             centerLong={-100.5}
           />
         }
-        footer={
-          <MethodologyCollapse chartId="revocationCountsByMonth">
-            <div>
-              <ul>
-                <li>
-                  Revocations are included based on when the person was admitted
-                  to a DOCR facility, not when the violation, offense, or
-                  revocation occurred.
-                </li>
-                <li>
-                  Revocations are attributed to the site of the terminating
-                  officer on the revocation in Docstars. Revocation admissions
-                  that can&apos;t be matched to a supervision case are not
-                  attributed to an office.
-                </li>
-              </ul>
-            </div>
-          </MethodologyCollapse>
+        footer={<Methodology chartId="revocationCountsByMonthGoal" />}
+        geoFooter={
+          <>
+            <Methodology chartId="revocationCountsByMonthGoal" />
+            <PeriodLabel metricPeriodMonths={metrics.metricPeriodMonths} />
+          </>
         }
       />
 
@@ -134,6 +122,12 @@ const CommunityGoals = () => {
           />
         }
         footer={<Methodology chartId="supervisionSuccessSnapshot" />}
+        geoFooter={
+          <>
+            <Methodology chartId="supervisionSuccessSnapshot" />
+            <PeriodLabel metricPeriodMonths={metrics.metricPeriodMonths} />
+          </>
+        }
       />
 
       <ChartCard
@@ -165,6 +159,12 @@ const CommunityGoals = () => {
           />
         }
         footer={<Methodology chartId="lsirScoreChangeSnapshot" />}
+        geoFooter={
+          <>
+            <Methodology chartId="lsirScoreChangeSnapshot" />
+            <PeriodLabel metricPeriodMonths={metrics.metricPeriodMonths} />
+          </>
+        }
       />
 
       <ChartCard
@@ -206,25 +206,12 @@ const CommunityGoals = () => {
             centerLong={-100.5}
           />
         }
-        footer={
-          <MethodologyCollapse chartId="revocationAdmissionsSnapshot">
-            <div>
-              <ul>
-                <li>
-                  Prison admissions include individuals who are newly
-                  incarcerated in DOCR facilities. Transfers, periods of
-                  temporary custody, returns from escape and/or erroneous
-                  releases are not considered admissions.
-                </li>
-                <li>
-                  Prison admissions are categorized as probation revocations,
-                  parole revocations, or new admissions. Revocation admissions
-                  are those admissions documented as probation revocations or
-                  parole revocations.
-                </li>
-              </ul>
-            </div>
-          </MethodologyCollapse>
+        footer={<Methodology chartId="revocationAdmissionsSnapshotGoal" />}
+        geoFooter={
+          <>
+            <Methodology chartId="revocationAdmissionsSnapshotGoal" />
+            <PeriodLabel metricPeriodMonths={metrics.metricPeriodMonths} />
+          </>
         }
       />
     </PageTemplate>

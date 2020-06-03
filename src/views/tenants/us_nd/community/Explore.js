@@ -155,7 +155,7 @@ const CommunityExplore = () => {
         chartId="revocationsByOfficer"
         chartTitle={
           <>
-            REVOCATIONS BY OFFICER
+            REVOCATION ADMISSIONS BY OFFICER
             {district === "all" && (
               <WarningIcon
                 tooltipText="Exporting this chart as an image will not include officer IDs unless a specific P&P office is selected from the explore bar."

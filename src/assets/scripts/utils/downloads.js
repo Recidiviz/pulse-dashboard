@@ -105,7 +105,7 @@ function getFilters(toggleStates) {
   return [
     getFilterValue(toggleStates.metricPeriodMonths, "months", "month"),
     getFilterValue(toggleStates.district, "districts", "District: "),
-    getFilterValue(toggleStates.chargeCategory, "supervision levels", "Supervision level: "),
+    getFilterValue(toggleStates.chargeCategory, "case types", "Case Type: "),
     getFilterValue(toggleStates.supervisionType, "supervision types", "Supervision type: ")
   ].join(", ");
 }
