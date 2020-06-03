@@ -34,6 +34,7 @@ import * as ToggleDefaults from "../../../../components/toggles/ToggleDefaults";
 // eslint-disable-next-line import/no-cycle
 import useChartData from "../../../../hooks/useChartData";
 import { getYearFromNow } from "../../../../utils/transforms/years";
+import MethodologyCollapse from "../../../../components/charts/MethodologyCollapse";
 
 const getReincarcerationRateByStayLengthFooter = () => (
   <div className="layer bdT p-20 w-100">
@@ -71,14 +72,22 @@ const importantNotes = [
       reincarceration calculations consider only incarceration in North Dakota DOCR facilities.`,
   },
   {
+    header: "LOCATION FILTER",
+    body: `Selecting a location filters charts to only show data from individuals living in that
+      location currently or prior to incarceration. Specifically, the county of residence is
+      determined by an individual's most recent home address. If the most recent address is that
+      of a ND DOCR facility or parole and probation office, the last known non-incarcerated address
+      is used. Of note: just over 40% of people are missing location data. For approximately 28% of
+      people, this is because there is no known non-incarcerated address. For approximately 13% of
+      people, this is because the last known non-incarcerated address is outside of North Dakota.`,
+  },
+  {
     header: "DATA PULLED FROM ELITE & DOCSTARS",
-    body: `Data in the dashboard is updated nightly using information pulled from Elite and
-      Docstars.`,
+    body: `Data in the dashboard is updated nightly using information pulled from Elite and Docstars.`,
   },
   {
     header: "LEARN MORE",
-    body:
-      'Click on "Methodology" for more information on the calculations behind that chart.',
+    body: `Click on "Methodology" for more information on the calculations behind that chart.`,
   },
 ];
 
@@ -196,9 +205,9 @@ const FacilitiesExplore = () => {
         chartTitle={
           <>
             DAYS AT LIBERTY (AVERAGE)
-            {(metricType !== "counts" || district !== "all") && (
+            {(metricType === "rates" || district !== "all") && (
               <WarningIcon
-                tooltipText="This graph is showing average days at liberty for all reincarcerated individuals. It does not support showing this metric as a rate. This chart does not yet support filtering by district of residence."
+                tooltipText="This graph is showing average days at liberty for all reincarcerated individuals. It does not support showing this metric as a rate. This chart does not yet support filtering by county of residence."
                 className="pL-10 toggle-alert"
               />
             )}
@@ -251,7 +260,7 @@ const FacilitiesExplore = () => {
             ADMISSIONS BY TYPE
             {district !== "all" && (
               <WarningIcon
-                tooltipText="This graph does not yet support filtering by district of residence."
+                tooltipText="This graph does not yet support filtering by county of residence."
                 className="pL-10 toggle-alert"
               />
             )}
@@ -268,7 +277,40 @@ const FacilitiesExplore = () => {
         }
         footer={
           <>
-            <Methodology chartId="admissionCountsByType" />
+            <MethodologyCollapse chartId="admissionCountsByType">
+              <div>
+                <ul>
+                  <li>
+                    Admissions include people admitted to DOCR facilities during
+                    a particular time frame. Transfers, periods of temporary
+                    custody, returns from escape and/or erroneous releases are
+                    not considered admissions.
+                  </li>
+                  <li>
+                    Prison admissions are categorized as probation revocations,
+                    parole revocations, or new admissions. New admissions are
+                    admissions resulting from a reason other than revocation.
+                  </li>
+                  <li>
+                    &quot;Technical Revocations&quot; include only those
+                    revocations which result solely from a technical violation.
+                    If there is a violation that includes a new offense or
+                    absconsion, it is considered a &quot;Non-Technical
+                    Revocation&quot;.
+                  </li>
+                  <li>
+                    Revocations of &quot;Unknown Type&quot; indicate individuals
+                    who were admitted to prison for a supervision revocation
+                    where the violation that caused the revocation cannot yet be
+                    determined. Revocation admissions are linked to supervision
+                    cases closed via revocation within 90 days of the admission.
+                    Revocation admissions without a supervision case closed via
+                    revocation in this window will always be considered of
+                    &quot;Unknown Type&quot;.
+                  </li>
+                </ul>
+              </div>
+            </MethodologyCollapse>
             <PeriodLabel metricPeriodMonths={metricPeriodMonths} />
           </>
         }

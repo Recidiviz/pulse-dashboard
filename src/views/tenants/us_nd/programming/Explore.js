@@ -44,13 +44,11 @@ const importantNotes = [
   },
   {
     header: "DATA PULLED FROM ELITE & DOCSTARS",
-    body: `Data in the dashboard is updated nightly using information pulled from Elite and
-      Docstars.`,
+    body: `Data in the dashboard is updated nightly using information pulled from Elite and Docstars.`,
   },
   {
     header: "LEARN MORE",
-    body:
-      'Click on "Methodology" for more information on the calculations behind that chart.',
+    body: `Click on "Methodology" for more information on the calculations behind that chart.`,
   },
 ];
 

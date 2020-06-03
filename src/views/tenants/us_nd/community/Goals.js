@@ -22,6 +22,7 @@ import Loading from "../../../../components/Loading";
 import ChartCard from "../../../../components/charts/ChartCard";
 import GeoViewTimeChart from "../../../../components/charts/GeoViewTimeChart";
 import Methodology from "../../../../components/charts/Methodology";
+import PeriodLabel from "../../../../components/charts/PeriodLabel";
 import LsirScoreChangeSnapshot from "../../../../components/charts/community/LsirScoreChangeSnapshot";
 import RevocationAdmissionsSnapshot from "../../../../components/charts/community/RevocationAdmissionsSnapshot";
 import RevocationCountOverTime from "../../../../components/charts/community/RevocationCountOverTime";
@@ -46,7 +47,7 @@ const CommunityGoals = () => {
     <PageTemplate>
       <ChartCard
         chartId="revocationCountsByMonth"
-        chartTitle="REVOCATIONS BY MONTH"
+        chartTitle="REVOCATION ADMISSIONS BY MONTH"
         chart={
           <RevocationCountOverTime
             metricType="counts"
@@ -62,7 +63,7 @@ const CommunityGoals = () => {
         geoChart={
           <GeoViewTimeChart
             chartId="revocationCountsByMonth"
-            chartTitle="REVOCATIONS BY MONTH"
+            chartTitle="REVOCATION ADMISSIONS BY MONTH"
             metricType="counts"
             metricPeriodMonths={metrics.metricPeriodMonths}
             supervisionType={metrics.supervisionType}
@@ -75,7 +76,13 @@ const CommunityGoals = () => {
             centerLong={-100.5}
           />
         }
-        footer={<Methodology chartId="revocationCountsByMonth" />}
+        footer={<Methodology chartId="revocationCountsByMonthGoal" />}
+        geoFooter={
+          <>
+            <Methodology chartId="revocationCountsByMonthGoal" />
+            <PeriodLabel metricPeriodMonths={metrics.metricPeriodMonths} />
+          </>
+        }
       />
 
       <ChartCard
@@ -115,6 +122,12 @@ const CommunityGoals = () => {
           />
         }
         footer={<Methodology chartId="supervisionSuccessSnapshot" />}
+        geoFooter={
+          <>
+            <Methodology chartId="supervisionSuccessSnapshot" />
+            <PeriodLabel metricPeriodMonths={metrics.metricPeriodMonths} />
+          </>
+        }
       />
 
       <ChartCard
@@ -146,6 +159,12 @@ const CommunityGoals = () => {
           />
         }
         footer={<Methodology chartId="lsirScoreChangeSnapshot" />}
+        geoFooter={
+          <>
+            <Methodology chartId="lsirScoreChangeSnapshot" />
+            <PeriodLabel metricPeriodMonths={metrics.metricPeriodMonths} />
+          </>
+        }
       />
 
       <ChartCard
@@ -187,7 +206,13 @@ const CommunityGoals = () => {
             centerLong={-100.5}
           />
         }
-        footer={<Methodology chartId="revocationAdmissionsSnapshot" />}
+        footer={<Methodology chartId="revocationAdmissionsSnapshotGoal" />}
+        geoFooter={
+          <>
+            <Methodology chartId="revocationAdmissionsSnapshotGoal" />
+            <PeriodLabel metricPeriodMonths={metrics.metricPeriodMonths} />
+          </>
+        }
       />
     </PageTemplate>
   );

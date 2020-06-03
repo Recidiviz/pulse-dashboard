@@ -49,26 +49,24 @@ const importantNotes = [
   },
   {
     header: "REVOCATIONS TO DOCR FACILITY",
-    body: `Unless noted otherwise, "revocation" refers only to revocations resulting in
-      incarceration at a DOCR facility. Revocations resulting in continuation of supervision, a
-      county jail sentence, or termination of supervision are not considered. In addition,
-      revocations are counted only when an individual’s admittance to a facility is documented in
-      Elite as a revocation. Individuals who have their supervision terminated due to revocation
-      (resulting in incarceration) but are admitted back into the system with the code
-      "new admission" are not included in revocation counts.
+    body: `As noted in chart titles and unless noted otherwise, this data focuses on revocation
+      admissions: revocations resulting in incarceration at a DOCR facility. Revocations resulting
+      in continuation of supervision, a county jail sentence, or termination of supervision are not
+      considered. In addition, revocations are counted only when an individual’s admittance to a
+      facility is documented in Elite as a revocation. Individuals who have their supervision
+      terminated due to revocation (resulting in incarceration) but are admitted back into the
+      system with the code "new admission" are not included in revocation counts.
 
       However, in case termination charts, all cases terminated via revocation as noted in Docstars
       are included whether or not they result in incarceration.`,
   },
   {
     header: "DATA PULLED FROM ELITE & DOCSTARS",
-    body: `Data in the dashboard is updated nightly using information pulled from Elite and
-      Docstars.`,
+    body: `Data in the dashboard is updated nightly using information pulled from Elite and Docstars.`,
   },
   {
     header: "LEARN MORE",
-    body:
-      'Click on "Methodology" for more information on the calculations behind that chart.',
+    body: `Click on "Methodology" for more information on the calculations behind that chart.`,
   },
 ];
 
@@ -120,7 +118,7 @@ const CommunityExplore = () => {
       <ChartCard
         key="revocationCountsByMonth"
         chartId="revocationCountsByMonth"
-        chartTitle="REVOCATIONS BY MONTH"
+        chartTitle="REVOCATION ADMISSIONS BY MONTH"
         chart={
           <RevocationCountOverTime
             metricType={metricType}
@@ -136,7 +134,7 @@ const CommunityExplore = () => {
         geoChart={
           <GeoViewTimeChart
             chartId="revocationCountsByMonth"
-            chartTitle="REVOCATIONS BY MONTH"
+            chartTitle="REVOCATION ADMISSIONS BY MONTH"
             metricType={metricType}
             metricPeriodMonths={metricPeriodMonths}
             supervisionType={supervisionType}
@@ -157,10 +155,10 @@ const CommunityExplore = () => {
         chartId="revocationsByOfficer"
         chartTitle={
           <>
-            REVOCATIONS BY OFFICER
+            REVOCATION ADMISSIONS BY OFFICER
             {district === "all" && (
               <WarningIcon
-                tooltipText="Exporting this chart as an image will not include officer IDs unless a specific P&P office is selected from the Explore bar."
+                tooltipText="Exporting this chart as an image will not include officer IDs unless a specific P&P office is selected from the explore bar."
                 className="pL-10 toggle-alert"
               />
             )}
@@ -236,7 +234,7 @@ const CommunityExplore = () => {
             {(supervisionType !== "all" || district !== "all") &&
               metricType === "rates" && (
                 <WarningIcon
-                  tooltipText="This graph is showing both non-revocation admissions to prison and admissions due to revocation from both parole and probation. We cannot show percentages of admissions broken down by supervision type or district because non-revocation admissions to prison cannot be broken down along those dimensions."
+                  tooltipText="This graph is showing both non-revocation and revocation admissions to prison. We cannot show percentages of admissions from a specific supervision type or office because those filters can’t be applied to non-revocation admissions to prison."
                   className="pL-10 toggle-alert"
                 />
               )}
@@ -264,7 +262,7 @@ const CommunityExplore = () => {
         chartId="revocationsBySupervisionType"
         chartTitle={
           <>
-            REVOCATIONS BY SUPERVISION TYPE
+            REVOCATION ADMISSIONS BY SUPERVISION TYPE
             {supervisionType !== "all" && (
               <WarningIcon
                 tooltipText="This graph is showing all individuals on supervision. It doesn’t support showing only individuals on probation or only individuals on parole."
@@ -288,7 +286,7 @@ const CommunityExplore = () => {
 
       <ChartCard
         chartId="revocationsByViolationType"
-        chartTitle="REVOCATIONS BY VIOLATION TYPE"
+        chartTitle="REVOCATION ADMISSIONS BY VIOLATION TYPE"
         chart={
           <RevocationCountByViolationType
             metricType={metricType}
@@ -306,7 +304,7 @@ const CommunityExplore = () => {
       <ChartCard
         key="revocationsByRace"
         chartId="revocationsByRace"
-        chartTitle="REVOCATIONS BY RACE"
+        chartTitle="REVOCATION ADMISSIONS BY RACE"
         chart={
           <RevocationProportionByRace
             metricType={metricType}
@@ -393,7 +391,7 @@ const CommunityExplore = () => {
             CASE TERMINATIONS BY OFFICER
             {district === "all" && (
               <WarningIcon
-                tooltipText="Exporting this chart as an image will not include officer IDs unless a specific P&P office is selected from the Explore bar."
+                tooltipText="Exporting this chart as an image will not include officer IDs unless a specific P&P office is selected from the explore bar."
                 className="pL-10 toggle-alert"
               />
             )}

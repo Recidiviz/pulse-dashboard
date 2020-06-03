@@ -22,6 +22,7 @@ import Loading from "../../../../components/Loading";
 import ChartCard from "../../../../components/charts/ChartCard";
 import GeoViewTimeChart from "../../../../components/charts/GeoViewTimeChart";
 import Methodology from "../../../../components/charts/Methodology";
+import PeriodLabel from "../../../../components/charts/PeriodLabel";
 import DaysAtLibertySnapshot from "../../../../components/charts/facilities/DaysAtLibertySnapshot";
 import ReincarcerationCountOverTime from "../../../../components/charts/facilities/ReincarcerationCountOverTime";
 // eslint-disable-next-line import/no-cycle
@@ -82,7 +83,13 @@ const FacilitiesGoals = () => {
             centerLong={-100.5}
           />
         }
-        footer={<Methodology chartId="reincarcerationCountsByMonth" />}
+        footer={<Methodology chartId="reincarcerationCountsByMonthGoal" />}
+        geoFooter={
+          <>
+            <Methodology chartId="reincarcerationCountsByMonthGoal" />
+            <PeriodLabel metricPeriodMonths={metrics.metricPeriodMonths} />
+          </>
+        }
       />
     </PageTemplate>
   );

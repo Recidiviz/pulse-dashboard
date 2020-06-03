@@ -20,5 +20,4 @@ import '../styles/index.scss';
 import './charts';
 import './popover';
 import './scrollbar';
-import './sidebar';
 import './utils';
