@@ -1,5 +1,5 @@
 // Recidiviz - a data platform for criminal justice reform
-// Copyright (C) 2019 Recidiviz, Inc.
+// Copyright (C) 2020 Recidiviz, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -19,44 +19,51 @@ import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { Bar } from "react-chartjs-2";
 import pattern from "patternomaly";
+import pipe from "lodash/fp/pipe";
 
-import DataSignificanceWarningIcon from "../DataSignificanceWarningIcon";
-import ExportMenu from "../ExportMenu";
-import Loading from "../../Loading";
+import {
+  calculateAverageRate,
+  sortByCount,
+  sortByRate,
+  transformRevocationDataToMap,
+  tranformSupervisionDataToMap,
+  uniteMaps,
+} from "./helpers";
 
+import DataSignificanceWarningIcon from "../../DataSignificanceWarningIcon";
+import ExportMenu from "../../ExportMenu";
+import Loading from "../../../Loading";
+
+import { COLORS } from "../../../../assets/scripts/constants/colors";
 // eslint-disable-next-line import/no-cycle
-import { useAuth0 } from "../../../react-auth0-spa";
-import { fetchChartData, awaitingResults } from "../../../utils/metricsClient";
-
-import { COLORS } from "../../../assets/scripts/constants/colors";
-import { axisCallbackForMetricType } from "../../../utils/charts/axis";
+import { useAuth0 } from "../../../../react-auth0-spa";
+import {
+  fetchChartData,
+  awaitingResults,
+} from "../../../../utils/metricsClient";
+import { axisCallbackForMetricType } from "../../../../utils/charts/axis";
 import {
   isDenominatorStatisticallySignificant,
   isDenominatorsMatrixStatisticallySignificant,
   tooltipForFooterWithCounts,
-} from "../../../utils/charts/significantStatistics";
+} from "../../../../utils/charts/significantStatistics";
 import {
   getTrailingLabelFromMetricPeriodMonthsToggle,
   getPeriodLabelFromMetricPeriodMonthsToggle,
   toggleLabel,
   updateTooltipForMetricTypeWithCounts,
-} from "../../../utils/charts/toggles";
-import { toInt } from "../../../utils/transforms/labels";
+} from "../../../../utils/charts/toggles";
 
 const chartId = "revocationsByDistrict";
 
 const RevocationsByDistrict = ({
   currentDistrict,
-  dataFilter,
+  dataFilter: filterData,
   filterStates,
   metricPeriodMonths,
   skippedFilters,
   treatCategoryAllAsAbsent,
 }) => {
-  const [chartLabels, setChartLabels] = useState([]);
-  const [chartDataPoints, setChartDataPoints] = useState([]);
-  const [numeratorCounts, setNumeratorCounts] = useState([]);
-  const [denominatorCounts, setDenominatorCounts] = useState([]);
   const [mode, setMode] = useState("counts"); // counts | rates
 
   const { loading, user, getTokenSilently } = useAuth0();
@@ -65,18 +72,9 @@ const RevocationsByDistrict = ({
   const [supervisionApiData, setSupervisionApiData] = useState({});
   const [awaitingSupervisionApi, setAwaitingSupervisionApi] = useState(true);
 
-  const averageValue = Math.floor(
-    chartDataPoints.reduce((acc, val) => acc + parseInt(val, 10), 0) /
-      chartDataPoints.length
-  );
-
   const timeDescription = `${getTrailingLabelFromMetricPeriodMonthsToggle(
     metricPeriodMonths
   )} (${getPeriodLabelFromMetricPeriodMonthsToggle(metricPeriodMonths)})`;
-
-  const showWarning = !isDenominatorsMatrixStatisticallySignificant(
-    denominatorCounts
-  );
 
   const handleModeChanging = (newMode) => {
     setMode(newMode);
@@ -91,9 +89,7 @@ const RevocationsByDistrict = ({
       setAwaitingRevocationApi,
       getTokenSilently
     );
-  }, [getTokenSilently]);
 
-  useEffect(() => {
     fetchChartData(
       "us_mo",
       "newRevocations",
@@ -104,103 +100,60 @@ const RevocationsByDistrict = ({
     );
   }, [getTokenSilently]);
 
-  useEffect(() => {
-    if (
-      awaitingRevocationApi ||
-      awaitingSupervisionApi ||
-      (!revocationApiData && !supervisionApiData)
-    ) {
-      return;
-    }
-    const filteredRevocationData = dataFilter(
-      revocationApiData,
-      skippedFilters,
-      treatCategoryAllAsAbsent
-    );
-    const filteredSupervisionData = dataFilter(
-      supervisionApiData,
-      skippedFilters,
-      treatCategoryAllAsAbsent
-    );
+  if (
+    awaitingResults(loading, user, awaitingRevocationApi) ||
+    awaitingResults(loading, user, awaitingSupervisionApi)
+  ) {
+    return <Loading />;
+  }
 
-    const districtToCount = filteredRevocationData.reduce(
-      (result, { district, population_count: populationCount }) => {
-        return {
-          ...result,
-          [district]: (result[district] || 0) + (toInt(populationCount) || 0),
-        };
-      },
-      {}
-    );
-
-    // Explicitly remove the All district, if provided, for this by-district chart
-    delete districtToCount.ALL;
-
-    const supervisionDistributions = filteredSupervisionData.reduce(
-      (result, { district, total_population: totalPopulation }) => {
-        return {
-          ...result,
-          [district]: (result[district] || 0) + (toInt(totalPopulation) || 0),
-        };
-      },
-      {}
-    );
-    // Explicitly remove the All district, if provided, for this by-district chart
-    delete supervisionDistributions.ALL;
-
-    const getRate = (district) =>
-      (
-        100 *
-        (districtToCount[district] / supervisionDistributions[district])
-      ).toFixed(2);
-
-    const sortedDistrictCounts = Object.entries(districtToCount).sort(
-      (a, b) => b[1] - a[1]
-    );
-
-    // Sort bars by decreasing count or rate
-    const sorted =
-      mode === "counts"
-        ? sortedDistrictCounts
-        : sortedDistrictCounts
-            .map((entry) => [entry[0], getRate(entry[0])])
-            .sort((a, b) => b[1] - a[1]);
-
-    const sortedDataPoints = sorted.map((entry) => entry[1]);
-    setChartDataPoints(sortedDataPoints);
-
-    const sortedLabels = sorted.map((entry) => entry[0]);
-    setChartLabels(sortedLabels);
-
-    setNumeratorCounts(sorted.map((entry) => districtToCount[entry[0]]));
-    setDenominatorCounts(
-      sorted.map((entry) => supervisionDistributions[entry[0]])
-    );
-  }, [
-    awaitingRevocationApi,
-    awaitingSupervisionApi,
+  const filteredRevocationData = filterData(
     revocationApiData,
-    supervisionApiData,
-    mode,
-    dataFilter,
     skippedFilters,
-    treatCategoryAllAsAbsent,
-  ]);
+    treatCategoryAllAsAbsent
+  );
+
+  const filteredSupervisionData = filterData(
+    supervisionApiData,
+    skippedFilters,
+    treatCategoryAllAsAbsent
+  );
+
+  const result = pipe(uniteMaps, mode === "counts" ? sortByCount : sortByRate)(
+    transformRevocationDataToMap(filteredRevocationData),
+    tranformSupervisionDataToMap(filteredSupervisionData)
+  );
+
+  const averageRate = calculateAverageRate(
+    filteredRevocationData,
+    filteredSupervisionData
+  );
+
+  const dataPoints =
+    mode === "counts"
+      ? result.map((item) => item.count)
+      : result.map((item) => item.rate.toFixed(2));
+
+  const labels = result.map((item) => item.district);
+  const numerators = result.map((item) => item.count);
+  const denominators = result.map((item) => item.total);
+
+  const showWarning = !isDenominatorsMatrixStatisticallySignificant(
+    denominators
+  );
 
   const barBackgroundColor = ({ dataIndex }) => {
     let color =
       currentDistrict &&
-      currentDistrict.toLowerCase() === chartLabels[dataIndex].toLowerCase()
+      currentDistrict.toLowerCase() === labels[dataIndex].toLowerCase()
         ? COLORS["lantern-light-blue"]
         : COLORS["lantern-orange"];
-
     if (
       mode === "rates" &&
-      !isDenominatorStatisticallySignificant(denominatorCounts[dataIndex])
+      !isDenominatorStatisticallySignificant(denominators[dataIndex])
     ) {
       color = pattern.draw("diagonal-right-left", color, "#ffffff", 5);
     }
-
     return color;
   };
 
@@ -208,7 +161,7 @@ const RevocationsByDistrict = ({
     <Bar
       id={chartId}
       data={{
-        labels: chartLabels,
+        labels,
         datasets: [
           {
             label: toggleLabel(
@@ -219,34 +172,37 @@ const RevocationsByDistrict = ({
               mode
             ),
             backgroundColor: barBackgroundColor,
-            data: chartDataPoints,
+            data: dataPoints,
           },
         ],
       }}
       options={{
-        annotation: {
-          drawTime: "afterDatasetsDraw",
-          annotations: [
-            {
-              drawTime: "afterDraw",
-              type: "line",
-              mode: "horizontal",
-              scaleID: "y-axis-0",
-              value: averageValue,
-              borderColor: "#72777a",
-              borderWidth: 2,
-              label: {
-                backgroundColor: "transparent",
-                fontColor: "#72777a",
-                fontStyle: "normal",
-                enabled: true,
-                content: "State average",
-                position: "right",
-                yAdjust: -10,
-              },
-            },
-          ],
-        },
+        annotation:
+          mode === "rates"
+            ? {
+                drawTime: "afterDatasetsDraw",
+                annotations: [
+                  {
+                    drawTime: "afterDraw",
+                    type: "line",
+                    mode: "horizontal",
+                    scaleID: "y-axis-0",
+                    value: averageRate,
+                    borderColor: "#72777a",
+                    borderWidth: 2,
+                    label: {
+                      backgroundColor: "transparent",
+                      fontColor: "#72777a",
+                      fontStyle: "normal",
+                      enabled: true,
+                      content: `Overall: ${averageRate.toFixed(2)}%`,
+                      position: "right",
+                      yAdjust: -10,
+                    },
+                  },
+                ],
+              }
+            : null,
         legend: {
           display: false,
         },
@@ -293,24 +249,17 @@ const RevocationsByDistrict = ({
                 mode,
                 tooltipItem,
                 data,
-                numeratorCounts,
-                denominatorCounts
+                numerators,
+                denominators
               ),
             footer: (tooltipItem) =>
               mode === "rates" &&
-              tooltipForFooterWithCounts(tooltipItem, denominatorCounts),
+              tooltipForFooterWithCounts(tooltipItem, denominators),
           },
         },
       }}
     />
   );
-
-  if (
-    awaitingResults(loading, user, awaitingRevocationApi) ||
-    awaitingResults(loading, user, awaitingSupervisionApi)
-  ) {
-    return <Loading />;
-  }
 
   return (
     <div>

@@ -32,7 +32,7 @@ import RevocationMatrix
 import RevocationCountOverTime
   from '../../../../components/charts/new_revocations/RevocationsOverTime';
 import RevocationsByDistrict
-  from '../../../../components/charts/new_revocations/RevocationsByDistrict';
+  from '../../../../components/charts/new_revocations/RevocationsByDistrict/RevocationsByDistrict';
 import RevocationsByRiskLevel
   from '../../../../components/charts/new_revocations/RevocationsByRiskLevel';
 import RevocationsByViolation
