@@ -51,10 +51,11 @@ February 1, 2017. This methodology negates the lag time between the last violati
 court's decision to revoke, and therefore gives a fuller picture of a person's behavioral record
 leading up to the decision to recommend revocation. Reports filed after the revocation are not
 included, since they were presumptively irrelevant to the revocation. These violation counts
-account for all types of violation reports, including supplementals. Hence, if a person had three
-initial violation reports and one supplemental report, they would be counted as having four
-violations. They would be categorized according to the most severe violation reported in all of
-these reports, regardless of whether it was in the initial report or supplemental report.`,
+include citations as well as initial and interdistrict violation reports. No other types of
+violation reports are included. Hence, if a person had three initial violation reports and one
+supplemental report, they would be counted as having four violations. They would be categorized
+according to the most severe violation reported in all of these reports, regardless of whether it
+was in the initial report or supplemental report.`,
     },
     {
       header: "Most serious violation",
