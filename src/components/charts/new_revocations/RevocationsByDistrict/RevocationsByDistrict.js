@@ -25,9 +25,9 @@ import {
   calculateAverageRate,
   sortByCount,
   sortByRate,
-  transformRevocationDataToMap,
-  tranformSupervisionDataToMap,
-  uniteMaps,
+  groupRevocationDataByDistrict,
+  groupSupervisionDataByDistrict,
+  mergeRevocationData,
 } from "./helpers";
 
 import DataSignificanceWarningIcon from "../../DataSignificanceWarningIcon";
@@ -119,9 +119,12 @@ const RevocationsByDistrict = ({
     treatCategoryAllAsAbsent
   );
 
-  const result = pipe(uniteMaps, mode === "counts" ? sortByCount : sortByRate)(
-    transformRevocationDataToMap(filteredRevocationData),
-    tranformSupervisionDataToMap(filteredSupervisionData)
+  const mergedRevocationData = pipe(
+    mergeRevocationData,
+    mode === "counts" ? sortByCount : sortByRate
+  )(
+    groupRevocationDataByDistrict(filteredRevocationData),
+    groupSupervisionDataByDistrict(filteredSupervisionData)
   );
 
   const averageRate = calculateAverageRate(
@@ -131,12 +134,12 @@ const RevocationsByDistrict = ({
 
   const dataPoints =
     mode === "counts"
-      ? result.map((item) => item.count)
-      : result.map((item) => item.rate.toFixed(2));
+      ? mergedRevocationData.map((item) => item.count)
+      : mergedRevocationData.map((item) => item.rate.toFixed(2));
 
-  const labels = result.map((item) => item.district);
-  const numerators = result.map((item) => item.count);
-  const denominators = result.map((item) => item.total);
+  const labels = mergedRevocationData.map((item) => item.district);
+  const numerators = mergedRevocationData.map((item) => item.count);
+  const denominators = mergedRevocationData.map((item) => item.total);
 
   const showWarning = !isDenominatorsMatrixStatisticallySignificant(
     denominators

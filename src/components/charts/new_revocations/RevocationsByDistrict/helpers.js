@@ -16,12 +16,20 @@
 // =============================================================================
 
 import orderBy from "lodash/fp/orderBy";
-import reduce from "lodash/fp/reduce";
-import toPairs from "lodash/fp/toPairs";
 
-const transformToMap = (key) =>
-  reduce(
-    (result, { district, [key]: field }) =>
+/**
+ * Creator function for groupping data by district.
+ * Need to exclude district=ALL data because it is not * needed for charts.
+ *
+ * @param {string} fieldKey Key of original record field.
+ * @returns {function} Unary function (argument - array of data)
+ *
+ * @example
+ * groupByDistrict("some_field") // (records) => { '01' => 5, '02' => 3 }
+ */
+const groupByDistrictCreator = (fieldKey) => (records) =>
+  records.reduce(
+    (result, { district, [fieldKey]: field }) =>
       district === "ALL"
         ? result
         : {
@@ -31,6 +39,40 @@ const transformToMap = (key) =>
     {}
   );
 
+export const groupRevocationDataByDistrict = groupByDistrictCreator(
+  "population_count"
+);
+export const groupSupervisionDataByDistrict = groupByDistrictCreator(
+  "total_population"
+);
+
+/**
+ * Form maximally described data for chart from * revocation and supervision data.
+ *
+ * @param {RevocationRecord} revocationGroupedData
+ * @param {SupervisionRecord} supervisionGroupedData
+ * @returns {{ district: string, count: number, total: number, rate: number }[]}
+ */
+export const mergeRevocationData = (
+  revocationGroupedData,
+  supervisionGroupedData
+) =>
+  Object.entries(revocationGroupedData).map(([district, count]) => {
+    const total = supervisionGroupedData[district];
+    const rate = total === 0 || count === 0 ? 0 : (100 * count) / total;
+    return { district, count, total, rate };
+  });
+
+export const sortByCount = orderBy(["count"], ["desc"]);
+export const sortByRate = orderBy(["rate"], ["desc"]);
+
+/**
+ * Sum population of revocation data
+ *
+ * @param {(string|number)} key
+ * @param {Array} data
+ * @returns {number}
+ */
 const sumPopulation = (key, data) =>
   data.reduce((acc, item) => {
     if (item.district === "ALL") {
@@ -39,19 +81,9 @@ const sumPopulation = (key, data) =>
     return acc;
   }, 0);
 
-export const transformRevocationDataToMap = transformToMap("population_count");
-export const tranformSupervisionDataToMap = transformToMap("total_population");
-
-export const uniteMaps = (revocationMap, supervisionMap) =>
-  toPairs(revocationMap).map(([district, count]) => {
-    const total = supervisionMap[district];
-    const rate = total === 0 || count === 0 ? 0 : (100 * count) / total;
-    return { district, count, total, rate };
-  });
-
-export const sortByCount = orderBy(["count"], ["desc"]);
-export const sortByRate = orderBy(["rate"], ["desc"]);
-
+/**
+ * Calculates avarage rate of revocation population.
+ */
 export const calculateAverageRate = (revocationData, supervisionData) => {
   const numerator = sumPopulation("population_count", revocationData);
   const denominator = sumPopulation("total_population", supervisionData);
