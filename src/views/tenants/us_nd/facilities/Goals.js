@@ -23,10 +23,10 @@ import ChartCard from "../../../../components/charts/ChartCard";
 import GeoViewTimeChart from "../../../../components/charts/GeoViewTimeChart";
 import Methodology from "../../../../components/charts/Methodology";
 import PeriodLabel from "../../../../components/charts/PeriodLabel";
-import DaysAtLibertySnapshot from "../../../../components/charts/snapshots/DaysAtLibertySnapshot";
+import DaysAtLibertySnapshot from "../../../../components/charts/facilities/DaysAtLibertySnapshot";
+import ReincarcerationCountOverTime from "../../../../components/charts/facilities/ReincarcerationCountOverTime";
 // eslint-disable-next-line import/no-cycle
 import useChartData from "../../../../hooks/useChartData";
-import ReincarcerationCountOverTime from "../../../../components/charts/reincarcerations/ReincarcerationCountOverTime";
 
 const metrics = {
   district: "all",

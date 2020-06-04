@@ -18,16 +18,16 @@
 import React, { useState, useEffect } from 'react';
 import { Line } from 'react-chartjs-2';
 
-import { COLORS } from '../../../../../assets/scripts/constants/colors';
-import { configureDownloadButtons } from '../../../../../assets/scripts/utils/downloads';
+import { COLORS } from '../../../assets/scripts/constants/colors';
+import { configureDownloadButtons } from '../../../assets/scripts/utils/downloads';
 import {
   toggleLabel, getMonthCountFromMetricPeriodMonthsToggle, updateTooltipForMetricType,
   filterDatasetBySupervisionType, filterDatasetByDistrict,
   centerSingleMonthDatasetIfNecessary,
-} from '../../../../../utils/charts/toggles';
-import { sortFilterAndSupplementMostRecentMonths } from '../../../../../utils/transforms/datasets';
-import { toInt } from '../../../../../utils/transforms/labels';
-import { monthNamesWithYearsFromNumbers } from '../../../../../utils/transforms/months';
+} from '../../../utils/charts/toggles';
+import { sortFilterAndSupplementMostRecentMonths } from '../../../utils/transforms/datasets';
+import { toInt } from '../../../utils/transforms/labels';
+import { monthNamesWithYearsFromNumbers } from '../../../utils/transforms/months';
 
 const FtrReferralCountByMonth = (props) => {
   const [chartLabels, setChartLabels] = useState([]);

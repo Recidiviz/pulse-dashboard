@@ -23,12 +23,12 @@ import ChartCard from "../../../../components/charts/ChartCard";
 import GeoViewTimeChart from "../../../../components/charts/GeoViewTimeChart";
 import Methodology from "../../../../components/charts/Methodology";
 import PeriodLabel from "../../../../components/charts/PeriodLabel";
-import FtrReferralsByAge from "../../../../components/charts/program_evaluation/us_nd/free_through_recovery/FtrReferralsByAge";
-import FtrReferralsByGender from "../../../../components/charts/program_evaluation/us_nd/free_through_recovery/FtrReferralsByGender";
-import FtrReferralsByLsir from "../../../../components/charts/program_evaluation/us_nd/free_through_recovery/FtrReferralsByLsir";
-import FtrReferralsByParticipationStatus from "../../../../components/charts/program_evaluation/us_nd/free_through_recovery/FtrReferralsByParticipationStatus";
-import FtrReferralsByRace from "../../../../components/charts/program_evaluation/us_nd/free_through_recovery/FtrReferralsByRace";
-import FtrReferralCountByMonth from "../../../../components/charts/program_evaluation/us_nd/free_through_recovery/FtrReferralCountByMonth";
+import FtrReferralsByAge from "../../../../components/charts/programming/FtrReferralsByAge";
+import FtrReferralsByGender from "../../../../components/charts/programming/FtrReferralsByGender";
+import FtrReferralsByLsir from "../../../../components/charts/programming/FtrReferralsByLsir";
+import FtrReferralsByParticipationStatus from "../../../../components/charts/programming/FtrReferralsByParticipationStatus";
+import FtrReferralsByRace from "../../../../components/charts/programming/FtrReferralsByRace";
+import FtrReferralCountByMonth from "../../../../components/charts/programming/FtrReferralCountByMonth";
 import ToggleBar from "../../../../components/toggles/ToggleBar";
 import * as ToggleDefaults from "../../../../components/toggles/ToggleDefaults";
 // eslint-disable-next-line import/no-cycle

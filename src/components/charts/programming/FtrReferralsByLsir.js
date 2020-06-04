@@ -18,32 +18,30 @@
 import React, { useState, useEffect } from 'react';
 import { Bar } from 'react-chartjs-2';
 
-import {
-  COLORS_STACKED_TWO_VALUES_ALT, COLORS,
-} from '../../../../../assets/scripts/constants/colors';
-import { configureDownloadButtons } from '../../../../../assets/scripts/utils/downloads';
+import { COLORS, COLORS_FIVE_VALUES } from '../../../assets/scripts/constants/colors';
+import { configureDownloadButtons } from '../../../assets/scripts/utils/downloads';
 import {
   filterDatasetBySupervisionType, filterDatasetByDistrict,
   filterDatasetByMetricPeriodMonths,
-} from '../../../../../utils/charts/toggles';
-import { tooltipForCountChart, tooltipForRateChart } from '../../../../../utils/charts/tooltips';
-import { sortByLabel } from '../../../../../utils/transforms/datasets';
-import { genderValueToHumanReadable, toInt } from '../../../../../utils/transforms/labels';
+} from '../../../utils/charts/toggles';
+import { tooltipForCountChart, tooltipForRateChart } from '../../../utils/charts/tooltips';
+import { toInt } from '../../../utils/transforms/labels';
 
-const FtrReferralsByGender = (props) => {
+const FtrReferralsByLsir = (props) => {
   const [chartLabels, setChartLabels] = useState([]);
   const [ftrReferralProportions, setFtrReferralProportions] = useState([]);
   const [stateSupervisionProportions, setStateSupervisionProportions] = useState([]);
   const [ftrReferralCounts, setFtrReferralCounts] = useState([]);
   const [stateSupervisionCounts, setStateSupervisionCounts] = useState([]);
 
-  const chartId = 'ftrReferralsByGender';
+  const chartId = 'ftrReferralsByLsir';
+  const lsirScoreBuckets = ['0-23', '24-29', '30-38', '39+'];
 
   const processResponse = () => {
-    const { ftrReferralsByGender } = props;
+    const { ftrReferralsByLsir } = props;
 
     let filteredFtrReferrals = filterDatasetBySupervisionType(
-      ftrReferralsByGender, props.supervisionType,
+      ftrReferralsByLsir, props.supervisionType,
     );
 
     filteredFtrReferrals = filterDatasetByDistrict(
@@ -54,57 +52,69 @@ const FtrReferralsByGender = (props) => {
       filteredFtrReferrals, props.metricPeriodMonths,
     );
 
-    const ftrReferralDataPoints = [];
-    const supervisionDataPoints = [];
+    let totalFtrReferrals = 0;
+    let totalSupervisionPopulation = 0;
+    const ftrReferralDataPoints = {};
+    const supervisionDataPoints = {};
 
     if (filteredFtrReferrals) {
       filteredFtrReferrals.forEach((data) => {
-        let { gender } = data;
-        gender = genderValueToHumanReadable(gender);
+        const { assessment_score_bucket: lsir } = data;
 
         const referralCount = toInt(data.count, 10);
-        ftrReferralDataPoints.push({ gender, count: referralCount });
 
-        const totalSupervisionPopulation = toInt(data.total_supervision_count);
-        supervisionDataPoints.push({ gender, count: totalSupervisionPopulation });
+        if (!ftrReferralDataPoints[lsir]) {
+          ftrReferralDataPoints[lsir] = 0;
+        }
+        ftrReferralDataPoints[lsir] += referralCount;
+        totalFtrReferrals += referralCount;
+
+        const supervisionCount = toInt(data.total_supervision_count);
+
+        if (!supervisionDataPoints[lsir]) {
+          supervisionDataPoints[lsir] = 0;
+        }
+        supervisionDataPoints[lsir] += supervisionCount;
+        totalSupervisionPopulation += supervisionCount;
       });
     }
 
-    function totalSum(dataPoints) {
-      if (dataPoints.length > 0) {
-        return dataPoints.map((element) => element.count).reduce(
-          (previousValue, currentValue) => (previousValue + currentValue),
-        );
+    const referralsByAgeCounts = [];
+    const referralsByAgeProportions = [];
+    const supervisionByAgeCounts = [];
+    const supervisionByAgeProportions = [];
+
+    for (let i = 0; i < lsirScoreBuckets.length; i += 1) {
+      const referralValue = ftrReferralDataPoints[lsirScoreBuckets[i]];
+      if (!referralValue || !totalFtrReferrals) {
+        referralsByAgeCounts.push(0);
+        referralsByAgeProportions.push(0);
+      } else {
+        referralsByAgeCounts.push(referralValue);
+        referralsByAgeProportions.push(100 * (referralValue / totalFtrReferrals));
       }
-      return 0;
+
+      const supervisionValue = supervisionDataPoints[lsirScoreBuckets[i]];
+      if (!supervisionValue || !totalSupervisionPopulation) {
+        supervisionByAgeCounts.push(0);
+        supervisionByAgeProportions.push(0);
+      } else {
+        supervisionByAgeCounts.push(supervisionValue);
+        supervisionByAgeProportions.push(100 * (supervisionValue / totalSupervisionPopulation));
+      }
     }
 
-    const totalFtrReferrals = totalSum(ftrReferralDataPoints);
-    const totalSupervisionPopulation = totalSum(supervisionDataPoints);
-
-    // Sort by gender alphabetically
-    const sortedFtrReferralsDataPoints = sortByLabel(ftrReferralDataPoints, 'gender');
-    const sortedSupervisionDataPoints = sortByLabel(supervisionDataPoints, 'gender');
-
-    setChartLabels(sortedFtrReferralsDataPoints.map((element) => element.gender));
-    setFtrReferralProportions(sortedFtrReferralsDataPoints.map(
-      (element) => (100 * (element.count / totalFtrReferrals)),
-    ));
-    setFtrReferralCounts(sortedFtrReferralsDataPoints.map(
-      (element) => (element.count),
-    ));
-    setStateSupervisionProportions(sortedSupervisionDataPoints.map(
-      (element) => (100 * (element.count / totalSupervisionPopulation)),
-    ));
-    setStateSupervisionCounts(sortedSupervisionDataPoints.map(
-      (element) => (element.count),
-    ));
+    setChartLabels(lsirScoreBuckets);
+    setFtrReferralCounts(referralsByAgeCounts);
+    setFtrReferralProportions(referralsByAgeProportions);
+    setStateSupervisionCounts(supervisionByAgeCounts);
+    setStateSupervisionProportions(supervisionByAgeProportions);
   };
 
   useEffect(() => {
     processResponse();
   }, [
-    props.ftrReferralsByGender,
+    props.ftrReferralsByLsir,
     props.metricType,
     props.metricPeriodMonths,
     props.supervisionType,
@@ -167,7 +177,7 @@ const FtrReferralsByGender = (props) => {
             },
             scaleLabel: {
               display: true,
-              labelString: 'Gender',
+              labelString: 'LSI-R Score',
             },
           }],
         },
@@ -182,44 +192,50 @@ const FtrReferralsByGender = (props) => {
         labels: ['Referrals', 'Supervision Population'],
         datasets: [{
           label: chartLabels[0],
-          backgroundColor: COLORS_STACKED_TWO_VALUES_ALT[0],
-          hoverBackgroundColor: COLORS_STACKED_TWO_VALUES_ALT[0],
-          hoverBorderColor: COLORS_STACKED_TWO_VALUES_ALT[0],
+          backgroundColor: COLORS_FIVE_VALUES[0],
+          hoverBackgroundColor: COLORS_FIVE_VALUES[0],
+          hoverBorderColor: COLORS_FIVE_VALUES[0],
+          yAxisID: 'y-axis-left',
           data: [
             ftrReferralProportions[0],
             stateSupervisionProportions[0],
           ],
         }, {
           label: chartLabels[1],
-          backgroundColor: COLORS_STACKED_TWO_VALUES_ALT[1],
-          hoverBackgroundColor: COLORS_STACKED_TWO_VALUES_ALT[1],
-          hoverBorderColor: COLORS_STACKED_TWO_VALUES_ALT[1],
+          backgroundColor: COLORS_FIVE_VALUES[1],
+          hoverBackgroundColor: COLORS_FIVE_VALUES[1],
+          hoverBorderColor: COLORS_FIVE_VALUES[1],
+          yAxisID: 'y-axis-left',
           data: [
             ftrReferralProportions[1],
             stateSupervisionProportions[1],
           ],
-        },
-        ],
+        }, {
+          label: chartLabels[2],
+          backgroundColor: COLORS_FIVE_VALUES[2],
+          hoverBackgroundColor: COLORS_FIVE_VALUES[2],
+          hoverBorderColor: COLORS_FIVE_VALUES[2],
+          yAxisID: 'y-axis-left',
+          data: [
+            ftrReferralProportions[2],
+            stateSupervisionProportions[2],
+          ],
+        }, {
+          label: chartLabels[3],
+          backgroundColor: COLORS_FIVE_VALUES[3],
+          hoverBackgroundColor: COLORS_FIVE_VALUES[3],
+          hoverBorderColor: COLORS_FIVE_VALUES[3],
+          yAxisID: 'y-axis-left',
+          data: [
+            ftrReferralProportions[3],
+            stateSupervisionProportions[3],
+          ],
+        }],
       }}
       options={{
-        scales: {
-          xAxes: [{
-            stacked: true,
-          }],
-          yAxes: [{
-            scaleLabel: {
-              display: true,
-              labelString: 'Percentage',
-            },
-            stacked: true,
-            ticks: {
-              min: 0,
-              max: 100,
-            },
-          }],
-        },
         responsive: true,
         legend: {
+          display: true,
           position: 'bottom',
         },
         tooltips: {
@@ -227,6 +243,33 @@ const FtrReferralsByGender = (props) => {
           mode: 'dataset',
           intersect: true,
           callbacks: tooltipForRateChart(),
+        },
+        scaleShowValues: true,
+        scales: {
+          yAxes: [{
+            stacked: true,
+            ticks: {
+              beginAtZero: true,
+              min: 0,
+              max: 100,
+            },
+            position: 'left',
+            id: 'y-axis-left',
+            scaleLabel: {
+              display: true,
+              labelString: 'Percentage',
+            },
+          }],
+          xAxes: [{
+            stacked: true,
+            ticks: {
+              autoSkip: false,
+            },
+            scaleLabel: {
+              display: true,
+              labelString: 'LSI-R Score',
+            },
+          }],
         },
       }}
     />
@@ -239,15 +282,15 @@ const FtrReferralsByGender = (props) => {
 
   const exportedStructureCallback = () => (
     {
-      metric: 'FTR Referrals by Gender',
+      metric: 'FTR Referrals by LSI-R Scores',
       series: [],
     });
 
-  configureDownloadButtons(chartId, 'FTR REFERRALS BY GENDER',
+  configureDownloadButtons(chartId, 'FTR REFERRALS BY LSI-R',
     activeChart.props.data.datasets, activeChart.props.data.labels,
     document.getElementById(chartId), exportedStructureCallback, props);
 
   return activeChart;
 };
 
-export default FtrReferralsByGender;
+export default FtrReferralsByLsir;
