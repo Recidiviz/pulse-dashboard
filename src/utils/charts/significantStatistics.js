@@ -43,7 +43,7 @@ function tooltipForFooterWithCounts([{ index }], denominators) {
   if (isDenominatorStatisticallySignificant(denominators[index])) {
     return "";
   }
-  return "* indicates low confidence due to small sample size";
+  return "* indicates the group is too small to make generalizations";
 }
 
 function tooltipForFooterWithNestedCounts([{ index }], denominatorCounts) {
@@ -53,7 +53,7 @@ function tooltipForFooterWithNestedCounts([{ index }], denominatorCounts) {
   );
 
   if (isStatisticsImplicit) {
-    return "* indicates low confidence due to small sample size";
+    return "* indicates the group is too small to make generalizations";
   }
   return "";
 }
