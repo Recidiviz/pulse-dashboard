@@ -53,9 +53,9 @@ leading up to the decision to recommend revocation. Reports filed after the revo
 included, since they were presumptively irrelevant to the revocation. These violation counts
 include citations as well as initial and interdistrict violation reports. No other types of
 violation reports are included. Hence, if a person had three initial violation reports and one
-supplemental report, they would be counted as having four violations. They would be categorized
+interdistrict report, they would be counted as having four violations. They would be categorized
 according to the most severe violation reported in all of these reports, regardless of whether it
-was in the initial report or supplemental report.`,
+was in the initial report or interdistrict report.`,
     },
     {
       header: "Most serious violation",
