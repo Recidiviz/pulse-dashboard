@@ -18,15 +18,15 @@
 import React, { useState, useEffect } from 'react';
 import { Bar, HorizontalBar } from 'react-chartjs-2';
 
-import { COLORS_FIVE_VALUES, COLORS } from '../../../../../assets/scripts/constants/colors';
-import { configureDownloadButtons } from '../../../../../assets/scripts/utils/downloads';
+import { COLORS_FIVE_VALUES, COLORS } from '../../../assets/scripts/constants/colors';
+import { configureDownloadButtons } from '../../../assets/scripts/utils/downloads';
 import {
   filterDatasetBySupervisionType, filterDatasetByDistrict,
   filterDatasetByMetricPeriodMonths,
-} from '../../../../../utils/charts/toggles';
-import { tooltipForCountChart } from '../../../../../utils/charts/tooltips';
-import { sortByLabel } from '../../../../../utils/transforms/datasets';
-import { raceValueToHumanReadable, toInt } from '../../../../../utils/transforms/labels';
+} from '../../../utils/charts/toggles';
+import { tooltipForCountChart } from '../../../utils/charts/tooltips';
+import { sortByLabel } from '../../../utils/transforms/datasets';
+import { raceValueToHumanReadable, toInt } from '../../../utils/transforms/labels';
 
 const FtrReferralsByRace = (props) => {
   const [chartLabels, setChartLabels] = useState([]);

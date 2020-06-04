@@ -30,7 +30,7 @@ const modifyExpectedDefinition = (expectedDefinition) => {
   expectedDefinition.data.datasets.forEach(dataset => {
     delete dataset['type'];
   });
-  
+
   expectedDefinition.options.legend.boxWidth = 10;
 
   // Ensure numbers are always numbers and not stringified numbers
