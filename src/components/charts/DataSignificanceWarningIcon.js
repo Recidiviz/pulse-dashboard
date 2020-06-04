@@ -20,9 +20,10 @@ import WarningIcon from "./WarningIcon";
 
 const DataSignificanceWarningIcon = () => {
   const text = `
-      Some categories in this chart may not be statistically significant
-      due to having a sample size smaller than 100.
-      Those categories are represented with line shading.
+      Some of the subgroups in this chart are smaller than 100,
+      which means the group is too small to make generalizations
+      about the rate for this population, or how it compares to
+      other populations.
   `;
 
   return <WarningIcon tooltipText={text} />;
