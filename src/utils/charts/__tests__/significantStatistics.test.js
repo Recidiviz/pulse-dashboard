@@ -77,7 +77,7 @@ describe("tooltipForFooterWithCounts function", () => {
     const index = 2;
 
     expect(tooltipForFooterWithCounts([{ index }], given)).toBe(
-      "* indicates low confidence due to small sample size"
+      "* indicates the group is too small to make generalizations"
     );
   });
 
@@ -95,7 +95,7 @@ describe("tooltipForFooterWithNestedCounts function", () => {
     const index = 2;
 
     expect(tooltipForFooterWithNestedCounts([{ index }], given)).toBe(
-      "* indicates low confidence due to small sample size"
+      "* indicates the group is too small to make generalizations"
     );
   });
 
