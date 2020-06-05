@@ -18,8 +18,8 @@
 import orderBy from "lodash/fp/orderBy";
 
 /**
- * Creator function for groupping data by district.
- * Need to exclude district=ALL data because it is not * needed for charts.
+ * Creator function for grouping data by district.
+ * Need to exclude district=ALL data because it is not needed for charts.
  *
  * @param {string} fieldKey Key of original record field.
  * @returns {function} Unary function (argument - array of data)
@@ -47,7 +47,7 @@ export const groupSupervisionDataByDistrict = groupByDistrictCreator(
 );
 
 /**
- * Form maximally described data for chart from * revocation and supervision data.
+ * Form maximally described data for chart from revocation and supervision data.
  *
  * @param {RevocationRecord} revocationGroupedData
  * @param {SupervisionRecord} supervisionGroupedData
