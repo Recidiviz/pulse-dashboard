@@ -51,13 +51,21 @@ const matrixViolationTypeToLabel = {
 };
 
 const technicalViolationTypes = [
-  'travelCount', 'residencyCount', 'employmentCount', 'associationCount', 'directiveCount',
-  'supervisionStrategyCount', 'interventionFeeCount', 'specialCount',
+  'travelCount', 'residencyCount', 'employmentCount', 'associationCount',
+  'directiveCount', 'supervisionStrategyCount', 'interventionFeeCount',
+  'specialCount','substanceCount', 'abscondedCount',
 ];
 
 const lawViolationTypes = [
-  'substanceCount', 'municipalCount', 'abscondedCount', 'misdemeanorCount', 'felonyCount',
+  'municipalCount', 'misdemeanorCount', 'felonyCount',
 ];
+
+const allViolationTypes =  [
+  'travelCount', 'residencyCount', 'employmentCount', 'associationCount',
+  'directiveCount', 'supervisionStrategyCount', 'interventionFeeCount',
+  'specialCount','substanceCount', 'municipalCount', 'abscondedCount',
+  'misdemeanorCount', 'felonyCount',
+]
 
 const violationTypeToLabel = {
   abscondedCount: 'Absconsion',
@@ -139,6 +147,7 @@ export {
   violationTypeToLabel,
   technicalViolationTypes,
   lawViolationTypes,
+  allViolationTypes,
   matrixViolationTypeToLabel,
   genderValueToHumanReadable,
   raceValueToHumanReadable,
