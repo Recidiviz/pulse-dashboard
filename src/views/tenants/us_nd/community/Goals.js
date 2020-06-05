@@ -150,6 +150,7 @@ const CommunityGoals = () => {
             metricPeriodMonths={metrics.metricPeriodMonths}
             supervisionType={metrics.supervisionType}
             keyedByOffice
+            possibleNegativeValues
             officeData={apiData.site_offices}
             dataPointsByOffice={apiData.average_change_lsir_score_by_period}
             numeratorKeys={["average_change"]}
