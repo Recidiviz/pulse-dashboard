@@ -443,6 +443,7 @@ const CommunityExplore = () => {
             metricPeriodMonths={metricPeriodMonths}
             supervisionType={supervisionType}
             keyedByOffice
+            possibleNegativeValues
             officeData={apiData.site_offices}
             dataPointsByOffice={apiData.average_change_lsir_score_by_period}
             numeratorKeys={["average_change"]}
