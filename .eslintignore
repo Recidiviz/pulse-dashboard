@@ -22,6 +22,8 @@ public/
 !src/components/charts/PeriodLabel.js
 !src/components/charts/TenantExportMenu.js
 !src/components/charts/WarningIcon.js
+!src/components/charts/facilities/ReincarcerationRateByStayLength.js
+!src/components/charts/facilities/__tests__/**/*.js
 !src/components/charts/new_revocations/CaseTable/**/*.js
 !src/components/charts/new_revocations/Chip.js
 !src/components/program_evaluation/us_nd/FtrReferralsByParticipationStatus.js

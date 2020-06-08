@@ -1,5 +1,5 @@
 // Recidiviz - a data platform for criminal justice reform
-// Copyright (C) 2019 Recidiviz, Inc.
+// Copyright (C) 2020 Recidiviz, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -15,72 +15,91 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React, { useState, useEffect } from 'react';
-import { Bar } from 'react-chartjs-2';
+import React from "react";
+import { Bar } from "react-chartjs-2";
 
-import { COLORS } from '../../../assets/scripts/constants/colors';
-import { configureDownloadButtons } from '../../../assets/scripts/utils/downloads';
+import { COLORS } from "../../../assets/scripts/constants/colors";
+import { configureDownloadButtons } from "../../../assets/scripts/utils/downloads";
 
-import { filterDatasetByDistrict } from '../../../utils/charts/toggles';
+import { filterDatasetByDistrict } from "../../../utils/charts/toggles";
 
-const ReincarcerationRateByStayLength = (props) => {
-  const [chartLabels, setChartLabels] = useState([]);
-  const [chartDataPoints, setChartDataPoints] = useState([]);
+const chartId = "reincarcerationRateByStayLength";
+const chartLabels = [
+  "0-12",
+  "12-24",
+  "24-36",
+  "36-48",
+  "48-60",
+  "60-72",
+  "72-84",
+  "84-96",
+  "96-108",
+  "108-120",
+  "120+",
+];
 
-  const chartId = 'reincarcerationRateByStayLength';
-  const stayLengthLabels = ['0-12', '12-24', '24-36', '36-48', '48-60',
-    '60-72', '72-84', '84-96', '96-108', '108-120', '120+'];
+const transformStayLength = (oldStayLength) => {
+  switch (oldStayLength) {
+    case "<12":
+      return "0-12";
+    case "120<":
+      return "120+";
+    default:
+      return oldStayLength;
+  }
+};
 
-  const processResponse = () => {
-    const { ratesByStayLength } = props;
-
-    const filteredRatesByStayLength = filterDatasetByDistrict(
-      ratesByStayLength, props.district,
-    );
-
-    const ratesByStayLengthData = [];
-    if (filteredRatesByStayLength) {
-      filteredRatesByStayLength.forEach((data) => {
-        let { stay_length_bucket: stayLength } = data;
-
-        if (stayLength === '<12') {
-          stayLength = '0-12';
-        } else if (stayLength === '120<') {
-          stayLength = '120+';
-        }
-
-        ratesByStayLengthData[stayLength] = data.recidivism_rate;
-      });
+const computeRateDataPoints = (filteredRatesByStayLength) => {
+  const ratesByStayLengthData = {};
+  filteredRatesByStayLength.forEach(
+    ({ stay_length_bucket: stayLength, recidivism_rate: rate }) => {
+      ratesByStayLengthData[transformStayLength(stayLength)] = rate;
     }
+  );
+  return chartLabels.map((chartLabel) => ratesByStayLengthData[chartLabel]);
+};
 
-    const rates = [];
-    for (let i = 0; i < stayLengthLabels.length; i += 1) {
-      rates.push(ratesByStayLengthData[stayLengthLabels[i]]);
+const computeCountDataPoints = (filteredRatesByStayLength) => {
+  const ratesByStayLengthData = {};
+  filteredRatesByStayLength.forEach(
+    ({ stay_length_bucket: stayLength, reincarceration_count: count }) => {
+      ratesByStayLengthData[transformStayLength(stayLength)] = count;
     }
+  );
+  return chartLabels.map((chartLabel) => ratesByStayLengthData[chartLabel]);
+};
 
-    setChartLabels(stayLengthLabels);
-    setChartDataPoints(rates);
-  };
+const ReincarcerationRateByStayLength = ({
+  district,
+  metricType,
+  ratesByStayLength,
+}) => {
+  const filteredRatesByStayLength = filterDatasetByDistrict(
+    ratesByStayLength,
+    district
+  );
 
-  useEffect(() => {
-    processResponse();
-  }, [
-    props.ratesByStayLength,
-    props.district,
-  ]);
+  const label =
+    metricType === "counts" ? "Number reincarcerated" : "Reincarceration rate";
+  const chartDataPoints =
+    metricType === "counts"
+      ? computeCountDataPoints(filteredRatesByStayLength)
+      : computeRateDataPoints(filteredRatesByStayLength);
 
   const chart = (
     <Bar
       id={chartId}
       data={{
         labels: chartLabels,
-        datasets: [{
-          label: 'Reincarceration rate',
-          backgroundColor: COLORS['blue-standard'],
-          hoverBackgroundColor: COLORS['blue-standard'],
-          yAxisID: 'y-axis-left',
-          data: chartDataPoints,
-        }],
+        datasets: [
+          {
+            label,
+            backgroundColor: COLORS["blue-standard"],
+            hoverBackgroundColor: COLORS["blue-standard"],
+            yAxisID: "y-axis-left",
+            data: chartDataPoints,
+          },
+        ],
       }}
       options={{
         responsive: true,
@@ -88,51 +107,63 @@ const ReincarcerationRateByStayLength = (props) => {
           display: false,
         },
         tooltips: {
-          backgroundColor: COLORS['grey-800-light'],
-          mode: 'index',
+          backgroundColor: COLORS["grey-800-light"],
+          mode: "index",
           callbacks: {
-            label(tooltipItems, data) {
-              const { index } = tooltipItems;
-              return `${data.datasets[tooltipItems.datasetIndex].label}: ${(data.datasets[tooltipItems.datasetIndex].data[index] * 100).toFixed(2)}%`;
+            label({ datasetIndex, index }, { datasets }) {
+              const dataset = datasets[datasetIndex];
+              if (metricType === "counts") {
+                return `${dataset.label}: ${dataset.data[index]}`;
+              }
+              return `${dataset.label}: ${dataset.data[index] * 100}%`;
             },
           },
         },
         scaleShowValues: true,
         scales: {
-          yAxes: [{
-            ticks: {
-              beginAtZero: true,
+          yAxes: [
+            {
+              ticks: {
+                beginAtZero: true,
+              },
+              position: "left",
+              id: "y-axis-left",
+              scaleLabel: {
+                display: true,
+                labelString: label,
+              },
             },
-            position: 'left',
-            id: 'y-axis-left',
-            scaleLabel: {
-              display: true,
-              labelString: 'Reincarceration rate',
+          ],
+          xAxes: [
+            {
+              ticks: {
+                autoSkip: false,
+              },
+              scaleLabel: {
+                display: true,
+                labelString: "Stay length (in months)",
+              },
             },
-          }],
-          xAxes: [{
-            ticks: {
-              autoSkip: false,
-            },
-            scaleLabel: {
-              display: true,
-              labelString: 'Stay length (in months)',
-            },
-          }],
+          ],
         },
       }}
     />
   );
 
-  const exportedStructureCallback = () => (
-    {
-      metric: 'Reincarceration rate by previous stay length',
-      series: [],
-    });
+  const exportedStructureCallback = () => ({
+    metric: "Reincarceration rate by previous stay length",
+    series: [],
+  });
 
-  configureDownloadButtons(chartId, 'REINCARCERATION RATE BY PREVIOUS STAY LENGTH',
-    chart.props.data.datasets, chart.props.data.labels,
-    document.getElementById(chartId), exportedStructureCallback, props);
+  configureDownloadButtons(
+    chartId,
+    "REINCARCERATION RATE BY PREVIOUS STAY LENGTH",
+    chart.props.data.datasets,
+    chart.props.data.labels,
+    document.getElementById(chartId),
+    exportedStructureCallback,
+    { district, metricType }
+  );
 
   return chart;
 };
