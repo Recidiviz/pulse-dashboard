@@ -24,11 +24,11 @@ import GeoViewTimeChart from "../../../../components/charts/GeoViewTimeChart";
 import Methodology from "../../../../components/charts/Methodology";
 import PeriodLabel from "../../../../components/charts/PeriodLabel";
 import WarningIcon from "../../../../components/charts/WarningIcon";
-import AdmissionsVsReleases from "../../../../components/charts/reincarcerations/AdmissionsVsReleases";
-import ReincarcerationCountOverTime from "../../../../components/charts/reincarcerations/ReincarcerationCountOverTime";
-import ReincarcerationRateByStayLength from "../../../../components/charts/reincarcerations/ReincarcerationRateByStayLength";
-import AdmissionCountsByType from "../../../../components/charts/revocations/AdmissionCountsByType";
-import DaysAtLibertySnapshot from "../../../../components/charts/snapshots/DaysAtLibertySnapshot";
+import AdmissionsVsReleases from "../../../../components/charts/facilities/AdmissionsVsReleases";
+import ReincarcerationCountOverTime from "../../../../components/charts/facilities/ReincarcerationCountOverTime";
+import ReincarcerationRateByStayLength from "../../../../components/charts/facilities/ReincarcerationRateByStayLength";
+import AdmissionCountsByType from "../../../../components/charts/common/AdmissionCountsByType";
+import DaysAtLibertySnapshot from "../../../../components/charts/facilities/DaysAtLibertySnapshot";
 import ToggleBar from "../../../../components/toggles/ToggleBar";
 import * as ToggleDefaults from "../../../../components/toggles/ToggleDefaults";
 // eslint-disable-next-line import/no-cycle

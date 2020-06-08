@@ -1,5 +1,5 @@
 // Recidiviz - a data platform for criminal justice reform
-// Copyright (C) 2019 Recidiviz, Inc.
+// Copyright (C) 2020 Recidiviz, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -15,46 +15,59 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React, { useState, useEffect } from 'react';
-import { Bar } from 'react-chartjs-2';
-import ExportMenu from '../ExportMenu';
-import Loading from '../../Loading';
+import React from "react";
+import PropTypes from "prop-types";
+import { Bar } from "react-chartjs-2";
 
-import { useAuth0 } from '../../../react-auth0-spa';
-import { fetchChartData, awaitingResults } from '../../../utils/metricsClient';
+import ExportMenu from "../ExportMenu";
+import Loading from "../../Loading";
 
-import { COLORS } from '../../../assets/scripts/constants/colors';
-import { axisCallbackForPercentage } from '../../../utils/charts/axis';
+import { COLORS } from "../../../assets/scripts/constants/colors";
+// eslint-disable-next-line import/no-cycle
+import useChartData from "../../../hooks/useChartData";
+import { axisCallbackForPercentage } from "../../../utils/charts/axis";
 import {
-  getTrailingLabelFromMetricPeriodMonthsToggle, getPeriodLabelFromMetricPeriodMonthsToggle,
+  getTrailingLabelFromMetricPeriodMonthsToggle,
+  getPeriodLabelFromMetricPeriodMonthsToggle,
   tooltipForRateMetricWithCounts,
-} from '../../../utils/charts/toggles';
+} from "../../../utils/charts/toggles";
 import {
-  toInt, technicalViolationTypes, lawViolationTypes, violationTypeToLabel, allViolationTypes
-} from '../../../utils/transforms/labels';
+  toInt,
+  technicalViolationTypes,
+  violationTypeToLabel,
+  allViolationTypes,
+} from "../../../utils/transforms/labels";
 
-const chartId = 'revocationsByViolationType';
+const chartId = "revocationsByViolationType";
 
-const RevocationsByViolation = (props) => {
-  const [chartLabels, setChartLabels] = useState([]);
-  const [chartDataPoints, setChartDataPoints] = useState([]);
-  const [numeratorCounts, setNumeratorCounts] = useState([]);
-  const [denominatorCounts, setDenominatorCounts] = useState([]);
+const RevocationsByViolation = ({
+  dataFilter,
+  filterStates,
+  metricPeriodMonths,
+  skippedFilters,
+  treatCategoryAllAsAbsent,
+}) => {
+  const { isLoading, apiData } = useChartData(
+    "us_mo/newRevocations",
+    "revocations_matrix_distribution_by_violation"
+  );
 
-  const { loading, user, getTokenSilently } = useAuth0();
-  const [apiData, setApiData] = useState({});
-  const [awaitingApi, setAwaitingApi] = useState(true);
+  if (isLoading) {
+    return <Loading />;
+  }
 
-  const processResponse = () => {
-    if (awaitingApi || !apiData) {
-      return;
-    }
-    const filteredData = props.dataFilter(
-      apiData, props.skippedFilters, props.treatCategoryAllAsAbsent,
-    );
+  const filteredData = dataFilter(
+    apiData,
+    skippedFilters,
+    treatCategoryAllAsAbsent
+  );
 
-    const violationToCount = filteredData.reduce(
-      (result, {
+  const plus = (term1, term2) => (term1 || 0) + (toInt(term2) || 0);
+
+  const violationToCount = filteredData.reduce(
+    (
+      result,
+      {
         absconded_count: abscondedCount,
         association_count: associationCount,
         directive_count: directiveCount,
@@ -70,84 +83,76 @@ const RevocationsByViolation = (props) => {
         travel_count: travelCount,
         weapon_count: weaponCount,
         violation_count: violationCount,
-      }) => {
-        return {
-          ...result,
-          abscondedCount: (result.abscondedCount || 0) + (toInt(abscondedCount) || 0),
-          associationCount: (result.associationCount || 0) + (toInt(associationCount) || 0),
-          directiveCount: (result.directiveCount || 0) + (toInt(directiveCount) || 0),
-          employmentCount: (result.employmentCount || 0) + (toInt(employmentCount) || 0),
-          felonyCount: (result.felonyCount || 0) + (toInt(felonyCount) || 0),
-          interventionFeeCount: (result.interventionFeeCount || 0) + (toInt(interventionFeeCount) || 0),
-          misdemeanorCount: (result.misdemeanorCount || 0) + (toInt(misdemeanorCount) || 0),
-          municipalCount: (result.municipalCount || 0) + (toInt(municipalCount) || 0),
-          residencyCount: (result.residencyCount || 0) + (toInt(residencyCount) || 0),
-          specialCount: (result.specialCount || 0) + (toInt(specialCount) || 0),
-          substanceCount: (result.substanceCount || 0) + (toInt(substanceCount) || 0),
-          supervisionStrategyCount: (result.supervisionStrategyCount || 0) + (toInt(supervisionStrategyCount) || 0),
-          travelCount: (result.travelCount || 0) + (toInt(travelCount) || 0),
-          weaponCount: (result.weaponCount || 0) + (toInt(weaponCount) || 0),
-          violationCount: (result.violationCount || 0) + (toInt(violationCount) || 0),
-        };
-      }, {},
-    );
-
-    const totalViolationCount = toInt(violationToCount.violationCount) || 0;
-
-    const violationTypeFrequency = (type) => {
-      if (!totalViolationCount) {
-        return (0.0).toFixed(2);
       }
-      return (100 * (violationToCount[type] / totalViolationCount)).toFixed(2);
-    };
+    ) => ({
+      ...result,
+      abscondedCount: plus(result.abscondedCount, abscondedCount),
+      associationCount: plus(result.associationCount, associationCount),
+      directiveCount: plus(result.directiveCount, directiveCount),
+      employmentCount: plus(result.employmentCount, employmentCount),
+      felonyCount: plus(result.felonyCount, felonyCount),
+      interventionFeeCount: plus(
+        result.interventionFeeCount,
+        interventionFeeCount
+      ),
+      misdemeanorCount: plus(result.misdemeanorCount, misdemeanorCount),
+      municipalCount: plus(result.municipalCount, municipalCount),
+      residencyCount: plus(result.residencyCount, residencyCount),
+      specialCount: plus(result.specialCount, specialCount),
+      substanceCount: plus(result.substanceCount, substanceCount),
+      supervisionStrategyCount: plus(
+        result.supervisionStrategyCount,
+        supervisionStrategyCount
+      ),
+      travelCount: plus(result.travelCount, travelCount),
+      weaponCount: plus(result.weaponCount, weaponCount),
+      violationCount: plus(result.violationCount, violationCount),
+    }),
+    {}
+  );
 
-    const labels = allViolationTypes.map((type) => violationTypeToLabel[type]);
-    const dataPoints = allViolationTypes.map((type) => violationTypeFrequency(type));
+  const totalViolationCount = toInt(violationToCount.violationCount) || 0;
 
-    setChartLabels(labels);
-    setChartDataPoints(dataPoints);
+  const chartLabels = allViolationTypes.map(
+    (type) => violationTypeToLabel[type]
+  );
 
-    setNumeratorCounts(allViolationTypes.map((type) => violationToCount[type]));
-    setDenominatorCounts(allViolationTypes.map((_) => totalViolationCount));
-  };
+  const chartDataPoints = allViolationTypes.map((type) => {
+    if (!totalViolationCount) {
+      return (0.0).toFixed(2);
+    }
+    return (100 * (violationToCount[type] / totalViolationCount)).toFixed(2);
+  });
+
+  const numeratorCounts = allViolationTypes.map(
+    (type) => violationToCount[type]
+  );
+
+  const denominatorCounts = allViolationTypes.map(() => totalViolationCount);
 
   // This sets bar color to light-blue-500 when it's a technical violation, orange when it's law
-  const colorTechnicalAndLaw = () => allViolationTypes.map(violationType => {
-    if (technicalViolationTypes.includes(violationType)) {
-      return COLORS['lantern-light-blue'];
-    } else {
-      return COLORS['lantern-orange'];
-    }
-  })
-
-  useEffect(() => {
-    fetchChartData(
-      'us_mo', 'newRevocations', 'revocations_matrix_distribution_by_violation',
-      setApiData, setAwaitingApi, getTokenSilently,
-    );
-  }, []);
-
-  useEffect(() => {
-    processResponse();
-  }, [
-    apiData,
-    awaitingApi,
-    props.filterStates,
-    props.metricPeriodMonths,
-  ]);
+  const colorTechnicalAndLaw = () =>
+    allViolationTypes.map((violationType) => {
+      if (technicalViolationTypes.includes(violationType)) {
+        return COLORS["lantern-light-blue"];
+      }
+      return COLORS["lantern-orange"];
+    });
 
   const chart = (
     <Bar
       id={chartId}
       data={{
         labels: chartLabels,
-        datasets: [{
-          label: 'Proportion of violations',
-          backgroundColor: colorTechnicalAndLaw(),
-          hoverBackgroundColor: colorTechnicalAndLaw(),
-          hoverBorderColor: colorTechnicalAndLaw(),
-          data: chartDataPoints,
-        }],
+        datasets: [
+          {
+            label: "Proportion of violations",
+            backgroundColor: colorTechnicalAndLaw(),
+            hoverBackgroundColor: colorTechnicalAndLaw(),
+            hoverBorderColor: colorTechnicalAndLaw(),
+            data: chartDataPoints,
+          },
+        ],
       }}
       options={{
         legend: {
@@ -156,40 +161,50 @@ const RevocationsByViolation = (props) => {
         responsive: true,
         maintainAspectRatio: false,
         scales: {
-          xAxes: [{
-            scaleLabel: {
-              display: true,
-              labelString: 'Violation type and condition violated',
+          xAxes: [
+            {
+              scaleLabel: {
+                display: true,
+                labelString: "Violation type and condition violated",
+              },
+              stacked: true,
             },
-            stacked: true,
-          }],
-          yAxes: [{
-            scaleLabel: {
-              display: true,
-              labelString: 'Percent of total reported violations',
+          ],
+          yAxes: [
+            {
+              scaleLabel: {
+                display: true,
+                labelString: "Percent of total reported violations",
+              },
+              stacked: true,
+              ticks: {
+                min: 0,
+                callback: axisCallbackForPercentage(),
+              },
             },
-            stacked: true,
-            ticks: {
-              min: 0,
-              callback: axisCallbackForPercentage(),
-            },
-          }],
+          ],
         },
         tooltips: {
-          backgroundColor: COLORS['grey-800-light'],
-          mode: 'index',
+          backgroundColor: COLORS["grey-800-light"],
+          mode: "index",
           intersect: false,
           callbacks: {
-            label: (tooltipItem, data) => tooltipForRateMetricWithCounts(tooltipItem, data, numeratorCounts, denominatorCounts),
+            label: (tooltipItem, data) =>
+              tooltipForRateMetricWithCounts(
+                tooltipItem,
+                data,
+                numeratorCounts,
+                denominatorCounts
+              ),
           },
         },
       }}
     />
   );
 
-  if (awaitingResults(loading, user, awaitingApi)) {
-    return <Loading />;
-  }
+  const description = `${getTrailingLabelFromMetricPeriodMonthsToggle(
+    metricPeriodMonths
+  )} (${getPeriodLabelFromMetricPeriodMonthsToggle(metricPeriodMonths)})`;
 
   return (
     <div>
@@ -199,19 +214,38 @@ const RevocationsByViolation = (props) => {
           chartId={chartId}
           chart={chart}
           metricTitle="Relative frequency of violation types"
-          timeWindowDescription={`${getTrailingLabelFromMetricPeriodMonthsToggle(props.metricPeriodMonths)} (${getPeriodLabelFromMetricPeriodMonthsToggle(props.metricPeriodMonths)})`}
-          filters={props.filterStates}
+          timeWindowDescription={description}
+          filters={filterStates}
         />
       </h4>
-      <h6 className="pB-20">
-        {`${getTrailingLabelFromMetricPeriodMonthsToggle(props.metricPeriodMonths)} (${getPeriodLabelFromMetricPeriodMonthsToggle(props.metricPeriodMonths)})`}
-      </h6>
+      <h6 className="pB-20">{description}</h6>
 
-      <div className="static-chart-container fs-block">
-        {chart}
-      </div>
+      <div className="static-chart-container fs-block">{chart}</div>
     </div>
   );
+};
+
+RevocationsByViolation.defaultProps = {
+  skippedFilters: [],
+  treatCategoryAllAsAbsent: undefined,
+};
+
+const metricPeriodMonthsType = PropTypes.oneOfType([
+  PropTypes.string,
+  PropTypes.number,
+]);
+
+RevocationsByViolation.propTypes = {
+  dataFilter: PropTypes.func.isRequired,
+  filterStates: PropTypes.shape({
+    metricPeriodMonths: metricPeriodMonthsType.isRequired,
+    chargeCategory: PropTypes.string,
+    district: PropTypes.string,
+    supervisionType: PropTypes.string,
+  }).isRequired,
+  metricPeriodMonths: PropTypes.string.isRequired,
+  skippedFilters: PropTypes.arrayOf(PropTypes.string),
+  treatCategoryAllAsAbsent: PropTypes.bool,
 };
 
 export default RevocationsByViolation;

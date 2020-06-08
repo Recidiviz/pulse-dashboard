@@ -18,30 +18,31 @@
 import React, { useState, useEffect } from 'react';
 import { Bar } from 'react-chartjs-2';
 
-import { COLORS, COLORS_FIVE_VALUES } from '../../../../../assets/scripts/constants/colors';
-import { configureDownloadButtons } from '../../../../../assets/scripts/utils/downloads';
+import { COLORS, COLORS_FIVE_VALUES } from '../../../assets/scripts/constants/colors';
+import { configureDownloadButtons } from '../../../assets/scripts/utils/downloads';
 import {
   filterDatasetBySupervisionType, filterDatasetByDistrict,
   filterDatasetByMetricPeriodMonths,
-} from '../../../../../utils/charts/toggles';
-import { tooltipForCountChart, tooltipForRateChart } from '../../../../../utils/charts/tooltips';
-import { toInt } from '../../../../../utils/transforms/labels';
+} from '../../../utils/charts/toggles';
+import { tooltipForCountChart, tooltipForRateChart } from '../../../utils/charts/tooltips';
+import { toInt } from '../../../utils/transforms/labels';
 
-const FtrReferralsByLsir = (props) => {
+const FtrReferralsByAge = (props) => {
   const [chartLabels, setChartLabels] = useState([]);
   const [ftrReferralProportions, setFtrReferralProportions] = useState([]);
   const [stateSupervisionProportions, setStateSupervisionProportions] = useState([]);
   const [ftrReferralCounts, setFtrReferralCounts] = useState([]);
   const [stateSupervisionCounts, setStateSupervisionCounts] = useState([]);
 
-  const chartId = 'ftrReferralsByLsir';
-  const lsirScoreBuckets = ['0-23', '24-29', '30-38', '39+'];
+  const chartId = 'ftrReferralsByAge';
+  const ageBucketLabels = ['<25', '25-29', '30-34', '35-39', '40<'];
+  const ageBucketDisplayLabels = ['Under 25', '25-29', '30-34', '35-39', '40 and over'];
 
   const processResponse = () => {
-    const { ftrReferralsByLsir } = props;
+    const { ftrReferralsByAge } = props;
 
     let filteredFtrReferrals = filterDatasetBySupervisionType(
-      ftrReferralsByLsir, props.supervisionType,
+      ftrReferralsByAge, props.supervisionType,
     );
 
     filteredFtrReferrals = filterDatasetByDistrict(
@@ -59,23 +60,29 @@ const FtrReferralsByLsir = (props) => {
 
     if (filteredFtrReferrals) {
       filteredFtrReferrals.forEach((data) => {
-        const { assessment_score_bucket: lsir } = data;
+        let { age_bucket: age } = data;
+
+        if (age === '0-24') {
+          age = 'Under 25';
+        } else if (age === '40+') {
+          age = '40 and over';
+        }
 
         const referralCount = toInt(data.count, 10);
 
-        if (!ftrReferralDataPoints[lsir]) {
-          ftrReferralDataPoints[lsir] = 0;
+        if (!ftrReferralDataPoints[age]) {
+          ftrReferralDataPoints[age] = 0;
         }
-        ftrReferralDataPoints[lsir] += referralCount;
+        ftrReferralDataPoints[age] += referralCount;
         totalFtrReferrals += referralCount;
 
-        const supervisionCount = toInt(data.total_supervision_count);
+        const totalSupervisionCount = toInt(data.total_supervision_count);
 
-        if (!supervisionDataPoints[lsir]) {
-          supervisionDataPoints[lsir] = 0;
+        if (!supervisionDataPoints[age]) {
+          supervisionDataPoints[age] = 0;
         }
-        supervisionDataPoints[lsir] += supervisionCount;
-        totalSupervisionPopulation += supervisionCount;
+        supervisionDataPoints[age] += totalSupervisionCount;
+        totalSupervisionPopulation += totalSupervisionCount;
       });
     }
 
@@ -84,8 +91,8 @@ const FtrReferralsByLsir = (props) => {
     const supervisionByAgeCounts = [];
     const supervisionByAgeProportions = [];
 
-    for (let i = 0; i < lsirScoreBuckets.length; i += 1) {
-      const referralValue = ftrReferralDataPoints[lsirScoreBuckets[i]];
+    for (let i = 0; i < ageBucketLabels.length; i += 1) {
+      const referralValue = ftrReferralDataPoints[ageBucketLabels[i]];
       if (!referralValue || !totalFtrReferrals) {
         referralsByAgeCounts.push(0);
         referralsByAgeProportions.push(0);
@@ -94,7 +101,7 @@ const FtrReferralsByLsir = (props) => {
         referralsByAgeProportions.push(100 * (referralValue / totalFtrReferrals));
       }
 
-      const supervisionValue = supervisionDataPoints[lsirScoreBuckets[i]];
+      const supervisionValue = supervisionDataPoints[ageBucketLabels[i]];
       if (!supervisionValue || !totalSupervisionPopulation) {
         supervisionByAgeCounts.push(0);
         supervisionByAgeProportions.push(0);
@@ -104,7 +111,7 @@ const FtrReferralsByLsir = (props) => {
       }
     }
 
-    setChartLabels(lsirScoreBuckets);
+    setChartLabels(ageBucketDisplayLabels);
     setFtrReferralCounts(referralsByAgeCounts);
     setFtrReferralProportions(referralsByAgeProportions);
     setStateSupervisionCounts(supervisionByAgeCounts);
@@ -114,7 +121,7 @@ const FtrReferralsByLsir = (props) => {
   useEffect(() => {
     processResponse();
   }, [
-    props.ftrReferralsByLsir,
+    props.ftrReferralsByAge,
     props.metricType,
     props.metricPeriodMonths,
     props.supervisionType,
@@ -177,7 +184,7 @@ const FtrReferralsByLsir = (props) => {
             },
             scaleLabel: {
               display: true,
-              labelString: 'LSI-R Score',
+              labelString: 'Age',
             },
           }],
         },
@@ -230,6 +237,16 @@ const FtrReferralsByLsir = (props) => {
             ftrReferralProportions[3],
             stateSupervisionProportions[3],
           ],
+        }, {
+          label: chartLabels[4],
+          backgroundColor: COLORS_FIVE_VALUES[4],
+          hoverBackgroundColor: COLORS_FIVE_VALUES[4],
+          hoverBorderColor: COLORS_FIVE_VALUES[4],
+          yAxisID: 'y-axis-left',
+          data: [
+            ftrReferralProportions[4],
+            stateSupervisionProportions[4],
+          ],
         }],
       }}
       options={{
@@ -267,7 +284,7 @@ const FtrReferralsByLsir = (props) => {
             },
             scaleLabel: {
               display: true,
-              labelString: 'LSI-R Score',
+              labelString: 'Age',
             },
           }],
         },
@@ -282,15 +299,15 @@ const FtrReferralsByLsir = (props) => {
 
   const exportedStructureCallback = () => (
     {
-      metric: 'FTR Referrals by LSI-R Scores',
+      metric: 'FTR Referrals by Age',
       series: [],
     });
 
-  configureDownloadButtons(chartId, 'FTR REFERRALS BY LSI-R',
+  configureDownloadButtons(chartId, 'FTR REFERRALS BY AGE',
     activeChart.props.data.datasets, activeChart.props.data.labels,
     document.getElementById(chartId), exportedStructureCallback, props);
 
   return activeChart;
 };
 
-export default FtrReferralsByLsir;
+export default FtrReferralsByAge;
