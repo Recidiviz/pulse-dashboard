@@ -53,7 +53,7 @@ const matrixViolationTypeToLabel = {
 const technicalViolationTypes = [
   'travelCount', 'residencyCount', 'employmentCount', 'associationCount',
   'directiveCount', 'supervisionStrategyCount', 'interventionFeeCount',
-  'specialCount','substanceCount', 'abscondedCount',
+  'specialCount','substanceCount', 'abscondedCount', 'weaponCount',
 ];
 
 const lawViolationTypes = [
@@ -63,7 +63,7 @@ const lawViolationTypes = [
 const allViolationTypes =  [
   'travelCount', 'residencyCount', 'employmentCount', 'associationCount',
   'directiveCount', 'supervisionStrategyCount', 'interventionFeeCount',
-  'specialCount','substanceCount', 'municipalCount', 'abscondedCount',
+  'specialCount', 'weaponCount', 'substanceCount', 'municipalCount', 'abscondedCount',
   'misdemeanorCount', 'felonyCount',
 ]
 
