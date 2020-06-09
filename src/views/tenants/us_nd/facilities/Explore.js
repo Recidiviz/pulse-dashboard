@@ -320,10 +320,10 @@ const FacilitiesExplore = () => {
         chartId="reincarcerationRateByStayLength"
         chartTitle={
           <>
-            REINCARCERATION RATE BY PREVIOUS STAY LENGTH
+            REINCARCERATIONS BY PREVIOUS STAY LENGTH
             {metricPeriodMonths !== "12" && (
               <WarningIcon
-                tooltipText="This graph is showing the reincarceration rate by previous stay length with the follow up period noted below. It does not show follow up periods other than 1 year."
+                tooltipText="This graph is showing the reincarcerations by previous stay length with the follow up period noted below. It does not show follow up periods other than 1 year."
                 className="pL-10 toggle-alert"
               />
             )}
