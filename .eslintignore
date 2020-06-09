@@ -26,6 +26,8 @@ public/
 !src/components/charts/facilities/__tests__/**/*.js
 !src/components/charts/new_revocations/CaseTable/**/*.js
 !src/components/charts/new_revocations/Chip.js
+!src/components/charts/new_revocations/RevocationsByDistrict/**/*.js
+!src/components/charts/new_revocations/RevocationsByViolation.js
 !src/components/program_evaluation/us_nd/FtrReferralsByParticipationStatus.js
 !src/components/toggles/__tests__/MetricPeriodToggle.test.js
 !src/components/toggles/__tests__/MetricTypeToggle.test.js

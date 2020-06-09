@@ -21,20 +21,28 @@ import { useAuth0 } from "../react-auth0-spa";
 import logger from "../utils/logger";
 import { callMetricsApi, awaitingResults } from "../utils/metricsClient";
 
-function useChartData(url) {
+function useChartData(url, file) {
   const { loading, user, getTokenSilently } = useAuth0();
   const [apiData, setApiData] = useState({});
   const [awaitingApi, setAwaitingApi] = useState(true);
 
   const fetchChartData = useCallback(async () => {
     try {
-      const responseData = await callMetricsApi(url, getTokenSilently);
-      setApiData(responseData);
+      if (file) {
+        const responseData = await callMetricsApi(
+          `${url}/${file}`,
+          getTokenSilently
+        );
+        setApiData(responseData[file]);
+      } else {
+        const responseData = await callMetricsApi(url, getTokenSilently);
+        setApiData(responseData);
+      }
       setAwaitingApi(false);
     } catch (error) {
       logger.error(error);
     }
-  }, [getTokenSilently, url]);
+  }, [file, getTokenSilently, url]);
 
   useEffect(() => {
     fetchChartData();
