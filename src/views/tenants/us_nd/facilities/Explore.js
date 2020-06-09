@@ -320,10 +320,10 @@ const FacilitiesExplore = () => {
         chartId="reincarcerationRateByStayLength"
         chartTitle={
           <>
-            REINCARCERATION RATE BY PREVIOUS STAY LENGTH
-            {(metricType !== "rates" || metricPeriodMonths !== "12") && (
+            REINCARCERATIONS BY PREVIOUS STAY LENGTH
+            {metricPeriodMonths !== "12" && (
               <WarningIcon
-                tooltipText="This graph is showing the reincarceration rate by previous stay length with the follow up period noted below. It cannot show this metric as a count. It also does not show follow up periods other than 1 year."
+                tooltipText="This graph is showing reincarceration by previous stay length with the follow up period noted below. It does not show follow up periods other than 1 year."
                 className="pL-10 toggle-alert"
               />
             )}
@@ -331,6 +331,7 @@ const FacilitiesExplore = () => {
         }
         chart={
           <ReincarcerationRateByStayLength
+            metricType={metricType}
             district={district}
             ratesByStayLength={apiData.reincarceration_rate_by_stay_length}
           />
