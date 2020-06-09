@@ -74,17 +74,27 @@ const ReincarcerationRateByStayLength = ({
   metricType,
   ratesByStayLength,
 }) => {
-  const filteredRatesByStayLength = filterDatasetByDistrict(
+  const filteredReincarcerationsByStayLength = filterDatasetByDistrict(
     ratesByStayLength,
     district
   );
 
   const label =
     metricType === "counts" ? "Number reincarcerated" : "Reincarceration rate";
+
   const chartDataPoints =
     metricType === "counts"
-      ? computeCountDataPoints(filteredRatesByStayLength)
-      : computeRateDataPoints(filteredRatesByStayLength);
+      ? computeCountDataPoints(filteredReincarcerationsByStayLength)
+      : computeRateDataPoints(filteredReincarcerationsByStayLength);
+
+  const tooltipLabel = ({ datasetIndex, index }, { datasets }) => {
+    const dataset = datasets[datasetIndex];
+    if (metricType === "counts") {
+      return `${dataset.label}: ${dataset.data[index]}`;
+    }
+    const rate = (dataset.data[index] * 100).toFixed(2);
+    return `${dataset.label}: ${rate}%`;
+  };
 
   const chart = (
     <Bar
@@ -110,13 +120,7 @@ const ReincarcerationRateByStayLength = ({
           backgroundColor: COLORS["grey-800-light"],
           mode: "index",
           callbacks: {
-            label({ datasetIndex, index }, { datasets }) {
-              const dataset = datasets[datasetIndex];
-              if (metricType === "counts") {
-                return `${dataset.label}: ${dataset.data[index]}`;
-              }
-              return `${dataset.label}: ${dataset.data[index] * 100}%`;
-            },
+            label: tooltipLabel,
           },
         },
         scaleShowValues: true,
@@ -151,13 +155,13 @@ const ReincarcerationRateByStayLength = ({
   );
 
   const exportedStructureCallback = () => ({
-    metric: "Reincarceration rate by previous stay length",
+    metric: "Reincarcerations by previous stay length",
     series: [],
   });
 
   configureDownloadButtons(
     chartId,
-    "REINCARCERATION RATE BY PREVIOUS STAY LENGTH",
+    "REINCARCERATIONS BY PREVIOUS STAY LENGTH",
     chart.props.data.datasets,
     chart.props.data.labels,
     document.getElementById(chartId),
