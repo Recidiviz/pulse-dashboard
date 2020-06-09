@@ -49,9 +49,9 @@ const transformStayLength = (oldStayLength) => {
   }
 };
 
-const computeRateDataPoints = (filteredRatesByStayLength) => {
+const computeRateDataPoints = (filteredReincarcerationsByStayLength) => {
   const ratesByStayLengthData = {};
-  filteredRatesByStayLength.forEach(
+  filteredReincarcerationsByStayLength.forEach(
     ({ stay_length_bucket: stayLength, recidivism_rate: rate }) => {
       ratesByStayLengthData[transformStayLength(stayLength)] = rate;
     }
@@ -59,14 +59,14 @@ const computeRateDataPoints = (filteredRatesByStayLength) => {
   return chartLabels.map((chartLabel) => ratesByStayLengthData[chartLabel]);
 };
 
-const computeCountDataPoints = (filteredRatesByStayLength) => {
-  const ratesByStayLengthData = {};
-  filteredRatesByStayLength.forEach(
+const computeCountDataPoints = (filteredReincarcerationsByStayLength) => {
+  const countsByStayLengthData = {};
+  filteredReincarcerationsByStayLength.forEach(
     ({ stay_length_bucket: stayLength, reincarceration_count: count }) => {
-      ratesByStayLengthData[transformStayLength(stayLength)] = count;
+      countsByStayLengthData[transformStayLength(stayLength)] = count;
     }
   );
-  return chartLabels.map((chartLabel) => ratesByStayLengthData[chartLabel]);
+  return chartLabels.map((chartLabel) => countsByStayLengthData[chartLabel]);
 };
 
 const ReincarcerationRateByStayLength = ({
