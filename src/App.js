@@ -62,7 +62,11 @@ const App = () => {
   // This lets us retrieve the state code for the user only after we have authenticated
   const getLandingView = (authenticated) => {
     if (!authenticated) {
-      return "/community/revocations";
+      // This has to be a path that will lead to a page for every state and is taking advantage
+      // of the fact that prior to a navigation refactor, this was a path used in all states, and
+      // now happens to redirect to the right landing page for all current states.
+      // TODO: But this will not be true for all states in the future, and will need a refactor.
+      return "/revocations";
     }
 
     const stateCode = getUserStateCode(user);
