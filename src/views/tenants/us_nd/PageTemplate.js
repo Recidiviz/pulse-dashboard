@@ -26,7 +26,10 @@ const PageTemplate = ({ children, importantNotes, toggleBar }) => (
     <div id="mainContent">
       {toggleBar}
 
-      <div className="row gap-20 pos-r">
+      <div
+        className="row gap-20 pos-r"
+        style={{ overflow: "initial !important" }}
+      >
         {importantNotes.length !== 0 && (
           <ImportantNotesBar importantNotes={importantNotes} />
         )}

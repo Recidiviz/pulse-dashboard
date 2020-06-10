@@ -1,0 +1,52 @@
+@import "../../assets/styles/spec/settings/materialColors.scss";
+@import "../../assets/styles/spec/settings/baseColors.scss";
+
+.toggle-filters {
+  display: flex;
+  font-weight: 500;
+  padding-right: 20px;
+  padding-left: 20px;
+
+  &__filter {
+    border-left: $grey-200 solid 2px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px;
+
+    &-title {
+      white-space: nowrap;
+      margin-right: 20px;
+      color: $grey-800;
+    }
+
+    &:nth-child(1) {
+      border-left: none;
+    }
+  }
+
+  &__select {
+    width: 100%;
+    color: $grey-500;
+    text-transform: uppercase;
+  }
+
+  #metricTypeToggle {
+    width: 200px;
+    color: $grey-500;
+    text-transform: uppercase;
+    margin-top: 10px;
+  }
+
+  #supervisionTypeToggle {
+    flex-grow: 4;
+  }
+
+  #metricPeriodToggle {
+    flex-grow: 3;
+  }
+
+  #districtToggle {
+    flex-grow: 4;
+  }
+}
