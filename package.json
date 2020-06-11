@@ -79,6 +79,7 @@
     "react-simple-maps": "^0.12.1",
     "react-spinners": "^0.8.1",
     "react-sticky-fill": "^0.8.4",
+    "react-test-renderer": "^16.13.1",
     "react-tooltip": "^3.11.1",
     "reactstrap": "^8.0.0",
     "skycons": "^1.0.0",
