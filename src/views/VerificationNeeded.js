@@ -19,7 +19,7 @@ import React from 'react';
 
 const VerificationNeeded = () => (
   <main className="main-content bgc-grey-100">
-    <div className="pos-a t-0 l-0 bgc-white w-100 h-100 d-f fxd-r fxw-w ai-c jc-c pos-r p-30">
+    <div className="pos-a t-0 bgc-white w-100 h-100 d-f fxd-r fxw-w ai-c jc-c pos-r p-30">
       <div className="d-f jc-c fxd-c">
         <h1 className="mB-30 fw-900 lh-1 recidiviz-dark-green-text" style={{ fontSize: '60px' }}>Almost there</h1>
         <h3 className="mB-10 fsz-lg c-grey-900 tt-c">Please verify your email</h3>
