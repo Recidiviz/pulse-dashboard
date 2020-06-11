@@ -19,10 +19,11 @@
 
 import React, { useMemo } from "react";
 import PropTypes from "prop-types";
-import Select from "react-select";
 import Sticky from "react-sticky-fill";
 
-import RadioGroup from "../RadioGroup";
+import RadioGroup from "../controls/RadioGroup";
+import Select from "../controls/Select";
+
 import {
   defaultDistrictOption,
   defaultMetricPeriodOption,
@@ -38,7 +39,7 @@ import "./ToggleBar.scss";
 
 const TOGGLE_STYLE = {
   zIndex: 700,
-  top: 55,
+  top: 65,
 };
 
 const ToggleBar = ({
@@ -51,6 +52,7 @@ const ToggleBar = ({
   replaceLa,
   stateCode,
 }) => {
+  const isCounty = stateCode !== undefined;
   const districtOptions = useMemo(
     () =>
       getDistrictOptions(
@@ -78,26 +80,6 @@ const ToggleBar = ({
                 </div>
               )}
 
-              {setChartSupervisionType && (
-                <div
-                  className="toggle-filters__filter"
-                  id="supervisionTypeToggle"
-                >
-                  <span className="toggle-filters__filter-title">
-                    Supervision type
-                  </span>
-                  <div className="toggle-filters__select">
-                    <Select
-                      options={supervisionTypeOptions}
-                      onChange={(option) => {
-                        setChartSupervisionType(option.value);
-                      }}
-                      defaultValue={defaultSupervisionTypeOption}
-                    />
-                  </div>
-                </div>
-              )}
-
               {setChartMetricPeriodMonths && (
                 <div className="toggle-filters__filter" id="metricPeriodToggle">
                   <span className="toggle-filters__filter-title">
@@ -115,9 +97,32 @@ const ToggleBar = ({
                 </div>
               )}
 
+              {setChartSupervisionType && (
+                <div
+                  className="toggle-filters__filter"
+                  id="supervisionTypeToggle"
+                >
+                  <span className="toggle-filters__filter-title">
+                    Supervision type
+                  </span>
+                  <div className="toggle-filters__select">
+                    <Select
+                      options={supervisionTypeOptions}
+                      onChange={(option) => {
+                        setChartSupervisionType(option.value);
+                      }}
+                      defaultValue={defaultSupervisionTypeOption}
+                      isSearchable={false}
+                    />
+                  </div>
+                </div>
+              )}
+
               {setChartDistrict && (
                 <div className="toggle-filters__filter" id="districtToggle">
-                  <span className="toggle-filters__filter-title">Office</span>
+                  <span className="toggle-filters__filter-title">
+                    {isCounty ? "County of Residence" : "Office"}
+                  </span>
                   <div className="toggle-filters__select">
                     <Select
                       options={districtOptions}

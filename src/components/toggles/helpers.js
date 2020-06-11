@@ -75,7 +75,10 @@ export const collectOptions = (districts, districtOffices) =>
     ? collectDistrictOfficesOptions(districtOffices)
     : collectDistrictsOptions(districts);
 
-export const appendAllOption = (options) => [defaultDistrictOption, ...options];
+export const prependAllOption = (options) => [
+  defaultDistrictOption,
+  ...options,
+];
 
 export const normalizeLabel = (replaceLa, stateCode) => (option) => ({
   ...option,
@@ -91,5 +94,5 @@ export const getDistrictOptions = (
   pipe(
     collectOptions,
     map(normalizeLabel(replaceLa, stateCode)),
-    appendAllOption
+    prependAllOption
   )(districts, districtOffices);

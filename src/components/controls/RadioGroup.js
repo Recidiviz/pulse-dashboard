@@ -20,28 +20,27 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 
+import "./RadioGroup.scss";
+
 const RadioGroup = ({ defaultValue, onChange, options }) => {
   const [state, setState] = useState(defaultValue);
 
   return (
-    <>
+    <div className="radio-group">
       {options.map(({ value, label }) => (
-        <div className="form-check" key={value}>
-          <label>
-            <input
-              type="radio"
-              checked={state === value}
-              onChange={() => {
-                setState(value);
-                onChange(value);
-              }}
-              className="form-check-input"
-            />
-            {label}
-          </label>
-        </div>
+        <label key={value}>
+          <input
+            type="radio"
+            checked={state === value}
+            onChange={() => {
+              setState(value);
+              onChange(value);
+            }}
+          />
+          {label}
+        </label>
       ))}
-    </>
+    </div>
   );
 };
 

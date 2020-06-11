@@ -11,7 +11,6 @@ public/
 !server/routes/*.js
 !server/utils/*.js
 !src/App.js
-!src/components/RadioGroup.js
 !src/components/PrivateTenantRedirect.js
 !src/components/charts/ChartCard.js
 !src/components/charts/DataSignificanceWarningIcon.js
@@ -25,7 +24,7 @@ public/
 !src/components/charts/new_revocations/Chip.js
 !src/components/charts/new_revocations/RevocationsByDistrict/**/*.js
 !src/components/charts/new_revocations/RevocationsByViolation.js
-!src/components/program_evaluation/us_nd/FtrReferralsByParticipationStatus.js
+!src/components/controls/**/*.js
 !src/components/sidebar/**/*.js
 !src/components/toggles/**/*.js
 !src/components/topbar/**/*.js

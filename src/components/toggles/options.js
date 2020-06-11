@@ -32,12 +32,12 @@ export const defaultMetricPeriodOption = metricPeriodOptions[1];
 export const defaultMetricPeriod = defaultMetricPeriodOption.value;
 
 export const supervisionTypeOptions = [
-  { label: "All types", value: "all" },
+  { label: "All", value: "all" },
   { label: "Individuals on probation", value: "probation" },
   { label: "Individuals on parole", value: "parole" },
 ];
 export const defaultSupervisionTypeOption = supervisionTypeOptions[0];
 export const defaultSupervisionType = defaultSupervisionTypeOption.value;
 
-export const defaultDistrictOption = { label: "All offices", value: "all" };
+export const defaultDistrictOption = { label: "All", value: "all" };
 export const defaultDistrict = defaultDistrictOption.value;
