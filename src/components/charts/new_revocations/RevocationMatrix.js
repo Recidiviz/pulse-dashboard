@@ -144,7 +144,7 @@ const RevocationMatrix = (props) => {
       <div key={i} className="cell">
         <div style={containerStyle}>
           <button
-            className={`total-revocations ${isSelected(violationType, violationCount)  ? 'is-selected': ''}`}
+            className={`total-revocations ${isSelected(violationType, violationCount) ? 'is-selected' : ''}`}
             onClick={() => toggleFilter(violationType, violationCount)}
             style={cellStyle}
           >
@@ -195,13 +195,13 @@ const RevocationMatrix = (props) => {
   return (
     <div className="revocation-matrix">
       <h4>
-        People revoked to prison by violation history
+        People revoked to prison by violation history (in year prior to their last reported violation)
         <ExportMenu
           chartId="revocationMatrix"
           regularElement
           elementDatasets={exportableMatrixData()}
           elementLabels={VIOLATION_COUNTS.map((count) => violationCountLabel(count))}
-          metricTitle="People revoked to prison by violation history"
+          metricTitle="People revoked to prison by violation history (in year prior to their last reported violation)"
           timeWindowDescription={`${getTrailingLabelFromMetricPeriodMonthsToggle(props.metricPeriodMonths)} (${getPeriodLabelFromMetricPeriodMonthsToggle(props.metricPeriodMonths)})`}
           filters={props.filterStates}
         />
@@ -210,16 +210,16 @@ const RevocationMatrix = (props) => {
         {`${getTrailingLabelFromMetricPeriodMonthsToggle(props.metricPeriodMonths)} (${getPeriodLabelFromMetricPeriodMonthsToggle(props.metricPeriodMonths)})`}
       </h6>
       <div className="x-label pY-30">
-        Number of violation reports and notices of citation<br/>(filed within one year of the last violation prior to revocation)
+        # of violation reports and notices of citation
       </div>
       <div className="matrix-content">
         <div id="revocationMatrix" className="d-f matrix-chart-container">
           <div className="y-label" data-html2canvas-ignore>
-            Most severe violation reported<br/>(filed within one year of the last violation prior to revocation)
+            Most severe violation reported
           </div>
           <div className={`matrix ${isFiltered ? 'is-filtered' : ''} fs-block`}>
             <div className="violation-counts">
-              <span className="empty-cell"/>
+              <span className="empty-cell" />
               {VIOLATION_COUNTS.map((count, i) => (
                 <span key={i} className="violation-column">{violationCountLabel(count)}</span>
               ))}
@@ -227,7 +227,7 @@ const RevocationMatrix = (props) => {
             </div>
             {Object.entries(matrixViolationTypeToLabel).map(renderRow)}
             <div className="violation-sum-row">
-              <span className="empty-cell"/>
+              <span className="empty-cell" />
               {VIOLATION_COUNTS.map((count, i) => (
                 <span key={i} className="violation-column violation-sum">
                   {reportedViolationsSum(count)}
