@@ -16,12 +16,7 @@
 // =============================================================================
 
 import React from "react";
-import {
-  BrowserRouter as Router,
-  Redirect,
-  Route,
-  Switch,
-} from "react-router-dom";
+import { Redirect, Route, Switch } from "react-router-dom";
 
 import { useAuth0 } from "./react-auth0-spa";
 
@@ -52,7 +47,7 @@ initFontAwesome();
 
 const App = () => {
   const { user, loading, isAuthenticated } = useAuth0();
-  const { isWide } = useLayout();
+  const { isLantern, isWide } = useLayout();
   const { isSideBarCollapsed, toggleSideBar } = useSideBar();
 
   if (loading) {
@@ -78,50 +73,51 @@ const App = () => {
   const isUrlEnabled = (url) => isViewAvailableForUserState(user, url);
 
   return (
-    <Router>
-      <div id="app" className={isSideBarCollapsed ? "is-collapsed" : ""}>
+    <div
+      id="app"
+      className={isSideBarCollapsed && !isLantern ? "is-collapsed" : ""}
+    >
+      <div>
+        <meta charSet="utf-8" />
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1, shrink-to-fit=no"
+        />
+        <title>Recidiviz Dashboard</title>
         <div>
-          <meta charSet="utf-8" />
-          <meta
-            name="viewport"
-            content="width=device-width, initial-scale=1, shrink-to-fit=no"
-          />
-          <title>Recidiviz Dashboard</title>
-          <div>
-            {!isWide && (
-              <SideBar
-                isUrlEnabled={isUrlEnabled}
-                toggleSideBar={toggleSideBar}
-              />
-            )}
-            <div className={containerClass}>
-              <TopBar toggleSideBar={toggleSideBar} />
+          {!isWide && (
+            <SideBar
+              isUrlEnabled={isUrlEnabled}
+              toggleSideBar={toggleSideBar}
+            />
+          )}
+          <div className={containerClass}>
+            <TopBar toggleSideBar={toggleSideBar} />
 
-              <Switch>
-                <Redirect exact from="/" to={getLandingView(isAuthenticated)} />
+            <Switch>
+              <Redirect exact from="/" to={getLandingView(isAuthenticated)} />
 
-                <PrivateTenantRedirect from="/snapshots" />
-                <PrivateTenantRedirect from="/revocations" />
-                <PrivateTenantRedirect from="/reincarcerations" />
-                <PrivateTenantRedirect from="/programEvaluation/freeThroughRecovery" />
+              <PrivateTenantRedirect from="/snapshots" />
+              <PrivateTenantRedirect from="/revocations" />
+              <PrivateTenantRedirect from="/reincarcerations" />
+              <PrivateTenantRedirect from="/programEvaluation/freeThroughRecovery" />
 
-                <PrivateTenantRoute path="/community/revocations" />
-                <PrivateTenantRoute path="/community/goals" />
-                <PrivateTenantRoute path="/community/explore" />
-                <PrivateTenantRoute path="/facilities/goals" />
-                <PrivateTenantRoute path="/facilities/explore" />
-                <PrivateTenantRoute path="/programming/explore" />
+              <PrivateTenantRoute path="/community/revocations" />
+              <PrivateTenantRoute path="/community/goals" />
+              <PrivateTenantRoute path="/community/explore" />
+              <PrivateTenantRoute path="/facilities/goals" />
+              <PrivateTenantRoute path="/facilities/explore" />
+              <PrivateTenantRoute path="/programming/explore" />
 
-                <PrivateRoute path="/profile" component={Profile} />
-                <Route path="/verify" component={VerificationNeeded} />
-                <Route component={NotFound} />
-              </Switch>
-              <Footer />
-            </div>
+              <PrivateRoute path="/profile" component={Profile} />
+              <Route path="/verify" component={VerificationNeeded} />
+              <Route component={NotFound} />
+            </Switch>
+            <Footer />
           </div>
         </div>
       </div>
-    </Router>
+    </div>
   );
 };
 
