@@ -11,6 +11,7 @@ public/
 !server/routes/*.js
 !server/utils/*.js
 !src/App.js
+!src/index.js
 !src/components/PrivateTenantRedirect.js
 !src/components/sidebar/**/*.js
 !src/components/topbar/**/*.js
@@ -34,6 +35,7 @@ public/
 !src/components/toggles/__tests__/SupervisionTypeToggle.test.js
 !src/components/toggles/__tests__/ToggleBar.test.js
 !src/hooks/useChartData.js
+!src/hooks/useSideBar.js
 !src/hooks/useTopBarShrinking.js
 !src/utils/charts/info.js
 !src/utils/charts/methodologies.js
