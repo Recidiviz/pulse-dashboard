@@ -78,12 +78,6 @@ const App = () => {
       className={isSideBarCollapsed && !isLantern ? "is-collapsed" : ""}
     >
       <div>
-        <meta charSet="utf-8" />
-        <meta
-          name="viewport"
-          content="width=device-width, initial-scale=1, shrink-to-fit=no"
-        />
-        <title>Recidiviz Dashboard</title>
         <div>
           {!isWide && (
             <SideBar
