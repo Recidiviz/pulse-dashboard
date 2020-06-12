@@ -37,7 +37,7 @@ const GeoViewToggle = ({ setGeoViewEnabled: onChange }) => {
           }}
           className="form-check-input"
         />
-        {geoViewEnabled ? "Map" : "Graph"}
+        {geoViewEnabled ? "Graph" : "Map"}
       </label>
     </div>
   );

@@ -16,25 +16,32 @@
 // =============================================================================
 
 import React from "react";
-import ReactSelect from "react-select";
-import merge from "lodash/fp/merge";
+import { getByText, fireEvent } from "@testing-library/dom";
+import { render } from "@testing-library/react";
+import "@testing-library/jest-dom/extend-expect";
+import GeoViewToggle from "../GeoViewToggle";
 
-const fontStyles = {
-  color: "rgba(114, 119, 122, 0.8)",
-  textTransform: "uppercase",
-};
+describe("GeoViewToggle", () => {
+  const props = {
+    setGeoViewEnabled: jest.fn(),
+  };
 
-const defaults = {
-  isSearchable: false,
-  styles: {
-    option: (styles) => ({ ...styles, ...fontStyles }),
-    singleValue: (styles) => ({ ...styles, ...fontStyles }),
-  },
-};
+  it("should render default component", () => {
+    const { container } = render(<GeoViewToggle {...props} />);
+    expect(getByText(container, "Map")).toBeTruthy();
+  });
 
-const Select = (props) => {
-  const propsWithDefaults = merge(defaults, props);
-  return <ReactSelect {...propsWithDefaults} />;
-};
+  it("should be toggled", async () => {
+    const { container } = render(<GeoViewToggle {...props} />);
 
-export default Select;
+    await fireEvent(
+      getByText(container, "Map"),
+      new MouseEvent("click", {
+        bubbles: true,
+        cancelable: true,
+      })
+    );
+
+    expect(getByText(container, "Graph")).toBeTruthy();
+  });
+});
