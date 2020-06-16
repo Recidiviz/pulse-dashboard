@@ -1,5 +1,5 @@
 // Recidiviz - a data platform for criminal justice reform
-// Copyright (C) 2019 Recidiviz, Inc.
+// Copyright (C) 2020 Recidiviz, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -16,13 +16,14 @@
 // =============================================================================
 
 const STATE_NAME_BY_CODE = {
-  us_mo: 'Missouri',
-  us_nd: 'North Dakota',
-  lantern: 'Lantern',
-  recidiviz: 'Recidiviz',
+  us_mo: "Missouri",
+  us_nd: "North Dakota",
+  us_pa: "Pennsylvania",
+  lantern: "Lantern",
+  recidiviz: "Recidiviz",
 };
 
-const METADATA_NAMESPACE = 'https://dashboard.recidiviz.org/';
+const METADATA_NAMESPACE = "https://dashboard.recidiviz.org/";
 
 /**
  * Returns the Auth0 app_metadata for the given user id token.
@@ -47,14 +48,14 @@ function getStateNameForCode(stateCode) {
 function getUserStateCode(user) {
   const appMetadata = getUserAppMetadata(user);
   if (!appMetadata) {
-    throw Error('No app_metadata available for user');
+    throw Error("No app_metadata available for user");
   }
 
   const stateCode = appMetadata.state_code;
   if (stateCode) {
     return stateCode;
   }
-  throw Error('No state code set for user');
+  throw Error("No state code set for user");
 }
 
 /**
@@ -70,7 +71,7 @@ function getUserStateName(user) {
  */
 function isLanternUser(user) {
   const stateCode = getUserStateCode(user);
-  return stateCode.toLowerCase() === 'lantern';
+  return stateCode.toLowerCase() === "lantern";
 }
 
 /**
@@ -78,7 +79,7 @@ function isLanternUser(user) {
  */
 function isRecidivizUser(user) {
   const stateCode = getUserStateCode(user);
-  return stateCode.toLowerCase() === 'recidiviz';
+  return stateCode.toLowerCase() === "recidiviz";
 }
 
 /**

@@ -15,35 +15,38 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React, { useEffect } from "react";
+import React from "react";
 import PropTypes from "prop-types";
-import { Redirect } from "react-router-dom";
 
-import { useAuth0 } from "../react-auth0-spa";
-import { getRedirectedView } from "../utils/authentication/viewAuthentication";
+import Footer from "../../../components/Footer";
+import TopBarLayout from "../../../components/topbar/TopBarLayout";
+import TopBarLogo from "../../../components/topbar/TopBarLogo";
+import TopBarUserMenuForAuthenticatedUser from "../../../components/topbar/TopBarUserMenuForAuthenticatedUser";
 
-const PrivateTenantRedirect = ({ from, ...rest }) => {
-  const { isAuthenticated, loginWithRedirect, user } = useAuth0();
+const Layout = ({ children }) => {
+  return (
+    <div id="app">
+      <div className="wide-page-container">
+        <TopBarLayout isWide>
+          <TopBarLogo />
+          <ul className="nav-right">
+            <TopBarUserMenuForAuthenticatedUser />
+          </ul>
+        </TopBarLayout>
 
-  useEffect(() => {
-    const fn = async () => {
-      if (!isAuthenticated) {
-        await loginWithRedirect({
-          appState: { targetUrl: from },
-        });
-      }
-    };
-    fn();
-  }, [isAuthenticated, loginWithRedirect, from]);
+        {children}
 
-  if (!isAuthenticated) return null;
-
-  const to = getRedirectedView(user, from);
-  return <Redirect from={from} to={to} {...rest} />;
+        <Footer />
+      </div>
+    </div>
+  );
 };
 
-PrivateTenantRedirect.propTypes = {
-  from: PropTypes.string.isRequired,
+Layout.propTypes = {
+  children: PropTypes.oneOfType([
+    PropTypes.node,
+    PropTypes.arrayOf(PropTypes.node),
+  ]).isRequired,
 };
 
-export default PrivateTenantRedirect;
+export default Layout;

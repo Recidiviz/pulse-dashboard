@@ -15,23 +15,30 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import { useState } from "react";
+import React, { createContext, useState, useContext } from "react";
 
-function useSideBar() {
-  const [isSideBarCollapsed, setIsSideBarCollapsed] = useState(false);
+import { useAuth0 } from "../react-auth0-spa";
+import { getCurrentStateCodeForAdminUsers } from "../views/stateViews";
 
-  function toggleSideBar() {
-    if (isSideBarCollapsed) {
-      setIsSideBarCollapsed(false);
-    } else {
-      setIsSideBarCollapsed(true);
-    }
-  }
+const AdminStateCodeContext = createContext({});
 
-  return {
-    isSideBarCollapsed,
-    toggleSideBar,
+export const useAdminStateCode = () => useContext(AdminStateCodeContext);
+
+// eslint-disable-next-line react/prop-types
+export const AdminStateCodeProvider = ({ children }) => {
+  const { user } = useAuth0();
+  const currentStateCode = getCurrentStateCodeForAdminUsers(user);
+
+  const [adminStateCode, setAdminStateCode] = useState(currentStateCode);
+
+  const contextValue = {
+    adminStateCode,
+    setAdminStateCode,
   };
-}
 
-export default useSideBar;
+  return (
+    <AdminStateCodeContext.Provider value={contextValue}>
+      {children}
+    </AdminStateCodeContext.Provider>
+  );
+};

@@ -1,5 +1,5 @@
 // Recidiviz - a data platform for criminal justice reform
-// Copyright (C) 2019 Recidiviz, Inc.
+// Copyright (C) 2020 Recidiviz, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -15,39 +15,43 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React, { useState } from 'react';
-import Select from 'react-select';
+import React, { useState } from "react";
+import PropTypes from "prop-types";
+import Select from "react-select";
+import { useHistory } from "react-router-dom";
 
-import { getStateNameForCode, isRecidivizUser, isLanternUser } from '../utils/authentication/user';
+import { getStateNameForCode } from "../utils/authentication/user";
 import {
-  getAvailableStatesForAdminUser,
-  getCurrentStateForAdminUsers,
-  setCurrentStateForAdminUsers,
-} from '../views/stateViews';
+  getAvailableStateCodesForAdminUser,
+  setCurrentStateCodeForAdminUsers,
+} from "../views/stateViews";
+import { useAdminStateCode } from "../contexts/AdminStateCodeContext";
 
-const StateSelector = (props) => {
-  const { user } = props;
-  const recidivizUser = isRecidivizUser(user);
-  const lanternUser = isLanternUser(user);
+const StateSelector = ({ user }) => {
+  const { push } = useHistory();
+  const { adminStateCode, setAdminStateCode } = useAdminStateCode();
 
-  const availableStateCodes = getAvailableStatesForAdminUser(recidivizUser, lanternUser);
-  const availableStates = availableStateCodes.map(
-    (code) => ({ value: code, label: getStateNameForCode(code) }),
+  const availableStateCodes = getAvailableStateCodesForAdminUser(user);
+  const availableStates = availableStateCodes.map((code) => ({
+    value: code,
+    label: getStateNameForCode(code),
+  }));
+
+  const initialState = availableStates.find(
+    (availableState) => availableState.value === adminStateCode
   );
-
-  const [selectedState, setSelectedState] = useState(
-    {
-      value: getCurrentStateForAdminUsers(isRecidivizUser, isLanternUser),
-      label: getStateNameForCode(getCurrentStateForAdminUsers(isRecidivizUser, isLanternUser)),
-    },
-  );
+  const [selectedState, setSelectedState] = useState(initialState);
 
   const selectState = (selectedOption) => {
     const stateCode = selectedOption.value.toLowerCase();
-    setCurrentStateForAdminUsers(stateCode);
-    setSelectedState({ value: stateCode, label: getStateNameForCode(stateCode) });
-    // Refresh the entire page
-    window.location.reload(false);
+    setCurrentStateCodeForAdminUsers(stateCode);
+    setAdminStateCode(stateCode);
+    setSelectedState({
+      value: stateCode,
+      label: getStateNameForCode(stateCode),
+    });
+
+    push({ pathname: "/" });
   };
 
   return (
@@ -58,6 +62,21 @@ const StateSelector = (props) => {
       isSearchable
     />
   );
+};
+
+StateSelector.defaultProps = {
+  user: undefined,
+};
+
+StateSelector.propTypes = {
+  user: PropTypes.shape({
+    picture: PropTypes.string,
+    name: PropTypes.string,
+    email: PropTypes.string,
+    [PropTypes.string]: PropTypes.shape({
+      state_code: PropTypes.string,
+    }),
+  }),
 };
 
 export default StateSelector;

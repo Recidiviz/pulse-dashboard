@@ -18,40 +18,35 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import ImportantNotesBar from "../../../components/ImportantNotesBar";
-import "../../../assets/styles/index.scss";
+import Footer from "../../../components/Footer";
+import TopBarLayout from "../../../components/topbar/TopBarLayout";
+import TopBarLogo from "../../../components/topbar/TopBarLogo";
+import TopBarUserMenuForAuthenticatedUser from "../../../components/topbar/TopBarUserMenuForAuthenticatedUser";
 
-const PageTemplate = ({ children, importantNotes, toggleBar }) => (
-  <main className="main-content bgc-grey-100">
-    <div id="mainContent">
-      {toggleBar}
-
-      <div className="row gap-20 pos-r">
-        {importantNotes.length !== 0 && (
-          <ImportantNotesBar importantNotes={importantNotes} />
-        )}
+const Layout = ({ children }) => {
+  return (
+    <div id="app">
+      <div className="wide-page-container">
+        <TopBarLayout isWide>
+          <TopBarLogo />
+          <ul className="nav-right">
+            <TopBarUserMenuForAuthenticatedUser />
+          </ul>
+        </TopBarLayout>
 
         {children}
+
+        <Footer />
       </div>
     </div>
-  </main>
-);
-
-PageTemplate.defaultProps = {
-  children: undefined,
-  importantNotes: [],
-  toggleBar: undefined,
+  );
 };
 
-PageTemplate.propTypes = {
-  children: PropTypes.node,
-  importantNotes: PropTypes.arrayOf(
-    PropTypes.shape({
-      header: PropTypes.string.isRequired,
-      body: PropTypes.string.isRequired,
-    }).isRequired
-  ),
-  toggleBar: PropTypes.node,
+Layout.propTypes = {
+  children: PropTypes.oneOfType([
+    PropTypes.node,
+    PropTypes.arrayOf(PropTypes.node),
+  ]).isRequired,
 };
 
-export default PageTemplate;
+export default Layout;
