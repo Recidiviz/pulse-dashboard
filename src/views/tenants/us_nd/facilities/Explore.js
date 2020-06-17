@@ -30,7 +30,11 @@ import ReincarcerationRateByStayLength from "../../../../components/charts/facil
 import AdmissionCountsByType from "../../../../components/charts/common/AdmissionCountsByType";
 import DaysAtLibertySnapshot from "../../../../components/charts/facilities/DaysAtLibertySnapshot";
 import ToggleBar from "../../../../components/toggles/ToggleBar";
-import * as ToggleDefaults from "../../../../components/toggles/ToggleDefaults";
+import {
+  defaultDistrict,
+  defaultMetricPeriod,
+  defaultMetricType,
+} from "../../../../components/toggles/options";
 // eslint-disable-next-line import/no-cycle
 import useChartData from "../../../../hooks/useChartData";
 import { getYearFromNow } from "../../../../utils/transforms/years";
@@ -93,11 +97,11 @@ const importantNotes = [
 
 const FacilitiesExplore = () => {
   const { apiData, isLoading } = useChartData("us_nd/facilities/explore");
-  const [metricType, setMetricType] = useState(ToggleDefaults.metricType);
+  const [metricType, setMetricType] = useState(defaultMetricType);
   const [metricPeriodMonths, setMetricPeriodMonths] = useState(
-    ToggleDefaults.metricPeriodMonths
+    defaultMetricPeriod
   );
-  const [district, setDistrict] = useState(ToggleDefaults.district);
+  const [district, setDistrict] = useState(defaultDistrict);
 
   if (isLoading) {
     return <Loading />;
