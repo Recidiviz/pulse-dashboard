@@ -24,7 +24,7 @@ import {
 } from "react-router-dom";
 
 import TenantRoutes from "./components/TenantRoutes";
-import { AdminStateCodeProvider } from "./contexts/AdminStateCodeContext";
+import { StateCodeProvider } from "./contexts/StateCodeContext";
 import NotFound from "./views/NotFound";
 import Profile from "./views/Profile";
 import VerificationNeeded from "./views/VerificationNeeded";
@@ -45,11 +45,9 @@ import "./assets/styles/index.scss";
 
 initFontAwesome();
 
-// TODO: what to do with guests?
-
 // prettier-ignore
 const App = () => (
-  <AdminStateCodeProvider>
+  <StateCodeProvider>
     <Router>
       <Switch>
         <Route path="/verify" component={VerificationNeeded} />
@@ -75,7 +73,6 @@ const App = () => (
               <Route path="/profile" component={Profile} />
               <Redirect exact from="/" to="/community/goals" />
               <Redirect from="/snapshots" to="/community/goals" />
-              <Redirect from="/revocations" to="/community/revocations" />
               <Redirect from="/revocations" to="/community/goals" />
               <Redirect from="/reincarcerations" to="/facilities/goals" />
               <Redirect from="/programEvaluation/freeThroughRecovery" to="/programming/explore" />
@@ -95,7 +92,7 @@ const App = () => (
         </TenantRoutes>
       </Switch>
     </Router>
-  </AdminStateCodeProvider>
+  </StateCodeProvider>
 );
 
 export default App;

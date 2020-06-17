@@ -31,6 +31,7 @@ public/
 !src/components/charts/new_revocations/Chip.js
 !src/components/charts/new_revocations/RevocationCharts.js
 !src/components/charts/new_revocations/RevocationMatrixExplanation.js
+!src/components/charts/new_revocations/Revocations.js
 !src/components/charts/new_revocations/RevocationsByDistrict/**/*.js
 !src/components/charts/new_revocations/RevocationsByViolation.js
 !src/components/charts/new_revocations/ToggleBar/**/*.js
@@ -57,7 +58,6 @@ public/
 !src/utils/logger.js
 !src/utils/transforms/years.js
 !src/utils/transforms/__tests__/years.test.js
-!src/views/stateViews.js
 !src/views/NotFound.js
 !src/views/Profile.js
 !src/views/VerificationNeeded.js

@@ -15,68 +15,48 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React, { useState } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import Select from "react-select";
 import { useHistory } from "react-router-dom";
 
+import { useStateCode } from "../contexts/StateCodeContext";
 import { getStateNameForCode } from "../utils/authentication/user";
-import {
-  getAvailableStateCodesForAdminUser,
-  setCurrentStateCodeForAdminUsers,
-} from "../views/stateViews";
-import { useAdminStateCode } from "../contexts/AdminStateCodeContext";
 
-const StateSelector = ({ user }) => {
+const StateSelector = ({ availableStateCodes }) => {
+  const { currentStateCode, updateCurrentStateCode } = useStateCode();
   const { push } = useHistory();
-  const { adminStateCode, setAdminStateCode } = useAdminStateCode();
 
-  const availableStateCodes = getAvailableStateCodesForAdminUser(user);
-  const availableStates = availableStateCodes.map((code) => ({
+  const availableStatesOptions = availableStateCodes.map((code) => ({
     value: code,
     label: getStateNameForCode(code),
   }));
 
-  const initialState = availableStates.find(
-    (availableState) => availableState.value === adminStateCode
+  const defaultValue = availableStatesOptions.find(
+    (availableState) => availableState.value === currentStateCode
   );
-  const [selectedState, setSelectedState] = useState(initialState);
 
   const selectState = (selectedOption) => {
-    const stateCode = selectedOption.value.toLowerCase();
-    setCurrentStateCodeForAdminUsers(stateCode);
-    setAdminStateCode(stateCode);
-    setSelectedState({
-      value: stateCode,
-      label: getStateNameForCode(stateCode),
-    });
-
-    push({ pathname: "/" });
+    updateCurrentStateCode(selectedOption.value);
+    push({ pathname: "/profile" });
   };
 
   return (
     <Select
-      value={selectedState}
+      defaultValue={defaultValue}
       onChange={selectState}
-      options={availableStates}
+      options={availableStatesOptions}
       isSearchable
     />
   );
 };
 
 StateSelector.defaultProps = {
-  user: undefined,
+  availableStateCodes: [],
 };
 
 StateSelector.propTypes = {
-  user: PropTypes.shape({
-    picture: PropTypes.string,
-    name: PropTypes.string,
-    email: PropTypes.string,
-    [PropTypes.string]: PropTypes.shape({
-      state_code: PropTypes.string,
-    }),
-  }),
+  availableStateCodes: PropTypes.arrayOf(PropTypes.string),
 };
 
 export default StateSelector;

@@ -15,79 +15,10 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React, { useState } from "react";
+import React from "react";
 
-import CaseTable from "../../../../components/charts/new_revocations/CaseTable/CaseTable";
-import RevocationCharts from "../../../../components/charts/new_revocations/RevocationCharts";
-import RevocationCountOverTime from "../../../../components/charts/new_revocations/RevocationsOverTime";
-import RevocationMatrix from "../../../../components/charts/new_revocations/RevocationMatrix";
-import RevocationMatrixExplanation from "../../../../components/charts/new_revocations/RevocationMatrixExplanation";
-import ToggleBar from "../../../../components/charts/new_revocations/ToggleBar/ToggleBar";
-import {
-  applyAllFilters,
-  applyTopLevelFilters,
-} from "../../../../components/charts/new_revocations/helpers";
-import {
-  DEFAULT_METRIC_PERIOD,
-  DEFAULT_CHARGE_CATEGORY,
-  DEFAULT_DISTRICT,
-  DEFAULT_SUPERVISION_TYPE,
-} from "../../../../components/charts/new_revocations/ToggleBar/options";
-import "../../../../assets/styles/index.scss";
+import Revocations from "../../../../components/charts/new_revocations/Revocations";
 
-const Revocations = () => {
-  const [filters, setFilters] = useState({
-    metricPeriodMonths: DEFAULT_METRIC_PERIOD,
-    chargeCategory: DEFAULT_CHARGE_CATEGORY,
-    district: DEFAULT_DISTRICT,
-    supervisionType: DEFAULT_SUPERVISION_TYPE,
-    reportedViolations: "",
-    violationType: "",
-  });
+const UsPaRevocations = () => <Revocations stateCode="us_pa" />;
 
-  const updateFilters = (newFilters) => {
-    setFilters({ ...filters, ...newFilters });
-  };
-
-  return (
-    <main className="dashboard bgc-grey-100">
-      <ToggleBar filters={filters} updateFilters={updateFilters} />
-
-      <div className="bgc-white p-20 m-20">
-        <RevocationCountOverTime
-          dataFilter={applyAllFilters(filters)}
-          skippedFilters={["metricPeriodMonths"]}
-          filterStates={filters}
-          metricPeriodMonths={filters.metricPeriodMonths}
-        />
-      </div>
-      <div className="d-f m-20 container-all-charts">
-        <div className="matrix-container bgc-white p-20 mR-20">
-          <RevocationMatrix
-            dataFilter={applyTopLevelFilters(filters)}
-            filterStates={filters}
-            updateFilters={updateFilters}
-            metricPeriodMonths={filters.metricPeriodMonths}
-          />
-        </div>
-        <RevocationMatrixExplanation />
-      </div>
-
-      <RevocationCharts
-        filters={filters}
-        dataFilter={applyAllFilters(filters)}
-      />
-
-      <div className="bgc-white m-20 p-20">
-        <CaseTable
-          dataFilter={applyAllFilters(filters)}
-          treatCategoryAllAsAbsent
-          filterStates={filters}
-          metricPeriodMonths={filters.metricPeriodMonths}
-        />
-      </div>
-    </main>
-  );
-};
-
-export default Revocations;
+export default UsPaRevocations;

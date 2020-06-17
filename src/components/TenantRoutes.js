@@ -20,15 +20,14 @@ import { useLocation } from "react-router-dom";
 
 import Loading from "./Loading";
 import { useAuth0 } from "../react-auth0-spa";
-import { useAdminStateCode } from "../contexts/AdminStateCodeContext";
-import { isUserHasAccess } from "../views/stateViews";
+import { useStateCode } from "../contexts/StateCodeContext";
+import { doesUserHasAccess } from "../utils/authentication/user";
 import NotFound from "../views/NotFound";
-import { isAdminUser } from "../utils/authentication/user";
 
 const TenantRoutes = ({ children }) => {
   const { user, loading, isAuthenticated, loginWithRedirect } = useAuth0();
   const { pathname } = useLocation();
-  const { adminStateCode } = useAdminStateCode();
+  const { currentStateCode, refreshCurrentStateCode } = useStateCode();
 
   useEffect(() => {
     const fn = async () => {
@@ -42,24 +41,26 @@ const TenantRoutes = ({ children }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isAuthenticated, loading]);
 
+  useEffect(() => {
+    if (user) {
+      refreshCurrentStateCode();
+    }
+  }, [refreshCurrentStateCode, isAuthenticated, user]);
+
   if (loading) {
     return <Loading />;
   }
 
-  if (!isAuthenticated || !user) {
+  if (!isAuthenticated || !user || !currentStateCode) {
     return null;
   }
 
   let element = null;
 
   Children.forEach(children, (child) => {
-    const hasAccess = isUserHasAccess(user, child.props.stateCode);
+    const { stateCode } = child.props;
 
-    if (isAdminUser(user)) {
-      if (hasAccess && adminStateCode === child.props.stateCode) {
-        element = child;
-      }
-    } else if (hasAccess) {
+    if (doesUserHasAccess(user, stateCode) && stateCode === currentStateCode) {
       element = child;
     }
   });

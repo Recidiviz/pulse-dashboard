@@ -20,6 +20,8 @@ import PropTypes from "prop-types";
 import Select from "react-select";
 import Sticky from "react-sticky-fill";
 import filter from "lodash/fp/filter";
+
+import identity from "lodash/fp/identity";
 import map from "lodash/fp/map";
 import pipe from "lodash/fp/pipe";
 import sortBy from "lodash/fp/sortBy";
@@ -50,9 +52,9 @@ export const prependAllOption = (options) => [
   ...options,
 ];
 
-const ToggleBar = ({ filters, updateFilters }) => {
+const ToggleBar = ({ filters, stateCode, updateFilters }) => {
   const { isLoading, apiData } = useChartData(
-    "us_mo/newRevocations",
+    `${stateCode}/newRevocations`,
     "revocations_matrix_cells"
   );
 
@@ -61,7 +63,7 @@ const ToggleBar = ({ filters, updateFilters }) => {
       map("district"),
       filter((district) => district.toLowerCase() !== "all"),
       uniq,
-      sortBy,
+      sortBy(identity),
       map((d) => ({ value: d, label: d })),
       prependAllOption
     )(apiData);
@@ -174,6 +176,7 @@ ToggleBar.propTypes = {
     violationType: PropTypes.string,
     reportedViolations: PropTypes.string,
   }).isRequired,
+  stateCode: PropTypes.string.isRequired,
   updateFilters: PropTypes.func.isRequired,
 };
 
