@@ -20,31 +20,36 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 
-const GeoViewToggle = ({ setGeoViewEnabled: onChange }) => {
-  const [geoViewEnabled, setGeoViewEnabled] = useState(false);
+import "./RadioGroup.scss";
+
+const RadioGroup = ({ defaultValue, onChange, options }) => {
+  const [state, setState] = useState(defaultValue);
 
   return (
-    <div className="btn-group-toggle">
-      <label className="btn btn-sm btn-secondary active">
-        <input
-          type="checkbox"
-          name="geo-view-enabled"
-          checked={geoViewEnabled}
-          onChange={() => {
-            const updatedGeoViewEnabled = !geoViewEnabled;
-            setGeoViewEnabled(updatedGeoViewEnabled);
-            onChange(updatedGeoViewEnabled);
-          }}
-          className="form-check-input"
-        />
-        {geoViewEnabled ? "Graph" : "Map"}
-      </label>
+    <div className="radio-group">
+      {options.map(({ value, label }) => (
+        <label key={value}>
+          <input
+            type="radio"
+            checked={state === value}
+            onChange={() => {
+              setState(value);
+              onChange(value);
+            }}
+          />
+          {label}
+        </label>
+      ))}
     </div>
   );
 };
 
-GeoViewToggle.propTypes = {
-  setGeoViewEnabled: PropTypes.func.isRequired,
+RadioGroup.propTypes = {
+  defaultValue: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired,
+  options: PropTypes.arrayOf(
+    PropTypes.shape({ label: PropTypes.string, value: PropTypes.string })
+  ).isRequired,
 };
 
-export default GeoViewToggle;
+export default RadioGroup;

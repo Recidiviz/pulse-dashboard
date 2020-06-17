@@ -1,0 +1,28 @@
+.radio-group {
+  display: flex;
+  justify-content: space-between;
+
+  label {
+    display: block;
+    font-size: 14px;
+    color: #7C8695;
+    opacity: 0.8;
+    letter-spacing: 0.79px;
+    line-height: 17px;
+    text-transform: uppercase;
+    margin-left: 20px;
+
+    &:nth-child(1) {
+      margin-left: 0;
+    }
+  }
+
+  input {
+    position: relative;
+    padding: 0;
+    margin: 0 8px 0 0;
+    vertical-align: bottom;
+    top: -2px;
+    *overflow: hidden;
+  }
+}

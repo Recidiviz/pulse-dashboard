@@ -36,7 +36,12 @@ import RevocationCountByViolationType from "../../../../components/charts/commun
 import RevocationProportionByRace from "../../../../components/charts/community/RevocationProportionByRace";
 import SupervisionSuccessSnapshot from "../../../../components/charts/community/SupervisionSuccessSnapshot";
 import ToggleBar from "../../../../components/toggles/ToggleBar";
-import * as ToggleDefaults from "../../../../components/toggles/ToggleDefaults";
+import {
+  defaultDistrict,
+  defaultMetricPeriod,
+  defaultMetricType,
+  defaultSupervisionType,
+} from "../../../../components/toggles/options";
 // eslint-disable-next-line import/no-cycle
 import useChartData from "../../../../hooks/useChartData";
 
@@ -72,14 +77,14 @@ const importantNotes = [
 
 const CommunityExplore = () => {
   const { apiData, isLoading } = useChartData("us_nd/community/explore");
-  const [metricType, setMetricType] = useState(ToggleDefaults.metricType);
+  const [metricType, setMetricType] = useState(defaultMetricType);
   const [metricPeriodMonths, setMetricPeriodMonths] = useState(
-    ToggleDefaults.metricPeriodMonths
+    defaultMetricPeriod
   );
   const [supervisionType, setSupervisionType] = useState(
-    ToggleDefaults.supervisionType
+    defaultSupervisionType
   );
-  const [district, setDistrict] = useState(ToggleDefaults.district);
+  const [district, setDistrict] = useState(defaultDistrict);
 
   if (isLoading) {
     return <Loading />;
