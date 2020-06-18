@@ -1,5 +1,5 @@
 // Recidiviz - a data platform for criminal justice reform
-// Copyright (C) 2019 Recidiviz, Inc.
+// Copyright (C) 2020 Recidiviz, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -15,16 +15,18 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-const metricType = 'counts';
-const metricPeriodMonths = '12';
-const supervisionType = 'all';
-const district = 'all';
-const geoView = false;
+import {
+  defaultDistrict,
+  defaultMetricPeriod,
+  defaultMetricType,
+  defaultSupervisionType,
+} from "../options";
 
-export {
-  metricType,
-  metricPeriodMonths,
-  supervisionType,
-  district,
-  geoView,
-};
+describe("Filter default values", () => {
+  it("should be right", () => {
+    expect(defaultDistrict).toBe("all");
+    expect(defaultMetricPeriod).toBe("12");
+    expect(defaultMetricType).toBe("counts");
+    expect(defaultSupervisionType).toBe("all");
+  });
+});

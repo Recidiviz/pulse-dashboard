@@ -22,19 +22,23 @@ import ImportantNotesBar from "../../../components/ImportantNotesBar";
 import "../../../assets/styles/index.scss";
 
 const PageTemplate = ({ children, importantNotes, toggleBar }) => (
-  <main className="main-content bgc-grey-100">
-    <div id="mainContent">
-      {toggleBar}
+  <>
+    {toggleBar}
+    <main className="main-content bgc-grey-100">
+      <div id="mainContent">
+        <div
+          className="row gap-20 pos-r"
+          style={{ overflow: "initial !important" }}
+        >
+          {importantNotes.length !== 0 && (
+            <ImportantNotesBar importantNotes={importantNotes} />
+          )}
 
-      <div className="row gap-20 pos-r">
-        {importantNotes.length !== 0 && (
-          <ImportantNotesBar importantNotes={importantNotes} />
-        )}
-
-        {children}
+          {children}
+        </div>
       </div>
-    </div>
-  </main>
+    </main>
+  </>
 );
 
 PageTemplate.defaultProps = {

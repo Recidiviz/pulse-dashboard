@@ -14,8 +14,7 @@ public/
 !src/index.js
 !src/components/StateSelector.js
 !src/components/TenantRoutes.js
-!src/components/sidebar/**/*.js
-!src/components/topbar/**/*.js
+!src/components/controls/**/*.js
 !src/components/charts/ChartCard.js
 !src/components/charts/DataSignificanceWarningIcon.js
 !src/components/charts/Methodology.js
@@ -35,13 +34,11 @@ public/
 !src/components/charts/new_revocations/RevocationsByDistrict/**/*.js
 !src/components/charts/new_revocations/RevocationsByViolation.js
 !src/components/charts/new_revocations/ToggleBar/**/*.js
-!src/components/program_evaluation/us_nd/FtrReferralsByParticipationStatus.js
-!src/components/toggles/__tests__/MetricPeriodToggle.test.js
-!src/components/toggles/__tests__/MetricTypeToggle.test.js
-!src/components/toggles/__tests__/SupervisionTypeToggle.test.js
-!src/components/toggles/__tests__/ToggleBar.test.js
+!src/components/sidebar/**/*.js
+!src/components/toggles/**/*.js
+!src/components/topbar/**/*.js
 !src/contexts/**/*.js
-!src/hooks/usePrevious.js
+!src/hooks/useChartData.js
 !src/hooks/usePrevious.js
 !src/hooks/useSideBar.js
 !src/hooks/useTopBarShrinking.js

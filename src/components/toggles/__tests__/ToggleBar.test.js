@@ -1,5 +1,5 @@
 // Recidiviz - a data platform for criminal justice reform
-// Copyright (C) 2019 Recidiviz, Inc.
+// Copyright (C) 2020 Recidiviz, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -14,45 +14,49 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
+
 import React from "react";
-import { getAllByTestId } from "@testing-library/dom";
+import { queryAllByAttribute } from "@testing-library/dom";
 import { render } from "@testing-library/react";
 import "@testing-library/jest-dom/extend-expect";
 import ToggleBar from "../ToggleBar";
+
+const getAllById = queryAllByAttribute.bind(null, "id");
 
 describe("test for component ToggleBar", () => {
   const props = {
     stateCode: undefined,
     replaceLa: undefined,
   };
-  it("display component MetricTypeToggle", () => {
+
+  it("display metric type toggle", () => {
     const nextProps = {
       ...props,
       setChartMetricType: jest.fn(),
     };
     const { container } = render(<ToggleBar {...nextProps} />);
-    expect(getAllByTestId(container, "metricTypeToggle")).toHaveLength(1);
+    expect(getAllById(container, "metricTypeToggle")).toHaveLength(1);
   });
 
-  it("display component MetricPeriodToggle", () => {
+  it("display metric period toggle", () => {
     const nextProps = {
       ...props,
       setChartMetricPeriodMonths: jest.fn(),
     };
     const { container } = render(<ToggleBar {...nextProps} />);
-    expect(getAllByTestId(container, "metricPeriodToggle")).toHaveLength(1);
+    expect(getAllById(container, "metricPeriodToggle")).toHaveLength(1);
   });
 
-  it("display component SupervisionTypeToggle", () => {
+  it("display supervision type toggle", () => {
     const nextProps = {
       ...props,
       setChartSupervisionType: jest.fn(),
     };
     const { container } = render(<ToggleBar {...nextProps} />);
-    expect(getAllByTestId(container, "supervisionTypeToggle")).toHaveLength(1);
+    expect(getAllById(container, "supervisionTypeToggle")).toHaveLength(1);
   });
 
-  it("display component DistrictToggle", () => {
+  it("display district toggle", () => {
     const nextProps = {
       ...props,
       setChartDistrict: jest.fn(),
@@ -69,6 +73,6 @@ describe("test for component ToggleBar", () => {
       ],
     };
     const { container } = render(<ToggleBar {...nextProps} />);
-    expect(getAllByTestId(container, "districtToggle")).toHaveLength(1);
+    expect(getAllById(container, "districtToggle")).toHaveLength(1);
   });
 });
