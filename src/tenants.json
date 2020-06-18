@@ -1,0 +1,22 @@
+{
+  "us_mo": {
+    "name": "Missouri",
+    "avaiableStateCodes": ["us_mo"]
+  },
+  "us_nd": {
+    "name": "North Dakota",
+    "avaiableStateCodes": ["us_nd"]
+  },
+  "us_pa": {
+    "name": "Pennsylvania",
+    "avaiableStateCodes": ["us_pa"]
+  },
+  "recidiviz": {
+    "name": "Recidiviz",
+    "avaiableStateCodes": ["us_mo", "us_nd", "us_pa"]
+  },
+  "lantern": {
+    "name": "Lantern",
+    "avaiableStateCodes": ["us_mo", "us_pa"]
+  }
+}

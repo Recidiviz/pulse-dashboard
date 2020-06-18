@@ -61,6 +61,7 @@ const CaseTable = ({
   metricPeriodMonths,
   skippedFilters,
   treatCategoryAllAsAbsent,
+  stateCode,
 }) => {
   const [index, setIndex] = useState(0);
   const [countData, setCountData] = useState(0);
@@ -73,14 +74,14 @@ const CaseTable = ({
 
   useEffect(() => {
     fetchChartData(
-      "us_mo",
+      stateCode,
       "newRevocations",
       "revocations_matrix_filtered_caseload",
       setApiData,
       setAwaitingApi,
       getTokenSilently
     );
-  }, [getTokenSilently]);
+  }, [getTokenSilently, stateCode]);
 
   // TODO: After moving the API call inside this component, the pagination protections are not
   // working exactly as intended. We are relying on the commented safe-guard near the end only.
@@ -261,6 +262,7 @@ CaseTable.propTypes = {
   skippedFilters: PropTypes.arrayOf(PropTypes.string),
   treatCategoryAllAsAbsent: PropTypes.bool.isRequired,
   metricPeriodMonths: metricPeriodMonthsType.isRequired,
+  stateCode: PropTypes.string.isRequired,
 };
 
 export default CaseTable;

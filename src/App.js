@@ -16,109 +16,83 @@
 // =============================================================================
 
 import React from "react";
-import { Redirect, Route, Switch } from "react-router-dom";
+import {
+  Redirect,
+  Route,
+  Switch,
+  BrowserRouter as Router,
+} from "react-router-dom";
 
-import { useAuth0 } from "./react-auth0-spa";
-
-import Footer from "./components/Footer";
-import Loading from "./components/Loading";
-import PrivateRoute from "./components/PrivateRoute";
-import PrivateTenantRedirect from "./components/PrivateTenantRedirect";
-import PrivateTenantRoute from "./components/PrivateTenantRoute";
-import SideBar from "./components/sidebar/SideBar";
-import TopBar from "./components/topbar/TopBar";
-import useLayout from "./hooks/useLayout";
-import useSideBar from "./hooks/useSideBar";
-import { getUserStateCode } from "./utils/authentication/user";
-import { isViewAvailableForUserState } from "./utils/authentication/viewAuthentication";
+import TenantRoutes from "./components/TenantRoutes";
+import { StateCodeProvider } from "./contexts/StateCodeContext";
 import NotFound from "./views/NotFound";
 import Profile from "./views/Profile";
 import VerificationNeeded from "./views/VerificationNeeded";
-import { getLandingViewForState } from "./views/stateViews";
-import "./assets/scripts/index";
-
-// styles
-import "./assets/styles/index.scss";
-
-// fontawesome
+import UsMoLayout from "./views/tenants/us_mo/Layout";
+import UsMoCommunityRevocations from "./views/tenants/us_mo/community/Revocations";
+import UsNdLayout from "./views/tenants/us_nd/Layout";
+import UsNdCommunityGoals from "./views/tenants/us_nd/community/Goals";
+import UsNdCommunityExplore from "./views/tenants/us_nd/community/Explore";
+import UsNdFacilitiesGoals from "./views/tenants/us_nd/facilities/Goals";
+import UsNdFacilitiesExplore from "./views/tenants/us_nd/facilities/Explore";
+import UsNdProgrammingExplore from "./views/tenants/us_nd/programming/Explore";
+import UsPaLayout from "./views/tenants/us_pa/Layout";
+import UsPaCommunityRevocations from "./views/tenants/us_pa/community/Revocations";
 import initFontAwesome from "./utils/initFontAwesome";
+
+import "./assets/scripts/index";
+import "./assets/styles/index.scss";
 
 initFontAwesome();
 
-const App = () => {
-  const { user, loading, isAuthenticated } = useAuth0();
-  const { isLantern, isWide } = useLayout();
-  const { isSideBarCollapsed, toggleSideBar } = useSideBar();
+// prettier-ignore
+const App = () => (
+  <StateCodeProvider>
+    <Router>
+      <Switch>
+        <Route path="/verify" component={VerificationNeeded} />
 
-  if (loading) {
-    return <Loading />;
-  }
-
-  // This lets us retrieve the state code for the user only after we have authenticated
-  const getLandingView = (authenticated) => {
-    if (!authenticated) {
-      // This has to be a path that will lead to a page for every state and is taking advantage
-      // of the fact that prior to a navigation refactor, this was a path used in all states, and
-      // now happens to redirect to the right landing page for all current states.
-      // TODO: But this will not be true for all states in the future, and will need a refactor.
-      return "/revocations";
-    }
-
-    const stateCode = getUserStateCode(user);
-    return getLandingViewForState(stateCode);
-  };
-
-  const containerClass = isWide ? "wide-page-container" : "page-container";
-
-  const isUrlEnabled = (url) => isViewAvailableForUserState(user, url);
-
-  return (
-    <div
-      id="app"
-      className={isSideBarCollapsed && !isLantern ? "is-collapsed" : ""}
-    >
-      <div>
-        <meta charSet="utf-8" />
-        <meta
-          name="viewport"
-          content="width=device-width, initial-scale=1, shrink-to-fit=no"
-        />
-        <title>Recidiviz Dashboard</title>
-        <div>
-          {!isWide && (
-            <SideBar
-              isUrlEnabled={isUrlEnabled}
-              toggleSideBar={toggleSideBar}
-            />
-          )}
-          <div className={containerClass}>
-            <TopBar toggleSideBar={toggleSideBar} />
-
+        <TenantRoutes>
+          <UsMoLayout stateCode="us_mo">
             <Switch>
-              <Redirect exact from="/" to={getLandingView(isAuthenticated)} />
-
-              <PrivateTenantRedirect from="/snapshots" />
-              <PrivateTenantRedirect from="/revocations" />
-              <PrivateTenantRedirect from="/reincarcerations" />
-              <PrivateTenantRedirect from="/programEvaluation/freeThroughRecovery" />
-
-              <PrivateTenantRoute path="/community/revocations" />
-              <PrivateTenantRoute path="/community/goals" />
-              <PrivateTenantRoute path="/community/explore" />
-              <PrivateTenantRoute path="/facilities/goals" />
-              <PrivateTenantRoute path="/facilities/explore" />
-              <PrivateTenantRoute path="/programming/explore" />
-
-              <PrivateRoute path="/profile" component={Profile} />
-              <Route path="/verify" component={VerificationNeeded} />
-              <Route component={NotFound} />
+              <Route path="/community/revocations" component={UsMoCommunityRevocations} />
+              <Route path="/profile" component={Profile} />
+              <Redirect exact from="/" to="/community/revocations" />
+              <Redirect from="/revocations" to="/community/revocations" />
+              <NotFound />
             </Switch>
-            <Footer />
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
+          </UsMoLayout>
+
+          <UsNdLayout stateCode="us_nd">
+            <Switch>
+              <Route path="/community/goals" component={UsNdCommunityGoals} />
+              <Route path="/community/explore" component={UsNdCommunityExplore} />
+              <Route path="/facilities/goals" component={UsNdFacilitiesGoals} />
+              <Route path="/facilities/explore" component={UsNdFacilitiesExplore} />
+              <Route path="/programming/explore" component={UsNdProgrammingExplore} />
+              <Route path="/profile" component={Profile} />
+              <Redirect exact from="/" to="/community/goals" />
+              <Redirect from="/snapshots" to="/community/goals" />
+              <Redirect from="/revocations" to="/community/goals" />
+              <Redirect from="/reincarcerations" to="/facilities/goals" />
+              <Redirect from="/programEvaluation/freeThroughRecovery" to="/programming/explore" />
+              <NotFound />
+            </Switch>
+          </UsNdLayout>
+
+          <UsPaLayout stateCode="us_pa">
+            <Switch>
+              <Route path="/community/revocations" component={UsPaCommunityRevocations} />
+              <Route path="/profile" component={Profile} />
+              <Redirect exact from="/" to="/community/revocations" />
+              <Redirect from="/revocations" to="/community/revocations" />
+              <NotFound />
+            </Switch>
+          </UsPaLayout>
+        </TenantRoutes>
+      </Switch>
+    </Router>
+  </StateCodeProvider>
+);
 
 export default App;

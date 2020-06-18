@@ -116,7 +116,7 @@ const RevocationsByGender = (props) => {
 
   useEffect(() => {
     fetchChartData(
-      'us_mo', 'newRevocations', 'revocations_matrix_distribution_by_gender',
+      props.stateCode, 'newRevocations', 'revocations_matrix_distribution_by_gender',
       setApiData, setAwaitingApi, getTokenSilently,
     );
   }, []);

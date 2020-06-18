@@ -1,5 +1,5 @@
 // Recidiviz - a data platform for criminal justice reform
-// Copyright (C) 2019 Recidiviz, Inc.
+// Copyright (C) 2020 Recidiviz, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -15,15 +15,21 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React from 'react';
-import { Container, Row, Col } from 'reactstrap';
-import Loading from '../components/Loading';
-import { useAuth0 } from '../react-auth0-spa';
-import { getUserStateName, isAdminUser } from '../utils/authentication/user';
-import StateSelector from '../components/StateSelector';
+import React from "react";
+import { Container, Row, Col } from "reactstrap";
+
+import { useAuth0 } from "../react-auth0-spa";
+import Loading from "../components/Loading";
+import StateSelector from "../components/StateSelector";
+import {
+  getUserStateName,
+  getAvailableStateCodes,
+} from "../utils/authentication/user";
 
 const Profile = () => {
   const { loading, user } = useAuth0();
+
+  const availableStateCodes = getAvailableStateCodes(user);
 
   if (loading || !user) {
     return <Loading />;
@@ -45,11 +51,11 @@ const Profile = () => {
               <h2>{user.name}</h2>
               <p className="lead text-muted">{user.email}</p>
               <p className="lead text-muted">{getUserStateName(user)}</p>
-              {isAdminUser(user) && (
-              <div style={{ maxWidth: '33%' }}>
-                <p className="lead text-muted">Current view state:</p>
-                <StateSelector user={user} />
-              </div>
+              {availableStateCodes.length > 1 && (
+                <div style={{ maxWidth: "33%" }}>
+                  <p className="lead text-muted">Current view state:</p>
+                  <StateSelector availableStateCodes={availableStateCodes} />
+                </div>
               )}
             </Col>
           </Row>

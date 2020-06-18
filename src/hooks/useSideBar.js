@@ -16,14 +16,9 @@
 // =============================================================================
 
 import { useState } from "react";
-import { useLocation } from "react-router-dom";
-
-const routesWithCollapsedSideBar = ["/verify"];
 
 function useSideBar() {
-  const { pathname } = useLocation();
-  const defaultState = routesWithCollapsedSideBar.includes(pathname);
-  const [isSideBarCollapsed, setIsSideBarCollapsed] = useState(defaultState);
+  const [isSideBarCollapsed, setIsSideBarCollapsed] = useState(false);
 
   function toggleSideBar() {
     if (isSideBarCollapsed) {

@@ -15,34 +15,40 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React from "react";
-import PropTypes from "prop-types";
+import React, { useCallback } from "react";
 
-const TopBarForGuest = ({ onLogin }) => (
-  <ul className="nav-right">
-    <li className="dropdown">
-      <a
-        href="?"
-        onClick={(event) => {
-          event.preventDefault();
-          onLogin();
-        }}
-        className="dropdown-toggle no-after peers fxw-nw ai-c lh-1"
-        data-toggle="dropdown"
-      >
-        <div className="peer mR-10">
-          <i className="ti-power-off" />
-        </div>
-        <div className="peer">
-          <span className="fsz-sm c-grey-900">Log in</span>
-        </div>
-      </a>
-    </li>
-  </ul>
-);
+import { useAuth0 } from "../../react-auth0-spa";
 
-TopBarForGuest.propTypes = {
-  onLogin: PropTypes.func.isRequired,
+const TopBarForGuest = () => {
+  const { loginWithRedirect } = useAuth0();
+
+  const onLogin = useCallback(
+    () => loginWithRedirect({ appState: { targetUrl: "/" } }),
+    [loginWithRedirect]
+  );
+
+  return (
+    <ul className="nav-right">
+      <li className="dropdown">
+        <a
+          href="?"
+          onClick={(event) => {
+            event.preventDefault();
+            onLogin();
+          }}
+          className="dropdown-toggle no-after peers fxw-nw ai-c lh-1"
+          data-toggle="dropdown"
+        >
+          <div className="peer mR-10">
+            <i className="ti-power-off" />
+          </div>
+          <div className="peer">
+            <span className="fsz-sm c-grey-900">Log in</span>
+          </div>
+        </a>
+      </li>
+    </ul>
+  );
 };
 
 export default TopBarForGuest;
