@@ -1,5 +1,5 @@
 // Recidiviz - a data platform for criminal justice reform
-// Copyright (C) 2019 Recidiviz, Inc.
+// Copyright (C) 2020 Recidiviz, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -15,49 +15,48 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React, { useState } from 'react';
-import Select from 'react-select';
+import React from "react";
+import PropTypes from "prop-types";
+import Select from "react-select";
+import { useHistory } from "react-router-dom";
 
-import { getStateNameForCode, isRecidivizUser, isLanternUser } from '../utils/authentication/user';
-import {
-  getAvailableStatesForAdminUser,
-  getCurrentStateForAdminUsers,
-  setCurrentStateForAdminUsers,
-} from '../views/stateViews';
+import { useStateCode } from "../contexts/StateCodeContext";
+import { getStateNameForCode } from "../utils/authentication/user";
 
-const StateSelector = (props) => {
-  const { user } = props;
-  const recidivizUser = isRecidivizUser(user);
-  const lanternUser = isLanternUser(user);
+const StateSelector = ({ availableStateCodes }) => {
+  const { currentStateCode, updateCurrentStateCode } = useStateCode();
+  const { push } = useHistory();
 
-  const availableStateCodes = getAvailableStatesForAdminUser(recidivizUser, lanternUser);
-  const availableStates = availableStateCodes.map(
-    (code) => ({ value: code, label: getStateNameForCode(code) }),
-  );
+  const availableStatesOptions = availableStateCodes.map((code) => ({
+    value: code,
+    label: getStateNameForCode(code),
+  }));
 
-  const [selectedState, setSelectedState] = useState(
-    {
-      value: getCurrentStateForAdminUsers(isRecidivizUser, isLanternUser),
-      label: getStateNameForCode(getCurrentStateForAdminUsers(isRecidivizUser, isLanternUser)),
-    },
+  const defaultValue = availableStatesOptions.find(
+    (availableState) => availableState.value === currentStateCode
   );
 
   const selectState = (selectedOption) => {
-    const stateCode = selectedOption.value.toLowerCase();
-    setCurrentStateForAdminUsers(stateCode);
-    setSelectedState({ value: stateCode, label: getStateNameForCode(stateCode) });
-    // Refresh the entire page
-    window.location.reload(false);
+    updateCurrentStateCode(selectedOption.value);
+    push({ pathname: "/profile" });
   };
 
   return (
     <Select
-      value={selectedState}
+      defaultValue={defaultValue}
       onChange={selectState}
-      options={availableStates}
+      options={availableStatesOptions}
       isSearchable
     />
   );
+};
+
+StateSelector.defaultProps = {
+  availableStateCodes: [],
+};
+
+StateSelector.propTypes = {
+  availableStateCodes: PropTypes.arrayOf(PropTypes.string),
 };
 
 export default StateSelector;

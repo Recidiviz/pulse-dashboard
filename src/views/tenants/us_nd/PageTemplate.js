@@ -17,8 +17,8 @@
 
 import React from "react";
 import PropTypes from "prop-types";
-import ImportantNotesBar from "./ImportantNotesBar";
 
+import ImportantNotesBar from "../../../components/ImportantNotesBar";
 import "../../../assets/styles/index.scss";
 
 const PageTemplate = ({ children, importantNotes, toggleBar }) => (

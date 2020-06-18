@@ -24,8 +24,6 @@ import SideBarGroup from "./SideBarGroup";
 import SideBarLink from "./SideBarLink";
 import SideBarMenu from "./SideBarMenu";
 
-import "./sidebar.scss";
-
 const SideBar = ({ toggleSideBar }) => {
   return (
     <div className="sidebar">

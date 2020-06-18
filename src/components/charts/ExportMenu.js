@@ -40,41 +40,41 @@ const ExportMenu = (props) => {
           ...
         </a>
         <div className="dropdown-menu dropdown-menu-right" aria-labelledby={`exportDropdownMenuButton-${props.chartId}`}>
-          <a className="dropdown-item" href="javascript:void(0);" data-toggle="modal" data-target={`#${modalId}`}>Additional info</a>
+          <button type="button" className="dropdown-item" data-toggle="modal" data-target={`#${modalId}`}>Additional info</button>
           {(props.shouldExport === undefined || props.shouldExport === true) && props.regularElement === undefined && (
-            <a className="dropdown-item" href="javascript:void(0);" onClick={() => downloadChartAsImage(
+            <button type="button" className="dropdown-item" onClick={() => downloadChartAsImage(
               props.chartId, props.metricTitle, props.chart.props.data.datasets,
               props.chart.props.data.labels, exportedStructureCallback, props.filters,
               undefined, undefined, props.timeWindowDescription, true
-            )}>Export image</a>
+            )}>Export image</button>
           )}
           {(props.shouldExport === undefined || props.shouldExport === true) && props.regularElement === undefined && (
-            <a className="dropdown-item" href="javascript:void(0);" onClick={() => downloadChartAsData(
+            <button type="button" className="dropdown-item" onClick={() => downloadChartAsData(
               props.chartId, props.metricTitle, props.chart.props.data.datasets,
               props.chart.props.data.labels, exportedStructureCallback, props.filters,
               undefined, undefined, props.timeWindowDescription, true
-            )}>Export data</a>
+            )}>Export data</button>
           )}
           {(props.shouldExport === undefined || props.shouldExport === true) && props.regularElement && (
-            <a className="dropdown-item" href="javascript:void(0);" onClick={() => downloadHtmlElementAsImage(
+            <button type="button" className="dropdown-item"onClick={() => downloadHtmlElementAsImage(
               props.chartId, props.metricTitle,props.elementDatasets, props.elementLabels,
               exportedStructureCallback, props.filters, undefined, undefined,
               props.timeWindowDescription, true
-            )}>Export image</a>
+            )}>Export image</button>
           )}
           {(props.shouldExport === undefined || props.shouldExport === true) && props.regularElement && (
-            <a className="dropdown-item" href="javascript:void(0);" onClick={() => downloadHtmlElementAsData(
+            <button type="button" className="dropdown-item" onClick={() => downloadHtmlElementAsData(
               props.chartId, props.metricTitle,props.elementDatasets, props.elementLabels,
               exportedStructureCallback, props.filters, undefined, undefined,
               props.timeWindowDescription, true
-            )}>Export data</a>
+            )}>Export data</button>
           )}
           {(props.isTable) && props.regularElement === undefined && (
-            <a className="dropdown-item" href="javascript:void(0);" onClick={() => downloadHtmlElementAsData(
+            <button type="button" className="dropdown-item" onClick={() => downloadHtmlElementAsData(
               props.chartId, props.metricTitle, props.tableData, props.tableLabels, exportedStructureCallback,
               props.filters, undefined, undefined, props.timeWindowDescription,
               true, props.isTable
-            )}>Export data</a>
+            )}>Export data</button>
           )}
         </div>
       </div>

@@ -74,7 +74,7 @@ const RevocationMatrix = (props) => {
 
   useEffect(() => {
     fetchChartData(
-      'us_mo', 'newRevocations', 'revocations_matrix_cells',
+      props.stateCode,  'newRevocations', 'revocations_matrix_cells',
       setApiData, setAwaitingApi, getTokenSilently,
     );
   }, []);

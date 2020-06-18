@@ -16,27 +16,23 @@
 // =============================================================================
 
 import React, { useState } from "react";
+import PropTypes from "prop-types";
 
-import CaseTable from "../../../../components/charts/new_revocations/CaseTable/CaseTable";
-import RevocationCharts from "../../../../components/charts/new_revocations/RevocationCharts";
-import RevocationCountOverTime from "../../../../components/charts/new_revocations/RevocationsOverTime";
-import RevocationMatrix from "../../../../components/charts/new_revocations/RevocationMatrix";
-import RevocationMatrixExplanation from "../../../../components/charts/new_revocations/RevocationMatrixExplanation";
-import ToggleBar from "../../../../components/charts/new_revocations/ToggleBar/ToggleBar";
-import {
-  applyAllFilters,
-  applyTopLevelFilters,
-} from "../../../../components/charts/new_revocations/helpers";
+import CaseTable from "./CaseTable/CaseTable";
+import RevocationCharts from "./RevocationCharts";
+import RevocationCountOverTime from "./RevocationsOverTime";
+import RevocationMatrix from "./RevocationMatrix";
+import RevocationMatrixExplanation from "./RevocationMatrixExplanation";
+import ToggleBar from "./ToggleBar/ToggleBar";
+import { applyAllFilters, applyTopLevelFilters } from "./helpers";
 import {
   DEFAULT_METRIC_PERIOD,
   DEFAULT_CHARGE_CATEGORY,
   DEFAULT_DISTRICT,
   DEFAULT_SUPERVISION_TYPE,
-} from "../../../../components/charts/new_revocations/ToggleBar/options";
+} from "./ToggleBar/options";
 
-const stateCode = "us_mo";
-
-const Revocations = () => {
+const Revocations = ({ stateCode }) => {
   const [filters, setFilters] = useState({
     metricPeriodMonths: DEFAULT_METRIC_PERIOD,
     chargeCategory: DEFAULT_CHARGE_CATEGORY,
@@ -64,7 +60,6 @@ const Revocations = () => {
           skippedFilters={["metricPeriodMonths"]}
           filterStates={filters}
           metricPeriodMonths={filters.metricPeriodMonths}
-          stateCode={stateCode}
         />
       </div>
       <div className="d-f m-20 container-all-charts">
@@ -74,7 +69,6 @@ const Revocations = () => {
             filterStates={filters}
             updateFilters={updateFilters}
             metricPeriodMonths={filters.metricPeriodMonths}
-            stateCode={stateCode}
           />
         </div>
         <RevocationMatrixExplanation />
@@ -83,7 +77,6 @@ const Revocations = () => {
       <RevocationCharts
         filters={filters}
         dataFilter={applyAllFilters(filters)}
-        stateCode={stateCode}
       />
 
       <div className="bgc-white m-20 p-20">
@@ -92,11 +85,14 @@ const Revocations = () => {
           treatCategoryAllAsAbsent
           filterStates={filters}
           metricPeriodMonths={filters.metricPeriodMonths}
-          stateCode={stateCode}
         />
       </div>
     </main>
   );
+};
+
+Revocations.propTypes = {
+  stateCode: PropTypes.string.isRequired,
 };
 
 export default Revocations;

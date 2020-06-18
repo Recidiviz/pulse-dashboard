@@ -1,5 +1,5 @@
 // Recidiviz - a data platform for criminal justice reform
-// Copyright (C) 2019 Recidiviz, Inc.
+// Copyright (C) 2020 Recidiviz, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -15,19 +15,14 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-const STATE_NAME_BY_CODE = {
-  us_mo: 'Missouri',
-  us_nd: 'North Dakota',
-  lantern: 'Lantern',
-  recidiviz: 'Recidiviz',
-};
+import tenants from "../../tenants.json";
 
-const METADATA_NAMESPACE = 'https://dashboard.recidiviz.org/';
+const METADATA_NAMESPACE = "https://dashboard.recidiviz.org/";
 
 /**
  * Returns the Auth0 app_metadata for the given user id token.
  */
-function getUserAppMetadata(user) {
+export function getUserAppMetadata(user) {
   const appMetadataKey = `${METADATA_NAMESPACE}app_metadata`;
   return user[appMetadataKey];
 }
@@ -36,63 +31,46 @@ function getUserAppMetadata(user) {
  * Returns the human-readable state name for the given state code,
  * e.g. getStateNameForCode('us_nd') = 'North Dakota'
  */
-function getStateNameForCode(stateCode) {
-  return STATE_NAME_BY_CODE[stateCode.toLowerCase()];
+export function getStateNameForCode(stateCode) {
+  return tenants[stateCode].name;
 }
 
 /**
  * Returns the state code of the authorized state for the given user.
  * For Recidiviz users or users in demo mode, this will be 'recidiviz'.
  */
-function getUserStateCode(user) {
+export function getUserStateCode(user) {
   const appMetadata = getUserAppMetadata(user);
   if (!appMetadata) {
-    throw Error('No app_metadata available for user');
+    throw Error("No app_metadata available for user");
   }
 
   const stateCode = appMetadata.state_code;
   if (stateCode) {
-    return stateCode;
+    return stateCode.toLowerCase();
   }
-  throw Error('No state code set for user');
+  throw Error("No state code set for user");
 }
 
 /**
  * Returns the human-readable state name for the authorized state code for the given usere.
  */
-function getUserStateName(user) {
+export function getUserStateName(user) {
   const stateCode = getUserStateCode(user);
   return getStateNameForCode(stateCode);
 }
 
 /**
- * Returns whether or not the given user is a Lantern user, i.e. has access to all Lantern states.
+ * Returns the list of states which are accessible to users to view data for.
  */
-function isLanternUser(user) {
+export function getAvailableStateCodes(user) {
   const stateCode = getUserStateCode(user);
-  return stateCode.toLowerCase() === 'lantern';
+  return tenants[stateCode].avaiableStateCodes;
 }
 
 /**
- * Returns whether or not the given user is a Recidiviz user, i.e. has access to all states.
+ * Returns is user user has access for specific state code.
  */
-function isRecidivizUser(user) {
-  const stateCode = getUserStateCode(user);
-  return stateCode.toLowerCase() === 'recidiviz';
+export function doesUserHaveAccess(user, stateCode) {
+  return getAvailableStateCodes(user).includes(stateCode);
 }
-
-/**
- * Returns whether or not the given user is an admin user, i.e. has access to multiple states.
- */
-function isAdminUser(user) {
-  return isRecidivizUser(user) || isLanternUser(user);
-}
-
-export {
-  getStateNameForCode,
-  getUserStateCode,
-  getUserStateName,
-  isLanternUser,
-  isRecidivizUser,
-  isAdminUser,
-};

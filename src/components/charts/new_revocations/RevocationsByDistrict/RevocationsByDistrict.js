@@ -63,6 +63,7 @@ const RevocationsByDistrict = ({
   metricPeriodMonths,
   skippedFilters,
   treatCategoryAllAsAbsent,
+  stateCode,
 }) => {
   const [mode, setMode] = useState("counts"); // counts | rates
 
@@ -82,7 +83,7 @@ const RevocationsByDistrict = ({
 
   useEffect(() => {
     fetchChartData(
-      "us_mo",
+      stateCode,
       "newRevocations",
       "revocations_matrix_distribution_by_district",
       setRevocationApiData,
@@ -98,7 +99,7 @@ const RevocationsByDistrict = ({
       setAwaitingSupervisionApi,
       getTokenSilently
     );
-  }, [getTokenSilently]);
+  }, [getTokenSilently, stateCode]);
 
   if (
     awaitingResults(loading, user, awaitingRevocationApi) ||
@@ -338,6 +339,7 @@ RevocationsByDistrict.propTypes = {
   currentDistrict: PropTypes.string.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
   treatCategoryAllAsAbsent: PropTypes.any,
+  stateCode: PropTypes.string.isRequired,
 };
 
 export default RevocationsByDistrict;

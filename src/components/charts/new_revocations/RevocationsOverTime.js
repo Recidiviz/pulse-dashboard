@@ -73,7 +73,7 @@ const RevocationsOverTime = (props) => {
 
   useEffect(() => {
     fetchChartData(
-      'us_mo', 'newRevocations', 'revocations_matrix_by_month',
+      props.stateCode, 'newRevocations', 'revocations_matrix_by_month',
       setApiData, setAwaitingApi, getTokenSilently,
     );
   }, []);
