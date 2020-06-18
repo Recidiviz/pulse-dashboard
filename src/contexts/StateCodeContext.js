@@ -20,7 +20,7 @@ import React, { createContext, useState, useContext } from "react";
 import { useAuth0 } from "../react-auth0-spa";
 import {
   getAvailableStateCodes,
-  doesUserHasAccess,
+  doesUserHaveAccess,
 } from "../utils/authentication/user";
 
 const CURRENT_STATE_IN_SESSION = "adminUserCurrentStateInSession";
@@ -46,7 +46,7 @@ export const StateCodeProvider = ({ children }) => {
     const fromStorage = sessionStorage.getItem(CURRENT_STATE_IN_SESSION);
     if (user) {
       const availableStateCodes = getAvailableStateCodes(user);
-      if (fromStorage && doesUserHasAccess(user, fromStorage)) {
+      if (fromStorage && doesUserHaveAccess(user, fromStorage)) {
         return fromStorage;
       }
       return availableStateCodes[0];

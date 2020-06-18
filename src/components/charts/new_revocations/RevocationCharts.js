@@ -27,7 +27,7 @@ import RevocationsByRace from "./RevocationsByRace";
 
 const CHARTS = ["District", "Risk level", "Violation", "Gender", "Race"];
 
-const RevocationCharts = ({ filters, dataFilter }) => {
+const RevocationCharts = ({ filters, dataFilter, stateCode }) => {
   const [selectedChart, setSelectedChart] = useState(CHARTS[0]);
 
   const riskLevelChart = (
@@ -35,6 +35,7 @@ const RevocationCharts = ({ filters, dataFilter }) => {
       dataFilter={dataFilter}
       filterStates={filters}
       metricPeriodMonths={filters.metricPeriodMonths}
+      stateCode={stateCode}
     />
   );
 
@@ -43,6 +44,7 @@ const RevocationCharts = ({ filters, dataFilter }) => {
       dataFilter={dataFilter}
       filterStates={filters}
       metricPeriodMonths={filters.metricPeriodMonths}
+      stateCode={stateCode}
     />
   );
 
@@ -51,6 +53,7 @@ const RevocationCharts = ({ filters, dataFilter }) => {
       dataFilter={dataFilter}
       filterStates={filters}
       metricPeriodMonths={filters.metricPeriodMonths}
+      stateCode={stateCode}
     />
   );
 
@@ -59,6 +62,7 @@ const RevocationCharts = ({ filters, dataFilter }) => {
       dataFilter={dataFilter}
       filterStates={filters}
       metricPeriodMonths={filters.metricPeriodMonths}
+      stateCode={stateCode}
     />
   );
 
@@ -69,6 +73,7 @@ const RevocationCharts = ({ filters, dataFilter }) => {
       filterStates={filters}
       metricPeriodMonths={filters.metricPeriodMonths}
       currentDistrict={filters.district}
+      stateCode={stateCode}
     />
   );
 
@@ -155,6 +160,7 @@ RevocationCharts.propTypes = {
     supervisionType: PropTypes.string,
   }).isRequired,
   dataFilter: PropTypes.func.isRequired,
+  stateCode: PropTypes.string.isRequired,
 };
 
 export default RevocationCharts;

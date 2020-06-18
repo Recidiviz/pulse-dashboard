@@ -71,6 +71,6 @@ export function getAvailableStateCodes(user) {
 /**
  * Returns is user user has access for specific state code.
  */
-export function doesUserHasAccess(user, stateCode) {
+export function doesUserHaveAccess(user, stateCode) {
   return getAvailableStateCodes(user).includes(stateCode);
 }

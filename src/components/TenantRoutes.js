@@ -21,7 +21,7 @@ import { useLocation } from "react-router-dom";
 import Loading from "./Loading";
 import { useAuth0 } from "../react-auth0-spa";
 import { useStateCode } from "../contexts/StateCodeContext";
-import { doesUserHasAccess } from "../utils/authentication/user";
+import { doesUserHaveAccess } from "../utils/authentication/user";
 import NotFound from "../views/NotFound";
 
 const TenantRoutes = ({ children }) => {
@@ -60,7 +60,7 @@ const TenantRoutes = ({ children }) => {
   Children.forEach(children, (child) => {
     const { stateCode } = child.props;
 
-    if (doesUserHasAccess(user, stateCode) && stateCode === currentStateCode) {
+    if (doesUserHaveAccess(user, stateCode) && stateCode === currentStateCode) {
       element = child;
     }
   });
