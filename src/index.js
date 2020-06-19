@@ -20,7 +20,6 @@ import "react-app-polyfill/stable";
 
 import React from "react";
 import ReactDOM from "react-dom";
-import { BrowserRouter as Router } from "react-router-dom";
 
 import "./index.css";
 import App from "./App";
@@ -55,9 +54,7 @@ ReactDOM.render(
     redirect_uri={window.location.origin}
     onRedirectCallback={onRedirectCallback}
   >
-    <Router>
-      <App />
-    </Router>
+    <App />
   </Auth0Provider>,
   document.getElementById("root")
 );

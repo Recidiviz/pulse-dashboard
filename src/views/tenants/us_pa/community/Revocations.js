@@ -34,7 +34,7 @@ import {
   DEFAULT_SUPERVISION_TYPE,
 } from "../../../../components/charts/new_revocations/ToggleBar/options";
 
-const stateCode = "us_mo";
+const stateCode = "us_pa";
 
 const Revocations = () => {
   const [filters, setFilters] = useState({

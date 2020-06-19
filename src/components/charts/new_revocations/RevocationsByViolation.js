@@ -46,9 +46,10 @@ const RevocationsByViolation = ({
   metricPeriodMonths,
   skippedFilters,
   treatCategoryAllAsAbsent,
+  stateCode,
 }) => {
   const { isLoading, apiData } = useChartData(
-    "us_mo/newRevocations",
+    `${stateCode}/newRevocations`,
     "revocations_matrix_distribution_by_violation"
   );
 
@@ -246,6 +247,7 @@ RevocationsByViolation.propTypes = {
   metricPeriodMonths: PropTypes.string.isRequired,
   skippedFilters: PropTypes.arrayOf(PropTypes.string),
   treatCategoryAllAsAbsent: PropTypes.bool,
+  stateCode: PropTypes.string.isRequired,
 };
 
 export default RevocationsByViolation;

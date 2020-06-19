@@ -104,7 +104,7 @@ const RevocationsByRiskLevel = (props) => {
 
   useEffect(() => {
     fetchChartData(
-      'us_mo', 'newRevocations', 'revocations_matrix_distribution_by_risk_level',
+      props.stateCode, 'newRevocations', 'revocations_matrix_distribution_by_risk_level',
       setApiData, setAwaitingApi, getTokenSilently,
     );
   }, []);

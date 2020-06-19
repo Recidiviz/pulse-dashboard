@@ -15,14 +15,6 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import { getUserStateCode } from './user';
-import {
-  getAvailableViewsForState,
-  getCurrentStateForAdminUsersFromStateCode,
-  getRedirectedViewForState,
-  isAdminStateCode,
-} from '../../views/stateViews';
-
 /**
  * Returns an artificial Auth0 id token for a fake/demo user.
  */
@@ -37,35 +29,6 @@ function getDemoUser() {
   };
 }
 
-function getNormalizedCode(user) {
-  const stateCode = getUserStateCode(user);
-  return isAdminStateCode(stateCode)
-    ? getCurrentStateForAdminUsersFromStateCode(stateCode) : stateCode.toLowerCase();
-}
-
-/**
- * Returns whether or not the view with the given name is available for the given user, based on
- * their state.
- */
-function isViewAvailableForUserState(user, view) {
-  const normalizedCode = getNormalizedCode(user);
-  const permittedViews = getAvailableViewsForState(normalizedCode);
-
-  if (!permittedViews) {
-    // State is not present in permissions yet
-    return false;
-  }
-
-  return permittedViews.includes(view.toLowerCase());
-}
-
-function getRedirectedView(user, view) {
-  const normalizedCode = getNormalizedCode(user);
-  return getRedirectedViewForState(view, normalizedCode);
-}
-
 export {
   getDemoUser,
-  getRedirectedView,
-  isViewAvailableForUserState,
 };
