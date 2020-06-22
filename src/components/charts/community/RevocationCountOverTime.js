@@ -15,144 +15,190 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React, { useState, useEffect } from 'react';
-import { Line } from 'react-chartjs-2';
+import React from "react";
+import { Line } from "react-chartjs-2";
+import pipe from "lodash/fp/pipe";
 
-import GeoViewTimeChart from '../GeoViewTimeChart';
-import { COLORS } from '../../../assets/scripts/constants/colors';
-import { configureDownloadButtons } from '../../../assets/scripts/utils/downloads';
+import { COLORS } from "../../../assets/scripts/constants/colors";
+import { configureDownloadButtons } from "../../../assets/scripts/utils/downloads";
 import {
-  getGoalForChart, getMaxForGoalAndDataIfGoalDisplayable, chartAnnotationForGoal,
-} from '../../../utils/charts/metricGoal';
+  getGoalForChart,
+  getMaxForGoalAndDataIfGoalDisplayable,
+  chartAnnotationForGoal,
+} from "../../../utils/charts/metricGoal";
 import {
-  toggleLabel, getMonthCountFromMetricPeriodMonthsToggle, updateTooltipForMetricType,
-  filterDatasetBySupervisionType, filterDatasetByDistrict, canDisplayGoal,
-  toggleYAxisTicksFor, centerSingleMonthDatasetIfNecessary,
-} from '../../../utils/charts/toggles';
-import { sortFilterAndSupplementMostRecentMonths } from '../../../utils/transforms/datasets';
-import { monthNamesWithYearsFromNumbers } from '../../../utils/transforms/months';
+  toggleLabel,
+  getMonthCountFromMetricPeriodMonthsToggle,
+  updateTooltipForMetricType,
+  filterDatasetBySupervisionType,
+  filterDatasetByDistrict,
+  canDisplayGoal,
+  toggleYAxisTicksFor,
+  centerSingleMonthDatasetIfNecessary,
+} from "../../../utils/charts/toggles";
+import { sortFilterAndSupplementMostRecentMonths } from "../../../utils/transforms/datasets";
+import { monthNamesWithYearsFromNumbers } from "../../../utils/transforms/months";
 
-const RevocationCountOverTime = (props) => {
-  const [chartLabels, setChartLabels] = useState([]);
-  const [chartDataPoints, setChartDataPoints] = useState([]);
-  const [chartMinValue, setChartMinValue] = useState();
-  const [chartMaxValue, setChartMaxValue] = useState();
+const sumReducer = (
+  acc,
+  {
+    year,
+    month,
+    revocation_count: revocationCount,
+    total_supervision_count: supervisionCount,
+  }
+) => {
+  const item = acc.find((s) => s.year === year && s.month === month);
+  const count = parseInt(revocationCount, 10);
+  const totalCount = parseInt(supervisionCount, 10);
 
-  const chartId = 'revocationCountsByMonth';
-  const GOAL = getGoalForChart('US_ND', chartId);
+  if (item) {
+    item.count += count;
+    item.totalCount += totalCount;
+  } else {
+    acc.push({ year, month, count, totalCount });
+  }
+
+  return acc;
+};
+
+const calculateMapper = (metricType) => (item) => {
+  switch (metricType) {
+    case "rates":
+      return {
+        ...item,
+        value: (
+          100 *
+          (parseInt(item.count, 10) / parseInt(item.totalCount, 10))
+        ).toFixed(2),
+      };
+    case "counts":
+    default:
+      return { ...item, value: item.count };
+  }
+};
+
+const RevocationCountOverTime = ({
+  revocationCountsByMonth: countsByMonth,
+  supervisionType,
+  district,
+  metricType,
+  metricPeriodMonths,
+  disableGoal,
+  geoView,
+  header,
+}) => {
+  const chartId = "revocationCountsByMonth";
+  const GOAL = getGoalForChart("US_ND", chartId);
   const stepSize = 10;
 
-  const processResponse = () => {
-    const { revocationCountsByMonth: countsByMonth } = props;
+  const chartDataPoints = pipe(
+    (dataset) => filterDatasetBySupervisionType(dataset, supervisionType),
+    (dataset) => filterDatasetByDistrict(dataset, district),
+    (dataset) => dataset.reduce(sumReducer, []),
+    (dataset) => dataset.map(calculateMapper(metricType)),
+    (dataset) =>
+      sortFilterAndSupplementMostRecentMonths(
+        dataset,
+        getMonthCountFromMetricPeriodMonthsToggle(metricPeriodMonths),
+        "value",
+        0
+      )
+  )(countsByMonth);
 
-    let filteredCountsByMonth = filterDatasetBySupervisionType(
-      countsByMonth, props.supervisionType,
-    );
+  const chartDataValues = chartDataPoints.map((element) => element.value);
+  const chartLabels = monthNamesWithYearsFromNumbers(
+    chartDataPoints.map((element) => element.month),
+    true
+  );
 
-    filteredCountsByMonth = filterDatasetByDistrict(
-      filteredCountsByMonth, props.district,
-    );
+  const chartMinValue = 0;
+  const chartMaxValue = getMaxForGoalAndDataIfGoalDisplayable(
+    GOAL,
+    chartDataValues,
+    stepSize,
+    { disableGoal, geoView, metricType, supervisionType, district }
+  );
 
-    const dataPoints = [];
-    if (filteredCountsByMonth) {
-      filteredCountsByMonth.forEach((data) => {
-        const {
-          year, month, revocation_count: revocationCount, total_supervision_count: supervisionCount,
-        } = data;
+  centerSingleMonthDatasetIfNecessary(chartDataValues, chartLabels);
 
-        if (props.metricType === 'counts') {
-          const value = revocationCount;
-          dataPoints.push({ year, month, value });
-        } else if (props.metricType === 'rates') {
-          const value = (100 * (revocationCount / supervisionCount)).toFixed(2);
-          dataPoints.push({ year, month, value });
-        }
-      });
-    }
-
-    const months = getMonthCountFromMetricPeriodMonthsToggle(props.metricPeriodMonths);
-    const sorted = sortFilterAndSupplementMostRecentMonths(dataPoints, months, 'value', 0);
-    const chartDataValues = (sorted.map((element) => element.value));
-    const max = getMaxForGoalAndDataIfGoalDisplayable(GOAL, chartDataValues, stepSize, props);
-    const monthNames = monthNamesWithYearsFromNumbers(
-      sorted.map((element) => element.month), true,
-    );
-
-    centerSingleMonthDatasetIfNecessary(chartDataValues, monthNames);
-    setChartLabels(monthNames);
-    setChartDataPoints(chartDataValues);
-    setChartMinValue(0);
-    setChartMaxValue(max);
-  };
+  const displayGoal = canDisplayGoal(GOAL, {
+    disableGoal,
+    geoView,
+    metricType,
+    supervisionType,
+    district,
+  });
 
   function goalLineIfApplicable() {
-    if (canDisplayGoal(GOAL, props)) {
-      return chartAnnotationForGoal(GOAL, 'revocationCountsByMonthGoalLine', {});
+    if (displayGoal) {
+      return chartAnnotationForGoal(
+        GOAL,
+        "revocationCountsByMonthGoalLine",
+        {}
+      );
     }
     return null;
   }
-
-  useEffect(() => {
-    processResponse();
-  }, [
-    props.revocationCountsByMonth,
-    props.metricType,
-    props.metricPeriodMonths,
-    props.supervisionType,
-    props.district,
-  ]);
 
   const chart = (
     <Line
       id={chartId}
       data={{
         labels: chartLabels,
-        datasets: [{
-          label: toggleLabel(
-            { counts: 'Revocation count', rates: 'Revocation rate' },
-            props.metricType,
-          ),
-          backgroundColor: COLORS['grey-500'],
-          borderColor: COLORS['grey-500'],
-          pointBackgroundColor: COLORS['grey-500'],
-          pointHoverBackgroundColor: COLORS['grey-500'],
-          pointHoverBorderColor: COLORS['grey-500'],
-          fill: false,
-          borderWidth: 2,
-          data: chartDataPoints,
-        }],
+        datasets: [
+          {
+            label: toggleLabel(
+              { counts: "Revocation count", rates: "Revocation rate" },
+              metricType
+            ),
+            backgroundColor: COLORS["grey-500"],
+            borderColor: COLORS["grey-500"],
+            pointBackgroundColor: COLORS["grey-500"],
+            pointHoverBackgroundColor: COLORS["grey-500"],
+            pointHoverBorderColor: COLORS["grey-500"],
+            fill: false,
+            borderWidth: 2,
+            data: chartDataValues,
+          },
+        ],
       }}
       options={{
         legend: {
           display: false,
-          position: 'bottom',
+          position: "bottom",
           labels: {
             usePointStyle: true,
             boxWidth: 10,
           },
         },
         scales: {
-          yAxes: [{
-            ticks: toggleYAxisTicksFor(
-              'counts', props.metricType, chartMinValue, chartMaxValue, stepSize,
-            ),
-            scaleLabel: {
-              display: true,
-              labelString: toggleLabel(
-                { counts: 'Revocation count', rates: 'Percentage' },
-                props.metricType,
+          yAxes: [
+            {
+              ticks: toggleYAxisTicksFor(
+                "counts",
+                metricType,
+                chartMinValue,
+                chartMaxValue,
+                stepSize
               ),
+              scaleLabel: {
+                display: true,
+                labelString: toggleLabel(
+                  { counts: "Revocation count", rates: "Percentage" },
+                  metricType
+                ),
+              },
+              stacked: true,
             },
-            stacked: true,
-          }],
+          ],
         },
         tooltips: {
-          backgroundColor: COLORS['grey-800-light'],
-          mode: 'x',
+          backgroundColor: COLORS["grey-800-light"],
+          mode: "x",
           callbacks: {
-            label: (tooltipItem, data) => updateTooltipForMetricType(
-              props.metricType, tooltipItem, data,
-            ),
+            label: (tooltipItem, data) =>
+              updateTooltipForMetricType(metricType, tooltipItem, data),
           },
         },
         annotation: goalLineIfApplicable(),
@@ -160,26 +206,33 @@ const RevocationCountOverTime = (props) => {
     />
   );
 
-  const exportedStructureCallback = () => (
-    {
-      metric: 'Revocation counts by month',
-      series: [],
-    });
+  const exportedStructureCallback = () => ({
+    metric: "Revocation counts by month",
+    series: [],
+  });
 
-  configureDownloadButtons(chartId, 'REVOCATION ADMISSIONS BY MONTH',
-    chart.props.data.datasets, chart.props.data.labels,
-    document.getElementById(chartId), exportedStructureCallback, props, true, true);
+  configureDownloadButtons(
+    chartId,
+    "REVOCATION ADMISSIONS BY MONTH",
+    chart.props.data.datasets,
+    chart.props.data.labels,
+    document.getElementById(chartId),
+    exportedStructureCallback,
+    { metricType, supervisionType, district },
+    true,
+    true
+  );
 
   const chartData = chart.props.data.datasets[0].data;
   const mostRecentValue = chartData[chartData.length - 1];
 
-  const header = document.getElementById(props.header);
+  const headerElement = document.getElementById(header);
 
-  if (header && mostRecentValue !== null && canDisplayGoal(GOAL, props)) {
+  if (header && mostRecentValue !== null && displayGoal) {
     const title = `There have been <span class='fs-block header-highlight'>${mostRecentValue} revocations</span> that led to incarceration in a DOCR facility this month so far.`;
-    header.innerHTML = title;
+    headerElement.innerHTML = title;
   } else if (header) {
-    header.innerHTML = '';
+    headerElement.innerHTML = "";
   }
 
   return chart;

@@ -32,7 +32,6 @@ import {
   metricPeriodOptions,
   metricTypeOptions,
   supervisionTypeOptions,
-  defaultDistrict,
 } from "./options";
 import { getDistrictOptions } from "./helpers";
 
@@ -127,11 +126,11 @@ const ToggleBar = ({
                   <div className="toggle-filters__select">
                     <Select
                       options={districtOptions}
-                      onChange={(option) => {
-                        setChartDistrict(`${option.value}`);
+                      onChange={(options) => {
+                        setChartDistrict(options.map((o) => String(o.value)));
                       }}
                       isMulti
-                      allOptionValue={defaultDistrict}
+                      allOption={defaultDistrictOption}
                       defaultValue={[defaultDistrictOption]}
                     />
                   </div>

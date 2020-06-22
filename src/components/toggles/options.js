@@ -40,4 +40,4 @@ export const defaultSupervisionTypeOption = supervisionTypeOptions[0];
 export const defaultSupervisionType = defaultSupervisionTypeOption.value;
 
 export const defaultDistrictOption = { label: "All", value: "all" };
-export const defaultDistrict = defaultDistrictOption.value;
+export const defaultDistrict = [defaultDistrictOption.value];

@@ -57,17 +57,16 @@ const Select = ({ allOption, isMulti, ...props }) => {
         {...props}
         isMulti
         onChange={(selected) => {
-          const isEmpty = selected.length === 0;
+          const options = selected || [];
+          const isEmpty = options.length === 0;
 
           const isAllOptionTheLast =
-            !isEmpty && selected[selected.length - 1].value === allOption.value;
+            !isEmpty && options[options.length - 1].value === allOption.value;
 
           if (isEmpty || isAllOptionTheLast) {
             updateSelectedOptions([allOption]);
           } else {
-            updateSelectedOptions(
-              selected.map((s) => ({ ...s, key: s.label }))
-            );
+            updateSelectedOptions(options.map((s) => ({ ...s, key: s.label })));
           }
         }}
         styles={defaultStyles}

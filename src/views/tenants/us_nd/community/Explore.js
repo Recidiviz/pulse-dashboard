@@ -22,19 +22,19 @@ import Loading from "../../../../components/Loading";
 import ChartCard from "../../../../components/charts/ChartCard";
 import GeoViewTimeChart from "../../../../components/charts/GeoViewTimeChart";
 import Methodology from "../../../../components/charts/Methodology";
-import PeriodLabel from "../../../../components/charts/PeriodLabel";
-import WarningIcon from "../../../../components/charts/WarningIcon";
-import AdmissionCountsByType from "../../../../components/charts/common/AdmissionCountsByType";
-import CaseTerminationsByOfficer from "../../../../components/charts/community/CaseTerminationsByOfficer";
-import CaseTerminationsByTerminationType from "../../../../components/charts/community/CaseTerminationsByTerminationType";
-import LsirScoreChangeSnapshot from "../../../../components/charts/community/LsirScoreChangeSnapshot";
-import RevocationAdmissionsSnapshot from "../../../../components/charts/community/RevocationAdmissionsSnapshot";
-import RevocationCountByOfficer from "../../../../components/charts/community/RevocationCountByOfficer";
+// import PeriodLabel from "../../../../components/charts/PeriodLabel";
+// import WarningIcon from "../../../../components/charts/WarningIcon";
+// import AdmissionCountsByType from "../../../../components/charts/common/AdmissionCountsByType";
+// import CaseTerminationsByOfficer from "../../../../components/charts/community/CaseTerminationsByOfficer";
+// import CaseTerminationsByTerminationType from "../../../../components/charts/community/CaseTerminationsByTerminationType";
+// import LsirScoreChangeSnapshot from "../../../../components/charts/community/LsirScoreChangeSnapshot";
+// import RevocationAdmissionsSnapshot from "../../../../components/charts/community/RevocationAdmissionsSnapshot";
+// import RevocationCountByOfficer from "../../../../components/charts/community/RevocationCountByOfficer";
 import RevocationCountOverTime from "../../../../components/charts/community/RevocationCountOverTime";
-import RevocationCountBySupervisionType from "../../../../components/charts/community/RevocationCountBySupervisionType";
-import RevocationCountByViolationType from "../../../../components/charts/community/RevocationCountByViolationType";
-import RevocationProportionByRace from "../../../../components/charts/community/RevocationProportionByRace";
-import SupervisionSuccessSnapshot from "../../../../components/charts/community/SupervisionSuccessSnapshot";
+// import RevocationCountBySupervisionType from "../../../../components/charts/community/RevocationCountBySupervisionType";
+// import RevocationCountByViolationType from "../../../../components/charts/community/RevocationCountByViolationType";
+// import RevocationProportionByRace from "../../../../components/charts/community/RevocationProportionByRace";
+// import SupervisionSuccessSnapshot from "../../../../components/charts/community/SupervisionSuccessSnapshot";
 import ToggleBar from "../../../../components/toggles/ToggleBar";
 import {
   defaultDistrict,
@@ -155,7 +155,7 @@ const CommunityExplore = () => {
         footer={<Methodology chartId="revocationCountsByMonth" />}
       />
 
-      <ChartCard
+      {/* <ChartCard
         key="revocationsByOfficer"
         chartId="revocationsByOfficer"
         chartTitle={
@@ -458,7 +458,7 @@ const CommunityExplore = () => {
           />
         }
         footer={<Methodology chartId="lsirScoreChangeSnapshot" />}
-      />
+      /> */}
     </PageTemplate>
   );
 };

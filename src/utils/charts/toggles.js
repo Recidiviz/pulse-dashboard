@@ -199,8 +199,10 @@ function filterDatasetByToggleFilters(dataset, toggleFilters) {
   return dataset.filter((element) => String(element[toggleKey]).toUpperCase() === String(toggleValue));
 }
 
-function filterDatasetByDistrict(dataset, district) {
-  return filterDatasetByToggleFilters(dataset, { district });
+function filterDatasetByDistrict(dataset, districts) {
+  return dataset.filter((element) =>
+    districts.map(d => d.toUpperCase()).includes(String(element.district).toUpperCase())
+  );
 }
 
 function filterDatasetBySupervisionType(dataset, supervisionType) {
