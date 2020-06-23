@@ -15,51 +15,53 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React, { useState, useEffect } from 'react';
-import { Bar } from 'react-chartjs-2';
+import React from "react";
+import PropTypes from "prop-types";
 
-import { COLORS_FIVE_VALUES } from '../../../assets/scripts/constants/colors';
-import { getPerOfficerChartDefinition } from '../BarCharts';
+import PerOfficerBarChart from "../common/bars/PerOfficeBarChart";
+import { COLORS_FIVE_VALUES } from "../../../assets/scripts/constants/colors";
 
-const chartId = 'revocationsByOfficer';
+const chartId = "revocationsByOfficer";
 
-export const getBarChartDefinition = (props) => {
-  return getPerOfficerChartDefinition({
-    chartId,
-    exportLabel: 'Revocations by officer',
-    countsPerPeriodPerOfficer: props.revocationCountsByOfficer,
-    officeData: props.officeData,
-    metricType: props.metricType,
-    metricPeriodMonths: props.metricPeriodMonths,
-    supervisionType: props.supervisionType,
-    district: props.district,
-    bars: [
-      { key: 'absconsion_count', label: 'Absconsion' },
-      { key: 'felony_count', label: 'New Offense' },
-      { key: 'technical_count', label: 'Technical' },
-      { key: 'unknown_count', label: 'Unknown Type' },
-    ],
-    yAxisLabel: props.metricType === 'counts' ? 'Revocation count' : 'Percentage',
-    barColorPalette: COLORS_FIVE_VALUES,
-  });
+const RevocationCountByOfficer = ({
+  revocationCountsByOfficer,
+  officeData,
+  metricType,
+  metricPeriodMonths,
+  supervisionType,
+  district,
+}) => (
+  <PerOfficerBarChart
+    chartId={chartId}
+    exportLabel="Revocations by officer"
+    countsPerPeriodPerOfficer={revocationCountsByOfficer}
+    officeData={officeData}
+    metricType={metricType}
+    metricPeriodMonths={metricPeriodMonths}
+    supervisionType={supervisionType}
+    district={district}
+    bars={[
+      { key: "absconsion_count", label: "Absconsion" },
+      { key: "felony_count", label: "New Offense" },
+      { key: "technical_count", label: "Technical" },
+      { key: "unknown_count", label: "Unknown Type" },
+    ]}
+    yAxisLabel={metricType === "counts" ? "Revocation count" : "Percentage"}
+    barColorPalette={COLORS_FIVE_VALUES}
+  />
+);
+
+RevocationCountByOfficer.defaultProps = {
+  revocationCountsByOfficer: {},
 };
 
-const RevocationCountByOfficer = (props) => {
-  const [chartDefinition, setChartDefinition] = useState(null);
-
-  useEffect(() => {
-    setChartDefinition(getBarChartDefinition(props));
-  }, [
-    props.revocationCountsByOfficer,
-    props.metricType,
-    props.metricPeriodMonths,
-    props.supervisionType,
-    props.district,
-  ]);
-
-  if (!chartDefinition) return null;
-
-  return <Bar {...chartDefinition} />;
+RevocationCountByOfficer.propTypes = {
+  revocationCountsByOfficer: PropTypes.arrayOf(PropTypes.shape({})),
+  metricType: PropTypes.string.isRequired,
+  metricPeriodMonths: PropTypes.string.isRequired,
+  supervisionType: PropTypes.string.isRequired,
+  district: PropTypes.arrayOf(PropTypes.string).isRequired,
+  officeData: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
 };
 
 export default RevocationCountByOfficer;
