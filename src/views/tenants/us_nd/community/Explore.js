@@ -25,14 +25,14 @@ import Methodology from "../../../../components/charts/Methodology";
 import PeriodLabel from "../../../../components/charts/PeriodLabel";
 import WarningIcon from "../../../../components/charts/WarningIcon";
 // import AdmissionCountsByType from "../../../../components/charts/common/AdmissionCountsByType";
-// import CaseTerminationsByOfficer from "../../../../components/charts/community/CaseTerminationsByOfficer";
-// import CaseTerminationsByTerminationType from "../../../../components/charts/community/CaseTerminationsByTerminationType";
+import CaseTerminationsByOfficer from "../../../../components/charts/community/CaseTerminationsByOfficer";
+import CaseTerminationsByTerminationType from "../../../../components/charts/community/CaseTerminationsByTerminationType";
 // import LsirScoreChangeSnapshot from "../../../../components/charts/community/LsirScoreChangeSnapshot";
 // import RevocationAdmissionsSnapshot from "../../../../components/charts/community/RevocationAdmissionsSnapshot";
 import RevocationCountByOfficer from "../../../../components/charts/community/RevocationCountByOfficer";
 import RevocationCountOverTime from "../../../../components/charts/community/RevocationCountOverTime";
-// import RevocationCountBySupervisionType from "../../../../components/charts/community/RevocationCountBySupervisionType";
-// import RevocationCountByViolationType from "../../../../components/charts/community/RevocationCountByViolationType";
+import RevocationCountBySupervisionType from "../../../../components/charts/community/RevocationCountBySupervisionType";
+import RevocationCountByViolationType from "../../../../components/charts/community/RevocationCountByViolationType";
 // import RevocationProportionByRace from "../../../../components/charts/community/RevocationProportionByRace";
 // import SupervisionSuccessSnapshot from "../../../../components/charts/community/SupervisionSuccessSnapshot";
 import ToggleBar from "../../../../components/toggles/ToggleBar";
@@ -186,7 +186,6 @@ const CommunityExplore = () => {
           </>
         }
       />
-
       {/* <ChartCard
         key="revocationAdmissionsSnapshot"
         chartId="revocationAdmissionsSnapshot"
@@ -261,6 +260,7 @@ const CommunityExplore = () => {
           </>
         }
       />
+      */}
 
       <ChartCard
         key="revocationsBySupervisionType"
@@ -306,6 +306,7 @@ const CommunityExplore = () => {
         footer={<Methodology chartId="revocationsByViolationType" />}
       />
 
+      {/*
       <ChartCard
         key="revocationsByRace"
         chartId="revocationsByRace"
@@ -370,6 +371,7 @@ const CommunityExplore = () => {
         footer={<Methodology chartId="supervisionSuccessSnapshot" />}
       />
 
+      */}
       <ChartCard
         key="caseTerminationsByTerminationType"
         chartId="caseTerminationsByTerminationType"
@@ -417,6 +419,7 @@ const CommunityExplore = () => {
         footer={<Methodology chartId="caseTerminationsByOfficer" />}
       />
 
+      {/*
       <ChartCard
         key="lsirScoreChangeSnapshot"
         chartId="lsirScoreChangeSnapshot"

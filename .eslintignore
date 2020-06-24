@@ -24,8 +24,13 @@ public/
 !src/components/charts/TenantExportMenu.js
 !src/components/charts/WarningIcon.js
 !src/components/charts/common/bars/**/*.js
+!src/components/charts/community/CaseTerminationsByOfficer.js
+!src/components/charts/community/CaseTerminationsByTerminationType.js
 !src/components/charts/community/RevocationCountByOfficer.js
+!src/components/charts/community/RevocationCountBySupervisionType.js
+!src/components/charts/community/RevocationCountByViolationType.js
 !src/components/charts/community/RevocationCountOverTime.js
+!src/components/charts/programming/FtrReferralsByParticipationStatus.js
 !src/components/charts/facilities/ReincarcerationRateByStayLength.js
 !src/components/charts/facilities/__tests__/**/*.js
 !src/components/charts/new_revocations/helpers.js

@@ -15,13 +15,13 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React, { useState, useEffect } from 'react';
-import { Bar } from 'react-chartjs-2';
-import { COLORS_FIVE_VALUES } from '../../../assets/scripts/constants/colors';
-import { configureDownloadButtons } from '../../../assets/scripts/utils/downloads';
-import { getPerMonthChartDefinition } from '../BarCharts';
+import React from "react";
+import PropTypes from "prop-types";
 
-const chartId = 'ftrReferralsByParticipationStatus';
+import PerMonthBarChart from "../common/bars/PerMonthBarChart";
+import { COLORS_FIVE_VALUES } from "../../../assets/scripts/constants/colors";
+
+const chartId = "ftrReferralsByParticipationStatus";
 
 const chartColors = [
   COLORS_FIVE_VALUES[0],
@@ -30,55 +30,44 @@ const chartColors = [
   COLORS_FIVE_VALUES[3],
 ];
 
-export const getBarChartDefinition = (props) => {
-  return getPerMonthChartDefinition({
-    chartId,
-    countsByMonth: props.ftrReferralsByParticipationStatus,
-    metricType: props.metricType,
-    numMonths: props.metricPeriodMonths,
-    filters: {
-      district: props.district,
-      supervision_type: props.supervisionType,
-    },
-    bars: [
-      { key: 'pending', label: 'Pending' },
-      { key: 'in_progress', label: 'In Progress' },
-      { key: 'denied', label: 'Denied' },
-      { key: 'discharged', label: 'Discharged' },
-    ],
-    yAxisLabel: props.metricType === 'counts' ? 'Count' : 'Percentage',
-    barColorPalette: chartColors,
-  });
+const FtrReferralsByParticipationStatus = ({
+  ftrReferralsByParticipationStatus,
+  metricType,
+  metricPeriodMonths,
+  supervisionType,
+  district,
+}) => (
+  <PerMonthBarChart
+    chartId={chartId}
+    exportLabel="FTR Referrals by Participation Status"
+    countsByMonth={ftrReferralsByParticipationStatus}
+    metricType={metricType}
+    numMonths={metricPeriodMonths}
+    filters={{
+      district,
+      supervisionType,
+    }}
+    bars={[
+      { key: "pending", label: "Pending" },
+      { key: "in_progress", label: "In Progress" },
+      { key: "denied", label: "Denied" },
+      { key: "discharged", label: "Discharged" },
+    ]}
+    yAxisLabel={metricType === "counts" ? "Count" : "Percentage"}
+    barColorPalette={chartColors}
+  />
+);
+
+FtrReferralsByParticipationStatus.defaultProps = {
+  ftrReferralsByParticipationStatus: [],
 };
 
-const FtrReferralsByParticipationStatus = (props) => {
-  const [chartDefinition, setChartDefinition] = useState(null);
-
-  useEffect(() => {
-    setChartDefinition(getBarChartDefinition(props));
-  }, [
-    props.ftrReferralsByParticipationStatus,
-    props.metricType,
-    props.metricPeriodMonths,
-    props.supervisionType,
-    props.district,
-  ]);
-
-  if (!chartDefinition) return null;
-
-  const chart = <Bar {...chartDefinition} />;
-
-  const exportedStructureCallback = () => (
-    {
-      metric: 'FTR Referrals by Participation Status',
-      series: [],
-    });
-
-  configureDownloadButtons(chartId, 'FTR REFERRALS BY PARTICIPATION STATUS',
-    chart.props.data.datasets, chart.props.data.labels,
-    document.getElementById(chartId), exportedStructureCallback, props, true, true);
-
-  return chart;
+FtrReferralsByParticipationStatus.propTypes = {
+  metricType: PropTypes.string.isRequired,
+  metricPeriodMonths: PropTypes.string.isRequired,
+  supervisionType: PropTypes.string.isRequired,
+  district: PropTypes.arrayOf(PropTypes.string).isRequired,
+  ftrReferralsByParticipationStatus: PropTypes.arrayOf(PropTypes.shape({})),
 };
 
 export default FtrReferralsByParticipationStatus;

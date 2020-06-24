@@ -34,18 +34,19 @@ import upperCase from "lodash/fp/upperCase";
 import values from "lodash/fp/values";
 
 import {
-  isValidOffice,
-  prepareData,
-  isValidOfficer,
   configureDownloads,
+  isValidOffice,
+  isValidOfficer,
+  mergeAllResolver,
+  prepareDataGroupedByOffice,
 } from "./utils";
 import { COLORS } from "../../../../assets/scripts/constants/colors";
 import {
   filterDatasetBySupervisionType,
   filterDatasetByMetricPeriodMonths,
-  updateTooltipForMetricType,
   toggleLabel,
   toggleYAxisTicksStackedRateBasicCount,
+  updateTooltipForMetricType,
 } from "../../../../utils/charts/toggles";
 
 const PerOfficerBarChart = ({
@@ -76,7 +77,7 @@ const PerOfficerBarChart = ({
     filter(isValidOfficer(offices)),
     // transform data
     groupBy("district"),
-    mapValues(map(prepareData(bars, metricType))),
+    mapValues(map(prepareDataGroupedByOffice(bars, metricType))),
     values,
     flatten,
     sortBy("officerId")
@@ -86,9 +87,7 @@ const PerOfficerBarChart = ({
 
   const officerViolationCountsByType = pipe(
     map("violationsByType"),
-    mergeAllWith((objValue, srcValue) =>
-      Array.isArray(objValue) ? objValue.concat(srcValue) : [objValue, srcValue]
-    )
+    mergeAllWith(mergeAllResolver)
   )(normalizedData);
 
   useEffect(() => {
@@ -96,7 +95,6 @@ const PerOfficerBarChart = ({
       chartId,
       officerLabels,
       officerViolationCountsByType,
-      offices,
       visibleOffices,
       exportLabel,
       bars,

@@ -15,9 +15,12 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
+import groupBy from "lodash/fp/groupBy";
+import map from "lodash/fp/map";
 import mapValues from "lodash/fp/mapValues";
 import pipe from "lodash/fp/pipe";
 import reduce from "lodash/fp/reduce";
+import sumBy from "lodash/fp/sumBy";
 import toInteger from "lodash/fp/toInteger";
 import values from "lodash/fp/values";
 import upperCase from "lodash/fp/upperCase";
@@ -25,7 +28,10 @@ import upperCase from "lodash/fp/upperCase";
 import { numberFromOfficerId } from "../../../../utils/transforms/labels";
 import { configureDownloadButtons } from "../../../../assets/scripts/utils/downloads";
 
-const sum = (a, b) => a + b;
+const sum = (a, b) => toInteger(a) + toInteger(b);
+
+export const mergeAllResolver = (objValue, srcValue) =>
+  Array.isArray(objValue) ? objValue.concat(srcValue) : [objValue, srcValue];
 
 /**
  * Checks if officer has valid name or not empty
@@ -55,7 +61,7 @@ export const isValidOffice = (visibleOffices) => ({ district: officeId }) => {
  * Returns an array of officer ID labels and a dictionary of data points for
  * each violation type.
  */
-export const prepareData = (bars, metricType) => (data) => {
+export const prepareDataGroupedByOffice = (bars, metricType) => (data) => {
   const officerId = numberFromOfficerId(data.officer_external_id);
 
   const violationCountsByType = reduce(
@@ -85,11 +91,65 @@ export const prepareData = (bars, metricType) => (data) => {
   return null;
 };
 
+/**
+ */
+export const prepareDataGroupedByMonth = (metricType, bars) => (data) => {
+  const { year, month } = data;
+
+  const monthCounts = reduce(
+    (acc, { key }) => ({ ...acc, [key]: Number(data[key]) }),
+    {},
+    bars
+  );
+
+  const totalCount = pipe(values, reduce(sum, 0))(monthCounts);
+
+  if (metricType === "counts") {
+    return {
+      year,
+      month,
+      monthDict: monthCounts,
+    };
+  }
+  if (metricType === "rates") {
+    const monthRates = {};
+
+    Object.keys(monthCounts).forEach((key) => {
+      const count = monthCounts[key];
+      monthRates[key] = Number((100 * (count / totalCount)).toFixed(2));
+    });
+
+    return {
+      year,
+      month,
+      monthDict: monthRates,
+    };
+  }
+  return null;
+};
+
+export const groupByMonth = (barKeys) =>
+  pipe(
+    groupBy((item) => `${item.year}-${item.month}`),
+    values,
+    map((data) => ({
+      year: data[0].year,
+      month: data[0].month,
+      ...reduce(
+        (acc, barKey) => ({
+          ...acc,
+          [barKey]: sumBy((o) => toInteger(o[barKey]), data),
+        }),
+        {},
+        barKeys
+      ),
+    }))
+  );
+
 export function configureDownloads(
   chartId,
   officerLabels,
   officerViolationCountsByType,
-  offices,
   visibleOffices,
   exportLabel,
   bars,
@@ -110,7 +170,7 @@ export function configureDownloads(
     (element) => `Officer ${element}`
   );
 
-  const chartTitle = `${upperCase(exportLabel)}`;
+  const chartTitle = upperCase(exportLabel);
 
   const convertValuesToNumbers = false;
 

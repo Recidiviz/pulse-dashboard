@@ -200,6 +200,7 @@ function filterDatasetByToggleFilters(dataset, toggleFilters) {
 }
 
 function filterDatasetByDistrict(dataset, districts) {
+  console.log(districts);
   return dataset.filter((element) =>
     districts.map(d => d.toUpperCase()).includes(String(element.district).toUpperCase())
   );

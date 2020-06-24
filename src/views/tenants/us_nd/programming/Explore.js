@@ -20,15 +20,15 @@ import React, { useState } from "react";
 import PageTemplate from "../PageTemplate";
 import Loading from "../../../../components/Loading";
 import ChartCard from "../../../../components/charts/ChartCard";
-import GeoViewTimeChart from "../../../../components/charts/GeoViewTimeChart";
+// import GeoViewTimeChart from "../../../../components/charts/GeoViewTimeChart";
 import Methodology from "../../../../components/charts/Methodology";
 import PeriodLabel from "../../../../components/charts/PeriodLabel";
-import FtrReferralsByAge from "../../../../components/charts/programming/FtrReferralsByAge";
-import FtrReferralsByGender from "../../../../components/charts/programming/FtrReferralsByGender";
-import FtrReferralsByLsir from "../../../../components/charts/programming/FtrReferralsByLsir";
+// import FtrReferralsByAge from "../../../../components/charts/programming/FtrReferralsByAge";
+// import FtrReferralsByGender from "../../../../components/charts/programming/FtrReferralsByGender";
+// import FtrReferralsByLsir from "../../../../components/charts/programming/FtrReferralsByLsir";
 import FtrReferralsByParticipationStatus from "../../../../components/charts/programming/FtrReferralsByParticipationStatus";
-import FtrReferralsByRace from "../../../../components/charts/programming/FtrReferralsByRace";
-import FtrReferralCountByMonth from "../../../../components/charts/programming/FtrReferralCountByMonth";
+// import FtrReferralsByRace from "../../../../components/charts/programming/FtrReferralsByRace";
+// import FtrReferralCountByMonth from "../../../../components/charts/programming/FtrReferralCountByMonth";
 import ToggleBar from "../../../../components/toggles/ToggleBar";
 import {
   defaultDistrict,
@@ -102,6 +102,7 @@ const ProgrammingExplore = () => {
 
   return (
     <PageTemplate importantNotes={importantNotes} toggleBar={toggleBar}>
+      {/*
       <ChartCard
         chartId="ftrReferralCountByMonth"
         chartTitle="FTR REFERRALS BY MONTH"
@@ -132,6 +133,7 @@ const ProgrammingExplore = () => {
         }
         footer={<Methodology chartId="ftrReferralCountByMonth" />}
       />
+      */}
 
       <ChartCard
         chartId="ftrReferralsByParticipationStatus"
@@ -155,6 +157,7 @@ const ProgrammingExplore = () => {
         }
       />
 
+      {/*
       <ChartCard
         chartId="ftrReferralsByRace"
         chartTitle="FTR REFERRALS BY RACE"
@@ -237,6 +240,7 @@ const ProgrammingExplore = () => {
           </>
         }
       />
+      */}
     </PageTemplate>
   );
 };
