@@ -59,7 +59,6 @@ const PerMonthBarChart = ({
     {}
   );
 
-  console.log(countsByMonth);
   const dataPoints = pipe(
     (dataset) =>
       visibleOffices

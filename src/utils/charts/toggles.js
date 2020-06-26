@@ -200,7 +200,6 @@ function filterDatasetByToggleFilters(dataset, toggleFilters) {
 }
 
 function filterDatasetByDistrict(dataset, districts) {
-  console.log(districts);
   return dataset.filter((element) =>
     districts.map(d => d.toUpperCase()).includes(String(element.district).toUpperCase())
   );
@@ -210,24 +209,24 @@ function filterDatasetBySupervisionType(dataset, supervisionType) {
   return filterDatasetByToggleFilters(dataset, { supervision_type: supervisionType });
 }
 
-function canDisplayGoal(goal, chartProps) {
-  if (chartProps.disableGoal === true) {
+function canDisplayGoal(goal, toggles) {
+  if (toggles.disableGoal === true) {
     return false;
   }
 
-  if (chartProps.geoView) {
+  if (toggles.geoView) {
     return false;
   }
 
   let canDisplay = true;
-  if (chartProps.metricType && goal.metricType) {
-    canDisplay = canDisplay && goal.metricType === chartProps.metricType;
+  if (toggles.metricType && goal.metricType) {
+    canDisplay = canDisplay && goal.metricType === toggles.metricType;
   }
-  if (chartProps.supervisionType) {
-    canDisplay = canDisplay && chartProps.supervisionType.toUpperCase() === 'ALL';
+  if (toggles.supervisionType) {
+    canDisplay = canDisplay && toggles.supervisionType.toUpperCase() === 'ALL';
   }
-  if (chartProps.district) {
-    canDisplay = canDisplay && chartProps.district.toUpperCase() === 'ALL';
+  if (toggles.district) {
+    canDisplay = canDisplay && toggles.district.toUpperCase() === 'ALL';
   }
   return canDisplay;
 }

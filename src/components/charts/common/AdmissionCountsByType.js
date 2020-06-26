@@ -15,92 +15,89 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React, { useState, useEffect } from 'react';
-import { Bar, Pie } from 'react-chartjs-2';
+import React from "react";
+import PropTypes from "prop-types";
+import { Bar, Pie } from "react-chartjs-2";
 
-import { COLORS, COLORS_FIVE_VALUES } from '../../../assets/scripts/constants/colors';
-import { configureDownloadButtons } from '../../../assets/scripts/utils/downloads';
+import concat from "lodash/fp/concat";
+import defaults from "lodash/fp/defaults";
+import entries from "lodash/fp/entries";
+import map from "lodash/fp/map";
+import merge from "lodash/fp/merge";
+import mergeAllWith from "lodash/fp/mergeAllWith";
+import pipe from "lodash/fp/pipe";
+import reduce from "lodash/fp/reduce";
+import toInteger from "lodash/fp/toInteger";
+
 import {
-  filterDatasetByDistrict, filterDatasetBySupervisionType, filterDatasetByMetricPeriodMonths,
-} from '../../../utils/charts/toggles';
-import { sortByLabel } from '../../../utils/transforms/datasets';
-import { toInt } from '../../../utils/transforms/labels';
+  COLORS,
+  COLORS_FIVE_VALUES,
+} from "../../../assets/scripts/constants/colors";
+import { configureDownloadButtons } from "../../../assets/scripts/utils/downloads";
+import {
+  filterDatasetByDistrict,
+  filterDatasetBySupervisionType,
+  filterDatasetByMetricPeriodMonths,
+} from "../../../utils/charts/toggles";
+import { sortByLabel } from "../../../utils/transforms/datasets";
 
-const AdmissionCountsByType = (props) => {
-  const [chartLabels, setChartLabels] = useState([]);
-  const [chartDataPoints, setChartDataPoints] = useState([]);
+const chartId = "admissionCountsByType";
 
-  const chartId = 'admissionCountsByType';
+const UNKNOWN_REVOCATION = "Revocations (Unknown Type)";
+const NEW_ADMISSION = "New Admissions";
+const NON_TECHNICAL = "Non-Technical Revocations";
+const TECHNICAL = "Technical Revocations";
 
-  const labelStringConversion = {
-    UNKNOWN_REVOCATION: 'Revocations (Unknown Type)',
-    NEW_ADMISSION: 'New Admissions',
-    NON_TECHNICAL: 'Non-Technical Revocations',
-    TECHNICAL: 'Technical Revocations',
-  };
+const AdmissionCountsByType = ({
+  admissionCountsByType,
+  metricPeriodMonths,
+  metricType,
+  district,
+  supervisionType,
+}) => {
+  // This chart does not support district or supervision type breakdowns for rates, only counts
+  const filterDistrict = metricType === "counts" ? district : ["all"];
+  const filterSupervisionType =
+    metricType === "counts" ? supervisionType : "all";
 
-  const processResponse = () => {
-    const { admissionCountsByType } = props;
+  const filteredAdmissionCounts = pipe(
+    (dataset) => filterDatasetByDistrict(dataset, filterDistrict),
+    (dataset) => filterDatasetBySupervisionType(dataset, filterSupervisionType),
+    (dataset) => filterDatasetByMetricPeriodMonths(dataset, metricPeriodMonths),
+    map((data) => ({
+      [TECHNICAL]: toInteger(data.technicals),
+      [NON_TECHNICAL]: toInteger(data.non_technicals),
+      [UNKNOWN_REVOCATION]: toInteger(data.unknown_revocations),
+    })),
+    mergeAllWith((obj, src) => obj + src)
+  )(admissionCountsByType);
 
-    const dataPoints = [];
+  // For this chart specifically, we want the new admissions total to always be equal to the
+  // new admissions admission count where supervision type and district both equal ALL
+  const dataPoints = pipe(
+    (dataset) => filterDatasetBySupervisionType(dataset, "ALL"),
+    (dataset) => filterDatasetByDistrict(dataset, ["ALL"]),
+    (dataset) => filterDatasetByMetricPeriodMonths(dataset, metricPeriodMonths),
+    ([data]) => ({
+      [NEW_ADMISSION]: toInteger(data.new_admissions),
+    }),
+    (dataset) => merge(filteredAdmissionCounts, dataset),
+    defaults({
+      [UNKNOWN_REVOCATION]: 0,
+      [NEW_ADMISSION]: 0,
+      [NON_TECHNICAL]: 0,
+      [TECHNICAL]: 0,
+    }),
+    entries,
+    reduce(
+      (acc, [key, value]) => concat([{ type: key, count: value }], acc),
+      []
+    ),
+    (dataset) => sortByLabel(dataset, "type")
+  )(admissionCountsByType);
 
-    // For this chart specifically, we want the new admissions total to always be equal to the
-    // new admissions admission count where supervision type and district both equal ALL
-    let filteredForNewAdmission = filterDatasetBySupervisionType(admissionCountsByType, 'ALL');
-    filteredForNewAdmission = filterDatasetByDistrict(filteredForNewAdmission, 'ALL');
-    filteredForNewAdmission = filterDatasetByMetricPeriodMonths(
-      filteredForNewAdmission, props.metricPeriodMonths,
-    );
-
-    filteredForNewAdmission.forEach((data) => {
-      const newAdmissions = toInt(data.new_admissions);
-      dataPoints.push({ type: labelStringConversion.NEW_ADMISSION, count: newAdmissions });
-    });
-
-    // This chart does not support district or supervision type breakdowns for rates, only counts
-    let filterDistrict = 'all';
-    let filterSupervisionType = 'all';
-    if (props.metricType === 'counts') {
-      filterDistrict = props.district;
-      filterSupervisionType = props.supervisionType;
-    }
-
-    let filteredAdmissionCounts = filterDatasetByDistrict(
-      admissionCountsByType, filterDistrict,
-    );
-
-    filteredAdmissionCounts = filterDatasetBySupervisionType(
-      filteredAdmissionCounts, filterSupervisionType,
-    );
-
-    filteredAdmissionCounts = filterDatasetByMetricPeriodMonths(
-      filteredAdmissionCounts, props.metricPeriodMonths,
-    );
-
-    if (filteredAdmissionCounts) {
-      filteredAdmissionCounts.forEach((data) => {
-        const technicals = toInt(data.technicals);
-        dataPoints.push({ type: labelStringConversion.TECHNICAL, count: technicals });
-
-        const nonTechnicals = toInt(data.non_technicals);
-        dataPoints.push({ type: labelStringConversion.NON_TECHNICAL, count: nonTechnicals });
-
-        const unknownRevocations = toInt(data.unknown_revocations);
-        dataPoints.push(
-          { type: labelStringConversion.UNKNOWN_REVOCATION, count: unknownRevocations },
-        );
-      });
-    } else {
-      Object.values(labelStringConversion).forEach((type) => {
-        dataPoints.push({ type, count: 0 });
-      });
-    }
-
-    const sorted = sortByLabel(dataPoints, 'type');
-
-    setChartLabels(sorted.map((element) => element.type));
-    setChartDataPoints(sorted.map((element) => element.count));
-  };
+  const chartLabels = map("type", dataPoints);
+  const chartDataPoints = map("count", dataPoints);
 
   const chartColors = [
     COLORS_FIVE_VALUES[1],
@@ -113,38 +110,46 @@ const AdmissionCountsByType = (props) => {
     <Pie
       id={chartId}
       data={{
-        datasets: [{
-          label: 'Admission count',
-          data: chartDataPoints,
-          // Note: these colors are intentionally set in this order so that
-          // the colors for technical and unknown revocations match those of
-          // the other charts on this page
-          backgroundColor: chartColors,
-          hoverBackgroundColor: chartColors,
-          hoverBorderColor: chartColors,
-          hoverBorderWidth: 0.5,
-        }],
+        datasets: [
+          {
+            label: "Admission count",
+            data: chartDataPoints,
+            // Note: these colors are intentionally set in this order so that
+            // the colors for technical and unknown revocations match those of
+            // the other charts on this page
+            backgroundColor: chartColors,
+            hoverBackgroundColor: chartColors,
+            hoverBorderColor: chartColors,
+            hoverBorderWidth: 0.5,
+          },
+        ],
         labels: chartLabels,
       }}
       options={{
         responsive: true,
         legend: {
-          position: 'right',
+          position: "right",
         },
         tooltips: {
-          backgroundColor: COLORS['grey-800-light'],
+          backgroundColor: COLORS["grey-800-light"],
           callbacks: {
             label: (tooltipItem, data) => {
               const dataset = data.datasets[tooltipItem.datasetIndex];
 
               const total = dataset.data.reduce(
-                (previousValue, currentValue) => (previousValue + currentValue),
+                (previousValue, currentValue) => previousValue + currentValue
               );
 
               const currentValue = dataset.data[tooltipItem.index];
               const percentage = ((currentValue / total) * 100).toFixed(2);
 
-              return (data.labels[tooltipItem.index]).concat(': ', percentage, '% (', currentValue, ')');
+              return data.labels[tooltipItem.index].concat(
+                ": ",
+                percentage,
+                "% (",
+                currentValue,
+                ")"
+              );
             },
           },
         },
@@ -156,96 +161,100 @@ const AdmissionCountsByType = (props) => {
     <Bar
       id={chartId}
       data={{
-        labels: ['Admission Counts'],
-        datasets: [{
-          label: chartLabels[0],
-          backgroundColor: chartColors[0],
-          hoverBackgroundColor: chartColors[0],
-          hoverBorderColor: chartColors[0],
-          data: [
-            chartDataPoints[0],
-          ],
-        }, {
-          label: chartLabels[1],
-          backgroundColor: chartColors[1],
-          hoverBackgroundColor: chartColors[1],
-          hoverBorderColor: chartColors[1],
-          data: [
-            chartDataPoints[1],
-          ],
-        }, {
-          label: chartLabels[2],
-          backgroundColor: chartColors[2],
-          hoverBackgroundColor: chartColors[2],
-          hoverBorderColor: chartColors[2],
-          data: [
-            chartDataPoints[2],
-          ],
-        }, {
-          label: chartLabels[3],
-          backgroundColor: chartColors[3],
-          hoverBackgroundColor: chartColors[3],
-          hoverBorderColor: chartColors[3],
-          data: [
-            chartDataPoints[3],
-          ],
-        }],
+        labels: ["Admission Counts"],
+        datasets: [
+          {
+            label: chartLabels[0],
+            backgroundColor: chartColors[0],
+            hoverBackgroundColor: chartColors[0],
+            hoverBorderColor: chartColors[0],
+            data: [chartDataPoints[0]],
+          },
+          {
+            label: chartLabels[1],
+            backgroundColor: chartColors[1],
+            hoverBackgroundColor: chartColors[1],
+            hoverBorderColor: chartColors[1],
+            data: [chartDataPoints[1]],
+          },
+          {
+            label: chartLabels[2],
+            backgroundColor: chartColors[2],
+            hoverBackgroundColor: chartColors[2],
+            hoverBorderColor: chartColors[2],
+            data: [chartDataPoints[2]],
+          },
+          {
+            label: chartLabels[3],
+            backgroundColor: chartColors[3],
+            hoverBackgroundColor: chartColors[3],
+            hoverBorderColor: chartColors[3],
+            data: [chartDataPoints[3]],
+          },
+        ],
       }}
       options={{
         responsive: true,
         legend: {
-          position: 'right',
+          position: "right",
         },
         tooltips: {
-          mode: 'index',
+          mode: "index",
           intersect: false,
         },
         scales: {
-          xAxes: [{
-            ticks: {
-              autoSkip: false,
+          xAxes: [
+            {
+              ticks: {
+                autoSkip: false,
+              },
             },
-          }],
-          yAxes: [{
-            scaleLabel: {
-              display: true,
-              labelString: 'Admission counts',
+          ],
+          yAxes: [
+            {
+              scaleLabel: {
+                display: true,
+                labelString: "Admission counts",
+              },
+              ticks: {
+                min: 0,
+              },
             },
-            ticks: {
-              min: 0,
-            }
-          }],
+          ],
         },
       }}
     />
   );
 
   let activeChart = countsChart;
-  if (props.metricType === 'rates') {
+  if (metricType === "rates") {
     activeChart = ratesChart;
   }
 
-  const exportedStructureCallback = () => (
-    {
-      metric: 'Admissions by type',
-      series: [],
-    });
+  const exportedStructureCallback = () => ({
+    metric: "Admissions by type",
+    series: [],
+  });
 
-  configureDownloadButtons(chartId, 'ADMISSIONS BY TYPE', activeChart.props.data.datasets,
-    activeChart.props.data.labels, document.getElementById(chartId),
-    exportedStructureCallback, props);
-
-  useEffect(() => {
-    processResponse();
-  }, [
-    props.admissionCountsByType,
-    props.metricType,
-    props.supervisionType,
-    props.metricPeriodMonths,
-    props.district,
-  ]);
+  configureDownloadButtons(
+    chartId,
+    "ADMISSIONS BY TYPE",
+    activeChart.props.data.datasets,
+    activeChart.props.data.labels,
+    document.getElementById(chartId),
+    exportedStructureCallback,
+    { metricPeriodMonths, metricType, district, supervisionType }
+  );
 
   return activeChart;
+};
+
+AdmissionCountsByType.propTypes = {
+  admissionCountsByType: PropTypes.arrayOf(PropTypes.shape({})),
+  supervisionType: PropTypes.string.isRequired,
+  district: PropTypes.arrayOf(PropTypes.string).isRequired,
+  metricType: PropTypes.string.isRequired,
+  metricPeriodMonths: PropTypes.string.isRequired,
 };
 
 export default AdmissionCountsByType;
