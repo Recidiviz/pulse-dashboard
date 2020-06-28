@@ -34,7 +34,7 @@ import RevocationCountOverTime from "../../../../components/charts/community/Rev
 import RevocationCountBySupervisionType from "../../../../components/charts/community/RevocationCountBySupervisionType";
 import RevocationCountByViolationType from "../../../../components/charts/community/RevocationCountByViolationType";
 import RevocationProportionByRace from "../../../../components/charts/community/RevocationProportionByRace";
-// import SupervisionSuccessSnapshot from "../../../../components/charts/community/SupervisionSuccessSnapshot";
+import SupervisionSuccessSnapshot from "../../../../components/charts/community/SupervisionSuccessSnapshot";
 import ToggleBar from "../../../../components/toggles/ToggleBar";
 import {
   defaultDistrict,
@@ -330,7 +330,6 @@ const CommunityExplore = () => {
         }
       />
 
-      {/*
       <ChartCard
         key="supervisionSuccessSnapshot"
         chartId="supervisionSuccessSnapshot"
@@ -342,6 +341,7 @@ const CommunityExplore = () => {
             supervisionType={supervisionType}
             district={district}
             disableGoal
+            stateCode="US_ND"
             supervisionSuccessRates={
               apiData.supervision_termination_by_type_by_month
             }
@@ -371,7 +371,6 @@ const CommunityExplore = () => {
         footer={<Methodology chartId="supervisionSuccessSnapshot" />}
       />
 
-      */}
       <ChartCard
         key="caseTerminationsByTerminationType"
         chartId="caseTerminationsByTerminationType"
