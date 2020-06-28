@@ -27,7 +27,7 @@ import WarningIcon from "../../../../components/charts/WarningIcon";
 import AdmissionCountsByType from "../../../../components/charts/common/AdmissionCountsByType";
 import CaseTerminationsByOfficer from "../../../../components/charts/community/CaseTerminationsByOfficer";
 import CaseTerminationsByTerminationType from "../../../../components/charts/community/CaseTerminationsByTerminationType";
-// import LsirScoreChangeSnapshot from "../../../../components/charts/community/LsirScoreChangeSnapshot";
+import LsirScoreChangeSnapshot from "../../../../components/charts/community/LsirScoreChangeSnapshot";
 import RevocationAdmissionsSnapshot from "../../../../components/charts/community/RevocationAdmissionsSnapshot";
 import RevocationCountByOfficer from "../../../../components/charts/community/RevocationCountByOfficer";
 import RevocationCountOverTime from "../../../../components/charts/community/RevocationCountOverTime";
@@ -418,7 +418,6 @@ const CommunityExplore = () => {
         footer={<Methodology chartId="caseTerminationsByOfficer" />}
       />
 
-      {/*
       <ChartCard
         key="lsirScoreChangeSnapshot"
         chartId="lsirScoreChangeSnapshot"
@@ -460,7 +459,7 @@ const CommunityExplore = () => {
           />
         }
         footer={<Methodology chartId="lsirScoreChangeSnapshot" />}
-      /> */}
+      />
     </PageTemplate>
   );
 };

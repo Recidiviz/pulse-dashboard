@@ -27,6 +27,7 @@ public/
 !src/components/charts/common/AdmissionCountsByType.js
 !src/components/charts/community/CaseTerminationsByOfficer.js
 !src/components/charts/community/CaseTerminationsByTerminationType.js
+!src/components/charts/community/LsirScoreChangeSnapshot.js
 !src/components/charts/community/RevocationAdmissionsSnapshot.js
 !src/components/charts/community/RevocationCountByOfficer.js
 !src/components/charts/community/RevocationCountBySupervisionType.js
