@@ -297,13 +297,13 @@ const RevocationAdmissionsSnapshot = ({
 
   const headerElement = document.getElementById(header);
 
-  if (header && displayGoal) {
+  if (headerElement && displayGoal) {
     const trendlineValues = chart.props.data.datasets[1].data;
     const trendlineText = trendlineGoalText(trendlineValues, goal);
 
     const title = `The percent of prison admissions due to revocations of probation and parole has been <span class='fs-block header-highlight'>trending ${trendlineText}.</span>`;
     headerElement.innerHTML = title;
-  } else if (header) {
+  } else if (headerElement) {
     headerElement.innerHTML = "";
   }
 
@@ -318,7 +318,7 @@ RevocationAdmissionsSnapshot.defaultProps = {
 RevocationAdmissionsSnapshot.propTypes = {
   stateCode: PropTypes.string.isRequired,
   disableGoal: PropTypes.bool,
-  header: PropTypes.node,
+  header: PropTypes.string,
   revocationAdmissionsByMonth: PropTypes.arrayOf(PropTypes.shape({})),
   supervisionType: PropTypes.string.isRequired,
   district: PropTypes.arrayOf(PropTypes.string).isRequired,

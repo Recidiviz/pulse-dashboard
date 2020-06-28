@@ -31,7 +31,7 @@ import SupervisionSuccessSnapshot from "../../../../components/charts/community/
 import useChartData from "../../../../hooks/useChartData";
 
 const metrics = {
-  district: "all",
+  district: ["all"],
   metricPeriodMonths: "36",
   supervisionType: "all",
 };
@@ -58,6 +58,7 @@ const CommunityGoals = () => {
             officeData={apiData.site_offices}
             revocationCountsByMonth={apiData.revocations_by_month}
             header="revocationCountsByMonth-header"
+            stateCode="US_ND"
           />
         }
         geoChart={
@@ -98,6 +99,7 @@ const CommunityGoals = () => {
               apiData.supervision_termination_by_type_by_month
             }
             header="supervisionSuccessSnapshot-header"
+            stateCode="US_ND"
           />
         }
         geoChart={
@@ -140,6 +142,7 @@ const CommunityGoals = () => {
             district={metrics.district}
             lsirScoreChangeByMonth={apiData.average_change_lsir_score_by_month}
             header="lsirScoreChangeSnapshot-header"
+            stateCode="US_ND"
           />
         }
         geoChart={
@@ -179,6 +182,7 @@ const CommunityGoals = () => {
             district={metrics.district}
             revocationAdmissionsByMonth={apiData.admissions_by_type_by_month}
             header="revocationAdmissionsSnapshot-header"
+            stateCode="US_ND"
           />
         }
         geoChart={

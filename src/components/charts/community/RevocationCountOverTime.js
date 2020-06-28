@@ -228,10 +228,10 @@ const RevocationCountOverTime = ({
 
   const headerElement = document.getElementById(header);
 
-  if (header && mostRecentValue !== null && displayGoal) {
+  if (headerElement && mostRecentValue !== null && displayGoal) {
     const title = `There have been <span class='fs-block header-highlight'>${mostRecentValue} revocations</span> that led to incarceration in a DOCR facility this month so far.`;
     headerElement.innerHTML = title;
-  } else if (header) {
+  } else if (headerElement) {
     headerElement.innerHTML = "";
   }
 

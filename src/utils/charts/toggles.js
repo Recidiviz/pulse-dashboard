@@ -226,7 +226,7 @@ function canDisplayGoal(goal, toggles) {
     canDisplay = canDisplay && toggles.supervisionType.toUpperCase() === 'ALL';
   }
   if (toggles.district) {
-    canDisplay = canDisplay && toggles.district.toUpperCase() === 'ALL';
+    canDisplay = canDisplay && toggles.district[0].toUpperCase() === 'ALL';
   }
   return canDisplay;
 }

@@ -230,13 +230,13 @@ const LsirScoreChangeSnapshot = ({
 
   const headerElement = document.getElementById(header);
 
-  if (header && displayGoal) {
+  if (headerElement && displayGoal) {
     const trendlineValues = chart.props.data.datasets[1].data;
     const trendlineText = trendlineGoalText(trendlineValues, goal);
 
     const title = `The average change in LSI-R scores between first reassessment and termination of supervision has been <span class='fs-block header-highlight'>trending ${trendlineText}.</span>`;
     headerElement.innerHTML = title;
-  } else if (header) {
+  } else if (headerElement) {
     headerElement.innerHTML = "";
   }
 
@@ -254,7 +254,7 @@ LsirScoreChangeSnapshot.propTypes = {
   metricPeriodMonths: PropTypes.string.isRequired,
   supervisionType: PropTypes.string.isRequired,
   district: PropTypes.arrayOf(PropTypes.string).isRequired,
-  header: PropTypes.node,
+  header: PropTypes.string,
   disableGoal: PropTypes.bool,
 };
 
