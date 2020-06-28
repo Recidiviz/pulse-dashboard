@@ -33,7 +33,7 @@ import RevocationCountByOfficer from "../../../../components/charts/community/Re
 import RevocationCountOverTime from "../../../../components/charts/community/RevocationCountOverTime";
 import RevocationCountBySupervisionType from "../../../../components/charts/community/RevocationCountBySupervisionType";
 import RevocationCountByViolationType from "../../../../components/charts/community/RevocationCountByViolationType";
-// import RevocationProportionByRace from "../../../../components/charts/community/RevocationProportionByRace";
+import RevocationProportionByRace from "../../../../components/charts/community/RevocationProportionByRace";
 // import SupervisionSuccessSnapshot from "../../../../components/charts/community/SupervisionSuccessSnapshot";
 import ToggleBar from "../../../../components/toggles/ToggleBar";
 import {
@@ -306,7 +306,6 @@ const CommunityExplore = () => {
         footer={<Methodology chartId="revocationsByViolationType" />}
       />
 
-      {/*
       <ChartCard
         key="revocationsByRace"
         chartId="revocationsByRace"
@@ -331,6 +330,7 @@ const CommunityExplore = () => {
         }
       />
 
+      {/*
       <ChartCard
         key="supervisionSuccessSnapshot"
         chartId="supervisionSuccessSnapshot"

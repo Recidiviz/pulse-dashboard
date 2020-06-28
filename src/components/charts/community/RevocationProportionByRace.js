@@ -1,5 +1,5 @@
 // Recidiviz - a data platform for criminal justice reform
-// Copyright (C) 2019 Recidiviz, Inc.
+// Copyright (C) 2020 Recidiviz, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -15,229 +15,181 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React, { useState, useEffect } from 'react';
-import { Bar, HorizontalBar } from 'react-chartjs-2';
+import React from "react";
+import PropTypes from "prop-types";
+import { Bar, HorizontalBar } from "react-chartjs-2";
 
-import { COLORS_FIVE_VALUES, COLORS } from '../../../assets/scripts/constants/colors';
-import { configureDownloadButtons } from '../../../assets/scripts/utils/downloads';
+import concat from "lodash/fp/concat";
+import difference from "lodash/fp/difference";
+import groupBy from "lodash/fp/groupBy";
+import map from "lodash/fp/map";
+import pipe from "lodash/fp/pipe";
+import range from "lodash/fp/range";
+import sortBy from "lodash/fp/sortBy";
+import sumBy from "lodash/fp/sumBy";
+import toInteger from "lodash/fp/toInteger";
+import values from "lodash/fp/values";
+
 import {
-  filterDatasetBySupervisionType, filterDatasetByDistrict,
+  COLORS_FIVE_VALUES,
+  COLORS,
+} from "../../../assets/scripts/constants/colors";
+import { configureDownloadButtons } from "../../../assets/scripts/utils/downloads";
+import {
+  filterDatasetBySupervisionType,
+  filterDatasetByDistrict,
   filterDatasetByMetricPeriodMonths,
-} from '../../../utils/charts/toggles';
-import { sortByLabel } from '../../../utils/transforms/datasets';
-import { raceValueToHumanReadable, toInt } from '../../../utils/transforms/labels';
+} from "../../../utils/charts/toggles";
+import { raceValueToHumanReadable } from "../../../utils/transforms/labels";
 
-const RevocationProportionByRace = (props) => {
-  const [chartLabels, setChartLabels] = useState([]);
-  const [revocationProportions, setRevocationProportions] = useState([]);
-  const [statePopulationProportions, setStatePopulationProportions] = useState([]);
-  const [stateSupervisionProportions, setStateSupervisionProportions] = useState([]);
-  const [revocationCounts, setRevocationCounts] = useState([]);
-  const [stateSupervisionCounts, setStateSupervisionCounts] = useState([]);
+const colors = [
+  COLORS_FIVE_VALUES[0],
+  COLORS_FIVE_VALUES[1],
+  COLORS_FIVE_VALUES[2],
+  COLORS_FIVE_VALUES[3],
+  COLORS_FIVE_VALUES[4],
+  COLORS["blue-standard-2"],
+  COLORS["blue-standard"],
+];
 
-  const chartId = 'revocationsByRace';
+/**
+ * Groups and brings to mind:
+ * { race: 'Asian', totalSupervisionCount: 43, revocationCount: 123 }
+ */
+const groupByRaceAndMap = pipe(
+  groupBy("race_or_ethnicity"),
+  values,
+  map((dataset) => ({
+    race: raceValueToHumanReadable(dataset[0].race_or_ethnicity),
+    totalSupervisionCount: sumBy(
+      (data) => toInteger(data.total_supervision_count),
+      dataset
+    ),
+    revocationCount: sumBy((data) => toInteger(data.revocation_count), dataset),
+  }))
+);
 
-  const processResponse = () => {
-    const { revocationProportionByRace, statePopulationByRace } = props;
+const addMissedRaceCounts = (stateCensusDataPoints) => (dataset) =>
+  pipe(
+    map("race"),
+    difference(map("race", stateCensusDataPoints)),
+    map((race) => ({ race, totalSupervisionCount: 0, revocationCount: 0 })),
+    concat(dataset)
+  )(dataset);
 
-    let filteredRevocationProportions = filterDatasetBySupervisionType(
-      revocationProportionByRace, props.supervisionType,
-    );
+const revocationMapper = ({ race, revocationCount }) => ({
+  race,
+  count: revocationCount,
+});
 
-    filteredRevocationProportions = filterDatasetByDistrict(
-      filteredRevocationProportions, props.district,
-    );
+const supervisionMapper = ({ race, totalSupervisionCount }) => ({
+  race,
+  count: totalSupervisionCount,
+});
 
-    const revocationProportionByRaceAndTime = filterDatasetByMetricPeriodMonths(
-      filteredRevocationProportions, props.metricPeriodMonths,
-    );
+const stateCensusMapper = ({ race_or_ethnicity: race, proportion }) => ({
+  race: raceValueToHumanReadable(race),
+  proportion: Number(proportion),
+});
 
-    const revocationDataPoints = [];
-    const supervisionDataPoints = [];
+const calculatePercents = (total) => ({ count }) => 100 * (count / total);
 
-    if (revocationProportionByRaceAndTime) {
-      revocationProportionByRaceAndTime.forEach((data) => {
-        const { race_or_ethnicity: race } = data;
+const chartId = "revocationsByRace";
 
-        const revocationCount = toInt(data.revocation_count, 10);
-        revocationDataPoints.push(
-          { race: raceValueToHumanReadable(race), count: revocationCount },
-        );
+const RevocationProportionByRace = ({
+  metricType,
+  metricPeriodMonths,
+  district,
+  supervisionType,
+  revocationProportionByRace,
+  statePopulationByRace,
+}) => {
+  const stateCensusDataPoints = pipe(
+    map(stateCensusMapper),
+    sortBy("race")
+  )(statePopulationByRace);
 
-        const totalSupervisionPopulation = toInt(data.total_supervision_count);
-        supervisionDataPoints.push(
-          { race: raceValueToHumanReadable(race), count: totalSupervisionPopulation },
-        );
-      });
-    }
+  const revocationProportion = pipe(
+    (dataset) => filterDatasetBySupervisionType(dataset, supervisionType),
+    (dataset) => filterDatasetByDistrict(dataset, district),
+    (dataset) => filterDatasetByMetricPeriodMonths(dataset, metricPeriodMonths),
+    groupByRaceAndMap,
+    addMissedRaceCounts(stateCensusDataPoints),
+    sortBy("race")
+  )(revocationProportionByRace);
 
-    const stateCensusDataPoints = [];
-    if (statePopulationByRace) {
-      statePopulationByRace.forEach((data) => {
-        const { race_or_ethnicity: race } = data;
-        const proportion = Number(data.proportion);
-        stateCensusDataPoints.push({ race: raceValueToHumanReadable(race), proportion });
-      });
-    }
+  const revocationDataPoints = map(revocationMapper, revocationProportion);
+  const supervisionDataPoints = map(supervisionMapper, revocationProportion);
 
-    const racesRepresentedRevocations = revocationDataPoints.map((element) => element.race);
-    const racesRepresentedSupervision = supervisionDataPoints.map((element) => element.race);
+  const totalRevocationsCount = sumBy("revocationCount", revocationProportion);
+  const totalSupervisionPopulationCount = sumBy(
+    "totalSupervisionCount",
+    revocationProportion
+  );
 
-    stateCensusDataPoints.forEach((raceGroup) => {
-      const { race } = raceGroup;
-      if (!racesRepresentedRevocations.includes(race)) {
-        revocationDataPoints.push({ race, count: 0 });
-      }
+  const chartLabels = map("race", revocationDataPoints);
+  const statePopulationProportions = map("proportion", stateCensusDataPoints);
 
-      if (!racesRepresentedSupervision.includes(race)) {
-        supervisionDataPoints.push({ race, count: 0 });
-      }
-    });
+  const revocationProportions = map(
+    calculatePercents(totalRevocationsCount),
+    revocationDataPoints
+  );
+  const revocationCounts = map("count", revocationDataPoints);
 
-    function totalSum(dataPoints) {
-      return dataPoints.map((element) => element.count).reduce(
-        (previousValue, currentValue) => (previousValue + currentValue),
-      );
-    }
-
-    const totalRevocations = totalSum(revocationDataPoints);
-    const totalSupervisionPopulation = totalSum(supervisionDataPoints);
-
-    // Sort by race alphabetically
-    const sortedRevocationDataPoints = sortByLabel(revocationDataPoints, 'race');
-    const sortedSupervisionDataPoints = sortByLabel(supervisionDataPoints, 'race');
-    const sortedStateCensusDataPoints = sortByLabel(stateCensusDataPoints, 'race');
-
-    setChartLabels(sortedRevocationDataPoints.map((element) => element.race));
-    setRevocationProportions(sortedRevocationDataPoints.map(
-      (element) => (100 * (element.count / totalRevocations)),
-    ));
-    setRevocationCounts(sortedRevocationDataPoints.map(
-      (element) => (element.count),
-    ));
-    setStateSupervisionProportions(sortedSupervisionDataPoints.map(
-      (element) => (100 * (element.count / totalSupervisionPopulation)),
-    ));
-    setStateSupervisionCounts(sortedSupervisionDataPoints.map(
-      (element) => (element.count),
-    ));
-    setStatePopulationProportions(sortedStateCensusDataPoints.map(
-      (element) => (element.proportion),
-    ));
-  };
-
-  useEffect(() => {
-    processResponse();
-  }, [
-    props.revocationProportionByRace,
-    props.metricType,
-    props.metricPeriodMonths,
-    props.supervisionType,
-    props.district,
-  ]);
+  const stateSupervisionProportions = map(
+    calculatePercents(totalSupervisionPopulationCount),
+    supervisionDataPoints
+  );
+  const stateSupervisionCounts = map("count", supervisionDataPoints);
 
   const ratesChart = (
     <HorizontalBar
       id={chartId}
       data={{
-        labels: ['Revocations', 'Supervision Population', 'ND Population'],
-        datasets: [{
-          label: chartLabels[0],
-          backgroundColor: COLORS_FIVE_VALUES[0],
-          hoverBackgroundColor: COLORS_FIVE_VALUES[0],
-          hoverBorderColor: COLORS_FIVE_VALUES[0],
-          data: [
-            revocationProportions[0],
-            stateSupervisionProportions[0],
-            statePopulationProportions[0],
-          ],
-        }, {
-          label: chartLabels[1],
-          backgroundColor: COLORS_FIVE_VALUES[1],
-          hoverBackgroundColor: COLORS_FIVE_VALUES[1],
-          hoverBorderColor: COLORS_FIVE_VALUES[1],
-          data: [
-            revocationProportions[1],
-            stateSupervisionProportions[1],
-            statePopulationProportions[1],
-          ],
-        }, {
-          label: chartLabels[2],
-          backgroundColor: COLORS_FIVE_VALUES[2],
-          hoverBackgroundColor: COLORS_FIVE_VALUES[2],
-          hoverBorderColor: COLORS_FIVE_VALUES[2],
-          data: [
-            revocationProportions[2],
-            stateSupervisionProportions[2],
-            statePopulationProportions[2],
-          ],
-        }, {
-          label: chartLabels[3],
-          backgroundColor: COLORS_FIVE_VALUES[3],
-          hoverBackgroundColor: COLORS_FIVE_VALUES[3],
-          hoverBorderColor: COLORS_FIVE_VALUES[3],
-          data: [
-            revocationProportions[3],
-            stateSupervisionProportions[3],
-            statePopulationProportions[3],
-          ],
-        }, {
-          label: chartLabels[4],
-          backgroundColor: COLORS_FIVE_VALUES[4],
-          hoverBackgroundColor: COLORS_FIVE_VALUES[4],
-          hoverBorderColor: COLORS_FIVE_VALUES[4],
-          data: [
-            revocationProportions[4],
-            stateSupervisionProportions[4],
-            statePopulationProportions[4],
-          ],
-        }, {
-          label: chartLabels[5],
-          backgroundColor: COLORS['blue-standard-2'],
-          hoverBackgroundColor: COLORS['blue-standard-2'],
-          hoverBorderColor: COLORS['blue-standard-2'],
-          data: [
-            revocationProportions[5],
-            stateSupervisionProportions[5],
-            statePopulationProportions[5],
-          ],
-        }, {
-          label: chartLabels[6],
-          backgroundColor: COLORS['blue-standard'],
-          hoverBackgroundColor: COLORS['blue-standard'],
-          hoverBorderColor: COLORS['blue-standard'],
-          data: [
-            revocationProportions[6],
-            stateSupervisionProportions[6],
-            statePopulationProportions[6],
-          ],
-        },
-        ],
+        labels: ["Revocations", "Supervision Population", "ND Population"],
+        datasets: map(
+          (i) => ({
+            label: chartLabels[i],
+            backgroundColor: colors[i],
+            hoverBackgroundColor: colors[i],
+            hoverBorderColor: colors[i],
+            data: [
+              revocationProportions[i],
+              stateSupervisionProportions[i],
+              statePopulationProportions[i],
+            ],
+          }),
+          range(0, chartLabels.length)
+        ),
       }}
       options={{
         scales: {
-          xAxes: [{
-            scaleLabel: {
-              display: true,
-              labelString: 'Percentage',
+          xAxes: [
+            {
+              scaleLabel: {
+                display: true,
+                labelString: "Percentage",
+              },
+              stacked: true,
+              ticks: {
+                min: 0,
+                max: 100,
+              },
             },
-            stacked: true,
-            ticks: {
-              min: 0,
-              max: 100,
+          ],
+          yAxes: [
+            {
+              stacked: true,
             },
-          }],
-          yAxes: [{
-            stacked: true,
-          }],
+          ],
         },
         responsive: true,
         legend: {
-          position: 'bottom',
+          position: "bottom",
         },
         tooltips: {
-          backgroundColor: COLORS['grey-800-light'],
-          mode: 'dataset',
+          backgroundColor: COLORS["grey-800-light"],
+          mode: "dataset",
           intersect: true,
           callbacks: {
             title: (tooltipItem, data) => {
@@ -249,17 +201,28 @@ const RevocationProportionByRace = (props) => {
               const currentValue = dataset.data[tooltipItem.index];
 
               let datasetCounts = [];
-              if (data.labels[tooltipItem.index] === 'Revocations') {
+              if (data.labels[tooltipItem.index] === "Revocations") {
                 datasetCounts = revocationCounts;
-              } else if (data.labels[tooltipItem.index] === 'Supervision Population') {
+              } else if (
+                data.labels[tooltipItem.index] === "Supervision Population"
+              ) {
                 datasetCounts = stateSupervisionCounts;
               } else {
-                return ''.concat(currentValue.toFixed(2), '% of ',
-                  data.labels[tooltipItem.index]);
+                return "".concat(
+                  currentValue.toFixed(2),
+                  "% of ",
+                  data.labels[tooltipItem.index]
+                );
               }
 
-              return ''.concat(currentValue.toFixed(2), '% of ',
-                data.labels[tooltipItem.index], ' (', datasetCounts[tooltipItem.datasetIndex], ')');
+              return "".concat(
+                currentValue.toFixed(2),
+                "% of ",
+                data.labels[tooltipItem.index],
+                " (",
+                datasetCounts[tooltipItem.datasetIndex],
+                ")"
+              );
             },
           },
         },
@@ -271,115 +234,83 @@ const RevocationProportionByRace = (props) => {
     <Bar
       id={chartId}
       data={{
-        labels: ['Revocation Counts', 'Supervision Population'],
-        datasets: [{
-          label: chartLabels[0],
-          backgroundColor: COLORS_FIVE_VALUES[0],
-          hoverBackgroundColor: COLORS_FIVE_VALUES[0],
-          hoverBorderColor: COLORS_FIVE_VALUES[0],
-          data: [
-            revocationCounts[0],
-            stateSupervisionCounts[0],
-          ],
-        }, {
-          label: chartLabels[1],
-          backgroundColor: COLORS_FIVE_VALUES[1],
-          hoverBackgroundColor: COLORS_FIVE_VALUES[1],
-          hoverBorderColor: COLORS_FIVE_VALUES[1],
-          data: [
-            revocationCounts[1],
-            stateSupervisionCounts[1],
-          ],
-        }, {
-          label: chartLabels[2],
-          backgroundColor: COLORS_FIVE_VALUES[2],
-          hoverBackgroundColor: COLORS_FIVE_VALUES[2],
-          hoverBorderColor: COLORS_FIVE_VALUES[2],
-          data: [
-            revocationCounts[2],
-            stateSupervisionCounts[2],
-          ],
-        }, {
-          label: chartLabels[3],
-          backgroundColor: COLORS_FIVE_VALUES[3],
-          hoverBackgroundColor: COLORS_FIVE_VALUES[3],
-          hoverBorderColor: COLORS_FIVE_VALUES[3],
-          data: [
-            revocationCounts[3],
-            stateSupervisionCounts[3],
-          ],
-        }, {
-          label: chartLabels[4],
-          backgroundColor: COLORS_FIVE_VALUES[4],
-          hoverBackgroundColor: COLORS_FIVE_VALUES[4],
-          hoverBorderColor: COLORS_FIVE_VALUES[4],
-          data: [
-            revocationCounts[4],
-            stateSupervisionCounts[4],
-          ],
-        }, {
-          label: chartLabels[5],
-          backgroundColor: COLORS['blue-standard-2'],
-          hoverBackgroundColor: COLORS['blue-standard-2'],
-          hoverBorderColor: COLORS['blue-standard-2'],
-          data: [
-            revocationCounts[5],
-            stateSupervisionCounts[5],
-          ],
-        }, {
-          label: chartLabels[6],
-          backgroundColor: COLORS['blue-standard'],
-          hoverBackgroundColor: COLORS['blue-standard'],
-          hoverBorderColor: COLORS['blue-standard'],
-          data: [
-            revocationCounts[6],
-            stateSupervisionCounts[6],
-          ],
-        },
-        ],
+        labels: ["Revocation Counts", "Supervision Population"],
+        datasets: map(
+          (i) => ({
+            label: chartLabels[i],
+            backgroundColor: colors[i],
+            hoverBackgroundColor: colors[i],
+            hoverBorderColor: colors[i],
+            data: [revocationCounts[i], stateSupervisionCounts[i]],
+          }),
+          range(0, chartLabels.length)
+        ),
       }}
       options={{
         responsive: true,
         legend: {
-          position: 'bottom',
+          position: "bottom",
         },
         tooltips: {
-          mode: 'index',
+          mode: "index",
           intersect: false,
         },
         scales: {
-          xAxes: [{
-            ticks: {
-              autoSkip: false,
+          xAxes: [
+            {
+              ticks: {
+                autoSkip: false,
+              },
             },
-          }],
-          yAxes: [{
-            scaleLabel: {
-              display: true,
-              labelString: 'Revocation counts',
+          ],
+          yAxes: [
+            {
+              scaleLabel: {
+                display: true,
+                labelString: "Revocation counts",
+              },
             },
-          }],
+          ],
         },
       }}
     />
   );
 
-  const exportedStructureCallback = () => (
-    {
-      metric: 'Revocations by race',
-      series: [],
-    });
+  const exportedStructureCallback = () => ({
+    metric: "Revocations by race",
+    series: [],
+  });
 
   let activeChart = countsChart;
-  if (props.metricType === 'rates') {
+  if (metricType === "rates") {
     activeChart = ratesChart;
   }
 
-  configureDownloadButtons(chartId, 'REVOCATIONS BY RACE',
-    activeChart.props.data.datasets, activeChart.props.data.labels,
-    document.getElementById('revocationsByRace'), exportedStructureCallback, props);
+  configureDownloadButtons(
+    chartId,
+    "REVOCATIONS BY RACE",
+    activeChart.props.data.datasets,
+    activeChart.props.data.labels,
+    document.getElementById("revocationsByRace"),
+    exportedStructureCallback,
+    { metricPeriodMonths, district, supervisionType }
+  );
 
   return activeChart;
+};
+
+RevocationProportionByRace.defaultProps = {
+  revocationProportionByRace: [],
+  statePopulationByRace: [],
+};
+
+RevocationProportionByRace.propTypes = {
+  metricType: PropTypes.string.isRequired,
+  metricPeriodMonths: PropTypes.string.isRequired,
+  district: PropTypes.arrayOf(PropTypes.string).isRequired,
+  supervisionType: PropTypes.string.isRequired,
+  revocationProportionByRace: PropTypes.arrayOf(PropTypes.shape({})),
+  statePopulationByRace: PropTypes.arrayOf(PropTypes.shape({})),
 };
 
 export default RevocationProportionByRace;
