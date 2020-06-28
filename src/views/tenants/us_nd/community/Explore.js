@@ -161,7 +161,7 @@ const CommunityExplore = () => {
         chartTitle={
           <>
             REVOCATION ADMISSIONS BY OFFICER
-            {district === "all" && (
+            {district[0] === "all" && (
               <WarningIcon
                 tooltipText="Exporting this chart as an image will not include officer IDs unless a specific P&P office is selected from the explore bar."
                 className="pL-10 toggle-alert"
@@ -236,7 +236,7 @@ const CommunityExplore = () => {
         chartTitle={
           <>
             ADMISSIONS BY TYPE
-            {(supervisionType !== "all" || district !== "all") &&
+            {(supervisionType !== "all" || district[0] !== "all") &&
               metricType === "rates" && (
                 <WarningIcon
                   tooltipText="This graph is showing both non-revocation and revocation admissions to prison. We cannot show percentages of admissions from a specific supervision type or office because those filters can’t be applied to non-revocation admissions to prison."
@@ -395,7 +395,7 @@ const CommunityExplore = () => {
         chartTitle={
           <>
             CASE TERMINATIONS BY OFFICER
-            {district === "all" && (
+            {district[0] === "all" && (
               <WarningIcon
                 tooltipText="Exporting this chart as an image will not include officer IDs unless a specific P&P office is selected from the explore bar."
                 className="pL-10 toggle-alert"
