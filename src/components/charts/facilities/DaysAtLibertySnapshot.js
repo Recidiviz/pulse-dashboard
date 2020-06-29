@@ -1,5 +1,5 @@
 // Recidiviz - a data platform for criminal justice reform
-// Copyright (C) 2019 Recidiviz, Inc.
+// Copyright (C) 2020 Recidiviz, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -15,95 +15,108 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React, { useState, useEffect } from 'react';
-import { Line } from 'react-chartjs-2';
+import React from "react";
+import PropTypes from "prop-types";
+import { Line } from "react-chartjs-2";
 
-import { COLORS } from '../../../assets/scripts/constants/colors';
-import { configureDownloadButtons } from '../../../assets/scripts/utils/downloads';
+import map from "lodash/fp/map";
+import pipe from "lodash/fp/pipe";
+
+import { COLORS } from "../../../assets/scripts/constants/colors";
+import { configureDownloadButtons } from "../../../assets/scripts/utils/downloads";
 import {
-  getGoalForChart, getMinForGoalAndData, getMaxForGoalAndData, trendlineGoalText,
+  getGoalForChart,
+  getMinForGoalAndData,
+  getMaxForGoalAndData,
+  trendlineGoalText,
   chartAnnotationForGoal,
-} from '../../../utils/charts/metricGoal';
+} from "../../../utils/charts/metricGoal";
 import {
-  getMonthCountFromMetricPeriodMonthsToggle, canDisplayGoal,
+  getMonthCountFromMetricPeriodMonthsToggle,
+  canDisplayGoal,
   centerSingleMonthDatasetIfNecessary,
-} from '../../../utils/charts/toggles';
+} from "../../../utils/charts/toggles";
 import {
-  generateTrendlineDataset, getTooltipWithoutTrendline,
-} from '../../../utils/charts/trendline';
-import { sortFilterAndSupplementMostRecentMonths } from '../../../utils/transforms/datasets';
-import { monthNamesWithYearsFromNumbers } from '../../../utils/transforms/months';
+  generateTrendlineDataset,
+  getTooltipWithoutTrendline,
+} from "../../../utils/charts/trendline";
+import { sortFilterAndSupplementMostRecentMonths } from "../../../utils/transforms/datasets";
+import { monthNamesWithYearsFromNumbers } from "../../../utils/transforms/months";
 
-const DaysAtLibertySnapshot = (props) => {
-  const [chartLabels, setChartLabels] = useState([]);
-  const [chartDataPoints, setChartDataPoints] = useState([]);
-  const [chartMinValue, setChartMinValue] = useState();
-  const [chartMaxValue, setChartMaxValue] = useState();
+const chartId = "daysAtLibertySnapshot";
+const stepSize = 200;
 
-  const chartId = 'daysAtLibertySnapshot';
-  const GOAL = getGoalForChart('US_ND', chartId);
-  const stepSize = 200;
+const DaysAtLibertySnapshot = ({
+  stateCode,
+  daysAtLibertyByMonth,
+  metricPeriodMonths,
+  disableGoal,
+  header,
+}) => {
+  const goal = getGoalForChart(stateCode, chartId);
+  const displayGoal = canDisplayGoal(goal, { disableGoal, metricPeriodMonths });
 
-  const processResponse = () => {
-    const { daysAtLibertyByMonth } = props;
+  const dataPoints = pipe(
+    map(({ year, month, avg_liberty: average }) => ({
+      year,
+      month,
+      average: parseFloat(average).toFixed(2),
+    })),
+    (dataset) =>
+      sortFilterAndSupplementMostRecentMonths(
+        dataset,
+        getMonthCountFromMetricPeriodMonthsToggle(metricPeriodMonths),
+        "average",
+        "0.0"
+      )
+  )(daysAtLibertyByMonth);
 
-    const dataPoints = [];
-    if (daysAtLibertyByMonth) {
-      daysAtLibertyByMonth.forEach((data) => {
-        const { year, month } = data;
-        const average = parseFloat(data.avg_liberty).toFixed(2);
-        dataPoints.push({ year, month, average });
-      });
-    }
+  const chartDataValues = map("average", dataPoints);
+  const min = getMinForGoalAndData(goal.value, chartDataValues, stepSize);
+  const max = getMaxForGoalAndData(goal.value, chartDataValues, stepSize);
+  const monthNames = monthNamesWithYearsFromNumbers(
+    map("month", dataPoints),
+    true
+  );
 
-    const months = getMonthCountFromMetricPeriodMonthsToggle(props.metricPeriodMonths);
-    const sorted = sortFilterAndSupplementMostRecentMonths(dataPoints, months, 'average', '0.0');
-    const chartDataValues = sorted.map((element) => element.average);
-    const min = getMinForGoalAndData(GOAL.value, chartDataValues, stepSize);
-    const max = getMaxForGoalAndData(GOAL.value, chartDataValues, stepSize);
-    const monthNames = monthNamesWithYearsFromNumbers(sorted.map((element) => element.month), true);
+  centerSingleMonthDatasetIfNecessary(chartDataValues, monthNames);
 
-    centerSingleMonthDatasetIfNecessary(chartDataValues, monthNames);
-    setChartLabels(monthNames);
-    setChartDataPoints(chartDataValues);
-    setChartMinValue(min);
-    setChartMaxValue(max);
-  };
+  const chartLabels = monthNames;
+  const chartDataPoints = chartDataValues;
+  const chartMinValue = min;
+  const chartMaxValue = max;
 
   function goalLineIfApplicable() {
-    if (canDisplayGoal(GOAL, props)) {
-      return chartAnnotationForGoal(GOAL, 'daysAtLibertySnapshotGoalLine', {});
+    if (displayGoal) {
+      return chartAnnotationForGoal(goal, "daysAtLibertySnapshotGoalLine", {});
     }
     return null;
   }
 
   function datasetsWithTrendlineIfApplicable() {
-    const datasets = [{
-      label: 'Days at liberty (average)',
-      backgroundColor: COLORS['blue-standard'],
-      borderColor: COLORS['blue-standard'],
-      pointBackgroundColor: COLORS['blue-standard'],
-      pointHoverBackgroundColor: COLORS['blue-standard'],
-      pointHoverBorderColor: COLORS['blue-standard'],
-      pointRadius: 4,
-      hitRadius: 5,
-      fill: false,
-      borderWidth: 2,
-      lineTension: 0,
-      data: chartDataPoints,
-    }];
-    if (canDisplayGoal(GOAL, props)) {
-      datasets.push(generateTrendlineDataset(chartDataPoints, COLORS['blue-standard-light']));
+    const datasets = [
+      {
+        label: "Days at liberty (average)",
+        backgroundColor: COLORS["blue-standard"],
+        borderColor: COLORS["blue-standard"],
+        pointBackgroundColor: COLORS["blue-standard"],
+        pointHoverBackgroundColor: COLORS["blue-standard"],
+        pointHoverBorderColor: COLORS["blue-standard"],
+        pointRadius: 4,
+        hitRadius: 5,
+        fill: false,
+        borderWidth: 2,
+        lineTension: 0,
+        data: chartDataPoints,
+      },
+    ];
+    if (displayGoal) {
+      datasets.push(
+        generateTrendlineDataset(chartDataPoints, COLORS["blue-standard-light"])
+      );
     }
     return datasets;
   }
-
-  useEffect(() => {
-    processResponse();
-  }, [
-    props.daysAtLibertyByMonth,
-    props.metricPeriodMonths,
-  ]);
 
   const chart = (
     <Line
@@ -115,52 +128,57 @@ const DaysAtLibertySnapshot = (props) => {
       options={{
         legend: {
           display: false,
-          position: 'right',
+          position: "right",
           labels: {
             usePointStyle: true,
             boxWidth: 5,
           },
         },
         tooltips: {
-          backgroundColor: COLORS['grey-800-light'],
+          backgroundColor: COLORS["grey-800-light"],
           enabled: true,
-          mode: 'point',
+          mode: "point",
           callbacks: {
-            label: (tooltipItem, data) => (getTooltipWithoutTrendline(tooltipItem, data, ' days')),
+            label: (tooltipItem, data) =>
+              getTooltipWithoutTrendline(tooltipItem, data, " days"),
           },
         },
         scales: {
-          xAxes: [{
-            ticks: {
-              fontColor: COLORS['grey-600'],
+          xAxes: [
+            {
+              ticks: {
+                fontColor: COLORS["grey-600"],
+              },
+              scaleLabel: {
+                display: true,
+                labelString: "Month of readmission",
+                fontColor: COLORS["grey-500"],
+                fontStyle: "bold",
+              },
+              gridLines: {
+                color: "#FFF",
+              },
             },
-            scaleLabel: {
-              display: true,
-              labelString: 'Month of readmission',
-              fontColor: COLORS['grey-500'],
-              fontStyle: 'bold',
+          ],
+          yAxes: [
+            {
+              ticks: {
+                fontColor: COLORS["grey-600"],
+                min: chartMinValue,
+                max: chartMaxValue,
+                stepSize,
+              },
+              scaleLabel: {
+                display: true,
+                labelString: "Number of days at liberty",
+                fontColor: COLORS["grey-500"],
+                fontStyle: "bold",
+              },
+              gridLines: {
+                color: COLORS["grey-300"],
+              },
             },
-            gridLines: {
-              color: '#FFF',
-            },
-          }],
-          yAxes: [{
-            ticks: {
-              fontColor: COLORS['grey-600'],
-              min: chartMinValue,
-              max: chartMaxValue,
-              stepSize,
-            },
-            scaleLabel: {
-              display: true,
-              labelString: 'Number of days at liberty',
-              fontColor: COLORS['grey-500'],
-              fontStyle: 'bold',
-            },
-            gridLines: {
-              color: COLORS['grey-300'],
-            },
-          }],
+          ],
         },
         annotation: goalLineIfApplicable(),
       }}
@@ -169,27 +187,50 @@ const DaysAtLibertySnapshot = (props) => {
 
   const exportedStructureCallback = function exportedStructureCallback() {
     return {
-      metric: 'Average days at liberty',
+      metric: "Average days at liberty",
       series: [],
     };
   };
-  configureDownloadButtons(chartId, 'DAYS AT LIBERTY (AVERAGE)', chart.props.data.datasets,
-    chart.props.data.labels, document.getElementById(chartId),
-    exportedStructureCallback, props, true, true);
 
-  const header = document.getElementById(props.header);
+  configureDownloadButtons(
+    chartId,
+    "DAYS AT LIBERTY (AVERAGE)",
+    chart.props.data.datasets,
+    chart.props.data.labels,
+    document.getElementById(chartId),
+    exportedStructureCallback,
+    {},
+    true,
+    true
+  );
 
-  if (header && canDisplayGoal(GOAL, props)) {
+  const headerElement = document.getElementById(header);
+
+  if (headerElement && displayGoal) {
     const trendlineValues = chart.props.data.datasets[1].data;
-    const trendlineText = trendlineGoalText(trendlineValues, GOAL);
+    const trendlineText = trendlineGoalText(trendlineValues, goal);
 
     const title = `The average days between release from incarceration and readmission has been <span class='fs-block header-highlight'>trending ${trendlineText}.</span>`;
-    header.innerHTML = title;
-  } else if (header) {
-    header.innerHTML = '';
+    headerElement.innerHTML = title;
+  } else if (headerElement) {
+    headerElement.innerHTML = "";
   }
 
-  return (chart);
+  return chart;
+};
+
+DaysAtLibertySnapshot.defaultProps = {
+  daysAtLibertyByMonth: [],
+  disableGoal: false,
+  header: undefined,
+};
+
+DaysAtLibertySnapshot.propTypes = {
+  daysAtLibertyByMonth: PropTypes.arrayOf(PropTypes.shape({})),
+  metricPeriodMonths: PropTypes.string.isRequired,
+  disableGoal: PropTypes.bool,
+  header: PropTypes.string,
+  stateCode: PropTypes.string.isRequired,
 };
 
 export default DaysAtLibertySnapshot;
