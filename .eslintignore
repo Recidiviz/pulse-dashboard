@@ -36,6 +36,7 @@ public/
 !src/components/charts/community/RevocationProportionByRace.js
 !src/components/charts/community/SupervisionSuccessSnapshot.js
 !src/components/charts/programming/FtrReferralsByParticipationStatus.js
+!src/components/charts/facilities/ReincarcerationCountOverTime.js
 !src/components/charts/facilities/ReincarcerationRateByStayLength.js
 !src/components/charts/facilities/__tests__/**/*.js
 !src/components/charts/new_revocations/helpers.js

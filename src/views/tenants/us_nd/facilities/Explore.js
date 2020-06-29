@@ -22,13 +22,13 @@ import Loading from "../../../../components/Loading";
 import ChartCard from "../../../../components/charts/ChartCard";
 import GeoViewTimeChart from "../../../../components/charts/GeoViewTimeChart";
 import Methodology from "../../../../components/charts/Methodology";
-import PeriodLabel from "../../../../components/charts/PeriodLabel";
-import WarningIcon from "../../../../components/charts/WarningIcon";
-import AdmissionsVsReleases from "../../../../components/charts/facilities/AdmissionsVsReleases";
+// import PeriodLabel from "../../../../components/charts/PeriodLabel";
+// import WarningIcon from "../../../../components/charts/WarningIcon";
+// import AdmissionsVsReleases from "../../../../components/charts/facilities/AdmissionsVsReleases";
 import ReincarcerationCountOverTime from "../../../../components/charts/facilities/ReincarcerationCountOverTime";
-import ReincarcerationRateByStayLength from "../../../../components/charts/facilities/ReincarcerationRateByStayLength";
-import AdmissionCountsByType from "../../../../components/charts/common/AdmissionCountsByType";
-import DaysAtLibertySnapshot from "../../../../components/charts/facilities/DaysAtLibertySnapshot";
+// import ReincarcerationRateByStayLength from "../../../../components/charts/facilities/ReincarcerationRateByStayLength";
+// import AdmissionCountsByType from "../../../../components/charts/common/AdmissionCountsByType";
+// import DaysAtLibertySnapshot from "../../../../components/charts/facilities/DaysAtLibertySnapshot";
 import ToggleBar from "../../../../components/toggles/ToggleBar";
 import {
   defaultDistrict,
@@ -37,27 +37,27 @@ import {
 } from "../../../../components/toggles/options";
 // eslint-disable-next-line import/no-cycle
 import useChartData from "../../../../hooks/useChartData";
-import { getYearFromNow } from "../../../../utils/transforms/years";
-import MethodologyCollapse from "../../../../components/charts/MethodologyCollapse";
+// import { getYearFromNow } from "../../../../utils/transforms/years";
+// import MethodologyCollapse from "../../../../components/charts/MethodologyCollapse";
 
-const getReincarcerationRateByStayLengthFooter = () => (
-  <div className="layer bdT p-20 w-100">
-    <div className="peers ai-c jc-c gapX-20">
-      <div className="peer">
-        <span className="fsz-def fw-600 mR-10 c-grey-800">
-          <small className="c-grey-500 fw-600">Release Cohort </small>
-          {getYearFromNow(-2)}
-        </span>
-      </div>
-      <div className="peer fw-600">
-        <span className="fsz-def fw-600 mR-10 c-grey-800">
-          {/* eslint-disable-next-line react/jsx-one-expression-per-line */}
-          <small className="c-grey-500 fw-600">Follow Up Period </small> 1 year
-        </span>
-      </div>
-    </div>
-  </div>
-);
+// const getReincarcerationRateByStayLengthFooter = () => (
+//   <div className="layer bdT p-20 w-100">
+//     <div className="peers ai-c jc-c gapX-20">
+//       <div className="peer">
+//         <span className="fsz-def fw-600 mR-10 c-grey-800">
+//           <small className="c-grey-500 fw-600">Release Cohort </small>
+//           {getYearFromNow(-2)}
+//         </span>
+//       </div>
+//       <div className="peer fw-600">
+//         <span className="fsz-def fw-600 mR-10 c-grey-800">
+//           {/* eslint-disable-next-line react/jsx-one-expression-per-line */}
+//           <small className="c-grey-500 fw-600">Follow Up Period </small> 1 year
+//         </span>
+//       </div>
+//     </div>
+//   </div>
+// );
 
 const importantNotes = [
   {
@@ -184,6 +184,7 @@ const FacilitiesExplore = () => {
             district={district}
             disableGoal
             reincarcerationCountsByMonth={apiData.reincarcerations_by_month}
+            stateCode="US_ND"
           />
         }
         geoChart={
@@ -204,7 +205,7 @@ const FacilitiesExplore = () => {
         footer={<Methodology chartId="reincarcerationCountsByMonth" />}
       />
 
-      <ChartCard
+      {/* <ChartCard
         chartId="daysAtLibertySnapshot"
         chartTitle={
           <>
@@ -346,7 +347,7 @@ const FacilitiesExplore = () => {
             {getReincarcerationRateByStayLengthFooter()}
           </>
         }
-      />
+      /> */}
     </PageTemplate>
   );
 };

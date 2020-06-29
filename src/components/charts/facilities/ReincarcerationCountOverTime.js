@@ -1,5 +1,5 @@
 // Recidiviz - a data platform for criminal justice reform
-// Copyright (C) 2019 Recidiviz, Inc.
+// Copyright (C) 2020 Recidiviz, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -15,146 +15,197 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React, { useState, useEffect } from 'react';
-import { Line } from 'react-chartjs-2';
+import React from "react";
+import PropTypes from "prop-types";
+import { Line } from "react-chartjs-2";
 
-import { COLORS } from '../../../assets/scripts/constants/colors';
-import { configureDownloadButtons } from '../../../assets/scripts/utils/downloads';
+import groupBy from "lodash/fp/groupBy";
+import map from "lodash/fp/map";
+import pipe from "lodash/fp/pipe";
+import sumBy from "lodash/fp/sumBy";
+import toInteger from "lodash/fp/toInteger";
+import values from "lodash/fp/values";
+
+import { COLORS } from "../../../assets/scripts/constants/colors";
+import { configureDownloadButtons } from "../../../assets/scripts/utils/downloads";
 import {
-  getGoalForChart, getMaxForGoalAndDataIfGoalDisplayable, chartAnnotationForGoal,
-} from '../../../utils/charts/metricGoal';
+  getGoalForChart,
+  getMaxForGoalAndDataIfGoalDisplayable,
+  chartAnnotationForGoal,
+} from "../../../utils/charts/metricGoal";
 import {
-  toggleLabel, getMonthCountFromMetricPeriodMonthsToggle, updateTooltipForMetricType,
-  filterDatasetByDistrict, canDisplayGoal, toggleYAxisTicksFor,
+  toggleLabel,
+  getMonthCountFromMetricPeriodMonthsToggle,
+  updateTooltipForMetricType,
+  filterDatasetByDistrict,
+  canDisplayGoal,
+  toggleYAxisTicksFor,
   centerSingleMonthDatasetIfNecessary,
-} from '../../../utils/charts/toggles';
-import { sortFilterAndSupplementMostRecentMonths } from '../../../utils/transforms/datasets';
-import { toInt } from '../../../utils/transforms/labels';
-import { monthNamesWithYearsFromNumbers } from '../../../utils/transforms/months';
+} from "../../../utils/charts/toggles";
+import { sortFilterAndSupplementMostRecentMonths } from "../../../utils/transforms/datasets";
+import { monthNamesWithYearsFromNumbers } from "../../../utils/transforms/months";
 
+const chartId = "reincarcerationCountsByMonth";
+const stepSize = 5;
 
-const ReincarcerationCountOverTime = (props) => {
-  const [chartLabels, setChartLabels] = useState([]);
-  const [chartDataPoints, setChartDataPoints] = useState([]);
-  const [chartMinValue, setChartMinValue] = useState();
-  const [chartMaxValue, setChartMaxValue] = useState();
+const dataCountsMapper = (dataset) => ({
+  year: dataset[0].year,
+  month: dataset[0].month,
+  value: sumBy((data) => toInteger(data.returns), dataset),
+});
 
-  const chartId = 'reincarcerationCountsByMonth';
-  const GOAL = getGoalForChart('US_ND', chartId);
-  const stepSize = 10;
+const dataRatesMapper = (dataset) => {
+  const returnCount = sumBy((data) => toInteger(data.returns), dataset);
+  const admissionCount = sumBy(
+    (data) => toInteger(data.total_admissions),
+    dataset
+  );
+  const value =
+    admissionCount !== 0
+      ? (100 * (returnCount / admissionCount)).toFixed(2)
+      : 0.0;
 
-  const processResponse = () => {
-    const { reincarcerationCountsByMonth: countsByMonth } = props;
-
-    const filteredCountsByMonth = filterDatasetByDistrict(
-      countsByMonth, props.district,
-    );
-
-    const dataPoints = [];
-    if (filteredCountsByMonth) {
-      filteredCountsByMonth.forEach((data) => {
-        const { year, month } = data;
-        const returnCount = toInt(data.returns);
-        const admissionCount = toInt(data.total_admissions);
-
-        if (props.metricType === 'counts') {
-          const value = returnCount;
-          dataPoints.push({ year, month, value });
-        } else if (props.metricType === 'rates') {
-          let value = 0.00;
-          if (admissionCount !== 0) {
-            value = (100 * (returnCount / admissionCount)).toFixed(2);
-          }
-          dataPoints.push({ year, month, value });
-        }
-      });
-    }
-
-    const months = getMonthCountFromMetricPeriodMonthsToggle(props.metricPeriodMonths);
-    const sorted = sortFilterAndSupplementMostRecentMonths(dataPoints, months, 'value', 0);
-    const chartDataValues = (sorted.map((element) => element.value));
-    const max = getMaxForGoalAndDataIfGoalDisplayable(GOAL, chartDataValues, stepSize, props);
-    const monthNames = monthNamesWithYearsFromNumbers(sorted.map((element) => element.month), true);
-
-    centerSingleMonthDatasetIfNecessary(chartDataValues, monthNames);
-    setChartLabels(monthNames);
-    setChartDataPoints(chartDataValues);
-    setChartMinValue(0);
-    setChartMaxValue(max);
+  return {
+    year: dataset[0].year,
+    month: dataset[0].month,
+    value,
   };
+};
+
+const sortAndSupplementMostRecentMonths = (metricPeriodMonths) => (dataset) =>
+  sortFilterAndSupplementMostRecentMonths(
+    dataset,
+    getMonthCountFromMetricPeriodMonthsToggle(metricPeriodMonths),
+    "value",
+    0
+  );
+
+const ReincarcerationCountOverTime = ({
+  reincarcerationCountsByMonth: countsByMonth,
+  district,
+  metricType,
+  metricPeriodMonths,
+  disableGoal,
+  header,
+  stateCode,
+}) => {
+  const goal = getGoalForChart(stateCode, chartId);
+  const goalProps = {
+    disableGoal,
+    district,
+    metricType,
+    metricPeriodMonths,
+  };
+  const displayGoal = canDisplayGoal(goal, goalProps);
+
+  const dataPoints = pipe(
+    (dataset) => filterDatasetByDistrict(dataset, district),
+    groupBy(({ year, month }) => `${year}-${month}`),
+    values,
+    map(metricType === "rates" ? dataRatesMapper : dataCountsMapper),
+    sortAndSupplementMostRecentMonths(metricPeriodMonths)
+  )(countsByMonth);
+
+  const chartDataValues = map("value", dataPoints);
+  const max = getMaxForGoalAndDataIfGoalDisplayable(
+    goal,
+    chartDataValues,
+    stepSize,
+    goalProps
+  );
+  const monthNames = monthNamesWithYearsFromNumbers(
+    map("month", dataPoints),
+    true
+  );
+
+  centerSingleMonthDatasetIfNecessary(chartDataValues, monthNames);
+
+  const chartLabels = monthNames;
+  const chartDataPoints = chartDataValues;
+  const chartMinValue = 0;
+  const chartMaxValue = max;
 
   function goalLineIfApplicable() {
-    if (canDisplayGoal(GOAL, props)) {
-      return chartAnnotationForGoal(GOAL, 'reincarcerationCountsByMonthGoalLine', {});
+    if (displayGoal) {
+      return chartAnnotationForGoal(
+        goal,
+        "reincarcerationCountsByMonthGoalLine",
+        {}
+      );
     }
     return null;
   }
-
-  useEffect(() => {
-    processResponse();
-  }, [
-    props.reincarcerationCountsByMonth,
-    props.metricType,
-    props.metricPeriodMonths,
-    props.district,
-  ]);
 
   const chart = (
     <Line
       id={chartId}
       data={{
         labels: chartLabels,
-        datasets: [{
-          label: toggleLabel(
-            { counts: 'Reincarceration admissions', rates: 'Percentage from reincarcerations' },
-            props.metricType,
-          ),
-          backgroundColor: COLORS['grey-500'],
-          borderColor: COLORS['grey-500'],
-          pointBackgroundColor: COLORS['grey-500'],
-          pointHoverBackgroundColor: COLORS['grey-500'],
-          pointHoverBorderColor: COLORS['grey-500'],
-          fill: false,
-          borderWidth: 2,
-          data: chartDataPoints,
-        }],
+        datasets: [
+          {
+            label: toggleLabel(
+              {
+                counts: "Reincarceration admissions",
+                rates: "Percentage from reincarcerations",
+              },
+              metricType
+            ),
+            backgroundColor: COLORS["grey-500"],
+            borderColor: COLORS["grey-500"],
+            pointBackgroundColor: COLORS["grey-500"],
+            pointHoverBackgroundColor: COLORS["grey-500"],
+            pointHoverBorderColor: COLORS["grey-500"],
+            fill: false,
+            borderWidth: 2,
+            data: chartDataPoints,
+          },
+        ],
       }}
       options={{
         legend: {
           display: false,
-          position: 'bottom',
+          position: "bottom",
           labels: {
             usePointStyle: true,
             boxWidth: 20,
           },
         },
         scales: {
-          xAxes: [{
-            ticks: {
-              autoSkip: true,
+          xAxes: [
+            {
+              ticks: {
+                autoSkip: true,
+              },
             },
-          }],
-          yAxes: [{
-            ticks: toggleYAxisTicksFor(
-              'counts', props.metricType, chartMinValue, chartMaxValue, stepSize,
-            ),
-            scaleLabel: {
-              display: true,
-              labelString: toggleLabel(
-                {
-                  counts: 'Reincarceration count',
-                  rates: 'Percent of admissions',
-                },
-                props.metricType,
+          ],
+          yAxes: [
+            {
+              ticks: toggleYAxisTicksFor(
+                "counts",
+                metricType,
+                chartMinValue,
+                chartMaxValue,
+                stepSize
               ),
+              scaleLabel: {
+                display: true,
+                labelString: toggleLabel(
+                  {
+                    counts: "Reincarceration count",
+                    rates: "Percent of admissions",
+                  },
+                  metricType
+                ),
+              },
             },
-          }],
+          ],
         },
         tooltips: {
-          backgroundColor: COLORS['grey-800-light'],
-          mode: 'x',
+          backgroundColor: COLORS["grey-800-light"],
+          mode: "x",
           callbacks: {
-            label: (tooltipItem, data) => updateTooltipForMetricType(props.metricType, tooltipItem, data),
+            label: (tooltipItem, data) =>
+              updateTooltipForMetricType(metricType, tooltipItem, data),
           },
         },
         annotation: goalLineIfApplicable(),
@@ -162,30 +213,52 @@ const ReincarcerationCountOverTime = (props) => {
     />
   );
 
-  const exportedStructureCallback = () => (
-    {
-      metric: 'Reincarceration counts by month',
-      series: [],
-    });
+  const exportedStructureCallback = () => ({
+    metric: "Reincarceration counts by month",
+    series: [],
+  });
 
-  configureDownloadButtons(chartId, 'REINCARCERATIONS BY MONTH',
-    chart.props.data.datasets, chart.props.data.labels,
+  configureDownloadButtons(
+    chartId,
+    "REINCARCERATIONS BY MONTH",
+    chart.props.data.datasets,
+    chart.props.data.labels,
     document.getElementById(chartId),
-    exportedStructureCallback, props, true, true);
+    exportedStructureCallback,
+    { district, metricType, metricPeriodMonths },
+    true,
+    true
+  );
 
   const chartData = chart.props.data.datasets[0].data;
   const mostRecentValue = chartData[chartData.length - 1];
 
-  const header = document.getElementById(props.header);
+  const headerElement = document.getElementById(header);
 
-  if (header && mostRecentValue !== null && canDisplayGoal(GOAL, props)) {
+  if (headerElement && mostRecentValue !== null && displayGoal) {
     const title = `There have been <span class='fs-block header-highlight'>${mostRecentValue} reincarcerations</span> to a DOCR facility this month so far.`;
-    header.innerHTML = title;
-  } else if (header) {
-    header.innerHTML = '';
+    headerElement.innerHTML = title;
+  } else if (headerElement) {
+    headerElement.innerHTML = "";
   }
 
-  return (chart);
+  return chart;
+};
+
+ReincarcerationCountOverTime.defaultProps = {
+  reincarcerationCountsByMonth: [],
+  disableGoal: false,
+  hedaer: undefined,
+};
+
+ReincarcerationCountOverTime.propTypes = {
+  reincarcerationCountsByMonth: PropTypes.arrayOf(PropTypes.shape({})),
+  metricType: PropTypes.string.isRequired,
+  metricPeriodMonths: PropTypes.string.isRequired,
+  district: PropTypes.arrayOf(PropTypes.string).isRequired,
+  disableGoal: PropTypes.bool,
+  header: PropTypes.string,
+  stateCode: PropTypes.string.isRequired,
 };
 
 export default ReincarcerationCountOverTime;
