@@ -15,9 +15,51 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
+/* eslint-disable react/prop-types */
+/* eslint-disable jsx-a11y/label-has-associated-control */
+
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import ReactSelect from "react-select";
+import ReactSelect, { components } from "react-select";
+
+import "./Select.scss";
+
+const ValueContainer = (props) => {
+  const { selectProps, getValue, children } = props;
+  const values = getValue();
+
+  const selectInput = React.Children.toArray(children).find(
+    (input) => input.type.name === "Input" || input.type.name === "DummyInput"
+  );
+
+  const isAll =
+    !selectProps.inputValue && values.length === 1 && values[0].value === "all";
+
+  const text = isAll
+    ? "ALL"
+    : `${values.length} ${values.length > 2 ? "Items" : "Item"} selected`;
+
+  return (
+    <components.ValueContainer {...props}>
+      {text}
+      {selectInput}
+    </components.ValueContainer>
+  );
+};
+
+const Option = (props) => {
+  const { isSelected, children } = props;
+
+  return (
+    <components.Option {...props}>
+      <label className="checkbox-container">
+        {children}
+        <input type="checkbox" checked={isSelected} onChange={() => null} />
+        <span className="checkmark" />
+      </label>
+    </components.Option>
+  );
+};
 
 const fontStyles = {
   color: "rgba(114, 119, 122, 0.8)",
@@ -25,13 +67,19 @@ const fontStyles = {
 };
 
 const defaultStyles = {
-  option: (base) => ({ ...base, ...fontStyles }),
+  option: (base, state) => ({
+    ...base,
+    ...fontStyles,
+    backgroundColor: state.isMulti ? "transparent" : base.backgroundColor,
+    "&:active": {
+      backgroundColor: state.isMulti ? "transparent" : base.backgroundColor,
+    },
+  }),
   singleValue: (base) => ({ ...base, ...fontStyles }),
-  valueContainer: (base) => ({ ...base, maxWidth: 800 }),
 };
 
 const Select = ({ allOption, isMulti, ...props }) => {
-  const [value, setValue] = useState(isMulti ? [allOption] : allOption);
+  const [value, setValue] = useState([allOption]);
 
   const updateSelectedOptions = (selectedOptions) => {
     props.onChange(selectedOptions);
@@ -39,32 +87,33 @@ const Select = ({ allOption, isMulti, ...props }) => {
   };
 
   if (isMulti) {
-    if (value.length === 1 && value[0].value === allOption.value) {
-      return (
-        <ReactSelect
-          {...props}
-          onChange={(selected) => {
-            updateSelectedOptions([selected]);
-          }}
-          styles={defaultStyles}
-          value={value[0]}
-        />
-      );
-    }
-
     return (
       <ReactSelect
         {...props}
+        hideSelectedOptions={false}
+        components={{
+          Option,
+          ValueContainer,
+          // MultiValueRemove: () => null,
+        }}
+        closeMenuOnSelect={false}
         isMulti
         onChange={(selected) => {
           const options = selected || [];
           const isEmpty = options.length === 0;
+
+          const isAllOptionTheFirst =
+            !isEmpty && options[0].value === allOption.value;
 
           const isAllOptionTheLast =
             !isEmpty && options[options.length - 1].value === allOption.value;
 
           if (isEmpty || isAllOptionTheLast) {
             updateSelectedOptions([allOption]);
+          } else if (isAllOptionTheFirst) {
+            updateSelectedOptions(
+              options.slice(1).map((s) => ({ ...s, key: s.label }))
+            );
           } else {
             updateSelectedOptions(options.map((s) => ({ ...s, key: s.label })));
           }

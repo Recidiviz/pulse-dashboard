@@ -50,6 +50,7 @@ public/
 !src/components/charts/new_revocations/RevocationsByDistrict/**/*.js
 !src/components/charts/new_revocations/RevocationsByViolation.js
 !src/components/charts/new_revocations/ToggleBar/**/*.js
+!src/components/charts/programming/FtrReferralCountByMonth.js
 !src/components/sidebar/**/*.js
 !src/components/toggles/**/*.js
 !src/components/topbar/**/*.js
