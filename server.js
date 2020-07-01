@@ -68,7 +68,7 @@ let checkJwt = jwt({
 
   audience: authConfig.audience,
   issuer: `https://${authConfig.domain}/`,
-  algorithm: ["RS256"],
+  algorithms: ["RS256"],
 });
 
 if (isDemoMode) {
