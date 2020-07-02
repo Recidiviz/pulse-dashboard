@@ -18,7 +18,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import PerOfficerBarChart from "../common/bars/PerOfficeBarChart";
+import PerOfficerBarChart from "../common/bars/PerOfficerBarChart";
 import { COLORS_FIVE_VALUES } from "../../../assets/scripts/constants/colors";
 
 const chartId = "revocationsByOfficer";

@@ -22,7 +22,7 @@ import { Line } from "react-chartjs-2";
 import groupBy from "lodash/fp/groupBy";
 import map from "lodash/fp/map";
 import pipe from "lodash/fp/pipe";
-import sumBy from "lodash/fp/sumBy";
+import meanBy from "lodash/fp/meanBy";
 import toInteger from "lodash/fp/toInteger";
 import values from "lodash/fp/values";
 
@@ -57,7 +57,10 @@ const groupByMonthAndMap = pipe(
   map((dataset) => ({
     year: toInteger(dataset[0].termination_year),
     month: toInteger(dataset[0].termination_month),
-    change: sumBy((data) => toInteger(data.average_change), dataset),
+    change: meanBy(
+      (data) => parseFloat(data.average_change, 10),
+      dataset
+    ).toFixed(2),
   }))
 );
 

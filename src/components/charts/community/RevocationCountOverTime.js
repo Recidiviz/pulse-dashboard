@@ -17,6 +17,8 @@
 
 import React from "react";
 import { Line } from "react-chartjs-2";
+
+import map from "lodash/fp/map";
 import pipe from "lodash/fp/pipe";
 
 import { COLORS } from "../../../assets/scripts/constants/colors";
@@ -38,45 +40,27 @@ import {
 } from "../../../utils/charts/toggles";
 import { sortFilterAndSupplementMostRecentMonths } from "../../../utils/transforms/datasets";
 import { monthNamesWithYearsFromNumbers } from "../../../utils/transforms/months";
+import { groupByMonth } from "../common/bars/utils";
 
-const sumReducer = (
-  acc,
-  {
-    year,
-    month,
-    revocation_count: revocationCount,
-    total_supervision_count: supervisionCount,
-  }
-) => {
-  const item = acc.find((s) => s.year === year && s.month === month);
-  const count = parseInt(revocationCount, 10);
-  const totalCount = parseInt(supervisionCount, 10);
+const dataCountsMapper = ({ year, month, revocation_count: count }) => ({
+  year,
+  month,
+  value: count,
+});
 
-  if (item) {
-    item.count += count;
-    item.totalCount += totalCount;
-  } else {
-    acc.push({ year, month, count, totalCount });
-  }
+const dataRatesMapper = ({
+  year,
+  month,
+  revocation_count: count,
+  total_supervision_count: totalCount,
+}) => ({
+  year,
+  month,
+  value: ((100 * count) / totalCount).toFixed(2),
+});
 
-  return acc;
-};
-
-const calculateMapper = (metricType) => (item) => {
-  switch (metricType) {
-    case "rates":
-      return {
-        ...item,
-        value: (
-          100 *
-          (parseInt(item.count, 10) / parseInt(item.totalCount, 10))
-        ).toFixed(2),
-      };
-    case "counts":
-    default:
-      return { ...item, value: item.count };
-  }
-};
+const chartId = "revocationCountsByMonth";
+const stepSize = 10;
 
 const RevocationCountOverTime = ({
   revocationCountsByMonth: countsByMonth,
@@ -87,16 +71,15 @@ const RevocationCountOverTime = ({
   disableGoal,
   geoView,
   header,
+  stateCode,
 }) => {
-  const chartId = "revocationCountsByMonth";
-  const GOAL = getGoalForChart("US_ND", chartId);
-  const stepSize = 10;
+  const goal = getGoalForChart(stateCode, chartId);
 
   const chartDataPoints = pipe(
     (dataset) => filterDatasetBySupervisionType(dataset, supervisionType),
     (dataset) => filterDatasetByDistrict(dataset, district),
-    (dataset) => dataset.reduce(sumReducer, []),
-    (dataset) => dataset.map(calculateMapper(metricType)),
+    groupByMonth(["revocation_count", "total_supervision_count"]),
+    map(metricType === "rates" ? dataRatesMapper : dataCountsMapper),
     (dataset) =>
       sortFilterAndSupplementMostRecentMonths(
         dataset,
@@ -108,13 +91,13 @@ const RevocationCountOverTime = ({
 
   const chartDataValues = chartDataPoints.map((element) => element.value);
   const chartLabels = monthNamesWithYearsFromNumbers(
-    chartDataPoints.map((element) => element.month),
+    map("month", chartDataPoints),
     true
   );
 
   const chartMinValue = 0;
   const chartMaxValue = getMaxForGoalAndDataIfGoalDisplayable(
-    GOAL,
+    goal,
     chartDataValues,
     stepSize,
     { disableGoal, geoView, metricType, supervisionType, district }
@@ -122,7 +105,7 @@ const RevocationCountOverTime = ({
 
   centerSingleMonthDatasetIfNecessary(chartDataValues, chartLabels);
 
-  const displayGoal = canDisplayGoal(GOAL, {
+  const displayGoal = canDisplayGoal(goal, {
     disableGoal,
     geoView,
     metricType,
@@ -133,7 +116,7 @@ const RevocationCountOverTime = ({
   function goalLineIfApplicable() {
     if (displayGoal) {
       return chartAnnotationForGoal(
-        GOAL,
+        goal,
         "revocationCountsByMonthGoalLine",
         {}
       );

@@ -53,8 +53,8 @@ const colors = [
 ];
 
 /**
- * Groups and brings to mind:
- * { race: 'Asian', totalSupervisionCount: 43, revocationCount: 123 }
+ * Groups and casts to object:
+ * [{ race: 'Asian', totalSupervisionCount: 43, revocationCount: 123 }, ...]
  */
 const groupByRaceAndMap = pipe(
   groupBy("race_or_ethnicity"),
@@ -69,6 +69,9 @@ const groupByRaceAndMap = pipe(
   }))
 );
 
+/**
+ * If dataset doesn't have all races, added missed races with zero counts to this dataset.
+ */
 const addMissedRaceCounts = (stateCensusDataPoints) => (dataset) =>
   pipe(
     map("race"),

@@ -134,6 +134,7 @@ const CommunityExplore = () => {
             disableGoal
             officeData={apiData.site_offices}
             revocationCountsByMonth={apiData.revocations_by_month}
+            stateCode="US_ND"
           />
         }
         geoChart={
@@ -427,6 +428,12 @@ const CommunityExplore = () => {
             {metricType !== "counts" && (
               <WarningIcon
                 tooltipText="This graph is showing average LSI-R score change. It does not support showing this metric as a rate."
+                className="pL-10 toggle-alert"
+              />
+            )}
+            {metricType === "counts" && district.length > 1 && (
+              <WarningIcon
+                tooltipText="Note: selecting multiple offices takes the average across offices’ LSI-R score change averages, not the average across all people in the selected offices"
                 className="pL-10 toggle-alert"
               />
             )}

@@ -336,9 +336,9 @@ const FacilitiesExplore = () => {
                 </div>
                 <div className="peer fw-600">
                   <span className="fsz-def fw-600 mR-10 c-grey-800">
-                    {/* eslint-disable-next-line react/jsx-one-expression-per-line */}
                     <small className="c-grey-500 fw-600">
-                      Follow Up Period
+                      {/* eslint-disable-next-line react/jsx-one-expression-per-line */}
+                      Follow Up Period{" "}
                     </small>
                     1 year
                   </span>

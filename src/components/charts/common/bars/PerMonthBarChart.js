@@ -22,12 +22,14 @@ import { Bar } from "react-chartjs-2";
 import map from "lodash/fp/map";
 import mergeAllWith from "lodash/fp/mergeAllWith";
 import pipe from "lodash/fp/pipe";
+import reduce from "lodash/fp/reduce";
+import values from "lodash/fp/values";
 
 import {
-  configureDownloads,
   groupByMonth,
   mergeAllResolver,
-  prepareDataGroupedByMonth,
+  sum,
+  configureDownloads,
 } from "./utils";
 import { COLORS } from "../../../../assets/scripts/constants/colors";
 import {
@@ -40,6 +42,41 @@ import {
 } from "../../../../utils/charts/toggles";
 import { sortFilterAndSupplementMostRecentMonths } from "../../../../utils/transforms/datasets";
 import { monthNamesWithYearsFromNumbers } from "../../../../utils/transforms/months";
+
+export const prepareDataGroupedByMonth = (metricType, bars) => (data) => {
+  const { year, month } = data;
+
+  const monthCounts = reduce(
+    (acc, { key }) => ({ ...acc, [key]: Number(data[key]) }),
+    {},
+    bars
+  );
+
+  const totalCount = pipe(values, reduce(sum, 0))(monthCounts);
+
+  if (metricType === "counts") {
+    return {
+      year,
+      month,
+      monthDict: monthCounts,
+    };
+  }
+  if (metricType === "rates") {
+    const monthRates = {};
+
+    Object.keys(monthCounts).forEach((key) => {
+      const count = monthCounts[key];
+      monthRates[key] = Number((100 * (count / totalCount)).toFixed(2));
+    });
+
+    return {
+      year,
+      month,
+      monthDict: monthRates,
+    };
+  }
+  return null;
+};
 
 const PerMonthBarChart = ({
   chartId,
@@ -99,7 +136,7 @@ const PerMonthBarChart = ({
       { metricType, visibleOffices }
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [metricType, visibleOffices]);
 
   return (
     <Bar

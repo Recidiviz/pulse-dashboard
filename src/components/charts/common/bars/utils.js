@@ -17,7 +17,6 @@
 
 import groupBy from "lodash/fp/groupBy";
 import map from "lodash/fp/map";
-import mapValues from "lodash/fp/mapValues";
 import pipe from "lodash/fp/pipe";
 import reduce from "lodash/fp/reduce";
 import sumBy from "lodash/fp/sumBy";
@@ -25,16 +24,22 @@ import toInteger from "lodash/fp/toInteger";
 import values from "lodash/fp/values";
 import upperCase from "lodash/fp/upperCase";
 
-import { numberFromOfficerId } from "../../../../utils/transforms/labels";
 import { configureDownloadButtons } from "../../../../assets/scripts/utils/downloads";
 
-const sum = (a, b) => toInteger(a) + toInteger(b);
+/**
+ * Casts arguments to integer and sum it.
+ */
+export const sum = (a, b) => toInteger(a) + toInteger(b);
 
+/**
+ * Internal function for concatinating arrays at the time of merge.
+ * Links: https://lodash.com/docs/4.17.15#mergeWith
+ */
 export const mergeAllResolver = (objValue, srcValue) =>
   Array.isArray(objValue) ? objValue.concat(srcValue) : [objValue, srcValue];
 
 /**
- * Checks if officer has valid name or not empty
+ * Checks if officer has valid and not empty name.
  */
 export const isValidOfficer = (offices) => ({
   officer_external_id: officerIDRaw,
@@ -52,83 +57,9 @@ export const isValidOffice = (visibleOffices) => ({ district: officeId }) => {
 };
 
 /**
- * Organizes the labels and data points so the chart can display the values
- * for the officers in the given `visibleOffice`.
- * `dataPoints` must be a dictionary where the office names are the keys,
- * and the values are arrays of dictionaries with values for the following keys:
- *    - officerID
- *    - violationsByType
- * Returns an array of officer ID labels and a dictionary of data points for
- * each violation type.
+ * Groups dataset by month/year and sum all bar counters.
  */
-export const prepareDataGroupedByOffice = (bars, metricType) => (data) => {
-  const officerId = numberFromOfficerId(data.officer_external_id);
-
-  const violationCountsByType = reduce(
-    (counts, { key }) => ({ ...counts, [key]: toInteger(data[key]) }),
-    {},
-    bars
-  );
-
-  if (metricType === "counts") {
-    return {
-      officerId,
-      violationsByType: violationCountsByType,
-    };
-  }
-  if (metricType === "rates") {
-    const totalCount = pipe(values, reduce(sum, 0))(violationCountsByType);
-    const violationRatesByType = mapValues(
-      (count) => 100 * (count / totalCount),
-      violationCountsByType
-    );
-
-    return {
-      officerId,
-      violationsByType: violationRatesByType,
-    };
-  }
-  return null;
-};
-
-/**
- */
-export const prepareDataGroupedByMonth = (metricType, bars) => (data) => {
-  const { year, month } = data;
-
-  const monthCounts = reduce(
-    (acc, { key }) => ({ ...acc, [key]: Number(data[key]) }),
-    {},
-    bars
-  );
-
-  const totalCount = pipe(values, reduce(sum, 0))(monthCounts);
-
-  if (metricType === "counts") {
-    return {
-      year,
-      month,
-      monthDict: monthCounts,
-    };
-  }
-  if (metricType === "rates") {
-    const monthRates = {};
-
-    Object.keys(monthCounts).forEach((key) => {
-      const count = monthCounts[key];
-      monthRates[key] = Number((100 * (count / totalCount)).toFixed(2));
-    });
-
-    return {
-      year,
-      month,
-      monthDict: monthRates,
-    };
-  }
-  return null;
-};
-
-export const groupByMonth = (barKeys) =>
+export const groupByMonth = (barKeys) => (dataset) =>
   pipe(
     groupBy((item) => `${item.year}-${item.month}`),
     values,
@@ -144,12 +75,12 @@ export const groupByMonth = (barKeys) =>
         barKeys
       ),
     }))
-  );
+  )(dataset);
 
 export function configureDownloads(
   chartId,
-  officerLabels,
-  officerViolationCountsByType,
+  chartLabels,
+  countsByType,
   visibleOffices,
   exportLabel,
   bars,
@@ -163,12 +94,8 @@ export function configureDownloads(
 
   const downloadableDataFormat = bars.map((bar) => ({
     label: bar.label,
-    data: officerViolationCountsByType[bar.key],
+    data: countsByType[bar.key],
   }));
-
-  const humanReadableOfficerLabels = officerLabels.map(
-    (element) => `Officer ${element}`
-  );
 
   const chartTitle = upperCase(exportLabel);
 
@@ -178,7 +105,7 @@ export function configureDownloads(
     chartId,
     chartTitle,
     downloadableDataFormat,
-    humanReadableOfficerLabels,
+    chartLabels,
     document.getElementById(chartId),
     exportedStructureCallback,
     toggles,

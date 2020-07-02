@@ -30,15 +30,16 @@ import pipe from "lodash/fp/pipe";
 import reduce from "lodash/fp/reduce";
 import set from "lodash/fp/set";
 import sortBy from "lodash/fp/sortBy";
+import toInteger from "lodash/fp/toInteger";
 import upperCase from "lodash/fp/upperCase";
 import values from "lodash/fp/values";
 
 import {
-  configureDownloads,
+  sum,
   isValidOffice,
   isValidOfficer,
   mergeAllResolver,
-  prepareDataGroupedByOffice,
+  configureDownloads,
 } from "./utils";
 import { COLORS } from "../../../../assets/scripts/constants/colors";
 import {
@@ -48,6 +49,47 @@ import {
   toggleYAxisTicksStackedRateBasicCount,
   updateTooltipForMetricType,
 } from "../../../../utils/charts/toggles";
+import { numberFromOfficerId } from "../../../../utils/transforms/labels";
+
+/**
+ * Organizes the labels and data points so the chart can display the values
+ * for the officers in the given `visibleOffice`.
+ * `dataPoints` must be a dictionary where the office names are the keys,
+ * and the values are arrays of dictionaries with values for the following keys:
+ *    - officerID
+ *    - violationsByType
+ * Returns an array of officer ID labels and a dictionary of data points for
+ * each violation type.
+ */
+const prepareDataGroupedByOffice = (bars, metricType) => (data) => {
+  const officerId = numberFromOfficerId(data.officer_external_id);
+
+  const countsByType = reduce(
+    (counts, { key }) => ({ ...counts, [key]: toInteger(data[key]) }),
+    {},
+    bars
+  );
+
+  if (metricType === "counts") {
+    return {
+      officerId,
+      values: countsByType,
+    };
+  }
+  if (metricType === "rates") {
+    const totalCount = pipe(values, reduce(sum, 0))(countsByType);
+    const ratesByType = mapValues(
+      (count) => (100 * (count / totalCount)).toFixed(2),
+      countsByType
+    );
+
+    return {
+      officerId,
+      values: ratesByType,
+    };
+  }
+  return null;
+};
 
 const PerOfficerBarChart = ({
   chartId,
@@ -69,6 +111,9 @@ const PerOfficerBarChart = ({
     officeData
   );
 
+  const isAllOffices =
+    visibleOffices.length === 1 && visibleOffices[0] === "all";
+
   const normalizedData = pipe(
     // filter data
     (data) => filterDatasetBySupervisionType(data, upperCase(supervisionType)),
@@ -85,26 +130,26 @@ const PerOfficerBarChart = ({
 
   const officerLabels = map("officerId", normalizedData);
 
-  const officerViolationCountsByType = pipe(
-    map("violationsByType"),
+  const countsByType = pipe(
+    map("values"),
     mergeAllWith(mergeAllResolver)
   )(normalizedData);
 
   useEffect(() => {
     configureDownloads(
       chartId,
-      officerLabels,
-      officerViolationCountsByType,
+      map((officer) => `Officer ${officer}`, officerLabels),
+      countsByType,
       visibleOffices,
       exportLabel,
       bars,
       { metricType, metricPeriodMonths, supervisionType, visibleOffices }
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [metricType, metricPeriodMonths, supervisionType, visibleOffices]);
 
   const chartLabels = officerLabels;
-  const allDataPoints = officerViolationCountsByType;
+  const allDataPoints = countsByType;
 
   return (
     <Bar
@@ -145,7 +190,7 @@ const PerOfficerBarChart = ({
               },
               stacked: true,
               ticks: {
-                display: false,
+                display: isAllOffices,
                 autoSkip: false,
               },
             },

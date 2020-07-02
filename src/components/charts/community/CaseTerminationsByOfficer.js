@@ -19,7 +19,7 @@ import React from "react";
 import PropTypes from "prop-types";
 
 import { COLORS_SEVEN_VALUES } from "../../../assets/scripts/constants/colors";
-import PerOfficerBarChart from "../common/bars/PerOfficeBarChart";
+import PerOfficerBarChart from "../common/bars/PerOfficerBarChart";
 
 const chartId = "caseTerminationsByOfficer";
 
