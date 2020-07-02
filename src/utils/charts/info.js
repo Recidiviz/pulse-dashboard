@@ -310,8 +310,8 @@ Termination, Delayed Action, Continuance.`,
     },
     {
       header: "Violation Record",
-      body: `A summary of all reported violations in violation reports and notices of citation
-filed within one year prior to the last reported violation before the person was revoked.`,
+      body: `A summary of the most severe reported violation on each violation report or notice of
+citation filed within one year prior to the last reported violation before the person was revoked.`,
     },
   ],
 };
