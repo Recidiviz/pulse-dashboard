@@ -23,7 +23,7 @@ import ChartCard from "../../../../components/charts/ChartCard";
 import GeoViewTimeChart from "../../../../components/charts/GeoViewTimeChart";
 import Methodology from "../../../../components/charts/Methodology";
 import PeriodLabel from "../../../../components/charts/PeriodLabel";
-// import FtrReferralsByAge from "../../../../components/charts/programming/FtrReferralsByAge";
+import FtrReferralsByAge from "../../../../components/charts/programming/FtrReferralsByAge";
 import FtrReferralsByGender from "../../../../components/charts/programming/FtrReferralsByGender";
 import FtrReferralsByLsir from "../../../../components/charts/programming/FtrReferralsByLsir";
 import FtrReferralsByParticipationStatus from "../../../../components/charts/programming/FtrReferralsByParticipationStatus";
@@ -218,7 +218,6 @@ const ProgrammingExplore = () => {
         }
       />
 
-      {/*
       <ChartCard
         chartId="ftrReferralsByAge"
         chartTitle="FTR REFERRALS BY AGE"
@@ -238,7 +237,6 @@ const ProgrammingExplore = () => {
           </>
         }
       />
-      */}
     </PageTemplate>
   );
 };
