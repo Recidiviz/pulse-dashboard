@@ -51,6 +51,7 @@ public/
 !src/components/charts/new_revocations/RevocationsByViolation.js
 !src/components/charts/new_revocations/ToggleBar/**/*.js
 !src/components/charts/programming/FtrReferralCountByMonth.js
+!src/components/charts/programming/FtrReferralsByLsir.js
 !src/components/charts/programming/FtrReferralsByParticipationStatus.js
 !src/components/charts/programming/FtrReferralsByRace.js
 !src/components/sidebar/**/*.js

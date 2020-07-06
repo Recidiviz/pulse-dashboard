@@ -25,7 +25,7 @@ import Methodology from "../../../../components/charts/Methodology";
 import PeriodLabel from "../../../../components/charts/PeriodLabel";
 // import FtrReferralsByAge from "../../../../components/charts/programming/FtrReferralsByAge";
 // import FtrReferralsByGender from "../../../../components/charts/programming/FtrReferralsByGender";
-// import FtrReferralsByLsir from "../../../../components/charts/programming/FtrReferralsByLsir";
+import FtrReferralsByLsir from "../../../../components/charts/programming/FtrReferralsByLsir";
 import FtrReferralsByParticipationStatus from "../../../../components/charts/programming/FtrReferralsByParticipationStatus";
 import FtrReferralsByRace from "../../../../components/charts/programming/FtrReferralsByRace";
 import FtrReferralCountByMonth from "../../../../components/charts/programming/FtrReferralCountByMonth";
@@ -178,7 +178,6 @@ const ProgrammingExplore = () => {
         }
       />
 
-      {/*
       <ChartCard
         chartId="ftrReferralsByLsir"
         chartTitle="FTR REFERRALS BY LSI-R"
@@ -199,6 +198,7 @@ const ProgrammingExplore = () => {
         }
       />
 
+      {/*
       <ChartCard
         chartId="ftrReferralsByGender"
         chartTitle="FTR REFERRALS BY GENDER"
