@@ -24,7 +24,7 @@ import GeoViewTimeChart from "../../../../components/charts/GeoViewTimeChart";
 import Methodology from "../../../../components/charts/Methodology";
 import PeriodLabel from "../../../../components/charts/PeriodLabel";
 // import FtrReferralsByAge from "../../../../components/charts/programming/FtrReferralsByAge";
-// import FtrReferralsByGender from "../../../../components/charts/programming/FtrReferralsByGender";
+import FtrReferralsByGender from "../../../../components/charts/programming/FtrReferralsByGender";
 import FtrReferralsByLsir from "../../../../components/charts/programming/FtrReferralsByLsir";
 import FtrReferralsByParticipationStatus from "../../../../components/charts/programming/FtrReferralsByParticipationStatus";
 import FtrReferralsByRace from "../../../../components/charts/programming/FtrReferralsByRace";
@@ -198,7 +198,6 @@ const ProgrammingExplore = () => {
         }
       />
 
-      {/*
       <ChartCard
         chartId="ftrReferralsByGender"
         chartTitle="FTR REFERRALS BY GENDER"
@@ -219,6 +218,7 @@ const ProgrammingExplore = () => {
         }
       />
 
+      {/*
       <ChartCard
         chartId="ftrReferralsByAge"
         chartTitle="FTR REFERRALS BY AGE"
