@@ -54,7 +54,6 @@ const CommunityGoals = () => {
             metricPeriodMonths={metrics.metricPeriodMonths}
             supervisionType={metrics.supervisionType}
             district={metrics.district}
-            geoView={false}
             officeData={apiData.site_offices}
             revocationCountsByMonth={apiData.revocations_by_month}
             header="revocationCountsByMonth-header"

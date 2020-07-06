@@ -19,16 +19,11 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Bar, HorizontalBar } from "react-chartjs-2";
 
-import concat from "lodash/fp/concat";
-import difference from "lodash/fp/difference";
-import groupBy from "lodash/fp/groupBy";
 import map from "lodash/fp/map";
 import pipe from "lodash/fp/pipe";
 import range from "lodash/fp/range";
 import sortBy from "lodash/fp/sortBy";
 import sumBy from "lodash/fp/sumBy";
-import toInteger from "lodash/fp/toInteger";
-import values from "lodash/fp/values";
 
 import {
   COLORS_FIVE_VALUES,
@@ -40,7 +35,12 @@ import {
   filterDatasetByDistrict,
   filterDatasetByMetricPeriodMonths,
 } from "../../../utils/charts/toggles";
-import { raceValueToHumanReadable } from "../../../utils/transforms/labels";
+import {
+  stateCensusMapper,
+  groupByRaceAndMap,
+  addMissedRaceCounts,
+  countMapper,
+} from "../common/utils/races";
 
 const colors = [
   COLORS_FIVE_VALUES[0],
@@ -52,50 +52,7 @@ const colors = [
   COLORS["blue-standard"],
 ];
 
-/**
- * Groups and casts to object:
- * [{ race: 'Asian', totalSupervisionCount: 43, revocationCount: 123 }, ...]
- */
-const groupByRaceAndMap = pipe(
-  groupBy("race_or_ethnicity"),
-  values,
-  map((dataset) => ({
-    race: raceValueToHumanReadable(dataset[0].race_or_ethnicity),
-    totalSupervisionCount: sumBy(
-      (data) => toInteger(data.total_supervision_count),
-      dataset
-    ),
-    revocationCount: sumBy((data) => toInteger(data.revocation_count), dataset),
-  }))
-);
-
-/**
- * If dataset doesn't have all races, added missed races with zero counts to this dataset.
- */
-const addMissedRaceCounts = (stateCensusDataPoints) => (dataset) =>
-  pipe(
-    map("race"),
-    difference(map("race", stateCensusDataPoints)),
-    map((race) => ({ race, totalSupervisionCount: 0, revocationCount: 0 })),
-    concat(dataset)
-  )(dataset);
-
-const revocationMapper = ({ race, revocationCount }) => ({
-  race,
-  count: revocationCount,
-});
-
-const supervisionMapper = ({ race, totalSupervisionCount }) => ({
-  race,
-  count: totalSupervisionCount,
-});
-
-const stateCensusMapper = ({ race_or_ethnicity: race, proportion }) => ({
-  race: raceValueToHumanReadable(race),
-  proportion: Number(proportion),
-});
-
-const calculatePercents = (total) => ({ count }) => 100 * (count / total);
+const calculatePercents = (total) => ({ value }) => 100 * (value / total);
 
 const chartId = "revocationsByRace";
 
@@ -107,6 +64,7 @@ const RevocationProportionByRace = ({
   revocationProportionByRace,
   statePopulationByRace,
 }) => {
+  const counts = ["revocation_count", "total_supervision_count"];
   const stateCensusDataPoints = pipe(
     map(stateCensusMapper),
     sortBy("race")
@@ -116,17 +74,23 @@ const RevocationProportionByRace = ({
     (dataset) => filterDatasetBySupervisionType(dataset, supervisionType),
     (dataset) => filterDatasetByDistrict(dataset, district),
     (dataset) => filterDatasetByMetricPeriodMonths(dataset, metricPeriodMonths),
-    groupByRaceAndMap,
-    addMissedRaceCounts(stateCensusDataPoints),
+    groupByRaceAndMap(counts),
+    addMissedRaceCounts(counts, stateCensusDataPoints),
     sortBy("race")
   )(revocationProportionByRace);
 
-  const revocationDataPoints = map(revocationMapper, revocationProportion);
-  const supervisionDataPoints = map(supervisionMapper, revocationProportion);
+  const revocationDataPoints = map(
+    countMapper("revocation_count"),
+    revocationProportion
+  );
+  const supervisionDataPoints = map(
+    countMapper("total_supervision_count"),
+    revocationProportion
+  );
 
-  const totalRevocationsCount = sumBy("revocationCount", revocationProportion);
+  const totalRevocationsCount = sumBy("revocation_count", revocationProportion);
   const totalSupervisionPopulationCount = sumBy(
-    "totalSupervisionCount",
+    "total_supervision_count",
     revocationProportion
   );
 
@@ -137,13 +101,13 @@ const RevocationProportionByRace = ({
     calculatePercents(totalRevocationsCount),
     revocationDataPoints
   );
-  const revocationCounts = map("count", revocationDataPoints);
+  const revocationCounts = map("value", revocationDataPoints);
 
   const stateSupervisionProportions = map(
     calculatePercents(totalSupervisionPopulationCount),
     supervisionDataPoints
   );
-  const stateSupervisionCounts = map("count", supervisionDataPoints);
+  const stateSupervisionCounts = map("value", supervisionDataPoints);
 
   const ratesChart = (
     <HorizontalBar

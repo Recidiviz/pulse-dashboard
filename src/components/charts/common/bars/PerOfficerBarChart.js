@@ -111,8 +111,9 @@ const PerOfficerBarChart = ({
     officeData
   );
 
-  const isAllOffices =
-    visibleOffices.length === 1 && visibleOffices[0] === "all";
+  const isOfficerIdsHidden =
+    (visibleOffices.length === 1 && visibleOffices[0] === "all") ||
+    visibleOffices.length > 2;
 
   const normalizedData = pipe(
     // filter data
@@ -190,7 +191,7 @@ const PerOfficerBarChart = ({
               },
               stacked: true,
               ticks: {
-                display: isAllOffices,
+                display: !isOfficerIdsHidden,
                 autoSkip: false,
               },
             },

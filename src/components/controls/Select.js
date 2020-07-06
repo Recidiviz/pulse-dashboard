@@ -94,13 +94,13 @@ const Select = ({ allOption, isMulti, ...props }) => {
         components={{
           Option,
           ValueContainer,
-          // MultiValueRemove: () => null,
         }}
         closeMenuOnSelect={false}
         isMulti
         onChange={(selected) => {
           const options = selected || [];
           const isEmpty = options.length === 0;
+          const isAllSelected = options.length + 1 === props.options.length;
 
           const isAllOptionTheFirst =
             !isEmpty && options[0].value === allOption.value;
@@ -108,7 +108,7 @@ const Select = ({ allOption, isMulti, ...props }) => {
           const isAllOptionTheLast =
             !isEmpty && options[options.length - 1].value === allOption.value;
 
-          if (isEmpty || isAllOptionTheLast) {
+          if (isEmpty || isAllOptionTheLast || isAllSelected) {
             updateSelectedOptions([allOption]);
           } else if (isAllOptionTheFirst) {
             updateSelectedOptions(

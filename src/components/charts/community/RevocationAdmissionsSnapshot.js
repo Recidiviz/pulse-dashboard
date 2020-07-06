@@ -15,7 +15,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React from "react";
+import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 import { Line } from "react-chartjs-2";
 
@@ -295,17 +295,19 @@ const RevocationAdmissionsSnapshot = ({
     true
   );
 
-  const headerElement = document.getElementById(header);
+  useEffect(() => {
+    const headerElement = document.getElementById(header);
 
-  if (headerElement && displayGoal) {
-    const trendlineValues = chart.props.data.datasets[1].data;
-    const trendlineText = trendlineGoalText(trendlineValues, goal);
+    if (headerElement && displayGoal) {
+      const trendlineValues = chart.props.data.datasets[1].data;
+      const trendlineText = trendlineGoalText(trendlineValues, goal);
 
-    const title = `The percent of prison admissions due to revocations of probation and parole has been <span class='fs-block header-highlight'>trending ${trendlineText}.</span>`;
-    headerElement.innerHTML = title;
-  } else if (headerElement) {
-    headerElement.innerHTML = "";
-  }
+      const title = `The percent of prison admissions due to revocations of probation and parole has been <span class='fs-block header-highlight'>trending ${trendlineText}.</span>`;
+      headerElement.innerHTML = title;
+    } else if (headerElement) {
+      headerElement.innerHTML = "";
+    }
+  }, [chart.props.data.datasets, displayGoal, goal, header]);
 
   return chart;
 };

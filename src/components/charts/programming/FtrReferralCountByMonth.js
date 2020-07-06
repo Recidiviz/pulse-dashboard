@@ -15,15 +15,14 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React from "react";
+import React, { useEffect } from "react";
 import { Line } from "react-chartjs-2";
 
-import groupBy from "lodash/fp/groupBy";
 import map from "lodash/fp/map";
 import pipe from "lodash/fp/pipe";
-import sumBy from "lodash/fp/sumBy";
 import toInteger from "lodash/fp/toInteger";
-import values from "lodash/fp/values";
+
+import { groupByMonth } from "../common/bars/utils";
 
 import { COLORS } from "../../../assets/scripts/constants/colors";
 import { configureDownloadButtons } from "../../../assets/scripts/utils/downloads";
@@ -80,17 +79,7 @@ const FtrReferralCountByMonth = ({
   const dataPoints = pipe(
     (dataset) => filterDatasetBySupervisionType(dataset, supervisionType),
     (dataset) => filterDatasetByDistrict(dataset, district),
-    groupBy(({ year, month }) => `${year}-${month}`),
-    values,
-    map((dataset) => ({
-      year: dataset[0].year,
-      month: dataset[0].month,
-      count: sumBy((data) => toInteger(data.count), dataset),
-      total_supervision_count: sumBy(
-        (data) => toInteger(data.total_supervision_count),
-        dataset
-      ),
-    })),
+    groupByMonth(["count", "total_supervision_count"]),
     map(metricType === "rates" ? dataRatesMapper : dataCountsMapper),
     sortAndSupplementMostRecentMonths(metricPeriodMonths)
   )(countsByMonth);
@@ -192,14 +181,16 @@ const FtrReferralCountByMonth = ({
   const chartData = chart.props.data.datasets[0].data;
   const mostRecentValue = chartData[chartData.length - 1];
 
-  const headerElement = document.getElementById(header);
+  useEffect(() => {
+    const headerElement = document.getElementById(header);
 
-  if (headerElement && mostRecentValue !== null && metricType === "counts") {
-    const title = `There have been <span class='fs-block header-highlight'>${mostRecentValue} referrals</span> to Free Through Recovery this month so far.`;
-    headerElement.innerHTML = title;
-  } else if (headerElement) {
-    headerElement.innerHTML = "";
-  }
+    if (headerElement && mostRecentValue !== null && metricType === "counts") {
+      const title = `There have been <span class='fs-block header-highlight'>${mostRecentValue} referrals</span> to Free Through Recovery this month so far.`;
+      headerElement.innerHTML = title;
+    } else if (headerElement) {
+      headerElement.innerHTML = "";
+    }
+  }, [header, metricType, mostRecentValue]);
 
   return chart;
 };

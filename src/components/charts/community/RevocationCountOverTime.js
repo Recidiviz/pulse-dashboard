@@ -15,7 +15,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React from "react";
+import React, { useEffect } from "react";
 import { Line } from "react-chartjs-2";
 
 import map from "lodash/fp/map";
@@ -69,7 +69,6 @@ const RevocationCountOverTime = ({
   metricType,
   metricPeriodMonths,
   disableGoal,
-  geoView,
   header,
   stateCode,
 }) => {
@@ -100,14 +99,13 @@ const RevocationCountOverTime = ({
     goal,
     chartDataValues,
     stepSize,
-    { disableGoal, geoView, metricType, supervisionType, district }
+    { disableGoal, metricType, supervisionType, district }
   );
 
   centerSingleMonthDatasetIfNecessary(chartDataValues, chartLabels);
 
   const displayGoal = canDisplayGoal(goal, {
     disableGoal,
-    geoView,
     metricType,
     supervisionType,
     district,
@@ -209,14 +207,16 @@ const RevocationCountOverTime = ({
   const chartData = chart.props.data.datasets[0].data;
   const mostRecentValue = chartData[chartData.length - 1];
 
-  const headerElement = document.getElementById(header);
+  useEffect(() => {
+    const headerElement = document.getElementById(header);
 
-  if (headerElement && mostRecentValue !== null && displayGoal) {
-    const title = `There have been <span class='fs-block header-highlight'>${mostRecentValue} revocations</span> that led to incarceration in a DOCR facility this month so far.`;
-    headerElement.innerHTML = title;
-  } else if (headerElement) {
-    headerElement.innerHTML = "";
-  }
+    if (headerElement && mostRecentValue !== null && displayGoal) {
+      const title = `There have been <span class='fs-block header-highlight'>${mostRecentValue} revocations</span> that led to incarceration in a DOCR facility this month so far.`;
+      headerElement.innerHTML = title;
+    } else if (headerElement) {
+      headerElement.innerHTML = "";
+    }
+  }, [displayGoal, header, mostRecentValue]);
 
   return chart;
 };

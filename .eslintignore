@@ -24,6 +24,7 @@ public/
 !src/components/charts/TenantExportMenu.js
 !src/components/charts/WarningIcon.js
 !src/components/charts/common/bars/**/*.js
+!src/components/charts/common/utils/**/*.js
 !src/components/charts/common/AdmissionCountsByType.js
 !src/components/charts/community/CaseTerminationsByOfficer.js
 !src/components/charts/community/CaseTerminationsByTerminationType.js
@@ -35,7 +36,6 @@ public/
 !src/components/charts/community/RevocationCountOverTime.js
 !src/components/charts/community/RevocationProportionByRace.js
 !src/components/charts/community/SupervisionSuccessSnapshot.js
-!src/components/charts/programming/FtrReferralsByParticipationStatus.js
 !src/components/charts/facilities/AdmissionsVsReleases.js
 !src/components/charts/facilities/DaysAtLibertySnapshot.js
 !src/components/charts/facilities/ReincarcerationCountOverTime.js
@@ -51,6 +51,8 @@ public/
 !src/components/charts/new_revocations/RevocationsByViolation.js
 !src/components/charts/new_revocations/ToggleBar/**/*.js
 !src/components/charts/programming/FtrReferralCountByMonth.js
+!src/components/charts/programming/FtrReferralsByParticipationStatus.js
+!src/components/charts/programming/FtrReferralsByRace.js
 !src/components/sidebar/**/*.js
 !src/components/toggles/**/*.js
 !src/components/topbar/**/*.js
