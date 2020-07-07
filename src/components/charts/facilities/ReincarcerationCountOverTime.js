@@ -15,7 +15,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React from "react";
+import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 import { Line } from "react-chartjs-2";
 
@@ -230,17 +230,19 @@ const ReincarcerationCountOverTime = ({
     true
   );
 
-  const chartData = chart.props.data.datasets[0].data;
-  const mostRecentValue = chartData[chartData.length - 1];
+  useEffect(() => {
+    const chartData = chart.props.data.datasets[0].data;
+    const mostRecentValue = chartData[chartData.length - 1];
 
-  const headerElement = document.getElementById(header);
+    const headerElement = document.getElementById(header);
 
-  if (headerElement && mostRecentValue !== null && displayGoal) {
-    const title = `There have been <span class='fs-block header-highlight'>${mostRecentValue} reincarcerations</span> to a DOCR facility this month so far.`;
-    headerElement.innerHTML = title;
-  } else if (headerElement) {
-    headerElement.innerHTML = "";
-  }
+    if (headerElement && mostRecentValue !== null && displayGoal) {
+      const title = `There have been <span class='fs-block header-highlight'>${mostRecentValue} reincarcerations</span> to a DOCR facility this month so far.`;
+      headerElement.innerHTML = title;
+    } else if (headerElement) {
+      headerElement.innerHTML = "";
+    }
+  }, [chart.props.data.datasets, displayGoal, header]);
 
   return chart;
 };

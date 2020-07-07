@@ -15,7 +15,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React from "react";
+import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 import { Line } from "react-chartjs-2";
 
@@ -204,17 +204,19 @@ const DaysAtLibertySnapshot = ({
     true
   );
 
-  const headerElement = document.getElementById(header);
+  useEffect(() => {
+    const headerElement = document.getElementById(header);
 
-  if (headerElement && displayGoal) {
-    const trendlineValues = chart.props.data.datasets[1].data;
-    const trendlineText = trendlineGoalText(trendlineValues, goal);
+    if (headerElement && displayGoal) {
+      const trendlineValues = chart.props.data.datasets[1].data;
+      const trendlineText = trendlineGoalText(trendlineValues, goal);
 
-    const title = `The average days between release from incarceration and readmission has been <span class='fs-block header-highlight'>trending ${trendlineText}.</span>`;
-    headerElement.innerHTML = title;
-  } else if (headerElement) {
-    headerElement.innerHTML = "";
-  }
+      const title = `The average days between release from incarceration and readmission has been <span class='fs-block header-highlight'>trending ${trendlineText}.</span>`;
+      headerElement.innerHTML = title;
+    } else if (headerElement) {
+      headerElement.innerHTML = "";
+    }
+  }, [chart.props.data.datasets, displayGoal, goal, header]);
 
   return chart;
 };
