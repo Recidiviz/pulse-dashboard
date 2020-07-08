@@ -1,5 +1,5 @@
 // Recidiviz - a data platform for criminal justice reform
-// Copyright (C) 2019 Recidiviz, Inc.
+// Copyright (C) 2020 Recidiviz, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -14,6 +14,10 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
+
+import lowerCase from "lodash/fp/lowerCase"
+import pipe from "lodash/fp/pipe";
+import startCase from "lodash/fp/startCase"
 
 const riskLevelValuetoLabel = {
   NOT_ASSESSED: 'Not Assessed',
@@ -113,9 +117,7 @@ function toTitleCase(str) {
   );
 }
 
-function humanReadableTitleCase(str) {
-  return toTitleCase(toHumanReadable(str));
-}
+const humanReadableTitleCase = pipe(lowerCase, startCase);
 
 /*
  * Returns the officer id from the canonical id format, '123: Firstname Lastname'.
