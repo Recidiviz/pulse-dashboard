@@ -1,5 +1,5 @@
 // Recidiviz - a data platform for criminal justice reform
-// Copyright (C) 2019 Recidiviz, Inc.
+// Copyright (C) 2020 Recidiviz, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -15,127 +15,95 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React, { useState, useEffect } from 'react';
-import { Bar, HorizontalBar } from 'react-chartjs-2';
+import React from "react";
+import { Bar, HorizontalBar } from "react-chartjs-2";
 
-import { COLORS_FIVE_VALUES, COLORS } from '../../../assets/scripts/constants/colors';
-import { configureDownloadButtons } from '../../../assets/scripts/utils/downloads';
+import map from "lodash/fp/map";
+import pipe from "lodash/fp/pipe";
+import range from "lodash/fp/range";
+import sortBy from "lodash/fp/sortBy";
+import sumBy from "lodash/fp/sumBy";
+
 import {
-  filterDatasetBySupervisionType, filterDatasetByDistrict,
+  COLORS_FIVE_VALUES,
+  COLORS,
+} from "../../../assets/scripts/constants/colors";
+import { configureDownloadButtons } from "../../../assets/scripts/utils/downloads";
+import {
+  filterDatasetBySupervisionType,
+  filterDatasetByDistrict,
   filterDatasetByMetricPeriodMonths,
-} from '../../../utils/charts/toggles';
-import { tooltipForCountChart } from '../../../utils/charts/tooltips';
-import { sortByLabel } from '../../../utils/transforms/datasets';
-import { raceValueToHumanReadable, toInt } from '../../../utils/transforms/labels';
+} from "../../../utils/charts/toggles";
+import { tooltipForCountChart } from "../../../utils/charts/tooltips";
+import {
+  addMissedRaceCounts,
+  countMapper,
+  groupByRaceAndMap,
+  stateCensusMapper,
+} from "../common/utils/races";
 
-const FtrReferralsByRace = (props) => {
-  const [chartLabels, setChartLabels] = useState([]);
-  const [ftrReferralProportions, setFtrReferralProportions] = useState([]);
-  const [stateSupervisionProportions, setStateSupervisionProportions] = useState([]);
-  const [statePopulationProportions, setStatePopulationProportions] = useState([]);
-  const [ftrReferralCounts, setFtrReferralCounts] = useState([]);
-  const [stateSupervisionCounts, setStateSupervisionCounts] = useState([]);
+const chartId = "ftrReferralsByRace";
+const colors = [
+  COLORS_FIVE_VALUES[0],
+  COLORS_FIVE_VALUES[1],
+  COLORS_FIVE_VALUES[2],
+  COLORS_FIVE_VALUES[3],
+  COLORS_FIVE_VALUES[4],
+  COLORS["blue-standard-2"],
+  COLORS["blue-standard"],
+];
 
-  const chartId = 'ftrReferralsByRace';
+const calculatePercents = (total) => ({ value }) => 100 * (value / total);
 
-  const processResponse = () => {
-    const { ftrReferralsByRace, statePopulationByRace } = props;
+const FtrReferralsByRace = ({
+  ftrReferralsByRace,
+  statePopulationByRace,
+  supervisionType,
+  district,
+  metricPeriodMonths,
+  metricType,
+}) => {
+  const counts = ["count", "total_supervision_count"];
+  const stateCensusDataPoints = pipe(
+    map(stateCensusMapper),
+    sortBy("race")
+  )(statePopulationByRace);
 
-    let filteredFtrReferrals = filterDatasetBySupervisionType(
-      ftrReferralsByRace, props.supervisionType,
-    );
+  const filteredFtrReferrals = pipe(
+    (dataset) => filterDatasetBySupervisionType(dataset, supervisionType),
+    (dataset) => filterDatasetByDistrict(dataset, district),
+    (dataset) => filterDatasetByMetricPeriodMonths(dataset, metricPeriodMonths),
+    groupByRaceAndMap(counts),
+    addMissedRaceCounts(counts, stateCensusDataPoints),
+    sortBy("race")
+  )(ftrReferralsByRace);
 
-    filteredFtrReferrals = filterDatasetByDistrict(
-      filteredFtrReferrals, props.district,
-    );
+  const chartLabels = map("race", filteredFtrReferrals);
+  const statePopulationProportions = map("proportion", stateCensusDataPoints);
 
-    filteredFtrReferrals = filterDatasetByMetricPeriodMonths(
-      filteredFtrReferrals, props.metricPeriodMonths,
-    );
+  // ftr refereal
+  const ftrReferralDataPoints = map(countMapper("count"), filteredFtrReferrals);
+  const totalFtrReferrals = sumBy("count", filteredFtrReferrals);
+  const ftrReferralCounts = map("value", ftrReferralDataPoints);
+  const ftrReferralProportions = map(
+    calculatePercents(totalFtrReferrals),
+    ftrReferralDataPoints
+  );
 
-    const ftrReferralDataPoints = [];
-    const supervisionDataPoints = [];
-
-    if (filteredFtrReferrals) {
-      filteredFtrReferrals.forEach((data) => {
-        const { race_or_ethnicity: race } = data;
-
-        const referralCount = toInt(data.count, 10);
-        ftrReferralDataPoints.push(
-          { race: raceValueToHumanReadable(race), count: referralCount },
-        );
-
-        const supervisionCount = toInt(data.total_supervision_count);
-        supervisionDataPoints.push(
-          { race: raceValueToHumanReadable(race), count: supervisionCount },
-        );
-      });
-    }
-
-    const stateCensusDataPoints = [];
-    if (statePopulationByRace) {
-      statePopulationByRace.forEach((data) => {
-        const { race_or_ethnicity: race } = data;
-        const proportion = Number(data.proportion);
-        stateCensusDataPoints.push({ race: raceValueToHumanReadable(race), proportion });
-      });
-    }
-
-    const racesRepresentedFtrReferrals = ftrReferralDataPoints.map((element) => element.race);
-    const racesRepresentedSupervision = supervisionDataPoints.map((element) => element.race);
-
-    stateCensusDataPoints.forEach((raceGroup) => {
-      const { race } = raceGroup;
-      if (!racesRepresentedFtrReferrals.includes(race)) {
-        ftrReferralDataPoints.push({ race, count: 0 });
-      }
-
-      if (!racesRepresentedSupervision.includes(race)) {
-        supervisionDataPoints.push({ race, count: 0 });
-      }
-    });
-
-    function totalSum(dataPoints) {
-      return dataPoints.map((element) => element.count).reduce(
-        (previousValue, currentValue) => (previousValue + currentValue),
-      );
-    }
-
-    const totalFtrReferrals = totalSum(ftrReferralDataPoints);
-    const totalSupervisionPopulation = totalSum(supervisionDataPoints);
-
-    // Sort by race alphabetically
-    const sortedFtrReferralsDataPoints = sortByLabel(ftrReferralDataPoints, 'race');
-    const sortedSupervisionDataPoints = sortByLabel(supervisionDataPoints, 'race');
-    const sortedStateCensusDataPoints = sortByLabel(stateCensusDataPoints, 'race');
-
-    setChartLabels(sortedFtrReferralsDataPoints.map((element) => element.race));
-    setFtrReferralProportions(sortedFtrReferralsDataPoints.map(
-      (element) => (100 * (element.count / totalFtrReferrals)),
-    ));
-    setFtrReferralCounts(sortedFtrReferralsDataPoints.map(
-      (element) => (element.count),
-    ));
-    setStateSupervisionProportions(sortedSupervisionDataPoints.map(
-      (element) => (100 * (element.count / totalSupervisionPopulation)),
-    ));
-    setStateSupervisionCounts(sortedSupervisionDataPoints.map(
-      (element) => (element.count),
-    ));
-    setStatePopulationProportions(sortedStateCensusDataPoints.map(
-      (element) => (element.proportion),
-    ));
-  };
-
-  useEffect(() => {
-    processResponse();
-  }, [
-    props.ftrReferralsByRace,
-    props.metricType,
-    props.metricPeriodMonths,
-    props.supervisionType,
-    props.district,
-  ]);
+  // supervision
+  const supervisionDataPoints = map(
+    countMapper("total_supervision_count"),
+    filteredFtrReferrals
+  );
+  const totalSupervisionPopulation = sumBy(
+    "total_supervision_count",
+    filteredFtrReferrals
+  );
+  const stateSupervisionCounts = map("value", supervisionDataPoints);
+  const stateSupervisionProportions = map(
+    calculatePercents(totalSupervisionPopulation),
+    supervisionDataPoints
+  );
 
   const countsChart = (
     <Bar
@@ -144,17 +112,17 @@ const FtrReferralsByRace = (props) => {
         labels: chartLabels,
         datasets: [
           {
-            label: 'Referrals',
-            backgroundColor: COLORS['blue-standard'],
-            hoverBackgroundColor: COLORS['blue-standard'],
-            yAxisID: 'y-axis-left',
+            label: "Referrals",
+            backgroundColor: COLORS["blue-standard"],
+            hoverBackgroundColor: COLORS["blue-standard"],
+            yAxisID: "y-axis-left",
             data: ftrReferralCounts,
           },
           {
-            label: 'Supervision Population',
-            backgroundColor: COLORS['blue-standard-2'],
-            hoverBackgroundColor: COLORS['blue-standard-2'],
-            yAxisID: 'y-axis-left',
+            label: "Supervision Population",
+            backgroundColor: COLORS["blue-standard-2"],
+            hoverBackgroundColor: COLORS["blue-standard-2"],
+            yAxisID: "y-axis-left",
             data: stateSupervisionCounts,
           },
         ],
@@ -163,43 +131,52 @@ const FtrReferralsByRace = (props) => {
         responsive: true,
         legend: {
           display: true,
-          position: 'bottom',
+          position: "bottom",
         },
         tooltips: {
-          backgroundColor: COLORS['grey-800-light'],
-          mode: 'index',
-          callbacks: tooltipForCountChart(ftrReferralCounts, 'Referral', stateSupervisionCounts, 'Supervision'),
+          backgroundColor: COLORS["grey-800-light"],
+          mode: "index",
+          callbacks: tooltipForCountChart(
+            ftrReferralCounts,
+            "Referral",
+            stateSupervisionCounts,
+            "Supervision"
+          ),
         },
         scaleShowValues: true,
         scales: {
-          yAxes: [{
-            stacked: false,
-            ticks: {
-              beginAtZero: true,
-            },
-            position: 'left',
-            id: 'y-axis-left',
-            scaleLabel: {
-              display: true,
-              labelString: 'Count',
-            },
-          }],
-          xAxes: [{
-            stacked: false,
-            ticks: {
-              autoSkip: false,
-              callback(value, index, values) {
-                if (value.length > 12) {
-                  return `${value.substr(0, 12)}...`; // Truncate
-                }
-                return value;
+          yAxes: [
+            {
+              stacked: false,
+              ticks: {
+                beginAtZero: true,
+              },
+              position: "left",
+              id: "y-axis-left",
+              scaleLabel: {
+                display: true,
+                labelString: "Count",
               },
             },
-            scaleLabel: {
-              display: true,
-              labelString: 'Race and Ethnicity',
+          ],
+          xAxes: [
+            {
+              stacked: false,
+              ticks: {
+                autoSkip: false,
+                callback(value) {
+                  if (value.length > 12) {
+                    return `${value.substr(0, 12)}...`; // Truncate
+                  }
+                  return value;
+                },
+              },
+              scaleLabel: {
+                display: true,
+                labelString: "Race and Ethnicity",
+              },
             },
-          }],
+          ],
         },
       }}
     />
@@ -209,104 +186,50 @@ const FtrReferralsByRace = (props) => {
     <HorizontalBar
       id={chartId}
       data={{
-        labels: ['Referrals', 'Supervision Population', 'ND Population'],
-        datasets: [{
-          label: chartLabels[0],
-          backgroundColor: COLORS_FIVE_VALUES[0],
-          hoverBackgroundColor: COLORS_FIVE_VALUES[0],
-          hoverBorderColor: COLORS_FIVE_VALUES[0],
-          data: [
-            ftrReferralProportions[0],
-            stateSupervisionProportions[0],
-            statePopulationProportions[0],
-          ],
-        }, {
-          label: chartLabels[1],
-          backgroundColor: COLORS_FIVE_VALUES[1],
-          hoverBackgroundColor: COLORS_FIVE_VALUES[1],
-          hoverBorderColor: COLORS_FIVE_VALUES[1],
-          data: [
-            ftrReferralProportions[1],
-            stateSupervisionProportions[1],
-            statePopulationProportions[1],
-          ],
-        }, {
-          label: chartLabels[2],
-          backgroundColor: COLORS_FIVE_VALUES[2],
-          hoverBackgroundColor: COLORS_FIVE_VALUES[2],
-          hoverBorderColor: COLORS_FIVE_VALUES[2],
-          data: [
-            ftrReferralProportions[2],
-            stateSupervisionProportions[2],
-            statePopulationProportions[2],
-          ],
-        }, {
-          label: chartLabels[3],
-          backgroundColor: COLORS_FIVE_VALUES[3],
-          hoverBackgroundColor: COLORS_FIVE_VALUES[3],
-          hoverBorderColor: COLORS_FIVE_VALUES[3],
-          data: [
-            ftrReferralProportions[3],
-            stateSupervisionProportions[3],
-            statePopulationProportions[3],
-          ],
-        }, {
-          label: chartLabels[4],
-          backgroundColor: COLORS_FIVE_VALUES[4],
-          hoverBackgroundColor: COLORS_FIVE_VALUES[4],
-          hoverBorderColor: COLORS_FIVE_VALUES[4],
-          data: [
-            ftrReferralProportions[4],
-            stateSupervisionProportions[4],
-            statePopulationProportions[4],
-          ],
-        }, {
-          label: chartLabels[5],
-          backgroundColor: COLORS['blue-standard-2'],
-          hoverBackgroundColor: COLORS['blue-standard-2'],
-          hoverBorderColor: COLORS['blue-standard-2'],
-          data: [
-            ftrReferralProportions[5],
-            stateSupervisionProportions[5],
-            statePopulationProportions[5],
-          ],
-        }, {
-          label: chartLabels[6],
-          backgroundColor: COLORS['blue-standard'],
-          hoverBackgroundColor: COLORS['blue-standard'],
-          hoverBorderColor: COLORS['blue-standard'],
-          data: [
-            ftrReferralProportions[6],
-            stateSupervisionProportions[6],
-            statePopulationProportions[6],
-          ],
-        },
-        ],
+        labels: ["Referrals", "Supervision Population", "ND Population"],
+        datasets: map(
+          (i) => ({
+            label: chartLabels[i],
+            backgroundColor: colors[i],
+            hoverBackgroundColor: colors[i],
+            hoverBorderColor: colors[i],
+            data: [
+              ftrReferralProportions[i],
+              stateSupervisionProportions[i],
+              statePopulationProportions[i],
+            ],
+          }),
+          range(0, chartLabels.length)
+        ),
       }}
       options={{
         scales: {
-          xAxes: [{
-            scaleLabel: {
-              display: true,
-              labelString: 'Percentage',
+          xAxes: [
+            {
+              scaleLabel: {
+                display: true,
+                labelString: "Percentage",
+              },
+              stacked: true,
+              ticks: {
+                min: 0,
+                max: 100,
+              },
             },
-            stacked: true,
-            ticks: {
-              min: 0,
-              max: 100,
+          ],
+          yAxes: [
+            {
+              stacked: true,
             },
-          }],
-          yAxes: [{
-            stacked: true,
-          }],
+          ],
         },
         responsive: true,
         legend: {
-          position: 'bottom',
+          position: "bottom",
         },
         tooltips: {
-          backgroundColor: COLORS['grey-800-light'],
-          mode: 'dataset',
+          backgroundColor: COLORS["grey-800-light"],
+          mode: "dataset",
           intersect: true,
           callbacks: {
             title: (tooltipItem, data) => {
@@ -318,17 +241,28 @@ const FtrReferralsByRace = (props) => {
               const currentValue = dataset.data[tooltipItem.index];
 
               let datasetCounts = [];
-              if (data.labels[tooltipItem.index] === 'Referrals') {
+              if (data.labels[tooltipItem.index] === "Referrals") {
                 datasetCounts = ftrReferralCounts;
-              } else if (data.labels[tooltipItem.index] === 'Supervision Population') {
+              } else if (
+                data.labels[tooltipItem.index] === "Supervision Population"
+              ) {
                 datasetCounts = stateSupervisionCounts;
               } else {
-                return ''.concat(currentValue.toFixed(2), '% of ',
-                  data.labels[tooltipItem.index]);
+                return "".concat(
+                  currentValue.toFixed(2),
+                  "% of ",
+                  data.labels[tooltipItem.index]
+                );
               }
 
-              return ''.concat(currentValue.toFixed(2), '% of ',
-                data.labels[tooltipItem.index], ' (', datasetCounts[tooltipItem.datasetIndex], ')');
+              return "".concat(
+                currentValue.toFixed(2),
+                "% of ",
+                data.labels[tooltipItem.index],
+                " (",
+                datasetCounts[tooltipItem.datasetIndex],
+                ")"
+              );
             },
           },
         },
@@ -337,19 +271,24 @@ const FtrReferralsByRace = (props) => {
   );
 
   let activeChart = countsChart;
-  if (props.metricType === 'rates') {
+  if (metricType === "rates") {
     activeChart = ratesChart;
   }
 
-  const exportedStructureCallback = () => (
-    {
-      metric: 'FTR Referrals by Race',
-      series: [],
-    });
+  const exportedStructureCallback = () => ({
+    metric: "FTR Referrals by Race",
+    series: [],
+  });
 
-  configureDownloadButtons(chartId, 'FTR REFERRALS BY RACE',
-    activeChart.props.data.datasets, activeChart.props.data.labels,
-    document.getElementById(chartId), exportedStructureCallback, props);
+  configureDownloadButtons(
+    chartId,
+    "FTR REFERRALS BY RACE",
+    activeChart.props.data.datasets,
+    activeChart.props.data.labels,
+    document.getElementById(chartId),
+    exportedStructureCallback,
+    { supervisionType, district, metricPeriodMonths, metricType }
+  );
 
   return activeChart;
 };

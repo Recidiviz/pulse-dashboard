@@ -29,7 +29,7 @@ import ReincarcerationCountOverTime from "../../../../components/charts/faciliti
 import useChartData from "../../../../hooks/useChartData";
 
 const metrics = {
-  district: "all",
+  district: ["all"],
   metricPeriodMonths: "36",
   supervisionType: "all",
 };
@@ -51,6 +51,7 @@ const FacilitiesGoals = () => {
             metricPeriodMonths={metrics.metricPeriodMonths}
             daysAtLibertyByMonth={apiData.avg_days_at_liberty_by_month}
             header="daysAtLibertySnapshot-header"
+            stateCode="US_ND"
           />
         }
         footer={<Methodology chartId="daysAtLibertySnapshot" />}
@@ -66,6 +67,7 @@ const FacilitiesGoals = () => {
             district={metrics.district}
             reincarcerationCountsByMonth={apiData.reincarcerations_by_month}
             header="reincarcerationCountsByMonth-header"
+            stateCode="US_ND"
           />
         }
         geoChart={

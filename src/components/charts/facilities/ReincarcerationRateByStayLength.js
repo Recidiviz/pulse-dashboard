@@ -16,7 +16,15 @@
 // =============================================================================
 
 import React from "react";
+import PropTypes from "prop-types";
 import { Bar } from "react-chartjs-2";
+
+import groupBy from "lodash/fp/groupBy";
+import map from "lodash/fp/map";
+import mapValues from "lodash/fp/mapValues";
+import meanBy from "lodash/fp/meanBy";
+import pipe from "lodash/fp/pipe";
+import sumBy from "lodash/fp/sumBy";
 
 import { COLORS } from "../../../assets/scripts/constants/colors";
 import { configureDownloadButtons } from "../../../assets/scripts/utils/downloads";
@@ -40,33 +48,24 @@ const chartLabels = [
 
 const transformStayLength = (oldStayLength) => {
   switch (oldStayLength) {
-    case "<12":
-      return "0-12";
-    case "120<":
-      return "120+";
+    case "0-12":
+      return "<12";
+    case "120+":
+      return "120<";
     default:
       return oldStayLength;
   }
 };
 
-const computeRateDataPoints = (filteredReincarcerationsByStayLength) => {
-  const ratesByStayLengthData = {};
-  filteredReincarcerationsByStayLength.forEach(
-    ({ stay_length_bucket: stayLength, recidivism_rate: rate }) => {
-      ratesByStayLengthData[transformStayLength(stayLength)] = rate;
-    }
-  );
-  return chartLabels.map((chartLabel) => ratesByStayLengthData[chartLabel]);
+const ratesTooltipLabel = ({ datasetIndex, index }, { datasets }) => {
+  const dataset = datasets[datasetIndex];
+  const rate = (dataset.data[index] * 100).toFixed(2);
+  return `${dataset.label}: ${rate}%`;
 };
 
-const computeCountDataPoints = (filteredReincarcerationsByStayLength) => {
-  const countsByStayLengthData = {};
-  filteredReincarcerationsByStayLength.forEach(
-    ({ stay_length_bucket: stayLength, reincarceration_count: count }) => {
-      countsByStayLengthData[transformStayLength(stayLength)] = count;
-    }
-  );
-  return chartLabels.map((chartLabel) => countsByStayLengthData[chartLabel]);
+const countsTooltipLabel = ({ datasetIndex, index }, { datasets }) => {
+  const dataset = datasets[datasetIndex];
+  return `${dataset.label}: ${dataset.data[index]}`;
 };
 
 const ReincarcerationRateByStayLength = ({
@@ -74,27 +73,25 @@ const ReincarcerationRateByStayLength = ({
   metricType,
   ratesByStayLength,
 }) => {
-  const filteredReincarcerationsByStayLength = filterDatasetByDistrict(
-    ratesByStayLength,
-    district
-  );
-
   const label =
     metricType === "counts" ? "Number reincarcerated" : "Reincarceration rate";
 
-  const chartDataPoints =
-    metricType === "counts"
-      ? computeCountDataPoints(filteredReincarcerationsByStayLength)
-      : computeRateDataPoints(filteredReincarcerationsByStayLength);
+  const dataPointsMap = pipe(
+    (dataset) => filterDatasetByDistrict(dataset, district),
+    groupBy("stay_length_bucket"),
+    mapValues((dataset) => ({
+      count: sumBy("reincarceration_count", dataset),
+      rate: meanBy("recidivism_rate", dataset),
+    }))
+  )(ratesByStayLength);
 
-  const tooltipLabel = ({ datasetIndex, index }, { datasets }) => {
-    const dataset = datasets[datasetIndex];
-    if (metricType === "counts") {
-      return `${dataset.label}: ${dataset.data[index]}`;
-    }
-    const rate = (dataset.data[index] * 100).toFixed(2);
-    return `${dataset.label}: ${rate}%`;
-  };
+  const dataPoints = map((chartLabel) => {
+    const transformedLabel = transformStayLength(chartLabel);
+
+    return metricType === "counts"
+      ? dataPointsMap[transformedLabel].count
+      : dataPointsMap[transformedLabel].rate;
+  })(chartLabels);
 
   const chart = (
     <Bar
@@ -107,7 +104,7 @@ const ReincarcerationRateByStayLength = ({
             backgroundColor: COLORS["blue-standard"],
             hoverBackgroundColor: COLORS["blue-standard"],
             yAxisID: "y-axis-left",
-            data: chartDataPoints,
+            data: dataPoints,
           },
         ],
       }}
@@ -120,7 +117,8 @@ const ReincarcerationRateByStayLength = ({
           backgroundColor: COLORS["grey-800-light"],
           mode: "index",
           callbacks: {
-            label: tooltipLabel,
+            label:
+              metricType === "counts" ? countsTooltipLabel : ratesTooltipLabel,
           },
         },
         scaleShowValues: true,
@@ -170,6 +168,16 @@ const ReincarcerationRateByStayLength = ({
   );
 
   return chart;
+};
+
+ReincarcerationRateByStayLength.defaultProps = {
+  ratesByStayLength: [],
+};
+
+ReincarcerationRateByStayLength.propTypes = {
+  ratesByStayLength: PropTypes.arrayOf(PropTypes.shape({})),
+  district: PropTypes.arrayOf(PropTypes.string).isRequired,
+  metricType: PropTypes.string.isRequired,
 };
 
 export default ReincarcerationRateByStayLength;

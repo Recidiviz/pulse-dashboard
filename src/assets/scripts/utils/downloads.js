@@ -326,9 +326,9 @@ function configureDownloadButtons(
   chartId, chartTitle, chartDatasets, chartLabels, chartBox,
   exportedStructureCallback, toggleStates, convertValuesToNumbers, handleTimeStringLabels, timeWindowDescription, shouldZipDownload
 ) {
-
   const filename = configureFilename(chartId, toggleStates, shouldZipDownload);
   const downloadChartAsImageButton = document.getElementById(`downloadChartAsImage-${chartId}`);
+
   if (downloadChartAsImageButton) {
     downloadChartAsImageButton.onclick = function downloadChartImage() {
       configureImageDownload(chartBox || document.getElementById(chartId), `${filename}.png`, chartTitle, toggleStates, chartId, timeWindowDescription, shouldZipDownload);

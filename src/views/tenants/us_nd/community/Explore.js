@@ -44,6 +44,7 @@ import {
 } from "../../../../components/toggles/options";
 // eslint-disable-next-line import/no-cycle
 import useChartData from "../../../../hooks/useChartData";
+import { isOfficerIdsHidden } from "../../../../components/charts/common/bars/utils";
 
 const importantNotes = [
   {
@@ -134,6 +135,7 @@ const CommunityExplore = () => {
             disableGoal
             officeData={apiData.site_offices}
             revocationCountsByMonth={apiData.revocations_by_month}
+            stateCode="US_ND"
           />
         }
         geoChart={
@@ -161,9 +163,9 @@ const CommunityExplore = () => {
         chartTitle={
           <>
             REVOCATION ADMISSIONS BY OFFICER
-            {district === "all" && (
+            {isOfficerIdsHidden(district) && (
               <WarningIcon
-                tooltipText="Exporting this chart as an image will not include officer IDs unless a specific P&P office is selected from the explore bar."
+                tooltipText="Exporting this chart as an image will not include officer IDs unless 3 or fewer P&P offices are selected from the explore bar."
                 className="pL-10 toggle-alert"
               />
             )}
@@ -186,13 +188,13 @@ const CommunityExplore = () => {
           </>
         }
       />
-
       <ChartCard
         key="revocationAdmissionsSnapshot"
         chartId="revocationAdmissionsSnapshot"
         chartTitle="PRISON ADMISSIONS DUE TO REVOCATION"
         chart={
           <RevocationAdmissionsSnapshot
+            stateCode="US_ND"
             metricType={metricType}
             metricPeriodMonths={metricPeriodMonths}
             supervisionType={supervisionType}
@@ -236,7 +238,7 @@ const CommunityExplore = () => {
         chartTitle={
           <>
             ADMISSIONS BY TYPE
-            {(supervisionType !== "all" || district !== "all") &&
+            {(supervisionType !== "all" || district[0] !== "all") &&
               metricType === "rates" && (
                 <WarningIcon
                   tooltipText="This graph is showing both non-revocation and revocation admissions to prison. We cannot show percentages of admissions from a specific supervision type or office because those filters can’t be applied to non-revocation admissions to prison."
@@ -341,6 +343,7 @@ const CommunityExplore = () => {
             supervisionType={supervisionType}
             district={district}
             disableGoal
+            stateCode="US_ND"
             supervisionSuccessRates={
               apiData.supervision_termination_by_type_by_month
             }
@@ -394,9 +397,9 @@ const CommunityExplore = () => {
         chartTitle={
           <>
             CASE TERMINATIONS BY OFFICER
-            {district === "all" && (
+            {isOfficerIdsHidden(district) && (
               <WarningIcon
-                tooltipText="Exporting this chart as an image will not include officer IDs unless a specific P&P office is selected from the explore bar."
+                tooltipText="Exporting this chart as an image will not include officer IDs unless 3 or fewer P&P offices are selected from the explore bar."
                 className="pL-10 toggle-alert"
               />
             )}
@@ -426,6 +429,12 @@ const CommunityExplore = () => {
             {metricType !== "counts" && (
               <WarningIcon
                 tooltipText="This graph is showing average LSI-R score change. It does not support showing this metric as a rate."
+                className="pL-10 toggle-alert"
+              />
+            )}
+            {metricType === "counts" && district.length > 1 && (
+              <WarningIcon
+                tooltipText="Note: selecting multiple offices takes the average across offices’ LSI-R score change averages, not the average across all people in the selected offices"
                 className="pL-10 toggle-alert"
               />
             )}
