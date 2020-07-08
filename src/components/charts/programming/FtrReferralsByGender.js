@@ -1,5 +1,5 @@
 // Recidiviz - a data platform for criminal justice reform
-// Copyright (C) 2019 Recidiviz, Inc.
+// Copyright (C) 2020 Recidiviz, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -15,101 +15,82 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React, { useState, useEffect } from 'react';
-import { Bar } from 'react-chartjs-2';
+import React from "react";
+import { Bar } from "react-chartjs-2";
+
+import groupBy from "lodash/fp/groupBy";
+import map from "lodash/fp/map";
+import pipe from "lodash/fp/pipe";
+import range from "lodash/fp/range";
+import sortBy from "lodash/fp/sortBy";
+import sumBy from "lodash/fp/sumBy";
+import toInteger from "lodash/fp/toInteger";
+import values from "lodash/fp/values";
 
 import {
-  COLORS_STACKED_TWO_VALUES_ALT, COLORS,
-} from '../../../assets/scripts/constants/colors';
-import { configureDownloadButtons } from '../../../assets/scripts/utils/downloads';
+  COLORS_STACKED_TWO_VALUES_ALT,
+  COLORS,
+} from "../../../assets/scripts/constants/colors";
+import { configureDownloadButtons } from "../../../assets/scripts/utils/downloads";
 import {
-  filterDatasetBySupervisionType, filterDatasetByDistrict,
+  filterDatasetBySupervisionType,
+  filterDatasetByDistrict,
   filterDatasetByMetricPeriodMonths,
-} from '../../../utils/charts/toggles';
-import { tooltipForCountChart, tooltipForRateChart } from '../../../utils/charts/tooltips';
-import { sortByLabel } from '../../../utils/transforms/datasets';
-import { genderValueToHumanReadable, toInt } from '../../../utils/transforms/labels';
+} from "../../../utils/charts/toggles";
+import {
+  tooltipForCountChart,
+  tooltipForRateChart,
+} from "../../../utils/charts/tooltips";
+import { genderValueToHumanReadable } from "../../../utils/transforms/labels";
 
-const FtrReferralsByGender = (props) => {
-  const [chartLabels, setChartLabels] = useState([]);
-  const [ftrReferralProportions, setFtrReferralProportions] = useState([]);
-  const [stateSupervisionProportions, setStateSupervisionProportions] = useState([]);
-  const [ftrReferralCounts, setFtrReferralCounts] = useState([]);
-  const [stateSupervisionCounts, setStateSupervisionCounts] = useState([]);
+const chartId = "ftrReferralsByGender";
 
-  const chartId = 'ftrReferralsByGender';
+const FtrReferralsByGender = ({
+  ftrReferralsByGender,
+  supervisionType,
+  district,
+  metricPeriodMonths,
+  metricType,
+}) => {
+  const filteredFtrReferrals = pipe(
+    (dataset) => filterDatasetBySupervisionType(dataset, supervisionType),
+    (dataset) => filterDatasetByDistrict(dataset, district),
+    (dataset) => filterDatasetByMetricPeriodMonths(dataset, metricPeriodMonths),
+    groupBy("gender"),
+    values,
+    map((dataset) => ({
+      gender: genderValueToHumanReadable(dataset[0].gender),
+      referralCount: sumBy(({ count }) => toInteger(count), dataset),
+      supervisionPopulation: sumBy(
+        ({ total_supervision_count: count }) => toInteger(count),
+        dataset
+      ),
+    })),
+    sortBy("gender")
+  )(ftrReferralsByGender);
 
-  const processResponse = () => {
-    const { ftrReferralsByGender } = props;
+  const totalFtrReferrals = sumBy("referralCount", filteredFtrReferrals);
+  const totalSupervisionPopulation = sumBy(
+    "supervisionPopulation",
+    filteredFtrReferrals
+  );
 
-    let filteredFtrReferrals = filterDatasetBySupervisionType(
-      ftrReferralsByGender, props.supervisionType,
-    );
+  const chartLabels = map("gender", filteredFtrReferrals);
 
-    filteredFtrReferrals = filterDatasetByDistrict(
-      filteredFtrReferrals, props.district,
-    );
+  const ftrReferralProportions = map(
+    (data) => 100 * (data.referralCount / totalFtrReferrals),
+    filteredFtrReferrals
+  );
 
-    filteredFtrReferrals = filterDatasetByMetricPeriodMonths(
-      filteredFtrReferrals, props.metricPeriodMonths,
-    );
-
-    const ftrReferralDataPoints = [];
-    const supervisionDataPoints = [];
-
-    if (filteredFtrReferrals) {
-      filteredFtrReferrals.forEach((data) => {
-        let { gender } = data;
-        gender = genderValueToHumanReadable(gender);
-
-        const referralCount = toInt(data.count, 10);
-        ftrReferralDataPoints.push({ gender, count: referralCount });
-
-        const totalSupervisionPopulation = toInt(data.total_supervision_count);
-        supervisionDataPoints.push({ gender, count: totalSupervisionPopulation });
-      });
-    }
-
-    function totalSum(dataPoints) {
-      if (dataPoints.length > 0) {
-        return dataPoints.map((element) => element.count).reduce(
-          (previousValue, currentValue) => (previousValue + currentValue),
-        );
-      }
-      return 0;
-    }
-
-    const totalFtrReferrals = totalSum(ftrReferralDataPoints);
-    const totalSupervisionPopulation = totalSum(supervisionDataPoints);
-
-    // Sort by gender alphabetically
-    const sortedFtrReferralsDataPoints = sortByLabel(ftrReferralDataPoints, 'gender');
-    const sortedSupervisionDataPoints = sortByLabel(supervisionDataPoints, 'gender');
-
-    setChartLabels(sortedFtrReferralsDataPoints.map((element) => element.gender));
-    setFtrReferralProportions(sortedFtrReferralsDataPoints.map(
-      (element) => (100 * (element.count / totalFtrReferrals)),
-    ));
-    setFtrReferralCounts(sortedFtrReferralsDataPoints.map(
-      (element) => (element.count),
-    ));
-    setStateSupervisionProportions(sortedSupervisionDataPoints.map(
-      (element) => (100 * (element.count / totalSupervisionPopulation)),
-    ));
-    setStateSupervisionCounts(sortedSupervisionDataPoints.map(
-      (element) => (element.count),
-    ));
-  };
-
-  useEffect(() => {
-    processResponse();
-  }, [
-    props.ftrReferralsByGender,
-    props.metricType,
-    props.metricPeriodMonths,
-    props.supervisionType,
-    props.district,
-  ]);
+  const ftrReferralCounts = map("referralCount", filteredFtrReferrals);
+  const stateSupervisionProportions = map(
+    (data) => 100 * (data.supervisionPopulation / totalSupervisionPopulation),
+    filteredFtrReferrals
+  );
+  const stateSupervisionCounts = map(
+    "supervisionPopulation",
+    filteredFtrReferrals
+  );
 
   const countsChart = (
     <Bar
@@ -118,17 +99,17 @@ const FtrReferralsByGender = (props) => {
         labels: chartLabels,
         datasets: [
           {
-            label: 'Referrals',
-            backgroundColor: COLORS['blue-standard'],
-            hoverBackgroundColor: COLORS['blue-standard'],
-            yAxisID: 'y-axis-left',
+            label: "Referrals",
+            backgroundColor: COLORS["blue-standard"],
+            hoverBackgroundColor: COLORS["blue-standard"],
+            yAxisID: "y-axis-left",
             data: ftrReferralCounts,
           },
           {
-            label: 'Supervision Population',
-            backgroundColor: COLORS['blue-standard-2'],
-            hoverBackgroundColor: COLORS['blue-standard-2'],
-            yAxisID: 'y-axis-left',
+            label: "Supervision Population",
+            backgroundColor: COLORS["blue-standard-2"],
+            hoverBackgroundColor: COLORS["blue-standard-2"],
+            yAxisID: "y-axis-left",
             data: stateSupervisionCounts,
           },
         ],
@@ -137,39 +118,48 @@ const FtrReferralsByGender = (props) => {
         responsive: true,
         legend: {
           display: true,
-          position: 'bottom',
+          position: "bottom",
         },
         tooltips: {
-          backgroundColor: COLORS['grey-800-light'],
-          mode: 'index',
-          callbacks: tooltipForCountChart(ftrReferralCounts, 'Referral', stateSupervisionCounts, 'Supervision'),
+          backgroundColor: COLORS["grey-800-light"],
+          mode: "index",
+          callbacks: tooltipForCountChart(
+            ftrReferralCounts,
+            "Referral",
+            stateSupervisionCounts,
+            "Supervision"
+          ),
         },
         scaleShowValues: true,
         scales: {
-          yAxes: [{
-            stacked: false,
-            ticks: {
-              beginAtZero: true,
-              min: undefined,
-              max: undefined,
+          yAxes: [
+            {
+              stacked: false,
+              ticks: {
+                beginAtZero: true,
+                min: undefined,
+                max: undefined,
+              },
+              position: "left",
+              id: "y-axis-left",
+              scaleLabel: {
+                display: true,
+                labelString: "Count",
+              },
             },
-            position: 'left',
-            id: 'y-axis-left',
-            scaleLabel: {
-              display: true,
-              labelString: 'Count',
+          ],
+          xAxes: [
+            {
+              stacked: false,
+              ticks: {
+                autoSkip: false,
+              },
+              scaleLabel: {
+                display: true,
+                labelString: "Gender",
+              },
             },
-          }],
-          xAxes: [{
-            stacked: false,
-            ticks: {
-              autoSkip: false,
-            },
-            scaleLabel: {
-              display: true,
-              labelString: 'Gender',
-            },
-          }],
+          ],
         },
       }}
     />
@@ -179,52 +169,46 @@ const FtrReferralsByGender = (props) => {
     <Bar
       id={chartId}
       data={{
-        labels: ['Referrals', 'Supervision Population'],
-        datasets: [{
-          label: chartLabels[0],
-          backgroundColor: COLORS_STACKED_TWO_VALUES_ALT[0],
-          hoverBackgroundColor: COLORS_STACKED_TWO_VALUES_ALT[0],
-          hoverBorderColor: COLORS_STACKED_TWO_VALUES_ALT[0],
-          data: [
-            ftrReferralProportions[0],
-            stateSupervisionProportions[0],
-          ],
-        }, {
-          label: chartLabels[1],
-          backgroundColor: COLORS_STACKED_TWO_VALUES_ALT[1],
-          hoverBackgroundColor: COLORS_STACKED_TWO_VALUES_ALT[1],
-          hoverBorderColor: COLORS_STACKED_TWO_VALUES_ALT[1],
-          data: [
-            ftrReferralProportions[1],
-            stateSupervisionProportions[1],
-          ],
-        },
-        ],
+        labels: ["Referrals", "Supervision Population"],
+        datasets: map(
+          (i) => ({
+            label: chartLabels[i],
+            backgroundColor: COLORS_STACKED_TWO_VALUES_ALT[i],
+            hoverBackgroundColor: COLORS_STACKED_TWO_VALUES_ALT[i],
+            hoverBorderColor: COLORS_STACKED_TWO_VALUES_ALT[i],
+            data: [ftrReferralProportions[i], stateSupervisionProportions[i]],
+          }),
+          range(0, 2)
+        ),
       }}
       options={{
         scales: {
-          xAxes: [{
-            stacked: true,
-          }],
-          yAxes: [{
-            scaleLabel: {
-              display: true,
-              labelString: 'Percentage',
+          xAxes: [
+            {
+              stacked: true,
             },
-            stacked: true,
-            ticks: {
-              min: 0,
-              max: 100,
+          ],
+          yAxes: [
+            {
+              scaleLabel: {
+                display: true,
+                labelString: "Percentage",
+              },
+              stacked: true,
+              ticks: {
+                min: 0,
+                max: 100,
+              },
             },
-          }],
+          ],
         },
         responsive: true,
         legend: {
-          position: 'bottom',
+          position: "bottom",
         },
         tooltips: {
-          backgroundColor: COLORS['grey-800-light'],
-          mode: 'dataset',
+          backgroundColor: COLORS["grey-800-light"],
+          mode: "dataset",
           intersect: true,
           callbacks: tooltipForRateChart(),
         },
@@ -233,19 +217,24 @@ const FtrReferralsByGender = (props) => {
   );
 
   let activeChart = countsChart;
-  if (props.metricType === 'rates') {
+  if (metricType === "rates") {
     activeChart = ratesChart;
   }
 
-  const exportedStructureCallback = () => (
-    {
-      metric: 'FTR Referrals by Gender',
-      series: [],
-    });
+  const exportedStructureCallback = () => ({
+    metric: "FTR Referrals by Gender",
+    series: [],
+  });
 
-  configureDownloadButtons(chartId, 'FTR REFERRALS BY GENDER',
-    activeChart.props.data.datasets, activeChart.props.data.labels,
-    document.getElementById(chartId), exportedStructureCallback, props);
+  configureDownloadButtons(
+    chartId,
+    "FTR REFERRALS BY GENDER",
+    activeChart.props.data.datasets,
+    activeChart.props.data.labels,
+    document.getElementById(chartId),
+    exportedStructureCallback,
+    { supervisionType, district, metricPeriodMonths, metricType }
+  );
 
   return activeChart;
 };

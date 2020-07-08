@@ -15,54 +15,56 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React, { useState, useEffect } from 'react';
-import { Bar } from 'react-chartjs-2';
+import React from "react";
+import PropTypes from "prop-types";
 
-import { COLORS_SEVEN_VALUES } from '../../../assets/scripts/constants/colors';
-import { getPerOfficerChartDefinition } from '../BarCharts';
+import { COLORS_SEVEN_VALUES } from "../../../assets/scripts/constants/colors";
+import PerOfficerBarChart from "../common/bars/PerOfficerBarChart";
 
-const chartId = 'caseTerminationsByOfficer';
+const chartId = "caseTerminationsByOfficer";
 
-export const getBarChartDefinition = (props) => {
-  return getPerOfficerChartDefinition({
-    chartId,
-    exportLabel: 'Case terminations by officer',
-    countsPerPeriodPerOfficer: props.terminationCountsByOfficer,
-    officeData: props.officeData,
-    metricType: props.metricType,
-    metricPeriodMonths: props.metricPeriodMonths,
-    supervisionType: props.supervisionType,
-    district: props.district,
-    bars: [
-      { key: 'absconsion', label: 'Absconsion' },
-      { key: 'revocation', label: 'Revocation' },
-      { key: 'suspension', label: 'Suspension' },
-      { key: 'discharge', label: 'Discharge' },
-      { key: 'expiration', label: 'Expiration' },
-      { key: 'death', label: 'Death' },
-      { key: 'other', label: 'Other' },
-    ],
-    yAxisLabel: props.metricType === 'counts' ? 'Case terminations' : 'Percentage',
-    barColorPalette: COLORS_SEVEN_VALUES,
-  });
+const CaseTerminationsByOfficer = ({
+  terminationCountsByOfficer,
+  officeData,
+  metricType,
+  metricPeriodMonths,
+  supervisionType,
+  district,
+}) => (
+  <PerOfficerBarChart
+    chartId={chartId}
+    exportLabel="Case terminations by officer"
+    countsPerPeriodPerOfficer={terminationCountsByOfficer}
+    officeData={officeData}
+    metricType={metricType}
+    metricPeriodMonths={metricPeriodMonths}
+    supervisionType={supervisionType}
+    district={district}
+    bars={[
+      { key: "absconsion", label: "Absconsion" },
+      { key: "revocation", label: "Revocation" },
+      { key: "suspension", label: "Suspension" },
+      { key: "discharge", label: "Discharge" },
+      { key: "expiration", label: "Expiration" },
+      { key: "death", label: "Death" },
+      { key: "other", label: "Other" },
+    ]}
+    yAxisLabel={metricType === "counts" ? "Case terminations" : "Percentage"}
+    barColorPalette={COLORS_SEVEN_VALUES}
+  />
+);
+
+CaseTerminationsByOfficer.defaultProps = {
+  terminationCountsByOfficer: [],
 };
 
-const CaseTerminationsByOfficer = (props) => {
-  const [chartDefinition, setChartDefinition] = useState(null);
-
-  useEffect(() => {
-    setChartDefinition(getBarChartDefinition(props));
-  }, [
-    props.revocationCountsByOfficer,
-    props.metricType,
-    props.metricPeriodMonths,
-    props.supervisionType,
-    props.district,
-  ]);
-
-  if (!chartDefinition) return null;
-
-  return <Bar {...chartDefinition} />;
+CaseTerminationsByOfficer.propTypes = {
+  terminationCountsByOfficer: PropTypes.arrayOf(PropTypes.shape({})),
+  metricType: PropTypes.string.isRequired,
+  metricPeriodMonths: PropTypes.string.isRequired,
+  supervisionType: PropTypes.string.isRequired,
+  district: PropTypes.arrayOf(PropTypes.string).isRequired,
+  officeData: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
 };
 
 export default CaseTerminationsByOfficer;

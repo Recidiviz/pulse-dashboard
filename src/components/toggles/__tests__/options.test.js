@@ -24,7 +24,7 @@ import {
 
 describe("Filter default values", () => {
   it("should be right", () => {
-    expect(defaultDistrict).toBe("all");
+    expect(defaultDistrict).toEqual(["all"]);
     expect(defaultMetricPeriod).toBe("12");
     expect(defaultMetricType).toBe("counts");
     expect(defaultSupervisionType).toBe("all");
