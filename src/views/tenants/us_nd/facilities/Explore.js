@@ -59,12 +59,13 @@ const importantNotes = [
   {
     header: "LOCATION FILTER",
     body: `Selecting a location filters charts to only show data from individuals living in that
-      location currently or prior to incarceration. Specifically, the county of residence is
-      determined by an individual's most recent home address. If the most recent address is that
-      of a ND DOCR facility or parole and probation office, the last known non-incarcerated address
-      is used. Of note: just over 40% of people are missing location data. For approximately 28% of
-      people, this is because there is no known non-incarcerated address. For approximately 13% of
-      people, this is because the last known non-incarcerated address is outside of North Dakota.`,
+      county or set of counties currently or prior to incarceration. Specifically, the county of
+      residence is determined by an individual's most recent home address. If the most recent
+      address is that of a ND DOCR facility or parole and probation office, the last known
+      non-incarcerated address is used. Of note: just over 40% of people are missing location data.
+      For approximately 28% of people, this is because there is no known non-incarcerated address.
+      For approximately 13% of people, this is because the last known non-incarcerated address is
+      outside of North Dakota.`,
   },
   {
     header: "DATA PULLED FROM ELITE & DOCSTARS",
