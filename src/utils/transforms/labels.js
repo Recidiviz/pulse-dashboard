@@ -15,6 +15,11 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
+import capitalize from "lodash/fp/capitalize"
+import lowerCase from "lodash/fp/lowerCase"
+import pipe from "lodash/fp/pipe";
+import startCase from "lodash/fp/startCase"
+
 const riskLevelValuetoLabel = {
   NOT_ASSESSED: 'Not Assessed',
   LOW: 'Low',
@@ -113,9 +118,7 @@ function toTitleCase(str) {
   );
 }
 
-function humanReadableTitleCase(str) {
-  return toTitleCase(toHumanReadable(str));
-}
+const humanReadableTitleCase = pipe(lowerCase, startCase);
 
 /*
  * Returns the officer id from the canonical id format, '123: Firstname Lastname'.

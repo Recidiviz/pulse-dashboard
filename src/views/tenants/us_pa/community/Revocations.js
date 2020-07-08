@@ -31,7 +31,6 @@ import {
   DEFAULT_METRIC_PERIOD,
   DEFAULT_CHARGE_CATEGORY,
   DEFAULT_DISTRICT,
-  DEFAULT_SUPERVISION_TYPE,
 } from "../../../../components/charts/new_revocations/ToggleBar/options";
 
 const stateCode = "us_pa";
@@ -41,7 +40,6 @@ const Revocations = () => {
     metricPeriodMonths: DEFAULT_METRIC_PERIOD,
     chargeCategory: DEFAULT_CHARGE_CATEGORY,
     district: DEFAULT_DISTRICT,
-    supervisionType: DEFAULT_SUPERVISION_TYPE,
     reportedViolations: "",
     violationType: "",
   });
@@ -61,7 +59,7 @@ const Revocations = () => {
       <div className="bgc-white p-20 m-20">
         <RevocationCountOverTime
           dataFilter={applyAllFilters(filters)}
-          skippedFilters={["metricPeriodMonths"]}
+          skippedFilters={["metricPeriodMonths", "supervisionType"]}
           filterStates={filters}
           metricPeriodMonths={filters.metricPeriodMonths}
           stateCode={stateCode}
