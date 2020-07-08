@@ -52,6 +52,9 @@ export const prependAllOption = (options) => [
   ...options,
 ];
 
+const findOptionByValue = (options, value) =>
+  options.find((option) => value === option.value);
+
 const ToggleBar = ({ filters, stateCode, updateFilters }) => {
   const { isLoading, apiData } = useChartData(
     `${stateCode}/newRevocations`,
@@ -98,54 +101,68 @@ const ToggleBar = ({ filters, stateCode, updateFilters }) => {
     <Sticky style={TOGGLE_STYLE}>
       <>
         <div className="top-level-filters d-f">
-          <div className={topLevelFilterClassName}>
-            <h4 className={titleLevelClassName}>
-              Time
-              <br style={{ display: isTopBarShrinking ? "block" : "none" }} />
-              Period
-            </h4>
-            <Select
-              className="select-align"
-              options={METRIC_PERIODS}
-              onChange={(option) => {
-                updateFilters({ metricPeriodMonths: option.value });
-              }}
-              value={METRIC_PERIODS.filter(
-                (option) => option.value === filters.metricPeriodMonths
-              )}
-            />
-          </div>
-          <div className={topLevelFilterClassName}>
-            <h4 className={titleLevelClassName}>District</h4>
-            <Select
-              className="select-align"
-              options={districts}
-              onChange={(option) => updateFilters({ district: option.value })}
-              defaultValue={DEFAULT_BASE_DISTRICT}
-            />
-          </div>
-          <div className={topLevelFilterClassName}>
-            <h4 className={titleLevelClassName}>Case Type</h4>
-            <Select
-              className="select-align"
-              options={CHARGE_CATEGORIES}
-              onChange={(option) => {
-                updateFilters({ chargeCategory: option.value });
-              }}
-              defaultValue={CHARGE_CATEGORIES[0]}
-            />
-          </div>
-          <div className={topLevelFilterClassName}>
-            <h4 className={titleLevelClassName}>Supervision Type</h4>
-            <Select
-              className="select-align"
-              options={SUPERVISION_TYPES}
-              onChange={(option) => {
-                updateFilters({ supervisionType: option.value });
-              }}
-              defaultValue={SUPERVISION_TYPES[0]}
-            />
-          </div>
+          {filters.metricPeriodMonths && (
+            <div className={topLevelFilterClassName}>
+              <h4 className={titleLevelClassName}>
+                Time
+                <br style={{ display: isTopBarShrinking ? "block" : "none" }} />
+                Period
+              </h4>
+              <Select
+                className="select-align"
+                options={METRIC_PERIODS}
+                onChange={(option) => {
+                  updateFilters({ metricPeriodMonths: option.value });
+                }}
+                value={METRIC_PERIODS.filter(
+                  (option) => option.value === filters.metricPeriodMonths
+                )}
+              />
+            </div>
+          )}
+          {filters.district && (
+            <div className={topLevelFilterClassName}>
+              <h4 className={titleLevelClassName}>District</h4>
+              <Select
+                className="select-align"
+                options={districts}
+                onChange={(option) => updateFilters({ district: option.value })}
+                value={findOptionByValue(districts, filters.district)}
+              />
+            </div>
+          )}
+          {filters.chargeCategory && (
+            <div className={topLevelFilterClassName}>
+              <h4 className={titleLevelClassName}>Case Type</h4>
+              <Select
+                className="select-align"
+                options={CHARGE_CATEGORIES}
+                onChange={(option) => {
+                  updateFilters({ chargeCategory: option.value });
+                }}
+                value={findOptionByValue(
+                  CHARGE_CATEGORIES,
+                  filters.chargeCategory
+                )}
+              />
+            </div>
+          )}
+          {filters.supervisionType && (
+            <div className={topLevelFilterClassName}>
+              <h4 className={titleLevelClassName}>Supervision Type</h4>
+              <Select
+                className="select-align"
+                options={SUPERVISION_TYPES}
+                onChange={(option) => {
+                  updateFilters({ supervisionType: option.value });
+                }}
+                value={findOptionByValue(
+                  SUPERVISION_TYPES,
+                  filters.supervisionType
+                )}
+              />
+            </div>
+          )}
         </div>
 
         {formattedMatrixFilters && (
