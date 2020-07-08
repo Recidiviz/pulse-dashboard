@@ -44,6 +44,7 @@ import {
 } from "../../../../components/toggles/options";
 // eslint-disable-next-line import/no-cycle
 import useChartData from "../../../../hooks/useChartData";
+import { isOfficerIdsHidden } from "../../../../components/charts/common/bars/utils";
 
 const importantNotes = [
   {
@@ -162,9 +163,9 @@ const CommunityExplore = () => {
         chartTitle={
           <>
             REVOCATION ADMISSIONS BY OFFICER
-            {district[0] === "all" && (
+            {isOfficerIdsHidden(district) && (
               <WarningIcon
-                tooltipText="Exporting this chart as an image will not include officer IDs unless a specific P&P office is selected from the explore bar."
+                tooltipText="Exporting this chart as an image will not include officer IDs unless 3 or fewer P&P offices are selected from the explore bar."
                 className="pL-10 toggle-alert"
               />
             )}
@@ -396,9 +397,9 @@ const CommunityExplore = () => {
         chartTitle={
           <>
             CASE TERMINATIONS BY OFFICER
-            {district[0] === "all" && (
+            {isOfficerIdsHidden(district) && (
               <WarningIcon
-                tooltipText="Exporting this chart as an image will not include officer IDs unless a specific P&P office is selected from the explore bar."
+                tooltipText="Exporting this chart as an image will not include officer IDs unless 3 or fewer P&P offices are selected from the explore bar."
                 className="pL-10 toggle-alert"
               />
             )}

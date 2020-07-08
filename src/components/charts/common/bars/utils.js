@@ -112,3 +112,6 @@ export function configureDownloads(
     convertValuesToNumbers
   );
 }
+
+export const isOfficerIdsHidden = (offices) =>
+  (offices.length === 1 && offices[0] === "all") || offices.length > 3;

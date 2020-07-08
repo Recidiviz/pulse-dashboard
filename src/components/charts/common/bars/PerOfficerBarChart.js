@@ -40,6 +40,7 @@ import {
   isValidOfficer,
   mergeAllResolver,
   configureDownloads,
+  isOfficerIdsHidden,
 } from "./utils";
 import { COLORS } from "../../../../assets/scripts/constants/colors";
 import {
@@ -110,10 +111,6 @@ const PerOfficerBarChart = ({
     {},
     officeData
   );
-
-  const isOfficerIdsHidden =
-    (visibleOffices.length === 1 && visibleOffices[0] === "all") ||
-    visibleOffices.length > 2;
 
   const normalizedData = pipe(
     // filter data
@@ -191,7 +188,7 @@ const PerOfficerBarChart = ({
               },
               stacked: true,
               ticks: {
-                display: !isOfficerIdsHidden,
+                display: !isOfficerIdsHidden(visibleOffices),
                 autoSkip: false,
               },
             },
