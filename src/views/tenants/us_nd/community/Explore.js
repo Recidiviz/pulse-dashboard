@@ -67,6 +67,11 @@ const importantNotes = [
       are included whether or not they result in incarceration.`,
   },
   {
+    header: "OFFICE FILTER",
+    body: `Selecting an office or set of offices filters charts to only show data from people
+      being supervised out of those office(s).`,
+  },
+  {
     header: "DATA PULLED FROM ELITE & DOCSTARS",
     body: `Data in the dashboard is updated nightly using information pulled from Elite and Docstars.`,
   },
