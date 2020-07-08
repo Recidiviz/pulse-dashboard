@@ -12,6 +12,7 @@ public/
 !server/utils/*.js
 !src/App.js
 !src/index.js
+!src/assets/scripts/utils/__tests__/**/*.js
 !src/components/StateSelector.js
 !src/components/TenantRoutes.js
 !src/components/controls/**/*.js

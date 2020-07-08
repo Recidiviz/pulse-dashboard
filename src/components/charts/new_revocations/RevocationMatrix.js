@@ -90,7 +90,7 @@ const RevocationMatrix = (props) => {
 
   const exportableMatrixData = () => {
     const datasets = [];
-    Object.keys(dataMatrix).forEach((rowLabel) => {
+    Object.keys(matrixViolationTypeToLabel).forEach((rowLabel) => {
       const dataset = { label: rowLabel, data: [] };
       const rowValues = dataMatrix[rowLabel] || {};
       VIOLATION_COUNTS.forEach((columnLabel) => {

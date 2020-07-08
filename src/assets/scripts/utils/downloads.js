@@ -1,5 +1,5 @@
 // Recidiviz - a data platform for criminal justice reform
-// Copyright (C) 2019 Recidiviz, Inc.
+// Copyright (C) 2020 Recidiviz, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -17,6 +17,7 @@
 
 import downloadjs from 'downloadjs';
 import * as csvExport from 'jsonexport/dist';
+
 import { timeStamp } from './time';
 import infoAboutChart from '../../../utils/charts/info';
 import JSZip from 'jszip';
@@ -101,13 +102,52 @@ function getFilterValue(filterValue, descriptionPlural, descriptionOne) {
   }
 }
 
-function getFilters(toggleStates) {
-  return [
-    getFilterValue(toggleStates.metricPeriodMonths, "months", "month"),
-    getFilterValue(toggleStates.district, "districts", "District: "),
-    getFilterValue(toggleStates.chargeCategory, "case types", "Case Type: "),
-    getFilterValue(toggleStates.supervisionType, "supervision types", "Supervision type: ")
-  ].join(", ");
+function formatMetricPeriodMonthsFilter(metricPeriodMonths) {
+  switch (metricPeriodMonths) {
+    case "1": return "1 month";
+    case "3": return "3 months";
+    case "6": return "6 months";
+    case "12": return "1 year";
+    case "36": return "3 years";
+    default: return "1 month";
+  }
+}
+
+const formatDistrict = (district) =>
+  district === "All"
+    ? "All districts"
+    : `District: ${district}`;
+
+const formatChargeCategory = (chargeCategory) =>
+  chargeCategory === "All"
+    ? "All case types"
+    : `Case type: ${humanReadableTitleCase(chargeCategory)}`;
+
+const formatSupervisionType = (supervisionType) =>
+  supervisionType === "All"
+    ? "All supervision types"
+    : `Supervision type: ${humanReadableTitleCase(supervisionType)}`;
+
+export function getFilters(toggleStates) {
+  const filters = [];
+
+  if (toggleStates.metricPeriodMonths) {
+    filters.push(formatMetricPeriodMonthsFilter(toggleStates.metricPeriodMonths));
+  }
+
+  if (toggleStates.district) {
+    filters.push(formatDistrict(toggleStates.district));
+  }
+
+  if (toggleStates.chargeCategory) {
+    filters.push(formatChargeCategory(toggleStates.chargeCategory));
+  }
+
+  if (toggleStates.supervisionType) {
+    filters.push(formatSupervisionType(toggleStates.supervisionType));
+  }
+
+  return filters.join(", ")
 }
 
 function getViolation(toggleStates) {
