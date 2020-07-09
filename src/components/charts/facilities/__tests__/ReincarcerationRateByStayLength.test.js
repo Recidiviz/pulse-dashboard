@@ -129,7 +129,7 @@ describe("test for component ReincarcerationRateByStayLength", () => {
     renderer.render(
       <ReincarcerationRateByStayLength
         metricType="rates"
-        district="ALL"
+        district={["all"]}
         ratesByStayLength={ratesByStayLength}
       />
     );
@@ -170,7 +170,7 @@ describe("test for component ReincarcerationRateByStayLength", () => {
     renderer.render(
       <ReincarcerationRateByStayLength
         metricType="counts"
-        district="ALL"
+        district={["all"]}
         ratesByStayLength={ratesByStayLength}
       />
     );

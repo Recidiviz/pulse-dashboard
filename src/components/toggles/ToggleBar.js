@@ -126,10 +126,12 @@ const ToggleBar = ({
                   <div className="toggle-filters__select">
                     <Select
                       options={districtOptions}
-                      onChange={(option) => {
-                        setChartDistrict(`${option.value}`);
+                      onChange={(options) => {
+                        setChartDistrict(options.map((o) => String(o.value)));
                       }}
-                      defaultValue={defaultDistrictOption}
+                      isMulti
+                      allOption={defaultDistrictOption}
+                      defaultValue={[defaultDistrictOption]}
                     />
                   </div>
                 </div>

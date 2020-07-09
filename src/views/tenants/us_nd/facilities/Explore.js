@@ -22,6 +22,7 @@ import Loading from "../../../../components/Loading";
 import ChartCard from "../../../../components/charts/ChartCard";
 import GeoViewTimeChart from "../../../../components/charts/GeoViewTimeChart";
 import Methodology from "../../../../components/charts/Methodology";
+import MethodologyCollapse from "../../../../components/charts/MethodologyCollapse";
 import PeriodLabel from "../../../../components/charts/PeriodLabel";
 import WarningIcon from "../../../../components/charts/WarningIcon";
 import AdmissionsVsReleases from "../../../../components/charts/facilities/AdmissionsVsReleases";
@@ -38,26 +39,6 @@ import {
 // eslint-disable-next-line import/no-cycle
 import useChartData from "../../../../hooks/useChartData";
 import { getYearFromNow } from "../../../../utils/transforms/years";
-import MethodologyCollapse from "../../../../components/charts/MethodologyCollapse";
-
-const getReincarcerationRateByStayLengthFooter = () => (
-  <div className="layer bdT p-20 w-100">
-    <div className="peers ai-c jc-c gapX-20">
-      <div className="peer">
-        <span className="fsz-def fw-600 mR-10 c-grey-800">
-          <small className="c-grey-500 fw-600">Release Cohort </small>
-          {getYearFromNow(-2)}
-        </span>
-      </div>
-      <div className="peer fw-600">
-        <span className="fsz-def fw-600 mR-10 c-grey-800">
-          {/* eslint-disable-next-line react/jsx-one-expression-per-line */}
-          <small className="c-grey-500 fw-600">Follow Up Period </small> 1 year
-        </span>
-      </div>
-    </div>
-  </div>
-);
 
 const importantNotes = [
   {
@@ -78,12 +59,13 @@ const importantNotes = [
   {
     header: "LOCATION FILTER",
     body: `Selecting a location filters charts to only show data from individuals living in that
-      location currently or prior to incarceration. Specifically, the county of residence is
-      determined by an individual's most recent home address. If the most recent address is that
-      of a ND DOCR facility or parole and probation office, the last known non-incarcerated address
-      is used. Of note: just over 40% of people are missing location data. For approximately 28% of
-      people, this is because there is no known non-incarcerated address. For approximately 13% of
-      people, this is because the last known non-incarcerated address is outside of North Dakota.`,
+      county or set of counties currently or prior to incarceration. Specifically, the county of
+      residence is determined by an individual's most recent home address. If the most recent
+      address is that of a ND DOCR facility or parole and probation office, the last known
+      non-incarcerated address is used. Of note: just over 40% of people are missing location data.
+      For approximately 28% of people, this is because there is no known non-incarcerated address.
+      For approximately 13% of people, this is because the last known non-incarcerated address is
+      outside of North Dakota.`,
   },
   {
     header: "DATA PULLED FROM ELITE & DOCSTARS",
@@ -184,6 +166,7 @@ const FacilitiesExplore = () => {
             district={district}
             disableGoal
             reincarcerationCountsByMonth={apiData.reincarcerations_by_month}
+            stateCode="US_ND"
           />
         }
         geoChart={
@@ -209,7 +192,7 @@ const FacilitiesExplore = () => {
         chartTitle={
           <>
             DAYS AT LIBERTY (AVERAGE)
-            {(metricType === "rates" || district !== "all") && (
+            {(metricType === "rates" || district[0] !== "all") && (
               <WarningIcon
                 tooltipText="This graph is showing average days at liberty for all reincarcerated individuals. It does not support showing this metric as a rate. This chart does not yet support filtering by county of residence."
                 className="pL-10 toggle-alert"
@@ -222,6 +205,7 @@ const FacilitiesExplore = () => {
             metricPeriodMonths={metricPeriodMonths}
             disableGoal
             daysAtLibertyByMonth={apiData.avg_days_at_liberty_by_month}
+            stateCode="US_ND"
           />
         }
         footer={<Methodology chartId="daysAtLibertySnapshot" />}
@@ -262,7 +246,7 @@ const FacilitiesExplore = () => {
         chartTitle={
           <>
             ADMISSIONS BY TYPE
-            {district !== "all" && (
+            {district[0] !== "all" && (
               <WarningIcon
                 tooltipText="This graph does not yet support filtering by county of residence."
                 className="pL-10 toggle-alert"
@@ -275,7 +259,7 @@ const FacilitiesExplore = () => {
             metricType={metricType}
             supervisionType="all"
             metricPeriodMonths={metricPeriodMonths}
-            district="all"
+            district={["all"]}
             admissionCountsByType={apiData.admissions_by_type_by_period}
           />
         }
@@ -343,7 +327,25 @@ const FacilitiesExplore = () => {
         footer={
           <>
             <Methodology chartId="reincarcerationRateByStayLength" />
-            {getReincarcerationRateByStayLengthFooter()}
+            <div className="layer bdT p-20 w-100">
+              <div className="peers ai-c jc-c gapX-20">
+                <div className="peer">
+                  <span className="fsz-def fw-600 mR-10 c-grey-800">
+                    <small className="c-grey-500 fw-600">Release Cohort </small>
+                    {getYearFromNow(-2)}
+                  </span>
+                </div>
+                <div className="peer fw-600">
+                  <span className="fsz-def fw-600 mR-10 c-grey-800">
+                    <small className="c-grey-500 fw-600">
+                      {/* eslint-disable-next-line react/jsx-one-expression-per-line */}
+                      Follow Up Period{" "}
+                    </small>
+                    1 year
+                  </span>
+                </div>
+              </div>
+            </div>
           </>
         }
       />

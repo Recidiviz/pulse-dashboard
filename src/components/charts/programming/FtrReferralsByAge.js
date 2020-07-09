@@ -1,5 +1,5 @@
 // Recidiviz - a data platform for criminal justice reform
-// Copyright (C) 2019 Recidiviz, Inc.
+// Copyright (C) 2020 Recidiviz, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -15,118 +15,115 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React, { useState, useEffect } from 'react';
-import { Bar } from 'react-chartjs-2';
+import React from "react";
+import { Bar } from "react-chartjs-2";
 
-import { COLORS, COLORS_FIVE_VALUES } from '../../../assets/scripts/constants/colors';
-import { configureDownloadButtons } from '../../../assets/scripts/utils/downloads';
+import pipe from "lodash/fp/pipe";
+
 import {
-  filterDatasetBySupervisionType, filterDatasetByDistrict,
+  COLORS,
+  COLORS_FIVE_VALUES,
+} from "../../../assets/scripts/constants/colors";
+import { configureDownloadButtons } from "../../../assets/scripts/utils/downloads";
+import {
+  filterDatasetBySupervisionType,
+  filterDatasetByDistrict,
   filterDatasetByMetricPeriodMonths,
-} from '../../../utils/charts/toggles';
-import { tooltipForCountChart, tooltipForRateChart } from '../../../utils/charts/tooltips';
-import { toInt } from '../../../utils/transforms/labels';
+} from "../../../utils/charts/toggles";
+import {
+  tooltipForCountChart,
+  tooltipForRateChart,
+} from "../../../utils/charts/tooltips";
+import { toInt } from "../../../utils/transforms/labels";
 
-const FtrReferralsByAge = (props) => {
-  const [chartLabels, setChartLabels] = useState([]);
-  const [ftrReferralProportions, setFtrReferralProportions] = useState([]);
-  const [stateSupervisionProportions, setStateSupervisionProportions] = useState([]);
-  const [ftrReferralCounts, setFtrReferralCounts] = useState([]);
-  const [stateSupervisionCounts, setStateSupervisionCounts] = useState([]);
+const chartId = "ftrReferralsByAge";
+const ageBucketLabels = ["<25", "25-29", "30-34", "35-39", "40<"];
+const ageBucketDisplayLabels = [
+  "Under 25",
+  "25-29",
+  "30-34",
+  "35-39",
+  "40 and over",
+];
 
-  const chartId = 'ftrReferralsByAge';
-  const ageBucketLabels = ['<25', '25-29', '30-34', '35-39', '40<'];
-  const ageBucketDisplayLabels = ['Under 25', '25-29', '30-34', '35-39', '40 and over'];
+const FtrReferralsByAge = ({
+  ftrReferralsByAge,
+  supervisionType,
+  district,
+  metricPeriodMonths,
+  metricType,
+}) => {
+  const filteredFtrReferrals = pipe(
+    (dataset) => filterDatasetBySupervisionType(dataset, supervisionType),
+    (dataset) => filterDatasetByDistrict(dataset, district),
+    (dataset) => filterDatasetByMetricPeriodMonths(dataset, metricPeriodMonths)
+  )(ftrReferralsByAge);
 
-  const processResponse = () => {
-    const { ftrReferralsByAge } = props;
+  let totalFtrReferrals = 0;
+  let totalSupervisionPopulation = 0;
+  const ftrReferralDataPoints = {};
+  const supervisionDataPoints = {};
 
-    let filteredFtrReferrals = filterDatasetBySupervisionType(
-      ftrReferralsByAge, props.supervisionType,
-    );
+  if (filteredFtrReferrals) {
+    filteredFtrReferrals.forEach((data) => {
+      let { age_bucket: age } = data;
 
-    filteredFtrReferrals = filterDatasetByDistrict(
-      filteredFtrReferrals, props.district,
-    );
-
-    filteredFtrReferrals = filterDatasetByMetricPeriodMonths(
-      filteredFtrReferrals, props.metricPeriodMonths,
-    );
-
-    let totalFtrReferrals = 0;
-    let totalSupervisionPopulation = 0;
-    const ftrReferralDataPoints = {};
-    const supervisionDataPoints = {};
-
-    if (filteredFtrReferrals) {
-      filteredFtrReferrals.forEach((data) => {
-        let { age_bucket: age } = data;
-
-        if (age === '0-24') {
-          age = 'Under 25';
-        } else if (age === '40+') {
-          age = '40 and over';
-        }
-
-        const referralCount = toInt(data.count, 10);
-
-        if (!ftrReferralDataPoints[age]) {
-          ftrReferralDataPoints[age] = 0;
-        }
-        ftrReferralDataPoints[age] += referralCount;
-        totalFtrReferrals += referralCount;
-
-        const totalSupervisionCount = toInt(data.total_supervision_count);
-
-        if (!supervisionDataPoints[age]) {
-          supervisionDataPoints[age] = 0;
-        }
-        supervisionDataPoints[age] += totalSupervisionCount;
-        totalSupervisionPopulation += totalSupervisionCount;
-      });
-    }
-
-    const referralsByAgeCounts = [];
-    const referralsByAgeProportions = [];
-    const supervisionByAgeCounts = [];
-    const supervisionByAgeProportions = [];
-
-    for (let i = 0; i < ageBucketLabels.length; i += 1) {
-      const referralValue = ftrReferralDataPoints[ageBucketLabels[i]];
-      if (!referralValue || !totalFtrReferrals) {
-        referralsByAgeCounts.push(0);
-        referralsByAgeProportions.push(0);
-      } else {
-        referralsByAgeCounts.push(referralValue);
-        referralsByAgeProportions.push(100 * (referralValue / totalFtrReferrals));
+      if (age === "0-24") {
+        age = "Under 25";
+      } else if (age === "40+") {
+        age = "40 and over";
       }
 
-      const supervisionValue = supervisionDataPoints[ageBucketLabels[i]];
-      if (!supervisionValue || !totalSupervisionPopulation) {
-        supervisionByAgeCounts.push(0);
-        supervisionByAgeProportions.push(0);
-      } else {
-        supervisionByAgeCounts.push(supervisionValue);
-        supervisionByAgeProportions.push(100 * (supervisionValue / totalSupervisionPopulation));
+      const referralCount = toInt(data.count, 10);
+
+      if (!ftrReferralDataPoints[age]) {
+        ftrReferralDataPoints[age] = 0;
       }
+      ftrReferralDataPoints[age] += referralCount;
+      totalFtrReferrals += referralCount;
+
+      const totalSupervisionCount = toInt(data.total_supervision_count);
+
+      if (!supervisionDataPoints[age]) {
+        supervisionDataPoints[age] = 0;
+      }
+      supervisionDataPoints[age] += totalSupervisionCount;
+      totalSupervisionPopulation += totalSupervisionCount;
+    });
+  }
+
+  const referralsByAgeCounts = [];
+  const referralsByAgeProportions = [];
+  const supervisionByAgeCounts = [];
+  const supervisionByAgeProportions = [];
+
+  for (let i = 0; i < ageBucketLabels.length; i += 1) {
+    const referralValue = ftrReferralDataPoints[ageBucketLabels[i]];
+    if (!referralValue || !totalFtrReferrals) {
+      referralsByAgeCounts.push(0);
+      referralsByAgeProportions.push(0);
+    } else {
+      referralsByAgeCounts.push(referralValue);
+      referralsByAgeProportions.push(100 * (referralValue / totalFtrReferrals));
     }
 
-    setChartLabels(ageBucketDisplayLabels);
-    setFtrReferralCounts(referralsByAgeCounts);
-    setFtrReferralProportions(referralsByAgeProportions);
-    setStateSupervisionCounts(supervisionByAgeCounts);
-    setStateSupervisionProportions(supervisionByAgeProportions);
-  };
+    const supervisionValue = supervisionDataPoints[ageBucketLabels[i]];
+    if (!supervisionValue || !totalSupervisionPopulation) {
+      supervisionByAgeCounts.push(0);
+      supervisionByAgeProportions.push(0);
+    } else {
+      supervisionByAgeCounts.push(supervisionValue);
+      supervisionByAgeProportions.push(
+        100 * (supervisionValue / totalSupervisionPopulation)
+      );
+    }
+  }
 
-  useEffect(() => {
-    processResponse();
-  }, [
-    props.ftrReferralsByAge,
-    props.metricType,
-    props.metricPeriodMonths,
-    props.supervisionType,
-    props.district,
-  ]);
+  const chartLabels = ageBucketDisplayLabels;
+  const ftrReferralCounts = referralsByAgeCounts;
+  const ftrReferralProportions = referralsByAgeProportions;
+  const stateSupervisionCounts = supervisionByAgeCounts;
+  const stateSupervisionProportions = supervisionByAgeProportions;
 
   const countsChart = (
     <Bar
@@ -135,17 +132,17 @@ const FtrReferralsByAge = (props) => {
         labels: chartLabels,
         datasets: [
           {
-            label: 'Referrals',
-            backgroundColor: COLORS['blue-standard'],
-            hoverBackgroundColor: COLORS['blue-standard'],
-            yAxisID: 'y-axis-left',
+            label: "Referrals",
+            backgroundColor: COLORS["blue-standard"],
+            hoverBackgroundColor: COLORS["blue-standard"],
+            yAxisID: "y-axis-left",
             data: ftrReferralCounts,
           },
           {
-            label: 'Supervision Population',
-            backgroundColor: COLORS['blue-standard-2'],
-            hoverBackgroundColor: COLORS['blue-standard-2'],
-            yAxisID: 'y-axis-left',
+            label: "Supervision Population",
+            backgroundColor: COLORS["blue-standard-2"],
+            hoverBackgroundColor: COLORS["blue-standard-2"],
+            yAxisID: "y-axis-left",
             data: stateSupervisionCounts,
           },
         ],
@@ -154,39 +151,48 @@ const FtrReferralsByAge = (props) => {
         responsive: true,
         legend: {
           display: true,
-          position: 'bottom',
+          position: "bottom",
         },
         tooltips: {
-          backgroundColor: COLORS['grey-800-light'],
-          mode: 'index',
-          callbacks: tooltipForCountChart(ftrReferralCounts, 'Referral', stateSupervisionCounts, 'Supervision'),
+          backgroundColor: COLORS["grey-800-light"],
+          mode: "index",
+          callbacks: tooltipForCountChart(
+            ftrReferralCounts,
+            "Referral",
+            stateSupervisionCounts,
+            "Supervision"
+          ),
         },
         scaleShowValues: true,
         scales: {
-          yAxes: [{
-            stacked: false,
-            ticks: {
-              beginAtZero: true,
-              min: undefined,
-              max: undefined,
+          yAxes: [
+            {
+              stacked: false,
+              ticks: {
+                beginAtZero: true,
+                min: undefined,
+                max: undefined,
+              },
+              position: "left",
+              id: "y-axis-left",
+              scaleLabel: {
+                display: true,
+                labelString: "Count",
+              },
             },
-            position: 'left',
-            id: 'y-axis-left',
-            scaleLabel: {
-              display: true,
-              labelString: 'Count',
+          ],
+          xAxes: [
+            {
+              stacked: false,
+              ticks: {
+                autoSkip: false,
+              },
+              scaleLabel: {
+                display: true,
+                labelString: "Age",
+              },
             },
-          }],
-          xAxes: [{
-            stacked: false,
-            ticks: {
-              autoSkip: false,
-            },
-            scaleLabel: {
-              display: true,
-              labelString: 'Age',
-            },
-          }],
+          ],
         },
       }}
     />
@@ -196,116 +202,116 @@ const FtrReferralsByAge = (props) => {
     <Bar
       id={chartId}
       data={{
-        labels: ['Referrals', 'Supervision Population'],
-        datasets: [{
-          label: chartLabels[0],
-          backgroundColor: COLORS_FIVE_VALUES[0],
-          hoverBackgroundColor: COLORS_FIVE_VALUES[0],
-          hoverBorderColor: COLORS_FIVE_VALUES[0],
-          yAxisID: 'y-axis-left',
-          data: [
-            ftrReferralProportions[0],
-            stateSupervisionProportions[0],
-          ],
-        }, {
-          label: chartLabels[1],
-          backgroundColor: COLORS_FIVE_VALUES[1],
-          hoverBackgroundColor: COLORS_FIVE_VALUES[1],
-          hoverBorderColor: COLORS_FIVE_VALUES[1],
-          yAxisID: 'y-axis-left',
-          data: [
-            ftrReferralProportions[1],
-            stateSupervisionProportions[1],
-          ],
-        }, {
-          label: chartLabels[2],
-          backgroundColor: COLORS_FIVE_VALUES[2],
-          hoverBackgroundColor: COLORS_FIVE_VALUES[2],
-          hoverBorderColor: COLORS_FIVE_VALUES[2],
-          yAxisID: 'y-axis-left',
-          data: [
-            ftrReferralProportions[2],
-            stateSupervisionProportions[2],
-          ],
-        }, {
-          label: chartLabels[3],
-          backgroundColor: COLORS_FIVE_VALUES[3],
-          hoverBackgroundColor: COLORS_FIVE_VALUES[3],
-          hoverBorderColor: COLORS_FIVE_VALUES[3],
-          yAxisID: 'y-axis-left',
-          data: [
-            ftrReferralProportions[3],
-            stateSupervisionProportions[3],
-          ],
-        }, {
-          label: chartLabels[4],
-          backgroundColor: COLORS_FIVE_VALUES[4],
-          hoverBackgroundColor: COLORS_FIVE_VALUES[4],
-          hoverBorderColor: COLORS_FIVE_VALUES[4],
-          yAxisID: 'y-axis-left',
-          data: [
-            ftrReferralProportions[4],
-            stateSupervisionProportions[4],
-          ],
-        }],
+        labels: ["Referrals", "Supervision Population"],
+        datasets: [
+          {
+            label: chartLabels[0],
+            backgroundColor: COLORS_FIVE_VALUES[0],
+            hoverBackgroundColor: COLORS_FIVE_VALUES[0],
+            hoverBorderColor: COLORS_FIVE_VALUES[0],
+            yAxisID: "y-axis-left",
+            data: [ftrReferralProportions[0], stateSupervisionProportions[0]],
+          },
+          {
+            label: chartLabels[1],
+            backgroundColor: COLORS_FIVE_VALUES[1],
+            hoverBackgroundColor: COLORS_FIVE_VALUES[1],
+            hoverBorderColor: COLORS_FIVE_VALUES[1],
+            yAxisID: "y-axis-left",
+            data: [ftrReferralProportions[1], stateSupervisionProportions[1]],
+          },
+          {
+            label: chartLabels[2],
+            backgroundColor: COLORS_FIVE_VALUES[2],
+            hoverBackgroundColor: COLORS_FIVE_VALUES[2],
+            hoverBorderColor: COLORS_FIVE_VALUES[2],
+            yAxisID: "y-axis-left",
+            data: [ftrReferralProportions[2], stateSupervisionProportions[2]],
+          },
+          {
+            label: chartLabels[3],
+            backgroundColor: COLORS_FIVE_VALUES[3],
+            hoverBackgroundColor: COLORS_FIVE_VALUES[3],
+            hoverBorderColor: COLORS_FIVE_VALUES[3],
+            yAxisID: "y-axis-left",
+            data: [ftrReferralProportions[3], stateSupervisionProportions[3]],
+          },
+          {
+            label: chartLabels[4],
+            backgroundColor: COLORS_FIVE_VALUES[4],
+            hoverBackgroundColor: COLORS_FIVE_VALUES[4],
+            hoverBorderColor: COLORS_FIVE_VALUES[4],
+            yAxisID: "y-axis-left",
+            data: [ftrReferralProportions[4], stateSupervisionProportions[4]],
+          },
+        ],
       }}
       options={{
         responsive: true,
         legend: {
           display: true,
-          position: 'bottom',
+          position: "bottom",
         },
         tooltips: {
-          backgroundColor: COLORS['grey-800-light'],
-          mode: 'dataset',
+          backgroundColor: COLORS["grey-800-light"],
+          mode: "dataset",
           intersect: true,
           callbacks: tooltipForRateChart(),
         },
         scaleShowValues: true,
         scales: {
-          yAxes: [{
-            stacked: true,
-            ticks: {
-              beginAtZero: true,
-              min: 0,
-              max: 100,
+          yAxes: [
+            {
+              stacked: true,
+              ticks: {
+                beginAtZero: true,
+                min: 0,
+                max: 100,
+              },
+              position: "left",
+              id: "y-axis-left",
+              scaleLabel: {
+                display: true,
+                labelString: "Percentage",
+              },
             },
-            position: 'left',
-            id: 'y-axis-left',
-            scaleLabel: {
-              display: true,
-              labelString: 'Percentage',
+          ],
+          xAxes: [
+            {
+              stacked: true,
+              ticks: {
+                autoSkip: false,
+              },
+              scaleLabel: {
+                display: true,
+                labelString: "Age",
+              },
             },
-          }],
-          xAxes: [{
-            stacked: true,
-            ticks: {
-              autoSkip: false,
-            },
-            scaleLabel: {
-              display: true,
-              labelString: 'Age',
-            },
-          }],
+          ],
         },
       }}
     />
   );
 
   let activeChart = countsChart;
-  if (props.metricType === 'rates') {
+  if (metricType === "rates") {
     activeChart = ratesChart;
   }
 
-  const exportedStructureCallback = () => (
-    {
-      metric: 'FTR Referrals by Age',
-      series: [],
-    });
+  const exportedStructureCallback = () => ({
+    metric: "FTR Referrals by Age",
+    series: [],
+  });
 
-  configureDownloadButtons(chartId, 'FTR REFERRALS BY AGE',
-    activeChart.props.data.datasets, activeChart.props.data.labels,
-    document.getElementById(chartId), exportedStructureCallback, props);
+  configureDownloadButtons(
+    chartId,
+    "FTR REFERRALS BY AGE",
+    activeChart.props.data.datasets,
+    activeChart.props.data.labels,
+    document.getElementById(chartId),
+    exportedStructureCallback,
+    { supervisionType, district, metricPeriodMonths, metricType }
+  );
 
   return activeChart;
 };

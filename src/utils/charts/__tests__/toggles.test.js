@@ -499,7 +499,7 @@ describe('test for file toggles', () => {
       metricType: "counts",
       metricPeriodMonths: "12",
       supervisionType: "all",
-      district: "all",
+      district: ["all"],
       geoView: false
     };
 
@@ -507,7 +507,7 @@ describe('test for file toggles', () => {
       metricType: "counts",
       metricPeriodMonths: "12",
       supervisionType: "all",
-      district: "all",
+      district: ["all"],
       geoView: true
     };
 
@@ -537,12 +537,12 @@ describe('test for file toggles', () => {
   });
 
   it('filter dataset by district', () => {
-    const district = 'all';
+    const district = ['all'];
 
     const dataset = [
       {
         supervision_type: "PAROLE",
-        district: "ALL",
+        district: ["all"],
         state_code: "US_DEMO",
         metric_period_months: "1",
         new_admissions: "32",
@@ -552,7 +552,7 @@ describe('test for file toggles', () => {
       },
       {
         supervision_type: "PAROLE",
-        district: "No",
+        district: ["No"],
         state_code: "US_DEMO",
         metric_period_months: "6",
         new_admissions: "141",
@@ -565,7 +565,7 @@ describe('test for file toggles', () => {
     const expectedToggleFiltersTest =  [
       {
         supervision_type: 'PAROLE',
-        district: 'ALL',
+        district: ['all'],
         state_code: 'US_DEMO',
         metric_period_months: '1',
         new_admissions: '32',

@@ -1,5 +1,5 @@
 // Recidiviz - a data platform for criminal justice reform
-// Copyright (C) 2019 Recidiviz, Inc.
+// Copyright (C) 2020 Recidiviz, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -15,106 +15,134 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React, { useState, useEffect } from 'react';
-import { Line } from 'react-chartjs-2';
+import React, { useEffect } from "react";
+import PropTypes from "prop-types";
+import { Line } from "react-chartjs-2";
 
-import { COLORS } from '../../../assets/scripts/constants/colors';
-import { configureDownloadButtons } from '../../../assets/scripts/utils/downloads';
+import groupBy from "lodash/fp/groupBy";
+import map from "lodash/fp/map";
+import pipe from "lodash/fp/pipe";
+import meanBy from "lodash/fp/meanBy";
+import toInteger from "lodash/fp/toInteger";
+import values from "lodash/fp/values";
+
+import { COLORS } from "../../../assets/scripts/constants/colors";
+import { configureDownloadButtons } from "../../../assets/scripts/utils/downloads";
 import {
-  getGoalForChart, getMinForGoalAndData, getMaxForGoalAndData, trendlineGoalText,
+  getGoalForChart,
+  getMinForGoalAndData,
+  getMaxForGoalAndData,
+  trendlineGoalText,
   chartAnnotationForGoal,
-} from '../../../utils/charts/metricGoal';
+} from "../../../utils/charts/metricGoal";
 import {
-  getMonthCountFromMetricPeriodMonthsToggle, filterDatasetBySupervisionType,
-  filterDatasetByDistrict, canDisplayGoal, centerSingleMonthDatasetIfNecessary,
-} from '../../../utils/charts/toggles';
+  getMonthCountFromMetricPeriodMonthsToggle,
+  filterDatasetBySupervisionType,
+  filterDatasetByDistrict,
+  canDisplayGoal,
+  centerSingleMonthDatasetIfNecessary,
+} from "../../../utils/charts/toggles";
 import {
-  generateTrendlineDataset, getTooltipWithoutTrendline,
-} from '../../../utils/charts/trendline';
-import { sortFilterAndSupplementMostRecentMonths } from '../../../utils/transforms/datasets';
-import { monthNamesWithYearsFromNumbers } from '../../../utils/transforms/months';
+  generateTrendlineDataset,
+  getTooltipWithoutTrendline,
+} from "../../../utils/charts/trendline";
+import { sortFilterAndSupplementMostRecentMonths } from "../../../utils/transforms/datasets";
+import { monthNamesWithYearsFromNumbers } from "../../../utils/transforms/months";
 
-const LsirScoreChangeSnapshot = (props) => {
-  const [chartLabels, setChartLabels] = useState([]);
-  const [chartDataPoints, setChartDataPoints] = useState([]);
-  const [chartMinValue, setChartMinValue] = useState();
-  const [chartMaxValue, setChartMaxValue] = useState();
+const groupByMonthAndMap = pipe(
+  groupBy(
+    ({ termination_year: year, termination_month: month }) => `${year}-${month}`
+  ),
+  values,
+  map((dataset) => ({
+    year: toInteger(dataset[0].termination_year),
+    month: toInteger(dataset[0].termination_month),
+    change: meanBy(
+      (data) => parseFloat(data.average_change, 10),
+      dataset
+    ).toFixed(2),
+  }))
+);
 
-  const chartId = 'lsirScoreChangeSnapshot';
-  const GOAL = getGoalForChart('US_ND', chartId);
-  const stepSize = 0.5;
+const chartId = "lsirScoreChangeSnapshot";
+const stepSize = 0.5;
 
-  const processResponse = () => {
-    const { lsirScoreChangeByMonth: changeByMonth } = props;
+const LsirScoreChangeSnapshot = ({
+  lsirScoreChangeByMonth: changeByMonth,
+  supervisionType,
+  district,
+  metricPeriodMonths,
+  disableGoal,
+  header,
+}) => {
+  const goal = getGoalForChart("US_ND", chartId);
+  const displayGoal = canDisplayGoal(goal, {
+    supervisionType,
+    district,
+    disableGoal,
+  });
 
-    let filteredChangeByMonth = filterDatasetBySupervisionType(
-      changeByMonth, props.supervisionType,
-    );
+  const dataPoints = pipe(
+    (dataset) => filterDatasetBySupervisionType(dataset, supervisionType),
+    (dataset) => filterDatasetByDistrict(dataset, district),
+    groupByMonthAndMap,
+    (dataset) =>
+      sortFilterAndSupplementMostRecentMonths(
+        dataset,
+        getMonthCountFromMetricPeriodMonthsToggle(metricPeriodMonths),
+        "change",
+        "0.0"
+      )
+  )(changeByMonth);
 
-    filteredChangeByMonth = filterDatasetByDistrict(
-      filteredChangeByMonth, props.district,
-    );
+  const chartDataValues = map("change", dataPoints);
+  const min = getMinForGoalAndData(goal.value, chartDataValues, stepSize);
+  const max = getMaxForGoalAndData(goal.value, chartDataValues, stepSize);
+  const monthNames = monthNamesWithYearsFromNumbers(
+    map("month", dataPoints),
+    true
+  );
 
-    const dataPoints = [];
-    if (filteredChangeByMonth) {
-      filteredChangeByMonth.forEach((data) => {
-        const { termination_year: year, termination_month: month } = data;
-        const change = parseFloat(data.average_change).toFixed(2);
+  centerSingleMonthDatasetIfNecessary(chartDataValues, monthNames);
 
-        dataPoints.push({ year, month, change });
-      });
-    }
-
-    const months = getMonthCountFromMetricPeriodMonthsToggle(props.metricPeriodMonths);
-    const sorted = sortFilterAndSupplementMostRecentMonths(dataPoints, months, 'change', '0.0');
-    const chartDataValues = sorted.map((element) => element.change);
-    const min = getMinForGoalAndData(GOAL.value, chartDataValues, stepSize);
-    const max = getMaxForGoalAndData(GOAL.value, chartDataValues, stepSize);
-    const monthNames = monthNamesWithYearsFromNumbers(sorted.map((element) => element.month), true);
-
-    centerSingleMonthDatasetIfNecessary(chartDataValues, monthNames);
-    setChartLabels(monthNames);
-    setChartDataPoints(chartDataValues);
-    setChartMinValue(min);
-    setChartMaxValue(max);
-  };
+  const chartLabels = monthNames;
+  const chartDataPoints = chartDataValues;
+  const chartMinValue = min;
+  const chartMaxValue = max;
 
   function goalLineIfApplicable() {
-    if (canDisplayGoal(GOAL, props)) {
-      return chartAnnotationForGoal(GOAL, 'lsirScoreChangeSnapshotGoalLine', { yAdjust: 10 });
+    if (displayGoal) {
+      return chartAnnotationForGoal(goal, "lsirScoreChangeSnapshotGoalLine", {
+        yAdjust: 10,
+      });
     }
     return null;
   }
 
   function datasetsWithTrendlineIfApplicable() {
-    const datasets = [{
-      label: 'LSI-R score changes (average)',
-      backgroundColor: COLORS['blue-standard'],
-      borderColor: COLORS['blue-standard'],
-      pointBackgroundColor: COLORS['blue-standard'],
-      pointHoverBackgroundColor: COLORS['blue-standard'],
-      pointHoverBorderColor: COLORS['blue-standard'],
-      pointRadius: 4,
-      hitRadius: 5,
-      fill: false,
-      borderWidth: 2,
-      lineTension: 0,
-      data: chartDataPoints,
-    }];
-    if (canDisplayGoal(GOAL, props)) {
-      datasets.push(generateTrendlineDataset(chartDataPoints, COLORS['blue-standard-light']));
+    const datasets = [
+      {
+        label: "LSI-R score changes (average)",
+        backgroundColor: COLORS["blue-standard"],
+        borderColor: COLORS["blue-standard"],
+        pointBackgroundColor: COLORS["blue-standard"],
+        pointHoverBackgroundColor: COLORS["blue-standard"],
+        pointHoverBorderColor: COLORS["blue-standard"],
+        pointRadius: 4,
+        hitRadius: 5,
+        fill: false,
+        borderWidth: 2,
+        lineTension: 0,
+        data: chartDataPoints,
+      },
+    ];
+    if (displayGoal) {
+      datasets.push(
+        generateTrendlineDataset(chartDataPoints, COLORS["blue-standard-light"])
+      );
     }
     return datasets;
   }
-
-  useEffect(() => {
-    processResponse();
-  }, [
-    props.lsirScoreChangeByMonth,
-    props.metricPeriodMonths,
-    props.supervisionType,
-    props.district,
-  ]);
 
   const chart = (
     <Line
@@ -126,53 +154,58 @@ const LsirScoreChangeSnapshot = (props) => {
       options={{
         legend: {
           display: false,
-          position: 'right',
+          position: "right",
           labels: {
             usePointStyle: true,
             boxWidth: 5,
           },
         },
         tooltips: {
-          backgroundColor: COLORS['grey-800-light'],
+          backgroundColor: COLORS["grey-800-light"],
           enabled: true,
-          mode: 'point',
+          mode: "point",
           callbacks: {
-            label: (tooltipItem, data) => (getTooltipWithoutTrendline(tooltipItem, data)),
+            label: (tooltipItem, data) =>
+              getTooltipWithoutTrendline(tooltipItem, data),
           },
         },
         scales: {
-          xAxes: [{
-            ticks: {
-              fontColor: COLORS['grey-600'],
-              autoSkip: true,
+          xAxes: [
+            {
+              ticks: {
+                fontColor: COLORS["grey-600"],
+                autoSkip: true,
+              },
+              scaleLabel: {
+                display: true,
+                labelString: "Month of supervision termination",
+                fontColor: COLORS["grey-500"],
+                fontStyle: "bold",
+              },
+              gridLines: {
+                color: "#FFF",
+              },
             },
-            scaleLabel: {
-              display: true,
-              labelString: 'Month of supervision termination',
-              fontColor: COLORS['grey-500'],
-              fontStyle: 'bold',
+          ],
+          yAxes: [
+            {
+              ticks: {
+                fontColor: COLORS["grey-600"],
+                min: chartMinValue,
+                max: chartMaxValue,
+                stepSize,
+              },
+              scaleLabel: {
+                display: true,
+                labelString: "Change in LSI-R scores",
+                fontColor: COLORS["grey-500"],
+                fontStyle: "bold",
+              },
+              gridLines: {
+                color: COLORS["grey-300"],
+              },
             },
-            gridLines: {
-              color: '#FFF',
-            },
-          }],
-          yAxes: [{
-            ticks: {
-              fontColor: COLORS['grey-600'],
-              min: chartMinValue,
-              max: chartMaxValue,
-              stepSize,
-            },
-            scaleLabel: {
-              display: true,
-              labelString: 'Change in LSI-R scores',
-              fontColor: COLORS['grey-500'],
-              fontStyle: 'bold',
-            },
-            gridLines: {
-              color: COLORS['grey-300'],
-            },
-          }],
+          ],
         },
         annotation: goalLineIfApplicable(),
       }}
@@ -181,27 +214,53 @@ const LsirScoreChangeSnapshot = (props) => {
 
   const exportedStructureCallback = function exportedStructureCallback() {
     return {
-      metric: 'Average change in LSI-R score between termination and first reassessment',
+      metric:
+        "Average change in LSI-R score between termination and first reassessment",
       series: [],
     };
   };
-  configureDownloadButtons(chartId, 'LSI-R SCORE CHANGES (AVERAGE)', chart.props.data.datasets,
-    chart.props.data.labels, document.getElementById(chartId),
-    exportedStructureCallback, props, true, true);
+  configureDownloadButtons(
+    chartId,
+    "LSI-R SCORE CHANGES (AVERAGE)",
+    chart.props.data.datasets,
+    chart.props.data.labels,
+    document.getElementById(chartId),
+    exportedStructureCallback,
+    { supervisionType, district, metricPeriodMonths },
+    true,
+    true
+  );
 
-  const header = document.getElementById(props.header);
+  useEffect(() => {
+    const headerElement = document.getElementById(header);
 
-  if (header && canDisplayGoal(GOAL, props)) {
-    const trendlineValues = chart.props.data.datasets[1].data;
-    const trendlineText = trendlineGoalText(trendlineValues, GOAL);
+    if (headerElement && displayGoal) {
+      const trendlineValues = chart.props.data.datasets[1].data;
+      const trendlineText = trendlineGoalText(trendlineValues, goal);
 
-    const title = `The average change in LSI-R scores between first reassessment and termination of supervision has been <span class='fs-block header-highlight'>trending ${trendlineText}.</span>`;
-    header.innerHTML = title;
-  } else if (header) {
-    header.innerHTML = '';
-  }
+      const title = `The average change in LSI-R scores between first reassessment and termination of supervision has been <span class='fs-block header-highlight'>trending ${trendlineText}.</span>`;
+      headerElement.innerHTML = title;
+    } else if (headerElement) {
+      headerElement.innerHTML = "";
+    }
+  }, [chart.props.data.datasets, displayGoal, goal, header]);
 
-  return (chart);
+  return chart;
+};
+
+LsirScoreChangeSnapshot.defaultProps = {
+  lsirScoreChangeByMonth: [],
+  header: undefined,
+  disableGoal: false,
+};
+
+LsirScoreChangeSnapshot.propTypes = {
+  lsirScoreChangeByMonth: PropTypes.arrayOf(PropTypes.shape({})),
+  metricPeriodMonths: PropTypes.string.isRequired,
+  supervisionType: PropTypes.string.isRequired,
+  district: PropTypes.arrayOf(PropTypes.string).isRequired,
+  header: PropTypes.string,
+  disableGoal: PropTypes.bool,
 };
 
 export default LsirScoreChangeSnapshot;

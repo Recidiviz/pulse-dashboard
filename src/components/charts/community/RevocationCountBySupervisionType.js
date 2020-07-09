@@ -1,5 +1,5 @@
 // Recidiviz - a data platform for criminal justice reform
-// Copyright (C) 2019 Recidiviz, Inc.
+// Copyright (C) 2020 Recidiviz, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -15,61 +15,47 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React, { useState, useEffect } from 'react';
-import { Bar } from 'react-chartjs-2';
+import React from "react";
+import PropTypes from "prop-types";
 
-import { COLORS_STACKED_TWO_VALUES } from '../../../assets/scripts/constants/colors';
-import { configureDownloadButtons } from '../../../assets/scripts/utils/downloads';
-import { getPerMonthChartDefinition } from '../BarCharts';
+import PerMonthBarChart from "../common/bars/PerMonthBarChart";
+import { COLORS_STACKED_TWO_VALUES } from "../../../assets/scripts/constants/colors";
 
-const chartId = 'revocationsBySupervisionType';
+const chartId = "revocationsBySupervisionType";
 
-export const getBarChartDefinition = (props) => {
-  return getPerMonthChartDefinition({
-    chartId,
-    countsByMonth: props.revocationCountsByMonthBySupervisionType,
-    metricType: props.metricType,
-    numMonths: props.metricPeriodMonths,
-    filters: {
-      district: props.district,
-    },
-    bars: [
-      { key: 'probation_count', label: 'Probation' },
-      { key: 'parole_count', label: 'Parole' },
-    ],
-    yAxisLabel: props.metricType === 'counts' ? 'Revocation count' : 'Percentage',
-    barColorPalette: COLORS_STACKED_TWO_VALUES,
-  });
+const RevocationCountBySupervisionType = ({
+  metricType,
+  metricPeriodMonths,
+  district,
+  revocationCountsByMonthBySupervisionType,
+}) => (
+  <PerMonthBarChart
+    chartId={chartId}
+    exportLabel="Revocation counts by supervision type"
+    countsByMonth={revocationCountsByMonthBySupervisionType}
+    metricType={metricType}
+    numMonths={metricPeriodMonths}
+    filters={{ district }}
+    bars={[
+      { key: "probation_count", label: "Probation" },
+      { key: "parole_count", label: "Parole" },
+    ]}
+    yAxisLabel={metricType === "counts" ? "Revocation count" : "Percentage"}
+    barColorPalette={COLORS_STACKED_TWO_VALUES}
+  />
+);
+
+RevocationCountBySupervisionType.defaultProps = {
+  revocationCountsByMonthBySupervisionType: [],
 };
 
-
-const RevocationCountBySupervisionType = (props) => {
-  const [chartDefinition, setChartDefinition] = useState(null);
-
-  useEffect(() => {
-    setChartDefinition(getBarChartDefinition(props));
-  }, [
-    props.revocationCountsByMonthBySupervisionType,
-    props.metricType,
-    props.metricPeriodMonths,
-    props.district,
-  ]);
-
-  if (!chartDefinition) return null;
-
-  const chart = <Bar {...chartDefinition} />;
-
-  const exportedStructureCallback = () => (
-    {
-      metric: 'Revocation counts by supervision type',
-      series: [],
-    });
-
-  configureDownloadButtons(chartId, 'REVOCATIONS BY SUPERVISION TYPE',
-    chart.props.data.datasets, chart.props.data.labels,
-    document.getElementById(chartId), exportedStructureCallback, props, true, true);
-
-  return chart;
+RevocationCountBySupervisionType.propTypes = {
+  metricType: PropTypes.string.isRequired,
+  metricPeriodMonths: PropTypes.string.isRequired,
+  district: PropTypes.arrayOf(PropTypes.string).isRequired,
+  revocationCountsByMonthBySupervisionType: PropTypes.arrayOf(
+    PropTypes.shape({})
+  ),
 };
 
 export default RevocationCountBySupervisionType;

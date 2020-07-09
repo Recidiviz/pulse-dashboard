@@ -1,0 +1,49 @@
+// Recidiviz - a data platform for criminal justice reform
+// Copyright (C) 2020 Recidiviz, Inc.
+//
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <https://www.gnu.org/licenses/>.
+// =============================================================================
+
+import React from "react";
+import { createCanvas } from "canvas";
+import path from "path";
+import { render } from "@testing-library/react";
+
+import { readJsonLinesFile } from '../../../utils/testing';
+
+import RevocationCountByOfficer from './RevocationCountByOfficer';
+import { testGetBarChartDefinitionAgainstSnapshots } from './test_utils/snapshotTesting'
+
+const baseDirname = path.join(__dirname, 'test_data/RevocationCountByOfficer')
+const countsData = readJsonLinesFile(path.join(baseDirname, 'revocations_by_officer_by_period.json'));
+const officeData = readJsonLinesFile(path.join(baseDirname, 'site_offices.json'))
+
+it("should render RevocationCountByOfficer", () => {
+  const { container } = render(
+    <RevocationCountByOfficer
+      metricType="counts"
+      metricPeriodMonths="12"
+      supervisionType="all"
+      district={["all"]}
+      revocationCountsByOfficer={countsData}
+      officeData={officeData}
+    />
+  )
+
+  const canvas = container.querySelector("#revocationsByOfficer");
+  const tempCanvas =
+  const context = canvas.getContext('2d')
+  console.log(canvas.height);
+  // const tempCanvas = createCanvas()
+})

@@ -1,5 +1,5 @@
 // Recidiviz - a data platform for criminal justice reform
-// Copyright (C) 2019 Recidiviz, Inc.
+// Copyright (C) 2020 Recidiviz, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -15,131 +15,178 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React, { useState, useEffect } from 'react';
-import { Line } from 'react-chartjs-2';
+import React, { useEffect } from "react";
+import PropTypes from "prop-types";
+import { Line } from "react-chartjs-2";
 
-import { COLORS } from '../../../assets/scripts/constants/colors';
-import { configureDownloadButtons } from '../../../assets/scripts/utils/downloads';
-import { toInt } from '../../../utils/transforms/labels';
-import { sortFilterAndSupplementMostRecentMonths } from '../../../utils/transforms/datasets';
-import { monthNamesWithYearsFromNumbers } from '../../../utils/transforms/months';
+import groupBy from "lodash/fp/groupBy";
+import filter from "lodash/fp/filter";
+import map from "lodash/fp/map";
+import pipe from "lodash/fp/pipe";
+import sumBy from "lodash/fp/sumBy";
+import toInteger from "lodash/fp/toInteger";
+import values from "lodash/fp/values";
+
+import { COLORS } from "../../../assets/scripts/constants/colors";
+import { configureDownloadButtons } from "../../../assets/scripts/utils/downloads";
+import { sortFilterAndSupplementMostRecentMonths } from "../../../utils/transforms/datasets";
+import { monthNamesWithYearsFromNumbers } from "../../../utils/transforms/months";
 import {
-  getGoalForChart, getMinForGoalAndData, getMaxForGoalAndData, trendlineGoalText,
+  getGoalForChart,
+  getMinForGoalAndData,
+  getMaxForGoalAndData,
+  trendlineGoalText,
   chartAnnotationForGoal,
-} from '../../../utils/charts/metricGoal';
+} from "../../../utils/charts/metricGoal";
 import {
-  getMonthCountFromMetricPeriodMonthsToggle, filterDatasetBySupervisionType,
-  filterDatasetByDistrict, updateTooltipForMetricType, toggleLabel, canDisplayGoal,
-  toggleYAxisTicksAdditionalOptions, centerSingleMonthDatasetIfNecessary,
-} from '../../../utils/charts/toggles';
-import { generateTrendlineDataset } from '../../../utils/charts/trendline';
+  getMonthCountFromMetricPeriodMonthsToggle,
+  filterDatasetBySupervisionType,
+  filterDatasetByDistrict,
+  updateTooltipForMetricType,
+  toggleLabel,
+  canDisplayGoal,
+  toggleYAxisTicksAdditionalOptions,
+  centerSingleMonthDatasetIfNecessary,
+} from "../../../utils/charts/toggles";
+import { generateTrendlineDataset } from "../../../utils/charts/trendline";
 
-const SupervisionSuccessSnapshot = (props) => {
-  const [chartLabels, setChartLabels] = useState([]);
-  const [chartDataPoints, setChartDataPoints] = useState([]);
-  const [chartMinValue, setChartMinValue] = useState();
-  const [chartMaxValue, setChartMaxValue] = useState();
+const chartId = "supervisionSuccessSnapshot";
 
-  const chartId = 'supervisionSuccessSnapshot';
-  const GOAL = getGoalForChart('US_ND', chartId);
+const isValidData = ({ month, year }) => {
+  const today = new Date();
+  const yearNow = today.getFullYear();
+  const monthNow = today.getMonth() + 1;
+
+  const currentYear = toInteger(year);
+  const currentMonth = toInteger(month);
+
+  return (
+    currentYear < yearNow ||
+    (currentYear === yearNow && currentMonth <= monthNow)
+  );
+};
+
+const groupByMonthAndMap = pipe(
+  groupBy(
+    ({ projected_year: year, projected_month: month }) => `${year}-${month}`
+  ),
+  values,
+  map((dataset) => ({
+    year: toInteger(dataset[0].projected_year),
+    month: toInteger(dataset[0].projected_month),
+    successful: sumBy(
+      (data) => toInteger(data.successful_termination),
+      dataset
+    ),
+    revocation: sumBy(
+      (data) => toInteger(data.revocation_termination),
+      dataset
+    ),
+  }))
+);
+
+const dataCountsMapper = ({ year, month, successful }) => {
+  return { year, month, value: successful };
+};
+
+const dataRatesMapper = ({ year, month, successful, revocation }) => {
+  const successRate =
+    successful + revocation !== 0
+      ? (100 * (successful / (successful + revocation))).toFixed(2)
+      : 0.0;
+
+  return { year, month, value: successRate };
+};
+
+const SupervisionSuccessSnapshot = ({
+  supervisionSuccessRates: countsByMonth,
+  stateCode,
+  supervisionType,
+  district,
+  metricType,
+  metricPeriodMonths,
+  header,
+  disableGoal,
+}) => {
   const stepSize = 10;
 
-  const processResponse = () => {
-    const { supervisionSuccessRates: countsByMonth } = props;
+  const goal = getGoalForChart(stateCode, chartId);
+  const displayGoal = canDisplayGoal(goal, {
+    disableGoal,
+    metricType,
+    supervisionType,
+    district,
+  });
 
-    let filteredCountsByMonth = filterDatasetBySupervisionType(
-      countsByMonth, props.supervisionType,
-    );
+  const dataPoints = pipe(
+    (dataset) => filterDatasetBySupervisionType(dataset, supervisionType),
+    (dataset) => filterDatasetByDistrict(dataset, district),
+    // Don't add completion rates for months in the future
+    filter(isValidData),
+    groupByMonthAndMap,
+    map(metricType === "rates" ? dataRatesMapper : dataCountsMapper),
+    (dataset) =>
+      sortFilterAndSupplementMostRecentMonths(
+        dataset,
+        getMonthCountFromMetricPeriodMonthsToggle(metricPeriodMonths),
+        "value",
+        "0"
+      )
+  )(countsByMonth);
 
-    filteredCountsByMonth = filterDatasetByDistrict(
-      filteredCountsByMonth, props.district,
-    );
+  const chartDataValues = map("value", dataPoints);
+  const min = getMinForGoalAndData(goal.value, chartDataValues, stepSize);
+  const max = getMaxForGoalAndData(goal.value, chartDataValues, stepSize);
+  const monthNames = monthNamesWithYearsFromNumbers(
+    map("month", dataPoints),
+    true
+  );
 
-    const today = new Date();
-    const yearNow = today.getFullYear();
-    const monthNow = today.getMonth() + 1;
+  centerSingleMonthDatasetIfNecessary(chartDataValues, monthNames);
 
-    const dataPoints = [];
-    if (filteredCountsByMonth) {
-      filteredCountsByMonth.forEach((data) => {
-        let { projected_year: year, projected_month: month } = data;
-        const successful = toInt(data.successful_termination);
-        const revocation = toInt(data.revocation_termination);
-
-        let successRate = 0.00;
-        if (successful + revocation !== 0) {
-          successRate = (100 * (successful / (successful + revocation))).toFixed(2);
-        }
-
-        year = toInt(year);
-        month = toInt(month);
-
-        // Don't add completion rates for months in the future
-        if (year < yearNow || (year === yearNow && month <= monthNow)) {
-          if (props.metricType === 'counts') {
-            dataPoints.push({ year, month, value: successful });
-          } else if (props.metricType === 'rates') {
-            dataPoints.push({ year, month, value: successRate });
-          }
-        }
-      });
-    }
-    const months = getMonthCountFromMetricPeriodMonthsToggle(props.metricPeriodMonths);
-    const sorted = sortFilterAndSupplementMostRecentMonths(
-      dataPoints, months, 'value', '0',
-    );
-    const chartDataValues = (sorted.map((element) => element.value));
-    const min = getMinForGoalAndData(GOAL.value, chartDataValues, stepSize);
-    const max = getMaxForGoalAndData(GOAL.value, chartDataValues, stepSize);
-    const monthNames = monthNamesWithYearsFromNumbers(sorted.map((element) => element.month), true);
-
-    centerSingleMonthDatasetIfNecessary(chartDataValues, monthNames);
-    setChartLabels(monthNames);
-    setChartDataPoints(chartDataValues);
-    setChartMinValue(min);
-    setChartMaxValue(max);
-  };
+  const chartLabels = monthNames;
+  const chartDataPoints = chartDataValues;
+  const chartMinValue = min;
+  const chartMaxValue = max;
 
   function goalLineIfApplicable() {
-    if (canDisplayGoal(GOAL, props)) {
-      return chartAnnotationForGoal(GOAL, 'supervisionSuccessSnapshotGoalLine', { yAdjust: 10 });
+    if (displayGoal) {
+      return chartAnnotationForGoal(
+        goal,
+        "supervisionSuccessSnapshotGoalLine",
+        { yAdjust: 10 }
+      );
     }
     return null;
   }
 
   function datasetsWithTrendlineIfApplicable() {
-    const datasets = [{
-      label: toggleLabel(
-        { counts: 'Successful completions', rates: 'Success rate' },
-        props.metricType,
-      ),
-      backgroundColor: COLORS['blue-standard'],
-      borderColor: COLORS['blue-standard'],
-      pointBackgroundColor: COLORS['blue-standard'],
-      pointHoverBackgroundColor: COLORS['blue-standard'],
-      pointHoverBorderColor: COLORS['blue-standard'],
-      pointRadius: 4,
-      hitRadius: 5,
-      fill: false,
-      borderWidth: 2,
-      lineTension: 0,
-      data: chartDataPoints,
-    }];
-    if (canDisplayGoal(GOAL, props)) {
-      datasets.push(generateTrendlineDataset(chartDataPoints, COLORS['blue-standard-light']));
+    const datasets = [
+      {
+        label: toggleLabel(
+          { counts: "Successful completions", rates: "Success rate" },
+          metricType
+        ),
+        backgroundColor: COLORS["blue-standard"],
+        borderColor: COLORS["blue-standard"],
+        pointBackgroundColor: COLORS["blue-standard"],
+        pointHoverBackgroundColor: COLORS["blue-standard"],
+        pointHoverBorderColor: COLORS["blue-standard"],
+        pointRadius: 4,
+        hitRadius: 5,
+        fill: false,
+        borderWidth: 2,
+        lineTension: 0,
+        data: chartDataPoints,
+      },
+    ];
+    if (displayGoal) {
+      datasets.push(
+        generateTrendlineDataset(chartDataPoints, COLORS["blue-standard-light"])
+      );
     }
     return datasets;
   }
-
-  useEffect(() => {
-    processResponse();
-  }, [
-    props.supervisionSuccessRates,
-    props.metricType,
-    props.metricPeriodMonths,
-    props.supervisionType,
-    props.district,
-  ]);
 
   const chart = (
     <Line
@@ -151,56 +198,63 @@ const SupervisionSuccessSnapshot = (props) => {
       options={{
         legend: {
           display: false,
-          position: 'right',
+          position: "right",
           labels: {
             usePointStyle: true,
             boxWidth: 5,
           },
         },
         tooltips: {
-          backgroundColor: COLORS['grey-800-light'],
+          backgroundColor: COLORS["grey-800-light"],
           enabled: true,
-          mode: 'point',
+          mode: "point",
           callbacks: {
-            label: (tooltipItem, data) => updateTooltipForMetricType(
-              props.metricType, tooltipItem, data,
-            ),
+            label: (tooltipItem, data) =>
+              updateTooltipForMetricType(metricType, tooltipItem, data),
           },
         },
         scales: {
-          xAxes: [{
-            ticks: {
-              fontColor: COLORS['grey-600'],
-              autoSkip: true,
+          xAxes: [
+            {
+              ticks: {
+                fontColor: COLORS["grey-600"],
+                autoSkip: true,
+              },
+              scaleLabel: {
+                display: true,
+                labelString: "Month of scheduled supervision termination",
+                fontColor: COLORS["grey-500"],
+                fontStyle: "bold",
+              },
+              gridLines: {
+                color: "#FFF",
+              },
             },
-            scaleLabel: {
-              display: true,
-              labelString: 'Month of scheduled supervision termination',
-              fontColor: COLORS['grey-500'],
-              fontStyle: 'bold',
-            },
-            gridLines: {
-              color: '#FFF',
-            },
-          }],
-          yAxes: [{
-            ticks: toggleYAxisTicksAdditionalOptions(
-              'rates', props.metricType, chartMinValue, chartMaxValue, stepSize,
-              { fontColor: COLORS['grey-600'] },
-            ),
-            scaleLabel: {
-              display: true,
-              labelString: toggleLabel(
-                { counts: 'Successful completions', rates: '% of people' },
-                props.metricType,
+          ],
+          yAxes: [
+            {
+              ticks: toggleYAxisTicksAdditionalOptions(
+                "rates",
+                metricType,
+                chartMinValue,
+                chartMaxValue,
+                stepSize,
+                { fontColor: COLORS["grey-600"] }
               ),
-              fontColor: COLORS['grey-500'],
-              fontStyle: 'bold',
+              scaleLabel: {
+                display: true,
+                labelString: toggleLabel(
+                  { counts: "Successful completions", rates: "% of people" },
+                  metricType
+                ),
+                fontColor: COLORS["grey-500"],
+                fontStyle: "bold",
+              },
+              gridLines: {
+                color: COLORS["grey-300"],
+              },
             },
-            gridLines: {
-              color: COLORS['grey-300'],
-            },
-          }],
+          ],
         },
         annotation: goalLineIfApplicable(),
       }}
@@ -209,28 +263,55 @@ const SupervisionSuccessSnapshot = (props) => {
 
   const exportedStructureCallback = function exportedStructureCallback() {
     return {
-      metric: 'Percentage of successful completion of supervision',
+      metric: "Percentage of successful completion of supervision",
       series: [],
     };
   };
 
-  configureDownloadButtons(chartId, 'SUCCESSFUL COMPLETION OF SUPERVISION', chart.props.data.datasets,
-    chart.props.data.labels, document.getElementById(chartId),
-    exportedStructureCallback, props, true, true);
+  configureDownloadButtons(
+    chartId,
+    "SUCCESSFUL COMPLETION OF SUPERVISION",
+    chart.props.data.datasets,
+    chart.props.data.labels,
+    document.getElementById(chartId),
+    exportedStructureCallback,
+    { metricType, metricPeriodMonths, supervisionType, district },
+    true,
+    true
+  );
 
-  const header = document.getElementById(props.header);
+  useEffect(() => {
+    const headerElement = document.getElementById(header);
 
-  if (header && canDisplayGoal(GOAL, props)) {
-    const trendlineValues = chart.props.data.datasets[1].data;
-    const trendlineText = trendlineGoalText(trendlineValues, GOAL);
+    if (headerElement && displayGoal) {
+      const trendlineValues = chart.props.data.datasets[1].data;
+      const trendlineText = trendlineGoalText(trendlineValues, goal);
 
-    const title = `The rate of successful completion of supervision has been <span class='fs-block header-highlight'>trending ${trendlineText}.</span>`;
-    header.innerHTML = title;
-  } else if (header) {
-    header.innerHTML = '';
-  }
+      const title = `The rate of successful completion of supervision has been <span class='fs-block header-highlight'>trending ${trendlineText}.</span>`;
+      headerElement.innerHTML = title;
+    } else if (headerElement) {
+      headerElement.innerHTML = "";
+    }
+  }, [chart.props.data.datasets, displayGoal, goal, header]);
 
-  return (chart);
+  return chart;
+};
+
+SupervisionSuccessSnapshot.defaultProps = {
+  supervisionSuccessRates: [],
+  header: undefined,
+  disableGoal: false,
+};
+
+SupervisionSuccessSnapshot.propTypes = {
+  supervisionSuccessRates: PropTypes.arrayOf(PropTypes.shape({})),
+  metricType: PropTypes.string.isRequired,
+  metricPeriodMonths: PropTypes.string.isRequired,
+  district: PropTypes.arrayOf(PropTypes.string).isRequired,
+  supervisionType: PropTypes.string.isRequired,
+  stateCode: PropTypes.string.isRequired,
+  header: PropTypes.node,
+  disableGoal: PropTypes.bool,
 };
 
 export default SupervisionSuccessSnapshot;
