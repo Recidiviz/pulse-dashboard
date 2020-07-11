@@ -15,96 +15,55 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
-import { Bar } from "react-chartjs-2";
-import pattern from "patternomaly";
-import pipe from "lodash/fp/pipe";
 
-import {
-  calculateAverageRate,
-  sortByCount,
-  sortByRate,
-  groupRevocationDataByDistrict,
-  groupSupervisionDataByDistrict,
-  mergeRevocationData,
-} from "./helpers";
-
-import DataSignificanceWarningIcon from "../../DataSignificanceWarningIcon";
-import ExportMenu from "../../ExportMenu";
+import CountsChart from "./CountsChart";
+import RatesChart from "./RatesChart";
+import ExitsChart from "./ExitesChart";
 import Loading from "../../../Loading";
-
-import { COLORS } from "../../../../assets/scripts/constants/colors";
 // eslint-disable-next-line import/no-cycle
-import { useAuth0 } from "../../../../react-auth0-spa";
-import {
-  fetchChartData,
-  awaitingResults,
-} from "../../../../utils/metricsClient";
-import { axisCallbackForMetricType } from "../../../../utils/charts/axis";
-import {
-  isDenominatorStatisticallySignificant,
-  isDenominatorsMatrixStatisticallySignificant,
-  tooltipForFooterWithCounts,
-} from "../../../../utils/charts/significantStatistics";
+import useChartData from "../../../../hooks/useChartData";
 import {
   getTrailingLabelFromMetricPeriodMonthsToggle,
   getPeriodLabelFromMetricPeriodMonthsToggle,
-  toggleLabel,
-  updateTooltipForMetricTypeWithCounts,
 } from "../../../../utils/charts/toggles";
 
 const chartId = "revocationsByDistrict";
+const chartTitle = "Revocations by district";
 
 const RevocationsByDistrict = ({
   currentDistrict,
   dataFilter: filterData,
   filterStates,
-  metricPeriodMonths,
+  metricPeriodMonths: months,
   skippedFilters,
   treatCategoryAllAsAbsent,
   stateCode,
 }) => {
-  const [mode, setMode] = useState("counts"); // counts | rates
+  const [mode, setMode] = useState("counts"); // counts | rates | exits
 
-  const { loading, user, getTokenSilently } = useAuth0();
-  const [revocationApiData, setRevocationApiData] = useState({});
-  const [awaitingRevocationApi, setAwaitingRevocationApi] = useState(true);
-  const [supervisionApiData, setSupervisionApiData] = useState({});
-  const [awaitingSupervisionApi, setAwaitingSupervisionApi] = useState(true);
+  const trailingLabel = getTrailingLabelFromMetricPeriodMonthsToggle(months);
+  const periodLabel = getPeriodLabelFromMetricPeriodMonthsToggle(months);
+  const timeDescription = `${trailingLabel} ${periodLabel}`;
 
-  const timeDescription = `${getTrailingLabelFromMetricPeriodMonthsToggle(
-    metricPeriodMonths
-  )} (${getPeriodLabelFromMetricPeriodMonthsToggle(metricPeriodMonths)})`;
+  const {
+    isLoading: revocationIsLoading,
+    apiData: revocationApiData,
+  } = useChartData(
+    `${stateCode}/newRevocations`,
+    "revocations_matrix_distribution_by_district"
+  );
 
-  const handleModeChanging = (newMode) => {
-    setMode(newMode);
-  };
+  const {
+    isLoading: supervisionIsLoading,
+    apiData: supervisionApiData,
+  } = useChartData(
+    `${stateCode}/newRevocations`,
+    "revocations_matrix_supervision_distribution_by_district"
+  );
 
-  useEffect(() => {
-    fetchChartData(
-      stateCode,
-      "newRevocations",
-      "revocations_matrix_distribution_by_district",
-      setRevocationApiData,
-      setAwaitingRevocationApi,
-      getTokenSilently
-    );
-
-    fetchChartData(
-      "us_mo",
-      "newRevocations",
-      "revocations_matrix_supervision_distribution_by_district",
-      setSupervisionApiData,
-      setAwaitingSupervisionApi,
-      getTokenSilently
-    );
-  }, [getTokenSilently, stateCode]);
-
-  if (
-    awaitingResults(loading, user, awaitingRevocationApi) ||
-    awaitingResults(loading, user, awaitingSupervisionApi)
-  ) {
+  if (revocationIsLoading || supervisionIsLoading) {
     return <Loading />;
   }
 
@@ -113,215 +72,53 @@ const RevocationsByDistrict = ({
     skippedFilters,
     treatCategoryAllAsAbsent
   );
-
   const filteredSupervisionData = filterData(
     supervisionApiData,
     skippedFilters,
     treatCategoryAllAsAbsent
   );
 
-  const mergedRevocationData = pipe(
-    mergeRevocationData,
-    mode === "counts" ? sortByCount : sortByRate
-  )(
-    groupRevocationDataByDistrict(filteredRevocationData),
-    groupSupervisionDataByDistrict(filteredSupervisionData)
-  );
-
-  const averageRate = calculateAverageRate(
-    filteredRevocationData,
-    filteredSupervisionData
-  );
-
-  const dataPoints =
-    mode === "counts"
-      ? mergedRevocationData.map((item) => item.count)
-      : mergedRevocationData.map((item) => item.rate.toFixed(2));
-
-  const labels = mergedRevocationData.map((item) => item.district);
-  const numerators = mergedRevocationData.map((item) => item.count);
-  const denominators = mergedRevocationData.map((item) => item.total);
-
-  const showWarning = !isDenominatorsMatrixStatisticallySignificant(
-    denominators
-  );
-
-  const barBackgroundColor = ({ dataIndex }) => {
-    let color =
-      currentDistrict &&
-      currentDistrict.toLowerCase() === labels[dataIndex].toLowerCase()
-        ? COLORS["lantern-light-blue"]
-        : COLORS["lantern-orange"];
-    if (
-      mode === "rates" &&
-      !isDenominatorStatisticallySignificant(denominators[dataIndex])
-    ) {
-      color = pattern.draw("diagonal-right-left", color, "#ffffff", 5);
-    }
-    return color;
-  };
-
-  const chart = (
-    <Bar
-      id={chartId}
-      data={{
-        labels,
-        datasets: [
-          {
-            label: toggleLabel(
-              {
-                counts: "Revocations",
-                rates: "Percent revoked",
-              },
-              mode
-            ),
-            backgroundColor: barBackgroundColor,
-            data: dataPoints,
-          },
-        ],
-      }}
-      options={{
-        annotation:
-          mode === "rates"
-            ? {
-                drawTime: "afterDatasetsDraw",
-                annotations: [
-                  {
-                    drawTime: "afterDraw",
-                    type: "line",
-                    mode: "horizontal",
-                    scaleID: "y-axis-0",
-                    value: averageRate,
-                    borderColor: "#72777a",
-                    borderWidth: 2,
-                    label: {
-                      backgroundColor: "transparent",
-                      fontColor: "#72777a",
-                      fontStyle: "normal",
-                      enabled: true,
-                      content: `Overall: ${averageRate.toFixed(2)}%`,
-                      position: "right",
-                      yAdjust: -10,
-                    },
-                  },
-                ],
-              }
-            : null,
-        legend: {
-          display: false,
-        },
-        responsive: true,
-        maintainAspectRatio: false,
-        scales: {
-          xAxes: [
-            {
-              scaleLabel: {
-                display: true,
-                labelString: "District",
-              },
-              stacked: true,
-            },
-          ],
-          yAxes: [
-            {
-              id: "y-axis-0",
-              scaleLabel: {
-                display: true,
-                labelString: toggleLabel(
-                  {
-                    counts: "Number of people revoked",
-                    rates: "Percent revoked",
-                  },
-                  mode
-                ),
-              },
-              stacked: true,
-              ticks: {
-                callback: axisCallbackForMetricType(mode === "rates"),
-              },
-            },
-          ],
-        },
-        tooltips: {
-          backgroundColor: COLORS["grey-800-light"],
-          footerFontSize: 9,
-          mode: "index",
-          intersect: false,
-          callbacks: {
-            label: (tooltipItem, data) =>
-              updateTooltipForMetricTypeWithCounts(
-                mode,
-                tooltipItem,
-                data,
-                numerators,
-                denominators
-              ),
-            footer: (tooltipItem) =>
-              mode === "rates" &&
-              tooltipForFooterWithCounts(tooltipItem, denominators),
-          },
-        },
-      }}
-    />
-  );
-
-  return (
-    <div>
-      <h4>
-        Revocations by district
-        {mode === "rates" && showWarning === true && (
-          <DataSignificanceWarningIcon />
-        )}
-        <ExportMenu
+  switch (mode) {
+    case "counts":
+    default:
+      return (
+        <CountsChart
           chartId={chartId}
-          chart={chart}
-          metricTitle="Revocations by district"
-          timeWindowDescription={timeDescription}
-          filters={filterStates}
+          chartTitle={chartTitle}
+          setMode={setMode}
+          filterStates={filterStates}
+          timeDescription={timeDescription}
+          currentDistrict={currentDistrict}
+          revocationApiData={filteredRevocationData}
         />
-      </h4>
-      <h6 className="pB-20">{timeDescription}</h6>
-
-      <div
-        id="modeButtons"
-        className="pB-20 btn-group btn-group-toggle"
-        data-toggle="buttons"
-      >
-        <label
-          id="countModeButton"
-          className="btn btn-sm btn-outline-primary active"
-          htmlFor="countMode"
-          onClick={() => handleModeChanging("counts")}
-        >
-          <input
-            type="radio"
-            name="modes"
-            id="countMode"
-            value="counts"
-            autoComplete="off"
-          />
-          Revocation count
-        </label>
-        <label
-          id="rateModeButton"
-          className="btn btn-sm btn-outline-primary"
-          htmlFor="rateMode"
-          onClick={() => handleModeChanging("rates")}
-        >
-          <input
-            type="radio"
-            name="modes"
-            id="rateMode"
-            value="rates"
-            autoComplete="off"
-          />
-          Percent revoked
-        </label>
-      </div>
-
-      <div className="static-chart-container fs-block">{chart}</div>
-    </div>
-  );
+      );
+    case "rates":
+      return (
+        <RatesChart
+          chartId={chartId}
+          chartTitle={chartTitle}
+          setMode={setMode}
+          filterStates={filterStates}
+          timeDescription={timeDescription}
+          currentDistrict={currentDistrict}
+          revocationApiData={filteredRevocationData}
+          supervisionApiData={filteredSupervisionData}
+        />
+      );
+    case "exits":
+      return (
+        <ExitsChart
+          chartId={chartId}
+          chartTitle={chartTitle}
+          setMode={setMode}
+          filterStates={filterStates}
+          timeDescription={timeDescription}
+          currentDistrict={currentDistrict}
+          revocationApiData={filteredRevocationData}
+          supervisionApiData={filteredSupervisionData}
+        />
+      );
+  }
 };
 
 RevocationsByDistrict.defaultProps = {

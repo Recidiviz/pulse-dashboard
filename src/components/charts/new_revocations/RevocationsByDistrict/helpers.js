@@ -15,7 +15,11 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
+import filter from "lodash/fp/filter";
 import orderBy from "lodash/fp/orderBy";
+import pipe from "lodash/fp/pipe";
+import sumBy from "lodash/fp/sumBy";
+import toInteger from "lodash/fp/toInteger";
 
 /**
  * Creator function for grouping data by district.
@@ -27,24 +31,17 @@ import orderBy from "lodash/fp/orderBy";
  * @example
  * groupByDistrict("some_field") // (records) => { '01' => 5, '02' => 3 }
  */
-const groupByDistrictCreator = (fieldKey) => (records) =>
+export const groupByDistrictCreator = (fieldKey, records) =>
   records.reduce(
     (result, { district, [fieldKey]: field }) =>
       district === "ALL"
         ? result
         : {
             ...result,
-            [district]: (result[district] || 0) + (parseInt(field, 10) || 0),
+            [district]: (result[district] || 0) + (toInteger(field) || 0),
           },
     {}
   );
-
-export const groupRevocationDataByDistrict = groupByDistrictCreator(
-  "population_count"
-);
-export const groupSupervisionDataByDistrict = groupByDistrictCreator(
-  "total_population"
-);
 
 /**
  * Form maximally described data for chart from revocation and supervision data.
@@ -63,8 +60,17 @@ export const mergeRevocationData = (
     return { district, count, total, rate };
   });
 
-export const sortByCount = orderBy(["count"], ["desc"]);
-export const sortByRate = orderBy(["rate"], ["desc"]);
+export const sortByMode = (mode) => {
+  switch (mode) {
+    case "counts":
+    default:
+      return orderBy(["count"], ["desc"]);
+    case "rates":
+      return orderBy(["rate"], ["desc"]);
+    case "exits":
+      return orderBy(["exit"], ["desc"]);
+  }
+};
 
 /**
  * Sum population of revocation data
@@ -73,21 +79,38 @@ export const sortByRate = orderBy(["rate"], ["desc"]);
  * @param {Array} data
  * @returns {number}
  */
-const sumPopulation = (key, data) =>
-  data.reduce((acc, item) => {
-    if (item.district === "ALL") {
-      return acc + (parseInt(item[key], 10) || 0);
-    }
-    return acc;
-  }, 0);
+export const sumCounts = (key, data) =>
+  pipe(
+    filter((item) => item.district === "ALL"),
+    sumBy((item) => toInteger(item[key]))
+  )(data);
 
 /**
- * Calculates avarage rate of revocation population.
+ * Calculates avarage rate
  */
-export const calculateAverageRate = (revocationData, supervisionData) => {
-  const numerator = sumPopulation("population_count", revocationData);
-  const denominator = sumPopulation("total_population", supervisionData);
-  return denominator === 0 || numerator === 0
-    ? 0
-    : (100 * numerator) / denominator;
-};
+export const calculateAverageRate = (numerator, denominator) =>
+  denominator === 0 || numerator === 0 ? 0 : (100 * numerator) / denominator;
+
+export const getAverageRateAnnotation = (averageRate) => ({
+  drawTime: "afterDatasetsDraw",
+  annotations: [
+    {
+      drawTime: "afterDraw",
+      type: "line",
+      mode: "horizontal",
+      scaleID: "y-axis-0",
+      value: averageRate,
+      borderColor: "#72777a",
+      borderWidth: 2,
+      label: {
+        backgroundColor: "transparent",
+        fontColor: "#72777a",
+        fontStyle: "normal",
+        enabled: true,
+        content: `Overall: ${averageRate.toFixed(2)}%`,
+        position: "right",
+        yAdjust: -10,
+      },
+    },
+  ],
+});

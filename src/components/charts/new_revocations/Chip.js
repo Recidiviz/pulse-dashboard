@@ -17,10 +17,21 @@
 
 import React from "react";
 import PropTypes from "prop-types";
+import cx from "classnames";
 
-const Chip = ({ label, onDelete }) => (
-  <div className="chip">
-    <span className="label">{label}</span>
+import "./Chip.scss";
+
+const Chip = ({ label, onClick, onDelete, isSelected, isShrinking }) => (
+  <div
+    className={cx({
+      chip: true,
+      selected: isSelected,
+      shrinking: isShrinking,
+    })}
+  >
+    <button type="button" className="label" onClick={onClick}>
+      {label}
+    </button>
     {onDelete !== undefined && (
       <button type="button" className="delete" onClick={onDelete}>
         <i className="ti-close fw-900" />
@@ -30,12 +41,18 @@ const Chip = ({ label, onDelete }) => (
 );
 
 Chip.defaultProps = {
-  onDelete: () => {},
+  onClick: () => {},
+  onDelete: undefined,
+  isSelected: false,
+  isShrinking: false,
 };
 
 Chip.propTypes = {
   label: PropTypes.string.isRequired,
+  onClick: PropTypes.func,
   onDelete: PropTypes.func,
+  isSelected: PropTypes.bool,
+  isShrinking: PropTypes.bool,
 };
 
 export default Chip;
