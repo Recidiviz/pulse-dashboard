@@ -18,7 +18,7 @@
 
 import "@testing-library/jest-dom/extend-expect";
 
-import { calculateAverageRate, sortByCount, sortByRate, mergeRevocationData } from "../helpers";
+import { calculateAverageRate, mergeRevocationData, sumCounts } from "../helpers";
 
 describe("#calculateAverageRate", () => {
   const revocationData = [
@@ -42,37 +42,10 @@ describe("#calculateAverageRate", () => {
   ];
 
   it("calculate avarage rate from filtered datasets", () => {
-    expect(calculateAverageRate(revocationData, supervisionData)).toEqual(25);
-  });
-});
-
-describe("sort functions", () => {
-  const mergedRevocationData = [
-    { district: "25", count: 397, total: 5200, rate: 7.634615384615385 },
-    { district: "10", count: 453, total: 11352, rate: 3.990486257928118 },
-    { district: "10N", count: 366, total: 6255, rate: 5.851318944844125 },
-    { district: "14", count: 374, total: 4591, rate: 8.1463733391418 },
-    { district: "11", count: 334, total: 6449, rate: 5.179097534501473 },
-  ];
-
-  it("sort merged revocation data by count", () => {
-    expect(sortByCount(mergedRevocationData)).toEqual([
-      { district: "10", count: 453, total: 11352, rate: 3.990486257928118 },
-      { district: "25", count: 397, total: 5200, rate: 7.634615384615385 },
-      { district: "14", count: 374, total: 4591, rate: 8.1463733391418 },
-      { district: "10N", count: 366, total: 6255, rate: 5.851318944844125 },
-      { district: "11", count: 334, total: 6449, rate: 5.179097534501473 },
-    ]);
-  });
-
-  it("sort merged revocation data by rate", () => {
-    expect(sortByRate(mergedRevocationData)).toEqual([
-      { district: "14", count: 374, total: 4591, rate: 8.1463733391418 },
-      { district: "25", count: 397, total: 5200, rate: 7.634615384615385 },
-      { district: "10N", count: 366, total: 6255, rate: 5.851318944844125 },
-      { district: "11", count: 334, total: 6449, rate: 5.179097534501473 },
-      { district: "10", count: 453, total: 11352, rate: 3.990486257928118 },
-    ]);
+    expect(calculateAverageRate(
+      sumCounts("population_count", revocationData),
+      sumCounts("total_population", supervisionData)
+    )).toEqual(25);
   });
 });
 
