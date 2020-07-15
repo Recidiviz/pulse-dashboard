@@ -16,10 +16,11 @@
 // =============================================================================
 
 import filter from "lodash/fp/filter";
-import orderBy from "lodash/fp/orderBy";
 import pipe from "lodash/fp/pipe";
 import sumBy from "lodash/fp/sumBy";
 import toInteger from "lodash/fp/toInteger";
+
+import { calculateRate } from "../helpers/rate";
 
 /**
  * Creator function for grouping data by district.
@@ -56,21 +57,9 @@ export const mergeRevocationData = (
 ) =>
   Object.entries(revocationGroupedData).map(([district, count]) => {
     const total = supervisionGroupedData[district];
-    const rate = total === 0 || count === 0 ? 0 : (100 * count) / total;
+    const rate = calculateRate(count, total);
     return { district, count, total, rate };
   });
-
-export const sortByMode = (mode) => {
-  switch (mode) {
-    case "counts":
-    default:
-      return orderBy(["count"], ["desc"]);
-    case "rates":
-      return orderBy(["rate"], ["desc"]);
-    case "exits":
-      return orderBy(["exit"], ["desc"]);
-  }
-};
 
 /**
  * Sum population of revocation data
@@ -85,32 +74,8 @@ export const sumCounts = (key, data) =>
     sumBy((item) => toInteger(item[key]))
   )(data);
 
-/**
- * Calculates avarage rate
- */
-export const calculateAverageRate = (numerator, denominator) =>
-  denominator === 0 || numerator === 0 ? 0 : (100 * numerator) / denominator;
-
-export const getAverageRateAnnotation = (averageRate) => ({
-  drawTime: "afterDatasetsDraw",
-  annotations: [
-    {
-      drawTime: "afterDraw",
-      type: "line",
-      mode: "horizontal",
-      scaleID: "y-axis-0",
-      value: averageRate,
-      borderColor: "#72777a",
-      borderWidth: 2,
-      label: {
-        backgroundColor: "transparent",
-        fontColor: "#72777a",
-        fontStyle: "normal",
-        enabled: true,
-        content: `Overall: ${averageRate.toFixed(2)}%`,
-        position: "right",
-        yAdjust: -10,
-      },
-    },
-  ],
-});
+export const modeButtons = [
+  { label: "Revocation count", value: "counts" },
+  { label: "Percent revoked of standing population", value: "rates" },
+  { label: "Percent revoked of exits", value: "exits" },
+];

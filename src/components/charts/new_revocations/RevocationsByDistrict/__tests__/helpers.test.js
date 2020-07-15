@@ -18,7 +18,8 @@
 
 import "@testing-library/jest-dom/extend-expect";
 
-import { calculateAverageRate, mergeRevocationData, sumCounts } from "../helpers";
+import { mergeRevocationData, sumCounts } from "../helpers";
+import { calculateRate } from "../../helpers/rate";
 
 describe("#calculateAverageRate", () => {
   const revocationData = [
@@ -42,7 +43,7 @@ describe("#calculateAverageRate", () => {
   ];
 
   it("calculate avarage rate from filtered datasets", () => {
-    expect(calculateAverageRate(
+    expect(calculateRate(
       sumCounts("population_count", revocationData),
       sumCounts("total_population", supervisionData)
     )).toEqual(25);

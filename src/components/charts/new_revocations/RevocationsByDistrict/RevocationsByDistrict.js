@@ -18,16 +18,13 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 
-import CountsChart from "./CountsChart";
-import RatesChart from "./RatesChart";
-import ExitsChart from "./ExitesChart";
+import RevocationCount from "./RevocationCount";
+import PercentRevokedByPopulation from "./PercentRevokedByPopulation";
+import PercentRevokedByExits from "./PercentRevokedByExits";
 import Loading from "../../../Loading";
+import { getTimeDescription } from "../helpers/format";
 // eslint-disable-next-line import/no-cycle
 import useChartData from "../../../../hooks/useChartData";
-import {
-  getTrailingLabelFromMetricPeriodMonthsToggle,
-  getPeriodLabelFromMetricPeriodMonthsToggle,
-} from "../../../../utils/charts/toggles";
 
 const chartId = "revocationsByDistrict";
 const chartTitle = "Revocations by district";
@@ -36,16 +33,14 @@ const RevocationsByDistrict = ({
   currentDistrict,
   dataFilter: filterData,
   filterStates,
-  metricPeriodMonths: months,
+  metricPeriodMonths,
   skippedFilters,
   treatCategoryAllAsAbsent,
   stateCode,
 }) => {
   const [mode, setMode] = useState("counts"); // counts | rates | exits
 
-  const trailingLabel = getTrailingLabelFromMetricPeriodMonthsToggle(months);
-  const periodLabel = getPeriodLabelFromMetricPeriodMonthsToggle(months);
-  const timeDescription = `${trailingLabel} ${periodLabel}`;
+  const timeDescription = getTimeDescription(metricPeriodMonths);
 
   const {
     isLoading: revocationIsLoading,
@@ -82,7 +77,7 @@ const RevocationsByDistrict = ({
     case "counts":
     default:
       return (
-        <CountsChart
+        <RevocationCount
           chartId={chartId}
           chartTitle={chartTitle}
           setMode={setMode}
@@ -94,7 +89,7 @@ const RevocationsByDistrict = ({
       );
     case "rates":
       return (
-        <RatesChart
+        <PercentRevokedByPopulation
           chartId={chartId}
           chartTitle={chartTitle}
           setMode={setMode}
@@ -107,7 +102,7 @@ const RevocationsByDistrict = ({
       );
     case "exits":
       return (
-        <ExitsChart
+        <PercentRevokedByExits
           chartId={chartId}
           chartTitle={chartTitle}
           setMode={setMode}
