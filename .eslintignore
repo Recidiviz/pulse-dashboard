@@ -43,17 +43,25 @@ public/
 !src/components/charts/facilities/ReincarcerationRateByStayLength.js
 !src/components/charts/facilities/__tests__/**/*.js
 !src/components/charts/new_revocations/helpers.js
+<<<<<<< HEAD
 !src/components/charts/new_revocations/helpers/**/*.js
 !src/components/charts/new_revocations/CaseTable/**/*.js
 !src/components/charts/new_revocations/Chip.js
 !src/components/charts/new_revocations/ModeSwitcher.js
+=======
+!src/components/charts/new_revocations/CaseTable/**/*.js
+!src/components/charts/new_revocations/Chip.js
+>>>>>>> 0bdb5890229cfdd98875187a2d3ecbd8b7764966
 !src/components/charts/new_revocations/RevocationCharts.js
 !src/components/charts/new_revocations/RevocationMatrixExplanation.js
 !src/components/charts/new_revocations/Revocations.js
 !src/components/charts/new_revocations/RevocationsByDistrict/**/*.js
+<<<<<<< HEAD
 !src/components/charts/new_revocations/RevocationsByGender/**/*.js
 !src/components/charts/new_revocations/RevocationsByRace/**/*.js
 !src/components/charts/new_revocations/RevocationsByRiskLevel/**/*.js
+=======
+>>>>>>> 0bdb5890229cfdd98875187a2d3ecbd8b7764966
 !src/components/charts/new_revocations/RevocationsByViolation.js
 !src/components/charts/new_revocations/ToggleBar/**/*.js
 !src/components/charts/programming/FtrReferralCountByMonth.js
