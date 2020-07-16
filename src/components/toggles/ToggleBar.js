@@ -68,7 +68,7 @@ const ToggleBar = ({
     <Sticky style={TOGGLE_STYLE}>
       <div className="row pB-10">
         <div className="col-md-12">
-          <div className="bd bgc-white">
+          <div className="bd bgc-white" style={{ marginLeft: -2 }}>
             <div className="row toggle-filters">
               {setChartMetricType && (
                 <div className="toggle-filters__filter" id="metricTypeToggle">
