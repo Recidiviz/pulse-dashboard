@@ -109,8 +109,8 @@ const RevocationsByRiskLevel = ({
 
   const chartLabels = map("label", riskLevelCounts);
   const chartDataPoints = map("rate", riskLevelCounts);
-  const numeratorCounts = map("populationCount", riskLevelCounts);
-  const denominatorCounts = map("supervisionCount", riskLevelCounts);
+  const numeratorCounts = map("numerator", riskLevelCounts);
+  const denominatorCounts = map("denominator", riskLevelCounts);
 
   const showWarning = !isDenominatorsMatrixStatisticallySignificant(
     denominatorCounts

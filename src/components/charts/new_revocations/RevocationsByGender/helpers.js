@@ -21,6 +21,10 @@ import set from "lodash/fp/set";
 import toInteger from "lodash/fp/toInteger";
 import { calculateRate } from "../helpers/rate";
 
+/**
+ * These are the only genders that are apparent in the source data set,
+ * not all of the genders we would like to represent.
+ */
 const GENDERS = ["FEMALE", "MALE"];
 const RISK_LEVELS = [
   "OVERALL",

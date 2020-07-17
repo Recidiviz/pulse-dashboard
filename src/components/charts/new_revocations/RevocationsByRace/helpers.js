@@ -85,8 +85,8 @@ export const getLabelByMode = (mode) => {
 /**
  * Transform to
  * {
- *   FEMALE: { LOW: [1, 4], HIGH: [5, 9], ... } }
- *   MALE: { LOW: [2, 9], HIGH: [2, 8], ... } }
+ *   ASIAN: { LOW: [1, 4], HIGH: [5, 9], ... } }
+ *   HISPANIC: { LOW: [2, 9], HIGH: [2, 8], ... } }
  * }
  */
 export const dataTransformer = (numeratorKey, denominatorKey) => (acc, data) =>
