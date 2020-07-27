@@ -28,6 +28,7 @@ import values from "lodash/fp/values";
 import {
   groupByMonth,
   mergeAllResolver,
+  ensureWrappedInArray,
   sum,
   configureDownloads,
 } from "./utils";
@@ -122,7 +123,8 @@ const PerMonthBarChart = ({
 
   const dataArrays = pipe(
     map("monthDict"),
-    mergeAllWith(mergeAllResolver)
+    mergeAllWith(mergeAllResolver),
+    ensureWrappedInArray
   )(dataPoints);
 
   useEffect(() => {

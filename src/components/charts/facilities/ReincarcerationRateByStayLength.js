@@ -88,9 +88,14 @@ const ReincarcerationRateByStayLength = ({
   const dataPoints = map((chartLabel) => {
     const transformedLabel = transformStayLength(chartLabel);
 
+    const dataPointsForLabel = dataPointsMap[transformedLabel];
+    if (dataPointsForLabel === undefined) {
+      return 0;
+    }
+
     return metricType === "counts"
-      ? dataPointsMap[transformedLabel].count
-      : dataPointsMap[transformedLabel].rate;
+      ? dataPointsForLabel.count
+      : dataPointsForLabel.rate;
   })(chartLabels);
 
   const chart = (
