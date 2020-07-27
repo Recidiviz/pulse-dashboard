@@ -38,7 +38,7 @@ const VerificationNeeded = () => (
         </p>
         <p className="mB-30 fsz-def c-grey-700">
           If you have reached this page by mistake, please try to log in again.
-          If you are still having trouble, please reach out to
+          If you are still having trouble, please reach out to &nbsp;
           <a
             href="mailto:web-support@recidiviz.org?Subject=Trouble%20logging%20in"
             target="_top"
