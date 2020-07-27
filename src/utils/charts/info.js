@@ -302,11 +302,9 @@ Those without Community Supervision Screening Tool/Community Supervision Tool sc
 in the Unassessed category.`,
     },
     {
-      header: "Officer Recommendation",
-      body: `The most severe "Recommendation" on the reports filed within one year prior to the
-last reported violation before the person was revoked. The recommendations are ranked in severity
-in the following order: Revocation, Privileges Revoked (SIS to SES), Extension, Suspension, Service
-Termination, Delayed Action, Continuance.`,
+      header: "Last Officer Recommendation (Including Supplemental)",
+      body: `The recommendation listed on the last violation report before the person was revoked,
+including any supplemental violation reports.`,
     },
     {
       header: "Violation Record",
