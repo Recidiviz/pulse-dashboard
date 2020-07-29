@@ -203,7 +203,7 @@ const CaseTable = ({
             </th>
             <th className="long-title">
               <Sortable {...sortableProps("officer_recommendation")}>
-                Officer Recommendation
+                Last Rec. (Including Supplemental)
               </Sortable>
             </th>
             <th>
