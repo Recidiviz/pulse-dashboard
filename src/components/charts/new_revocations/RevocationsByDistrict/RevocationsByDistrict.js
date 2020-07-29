@@ -25,9 +25,10 @@ import Loading from "../../../Loading";
 import { getTimeDescription } from "../helpers/format";
 // eslint-disable-next-line import/no-cycle
 import useChartData from "../../../../hooks/useChartData";
+import { ADMISSION_TYPES } from "../ToggleBar/options";
 
 const chartId = "revocationsByDistrict";
-const chartTitle = "Revocations by district";
+const chartTitle = "Admissions by district";
 
 const RevocationsByDistrict = ({
   currentDistrict,
@@ -40,7 +41,11 @@ const RevocationsByDistrict = ({
 }) => {
   const [mode, setMode] = useState("counts"); // counts | rates | exits
 
-  const timeDescription = getTimeDescription(metricPeriodMonths);
+  const timeDescription = getTimeDescription(
+    metricPeriodMonths,
+    ADMISSION_TYPES,
+    filterStates.admissionType
+  );
 
   const {
     isLoading: revocationIsLoading,

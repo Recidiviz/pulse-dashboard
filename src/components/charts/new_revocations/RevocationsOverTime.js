@@ -178,11 +178,11 @@ const RevocationsOverTime = (props) => {
   return (
     <div>
       <h4>
-        Number of people revoked to prison per month
+        Number of admissions per month
         <ExportMenu
           chartId={chartId}
           chart={chart}
-          metricTitle="Number of people revoked to prison per month"
+          metricTitle="Number of admissions per month"
           timeWindowDescription={getTrailingLabelFromMetricPeriodMonthsToggle(props.metricPeriodMonths)}
           filters={props.filterStates}
         />

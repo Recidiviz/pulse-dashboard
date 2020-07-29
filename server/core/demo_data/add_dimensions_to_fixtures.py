@@ -133,7 +133,7 @@ def main():
     print('WRITING RESULTS TO NEW FIXTURE FILE...')
     with open(args.out_file, 'w') as filehandle:
         for data_point in new_data_points:
-            filehandle.write('%s\n' % json.dumps(data_point))
+            filehandle.write('%s\n' % json.dumps(data_point, separators=(',', ':')))
 
 
 def randomize_among_dimensions(dimension_values):

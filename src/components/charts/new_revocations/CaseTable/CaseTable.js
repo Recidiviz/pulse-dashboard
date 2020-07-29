@@ -173,12 +173,12 @@ const CaseTable = ({
   return (
     <div className="case-table">
       <h4>
-        Revoked individuals
+        Admitted individuals
         <ExportMenu
           chartId={chartId}
           shouldExport={false}
           tableData={tableData}
-          metricTitle="Revoked individuals"
+          metricTitle="Admitted individuals"
           isTable
           tableLabels={labels}
           timeWindowDescription={`${trailingLabel} (${periodLabel})`}

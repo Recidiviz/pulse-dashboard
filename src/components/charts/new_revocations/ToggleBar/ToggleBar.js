@@ -17,7 +17,6 @@
 
 import React, { useMemo } from "react";
 import PropTypes from "prop-types";
-import Select from "react-select";
 import Sticky from "react-sticky-fill";
 import filter from "lodash/fp/filter";
 
@@ -27,15 +26,21 @@ import pipe from "lodash/fp/pipe";
 import sortBy from "lodash/fp/sortBy";
 import uniq from "lodash/fp/uniq";
 
+import Select from "../../../controls/Select";
 import Chip from "../Chip";
 import Loading from "../../../Loading";
 import useChartData from "../../../../hooks/useChartData";
 import useTopBarShrinking from "../../../../hooks/useTopBarShrinking";
 import {
-  DEFAULT_BASE_DISTRICT,
+  DEFAULT_DISTRICT,
   CHARGE_CATEGORIES,
   METRIC_PERIODS,
   SUPERVISION_TYPES,
+  ADMISSION_TYPES,
+  DEFAULT_ADMISSION_TYPE,
+  DEFAULT_SUPERVISION_TYPE,
+  DEFAULT_CHARGE_CATEGORY,
+  DEFAULT_METRIC_PERIOD,
 } from "./options";
 import {
   matrixViolationTypeToLabel,
@@ -47,13 +52,7 @@ const TOGGLE_STYLE = {
   top: 65,
 };
 
-export const prependAllOption = (options) => [
-  DEFAULT_BASE_DISTRICT,
-  ...options,
-];
-
-const findOptionByValue = (options, value) =>
-  options.find((option) => value === option.value);
+export const prependAllOption = (options) => [DEFAULT_DISTRICT, ...options];
 
 const ToggleBar = ({ filters, stateCode, updateFilters }) => {
   const { isLoading, apiData } = useChartData(
@@ -61,16 +60,28 @@ const ToggleBar = ({ filters, stateCode, updateFilters }) => {
     "revocations_matrix_cells"
   );
 
-  const districts = useMemo(() => {
-    return pipe(
-      map("district"),
-      filter((district) => district.toLowerCase() !== "all"),
-      uniq,
-      sortBy(identity),
-      map((d) => ({ value: d, label: d })),
-      prependAllOption
-    )(apiData);
-  }, [apiData]);
+  const {
+    violationType,
+    reportedViolations,
+    metricPeriodMonths,
+    district,
+    chargeCategory,
+    supervisionType,
+    admissionType,
+  } = filters;
+
+  const districts = useMemo(
+    () =>
+      pipe(
+        map("district"),
+        filter((d) => d.toLowerCase() !== "all"),
+        uniq,
+        sortBy(identity),
+        map((d) => ({ value: d, label: d })),
+        prependAllOption
+      )(apiData),
+    [apiData]
+  );
 
   const isTopBarShrinking = useTopBarShrinking();
   const topLevelFilterClassName = isTopBarShrinking
@@ -82,16 +93,14 @@ const ToggleBar = ({ filters, stateCode, updateFilters }) => {
 
   const formattedMatrixFilters = useMemo(() => {
     const parts = [];
-    if (filters.violationType) {
-      parts.push(matrixViolationTypeToLabel[filters.violationType]);
+    if (violationType) {
+      parts.push(matrixViolationTypeToLabel[violationType]);
     }
-    if (filters.reportedViolations) {
-      parts.push(
-        `${violationCountLabel(filters.reportedViolations)} violations`
-      );
+    if (reportedViolations) {
+      parts.push(`${violationCountLabel(reportedViolations)} violations`);
     }
     return parts.join(", ");
-  }, [filters.reportedViolations, filters.violationType]);
+  }, [reportedViolations, violationType]);
 
   if (isLoading) {
     return <Loading />;
@@ -101,7 +110,7 @@ const ToggleBar = ({ filters, stateCode, updateFilters }) => {
     <Sticky style={TOGGLE_STYLE}>
       <>
         <div className="top-level-filters d-f">
-          {filters.metricPeriodMonths && (
+          {metricPeriodMonths && (
             <div className={topLevelFilterClassName}>
               <h4 className={titleLevelClassName}>
                 Time
@@ -114,24 +123,22 @@ const ToggleBar = ({ filters, stateCode, updateFilters }) => {
                 onChange={(option) => {
                   updateFilters({ metricPeriodMonths: option.value });
                 }}
-                value={METRIC_PERIODS.filter(
-                  (option) => option.value === filters.metricPeriodMonths
-                )}
+                defaultValue={DEFAULT_METRIC_PERIOD}
               />
             </div>
           )}
-          {filters.district && (
+          {district && (
             <div className={topLevelFilterClassName}>
               <h4 className={titleLevelClassName}>District</h4>
               <Select
                 className="select-align"
                 options={districts}
                 onChange={(option) => updateFilters({ district: option.value })}
-                value={findOptionByValue(districts, filters.district)}
+                defaultValue={DEFAULT_DISTRICT}
               />
             </div>
           )}
-          {filters.chargeCategory && (
+          {chargeCategory && (
             <div className={topLevelFilterClassName}>
               <h4 className={titleLevelClassName}>Case Type</h4>
               <Select
@@ -140,14 +147,11 @@ const ToggleBar = ({ filters, stateCode, updateFilters }) => {
                 onChange={(option) => {
                   updateFilters({ chargeCategory: option.value });
                 }}
-                value={findOptionByValue(
-                  CHARGE_CATEGORIES,
-                  filters.chargeCategory
-                )}
+                defaultValue={DEFAULT_CHARGE_CATEGORY}
               />
             </div>
           )}
-          {filters.supervisionType && (
+          {supervisionType && (
             <div className={topLevelFilterClassName}>
               <h4 className={titleLevelClassName}>Supervision Type</h4>
               <Select
@@ -156,10 +160,23 @@ const ToggleBar = ({ filters, stateCode, updateFilters }) => {
                 onChange={(option) => {
                   updateFilters({ supervisionType: option.value });
                 }}
-                value={findOptionByValue(
-                  SUPERVISION_TYPES,
-                  filters.supervisionType
-                )}
+                defaultValue={DEFAULT_SUPERVISION_TYPE}
+              />
+            </div>
+          )}
+          {admissionType && (
+            <div className={topLevelFilterClassName}>
+              <h4 className={titleLevelClassName}>Admission Type</h4>
+              <Select
+                className="select-align"
+                options={ADMISSION_TYPES}
+                onChange={(selected) => {
+                  const values = map("value", selected);
+                  updateFilters({ admissionType: values });
+                }}
+                isMulti
+                allOption={DEFAULT_ADMISSION_TYPE}
+                defaultValue={[DEFAULT_ADMISSION_TYPE]}
               />
             </div>
           )}
@@ -190,6 +207,7 @@ ToggleBar.propTypes = {
     chargeCategory: PropTypes.string,
     district: PropTypes.string,
     supervisionType: PropTypes.string,
+    admissionType: PropTypes.arrayOf(PropTypes.string),
     violationType: PropTypes.string,
     reportedViolations: PropTypes.string,
   }).isRequired,

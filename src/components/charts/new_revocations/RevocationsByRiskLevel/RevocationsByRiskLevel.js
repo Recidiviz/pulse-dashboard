@@ -50,6 +50,7 @@ import {
 } from "../../../../utils/transforms/labels";
 import useChartData from "../../../../hooks/useChartData";
 import { findDenominatorKeyByMode, getLabelByMode } from "./helpers";
+import { ADMISSION_TYPES } from "../ToggleBar/options";
 
 const chartId = "revocationsByRiskLevel";
 
@@ -70,7 +71,11 @@ const RevocationsByRiskLevel = ({
 
   const denominatorKey = findDenominatorKeyByMode(mode);
   const chartLabel = getLabelByMode(mode);
-  const timeDescription = getTimeDescription(metricPeriodMonths);
+  const timeDescription = getTimeDescription(
+    metricPeriodMonths,
+    ADMISSION_TYPES,
+    filterStates.admissionType
+  );
 
   const { isLoading, apiData } = useChartData(
     `${stateCode}/newRevocations`,
@@ -191,7 +196,7 @@ const RevocationsByRiskLevel = ({
   return (
     <div>
       <h4>
-        Percent revoked by risk level
+        Admissions by risk level
         {showWarning === true && <DataSignificanceWarningIcon />}
         <ExportMenu
           chartId={chartId}
@@ -220,7 +225,8 @@ RevocationsByRiskLevel.propTypes = {
   skippedFilters: PropTypes.arrayOf(PropTypes.string),
   treatCategoryAllAsAbsent: PropTypes.bool,
   metricPeriodMonths: PropTypes.string.isRequired,
-  filterStates: PropTypes.shape({}),
+  // eslint-disable-next-line react/forbid-prop-types
+  filterStates: PropTypes.object,
 };
 
 export default RevocationsByRiskLevel;

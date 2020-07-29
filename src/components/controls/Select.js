@@ -16,16 +16,163 @@
 // =============================================================================
 
 /* eslint-disable react/prop-types */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/label-has-associated-control */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
 
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import ReactSelect, { components } from "react-select";
 
+import has from "lodash/fp/has";
+import map from "lodash/fp/map";
+
 import "./Select.scss";
 
-const ValueContainer = (props) => {
-  const { selectProps, getValue, children } = props;
+export const getAllOptionsWithValue = (options, allOption) => {
+  const result = [];
+
+  options.forEach((option) => {
+    if (has("value", option) && allOption.value !== option.value) {
+      result.push(option);
+    }
+    if (has("options", option)) {
+      option.options.forEach((o) => {
+        if (has("value", o)) {
+          result.push(o);
+        }
+      });
+    }
+  });
+
+  return result;
+};
+
+export const formatValue = (
+  allOptions,
+  allOption,
+  selectedOptions,
+  isShortFormat = true
+) => {
+  const selectedValues = map("value", selectedOptions);
+
+  // show option label if only one selected
+  if (selectedValues.length === 1) {
+    const options = getAllOptionsWithValue(allOptions, allOption);
+    const option = options.find((o) => o.value === selectedValues[0]);
+    return option ? option.label : "";
+  }
+
+  // show group label if all options in the only one group selected
+  const selectedGroups = allOptions
+    .filter((o) => o.options)
+    .filter((group) =>
+      group.options.every((o) => selectedValues.includes(o.value))
+    );
+  if (
+    selectedGroups.length === 1 &&
+    selectedGroups[0].options.length === selectedValues.length
+  ) {
+    return `${selectedGroups[0].label} - ${selectedGroups[0].allSelectedLabel}`;
+  }
+
+  if (isShortFormat) {
+    return `${selectedOptions.length} Items selected`;
+  }
+
+  const groupOptions = getAllOptionsWithValue(selectedGroups, allOption);
+  const optionLabels = selectedOptions
+    .filter(
+      (option) =>
+        !groupOptions.find((groupOption) => groupOption.value === option.value)
+    )
+    .map((option) => option.label);
+  const groupLabels = map(
+    (group) => `${group.label} - ${group.allSelectedLabel}`,
+    selectedGroups
+  );
+
+  return optionLabels.concat(groupLabels).join(", ");
+};
+
+const onMultiChange = (allOptions, allOption, handleChange) => (
+  selectedOptions = []
+) => {
+  const options = getAllOptionsWithValue(allOptions, allOption);
+  const selectedValues = map("value", selectedOptions);
+
+  const isNoOptionsSelected = selectedValues.length === 0;
+
+  const isAllOptionSelected =
+    selectedValues.length > 1 &&
+    selectedValues[selectedValues.length - 1] === allOption.value;
+
+  const isAllOptionsSelected = options.every((o) =>
+    selectedValues.includes(o.value)
+  );
+
+  let updatedOptions = [];
+  if (isNoOptionsSelected || isAllOptionSelected || isAllOptionsSelected) {
+    updatedOptions = [allOption];
+  } else if (
+    selectedValues.length > 1 &&
+    selectedValues.includes(allOption.value)
+  ) {
+    updatedOptions = selectedOptions.filter((o) => o.value !== allOption.value);
+  } else {
+    updatedOptions = selectedOptions;
+  }
+
+  handleChange(updatedOptions.map((o) => ({ ...o, key: o.value })));
+};
+
+const GroupHeading = ({ onChange, ...props }) => {
+  const {
+    children: label,
+    selectProps: { options, value },
+  } = props;
+  const groupOptions = options.find((o) => o.label === label).options;
+
+  const isOptionSelected = (option) =>
+    value.find((val) => val.value === option.value);
+
+  const isAllOptionsSelected = groupOptions.every(isOptionSelected);
+
+  const onClick = () => {
+    let updatedOptions = [...value];
+
+    if (isAllOptionsSelected) {
+      groupOptions.forEach((option) => {
+        updatedOptions = updatedOptions.filter(
+          (updatedOption) => option.value !== updatedOption.value
+        );
+      });
+    } else {
+      updatedOptions = updatedOptions.concat(
+        groupOptions.filter((option) => !isOptionSelected(option))
+      );
+    }
+
+    onChange(updatedOptions);
+  };
+
+  return (
+    <div onClick={onClick}>
+      <label className="checkbox-container" style={{ marginLeft: -8 }}>
+        {label}
+        <input
+          type="checkbox"
+          checked={isAllOptionsSelected}
+          onChange={() => null}
+        />
+        <span className="checkmark" />
+      </label>
+    </div>
+  );
+};
+
+const ValueContainer = ({ allOptions, allOption, children, ...props }) => {
+  const { selectProps, getValue } = props;
   const values = getValue();
 
   const selectInput = React.Children.toArray(children).find(
@@ -33,16 +180,21 @@ const ValueContainer = (props) => {
   );
 
   const isAll =
-    !selectProps.inputValue && values.length === 1 && values[0].value === "all";
+    !selectProps.inputValue &&
+    values.length === 1 &&
+    allOption &&
+    values[0].value === allOption.value;
 
   const text = isAll
-    ? "ALL"
-    : `${values.length} ${values.length > 2 ? "Items" : "Item"} selected`;
+    ? allOption.label
+    : formatValue(allOptions, allOption, values);
 
   return (
     <components.ValueContainer {...props}>
-      {text}
-      {selectInput}
+      <>
+        {text}
+        {selectInput}
+      </>
     </components.ValueContainer>
   );
 };
@@ -76,48 +228,42 @@ const defaultStyles = {
     },
   }),
   singleValue: (base) => ({ ...base, ...fontStyles }),
+  group: (base) => ({ ...base, ...fontStyles, marginLeft: 20 }),
 };
 
 const Select = ({ allOption, isMulti, ...props }) => {
+  const { options } = props;
   const [value, setValue] = useState([allOption]);
 
-  const updateSelectedOptions = (selectedOptions) => {
+  const handleChange = (selectedOptions) => {
     props.onChange(selectedOptions);
-    setValue(selectedOptions);
+    return setValue(selectedOptions);
   };
+
+  const onChange = onMultiChange(options, allOption, handleChange);
 
   if (isMulti) {
     return (
       <ReactSelect
         {...props}
-        hideSelectedOptions={false}
-        components={{
-          Option,
-          ValueContainer,
-        }}
         closeMenuOnSelect={false}
-        isMulti
-        onChange={(selected) => {
-          const options = selected || [];
-          const isEmpty = options.length === 0;
-          const isAllSelected = options.length + 1 === props.options.length;
-
-          const isAllOptionTheFirst =
-            !isEmpty && options[0].value === allOption.value;
-
-          const isAllOptionTheLast =
-            !isEmpty && options[options.length - 1].value === allOption.value;
-
-          if (isEmpty || isAllOptionTheLast || isAllSelected) {
-            updateSelectedOptions([allOption]);
-          } else if (isAllOptionTheFirst) {
-            updateSelectedOptions(
-              options.slice(1).map((s) => ({ ...s, key: s.label }))
-            );
-          } else {
-            updateSelectedOptions(options.map((s) => ({ ...s, key: s.label })));
-          }
+        components={{
+          GroupHeading: (groupHeadingProps) => (
+            <GroupHeading onChange={onChange} {...groupHeadingProps} />
+          ),
+          Option,
+          ValueContainer: (valueContainerProps) => (
+            <ValueContainer
+              allOptions={options}
+              allOption={allOption}
+              {...valueContainerProps}
+            />
+          ),
         }}
+        hideSelectedOptions={false}
+        isMulti
+        isSearchable={false}
+        onChange={onChange}
         styles={defaultStyles}
         value={value}
       />
@@ -133,7 +279,7 @@ const option = PropTypes.shape({
 });
 
 Select.defaultProps = {
-  allOption: { label: "All", value: "all" },
+  allOption: undefined,
   isMulti: false,
   options: [],
   defaultValue: undefined,

@@ -44,6 +44,7 @@ import {
 } from "../../../../utils/charts/significantStatistics";
 import { tooltipForRateMetricWithNestedCounts } from "../../../../utils/charts/toggles";
 import useChartData from "../../../../hooks/useChartData";
+import { ADMISSION_TYPES } from "../ToggleBar/options";
 
 const modeButtons = [
   { label: "Percent revoked of standing population", value: "rates" },
@@ -75,7 +76,11 @@ const RevocationsByGender = ({
 
   const numeratorKey = "population_count";
   const denominatorKey = findDenominatorKeyByMode(mode);
-  const timeDescription = getTimeDescription(metricPeriodMonths);
+  const timeDescription = getTimeDescription(
+    metricPeriodMonths,
+    ADMISSION_TYPES,
+    filterStates.admissionType
+  );
 
   const { isLoading, apiData } = useChartData(
     `${stateCode}/newRevocations`,
@@ -164,7 +169,7 @@ const RevocationsByGender = ({
   return (
     <div>
       <h4>
-        Percent revoked by gender and risk level
+        Admissions by gender and risk level
         {showWarning === true && <DataSignificanceWarningIcon />}
         <ExportMenu
           chartId={chartId}
@@ -193,7 +198,8 @@ RevocationsByGender.propTypes = {
   skippedFilters: PropTypes.arrayOf(PropTypes.string),
   treatCategoryAllAsAbsent: PropTypes.bool,
   metricPeriodMonths: PropTypes.string.isRequired,
-  filterStates: PropTypes.shape({}),
+  // eslint-disable-next-line react/forbid-prop-types
+  filterStates: PropTypes.object,
 };
 
 export default RevocationsByGender;

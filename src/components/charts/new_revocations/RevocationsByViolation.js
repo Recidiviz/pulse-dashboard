@@ -26,17 +26,15 @@ import { COLORS } from "../../../assets/scripts/constants/colors";
 // eslint-disable-next-line import/no-cycle
 import useChartData from "../../../hooks/useChartData";
 import { axisCallbackForPercentage } from "../../../utils/charts/axis";
-import {
-  getTrailingLabelFromMetricPeriodMonthsToggle,
-  getPeriodLabelFromMetricPeriodMonthsToggle,
-  tooltipForRateMetricWithCounts,
-} from "../../../utils/charts/toggles";
+import { tooltipForRateMetricWithCounts } from "../../../utils/charts/toggles";
 import {
   toInt,
   technicalViolationTypes,
   violationTypeToLabel,
   allViolationTypes,
 } from "../../../utils/transforms/labels";
+import { ADMISSION_TYPES } from "./ToggleBar/options";
+import { getTimeDescription } from "./helpers/format";
 
 const chartId = "revocationsByViolationType";
 
@@ -48,6 +46,12 @@ const RevocationsByViolation = ({
   treatCategoryAllAsAbsent,
   stateCode,
 }) => {
+  const timeDescription = getTimeDescription(
+    metricPeriodMonths,
+    ADMISSION_TYPES,
+    filterStates.admissionType
+  );
+
   const { isLoading, apiData } = useChartData(
     `${stateCode}/newRevocations`,
     "revocations_matrix_distribution_by_violation"
@@ -203,10 +207,6 @@ const RevocationsByViolation = ({
     />
   );
 
-  const description = `${getTrailingLabelFromMetricPeriodMonthsToggle(
-    metricPeriodMonths
-  )} (${getPeriodLabelFromMetricPeriodMonthsToggle(metricPeriodMonths)})`;
-
   return (
     <div>
       <h4>
@@ -215,11 +215,11 @@ const RevocationsByViolation = ({
           chartId={chartId}
           chart={chart}
           metricTitle="Relative frequency of violation types"
-          timeWindowDescription={description}
+          timeWindowDescription={timeDescription}
           filters={filterStates}
         />
       </h4>
-      <h6 className="pB-20">{description}</h6>
+      <h6 className="pB-20">{timeDescription}</h6>
 
       <div className="static-chart-container fs-block">{chart}</div>
     </div>
@@ -239,6 +239,7 @@ const metricPeriodMonthsType = PropTypes.oneOfType([
 RevocationsByViolation.propTypes = {
   dataFilter: PropTypes.func.isRequired,
   filterStates: PropTypes.shape({
+    admissionType: PropTypes.arrayOf(PropTypes.string),
     metricPeriodMonths: metricPeriodMonthsType.isRequired,
     chargeCategory: PropTypes.string,
     district: PropTypes.string,
