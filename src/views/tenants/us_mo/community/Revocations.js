@@ -38,10 +38,10 @@ const stateCode = "us_mo";
 
 const Revocations = () => {
   const [filters, setFilters] = useState({
-    metricPeriodMonths: DEFAULT_METRIC_PERIOD,
-    chargeCategory: DEFAULT_CHARGE_CATEGORY,
-    district: DEFAULT_DISTRICT,
-    supervisionType: DEFAULT_SUPERVISION_TYPE,
+    metricPeriodMonths: DEFAULT_METRIC_PERIOD.value,
+    chargeCategory: DEFAULT_CHARGE_CATEGORY.value,
+    district: DEFAULT_DISTRICT.value,
+    supervisionType: DEFAULT_SUPERVISION_TYPE.value,
     reportedViolations: "",
     violationType: "",
   });

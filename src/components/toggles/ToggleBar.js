@@ -130,7 +130,7 @@ const ToggleBar = ({
                         setChartDistrict(options.map((o) => String(o.value)));
                       }}
                       isMulti
-                      allOption={defaultDistrictOption}
+                      summingOption={defaultDistrictOption}
                       defaultValue={[defaultDistrictOption]}
                     />
                   </div>

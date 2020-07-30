@@ -19,19 +19,27 @@ import {
   getTrailingLabelFromMetricPeriodMonthsToggle,
   getPeriodLabelFromMetricPeriodMonthsToggle,
 } from "../../../../utils/charts/toggles";
-import { formatValue, getAllOptionsWithValue } from "../../../controls/Select";
+import {
+  formatSelectOptionValue,
+  getAllOptionsWithValue,
+} from "../../../controls/Select";
 
 export const getTimeDescription = (months, admissionOptions, admissionType) => {
   const trailingLabel = getTrailingLabelFromMetricPeriodMonthsToggle(months);
   const periodLabel = getPeriodLabelFromMetricPeriodMonthsToggle(months);
-  const admissinTypeOptions = getAllOptionsWithValue(
+
+  if (!admissionType) {
+    return `${trailingLabel} (${periodLabel})`;
+  }
+
+  const admissionTypeOptions = getAllOptionsWithValue(
     admissionOptions,
     admissionOptions[0]
   ).filter((ao) => admissionType.includes(ao.value));
-  const admissionFilter = formatValue(
+  const admissionFilter = formatSelectOptionValue(
     admissionOptions,
     admissionOptions[0],
-    admissinTypeOptions,
+    admissionTypeOptions,
     false
   );
   const admissionLabel = admissionFilter ? `; ${admissionFilter}` : "";

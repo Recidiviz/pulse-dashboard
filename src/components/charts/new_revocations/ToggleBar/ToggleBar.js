@@ -175,7 +175,7 @@ const ToggleBar = ({ filters, stateCode, updateFilters }) => {
                   updateFilters({ admissionType: values });
                 }}
                 isMulti
-                allOption={DEFAULT_ADMISSION_TYPE}
+                summingOption={DEFAULT_ADMISSION_TYPE}
                 defaultValue={[DEFAULT_ADMISSION_TYPE]}
               />
             </div>

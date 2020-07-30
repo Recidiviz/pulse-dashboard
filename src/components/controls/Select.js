@@ -29,11 +29,11 @@ import map from "lodash/fp/map";
 
 import "./Select.scss";
 
-export const getAllOptionsWithValue = (options, allOption) => {
+export const getAllOptionsWithValue = (options, summingOption) => {
   const result = [];
 
   options.forEach((option) => {
-    if (has("value", option) && allOption.value !== option.value) {
+    if (has("value", option) && summingOption.value !== option.value) {
       result.push(option);
     }
     if (has("options", option)) {
@@ -48,9 +48,9 @@ export const getAllOptionsWithValue = (options, allOption) => {
   return result;
 };
 
-export const formatValue = (
+export const formatSelectOptionValue = (
   allOptions,
-  allOption,
+  summingOption,
   selectedOptions,
   isShortFormat = true
 ) => {
@@ -58,7 +58,7 @@ export const formatValue = (
 
   // show option label if only one selected
   if (selectedValues.length === 1) {
-    const options = getAllOptionsWithValue(allOptions, allOption);
+    const options = getAllOptionsWithValue(allOptions, summingOption);
     const option = options.find((o) => o.value === selectedValues[0]);
     return option ? option.label : "";
   }
@@ -80,7 +80,7 @@ export const formatValue = (
     return `${selectedOptions.length} Items selected`;
   }
 
-  const groupOptions = getAllOptionsWithValue(selectedGroups, allOption);
+  const groupOptions = getAllOptionsWithValue(selectedGroups, summingOption);
   const optionLabels = selectedOptions
     .filter(
       (option) =>
@@ -95,30 +95,32 @@ export const formatValue = (
   return optionLabels.concat(groupLabels).join(", ");
 };
 
-const onMultiChange = (allOptions, allOption, handleChange) => (
+const onMultiChange = (allOptions, summingOption, handleChange) => (
   selectedOptions = []
 ) => {
-  const options = getAllOptionsWithValue(allOptions, allOption);
+  const options = getAllOptionsWithValue(allOptions, summingOption);
   const selectedValues = map("value", selectedOptions);
 
   const isNoOptionsSelected = selectedValues.length === 0;
 
-  const isAllOptionSelected =
+  const isSummingOptionSelected =
     selectedValues.length > 1 &&
-    selectedValues[selectedValues.length - 1] === allOption.value;
+    selectedValues[selectedValues.length - 1] === summingOption.value;
 
   const isAllOptionsSelected = options.every((o) =>
     selectedValues.includes(o.value)
   );
 
   let updatedOptions = [];
-  if (isNoOptionsSelected || isAllOptionSelected || isAllOptionsSelected) {
-    updatedOptions = [allOption];
+  if (isNoOptionsSelected || isSummingOptionSelected || isAllOptionsSelected) {
+    updatedOptions = [summingOption];
   } else if (
     selectedValues.length > 1 &&
-    selectedValues.includes(allOption.value)
+    selectedValues.includes(summingOption.value)
   ) {
-    updatedOptions = selectedOptions.filter((o) => o.value !== allOption.value);
+    updatedOptions = selectedOptions.filter(
+      (o) => o.value !== summingOption.value
+    );
   } else {
     updatedOptions = selectedOptions;
   }
@@ -171,7 +173,7 @@ const GroupHeading = ({ onChange, ...props }) => {
   );
 };
 
-const ValueContainer = ({ allOptions, allOption, children, ...props }) => {
+const ValueContainer = ({ allOptions, summingOption, children, ...props }) => {
   const { selectProps, getValue } = props;
   const values = getValue();
 
@@ -182,12 +184,12 @@ const ValueContainer = ({ allOptions, allOption, children, ...props }) => {
   const isAll =
     !selectProps.inputValue &&
     values.length === 1 &&
-    allOption &&
-    values[0].value === allOption.value;
+    summingOption &&
+    values[0].value === summingOption.value;
 
   const text = isAll
-    ? allOption.label
-    : formatValue(allOptions, allOption, values);
+    ? summingOption.label
+    : formatSelectOptionValue(allOptions, summingOption, values);
 
   return (
     <components.ValueContainer {...props}>
@@ -231,16 +233,16 @@ const defaultStyles = {
   group: (base) => ({ ...base, ...fontStyles, marginLeft: 20 }),
 };
 
-const Select = ({ allOption, isMulti, ...props }) => {
+const Select = ({ summingOption, isMulti, ...props }) => {
   const { options } = props;
-  const [value, setValue] = useState([allOption]);
+  const [value, setValue] = useState([summingOption]);
 
   const handleChange = (selectedOptions) => {
     props.onChange(selectedOptions);
     return setValue(selectedOptions);
   };
 
-  const onChange = onMultiChange(options, allOption, handleChange);
+  const onChange = onMultiChange(options, summingOption, handleChange);
 
   if (isMulti) {
     return (
@@ -255,7 +257,7 @@ const Select = ({ allOption, isMulti, ...props }) => {
           ValueContainer: (valueContainerProps) => (
             <ValueContainer
               allOptions={options}
-              allOption={allOption}
+              summingOption={summingOption}
               {...valueContainerProps}
             />
           ),
@@ -279,14 +281,14 @@ const option = PropTypes.shape({
 });
 
 Select.defaultProps = {
-  allOption: undefined,
+  summingOption: undefined,
   isMulti: false,
   options: [],
   defaultValue: undefined,
 };
 
 Select.propTypes = {
-  allOption: option,
+  summingOption: option,
   isMulti: PropTypes.bool,
   options: PropTypes.arrayOf(option),
   defaultValue: PropTypes.oneOfType([option, PropTypes.arrayOf(option)]),

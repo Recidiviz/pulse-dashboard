@@ -28,19 +28,18 @@ const nullSafeComparison = (field, filter) => {
   return field.toLowerCase() === filter.toLowerCase();
 };
 
-const nullSafeComparisonForArray = (field, filter) => {
-  if (field === undefined) return true;
-  if (!field && !filter) return true;
+const nullSafeComparisonForArray = (field, filters) => {
+  if (!field && !filters) return true;
   if (!field) return false;
-  if (!filter) return false;
+  if (!filters) return false;
   return (
-    filter.filter((value) => value.toLowerCase() === field.toLowerCase())
+    filters.filter((value) => value.toLowerCase() === field.toLowerCase())
       .length !== 0
   );
 };
 
 const isAllItem = (item) => item.toLowerCase() === "all";
-const isAllItemForArray = (items) => {
+const includesAllItemFirst = (items) => {
   return items.length === 1 && isAllItem(items[0]);
 };
 
@@ -86,7 +85,7 @@ export const applyTopLevelFilters = (filters) => (
     if (
       filters.admissionType &&
       !skippedFilters.includes("admissionType") &&
-      !isAllItemForArray(filters.admissionType) &&
+      !includesAllItemFirst(filters.admissionType) &&
       !nullSafeComparisonForArray(item.admission_type, filters.admissionType)
     ) {
       return false;
