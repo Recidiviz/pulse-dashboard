@@ -169,9 +169,9 @@ const ToggleBar = ({ filters, stateCode, updateFilters }) => {
           <div className="top-level-filters pre-top-level-filters">
             <div className={topLevelFilterClassName}>
               <h4 className={titleLevelClassName}>Additional filters</h4>
-              {/* <span>Clear All</span> */}
               <Chip
                 label={formattedMatrixFilters}
+                isShrinking={isTopBarShrinking}
                 onDelete={() => {
                   updateFilters({ violationType: "", reportedViolations: "" });
                 }}

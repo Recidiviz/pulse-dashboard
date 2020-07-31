@@ -19,6 +19,14 @@ import lowerCase from "lodash/fp/lowerCase"
 import pipe from "lodash/fp/pipe";
 import startCase from "lodash/fp/startCase"
 
+const riskLevels = [
+  "NOT_ASSESSED",
+  "LOW",
+  "MEDIUM",
+  "HIGH",
+  "VERY_HIGH",
+];
+
 const riskLevelValuetoLabel = {
   NOT_ASSESSED: 'Not Assessed',
   LOW: 'Low',
@@ -145,6 +153,7 @@ function nameFromOfficerId(officerId) {
 const violationCountLabel = (count) => (count === '8' ? '8+' : count);
 
 export {
+  riskLevels,
   riskLevelValuetoLabel,
   violationTypeToLabel,
   technicalViolationTypes,

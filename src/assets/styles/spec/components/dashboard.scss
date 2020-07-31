@@ -30,45 +30,8 @@
     flex-grow: 1;
   }
 
-  .chip {
-    $color: #235781;
-
-    display: inline-flex;
-    height: 32px;
-    border: 1px solid $color;
-    padding: 4px 16px;
-    border-radius: 24px;
-
-    .label {
-      margin: 0;
-      color: $color;
-      font-size: 14px;
-      font-weight: 500;
-    }
-
-    .delete {
-      padding: 0;
-      margin-left: 12px;
-      margin-top: 1px;
-      border: none;
-      background: transparent;
-      color: $color;
-    }
-  }
-
   .top-level-active {
     padding: 12px 14px !important;
-
-    .chip {
-      height: 28px;
-      padding: 3px 12px;
-      border-radius: 24px;
-
-      .delete {
-        margin-left: 12px;
-        margin-top: 1px;
-      }
-    }
   }
 
   &.pre-top-level-filters {

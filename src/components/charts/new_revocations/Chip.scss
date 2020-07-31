@@ -1,0 +1,53 @@
+.chip {
+  $color1: #235781;
+  $color2: white;
+
+  display: inline-flex;
+  height: 32px;
+  border: 1px solid $color1;
+  background-color: $color2;
+  padding: 2px 8px;
+  border-radius: 24px;
+  margin-right: 10px;
+
+  .label {
+    margin: 0;
+    color: $color1;
+    font-size: 14px;
+    font-weight: 500;
+    border: none;
+    background-color: $color2;
+    outline: none;
+  }
+
+  .delete {
+    padding: 0;
+    margin-left: 4px;
+    margin-top: 1px;
+    border: none;
+    background: transparent;
+    color: $color1;
+  }
+
+  &.selected {
+    background-color: $color1;
+
+    .label {
+      color: $color2;
+      background-color: $color1;
+    }
+
+    .delete {
+      color: $color2;
+    }
+  }
+
+  &.shrinking {
+    height: 28px;
+    border-radius: 24px;
+
+    .delete {
+      margin-top: 2px;
+    }
+  }
+}

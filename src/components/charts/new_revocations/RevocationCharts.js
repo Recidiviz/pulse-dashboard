@@ -20,10 +20,10 @@ import PropTypes from "prop-types";
 import RenderInBrowser from "react-render-in-browser";
 
 import RevocationsByDistrict from "./RevocationsByDistrict/RevocationsByDistrict";
-import RevocationsByRiskLevel from "./RevocationsByRiskLevel";
+import RevocationsByRiskLevel from "./RevocationsByRiskLevel/RevocationsByRiskLevel";
 import RevocationsByViolation from "./RevocationsByViolation";
-import RevocationsByGender from "./RevocationsByGender";
-import RevocationsByRace from "./RevocationsByRace";
+import RevocationsByGender from "./RevocationsByGender/RevocationsByGender";
+import RevocationsByRace from "./RevocationsByRace/RevocationsByRace";
 
 const CHARTS = ["District", "Risk level", "Violation", "Gender", "Race"];
 
