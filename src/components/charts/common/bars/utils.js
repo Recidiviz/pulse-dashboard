@@ -39,6 +39,19 @@ export const mergeAllResolver = (objValue, srcValue) =>
   Array.isArray(objValue) ? objValue.concat(srcValue) : [objValue, srcValue];
 
 /**
+ * Takes in an array of objects where each value should be an array and wraps
+ * a given value in an array if it is not already an array.
+ */
+export const ensureWrappedInArray = (dataArrays) => {
+  return Object.fromEntries(
+    Object.entries(dataArrays).map(([key, value]) => [
+      key,
+      Array.isArray(value) ? value : [value],
+    ])
+  );
+};
+
+/**
  * Checks if officer has valid and not empty name.
  */
 export const isValidOfficer = (offices) => ({

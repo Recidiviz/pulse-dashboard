@@ -65,9 +65,9 @@ const AdmissionCountsByType = ({
     (dataset) => filterDatasetBySupervisionType(dataset, filterSupervisionType),
     (dataset) => filterDatasetByMetricPeriodMonths(dataset, metricPeriodMonths),
     map((data) => ({
-      [TECHNICAL]: toInteger(data.technicals),
-      [NON_TECHNICAL]: toInteger(data.non_technicals),
-      [UNKNOWN_REVOCATION]: toInteger(data.unknown_revocations),
+      [TECHNICAL]: toInteger(data ? data.technicals : 0),
+      [NON_TECHNICAL]: toInteger(data ? data.non_technicals : 0),
+      [UNKNOWN_REVOCATION]: toInteger(data ? data.unknown_revocations : 0),
     })),
     mergeAllWith((obj, src) => obj + src)
   )(admissionCountsByType);
@@ -79,7 +79,7 @@ const AdmissionCountsByType = ({
     (dataset) => filterDatasetByDistrict(dataset, ["ALL"]),
     (dataset) => filterDatasetByMetricPeriodMonths(dataset, metricPeriodMonths),
     ([data]) => ({
-      [NEW_ADMISSION]: toInteger(data.new_admissions),
+      [NEW_ADMISSION]: toInteger(data ? data.new_admissions : 0),
     }),
     (dataset) => merge(filteredAdmissionCounts, dataset),
     defaults({
