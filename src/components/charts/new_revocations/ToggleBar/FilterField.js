@@ -17,24 +17,29 @@
 
 import React from "react";
 import PropTypes from "prop-types";
-import Sticky from "react-sticky-fill";
 
-const TOGGLE_STYLE = {
-  zIndex: 700,
-  top: 65,
+import useTopBarShrinking from "../../../../hooks/useTopBarShrinking";
+
+const FilterField = ({ label, children }) => {
+  const isTopBarShrinking = useTopBarShrinking();
+  const topLevelFilterClassName = isTopBarShrinking
+    ? "top-level-filter top-level-active d-f align-items-center"
+    : "top-level-filter";
+  const titleLevelClassName = isTopBarShrinking
+    ? "title-level top-level-filters-title"
+    : "title-level";
+
+  return (
+    <div className={topLevelFilterClassName}>
+      <h4 className={titleLevelClassName}>{label}</h4>
+      {children}
+    </div>
+  );
 };
 
-const ToggleBar = ({ children }) => (
-  <Sticky style={TOGGLE_STYLE}>
-    <>{children}</>
-  </Sticky>
-);
-
-ToggleBar.propTypes = {
-  children: PropTypes.oneOfType([
-    PropTypes.arrayOf(PropTypes.node),
-    PropTypes.node,
-  ]).isRequired,
+FilterField.propTypes = {
+  label: PropTypes.string.isRequired,
+  children: PropTypes.node.isRequired,
 };
 
-export default ToggleBar;
+export default FilterField;

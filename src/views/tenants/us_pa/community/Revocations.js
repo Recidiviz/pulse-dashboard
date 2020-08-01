@@ -23,6 +23,11 @@ import RevocationCountOverTime from "../../../../components/charts/new_revocatio
 import RevocationMatrix from "../../../../components/charts/new_revocations/RevocationMatrix";
 import RevocationMatrixExplanation from "../../../../components/charts/new_revocations/RevocationMatrixExplanation";
 import ToggleBar from "../../../../components/charts/new_revocations/ToggleBar/ToggleBar";
+import MetricPeriodMonthsFilter from "../../../../components/charts/new_revocations/ToggleBar/MetricPeriodMonthsFilter";
+import DistrictFilter from "../../../../components/charts/new_revocations/ToggleBar/DistrictFilter";
+import ChargeCategoryFilter from "../../../../components/charts/new_revocations/ToggleBar/ChargeCategoryFilter";
+import AdmissionTypeFilter from "../../../../components/charts/new_revocations/ToggleBar/AdmissionTypeFilter";
+import ViolationFilter from "../../../../components/charts/new_revocations/ToggleBar/ViolationFilter";
 import {
   applyAllFilters,
   applyTopLevelFilters,
@@ -32,6 +37,8 @@ import {
   DEFAULT_CHARGE_CATEGORY,
   DEFAULT_DISTRICT,
   DEFAULT_ADMISSION_TYPE,
+  CHARGE_CATEGORIES,
+  METRIC_PERIODS,
 } from "../../../../components/charts/new_revocations/ToggleBar/options";
 
 const stateCode = "us_pa";
@@ -52,11 +59,52 @@ const Revocations = () => {
 
   return (
     <main className="dashboard bgc-grey-100">
-      <ToggleBar
-        filters={filters}
-        stateCode={stateCode}
-        updateFilters={updateFilters}
-      />
+      <ToggleBar>
+        <div className="top-level-filters d-f">
+          <MetricPeriodMonthsFilter
+            options={METRIC_PERIODS}
+            defaultValue={DEFAULT_METRIC_PERIOD}
+            onChange={updateFilters}
+          />
+          <DistrictFilter
+            stateCode={stateCode}
+            defaultValue={DEFAULT_DISTRICT}
+            onChange={updateFilters}
+          />
+          <ChargeCategoryFilter
+            options={CHARGE_CATEGORIES}
+            defaultValue={DEFAULT_CHARGE_CATEGORY}
+            onChange={updateFilters}
+          />
+          <AdmissionTypeFilter
+            options={[
+              { value: "All", label: "ALL" },
+              { value: "REVOCATION", label: "Revocation" },
+              {
+                label: "SCI",
+                allSelectedLabel: "All Short Term",
+                options: [
+                  { value: "SCI_6", label: "SCI 6 months" },
+                  { value: "SCI_9", label: "SCI 9 months" },
+                  { value: "SCI_12", label: "SCI 12 months" },
+                ],
+              },
+              { value: "PVC", label: "PVC" },
+              { value: "INPATIENT_DA", label: "Inpatient D&A" },
+              { value: "DA_DETOX", label: "D&A Detox" },
+              { value: "MENTAL_HEALTH", label: "Mental Health" },
+            ]}
+            summingOption={{ value: "All", label: "ALL" }}
+            defaultValue={[{ value: "REVOCATION", label: "Revocation" }]}
+            onChange={updateFilters}
+          />
+        </div>
+        <ViolationFilter
+          violationType={filters.violationType}
+          reportedViolations={filters.reportedViolations}
+          onClick={updateFilters}
+        />
+      </ToggleBar>
 
       <div className="bgc-white p-20 m-20">
         <RevocationCountOverTime

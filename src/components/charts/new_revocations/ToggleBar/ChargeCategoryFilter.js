@@ -17,24 +17,34 @@
 
 import React from "react";
 import PropTypes from "prop-types";
-import Sticky from "react-sticky-fill";
 
-const TOGGLE_STYLE = {
-  zIndex: 700,
-  top: 65,
+import Select from "../../../controls/Select";
+import FilterField from "./FilterField";
+
+const ChangeCategoryFilter = ({ options, defaultValue, onChange }) => {
+  return (
+    <FilterField label="Case Type">
+      <Select
+        className="select-align"
+        options={options}
+        onChange={(option) => {
+          onChange({ chargeCategory: option.value });
+        }}
+        defaultValue={defaultValue}
+      />
+    </FilterField>
+  );
 };
 
-const ToggleBar = ({ children }) => (
-  <Sticky style={TOGGLE_STYLE}>
-    <>{children}</>
-  </Sticky>
-);
-
-ToggleBar.propTypes = {
-  children: PropTypes.oneOfType([
-    PropTypes.arrayOf(PropTypes.node),
-    PropTypes.node,
-  ]).isRequired,
+ChangeCategoryFilter.propTypes = {
+  options: PropTypes.arrayOf(
+    PropTypes.shape({ label: PropTypes.string, value: PropTypes.string })
+  ).isRequired,
+  defaultValue: PropTypes.shape({
+    label: PropTypes.string,
+    value: PropTypes.string,
+  }).isRequired,
+  onChange: PropTypes.func.isRequired,
 };
 
-export default ToggleBar;
+export default ChangeCategoryFilter;
