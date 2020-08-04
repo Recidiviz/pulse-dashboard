@@ -22,10 +22,8 @@ import RevocationCount from "./RevocationCount";
 import PercentRevokedByPopulation from "./PercentRevokedByPopulation";
 import PercentRevokedByExits from "./PercentRevokedByExits";
 import Loading from "../../../Loading";
-import { getTimeDescription } from "../helpers/format";
 // eslint-disable-next-line import/no-cycle
 import useChartData from "../../../../hooks/useChartData";
-import { ADMISSION_TYPES } from "../ToggleBar/options";
 
 const chartId = "revocationsByDistrict";
 const chartTitle = "Admissions by district";
@@ -34,18 +32,12 @@ const RevocationsByDistrict = ({
   currentDistrict,
   dataFilter: filterData,
   filterStates,
-  metricPeriodMonths,
   skippedFilters,
   treatCategoryAllAsAbsent,
   stateCode,
+  timeDescription,
 }) => {
   const [mode, setMode] = useState("counts"); // counts | rates | exits
-
-  const timeDescription = getTimeDescription(
-    metricPeriodMonths,
-    ADMISSION_TYPES,
-    filterStates.admissionType
-  );
 
   const {
     isLoading: revocationIsLoading,
@@ -132,11 +124,11 @@ RevocationsByDistrict.propTypes = {
   filterStates: PropTypes.object.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
   skippedFilters: PropTypes.array.isRequired,
-  metricPeriodMonths: PropTypes.string.isRequired,
   currentDistrict: PropTypes.string.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
   treatCategoryAllAsAbsent: PropTypes.any,
   stateCode: PropTypes.string.isRequired,
+  timeDescription: PropTypes.string.isRequired,
 };
 
 export default RevocationsByDistrict;

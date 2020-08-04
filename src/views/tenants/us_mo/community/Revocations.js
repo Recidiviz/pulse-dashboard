@@ -33,6 +33,7 @@ import {
   applyAllFilters,
   applyTopLevelFilters,
 } from "../../../../components/charts/new_revocations/helpers";
+import { getTimeDescription } from "../../../../components/charts/new_revocations/helpers/format";
 import {
   DEFAULT_METRIC_PERIOD,
   DEFAULT_CHARGE_CATEGORY,
@@ -44,6 +45,15 @@ import {
 } from "../../../../components/charts/new_revocations/ToggleBar/options";
 
 const stateCode = "us_mo";
+const admissionTypeOptions = [
+  { value: "All", label: "ALL" },
+  { value: "REVOCATION", label: "Revocation" },
+  {
+    value: "INSTITUTIONAL TREATMENT",
+    label: "Institutional Treatment",
+  },
+  { value: "BOARDS_RETURN", label: "Board Returns" },
+];
 
 const Revocations = () => {
   const [filters, setFilters] = useState({
@@ -58,6 +68,12 @@ const Revocations = () => {
   const updateFilters = (newFilters) => {
     setFilters({ ...filters, ...newFilters });
   };
+
+  const timeDescription = getTimeDescription(
+    filters.metricPeriodMonths,
+    admissionTypeOptions,
+    filters.admissionType
+  );
 
   return (
     <main className="dashboard bgc-grey-100">
@@ -79,15 +95,7 @@ const Revocations = () => {
             onChange={updateFilters}
           />
           <AdmissionTypeFilter
-            options={[
-              { value: "All", label: "ALL" },
-              { value: "REVOCATION", label: "Revocation" },
-              {
-                value: "INSTITUTIONAL TREATMENT",
-                label: "Institutional Treatment",
-              },
-              { value: "BOARDS_RETURN", label: "Board Returns" },
-            ]}
+            options={admissionTypeOptions}
             summingOption={{ value: "All", label: "ALL" }}
             defaultValue={[{ value: "REVOCATION", label: "Revocation" }]}
             onChange={updateFilters}
@@ -131,6 +139,7 @@ const Revocations = () => {
         filters={filters}
         dataFilter={applyAllFilters(filters)}
         stateCode={stateCode}
+        timeDescription={timeDescription}
       />
 
       <div className="bgc-white m-20 p-20">

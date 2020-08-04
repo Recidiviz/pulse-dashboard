@@ -40,8 +40,26 @@ import {
   CHARGE_CATEGORIES,
   METRIC_PERIODS,
 } from "../../../../components/charts/new_revocations/ToggleBar/options";
+import { getTimeDescription } from "../../../../components/charts/new_revocations/helpers/format";
 
 const stateCode = "us_pa";
+const admissionTypeOptions = [
+  { value: "All", label: "ALL" },
+  { value: "REVOCATION", label: "Revocation" },
+  {
+    label: "SCI",
+    allSelectedLabel: "All Short Term",
+    options: [
+      { value: "SCI_6", label: "SCI 6 months" },
+      { value: "SCI_9", label: "SCI 9 months" },
+      { value: "SCI_12", label: "SCI 12 months" },
+    ],
+  },
+  { value: "PVC", label: "PVC" },
+  { value: "INPATIENT_DA", label: "Inpatient D&A" },
+  { value: "DA_DETOX", label: "D&A Detox" },
+  { value: "MENTAL_HEALTH", label: "Mental Health" },
+];
 
 const Revocations = () => {
   const [filters, setFilters] = useState({
@@ -56,6 +74,12 @@ const Revocations = () => {
   const updateFilters = (newFilters) => {
     setFilters({ ...filters, ...newFilters });
   };
+
+  const timeDescription = getTimeDescription(
+    filters.metricPeriodMonths,
+    admissionTypeOptions,
+    filters.admissionType
+  );
 
   return (
     <main className="dashboard bgc-grey-100">
@@ -77,23 +101,7 @@ const Revocations = () => {
             onChange={updateFilters}
           />
           <AdmissionTypeFilter
-            options={[
-              { value: "All", label: "ALL" },
-              { value: "REVOCATION", label: "Revocation" },
-              {
-                label: "SCI",
-                allSelectedLabel: "All Short Term",
-                options: [
-                  { value: "SCI_6", label: "SCI 6 months" },
-                  { value: "SCI_9", label: "SCI 9 months" },
-                  { value: "SCI_12", label: "SCI 12 months" },
-                ],
-              },
-              { value: "PVC", label: "PVC" },
-              { value: "INPATIENT_DA", label: "Inpatient D&A" },
-              { value: "DA_DETOX", label: "D&A Detox" },
-              { value: "MENTAL_HEALTH", label: "Mental Health" },
-            ]}
+            options={admissionTypeOptions}
             summingOption={{ value: "All", label: "ALL" }}
             defaultValue={[{ value: "REVOCATION", label: "Revocation" }]}
             onChange={updateFilters}
@@ -132,6 +140,7 @@ const Revocations = () => {
         filters={filters}
         dataFilter={applyAllFilters(filters)}
         stateCode={stateCode}
+        timeDescription={timeDescription}
       />
 
       <div className="bgc-white m-20 p-20">
