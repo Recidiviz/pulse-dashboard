@@ -275,7 +275,7 @@ const Select = ({ summingOption, isMulti, ...props }) => {
   return <ReactSelect {...props} styles={defaultStyles} />;
 };
 
-const option = PropTypes.shape({
+const optionType = PropTypes.shape({
   label: PropTypes.string,
   value: PropTypes.any,
 });
@@ -288,10 +288,13 @@ Select.defaultProps = {
 };
 
 Select.propTypes = {
-  summingOption: option,
+  summingOption: optionType,
   isMulti: PropTypes.bool,
-  options: PropTypes.arrayOf(option),
-  defaultValue: PropTypes.oneOfType([option, PropTypes.arrayOf(option)]),
+  options: PropTypes.arrayOf(optionType),
+  defaultValue: PropTypes.oneOfType([
+    optionType,
+    PropTypes.arrayOf(optionType),
+  ]),
   onChange: PropTypes.func.isRequired,
 };
 

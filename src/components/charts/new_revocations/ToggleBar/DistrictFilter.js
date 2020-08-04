@@ -30,7 +30,12 @@ import Loading from "../../../Loading";
 import Select from "../../../controls/Select";
 import useChartData from "../../../../hooks/useChartData";
 
-const DistrictFilter = ({ stateCode, defaultValue, onChange }) => {
+const DistrictFilter = ({
+  stateCode,
+  defaultValue,
+  onChange,
+  summingOption,
+}) => {
   const { isLoading, apiData } = useChartData(
     `${stateCode}/newRevocations`,
     "revocations_matrix_cells"
@@ -44,7 +49,7 @@ const DistrictFilter = ({ stateCode, defaultValue, onChange }) => {
         uniq,
         sortBy(identity),
         map((d) => ({ value: d, label: d })),
-        (options) => [defaultValue, ...options]
+        (options) => [...defaultValue, ...options]
       )(apiData),
     [apiData, defaultValue]
   );
@@ -62,19 +67,32 @@ const DistrictFilter = ({ stateCode, defaultValue, onChange }) => {
       <Select
         className="select-align"
         options={districts}
-        onChange={(option) => onChange({ district: option.value })}
+        onChange={(options) => {
+          const district = map("value", options);
+          onChange({ district });
+        }}
+        isMulti
+        summingOption={summingOption}
         defaultValue={defaultValue}
       />
     </FilterField>
   );
 };
 
+DistrictFilter.defaultProps = {
+  defaultValue: undefined,
+  summingOption: undefined,
+};
+
+const optionType = PropTypes.shape({
+  label: PropTypes.string,
+  value: PropTypes.string,
+});
+
 DistrictFilter.propTypes = {
   stateCode: PropTypes.string.isRequired,
-  defaultValue: PropTypes.shape({
-    label: PropTypes.string,
-    value: PropTypes.string,
-  }).isRequired,
+  defaultValue: PropTypes.arrayOf(optionType),
+  summingOption: optionType,
   onChange: PropTypes.func.isRequired,
 };
 

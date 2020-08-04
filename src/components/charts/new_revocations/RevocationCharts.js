@@ -76,7 +76,7 @@ const RevocationCharts = ({
       dataFilter={dataFilter}
       skippedFilters={["district"]}
       filterStates={filters}
-      currentDistrict={filters.district}
+      currentDistricts={filters.district}
       stateCode={stateCode}
       timeDescription={timeDescription}
     />
@@ -158,8 +158,9 @@ RevocationCharts.propTypes = {
   filters: PropTypes.shape({
     metricPeriodMonths: PropTypes.string,
     chargeCategory: PropTypes.string,
-    district: PropTypes.string,
+    district: PropTypes.arrayOf(PropTypes.string),
     supervisionType: PropTypes.string,
+    admissionType: PropTypes.arrayOf(PropTypes.string),
   }).isRequired,
   dataFilter: PropTypes.func.isRequired,
   stateCode: PropTypes.string.isRequired,
