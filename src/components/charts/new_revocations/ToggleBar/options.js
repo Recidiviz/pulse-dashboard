@@ -23,10 +23,6 @@ export const METRIC_PERIODS = [
   { value: "1", label: "1 month" },
 ];
 
-export const DEFAULT_METRIC_PERIOD = "12";
-
-export const DEFAULT_BASE_DISTRICT = { value: "All", label: "All districts" };
-
 export const CHARGE_CATEGORIES = [
   { value: "All", label: "All" },
   { value: "GENERAL", label: "General" },
@@ -35,10 +31,6 @@ export const CHARGE_CATEGORIES = [
   { value: "SERIOUS_MENTAL_ILLNESS", label: "Serious Mental Illness" },
 ];
 
-// TODO: Determine if we want to continue to explicitly provide charge_category=ALL or treat it
-// like supervision type where ALL is a summation of other rows
-export const DEFAULT_CHARGE_CATEGORY = "All";
-
 export const SUPERVISION_TYPES = [
   { value: "All", label: "All" },
   { value: "PROBATION", label: "Probation" },
@@ -46,5 +38,26 @@ export const SUPERVISION_TYPES = [
   { value: "DUAL", label: "Dual Supervision" },
 ];
 
-export const DEFAULT_DISTRICT = "All";
-export const DEFAULT_SUPERVISION_TYPE = "All";
+export const ADMISSION_TYPES = [
+  { value: "All", label: "ALL" },
+  { value: "REVOCATION", label: "Revocation" },
+  {
+    label: "SCI",
+    allSelectedLabel: "All Short Term",
+    options: [
+      { value: "SCI_6", label: "SCI 6 months" },
+      { value: "SCI_9", label: "SCI 9 months" },
+      { value: "SCI_12", label: "SCI 12 months" },
+    ],
+  },
+  { value: "PVC", label: "PVC" },
+  { value: "INPATIENT_DA", label: "Inpatient D&A" },
+  { value: "DA_DETOX", label: "D&A Detox" },
+  { value: "MENTAL_HEALTH", label: "Mental Health" },
+];
+
+export const DEFAULT_METRIC_PERIOD = METRIC_PERIODS[1];
+export const DEFAULT_DISTRICT = { value: "All", label: "All districts" };
+export const DEFAULT_SUPERVISION_TYPE = SUPERVISION_TYPES[0];
+export const DEFAULT_CHARGE_CATEGORY = CHARGE_CATEGORIES[0];
+export const DEFAULT_ADMISSION_TYPE = ADMISSION_TYPES[0];

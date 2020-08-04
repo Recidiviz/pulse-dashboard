@@ -51,7 +51,11 @@ const RevocationMatrix = (props) => {
     setFilteredData(filteredData);
 
     const matrix = filteredData.reduce(
-      (result, { violation_type: violationType, reported_violations: reportedViolations, total_revocations: totalRevocations }) => {
+      (result, {
+        violation_type: violationType,
+        reported_violations: reportedViolations,
+        total_revocations: totalRevocations
+      }) => {
         if (!result[violationType]) {
           return { ...result, [violationType]: { [reportedViolations]: toInt(totalRevocations) } };
         }
@@ -165,9 +169,7 @@ const RevocationMatrix = (props) => {
         className={`violation-row ${isSelected(violationType, '') ? 'is-selected' : ''}`}
       >
         <div className="violation-type-label">
-          <button
-            onClick={() => toggleFilter(violationType, '')}
-          >
+          <button onClick={() => toggleFilter(violationType, '')}>
             {name}
           </button>
         </div>
@@ -195,13 +197,13 @@ const RevocationMatrix = (props) => {
   return (
     <div className="revocation-matrix">
       <h4>
-        People revoked to prison by violation history (in year prior to their last reported violation)
+        Admissions by violation history (in year prior to their last reported violation)
         <ExportMenu
           chartId="revocationMatrix"
           regularElement
           elementDatasets={exportableMatrixData()}
           elementLabels={VIOLATION_COUNTS.map((count) => violationCountLabel(count))}
-          metricTitle="People revoked to prison by violation history (in year prior to their last reported violation)"
+          metricTitle="Admissions by violation history (in year prior to their last reported violation)"
           timeWindowDescription={`${getTrailingLabelFromMetricPeriodMonthsToggle(props.metricPeriodMonths)} (${getPeriodLabelFromMetricPeriodMonthsToggle(props.metricPeriodMonths)})`}
           filters={props.filterStates}
         />

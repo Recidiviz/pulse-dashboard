@@ -31,15 +31,17 @@ import {
   DEFAULT_METRIC_PERIOD,
   DEFAULT_CHARGE_CATEGORY,
   DEFAULT_DISTRICT,
+  DEFAULT_ADMISSION_TYPE,
 } from "../../../../components/charts/new_revocations/ToggleBar/options";
 
 const stateCode = "us_pa";
 
 const Revocations = () => {
   const [filters, setFilters] = useState({
-    metricPeriodMonths: DEFAULT_METRIC_PERIOD,
-    chargeCategory: DEFAULT_CHARGE_CATEGORY,
-    district: DEFAULT_DISTRICT,
+    metricPeriodMonths: DEFAULT_METRIC_PERIOD.value,
+    chargeCategory: DEFAULT_CHARGE_CATEGORY.value,
+    district: DEFAULT_DISTRICT.value,
+    admissionType: [DEFAULT_ADMISSION_TYPE.value],
     reportedViolations: "",
     violationType: "",
   });

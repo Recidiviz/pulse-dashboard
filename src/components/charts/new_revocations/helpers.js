@@ -21,14 +21,27 @@ import {
   violationCountLabel,
 } from "../../../utils/transforms/labels";
 
-const nullSafeComparison = (a, b) => {
-  if (!a && !b) return true;
-  if (!a) return false;
-  if (!b) return false;
-  return a.toLowerCase() === b.toLowerCase();
+const nullSafeComparison = (field, filter) => {
+  if (!field && !filter) return true;
+  if (!field) return false;
+  if (!filter) return false;
+  return field.toLowerCase() === filter.toLowerCase();
+};
+
+const nullSafeComparisonForArray = (field, filters) => {
+  if (!field && !filters) return true;
+  if (!field) return false;
+  if (!filters) return false;
+  return (
+    filters.filter((value) => value.toLowerCase() === field.toLowerCase())
+      .length !== 0
+  );
 };
 
 const isAllItem = (item) => item.toLowerCase() === "all";
+const includesAllItemFirst = (items) => {
+  return items.length === 1 && isAllItem(items[0]);
+};
 
 export const applyTopLevelFilters = (filters) => (
   data,
@@ -66,6 +79,14 @@ export const applyTopLevelFilters = (filters) => (
       !skippedFilters.includes("supervisionType") &&
       !(treatCategoryAllAsAbsent && isAllItem(filters.supervisionType)) &&
       !nullSafeComparison(item.supervision_type, filters.supervisionType)
+    ) {
+      return false;
+    }
+    if (
+      filters.admissionType &&
+      !skippedFilters.includes("admissionType") &&
+      !includesAllItemFirst(filters.admissionType) &&
+      !nullSafeComparisonForArray(item.admission_type, filters.admissionType)
     ) {
       return false;
     }
