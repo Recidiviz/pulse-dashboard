@@ -39,7 +39,6 @@ import {
   DEFAULT_CHARGE_CATEGORY,
   DEFAULT_SUPERVISION_TYPE,
   DEFAULT_DISTRICT,
-  CHARGE_CATEGORIES,
   METRIC_PERIODS,
   SUPERVISION_TYPES,
 } from "../../../../components/charts/new_revocations/ToggleBar/options";
@@ -53,6 +52,13 @@ const admissionTypeOptions = [
     label: "Institutional Treatment",
   },
   { value: "BOARDS_RETURN", label: "Board Returns" },
+];
+const chargeCategoryOptions = [
+  { value: "All", label: "All" },
+  { value: "GENERAL", label: "General" },
+  { value: "SEX_OFFENDER", label: "Sex Offense" },
+  { value: "DOMESTIC_VIOLENCE", label: "Domestic Violence" },
+  { value: "SERIOUS_MENTAL_ILLNESS", label: "Serious Mental Illness" },
 ];
 
 const Revocations = () => {
@@ -90,8 +96,8 @@ const Revocations = () => {
             onChange={updateFilters}
           />
           <ChargeCategoryFilter
-            options={CHARGE_CATEGORIES}
-            defaultValue={DEFAULT_CHARGE_CATEGORY}
+            options={chargeCategoryOptions}
+            defaultValue={chargeCategoryOptions[0]}
             onChange={updateFilters}
           />
           <AdmissionTypeFilter

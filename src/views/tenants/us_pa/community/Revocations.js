@@ -37,7 +37,6 @@ import {
   DEFAULT_CHARGE_CATEGORY,
   DEFAULT_DISTRICT,
   DEFAULT_ADMISSION_TYPE,
-  CHARGE_CATEGORIES,
   METRIC_PERIODS,
 } from "../../../../components/charts/new_revocations/ToggleBar/options";
 import { getTimeDescription } from "../../../../components/charts/new_revocations/helpers/format";
@@ -59,6 +58,15 @@ const admissionTypeOptions = [
   { value: "INPATIENT_DA", label: "Inpatient D&A" },
   { value: "DA_DETOX", label: "D&A Detox" },
   { value: "MENTAL_HEALTH", label: "Mental Health" },
+];
+const chargeCategoryOptions = [
+  { value: "All", label: "All" },
+  { value: "GENERAL", label: "General" },
+  { value: "SEX_OFFENDER", label: "Sex Offense" },
+  { value: "DOMESTIC_VIOLENCE", label: "Domestic Violence" },
+  { value: "MENTAL_HEALTH", label: "Mental Health" },
+  { value: "AOD", label: "AOD" },
+  { value: "SPECIAL_PROBATION", label: "Special Probation" },
 ];
 
 const Revocations = () => {
@@ -96,8 +104,8 @@ const Revocations = () => {
             onChange={updateFilters}
           />
           <ChargeCategoryFilter
-            options={CHARGE_CATEGORIES}
-            defaultValue={DEFAULT_CHARGE_CATEGORY}
+            options={chargeCategoryOptions}
+            defaultValue={chargeCategoryOptions[0]}
             onChange={updateFilters}
           />
           <AdmissionTypeFilter
