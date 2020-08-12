@@ -156,7 +156,6 @@ const GroupHeading = ({ onChange, ...props }) => {
     }
 
     onChange(updatedOptions);
-    // dummyInputRef.current.focus();
   };
 
   return (
@@ -178,8 +177,8 @@ const ValueContainer = ({ allOptions, summingOption, children, ...props }) => {
   const { selectProps, getValue } = props;
   const values = getValue();
 
-  const selectInput = React.Children.toArray(children).find(
-    (input) => input.type.name === "DummyInput"
+  const selectInput = React.Children.toArray(children).find((input) =>
+    ["DummyInput", "Input"].includes(input.type.name)
   );
 
   const isAll =
@@ -250,6 +249,7 @@ const Select = ({ summingOption, isMulti, ...props }) => {
   if (isMulti) {
     return (
       <ReactSelect
+        isSearchable={false}
         {...props}
         ref={ref}
         closeMenuOnSelect={false}
@@ -268,7 +268,6 @@ const Select = ({ summingOption, isMulti, ...props }) => {
         }}
         hideSelectedOptions={false}
         isMulti
-        isSearchable={false}
         onChange={onChange}
         styles={defaultStyles}
         value={value}

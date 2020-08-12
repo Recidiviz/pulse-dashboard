@@ -74,6 +74,7 @@ const DistrictFilter = ({
         isMulti
         summingOption={summingOption}
         defaultValue={defaultValue}
+        isSearchable
       />
     </FilterField>
   );
