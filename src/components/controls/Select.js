@@ -20,7 +20,7 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import PropTypes from "prop-types";
 import ReactSelect, { components } from "react-select";
 
@@ -156,6 +156,7 @@ const GroupHeading = ({ onChange, ...props }) => {
     }
 
     onChange(updatedOptions);
+    // dummyInputRef.current.focus();
   };
 
   return (
@@ -178,7 +179,7 @@ const ValueContainer = ({ allOptions, summingOption, children, ...props }) => {
   const values = getValue();
 
   const selectInput = React.Children.toArray(children).find(
-    (input) => input.type.name === "Input" || input.type.name === "DummyInput"
+    (input) => input.type.name === "DummyInput"
   );
 
   const isAll =
@@ -193,10 +194,8 @@ const ValueContainer = ({ allOptions, summingOption, children, ...props }) => {
 
   return (
     <components.ValueContainer {...props}>
-      <>
-        {text}
-        {selectInput}
-      </>
+      {text}
+      {selectInput}
     </components.ValueContainer>
   );
 };
@@ -234,11 +233,15 @@ const defaultStyles = {
 };
 
 const Select = ({ summingOption, isMulti, ...props }) => {
-  const { options } = props;
-  const [value, setValue] = useState([summingOption]);
+  const { options, defaultValue } = props;
+  const [value, setValue] = useState(defaultValue);
+  const ref = useRef();
 
   const handleChange = (selectedOptions) => {
     props.onChange(selectedOptions);
+    setTimeout(() => {
+      ref.current.select.inputRef.focus();
+    }, 0);
     return setValue(selectedOptions);
   };
 
@@ -248,6 +251,7 @@ const Select = ({ summingOption, isMulti, ...props }) => {
     return (
       <ReactSelect
         {...props}
+        ref={ref}
         closeMenuOnSelect={false}
         components={{
           GroupHeading: (groupHeadingProps) => (
