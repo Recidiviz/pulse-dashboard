@@ -102,8 +102,8 @@ const Revocations = () => {
           />
           <AdmissionTypeFilter
             options={admissionTypeOptions}
-            summingOption={{ value: "All", label: "ALL" }}
-            defaultValue={[{ value: "REVOCATION", label: "Revocation" }]}
+            summingOption={admissionTypeOptions[0]}
+            defaultValue={[admissionTypeOptions[1]]}
             onChange={updateFilters}
           />
           <SupervisionTypeFilter
