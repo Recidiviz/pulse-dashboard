@@ -232,8 +232,8 @@ const defaultStyles = {
   group: (base) => ({ ...base, ...fontStyles, marginLeft: 20 }),
 };
 
-const Select = ({ summingOption, isMulti, defaultValue, ...props }) => {
-  const { options } = props;
+const Select = ({ summingOption, isMulti, ...props }) => {
+  const { options, defaultValue } = props;
   const [value, setValue] = useState(defaultValue);
   const ref = useRef();
 
