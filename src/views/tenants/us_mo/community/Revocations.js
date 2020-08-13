@@ -19,6 +19,11 @@ import React, { useState } from "react";
 
 import CaseTable from "../../../../components/charts/new_revocations/CaseTable/CaseTable";
 import RevocationCharts from "../../../../components/charts/new_revocations/RevocationCharts";
+import RevocationsByRiskLevel from "../../../../components/charts/new_revocations/RevocationsByRiskLevel/RevocationsByRiskLevel";
+import RevocationsByViolation from "../../../../components/charts/new_revocations/RevocationsByViolation";
+import RevocationsByGender from "../../../../components/charts/new_revocations/RevocationsByGender/RevocationsByGender";
+import RevocationsByRace from "../../../../components/charts/new_revocations/RevocationsByRace/RevocationsByRace";
+import RevocationsByDistrict from "../../../../components/charts/new_revocations/RevocationsByDistrict/RevocationsByDistrict";
 import RevocationCountOverTime from "../../../../components/charts/new_revocations/RevocationsOverTime";
 import RevocationMatrix from "../../../../components/charts/new_revocations/RevocationMatrix";
 import RevocationMatrixExplanation from "../../../../components/charts/new_revocations/RevocationMatrixExplanation";
@@ -65,6 +70,7 @@ const Revocations = () => {
     violationType: "",
   });
 
+  const allDataFilter = applyAllFilters(filters);
   const updateFilters = (newFilters) => {
     setFilters({ ...filters, ...newFilters });
   };
@@ -115,7 +121,7 @@ const Revocations = () => {
 
       <div className="bgc-white p-20 m-20">
         <RevocationCountOverTime
-          dataFilter={applyAllFilters(filters)}
+          dataFilter={allDataFilter}
           skippedFilters={["metricPeriodMonths"]}
           filterStates={filters}
           metricPeriodMonths={filters.metricPeriodMonths}
@@ -136,15 +142,87 @@ const Revocations = () => {
       </div>
 
       <RevocationCharts
-        filters={filters}
-        dataFilter={applyAllFilters(filters)}
-        stateCode={stateCode}
-        timeDescription={timeDescription}
+        riskLevelChart={
+          <RevocationsByRiskLevel
+            dataFilter={allDataFilter}
+            filterStates={filters}
+            stateCode={stateCode}
+            timeDescription={timeDescription}
+          />
+        }
+        violationChart={
+          <RevocationsByViolation
+            dataFilter={allDataFilter}
+            filterStates={filters}
+            stateCode={stateCode}
+            timeDescription={timeDescription}
+            technicalViolationTypes={[
+              "travel_count",
+              "residency_count",
+              "employment_count",
+              "association_count",
+              "directive_count",
+              "supervision_strategy_count",
+              "intervention_fee_count",
+              "special_count",
+              "substance_count",
+              "absconded_count",
+              "weapon_count",
+            ]}
+            lawViolationTypes={[
+              "municipal_count",
+              "misdemeanor_count",
+              "felony_count",
+            ]}
+            allViolationTypes={[
+              "travel_count",
+              "residency_count",
+              "employment_count",
+              "association_count",
+              "directive_count",
+              "supervision_strategy_count",
+              "intervention_fee_count",
+              "special_count",
+              "weapon_count",
+              "substance_count",
+              "municipal_count",
+              "absconded_count",
+              "misdemeanor_count",
+              "felony_count",
+            ]}
+          />
+        }
+        genderChart={
+          <RevocationsByGender
+            dataFilter={allDataFilter}
+            filterStates={filters}
+            stateCode={stateCode}
+            timeDescription={timeDescription}
+          />
+        }
+        raceChart={
+          <RevocationsByRace
+            dataFilter={allDataFilter}
+            filterStates={filters}
+            stateCode={stateCode}
+            timeDescription={timeDescription}
+          />
+        }
+        districtChart={
+          <RevocationsByDistrict
+            dataFilter={allDataFilter}
+            skippedFilters={["district"]}
+            filterStates={filters}
+            currentDistrict={filters.district}
+            stateCode={stateCode}
+            timeDescription={timeDescription}
+          />
+        }
       />
 
       <div className="bgc-white m-20 p-20">
         <CaseTable
-          dataFilter={applyAllFilters(filters)}
+          dataFilter={allDataFilter}
           treatCategoryAllAsAbsent
           filterStates={filters}
           metricPeriodMonths={filters.metricPeriodMonths}

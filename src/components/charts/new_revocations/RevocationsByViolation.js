@@ -19,6 +19,13 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Bar } from "react-chartjs-2";
 
+import concat from "lodash/fp/concat";
+import map from "lodash/fp/map";
+import mergeAllWith from "lodash/fp/mergeAllWith";
+import pick from "lodash/fp/pick";
+import pipe from "lodash/fp/pipe";
+import toInteger from "lodash/fp/toInteger";
+
 import ExportMenu from "../ExportMenu";
 import Loading from "../../Loading";
 
@@ -27,14 +34,11 @@ import { COLORS } from "../../../assets/scripts/constants/colors";
 import useChartData from "../../../hooks/useChartData";
 import { axisCallbackForPercentage } from "../../../utils/charts/axis";
 import { tooltipForRateMetricWithCounts } from "../../../utils/charts/toggles";
-import {
-  toInt,
-  technicalViolationTypes,
-  violationTypeToLabel,
-  allViolationTypes,
-} from "../../../utils/transforms/labels";
+import { violationTypeToLabel } from "../../../utils/transforms/labels";
+import { calculateRate } from "./helpers/rate";
 
 const chartId = "revocationsByViolationType";
+const violationCountKey = "violation_count";
 
 const RevocationsByViolation = ({
   dataFilter,
@@ -43,6 +47,9 @@ const RevocationsByViolation = ({
   treatCategoryAllAsAbsent,
   stateCode,
   timeDescription,
+  technicalViolationTypes,
+  lawViolationTypes,
+  allViolationTypes,
 }) => {
   const { isLoading, apiData } = useChartData(
     `${stateCode}/newRevocations`,
@@ -59,73 +66,26 @@ const RevocationsByViolation = ({
     treatCategoryAllAsAbsent
   );
 
-  const plus = (term1, term2) => (term1 || 0) + (toInt(term2) || 0);
+  const violationToCount = pipe(
+    map(pick(concat(allViolationTypes, violationCountKey))),
+    mergeAllWith((a, b) => toInteger(a) + toInteger(b))
+  )(filteredData);
 
-  const violationToCount = filteredData.reduce(
-    (
-      result,
-      {
-        absconded_count: abscondedCount,
-        association_count: associationCount,
-        directive_count: directiveCount,
-        employment_count: employmentCount,
-        felony_count: felonyCount,
-        intervention_fee_count: interventionFeeCount,
-        misdemeanor_count: misdemeanorCount,
-        municipal_count: municipalCount,
-        residency_count: residencyCount,
-        special_count: specialCount,
-        substance_count: substanceCount,
-        supervision_strategy_count: supervisionStrategyCount,
-        travel_count: travelCount,
-        weapon_count: weaponCount,
-        violation_count: violationCount,
-      }
-    ) => ({
-      ...result,
-      abscondedCount: plus(result.abscondedCount, abscondedCount),
-      associationCount: plus(result.associationCount, associationCount),
-      directiveCount: plus(result.directiveCount, directiveCount),
-      employmentCount: plus(result.employmentCount, employmentCount),
-      felonyCount: plus(result.felonyCount, felonyCount),
-      interventionFeeCount: plus(
-        result.interventionFeeCount,
-        interventionFeeCount
-      ),
-      misdemeanorCount: plus(result.misdemeanorCount, misdemeanorCount),
-      municipalCount: plus(result.municipalCount, municipalCount),
-      residencyCount: plus(result.residencyCount, residencyCount),
-      specialCount: plus(result.specialCount, specialCount),
-      substanceCount: plus(result.substanceCount, substanceCount),
-      supervisionStrategyCount: plus(
-        result.supervisionStrategyCount,
-        supervisionStrategyCount
-      ),
-      travelCount: plus(result.travelCount, travelCount),
-      weaponCount: plus(result.weaponCount, weaponCount),
-      violationCount: plus(result.violationCount, violationCount),
-    }),
-    {}
+  const totalViolationCount = toInteger(violationToCount[violationCountKey]);
+  const chartLabels = map(
+    (type) => violationTypeToLabel[type],
+    allViolationTypes
   );
-
-  const totalViolationCount = toInt(violationToCount.violationCount) || 0;
-
-  const chartLabels = allViolationTypes.map(
-    (type) => violationTypeToLabel[type]
+  const numeratorCounts = map(
+    (type) => violationToCount[type],
+    allViolationTypes
   );
-
-  const chartDataPoints = allViolationTypes.map((type) => {
-    if (!totalViolationCount) {
-      return (0.0).toFixed(2);
-    }
-    return (100 * (violationToCount[type] / totalViolationCount)).toFixed(2);
-  });
-
-  const numeratorCounts = allViolationTypes.map(
-    (type) => violationToCount[type]
+  const denominatorCounts = map(() => totalViolationCount, allViolationTypes);
+  const chartDataPoints = map(
+    (type) =>
+      calculateRate(violationToCount[type], totalViolationCount).toFixed(2),
+    allViolationTypes
   );
-
-  const denominatorCounts = allViolationTypes.map(() => totalViolationCount);
 
   // This sets bar color to light-blue-500 when it's a technical violation, orange when it's law
   const colorTechnicalAndLaw = () =>
@@ -133,7 +93,10 @@ const RevocationsByViolation = ({
       if (technicalViolationTypes.includes(violationType)) {
         return COLORS["lantern-light-blue"];
       }
-      return COLORS["lantern-orange"];
+      if (lawViolationTypes.includes(violationType)) {
+        return COLORS["lantern-orange"];
+      }
+      return null;
     });
 
   const chart = (
@@ -241,6 +204,9 @@ RevocationsByViolation.propTypes = {
   treatCategoryAllAsAbsent: PropTypes.bool,
   stateCode: PropTypes.string.isRequired,
   timeDescription: PropTypes.string.isRequired,
+  technicalViolationTypes: PropTypes.arrayOf(PropTypes.string).isRequired,
+  lawViolationTypes: PropTypes.arrayOf(PropTypes.string).isRequired,
+  allViolationTypes: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
 export default RevocationsByViolation;

@@ -62,38 +62,28 @@ const matrixViolationTypeToLabel = {
   FELONY: "Felony",
 };
 
-const technicalViolationTypes = [
-  'travelCount', 'residencyCount', 'employmentCount', 'associationCount',
-  'directiveCount', 'supervisionStrategyCount', 'interventionFeeCount',
-  'specialCount','substanceCount', 'abscondedCount', 'weaponCount',
-];
-
-const lawViolationTypes = [
-  'municipalCount', 'misdemeanorCount', 'felonyCount',
-];
-
-const allViolationTypes =  [
-  'travelCount', 'residencyCount', 'employmentCount', 'associationCount',
-  'directiveCount', 'supervisionStrategyCount', 'interventionFeeCount',
-  'specialCount', 'weaponCount', 'substanceCount', 'municipalCount', 'abscondedCount',
-  'misdemeanorCount', 'felonyCount',
-]
-
 const violationTypeToLabel = {
-  abscondedCount: 'Absconsion',
-  associationCount: 'Association',
-  directiveCount: 'Report / Directives',
-  employmentCount: 'Employment',
-  felonyCount: 'Felony',
-  interventionFeeCount: 'Intervention Fees',
-  misdemeanorCount: 'Misdemeanor',
-  municipalCount: 'Municipal',
-  residencyCount: 'Residency',
-  specialCount: 'Special Conditions',
-  substanceCount: 'Substance Use',
-  supervisionStrategyCount: 'Supervision Strategies',
-  travelCount: 'Travel',
-  weaponCount: 'Weapons',
+  absconding_count: 'Absconding',
+  absconded_count: 'Absconsion',
+  association_count: 'Association',
+  directive_count: 'Report / Directives',
+  elec_monitoring_count: 'Elec. monitoring',
+  employment_count: 'Employment',
+  felony_count: 'Felony',
+  high_tech_count: 'High tech',
+  intervention_fee_count: 'Intervention Fees',
+  low_tech_count: 'Low tech',
+  med_tech_count: 'Med. tech.',
+  misdemeanor_count: 'Misdemeanor',
+  municipal_count: 'Municipal',
+  residency_count: 'Residency',
+  special_count: 'Special Conditions',
+  substance_count: 'Substance Use',
+  subs_use_count: 'Subs. use',
+  summary_offense_count: 'Summary offense',
+  supervision_strategy_count: 'Supervision Strategies',
+  travel_count: 'Travel',
+  weapon_count: 'Weapons',
 };
 
 function genderValueToHumanReadable(genderValue) {
@@ -156,9 +146,6 @@ export {
   riskLevels,
   riskLevelValuetoLabel,
   violationTypeToLabel,
-  technicalViolationTypes,
-  lawViolationTypes,
-  allViolationTypes,
   matrixViolationTypeToLabel,
   genderValueToHumanReadable,
   raceValueToHumanReadable,
