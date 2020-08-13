@@ -91,7 +91,6 @@ const FILES_BY_METRIC_TYPE = {
     'revocations_matrix_distribution_by_risk_level.json',
     'revocations_matrix_distribution_by_violation.json',
     'revocations_matrix_filtered_caseload.json',
-    'revocations_matrix_supervision_distribution_by_district.json',
   ],
   communityGoals: [
     'admissions_by_type_by_month.json',

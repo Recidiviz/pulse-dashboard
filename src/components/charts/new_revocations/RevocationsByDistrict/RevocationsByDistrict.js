@@ -55,25 +55,12 @@ const RevocationsByDistrict = ({
     "revocations_matrix_distribution_by_district"
   );
 
-  const {
-    isLoading: supervisionIsLoading,
-    apiData: supervisionApiData,
-  } = useChartData(
-    `${stateCode}/newRevocations`,
-    "revocations_matrix_supervision_distribution_by_district"
-  );
-
-  if (revocationIsLoading || supervisionIsLoading) {
+  if (revocationIsLoading) {
     return <Loading />;
   }
 
   const filteredRevocationData = filterData(
     revocationApiData,
-    skippedFilters,
-    treatCategoryAllAsAbsent
-  );
-  const filteredSupervisionData = filterData(
-    supervisionApiData,
     skippedFilters,
     treatCategoryAllAsAbsent
   );
@@ -102,7 +89,6 @@ const RevocationsByDistrict = ({
           timeDescription={timeDescription}
           currentDistrict={currentDistrict}
           revocationApiData={filteredRevocationData}
-          supervisionApiData={filteredSupervisionData}
         />
       );
     case "exits":
@@ -115,7 +101,6 @@ const RevocationsByDistrict = ({
           timeDescription={timeDescription}
           currentDistrict={currentDistrict}
           revocationApiData={filteredRevocationData}
-          supervisionApiData={filteredSupervisionData}
         />
       );
   }
