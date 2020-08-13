@@ -15,7 +15,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React from "react";
+import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 import { Bar, HorizontalBar } from "react-chartjs-2";
 
@@ -253,15 +253,24 @@ const RevocationProportionByRace = ({
     activeChart = ratesChart;
   }
 
-  configureDownloadButtons(
-    chartId,
-    "REVOCATIONS BY RACE",
+  useEffect(() => {
+    configureDownloadButtons(
+      chartId,
+      "REVOCATIONS BY RACE",
+      activeChart.props.data.datasets,
+      activeChart.props.data.labels,
+      document.getElementById("revocationsByRace"),
+      exportedStructureCallback,
+      { metricPeriodMonths, district, supervisionType }
+    );
+  }, [
+    metricType,
+    metricPeriodMonths,
+    district,
+    supervisionType,
     activeChart.props.data.datasets,
     activeChart.props.data.labels,
-    document.getElementById("revocationsByRace"),
-    exportedStructureCallback,
-    { metricPeriodMonths, district, supervisionType }
-  );
+  ]);
 
   return activeChart;
 };

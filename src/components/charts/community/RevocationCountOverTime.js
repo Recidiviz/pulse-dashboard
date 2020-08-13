@@ -192,17 +192,25 @@ const RevocationCountOverTime = ({
     series: [],
   });
 
-  configureDownloadButtons(
-    chartId,
-    "REVOCATION ADMISSIONS BY MONTH",
+  useEffect(() => {
+    configureDownloadButtons(
+      chartId,
+      "REVOCATION ADMISSIONS BY MONTH",
+      chart.props.data.datasets,
+      chart.props.data.labels,
+      document.getElementById(chartId),
+      exportedStructureCallback,
+      { metricType, supervisionType, district },
+      true,
+      true
+    );
+  }, [
+    metricType,
+    district,
+    supervisionType,
     chart.props.data.datasets,
     chart.props.data.labels,
-    document.getElementById(chartId),
-    exportedStructureCallback,
-    { metricType, supervisionType, district },
-    true,
-    true
-  );
+  ]);
 
   const chartData = chart.props.data.datasets[0].data;
   const mostRecentValue = chartData[chartData.length - 1];
