@@ -268,17 +268,26 @@ const SupervisionSuccessSnapshot = ({
     };
   };
 
-  configureDownloadButtons(
-    chartId,
-    "SUCCESSFUL COMPLETION OF SUPERVISION",
+  useEffect(() => {
+    configureDownloadButtons(
+      chartId,
+      "SUCCESSFUL COMPLETION OF SUPERVISION",
+      chart.props.data.datasets,
+      chart.props.data.labels,
+      document.getElementById(chartId),
+      exportedStructureCallback,
+      { metricType, metricPeriodMonths, supervisionType, district },
+      true,
+      true
+    );
+  }, [
+    metricType,
+    metricPeriodMonths,
+    supervisionType,
+    district,
     chart.props.data.datasets,
     chart.props.data.labels,
-    document.getElementById(chartId),
-    exportedStructureCallback,
-    { metricType, metricPeriodMonths, supervisionType, district },
-    true,
-    true
-  );
+  ]);
 
   useEffect(() => {
     const headerElement = document.getElementById(header);

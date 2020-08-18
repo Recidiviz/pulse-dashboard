@@ -15,7 +15,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React from "react";
+import React, { useEffect } from "react";
 import { Bar } from "react-chartjs-2";
 
 import pipe from "lodash/fp/pipe";
@@ -303,15 +303,24 @@ const FtrReferralsByAge = ({
     series: [],
   });
 
-  configureDownloadButtons(
-    chartId,
-    "FTR REFERRALS BY AGE",
+  useEffect(() => {
+    configureDownloadButtons(
+      chartId,
+      "FTR REFERRALS BY AGE",
+      activeChart.props.data.datasets,
+      activeChart.props.data.labels,
+      document.getElementById(chartId),
+      exportedStructureCallback,
+      { supervisionType, district, metricPeriodMonths, metricType }
+    );
+  }, [
+    supervisionType,
+    district,
+    metricPeriodMonths,
+    metricType,
     activeChart.props.data.datasets,
     activeChart.props.data.labels,
-    document.getElementById(chartId),
-    exportedStructureCallback,
-    { supervisionType, district, metricPeriodMonths, metricType }
-  );
+  ]);
 
   return activeChart;
 };
