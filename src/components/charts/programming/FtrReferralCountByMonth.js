@@ -166,17 +166,26 @@ const FtrReferralCountByMonth = ({
     series: [],
   });
 
-  configureDownloadButtons(
-    chartId,
-    "FTR REFERRAL COUNT BY MONTH",
+  useEffect(() => {
+    configureDownloadButtons(
+      chartId,
+      "FTR REFERRAL COUNT BY MONTH",
+      chart.props.data.datasets,
+      chart.props.data.labels,
+      document.getElementById(chartId),
+      exportedStructureCallback,
+      { supervisionType, district, metricType, metricPeriodMonths },
+      true,
+      true
+    );
+  }, [
+    supervisionType,
+    district,
+    metricPeriodMonths,
+    metricType,
     chart.props.data.datasets,
     chart.props.data.labels,
-    document.getElementById(chartId),
-    exportedStructureCallback,
-    { supervisionType, district, metricType, metricPeriodMonths },
-    true,
-    true
-  );
+  ]);
 
   const chartData = chart.props.data.datasets[0].data;
   const mostRecentValue = chartData[chartData.length - 1];

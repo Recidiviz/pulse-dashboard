@@ -15,7 +15,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React from "react";
+import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 import { Bar } from "react-chartjs-2";
 
@@ -162,15 +162,22 @@ const ReincarcerationRateByStayLength = ({
     series: [],
   });
 
-  configureDownloadButtons(
-    chartId,
-    "REINCARCERATIONS BY PREVIOUS STAY LENGTH",
+  useEffect(() => {
+    configureDownloadButtons(
+      chartId,
+      "REINCARCERATIONS BY PREVIOUS STAY LENGTH",
+      chart.props.data.datasets,
+      chart.props.data.labels,
+      document.getElementById(chartId),
+      exportedStructureCallback,
+      { district, metricType }
+    );
+  }, [
     chart.props.data.datasets,
     chart.props.data.labels,
-    document.getElementById(chartId),
-    exportedStructureCallback,
-    { district, metricType }
-  );
+    district,
+    metricType,
+  ]);
 
   return chart;
 };
