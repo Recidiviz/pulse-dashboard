@@ -283,17 +283,28 @@ const RevocationAdmissionsSnapshot = ({
       series: [],
     };
   };
-  configureDownloadButtons(
-    chartId,
-    "PRISON ADMISSIONS DUE TO REVOCATION",
+
+  useEffect(() => {
+    configureDownloadButtons(
+      chartId,
+      "PRISON ADMISSIONS DUE TO REVOCATION",
+      chart.props.data.datasets,
+      chart.props.data.labels,
+      document.getElementById(chartId),
+      exportedStructureCallback,
+      toggles,
+      true,
+      true
+    );
+  }, [
+    metricType,
+    metricPeriodMonths,
+    district,
+    supervisionType,
     chart.props.data.datasets,
     chart.props.data.labels,
-    document.getElementById(chartId),
-    exportedStructureCallback,
     toggles,
-    true,
-    true
-  );
+  ]);
 
   useEffect(() => {
     const headerElement = document.getElementById(header);

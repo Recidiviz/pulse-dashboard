@@ -219,17 +219,26 @@ const LsirScoreChangeSnapshot = ({
       series: [],
     };
   };
-  configureDownloadButtons(
-    chartId,
-    "LSI-R SCORE CHANGES (AVERAGE)",
+
+  useEffect(() => {
+    configureDownloadButtons(
+      chartId,
+      "LSI-R SCORE CHANGES (AVERAGE)",
+      chart.props.data.datasets,
+      chart.props.data.labels,
+      document.getElementById(chartId),
+      exportedStructureCallback,
+      { supervisionType, district, metricPeriodMonths },
+      true,
+      true
+    );
+  }, [
+    metricPeriodMonths,
+    district,
+    supervisionType,
     chart.props.data.datasets,
     chart.props.data.labels,
-    document.getElementById(chartId),
-    exportedStructureCallback,
-    { supervisionType, district, metricPeriodMonths },
-    true,
-    true
-  );
+  ]);
 
   useEffect(() => {
     const headerElement = document.getElementById(header);

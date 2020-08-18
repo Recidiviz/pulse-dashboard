@@ -218,17 +218,25 @@ const ReincarcerationCountOverTime = ({
     series: [],
   });
 
-  configureDownloadButtons(
-    chartId,
-    "REINCARCERATIONS BY MONTH",
+  useEffect(() => {
+    configureDownloadButtons(
+      chartId,
+      "REINCARCERATIONS BY MONTH",
+      chart.props.data.datasets,
+      chart.props.data.labels,
+      document.getElementById(chartId),
+      exportedStructureCallback,
+      { district, metricType, metricPeriodMonths },
+      true,
+      true
+    );
+  }, [
     chart.props.data.datasets,
     chart.props.data.labels,
-    document.getElementById(chartId),
-    exportedStructureCallback,
-    { district, metricType, metricPeriodMonths },
-    true,
-    true
-  );
+    district,
+    metricPeriodMonths,
+    metricType,
+  ]);
 
   useEffect(() => {
     const chartData = chart.props.data.datasets[0].data;

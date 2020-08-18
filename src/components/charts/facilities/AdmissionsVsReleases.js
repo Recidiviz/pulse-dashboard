@@ -15,7 +15,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React from "react";
+import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 import { Bar } from "react-chartjs-2";
 
@@ -170,17 +170,25 @@ const AdmissionsVsReleases = ({
     series: [],
   });
 
-  configureDownloadButtons(
-    chartId,
-    "ADMISSIONS VERSUS RELEASES",
+  useEffect(() => {
+    configureDownloadButtons(
+      chartId,
+      "ADMISSIONS VERSUS RELEASES",
+      chart.props.data.datasets,
+      chart.props.data.labels,
+      document.getElementById(chartId),
+      exportedStructureCallback,
+      { district, metricType, metricPeriodMonths },
+      true,
+      true
+    );
+  }, [
     chart.props.data.datasets,
     chart.props.data.labels,
-    document.getElementById(chartId),
-    exportedStructureCallback,
-    { district, metricType, metricPeriodMonths },
-    true,
-    true
-  );
+    district,
+    metricPeriodMonths,
+    metricType,
+  ]);
 
   const chartData = chart.props.data.datasets[0].data;
   const mostRecentValue = chartData[chartData.length - 1];
