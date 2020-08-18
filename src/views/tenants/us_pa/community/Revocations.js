@@ -25,7 +25,7 @@ import RevocationsByGender from "../../../../components/charts/new_revocations/R
 import RevocationsByRace from "../../../../components/charts/new_revocations/RevocationsByRace/RevocationsByRace";
 import RevocationsByDistrict from "../../../../components/charts/new_revocations/RevocationsByDistrict/RevocationsByDistrict";
 import RevocationCountOverTime from "../../../../components/charts/new_revocations/RevocationsOverTime";
-import RevocationMatrix from "../../../../components/charts/new_revocations/RevocationMatrix";
+import RevocationMatrix from "../../../../components/charts/new_revocations/RevocationMatrix/RevocationMatrix";
 import RevocationMatrixExplanation from "../../../../components/charts/new_revocations/RevocationMatrixExplanation";
 import ToggleBar from "../../../../components/charts/new_revocations/ToggleBar/ToggleBar";
 import MetricPeriodMonthsFilter from "../../../../components/charts/new_revocations/ToggleBar/MetricPeriodMonthsFilter";
@@ -41,7 +41,6 @@ import {
   DEFAULT_METRIC_PERIOD,
   DEFAULT_CHARGE_CATEGORY,
   DEFAULT_DISTRICT,
-  DEFAULT_ADMISSION_TYPE,
   CHARGE_CATEGORIES,
   METRIC_PERIODS,
 } from "../../../../components/charts/new_revocations/ToggleBar/options";
@@ -65,13 +64,14 @@ const admissionTypeOptions = [
   { value: "DA_DETOX", label: "D&A Detox" },
   { value: "MENTAL_HEALTH", label: "Mental Health" },
 ];
+const defaultAdmissionTypeOptions = [admissionTypeOptions[1]];
 
 const Revocations = () => {
   const [filters, setFilters] = useState({
     metricPeriodMonths: DEFAULT_METRIC_PERIOD.value,
     chargeCategory: DEFAULT_CHARGE_CATEGORY.value,
     district: DEFAULT_DISTRICT.value,
-    admissionType: [DEFAULT_ADMISSION_TYPE.value],
+    admissionType: defaultAdmissionTypeOptions.map((option) => option.value),
     reportedViolations: "",
     violationType: "",
   });
@@ -109,7 +109,7 @@ const Revocations = () => {
           <AdmissionTypeFilter
             options={admissionTypeOptions}
             summingOption={admissionTypeOptions[0]}
-            defaultValue={[admissionTypeOptions[1]]}
+            defaultValue={defaultAdmissionTypeOptions}
             onChange={updateFilters}
           />
         </div>
@@ -135,8 +135,19 @@ const Revocations = () => {
             dataFilter={applyTopLevelFilters(filters)}
             filterStates={filters}
             updateFilters={updateFilters}
-            metricPeriodMonths={filters.metricPeriodMonths}
+            timeDescription={timeDescription}
             stateCode={stateCode}
+            violationTypes={[
+              "LOW_TECH",
+              "MED_TECH",
+              "ELEC_MONITORING",
+              "SUBS_USE",
+              "ABSCONDING",
+              "HIGH_TECH",
+              "SUMMARY_OFFENSE",
+              "MISDEMEANOR",
+              "FELONY",
+            ]}
           />
         </div>
         <RevocationMatrixExplanation />
