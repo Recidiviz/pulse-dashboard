@@ -15,7 +15,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React from "react";
+import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 import { Bar, Pie } from "react-chartjs-2";
 
@@ -233,15 +233,24 @@ const AdmissionCountsByType = ({
     series: [],
   });
 
-  configureDownloadButtons(
-    chartId,
-    "ADMISSIONS BY TYPE",
+  useEffect(() => {
+    configureDownloadButtons(
+      chartId,
+      "ADMISSIONS BY TYPE",
+      activeChart.props.data.datasets,
+      activeChart.props.data.labels,
+      document.getElementById(chartId),
+      exportedStructureCallback,
+      { metricPeriodMonths, metricType, district, supervisionType }
+    );
+  }, [
+    metricPeriodMonths,
+    metricType,
+    district,
+    supervisionType,
     activeChart.props.data.datasets,
     activeChart.props.data.labels,
-    document.getElementById(chartId),
-    exportedStructureCallback,
-    { metricPeriodMonths, metricType, district, supervisionType }
-  );
+  ]);
 
   return activeChart;
 };
