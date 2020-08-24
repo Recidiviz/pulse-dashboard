@@ -36,12 +36,12 @@ import {
 import { getTimeDescription } from "../../../../components/charts/new_revocations/helpers/format";
 import {
   DEFAULT_METRIC_PERIOD,
-  DEFAULT_CHARGE_CATEGORY,
   DEFAULT_SUPERVISION_TYPE,
   DEFAULT_DISTRICT,
   METRIC_PERIODS,
   SUPERVISION_TYPES,
 } from "../../../../components/charts/new_revocations/ToggleBar/options";
+import flags from "../../../../flags";
 
 const stateCode = "us_mo";
 const admissionTypeOptions = [
@@ -64,9 +64,12 @@ const chargeCategoryOptions = [
 const Revocations = () => {
   const [filters, setFilters] = useState({
     metricPeriodMonths: DEFAULT_METRIC_PERIOD.value,
-    chargeCategory: DEFAULT_CHARGE_CATEGORY.value,
+    chargeCategory: chargeCategoryOptions[0].value,
     district: DEFAULT_DISTRICT.value,
     supervisionType: DEFAULT_SUPERVISION_TYPE.value,
+    ...(flags.enableAdmissionTypeFilterForMO
+      ? { admissionType: [admissionTypeOptions[1].value] }
+      : {}),
     reportedViolations: "",
     violationType: "",
   });
@@ -100,12 +103,14 @@ const Revocations = () => {
             defaultValue={chargeCategoryOptions[0]}
             onChange={updateFilters}
           />
-          <AdmissionTypeFilter
-            options={admissionTypeOptions}
-            summingOption={admissionTypeOptions[0]}
-            defaultValue={[admissionTypeOptions[1]]}
-            onChange={updateFilters}
-          />
+          {flags.enableAdmissionTypeFilterForMO && (
+            <AdmissionTypeFilter
+              options={admissionTypeOptions}
+              summingOption={admissionTypeOptions[0]}
+              defaultValue={[admissionTypeOptions[1]]}
+              onChange={updateFilters}
+            />
+          )}
           <SupervisionTypeFilter
             options={SUPERVISION_TYPES}
             defaultValue={DEFAULT_SUPERVISION_TYPE}

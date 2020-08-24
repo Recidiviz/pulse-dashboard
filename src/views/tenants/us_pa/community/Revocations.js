@@ -34,9 +34,7 @@ import {
 } from "../../../../components/charts/new_revocations/helpers";
 import {
   DEFAULT_METRIC_PERIOD,
-  DEFAULT_CHARGE_CATEGORY,
   DEFAULT_DISTRICT,
-  DEFAULT_ADMISSION_TYPE,
   METRIC_PERIODS,
 } from "../../../../components/charts/new_revocations/ToggleBar/options";
 import { getTimeDescription } from "../../../../components/charts/new_revocations/helpers/format";
@@ -72,9 +70,9 @@ const chargeCategoryOptions = [
 const Revocations = () => {
   const [filters, setFilters] = useState({
     metricPeriodMonths: DEFAULT_METRIC_PERIOD.value,
-    chargeCategory: DEFAULT_CHARGE_CATEGORY.value,
+    chargeCategory: chargeCategoryOptions[0].value,
     district: DEFAULT_DISTRICT.value,
-    admissionType: [DEFAULT_ADMISSION_TYPE.value],
+    admissionType: [admissionTypeOptions[1].value],
     reportedViolations: "",
     violationType: "",
   });
