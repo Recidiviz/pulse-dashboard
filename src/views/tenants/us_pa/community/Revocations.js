@@ -36,7 +36,6 @@ import {
   DEFAULT_METRIC_PERIOD,
   DEFAULT_CHARGE_CATEGORY,
   DEFAULT_DISTRICT,
-  DEFAULT_ADMISSION_TYPE,
   CHARGE_CATEGORIES,
   METRIC_PERIODS,
 } from "../../../../components/charts/new_revocations/ToggleBar/options";
@@ -66,7 +65,7 @@ const Revocations = () => {
     metricPeriodMonths: DEFAULT_METRIC_PERIOD.value,
     chargeCategory: DEFAULT_CHARGE_CATEGORY.value,
     district: [DEFAULT_DISTRICT.value],
-    admissionType: [DEFAULT_ADMISSION_TYPE.value],
+    admissionType: [admissionTypeOptions[1].value],
     reportedViolations: "",
     violationType: "",
   });
