@@ -34,7 +34,6 @@ import { COLORS } from "../../../assets/scripts/constants/colors";
 import useChartData from "../../../hooks/useChartData";
 import { axisCallbackForPercentage } from "../../../utils/charts/axis";
 import { tooltipForRateMetricWithCounts } from "../../../utils/charts/toggles";
-import { violationTypeToLabel } from "../../../utils/transforms/labels";
 import { calculateRate } from "./helpers/rate";
 
 const chartId = "revocationsByViolationType";
@@ -47,9 +46,7 @@ const RevocationsByViolation = ({
   treatCategoryAllAsAbsent,
   stateCode,
   timeDescription,
-  technicalViolationTypes,
-  lawViolationTypes,
-  allViolationTypes,
+  violationTypes,
 }) => {
   const { isLoading, apiData } = useChartData(
     `${stateCode}/newRevocations`,
@@ -66,37 +63,40 @@ const RevocationsByViolation = ({
     treatCategoryAllAsAbsent
   );
 
+  const allViolationTypeKeys = map("key", violationTypes);
+  const chartLabels = map("label", violationTypes);
+
   const violationToCount = pipe(
-    map(pick(concat(allViolationTypes, violationCountKey))),
+    map(pick(concat(allViolationTypeKeys, violationCountKey))),
     mergeAllWith((a, b) => toInteger(a) + toInteger(b))
   )(filteredData);
 
   const totalViolationCount = toInteger(violationToCount[violationCountKey]);
-  const chartLabels = map(
-    (type) => violationTypeToLabel[type],
-    allViolationTypes
-  );
   const numeratorCounts = map(
     (type) => violationToCount[type],
-    allViolationTypes
+    allViolationTypeKeys
   );
-  const denominatorCounts = map(() => totalViolationCount, allViolationTypes);
+  const denominatorCounts = map(
+    () => totalViolationCount,
+    allViolationTypeKeys
+  );
   const chartDataPoints = map(
     (type) =>
       calculateRate(violationToCount[type], totalViolationCount).toFixed(2),
-    allViolationTypes
+    allViolationTypeKeys
   );
 
   // This sets bar color to light-blue-500 when it's a technical violation, orange when it's law
   const colorTechnicalAndLaw = () =>
-    allViolationTypes.map((violationType) => {
-      if (technicalViolationTypes.includes(violationType)) {
-        return COLORS["lantern-light-blue"];
+    violationTypes.map((violationType) => {
+      switch (violationType.type) {
+        case "TECHNICAL":
+          return COLORS["lantern-light-blue"];
+        case "LOW":
+          return COLORS["lantern-orange"];
+        default:
+          return COLORS["lantern-light-blue"];
       }
-      if (lawViolationTypes.includes(violationType)) {
-        return COLORS["lantern-orange"];
-      }
-      return null;
     });
 
   const chart = (
@@ -204,9 +204,13 @@ RevocationsByViolation.propTypes = {
   treatCategoryAllAsAbsent: PropTypes.bool,
   stateCode: PropTypes.string.isRequired,
   timeDescription: PropTypes.string.isRequired,
-  technicalViolationTypes: PropTypes.arrayOf(PropTypes.string).isRequired,
-  lawViolationTypes: PropTypes.arrayOf(PropTypes.string).isRequired,
-  allViolationTypes: PropTypes.arrayOf(PropTypes.string).isRequired,
+  violationTypes: PropTypes.arrayOf(
+    PropTypes.shape({
+      key: PropTypes.string.isRequired,
+      label: PropTypes.string.isRequired,
+      type: PropTypes.string.isRequired,
+    })
+  ).isRequired,
 };
 
 export default RevocationsByViolation;
