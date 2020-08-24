@@ -61,11 +61,11 @@ const matrixViolationTypeToLabel = {
   MISDEMEANOR: "Misdemeanor",
   FELONY: "Felony",
   LOW_TECH: "Low tech.",
-  MED_TECH: "MED tech.",
+  MED_TECH: "Med tech.",
   ELEC_MONITORING: "Elec. monitoring",
   SUBS_USE: "Subs. use",
   ABSCONDING: "Absconding",
-  HIGH_TECH: "High tech",
+  HIGH_TECH: "High tech.",
   SUMMARY_OFFENSE: "Summary offense",
 };
 
