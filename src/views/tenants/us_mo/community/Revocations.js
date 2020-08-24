@@ -54,11 +54,32 @@ const stateCode = "us_mo";
 const admissionTypeOptions = [
   { value: "All", label: "ALL" },
   { value: "REVOCATION", label: "Revocation" },
-  {
-    value: "INSTITUTIONAL TREATMENT",
-    label: "Institutional Treatment",
-  },
+  { value: "INSTITUTIONAL TREATMENT", label: "Institutional Treatment" },
   { value: "BOARDS_RETURN", label: "Board Returns" },
+];
+const violationTypes = [
+  { key: "travel_count", label: "Travel", type: "TECHNICAL" },
+  { key: "residency_count", label: "Residency", type: "TECHNICAL" },
+  { key: "employment_count", label: "Employment", type: "TECHNICAL" },
+  { key: "association_count", label: "Association", type: "TECHNICAL" },
+  { key: "directive_count", label: "Report / Directives", type: "TECHNICAL" },
+  {
+    key: "supervision_strategy_count",
+    label: "Supervision Strategies",
+    type: "TECHNICAL",
+  },
+  {
+    key: "intervention_fee_count",
+    label: "Intervention Fees",
+    type: "TECHNICAL",
+  },
+  { key: "special_count", label: "Special Conditions", type: "TECHNICAL" },
+  { key: "weapon_count", label: "Weapons", type: "TECHNICAL" },
+  { key: "substance_count", label: "Substance Use", type: "TECHNICAL" },
+  { key: "municipal_count", label: "Municipal", type: "LOW" },
+  { key: "absconded_count", label: "Absconsion", type: "TECHNICAL" },
+  { key: "misdemeanor_count", label: "Misdemeanor", type: "LOW" },
+  { key: "felony_count", label: "Felony", type: "LOW" },
 ];
 
 const Revocations = () => {
@@ -162,40 +183,7 @@ const Revocations = () => {
             filterStates={filters}
             stateCode={stateCode}
             timeDescription={timeDescription}
-            technicalViolationTypes={[
-              "travel_count",
-              "residency_count",
-              "employment_count",
-              "association_count",
-              "directive_count",
-              "supervision_strategy_count",
-              "intervention_fee_count",
-              "special_count",
-              "substance_count",
-              "absconded_count",
-              "weapon_count",
-            ]}
-            lawViolationTypes={[
-              "municipal_count",
-              "misdemeanor_count",
-              "felony_count",
-            ]}
-            allViolationTypes={[
-              "travel_count",
-              "residency_count",
-              "employment_count",
-              "association_count",
-              "directive_count",
-              "supervision_strategy_count",
-              "intervention_fee_count",
-              "special_count",
-              "weapon_count",
-              "substance_count",
-              "municipal_count",
-              "absconded_count",
-              "misdemeanor_count",
-              "felony_count",
-            ]}
+            violationTypes={violationTypes}
           />
         }
         genderChart={

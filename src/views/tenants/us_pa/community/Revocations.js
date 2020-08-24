@@ -64,6 +64,21 @@ const admissionTypeOptions = [
   { value: "DA_DETOX", label: "D&A Detox" },
   { value: "MENTAL_HEALTH", label: "Mental Health" },
 ];
+const violationTypes = [
+  { key: "low_tech_count", label: "Low tech.", type: "TECHNICAL" },
+  { key: "med_tech_count", label: "Med tech.", type: "TECHNICAL" },
+  {
+    key: "elec_monitoring_count",
+    label: "Elec. monitoring",
+    type: "TECHNICAL",
+  },
+  { key: "subs_use_count", label: "Subs. use", type: "TECHNICAL" },
+  { key: "absconding_count", label: "Absconding", type: "TECHNICAL" },
+  { key: "high_tech_count", label: "High tech.", type: "TECHNICAL" },
+  { key: "summary_offense_count", label: "Summary offense", type: "LOW" },
+  { key: "misdemeanor_count", label: "Misdemeanor", type: "LOW" },
+  { key: "felony_count", label: "Felony", type: "LOW" },
+];
 
 const Revocations = () => {
   const [filters, setFilters] = useState({
@@ -156,30 +171,7 @@ const Revocations = () => {
             filterStates={filters}
             stateCode={stateCode}
             timeDescription={timeDescription}
-            technicalViolationTypes={[
-              "low_tech_count",
-              "med_tech_count",
-              "elec_monitoring_count",
-              "subs_use_count",
-              "absconding_count",
-              "high_tech_count",
-            ]}
-            lawViolationTypes={[
-              "summary_offense_count",
-              "misdemeanor_count",
-              "felony_count",
-            ]}
-            allViolationTypes={[
-              "low_tech_count",
-              "med_tech_count",
-              "elec_monitoring_count",
-              "subs_use_count",
-              "absconding_count",
-              "high_tech_count",
-              "summary_offense_count",
-              "misdemeanor_count",
-              "felony_count",
-            ]}
+            violationTypes={violationTypes}
           />
         }
         genderChart={

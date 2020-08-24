@@ -62,30 +62,6 @@ const matrixViolationTypeToLabel = {
   FELONY: "Felony",
 };
 
-const violationTypeToLabel = {
-  absconding_count: 'Absconding',
-  absconded_count: 'Absconsion',
-  association_count: 'Association',
-  directive_count: 'Report / Directives',
-  elec_monitoring_count: 'Elec. monitoring',
-  employment_count: 'Employment',
-  felony_count: 'Felony',
-  high_tech_count: 'High tech',
-  intervention_fee_count: 'Intervention Fees',
-  low_tech_count: 'Low tech',
-  med_tech_count: 'Med. tech.',
-  misdemeanor_count: 'Misdemeanor',
-  municipal_count: 'Municipal',
-  residency_count: 'Residency',
-  special_count: 'Special Conditions',
-  substance_count: 'Substance Use',
-  subs_use_count: 'Subs. use',
-  summary_offense_count: 'Summary offense',
-  supervision_strategy_count: 'Supervision Strategies',
-  travel_count: 'Travel',
-  weapon_count: 'Weapons',
-};
-
 function genderValueToHumanReadable(genderValue) {
   return genderValuetoLabel[genderValue];
 }
@@ -145,7 +121,6 @@ const violationCountLabel = (count) => (count === '8' ? '8+' : count);
 export {
   riskLevels,
   riskLevelValuetoLabel,
-  violationTypeToLabel,
   matrixViolationTypeToLabel,
   genderValueToHumanReadable,
   raceValueToHumanReadable,
