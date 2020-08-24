@@ -25,9 +25,9 @@ import filter from "lodash/fp/filter";
 import get from "lodash/fp/get";
 import getOr from "lodash/fp/getOr";
 import groupBy from "lodash/fp/groupBy";
-import map from "lodash/fp/map";
 import mapValues from "lodash/fp/mapValues";
 import max from "lodash/fp/max";
+import flatten from "lodash/fp/flatten";
 import pipe from "lodash/fp/pipe";
 import sum from "lodash/fp/sum";
 import sumBy from "lodash/fp/sumBy";
@@ -92,9 +92,16 @@ const RevocationMatrix = ({
   }
 
   const maxRevocations = pipe(
-    map(getInteger("total_revocations")),
+    () =>
+      violationTypes.map((rowLabel) =>
+        VIOLATION_COUNTS.map((columnLabel) =>
+          getOr(0, [rowLabel, columnLabel], dataMatrix)
+        )
+      ),
+    flatten,
     max
-  )(filteredData);
+  )();
+
   const violationsSum = sumByInteger("total_revocations")(filteredData);
   const reportedViolationsSum = pipe(
     (count) =>
@@ -114,19 +121,12 @@ const RevocationMatrix = ({
     }
   };
 
-  const exportableMatrixData = () => {
-    const datasets = [];
-    Object.keys(violationTypes).forEach((rowLabel) => {
-      const dataset = { label: rowLabel, data: [] };
-      const rowValues = dataMatrix[rowLabel] || {};
-      VIOLATION_COUNTS.forEach((columnLabel) => {
-        dataset.data.push(rowValues[columnLabel] || 0);
-      });
-
-      datasets.push(dataset);
-    });
-    return datasets;
-  };
+  const exportableMatrixData = violationTypes.map((rowLabel) => ({
+    label: rowLabel,
+    data: VIOLATION_COUNTS.map((columnLabel) =>
+      getOr(0, [rowLabel, columnLabel], dataMatrix)
+    ),
+  }));
 
   return (
     <div className="revocation-matrix">
@@ -135,7 +135,7 @@ const RevocationMatrix = ({
         <ExportMenu
           chartId="revocationMatrix"
           regularElement
-          elementDatasets={exportableMatrixData(dataMatrix)}
+          elementDatasets={exportableMatrixData}
           elementLabels={VIOLATION_COUNTS.map(violationCountLabel)}
           metricTitle={TITLE}
           timeWindowDescription={timeDescription}
