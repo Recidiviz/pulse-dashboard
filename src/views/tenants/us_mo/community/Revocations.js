@@ -48,6 +48,7 @@ import {
   METRIC_PERIODS,
   SUPERVISION_TYPES,
 } from "../../../../components/charts/new_revocations/ToggleBar/options";
+import flags from "../../../../flags";
 
 const stateCode = "us_mo";
 const admissionTypeOptions = [
@@ -66,6 +67,9 @@ const Revocations = () => {
     chargeCategory: DEFAULT_CHARGE_CATEGORY.value,
     district: DEFAULT_DISTRICT.value,
     supervisionType: DEFAULT_SUPERVISION_TYPE.value,
+    ...(flags.enableAdmissionTypeFilterForMO
+      ? { admissionType: [admissionTypeOptions[1].value] }
+      : {}),
     reportedViolations: "",
     violationType: "",
   });
@@ -100,12 +104,14 @@ const Revocations = () => {
             defaultValue={DEFAULT_CHARGE_CATEGORY}
             onChange={updateFilters}
           />
-          <AdmissionTypeFilter
-            options={admissionTypeOptions}
-            summingOption={admissionTypeOptions[0]}
-            defaultValue={[admissionTypeOptions[1]]}
-            onChange={updateFilters}
-          />
+          {flags.enableAdmissionTypeFilterForMO && (
+            <AdmissionTypeFilter
+              options={admissionTypeOptions}
+              summingOption={admissionTypeOptions[0]}
+              defaultValue={[admissionTypeOptions[1]]}
+              onChange={updateFilters}
+            />
+          )}
           <SupervisionTypeFilter
             options={SUPERVISION_TYPES}
             defaultValue={DEFAULT_SUPERVISION_TYPE}
