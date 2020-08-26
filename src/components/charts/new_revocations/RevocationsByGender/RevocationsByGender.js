@@ -28,7 +28,6 @@ import {
   findDenominatorKeyByMode,
   getLabelByMode,
 } from "./helpers";
-import { getTimeDescription } from "../helpers/format";
 import ModeSwitcher from "../ModeSwitcher";
 import DataSignificanceWarningIcon from "../../DataSignificanceWarningIcon";
 import ExportMenu from "../../ExportMenu";
@@ -44,7 +43,6 @@ import {
 } from "../../../../utils/charts/significantStatistics";
 import { tooltipForRateMetricWithNestedCounts } from "../../../../utils/charts/toggles";
 import useChartData from "../../../../hooks/useChartData";
-import { ADMISSION_TYPES } from "../ToggleBar/options";
 
 const modeButtons = [
   { label: "Percent revoked of standing population", value: "rates" },
@@ -69,18 +67,13 @@ const RevocationsByGender = ({
   dataFilter,
   skippedFilters,
   treatCategoryAllAsAbsent,
-  metricPeriodMonths,
   filterStates,
+  timeDescription,
 }) => {
   const [mode, setMode] = useState("rates"); // rates | exits
 
   const numeratorKey = "population_count";
   const denominatorKey = findDenominatorKeyByMode(mode);
-  const timeDescription = getTimeDescription(
-    metricPeriodMonths,
-    ADMISSION_TYPES,
-    filterStates.admissionType
-  );
 
   const { isLoading, apiData } = useChartData(
     `${stateCode}/newRevocations`,
@@ -197,9 +190,9 @@ RevocationsByGender.propTypes = {
   dataFilter: PropTypes.func.isRequired,
   skippedFilters: PropTypes.arrayOf(PropTypes.string),
   treatCategoryAllAsAbsent: PropTypes.bool,
-  metricPeriodMonths: PropTypes.string.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
   filterStates: PropTypes.object,
+  timeDescription: PropTypes.string.isRequired,
 };
 
 export default RevocationsByGender;

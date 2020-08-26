@@ -33,25 +33,17 @@ import {
   violationTypeToLabel,
   allViolationTypes,
 } from "../../../utils/transforms/labels";
-import { ADMISSION_TYPES } from "./ToggleBar/options";
-import { getTimeDescription } from "./helpers/format";
 
 const chartId = "revocationsByViolationType";
 
 const RevocationsByViolation = ({
   dataFilter,
   filterStates,
-  metricPeriodMonths,
   skippedFilters,
   treatCategoryAllAsAbsent,
   stateCode,
+  timeDescription,
 }) => {
-  const timeDescription = getTimeDescription(
-    metricPeriodMonths,
-    ADMISSION_TYPES,
-    filterStates.admissionType
-  );
-
   const { isLoading, apiData } = useChartData(
     `${stateCode}/newRevocations`,
     "revocations_matrix_distribution_by_violation"
@@ -245,10 +237,10 @@ RevocationsByViolation.propTypes = {
     district: PropTypes.string,
     supervisionType: PropTypes.string,
   }).isRequired,
-  metricPeriodMonths: PropTypes.string.isRequired,
   skippedFilters: PropTypes.arrayOf(PropTypes.string),
   treatCategoryAllAsAbsent: PropTypes.bool,
   stateCode: PropTypes.string.isRequired,
+  timeDescription: PropTypes.string.isRequired,
 };
 
 export default RevocationsByViolation;
