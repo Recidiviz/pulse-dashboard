@@ -27,15 +27,20 @@ import RevocationsByRace from "./RevocationsByRace/RevocationsByRace";
 
 const CHARTS = ["District", "Risk level", "Violation", "Gender", "Race"];
 
-const RevocationCharts = ({ filters, dataFilter, stateCode }) => {
+const RevocationCharts = ({
+  filters,
+  dataFilter,
+  stateCode,
+  timeDescription,
+}) => {
   const [selectedChart, setSelectedChart] = useState(CHARTS[0]);
 
   const riskLevelChart = (
     <RevocationsByRiskLevel
       dataFilter={dataFilter}
       filterStates={filters}
-      metricPeriodMonths={filters.metricPeriodMonths}
       stateCode={stateCode}
+      timeDescription={timeDescription}
     />
   );
 
@@ -43,8 +48,8 @@ const RevocationCharts = ({ filters, dataFilter, stateCode }) => {
     <RevocationsByViolation
       dataFilter={dataFilter}
       filterStates={filters}
-      metricPeriodMonths={filters.metricPeriodMonths}
       stateCode={stateCode}
+      timeDescription={timeDescription}
     />
   );
 
@@ -52,8 +57,8 @@ const RevocationCharts = ({ filters, dataFilter, stateCode }) => {
     <RevocationsByGender
       dataFilter={dataFilter}
       filterStates={filters}
-      metricPeriodMonths={filters.metricPeriodMonths}
       stateCode={stateCode}
+      timeDescription={timeDescription}
     />
   );
 
@@ -61,8 +66,8 @@ const RevocationCharts = ({ filters, dataFilter, stateCode }) => {
     <RevocationsByRace
       dataFilter={dataFilter}
       filterStates={filters}
-      metricPeriodMonths={filters.metricPeriodMonths}
       stateCode={stateCode}
+      timeDescription={timeDescription}
     />
   );
 
@@ -71,33 +76,30 @@ const RevocationCharts = ({ filters, dataFilter, stateCode }) => {
       dataFilter={dataFilter}
       skippedFilters={["district"]}
       filterStates={filters}
-      metricPeriodMonths={filters.metricPeriodMonths}
       currentDistrict={filters.district}
       stateCode={stateCode}
+      timeDescription={timeDescription}
     />
   );
 
   // This will ensure that we proactively load each chart component and their data now, but only
   // display the selected chart
-  const conditionallyHide = (chart, chartName, chartComponent, index) => {
-    const shouldBeHidden = chart !== chartName;
-    const divStyle = shouldBeHidden ? { display: "none" } : {};
-    return (
-      <div key={index} style={divStyle}>
-        {chartComponent}
-      </div>
-    );
-  };
+  const conditionallyHide = (chart, chartName, chartComponent, index) => (
+    <div
+      key={index}
+      style={{ display: chart === chartName ? "block" : "none" }}
+    >
+      {chartComponent}
+    </div>
+  );
 
-  const renderSelectedChartSimultaneousLoad = () => {
-    return [
-      conditionallyHide(selectedChart, "Risk level", riskLevelChart, 0),
-      conditionallyHide(selectedChart, "Violation", violationChart, 1),
-      conditionallyHide(selectedChart, "Gender", genderChart, 2),
-      conditionallyHide(selectedChart, "Race", raceChart, 3),
-      conditionallyHide(selectedChart, "District", districtChart, 4),
-    ];
-  };
+  const renderSelectedChartSimultaneousLoad = () => [
+    conditionallyHide(selectedChart, "Risk level", riskLevelChart, 0),
+    conditionallyHide(selectedChart, "Violation", violationChart, 1),
+    conditionallyHide(selectedChart, "Gender", genderChart, 2),
+    conditionallyHide(selectedChart, "Race", raceChart, 3),
+    conditionallyHide(selectedChart, "District", districtChart, 4),
+  ];
 
   const renderSelectedChartSingularLoad = () => {
     switch (selectedChart) {
@@ -161,6 +163,7 @@ RevocationCharts.propTypes = {
   }).isRequired,
   dataFilter: PropTypes.func.isRequired,
   stateCode: PropTypes.string.isRequired,
+  timeDescription: PropTypes.string.isRequired,
 };
 
 export default RevocationCharts;

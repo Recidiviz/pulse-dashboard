@@ -23,18 +23,38 @@ import RevocationCountOverTime from "../../../../components/charts/new_revocatio
 import RevocationMatrix from "../../../../components/charts/new_revocations/RevocationMatrix";
 import RevocationMatrixExplanation from "../../../../components/charts/new_revocations/RevocationMatrixExplanation";
 import ToggleBar from "../../../../components/charts/new_revocations/ToggleBar/ToggleBar";
+import MetricPeriodMonthsFilter from "../../../../components/charts/new_revocations/ToggleBar/MetricPeriodMonthsFilter";
+import DistrictFilter from "../../../../components/charts/new_revocations/ToggleBar/DistrictFilter";
+import ChargeCategoryFilter from "../../../../components/charts/new_revocations/ToggleBar/ChargeCategoryFilter";
+import AdmissionTypeFilter from "../../../../components/charts/new_revocations/ToggleBar/AdmissionTypeFilter";
+import SupervisionTypeFilter from "../../../../components/charts/new_revocations/ToggleBar/SupervisionTypeFilter";
+import ViolationFilter from "../../../../components/charts/new_revocations/ToggleBar/ViolationFilter";
 import {
   applyAllFilters,
   applyTopLevelFilters,
 } from "../../../../components/charts/new_revocations/helpers";
+import { getTimeDescription } from "../../../../components/charts/new_revocations/helpers/format";
 import {
   DEFAULT_METRIC_PERIOD,
   DEFAULT_CHARGE_CATEGORY,
-  DEFAULT_DISTRICT,
   DEFAULT_SUPERVISION_TYPE,
+  DEFAULT_DISTRICT,
+  CHARGE_CATEGORIES,
+  METRIC_PERIODS,
+  SUPERVISION_TYPES,
 } from "../../../../components/charts/new_revocations/ToggleBar/options";
+import flags from "../../../../flags";
 
 const stateCode = "us_mo";
+const admissionTypeOptions = [
+  { value: "All", label: "ALL" },
+  { value: "REVOCATION", label: "Revocation" },
+  {
+    value: "INSTITUTIONAL TREATMENT",
+    label: "Institutional Treatment",
+  },
+  { value: "BOARDS_RETURN", label: "Board Returns" },
+];
 
 const Revocations = () => {
   const [filters, setFilters] = useState({
@@ -42,6 +62,9 @@ const Revocations = () => {
     chargeCategory: DEFAULT_CHARGE_CATEGORY.value,
     district: DEFAULT_DISTRICT.value,
     supervisionType: DEFAULT_SUPERVISION_TYPE.value,
+    ...(flags.enableAdmissionTypeFilterForMO
+      ? { admissionType: [admissionTypeOptions[1].value] }
+      : {}),
     reportedViolations: "",
     violationType: "",
   });
@@ -50,13 +73,51 @@ const Revocations = () => {
     setFilters({ ...filters, ...newFilters });
   };
 
+  const timeDescription = getTimeDescription(
+    filters.metricPeriodMonths,
+    admissionTypeOptions,
+    filters.admissionType
+  );
+
   return (
     <main className="dashboard bgc-grey-100">
-      <ToggleBar
-        filters={filters}
-        stateCode={stateCode}
-        updateFilters={updateFilters}
-      />
+      <ToggleBar>
+        <div className="top-level-filters d-f">
+          <MetricPeriodMonthsFilter
+            options={METRIC_PERIODS}
+            defaultValue={DEFAULT_METRIC_PERIOD}
+            onChange={updateFilters}
+          />
+          <DistrictFilter
+            stateCode={stateCode}
+            defaultValue={DEFAULT_DISTRICT}
+            onChange={updateFilters}
+          />
+          <ChargeCategoryFilter
+            options={CHARGE_CATEGORIES}
+            defaultValue={DEFAULT_CHARGE_CATEGORY}
+            onChange={updateFilters}
+          />
+          {flags.enableAdmissionTypeFilterForMO && (
+            <AdmissionTypeFilter
+              options={admissionTypeOptions}
+              summingOption={admissionTypeOptions[0]}
+              defaultValue={[admissionTypeOptions[1]]}
+              onChange={updateFilters}
+            />
+          )}
+          <SupervisionTypeFilter
+            options={SUPERVISION_TYPES}
+            defaultValue={DEFAULT_SUPERVISION_TYPE}
+            onChange={updateFilters}
+          />
+        </div>
+        <ViolationFilter
+          violationType={filters.violationType}
+          reportedViolations={filters.reportedViolations}
+          onClick={updateFilters}
+        />
+      </ToggleBar>
 
       <div className="bgc-white p-20 m-20">
         <RevocationCountOverTime
@@ -84,6 +145,7 @@ const Revocations = () => {
         filters={filters}
         dataFilter={applyAllFilters(filters)}
         stateCode={stateCode}
+        timeDescription={timeDescription}
       />
 
       <div className="bgc-white m-20 p-20">

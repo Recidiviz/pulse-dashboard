@@ -27,15 +27,16 @@ import pipe from "lodash/fp/pipe";
 import sortBy from "lodash/fp/sortBy";
 import values from "lodash/fp/values";
 
+import { findDenominatorKeyByMode, getLabelByMode } from "./helpers";
 import { sumIntBy } from "../helpers/counts";
 import { calculateRate } from "../helpers/rate";
-import { getTimeDescription } from "../helpers/format";
 import ModeSwitcher from "../ModeSwitcher";
 import DataSignificanceWarningIcon from "../../DataSignificanceWarningIcon";
 import ExportMenu from "../../ExportMenu";
 import Loading from "../../../Loading";
 
 import { COLORS } from "../../../../assets/scripts/constants/colors";
+import useChartData from "../../../../hooks/useChartData";
 import { axisCallbackForPercentage } from "../../../../utils/charts/axis";
 import {
   isDenominatorStatisticallySignificant,
@@ -48,9 +49,6 @@ import {
   riskLevelValuetoLabel,
   riskLevels,
 } from "../../../../utils/transforms/labels";
-import useChartData from "../../../../hooks/useChartData";
-import { findDenominatorKeyByMode, getLabelByMode } from "./helpers";
-import { ADMISSION_TYPES } from "../ToggleBar/options";
 
 const chartId = "revocationsByRiskLevel";
 
@@ -64,18 +62,13 @@ const RevocationsByRiskLevel = ({
   dataFilter,
   skippedFilters,
   treatCategoryAllAsAbsent,
-  metricPeriodMonths,
   filterStates,
+  timeDescription,
 }) => {
   const [mode, setMode] = useState("rates"); // rates | exits
 
   const denominatorKey = findDenominatorKeyByMode(mode);
   const chartLabel = getLabelByMode(mode);
-  const timeDescription = getTimeDescription(
-    metricPeriodMonths,
-    ADMISSION_TYPES,
-    filterStates.admissionType
-  );
 
   const { isLoading, apiData } = useChartData(
     `${stateCode}/newRevocations`,
@@ -224,9 +217,9 @@ RevocationsByRiskLevel.propTypes = {
   dataFilter: PropTypes.func.isRequired,
   skippedFilters: PropTypes.arrayOf(PropTypes.string),
   treatCategoryAllAsAbsent: PropTypes.bool,
-  metricPeriodMonths: PropTypes.string.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
   filterStates: PropTypes.object,
+  timeDescription: PropTypes.string.isRequired,
 };
 
 export default RevocationsByRiskLevel;
