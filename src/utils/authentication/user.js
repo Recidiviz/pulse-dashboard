@@ -28,6 +28,14 @@ export function getUserAppMetadata(user) {
 }
 
 /**
+ * Returns the Auth0 user_metadata for the given user.
+ */
+export function getUserMetadata(user) {
+  const appMetadataKey = `${METADATA_NAMESPACE}user_metadata`;
+  return user[appMetadataKey] || {};
+}
+
+/**
  * Returns the human-readable state name for the given state code,
  * e.g. getStateNameForCode('us_nd') = 'North Dakota'
  */
@@ -73,4 +81,22 @@ export function getAvailableStateCodes(user) {
  */
 export function doesUserHaveAccess(user, stateCode) {
   return getAvailableStateCodes(user).includes(stateCode);
+}
+
+/**
+ * Returns Auth0 user districts or null if it missed
+ */
+export function getUserDistricts(user) {
+  const stateCode = getUserStateCode(user);
+  const { region, district } = getUserMetadata(user);
+
+  if (district) {
+    return [district];
+  }
+
+  if (region && tenants[stateCode].regions) {
+    return tenants[stateCode].regions[region];
+  }
+
+  return null;
 }

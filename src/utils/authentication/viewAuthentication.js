@@ -24,7 +24,10 @@ function getDemoUser() {
     name: 'Demo Jones',
     email: 'notarealemail@recidiviz.org',
     'https://dashboard.recidiviz.org/app_metadata': {
-      state_code: 'RECIDIVIZ',
+      state_code: 'us_mo',
+    },
+    'https://dashboard.recidiviz.org/user_metadata': {
+      region: "Western Region",
     },
   };
 }

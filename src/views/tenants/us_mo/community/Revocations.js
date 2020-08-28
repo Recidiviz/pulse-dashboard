@@ -38,12 +38,13 @@ import {
   DEFAULT_METRIC_PERIOD,
   DEFAULT_CHARGE_CATEGORY,
   DEFAULT_SUPERVISION_TYPE,
-  DEFAULT_DISTRICT,
   CHARGE_CATEGORIES,
   METRIC_PERIODS,
   SUPERVISION_TYPES,
 } from "../../../../components/charts/new_revocations/ToggleBar/options";
 import flags from "../../../../flags";
+import { useAuth0 } from "../../../../react-auth0-spa";
+import { getUserMetadata } from "../../../../utils/authentication/user";
 
 const stateCode = "us_mo";
 const admissionTypeOptions = [
@@ -57,10 +58,13 @@ const admissionTypeOptions = [
 ];
 
 const Revocations = () => {
+  const { user } = useAuth0();
+  const { district } = getUserMetadata(user);
+
   const [filters, setFilters] = useState({
     metricPeriodMonths: DEFAULT_METRIC_PERIOD.value,
     chargeCategory: DEFAULT_CHARGE_CATEGORY.value,
-    district: [DEFAULT_DISTRICT.value],
+    district: [district || "All"],
     supervisionType: DEFAULT_SUPERVISION_TYPE.value,
     ...(flags.enableAdmissionTypeFilterForMO
       ? { admissionType: [admissionTypeOptions[1].value] }
@@ -88,12 +92,7 @@ const Revocations = () => {
             defaultValue={DEFAULT_METRIC_PERIOD}
             onChange={updateFilters}
           />
-          <DistrictFilter
-            stateCode={stateCode}
-            summingOption={DEFAULT_DISTRICT}
-            defaultValue={[DEFAULT_DISTRICT]}
-            onChange={updateFilters}
-          />
+          <DistrictFilter stateCode={stateCode} onChange={updateFilters} />
           <ChargeCategoryFilter
             options={CHARGE_CATEGORIES}
             defaultValue={DEFAULT_CHARGE_CATEGORY}
