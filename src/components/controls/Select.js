@@ -156,6 +156,7 @@ const GroupHeading = ({ onChange, ...props }) => {
     }
 
     onChange(updatedOptions);
+    // dummyInputRef.current.focus();
   };
 
   return (
