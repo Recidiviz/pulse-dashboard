@@ -48,6 +48,7 @@ public/
 !src/components/charts/new_revocations/Chip.js
 !src/components/charts/new_revocations/ModeSwitcher.js
 !src/components/charts/new_revocations/RevocationCharts.js
+!src/components/charts/new_revocations/RevocationMatrix/*.js
 !src/components/charts/new_revocations/RevocationMatrixExplanation.js
 !src/components/charts/new_revocations/Revocations.js
 !src/components/charts/new_revocations/RevocationsOverTime.js
