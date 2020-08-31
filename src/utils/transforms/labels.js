@@ -62,40 +62,6 @@ const matrixViolationTypeToLabel = {
   FELONY: "Felony",
 };
 
-const technicalViolationTypes = [
-  'travelCount', 'residencyCount', 'employmentCount', 'associationCount',
-  'directiveCount', 'supervisionStrategyCount', 'interventionFeeCount',
-  'specialCount','substanceCount', 'abscondedCount', 'weaponCount',
-];
-
-const lawViolationTypes = [
-  'municipalCount', 'misdemeanorCount', 'felonyCount',
-];
-
-const allViolationTypes =  [
-  'travelCount', 'residencyCount', 'employmentCount', 'associationCount',
-  'directiveCount', 'supervisionStrategyCount', 'interventionFeeCount',
-  'specialCount', 'weaponCount', 'substanceCount', 'municipalCount', 'abscondedCount',
-  'misdemeanorCount', 'felonyCount',
-]
-
-const violationTypeToLabel = {
-  abscondedCount: 'Absconsion',
-  associationCount: 'Association',
-  directiveCount: 'Report / Directives',
-  employmentCount: 'Employment',
-  felonyCount: 'Felony',
-  interventionFeeCount: 'Intervention Fees',
-  misdemeanorCount: 'Misdemeanor',
-  municipalCount: 'Municipal',
-  residencyCount: 'Residency',
-  specialCount: 'Special Conditions',
-  substanceCount: 'Substance Use',
-  supervisionStrategyCount: 'Supervision Strategies',
-  travelCount: 'Travel',
-  weaponCount: 'Weapons',
-};
-
 function genderValueToHumanReadable(genderValue) {
   return genderValuetoLabel[genderValue];
 }
@@ -155,10 +121,6 @@ const violationCountLabel = (count) => (count === '8' ? '8+' : count);
 export {
   riskLevels,
   riskLevelValuetoLabel,
-  violationTypeToLabel,
-  technicalViolationTypes,
-  lawViolationTypes,
-  allViolationTypes,
   matrixViolationTypeToLabel,
   genderValueToHumanReadable,
   raceValueToHumanReadable,
