@@ -22,8 +22,11 @@ import Footer from "../../../components/Footer";
 import TopBarLayout from "../../../components/topbar/TopBarLayout";
 import TopBarLogo from "../../../components/topbar/TopBarLogo";
 import TopBarUserMenuForAuthenticatedUser from "../../../components/topbar/TopBarUserMenuForAuthenticatedUser";
+import useHelpScout from "../../../hooks/useHelpScout";
 
 const Layout = ({ children }) => {
+  useHelpScout();
+
   return (
     <div id="app">
       <div className="wide-page-container">
