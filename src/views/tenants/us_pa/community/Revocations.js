@@ -75,9 +75,9 @@ const violationTypes = [
   { key: "subs_use_count", label: "Subs. use", type: "TECHNICAL" },
   { key: "absconding_count", label: "Absconding", type: "TECHNICAL" },
   { key: "high_tech_count", label: "High tech.", type: "TECHNICAL" },
-  { key: "summary_offense_count", label: "Summary offense", type: "LOW" },
-  { key: "misdemeanor_count", label: "Misdemeanor", type: "LOW" },
-  { key: "felony_count", label: "Felony", type: "LOW" },
+  { key: "summary_offense_count", label: "Summary offense", type: "LAW" },
+  { key: "misdemeanor_count", label: "Misdemeanor", type: "LAW" },
+  { key: "felony_count", label: "Felony", type: "LAW" },
 ];
 
 const Revocations = () => {

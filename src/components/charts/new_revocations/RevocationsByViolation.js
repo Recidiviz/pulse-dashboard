@@ -92,7 +92,7 @@ const RevocationsByViolation = ({
       switch (violationType.type) {
         case "TECHNICAL":
           return COLORS["lantern-light-blue"];
-        case "LOW":
+        case "LAW":
           return COLORS["lantern-orange"];
         default:
           return COLORS["lantern-light-blue"];
