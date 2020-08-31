@@ -19,68 +19,16 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 import RenderInBrowser from "react-render-in-browser";
 
-import RevocationsByDistrict from "./RevocationsByDistrict/RevocationsByDistrict";
-import RevocationsByRiskLevel from "./RevocationsByRiskLevel/RevocationsByRiskLevel";
-import RevocationsByViolation from "./RevocationsByViolation";
-import RevocationsByGender from "./RevocationsByGender/RevocationsByGender";
-import RevocationsByRace from "./RevocationsByRace/RevocationsByRace";
-
 const CHARTS = ["District", "Risk level", "Violation", "Gender", "Race"];
 
 const RevocationCharts = ({
-  filters,
-  dataFilter,
-  stateCode,
-  timeDescription,
+  riskLevelChart,
+  violationChart,
+  genderChart,
+  raceChart,
+  districtChart,
 }) => {
   const [selectedChart, setSelectedChart] = useState(CHARTS[0]);
-
-  const riskLevelChart = (
-    <RevocationsByRiskLevel
-      dataFilter={dataFilter}
-      filterStates={filters}
-      stateCode={stateCode}
-      timeDescription={timeDescription}
-    />
-  );
-
-  const violationChart = (
-    <RevocationsByViolation
-      dataFilter={dataFilter}
-      filterStates={filters}
-      stateCode={stateCode}
-      timeDescription={timeDescription}
-    />
-  );
-
-  const genderChart = (
-    <RevocationsByGender
-      dataFilter={dataFilter}
-      filterStates={filters}
-      stateCode={stateCode}
-      timeDescription={timeDescription}
-    />
-  );
-
-  const raceChart = (
-    <RevocationsByRace
-      dataFilter={dataFilter}
-      filterStates={filters}
-      stateCode={stateCode}
-      timeDescription={timeDescription}
-    />
-  );
-
-  const districtChart = (
-    <RevocationsByDistrict
-      dataFilter={dataFilter}
-      skippedFilters={["district"]}
-      filterStates={filters}
-      currentDistricts={filters.district}
-      stateCode={stateCode}
-      timeDescription={timeDescription}
-    />
-  );
 
   // This will ensure that we proactively load each chart component and their data now, but only
   // display the selected chart
@@ -155,16 +103,11 @@ const RevocationCharts = ({
 };
 
 RevocationCharts.propTypes = {
-  filters: PropTypes.shape({
-    metricPeriodMonths: PropTypes.string,
-    chargeCategory: PropTypes.string,
-    district: PropTypes.arrayOf(PropTypes.string),
-    supervisionType: PropTypes.string,
-    admissionType: PropTypes.arrayOf(PropTypes.string),
-  }).isRequired,
-  dataFilter: PropTypes.func.isRequired,
-  stateCode: PropTypes.string.isRequired,
-  timeDescription: PropTypes.string.isRequired,
+  riskLevelChart: PropTypes.node.isRequired,
+  violationChart: PropTypes.node.isRequired,
+  genderChart: PropTypes.node.isRequired,
+  raceChart: PropTypes.node.isRequired,
+  districtChart: PropTypes.node.isRequired,
 };
 
 export default RevocationCharts;
