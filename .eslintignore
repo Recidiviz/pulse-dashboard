@@ -51,6 +51,7 @@ public/
 !src/components/charts/new_revocations/RevocationMatrix/*.js
 !src/components/charts/new_revocations/RevocationMatrixExplanation.js
 !src/components/charts/new_revocations/Revocations.js
+!src/components/charts/new_revocations/RevocationsOverTime.js
 !src/components/charts/new_revocations/RevocationsByDistrict/**/*.js
 !src/components/charts/new_revocations/RevocationsByGender/**/*.js
 !src/components/charts/new_revocations/RevocationsByRace/**/*.js
