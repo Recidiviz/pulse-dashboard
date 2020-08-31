@@ -60,40 +60,13 @@ const matrixViolationTypeToLabel = {
   ABSCONDED: "Absconsion",
   MISDEMEANOR: "Misdemeanor",
   FELONY: "Felony",
-};
-
-const technicalViolationTypes = [
-  'travelCount', 'residencyCount', 'employmentCount', 'associationCount',
-  'directiveCount', 'supervisionStrategyCount', 'interventionFeeCount',
-  'specialCount','substanceCount', 'abscondedCount', 'weaponCount',
-];
-
-const lawViolationTypes = [
-  'municipalCount', 'misdemeanorCount', 'felonyCount',
-];
-
-const allViolationTypes =  [
-  'travelCount', 'residencyCount', 'employmentCount', 'associationCount',
-  'directiveCount', 'supervisionStrategyCount', 'interventionFeeCount',
-  'specialCount', 'weaponCount', 'substanceCount', 'municipalCount', 'abscondedCount',
-  'misdemeanorCount', 'felonyCount',
-]
-
-const violationTypeToLabel = {
-  abscondedCount: 'Absconsion',
-  associationCount: 'Association',
-  directiveCount: 'Report / Directives',
-  employmentCount: 'Employment',
-  felonyCount: 'Felony',
-  interventionFeeCount: 'Intervention Fees',
-  misdemeanorCount: 'Misdemeanor',
-  municipalCount: 'Municipal',
-  residencyCount: 'Residency',
-  specialCount: 'Special Conditions',
-  substanceCount: 'Substance Use',
-  supervisionStrategyCount: 'Supervision Strategies',
-  travelCount: 'Travel',
-  weaponCount: 'Weapons',
+  LOW_TECH: "Low tech.",
+  MED_TECH: "Med tech.",
+  ELEC_MONITORING: "Elec. monitoring",
+  SUBS_USE: "Subs. use",
+  ABSCONDING: "Absconding",
+  HIGH_TECH: "High tech.",
+  SUMMARY_OFFENSE: "Summary offense",
 };
 
 function genderValueToHumanReadable(genderValue) {
@@ -155,10 +128,6 @@ const violationCountLabel = (count) => (count === '8' ? '8+' : count);
 export {
   riskLevels,
   riskLevelValuetoLabel,
-  violationTypeToLabel,
-  technicalViolationTypes,
-  lawViolationTypes,
-  allViolationTypes,
   matrixViolationTypeToLabel,
   genderValueToHumanReadable,
   raceValueToHumanReadable,
