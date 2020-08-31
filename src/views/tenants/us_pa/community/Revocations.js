@@ -31,6 +31,7 @@ import ViolationFilter from "../../../../components/charts/new_revocations/Toggl
 import {
   applyAllFilters,
   applyTopLevelFilters,
+  transformFilters,
 } from "../../../../components/charts/new_revocations/helpers";
 import {
   DEFAULT_METRIC_PERIOD,
@@ -40,7 +41,10 @@ import {
 } from "../../../../components/charts/new_revocations/ToggleBar/options";
 import { getTimeDescription } from "../../../../components/charts/new_revocations/helpers/format";
 import { useAuth0 } from "../../../../react-auth0-spa";
-import { getUserMetadata } from "../../../../utils/authentication/user";
+import {
+  getUserMetadata,
+  getUserDistricts,
+} from "../../../../utils/authentication/user";
 
 const stateCode = "us_pa";
 const admissionTypeOptions = [
@@ -64,6 +68,7 @@ const admissionTypeOptions = [
 const Revocations = () => {
   const { user } = useAuth0();
   const { district } = getUserMetadata(user);
+  const userDistricts = getUserDistricts(user);
 
   const [filters, setFilters] = useState({
     metricPeriodMonths: DEFAULT_METRIC_PERIOD.value,
@@ -77,6 +82,7 @@ const Revocations = () => {
   const updateFilters = (newFilters) => {
     setFilters({ ...filters, ...newFilters });
   };
+  const transformedFilters = transformFilters(filters, userDistricts);
 
   const timeDescription = getTimeDescription(
     filters.metricPeriodMonths,
@@ -115,7 +121,7 @@ const Revocations = () => {
 
       <div className="bgc-white p-20 m-20">
         <RevocationCountOverTime
-          dataFilter={applyAllFilters(filters)}
+          dataFilter={applyAllFilters(transformedFilters)}
           skippedFilters={["metricPeriodMonths", "supervisionType"]}
           filterStates={filters}
           metricPeriodMonths={filters.metricPeriodMonths}
@@ -125,7 +131,7 @@ const Revocations = () => {
       <div className="d-f m-20 container-all-charts">
         <div className="matrix-container bgc-white p-20 mR-20">
           <RevocationMatrix
-            dataFilter={applyTopLevelFilters(filters)}
+            dataFilter={applyTopLevelFilters(transformedFilters)}
             filterStates={filters}
             updateFilters={updateFilters}
             metricPeriodMonths={filters.metricPeriodMonths}
@@ -137,14 +143,14 @@ const Revocations = () => {
 
       <RevocationCharts
         filters={filters}
-        dataFilter={applyAllFilters(filters)}
+        dataFilter={applyAllFilters(transformedFilters)}
         stateCode={stateCode}
         timeDescription={timeDescription}
       />
 
       <div className="bgc-white m-20 p-20">
         <CaseTable
-          dataFilter={applyAllFilters(filters)}
+          dataFilter={applyAllFilters(transformedFilters)}
           treatCategoryAllAsAbsent
           filterStates={filters}
           metricPeriodMonths={filters.metricPeriodMonths}
