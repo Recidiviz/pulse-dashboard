@@ -76,10 +76,10 @@ const violationTypes = [
   { key: "special_count", label: "Special Conditions", type: "TECHNICAL" },
   { key: "weapon_count", label: "Weapons", type: "TECHNICAL" },
   { key: "substance_count", label: "Substance Use", type: "TECHNICAL" },
-  { key: "municipal_count", label: "Municipal", type: "LOW" },
+  { key: "municipal_count", label: "Municipal", type: "LAW" },
   { key: "absconded_count", label: "Absconsion", type: "TECHNICAL" },
-  { key: "misdemeanor_count", label: "Misdemeanor", type: "LOW" },
-  { key: "felony_count", label: "Felony", type: "LOW" },
+  { key: "misdemeanor_count", label: "Misdemeanor", type: "LAW" },
+  { key: "felony_count", label: "Felony", type: "LAW" },
 ];
 
 const Revocations = () => {
