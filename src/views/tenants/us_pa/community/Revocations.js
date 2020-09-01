@@ -69,7 +69,6 @@ const chargeCategoryOptions = [
   { value: "DOMESTIC_VIOLENCE", label: "Domestic Violence" },
   { value: "MENTAL_HEALTH", label: "Mental Health" },
   { value: "AOD", label: "AOD" },
-  { value: "SPECIAL_PROBATION", label: "Special Probation" },
 ];
 const violationTypes = [
   { key: "low_tech_count", label: "Low tech.", type: "TECHNICAL" },

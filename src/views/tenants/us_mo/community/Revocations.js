@@ -64,8 +64,6 @@ const chargeCategoryOptions = [
   { value: "SEX_OFFENDER", label: "Sex Offense" },
   { value: "DOMESTIC_VIOLENCE", label: "Domestic Violence" },
   { value: "SERIOUS_MENTAL_ILLNESS", label: "Serious Mental Illness" },
-  { value: "INSTITUTIONAL TREATMENT", label: "Institutional Treatment" },
-  { value: "BOARDS_RETURN", label: "Board Returns" },
 ];
 const violationTypes = [
   { key: "travel_count", label: "Travel", type: "TECHNICAL" },
