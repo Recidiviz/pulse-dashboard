@@ -256,7 +256,7 @@ CaseTable.propTypes = {
   filterStates: PropTypes.shape({
     metricPeriodMonths: metricPeriodMonthsType.isRequired,
     chargeCategory: PropTypes.string,
-    district: PropTypes.string,
+    district: PropTypes.arrayOf(PropTypes.string),
     supervisionType: PropTypes.string,
   }).isRequired,
   skippedFilters: PropTypes.arrayOf(PropTypes.string),

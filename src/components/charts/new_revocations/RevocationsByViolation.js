@@ -197,7 +197,7 @@ RevocationsByViolation.propTypes = {
     admissionType: PropTypes.arrayOf(PropTypes.string),
     metricPeriodMonths: metricPeriodMonthsType.isRequired,
     chargeCategory: PropTypes.string,
-    district: PropTypes.string,
+    district: PropTypes.arrayOf(PropTypes.string),
     supervisionType: PropTypes.string,
   }).isRequired,
   skippedFilters: PropTypes.arrayOf(PropTypes.string),

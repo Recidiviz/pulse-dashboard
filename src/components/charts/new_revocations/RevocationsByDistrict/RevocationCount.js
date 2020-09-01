@@ -40,7 +40,7 @@ const RevocationCount = ({
   setMode,
   filterStates,
   timeDescription,
-  currentDistrict,
+  currentDistricts,
   revocationApiData,
 }) => {
   const data = pipe(
@@ -58,7 +58,10 @@ const RevocationCount = ({
   const dataPoints = data.map((item) => item.count);
 
   const barBackgroundColor = ({ dataIndex }) =>
-    currentDistrict.toLowerCase() === labels[dataIndex].toLowerCase()
+    currentDistricts.find(
+      (currentDistrict) =>
+        currentDistrict.toLowerCase() === labels[dataIndex].toLowerCase()
+    )
       ? COLORS["lantern-light-blue"]
       : COLORS["lantern-orange"];
 
@@ -140,7 +143,7 @@ RevocationCount.propTypes = {
   setMode: PropTypes.func.isRequired,
   filterStates: PropTypes.shape({}).isRequired,
   timeDescription: PropTypes.string.isRequired,
-  currentDistrict: PropTypes.string.isRequired,
+  currentDistricts: PropTypes.arrayOf(PropTypes.string).isRequired,
   revocationApiData: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
 };
 

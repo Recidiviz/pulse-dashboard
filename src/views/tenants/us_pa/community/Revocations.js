@@ -90,7 +90,7 @@ const Revocations = () => {
   const [filters, setFilters] = useState({
     metricPeriodMonths: DEFAULT_METRIC_PERIOD.value,
     chargeCategory: chargeCategoryOptions[0].value,
-    district: DEFAULT_DISTRICT.value,
+    district: [DEFAULT_DISTRICT.value],
     admissionType: [admissionTypeOptions[1].value],
     reportedViolations: "",
     violationType: "",
@@ -118,7 +118,8 @@ const Revocations = () => {
           />
           <DistrictFilter
             stateCode={stateCode}
-            defaultValue={DEFAULT_DISTRICT}
+            summingOption={DEFAULT_DISTRICT}
+            defaultValue={[DEFAULT_DISTRICT]}
             onChange={updateFilters}
           />
           <ChargeCategoryFilter
@@ -212,7 +213,7 @@ const Revocations = () => {
             dataFilter={allDataFilter}
             skippedFilters={["district"]}
             filterStates={filters}
-            currentDistrict={filters.district}
+            currentDistricts={filters.district}
             stateCode={stateCode}
             timeDescription={timeDescription}
           />

@@ -60,8 +60,8 @@ export const applyTopLevelFilters = (filters) => (
     if (
       filters.district &&
       !skippedFilters.includes("district") &&
-      !(treatCategoryAllAsAbsent && isAllItem(filters.district)) &&
-      !nullSafeComparison(item.district, filters.district)
+      !(treatCategoryAllAsAbsent && includesAllItemFirst(filters.district)) &&
+      !nullSafeComparisonForArray(item.district, filters.district)
     ) {
       return false;
     }
