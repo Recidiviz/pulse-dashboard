@@ -42,9 +42,7 @@ import {
 import { getTimeDescription } from "../../../../components/charts/new_revocations/helpers/format";
 import {
   DEFAULT_METRIC_PERIOD,
-  DEFAULT_CHARGE_CATEGORY,
   DEFAULT_SUPERVISION_TYPE,
-  CHARGE_CATEGORIES,
   METRIC_PERIODS,
   SUPERVISION_TYPES,
 } from "../../../../components/charts/new_revocations/ToggleBar/options";
@@ -59,8 +57,18 @@ const stateCode = "us_mo";
 const admissionTypeOptions = [
   { value: "All", label: "ALL" },
   { value: "REVOCATION", label: "Revocation" },
-  { value: "INSTITUTIONAL TREATMENT", label: "Institutional Treatment" },
+  {
+    value: "INSTITUTIONAL TREATMENT",
+    label: "Institutional Treatment",
+  },
   { value: "BOARDS_RETURN", label: "Board Returns" },
+];
+const chargeCategoryOptions = [
+  { value: "All", label: "All" },
+  { value: "GENERAL", label: "General" },
+  { value: "SEX_OFFENDER", label: "Sex Offense" },
+  { value: "DOMESTIC_VIOLENCE", label: "Domestic Violence" },
+  { value: "SERIOUS_MENTAL_ILLNESS", label: "Serious Mental Illness" },
 ];
 const violationTypes = [
   { key: "travel_count", label: "Travel", type: "TECHNICAL" },
@@ -94,7 +102,7 @@ const Revocations = () => {
 
   const [filters, setFilters] = useState({
     metricPeriodMonths: DEFAULT_METRIC_PERIOD.value,
-    chargeCategory: DEFAULT_CHARGE_CATEGORY.value,
+    chargeCategory: chargeCategoryOptions[0].value,
     district: [district || "All"],
     supervisionType: DEFAULT_SUPERVISION_TYPE.value,
     ...(flags.enableAdmissionTypeFilterForMO
@@ -127,8 +135,8 @@ const Revocations = () => {
           />
           <DistrictFilter stateCode={stateCode} onChange={updateFilters} />
           <ChargeCategoryFilter
-            options={CHARGE_CATEGORIES}
-            defaultValue={DEFAULT_CHARGE_CATEGORY}
+            options={chargeCategoryOptions}
+            defaultValue={chargeCategoryOptions[0]}
             onChange={updateFilters}
           />
           {flags.enableAdmissionTypeFilterForMO && (

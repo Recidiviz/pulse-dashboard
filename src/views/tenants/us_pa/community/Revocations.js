@@ -40,8 +40,6 @@ import {
 } from "../../../../components/charts/new_revocations/helpers";
 import {
   DEFAULT_METRIC_PERIOD,
-  DEFAULT_CHARGE_CATEGORY,
-  CHARGE_CATEGORIES,
   METRIC_PERIODS,
 } from "../../../../components/charts/new_revocations/ToggleBar/options";
 import { getTimeDescription } from "../../../../components/charts/new_revocations/helpers/format";
@@ -69,6 +67,14 @@ const admissionTypeOptions = [
   { value: "DA_DETOX", label: "D&A Detox" },
   { value: "MENTAL_HEALTH", label: "Mental Health" },
 ];
+const chargeCategoryOptions = [
+  { value: "All", label: "All" },
+  { value: "GENERAL", label: "General" },
+  { value: "SEX_OFFENDER", label: "Sex Offense" },
+  { value: "DOMESTIC_VIOLENCE", label: "Domestic Violence" },
+  { value: "MENTAL_HEALTH", label: "Mental Health" },
+  { value: "AOD", label: "AOD" },
+];
 const violationTypes = [
   { key: "low_tech_count", label: "Low tech.", type: "TECHNICAL" },
   { key: "med_tech_count", label: "Med tech.", type: "TECHNICAL" },
@@ -92,7 +98,7 @@ const Revocations = () => {
 
   const [filters, setFilters] = useState({
     metricPeriodMonths: DEFAULT_METRIC_PERIOD.value,
-    chargeCategory: DEFAULT_CHARGE_CATEGORY.value,
+    chargeCategory: chargeCategoryOptions[0].value,
     district: [district || "All"],
     admissionType: [admissionTypeOptions[1].value],
     reportedViolations: "",
@@ -122,8 +128,8 @@ const Revocations = () => {
           />
           <DistrictFilter stateCode={stateCode} onChange={updateFilters} />
           <ChargeCategoryFilter
-            options={CHARGE_CATEGORIES}
-            defaultValue={DEFAULT_CHARGE_CATEGORY}
+            options={chargeCategoryOptions}
+            defaultValue={chargeCategoryOptions[0]}
             onChange={updateFilters}
           />
           <AdmissionTypeFilter
