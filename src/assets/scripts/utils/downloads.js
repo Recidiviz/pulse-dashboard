@@ -22,6 +22,10 @@ import { timeStamp } from './time';
 import infoAboutChart from '../../../utils/charts/info';
 import JSZip from 'jszip';
 import { humanReadableTitleCase } from '../../../utils/transforms/labels';
+import pipe from "lodash/fp/pipe";
+import find from "lodash/fp/find";
+import get from "lodash/fp/get";
+import { CUSTODIAL_AUTHORITIES } from "../../../components/charts/new_revocations/ToggleBar/options";
 
 // Functions for flowing through browser-specific download functionality
 // https://stackoverflow.com/questions/9847580/how-to-detect-safari-chrome-ie-firefox-and-opera-browser
@@ -128,6 +132,14 @@ const formatSupervisionType = (supervisionType) =>
     ? "All supervision types"
     : `Supervision type: ${humanReadableTitleCase(supervisionType)}`;
 
+const formatCustodialAuthority = (custodialAuthority) =>
+  custodialAuthority === "ALL"
+    ? "All custodial authorities"
+    : `Custodial authority: ${pipe(
+        find({ value: custodialAuthority }),
+        get("label")
+      )(CUSTODIAL_AUTHORITIES)}`;
+
 export function getFilters(toggleStates) {
   const filters = [];
 
@@ -145,6 +157,10 @@ export function getFilters(toggleStates) {
 
   if (toggleStates.supervisionType) {
     filters.push(formatSupervisionType(toggleStates.supervisionType));
+  }
+
+  if (toggleStates.custodialAuthority) {
+    filters.push(formatCustodialAuthority(toggleStates.custodialAuthority));
   }
 
   return filters.join(", ")
