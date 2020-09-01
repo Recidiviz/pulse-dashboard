@@ -17,6 +17,7 @@
 
 /**
  * Returns an artificial Auth0 id token for a fake/demo user.
+ * You can uncomment code for testing different user metadata.
  */
 function getDemoUser() {
   return {
