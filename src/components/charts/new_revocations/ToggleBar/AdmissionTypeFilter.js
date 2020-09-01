@@ -47,16 +47,19 @@ const AdmissionTypeFilter = ({
 
 AdmissionTypeFilter.defaultProps = {
   options: [],
-  defaultValue: "",
-  summingOption: "",
+  defaultValue: undefined,
+  summingOption: undefined,
 };
 
+const optionType = PropTypes.shape({
+  label: PropTypes.string,
+  value: PropTypes.string,
+});
+
 AdmissionTypeFilter.propTypes = {
-  options: PropTypes.arrayOf(
-    PropTypes.shape({ label: PropTypes.string, value: PropTypes.string })
-  ),
-  defaultValue: PropTypes.string,
-  summingOption: PropTypes.string,
+  options: PropTypes.arrayOf(optionType),
+  defaultValue: PropTypes.arrayOf(optionType),
+  summingOption: optionType,
   onChange: PropTypes.func.isRequired,
 };
 

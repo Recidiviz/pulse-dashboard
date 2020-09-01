@@ -178,8 +178,8 @@ const ValueContainer = ({ allOptions, summingOption, children, ...props }) => {
   const { selectProps, getValue } = props;
   const values = getValue();
 
-  const selectInput = React.Children.toArray(children).find(
-    (input) => input.type.name === "DummyInput"
+  const selectInput = React.Children.toArray(children).find((input) =>
+    ["DummyInput", "Input"].includes(input.type.name)
   );
 
   const isAll =
@@ -250,6 +250,7 @@ const Select = ({ summingOption, isMulti, ...props }) => {
   if (isMulti) {
     return (
       <ReactSelect
+        isSearchable={false}
         {...props}
         ref={ref}
         closeMenuOnSelect={false}
@@ -268,7 +269,6 @@ const Select = ({ summingOption, isMulti, ...props }) => {
         }}
         hideSelectedOptions={false}
         isMulti
-        isSearchable={false}
         onChange={onChange}
         styles={defaultStyles}
         value={value}
@@ -279,7 +279,7 @@ const Select = ({ summingOption, isMulti, ...props }) => {
   return <ReactSelect {...props} styles={defaultStyles} />;
 };
 
-const option = PropTypes.shape({
+const optionType = PropTypes.shape({
   label: PropTypes.string,
   value: PropTypes.any,
 });
@@ -292,10 +292,13 @@ Select.defaultProps = {
 };
 
 Select.propTypes = {
-  summingOption: option,
+  summingOption: optionType,
   isMulti: PropTypes.bool,
-  options: PropTypes.arrayOf(option),
-  defaultValue: PropTypes.oneOfType([option, PropTypes.arrayOf(option)]),
+  options: PropTypes.arrayOf(optionType),
+  defaultValue: PropTypes.oneOfType([
+    optionType,
+    PropTypes.arrayOf(optionType),
+  ]),
   onChange: PropTypes.func.isRequired,
 };
 

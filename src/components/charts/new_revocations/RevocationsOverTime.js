@@ -1,5 +1,5 @@
 // Recidiviz - a data platform for criminal justice reform
-// Copyright (C) 2019 Recidiviz, Inc.
+// Copyright (C) 2020 Recidiviz, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -15,91 +15,88 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React, { useState, useEffect } from 'react';
-import { Bar, Line } from 'react-chartjs-2';
-import ExportMenu from '../ExportMenu';
-import Loading from '../../Loading';
+import React from "react";
+import PropTypes from "prop-types";
+import { Bar, Line } from "react-chartjs-2";
 
-import { useAuth0 } from '../../../react-auth0-spa';
-import { fetchChartData, awaitingResults } from '../../../utils/metricsClient';
+import map from "lodash/fp/map";
+import pipe from "lodash/fp/pipe";
 
-import { COLORS } from '../../../assets/scripts/constants/colors';
-import { labelCurrentMonth, currentMonthBox } from '../../../utils/charts/currentSpan';
+import { groupByMonth } from "../common/bars/utils";
+import ExportMenu from "../ExportMenu";
+import Loading from "../../Loading";
+
+import useChartData from "../../../hooks/useChartData";
+import { COLORS } from "../../../assets/scripts/constants/colors";
 import {
-  getMonthCountFromMetricPeriodMonthsToggle, getTrailingLabelFromMetricPeriodMonthsToggle,
+  labelCurrentMonth,
+  currentMonthBox,
+} from "../../../utils/charts/currentSpan";
+import {
+  getMonthCountFromMetricPeriodMonthsToggle,
+  getTrailingLabelFromMetricPeriodMonthsToggle,
   centerSingleMonthDatasetIfNecessary,
-} from '../../../utils/charts/toggles';
-import { sortFilterAndSupplementMostRecentMonths } from '../../../utils/transforms/datasets';
-import { toInt } from '../../../utils/transforms/labels';
-import { monthNamesAllWithYearsFromNumbers } from '../../../utils/transforms/months';
+} from "../../../utils/charts/toggles";
+import { sortFilterAndSupplementMostRecentMonths } from "../../../utils/transforms/datasets";
+import { monthNamesAllWithYearsFromNumbers } from "../../../utils/transforms/months";
 
-const chartId = 'revocationsOverTime';
+const chartId = "revocationsOverTime";
 
-const RevocationsOverTime = (props) => {
-  const [chartLabels, setChartLabels] = useState([]);
-  const [chartDataPoints, setChartDataPoints] = useState([]);
+const RevocationsOverTime = ({
+  stateCode,
+  dataFilter,
+  skippedFilters,
+  treatCategoryAllAsAbsent,
+  metricPeriodMonths,
+  filterStates,
+}) => {
+  const { isLoading, apiData } = useChartData(
+    `${stateCode}/newRevocations`,
+    "revocations_matrix_by_month"
+  );
 
-  const { loading, user, getTokenSilently } = useAuth0();
-  const [apiData, setApiData] = useState({});
-  const [awaitingApi, setAwaitingApi] = useState(true);
+  if (isLoading) {
+    return <Loading />;
+  }
 
-  const processResponse = () => {
-    if (awaitingApi || !apiData) {
-      return;
-    }
-    const filteredData = props.dataFilter(
-      apiData, props.skippedFilters, props.treatCategoryAllAsAbsent,
-    );
+  const chartData = pipe(
+    dataFilter,
+    groupByMonth(["total_revocations"]),
+    (dataset) =>
+      sortFilterAndSupplementMostRecentMonths(
+        dataset,
+        getMonthCountFromMetricPeriodMonthsToggle(metricPeriodMonths),
+        "total_revocations",
+        0
+      )
+  )(apiData, skippedFilters, treatCategoryAllAsAbsent);
 
-    const yearAndMonthToCount = filteredData.reduce(
-      (result, { year, month, total_revocations: totalRevocations }) => {
-        return { ...result, [`${year}:${month}`]: (result[`${year}:${month}`] || 0) + (toInt(totalRevocations) || 0) };
-      }, {},
-    );
-    const chartData = Object.entries(yearAndMonthToCount).map(([yearAndMonth, count]) => {
-      const [year, month] = yearAndMonth.split(':');
-      return { year, month, count };
-    });
+  const labels = monthNamesAllWithYearsFromNumbers(
+    map("month", chartData),
+    false
+  );
+  const dataPoints = map("total_revocations", chartData);
 
-    const months = getMonthCountFromMetricPeriodMonthsToggle(props.metricPeriodMonths);
-    const sortedChartData = sortFilterAndSupplementMostRecentMonths(chartData, months, 'count', 0);
-    const labels = monthNamesAllWithYearsFromNumbers(sortedChartData.map((element) => element.month), false)
-    const dataPoints = (sortedChartData.map((element) => element.count));
+  centerSingleMonthDatasetIfNecessary(dataPoints, labels);
 
-    centerSingleMonthDatasetIfNecessary(dataPoints, labels);
-    setChartLabels(labels);
-    setChartDataPoints(dataPoints);
-  };
+  const chartLabels = labels;
+  const chartDataPoints = dataPoints;
 
-  useEffect(() => {
-    fetchChartData(
-      props.stateCode, 'newRevocations', 'revocations_matrix_by_month',
-      setApiData, setAwaitingApi, getTokenSilently,
-    );
-  }, []);
-
-  useEffect(() => {
-    processResponse();
-  }, [
-    apiData,
-    awaitingApi,
-    props.filterStates,
-    props.metricPeriodMonths,
-  ]);
-
-  const datasets = [{
-    label: 'Revocations',
-    borderColor: COLORS['lantern-light-blue'],
-    pointBackgroundColor: COLORS['lantern-light-blue'],
-    fill: false,
-    lineTension: 0,
-    borderWidth: 2,
-    data: chartDataPoints,
-    backgroundColor: COLORS['lantern-light-blue'],
-    hoverBackgroundColor: COLORS['lantern-light-blue'],
-    hoverBorderColor: COLORS['lantern-light-blue']
-  }];
-  const maxElement = Math.max.apply(Math, chartDataPoints);
+  const datasets = [
+    {
+      label: "Revocations",
+      borderColor: COLORS["lantern-light-blue"],
+      pointBackgroundColor: COLORS["lantern-light-blue"],
+      fill: false,
+      lineTension: 0,
+      borderWidth: 2,
+      data: chartDataPoints,
+      backgroundColor: COLORS["lantern-light-blue"],
+      hoverBackgroundColor: COLORS["lantern-light-blue"],
+      hoverBorderColor: COLORS["lantern-light-blue"],
+    },
+  ];
+  const maxElement = Math.max(...chartDataPoints);
   const maxValue = maxElement <= 3 ? 5 : maxElement;
 
   const options = {
@@ -109,40 +106,48 @@ const RevocationsOverTime = (props) => {
       display: false,
     },
     scales: {
-      xAxes: [{
-        ticks: {
-          autoSkip: false,
-        },
-      }],
-      yAxes: [{
-        scaleLabel: {
-          display: true,
-          labelString: 'People revoked',
-        },
-        ticks: {
-          min: 0,
-          callback(value) {
-            if (value % 1 === 0) {
-              return value;
-            }
+      xAxes: [
+        {
+          ticks: {
+            autoSkip: false,
           },
-          suggestedMax: maxValue,
         },
-      }],
+      ],
+      yAxes: [
+        {
+          scaleLabel: {
+            display: true,
+            labelString: "People revoked",
+          },
+          ticks: {
+            min: 0,
+            callback(value) {
+              if (value % 1 === 0) {
+                return value;
+              }
+              return 0;
+            },
+            suggestedMax: maxValue,
+          },
+        },
+      ],
     },
     tooltips: {
-      backgroundColor: COLORS['grey-800-light'],
-      mode: 'x',
+      backgroundColor: COLORS["grey-800-light"],
+      mode: "x",
       callbacks: {
         title: (tooltipItem) => labelCurrentMonth(tooltipItem, chartLabels),
       },
     },
-    annotation: currentMonthBox('currentMonthBoxRevocationsOverTime', chartLabels),
+    annotation: currentMonthBox(
+      "currentMonthBoxRevocationsOverTime",
+      chartLabels
+    ),
   };
 
-  const countZero = chartDataPoints.filter(item => item === 0).length;
+  const countZero = chartDataPoints.filter((item) => item === 0).length;
 
-  const lineChart  = (
+  const lineChart = (
     <Line
       id={chartId}
       data={{
@@ -152,8 +157,8 @@ const RevocationsOverTime = (props) => {
       options={options}
     />
   );
-  let barOptions = options;
-  barOptions.scales.xAxes[0].ticks.barThickness = 'flex';
+  const barOptions = options;
+  barOptions.scales.xAxes[0].ticks.barThickness = "flex";
   barOptions.scales.xAxes[0].barPercentage = 0.08;
 
   const barChart = (
@@ -162,19 +167,15 @@ const RevocationsOverTime = (props) => {
       width={50}
       data={{
         labels: chartLabels,
-        datasets
+        datasets,
       }}
       options={barOptions}
     />
   );
 
-
-  if (awaitingResults(loading, user, awaitingApi)) {
-    return <Loading />;
-  }
-
   // If at least a third of all points are 0, show bar chart. Otherwise, show line chart.
-  const chart = (countZero / props.metricPeriodMonths) >= 0.33 ? barChart : lineChart;
+  const chart = countZero / metricPeriodMonths >= 0.33 ? barChart : lineChart;
+
   return (
     <div>
       <h4>
@@ -183,19 +184,40 @@ const RevocationsOverTime = (props) => {
           chartId={chartId}
           chart={chart}
           metricTitle="Number of admissions per month"
-          timeWindowDescription={getTrailingLabelFromMetricPeriodMonthsToggle(props.metricPeriodMonths)}
-          filters={props.filterStates}
+          timeWindowDescription={getTrailingLabelFromMetricPeriodMonthsToggle(
+            metricPeriodMonths
+          )}
+          filters={filterStates}
         />
       </h4>
       <h6 className="pB-20">
-        {getTrailingLabelFromMetricPeriodMonthsToggle(props.metricPeriodMonths)}
+        {getTrailingLabelFromMetricPeriodMonthsToggle(metricPeriodMonths)}
       </h6>
 
-      <div className="chart-container fs-block" style={{ position: 'relative', height: '180px' }}>
+      <div
+        className="chart-container fs-block"
+        style={{ position: "relative", height: "180px" }}
+      >
         {chart}
       </div>
     </div>
   );
+};
+
+RevocationsOverTime.defaultProps = {
+  skippedFilters: [],
+  treatCategoryAllAsAbsent: false,
+  filterStates: {},
+};
+
+RevocationsOverTime.propTypes = {
+  stateCode: PropTypes.string.isRequired,
+  dataFilter: PropTypes.func.isRequired,
+  skippedFilters: PropTypes.arrayOf(PropTypes.string),
+  treatCategoryAllAsAbsent: PropTypes.bool,
+  metricPeriodMonths: PropTypes.string.isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
+  filterStates: PropTypes.object,
 };
 
 export default RevocationsOverTime;
