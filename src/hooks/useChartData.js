@@ -19,8 +19,17 @@ import { useState, useCallback, useEffect } from "react";
 // eslint-disable-next-line import/no-cycle
 import { useAuth0 } from "../react-auth0-spa";
 import logger from "../utils/logger";
-import { callMetricsApi, awaitingResults } from "../utils/metricsClient";
+import {
+  parseResponseByFileFormat,
+  parseResponsesByFileFormat,
+} from "../api/metrics/fileParser";
+import { callMetricsApi, awaitingResults } from "../api/metrics/metricsClient";
 
+/**
+ * A hook which fetches the given file at the given API service URL. Returns
+ * state which will populate with the response data and a flag indicating whether
+ * or not the response is still loading, in the form of `{ apiData, isLoading }`.
+ */
 function useChartData(url, file) {
   const { loading, user, getTokenSilently } = useAuth0();
   const [apiData, setApiData] = useState({});
@@ -33,10 +42,14 @@ function useChartData(url, file) {
           `${url}/${file}`,
           getTokenSilently
         );
-        setApiData(responseData[file]);
+
+        const metricFile = parseResponseByFileFormat(responseData, file);
+        setApiData(metricFile);
       } else {
         const responseData = await callMetricsApi(url, getTokenSilently);
-        setApiData(responseData);
+
+        const metricFiles = parseResponsesByFileFormat(responseData);
+        setApiData(metricFiles);
       }
       setAwaitingApi(false);
     } catch (error) {

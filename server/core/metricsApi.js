@@ -28,6 +28,7 @@ const cacheManager = require('cache-manager');
 const fs = require('fs');
 const path = require('path');
 const util = require('util');
+const { unzipSync } = require('zlib');
 const objectStorage = require('./objectStorage');
 
 const BUCKET_NAME = process.env.METRIC_BUCKET;
@@ -83,25 +84,25 @@ const FILES_BY_METRIC_TYPE = {
     'site_offices.json',
   ],
   newRevocation: [
-    'revocations_matrix_by_month.json',
-    'revocations_matrix_cells.json',
-    'revocations_matrix_distribution_by_district.json',
-    'revocations_matrix_distribution_by_gender.json',
-    'revocations_matrix_distribution_by_race.json',
-    'revocations_matrix_distribution_by_risk_level.json',
-    'revocations_matrix_distribution_by_violation.json',
+    'revocations_matrix_by_month.txt',
+    'revocations_matrix_cells.txt',
+    'revocations_matrix_distribution_by_district.txt',
+    'revocations_matrix_distribution_by_gender.txt',
+    'revocations_matrix_distribution_by_race.txt',
+    'revocations_matrix_distribution_by_risk_level.txt',
+    'revocations_matrix_distribution_by_violation.txt',
+    'revocations_matrix_supervision_distribution_by_district.txt',
     'revocations_matrix_filtered_caseload.json',
-    'revocations_matrix_supervision_distribution_by_district.json',
   ],
   communityGoals: [
-    'admissions_by_type_by_month.json',
-    'admissions_by_type_by_period.json',
-    'average_change_lsir_score_by_month.json',
-    'average_change_lsir_score_by_period.json',
-    'revocations_by_month.json',
-    'revocations_by_period.json',
-    'supervision_termination_by_type_by_month.json',
-    'supervision_termination_by_type_by_period.json',
+    'admissions_by_type_by_month.txt',
+    'admissions_by_type_by_period.txt',
+    'average_change_lsir_score_by_month.txt',
+    'average_change_lsir_score_by_period.txt',
+    'revocations_by_month.txt',
+    'revocations_by_period.txt',
+    'supervision_termination_by_type_by_month.txt',
+    'supervision_termination_by_type_by_period.txt',
     'site_offices.json',
   ],
   communityExplore: [
@@ -149,15 +150,55 @@ const FILES_BY_METRIC_TYPE = {
   ],
 };
 
+function inOptimizedFileWhitelist(metricType, file) {
+  const files = FILES_BY_METRIC_TYPE[metricType];
+
+  const optimizedFilename = `${file}.txt`;
+  if (files.includes(optimizedFilename)) {
+    return true;
+  }
+
+  const nonOptimizedFilename = `${file}.json`;
+  if (files.includes(nonOptimizedFilename)) {
+    return false;
+  }
+
+  throw `${file} not found with either txt or json extension for metric type ${metricType}`;
+}
+
+function withoutExtension(filename) {
+  return path.parse(filename).name;
+}
+
+function onlyExtension(filename) {
+  return path.parse(filename).ext;
+}
+
 /**
- * Converts the given contents, a Buffer of bytes, into a JS object or array.
+ * Processes the given metric file, a Buffer of bytes, returning a json object
+ * structured based on the given format.
  */
-function convertDownloadToJson(contents) {
+function processMetricFile(contents, metadata, extension) {
   const stringContents = contents.toString();
   if (!stringContents || stringContents.length === 0) {
     return null;
   }
 
+  if (extension.toLowerCase() === '.json') {
+    return processJsonLinesMetricFile(stringContents);
+  }
+  if (extension.toLowerCase() === '.txt') {
+    return processOptimizedTxtMetricFile(stringContents, metadata);
+  }
+
+  return {};
+}
+
+/**
+ * Processes a Json Lines formatted metric file. This consists of a single
+ * json object on its own line per data point.
+ */
+function processJsonLinesMetricFile(stringContents) {
   const jsonObject = [];
   const splitStrings = stringContents.split('\n');
   splitStrings.forEach((line) => {
@@ -169,11 +210,28 @@ function convertDownloadToJson(contents) {
   return jsonObject;
 }
 
+/**
+ * Processes our optimized format metric file. This consists of a single,
+ * flattened array that can be expanded into a compact matrix from which
+ * data points can be located via metadata.
+ */
+function processOptimizedTxtMetricFile(stringContents, metadata) {
+  try {
+    const decompressedStringContents = unzipSync(stringContents);
+    console.log('Decompressed file...');
+    return { flattenedValueMatrix: decompressedStringContents, metadata };
+  } catch (error) {
+    console.error('An error occurred during decompression, assuming already decompressed...', error.code, error.errno);
+    return { flattenedValueMatrix: stringContents, metadata };
+  }
+}
+
 function filesForMetricType(metricType, file) {
   const files = FILES_BY_METRIC_TYPE[metricType];
 
   if (file) {
-    const normalizedFile = `${file}.json`;
+    const extension = inOptimizedFileWhitelist(metricType, file) ? '.txt' : '.json';
+    const normalizedFile = `${file}${extension}`;
     if (files.indexOf(normalizedFile) > -1) {
       return [normalizedFile];
     }
@@ -198,9 +256,26 @@ function fetchMetricsFromGCS(stateCode, metricType, file) {
 
   const files = filesForMetricType(metricType, file);
   files.forEach((filename) => {
-    const fileKey = filename.replace('.json', '');
-    promises.push(objectStorage.downloadFile(BUCKET_NAME, stateCode, filename)
-      .then((contents) => ({ fileKey, contents })));
+    const fileKey = withoutExtension(filename);
+    const extension = onlyExtension(filename);
+
+    const filePromise = objectStorage.downloadFile(BUCKET_NAME, stateCode, filename);
+    const metadataPromise = objectStorage.downloadFileMetadata(BUCKET_NAME, stateCode, filename);
+
+    promises.push(Promise.all([filePromise, metadataPromise])
+      .then((bothResults) => {
+        const contents = bothResults[0];
+        const rawMetadata = bothResults[1][0].metadata;
+
+        const metadata = {};
+        if (rawMetadata) {
+          metadata.value_keys = JSON.parse(rawMetadata.value_keys);
+          metadata.total_data_points = rawMetadata.total_data_points;
+          metadata.dimension_manifest = JSON.parse(rawMetadata.dimension_manifest);
+        }
+
+        return { fileKey, extension, metadata, contents };
+      }));
   });
 
   return promises;
@@ -215,10 +290,22 @@ function fetchMetricsFromLocal(stateCode, metricType, file) {
 
   const files = filesForMetricType(metricType, file);
   files.forEach((filename) => {
-    const fileKey = filename.replace('.json', '');
+    const fileKey = withoutExtension(filename);
+    const extension = onlyExtension(filename);
     const filePath = path.resolve(__dirname, `./demo_data/${filename}`);
 
-    promises.push(asyncReadFile(filePath).then((contents) => ({ fileKey, contents })));
+    let metadata = {};
+    if (extension == '.txt') {
+      const metadataFilePath = path.resolve(
+        __dirname, `./demo_data/${fileKey}.metadata.json`);
+
+        let metadataContents = fs.readFileSync(metadataFilePath);
+        metadata = JSON.parse(metadataContents);
+    }
+
+    promises.push(asyncReadFile(filePath).then(
+      (contents) => ({ fileKey, extension, metadata, contents }))
+    );
   });
 
   return promises;
@@ -260,8 +347,9 @@ function fetchMetrics(stateCode, metricType, file, isDemo, callback) {
       const results = {};
       allFileContents.forEach((contents) => {
         console.log(`Fetched contents for fileKey ${contents.fileKey}`);
-        const deserializedFile = convertDownloadToJson(contents.contents);
-        results[contents.fileKey] = deserializedFile;
+        const processedResponse = processMetricFile(
+          contents.contents, contents.metadata, contents.extension);
+        results[contents.fileKey] = processedResponse;
       });
 
       console.log(`Fetched all ${cacheKey} metrics from ${source}`);

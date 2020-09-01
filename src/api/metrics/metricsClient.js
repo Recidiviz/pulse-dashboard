@@ -15,6 +15,9 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
+import { parseResponseByFileFormat } from "./fileParser";
+import logger from "../../utils/logger";
+
 /**
  * An asynchronous function that returns a promise which will eventually return the results from
  * invoking the given API endpoint. Takes in the |endpoint| as a string and the |getTokenSilently|
@@ -24,30 +27,47 @@ async function callMetricsApi(endpoint, getTokenSilently) {
   try {
     const token = await getTokenSilently();
 
-    const response = await fetch(`${process.env.REACT_APP_API_URL}/api/${endpoint}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const response = await fetch(
+      `${process.env.REACT_APP_API_URL}/api/${endpoint}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
 
     const responseData = await response.json();
     return responseData;
   } catch (error) {
-    console.log(error);
+    logger.error(error);
     return null;
   }
 }
 
-const fetchChartData = async (stateCode, metricType, file,
-    setApiResponse, setAwaitingFlag, getTokenSilently) => {
+/**
+ * A synchronous function that fetches data for the given state, metric type, and file. Takes in
+ * functions for setting the API response and a flag indicating whether or not we are still
+ * awaiting the API response.
+ */
+const fetchChartData = async (
+  stateCode,
+  metricType,
+  file,
+  setApiResponse,
+  setAwaitingFlag,
+  getTokenSilently
+) => {
   try {
     const responseData = await callMetricsApi(
-      `${stateCode.toLowerCase()}/${metricType}/${file}`, getTokenSilently,
+      `${stateCode.toLowerCase()}/${metricType}/${file}`,
+      getTokenSilently
     );
-    setApiResponse(responseData[file]);
+
+    const metricFile = parseResponseByFileFormat(responseData, file);
+    setApiResponse(metricFile);
     setAwaitingFlag(false);
   } catch (error) {
-    console.error(error);
+    logger.error(error);
   }
 };
 
@@ -60,8 +80,4 @@ function awaitingResults(loading, user, awaitingApi) {
   return loading || !user || awaitingApi;
 }
 
-export {
-  callMetricsApi,
-  fetchChartData,
-  awaitingResults,
-};
+export { callMetricsApi, fetchChartData, awaitingResults };
