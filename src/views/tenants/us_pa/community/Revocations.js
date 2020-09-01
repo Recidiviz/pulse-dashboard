@@ -43,8 +43,10 @@ import {
   DEFAULT_DISTRICT,
   CHARGE_CATEGORIES,
   METRIC_PERIODS,
+  CUSTODIAL_AUTHORITIES,
 } from "../../../../components/charts/new_revocations/ToggleBar/options";
 import { getTimeDescription } from "../../../../components/charts/new_revocations/helpers/format";
+import CustodialAuthorityFilter from "../../../../components/charts/new_revocations/ToggleBar/CustodialAuthority";
 
 const stateCode = "us_pa";
 const admissionTypeOptions = [
@@ -88,6 +90,7 @@ const Revocations = () => {
     admissionType: [admissionTypeOptions[1].value],
     reportedViolations: "",
     violationType: "",
+    custodialAuthority: CUSTODIAL_AUTHORITIES[0].value,
   });
 
   const allDataFilter = applyAllFilters(filters);
@@ -127,6 +130,7 @@ const Revocations = () => {
             defaultValue={[admissionTypeOptions[1]]}
             onChange={updateFilters}
           />
+          <CustodialAuthorityFilter onChange={updateFilters} />
         </div>
         <ViolationFilter
           violationType={filters.violationType}

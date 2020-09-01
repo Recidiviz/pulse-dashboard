@@ -56,6 +56,14 @@ export const ADMISSION_TYPES = [
   { value: "MENTAL_HEALTH", label: "Mental Health" },
 ];
 
+export const CUSTODIAL_AUTHORITIES = [
+  { value: "ALL", label: "All" },
+  { value: "PAROLE_BOARD", label: "Parole board" },
+  { value: "COURTS", label: "Courts" },
+  { value: "DOC", label: "DOC" },
+  { value: "OTHER_STATE", label: "Other state" },
+];
+
 export const DEFAULT_METRIC_PERIOD = METRIC_PERIODS[1];
 export const DEFAULT_DISTRICT = { value: "All", label: "All districts" };
 export const DEFAULT_SUPERVISION_TYPE = SUPERVISION_TYPES[0];

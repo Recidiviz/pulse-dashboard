@@ -90,6 +90,14 @@ export const applyTopLevelFilters = (filters) => (
     ) {
       return false;
     }
+    if (
+      filters.custodialAuthority &&
+      !skippedFilters.includes("custodialAuthority") &&
+      !isAllItem(filters.custodialAuthority) &&
+      !nullSafeComparison(item.custodial_authority, filters.custodialAuthority)
+    ) {
+      return false;
+    }
     return true;
   });
 
