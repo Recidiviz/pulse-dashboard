@@ -31,6 +31,9 @@ const getDimensionKey = (dimensions, dimensionIndex) => {
  * given key index and value index. `dimensions` is expected to be an array of arrays, where each array
  * is a separate dimension and the second element in each array is an array of possible values for
  * that dimension.
+ *
+ * The value is returned in UPPERCASE because it is conventional that dimension values used elsewhere
+ * in the app for filtering purposes will be UPPERCASE, as well.
  */
 const getDimensionValue = (dimensions, dimensionIndex, dimensionValueIndex) => {
   const value = dimensions[dimensionIndex][1][dimensionValueIndex];
@@ -122,15 +125,15 @@ const validateMetadata = (metadata) => {
     );
   }
 
-  const emptyDimensionRanges = [];
+  const malformedDimensionRanges = [];
   dimensions.forEach((dimension) => {
     if (!Array.isArray(dimension[1])) {
-      emptyDimensionRanges.push(dimension);
+      malformedDimensionRanges.push(dimension);
     }
   });
-  if (emptyDimensionRanges.length > 0) {
+  if (malformedDimensionRanges.length > 0) {
     throw new Error(
-      `Given metric file dimension manifest contains dimensions with a set of possible values that is not an array: ${emptyDimensionRanges.join(
+      `Given metric file dimension manifest contains dimensions with a set of possible values that is not an array: ${malformedDimensionRanges.join(
         ", "
       )}`
     );

@@ -141,7 +141,6 @@ describe("Test expandMetricRepresentation", () => {
   });
 
   it("produces empty output for empty input", () => {
-    // Appends another value key of total_population and adds values of 100 for each data point
     const contents = "";
     const metadata = {
       total_data_points: "0",
