@@ -33,7 +33,7 @@ const objectStorage = require('./objectStorage');
 
 const BUCKET_NAME = process.env.METRIC_BUCKET;
 const METRIC_CACHE_TTL_SECONDS = 60 * 60; // Expire items in the cache after 1 hour
-const METRIC_REFRESH_SECONDS = 60 * 10;
+const METRIC_REFRESH_SECONDS = 60 * 10;   // Refresh the cache in the background after cache hits that occur within 10 minutes before expiration
 
 const memoryCache = cacheManager.caching(
   { store: 'memory', ttl: METRIC_CACHE_TTL_SECONDS, refreshThreshold: METRIC_REFRESH_SECONDS },
@@ -41,48 +41,6 @@ const memoryCache = cacheManager.caching(
 const asyncReadFile = util.promisify(fs.readFile);
 
 const FILES_BY_METRIC_TYPE = {
-  freeThroughRecovery: [
-    'ftr_referrals_by_month.json',
-    'ftr_referrals_by_period.json',
-    'ftr_referrals_by_age_by_period.json',
-    'ftr_referrals_by_gender_by_period.json',
-    'ftr_referrals_by_lsir_by_period.json',
-    'ftr_referrals_by_participation_status.json',
-    'ftr_referrals_by_race_and_ethnicity_by_period.json',
-    'race_proportions.json',
-    'site_offices.json',
-  ],
-  reincarceration: [
-    'admissions_versus_releases_by_month.json',
-    'admissions_versus_releases_by_period.json',
-    'reincarceration_rate_by_stay_length.json',
-    'reincarcerations_by_month.json',
-    'reincarcerations_by_period.json',
-  ],
-  revocation: [
-    'revocations_by_officer_by_period.json',
-    'revocations_by_site_id_by_period.json',
-    'admissions_by_type_by_period.json',
-    'case_terminations_by_type_by_month.json',
-    'case_terminations_by_type_by_officer_by_period.json',
-    'race_proportions.json',
-    'revocations_by_month.json',
-    'revocations_by_period.json',
-    'revocations_by_race_and_ethnicity_by_period.json',
-    'revocations_by_supervision_type_by_month.json',
-    'revocations_by_violation_type_by_month.json',
-    'site_offices.json',
-  ],
-  snapshot: [
-    'admissions_by_type_by_month.json',
-    'admissions_by_type_by_period.json',
-    'average_change_lsir_score_by_month.json',
-    'average_change_lsir_score_by_period.json',
-    'avg_days_at_liberty_by_month.json',
-    'supervision_termination_by_type_by_month.json',
-    'supervision_termination_by_type_by_period.json',
-    'site_offices.json',
-  ],
   newRevocation: [
     'revocations_matrix_by_month.json',
     'revocations_matrix_cells.json',
@@ -150,6 +108,12 @@ const FILES_BY_METRIC_TYPE = {
   ],
 };
 
+/**
+ * Determines whether or not we should be retrieving the optimized version of the
+ * metric file with the given file name and metric type. This is determined by
+ * checking the extension for the given file in the mappings from metric type to
+ * file name above.
+ */
 function inOptimizedFileWhitelist(metricType, file) {
   const files = FILES_BY_METRIC_TYPE[metricType];
 
@@ -166,10 +130,16 @@ function inOptimizedFileWhitelist(metricType, file) {
   throw `${file} not found with either txt or json extension for metric type ${metricType}`;
 }
 
+/**
+ * Returns the given filename without the extension.
+ */
 function withoutExtension(filename) {
   return path.parse(filename).name;
 }
 
+/**
+ * Returns the extension at the end of the given filename.
+ */
 function onlyExtension(filename) {
   return path.parse(filename).ext;
 }
@@ -195,8 +165,9 @@ function processMetricFile(contents, metadata, extension) {
 }
 
 /**
- * Processes a Json Lines formatted metric file. This consists of a single
- * json object on its own line per data point.
+ * Processes a Json Lines formatted metric file. This consists of the string contents
+ * of a file which is formatted with a single JSON object on each line. Each object
+ * is a single data point. These are returned as an array of Javascript objects.
  */
 function processJsonLinesMetricFile(stringContents) {
   const jsonObject = [];
@@ -213,7 +184,12 @@ function processJsonLinesMetricFile(stringContents) {
 /**
  * Processes our optimized format metric file. This consists of a single,
  * flattened array that can be expanded into a compact matrix from which
- * data points can be located via metadata.
+ * data points can be located via metadata. The returned object has two keys:
+ *   - `flattenedValueMatrix`: A comma-separated string of values which is a flattened
+ *                             version of a collection of arrays forming a compact
+ *                             representation of a sparse matrix.
+ *   - `metadata`: An object with the metadata required to parse values from the
+ *                 flattenedValueMatrix
  */
 function processOptimizedTxtMetricFile(stringContents, metadata) {
   try {
@@ -226,6 +202,13 @@ function processOptimizedTxtMetricFile(stringContents, metadata) {
   }
 }
 
+/**
+ * Retrieves the names of all of the files which are available for the given metric type,
+ * with the filenames that are hard-coded for each file.
+ *
+ * If a specific file is requested, this checks that the file is available for the
+ * given metric type, and sets the proper extension on the filename.
+ */
 function filesForMetricType(metricType, file) {
   const files = FILES_BY_METRIC_TYPE[metricType];
 
@@ -245,11 +228,12 @@ function filesForMetricType(metricType, file) {
  * Retrieves all metric files for the given metric type from Google Cloud Storage.
  *
  * Returns a list of Promises, one per metric file for the given type, where each Promise will
- * eventually return either an error or an object with two keys:
+ * eventually return either an error or an object with the following keys:
  *   - `fileKey`: a unique key for identifying the metric file, e.g. 'revocations_by_month'
+ *   - `extension`: the extension of the metric file, either .txt or .json
  *   - `contents`: the contents of the file deserialized into JS objects/arrays
- *   - `file`: (optional) a specific metric file under this metric type to request. If absent,
- *             requests all files for the given metric type.
+ *   - `metadata`: (optional) the metadata of the metric file, if it is in the
+                   optimized (compressed .txt) format
  */
 function fetchMetricsFromGCS(stateCode, metricType, file) {
   const promises = [];
@@ -283,7 +267,8 @@ function fetchMetricsFromGCS(stateCode, metricType, file) {
 
 /**
  * This is a parallel to fetchMetricsFromGCS, but instead fetches metric files from the local
- * file system.
+ * file system. The return format, a list of Promises that resolve to an object with the
+ * keys desecribed therein, is identical.
  */
 function fetchMetricsFromLocal(stateCode, metricType, file) {
   const promises = [];
