@@ -49,8 +49,9 @@ const DistrictFilter = ({ stateCode, onChange }) => {
       <FilterField label="District">
         <Select
           className="select-align"
-          options={{ label: userDistricts[0], value: userDistricts[0] }}
+          options={[{ label: userDistricts[0], value: userDistricts[0] }]}
           defaultValue={{ label: userDistricts[0], value: userDistricts[0] }}
+          onChange={() => {}}
           isDisabled
         />
       </FilterField>

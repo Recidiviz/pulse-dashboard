@@ -25,13 +25,13 @@ function getDemoUser() {
     name: 'Demo Jones',
     email: 'notarealemail@recidiviz.org',
     'https://dashboard.recidiviz.org/app_metadata': {
-      state_code: 'recidiviz',
-      // state_code: 'us_mo',
+      // state_code: 'recidiviz',
+      state_code: 'us_mo',
     },
-    // 'https://dashboard.recidiviz.org/user_metadata': {
+    'https://dashboard.recidiviz.org/user_metadata': {
     //   region: "Western Region",
-    //   district: "19"
-    // },
+      district: "19"
+    },
   };
 }
 
