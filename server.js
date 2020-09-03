@@ -77,14 +77,6 @@ if (isDemoMode) {
   };
 }
 
-app.get(
-  "/api/:stateCode/programEvaluation/freeThroughRecovery",
-  checkJwt,
-  api.freeThroughRecovery
-);
-app.get("/api/:stateCode/reincarcerations", checkJwt, api.reincarcerations);
-app.get("/api/:stateCode/revocations", checkJwt, api.revocations);
-app.get("/api/:stateCode/snapshots", checkJwt, api.snapshots);
 app.get("/api/:stateCode/newRevocations", checkJwt, api.newRevocations);
 app.get(
   "/api/:stateCode/newRevocations/:file",

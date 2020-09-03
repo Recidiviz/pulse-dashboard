@@ -1,0 +1,1 @@
+{"total_data_points": 39, "value_keys": ["avg_liberty", "returns"], "dimension_manifest": [["month", ["1", "10", "11", "12", "2", "3", "4", "5", "6", "7", "8", "9"]], ["state_code", ["us_demo"]], ["year", ["2017", "2018", "2019", "2020"]]]}

@@ -89,8 +89,11 @@ export const getLabelByMode = (mode) => {
  *   HISPANIC: { LOW: [2, 9], HIGH: [2, 8], ... } }
  * }
  */
-export const dataTransformer = (numeratorKey, denominatorKey) => (acc, data) =>
-  pipe(
+export const dataTransformer = (numeratorKey, denominatorKey) => (
+  acc,
+  data
+) => {
+  return pipe(
     set(
       [data.race, data.risk_level],
       [
@@ -110,3 +113,4 @@ export const dataTransformer = (numeratorKey, denominatorKey) => (acc, data) =>
       ]
     )
   )(acc);
+};
