@@ -51,7 +51,6 @@ const FILES_BY_METRIC_TYPE = {
     'revocations_matrix_distribution_by_race.txt',
     'revocations_matrix_distribution_by_risk_level.txt',
     'revocations_matrix_distribution_by_violation.txt',
-    'revocations_matrix_supervision_distribution_by_district.txt',
     'revocations_matrix_filtered_caseload.json',
   ],
   communityGoals: [
