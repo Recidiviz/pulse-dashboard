@@ -10,6 +10,7 @@ public/
 !server/core/objectStorage.js
 !server/routes/*.js
 !server/utils/*.js
+!src/api/**/*.js
 !src/App.js
 !src/index.js
 !src/assets/scripts/utils/__tests__/**/*.js
@@ -48,8 +49,10 @@ public/
 !src/components/charts/new_revocations/Chip.js
 !src/components/charts/new_revocations/ModeSwitcher.js
 !src/components/charts/new_revocations/RevocationCharts.js
+!src/components/charts/new_revocations/RevocationMatrix/*.js
 !src/components/charts/new_revocations/RevocationMatrixExplanation.js
 !src/components/charts/new_revocations/Revocations.js
+!src/components/charts/new_revocations/RevocationsOverTime.js
 !src/components/charts/new_revocations/RevocationsByDistrict/**/*.js
 !src/components/charts/new_revocations/RevocationsByGender/**/*.js
 !src/components/charts/new_revocations/RevocationsByRace/**/*.js

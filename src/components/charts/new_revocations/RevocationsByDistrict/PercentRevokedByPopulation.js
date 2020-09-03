@@ -50,7 +50,7 @@ const PercentRevokedByPopulation = ({
   setMode,
   filterStates,
   timeDescription,
-  currentDistrict,
+  currentDistricts,
   revocationApiData,
 }) => {
   const filteredData = pipe(
@@ -90,8 +90,11 @@ const PercentRevokedByPopulation = ({
 
   const barBackgroundColor = ({ dataIndex }) => {
     let color =
-      currentDistrict &&
-      currentDistrict.toLowerCase() === labels[dataIndex].toLowerCase()
+      currentDistricts &&
+      currentDistricts.find(
+        (currentDistrict) =>
+          currentDistrict.toLowerCase() === labels[dataIndex].toLowerCase()
+      )
         ? COLORS["lantern-light-blue"]
         : COLORS["lantern-orange"];
     if (!isDenominatorStatisticallySignificant(denominators[dataIndex])) {
@@ -191,7 +194,7 @@ PercentRevokedByPopulation.propTypes = {
   setMode: PropTypes.func.isRequired,
   filterStates: PropTypes.shape({}).isRequired,
   timeDescription: PropTypes.string.isRequired,
-  currentDistrict: PropTypes.string.isRequired,
+  currentDistricts: PropTypes.arrayOf(PropTypes.string).isRequired,
   revocationApiData: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
 };
 

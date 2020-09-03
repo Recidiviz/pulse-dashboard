@@ -60,8 +60,8 @@ export const applyTopLevelFilters = (filters) => (
     if (
       filters.district &&
       !skippedFilters.includes("district") &&
-      !(treatCategoryAllAsAbsent && isAllItem(filters.district)) &&
-      !nullSafeComparison(item.district, filters.district)
+      !(treatCategoryAllAsAbsent && includesAllItemFirst(filters.district)) &&
+      !nullSafeComparisonForArray(item.district, filters.district)
     ) {
       return false;
     }
@@ -134,4 +134,12 @@ export const formattedMatrixFilters = (filters) => {
     parts.push(`${violationCountLabel(filters.reportedViolations)} violations`);
   }
   return parts.join(", ");
+};
+
+export const limitFiltersToUserDistricts = (filters, userDistricts) => {
+  if (userDistricts !== null && includesAllItemFirst(filters.district)) {
+    return { ...filters, district: userDistricts };
+  }
+
+  return filters;
 };

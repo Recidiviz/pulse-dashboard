@@ -33,6 +33,7 @@ import DataSignificanceWarningIcon from "../../DataSignificanceWarningIcon";
 import ExportMenu from "../../ExportMenu";
 import Loading from "../../../Loading";
 
+import flags from "../../../../flags";
 import { COLORS } from "../../../../assets/scripts/constants/colors";
 import { axisCallbackForPercentage } from "../../../../utils/charts/axis";
 import {
@@ -173,7 +174,9 @@ const RevocationsByGender = ({
         />
       </h4>
       <h6 className="pB-20">{timeDescription}</h6>
-      <ModeSwitcher mode={mode} setMode={setMode} buttons={modeButtons} />
+      {flags.enableRevocationRateByExit && (
+        <ModeSwitcher mode={mode} setMode={setMode} buttons={modeButtons} />
+      )}
       <div className="static-chart-container fs-block">{chart}</div>
     </div>
   );

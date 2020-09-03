@@ -31,7 +31,7 @@ import usePrevious from "../../../../hooks/usePrevious";
 import {
   fetchChartData,
   awaitingResults,
-} from "../../../../utils/metricsClient";
+} from "../../../../api/metrics/metricsClient";
 
 import { COLORS } from "../../../../assets/scripts/constants/colors";
 import {
@@ -256,7 +256,7 @@ CaseTable.propTypes = {
   filterStates: PropTypes.shape({
     metricPeriodMonths: metricPeriodMonthsType.isRequired,
     chargeCategory: PropTypes.string,
-    district: PropTypes.string,
+    district: PropTypes.arrayOf(PropTypes.string),
     supervisionType: PropTypes.string,
   }).isRequired,
   skippedFilters: PropTypes.arrayOf(PropTypes.string),

@@ -39,6 +39,22 @@ function downloadFile(bucketName, stateCode, srcFilename) {
     .download();
 }
 
+/**
+ * Asynchronously downloads the metadata for the file in the given bucket with the given file name.
+ * Returns a Promise which will eventually return either an error or the metadata of the file as a
+ * Buffer of bytes.
+ */
+function downloadFileMetadata(bucketName, stateCode, srcFilename) {
+  const storage = new Storage();
+
+  // Returns a Promise that returns a Buffer with the metadata object once the download completes
+  return storage
+    .bucket(bucketName)
+    .file(`${stateCode}/${srcFilename}`)
+    .getMetadata();
+}
+
 module.exports = {
   downloadFile,
+  downloadFileMetadata,
 };

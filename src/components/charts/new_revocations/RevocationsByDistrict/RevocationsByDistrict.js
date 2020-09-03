@@ -29,7 +29,7 @@ const chartId = "revocationsByDistrict";
 const chartTitle = "Admissions by district";
 
 const RevocationsByDistrict = ({
-  currentDistrict,
+  currentDistricts,
   dataFilter: filterData,
   filterStates,
   skippedFilters,
@@ -67,7 +67,7 @@ const RevocationsByDistrict = ({
           setMode={setMode}
           filterStates={filterStates}
           timeDescription={timeDescription}
-          currentDistrict={currentDistrict}
+          currentDistricts={currentDistricts}
           revocationApiData={filteredRevocationData}
         />
       );
@@ -79,7 +79,7 @@ const RevocationsByDistrict = ({
           setMode={setMode}
           filterStates={filterStates}
           timeDescription={timeDescription}
-          currentDistrict={currentDistrict}
+          currentDistricts={currentDistricts}
           revocationApiData={filteredRevocationData}
         />
       );
@@ -91,7 +91,7 @@ const RevocationsByDistrict = ({
           setMode={setMode}
           filterStates={filterStates}
           timeDescription={timeDescription}
-          currentDistrict={currentDistrict}
+          currentDistricts={currentDistricts}
           revocationApiData={filteredRevocationData}
         />
       );
@@ -109,7 +109,7 @@ RevocationsByDistrict.propTypes = {
   filterStates: PropTypes.object.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
   skippedFilters: PropTypes.array.isRequired,
-  currentDistrict: PropTypes.string.isRequired,
+  currentDistricts: PropTypes.arrayOf(PropTypes.string).isRequired,
   // eslint-disable-next-line react/forbid-prop-types
   treatCategoryAllAsAbsent: PropTypes.any,
   stateCode: PropTypes.string.isRequired,
