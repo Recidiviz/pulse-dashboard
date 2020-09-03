@@ -28,14 +28,6 @@ export function getUserAppMetadata(user) {
 }
 
 /**
- * Returns the Auth0 user_metadata for the given user.
- */
-export function getUserMetadata(user) {
-  const appMetadataKey = `${METADATA_NAMESPACE}user_metadata`;
-  return user[appMetadataKey] || {};
-}
-
-/**
  * Returns the human-readable state name for the given state code,
  * e.g. getStateNameForCode('us_nd') = 'North Dakota'
  */
@@ -84,11 +76,13 @@ export function doesUserHaveAccess(user, stateCode) {
 }
 
 /**
- * Returns Auth0 user districts or null if it missed
+ * Returns the district or districts that a user should be limited
+ * to viewing data for, if there is user metadata in Auth0 specifying
+ * a district or region (group of districts) for the user.
  */
 export function getUserDistricts(user) {
   const stateCode = getUserStateCode(user);
-  const { region, district } = getUserMetadata(user);
+  const { region, district } = getUserAppMetadata(user);
 
   if (district) {
     return [district];

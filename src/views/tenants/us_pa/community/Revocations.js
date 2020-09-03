@@ -36,7 +36,7 @@ import ViolationFilter from "../../../../components/charts/new_revocations/Toggl
 import {
   applyAllFilters,
   applyTopLevelFilters,
-  transformFilters,
+  limitFiltersToUserDistricts,
 } from "../../../../components/charts/new_revocations/helpers";
 import {
   DEFAULT_METRIC_PERIOD,
@@ -45,7 +45,7 @@ import {
 import { getTimeDescription } from "../../../../components/charts/new_revocations/helpers/format";
 import { useAuth0 } from "../../../../react-auth0-spa";
 import {
-  getUserMetadata,
+  getUserAppMetadata,
   getUserDistricts,
 } from "../../../../utils/authentication/user";
 
@@ -93,7 +93,7 @@ const violationTypes = [
 
 const Revocations = () => {
   const { user } = useAuth0();
-  const { district } = getUserMetadata(user);
+  const { district } = getUserAppMetadata(user);
   const userDistricts = getUserDistricts(user);
 
   const [filters, setFilters] = useState({
@@ -108,7 +108,10 @@ const Revocations = () => {
   const updateFilters = (newFilters) => {
     setFilters({ ...filters, ...newFilters });
   };
-  const transformedFilters = transformFilters(filters, userDistricts);
+  const transformedFilters = limitFiltersToUserDistricts(
+    filters,
+    userDistricts
+  );
   const allDataFilter = applyAllFilters(transformedFilters);
 
   const timeDescription = getTimeDescription(

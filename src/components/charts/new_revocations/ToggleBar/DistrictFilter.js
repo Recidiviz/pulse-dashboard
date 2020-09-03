@@ -31,8 +31,14 @@ import useChartData from "../../../../hooks/useChartData";
 import { useAuth0 } from "../../../../react-auth0-spa";
 import {
   getUserDistricts,
-  getUserMetadata,
+  getUserAppMetadata,
 } from "../../../../utils/authentication/user";
+
+const allDistrictsOption = { label: "All districts", value: "All" };
+const allRegionDistrictsOption = {
+  label: "All region districts",
+  value: "All",
+};
 
 const DistrictFilter = ({ stateCode, onChange }) => {
   const { user } = useAuth0();
@@ -41,7 +47,7 @@ const DistrictFilter = ({ stateCode, onChange }) => {
     "revocations_matrix_cells"
   );
 
-  const { district, region } = getUserMetadata(user);
+  const { district, region } = getUserAppMetadata(user);
   const userDistricts = getUserDistricts(user);
 
   if (district) {
@@ -61,7 +67,7 @@ const DistrictFilter = ({ stateCode, onChange }) => {
   if (region) {
     const regionDistricts = pipe(
       map((d) => ({ label: d, value: d })),
-      (options) => [{ label: "All region districts", value: "All" }, ...options]
+      (options) => [allRegionDistrictsOption, ...options]
     )(userDistricts);
 
     return (
@@ -74,8 +80,8 @@ const DistrictFilter = ({ stateCode, onChange }) => {
           }}
           isMulti
           isLoading={isLoading}
-          summingOption={{ label: "All region districts", value: "All" }}
-          defaultValue={[{ label: "All region districts", value: "All" }]}
+          summingOption={allRegionDistrictsOption}
+          defaultValue={[allRegionDistrictsOption]}
           isSearchable
         />
       </FilterField>
@@ -88,7 +94,7 @@ const DistrictFilter = ({ stateCode, onChange }) => {
     uniq,
     sortBy(identity),
     map((d) => ({ value: d, label: d })),
-    (options) => [{ label: "All districts", value: "All" }, ...options]
+    (options) => [allDistrictsOption, ...options]
   )(apiData);
 
   return (
@@ -101,8 +107,8 @@ const DistrictFilter = ({ stateCode, onChange }) => {
         }}
         isMulti
         isLoading={isLoading}
-        summingOption={{ label: "All districts", value: "All" }}
-        defaultValue={[{ label: "All districts", value: "All" }]}
+        summingOption={allDistrictsOption}
+        defaultValue={[allDistrictsOption]}
         isSearchable
       />
     </FilterField>

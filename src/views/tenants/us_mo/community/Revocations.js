@@ -37,7 +37,7 @@ import ViolationFilter from "../../../../components/charts/new_revocations/Toggl
 import {
   applyAllFilters,
   applyTopLevelFilters,
-  transformFilters,
+  limitFiltersToUserDistricts,
 } from "../../../../components/charts/new_revocations/helpers";
 import { getTimeDescription } from "../../../../components/charts/new_revocations/helpers/format";
 import {
@@ -49,7 +49,7 @@ import {
 import flags from "../../../../flags";
 import { useAuth0 } from "../../../../react-auth0-spa";
 import {
-  getUserMetadata,
+  getUserAppMetadata,
   getUserDistricts,
 } from "../../../../utils/authentication/user";
 
@@ -97,7 +97,7 @@ const violationTypes = [
 
 const Revocations = () => {
   const { user } = useAuth0();
-  const { district } = getUserMetadata(user);
+  const { district } = getUserAppMetadata(user);
   const userDistricts = getUserDistricts(user);
 
   const [filters, setFilters] = useState({
@@ -112,11 +112,14 @@ const Revocations = () => {
     violationType: "",
   });
 
-  const allDataFilter = applyAllFilters(filters);
   const updateFilters = (newFilters) => {
     setFilters({ ...filters, ...newFilters });
   };
-  const transformedFilters = transformFilters(filters, userDistricts);
+  const transformedFilters = limitFiltersToUserDistricts(
+    filters,
+    userDistricts
+  );
+  const allDataFilter = applyAllFilters(transformedFilters);
 
   const timeDescription = getTimeDescription(
     filters.metricPeriodMonths,
@@ -229,7 +232,7 @@ const Revocations = () => {
             dataFilter={allDataFilter}
             skippedFilters={["district"]}
             filterStates={filters}
-            currentDistricts={filters.district}
+            currentDistricts={transformedFilters.district}
             stateCode={stateCode}
             timeDescription={timeDescription}
           />
