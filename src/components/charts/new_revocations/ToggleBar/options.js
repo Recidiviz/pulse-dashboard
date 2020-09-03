@@ -57,7 +57,6 @@ export const ADMISSION_TYPES = [
 ];
 
 export const DEFAULT_METRIC_PERIOD = METRIC_PERIODS[1];
-export const DEFAULT_DISTRICT = { value: "All", label: "All districts" };
 export const DEFAULT_SUPERVISION_TYPE = SUPERVISION_TYPES[0];
 export const DEFAULT_CHARGE_CATEGORY = CHARGE_CATEGORIES[0];
 export const DEFAULT_ADMISSION_TYPE = ADMISSION_TYPES[0];

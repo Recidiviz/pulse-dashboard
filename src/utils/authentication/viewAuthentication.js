@@ -17,6 +17,7 @@
 
 /**
  * Returns an artificial Auth0 id token for a fake/demo user.
+ * You can uncomment code for testing different user metadata.
  */
 function getDemoUser() {
   return {
@@ -24,7 +25,10 @@ function getDemoUser() {
     name: 'Demo Jones',
     email: 'notarealemail@recidiviz.org',
     'https://dashboard.recidiviz.org/app_metadata': {
-      state_code: 'RECIDIVIZ',
+      state_code: 'recidiviz',
+      // state_code: 'us_mo',
+      // region: "Western Region",
+      // district: "19"
     },
   };
 }

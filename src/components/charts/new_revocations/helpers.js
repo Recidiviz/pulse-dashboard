@@ -135,3 +135,11 @@ export const formattedMatrixFilters = (filters) => {
   }
   return parts.join(", ");
 };
+
+export const limitFiltersToUserDistricts = (filters, userDistricts) => {
+  if (userDistricts !== null && includesAllItemFirst(filters.district)) {
+    return { ...filters, district: userDistricts };
+  }
+
+  return filters;
+};
