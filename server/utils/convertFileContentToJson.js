@@ -16,11 +16,23 @@
 // =============================================================================
 
 /**
- * Utilities for running the backend in demo mode.
+ * Converts the given contents, a Buffer of bytes, into a JS object or array.
  */
+function convertFileContentToJson(contents) {
+  const stringContents = contents.toString();
+  if (!stringContents || stringContents.length === 0) {
+    return null;
+  }
 
-function isDemoMode() {
-  return process.env.IS_DEMO === "true";
+  const jsonObject = [];
+  const splitStrings = stringContents.split("\n");
+  splitStrings.forEach((line) => {
+    if (line) {
+      jsonObject.push(JSON.parse(line));
+    }
+  });
+
+  return jsonObject;
 }
 
-exports.default = isDemoMode();
+exports.default = convertFileContentToJson;

@@ -80,26 +80,9 @@ if (isDemoMode) {
 app.get(
   "/api/:stateCode/programEvaluation/freeThroughRecovery",
   checkJwt,
-  api.freeThroughRecovery
+  api.metrics
 );
-app.get("/api/:stateCode/reincarcerations", checkJwt, api.reincarcerations);
-app.get("/api/:stateCode/revocations", checkJwt, api.revocations);
-app.get("/api/:stateCode/snapshots", checkJwt, api.snapshots);
-app.get("/api/:stateCode/newRevocations", checkJwt, api.newRevocations);
-app.get(
-  "/api/:stateCode/newRevocations/:file",
-  checkJwt,
-  api.newRevocationFile
-);
-app.get("/api/:stateCode/community/goals", checkJwt, api.communityGoals);
-app.get("/api/:stateCode/community/explore", checkJwt, api.communityExplore);
-app.get("/api/:stateCode/facilities/goals", checkJwt, api.facilitiesGoals);
-app.get("/api/:stateCode/facilities/explore", checkJwt, api.facilitiesExplore);
-app.get(
-  "/api/:stateCode/programming/explore",
-  checkJwt,
-  api.programmingExplore
-);
+app.get("/api/:stateCode/:metricType/:file", checkJwt, api.metrics);
 
 // An App Engine-specific API for handling warmup requests on new instance initialization
 app.get("/_ah/warmup", () => {

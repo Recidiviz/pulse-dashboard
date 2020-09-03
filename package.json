@@ -19,6 +19,7 @@
   },
   "dependencies": {
     "@auth0/auth0-spa-js": "^1.0.2",
+    "@babel/plugin-transform-runtime": "^7.11.5",
     "@fortawesome/fontawesome-svg-core": "^1.2.17",
     "@fortawesome/free-solid-svg-icons": "^5.8.1",
     "@fortawesome/react-fontawesome": "^0.1.4",
@@ -90,6 +91,7 @@
     "typescript": "^3.8.3"
   },
   "devDependencies": {
+    "@babel/preset-env": "^7.11.5",
     "@testing-library/dom": "^7.0.4",
     "@testing-library/jest-dom": "^5.1.1",
     "@testing-library/react": "^10.0.1",

@@ -16,36 +16,21 @@
 // =============================================================================
 
 /**
- * This file contains route handlers for calls to our Metrics API, to be mapped to app routes
- * in server.js.
+ * Utilities for retrieving and caching metrics for the app.
+ *
+ * In the current implementation, metrics are stored in pre-processed json files in Google Cloud
+ * Storage. Those files are pulled down and cached in memory with a TTL. That TTL is unaffected by
+ * access to the cache, so files are re-fetched at a predictable cadence, allowing for updates to
+ * those files to be quickly reflected in the app without frequent requests to GCS.
  */
-
-const { fetchMetrics } = require("../core");
-const { default: isDemoMode } = require("../utils/demoMode");
-
-/**
- * A callback which returns either either an error payload or a data payload.
- */
-function responder(res) {
-  return (err, data) => {
-    if (err) {
-      res.send(err);
-    } else {
-      res.send(data);
-    }
-  };
-}
-
-function metrics(req, res) {
-  fetchMetrics(
-    req.params.stateCode,
-    req.params.metricType,
-    req.params.file,
-    isDemoMode,
-    responder(res)
-  );
-}
+const { default: fetchMetrics } = require("./fetchMetrics");
+const { default: fetchMetricsFromLocal } = require("./fetchMetricsFromLocal");
+const { default: fetchMetricsFromGCS } = require("./fetchMetricsFromGCS");
+const { default: getFilesByMetricType } = require("./getFilesByMetricType");
 
 module.exports = {
-  metrics,
+  fetchMetrics,
+  fetchMetricsFromLocal,
+  fetchMetricsFromGCS,
+  getFilesByMetricType,
 };

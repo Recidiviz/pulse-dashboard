@@ -15,12 +15,26 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-/**
- * Utilities for running the backend in demo mode.
- */
+const {
+  default: convertFileContentToJson,
+} = require("../convertFileContentToJson");
 
-function isDemoMode() {
-  return process.env.IS_DEMO === "true";
-}
+describe("convertFileContentToJson tests", () => {
+  it("should return null if file is empty", () => {
+    const mockContent = "";
+    const contents = Buffer.from(mockContent);
 
-exports.default = isDemoMode();
+    expect(convertFileContentToJson(contents)).toStrictEqual(null);
+  });
+
+  it("should transform file content to json", () => {
+    const mockContent =
+      '{"first_key":"first line"}\n{"second_key": "second value"}\n';
+    const contents = Buffer.from(mockContent);
+
+    expect(convertFileContentToJson(contents)).toStrictEqual([
+      { first_key: "first line" },
+      { second_key: "second value" },
+    ]);
+  });
+});
