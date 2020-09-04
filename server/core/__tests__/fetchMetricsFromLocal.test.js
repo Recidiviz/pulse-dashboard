@@ -23,7 +23,6 @@ const { getFilesByMetricType } = require("../getFilesByMetricType");
 jest.mock("../getFilesByMetricType", () => ({
   getFilesByMetricType: jest.fn(),
 }));
-jest.mock("path");
 jest.mock("fs");
 
 describe("fetchMetricsFromLocal tests", () => {
@@ -31,28 +30,57 @@ describe("fetchMetricsFromLocal tests", () => {
   const metricType = "some type";
   const file = "some file";
 
-  const returnedFile = "some_file.json";
-  const returnedFileKey = "some_file";
-  const returnedFiles = [returnedFile];
   const promiseResValue = "resolved value";
+  const metadata = "some metadata";
 
-  it("should return array with resolving promises", () => {
+  it("should return array with resolving promises without metadata", () => {
+    const returnedFile = "some_file.json";
+    const returnedFileKey = "some_file";
+    const returnedFileExtension = ".json";
+    const returnedFiles = [returnedFile];
     getFilesByMetricType.mockImplementation(() => returnedFiles);
 
-    const resolveSpy = jest.spyOn(path, "resolve");
+    jest.spyOn(path, "resolve");
     const readFileSpy = jest.spyOn(fs, "readFile");
+    const readFileSyncSpy = jest.spyOn(fs, "readFileSync");
     readFileSpy.mockImplementation((_, callback) =>
       callback(null, promiseResValue)
     );
+    readFileSyncSpy.mockReturnValue(JSON.stringify(metadata));
 
     fetchMetricsFromLocal(stateCode, metricType, file).forEach((promise) => {
       expect(promise).resolves.toStrictEqual({
         contents: promiseResValue,
         fileKey: returnedFileKey,
+        metadata: {},
+        extension: returnedFileExtension,
       });
     });
+  });
 
-    expect(resolveSpy.mock.calls.length).toBe(1);
+  it("should return array with resolving promises with metadata", () => {
+    const returnedFileKey = "some_file";
+    const returnedFile = "some_file.txt";
+    const returnedFileExtension = ".txt";
+    const returnedFiles = [returnedFile];
+    getFilesByMetricType.mockImplementation(() => returnedFiles);
+
+    jest.spyOn(path, "resolve");
+    const readFileSpy = jest.spyOn(fs, "readFile");
+    const readFileSyncSpy = jest.spyOn(fs, "readFileSync");
+    readFileSpy.mockImplementation((_, callback) =>
+      callback(null, promiseResValue)
+    );
+    readFileSyncSpy.mockReturnValue(JSON.stringify(metadata));
+
+    fetchMetricsFromLocal(stateCode, metricType, file).forEach((promise) => {
+      expect(promise).resolves.toStrictEqual({
+        contents: promiseResValue,
+        fileKey: returnedFileKey,
+        metadata,
+        extension: returnedFileExtension,
+      });
+    });
   });
 
   it("should return array with rejected promises", () => {

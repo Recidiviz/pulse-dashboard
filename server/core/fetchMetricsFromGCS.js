@@ -54,7 +54,7 @@ function fetchMetricsFromGCS(stateCode, metricType, file) {
       promises.push(
         Promise.all([filePromise, metadataPromise]).then((bothResults) => {
           const contents = bothResults[0];
-          const rawMetadata = bothResults[1][0].metadata;
+          const rawMetadata = bothResults[1][0] && bothResults[1][0].metadata;
 
           const metadata = {};
           if (rawMetadata) {

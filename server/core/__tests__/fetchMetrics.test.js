@@ -16,13 +16,11 @@
 // =============================================================================
 
 const { fetchMetrics } = require("../");
-const {
-  default: convertFileContentToJson,
-} = require("../../utils/convertFileContentToJson");
+const { default: processMetricFile } = require("../processMetricFile");
 const { default: fetchMetricsFromLocal } = require("../fetchMetricsFromLocal");
 const { default: fetchMetricsFromGCS } = require("../fetchMetricsFromGCS");
 
-jest.mock("../../utils/convertFileContentToJson");
+jest.mock("../processMetricFile");
 jest.mock("../fetchMetricsFromLocal");
 jest.mock("../fetchMetricsFromGCS");
 
@@ -31,7 +29,15 @@ describe("fetchMetrics tests", () => {
   const upperCasedStateCode = "DEMO_CODE";
   const file = "file";
   const fileKey = "some key";
-  const contents = "some content";
+  const contents = "some file contents";
+  const metadata = "some metadata";
+  const extension = "some extension";
+  const promiseData = {
+    contents,
+    metadata,
+    extension,
+    fileKey,
+  };
   const deserializedFile = "some deserialized file";
   const error = new Error("some error");
 
@@ -42,13 +48,9 @@ describe("fetchMetrics tests", () => {
   it("should successfully process response with local data", (done) => {
     const metricType = "metric_type";
     const isDemo = true;
-    fetchMetricsFromLocal.mockReturnValue([
-      Promise.resolve({
-        fileKey,
-        contents,
-      }),
-    ]);
-    convertFileContentToJson.mockReturnValue(deserializedFile);
+    fetchMetricsFromLocal.mockReturnValue([Promise.resolve(promiseData)]);
+    processMetricFile.mockReturnValue(deserializedFile);
+
     fetchMetrics(stateCode, metricType, file, isDemo, (err, result) => {
       expect(err).toBeNull();
       expect(result).toStrictEqual({
@@ -60,8 +62,12 @@ describe("fetchMetrics tests", () => {
         metricType,
         file
       );
-      expect(convertFileContentToJson).toHaveBeenCalledTimes(1);
-      expect(convertFileContentToJson).toHaveBeenCalledWith(contents);
+      expect(processMetricFile).toHaveBeenCalledTimes(1);
+      expect(processMetricFile).toHaveBeenCalledWith(
+        contents,
+        metadata,
+        extension
+      );
       done();
     });
   });
@@ -69,13 +75,9 @@ describe("fetchMetrics tests", () => {
   it("should successfully process response with GCS data", (done) => {
     const metricType = "metric_type_2";
     const isDemo = false;
-    fetchMetricsFromGCS.mockReturnValue([
-      Promise.resolve({
-        fileKey,
-        contents,
-      }),
-    ]);
-    convertFileContentToJson.mockReturnValue(deserializedFile);
+    fetchMetricsFromGCS.mockReturnValue([Promise.resolve(promiseData)]);
+    processMetricFile.mockReturnValue(deserializedFile);
+
     fetchMetrics(stateCode, metricType, file, isDemo, (err, result) => {
       expect(err).toBeNull();
       expect(result).toStrictEqual({
@@ -86,6 +88,12 @@ describe("fetchMetrics tests", () => {
         upperCasedStateCode,
         metricType,
         file
+      );
+      expect(processMetricFile).toHaveBeenCalledTimes(1);
+      expect(processMetricFile).toHaveBeenCalledWith(
+        contents,
+        metadata,
+        extension
       );
       done();
     });

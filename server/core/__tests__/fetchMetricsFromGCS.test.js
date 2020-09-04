@@ -31,23 +31,71 @@ describe("fetchMetricsFromGCS tests", () => {
 
   const returnedFile = "some_file.json";
   const returnedFileKey = "some_file";
+  const returnedFileExtension = ".json";
   const returnedFiles = [returnedFile];
-  const promiseResValue = "resolved value";
+  const downloadFileResponse = "resolved value";
+  const value_keys = "some value keys";
+  const total_data_points = "some total data points";
+  const dimension_manifest = "some dimension manifest";
+  const downloadFileMetadataResponse = [
+    {
+      metadata: {
+        value_keys: JSON.stringify(value_keys),
+        total_data_points: total_data_points,
+        dimension_manifest: JSON.stringify(dimension_manifest),
+      },
+    },
+  ];
 
-  it("should return array with resolving promises", () => {
+  it("should return array with data and metadata", () => {
     getFilesByMetricType.mockImplementation(() => returnedFiles);
 
     const downloadFileSpy = jest.spyOn(objectStorage, "downloadFile");
-    downloadFileSpy.mockReturnValue(Promise.resolve(promiseResValue));
+    const downloadFileMetadataSpy = jest.spyOn(
+      objectStorage,
+      "downloadFileMetadata"
+    );
+    downloadFileSpy.mockReturnValue(Promise.resolve(downloadFileResponse));
+    downloadFileMetadataSpy.mockReturnValue(
+      Promise.resolve(downloadFileMetadataResponse)
+    );
 
     fetchMetricsFromGCS(stateCode, metricType, file).forEach((promise) => {
       expect(promise).resolves.toStrictEqual({
-        contents: promiseResValue,
+        contents: downloadFileResponse,
         fileKey: returnedFileKey,
+        extension: returnedFileExtension,
+        metadata: {
+          value_keys,
+          total_data_points,
+          dimension_manifest,
+        },
       });
     });
 
-    expect(downloadFileSpy.mock.calls.length).toBe(1);
+    expect(downloadFileSpy).toHaveBeenCalledTimes(1);
+    expect(downloadFileMetadataSpy).toHaveBeenCalledTimes(1);
+  });
+
+  it("should return array with data and without metadata", () => {
+    getFilesByMetricType.mockImplementation(() => returnedFiles);
+
+    const downloadFileSpy = jest.spyOn(objectStorage, "downloadFile");
+    const downloadFileMetadataSpy = jest.spyOn(
+      objectStorage,
+      "downloadFileMetadata"
+    );
+    downloadFileSpy.mockReturnValue(Promise.resolve(downloadFileResponse));
+    downloadFileMetadataSpy.mockReturnValue(Promise.resolve([]));
+
+    fetchMetricsFromGCS(stateCode, metricType, file).forEach((promise) => {
+      expect(promise).resolves.toStrictEqual({
+        contents: downloadFileResponse,
+        fileKey: returnedFileKey,
+        extension: returnedFileExtension,
+        metadata: {},
+      });
+    });
   });
 
   it("should return array with rejected promises", () => {
