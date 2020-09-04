@@ -58,7 +58,7 @@ const FILES_BY_METRIC_TYPE = {
     "supervision_termination_by_type_by_period.json",
     "site_offices.json",
   ],
-  newRevocations: [
+  newRevocation: [
     "revocations_matrix_by_month.json",
     "revocations_matrix_cells.json",
     "revocations_matrix_distribution_by_district.json",

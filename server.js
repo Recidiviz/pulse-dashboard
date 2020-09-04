@@ -1,5 +1,5 @@
 // Recidiviz - a data platform for criminal justice reform
-// Copyright (C) 2019 Recidiviz, Inc.
+// Copyright (C) 2020 Recidiviz, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -80,9 +80,26 @@ if (isDemoMode) {
 app.get(
   "/api/:stateCode/programEvaluation/freeThroughRecovery",
   checkJwt,
-  api.metrics
+  api.freeThroughRecovery
 );
-app.get("/api/:stateCode/:metricType/:file", checkJwt, api.metrics);
+app.get("/api/:stateCode/reincarcerations", checkJwt, api.reincarcerations);
+app.get("/api/:stateCode/revocations", checkJwt, api.revocations);
+app.get("/api/:stateCode/snapshots", checkJwt, api.snapshots);
+app.get("/api/:stateCode/newRevocations", checkJwt, api.newRevocations);
+app.get(
+  "/api/:stateCode/newRevocations/:file",
+  checkJwt,
+  api.newRevocationFile
+);
+app.get("/api/:stateCode/community/goals", checkJwt, api.communityGoals);
+app.get("/api/:stateCode/community/explore", checkJwt, api.communityExplore);
+app.get("/api/:stateCode/facilities/goals", checkJwt, api.facilitiesGoals);
+app.get("/api/:stateCode/facilities/explore", checkJwt, api.facilitiesExplore);
+app.get(
+  "/api/:stateCode/programming/explore",
+  checkJwt,
+  api.programmingExplore
+);
 
 // An App Engine-specific API for handling warmup requests on new instance initialization
 app.get("/_ah/warmup", () => {

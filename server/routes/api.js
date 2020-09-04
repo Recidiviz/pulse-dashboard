@@ -1,5 +1,5 @@
 // Recidiviz - a data platform for criminal justice reform
-// Copyright (C) 2019 Recidiviz, Inc.
+// Copyright (C) 2020 Recidiviz, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -36,16 +36,126 @@ function responder(res) {
   };
 }
 
-function metrics(req, res) {
+function freeThroughRecovery(req, res) {
   fetchMetrics(
     req.params.stateCode,
-    req.params.metricType,
+    "freeThroughRecovery",
+    null,
+    isDemoMode,
+    responder(res)
+  );
+}
+
+function reincarcerations(req, res) {
+  fetchMetrics(
+    req.params.stateCode,
+    "reincarceration",
+    null,
+    isDemoMode,
+    responder(res)
+  );
+}
+
+function revocations(req, res) {
+  fetchMetrics(
+    req.params.stateCode,
+    "revocation",
+    null,
+    isDemoMode,
+    responder(res)
+  );
+}
+
+function snapshots(req, res) {
+  fetchMetrics(
+    req.params.stateCode,
+    "snapshot",
+    null,
+    isDemoMode,
+    responder(res)
+  );
+}
+
+function newRevocations(req, res) {
+  fetchMetrics(
+    req.params.stateCode,
+    "newRevocation",
+    null,
+    isDemoMode,
+    responder(res)
+  );
+}
+
+function newRevocationFile(req, res) {
+  fetchMetrics(
+    req.params.stateCode,
+    "newRevocation",
     req.params.file,
     isDemoMode,
     responder(res)
   );
 }
 
+function communityGoals(req, res) {
+  fetchMetrics(
+    req.params.stateCode,
+    "communityGoals",
+    null,
+    isDemoMode,
+    responder(res)
+  );
+}
+
+function communityExplore(req, res) {
+  fetchMetrics(
+    req.params.stateCode,
+    "communityExplore",
+    null,
+    isDemoMode,
+    responder(res)
+  );
+}
+
+function facilitiesGoals(req, res) {
+  fetchMetrics(
+    req.params.stateCode,
+    "facilitiesGoals",
+    null,
+    isDemoMode,
+    responder(res)
+  );
+}
+
+function facilitiesExplore(req, res) {
+  fetchMetrics(
+    req.params.stateCode,
+    "facilitiesExplore",
+    null,
+    isDemoMode,
+    responder(res)
+  );
+}
+
+function programmingExplore(req, res) {
+  fetchMetrics(
+    req.params.stateCode,
+    "programmingExplore",
+    null,
+    isDemoMode,
+    responder(res)
+  );
+}
+
 module.exports = {
-  metrics,
+  freeThroughRecovery,
+  reincarcerations,
+  revocations,
+  snapshots,
+  newRevocations,
+  newRevocationFile,
+  communityGoals,
+  communityExplore,
+  facilitiesGoals,
+  facilitiesExplore,
+  programmingExplore,
 };

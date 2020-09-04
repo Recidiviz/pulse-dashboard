@@ -37,7 +37,6 @@ describe("fetchMetrics tests", () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
-    jest.resetModules();
   });
 
   it("should successfully process response with local data", (done) => {
@@ -82,7 +81,6 @@ describe("fetchMetrics tests", () => {
       expect(result).toStrictEqual({
         [fileKey]: deserializedFile,
       });
-      console.log(fetchMetricsFromGCS);
       expect(fetchMetricsFromGCS).toHaveBeenCalledTimes(1);
       expect(fetchMetricsFromGCS).toHaveBeenCalledWith(
         upperCasedStateCode,
