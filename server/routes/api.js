@@ -21,7 +21,7 @@
  */
 
 const { fetchMetrics } = require("../core");
-const { default: isDemoMode } = require("../utils/demoMode");
+const { default: isDemoMode } = require("../utils/isDemoMode");
 
 /**
  * A callback which returns either either an error payload or a data payload.
@@ -158,4 +158,5 @@ module.exports = {
   facilitiesGoals,
   facilitiesExplore,
   programmingExplore,
+  responder,
 };

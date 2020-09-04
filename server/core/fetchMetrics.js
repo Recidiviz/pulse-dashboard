@@ -73,7 +73,6 @@ function fetchMetrics(stateCode, metricType, file, isDemo, callback) {
           cacheCb(null, results);
         })
         .catch((err) => {
-          console.log(err, "??");
           cacheCb(err, null);
         });
     },
