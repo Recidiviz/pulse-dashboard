@@ -31,7 +31,7 @@ import usePrevious from "../../../../hooks/usePrevious";
 import {
   fetchChartData,
   awaitingResults,
-} from "../../../../utils/metricsClient";
+} from "../../../../api/metrics/metricsClient";
 
 import { COLORS } from "../../../../assets/scripts/constants/colors";
 import {

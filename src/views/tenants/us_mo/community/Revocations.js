@@ -37,16 +37,21 @@ import ViolationFilter from "../../../../components/charts/new_revocations/Toggl
 import {
   applyAllFilters,
   applyTopLevelFilters,
+  limitFiltersToUserDistricts,
 } from "../../../../components/charts/new_revocations/helpers";
 import { getTimeDescription } from "../../../../components/charts/new_revocations/helpers/format";
 import {
   DEFAULT_METRIC_PERIOD,
   DEFAULT_SUPERVISION_TYPE,
-  DEFAULT_DISTRICT,
   METRIC_PERIODS,
   SUPERVISION_TYPES,
 } from "../../../../components/charts/new_revocations/ToggleBar/options";
 import flags from "../../../../flags";
+import { useAuth0 } from "../../../../react-auth0-spa";
+import {
+  getUserAppMetadata,
+  getUserDistricts,
+} from "../../../../utils/authentication/user";
 
 const stateCode = "us_mo";
 const admissionTypeOptions = [
@@ -91,10 +96,14 @@ const violationTypes = [
 ];
 
 const Revocations = () => {
+  const { user } = useAuth0();
+  const { district } = getUserAppMetadata(user);
+  const userDistricts = getUserDistricts(user);
+
   const [filters, setFilters] = useState({
     metricPeriodMonths: DEFAULT_METRIC_PERIOD.value,
     chargeCategory: chargeCategoryOptions[0].value,
-    district: [DEFAULT_DISTRICT.value],
+    district: [district || "All"],
     supervisionType: DEFAULT_SUPERVISION_TYPE.value,
     ...(flags.enableAdmissionTypeFilterForMO
       ? { admissionType: [admissionTypeOptions[1].value] }
@@ -103,10 +112,14 @@ const Revocations = () => {
     violationType: "",
   });
 
-  const allDataFilter = applyAllFilters(filters);
   const updateFilters = (newFilters) => {
     setFilters({ ...filters, ...newFilters });
   };
+  const transformedFilters = limitFiltersToUserDistricts(
+    filters,
+    userDistricts
+  );
+  const allDataFilter = applyAllFilters(transformedFilters);
 
   const timeDescription = getTimeDescription(
     filters.metricPeriodMonths,
@@ -123,12 +136,7 @@ const Revocations = () => {
             defaultValue={DEFAULT_METRIC_PERIOD}
             onChange={updateFilters}
           />
-          <DistrictFilter
-            stateCode={stateCode}
-            summingOption={DEFAULT_DISTRICT}
-            defaultValue={[DEFAULT_DISTRICT]}
-            onChange={updateFilters}
-          />
+          <DistrictFilter stateCode={stateCode} onChange={updateFilters} />
           <ChargeCategoryFilter
             options={chargeCategoryOptions}
             defaultValue={chargeCategoryOptions[0]}
@@ -167,7 +175,7 @@ const Revocations = () => {
       <div className="d-f m-20 container-all-charts">
         <div className="matrix-container bgc-white p-20 mR-20">
           <RevocationMatrix
-            dataFilter={applyTopLevelFilters(filters)}
+            dataFilter={applyTopLevelFilters(transformedFilters)}
             filterStates={filters}
             updateFilters={updateFilters}
             timeDescription={timeDescription}
@@ -224,7 +232,7 @@ const Revocations = () => {
             dataFilter={allDataFilter}
             skippedFilters={["district"]}
             filterStates={filters}
-            currentDistricts={filters.district}
+            currentDistricts={transformedFilters.district}
             stateCode={stateCode}
             timeDescription={timeDescription}
           />

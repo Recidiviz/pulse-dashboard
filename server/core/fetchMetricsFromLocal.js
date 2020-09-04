@@ -19,11 +19,14 @@ const fs = require("fs");
 const util = require("util");
 const path = require("path");
 const { getFilesByMetricType } = require("./getFilesByMetricType");
+const { getFileExtension, getFileName } = require("../utils/fileName");
+
 const asyncReadFile = util.promisify(fs.readFile);
 
 /**
  * This is a parallel to fetchMetricsFromGCS, but instead fetches metric files from the local
- * file system.
+ * file system. The return format, a list of Promises that resolve to an object with the
+ * keys described therein, is identical.
  */
 function fetchMetricsFromLocal(_, metricType, file) {
   const promises = [];
@@ -31,11 +34,27 @@ function fetchMetricsFromLocal(_, metricType, file) {
   try {
     const files = getFilesByMetricType(metricType, file);
     files.forEach((filename) => {
-      const fileKey = filename.replace(".json", "");
+      const fileKey = getFileName(filename);
+      const extension = getFileExtension(filename);
       const filePath = path.resolve(__dirname, `./demo_data/${filename}`);
 
+      let metadata = {};
+      if (extension === ".txt") {
+        const metadataFilePath = path.resolve(
+          __dirname,
+          `./demo_data/${fileKey}.metadata.json`
+        );
+
+        metadata = JSON.parse(fs.readFileSync(metadataFilePath));
+      }
+
       promises.push(
-        asyncReadFile(filePath).then((contents) => ({ fileKey, contents }))
+        asyncReadFile(filePath).then((contents) => ({
+          fileKey,
+          extension,
+          metadata,
+          contents,
+        }))
       );
     });
   } catch (e) {

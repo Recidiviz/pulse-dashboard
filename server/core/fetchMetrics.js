@@ -16,9 +16,7 @@
 // =============================================================================
 
 const cacheManager = require("cache-manager");
-const {
-  default: convertFileContentToJson,
-} = require("../utils/convertFileContentToJson");
+const { default: processMetricFile } = require("./processMetricFile");
 const { default: fetchMetricsFromLocal } = require("./fetchMetricsFromLocal");
 const { default: fetchMetricsFromGCS } = require("./fetchMetricsFromGCS");
 
@@ -63,16 +61,18 @@ function fetchMetrics(stateCode, metricType, file, isDemo, callback) {
           const results = {};
           allFileContents.forEach((contents) => {
             console.log(`Fetched contents for fileKey ${contents.fileKey}`);
-            const deserializedFile = convertFileContentToJson(
-              contents.contents
+            results[contents.fileKey] = processMetricFile(
+              contents.contents,
+              contents.metadata,
+              contents.extension
             );
-            results[contents.fileKey] = deserializedFile;
           });
 
           console.log(`Fetched all ${cacheKey} metrics from ${source}`);
           cacheCb(null, results);
         })
         .catch((err) => {
+          console.log(err);
           cacheCb(err, null);
         });
     },

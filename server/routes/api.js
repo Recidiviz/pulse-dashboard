@@ -36,45 +36,7 @@ function responder(res) {
   };
 }
 
-function freeThroughRecovery(req, res) {
-  fetchMetrics(
-    req.params.stateCode,
-    "freeThroughRecovery",
-    null,
-    isDemoMode,
-    responder(res)
-  );
-}
-
-function reincarcerations(req, res) {
-  fetchMetrics(
-    req.params.stateCode,
-    "reincarceration",
-    null,
-    isDemoMode,
-    responder(res)
-  );
-}
-
-function revocations(req, res) {
-  fetchMetrics(
-    req.params.stateCode,
-    "revocation",
-    null,
-    isDemoMode,
-    responder(res)
-  );
-}
-
-function snapshots(req, res) {
-  fetchMetrics(
-    req.params.stateCode,
-    "snapshot",
-    null,
-    isDemoMode,
-    responder(res)
-  );
-}
+// TODO: Generalize this API to take in the metric type and file as request parameters in all calls
 
 function newRevocations(req, res) {
   fetchMetrics(
@@ -147,10 +109,6 @@ function programmingExplore(req, res) {
 }
 
 module.exports = {
-  freeThroughRecovery,
-  reincarcerations,
-  revocations,
-  snapshots,
   newRevocations,
   newRevocationFile,
   communityGoals,

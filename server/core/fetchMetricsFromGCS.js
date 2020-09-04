@@ -18,16 +18,18 @@
 const BUCKET_NAME = process.env.METRIC_BUCKET;
 const objectStorage = require("./objectStorage");
 const { getFilesByMetricType } = require("./getFilesByMetricType");
+const { getFileExtension, getFileName } = require("../utils/fileName");
 
 /**
  * Retrieves all metric files for the given metric type from Google Cloud Storage.
  *
  * Returns a list of Promises, one per metric file for the given type, where each Promise will
- * eventually return either an error or an object with two keys:
+ * eventually return either an error or an object with the following keys:
  *   - `fileKey`: a unique key for identifying the metric file, e.g. 'revocations_by_month'
+ *   - `extension`: the extension of the metric file, either .txt or .json
  *   - `contents`: the contents of the file deserialized into JS objects/arrays
- *   - `file`: (optional) a specific metric file under this metric type to request. If absent,
- *             requests all files for the given metric type.
+ *   - `metadata`: (optional) the metadata of the metric file, if it is in the
+ optimized (compressed .txt) format
  */
 function fetchMetricsFromGCS(stateCode, metricType, file) {
   const promises = [];
@@ -35,11 +37,36 @@ function fetchMetricsFromGCS(stateCode, metricType, file) {
   try {
     const files = getFilesByMetricType(metricType, file);
     files.forEach((filename) => {
-      const fileKey = filename.replace(".json", "");
+      const fileKey = getFileName(filename);
+      const extension = getFileExtension(filename);
+
+      const filePromise = objectStorage.downloadFile(
+        BUCKET_NAME,
+        stateCode,
+        filename
+      );
+      const metadataPromise = objectStorage.downloadFileMetadata(
+        BUCKET_NAME,
+        stateCode,
+        filename
+      );
+
       promises.push(
-        objectStorage
-          .downloadFile(BUCKET_NAME, stateCode, filename)
-          .then((contents) => ({ fileKey, contents }))
+        Promise.all([filePromise, metadataPromise]).then((bothResults) => {
+          const contents = bothResults[0];
+          const rawMetadata = bothResults[1][0].metadata;
+
+          const metadata = {};
+          if (rawMetadata) {
+            metadata.value_keys = JSON.parse(rawMetadata.value_keys);
+            metadata.total_data_points = rawMetadata.total_data_points;
+            metadata.dimension_manifest = JSON.parse(
+              rawMetadata.dimension_manifest
+            );
+          }
+
+          return { fileKey, extension, metadata, contents };
+        })
       );
     });
   } catch (e) {

@@ -20,19 +20,19 @@ import PropTypes from "prop-types";
 import { Bar } from "react-chartjs-2";
 import pattern from "patternomaly";
 
+import groupBy from "lodash/fp/groupBy";
+import filter from "lodash/fp/filter";
 import map from "lodash/fp/map";
 import orderBy from "lodash/fp/orderBy";
 import pipe from "lodash/fp/pipe";
+import sumBy from "lodash/fp/sumBy";
+import toInteger from "lodash/fp/toInteger";
+import values from "lodash/fp/values";
 
 import ModeSwitcher from "../ModeSwitcher";
 import DataSignificanceWarningIcon from "../../DataSignificanceWarningIcon";
 import ExportMenu from "../../ExportMenu";
-import {
-  groupByDistrictCreator,
-  mergeRevocationData,
-  sumCounts,
-  modeButtons,
-} from "./helpers";
+import { sumCounts, modeButtons } from "./helpers";
 import { calculateRate, getRateAnnotation } from "../helpers/rate";
 import {
   isDenominatorsMatrixStatisticallySignificant,
@@ -52,21 +52,33 @@ const PercentRevokedByExits = ({
   timeDescription,
   currentDistricts,
   revocationApiData,
-  supervisionApiData,
 }) => {
-  const agregatedData = pipe(mergeRevocationData, orderBy(["rate"], ["desc"]))(
-    groupByDistrictCreator("population_count", revocationApiData),
-    groupByDistrictCreator("total_exit_count", supervisionApiData)
-  );
+  const filteredData = pipe(
+    filter((item) => item.district !== "ALL"),
+    groupBy("district"),
+    values,
+    map((dataset) => ({
+      district: dataset[0].district,
+      count: sumBy((item) => toInteger(item.population_count), dataset),
+      exit_count: sumBy((item) => toInteger(item.total_exit_count), dataset),
+    })),
+    map((dataPoint) => ({
+      district: dataPoint.district,
+      count: dataPoint.count,
+      exit_count: dataPoint.exit_count,
+      rate: calculateRate(dataPoint.count, dataPoint.exit_count),
+    })),
+    orderBy(["rate"], ["desc"])
+  )(revocationApiData);
 
-  const labels = map("district", agregatedData);
-  const dataPoints = map((item) => item.rate.toFixed(2), agregatedData);
-  const numerators = map("count", agregatedData);
-  const denominators = map("total", agregatedData);
+  const labels = map("district", filteredData);
+  const dataPoints = map((item) => item.rate.toFixed(2), filteredData);
+  const numerators = map("count", filteredData);
+  const denominators = map("exit_count", filteredData);
 
   const averageRate = calculateRate(
     sumCounts("population_count", revocationApiData),
-    sumCounts("total_exit_count", supervisionApiData)
+    sumCounts("total_exit_count", revocationApiData)
   );
 
   const showWarning = !isDenominatorsMatrixStatisticallySignificant(
@@ -181,7 +193,6 @@ PercentRevokedByExits.propTypes = {
   timeDescription: PropTypes.string.isRequired,
   currentDistricts: PropTypes.arrayOf(PropTypes.string).isRequired,
   revocationApiData: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
-  supervisionApiData: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
 };
 
 export default PercentRevokedByExits;
