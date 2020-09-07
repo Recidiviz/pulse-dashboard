@@ -1,5 +1,5 @@
 // Recidiviz - a data platform for criminal justice reform
-// Copyright (C) 2019 Recidiviz, Inc.
+// Copyright (C) 2020 Recidiviz, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -15,9 +15,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import '../styles/index.scss';
-
-import './charts';
-import './popover';
-import './scrollbar';
-import './utils';
+import "bootstrap";
+import "../styles/index.scss";
+import "./charts";
+import "./utils";

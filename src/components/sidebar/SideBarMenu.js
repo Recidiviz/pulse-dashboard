@@ -17,9 +17,12 @@
 
 import React from "react";
 import PropTypes from "prop-types";
+import PerfectScrollBar from "react-perfect-scrollbar";
 
 const SideBarMenu = ({ children }) => (
-  <ul className="sidebar-menu scrollable pos-r pT-30">{children}</ul>
+  <PerfectScrollBar component="ul" className="sidebar-menu pos-r pT-30">
+    {children}
+  </PerfectScrollBar>
 );
 
 SideBarMenu.propTypes = {
