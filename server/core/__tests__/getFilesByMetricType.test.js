@@ -15,26 +15,24 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-const {
-  getFilesByMetricType,
-  FILES_BY_METRIC_TYPE,
-} = require("../getFilesByMetricType");
+const mockMetricType = "someMetricType";
+const mockFileName = "someFileName";
+const mockSecondFileName = "someOtherFileName";
+const mockTxtFile = `${mockFileName}.txt`;
+const mockJsonFile = `${mockSecondFileName}.json`;
+const mockMetricTypeFiles = [mockTxtFile, mockJsonFile];
+const mockMetricTypes = { [mockMetricType]: mockMetricTypeFiles };
+
+jest.mock("../constants", () => ({
+  FILES_BY_METRIC_TYPE: mockMetricTypes,
+}));
+const { getFilesByMetricType } = require("../getFilesByMetricType");
 
 describe("getFilesByMetricType tests", () => {
-  const [firstMetricType] = Object.keys(FILES_BY_METRIC_TYPE);
-  const filesMatchingFirstMetricType = FILES_BY_METRIC_TYPE[firstMetricType];
-
   it("should return file names for metricType", () => {
-    expect(getFilesByMetricType(firstMetricType)).toStrictEqual(
-      filesMatchingFirstMetricType
+    expect(getFilesByMetricType(mockMetricType)).toStrictEqual(
+      mockMetricTypeFiles
     );
-  });
-
-  it("should return array with single file name", () => {
-    const fileName = filesMatchingFirstMetricType[0].replace(".json", "");
-    expect(getFilesByMetricType(firstMetricType, fileName)).toEqual([
-      filesMatchingFirstMetricType[0],
-    ]);
   });
 
   it("should throw error if there is no corresponding metricType", () => {
@@ -42,10 +40,29 @@ describe("getFilesByMetricType tests", () => {
     expect(() => getFilesByMetricType(metricType)).toThrow(Error);
   });
 
+  it("should return txt if for given file name both txt and json files exist", () => {
+    const mockTxtFile = `${mockFileName}.txt`;
+    const mockJsonFile = `${mockFileName}.json`;
+    jest.mock("../constants", () => ({
+      FILES_BY_METRIC_TYPE: {
+        [mockMetricType]: [mockJsonFile, mockTxtFile],
+      },
+    }));
+    const { getFilesByMetricType } = require("../getFilesByMetricType");
+
+    expect(getFilesByMetricType(mockMetricType, mockFileName)).toEqual([
+      mockTxtFile,
+    ]);
+  });
+
+  it("should return json if for given file name txt does not exist", () => {
+    expect(getFilesByMetricType(mockMetricType, mockSecondFileName)).toEqual([
+      mockJsonFile,
+    ]);
+  });
+
   it("should throw error if there is no corresponding file", () => {
     const fileName = "random file name that is not real case";
-    expect(() => getFilesByMetricType(firstMetricType, fileName)).toThrow(
-      Error
-    );
+    expect(() => getFilesByMetricType(mockMetricType, fileName)).toThrow(Error);
   });
 });

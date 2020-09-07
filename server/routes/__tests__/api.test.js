@@ -16,10 +16,6 @@
 // =============================================================================
 
 const {
-  freeThroughRecovery,
-  reincarcerations,
-  revocations,
-  snapshots,
   newRevocations,
   newRevocationFile,
   communityGoals,
@@ -41,54 +37,6 @@ describe("api tests", () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
-  });
-
-  it("should call fetchMetrics for freeThroughRecovery ", () => {
-    freeThroughRecovery(req, res);
-
-    expect(fetchMetrics).toHaveBeenCalledWith(
-      stateCode,
-      "freeThroughRecovery",
-      null,
-      false,
-      expect.any(Function)
-    );
-  });
-
-  it("should call fetchMetrics for reincarceration ", () => {
-    reincarcerations(req, res);
-
-    expect(fetchMetrics).toHaveBeenCalledWith(
-      stateCode,
-      "reincarceration",
-      null,
-      false,
-      expect.any(Function)
-    );
-  });
-
-  it("should call fetchMetrics for revocation ", () => {
-    revocations(req, res);
-
-    expect(fetchMetrics).toHaveBeenCalledWith(
-      stateCode,
-      "revocation",
-      null,
-      false,
-      expect.any(Function)
-    );
-  });
-
-  it("should call fetchMetrics for snapshot ", () => {
-    snapshots(req, res);
-
-    expect(fetchMetrics).toHaveBeenCalledWith(
-      stateCode,
-      "snapshot",
-      null,
-      false,
-      expect.any(Function)
-    );
   });
 
   it("should call fetchMetrics for newRevocation ", () => {

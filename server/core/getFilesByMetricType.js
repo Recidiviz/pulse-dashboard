@@ -15,73 +15,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-const { getFileName } = require("../utils/fileName");
-const FILES_BY_METRIC_TYPE = {
-  newRevocation: [
-    "revocations_matrix_by_month.txt",
-    "revocations_matrix_cells.txt",
-    "revocations_matrix_distribution_by_district.txt",
-    "revocations_matrix_distribution_by_gender.txt",
-    "revocations_matrix_distribution_by_race.txt",
-    "revocations_matrix_distribution_by_risk_level.txt",
-    "revocations_matrix_distribution_by_violation.txt",
-    "revocations_matrix_filtered_caseload.json",
-  ],
-  communityGoals: [
-    "admissions_by_type_by_month.txt",
-    "admissions_by_type_by_period.txt",
-    "average_change_lsir_score_by_month.txt",
-    "average_change_lsir_score_by_period.txt",
-    "revocations_by_month.txt",
-    "revocations_by_period.txt",
-    "supervision_termination_by_type_by_month.txt",
-    "supervision_termination_by_type_by_period.txt",
-    "site_offices.json",
-  ],
-  communityExplore: [
-    "admissions_by_type_by_month.txt",
-    "admissions_by_type_by_period.txt",
-    "average_change_lsir_score_by_month.txt",
-    "average_change_lsir_score_by_period.txt",
-    "case_terminations_by_type_by_month.txt",
-    "case_terminations_by_type_by_officer_by_period.txt",
-    "race_proportions.json",
-    "revocations_by_month.txt",
-    "revocations_by_officer_by_period.txt",
-    "revocations_by_period.txt",
-    "revocations_by_race_and_ethnicity_by_period.txt",
-    "revocations_by_supervision_type_by_month.txt",
-    "revocations_by_violation_type_by_month.txt",
-    "supervision_termination_by_type_by_month.txt",
-    "supervision_termination_by_type_by_period.txt",
-    "site_offices.json",
-  ],
-  facilitiesGoals: [
-    "avg_days_at_liberty_by_month.txt",
-    "reincarcerations_by_month.txt",
-    "reincarcerations_by_period.txt",
-  ],
-  facilitiesExplore: [
-    "admissions_by_type_by_period.txt",
-    "admissions_versus_releases_by_month.txt",
-    "admissions_versus_releases_by_period.txt",
-    "avg_days_at_liberty_by_month.txt",
-    "reincarceration_rate_by_stay_length.txt",
-    "reincarcerations_by_month.txt",
-    "reincarcerations_by_period.txt",
-  ],
-  programmingExplore: [
-    "ftr_referrals_by_age_by_period.txt",
-    "ftr_referrals_by_gender_by_period.txt",
-    "ftr_referrals_by_lsir_by_period.txt",
-    "ftr_referrals_by_month.txt",
-    "ftr_referrals_by_participation_status.txt",
-    "ftr_referrals_by_period.txt",
-    "ftr_referrals_by_race_and_ethnicity_by_period.txt",
-    "race_proportions.json",
-    "site_offices.json",
-  ],
-};
+const { FILES_BY_METRIC_TYPE } = require("./constants");
 
 /**
  * Retrieves the names of all of the files which are available for the given metric type,
@@ -98,25 +32,23 @@ function getFilesByMetricType(metricType, file) {
   }
 
   if (file) {
-    const fileWithExtension = files.find((item) => getFileName(item) === file);
+    const txtFile = files.find((item) => item === `${file}.txt`);
+    const jsonFile = files.find((item) => item === `${file}.json`);
 
-    if (!fileWithExtension) {
-      throw `${file} not found with either txt or json extension for metric type ${metricType}`;
+    if (txtFile) {
+      return [txtFile];
     }
 
-    if (files.indexOf(fileWithExtension) > -1) {
-      return [fileWithExtension];
+    if (jsonFile) {
+      return [jsonFile];
     }
 
     throw new Error(
-      `Metric file ${fileWithExtension} not registered for metric type ${metricType}`
+      `${file} not found with either txt or json extension for metric type ${metricType}`
     );
   }
 
   return files;
 }
 
-module.exports = {
-  FILES_BY_METRIC_TYPE,
-  getFilesByMetricType,
-};
+module.exports = { getFilesByMetricType };

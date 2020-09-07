@@ -15,7 +15,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-const { downloadFile } = require("../objectStorage");
+const { downloadFile, downloadFileMetadata } = require("../objectStorage");
 const { Storage } = require("@google-cloud/storage");
 
 jest.mock("@google-cloud/storage", () => ({
@@ -27,17 +27,31 @@ describe("objectStorage tests", () => {
   const stateCode = "some code";
   const fileName = "some file name";
   const returnValue = "some value, no matter if Promise or no";
+  const getMetadata = jest.fn().mockReturnValue(returnValue);
+  const download = jest.fn().mockReturnValue(returnValue);
+  const file = jest.fn().mockImplementation(() => ({ download, getMetadata }));
+  const bucket = jest.fn().mockImplementation(() => ({ file }));
+  Storage.mockImplementation(() => ({ bucket: bucket }));
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
 
   it("should call chain of methods to download file", () => {
-    const download = jest.fn().mockReturnValue(returnValue);
-    const file = jest.fn().mockImplementation(() => ({ download }));
-    const bucket = jest.fn().mockImplementation(() => ({ file }));
-    Storage.mockImplementation(() => ({ bucket: bucket }));
-
     expect(downloadFile(bucketName, stateCode, fileName)).toEqual(returnValue);
     expect(Storage).toHaveBeenCalledTimes(1);
     expect(bucket).toHaveBeenCalledWith(bucketName);
     expect(file).toHaveBeenCalledWith(`${stateCode}/${fileName}`);
     expect(download).toHaveBeenCalledTimes(1);
+  });
+
+  it("should call chain of methods to get file metadata", () => {
+    expect(downloadFileMetadata(bucketName, stateCode, fileName)).toEqual(
+      returnValue
+    );
+    expect(Storage).toHaveBeenCalledTimes(1);
+    expect(bucket).toHaveBeenCalledWith(bucketName);
+    expect(file).toHaveBeenCalledWith(`${stateCode}/${fileName}`);
+    expect(getMetadata).toHaveBeenCalledTimes(1);
   });
 });

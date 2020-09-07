@@ -16,23 +16,15 @@
 // =============================================================================
 
 const {
-  default: convertFileContentToJson,
-} = require("../convertFileContentToJson");
+  default: processJsonLinesMetricFile,
+} = require("../processJsonLinesMetricFile");
 
-describe("convertFileContentToJson tests", () => {
-  it("should return null if file is empty", () => {
-    const mockContent = "";
-    const contents = Buffer.from(mockContent);
-
-    expect(convertFileContentToJson(contents)).toStrictEqual(null);
-  });
-
+describe("processJsonLinesMetricFile tests", () => {
   it("should transform file content to json", () => {
-    const mockContent =
+    const mockStringContents =
       '{"first_key":"first line"}\n{"second_key": "second value"}\n';
-    const contents = Buffer.from(mockContent);
 
-    expect(convertFileContentToJson(contents)).toStrictEqual([
+    expect(processJsonLinesMetricFile(mockStringContents)).toStrictEqual([
       { first_key: "first line" },
       { second_key: "second value" },
     ]);
