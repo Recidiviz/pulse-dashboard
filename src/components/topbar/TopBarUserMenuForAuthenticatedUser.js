@@ -25,13 +25,9 @@ import { getUserStateName } from "../../utils/authentication/user";
 const TopBarUserMenuForAuthenticatedUser = () => {
   const { user, logout } = useAuth0();
 
-  const onLogout = useCallback(
-    (e) => {
-      e.preventDefault();
-      logout({ returnTo: window.location.origin });
-    },
-    [logout]
-  );
+  const onLogout = useCallback(() => {
+    logout({ returnTo: window.location.origin });
+  }, [logout]);
 
   return (
     <Dropdown as="li">
@@ -55,7 +51,8 @@ const TopBarUserMenuForAuthenticatedUser = () => {
         </Dropdown.Item>
         <Dropdown.Divider role="separator" />
         <Dropdown.Item
-          href="#"
+          as="button"
+          variant="link"
           className="d-b td-n pY-5 bgcH-grey-100 c-grey-700"
           onClick={onLogout}
         >

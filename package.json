@@ -58,7 +58,6 @@
     "jwks-rsa": "^1.4.0",
     "lodash": "^4.17.19",
     "lokijs": "^1.5.6",
-    "masonry-layout": "^4.2.0",
     "moment": "^2.24.0",
     "morgan": "^1.9.1",
     "node-cache": "^5.1.0",
