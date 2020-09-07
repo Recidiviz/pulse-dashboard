@@ -26,6 +26,7 @@ const buttons = [
   { label: "Percent revoked of exits", value: "exits" },
 ];
 
+// TODO: delete jquery if component is being used
 const ModeSwitcher = ({ mode, setMode }) => (
   <div
     id="modeButtons"

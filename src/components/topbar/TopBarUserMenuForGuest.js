@@ -19,6 +19,7 @@ import React, { useCallback } from "react";
 
 import { useAuth0 } from "../../react-auth0-spa";
 
+// TODO: rewrite jquery to react-bootstrap if will be used
 const TopBarForGuest = () => {
   const { loginWithRedirect } = useAuth0();
 

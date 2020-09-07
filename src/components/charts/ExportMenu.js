@@ -15,103 +15,208 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React from 'react';
+import React, { useCallback, useState } from "react";
+import { Dropdown, Modal } from "react-bootstrap";
 
 import {
-  downloadChartAsImage, downloadChartAsData, downloadHtmlElementAsImage, downloadHtmlElementAsData,
-} from '../../assets/scripts/utils/downloads';
-import chartIdToInfo from '../../utils/charts/info';
+  downloadChartAsImage,
+  downloadChartAsData,
+  downloadHtmlElementAsImage,
+  downloadHtmlElementAsData,
+} from "../../assets/scripts/utils/downloads";
+import chartIdToInfo from "../../utils/charts/info";
 
 const ExportMenu = (props) => {
+  const [isModalOpened, setIsModalOpened] = useState(false);
   const additionalInfo = chartIdToInfo[props.chartId] || [];
 
-  const modalId = `additionalInfoModal-${props.chartId}`;
+  const exportedStructureCallback = () => ({
+    metric: props.metricTitle,
+    series: [],
+  });
 
-  const exportedStructureCallback = () => (
-    {
-      metric: props.metricTitle,
-      series: [],
-    });
+  const toggleModal = useCallback(() => {
+    setIsModalOpened(!isModalOpened);
+  }, [isModalOpened]);
+
+  const hideModal = useCallback(() => {
+    setIsModalOpened(false);
+  }, []);
 
   return (
     <span className="fa-pull-right">
-      <div className="dropdown show">
-        <a href="#" role="button" id={`exportDropdownMenuButton-${props.chartId}`} data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      <Dropdown>
+        <Dropdown.Toggle
+          role="button"
+          id={`exportDropdownMenuButton-${props.chartId}`}
+        >
           ...
-        </a>
-        <div className="dropdown-menu dropdown-menu-right" aria-labelledby={`exportDropdownMenuButton-${props.chartId}`}>
-          <button type="button" className="dropdown-item" data-toggle="modal" data-target={`#${modalId}`}>Additional info</button>
-          {(props.shouldExport === undefined || props.shouldExport === true) && props.regularElement === undefined && (
-            <button type="button" className="dropdown-item" onClick={() => downloadChartAsImage(
-              props.chartId, props.metricTitle, props.chart.props.data.datasets,
-              props.chart.props.data.labels, exportedStructureCallback, props.filters,
-              undefined, undefined, props.timeWindowDescription, true
-            )}>Export image</button>
+        </Dropdown.Toggle>
+        <Dropdown.Menu
+          className="dropdown-menu dropdown-menu-right"
+          aria-labelledby={`exportDropdownMenuButton-${props.chartId}`}
+        >
+          <Dropdown.Item as="button" onClick={toggleModal}>
+            Additional info
+          </Dropdown.Item>
+          {(props.shouldExport === undefined || props.shouldExport === true) &&
+            props.regularElement === undefined && (
+              <Dropdown.Item
+                as="button"
+                onClick={() =>
+                  downloadChartAsImage(
+                    props.chartId,
+                    props.metricTitle,
+                    props.chart.props.data.datasets,
+                    props.chart.props.data.labels,
+                    exportedStructureCallback,
+                    props.filters,
+                    undefined,
+                    undefined,
+                    props.timeWindowDescription,
+                    true
+                  )
+                }
+              >
+                Export image
+              </Dropdown.Item>
+            )}
+          {(props.shouldExport === undefined || props.shouldExport === true) &&
+            props.regularElement === undefined && (
+              <Dropdown.Item
+                as="button"
+                onClick={() =>
+                  downloadChartAsData(
+                    props.chartId,
+                    props.metricTitle,
+                    props.chart.props.data.datasets,
+                    props.chart.props.data.labels,
+                    exportedStructureCallback,
+                    props.filters,
+                    undefined,
+                    undefined,
+                    props.timeWindowDescription,
+                    true
+                  )
+                }
+              >
+                Export data
+              </Dropdown.Item>
+            )}
+          {(props.shouldExport === undefined || props.shouldExport === true) &&
+            props.regularElement && (
+              <Dropdown.Item
+                as="button"
+                onClick={() =>
+                  downloadHtmlElementAsImage(
+                    props.chartId,
+                    props.metricTitle,
+                    props.elementDatasets,
+                    props.elementLabels,
+                    exportedStructureCallback,
+                    props.filters,
+                    undefined,
+                    undefined,
+                    props.timeWindowDescription,
+                    true
+                  )
+                }
+              >
+                Export image
+              </Dropdown.Item>
+            )}
+          {(props.shouldExport === undefined || props.shouldExport === true) &&
+            props.regularElement && (
+              <Dropdown.Item
+                as="button"
+                onClick={() =>
+                  downloadHtmlElementAsData(
+                    props.chartId,
+                    props.metricTitle,
+                    props.elementDatasets,
+                    props.elementLabels,
+                    exportedStructureCallback,
+                    props.filters,
+                    undefined,
+                    undefined,
+                    props.timeWindowDescription,
+                    true
+                  )
+                }
+              >
+                Export data
+              </Dropdown.Item>
+            )}
+          {props.isTable && props.regularElement === undefined && (
+            <Dropdown.Item
+              as="button"
+              onClick={() =>
+                downloadHtmlElementAsData(
+                  props.chartId,
+                  props.metricTitle,
+                  props.tableData,
+                  props.tableLabels,
+                  exportedStructureCallback,
+                  props.filters,
+                  undefined,
+                  undefined,
+                  props.timeWindowDescription,
+                  true,
+                  props.isTable
+                )
+              }
+            >
+              Export data
+            </Dropdown.Item>
           )}
-          {(props.shouldExport === undefined || props.shouldExport === true) && props.regularElement === undefined && (
-            <button type="button" className="dropdown-item" onClick={() => downloadChartAsData(
-              props.chartId, props.metricTitle, props.chart.props.data.datasets,
-              props.chart.props.data.labels, exportedStructureCallback, props.filters,
-              undefined, undefined, props.timeWindowDescription, true
-            )}>Export data</button>
-          )}
-          {(props.shouldExport === undefined || props.shouldExport === true) && props.regularElement && (
-            <button type="button" className="dropdown-item"onClick={() => downloadHtmlElementAsImage(
-              props.chartId, props.metricTitle,props.elementDatasets, props.elementLabels,
-              exportedStructureCallback, props.filters, undefined, undefined,
-              props.timeWindowDescription, true
-            )}>Export image</button>
-          )}
-          {(props.shouldExport === undefined || props.shouldExport === true) && props.regularElement && (
-            <button type="button" className="dropdown-item" onClick={() => downloadHtmlElementAsData(
-              props.chartId, props.metricTitle,props.elementDatasets, props.elementLabels,
-              exportedStructureCallback, props.filters, undefined, undefined,
-              props.timeWindowDescription, true
-            )}>Export data</button>
-          )}
-          {(props.isTable) && props.regularElement === undefined && (
-            <button type="button" className="dropdown-item" onClick={() => downloadHtmlElementAsData(
-              props.chartId, props.metricTitle, props.tableData, props.tableLabels, exportedStructureCallback,
-              props.filters, undefined, undefined, props.timeWindowDescription,
-              true, props.isTable
-            )}>Export data</button>
-          )}
-        </div>
-      </div>
+        </Dropdown.Menu>
+      </Dropdown>
 
-      <div id={modalId} className="modal fade" tabIndex="-1" role="dialog" aria-hidden="true">
-        <div className="modal-dialog modal-dialog-centered" role="document">
-          <div className="modal-content">
-            <div className="modal-header">
-              <h5 className="modal-title">About this chart</h5>
-              <button type="button" className="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div className="modal-overflow">
-              <div className="modal-body">
-                {additionalInfo.length > 0 ? (
-                  <ul>
-                    {additionalInfo.map((info, i) => (
-                      <div key={i}>
-                        <h6>{info.header}</h6>
-                        <p>{info.body}</p>
-                      </div>
-                    ))}
-                  </ul>
-                ) : (
-                    <p>
-                      There is no additional information for this chart.
-                    </p>
-                  )}
-              </div>
-            </div>
-            <div className="modal-footer">
-              <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
-            </div>
-          </div>
+      <Modal
+        centered
+        show={isModalOpened}
+        tabIndex="-1"
+        role="dialog"
+        onHide={hideModal}
+        scrollable
+      >
+        <Modal.Header>
+          <h5 className="modal-title">About this chart</h5>
+          <button
+            type="button"
+            className="close"
+            onClick={hideModal}
+            aria-label="Close"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </Modal.Header>
+        <div className="modal-overflow">
+          <Modal.Body>
+            {additionalInfo.length > 0 ? (
+              <ul>
+                {additionalInfo.map((info, i) => (
+                  <div key={i}>
+                    <h6>{info.header}</h6>
+                    <p>{info.body}</p>
+                  </div>
+                ))}
+              </ul>
+            ) : (
+              <p>There is no additional information for this chart.</p>
+            )}
+          </Modal.Body>
         </div>
-      </div>
+        <Modal.Footer>
+          <button
+            type="button"
+            className="btn btn-secondary"
+            onClick={hideModal}
+          >
+            Close
+          </button>
+        </Modal.Footer>
+      </Modal>
     </span>
   );
 };

@@ -16,6 +16,7 @@
 // =============================================================================
 
 import React, { useCallback } from "react";
+import { Dropdown } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
 import { useAuth0 } from "../../react-auth0-spa";
@@ -25,17 +26,16 @@ const TopBarUserMenuForAuthenticatedUser = () => {
   const { user, logout } = useAuth0();
 
   const onLogout = useCallback(
-    () => logout({ returnTo: window.location.origin }),
+    (e) => {
+      e.preventDefault();
+      logout({ returnTo: window.location.origin });
+    },
     [logout]
   );
 
   return (
-    <li className="dropdown">
-      <a
-        href="?"
-        className="dropdown-toggle no-after peers fxw-nw ai-c lh-1"
-        data-toggle="dropdown"
-      >
+    <Dropdown as="li">
+      <Dropdown.Toggle variant="link" className="peers fxw-nw ai-c lh-1">
         <div className="peer mR-10">
           <img className="w-2r bdrs-50p" src={user.picture} alt="" />
         </div>
@@ -43,33 +43,27 @@ const TopBarUserMenuForAuthenticatedUser = () => {
           <ul className="fsz-sm c-grey-900">{user.name}</ul>
           <ul className="fsz-sm pT-3 c-grey-600">{getUserStateName(user)}</ul>
         </div>
-      </a>
-      <ul className="dropdown-menu fsz-sm">
-        <li>
-          <Link
-            to="/profile"
-            className="d-b td-n pY-5 bgcH-grey-100 c-grey-700"
-          >
-            <i className="ti-user mR-10" />
-            <span>Profile</span>
-          </Link>
-        </li>
-        <li role="separator" className="divider" />
-        <li>
-          {/* The href below must be '#' to allow Auth0 to log out successfully. */}
-          {/* eslint-disable jsx-a11y/anchor-is-valid */}
-          <a
-            href="#"
-            className="d-b td-n pY-5 bgcH-grey-100 c-grey-700"
-            onClick={onLogout}
-          >
-            <i className="ti-power-off mR-10" />
-            <span>Logout</span>
-          </a>
-          {/* eslint-enable */}
-        </li>
-      </ul>
-    </li>
+      </Dropdown.Toggle>
+      <Dropdown.Menu renderOnMount as="ul" className="dropdown-menu fsz-sm">
+        <Dropdown.Item
+          as={Link}
+          to="/profile"
+          className="d-b td-n pY-5 bgcH-grey-100 c-grey-700"
+        >
+          <i className="ti-user mR-10" />
+          <span>Profile</span>
+        </Dropdown.Item>
+        <Dropdown.Divider role="separator" />
+        <Dropdown.Item
+          href="#"
+          className="d-b td-n pY-5 bgcH-grey-100 c-grey-700"
+          onClick={onLogout}
+        >
+          <i className="ti-power-off mR-10" />
+          <span>Logout</span>
+        </Dropdown.Item>
+      </Dropdown.Menu>
+    </Dropdown>
   );
 };
 
