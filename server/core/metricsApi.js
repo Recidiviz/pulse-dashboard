@@ -26,20 +26,17 @@
  * those files to be quickly reflected in the app without frequent requests to GCS.
  */
 
-const cacheManager = require('cache-manager');
 const fs = require('fs');
 const path = require('path');
 const util = require('util');
 const { unzipSync } = require('zlib');
 const objectStorage = require('./objectStorage');
-
+const { default: createMemoryCache } = require('./createMemoryCache');
 const BUCKET_NAME = process.env.METRIC_BUCKET;
 const METRIC_CACHE_TTL_SECONDS = 60 * 60; // Expire items in the cache after 1 hour
 const METRIC_REFRESH_SECONDS = 60 * 10;   // Refresh the cache in the background after cache hits that occur within 10 minutes before expiration
 
-const memoryCache = cacheManager.caching(
-  { store: 'memory', ttl: METRIC_CACHE_TTL_SECONDS, refreshThreshold: METRIC_REFRESH_SECONDS },
-);
+const memoryCache = createMemoryCache(METRIC_CACHE_TTL_SECONDS, METRIC_REFRESH_SECONDS);
 const asyncReadFile = util.promisify(fs.readFile);
 
 const FILES_BY_METRIC_TYPE = {
