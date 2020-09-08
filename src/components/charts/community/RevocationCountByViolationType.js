@@ -51,18 +51,24 @@ const RevocationCountByViolationType = ({
   />
 );
 
-RevocationCountByViolationType.defaultProps = {
-  revocationCountsByMonthByViolationType: [],
-};
-
 RevocationCountByViolationType.propTypes = {
   metricType: PropTypes.string.isRequired,
   metricPeriodMonths: PropTypes.string.isRequired,
   supervisionType: PropTypes.string.isRequired,
   district: PropTypes.arrayOf(PropTypes.string).isRequired,
   revocationCountsByMonthByViolationType: PropTypes.arrayOf(
-    PropTypes.shape({})
-  ),
+    PropTypes.shape({
+      absconsion_count: PropTypes.string,
+      district: PropTypes.string,
+      felony_count: PropTypes.string,
+      month: PropTypes.string,
+      state_code: PropTypes.string,
+      supervision_type: PropTypes.string,
+      technical_count: PropTypes.string,
+      unknown_count: PropTypes.string,
+      year: PropTypes.string,
+    })
+  ).isRequired,
 };
 
 export default RevocationCountByViolationType;

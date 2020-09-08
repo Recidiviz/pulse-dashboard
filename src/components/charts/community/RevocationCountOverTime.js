@@ -16,6 +16,7 @@
 // =============================================================================
 
 import React, { useEffect } from "react";
+import PropTypes from "prop-types";
 import { Line } from "react-chartjs-2";
 
 import map from "lodash/fp/map";
@@ -41,6 +42,7 @@ import {
 import { sortFilterAndSupplementMostRecentMonths } from "../../../utils/transforms/datasets";
 import { monthNamesWithYearsFromNumbers } from "../../../utils/transforms/months";
 import { groupByMonth } from "../common/bars/utils";
+import { officeDataPropTypes } from "./propTypes";
 
 const dataCountsMapper = ({ year, month, revocation_count: count }) => ({
   year,
@@ -227,6 +229,28 @@ const RevocationCountOverTime = ({
   }, [displayGoal, header, mostRecentValue]);
 
   return chart;
+};
+
+RevocationCountOverTime.propTypes = {
+  disableGoal: PropTypes.bool.isRequired,
+  district: PropTypes.arrayOf(PropTypes.string).isRequired,
+  geoView: PropTypes.bool.isRequired,
+  metricPeriodMonths: PropTypes.string.isRequired,
+  metricType: PropTypes.string.isRequired,
+  stateCode: PropTypes.string.isRequired,
+  supervisionType: PropTypes.string.isRequired,
+  officeData: PropTypes.arrayOf(officeDataPropTypes).isRequired,
+  revocationCountsByMonth: PropTypes.arrayOf(
+    PropTypes.shape({
+      district: PropTypes.string.isRequired,
+      month: PropTypes.string.isRequired,
+      revocation_count: PropTypes.string.isRequired,
+      state_code: PropTypes.string.isRequired,
+      supervision_type: PropTypes.string.isRequired,
+      total_supervision_count: PropTypes.string.isRequired,
+      year: PropTypes.string.isRequired,
+    })
+  ).isRequired,
 };
 
 export default RevocationCountOverTime;

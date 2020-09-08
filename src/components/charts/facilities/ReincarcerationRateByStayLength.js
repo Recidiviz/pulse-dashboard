@@ -182,12 +182,18 @@ const ReincarcerationRateByStayLength = ({
   return chart;
 };
 
-ReincarcerationRateByStayLength.defaultProps = {
-  ratesByStayLength: [],
-};
-
 ReincarcerationRateByStayLength.propTypes = {
-  ratesByStayLength: PropTypes.arrayOf(PropTypes.shape({})),
+  ratesByStayLength: PropTypes.arrayOf(
+    PropTypes.shape({
+      district: PropTypes.string,
+      follow_up_period: PropTypes.string,
+      recidivism_rate: PropTypes.string,
+      reincarceration_count: PropTypes.string,
+      release_cohort: PropTypes.string,
+      state_code: PropTypes.string,
+      stay_length_bucket: PropTypes.string,
+    })
+  ).isRequired,
   district: PropTypes.arrayOf(PropTypes.string).isRequired,
   metricType: PropTypes.string.isRequired,
 };

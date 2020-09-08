@@ -54,17 +54,26 @@ const CaseTerminationsByTerminationType = ({
   />
 );
 
-CaseTerminationsByTerminationType.defaultProps = {
-  caseTerminationCountsByMonthByTerminationType: [],
-};
-
 CaseTerminationsByTerminationType.propTypes = {
   metricType: PropTypes.string.isRequired,
   metricPeriodMonths: PropTypes.string.isRequired,
   district: PropTypes.arrayOf(PropTypes.string).isRequired,
   caseTerminationCountsByMonthByTerminationType: PropTypes.arrayOf(
-    PropTypes.shape({})
-  ),
+    PropTypes.shape({
+      absconsion: PropTypes.string,
+      death: PropTypes.string,
+      discharge: PropTypes.string,
+      district: PropTypes.string,
+      expiration: PropTypes.string,
+      month: PropTypes.string,
+      other: PropTypes.string,
+      revocation: PropTypes.string,
+      state_code: PropTypes.string,
+      supervision_type: PropTypes.string,
+      suspension: PropTypes.string,
+      year: PropTypes.string,
+    })
+  ).isRequired,
   supervisionType: PropTypes.string.isRequired,
 };
 

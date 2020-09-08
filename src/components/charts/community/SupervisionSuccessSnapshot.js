@@ -307,13 +307,22 @@ const SupervisionSuccessSnapshot = ({
 };
 
 SupervisionSuccessSnapshot.defaultProps = {
-  supervisionSuccessRates: [],
   header: undefined,
   disableGoal: false,
 };
 
 SupervisionSuccessSnapshot.propTypes = {
-  supervisionSuccessRates: PropTypes.arrayOf(PropTypes.shape({})),
+  supervisionSuccessRates: PropTypes.arrayOf(
+    PropTypes.shape({
+      district: PropTypes.string,
+      projected_month: PropTypes.string,
+      projected_year: PropTypes.string,
+      revocation_termination: PropTypes.string,
+      state_code: PropTypes.string,
+      successful_termination: PropTypes.string,
+      supervision_type: PropTypes.string,
+    })
+  ).isRequired,
   metricType: PropTypes.string.isRequired,
   metricPeriodMonths: PropTypes.string.isRequired,
   district: PropTypes.arrayOf(PropTypes.string).isRequired,

@@ -39,6 +39,7 @@ import {
 } from "../../../utils/charts/toggles";
 import { sortFilterAndSupplementMostRecentMonths } from "../../../utils/transforms/datasets";
 import { monthNamesAllWithYearsFromNumbers } from "../../../utils/transforms/months";
+import { filtersPropTypes } from "./propTypes";
 
 const chartId = "revocationsOverTime";
 
@@ -207,7 +208,6 @@ const RevocationsOverTime = ({
 RevocationsOverTime.defaultProps = {
   skippedFilters: [],
   treatCategoryAllAsAbsent: false,
-  filterStates: {},
 };
 
 RevocationsOverTime.propTypes = {
@@ -217,7 +217,7 @@ RevocationsOverTime.propTypes = {
   treatCategoryAllAsAbsent: PropTypes.bool,
   metricPeriodMonths: PropTypes.string.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
-  filterStates: PropTypes.object,
+  filterStates: filtersPropTypes.isRequired,
 };
 
 export default RevocationsOverTime;

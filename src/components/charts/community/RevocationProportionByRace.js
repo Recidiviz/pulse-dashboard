@@ -275,18 +275,29 @@ const RevocationProportionByRace = ({
   return activeChart;
 };
 
-RevocationProportionByRace.defaultProps = {
-  revocationProportionByRace: [],
-  statePopulationByRace: [],
-};
-
 RevocationProportionByRace.propTypes = {
   metricType: PropTypes.string.isRequired,
   metricPeriodMonths: PropTypes.string.isRequired,
   district: PropTypes.arrayOf(PropTypes.string).isRequired,
   supervisionType: PropTypes.string.isRequired,
-  revocationProportionByRace: PropTypes.arrayOf(PropTypes.shape({})),
-  statePopulationByRace: PropTypes.arrayOf(PropTypes.shape({})),
+  revocationProportionByRace: PropTypes.arrayOf(
+    PropTypes.shape({
+      district: PropTypes.string,
+      metric_period_months: PropTypes.string,
+      race_or_ethnicity: PropTypes.string,
+      revocation_count: PropTypes.string,
+      state_code: PropTypes.string,
+      supervision_type: PropTypes.string,
+      total_supervision_count: PropTypes.string,
+    })
+  ).isRequired,
+  statePopulationByRace: PropTypes.arrayOf(
+    PropTypes.shape({
+      proportion: PropTypes.string,
+      race_or_ethnicity: PropTypes.string,
+      state_code: PropTypes.string,
+    })
+  ).isRequired,
 };
 
 export default RevocationProportionByRace;

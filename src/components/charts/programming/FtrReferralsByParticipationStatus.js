@@ -58,16 +58,24 @@ const FtrReferralsByParticipationStatus = ({
   />
 );
 
-FtrReferralsByParticipationStatus.defaultProps = {
-  ftrReferralsByParticipationStatus: [],
-};
-
 FtrReferralsByParticipationStatus.propTypes = {
   metricType: PropTypes.string.isRequired,
   metricPeriodMonths: PropTypes.string.isRequired,
   supervisionType: PropTypes.string.isRequired,
   district: PropTypes.arrayOf(PropTypes.string).isRequired,
-  ftrReferralsByParticipationStatus: PropTypes.arrayOf(PropTypes.shape({})),
+  ftrReferralsByParticipationStatus: PropTypes.arrayOf(
+    PropTypes.shape({
+      denied: PropTypes.string,
+      discharged: PropTypes.string,
+      district: PropTypes.string,
+      in_progress: PropTypes.string,
+      month: PropTypes.string,
+      pending: PropTypes.string,
+      state_code: PropTypes.string,
+      supervision_type: PropTypes.string,
+      year: PropTypes.string,
+    })
+  ).isRequired,
 };
 
 export default FtrReferralsByParticipationStatus;

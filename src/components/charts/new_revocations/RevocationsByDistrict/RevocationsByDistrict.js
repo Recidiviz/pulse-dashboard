@@ -24,6 +24,7 @@ import PercentRevokedByExits from "./PercentRevokedByExits";
 import Loading from "../../../Loading";
 // eslint-disable-next-line import/no-cycle
 import useChartData from "../../../../hooks/useChartData";
+import { filtersPropTypes } from "../propTypes";
 
 const chartId = "revocationsByDistrict";
 const chartTitle = "Admissions by district";
@@ -105,10 +106,8 @@ RevocationsByDistrict.defaultProps = {
 RevocationsByDistrict.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
   dataFilter: PropTypes.func.isRequired,
-  // eslint-disable-next-line react/forbid-prop-types
-  filterStates: PropTypes.object.isRequired,
-  // eslint-disable-next-line react/forbid-prop-types
-  skippedFilters: PropTypes.array.isRequired,
+  filterStates: filtersPropTypes.isRequired,
+  skippedFilters: PropTypes.arrayOf(PropTypes.string).isRequired,
   currentDistricts: PropTypes.arrayOf(PropTypes.string).isRequired,
   // eslint-disable-next-line react/forbid-prop-types
   treatCategoryAllAsAbsent: PropTypes.any,

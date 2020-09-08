@@ -20,6 +20,7 @@ import PropTypes from "prop-types";
 
 import { COLORS_SEVEN_VALUES } from "../../../assets/scripts/constants/colors";
 import PerOfficerBarChart from "../common/bars/PerOfficerBarChart";
+import { officeDataPropTypes } from "./propTypes";
 
 const chartId = "caseTerminationsByOfficer";
 
@@ -54,17 +55,28 @@ const CaseTerminationsByOfficer = ({
   />
 );
 
-CaseTerminationsByOfficer.defaultProps = {
-  terminationCountsByOfficer: [],
-};
-
 CaseTerminationsByOfficer.propTypes = {
-  terminationCountsByOfficer: PropTypes.arrayOf(PropTypes.shape({})),
+  terminationCountsByOfficer: PropTypes.arrayOf(
+    PropTypes.shape({
+      absconsion: PropTypes.string,
+      death: PropTypes.string,
+      discharge: PropTypes.string,
+      district: PropTypes.string,
+      expiration: PropTypes.string,
+      metric_period_months: PropTypes.string,
+      officer_external_id: PropTypes.string,
+      other: PropTypes.string,
+      revocation: PropTypes.string,
+      state_code: PropTypes.string,
+      supervision_type: PropTypes.string,
+      suspension: PropTypes.string,
+    })
+  ).isRequired,
   metricType: PropTypes.string.isRequired,
   metricPeriodMonths: PropTypes.string.isRequired,
   supervisionType: PropTypes.string.isRequired,
   district: PropTypes.arrayOf(PropTypes.string).isRequired,
-  officeData: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  officeData: PropTypes.arrayOf(officeDataPropTypes).isRequired,
 };
 
 export default CaseTerminationsByOfficer;

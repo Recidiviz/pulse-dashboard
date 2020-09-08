@@ -33,6 +33,7 @@ import { standardTooltipForCountMetric } from "../../../../utils/charts/toggles"
 import ModeSwitcher from "../ModeSwitcher";
 import ExportMenu from "../../ExportMenu";
 import { modeButtons } from "./helpers";
+import { filtersPropTypes } from "../propTypes";
 
 const RevocationCount = ({
   chartId,
@@ -141,7 +142,7 @@ RevocationCount.propTypes = {
   chartId: PropTypes.string.isRequired,
   chartTitle: PropTypes.string.isRequired,
   setMode: PropTypes.func.isRequired,
-  filterStates: PropTypes.shape({}).isRequired,
+  filterStates: filtersPropTypes.isRequired,
   timeDescription: PropTypes.string.isRequired,
   currentDistricts: PropTypes.arrayOf(PropTypes.string).isRequired,
   revocationApiData: PropTypes.arrayOf(PropTypes.shape({})).isRequired,

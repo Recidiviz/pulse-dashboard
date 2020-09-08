@@ -35,6 +35,7 @@ import useChartData from "../../../hooks/useChartData";
 import { axisCallbackForPercentage } from "../../../utils/charts/axis";
 import { tooltipForRateMetricWithCounts } from "../../../utils/charts/toggles";
 import { calculateRate } from "./helpers/rate";
+import { filtersPropTypes } from "./propTypes";
 
 const chartId = "revocationsByViolationType";
 const violationCountKey = "violation_count";
@@ -42,7 +43,7 @@ const violationCountKey = "violation_count";
 const RevocationsByViolation = ({
   dataFilter,
   filterStates,
-  skippedFilters,
+  skippedFilters = [],
   treatCategoryAllAsAbsent,
   stateCode,
   timeDescription,
@@ -186,20 +187,9 @@ RevocationsByViolation.defaultProps = {
   treatCategoryAllAsAbsent: undefined,
 };
 
-const metricPeriodMonthsType = PropTypes.oneOfType([
-  PropTypes.string,
-  PropTypes.number,
-]);
-
 RevocationsByViolation.propTypes = {
   dataFilter: PropTypes.func.isRequired,
-  filterStates: PropTypes.shape({
-    admissionType: PropTypes.arrayOf(PropTypes.string),
-    metricPeriodMonths: metricPeriodMonthsType.isRequired,
-    chargeCategory: PropTypes.string,
-    district: PropTypes.arrayOf(PropTypes.string),
-    supervisionType: PropTypes.string,
-  }).isRequired,
+  filterStates: filtersPropTypes.isRequired,
   skippedFilters: PropTypes.arrayOf(PropTypes.string),
   treatCategoryAllAsAbsent: PropTypes.bool,
   stateCode: PropTypes.string.isRequired,

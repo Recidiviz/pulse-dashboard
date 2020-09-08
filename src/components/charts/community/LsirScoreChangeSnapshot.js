@@ -258,13 +258,21 @@ const LsirScoreChangeSnapshot = ({
 };
 
 LsirScoreChangeSnapshot.defaultProps = {
-  lsirScoreChangeByMonth: [],
   header: undefined,
   disableGoal: false,
 };
 
 LsirScoreChangeSnapshot.propTypes = {
-  lsirScoreChangeByMonth: PropTypes.arrayOf(PropTypes.shape({})),
+  lsirScoreChangeByMonth: PropTypes.arrayOf(
+    PropTypes.shape({
+      average_change: PropTypes.string,
+      district: PropTypes.string,
+      state_code: PropTypes.string,
+      supervision_type: PropTypes.string,
+      termination_month: PropTypes.string,
+      termination_year: PropTypes.string,
+    })
+  ).isRequired,
   metricPeriodMonths: PropTypes.string.isRequired,
   supervisionType: PropTypes.string.isRequired,
   district: PropTypes.arrayOf(PropTypes.string).isRequired,

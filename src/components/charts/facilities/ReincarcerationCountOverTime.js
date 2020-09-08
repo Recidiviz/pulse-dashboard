@@ -256,13 +256,21 @@ const ReincarcerationCountOverTime = ({
 };
 
 ReincarcerationCountOverTime.defaultProps = {
-  reincarcerationCountsByMonth: [],
   disableGoal: false,
   hedaer: undefined,
 };
 
 ReincarcerationCountOverTime.propTypes = {
-  reincarcerationCountsByMonth: PropTypes.arrayOf(PropTypes.shape({})),
+  reincarcerationCountsByMonth: PropTypes.arrayOf(
+    PropTypes.shape({
+      district: PropTypes.string,
+      month: PropTypes.string,
+      returns: PropTypes.string,
+      state_code: PropTypes.string,
+      total_admissions: PropTypes.string,
+      year: PropTypes.string,
+    })
+  ).isRequired,
   metricType: PropTypes.string.isRequired,
   metricPeriodMonths: PropTypes.string.isRequired,
   district: PropTypes.arrayOf(PropTypes.string).isRequired,

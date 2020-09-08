@@ -16,6 +16,7 @@
 // =============================================================================
 
 import React, { useEffect } from "react";
+import PropTypes from "prop-types";
 import { Line } from "react-chartjs-2";
 
 import map from "lodash/fp/map";
@@ -204,7 +205,27 @@ const FtrReferralCountByMonth = ({
   return chart;
 };
 
-FtrReferralCountByMonth.defaultProps = {};
-FtrReferralCountByMonth.propTypes = {};
+FtrReferralCountByMonth.defaultProps = {
+  header: undefined,
+};
+
+FtrReferralCountByMonth.propTypes = {
+  ftrReferralCountByMonth: PropTypes.arrayOf(
+    PropTypes.shape({
+      count: PropTypes.string,
+      district: PropTypes.string,
+      month: PropTypes.string,
+      state_code: PropTypes.string,
+      supervision_type: PropTypes.string,
+      total_supervision_count: PropTypes.string,
+      year: PropTypes.string,
+    })
+  ).isRequired,
+  supervisionType: PropTypes.string.isRequired,
+  district: PropTypes.arrayOf(PropTypes.string).isRequired,
+  metricType: PropTypes.string.isRequired,
+  metricPeriodMonths: PropTypes.string.isRequired,
+  header: PropTypes.node,
+};
 
 export default FtrReferralCountByMonth;

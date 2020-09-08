@@ -224,13 +224,20 @@ const DaysAtLibertySnapshot = ({
 };
 
 DaysAtLibertySnapshot.defaultProps = {
-  daysAtLibertyByMonth: [],
   disableGoal: false,
   header: undefined,
 };
 
 DaysAtLibertySnapshot.propTypes = {
-  daysAtLibertyByMonth: PropTypes.arrayOf(PropTypes.shape({})),
+  daysAtLibertyByMonth: PropTypes.arrayOf(
+    PropTypes.shape({
+      avg_liberty: PropTypes.string.isRequired,
+      month: PropTypes.string.isRequired,
+      returns: PropTypes.string.isRequired,
+      state_code: PropTypes.string.isRequired,
+      year: PropTypes.string.isRequired,
+    })
+  ).isRequired,
   metricPeriodMonths: PropTypes.string.isRequired,
   disableGoal: PropTypes.bool,
   header: PropTypes.string,

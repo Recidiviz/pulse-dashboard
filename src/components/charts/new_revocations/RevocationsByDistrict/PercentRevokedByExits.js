@@ -43,6 +43,7 @@ import {
 import { COLORS } from "../../../../assets/scripts/constants/colors";
 import { tooltipForRateMetricWithCounts } from "../../../../utils/charts/toggles";
 import { axisCallbackForPercentage } from "../../../../utils/charts/axis";
+import { filtersPropTypes } from "../propTypes";
 
 const PercentRevokedByExits = ({
   chartId,
@@ -189,7 +190,7 @@ PercentRevokedByExits.propTypes = {
   chartId: PropTypes.string.isRequired,
   chartTitle: PropTypes.string.isRequired,
   setMode: PropTypes.func.isRequired,
-  filterStates: PropTypes.shape({}).isRequired,
+  filterStates: filtersPropTypes.isRequired,
   timeDescription: PropTypes.string.isRequired,
   currentDistricts: PropTypes.arrayOf(PropTypes.string).isRequired,
   revocationApiData: PropTypes.arrayOf(PropTypes.shape({})).isRequired,

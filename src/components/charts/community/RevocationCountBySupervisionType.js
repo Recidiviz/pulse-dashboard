@@ -45,17 +45,20 @@ const RevocationCountBySupervisionType = ({
   />
 );
 
-RevocationCountBySupervisionType.defaultProps = {
-  revocationCountsByMonthBySupervisionType: [],
-};
-
 RevocationCountBySupervisionType.propTypes = {
   metricType: PropTypes.string.isRequired,
   metricPeriodMonths: PropTypes.string.isRequired,
   district: PropTypes.arrayOf(PropTypes.string).isRequired,
   revocationCountsByMonthBySupervisionType: PropTypes.arrayOf(
-    PropTypes.shape({})
-  ),
+    PropTypes.shape({
+      district: PropTypes.string,
+      month: PropTypes.string,
+      parole_count: PropTypes.string,
+      probation_count: PropTypes.string,
+      state_code: PropTypes.string,
+      year: PropTypes.string,
+    })
+  ).isRequired,
 };
 
 export default RevocationCountBySupervisionType;

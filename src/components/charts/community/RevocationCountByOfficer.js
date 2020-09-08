@@ -20,6 +20,7 @@ import PropTypes from "prop-types";
 
 import PerOfficerBarChart from "../common/bars/PerOfficerBarChart";
 import { COLORS_FIVE_VALUES } from "../../../assets/scripts/constants/colors";
+import { officeDataPropTypes } from "./propTypes";
 
 const chartId = "revocationsByOfficer";
 
@@ -56,12 +57,24 @@ RevocationCountByOfficer.defaultProps = {
 };
 
 RevocationCountByOfficer.propTypes = {
-  revocationCountsByOfficer: PropTypes.arrayOf(PropTypes.shape({})),
+  revocationCountsByOfficer: PropTypes.arrayOf(
+    PropTypes.shape({
+      absconsion_count: PropTypes.string,
+      district: PropTypes.string,
+      felony_count: PropTypes.string,
+      metric_period_months: PropTypes.string,
+      officer_external_id: PropTypes.string,
+      state_code: PropTypes.string,
+      supervision_type: PropTypes.string,
+      technical_count: PropTypes.string,
+      unknown_count: PropTypes.string,
+    })
+  ),
   metricType: PropTypes.string.isRequired,
   metricPeriodMonths: PropTypes.string.isRequired,
   supervisionType: PropTypes.string.isRequired,
   district: PropTypes.arrayOf(PropTypes.string).isRequired,
-  officeData: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  officeData: PropTypes.arrayOf(officeDataPropTypes).isRequired,
 };
 
 export default RevocationCountByOfficer;

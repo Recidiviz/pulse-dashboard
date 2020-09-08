@@ -50,6 +50,7 @@ import {
   riskLevelValuetoLabel,
   riskLevels,
 } from "../../../../utils/transforms/labels";
+import { filtersPropTypes } from "../propTypes";
 
 const chartId = "revocationsByRiskLevel";
 
@@ -212,7 +213,6 @@ const RevocationsByRiskLevel = ({
 RevocationsByRiskLevel.defaultProps = {
   skippedFilters: [],
   treatCategoryAllAsAbsent: false,
-  filterStates: {},
 };
 
 RevocationsByRiskLevel.propTypes = {
@@ -221,7 +221,7 @@ RevocationsByRiskLevel.propTypes = {
   skippedFilters: PropTypes.arrayOf(PropTypes.string),
   treatCategoryAllAsAbsent: PropTypes.bool,
   // eslint-disable-next-line react/forbid-prop-types
-  filterStates: PropTypes.object,
+  filterStates: filtersPropTypes.isRequired,
   timeDescription: PropTypes.string.isRequired,
 };
 

@@ -16,6 +16,7 @@
 // =============================================================================
 
 import React, { useEffect } from "react";
+import PropTypes from "prop-types";
 import { Bar } from "react-chartjs-2";
 
 import defaults from "lodash/fp/defaults";
@@ -316,6 +317,24 @@ const FtrReferralsByLsir = ({
   ]);
 
   return activeChart;
+};
+
+FtrReferralsByLsir.propTypes = {
+  ftrReferralsByLsir: PropTypes.arrayOf(
+    PropTypes.shape({
+      assessment_score_bucket: PropTypes.string,
+      count: PropTypes.string,
+      district: PropTypes.string,
+      metric_period_months: PropTypes.string,
+      state_code: PropTypes.string,
+      supervision_type: PropTypes.string,
+      total_supervision_count: PropTypes.string,
+    })
+  ).isRequired,
+  supervisionType: PropTypes.string.isRequired,
+  district: PropTypes.arrayOf(PropTypes.string).isRequired,
+  metricType: PropTypes.string.isRequired,
+  metricPeriodMonths: PropTypes.string.isRequired,
 };
 
 export default FtrReferralsByLsir;

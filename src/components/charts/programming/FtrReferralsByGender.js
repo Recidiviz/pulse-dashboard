@@ -16,6 +16,7 @@
 // =============================================================================
 
 import React, { useEffect } from "react";
+import PropTypes from "prop-types";
 import { Bar } from "react-chartjs-2";
 
 import groupBy from "lodash/fp/groupBy";
@@ -246,6 +247,24 @@ const FtrReferralsByGender = ({
   ]);
 
   return activeChart;
+};
+
+FtrReferralsByGender.propTypes = {
+  ftrReferralsByGender: PropTypes.arrayOf(
+    PropTypes.shape({
+      count: PropTypes.string,
+      district: PropTypes.string,
+      gender: PropTypes.string,
+      metric_period_months: PropTypes.string,
+      state_code: PropTypes.string,
+      supervision_type: PropTypes.string,
+      total_supervision_count: PropTypes.string,
+    })
+  ).isRequired,
+  supervisionType: PropTypes.string.isRequired,
+  district: PropTypes.arrayOf(PropTypes.string).isRequired,
+  metricPeriodMonths: PropTypes.string.isRequired,
+  metricType: PropTypes.string.isRequired,
 };
 
 export default FtrReferralsByGender;

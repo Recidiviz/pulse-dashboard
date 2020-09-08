@@ -44,6 +44,7 @@ import {
 } from "../../../../utils/charts/significantStatistics";
 import { tooltipForRateMetricWithNestedCounts } from "../../../../utils/charts/toggles";
 import useChartData from "../../../../hooks/useChartData";
+import { filtersPropTypes } from "../propTypes";
 
 const modeButtons = [
   { label: "Percent revoked of standing population", value: "rates" },
@@ -185,7 +186,6 @@ const RevocationsByGender = ({
 RevocationsByGender.defaultProps = {
   skippedFilters: [],
   treatCategoryAllAsAbsent: false,
-  filterStates: {},
 };
 
 RevocationsByGender.propTypes = {
@@ -193,8 +193,7 @@ RevocationsByGender.propTypes = {
   dataFilter: PropTypes.func.isRequired,
   skippedFilters: PropTypes.arrayOf(PropTypes.string),
   treatCategoryAllAsAbsent: PropTypes.bool,
-  // eslint-disable-next-line react/forbid-prop-types
-  filterStates: PropTypes.object,
+  filterStates: filtersPropTypes.isRequired,
   timeDescription: PropTypes.string.isRequired,
 };
 

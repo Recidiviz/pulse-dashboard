@@ -47,6 +47,7 @@ import {
   tooltipForFooterWithNestedCounts,
 } from "../../../../utils/charts/significantStatistics";
 import { tooltipForRateMetricWithNestedCounts } from "../../../../utils/charts/toggles";
+import { filtersPropTypes } from "../propTypes";
 
 const modeButtons = [
   { label: "Percent revoked of standing population", value: "rates" },
@@ -199,7 +200,6 @@ const RevocationsByRace = ({
 RevocationsByRace.defaultProps = {
   skippedFilters: [],
   treatCategoryAllAsAbsent: false,
-  filterStates: {},
 };
 
 RevocationsByRace.propTypes = {
@@ -208,7 +208,7 @@ RevocationsByRace.propTypes = {
   skippedFilters: PropTypes.arrayOf(PropTypes.string),
   treatCategoryAllAsAbsent: PropTypes.bool,
   // eslint-disable-next-line react/forbid-prop-types
-  filterStates: PropTypes.object,
+  filterStates: filtersPropTypes.isRequired,
   timeDescription: PropTypes.string.isRequired,
 };
 

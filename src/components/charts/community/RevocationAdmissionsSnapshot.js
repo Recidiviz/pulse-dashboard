@@ -325,14 +325,25 @@ const RevocationAdmissionsSnapshot = ({
 
 RevocationAdmissionsSnapshot.defaultProps = {
   disableGoal: false,
-  revocationAdmissionsByMonth: [],
 };
 
 RevocationAdmissionsSnapshot.propTypes = {
   stateCode: PropTypes.string.isRequired,
   disableGoal: PropTypes.bool,
   header: PropTypes.string,
-  revocationAdmissionsByMonth: PropTypes.arrayOf(PropTypes.shape({})),
+  revocationAdmissionsByMonth: PropTypes.arrayOf(
+    PropTypes.shape({
+      district: PropTypes.string,
+      month: PropTypes.string,
+      new_admissions: PropTypes.string,
+      non_technicals: PropTypes.string,
+      state_code: PropTypes.string,
+      supervision_type: PropTypes.string,
+      technicals: PropTypes.string,
+      unknown_revocations: PropTypes.string,
+      year: PropTypes.string,
+    })
+  ).isRequired,
   supervisionType: PropTypes.string.isRequired,
   district: PropTypes.arrayOf(PropTypes.string).isRequired,
   metricType: PropTypes.string.isRequired,

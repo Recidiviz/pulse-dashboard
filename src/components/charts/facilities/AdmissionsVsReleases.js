@@ -220,12 +220,20 @@ const AdmissionsVsReleases = ({
 };
 
 AdmissionsVsReleases.defaultProps = {
-  admissionsVsReleases: [],
-  hedaer: undefined,
+  header: undefined,
 };
 
 AdmissionsVsReleases.propTypes = {
-  admissionsVsReleases: PropTypes.arrayOf(PropTypes.shape({})),
+  admissionsVsReleases: PropTypes.arrayOf(
+    PropTypes.shape({
+      district: PropTypes.string,
+      month: PropTypes.string,
+      month_end_population: PropTypes.string,
+      population_change: PropTypes.string,
+      state_code: PropTypes.string,
+      year: PropTypes.string,
+    })
+  ).isRequired,
   metricType: PropTypes.string.isRequired,
   metricPeriodMonths: PropTypes.string.isRequired,
   district: PropTypes.arrayOf(PropTypes.string).isRequired,
