@@ -42,7 +42,8 @@ import {
 import { sortFilterAndSupplementMostRecentMonths } from "../../../utils/transforms/datasets";
 import { monthNamesWithYearsFromNumbers } from "../../../utils/transforms/months";
 import { groupByMonth } from "../common/bars/utils";
-import { officeDataPropTypes } from "./propTypes";
+import { metricTypePropType, officeDataPropTypes } from "../propTypes";
+import { METRIC_TYPES } from "../../constants";
 
 const dataCountsMapper = ({ year, month, revocation_count: count }) => ({
   year,
@@ -80,7 +81,7 @@ const RevocationCountOverTime = ({
     (dataset) => filterDatasetBySupervisionType(dataset, supervisionType),
     (dataset) => filterDatasetByDistrict(dataset, district),
     groupByMonth(["revocation_count", "total_supervision_count"]),
-    map(metricType === "rates" ? dataRatesMapper : dataCountsMapper),
+    map(metricType === METRIC_TYPES.RATES ? dataRatesMapper : dataCountsMapper),
     (dataset) =>
       sortFilterAndSupplementMostRecentMonths(
         dataset,
@@ -159,7 +160,7 @@ const RevocationCountOverTime = ({
           yAxes: [
             {
               ticks: toggleYAxisTicksFor(
-                "counts",
+                METRIC_TYPES.COUNTS,
                 metricType,
                 chartMinValue,
                 chartMaxValue,
@@ -238,7 +239,7 @@ RevocationCountOverTime.defaultProps = {
 RevocationCountOverTime.propTypes = {
   district: PropTypes.arrayOf(PropTypes.string).isRequired,
   metricPeriodMonths: PropTypes.string.isRequired,
-  metricType: PropTypes.string.isRequired,
+  metricType: metricTypePropType.isRequired,
   stateCode: PropTypes.string.isRequired,
   supervisionType: PropTypes.string.isRequired,
   officeData: PropTypes.arrayOf(officeDataPropTypes).isRequired,

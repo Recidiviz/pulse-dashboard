@@ -44,7 +44,7 @@ import {
 } from "../../../../utils/charts/significantStatistics";
 import { tooltipForRateMetricWithNestedCounts } from "../../../../utils/charts/toggles";
 import useChartData from "../../../../hooks/useChartData";
-import { filtersPropTypes } from "../propTypes";
+import { filtersPropTypes } from "../../propTypes";
 
 const modeButtons = [
   { label: "Percent revoked of standing population", value: "rates" },

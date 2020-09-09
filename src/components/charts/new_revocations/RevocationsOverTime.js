@@ -39,7 +39,7 @@ import {
 } from "../../../utils/charts/toggles";
 import { sortFilterAndSupplementMostRecentMonths } from "../../../utils/transforms/datasets";
 import { monthNamesAllWithYearsFromNumbers } from "../../../utils/transforms/months";
-import { filtersPropTypes } from "./propTypes";
+import { filtersPropTypes } from "../propTypes";
 
 const chartId = "revocationsOverTime";
 

@@ -35,7 +35,7 @@ import useChartData from "../../../hooks/useChartData";
 import { axisCallbackForPercentage } from "../../../utils/charts/axis";
 import { tooltipForRateMetricWithCounts } from "../../../utils/charts/toggles";
 import { calculateRate } from "./helpers/rate";
-import { filtersPropTypes } from "./propTypes";
+import { filtersPropTypes } from "../propTypes";
 
 const chartId = "revocationsByViolationType";
 const violationCountKey = "violation_count";

@@ -30,6 +30,8 @@ import { COLORS } from "../../../assets/scripts/constants/colors";
 import { configureDownloadButtons } from "../../../assets/scripts/utils/downloads";
 
 import { filterDatasetByDistrict } from "../../../utils/charts/toggles";
+import { METRIC_TYPES } from "../../constants";
+import { metricTypePropType } from "../propTypes";
 
 const chartId = "reincarcerationRateByStayLength";
 const chartLabels = [
@@ -74,7 +76,9 @@ const ReincarcerationRateByStayLength = ({
   ratesByStayLength,
 }) => {
   const label =
-    metricType === "counts" ? "Number reincarcerated" : "Reincarceration rate";
+    metricType === METRIC_TYPES.COUNTS
+      ? "Number reincarcerated"
+      : "Reincarceration rate";
 
   const dataPointsMap = pipe(
     (dataset) => filterDatasetByDistrict(dataset, district),
@@ -93,7 +97,7 @@ const ReincarcerationRateByStayLength = ({
       return 0;
     }
 
-    return metricType === "counts"
+    return metricType === METRIC_TYPES.COUNTS
       ? dataPointsForLabel.count
       : dataPointsForLabel.rate;
   })(chartLabels);
@@ -123,7 +127,9 @@ const ReincarcerationRateByStayLength = ({
           mode: "index",
           callbacks: {
             label:
-              metricType === "counts" ? countsTooltipLabel : ratesTooltipLabel,
+              metricType === METRIC_TYPES.COUNTS
+                ? countsTooltipLabel
+                : ratesTooltipLabel,
           },
         },
         scaleShowValues: true,
@@ -195,7 +201,7 @@ ReincarcerationRateByStayLength.propTypes = {
     })
   ).isRequired,
   district: PropTypes.arrayOf(PropTypes.string).isRequired,
-  metricType: PropTypes.string.isRequired,
+  metricType: metricTypePropType.isRequired,
 };
 
 export default ReincarcerationRateByStayLength;

@@ -49,6 +49,8 @@ import {
   centerSingleMonthDatasetIfNecessary,
 } from "../../../utils/charts/toggles";
 import { generateTrendlineDataset } from "../../../utils/charts/trendline";
+import { METRIC_TYPES } from "../../constants";
+import { metricTypePropType } from "../propTypes";
 
 const chartId = "supervisionSuccessSnapshot";
 
@@ -124,7 +126,7 @@ const SupervisionSuccessSnapshot = ({
     // Don't add completion rates for months in the future
     filter(isValidData),
     groupByMonthAndMap,
-    map(metricType === "rates" ? dataRatesMapper : dataCountsMapper),
+    map(metricType === METRIC_TYPES.RATES ? dataRatesMapper : dataCountsMapper),
     (dataset) =>
       sortFilterAndSupplementMostRecentMonths(
         dataset,
@@ -234,7 +236,7 @@ const SupervisionSuccessSnapshot = ({
           yAxes: [
             {
               ticks: toggleYAxisTicksAdditionalOptions(
-                "rates",
+                METRIC_TYPES.RATES,
                 metricType,
                 chartMinValue,
                 chartMaxValue,
@@ -323,7 +325,7 @@ SupervisionSuccessSnapshot.propTypes = {
       supervision_type: PropTypes.string,
     })
   ).isRequired,
-  metricType: PropTypes.string.isRequired,
+  metricType: metricTypePropType.isRequired,
   metricPeriodMonths: PropTypes.string.isRequired,
   district: PropTypes.arrayOf(PropTypes.string).isRequired,
   supervisionType: PropTypes.string.isRequired,

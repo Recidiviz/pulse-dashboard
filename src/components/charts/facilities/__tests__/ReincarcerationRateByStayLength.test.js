@@ -20,6 +20,7 @@ import React from "react";
 import ShallowRenderer from "react-test-renderer/shallow";
 import "@testing-library/jest-dom/extend-expect";
 import ReincarcerationRateByStayLength from "../ReincarcerationRateByStayLength";
+import { METRIC_TYPES } from "../../../constants";
 
 const ratesByStayLength = [
   {
@@ -128,7 +129,7 @@ describe("test for component ReincarcerationRateByStayLength", () => {
     const renderer = new ShallowRenderer();
     renderer.render(
       <ReincarcerationRateByStayLength
-        metricType="rates"
+        metricType={METRIC_TYPES.RATES}
         district={["all"]}
         ratesByStayLength={ratesByStayLength}
       />
@@ -169,7 +170,7 @@ describe("test for component ReincarcerationRateByStayLength", () => {
     const renderer = new ShallowRenderer();
     renderer.render(
       <ReincarcerationRateByStayLength
-        metricType="counts"
+        metricType={METRIC_TYPES.COUNTS}
         district={["all"]}
         ratesByStayLength={ratesByStayLength}
       />

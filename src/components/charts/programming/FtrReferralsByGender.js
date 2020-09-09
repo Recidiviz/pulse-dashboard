@@ -43,6 +43,8 @@ import {
   tooltipForRateChart,
 } from "../../../utils/charts/tooltips";
 import { genderValueToHumanReadable } from "../../../utils/transforms/labels";
+import { metricTypePropType } from "../propTypes";
+import { METRIC_TYPES } from "../../constants";
 
 const chartId = "ftrReferralsByGender";
 
@@ -218,7 +220,7 @@ const FtrReferralsByGender = ({
   );
 
   let activeChart = countsChart;
-  if (metricType === "rates") {
+  if (metricType === METRIC_TYPES.RATES) {
     activeChart = ratesChart;
   }
 
@@ -264,7 +266,7 @@ FtrReferralsByGender.propTypes = {
   supervisionType: PropTypes.string.isRequired,
   district: PropTypes.arrayOf(PropTypes.string).isRequired,
   metricPeriodMonths: PropTypes.string.isRequired,
-  metricType: PropTypes.string.isRequired,
+  metricType: metricTypePropType.isRequired,
 };
 
 export default FtrReferralsByGender;

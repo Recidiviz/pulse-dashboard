@@ -44,6 +44,8 @@ import {
 } from "../../../utils/charts/toggles";
 import { sortFilterAndSupplementMostRecentMonths } from "../../../utils/transforms/datasets";
 import { monthNamesWithYearsFromNumbers } from "../../../utils/transforms/months";
+import { METRIC_TYPES } from "../../constants";
+import { metricTypePropType } from "../propTypes";
 
 const chartId = "reincarcerationCountsByMonth";
 const stepSize = 5;
@@ -102,7 +104,7 @@ const ReincarcerationCountOverTime = ({
     (dataset) => filterDatasetByDistrict(dataset, district),
     groupBy(({ year, month }) => `${year}-${month}`),
     values,
-    map(metricType === "rates" ? dataRatesMapper : dataCountsMapper),
+    map(metricType === METRIC_TYPES.RATES ? dataRatesMapper : dataCountsMapper),
     sortAndSupplementMostRecentMonths(metricPeriodMonths)
   )(countsByMonth);
 
@@ -181,7 +183,7 @@ const ReincarcerationCountOverTime = ({
           yAxes: [
             {
               ticks: toggleYAxisTicksFor(
-                "counts",
+                METRIC_TYPES.COUNTS,
                 metricType,
                 chartMinValue,
                 chartMaxValue,
@@ -271,7 +273,7 @@ ReincarcerationCountOverTime.propTypes = {
       year: PropTypes.string,
     })
   ).isRequired,
-  metricType: PropTypes.string.isRequired,
+  metricType: metricTypePropType.isRequired,
   metricPeriodMonths: PropTypes.string.isRequired,
   district: PropTypes.arrayOf(PropTypes.string).isRequired,
   disableGoal: PropTypes.bool,

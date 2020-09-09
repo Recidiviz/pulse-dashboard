@@ -24,7 +24,7 @@ import PercentRevokedByExits from "./PercentRevokedByExits";
 import Loading from "../../../Loading";
 // eslint-disable-next-line import/no-cycle
 import useChartData from "../../../../hooks/useChartData";
-import { filtersPropTypes } from "../propTypes";
+import { filtersPropTypes } from "../../propTypes";
 
 const chartId = "revocationsByDistrict";
 const chartTitle = "Admissions by district";

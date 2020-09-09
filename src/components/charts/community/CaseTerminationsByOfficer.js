@@ -20,7 +20,8 @@ import PropTypes from "prop-types";
 
 import { COLORS_SEVEN_VALUES } from "../../../assets/scripts/constants/colors";
 import PerOfficerBarChart from "../common/bars/PerOfficerBarChart";
-import { officeDataPropTypes } from "./propTypes";
+import { metricTypePropType, officeDataPropTypes } from "../propTypes";
+import { METRIC_TYPES } from "../../constants";
 
 const chartId = "caseTerminationsByOfficer";
 
@@ -50,7 +51,9 @@ const CaseTerminationsByOfficer = ({
       { key: "death", label: "Death" },
       { key: "other", label: "Other" },
     ]}
-    yAxisLabel={metricType === "counts" ? "Case terminations" : "Percentage"}
+    yAxisLabel={
+      metricType === METRIC_TYPES.COUNTS ? "Case terminations" : "Percentage"
+    }
     barColorPalette={COLORS_SEVEN_VALUES}
   />
 );
@@ -72,7 +75,7 @@ CaseTerminationsByOfficer.propTypes = {
       suspension: PropTypes.string,
     })
   ).isRequired,
-  metricType: PropTypes.string.isRequired,
+  metricType: metricTypePropType.isRequired,
   metricPeriodMonths: PropTypes.string.isRequired,
   supervisionType: PropTypes.string.isRequired,
   district: PropTypes.arrayOf(PropTypes.string).isRequired,

@@ -44,7 +44,7 @@ import {
   nameFromOfficerId,
   riskLevelValuetoLabel,
 } from "../../../../utils/transforms/labels";
-import { filtersPropTypes } from "../propTypes";
+import { filtersPropTypes } from "../../propTypes";
 
 const CASES_PER_PAGE = 15;
 

@@ -45,6 +45,7 @@ import {
 // eslint-disable-next-line import/no-cycle
 import useChartData from "../../../../hooks/useChartData";
 import { isOfficerIdsHidden } from "../../../../components/charts/common/bars/utils";
+import { METRIC_TYPES } from "../../../../components/constants";
 
 const importantNotes = [
   {
@@ -243,7 +244,7 @@ const CommunityExplore = () => {
           <>
             ADMISSIONS BY TYPE
             {(supervisionType !== "all" || district[0] !== "all") &&
-              metricType === "rates" && (
+              metricType === METRIC_TYPES.RATES && (
                 <WarningIcon
                   tooltipText="This graph is showing both non-revocation and revocation admissions to prison. We cannot show percentages of admissions from a specific supervision type or office because those filters can’t be applied to non-revocation admissions to prison."
                   className="pL-10 toggle-alert"

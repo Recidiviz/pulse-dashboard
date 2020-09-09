@@ -42,6 +42,8 @@ import {
   groupByRaceAndMap,
   stateCensusMapper,
 } from "../common/utils/races";
+import { metricTypePropType } from "../propTypes";
+import { METRIC_TYPES } from "../../constants";
 
 const chartId = "ftrReferralsByRace";
 const colors = [
@@ -272,7 +274,7 @@ const FtrReferralsByRace = ({
   );
 
   let activeChart = countsChart;
-  if (metricType === "rates") {
+  if (metricType === METRIC_TYPES.RATES) {
     activeChart = ratesChart;
   }
 
@@ -324,7 +326,7 @@ FtrReferralsByRace.propTypes = {
   ).isRequired,
   supervisionType: PropTypes.string.isRequired,
   district: PropTypes.arrayOf(PropTypes.string).isRequired,
-  metricType: PropTypes.string.isRequired,
+  metricType: metricTypePropType.isRequired,
   metricPeriodMonths: PropTypes.string.isRequired,
 };
 

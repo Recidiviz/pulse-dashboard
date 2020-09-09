@@ -33,7 +33,7 @@ import { standardTooltipForCountMetric } from "../../../../utils/charts/toggles"
 import ModeSwitcher from "../ModeSwitcher";
 import ExportMenu from "../../ExportMenu";
 import { modeButtons } from "./helpers";
-import { filtersPropTypes } from "../propTypes";
+import { filtersPropTypes } from "../../propTypes";
 
 const RevocationCount = ({
   chartId,

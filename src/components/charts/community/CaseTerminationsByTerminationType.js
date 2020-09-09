@@ -20,6 +20,8 @@ import PropTypes from "prop-types";
 
 import PerMonthBarChart from "../common/bars/PerMonthBarChart";
 import { COLORS_SEVEN_VALUES } from "../../../assets/scripts/constants/colors";
+import { METRIC_TYPES } from "../../constants";
+import { metricTypePropType } from "../propTypes";
 
 const chartId = "caseTerminationsByTerminationType";
 
@@ -49,13 +51,15 @@ const CaseTerminationsByTerminationType = ({
       { key: "death", label: "Death" },
       { key: "other", label: "Other" },
     ]}
-    yAxisLabel={metricType === "counts" ? "Case terminations" : "Percentage"}
+    yAxisLabel={
+      metricType === METRIC_TYPES.COUNTS ? "Case terminations" : "Percentage"
+    }
     barColorPalette={COLORS_SEVEN_VALUES}
   />
 );
 
 CaseTerminationsByTerminationType.propTypes = {
-  metricType: PropTypes.string.isRequired,
+  metricType: metricTypePropType.isRequired,
   metricPeriodMonths: PropTypes.string.isRequired,
   district: PropTypes.arrayOf(PropTypes.string).isRequired,
   caseTerminationCountsByMonthByTerminationType: PropTypes.arrayOf(

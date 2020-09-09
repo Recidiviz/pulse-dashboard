@@ -42,6 +42,8 @@ import {
   tooltipForCountChart,
   tooltipForRateChart,
 } from "../../../utils/charts/tooltips";
+import { metricTypePropType } from "../propTypes";
+import { METRIC_TYPES } from "../../constants";
 
 const chartId = "ftrReferralsByLsir";
 
@@ -288,7 +290,7 @@ const FtrReferralsByLsir = ({
   );
 
   let activeChart = countsChart;
-  if (metricType === "rates") {
+  if (metricType === METRIC_TYPES.RATES) {
     activeChart = ratesChart;
   }
 
@@ -333,7 +335,7 @@ FtrReferralsByLsir.propTypes = {
   ).isRequired,
   supervisionType: PropTypes.string.isRequired,
   district: PropTypes.arrayOf(PropTypes.string).isRequired,
-  metricType: PropTypes.string.isRequired,
+  metricType: metricTypePropType.isRequired,
   metricPeriodMonths: PropTypes.string.isRequired,
 };
 

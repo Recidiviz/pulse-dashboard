@@ -50,6 +50,8 @@ import {
   centerSingleMonthDatasetIfNecessary,
 } from "../../../utils/charts/toggles";
 import { generateTrendlineDataset } from "../../../utils/charts/trendline";
+import { metricTypePropType } from "../propTypes";
+import { METRIC_TYPES } from "../../constants";
 
 const chartId = "revocationAdmissionsSnapshot";
 const stepSize = 10;
@@ -137,7 +139,7 @@ const RevocationAdmissionsSnapshot = ({
     (dataset) => filterDatasetByDistrict(dataset, district),
     groupByMonth(calculateTotalRevocations),
     toRevocationCountsList,
-    metricType === "counts"
+    metricType === METRIC_TYPES.COUNTS
       ? identity
       : map((data) => ({
           ...data,
@@ -346,7 +348,7 @@ RevocationAdmissionsSnapshot.propTypes = {
   ).isRequired,
   supervisionType: PropTypes.string.isRequired,
   district: PropTypes.arrayOf(PropTypes.string).isRequired,
-  metricType: PropTypes.string.isRequired,
+  metricType: metricTypePropType.isRequired,
   metricPeriodMonths: PropTypes.string.isRequired,
 };
 

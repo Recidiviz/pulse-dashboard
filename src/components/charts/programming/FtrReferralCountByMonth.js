@@ -37,6 +37,8 @@ import {
 } from "../../../utils/charts/toggles";
 import { sortFilterAndSupplementMostRecentMonths } from "../../../utils/transforms/datasets";
 import { monthNamesWithYearsFromNumbers } from "../../../utils/transforms/months";
+import { metricTypePropType } from "../propTypes";
+import { METRIC_TYPES } from "../../constants";
 
 const dataCountsMapper = ({ year, month, count }) => ({
   year,
@@ -81,7 +83,7 @@ const FtrReferralCountByMonth = ({
     (dataset) => filterDatasetBySupervisionType(dataset, supervisionType),
     (dataset) => filterDatasetByDistrict(dataset, district),
     groupByMonth(["count", "total_supervision_count"]),
-    map(metricType === "rates" ? dataRatesMapper : dataCountsMapper),
+    map(metricType === METRIC_TYPES.RATES ? dataRatesMapper : dataCountsMapper),
     sortAndSupplementMostRecentMonths(metricPeriodMonths)
   )(countsByMonth);
 
@@ -194,7 +196,11 @@ const FtrReferralCountByMonth = ({
   useEffect(() => {
     const headerElement = document.getElementById(header);
 
-    if (headerElement && mostRecentValue !== null && metricType === "counts") {
+    if (
+      headerElement &&
+      mostRecentValue !== null &&
+      metricType === METRIC_TYPES.COUNTS
+    ) {
       const title = `There have been <span class='fs-block header-highlight'>${mostRecentValue} referrals</span> to Free Through Recovery this month so far.`;
       headerElement.innerHTML = title;
     } else if (headerElement) {
@@ -223,7 +229,7 @@ FtrReferralCountByMonth.propTypes = {
   ).isRequired,
   supervisionType: PropTypes.string.isRequired,
   district: PropTypes.arrayOf(PropTypes.string).isRequired,
-  metricType: PropTypes.string.isRequired,
+  metricType: metricTypePropType.isRequired,
   metricPeriodMonths: PropTypes.string.isRequired,
   header: PropTypes.node,
 };

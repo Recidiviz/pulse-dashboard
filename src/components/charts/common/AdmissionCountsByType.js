@@ -40,6 +40,8 @@ import {
   filterDatasetByMetricPeriodMonths,
 } from "../../../utils/charts/toggles";
 import { sortByLabel } from "../../../utils/transforms/datasets";
+import { metricTypePropType } from "../propTypes";
+import { METRIC_TYPES } from "../../constants";
 
 const chartId = "admissionCountsByType";
 
@@ -56,9 +58,10 @@ const AdmissionCountsByType = ({
   supervisionType,
 }) => {
   // This chart does not support district or supervision type breakdowns for rates, only counts
-  const filterDistrict = metricType === "counts" ? district : ["all"];
+  const filterDistrict =
+    metricType === METRIC_TYPES.COUNTS ? district : ["all"];
   const filterSupervisionType =
-    metricType === "counts" ? supervisionType : "all";
+    metricType === METRIC_TYPES.COUNTS ? supervisionType : "all";
 
   const filteredAdmissionCounts = pipe(
     (dataset) => filterDatasetByDistrict(dataset, filterDistrict),
@@ -226,7 +229,8 @@ const AdmissionCountsByType = ({
     />
   );
 
-  const activeChart = metricType === "rates" ? ratesChart : countsChart;
+  const activeChart =
+    metricType === METRIC_TYPES.RATES ? ratesChart : countsChart;
 
   const exportedStructureCallback = () => ({
     metric: "Admissions by type",
@@ -259,7 +263,7 @@ AdmissionCountsByType.propTypes = {
   admissionCountsByType: PropTypes.arrayOf(PropTypes.shape({})),
   supervisionType: PropTypes.string.isRequired,
   district: PropTypes.arrayOf(PropTypes.string).isRequired,
-  metricType: PropTypes.string.isRequired,
+  metricType: metricTypePropType.isRequired,
   metricPeriodMonths: PropTypes.string.isRequired,
 };
 

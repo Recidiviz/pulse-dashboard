@@ -35,6 +35,8 @@ import {
   tooltipForRateChart,
 } from "../../../utils/charts/tooltips";
 import { toInt } from "../../../utils/transforms/labels";
+import { metricTypePropType } from "../propTypes";
+import { METRIC_TYPES } from "../../constants";
 
 const chartId = "ftrReferralsByAge";
 const ageBucketLabels = ["<25", "25-29", "30-34", "35-39", "40<"];
@@ -294,7 +296,7 @@ const FtrReferralsByAge = ({
   );
 
   let activeChart = countsChart;
-  if (metricType === "rates") {
+  if (metricType === METRIC_TYPES.RATES) {
     activeChart = ratesChart;
   }
 
@@ -340,7 +342,7 @@ FtrReferralsByAge.propTypes = {
   supervisionType: PropTypes.string.isRequired,
   district: PropTypes.arrayOf(PropTypes.string).isRequired,
   metricPeriodMonths: PropTypes.string.isRequired,
-  metricType: PropTypes.string.isRequired,
+  metricType: metricTypePropType.isRequired,
 };
 
 export default FtrReferralsByAge;

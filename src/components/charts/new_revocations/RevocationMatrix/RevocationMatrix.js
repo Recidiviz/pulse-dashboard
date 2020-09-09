@@ -41,7 +41,7 @@ import Loading from "../../../Loading";
 
 import useChartData from "../../../../hooks/useChartData";
 import { violationCountLabel } from "../../../../utils/transforms/labels";
-import { filtersPropTypes } from "../propTypes";
+import { filtersPropTypes } from "../../propTypes";
 
 const TITLE =
   "Admissions by violation history (in year prior to their last reported violation)";

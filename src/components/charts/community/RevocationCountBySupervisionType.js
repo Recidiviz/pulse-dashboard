@@ -20,6 +20,8 @@ import PropTypes from "prop-types";
 
 import PerMonthBarChart from "../common/bars/PerMonthBarChart";
 import { COLORS_STACKED_TWO_VALUES } from "../../../assets/scripts/constants/colors";
+import { METRIC_TYPES } from "../../constants";
+import { metricTypePropType } from "../propTypes";
 
 const chartId = "revocationsBySupervisionType";
 
@@ -40,13 +42,15 @@ const RevocationCountBySupervisionType = ({
       { key: "probation_count", label: "Probation" },
       { key: "parole_count", label: "Parole" },
     ]}
-    yAxisLabel={metricType === "counts" ? "Revocation count" : "Percentage"}
+    yAxisLabel={
+      metricType === METRIC_TYPES.COUNTS ? "Revocation count" : "Percentage"
+    }
     barColorPalette={COLORS_STACKED_TWO_VALUES}
   />
 );
 
 RevocationCountBySupervisionType.propTypes = {
-  metricType: PropTypes.string.isRequired,
+  metricType: metricTypePropType.isRequired,
   metricPeriodMonths: PropTypes.string.isRequired,
   district: PropTypes.arrayOf(PropTypes.string).isRequired,
   revocationCountsByMonthBySupervisionType: PropTypes.arrayOf(

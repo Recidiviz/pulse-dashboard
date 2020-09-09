@@ -39,6 +39,8 @@ import {
 } from "../../../utils/charts/toggles";
 import { sortFilterAndSupplementMostRecentMonths } from "../../../utils/transforms/datasets";
 import { monthNamesWithYearsFromNumbers } from "../../../utils/transforms/months";
+import { METRIC_TYPES } from "../../constants";
+import { metricTypePropType } from "../propTypes";
 
 const dataCountsMapper = (dataset) => ({
   year: dataset[0].year,
@@ -86,7 +88,9 @@ const AdmissionsVsReleases = ({
     (dataset) => filterDatasetByDistrict(dataset, district),
     groupBy(({ year, month }) => `${year}-${month}`),
     values,
-    map(metricType === "counts" ? dataCountsMapper : dataRatesMapper),
+    map(
+      metricType === METRIC_TYPES.COUNTS ? dataCountsMapper : dataRatesMapper
+    ),
     (dataset) =>
       sortFilterAndSupplementMostRecentMonths(
         dataset,
@@ -198,7 +202,7 @@ const AdmissionsVsReleases = ({
   if (
     headerElement &&
     mostRecentValue !== null &&
-    metricType === "counts" &&
+    metricType === METRIC_TYPES.COUNTS &&
     district[0].toUpperCase() === "ALL"
   ) {
     let title = "";
@@ -234,7 +238,7 @@ AdmissionsVsReleases.propTypes = {
       year: PropTypes.string,
     })
   ).isRequired,
-  metricType: PropTypes.string.isRequired,
+  metricType: metricTypePropType.isRequired,
   metricPeriodMonths: PropTypes.string.isRequired,
   district: PropTypes.arrayOf(PropTypes.string).isRequired,
   header: PropTypes.string,

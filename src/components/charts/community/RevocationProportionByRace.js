@@ -41,6 +41,8 @@ import {
   addMissedRaceCounts,
   countMapper,
 } from "../common/utils/races";
+import { metricTypePropType } from "../propTypes";
+import { METRIC_TYPES } from "../../constants";
 
 const colors = [
   COLORS_FIVE_VALUES[0],
@@ -249,7 +251,7 @@ const RevocationProportionByRace = ({
   });
 
   let activeChart = countsChart;
-  if (metricType === "rates") {
+  if (metricType === METRIC_TYPES.RATES) {
     activeChart = ratesChart;
   }
 
@@ -276,7 +278,7 @@ const RevocationProportionByRace = ({
 };
 
 RevocationProportionByRace.propTypes = {
-  metricType: PropTypes.string.isRequired,
+  metricType: metricTypePropType.isRequired,
   metricPeriodMonths: PropTypes.string.isRequired,
   district: PropTypes.arrayOf(PropTypes.string).isRequired,
   supervisionType: PropTypes.string.isRequired,

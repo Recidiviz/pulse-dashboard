@@ -20,6 +20,8 @@ import PropTypes from "prop-types";
 
 import PerMonthBarChart from "../common/bars/PerMonthBarChart";
 import { COLORS_FIVE_VALUES } from "../../../assets/scripts/constants/colors";
+import { metricTypePropType } from "../propTypes";
+import { METRIC_TYPES } from "../../constants";
 
 const chartId = "ftrReferralsByParticipationStatus";
 
@@ -53,13 +55,13 @@ const FtrReferralsByParticipationStatus = ({
       { key: "denied", label: "Denied" },
       { key: "discharged", label: "Discharged" },
     ]}
-    yAxisLabel={metricType === "counts" ? "Count" : "Percentage"}
+    yAxisLabel={metricType === METRIC_TYPES.COUNTS ? "Count" : "Percentage"}
     barColorPalette={chartColors}
   />
 );
 
 FtrReferralsByParticipationStatus.propTypes = {
-  metricType: PropTypes.string.isRequired,
+  metricType: metricTypePropType.isRequired,
   metricPeriodMonths: PropTypes.string.isRequired,
   supervisionType: PropTypes.string.isRequired,
   district: PropTypes.arrayOf(PropTypes.string).isRequired,

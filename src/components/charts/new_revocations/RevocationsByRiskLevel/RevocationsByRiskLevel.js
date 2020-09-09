@@ -50,7 +50,7 @@ import {
   riskLevelValuetoLabel,
   riskLevels,
 } from "../../../../utils/transforms/labels";
-import { filtersPropTypes } from "../propTypes";
+import { filtersPropTypes } from "../../propTypes";
 
 const chartId = "revocationsByRiskLevel";
 
