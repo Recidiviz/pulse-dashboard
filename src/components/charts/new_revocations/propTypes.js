@@ -6,8 +6,8 @@ export const filtersPropTypes = PropTypes.shape({
     .isRequired,
   chargeCategory: PropTypes.string.isRequired,
   district: PropTypes.arrayOf(PropTypes.string).isRequired,
-  supervisionType: PropTypes.string.isRequired,
+  supervisionType: PropTypes.string,
   reportedViolations: PropTypes.string.isRequired,
   violationType: PropTypes.string.isRequired,
-  admissionType: PropTypes.string,
+  admissionType: PropTypes.arrayOf(PropTypes.string),
 });

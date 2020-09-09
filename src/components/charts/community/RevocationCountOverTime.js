@@ -70,7 +70,7 @@ const RevocationCountOverTime = ({
   district,
   metricType,
   metricPeriodMonths,
-  disableGoal,
+  disableGoal = false,
   header,
   stateCode,
 }) => {
@@ -231,10 +231,12 @@ const RevocationCountOverTime = ({
   return chart;
 };
 
+RevocationCountOverTime.defaultProps = {
+  disableGoal: false,
+};
+
 RevocationCountOverTime.propTypes = {
-  disableGoal: PropTypes.bool.isRequired,
   district: PropTypes.arrayOf(PropTypes.string).isRequired,
-  geoView: PropTypes.bool.isRequired,
   metricPeriodMonths: PropTypes.string.isRequired,
   metricType: PropTypes.string.isRequired,
   stateCode: PropTypes.string.isRequired,
@@ -251,6 +253,7 @@ RevocationCountOverTime.propTypes = {
       year: PropTypes.string.isRequired,
     })
   ).isRequired,
+  disableGoal: PropTypes.bool,
 };
 
 export default RevocationCountOverTime;

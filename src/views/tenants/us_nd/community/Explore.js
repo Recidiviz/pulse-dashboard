@@ -136,7 +136,6 @@ const CommunityExplore = () => {
             metricPeriodMonths={metricPeriodMonths}
             supervisionType={supervisionType}
             district={district}
-            geoView={false}
             disableGoal
             officeData={apiData.site_offices}
             revocationCountsByMonth={apiData.revocations_by_month}
