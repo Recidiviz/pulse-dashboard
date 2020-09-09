@@ -15,19 +15,18 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-const cacheManager = require("cache-manager");
 const { default: processMetricFile } = require("./processMetricFile");
 const { default: fetchMetricsFromLocal } = require("./fetchMetricsFromLocal");
 const { default: fetchMetricsFromGCS } = require("./fetchMetricsFromGCS");
+const { default: createMemoryCache } = require("./createMemoryCache");
 
 const METRIC_CACHE_TTL_SECONDS = 60 * 60; // Expire items in the cache after 1 hour
 const METRIC_REFRESH_SECONDS = 60 * 10;
 
-const memoryCache = cacheManager.caching({
-  store: "memory",
-  ttl: METRIC_CACHE_TTL_SECONDS,
-  refreshThreshold: METRIC_REFRESH_SECONDS,
-});
+const memoryCache = createMemoryCache(
+  METRIC_CACHE_TTL_SECONDS,
+  METRIC_REFRESH_SECONDS
+);
 
 /**
  * Retrieves the metrics for the given metric type and passes them into the given callback.
