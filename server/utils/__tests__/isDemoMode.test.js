@@ -27,7 +27,7 @@ describe("demoMode tests", () => {
     expect(isDemoMode).toBe(true);
   });
 
-  it("should return true if env is truthy", () => {
+  it("should return false if env is falsy", () => {
     process.env.IS_DEMO = "false";
     const { default: isDemoMode } = require("../isDemoMode");
 

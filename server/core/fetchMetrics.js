@@ -51,7 +51,7 @@ function fetchMetrics(stateCode, metricType, file, isDemo, callback) {
     cacheKey,
     (cacheCb) => {
       const fetcher = isDemo ? fetchMetricsFromLocal : fetchMetricsFromGCS;
-      const source = isDemo ? "local" : "GSC";
+      const source = isDemo ? "local" : "GCS";
 
       console.log(`Fetching ${cacheKey} metrics from ${source}...`);
       const metricPromises = fetcher(stateCode.toUpperCase(), metricType, file);
