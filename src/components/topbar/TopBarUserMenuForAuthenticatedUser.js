@@ -25,13 +25,20 @@ import { getUserStateName } from "../../utils/authentication/user";
 const TopBarUserMenuForAuthenticatedUser = () => {
   const { user, logout } = useAuth0();
 
-  const onLogout = useCallback(() => {
-    logout({ returnTo: window.location.origin });
-  }, [logout]);
+  const onLogout = useCallback(
+    (e) => {
+      e.preventDefault();
+      logout({ returnTo: window.location.origin });
+    },
+    [logout]
+  );
 
   return (
     <Dropdown as="li">
-      <Dropdown.Toggle variant="link" className="peers fxw-nw ai-c lh-1">
+      <Dropdown.Toggle
+        variant="link"
+        className="no-after peers fxw-nw ai-c lh-1 ta-l"
+      >
         <div className="peer mR-10">
           <img className="w-2r bdrs-50p" src={user.picture} alt="" />
         </div>
@@ -44,16 +51,17 @@ const TopBarUserMenuForAuthenticatedUser = () => {
         <Dropdown.Item
           as={Link}
           to="/profile"
-          className="d-b td-n pY-5 bgcH-grey-100 c-grey-700"
+          className="d-b td-n bgcH-grey-100 c-grey-700 pX-15"
         >
           <i className="ti-user mR-10" />
           <span>Profile</span>
         </Dropdown.Item>
         <Dropdown.Divider role="separator" />
         <Dropdown.Item
-          as="button"
+          as="a"
+          href="#"
           variant="link"
-          className="d-b td-n pY-5 bgcH-grey-100 c-grey-700"
+          className="d-b td-n bgcH-grey-100 c-grey-700 pX-15"
           onClick={onLogout}
         >
           <i className="ti-power-off mR-10" />

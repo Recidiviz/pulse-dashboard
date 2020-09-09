@@ -17,6 +17,7 @@
 
 import React, { useCallback, useState } from "react";
 import { Dropdown, Modal } from "react-bootstrap";
+import PropTypes from "prop-types";
 
 import {
   downloadChartAsImage,
@@ -26,12 +27,25 @@ import {
 } from "../../assets/scripts/utils/downloads";
 import chartIdToInfo from "../../utils/charts/info";
 
-const ExportMenu = (props) => {
+const ExportMenu = ({
+  chartId,
+  timeWindowDescription,
+  metricTitle,
+  filters,
+  shouldExport = true,
+  regularElement = false,
+  isTable = false,
+  chart = null,
+  elementDatasets = null,
+  elementLabels = null,
+  tableData = null,
+  tableLabels = null,
+}) => {
   const [isModalOpened, setIsModalOpened] = useState(false);
-  const additionalInfo = chartIdToInfo[props.chartId] || [];
+  const additionalInfo = chartIdToInfo[chartId] || [];
 
   const exportedStructureCallback = () => ({
-    metric: props.metricTitle,
+    metric: metricTitle,
     series: [],
   });
 
@@ -45,124 +59,122 @@ const ExportMenu = (props) => {
 
   return (
     <span className="fa-pull-right">
-      <Dropdown>
+      <Dropdown drop="down" alignRight>
         <Dropdown.Toggle
+          variant="link"
           role="button"
-          id={`exportDropdownMenuButton-${props.chartId}`}
+          id={`exportDropdownMenuButton-${chartId}`}
+          className="no-after text-decoration-none"
         >
-          ...
+          <span className="h4">...</span>
         </Dropdown.Toggle>
         <Dropdown.Menu
-          className="dropdown-menu dropdown-menu-right"
-          aria-labelledby={`exportDropdownMenuButton-${props.chartId}`}
+          className="dropdown-menu"
+          aria-labelledby={`exportDropdownMenuButton-${chartId}`}
         >
           <Dropdown.Item as="button" onClick={toggleModal}>
             Additional info
           </Dropdown.Item>
-          {(props.shouldExport === undefined || props.shouldExport === true) &&
-            props.regularElement === undefined && (
-              <Dropdown.Item
-                as="button"
-                onClick={() =>
-                  downloadChartAsImage(
-                    props.chartId,
-                    props.metricTitle,
-                    props.chart.props.data.datasets,
-                    props.chart.props.data.labels,
-                    exportedStructureCallback,
-                    props.filters,
-                    undefined,
-                    undefined,
-                    props.timeWindowDescription,
-                    true
-                  )
-                }
-              >
-                Export image
-              </Dropdown.Item>
-            )}
-          {(props.shouldExport === undefined || props.shouldExport === true) &&
-            props.regularElement === undefined && (
-              <Dropdown.Item
-                as="button"
-                onClick={() =>
-                  downloadChartAsData(
-                    props.chartId,
-                    props.metricTitle,
-                    props.chart.props.data.datasets,
-                    props.chart.props.data.labels,
-                    exportedStructureCallback,
-                    props.filters,
-                    undefined,
-                    undefined,
-                    props.timeWindowDescription,
-                    true
-                  )
-                }
-              >
-                Export data
-              </Dropdown.Item>
-            )}
-          {(props.shouldExport === undefined || props.shouldExport === true) &&
-            props.regularElement && (
-              <Dropdown.Item
-                as="button"
-                onClick={() =>
-                  downloadHtmlElementAsImage(
-                    props.chartId,
-                    props.metricTitle,
-                    props.elementDatasets,
-                    props.elementLabels,
-                    exportedStructureCallback,
-                    props.filters,
-                    undefined,
-                    undefined,
-                    props.timeWindowDescription,
-                    true
-                  )
-                }
-              >
-                Export image
-              </Dropdown.Item>
-            )}
-          {(props.shouldExport === undefined || props.shouldExport === true) &&
-            props.regularElement && (
-              <Dropdown.Item
-                as="button"
-                onClick={() =>
-                  downloadHtmlElementAsData(
-                    props.chartId,
-                    props.metricTitle,
-                    props.elementDatasets,
-                    props.elementLabels,
-                    exportedStructureCallback,
-                    props.filters,
-                    undefined,
-                    undefined,
-                    props.timeWindowDescription,
-                    true
-                  )
-                }
-              >
-                Export data
-              </Dropdown.Item>
-            )}
-          {props.isTable && props.regularElement === undefined && (
+          {shouldExport && !regularElement && (
+            <Dropdown.Item
+              as="button"
+              onClick={() =>
+                downloadChartAsImage(
+                  chartId,
+                  metricTitle,
+                  chart.data.datasets,
+                  chart.data.labels,
+                  exportedStructureCallback,
+                  filters,
+                  undefined,
+                  undefined,
+                  timeWindowDescription,
+                  true
+                )
+              }
+            >
+              Export image
+            </Dropdown.Item>
+          )}
+          {shouldExport && !regularElement && (
+            <Dropdown.Item
+              as="button"
+              onClick={() =>
+                downloadChartAsData(
+                  chartId,
+                  metricTitle,
+                  chart.data.datasets,
+                  chart.data.labels,
+                  exportedStructureCallback,
+                  filters,
+                  undefined,
+                  undefined,
+                  timeWindowDescription,
+                  true
+                )
+              }
+            >
+              Export data
+            </Dropdown.Item>
+          )}
+          {shouldExport && regularElement && (
+            <Dropdown.Item
+              as="button"
+              onClick={() =>
+                downloadHtmlElementAsImage(
+                  chartId,
+                  metricTitle,
+                  elementDatasets,
+                  elementLabels,
+                  exportedStructureCallback,
+                  filters,
+                  undefined,
+                  undefined,
+                  timeWindowDescription,
+                  true
+                )
+              }
+            >
+              Export image
+            </Dropdown.Item>
+          )}
+          {shouldExport && regularElement && (
             <Dropdown.Item
               as="button"
               onClick={() =>
                 downloadHtmlElementAsData(
-                  props.chartId,
-                  props.metricTitle,
-                  props.tableData,
-                  props.tableLabels,
+                  chartId,
+                  metricTitle,
+                  elementDatasets,
+                  elementLabels,
                   exportedStructureCallback,
-                  props.filters,
+                  filters,
                   undefined,
                   undefined,
-                  props.timeWindowDescription,
+                  timeWindowDescription,
+                  true
+                )
+              }
+            >
+              Export data
+            </Dropdown.Item>
+          )}
+          {isTable && !regularElement && (
+            <Dropdown.Item
+              as="button"
+              onClick={() =>
+                downloadHtmlElementAsData(
+                  chartId,
+                  metricTitle,
+                  tableData,
+                  tableLabels,
+                  exportedStructureCallback,
+                  filters,
+                  undefined,
+                  undefined,
+                  timeWindowDescription,
                   true,
-                  props.isTable
+                  isTable
                 )
               }
             >
@@ -219,6 +231,42 @@ const ExportMenu = (props) => {
       </Modal>
     </span>
   );
+};
+
+ExportMenu.defaultProps = {
+  regularElement: false,
+  shouldExport: true,
+  elementDatasets: null,
+  chart: null,
+  isTable: false,
+  elementLabels: null,
+  tableData: null,
+  tableLabels: null,
+};
+
+ExportMenu.propTypes = {
+  chartId: PropTypes.string.isRequired,
+  timeWindowDescription: PropTypes.string.isRequired,
+  metricTitle: PropTypes.string.isRequired,
+  filters: PropTypes.shape({}).isRequired,
+  regularElement: PropTypes.bool,
+  shouldExport: PropTypes.bool,
+  elementDatasets: PropTypes.arrayOf(
+    PropTypes.shape({
+      label: PropTypes.string,
+      data: PropTypes.arrayOf(PropTypes.number),
+    })
+  ),
+  chart: PropTypes.node,
+  isTable: PropTypes.bool,
+  // Shape should be taken from ./propTypes.js (now not merged)
+  elementLabels: PropTypes.arrayOf(PropTypes.string),
+  tableData: PropTypes.arrayOf(
+    PropTypes.shape({
+      data: PropTypes.arrayOf(PropTypes.any),
+    })
+  ),
+  tableLabels: PropTypes.arrayOf(PropTypes.string),
 };
 
 export default ExportMenu;
