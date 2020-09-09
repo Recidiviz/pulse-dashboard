@@ -82,8 +82,8 @@ const ExportMenu = ({
                 downloadChartAsImage(
                   chartId,
                   metricTitle,
-                  chart.data.datasets,
-                  chart.data.labels,
+                  chart.props.data.datasets,
+                  chart.props.data.labels,
                   exportedStructureCallback,
                   filters,
                   undefined,
@@ -103,8 +103,8 @@ const ExportMenu = ({
                 downloadChartAsData(
                   chartId,
                   metricTitle,
-                  chart.data.datasets,
-                  chart.data.labels,
+                  chart.props.data.datasets,
+                  chart.props.data.labels,
                   exportedStructureCallback,
                   filters,
                   undefined,
