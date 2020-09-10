@@ -30,7 +30,7 @@ const useHelpScout = () => {
       document.head.append(helpScoutScript);
     }
 
-    window.Beacon("init", "97c454d9-8aef-447d-b617-bc765ab43f8c");
+    window.Beacon("init", process.env.HELP_SCOUT_TOKEN);
 
     return () => window.Beacon("destroy");
   }, []);
