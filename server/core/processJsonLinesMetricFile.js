@@ -15,15 +15,21 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-const cacheManager = require("cache-manager");
-const { default: isDemoMode } = require("../utils/isDemoMode");
-
-function createMemoryCache(ttl, refreshThreshold) {
-  return cacheManager.caching({
-    store: isDemoMode ? "none" : "memory",
-    ttl,
-    refreshThreshold,
+/**
+ * Processes a Json Lines formatted metric file. This consists of the string contents
+ * of a file which is formatted with a single JSON object on each line. Each object
+ * is a single data point. These are returned as an array of Javascript objects.
+ */
+function processJsonLinesMetricFile(stringContents) {
+  const jsonObject = [];
+  const splitStrings = stringContents.split("\n");
+  splitStrings.forEach((line) => {
+    if (line) {
+      jsonObject.push(JSON.parse(line));
+    }
   });
+
+  return jsonObject;
 }
 
-exports.default = createMemoryCache;
+exports.default = processJsonLinesMetricFile;

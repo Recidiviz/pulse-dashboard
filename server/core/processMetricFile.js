@@ -15,15 +15,31 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-const cacheManager = require("cache-manager");
-const { default: isDemoMode } = require("../utils/isDemoMode");
+const {
+  default: processJsonLinesMetricFile,
+} = require("./processJsonLinesMetricFile");
+const {
+  default: processOptimizedTxtMetricFile,
+} = require("./processOptimizedTxtMetricFile");
 
-function createMemoryCache(ttl, refreshThreshold) {
-  return cacheManager.caching({
-    store: isDemoMode ? "none" : "memory",
-    ttl,
-    refreshThreshold,
-  });
+/**
+ * Processes the given metric file, a Buffer of bytes, returning a json object
+ * structured based on the given format.
+ */
+function processMetricFile(contents, metadata, extension) {
+  const stringContents = contents.toString();
+  if (!stringContents || stringContents.length === 0) {
+    return null;
+  }
+
+  if (extension.toLowerCase() === ".json") {
+    return processJsonLinesMetricFile(stringContents);
+  }
+  if (extension.toLowerCase() === ".txt") {
+    return processOptimizedTxtMetricFile(stringContents, metadata);
+  }
+
+  return {};
 }
 
-exports.default = createMemoryCache;
+exports.default = processMetricFile;

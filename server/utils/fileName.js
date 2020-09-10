@@ -14,16 +14,26 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
+/**
+ * Utilities for working with file names
+ */
+const path = require("path");
 
-const cacheManager = require("cache-manager");
-const { default: isDemoMode } = require("../utils/isDemoMode");
-
-function createMemoryCache(ttl, refreshThreshold) {
-  return cacheManager.caching({
-    store: isDemoMode ? "none" : "memory",
-    ttl,
-    refreshThreshold,
-  });
+/**
+ * Returns the given filename without the extension.
+ */
+function getFileName(filename) {
+  return path.parse(filename).name;
 }
 
-exports.default = createMemoryCache;
+/**
+ * Returns the extension at the end of the given filename.
+ */
+function getFileExtension(filename) {
+  return path.parse(filename).ext;
+}
+
+module.exports = {
+  getFileExtension,
+  getFileName,
+};

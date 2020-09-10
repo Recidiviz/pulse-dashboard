@@ -15,15 +15,22 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-const cacheManager = require("cache-manager");
-const { default: isDemoMode } = require("../utils/isDemoMode");
-
-function createMemoryCache(ttl, refreshThreshold) {
-  return cacheManager.caching({
-    store: isDemoMode ? "none" : "memory",
-    ttl,
-    refreshThreshold,
+describe("demoMode tests", () => {
+  beforeEach(() => {
+    jest.resetModules();
   });
-}
 
-exports.default = createMemoryCache;
+  it("should return true if env is truthy", () => {
+    process.env.IS_DEMO = "true";
+    const { default: isDemoMode } = require("../isDemoMode");
+
+    expect(isDemoMode).toBe(true);
+  });
+
+  it("should return false if env is falsy", () => {
+    process.env.IS_DEMO = "false";
+    const { default: isDemoMode } = require("../isDemoMode");
+
+    expect(isDemoMode).toBe(false);
+  });
+});
