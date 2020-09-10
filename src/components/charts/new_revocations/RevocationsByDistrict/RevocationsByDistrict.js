@@ -34,7 +34,7 @@ const RevocationsByDistrict = ({
   dataFilter: filterData,
   filterStates,
   skippedFilters,
-  treatCategoryAllAsAbsent,
+  treatCategoryAllAsAbsent = false,
   stateCode,
   timeDescription,
 }) => {
@@ -100,7 +100,7 @@ const RevocationsByDistrict = ({
 };
 
 RevocationsByDistrict.defaultProps = {
-  treatCategoryAllAsAbsent: undefined,
+  treatCategoryAllAsAbsent: false,
 };
 
 RevocationsByDistrict.propTypes = {
@@ -109,8 +109,7 @@ RevocationsByDistrict.propTypes = {
   filterStates: filtersPropTypes.isRequired,
   skippedFilters: PropTypes.arrayOf(PropTypes.string).isRequired,
   currentDistricts: PropTypes.arrayOf(PropTypes.string).isRequired,
-  // eslint-disable-next-line react/forbid-prop-types
-  treatCategoryAllAsAbsent: PropTypes.any,
+  treatCategoryAllAsAbsent: PropTypes.bool,
   stateCode: PropTypes.string.isRequired,
   timeDescription: PropTypes.string.isRequired,
 };

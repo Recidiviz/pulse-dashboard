@@ -88,7 +88,7 @@ const ReincarcerationCountOverTime = ({
   metricType,
   metricPeriodMonths,
   disableGoal,
-  header,
+  header = null,
   stateCode,
 }) => {
   const goal = getGoalForChart(stateCode, chartId);
@@ -244,7 +244,7 @@ const ReincarcerationCountOverTime = ({
     const chartData = chart.props.data.datasets[0].data;
     const mostRecentValue = chartData[chartData.length - 1];
 
-    const headerElement = document.getElementById(header);
+    const headerElement = header && document.getElementById(header);
 
     if (headerElement && mostRecentValue !== null && displayGoal) {
       const title = `There have been <span class='fs-block header-highlight'>${mostRecentValue} reincarcerations</span> to a DOCR facility this month so far.`;
@@ -259,7 +259,7 @@ const ReincarcerationCountOverTime = ({
 
 ReincarcerationCountOverTime.defaultProps = {
   disableGoal: false,
-  hedaer: undefined,
+  header: null,
 };
 
 ReincarcerationCountOverTime.propTypes = {

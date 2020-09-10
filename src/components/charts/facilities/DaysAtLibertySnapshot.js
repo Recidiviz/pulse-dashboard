@@ -50,8 +50,8 @@ const DaysAtLibertySnapshot = ({
   stateCode,
   daysAtLibertyByMonth,
   metricPeriodMonths,
-  disableGoal,
-  header,
+  disableGoal = false,
+  header = null,
 }) => {
   const goal = getGoalForChart(stateCode, chartId);
   const displayGoal = canDisplayGoal(goal, { disableGoal, metricPeriodMonths });
@@ -207,7 +207,7 @@ const DaysAtLibertySnapshot = ({
   }, [chart.props.data.datasets, chart.props.data.labels, metricPeriodMonths]);
 
   useEffect(() => {
-    const headerElement = document.getElementById(header);
+    const headerElement = header && document.getElementById(header);
 
     if (headerElement && displayGoal) {
       const trendlineValues = chart.props.data.datasets[1].data;
@@ -225,7 +225,7 @@ const DaysAtLibertySnapshot = ({
 
 DaysAtLibertySnapshot.defaultProps = {
   disableGoal: false,
-  header: undefined,
+  header: null,
 };
 
 DaysAtLibertySnapshot.propTypes = {
@@ -239,9 +239,9 @@ DaysAtLibertySnapshot.propTypes = {
     })
   ).isRequired,
   metricPeriodMonths: PropTypes.string.isRequired,
+  stateCode: PropTypes.string.isRequired,
   disableGoal: PropTypes.bool,
   header: PropTypes.string,
-  stateCode: PropTypes.string.isRequired,
 };
 
 export default DaysAtLibertySnapshot;

@@ -73,7 +73,7 @@ const LsirScoreChangeSnapshot = ({
   district,
   metricPeriodMonths,
   disableGoal,
-  header,
+  header = null,
 }) => {
   const goal = getGoalForChart("US_ND", chartId);
   const displayGoal = canDisplayGoal(goal, {
@@ -241,7 +241,7 @@ const LsirScoreChangeSnapshot = ({
   ]);
 
   useEffect(() => {
-    const headerElement = document.getElementById(header);
+    const headerElement = header && document.getElementById(header);
 
     if (headerElement && displayGoal) {
       const trendlineValues = chart.props.data.datasets[1].data;
@@ -258,7 +258,7 @@ const LsirScoreChangeSnapshot = ({
 };
 
 LsirScoreChangeSnapshot.defaultProps = {
-  header: undefined,
+  header: null,
   disableGoal: false,
 };
 

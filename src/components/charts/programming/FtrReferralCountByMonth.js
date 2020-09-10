@@ -77,7 +77,7 @@ const FtrReferralCountByMonth = ({
   district,
   metricType,
   metricPeriodMonths,
-  header,
+  header = null,
 }) => {
   const dataPoints = pipe(
     (dataset) => filterDatasetBySupervisionType(dataset, supervisionType),
@@ -194,7 +194,7 @@ const FtrReferralCountByMonth = ({
   const mostRecentValue = chartData[chartData.length - 1];
 
   useEffect(() => {
-    const headerElement = document.getElementById(header);
+    const headerElement = header && document.getElementById(header);
 
     if (
       headerElement &&
@@ -212,7 +212,7 @@ const FtrReferralCountByMonth = ({
 };
 
 FtrReferralCountByMonth.defaultProps = {
-  header: undefined,
+  header: null,
 };
 
 FtrReferralCountByMonth.propTypes = {
@@ -231,7 +231,7 @@ FtrReferralCountByMonth.propTypes = {
   district: PropTypes.arrayOf(PropTypes.string).isRequired,
   metricType: metricTypePropType.isRequired,
   metricPeriodMonths: PropTypes.string.isRequired,
-  header: PropTypes.node,
+  header: PropTypes.string,
 };
 
 export default FtrReferralCountByMonth;

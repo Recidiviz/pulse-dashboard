@@ -82,7 +82,7 @@ const AdmissionsVsReleases = ({
   district,
   metricType,
   metricPeriodMonths,
-  header,
+  header = null,
 }) => {
   const dataPoints = pipe(
     (dataset) => filterDatasetByDistrict(dataset, district),
@@ -197,7 +197,7 @@ const AdmissionsVsReleases = ({
   const chartData = chart.props.data.datasets[0].data;
   const mostRecentValue = chartData[chartData.length - 1];
 
-  const headerElement = document.getElementById(header);
+  const headerElement = header && document.getElementById(header);
 
   if (
     headerElement &&
@@ -224,7 +224,7 @@ const AdmissionsVsReleases = ({
 };
 
 AdmissionsVsReleases.defaultProps = {
-  header: undefined,
+  header: null,
 };
 
 AdmissionsVsReleases.propTypes = {

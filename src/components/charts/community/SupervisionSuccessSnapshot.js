@@ -107,8 +107,8 @@ const SupervisionSuccessSnapshot = ({
   district,
   metricType,
   metricPeriodMonths,
-  header,
-  disableGoal,
+  header = null,
+  disableGoal = false,
 }) => {
   const stepSize = 10;
 
@@ -309,7 +309,7 @@ const SupervisionSuccessSnapshot = ({
 };
 
 SupervisionSuccessSnapshot.defaultProps = {
-  header: undefined,
+  header: null,
   disableGoal: false,
 };
 
@@ -330,7 +330,7 @@ SupervisionSuccessSnapshot.propTypes = {
   district: PropTypes.arrayOf(PropTypes.string).isRequired,
   supervisionType: PropTypes.string.isRequired,
   stateCode: PropTypes.string.isRequired,
-  header: PropTypes.node,
+  header: PropTypes.string,
   disableGoal: PropTypes.bool,
 };
 

@@ -43,11 +43,11 @@ const violationCountKey = "violation_count";
 const RevocationsByViolation = ({
   dataFilter,
   filterStates,
-  skippedFilters = [],
-  treatCategoryAllAsAbsent,
   stateCode,
   timeDescription,
   violationTypes,
+  skippedFilters = [],
+  treatCategoryAllAsAbsent = false,
 }) => {
   const { isLoading, apiData } = useChartData(
     `${stateCode}/newRevocations`,
@@ -184,14 +184,12 @@ const RevocationsByViolation = ({
 
 RevocationsByViolation.defaultProps = {
   skippedFilters: [],
-  treatCategoryAllAsAbsent: undefined,
+  treatCategoryAllAsAbsent: false,
 };
 
 RevocationsByViolation.propTypes = {
   dataFilter: PropTypes.func.isRequired,
   filterStates: filtersPropTypes.isRequired,
-  skippedFilters: PropTypes.arrayOf(PropTypes.string),
-  treatCategoryAllAsAbsent: PropTypes.bool,
   stateCode: PropTypes.string.isRequired,
   timeDescription: PropTypes.string.isRequired,
   violationTypes: PropTypes.arrayOf(
@@ -201,6 +199,8 @@ RevocationsByViolation.propTypes = {
       type: PropTypes.string.isRequired,
     })
   ).isRequired,
+  skippedFilters: PropTypes.arrayOf(PropTypes.string),
+  treatCategoryAllAsAbsent: PropTypes.bool,
 };
 
 export default RevocationsByViolation;

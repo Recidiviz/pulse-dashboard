@@ -193,8 +193,8 @@ ReincarcerationRateByStayLength.propTypes = {
     PropTypes.shape({
       district: PropTypes.string,
       follow_up_period: PropTypes.string,
-      recidivism_rate: PropTypes.string,
-      reincarceration_count: PropTypes.string,
+      recidivism_rate: PropTypes.number,
+      reincarceration_count: PropTypes.number,
       release_cohort: PropTypes.string,
       state_code: PropTypes.string,
       stay_length_bucket: PropTypes.string,

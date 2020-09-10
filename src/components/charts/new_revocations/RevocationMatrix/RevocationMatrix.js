@@ -55,8 +55,8 @@ const RevocationMatrix = ({
   stateCode,
   dataFilter,
   filterStates,
-  skippedFilters,
-  treatCategoryAllAsAbsent,
+  skippedFilters = [],
+  treatCategoryAllAsAbsent = false,
   timeDescription,
   updateFilters,
   violationTypes,
@@ -209,8 +209,8 @@ const RevocationMatrix = ({
 };
 
 RevocationMatrix.defaultProps = {
-  treatCategoryAllAsAbsent: undefined,
-  skippedFilters: undefined,
+  treatCategoryAllAsAbsent: false,
+  skippedFilters: [],
 };
 
 RevocationMatrix.propTypes = {
