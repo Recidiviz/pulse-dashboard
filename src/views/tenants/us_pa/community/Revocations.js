@@ -33,6 +33,7 @@ import DistrictFilter from "../../../../components/charts/new_revocations/Toggle
 import ChargeCategoryFilter from "../../../../components/charts/new_revocations/ToggleBar/ChargeCategoryFilter";
 import AdmissionTypeFilter from "../../../../components/charts/new_revocations/ToggleBar/AdmissionTypeFilter";
 import ViolationFilter from "../../../../components/charts/new_revocations/ToggleBar/ViolationFilter";
+import SupervisionLevelFilter from "../../../../components/charts/new_revocations/ToggleBar/SupervisionLevelFilter";
 import {
   applyAllFilters,
   applyTopLevelFilters,
@@ -41,6 +42,7 @@ import {
 import {
   DEFAULT_METRIC_PERIOD,
   METRIC_PERIODS,
+  SUPERVISION_LEVEL,
 } from "../../../../components/charts/new_revocations/ToggleBar/options";
 import { getTimeDescription } from "../../../../components/charts/new_revocations/helpers/format";
 import { useAuth0 } from "../../../../react-auth0-spa";
@@ -103,6 +105,7 @@ const Revocations = () => {
     admissionType: [admissionTypeOptions[1].value],
     reportedViolations: "",
     violationType: "",
+    supervisionLevel: SUPERVISION_LEVEL[0].value,
   });
 
   const updateFilters = (newFilters) => {
@@ -135,6 +138,7 @@ const Revocations = () => {
             defaultValue={chargeCategoryOptions[0]}
             onChange={updateFilters}
           />
+          <SupervisionLevelFilter onChange={updateFilters} />
           <AdmissionTypeFilter
             options={admissionTypeOptions}
             summingOption={admissionTypeOptions[0]}

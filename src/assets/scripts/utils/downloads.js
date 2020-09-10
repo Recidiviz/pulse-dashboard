@@ -17,7 +17,11 @@
 
 import downloadjs from 'downloadjs';
 import * as csvExport from 'jsonexport/dist';
+import pipe from "lodash/fp/pipe";
+import find from "lodash/fp/find";
+import get from "lodash/fp/get";
 
+import { SUPERVISION_LEVEL } from "../../../components/charts/new_revocations/ToggleBar/options";
 import { timeStamp } from './time';
 import infoAboutChart from '../../../utils/charts/info';
 import JSZip from 'jszip';
@@ -128,6 +132,14 @@ const formatSupervisionType = (supervisionType) =>
     ? "All supervision types"
     : `Supervision type: ${humanReadableTitleCase(supervisionType)}`;
 
+const formatSupervisionLevel = (supervisionLevel) =>
+  supervisionLevel === "All"
+    ? "All supervision levels"
+    : `Supervision type: ${pipe(
+        find({ value: supervisionLevel }),
+        get("label")
+      )(SUPERVISION_LEVEL)}`;
+
 export function getFilters(toggleStates) {
   const filters = [];
 
@@ -145,6 +157,10 @@ export function getFilters(toggleStates) {
 
   if (toggleStates.supervisionType) {
     filters.push(formatSupervisionType(toggleStates.supervisionType));
+  }
+
+  if (toggleStates.supervisionLevel) {
+    filters.push(formatSupervisionLevel(toggleStates.supervisionLevel));
   }
 
   return filters.join(", ")
