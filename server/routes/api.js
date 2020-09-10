@@ -1,5 +1,5 @@
 // Recidiviz - a data platform for criminal justice reform
-// Copyright (C) 2019 Recidiviz, Inc.
+// Copyright (C) 2020 Recidiviz, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -20,16 +20,14 @@
  * in server.js.
  */
 
-const metricsApi = require("../core/metricsApi");
-const demoMode = require("../utils/demoMode");
-
-const isDemoMode = demoMode.isDemoMode();
+const { fetchMetrics } = require("../core");
+const { default: isDemoMode } = require("../utils/isDemoMode");
 
 /**
  * A callback which returns either either an error payload or a data payload.
  */
 function responder(res) {
-  return function respond(err, data) {
+  return (err, data) => {
     if (err) {
       res.send(err);
     } else {
@@ -41,58 +39,71 @@ function responder(res) {
 // TODO: Generalize this API to take in the metric type and file as request parameters in all calls
 
 function newRevocations(req, res) {
-  metricsApi.fetchNewRevocationMetrics(
-    isDemoMode,
+  fetchMetrics(
     req.params.stateCode,
+    "newRevocation",
+    null,
+    isDemoMode,
     responder(res)
   );
 }
 
 function newRevocationFile(req, res) {
-  metricsApi.fetchNewRevocationFile(
-    isDemoMode,
+  fetchMetrics(
     req.params.stateCode,
+    "newRevocation",
     req.params.file,
+    isDemoMode,
     responder(res)
   );
 }
 
 function communityGoals(req, res) {
-  metricsApi.fetchCommunityGoals(
-    isDemoMode,
+  fetchMetrics(
     req.params.stateCode,
+    "communityGoals",
+    null,
+    isDemoMode,
     responder(res)
   );
 }
 
 function communityExplore(req, res) {
-  metricsApi.fetchCommunityExplore(
-    isDemoMode,
+  fetchMetrics(
     req.params.stateCode,
+    "communityExplore",
+    null,
+    isDemoMode,
     responder(res)
   );
 }
 
 function facilitiesGoals(req, res) {
-  metricsApi.fetchFacilitiesGoals(
-    isDemoMode,
+  fetchMetrics(
     req.params.stateCode,
+    "facilitiesGoals",
+    null,
+    isDemoMode,
     responder(res)
   );
 }
 
 function facilitiesExplore(req, res) {
-  metricsApi.fetchFacilitiesExplore(
-    isDemoMode,
+  fetchMetrics(
     req.params.stateCode,
+    "facilitiesExplore",
+    null,
+    isDemoMode,
     responder(res)
   );
 }
 
 function programmingExplore(req, res) {
-  metricsApi.fetchProgrammingExplore(
-    isDemoMode,
+  fetchMetrics(
     req.params.stateCode,
+    "programmingExplore",
+    null,
+    isDemoMode,
     responder(res)
   );
 }
@@ -105,4 +116,5 @@ module.exports = {
   facilitiesGoals,
   facilitiesExplore,
   programmingExplore,
+  responder,
 };

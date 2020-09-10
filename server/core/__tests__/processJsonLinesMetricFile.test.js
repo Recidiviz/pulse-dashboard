@@ -15,15 +15,18 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-const cacheManager = require("cache-manager");
-const { default: isDemoMode } = require("../utils/isDemoMode");
+const {
+  default: processJsonLinesMetricFile,
+} = require("../processJsonLinesMetricFile");
 
-function createMemoryCache(ttl, refreshThreshold) {
-  return cacheManager.caching({
-    store: isDemoMode ? "none" : "memory",
-    ttl,
-    refreshThreshold,
+describe("processJsonLinesMetricFile tests", () => {
+  it("should transform file content to json", () => {
+    const mockStringContents =
+      '{"first_key":"first line"}\n{"second_key": "second value"}\n';
+
+    expect(processJsonLinesMetricFile(mockStringContents)).toStrictEqual([
+      { first_key: "first line" },
+      { second_key: "second value" },
+    ]);
   });
-}
-
-exports.default = createMemoryCache;
+});
