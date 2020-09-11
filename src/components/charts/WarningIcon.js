@@ -19,7 +19,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import ReactTooltip from "react-tooltip";
 
-const WarningIcon = ({ tooltipText, className }) => {
+const WarningIcon = ({ tooltipText, className = "" }) => {
   const id = `_${Math.random().toString(36).substr(2, 9)}`;
 
   return (

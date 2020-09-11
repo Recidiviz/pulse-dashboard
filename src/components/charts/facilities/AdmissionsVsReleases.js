@@ -39,6 +39,8 @@ import {
 } from "../../../utils/charts/toggles";
 import { sortFilterAndSupplementMostRecentMonths } from "../../../utils/transforms/datasets";
 import { monthNamesWithYearsFromNumbers } from "../../../utils/transforms/months";
+import { METRIC_TYPES } from "../../constants";
+import { metricTypePropType } from "../propTypes";
 
 const dataCountsMapper = (dataset) => ({
   year: dataset[0].year,
@@ -80,13 +82,15 @@ const AdmissionsVsReleases = ({
   district,
   metricType,
   metricPeriodMonths,
-  header,
+  header = null,
 }) => {
   const dataPoints = pipe(
     (dataset) => filterDatasetByDistrict(dataset, district),
     groupBy(({ year, month }) => `${year}-${month}`),
     values,
-    map(metricType === "counts" ? dataCountsMapper : dataRatesMapper),
+    map(
+      metricType === METRIC_TYPES.COUNTS ? dataCountsMapper : dataRatesMapper
+    ),
     (dataset) =>
       sortFilterAndSupplementMostRecentMonths(
         dataset,
@@ -193,12 +197,12 @@ const AdmissionsVsReleases = ({
   const chartData = chart.props.data.datasets[0].data;
   const mostRecentValue = chartData[chartData.length - 1];
 
-  const headerElement = document.getElementById(header);
+  const headerElement = header && document.getElementById(header);
 
   if (
     headerElement &&
     mostRecentValue !== null &&
-    metricType === "counts" &&
+    metricType === METRIC_TYPES.COUNTS &&
     district[0].toUpperCase() === "ALL"
   ) {
     let title = "";
@@ -220,13 +224,21 @@ const AdmissionsVsReleases = ({
 };
 
 AdmissionsVsReleases.defaultProps = {
-  admissionsVsReleases: [],
-  hedaer: undefined,
+  header: null,
 };
 
 AdmissionsVsReleases.propTypes = {
-  admissionsVsReleases: PropTypes.arrayOf(PropTypes.shape({})),
-  metricType: PropTypes.string.isRequired,
+  admissionsVsReleases: PropTypes.arrayOf(
+    PropTypes.shape({
+      district: PropTypes.string,
+      month: PropTypes.string,
+      month_end_population: PropTypes.string,
+      population_change: PropTypes.string,
+      state_code: PropTypes.string,
+      year: PropTypes.string,
+    })
+  ).isRequired,
+  metricType: metricTypePropType.isRequired,
   metricPeriodMonths: PropTypes.string.isRequired,
   district: PropTypes.arrayOf(PropTypes.string).isRequired,
   header: PropTypes.string,

@@ -15,7 +15,8 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React, { Component } from 'react';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import {
   ComposableMap,
   ZoomableGroup,
@@ -23,30 +24,32 @@ import {
   Geography,
   Markers,
   Marker,
-} from 'react-simple-maps';
-import ReactTooltip from 'react-tooltip';
-import { geoAlbersUsa } from 'd3-geo';
-import { scaleLinear } from 'd3-scale';
+} from "react-simple-maps";
+import ReactTooltip from "react-tooltip";
+import { geoAlbersUsa } from "d3-geo";
+import { scaleLinear } from "d3-scale";
 
-import { COLORS } from '../../assets/scripts/constants/colors';
-import { configureDownloadButtons } from '../../assets/scripts/utils/downloads';
-import geographyObject from '../../assets/static/maps/us_nd.json';
-import { colorForValue } from '../../utils/charts/choropleth';
-import { toHtmlFriendly } from '../../utils/transforms/labels';
+import { COLORS } from "../../assets/scripts/constants/colors";
+import { configureDownloadButtons } from "../../assets/scripts/utils/downloads";
+import geographyObject from "../../assets/static/maps/us_nd.json";
+import { colorForValue } from "../../utils/charts/choropleth";
+import { toHtmlFriendly } from "../../utils/transforms/labels";
+import { metricTypePropType } from "./propTypes";
+import { METRIC_TYPES } from "../constants";
 
 const minMarkerRadius = 10;
 const maxMarkerRadius = 35;
 
-const METRIC_PERIODS = ['1', '3', '6', '12', '36'];
+const METRIC_PERIODS = ["1", "3", "6", "12", "36"];
 
 const RATIO_CONTAINER_OUTER_STYLE = {
-  position: 'relative',
+  position: "relative",
   height: 0,
-  paddingBottom: '50%',
+  paddingBottom: "50%",
 };
 
 const RATIO_CONTAINER_INNER_STYLE = {
-  position: 'absolute',
+  position: "absolute",
   top: 0,
   left: 0,
   right: 0,
@@ -55,29 +58,29 @@ const RATIO_CONTAINER_INNER_STYLE = {
 
 function normalizedOfficeKey(officeName) {
   let normalized = toHtmlFriendly(officeName).toLowerCase();
-  normalized = normalized.replace(/-/g, '_');
+  normalized = normalized.replace(/-/g, "_");
 
   return normalized;
 }
 
 function normalizedDistrictId(district) {
   let normalized = String(district).toLowerCase();
-  normalized = normalized.replace(/-/g, '_');
-  normalized = normalized.replace(/ /g, '_');
+  normalized = normalized.replace(/-/g, "_");
+  normalized = normalized.replace(/ /g, "_");
 
   return normalized;
 }
 
 function normalizedSupervisionTypeKey(supervisionType) {
   if (!supervisionType) {
-    return 'none';
+    return "none";
   }
   return supervisionType.toLowerCase();
 }
 
 function normalizedCountyName(geographyNameForCounty, stateCode) {
   let normalized = String(geographyNameForCounty).toLowerCase();
-  normalized = normalized.replace(/ /g, '_');
+  normalized = normalized.replace(/ /g, "_");
   return `${stateCode}_${normalized}`;
 }
 
@@ -86,7 +89,12 @@ function getOfficeForCounty(offices, geographyNameForCounty, stateCode) {
   return offices[countyName];
 }
 
-function getOfficeDataValue(office, metricType, metricPeriodMonths, supervisionType) {
+function getOfficeDataValue(
+  office,
+  metricType,
+  metricPeriodMonths,
+  supervisionType
+) {
   const supervisionTypeKey = normalizedSupervisionTypeKey(supervisionType);
 
   if (!office.dataValues[metricPeriodMonths]) {
@@ -96,15 +104,20 @@ function getOfficeDataValue(office, metricType, metricPeriodMonths, supervisionT
     return 0;
   }
 
-  if (metricType === 'counts') {
+  if (metricType === METRIC_TYPES.COUNTS) {
     return office.dataValues[metricPeriodMonths][supervisionTypeKey].numerator;
   }
 
   return office.dataValues[metricPeriodMonths][supervisionTypeKey].rate;
 }
 
-function relatedMaxValue(maxValues, metricType, metricPeriodMonths, supervisionTypeKey) {
-  const valueKey = metricType === 'counts' ? 'numerator' : 'rate';
+function relatedMaxValue(
+  maxValues,
+  metricType,
+  metricPeriodMonths,
+  supervisionTypeKey
+) {
+  const valueKey = metricType === METRIC_TYPES.COUNTS ? "numerator" : "rate";
   return maxValues[metricPeriodMonths][supervisionTypeKey][valueKey];
 }
 
@@ -114,15 +127,31 @@ function relatedMaxValue(maxValues, metricType, metricPeriodMonths, supervisionT
  * rate of the offices, where the office with the highest number or percentage of
  * numerator events will have a marker with the radius size of `maxMarkerRadius`.
  */
-function radiusOfMarker(office, maxValues, metricType, metricPeriodMonths, supervisionType) {
+function radiusOfMarker(
+  office,
+  maxValues,
+  metricType,
+  metricPeriodMonths,
+  supervisionType
+) {
   const supervisionTypeKey = normalizedSupervisionTypeKey(supervisionType);
-  const maxValue = relatedMaxValue(maxValues, metricType, metricPeriodMonths, supervisionTypeKey);
+  const maxValue = relatedMaxValue(
+    maxValues,
+    metricType,
+    metricPeriodMonths,
+    supervisionTypeKey
+  );
 
   const officeScale = scaleLinear()
     .domain([0, maxValue])
     .range([minMarkerRadius, maxMarkerRadius]);
 
-  const dataValue = getOfficeDataValue(office, metricType, metricPeriodMonths, supervisionType);
+  const dataValue = getOfficeDataValue(
+    office,
+    metricType,
+    metricPeriodMonths,
+    supervisionType
+  );
   // We use the absolute value so that the radius is tied to distance away from 0.
   // An alternative to consider is making the domain of the scale the minimum value, but this fits
   // the only negative value use case we have right now: LSIR Score Change, where large negative
@@ -130,13 +159,23 @@ function radiusOfMarker(office, maxValues, metricType, metricPeriodMonths, super
   return officeScale(Math.abs(dataValue));
 }
 
-function toggleTooltip(office, metricType, metricPeriodMonths, supervisionType) {
+function toggleTooltip(
+  office,
+  metricType,
+  metricPeriodMonths,
+  supervisionType
+) {
   let value = 0;
   if (office) {
-    value = getOfficeDataValue(office, metricType, metricPeriodMonths, supervisionType);
+    value = getOfficeDataValue(
+      office,
+      metricType,
+      metricPeriodMonths,
+      supervisionType
+    );
   }
 
-  if (metricType === 'counts') {
+  if (metricType === METRIC_TYPES.COUNTS) {
     return `${office.officeName}: ${value}`;
   }
 
@@ -144,40 +183,73 @@ function toggleTooltip(office, metricType, metricPeriodMonths, supervisionType) 
 }
 
 function toggleTooltipForCounty(
-  offices, geographyNameForCounty, metricType, metricPeriodMonths, supervisionType, stateCode,
+  offices,
+  geographyNameForCounty,
+  metricType,
+  metricPeriodMonths,
+  supervisionType,
+  stateCode
 ) {
   const countyName = normalizedCountyName(geographyNameForCounty, stateCode);
   const office = offices[countyName];
 
   let value = 0;
   if (office) {
-    value = getOfficeDataValue(office, metricType, metricPeriodMonths, supervisionType);
+    value = getOfficeDataValue(
+      office,
+      metricType,
+      metricPeriodMonths,
+      supervisionType
+    );
   }
 
-  if (metricType === 'counts') {
+  if (metricType === METRIC_TYPES.COUNTS) {
     return `${geographyNameForCounty}: ${value}`;
   }
   return `${geographyNameForCounty}: ${value}%`;
 }
 
 function colorForMarker(
-  office, maxValues, metricType, metricPeriodMonths, supervisionType, useDarkMode, possibleNegative,
+  office,
+  maxValues,
+  metricType,
+  metricPeriodMonths,
+  supervisionType,
+  useDarkMode,
+  possibleNegative
 ) {
   const supervisionTypeKey = normalizedSupervisionTypeKey(supervisionType);
 
   let dataValue = 0;
   if (office) {
-    dataValue = getOfficeDataValue(office, metricType, metricPeriodMonths, supervisionType);
+    dataValue = getOfficeDataValue(
+      office,
+      metricType,
+      metricPeriodMonths,
+      supervisionType
+    );
   }
-  const maxValue = relatedMaxValue(maxValues, metricType, metricPeriodMonths, supervisionTypeKey);
+  const maxValue = relatedMaxValue(
+    maxValues,
+    metricType,
+    metricPeriodMonths,
+    supervisionTypeKey
+  );
 
   return colorForValue(dataValue, maxValue, useDarkMode, possibleNegative);
 }
 
-function sortChartDataPoints(dataPoints, metricType, metricPeriodMonths, supervisionType) {
-  return dataPoints.sort((a, b) => (
-    getOfficeDataValue(b, metricType, metricPeriodMonths, supervisionType)
-    - getOfficeDataValue(a, metricType, metricPeriodMonths, supervisionType)));
+function sortChartDataPoints(
+  dataPoints,
+  metricType,
+  metricPeriodMonths,
+  supervisionType
+) {
+  return dataPoints.sort(
+    (a, b) =>
+      getOfficeDataValue(b, metricType, metricPeriodMonths, supervisionType) -
+      getOfficeDataValue(a, metricType, metricPeriodMonths, supervisionType)
+  );
 }
 
 class GeoViewTimeChart extends Component {
@@ -205,41 +277,51 @@ class GeoViewTimeChart extends Component {
   setEmptyOfficeData(office) {
     METRIC_PERIODS.forEach((metricPeriodMonths) => {
       office.dataValues[metricPeriodMonths] = {
-        none: { numerator: 0, denominator: 0, rate: 0.00 },
-        all: { numerator: 0, denominator: 0, rate: 0.00 },
-        parole: { numerator: 0, denominator: 0, rate: 0.00 },
-        probation: { numerator: 0, denominator: 0, rate: 0.00 },
+        none: { numerator: 0, denominator: 0, rate: 0.0 },
+        all: { numerator: 0, denominator: 0, rate: 0.0 },
+        parole: { numerator: 0, denominator: 0, rate: 0.0 },
+        probation: { numerator: 0, denominator: 0, rate: 0.0 },
       };
     });
   }
 
   reconfigureExports() {
-    const exportedStructureCallback = () => (
-      {
-        metric: 'Events by P&P office',
-        series: [],
-      });
+    const exportedStructureCallback = () => ({
+      metric: "Events by P&P office",
+      series: [],
+    });
 
     const dataPointsByOffice = [];
     const officeNames = [];
     this.chartDataPoints.forEach((data) => {
       const { officeName } = data;
       const officeDataValue = getOfficeDataValue(
-        data, this.props.metricType, this.props.metricPeriodMonths, this.props.supervisionType,
+        data,
+        this.props.metricType,
+        this.props.metricPeriodMonths,
+        this.props.supervisionType
       );
 
       officeNames.push(officeName);
       dataPointsByOffice.push(officeDataValue);
     });
 
-    const downloadableDataFormat = [{
-      data: dataPointsByOffice,
-      label: 'Event count',
-    }];
+    const downloadableDataFormat = [
+      {
+        data: dataPointsByOffice,
+        label: "Event count",
+      },
+    ];
 
-    configureDownloadButtons(this.props.chartId, this.props.chartTitle,
-      downloadableDataFormat, officeNames, document.getElementById(this.props.chartId),
-      exportedStructureCallback, this.props);
+    configureDownloadButtons(
+      this.props.chartId,
+      this.props.chartTitle,
+      downloadableDataFormat,
+      officeNames,
+      document.getElementById(this.props.chartId),
+      exportedStructureCallback,
+      this.props
+    );
   }
 
   initializeMaxValues() {
@@ -250,13 +332,17 @@ class GeoViewTimeChart extends Component {
         all: { numerator: -1e100, rate: -1e100 },
         parole: { numerator: -1e100, rate: -1e100 },
         probation: { numerator: -1e100, rate: -1e100 },
-      }
+      };
     });
   }
 
   initializeChartData() {
     const {
-      officeData, dataPointsByOffice, numeratorKeys, denominatorKeys, shareDenominatorAcrossRates,
+      officeData,
+      dataPointsByOffice,
+      numeratorKeys,
+      denominatorKeys,
+      shareDenominatorAcrossRates,
     } = this.props;
 
     this.officeData = officeData;
@@ -342,7 +428,7 @@ class GeoViewTimeChart extends Component {
 
         // The API response providing data to this geo view chart might include rows with
         // district=ALL, e.g. if the response is shared with a non-geo chart. Skip over these rows.
-        if (districtId === 'all') {
+        if (districtId === "all") {
           return;
         }
 
@@ -353,16 +439,18 @@ class GeoViewTimeChart extends Component {
 
         const { officeName } = this.offices[districtId];
         const officeNameKey = normalizedOfficeKey(officeName);
-        const supervisionTypeKey = normalizedSupervisionTypeKey(supervisionType);
+        const supervisionTypeKey = normalizedSupervisionTypeKey(
+          supervisionType
+        );
 
         const office = this.offices[districtId];
         if (office) {
           if (!office.dataValues[metricPeriodMonths]) {
             office.dataValues[metricPeriodMonths] = {
-              none: { numerator: 0, denominator: 0, rate: 0.00 },
-              all: { numerator: 0, denominator: 0, rate: 0.00 },
-              parole: { numerator: 0, denominator: 0, rate: 0.00 },
-              probation: { numerator: 0, denominator: 0, rate: 0.00 },
+              none: { numerator: 0, denominator: 0, rate: 0.0 },
+              all: { numerator: 0, denominator: 0, rate: 0.0 },
+              parole: { numerator: 0, denominator: 0, rate: 0.0 },
+              probation: { numerator: 0, denominator: 0, rate: 0.0 },
             };
           }
           if (!office.dataValues[metricPeriodMonths][supervisionTypeKey]) {
@@ -383,13 +471,17 @@ class GeoViewTimeChart extends Component {
             denominator = totalDenominatorByMetricPeriod[metricPeriodMonths];
           }
 
-          if (numerator === 0 && (denominator === 0 && denominatorKeys.length > 0)) {
+          if (
+            numerator === 0 &&
+            denominator === 0 &&
+            denominatorKeys.length > 0
+          ) {
             return;
           }
 
           let rate = 0.0;
           if (denominator !== 0 && denominatorKeys.length > 0) {
-            rate = (100 * (numerator / denominator));
+            rate = 100 * (numerator / denominator);
           }
           const rateFixed = rate.toFixed(2);
 
@@ -405,10 +497,17 @@ class GeoViewTimeChart extends Component {
           }
 
           const numeratorAbs = Math.abs(numerator);
-          if (numeratorAbs > this.maxValues[metricPeriodMonths][supervisionTypeKey].numerator) {
-            this.maxValues[metricPeriodMonths][supervisionTypeKey].numerator = numeratorAbs;
+          if (
+            numeratorAbs >
+            this.maxValues[metricPeriodMonths][supervisionTypeKey].numerator
+          ) {
+            this.maxValues[metricPeriodMonths][
+              supervisionTypeKey
+            ].numerator = numeratorAbs;
           }
-          if (rate > this.maxValues[metricPeriodMonths][supervisionTypeKey].rate) {
+          if (
+            rate > this.maxValues[metricPeriodMonths][supervisionTypeKey].rate
+          ) {
             this.maxValues[metricPeriodMonths][supervisionTypeKey].rate = rate;
           }
         }
@@ -416,8 +515,9 @@ class GeoViewTimeChart extends Component {
     }
 
     // Set the count to 0 for offices without data
-    const officeKeysWithoutData = this.officeKeys.filter((value) => (
-      !this.officeKeysWithData.includes(value)));
+    const officeKeysWithoutData = this.officeKeys.filter(
+      (value) => !this.officeKeysWithData.includes(value)
+    );
 
     officeKeysWithoutData.forEach((officeKey) => {
       const office = this.offices[officeKey];
@@ -428,24 +528,42 @@ class GeoViewTimeChart extends Component {
     });
 
     const { metricType, metricPeriodMonths, supervisionType } = this.props;
-    sortChartDataPoints(this.chartDataPoints, metricType, metricPeriodMonths, supervisionType);
+    sortChartDataPoints(
+      this.chartDataPoints,
+      metricType,
+      metricPeriodMonths,
+      supervisionType
+    );
   }
 
   render() {
     const {
-      metricType, metricPeriodMonths, supervisionType,
-      keyedByOffice, centerLong, centerLat, chartId, stateCode,
+      metricType,
+      metricPeriodMonths,
+      supervisionType,
+      keyedByOffice,
+      centerLong,
+      centerLat,
+      chartId,
+      stateCode,
       possibleNegativeValues,
     } = this.props;
 
     const sortedDataPoints = sortChartDataPoints(
-      this.chartDataPoints, metricType, metricPeriodMonths, supervisionType,
+      this.chartDataPoints,
+      metricType,
+      metricPeriodMonths,
+      supervisionType
     );
 
     if (keyedByOffice) {
       // Show a choropleth map with colored, sized circles for P&P offices
       return (
-        <div id={chartId} className="map-container" style={RATIO_CONTAINER_OUTER_STYLE}>
+        <div
+          id={chartId}
+          className="map-container"
+          style={RATIO_CONTAINER_OUTER_STYLE}
+        >
           <div style={RATIO_CONTAINER_INNER_STYLE}>
             <ComposableMap
               projection={geoAlbersUsa}
@@ -453,39 +571,40 @@ class GeoViewTimeChart extends Component {
               width={1100}
               height={570}
               style={{
-                width: '100%',
-                height: 'auto',
+                width: "100%",
+                height: "auto",
               }}
             >
               <ZoomableGroup center={[centerLong, centerLat]} zoom={8.2}>
                 <Geographies geography={geographyObject}>
-                  {(geographies, projection) => geographies.map((geography) => (
-                    <Geography
-                      key={geography.properties.NAME}
-                      geography={geography}
-                      projection={projection}
-                      style={{
-                        default: {
-                          fill: '#F5F6F7',
-                          stroke: COLORS['grey-300'],
-                          strokeWidth: 0.2,
-                          outline: 'none',
-                        },
-                        hover: {
-                          fill: '#F5F6F7',
-                          stroke: COLORS['grey-300'],
-                          strokeWidth: 0.2,
-                          outline: 'none',
-                        },
-                        pressed: {
-                          fill: '#F5F6F7',
-                          stroke: COLORS['grey-300'],
-                          strokeWidth: 0.2,
-                          outline: 'none',
-                        },
-                      }}
-                    />
-                  ))
+                  {(geographies, projection) =>
+                    geographies.map((geography) => (
+                      <Geography
+                        key={geography.properties.NAME}
+                        geography={geography}
+                        projection={projection}
+                        style={{
+                          default: {
+                            fill: "#F5F6F7",
+                            stroke: COLORS["grey-300"],
+                            strokeWidth: 0.2,
+                            outline: "none",
+                          },
+                          hover: {
+                            fill: "#F5F6F7",
+                            stroke: COLORS["grey-300"],
+                            strokeWidth: 0.2,
+                            outline: "none",
+                          },
+                          pressed: {
+                            fill: "#F5F6F7",
+                            stroke: COLORS["grey-300"],
+                            strokeWidth: 0.2,
+                            outline: "none",
+                          },
+                        }}
+                      />
+                    ))
                   }
                 </Geographies>
                 <Markers>
@@ -495,19 +614,38 @@ class GeoViewTimeChart extends Component {
                       marker={office}
                       style={{
                         default: {
-                          fill: colorForMarker(office, this.maxValues, metricType, metricPeriodMonths, supervisionType, true, possibleNegativeValues),
-                          stroke: '#F5F6F7',
-                          strokeWidth: '3',
+                          fill: colorForMarker(
+                            office,
+                            this.maxValues,
+                            metricType,
+                            metricPeriodMonths,
+                            supervisionType,
+                            true,
+                            possibleNegativeValues
+                          ),
+                          stroke: "#F5F6F7",
+                          strokeWidth: "3",
                         },
-                        hover: { fill: COLORS['blue-standard'] },
-                        pressed: { fill: COLORS['blue-standard'] },
+                        hover: { fill: COLORS["blue-standard"] },
+                        pressed: { fill: COLORS["blue-standard"] },
                       }}
                     >
                       <circle
-                        data-tip={toggleTooltip(office, metricType, metricPeriodMonths, supervisionType)}
+                        data-tip={toggleTooltip(
+                          office,
+                          metricType,
+                          metricPeriodMonths,
+                          supervisionType
+                        )}
                         cx={0}
                         cy={0}
-                        r={radiusOfMarker(office, this.maxValues, metricType, metricPeriodMonths, supervisionType)}
+                        r={radiusOfMarker(
+                          office,
+                          this.maxValues,
+                          metricType,
+                          metricPeriodMonths,
+                          supervisionType
+                        )}
                       />
                     </Marker>
                   ))}
@@ -522,7 +660,11 @@ class GeoViewTimeChart extends Component {
 
     // Show just a regular choropleth, with no circles for offices
     return (
-      <div id={chartId} className="map-container" style={RATIO_CONTAINER_OUTER_STYLE}>
+      <div
+        id={chartId}
+        className="map-container"
+        style={RATIO_CONTAINER_OUTER_STYLE}
+      >
         <div style={RATIO_CONTAINER_INNER_STYLE}>
           <ComposableMap
             projection={geoAlbersUsa}
@@ -530,40 +672,77 @@ class GeoViewTimeChart extends Component {
             width={980}
             height={500}
             style={{
-              width: '100%',
-              height: 'auto',
+              width: "100%",
+              height: "auto",
             }}
           >
-            <ZoomableGroup center={[centerLong, centerLat]} zoom={7} disablePanning>
+            <ZoomableGroup
+              center={[centerLong, centerLat]}
+              zoom={7}
+              disablePanning
+            >
               <Geographies geography={geographyObject} disableOptimization>
-                {(geographies, projection) => geographies.map((geography) => (
-                  <Geography
-                    key={geography.properties.NAME}
-                    data-tip={toggleTooltipForCounty(this.offices, geography.properties.NAME, metricType, metricPeriodMonths, supervisionType, stateCode)}
-                    geography={geography}
-                    projection={projection}
-                    style={{
-                      default: {
-                        fill: colorForMarker(getOfficeForCounty(this.offices, geography.properties.NAME, stateCode), this.maxValues, metricType, metricPeriodMonths, supervisionType, false, possibleNegativeValues),
-                        stroke: COLORS['grey-700'],
-                        strokeWidth: 0.2,
-                        outline: 'none',
-                      },
-                      hover: {
-                        fill: colorForMarker(getOfficeForCounty(this.offices, geography.properties.NAME, stateCode), this.maxValues, metricType, metricPeriodMonths, supervisionType, true, possibleNegativeValues),
-                        stroke: COLORS['grey-700'],
-                        strokeWidth: 0.2,
-                        outline: 'none',
-                      },
-                      pressed: {
-                        fill: '#CFD8DC',
-                        stroke: COLORS['grey-700'],
-                        strokeWidth: 0.2,
-                        outline: 'none',
-                      },
-                    }}
-                  />
-                ))}
+                {(geographies, projection) =>
+                  geographies.map((geography) => (
+                    <Geography
+                      key={geography.properties.NAME}
+                      data-tip={toggleTooltipForCounty(
+                        this.offices,
+                        geography.properties.NAME,
+                        metricType,
+                        metricPeriodMonths,
+                        supervisionType,
+                        stateCode
+                      )}
+                      geography={geography}
+                      projection={projection}
+                      style={{
+                        default: {
+                          fill: colorForMarker(
+                            getOfficeForCounty(
+                              this.offices,
+                              geography.properties.NAME,
+                              stateCode
+                            ),
+                            this.maxValues,
+                            metricType,
+                            metricPeriodMonths,
+                            supervisionType,
+                            false,
+                            possibleNegativeValues
+                          ),
+                          stroke: COLORS["grey-700"],
+                          strokeWidth: 0.2,
+                          outline: "none",
+                        },
+                        hover: {
+                          fill: colorForMarker(
+                            getOfficeForCounty(
+                              this.offices,
+                              geography.properties.NAME,
+                              stateCode
+                            ),
+                            this.maxValues,
+                            metricType,
+                            metricPeriodMonths,
+                            supervisionType,
+                            true,
+                            possibleNegativeValues
+                          ),
+                          stroke: COLORS["grey-700"],
+                          strokeWidth: 0.2,
+                          outline: "none",
+                        },
+                        pressed: {
+                          fill: "#CFD8DC",
+                          stroke: COLORS["grey-700"],
+                          strokeWidth: 0.2,
+                          outline: "none",
+                        },
+                      }}
+                    />
+                  ))
+                }
               </Geographies>
             </ZoomableGroup>
           </ComposableMap>
@@ -573,5 +752,50 @@ class GeoViewTimeChart extends Component {
     );
   }
 }
+
+GeoViewTimeChart.defaultProps = {
+  possibleNegativeValues: false,
+  shareDenominatorAcrossRates: false,
+  keyedByOffice: false,
+  stateCode: null,
+  officeData: null,
+  supervisionType: null,
+};
+
+GeoViewTimeChart.propTypes = {
+  chartId: PropTypes.string.isRequired,
+  centerLong: PropTypes.number.isRequired,
+  centerLat: PropTypes.number.isRequired,
+  chartTitle: PropTypes.string.isRequired,
+  metricType: metricTypePropType.isRequired,
+  metricPeriodMonths: PropTypes.string.isRequired,
+  dataPointsByOffice: PropTypes.arrayOf(
+    PropTypes.shape({
+      district: PropTypes.string,
+      metric_period_months: PropTypes.string,
+      revocation_count: PropTypes.string,
+      state_code: PropTypes.string,
+      supervision_type: PropTypes.string,
+      total_supervision_count: PropTypes.string,
+    })
+  ).isRequired,
+  numeratorKeys: PropTypes.arrayOf(PropTypes.string).isRequired,
+  denominatorKeys: PropTypes.arrayOf(PropTypes.string).isRequired,
+  supervisionType: PropTypes.string,
+  officeData: PropTypes.arrayOf(
+    PropTypes.shape({
+      district: PropTypes.number,
+      lat: PropTypes.number,
+      long: PropTypes.number,
+      site_name: PropTypes.string,
+      state_code: PropTypes.string,
+      title_side: PropTypes.string,
+    })
+  ),
+  keyedByOffice: PropTypes.bool,
+  shareDenominatorAcrossRates: PropTypes.bool,
+  stateCode: PropTypes.string,
+  possibleNegativeValues: PropTypes.bool,
+};
 
 export default GeoViewTimeChart;

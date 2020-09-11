@@ -26,9 +26,9 @@ const ChartCard = ({
   chartId,
   chartTitle,
   hasExport,
-  footer,
-  geoChart,
-  geoFooter,
+  footer = null,
+  geoChart = null,
+  geoFooter = null,
 }) => {
   const [geoViewEnabled, setGeoViewEnabled] = useState(false);
 
@@ -65,7 +65,7 @@ const ChartCard = ({
             {isGeoViewAvailable && geoViewEnabled ? geoChart : chart}
           </div>
 
-          {geoViewEnabled && geoFooter !== undefined ? geoFooter : footer}
+          {geoViewEnabled && geoFooter ? geoFooter : footer}
         </div>
       </div>
     </div>
@@ -73,9 +73,9 @@ const ChartCard = ({
 };
 
 ChartCard.defaultProps = {
-  footer: undefined,
-  geoChart: undefined,
-  geoFooter: undefined,
+  footer: null,
+  geoChart: null,
+  geoFooter: null,
   hasExport: true,
 };
 

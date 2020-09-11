@@ -20,6 +20,8 @@ import PropTypes from "prop-types";
 
 import { COLORS_SEVEN_VALUES } from "../../../assets/scripts/constants/colors";
 import PerOfficerBarChart from "../common/bars/PerOfficerBarChart";
+import { metricTypePropType, officeDataPropTypes } from "../propTypes";
+import { METRIC_TYPES } from "../../constants";
 
 const chartId = "caseTerminationsByOfficer";
 
@@ -49,22 +51,35 @@ const CaseTerminationsByOfficer = ({
       { key: "death", label: "Death" },
       { key: "other", label: "Other" },
     ]}
-    yAxisLabel={metricType === "counts" ? "Case terminations" : "Percentage"}
+    yAxisLabel={
+      metricType === METRIC_TYPES.COUNTS ? "Case terminations" : "Percentage"
+    }
     barColorPalette={COLORS_SEVEN_VALUES}
   />
 );
 
-CaseTerminationsByOfficer.defaultProps = {
-  terminationCountsByOfficer: [],
-};
-
 CaseTerminationsByOfficer.propTypes = {
-  terminationCountsByOfficer: PropTypes.arrayOf(PropTypes.shape({})),
-  metricType: PropTypes.string.isRequired,
+  terminationCountsByOfficer: PropTypes.arrayOf(
+    PropTypes.shape({
+      absconsion: PropTypes.string,
+      death: PropTypes.string,
+      discharge: PropTypes.string,
+      district: PropTypes.string,
+      expiration: PropTypes.string,
+      metric_period_months: PropTypes.string,
+      officer_external_id: PropTypes.string,
+      other: PropTypes.string,
+      revocation: PropTypes.string,
+      state_code: PropTypes.string,
+      supervision_type: PropTypes.string,
+      suspension: PropTypes.string,
+    })
+  ).isRequired,
+  metricType: metricTypePropType.isRequired,
   metricPeriodMonths: PropTypes.string.isRequired,
   supervisionType: PropTypes.string.isRequired,
   district: PropTypes.arrayOf(PropTypes.string).isRequired,
-  officeData: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  officeData: PropTypes.arrayOf(officeDataPropTypes).isRequired,
 };
 
 export default CaseTerminationsByOfficer;

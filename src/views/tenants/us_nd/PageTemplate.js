@@ -21,7 +21,7 @@ import PropTypes from "prop-types";
 import ImportantNotesBar from "../../../components/ImportantNotesBar";
 import "../../../assets/styles/index.scss";
 
-const PageTemplate = ({ children, importantNotes, toggleBar }) => (
+const PageTemplate = ({ children, importantNotes, toggleBar = null }) => (
   <>
     {toggleBar}
     <main className="main-content bgc-grey-100">
@@ -42,13 +42,12 @@ const PageTemplate = ({ children, importantNotes, toggleBar }) => (
 );
 
 PageTemplate.defaultProps = {
-  children: undefined,
   importantNotes: [],
-  toggleBar: undefined,
+  toggleBar: null,
 };
 
 PageTemplate.propTypes = {
-  children: PropTypes.node,
+  children: PropTypes.node.isRequired,
   importantNotes: PropTypes.arrayOf(
     PropTypes.shape({
       header: PropTypes.string.isRequired,

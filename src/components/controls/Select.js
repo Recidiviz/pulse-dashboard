@@ -232,7 +232,7 @@ const defaultStyles = {
   group: (base) => ({ ...base, ...fontStyles, marginLeft: 20 }),
 };
 
-const Select = ({ summingOption, isMulti, ...props }) => {
+const Select = ({ summingOption = null, isMulti, ...props }) => {
   const { options, defaultValue } = props;
   const [value, setValue] = useState(defaultValue);
   const ref = useRef();
@@ -285,21 +285,18 @@ const optionType = PropTypes.shape({
 });
 
 Select.defaultProps = {
-  summingOption: undefined,
+  summingOption: null,
   isMulti: false,
   options: [],
-  defaultValue: undefined,
 };
 
 Select.propTypes = {
+  defaultValue: PropTypes.oneOfType([optionType, PropTypes.arrayOf(optionType)])
+    .isRequired,
+  onChange: PropTypes.func.isRequired,
   summingOption: optionType,
   isMulti: PropTypes.bool,
   options: PropTypes.arrayOf(optionType),
-  defaultValue: PropTypes.oneOfType([
-    optionType,
-    PropTypes.arrayOf(optionType),
-  ]),
-  onChange: PropTypes.func.isRequired,
 };
 
 export default Select;

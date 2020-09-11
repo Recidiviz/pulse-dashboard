@@ -35,6 +35,7 @@ import useChartData from "../../../hooks/useChartData";
 import { axisCallbackForPercentage } from "../../../utils/charts/axis";
 import { tooltipForRateMetricWithCounts } from "../../../utils/charts/toggles";
 import { calculateRate } from "./helpers/rate";
+import { filtersPropTypes } from "../propTypes";
 
 const chartId = "revocationsByViolationType";
 const violationCountKey = "violation_count";
@@ -42,11 +43,11 @@ const violationCountKey = "violation_count";
 const RevocationsByViolation = ({
   dataFilter,
   filterStates,
-  skippedFilters,
-  treatCategoryAllAsAbsent,
   stateCode,
   timeDescription,
   violationTypes,
+  skippedFilters = [],
+  treatCategoryAllAsAbsent = false,
 }) => {
   const { isLoading, apiData } = useChartData(
     `${stateCode}/newRevocations`,
@@ -183,25 +184,12 @@ const RevocationsByViolation = ({
 
 RevocationsByViolation.defaultProps = {
   skippedFilters: [],
-  treatCategoryAllAsAbsent: undefined,
+  treatCategoryAllAsAbsent: false,
 };
-
-const metricPeriodMonthsType = PropTypes.oneOfType([
-  PropTypes.string,
-  PropTypes.number,
-]);
 
 RevocationsByViolation.propTypes = {
   dataFilter: PropTypes.func.isRequired,
-  filterStates: PropTypes.shape({
-    admissionType: PropTypes.arrayOf(PropTypes.string),
-    metricPeriodMonths: metricPeriodMonthsType.isRequired,
-    chargeCategory: PropTypes.string,
-    district: PropTypes.arrayOf(PropTypes.string),
-    supervisionType: PropTypes.string,
-  }).isRequired,
-  skippedFilters: PropTypes.arrayOf(PropTypes.string),
-  treatCategoryAllAsAbsent: PropTypes.bool,
+  filterStates: filtersPropTypes.isRequired,
   stateCode: PropTypes.string.isRequired,
   timeDescription: PropTypes.string.isRequired,
   violationTypes: PropTypes.arrayOf(
@@ -211,6 +199,8 @@ RevocationsByViolation.propTypes = {
       type: PropTypes.string.isRequired,
     })
   ).isRequired,
+  skippedFilters: PropTypes.arrayOf(PropTypes.string),
+  treatCategoryAllAsAbsent: PropTypes.bool,
 };
 
 export default RevocationsByViolation;

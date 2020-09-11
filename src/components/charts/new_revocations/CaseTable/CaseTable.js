@@ -44,6 +44,7 @@ import {
   nameFromOfficerId,
   riskLevelValuetoLabel,
 } from "../../../../utils/transforms/labels";
+import { filtersPropTypes } from "../../propTypes";
 
 const CASES_PER_PAGE = 15;
 
@@ -253,12 +254,7 @@ const metricPeriodMonthsType = PropTypes.oneOfType([
 
 CaseTable.propTypes = {
   dataFilter: PropTypes.func.isRequired,
-  filterStates: PropTypes.shape({
-    metricPeriodMonths: metricPeriodMonthsType.isRequired,
-    chargeCategory: PropTypes.string,
-    district: PropTypes.arrayOf(PropTypes.string),
-    supervisionType: PropTypes.string,
-  }).isRequired,
+  filterStates: filtersPropTypes.isRequired,
   skippedFilters: PropTypes.arrayOf(PropTypes.string),
   treatCategoryAllAsAbsent: PropTypes.bool.isRequired,
   metricPeriodMonths: metricPeriodMonthsType.isRequired,

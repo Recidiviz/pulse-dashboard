@@ -17,16 +17,21 @@
 
 import React from "react";
 import PropTypes from "prop-types";
+import cn from "classnames";
 
-const TopBarLayout = ({ children, isWide }) => (
-  <div className={`header navbar ${isWide ? "wide-navbar" : ""}`}>
+const TopBarLayout = ({ children, isWide = false }) => (
+  <div className={cn("header", "navbar", { "wide-navbar": isWide })}>
     <div className="header-container">{children}</div>
   </div>
 );
 
+TopBarLayout.defaultProps = {
+  isWide: false,
+};
+
 TopBarLayout.propTypes = {
   children: PropTypes.node.isRequired,
-  isWide: PropTypes.bool.isRequired,
+  isWide: PropTypes.bool,
 };
 
 export default TopBarLayout;
