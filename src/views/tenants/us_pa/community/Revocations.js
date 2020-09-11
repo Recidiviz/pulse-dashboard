@@ -48,6 +48,7 @@ import {
   getUserAppMetadata,
   getUserDistricts,
 } from "../../../../utils/authentication/user";
+import flags from "../../../../flags";
 
 const stateCode = "us_pa";
 const admissionTypeOptions = [
@@ -103,6 +104,9 @@ const Revocations = () => {
     admissionType: [admissionTypeOptions[1].value],
     reportedViolations: "",
     violationType: "",
+    ...(flags.enableAdmissionTypeFilter
+      ? { admissionType: [admissionTypeOptions[1].value] }
+      : {}),
   });
 
   const updateFilters = (newFilters) => {
@@ -135,12 +139,14 @@ const Revocations = () => {
             defaultValue={chargeCategoryOptions[0]}
             onChange={updateFilters}
           />
-          <AdmissionTypeFilter
-            options={admissionTypeOptions}
-            summingOption={admissionTypeOptions[0]}
-            defaultValue={[admissionTypeOptions[1]]}
-            onChange={updateFilters}
-          />
+          {flags.enableAdmissionTypeFilter && (
+            <AdmissionTypeFilter
+              options={admissionTypeOptions}
+              summingOption={admissionTypeOptions[0]}
+              defaultValue={[admissionTypeOptions[1]]}
+              onChange={updateFilters}
+            />
+          )}
         </div>
         <ViolationFilter
           violationType={filters.violationType}
