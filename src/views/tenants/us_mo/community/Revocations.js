@@ -105,7 +105,7 @@ const Revocations = () => {
     chargeCategory: chargeCategoryOptions[0].value,
     district: [district || "All"],
     supervisionType: DEFAULT_SUPERVISION_TYPE.value,
-    ...(flags.enableAdmissionTypeFilterForMO
+    ...(flags.enableAdmissionTypeFilter
       ? { admissionType: [admissionTypeOptions[1].value] }
       : {}),
     reportedViolations: "",
@@ -142,7 +142,7 @@ const Revocations = () => {
             defaultValue={chargeCategoryOptions[0]}
             onChange={updateFilters}
           />
-          {flags.enableAdmissionTypeFilterForMO && (
+          {flags.enableAdmissionTypeFilter && (
             <AdmissionTypeFilter
               options={admissionTypeOptions}
               summingOption={admissionTypeOptions[0]}
