@@ -51,6 +51,8 @@ import {
   updateTooltipForMetricType,
 } from "../../../../utils/charts/toggles";
 import { numberFromOfficerId } from "../../../../utils/transforms/labels";
+import { metricTypePropType } from "../../propTypes";
+import { METRIC_TYPES } from "../../../constants";
 
 /**
  * Organizes the labels and data points so the chart can display the values
@@ -71,13 +73,13 @@ const prepareDataGroupedByOffice = (bars, metricType) => (data) => {
     bars
   );
 
-  if (metricType === "counts") {
+  if (metricType === METRIC_TYPES.COUNTS) {
     return {
       officerId,
       values: countsByType,
     };
   }
-  if (metricType === "rates") {
+  if (metricType === METRIC_TYPES.RATES) {
     const totalCount = pipe(values, reduce(sum, 0))(countsByType);
     const ratesByType = mapValues(
       (count) => (100 * (count / totalCount)).toFixed(2),
@@ -223,7 +225,7 @@ PerOfficerBarChart.propTypes = {
   chartId: PropTypes.string.isRequired,
   exportLabel: PropTypes.string.isRequired,
   countsPerPeriodPerOfficer: PropTypes.arrayOf(PropTypes.shape({})),
-  metricType: PropTypes.string.isRequired,
+  metricType: metricTypePropType.isRequired,
   metricPeriodMonths: PropTypes.string.isRequired,
   supervisionType: PropTypes.string.isRequired,
   district: PropTypes.arrayOf(PropTypes.string).isRequired,

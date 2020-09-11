@@ -20,6 +20,8 @@ import PropTypes from "prop-types";
 
 import PerMonthBarChart from "../common/bars/PerMonthBarChart";
 import { COLORS_FIVE_VALUES } from "../../../assets/scripts/constants/colors";
+import { metricTypePropType } from "../propTypes";
+import { METRIC_TYPES } from "../../constants";
 
 const chartId = "revocationsByViolationType";
 
@@ -46,23 +48,31 @@ const RevocationCountByViolationType = ({
       { key: "technical_count", label: "Technical" },
       { key: "unknown_count", label: "Unknown Type" },
     ]}
-    yAxisLabel={metricType === "counts" ? "Revocation count" : "Percentage"}
+    yAxisLabel={
+      metricType === METRIC_TYPES.COUNTS ? "Revocation count" : "Percentage"
+    }
     barColorPalette={COLORS_FIVE_VALUES}
   />
 );
 
-RevocationCountByViolationType.defaultProps = {
-  revocationCountsByMonthByViolationType: [],
-};
-
 RevocationCountByViolationType.propTypes = {
-  metricType: PropTypes.string.isRequired,
+  metricType: metricTypePropType.isRequired,
   metricPeriodMonths: PropTypes.string.isRequired,
   supervisionType: PropTypes.string.isRequired,
   district: PropTypes.arrayOf(PropTypes.string).isRequired,
   revocationCountsByMonthByViolationType: PropTypes.arrayOf(
-    PropTypes.shape({})
-  ),
+    PropTypes.shape({
+      absconsion_count: PropTypes.string,
+      district: PropTypes.string,
+      felony_count: PropTypes.string,
+      month: PropTypes.string,
+      state_code: PropTypes.string,
+      supervision_type: PropTypes.string,
+      technical_count: PropTypes.string,
+      unknown_count: PropTypes.string,
+      year: PropTypes.string,
+    })
+  ).isRequired,
 };
 
 export default RevocationCountByViolationType;

@@ -16,11 +16,11 @@
 // =============================================================================
 
 const cacheManager = require("cache-manager");
-const { isDemoMode } = require("../utils/demoMode");
+const { default: isDemoMode } = require("../utils/isDemoMode");
 
 function createMemoryCache(ttl, refreshThreshold) {
   return cacheManager.caching({
-    store: isDemoMode() ? "none" : "memory",
+    store: isDemoMode ? "none" : "memory",
     ttl,
     refreshThreshold,
   });

@@ -70,17 +70,13 @@ const ImportantNotesBar = ({ importantNotes }) => {
   );
 };
 
-ImportantNotesBar.defaultProps = {
-  importantNotes: [],
-};
-
 ImportantNotesBar.propTypes = {
   importantNotes: PropTypes.arrayOf(
     PropTypes.shape({
       header: PropTypes.string,
       body: PropTypes.string,
     })
-  ),
+  ).isRequired,
 };
 
 export default ImportantNotesBar;

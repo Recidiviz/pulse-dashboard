@@ -73,7 +73,7 @@ const Layout = ({ children }) => {
       </div>
 
       <div className="page-container">
-        <TopBarLayout isWide={false}>
+        <TopBarLayout>
           <ul className="nav-left">
             <TopBarHamburgerMenu onClick={toggleSideBar} />
             <TopBarTitle pathname={location.pathname} />

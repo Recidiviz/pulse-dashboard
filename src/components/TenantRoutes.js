@@ -16,6 +16,7 @@
 // =============================================================================
 
 import React, { Children, useEffect } from "react";
+import PropTypes from "prop-types";
 import { useLocation } from "react-router-dom";
 
 import Loading from "./Loading";
@@ -70,6 +71,10 @@ const TenantRoutes = ({ children }) => {
   }
 
   return element;
+};
+
+TenantRoutes.propTypes = {
+  children: PropTypes.node.isRequired,
 };
 
 export default TenantRoutes;

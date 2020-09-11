@@ -50,6 +50,8 @@ import {
   centerSingleMonthDatasetIfNecessary,
 } from "../../../utils/charts/toggles";
 import { generateTrendlineDataset } from "../../../utils/charts/trendline";
+import { metricTypePropType } from "../propTypes";
+import { METRIC_TYPES } from "../../constants";
 
 const chartId = "revocationAdmissionsSnapshot";
 const stepSize = 10;
@@ -137,7 +139,7 @@ const RevocationAdmissionsSnapshot = ({
     (dataset) => filterDatasetByDistrict(dataset, district),
     groupByMonth(calculateTotalRevocations),
     toRevocationCountsList,
-    metricType === "counts"
+    metricType === METRIC_TYPES.COUNTS
       ? identity
       : map((data) => ({
           ...data,
@@ -325,17 +327,28 @@ const RevocationAdmissionsSnapshot = ({
 
 RevocationAdmissionsSnapshot.defaultProps = {
   disableGoal: false,
-  revocationAdmissionsByMonth: [],
 };
 
 RevocationAdmissionsSnapshot.propTypes = {
   stateCode: PropTypes.string.isRequired,
   disableGoal: PropTypes.bool,
   header: PropTypes.string,
-  revocationAdmissionsByMonth: PropTypes.arrayOf(PropTypes.shape({})),
+  revocationAdmissionsByMonth: PropTypes.arrayOf(
+    PropTypes.shape({
+      district: PropTypes.string,
+      month: PropTypes.string,
+      new_admissions: PropTypes.string,
+      non_technicals: PropTypes.string,
+      state_code: PropTypes.string,
+      supervision_type: PropTypes.string,
+      technicals: PropTypes.string,
+      unknown_revocations: PropTypes.string,
+      year: PropTypes.string,
+    })
+  ).isRequired,
   supervisionType: PropTypes.string.isRequired,
   district: PropTypes.arrayOf(PropTypes.string).isRequired,
-  metricType: PropTypes.string.isRequired,
+  metricType: metricTypePropType.isRequired,
   metricPeriodMonths: PropTypes.string.isRequired,
 };
 

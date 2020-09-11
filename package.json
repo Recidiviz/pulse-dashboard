@@ -10,7 +10,9 @@
     "start": "node server.js",
     "build": "react-scripts build",
     "build-staging": "env-cmd -f .env.development react-scripts build",
-    "test": "react-scripts test --env=jest-environment-jsdom-sixteen",
+    "test-server": "jest ./server",
+    "test-client": "jest ./src",
+    "test": "jest",
     "spa": "react-scripts start",
     "server": "node server.js",
     "server:dev": "nodemon server.js",
@@ -87,6 +89,7 @@
     "typescript": "^3.8.3"
   },
   "devDependencies": {
+    "@babel/plugin-transform-runtime": "^7.11.5",
     "@testing-library/dom": "^7.0.4",
     "@testing-library/jest-dom": "^5.1.1",
     "@testing-library/react": "^10.0.1",
@@ -123,5 +126,14 @@
       "last 1 safari version",
       "ie 11"
     ]
+  },
+  "jest": {
+    "setupFilesAfterEnv": [
+      "jest-extended"
+    ],
+    "moduleNameMapper": {
+      "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/__mocks__/fileMock.js",
+      "\\.(css|scss|sass)$": "<rootDir>/__mocks__/styleMock.js"
+    }
   }
 }
