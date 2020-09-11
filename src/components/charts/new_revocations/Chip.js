@@ -21,7 +21,13 @@ import cx from "classnames";
 
 import "./Chip.scss";
 
-const Chip = ({ label, onClick, onDelete, isSelected, isShrinking }) => (
+const Chip = ({
+  label,
+  onClick = () => {},
+  onDelete = null,
+  isSelected = false,
+  isShrinking = false,
+}) => (
   <div
     className={cx({
       chip: true,
@@ -32,7 +38,7 @@ const Chip = ({ label, onClick, onDelete, isSelected, isShrinking }) => (
     <button type="button" className="label" onClick={onClick}>
       {label}
     </button>
-    {onDelete !== undefined && (
+    {onDelete && (
       <button type="button" className="delete" onClick={onDelete}>
         <i className="ti-close fw-900" />
       </button>
@@ -42,7 +48,7 @@ const Chip = ({ label, onClick, onDelete, isSelected, isShrinking }) => (
 
 Chip.defaultProps = {
   onClick: () => {},
-  onDelete: undefined,
+  onDelete: null,
   isSelected: false,
   isShrinking: false,
 };

@@ -16,6 +16,7 @@
 // =============================================================================
 
 import React, { useEffect } from "react";
+import PropTypes from "prop-types";
 import { Bar, HorizontalBar } from "react-chartjs-2";
 
 import map from "lodash/fp/map";
@@ -41,6 +42,8 @@ import {
   groupByRaceAndMap,
   stateCensusMapper,
 } from "../common/utils/races";
+import { metricTypePropType } from "../propTypes";
+import { METRIC_TYPES } from "../../constants";
 
 const chartId = "ftrReferralsByRace";
 const colors = [
@@ -271,7 +274,7 @@ const FtrReferralsByRace = ({
   );
 
   let activeChart = countsChart;
-  if (metricType === "rates") {
+  if (metricType === METRIC_TYPES.RATES) {
     activeChart = ratesChart;
   }
 
@@ -300,6 +303,31 @@ const FtrReferralsByRace = ({
   ]);
 
   return activeChart;
+};
+
+FtrReferralsByRace.propTypes = {
+  ftrReferralsByRace: PropTypes.arrayOf(
+    PropTypes.shape({
+      count: PropTypes.string,
+      district: PropTypes.string,
+      metric_period_months: PropTypes.string,
+      race_or_ethnicity: PropTypes.string,
+      state_code: PropTypes.string,
+      supervision_type: PropTypes.string,
+      total_supervision_count: PropTypes.string,
+    })
+  ).isRequired,
+  statePopulationByRace: PropTypes.arrayOf(
+    PropTypes.shape({
+      proportion: PropTypes.string,
+      race_or_ethnicity: PropTypes.string,
+      state_code: PropTypes.string,
+    })
+  ).isRequired,
+  supervisionType: PropTypes.string.isRequired,
+  district: PropTypes.arrayOf(PropTypes.string).isRequired,
+  metricType: metricTypePropType.isRequired,
+  metricPeriodMonths: PropTypes.string.isRequired,
 };
 
 export default FtrReferralsByRace;

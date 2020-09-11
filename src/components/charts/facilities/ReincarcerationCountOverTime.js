@@ -44,6 +44,8 @@ import {
 } from "../../../utils/charts/toggles";
 import { sortFilterAndSupplementMostRecentMonths } from "../../../utils/transforms/datasets";
 import { monthNamesWithYearsFromNumbers } from "../../../utils/transforms/months";
+import { METRIC_TYPES } from "../../constants";
+import { metricTypePropType } from "../propTypes";
 
 const chartId = "reincarcerationCountsByMonth";
 const stepSize = 5;
@@ -86,7 +88,7 @@ const ReincarcerationCountOverTime = ({
   metricType,
   metricPeriodMonths,
   disableGoal,
-  header,
+  header = null,
   stateCode,
 }) => {
   const goal = getGoalForChart(stateCode, chartId);
@@ -102,7 +104,7 @@ const ReincarcerationCountOverTime = ({
     (dataset) => filterDatasetByDistrict(dataset, district),
     groupBy(({ year, month }) => `${year}-${month}`),
     values,
-    map(metricType === "rates" ? dataRatesMapper : dataCountsMapper),
+    map(metricType === METRIC_TYPES.RATES ? dataRatesMapper : dataCountsMapper),
     sortAndSupplementMostRecentMonths(metricPeriodMonths)
   )(countsByMonth);
 
@@ -181,7 +183,7 @@ const ReincarcerationCountOverTime = ({
           yAxes: [
             {
               ticks: toggleYAxisTicksFor(
-                "counts",
+                METRIC_TYPES.COUNTS,
                 metricType,
                 chartMinValue,
                 chartMaxValue,
@@ -242,7 +244,7 @@ const ReincarcerationCountOverTime = ({
     const chartData = chart.props.data.datasets[0].data;
     const mostRecentValue = chartData[chartData.length - 1];
 
-    const headerElement = document.getElementById(header);
+    const headerElement = header && document.getElementById(header);
 
     if (headerElement && mostRecentValue !== null && displayGoal) {
       const title = `There have been <span class='fs-block header-highlight'>${mostRecentValue} reincarcerations</span> to a DOCR facility this month so far.`;
@@ -256,14 +258,22 @@ const ReincarcerationCountOverTime = ({
 };
 
 ReincarcerationCountOverTime.defaultProps = {
-  reincarcerationCountsByMonth: [],
   disableGoal: false,
-  hedaer: undefined,
+  header: null,
 };
 
 ReincarcerationCountOverTime.propTypes = {
-  reincarcerationCountsByMonth: PropTypes.arrayOf(PropTypes.shape({})),
-  metricType: PropTypes.string.isRequired,
+  reincarcerationCountsByMonth: PropTypes.arrayOf(
+    PropTypes.shape({
+      district: PropTypes.string,
+      month: PropTypes.string,
+      returns: PropTypes.string,
+      state_code: PropTypes.string,
+      total_admissions: PropTypes.string,
+      year: PropTypes.string,
+    })
+  ).isRequired,
+  metricType: metricTypePropType.isRequired,
   metricPeriodMonths: PropTypes.string.isRequired,
   district: PropTypes.arrayOf(PropTypes.string).isRequired,
   disableGoal: PropTypes.bool,

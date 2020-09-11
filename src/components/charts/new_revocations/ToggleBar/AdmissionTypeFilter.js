@@ -23,10 +23,10 @@ import Select from "../../../controls/Select";
 import FilterField from "./FilterField";
 
 const AdmissionTypeFilter = ({
-  options,
   defaultValue,
   summingOption,
   onChange,
+  options = [],
 }) => {
   return (
     <FilterField label="Admission Type">
@@ -47,8 +47,6 @@ const AdmissionTypeFilter = ({
 
 AdmissionTypeFilter.defaultProps = {
   options: [],
-  defaultValue: undefined,
-  summingOption: undefined,
 };
 
 const optionType = PropTypes.shape({
@@ -57,10 +55,10 @@ const optionType = PropTypes.shape({
 });
 
 AdmissionTypeFilter.propTypes = {
-  options: PropTypes.arrayOf(optionType),
-  defaultValue: PropTypes.arrayOf(optionType),
-  summingOption: optionType,
+  defaultValue: PropTypes.arrayOf(optionType).isRequired,
+  summingOption: optionType.isRequired,
   onChange: PropTypes.func.isRequired,
+  options: PropTypes.arrayOf(optionType),
 };
 
 export default AdmissionTypeFilter;

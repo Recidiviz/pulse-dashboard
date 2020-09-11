@@ -20,6 +20,8 @@ import PropTypes from "prop-types";
 
 import PerMonthBarChart from "../common/bars/PerMonthBarChart";
 import { COLORS_SEVEN_VALUES } from "../../../assets/scripts/constants/colors";
+import { METRIC_TYPES } from "../../constants";
+import { metricTypePropType } from "../propTypes";
 
 const chartId = "caseTerminationsByTerminationType";
 
@@ -49,22 +51,33 @@ const CaseTerminationsByTerminationType = ({
       { key: "death", label: "Death" },
       { key: "other", label: "Other" },
     ]}
-    yAxisLabel={metricType === "counts" ? "Case terminations" : "Percentage"}
+    yAxisLabel={
+      metricType === METRIC_TYPES.COUNTS ? "Case terminations" : "Percentage"
+    }
     barColorPalette={COLORS_SEVEN_VALUES}
   />
 );
 
-CaseTerminationsByTerminationType.defaultProps = {
-  caseTerminationCountsByMonthByTerminationType: [],
-};
-
 CaseTerminationsByTerminationType.propTypes = {
-  metricType: PropTypes.string.isRequired,
+  metricType: metricTypePropType.isRequired,
   metricPeriodMonths: PropTypes.string.isRequired,
   district: PropTypes.arrayOf(PropTypes.string).isRequired,
   caseTerminationCountsByMonthByTerminationType: PropTypes.arrayOf(
-    PropTypes.shape({})
-  ),
+    PropTypes.shape({
+      absconsion: PropTypes.string,
+      death: PropTypes.string,
+      discharge: PropTypes.string,
+      district: PropTypes.string,
+      expiration: PropTypes.string,
+      month: PropTypes.string,
+      other: PropTypes.string,
+      revocation: PropTypes.string,
+      state_code: PropTypes.string,
+      supervision_type: PropTypes.string,
+      suspension: PropTypes.string,
+      year: PropTypes.string,
+    })
+  ).isRequired,
   supervisionType: PropTypes.string.isRequired,
 };
 

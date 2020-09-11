@@ -50,8 +50,8 @@ const DaysAtLibertySnapshot = ({
   stateCode,
   daysAtLibertyByMonth,
   metricPeriodMonths,
-  disableGoal,
-  header,
+  disableGoal = false,
+  header = null,
 }) => {
   const goal = getGoalForChart(stateCode, chartId);
   const displayGoal = canDisplayGoal(goal, { disableGoal, metricPeriodMonths });
@@ -207,7 +207,7 @@ const DaysAtLibertySnapshot = ({
   }, [chart.props.data.datasets, chart.props.data.labels, metricPeriodMonths]);
 
   useEffect(() => {
-    const headerElement = document.getElementById(header);
+    const headerElement = header && document.getElementById(header);
 
     if (headerElement && displayGoal) {
       const trendlineValues = chart.props.data.datasets[1].data;
@@ -224,17 +224,24 @@ const DaysAtLibertySnapshot = ({
 };
 
 DaysAtLibertySnapshot.defaultProps = {
-  daysAtLibertyByMonth: [],
   disableGoal: false,
-  header: undefined,
+  header: null,
 };
 
 DaysAtLibertySnapshot.propTypes = {
-  daysAtLibertyByMonth: PropTypes.arrayOf(PropTypes.shape({})),
+  daysAtLibertyByMonth: PropTypes.arrayOf(
+    PropTypes.shape({
+      avg_liberty: PropTypes.string.isRequired,
+      month: PropTypes.string.isRequired,
+      returns: PropTypes.string.isRequired,
+      state_code: PropTypes.string.isRequired,
+      year: PropTypes.string.isRequired,
+    })
+  ).isRequired,
   metricPeriodMonths: PropTypes.string.isRequired,
+  stateCode: PropTypes.string.isRequired,
   disableGoal: PropTypes.bool,
   header: PropTypes.string,
-  stateCode: PropTypes.string.isRequired,
 };
 
 export default DaysAtLibertySnapshot;

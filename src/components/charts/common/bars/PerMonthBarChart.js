@@ -43,6 +43,8 @@ import {
 } from "../../../../utils/charts/toggles";
 import { sortFilterAndSupplementMostRecentMonths } from "../../../../utils/transforms/datasets";
 import { monthNamesWithYearsFromNumbers } from "../../../../utils/transforms/months";
+import { metricTypePropType } from "../../propTypes";
+import { METRIC_TYPES } from "../../../constants";
 
 export const prepareDataGroupedByMonth = (metricType, bars) => (data) => {
   const { year, month } = data;
@@ -55,14 +57,14 @@ export const prepareDataGroupedByMonth = (metricType, bars) => (data) => {
 
   const totalCount = pipe(values, reduce(sum, 0))(monthCounts);
 
-  if (metricType === "counts") {
+  if (metricType === METRIC_TYPES.COUNTS) {
     return {
       year,
       month,
       monthDict: monthCounts,
     };
   }
-  if (metricType === "rates") {
+  if (metricType === METRIC_TYPES.RATES) {
     const monthRates = {};
 
     Object.keys(monthCounts).forEach((key) => {
@@ -209,7 +211,7 @@ PerMonthBarChart.propTypes = {
   chartId: PropTypes.string.isRequired,
   exportLabel: PropTypes.string.isRequired,
   countsByMonth: PropTypes.arrayOf(PropTypes.shape({})),
-  metricType: PropTypes.string.isRequired,
+  metricType: metricTypePropType.isRequired,
   numMonths: PropTypes.string.isRequired,
   filters: PropTypes.shape({
     district: PropTypes.arrayOf(PropTypes.string),

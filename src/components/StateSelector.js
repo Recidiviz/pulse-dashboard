@@ -51,12 +51,8 @@ const StateSelector = ({ availableStateCodes }) => {
   );
 };
 
-StateSelector.defaultProps = {
-  availableStateCodes: [],
-};
-
 StateSelector.propTypes = {
-  availableStateCodes: PropTypes.arrayOf(PropTypes.string),
+  availableStateCodes: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
 export default StateSelector;

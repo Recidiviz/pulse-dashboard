@@ -41,6 +41,7 @@ import Loading from "../../../Loading";
 
 import useChartData from "../../../../hooks/useChartData";
 import { violationCountLabel } from "../../../../utils/transforms/labels";
+import { filtersPropTypes } from "../../propTypes";
 
 const TITLE =
   "Admissions by violation history (in year prior to their last reported violation)";
@@ -54,8 +55,8 @@ const RevocationMatrix = ({
   stateCode,
   dataFilter,
   filterStates,
-  skippedFilters,
-  treatCategoryAllAsAbsent,
+  skippedFilters = [],
+  treatCategoryAllAsAbsent = false,
   timeDescription,
   updateFilters,
   violationTypes,
@@ -208,16 +209,14 @@ const RevocationMatrix = ({
 };
 
 RevocationMatrix.defaultProps = {
-  treatCategoryAllAsAbsent: undefined,
-  skippedFilters: undefined,
+  treatCategoryAllAsAbsent: false,
+  skippedFilters: [],
 };
 
 RevocationMatrix.propTypes = {
   dataFilter: PropTypes.func.isRequired,
-  // eslint-disable-next-line react/forbid-prop-types
-  filterStates: PropTypes.object.isRequired,
+  filterStates: filtersPropTypes.isRequired,
   skippedFilters: PropTypes.arrayOf(PropTypes.string),
-  // eslint-disable-next-line react/forbid-prop-types
   treatCategoryAllAsAbsent: PropTypes.bool,
   stateCode: PropTypes.string.isRequired,
   timeDescription: PropTypes.string.isRequired,

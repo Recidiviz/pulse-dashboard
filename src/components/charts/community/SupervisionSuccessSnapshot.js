@@ -49,6 +49,8 @@ import {
   centerSingleMonthDatasetIfNecessary,
 } from "../../../utils/charts/toggles";
 import { generateTrendlineDataset } from "../../../utils/charts/trendline";
+import { METRIC_TYPES } from "../../constants";
+import { metricTypePropType } from "../propTypes";
 
 const chartId = "supervisionSuccessSnapshot";
 
@@ -105,8 +107,8 @@ const SupervisionSuccessSnapshot = ({
   district,
   metricType,
   metricPeriodMonths,
-  header,
-  disableGoal,
+  header = null,
+  disableGoal = false,
 }) => {
   const stepSize = 10;
 
@@ -124,7 +126,7 @@ const SupervisionSuccessSnapshot = ({
     // Don't add completion rates for months in the future
     filter(isValidData),
     groupByMonthAndMap,
-    map(metricType === "rates" ? dataRatesMapper : dataCountsMapper),
+    map(metricType === METRIC_TYPES.RATES ? dataRatesMapper : dataCountsMapper),
     (dataset) =>
       sortFilterAndSupplementMostRecentMonths(
         dataset,
@@ -234,7 +236,7 @@ const SupervisionSuccessSnapshot = ({
           yAxes: [
             {
               ticks: toggleYAxisTicksAdditionalOptions(
-                "rates",
+                METRIC_TYPES.RATES,
                 metricType,
                 chartMinValue,
                 chartMaxValue,
@@ -307,19 +309,28 @@ const SupervisionSuccessSnapshot = ({
 };
 
 SupervisionSuccessSnapshot.defaultProps = {
-  supervisionSuccessRates: [],
-  header: undefined,
+  header: null,
   disableGoal: false,
 };
 
 SupervisionSuccessSnapshot.propTypes = {
-  supervisionSuccessRates: PropTypes.arrayOf(PropTypes.shape({})),
-  metricType: PropTypes.string.isRequired,
+  supervisionSuccessRates: PropTypes.arrayOf(
+    PropTypes.shape({
+      district: PropTypes.string,
+      projected_month: PropTypes.string,
+      projected_year: PropTypes.string,
+      revocation_termination: PropTypes.string,
+      state_code: PropTypes.string,
+      successful_termination: PropTypes.string,
+      supervision_type: PropTypes.string,
+    })
+  ).isRequired,
+  metricType: metricTypePropType.isRequired,
   metricPeriodMonths: PropTypes.string.isRequired,
   district: PropTypes.arrayOf(PropTypes.string).isRequired,
   supervisionType: PropTypes.string.isRequired,
   stateCode: PropTypes.string.isRequired,
-  header: PropTypes.node,
+  header: PropTypes.string,
   disableGoal: PropTypes.bool,
 };
 
