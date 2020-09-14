@@ -104,9 +104,6 @@
     .dropdown-menu {
       display: block;
       margin: 0;
-      transform-origin: top right;
-      transform: scale(0, 0);
-      transition: transform 0.15s ease-out;
 
       .divider {
         border-bottom: 1px solid $border-color;

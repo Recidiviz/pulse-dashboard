@@ -17,6 +17,7 @@
 
 import React from "react";
 import PropTypes from "prop-types";
+import { Dropdown } from "react-bootstrap";
 
 const TenantExportMenu = ({ chartId, chartType }) => {
   function getDownloadFunctionName() {
@@ -31,37 +32,29 @@ const TenantExportMenu = ({ chartId, chartType }) => {
   }
 
   return (
-    <div className="dropdown show export-button">
-      <button
-        className="btn btn-secondary btn-sm dropdown-toggle"
-        type="button"
+    <Dropdown className="export-button">
+      <Dropdown.Toggle
+        variant="secondary"
+        size="sm"
         id={`exportDropdownMenuButton-${chartId}`}
-        data-toggle="dropdown"
-        aria-haspopup="true"
-        aria-expanded="false"
       >
         Export
-      </button>
-      <div
-        className="dropdown-menu"
+      </Dropdown.Toggle>
+      <Dropdown.Menu
+        renderOnMount
         aria-labelledby={`exportDropdownMenuButton-${chartId}`}
       >
-        <button
-          type="button"
-          className="dropdown-item"
+        <Dropdown.Item
+          as="button"
           id={`${getDownloadFunctionName()}-${chartId}`}
         >
           Export image
-        </button>
-        <button
-          type="button"
-          id={`downloadChartData-${chartId}`}
-          className="dropdown-item"
-        >
+        </Dropdown.Item>
+        <Dropdown.Item as="button" id={`downloadChartData-${chartId}`}>
           Export data
-        </button>
-      </div>
-    </div>
+        </Dropdown.Item>
+      </Dropdown.Menu>
+    </Dropdown>
   );
 };
 

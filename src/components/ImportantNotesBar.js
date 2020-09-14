@@ -15,51 +15,60 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React from "react";
+import React, { useCallback, useState } from "react";
+import { Collapse } from "react-bootstrap";
 import PropTypes from "prop-types";
 
 import "./ImportantNotesBar.css";
 
-const ImportantNotesBar = ({ importantNotes }) => (
-  <div className="col-12">
-    <div className="bd bgc-white pX-40 pY-20">
-      <div className="w-100" id="importantNotesBar">
-        <button
-          className="btn btn-link collapsed pX-0 w-100 text-decoration-none"
-          type="button"
-          data-toggle="collapse"
-          data-target="#importantNotes"
-          aria-expanded="true"
-          aria-controls="importantNotes"
-        >
-          <h5
-            id="importantNotesBarHeading"
-            className="lh-1 mB-0 text-left recidiviz-dark-green-text"
+const ImportantNotesBar = ({ importantNotes }) => {
+  const [isOpened, setIsOpened] = useState(false);
+
+  const toggleIsOpened = useCallback(() => {
+    setIsOpened(!isOpened);
+  }, [isOpened]);
+
+  return (
+    <div className="col-12">
+      <div className="bd bgc-white pX-40 pY-20">
+        <div className="w-100" id="importantNotesBar">
+          <button
+            className="btn btn-link pX-0 w-100 text-decoration-none"
+            type="button"
+            aria-expanded="true"
+            aria-controls="importantNotes"
+            onClick={toggleIsOpened}
           >
-            Important Notes
-            <span className="ti-angle-right" />
-            <span className="ti-angle-down" />
-          </h5>
-        </button>
-        <div
-          id="importantNotes"
-          className="collapse"
-          aria-labelledby="importantNotesBarHeading"
-          data-parent="#importantNotesBar"
-        >
-          <div className="bdT mT-10 pT-10">
-            {importantNotes.map((note) => (
-              <p key={note.header}>
-                <span className="font-weight-bold">{`${note.header}: `}</span>
-                {note.body}
-              </p>
-            ))}
-          </div>
+            <h5
+              id="importantNotesBarHeading"
+              className="lh-1 mB-0 text-left recidiviz-dark-green-text"
+            >
+              Important Notes
+              <span className="ti-angle-right" />
+              <span className="ti-angle-down" />
+            </h5>
+          </button>
+          <Collapse
+            in={isOpened}
+            id="importantNotes"
+            aria-labelledby="importantNotesBarHeading"
+          >
+            <div>
+              <div className="bdT mT-10 pT-10">
+                {importantNotes.map((note) => (
+                  <p key={note.header}>
+                    <span className="font-weight-bold">{`${note.header}: `}</span>
+                    {note.body}
+                  </p>
+                ))}
+              </div>
+            </div>
+          </Collapse>
         </div>
       </div>
     </div>
-  </div>
-);
+  );
+};
 
 ImportantNotesBar.propTypes = {
   importantNotes: PropTypes.arrayOf(
