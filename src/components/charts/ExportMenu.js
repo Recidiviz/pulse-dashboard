@@ -26,6 +26,7 @@ import {
   downloadHtmlElementAsData,
 } from "../../assets/scripts/utils/downloads";
 import chartIdToInfo from "../../utils/charts/info";
+import { filtersPropTypes } from "./propTypes";
 
 const ExportMenu = ({
   chartId,
@@ -248,7 +249,7 @@ ExportMenu.propTypes = {
   chartId: PropTypes.string.isRequired,
   timeWindowDescription: PropTypes.string.isRequired,
   metricTitle: PropTypes.string.isRequired,
-  filters: PropTypes.shape({}).isRequired,
+  filters: filtersPropTypes.isRequired,
   regularElement: PropTypes.bool,
   shouldExport: PropTypes.bool,
   elementDatasets: PropTypes.arrayOf(
@@ -259,7 +260,6 @@ ExportMenu.propTypes = {
   ),
   chart: PropTypes.node,
   isTable: PropTypes.bool,
-  // Shape should be taken from ./propTypes.js (now not merged)
   elementLabels: PropTypes.arrayOf(PropTypes.string),
   tableData: PropTypes.arrayOf(
     PropTypes.shape({
