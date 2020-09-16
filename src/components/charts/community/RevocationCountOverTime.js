@@ -25,6 +25,10 @@ import pipe from "lodash/fp/pipe";
 import { COLORS } from "../../../assets/scripts/constants/colors";
 import { configureDownloadButtons } from "../../../assets/scripts/utils/downloads";
 import {
+  filterDatasetBySupervisionType,
+  filterDatasetByDistrict,
+} from "../../../utils/charts/dataFilters";
+import {
   getGoalForChart,
   getMaxForGoalAndDataIfGoalDisplayable,
   chartAnnotationForGoal,
@@ -33,8 +37,6 @@ import {
   toggleLabel,
   getMonthCountFromMetricPeriodMonthsToggle,
   updateTooltipForMetricType,
-  filterDatasetBySupervisionType,
-  filterDatasetByDistrict,
   canDisplayGoal,
   toggleYAxisTicksFor,
   centerSingleMonthDatasetIfNecessary,

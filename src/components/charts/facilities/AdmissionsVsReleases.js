@@ -31,11 +31,11 @@ import {
   COLORS_GOOD_BAD,
 } from "../../../assets/scripts/constants/colors";
 import { configureDownloadButtons } from "../../../assets/scripts/utils/downloads";
+import { filterDatasetByDistrict } from "../../../utils/charts/dataFilters";
 import {
   toggleLabel,
   getMonthCountFromMetricPeriodMonthsToggle,
   updateTooltipForMetricType,
-  filterDatasetByDistrict,
 } from "../../../utils/charts/toggles";
 import { sortFilterAndSupplementMostRecentMonths } from "../../../utils/transforms/datasets";
 import { monthNamesWithYearsFromNumbers } from "../../../utils/transforms/months";

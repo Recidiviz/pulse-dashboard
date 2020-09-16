@@ -29,7 +29,7 @@ import {
   filterDatasetBySupervisionType,
   filterDatasetByDistrict,
   filterDatasetByMetricPeriodMonths,
-} from "../../../utils/charts/toggles";
+} from "../../../utils/charts/dataFilters";
 import {
   tooltipForCountChart,
   tooltipForRateChart,

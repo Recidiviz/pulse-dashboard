@@ -38,7 +38,7 @@ import {
   filterDatasetByDistrict,
   filterDatasetBySupervisionType,
   filterDatasetByMetricPeriodMonths,
-} from "../../../utils/charts/toggles";
+} from "../../../utils/charts/dataFilters";
 import { sortByLabel } from "../../../utils/transforms/datasets";
 import { metricTypePropType } from "../propTypes";
 import { METRIC_TYPES } from "../../constants";

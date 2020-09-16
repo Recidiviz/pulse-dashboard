@@ -188,27 +188,6 @@ function updateTooltipForMetricTypeWithCounts(
   return standardTooltipForCountMetric(tooltipItem, data);
 }
 
-function filterDatasetByMetricPeriodMonths(dataset, metricPeriodMonths) {
-  return dataset.filter((element) => element.metric_period_months === metricPeriodMonths);
-}
-
-function filterDatasetByToggleFilters(dataset, toggleFilters) {
-  const toggleKey = Object.keys(toggleFilters)[0];
-  const toggleValue = toggleFilters[toggleKey].toUpperCase();
-
-  return dataset.filter((element) => String(element[toggleKey]).toUpperCase() === String(toggleValue));
-}
-
-function filterDatasetByDistrict(dataset, districts) {
-  return dataset.filter((element) =>
-    districts.map(d => d.toUpperCase()).includes(String(element.district).toUpperCase())
-  );
-}
-
-function filterDatasetBySupervisionType(dataset, supervisionType) {
-  return filterDatasetByToggleFilters(dataset, { supervision_type: supervisionType });
-}
-
 function canDisplayGoal(goal, toggles) {
   if (toggles.disableGoal === true) {
     return false;
@@ -258,9 +237,6 @@ export {
   tooltipForRateMetricWithNestedCounts,
   updateTooltipForMetricType,
   updateTooltipForMetricTypeWithCounts,
-  filterDatasetByMetricPeriodMonths,
-  filterDatasetByDistrict,
-  filterDatasetBySupervisionType,
   canDisplayGoal,
   centerSingleMonthDatasetIfNecessary,
 };

@@ -34,7 +34,7 @@ import {
   filterDatasetBySupervisionType,
   filterDatasetByDistrict,
   filterDatasetByMetricPeriodMonths,
-} from "../../../utils/charts/toggles";
+} from "../../../utils/charts/dataFilters";
 import { tooltipForCountChart } from "../../../utils/charts/tooltips";
 import {
   addMissedRaceCounts,

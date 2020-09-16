@@ -29,7 +29,7 @@ import sumBy from "lodash/fp/sumBy";
 import { COLORS } from "../../../assets/scripts/constants/colors";
 import { configureDownloadButtons } from "../../../assets/scripts/utils/downloads";
 
-import { filterDatasetByDistrict } from "../../../utils/charts/toggles";
+import { filterDatasetByDistrict } from "../../../utils/charts/dataFilters";
 import { METRIC_TYPES } from "../../constants";
 import { metricTypePropType } from "../propTypes";
 
