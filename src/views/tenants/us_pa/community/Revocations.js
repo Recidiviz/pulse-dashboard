@@ -37,8 +37,9 @@ import SupervisionLevelFilter from "../../../../components/charts/new_revocation
 import ErrorBoundary from "../../../../components/ErrorBoundary";
 import {
   applyAllFilters,
-  applyTopLevelFilters,
   limitFiltersToUserDistricts,
+  matchesAllFilters,
+  matchesTopLevelFilters,
 } from "../../../../components/charts/new_revocations/helpers";
 import {
   DEFAULT_METRIC_PERIOD,
@@ -123,6 +124,8 @@ const Revocations = () => {
     userDistricts
   );
   const allDataFilter = applyAllFilters(transformedFilters);
+  const allFilterMatch = matchesAllFilters(transformedFilters);
+  const topLevelFilterMatch = matchesTopLevelFilters(transformedFilters);
 
   const timeDescription = getTimeDescription(
     filters.metricPeriodMonths,
@@ -167,7 +170,7 @@ const Revocations = () => {
       <div className="bgc-white p-20 m-20">
         <ErrorBoundary>
           <RevocationCountOverTime
-            dataFilter={allDataFilter}
+            dataFilter={allFilterMatch}
             skippedFilters={["metricPeriodMonths", "supervisionType"]}
             filterStates={filters}
             metricPeriodMonths={filters.metricPeriodMonths}
@@ -179,7 +182,7 @@ const Revocations = () => {
         <div className="matrix-container bgc-white p-20 mR-20">
           <ErrorBoundary>
             <RevocationMatrix
-              dataFilter={applyTopLevelFilters(transformedFilters)}
+              dataFilter={topLevelFilterMatch}
               filterStates={filters}
               updateFilters={updateFilters}
               timeDescription={timeDescription}
@@ -205,7 +208,7 @@ const Revocations = () => {
         riskLevelChart={
           <ErrorBoundary>
             <RevocationsByRiskLevel
-              dataFilter={allDataFilter}
+              dataFilter={allFilterMatch}
               filterStates={filters}
               stateCode={stateCode}
               timeDescription={timeDescription}
@@ -215,7 +218,7 @@ const Revocations = () => {
         violationChart={
           <ErrorBoundary>
             <RevocationsByViolation
-              dataFilter={allDataFilter}
+              dataFilter={allFilterMatch}
               filterStates={filters}
               stateCode={stateCode}
               timeDescription={timeDescription}
@@ -226,7 +229,7 @@ const Revocations = () => {
         genderChart={
           <ErrorBoundary>
             <RevocationsByGender
-              dataFilter={allDataFilter}
+              dataFilter={allFilterMatch}
               filterStates={filters}
               stateCode={stateCode}
               timeDescription={timeDescription}
@@ -236,7 +239,7 @@ const Revocations = () => {
         raceChart={
           <ErrorBoundary>
             <RevocationsByRace
-              dataFilter={allDataFilter}
+              dataFilter={allFilterMatch}
               filterStates={filters}
               stateCode={stateCode}
               timeDescription={timeDescription}
@@ -246,7 +249,7 @@ const Revocations = () => {
         districtChart={
           <ErrorBoundary>
             <RevocationsByDistrict
-              dataFilter={allDataFilter}
+              dataFilter={allFilterMatch}
               skippedFilters={["district"]}
               filterStates={filters}
               currentDistricts={filters.district}
