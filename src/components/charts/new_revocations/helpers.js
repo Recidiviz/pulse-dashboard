@@ -28,11 +28,9 @@ import {
   includesAllItemFirst,
 } from "../../../utils/charts/dataPointComparisons";
 
-const matchesTopLevelFilters = (
-  filters,
-  skippedFilters,
-  treatCategoryAllAsAbsent,
-  applySupervisionLevel
+export const matchesTopLevelFilters = (filters, applySupervisionLevel = true) => (
+  skippedFilters = [],
+  treatCategoryAllAsAbsent = false
 ) => (item) => {
   if (
     filters.metricPeriodMonths &&
@@ -97,16 +95,14 @@ export const applyTopLevelFilters = (filters, applySupervisionLevel = true) => (
   skippedFilters = [],
   treatCategoryAllAsAbsent = false
 ) => {
-  const filterFn = matchesTopLevelFilters(
-    filters,
+  const filterFn = matchesTopLevelFilters(filters, applySupervisionLevel)(
     skippedFilters,
-    treatCategoryAllAsAbsent,
-    applySupervisionLevel
+    treatCategoryAllAsAbsent
   );
   return data.filter((item) => filterFn(item));
 };
 
-const matchesMatrixFilters = (filters) => (item) => {
+export const matchesMatrixFilters = (filters) => (item) => {
   if (
     filters.violationType &&
     !nullSafeComparison(item.violation_type, filters.violationType)
@@ -133,11 +129,9 @@ export const matchesAllFilters = (filters, applySupervisionLevel = true) => (
   skippedFilters = [],
   treatCategoryAllAsAbsent = false
 ) => (item) => {
-  const topLevelFilterFn = matchesTopLevelFilters(
-    filters,
+  const topLevelFilterFn = matchesTopLevelFilters(filters, applySupervisionLevel)(
     skippedFilters,
-    treatCategoryAllAsAbsent,
-    applySupervisionLevel
+    treatCategoryAllAsAbsent
   );
   const matrixFilterFn = matchesMatrixFilters(filters);
   return topLevelFilterFn(item) && matrixFilterFn(item);

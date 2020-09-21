@@ -33,6 +33,7 @@ import Error from "../../Error";
 import { COLORS } from "../../../assets/scripts/constants/colors";
 import useChartData from "../../../hooks/useChartData";
 import { axisCallbackForPercentage } from "../../../utils/charts/axis";
+import { filterOptimizedDataFormat } from "../../../utils/charts/dataFilters";
 import { tooltipForRateMetricWithCounts } from "../../../utils/charts/toggles";
 import { calculateRate } from "./helpers/rate";
 import { filtersPropTypes } from "../propTypes";
@@ -51,7 +52,8 @@ const RevocationsByViolation = ({
 }) => {
   const { isLoading, isError, apiData } = useChartData(
     `${stateCode}/newRevocations`,
-    "revocations_matrix_distribution_by_violation"
+    "revocations_matrix_distribution_by_violation",
+    false
   );
 
   if (isLoading) {
@@ -62,11 +64,16 @@ const RevocationsByViolation = ({
     return <Error />;
   }
 
-  const filteredData = dataFilter(
-    apiData,
-    skippedFilters,
-    treatCategoryAllAsAbsent
-  );
+  const filterFn = dataFilter(skippedFilters, treatCategoryAllAsAbsent);
+
+  const filteredData = pipe((metricFile) =>
+    filterOptimizedDataFormat(
+      metricFile.flattenedValueMatrix,
+      metricFile.metadata,
+      {},
+      filterFn
+    )
+  )(apiData);
 
   const allViolationTypeKeys = map("key", violationTypes);
   const chartLabels = map("label", violationTypes);

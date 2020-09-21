@@ -22,7 +22,6 @@ import {
   getDimensionValue,
   getValueKey,
   convertFromStringToUnflattenedMatrix,
-  unflattenValues,
   validateMetadata,
 } from "../../api/metrics/optimizedFormatHelpers";
 
@@ -32,7 +31,6 @@ function convertFiltersToIndices(metadata, totalDataPoints, filters) {
 
   for (const [key, value] of Object.entries(filters)) {
     let dimensionKeyIndex;
-    let i;
     for (let i = 0; i < dimensions.length; i += 1) {
       const dimensionKey = dimensions[0].toUpperCase();
       if (dimensionKey === key.toUpperCase()) {

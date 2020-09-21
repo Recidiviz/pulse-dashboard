@@ -18,6 +18,8 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 
+import pipe from "lodash/fp/pipe";
+
 import RevocationCount from "./RevocationCount";
 import PercentRevokedByPopulation from "./PercentRevokedByPopulation";
 import PercentRevokedByExits from "./PercentRevokedByExits";
@@ -25,13 +27,14 @@ import Loading from "../../../Loading";
 import Error from "../../../Error";
 import useChartData from "../../../../hooks/useChartData";
 import { filtersPropTypes } from "../../propTypes";
+import { filterOptimizedDataFormat } from "../../../../utils/charts/dataFilters";
 
 const chartId = "revocationsByDistrict";
 const chartTitle = "Admissions by district";
 
 const RevocationsByDistrict = ({
   currentDistricts,
-  dataFilter: filterData,
+  dataFilter,
   filterStates,
   skippedFilters,
   treatCategoryAllAsAbsent = false,
@@ -46,7 +49,8 @@ const RevocationsByDistrict = ({
     apiData: revocationApiData,
   } = useChartData(
     `${stateCode}/newRevocations`,
-    "revocations_matrix_distribution_by_district"
+    "revocations_matrix_distribution_by_district",
+    false
   );
 
   if (revocationIsLoading) {
@@ -57,11 +61,16 @@ const RevocationsByDistrict = ({
     return <Error />;
   }
 
-  const filteredRevocationData = filterData(
-    revocationApiData,
-    skippedFilters,
-    treatCategoryAllAsAbsent
-  );
+  const filterFn = dataFilter(skippedFilters, treatCategoryAllAsAbsent);
+
+  const filteredRevocationData = pipe((metricFile) =>
+    filterOptimizedDataFormat(
+      metricFile.flattenedValueMatrix,
+      metricFile.metadata,
+      {},
+      filterFn
+    )
+  )(revocationApiData);
 
   switch (mode) {
     case "counts":

@@ -41,6 +41,7 @@ import Loading from "../../../Loading";
 import Error from "../../../Error";
 
 import useChartData from "../../../../hooks/useChartData";
+import { filterOptimizedDataFormat } from "../../../../utils/charts/dataFilters";
 import { violationCountLabel } from "../../../../utils/transforms/labels";
 import { filtersPropTypes } from "../../propTypes";
 
@@ -64,7 +65,8 @@ const RevocationMatrix = ({
 }) => {
   const { apiData, isLoading, isError } = useChartData(
     `${stateCode}/newRevocations`,
-    "revocations_matrix_cells"
+    "revocations_matrix_cells",
+    false
   );
 
   if (isLoading) {
@@ -78,10 +80,18 @@ const RevocationMatrix = ({
   const isFiltered =
     filterStates.violationType || filterStates.reportedViolations;
 
+  const filterFn = dataFilter(skippedFilters, treatCategoryAllAsAbsent);
+
   const filteredData = pipe(
-    dataFilter,
+    (metricFile) =>
+      filterOptimizedDataFormat(
+        metricFile.flattenedValueMatrix,
+        metricFile.metadata,
+        {},
+        filterFn
+      ),
     filter((data) => violationTypes.includes(data.violation_type))
-  )(apiData, skippedFilters, treatCategoryAllAsAbsent);
+  )(apiData);
 
   const dataMatrix = pipe(
     groupBy("violation_type"),

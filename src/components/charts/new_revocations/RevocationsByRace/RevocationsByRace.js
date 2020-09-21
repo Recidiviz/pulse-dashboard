@@ -41,6 +41,7 @@ import {
 } from "../../../../assets/scripts/constants/colors";
 import useChartData from "../../../../hooks/useChartData";
 import { axisCallbackForPercentage } from "../../../../utils/charts/axis";
+import { filterOptimizedDataFormat } from "../../../../utils/charts/dataFilters";
 import {
   generateLabelsWithCustomColors,
   getBarBackgroundColor,
@@ -73,7 +74,8 @@ const RevocationsByRace = ({
 
   const { isLoading, isError, apiData } = useChartData(
     `${stateCode}/newRevocations`,
-    "revocations_matrix_distribution_by_race"
+    "revocations_matrix_distribution_by_race",
+    false
   );
 
   if (isLoading) {
@@ -84,8 +86,16 @@ const RevocationsByRace = ({
     return <Error />;
   }
 
+  const filterFn = dataFilter(skippedFilters, treatCategoryAllAsAbsent);
+
   const { dataPoints, numerators, denominators } = pipe(
-    (dataset) => dataFilter(dataset, skippedFilters, treatCategoryAllAsAbsent),
+    (metricFile) =>
+      filterOptimizedDataFormat(
+        metricFile.flattenedValueMatrix,
+        metricFile.metadata,
+        {},
+        filterFn
+      ),
     reduce(dataTransformer(numeratorKey, denominatorKey), {}),
     getCounts
   )(apiData);
