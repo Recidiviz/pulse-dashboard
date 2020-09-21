@@ -38,6 +38,7 @@ import {
   applyAllFilters,
   applyTopLevelFilters,
   limitFiltersToUserDistricts,
+  matchesAllFilters,
 } from "../../../../components/charts/new_revocations/helpers";
 import { getTimeDescription } from "../../../../components/charts/new_revocations/helpers/format";
 import {
@@ -121,7 +122,9 @@ const Revocations = () => {
     filters,
     userDistricts
   );
+
   const allDataFilter = applyAllFilters(transformedFilters, false);
+  const allFilterMatch = matchesAllFilters(transformedFilters, false);
 
   const timeDescription = getTimeDescription(
     filters.metricPeriodMonths,
@@ -205,7 +208,7 @@ const Revocations = () => {
         riskLevelChart={
           <ErrorBoundary>
             <RevocationsByRiskLevel
-              dataFilter={allDataFilter}
+              dataFilter={allFilterMatch}
               filterStates={filters}
               stateCode={stateCode}
               timeDescription={timeDescription}

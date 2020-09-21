@@ -76,6 +76,17 @@ const unflattenValues = (flattenedValues, totalDataPoints) => {
 };
 
 /**
+ * Convers the given optimized array as a singular string into an unflattened matrix.
+ */
+const convertFromStringToUnflattenedMatrix = (
+  contentsAsString,
+  totalDataPoints
+) => {
+  const flattenedValues = stringToArray(contentsAsString);
+  return unflattenValues(flattenedValues, totalDataPoints);
+};
+
+/**
  * Validates the given metric file metadata to ensure that certain assumptions are met:
  *   - That metadata.total_data_points is defined and is numeric
  *   - That metadata.value_keys is defined and is a non-empty array
@@ -143,6 +154,7 @@ export {
   getDimensionValue,
   getValueKey,
   stringToArray,
+  convertFromStringToUnflattenedMatrix,
   unflattenValues,
   validateMetadata,
 };

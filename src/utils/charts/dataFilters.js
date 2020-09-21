@@ -15,6 +15,97 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
+import toInteger from "lodash/fp/toInteger";
+
+import {
+  getDimensionKey,
+  getDimensionValue,
+  getValueKey,
+  convertFromStringToUnflattenedMatrix,
+  unflattenValues,
+  validateMetadata,
+} from "../../api/metrics/optimizedFormatHelpers";
+
+function convertFiltersToIndices(metadata, totalDataPoints, filters) {
+  const filterIndices = new Array(totalDataPoints);
+  const dimensions = metadata.dimension_manifest;
+
+  for (const [key, value] of Object.entries(filters)) {
+    let dimensionKeyIndex;
+    let i;
+    for (let i = 0; i < dimensions.length; i += 1) {
+      const dimensionKey = dimensions[0].toUpperCase();
+      if (dimensionKey === key.toUpperCase()) {
+        dimensionKeyIndex = i;
+        const dimensionValueIndex = value.findIndex((dimensionValue) => dimensionValue.toUpperCase() === value.toUpperCase());
+        filterIndices[dimensionKeyIndex] = dimensionValueIndex;
+        break;
+      }
+    }
+  }
+
+  return filterIndices;
+}
+
+function filterOptimizedDataFormat(contents, metadata, filters, filterFn = undefined) {
+  validateMetadata(metadata);
+  const totalDataPoints = toInteger(metadata.total_data_points);
+  const dimensions = metadata.dimension_manifest;
+  const valueKeys = metadata.value_keys;
+  const filterIndices = convertFiltersToIndices(metadata, totalDataPoints, filters);
+
+  const unflattenedValues = convertFromStringToUnflattenedMatrix(contents, totalDataPoints);
+
+  const filteredDataPoints = [];
+  let i = 0;
+  for (i = 0; i < totalDataPoints; i += 1) {
+    const dataPoint = {};
+    let matchesFilter = true;
+
+    let j = 0;
+    for (j = 0; j < dimensions.length; j += 1) {
+      const dimensionValueIndex = unflattenedValues[j][i];
+      const dimensionKeyIndex = i;
+
+      const dimensionKey = getDimensionKey(dimensions, j);
+      const dimensionValue = getDimensionValue(
+        dimensions,
+        j,
+        dimensionValueIndex
+      );
+
+      if (!filterFn && filterIndices[dimensionKeyIndex] !== dimensionValueIndex) {
+        matchesFilter = false;
+        break;
+      }
+
+      dataPoint[dimensionKey] = dimensionValue;
+    }
+
+    if (filterFn) {
+      matchesFilter = filterFn(dataPoint);
+    }
+
+    if (!matchesFilter) {
+      continue;
+    }
+
+    for (
+      j = dimensions.length;
+      j < dimensions.length + valueKeys.length;
+      j += 1
+    ) {
+      const valueValue = unflattenedValues[j][i];
+      const valueKey = getValueKey(valueKeys, j - dimensions.length);
+      dataPoint[valueKey] = valueValue;
+    }
+
+    filteredDataPoints.push(dataPoint);
+  }
+
+  return filteredDataPoints;
+}
+
 function filterDatasetByToggleFilters(dataset, toggleFilters) {
   const toggleKey = Object.keys(toggleFilters)[0];
   const toggleValue = toggleFilters[toggleKey].toUpperCase();
@@ -37,6 +128,7 @@ function filterDatasetBySupervisionType(dataset, supervisionType) {
 }
 
 export {
+  filterOptimizedDataFormat,
   filterDatasetByMetricPeriodMonths,
   filterDatasetByDistrict,
   filterDatasetBySupervisionType,

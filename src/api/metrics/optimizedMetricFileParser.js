@@ -21,8 +21,7 @@ import {
   getDimensionKey,
   getDimensionValue,
   getValueKey,
-  stringToArray,
-  unflattenValues,
+  convertFromStringToUnflattenedMatrix,
   validateMetadata,
 } from "./optimizedFormatHelpers";
 
@@ -49,8 +48,10 @@ const expandMetricRepresentation = (contents, metadata) => {
     return [];
   }
 
-  const flattenedValues = stringToArray(contents);
-  const unflattenedValues = unflattenValues(flattenedValues, totalDataPoints);
+  const unflattenedValues = convertFromStringToUnflattenedMatrix(
+    contents,
+    totalDataPoints
+  );
 
   const dataPoints = [];
   let i = 0;

@@ -21,109 +21,127 @@ import {
   violationCountLabel,
 } from "../../../utils/transforms/labels";
 
-const nullSafeComparison = (field, filter) => {
-  if (!field && !filter) return true;
-  if (!field) return false;
-  if (!filter) return false;
-  return field.toLowerCase() === filter.toLowerCase();
-};
+import {
+  nullSafeComparison,
+  nullSafeComparisonForArray,
+  isAllItem,
+  includesAllItemFirst,
+} from "../../../utils/charts/dataPointComparisons";
 
-const nullSafeComparisonForArray = (field, filters) => {
-  if (!field && !filters) return true;
-  if (!field) return false;
-  if (!filters) return false;
-  return (
-    filters.filter((value) => value.toLowerCase() === field.toLowerCase())
-      .length !== 0
-  );
-};
+const matchesTopLevelFilters = (
+  filters,
+  skippedFilters,
+  treatCategoryAllAsAbsent,
+  applySupervisionLevel
+) => (item) => {
+  if (
+    filters.metricPeriodMonths &&
+    !skippedFilters.includes("metricPeriodMonths") &&
+    !nullSafeComparison(item.metric_period_months, filters.metricPeriodMonths)
+  ) {
+    return false;
+  }
 
-const isAllItem = (item) => item.toLowerCase() === "all";
-const includesAllItemFirst = (items) => {
-  return items.length === 1 && isAllItem(items[0]);
+  if (
+    filters.district &&
+    !skippedFilters.includes("district") &&
+    !(treatCategoryAllAsAbsent && includesAllItemFirst(filters.district)) &&
+    !nullSafeComparisonForArray(item.district, filters.district)
+  ) {
+    return false;
+  }
+
+  if (
+    filters.chargeCategory &&
+    !skippedFilters.includes("chargeCategory") &&
+    !(treatCategoryAllAsAbsent && isAllItem(filters.chargeCategory)) &&
+    !nullSafeComparison(item.charge_category, filters.chargeCategory)
+  ) {
+    return false;
+  }
+  if (
+    filters.supervisionType &&
+    !skippedFilters.includes("supervisionType") &&
+    !(treatCategoryAllAsAbsent && isAllItem(filters.supervisionType)) &&
+    !nullSafeComparison(item.supervision_type, filters.supervisionType)
+  ) {
+    return false;
+  }
+  if (
+    filters.admissionType &&
+    !skippedFilters.includes("admissionType") &&
+    !includesAllItemFirst(filters.admissionType) &&
+    !nullSafeComparisonForArray(item.admission_type, filters.admissionType)
+  ) {
+    return false;
+  }
+  if (
+    (filters.supervisionLevel &&
+      !skippedFilters.includes("supervisionLevel") &&
+      !isAllItem(filters.supervisionLevel) &&
+      !nullSafeComparison(
+        item.supervision_level,
+        filters.supervisionLevel
+      )) ||
+    (!applySupervisionLevel &&
+      item.supervision_level &&
+      isAllItem(item.supervision_level))
+  ) {
+    return false;
+  }
+  return true;
 };
 
 export const applyTopLevelFilters = (filters, applySupervisionLevel = true) => (
   data,
   skippedFilters = [],
   treatCategoryAllAsAbsent = false
-) =>
-  data.filter((item) => {
-    if (
-      filters.metricPeriodMonths &&
-      !skippedFilters.includes("metricPeriodMonths") &&
-      !nullSafeComparison(item.metric_period_months, filters.metricPeriodMonths)
-    ) {
-      return false;
-    }
+) => {
+  const filterFn = matchesTopLevelFilters(
+    filters,
+    skippedFilters,
+    treatCategoryAllAsAbsent,
+    applySupervisionLevel
+  );
+  return data.filter((item) => filterFn(item));
+};
 
-    if (
-      filters.district &&
-      !skippedFilters.includes("district") &&
-      !(treatCategoryAllAsAbsent && includesAllItemFirst(filters.district)) &&
-      !nullSafeComparisonForArray(item.district, filters.district)
-    ) {
-      return false;
-    }
+const matchesMatrixFilters = (filters) => (item) => {
+  if (
+    filters.violationType &&
+    !nullSafeComparison(item.violation_type, filters.violationType)
+  ) {
+    return false;
+  }
 
-    if (
-      filters.chargeCategory &&
-      !skippedFilters.includes("chargeCategory") &&
-      !(treatCategoryAllAsAbsent && isAllItem(filters.chargeCategory)) &&
-      !nullSafeComparison(item.charge_category, filters.chargeCategory)
-    ) {
-      return false;
-    }
-    if (
-      filters.supervisionType &&
-      !skippedFilters.includes("supervisionType") &&
-      !(treatCategoryAllAsAbsent && isAllItem(filters.supervisionType)) &&
-      !nullSafeComparison(item.supervision_type, filters.supervisionType)
-    ) {
-      return false;
-    }
-    if (
-      filters.admissionType &&
-      !skippedFilters.includes("admissionType") &&
-      !includesAllItemFirst(filters.admissionType) &&
-      !nullSafeComparisonForArray(item.admission_type, filters.admissionType)
-    ) {
-      return false;
-    }
-    if (
-      (filters.supervisionLevel &&
-        !skippedFilters.includes("supervisionLevel") &&
-        !isAllItem(filters.supervisionLevel) &&
-        !nullSafeComparison(
-          item.supervision_level,
-          filters.supervisionLevel
-        )) ||
-      (!applySupervisionLevel &&
-        item.supervision_level &&
-        isAllItem(item.supervision_level))
-    ) {
-      return false;
-    }
-    return true;
-  });
+  if (
+    filters.reportedViolations &&
+    toInt(item.reported_violations) !== toInt(filters.reportedViolations)
+  ) {
+    return false;
+  }
 
-const applyMatrixFilters = (filters) => (data) =>
-  data.filter((item) => {
-    if (
-      filters.violationType &&
-      !nullSafeComparison(item.violation_type, filters.violationType)
-    ) {
-      return false;
-    }
+  return true;
+};
 
-    if (
-      filters.reportedViolations &&
-      toInt(item.reported_violations) !== toInt(filters.reportedViolations)
-    ) {
-      return false;
-    }
-    return true;
-  });
+const applyMatrixFilters = (filters) => (data) => {
+  const filterFn = matchesMatrixFilters(filters);
+  return data.filter((item) => filterFn(item));
+};
+
+export const matchesAllFilters = (filters, applySupervisionLevel = true) => (
+  skippedFilters = [],
+  treatCategoryAllAsAbsent = false
+) => (item) => {
+  const topLevelFilterFn = matchesTopLevelFilters(
+    filters,
+    skippedFilters,
+    treatCategoryAllAsAbsent,
+    applySupervisionLevel
+  );
+  const matrixFilterFn = matchesMatrixFilters(filters);
+  return topLevelFilterFn(item) && matrixFilterFn(item);
+};
 
 export const applyAllFilters = (filters, applySupervisionLevel = true) => (
   data,
@@ -133,7 +151,8 @@ export const applyAllFilters = (filters, applySupervisionLevel = true) => (
   const filteredData = applyTopLevelFilters(filters, applySupervisionLevel)(
     data,
     skippedFilters,
-    treatCategoryAllAsAbsent
+    treatCategoryAllAsAbsent,
+    applySupervisionLevel
   );
   return applyMatrixFilters(filters)(filteredData);
 };

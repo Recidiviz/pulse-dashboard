@@ -20,17 +20,22 @@ import expandMetricRepresentation from "./optimizedMetricFileParser";
 /**
  * Parses the given metric response based on the format of the given data.
  */
-const parseResponseByFileFormat = (responseData, file) => {
+const parseResponseByFileFormat = (responseData, file, eagerExpand = true) => {
   const metricFile = responseData[file];
 
   if (metricFile.flattenedValueMatrix) {
     // If it has the key flattenedValueMatrix, it's the optimized format.
-    return expandMetricRepresentation(
-      metricFile.flattenedValueMatrix,
-      metricFile.metadata
-    );
+    if (eagerExpand) {
+      return expandMetricRepresentation(
+        metricFile.flattenedValueMatrix,
+        metricFile.metadata
+      );
+    }
   }
-  // Otherwise, it's the verbose json lines format that is ready to go.
+
+  // If it's verbose json lines format that is ready to go, return that.
+  // If it's the optimized format but we don't want to eagerly expand it to
+  // the json lines format, return it unaltered for later processing.
   return metricFile;
 };
 
@@ -38,12 +43,16 @@ const parseResponseByFileFormat = (responseData, file) => {
  * Parses the given metric responses which is assumed to have multiple metric files,
  * one per object key.
  */
-const parseResponsesByFileFormat = (responseData) => {
+const parseResponsesByFileFormat = (responseData, eagerExpand = true) => {
   const parsedResponses = {};
   const files = Object.keys(responseData);
 
   files.forEach((file) => {
-    const parsedResponse = parseResponseByFileFormat(responseData, file);
+    const parsedResponse = parseResponseByFileFormat(
+      responseData,
+      file,
+      eagerExpand
+    );
     parsedResponses[file] = parsedResponse;
   });
 

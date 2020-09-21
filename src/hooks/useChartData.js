@@ -29,7 +29,7 @@ import { callMetricsApi, awaitingResults } from "../api/metrics/metricsClient";
  * state which will populate with the response data and a flag indicating whether
  * or not the response is still loading, in the form of `{ apiData, isLoading }`.
  */
-function useChartData(url, file) {
+function useChartData(url, file, eagerExpand = true) {
   const { loading, user, getTokenSilently } = useAuth0();
   const [apiData, setApiData] = useState({});
   const [awaitingApi, setAwaitingApi] = useState(true);
@@ -43,12 +43,19 @@ function useChartData(url, file) {
           getTokenSilently
         );
 
-        const metricFile = parseResponseByFileFormat(responseData, file);
+        const metricFile = parseResponseByFileFormat(
+          responseData,
+          file,
+          eagerExpand
+        );
         setApiData(metricFile);
       } else {
         const responseData = await callMetricsApi(url, getTokenSilently);
 
-        const metricFiles = parseResponsesByFileFormat(responseData);
+        const metricFiles = parseResponsesByFileFormat(
+          responseData,
+          eagerExpand
+        );
         setApiData(metricFiles);
       }
       setAwaitingApi(false);
@@ -57,7 +64,7 @@ function useChartData(url, file) {
       setIsError(true);
       logger.error(error);
     }
-  }, [file, getTokenSilently, url]);
+  }, [eagerExpand, file, getTokenSilently, url]);
 
   useEffect(() => {
     fetchChartData();

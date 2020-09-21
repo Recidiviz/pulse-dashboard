@@ -40,6 +40,7 @@ import flags from "../../../../flags";
 import { COLORS } from "../../../../assets/scripts/constants/colors";
 import useChartData from "../../../../hooks/useChartData";
 import { axisCallbackForPercentage } from "../../../../utils/charts/axis";
+import { filterOptimizedDataFormat } from "../../../../utils/charts/dataFilters";
 import {
   isDenominatorStatisticallySignificant,
   isDenominatorsMatrixStatisticallySignificant,
@@ -75,7 +76,8 @@ const RevocationsByRiskLevel = ({
 
   const { isLoading, isError, apiData } = useChartData(
     `${stateCode}/newRevocations`,
-    "revocations_matrix_distribution_by_risk_level"
+    "revocations_matrix_distribution_by_risk_level",
+    false
   );
 
   if (isLoading) {
@@ -86,15 +88,18 @@ const RevocationsByRiskLevel = ({
     return <Error />;
   }
 
-  const filteredData = dataFilter(
-    apiData,
-    skippedFilters,
-    treatCategoryAllAsAbsent
-  );
+  const filterFn = dataFilter(skippedFilters, treatCategoryAllAsAbsent);
 
   const riskLevelValueToLabel = riskLevelValueToLabelByStateCode[stateCode];
 
   const riskLevelCounts = pipe(
+    (metricFile) =>
+      filterOptimizedDataFormat(
+        metricFile.flattenedValueMatrix,
+        metricFile.metadata,
+        {},
+        filterFn
+      ),
     filter((data) => riskLevels.includes(data.risk_level)),
     groupBy("risk_level"),
     values,
@@ -112,7 +117,7 @@ const RevocationsByRiskLevel = ({
         rate: rate.toFixed(2),
       };
     })
-  )(filteredData);
+  )(apiData);
 
   const chartLabels = map("label", riskLevelCounts);
   const chartDataPoints = map("rate", riskLevelCounts);
