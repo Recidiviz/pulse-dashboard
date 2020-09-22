@@ -50,7 +50,7 @@ const RevocationsByViolation = ({
   skippedFilters = [],
   treatCategoryAllAsAbsent = false,
 }) => {
-  const { isLoading, isError, apiData } = useChartData(
+  const { isLoading, isError, apiData, unflattenedValues } = useChartData(
     `${stateCode}/newRevocations`,
     "revocations_matrix_distribution_by_violation",
     false
@@ -68,7 +68,7 @@ const RevocationsByViolation = ({
 
   const filteredData = pipe((metricFile) =>
     filterOptimizedDataFormat(
-      metricFile.flattenedValueMatrix,
+      unflattenedValues,
       metricFile.metadata,
       {},
       filterFn

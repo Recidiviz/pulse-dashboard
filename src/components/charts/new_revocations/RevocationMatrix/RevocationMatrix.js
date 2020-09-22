@@ -63,7 +63,7 @@ const RevocationMatrix = ({
   updateFilters,
   violationTypes,
 }) => {
-  const { apiData, isLoading, isError } = useChartData(
+  const { apiData, isLoading, isError, unflattenedValues } = useChartData(
     `${stateCode}/newRevocations`,
     "revocations_matrix_cells",
     false
@@ -85,7 +85,7 @@ const RevocationMatrix = ({
   const filteredData = pipe(
     (metricFile) =>
       filterOptimizedDataFormat(
-        metricFile.flattenedValueMatrix,
+        unflattenedValues,
         metricFile.metadata,
         {},
         filterFn

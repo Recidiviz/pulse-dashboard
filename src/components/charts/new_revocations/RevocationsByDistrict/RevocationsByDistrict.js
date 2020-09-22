@@ -47,6 +47,7 @@ const RevocationsByDistrict = ({
     isError,
     isLoading: revocationIsLoading,
     apiData: revocationApiData,
+    unflattenedValues,
   } = useChartData(
     `${stateCode}/newRevocations`,
     "revocations_matrix_distribution_by_district",
@@ -65,7 +66,7 @@ const RevocationsByDistrict = ({
 
   const filteredRevocationData = pipe((metricFile) =>
     filterOptimizedDataFormat(
-      metricFile.flattenedValueMatrix,
+      unflattenedValues,
       metricFile.metadata,
       {},
       filterFn

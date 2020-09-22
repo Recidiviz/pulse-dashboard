@@ -74,7 +74,7 @@ const RevocationsByRiskLevel = ({
   const denominatorKey = findDenominatorKeyByMode(mode);
   const chartLabel = getLabelByMode(mode);
 
-  const { isLoading, isError, apiData } = useChartData(
+  const { isLoading, isError, apiData, unflattenedValues } = useChartData(
     `${stateCode}/newRevocations`,
     "revocations_matrix_distribution_by_risk_level",
     false
@@ -95,7 +95,7 @@ const RevocationsByRiskLevel = ({
   const riskLevelCounts = pipe(
     (metricFile) =>
       filterOptimizedDataFormat(
-        metricFile.flattenedValueMatrix,
+        unflattenedValues,
         metricFile.metadata,
         {},
         filterFn

@@ -71,7 +71,7 @@ const RevocationsByGender = ({
   const numeratorKey = "population_count";
   const denominatorKey = findDenominatorKeyByMode(mode);
 
-  const { isLoading, isError, apiData } = useChartData(
+  const { isLoading, isError, apiData, unflattenedValues } = useChartData(
     `${stateCode}/newRevocations`,
     "revocations_matrix_distribution_by_gender",
     false
@@ -90,7 +90,7 @@ const RevocationsByGender = ({
   const { dataPoints, numerators, denominators } = pipe(
     (metricFile) =>
       filterOptimizedDataFormat(
-        metricFile.flattenedValueMatrix,
+        unflattenedValues,
         metricFile.metadata,
         {},
         filterFn

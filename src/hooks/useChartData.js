@@ -22,6 +22,7 @@ import {
   parseResponseByFileFormat,
   parseResponsesByFileFormat,
 } from "../api/metrics/fileParser";
+import { convertFromStringToUnflattenedMatrix } from "../api/metrics/optimizedFormatHelpers";
 import { callMetricsApi, awaitingResults } from "../api/metrics/metricsClient";
 
 /**
@@ -32,6 +33,7 @@ import { callMetricsApi, awaitingResults } from "../api/metrics/metricsClient";
 function useChartData(url, file, eagerExpand = true) {
   const { loading, user, getTokenSilently } = useAuth0();
   const [apiData, setApiData] = useState({});
+  const [unflattenedValues, setUnflattenedValues] = useState([]);
   const [awaitingApi, setAwaitingApi] = useState(true);
   const [isError, setIsError] = useState(false);
 
@@ -49,6 +51,20 @@ function useChartData(url, file, eagerExpand = true) {
           eagerExpand
         );
         setApiData(metricFile);
+
+        // If we are not eagerly expanding a single file request, then proactively
+        // unflatten the data matrix to avoid repeated unflattening operations in
+        // filtering operations later on.
+        if (!eagerExpand) {
+          const totalDataPoints = toInteger(
+            metricFile.metadata.total_data_points
+          );
+          const unflattened = convertFromStringToUnflattenedMatrix(
+            metricFile.flattenedValueMatrix,
+            totalDataPoints
+          );
+          setUnflattenedValues(unflattened);
+        }
       } else {
         const responseData = await callMetricsApi(url, getTokenSilently);
 
@@ -72,7 +88,7 @@ function useChartData(url, file, eagerExpand = true) {
 
   const isLoading = awaitingResults(loading, user, awaitingApi);
 
-  return { apiData, isLoading, isError };
+  return { apiData, isLoading, isError, unflattenedValues };
 }
 
 export default useChartData;

@@ -72,7 +72,7 @@ const RevocationsByRace = ({
   const numeratorKey = "population_count";
   const denominatorKey = findDenominatorKeyByMode(mode);
 
-  const { isLoading, isError, apiData } = useChartData(
+  const { isLoading, isError, apiData, unflattenedValues } = useChartData(
     `${stateCode}/newRevocations`,
     "revocations_matrix_distribution_by_race",
     false
@@ -91,7 +91,7 @@ const RevocationsByRace = ({
   const { dataPoints, numerators, denominators } = pipe(
     (metricFile) =>
       filterOptimizedDataFormat(
-        metricFile.flattenedValueMatrix,
+        unflattenedValues,
         metricFile.metadata,
         {},
         filterFn

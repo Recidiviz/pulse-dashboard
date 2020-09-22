@@ -54,7 +54,7 @@ const RevocationsOverTime = ({
   metricPeriodMonths,
   filterStates,
 }) => {
-  const { isLoading, isError, apiData } = useChartData(
+  const { isLoading, isError, apiData, unflattenedValues } = useChartData(
     `${stateCode}/newRevocations`,
     "revocations_matrix_by_month",
     false
@@ -73,7 +73,7 @@ const RevocationsOverTime = ({
   const chartData = pipe(
     (metricFile) =>
       filterOptimizedDataFormat(
-        metricFile.flattenedValueMatrix,
+        unflattenedValues,
         metricFile.metadata,
         {},
         filterFn

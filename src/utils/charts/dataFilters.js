@@ -45,14 +45,14 @@ function convertFiltersToIndices(metadata, totalDataPoints, filters) {
   return filterIndices;
 }
 
-function filterOptimizedDataFormat(contents, metadata, filters, filterFn = undefined) {
+function filterOptimizedDataFormat(unflattenedValues, metadata, filters, filterFn = undefined) {
   validateMetadata(metadata);
   const totalDataPoints = toInteger(metadata.total_data_points);
   const dimensions = metadata.dimension_manifest;
   const valueKeys = metadata.value_keys;
   const filterIndices = convertFiltersToIndices(metadata, totalDataPoints, filters);
 
-  const unflattenedValues = convertFromStringToUnflattenedMatrix(contents, totalDataPoints);
+  // const unflattenedValues = convertFromStringToUnflattenedMatrix(contents, totalDataPoints);
 
   const filteredDataPoints = [];
   let i = 0;
