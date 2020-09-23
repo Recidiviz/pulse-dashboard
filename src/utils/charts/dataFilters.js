@@ -50,7 +50,7 @@ function filterOptimizedDataFormat(unflattenedValues, metadata, filters, filterF
   const totalDataPoints = toInteger(metadata.total_data_points);
   const dimensions = metadata.dimension_manifest;
   const valueKeys = metadata.value_keys;
-  const filterIndices = convertFiltersToIndices(metadata, totalDataPoints, filters);
+  // const filterIndices = convertFiltersToIndices(metadata, totalDataPoints, filters);
 
   const filteredDataPoints = [];
   let i = 0;
@@ -76,10 +76,10 @@ function filterOptimizedDataFormat(unflattenedValues, metadata, filters, filterF
           break;
         }
       }
-      if (!filterFn && filterIndices[dimensionKeyIndex] !== dimensionValueIndex) {
-        matchesFilter = false;
-        break;
-      }
+      // if (!filterFn && filterIndices[dimensionKeyIndex] !== dimensionValueIndex) {
+      //   matchesFilter = false;
+      //   break;
+      // }
 
       dataPoint[dimensionKey] = dimensionValue;
     }

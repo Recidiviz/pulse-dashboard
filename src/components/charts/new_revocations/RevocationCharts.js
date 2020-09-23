@@ -17,7 +17,6 @@
 
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import RenderInBrowser from "react-render-in-browser";
 
 const CHARTS = ["District", "Risk level", "Violation", "Gender", "Race"];
 
@@ -29,25 +28,6 @@ const RevocationCharts = ({
   districtChart,
 }) => {
   const [selectedChart, setSelectedChart] = useState(CHARTS[0]);
-
-  // This will ensure that we proactively load each chart component and their data now, but only
-  // display the selected chart
-  const conditionallyHide = (chart, chartName, chartComponent, index) => (
-    <div
-      key={index}
-      style={{ display: chart === chartName ? "block" : "none" }}
-    >
-      {chartComponent}
-    </div>
-  );
-
-  const renderSelectedChartSimultaneousLoad = () => [
-    conditionallyHide(selectedChart, "Risk level", riskLevelChart, 0),
-    conditionallyHide(selectedChart, "Violation", violationChart, 1),
-    conditionallyHide(selectedChart, "Gender", genderChart, 2),
-    conditionallyHide(selectedChart, "Race", raceChart, 3),
-    conditionallyHide(selectedChart, "District", districtChart, 4),
-  ];
 
   const renderSelectedChartSingularLoad = () => {
     switch (selectedChart) {
@@ -63,22 +43,6 @@ const RevocationCharts = ({
         return districtChart;
     }
   };
-
-  // IE11 has intermittent issues loading all of these charts simultaneously, most of the time
-  // returning errors of "Script7002: XMLHttpRequest: Network Error 0x2eff..."
-  // For IE users, we render each chart only when selected.
-  // For other users, we render each chart simultaneously so that toggling feels instant.
-  const renderSelectedChart = () => (
-    <>
-      <RenderInBrowser except ie>
-        {renderSelectedChartSimultaneousLoad()}
-      </RenderInBrowser>
-
-      <RenderInBrowser ie only>
-        {renderSelectedChartSingularLoad()}
-      </RenderInBrowser>
-    </>
-  );
 
   return (
     <div className="static-charts d-f bgc-white m-20">
@@ -97,7 +61,9 @@ const RevocationCharts = ({
           </div>
         ))}
       </div>
-      <div className="selected-chart p-20">{renderSelectedChart()}</div>
+      <div className="selected-chart p-20">
+        {renderSelectedChartSingularLoad()}
+      </div>
     </div>
   );
 };
