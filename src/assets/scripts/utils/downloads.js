@@ -86,22 +86,6 @@ function downloadCanvasImage(canvas, filename, chartTitle, toggleStates, shouldZ
   }
 }
 
-function getFilterValue(filterValue, descriptionPlural, descriptionOne) {
-  if (
-    filterValue === "All" ||
-    ((parseInt(filterValue) === 12 ||
-     parseInt(filterValue) === 36 ||
-     parseInt(filterValue) === 6 ||
-     parseInt(filterValue) === 3) &&
-     (descriptionOne === "month"))) {
-    return filterValue + " " + descriptionPlural;
-  } else if (parseInt(filterValue) === 1 && (descriptionOne === "month")) {
-    return filterValue + " " + descriptionOne;
-  } else {
-    return descriptionOne + humanReadableTitleCase(filterValue.toLowerCase());
-  }
-}
-
 function formatMetricPeriodMonthsFilter(metricPeriodMonths) {
   switch (metricPeriodMonths) {
     case "1": return "1 month";
