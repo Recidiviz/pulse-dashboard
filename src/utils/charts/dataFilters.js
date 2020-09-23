@@ -52,8 +52,6 @@ function filterOptimizedDataFormat(unflattenedValues, metadata, filters, filterF
   const valueKeys = metadata.value_keys;
   const filterIndices = convertFiltersToIndices(metadata, totalDataPoints, filters);
 
-  // const unflattenedValues = convertFromStringToUnflattenedMatrix(contents, totalDataPoints);
-
   const filteredDataPoints = [];
   let i = 0;
   for (i = 0; i < totalDataPoints; i += 1) {
@@ -72,16 +70,18 @@ function filterOptimizedDataFormat(unflattenedValues, metadata, filters, filterF
         dimensionValueIndex
       );
 
+      if (filterFn) {
+        matchesFilter = filterFn({[dimensionKey]: dimensionValue}, dimensionKey);
+        if (!matchesFilter) {
+          break;
+        }
+      }
       if (!filterFn && filterIndices[dimensionKeyIndex] !== dimensionValueIndex) {
         matchesFilter = false;
         break;
       }
 
       dataPoint[dimensionKey] = dimensionValue;
-    }
-
-    if (filterFn) {
-      matchesFilter = filterFn(dataPoint);
     }
 
     if (!matchesFilter) {
