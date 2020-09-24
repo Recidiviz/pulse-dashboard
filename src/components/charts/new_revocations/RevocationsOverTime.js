@@ -75,7 +75,6 @@ const RevocationsOverTime = ({
       filterOptimizedDataFormat(
         unflattenedValues,
         metricFile.metadata,
-        {},
         filterFn
       ),
     groupByMonth(["total_revocations"]),

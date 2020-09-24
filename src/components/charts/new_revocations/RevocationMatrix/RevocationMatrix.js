@@ -87,7 +87,6 @@ const RevocationMatrix = ({
       filterOptimizedDataFormat(
         unflattenedValues,
         metricFile.metadata,
-        {},
         filterFn
       ),
     filter((data) => violationTypes.includes(data.violation_type))

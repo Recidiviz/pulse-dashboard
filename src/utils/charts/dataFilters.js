@@ -25,32 +25,11 @@ import {
   validateMetadata,
 } from "../../api/metrics/optimizedFormatHelpers";
 
-function convertFiltersToIndices(metadata, totalDataPoints, filters) {
-  const filterIndices = new Array(totalDataPoints);
-  const dimensions = metadata.dimension_manifest;
-
-  for (const [key, value] of Object.entries(filters)) {
-    let dimensionKeyIndex;
-    for (let i = 0; i < dimensions.length; i += 1) {
-      const dimensionKey = dimensions[0].toUpperCase();
-      if (dimensionKey === key.toUpperCase()) {
-        dimensionKeyIndex = i;
-        const dimensionValueIndex = value.findIndex((dimensionValue) => dimensionValue.toUpperCase() === value.toUpperCase());
-        filterIndices[dimensionKeyIndex] = dimensionValueIndex;
-        break;
-      }
-    }
-  }
-
-  return filterIndices;
-}
-
-function filterOptimizedDataFormat(unflattenedValues, metadata, filters, filterFn = undefined) {
+function filterOptimizedDataFormat(unflattenedValues, metadata, filterFn) {
   validateMetadata(metadata);
   const totalDataPoints = toInteger(metadata.total_data_points);
   const dimensions = metadata.dimension_manifest;
   const valueKeys = metadata.value_keys;
-  // const filterIndices = convertFiltersToIndices(metadata, totalDataPoints, filters);
 
   const filteredDataPoints = [];
   let i = 0;
@@ -70,16 +49,10 @@ function filterOptimizedDataFormat(unflattenedValues, metadata, filters, filterF
         dimensionValueIndex
       );
 
-      if (filterFn) {
-        matchesFilter = filterFn({[dimensionKey]: dimensionValue}, dimensionKey);
-        if (!matchesFilter) {
-          break;
-        }
+      matchesFilter = filterFn({[dimensionKey]: dimensionValue}, dimensionKey);
+      if (!matchesFilter) {
+        break;
       }
-      // if (!filterFn && filterIndices[dimensionKeyIndex] !== dimensionValueIndex) {
-      //   matchesFilter = false;
-      //   break;
-      // }
 
       dataPoint[dimensionKey] = dimensionValue;
     }

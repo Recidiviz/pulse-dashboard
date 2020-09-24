@@ -67,12 +67,7 @@ const RevocationsByViolation = ({
   const filterFn = dataFilter(skippedFilters, treatCategoryAllAsAbsent);
 
   const filteredData = pipe((metricFile) =>
-    filterOptimizedDataFormat(
-      unflattenedValues,
-      metricFile.metadata,
-      {},
-      filterFn
-    )
+    filterOptimizedDataFormat(unflattenedValues, metricFile.metadata, filterFn)
   )(apiData);
 
   const allViolationTypeKeys = map("key", violationTypes);

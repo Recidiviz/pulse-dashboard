@@ -65,12 +65,7 @@ const RevocationsByDistrict = ({
   const filterFn = dataFilter(skippedFilters, treatCategoryAllAsAbsent);
 
   const filteredRevocationData = pipe((metricFile) =>
-    filterOptimizedDataFormat(
-      unflattenedValues,
-      metricFile.metadata,
-      {},
-      filterFn
-    )
+    filterOptimizedDataFormat(unflattenedValues, metricFile.metadata, filterFn)
   )(revocationApiData);
 
   switch (mode) {

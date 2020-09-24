@@ -28,7 +28,18 @@ import { callMetricsApi, awaitingResults } from "../api/metrics/metricsClient";
 /**
  * A hook which fetches the given file at the given API service URL. Returns
  * state which will populate with the response data and a flag indicating whether
- * or not the response is still loading, in the form of `{ apiData, isLoading }`.
+ * or not the response is still loading, in the form of `{ apiData, isLoading, unflattenedValues }`.
+ *
+ * `unflattenValues` is the unflattened value matrix from the apiData and is only
+ * populated if the request was for a specific file, if that file was in the optimized
+ * format, and if eagerExpand is set to false.
+ *
+ * `eagerExpand` defaults to true, which means that by default we immediately expand
+ * the optimized format into an array of deserialized objects. If set to false, this
+ * returns `apiData` in its optimized format, with keys of `flattenedValueMatrix` and
+ * `metadata`, and `unflattenedValues` is produced and returned as a convenience to
+ * ensure we do not need to proactively and repeatedly unflatten the value matrix
+ * on subsequent filter operations.
  */
 function useChartData(url, file, eagerExpand = true) {
   const { loading, user, getTokenSilently } = useAuth0();
@@ -59,10 +70,13 @@ function useChartData(url, file, eagerExpand = true) {
           const totalDataPoints = toInteger(
             metricFile.metadata.total_data_points
           );
-          const unflattened = convertFromStringToUnflattenedMatrix(
-            metricFile.flattenedValueMatrix,
-            totalDataPoints
-          );
+          const unflattened =
+            totalDataPoints === 0
+              ? []
+              : convertFromStringToUnflattenedMatrix(
+                  metricFile.flattenedValueMatrix,
+                  totalDataPoints
+                );
           setUnflattenedValues(unflattened);
         }
       } else {

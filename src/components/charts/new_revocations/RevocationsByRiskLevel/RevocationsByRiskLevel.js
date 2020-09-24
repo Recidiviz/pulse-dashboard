@@ -97,7 +97,6 @@ const RevocationsByRiskLevel = ({
       filterOptimizedDataFormat(
         unflattenedValues,
         metricFile.metadata,
-        {},
         filterFn
       ),
     filter((data) => riskLevels.includes(data.risk_level)),

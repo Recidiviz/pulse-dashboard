@@ -93,7 +93,6 @@ const RevocationsByRace = ({
       filterOptimizedDataFormat(
         unflattenedValues,
         metricFile.metadata,
-        {},
         filterFn
       ),
     reduce(dataTransformer(numeratorKey, denominatorKey), {}),
