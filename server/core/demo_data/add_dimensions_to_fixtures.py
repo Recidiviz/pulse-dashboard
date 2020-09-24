@@ -99,8 +99,6 @@ def main():
     print('PROCESSING EACH DATA POINT ROW...')
     new_data_points = []
     for data_point_raw in content:
-        print('BEFORE: ', data_point_raw)
-
         data_point = json.loads(data_point_raw)
 
         values_to_update = {}
@@ -125,8 +123,6 @@ def main():
             for key in values_to_update:
                 updated_value = values_to_update[key][dimension]
                 new_data_point[key] = updated_value
-
-            print('AFTER:  ', new_data_point)
 
             new_data_points.append(new_data_point)
 
