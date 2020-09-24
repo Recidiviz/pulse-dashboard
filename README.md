@@ -36,7 +36,8 @@ That's it! We suggest installing a linting package for your preferred code edito
 
 Second and last, set up your environment variables.
 
-From the 1Password shared vault, download and unzip the `pulse_dashboard_env_vars.zip` and copy the files into the project directory.
+For Recidiviz staff, download and unzip the `pulse_dashboard_env_vars.zip` from the shared 1Password vault and copy the files into the project directory. 
+For anyone trying to set this up independently, construct environment variables by hand based on the explanations below.
 
 Explanation of frontend env files:
 - `.env.frontend.example` - example file for frontend variables that are required
