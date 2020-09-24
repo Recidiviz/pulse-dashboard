@@ -42,7 +42,7 @@ import {
 import {
   DEFAULT_METRIC_PERIOD,
   METRIC_PERIODS,
-  SUPERVISION_LEVEL,
+  SUPERVISION_LEVELS,
 } from "../../../../components/charts/new_revocations/ToggleBar/options";
 import { getTimeDescription } from "../../../../components/charts/new_revocations/helpers/format";
 import { useAuth0 } from "../../../../react-auth0-spa";
@@ -109,7 +109,7 @@ const Revocations = () => {
     ...(flags.enableAdmissionTypeFilter
       ? { admissionType: [admissionTypeOptions[1].value] }
       : {}),
-    supervisionLevel: SUPERVISION_LEVEL[0].value,
+    supervisionLevel: SUPERVISION_LEVELS[0].value,
   });
 
   const updateFilters = (newFilters) => {

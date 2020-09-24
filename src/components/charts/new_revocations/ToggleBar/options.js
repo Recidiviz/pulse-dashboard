@@ -38,7 +38,7 @@ export const SUPERVISION_TYPES = [
   { value: "DUAL", label: "Dual Supervision" },
 ];
 
-export const SUPERVISION_LEVEL = [
+export const SUPERVISION_LEVELS = [
   { value: "All", label: "All" },
   { value: "ENHANCED", label: "Enhanced Supervision" },
   { value: "MAXIMUM", label: "Maximum Supervision" },

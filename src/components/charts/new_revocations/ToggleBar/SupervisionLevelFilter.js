@@ -20,17 +20,17 @@ import PropTypes from "prop-types";
 
 import Select from "../../../controls/Select";
 import FilterField from "./FilterField";
-import { SUPERVISION_LEVEL } from "./options";
+import { SUPERVISION_LEVELS } from "./options";
 
 const SupervisionLevelFilter = ({ onChange }) => (
   <FilterField label="Supervision Level">
     <Select
       className="select-align"
-      options={SUPERVISION_LEVEL}
+      options={SUPERVISION_LEVELS}
       onChange={(option) => {
         onChange({ supervisionLevel: option.value });
       }}
-      defaultValue={SUPERVISION_LEVEL[0]}
+      defaultValue={SUPERVISION_LEVELS[0]}
     />
   </FilterField>
 );
