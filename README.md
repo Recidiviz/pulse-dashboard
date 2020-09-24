@@ -36,7 +36,17 @@ That's it! We suggest installing a linting package for your preferred code edito
 
 Second and last, set up your environment variables.
 
-For the frontend: copy the `.env.frontend.example` file and set variables accordingly per environment. At the moment, the app is deployed to both staging and production environments. Staging relies on environment variables stored in `.env.development` and production relies on variables in `.env.production`. Local relies on `.env.development.local`.
+From the 1Password shared vault, download and unzip the `pulse_dashboard_env_vars.zip` and copy the files into the project directory.
+
+Explanation of frontend env files:
+- `.env.frontend.example` - example file for frontend variables that are required
+- `.env.development` - variables used during the staging deploy
+- `.env.production` - variables used during the production deploy
+- `.env.development.local` - variables used when the environment is started locally using `yarn dev`
+
+Explanation of backend env files:
+- `.env` - variables used for the backend API
+
 
 Expected frontend environment variables include:
 
@@ -45,9 +55,6 @@ Expected frontend environment variables include:
 - `REACT_APP_FEEDBACK_URL` - the URL of the Recidiviz Dashboard Feedback form.
 - `REACT_APP_IS_DEMO (OPTIONAL)` - whether or not to run the frontend in demo mode, which will run the app without requiring authentication. This should only be set when running locally and should be provided through the command line, along with the backend sibling below. To run the app in demo mode, use the following command: `./run_in_demo_mode.sh`
 
-The build process, as described below, ensures that the proper values are compiled and included in the static bundle at build time, for the right environment.
-
-For the backend: copy the `.env.backend.example` file into `.env` and set variables appropriate for your local environment. Set these same variables in your Google App Engine yaml files, if deploying to GAE. Those files are described later on.
 
 Expected backend environment variables include:
 
@@ -56,9 +63,13 @@ Expected backend environment variables include:
 - `METRIC_BUCKET` - the name of the Google Cloud Storage bucket where the metrics reside.
 - `IS_DEMO` (OPTIONAL) - whether or not to run the backend in demo mode, which will retrieve static fixture data from the `server/core/demo_data` directory instead of pulling data from dynamic, live sources. This should only be set when running locally and should be provided through the command line, along with the frontend sibling above. To run the app in demo mode, use the following command: `./run_in_demo_mode.sh`
 
+
+The build process, as described below, ensures that the proper values are compiled and included in the static bundle at build time, for the right environment.
+
+
 ### Authentication
 
-The backend API server and most frontend views in the app are authenticated via [Auth0](https://auth0.com/). You can control which views are authenticated by specifying `Route` versus `PrivateRoute` in `src/App.js`. If you are setting this app up completely fresh, you will need to create your own Auth0 account and set the relevant details in `src/auth_config_dev.json` and `src/auth_config_production.json`. See `src/auth_config.json.example`.
+The backend API server and most frontend views in the app are authenticated via [Auth0](https://auth0.com/). You can control which views are authenticated by specifying `Route` versus `PrivateRoute` in `src/App.js`. If you are setting this app up completely fresh, you will need to create your own Auth0 account.
 
 This setup assumes you have two separate Auth0 tenants, one for lower tiers and one for production. The former should be configured in `auth_config_dev.json` and the latter in `auth_config_production.json`. Which file is loaded and used relies on the `AUTH_ENV` environment variable on the backend and the `REACT_APP_AUTH_ENV` environment variable on the frontend. It is important that the same config file be loaded on the backend and frontend servers in a given tier so that API authentication will work.
 
