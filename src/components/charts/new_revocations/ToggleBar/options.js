@@ -44,8 +44,8 @@ export const SUPERVISION_LEVELS = [
   { value: "MAXIMUM", label: "Maximum Supervision" },
   { value: "MEDIUM", label: "Medium Supervision" },
   { value: "MINIMUM", label: "Minimum Supervision" },
-  { value: "SPECIAL_CIRCUMSTANCE", label: "Special Circumstance Supervision" },
-  { value: "MONITORED", label: "Monitored Supervision" },
+  { value: "SPECIAL", label: "Special Circumstance Supervision" },
+  { value: "ELECTRONIC_MONITORING_ONLY", label: "Monitored Supervision" },
 ];
 
 export const ADMISSION_TYPES = [
