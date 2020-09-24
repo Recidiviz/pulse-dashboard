@@ -342,6 +342,13 @@
   }
 }
 
+@media screen and (max-width: 1680px) {
+  .top-level-filters .top-level-filters-title {
+    margin-right: 11px;
+    min-height: 40% !important;
+  }
+}
+
 @media screen and (max-width: 1420px) {
   .top-level-filters .top-level-filters-title {
     font-size: 0.65rem;
@@ -379,13 +386,6 @@
   .revocation-matrix .matrix .cell,
   .revocation-matrix .matrix .violation-column {
     width: 9%;
-  }
-}
-
-@media screen and (max-width: 1680px) {
-  .top-level-filters .top-level-filters-title {
-    margin-right: 11px;
-    min-height: 40% !important;
   }
 }
 
