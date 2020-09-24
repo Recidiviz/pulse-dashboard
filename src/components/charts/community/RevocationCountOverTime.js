@@ -16,6 +16,7 @@
 // =============================================================================
 
 import React, { useEffect } from "react";
+import PropTypes from "prop-types";
 import { Line } from "react-chartjs-2";
 
 import map from "lodash/fp/map";
@@ -41,6 +42,8 @@ import {
 import { sortFilterAndSupplementMostRecentMonths } from "../../../utils/transforms/datasets";
 import { monthNamesWithYearsFromNumbers } from "../../../utils/transforms/months";
 import { groupByMonth } from "../common/bars/utils";
+import { metricTypePropType, officeDataPropTypes } from "../propTypes";
+import { METRIC_TYPES } from "../../constants";
 
 const dataCountsMapper = ({ year, month, revocation_count: count }) => ({
   year,
@@ -68,7 +71,7 @@ const RevocationCountOverTime = ({
   district,
   metricType,
   metricPeriodMonths,
-  disableGoal,
+  disableGoal = false,
   header,
   stateCode,
 }) => {
@@ -78,7 +81,7 @@ const RevocationCountOverTime = ({
     (dataset) => filterDatasetBySupervisionType(dataset, supervisionType),
     (dataset) => filterDatasetByDistrict(dataset, district),
     groupByMonth(["revocation_count", "total_supervision_count"]),
-    map(metricType === "rates" ? dataRatesMapper : dataCountsMapper),
+    map(metricType === METRIC_TYPES.RATES ? dataRatesMapper : dataCountsMapper),
     (dataset) =>
       sortFilterAndSupplementMostRecentMonths(
         dataset,
@@ -157,7 +160,7 @@ const RevocationCountOverTime = ({
           yAxes: [
             {
               ticks: toggleYAxisTicksFor(
-                "counts",
+                METRIC_TYPES.COUNTS,
                 metricType,
                 chartMinValue,
                 chartMaxValue,
@@ -227,6 +230,31 @@ const RevocationCountOverTime = ({
   }, [displayGoal, header, mostRecentValue]);
 
   return chart;
+};
+
+RevocationCountOverTime.defaultProps = {
+  disableGoal: false,
+};
+
+RevocationCountOverTime.propTypes = {
+  district: PropTypes.arrayOf(PropTypes.string).isRequired,
+  metricPeriodMonths: PropTypes.string.isRequired,
+  metricType: metricTypePropType.isRequired,
+  stateCode: PropTypes.string.isRequired,
+  supervisionType: PropTypes.string.isRequired,
+  officeData: PropTypes.arrayOf(officeDataPropTypes).isRequired,
+  revocationCountsByMonth: PropTypes.arrayOf(
+    PropTypes.shape({
+      district: PropTypes.string.isRequired,
+      month: PropTypes.string.isRequired,
+      revocation_count: PropTypes.string.isRequired,
+      state_code: PropTypes.string.isRequired,
+      supervision_type: PropTypes.string.isRequired,
+      total_supervision_count: PropTypes.string.isRequired,
+      year: PropTypes.string.isRequired,
+    })
+  ).isRequired,
+  disableGoal: PropTypes.bool,
 };
 
 export default RevocationCountOverTime;

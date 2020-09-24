@@ -43,14 +43,14 @@ const TOGGLE_STYLE = {
 };
 
 const ToggleBar = ({
-  setChartMetricType,
-  setChartSupervisionType,
-  setChartMetricPeriodMonths,
-  setChartDistrict,
-  availableDistricts,
-  districtOffices,
-  replaceLa,
-  stateCode,
+  setChartMetricType = null,
+  setChartSupervisionType = null,
+  setChartMetricPeriodMonths = null,
+  setChartDistrict = null,
+  availableDistricts = [],
+  districtOffices = null,
+  replaceLa = false,
+  stateCode = null,
 }) => {
   const isCounty = stateCode !== undefined;
   const districtOptions = useMemo(
@@ -145,14 +145,14 @@ const ToggleBar = ({
 };
 
 ToggleBar.defaultProps = {
-  setChartMetricType: undefined,
-  setChartSupervisionType: undefined,
-  setChartMetricPeriodMonths: undefined,
-  setChartDistrict: undefined,
-  availableDistricts: undefined,
-  districtOffices: undefined,
+  setChartMetricType: null,
+  setChartSupervisionType: null,
+  setChartMetricPeriodMonths: null,
+  setChartDistrict: null,
+  availableDistricts: [],
+  districtOffices: null,
   replaceLa: false,
-  stateCode: undefined,
+  stateCode: null,
 };
 
 ToggleBar.propTypes = {

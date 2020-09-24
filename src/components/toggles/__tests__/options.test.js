@@ -21,12 +21,13 @@ import {
   defaultMetricType,
   defaultSupervisionType,
 } from "../options";
+import { METRIC_TYPES } from "../../constants";
 
 describe("Filter default values", () => {
   it("should be right", () => {
     expect(defaultDistrict).toEqual(["all"]);
     expect(defaultMetricPeriod).toBe("12");
-    expect(defaultMetricType).toBe("counts");
+    expect(defaultMetricType).toBe(METRIC_TYPES.COUNTS);
     expect(defaultSupervisionType).toBe("all");
   });
 });

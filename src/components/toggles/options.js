@@ -15,9 +15,11 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
+import { METRIC_TYPES } from "../constants";
+
 export const metricTypeOptions = [
-  { label: "Counts", value: "counts" },
-  { label: "Rates", value: "rates" },
+  { label: "Counts", value: METRIC_TYPES.COUNTS },
+  { label: "Rates", value: METRIC_TYPES.RATES },
 ];
 export const defaultMetricType = metricTypeOptions[0].value;
 

@@ -16,6 +16,7 @@
 // =============================================================================
 
 import React, { useCallback } from "react";
+import { Dropdown } from "react-bootstrap";
 
 import { useAuth0 } from "../../react-auth0-spa";
 
@@ -23,21 +24,21 @@ const TopBarForGuest = () => {
   const { loginWithRedirect } = useAuth0();
 
   const onLogin = useCallback(
-    () => loginWithRedirect({ appState: { targetUrl: "/" } }),
+    (e) => {
+      e.preventDefault();
+      loginWithRedirect({ appState: { targetUrl: "/" } });
+    },
     [loginWithRedirect]
   );
 
   return (
     <ul className="nav-right">
-      <li className="dropdown">
-        <a
-          href="?"
-          onClick={(event) => {
-            event.preventDefault();
-            onLogin();
-          }}
-          className="dropdown-toggle no-after peers fxw-nw ai-c lh-1"
-          data-toggle="dropdown"
+      <Dropdown as="li">
+        <Dropdown.Toggle
+          as="a"
+          href="#"
+          onClick={onLogin}
+          className="no-after peers fxw-nw ai-c lh-1 ta-l"
         >
           <div className="peer mR-10">
             <i className="ti-power-off" />
@@ -45,8 +46,8 @@ const TopBarForGuest = () => {
           <div className="peer">
             <span className="fsz-sm c-grey-900">Log in</span>
           </div>
-        </a>
-      </li>
+        </Dropdown.Toggle>
+      </Dropdown>
     </ul>
   );
 };

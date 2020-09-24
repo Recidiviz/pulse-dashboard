@@ -76,7 +76,6 @@ const FacilitiesGoals = () => {
             chartTitle="REINCARCERATIONS BY MONTH"
             metricType="counts"
             metricPeriodMonths={metrics.metricPeriodMonths}
-            keyedByOffice={false}
             stateCode="us_nd"
             dataPointsByOffice={apiData.reincarcerations_by_period}
             numeratorKeys={["returns"]}

@@ -19,7 +19,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import startCase from "lodash/fp/startCase";
 
-const TopBarTitle = ({ pathname }) => {
+const TopBarTitle = ({ pathname = "" }) => {
   const title = pathname.substr(1).split("/").map(startCase).join(" > ");
 
   return (

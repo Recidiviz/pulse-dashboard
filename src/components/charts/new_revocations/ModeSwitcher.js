@@ -21,7 +21,7 @@ import PropTypes from "prop-types";
 import Chip from "./Chip";
 
 const ModeSwitcher = ({ mode, setMode, buttons }) => (
-  <div className="pB-20 btn-group btn-group-toggle" data-toggle="buttons">
+  <div className="pB-20">
     {buttons.map(({ label, value }) => (
       <Chip
         key={value}

@@ -15,23 +15,28 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React from "react";
+import React, { useCallback, useState } from "react";
+import { Collapse } from "react-bootstrap";
 import PropTypes from "prop-types";
 
 import { toTitleCase } from "../../utils/transforms/labels";
 
 const MethodologyCollapse = ({ children, chartId }) => {
+  const [isOpened, setIsOpened] = useState(false);
   const id = toTitleCase(chartId);
+
+  const toggleIsOpened = useCallback(() => {
+    setIsOpened(!isOpened);
+  }, [isOpened]);
 
   return (
     <div className="layer bdT p-20 w-100 accordion" id={`methodology${id}`}>
       <div className="mb-0" id={`methodologyHeading${id}`}>
         <div className="mb-0">
           <button
-            className="btn btn-link collapsed pL-0"
+            onClick={toggleIsOpened}
+            className="btn btn-link pL-0"
             type="button"
-            data-toggle="collapse"
-            data-target={`#collapseMethodology${id}`}
             aria-expanded="true"
             aria-controls={`collapseMethodology${id}`}
           >
@@ -39,14 +44,13 @@ const MethodologyCollapse = ({ children, chartId }) => {
           </button>
         </div>
       </div>
-      <div
+      <Collapse
+        in={isOpened}
         id={`collapseMethodology${id}`}
-        className="collapse"
         aria-labelledby={`methodologyHeading${id}`}
-        data-parent={`#methodology${id}`}
       >
         {children}
-      </div>
+      </Collapse>
     </div>
   );
 };

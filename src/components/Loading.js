@@ -15,24 +15,19 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React from 'react';
-import loading from '../assets/loading.svg';
+import React from "react";
 
 import BounceLoader from "react-spinners/BounceLoader";
 
 const override = {
-  display: 'block',
-  margin: '0 auto',
+  display: "block",
+  margin: "0 auto",
 };
 
 const Loading = () => (
-    <div className="sweet-loading">
-      <BounceLoader
-        css={override}
-        size={60}
-        color={"#8B2D21"}
-      />
-    </div>
+  <div className="sweet-loading">
+    <BounceLoader css={override} size={60} color={"#8B2D21"} />
+  </div>
 );
 
 export default Loading;
