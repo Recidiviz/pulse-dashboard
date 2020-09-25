@@ -38,6 +38,16 @@ export const SUPERVISION_TYPES = [
   { value: "DUAL", label: "Dual Supervision" },
 ];
 
+export const SUPERVISION_LEVELS = [
+  { value: "All", label: "All" },
+  { value: "ENHANCED", label: "Enhanced Supervision" },
+  { value: "MAXIMUM", label: "Maximum Supervision" },
+  { value: "MEDIUM", label: "Medium Supervision" },
+  { value: "MINIMUM", label: "Minimum Supervision" },
+  { value: "SPECIAL", label: "Special Circumstance Supervision" },
+  { value: "ELECTRONIC_MONITORING_ONLY", label: "Monitored Supervision" },
+];
+
 export const ADMISSION_TYPES = [
   { value: "All", label: "ALL" },
   { value: "REVOCATION", label: "Revocation" },

@@ -90,6 +90,14 @@ export const applyTopLevelFilters = (filters) => (
     ) {
       return false;
     }
+    if (
+      filters.supervisionLevel &&
+      !skippedFilters.includes("supervisionLevel") &&
+      !isAllItem(filters.supervisionLevel) &&
+      !nullSafeComparison(item.supervision_level, filters.supervisionLevel)
+    ) {
+      return false;
+    }
     return true;
   });
 
