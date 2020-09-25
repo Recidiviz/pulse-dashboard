@@ -15,6 +15,8 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
+/* eslint-disable no-console */
+
 const { unzipSync } = require("zlib");
 /**
  * Processes our optimized format metric file. This consists of a single,
