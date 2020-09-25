@@ -185,7 +185,7 @@ function downloadMethodologyFile(chartId, chartTitle, timeWindowDescription, tog
   }
 
   text += "\r\n";
-  text += `Export Date: ${exportDate}\r\n`;
+  text += `Export Date: ${exportDate}\r\n\n`;
 
   infoChart.map((chart) => {
     text += chart.header + "\r\n";
