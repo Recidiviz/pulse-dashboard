@@ -34,7 +34,14 @@ const getDimensionKey = (dimensions, dimensionIndex) => {
  * in the app for filtering purposes will be UPPERCASE, as well.
  */
 const getDimensionValue = (dimensions, dimensionIndex, dimensionValueIndex) => {
-  const value = dimensions[dimensionIndex][1][dimensionValueIndex];
+  let value;
+  try {
+    value = dimensions[dimensionIndex][1][dimensionValueIndex];
+  } catch (error) {
+    throw new Error(
+      `Could not parse dimension manifest of ${dimensions} with dimension index of ${dimensionIndex} and dimension value index of ${dimensionValueIndex}`
+    );
+  }
   if (!value) {
     throw new Error(
       `Metric file value array references dimension value index of ${dimensionValueIndex} which is not found in the dimension_manifest for dimension of index ${dimensionIndex}. Dimension manifest for that dimension is ${dimensions[dimensionIndex]}`
@@ -63,6 +70,13 @@ const stringToArray = (contentsAsString) => {
  * entire array length is divisible by totalDataPoints.
  */
 const unflattenValues = (flattenedValues, totalDataPoints) => {
+  if (
+    totalDataPoints === 0 ||
+    (flattenedValues.length === 1 && !flattenedValues[0])
+  ) {
+    return [];
+  }
+
   const unflattened = [];
   let i;
   let j;

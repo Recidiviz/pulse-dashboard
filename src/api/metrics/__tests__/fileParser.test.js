@@ -128,6 +128,23 @@ describe("Test fileParser.parseResponseByFileFormat", () => {
     expect(parsedResponse).toEqual(EXPECTED_OUTPUT);
   });
 
+  it("produces the correct output for an unexpanded optimized metric file input", () => {
+    const contents = FLATTENED_VALUES;
+    const metadata = METADATA;
+    const response = {
+      my_metric_file: {
+        flattenedValueMatrix: contents,
+        metadata,
+      },
+    };
+    const parsedResponse = methods.parseResponseByFileFormat(
+      response,
+      "my_metric_file",
+      false
+    );
+    expect(parsedResponse).toEqual(response.my_metric_file);
+  });
+
   it("produces the correct output for a json lines metric file input", () => {
     const response = {
       my_metric_file: EXPECTED_OUTPUT,
