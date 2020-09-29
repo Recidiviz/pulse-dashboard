@@ -48,19 +48,11 @@ import {
 } from "../../../../utils/charts/significantStatistics";
 import { tooltipForRateMetricWithNestedCounts } from "../../../../utils/charts/toggles";
 import { filtersPropTypes } from "../../propTypes";
+import { riskLevelLabels } from "../../../../utils/transforms/labels";
 
 const modeButtons = [
   { label: "Percent revoked of standing population", value: "rates" },
   { label: "Percent revoked of exits", value: "exits" },
-];
-
-const CHART_LABELS = [
-  "Overall",
-  "Not Assessed",
-  "Low Risk",
-  "Moderate Risk",
-  "High Risk",
-  "Very High Risk",
 ];
 
 const chartId = "revocationsByRace";
@@ -110,7 +102,7 @@ const RevocationsByRace = ({
     <Bar
       id={chartId}
       data={{
-        labels: CHART_LABELS,
+        labels: riskLevelLabels(stateCode),
         datasets: [
           generateDataset("Caucasian", 0),
           generateDataset("African American", 1),

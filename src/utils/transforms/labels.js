@@ -27,22 +27,27 @@ const riskLevels = [
   "VERY_HIGH",
 ]
 
-
 const riskLevelValueToLabelByStateCode = {
-  "us_mo": {
+  us_mo: {
+    OVERALL: 'Overall',
     NOT_ASSESSED: 'Not Assessed',
     LOW: 'Low Risk',
     MEDIUM: 'Moderate  Risk',
     HIGH: 'High Risk',
     VERY_HIGH: 'Very High  Risk',
   },
-  "us_pa": {
+  us_pa: {
+    OVERALL: 'Overall',
     NOT_ASSESSED: 'Not Assessed',
     LOW: 'Low  Risk',
     MEDIUM: 'Medium  Risk',
     HIGH: 'High Risk',
   },
 };
+
+export function riskLevelLabels(stateCode) {
+  return Object.values(riskLevelValueToLabelByStateCode[stateCode]);
+}
 
 const genderValueToLabel = {
   FEMALE: 'Female',
