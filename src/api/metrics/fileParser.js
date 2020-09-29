@@ -23,14 +23,12 @@ import expandMetricRepresentation from "./optimizedMetricFileParser";
 const parseResponseByFileFormat = (responseData, file, eagerExpand = true) => {
   const metricFile = responseData[file];
 
-  if (metricFile.flattenedValueMatrix) {
-    // If it has the key flattenedValueMatrix, it's the optimized format.
-    if (eagerExpand) {
-      return expandMetricRepresentation(
-        metricFile.flattenedValueMatrix,
-        metricFile.metadata
-      );
-    }
+  // If it has the key flattenedValueMatrix, it's the optimized format.
+  if (metricFile.flattenedValueMatrix && eagerExpand) {
+    return expandMetricRepresentation(
+      metricFile.flattenedValueMatrix,
+      metricFile.metadata
+    );
   }
 
   // If it's verbose json lines format that is ready to go, return that.

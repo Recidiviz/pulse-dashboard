@@ -195,7 +195,9 @@ describe("Test expandMetricRepresentation", () => {
 
     expect(() => {
       expandMetricRepresentation(contents, metadata);
-    }).toThrow('Given metric file metadata has undefined "total_data_points"');
+    }).toThrow(
+      'Given metric file metadata has undefined or null "total_data_points"'
+    );
   });
 
   it("correctly validates against a non-numeric metadata.total_data_points", () => {

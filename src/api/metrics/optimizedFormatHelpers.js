@@ -76,7 +76,7 @@ const unflattenValues = (flattenedValues, totalDataPoints) => {
 };
 
 /**
- * Convers the given optimized array as a singular string into an unflattened matrix.
+ * Converts the given optimized array as a singular string into an unflattened matrix.
  */
 const convertFromStringToUnflattenedMatrix = (
   contentsAsString,
@@ -95,9 +95,9 @@ const convertFromStringToUnflattenedMatrix = (
  *   - That each array of possible values in metadata.dimension_manifest is a non-empty array
  */
 const validateMetadata = (metadata) => {
-  if (metadata.total_data_points === undefined) {
+  if (metadata.total_data_points == null) {
     throw new Error(
-      'Given metric file metadata has undefined "total_data_points"'
+      'Given metric file metadata has undefined or null "total_data_points"'
     );
   }
   if (Number.isNaN(Number(metadata.total_data_points))) {
