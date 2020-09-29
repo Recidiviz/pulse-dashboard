@@ -25,17 +25,26 @@ const riskLevels = [
   "MEDIUM",
   "HIGH",
   "VERY_HIGH",
-];
+]
 
-const riskLevelValuetoLabel = {
-  NOT_ASSESSED: 'Not Assessed',
-  LOW: 'Low',
-  MEDIUM: 'Moderate',
-  HIGH: 'High',
-  VERY_HIGH: 'Very high',
+
+const riskLevelValueToLabelByStateCode = {
+  "us_mo": {
+    NOT_ASSESSED: 'Not Assessed',
+    LOW: 'Low Risk',
+    MEDIUM: 'Moderate  Risk',
+    HIGH: 'High Risk',
+    VERY_HIGH: 'Very High  Risk',
+  },
+  "us_pa": {
+    NOT_ASSESSED: 'Not Assessed',
+    LOW: 'Low  Risk',
+    MEDIUM: 'Medium  Risk',
+    HIGH: 'High Risk',
+  },
 };
 
-const genderValuetoLabel = {
+const genderValueToLabel = {
   FEMALE: 'Female',
   MALE: 'Male',
   TRANS: 'Trans',
@@ -43,7 +52,7 @@ const genderValuetoLabel = {
   TRANS_MALE: 'Trans Male',
 };
 
-const raceValuetoLabel = {
+const raceValueToLabel = {
   AMERICAN_INDIAN_ALASKAN_NATIVE: 'American Indian Alaskan Native',
   ASIAN: 'Asian',
   BLACK: 'Black',
@@ -70,11 +79,11 @@ const matrixViolationTypeToLabel = {
 };
 
 function genderValueToHumanReadable(genderValue) {
-  return genderValuetoLabel[genderValue];
+  return genderValueToLabel[genderValue];
 }
 
 function raceValueToHumanReadable(raceValue) {
-  return raceValuetoLabel[raceValue];
+  return raceValueToLabel[raceValue];
 }
 
 function toHtmlFriendly(string) {
@@ -127,7 +136,7 @@ const violationCountLabel = (count) => (count === '8' ? '8+' : count);
 
 export {
   riskLevels,
-  riskLevelValuetoLabel,
+  riskLevelValueToLabelByStateCode,
   matrixViolationTypeToLabel,
   genderValueToHumanReadable,
   raceValueToHumanReadable,
