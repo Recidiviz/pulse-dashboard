@@ -65,7 +65,7 @@ export function getUserStateName(user) {
  */
 export function getAvailableStateCodes(user) {
   const stateCode = getUserStateCode(user);
-  return tenants[stateCode].avaiableStateCodes;
+  return tenants[stateCode].availableStateCodes;
 }
 
 /**

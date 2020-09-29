@@ -21,7 +21,7 @@ import * as core from "./utils/coreConstants";
 export default {
   [lantern.MO]: {
     "name": "Missouri",
-    "avaiableStateCodes": [lantern.MO],
+    "availableStateCodes": [lantern.MO],
     "regions": {
       "Western Region": ["1", "4", "4C", "WN", "4W", "19", "24"],
       "North Central Region": ["2", "5", "6", "20", "27", "29", "32", "XCRC", "MCC", "MTC", "WMCC", "WRDCC"],
@@ -33,18 +33,18 @@ export default {
   },
   [core.ND]: {
     "name": "North Dakota",
-    "avaiableStateCodes": [core.ND]
+    "availableStateCodes": [core.ND]
   },
   [lantern.PA]: {
     "name": "Pennsylvania",
-    "avaiableStateCodes": [lantern.PA]
+    "availableStateCodes": [lantern.PA]
   },
   "recidiviz": {
     "name": "Recidiviz",
-    "avaiableStateCodes": lantern.LANTERN_STATES.concat(core.CORE_STATES)
+    "availableStateCodes": lantern.LANTERN_STATES.concat(core.CORE_STATES)
   },
   "lantern": {
     "name": "Lantern",
-    "avaiableStateCodes": lantern.LANTERN_STATES
+    "availableStateCodes": lantern.LANTERN_STATES
   }
 }
