@@ -47,7 +47,7 @@ import {
 import { tooltipForRateMetricWithCounts } from "../../../../utils/charts/toggles";
 import {
   humanReadableTitleCase,
-  riskLevelValuetoLabel,
+  riskLevelValueToLabelByStateCode,
   riskLevels,
 } from "../../../../utils/transforms/labels";
 import { filtersPropTypes } from "../../propTypes";
@@ -87,13 +87,15 @@ const RevocationsByRiskLevel = ({
     treatCategoryAllAsAbsent
   );
 
+  const riskLevelValueToLabel = riskLevelValueToLabelByStateCode[stateCode];
+
   const riskLevelCounts = pipe(
     filter((data) => riskLevels.includes(data.risk_level)),
     groupBy("risk_level"),
     values,
     sortBy((dataset) => riskLevels.indexOf(dataset[0].risk_level)),
     map((dataset) => {
-      const riskLevelLabel = riskLevelValuetoLabel[dataset[0].risk_level];
+      const riskLevelLabel = riskLevelValueToLabel[dataset[0].risk_level];
       const label = humanReadableTitleCase(riskLevelLabel);
       const numerator = sumIntBy("population_count", dataset);
       const denominator = sumIntBy(denominatorKey, dataset);

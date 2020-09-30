@@ -18,6 +18,7 @@
 import lowerCase from "lodash/fp/lowerCase"
 import pipe from "lodash/fp/pipe";
 import startCase from "lodash/fp/startCase"
+import * as lanternState from "../lanternConstants";
 
 const riskLevels = [
   "NOT_ASSESSED",
@@ -25,17 +26,31 @@ const riskLevels = [
   "MEDIUM",
   "HIGH",
   "VERY_HIGH",
-];
+]
 
-const riskLevelValuetoLabel = {
-  NOT_ASSESSED: 'Not Assessed',
-  LOW: 'Low',
-  MEDIUM: 'Moderate',
-  HIGH: 'High',
-  VERY_HIGH: 'Very high',
+const riskLevelValueToLabelByStateCode = {
+  [lanternState.MO]: {
+    OVERALL: 'Overall',
+    NOT_ASSESSED: 'Not Assessed',
+    LOW: 'Low Risk',
+    MEDIUM: 'Moderate  Risk',
+    HIGH: 'High Risk',
+    VERY_HIGH: 'Very High  Risk',
+  },
+  [lanternState.PA]: {
+    OVERALL: 'Overall',
+    NOT_ASSESSED: 'Not Assessed',
+    LOW: 'Low  Risk',
+    MEDIUM: 'Medium  Risk',
+    HIGH: 'High Risk',
+  },
 };
 
-const genderValuetoLabel = {
+export function riskLevelLabels(stateCode) {
+  return Object.values(riskLevelValueToLabelByStateCode[stateCode]);
+}
+
+const genderValueToLabel = {
   FEMALE: 'Female',
   MALE: 'Male',
   TRANS: 'Trans',
@@ -43,7 +58,7 @@ const genderValuetoLabel = {
   TRANS_MALE: 'Trans Male',
 };
 
-const raceValuetoLabel = {
+const raceValueToLabel = {
   AMERICAN_INDIAN_ALASKAN_NATIVE: 'American Indian Alaskan Native',
   ASIAN: 'Asian',
   BLACK: 'Black',
@@ -70,11 +85,11 @@ const matrixViolationTypeToLabel = {
 };
 
 function genderValueToHumanReadable(genderValue) {
-  return genderValuetoLabel[genderValue];
+  return genderValueToLabel[genderValue];
 }
 
 function raceValueToHumanReadable(raceValue) {
-  return raceValuetoLabel[raceValue];
+  return raceValueToLabel[raceValue];
 }
 
 function toHtmlFriendly(string) {
@@ -127,7 +142,7 @@ const violationCountLabel = (count) => (count === '8' ? '8+' : count);
 
 export {
   riskLevels,
-  riskLevelValuetoLabel,
+  riskLevelValueToLabelByStateCode,
   matrixViolationTypeToLabel,
   genderValueToHumanReadable,
   raceValueToHumanReadable,

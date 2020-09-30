@@ -15,7 +15,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import tenants from "../../tenants.json";
+import tenants from "../../tenants";
 
 const METADATA_NAMESPACE = "https://dashboard.recidiviz.org/";
 
@@ -65,7 +65,7 @@ export function getUserStateName(user) {
  */
 export function getAvailableStateCodes(user) {
   const stateCode = getUserStateCode(user);
-  return tenants[stateCode].avaiableStateCodes;
+  return tenants[stateCode].availableStateCodes;
 }
 
 /**

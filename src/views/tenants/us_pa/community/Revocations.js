@@ -51,8 +51,9 @@ import {
   getUserDistricts,
 } from "../../../../utils/authentication/user";
 import flags from "../../../../flags";
+import * as lanternState from "../../../../utils/lanternConstants";
 
-const stateCode = "us_pa";
+const stateCode = lanternState.PA;
 const admissionTypeOptions = [
   { value: "All", label: "ALL" },
   { value: "REVOCATION", label: "Revocation" },
