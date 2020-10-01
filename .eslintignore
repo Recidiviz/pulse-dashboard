@@ -86,6 +86,7 @@ public/
 !src/utils/charts/__tests__/metricGoal.test.js
 !src/utils/charts/__tests__/significantStatistics.test.js
 !src/utils/charts/__tests__/violationRecord.test.js
+!src/utils/charts/__tests__/trendline.test.js
 !src/utils/logger.js
 !src/utils/transforms/years.js
 !src/utils/transforms/__tests__/years.test.js
