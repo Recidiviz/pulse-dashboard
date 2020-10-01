@@ -121,7 +121,7 @@ const Revocations = () => {
     filters,
     userDistricts
   );
-  const allDataFilter = applyAllFilters(transformedFilters);
+  const allDataFilter = applyAllFilters(transformedFilters, true);
 
   const timeDescription = getTimeDescription(
     filters.metricPeriodMonths,
