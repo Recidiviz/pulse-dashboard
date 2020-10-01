@@ -27,7 +27,6 @@ import LsirScoreChangeSnapshot from "../../../../components/charts/community/Lsi
 import RevocationAdmissionsSnapshot from "../../../../components/charts/community/RevocationAdmissionsSnapshot";
 import RevocationCountOverTime from "../../../../components/charts/community/RevocationCountOverTime";
 import SupervisionSuccessSnapshot from "../../../../components/charts/community/SupervisionSuccessSnapshot";
-// eslint-disable-next-line import/no-cycle
 import useChartData from "../../../../hooks/useChartData";
 
 const metrics = {
