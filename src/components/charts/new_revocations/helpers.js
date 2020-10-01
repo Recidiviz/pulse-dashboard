@@ -43,11 +43,10 @@ const includesAllItemFirst = (items) => {
   return items.length === 1 && isAllItem(items[0]);
 };
 
-export const applyTopLevelFilters = (filters) => (
+export const applyTopLevelFilters = (filters, applySupervisionLevel = true) => (
   data,
   skippedFilters = [],
-  treatCategoryAllAsAbsent = false,
-  applySupervisionLevel = false
+  treatCategoryAllAsAbsent = false
 ) =>
   data.filter((item) => {
     if (
@@ -122,20 +121,18 @@ const applyMatrixFilters = (filters) => (data) =>
     ) {
       return false;
     }
-
     return true;
   });
 
-export const applyAllFilters = (filters, applySupervisionLevel = false) => (
+export const applyAllFilters = (filters, applySupervisionLevel = true) => (
   data,
   skippedFilters = [],
   treatCategoryAllAsAbsent = false
 ) => {
-  const filteredData = applyTopLevelFilters(filters)(
+  const filteredData = applyTopLevelFilters(filters, applySupervisionLevel)(
     data,
     skippedFilters,
-    treatCategoryAllAsAbsent,
-    applySupervisionLevel
+    treatCategoryAllAsAbsent
   );
   return applyMatrixFilters(filters)(filteredData);
 };
