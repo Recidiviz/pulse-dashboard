@@ -99,7 +99,8 @@ export const applyTopLevelFilters = (filters, applySupervisionLevel = true) => (
           filters.supervisionLevel
         )) ||
       (!applySupervisionLevel &&
-        (!item.supervision_level || isAllItem(item.supervision_level)))
+        item.supervision_level &&
+        isAllItem(item.supervision_level))
     ) {
       return false;
     }
