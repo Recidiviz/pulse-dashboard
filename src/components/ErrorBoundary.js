@@ -15,6 +15,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 import React from "react";
+import PropTypes from "prop-types";
 import Error from "./Error";
 import { RENDERING_ERROR } from "./constants";
 
@@ -29,16 +30,23 @@ class ErrorBoundary extends React.Component {
   }
 
   componentDidCatch(error, errorInfo) {
+    // eslint-disable-next-line no-console
     console.log(error, errorInfo);
   }
 
   render() {
-    if (this.state.isError) {
+    const { isError } = this.state;
+    const { children } = this.props;
+    if (isError) {
       return <Error text={RENDERING_ERROR} />;
     }
 
-    return this.props.children;
+    return children;
   }
 }
+
+ErrorBoundary.propTypes = {
+  children: PropTypes.element.isRequired,
+};
 
 export default ErrorBoundary;
