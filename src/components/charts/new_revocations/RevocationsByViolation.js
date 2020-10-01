@@ -31,7 +31,6 @@ import Loading from "../../Loading";
 import Error from "../../Error";
 
 import { COLORS } from "../../../assets/scripts/constants/colors";
-// eslint-disable-next-line import/no-cycle
 import useChartData from "../../../hooks/useChartData";
 import { axisCallbackForPercentage } from "../../../utils/charts/axis";
 import { tooltipForRateMetricWithCounts } from "../../../utils/charts/toggles";

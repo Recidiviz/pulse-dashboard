@@ -23,7 +23,6 @@ import PercentRevokedByPopulation from "./PercentRevokedByPopulation";
 import PercentRevokedByExits from "./PercentRevokedByExits";
 import Loading from "../../../Loading";
 import Error from "../../../Error";
-// eslint-disable-next-line import/no-cycle
 import useChartData from "../../../../hooks/useChartData";
 import { filtersPropTypes } from "../../propTypes";
 import { FETCHING_ERROR } from "../../../constants";
