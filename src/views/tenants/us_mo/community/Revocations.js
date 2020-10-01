@@ -120,7 +120,7 @@ const Revocations = () => {
     filters,
     userDistricts
   );
-  const allDataFilter = applyAllFilters(transformedFilters);
+  const allDataFilter = applyAllFilters(transformedFilters, false);
 
   const timeDescription = getTimeDescription(
     filters.metricPeriodMonths,
@@ -176,7 +176,7 @@ const Revocations = () => {
       <div className="d-f m-20 container-all-charts">
         <div className="matrix-container bgc-white p-20 mR-20">
           <RevocationMatrix
-            dataFilter={applyTopLevelFilters(transformedFilters)}
+            dataFilter={applyTopLevelFilters(transformedFilters, false)}
             filterStates={filters}
             updateFilters={updateFilters}
             timeDescription={timeDescription}
