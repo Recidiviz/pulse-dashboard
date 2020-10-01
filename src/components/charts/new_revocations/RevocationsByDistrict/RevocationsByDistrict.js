@@ -22,9 +22,11 @@ import RevocationCount from "./RevocationCount";
 import PercentRevokedByPopulation from "./PercentRevokedByPopulation";
 import PercentRevokedByExits from "./PercentRevokedByExits";
 import Loading from "../../../Loading";
+import Error from "../../../Error";
 // eslint-disable-next-line import/no-cycle
 import useChartData from "../../../../hooks/useChartData";
 import { filtersPropTypes } from "../../propTypes";
+import { FETCHING_ERROR } from "../../../constants";
 
 const chartId = "revocationsByDistrict";
 const chartTitle = "Admissions by district";
@@ -41,6 +43,7 @@ const RevocationsByDistrict = ({
   const [mode, setMode] = useState("counts"); // counts | rates | exits
 
   const {
+    isError,
     isLoading: revocationIsLoading,
     apiData: revocationApiData,
   } = useChartData(
@@ -50,6 +53,10 @@ const RevocationsByDistrict = ({
 
   if (revocationIsLoading) {
     return <Loading />;
+  }
+
+  if (isError) {
+    return <Error text={FETCHING_ERROR} />;
   }
 
   const filteredRevocationData = filterData(

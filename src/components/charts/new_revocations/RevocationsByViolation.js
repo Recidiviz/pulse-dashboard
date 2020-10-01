@@ -28,6 +28,7 @@ import toInteger from "lodash/fp/toInteger";
 
 import ExportMenu from "../ExportMenu";
 import Loading from "../../Loading";
+import Error from "../../Error";
 
 import { COLORS } from "../../../assets/scripts/constants/colors";
 // eslint-disable-next-line import/no-cycle
@@ -36,6 +37,7 @@ import { axisCallbackForPercentage } from "../../../utils/charts/axis";
 import { tooltipForRateMetricWithCounts } from "../../../utils/charts/toggles";
 import { calculateRate } from "./helpers/rate";
 import { filtersPropTypes } from "../propTypes";
+import { FETCHING_ERROR } from "../../constants";
 
 const chartId = "revocationsByViolationType";
 const violationCountKey = "violation_count";
@@ -49,13 +51,17 @@ const RevocationsByViolation = ({
   skippedFilters = [],
   treatCategoryAllAsAbsent = false,
 }) => {
-  const { isLoading, apiData } = useChartData(
+  const { isLoading, isError, apiData } = useChartData(
     `${stateCode}/newRevocations`,
     "revocations_matrix_distribution_by_violation"
   );
 
   if (isLoading) {
     return <Loading />;
+  }
+
+  if (isError) {
+    return <Error text={FETCHING_ERROR} />;
   }
 
   const filteredData = dataFilter(

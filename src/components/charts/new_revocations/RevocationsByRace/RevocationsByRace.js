@@ -32,6 +32,7 @@ import ModeSwitcher from "../ModeSwitcher";
 import DataSignificanceWarningIcon from "../../DataSignificanceWarningIcon";
 import ExportMenu from "../../ExportMenu";
 import Loading from "../../../Loading";
+import Error from "../../../Error";
 
 import flags from "../../../../flags";
 import {
@@ -49,6 +50,7 @@ import {
 import { tooltipForRateMetricWithNestedCounts } from "../../../../utils/charts/toggles";
 import { filtersPropTypes } from "../../propTypes";
 import { riskLevelLabels } from "../../../../utils/transforms/labels";
+import { FETCHING_ERROR } from "../../../constants";
 
 const modeButtons = [
   { label: "Percent revoked of standing population", value: "rates" },
@@ -70,13 +72,17 @@ const RevocationsByRace = ({
   const numeratorKey = "population_count";
   const denominatorKey = findDenominatorKeyByMode(mode);
 
-  const { isLoading, apiData } = useChartData(
+  const { isLoading, isError, apiData } = useChartData(
     `${stateCode}/newRevocations`,
     "revocations_matrix_distribution_by_race"
   );
 
   if (isLoading) {
     return <Loading />;
+  }
+
+  if (isError) {
+    return <Error text={FETCHING_ERROR} />;
   }
 
   const { dataPoints, numerators, denominators } = pipe(

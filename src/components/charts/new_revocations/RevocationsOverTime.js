@@ -25,6 +25,7 @@ import pipe from "lodash/fp/pipe";
 import { groupByMonth } from "../common/bars/utils";
 import ExportMenu from "../ExportMenu";
 import Loading from "../../Loading";
+import Error from "../../Error";
 
 import useChartData from "../../../hooks/useChartData";
 import { COLORS } from "../../../assets/scripts/constants/colors";
@@ -40,6 +41,7 @@ import {
 import { sortFilterAndSupplementMostRecentMonths } from "../../../utils/transforms/datasets";
 import { monthNamesAllWithYearsFromNumbers } from "../../../utils/transforms/months";
 import { filtersPropTypes } from "../propTypes";
+import { FETCHING_ERROR } from "../../constants";
 
 const chartId = "revocationsOverTime";
 
@@ -51,13 +53,17 @@ const RevocationsOverTime = ({
   metricPeriodMonths,
   filterStates,
 }) => {
-  const { isLoading, apiData } = useChartData(
+  const { isLoading, isError, apiData } = useChartData(
     `${stateCode}/newRevocations`,
     "revocations_matrix_by_month"
   );
 
   if (isLoading) {
     return <Loading />;
+  }
+
+  if (isError) {
+    return <Error text={FETCHING_ERROR} />;
   }
 
   const chartData = pipe(

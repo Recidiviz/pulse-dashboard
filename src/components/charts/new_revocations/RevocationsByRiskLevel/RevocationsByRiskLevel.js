@@ -34,6 +34,7 @@ import ModeSwitcher from "../ModeSwitcher";
 import DataSignificanceWarningIcon from "../../DataSignificanceWarningIcon";
 import ExportMenu from "../../ExportMenu";
 import Loading from "../../../Loading";
+import Error from "../../../Error";
 
 import flags from "../../../../flags";
 import { COLORS } from "../../../../assets/scripts/constants/colors";
@@ -51,6 +52,7 @@ import {
   riskLevels,
 } from "../../../../utils/transforms/labels";
 import { filtersPropTypes } from "../../propTypes";
+import { FETCHING_ERROR } from "../../../constants";
 
 const chartId = "revocationsByRiskLevel";
 
@@ -72,13 +74,17 @@ const RevocationsByRiskLevel = ({
   const denominatorKey = findDenominatorKeyByMode(mode);
   const chartLabel = getLabelByMode(mode);
 
-  const { isLoading, apiData } = useChartData(
+  const { isLoading, isError, apiData } = useChartData(
     `${stateCode}/newRevocations`,
     "revocations_matrix_distribution_by_risk_level"
   );
 
   if (isLoading) {
     return <Loading />;
+  }
+
+  if (isError) {
+    return <Error text={FETCHING_ERROR} />;
   }
 
   const filteredData = dataFilter(
