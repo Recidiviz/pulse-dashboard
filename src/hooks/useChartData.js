@@ -16,7 +16,6 @@
 // =============================================================================
 
 import { useState, useCallback, useEffect } from "react";
-// eslint-disable-next-line import/no-cycle
 import { useAuth0 } from "../react-auth0-spa";
 import logger from "../utils/logger";
 import {
@@ -34,6 +33,7 @@ function useChartData(url, file) {
   const { loading, user, getTokenSilently } = useAuth0();
   const [apiData, setApiData] = useState({});
   const [awaitingApi, setAwaitingApi] = useState(true);
+  const [isError, setIsError] = useState(false);
 
   const fetchChartData = useCallback(async () => {
     try {
@@ -53,6 +53,8 @@ function useChartData(url, file) {
       }
       setAwaitingApi(false);
     } catch (error) {
+      setAwaitingApi(false);
+      setIsError(true);
       logger.error(error);
     }
   }, [file, getTokenSilently, url]);
@@ -63,7 +65,7 @@ function useChartData(url, file) {
 
   const isLoading = awaitingResults(loading, user, awaitingApi);
 
-  return { apiData, isLoading };
+  return { apiData, isLoading, isError };
 }
 
 export default useChartData;

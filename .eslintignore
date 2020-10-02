@@ -14,6 +14,8 @@ public/
 !src/App.js
 !src/index.js
 !src/assets/scripts/utils/__tests__/**/*.js
+!src/components/Error.js
+!src/components/ErrorBoundary.js
 !src/components/StateSelector.js
 !src/components/ImportantNotesBar.js
 !src/components/TenantRoutes.js

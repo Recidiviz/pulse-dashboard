@@ -22,6 +22,7 @@ import RevocationCount from "./RevocationCount";
 import PercentRevokedByPopulation from "./PercentRevokedByPopulation";
 import PercentRevokedByExits from "./PercentRevokedByExits";
 import Loading from "../../../Loading";
+import Error from "../../../Error";
 import useChartData from "../../../../hooks/useChartData";
 import { filtersPropTypes } from "../../propTypes";
 
@@ -40,6 +41,7 @@ const RevocationsByDistrict = ({
   const [mode, setMode] = useState("counts"); // counts | rates | exits
 
   const {
+    isError,
     isLoading: revocationIsLoading,
     apiData: revocationApiData,
   } = useChartData(
@@ -49,6 +51,10 @@ const RevocationsByDistrict = ({
 
   if (revocationIsLoading) {
     return <Loading />;
+  }
+
+  if (isError) {
+    return <Error />;
   }
 
   const filteredRevocationData = filterData(

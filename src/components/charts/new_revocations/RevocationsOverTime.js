@@ -25,6 +25,7 @@ import pipe from "lodash/fp/pipe";
 import { groupByMonth } from "../common/bars/utils";
 import ExportMenu from "../ExportMenu";
 import Loading from "../../Loading";
+import Error from "../../Error";
 
 import useChartData from "../../../hooks/useChartData";
 import { COLORS } from "../../../assets/scripts/constants/colors";
@@ -52,13 +53,17 @@ const RevocationsOverTime = ({
   metricPeriodMonths,
   filterStates,
 }) => {
-  const { isLoading, apiData } = useChartData(
+  const { isLoading, isError, apiData } = useChartData(
     `${stateCode}/newRevocations`,
     "revocations_matrix_by_month"
   );
 
   if (isLoading) {
     return <Loading />;
+  }
+
+  if (isError) {
+    return <Error />;
   }
 
   const chartData = pipe(
