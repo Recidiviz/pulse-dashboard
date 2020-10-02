@@ -21,7 +21,7 @@ import PropTypes from "prop-types";
 const Sortable = ({ children, order = null, onClick }) => (
   <button
     type="button"
-    style={{ cursor: "pointer", userSelect: "none" }}
+    style={{ cursor: "pointer", userSelect: "none", textAlign: "left" }}
     onClick={onClick}
   >
     {children}

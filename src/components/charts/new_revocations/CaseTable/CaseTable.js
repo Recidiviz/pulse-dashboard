@@ -63,6 +63,7 @@ const CaseTable = ({
   skippedFilters,
   treatCategoryAllAsAbsent,
   stateCode,
+  options,
 }) => {
   const [index, setIndex] = useState(0);
   const [countData, setCountData] = useState(0);
@@ -136,15 +137,6 @@ const CaseTable = ({
     return <td style={unknownStyle}>{nullSafeLabel(label)}</td>;
   };
 
-  const labels = [
-    "DOC ID",
-    "District",
-    "Officer",
-    "Risk level",
-    "Officer Recommendation",
-    "Violation record",
-  ];
-
   const tableData = (filteredData || []).map((record) => ({
     data: [
       nullSafeLabel(record.state_id),
@@ -183,7 +175,7 @@ const CaseTable = ({
           tableData={tableData}
           metricTitle="Admitted individuals"
           isTable
-          tableLabels={labels}
+          tableLabels={options.map((o) => o.label)}
           timeWindowDescription={`${trailingLabel} (${periodLabel})`}
           filters={filterStates}
         />
@@ -192,28 +184,13 @@ const CaseTable = ({
       <table>
         <thead>
           <tr>
-            <th>
-              <Sortable {...sortableProps("state_id")}>DOC ID</Sortable>
-            </th>
-            <th>
-              <Sortable {...sortableProps("district")}>District</Sortable>
-            </th>
-            <th>
-              <Sortable {...sortableProps("officer")}>Officer</Sortable>
-            </th>
-            <th>
-              <Sortable {...sortableProps("risk_level")}>Risk level</Sortable>
-            </th>
-            <th className="long-title">
-              <Sortable {...sortableProps("officer_recommendation")}>
-                Last Rec. (Including Supplemental)
-              </Sortable>
-            </th>
-            <th>
-              <Sortable {...sortableProps("violation_record")}>
-                Violation record
-              </Sortable>
-            </th>
+            {options.map((o) => {
+              return (
+                <th key={o.key}>
+                  <Sortable {...sortableProps(o.key)}>{o.label}</Sortable>
+                </th>
+              );
+            })}
           </tr>
         </thead>
         <tbody className="fs-block">
@@ -263,6 +240,7 @@ CaseTable.propTypes = {
   treatCategoryAllAsAbsent: PropTypes.bool.isRequired,
   metricPeriodMonths: metricPeriodMonthsType.isRequired,
   stateCode: PropTypes.string.isRequired,
+  options: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
 export default CaseTable;
