@@ -13,7 +13,8 @@ const Error = ({ text }) => (
 );
 
 Error.defaultProps = {
-  text: "Oops... Something went wrong. Check console for detailed info.",
+  text:
+    "Something went wrong while loading this chart. Check back later or contact feedback@recidiviz.org for more information.",
 };
 
 Error.propTypes = {

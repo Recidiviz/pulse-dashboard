@@ -41,7 +41,6 @@ import {
 } from "../../../../utils/transforms/labels";
 import { filtersPropTypes } from "../../propTypes";
 import useChartData from "../../../../hooks/useChartData";
-import { FETCHING_ERROR } from "../../../constants";
 
 const CASES_PER_PAGE = 15;
 
@@ -84,7 +83,7 @@ const CaseTable = ({
   }
 
   if (isError) {
-    return <Error text={FETCHING_ERROR} />;
+    return <Error />;
   }
 
   const filteredData = dataFilter(

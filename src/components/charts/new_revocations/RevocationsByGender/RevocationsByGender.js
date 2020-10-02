@@ -47,7 +47,6 @@ import { tooltipForRateMetricWithNestedCounts } from "../../../../utils/charts/t
 import useChartData from "../../../../hooks/useChartData";
 import { filtersPropTypes } from "../../propTypes";
 import { riskLevelLabels } from "../../../../utils/transforms/labels";
-import { FETCHING_ERROR } from "../../../constants";
 
 const modeButtons = [
   { label: "Percent revoked of standing population", value: "rates" },
@@ -81,7 +80,7 @@ const RevocationsByGender = ({
   }
 
   if (isError) {
-    return <Error text={FETCHING_ERROR} />;
+    return <Error />;
   }
 
   const { dataPoints, numerators, denominators } = pipe(

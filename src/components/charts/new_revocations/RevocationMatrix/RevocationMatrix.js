@@ -43,7 +43,6 @@ import Error from "../../../Error";
 import useChartData from "../../../../hooks/useChartData";
 import { violationCountLabel } from "../../../../utils/transforms/labels";
 import { filtersPropTypes } from "../../propTypes";
-import { FETCHING_ERROR } from "../../../constants";
 
 const TITLE =
   "Admissions by violation history (in year prior to their last reported violation)";
@@ -73,7 +72,7 @@ const RevocationMatrix = ({
   }
 
   if (isError) {
-    return <Error text={FETCHING_ERROR} />;
+    return <Error />;
   }
 
   const isFiltered =

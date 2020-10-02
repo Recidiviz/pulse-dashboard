@@ -41,7 +41,6 @@ import {
 import { sortFilterAndSupplementMostRecentMonths } from "../../../utils/transforms/datasets";
 import { monthNamesAllWithYearsFromNumbers } from "../../../utils/transforms/months";
 import { filtersPropTypes } from "../propTypes";
-import { FETCHING_ERROR } from "../../constants";
 
 const chartId = "revocationsOverTime";
 
@@ -63,7 +62,7 @@ const RevocationsOverTime = ({
   }
 
   if (isError) {
-    return <Error text={FETCHING_ERROR} />;
+    return <Error />;
   }
 
   const chartData = pipe(

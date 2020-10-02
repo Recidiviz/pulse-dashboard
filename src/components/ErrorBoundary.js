@@ -17,7 +17,6 @@
 import React from "react";
 import PropTypes from "prop-types";
 import Error from "./Error";
-import { RENDERING_ERROR } from "./constants";
 
 class ErrorBoundary extends React.Component {
   constructor(props) {
@@ -38,7 +37,7 @@ class ErrorBoundary extends React.Component {
     const { isError } = this.state;
     const { children } = this.props;
     if (isError) {
-      return <Error text={RENDERING_ERROR} />;
+      return <Error />;
     }
 
     return children;

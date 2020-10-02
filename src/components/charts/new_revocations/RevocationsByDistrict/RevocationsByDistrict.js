@@ -25,7 +25,6 @@ import Loading from "../../../Loading";
 import Error from "../../../Error";
 import useChartData from "../../../../hooks/useChartData";
 import { filtersPropTypes } from "../../propTypes";
-import { FETCHING_ERROR } from "../../../constants";
 
 const chartId = "revocationsByDistrict";
 const chartTitle = "Admissions by district";
@@ -55,7 +54,7 @@ const RevocationsByDistrict = ({
   }
 
   if (isError) {
-    return <Error text={FETCHING_ERROR} />;
+    return <Error />;
   }
 
   const filteredRevocationData = filterData(

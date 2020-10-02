@@ -36,7 +36,6 @@ import { axisCallbackForPercentage } from "../../../utils/charts/axis";
 import { tooltipForRateMetricWithCounts } from "../../../utils/charts/toggles";
 import { calculateRate } from "./helpers/rate";
 import { filtersPropTypes } from "../propTypes";
-import { FETCHING_ERROR } from "../../constants";
 
 const chartId = "revocationsByViolationType";
 const violationCountKey = "violation_count";
@@ -60,7 +59,7 @@ const RevocationsByViolation = ({
   }
 
   if (isError) {
-    return <Error text={FETCHING_ERROR} />;
+    return <Error />;
   }
 
   const filteredData = dataFilter(

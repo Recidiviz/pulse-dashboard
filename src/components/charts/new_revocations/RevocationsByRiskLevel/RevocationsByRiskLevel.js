@@ -52,7 +52,6 @@ import {
   riskLevels,
 } from "../../../../utils/transforms/labels";
 import { filtersPropTypes } from "../../propTypes";
-import { FETCHING_ERROR } from "../../../constants";
 
 const chartId = "revocationsByRiskLevel";
 
@@ -84,7 +83,7 @@ const RevocationsByRiskLevel = ({
   }
 
   if (isError) {
-    return <Error text={FETCHING_ERROR} />;
+    return <Error />;
   }
 
   const filteredData = dataFilter(
