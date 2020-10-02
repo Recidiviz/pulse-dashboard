@@ -16,8 +16,8 @@
 // =============================================================================
 
 function axisCallbackForPercentage() {
-  return function(value, index, values) {
-      return `${value}%`;
+  return function (value) {
+    return `${value}%`;
   };
 }
 
@@ -26,12 +26,9 @@ function axisCallbackForMetricType(isRateMode) {
     return axisCallbackForPercentage();
   }
 
-  return function(value, index, values) {
-      return value;
+  return function (value) {
+    return value;
   };
 }
 
-export {
-  axisCallbackForPercentage,
-  axisCallbackForMetricType,
-};
+export { axisCallbackForPercentage, axisCallbackForMetricType };

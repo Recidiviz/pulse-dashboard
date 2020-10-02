@@ -22,7 +22,6 @@ import RevocationCount from "./RevocationCount";
 import PercentRevokedByPopulation from "./PercentRevokedByPopulation";
 import PercentRevokedByExits from "./PercentRevokedByExits";
 import Loading from "../../../Loading";
-// eslint-disable-next-line import/no-cycle
 import useChartData from "../../../../hooks/useChartData";
 import { filtersPropTypes } from "../../propTypes";
 
@@ -104,7 +103,6 @@ RevocationsByDistrict.defaultProps = {
 };
 
 RevocationsByDistrict.propTypes = {
-  // eslint-disable-next-line react/forbid-prop-types
   dataFilter: PropTypes.func.isRequired,
   filterStates: filtersPropTypes.isRequired,
   skippedFilters: PropTypes.arrayOf(PropTypes.string).isRequired,
