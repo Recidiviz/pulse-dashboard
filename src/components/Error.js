@@ -13,12 +13,17 @@ const Error = ({ text }) => (
 );
 
 Error.defaultProps = {
-  text:
-    "Something went wrong while loading this chart. Check back later or contact feedback@recidiviz.org for more information.",
+  text: (
+    <>
+      Something went wrong while loading this chart. Check back later or contact
+      <a href="mailto:feedback@recidiviz.org"> feedback@recidiviz.org</a>
+      for more information.
+    </>
+  ),
 };
 
 Error.propTypes = {
-  text: PropTypes.string,
+  text: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
 };
 
 export default Error;
