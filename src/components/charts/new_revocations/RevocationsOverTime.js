@@ -40,6 +40,7 @@ import {
 } from "../../../utils/charts/toggles";
 import { sortFilterAndSupplementMostRecentMonths } from "../../../utils/transforms/datasets";
 import { monthNamesAllWithYearsFromNumbers } from "../../../utils/transforms/months";
+import { generateTrendlineDataset } from "../../../utils/charts/trendline";
 import { filtersPropTypes } from "../propTypes";
 
 const chartId = "revocationsOverTime";
@@ -101,6 +102,7 @@ const RevocationsOverTime = ({
       hoverBackgroundColor: COLORS["lantern-light-blue"],
       hoverBorderColor: COLORS["lantern-light-blue"],
     },
+    generateTrendlineDataset(chartDataPoints, COLORS["blue-standard-light"]),
   ];
   const maxElement = Math.max(...chartDataPoints);
   const maxValue = maxElement <= 3 ? 5 : maxElement;
@@ -221,7 +223,6 @@ RevocationsOverTime.propTypes = {
   skippedFilters: PropTypes.arrayOf(PropTypes.string),
   treatCategoryAllAsAbsent: PropTypes.bool,
   metricPeriodMonths: PropTypes.string.isRequired,
-  // eslint-disable-next-line react/forbid-prop-types
   filterStates: filtersPropTypes.isRequired,
 };
 

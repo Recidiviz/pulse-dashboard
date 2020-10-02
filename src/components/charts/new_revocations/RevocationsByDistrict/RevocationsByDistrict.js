@@ -109,7 +109,6 @@ RevocationsByDistrict.defaultProps = {
 };
 
 RevocationsByDistrict.propTypes = {
-  // eslint-disable-next-line react/forbid-prop-types
   dataFilter: PropTypes.func.isRequired,
   filterStates: filtersPropTypes.isRequired,
   skippedFilters: PropTypes.arrayOf(PropTypes.string).isRequired,
