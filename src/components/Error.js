@@ -12,15 +12,16 @@ const Error = ({ text }) => (
   </div>
 );
 
+/* eslint-disable */
 Error.defaultProps = {
   text: (
     <>
       Something went wrong while loading this chart. Check back later or contact
-      <a href="mailto:feedback@recidiviz.org"> feedback@recidiviz.org</a>
-      for more information.
+      {' '}<a href="mailto:feedback@recidiviz.org">feedback@recidiviz.org</a> for more information.
     </>
   ),
 };
+/* eslint-disable */
 
 Error.propTypes = {
   text: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
