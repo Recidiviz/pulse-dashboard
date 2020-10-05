@@ -39,6 +39,7 @@ import UsNdProgrammingExplore from "./views/tenants/us_nd/programming/Explore";
 import UsPaLayout from "./views/tenants/us_pa/Layout";
 import UsPaCommunityRevocations from "./views/tenants/us_pa/community/Revocations";
 import initFontAwesome from "./utils/initFontAwesome";
+import { initI18n } from "./views/tenant_copy_translations/i18nSettings";
 
 import "./assets/scripts/index";
 import "./assets/styles/index.scss";
@@ -46,6 +47,7 @@ import * as lanternState from "./utils/lanternConstants";
 import * as coreState from "./utils/coreConstants";
 
 initFontAwesome();
+initI18n();
 
 // prettier-ignore
 const App = () => (
