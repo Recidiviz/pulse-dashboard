@@ -95,17 +95,6 @@ const violationTypes = [
   { key: "misdemeanor_count", label: "Misdemeanor", type: "LAW" },
   { key: "felony_count", label: "Felony", type: "LAW" },
 ];
-const caseTableOptions = [
-  { key: "state_id", label: "DOC ID" },
-  { key: "district", label: "District" },
-  { key: "officer", label: "Officer" },
-  { key: "risk_level", label: "Risk level" },
-  {
-    key: "officer_recommendation",
-    label: `Last Rec. (Including Supplemental)`,
-  },
-  { key: "violation_record", label: "Violation record" },
-];
 
 const Revocations = () => {
   const { user } = useAuth0();
@@ -258,7 +247,6 @@ const Revocations = () => {
           filterStates={filters}
           metricPeriodMonths={filters.metricPeriodMonths}
           stateCode={stateCode}
-          options={caseTableOptions}
         />
       </div>
     </main>

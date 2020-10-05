@@ -45,6 +45,7 @@ import {
   riskLevelValueToLabelByStateCode,
 } from "../../../../utils/transforms/labels";
 import { filtersPropTypes } from "../../propTypes";
+import { translate } from "../../../../views/tenant_copy_translations/i18nSettings";
 
 const CASES_PER_PAGE = 15;
 
@@ -63,7 +64,6 @@ const CaseTable = ({
   skippedFilters,
   treatCategoryAllAsAbsent,
   stateCode,
-  options,
 }) => {
   const [index, setIndex] = useState(0);
   const [countData, setCountData] = useState(0);
@@ -73,6 +73,18 @@ const CaseTable = ({
   const [awaitingApi, setAwaitingApi] = useState(true);
 
   const { toggleOrder, comparator, getOrder } = useSort();
+
+  const options = [
+    { key: "state_id", label: "DOC ID" },
+    { key: "district", label: "District" },
+    { key: "officer", label: translate("Officer") },
+    { key: "risk_level", label: "Risk level" },
+    {
+      key: "officer_recommendation",
+      label: `Last Rec. (Including Supplemental)`,
+    },
+    { key: "violation_record", label: "Violation record" },
+  ];
 
   useEffect(() => {
     fetchChartData(
@@ -240,7 +252,6 @@ CaseTable.propTypes = {
   treatCategoryAllAsAbsent: PropTypes.bool.isRequired,
   metricPeriodMonths: metricPeriodMonthsType.isRequired,
   stateCode: PropTypes.string.isRequired,
-  options: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
 export default CaseTable;
