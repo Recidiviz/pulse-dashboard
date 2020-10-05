@@ -561,7 +561,7 @@ class GeoViewTimeChart extends Component {
       return (
         <div
           id={chartId}
-          className="map-container"
+          className="GeoViewTimeChart map-container"
           style={RATIO_CONTAINER_OUTER_STYLE}
         >
           <div style={RATIO_CONTAINER_INNER_STYLE}>

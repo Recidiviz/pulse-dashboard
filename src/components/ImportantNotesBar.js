@@ -29,7 +29,7 @@ const ImportantNotesBar = ({ importantNotes }) => {
   }, [isOpened]);
 
   return (
-    <div className="col-12">
+    <div className="ImportantNotesBar col-12">
       <div className="bd bgc-white pX-40 pY-20">
         <div className="w-100" id="importantNotesBar">
           <button

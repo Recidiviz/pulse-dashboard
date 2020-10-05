@@ -67,7 +67,7 @@
   flex: 2 1 0;
 }
 
-.revocation-matrix {
+.RevocationMatrix {
 
   .y-label, .x-label {
     text-align: center;
@@ -186,7 +186,7 @@
   }
 }
 
-.matrix-explanation {
+.RevocationMatrixExplanation {
   flex: 1 1 0;
 
   p {
@@ -272,7 +272,7 @@
   width: 80vw;
 }
 
-.case-table {
+.CaseTable {
   table {
     width: 100%;
   }
@@ -303,7 +303,7 @@
     width: 15%;
   }
 
-  .table-navigation {
+  .Pagination {
     text-align: right;
     padding: 20px 40px;
     text-transform: uppercase;
@@ -325,19 +325,19 @@
 .separate-filter-title {
   display: none;
 
-  .case-table .separation-column {
+  .CaseTable .separation-column {
     display: block;
   }
 
-  .case-table .long-title {
+  .CaseTable .long-title {
     word-break: break-all;
     word-wrap: break-word;
   }
 }
 
 @media screen and (max-width: 1868px) {
-  .revocation-matrix .matrix .cell,
-  .revocation-matrix .matrix .violation-column {
+  .RevocationMatrix .matrix .cell,
+  .RevocationMatrix .matrix .violation-column {
     width: 9%;
   }
 }
@@ -354,8 +354,8 @@
     font-size: 0.65rem;
   }
 
-  .revocation-matrix .matrix .cell,
-  .revocation-matrix .matrix .violation-column {
+  .RevocationMatrix .matrix .cell,
+  .RevocationMatrix .matrix .violation-column {
     width: 8%;
   }
 }
@@ -366,7 +366,7 @@
     width: 98%;
   }
 
-  .revocation-matrix .matrix-content {
+  .RevocationMatrix .matrix-content {
     overflow-x: auto;
     overflow-y: hidden;
 
@@ -375,7 +375,7 @@
     }
   }
 
-  .matrix-explanation {
+  .RevocationMatrixExplanation {
     margin-right: 20px;
   }
 
@@ -383,8 +383,8 @@
     margin-bottom: 20px;
   }
 
-  .revocation-matrix .matrix .cell,
-  .revocation-matrix .matrix .violation-column {
+  .RevocationMatrix .matrix .cell,
+  .RevocationMatrix .matrix .violation-column {
     width: 9%;
   }
 }

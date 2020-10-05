@@ -159,7 +159,7 @@ const RevocationsByGender = ({
   );
 
   return (
-    <div>
+    <div className="RevocationsByGender">
       <h4>
         Admissions by gender and risk level
         {showWarning === true && <DataSignificanceWarningIcon />}

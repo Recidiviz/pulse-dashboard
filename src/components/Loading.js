@@ -25,8 +25,8 @@ const override = {
 };
 
 const Loading = () => (
-  <div className="sweet-loading">
-    <BounceLoader css={override} size={60} color={"#8B2D21"} />
+  <div className="Loading sweet-loading">
+    <BounceLoader css={override} size={60} color="#8B2D21" />
   </div>
 );
 

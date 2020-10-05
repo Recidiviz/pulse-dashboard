@@ -20,7 +20,11 @@ import PropTypes from "prop-types";
 import cn from "classnames";
 
 const TopBarLayout = ({ children, isWide = false }) => (
-  <div className={cn("header", "navbar", { "wide-navbar": isWide })}>
+  <div
+    className={cn("TopBarLayout", "header", "navbar", {
+      "wide-navbar": isWide,
+    })}
+  >
     <div className="header-container">{children}</div>
   </div>
 );

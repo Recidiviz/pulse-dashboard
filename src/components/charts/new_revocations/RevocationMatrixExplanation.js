@@ -18,7 +18,7 @@
 import React from "react";
 
 const RevocationMatrixExplanation = () => (
-  <div className="matrix-explanation bgc-white p-20">
+  <div className="RevocationMatrixExplanation bgc-white p-20">
     <h4>Using this chart</h4>
     <p className="fw-300">
       This chart plots all people who were revoked to prison during the selected

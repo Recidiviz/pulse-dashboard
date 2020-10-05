@@ -120,7 +120,7 @@ const RevocationCount = ({
   );
 
   return (
-    <div>
+    <div className="RevocationCount">
       <h4>
         {chartTitle}
         <ExportMenu

@@ -17,6 +17,7 @@
 
 import React from "react";
 import PropTypes from "prop-types";
+import cn from "classnames";
 
 import useTopBarShrinking from "../../../../hooks/useTopBarShrinking";
 
@@ -30,7 +31,7 @@ const FilterField = ({ label, children }) => {
     : "title-level";
 
   return (
-    <div className={topLevelFilterClassName}>
+    <div className={cn("FilterField", topLevelFilterClassName)}>
       <h4 className={titleLevelClassName}>{label}</h4>
       {children}
     </div>

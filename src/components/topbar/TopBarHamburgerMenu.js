@@ -19,7 +19,7 @@ import React from "react";
 import PropTypes from "prop-types";
 
 const TopBarHamburgerMenu = ({ onClick }) => (
-  <li>
+  <li className="TopBarHamburgerMenu">
     <button
       type="button"
       id="sidebar-toggle"

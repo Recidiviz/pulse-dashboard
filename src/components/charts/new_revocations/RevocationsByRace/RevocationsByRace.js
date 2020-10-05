@@ -171,7 +171,7 @@ const RevocationsByRace = ({
   );
 
   return (
-    <div>
+    <div className="RevocationsByRace">
       <h4>
         Admissions by race/ethnicity and risk level
         {showWarning === true && <DataSignificanceWarningIcon />}

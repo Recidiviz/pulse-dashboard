@@ -135,7 +135,7 @@ const RevocationMatrix = ({
   }));
 
   return (
-    <div className="revocation-matrix">
+    <div className="RevocationMatrix">
       <h4>
         {TITLE}
         <ExportMenu
