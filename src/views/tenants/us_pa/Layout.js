@@ -18,12 +18,17 @@
 import React from "react";
 import PropTypes from "prop-types";
 
+import { useAuth0 } from "../../../react-auth0-spa";
+import { enableIntercomLauncherForUser } from "../../../utils/intercomSettings";
 import Footer from "../../../components/Footer";
 import TopBarLayout from "../../../components/topbar/TopBarLayout";
 import TopBarLogo from "../../../components/topbar/TopBarLogo";
 import TopBarUserMenuForAuthenticatedUser from "../../../components/topbar/TopBarUserMenuForAuthenticatedUser";
 
 const Layout = ({ children }) => {
+  const { user } = useAuth0();
+  enableIntercomLauncherForUser(user);
+
   return (
     <div id="app">
       <div className="wide-page-container">

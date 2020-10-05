@@ -39,11 +39,13 @@ import UsNdProgrammingExplore from "./views/tenants/us_nd/programming/Explore";
 import UsPaLayout from "./views/tenants/us_pa/Layout";
 import UsPaCommunityRevocations from "./views/tenants/us_pa/community/Revocations";
 import initFontAwesome from "./utils/initFontAwesome";
+import { initIntercomSettings } from "./utils/intercomSettings";
 
 import "./assets/scripts/index";
 import "./assets/styles/index.scss";
 
 initFontAwesome();
+initIntercomSettings();
 
 // prettier-ignore
 const App = () => (
