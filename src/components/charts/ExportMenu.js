@@ -43,7 +43,7 @@ const ExportMenu = ({
   tableLabels = null,
 }) => {
   const [isModalOpened, setIsModalOpened] = useState(false);
-  const additionalInfo = chartIdToInfo[chartId] || [];
+  const additionalInfo = chartIdToInfo()[chartId] || [];
 
   const exportedStructureCallback = () => ({
     metric: metricTitle,
