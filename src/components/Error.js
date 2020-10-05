@@ -7,7 +7,7 @@ import warningIcon from "../assets/static/images/warning.svg";
 
 const Error = ({ text }) => (
   <div className="Error">
-    <img src={warningIcon} alt="Error icon" className="error__icon" />
+    <img src={warningIcon} alt="Error icon" className="Error__icon" />
     <p className="Error__text">{text}</p>
   </div>
 );
