@@ -42,10 +42,14 @@ const chartIdToInfo = () => {
         header: "What this chart shows",
         body: `This chart plots all people who were revoked to prison during the time period
   selected by the user, according to their most serious violation and the total number of
-  violation reports and notices of citation. The user can select the time period for revocations
+  ${translate(
+    "violationReports"
+  )}. The user can select the time period for revocations
   included in the chart by using the drop-down menu in the upper left corner of the page.
   The most serious violation and total number of reported violations are determined by looking back
-  at all violation reports and notices of citation filed within one year prior to the last reported
+  at all ${translate(
+    "violationReports"
+  )} filed within one year prior to the last reported
   violation before their revocation. For example, if the last violation a person committed occurred
   on February 1, 2017, and they were revoked on January 15, 2018, the most serious violation and
   number of violations would be determined by looking over the period of February 1, 2016 -
@@ -69,7 +73,7 @@ const chartIdToInfo = () => {
   misdemeanor row because a misdemeanor is their most serious violation.`,
       },
       {
-        header: "Number of violation reports and notices of citation filed",
+        header: `Number of ${translate("violationReports")} filed`,
         body: `This is determined by counting the total number of violation reports and notices of
   citation that were filed one year prior to the last reported violation before their revocation.
   For example, if a person had one notice of citation on February 10, 2016 and one violation report
@@ -84,7 +88,9 @@ const chartIdToInfo = () => {
   (i.e., SIS to SES); (2) people who were admitted to prison for reasons aside from
   revocation, such as treatment or short term sanctions; (3) people who have been
   detained pending a revocation hearing, but who have not been legally revoked; and (4) people who
-  have zero violation reports and notices of citation within the year leading up to their revocation
+  have zero ${translate(
+    "violationReports"
+  )} within the year leading up to their revocation
   (this is around 1% of the revoked population). This chart (like all charts on the page) will
   automatically repopulate to match whatever filters the user has selected. For example, if the user
   has selected "District 2" and "Probation" from the drop down menus at the top of the screen,
@@ -169,16 +175,24 @@ const chartIdToInfo = () => {
         body: `This chart shows the relative frequency of each type of violation among the selected
   group. The blue bars represent the different categories of conditions violated that constitute
   technical violations. The orange bars represent different categories of law violations. This is
-  calculated as follows: The total number of violation reports or notices of citation upon which each
-  type of violation appears, divided by the total number of violation reports or notices of citation
+  calculated as follows: The total number of ${translate(
+    "violationReports"
+  )} upon which each
+  type of violation appears, divided by the total number of ${translate(
+    "violationReports"
+  )}
   filed. Violation counts include all reported violations filed within one year of a person's last
   violation before they were revoked. For this chart only, if multiple violation types are listed on
   one violation report or notice of citation, they are all counted. For example, if a single notice of
   citation lists both an employment violation and a reporting violation, both are counted. Hence the
   total number of reported violations included in this chart will be larger than the total number of
-  violation reports and notices of citation. For example, if there were a total of 100 violation
+  ${translate(
+    "violationReports"
+  )}. For example, if there were a total of 100 violation
   reports and notices of citation, but each report listed 2 different violations, the denominator in
-  each percentage would still be 100. If, out of these 100 violation reports and notices of citation,
+  each percentage would still be 100. If, out of these 100 ${translate(
+    "violationReports"
+  )},
   20 included at least one employment violation, then the percentage for employment violations would
   be 20/100=10%.`,
       },
