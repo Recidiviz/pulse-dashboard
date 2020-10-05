@@ -34,6 +34,7 @@ import ModeSwitcher from "../ModeSwitcher";
 import DataSignificanceWarningIcon from "../../DataSignificanceWarningIcon";
 import ExportMenu from "../../ExportMenu";
 import Loading from "../../../Loading";
+import Error from "../../../Error";
 
 import flags from "../../../../flags";
 import { COLORS } from "../../../../assets/scripts/constants/colors";
@@ -47,7 +48,7 @@ import {
 import { tooltipForRateMetricWithCounts } from "../../../../utils/charts/toggles";
 import {
   humanReadableTitleCase,
-  riskLevelValuetoLabel,
+  riskLevelValueToLabelByStateCode,
   riskLevels,
 } from "../../../../utils/transforms/labels";
 import { filtersPropTypes } from "../../propTypes";
@@ -72,7 +73,7 @@ const RevocationsByRiskLevel = ({
   const denominatorKey = findDenominatorKeyByMode(mode);
   const chartLabel = getLabelByMode(mode);
 
-  const { isLoading, apiData } = useChartData(
+  const { isLoading, isError, apiData } = useChartData(
     `${stateCode}/newRevocations`,
     "revocations_matrix_distribution_by_risk_level"
   );
@@ -81,11 +82,17 @@ const RevocationsByRiskLevel = ({
     return <Loading />;
   }
 
+  if (isError) {
+    return <Error />;
+  }
+
   const filteredData = dataFilter(
     apiData,
     skippedFilters,
     treatCategoryAllAsAbsent
   );
+
+  const riskLevelValueToLabel = riskLevelValueToLabelByStateCode[stateCode];
 
   const riskLevelCounts = pipe(
     filter((data) => riskLevels.includes(data.risk_level)),
@@ -93,7 +100,7 @@ const RevocationsByRiskLevel = ({
     values,
     sortBy((dataset) => riskLevels.indexOf(dataset[0].risk_level)),
     map((dataset) => {
-      const riskLevelLabel = riskLevelValuetoLabel[dataset[0].risk_level];
+      const riskLevelLabel = riskLevelValueToLabel[dataset[0].risk_level];
       const label = humanReadableTitleCase(riskLevelLabel);
       const numerator = sumIntBy("population_count", dataset);
       const denominator = sumIntBy(denominatorKey, dataset);

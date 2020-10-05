@@ -26,8 +26,7 @@ import { getStateNameForCode } from "../utils/authentication/user";
 const StateSelector = ({ availableStateCodes }) => {
   const { currentStateCode, updateCurrentStateCode } = useStateCode();
   const { push } = useHistory();
-
-  const availableStatesOptions = availableStateCodes.map((code) => ({
+  const availableStatesOptions = availableStateCodes.sort().map((code) => ({
     value: code,
     label: getStateNameForCode(code),
   }));

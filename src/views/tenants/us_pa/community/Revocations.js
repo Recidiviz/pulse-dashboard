@@ -34,6 +34,7 @@ import ChargeCategoryFilter from "../../../../components/charts/new_revocations/
 import AdmissionTypeFilter from "../../../../components/charts/new_revocations/ToggleBar/AdmissionTypeFilter";
 import ViolationFilter from "../../../../components/charts/new_revocations/ToggleBar/ViolationFilter";
 import SupervisionLevelFilter from "../../../../components/charts/new_revocations/ToggleBar/SupervisionLevelFilter";
+import ErrorBoundary from "../../../../components/ErrorBoundary";
 import {
   applyAllFilters,
   applyTopLevelFilters,
@@ -51,8 +52,9 @@ import {
   getUserDistricts,
 } from "../../../../utils/authentication/user";
 import flags from "../../../../flags";
+import * as lanternState from "../../../../utils/lanternConstants";
 
-const stateCode = "us_pa";
+const stateCode = lanternState.PA;
 const admissionTypeOptions = [
   { value: "All", label: "ALL" },
   { value: "REVOCATION", label: "Revocation" },
@@ -137,7 +139,9 @@ const Revocations = () => {
             defaultValue={DEFAULT_METRIC_PERIOD}
             onChange={updateFilters}
           />
-          <DistrictFilter stateCode={stateCode} onChange={updateFilters} />
+          <ErrorBoundary>
+            <DistrictFilter stateCode={stateCode} onChange={updateFilters} />
+          </ErrorBoundary>
           <ChargeCategoryFilter
             options={chargeCategoryOptions}
             defaultValue={chargeCategoryOptions[0]}
@@ -161,92 +165,108 @@ const Revocations = () => {
       </ToggleBar>
 
       <div className="bgc-white p-20 m-20">
-        <RevocationCountOverTime
-          dataFilter={allDataFilter}
-          skippedFilters={["metricPeriodMonths", "supervisionType"]}
-          filterStates={filters}
-          metricPeriodMonths={filters.metricPeriodMonths}
-          stateCode={stateCode}
-        />
+        <ErrorBoundary>
+          <RevocationCountOverTime
+            dataFilter={allDataFilter}
+            skippedFilters={["metricPeriodMonths", "supervisionType"]}
+            filterStates={filters}
+            metricPeriodMonths={filters.metricPeriodMonths}
+            stateCode={stateCode}
+          />
+        </ErrorBoundary>
       </div>
       <div className="d-f m-20 container-all-charts">
         <div className="matrix-container bgc-white p-20 mR-20">
-          <RevocationMatrix
-            dataFilter={applyTopLevelFilters(transformedFilters)}
-            filterStates={filters}
-            updateFilters={updateFilters}
-            timeDescription={timeDescription}
-            stateCode={stateCode}
-            violationTypes={[
-              "LOW_TECH",
-              "MED_TECH",
-              "ELEC_MONITORING",
-              "SUBSTANCE_ABUSE",
-              "ABSCONDED",
-              "HIGH_TECH",
-              "SUMMARY_OFFENSE",
-              "MISDEMEANOR",
-              "FELONY",
-            ]}
-          />
+          <ErrorBoundary>
+            <RevocationMatrix
+              dataFilter={applyTopLevelFilters(transformedFilters)}
+              filterStates={filters}
+              updateFilters={updateFilters}
+              timeDescription={timeDescription}
+              stateCode={stateCode}
+              violationTypes={[
+                "LOW_TECH",
+                "MED_TECH",
+                "ELEC_MONITORING",
+                "SUBSTANCE_ABUSE",
+                "ABSCONDED",
+                "HIGH_TECH",
+                "SUMMARY_OFFENSE",
+                "MISDEMEANOR",
+                "FELONY",
+              ]}
+            />
+          </ErrorBoundary>
         </div>
         <RevocationMatrixExplanation />
       </div>
 
       <RevocationCharts
         riskLevelChart={
-          <RevocationsByRiskLevel
-            dataFilter={allDataFilter}
-            filterStates={filters}
-            stateCode={stateCode}
-            timeDescription={timeDescription}
-          />
+          <ErrorBoundary>
+            <RevocationsByRiskLevel
+              dataFilter={allDataFilter}
+              filterStates={filters}
+              stateCode={stateCode}
+              timeDescription={timeDescription}
+            />
+          </ErrorBoundary>
         }
         violationChart={
-          <RevocationsByViolation
-            dataFilter={allDataFilter}
-            filterStates={filters}
-            stateCode={stateCode}
-            timeDescription={timeDescription}
-            violationTypes={violationTypes}
-          />
+          <ErrorBoundary>
+            <RevocationsByViolation
+              dataFilter={allDataFilter}
+              filterStates={filters}
+              stateCode={stateCode}
+              timeDescription={timeDescription}
+              violationTypes={violationTypes}
+            />
+          </ErrorBoundary>
         }
         genderChart={
-          <RevocationsByGender
-            dataFilter={allDataFilter}
-            filterStates={filters}
-            stateCode={stateCode}
-            timeDescription={timeDescription}
-          />
+          <ErrorBoundary>
+            <RevocationsByGender
+              dataFilter={allDataFilter}
+              filterStates={filters}
+              stateCode={stateCode}
+              timeDescription={timeDescription}
+            />
+          </ErrorBoundary>
         }
         raceChart={
-          <RevocationsByRace
-            dataFilter={allDataFilter}
-            filterStates={filters}
-            stateCode={stateCode}
-            timeDescription={timeDescription}
-          />
+          <ErrorBoundary>
+            <RevocationsByRace
+              dataFilter={allDataFilter}
+              filterStates={filters}
+              stateCode={stateCode}
+              timeDescription={timeDescription}
+            />
+          </ErrorBoundary>
         }
         districtChart={
-          <RevocationsByDistrict
-            dataFilter={allDataFilter}
-            skippedFilters={["district"]}
-            filterStates={filters}
-            currentDistricts={filters.district}
-            stateCode={stateCode}
-            timeDescription={timeDescription}
-          />
+          <ErrorBoundary>
+            <RevocationsByDistrict
+              dataFilter={allDataFilter}
+              skippedFilters={["district"]}
+              filterStates={filters}
+              currentDistricts={filters.district}
+              stateCode={stateCode}
+              timeDescription={timeDescription}
+            />
+          </ErrorBoundary>
         }
       />
 
       <div className="bgc-white m-20 p-20">
-        <CaseTable
-          dataFilter={allDataFilter}
-          treatCategoryAllAsAbsent
-          filterStates={filters}
-          metricPeriodMonths={filters.metricPeriodMonths}
-          stateCode={stateCode}
-        />
+        <ErrorBoundary>
+          <CaseTable
+            dataFilter={allDataFilter}
+            treatCategoryAllAsAbsent
+            filterStates={filters}
+            metricPeriodMonths={filters.metricPeriodMonths}
+            stateCode={stateCode}
+          />
+        </ErrorBoundary>
       </div>
     </main>
   );

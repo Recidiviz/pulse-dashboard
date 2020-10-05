@@ -24,14 +24,9 @@ import useSort from "./useSort";
 
 import ExportMenu from "../../ExportMenu";
 import Loading from "../../../Loading";
+import Error from "../../../Error";
 
-// eslint-disable-next-line import/no-cycle
-import { useAuth0 } from "../../../../react-auth0-spa";
 import usePrevious from "../../../../hooks/usePrevious";
-import {
-  fetchChartData,
-  awaitingResults,
-} from "../../../../api/metrics/metricsClient";
 
 import { COLORS } from "../../../../assets/scripts/constants/colors";
 import {
@@ -42,9 +37,10 @@ import { parseAndFormatViolationRecord } from "../../../../utils/charts/violatio
 import {
   humanReadableTitleCase,
   nameFromOfficerId,
-  riskLevelValuetoLabel,
+  riskLevelValueToLabelByStateCode,
 } from "../../../../utils/transforms/labels";
 import { filtersPropTypes } from "../../propTypes";
+import useChartData from "../../../../hooks/useChartData";
 
 const CASES_PER_PAGE = 15;
 
@@ -67,22 +63,12 @@ const CaseTable = ({
   const [index, setIndex] = useState(0);
   const [countData, setCountData] = useState(0);
 
-  const { loading, user, getTokenSilently } = useAuth0();
-  const [apiData, setApiData] = useState({});
-  const [awaitingApi, setAwaitingApi] = useState(true);
-
   const { toggleOrder, comparator, getOrder } = useSort();
 
-  useEffect(() => {
-    fetchChartData(
-      stateCode,
-      "newRevocations",
-      "revocations_matrix_filtered_caseload",
-      setApiData,
-      setAwaitingApi,
-      getTokenSilently
-    );
-  }, [getTokenSilently, stateCode]);
+  const { isLoading, isError, apiData } = useChartData(
+    `${stateCode}/newRevocations`,
+    "revocations_matrix_filtered_caseload"
+  );
 
   // TODO: After moving the API call inside this component, the pagination protections are not
   // working exactly as intended. We are relying on the commented safe-guard near the end only.
@@ -92,8 +78,12 @@ const CaseTable = ({
     setCountData(apiData.length);
   }, [apiData.length]);
 
-  if (awaitingResults(loading, user, awaitingApi)) {
+  if (isLoading) {
     return <Loading />;
+  }
+
+  if (isError) {
+    return <Error />;
   }
 
   const filteredData = dataFilter(
@@ -150,7 +140,9 @@ const CaseTable = ({
       nullSafeLabel(record.state_id),
       nullSafeLabel(record.district),
       nullSafeLabel(nameFromOfficerId(record.officer)),
-      nullSafeLabel(riskLevelValuetoLabel[record.risk_level]),
+      nullSafeLabel(
+        riskLevelValueToLabelByStateCode[stateCode][record.risk_level]
+      ),
       nullSafeLabel(normalizeLabel(record.officer_recommendation)),
       nullSafeLabel(parseAndFormatViolationRecord(record.violation_record)),
     ],
@@ -222,7 +214,9 @@ const CaseTable = ({
               <td>{details.state_id}</td>
               {nullSafeCell(details.district)}
               {nullSafeCell(nameFromOfficerId(details.officer))}
-              {nullSafeCell(riskLevelValuetoLabel[details.risk_level])}
+              {nullSafeCell(
+                riskLevelValueToLabelByStateCode[stateCode][details.risk_level]
+              )}
               {nullSafeCell(normalizeLabel(details.officer_recommendation))}
               {nullSafeCell(
                 parseAndFormatViolationRecord(details.violation_record)

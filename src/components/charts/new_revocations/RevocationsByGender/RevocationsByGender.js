@@ -32,6 +32,7 @@ import ModeSwitcher from "../ModeSwitcher";
 import DataSignificanceWarningIcon from "../../DataSignificanceWarningIcon";
 import ExportMenu from "../../ExportMenu";
 import Loading from "../../../Loading";
+import Error from "../../../Error";
 
 import flags from "../../../../flags";
 import { COLORS } from "../../../../assets/scripts/constants/colors";
@@ -45,19 +46,11 @@ import {
 import { tooltipForRateMetricWithNestedCounts } from "../../../../utils/charts/toggles";
 import useChartData from "../../../../hooks/useChartData";
 import { filtersPropTypes } from "../../propTypes";
+import { riskLevelLabels } from "../../../../utils/transforms/labels";
 
 const modeButtons = [
   { label: "Percent revoked of standing population", value: "rates" },
   { label: "Percent revoked of exits", value: "exits" },
-];
-
-const CHART_LABELS = [
-  "Overall",
-  "Not Assessed",
-  "Low Risk",
-  "Moderate Risk",
-  "High Risk",
-  "Very High Risk",
 ];
 
 const colors = [COLORS["lantern-light-blue"], COLORS["lantern-orange"]];
@@ -77,13 +70,17 @@ const RevocationsByGender = ({
   const numeratorKey = "population_count";
   const denominatorKey = findDenominatorKeyByMode(mode);
 
-  const { isLoading, apiData } = useChartData(
+  const { isLoading, isError, apiData } = useChartData(
     `${stateCode}/newRevocations`,
     "revocations_matrix_distribution_by_gender"
   );
 
   if (isLoading) {
     return <Loading />;
+  }
+
+  if (isError) {
+    return <Error />;
   }
 
   const { dataPoints, numerators, denominators } = pipe(
@@ -106,7 +103,7 @@ const RevocationsByGender = ({
     <Bar
       id={chartId}
       data={{
-        labels: CHART_LABELS,
+        labels: riskLevelLabels(stateCode),
         datasets: [generateDataset("Women", 0), generateDataset("Men", 1)],
       }}
       options={{

@@ -22,7 +22,7 @@ import RevocationCount from "./RevocationCount";
 import PercentRevokedByPopulation from "./PercentRevokedByPopulation";
 import PercentRevokedByExits from "./PercentRevokedByExits";
 import Loading from "../../../Loading";
-// eslint-disable-next-line import/no-cycle
+import Error from "../../../Error";
 import useChartData from "../../../../hooks/useChartData";
 import { filtersPropTypes } from "../../propTypes";
 
@@ -41,6 +41,7 @@ const RevocationsByDistrict = ({
   const [mode, setMode] = useState("counts"); // counts | rates | exits
 
   const {
+    isError,
     isLoading: revocationIsLoading,
     apiData: revocationApiData,
   } = useChartData(
@@ -50,6 +51,10 @@ const RevocationsByDistrict = ({
 
   if (revocationIsLoading) {
     return <Loading />;
+  }
+
+  if (isError) {
+    return <Error />;
   }
 
   const filteredRevocationData = filterData(
@@ -104,7 +109,6 @@ RevocationsByDistrict.defaultProps = {
 };
 
 RevocationsByDistrict.propTypes = {
-  // eslint-disable-next-line react/forbid-prop-types
   dataFilter: PropTypes.func.isRequired,
   filterStates: filtersPropTypes.isRequired,
   skippedFilters: PropTypes.arrayOf(PropTypes.string).isRequired,

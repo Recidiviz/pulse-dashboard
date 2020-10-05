@@ -43,6 +43,8 @@ import { initIntercomSettings } from "./utils/intercomSettings";
 
 import "./assets/scripts/index";
 import "./assets/styles/index.scss";
+import * as lanternState from "./utils/lanternConstants";
+import * as coreState from "./utils/coreConstants";
 
 initFontAwesome();
 initIntercomSettings();
@@ -55,7 +57,7 @@ const App = () => (
         <Route path="/verify" component={VerificationNeeded} />
 
         <TenantRoutes>
-          <UsMoLayout stateCode="us_mo">
+          <UsMoLayout stateCode={lanternState.MO}>
             <Switch>
               <Route path="/community/revocations" component={UsMoCommunityRevocations} />
               <Route path="/profile" component={Profile} />
@@ -65,7 +67,7 @@ const App = () => (
             </Switch>
           </UsMoLayout>
 
-          <UsNdLayout stateCode="us_nd">
+          <UsNdLayout stateCode={coreState.ND}>
             <Switch>
               <Route path="/community/goals" component={UsNdCommunityGoals} />
               <Route path="/community/explore" component={UsNdCommunityExplore} />
@@ -82,7 +84,7 @@ const App = () => (
             </Switch>
           </UsNdLayout>
 
-          <UsPaLayout stateCode="us_pa">
+          <UsPaLayout stateCode={lanternState.PA}>
             <Switch>
               <Route path="/community/revocations" component={UsPaCommunityRevocations} />
               <Route path="/profile" component={Profile} />

@@ -25,6 +25,7 @@ import pipe from "lodash/fp/pipe";
 import { groupByMonth } from "../common/bars/utils";
 import ExportMenu from "../ExportMenu";
 import Loading from "../../Loading";
+import Error from "../../Error";
 
 import useChartData from "../../../hooks/useChartData";
 import { COLORS } from "../../../assets/scripts/constants/colors";
@@ -39,6 +40,7 @@ import {
 } from "../../../utils/charts/toggles";
 import { sortFilterAndSupplementMostRecentMonths } from "../../../utils/transforms/datasets";
 import { monthNamesAllWithYearsFromNumbers } from "../../../utils/transforms/months";
+import { generateTrendlineDataset } from "../../../utils/charts/trendline";
 import { filtersPropTypes } from "../propTypes";
 
 const chartId = "revocationsOverTime";
@@ -51,13 +53,17 @@ const RevocationsOverTime = ({
   metricPeriodMonths,
   filterStates,
 }) => {
-  const { isLoading, apiData } = useChartData(
+  const { isLoading, isError, apiData } = useChartData(
     `${stateCode}/newRevocations`,
     "revocations_matrix_by_month"
   );
 
   if (isLoading) {
     return <Loading />;
+  }
+
+  if (isError) {
+    return <Error />;
   }
 
   const chartData = pipe(
@@ -96,6 +102,7 @@ const RevocationsOverTime = ({
       hoverBackgroundColor: COLORS["lantern-light-blue"],
       hoverBorderColor: COLORS["lantern-light-blue"],
     },
+    generateTrendlineDataset(chartDataPoints, COLORS["blue-standard-light"]),
   ];
   const maxElement = Math.max(...chartDataPoints);
   const maxValue = maxElement <= 3 ? 5 : maxElement;
@@ -216,7 +223,6 @@ RevocationsOverTime.propTypes = {
   skippedFilters: PropTypes.arrayOf(PropTypes.string),
   treatCategoryAllAsAbsent: PropTypes.bool,
   metricPeriodMonths: PropTypes.string.isRequired,
-  // eslint-disable-next-line react/forbid-prop-types
   filterStates: filtersPropTypes.isRequired,
 };
 
