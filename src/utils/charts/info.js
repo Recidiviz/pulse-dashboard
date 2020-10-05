@@ -16,6 +16,7 @@
 // =============================================================================
 import { translate } from "../../views/tenant_copy_translations/i18nSettings";
 
+// prettier-ignore
 const chartIdToInfo = () => {
   return {
     revocationsOverTime: [
@@ -42,14 +43,11 @@ const chartIdToInfo = () => {
         header: "What this chart shows",
         body: `This chart plots all people who were revoked to prison during the time period
   selected by the user, according to their most serious violation and the total number of
-  ${translate(
-    "violationReports"
-  )}. The user can select the time period for revocations
+  ${translate("violationReports")}. The user can select the time period
+  for revocations
   included in the chart by using the drop-down menu in the upper left corner of the page.
   The most serious violation and total number of reported violations are determined by looking back
-  at all ${translate(
-    "violationReports"
-  )} filed within one year prior to the last reported
+  at all ${translate("violationReports")} filed within one year prior to the last reported
   violation before their revocation. For example, if the last violation a person committed occurred
   on February 1, 2017, and they were revoked on January 15, 2018, the most serious violation and
   number of violations would be determined by looking over the period of February 1, 2016 -
@@ -88,9 +86,7 @@ const chartIdToInfo = () => {
   (i.e., SIS to SES); (2) people who were admitted to prison for reasons aside from
   revocation, such as treatment or short term sanctions; (3) people who have been
   detained pending a revocation hearing, but who have not been legally revoked; and (4) people who
-  have zero ${translate(
-    "violationReports"
-  )} within the year leading up to their revocation
+  have zero ${translate("violationReports")} within the year leading up to their revocation
   (this is around 1% of the revoked population). This chart (like all charts on the page) will
   automatically repopulate to match whatever filters the user has selected. For example, if the user
   has selected "District 2" and "Probation" from the drop down menus at the top of the screen,
@@ -101,17 +97,18 @@ const chartIdToInfo = () => {
     revocationsByDistrict: [
       {
         header: "What the count chart shows",
-        body: `This chart shows the total number of people revoked to prison from each district
-  during the time period selected in the "Time Period" drop down menu. The districts are positioned
-  in descending order from left to right, with the district with the highest number of people
-  revoked at the left. If a person’s district is unknown (meaning they were not under active
+        body: `This chart shows the total number of people ${translate("revoked")}
+  to prison from each district during the time period selected in the
+  "Time Period" drop down menu. The districts are positioned
+  in descending order from left to right, with the district with the highest
+  number of people ${translate("revoked")} at the left. If a person’s district is unknown (meaning they were not under active
   supervision in any district within 2 years prior to the revocation), they are not included in the
   district counts or rates.`,
       },
       {
         header: "What the percentage chart shows",
-        body: `This chart shows the percentage of people revoked in each district. Percent revoked is
-  defined as the number of people revoked from that district in the selected time period divided by
+        body: `This chart shows the percentage of people ${translate("revoked")} in each district. Percent revoked is
+  defined as the number of people ${translate("revoked")} from that district in the selected time period divided by
   the total supervised population within that district during the same time period. The districts are
   positioned in descending order from left to right, with the district with the highest revocation
   rate at the left. If a person’s district is unknown (meaning they were not under active
@@ -157,9 +154,9 @@ const chartIdToInfo = () => {
         header: "Filtering by violation history",
         body: `If the user has filtered the page by clicking on a specific violation type
   (i.e., technical) or bubble (i.e., technical, 3) within the revocation plot, this chart
-  will show the percentage of people revoked with the selected violation history by risk level.
+  will show the percentage of people ${translate("revoked")} with the selected violation history by risk level.
   For example, if the user had selected the technical row on the revocations plot, the chart
-  would show: For each risk level, the number of people revoked whose most serious
+  would show: For each risk level, the number of people ${translate("revoked")} whose most serious
   violation was a technical, divided by the total number of people whose most serious
   violation was a technical, including those who were not revoked. Comparing these percentages will
   indicate whether revocation practices are sensitive to risk level. That is, whether people who are
@@ -175,24 +172,16 @@ const chartIdToInfo = () => {
         body: `This chart shows the relative frequency of each type of violation among the selected
   group. The blue bars represent the different categories of conditions violated that constitute
   technical violations. The orange bars represent different categories of law violations. This is
-  calculated as follows: The total number of ${translate(
-    "violationReports"
-  )} upon which each
-  type of violation appears, divided by the total number of ${translate(
-    "violationReports"
-  )}
+  calculated as follows: The total number of ${translate("violationReports")} upon which each
+  type of violation appears, divided by the total number of ${translate("violationReports")}
   filed. Violation counts include all reported violations filed within one year of a person's last
   violation before they were revoked. For this chart only, if multiple violation types are listed on
   one violation report or notice of citation, they are all counted. For example, if a single notice of
   citation lists both an employment violation and a reporting violation, both are counted. Hence the
   total number of reported violations included in this chart will be larger than the total number of
-  ${translate(
-    "violationReports"
-  )}. For example, if there were a total of 100 violation
+  ${translate("violationReports")}. For example, if there were a total of 100 violation
   reports and notices of citation, but each report listed 2 different violations, the denominator in
-  each percentage would still be 100. If, out of these 100 ${translate(
-    "violationReports"
-  )},
+  each percentage would still be 100. If, out of these 100 ${translate("violationReports")},
   20 included at least one employment violation, then the percentage for employment violations would
   be 20/100=10%.`,
       },
@@ -239,7 +228,9 @@ const chartIdToInfo = () => {
   the percent of people with the selected violation history who were revoked, for each
   ${translate("gender")} and
   risk level group. For example, if the user selected the technical row on the revocations plot, the
-  chart would show: For men and women overall, and for each risk level, the number of people revoked
+  chart would show: For men and women overall, and for each risk level, the number of people ${translate(
+    "revoked"
+  )}
   whose most serious violation was a technical, divided by the total number of people whose most
   serious violation was a technical, including those who were not revoked. Comparing these percentages
   is an indicator of whether revocation practices differ between men and women. That is, whether men
@@ -304,16 +295,12 @@ const chartIdToInfo = () => {
         header: "District",
         body: `The district within which a person was under supervision during their last active
   supervision period prior to revocation. For a small percentage of individuals (approx. 4–8 percent),
-  the district and ${translate(
-    "officer"
-  )} are unknown. This happens when the individual was not associated with an
+  the district and ${translate("officer")} are unknown. This happens when the individual was not associated with an
   active supervision period at any point within the two years prior to the revocation.`,
       },
       {
         header: translate("Officer"),
-        body: `The most recent supervision ${translate(
-          "officer"
-        )} the person was assigned to prior to revocation.`,
+        body: `The most recent supervision ${translate("officer")} the person was assigned to prior to revocation.`,
       },
       {
         header: "Risk Level",
@@ -323,9 +310,7 @@ const chartIdToInfo = () => {
   in the Unassessed category.`,
       },
       {
-        header: `Last ${translate(
-          "Officer"
-        )} Recommendation (Including Supplemental)`,
+        header: `Last ${translate("Officer")} Recommendation (Including Supplemental)`,
         body: `The recommendation listed on the last violation report before the person was revoked,
   including any supplemental violation reports.`,
       },

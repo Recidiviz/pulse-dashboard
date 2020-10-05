@@ -34,6 +34,7 @@ import ModeSwitcher from "../ModeSwitcher";
 import ExportMenu from "../../ExportMenu";
 import { modeButtons } from "./helpers";
 import { filtersPropTypes } from "../../propTypes";
+import { translate } from "../../../../views/tenant_copy_translations/i18nSettings";
 
 const RevocationCount = ({
   chartId,
@@ -100,7 +101,7 @@ const RevocationCount = ({
               id: "y-axis-0",
               scaleLabel: {
                 display: true,
-                labelString: "Number of people revoked",
+                labelString: `Number of people ${translate("revoked")}`,
               },
               stacked: true,
             },
