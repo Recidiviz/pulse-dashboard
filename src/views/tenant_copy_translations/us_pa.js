@@ -1,4 +1,6 @@
 export default {
-  "officer": "agent",
-  "Officer": "Agent"
+  officer: "agent",
+  Officer: "Agent",
+  gender: "sex",
+  Gender: "Sex"
 }

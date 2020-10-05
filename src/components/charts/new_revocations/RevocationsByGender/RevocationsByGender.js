@@ -21,6 +21,7 @@ import { Bar } from "react-chartjs-2";
 
 import pipe from "lodash/fp/pipe";
 import reduce from "lodash/fp/reduce";
+import { translate } from "../../../../views/tenant_copy_translations/i18nSettings";
 
 import {
   dataTransformer,
@@ -115,7 +116,7 @@ const RevocationsByGender = ({
             {
               scaleLabel: {
                 display: true,
-                labelString: "Gender and risk level",
+                labelString: `${translate("Gender")} and risk level`,
               },
             },
           ],
@@ -156,12 +157,14 @@ const RevocationsByGender = ({
   return (
     <div>
       <h4>
-        Admissions by gender and risk level
+        Admissions by {translate("gender")} and risk level
         {showWarning === true && <DataSignificanceWarningIcon />}
         <ExportMenu
           chartId={chartId}
           chart={chart}
-          metricTitle={`${getLabelByMode(mode)} by gender and risk level`}
+          metricTitle={`${getLabelByMode(mode)} by ${translate(
+            "gender"
+          )} and risk level`}
           timeWindowDescription={timeDescription}
           filters={filterStates}
         />

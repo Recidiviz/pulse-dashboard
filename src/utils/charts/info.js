@@ -222,7 +222,8 @@ const chartIdToInfo = () => {
         header: "Filtering by violation history",
         body: `If the user has filtered the page by clicking on a specific violation type
   (i.e., technical) or bubble (i.e., technical, 3) within the revocation plot, this chart will show
-  the percent of people with the selected violation history who were revoked, for each gender and
+  the percent of people with the selected violation history who were revoked, for each
+  ${translate("gender")} and
   risk level group. For example, if the user selected the technical row on the revocations plot, the
   chart would show: For men and women overall, and for each risk level, the number of people revoked
   whose most serious violation was a technical, divided by the total number of people whose most
