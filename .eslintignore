@@ -99,3 +99,4 @@ public/
 !src/views/tenants/us_mo/**/*.js
 !src/views/tenants/us_nd/**/*.js
 !src/views/tenants/us_pa/**/*.js
+!src/views/tenants/utils/*.js

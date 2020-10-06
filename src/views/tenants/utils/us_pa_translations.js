@@ -18,6 +18,8 @@
 // Note: Each time you add a translation you will need to restart your dev
 // server before you will see the translation rendered properly
 
+import { PA_METHODOLOGY } from "./us_pa_methodology";
+
 export default {
   officer: "agent",
   Officer: "Agent",
@@ -30,8 +32,16 @@ export default {
   Revocations: "Admissions",
   percentRevoked: "Admission rate",
   percentOfPopulationRevoked: "Admission rate of standing population",
-  matrixExplanationP1: "This chart plots all people who were admitted to SCIs from parole during the selected time period, according to their most serious violation and the total number of violation reports that were filed within one year prior to the last reported violation before the person was admitted. (See “Additional Info” for more details.)",
-  matrixExplanationP2: "The numbers inside the bubbles represent the number of people who were admitted, whose most serious violation matches the violation at the head of that row, and who have the number of prior violations at the head of that column.",
+  matrixExplanationP1: `This chart plots all people who were admitted to SCIs
+from parole during the selected time period, according to their most serious
+violation and the total number of violation reports that were filed within
+one year prior to the last reported violation before the person was admitted.
+(See “Additional Info” for more details.)`,
+  matrixExplanationP2: `The numbers inside the bubbles represent the number of
+people who were admitted, whose most serious violation matches the violation at
+the head of that row, and who have the number of prior violations at the head
+of that column.`,
   Technical: "Low tech.",
   lastRecommendation: "Last recommendation",
-}
+  methodology: PA_METHODOLOGY,
+};
