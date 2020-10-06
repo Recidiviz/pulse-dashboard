@@ -75,50 +75,63 @@ describe("applyTopLevelFilters", () => {
     ];
   });
 
-  describe("with supervision_level = 'MEDIUM' filter applied", () => {
-    beforeEach(() => {
-      filters = { supervisionLevel: "MEDIUM" };
-      filtered = applyTopLevelFilters(filters, true)(data);
-    });
-
-    it("correctly returns supervision_level items matching the filter term", () => {
-      const expected = [data[1], data[2]];
-
-      expect(filtered).toEqual(expected);
-    });
-
-    it("does not double count the 'ALL' item", () => {
-      expect(filtered).not.toContain(data[0]);
-    });
-  });
-
-  describe("with supervision_level = 'ALL' filter applied (default)", () => {
-    beforeEach(() => {
-      filters = { supervisionLevel: "ALL" };
-      filtered = applyTopLevelFilters(filters, true)(data);
-    });
-
-    it("returns the 'ALL' row", () => {
-      const expected = [data[0]];
-      expect(filtered).toEqual(expected);
-    });
-  });
-
-  describe("when the data item does not have the supervision_level attribute", () => {
-    let missingAttributeData;
-
-    beforeEach(() => {
-      missingAttributeData = data.map((i) => {
-        /* eslint-disable camelcase */
-        const { supervision_level, ...item } = i;
-        return item;
+  describe("supervisionLevel filter", () => {
+    describe("with supervisionLevel = 'MEDIUM' filter applied", () => {
+      beforeEach(() => {
+        filters = { supervisionLevel: "MEDIUM" };
+        filtered = applyTopLevelFilters(filters)(data);
       });
-      filters = { supervisionLevel: "ALL" };
-      filtered = applyTopLevelFilters(filters, true)(missingAttributeData);
+
+      it("correctly returns supervision_level items matching the filter term", () => {
+        const expected = [data[1], data[2]];
+
+        expect(filtered).toEqual(expected);
+      });
+
+      it("does not double count the 'ALL' item", () => {
+        expect(filtered).not.toContain(data[0]);
+      });
     });
 
-    it("returns all of the rows", () => {
-      expect(filtered).toEqual(missingAttributeData);
+    describe("with supervisionLevel = 'ALL' filter applied", () => {
+      beforeEach(() => {
+        filters = { supervisionLevel: "ALL" };
+        filtered = applyTopLevelFilters(filters)(data);
+      });
+
+      it("returns the 'ALL' row", () => {
+        const expected = [data[0]];
+        expect(filtered).toEqual(expected);
+      });
+    });
+
+    describe("when the filters do not include supervisionLevel attribute", () => {
+      beforeEach(() => {
+        filters = {};
+        filtered = applyTopLevelFilters(filters)(data);
+      });
+
+      it("returns the input data", () => {
+        expect(filtered).toEqual(data);
+      });
+    });
+
+    describe("when the data item does not have the supervision_level attribute", () => {
+      let missingAttributeData;
+
+      beforeEach(() => {
+        missingAttributeData = data.map((i) => {
+          /* eslint-disable camelcase */
+          const { supervision_level, ...item } = i;
+          return item;
+        });
+        filters = { supervisionLevel: "ALL" };
+        filtered = applyTopLevelFilters(filters)(missingAttributeData);
+      });
+
+      it("returns all of the rows", () => {
+        expect(filtered).toEqual(missingAttributeData);
+      });
     });
   });
 });
