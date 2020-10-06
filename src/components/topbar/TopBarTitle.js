@@ -24,7 +24,7 @@ const TopBarTitle = ({ pathname = "" }) => {
 
   return (
     <li
-      className="TopBarTitle"
+      className="TopBar__title"
       style={{ paddingLeft: "20px", paddingTop: "22px" }}
     >
       <h5 className="lh-1 mB-0 logo-text recidiviz-dark-green-text">{title}</h5>

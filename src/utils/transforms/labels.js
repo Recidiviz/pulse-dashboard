@@ -93,7 +93,7 @@ function raceValueToHumanReadable(raceValue) {
 }
 
 function toHtmlFriendly(string) {
-  return string.replace(/ /g, '-');
+  return string.replace(/\W+/g, '-');
 }
 
 function toHumanReadable(string) {

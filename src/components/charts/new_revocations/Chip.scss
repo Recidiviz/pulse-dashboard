@@ -10,6 +10,15 @@
   border-radius: 24px;
   margin-right: 10px;
 
+  &--selected {
+    background-color: $color1;
+  }
+
+  &--shrinking {
+    height: 28px;
+    border-radius: 24px;
+  }
+
   &__label {
     margin: 0;
     color: $color1;
@@ -19,7 +28,7 @@
     background-color: $color2;
     outline: none;
 
-    .Chip_selected & {
+    .Chip--selected & {
       color: $color2;
       background-color: $color1;
     }
@@ -33,21 +42,12 @@
     background: transparent;
     color: $color1;
 
-    .Chip_selected & {
+    .Chip--selected & {
       color: $color2;
     }
 
-    .Chip_shrinking & {
+    .Chip--shrinking & {
       margin-top: 2px;
     }
-  }
-
-  &_selected {
-    background-color: $color1;
-  }
-
-  &_shrinking {
-    height: 28px;
-    border-radius: 24px;
   }
 }

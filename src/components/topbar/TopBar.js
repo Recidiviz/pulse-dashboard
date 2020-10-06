@@ -19,23 +19,23 @@ import React from "react";
 import PropTypes from "prop-types";
 import cn from "classnames";
 
-const TopBarLayout = ({ children, isWide = false }) => (
+const TopBar = ({ children, isWide = false }) => (
   <div
-    className={cn("TopBarLayout", "header", "navbar", {
+    className={cn("TopBar", "header", "navbar", {
       "wide-navbar": isWide,
     })}
   >
-    <div className="header-container">{children}</div>
+    <div className="TopBar__container header-container">{children}</div>
   </div>
 );
 
-TopBarLayout.defaultProps = {
+TopBar.defaultProps = {
   isWide: false,
 };
 
-TopBarLayout.propTypes = {
+TopBar.propTypes = {
   children: PropTypes.node.isRequired,
   isWide: PropTypes.bool,
 };
 
-export default TopBarLayout;
+export default TopBar;

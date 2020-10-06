@@ -30,7 +30,7 @@ const RevocationMatrixRow = ({
 }) => {
   return (
     <div
-      className={cx("RevocationMatrixRow", "violation-row", {
+      className={cx("RevocationMatrix__row", "violation-row", {
         "is-selected": isSelected,
       })}
     >

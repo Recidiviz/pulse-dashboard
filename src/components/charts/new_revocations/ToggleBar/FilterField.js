@@ -20,6 +20,7 @@ import PropTypes from "prop-types";
 import cn from "classnames";
 
 import useTopBarShrinking from "../../../../hooks/useTopBarShrinking";
+import { toHtmlFriendly } from "../../../../utils/transforms/labels";
 
 const FilterField = ({ label, children }) => {
   const isTopBarShrinking = useTopBarShrinking();
@@ -31,7 +32,13 @@ const FilterField = ({ label, children }) => {
     : "title-level";
 
   return (
-    <div className={cn("FilterField", topLevelFilterClassName)}>
+    <div
+      className={cn(
+        "FilterField",
+        `FilterField--${toHtmlFriendly(label).toLowerCase()}`,
+        topLevelFilterClassName
+      )}
+    >
       <h4 className={titleLevelClassName}>{label}</h4>
       {children}
     </div>
