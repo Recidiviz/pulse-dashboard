@@ -17,4 +17,4 @@
 
 export const ND = "us_nd";
 
-export const CORE_STATES = [ND]
+export const CORE_STATES = [ND];

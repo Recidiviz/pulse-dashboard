@@ -26,14 +26,15 @@ export function initI18n() {
     staticCatalog: {
       us_mo: TRANSLATIONS.MO,
       us_pa: TRANSLATIONS.PA,
-    }
-  })
+    },
+  });
 }
 
 export function setTranslateLocale(tenant) {
-  i18n.setLocale(tenant)
+  i18n.setLocale(tenant);
 }
 
 export function translate(term) {
-  return i18n.__(term)
+  /* eslint-disable no-underscore-dangle */
+  return i18n.__(term);
 }
