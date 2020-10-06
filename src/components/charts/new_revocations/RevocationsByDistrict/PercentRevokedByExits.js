@@ -180,7 +180,7 @@ const PercentRevokedByExits = ({
         />
       </h4>
       <h6 className="pB-20">{timeDescription}</h6>
-      <ModeSwitcher mode="exits" setMode={setMode} buttons={modeButtons} />
+      <ModeSwitcher mode="exits" setMode={setMode} buttons={modeButtons()} />
       <div className="static-chart-container fs-block">{chart}</div>
     </div>
   );

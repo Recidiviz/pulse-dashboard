@@ -52,10 +52,10 @@ import {
   getUserAppMetadata,
   getUserDistricts,
 } from "../../../../utils/authentication/user";
-import * as lanternState from "../../../../utils/lanternConstants";
+import * as lanternTenant from "../../utils/lanternTenants";
 import ErrorBoundary from "../../../../components/ErrorBoundary";
 
-const stateCode = lanternState.MO;
+const stateCode = lanternTenant.MO;
 const admissionTypeOptions = [
   { value: "All", label: "ALL" },
   { value: "REVOCATION", label: "Revocation" },

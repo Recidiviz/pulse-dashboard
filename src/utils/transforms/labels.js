@@ -18,7 +18,7 @@
 import lowerCase from "lodash/fp/lowerCase"
 import pipe from "lodash/fp/pipe";
 import startCase from "lodash/fp/startCase"
-import * as lanternState from "../lanternConstants";
+import * as lanternState from "../../views/tenants/utils/lanternTenants";
 
 const riskLevels = [
   "NOT_ASSESSED",
@@ -41,7 +41,7 @@ const riskLevelValueToLabelByStateCode = {
     OVERALL: 'Overall',
     NOT_ASSESSED: 'Not Assessed',
     LOW: 'Low  Risk',
-    MEDIUM: 'Medium  Risk',
+    MEDIUM: 'Medium Risk',
     HIGH: 'High Risk',
   },
 };
