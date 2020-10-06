@@ -37,7 +37,7 @@ const formatSupervisionType = (supervisionType) =>
 const formatSupervisionLevel = (supervisionLevel) =>
   supervisionLevel === "All"
     ? "All supervision levels"
-    : `Supervision type: ${pipe(
+    : `Supervision level: ${pipe(
         find({ value: supervisionLevel }),
         get("label")
       )(SUPERVISION_LEVELS)}`;

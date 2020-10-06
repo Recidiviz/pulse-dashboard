@@ -1,7 +1,6 @@
 import { humanReadableTitleCase } from "../../../utils/transforms/labels";
 
 function getViolation({ reportedViolations, violationType }) {
-  console.log(reportedViolations, violationType);
   let str = "";
 
   if (reportedViolations) {

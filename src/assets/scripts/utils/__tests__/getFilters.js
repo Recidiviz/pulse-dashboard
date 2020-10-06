@@ -43,7 +43,7 @@ describe("getFilters tests", () => {
     };
 
     const expected =
-      "3 years, District: SLCRC, Case type: Sex Offence, Supervision type: Probation, Supervision type: Enhanced Supervision";
+      "3 years, District: SLCRC, Case type: Sex Offence, Supervision type: Probation, Supervision level: Enhanced Supervision";
 
     expect(getFilters(given)).toBe(expected);
     expect(getFilters({})).toBe("");
