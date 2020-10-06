@@ -16,6 +16,7 @@
 // =============================================================================
 
 import { useState, useCallback, useEffect } from "react";
+import toInteger from "lodash/fp/toInteger";
 import { useAuth0 } from "../react-auth0-spa";
 import logger from "../utils/logger";
 import {
