@@ -33,6 +33,7 @@ import ModeSwitcher from "../ModeSwitcher";
 import DataSignificanceWarningIcon from "../../DataSignificanceWarningIcon";
 import ExportMenu from "../../ExportMenu";
 import Loading from "../../../Loading";
+import Error from "../../../Error";
 
 import flags from "../../../../flags";
 import { COLORS } from "../../../../assets/scripts/constants/colors";
@@ -65,7 +66,7 @@ const RevocationsByGender = ({
   const numeratorKey = "population_count";
   const denominatorKey = findDenominatorKeyByMode(mode);
 
-  const { isLoading, apiData } = useChartData(
+  const { isLoading, isError, apiData } = useChartData(
     `${stateCode}/newRevocations`,
     "revocations_matrix_distribution_by_gender"
   );
@@ -77,6 +78,10 @@ const RevocationsByGender = ({
 
   if (isLoading) {
     return <Loading />;
+  }
+
+  if (isError) {
+    return <Error />;
   }
 
   const { dataPoints, numerators, denominators } = pipe(

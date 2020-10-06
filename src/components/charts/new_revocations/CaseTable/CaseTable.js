@@ -24,14 +24,9 @@ import useSort from "./useSort";
 
 import ExportMenu from "../../ExportMenu";
 import Loading from "../../../Loading";
+import Error from "../../../Error";
 
-// eslint-disable-next-line import/no-cycle
-import { useAuth0 } from "../../../../react-auth0-spa";
 import usePrevious from "../../../../hooks/usePrevious";
-import {
-  fetchChartData,
-  awaitingResults,
-} from "../../../../api/metrics/metricsClient";
 
 import { COLORS } from "../../../../assets/scripts/constants/colors";
 import {
@@ -45,6 +40,7 @@ import {
   riskLevelValueToLabelByStateCode,
 } from "../../../../utils/transforms/labels";
 import { filtersPropTypes } from "../../propTypes";
+import useChartData from "../../../../hooks/useChartData";
 import { translate } from "../../../../views/tenants/utils/i18nSettings";
 
 const CASES_PER_PAGE = 15;
@@ -68,11 +64,16 @@ const CaseTable = ({
   const [index, setIndex] = useState(0);
   const [countData, setCountData] = useState(0);
 
-  const { loading, user, getTokenSilently } = useAuth0();
-  const [apiData, setApiData] = useState({});
-  const [awaitingApi, setAwaitingApi] = useState(true);
-
   const { toggleOrder, comparator, getOrder } = useSort();
+
+  const { isLoading, isError, apiData } = useChartData(
+    `${stateCode}/newRevocations`,
+    "revocations_matrix_filtered_caseload"
+  );
+
+  // TODO: After moving the API call inside this component, the pagination protections are not
+  // working exactly as intended. We are relying on the commented safe-guard near the end only.
+  const prevCount = usePrevious(countData);
 
   const options = [
     { key: "state_id", label: "DOC ID" },
@@ -87,26 +88,15 @@ const CaseTable = ({
   ];
 
   useEffect(() => {
-    fetchChartData(
-      stateCode,
-      "newRevocations",
-      "revocations_matrix_filtered_caseload",
-      setApiData,
-      setAwaitingApi,
-      getTokenSilently
-    );
-  }, [getTokenSilently, stateCode]);
-
-  // TODO: After moving the API call inside this component, the pagination protections are not
-  // working exactly as intended. We are relying on the commented safe-guard near the end only.
-  const prevCount = usePrevious(countData);
-
-  useEffect(() => {
     setCountData(apiData.length);
   }, [apiData.length]);
 
-  if (awaitingResults(loading, user, awaitingApi)) {
+  if (isLoading) {
     return <Loading />;
+  }
+
+  if (isError) {
+    return <Error />;
   }
 
   const filteredData = dataFilter(

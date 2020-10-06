@@ -38,6 +38,7 @@ import RevocationMatrixCell from "./RevocationMatrixCell";
 import RevocationMatrixRow from "./RevocationMatrixRow";
 import ExportMenu from "../../ExportMenu";
 import Loading from "../../../Loading";
+import Error from "../../../Error";
 
 import useChartData from "../../../../hooks/useChartData";
 import { violationCountLabel } from "../../../../utils/transforms/labels";
@@ -62,13 +63,17 @@ const RevocationMatrix = ({
   updateFilters,
   violationTypes,
 }) => {
-  const { apiData, isLoading } = useChartData(
+  const { apiData, isLoading, isError } = useChartData(
     `${stateCode}/newRevocations`,
     "revocations_matrix_cells"
   );
 
   if (isLoading) {
     return <Loading />;
+  }
+
+  if (isError) {
+    return <Error />;
   }
 
   const isFiltered =
