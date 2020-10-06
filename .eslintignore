@@ -48,6 +48,7 @@ public/
 !src/components/charts/facilities/ReincarcerationRateByStayLength.js
 !src/components/charts/facilities/__tests__/**/*.js
 !src/components/charts/new_revocations/propTypes.js
+!src/components/charts/new_revocations/__tests__/helpers.test.js
 !src/components/charts/new_revocations/helpers.js
 !src/components/charts/new_revocations/helpers/**/*.js
 !src/components/charts/new_revocations/CaseTable/**/*.js
