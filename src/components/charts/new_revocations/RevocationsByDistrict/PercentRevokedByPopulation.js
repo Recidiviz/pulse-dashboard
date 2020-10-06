@@ -44,6 +44,7 @@ import { COLORS } from "../../../../assets/scripts/constants/colors";
 import { tooltipForRateMetricWithCounts } from "../../../../utils/charts/toggles";
 import { axisCallbackForPercentage } from "../../../../utils/charts/axis";
 import { filtersPropTypes } from "../../propTypes";
+import { translate } from "../../../../views/tenant_copy_translations/i18nSettings";
 
 const PercentRevokedByPopulation = ({
   chartId,
@@ -111,7 +112,7 @@ const PercentRevokedByPopulation = ({
         labels,
         datasets: [
           {
-            label: "Percent of standing population revoked",
+            label: translate("percentOfPopulationRevoked"),
             backgroundColor: barBackgroundColor,
             data: dataPoints,
           },
@@ -139,7 +140,7 @@ const PercentRevokedByPopulation = ({
               id: "y-axis-0",
               scaleLabel: {
                 display: true,
-                labelString: "Percent of standing population revoked",
+                labelString: translate("percentOfPopulationRevoked"),
               },
               stacked: true,
               ticks: {
@@ -183,7 +184,7 @@ const PercentRevokedByPopulation = ({
         />
       </h4>
       <h6 className="pB-20">{timeDescription}</h6>
-      <ModeSwitcher mode="rates" setMode={setMode} buttons={modeButtons} />
+      <ModeSwitcher mode="rates" setMode={setMode} buttons={modeButtons()} />
       <div className="static-chart-container fs-block">{chart}</div>
     </div>
   );

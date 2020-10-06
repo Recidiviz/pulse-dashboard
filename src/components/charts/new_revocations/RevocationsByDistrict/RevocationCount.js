@@ -58,7 +58,8 @@ const RevocationCount = ({
 
   const labels = map("district", data);
   const dataPoints = data.map((item) => item.count);
-
+  const buttons = modeButtons();
+  console.log({ buttons });
   const barBackgroundColor = ({ dataIndex }) =>
     currentDistricts.find(
       (currentDistrict) =>
@@ -74,7 +75,7 @@ const RevocationCount = ({
         labels,
         datasets: [
           {
-            label: "Revocations",
+            label: translate("Revocations"),
             backgroundColor: barBackgroundColor,
             data: dataPoints,
           },
@@ -119,7 +120,6 @@ const RevocationCount = ({
       }}
     />
   );
-
   return (
     <div>
       <h4>
@@ -133,7 +133,7 @@ const RevocationCount = ({
         />
       </h4>
       <h6 className="pB-20">{timeDescription}</h6>
-      <ModeSwitcher mode="counts" setMode={setMode} buttons={modeButtons} />
+      <ModeSwitcher mode="counts" setMode={setMode} buttons={buttons} />
       <div className="static-chart-container fs-block">{chart}</div>
     </div>
   );
