@@ -195,7 +195,6 @@ const RevocationsByRiskLevel = ({
     />
   );
 
-  // TODO do revocationsRateByExit still exist?
   return (
     <div>
       <h4>
