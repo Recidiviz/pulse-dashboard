@@ -43,7 +43,7 @@ const includesAllItemFirst = (items) => {
   return items.length === 1 && isAllItem(items[0]);
 };
 
-export const applyTopLevelFilters = (filters, applySupervisionLevel = true) => (
+export const applyTopLevelFilters = (filters) => (
   data,
   skippedFilters = [],
   treatCategoryAllAsAbsent = false
@@ -91,16 +91,9 @@ export const applyTopLevelFilters = (filters, applySupervisionLevel = true) => (
       return false;
     }
     if (
-      (filters.supervisionLevel &&
-        !skippedFilters.includes("supervisionLevel") &&
-        !isAllItem(filters.supervisionLevel) &&
-        !nullSafeComparison(
-          item.supervision_level,
-          filters.supervisionLevel
-        )) ||
-      (!applySupervisionLevel &&
-        item.supervision_level &&
-        isAllItem(item.supervision_level))
+      filters.supervisionLevel &&
+      !skippedFilters.includes("supervisionLevel") &&
+      !nullSafeComparison(item.supervision_level, filters.supervisionLevel)
     ) {
       return false;
     }

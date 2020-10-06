@@ -45,6 +45,7 @@ import {
   DEFAULT_SUPERVISION_TYPE,
   METRIC_PERIODS,
   SUPERVISION_TYPES,
+  SUPERVISION_LEVELS,
 } from "../../../../components/charts/new_revocations/ToggleBar/options";
 import flags from "../../../../flags";
 import { useAuth0 } from "../../../../react-auth0-spa";
@@ -112,6 +113,7 @@ const Revocations = () => {
       : {}),
     reportedViolations: "",
     violationType: "",
+    supervisionLevel: SUPERVISION_LEVELS[0].value,
   });
 
   const updateFilters = (newFilters) => {
@@ -182,7 +184,7 @@ const Revocations = () => {
         <div className="matrix-container bgc-white p-20 mR-20">
           <ErrorBoundary>
             <RevocationMatrix
-              dataFilter={applyTopLevelFilters(transformedFilters, false)}
+              dataFilter={applyTopLevelFilters(transformedFilters)}
               filterStates={filters}
               updateFilters={updateFilters}
               timeDescription={timeDescription}
