@@ -48,11 +48,6 @@ import useChartData from "../../../../hooks/useChartData";
 import { filtersPropTypes } from "../../propTypes";
 import { riskLevelLabels } from "../../../../utils/transforms/labels";
 
-const modeButtons = [
-  { label: "Percent revoked of standing population", value: "rates" },
-  { label: "Percent revoked of exits", value: "exits" },
-];
-
 const colors = [COLORS["lantern-light-blue"], COLORS["lantern-orange"]];
 
 const chartId = "revocationsByGender";
@@ -74,6 +69,11 @@ const RevocationsByGender = ({
     `${stateCode}/newRevocations`,
     "revocations_matrix_distribution_by_gender"
   );
+
+  const modeButtons = [
+    { label: translate("percentOfPopulationRevoked"), value: "rates" },
+    { label: "Percent revoked of exits", value: "exits" },
+  ];
 
   if (isLoading) {
     return <Loading />;
@@ -171,7 +171,7 @@ const RevocationsByGender = ({
       </h4>
       <h6 className="pB-20">{timeDescription}</h6>
       {flags.enableRevocationRateByExit && (
-        <ModeSwitcher mode={mode} setMode={setMode} buttons={modeButtons()} />
+        <ModeSwitcher mode={mode} setMode={setMode} buttons={modeButtons} />
       )}
       <div className="static-chart-container fs-block">{chart}</div>
     </div>

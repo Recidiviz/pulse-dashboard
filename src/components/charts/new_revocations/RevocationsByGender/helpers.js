@@ -20,6 +20,7 @@ import pipe from "lodash/fp/pipe";
 import set from "lodash/fp/set";
 import toInteger from "lodash/fp/toInteger";
 import { calculateRate } from "../helpers/rate";
+import { translate } from "../../../../views/tenant_copy_translations/i18nSettings";
 
 /**
  * These are the only genders that are apparent in the source data set,
@@ -73,7 +74,7 @@ export const getLabelByMode = (mode) => {
   switch (mode) {
     case "rates":
     default:
-      return "Percent of standing population revoked";
+      return translate("percentOfPopulationRevoked");
     case "exits":
       return "Percent revoked out of all exits";
   }
