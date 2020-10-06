@@ -81,7 +81,7 @@ const CaseTable = ({
     { key: "risk_level", label: "Risk level" },
     {
       key: "officer_recommendation",
-      label: `Last Rec. (Including Supplemental)`,
+      label: translate("lastRecommendation"),
     },
     { key: "violation_record", label: "Violation record" },
   ];
