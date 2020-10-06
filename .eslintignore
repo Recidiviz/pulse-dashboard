@@ -16,6 +16,8 @@ public/
 !src/assets/scripts/utils/__tests__/**/*.js
 !src/assets/scripts/utils/getFilters.js
 !src/assets/scripts/utils/getViolation.js
+!src/components/Error.js
+!src/components/ErrorBoundary.js
 !src/components/StateSelector.js
 !src/components/ImportantNotesBar.js
 !src/components/TenantRoutes.js
@@ -88,6 +90,7 @@ public/
 !src/utils/charts/__tests__/metricGoal.test.js
 !src/utils/charts/__tests__/significantStatistics.test.js
 !src/utils/charts/__tests__/violationRecord.test.js
+!src/utils/charts/__tests__/trendline.test.js
 !src/utils/logger.js
 !src/utils/transforms/years.js
 !src/utils/transforms/__tests__/years.test.js

@@ -84,6 +84,7 @@ function generateTrendlineDataset(chartDataPoints, lineColor) {
     hoverRadius: 0,
     borderWidth: 1.5,
     lineTension: 0,
+    type: 'line',
     data: trendlineData(chartDataPoints),
   };
 }
