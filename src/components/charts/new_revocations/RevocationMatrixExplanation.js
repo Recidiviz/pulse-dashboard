@@ -17,7 +17,7 @@
 
 import React from "react";
 
-import { translate } from "../../../views/tenant_copy_translations/i18nSettings";
+import { translate } from "../../../views/tenants/utils/i18nSettings";
 
 const RevocationMatrixExplanation = () => (
   <div className="matrix-explanation bgc-white p-20">

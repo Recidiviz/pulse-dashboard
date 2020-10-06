@@ -18,7 +18,7 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import RenderInBrowser from "react-render-in-browser";
-import { translate } from "../../../views/tenant_copy_translations/i18nSettings";
+import { translate } from "../../../views/tenants/utils/i18nSettings";
 
 const CHARTS = ["District", "Risk level", "Violation", "Gender", "Race"];
 

@@ -17,6 +17,7 @@
 
 // Note: Each time you add a translation you will need to restart your dev
 // server before you will see the translation rendered properly
+
 export default {
   officer: "officer",
   Officer: "Officer",

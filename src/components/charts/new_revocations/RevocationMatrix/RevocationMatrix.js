@@ -42,7 +42,7 @@ import Loading from "../../../Loading";
 import useChartData from "../../../../hooks/useChartData";
 import { violationCountLabel } from "../../../../utils/transforms/labels";
 import { filtersPropTypes } from "../../propTypes";
-import { translate } from "../../../../views/tenant_copy_translations/i18nSettings";
+import { translate } from "../../../../views/tenants/utils/i18nSettings";
 
 const TITLE =
   "Admissions by violation history (in year prior to their last reported violation)";

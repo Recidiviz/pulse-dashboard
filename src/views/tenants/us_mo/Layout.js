@@ -22,7 +22,7 @@ import Footer from "../../../components/Footer";
 import TopBarLayout from "../../../components/topbar/TopBarLayout";
 import TopBarLogo from "../../../components/topbar/TopBarLogo";
 import TopBarUserMenuForAuthenticatedUser from "../../../components/topbar/TopBarUserMenuForAuthenticatedUser";
-import { setTranslateLocale } from "../../tenant_copy_translations/i18nSettings";
+import { setTranslateLocale } from "../utils/i18nSettings";
 
 const Layout = ({ children }) => {
   setTranslateLocale("us_mo");

@@ -52,7 +52,7 @@ import {
   getUserAppMetadata,
   getUserDistricts,
 } from "../../../../utils/authentication/user";
-import * as lanternState from "../../../../utils/lanternConstants";
+import * as lanternState from "../../utils/lanternTenants";
 
 const stateCode = lanternState.MO;
 const admissionTypeOptions = [

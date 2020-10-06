@@ -22,7 +22,7 @@ import toInteger from "lodash/fp/toInteger";
 
 import { calculateRate } from "../helpers/rate";
 import flags from "../../../../flags";
-import { translate } from "../../../../views/tenant_copy_translations/i18nSettings";
+import { translate } from "../../../../views/tenants/utils/i18nSettings";
 
 /**
  * Creator function for grouping data by district.

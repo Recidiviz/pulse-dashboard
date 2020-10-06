@@ -51,7 +51,7 @@ import {
   getUserDistricts,
 } from "../../../../utils/authentication/user";
 import flags from "../../../../flags";
-import * as lanternState from "../../../../utils/lanternConstants";
+import * as lanternState from "../../utils/lanternTenants";
 
 const stateCode = lanternState.PA;
 const admissionTypeOptions = [

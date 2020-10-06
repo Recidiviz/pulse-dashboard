@@ -44,7 +44,7 @@ import { COLORS } from "../../../../assets/scripts/constants/colors";
 import { tooltipForRateMetricWithCounts } from "../../../../utils/charts/toggles";
 import { axisCallbackForPercentage } from "../../../../utils/charts/axis";
 import { filtersPropTypes } from "../../propTypes";
-import { translate } from "../../../../views/tenant_copy_translations/i18nSettings";
+import { translate } from "../../../../views/tenants/utils/i18nSettings";
 
 const PercentRevokedByPopulation = ({
   chartId,

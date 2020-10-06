@@ -40,7 +40,7 @@ import {
 import { sortFilterAndSupplementMostRecentMonths } from "../../../utils/transforms/datasets";
 import { monthNamesAllWithYearsFromNumbers } from "../../../utils/transforms/months";
 import { filtersPropTypes } from "../propTypes";
-import { translate } from "../../../views/tenant_copy_translations/i18nSettings";
+import { translate } from "../../../views/tenants/utils/i18nSettings";
 
 const chartId = "revocationsOverTime";
 

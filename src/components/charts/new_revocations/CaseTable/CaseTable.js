@@ -45,7 +45,7 @@ import {
   riskLevelValueToLabelByStateCode,
 } from "../../../../utils/transforms/labels";
 import { filtersPropTypes } from "../../propTypes";
-import { translate } from "../../../../views/tenant_copy_translations/i18nSettings";
+import { translate } from "../../../../views/tenants/utils/i18nSettings";
 
 const CASES_PER_PAGE = 15;
 

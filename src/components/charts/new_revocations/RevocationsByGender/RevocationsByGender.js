@@ -21,7 +21,7 @@ import { Bar } from "react-chartjs-2";
 
 import pipe from "lodash/fp/pipe";
 import reduce from "lodash/fp/reduce";
-import { translate } from "../../../../views/tenant_copy_translations/i18nSettings";
+import { translate } from "../../../../views/tenants/utils/i18nSettings";
 
 import {
   dataTransformer,

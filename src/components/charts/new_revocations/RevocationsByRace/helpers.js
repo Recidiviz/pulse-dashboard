@@ -20,7 +20,7 @@ import pipe from "lodash/fp/pipe";
 import set from "lodash/fp/set";
 import toInteger from "lodash/fp/toInteger";
 import { calculateRate } from "../helpers/rate";
-import { translate } from "../../../../views/tenant_copy_translations/i18nSettings";
+import { translate } from "../../../../views/tenants/utils/i18nSettings";
 
 const RACES = [
   "WHITE",
