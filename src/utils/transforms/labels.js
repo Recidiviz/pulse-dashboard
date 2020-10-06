@@ -41,7 +41,7 @@ const riskLevelValueToLabelByStateCode = {
     OVERALL: 'Overall',
     NOT_ASSESSED: 'Not Assessed',
     LOW: 'Low  Risk',
-    MEDIUM: 'Medium  Risk',
+    MEDIUM: 'Medium Risk',
     HIGH: 'High Risk',
   },
 };
