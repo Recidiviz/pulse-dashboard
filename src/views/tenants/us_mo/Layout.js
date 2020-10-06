@@ -23,9 +23,10 @@ import TopBarLayout from "../../../components/topbar/TopBarLayout";
 import TopBarLogo from "../../../components/topbar/TopBarLogo";
 import TopBarUserMenuForAuthenticatedUser from "../../../components/topbar/TopBarUserMenuForAuthenticatedUser";
 import { setTranslateLocale } from "../utils/i18nSettings";
+import * as lanternTenant from "../utils/lanternTenants";
 
 const Layout = ({ children }) => {
-  setTranslateLocale("us_mo");
+  setTranslateLocale(lanternTenant.MO);
 
   return (
     <div id="app">
