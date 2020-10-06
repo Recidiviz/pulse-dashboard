@@ -15,6 +15,8 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
+import { translate } from "../../../../views/tenant_copy_translations/i18nSettings";
+
 export const findDenominatorKeyByMode = (mode) => {
   switch (mode) {
     case "rates":
@@ -29,7 +31,7 @@ export const getLabelByMode = (mode) => {
   switch (mode) {
     case "rates":
     default:
-      return "Percent of standing population revoked";
+      return translate("percentOfPopulationRevoked");
     case "exits":
       return "Percent revoked out of all exits";
   }

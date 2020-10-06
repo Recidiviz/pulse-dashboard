@@ -59,7 +59,6 @@ const RevocationCount = ({
   const labels = map("district", data);
   const dataPoints = data.map((item) => item.count);
   const buttons = modeButtons();
-  console.log({ buttons });
   const barBackgroundColor = ({ dataIndex }) =>
     currentDistricts.find(
       (currentDistrict) =>
