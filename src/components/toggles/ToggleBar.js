@@ -17,7 +17,7 @@
 
 /* eslint-disable jsx-a11y/label-has-associated-control */
 
-import React, { useMemo } from "react";
+import React, { useCallback, useMemo } from "react";
 import PropTypes from "prop-types";
 import Sticky from "react-sticky-fill";
 
@@ -36,6 +36,7 @@ import {
 import { getDistrictOptions } from "./helpers";
 
 import "./ToggleBar.scss";
+import MultiSelect from "../controls/MultiSelect";
 
 const TOGGLE_STYLE = {
   zIndex: 700,
@@ -47,6 +48,9 @@ const ToggleBar = ({
   setChartSupervisionType = null,
   setChartMetricPeriodMonths = null,
   setChartDistrict = null,
+  metricPeriodMonths,
+  district,
+  supervisionType,
   availableDistricts = [],
   districtOffices = null,
   replaceLa = false,
@@ -62,6 +66,18 @@ const ToggleBar = ({
         stateCode
       ),
     [availableDistricts, districtOffices, replaceLa, stateCode]
+  );
+
+  const createOnFilterChange = useCallback(
+    (func) => (option) => {
+      func(option.value);
+    },
+    []
+  );
+
+  const getFilterValue = useCallback(
+    (value, options) => options.find((option) => option.value === value),
+    []
   );
 
   return (
@@ -87,10 +103,14 @@ const ToggleBar = ({
                   </span>
                   <div className="toggle-filters__select">
                     <Select
+                      value={getFilterValue(
+                        metricPeriodMonths,
+                        metricPeriodOptions
+                      )}
                       options={metricPeriodOptions}
-                      onChange={(option) => {
-                        setChartMetricPeriodMonths(option.value);
-                      }}
+                      onChange={createOnFilterChange(
+                        setChartMetricPeriodMonths
+                      )}
                       defaultValue={defaultMetricPeriodOption}
                     />
                   </div>
@@ -107,10 +127,12 @@ const ToggleBar = ({
                   </span>
                   <div className="toggle-filters__select">
                     <Select
+                      value={getFilterValue(
+                        supervisionType,
+                        supervisionTypeOptions
+                      )}
                       options={supervisionTypeOptions}
-                      onChange={(option) => {
-                        setChartSupervisionType(option.value);
-                      }}
+                      onChange={createOnFilterChange(setChartSupervisionType)}
                       defaultValue={defaultSupervisionTypeOption}
                       isSearchable={false}
                     />
@@ -124,12 +146,14 @@ const ToggleBar = ({
                     {isCounty ? "County of Residence" : "Office"}
                   </span>
                   <div className="toggle-filters__select">
-                    <Select
+                    <MultiSelect
+                      value={districtOptions.filter((option) =>
+                        district.includes(String(option.value))
+                      )}
                       options={districtOptions}
                       onChange={(options) => {
                         setChartDistrict(options.map((o) => String(o.value)));
                       }}
-                      isMulti
                       summingOption={defaultDistrictOption}
                       defaultValue={[defaultDistrictOption]}
                     />
@@ -153,9 +177,15 @@ ToggleBar.defaultProps = {
   districtOffices: null,
   replaceLa: false,
   stateCode: null,
+  metricPeriodMonths: null,
+  district: null,
+  supervisionType: null,
 };
 
 ToggleBar.propTypes = {
+  metricPeriodMonths: PropTypes.string,
+  district: PropTypes.arrayOf(PropTypes.string),
+  supervisionType: PropTypes.string,
   setChartMetricType: PropTypes.func,
   setChartSupervisionType: PropTypes.func,
   setChartMetricPeriodMonths: PropTypes.func,

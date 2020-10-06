@@ -15,28 +15,39 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React from "react";
+import React, { useCallback } from "react";
 import PropTypes from "prop-types";
 
 import Select from "../../../controls/Select";
 import FilterField from "./FilterField";
-import { SUPERVISION_LEVELS } from "./options";
+import { optionPropType } from "../../../propTypes";
 
-const SupervisionLevelFilter = ({ onChange }) => (
-  <FilterField label="Supervision Level">
-    <Select
-      className="select-align"
-      options={SUPERVISION_LEVELS}
-      onChange={(option) => {
-        onChange({ supervisionLevel: option.value });
-      }}
-      defaultValue={SUPERVISION_LEVELS[0]}
-    />
-  </FilterField>
-);
+const ToggleBarFilter = ({ label, value, options, defaultValue, onChange }) => {
+  const onValueChange = useCallback((option) => onChange(option.value), [
+    onChange,
+  ]);
 
-SupervisionLevelFilter.propTypes = {
+  const selectedOption = options.find((option) => option.value === value);
+
+  return (
+    <FilterField label={label}>
+      <Select
+        value={selectedOption}
+        className="select-align"
+        options={options}
+        onChange={onValueChange}
+        defaultValue={defaultValue}
+      />
+    </FilterField>
+  );
+};
+
+ToggleBarFilter.propTypes = {
+  label: PropTypes.string.isRequired,
+  value: PropTypes.string.isRequired,
+  options: PropTypes.arrayOf(optionPropType).isRequired,
+  defaultValue: optionPropType.isRequired,
   onChange: PropTypes.func.isRequired,
 };
 
-export default SupervisionLevelFilter;
+export default ToggleBarFilter;

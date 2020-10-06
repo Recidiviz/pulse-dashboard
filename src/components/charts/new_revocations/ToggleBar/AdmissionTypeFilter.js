@@ -15,29 +15,35 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React from "react";
+import React, { useCallback } from "react";
 import PropTypes from "prop-types";
 import map from "lodash/fp/map";
 
-import Select from "../../../controls/Select";
 import FilterField from "./FilterField";
+import MultiSelect from "../../../controls/MultiSelect";
+import { optionPropType } from "../../../propTypes";
 
 const AdmissionTypeFilter = ({
   defaultValue,
+  value,
   summingOption,
   onChange,
   options = [],
 }) => {
+  const onValueChange = useCallback(
+    (selected) => onChange(map("value", selected)),
+    [onChange]
+  );
+
+  const selectValue = options.filter((option) => value.includes(option.value));
+
   return (
     <FilterField label="Admission Type">
-      <Select
+      <MultiSelect
+        value={selectValue}
         className="select-align"
         options={options}
-        onChange={(selected) => {
-          const values = map("value", selected);
-          onChange({ admissionType: values });
-        }}
-        isMulti
+        onChange={onValueChange}
         summingOption={summingOption}
         defaultValue={defaultValue}
       />
@@ -49,16 +55,12 @@ AdmissionTypeFilter.defaultProps = {
   options: [],
 };
 
-const optionType = PropTypes.shape({
-  label: PropTypes.string,
-  value: PropTypes.string,
-});
-
 AdmissionTypeFilter.propTypes = {
-  defaultValue: PropTypes.arrayOf(optionType).isRequired,
-  summingOption: optionType.isRequired,
+  defaultValue: PropTypes.arrayOf(PropTypes.string).isRequired,
+  value: PropTypes.arrayOf(optionPropType).isRequired,
+  summingOption: optionPropType.isRequired,
   onChange: PropTypes.func.isRequired,
-  options: PropTypes.arrayOf(optionType),
+  options: PropTypes.arrayOf(optionPropType),
 };
 
 export default AdmissionTypeFilter;

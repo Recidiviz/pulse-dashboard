@@ -15,7 +15,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React from "react";
+import React, { useCallback, useMemo } from "react";
 import PropTypes from "prop-types";
 
 import filter from "lodash/fp/filter";
@@ -33,6 +33,7 @@ import {
   getUserDistricts,
   getUserAppMetadata,
 } from "../../../../utils/authentication/user";
+import MultiSelect from "../../../controls/MultiSelect";
 
 const allDistrictsOption = { label: "All districts", value: "All" };
 const allRegionDistrictsOption = {
@@ -40,7 +41,7 @@ const allRegionDistrictsOption = {
   value: "All",
 };
 
-const DistrictFilter = ({ stateCode, onChange }) => {
+const DistrictFilter = ({ value, stateCode, onChange }) => {
   const { user } = useAuth0();
   const { isLoading, apiData } = useChartData(
     `${stateCode}/newRevocations`,
@@ -50,72 +51,81 @@ const DistrictFilter = ({ stateCode, onChange }) => {
   const { district, region } = getUserAppMetadata(user);
   const userDistricts = getUserDistricts(user);
 
-  if (district) {
-    return (
-      <FilterField label="District">
+  const onValueChange = useCallback(
+    (options) => onChange(map("value", options)),
+    [onChange]
+  );
+
+  const select = useMemo(() => {
+    if (district) {
+      const singleValue = { label: userDistricts[0], value: userDistricts[0] };
+
+      return (
         <Select
+          value={singleValue}
           className="select-align"
-          options={[{ label: userDistricts[0], value: userDistricts[0] }]}
-          defaultValue={{ label: userDistricts[0], value: userDistricts[0] }}
+          options={[singleValue]}
+          defaultValue={singleValue}
           onChange={() => {}}
           isDisabled
         />
-      </FilterField>
-    );
-  }
+      );
+    }
 
-  if (region) {
-    const regionDistricts = pipe(
-      map((d) => ({ label: d, value: d })),
-      (options) => [allRegionDistrictsOption, ...options]
-    )(userDistricts);
+    const { options, summingOption, defaultValue } = region
+      ? {
+          options: [allRegionDistrictsOption].concat(
+            map((d) => ({ label: d, value: d }), userDistricts)
+          ),
+          summingOption: allRegionDistrictsOption,
+          defaultValue: [allRegionDistrictsOption],
+        }
+      : {
+          options: [allDistrictsOption].concat(
+            pipe(
+              map("district"),
+              filter((d) => d.toLowerCase() !== "all"),
+              uniq,
+              sortBy(identity),
+              map((d) => ({ value: d, label: d }))
+            )(apiData)
+          ),
+          summingOption: allDistrictsOption,
+          defaultValue: [allDistrictsOption],
+        };
+
+    const selectValue = options.filter((option) =>
+      value.includes(option.value)
+    );
 
     return (
-      <FilterField label="District">
-        <Select
-          className="select-align"
-          options={regionDistricts}
-          onChange={(options) => {
-            onChange({ district: map("value", options) });
-          }}
-          isMulti
-          isLoading={isLoading}
-          summingOption={allRegionDistrictsOption}
-          defaultValue={[allRegionDistrictsOption]}
-          isSearchable
-        />
-      </FilterField>
-    );
-  }
-
-  const districts = pipe(
-    map("district"),
-    filter((d) => d.toLowerCase() !== "all"),
-    uniq,
-    sortBy(identity),
-    map((d) => ({ value: d, label: d })),
-    (options) => [allDistrictsOption, ...options]
-  )(apiData);
-
-  return (
-    <FilterField label="District">
-      <Select
+      <MultiSelect
+        options={options}
+        summingOption={summingOption}
+        defaultValue={defaultValue}
+        value={selectValue}
         className="select-align"
-        options={districts}
-        onChange={(options) => {
-          onChange({ district: map("value", options) });
-        }}
+        onChange={onValueChange}
         isMulti
         isLoading={isLoading}
-        summingOption={allDistrictsOption}
-        defaultValue={[allDistrictsOption]}
         isSearchable
       />
-    </FilterField>
-  );
+    );
+  }, [
+    district,
+    userDistricts,
+    region,
+    isLoading,
+    apiData,
+    onValueChange,
+    value,
+  ]);
+
+  return <FilterField label="District">{select}</FilterField>;
 };
 
 DistrictFilter.propTypes = {
+  value: PropTypes.arrayOf(PropTypes.string).isRequired,
   stateCode: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
 };

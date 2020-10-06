@@ -22,7 +22,7 @@ import {
 import {
   formatSelectOptionValue,
   getAllOptionsWithValue,
-} from "../../../controls/Select";
+} from "../../../controls/utils";
 
 export const getTimeDescription = (months, admissionOptions, admissionType) => {
   const trailingLabel = getTrailingLabelFromMetricPeriodMonthsToggle(months);
