@@ -16,67 +16,70 @@
 // =============================================================================
 
 import { applyTopLevelFilters } from "../helpers";
-import defaultFiltersMO from "../../../../views/tenants/us_mo/community/Revocations";
 
 describe("applyTopLevelFilters", () => {
-  let filters = {}
-  let filtered = []
-  const data = [
-    {
-      charge_category: "ALL",
-      district: "ALL",
-      month: "1",
-      reported_violations: "1",
-      state_code: "US_PA",
-      supervision_level: "ALL",
-      supervision_type: "PAROLE",
-      total_revocations: "35",
-      violation_type: "MED_TECH",
-      year: "2020",
-    },
-    {
-      charge_category: "ALL",
-      district: "ALL",
-      month: "1",
-      reported_violations: "1",
-      state_code: "US_PA",
-      supervision_level: "MEDIUM",
-      supervision_type: "PAROLE",
-      total_revocations: "5",
-      violation_type: "MED_TECH",
-      year: "2020",
-    },
-    {
-      charge_category: "ALL",
-      district: "ALL",
-      month: "1",
-      reported_violations: "1",
-      state_code: "US_PA",
-      supervision_level: "MEDIUM",
-      supervision_type: "PAROLE",
-      total_revocations: "10",
-      violation_type: "MED_TECH",
-      year: "2020",
-    },
-    {
-      charge_category: "ALL",
-      district: "ALL",
-      month: "1",
-      reported_violations: "1",
-      state_code: "US_PA",
-      supervision_level: "MINIMUM",
-      supervision_type: "PAROLE",
-      total_revocations: "20",
-      violation_type: "MED_TECH",
-      year: "2020",
-    },
-  ]
+  let filters = {};
+  let filtered = [];
+  let data = [];
+
+  beforeEach(() => {
+    data = [
+      {
+        charge_category: "ALL",
+        district: "ALL",
+        month: "1",
+        reported_violations: "1",
+        state_code: "US_PA",
+        supervision_level: "ALL",
+        supervision_type: "PAROLE",
+        total_revocations: "35",
+        violation_type: "MED_TECH",
+        year: "2020",
+      },
+      {
+        charge_category: "ALL",
+        district: "ALL",
+        month: "1",
+        reported_violations: "1",
+        state_code: "US_PA",
+        supervision_level: "MEDIUM",
+        supervision_type: "PAROLE",
+        total_revocations: "5",
+        violation_type: "MED_TECH",
+        year: "2020",
+      },
+      {
+        charge_category: "ALL",
+        district: "ALL",
+        month: "1",
+        reported_violations: "1",
+        state_code: "US_PA",
+        supervision_level: "MEDIUM",
+        supervision_type: "PAROLE",
+        total_revocations: "10",
+        violation_type: "MED_TECH",
+        year: "2020",
+      },
+      {
+        charge_category: "ALL",
+        district: "ALL",
+        month: "1",
+        reported_violations: "1",
+        state_code: "US_PA",
+        supervision_level: "MINIMUM",
+        supervision_type: "PAROLE",
+        total_revocations: "20",
+        violation_type: "MED_TECH",
+        year: "2020",
+      },
+    ];
+  });
 
   describe("with supervision_level = 'MEDIUM' filter applied", () => {
     beforeEach(() => {
-      filters = { supervisionLevel: "MEDIUM" }
-      filtered = applyTopLevelFilters(filters, true)(data)
-    })
+      filters = { supervisionLevel: "MEDIUM" };
+      filtered = applyTopLevelFilters(filters, true)(data);
+    });
 
     it("correctly returns supervision_level items matching the filter term", () => {
       const expected = [data[1], data[2]];
@@ -85,19 +88,37 @@ describe("applyTopLevelFilters", () => {
     });
 
     it("does not double count the 'ALL' item", () => {
-      expect(filtered).not.toContain(data[0])
+      expect(filtered).not.toContain(data[0]);
     });
-  })
+  });
 
   describe("with supervision_level = 'ALL' filter applied (default)", () => {
     beforeEach(() => {
-      filters = { supervisionLevel: "ALL" }
-      filtered = applyTopLevelFilters(filters, true)(data)
-    })
+      filters = { supervisionLevel: "ALL" };
+      filtered = applyTopLevelFilters(filters, true)(data);
+    });
 
     it("returns the 'ALL' row", () => {
       const expected = [data[0]];
       expect(filtered).toEqual(expected);
     });
-  })
+  });
+
+  describe("when the data item does not have the supervision_level attribute", () => {
+    let missingAttributeData;
+
+    beforeEach(() => {
+      missingAttributeData = data.map((i) => {
+        /* eslint-disable camelcase */
+        const { supervision_level, ...item } = i;
+        return item;
+      });
+      filters = { supervisionLevel: "ALL" };
+      filtered = applyTopLevelFilters(filters, true)(missingAttributeData);
+    });
+
+    it("returns all of the rows", () => {
+      expect(filtered).toEqual(missingAttributeData);
+    });
+  });
 });

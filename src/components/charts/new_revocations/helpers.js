@@ -93,7 +93,8 @@ export const applyTopLevelFilters = (filters) => (
     if (
       filters.supervisionLevel &&
       !skippedFilters.includes("supervisionLevel") &&
-      !nullSafeComparison(item.supervision_level, filters.supervisionLevel)
+      !nullSafeComparison(item.supervision_level, filters.supervisionLevel) &&
+      item.supervision_level
     ) {
       return false;
     }
@@ -118,12 +119,12 @@ const applyMatrixFilters = (filters) => (data) =>
     return true;
   });
 
-export const applyAllFilters = (filters, applySupervisionLevel = true) => (
+export const applyAllFilters = (filters) => (
   data,
   skippedFilters = [],
   treatCategoryAllAsAbsent = false
 ) => {
-  const filteredData = applyTopLevelFilters(filters, applySupervisionLevel)(
+  const filteredData = applyTopLevelFilters(filters)(
     data,
     skippedFilters,
     treatCategoryAllAsAbsent
