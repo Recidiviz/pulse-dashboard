@@ -41,6 +41,7 @@ import {
 } from "../../../../utils/transforms/labels";
 import { filtersPropTypes } from "../../propTypes";
 import useChartData from "../../../../hooks/useChartData";
+import { translate } from "../../../../views/tenants/utils/i18nSettings";
 
 const CASES_PER_PAGE = 15;
 
@@ -73,6 +74,18 @@ const CaseTable = ({
   // TODO: After moving the API call inside this component, the pagination protections are not
   // working exactly as intended. We are relying on the commented safe-guard near the end only.
   const prevCount = usePrevious(countData);
+
+  const options = [
+    { key: "state_id", label: "DOC ID" },
+    { key: "district", label: "District" },
+    { key: "officer", label: translate("Officer") },
+    { key: "risk_level", label: "Risk level" },
+    {
+      key: "officer_recommendation",
+      label: translate("lastRecommendation"),
+    },
+    { key: "violation_record", label: "Violation record" },
+  ];
 
   useEffect(() => {
     setCountData(apiData.length);
@@ -126,15 +139,6 @@ const CaseTable = ({
     return <td style={unknownStyle}>{nullSafeLabel(label)}</td>;
   };
 
-  const labels = [
-    "DOC ID",
-    "District",
-    "Officer",
-    "Risk level",
-    "Officer Recommendation",
-    "Violation record",
-  ];
-
   const tableData = (filteredData || []).map((record) => ({
     data: [
       nullSafeLabel(record.state_id),
@@ -173,7 +177,7 @@ const CaseTable = ({
           tableData={tableData}
           metricTitle="Admitted individuals"
           isTable
-          tableLabels={labels}
+          tableLabels={options.map((o) => o.label)}
           timeWindowDescription={`${trailingLabel} (${periodLabel})`}
           filters={filterStates}
         />
@@ -182,28 +186,13 @@ const CaseTable = ({
       <table>
         <thead>
           <tr>
-            <th>
-              <Sortable {...sortableProps("state_id")}>DOC ID</Sortable>
-            </th>
-            <th>
-              <Sortable {...sortableProps("district")}>District</Sortable>
-            </th>
-            <th>
-              <Sortable {...sortableProps("officer")}>Officer</Sortable>
-            </th>
-            <th>
-              <Sortable {...sortableProps("risk_level")}>Risk level</Sortable>
-            </th>
-            <th className="long-title">
-              <Sortable {...sortableProps("officer_recommendation")}>
-                Last Rec. (Including Supplemental)
-              </Sortable>
-            </th>
-            <th>
-              <Sortable {...sortableProps("violation_record")}>
-                Violation record
-              </Sortable>
-            </th>
+            {options.map((o) => {
+              return (
+                <th key={o.key}>
+                  <Sortable {...sortableProps(o.key)}>{o.label}</Sortable>
+                </th>
+              );
+            })}
           </tr>
         </thead>
         <tbody className="fs-block">
