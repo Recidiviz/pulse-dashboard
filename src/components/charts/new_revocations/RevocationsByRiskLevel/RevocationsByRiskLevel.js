@@ -210,7 +210,7 @@ const RevocationsByRiskLevel = ({
       </h4>
       <h6 className="pB-20">{timeDescription}</h6>
       {flags.enableRevocationRateByExit && (
-        <ModeSwitcher mode={mode} setMode={setMode} buttons={modeButtons} />
+        <ModeSwitcher mode={mode} setMode={setMode} buttons={modeButtons()} />
       )}
       <div className="static-chart-container fs-block">{chart}</div>
     </div>

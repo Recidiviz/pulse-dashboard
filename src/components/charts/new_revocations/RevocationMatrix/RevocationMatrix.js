@@ -43,6 +43,7 @@ import Error from "../../../Error";
 import useChartData from "../../../../hooks/useChartData";
 import { violationCountLabel } from "../../../../utils/transforms/labels";
 import { filtersPropTypes } from "../../propTypes";
+import { translate } from "../../../../views/tenants/utils/i18nSettings";
 
 const TITLE =
   "Admissions by violation history (in year prior to their last reported violation)";
@@ -149,9 +150,7 @@ const RevocationMatrix = ({
         />
       </h4>
       <h6>{timeDescription}</h6>
-      <div className="x-label pY-30">
-        # of violation reports and notices of citation
-      </div>
+      <div className="x-label pY-30"># of {translate("violationReports")}</div>
       <div className="matrix-content">
         <div id="revocationMatrix" className="d-f matrix-chart-container">
           <div className="y-label" data-html2canvas-ignore>

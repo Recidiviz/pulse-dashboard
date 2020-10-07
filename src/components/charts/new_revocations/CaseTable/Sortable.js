@@ -22,7 +22,7 @@ const Sortable = ({ children, order = null, onClick }) => (
   <button
     className="Sortable"
     type="button"
-    style={{ cursor: "pointer", userSelect: "none" }}
+    style={{ cursor: "pointer", userSelect: "none", textAlign: "left" }}
     onClick={onClick}
   >
     {children}

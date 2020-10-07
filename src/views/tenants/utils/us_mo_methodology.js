@@ -15,7 +15,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-const chartIdToInfo = {
+export const MO_METHODOLOGY = {
   revocationsOverTime: [
     {
       id: 1,
@@ -340,4 +340,4 @@ citation filed within one year prior to the last reported violation before the p
   ],
 };
 
-export default chartIdToInfo;
+export default { MO_METHODOLOGY };

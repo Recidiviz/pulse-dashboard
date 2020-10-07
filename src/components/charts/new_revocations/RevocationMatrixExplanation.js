@@ -17,22 +17,13 @@
 
 import React from "react";
 
+import { translate } from "../../../views/tenants/utils/i18nSettings";
+
 const RevocationMatrixExplanation = () => (
   <div className="RevocationMatrixExplanation bgc-white p-20">
     <h4>Using this chart</h4>
-    <p className="fw-300">
-      This chart plots all people who were revoked to prison during the selected
-      time period, according to their most serious violation and the total
-      number of violation reports and notices of citation that were filed within
-      one year prior to the last reported violation before the person was
-      revoked. (See methodology for more details.)
-    </p>
-    <p className="fw-300">
-      The numbers inside the bubbles represent the number of people who were
-      revoked, whose most serious violation matches the violation at the head of
-      that row, and who have the number of prior violations at the head of that
-      column.
-    </p>
+    <p className="fw-300">{translate("matrixExplanationP1")}</p>
+    <p className="fw-300">{translate("matrixExplanationP2")}</p>
     <div className="d-f mT-20">
       <div className="example-icon-container">
         <div className="example-violation-total">35</div>
@@ -45,7 +36,7 @@ const RevocationMatrixExplanation = () => (
     </div>
     <div className="d-f mT-20">
       <div className="example-icon-container">
-        <div className="example-violation-type">Technical</div>
+        <div className="example-violation-type">{translate("Technical")}</div>
       </div>
       <p className="fs-i fw-600">
         Click on a row label to filter all charts on this dashboard to the group

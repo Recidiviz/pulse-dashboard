@@ -316,23 +316,6 @@
       color: inherit;
     }
   }
-
-  .separation-column {
-    display: none;
-  }
-}
-
-.separate-filter-title {
-  display: none;
-
-  .CaseTable .separation-column {
-    display: block;
-  }
-
-  .CaseTable .long-title {
-    word-break: break-all;
-    word-wrap: break-word;
-  }
 }
 
 @media screen and (max-width: 1868px) {

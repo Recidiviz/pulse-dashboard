@@ -22,8 +22,12 @@ import Footer from "../../../components/Footer";
 import TopBar from "../../../components/topbar/TopBar";
 import TopBarLogo from "../../../components/topbar/TopBarLogo";
 import TopBarUserMenuForAuthenticatedUser from "../../../components/topbar/TopBarUserMenuForAuthenticatedUser";
+import { setTranslateLocale } from "../utils/i18nSettings";
+import * as lanternTenant from "../utils/lanternTenants";
 
 const Layout = ({ children }) => {
+  setTranslateLocale(lanternTenant.PA);
+
   return (
     <div id="app">
       <div className="wide-page-container">

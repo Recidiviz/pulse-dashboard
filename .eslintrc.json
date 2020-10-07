@@ -14,7 +14,8 @@
     "react/jsx-wrap-multilines": [
       "error",
       { "declaration": false, "assignment": false }
-    ]
+    ],
+    "react/jsx-one-expression-per-line": 0
   },
   "env": {
     "browser": true,

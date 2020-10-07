@@ -25,8 +25,8 @@ import {
   downloadHtmlElementAsImage,
   downloadHtmlElementAsData,
 } from "../../assets/scripts/utils/downloads";
-import chartIdToInfo from "../../utils/charts/info";
 import { filtersPropTypes } from "./propTypes";
+import { translate } from "../../views/tenants/utils/i18nSettings";
 
 const ExportMenu = ({
   chartId,
@@ -43,7 +43,7 @@ const ExportMenu = ({
   tableLabels = null,
 }) => {
   const [isModalOpened, setIsModalOpened] = useState(false);
-  const additionalInfo = chartIdToInfo[chartId] || [];
+  const additionalInfo = translate("methodology")[chartId] || [];
 
   const exportedStructureCallback = () => ({
     metric: metricTitle,

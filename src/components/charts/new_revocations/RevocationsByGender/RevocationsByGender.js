@@ -21,6 +21,7 @@ import { Bar } from "react-chartjs-2";
 
 import pipe from "lodash/fp/pipe";
 import reduce from "lodash/fp/reduce";
+import { translate } from "../../../../views/tenants/utils/i18nSettings";
 
 import {
   dataTransformer,
@@ -48,11 +49,6 @@ import useChartData from "../../../../hooks/useChartData";
 import { filtersPropTypes } from "../../propTypes";
 import { riskLevelLabels } from "../../../../utils/transforms/labels";
 
-const modeButtons = [
-  { label: "Percent revoked of standing population", value: "rates" },
-  { label: "Percent revoked of exits", value: "exits" },
-];
-
 const colors = [COLORS["lantern-light-blue"], COLORS["lantern-orange"]];
 
 const chartId = "revocationsByGender";
@@ -74,6 +70,11 @@ const RevocationsByGender = ({
     `${stateCode}/newRevocations`,
     "revocations_matrix_distribution_by_gender"
   );
+
+  const modeButtons = [
+    { label: translate("percentOfPopulationRevoked"), value: "rates" },
+    { label: "Percent revoked of exits", value: "exits" },
+  ];
 
   if (isLoading) {
     return <Loading />;
@@ -120,7 +121,7 @@ const RevocationsByGender = ({
             {
               scaleLabel: {
                 display: true,
-                labelString: "Gender and risk level",
+                labelString: `${translate("Gender")} and risk level`,
               },
             },
           ],
@@ -161,12 +162,14 @@ const RevocationsByGender = ({
   return (
     <div className="RevocationsByGender">
       <h4>
-        Admissions by gender and risk level
+        Admissions by {translate("gender")} and risk level
         {showWarning === true && <DataSignificanceWarningIcon />}
         <ExportMenu
           chartId={chartId}
           chart={chart}
-          metricTitle={`${getLabelByMode(mode)} by gender and risk level`}
+          metricTitle={`${getLabelByMode(mode)} by ${translate(
+            "gender"
+          )} and risk level`}
           timeWindowDescription={timeDescription}
           filters={filterStates}
         />

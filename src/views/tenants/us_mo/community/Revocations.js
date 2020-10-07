@@ -45,6 +45,7 @@ import {
   DEFAULT_SUPERVISION_TYPE,
   METRIC_PERIODS,
   SUPERVISION_TYPES,
+  SUPERVISION_LEVELS,
 } from "../../../../components/charts/new_revocations/ToggleBar/options";
 import flags from "../../../../flags";
 import { useAuth0 } from "../../../../react-auth0-spa";
@@ -52,10 +53,10 @@ import {
   getUserAppMetadata,
   getUserDistricts,
 } from "../../../../utils/authentication/user";
-import * as lanternState from "../../../../utils/lanternConstants";
+import * as lanternTenant from "../../utils/lanternTenants";
 import ErrorBoundary from "../../../../components/ErrorBoundary";
 
-const stateCode = lanternState.MO;
+const stateCode = lanternTenant.MO;
 const admissionTypeOptions = [
   { value: "All", label: "ALL" },
   { value: "REVOCATION", label: "Revocation" },
@@ -112,6 +113,7 @@ const Revocations = () => {
       : {}),
     reportedViolations: "",
     violationType: "",
+    supervisionLevel: SUPERVISION_LEVELS[0].value,
   });
 
   const updateFilters = (newFilters) => {
@@ -121,7 +123,7 @@ const Revocations = () => {
     filters,
     userDistricts
   );
-  const allDataFilter = applyAllFilters(transformedFilters, false);
+  const allDataFilter = applyAllFilters(transformedFilters);
 
   const timeDescription = getTimeDescription(
     filters.metricPeriodMonths,
@@ -182,7 +184,7 @@ const Revocations = () => {
         <div className="matrix-container bgc-white p-20 mR-20">
           <ErrorBoundary>
             <RevocationMatrix
-              dataFilter={applyTopLevelFilters(transformedFilters, false)}
+              dataFilter={applyTopLevelFilters(transformedFilters)}
               filterStates={filters}
               updateFilters={updateFilters}
               timeDescription={timeDescription}
