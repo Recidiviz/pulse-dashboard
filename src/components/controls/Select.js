@@ -27,6 +27,7 @@ import ReactSelect, { components } from "react-select";
 import has from "lodash/fp/has";
 import map from "lodash/fp/map";
 
+import { COLORS } from "../../assets/scripts/constants/colors";
 import "./Select.scss";
 
 export const getAllOptionsWithValue = (options, summingOption) => {
@@ -224,9 +225,7 @@ const defaultStyles = {
     ...base,
     ...fontStyles,
     backgroundColor: state.isMulti ? "transparent" : base.backgroundColor,
-    "&:active": {
-      backgroundColor: state.isMulti ? "transparent" : base.backgroundColor,
-    },
+    color: state.isSelected && !state.isMulti ? COLORS.white : fontStyles.color,
   }),
   singleValue: (base) => ({ ...base, ...fontStyles }),
   group: (base) => ({ ...base, ...fontStyles, marginLeft: 20 }),
