@@ -312,23 +312,6 @@
       color: inherit;
     }
   }
-
-  .separation-column {
-    display: none;
-  }
-}
-
-.separate-filter-title {
-  display: none;
-
-  .case-table .separation-column {
-    display: block;
-  }
-
-  .case-table .long-title {
-    word-break: break-all;
-    word-wrap: break-word;
-  }
 }
 
 @media screen and (max-width: 1868px) {

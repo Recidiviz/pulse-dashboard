@@ -53,7 +53,7 @@ const includesAllItemFirst = (items) => {
   return items.length === 1 && isAllItem(items[0]);
 };
 
-export const applyTopLevelFilters = (filters, applySupervisionLevel = true) => (
+export const applyTopLevelFilters = (filters) => (
   data,
   skippedFilters = [],
   treatCategoryAllAsAbsent = false
@@ -104,16 +104,10 @@ export const applyTopLevelFilters = (filters, applySupervisionLevel = true) => (
       return false;
     }
     if (
-      (filters[SUPERVISION_LEVEL] &&
-        !skippedFilters.includes(SUPERVISION_LEVEL) &&
-        !isAllItem(filters[SUPERVISION_LEVEL]) &&
-        !nullSafeComparison(
-          item.supervision_level,
-          filters[SUPERVISION_LEVEL]
-        )) ||
-      (!applySupervisionLevel &&
-        item.supervision_level &&
-        isAllItem(item.supervision_level))
+      filters[SUPERVISION_LEVEL] &&
+      !skippedFilters.includes(SUPERVISION_LEVEL) &&
+      !nullSafeComparison(item.supervision_level, filters[SUPERVISION_LEVEL]) &&
+      item.supervision_level
     ) {
       return false;
     }
@@ -138,12 +132,12 @@ const applyMatrixFilters = (filters) => (data) =>
     return true;
   });
 
-export const applyAllFilters = (filters, applySupervisionLevel = true) => (
+export const applyAllFilters = (filters) => (
   data,
   skippedFilters = [],
   treatCategoryAllAsAbsent = false
 ) => {
-  const filteredData = applyTopLevelFilters(filters, applySupervisionLevel)(
+  const filteredData = applyTopLevelFilters(filters)(
     data,
     skippedFilters,
     treatCategoryAllAsAbsent

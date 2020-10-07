@@ -15,24 +15,13 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import { translate } from "../../../../views/tenants/utils/i18nSettings";
+// Used for I18n copy translations
+import MO_TRANSLATIONS from "./us_mo_translations";
+import PA_TRANSLATIONS from "./us_pa_translations";
 
-export const findDenominatorKeyByMode = (mode) => {
-  switch (mode) {
-    case "rates":
-    default:
-      return "total_supervision_count";
-    case "exits":
-      return "total_exit_count";
-  }
-};
+export const MO = "us_mo";
+export const PA = "us_pa";
 
-export const getLabelByMode = (mode) => {
-  switch (mode) {
-    case "rates":
-    default:
-      return translate("percentOfPopulationRevoked");
-    case "exits":
-      return "Percent revoked out of all exits";
-  }
-};
+export const LANTERN_STATES = [MO, PA];
+
+export const TRANSLATIONS = { MO: MO_TRANSLATIONS, PA: PA_TRANSLATIONS };

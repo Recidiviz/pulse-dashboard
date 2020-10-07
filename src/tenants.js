@@ -15,8 +15,8 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import * as lantern from "./utils/lanternConstants";
-import * as core from "./utils/coreConstants";
+import * as lantern from "./views/tenants/utils/lanternTenants";
+import * as core from "./views/tenants/utils/coreTenants";
 
 export default {
   [lantern.MO]: {
