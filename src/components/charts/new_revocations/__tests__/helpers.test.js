@@ -121,27 +121,6 @@ describe("applyTopLevelFilters", () => {
       });
     });
 
-    // This is the case for the RevocationsByViolation chart because the
-    // revocations_matrix_distribution_by_violation endpoint does not have
-    // the supervision_level attribute
-    // describe("when the data item does not have the supervision_level attribute", () => {
-    //   let missingAttributeData;
-    //
-    //   beforeEach(() => {
-    //     missingAttributeData = data.map((i) => {
-    //       /* eslint-disable camelcase */
-    //       const { supervision_level, ...item } = i;
-    //       return item;
-    //     });
-    //     filters = { supervisionLevel: "ALL" };
-    //     filtered = applyTopLevelFilters(filters)(missingAttributeData);
-    //   });
-    //
-    //   it("returns all of the rows", () => {
-    //     expect(filtered).toEqual(missingAttributeData);
-    //   });
-    // });
-
     // This is the case for the CaseTable because the
     // revocations_matrix_filtered_caseload endpoint does not include 'ALL' rows
     describe("when the treatCategoryAllAsAbsent flag is true", () => {
@@ -178,7 +157,7 @@ describe("applyTopLevelFilters", () => {
           });
         });
 
-        // The onlyl time a null should pass through a filter is when
+        // The only time a null should pass through a filter is when
         // treatCategoryAllAsAbsent = true and the filter = 'ALL'
         describe("with supervisionLevel = 'ALL' filter applied", () => {
           beforeEach(() => {
@@ -227,7 +206,7 @@ describe("applyTopLevelFilters", () => {
     describe("when the treatCategoryAllAsAbsent flag is false", () => {
       const treatCategoryAllAsAbsent = false;
 
-      describe("when an item_supervision level is null", () => {
+      describe("when an item supervision_level is null", () => {
         beforeAll(() => {
           data.push({
             charge_category: "ALL",
