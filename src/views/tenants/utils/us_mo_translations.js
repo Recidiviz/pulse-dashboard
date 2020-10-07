@@ -18,6 +18,8 @@
 // Note: Each time you add a translation you will need to restart your dev
 // server before you will see the translation rendered properly
 
+import { MO_METHODOLOGY } from "./us_mo_methodology";
+
 export default {
   officer: "officer",
   Officer: "Officer",
@@ -30,8 +32,16 @@ export default {
   Revocations: "Revocations",
   percentRevoked: "Percent revoked",
   percentOfPopulationRevoked: "Percent of standing population revoked",
-  matrixExplanationP1: "This chart plots all people who were revoked to prison during the selected time period, according to their most serious violation and the total number of violation reports and notices of citation that were filed within one year prior to the last reported violation before the person was revoked. (See methodology for more details.)",
-  matrixExplanationP2: "The numbers inside the bubbles represent the number of people who were revoked, whose most serious violation matches the violation at the head of that row, and who have the number of prior violations at the head of that column.",
+  matrixExplanationP1: `This chart plots all people who were revoked to prison
+during the selected time period, according to their most serious violation
+and the total number of violation reports and notices of citation that
+were filed within one year prior to the last reported violation before
+the person was revoked. (See methodology for more details.)`,
+  matrixExplanationP2: `The numbers inside the bubbles represent the number of
+people who were revoked, whose most serious violation matches the violation at
+the head of that row, and who have the number of prior violations at the head
+of that column.`,
   Technical: "Technical",
   lastRecommendation: "Last Rec. (Incl. Supplementals)",
-}
+  methodology: MO_METHODOLOGY,
+};
