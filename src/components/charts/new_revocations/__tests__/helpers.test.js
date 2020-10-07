@@ -31,7 +31,7 @@ describe("applyTopLevelFilters", () => {
         reported_violations: "1",
         state_code: "US_PA",
         supervision_level: "ALL",
-        supervision_type: "PAROLE",
+        supervision_type: "ALL",
         total_revocations: "35",
         violation_type: "MED_TECH",
         year: "2020",
@@ -67,7 +67,7 @@ describe("applyTopLevelFilters", () => {
         reported_violations: "1",
         state_code: "US_PA",
         supervision_level: "MINIMUM",
-        supervision_type: "PAROLE",
+        supervision_type: "PROBATION",
         total_revocations: "20",
         violation_type: "MED_TECH",
         year: "2020",
@@ -76,20 +76,23 @@ describe("applyTopLevelFilters", () => {
   });
 
   describe("supervisionLevel filter", () => {
+    let filteredSupervisionLevels = [];
+
     describe("with supervisionLevel = 'MEDIUM' filter applied", () => {
       beforeEach(() => {
         filters = { supervisionLevel: "MEDIUM" };
         filtered = applyTopLevelFilters(filters)(data);
+        filteredSupervisionLevels = filtered.map((f) => f.supervision_level);
       });
 
       it("correctly returns supervision_level items matching the filter term", () => {
-        const expected = [data[1], data[2]];
+        const expected = ["MEDIUM", "MEDIUM"];
 
-        expect(filtered).toEqual(expected);
+        expect(filteredSupervisionLevels).toEqual(expected);
       });
 
       it("does not double count the 'ALL' item", () => {
-        expect(filtered).not.toContain(data[0]);
+        expect(filteredSupervisionLevels).not.toContain("ALL");
       });
     });
 
@@ -97,11 +100,13 @@ describe("applyTopLevelFilters", () => {
       beforeEach(() => {
         filters = { supervisionLevel: "ALL" };
         filtered = applyTopLevelFilters(filters)(data);
+        filteredSupervisionLevels = filtered.map((f) => f.supervision_level);
       });
 
       it("returns the 'ALL' row", () => {
-        const expected = [data[0]];
-        expect(filtered).toEqual(expected);
+        const expected = ["ALL"];
+
+        expect(filteredSupervisionLevels).toEqual(expected);
       });
     });
 
@@ -116,21 +121,165 @@ describe("applyTopLevelFilters", () => {
       });
     });
 
-    describe("when the data item does not have the supervision_level attribute", () => {
-      let missingAttributeData;
+    // This is the case for the RevocationsByViolation chart because the
+    // revocations_matrix_distribution_by_violation endpoint does not have
+    // the supervision_level attribute
+    // describe("when the data item does not have the supervision_level attribute", () => {
+    //   let missingAttributeData;
+    //
+    //   beforeEach(() => {
+    //     missingAttributeData = data.map((i) => {
+    //       /* eslint-disable camelcase */
+    //       const { supervision_level, ...item } = i;
+    //       return item;
+    //     });
+    //     filters = { supervisionLevel: "ALL" };
+    //     filtered = applyTopLevelFilters(filters)(missingAttributeData);
+    //   });
+    //
+    //   it("returns all of the rows", () => {
+    //     expect(filtered).toEqual(missingAttributeData);
+    //   });
+    // });
+
+    // This is the case for the CaseTable because the
+    // revocations_matrix_filtered_caseload endpoint does not include 'ALL' rows
+    describe("when the treatCategoryAllAsAbsent flag is true", () => {
+      let missingCategoryAllData;
+      const treatCategoryAllAsAbsent = true;
 
       beforeEach(() => {
-        missingAttributeData = data.map((i) => {
-          /* eslint-disable camelcase */
-          const { supervision_level, ...item } = i;
-          return item;
-        });
+        missingCategoryAllData = data.slice(1);
         filters = { supervisionLevel: "ALL" };
-        filtered = applyTopLevelFilters(filters)(missingAttributeData);
+        filtered = applyTopLevelFilters(filters)(
+          missingCategoryAllData,
+          [],
+          treatCategoryAllAsAbsent
+        );
       });
 
       it("returns all of the rows", () => {
-        expect(filtered).toEqual(missingAttributeData);
+        expect(filtered).toEqual(missingCategoryAllData);
+      });
+
+      describe("when an item supervision_level is null", () => {
+        beforeEach(() => {
+          missingCategoryAllData.push({
+            charge_category: "NOT_ALL",
+            district: "NOT_ALL",
+            month: "1",
+            reported_violations: "1",
+            state_code: "US_PA",
+            supervision_level: null,
+            supervision_type: "PAROLE",
+            total_revocations: "20",
+            violation_type: "MED_TECH",
+            year: "2020",
+          });
+        });
+
+        // The onlyl time a null should pass through a filter is when
+        // treatCategoryAllAsAbsent = true and the filter = 'ALL'
+        describe("with supervisionLevel = 'ALL' filter applied", () => {
+          beforeEach(() => {
+            filters = { supervisionLevel: "ALL" };
+            filtered = applyTopLevelFilters(filters)(
+              missingCategoryAllData,
+              [],
+              treatCategoryAllAsAbsent
+            );
+            filteredSupervisionLevels = filtered.map(
+              (f) => f.supervision_level
+            );
+          });
+
+          it("returns the all of the rows including the null row", () => {
+            const expected = ["MEDIUM", "MEDIUM", "MINIMUM", null];
+            expect(filteredSupervisionLevels).toEqual(expected);
+          });
+        });
+
+        // Even with treatCategoryAllAsAbsent = true, do not pass nulls through
+        // if the supervisionLevel filter is not 'ALL'
+        describe("with supervisionLevel = 'MEDIUM' filter applied", () => {
+          beforeEach(() => {
+            filters = { supervisionLevel: "MEDIUM" };
+            filtered = applyTopLevelFilters(filters)(
+              missingCategoryAllData,
+              [],
+              treatCategoryAllAsAbsent
+            );
+            filteredSupervisionLevels = filtered.map(
+              (f) => f.supervision_level
+            );
+          });
+
+          it("returns only the rows matching the filter", () => {
+            const expected = ["MEDIUM", "MEDIUM"];
+            expect(filteredSupervisionLevels).toEqual(expected);
+          });
+        });
+      });
+    });
+
+    // When treatCategoryAllAsAbsent is false, never let nulls pass through
+    // the filter
+    describe("when the treatCategoryAllAsAbsent flag is false", () => {
+      const treatCategoryAllAsAbsent = false;
+
+      describe("when an item_supervision level is null", () => {
+        beforeAll(() => {
+          data.push({
+            charge_category: "ALL",
+            district: "ALL",
+            month: "1",
+            reported_violations: "1",
+            state_code: "US_PA",
+            supervision_level: null,
+            supervision_type: "PAROLE",
+            total_revocations: "20",
+            violation_type: "MED_TECH",
+            year: "2020",
+          });
+        });
+
+        describe("with supervisionLevel = 'ALL' filter applied", () => {
+          beforeEach(() => {
+            filters = { supervisionLevel: "ALL" };
+            filtered = applyTopLevelFilters(filters)(
+              data,
+              [],
+              treatCategoryAllAsAbsent
+            );
+            filteredSupervisionLevels = filtered.map(
+              (f) => f.supervision_level
+            );
+          });
+
+          it("returns only the 'ALL' row", () => {
+            const expected = ["ALL"];
+            expect(filteredSupervisionLevels).toEqual(expected);
+          });
+        });
+
+        describe("with supervisionLevel = 'MEDIUM' filter applied", () => {
+          beforeEach(() => {
+            filters = { supervisionLevel: "MEDIUM" };
+            filtered = applyTopLevelFilters(filters)(
+              data,
+              [],
+              treatCategoryAllAsAbsent
+            );
+            filteredSupervisionLevels = filtered.map(
+              (f) => f.supervision_level
+            );
+          });
+
+          it("returns only the rows matching the filter", () => {
+            const expected = ["MEDIUM", "MEDIUM"];
+            expect(filteredSupervisionLevels).toEqual(expected);
+          });
+        });
       });
     });
   });
