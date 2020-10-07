@@ -44,4 +44,6 @@ Select.propTypes = {
   options: PropTypes.arrayOf(optionPropType).isRequired,
 };
 
+Select.displayName = "Select";
+
 export default Select;
