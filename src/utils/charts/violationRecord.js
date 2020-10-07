@@ -77,11 +77,7 @@ export function formatViolationRecord(records) {
     return "";
   }
 
-  return records
-    .slice()
-    .sort(violationComparator)
-    .map(violationFormatter)
-    .join(", ");
+  return records.slice().map(violationFormatter).join(", ");
 }
 
 export const parseAndFormatViolationRecord = compose(
