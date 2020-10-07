@@ -152,7 +152,7 @@ const Revocations = () => {
             label="Time Period"
             value={filters[METRIC_PERIOD_MONTHS]}
             options={METRIC_PERIODS}
-            defaultValue={DEFAULT_METRIC_PERIOD}
+            defaultOption={DEFAULT_METRIC_PERIOD}
             onChange={createOnFilterChange(METRIC_PERIOD_MONTHS)}
           />
           <ErrorBoundary>
@@ -166,7 +166,7 @@ const Revocations = () => {
             label="Case Type"
             value={filters[CHARGE_CATEGORY]}
             options={chargeCategoryOptions}
-            defaultValue={chargeCategoryOptions[0]}
+            defaultOption={chargeCategoryOptions[0]}
             onChange={createOnFilterChange(CHARGE_CATEGORY)}
           />
           {flags.enableAdmissionTypeFilter && (
@@ -182,7 +182,7 @@ const Revocations = () => {
             label="Supervision Type"
             value={filters[SUPERVISION_TYPE]}
             options={SUPERVISION_TYPES}
-            defaultValue={DEFAULT_SUPERVISION_TYPE}
+            defaultOption={DEFAULT_SUPERVISION_TYPE}
             onChange={createOnFilterChange(SUPERVISION_TYPE)}
           />
         </div>

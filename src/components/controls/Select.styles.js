@@ -4,13 +4,14 @@ const fontStyles = {
 };
 
 export default {
+  container: (base) => ({
+    ...base,
+    flexGrow: 1,
+  }),
   option: (base, state) => ({
     ...base,
     ...fontStyles,
-    backgroundColor: state.isMulti ? "transparent" : base.backgroundColor,
-    "&:active": {
-      backgroundColor: state.isMulti ? "transparent" : base.backgroundColor,
-    },
+    color: state.isSelected ? "#fff" : fontStyles.color,
   }),
   singleValue: (base) => ({ ...base, ...fontStyles }),
   group: (base) => ({ ...base, ...fontStyles, marginLeft: 20 }),

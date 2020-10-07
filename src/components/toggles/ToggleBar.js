@@ -23,6 +23,7 @@ import Sticky from "react-sticky-fill";
 
 import RadioGroup from "../controls/RadioGroup";
 import Select from "../controls/Select";
+import MultiSelect from "../controls/MultiSelect";
 
 import {
   defaultDistrictOption,
@@ -36,7 +37,6 @@ import {
 import { getDistrictOptions } from "./helpers";
 
 import "./ToggleBar.scss";
-import MultiSelect from "../controls/MultiSelect";
 
 const TOGGLE_STYLE = {
   zIndex: 700,

@@ -22,7 +22,13 @@ import Select from "../../../controls/Select";
 import FilterField from "./FilterField";
 import { optionPropType } from "../../../propTypes";
 
-const ToggleBarFilter = ({ label, value, options, defaultValue, onChange }) => {
+const ToggleBarFilter = ({
+  label,
+  value,
+  options,
+  defaultOption,
+  onChange,
+}) => {
   const onValueChange = useCallback((option) => onChange(option.value), [
     onChange,
   ]);
@@ -33,10 +39,9 @@ const ToggleBarFilter = ({ label, value, options, defaultValue, onChange }) => {
     <FilterField label={label}>
       <Select
         value={selectedOption}
-        className="select-align"
         options={options}
         onChange={onValueChange}
-        defaultValue={defaultValue}
+        defaultValue={defaultOption}
       />
     </FilterField>
   );
@@ -46,7 +51,7 @@ ToggleBarFilter.propTypes = {
   label: PropTypes.string.isRequired,
   value: PropTypes.string.isRequired,
   options: PropTypes.arrayOf(optionPropType).isRequired,
-  defaultValue: optionPropType.isRequired,
+  defaultOption: optionPropType.isRequired,
   onChange: PropTypes.func.isRequired,
 };
 

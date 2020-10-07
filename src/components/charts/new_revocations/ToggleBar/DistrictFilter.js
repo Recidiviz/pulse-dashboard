@@ -63,7 +63,6 @@ const DistrictFilter = ({ value, stateCode, onChange }) => {
       return (
         <Select
           value={singleValue}
-          className="select-align"
           options={[singleValue]}
           defaultValue={singleValue}
           onChange={() => {}}
@@ -104,7 +103,6 @@ const DistrictFilter = ({ value, stateCode, onChange }) => {
         summingOption={summingOption}
         defaultValue={defaultValue}
         value={selectValue}
-        className="select-align"
         onChange={onValueChange}
         isMulti
         isLoading={isLoading}

@@ -19,23 +19,29 @@ import PropTypes from "prop-types";
 import ReactSelect from "react-select";
 
 import styles from "./Select.styles";
+import { optionPropType } from "../propTypes";
 
 const Select = forwardRef((props, ref) => (
-  <ReactSelect ref={ref} styles={styles} {...props} />
+  <ReactSelect
+    ref={ref}
+    styles={styles}
+    className="Select"
+    classNamePrefix="Select"
+    {...props}
+  />
 ));
 
-const optionType = PropTypes.shape({
-  label: PropTypes.string,
-  value: PropTypes.any,
-});
-
 Select.propTypes = {
-  value: PropTypes.oneOfType([optionType, PropTypes.arrayOf(optionType)])
-    .isRequired,
-  defaultValue: PropTypes.oneOfType([optionType, PropTypes.arrayOf(optionType)])
-    .isRequired,
+  value: PropTypes.oneOfType([
+    optionPropType,
+    PropTypes.arrayOf(optionPropType),
+  ]).isRequired,
+  defaultValue: PropTypes.oneOfType([
+    optionPropType,
+    PropTypes.arrayOf(optionPropType),
+  ]).isRequired,
   onChange: PropTypes.func.isRequired,
-  options: PropTypes.arrayOf(optionType).isRequired,
+  options: PropTypes.arrayOf(optionPropType).isRequired,
 };
 
 export default Select;

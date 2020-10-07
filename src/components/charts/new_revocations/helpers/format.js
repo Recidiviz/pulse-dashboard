@@ -21,7 +21,8 @@ import {
 } from "../../../../utils/charts/toggles";
 import {
   formatSelectOptionValue,
-  getAllOptionsWithValue,
+  excludeOption,
+  flatOptions,
 } from "../../../controls/utils";
 
 export const getTimeDescription = (months, admissionOptions, admissionType) => {
@@ -32,8 +33,8 @@ export const getTimeDescription = (months, admissionOptions, admissionType) => {
     return `${trailingLabel} (${periodLabel})`;
   }
 
-  const admissionTypeOptions = getAllOptionsWithValue(
-    admissionOptions,
+  const admissionTypeOptions = excludeOption(
+    flatOptions(admissionOptions),
     admissionOptions[0]
   ).filter((ao) => admissionType.includes(ao.value));
   const admissionFilter = formatSelectOptionValue(

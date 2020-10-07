@@ -154,7 +154,7 @@ const Revocations = () => {
             label="Time Period"
             value={filters[METRIC_PERIOD_MONTHS]}
             options={METRIC_PERIODS}
-            defaultValue={DEFAULT_METRIC_PERIOD}
+            defaultOption={DEFAULT_METRIC_PERIOD}
             onChange={createOnFilterChange(METRIC_PERIOD_MONTHS)}
           />
           <ErrorBoundary>
@@ -168,14 +168,14 @@ const Revocations = () => {
             label="Case Type"
             value={filters[CHARGE_CATEGORY]}
             options={chargeCategoryOptions}
-            defaultValue={chargeCategoryOptions[0]}
+            defaultOption={chargeCategoryOptions[0]}
             onChange={createOnFilterChange(CHARGE_CATEGORY)}
           />
           <ToggleBarFilter
             label="Supervision Level"
             value={filters[SUPERVISION_LEVEL]}
             options={SUPERVISION_LEVELS}
-            defaultValue={SUPERVISION_LEVELS[0]}
+            defaultOption={SUPERVISION_LEVELS[0]}
             onChange={createOnFilterChange(SUPERVISION_LEVEL)}
           />
           {flags.enableAdmissionTypeFilter && (

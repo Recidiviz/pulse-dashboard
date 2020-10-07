@@ -13,6 +13,7 @@ public/
 !src/api/**/*.js
 !src/App.js
 !src/index.js
+!src/setupTests.js
 !src/assets/scripts/utils/__tests__/**/*.js
 !src/components/propTypes.js
 !src/components/Error.js
