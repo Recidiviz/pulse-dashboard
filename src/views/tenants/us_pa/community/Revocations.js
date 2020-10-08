@@ -26,7 +26,7 @@ import RevocationsByRace from "../../../../components/charts/new_revocations/Rev
 import RevocationsByDistrict from "../../../../components/charts/new_revocations/RevocationsByDistrict/RevocationsByDistrict";
 import RevocationCountOverTime from "../../../../components/charts/new_revocations/RevocationsOverTime";
 import RevocationMatrix from "../../../../components/charts/new_revocations/RevocationMatrix/RevocationMatrix";
-import RevocationMatrixExplanation from "../../../../components/charts/new_revocations/RevocationMatrixExplanation";
+import RevocationMatrixExplanation from "../../../../components/charts/new_revocations/RevocationMatrix/RevocationMatrixExplanation";
 import ToggleBar from "../../../../components/charts/new_revocations/ToggleBar/ToggleBar";
 import ToggleBarFilter from "../../../../components/charts/new_revocations/ToggleBar/ToggleBarFilter";
 import DistrictFilter from "../../../../components/charts/new_revocations/ToggleBar/DistrictFilter";
