@@ -65,4 +65,18 @@ export function compareViolationRecords(aRecordLabel, bRecordLabel, order) {
   return 0;
 }
 
-export const parseAndFormatViolationRecord = compose(parseViolationRecord);
+const violationFormatter = (record) =>
+  `${record.number} ${record.abbreviation}`;
+
+export function formatViolationRecord(records) {
+  if (records.length === 0) {
+    return "";
+  }
+
+  return records.slice().map(violationFormatter).join(", ");
+}
+
+export const parseAndFormatViolationRecord = compose(
+  formatViolationRecord,
+  parseViolationRecord
+);
