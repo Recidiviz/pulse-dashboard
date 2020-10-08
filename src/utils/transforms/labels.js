@@ -15,57 +15,31 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import lowerCase from "lodash/fp/lowerCase"
+import lowerCase from "lodash/fp/lowerCase";
 import pipe from "lodash/fp/pipe";
-import startCase from "lodash/fp/startCase"
-import * as lanternState from "../../views/tenants/utils/lanternTenants";
+import startCase from "lodash/fp/startCase";
+import { translate } from "../../views/tenants/utils/i18nSettings";
 
-const riskLevels = [
-  "NOT_ASSESSED",
-  "LOW",
-  "MEDIUM",
-  "HIGH",
-  "VERY_HIGH",
-]
-
-const riskLevelValueToLabelByStateCode = {
-  [lanternState.MO]: {
-    OVERALL: 'Overall',
-    NOT_ASSESSED: 'Not Assessed',
-    LOW: 'Low Risk',
-    MEDIUM: 'Moderate Risk',
-    HIGH: 'High Risk',
-    VERY_HIGH: 'Very High Risk',
-  },
-  [lanternState.PA]: {
-    OVERALL: 'Overall',
-    NOT_ASSESSED: 'Not Assessed',
-    LOW: 'Low Risk',
-    MEDIUM: 'Medium Risk',
-    HIGH: 'High Risk',
-  },
-};
-
-export function riskLevelLabels(stateCode) {
-  return Object.values(riskLevelValueToLabelByStateCode[stateCode]);
+export function riskLevelLabels() {
+  return Object.values(translate("riskLevelsMap"));
 }
 
 const genderValueToLabel = {
-  FEMALE: 'Female',
-  MALE: 'Male',
-  TRANS: 'Trans',
-  TRANS_FEMALE: 'Trans Female',
-  TRANS_MALE: 'Trans Male',
+  FEMALE: "Female",
+  MALE: "Male",
+  TRANS: "Trans",
+  TRANS_FEMALE: "Trans Female",
+  TRANS_MALE: "Trans Male",
 };
 
 const raceValueToLabel = {
-  AMERICAN_INDIAN_ALASKAN_NATIVE: 'American Indian Alaskan Native',
-  ASIAN: 'Asian',
-  BLACK: 'Black',
-  HISPANIC: 'Hispanic',
-  NATIVE_HAWAIIAN_PACIFIC_ISLANDER: 'Native Hawaiian Pacific Islander',
-  WHITE: 'White',
-  OTHER: 'Other',
+  AMERICAN_INDIAN_ALASKAN_NATIVE: "American Indian Alaskan Native",
+  ASIAN: "Asian",
+  BLACK: "Black",
+  HISPANIC: "Hispanic",
+  NATIVE_HAWAIIAN_PACIFIC_ISLANDER: "Native Hawaiian Pacific Islander",
+  WHITE: "White",
+  OTHER: "Other",
 };
 
 const matrixViolationTypeToLabel = {
@@ -93,12 +67,12 @@ function raceValueToHumanReadable(raceValue) {
 }
 
 function toHtmlFriendly(string) {
-  return string.replace(/ /g, '-');
+  return string.replace(/ /g, "-");
 }
 
 function toHumanReadable(string) {
-  let newString = string.replace(/-/g, ' ');
-  newString = newString.replace(/_/g, ' ');
+  let newString = string.replace(/-/g, " ");
+  newString = newString.replace(/_/g, " ");
   return newString;
 }
 
@@ -109,7 +83,7 @@ function toInt(nonInt) {
 function toTitleCase(str) {
   return str.replace(
     /\w\S*/g,
-    (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase(),
+    (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase()
   );
 }
 
@@ -128,21 +102,19 @@ function numberFromOfficerId(officerId) {
  */
 function nameFromOfficerId(officerId) {
   if (!officerId) {
-    return '';
+    return "";
   }
 
-  const parts = officerId.split(':');
+  const parts = officerId.split(":");
   if (parts.length === 1) {
     return officerId;
   }
   return parts[1].trim();
 }
 
-const violationCountLabel = (count) => (count === '8' ? '8+' : count);
+const violationCountLabel = (count) => (count === "8" ? "8+" : count);
 
 export {
-  riskLevels,
-  riskLevelValueToLabelByStateCode,
   matrixViolationTypeToLabel,
   genderValueToHumanReadable,
   raceValueToHumanReadable,

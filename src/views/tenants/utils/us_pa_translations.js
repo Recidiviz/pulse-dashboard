@@ -44,4 +44,11 @@ of that column.`,
   Technical: "Low tech.",
   lastRecommendation: "Last recommendation",
   methodology: PA_METHODOLOGY,
+  riskLevelsMap: {
+    OVERALL: "Overall",
+    NOT_ASSESSED: "Not Assessed",
+    LOW: "Low Risk",
+    MEDIUM: "Medium Risk",
+    HIGH: "High Risk",
+  },
 };
