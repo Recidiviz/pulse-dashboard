@@ -20,17 +20,17 @@ import PropTypes from "prop-types";
 
 import Select from "../../../controls/Select";
 import FilterField from "./FilterField";
-import { SUPERVISION_LEVELS } from "./options";
+import { PAFilterOptions } from "../../../../views/tenants/constants/filterOptions";
 
 const SupervisionLevelFilter = ({ onChange }) => (
   <FilterField label="Supervision Level">
     <Select
       className="select-align"
-      options={SUPERVISION_LEVELS}
+      options={PAFilterOptions.supervisionLevel.options}
       onChange={(option) => {
         onChange({ supervisionLevel: option.value });
       }}
-      defaultValue={SUPERVISION_LEVELS[0]}
+      defaultValue={PAFilterOptions.supervisionLevel.defaultOption}
     />
   </FilterField>
 );

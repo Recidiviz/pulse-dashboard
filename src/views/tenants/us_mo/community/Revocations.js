@@ -34,19 +34,13 @@ import ChargeCategoryFilter from "../../../../components/charts/new_revocations/
 import AdmissionTypeFilter from "../../../../components/charts/new_revocations/ToggleBar/AdmissionTypeFilter";
 import SupervisionTypeFilter from "../../../../components/charts/new_revocations/ToggleBar/SupervisionTypeFilter";
 import ViolationFilter from "../../../../components/charts/new_revocations/ToggleBar/ViolationFilter";
+import ErrorBoundary from "../../../../components/ErrorBoundary";
 import {
   applyAllFilters,
   applyTopLevelFilters,
   limitFiltersToUserDistricts,
 } from "../../../../components/charts/new_revocations/helpers";
 import { getTimeDescription } from "../../../../components/charts/new_revocations/helpers/format";
-import {
-  DEFAULT_METRIC_PERIOD,
-  DEFAULT_SUPERVISION_TYPE,
-  METRIC_PERIODS,
-  SUPERVISION_TYPES,
-  SUPERVISION_LEVELS,
-} from "../../../../components/charts/new_revocations/ToggleBar/options";
 import flags from "../../../../flags";
 import { useAuth0 } from "../../../../react-auth0-spa";
 import {
@@ -54,49 +48,9 @@ import {
   getUserDistricts,
 } from "../../../../utils/authentication/user";
 import * as lanternTenant from "../../utils/lanternTenants";
-import ErrorBoundary from "../../../../components/ErrorBoundary";
+import { MOFilterOptions as filterOptions } from "../../constants/filterOptions";
 
 const stateCode = lanternTenant.MO;
-const admissionTypeOptions = [
-  { value: "All", label: "ALL" },
-  { value: "REVOCATION", label: "Revocation" },
-  {
-    value: "INSTITUTIONAL TREATMENT",
-    label: "Institutional Treatment",
-  },
-  { value: "BOARDS_RETURN", label: "Board Returns" },
-];
-const chargeCategoryOptions = [
-  { value: "All", label: "All" },
-  { value: "GENERAL", label: "General" },
-  { value: "SEX_OFFENDER", label: "Sex Offense" },
-  { value: "DOMESTIC_VIOLENCE", label: "Domestic Violence" },
-  { value: "SERIOUS_MENTAL_ILLNESS", label: "Serious Mental Illness" },
-];
-const violationTypes = [
-  { key: "travel_count", label: "Travel", type: "TECHNICAL" },
-  { key: "residency_count", label: "Residency", type: "TECHNICAL" },
-  { key: "employment_count", label: "Employment", type: "TECHNICAL" },
-  { key: "association_count", label: "Association", type: "TECHNICAL" },
-  { key: "directive_count", label: "Report / Directives", type: "TECHNICAL" },
-  {
-    key: "supervision_strategy_count",
-    label: "Supervision Strategies",
-    type: "TECHNICAL",
-  },
-  {
-    key: "intervention_fee_count",
-    label: "Intervention Fees",
-    type: "TECHNICAL",
-  },
-  { key: "special_count", label: "Special Conditions", type: "TECHNICAL" },
-  { key: "weapon_count", label: "Weapons", type: "TECHNICAL" },
-  { key: "substance_count", label: "Substance Use", type: "TECHNICAL" },
-  { key: "municipal_count", label: "Municipal", type: "LAW" },
-  { key: "absconded_count", label: "Absconsion", type: "TECHNICAL" },
-  { key: "misdemeanor_count", label: "Misdemeanor", type: "LAW" },
-  { key: "felony_count", label: "Felony", type: "LAW" },
-];
 
 const Revocations = () => {
   const { user } = useAuth0();
@@ -104,17 +58,18 @@ const Revocations = () => {
   const userDistricts = getUserDistricts(user);
 
   const [filters, setFilters] = useState({
-    metricPeriodMonths: DEFAULT_METRIC_PERIOD.value,
-    chargeCategory: chargeCategoryOptions[0].value,
-    district: [district || "All"],
-    supervisionType: DEFAULT_SUPERVISION_TYPE.value,
+    metricPeriodMonths: filterOptions.metricPeriodMonths.defaultValue,
+    chargeCategory: filterOptions.chargeCategory.defaultValue,
+    reportedViolations: filterOptions.reportedViolations.defaultValue,
+    violationType: filterOptions.violationType.defaultValue,
+    supervisionType: filterOptions.supervisionType.defaultValue,
+    supervisionLevel: filterOptions.supervisionLevel.defaultValue,
     ...(flags.enableAdmissionTypeFilter
-      ? { admissionType: [admissionTypeOptions[1].value] }
+      ? { admissionType: filterOptions.admissionType.defaultValue }
       : {}),
-    reportedViolations: "",
-    violationType: "",
-    supervisionLevel: SUPERVISION_LEVELS[0].value,
+    district: [district || filterOptions.district.defaultValue],
   });
+  console.log(filters);
 
   const updateFilters = (newFilters) => {
     setFilters({ ...filters, ...newFilters });
@@ -127,7 +82,7 @@ const Revocations = () => {
 
   const timeDescription = getTimeDescription(
     filters.metricPeriodMonths,
-    admissionTypeOptions,
+    filterOptions.admissionType.options,
     filters.admissionType
   );
 
@@ -136,29 +91,29 @@ const Revocations = () => {
       <ToggleBar>
         <div className="top-level-filters d-f">
           <MetricPeriodMonthsFilter
-            options={METRIC_PERIODS}
-            defaultValue={DEFAULT_METRIC_PERIOD}
+            options={filterOptions.metricPeriodMonths.options}
+            defaultValue={filterOptions.metricPeriodMonths.defaultOption}
             onChange={updateFilters}
           />
           <ErrorBoundary>
             <DistrictFilter stateCode={stateCode} onChange={updateFilters} />
           </ErrorBoundary>
           <ChargeCategoryFilter
-            options={chargeCategoryOptions}
-            defaultValue={chargeCategoryOptions[0]}
+            options={filterOptions.chargeCategory.options}
+            defaultValue={filterOptions.chargeCategory.defaultOption}
             onChange={updateFilters}
           />
           {flags.enableAdmissionTypeFilter && (
             <AdmissionTypeFilter
-              options={admissionTypeOptions}
-              summingOption={admissionTypeOptions[0]}
-              defaultValue={[admissionTypeOptions[1]]}
+              options={filterOptions.admissionType.options}
+              summingOption={filterOptions.admissionType.summingOption}
+              defaultValue={filterOptions.admissionType.defaultOption}
               onChange={updateFilters}
             />
           )}
           <SupervisionTypeFilter
-            options={SUPERVISION_TYPES}
-            defaultValue={DEFAULT_SUPERVISION_TYPE}
+            options={filterOptions.supervisionType.options}
+            defaultValue={filterOptions.supervisionType.defaultOption}
             onChange={updateFilters}
           />
         </div>
@@ -221,7 +176,7 @@ const Revocations = () => {
               filterStates={filters}
               stateCode={stateCode}
               timeDescription={timeDescription}
-              violationTypes={violationTypes}
+              violationTypes={filterOptions.violationType.options}
             />
           </ErrorBoundary>
         }

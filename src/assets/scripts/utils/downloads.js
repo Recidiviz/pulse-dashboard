@@ -21,7 +21,6 @@ import pipe from "lodash/fp/pipe";
 import find from "lodash/fp/find";
 import get from "lodash/fp/get";
 
-import { SUPERVISION_LEVELS } from "../../../components/charts/new_revocations/ToggleBar/options";
 import { timeStamp } from './time';
 import JSZip from 'jszip';
 import { humanReadableTitleCase } from '../../../utils/transforms/labels';
@@ -122,7 +121,7 @@ const formatSupervisionLevel = (supervisionLevel) =>
     : `Supervision type: ${pipe(
         find({ value: supervisionLevel }),
         get("label")
-      )(SUPERVISION_LEVELS)}`;
+      )(humanReadableTitleCase(supervisionLevel))}`;
 
 export function getFilters(toggleStates) {
   const filters = [];
