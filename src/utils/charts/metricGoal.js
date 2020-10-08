@@ -1,5 +1,5 @@
 // Recidiviz - a data platform for criminal justice reform
-// Copyright (C) 2019 Recidiviz, Inc.
+// Copyright (C) 2020 Recidiviz, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -15,9 +15,9 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import { COLORS } from '../../assets/scripts/constants/colors';
-import { trendlineSlope } from './trendline';
-import { canDisplayGoal } from './toggles';
+import { COLORS } from "../../assets/scripts/constants/colors";
+import { trendlineSlope } from "./trendline";
+import { canDisplayGoal } from "./toggles";
 
 // TODO(75): Retrieve these dynamically using the API
 const GOALS = {
@@ -25,38 +25,38 @@ const GOALS = {
     daysAtLibertySnapshot: {
       isUpward: true,
       value: 1095,
-      label: '1095 days (3 years)',
+      label: "1095 days (3 years)",
       metricType: null,
     },
     lsirScoreChangeSnapshot: {
       isUpward: false,
       value: -1,
-      label: '-1.0',
+      label: "-1.0",
       metricType: null,
     },
     reincarcerationCountsByMonth: {
       isUpward: false,
       value: 30,
-      label: '30',
-      metricType: 'counts',
+      label: "30",
+      metricType: "counts",
     },
     revocationAdmissionsSnapshot: {
       isUpward: false,
       value: 35,
-      label: '35%',
-      metricType: 'rates',
+      label: "35%",
+      metricType: "rates",
     },
     revocationCountsByMonth: {
       isUpward: false,
       value: 30,
-      label: '30',
-      metricType: 'counts',
+      label: "30",
+      metricType: "counts",
     },
     supervisionSuccessSnapshot: {
       isUpward: true,
       value: 75,
-      label: '75%',
-      metricType: 'rates',
+      label: "75%",
+      metricType: "rates",
     },
   },
 };
@@ -70,11 +70,16 @@ function Goal(isUpward, value, label, metricType) {
 
 function getGoalForChart(stateCode, chartId) {
   const goalDict = GOALS[stateCode][chartId];
-  return new Goal(goalDict.isUpward, goalDict.value, goalDict.label, goalDict.metricType);
+  return new Goal(
+    goalDict.isUpward,
+    goalDict.value,
+    goalDict.label,
+    goalDict.metricType
+  );
 }
 
 function goalLabelContentString(goal) {
-  return 'goal: '.concat(goal.label);
+  return "goal: ".concat(goal.label);
 }
 
 /**
@@ -82,15 +87,15 @@ function goalLabelContentString(goal) {
  * or away from the goal.
  */
 function trendlineGoalText(trendlineValues, goal) {
-  const towards = 'towards the goal';
-  const away = 'away from the goal';
+  const towards = "towards the goal";
+  const away = "away from the goal";
   const slopeOfTrendline = trendlineSlope(trendlineValues);
-  let trendlineText = '';
+  let trendlineText = "";
 
   if (goal.isUpward) {
-    trendlineText = (slopeOfTrendline > 0) ? towards : away;
+    trendlineText = slopeOfTrendline > 0 ? towards : away;
   } else {
-    trendlineText = (slopeOfTrendline < 0) ? towards : away;
+    trendlineText = slopeOfTrendline < 0 ? towards : away;
   }
 
   return trendlineText;
@@ -107,7 +112,7 @@ function getMinForGoalAndData(goalValue, dataPoints, stepSize) {
   if (goalValue < minValue) {
     minValue = goalValue;
   }
-  return (minValue - stepSize) - ((minValue - stepSize) % stepSize);
+  return minValue - stepSize - ((minValue - stepSize) % stepSize);
 }
 
 /**
@@ -121,10 +126,15 @@ function getMaxForGoalAndData(goalValue, dataPoints, stepSize) {
   if (goalValue > maxValue) {
     maxValue = goalValue;
   }
-  return (maxValue + stepSize) + (stepSize - (maxValue % stepSize));
+  return maxValue + stepSize + (stepSize - (maxValue % stepSize));
 }
 
-function getMaxForGoalAndDataIfGoalDisplayable(goal, dataPoints, stepSize, toggleStates) {
+function getMaxForGoalAndDataIfGoalDisplayable(
+  goal,
+  dataPoints,
+  stepSize,
+  toggleStates
+) {
   if (canDisplayGoal(goal, toggleStates)) {
     return getMaxForGoalAndData(goal.value, dataPoints, stepSize);
   }
@@ -133,54 +143,58 @@ function getMaxForGoalAndDataIfGoalDisplayable(goal, dataPoints, stepSize, toggl
 
 function chartAnnotationForGoal(goal, annotationId, overrides) {
   return {
-    drawTime: 'afterDatasetsDraw',
-    events: ['click'],
+    drawTime: "afterDatasetsDraw",
+    events: ["click"],
 
     // Array of annotation configuration objects
     // See below for detailed descriptions of the annotation options
-    annotations: [{
-      type: overrides.type || 'line',
-      mode: overrides.mode || 'horizontal',
-      value: goal.value,
+    annotations: [
+      {
+        type: overrides.type || "line",
+        mode: overrides.mode || "horizontal",
+        value: goal.value,
 
-      // optional annotation ID (must be unique)
-      id: annotationId,
-      scaleID: 'y-axis-0',
+        // optional annotation ID (must be unique)
+        id: annotationId,
+        scaleID: "y-axis-0",
 
-      drawTime: 'afterDatasetsDraw',
+        drawTime: "afterDatasetsDraw",
 
-      borderColor: COLORS['red-standard'],
-      borderWidth: 2,
-      borderDash: [2, 2],
-      borderDashOffset: 5,
-      label: {
-        enabled: true,
-        content: goalLabelContentString(goal),
-        position: overrides.position || 'right',
+        borderColor: COLORS["red-standard"],
+        borderWidth: 2,
+        borderDash: [2, 2],
+        borderDashOffset: 5,
+        label: {
+          enabled: true,
+          content: goalLabelContentString(goal),
+          position: overrides.position || "right",
 
-        // Background color of label, default below
-        backgroundColor: 'rgba(0, 0, 0, 0)',
+          // Background color of label, default below
+          backgroundColor: "rgba(0, 0, 0, 0)",
 
-        fontFamily: 'sans-serif',
-        fontSize: 12,
-        fontStyle: 'bold',
-        fontColor: COLORS['red-standard'],
+          fontFamily: "sans-serif",
+          fontSize: 12,
+          fontStyle: "bold",
+          fontColor: COLORS["red-standard"],
 
-        // Adjustment along x-axis (left-right) of label relative to above
-        // number (can be negative). For horizontal lines positioned left
-        // or right, negative values move the label toward the edge, and
-        // positive values toward the center.
-        xAdjust: overrides.xAdjust || 0,
+          // Adjustment along x-axis (left-right) of label relative to above
+          // number (can be negative). For horizontal lines positioned left
+          // or right, negative values move the label toward the edge, and
+          // positive values toward the center.
+          xAdjust: overrides.xAdjust || 0,
 
-        // Adjustment along y-axis (top-bottom) of label relative to above
-        // number (can be negative). For vertical lines positioned top or
-        // bottom, negative values move the label toward the edge, and
-        // positive values toward the center.
-        yAdjust: overrides.yAdjust || -10,
+          // Adjustment along y-axis (top-bottom) of label relative to above
+          // number (can be negative). For vertical lines positioned top or
+          // bottom, negative values move the label toward the edge, and
+          // positive values toward the center.
+          yAdjust: overrides.yAdjust || -10,
+        },
+
+        onClick(e) {
+          return e;
+        },
       },
-
-      onClick(e) { return e; },
-    }],
+    ],
   };
 }
 

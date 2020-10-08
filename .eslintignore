@@ -92,6 +92,7 @@ public/
 !src/utils/charts/__tests__/trendline.test.js
 !src/utils/logger.js
 !src/utils/transforms/**/*.js
+!src/utils/charts/**/*.js
 !src/views/NotFound.js
 !src/views/Profile.js
 !src/views/VerificationNeeded.js

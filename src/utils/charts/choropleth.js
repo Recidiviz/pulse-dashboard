@@ -1,5 +1,5 @@
 // Recidiviz - a data platform for criminal justice reform
-// Copyright (C) 2019 Recidiviz, Inc.
+// Copyright (C) 2020 Recidiviz, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -14,16 +14,15 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-import { scaleLinear } from 'd3-scale';
-import { toHumanReadable } from '../transforms/labels';
-import { COLORS } from '../../assets/scripts/constants/colors';
+import { scaleLinear } from "d3-scale";
+import { COLORS } from "../../assets/scripts/constants/colors";
 
-const BLUES = ['#F5F6F7', '#9FB1E3', COLORS['blue-standard-2']];
-const DARK_BLUES = ['#CCD1DE', '#8897C4', '#1F2A3B'];
-const REDS = ['#F7F5F6', '#E39FB1', COLORS['red-standard']];
-const DARK_REDS = ['#DECCD1', '#C48897', '#3B1F2A'];
+const BLUES = ["#F5F6F7", "#9FB1E3", COLORS["blue-standard-2"]];
+const DARK_BLUES = ["#CCD1DE", "#8897C4", "#1F2A3B"];
+const REDS = ["#F7F5F6", "#E39FB1", COLORS["red-standard"]];
+const DARK_REDS = ["#DECCD1", "#C48897", "#3B1F2A"];
 
-function colorForValue(value, maxValue, useDark, possibleNegative) {
+export function colorForValue(value, maxValue, useDark, possibleNegative) {
   const scaleValue = possibleNegative ? Math.abs(value) : value;
   const valueWasNegative = value < 0;
 
@@ -62,17 +61,3 @@ function colorForValue(value, maxValue, useDark, possibleNegative) {
   }
   return positiveScale(scaleValue);
 }
-
-function countyNameFromCode(stateCode, countyCode) {
-  if (!stateCode || !countyCode) {
-    return undefined;
-  }
-  let newCountyName = countyCode.replace(stateCode.concat('_'), '');
-  newCountyName = toHumanReadable(newCountyName);
-  return newCountyName;
-}
-
-export {
-  colorForValue,
-  countyNameFromCode,
-};
