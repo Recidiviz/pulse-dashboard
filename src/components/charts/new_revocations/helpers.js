@@ -94,7 +94,7 @@ export const applyTopLevelFilters = (filters) => (
       filters.supervisionLevel &&
       !skippedFilters.includes("supervisionLevel") &&
       !nullSafeComparison(item.supervision_level, filters.supervisionLevel) &&
-      item.supervision_level
+      !(treatCategoryAllAsAbsent && isAllItem(filters.supervisionLevel))
     ) {
       return false;
     }
