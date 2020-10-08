@@ -34,6 +34,7 @@ import ModeSwitcher from "../ModeSwitcher";
 import ExportMenu from "../../ExportMenu";
 import { modeButtons } from "./helpers";
 import { filtersPropTypes } from "../../propTypes";
+import { translate } from "../../../../views/tenants/utils/i18nSettings";
 
 const RevocationCount = ({
   chartId,
@@ -57,7 +58,6 @@ const RevocationCount = ({
 
   const labels = map("district", data);
   const dataPoints = data.map((item) => item.count);
-
   const barBackgroundColor = ({ dataIndex }) =>
     currentDistricts.find(
       (currentDistrict) =>
@@ -73,7 +73,7 @@ const RevocationCount = ({
         labels,
         datasets: [
           {
-            label: "Revocations",
+            label: translate("Revocations"),
             backgroundColor: barBackgroundColor,
             data: dataPoints,
           },
@@ -100,7 +100,7 @@ const RevocationCount = ({
               id: "y-axis-0",
               scaleLabel: {
                 display: true,
-                labelString: "Number of people revoked",
+                labelString: `Number of people ${translate("revoked")}`,
               },
               stacked: true,
             },
@@ -118,7 +118,6 @@ const RevocationCount = ({
       }}
     />
   );
-
   return (
     <div>
       <h4>
@@ -132,7 +131,7 @@ const RevocationCount = ({
         />
       </h4>
       <h6 className="pB-20">{timeDescription}</h6>
-      <ModeSwitcher mode="counts" setMode={setMode} buttons={modeButtons} />
+      <ModeSwitcher mode="counts" setMode={setMode} buttons={modeButtons()} />
       <div className="static-chart-container fs-block">{chart}</div>
     </div>
   );

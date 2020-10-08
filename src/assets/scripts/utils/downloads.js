@@ -17,9 +17,9 @@
 
 import downloadjs from "downloadjs";
 import * as csvExport from "jsonexport/dist";
-import JSZip from "jszip";
 import { timeStamp } from "./time";
-import infoAboutChart from "../../../utils/charts/info";
+import JSZip from "jszip";
+import { translate } from "../../../views/tenants/utils/i18nSettings";
 import getFilters from "./getFilters";
 import getViolation from "./getViolation";
 
@@ -105,7 +105,7 @@ function downloadMethodologyFile(
   toggleStates
 ) {
   const filename = "methodology.txt";
-  const infoChart = infoAboutChart[chartId] || [];
+  const infoChart = translate("methodology")[chartId] || [];
   const exportDate = new Date().toLocaleDateString("en-US");
   const filters = getFilters(toggleStates);
   const violation = getViolation(toggleStates);

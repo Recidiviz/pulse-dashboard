@@ -26,7 +26,7 @@ import RevocationsByRace from "../../../../components/charts/new_revocations/Rev
 import RevocationsByDistrict from "../../../../components/charts/new_revocations/RevocationsByDistrict/RevocationsByDistrict";
 import RevocationCountOverTime from "../../../../components/charts/new_revocations/RevocationsOverTime";
 import RevocationMatrix from "../../../../components/charts/new_revocations/RevocationMatrix/RevocationMatrix";
-import RevocationMatrixExplanation from "../../../../components/charts/new_revocations/RevocationMatrixExplanation";
+import RevocationMatrixExplanation from "../../../../components/charts/new_revocations/RevocationMatrix/RevocationMatrixExplanation";
 import ToggleBar from "../../../../components/charts/new_revocations/ToggleBar/ToggleBar";
 import MetricPeriodMonthsFilter from "../../../../components/charts/new_revocations/ToggleBar/MetricPeriodMonthsFilter";
 import DistrictFilter from "../../../../components/charts/new_revocations/ToggleBar/DistrictFilter";
@@ -52,9 +52,9 @@ import {
   getUserDistricts,
 } from "../../../../utils/authentication/user";
 import flags from "../../../../flags";
-import * as lanternState from "../../../../utils/lanternConstants";
+import * as lanternTenant from "../../utils/lanternTenants";
 
-const stateCode = lanternState.PA;
+const stateCode = lanternTenant.PA;
 const admissionTypeOptions = [
   { value: "All", label: "ALL" },
   { value: "REVOCATION", label: "Revocation" },
