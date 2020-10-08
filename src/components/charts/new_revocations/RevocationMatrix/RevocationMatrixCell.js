@@ -37,7 +37,9 @@ const RevocationMatrixCell = ({ count, maxCount, isSelected, onClick }) => {
   };
 
   const cellStyle = {
-    background: `rgba(0, 44, 66, ${ratio})`, // lantern-dark-blue with opacity
+    // lantern-dark-blue with opacity
+    background:
+      ratio === 0 ? COLORS.white : `rgba(0, 44, 66, ${Math.max(ratio, 0.05)})`,
     width: "100%",
     height: "100%",
     borderRadius: Math.ceil(radius / 2),
