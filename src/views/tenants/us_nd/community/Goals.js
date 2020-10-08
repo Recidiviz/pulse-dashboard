@@ -28,12 +28,7 @@ import RevocationAdmissionsSnapshot from "../../../../components/charts/communit
 import RevocationCountOverTime from "../../../../components/charts/community/RevocationCountOverTime";
 import SupervisionSuccessSnapshot from "../../../../components/charts/community/SupervisionSuccessSnapshot";
 import useChartData from "../../../../hooks/useChartData";
-
-const metrics = {
-  district: ["all"],
-  metricPeriodMonths: "36",
-  supervisionType: "all",
-};
+import { metrics } from "./constants";
 
 const CommunityGoals = () => {
   const { apiData, isLoading } = useChartData("us_nd/community/goals");

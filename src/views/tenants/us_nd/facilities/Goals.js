@@ -25,14 +25,8 @@ import Methodology from "../../../../components/charts/Methodology";
 import PeriodLabel from "../../../../components/charts/PeriodLabel";
 import DaysAtLibertySnapshot from "../../../../components/charts/facilities/DaysAtLibertySnapshot";
 import ReincarcerationCountOverTime from "../../../../components/charts/facilities/ReincarcerationCountOverTime";
-// eslint-disable-next-line import/no-cycle
 import useChartData from "../../../../hooks/useChartData";
-
-const metrics = {
-  district: ["all"],
-  metricPeriodMonths: "36",
-  supervisionType: "all",
-};
+import { metrics } from "./constants";
 
 const FacilitiesGoals = () => {
   const { apiData, isLoading } = useChartData("us_nd/facilities/goals");
