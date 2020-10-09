@@ -23,9 +23,9 @@ import get from "lodash/fp/get";
 
 import { SUPERVISION_LEVELS } from "../../../components/charts/new_revocations/ToggleBar/options";
 import { timeStamp } from './time';
-import infoAboutChart from '../../../utils/charts/info';
 import JSZip from 'jszip';
 import { humanReadableTitleCase } from '../../../utils/transforms/labels';
+import { translate } from "../../../views/tenants/utils/i18nSettings";
 
 // Functions for flowing through browser-specific download functionality
 // https://stackoverflow.com/questions/9847580/how-to-detect-safari-chrome-ie-firefox-and-opera-browser
@@ -170,7 +170,7 @@ function getViolation(toggleStates) {
 
 function downloadMethodologyFile(chartId, chartTitle, timeWindowDescription, toggleStates) {
   const filename = "methodology.txt";
-  const infoChart = infoAboutChart[chartId] || [];
+  const infoChart = translate("methodology")[chartId] || [];
   const exportDate = new Date().toLocaleDateString('en-US');
   const filters = getFilters(toggleStates);
   const violation = getViolation(toggleStates);

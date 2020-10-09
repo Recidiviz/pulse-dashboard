@@ -46,12 +46,9 @@ import {
   tooltipForFooterWithCounts,
 } from "../../../../utils/charts/significantStatistics";
 import { tooltipForRateMetricWithCounts } from "../../../../utils/charts/toggles";
-import {
-  humanReadableTitleCase,
-  riskLevelValueToLabelByStateCode,
-  riskLevels,
-} from "../../../../utils/transforms/labels";
+import { humanReadableTitleCase } from "../../../../utils/transforms/labels";
 import { filtersPropTypes } from "../../propTypes";
+import { translate } from "../../../../views/tenants/utils/i18nSettings";
 
 const chartId = "revocationsByRiskLevel";
 
@@ -92,15 +89,15 @@ const RevocationsByRiskLevel = ({
     treatCategoryAllAsAbsent
   );
 
-  const riskLevelValueToLabel = riskLevelValueToLabelByStateCode[stateCode];
+  const riskLevels = translate("riskLevelsMap");
 
   const riskLevelCounts = pipe(
-    filter((data) => riskLevels.includes(data.risk_level)),
+    filter((data) => Object.keys(riskLevels).includes(data.risk_level)),
     groupBy("risk_level"),
     values,
-    sortBy((dataset) => riskLevels.indexOf(dataset[0].risk_level)),
+    sortBy((dataset) => Object.keys(riskLevels).indexOf(dataset[0].risk_level)),
     map((dataset) => {
-      const riskLevelLabel = riskLevelValueToLabel[dataset[0].risk_level];
+      const riskLevelLabel = riskLevels[dataset[0].risk_level];
       const label = humanReadableTitleCase(riskLevelLabel);
       const numerator = sumIntBy("population_count", dataset);
       const denominator = sumIntBy(denominatorKey, dataset);
@@ -210,7 +207,7 @@ const RevocationsByRiskLevel = ({
       </h4>
       <h6 className="pB-20">{timeDescription}</h6>
       {flags.enableRevocationRateByExit && (
-        <ModeSwitcher mode={mode} setMode={setMode} buttons={modeButtons} />
+        <ModeSwitcher mode={mode} setMode={setMode} buttons={modeButtons()} />
       )}
       <div className="static-chart-container fs-block">{chart}</div>
     </div>

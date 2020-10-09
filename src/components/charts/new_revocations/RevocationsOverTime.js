@@ -42,6 +42,7 @@ import { sortFilterAndSupplementMostRecentMonths } from "../../../utils/transfor
 import { monthNamesAllWithYearsFromNumbers } from "../../../utils/transforms/months";
 import { generateTrendlineDataset } from "../../../utils/charts/trendline";
 import { filtersPropTypes } from "../propTypes";
+import { translate } from "../../../views/tenants/utils/i18nSettings";
 
 const chartId = "revocationsOverTime";
 
@@ -125,7 +126,7 @@ const RevocationsOverTime = ({
         {
           scaleLabel: {
             display: true,
-            labelString: "People revoked",
+            labelString: `Number of people ${translate("revoked")}`,
           },
           ticks: {
             min: 0,
@@ -187,11 +188,11 @@ const RevocationsOverTime = ({
   return (
     <div>
       <h4>
-        Number of admissions per month
+        {translate("revocationsOverTimeXAxis")}
         <ExportMenu
           chartId={chartId}
           chart={chart}
-          metricTitle="Number of admissions per month"
+          metricTitle={translate("revocationsOverTimeXAxis")}
           timeWindowDescription={getTrailingLabelFromMetricPeriodMonthsToggle(
             metricPeriodMonths
           )}

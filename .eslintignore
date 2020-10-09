@@ -48,6 +48,7 @@ public/
 !src/components/charts/facilities/ReincarcerationRateByStayLength.js
 !src/components/charts/facilities/__tests__/**/*.js
 !src/components/charts/new_revocations/propTypes.js
+!src/components/charts/new_revocations/__tests__/helpers.test.js
 !src/components/charts/new_revocations/helpers.js
 !src/components/charts/new_revocations/helpers/**/*.js
 !src/components/charts/new_revocations/CaseTable/**/*.js
@@ -91,6 +92,7 @@ public/
 !src/utils/charts/__tests__/trendline.test.js
 !src/utils/logger.js
 !src/utils/transforms/years.js
+!src/utils/transforms/labels.js
 !src/utils/transforms/__tests__/years.test.js
 !src/views/NotFound.js
 !src/views/Profile.js
@@ -98,3 +100,4 @@ public/
 !src/views/tenants/us_mo/**/*.js
 !src/views/tenants/us_nd/**/*.js
 !src/views/tenants/us_pa/**/*.js
+!src/views/tenants/utils/*.js

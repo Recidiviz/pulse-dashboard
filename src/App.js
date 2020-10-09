@@ -40,14 +40,16 @@ import UsPaLayout from "./views/tenants/us_pa/Layout";
 import UsPaCommunityRevocations from "./views/tenants/us_pa/community/Revocations";
 import initFontAwesome from "./utils/initFontAwesome";
 import { initIntercomSettings } from "./utils/intercomSettings";
+import { initI18n } from "./views/tenants/utils/i18nSettings";
 
 import "./assets/scripts/index";
 import "./assets/styles/index.scss";
-import * as lanternState from "./utils/lanternConstants";
-import * as coreState from "./utils/coreConstants";
+import * as lanternTenant from "./views/tenants/utils/lanternTenants";
+import * as coreTenant from "./views/tenants/utils/coreTenants";
 
 initFontAwesome();
 initIntercomSettings();
+initI18n();
 
 // prettier-ignore
 const App = () => (
@@ -57,7 +59,7 @@ const App = () => (
         <Route path="/verify" component={VerificationNeeded} />
 
         <TenantRoutes>
-          <UsMoLayout stateCode={lanternState.MO}>
+          <UsMoLayout stateCode={lanternTenant.MO}>
             <Switch>
               <Route path="/community/revocations" component={UsMoCommunityRevocations} />
               <Route path="/profile" component={Profile} />
@@ -67,7 +69,7 @@ const App = () => (
             </Switch>
           </UsMoLayout>
 
-          <UsNdLayout stateCode={coreState.ND}>
+          <UsNdLayout stateCode={coreTenant.ND}>
             <Switch>
               <Route path="/community/goals" component={UsNdCommunityGoals} />
               <Route path="/community/explore" component={UsNdCommunityExplore} />
@@ -84,7 +86,7 @@ const App = () => (
             </Switch>
           </UsNdLayout>
 
-          <UsPaLayout stateCode={lanternState.PA}>
+          <UsPaLayout stateCode={lanternTenant.PA}>
             <Switch>
               <Route path="/community/revocations" component={UsPaCommunityRevocations} />
               <Route path="/profile" component={Profile} />

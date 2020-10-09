@@ -1,5 +1,5 @@
 // Recidiviz - a data platform for criminal justice reform
-// Copyright (C) 2020 Recidiviz, Inc.
+// Copyright (C) 2019 Recidiviz, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -15,7 +15,26 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-export const MO = "us_mo";
-export const PA = "us_pa";
+import { I18n } from "i18n";
 
-export const LANTERN_STATES = [MO, PA]
+import { TRANSLATIONS } from "./lanternTenants";
+
+export const i18n = new I18n();
+
+export function initI18n() {
+  i18n.configure({
+    staticCatalog: {
+      us_mo: TRANSLATIONS.MO,
+      us_pa: TRANSLATIONS.PA,
+    },
+  });
+}
+
+export function setTranslateLocale(tenant) {
+  i18n.setLocale(tenant);
+}
+
+export function translate(term) {
+  /* eslint-disable no-underscore-dangle */
+  return i18n.__(term);
+}
