@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-
+// TODO: Compare with src/components/charts/new_revocations/ToggleBar/ToggleBar.js and merge
 /* eslint-disable jsx-a11y/label-has-associated-control */
 
 import React, { useCallback, useMemo } from "react";

@@ -15,7 +15,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React, { useCallback } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 
 import Select from "../../../controls/Select";
@@ -29,9 +29,7 @@ const ToggleBarFilter = ({
   defaultOption,
   onChange,
 }) => {
-  const onValueChange = useCallback((option) => onChange(option.value), [
-    onChange,
-  ]);
+  const onValueChange = (option) => onChange(option.value);
 
   const selectedOption = options.find((option) => option.value === value);
 

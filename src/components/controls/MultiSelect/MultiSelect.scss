@@ -1,6 +1,10 @@
 .MultiSelect {
   flex-grow: 1;
 
+  &__value-container {
+    white-space: nowrap;
+  }
+
   &__group-heading {
     padding-bottom: 8px;
   }

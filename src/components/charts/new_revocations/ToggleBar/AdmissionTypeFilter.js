@@ -15,7 +15,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React, { useCallback } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import map from "lodash/fp/map";
 
@@ -31,10 +31,7 @@ const AdmissionTypeFilter = ({
   onChange,
   options = [],
 }) => {
-  const onValueChange = useCallback(
-    (selected) => onChange(map("value", selected)),
-    [onChange]
-  );
+  const onValueChange = (selected) => onChange(map("value", selected));
 
   const selectValue = flatOptions(options).filter((option) =>
     value.includes(option.value)

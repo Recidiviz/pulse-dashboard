@@ -17,21 +17,26 @@
 
 import React from "react";
 import PropTypes from "prop-types";
+import cn from "classnames";
+import "./FilterField.scss";
 
 import useTopBarShrinking from "../../../../hooks/useTopBarShrinking";
 
 const FilterField = ({ label, children }) => {
   const isTopBarShrinking = useTopBarShrinking();
-  const topLevelFilterClassName = isTopBarShrinking
-    ? "top-level-filter top-level-active d-f align-items-center"
-    : "top-level-filter";
-  const titleLevelClassName = isTopBarShrinking
-    ? "title-level top-level-filters-title"
-    : "title-level";
-
   return (
-    <div className={topLevelFilterClassName}>
-      <h4 className={titleLevelClassName}>{label}</h4>
+    <div
+      className={cn("FilterField", {
+        "FilterField--shrink": isTopBarShrinking,
+      })}
+    >
+      <h4
+        className={cn("FilterField__label", {
+          "FilterField__label--shrink": isTopBarShrinking,
+        })}
+      >
+        {label}
+      </h4>
       {children}
     </div>
   );

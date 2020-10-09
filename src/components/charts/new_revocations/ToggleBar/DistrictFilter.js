@@ -15,7 +15,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React, { useCallback, useMemo } from "react";
+import React, { useMemo } from "react";
 import PropTypes from "prop-types";
 
 import filter from "lodash/fp/filter";
@@ -50,11 +50,6 @@ const DistrictFilter = ({ value, stateCode, onChange }) => {
 
   const { district, region } = getUserAppMetadata(user);
   const userDistricts = getUserDistricts(user);
-
-  const onValueChange = useCallback(
-    (options) => onChange(map("value", options)),
-    [onChange]
-  );
 
   const select = useMemo(() => {
     if (district) {
@@ -93,6 +88,8 @@ const DistrictFilter = ({ value, stateCode, onChange }) => {
           defaultValue: [allDistrictsOption],
         };
 
+    const onValueChange = (newOptions) => onChange(map("value", newOptions));
+
     const selectValue = options.filter((option) =>
       value.includes(option.value)
     );
@@ -109,15 +106,7 @@ const DistrictFilter = ({ value, stateCode, onChange }) => {
         isSearchable
       />
     );
-  }, [
-    district,
-    userDistricts,
-    region,
-    isLoading,
-    apiData,
-    onValueChange,
-    value,
-  ]);
+  }, [district, userDistricts, region, isLoading, apiData, onChange, value]);
 
   return <FilterField label="District">{select}</FilterField>;
 };
