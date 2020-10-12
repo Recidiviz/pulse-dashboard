@@ -41,9 +41,6 @@ const MultiSelect = ({
     (selectedOptions) => {
       const newOptions = getNewOptions(options, summingOption, selectedOptions);
       onChange(newOptions);
-      setTimeout(() => {
-        ref.current.select.inputRef.focus();
-      }, 0);
     },
     [onChange, options, summingOption]
   );
