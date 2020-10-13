@@ -15,19 +15,20 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import { getFilters } from "../downloads";
+import getFilters from "../getFilters";
 
-describe("#getFilters", () => {
+describe("getFilters tests", () => {
   it("outputs all filters with value 'All'", () => {
     const given = {
       metricPeriodMonths: "12",
       district: "All",
       chargeCategory: "All",
       supervisionType: "All",
+      supervisionLevel: "All",
     };
 
     const expected =
-      "1 year, All districts, All case types, All supervision types";
+      "1 year, All districts, All case types, All supervision types, All supervision levels";
 
     expect(getFilters(given)).toBe(expected);
   });
@@ -38,12 +39,18 @@ describe("#getFilters", () => {
       district: "SLCRC",
       chargeCategory: "SEX_OFFENCE",
       supervisionType: "PROBATION",
+      supervisionLevel: "ENHANCED",
     };
 
     const expected =
-      "3 years, District: SLCRC, Case type: Sex Offence, Supervision type: Probation";
+      "3 years, District: SLCRC, Case type: Sex Offence, Supervision type: Probation, Supervision level: Enhanced Supervision";
 
     expect(getFilters(given)).toBe(expected);
+    expect(getFilters({})).toBe("");
+    expect(getFilters({ metricPeriodMonths: "1" })).toBe("1 month");
+    expect(getFilters({ metricPeriodMonths: "3" })).toBe("3 months");
+    expect(getFilters({ metricPeriodMonths: "6" })).toBe("6 months");
+    expect(getFilters({ metricPeriodMonths: "any" })).toBe("1 month");
   });
 
   it("outputs all expect supervision type", () => {
