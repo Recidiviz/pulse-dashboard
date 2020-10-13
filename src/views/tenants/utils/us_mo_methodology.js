@@ -191,7 +191,7 @@ violation reports and notices of citation. For example, if there were a total of
 reports and notices of citation, but each report listed 2 different violations, the denominator in
 each percentage would still be 100. If, out of these 100 violation reports and notices of citation,
 20 included at least one employment violation, then the percentage for employment violations would
-be 20/100=10%.`,
+be 20/100=20%.`,
     },
     {
       id: 2,
