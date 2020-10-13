@@ -37,7 +37,6 @@ import { parseAndFormatViolationRecord } from "../../../../utils/charts/violatio
 import {
   humanReadableTitleCase,
   nameFromOfficerId,
-  riskLevelValueToLabelByStateCode,
 } from "../../../../utils/transforms/labels";
 import { filtersPropTypes } from "../../propTypes";
 import useChartData from "../../../../hooks/useChartData";
@@ -144,9 +143,7 @@ const CaseTable = ({
       nullSafeLabel(record.state_id),
       nullSafeLabel(record.district),
       nullSafeLabel(nameFromOfficerId(record.officer)),
-      nullSafeLabel(
-        riskLevelValueToLabelByStateCode[stateCode][record.risk_level]
-      ),
+      nullSafeLabel(translate("riskLevelsMap")[record.risk_level]),
       nullSafeLabel(normalizeLabel(record.officer_recommendation)),
       nullSafeLabel(parseAndFormatViolationRecord(record.violation_record)),
     ],
@@ -203,9 +200,7 @@ const CaseTable = ({
               <td>{details.state_id}</td>
               {nullSafeCell(details.district)}
               {nullSafeCell(nameFromOfficerId(details.officer))}
-              {nullSafeCell(
-                riskLevelValueToLabelByStateCode[stateCode][details.risk_level]
-              )}
+              {nullSafeCell(translate("riskLevelsMap")[details.risk_level])}
               {nullSafeCell(normalizeLabel(details.officer_recommendation))}
               {nullSafeCell(
                 parseAndFormatViolationRecord(details.violation_record)

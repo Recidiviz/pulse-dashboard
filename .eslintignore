@@ -94,6 +94,7 @@ public/
 !src/utils/charts/__tests__/trendline.test.js
 !src/utils/logger.js
 !src/utils/transforms/years.js
+!src/utils/transforms/labels.js
 !src/utils/transforms/__tests__/years.test.js
 !src/views/NotFound.js
 !src/views/Profile.js
