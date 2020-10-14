@@ -24,7 +24,7 @@ import SideBarMenu from "../../../components/sidebar/SideBarMenu";
 import SideBarGroup from "../../../components/sidebar/SideBarGroup";
 import SideBarLink from "../../../components/sidebar/SideBarLink";
 import SideBarFeedback from "../../../components/sidebar/SideBarFeedback";
-import TopBarLayout from "../../../components/topbar/TopBarLayout";
+import TopBar from "../../../components/topbar/TopBar";
 import TopBarHamburgerMenu from "../../../components/topbar/TopBarHamburgerMenu";
 import TopBarTitle from "../../../components/topbar/TopBarTitle";
 import TopBarUserMenuForAuthenticatedUser from "../../../components/topbar/TopBarUserMenuForAuthenticatedUser";
@@ -76,7 +76,7 @@ const Layout = ({ children }) => {
       </div>
 
       <div className="page-container">
-        <TopBarLayout>
+        <TopBar>
           <ul className="nav-left">
             <TopBarHamburgerMenu onClick={toggleSideBar} />
             <TopBarTitle pathname={location.pathname} />
@@ -84,7 +84,7 @@ const Layout = ({ children }) => {
           <ul className="nav-right">
             <TopBarUserMenuForAuthenticatedUser />
           </ul>
-        </TopBarLayout>
+        </TopBar>
 
         {children}
 

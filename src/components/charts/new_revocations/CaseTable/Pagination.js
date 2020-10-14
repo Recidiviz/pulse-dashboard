@@ -36,7 +36,7 @@ const Pagination = ({ beginning, end, total, onUpdatePage }) => {
   const range = start !== end ? `${start}-${end}` : beginning + 1;
 
   return (
-    <div className="table-navigation fs-block">
+    <div className="Pagination fs-block">
       {arrowLeft}
       <span>{`Showing ${range} of ${total}`}</span>
       {arrowRight}

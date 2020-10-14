@@ -36,7 +36,7 @@ const ChartCard = ({
   const chartType = geoViewEnabled ? "svg" : "canvas";
 
   return (
-    <div className="col-md-6">
+    <div className="ChartCard col-md-6">
       <div className="bd bgc-white p-20">
         <div className="layers">
           <div className="layer w-100 pX-20 pT-20">

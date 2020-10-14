@@ -42,7 +42,7 @@ const ViolationFilter = ({ reportedViolations, violationType, onClick }) => {
   if (!formattedMatrixFilters) return null;
 
   return (
-    <div className="top-level-filters pre-top-level-filters">
+    <div className="ViolationFilter top-level-filters pre-top-level-filters">
       <FilterField label="Additional filters">
         <Chip
           label={formattedMatrixFilters}

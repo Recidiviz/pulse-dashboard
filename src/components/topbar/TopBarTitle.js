@@ -23,7 +23,10 @@ const TopBarTitle = ({ pathname = "" }) => {
   const title = pathname.substr(1).split("/").map(startCase).join(" > ");
 
   return (
-    <li style={{ paddingLeft: "20px", paddingTop: "22px" }}>
+    <li
+      className="TopBar__title"
+      style={{ paddingLeft: "20px", paddingTop: "22px" }}
+    >
       <h5 className="lh-1 mB-0 logo-text recidiviz-dark-green-text">{title}</h5>
     </li>
   );

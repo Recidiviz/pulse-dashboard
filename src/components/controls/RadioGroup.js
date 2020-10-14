@@ -26,10 +26,11 @@ const RadioGroup = ({ defaultValue, onChange, options }) => {
   const [state, setState] = useState(defaultValue);
 
   return (
-    <div className="radio-group">
+    <div className="RadioGroup">
       {options.map(({ value, label }) => (
-        <label key={value}>
+        <label className="RadioGroup__label" key={value}>
           <input
+            className="RadioGroup__input"
             type="radio"
             checked={state === value}
             onChange={() => {
