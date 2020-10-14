@@ -18,7 +18,7 @@
 import React from "react";
 
 const SideBarFeedback = () => (
-  <li className="bottom-item">
+  <li className="SideBarFeedback bottom-item">
     <a
       className="sidebar-link"
       id="feedback-link"

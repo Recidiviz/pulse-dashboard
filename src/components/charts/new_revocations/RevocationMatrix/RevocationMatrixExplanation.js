@@ -20,7 +20,7 @@ import React from "react";
 import { translate } from "../../../../views/tenants/utils/i18nSettings";
 
 const RevocationMatrixExplanation = () => (
-  <div className="matrix-explanation bgc-white p-20">
+  <div className="RevocationMatrixExplanation bgc-white p-20">
     <h4>Using this chart</h4>
     <p className="fw-400">{translate("matrixExplanationP1")}</p>
     <p className="fw-400">{translate("matrixExplanationP2")}</p>

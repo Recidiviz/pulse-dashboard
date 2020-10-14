@@ -186,7 +186,7 @@ const RevocationsOverTime = ({
   const chart = countZero / metricPeriodMonths >= 0.33 ? barChart : lineChart;
 
   return (
-    <div>
+    <div className="RevocationsByViolation">
       <h4>
         {translate("revocationsOverTimeXAxis")}
         <ExportMenu

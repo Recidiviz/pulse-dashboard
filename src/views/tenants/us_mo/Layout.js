@@ -19,7 +19,7 @@ import React from "react";
 import PropTypes from "prop-types";
 
 import Footer from "../../../components/Footer";
-import TopBarLayout from "../../../components/topbar/TopBarLayout";
+import TopBar from "../../../components/topbar/TopBar";
 import TopBarLogo from "../../../components/topbar/TopBarLogo";
 import TopBarUserMenuForAuthenticatedUser from "../../../components/topbar/TopBarUserMenuForAuthenticatedUser";
 import { setTranslateLocale } from "../utils/i18nSettings";
@@ -31,12 +31,12 @@ const Layout = ({ children }) => {
   return (
     <div id="app">
       <div className="wide-page-container">
-        <TopBarLayout isWide>
+        <TopBar isWide>
           <TopBarLogo />
           <ul className="nav-right">
             <TopBarUserMenuForAuthenticatedUser />
           </ul>
-        </TopBarLayout>
+        </TopBar>
 
         {children}
 

@@ -167,7 +167,7 @@ const PercentRevokedByExits = ({
   );
 
   return (
-    <div>
+    <div className="PercentRevokedByExits">
       <h4>
         {chartTitle}
         {showWarning && <DataSignificanceWarningIcon />}

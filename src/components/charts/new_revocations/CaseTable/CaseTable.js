@@ -165,7 +165,7 @@ const CaseTable = ({
   });
 
   return (
-    <div className="case-table">
+    <div className="CaseTable">
       <h4>
         Admitted individuals
         <ExportMenu
