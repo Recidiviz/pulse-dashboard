@@ -30,8 +30,8 @@ const Chip = ({
 }) => (
   <div
     className={cx("Chip", {
-      Chip_selected: isSelected,
-      Chip_shrinking: isShrinking,
+      "Chip--selected": isSelected,
+      "Chip--shrinking": isShrinking,
     })}
   >
     <button type="button" className="Chip__label" onClick={onClick}>
