@@ -18,6 +18,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 
+import { useAuth0 } from "../../../react-auth0-spa";
+import { enableIntercomLauncherForUser } from "../../../utils/intercomSettings";
 import Footer from "../../../components/Footer";
 import TopBar from "../../../components/topbar/TopBar";
 import TopBarLogo from "../../../components/topbar/TopBarLogo";
@@ -26,6 +28,8 @@ import { setTranslateLocale } from "../utils/i18nSettings";
 import * as lanternTenant from "../utils/lanternTenants";
 
 const Layout = ({ children }) => {
+  const { user } = useAuth0();
+  enableIntercomLauncherForUser(user);
   setTranslateLocale(lanternTenant.MO);
 
   return (

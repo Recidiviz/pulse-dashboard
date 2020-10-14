@@ -30,8 +30,11 @@ import TopBarTitle from "../../../components/topbar/TopBarTitle";
 import TopBarUserMenuForAuthenticatedUser from "../../../components/topbar/TopBarUserMenuForAuthenticatedUser";
 import Footer from "../../../components/Footer";
 import useSideBar from "../../../hooks/useSideBar";
+import { disableIntercomLauncher } from "../../../utils/intercomSettings";
 
 const Layout = ({ children }) => {
+  disableIntercomLauncher();
+
   const { isSideBarCollapsed, toggleSideBar } = useSideBar();
   const location = useLocation();
 
