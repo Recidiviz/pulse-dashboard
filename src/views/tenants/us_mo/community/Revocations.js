@@ -69,7 +69,6 @@ const Revocations = () => {
       : {}),
     district: [district || filterOptions.district.defaultValue],
   });
-  console.log(filters);
 
   const updateFilters = (newFilters) => {
     setFilters({ ...filters, ...newFilters });
