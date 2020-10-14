@@ -41,7 +41,11 @@ function toggleYAxisTicksFor(
     };
   }
 
-  return {};
+  return {
+    min: undefined,
+    max: undefined,
+    stepSize: undefined,
+  };
 }
 
 function toggleYAxisTicksBasedOnGoal(
