@@ -47,7 +47,7 @@ const RevocationMatrixCell = ({ count, maxCount, isSelected, onClick }) => {
   };
 
   return (
-    <div className="cell">
+    <div className="RevocationMatrix__cell cell">
       <div style={containerStyle}>
         <button
           type="button"

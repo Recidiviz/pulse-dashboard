@@ -82,7 +82,7 @@ const RevocationCharts = ({
   );
 
   return (
-    <div className="static-charts d-f bgc-white m-20">
+    <div className="RevocationCharts static-charts d-f bgc-white m-20">
       <div className="chart-type-labels p-20">
         {CHARTS.map((chart) => (
           <div key={chart}>

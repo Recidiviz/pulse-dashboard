@@ -29,17 +29,16 @@ const Chip = ({
   isShrinking = false,
 }) => (
   <div
-    className={cx({
-      chip: true,
-      selected: isSelected,
-      shrinking: isShrinking,
+    className={cx("Chip", {
+      "Chip--selected": isSelected,
+      "Chip--shrinking": isShrinking,
     })}
   >
-    <button type="button" className="label" onClick={onClick}>
+    <button type="button" className="Chip__label" onClick={onClick}>
       {label}
     </button>
     {onDelete && (
-      <button type="button" className="delete" onClick={onDelete}>
+      <button type="button" className="Chip__delete-button" onClick={onDelete}>
         <i className="ti-close fw-900" />
       </button>
     )}

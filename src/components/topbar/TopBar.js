@@ -17,24 +17,25 @@
 
 import React from "react";
 import PropTypes from "prop-types";
+import cn from "classnames";
 
-import { getPeriodLabelFromMetricPeriodMonthsToggle } from "../../utils/charts/toggles";
-
-const PeriodLabel = ({ metricPeriodMonths }) => (
-  <div className="PeriodLabel layer bdT p-20 w-100">
-    <div className="peers ai-c jc-c gapX-20">
-      <div className="peer fw-600">
-        <small className="c-grey-500 fw-600">Period </small>
-        <span className="fsz-def fw-600 mR-10 c-grey-800">
-          {getPeriodLabelFromMetricPeriodMonthsToggle(metricPeriodMonths)}
-        </span>
-      </div>
-    </div>
+const TopBar = ({ children, isWide = false }) => (
+  <div
+    className={cn("TopBar", "header", "navbar", {
+      "wide-navbar": isWide,
+    })}
+  >
+    <div className="TopBar__container header-container">{children}</div>
   </div>
 );
 
-PeriodLabel.propTypes = {
-  metricPeriodMonths: PropTypes.string.isRequired,
+TopBar.defaultProps = {
+  isWide: false,
 };
 
-export default PeriodLabel;
+TopBar.propTypes = {
+  children: PropTypes.node.isRequired,
+  isWide: PropTypes.bool,
+};
+
+export default TopBar;
