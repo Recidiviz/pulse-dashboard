@@ -26,7 +26,6 @@ import pick from "lodash/fp/pick";
 import pipe from "lodash/fp/pipe";
 import toInteger from "lodash/fp/toInteger";
 
-import ExportMenu from "../ExportMenu";
 import Loading from "../../Loading";
 import Error from "../../Error";
 
@@ -36,6 +35,7 @@ import { axisCallbackForPercentage } from "../../../utils/charts/axis";
 import { tooltipForRateMetricWithCounts } from "../../../utils/charts/toggles";
 import { calculateRate } from "./helpers/rate";
 import { filtersPropTypes } from "../propTypes";
+import RevocationsByFeature from "./RevocationsByFeature";
 
 const chartId = "revocationsByViolationType";
 const violationCountKey = "violation_count";
@@ -104,20 +104,22 @@ const RevocationsByViolation = ({
       }
     });
 
+  const datasets = [
+    {
+      label: "Proportion of violations",
+      backgroundColor: colorTechnicalAndLaw(),
+      hoverBackgroundColor: colorTechnicalAndLaw(),
+      hoverBorderColor: colorTechnicalAndLaw(),
+      data: chartDataPoints,
+    },
+  ];
+
   const chart = (
     <Bar
       id={chartId}
       data={{
         labels: chartLabels,
-        datasets: [
-          {
-            label: "Proportion of violations",
-            backgroundColor: colorTechnicalAndLaw(),
-            hoverBackgroundColor: colorTechnicalAndLaw(),
-            hoverBorderColor: colorTechnicalAndLaw(),
-            data: chartDataPoints,
-          },
-        ],
+        datasets,
       }}
       options={{
         legend: {
@@ -168,21 +170,16 @@ const RevocationsByViolation = ({
   );
 
   return (
-    <div>
-      <h4>
-        Relative frequency of violation types
-        <ExportMenu
-          chartId={chartId}
-          chart={chart}
-          metricTitle="Relative frequency of violation types"
-          timeWindowDescription={timeDescription}
-          filters={filterStates}
-        />
-      </h4>
-      <h6 className="pB-20">{timeDescription}</h6>
-
-      <div className="static-chart-container fs-block">{chart}</div>
-    </div>
+    <RevocationsByFeature
+      chartTitle="Relative frequency of violation types"
+      timeDescription={timeDescription}
+      labels={chartLabels}
+      chartId={chartId}
+      datasets={datasets}
+      metricTitle="Relative frequency of violation types"
+      filterStates={filterStates}
+      chart={chart}
+    />
   );
 };
 

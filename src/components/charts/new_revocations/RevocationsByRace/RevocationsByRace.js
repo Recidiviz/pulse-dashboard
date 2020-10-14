@@ -23,13 +23,11 @@ import reduce from "lodash/fp/reduce";
 
 import {
   dataTransformer,
-  findDenominatorKeyByMode,
+  getDenominatorKeyByMode,
   getCounts,
   getLabelByMode,
 } from "./helpers";
 import ModeSwitcher from "../ModeSwitcher";
-import DataSignificanceWarningIcon from "../../DataSignificanceWarningIcon";
-import ExportMenu from "../../ExportMenu";
 import Loading from "../../../Loading";
 import Error from "../../../Error";
 
@@ -43,11 +41,8 @@ import {
 import { filtersPropTypes } from "../../propTypes";
 import { riskLevelLabels } from "../../../../utils/transforms/labels";
 import BarChartWithLabels from "../BarChartWithLabels";
-
-const modeButtons = [
-  { label: "Percent revoked of standing population", value: "rates" },
-  { label: "Percent revoked of exits", value: "exits" },
-];
+import RevocationsByFeature from "../RevocationsByFeature";
+import { translate } from "../../../../views/tenants/utils/i18nSettings";
 
 const chartId = "revocationsByRace";
 
@@ -62,12 +57,17 @@ const RevocationsByRace = ({
   const [mode, setMode] = useState("rates"); // rates | exits
 
   const numeratorKey = "population_count";
-  const denominatorKey = findDenominatorKeyByMode(mode);
+  const denominatorKey = getDenominatorKeyByMode(mode);
 
   const { isLoading, isError, apiData } = useChartData(
     `${stateCode}/newRevocations`,
     "revocations_matrix_distribution_by_race"
   );
+
+  const modeButtons = [
+    { label: translate("percentOfPopulationRevoked"), value: "rates" },
+    { label: "Percent revoked of exits", value: "exits" },
+  ];
 
   if (isLoading) {
     return <Loading />;
@@ -109,25 +109,21 @@ const RevocationsByRace = ({
   };
 
   return (
-    <div>
-      <h4>
-        Admissions by race/ethnicity and risk level
-        {showWarning && <DataSignificanceWarningIcon />}
-        <ExportMenu
-          chartId={chartId}
-          chart={{ props: { data } }}
-          metricTitle={`${getLabelByMode(
-            mode
-          )} by race/ethnicity and risk level`}
-          timeWindowDescription={timeDescription}
-          filters={filterStates}
-        />
-      </h4>
-      <h6 className="pB-20">{timeDescription}</h6>
-      {flags.enableRevocationRateByExit && (
-        <ModeSwitcher mode={mode} setMode={setMode} buttons={modeButtons} />
-      )}
-      <div className="static-chart-container fs-block">
+    <RevocationsByFeature
+      chartTitle="Admissions by race/ethnicity and risk level"
+      timeDescription={timeDescription}
+      filterStates={filterStates}
+      labels={data.labels}
+      chartId={chartId}
+      datasets={data.datasets}
+      metricTitle={`${getLabelByMode(mode)} by race/ethnicity and risk level`}
+      showWarning={showWarning}
+      modeSwitcher={
+        flags.enableRevocationRateByExit ? (
+          <ModeSwitcher mode={mode} setMode={setMode} buttons={modeButtons} />
+        ) : null
+      }
+      chart={
         <BarChartWithLabels
           id={chartId}
           data={data}
@@ -137,8 +133,8 @@ const RevocationsByRace = ({
           numerators={numerators}
           denominators={denominators}
         />
-      </div>
-    </div>
+      }
+    />
   );
 };
 
@@ -152,7 +148,6 @@ RevocationsByRace.propTypes = {
   dataFilter: PropTypes.func.isRequired,
   skippedFilters: PropTypes.arrayOf(PropTypes.string),
   treatCategoryAllAsAbsent: PropTypes.bool,
-  // eslint-disable-next-line react/forbid-prop-types
   filterStates: filtersPropTypes.isRequired,
   timeDescription: PropTypes.string.isRequired,
 };

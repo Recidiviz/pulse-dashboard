@@ -31,8 +31,6 @@ import { findDenominatorKeyByMode, getLabelByMode } from "./helpers";
 import { sumIntBy } from "../helpers/counts";
 import { calculateRate } from "../helpers/rate";
 import ModeSwitcher from "../ModeSwitcher";
-import DataSignificanceWarningIcon from "../../DataSignificanceWarningIcon";
-import ExportMenu from "../../ExportMenu";
 import Loading from "../../../Loading";
 import Error from "../../../Error";
 
@@ -49,6 +47,7 @@ import { tooltipForRateMetricWithCounts } from "../../../../utils/charts/toggles
 import { humanReadableTitleCase } from "../../../../utils/transforms/labels";
 import { filtersPropTypes } from "../../propTypes";
 import { translate } from "../../../../views/tenants/utils/i18nSettings";
+import RevocationsByFeature from "../RevocationsByFeature";
 
 const chartId = "revocationsByRiskLevel";
 
@@ -127,19 +126,20 @@ const RevocationsByRiskLevel = ({
     }
     return pattern.draw("diagonal-right-left", color, "#ffffff", 5);
   };
+  const datasets = [
+    {
+      label: chartLabel,
+      backgroundColor: barBackgroundColor,
+      data: chartDataPoints,
+    },
+  ];
 
   const chart = (
     <Bar
       id={chartId}
       data={{
         labels: chartLabels,
-        datasets: [
-          {
-            label: chartLabel,
-            backgroundColor: barBackgroundColor,
-            data: chartDataPoints,
-          },
-        ],
+        datasets,
       }}
       options={{
         legend: {
@@ -193,24 +193,22 @@ const RevocationsByRiskLevel = ({
   );
 
   return (
-    <div>
-      <h4>
-        Admissions by risk level
-        {showWarning === true && <DataSignificanceWarningIcon />}
-        <ExportMenu
-          chartId={chartId}
-          chart={chart}
-          metricTitle={`${chartLabel} by risk level`}
-          timeWindowDescription={timeDescription}
-          filters={filterStates}
-        />
-      </h4>
-      <h6 className="pB-20">{timeDescription}</h6>
-      {flags.enableRevocationRateByExit && (
-        <ModeSwitcher mode={mode} setMode={setMode} buttons={modeButtons()} />
-      )}
-      <div className="static-chart-container fs-block">{chart}</div>
-    </div>
+    <RevocationsByFeature
+      chartTitle="Admissions by risk level"
+      timeDescription={timeDescription}
+      labels={chartLabels}
+      chartId={chartId}
+      datasets={datasets}
+      metricTitle={`${chartLabel} by risk level`}
+      filterStates={filterStates}
+      chart={chart}
+      showWarning={showWarning}
+      modeSwitcher={
+        flags.enableRevocationRateByExit ? (
+          <ModeSwitcher mode={mode} setMode={setMode} buttons={modeButtons} />
+        ) : null
+      }
+    />
   );
 };
 
@@ -224,7 +222,6 @@ RevocationsByRiskLevel.propTypes = {
   dataFilter: PropTypes.func.isRequired,
   skippedFilters: PropTypes.arrayOf(PropTypes.string),
   treatCategoryAllAsAbsent: PropTypes.bool,
-  // eslint-disable-next-line react/forbid-prop-types
   filterStates: filtersPropTypes.isRequired,
   timeDescription: PropTypes.string.isRequired,
 };

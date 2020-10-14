@@ -60,7 +60,7 @@ export const getCounts = (transformedData) => {
   return { dataPoints, numerators, denominators };
 };
 
-export const findDenominatorKeyByMode = (mode) => {
+export const getDenominatorKeyByMode = (mode) => {
   switch (mode) {
     case "rates":
     default:

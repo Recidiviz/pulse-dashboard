@@ -25,12 +25,10 @@ import { translate } from "../../../../views/tenants/utils/i18nSettings";
 import {
   dataTransformer,
   getCounts,
-  findDenominatorKeyByMode,
+  getDenominatorKeyByMode,
   getLabelByMode,
 } from "./helpers";
 import ModeSwitcher from "../ModeSwitcher";
-import DataSignificanceWarningIcon from "../../DataSignificanceWarningIcon";
-import ExportMenu from "../../ExportMenu";
 import Loading from "../../../Loading";
 import Error from "../../../Error";
 
@@ -44,6 +42,7 @@ import useChartData from "../../../../hooks/useChartData";
 import { filtersPropTypes } from "../../propTypes";
 import { riskLevelLabels } from "../../../../utils/transforms/labels";
 import BarChartWithLabels from "../BarChartWithLabels";
+import RevocationsByFeature from "../RevocationsByFeature";
 
 const colors = [COLORS["lantern-light-blue"], COLORS["lantern-orange"]];
 
@@ -60,7 +59,7 @@ const RevocationsByGender = ({
   const [mode, setMode] = useState("rates"); // rates | exits
 
   const numeratorKey = "population_count";
-  const denominatorKey = findDenominatorKeyByMode(mode);
+  const denominatorKey = getDenominatorKeyByMode(mode);
 
   const { isLoading, isError, apiData } = useChartData(
     `${stateCode}/newRevocations`,
@@ -102,25 +101,18 @@ const RevocationsByGender = ({
   };
 
   return (
-    <div>
-      <h4>
-        Admissions by {translate("gender")} and risk level
-        {showWarning === true && <DataSignificanceWarningIcon />}
-        <ExportMenu
-          chartId={chartId}
-          chart={{ props: { data } }}
-          metricTitle={`${getLabelByMode(mode)} by ${translate(
-            "gender"
-          )} and risk level`}
-          timeWindowDescription={timeDescription}
-          filters={filterStates}
-        />
-      </h4>
-      <h6 className="pB-20">{timeDescription}</h6>
-      {flags.enableRevocationRateByExit && (
-        <ModeSwitcher mode={mode} setMode={setMode} buttons={modeButtons} />
-      )}
-      <div className="static-chart-container fs-block">
+    <RevocationsByFeature
+      timeDescription={timeDescription}
+      filterStates={filterStates}
+      chartId={chartId}
+      datasets={data.datasets}
+      labels={data.labels}
+      metricTitle={`${getLabelByMode(mode)} by ${translate(
+        "gender"
+      )} and risk level`}
+      showWarning={showWarning}
+      chartTitle={`Admissions by ${translate("gender")} and risk level`}
+      chart={
         <BarChartWithLabels
           id={chartId}
           data={data}
@@ -130,8 +122,13 @@ const RevocationsByGender = ({
           denominators={denominators}
           numerators={numerators}
         />
-      </div>
-    </div>
+      }
+      modeSwitcher={
+        flags.enableRevocationRateByExit ? (
+          <ModeSwitcher mode={mode} setMode={setMode} buttons={modeButtons} />
+        ) : null
+      }
+    />
   );
 };
 
