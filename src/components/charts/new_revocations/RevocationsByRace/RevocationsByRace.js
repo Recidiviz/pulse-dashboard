@@ -17,7 +17,6 @@
 
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import { Bar } from "react-chartjs-2";
 
 import pipe from "lodash/fp/pipe";
 import reduce from "lodash/fp/reduce";
@@ -35,21 +34,15 @@ import Loading from "../../../Loading";
 import Error from "../../../Error";
 
 import flags from "../../../../flags";
-import {
-  COLORS,
-  COLORS_LANTERN_SET,
-} from "../../../../assets/scripts/constants/colors";
+import { COLORS_LANTERN_SET } from "../../../../assets/scripts/constants/colors";
 import useChartData from "../../../../hooks/useChartData";
-import { axisCallbackForPercentage } from "../../../../utils/charts/axis";
 import {
-  generateLabelsWithCustomColors,
   getBarBackgroundColor,
   isDenominatorsMatrixStatisticallySignificant,
-  tooltipForFooterWithNestedCounts,
 } from "../../../../utils/charts/significantStatistics";
-import { tooltipForRateMetricWithNestedCounts } from "../../../../utils/charts/toggles";
 import { filtersPropTypes } from "../../propTypes";
 import { riskLevelLabels } from "../../../../utils/transforms/labels";
+import BarChartWithLabels from "../BarChartWithLabels";
 
 const modeButtons = [
   { label: "Percent revoked of standing population", value: "rates" },
@@ -103,81 +96,26 @@ const RevocationsByRace = ({
     data: dataPoints[index],
   });
 
-  const chart = (
-    <Bar
-      id={chartId}
-      data={{
-        labels: riskLevelLabels(stateCode),
-        datasets: [
-          generateDataset("Caucasian", 0),
-          generateDataset("African American", 1),
-          generateDataset("Hispanic", 2),
-          generateDataset("Asian", 3),
-          generateDataset("Native American", 4),
-          generateDataset("Pacific Islander", 5),
-        ],
-      }}
-      options={{
-        legend: {
-          position: "bottom",
-          labels: {
-            generateLabels: (ch) =>
-              generateLabelsWithCustomColors(ch, COLORS_LANTERN_SET),
-          },
-        },
-        responsive: true,
-        maintainAspectRatio: false,
-        scales: {
-          xAxes: [
-            {
-              scaleLabel: {
-                display: true,
-                labelString: "Race/ethnicity and risk level",
-              },
-            },
-          ],
-          yAxes: [
-            {
-              ticks: {
-                beginAtZero: true,
-                callback: axisCallbackForPercentage(),
-              },
-              scaleLabel: {
-                display: true,
-                labelString: getLabelByMode(mode),
-              },
-            },
-          ],
-        },
-        tooltips: {
-          backgroundColor: COLORS["grey-800-light"],
-          footerFontSize: 9,
-          mode: "index",
-          intersect: false,
-          callbacks: {
-            label: (tooltipItem, data) =>
-              tooltipForRateMetricWithNestedCounts(
-                tooltipItem,
-                data,
-                numerators,
-                denominators
-              ),
-            footer: (tooltipItem) =>
-              tooltipForFooterWithNestedCounts(tooltipItem, denominators),
-          },
-        },
-      }}
-    />
-  );
+  const data = {
+    labels: riskLevelLabels(stateCode),
+    datasets: [
+      "Caucasian",
+      "African American",
+      "Hispanic",
+      "Asian",
+      "Native American",
+      "Pacific Islander",
+    ].map(generateDataset),
+  };
 
   return (
     <div>
       <h4>
         Admissions by race/ethnicity and risk level
-        {showWarning === true && <DataSignificanceWarningIcon />}
+        {showWarning && <DataSignificanceWarningIcon />}
         <ExportMenu
           chartId={chartId}
-          chart={chart}
+          chart={{ props: { data } }}
           metricTitle={`${getLabelByMode(
             mode
           )} by race/ethnicity and risk level`}
@@ -187,9 +125,19 @@ const RevocationsByRace = ({
       </h4>
       <h6 className="pB-20">{timeDescription}</h6>
       {flags.enableRevocationRateByExit && (
-        <ModeSwitcher mode={mode} setMode={setMode} buttons={modeButtons()} />
+        <ModeSwitcher mode={mode} setMode={setMode} buttons={modeButtons} />
       )}
-      <div className="static-chart-container fs-block">{chart}</div>
+      <div className="static-chart-container fs-block">
+        <BarChartWithLabels
+          id={chartId}
+          data={data}
+          labelColors={COLORS_LANTERN_SET}
+          xAxisLabel="Race/ethnicity and risk level"
+          yAxisLabel={getLabelByMode(mode)}
+          numerators={numerators}
+          denominators={denominators}
+        />
+      </div>
     </div>
   );
 };

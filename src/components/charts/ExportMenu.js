@@ -36,6 +36,7 @@ const ExportMenu = ({
   shouldExport = true,
   regularElement = false,
   isTable = false,
+  // TODO: pass only chart.props.data.datasets and chart.props.data.labels
   chart = null,
   elementDatasets = null,
   elementLabels = null,

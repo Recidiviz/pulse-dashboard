@@ -17,7 +17,6 @@
 
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import { Bar } from "react-chartjs-2";
 
 import pipe from "lodash/fp/pipe";
 import reduce from "lodash/fp/reduce";
@@ -37,17 +36,14 @@ import Error from "../../../Error";
 
 import flags from "../../../../flags";
 import { COLORS } from "../../../../assets/scripts/constants/colors";
-import { axisCallbackForPercentage } from "../../../../utils/charts/axis";
 import {
-  generateLabelsWithCustomColors,
   getBarBackgroundColor,
   isDenominatorsMatrixStatisticallySignificant,
-  tooltipForFooterWithNestedCounts,
 } from "../../../../utils/charts/significantStatistics";
-import { tooltipForRateMetricWithNestedCounts } from "../../../../utils/charts/toggles";
 import useChartData from "../../../../hooks/useChartData";
 import { filtersPropTypes } from "../../propTypes";
 import { riskLevelLabels } from "../../../../utils/transforms/labels";
+import BarChartWithLabels from "../BarChartWithLabels";
 
 const colors = [COLORS["lantern-light-blue"], COLORS["lantern-orange"]];
 
@@ -100,64 +96,10 @@ const RevocationsByGender = ({
     data: dataPoints[index],
   });
 
-  const chart = (
-    <Bar
-      id={chartId}
-      data={{
-        labels: riskLevelLabels(stateCode),
-        datasets: [generateDataset("Women", 0), generateDataset("Men", 1)],
-      }}
-      options={{
-        legend: {
-          position: "bottom",
-          labels: {
-            generateLabels: (ch) => generateLabelsWithCustomColors(ch, colors),
-          },
-        },
-        responsive: true,
-        maintainAspectRatio: false,
-        scales: {
-          xAxes: [
-            {
-              scaleLabel: {
-                display: true,
-                labelString: `${translate("Gender")} and risk level`,
-              },
-            },
-          ],
-          yAxes: [
-            {
-              ticks: {
-                beginAtZero: true,
-                callback: axisCallbackForPercentage(),
-              },
-              scaleLabel: {
-                display: true,
-                labelString: getLabelByMode(mode),
-              },
-            },
-          ],
-        },
-        tooltips: {
-          backgroundColor: COLORS["grey-800-light"],
-          footerFontSize: 9,
-          mode: "index",
-          intersect: false,
-          callbacks: {
-            label: (tooltipItem, data) =>
-              tooltipForRateMetricWithNestedCounts(
-                tooltipItem,
-                data,
-                numerators,
-                denominators
-              ),
-            footer: (tooltipItem) =>
-              tooltipForFooterWithNestedCounts(tooltipItem, denominators),
-          },
-        },
-      }}
-    />
-  );
+  const data = {
+    labels: riskLevelLabels(stateCode),
+    datasets: ["Women", "Men"].map(generateDataset),
+  };
 
   return (
     <div>
@@ -166,7 +108,7 @@ const RevocationsByGender = ({
         {showWarning === true && <DataSignificanceWarningIcon />}
         <ExportMenu
           chartId={chartId}
-          chart={chart}
+          chart={{ props: { data } }}
           metricTitle={`${getLabelByMode(mode)} by ${translate(
             "gender"
           )} and risk level`}
@@ -178,7 +120,17 @@ const RevocationsByGender = ({
       {flags.enableRevocationRateByExit && (
         <ModeSwitcher mode={mode} setMode={setMode} buttons={modeButtons} />
       )}
-      <div className="static-chart-container fs-block">{chart}</div>
+      <div className="static-chart-container fs-block">
+        <BarChartWithLabels
+          id={chartId}
+          data={data}
+          xAxisLabel={`${translate("Gender")} and risk level`}
+          yAxisLabel={getLabelByMode(mode)}
+          labelColors={colors}
+          denominators={denominators}
+          numerators={numerators}
+        />
+      </div>
     </div>
   );
 };
