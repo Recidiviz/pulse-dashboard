@@ -226,6 +226,9 @@ const defaultStyles = {
     ...fontStyles,
     backgroundColor: state.isMulti ? "transparent" : base.backgroundColor,
     color: state.isSelected && !state.isMulti ? COLORS.white : fontStyles.color,
+    ":active": {
+      backgroundColor: state.isMulti ? "transparent" : base.backgroundColor,
+    },
   }),
   valueContainer: (base) => ({
     ...base,
