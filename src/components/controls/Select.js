@@ -227,6 +227,7 @@ const defaultStyles = {
     backgroundColor: state.isMulti ? "transparent" : base.backgroundColor,
     color: state.isSelected && !state.isMulti ? COLORS.white : fontStyles.color,
   }),
+  valueContainer: (base) => ({ ...base, textTransform: "uppercase" }),
   singleValue: (base) => ({ ...base, ...fontStyles }),
   group: (base) => ({ ...base, ...fontStyles, marginLeft: 20 }),
 };
