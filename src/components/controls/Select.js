@@ -195,7 +195,9 @@ const ValueContainer = ({ allOptions, summingOption, children, ...props }) => {
 
   return (
     <components.ValueContainer {...props}>
-      {text}
+      {!selectProps.inputValue && (
+        <div style={{ position: "absolute" }}>{text}</div>
+      )}
       {selectInput}
     </components.ValueContainer>
   );
@@ -227,7 +229,12 @@ const defaultStyles = {
     backgroundColor: state.isMulti ? "transparent" : base.backgroundColor,
     color: state.isSelected && !state.isMulti ? COLORS.white : fontStyles.color,
   }),
-  valueContainer: (base) => ({ ...base, textTransform: "uppercase" }),
+  valueContainer: (base) => ({
+    ...base,
+    textTransform: "uppercase",
+    whiteSpace: "nowrap",
+    textOverflow: "ellipsis",
+  }),
   singleValue: (base) => ({ ...base, ...fontStyles }),
   group: (base) => ({ ...base, ...fontStyles, marginLeft: 20 }),
 };
