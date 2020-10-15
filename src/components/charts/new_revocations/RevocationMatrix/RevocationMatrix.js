@@ -41,7 +41,10 @@ import Loading from "../../../Loading";
 import Error from "../../../Error";
 
 import useChartData from "../../../../hooks/useChartData";
-import { violationCountLabel } from "../../../../utils/transforms/labels";
+import {
+  matrixViolationTypeToLabel,
+  violationCountLabel,
+} from "../../../../utils/transforms/labels";
 import { filtersPropTypes } from "../../propTypes";
 import { translate } from "../../../../views/tenants/utils/i18nSettings";
 
@@ -129,7 +132,7 @@ const RevocationMatrix = ({
   };
 
   const exportableMatrixData = violationTypes.map((rowLabel) => ({
-    label: rowLabel,
+    label: matrixViolationTypeToLabel[rowLabel],
     data: VIOLATION_COUNTS.map((columnLabel) =>
       getOr(0, [rowLabel, columnLabel], dataMatrix)
     ),
