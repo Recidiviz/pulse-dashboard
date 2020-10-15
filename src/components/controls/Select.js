@@ -78,7 +78,7 @@ export const formatSelectOptionValue = (
   }
 
   if (isShortFormat) {
-    return `${selectedOptions.length} Items selected`;
+    return `${selectedOptions.length} Items`;
   }
 
   const groupOptions = getAllOptionsWithValue(selectedGroups, summingOption);
@@ -195,9 +195,7 @@ const ValueContainer = ({ allOptions, summingOption, children, ...props }) => {
 
   return (
     <components.ValueContainer {...props}>
-      {!selectProps.inputValue && (
-        <div style={{ position: "absolute" }}>{text}</div>
-      )}
+      {text}
       {selectInput}
     </components.ValueContainer>
   );
