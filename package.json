@@ -111,7 +111,8 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged && yarn test --only-changed"
+      "pre-commit": "lint-staged",
+      "pre-push": "yarn test --only-changed"
     }
   },
   "lint-staged": {
