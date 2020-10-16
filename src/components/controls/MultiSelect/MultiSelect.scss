@@ -3,6 +3,7 @@
 
   &__value-container {
     white-space: nowrap;
+    flex-wrap: nowrap !important;
   }
 
   &__group-heading {

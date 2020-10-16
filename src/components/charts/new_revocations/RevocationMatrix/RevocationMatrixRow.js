@@ -29,7 +29,11 @@ const RevocationMatrixRow = ({
   onClick,
 }) => {
   return (
-    <div className={cx("violation-row", { "is-selected": isSelected })}>
+    <div
+      className={cx("RevocationMatrix__row", "violation-row", {
+        "is-selected": isSelected,
+      })}
+    >
       <div className="violation-type-label">
         <button type="button" onClick={onClick}>
           {matrixViolationTypeToLabel[violationType]}

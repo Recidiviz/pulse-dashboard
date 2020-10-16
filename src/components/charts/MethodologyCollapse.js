@@ -30,7 +30,10 @@ const MethodologyCollapse = ({ children, chartId }) => {
   }, [isOpened]);
 
   return (
-    <div className="layer bdT p-20 w-100 accordion" id={`methodology${id}`}>
+    <div
+      className="MethodologyCollapse layer bdT p-20 w-100 accordion"
+      id={`methodology${id}`}
+    >
       <div className="mb-0" id={`methodologyHeading${id}`}>
         <div className="mb-0">
           <button

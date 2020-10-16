@@ -24,7 +24,7 @@ const GeoViewToggle = ({ setGeoViewEnabled: onChange }) => {
   const [geoViewEnabled, setGeoViewEnabled] = useState(false);
 
   return (
-    <div className="btn-group-toggle">
+    <div className="GeoViewToggle btn-group-toggle">
       <label className="btn btn-sm btn-secondary active">
         <input
           type="checkbox"

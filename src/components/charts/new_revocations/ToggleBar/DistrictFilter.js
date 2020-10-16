@@ -35,11 +35,7 @@ import {
 } from "../../../../utils/authentication/user";
 import MultiSelect from "../../../controls/MultiSelect";
 
-const allDistrictsOption = { label: "All districts", value: "All" };
-const allRegionDistrictsOption = {
-  label: "All region districts",
-  value: "All",
-};
+const allDistrictsOption = { label: "All", value: "All" };
 
 const DistrictFilter = ({ value, stateCode, onChange }) => {
   const { user } = useAuth0();
@@ -68,11 +64,11 @@ const DistrictFilter = ({ value, stateCode, onChange }) => {
 
     const { options, summingOption, defaultValue } = region
       ? {
-          options: [allRegionDistrictsOption].concat(
+          options: [allDistrictsOption].concat(
             map((d) => ({ label: d, value: d }), userDistricts)
           ),
-          summingOption: allRegionDistrictsOption,
-          defaultValue: [allRegionDistrictsOption],
+          summingOption: allDistrictsOption,
+          defaultValue: [allDistrictsOption],
         }
       : {
           options: [allDistrictsOption].concat(
