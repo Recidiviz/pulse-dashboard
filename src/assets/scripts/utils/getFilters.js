@@ -40,7 +40,7 @@ const formatSupervisionLevel = (supervisionLevel) =>
     : `Supervision level: ${pipe(
         find({ value: supervisionLevel }),
         get("label")
-      )(SUPERVISION_LEVELS)}`;
+      )(SUPERVISION_LEVELS.options)}`;
 
 function getFilters(toggleStates) {
   const filters = [];
