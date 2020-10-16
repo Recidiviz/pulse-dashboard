@@ -168,7 +168,7 @@ const RevocationsByViolation = ({
   );
 
   return (
-    <div>
+    <div className="RevocationsByViolation">
       <h4>
         Relative frequency of violation types
         <ExportMenu

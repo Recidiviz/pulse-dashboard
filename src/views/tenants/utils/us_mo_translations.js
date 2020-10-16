@@ -44,4 +44,12 @@ of that column.`,
   Technical: "Technical",
   lastRecommendation: "Last Rec. (Incl. Supplementals)",
   methodology: MO_METHODOLOGY,
+  riskLevelsMap: {
+    OVERALL: "Overall",
+    NOT_ASSESSED: "Not Assessed",
+    LOW: "Low Risk",
+    MEDIUM: "Moderate Risk",
+    HIGH: "High Risk",
+    VERY_HIGH: "Very High Risk",
+  },
 };

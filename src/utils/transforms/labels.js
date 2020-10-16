@@ -18,30 +18,10 @@
 import lowerCase from "lodash/fp/lowerCase";
 import pipe from "lodash/fp/pipe";
 import startCase from "lodash/fp/startCase";
-import * as lanternState from "../../views/tenants/utils/lanternTenants";
+import { translate } from "../../views/tenants/utils/i18nSettings";
 
-const riskLevels = ["NOT_ASSESSED", "LOW", "MEDIUM", "HIGH", "VERY_HIGH"];
-
-const riskLevelValueToLabelByStateCode = {
-  [lanternState.MO]: {
-    OVERALL: "Overall",
-    NOT_ASSESSED: "Not Assessed",
-    LOW: "Low Risk",
-    MEDIUM: "Moderate  Risk",
-    HIGH: "High Risk",
-    VERY_HIGH: "Very High  Risk",
-  },
-  [lanternState.PA]: {
-    OVERALL: "Overall",
-    NOT_ASSESSED: "Not Assessed",
-    LOW: "Low  Risk",
-    MEDIUM: "Medium Risk",
-    HIGH: "High Risk",
-  },
-};
-
-export function riskLevelLabels(stateCode) {
-  return Object.values(riskLevelValueToLabelByStateCode[stateCode]);
+export function riskLevelLabels() {
+  return Object.values(translate("riskLevelsMap"));
 }
 
 const genderValueToLabel = {
@@ -87,7 +67,7 @@ function raceValueToHumanReadable(raceValue) {
 }
 
 function toHtmlFriendly(string) {
-  return string.replace(/ /g, "-");
+  return string.replace(/\W+/g, "-");
 }
 
 function toHumanReadable(string) {
@@ -133,8 +113,6 @@ function nameFromOfficerId(officerId) {
 const violationCountLabel = (count) => (count === "8" ? "8+" : count);
 
 export {
-  riskLevels,
-  riskLevelValueToLabelByStateCode,
   matrixViolationTypeToLabel,
   genderValueToHumanReadable,
   raceValueToHumanReadable,

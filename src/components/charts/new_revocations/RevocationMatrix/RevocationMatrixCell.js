@@ -26,7 +26,7 @@ const maxRadius = 50;
 
 const RevocationMatrixCell = ({ count, maxCount, isSelected, onClick }) => {
   const ratio = maxCount > 0 ? count / maxCount : 0;
-  const radius = Math.max(minRadius, Math.ceil(ratio * maxRadius));
+  const radius = Math.max(minRadius, Math.ceil(ratio * maxRadius) + 15);
 
   const containerStyle = {
     background: "white",
@@ -47,7 +47,7 @@ const RevocationMatrixCell = ({ count, maxCount, isSelected, onClick }) => {
   };
 
   return (
-    <div className="cell">
+    <div className="RevocationMatrix__cell cell">
       <div style={containerStyle}>
         <button
           type="button"

@@ -14,7 +14,7 @@ const METRIC_PERIODS = {
   },
 };
 
-const SUPERVISION_LEVELS = {
+export const SUPERVISION_LEVELS = {
   options: [
     { value: "All", label: "All" },
     { value: "ENHANCED", label: "Enhanced Supervision" },

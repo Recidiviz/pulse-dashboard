@@ -14,8 +14,11 @@ public/
 !src/App.js
 !src/index.js
 !src/assets/scripts/utils/__tests__/**/*.js
+!src/assets/scripts/utils/getFilters.js
+!src/assets/scripts/utils/getViolation.js
 !src/components/*.js
 !src/components/controls/**/*.js
+!src/components/charts/ExportMenu.js
 !src/components/charts/ChartCard.js
 !src/components/charts/DataSignificanceWarningIcon.js
 !src/components/charts/Methodology.js

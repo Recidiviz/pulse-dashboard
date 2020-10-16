@@ -43,9 +43,16 @@ describe("test label", () => {
 
   it("to Html friendly with multiple spaces", () => {
     const dataAfterTest = labelsMethods.toHtmlFriendly(
-      "Los Angeles California"
+      "Los Angeles  California"
     );
     expect(dataAfterTest.toString()).toEqual("Los-Angeles-California");
+  });
+
+  it("to Html friendly with html forbidden symbols", () => {
+    const dataAfterTest = labelsMethods.toHtmlFriendly(
+      "A&P Grocery in California"
+    );
+    expect(dataAfterTest.toString()).toEqual("A-P-Grocery-in-California");
   });
 
   it("to human readable", () => {

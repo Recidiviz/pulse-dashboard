@@ -18,11 +18,13 @@
 export const MO_METHODOLOGY = {
   revocationsOverTime: [
     {
+      id: 1,
       header: "What this chart shows",
       body: `This chart displays the total number of people who were admitted to prison during
 each month due to revocation by the parole board or the court.`,
     },
     {
+      id: 2,
       header: "Who is included",
       body: `This chart includes only people who were revoked to prison. Counts do not include (1)
 people who were revoked to termination or to a new form of supervision (i.e., SIS to SES);
@@ -37,6 +39,7 @@ population in District 2.`,
   ],
   revocationMatrix: [
     {
+      id: 1,
       header: "What this chart shows",
       body: `This chart plots all people who were revoked to prison during the time period
 selected by the user, according to their most serious violation and the total number of
@@ -58,6 +61,7 @@ according to the most severe violation reported in all of these reports, regardl
 was in the initial report or interdistrict report.`,
     },
     {
+      id: 2,
       header: "Most serious violation",
       body: `Violations, starting with the least serious, are listed in order of severity:
 technical, substance use, municipal offense, absconsion, misdemeanor, felony. The most serious
@@ -67,6 +71,7 @@ then one substance use violation, and then they were revoked, they would be plac
 misdemeanor row because a misdemeanor is their most serious violation.`,
     },
     {
+      id: 3,
       header: "Number of violation reports and notices of citation filed",
       body: `This is determined by counting the total number of violation reports and notices of
 citation that were filed one year prior to the last reported violation before their revocation.
@@ -76,6 +81,7 @@ on February 1, 2017, and then they were revoked (without any new violations), th
 listed within a single report.`,
     },
     {
+      id: 4,
       header: "Who is included",
       body: `This chart includes only people who were revoked to prison. It does not include
 (1) people who were revoked to termination or to a new form of supervision
@@ -92,6 +98,7 @@ District 2.`,
   ],
   revocationsByDistrict: [
     {
+      id: 1,
       header: "What the count chart shows",
       body: `This chart shows the total number of people revoked to prison from each district
 during the time period selected in the "Time Period" drop down menu. The districts are positioned
@@ -101,6 +108,7 @@ supervision in any district within 2 years prior to the revocation), they are no
 district counts or rates.`,
     },
     {
+      id: 2,
       header: "What the percentage chart shows",
       body: `This chart shows the percentage of people revoked in each district. Percent revoked is
 defined as the number of people revoked from that district in the selected time period divided by
@@ -111,6 +119,7 @@ supervision in any district within 2 years prior to the revocation), they are no
 district counts or rates.`,
     },
     {
+      id: 3,
       header: "Who is included",
       body: `This chart includes only people who were revoked to prison. Counts do not include (1)
 people who were revoked to termination or to a new form of supervision (i.e., SIS to SES);
@@ -125,6 +134,7 @@ population in District 2.`,
   ],
   revocationsByRiskLevel: [
     {
+      id: 1,
       header: "What this chart shows",
       body: `This chart shows the percentage of people who were revoked in each risk level group.
 This is calculated as the number of people of each risk level who were revoked divided by the total
@@ -134,6 +144,7 @@ Screening Tool and/or the Community Supervision Tool (if relevant) and no other 
 Supervision Tool scores are counted in the Unassessed category.`,
     },
     {
+      id: 2,
       header: "Who is included",
       body: `This chart includes only people who were revoked to prison. Counts do not include (1)
 people who were revoked to termination or to a new form of supervision (i.e., SIS to SES);
@@ -146,6 +157,7 @@ the screen, this chart will automatically update to include only people from the
 population in District 2.`,
     },
     {
+      id: 3,
       header: "Filtering by violation history",
       body: `If the user has filtered the page by clicking on a specific violation type
 (i.e., technical) or bubble (i.e., technical, 3) within the revocation plot, this chart
@@ -163,6 +175,7 @@ is still on supervision) or the date that the person was discharged from supervi
   ],
   revocationsByViolationType: [
     {
+      id: 1,
       header: "What this chart shows",
       body: `This chart shows the relative frequency of each type of violation among the selected
 group. The blue bars represent the different categories of conditions violated that constitute
@@ -178,9 +191,10 @@ violation reports and notices of citation. For example, if there were a total of
 reports and notices of citation, but each report listed 2 different violations, the denominator in
 each percentage would still be 100. If, out of these 100 violation reports and notices of citation,
 20 included at least one employment violation, then the percentage for employment violations would
-be 20/100=10%.`,
+be 20/100=20%.`,
     },
     {
+      id: 2,
       header: "Who is included",
       body: `This chart includes only violation records for people who were revoked to prison.
 Counts do not include (1) people who were revoked to termination or to a new form of
@@ -195,6 +209,7 @@ only people from the probation population in District 2.`,
   ],
   revocationsByGender: [
     {
+      id: 1,
       header: "What this chart shows",
       body: `This chart compares the percent of women and men who were revoked, overall and broken
 out by risk level. These percentages are calculated as follows: Overall and for each risk level,
@@ -205,6 +220,7 @@ Those without Community Supervision Screening Tool/Community Supervision Tool sc
 in the Unassessed category.`,
     },
     {
+      id: 2,
       header: "Who is included",
       body: `This chart includes only people who were revoked to prison. Counts do not include (1)
 people who were revoked to termination or to a new form of supervision (i.e., SIS to SES);
@@ -217,6 +233,7 @@ the screen, this chart will automatically update to include only people from the
 population in District 2.`,
     },
     {
+      id: 3,
       header: "Filtering by violation history",
       body: `If the user has filtered the page by clicking on a specific violation type
 (i.e., technical) or bubble (i.e., technical, 3) within the revocation plot, this chart will show
@@ -234,6 +251,7 @@ still on supervision) or the date that the person was discharged from supervisio
   ],
   revocationsByRace: [
     {
+      id: 1,
       header: "What this chart shows",
       body: `This chart compares the percent of people in each race/ethnicity group who were
 revoked, overall and broken out by risk level. These percentages are calculated as follows: Overall
@@ -244,6 +262,7 @@ and no other assessment (i.e., Prison Intake Tool). Those without Community Supe
 Tool/Community Supervision Tool scores are counted in the Unassessed category.`,
     },
     {
+      id: 2,
       header: "Who is included",
       body: `This chart includes only people who were revoked to prison. Counts do not include (1)
 people who were revoked to termination or to a new form of supervision (i.e., SIS to SES);
@@ -256,6 +275,7 @@ the screen, this chart will automatically update to include only people from the
 population in District 2.`,
     },
     {
+      id: 3,
       header: "Filtering by violation history",
       body: `If the user has filtered the page by clicking on a specific violation type
 (i.e., technical) or bubble (i.e., technical, 3) within the revocation plot, this chart will show
@@ -274,6 +294,7 @@ the date that the person was discharged from supervision.`,
   ],
   filteredCaseTable: [
     {
+      id: 1,
       header: "What this list includes",
       body: `This is a list of people who fall within the filters that have been selected on the
 page. In the default landing view, this includes all people who have been revoked to prison
@@ -284,6 +305,7 @@ the drop down menus at the top of the screen, this list would automatically upda
 include only people from the probation population in District 2.`,
     },
     {
+      id: 2,
       header: "District",
       body: `The district within which a person was under supervision during their last active
 supervision period prior to revocation. For a small percentage of individuals (approx. 4–8 percent),
@@ -291,10 +313,12 @@ the district and officer are unknown. This happens when the individual was not a
 active supervision period at any point within the two years prior to the revocation.`,
     },
     {
+      id: 3,
       header: "Officer",
       body: `The most recent supervision officer the person was assigned to prior to revocation.`,
     },
     {
+      id: 4,
       header: "Risk Level",
       body: `Risk level is defined based only on the Community Supervision Screening Tool and/or
 the Community Supervision Tool (if relevant) and no other assessment (i.e., Prison Intake Tool).
@@ -302,11 +326,13 @@ Those without Community Supervision Screening Tool/Community Supervision Tool sc
 in the Unassessed category.`,
     },
     {
+      id: 5,
       header: "Last Officer Recommendation (Including Supplemental)",
       body: `The recommendation listed on the last violation report before the person was revoked,
 including any supplemental violation reports.`,
     },
     {
+      id: 6,
       header: "Violation Record",
       body: `A summary of the most severe reported violation on each violation report or notice of
 citation filed within one year prior to the last reported violation before the person was revoked.`,

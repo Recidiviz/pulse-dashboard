@@ -15,26 +15,32 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React from "react";
-import PropTypes from "prop-types";
+import { getUserStateCode } from "./authentication/user";
 
-import { getPeriodLabelFromMetricPeriodMonthsToggle } from "../../utils/charts/toggles";
+const APP_ID = process.env.REACT_APP_INTERCOM_APP_ID;
 
-const PeriodLabel = ({ metricPeriodMonths }) => (
-  <div className="PeriodLabel layer bdT p-20 w-100">
-    <div className="peers ai-c jc-c gapX-20">
-      <div className="peer fw-600">
-        <small className="c-grey-500 fw-600">Period </small>
-        <span className="fsz-def fw-600 mR-10 c-grey-800">
-          {getPeriodLabelFromMetricPeriodMonthsToggle(metricPeriodMonths)}
-        </span>
-      </div>
-    </div>
-  </div>
-);
+export function initIntercomSettings() {
+  window.intercomSettings = {
+    app_id: APP_ID,
+  };
 
-PeriodLabel.propTypes = {
-  metricPeriodMonths: PropTypes.string.isRequired,
-};
+  window.Intercom("boot", window.IntercomSettings);
+}
 
-export default PeriodLabel;
+export function enableIntercomLauncherForUser(user) {
+  const userStateCode = getUserStateCode(user);
+  const intercomSettings = {
+    state_code: userStateCode,
+    name: user.name,
+    nickname: user.nickname,
+    email: user.email,
+    user_id: user.sub,
+    hide_default_launcher: false,
+  };
+
+  window.Intercom("update", intercomSettings);
+}
+
+export function disableIntercomLauncher() {
+  window.Intercom("update", { hide_default_launcher: true });
+}
