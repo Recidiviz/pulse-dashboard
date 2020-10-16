@@ -1,5 +1,5 @@
 // Recidiviz - a data platform for criminal justice reform
-// Copyright (C) 2019 Recidiviz, Inc.
+// Copyright (C) 2020 Recidiviz, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -20,17 +20,49 @@ import tk from "timekeeper";
 import * as monthMethods from "../months";
 
 describe("test for file months", () => {
-  // prettier-ignore
   const monthNumbers = [
-    "4", "5", "6", "7", "8", "9", "10", "11", "12", "1", "2", "3"
+    "4",
+    "5",
+    "6",
+    "7",
+    "8",
+    "9",
+    "10",
+    "11",
+    "12",
+    "1",
+    "2",
+    "3",
   ];
-  // prettier-ignore
   const monthNumbersWithInvalidEntries = [
-    "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "-5", "1", "2", "3"
+    "4",
+    "5",
+    "6",
+    "7",
+    "8",
+    "9",
+    "10",
+    "11",
+    "12",
+    "13",
+    "-5",
+    "1",
+    "2",
+    "3",
   ];
-  // prettier-ignore
   const monthNumbersOutOfOrder = [
-    "6", "8", "4", "7", "5", "9", "10", "1", "12", "11", "2", "3"
+    "6",
+    "8",
+    "4",
+    "7",
+    "5",
+    "9",
+    "10",
+    "1",
+    "12",
+    "11",
+    "2",
+    "3",
   ];
 
   it("get current month name", () => {
@@ -42,21 +74,51 @@ describe("test for file months", () => {
   });
 
   it("month names from numbers", () => {
-    // prettier-ignore
     const expectedForAbbreviated = [
-      "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec", "Jan",
-      "Feb", "Mar"
-    ];
-    // prettier-ignore
-    const expectedMonthNames = [
-      "April", "May", "June", "July", "August", "September", "October",
-      "November", "December", "January", "February", "March"
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
+      "Jan",
+      "Feb",
+      "Mar",
     ];
 
-    // prettier-ignore
+    const expectedMonthNames = [
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December",
+      "January",
+      "February",
+      "March",
+    ];
+
     const expectedForWrongNumbers = [
-      "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec", undefined,
-      undefined, "Jan", "Feb", "Mar"
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
+      undefined,
+      undefined,
+      "Jan",
+      "Feb",
+      "Mar",
     ];
 
     const monthNamesWithAbbreviated = monthMethods.monthNamesFromNumbers(
@@ -85,26 +147,66 @@ describe("test for file months", () => {
   });
 
   it("month names all with years from numbers", () => {
-    // prettier-ignore
     const dataExpected = [
-      "Apr '19", "May '19", "Jun '19", "Jul '19", "Aug '19", "Sep '19",
-      "Oct '19", "Nov '19", "Dec '19", "Jan '20", "Feb '20", "Mar '20"
+      "Apr '19",
+      "May '19",
+      "Jun '19",
+      "Jul '19",
+      "Aug '19",
+      "Sep '19",
+      "Oct '19",
+      "Nov '19",
+      "Dec '19",
+      "Jan '20",
+      "Feb '20",
+      "Mar '20",
     ];
 
-    // prettier-ignore
     const expectedForDifferentOrder = [
-      "Jun '19", "Aug '19", "Apr '19", "Jul '19", "May '19", "Sep '19",
-      "Oct '19", "Jan '20", "Dec '20", "Nov '20", "Feb '20", "Mar '20"
+      "Jun '19",
+      "Aug '19",
+      "Apr '19",
+      "Jul '19",
+      "May '19",
+      "Sep '19",
+      "Oct '19",
+      "Jan '20",
+      "Dec '20",
+      "Nov '20",
+      "Feb '20",
+      "Mar '20",
     ];
-    // prettier-ignore
+
     const expectedForLongArray = [
-      "Apr '19", "May '19", "Jun '19", "Jul '19", "Aug '19", "Sep '19",
-      "Oct '19", "Nov '19", "Dec '19", "Jan '20", "Feb '20", "Mar '20",
-      "Apr '20"
+      "Apr '19",
+      "May '19",
+      "Jun '19",
+      "Jul '19",
+      "Aug '19",
+      "Sep '19",
+      "Oct '19",
+      "Nov '19",
+      "Dec '19",
+      "Jan '20",
+      "Feb '20",
+      "Mar '20",
+      "Apr '20",
     ];
-    // prettier-ignore
+
     const longArray = [
-      "4", "5", "6", "7", "8", "9", "10", "11", "12", "1", "2", "3", "4"
+      "4",
+      "5",
+      "6",
+      "7",
+      "8",
+      "9",
+      "10",
+      "11",
+      "12",
+      "1",
+      "2",
+      "3",
+      "4",
     ];
 
     const monthNamesWithYears = monthMethods.monthNamesAllWithYearsFromNumbers(
@@ -135,20 +237,51 @@ describe("test for file months", () => {
   });
 
   it("month names with years from numbers", () => {
-    // prettier-ignore
     const dataExpected = [
-      "Apr '19", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
-      "Jan '20", "Feb", "Mar"
+      "Apr '19",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
+      "Jan '20",
+      "Feb",
+      "Mar",
     ];
-    // prettier-ignore
+
     const dataExpectedLongArray = [
-      "Apr '19", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
-      undefined, undefined, "Jan '20", "Feb", "Mar"
+      "Apr '19",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
+      undefined,
+      undefined,
+      "Jan '20",
+      "Feb",
+      "Mar",
     ];
-    // prettier-ignore
+
     const dataExpectedDifferentOrderArray = [
-      "Jun '19", "Aug", "Apr", "Jul", "May", "Sep", "Oct", "Jan '20", "Dec",
-      "Nov", "Feb", "Mar",
+      "Jun '19",
+      "Aug",
+      "Apr",
+      "Jul",
+      "May",
+      "Sep",
+      "Oct",
+      "Jan '20",
+      "Dec",
+      "Nov",
+      "Feb",
+      "Mar",
     ];
 
     const monthNamesWithYears = monthMethods.monthNamesWithYearsFromNumbers(
