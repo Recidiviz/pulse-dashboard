@@ -15,7 +15,15 @@
       "error",
       { "declaration": false, "assignment": false }
     ],
-    "react/jsx-one-expression-per-line": 0
+    "react/jsx-one-expression-per-line": 0,
+    "jsx-a11y/label-has-associated-control": [
+      "error",
+      {
+        "required": {
+          "some": ["nesting", "id"]
+        }
+      }
+    ]
   },
   "env": {
     "browser": true,

@@ -18,7 +18,6 @@
 import React from "react";
 import { queryAllByAttribute } from "@testing-library/dom";
 import { render } from "@testing-library/react";
-import "@testing-library/jest-dom/extend-expect";
 import ToggleBar from "../ToggleBar";
 
 const getAllById = queryAllByAttribute.bind(null, "id");
@@ -61,6 +60,7 @@ describe("test for component ToggleBar", () => {
       ...props,
       setChartDistrict: jest.fn(),
       replaceLa: true,
+      district: ["16"],
       availableDistricts: ["beulah", "bismarck", "bottineau"],
       districtOffices: [
         {

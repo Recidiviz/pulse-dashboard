@@ -99,6 +99,10 @@ const CommunityExplore = () => {
 
   const toggleBar = (
     <ToggleBar
+      metricType={metricType}
+      metricPeriodMonths={metricPeriodMonths}
+      district={district}
+      supervisionType={supervisionType}
       setChartMetricType={setMetricType}
       setChartMetricPeriodMonths={setMetricPeriodMonths}
       setChartSupervisionType={setSupervisionType}

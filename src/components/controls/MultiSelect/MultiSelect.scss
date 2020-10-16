@@ -1,0 +1,68 @@
+.MultiSelect {
+  flex-grow: 1;
+
+  &__value-container {
+    white-space: nowrap;
+    flex-wrap: nowrap !important;
+  }
+
+  &__group-heading {
+    padding-bottom: 8px;
+  }
+
+  &__checkbox-container {
+    display: block;
+    position: relative;
+    padding-left: 30px;
+    padding-right: 0;
+    margin-bottom: 0;
+    margin-left: -8;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+
+  &__checkbox-input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+  }
+
+  &__checkbox {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 20px;
+    width: 20px;
+    background-color: #eee;
+    border-radius: 4px;
+    &:after {
+      content: "";
+      position: absolute;
+      display: none;
+      left: 7px;
+      top: 4px;
+      width: 5px;
+      height: 10px;
+      border: solid white;
+      border-width: 0 3px 3px 0;
+      -webkit-transform: rotate(45deg);
+      -ms-transform: rotate(45deg);
+      transform: rotate(45deg);
+    }
+
+    .MultiSelect__option--is-focused & {
+      background-color: #ccc;
+    }
+    .MultiSelect__checkbox-input:checked ~ & {
+      background-color: #2196f3;
+    }
+    .MultiSelect__checkbox-input:checked ~ &:after {
+      display: block;
+    }
+  }
+}

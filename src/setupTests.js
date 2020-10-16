@@ -15,3 +15,4 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 import "jest-extended";
+import "@testing-library/jest-dom/extend-expect";
