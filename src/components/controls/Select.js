@@ -78,7 +78,7 @@ export const formatSelectOptionValue = (
   }
 
   if (isShortFormat) {
-    return `${selectedOptions.length} Items selected`;
+    return `${selectedOptions.length} Items`;
   }
 
   const groupOptions = getAllOptionsWithValue(selectedGroups, summingOption);
@@ -226,6 +226,15 @@ const defaultStyles = {
     ...fontStyles,
     backgroundColor: state.isMulti ? "transparent" : base.backgroundColor,
     color: state.isSelected && !state.isMulti ? COLORS.white : fontStyles.color,
+    ":active": {
+      backgroundColor: state.isMulti ? "transparent" : base.backgroundColor,
+    },
+  }),
+  valueContainer: (base) => ({
+    ...base,
+    textTransform: "uppercase",
+    whiteSpace: "nowrap",
+    textOverflow: "ellipsis",
   }),
   singleValue: (base) => ({ ...base, ...fontStyles }),
   group: (base) => ({ ...base, ...fontStyles, marginLeft: 20 }),

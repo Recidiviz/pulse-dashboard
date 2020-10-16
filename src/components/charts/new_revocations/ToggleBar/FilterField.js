@@ -25,7 +25,7 @@ import { toHtmlFriendly } from "../../../../utils/transforms/labels";
 const FilterField = ({ label, children }) => {
   const isTopBarShrinking = useTopBarShrinking();
   const topLevelFilterClassName = isTopBarShrinking
-    ? "top-level-filter top-level-active d-f align-items-center"
+    ? "top-level-filter top-level-active"
     : "top-level-filter";
   const titleLevelClassName = isTopBarShrinking
     ? "title-level top-level-filters-title"

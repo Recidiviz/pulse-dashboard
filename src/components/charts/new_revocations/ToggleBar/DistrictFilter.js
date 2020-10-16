@@ -34,11 +34,7 @@ import {
   getUserAppMetadata,
 } from "../../../../utils/authentication/user";
 
-const allDistrictsOption = { label: "All districts", value: "All" };
-const allRegionDistrictsOption = {
-  label: "All region districts",
-  value: "All",
-};
+const allDistrictsOption = { label: "All", value: "All" };
 
 const DistrictFilter = ({ stateCode, onChange }) => {
   const { user } = useAuth0();
@@ -67,7 +63,7 @@ const DistrictFilter = ({ stateCode, onChange }) => {
   if (region) {
     const regionDistricts = pipe(
       map((d) => ({ label: d, value: d })),
-      (options) => [allRegionDistrictsOption, ...options]
+      (options) => [allDistrictsOption, ...options]
     )(userDistricts);
 
     return (
@@ -80,8 +76,8 @@ const DistrictFilter = ({ stateCode, onChange }) => {
           }}
           isMulti
           isLoading={isLoading}
-          summingOption={allRegionDistrictsOption}
-          defaultValue={[allRegionDistrictsOption]}
+          summingOption={allDistrictsOption}
+          defaultValue={[allDistrictsOption]}
           isSearchable
         />
       </FilterField>
