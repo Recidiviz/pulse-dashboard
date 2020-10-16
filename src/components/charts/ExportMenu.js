@@ -36,7 +36,6 @@ const ExportMenu = ({
   shouldExport = true,
   regularElement = false,
   isTable = false,
-  // TODO: pass only chart.props.data.datasets and chart.props.data.labels
   chart = null,
   elementDatasets = null,
   elementLabels = null,
@@ -259,7 +258,6 @@ ExportMenu.propTypes = {
       data: PropTypes.arrayOf(PropTypes.number),
     })
   ),
-  // TODO: replace chart prop in favor of datasets and label data
   // eslint-disable-next-line react/forbid-prop-types
   chart: PropTypes.any,
   isTable: PropTypes.bool,

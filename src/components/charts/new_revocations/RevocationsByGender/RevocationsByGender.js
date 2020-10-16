@@ -42,7 +42,7 @@ import useChartData from "../../../../hooks/useChartData";
 import { filtersPropTypes } from "../../propTypes";
 import { riskLevelLabels } from "../../../../utils/transforms/labels";
 import BarChartWithLabels from "../BarChartWithLabels";
-import RevocationsByFeature from "../RevocationsByFeature";
+import RevocationsByDimension from "../RevocationsByDimension";
 
 const colors = [COLORS["lantern-light-blue"], COLORS["lantern-orange"]];
 
@@ -101,7 +101,7 @@ const RevocationsByGender = ({
   };
 
   return (
-    <RevocationsByFeature
+    <RevocationsByDimension
       timeDescription={timeDescription}
       filterStates={filterStates}
       chartId={chartId}

@@ -35,7 +35,7 @@ import { axisCallbackForPercentage } from "../../../utils/charts/axis";
 import { tooltipForRateMetricWithCounts } from "../../../utils/charts/toggles";
 import { calculateRate } from "./helpers/rate";
 import { filtersPropTypes } from "../propTypes";
-import RevocationsByFeature from "./RevocationsByFeature";
+import RevocationsByDimension from "./RevocationsByDimension";
 
 const chartId = "revocationsByViolationType";
 const violationCountKey = "violation_count";
@@ -170,7 +170,7 @@ const RevocationsByViolation = ({
   );
 
   return (
-    <RevocationsByFeature
+    <RevocationsByDimension
       chartTitle="Relative frequency of violation types"
       timeDescription={timeDescription}
       labels={chartLabels}

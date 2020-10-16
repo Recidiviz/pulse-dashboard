@@ -41,7 +41,7 @@ import {
 import { filtersPropTypes } from "../../propTypes";
 import { riskLevelLabels } from "../../../../utils/transforms/labels";
 import BarChartWithLabels from "../BarChartWithLabels";
-import RevocationsByFeature from "../RevocationsByFeature";
+import RevocationsByDimension from "../RevocationsByDimension";
 import { translate } from "../../../../views/tenants/utils/i18nSettings";
 
 const chartId = "revocationsByRace";
@@ -109,7 +109,7 @@ const RevocationsByRace = ({
   };
 
   return (
-    <RevocationsByFeature
+    <RevocationsByDimension
       chartTitle="Admissions by race/ethnicity and risk level"
       timeDescription={timeDescription}
       filterStates={filterStates}

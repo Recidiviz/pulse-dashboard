@@ -47,7 +47,7 @@ import { tooltipForRateMetricWithCounts } from "../../../../utils/charts/toggles
 import { humanReadableTitleCase } from "../../../../utils/transforms/labels";
 import { filtersPropTypes } from "../../propTypes";
 import { translate } from "../../../../views/tenants/utils/i18nSettings";
-import RevocationsByFeature from "../RevocationsByFeature";
+import RevocationsByDimension from "../RevocationsByDimension";
 
 const chartId = "revocationsByRiskLevel";
 
@@ -193,7 +193,7 @@ const RevocationsByRiskLevel = ({
   );
 
   return (
-    <RevocationsByFeature
+    <RevocationsByDimension
       chartTitle="Admissions by risk level"
       timeDescription={timeDescription}
       labels={chartLabels}
