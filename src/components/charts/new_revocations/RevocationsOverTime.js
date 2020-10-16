@@ -23,7 +23,6 @@ import map from "lodash/fp/map";
 import pipe from "lodash/fp/pipe";
 
 import { groupByMonth } from "../common/bars/utils";
-import ExportMenu from "../ExportMenu";
 import Loading from "../../Loading";
 import Error from "../../Error";
 
@@ -43,6 +42,7 @@ import { monthNamesAllWithYearsFromNumbers } from "../../../utils/transforms/mon
 import { generateTrendlineDataset } from "../../../utils/charts/trendline";
 import { filtersPropTypes } from "../propTypes";
 import { translate } from "../../../views/tenants/utils/i18nSettings";
+import RevocationsByDimension from "./RevocationsByDimension";
 
 const chartId = "revocationsOverTime";
 
@@ -184,30 +184,19 @@ const RevocationsOverTime = ({
   const chart = countZero / metricPeriodMonths >= 0.33 ? barChart : lineChart;
 
   return (
-    <div>
-      <h4>
-        {translate("revocationsOverTimeXAxis")}
-        <ExportMenu
-          chartId={chartId}
-          chart={chart}
-          metricTitle={translate("revocationsOverTimeXAxis")}
-          timeWindowDescription={getTrailingLabelFromMetricPeriodMonthsToggle(
-            metricPeriodMonths
-          )}
-          filters={filterStates}
-        />
-      </h4>
-      <h6 className="pB-20">
-        {getTrailingLabelFromMetricPeriodMonthsToggle(metricPeriodMonths)}
-      </h6>
-
-      <div
-        className="chart-container fs-block"
-        style={{ position: "relative", height: "180px" }}
-      >
-        {chart}
-      </div>
-    </div>
+    <RevocationsByDimension
+      chartTitle={translate("revocationsOverTimeXAxis")}
+      timeDescription={getTrailingLabelFromMetricPeriodMonthsToggle(
+        metricPeriodMonths
+      )}
+      labels={chartLabels}
+      chartId={chartId}
+      datasets={datasets}
+      metricTitle={translate("revocationsOverTimeXAxis")}
+      filterStates={filterStates}
+      chart={chart}
+      classModifier="over-time"
+    />
   );
 };
 

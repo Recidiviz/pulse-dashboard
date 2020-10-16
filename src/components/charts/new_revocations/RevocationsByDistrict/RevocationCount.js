@@ -28,10 +28,11 @@ import sumBy from "lodash/fp/sumBy";
 import toInteger from "lodash/fp/toInteger";
 import values from "lodash/fp/values";
 
+import RevocationsByDimension from "../RevocationsByDimension";
+import ModeSwitcher from "../ModeSwitcher";
+
 import { COLORS } from "../../../../assets/scripts/constants/colors";
 import { standardTooltipForCountMetric } from "../../../../utils/charts/toggles";
-import ModeSwitcher from "../ModeSwitcher";
-import ExportMenu from "../../ExportMenu";
 import { modeButtons } from "./helpers";
 import { filtersPropTypes } from "../../propTypes";
 import { translate } from "../../../../views/tenants/utils/i18nSettings";
@@ -66,18 +67,20 @@ const RevocationCount = ({
       ? COLORS["lantern-light-blue"]
       : COLORS["lantern-orange"];
 
+  const datasets = [
+    {
+      label: translate("Revocations"),
+      backgroundColor: barBackgroundColor,
+      data: dataPoints,
+    },
+  ];
+
   const chart = (
     <Bar
       id={chartId}
       data={{
         labels,
-        datasets: [
-          {
-            label: translate("Revocations"),
-            backgroundColor: barBackgroundColor,
-            data: dataPoints,
-          },
-        ],
+        datasets,
       }}
       options={{
         legend: {
@@ -118,22 +121,21 @@ const RevocationCount = ({
       }}
     />
   );
+
   return (
-    <div>
-      <h4>
-        {chartTitle}
-        <ExportMenu
-          chartId={chartId}
-          chart={chart}
-          metricTitle={chartTitle}
-          timeWindowDescription={timeDescription}
-          filters={filterStates}
-        />
-      </h4>
-      <h6 className="pB-20">{timeDescription}</h6>
-      <ModeSwitcher mode="counts" setMode={setMode} buttons={modeButtons()} />
-      <div className="static-chart-container fs-block">{chart}</div>
-    </div>
+    <RevocationsByDimension
+      chartTitle={chartTitle}
+      timeDescription={timeDescription}
+      labels={labels}
+      chartId={chartId}
+      datasets={datasets}
+      metricTitle={chartTitle}
+      chart={chart}
+      filterStates={filterStates}
+      modeSwitcher={
+        <ModeSwitcher mode="counts" setMode={setMode} buttons={modeButtons()} />
+      }
+    />
   );
 };
 

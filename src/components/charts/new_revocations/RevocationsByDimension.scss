@@ -1,0 +1,17 @@
+.RevocationsByDimension {
+  &__time {
+    padding-bottom: 20px;
+  }
+
+  &__chart-wrapper {
+    position: relative;
+    margin: auto;
+    height: 60vh;
+    width: 80vw;
+    &--over-time {
+      position: relative;
+      height: 180px;
+      width: auto;
+    }
+  }
+}

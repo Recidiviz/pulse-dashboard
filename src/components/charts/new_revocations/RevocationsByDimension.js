@@ -17,9 +17,12 @@
 
 import React from "react";
 import PropTypes from "prop-types";
+import cn from "classnames";
 import DataSignificanceWarningIcon from "../DataSignificanceWarningIcon";
 import ExportMenu from "../ExportMenu";
 import { filtersPropTypes } from "../propTypes";
+
+import "./RevocationsByDimension.scss";
 
 const RevocationsByDimension = ({
   chartTitle,
@@ -32,9 +35,10 @@ const RevocationsByDimension = ({
   chart,
   showWarning,
   modeSwitcher,
+  classModifier,
 }) => (
-  <div>
-    <h4>
+  <div className="RevocationsByDimension">
+    <h4 className="RevocationsByDimension__title">
       {chartTitle}
       {showWarning && <DataSignificanceWarningIcon />}
       <ExportMenu
@@ -45,15 +49,22 @@ const RevocationsByDimension = ({
         filters={filterStates}
       />
     </h4>
-    <h6 className="pB-20">{timeDescription}</h6>
+    <h6 className="RevocationsByDimension__time">{timeDescription}</h6>
     {modeSwitcher}
-    <div className="static-chart-container fs-block">{chart}</div>
+    <div
+      className={cn("RevocationsByDimension__chart-wrapper", {
+        [`RevocationsByDimension__chart-wrapper--${classModifier}`]: classModifier,
+      })}
+    >
+      {chart}
+    </div>
   </div>
 );
 
 RevocationsByDimension.defaultProps = {
   showWarning: false,
   modeSwitcher: null,
+  classModifier: "",
 };
 
 RevocationsByDimension.propTypes = {
@@ -76,6 +87,7 @@ RevocationsByDimension.propTypes = {
   chart: PropTypes.element.isRequired,
   showWarning: PropTypes.bool,
   modeSwitcher: PropTypes.element,
+  classModifier: PropTypes.string,
 };
 
 export default RevocationsByDimension;

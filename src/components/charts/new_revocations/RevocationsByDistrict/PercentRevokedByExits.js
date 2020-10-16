@@ -30,8 +30,7 @@ import toInteger from "lodash/fp/toInteger";
 import values from "lodash/fp/values";
 
 import ModeSwitcher from "../ModeSwitcher";
-import DataSignificanceWarningIcon from "../../DataSignificanceWarningIcon";
-import ExportMenu from "../../ExportMenu";
+import RevocationsByDimension from "../RevocationsByDimension";
 import { sumCounts, modeButtons } from "./helpers";
 import { calculateRate, getRateAnnotation } from "../helpers/rate";
 import {
@@ -101,18 +100,20 @@ const PercentRevokedByExits = ({
     return color;
   };
 
+  const datasets = [
+    {
+      label: "Percent revoked out of all exits",
+      backgroundColor: barBackgroundColor,
+      data: dataPoints,
+    },
+  ];
+
   const chart = (
     <Bar
       id={chartId}
       data={{
         labels,
-        datasets: [
-          {
-            label: "Percent revoked out of all exits",
-            backgroundColor: barBackgroundColor,
-            data: dataPoints,
-          },
-        ],
+        datasets,
       }}
       options={{
         annotation: getRateAnnotation(averageRate),
@@ -167,22 +168,20 @@ const PercentRevokedByExits = ({
   );
 
   return (
-    <div>
-      <h4>
-        {chartTitle}
-        {showWarning && <DataSignificanceWarningIcon />}
-        <ExportMenu
-          chartId={chartId}
-          chart={chart}
-          metricTitle={chartTitle}
-          timeWindowDescription={timeDescription}
-          filters={filterStates}
-        />
-      </h4>
-      <h6 className="pB-20">{timeDescription}</h6>
-      <ModeSwitcher mode="exits" setMode={setMode} buttons={modeButtons()} />
-      <div className="static-chart-container fs-block">{chart}</div>
-    </div>
+    <RevocationsByDimension
+      chartTitle={chartTitle}
+      timeDescription={timeDescription}
+      labels={labels}
+      chartId={chartId}
+      datasets={datasets}
+      metricTitle={chartTitle}
+      filterStates={filterStates}
+      chart={chart}
+      modeSwitcher={
+        <ModeSwitcher mode="exits" setMode={setMode} buttons={modeButtons()} />
+      }
+      showWarning={showWarning}
+    />
   );
 };
 
