@@ -13,9 +13,11 @@ public/
 !src/api/**/*.js
 !src/App.js
 !src/index.js
+!src/setupTests.js
 !src/assets/scripts/utils/__tests__/**/*.js
 !src/assets/scripts/utils/getFilters.js
 !src/assets/scripts/utils/getViolation.js
+!src/components/propTypes.js
 !src/components/Error.js
 !src/components/ErrorBoundary.js
 !src/components/Footer.js
@@ -23,6 +25,7 @@ public/
 !src/components/Loading.js
 !src/components/StateSelector.js
 !src/components/TenantRoutes.js
+!src/constants/**/*.js
 !src/components/controls/**/*.js
 !src/components/charts/ExportMenu.js
 !src/components/charts/ChartCard.js

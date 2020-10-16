@@ -14,37 +14,28 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-
 import React from "react";
 import PropTypes from "prop-types";
+import { components } from "react-select";
 
-import Select from "../../../controls/Select";
-import FilterField from "./FilterField";
-
-const MetricPeriodMonthsFilter = ({ options, defaultValue, onChange }) => {
-  return (
-    <FilterField label="Time Period">
-      <Select
-        className="select-align"
-        options={options}
-        onChange={(option) => {
-          onChange({ metricPeriodMonths: option.value });
-        }}
-        defaultValue={defaultValue}
+const Option = ({ children, isSelected, ...props }) => (
+  <components.Option isSelected={isSelected} {...props}>
+    <label className="MultiSelect__checkbox-container">
+      {children}
+      <input
+        className="MultiSelect__checkbox-input"
+        type="checkbox"
+        disabled
+        checked={isSelected}
       />
-    </FilterField>
-  );
+      <span className="MultiSelect__checkbox" />
+    </label>
+  </components.Option>
+);
+
+Option.propTypes = {
+  isSelected: PropTypes.bool.isRequired,
+  children: PropTypes.node.isRequired,
 };
 
-MetricPeriodMonthsFilter.propTypes = {
-  options: PropTypes.arrayOf(
-    PropTypes.shape({ label: PropTypes.string, value: PropTypes.string })
-  ).isRequired,
-  defaultValue: PropTypes.shape({
-    label: PropTypes.string,
-    value: PropTypes.string,
-  }).isRequired,
-  onChange: PropTypes.func.isRequired,
-};
-
-export default MetricPeriodMonthsFilter;
+export default Option;

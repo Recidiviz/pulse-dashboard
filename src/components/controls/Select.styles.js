@@ -14,29 +14,33 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
+import { COLORS } from "../../assets/scripts/constants/colors";
 
-import React from "react";
-import PropTypes from "prop-types";
-
-import Select from "../../../controls/Select";
-import FilterField from "./FilterField";
-import { SUPERVISION_LEVELS } from "./options";
-
-const SupervisionLevelFilter = ({ onChange }) => (
-  <FilterField label="Supervision Level">
-    <Select
-      className="select-align"
-      options={SUPERVISION_LEVELS}
-      onChange={(option) => {
-        onChange({ supervisionLevel: option.value });
-      }}
-      defaultValue={SUPERVISION_LEVELS[0]}
-    />
-  </FilterField>
-);
-
-SupervisionLevelFilter.propTypes = {
-  onChange: PropTypes.func.isRequired,
+const fontStyles = {
+  color: "rgba(114, 119, 122, 0.8)",
+  textTransform: "uppercase",
 };
 
-export default SupervisionLevelFilter;
+export default {
+  container: (base) => ({
+    ...base,
+    flexGrow: 1,
+  }),
+  option: (base, state) => ({
+    ...base,
+    ...fontStyles,
+    backgroundColor: state.isMulti ? "transparent" : base.backgroundColor,
+    color: state.isSelected && !state.isMulti ? COLORS.white : fontStyles.color,
+    ":active": {
+      backgroundColor: state.isMulti ? "transparent" : base.backgroundColor,
+    },
+  }),
+  valueContainer: (base) => ({
+    ...base,
+    textTransform: "uppercase",
+    whiteSpace: "nowrap",
+    textOverflow: "ellipsis",
+  }),
+  singleValue: (base) => ({ ...base, ...fontStyles }),
+  group: (base) => ({ ...base, ...fontStyles, marginLeft: 20 }),
+};
