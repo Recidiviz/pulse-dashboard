@@ -1,11 +1,11 @@
-.radio-group {
+.RadioGroup {
   display: flex;
   justify-content: space-between;
 
-  label {
+  &__label {
     display: block;
     font-size: 14px;
-    color: #7C8695;
+    color: #7c8695;
     opacity: 0.8;
     letter-spacing: 0.79px;
     line-height: 17px;
@@ -17,7 +17,7 @@
     }
   }
 
-  input {
+  &__input {
     position: relative;
     padding: 0;
     margin: 0 8px 0 0;

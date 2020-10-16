@@ -36,7 +36,7 @@ export const PA_METHODOLOGY = {
       body: `Violations, starting with the least serious, are listed in order of severity: low technical, medium technical, electronic monitoring, substance use, absconding, high technical, summary offense, misdemeanor, felony. The most serious violation determines what row a person is placed in, regardless of whether it was the most recent violation. For example, if a person had one misdemeanor violation, then two low technical violations, then one substance use violation, and then they were admitted, they would be placed in the misdemeanor row because a misdemeanor is their most serious violation.`,
     },
     {
-      header: "Number of violation reports and notices of citation filed",
+      header: "Number of violation reports filed",
       body: `This is determined by counting the total number of reports that were filed one year prior to the last reported violation before their admission.  For example, if a person had one violation report on February 10, 2016 and one violation report  on February 1, 2017, and then they were admitted (without any new violations), they would be in the "2" column. This is the case even if several types of violations or conditions violated were listed within a single report.`,
     },
     {
@@ -46,11 +46,11 @@ export const PA_METHODOLOGY = {
   ],
   revocationsByDistrict: [
     {
-      header: "What the count chart shows",
+      header: `What the "Admission count" chart shows`,
       body: `This chart shows the total number of people admitted to SCIs from parole from each district during the time period selected in the "Time Period" drop down menu. The districts are positioned in descending order from left to right, with the district with the highest number of people admitted at the left. If a person’s district is unknown (meaning they were not under active supervision in any district within 2 years prior to their admission), they are not included in the district counts or rates.`,
     },
     {
-      header: "What the percentage chart shows",
+      header: `What the "Admission rate of standing population" chart shows`,
       body: `This chart shows the admission rate from parole in each district. Admission rate is defined as the number of people admitted from that district in the selected time period divided by the total supervised population within that district during the same time period. The districts are positioned in descending order from left to right, with the district with the highest admission rate at the left. If a person’s district is unknown (meaning they were not under active supervision within 2 years prior to their admission), they are not included in the district counts or rates.`,
     },
     {
@@ -75,7 +75,7 @@ export const PA_METHODOLOGY = {
   revocationsByViolationType: [
     {
       header: "What this chart shows",
-      body: `This chart shows the relative frequency of each type of violation among the selected group. The blue bars represent the different categories of conditions violated that constitute technical violations. The orange bars represent different categories of law violations. This is calculated as follows: The total number of violation reports upon which each type of violation appears, divided by the total number of violation reports filed. Violation counts include all reported violations filed within one year of a person's last violation before they were admitted. For this chart only, if multiple violation types are listed on one violation report or notice of citation, they are all counted. For example, if a single violation report lists both an employment violation and a reporting violation, both are counted. Hence the total number of reported violations included in this chart will be larger than the total number of violation reports. For example, if there were a total of 100 violation reports, but each report listed 2 different violations, the denominator in each percentage would still be 100. If, out of these 100 violation reports, 20 included at least one employment violation, then the percentage for employment violations would be 20/100=20%.`,
+      body: `This chart shows the relative frequency of each type of violation among the selected group. The blue bars represent the different categories of conditions violated that constitute technical violations. The orange bars represent different categories of law violations. This is calculated as follows: The total number of violation reports upon which each type of violation appears, divided by the total number of violation reports filed. Violation counts include all reported violations filed within one year of a person's last violation before they were admitted. For this chart only, if multiple violation types are listed on one violation report or notice of citation, they are all counted. For example, if a single violation report lists both an absconsion violation and an electronic monitoring violation, both are counted. Hence the total number of reported violations included in this chart will be larger than the total number of violation reports. For example, if there were a total of 100 violation reports, but each report listed 2 different violations, the denominator in each percentage would still be 100. If, out of these 100 violation reports, 20 included at least one employment violation, then the percentage for employment violations would be 20/100=20%.`,
     },
     {
       header: "Who is included",
@@ -120,20 +120,20 @@ export const PA_METHODOLOGY = {
       body: `The district within which a person was under supervision during their last active supervision period prior to admission. For a small percentage of individuals (less than 0.5%) the district and agent are unknown. This happens when the individual was not associated with an active supervision period at any point within the two years prior to the admission. `,
     },
     {
-      header: "Officer",
+      header: "Agent",
       body: `The most recent supervision agent the person was assigned to prior to admission.`,
     },
     {
       header: "Risk Level",
-      body: `Risk level is defined based only on the Community Supervision Screening Tool and/or the Community Supervision Tool (if relevant) and no other assessment (i.e., Prison Intake Tool). Those without Community Supervision Screening Tool/Community Supervision Tool scores are counted in the Unassessed category.`,
+      body: `Risk level is defined based only on the LSI-R tool and no other assessment. Those without LSI-R scores are counted in the Unassessed category. LSI-R scores above 54 are not counted.`,
     },
     {
-      header: "Last Officer Recommendation (Including Supplemental)",
-      body: `The most severe "Recommendation" on the reports filed within one year prior to the last reported violation before the person was admitted. The recommendations are ranked in severity in the following order: Revocation, treatment in prison, new conditions, treatment in field, community service, delayed action, other, internal unknown.`,
+      header: "Last Recommendation",
+      body: `The recommendation listed on the last violation report before the person was admitted.`,
     },
     {
       header: "Violation Record",
-      body: `A summary of all reported violations in violation reports filed within one year prior to the last reported violation before the person was admitted.`,
+      body: `A summary of the most severe reported violation on each violation report filed within one year prior to the last reported violation before the person was admitted.`,
     },
   ],
 };

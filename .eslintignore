@@ -14,12 +14,17 @@ public/
 !src/App.js
 !src/index.js
 !src/assets/scripts/utils/__tests__/**/*.js
+!src/assets/scripts/utils/getFilters.js
+!src/assets/scripts/utils/getViolation.js
 !src/components/Error.js
 !src/components/ErrorBoundary.js
-!src/components/StateSelector.js
+!src/components/Footer.js
 !src/components/ImportantNotesBar.js
+!src/components/Loading.js
+!src/components/StateSelector.js
 !src/components/TenantRoutes.js
 !src/components/controls/**/*.js
+!src/components/charts/ExportMenu.js
 !src/components/charts/ChartCard.js
 !src/components/charts/DataSignificanceWarningIcon.js
 !src/components/charts/Methodology.js
@@ -92,6 +97,7 @@ public/
 !src/utils/charts/__tests__/trendline.test.js
 !src/utils/logger.js
 !src/utils/transforms/years.js
+!src/utils/transforms/labels.js
 !src/utils/transforms/__tests__/years.test.js
 !src/views/NotFound.js
 !src/views/Profile.js

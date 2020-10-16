@@ -171,7 +171,7 @@ const PercentRevokedByPopulation = ({
   );
 
   return (
-    <div>
+    <div className="PercentRevokedByPopulation">
       <h4>
         {chartTitle}
         {showWarning && <DataSignificanceWarningIcon />}

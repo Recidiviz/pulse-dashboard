@@ -20,7 +20,7 @@ import PropTypes from "prop-types";
 import { NavLink } from "react-router-dom";
 
 const SideBarLink = ({ name, url }) => (
-  <li className="nav-item">
+  <li className="SideBarLink nav-item">
     <NavLink to={url} className="sidebar-link" activeClassName="active">
       {name}
     </NavLink>

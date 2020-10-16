@@ -25,7 +25,7 @@ const SideBarGroup = ({ children, icon, name, url }) => {
   const className = isActive ? "sidebar-group active" : "sidebar-group";
 
   return (
-    <li className="nav-item">
+    <li className="SideBarGroup nav-item">
       <div className={className}>
         <span className="icon-holder">{icon}</span>
         <span className="title">{name}</span>
