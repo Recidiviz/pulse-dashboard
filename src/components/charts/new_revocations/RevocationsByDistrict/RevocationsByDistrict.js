@@ -33,8 +33,6 @@ const RevocationsByDistrict = ({
   currentDistricts,
   dataFilter: filterData,
   filterStates,
-  skippedFilters,
-  treatCategoryAllAsAbsent = false,
   stateCode,
   timeDescription,
 }) => {
@@ -57,11 +55,7 @@ const RevocationsByDistrict = ({
     return <Error />;
   }
 
-  const filteredRevocationData = filterData(
-    revocationApiData,
-    skippedFilters,
-    treatCategoryAllAsAbsent
-  );
+  const filteredRevocationData = filterData(revocationApiData);
 
   switch (mode) {
     case "counts":
@@ -104,16 +98,10 @@ const RevocationsByDistrict = ({
   }
 };
 
-RevocationsByDistrict.defaultProps = {
-  treatCategoryAllAsAbsent: false,
-};
-
 RevocationsByDistrict.propTypes = {
   dataFilter: PropTypes.func.isRequired,
   filterStates: filtersPropTypes.isRequired,
-  skippedFilters: PropTypes.arrayOf(PropTypes.string).isRequired,
   currentDistricts: PropTypes.arrayOf(PropTypes.string).isRequired,
-  treatCategoryAllAsAbsent: PropTypes.bool,
   stateCode: PropTypes.string.isRequired,
   timeDescription: PropTypes.string.isRequired,
 };

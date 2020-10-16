@@ -122,7 +122,6 @@ const Revocations = () => {
     filters,
     userDistricts
   );
-  const allDataFilter = applyAllFilters(transformedFilters);
 
   const timeDescription = getTimeDescription(
     filters.metricPeriodMonths,
@@ -167,8 +166,10 @@ const Revocations = () => {
       <div className="bgc-white p-20 m-20">
         <ErrorBoundary>
           <RevocationCountOverTime
-            dataFilter={allDataFilter}
-            skippedFilters={["metricPeriodMonths", "supervisionType"]}
+            dataFilter={applyAllFilters(transformedFilters, [
+              "metricPeriodMonths",
+              "supervisionType",
+            ])}
             filterStates={filters}
             metricPeriodMonths={filters.metricPeriodMonths}
             stateCode={stateCode}
@@ -205,7 +206,7 @@ const Revocations = () => {
         riskLevelChart={
           <ErrorBoundary>
             <RevocationsByRiskLevel
-              dataFilter={allDataFilter}
+              dataFilter={applyAllFilters(transformedFilters)}
               filterStates={filters}
               stateCode={stateCode}
               timeDescription={timeDescription}
@@ -215,7 +216,7 @@ const Revocations = () => {
         violationChart={
           <ErrorBoundary>
             <RevocationsByViolation
-              dataFilter={allDataFilter}
+              dataFilter={applyAllFilters(transformedFilters)}
               filterStates={filters}
               stateCode={stateCode}
               timeDescription={timeDescription}
@@ -226,7 +227,7 @@ const Revocations = () => {
         genderChart={
           <ErrorBoundary>
             <RevocationsByGender
-              dataFilter={allDataFilter}
+              dataFilter={applyAllFilters(transformedFilters)}
               filterStates={filters}
               stateCode={stateCode}
               timeDescription={timeDescription}
@@ -236,7 +237,7 @@ const Revocations = () => {
         raceChart={
           <ErrorBoundary>
             <RevocationsByRace
-              dataFilter={allDataFilter}
+              dataFilter={applyAllFilters(transformedFilters)}
               filterStates={filters}
               stateCode={stateCode}
               timeDescription={timeDescription}
@@ -246,8 +247,7 @@ const Revocations = () => {
         districtChart={
           <ErrorBoundary>
             <RevocationsByDistrict
-              dataFilter={allDataFilter}
-              skippedFilters={["district"]}
+              dataFilter={applyAllFilters(transformedFilters, ["district"])}
               filterStates={filters}
               currentDistricts={filters.district}
               stateCode={stateCode}
@@ -260,8 +260,7 @@ const Revocations = () => {
       <div className="bgc-white m-20 p-20">
         <ErrorBoundary>
           <CaseTable
-            dataFilter={allDataFilter}
-            treatCategoryAllAsAbsent
+            dataFilter={applyAllFilters(transformedFilters, undefined, true)}
             filterStates={filters}
             metricPeriodMonths={filters.metricPeriodMonths}
             stateCode={stateCode}

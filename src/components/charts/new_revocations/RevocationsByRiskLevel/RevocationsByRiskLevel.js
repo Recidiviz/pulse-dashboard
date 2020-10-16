@@ -59,8 +59,6 @@ const modeButtons = [
 const RevocationsByRiskLevel = ({
   stateCode,
   dataFilter,
-  skippedFilters,
-  treatCategoryAllAsAbsent,
   filterStates,
   timeDescription,
 }) => {
@@ -82,15 +80,10 @@ const RevocationsByRiskLevel = ({
     return <Error />;
   }
 
-  const filteredData = dataFilter(
-    apiData,
-    skippedFilters,
-    treatCategoryAllAsAbsent
-  );
-
   const riskLevels = translate("riskLevelsMap");
 
   const riskLevelCounts = pipe(
+    dataFilter,
     filter((data) => Object.keys(riskLevels).includes(data.risk_level)),
     groupBy("risk_level"),
     values,
@@ -108,7 +101,7 @@ const RevocationsByRiskLevel = ({
         rate: rate.toFixed(2),
       };
     })
-  )(filteredData);
+  )(apiData);
 
   const chartLabels = map("label", riskLevelCounts);
   const chartDataPoints = map("rate", riskLevelCounts);
@@ -212,16 +205,9 @@ const RevocationsByRiskLevel = ({
   );
 };
 
-RevocationsByRiskLevel.defaultProps = {
-  skippedFilters: [],
-  treatCategoryAllAsAbsent: false,
-};
-
 RevocationsByRiskLevel.propTypes = {
   stateCode: PropTypes.string.isRequired,
   dataFilter: PropTypes.func.isRequired,
-  skippedFilters: PropTypes.arrayOf(PropTypes.string),
-  treatCategoryAllAsAbsent: PropTypes.bool,
   filterStates: filtersPropTypes.isRequired,
   timeDescription: PropTypes.string.isRequired,
 };

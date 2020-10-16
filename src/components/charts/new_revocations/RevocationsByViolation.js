@@ -46,8 +46,6 @@ const RevocationsByViolation = ({
   stateCode,
   timeDescription,
   violationTypes,
-  skippedFilters = [],
-  treatCategoryAllAsAbsent = false,
 }) => {
   const { isLoading, isError, apiData } = useChartData(
     `${stateCode}/newRevocations`,
@@ -62,19 +60,14 @@ const RevocationsByViolation = ({
     return <Error />;
   }
 
-  const filteredData = dataFilter(
-    apiData,
-    skippedFilters,
-    treatCategoryAllAsAbsent
-  );
-
   const allViolationTypeKeys = map("key", violationTypes);
   const chartLabels = map("label", violationTypes);
 
   const violationToCount = pipe(
+    dataFilter,
     map(pick(concat(allViolationTypeKeys, violationCountKey))),
     mergeAllWith((a, b) => toInteger(a) + toInteger(b))
-  )(filteredData);
+  )(apiData);
 
   const totalViolationCount = toInteger(violationToCount[violationCountKey]);
   const numeratorCounts = map(
@@ -183,11 +176,6 @@ const RevocationsByViolation = ({
   );
 };
 
-RevocationsByViolation.defaultProps = {
-  skippedFilters: [],
-  treatCategoryAllAsAbsent: false,
-};
-
 RevocationsByViolation.propTypes = {
   dataFilter: PropTypes.func.isRequired,
   filterStates: filtersPropTypes.isRequired,
@@ -200,8 +188,6 @@ RevocationsByViolation.propTypes = {
       type: PropTypes.string.isRequired,
     })
   ).isRequired,
-  skippedFilters: PropTypes.arrayOf(PropTypes.string),
-  treatCategoryAllAsAbsent: PropTypes.bool,
 };
 
 export default RevocationsByViolation;

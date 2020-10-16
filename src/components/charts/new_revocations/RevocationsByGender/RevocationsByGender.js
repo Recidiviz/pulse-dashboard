@@ -51,8 +51,6 @@ const chartId = "revocationsByGender";
 const RevocationsByGender = ({
   stateCode,
   dataFilter,
-  skippedFilters,
-  treatCategoryAllAsAbsent,
   filterStates,
   timeDescription,
 }) => {
@@ -80,7 +78,7 @@ const RevocationsByGender = ({
   }
 
   const { dataPoints, numerators, denominators } = pipe(
-    (dataset) => dataFilter(dataset, skippedFilters, treatCategoryAllAsAbsent),
+    dataFilter,
     reduce(dataTransformer(numeratorKey, denominatorKey), {}),
     getCounts
   )(apiData);
@@ -132,16 +130,9 @@ const RevocationsByGender = ({
   );
 };
 
-RevocationsByGender.defaultProps = {
-  skippedFilters: [],
-  treatCategoryAllAsAbsent: false,
-};
-
 RevocationsByGender.propTypes = {
   stateCode: PropTypes.string.isRequired,
   dataFilter: PropTypes.func.isRequired,
-  skippedFilters: PropTypes.arrayOf(PropTypes.string),
-  treatCategoryAllAsAbsent: PropTypes.bool,
   filterStates: filtersPropTypes.isRequired,
   timeDescription: PropTypes.string.isRequired,
 };

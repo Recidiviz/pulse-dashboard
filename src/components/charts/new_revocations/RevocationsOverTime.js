@@ -49,8 +49,6 @@ const chartId = "revocationsOverTime";
 const RevocationsOverTime = ({
   stateCode,
   dataFilter,
-  skippedFilters,
-  treatCategoryAllAsAbsent,
   metricPeriodMonths,
   filterStates,
 }) => {
@@ -77,7 +75,7 @@ const RevocationsOverTime = ({
         "total_revocations",
         0
       )
-  )(apiData, skippedFilters, treatCategoryAllAsAbsent);
+  )(apiData);
 
   const labels = monthNamesAllWithYearsFromNumbers(
     map("month", chartData),
@@ -213,16 +211,9 @@ const RevocationsOverTime = ({
   );
 };
 
-RevocationsOverTime.defaultProps = {
-  skippedFilters: [],
-  treatCategoryAllAsAbsent: false,
-};
-
 RevocationsOverTime.propTypes = {
   stateCode: PropTypes.string.isRequired,
   dataFilter: PropTypes.func.isRequired,
-  skippedFilters: PropTypes.arrayOf(PropTypes.string),
-  treatCategoryAllAsAbsent: PropTypes.bool,
   metricPeriodMonths: PropTypes.string.isRequired,
   filterStates: filtersPropTypes.isRequired,
 };

@@ -56,8 +56,6 @@ const CaseTable = ({
   dataFilter,
   filterStates,
   metricPeriodMonths,
-  skippedFilters,
-  treatCategoryAllAsAbsent,
   stateCode,
 }) => {
   const [index, setIndex] = useState(0);
@@ -98,11 +96,7 @@ const CaseTable = ({
     return <Error />;
   }
 
-  const filteredData = dataFilter(
-    apiData,
-    skippedFilters,
-    treatCategoryAllAsAbsent
-  );
+  const filteredData = dataFilter(apiData);
 
   // Sort case load first by district, second by officer name, third by person id (all ascending)
   const caseLoad = filteredData.sort(comparator);
@@ -221,10 +215,6 @@ const CaseTable = ({
   );
 };
 
-CaseTable.defaultProps = {
-  skippedFilters: [],
-};
-
 const metricPeriodMonthsType = PropTypes.oneOfType([
   PropTypes.string,
   PropTypes.number,
@@ -233,8 +223,6 @@ const metricPeriodMonthsType = PropTypes.oneOfType([
 CaseTable.propTypes = {
   dataFilter: PropTypes.func.isRequired,
   filterStates: filtersPropTypes.isRequired,
-  skippedFilters: PropTypes.arrayOf(PropTypes.string),
-  treatCategoryAllAsAbsent: PropTypes.bool.isRequired,
   metricPeriodMonths: metricPeriodMonthsType.isRequired,
   stateCode: PropTypes.string.isRequired,
 };

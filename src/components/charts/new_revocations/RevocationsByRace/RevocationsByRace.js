@@ -49,8 +49,6 @@ const chartId = "revocationsByRace";
 const RevocationsByRace = ({
   stateCode,
   dataFilter,
-  skippedFilters,
-  treatCategoryAllAsAbsent,
   filterStates,
   timeDescription,
 }) => {
@@ -78,7 +76,7 @@ const RevocationsByRace = ({
   }
 
   const { dataPoints, numerators, denominators } = pipe(
-    (dataset) => dataFilter(dataset, skippedFilters, treatCategoryAllAsAbsent),
+    dataFilter,
     reduce(dataTransformer(numeratorKey, denominatorKey), {}),
     getCounts
   )(apiData);
@@ -138,16 +136,9 @@ const RevocationsByRace = ({
   );
 };
 
-RevocationsByRace.defaultProps = {
-  skippedFilters: [],
-  treatCategoryAllAsAbsent: false,
-};
-
 RevocationsByRace.propTypes = {
   stateCode: PropTypes.string.isRequired,
   dataFilter: PropTypes.func.isRequired,
-  skippedFilters: PropTypes.arrayOf(PropTypes.string),
-  treatCategoryAllAsAbsent: PropTypes.bool,
   filterStates: filtersPropTypes.isRequired,
   timeDescription: PropTypes.string.isRequired,
 };
