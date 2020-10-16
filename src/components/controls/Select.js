@@ -20,7 +20,7 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import PropTypes from "prop-types";
 import ReactSelect, { components } from "react-select";
 
@@ -157,7 +157,6 @@ const GroupHeading = ({ onChange, ...props }) => {
     }
 
     onChange(updatedOptions);
-    // dummyInputRef.current.focus();
   };
 
   return (
@@ -178,9 +177,8 @@ const GroupHeading = ({ onChange, ...props }) => {
 const ValueContainer = ({ allOptions, summingOption, children, ...props }) => {
   const { selectProps, getValue } = props;
   const values = getValue();
-
   const selectInput = React.Children.toArray(children).find((input) =>
-    ["DummyInput", "Input"].includes(input.type.name)
+    ["Input"].includes(input.type.name)
   );
 
   const isAll =
@@ -236,11 +234,14 @@ const Select = ({ summingOption = null, isMulti, ...props }) => {
   const [value, setValue] = useState(defaultValue);
   const ref = useRef();
 
+  useEffect(() => {
+    if (ref.current && ref.current.select.inputRef) {
+      ref.current.select.inputRef.focus();
+    }
+  }, [value]);
+
   const handleChange = (selectedOptions) => {
     props.onChange(selectedOptions);
-    setTimeout(() => {
-      ref.current.select.inputRef.focus();
-    }, 0);
     return setValue(selectedOptions);
   };
 
