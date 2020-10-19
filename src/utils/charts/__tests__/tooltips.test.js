@@ -15,7 +15,6 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import "@testing-library/jest-dom/extend-expect";
 import * as tooltipsMethods from "../tooltips";
 
 describe("test for tooltips", () => {

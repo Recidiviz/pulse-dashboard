@@ -14,7 +14,6 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-import "@testing-library/jest-dom/extend-expect";
 import tk from "timekeeper";
 import * as toggleMethods from "../toggles";
 
