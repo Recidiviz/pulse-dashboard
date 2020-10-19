@@ -1,5 +1,5 @@
 // Recidiviz - a data platform for criminal justice reform
-// Copyright (C) 2019 Recidiviz, Inc.
+// Copyright (C) 2020 Recidiviz, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -15,7 +15,6 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import "@testing-library/jest-dom/extend-expect";
 import * as choroplethMethods from "../choropleth";
 
 describe("test for choropleth", () => {
@@ -112,19 +111,5 @@ describe("test for choropleth", () => {
       false
     );
     expect(colorForCentralNegativeValue).toBe("rgb(255, 255, 255)");
-  });
-
-  it("county name from code", () => {
-    const newCountryName = choroplethMethods.countyNameFromCode(
-      "us_ca",
-      "us_ca_los_angeles"
-    );
-    expect(newCountryName).toBe("los angeles");
-
-    const emptyCountryName = choroplethMethods.countyNameFromCode(
-      undefined,
-      undefined
-    );
-    expect(emptyCountryName).toBe(undefined);
   });
 });

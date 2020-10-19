@@ -1,5 +1,5 @@
 // Recidiviz - a data platform for criminal justice reform
-// Copyright (C) 2019 Recidiviz, Inc.
+// Copyright (C) 2020 Recidiviz, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -58,8 +58,8 @@ function trendlineData(dataPoints) {
     fitter.add(index, dataValue);
   });
 
-  const y1 = (fitter.f(fitter.minx));
-  const y2 = (fitter.f(fitter.maxx));
+  const y1 = fitter.f(fitter.minx);
+  const y2 = fitter.f(fitter.maxx);
 
   const overallDelta = y2 - y1;
   const incrementalDelta = overallDelta / dataPoints.length;
@@ -67,7 +67,7 @@ function trendlineData(dataPoints) {
   const trendlineValues = [];
 
   for (let i = 0; i < dataPoints.length; i += 1) {
-    trendlineValues[i] = y1 + (i * incrementalDelta);
+    trendlineValues[i] = y1 + i * incrementalDelta;
   }
 
   return trendlineValues;
@@ -75,7 +75,7 @@ function trendlineData(dataPoints) {
 
 function generateTrendlineDataset(chartDataPoints, lineColor) {
   return {
-    label: 'trendline',
+    label: "trendline",
     backgroundColor: lineColor,
     borderColor: lineColor,
     fill: false,
@@ -84,7 +84,7 @@ function generateTrendlineDataset(chartDataPoints, lineColor) {
     hoverRadius: 0,
     borderWidth: 1.5,
     lineTension: 0,
-    type: 'line',
+    type: "line",
     data: trendlineData(chartDataPoints),
   };
 }
@@ -109,8 +109,8 @@ function trendlineSlope(trendlineValues) {
  */
 function getTooltipWithoutTrendline(tooltipItem, data, units) {
   const { label } = data.datasets[tooltipItem.datasetIndex];
-  if (label === 'trendline') return '';
-  let tooltipLabel = (tooltipItem.yLabel).toString();
+  if (label === "trendline") return "";
+  let tooltipLabel = tooltipItem.yLabel.toString();
   if (units) {
     tooltipLabel = tooltipLabel.concat(units);
   }

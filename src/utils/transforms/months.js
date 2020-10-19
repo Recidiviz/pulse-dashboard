@@ -15,12 +15,34 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-const MONTH_NAMES = ['January', 'February', 'March', 'April', 'May', 'June',
-  'July', 'August', 'September', 'October', 'November', 'December',
+const MONTH_NAMES = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
 ];
 
-const MONTH_NAMES_ABBREVIATED = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-  'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
+const MONTH_NAMES_ABBREVIATED = [
+  "Jan",
+  "Feb",
+  "Mar",
+  "Apr",
+  "May",
+  "Jun",
+  "Jul",
+  "Aug",
+  "Sep",
+  "Oct",
+  "Nov",
+  "Dec",
 ];
 
 const getCurrentMonthName = function getCurrentMonthName() {
@@ -29,16 +51,9 @@ const getCurrentMonthName = function getCurrentMonthName() {
   return MONTH_NAMES[thisMonth];
 };
 
-const monthNameFromNumber = function monthNameFromNumber(number) {
-  return MONTH_NAMES[number - 1];
-};
-
-const monthNameFromNumberAbbreviated = function monthNameShortFromNumber(number) {
-  return MONTH_NAMES_ABBREVIATED[number - 1];
-};
-
 const monthNamesFromNumbers = function monthNamesFromNumbers(
-  monthNumbers, abbreviated,
+  monthNumbers,
+  abbreviated
 ) {
   const monthList = [];
   const namesArray = abbreviated ? MONTH_NAMES_ABBREVIATED : MONTH_NAMES;
@@ -50,12 +65,18 @@ const monthNamesFromNumbers = function monthNamesFromNumbers(
   return monthList;
 };
 
-const monthNamesWithYears = function monthNamesWithyears(monthNumbers, abbreviated, allMonths) {
+const monthNamesWithYears = function monthNamesWithyears(
+  monthNumbers,
+  abbreviated,
+  allMonths
+) {
   const monthNames = monthNamesFromNumbers(monthNumbers, abbreviated);
   const monthNumbersNormalized = monthNumbers.map((month) => Number(month));
-  const multipleYears = (monthNumbersNormalized.length > 12
-    || monthNumbersNormalized[monthNumbersNormalized.length - 1] < monthNumbersNormalized[0]);
-  const january = abbreviated ? 'Jan' : 'January';
+  const multipleYears =
+    monthNumbersNormalized.length > 12 ||
+    monthNumbersNormalized[monthNumbersNormalized.length - 1] <
+      monthNumbersNormalized[0];
+  const january = abbreviated ? "Jan" : "January";
 
   const today = new Date();
   let year = today.getFullYear();
@@ -74,38 +95,22 @@ const monthNamesWithYears = function monthNamesWithyears(monthNumbers, abbreviat
 };
 
 const monthNamesWithYearsFromNumbers = function monthNamesShortWithYearsFromNumbers(
-  monthNumbers, abbreviated,
+  monthNumbers,
+  abbreviated
 ) {
   return monthNamesWithYears(monthNumbers, abbreviated, false);
 };
 
 const monthNamesAllWithYearsFromNumbers = function monthNamesShortWithYearsFromNumbers(
-  monthNumbers, abbreviated,
+  monthNumbers,
+  abbreviated
 ) {
   return monthNamesWithYears(monthNumbers, abbreviated, true);
 };
 
-const monthNamesFromShortName = function monthNamesFromShortName(shortName) {
-  if (shortName) {
-    let monthName = shortName;
-
-    // Strip the year ('XX) from the name if it exists
-    if (shortName.includes("'")) {
-      monthName = shortName.substring(0, shortName.indexOf("'") - 1);
-    }
-
-    return MONTH_NAMES[MONTH_NAMES_ABBREVIATED.indexOf(monthName)];
-  }
-
-  return '';
-};
-
 export {
   getCurrentMonthName,
-  monthNameFromNumber,
-  monthNameFromNumberAbbreviated,
   monthNamesFromNumbers,
   monthNamesWithYearsFromNumbers,
   monthNamesAllWithYearsFromNumbers,
-  monthNamesFromShortName,
 };

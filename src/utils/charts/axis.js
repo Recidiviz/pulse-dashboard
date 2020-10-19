@@ -1,5 +1,5 @@
 // Recidiviz - a data platform for criminal justice reform
-// Copyright (C) 2019 Recidiviz, Inc.
+// Copyright (C) 2020 Recidiviz, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -14,21 +14,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-
-function axisCallbackForPercentage() {
+export function axisCallbackForPercentage() {
   return function (value) {
     return `${value}%`;
   };
 }
-
-function axisCallbackForMetricType(isRateMode) {
-  if (isRateMode) {
-    return axisCallbackForPercentage();
-  }
-
-  return function (value) {
-    return value;
-  };
-}
-
-export { axisCallbackForPercentage, axisCallbackForMetricType };

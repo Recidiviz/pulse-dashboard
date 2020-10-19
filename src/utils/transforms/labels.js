@@ -71,9 +71,7 @@ function toHtmlFriendly(string) {
 }
 
 function toHumanReadable(string) {
-  let newString = string.replace(/-/g, " ");
-  newString = newString.replace(/_/g, " ");
-  return newString;
+  return string.replace(/[-_]/g, " ");
 }
 
 function toInt(nonInt) {

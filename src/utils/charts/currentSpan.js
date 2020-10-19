@@ -1,5 +1,5 @@
 // Recidiviz - a data platform for criminal justice reform
-// Copyright (C) 2019 Recidiviz, Inc.
+// Copyright (C) 2020 Recidiviz, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -15,18 +15,23 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import { COLORS } from '../../assets/scripts/constants/colors';
-import { getCurrentMonthName } from '../transforms/months';
+import { COLORS } from "../../assets/scripts/constants/colors";
+import { getCurrentMonthName } from "../transforms/months";
 
 function labelCurrentMonth(tooltipItems, labels) {
   const tooltipItem = tooltipItems[0];
   const { index, xLabel: label } = tooltipItem;
 
-  const onlyMonthInSet = !labels[0] && !labels[labels.length - 1] && index === 1;
+  const onlyMonthInSet =
+    !labels[0] && !labels[labels.length - 1] && index === 1;
   const lastMonthInSet = index === labels.length - 1;
   const currentMonth = getCurrentMonthName();
 
-  if ((lastMonthInSet || onlyMonthInSet) && label && label.startsWith(currentMonth)) {
+  if (
+    (lastMonthInSet || onlyMonthInSet) &&
+    label &&
+    label.startsWith(currentMonth)
+  ) {
     return `${label} (in progress)`;
   }
 
@@ -47,32 +52,33 @@ function currentMonthBox(annotationId, chartLabels) {
 
   const previousMonthTick = chartLabels[chartLabels.length - 2];
   return {
-    drawTime: 'beforeDatasetsDraw',
-    events: ['click'],
+    drawTime: "beforeDatasetsDraw",
+    events: ["click"],
 
     // Array of annotation configuration objects
     // See below for detailed descriptions of the annotation options
-    annotations: [{
-      type: 'box',
+    annotations: [
+      {
+        type: "box",
 
-      // optional annotation ID (must be unique)
-      id: annotationId,
-      xScaleID: 'x-axis-0',
+        // optional annotation ID (must be unique)
+        id: annotationId,
+        xScaleID: "x-axis-0",
 
-      drawTime: 'beforeDatasetsDraw',
+        drawTime: "beforeDatasetsDraw",
 
-      borderColor: COLORS['grey-300'],
-      borderWidth: 1,
-      backgroundColor: 'rgba(224, 224, 224, 0.5)',
+        borderColor: COLORS["grey-300"],
+        borderWidth: 1,
+        backgroundColor: "rgba(224, 224, 224, 0.5)",
 
-      xMin: previousMonthTick,
+        xMin: previousMonthTick,
 
-      onClick(e) { return e; },
-    }],
+        onClick(e) {
+          return e;
+        },
+      },
+    ],
   };
 }
 
-export {
-  labelCurrentMonth,
-  currentMonthBox,
-};
+export { labelCurrentMonth, currentMonthBox };
