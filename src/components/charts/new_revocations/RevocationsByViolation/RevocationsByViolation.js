@@ -19,26 +19,18 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Bar } from "react-chartjs-2";
 
-import concat from "lodash/fp/concat";
-import map from "lodash/fp/map";
-import mergeAllWith from "lodash/fp/mergeAllWith";
-import pick from "lodash/fp/pick";
-import pipe from "lodash/fp/pipe";
-import toInteger from "lodash/fp/toInteger";
+import Loading from "../../../Loading";
+import Error from "../../../Error";
 
-import Loading from "../../Loading";
-import Error from "../../Error";
-
-import { COLORS } from "../../../assets/scripts/constants/colors";
-import useChartData from "../../../hooks/useChartData";
-import { axisCallbackForPercentage } from "../../../utils/charts/axis";
-import { tooltipForRateMetricWithCounts } from "../../../utils/charts/toggles";
-import { calculateRate } from "./helpers/rate";
-import { filtersPropTypes } from "../propTypes";
-import RevocationsByDimension from "./RevocationsByDimension";
+import { COLORS } from "../../../../assets/scripts/constants/colors";
+import useChartData from "../../../../hooks/useChartData";
+import { axisCallbackForPercentage } from "../../../../utils/charts/axis";
+import { tooltipForRateMetricWithCounts } from "../../../../utils/charts/toggles";
+import { filtersPropTypes } from "../../propTypes";
+import RevocationsByDimension from "../RevocationsByDimension";
+import generateRevocationsByViolationChartData from "./generateRevocationsByViolationChartData";
 
 const chartId = "revocationsByViolationType";
-const violationCountKey = "violation_count";
 
 const RevocationsByViolation = ({
   dataFilter,
@@ -60,60 +52,20 @@ const RevocationsByViolation = ({
     return <Error />;
   }
 
-  const allViolationTypeKeys = map("key", violationTypes);
-  const chartLabels = map("label", violationTypes);
-
-  const violationToCount = pipe(
+  const {
+    data,
+    numerators,
+    denominators,
+  } = generateRevocationsByViolationChartData(
+    apiData,
     dataFilter,
-    map(pick(concat(allViolationTypeKeys, violationCountKey))),
-    mergeAllWith((a, b) => toInteger(a) + toInteger(b))
-  )(apiData);
-
-  const totalViolationCount = toInteger(violationToCount[violationCountKey]);
-  const numeratorCounts = map(
-    (type) => violationToCount[type],
-    allViolationTypeKeys
+    violationTypes
   );
-  const denominatorCounts = map(
-    () => totalViolationCount,
-    allViolationTypeKeys
-  );
-  const chartDataPoints = map(
-    (type) =>
-      calculateRate(violationToCount[type], totalViolationCount).toFixed(2),
-    allViolationTypeKeys
-  );
-
-  // This sets bar color to light-blue-500 when it's a technical violation, orange when it's law
-  const colorTechnicalAndLaw = () =>
-    violationTypes.map((violationType) => {
-      switch (violationType.type) {
-        case "TECHNICAL":
-          return COLORS["lantern-light-blue"];
-        case "LAW":
-          return COLORS["lantern-orange"];
-        default:
-          return COLORS["lantern-light-blue"];
-      }
-    });
-
-  const datasets = [
-    {
-      label: "Proportion of violations",
-      backgroundColor: colorTechnicalAndLaw(),
-      hoverBackgroundColor: colorTechnicalAndLaw(),
-      hoverBorderColor: colorTechnicalAndLaw(),
-      data: chartDataPoints,
-    },
-  ];
 
   const chart = (
     <Bar
       id={chartId}
-      data={{
-        labels: chartLabels,
-        datasets,
-      }}
+      data={data}
       options={{
         legend: {
           display: false,
@@ -153,8 +105,8 @@ const RevocationsByViolation = ({
               tooltipForRateMetricWithCounts(
                 tooltipItem,
                 data,
-                numeratorCounts,
-                denominatorCounts
+                numerators,
+                denominators
               ),
           },
         },
@@ -166,9 +118,9 @@ const RevocationsByViolation = ({
     <RevocationsByDimension
       chartTitle="Relative frequency of violation types"
       timeDescription={timeDescription}
-      labels={chartLabels}
+      labels={data.labels}
       chartId={chartId}
-      datasets={datasets}
+      datasets={data.datasets}
       metricTitle="Relative frequency of violation types"
       filterStates={filterStates}
       chart={chart}
