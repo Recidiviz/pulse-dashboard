@@ -59,7 +59,7 @@ const ExportMenu = ({
   }, []);
 
   return (
-    <span className="fa-pull-right">
+    <span className="ExportMenu fa-pull-right">
       <Dropdown drop="down" alignRight>
         <Dropdown.Toggle
           variant="link"
@@ -208,8 +208,8 @@ const ExportMenu = ({
           <Modal.Body>
             {additionalInfo.length > 0 ? (
               <ul>
-                {additionalInfo.map((info, i) => (
-                  <div key={i}>
+                {additionalInfo.map((info) => (
+                  <div key={info.id}>
                     <h6>{info.header}</h6>
                     <p>{info.body}</p>
                   </div>

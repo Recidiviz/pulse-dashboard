@@ -12,6 +12,17 @@
     padding: 20px 40px;
     border-right: 1px solid $border-color;
 
+    @media screen and (max-width: 1024px) {
+      padding-left: 20px;
+      padding-right: 20px;
+    }
+    h4 {
+      margin-bottom: 0;
+      @media screen and (max-width: 1024px) {
+        font-size: 1rem;
+      }
+    }
+
     &:last-child {
       border-right: 0;
     }
@@ -20,19 +31,31 @@
   .top-level-filters-title {
     margin-right: 11px;
     float: left;
-    width: 25%;
     text-align: justify;
     font-size: 0.9rem;
     flex-shrink: 0;
-    transition: 0.25s
-  }
+    transition: 0.25s;
+    @media screen and (max-width: 1024px) {
+      font-size: 0.6rem;
+    }
 
-  .select-align {
-    flex-grow: 1;
+    @media screen and (max-width: 960px) {
+      font-size: 0.5rem;
+    }
+
+    @media screen and (max-width: 960px) {
+      font-size: 0.5rem;
+    }
   }
 
   .top-level-active {
+    display: flex;
+    flex-direction: column;
     padding: 12px 14px !important;
+    @media screen and (min-width: 1025px) {
+      flex-direction: row;
+      align-items: center;
+    }
   }
 
   &.pre-top-level-filters {
@@ -56,7 +79,6 @@
       }
     }
   }
-
 }
 
 .revocations-time-graph {
@@ -67,9 +89,9 @@
   flex: 2 1 0;
 }
 
-.revocation-matrix {
-
-  .y-label, .x-label {
+.RevocationMatrix {
+  .y-label,
+  .x-label {
     text-align: center;
   }
 
@@ -89,21 +111,23 @@
   }
 
   .matrix {
-    .violation-type-label, .empty-cell {
+    .violation-type-label,
+    .empty-cell {
       display: inline-block;
       width: 125px;
       margin-right: 20px;
     }
 
-    .violation-column, .cell {
+    .violation-column,
+    .cell {
       display: inline-block;
       width: 10%;
       text-align: center;
     }
 
     .cell {
-      background:
-        linear-gradient($border-color, $border-color) no-repeat center/1px 100%,
+      background: linear-gradient($border-color, $border-color) no-repeat
+          center/1px 100%,
         linear-gradient($border-color, $border-color) no-repeat center/100% 1px;
       width: 10%;
     }
@@ -125,6 +149,9 @@
           font-size: 12px;
           font-weight: 600;
           white-space: nowrap;
+          &:focus {
+            outline: none;
+          }
         }
       }
 
@@ -186,7 +213,7 @@
   }
 }
 
-.matrix-explanation {
+.RevocationMatrixExplanation {
   flex: 1 1 0;
 
   p {
@@ -252,6 +279,7 @@
       font-size: 16px;
       font-weight: 600;
       margin-bottom: 20px;
+      text-align: left;
 
       &.selected {
         color: rgb(39, 128, 194);
@@ -272,7 +300,7 @@
   width: 80vw;
 }
 
-.case-table {
+.CaseTable {
   table {
     width: 100%;
   }
@@ -303,7 +331,7 @@
     width: 15%;
   }
 
-  .table-navigation {
+  .Pagination {
     text-align: right;
     padding: 20px 40px;
     text-transform: uppercase;
@@ -319,8 +347,8 @@
 }
 
 @media screen and (max-width: 1868px) {
-  .revocation-matrix .matrix .cell,
-  .revocation-matrix .matrix .violation-column {
+  .RevocationMatrix .matrix .cell,
+  .RevocationMatrix .matrix .violation-column {
     width: 9%;
   }
 }
@@ -337,8 +365,8 @@
     font-size: 0.65rem;
   }
 
-  .revocation-matrix .matrix .cell,
-  .revocation-matrix .matrix .violation-column {
+  .RevocationMatrix .matrix .cell,
+  .RevocationMatrix .matrix .violation-column {
     width: 8%;
   }
 }
@@ -349,7 +377,7 @@
     width: 98%;
   }
 
-  .revocation-matrix .matrix-content {
+  .RevocationMatrix .matrix-content {
     overflow-x: auto;
     overflow-y: hidden;
 
@@ -358,7 +386,7 @@
     }
   }
 
-  .matrix-explanation {
+  .RevocationMatrixExplanation {
     margin-right: 20px;
   }
 
@@ -366,24 +394,8 @@
     margin-bottom: 20px;
   }
 
-  .revocation-matrix .matrix .cell,
-  .revocation-matrix .matrix .violation-column {
+  .RevocationMatrix .matrix .cell,
+  .RevocationMatrix .matrix .violation-column {
     width: 9%;
-  }
-}
-
-@media screen and (max-width: 1024px) {
-  .top-level-filters .top-level-filter h4 {
-    min-height: 60%;
-  }
-
-  .top-level-filters .top-level-filters-title {
-    font-size: 0.6rem;
-  }
-}
-
-@media screen and (max-width: 960px) {
-  .top-level-filters .top-level-filters-title {
-    font-size: 0.5rem;
   }
 }

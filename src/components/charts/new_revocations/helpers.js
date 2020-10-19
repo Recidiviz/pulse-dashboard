@@ -20,6 +20,16 @@ import {
   toInt,
   violationCountLabel,
 } from "../../../utils/transforms/labels";
+import {
+  ADMISSION_TYPE,
+  CHARGE_CATEGORY,
+  DISTRICT,
+  METRIC_PERIOD_MONTHS,
+  REPORTED_VIOLATIONS,
+  SUPERVISION_LEVEL,
+  SUPERVISION_TYPE,
+  VIOLATION_TYPE,
+} from "../../../constants/filterTypes";
 
 const nullSafeComparison = (field, filter) => {
   if (!field && !filter) return true;
@@ -50,51 +60,54 @@ export const applyTopLevelFilters = (
 ) => (data) =>
   data.filter((item) => {
     if (
-      filters.metricPeriodMonths &&
-      !skippedFilters.includes("metricPeriodMonths") &&
-      !nullSafeComparison(item.metric_period_months, filters.metricPeriodMonths)
+      filters[METRIC_PERIOD_MONTHS] &&
+      !skippedFilters.includes(METRIC_PERIOD_MONTHS) &&
+      !nullSafeComparison(
+        item.metric_period_months,
+        filters[METRIC_PERIOD_MONTHS]
+      )
     ) {
       return false;
     }
 
     if (
-      filters.district &&
-      !skippedFilters.includes("district") &&
-      !(treatCategoryAllAsAbsent && includesAllItemFirst(filters.district)) &&
-      !nullSafeComparisonForArray(item.district, filters.district)
+      filters[DISTRICT] &&
+      !skippedFilters.includes(DISTRICT) &&
+      !(treatCategoryAllAsAbsent && includesAllItemFirst(filters[DISTRICT])) &&
+      !nullSafeComparisonForArray(item.district, filters[DISTRICT])
     ) {
       return false;
     }
 
     if (
-      filters.chargeCategory &&
-      !skippedFilters.includes("chargeCategory") &&
-      !(treatCategoryAllAsAbsent && isAllItem(filters.chargeCategory)) &&
-      !nullSafeComparison(item.charge_category, filters.chargeCategory)
+      filters[CHARGE_CATEGORY] &&
+      !skippedFilters.includes(CHARGE_CATEGORY) &&
+      !(treatCategoryAllAsAbsent && isAllItem(filters[CHARGE_CATEGORY])) &&
+      !nullSafeComparison(item.charge_category, filters[CHARGE_CATEGORY])
     ) {
       return false;
     }
     if (
-      filters.supervisionType &&
-      !skippedFilters.includes("supervisionType") &&
-      !(treatCategoryAllAsAbsent && isAllItem(filters.supervisionType)) &&
-      !nullSafeComparison(item.supervision_type, filters.supervisionType)
+      filters[SUPERVISION_TYPE] &&
+      !skippedFilters.includes(SUPERVISION_TYPE) &&
+      !(treatCategoryAllAsAbsent && isAllItem(filters[SUPERVISION_TYPE])) &&
+      !nullSafeComparison(item.supervision_type, filters[SUPERVISION_TYPE])
     ) {
       return false;
     }
     if (
-      filters.admissionType &&
-      !skippedFilters.includes("admissionType") &&
-      !includesAllItemFirst(filters.admissionType) &&
-      !nullSafeComparisonForArray(item.admission_type, filters.admissionType)
+      filters[ADMISSION_TYPE] &&
+      !skippedFilters.includes(ADMISSION_TYPE) &&
+      !includesAllItemFirst(filters[ADMISSION_TYPE]) &&
+      !nullSafeComparisonForArray(item.admission_type, filters[ADMISSION_TYPE])
     ) {
       return false;
     }
     if (
-      filters.supervisionLevel &&
-      !skippedFilters.includes("supervisionLevel") &&
-      !nullSafeComparison(item.supervision_level, filters.supervisionLevel) &&
-      !(treatCategoryAllAsAbsent && isAllItem(filters.supervisionLevel))
+      filters[SUPERVISION_LEVEL] &&
+      !skippedFilters.includes(SUPERVISION_LEVEL) &&
+      !nullSafeComparison(item.supervision_level, filters[SUPERVISION_LEVEL]) &&
+      !(treatCategoryAllAsAbsent && isAllItem(filters[SUPERVISION_LEVEL]))
     ) {
       return false;
     }
@@ -104,15 +117,15 @@ export const applyTopLevelFilters = (
 const applyMatrixFilters = (filters) => (data) =>
   data.filter((item) => {
     if (
-      filters.violationType &&
-      !nullSafeComparison(item.violation_type, filters.violationType)
+      filters[VIOLATION_TYPE] &&
+      !nullSafeComparison(item.violation_type, filters[VIOLATION_TYPE])
     ) {
       return false;
     }
 
     if (
-      filters.reportedViolations &&
-      toInt(item.reported_violations) !== toInt(filters.reportedViolations)
+      filters[REPORTED_VIOLATIONS] &&
+      toInt(item.reported_violations) !== toInt(filters[REPORTED_VIOLATIONS])
     ) {
       return false;
     }
@@ -134,17 +147,19 @@ export const applyAllFilters = (
 
 export const formattedMatrixFilters = (filters) => {
   const parts = [];
-  if (filters.violationType) {
-    parts.push(matrixViolationTypeToLabel[filters.violationType]);
+  if (filters[VIOLATION_TYPE]) {
+    parts.push(matrixViolationTypeToLabel[filters[VIOLATION_TYPE]]);
   }
-  if (filters.reportedViolations) {
-    parts.push(`${violationCountLabel(filters.reportedViolations)} violations`);
+  if (filters[REPORTED_VIOLATIONS]) {
+    parts.push(
+      `${violationCountLabel(filters[REPORTED_VIOLATIONS])} violations`
+    );
   }
   return parts.join(", ");
 };
 
 export const limitFiltersToUserDistricts = (filters, userDistricts) => {
-  if (userDistricts !== null && includesAllItemFirst(filters.district)) {
+  if (userDistricts !== null && includesAllItemFirst(filters[DISTRICT])) {
     return { ...filters, district: userDistricts };
   }
 

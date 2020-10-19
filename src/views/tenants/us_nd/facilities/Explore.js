@@ -94,6 +94,9 @@ const FacilitiesExplore = () => {
       setChartMetricType={setMetricType}
       setChartMetricPeriodMonths={setMetricPeriodMonths}
       setChartDistrict={setDistrict}
+      metricType={metricType}
+      metricPeriodMonths={metricPeriodMonths}
+      district={district}
       stateCode="US_ND"
       replaceLa
       availableDistricts={[

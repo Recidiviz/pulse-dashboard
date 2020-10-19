@@ -20,31 +20,37 @@ import PropTypes from "prop-types";
 
 import Select from "../../../controls/Select";
 import FilterField from "./FilterField";
+import { optionPropType } from "../../../propTypes";
 
-const ChangeCategoryFilter = ({ options, defaultValue, onChange }) => {
+const ToggleBarFilter = ({
+  label,
+  value,
+  options,
+  defaultOption,
+  onChange,
+}) => {
+  const onValueChange = (option) => onChange(option.value);
+
+  const selectedOption = options.find((option) => option.value === value);
+
   return (
-    <FilterField label="Case Type">
+    <FilterField label={label}>
       <Select
-        className="select-align"
+        value={selectedOption}
         options={options}
-        onChange={(option) => {
-          onChange({ chargeCategory: option.value });
-        }}
-        defaultValue={defaultValue}
+        onChange={onValueChange}
+        defaultValue={defaultOption}
       />
     </FilterField>
   );
 };
 
-ChangeCategoryFilter.propTypes = {
-  options: PropTypes.arrayOf(
-    PropTypes.shape({ label: PropTypes.string, value: PropTypes.string })
-  ).isRequired,
-  defaultValue: PropTypes.shape({
-    label: PropTypes.string,
-    value: PropTypes.string,
-  }).isRequired,
+ToggleBarFilter.propTypes = {
+  label: PropTypes.string.isRequired,
+  value: PropTypes.string.isRequired,
+  options: PropTypes.arrayOf(optionPropType).isRequired,
+  defaultOption: optionPropType.isRequired,
   onChange: PropTypes.func.isRequired,
 };
 
-export default ChangeCategoryFilter;
+export default ToggleBarFilter;

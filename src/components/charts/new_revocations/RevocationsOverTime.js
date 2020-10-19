@@ -90,7 +90,7 @@ const RevocationsOverTime = ({
 
   const datasets = [
     {
-      label: "Revocations",
+      label: translate("Revocations"),
       borderColor: COLORS["lantern-light-blue"],
       pointBackgroundColor: COLORS["lantern-light-blue"],
       fill: false,
@@ -132,7 +132,7 @@ const RevocationsOverTime = ({
               if (value % 1 === 0) {
                 return value;
               }
-              return 0;
+              return null;
             },
             suggestedMax: maxValue,
           },
