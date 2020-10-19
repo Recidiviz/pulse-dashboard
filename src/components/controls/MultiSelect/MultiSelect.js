@@ -72,7 +72,9 @@ const MultiSelect = ({
   return (
     <Select
       classNamePrefix="MultiSelect"
-      className={cn("MultiSelect", className)}
+      className={cn("MultiSelect", className, {
+        "MultiSelect--summing-option-selected": summingOption === value[0],
+      })}
       ref={ref}
       isSearchable={false}
       closeMenuOnSelect={false}
@@ -80,6 +82,7 @@ const MultiSelect = ({
       hideSelectedOptions={false}
       onChange={handleChange}
       options={options}
+      value={value}
       {...props}
       isMulti
     />
