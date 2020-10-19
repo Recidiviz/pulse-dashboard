@@ -14,36 +14,4 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-import React, { forwardRef } from "react";
-import PropTypes from "prop-types";
-import ReactSelect from "react-select";
-
-import styles from "./Select.styles";
-import { optionPropType } from "../propTypes";
-
-const Select = forwardRef((props, ref) => (
-  <ReactSelect
-    ref={ref}
-    styles={styles}
-    className="Select"
-    classNamePrefix="Select"
-    {...props}
-  />
-));
-
-Select.propTypes = {
-  value: PropTypes.oneOfType([
-    optionPropType,
-    PropTypes.arrayOf(optionPropType),
-  ]).isRequired,
-  defaultValue: PropTypes.oneOfType([
-    optionPropType,
-    PropTypes.arrayOf(optionPropType),
-  ]).isRequired,
-  onChange: PropTypes.func.isRequired,
-  options: PropTypes.arrayOf(optionPropType).isRequired,
-};
-
-Select.displayName = "Select";
-
-export default Select;
+export { default } from "./MultiSelect";

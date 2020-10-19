@@ -15,7 +15,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 
 import CaseTable from "../../../../components/charts/new_revocations/CaseTable/CaseTable";
 import RevocationCharts from "../../../../components/charts/new_revocations/RevocationCharts";
@@ -28,13 +28,11 @@ import RevocationCountOverTime from "../../../../components/charts/new_revocatio
 import RevocationMatrix from "../../../../components/charts/new_revocations/RevocationMatrix/RevocationMatrix";
 import RevocationMatrixExplanation from "../../../../components/charts/new_revocations/RevocationMatrix/RevocationMatrixExplanation";
 import ToggleBar from "../../../../components/charts/new_revocations/ToggleBar/ToggleBar";
-import MetricPeriodMonthsFilter from "../../../../components/charts/new_revocations/ToggleBar/MetricPeriodMonthsFilter";
 import DistrictFilter from "../../../../components/charts/new_revocations/ToggleBar/DistrictFilter";
-import ChargeCategoryFilter from "../../../../components/charts/new_revocations/ToggleBar/ChargeCategoryFilter";
 import AdmissionTypeFilter from "../../../../components/charts/new_revocations/ToggleBar/AdmissionTypeFilter";
-import SupervisionTypeFilter from "../../../../components/charts/new_revocations/ToggleBar/SupervisionTypeFilter";
 import ViolationFilter from "../../../../components/charts/new_revocations/ToggleBar/ViolationFilter";
 import ErrorBoundary from "../../../../components/ErrorBoundary";
+import ToggleBarFilter from "../../../../components/charts/new_revocations/ToggleBar/ToggleBarFilter";
 import {
   applyAllFilters,
   applyTopLevelFilters,
@@ -48,6 +46,16 @@ import {
   getUserDistricts,
 } from "../../../../utils/authentication/user";
 import * as lanternTenant from "../../utils/lanternTenants";
+import {
+  ADMISSION_TYPE,
+  CHARGE_CATEGORY,
+  DISTRICT,
+  METRIC_PERIOD_MONTHS,
+  REPORTED_VIOLATIONS,
+  SUPERVISION_LEVEL,
+  SUPERVISION_TYPE,
+  VIOLATION_TYPE,
+} from "../../../../constants/filterTypes";
 import { MOFilterOptions as filterOptions } from "../../constants/filterOptions";
 
 const stateCode = lanternTenant.MO;
@@ -58,21 +66,29 @@ const Revocations = () => {
   const userDistricts = getUserDistricts(user);
 
   const [filters, setFilters] = useState({
-    metricPeriodMonths: filterOptions.metricPeriodMonths.defaultValue,
-    chargeCategory: filterOptions.chargeCategory.defaultValue,
-    reportedViolations: filterOptions.reportedViolations.defaultValue,
-    violationType: filterOptions.violationType.defaultValue,
-    supervisionType: filterOptions.supervisionType.defaultValue,
-    supervisionLevel: filterOptions.supervisionLevel.defaultValue,
+    [METRIC_PERIOD_MONTHS]: filterOptions[METRIC_PERIOD_MONTHS].defaultValue,
+    [CHARGE_CATEGORY]: filterOptions[CHARGE_CATEGORY].defaultValue,
+    [REPORTED_VIOLATIONS]: filterOptions[REPORTED_VIOLATIONS].defaultValue,
+    [VIOLATION_TYPE]: filterOptions[VIOLATION_TYPE].defaultValue,
+    [SUPERVISION_TYPE]: filterOptions[SUPERVISION_TYPE].defaultValue,
+    [SUPERVISION_LEVEL]: filterOptions[SUPERVISION_LEVEL].defaultValue,
     ...(flags.enableAdmissionTypeFilter
-      ? { admissionType: filterOptions.admissionType.defaultValue }
+      ? { [ADMISSION_TYPE]: filterOptions[ADMISSION_TYPE].defaultValue }
       : {}),
-    district: [district || filterOptions.district.defaultValue],
+    [DISTRICT]: [district || filterOptions[DISTRICT].defaultValue],
   });
 
   const updateFilters = (newFilters) => {
     setFilters({ ...filters, ...newFilters });
   };
+
+  const createOnFilterChange = useCallback(
+    (field) => (value) => {
+      setFilters({ ...filters, [field]: value });
+    },
+    [filters]
+  );
+
   const transformedFilters = limitFiltersToUserDistricts(
     filters,
     userDistricts
@@ -80,45 +96,56 @@ const Revocations = () => {
   const allDataFilter = applyAllFilters(transformedFilters);
 
   const timeDescription = getTimeDescription(
-    filters.metricPeriodMonths,
-    filterOptions.admissionType.options,
-    filters.admissionType
+    filters[METRIC_PERIOD_MONTHS],
+    filterOptions[ADMISSION_TYPE].options,
+    filters[ADMISSION_TYPE]
   );
 
   return (
     <main className="dashboard bgc-grey-100">
       <ToggleBar>
         <div className="top-level-filters d-f">
-          <MetricPeriodMonthsFilter
-            options={filterOptions.metricPeriodMonths.options}
-            defaultValue={filterOptions.metricPeriodMonths.defaultOption}
-            onChange={updateFilters}
+          <ToggleBarFilter
+            label="Time Period"
+            value={filters[METRIC_PERIOD_MONTHS]}
+            options={filterOptions[METRIC_PERIOD_MONTHS].options}
+            defaultOption={filterOptions[METRIC_PERIOD_MONTHS].defaultOption}
+            onChange={createOnFilterChange(METRIC_PERIOD_MONTHS)}
           />
           <ErrorBoundary>
-            <DistrictFilter stateCode={stateCode} onChange={updateFilters} />
+            <DistrictFilter
+              value={filters[DISTRICT]}
+              stateCode={stateCode}
+              onChange={createOnFilterChange(DISTRICT)}
+            />
           </ErrorBoundary>
-          <ChargeCategoryFilter
-            options={filterOptions.chargeCategory.options}
-            defaultValue={filterOptions.chargeCategory.defaultOption}
-            onChange={updateFilters}
+          <ToggleBarFilter
+            label="Case Type"
+            value={filters[CHARGE_CATEGORY]}
+            options={filterOptions[CHARGE_CATEGORY].options}
+            defaultOption={filterOptions[CHARGE_CATEGORY].defaultOption}
+            onChange={createOnFilterChange(CHARGE_CATEGORY)}
           />
           {flags.enableAdmissionTypeFilter && (
             <AdmissionTypeFilter
-              options={filterOptions.admissionType.options}
-              summingOption={filterOptions.admissionType.summingOption}
-              defaultValue={filterOptions.admissionType.defaultOption}
-              onChange={updateFilters}
+              value={filters[ADMISSION_TYPE]}
+              options={filterOptions[ADMISSION_TYPE].options}
+              summingOption={filterOptions[ADMISSION_TYPE].summingOption}
+              defaultValue={filterOptions[ADMISSION_TYPE].defaultValue}
+              onChange={createOnFilterChange(ADMISSION_TYPE)}
             />
           )}
-          <SupervisionTypeFilter
-            options={filterOptions.supervisionType.options}
-            defaultValue={filterOptions.supervisionType.defaultOption}
-            onChange={updateFilters}
+          <ToggleBarFilter
+            label="Supervision Type"
+            value={filters[SUPERVISION_TYPE]}
+            options={filterOptions[SUPERVISION_TYPE].options}
+            defaultOption={filterOptions[SUPERVISION_TYPE].defaultOption}
+            onChange={createOnFilterChange(SUPERVISION_TYPE)}
           />
         </div>
         <ViolationFilter
-          violationType={filters.violationType}
-          reportedViolations={filters.reportedViolations}
+          violationType={filters[VIOLATION_TYPE]}
+          reportedViolations={filters[REPORTED_VIOLATIONS]}
           onClick={updateFilters}
         />
       </ToggleBar>
@@ -127,9 +154,9 @@ const Revocations = () => {
         <ErrorBoundary>
           <RevocationCountOverTime
             dataFilter={allDataFilter}
-            skippedFilters={["metricPeriodMonths"]}
+            skippedFilters={[METRIC_PERIOD_MONTHS]}
             filterStates={filters}
-            metricPeriodMonths={filters.metricPeriodMonths}
+            metricPeriodMonths={filters[METRIC_PERIOD_MONTHS]}
             stateCode={stateCode}
           />
         </ErrorBoundary>
@@ -175,7 +202,7 @@ const Revocations = () => {
               filterStates={filters}
               stateCode={stateCode}
               timeDescription={timeDescription}
-              violationTypes={filterOptions.violationType.options}
+              violationTypes={filterOptions[VIOLATION_TYPE].options}
             />
           </ErrorBoundary>
         }
@@ -203,9 +230,9 @@ const Revocations = () => {
           <ErrorBoundary>
             <RevocationsByDistrict
               dataFilter={allDataFilter}
-              skippedFilters={["district"]}
+              skippedFilters={[DISTRICT]}
               filterStates={filters}
-              currentDistricts={transformedFilters.district}
+              currentDistricts={transformedFilters[DISTRICT]}
               stateCode={stateCode}
               timeDescription={timeDescription}
             />
@@ -219,7 +246,7 @@ const Revocations = () => {
             dataFilter={allDataFilter}
             treatCategoryAllAsAbsent
             filterStates={filters}
-            metricPeriodMonths={filters.metricPeriodMonths}
+            metricPeriodMonths={filters[METRIC_PERIOD_MONTHS]}
             stateCode={stateCode}
           />
         </ErrorBoundary>

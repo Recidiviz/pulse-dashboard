@@ -14,6 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
+// TODO: Compare with src/components/toggles/ToggleBar.js and merge
 
 import React from "react";
 import PropTypes from "prop-types";

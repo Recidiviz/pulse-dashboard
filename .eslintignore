@@ -13,6 +13,7 @@ public/
 !src/api/**/*.js
 !src/App.js
 !src/index.js
+!src/setupTests.js
 !src/assets/scripts/utils/__tests__/**/*.js
 !src/assets/scripts/utils/getFilters.js
 !src/assets/scripts/utils/getViolation.js
@@ -74,6 +75,7 @@ public/
 !src/components/toggles/**/*.js
 !src/components/topbar/**/*.js
 !src/contexts/**/*.js
+!src/constants/**/*.js
 !src/hooks/**/*.js
 !src/utils/**/*.js
 !src/views/**/*.js

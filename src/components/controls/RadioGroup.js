@@ -14,9 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-
 /* eslint-disable jsx-a11y/label-has-associated-control */
-
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 

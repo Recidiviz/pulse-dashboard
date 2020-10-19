@@ -1,3 +1,14 @@
+import {
+  ADMISSION_TYPE,
+  CHARGE_CATEGORY,
+  DISTRICT,
+  METRIC_PERIOD_MONTHS,
+  REPORTED_VIOLATIONS,
+  SUPERVISION_LEVEL,
+  SUPERVISION_TYPE,
+  VIOLATION_TYPE,
+} from "../../../constants/filterTypes";
+
 const METRIC_PERIODS = {
   options: [
     { value: "36", label: "3 years" },
@@ -48,7 +59,7 @@ const SUPERVISION_TYPES = {
 };
 
 export const MOFilterOptions = {
-  admissionType: {
+  [ADMISSION_TYPE]: {
     options: [
       { value: "All", label: "ALL" },
       { value: "REVOCATION", label: "Revocation" },
@@ -68,7 +79,7 @@ export const MOFilterOptions = {
       return this.options[0];
     },
   },
-  chargeCategory: {
+  [CHARGE_CATEGORY]: {
     options: [
       { value: "All", label: "All" },
       { value: "GENERAL", label: "General" },
@@ -83,7 +94,7 @@ export const MOFilterOptions = {
       return this.defaultOption.value;
     },
   },
-  violationType: {
+  [VIOLATION_TYPE]: {
     options: [
       { key: "travel_count", label: "Travel", type: "TECHNICAL" },
       { key: "residency_count", label: "Residency", type: "TECHNICAL" },
@@ -114,15 +125,15 @@ export const MOFilterOptions = {
     ],
     defaultValue: "",
   },
-  metricPeriodMonths: METRIC_PERIODS,
-  supervisionLevel: SUPERVISION_LEVELS,
-  supervisionType: SUPERVISION_TYPES,
-  reportedViolations: { defaultValue: "" },
-  district: { defaultValue: "All" },
+  [METRIC_PERIOD_MONTHS]: METRIC_PERIODS,
+  [SUPERVISION_LEVEL]: SUPERVISION_LEVELS,
+  [SUPERVISION_TYPE]: SUPERVISION_TYPES,
+  [REPORTED_VIOLATIONS]: { defaultValue: "" },
+  [DISTRICT]: { defaultValue: "All" },
 };
 
 export const PAFilterOptions = {
-  admissionType: {
+  [ADMISSION_TYPE]: {
     options: [
       { value: "All", label: "ALL" },
       { value: "REVOCATION", label: "Revocation" },
@@ -150,7 +161,7 @@ export const PAFilterOptions = {
       return this.options[0];
     },
   },
-  chargeCategory: {
+  [CHARGE_CATEGORY]: {
     options: [
       { value: "All", label: "All" },
       { value: "GENERAL", label: "General" },
@@ -166,7 +177,7 @@ export const PAFilterOptions = {
       return this.defaultOption.value;
     },
   },
-  violationType: {
+  [VIOLATION_TYPE]: {
     options: [
       { key: "low_tech_count", label: "Low tech.", type: "TECHNICAL" },
       { key: "med_tech_count", label: "Med tech.", type: "TECHNICAL" },
@@ -184,9 +195,9 @@ export const PAFilterOptions = {
     ],
     defaultValue: "",
   },
-  metricPeriodMonths: METRIC_PERIODS,
-  supervisionLevel: SUPERVISION_LEVELS,
-  supervisionType: { defaultValue: "All" },
-  reportedViolations: { defaultValue: "" },
-  district: { defaultValue: "All" },
+  [METRIC_PERIOD_MONTHS]: METRIC_PERIODS,
+  [SUPERVISION_LEVEL]: SUPERVISION_LEVELS,
+  [SUPERVISION_TYPE]: { defaultValue: "All" },
+  [REPORTED_VIOLATIONS]: { defaultValue: "" },
+  [DISTRICT]: { defaultValue: "All" },
 };
