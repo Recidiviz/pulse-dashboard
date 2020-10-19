@@ -19,8 +19,13 @@ import getOr from "lodash/fp/getOr";
 import pipe from "lodash/fp/pipe";
 import set from "lodash/fp/set";
 import toInteger from "lodash/fp/toInteger";
+import reduce from "lodash/fp/reduce";
+
 import { calculateRate } from "../helpers/rate";
-import { translate } from "../../../../views/tenants/utils/i18nSettings";
+import { getBarBackgroundColor } from "../../../../utils/charts/significantStatistics";
+import { COLORS_LANTERN_SET } from "../../../../assets/scripts/constants/colors";
+import { riskLevelLabels } from "../../../../utils/transforms/labels";
+import getDenominatorKeyByMode from "../utils/getDenominatorKeyByMode";
 
 const RACES = [
   "WHITE",
@@ -39,7 +44,7 @@ const RISK_LEVELS = [
   "VERY_HIGH",
 ];
 
-export const getCounts = (transformedData) => {
+const getCounts = (transformedData) => {
   const dataPoints = [];
   const numerators = [];
   const denominators = [];
@@ -63,26 +68,6 @@ export const getCounts = (transformedData) => {
   return { dataPoints, numerators, denominators };
 };
 
-export const getDenominatorKeyByMode = (mode) => {
-  switch (mode) {
-    case "rates":
-    default:
-      return "total_supervision_count";
-    case "exits":
-      return "total_exit_count";
-  }
-};
-
-export const getLabelByMode = (mode) => {
-  switch (mode) {
-    case "rates":
-    default:
-      return translate("percentOfPopulationRevoked");
-    case "exits":
-      return "Percent revoked out of all exits";
-  }
-};
-
 /**
  * Transform to
  * {
@@ -90,10 +75,7 @@ export const getLabelByMode = (mode) => {
  *   HISPANIC: { LOW: [2, 9], HIGH: [2, 8], ... } }
  * }
  */
-export const dataTransformer = (numeratorKey, denominatorKey) => (
-  acc,
-  data
-) => {
+const dataTransformer = (numeratorKey, denominatorKey) => (acc, data) => {
   return pipe(
     set(
       [data.race, data.risk_level],
@@ -115,3 +97,48 @@ export const dataTransformer = (numeratorKey, denominatorKey) => (
     )
   )(acc);
 };
+
+const generateRevocationsByRaceChartData = (
+  apiData,
+  dataFilter,
+  mode,
+  stateCode
+) => {
+  const numeratorKey = "population_count";
+  const denominatorKey = getDenominatorKeyByMode(mode);
+
+  const { dataPoints, numerators, denominators } = pipe(
+    dataFilter,
+    reduce(dataTransformer(numeratorKey, denominatorKey), {}),
+    getCounts
+  )(apiData);
+
+  const generateDataset = (label, index) => ({
+    label,
+    backgroundColor: getBarBackgroundColor(
+      COLORS_LANTERN_SET[index],
+      denominators
+    ),
+    data: dataPoints[index],
+  });
+
+  const data = {
+    labels: riskLevelLabels(stateCode),
+    datasets: [
+      "Caucasian",
+      "African American",
+      "Hispanic",
+      "Asian",
+      "Native American",
+      "Pacific Islander",
+    ].map(generateDataset),
+  };
+
+  return {
+    data,
+    numerators,
+    denominators,
+  };
+};
+
+export default generateRevocationsByRaceChartData;

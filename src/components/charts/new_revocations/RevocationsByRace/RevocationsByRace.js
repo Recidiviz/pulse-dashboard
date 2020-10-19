@@ -18,31 +18,19 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 
-import pipe from "lodash/fp/pipe";
-import reduce from "lodash/fp/reduce";
-
-import {
-  dataTransformer,
-  getDenominatorKeyByMode,
-  getCounts,
-  getLabelByMode,
-} from "./helpers";
+import BarChartWithLabels from "../BarChartWithLabels";
+import RevocationsByDimension from "../RevocationsByDimension";
 import ModeSwitcher from "../ModeSwitcher";
 import Loading from "../../../Loading";
 import Error from "../../../Error";
 
 import flags from "../../../../flags";
 import { COLORS_LANTERN_SET } from "../../../../assets/scripts/constants/colors";
-import useChartData from "../../../../hooks/useChartData";
-import {
-  getBarBackgroundColor,
-  isDenominatorsMatrixStatisticallySignificant,
-} from "../../../../utils/charts/significantStatistics";
+import { isDenominatorsMatrixStatisticallySignificant } from "../../../../utils/charts/significantStatistics";
 import { filtersPropTypes } from "../../propTypes";
-import { riskLevelLabels } from "../../../../utils/transforms/labels";
-import BarChartWithLabels from "../BarChartWithLabels";
-import RevocationsByDimension from "../RevocationsByDimension";
-import { translate } from "../../../../views/tenants/utils/i18nSettings";
+import useChartData from "../../../../hooks/useChartData";
+import generateRevocationsByRaceData from "./generateRevocationsByRaceChartData";
+import getLabelByMode from "../utils/getLabelByMode";
 
 const chartId = "revocationsByRace";
 
@@ -54,18 +42,10 @@ const RevocationsByRace = ({
 }) => {
   const [mode, setMode] = useState("rates"); // rates | exits
 
-  const numeratorKey = "population_count";
-  const denominatorKey = getDenominatorKeyByMode(mode);
-
   const { isLoading, isError, apiData } = useChartData(
     `${stateCode}/newRevocations`,
     "revocations_matrix_distribution_by_race"
   );
-
-  const modeButtons = [
-    { label: translate("percentOfPopulationRevoked"), value: "rates" },
-    { label: "Percent revoked of exits", value: "exits" },
-  ];
 
   if (isLoading) {
     return <Loading />;
@@ -75,36 +55,21 @@ const RevocationsByRace = ({
     return <Error />;
   }
 
-  const { dataPoints, numerators, denominators } = pipe(
+  const { data, numerators, denominators } = generateRevocationsByRaceData(
+    apiData,
     dataFilter,
-    reduce(dataTransformer(numeratorKey, denominatorKey), {}),
-    getCounts
-  )(apiData);
+    mode,
+    stateCode
+  );
 
   const showWarning = !isDenominatorsMatrixStatisticallySignificant(
     denominators
   );
 
-  const generateDataset = (label, index) => ({
-    label,
-    backgroundColor: getBarBackgroundColor(
-      COLORS_LANTERN_SET[index],
-      denominators
-    ),
-    data: dataPoints[index],
-  });
-
-  const data = {
-    labels: riskLevelLabels(stateCode),
-    datasets: [
-      "Caucasian",
-      "African American",
-      "Hispanic",
-      "Asian",
-      "Native American",
-      "Pacific Islander",
-    ].map(generateDataset),
-  };
+  const modeButtons = [
+    { label: getLabelByMode("rates"), value: "rates" },
+    { label: getLabelByMode("exits"), value: "exits" },
+  ];
 
   return (
     <RevocationsByDimension

@@ -18,43 +18,26 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { Bar } from "react-chartjs-2";
-import pattern from "patternomaly";
 
-import filter from "lodash/fp/filter";
-import groupBy from "lodash/fp/groupBy";
-import map from "lodash/fp/map";
-import pipe from "lodash/fp/pipe";
-import sortBy from "lodash/fp/sortBy";
-import values from "lodash/fp/values";
-
-import { findDenominatorKeyByMode, getLabelByMode } from "./helpers";
-import { sumIntBy } from "../helpers/counts";
-import { calculateRate } from "../helpers/rate";
 import ModeSwitcher from "../ModeSwitcher";
 import Loading from "../../../Loading";
 import Error from "../../../Error";
+import RevocationsByDimension from "../RevocationsByDimension";
 
 import flags from "../../../../flags";
 import { COLORS } from "../../../../assets/scripts/constants/colors";
 import useChartData from "../../../../hooks/useChartData";
 import { axisCallbackForPercentage } from "../../../../utils/charts/axis";
 import {
-  isDenominatorStatisticallySignificant,
   isDenominatorsMatrixStatisticallySignificant,
   tooltipForFooterWithCounts,
 } from "../../../../utils/charts/significantStatistics";
 import { tooltipForRateMetricWithCounts } from "../../../../utils/charts/toggles";
-import { humanReadableTitleCase } from "../../../../utils/transforms/labels";
 import { filtersPropTypes } from "../../propTypes";
-import { translate } from "../../../../views/tenants/utils/i18nSettings";
-import RevocationsByDimension from "../RevocationsByDimension";
+import getLabelByMode from "../utils/getLabelByMode";
+import generateRevocationsByRiskLevelChartData from "./generateRevocationsByRiskLevelChartData";
 
 const chartId = "revocationsByRiskLevel";
-
-const modeButtons = [
-  { label: "Percent revoked of standing population", value: "rates" },
-  { label: "Percent revoked of exits", value: "exits" },
-];
 
 const RevocationsByRiskLevel = ({
   stateCode,
@@ -63,9 +46,6 @@ const RevocationsByRiskLevel = ({
   timeDescription,
 }) => {
   const [mode, setMode] = useState("rates"); // rates | exits
-
-  const denominatorKey = findDenominatorKeyByMode(mode);
-  const chartLabel = getLabelByMode(mode);
 
   const { isLoading, isError, apiData } = useChartData(
     `${stateCode}/newRevocations`,
@@ -80,60 +60,25 @@ const RevocationsByRiskLevel = ({
     return <Error />;
   }
 
-  const riskLevels = translate("riskLevelsMap");
-
-  const riskLevelCounts = pipe(
-    dataFilter,
-    filter((data) => Object.keys(riskLevels).includes(data.risk_level)),
-    groupBy("risk_level"),
-    values,
-    sortBy((dataset) => Object.keys(riskLevels).indexOf(dataset[0].risk_level)),
-    map((dataset) => {
-      const riskLevelLabel = riskLevels[dataset[0].risk_level];
-      const label = humanReadableTitleCase(riskLevelLabel);
-      const numerator = sumIntBy("population_count", dataset);
-      const denominator = sumIntBy(denominatorKey, dataset);
-      const rate = calculateRate(numerator, denominator);
-      return {
-        label,
-        numerator,
-        denominator,
-        rate: rate.toFixed(2),
-      };
-    })
-  )(apiData);
-
-  const chartLabels = map("label", riskLevelCounts);
-  const chartDataPoints = map("rate", riskLevelCounts);
-  const numeratorCounts = map("numerator", riskLevelCounts);
-  const denominatorCounts = map("denominator", riskLevelCounts);
+  const {
+    data: chartData,
+    numerators,
+    denominators,
+  } = generateRevocationsByRiskLevelChartData(apiData, dataFilter, mode);
 
   const showWarning = !isDenominatorsMatrixStatisticallySignificant(
-    denominatorCounts
+    denominators
   );
 
-  const barBackgroundColor = ({ dataIndex }) => {
-    const color = COLORS["lantern-orange"];
-    if (isDenominatorStatisticallySignificant(denominatorCounts[dataIndex])) {
-      return color;
-    }
-    return pattern.draw("diagonal-right-left", color, "#ffffff", 5);
-  };
-  const datasets = [
-    {
-      label: chartLabel,
-      backgroundColor: barBackgroundColor,
-      data: chartDataPoints,
-    },
+  const modeButtons = [
+    { label: getLabelByMode("rates"), value: "rates" },
+    { label: getLabelByMode("exits"), value: "exits" },
   ];
 
   const chart = (
     <Bar
       id={chartId}
-      data={{
-        labels: chartLabels,
-        datasets,
-      }}
+      data={chartData}
       options={{
         legend: {
           display: false,
@@ -158,7 +103,7 @@ const RevocationsByRiskLevel = ({
               },
               scaleLabel: {
                 display: true,
-                labelString: chartLabel,
+                labelString: chartData.labels,
               },
               stacked: true,
             },
@@ -174,11 +119,11 @@ const RevocationsByRiskLevel = ({
               tooltipForRateMetricWithCounts(
                 tooltipItem,
                 data,
-                numeratorCounts,
-                denominatorCounts
+                numerators,
+                denominators
               ),
             footer: (tooltipItem) =>
-              tooltipForFooterWithCounts(tooltipItem, denominatorCounts),
+              tooltipForFooterWithCounts(tooltipItem, denominators),
           },
         },
       }}
@@ -189,10 +134,10 @@ const RevocationsByRiskLevel = ({
     <RevocationsByDimension
       chartTitle="Admissions by risk level"
       timeDescription={timeDescription}
-      labels={chartLabels}
+      labels={chartData.labels}
       chartId={chartId}
-      datasets={datasets}
-      metricTitle={`${chartLabel} by risk level`}
+      datasets={chartData.datasets}
+      metricTitle={`${getLabelByMode(mode)} by risk level`}
       filterStates={filterStates}
       chart={chart}
       showWarning={showWarning}

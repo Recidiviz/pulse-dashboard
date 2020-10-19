@@ -18,33 +18,21 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 
-import pipe from "lodash/fp/pipe";
-import reduce from "lodash/fp/reduce";
 import { translate } from "../../../../views/tenants/utils/i18nSettings";
 
-import {
-  dataTransformer,
-  getCounts,
-  getDenominatorKeyByMode,
-  getLabelByMode,
-} from "./helpers";
+import generateRevocationsByGenderChartData from "./generateRevocationsByGenderChartData";
 import ModeSwitcher from "../ModeSwitcher";
 import Loading from "../../../Loading";
 import Error from "../../../Error";
 
 import flags from "../../../../flags";
-import { COLORS } from "../../../../assets/scripts/constants/colors";
-import {
-  getBarBackgroundColor,
-  isDenominatorsMatrixStatisticallySignificant,
-} from "../../../../utils/charts/significantStatistics";
+import { isDenominatorsMatrixStatisticallySignificant } from "../../../../utils/charts/significantStatistics";
 import useChartData from "../../../../hooks/useChartData";
 import { filtersPropTypes } from "../../propTypes";
-import { riskLevelLabels } from "../../../../utils/transforms/labels";
 import BarChartWithLabels from "../BarChartWithLabels";
 import RevocationsByDimension from "../RevocationsByDimension";
-
-const colors = [COLORS["lantern-light-blue"], COLORS["lantern-orange"]];
+import getLabelByMode from "../utils/getLabelByMode";
+import { CHART_COLORS } from "./constants";
 
 const chartId = "revocationsByGender";
 
@@ -56,18 +44,10 @@ const RevocationsByGender = ({
 }) => {
   const [mode, setMode] = useState("rates"); // rates | exits
 
-  const numeratorKey = "population_count";
-  const denominatorKey = getDenominatorKeyByMode(mode);
-
   const { isLoading, isError, apiData } = useChartData(
     `${stateCode}/newRevocations`,
     "revocations_matrix_distribution_by_gender"
   );
-
-  const modeButtons = [
-    { label: translate("percentOfPopulationRevoked"), value: "rates" },
-    { label: "Percent revoked of exits", value: "exits" },
-  ];
 
   if (isLoading) {
     return <Loading />;
@@ -77,26 +57,25 @@ const RevocationsByGender = ({
     return <Error />;
   }
 
-  const { dataPoints, numerators, denominators } = pipe(
+  const {
+    data,
+    numerators,
+    denominators,
+  } = generateRevocationsByGenderChartData(
+    apiData,
     dataFilter,
-    reduce(dataTransformer(numeratorKey, denominatorKey), {}),
-    getCounts
-  )(apiData);
+    mode,
+    stateCode
+  );
 
   const showWarning = !isDenominatorsMatrixStatisticallySignificant(
     denominators
   );
 
-  const generateDataset = (label, index) => ({
-    label,
-    backgroundColor: getBarBackgroundColor(colors[index], denominators),
-    data: dataPoints[index],
-  });
-
-  const data = {
-    labels: riskLevelLabels(stateCode),
-    datasets: ["Women", "Men"].map(generateDataset),
-  };
+  const modeButtons = [
+    { label: getLabelByMode("rates"), value: "rates" },
+    { label: getLabelByMode("exits"), value: "exits" },
+  ];
 
   return (
     <RevocationsByDimension
@@ -116,7 +95,7 @@ const RevocationsByGender = ({
           data={data}
           xAxisLabel={`${translate("Gender")} and risk level`}
           yAxisLabel={getLabelByMode(mode)}
-          labelColors={colors}
+          labelColors={CHART_COLORS}
           denominators={denominators}
           numerators={numerators}
         />
