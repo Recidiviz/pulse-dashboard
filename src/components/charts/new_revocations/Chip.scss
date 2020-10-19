@@ -1,4 +1,4 @@
-.chip {
+.Chip {
   $color1: #235781;
   $color2: white;
 
@@ -10,43 +10,45 @@
   border-radius: 24px;
   margin-right: 10px;
 
-  .label {
+  &--selected {
+    background-color: $color1;
+  }
+
+  &--shrinking {
+    height: 28px;
+    border-radius: 24px;
+  }
+
+  &__label {
     margin: 0;
     color: $color1;
     font-size: 14px;
     font-weight: 500;
     border: none;
     background-color: $color2;
-    outline: none;
+    &:focus {
+      outline: none;
+    }
+
+    .Chip--selected & {
+      color: $color2;
+      background-color: $color1;
+    }
   }
 
-  .delete {
+  &__delete-button {
     padding: 0;
     margin-left: 4px;
     margin-top: 1px;
     border: none;
     background: transparent;
     color: $color1;
-  }
 
-  &.selected {
-    background-color: $color1;
-
-    .label {
-      color: $color2;
-      background-color: $color1;
-    }
-
-    .delete {
+    .Chip--selected & {
       color: $color2;
     }
-  }
 
-  &.shrinking {
-    height: 28px;
-    border-radius: 24px;
-
-    .delete {
+    .Chip--shrinking & {
       margin-top: 2px;
     }
   }

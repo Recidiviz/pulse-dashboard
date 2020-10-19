@@ -92,7 +92,7 @@ const RevocationsOverTime = ({
 
   const datasets = [
     {
-      label: "Revocations",
+      label: translate("Revocations"),
       borderColor: COLORS["lantern-light-blue"],
       pointBackgroundColor: COLORS["lantern-light-blue"],
       fill: false,
@@ -134,7 +134,7 @@ const RevocationsOverTime = ({
               if (value % 1 === 0) {
                 return value;
               }
-              return 0;
+              return null;
             },
             suggestedMax: maxValue,
           },
@@ -186,7 +186,7 @@ const RevocationsOverTime = ({
   const chart = countZero / metricPeriodMonths >= 0.33 ? barChart : lineChart;
 
   return (
-    <div>
+    <div className="RevocationsByViolation">
       <h4>
         {translate("revocationsOverTimeXAxis")}
         <ExportMenu
@@ -205,7 +205,7 @@ const RevocationsOverTime = ({
 
       <div
         className="chart-container fs-block"
-        style={{ position: "relative", height: "180px" }}
+        style={{ position: "relative", height: "240px" }}
       >
         {chart}
       </div>

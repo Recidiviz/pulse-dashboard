@@ -15,23 +15,32 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React from "react";
-import PropTypes from "prop-types";
-import cn from "classnames";
+import { getUserStateCode } from "../utils/authentication/user"
 
-const TopBarLayout = ({ children, isWide = false }) => (
-  <div className={cn("header", "navbar", { "wide-navbar": isWide })}>
-    <div className="header-container">{children}</div>
-  </div>
-);
+const APP_ID = process.env.REACT_APP_INTERCOM_APP_ID;
 
-TopBarLayout.defaultProps = {
-  isWide: false,
-};
+export function initIntercomSettings() {
+  window.intercomSettings = {
+    app_id: APP_ID,
+  };
 
-TopBarLayout.propTypes = {
-  children: PropTypes.node.isRequired,
-  isWide: PropTypes.bool,
-};
+  window.Intercom("boot", window.IntercomSettings);
+}
 
-export default TopBarLayout;
+export function enableIntercomLauncherForUser(user) {
+  const userStateCode = getUserStateCode(user);
+  const intercomSettings = {
+    state_code: userStateCode,
+    name: user.name,
+    nickname: user.nickname,
+    email: user.email,
+    user_id: user.sub,
+    hide_default_launcher: false
+  }
+
+  window.Intercom("update", intercomSettings)
+}
+
+export function disableIntercomLauncher() {
+  window.Intercom("update", { hide_default_launcher: true} )
+}

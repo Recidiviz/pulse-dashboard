@@ -21,7 +21,7 @@ import PropTypes from "prop-types";
 import { getPeriodLabelFromMetricPeriodMonthsToggle } from "../../utils/charts/toggles";
 
 const PeriodLabel = ({ metricPeriodMonths }) => (
-  <div className="layer bdT p-20 w-100">
+  <div className="PeriodLabel layer bdT p-20 w-100">
     <div className="peers ai-c jc-c gapX-20">
       <div className="peer fw-600">
         <small className="c-grey-500 fw-600">Period </small>

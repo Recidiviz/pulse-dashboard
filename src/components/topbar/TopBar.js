@@ -17,34 +17,25 @@
 
 import React from "react";
 import PropTypes from "prop-types";
+import cn from "classnames";
 
-import Select from "../../../controls/Select";
-import FilterField from "./FilterField";
+const TopBar = ({ children, isWide = false }) => (
+  <div
+    className={cn("TopBar", "header", "navbar", {
+      "wide-navbar": isWide,
+    })}
+  >
+    <div className="TopBar__container header-container">{children}</div>
+  </div>
+);
 
-const MetricPeriodMonthsFilter = ({ options, defaultValue, onChange }) => {
-  return (
-    <FilterField label="Time Period">
-      <Select
-        className="select-align"
-        options={options}
-        onChange={(option) => {
-          onChange({ metricPeriodMonths: option.value });
-        }}
-        defaultValue={defaultValue}
-      />
-    </FilterField>
-  );
+TopBar.defaultProps = {
+  isWide: false,
 };
 
-MetricPeriodMonthsFilter.propTypes = {
-  options: PropTypes.arrayOf(
-    PropTypes.shape({ label: PropTypes.string, value: PropTypes.string })
-  ).isRequired,
-  defaultValue: PropTypes.shape({
-    label: PropTypes.string,
-    value: PropTypes.string,
-  }).isRequired,
-  onChange: PropTypes.func.isRequired,
+TopBar.propTypes = {
+  children: PropTypes.node.isRequired,
+  isWide: PropTypes.bool,
 };
 
-export default MetricPeriodMonthsFilter;
+export default TopBar;

@@ -193,7 +193,7 @@ const RevocationsByRiskLevel = ({
   );
 
   return (
-    <div>
+    <div className="RevocationsByRiskLevel">
       <h4>
         Admissions by risk level
         {showWarning === true && <DataSignificanceWarningIcon />}
