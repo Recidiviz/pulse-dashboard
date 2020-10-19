@@ -23,7 +23,7 @@ export const PA_METHODOLOGY = {
     },
     {
       header: "Who is included",
-      body: `Counts include all people who were admitted to SCIs from parole. This includes people on parole who were admitted for non-revocation sanctions and those who were admitted for revocation. Counts do not include (1) people who have been detained pending a revocation hearing but have not been legally revoked; (2) People who are serving a State Indeterminate Punishment sentence. This chart (like all charts on the page) will automatically repopulate to match whatever filter(s) the user has selected. For example, if the user has selected "District 2" from the drop-down menus at the top of the screen, this chart will automatically update to include only people from District 2.`,
+      body: `Counts include all people who were admitted to SCIs from parole. This includes people on parole who were admitted for non-revocation sanctions and those who were admitted for revocation. Counts do not include (1) people who have been detained pending a revocation hearing but have not been legally revoked; (2) People who are serving a State Indeterminate Punishment sentence; (3) Placements in Parole Violator Centers. This chart (like all charts on the page) will automatically repopulate to match whatever filter(s) the user has selected. For example, if the user has selected "District 2" from the drop-down menus at the top of the screen, this chart will automatically update to include only people from District 2.`,
     },
   ],
   revocationMatrix: [
@@ -41,7 +41,7 @@ export const PA_METHODOLOGY = {
     },
     {
       header: "Who is included",
-      body: `Counts include all people who were admitted to SCIs from parole. This includes people on parole who were admitted for non-revocation sanctions and those who were admitted for revocation. Counts do not include (1) people who have been detained pending a revocation hearing but have not been legally revoked; (2) People who are serving a State Indeterminate Punishment sentence. This chart (like all charts on the page) will automatically repopulate to match whatever filter(s) the user has selected. For example, if the user has selected "District 2" from the drop-down menus at the top of the screen, this chart will automatically update to include only people from District 2.`,
+      body: `Counts include all people who were admitted to SCIs from parole. This includes people on parole who were admitted for non-revocation sanctions and those who were admitted for revocation. Counts do not include (1) people who have been detained pending a revocation hearing but have not been legally revoked; (2) People who are serving a State Indeterminate Punishment sentence; (3) Placements in Parole Violator Centers. This chart (like all charts on the page) will automatically repopulate to match whatever filter(s) the user has selected. For example, if the user has selected "District 2" from the drop-down menus at the top of the screen, this chart will automatically update to include only people from District 2.`,
     },
   ],
   revocationsByDistrict: [
@@ -55,7 +55,7 @@ export const PA_METHODOLOGY = {
     },
     {
       header: "Who is included",
-      body: `Counts include all people who were admitted to SCIs from parole. This includes people on parole who were admitted for non-revocation sanctions and those who were admitted for revocation. Counts do not include (1) people who have been detained pending a revocation hearing but have not been legally revoked; (2) People who are serving a State Indeterminate Punishment sentence. This chart (like all charts on the page) will automatically repopulate to match whatever filter(s) the user has selected. For example, if the user has selected "District 2" from the drop-down menus at the top of the screen, this chart will automatically update to include only people from District 2.`,
+      body: `Counts include all people who were admitted to SCIs from parole. This includes people on parole who were admitted for non-revocation sanctions and those who were admitted for revocation. Counts do not include (1) people who have been detained pending a revocation hearing but have not been legally revoked; (2) People who are serving a State Indeterminate Punishment sentence; (3) Placements in Parole Violator Centers. This chart (like all charts on the page) will automatically repopulate to match whatever filter(s) the user has selected. For example, if the user has selected "District 2" from the drop-down menus at the top of the screen, this chart will automatically update to include only people from District 2.`,
     },
   ],
   revocationsByRiskLevel: [
@@ -65,7 +65,7 @@ export const PA_METHODOLOGY = {
     },
     {
       header: "Who is included",
-      body: `Counts include all people who were admitted to SCIs from parole. This includes people on parole who were admitted for non-revocation sanctions and those who were admitted for revocation. Counts do not include (1) people who have been detained pending a revocation hearing but have not been legally revoked; (2) People who are serving a State Indeterminate Punishment sentence. This chart (like all charts on the page) will automatically repopulate to match whatever filter(s) the user has selected. For example, if the user has selected "District 2" from the drop-down menus at the top of the screen, this chart will automatically update to include only people from District 2.`,
+      body: `Counts include all people who were admitted to SCIs from parole. This includes people on parole who were admitted for non-revocation sanctions and those who were admitted for revocation. Counts do not include (1) people who have been detained pending a revocation hearing but have not been legally revoked; (2) People who are serving a State Indeterminate Punishment sentence; (3) Placements in Parole Violator Centers. This chart (like all charts on the page) will automatically repopulate to match whatever filter(s) the user has selected. For example, if the user has selected "District 2" from the drop-down menus at the top of the screen, this chart will automatically update to include only people from District 2.`,
     },
     {
       header: "Filtering by violation history",
@@ -79,7 +79,7 @@ export const PA_METHODOLOGY = {
     },
     {
       header: "Who is included",
-      body: `Counts include only violation records for people who were admitted to SCIs from parole. This includes people on parole who were admitted for non-revocation sanctions and those who were admitted for revocation. Counts do not include (1) people who have been detained pending a revocation hearing but have not been legally revoked; (2) People who are serving a State Indeterminate Punishment sentence. This chart (like all charts on the page) will automatically repopulate to match whatever filter(s) the user has selected. For example, if the user has selected "District 2" from the drop-down menus at the top of the screen, this chart will automatically update to include only people from District 2.`,
+      body: `Counts include only violation records for people who were admitted to SCIs from parole. This includes people on parole who were admitted for non-revocation sanctions and those who were admitted for revocation. Counts do not include (1) people who have been detained pending a revocation hearing but have not been legally revoked; (2) People who are serving a State Indeterminate Punishment sentence; (3) Placements in Parole Violator Centers. This chart (like all charts on the page) will automatically repopulate to match whatever filter(s) the user has selected. For example, if the user has selected "District 2" from the drop-down menus at the top of the screen, this chart will automatically update to include only people from District 2.`,
     },
   ],
   revocationsByGender: [
@@ -89,7 +89,7 @@ export const PA_METHODOLOGY = {
     },
     {
       header: "Who is included",
-      body: `Counts include all people who were admitted to SCIs from parole. This includes people on parole who were admitted for non-revocation sanctions and those who were admitted for revocation. Counts do not include (1) people who have been detained pending a revocation hearing but have not been legally revoked; (2) People who are serving a State Indeterminate Punishment sentence. This chart (like all charts on the page) will automatically repopulate to match whatever filter(s) the user has selected. For example, if the user has selected "District 2" from the drop-down menus at the top of the screen, this chart will automatically update to include only people from District 2.`,
+      body: `Counts include all people who were admitted to SCIs from parole. This includes people on parole who were admitted for non-revocation sanctions and those who were admitted for revocation. Counts do not include (1) people who have been detained pending a revocation hearing but have not been legally revoked; (2) People who are serving a State Indeterminate Punishment sentence; (3) Placements in Parole Violator Centers. This chart (like all charts on the page) will automatically repopulate to match whatever filter(s) the user has selected. For example, if the user has selected "District 2" from the drop-down menus at the top of the screen, this chart will automatically update to include only people from District 2.`,
     },
     {
       header: "Filtering by violation history",
@@ -103,7 +103,7 @@ export const PA_METHODOLOGY = {
     },
     {
       header: "Who is included",
-      body: `Counts include all people who were admitted to SCIs from parole. This includes people on parole who were admitted for non-revocation sanctions and those who were admitted for revocation. Counts do not include (1) people who have been detained pending a revocation hearing but have not been legally revoked; (2) People who are serving a State Indeterminate Punishment sentence. This chart (like all charts on the page) will automatically repopulate to match whatever filter(s) the user has selected. For example, if the user has selected "District 2" from the drop-down menus at the top of the screen, this chart will automatically update to include only people from District 2.`,
+      body: `Counts include all people who were admitted to SCIs from parole. This includes people on parole who were admitted for non-revocation sanctions and those who were admitted for revocation. Counts do not include (1) people who have been detained pending a revocation hearing but have not been legally revoked; (2) People who are serving a State Indeterminate Punishment sentence; (3) Placements in Parole Violator Centers. This chart (like all charts on the page) will automatically repopulate to match whatever filter(s) the user has selected. For example, if the user has selected "District 2" from the drop-down menus at the top of the screen, this chart will automatically update to include only people from District 2.`,
     },
     {
       header: "Filtering by violation history",
@@ -129,7 +129,7 @@ export const PA_METHODOLOGY = {
     },
     {
       header: "Last Recommendation",
-      body: `The recommendation listed on the last violation report before the person was admitted.`,
+      body: `The recommendation listed on the last violation report before the person was admitted. "Placement in DOC facilities" currently includes the following recommendations: Placement in CCC Half Way Back, Placement in PVC, Placement in D&A Detox Facility, Placement in Mental Health Facility, Placement in Violation Center County PRison, Community Parole Corrections Half Way Out.`,
     },
     {
       header: "Violation Record",
