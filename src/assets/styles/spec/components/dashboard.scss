@@ -126,15 +126,32 @@
     }
 
     .cell {
-      background: linear-gradient($border-color, $border-color) no-repeat
-          center/1px 100%,
-        linear-gradient($border-color, $border-color) no-repeat center/100% 1px;
+      position: relative;
       width: 10%;
+      &:before {
+        content: "";
+        position: absolute;
+        left: 50%;
+        top: 0;
+        width: 1px;
+        background-color: $border-color;
+        height: 100%;
+      }
+      &:after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 0;
+        height: 1px;
+        width: 100%;
+        background-color: $border-color;
+      }
     }
 
     .violation-row {
       position: relative;
       line-height: 70px;
+      height: 70px;
 
       .violation-type-label {
         text-align: right;
