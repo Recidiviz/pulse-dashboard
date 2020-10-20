@@ -101,11 +101,4 @@ describe("test label", () => {
     const dataAfterTest = labelsMethods.numberFromOfficerId(dataForTest);
     expect(dataAfterTest).toBe(27);
   });
-
-  it("nameFromOfficerId", () => {
-    const dataForTest = "104: Mike Giacobbo";
-    const dataAfterTest = labelsMethods.nameFromOfficerId(dataForTest);
-    const dataExpected = "Mike Giacobbo";
-    expect(dataAfterTest).toEqual(dataExpected);
-  });
 });
