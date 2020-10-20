@@ -28,23 +28,17 @@ import RevocationCountOverTime from "../../../../components/charts/new_revocatio
 import RevocationMatrix from "../../../../components/charts/new_revocations/RevocationMatrix/RevocationMatrix";
 import RevocationMatrixExplanation from "../../../../components/charts/new_revocations/RevocationMatrix/RevocationMatrixExplanation";
 import ToggleBar from "../../../../components/charts/new_revocations/ToggleBar/ToggleBar";
-import ToggleBarFilter from "../../../../components/charts/new_revocations/ToggleBar/ToggleBarFilter";
 import DistrictFilter from "../../../../components/charts/new_revocations/ToggleBar/DistrictFilter";
 import AdmissionTypeFilter from "../../../../components/charts/new_revocations/ToggleBar/AdmissionTypeFilter";
 import ViolationFilter from "../../../../components/charts/new_revocations/ToggleBar/ViolationFilter";
+import ErrorBoundary from "../../../../components/ErrorBoundary";
+import ToggleBarFilter from "../../../../components/charts/new_revocations/ToggleBar/ToggleBarFilter";
 import {
   applyAllFilters,
   applyTopLevelFilters,
   limitFiltersToUserDistricts,
 } from "../../../../components/charts/new_revocations/helpers";
 import { getTimeDescription } from "../../../../components/charts/new_revocations/helpers/format";
-import {
-  DEFAULT_METRIC_PERIOD,
-  DEFAULT_SUPERVISION_TYPE,
-  METRIC_PERIODS,
-  SUPERVISION_TYPES,
-  SUPERVISION_LEVELS,
-} from "../../../../components/charts/new_revocations/ToggleBar/options";
 import flags from "../../../../flags";
 import { useAuth0 } from "../../../../react-auth0-spa";
 import {
@@ -52,7 +46,6 @@ import {
   getUserDistricts,
 } from "../../../../utils/authentication/user";
 import * as lanternTenant from "../../utils/lanternTenants";
-import ErrorBoundary from "../../../../components/ErrorBoundary";
 import {
   ADMISSION_TYPE,
   CHARGE_CATEGORY,
@@ -63,48 +56,9 @@ import {
   SUPERVISION_TYPE,
   VIOLATION_TYPE,
 } from "../../../../constants/filterTypes";
+import { MOFilterOptions as filterOptions } from "../../constants/filterOptions";
 
 const stateCode = lanternTenant.MO;
-const admissionTypeOptions = [
-  { value: "All", label: "ALL" },
-  { value: "REVOCATION", label: "Revocation" },
-  {
-    value: "INSTITUTIONAL TREATMENT",
-    label: "Institutional Treatment",
-  },
-  { value: "BOARDS_RETURN", label: "Board Returns" },
-];
-const chargeCategoryOptions = [
-  { value: "All", label: "All" },
-  { value: "GENERAL", label: "General" },
-  { value: "SEX_OFFENDER", label: "Sex Offense" },
-  { value: "DOMESTIC_VIOLENCE", label: "Domestic Violence" },
-  { value: "SERIOUS_MENTAL_ILLNESS", label: "Serious Mental Illness" },
-];
-const violationTypes = [
-  { key: "travel_count", label: "Travel", type: "TECHNICAL" },
-  { key: "residency_count", label: "Residency", type: "TECHNICAL" },
-  { key: "employment_count", label: "Employment", type: "TECHNICAL" },
-  { key: "association_count", label: "Association", type: "TECHNICAL" },
-  { key: "directive_count", label: "Report / Directives", type: "TECHNICAL" },
-  {
-    key: "supervision_strategy_count",
-    label: "Supervision Strategies",
-    type: "TECHNICAL",
-  },
-  {
-    key: "intervention_fee_count",
-    label: "Intervention Fees",
-    type: "TECHNICAL",
-  },
-  { key: "special_count", label: "Special Conditions", type: "TECHNICAL" },
-  { key: "weapon_count", label: "Weapons", type: "TECHNICAL" },
-  { key: "substance_count", label: "Substance Use", type: "TECHNICAL" },
-  { key: "municipal_count", label: "Municipal", type: "LAW" },
-  { key: "absconded_count", label: "Absconsion", type: "TECHNICAL" },
-  { key: "misdemeanor_count", label: "Misdemeanor", type: "LAW" },
-  { key: "felony_count", label: "Felony", type: "LAW" },
-];
 
 const Revocations = () => {
   const { user } = useAuth0();
@@ -112,16 +66,16 @@ const Revocations = () => {
   const userDistricts = getUserDistricts(user);
 
   const [filters, setFilters] = useState({
-    [METRIC_PERIOD_MONTHS]: DEFAULT_METRIC_PERIOD.value,
-    [CHARGE_CATEGORY]: chargeCategoryOptions[0].value,
-    district: [district || "All"],
-    [SUPERVISION_TYPE]: DEFAULT_SUPERVISION_TYPE.value,
+    [METRIC_PERIOD_MONTHS]: filterOptions[METRIC_PERIOD_MONTHS].defaultValue,
+    [CHARGE_CATEGORY]: filterOptions[CHARGE_CATEGORY].defaultValue,
+    [REPORTED_VIOLATIONS]: filterOptions[REPORTED_VIOLATIONS].defaultValue,
+    [VIOLATION_TYPE]: filterOptions[VIOLATION_TYPE].defaultValue,
+    [SUPERVISION_TYPE]: filterOptions[SUPERVISION_TYPE].defaultValue,
+    [SUPERVISION_LEVEL]: filterOptions[SUPERVISION_LEVEL].defaultValue,
     ...(flags.enableAdmissionTypeFilter
-      ? { [ADMISSION_TYPE]: [admissionTypeOptions[1].value] }
+      ? { [ADMISSION_TYPE]: filterOptions[ADMISSION_TYPE].defaultValue }
       : {}),
-    [REPORTED_VIOLATIONS]: "",
-    [VIOLATION_TYPE]: "",
-    [SUPERVISION_LEVEL]: SUPERVISION_LEVELS[0].value,
+    [DISTRICT]: [district || filterOptions[DISTRICT].defaultValue],
   });
 
   const updateFilters = (newFilters) => {
@@ -142,7 +96,7 @@ const Revocations = () => {
 
   const timeDescription = getTimeDescription(
     filters[METRIC_PERIOD_MONTHS],
-    admissionTypeOptions,
+    filterOptions[ADMISSION_TYPE].options,
     filters[ADMISSION_TYPE]
   );
 
@@ -153,8 +107,8 @@ const Revocations = () => {
           <ToggleBarFilter
             label="Time Period"
             value={filters[METRIC_PERIOD_MONTHS]}
-            options={METRIC_PERIODS}
-            defaultOption={DEFAULT_METRIC_PERIOD}
+            options={filterOptions[METRIC_PERIOD_MONTHS].options}
+            defaultOption={filterOptions[METRIC_PERIOD_MONTHS].defaultOption}
             onChange={createOnFilterChange(METRIC_PERIOD_MONTHS)}
           />
           <ErrorBoundary>
@@ -167,24 +121,24 @@ const Revocations = () => {
           <ToggleBarFilter
             label="Case Type"
             value={filters[CHARGE_CATEGORY]}
-            options={chargeCategoryOptions}
-            defaultOption={chargeCategoryOptions[0]}
+            options={filterOptions[CHARGE_CATEGORY].options}
+            defaultOption={filterOptions[CHARGE_CATEGORY].defaultOption}
             onChange={createOnFilterChange(CHARGE_CATEGORY)}
           />
           {flags.enableAdmissionTypeFilter && (
             <AdmissionTypeFilter
               value={filters[ADMISSION_TYPE]}
-              options={admissionTypeOptions}
-              summingOption={admissionTypeOptions[0]}
-              defaultValue={[admissionTypeOptions[1]]}
+              options={filterOptions[ADMISSION_TYPE].options}
+              summingOption={filterOptions[ADMISSION_TYPE].summingOption}
+              defaultValue={filterOptions[ADMISSION_TYPE].defaultValue}
               onChange={createOnFilterChange(ADMISSION_TYPE)}
             />
           )}
           <ToggleBarFilter
             label="Supervision Type"
             value={filters[SUPERVISION_TYPE]}
-            options={SUPERVISION_TYPES}
-            defaultOption={DEFAULT_SUPERVISION_TYPE}
+            options={filterOptions[SUPERVISION_TYPE].options}
+            defaultOption={filterOptions[SUPERVISION_TYPE].defaultOption}
             onChange={createOnFilterChange(SUPERVISION_TYPE)}
           />
         </div>
@@ -248,7 +202,7 @@ const Revocations = () => {
               filterStates={filters}
               stateCode={stateCode}
               timeDescription={timeDescription}
-              violationTypes={violationTypes}
+              violationTypes={filterOptions[VIOLATION_TYPE].options}
             />
           </ErrorBoundary>
         }

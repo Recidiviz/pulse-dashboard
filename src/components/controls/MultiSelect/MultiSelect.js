@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-import React, { useCallback, useMemo, useRef } from "react";
+import React, { useCallback, useMemo, useRef, useEffect } from "react";
 import PropTypes from "prop-types";
 import cn from "classnames";
 
@@ -31,19 +31,23 @@ import "./MultiSelect.scss";
 const MultiSelect = ({
   summingOption,
   options,
+  value,
   onChange,
   className,
   ...props
 }) => {
   const ref = useRef();
 
+  useEffect(() => {
+    if (ref.current && ref.current.select.inputRef) {
+      ref.current.select.inputRef.focus();
+    }
+  }, [value]);
+
   const handleChange = useCallback(
     (selectedOptions) => {
       const newOptions = getNewOptions(options, summingOption, selectedOptions);
       onChange(newOptions);
-      setTimeout(() => {
-        ref.current.select.inputRef.focus();
-      }, 4);
     },
     [onChange, options, summingOption]
   );
@@ -68,7 +72,9 @@ const MultiSelect = ({
   return (
     <Select
       classNamePrefix="MultiSelect"
-      className={cn("MultiSelect", className)}
+      className={cn("MultiSelect", className, {
+        "MultiSelect--summing-option-selected": summingOption === value[0],
+      })}
       ref={ref}
       isSearchable={false}
       closeMenuOnSelect={false}
@@ -76,6 +82,7 @@ const MultiSelect = ({
       hideSelectedOptions={false}
       onChange={handleChange}
       options={options}
+      value={value}
       {...props}
       isMulti
     />
@@ -83,7 +90,6 @@ const MultiSelect = ({
 };
 
 MultiSelect.defaultProps = {
-  summingOption: null,
   className: "",
 };
 
@@ -93,7 +99,7 @@ MultiSelect.propTypes = {
   onChange: PropTypes.func.isRequired,
   options: PropTypes.arrayOf(optionPropType).isRequired,
   className: PropTypes.string,
-  summingOption: optionPropType,
+  summingOption: optionPropType.isRequired,
 };
 
 export default MultiSelect;
