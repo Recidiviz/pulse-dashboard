@@ -25,7 +25,6 @@ function parseViolationRecord(recordLabel = "") {
   if (!recordLabel) {
     return [];
   }
-
   return recordLabel.split(";").map((recordPart) => {
     const record = recordPart.match(recordPartRegex).groups;
     record.number = parseInt(record.number, 0);
