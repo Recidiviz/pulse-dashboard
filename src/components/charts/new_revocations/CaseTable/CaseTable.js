@@ -21,34 +21,20 @@ import PropTypes from "prop-types";
 import Pagination from "./Pagination";
 import Sortable from "./Sortable";
 import useSort from "./useSort";
-
 import ExportMenu from "../../ExportMenu";
 import Loading from "../../../Loading";
 import Error from "../../../Error";
-
 import usePrevious from "../../../../hooks/usePrevious";
-
-import { COLORS } from "../../../../assets/scripts/constants/colors";
 import {
   getTrailingLabelFromMetricPeriodMonthsToggle,
   getPeriodLabelFromMetricPeriodMonthsToggle,
 } from "../../../../utils/charts/toggles";
-import { parseAndFormatViolationRecord } from "../../../../utils/charts/violationRecord";
-import {
-  humanReadableTitleCase,
-  nameFromOfficerId,
-} from "../../../../utils/transforms/labels";
 import { filtersPropTypes } from "../../propTypes";
 import useChartData from "../../../../hooks/useChartData";
 import { translate } from "../../../../views/tenants/utils/i18nSettings";
+import { nullSafeCell, formatData, formatExportData } from "./helpers";
 
 const CASES_PER_PAGE = 15;
-
-const unknownStyle = {
-  fontStyle: "italic",
-  fontSize: "13px",
-  color: COLORS["grey-500"],
-};
 
 const chartId = "filteredCaseTable";
 
@@ -127,34 +113,7 @@ const CaseTable = ({
   }
 
   const page = caseLoad.slice(beginning, end);
-
-  const normalizeLabel = (label) =>
-    label ? humanReadableTitleCase(label) : "";
-  const nullSafeLabel = (label) => label || "Unknown";
-  const nullSafeCell = (label) => {
-    if (label) {
-      return <td>{label}</td>;
-    }
-    return <td style={unknownStyle}>{nullSafeLabel(label)}</td>;
-  };
-
-  const tableData = (filteredData || []).map((record) => ({
-    data: [
-      nullSafeLabel(record.state_id),
-      nullSafeLabel(record.district),
-      nullSafeLabel(nameFromOfficerId(record.officer)),
-      nullSafeLabel(translate("riskLevelsMap")[record.risk_level]),
-      nullSafeLabel(normalizeLabel(record.officer_recommendation)),
-      nullSafeLabel(parseAndFormatViolationRecord(record.violation_record)),
-    ],
-  }));
-
-  const trailingLabel = getTrailingLabelFromMetricPeriodMonthsToggle(
-    metricPeriodMonths
-  );
-  const periodLabel = getPeriodLabelFromMetricPeriodMonthsToggle(
-    metricPeriodMonths
-  );
+  const tableData = formatData(page);
 
   const sortableProps = (field) => ({
     order: getOrder(field),
@@ -164,6 +123,13 @@ const CaseTable = ({
     },
   });
 
+  const trailingLabel = getTrailingLabelFromMetricPeriodMonthsToggle(
+    metricPeriodMonths
+  );
+  const periodLabel = getPeriodLabelFromMetricPeriodMonthsToggle(
+    metricPeriodMonths
+  );
+
   return (
     <div className="CaseTable">
       <h4>
@@ -171,7 +137,7 @@ const CaseTable = ({
         <ExportMenu
           chartId={chartId}
           shouldExport={false}
-          tableData={tableData}
+          tableData={formatExportData(filteredData)}
           metricTitle="Admitted individuals"
           isTable
           tableLabels={options.map((o) => o.label)}
@@ -193,18 +159,14 @@ const CaseTable = ({
           </tr>
         </thead>
         <tbody className="fs-block">
-          {page.map((details, i) => (
-            // Need to know unique set of fields for uniq key
-            // eslint-disable-next-line react/no-array-index-key
-            <tr key={i}>
+          {tableData.map((details) => (
+            <tr key={details.state_id}>
               <td>{details.state_id}</td>
               {nullSafeCell(details.district)}
-              {nullSafeCell(nameFromOfficerId(details.officer))}
-              {nullSafeCell(translate("riskLevelsMap")[details.risk_level])}
-              {nullSafeCell(normalizeLabel(details.officer_recommendation))}
-              {nullSafeCell(
-                parseAndFormatViolationRecord(details.violation_record)
-              )}
+              {nullSafeCell(details.officer)}
+              {nullSafeCell(details.risk_level)}
+              {nullSafeCell(details.officer_recommendation)}
+              {nullSafeCell(details.violation_record)}
             </tr>
           ))}
         </tbody>

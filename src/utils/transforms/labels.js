@@ -95,21 +95,6 @@ function numberFromOfficerId(officerId) {
   return toInt(officerId);
 }
 
-/*
- * Returns the officer name from the canonical id format, '123: Firstname Lastname'.
- */
-function nameFromOfficerId(officerId) {
-  if (!officerId) {
-    return "";
-  }
-
-  const parts = officerId.split(":");
-  if (parts.length === 1) {
-    return officerId;
-  }
-  return parts[1].trim();
-}
-
 const violationCountLabel = (count) => (count === "8" ? "8+" : count);
 
 export {
@@ -122,6 +107,5 @@ export {
   toTitleCase,
   humanReadableTitleCase,
   numberFromOfficerId,
-  nameFromOfficerId,
   violationCountLabel,
 };
