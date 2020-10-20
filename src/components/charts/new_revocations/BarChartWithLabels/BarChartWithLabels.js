@@ -75,10 +75,10 @@ const BarChartWithLabels = ({
         mode: "index",
         intersect: false,
         callbacks: {
-          label: (tooltipItem, data) =>
+          label: (tooltipItem, tooltipData) =>
             tooltipForRateMetricWithNestedCounts(
               tooltipItem,
-              data,
+              tooltipData,
               numerators,
               denominators
             ),

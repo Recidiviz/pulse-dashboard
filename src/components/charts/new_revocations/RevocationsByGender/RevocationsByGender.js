@@ -15,99 +15,51 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React, { useState } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 
 import { translate } from "../../../../views/tenants/utils/i18nSettings";
-
-import generateRevocationsByGenderChartData from "./generateRevocationsByGenderChartData";
-import ModeSwitcher from "../ModeSwitcher";
-import Loading from "../../../Loading";
-import Error from "../../../Error";
-
-import flags from "../../../../flags";
-import { isDenominatorsMatrixStatisticallySignificant } from "../../../../utils/charts/significantStatistics";
-import useChartData from "../../../../hooks/useChartData";
 import { filtersPropTypes } from "../../propTypes";
-import BarChartWithLabels from "../BarChartWithLabels";
-import RevocationsByDimension from "../RevocationsByDimension";
 import getLabelByMode from "../utils/getLabelByMode";
-import { CHART_COLORS } from "./constants";
 
-const chartId = "revocationsByGender";
+import RevocationsByDimension from "../RevocationsByDimension";
+import BarChartWithLabels from "../BarChartWithLabels";
+import { CHART_COLORS } from "./constants";
+import createGenerateChartData from "./createGenerateChartData";
+import flags from "../../../../flags";
 
 const RevocationsByGender = ({
   stateCode,
   dataFilter,
   filterStates,
   timeDescription,
-}) => {
-  const [mode, setMode] = useState("rates"); // rates | exits
-
-  const { isLoading, isError, apiData } = useChartData(
-    `${stateCode}/newRevocations`,
-    "revocations_matrix_distribution_by_gender"
-  );
-
-  if (isLoading) {
-    return <Loading />;
-  }
-
-  if (isError) {
-    return <Error />;
-  }
-
-  const {
-    data,
-    numerators,
-    denominators,
-  } = generateRevocationsByGenderChartData(
-    apiData,
-    dataFilter,
-    mode,
-    stateCode
-  );
-
-  const showWarning = !isDenominatorsMatrixStatisticallySignificant(
-    denominators
-  );
-
-  const modeButtons = [
-    { label: getLabelByMode("rates"), value: "rates" },
-    { label: getLabelByMode("exits"), value: "exits" },
-  ];
-
-  return (
-    <RevocationsByDimension
-      timeDescription={timeDescription}
-      filterStates={filterStates}
-      chartId={chartId}
-      datasets={data.datasets}
-      labels={data.labels}
-      metricTitle={`${getLabelByMode(mode)} by ${translate(
-        "gender"
-      )} and risk level`}
-      showWarning={showWarning}
-      chartTitle={`Admissions by ${translate("gender")} and risk level`}
-      chart={
-        <BarChartWithLabels
-          id={chartId}
-          data={data}
-          xAxisLabel={`${translate("Gender")} and risk level`}
-          yAxisLabel={getLabelByMode(mode)}
-          labelColors={CHART_COLORS}
-          denominators={denominators}
-          numerators={numerators}
-        />
-      }
-      modeSwitcher={
-        flags.enableRevocationRateByExit ? (
-          <ModeSwitcher mode={mode} setMode={setMode} buttons={modeButtons} />
-        ) : null
-      }
-    />
-  );
-};
+}) => (
+  <RevocationsByDimension
+    chartId="revocationsByGender"
+    apiUrl={`${stateCode}/newRevocations`}
+    apiFile="revocations_matrix_distribution_by_gender"
+    renderChart={({ chartId, data, denominators, numerators, mode }) => (
+      <BarChartWithLabels
+        id={chartId}
+        data={data}
+        xAxisLabel={`${translate("Gender")} and risk level`}
+        yAxisLabel={getLabelByMode(mode)}
+        labelColors={CHART_COLORS}
+        denominators={denominators}
+        numerators={numerators}
+      />
+    )}
+    generateChartData={createGenerateChartData(dataFilter, stateCode)}
+    chartTitle={`Admissions by ${translate("gender")} and risk level`}
+    getMetricTitle={(mode) =>
+      `${getLabelByMode(mode)} by ${translate("gender")} and risk level`
+    }
+    filterStates={filterStates}
+    timeDescription={timeDescription}
+    modes={flags.enableRevocationRateByExit ? ["rates", "exits"] : []}
+    defaultMode="rates"
+  />
+);
 
 RevocationsByGender.propTypes = {
   stateCode: PropTypes.string.isRequired,

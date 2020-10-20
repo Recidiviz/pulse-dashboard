@@ -16,15 +16,16 @@
 // =============================================================================
 
 import React from "react";
-import PropTypes from "prop-types";
 import cn from "classnames";
-import DataSignificanceWarningIcon from "../DataSignificanceWarningIcon";
-import ExportMenu from "../ExportMenu";
-import { filtersPropTypes } from "../propTypes";
+import PropTypes from "prop-types";
+
+import DataSignificanceWarningIcon from "../../DataSignificanceWarningIcon";
+import ExportMenu from "../../ExportMenu";
+import { filtersPropTypes } from "../../propTypes";
 
 import "./RevocationsByDimension.scss";
 
-const RevocationsByDimension = ({
+const RevocationsByDimensionComponent = ({
   chartTitle,
   chartId,
   datasets,
@@ -61,13 +62,13 @@ const RevocationsByDimension = ({
   </div>
 );
 
-RevocationsByDimension.defaultProps = {
+RevocationsByDimensionComponent.defaultProps = {
   showWarning: false,
   modeSwitcher: null,
   classModifier: "",
 };
 
-RevocationsByDimension.propTypes = {
+RevocationsByDimensionComponent.propTypes = {
   chartTitle: PropTypes.string.isRequired,
   chartId: PropTypes.string.isRequired,
   datasets: PropTypes.arrayOf(
@@ -90,4 +91,4 @@ RevocationsByDimension.propTypes = {
   classModifier: PropTypes.string,
 };
 
-export default RevocationsByDimension;
+export default RevocationsByDimensionComponent;

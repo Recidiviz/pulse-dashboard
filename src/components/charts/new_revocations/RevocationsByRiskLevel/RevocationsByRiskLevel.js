@@ -22,7 +22,6 @@ import { Bar } from "react-chartjs-2";
 import ModeSwitcher from "../ModeSwitcher";
 import Loading from "../../../Loading";
 import Error from "../../../Error";
-import RevocationsByDimension from "../RevocationsByDimension";
 
 import flags from "../../../../flags";
 import { COLORS } from "../../../../assets/scripts/constants/colors";
@@ -36,6 +35,7 @@ import { tooltipForRateMetricWithCounts } from "../../../../utils/charts/toggles
 import { filtersPropTypes } from "../../propTypes";
 import getLabelByMode from "../utils/getLabelByMode";
 import generateRevocationsByRiskLevelChartData from "./generateRevocationsByRiskLevelChartData";
+import RevocationsByDimension from "../RevocationsByDimension/RevocationsByDimensionComponent";
 
 const chartId = "revocationsByRiskLevel";
 

@@ -30,7 +30,6 @@ import toInteger from "lodash/fp/toInteger";
 import values from "lodash/fp/values";
 
 import ModeSwitcher from "../ModeSwitcher";
-import RevocationsByDimension from "../RevocationsByDimension";
 import { sumCounts, modeButtons } from "./helpers";
 import { calculateRate, getRateAnnotation } from "../helpers/rate";
 import {
@@ -43,6 +42,7 @@ import { COLORS } from "../../../../assets/scripts/constants/colors";
 import { tooltipForRateMetricWithCounts } from "../../../../utils/charts/toggles";
 import { axisCallbackForPercentage } from "../../../../utils/charts/axis";
 import { filtersPropTypes } from "../../propTypes";
+import RevocationsByDimension from "../RevocationsByDimension/RevocationsByDimensionComponent";
 
 const PercentRevokedByExits = ({
   chartId,

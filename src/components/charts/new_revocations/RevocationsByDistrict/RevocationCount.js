@@ -28,7 +28,6 @@ import sumBy from "lodash/fp/sumBy";
 import toInteger from "lodash/fp/toInteger";
 import values from "lodash/fp/values";
 
-import RevocationsByDimension from "../RevocationsByDimension";
 import ModeSwitcher from "../ModeSwitcher";
 
 import { COLORS } from "../../../../assets/scripts/constants/colors";
@@ -36,6 +35,7 @@ import { standardTooltipForCountMetric } from "../../../../utils/charts/toggles"
 import { modeButtons } from "./helpers";
 import { filtersPropTypes } from "../../propTypes";
 import { translate } from "../../../../views/tenants/utils/i18nSettings";
+import RevocationsByDimension from "../RevocationsByDimension/RevocationsByDimensionComponent";
 
 const RevocationCount = ({
   chartId,

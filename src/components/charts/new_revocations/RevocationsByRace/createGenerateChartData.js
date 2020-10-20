@@ -98,12 +98,7 @@ const dataTransformer = (numeratorKey, denominatorKey) => (acc, data) => {
   )(acc);
 };
 
-const generateRevocationsByRaceChartData = (
-  apiData,
-  dataFilter,
-  mode,
-  stateCode
-) => {
+const createGenerateChartData = (dataFilter, stateCode) => (apiData, mode) => {
   const numeratorKey = "population_count";
   const denominatorKey = getDenominatorKeyByMode(mode);
 
@@ -141,4 +136,4 @@ const generateRevocationsByRaceChartData = (
   };
 };
 
-export default generateRevocationsByRaceChartData;
+export default createGenerateChartData;

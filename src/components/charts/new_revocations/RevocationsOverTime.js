@@ -42,7 +42,7 @@ import { monthNamesAllWithYearsFromNumbers } from "../../../utils/transforms/mon
 import { generateTrendlineDataset } from "../../../utils/charts/trendline";
 import { filtersPropTypes } from "../propTypes";
 import { translate } from "../../../views/tenants/utils/i18nSettings";
-import RevocationsByDimension from "./RevocationsByDimension";
+import RevocationsByDimension from "./RevocationsByDimension/RevocationsByDimensionComponent";
 
 const chartId = "revocationsOverTime";
 

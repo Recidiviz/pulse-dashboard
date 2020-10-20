@@ -27,8 +27,8 @@ import useChartData from "../../../../hooks/useChartData";
 import { axisCallbackForPercentage } from "../../../../utils/charts/axis";
 import { tooltipForRateMetricWithCounts } from "../../../../utils/charts/toggles";
 import { filtersPropTypes } from "../../propTypes";
-import RevocationsByDimension from "../RevocationsByDimension";
 import generateRevocationsByViolationChartData from "./generateRevocationsByViolationChartData";
+import RevocationsByDimension from "../RevocationsByDimension/RevocationsByDimensionComponent";
 
 const chartId = "revocationsByViolationType";
 
@@ -101,10 +101,10 @@ const RevocationsByViolation = ({
           mode: "index",
           intersect: false,
           callbacks: {
-            label: (tooltipItem, data) =>
+            label: (tooltipItem, tooltipData) =>
               tooltipForRateMetricWithCounts(
                 tooltipItem,
-                data,
+                tooltipData,
                 numerators,
                 denominators
               ),
