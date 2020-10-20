@@ -49,7 +49,7 @@ const RevocationsByRace = ({
     )}
     generateChartData={createGenerateChartData(dataFilter, stateCode)}
     chartTitle="Admissions by race/ethnicity and risk level"
-    getMetricTitle={(mode) =>
+    metricTitle={(mode) =>
       `${getLabelByMode(mode)} by race/ethnicity and risk level`
     }
     filterStates={filterStates}

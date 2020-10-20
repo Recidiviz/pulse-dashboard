@@ -45,7 +45,7 @@ const RevocationsByRiskLevel = ({
     )}
     generateChartData={createGenerateChartData(dataFilter)}
     chartTitle="Admissions by risk level"
-    getMetricTitle={(mode) => `${getLabelByMode(mode)} by risk level`}
+    metricTitle={(mode) => `${getLabelByMode(mode)} by risk level`}
     filterStates={filterStates}
     timeDescription={timeDescription}
     modes={flags.enableRevocationRateByExit ? ["rates", "exits"] : []}

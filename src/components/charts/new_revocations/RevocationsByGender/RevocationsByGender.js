@@ -51,7 +51,7 @@ const RevocationsByGender = ({
     )}
     generateChartData={createGenerateChartData(dataFilter, stateCode)}
     chartTitle={`Admissions by ${translate("gender")} and risk level`}
-    getMetricTitle={(mode) =>
+    metricTitle={(mode) =>
       `${getLabelByMode(mode)} by ${translate("gender")} and risk level`
     }
     filterStates={filterStates}

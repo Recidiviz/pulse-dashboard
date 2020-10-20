@@ -8,11 +8,7 @@ import toInteger from "lodash/fp/toInteger";
 import { calculateRate } from "../helpers/rate";
 import { COLORS } from "../../../../assets/scripts/constants/colors";
 
-const generateRevocationsByViolationChartData = (
-  apiData,
-  dataFilter,
-  violationTypes
-) => {
+const createGenerateChartData = (dataFilter, violationTypes) => (apiData) => {
   const violationCountKey = "violation_count";
 
   const allViolationTypeKeys = map("key", violationTypes);
@@ -65,4 +61,4 @@ const generateRevocationsByViolationChartData = (
   };
 };
 
-export default generateRevocationsByViolationChartData;
+export default createGenerateChartData;

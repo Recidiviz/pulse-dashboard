@@ -34,7 +34,7 @@ const RevocationsByDimension = ({
   apiFile,
   renderChart,
   generateChartData,
-  getMetricTitle,
+  metricTitle,
   chartTitle,
   filterStates,
   timeDescription,
@@ -71,7 +71,9 @@ const RevocationsByDimension = ({
       chartId={chartId}
       datasets={data.datasets}
       labels={data.labels}
-      metricTitle={getMetricTitle(mode)}
+      metricTitle={
+        typeof metricTitle === "function" ? metricTitle(mode) : metricTitle
+      }
       showWarning={showWarning}
       chartTitle={chartTitle}
       chart={renderChart({ chartId, data, denominators, numerators, mode })}
@@ -95,7 +97,8 @@ RevocationsByDimension.propTypes = {
   apiFile: PropTypes.string.isRequired,
   renderChart: PropTypes.func.isRequired,
   generateChartData: PropTypes.func.isRequired,
-  getMetricTitle: PropTypes.func.isRequired,
+  metricTitle: PropTypes.oneOfType([PropTypes.func, PropTypes.string])
+    .isRequired,
   chartTitle: PropTypes.string.isRequired,
   filterStates: filtersPropTypes.isRequired,
   timeDescription: PropTypes.string.isRequired,
