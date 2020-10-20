@@ -129,7 +129,7 @@ export const PA_METHODOLOGY = {
     },
     {
       header: "Last Recommendation",
-      body: `The recommendation listed on the last violation report before the person was admitted. "Placement in DOC facilities" currently includes the following recommendations: Placement in CCC Half Way Back, Placement in PVC, Placement in D&A Detox Facility, Placement in Mental Health Facility, Placement in Violation Center County PRison, Community Parole Corrections Half Way Out.`,
+      body: `The recommendation listed on the last violation report before the person was admitted. "Placement In DOC Facility" currently includes the following recommendations: Placement in CCC Half Way Back, Placement in PVC, Placement in D&A Detox Facility, Placement in Mental Health Facility, Placement in Violation Center County PRison, Community Parole Corrections Half Way Out.`,
     },
     {
       header: "Violation Record",
