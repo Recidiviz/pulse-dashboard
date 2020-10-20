@@ -79,10 +79,11 @@ function downloadCanvasImage(
       canvas.width / 2,
       topPadding - 40
     );
-  }
-  const violation = getViolation(toggleStates);
-  if (violation) {
-    destinationCtx.fillText(violation, canvas.width / 2, topPadding - 20);
+    destinationCtx.fillText(
+      getViolation(toggleStates),
+      canvas.width / 2,
+      topPadding - 20
+    );
   }
   destinationCtx.drawImage(canvas, 0, topPadding);
 
