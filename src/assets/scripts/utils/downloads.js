@@ -56,7 +56,6 @@ function downloadCanvasImage(
   toggleStates,
   shouldZipDownload
 ) {
-  console.log(toggleStates);
   const topPadding = 120;
   const temporaryCanvas = document.createElement("canvas");
   temporaryCanvas.width = canvas.width;
@@ -295,7 +294,6 @@ function configureImageDownload(
       timeWindowDescription,
       toggleStates
     );
-    console.log("297", toggleStates);
     const imageFile = downloadCanvasImage(
       canvas,
       filename,
@@ -306,7 +304,6 @@ function configureImageDownload(
     const files = [methodologyFile, imageFile];
     downloadZipFile(files, "export_image.zip");
   } else {
-    console.log("308", toggleStates);
     downloadCanvasImage(canvas, filename, chartTitle);
   }
 }
@@ -331,7 +328,6 @@ function configureDownloadButtons(
 
   if (downloadChartAsImageButton) {
     downloadChartAsImageButton.onclick = function downloadChartImage() {
-      console.log("331", toggleStates);
       configureImageDownload(
         chartBox || document.getElementById(chartId),
         `${filename}.png`,
