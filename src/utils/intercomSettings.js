@@ -15,7 +15,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import { getUserStateCode } from "../utils/authentication/user"
+import { getUserStateCode } from "./authentication/user";
 
 const APP_ID = process.env.REACT_APP_INTERCOM_APP_ID;
 
@@ -35,12 +35,12 @@ export function enableIntercomLauncherForUser(user) {
     nickname: user.nickname,
     email: user.email,
     user_id: user.sub,
-    hide_default_launcher: false
-  }
+    hide_default_launcher: false,
+  };
 
-  window.Intercom("update", intercomSettings)
+  window.Intercom("update", intercomSettings);
 }
 
 export function disableIntercomLauncher() {
-  window.Intercom("update", { hide_default_launcher: true} )
+  window.Intercom("update", { hide_default_launcher: true });
 }

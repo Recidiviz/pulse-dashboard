@@ -16,8 +16,6 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import "@testing-library/jest-dom/extend-expect";
-
 import { mergeRevocationData, sumCounts } from "../helpers";
 import { calculateRate } from "../../helpers/rate";
 

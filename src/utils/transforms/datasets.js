@@ -14,43 +14,17 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-const TRANSITIONAL_FACILITY_FILTERS = {
-  US_ND: ['FTPFAR', 'GFC', 'BTC', 'FTPMND', 'MTPFAR', 'LRRP', 'MTPMND'],
-  US_DEMO: ['GHI', 'PQR', 'VWX'],
-};
-
-const RELEASE_FACILITY_FILTERS = {
-  US_ND: ['DWCRC', 'MRCC', 'JRCC', 'NDSP', 'TRCC', 'CJ', 'NTAD'],
-  US_DEMO: ['ABC', 'DEF', 'JKL', 'MNO', 'STU', 'YZ'],
-};
-
-/**
- * Filters data points to only include the list of facilities corresponding to
- * the given `facilityType` and `stateCode`. Assumes the data is in the format:
- * [facilityName, dataValue]
- */
-function filterFacilities(dataPoints, facilityType, stateCode) {
-  const facilityArray = (facilityType === 'TRANSITIONAL'
-    ? TRANSITIONAL_FACILITY_FILTERS[stateCode] : RELEASE_FACILITY_FILTERS[stateCode]);
-
-  const filteredData = [];
-  dataPoints.forEach((data) => {
-    if (facilityArray.includes(data[0])) {
-      filteredData.push(data);
-    }
-  });
-
-  return filteredData;
-}
-
 /**
  * Sorts the data points by year and month, ascending.
  * Assumes that the the data is in the format:
  * [[year, month, data], [year, month, data], ...]
  */
-function sortByYearAndMonth(dataPoints) {
-  return dataPoints.sort((a, b) => (
-    (Number(a.year) === Number(b.year)) ? (Number(a.month) - Number(b.month)) : (Number(a.year) - Number(b.year))));
+export function sortByYearAndMonth(dataPoints) {
+  return dataPoints.sort((a, b) =>
+    Number(a.year) === Number(b.year)
+      ? Number(a.month) - Number(b.month)
+      : Number(a.year) - Number(b.year)
+  );
 }
 
 /**
@@ -58,21 +32,12 @@ function sortByYearAndMonth(dataPoints) {
  *  -`labelIndex`: The index in the dataPoint array that contains the label
  *    to sort on
  */
-function sortByLabel(dataPoints, labelKey) {
-  return dataPoints.sort((a, b) => (a[labelKey].localeCompare(b[labelKey])));
+export function sortByLabel(dataPoints, labelKey) {
+  return dataPoints.sort((a, b) => a[labelKey].localeCompare(b[labelKey]));
 }
 
-function filterMostRecentMonths(dataPoints, monthCount) {
+export function filterMostRecentMonths(dataPoints, monthCount) {
   return dataPoints.slice(dataPoints.length - monthCount, dataPoints.length);
-}
-
-/**
- * Sorts the data points by year and month, ascending, and then returns the
- * most recent `monthCount` number of months.
- */
-function sortAndFilterMostRecentMonths(unsortedDataPoints, monthCount) {
-  const sortedData = sortByYearAndMonth(unsortedDataPoints);
-  return filterMostRecentMonths(sortedData, monthCount);
 }
 
 /**
@@ -97,14 +62,16 @@ function addEmptyMonthsToData(dataPoints, monthCount, valueKey, emptyValue) {
     // This bizarre math avoids a JS quirk with modulo operations on negative numbers.
     // https://web.archive.org/web/20090717035140if_/javascript.about.com/od/problemsolving/a/modulobug.htm
     const remainder = ((i % 12) + 12) % 12;
-    const month = (remainder === 0) ? 12 : remainder;
+    const month = remainder === 0 ? 12 : remainder;
 
     const dateMonthsAgo = new Date(now.getTime());
     dateMonthsAgo.setMonth(i - 1);
     const year = dateMonthsAgo.getFullYear();
 
-    if (dateMonthsAgo.getMonth() !== (month - 1)) {
-      console.error(`Month mismatch: month=${month}, dateMonthsAgo=${dateMonthsAgo}`);
+    if (dateMonthsAgo.getMonth() !== month - 1) {
+      console.error(
+        `Month mismatch: month=${month}, dateMonthsAgo=${dateMonthsAgo}`
+      );
     }
 
     if (!representedMonths[year] || !representedMonths[year][month]) {
@@ -125,21 +92,18 @@ function addEmptyMonthsToData(dataPoints, monthCount, valueKey, emptyValue) {
  * most recent `monthCount` number of months. Adds empty data for any months
  * that are missing.
  */
-function sortFilterAndSupplementMostRecentMonths(
-  unsortedDataPoints, monthCount, valueKey, emptyValue,
+export function sortFilterAndSupplementMostRecentMonths(
+  unsortedDataPoints,
+  monthCount,
+  valueKey,
+  emptyValue
 ) {
   const updatedDataPoints = addEmptyMonthsToData(
-    unsortedDataPoints, monthCount, valueKey, emptyValue,
+    unsortedDataPoints,
+    monthCount,
+    valueKey,
+    emptyValue
   );
   const sortedData = sortByYearAndMonth(updatedDataPoints);
   return filterMostRecentMonths(sortedData, monthCount);
 }
-
-export {
-  filterFacilities,
-  filterMostRecentMonths,
-  sortFilterAndSupplementMostRecentMonths,
-  sortAndFilterMostRecentMonths,
-  sortByLabel,
-  sortByYearAndMonth,
-};

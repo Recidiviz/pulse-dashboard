@@ -2,7 +2,7 @@ import pipe from "lodash/fp/pipe";
 import find from "lodash/fp/find";
 import get from "lodash/fp/get";
 import { humanReadableTitleCase } from "../../../utils/transforms/labels";
-import { SUPERVISION_LEVELS } from "../../../components/charts/new_revocations/ToggleBar/options";
+import { SUPERVISION_LEVELS } from "../../../views/tenants/constants/filterOptions";
 
 function formatMetricPeriodMonthsFilter(metricPeriodMonths) {
   switch (metricPeriodMonths) {
@@ -40,7 +40,7 @@ const formatSupervisionLevel = (supervisionLevel) =>
     : `Supervision level: ${pipe(
         find({ value: supervisionLevel }),
         get("label")
-      )(SUPERVISION_LEVELS)}`;
+      )(SUPERVISION_LEVELS.options)}`;
 
 function getFilters(toggleStates) {
   const filters = [];

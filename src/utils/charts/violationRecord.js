@@ -37,10 +37,6 @@ export function sumViolationRecords(records) {
   return records.reduce((acc, record) => acc + record.number, 0);
 }
 
-export const violationComparator = (a, b) =>
-  VIOLATION_SEVERITY.indexOf(a.abbreviation) -
-  VIOLATION_SEVERITY.indexOf(b.abbreviation);
-
 export function compareViolationRecords(aRecordLabel, bRecordLabel, order) {
   const aRecords = parseViolationRecord(aRecordLabel);
   const bRecords = parseViolationRecord(bRecordLabel);

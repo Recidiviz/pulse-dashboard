@@ -1,5 +1,5 @@
 // Recidiviz - a data platform for criminal justice reform
-// Copyright (C) 2019 Recidiviz, Inc.
+// Copyright (C) 2020 Recidiviz, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -15,7 +15,12 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-function tooltipForCountChart(firstDataset, firstPrefix, secondDataset, secondPrefix) {
+function tooltipForCountChart(
+  firstDataset,
+  firstPrefix,
+  secondDataset,
+  secondPrefix
+) {
   return {
     title: (tooltipItem, data) => data.labels[tooltipItem[0].index],
     label: (tooltipItem, data) => {
@@ -51,7 +56,4 @@ function tooltipForRateChart() {
   };
 }
 
-export {
-  tooltipForCountChart,
-  tooltipForRateChart,
-};
+export { tooltipForCountChart, tooltipForRateChart };
