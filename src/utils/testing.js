@@ -15,12 +15,12 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-const fs = require('fs');
-
+const fs = require("fs");
 
 export const readJsonLinesFile = (path) => {
-  return fs.readFileSync(path, 'utf8')
-      .trim()
-      .split('\n')
-      .map(line => JSON.parse(line));
+  return fs
+    .readFileSync(path, "utf8")
+    .trim()
+    .split("\n")
+    .map((line) => JSON.parse(line));
 };

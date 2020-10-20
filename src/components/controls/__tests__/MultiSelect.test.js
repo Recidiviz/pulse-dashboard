@@ -16,23 +16,28 @@
 // =============================================================================
 
 import React from "react";
-
 import { render } from "@testing-library/react";
-import Pagination from "../Pagination";
 
-describe("test for component CaseTablePaging", () => {
-  const updatePage = jest.fn();
+import MultiSelect from "../MultiSelect/MultiSelect";
 
-  it("displays initial label", async () => {
-    const { getByText } = render(
-      <Pagination
-        beginning={0}
-        end={15}
-        total={1000}
-        onUpdatePage={updatePage}
-      />
-    );
-
-    expect(getByText("Showing 1-15 of 1000")).toBeInTheDocument();
+describe("MultiSelect", () => {
+  it("Should not throw error when ref.current does not exist yet", () => {
+    const onChange = () => {};
+    jest.spyOn(React, "useRef").mockReturnValueOnce({ current: null });
+    const renderer = () => {
+      render(
+        <MultiSelect
+          onChange={onChange}
+          defaultValue={[{ label: "ALL", value: "ALL" }]}
+          value={[{ label: "ALL", value: "ALL" }]}
+          options={[
+            { label: "ALL", value: "ALL" },
+            { label: "02", value: "02" },
+          ]}
+          summingOption={{ label: "ALL", value: "ALL" }}
+        />
+      );
+    };
+    expect(renderer).not.toThrow();
   });
 });

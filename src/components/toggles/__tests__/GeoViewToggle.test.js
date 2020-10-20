@@ -18,7 +18,6 @@
 import React from "react";
 import { getByText, fireEvent } from "@testing-library/dom";
 import { render } from "@testing-library/react";
-import "@testing-library/jest-dom/extend-expect";
 import GeoViewToggle from "../GeoViewToggle";
 
 describe("GeoViewToggle", () => {
