@@ -15,140 +15,43 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React, { useState } from "react";
+import React from "react";
 import PropTypes from "prop-types";
-import { Bar } from "react-chartjs-2";
-
-import ModeSwitcher from "../ModeSwitcher";
-import Loading from "../../../Loading";
-import Error from "../../../Error";
 
 import flags from "../../../../flags";
-import { COLORS } from "../../../../assets/scripts/constants/colors";
-import useChartData from "../../../../hooks/useChartData";
-import { axisCallbackForPercentage } from "../../../../utils/charts/axis";
-import {
-  isDenominatorsMatrixStatisticallySignificant,
-  tooltipForFooterWithCounts,
-} from "../../../../utils/charts/significantStatistics";
-import { tooltipForRateMetricWithCounts } from "../../../../utils/charts/toggles";
 import { filtersPropTypes } from "../../propTypes";
 import getLabelByMode from "../utils/getLabelByMode";
-import generateRevocationsByRiskLevelChartData from "./generateRevocationsByRiskLevelChartData";
-import RevocationsByDimension from "../RevocationsByDimension/RevocationsByDimensionComponent";
-
-const chartId = "revocationsByRiskLevel";
+import createGenerateChartData from "./createGenerateChartData";
+import RevocationsByDimension from "../RevocationsByDimension";
+import RevocationsByRiskLevelChart from "./RevocationsByRiskLevelChart";
 
 const RevocationsByRiskLevel = ({
   stateCode,
   dataFilter,
   filterStates,
   timeDescription,
-}) => {
-  const [mode, setMode] = useState("rates"); // rates | exits
-
-  const { isLoading, isError, apiData } = useChartData(
-    `${stateCode}/newRevocations`,
-    "revocations_matrix_distribution_by_risk_level"
-  );
-
-  if (isLoading) {
-    return <Loading />;
-  }
-
-  if (isError) {
-    return <Error />;
-  }
-
-  const {
-    data: chartData,
-    numerators,
-    denominators,
-  } = generateRevocationsByRiskLevelChartData(apiData, dataFilter, mode);
-
-  const showWarning = !isDenominatorsMatrixStatisticallySignificant(
-    denominators
-  );
-
-  const modeButtons = [
-    { label: getLabelByMode("rates"), value: "rates" },
-    { label: getLabelByMode("exits"), value: "exits" },
-  ];
-
-  const chart = (
-    <Bar
-      id={chartId}
-      data={chartData}
-      options={{
-        legend: {
-          display: false,
-        },
-        responsive: true,
-        maintainAspectRatio: false,
-        scales: {
-          xAxes: [
-            {
-              scaleLabel: {
-                display: true,
-                labelString: "Risk level",
-              },
-              stacked: true,
-            },
-          ],
-          yAxes: [
-            {
-              ticks: {
-                beginAtZero: true,
-                callback: axisCallbackForPercentage(),
-              },
-              scaleLabel: {
-                display: true,
-                labelString: chartData.labels,
-              },
-              stacked: true,
-            },
-          ],
-        },
-        tooltips: {
-          backgroundColor: COLORS["grey-800-light"],
-          footerFontSize: 9,
-          mode: "index",
-          intersect: false,
-          callbacks: {
-            label: (tooltipItem, data) =>
-              tooltipForRateMetricWithCounts(
-                tooltipItem,
-                data,
-                numerators,
-                denominators
-              ),
-            footer: (tooltipItem) =>
-              tooltipForFooterWithCounts(tooltipItem, denominators),
-          },
-        },
-      }}
-    />
-  );
-
-  return (
-    <RevocationsByDimension
-      chartTitle="Admissions by risk level"
-      timeDescription={timeDescription}
-      labels={chartData.labels}
-      chartId={chartId}
-      datasets={chartData.datasets}
-      metricTitle={`${getLabelByMode(mode)} by risk level`}
-      filterStates={filterStates}
-      chart={chart}
-      showWarning={showWarning}
-      modeSwitcher={
-        flags.enableRevocationRateByExit ? (
-          <ModeSwitcher mode={mode} setMode={setMode} buttons={modeButtons} />
-        ) : null
-      }
-    />
-  );
-};
+}) => (
+  <RevocationsByDimension
+    chartId="revocationsByRiskLevel"
+    apiUrl={`${stateCode}/newRevocations`}
+    apiFile="revocations_matrix_distribution_by_risk_level"
+    renderChart={({ chartId, data, denominators, numerators }) => (
+      <RevocationsByRiskLevelChart
+        chartId={chartId}
+        data={data}
+        denominators={denominators}
+        numerators={numerators}
+      />
+    )}
+    generateChartData={createGenerateChartData(dataFilter)}
+    chartTitle="Admissions by risk level"
+    getMetricTitle={(mode) => `${getLabelByMode(mode)} by risk level`}
+    filterStates={filterStates}
+    timeDescription={timeDescription}
+    modes={flags.enableRevocationRateByExit ? ["rates", "exits"] : []}
+    defaultMode="rates"
+  />
+);
 
 RevocationsByRiskLevel.propTypes = {
   stateCode: PropTypes.string.isRequired,

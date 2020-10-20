@@ -14,7 +14,7 @@ import { isDenominatorStatisticallySignificant } from "../../../../utils/charts/
 import getDenominatorKeyByMode from "../utils/getDenominatorKeyByMode";
 import getLabelByMode from "../utils/getLabelByMode";
 
-const generateRevocationsByRiskLevelChartData = (apiData, dataFilter, mode) => {
+const createGenerateChartData = (dataFilter) => (apiData, mode) => {
   const denominatorKey = getDenominatorKeyByMode(mode);
   const riskLevels = translate("riskLevelsMap");
 
@@ -65,4 +65,4 @@ const generateRevocationsByRiskLevelChartData = (apiData, dataFilter, mode) => {
   return { data, numerators, denominators };
 };
 
-export default generateRevocationsByRiskLevelChartData;
+export default createGenerateChartData;
