@@ -15,10 +15,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import getOr from "lodash/fp/getOr";
 import pipe from "lodash/fp/pipe";
-import set from "lodash/fp/set";
-import toInteger from "lodash/fp/toInteger";
 import reduce from "lodash/fp/reduce";
 
 import { CHART_COLORS } from "./constants";
@@ -29,50 +26,24 @@ import {
 } from "../../../../utils/transforms/labels";
 import getDenominatorKeyByMode from "../utils/getDenominatorKeyByMode";
 import getCounts from "../utils/getCounts";
+import createRiskLevelsMap from "../utils/createRiskLevelsMap";
 
 /**
  * These are the only genders that are apparent in the source data set,
  * not all of the genders we would like to represent.
  */
-const GENDERS = ["FEMALE", "MALE"];
-
-/**
- * Transform to
- * {
- *   FEMALE: { LOW: [1, 4], HIGH: [5, 9], ... } }
- *   MALE: { LOW: [2, 9], HIGH: [2, 8], ... } }
- * }
- */
-const dataTransformer = (numeratorKey, denominatorKey) => (acc, data) =>
-  pipe(
-    set(
-      [data.gender, data.risk_level],
-      [
-        getOr(0, [data.gender, data.risk_level, 0], acc) +
-          toInteger(data[numeratorKey]),
-        getOr(0, [data.gender, data.risk_level, 1], acc) +
-          toInteger(data[denominatorKey]),
-      ]
-    ),
-    set(
-      [data.gender, "OVERALL"],
-      [
-        getOr(0, [data.gender, "OVERALL", 0], acc) +
-          toInteger(data[numeratorKey]),
-        getOr(0, [data.gender, "OVERALL", 1], acc) +
-          toInteger(data[denominatorKey]),
-      ]
-    )
-  )(acc);
+const GENDER_LABELS_MAP = { FEMALE: "Women", MALE: "Men" };
 
 const createGenerateChartData = (dataFilter, stateCode) => (apiData, mode) => {
   const numeratorKey = "population_count";
   const denominatorKey = getDenominatorKeyByMode(mode);
+  const genders = Object.keys(GENDER_LABELS_MAP);
+  const genderLabels = Object.values(GENDER_LABELS_MAP);
 
   const { dataPoints, numerators, denominators } = pipe(
     dataFilter,
-    reduce(dataTransformer(numeratorKey, denominatorKey), {}),
-    (data) => getCounts(data, getRiskLevels(stateCode), GENDERS)
+    reduce(createRiskLevelsMap(numeratorKey, denominatorKey, "gender"), {}),
+    (data) => getCounts(data, getRiskLevels(stateCode), genders)
   )(apiData);
 
   const generateDataset = (label, index) => ({
@@ -83,7 +54,7 @@ const createGenerateChartData = (dataFilter, stateCode) => (apiData, mode) => {
 
   const data = {
     labels: getRiskLevelLabels(stateCode),
-    datasets: ["Women", "Men"].map(generateDataset),
+    datasets: genderLabels.map(generateDataset),
   };
 
   return { data, numerators, denominators };

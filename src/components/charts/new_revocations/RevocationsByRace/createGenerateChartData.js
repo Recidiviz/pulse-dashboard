@@ -15,10 +15,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import getOr from "lodash/fp/getOr";
 import pipe from "lodash/fp/pipe";
-import set from "lodash/fp/set";
-import toInteger from "lodash/fp/toInteger";
 import reduce from "lodash/fp/reduce";
 
 import { getBarBackgroundColor } from "../../../../utils/charts/significantStatistics";
@@ -29,54 +26,28 @@ import {
 import getDenominatorKeyByMode from "../utils/getDenominatorKeyByMode";
 import getCounts from "../utils/getCounts";
 import { COLORS_LANTERN_SET } from "../../../../assets/scripts/constants/colors";
+import createRiskLevelsMap from "../utils/createRiskLevelsMap";
 
-const RACES = [
-  "WHITE",
-  "BLACK",
-  "HISPANIC",
-  "ASIAN",
-  "AMERICAN_INDIAN_ALASKAN_NATIVE",
-  "PACIFIC_ISLANDER",
-];
-
-/**
- * Transform to
- * {
- *   ASIAN: { LOW: [1, 4], HIGH: [5, 9], ... } }
- *   HISPANIC: { LOW: [2, 9], HIGH: [2, 8], ... } }
- * }
- */
-const dataTransformer = (numeratorKey, denominatorKey) => (acc, data) => {
-  return pipe(
-    set(
-      [data.race, data.risk_level],
-      [
-        getOr(0, [data.race, data.risk_level, 0], acc) +
-          toInteger(data[numeratorKey]),
-        getOr(0, [data.race, data.risk_level, 1], acc) +
-          toInteger(data[denominatorKey]),
-      ]
-    ),
-    set(
-      [data.race, "OVERALL"],
-      [
-        getOr(0, [data.race, "OVERALL", 0], acc) +
-          toInteger(data[numeratorKey]),
-        getOr(0, [data.race, "OVERALL", 1], acc) +
-          toInteger(data[denominatorKey]),
-      ]
-    )
-  )(acc);
+const RACE_LABELS_MAP = {
+  WHITE: "Caucasian",
+  BLACK: "African American",
+  HISPANIC: "Hispanic",
+  ASIAN: "Asian",
+  AMERICAN_INDIAN_ALASKAN_NATIVE: "Native American",
+  PACIFIC_ISLANDER: "Pacific Islander",
 };
 
 const createGenerateChartData = (dataFilter, stateCode) => (apiData, mode) => {
   const numeratorKey = "population_count";
   const denominatorKey = getDenominatorKeyByMode(mode);
 
+  const races = Object.keys(RACE_LABELS_MAP);
+  const raceLabels = Object.values(RACE_LABELS_MAP);
+
   const { dataPoints, numerators, denominators } = pipe(
     dataFilter,
-    reduce(dataTransformer(numeratorKey, denominatorKey), {}),
-    (data) => getCounts(data, getRiskLevels(stateCode), RACES)
+    reduce(createRiskLevelsMap(numeratorKey, denominatorKey, "race"), {}),
+    (data) => getCounts(data, getRiskLevels(stateCode), races)
   )(apiData);
 
   const generateDataset = (label, index) => ({
@@ -90,14 +61,7 @@ const createGenerateChartData = (dataFilter, stateCode) => (apiData, mode) => {
 
   const data = {
     labels: getRiskLevelLabels(stateCode),
-    datasets: [
-      "Caucasian",
-      "African American",
-      "Hispanic",
-      "Asian",
-      "Native American",
-      "Pacific Islander",
-    ].map(generateDataset),
+    datasets: raceLabels.map(generateDataset),
   };
 
   return {
