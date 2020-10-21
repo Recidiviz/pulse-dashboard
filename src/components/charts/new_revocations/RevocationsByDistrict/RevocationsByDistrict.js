@@ -15,88 +15,68 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React, { useState } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 
-import RevocationCount from "./RevocationCount";
-import PercentRevokedByPopulation from "./PercentRevokedByPopulation";
-import PercentRevokedByExits from "./PercentRevokedByExits";
-import Loading from "../../../Loading";
-import Error from "../../../Error";
-import useChartData from "../../../../hooks/useChartData";
 import { filtersPropTypes } from "../../propTypes";
+import RevocationsByDimension from "../RevocationsByDimension";
+import PercentRevokedChart from "./PercentRevokedChart";
+import { translate } from "../../../../views/tenants/utils/i18nSettings";
+import RevocationCountChart from "./RevocationCountChart";
+import createGenerateChartData from "./createGenerateChartData";
+import flags from "../../../../flags";
 
-const chartId = "revocationsByDistrict";
 const chartTitle = "Admissions by district";
 
 const RevocationsByDistrict = ({
   currentDistricts,
-  dataFilter: filterData,
+  dataFilter,
   filterStates,
   stateCode,
   timeDescription,
-}) => {
-  const [mode, setMode] = useState("counts"); // counts | rates | exits
-
-  const {
-    isError,
-    isLoading: revocationIsLoading,
-    apiData: revocationApiData,
-  } = useChartData(
-    `${stateCode}/newRevocations`,
-    "revocations_matrix_distribution_by_district"
-  );
-
-  if (revocationIsLoading) {
-    return <Loading />;
-  }
-
-  if (isError) {
-    return <Error />;
-  }
-
-  const filteredRevocationData = filterData(revocationApiData);
-
-  switch (mode) {
-    case "counts":
-    default:
-      return (
-        <RevocationCount
+}) => (
+  <RevocationsByDimension
+    chartId="revocationsByDistrict"
+    apiUrl={`${stateCode}/newRevocations`}
+    apiFile="revocations_matrix_distribution_by_district"
+    renderChart={({
+      chartId,
+      data,
+      denominators,
+      numerators,
+      averageRate,
+      mode,
+    }) =>
+      mode === "counts" ? (
+        <RevocationCountChart chartId={chartId} data={data} />
+      ) : (
+        <PercentRevokedChart
+          data={data}
           chartId={chartId}
-          chartTitle={chartTitle}
-          setMode={setMode}
-          filterStates={filterStates}
-          timeDescription={timeDescription}
-          currentDistricts={currentDistricts}
-          revocationApiData={filteredRevocationData}
+          numerators={numerators}
+          denominators={denominators}
+          averageRate={averageRate}
+          yAxisLabel={
+            mode === "rates"
+              ? translate("percentOfPopulationRevoked")
+              : "Percent revoked out of all exits"
+          }
         />
-      );
-    case "rates":
-      return (
-        <PercentRevokedByPopulation
-          chartId={chartId}
-          chartTitle={chartTitle}
-          setMode={setMode}
-          filterStates={filterStates}
-          timeDescription={timeDescription}
-          currentDistricts={currentDistricts}
-          revocationApiData={filteredRevocationData}
-        />
-      );
-    case "exits":
-      return (
-        <PercentRevokedByExits
-          chartId={chartId}
-          chartTitle={chartTitle}
-          setMode={setMode}
-          filterStates={filterStates}
-          timeDescription={timeDescription}
-          currentDistricts={currentDistricts}
-          revocationApiData={filteredRevocationData}
-        />
-      );
-  }
-};
+      )
+    }
+    generateChartData={createGenerateChartData(dataFilter, currentDistricts)}
+    chartTitle={chartTitle}
+    metricTitle={chartTitle}
+    filterStates={filterStates}
+    timeDescription={timeDescription}
+    modes={
+      flags.enableRevocationRateByExit
+        ? ["counts", "rates", "exits"]
+        : ["counts", "rates"]
+    }
+    defaultMode="counts"
+  />
+);
 
 RevocationsByDistrict.propTypes = {
   dataFilter: PropTypes.func.isRequired,

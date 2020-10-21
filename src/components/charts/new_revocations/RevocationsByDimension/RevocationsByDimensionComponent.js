@@ -75,10 +75,13 @@ RevocationsByDimensionComponent.propTypes = {
     PropTypes.shape({
       label: PropTypes.string,
       backgroundColor: PropTypes.oneOfType([
-        PropTypes.func,
         PropTypes.arrayOf(PropTypes.string),
+        PropTypes.string,
+        PropTypes.func,
       ]),
-      data: PropTypes.arrayOf(PropTypes.string),
+      data: PropTypes.arrayOf(
+        PropTypes.oneOfType([PropTypes.number, PropTypes.string])
+      ),
     })
   ).isRequired,
   labels: PropTypes.arrayOf(PropTypes.string).isRequired,

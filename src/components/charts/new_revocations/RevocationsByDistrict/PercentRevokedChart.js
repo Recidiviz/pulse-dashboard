@@ -1,22 +1,26 @@
 import React from "react";
-import PropTypes from "prop-types";
 import { Bar } from "react-chartjs-2";
 
+import PropTypes from "prop-types";
+import { getRateAnnotation } from "../helpers/rate";
 import { axisCallbackForPercentage } from "../../../../utils/charts/axis";
 import { tooltipForRateMetricWithCounts } from "../../../../utils/charts/toggles";
 import { tooltipForFooterWithCounts } from "../../../../utils/charts/significantStatistics";
 import { COLORS } from "../../../../assets/scripts/constants/colors";
 
-const RevocationsByRiskLevelChart = ({
+const PercentRevokedChart = ({
   chartId,
   data,
-  denominators,
+  averageRate,
   numerators,
+  denominators,
+  yAxisLabel,
 }) => (
   <Bar
     id={chartId}
     data={data}
     options={{
+      annotation: getRateAnnotation(averageRate),
       legend: {
         display: false,
       },
@@ -27,22 +31,22 @@ const RevocationsByRiskLevelChart = ({
           {
             scaleLabel: {
               display: true,
-              labelString: "Risk level",
+              labelString: "District",
             },
             stacked: true,
           },
         ],
         yAxes: [
           {
-            ticks: {
-              beginAtZero: true,
-              callback: axisCallbackForPercentage(),
-            },
+            id: "y-axis-0",
             scaleLabel: {
               display: true,
-              labelString: data.labels,
+              labelString: yAxisLabel,
             },
             stacked: true,
+            ticks: {
+              callback: axisCallbackForPercentage(),
+            },
           },
         ],
       },
@@ -67,7 +71,7 @@ const RevocationsByRiskLevelChart = ({
   />
 );
 
-RevocationsByRiskLevelChart.propTypes = {
+PercentRevokedChart.propTypes = {
   chartId: PropTypes.string.isRequired,
   data: PropTypes.shape({
     labels: PropTypes.arrayOf(PropTypes.string),
@@ -81,6 +85,8 @@ RevocationsByRiskLevelChart.propTypes = {
   }).isRequired,
   numerators: PropTypes.arrayOf(PropTypes.number).isRequired,
   denominators: PropTypes.arrayOf(PropTypes.number).isRequired,
+  yAxisLabel: PropTypes.string.isRequired,
+  averageRate: PropTypes.number.isRequired,
 };
 
-export default RevocationsByRiskLevelChart;
+export default PercentRevokedChart;

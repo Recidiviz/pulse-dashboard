@@ -70,14 +70,15 @@ RevocationsByViolationChart.propTypes = {
     datasets: PropTypes.arrayOf(
       PropTypes.shape({
         label: PropTypes.string,
-        backgroundColor: PropTypes.func,
+        backgroundColor: PropTypes.arrayOf(PropTypes.string),
+        hoverBackgroundColor: PropTypes.arrayOf(PropTypes.string),
+        hoverBorderColor: PropTypes.arrayOf(PropTypes.string),
         data: PropTypes.arrayOf(PropTypes.string),
       })
     ),
   }).isRequired,
-  numerators: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)).isRequired,
-  denominators: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number))
-    .isRequired,
+  numerators: PropTypes.arrayOf(PropTypes.number).isRequired,
+  denominators: PropTypes.arrayOf(PropTypes.number).isRequired,
 };
 
 export default RevocationsByViolationChart;

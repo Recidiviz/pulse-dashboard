@@ -21,8 +21,6 @@ import sumBy from "lodash/fp/sumBy";
 import toInteger from "lodash/fp/toInteger";
 
 import { calculateRate } from "../helpers/rate";
-import flags from "../../../../flags";
-import { translate } from "../../../../views/tenants/utils/i18nSettings";
 
 /**
  * Creator function for grouping data by district.
@@ -75,22 +73,3 @@ export const sumCounts = (key, data) =>
     filter((item) => item.district === "ALL"),
     sumBy((item) => toInteger(item[key]))
   )(data);
-
-export const modeButtons = () => {
-  return flags.enableRevocationRateByExit
-    ? [
-        { label: `${translate("Revocation")} count`, value: "counts" },
-        {
-          label: `${translate("percentRevoked")} of standing population`,
-          value: "rates",
-        },
-        { label: `${translate("percentRevoked")} of exits`, value: "exits" },
-      ]
-    : [
-        { label: `${translate("Revocation")} count`, value: "counts" },
-        {
-          label: `${translate("percentRevoked")} of standing population`,
-          value: "rates",
-        },
-      ];
-};

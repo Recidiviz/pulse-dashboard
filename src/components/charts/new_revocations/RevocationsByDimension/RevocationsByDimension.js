@@ -53,7 +53,10 @@ const RevocationsByDimension = ({
     return <Error />;
   }
 
-  const { data, numerators, denominators } = generateChartData(apiData, mode);
+  const { data, numerators, denominators, averageRate } = generateChartData(
+    apiData,
+    mode
+  );
 
   const showWarning = !isDenominatorsMatrixStatisticallySignificant(
     denominators
@@ -76,7 +79,14 @@ const RevocationsByDimension = ({
       }
       showWarning={showWarning}
       chartTitle={chartTitle}
-      chart={renderChart({ chartId, data, denominators, numerators, mode })}
+      chart={renderChart({
+        chartId,
+        data,
+        denominators,
+        numerators,
+        mode,
+        averageRate,
+      })}
       modeSwitcher={
         modes.length ? (
           <ModeSwitcher mode={mode} setMode={setMode} buttons={modeButtons} />
@@ -102,12 +112,7 @@ RevocationsByDimension.propTypes = {
   chartTitle: PropTypes.string.isRequired,
   filterStates: filtersPropTypes.isRequired,
   timeDescription: PropTypes.string.isRequired,
-  modes: PropTypes.arrayOf(
-    PropTypes.shape({
-      label: PropTypes.string.isRequired,
-      value: PropTypes.string.isRequired,
-    })
-  ),
+  modes: PropTypes.arrayOf(PropTypes.string),
   defaultMode: PropTypes.string,
 };
 
