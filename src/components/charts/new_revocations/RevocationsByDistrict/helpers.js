@@ -20,47 +20,6 @@ import pipe from "lodash/fp/pipe";
 import sumBy from "lodash/fp/sumBy";
 import toInteger from "lodash/fp/toInteger";
 
-import { calculateRate } from "../helpers/rate";
-
-/**
- * Creator function for grouping data by district.
- * Need to exclude district=ALL data because it is not needed for charts.
- *
- * @param {string} fieldKey Key of original record field.
- * @returns {function} Unary function (argument - array of data)
- *
- * @example
- * groupByDistrict("some_field") // (records) => { '01' => 5, '02' => 3 }
- */
-export const groupByDistrictCreator = (fieldKey, records) =>
-  records.reduce(
-    (result, { district, [fieldKey]: field }) =>
-      district === "ALL"
-        ? result
-        : {
-            ...result,
-            [district]: (result[district] || 0) + (toInteger(field) || 0),
-          },
-    {}
-  );
-
-/**
- * Form maximally described data for chart from revocation and supervision data.
- *
- * @param {RevocationRecord} revocationGroupedData
- * @param {SupervisionRecord} supervisionGroupedData
- * @returns {{ district: string, count: number, total: number, rate: number }[]}
- */
-export const mergeRevocationData = (
-  revocationGroupedData,
-  supervisionGroupedData
-) =>
-  Object.entries(revocationGroupedData).map(([district, count]) => {
-    const total = supervisionGroupedData[district];
-    const rate = calculateRate(count, total);
-    return { district, count, total, rate };
-  });
-
 /**
  * Sum population of revocation data
  *

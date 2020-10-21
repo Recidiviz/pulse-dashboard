@@ -19,11 +19,11 @@ import React, { useCallback, useState } from "react";
 
 import CaseTable from "../../../../components/charts/new_revocations/CaseTable/CaseTable";
 import RevocationCharts from "../../../../components/charts/new_revocations/RevocationCharts";
-import RevocationsByRiskLevel from "../../../../components/charts/new_revocations/RevocationsByRiskLevel/RevocationsByRiskLevel";
+import RevocationsByRiskLevel from "../../../../components/charts/new_revocations/RevocationsByRiskLevel";
 import RevocationsByViolation from "../../../../components/charts/new_revocations/RevocationsByViolation";
-import RevocationsByGender from "../../../../components/charts/new_revocations/RevocationsByGender/RevocationsByGender";
-import RevocationsByRace from "../../../../components/charts/new_revocations/RevocationsByRace/RevocationsByRace";
-import RevocationsByDistrict from "../../../../components/charts/new_revocations/RevocationsByDistrict/RevocationsByDistrict";
+import RevocationsByGender from "../../../../components/charts/new_revocations/RevocationsByGender";
+import RevocationsByRace from "../../../../components/charts/new_revocations/RevocationsByRace";
+import RevocationsByDistrict from "../../../../components/charts/new_revocations/RevocationsByDistrict";
 import RevocationCountOverTime from "../../../../components/charts/new_revocations/RevocationsOverTime";
 import RevocationMatrix from "../../../../components/charts/new_revocations/RevocationMatrix/RevocationMatrix";
 import RevocationMatrixExplanation from "../../../../components/charts/new_revocations/RevocationMatrix/RevocationMatrixExplanation";
