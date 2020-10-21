@@ -15,6 +15,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
+import moment from "moment";
 import { getTooltipWithoutTrendline } from "./trendline";
 import { isDenominatorStatisticallySignificant } from "./significantStatistics";
 
@@ -113,7 +114,7 @@ function getPeriodLabelFromMetricPeriodMonthsToggle(toggledValue) {
   startDate.setMonth(startDate.getMonth() - (months - 1));
   startDate.setDate(1);
 
-  return `${startDate.toLocaleDateString("en-US")} to present`;
+  return `${moment(startDate).format("M/D/YYYY")} to present`;
 }
 
 function getTrailingLabelFromMetricPeriodMonthsToggle(toggledValue) {
