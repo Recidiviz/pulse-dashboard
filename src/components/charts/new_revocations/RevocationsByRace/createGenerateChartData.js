@@ -21,11 +21,14 @@ import set from "lodash/fp/set";
 import toInteger from "lodash/fp/toInteger";
 import reduce from "lodash/fp/reduce";
 
-import { calculateRate } from "../helpers/rate";
 import { getBarBackgroundColor } from "../../../../utils/charts/significantStatistics";
-import { COLORS_LANTERN_SET } from "../../../../assets/scripts/constants/colors";
-import { riskLevelLabels } from "../../../../utils/transforms/labels";
+import {
+  getRiskLevelLabels,
+  getRiskLevels,
+} from "../../../../utils/transforms/labels";
 import getDenominatorKeyByMode from "../utils/getDenominatorKeyByMode";
+import getCounts from "../utils/getCounts";
+import { COLORS_LANTERN_SET } from "../../../../assets/scripts/constants/colors";
 
 const RACES = [
   "WHITE",
@@ -35,38 +38,6 @@ const RACES = [
   "AMERICAN_INDIAN_ALASKAN_NATIVE",
   "PACIFIC_ISLANDER",
 ];
-const RISK_LEVELS = [
-  "OVERALL",
-  "NOT_ASSESSED",
-  "LOW",
-  "MEDIUM",
-  "HIGH",
-  "VERY_HIGH",
-];
-
-const getCounts = (transformedData) => {
-  const dataPoints = [];
-  const numerators = [];
-  const denominators = [];
-
-  RACES.forEach((race, i) => {
-    dataPoints.push([]);
-    numerators.push([]);
-    denominators.push([]);
-
-    RISK_LEVELS.forEach((riskLevel) => {
-      const numerator = getOr(0, [race, riskLevel, 0], transformedData);
-      const denominator = getOr(0, [race, riskLevel, 1], transformedData);
-      const rate = calculateRate(numerator, denominator).toFixed(2);
-
-      numerators[i].push(numerator);
-      denominators[i].push(denominator);
-      dataPoints[i].push(rate);
-    });
-  });
-
-  return { dataPoints, numerators, denominators };
-};
 
 /**
  * Transform to
@@ -105,7 +76,7 @@ const createGenerateChartData = (dataFilter, stateCode) => (apiData, mode) => {
   const { dataPoints, numerators, denominators } = pipe(
     dataFilter,
     reduce(dataTransformer(numeratorKey, denominatorKey), {}),
-    getCounts
+    (data) => getCounts(data, getRiskLevels(stateCode), RACES)
   )(apiData);
 
   const generateDataset = (label, index) => ({
@@ -118,7 +89,7 @@ const createGenerateChartData = (dataFilter, stateCode) => (apiData, mode) => {
   });
 
   const data = {
-    labels: riskLevelLabels(stateCode),
+    labels: getRiskLevelLabels(stateCode),
     datasets: [
       "Caucasian",
       "African American",

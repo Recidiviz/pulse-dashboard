@@ -21,49 +21,20 @@ import set from "lodash/fp/set";
 import toInteger from "lodash/fp/toInteger";
 import reduce from "lodash/fp/reduce";
 
-import { calculateRate } from "../helpers/rate";
-import { getBarBackgroundColor } from "../../../../utils/charts/significantStatistics";
-import { riskLevelLabels } from "../../../../utils/transforms/labels";
 import { CHART_COLORS } from "./constants";
+import { getBarBackgroundColor } from "../../../../utils/charts/significantStatistics";
+import {
+  getRiskLevels,
+  getRiskLevelLabels,
+} from "../../../../utils/transforms/labels";
 import getDenominatorKeyByMode from "../utils/getDenominatorKeyByMode";
+import getCounts from "../utils/getCounts";
 
 /**
  * These are the only genders that are apparent in the source data set,
  * not all of the genders we would like to represent.
  */
 const GENDERS = ["FEMALE", "MALE"];
-const RISK_LEVELS = [
-  "OVERALL",
-  "NOT_ASSESSED",
-  "LOW",
-  "MEDIUM",
-  "HIGH",
-  "VERY_HIGH",
-];
-
-const getCounts = (transformedData) => {
-  const dataPoints = [];
-  const numerators = [];
-  const denominators = [];
-
-  GENDERS.forEach((gender, i) => {
-    dataPoints.push([]);
-    numerators.push([]);
-    denominators.push([]);
-
-    RISK_LEVELS.forEach((riskLevel) => {
-      const numerator = getOr(0, [gender, riskLevel, 0], transformedData);
-      const denominator = getOr(0, [gender, riskLevel, 1], transformedData);
-      const rate = calculateRate(numerator, denominator).toFixed(2);
-
-      numerators[i].push(numerator);
-      denominators[i].push(denominator);
-      dataPoints[i].push(rate);
-    });
-  });
-
-  return { dataPoints, numerators, denominators };
-};
 
 /**
  * Transform to
@@ -101,7 +72,7 @@ const createGenerateChartData = (dataFilter, stateCode) => (apiData, mode) => {
   const { dataPoints, numerators, denominators } = pipe(
     dataFilter,
     reduce(dataTransformer(numeratorKey, denominatorKey), {}),
-    getCounts
+    (data) => getCounts(data, getRiskLevels(stateCode), GENDERS)
   )(apiData);
 
   const generateDataset = (label, index) => ({
@@ -111,7 +82,7 @@ const createGenerateChartData = (dataFilter, stateCode) => (apiData, mode) => {
   });
 
   const data = {
-    labels: riskLevelLabels(stateCode),
+    labels: getRiskLevelLabels(stateCode),
     datasets: ["Women", "Men"].map(generateDataset),
   };
 
