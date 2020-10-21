@@ -15,8 +15,8 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-const { downloadFile, downloadFileMetadata } = require("../objectStorage");
 const { Storage } = require("@google-cloud/storage");
+const { downloadFile, downloadFileMetadata } = require("../objectStorage");
 
 jest.mock("@google-cloud/storage", () => ({
   Storage: jest.fn(),
@@ -31,7 +31,7 @@ describe("objectStorage tests", () => {
   const download = jest.fn().mockReturnValue(returnValue);
   const file = jest.fn().mockImplementation(() => ({ download, getMetadata }));
   const bucket = jest.fn().mockImplementation(() => ({ file }));
-  Storage.mockImplementation(() => ({ bucket: bucket }));
+  Storage.mockImplementation(() => ({ bucket }));
 
   beforeEach(() => {
     jest.clearAllMocks();

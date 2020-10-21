@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import createAuth0Client from "@auth0/auth0-spa-js";
-import isDemoMode from './utils/authentication/demoMode';
-import { getDemoUser } from './utils/authentication/viewAuthentication';
+import isDemoMode from "./utils/authentication/demoMode";
+import { getDemoUser } from "./utils/authentication/viewAuthentication";
 
 const DEFAULT_REDIRECT_CALLBACK = () =>
   window.history.replaceState({}, document.title, window.location.pathname);
@@ -12,7 +12,7 @@ const overrideIfDemoMode = (Auth0ContextValue) => {
   return Object.assign(Auth0ContextValue, {
     isAuthenticated: true,
     user: getDemoUser(),
-    getTokenSilently: () => ''
+    getTokenSilently: () => "",
   });
 };
 
@@ -88,15 +88,13 @@ export const Auth0Provider = ({
     loginWithRedirect: (...p) => auth0Client.loginWithRedirect(...p),
     getTokenSilently: (...p) => auth0Client.getTokenSilently(...p),
     getTokenWithPopup: (...p) => auth0Client.getTokenWithPopup(...p),
-    logout: (...p) => auth0Client.logout(...p)
+    logout: (...p) => auth0Client.logout(...p),
   };
 
   overrideIfDemoMode(contextValue);
 
   return (
-    <Auth0Context.Provider
-      value={contextValue}
-    >
+    <Auth0Context.Provider value={contextValue}>
       {children}
     </Auth0Context.Provider>
   );

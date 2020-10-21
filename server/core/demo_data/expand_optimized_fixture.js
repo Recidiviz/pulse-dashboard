@@ -163,7 +163,7 @@ const validateMetadata = (metadata) => {
  */
 const expandMetricRepresentation = (contents, metadata) => {
   validateMetadata(metadata);
-  const totalDataPoints = parseInt(metadata.total_data_points);
+  const totalDataPoints = parseInt(metadata.total_data_points, 10);
   const dimensions = metadata.dimension_manifest;
   const valueKeys = metadata.value_keys;
 
@@ -225,5 +225,6 @@ const dataPoints = expandMetricRepresentation(fixtureContents, metadata);
 const expandedContents = dataPoints.map((dp) => JSON.stringify(dp)).join("\n");
 fs.writeFile(`${fileKey}.json`, expandedContents, (err) => {
     if (err) throw err;
+    // eslint-disable-next-line no-console
     console.log('Data written to file');
 });

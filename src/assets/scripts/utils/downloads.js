@@ -17,15 +17,15 @@
 
 import downloadjs from "downloadjs";
 import * as csvExport from "jsonexport/dist";
-import { timeStamp } from "./time";
 import JSZip from "jszip";
+import { timeStamp } from "./time";
 import { translate } from "../../../views/tenants/utils/i18nSettings";
 import getFilters from "./getFilters";
 import getViolation from "./getViolation";
 
 // Functions for flowing through browser-specific download functionality
 // https://stackoverflow.com/questions/9847580/how-to-detect-safari-chrome-ie-firefox-and-opera-browser
-const isIE = /*@cc_on!@*/ false || !!document.documentMode;
+const isIE = /* @cc_on!@ */ false || !!document.documentMode;
 const isEdge = !isIE && !!window.StyleMedia;
 
 function configureFilename(chartId, toggleStates, shouldZipDownload) {
@@ -94,9 +94,8 @@ function downloadCanvasImage(
       data: data.substring(22),
       type: "base64",
     };
-  } else {
-    downloadjs(data, filename, "image/png;base64");
   }
+  downloadjs(data, filename, "image/png;base64");
 }
 
 function downloadMethodologyFile(
@@ -124,8 +123,8 @@ function downloadMethodologyFile(
   text += `Export Date: ${exportDate}\r\n\n`;
 
   infoChart.map((chart) => {
-    text += chart.header + "\r\n";
-    text += chart.body + "\r\n";
+    text += `${chart.header}\r\n`;
+    text += `${chart.body}\r\n`;
     text += "\r\n";
   });
 
@@ -137,7 +136,7 @@ function downloadMethodologyFile(
 }
 
 function downloadZipFile(files, zipFilename) {
-  let zip = new JSZip();
+  const zip = new JSZip();
   files.map((file) => {
     let fileTypeDescriptor = null;
     if (file.type === "binary") {
@@ -160,7 +159,7 @@ function downloadObjectAsCsv(exportObj, exportName, shouldZipDownload) {
   const options = {
     mapHeaders: (header) => header.replace(/label|values./, ""),
   };
-  let obj = [];
+  const obj = [];
 
   csvExport(exportObj.series, options, (err, csv) => {
     if (err) throw err;
@@ -244,7 +243,7 @@ function configureDataDownloadButton(
           i += 1;
         });
 
-        let obj = {};
+        const obj = {};
         if (!isTable) {
           obj.label = dataset.label;
         }
@@ -270,7 +269,7 @@ function configureDataDownloadButton(
         filename,
         shouldZipDownload
       );
-      let files = [methodologyFile, csvFile];
+      const files = [methodologyFile, csvFile];
       downloadZipFile(files, "export_data.zip");
     } else {
       downloadObjectAsCsv(exportData, filename);

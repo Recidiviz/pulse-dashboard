@@ -18,9 +18,8 @@
 /**
  * Utilities for running the backend in demo mode.
  */
-
-function isDemoMode() {
+function getIsDemoMode() {
   return process.env.IS_DEMO === "true";
 }
 
-exports.default = isDemoMode();
+export default getIsDemoMode();
