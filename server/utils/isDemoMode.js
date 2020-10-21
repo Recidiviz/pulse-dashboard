@@ -22,4 +22,4 @@ function getIsDemoMode() {
   return process.env.IS_DEMO === "true";
 }
 
-export default getIsDemoMode();
+exports.default = getIsDemoMode();

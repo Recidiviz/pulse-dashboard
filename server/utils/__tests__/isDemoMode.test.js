@@ -15,8 +15,6 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-/* eslint-disable global-require */
-
 describe("demoMode tests", () => {
   beforeEach(() => {
     jest.resetModules();
