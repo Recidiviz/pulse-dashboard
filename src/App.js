@@ -28,15 +28,14 @@ import { StateCodeProvider } from "./contexts/StateCodeContext";
 import NotFound from "./views/NotFound";
 import Profile from "./views/Profile";
 import VerificationNeeded from "./views/VerificationNeeded";
-import UsMoLayout from "./views/tenants/us_mo/Layout";
+import LanternLayout from "./components/layouts/LanternLayout";
 import UsMoCommunityRevocations from "./views/tenants/us_mo/community/Revocations";
-import UsNdLayout from "./views/tenants/us_nd/Layout";
+import CoreLayout from "./components/layouts/CoreLayout";
 import UsNdCommunityGoals from "./views/tenants/us_nd/community/Goals";
 import UsNdCommunityExplore from "./views/tenants/us_nd/community/Explore";
 import UsNdFacilitiesGoals from "./views/tenants/us_nd/facilities/Goals";
 import UsNdFacilitiesExplore from "./views/tenants/us_nd/facilities/Explore";
 import UsNdProgrammingExplore from "./views/tenants/us_nd/programming/Explore";
-import UsPaLayout from "./views/tenants/us_pa/Layout";
 import UsPaCommunityRevocations from "./views/tenants/us_pa/community/Revocations";
 import initFontAwesome from "./utils/initFontAwesome";
 import { initIntercomSettings } from "./utils/intercomSettings";
@@ -59,7 +58,7 @@ const App = () => (
         <Route path="/verify" component={VerificationNeeded} />
 
         <TenantRoutes>
-          <UsMoLayout stateCode={lanternTenant.MO}>
+          <LanternLayout stateCode={lanternTenant.MO}>
             <Switch>
               <Route path="/community/revocations" component={UsMoCommunityRevocations} />
               <Route path="/profile" component={Profile} />
@@ -67,9 +66,9 @@ const App = () => (
               <Redirect from="/revocations" to="/community/revocations" />
               <NotFound />
             </Switch>
-          </UsMoLayout>
+          </LanternLayout>
 
-          <UsNdLayout stateCode={coreTenant.ND}>
+          <CoreLayout stateCode={coreTenant.ND}>
             <Switch>
               <Route path="/community/goals" component={UsNdCommunityGoals} />
               <Route path="/community/explore" component={UsNdCommunityExplore} />
@@ -84,9 +83,9 @@ const App = () => (
               <Redirect from="/programEvaluation/freeThroughRecovery" to="/programming/explore" />
               <NotFound />
             </Switch>
-          </UsNdLayout>
+          </CoreLayout>
 
-          <UsPaLayout stateCode={lanternTenant.PA}>
+          <LanternLayout stateCode={lanternTenant.PA}>
             <Switch>
               <Route path="/community/revocations" component={UsPaCommunityRevocations} />
               <Route path="/profile" component={Profile} />
@@ -94,7 +93,7 @@ const App = () => (
               <Redirect from="/revocations" to="/community/revocations" />
               <NotFound />
             </Switch>
-          </UsPaLayout>
+          </LanternLayout>
         </TenantRoutes>
       </Switch>
     </Router>
