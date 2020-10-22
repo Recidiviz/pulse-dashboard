@@ -17,8 +17,9 @@
 
 import downloadjs from "downloadjs";
 import * as csvExport from "jsonexport/dist";
-import JSZip from "jszip";
+import moment from "moment";
 import { timeStamp } from "./time";
+import JSZip from "jszip";
 import { translate } from "../../../views/tenants/utils/i18nSettings";
 import getFilters from "./getFilters";
 import getViolation from "./getViolation";
@@ -106,7 +107,7 @@ function downloadMethodologyFile(
 ) {
   const filename = "methodology.txt";
   const infoChart = translate("methodology")[chartId] || [];
-  const exportDate = new Date().toLocaleDateString("en-US");
+  const exportDate = moment().format("M/D/YYYY");
   const filters = getFilters(toggleStates);
   const violation = getViolation(toggleStates);
 

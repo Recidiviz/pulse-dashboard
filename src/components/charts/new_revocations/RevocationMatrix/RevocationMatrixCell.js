@@ -29,6 +29,8 @@ const RevocationMatrixCell = ({ count, maxCount, isSelected, onClick }) => {
   const radius = Math.max(minRadius, Math.ceil(ratio * maxRadius) + 15);
 
   const containerStyle = {
+    position: "relative",
+    zIndex: 1,
     background: "white",
     display: "inline-block",
     width: radius,

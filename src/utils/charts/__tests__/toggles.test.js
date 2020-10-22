@@ -311,12 +311,12 @@ describe("test for file toggles", () => {
     const emptyPeriodMonth = toggleMethods.getPeriodLabelFromMetricPeriodMonthsToggle(
       undefined
     );
-    expect(emptyPeriodMonth).toBe("Invalid Date to present");
+    expect(emptyPeriodMonth).toBe("Invalid date to present");
 
     const incorrectPeriodMonth = toggleMethods.getPeriodLabelFromMetricPeriodMonthsToggle(
       "period month"
     );
-    expect(incorrectPeriodMonth).toBe("Invalid Date to present");
+    expect(incorrectPeriodMonth).toBe("Invalid date to present");
   });
 
   it("get trailing label from metric period months toggle", () => {
