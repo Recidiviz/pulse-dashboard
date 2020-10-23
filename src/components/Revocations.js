@@ -1,5 +1,4 @@
 import React, { useCallback, useState } from "react";
-import PropTypes from "prop-types";
 
 import {
   applyAllFilters,
@@ -28,9 +27,11 @@ import {
   getUserAppMetadata,
   getUserDistricts,
 } from "../utils/authentication/user";
+import { useStateCode } from "../contexts/StateCodeContext";
 import flags from "../flags";
 import * as lanternTenant from "../views/tenants/utils/lanternTenants";
 import filterOptionsMap from "../views/tenants/constants/filterOptions";
+import { translate } from "../views/tenants/utils/i18nSettings";
 import {
   ADMISSION_TYPE,
   CHARGE_CATEGORY,
@@ -42,10 +43,12 @@ import {
   VIOLATION_TYPE,
 } from "../constants/filterTypes";
 
-const Revocations = ({ stateCode, violationTypes }) => {
+const Revocations = () => {
   const { user } = useAuth0();
+  const { currentStateCode: stateCode } = useStateCode();
   const { district } = getUserAppMetadata(user);
   const userDistricts = getUserDistricts(user);
+  const violationTypes = translate("violationTypes");
 
   const filterOptions = filterOptionsMap[stateCode];
 
@@ -110,7 +113,7 @@ const Revocations = ({ stateCode, violationTypes }) => {
             defaultOption={filterOptions[CHARGE_CATEGORY].defaultOption}
             onChange={createOnFilterChange(CHARGE_CATEGORY)}
           />
-          {filterOptions[SUPERVISION_LEVEL].enabled && (
+          {filterOptions[SUPERVISION_LEVEL].componentEnabled && (
             <ToggleBarFilter
               label="Supervision Level"
               value={filters[SUPERVISION_LEVEL]}
@@ -128,7 +131,7 @@ const Revocations = ({ stateCode, violationTypes }) => {
               onChange={createOnFilterChange(ADMISSION_TYPE)}
             />
           )}
-          {filterOptions[SUPERVISION_TYPE].enabled && (
+          {filterOptions[SUPERVISION_TYPE].componentEnabled && (
             <ToggleBarFilter
               label="Supervision Type"
               value={filters[SUPERVISION_TYPE]}
@@ -149,10 +152,7 @@ const Revocations = ({ stateCode, violationTypes }) => {
         <ErrorBoundary>
           <RevocationCountOverTime
             dataFilter={allDataFilter}
-            skippedFilters={[
-              METRIC_PERIOD_MONTHS,
-              ...(stateCode === lanternTenant.PA ? [SUPERVISION_TYPE] : []),
-            ]}
+            skippedFilters={[METRIC_PERIOD_MONTHS]}
             filterStates={filters}
             metricPeriodMonths={filters[METRIC_PERIOD_MONTHS]}
             stateCode={stateCode}
@@ -250,9 +250,6 @@ const Revocations = ({ stateCode, violationTypes }) => {
   );
 };
 
-Revocations.propTypes = {
-  stateCode: PropTypes.string.isRequired,
-  violationTypes: PropTypes.arrayOf(PropTypes.string).isRequired,
-};
+Revocations.propTypes = {};
 
 export default Revocations;

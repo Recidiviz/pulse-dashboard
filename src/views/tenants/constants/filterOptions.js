@@ -127,8 +127,8 @@ const MOFilterOptions = {
     defaultValue: "",
   },
   [METRIC_PERIOD_MONTHS]: METRIC_PERIODS,
-  [SUPERVISION_LEVEL]: { SUPERVISION_LEVELS, enabled: false },
-  [SUPERVISION_TYPE]: { enabled: true, ...SUPERVISION_TYPES },
+  [SUPERVISION_LEVEL]: { SUPERVISION_LEVELS, componentEnabled: false },
+  [SUPERVISION_TYPE]: { ...SUPERVISION_TYPES, componentEnabled: true },
   [REPORTED_VIOLATIONS]: { defaultValue: "" },
   [DISTRICT]: { defaultValue: "All" },
 };
@@ -197,8 +197,8 @@ const PAFilterOptions = {
     defaultValue: "",
   },
   [METRIC_PERIOD_MONTHS]: METRIC_PERIODS,
-  [SUPERVISION_LEVEL]: { ...SUPERVISION_LEVELS, enabled: true },
-  [SUPERVISION_TYPE]: { enabled: false, defaultValue: "All" },
+  [SUPERVISION_LEVEL]: { ...SUPERVISION_LEVELS, componentEnabled: true },
+  [SUPERVISION_TYPE]: { defaultValue: "All", componentEnabled: false },
   [REPORTED_VIOLATIONS]: { defaultValue: "" },
   [DISTRICT]: { defaultValue: "All" },
 };

@@ -29,14 +29,13 @@ import NotFound from "./views/NotFound";
 import Profile from "./views/Profile";
 import VerificationNeeded from "./views/VerificationNeeded";
 import LanternLayout from "./components/layouts/LanternLayout";
-import UsMoCommunityRevocations from "./views/tenants/us_mo/community/Revocations";
 import CoreLayout from "./components/layouts/CoreLayout";
+import Revocations from "./components/Revocations";
 import UsNdCommunityGoals from "./views/tenants/us_nd/community/Goals";
 import UsNdCommunityExplore from "./views/tenants/us_nd/community/Explore";
 import UsNdFacilitiesGoals from "./views/tenants/us_nd/facilities/Goals";
 import UsNdFacilitiesExplore from "./views/tenants/us_nd/facilities/Explore";
 import UsNdProgrammingExplore from "./views/tenants/us_nd/programming/Explore";
-import UsPaCommunityRevocations from "./views/tenants/us_pa/community/Revocations";
 import initFontAwesome from "./utils/initFontAwesome";
 import { initIntercomSettings } from "./utils/intercomSettings";
 import { initI18n } from "./views/tenants/utils/i18nSettings";
@@ -60,7 +59,7 @@ const App = () => (
         <TenantRoutes>
           <LanternLayout stateCode={lanternTenant.MO}>
             <Switch>
-              <Route path="/community/revocations" component={UsMoCommunityRevocations} />
+              <Route path="/community/revocations" component={Revocations} />
               <Route path="/profile" component={Profile} />
               <Redirect exact from="/" to="/community/revocations" />
               <Redirect from="/revocations" to="/community/revocations" />
@@ -87,7 +86,7 @@ const App = () => (
 
           <LanternLayout stateCode={lanternTenant.PA}>
             <Switch>
-              <Route path="/community/revocations" component={UsPaCommunityRevocations} />
+              <Route path="/community/revocations" component={Revocations} />
               <Route path="/profile" component={Profile} />
               <Redirect exact from="/" to="/community/revocations" />
               <Redirect from="/revocations" to="/community/revocations" />

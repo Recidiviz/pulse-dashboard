@@ -52,4 +52,12 @@ of that column.`,
     HIGH: "High Risk",
     VERY_HIGH: "Very High Risk",
   },
+  violationTypes: [
+    "TECHNICAL",
+    "SUBSTANCE_ABUSE",
+    "MUNICIPAL",
+    "ABSCONDED",
+    "MISDEMEANOR",
+    "FELONY",
+  ],
 };
