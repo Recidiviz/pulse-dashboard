@@ -177,9 +177,7 @@ const Revocations = () => {
                 "SUBSTANCE_ABUSE",
                 "ABSCONDED",
                 "HIGH_TECH",
-                "SUMMARY_OFFENSE",
-                "MISDEMEANOR",
-                "FELONY",
+                "LAW",
               ]}
             />
           </ErrorBoundary>

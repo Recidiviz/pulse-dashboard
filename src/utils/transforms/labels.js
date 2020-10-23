@@ -44,7 +44,7 @@ const raceValueToLabel = {
 
 const matrixViolationTypeToLabel = {
   TECHNICAL: "Technical",
-  SUBSTANCE_ABUSE: "Subs. Use",
+  SUBSTANCE_ABUSE: "Subs. use",
   MUNICIPAL: "Municipal",
   ABSCONDED: "Absconsion",
   MISDEMEANOR: "Misdemeanor",
@@ -56,6 +56,7 @@ const matrixViolationTypeToLabel = {
   ABSCONDING: "Absconding",
   HIGH_TECH: "High tech.",
   SUMMARY_OFFENSE: "Summary offense",
+  LAW: "Law",
 };
 
 function genderValueToHumanReadable(genderValue) {
