@@ -24,6 +24,8 @@
         }
       }
     ],
+    "radix": "off",
+    "no-console": "error",
     "import/prefer-default-export": "off"
   },
   "env": {

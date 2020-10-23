@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import createAuth0Client from "@auth0/auth0-spa-js";
+import PropTypes from "prop-types";
 import isDemoMode from "./utils/authentication/demoMode";
 import { getDemoUser } from "./utils/authentication/viewAuthentication";
 
@@ -7,13 +8,13 @@ const DEFAULT_REDIRECT_CALLBACK = () =>
   window.history.replaceState({}, document.title, window.location.pathname);
 
 const overrideIfDemoMode = (Auth0ContextValue) => {
-  if (!isDemoMode()) return;
-
-  return Object.assign(Auth0ContextValue, {
-    isAuthenticated: true,
-    user: getDemoUser(),
-    getTokenSilently: () => "",
-  });
+  if (isDemoMode()) {
+    Object.assign(Auth0ContextValue, {
+      isAuthenticated: true,
+      user: getDemoUser(),
+      getTokenSilently: () => "",
+    });
+  }
 };
 
 export const Auth0Context = React.createContext();
@@ -39,13 +40,13 @@ export const Auth0Provider = ({
         onRedirectCallback(appState);
       }
 
-      const isAuthenticated = await auth0FromHook.isAuthenticated();
+      const isUserAuthenticated = await auth0FromHook.isAuthenticated();
 
-      setIsAuthenticated(isAuthenticated);
+      setIsAuthenticated(isUserAuthenticated);
 
-      if (isAuthenticated) {
-        const user = await auth0FromHook.getUser();
-        setUser(user);
+      if (isUserAuthenticated) {
+        const newUser = await auth0FromHook.getUser();
+        setUser(newUser);
       }
 
       setLoading(false);
@@ -59,22 +60,23 @@ export const Auth0Provider = ({
     try {
       await auth0Client.loginWithPopup(params);
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.error(error);
     } finally {
       setPopupOpen(false);
     }
-    const user = await auth0Client.getUser();
-    setUser(user);
+    const newUser = await auth0Client.getUser();
+    setUser(newUser);
     setIsAuthenticated(true);
   };
 
   const handleRedirectCallback = async () => {
     setLoading(true);
     await auth0Client.handleRedirectCallback();
-    const user = await auth0Client.getUser();
+    const newUser = await auth0Client.getUser();
     setLoading(false);
     setIsAuthenticated(true);
-    setUser(user);
+    setUser(newUser);
   };
 
   const contextValue = {
@@ -98,4 +100,9 @@ export const Auth0Provider = ({
       {children}
     </Auth0Context.Provider>
   );
+};
+
+Auth0Provider.propTypes = {
+  children: PropTypes.node.isRequired,
+  onRedirectCallback: PropTypes.func.isRequired,
 };

@@ -163,7 +163,7 @@ const validateMetadata = (metadata) => {
  */
 const expandMetricRepresentation = (contents, metadata) => {
   validateMetadata(metadata);
-  const totalDataPoints = parseInt(metadata.total_data_points, 10);
+  const totalDataPoints = parseInt(metadata.total_data_points);
   const dimensions = metadata.dimension_manifest;
   const valueKeys = metadata.value_keys;
 

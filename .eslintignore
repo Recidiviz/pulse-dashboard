@@ -3,10 +3,5 @@ node_modules/
 build/
 public/
 
-src/serviceWorker.js
 src/auth0/**/*.js
-src/react-auth0-spa.js
-src/components/charts/community/test_utils/snapshotTesting.js
-src/components/charts/community/test_data/snapshotChartVariants.js
 src/components/charts/GeoViewTimeChart.js
-src/assets/scripts/utils/downloads.js
