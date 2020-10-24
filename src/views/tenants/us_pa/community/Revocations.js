@@ -154,7 +154,7 @@ const Revocations = () => {
         <ErrorBoundary>
           <RevocationCountOverTime
             dataFilter={allDataFilter}
-            skippedFilters={[METRIC_PERIOD_MONTHS, SUPERVISION_TYPE]}
+            skippedFilters={[METRIC_PERIOD_MONTHS]}
             filterStates={filters}
             metricPeriodMonths={filters[METRIC_PERIOD_MONTHS]}
             stateCode={stateCode}
@@ -177,9 +177,7 @@ const Revocations = () => {
                 "SUBSTANCE_ABUSE",
                 "ABSCONDED",
                 "HIGH_TECH",
-                "SUMMARY_OFFENSE",
-                "MISDEMEANOR",
-                "FELONY",
+                "LAW",
               ]}
             />
           </ErrorBoundary>
