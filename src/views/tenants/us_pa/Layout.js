@@ -26,11 +26,13 @@ import TopBarLogo from "../../../components/topbar/TopBarLogo";
 import TopBarUserMenuForAuthenticatedUser from "../../../components/topbar/TopBarUserMenuForAuthenticatedUser";
 import { setTranslateLocale } from "../utils/i18nSettings";
 import * as lanternTenant from "../utils/lanternTenants";
+import usePageLayout from "../../../hooks/usePageLayout";
 
 const Layout = ({ children }) => {
   const { user } = useAuth0();
   enableIntercomLauncherForUser(user);
   setTranslateLocale(lanternTenant.PA);
+  usePageLayout();
 
   return (
     <div id="app">
