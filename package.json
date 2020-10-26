@@ -141,6 +141,7 @@
     },
     "collectCoverageFrom": [
       "server/**/*.js",
+      "!src/auth0/rules/*.js",
       "src/**/*.js"
     ]
   }
