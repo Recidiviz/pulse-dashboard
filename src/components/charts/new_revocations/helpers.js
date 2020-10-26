@@ -114,7 +114,7 @@ export const applyTopLevelFilters = (filters) => (
     return true;
   });
 
-const applyMatrixFilters = (filters) => (data) =>
+export const applyMatrixFilters = (filters) => (data) =>
   data.filter((item) => {
     if (
       filters[VIOLATION_TYPE] &&

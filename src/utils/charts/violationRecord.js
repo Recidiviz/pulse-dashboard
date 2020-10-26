@@ -17,7 +17,15 @@
 
 import compose from "lodash/fp/compose";
 
-const VIOLATION_SEVERITY = ["fel", "misd", "absc", "muni", "subs", "tech"];
+const VIOLATION_SEVERITY = [
+  "fel",
+  "misd",
+  "law",
+  "absc",
+  "muni",
+  "subs",
+  "tech",
+];
 
 const recordPartRegex = /(?<number>\d+)(?<abbreviation>\w+)/;
 
