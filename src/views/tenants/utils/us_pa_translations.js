@@ -51,4 +51,11 @@ of that column.`,
     MEDIUM: "Medium Risk",
     HIGH: "High Risk",
   },
+  raceLabelMap: {
+    WHITE: "White",
+    BLACK: "Black",
+    HISPANIC: "Hispanic",
+    ASIAN: "Asian",
+    AMERICAN_INDIAN_ALASKAN_NATIVE: "Native American",
+  },
 };

@@ -21,6 +21,8 @@ import set from "lodash/fp/set";
 import toInteger from "lodash/fp/toInteger";
 import { calculateRate } from "../helpers/rate";
 import { translate } from "../../../../views/tenants/utils/i18nSettings";
+import { getBarBackgroundColor } from "../../../../utils/charts/significantStatistics";
+import { COLORS_LANTERN_SET } from "../../../../assets/scripts/constants/colors";
 
 const RACES = [
   "WHITE",
@@ -37,6 +39,21 @@ const RISK_LEVELS = [
   "HIGH",
   "VERY_HIGH",
 ];
+
+export const generateDatasets = (dataPoints, denominators) => {
+  const labels = translate("raceLabelMap");
+
+  return RACES.map((race, index) => {
+    return {
+      label: labels[race],
+      backgroundColor: getBarBackgroundColor(
+        COLORS_LANTERN_SET[index],
+        denominators
+      ),
+      data: dataPoints[index],
+    };
+  });
+};
 
 export const getCounts = (transformedData) => {
   const dataPoints = [];

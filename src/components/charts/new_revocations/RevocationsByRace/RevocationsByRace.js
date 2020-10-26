@@ -27,6 +27,7 @@ import {
   findDenominatorKeyByMode,
   getCounts,
   getLabelByMode,
+  generateDatasets,
 } from "./helpers";
 import ModeSwitcher from "../ModeSwitcher";
 import DataSignificanceWarningIcon from "../../DataSignificanceWarningIcon";
@@ -43,7 +44,6 @@ import useChartData from "../../../../hooks/useChartData";
 import { axisCallbackForPercentage } from "../../../../utils/charts/axis";
 import {
   generateLabelsWithCustomColors,
-  getBarBackgroundColor,
   isDenominatorsMatrixStatisticallySignificant,
   tooltipForFooterWithNestedCounts,
 } from "../../../../utils/charts/significantStatistics";
@@ -94,27 +94,12 @@ const RevocationsByRace = ({
     denominators
   );
 
-  const generateDataset = (label, index) => ({
-    label,
-    backgroundColor: getBarBackgroundColor(
-      COLORS_LANTERN_SET[index],
-      denominators
-    ),
-    data: dataPoints[index],
-  });
-
   const chart = (
     <Bar
       id={chartId}
       data={{
         labels: riskLevelLabels(stateCode),
-        datasets: [
-          generateDataset("Caucasian", 0),
-          generateDataset("African American", 1),
-          generateDataset("Hispanic", 2),
-          generateDataset("Asian", 3),
-          generateDataset("Native American", 4),
-        ],
+        datasets: generateDatasets(dataPoints, denominators),
       }}
       options={{
         legend: {
