@@ -23,6 +23,7 @@ import Chip from "../Chip";
 import {
   violationCountLabel,
   matrixViolationTypeToLabel,
+  pluralize,
 } from "../../../../utils/transforms/labels";
 
 const ViolationFilter = ({ reportedViolations, violationType, onClick }) => {
@@ -32,7 +33,9 @@ const ViolationFilter = ({ reportedViolations, violationType, onClick }) => {
       parts.push(matrixViolationTypeToLabel[violationType]);
     }
     if (reportedViolations) {
-      parts.push(`${violationCountLabel(reportedViolations)} violations`);
+      parts.push(
+        pluralize(violationCountLabel(reportedViolations), "violation")
+      );
     }
     return parts.join(", ");
   }, [reportedViolations, violationType]);
