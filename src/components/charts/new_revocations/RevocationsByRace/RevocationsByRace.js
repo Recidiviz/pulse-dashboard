@@ -114,7 +114,6 @@ const RevocationsByRace = ({
           generateDataset("Hispanic", 2),
           generateDataset("Asian", 3),
           generateDataset("Native American", 4),
-          generateDataset("Pacific Islander", 5),
         ],
       }}
       options={{
