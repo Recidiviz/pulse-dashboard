@@ -56,21 +56,15 @@ const TenantRoutes = ({ children }) => {
     return null;
   }
 
-  let element = null;
-
-  Children.forEach(children, (child) => {
+  return Children.toArray(children).reduce((node, child) => {
     const { stateCode } = child.props;
 
     if (doesUserHaveAccess(user, stateCode) && stateCode === currentStateCode) {
-      element = child;
+      return child;
     }
-  });
 
-  if (element === null) {
-    return <NotFound />;
-  }
-
-  return element;
+    return node;
+  }, <NotFound />);
 };
 
 TenantRoutes.propTypes = {
