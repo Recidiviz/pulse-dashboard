@@ -7,10 +7,12 @@ import TopBar from "../topbar/TopBar";
 import TopBarLogo from "../topbar/TopBarLogo";
 import TopBarUserMenuForAuthenticatedUser from "../topbar/TopBarUserMenuForAuthenticatedUser";
 import Footer from "../Footer";
+import usePageLayout from "../../hooks/usePageLayout";
 
 const Layout = ({ children }) => {
   const { user } = useAuth0();
   enableIntercomLauncherForUser(user);
+  usePageLayout();
 
   return (
     <div id="app">

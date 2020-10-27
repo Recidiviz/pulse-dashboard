@@ -101,4 +101,14 @@ describe("test label", () => {
     const dataAfterTest = labelsMethods.numberFromOfficerId(dataForTest);
     expect(dataAfterTest).toBe(27);
   });
+
+  it("pluralize when it should not pluralize", () => {
+    const result = labelsMethods.pluralize(1, "violation");
+    expect(result).toEqual("1 violation");
+  });
+
+  it("pluralize when it should pluralize", () => {
+    const result = labelsMethods.pluralize(2, "violation");
+    expect(result).toEqual("2 violations");
+  });
 });

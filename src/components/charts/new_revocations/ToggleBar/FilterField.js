@@ -19,10 +19,11 @@ import PropTypes from "prop-types";
 import cn from "classnames";
 import "./FilterField.scss";
 
-import useTopBarShrinking from "../../../../hooks/useTopBarShrinking";
+import { usePageState } from "../../../../contexts/PageContext";
 
 const FilterField = ({ label, children }) => {
-  const isTopBarShrinking = useTopBarShrinking();
+  const { isTopBarShrinking } = usePageState();
+
   return (
     <div
       className={cn("FilterField", {
