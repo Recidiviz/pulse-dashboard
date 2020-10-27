@@ -1,51 +1,37 @@
-// Recidiviz - a data platform for criminal justice reform
-// Copyright (C) 2020 Recidiviz, Inc.
-//
-// This program is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with this program.  If not, see <https://www.gnu.org/licenses/>.
-// =============================================================================
-
 import React, { useCallback, useState } from "react";
 
-import CaseTable from "../../../../components/charts/new_revocations/CaseTable/CaseTable";
-import RevocationCharts from "../../../../components/charts/new_revocations/RevocationCharts";
-import RevocationsByRiskLevel from "../../../../components/charts/new_revocations/RevocationsByRiskLevel/RevocationsByRiskLevel";
-import RevocationsByViolation from "../../../../components/charts/new_revocations/RevocationsByViolation";
-import RevocationsByGender from "../../../../components/charts/new_revocations/RevocationsByGender/RevocationsByGender";
-import RevocationsByRace from "../../../../components/charts/new_revocations/RevocationsByRace/RevocationsByRace";
-import RevocationsByDistrict from "../../../../components/charts/new_revocations/RevocationsByDistrict/RevocationsByDistrict";
-import RevocationCountOverTime from "../../../../components/charts/new_revocations/RevocationsOverTime";
-import RevocationMatrix from "../../../../components/charts/new_revocations/RevocationMatrix/RevocationMatrix";
-import RevocationMatrixExplanation from "../../../../components/charts/new_revocations/RevocationMatrix/RevocationMatrixExplanation";
-import ToggleBar from "../../../../components/charts/new_revocations/ToggleBar/ToggleBar";
-import DistrictFilter from "../../../../components/charts/new_revocations/ToggleBar/DistrictFilter";
-import AdmissionTypeFilter from "../../../../components/charts/new_revocations/ToggleBar/AdmissionTypeFilter";
-import ViolationFilter from "../../../../components/charts/new_revocations/ToggleBar/ViolationFilter";
-import ErrorBoundary from "../../../../components/ErrorBoundary";
-import ToggleBarFilter from "../../../../components/charts/new_revocations/ToggleBar/ToggleBarFilter";
 import {
   applyAllFilters,
   applyTopLevelFilters,
   limitFiltersToUserDistricts,
-} from "../../../../components/charts/new_revocations/helpers";
-import { getTimeDescription } from "../../../../components/charts/new_revocations/helpers/format";
-import flags from "../../../../flags";
-import { useAuth0 } from "../../../../react-auth0-spa";
+} from "./charts/new_revocations/helpers";
+import { getTimeDescription } from "./charts/new_revocations/helpers/format";
+import ToggleBar from "./charts/new_revocations/ToggleBar/ToggleBar";
+import ToggleBarFilter from "./charts/new_revocations/ToggleBar/ToggleBarFilter";
+import ErrorBoundary from "./ErrorBoundary";
+import DistrictFilter from "./charts/new_revocations/ToggleBar/DistrictFilter";
+import AdmissionTypeFilter from "./charts/new_revocations/ToggleBar/AdmissionTypeFilter";
+import ViolationFilter from "./charts/new_revocations/ToggleBar/ViolationFilter";
+import RevocationCountOverTime from "./charts/new_revocations/RevocationsOverTime";
+import RevocationMatrix from "./charts/new_revocations/RevocationMatrix/RevocationMatrix";
+import RevocationMatrixExplanation from "./charts/new_revocations/RevocationMatrix/RevocationMatrixExplanation";
+import RevocationCharts from "./charts/new_revocations/RevocationCharts";
+import RevocationsByRiskLevel from "./charts/new_revocations/RevocationsByRiskLevel/RevocationsByRiskLevel";
+import RevocationsByViolation from "./charts/new_revocations/RevocationsByViolation";
+import RevocationsByGender from "./charts/new_revocations/RevocationsByGender/RevocationsByGender";
+import RevocationsByRace from "./charts/new_revocations/RevocationsByRace/RevocationsByRace";
+import RevocationsByDistrict from "./charts/new_revocations/RevocationsByDistrict/RevocationsByDistrict";
+import CaseTable from "./charts/new_revocations/CaseTable/CaseTable";
+import { useAuth0 } from "../react-auth0-spa";
 import {
   getUserAppMetadata,
   getUserDistricts,
-} from "../../../../utils/authentication/user";
-import * as lanternTenant from "../../utils/lanternTenants";
+} from "../utils/authentication/user";
+import { useStateCode } from "../contexts/StateCodeContext";
+import flags from "../flags";
+import * as lanternTenant from "../views/tenants/utils/lanternTenants";
+import filterOptionsMap from "../views/tenants/constants/filterOptions";
+import { translate } from "../views/tenants/utils/i18nSettings";
 import {
   ADMISSION_TYPE,
   CHARGE_CATEGORY,
@@ -55,15 +41,16 @@ import {
   SUPERVISION_LEVEL,
   SUPERVISION_TYPE,
   VIOLATION_TYPE,
-} from "../../../../constants/filterTypes";
-import { MOFilterOptions as filterOptions } from "../../constants/filterOptions";
-
-const stateCode = lanternTenant.MO;
+} from "../constants/filterTypes";
 
 const Revocations = () => {
   const { user } = useAuth0();
+  const { currentStateCode: stateCode } = useStateCode();
   const { district } = getUserAppMetadata(user);
   const userDistricts = getUserDistricts(user);
+  const violationTypes = translate("violationTypes");
+
+  const filterOptions = filterOptionsMap[stateCode];
 
   const [filters, setFilters] = useState({
     [METRIC_PERIOD_MONTHS]: filterOptions[METRIC_PERIOD_MONTHS].defaultValue,
@@ -126,6 +113,15 @@ const Revocations = () => {
             defaultOption={filterOptions[CHARGE_CATEGORY].defaultOption}
             onChange={createOnFilterChange(CHARGE_CATEGORY)}
           />
+          {filterOptions[SUPERVISION_LEVEL].componentEnabled && (
+            <ToggleBarFilter
+              label="Supervision Level"
+              value={filters[SUPERVISION_LEVEL]}
+              options={filterOptions[SUPERVISION_LEVEL].options}
+              defaultOption={filterOptions[SUPERVISION_LEVEL].defaultOption}
+              onChange={createOnFilterChange(SUPERVISION_LEVEL)}
+            />
+          )}
           {flags.enableAdmissionTypeFilter && (
             <AdmissionTypeFilter
               value={filters[ADMISSION_TYPE]}
@@ -135,13 +131,15 @@ const Revocations = () => {
               onChange={createOnFilterChange(ADMISSION_TYPE)}
             />
           )}
-          <ToggleBarFilter
-            label="Supervision Type"
-            value={filters[SUPERVISION_TYPE]}
-            options={filterOptions[SUPERVISION_TYPE].options}
-            defaultOption={filterOptions[SUPERVISION_TYPE].defaultOption}
-            onChange={createOnFilterChange(SUPERVISION_TYPE)}
-          />
+          {filterOptions[SUPERVISION_TYPE].componentEnabled && (
+            <ToggleBarFilter
+              label="Supervision Type"
+              value={filters[SUPERVISION_TYPE]}
+              options={filterOptions[SUPERVISION_TYPE].options}
+              defaultOption={filterOptions[SUPERVISION_TYPE].defaultOption}
+              onChange={createOnFilterChange(SUPERVISION_TYPE)}
+            />
+          )}
         </div>
         <ViolationFilter
           violationType={filters[VIOLATION_TYPE]}
@@ -170,14 +168,7 @@ const Revocations = () => {
               updateFilters={updateFilters}
               timeDescription={timeDescription}
               stateCode={stateCode}
-              violationTypes={[
-                "TECHNICAL",
-                "SUBSTANCE_ABUSE",
-                "MUNICIPAL",
-                "ABSCONDED",
-                "MISDEMEANOR",
-                "FELONY",
-              ]}
+              violationTypes={violationTypes}
             />
           </ErrorBoundary>
         </div>
@@ -232,7 +223,11 @@ const Revocations = () => {
               dataFilter={allDataFilter}
               skippedFilters={[DISTRICT]}
               filterStates={filters}
-              currentDistricts={transformedFilters[DISTRICT]}
+              currentDistricts={
+                stateCode === lanternTenant.MO
+                  ? transformedFilters[DISTRICT]
+                  : filters[DISTRICT]
+              }
               stateCode={stateCode}
               timeDescription={timeDescription}
             />
@@ -254,5 +249,7 @@ const Revocations = () => {
     </main>
   );
 };
+
+Revocations.propTypes = {};
 
 export default Revocations;

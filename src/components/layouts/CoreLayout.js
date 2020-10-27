@@ -19,20 +19,20 @@ import React from "react";
 import PropTypes from "prop-types";
 import { useLocation } from "react-router-dom";
 
-import SideBarHeader from "../../../components/sidebar/SideBarHeader";
-import SideBarMenu from "../../../components/sidebar/SideBarMenu";
-import SideBarGroup from "../../../components/sidebar/SideBarGroup";
-import SideBarLink from "../../../components/sidebar/SideBarLink";
-import SideBarFeedback from "../../../components/sidebar/SideBarFeedback";
-import TopBar from "../../../components/topbar/TopBar";
-import TopBarHamburgerMenu from "../../../components/topbar/TopBarHamburgerMenu";
-import TopBarTitle from "../../../components/topbar/TopBarTitle";
-import TopBarUserMenuForAuthenticatedUser from "../../../components/topbar/TopBarUserMenuForAuthenticatedUser";
-import Footer from "../../../components/Footer";
-import useSideBar from "../../../hooks/useSideBar";
-import { disableIntercomLauncher } from "../../../utils/intercomSettings";
+import SideBarHeader from "../sidebar/SideBarHeader";
+import SideBarMenu from "../sidebar/SideBarMenu";
+import SideBarGroup from "../sidebar/SideBarGroup";
+import SideBarLink from "../sidebar/SideBarLink";
+import SideBarFeedback from "../sidebar/SideBarFeedback";
+import TopBar from "../topbar/TopBar";
+import TopBarHamburgerMenu from "../topbar/TopBarHamburgerMenu";
+import TopBarTitle from "../topbar/TopBarTitle";
+import TopBarUserMenuForAuthenticatedUser from "../topbar/TopBarUserMenuForAuthenticatedUser";
+import Footer from "../Footer";
+import useSideBar from "../../hooks/useSideBar";
+import { disableIntercomLauncher } from "../../utils/intercomSettings";
 
-const Layout = ({ children }) => {
+const CoreLayout = ({ children }) => {
   disableIntercomLauncher();
 
   const { isSideBarCollapsed, toggleSideBar } = useSideBar();
@@ -94,11 +94,11 @@ const Layout = ({ children }) => {
   );
 };
 
-Layout.propTypes = {
+CoreLayout.propTypes = {
   children: PropTypes.oneOfType([
     PropTypes.node,
     PropTypes.arrayOf(PropTypes.node),
   ]).isRequired,
 };
 
-export default Layout;
+export default CoreLayout;
