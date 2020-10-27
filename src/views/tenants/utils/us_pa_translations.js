@@ -58,4 +58,13 @@ of that column.`,
     ASIAN: "Asian",
     AMERICAN_INDIAN_ALASKAN_NATIVE: "Native American",
   },
+  violationTypes: [
+    "LOW_TECH",
+    "MED_TECH",
+    "ELEC_MONITORING",
+    "SUBSTANCE_ABUSE",
+    "ABSCONDED",
+    "HIGH_TECH",
+    "LAW",
+  ],
 };

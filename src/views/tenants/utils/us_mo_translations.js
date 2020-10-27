@@ -59,4 +59,12 @@ of that column.`,
     ASIAN: "Asian",
     AMERICAN_INDIAN_ALASKAN_NATIVE: "Native American",
   },
+  violationTypes: [
+    "TECHNICAL",
+    "SUBSTANCE_ABUSE",
+    "MUNICIPAL",
+    "ABSCONDED",
+    "MISDEMEANOR",
+    "FELONY",
+  ],
 };
