@@ -20,21 +20,22 @@ import PropTypes from "prop-types";
 
 import FilterField from "./FilterField";
 import Chip from "../Chip";
-import useTopBarShrinking from "../../../../hooks/useTopBarShrinking";
 import {
   violationCountLabel,
   matrixViolationTypeToLabel,
+  pluralize,
 } from "../../../../utils/transforms/labels";
 
 const ViolationFilter = ({ reportedViolations, violationType, onClick }) => {
-  const isTopBarShrinking = useTopBarShrinking();
   const formattedMatrixFilters = useMemo(() => {
     const parts = [];
     if (violationType) {
       parts.push(matrixViolationTypeToLabel[violationType]);
     }
     if (reportedViolations) {
-      parts.push(`${violationCountLabel(reportedViolations)} violations`);
+      parts.push(
+        pluralize(violationCountLabel(reportedViolations), "violation")
+      );
     }
     return parts.join(", ");
   }, [reportedViolations, violationType]);
@@ -46,7 +47,6 @@ const ViolationFilter = ({ reportedViolations, violationType, onClick }) => {
       <FilterField label="Additional filters">
         <Chip
           label={formattedMatrixFilters}
-          isShrinking={isTopBarShrinking}
           onDelete={() => {
             onClick({ violationType: "", reportedViolations: "" });
           }}

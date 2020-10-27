@@ -98,6 +98,11 @@ function numberFromOfficerId(officerId) {
 
 const violationCountLabel = (count) => (count === "8" ? "8+" : count);
 
+const pluralize = (count, term) => {
+  const base = `${count} ${term}`;
+  return count > 1 ? `${base}s` : base;
+};
+
 export {
   matrixViolationTypeToLabel,
   genderValueToHumanReadable,
@@ -109,4 +114,5 @@ export {
   humanReadableTitleCase,
   numberFromOfficerId,
   violationCountLabel,
+  pluralize,
 };

@@ -8,6 +8,7 @@ import {
   SUPERVISION_TYPE,
   VIOLATION_TYPE,
 } from "../../../constants/filterTypes";
+import { MO, PA } from "../utils/lanternTenants";
 
 const METRIC_PERIODS = {
   options: [
@@ -58,7 +59,7 @@ const SUPERVISION_TYPES = {
   },
 };
 
-export const MOFilterOptions = {
+const MOFilterOptions = {
   [ADMISSION_TYPE]: {
     options: [
       { value: "All", label: "ALL" },
@@ -126,13 +127,13 @@ export const MOFilterOptions = {
     defaultValue: "",
   },
   [METRIC_PERIOD_MONTHS]: METRIC_PERIODS,
-  [SUPERVISION_LEVEL]: SUPERVISION_LEVELS,
-  [SUPERVISION_TYPE]: SUPERVISION_TYPES,
+  [SUPERVISION_LEVEL]: { SUPERVISION_LEVELS, componentEnabled: false },
+  [SUPERVISION_TYPE]: { ...SUPERVISION_TYPES, componentEnabled: true },
   [REPORTED_VIOLATIONS]: { defaultValue: "" },
   [DISTRICT]: { defaultValue: "All" },
 };
 
-export const PAFilterOptions = {
+const PAFilterOptions = {
   [ADMISSION_TYPE]: {
     options: [
       { value: "All", label: "ALL" },
@@ -194,8 +195,13 @@ export const PAFilterOptions = {
     defaultValue: "",
   },
   [METRIC_PERIOD_MONTHS]: METRIC_PERIODS,
-  [SUPERVISION_LEVEL]: SUPERVISION_LEVELS,
-  [SUPERVISION_TYPE]: { defaultValue: "All" },
+  [SUPERVISION_LEVEL]: { ...SUPERVISION_LEVELS, componentEnabled: true },
+  [SUPERVISION_TYPE]: { defaultValue: "All", componentEnabled: false },
   [REPORTED_VIOLATIONS]: { defaultValue: "" },
   [DISTRICT]: { defaultValue: "All" },
+};
+
+export default {
+  [MO]: MOFilterOptions,
+  [PA]: PAFilterOptions,
 };

@@ -15,20 +15,28 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import { useLayoutEffect, useRef, useState } from "react";
+import { useLayoutEffect, useRef } from "react";
+import { usePageState, usePageDispatch } from "../contexts/PageContext";
 
-const useTopBarShrinking = () => {
-  const [isTopBarShrinking, setIsTopBarShrinking] = useState(false);
-
+const usePageLayout = () => {
+  const pageDispatch = usePageDispatch();
+  const { isTopBarShrinking } = usePageState();
   const frame = useRef(0);
+
   useLayoutEffect(() => {
     const handler = () => {
       cancelAnimationFrame(frame.current);
       frame.current = requestAnimationFrame(() => {
-        if (!isTopBarShrinking && window.pageYOffset > 60) {
-          setIsTopBarShrinking(true);
+        if (!isTopBarShrinking && window.pageYOffset > 90) {
+          pageDispatch({
+            type: "update",
+            payload: { isTopBarShrinking: true },
+          });
         } else if (isTopBarShrinking && window.pageYOffset < 5) {
-          setIsTopBarShrinking(false);
+          pageDispatch({
+            type: "update",
+            payload: { isTopBarShrinking: false },
+          });
           window.scrollTo({ top: 0, behavior: "smooth" });
         }
       });
@@ -44,8 +52,6 @@ const useTopBarShrinking = () => {
       window.removeEventListener("scroll", handler);
     };
   });
-
-  return isTopBarShrinking;
 };
 
-export default useTopBarShrinking;
+export default usePageLayout;
