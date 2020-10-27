@@ -40,7 +40,7 @@ export const StateCodeProvider = ({ children }) => {
   );
 
   useEffect(() => {
-    setTranslateLocale(currentStateCode);
+    if (currentStateCode) setTranslateLocale(currentStateCode);
   }, [currentStateCode]);
 
   /*
