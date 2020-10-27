@@ -20,34 +20,40 @@ import { render } from "@testing-library/react";
 
 import App from "./App";
 import { useAuth0 } from "./react-auth0-spa";
+import { METADATA_NAMESPACE } from "./utils/authentication/user";
 import { ND } from "./views/tenants/utils/coreTenants";
 import { MO, PA } from "./views/tenants/utils/lanternTenants";
 
 import mockWithTestId from "../__helpers__/mockWithTestId";
-import UsMoRevocations from "./views/tenants/us_mo/community/Revocations";
-import UsPaRevocations from "./views/tenants/us_pa/community/Revocations";
+import Revocations from "./components/Revocations";
 import UsNDCommunityGoals from "./views/tenants/us_nd/community/Goals";
 import NotFound from "./views/NotFound";
 import Loading from "./components/Loading";
+import LanternLayout from "./components/layouts/LanternLayout";
+import CoreLayout from "./components/layouts/CoreLayout";
 
 jest.mock("./utils/intercomSettings");
 jest.mock("./utils/initFontAwesome");
 jest.mock("./views/tenants/utils/i18nSettings");
-jest.mock("./views/tenants/us_mo/community/Revocations");
-jest.mock("./views/tenants/us_pa/community/Revocations");
+jest.mock("./components/layouts/LanternLayout");
+jest.mock("./components/layouts/CoreLayout");
+jest.mock("./components/Revocations");
 jest.mock("./views/tenants/us_nd/community/Goals");
 jest.mock("./views/NotFound");
 jest.mock("./components/Loading");
 jest.mock("./react-auth0-spa");
 
 describe("App tests", () => {
-  const mockMOCommunityRevocationsId = "mo-community-revocations-id";
-  const mockPACommunityRevocationsId = "pa-community-revocations-id";
+  const metadataField = `${METADATA_NAMESPACE}app_metadata`;
+
+  const mockRevocationsId = "mo-community-revocations-id";
   const mockNDCommunityGoalsId = "nd-community-goals-id";
   const mockNotFoundId = "not-found-id";
   const mockLoadingTestId = "loading-test-id";
-  UsMoRevocations.mockReturnValue(mockWithTestId(mockMOCommunityRevocationsId));
-  UsPaRevocations.mockReturnValue(mockWithTestId(mockPACommunityRevocationsId));
+
+  LanternLayout.mockImplementation(({ children }) => children);
+  CoreLayout.mockImplementation(({ children }) => children);
+  Revocations.mockReturnValue(mockWithTestId(mockRevocationsId));
   UsNDCommunityGoals.mockReturnValue(mockWithTestId(mockNDCommunityGoalsId));
   NotFound.mockReturnValue(mockWithTestId(mockNotFoundId));
   Loading.mockReturnValue(mockWithTestId(mockLoadingTestId));
@@ -56,17 +62,10 @@ describe("App tests", () => {
     jest.clearAllMocks();
   });
 
-  it("should render MO revocations page", () => {
-    window.history.pushState(
-      {},
-      "MO revocations page",
-      "/community/revocations"
-    );
-    const user = {
-      "https://dashboard.recidiviz.org/app_metadata": {
-        state_code: MO,
-      },
-    };
+  it("should render MO Layout with Revocations page", () => {
+    window.history.pushState({}, "", "/community/revocations");
+
+    const user = { [metadataField]: { state_code: MO } };
     useAuth0.mockReturnValue({
       user,
       isAuthenticated: true,
@@ -74,18 +73,18 @@ describe("App tests", () => {
       loginWithRedirect: jest.fn(),
       getTokenSilently: jest.fn(),
     });
+
     const { getByTestId } = render(<App />);
 
-    expect(getByTestId(mockMOCommunityRevocationsId)).toBeInTheDocument();
+    expect(LanternLayout).toHaveBeenCalledTimes(1);
+    expect(LanternLayout.mock.calls[0][0].stateCode).toBe(MO);
+    expect(getByTestId(mockRevocationsId)).toBeInTheDocument();
   });
 
-  it("should render ND community goals page", () => {
-    window.history.pushState({}, "ND community goals page", "/community/goals");
-    const user = {
-      "https://dashboard.recidiviz.org/app_metadata": {
-        state_code: ND,
-      },
-    };
+  it("should render ND Layout with community goals page", () => {
+    window.history.pushState({}, "", "/community/goals");
+    const user = { [metadataField]: { state_code: ND } };
+
     useAuth0.mockReturnValue({
       user,
       isAuthenticated: true,
@@ -93,22 +92,17 @@ describe("App tests", () => {
       loginWithRedirect: jest.fn(),
       getTokenSilently: jest.fn(),
     });
+
     const { getByTestId } = render(<App />);
 
+    expect(CoreLayout).toHaveBeenCalledTimes(1);
+    expect(CoreLayout.mock.calls[0][0].stateCode).toBe(ND);
     expect(getByTestId(mockNDCommunityGoalsId)).toBeInTheDocument();
   });
 
-  it("should render PA community goals page", () => {
-    window.history.pushState(
-      {},
-      "PA revocations page",
-      "/community/revocations"
-    );
-    const user = {
-      "https://dashboard.recidiviz.org/app_metadata": {
-        state_code: PA,
-      },
-    };
+  it("should render PA Layout with Revocations page", () => {
+    window.history.pushState({}, "", "/community/revocations");
+    const user = { [metadataField]: { state_code: PA } };
     useAuth0.mockReturnValue({
       user,
       isAuthenticated: true,
@@ -116,15 +110,19 @@ describe("App tests", () => {
       loginWithRedirect: jest.fn(),
       getTokenSilently: jest.fn(),
     });
+
     const { getByTestId } = render(<App />);
 
-    expect(getByTestId(mockPACommunityRevocationsId)).toBeInTheDocument();
+    expect(LanternLayout).toHaveBeenCalledTimes(1);
+    expect(LanternLayout.mock.calls[0][0].stateCode).toBe(PA);
+    expect(getByTestId(mockRevocationsId)).toBeInTheDocument();
   });
 
   it("should render Not Found page ", () => {
-    window.history.pushState({}, "PA revocations page", "/some/page");
-    const { getByTestId } = render(<App />);
+    window.history.pushState({}, "", "/some/page");
+    const { container, getByTestId } = render(<App />);
 
+    expect(container.children.length).toBe(1);
     expect(getByTestId(mockNotFoundId)).toBeInTheDocument();
   });
 
