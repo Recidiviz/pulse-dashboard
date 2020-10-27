@@ -20,17 +20,17 @@ Bringing criminal justice analysis to decision makers to help reduce incarcerati
 
    `git clone git@github.com:Recidiviz/pulse-dashboard.git`
 
-2. Ensure you are using the correct version of Node (if you don't use NVM, just check the .nvmrc file and ensure you are using that version).
+1. Ensure you are using the correct version of Node (if you don't use NVM, just check the .nvmrc file and ensure you are using that version).
 
   `nvm use`
 
-3. Install Yarn package manager:
+1. Install Yarn package manager:
 
    `brew install yarn`
 
    For alternative Yarn installation options, see [Yarn Installation](https://yarnpkg.com/en/docs/install).
 
-4. Install dependencies:
+1. Install dependencies:
 
    `yarn install`
 
