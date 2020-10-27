@@ -22,10 +22,13 @@ import App from "./App";
 import { useAuth0 } from "./react-auth0-spa";
 import { ND } from "./views/tenants/utils/coreTenants";
 import { MO, PA } from "./views/tenants/utils/lanternTenants";
-import UsMoCommunityRevocations from "./views/tenants/us_mo/community/Revocations";
-import UsPaCommunityRevocations from "./views/tenants/us_pa/community/Revocations";
-import UsNdCommunityGoals from "./views/tenants/us_nd/community/Goals";
+
+import mockWithTestId from "../__helpers__/mockWithTestId";
+import UsMoRevocations from "./views/tenants/us_mo/community/Revocations";
+import UsPaRevocations from "./views/tenants/us_pa/community/Revocations";
+import UsNDCommunityGoals from "./views/tenants/us_nd/community/Goals";
 import NotFound from "./views/NotFound";
+import Loading from "./components/Loading";
 
 jest.mock("./utils/intercomSettings");
 jest.mock("./utils/initFontAwesome");
@@ -34,13 +37,20 @@ jest.mock("./views/tenants/us_mo/community/Revocations");
 jest.mock("./views/tenants/us_pa/community/Revocations");
 jest.mock("./views/tenants/us_nd/community/Goals");
 jest.mock("./views/NotFound");
+jest.mock("./components/Loading");
 jest.mock("./react-auth0-spa");
 
 describe("App tests", () => {
-  UsMoCommunityRevocations.mockReturnValue(null);
-  UsPaCommunityRevocations.mockReturnValue(null);
-  UsNdCommunityGoals.mockReturnValue(null);
-  NotFound.mockReturnValue(null);
+  const mockMOCommunityRevocationsId = "mo-community-revocations-id";
+  const mockPACommunityRevocationsId = "pa-community-revocations-id";
+  const mockNDCommunityGoalsId = "nd-community-goals-id";
+  const mockNotFoundId = "not-found-id";
+  const mockLoadingTestId = "loading-test-id";
+  UsMoRevocations.mockReturnValue(mockWithTestId(mockMOCommunityRevocationsId));
+  UsPaRevocations.mockReturnValue(mockWithTestId(mockPACommunityRevocationsId));
+  UsNDCommunityGoals.mockReturnValue(mockWithTestId(mockNDCommunityGoalsId));
+  NotFound.mockReturnValue(mockWithTestId(mockNotFoundId));
+  Loading.mockReturnValue(mockWithTestId(mockLoadingTestId));
 
   beforeEach(() => {
     jest.clearAllMocks();
@@ -64,9 +74,9 @@ describe("App tests", () => {
       loginWithRedirect: jest.fn(),
       getTokenSilently: jest.fn(),
     });
-    render(<App />);
+    const { getByTestId } = render(<App />);
 
-    expect(UsMoCommunityRevocations).toHaveBeenCalled();
+    expect(getByTestId(mockMOCommunityRevocationsId)).toBeInTheDocument();
   });
 
   it("should render ND community goals page", () => {
@@ -83,9 +93,9 @@ describe("App tests", () => {
       loginWithRedirect: jest.fn(),
       getTokenSilently: jest.fn(),
     });
-    render(<App />);
+    const { getByTestId } = render(<App />);
 
-    expect(UsNdCommunityGoals).toHaveBeenCalled();
+    expect(getByTestId(mockNDCommunityGoalsId)).toBeInTheDocument();
   });
 
   it("should render PA community goals page", () => {
@@ -106,15 +116,43 @@ describe("App tests", () => {
       loginWithRedirect: jest.fn(),
       getTokenSilently: jest.fn(),
     });
-    render(<App />);
+    const { getByTestId } = render(<App />);
 
-    expect(UsPaCommunityRevocations).toHaveBeenCalled();
+    expect(getByTestId(mockPACommunityRevocationsId)).toBeInTheDocument();
   });
 
   it("should render Not Found page ", () => {
     window.history.pushState({}, "PA revocations page", "/some/page");
+    const { getByTestId } = render(<App />);
+
+    expect(getByTestId(mockNotFoundId)).toBeInTheDocument();
+  });
+
+  it("should render Loading component while user is loading", () => {
+    useAuth0.mockReturnValue({
+      isAuthenticated: false,
+      loading: true,
+      loginWithRedirect: jest.fn(),
+      getTokenSilently: jest.fn(),
+    });
+
+    const { container } = render(<App />);
+
+    expect(container.children.length).toBe(1);
+    expect(container.firstChild.dataset.testid).toBe(mockLoadingTestId);
+  });
+
+  it("should redirect to login page is user is not authenticated", () => {
+    const loginWithRedirect = jest.fn();
+    useAuth0.mockReturnValue({
+      isAuthenticated: false,
+      loading: false,
+      loginWithRedirect,
+      getTokenSilently: jest.fn(),
+    });
+
     render(<App />);
 
-    expect(NotFound).toHaveBeenCalled();
+    expect(loginWithRedirect).toHaveBeenCalled();
   });
 });
