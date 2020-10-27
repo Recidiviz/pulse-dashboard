@@ -30,7 +30,6 @@ const ToggleBarFilter = ({
   onChange,
 }) => {
   const onValueChange = (option) => onChange(option.value);
-
   const selectedOption = options.find((option) => option.value === value);
 
   return (

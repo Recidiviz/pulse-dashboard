@@ -25,6 +25,7 @@ import {
 
 import TenantRoutes from "./components/TenantRoutes";
 import { StateCodeProvider } from "./contexts/StateCodeContext";
+import { PageProvider } from "./contexts/PageContext";
 import NotFound from "./views/NotFound";
 import Profile from "./views/Profile";
 import VerificationNeeded from "./views/VerificationNeeded";
@@ -53,52 +54,54 @@ initI18n();
 
 // prettier-ignore
 const App = () => (
-  <StateCodeProvider>
-    <Router>
-      <Switch>
-        <Route path="/verify" component={VerificationNeeded} />
+  <PageProvider>
+    <StateCodeProvider>
+      <Router>
+        <Switch>
+          <Route path="/verify" component={VerificationNeeded} />
 
-        <TenantRoutes>
-          <UsMoLayout stateCode={lanternTenant.MO}>
-            <Switch>
-              <Route path="/community/revocations" component={UsMoCommunityRevocations} />
-              <Route path="/profile" component={Profile} />
-              <Redirect exact from="/" to="/community/revocations" />
-              <Redirect from="/revocations" to="/community/revocations" />
-              <NotFound />
-            </Switch>
-          </UsMoLayout>
+          <TenantRoutes>
+            <UsMoLayout stateCode={lanternTenant.MO}>
+              <Switch>
+                <Route path="/community/revocations" component={UsMoCommunityRevocations} />
+                <Route path="/profile" component={Profile} />
+                <Redirect exact from="/" to="/community/revocations" />
+                <Redirect from="/revocations" to="/community/revocations" />
+                <NotFound />
+              </Switch>
+            </UsMoLayout>
 
-          <UsNdLayout stateCode={coreTenant.ND}>
-            <Switch>
-              <Route path="/community/goals" component={UsNdCommunityGoals} />
-              <Route path="/community/explore" component={UsNdCommunityExplore} />
-              <Route path="/facilities/goals" component={UsNdFacilitiesGoals} />
-              <Route path="/facilities/explore" component={UsNdFacilitiesExplore} />
-              <Route path="/programming/explore" component={UsNdProgrammingExplore} />
-              <Route path="/profile" component={Profile} />
-              <Redirect exact from="/" to="/community/goals" />
-              <Redirect from="/snapshots" to="/community/goals" />
-              <Redirect from="/revocations" to="/community/goals" />
-              <Redirect from="/reincarcerations" to="/facilities/goals" />
-              <Redirect from="/programEvaluation/freeThroughRecovery" to="/programming/explore" />
-              <NotFound />
-            </Switch>
-          </UsNdLayout>
+            <UsNdLayout stateCode={coreTenant.ND}>
+              <Switch>
+                <Route path="/community/goals" component={UsNdCommunityGoals} />
+                <Route path="/community/explore" component={UsNdCommunityExplore} />
+                <Route path="/facilities/goals" component={UsNdFacilitiesGoals} />
+                <Route path="/facilities/explore" component={UsNdFacilitiesExplore} />
+                <Route path="/programming/explore" component={UsNdProgrammingExplore} />
+                <Route path="/profile" component={Profile} />
+                <Redirect exact from="/" to="/community/goals" />
+                <Redirect from="/snapshots" to="/community/goals" />
+                <Redirect from="/revocations" to="/community/goals" />
+                <Redirect from="/reincarcerations" to="/facilities/goals" />
+                <Redirect from="/programEvaluation/freeThroughRecovery" to="/programming/explore" />
+                <NotFound />
+              </Switch>
+            </UsNdLayout>
 
-          <UsPaLayout stateCode={lanternTenant.PA}>
-            <Switch>
-              <Route path="/community/revocations" component={UsPaCommunityRevocations} />
-              <Route path="/profile" component={Profile} />
-              <Redirect exact from="/" to="/community/revocations" />
-              <Redirect from="/revocations" to="/community/revocations" />
-              <NotFound />
-            </Switch>
-          </UsPaLayout>
-        </TenantRoutes>
-      </Switch>
-    </Router>
-  </StateCodeProvider>
+            <UsPaLayout stateCode={lanternTenant.PA}>
+              <Switch>
+                <Route path="/community/revocations" component={UsPaCommunityRevocations} />
+                <Route path="/profile" component={Profile} />
+                <Redirect exact from="/" to="/community/revocations" />
+                <Redirect from="/revocations" to="/community/revocations" />
+                <NotFound />
+              </Switch>
+            </UsPaLayout>
+          </TenantRoutes>
+        </Switch>
+      </Router>
+    </StateCodeProvider>
+  </PageProvider>
 );
 
 export default App;
