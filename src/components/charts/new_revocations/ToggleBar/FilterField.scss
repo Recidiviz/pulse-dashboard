@@ -21,6 +21,15 @@
     }
   }
 
+  &--additional {
+    display: inline-block;
+
+    .FilterField__label {
+      display: inline;
+      margin-right: 1rem;
+    }
+  }
+
   &__label {
     @media (max-width: 768px) {
       font-size: 0.9rem;

@@ -44,7 +44,10 @@ const ViolationFilter = ({ reportedViolations, violationType, onClick }) => {
 
   return (
     <div className="ViolationFilter top-level-filters pre-top-level-filters">
-      <FilterField label="Additional filters">
+      <FilterField
+        label="Additional filters"
+        className="FilterField--additional"
+      >
         <Chip
           label={formattedMatrixFilters}
           onDelete={() => {
