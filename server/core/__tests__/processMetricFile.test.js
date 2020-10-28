@@ -23,6 +23,7 @@ const {
 const {
   default: processOptimizedTxtMetricFile,
 } = require("../processOptimizedTxtMetricFile");
+
 jest.mock("../processJsonLinesMetricFile");
 jest.mock("../processOptimizedTxtMetricFile");
 

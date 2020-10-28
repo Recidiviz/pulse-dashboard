@@ -127,7 +127,7 @@ const MOFilterOptions = {
     defaultValue: "",
   },
   [METRIC_PERIOD_MONTHS]: METRIC_PERIODS,
-  [SUPERVISION_LEVEL]: { SUPERVISION_LEVELS, componentEnabled: false },
+  [SUPERVISION_LEVEL]: { ...SUPERVISION_LEVELS, componentEnabled: false },
   [SUPERVISION_TYPE]: { ...SUPERVISION_TYPES, componentEnabled: true },
   [REPORTED_VIOLATIONS]: { defaultValue: "" },
   [DISTRICT]: { defaultValue: "All" },

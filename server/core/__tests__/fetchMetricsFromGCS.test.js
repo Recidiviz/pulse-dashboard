@@ -34,15 +34,15 @@ describe("fetchMetricsFromGCS tests", () => {
   const returnedFileExtension = ".json";
   const returnedFiles = [returnedFile];
   const downloadFileResponse = "resolved value";
-  const value_keys = "some value keys";
-  const total_data_points = "some total data points";
-  const dimension_manifest = "some dimension manifest";
+  const valueKeys = "some value keys";
+  const totalDataPoints = "some total data points";
+  const dimensionManifest = "some dimension manifest";
   const downloadFileMetadataResponse = [
     {
       metadata: {
-        value_keys: JSON.stringify(value_keys),
-        total_data_points: total_data_points,
-        dimension_manifest: JSON.stringify(dimension_manifest),
+        value_keys: JSON.stringify(valueKeys),
+        total_data_points: totalDataPoints,
+        dimension_manifest: JSON.stringify(dimensionManifest),
       },
     },
   ];
@@ -66,9 +66,9 @@ describe("fetchMetricsFromGCS tests", () => {
         fileKey: returnedFileKey,
         extension: returnedFileExtension,
         metadata: {
-          value_keys,
-          total_data_points,
-          dimension_manifest,
+          value_keys: valueKeys,
+          total_data_points: totalDataPoints,
+          dimension_manifest: dimensionManifest,
         },
       });
     });
