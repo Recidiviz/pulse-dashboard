@@ -8,8 +8,8 @@
 // @Topbar
 // ---------------------------------------------------------
 
-@import '../../assets/styles/spec/settings/index';
-@import '../../assets/styles/spec/tools/index';
+@import "../../assets/styles/spec/settings/index";
+@import "../../assets/styles/spec/tools/index";
 
 .header {
   background-color: $default-white;
@@ -50,7 +50,8 @@
       > li {
         float: left;
 
-        > a, button {
+        > a,
+        button {
           color: $default-text-color;
           display: block;
           line-height: $header-height;

@@ -12,8 +12,8 @@
 // @Sidebar
 // ---------------------------------------------------------
 
-@import '../../assets/styles/spec/settings/index';
-@import '../../assets/styles/spec/tools/index';
+@import "../../assets/styles/spec/settings/index";
+@import "../../assets/styles/spec/tools/index";
 
 .sidebar {
   background-color: $default-white;
@@ -97,7 +97,6 @@
               }
             }
           }
-
 
           li {
             &.dropdown {
@@ -220,7 +219,7 @@
     &.active::before {
       background: $md-blue-500;
       border-radius: 50%;
-      content: '';
+      content: "";
       display: block;
       height: 8px;
       left: -8px;
@@ -246,7 +245,9 @@
       &::before {
         margin-left: -11px;
         font-size: 11px;
-        font-family: "themify"; font-weight: bold; content: "\e649";
+        font-family: "themify";
+        font-weight: bold;
+        content: "\e649";
       }
     }
   }

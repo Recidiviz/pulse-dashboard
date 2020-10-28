@@ -15,8 +15,8 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React from 'react';
-import ReactDOM from 'react-dom';
+// import React from "react";
+// import ReactDOM from "react-dom";
 // import App from './App';
 
 // TODO: Currently fails because it's not picking up all dependencies,
@@ -27,6 +27,4 @@ import ReactDOM from 'react-dom';
 //   ReactDOM.unmountComponentAtNode(div);
 // });
 
-it('does nothing for now', () => {
-
-});
+it("does nothing for now", () => {});

@@ -17,15 +17,17 @@
 
 import downloadjs from "downloadjs";
 import * as csvExport from "jsonexport/dist";
-import { timeStamp } from "./time";
+import moment from "moment";
 import JSZip from "jszip";
+
+import { timeStamp } from "./time";
 import { translate } from "../../../views/tenants/utils/i18nSettings";
 import getFilters from "./getFilters";
 import getViolation from "./getViolation";
 
 // Functions for flowing through browser-specific download functionality
 // https://stackoverflow.com/questions/9847580/how-to-detect-safari-chrome-ie-firefox-and-opera-browser
-const isIE = /*@cc_on!@*/ false || !!document.documentMode;
+const isIE = /* @cc_on!@ */ false || !!document.documentMode;
 const isEdge = !isIE && !!window.StyleMedia;
 
 function configureFilename(chartId, toggleStates, shouldZipDownload) {
@@ -49,6 +51,7 @@ function configureFilename(chartId, toggleStates, shouldZipDownload) {
   return filename;
 }
 
+// eslint-disable-next-line consistent-return
 function downloadCanvasImage(
   canvas,
   filename,
@@ -79,10 +82,11 @@ function downloadCanvasImage(
       canvas.width / 2,
       topPadding - 40
     );
-  }
-  const violation = getViolation(toggleStates);
-  if (violation) {
-    destinationCtx.fillText(violation, canvas.width / 2, topPadding - 20);
+    destinationCtx.fillText(
+      getViolation(toggleStates),
+      canvas.width / 2,
+      topPadding - 20
+    );
   }
   destinationCtx.drawImage(canvas, 0, topPadding);
 
@@ -93,9 +97,8 @@ function downloadCanvasImage(
       data: data.substring(22),
       type: "base64",
     };
-  } else {
-    downloadjs(data, filename, "image/png;base64");
   }
+  downloadjs(data, filename, "image/png;base64");
 }
 
 function downloadMethodologyFile(
@@ -106,7 +109,7 @@ function downloadMethodologyFile(
 ) {
   const filename = "methodology.txt";
   const infoChart = translate("methodology")[chartId] || [];
-  const exportDate = new Date().toLocaleDateString("en-US");
+  const exportDate = moment().format("M/D/YYYY");
   const filters = getFilters(toggleStates);
   const violation = getViolation(toggleStates);
 
@@ -122,9 +125,9 @@ function downloadMethodologyFile(
   text += "\r\n";
   text += `Export Date: ${exportDate}\r\n\n`;
 
-  infoChart.map((chart) => {
-    text += chart.header + "\r\n";
-    text += chart.body + "\r\n";
+  infoChart.forEach((chart) => {
+    text += `${chart.header}\r\n`;
+    text += `${chart.body}\r\n`;
     text += "\r\n";
   });
 
@@ -136,18 +139,14 @@ function downloadMethodologyFile(
 }
 
 function downloadZipFile(files, zipFilename) {
-  let zip = new JSZip();
-  files.map((file) => {
-    let fileTypeDescriptor = null;
+  const zip = new JSZip();
+  files.forEach((file) => {
     if (file.type === "binary") {
-      fileTypeDescriptor = { binary: true };
+      zip.file(file.name, file.data, { binary: true });
     } else if (file.type === "base64") {
-      fileTypeDescriptor = { base64: true };
+      zip.file(file.name, file.data, { base64: true });
     } else {
       throw new Error("File type not supported.");
-    }
-    if (fileTypeDescriptor !== null) {
-      zip.file(file.name, file.data, fileTypeDescriptor);
     }
   });
   zip.generateAsync({ type: "blob" }).then(function (content) {
@@ -159,7 +158,7 @@ function downloadObjectAsCsv(exportObj, exportName, shouldZipDownload) {
   const options = {
     mapHeaders: (header) => header.replace(/label|values./, ""),
   };
-  let obj = [];
+  const obj = [];
 
   csvExport(exportObj.series, options, (err, csv) => {
     if (err) throw err;
@@ -185,14 +184,6 @@ function downloadObjectAsCsv(exportObj, exportName, shouldZipDownload) {
   // We don't need to worry about Windows or not here,
   // because the downstream zip download works across browsers
   return obj;
-}
-
-function downloadObjectAsJson(exportObj, exportName) {
-  const dataStr = `data:text/json;charset=utf-8,${encodeURIComponent(
-    JSON.stringify(exportObj, null, "\t")
-  )}`;
-  const filename = `${exportName}.json`;
-  downloadjs(dataStr, filename, "text/json");
 }
 
 function configureDataDownloadButton(
@@ -221,10 +212,8 @@ function configureDataDownloadButton(
           let csvLabel = chartLabels[i];
           if (handleTimeStringLabels) {
             const currentLabelParts = chartLabels[i].split(" ");
-            if (
-              currentLabelParts.length > 1 &&
-              currentLabelParts[1] !== currentYear
-            ) {
+            if (currentLabelParts.length > 1) {
+              // eslint-disable-next-line prefer-destructuring
               currentYear = currentLabelParts[1];
             }
             if (currentLabelParts.length === 1 && currentYear.length > 1) {
@@ -234,7 +223,7 @@ function configureDataDownloadButton(
 
           if (
             (convertValuesToNumbers === undefined || convertValuesToNumbers) &&
-            !isNaN(Number(dataPoint))
+            !Number.isNaN(Number(dataPoint))
           ) {
             values[csvLabel] = Number(dataPoint);
           } else {
@@ -243,7 +232,7 @@ function configureDataDownloadButton(
           i += 1;
         });
 
-        let obj = {};
+        const obj = {};
         if (!isTable) {
           obj.label = dataset.label;
         }
@@ -269,7 +258,7 @@ function configureDataDownloadButton(
         filename,
         shouldZipDownload
       );
-      let files = [methodologyFile, csvFile];
+      const files = [methodologyFile, csvFile];
       downloadZipFile(files, "export_data.zip");
     } else {
       downloadObjectAsCsv(exportData, filename);
@@ -305,6 +294,33 @@ function configureImageDownload(
   } else {
     downloadCanvasImage(canvas, filename, chartTitle);
   }
+}
+
+function downloadHtmlElementAsImage(
+  chartId,
+  chartTitle,
+  chartDatasets,
+  chartLabels,
+  exportedStructureCallback,
+  toggleStates,
+  convertValuesToNumbers,
+  handleTimeStringLabels,
+  timeWindowDescription,
+  shouldZipDownload
+) {
+  const element = document.getElementById(chartId);
+
+  window.html2canvas(element, {}).then((canvas) => {
+    configureImageDownload(
+      canvas,
+      `${chartId}-${timeStamp()}.png`,
+      chartTitle,
+      toggleStates,
+      chartId,
+      timeWindowDescription,
+      shouldZipDownload
+    );
+  });
 }
 
 function configureDownloadButtons(
@@ -429,33 +445,6 @@ function downloadChartAsData(
   downloadChartData();
 }
 
-function downloadHtmlElementAsImage(
-  chartId,
-  chartTitle,
-  chartDatasets,
-  chartLabels,
-  exportedStructureCallback,
-  toggleStates,
-  convertValuesToNumbers,
-  handleTimeStringLabels,
-  timeWindowDescription,
-  shouldZipDownload
-) {
-  const element = document.getElementById(chartId);
-
-  window.html2canvas(element, {}).then((canvas) => {
-    configureImageDownload(
-      canvas,
-      `${chartId}-${timeStamp()}.png`,
-      chartTitle,
-      toggleStates,
-      chartId,
-      timeWindowDescription,
-      shouldZipDownload
-    );
-  });
-}
-
 function downloadHtmlElementAsData(
   chartId,
   chartTitle,
@@ -488,7 +477,6 @@ function downloadHtmlElementAsData(
 export {
   downloadCanvasImage,
   downloadObjectAsCsv,
-  downloadObjectAsJson,
   configureDownloadButtons,
   downloadChartAsImage,
   downloadChartAsData,

@@ -24,6 +24,8 @@
         }
       }
     ],
+    "radix": "off",
+    "no-console": "error",
     "import/prefer-default-export": "off"
   },
   "env": {
@@ -35,6 +37,16 @@
       "files": ["./server.js", "./server/**/*.js"],
       "env": {
         "node": true
+      }
+    },
+    {
+      "files": ["**/*.test.js"],
+      "env": {
+        "jest": true
+      },
+      "rules": {
+        "global-require": "off",
+        "no-shadow": "off"
       }
     }
   ]

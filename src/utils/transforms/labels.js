@@ -48,7 +48,7 @@ const raceValueToLabel = {
 
 const matrixViolationTypeToLabel = {
   TECHNICAL: "Technical",
-  SUBSTANCE_ABUSE: "Subs. Use",
+  SUBSTANCE_ABUSE: "Subs. use",
   MUNICIPAL: "Municipal",
   ABSCONDED: "Absconsion",
   MISDEMEANOR: "Misdemeanor",
@@ -60,6 +60,7 @@ const matrixViolationTypeToLabel = {
   ABSCONDING: "Absconding",
   HIGH_TECH: "High tech.",
   SUMMARY_OFFENSE: "Summary offense",
+  LAW: "Law",
 };
 
 function genderValueToHumanReadable(genderValue) {
@@ -99,22 +100,12 @@ function numberFromOfficerId(officerId) {
   return toInt(officerId);
 }
 
-/*
- * Returns the officer name from the canonical id format, '123: Firstname Lastname'.
- */
-function nameFromOfficerId(officerId) {
-  if (!officerId) {
-    return "";
-  }
-
-  const parts = officerId.split(":");
-  if (parts.length === 1) {
-    return officerId;
-  }
-  return parts[1].trim();
-}
-
 const violationCountLabel = (count) => (count === "8" ? "8+" : count);
+
+const pluralize = (count, term) => {
+  const base = `${count} ${term}`;
+  return count > 1 ? `${base}s` : base;
+};
 
 export {
   matrixViolationTypeToLabel,
@@ -126,6 +117,6 @@ export {
   toTitleCase,
   humanReadableTitleCase,
   numberFromOfficerId,
-  nameFromOfficerId,
   violationCountLabel,
+  pluralize,
 };

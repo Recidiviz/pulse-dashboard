@@ -2,13 +2,14 @@
   $color1: #235781;
   $color2: white;
 
-  display: inline-flex;
+  display: inline-block;
   height: 32px;
   border: 1px solid $color1;
   background-color: $color2;
   padding: 2px 8px;
   border-radius: 24px;
   margin-right: 10px;
+  width: auto;
 
   &--selected {
     background-color: $color1;
@@ -17,6 +18,7 @@
   &--shrinking {
     height: 28px;
     border-radius: 24px;
+    line-height: 18px;
   }
 
   &__label {
@@ -26,6 +28,8 @@
     font-weight: 500;
     border: none;
     background-color: $color2;
+    padding: 0 6px;
+
     &:focus {
       outline: none;
     }

@@ -15,7 +15,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import { applyTopLevelFilters } from "../helpers";
+import { applyTopLevelFilters, applyMatrixFilters } from "../helpers";
 
 describe("applyTopLevelFilters", () => {
   let filters = {};
@@ -259,6 +259,113 @@ describe("applyTopLevelFilters", () => {
             expect(filteredSupervisionLevels).toEqual(expected);
           });
         });
+      });
+    });
+  });
+});
+
+describe("applyMatrixFilters", () => {
+  let filters = {};
+  let filtered = [];
+  let data = [];
+
+  beforeEach(() => {
+    data = [
+      {
+        charge_category: "ALL",
+        district: "ALL",
+        month: "1",
+        reported_violations: "1",
+        state_code: "US_PA",
+        supervision_level: "ALL",
+        supervision_type: "ALL",
+        total_revocations: "35",
+        violation_type: "MED_TECH",
+        year: "2020",
+      },
+      {
+        charge_category: "ALL",
+        district: "ALL",
+        month: "1",
+        reported_violations: "1",
+        state_code: "US_PA",
+        supervision_level: "MEDIUM",
+        supervision_type: "PAROLE",
+        total_revocations: "5",
+        violation_type: "MED_TECH",
+        year: "2020",
+      },
+      {
+        charge_category: "ALL",
+        district: "ALL",
+        month: "1",
+        reported_violations: "1",
+        state_code: "US_PA",
+        supervision_level: "MEDIUM",
+        supervision_type: "PAROLE",
+        total_revocations: "10",
+        violation_type: "LAW",
+        year: "2020",
+      },
+      {
+        charge_category: "ALL",
+        district: "ALL",
+        month: "1",
+        reported_violations: "1",
+        state_code: "US_PA",
+        supervision_level: "MINIMUM",
+        supervision_type: "PROBATION",
+        total_revocations: "20",
+        violation_type: "LAW",
+        year: "2020",
+      },
+    ];
+  });
+
+  // For the applyMatrixFilters we do not need to worry about ALL values
+  // All values do not exist in violation_type and reported_violations fields
+  describe("violationType filter", () => {
+    let filteredViolationTypes = [];
+
+    describe("with violationType = 'MED_TECH' filter applied", () => {
+      beforeEach(() => {
+        filters = { violationType: "MED_TECH" };
+        filtered = applyMatrixFilters(filters)(data);
+        filteredViolationTypes = filtered.map((f) => f.violation_type);
+      });
+
+      it("correctly returns all violation_type items matching the filter term", () => {
+        const expected = ["MED_TECH", "MED_TECH"];
+
+        expect(filteredViolationTypes).toEqual(expected);
+      });
+    });
+
+    describe("with violationType = 'LAW' filter applied", () => {
+      beforeEach(() => {
+        filters = { violationType: "LAW" };
+        filtered = applyMatrixFilters(filters)(data);
+        filteredViolationTypes = filtered.map((f) => f.violation_type);
+      });
+
+      it("correctly returns supervision_level items matching the filter term", () => {
+        const expected = ["LAW", "LAW"];
+
+        expect(filteredViolationTypes).toEqual(expected);
+      });
+    });
+
+    describe("with violationType = 'BOGUS' filter applied", () => {
+      beforeEach(() => {
+        filters = { violationType: "BOGUS" };
+        filtered = applyMatrixFilters(filters)(data);
+        filteredViolationTypes = filtered.map((f) => f.violationType);
+      });
+
+      it("returns an empty array and does not throw an error", () => {
+        const expected = [];
+
+        expect(filteredViolationTypes).toEqual(expected);
       });
     });
   });

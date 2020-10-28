@@ -102,10 +102,13 @@ describe("test label", () => {
     expect(dataAfterTest).toBe(27);
   });
 
-  it("nameFromOfficerId", () => {
-    const dataForTest = "104: Mike Giacobbo";
-    const dataAfterTest = labelsMethods.nameFromOfficerId(dataForTest);
-    const dataExpected = "Mike Giacobbo";
-    expect(dataAfterTest).toEqual(dataExpected);
+  it("pluralize when it should not pluralize", () => {
+    const result = labelsMethods.pluralize(1, "violation");
+    expect(result).toEqual("1 violation");
+  });
+
+  it("pluralize when it should pluralize", () => {
+    const result = labelsMethods.pluralize(2, "violation");
+    expect(result).toEqual("2 violations");
   });
 });

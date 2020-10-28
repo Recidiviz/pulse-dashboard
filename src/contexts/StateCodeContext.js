@@ -15,13 +15,14 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React, { createContext, useState, useContext } from "react";
+import React, { createContext, useState, useContext, useEffect } from "react";
 
 import { useAuth0 } from "../react-auth0-spa";
 import {
   getAvailableStateCodes,
   doesUserHaveAccess,
 } from "../utils/authentication/user";
+import { setTranslateLocale } from "../views/tenants/utils/i18nSettings";
 
 const CURRENT_STATE_IN_SESSION = "adminUserCurrentStateInSession";
 
@@ -37,6 +38,10 @@ export const StateCodeProvider = ({ children }) => {
     // eslint-disable-next-line no-use-before-define
     getCurrentStateCode()
   );
+
+  useEffect(() => {
+    if (currentStateCode) setTranslateLocale(currentStateCode);
+  }, [currentStateCode]);
 
   /*
    * Returns the current state that should be viewed. This is retrieved from
@@ -72,7 +77,6 @@ export const StateCodeProvider = ({ children }) => {
   const contextValue = {
     currentStateCode,
     updateCurrentStateCode,
-    getAvailableStateCodes,
     refreshCurrentStateCode,
   };
 
