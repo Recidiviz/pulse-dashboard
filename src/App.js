@@ -40,11 +40,11 @@ import UsNdProgrammingExplore from "./views/tenants/us_nd/programming/Explore";
 import initFontAwesome from "./utils/initFontAwesome";
 import { initIntercomSettings } from "./utils/intercomSettings";
 import { initI18n } from "./views/tenants/utils/i18nSettings";
+import * as lanternTenant from "./views/tenants/utils/lanternTenants";
+import * as coreTenant from "./views/tenants/utils/coreTenants";
 
 import "./assets/scripts/index";
 import "./assets/styles/index.scss";
-import * as lanternTenant from "./views/tenants/utils/lanternTenants";
-import * as coreTenant from "./views/tenants/utils/coreTenants";
 
 initFontAwesome();
 initIntercomSettings();
