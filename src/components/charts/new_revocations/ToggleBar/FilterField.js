@@ -21,12 +21,12 @@ import "./FilterField.scss";
 
 import { usePageState } from "../../../../contexts/PageContext";
 
-const FilterField = ({ label, children }) => {
+const FilterField = ({ label, children, className }) => {
   const { isTopBarShrinking } = usePageState();
 
   return (
     <div
-      className={cn("FilterField", {
+      className={cn("FilterField", `${className}`, {
         "FilterField--shrink": isTopBarShrinking,
       })}
     >
@@ -42,9 +42,14 @@ const FilterField = ({ label, children }) => {
   );
 };
 
+FilterField.defaultProps = {
+  className: null,
+};
+
 FilterField.propTypes = {
   label: PropTypes.string.isRequired,
   children: PropTypes.node.isRequired,
+  className: PropTypes.string,
 };
 
 export default FilterField;
