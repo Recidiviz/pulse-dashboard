@@ -69,7 +69,7 @@ function addEmptyMonthsToData(dataPoints, monthCount, valueKey, emptyValue) {
     const year = dateMonthsAgo.getFullYear();
 
     if (dateMonthsAgo.getMonth() !== month - 1) {
-      /* eslint-disable no-console */
+      // eslint-disable-next-line no-console
       console.error(
         `Month mismatch: month=${month}, dateMonthsAgo=${dateMonthsAgo}`
       );

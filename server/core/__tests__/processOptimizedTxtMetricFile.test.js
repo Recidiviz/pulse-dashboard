@@ -19,6 +19,7 @@ const { unzipSync } = require("zlib");
 const {
   default: processOptimizedTxtMetricFile,
 } = require("../processOptimizedTxtMetricFile");
+
 jest.mock("zlib");
 
 describe("processOptimizedTxtMetricFile tests", () => {
