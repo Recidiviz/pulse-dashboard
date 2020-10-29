@@ -92,6 +92,7 @@ const RevocationsByDimension = ({
           <ModeSwitcher mode={mode} setMode={setMode} buttons={modeButtons} />
         ) : null
       }
+      classModifier={chartId}
     />
   );
 };

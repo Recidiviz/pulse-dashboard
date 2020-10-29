@@ -42,7 +42,7 @@ import { monthNamesAllWithYearsFromNumbers } from "../../../utils/transforms/mon
 import { generateTrendlineDataset } from "../../../utils/charts/trendline";
 import { filtersPropTypes } from "../propTypes";
 import { translate } from "../../../views/tenants/utils/i18nSettings";
-import RevocationsByDimension from "./RevocationsByDimension/RevocationsByDimensionComponent";
+import RevocationsByDimensionComponent from "./RevocationsByDimension/RevocationsByDimensionComponent";
 
 const chartId = "revocationsOverTime";
 
@@ -184,7 +184,7 @@ const RevocationsOverTime = ({
   const chart = countZero / metricPeriodMonths >= 0.33 ? barChart : lineChart;
 
   return (
-    <RevocationsByDimension
+    <RevocationsByDimensionComponent
       chartTitle={translate("revocationsOverTimeXAxis")}
       timeDescription={getTrailingLabelFromMetricPeriodMonthsToggle(
         metricPeriodMonths
@@ -195,7 +195,7 @@ const RevocationsOverTime = ({
       metricTitle={translate("revocationsOverTimeXAxis")}
       filterStates={filterStates}
       chart={chart}
-      classModifier="over-time"
+      classModifier={chartId}
     />
   );
 };
