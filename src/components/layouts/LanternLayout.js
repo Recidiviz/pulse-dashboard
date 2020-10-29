@@ -1,17 +1,15 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import { useAuth0 } from "../../react-auth0-spa";
-import { enableIntercomLauncherForUser } from "../../utils/intercomSettings";
 import TopBar from "../topbar/TopBar";
 import TopBarLogo from "../topbar/TopBarLogo";
 import TopBarUserMenuForAuthenticatedUser from "../topbar/TopBarUserMenuForAuthenticatedUser";
 import Footer from "../Footer";
 import usePageLayout from "../../hooks/usePageLayout";
+import useIntercom from "../../hooks/useIntercom";
 
-const Layout = ({ children }) => {
-  const { user } = useAuth0();
-  enableIntercomLauncherForUser(user);
+const LanternLayout = ({ children }) => {
+  useIntercom();
   usePageLayout();
 
   return (
@@ -30,11 +28,8 @@ const Layout = ({ children }) => {
   );
 };
 
-Layout.propTypes = {
-  children: PropTypes.oneOfType([
-    PropTypes.node,
-    PropTypes.arrayOf(PropTypes.node),
-  ]).isRequired,
+LanternLayout.propTypes = {
+  children: PropTypes.node.isRequired,
 };
 
-export default Layout;
+export default LanternLayout;
