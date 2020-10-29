@@ -32,7 +32,7 @@ describe("filterOptionsMap", () => {
     });
   });
 
-  describe("metricPeriodMonths fiter option", () => {
+  describe("metricPeriodMonths filter option", () => {
     it("is the same for both tenants", () => {
       result = filterOptionsMap;
       const expected = {
@@ -118,6 +118,8 @@ describe("filterOptionsMap", () => {
           label: "ALL",
           value: "All",
         },
+        componentEnabled: false,
+        filterEnabled: false,
       };
 
       expect(result.admissionType).toEqual(expected);
@@ -374,6 +376,8 @@ describe("filterOptionsMap", () => {
           label: "ALL",
           value: "All",
         },
+        componentEnabled: false,
+        filterEnabled: false,
       };
 
       expect(result.admissionType).toEqual(expected);

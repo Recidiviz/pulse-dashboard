@@ -79,6 +79,9 @@ const MOFilterOptions = {
     get summingOption() {
       return this.options[0];
     },
+    // TODO(425): Set to true when we are ready to launch admission type filters for MO
+    filterEnabled: false,
+    componentEnabled: false,
   },
   [CHARGE_CATEGORY]: {
     options: [
@@ -161,6 +164,9 @@ const PAFilterOptions = {
     get summingOption() {
       return this.options[0];
     },
+    // TODO(425): Set to true when we are ready to launch admission type filters for PA
+    filterEnabled: false,
+    componentEnabled: false,
   },
   [CHARGE_CATEGORY]: {
     options: [
