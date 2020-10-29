@@ -27,6 +27,10 @@ export function initI18n() {
       us_mo: TRANSLATIONS.MO,
       us_pa: TRANSLATIONS.PA,
     },
+    defaultLocale: "us_pa",
+    missingKeyFn(locale, value) {
+      return value;
+    },
   });
 }
 
