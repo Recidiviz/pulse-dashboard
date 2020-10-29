@@ -81,7 +81,7 @@ describe("applyTopLevelFilters", () => {
     describe("with supervisionLevel = 'MEDIUM' filter applied", () => {
       beforeEach(() => {
         filters = { supervisionLevel: "MEDIUM" };
-        filtered = applyTopLevelFilters(filters)(data);
+        filtered = applyTopLevelFilters({ filters })(data);
         filteredSupervisionLevels = filtered.map((f) => f.supervision_level);
       });
 
@@ -99,7 +99,7 @@ describe("applyTopLevelFilters", () => {
     describe("with supervisionLevel = 'ALL' filter applied", () => {
       beforeEach(() => {
         filters = { supervisionLevel: "ALL" };
-        filtered = applyTopLevelFilters(filters)(data);
+        filtered = applyTopLevelFilters({ filters })(data);
         filteredSupervisionLevels = filtered.map((f) => f.supervision_level);
       });
 
@@ -113,7 +113,7 @@ describe("applyTopLevelFilters", () => {
     describe("when the filters do not include supervisionLevel attribute", () => {
       beforeEach(() => {
         filters = {};
-        filtered = applyTopLevelFilters(filters)(data);
+        filtered = applyTopLevelFilters({ filters })(data);
       });
 
       it("returns the input data", () => {
@@ -130,11 +130,11 @@ describe("applyTopLevelFilters", () => {
       beforeEach(() => {
         missingCategoryAllData = data.slice(1);
         filters = { supervisionLevel: "ALL" };
-        filtered = applyTopLevelFilters(
+        filtered = applyTopLevelFilters({
           filters,
-          [],
-          treatCategoryAllAsAbsent
-        )(missingCategoryAllData);
+          skippedFilters: [],
+          treatCategoryAllAsAbsent,
+        })(missingCategoryAllData);
       });
 
       it("returns all of the rows", () => {
@@ -162,11 +162,11 @@ describe("applyTopLevelFilters", () => {
         describe("with supervisionLevel = 'ALL' filter applied", () => {
           beforeEach(() => {
             filters = { supervisionLevel: "ALL" };
-            filtered = applyTopLevelFilters(
+            filtered = applyTopLevelFilters({
               filters,
-              [],
-              treatCategoryAllAsAbsent
-            )(missingCategoryAllData);
+              skippedFilters: [],
+              treatCategoryAllAsAbsent,
+            })(missingCategoryAllData);
             filteredSupervisionLevels = filtered.map(
               (f) => f.supervision_level
             );
@@ -183,11 +183,11 @@ describe("applyTopLevelFilters", () => {
         describe("with supervisionLevel = 'MEDIUM' filter applied", () => {
           beforeEach(() => {
             filters = { supervisionLevel: "MEDIUM" };
-            filtered = applyTopLevelFilters(
+            filtered = applyTopLevelFilters({
               filters,
-              [],
-              treatCategoryAllAsAbsent
-            )(missingCategoryAllData);
+              skippedFilters: [],
+              treatCategoryAllAsAbsent,
+            })(missingCategoryAllData);
             filteredSupervisionLevels = filtered.map(
               (f) => f.supervision_level
             );
@@ -225,11 +225,11 @@ describe("applyTopLevelFilters", () => {
         describe("with supervisionLevel = 'ALL' filter applied", () => {
           beforeEach(() => {
             filters = { supervisionLevel: "ALL" };
-            filtered = applyTopLevelFilters(
+            filtered = applyTopLevelFilters({
               filters,
-              [],
-              treatCategoryAllAsAbsent
-            )(data);
+              skippedFilters: [],
+              treatCategoryAllAsAbsent,
+            })(data);
             filteredSupervisionLevels = filtered.map(
               (f) => f.supervision_level
             );
@@ -244,11 +244,11 @@ describe("applyTopLevelFilters", () => {
         describe("with supervisionLevel = 'MEDIUM' filter applied", () => {
           beforeEach(() => {
             filters = { supervisionLevel: "MEDIUM" };
-            filtered = applyTopLevelFilters(
+            filtered = applyTopLevelFilters({
               filters,
-              [],
-              treatCategoryAllAsAbsent
-            )(data);
+              skippedFilters: [],
+              treatCategoryAllAsAbsent,
+            })(data);
             filteredSupervisionLevels = filtered.map(
               (f) => f.supervision_level
             );

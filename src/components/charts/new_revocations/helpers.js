@@ -53,11 +53,11 @@ const includesAllItemFirst = (items) => {
   return items.length === 1 && isAllItem(items[0]);
 };
 
-export const applyTopLevelFilters = (
+export const applyTopLevelFilters = ({
   filters,
   skippedFilters = [],
-  treatCategoryAllAsAbsent = false
-) => (data) =>
+  treatCategoryAllAsAbsent = false,
+}) => (data) =>
   data.filter((item) => {
     if (
       filters[METRIC_PERIOD_MONTHS] &&
@@ -132,16 +132,16 @@ export const applyMatrixFilters = (filters) => (data) =>
     return true;
   });
 
-export const applyAllFilters = (
+export const applyAllFilters = ({
   filters,
   skippedFilters = [],
-  treatCategoryAllAsAbsent = false
-) => (data) => {
-  const filteredData = applyTopLevelFilters(
+  treatCategoryAllAsAbsent = false,
+}) => (data) => {
+  const filteredData = applyTopLevelFilters({
     filters,
     skippedFilters,
-    treatCategoryAllAsAbsent
-  )(data);
+    treatCategoryAllAsAbsent,
+  })(data);
   return applyMatrixFilters(filters)(filteredData);
 };
 
