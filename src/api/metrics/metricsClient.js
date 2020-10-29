@@ -15,7 +15,6 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import { parseResponseByFileFormat } from "./fileParser";
 import logger from "../../utils/logger";
 
 /**
@@ -45,33 +44,6 @@ async function callMetricsApi(endpoint, getTokenSilently) {
 }
 
 /**
- * A synchronous function that fetches data for the given state, metric type, and file. Takes in
- * functions for setting the API response and a flag indicating whether or not we are still
- * awaiting the API response.
- */
-const fetchChartData = async (
-  stateCode,
-  metricType,
-  file,
-  setApiResponse,
-  setAwaitingFlag,
-  getTokenSilently
-) => {
-  try {
-    const responseData = await callMetricsApi(
-      `${stateCode.toLowerCase()}/${metricType}/${file}`,
-      getTokenSilently
-    );
-
-    const metricFile = parseResponseByFileFormat(responseData, file);
-    setApiResponse(metricFile);
-    setAwaitingFlag(false);
-  } catch (error) {
-    logger.error(error);
-  }
-};
-
-/**
  * A convenience function returning whether or not the client is still awaiting what it needs to
  * display results to the user. We are ready if we are no longer loading the view, if we are no
  * longer awaiting the API, and if we have an authenticated user.
@@ -80,4 +52,4 @@ function awaitingResults(loading, user, awaitingApi) {
   return loading || !user || awaitingApi;
 }
 
-export { callMetricsApi, fetchChartData, awaitingResults };
+export { callMetricsApi, awaitingResults };
