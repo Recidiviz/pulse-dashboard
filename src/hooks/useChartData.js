@@ -31,7 +31,7 @@ import { callMetricsApi, awaitingResults } from "../api/metrics/metricsClient";
  */
 function useChartData(url, file) {
   const { loading, user, getTokenSilently } = useAuth0();
-  const [apiData, setApiData] = useState({});
+  const [apiData, setApiData] = useState([]);
   const [awaitingApi, setAwaitingApi] = useState(true);
   const [isError, setIsError] = useState(false);
 
