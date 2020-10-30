@@ -24,20 +24,20 @@ describe("LanternLayout tests", () => {
 
   it("should render children", () => {
     const { getByTestId } = render(
-      <LanternLayout>{mockChildren}</LanternLayout>
+      <LanternLayout stateCode="us_mo">{mockChildren}</LanternLayout>
     );
 
     expect(getByTestId(mockChildrenId)).toBeInTheDocument();
   });
 
   it("should use Intercom for Lantern layout", () => {
-    render(<LanternLayout>{mockChildren}</LanternLayout>);
+    render(<LanternLayout stateCode="us_mo">{mockChildren}</LanternLayout>);
 
     expect(useIntercom).toHaveBeenCalled();
   });
 
   it("should use Page Layout hook", () => {
-    render(<LanternLayout>{mockChildren}</LanternLayout>);
+    render(<LanternLayout stateCode="us_mo">{mockChildren}</LanternLayout>);
 
     expect(usePageLayout).toHaveBeenCalled();
   });
