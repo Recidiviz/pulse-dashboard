@@ -15,20 +15,18 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import filter from "lodash/fp/filter";
-import pipe from "lodash/fp/pipe";
-import sumBy from "lodash/fp/sumBy";
-import toInteger from "lodash/fp/toInteger";
+import { translate } from "../../../../views/tenants/utils/i18nSettings";
 
-/**
- * Sum population of revocation data
- *
- * @param {(string|number)} key
- * @param {Array} data
- * @returns {number}
- */
-export const sumCounts = (key, data) =>
-  pipe(
-    filter((item) => item.district === "ALL"),
-    sumBy((item) => toInteger(item[key]))
-  )(data);
+const getLabelByMode = (mode) => {
+  switch (mode) {
+    case "counts":
+      return `${translate("Revocation")} count`;
+    case "exits":
+      return "Percent revoked out of all exits";
+    case "rates":
+    default:
+      return translate("percentOfPopulationRevoked");
+  }
+};
+
+export default getLabelByMode;

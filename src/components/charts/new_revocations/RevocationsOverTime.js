@@ -23,7 +23,6 @@ import map from "lodash/fp/map";
 import pipe from "lodash/fp/pipe";
 
 import { groupByMonth } from "../common/bars/utils";
-import ExportMenu from "../ExportMenu";
 import Loading from "../../Loading";
 import Error from "../../Error";
 
@@ -43,14 +42,13 @@ import { monthNamesAllWithYearsFromNumbers } from "../../../utils/transforms/mon
 import { generateTrendlineDataset } from "../../../utils/charts/trendline";
 import { filtersPropTypes } from "../propTypes";
 import { translate } from "../../../views/tenants/utils/i18nSettings";
+import RevocationsByDimensionComponent from "./RevocationsByDimension/RevocationsByDimensionComponent";
 
 const chartId = "revocationsOverTime";
 
 const RevocationsOverTime = ({
   stateCode,
   dataFilter,
-  skippedFilters,
-  treatCategoryAllAsAbsent,
   metricPeriodMonths,
   filterStates,
 }) => {
@@ -77,7 +75,7 @@ const RevocationsOverTime = ({
         "total_revocations",
         0
       )
-  )(apiData, skippedFilters, treatCategoryAllAsAbsent);
+  )(apiData);
 
   const labels = monthNamesAllWithYearsFromNumbers(
     map("month", chartData),
@@ -186,43 +184,25 @@ const RevocationsOverTime = ({
   const chart = countZero / metricPeriodMonths >= 0.33 ? barChart : lineChart;
 
   return (
-    <div className="RevocationsByViolation">
-      <h4>
-        {translate("revocationsOverTimeXAxis")}
-        <ExportMenu
-          chartId={chartId}
-          chart={chart}
-          metricTitle={translate("revocationsOverTimeXAxis")}
-          timeWindowDescription={getTrailingLabelFromMetricPeriodMonthsToggle(
-            metricPeriodMonths
-          )}
-          filters={filterStates}
-        />
-      </h4>
-      <h6 className="pB-20">
-        {getTrailingLabelFromMetricPeriodMonthsToggle(metricPeriodMonths)}
-      </h6>
-
-      <div
-        className="chart-container fs-block"
-        style={{ position: "relative", height: "240px" }}
-      >
-        {chart}
-      </div>
-    </div>
+    <RevocationsByDimensionComponent
+      chartTitle={translate("revocationsOverTimeXAxis")}
+      timeDescription={getTrailingLabelFromMetricPeriodMonthsToggle(
+        metricPeriodMonths
+      )}
+      labels={chartLabels}
+      chartId={chartId}
+      datasets={datasets}
+      metricTitle={translate("revocationsOverTimeXAxis")}
+      filterStates={filterStates}
+      chart={chart}
+      classModifier={chartId}
+    />
   );
-};
-
-RevocationsOverTime.defaultProps = {
-  skippedFilters: [],
-  treatCategoryAllAsAbsent: false,
 };
 
 RevocationsOverTime.propTypes = {
   stateCode: PropTypes.string.isRequired,
   dataFilter: PropTypes.func.isRequired,
-  skippedFilters: PropTypes.arrayOf(PropTypes.string),
-  treatCategoryAllAsAbsent: PropTypes.bool,
   metricPeriodMonths: PropTypes.string.isRequired,
   filterStates: filtersPropTypes.isRequired,
 };

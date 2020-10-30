@@ -15,24 +15,4 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import { translate } from "../../../../views/tenants/utils/i18nSettings";
-
-export const findDenominatorKeyByMode = (mode) => {
-  switch (mode) {
-    case "rates":
-    default:
-      return "total_supervision_count";
-    case "exits":
-      return "total_exit_count";
-  }
-};
-
-export const getLabelByMode = (mode) => {
-  switch (mode) {
-    case "rates":
-    default:
-      return translate("percentOfPopulationRevoked");
-    case "exits":
-      return "Percent revoked out of all exits";
-  }
-};
+export { default } from "./RevocationsByRace";

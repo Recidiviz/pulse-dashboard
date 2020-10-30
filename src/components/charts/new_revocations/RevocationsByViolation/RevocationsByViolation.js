@@ -18,52 +18,50 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import BarChartWithLabels from "../BarChartWithLabels";
 import RevocationsByDimension from "../RevocationsByDimension";
+import RevocationsByViolationChart from "./RevocationsByViolationChart";
 import createGenerateChartData from "./createGenerateChartData";
-import getLabelByMode from "../utils/getLabelByMode";
-import { COLORS_LANTERN_SET } from "../../../../assets/scripts/constants/colors";
 import { filtersPropTypes } from "../../propTypes";
-import flags from "../../../../flags";
 
-const RevocationsByRace = ({
-  stateCode,
+const RevocationsByViolation = ({
   dataFilter,
   filterStates,
+  stateCode,
   timeDescription,
+  violationTypes,
 }) => (
   <RevocationsByDimension
-    chartId="revocationsByRace"
+    chartId="revocationsByViolationType"
     apiUrl={`${stateCode}/newRevocations`}
-    apiFile="revocations_matrix_distribution_by_race"
-    renderChart={({ chartId, data, denominators, numerators, mode }) => (
-      <BarChartWithLabels
-        id={chartId}
-        data={data}
-        labelColors={COLORS_LANTERN_SET}
-        xAxisLabel="Race/ethnicity and risk level"
-        yAxisLabel={getLabelByMode(mode)}
+    apiFile="revocations_matrix_distribution_by_violation"
+    renderChart={({ chartId, data, denominators, numerators }) => (
+      <RevocationsByViolationChart
         numerators={numerators}
         denominators={denominators}
+        chartId={chartId}
+        data={data}
       />
     )}
-    generateChartData={createGenerateChartData(dataFilter)}
-    chartTitle="Admissions by race/ethnicity and risk level"
-    metricTitle={(mode) =>
-      `${getLabelByMode(mode)} by race/ethnicity and risk level`
-    }
+    generateChartData={createGenerateChartData(dataFilter, violationTypes)}
+    chartTitle="Relative frequency of violation types"
+    metricTitle="Relative frequency of violation types"
     filterStates={filterStates}
     timeDescription={timeDescription}
-    modes={flags.enableRevocationRateByExit ? ["rates", "exits"] : []}
-    defaultMode="rates"
   />
 );
 
-RevocationsByRace.propTypes = {
-  stateCode: PropTypes.string.isRequired,
+RevocationsByViolation.propTypes = {
   dataFilter: PropTypes.func.isRequired,
   filterStates: filtersPropTypes.isRequired,
+  stateCode: PropTypes.string.isRequired,
   timeDescription: PropTypes.string.isRequired,
+  violationTypes: PropTypes.arrayOf(
+    PropTypes.shape({
+      key: PropTypes.string.isRequired,
+      label: PropTypes.string.isRequired,
+      type: PropTypes.string.isRequired,
+    })
+  ).isRequired,
 };
 
-export default RevocationsByRace;
+export default RevocationsByViolation;

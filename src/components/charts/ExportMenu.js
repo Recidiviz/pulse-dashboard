@@ -258,7 +258,8 @@ ExportMenu.propTypes = {
       data: PropTypes.arrayOf(PropTypes.number),
     })
   ),
-  chart: PropTypes.node,
+  // eslint-disable-next-line react/forbid-prop-types
+  chart: PropTypes.any,
   isTable: PropTypes.bool,
   elementLabels: PropTypes.arrayOf(PropTypes.string),
   tableData: PropTypes.arrayOf(

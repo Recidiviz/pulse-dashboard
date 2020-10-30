@@ -20,7 +20,11 @@ import pipe from "lodash/fp/pipe";
 import startCase from "lodash/fp/startCase";
 import { translate } from "../../views/tenants/utils/i18nSettings";
 
-export function riskLevelLabels() {
+export function getRiskLevels() {
+  return Object.keys(translate("riskLevelsMap"));
+}
+
+export function getRiskLevelLabels() {
   return Object.values(translate("riskLevelsMap"));
 }
 
