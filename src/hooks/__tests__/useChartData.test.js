@@ -21,7 +21,6 @@ import useChartData from "../useChartData";
 import Error from "../../components/Error";
 import { callMetricsApi } from "../../api/metrics/metricsClient";
 import { useAuth0 } from "../../react-auth0-spa";
-import logger from "../../utils/logger";
 
 jest.mock("../../react-auth0-spa");
 jest.mock("../../api/metrics/metricsClient");
@@ -53,7 +52,7 @@ describe("useChartData", () => {
       });
 
       // do not log the expected error - keep tests less verbose
-      jest.spyOn(logger, "error").mockImplementation(() => {});
+      jest.spyOn(console, "error").mockImplementation(() => {});
     });
 
     afterEach(() => {
