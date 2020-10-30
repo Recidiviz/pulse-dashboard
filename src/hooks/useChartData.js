@@ -17,7 +17,6 @@
 
 import { useState, useCallback, useEffect } from "react";
 import { useAuth0 } from "../react-auth0-spa";
-import logger from "../utils/logger";
 import {
   parseResponseByFileFormat,
   parseResponsesByFileFormat,
@@ -31,7 +30,7 @@ import { callMetricsApi, awaitingResults } from "../api/metrics/metricsClient";
  */
 function useChartData(url, file) {
   const { loading, user, getTokenSilently } = useAuth0();
-  const [apiData, setApiData] = useState({});
+  const [apiData, setApiData] = useState([]);
   const [awaitingApi, setAwaitingApi] = useState(true);
   const [isError, setIsError] = useState(false);
 
@@ -55,7 +54,7 @@ function useChartData(url, file) {
     } catch (error) {
       setAwaitingApi(false);
       setIsError(true);
-      logger.error(error);
+      console.error(error);
     }
   }, [file, getTokenSilently, url]);
 

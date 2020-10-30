@@ -8,11 +8,13 @@ import TopBarLogo from "../topbar/TopBarLogo";
 import TopBarUserMenuForAuthenticatedUser from "../topbar/TopBarUserMenuForAuthenticatedUser";
 import Footer from "../Footer";
 import usePageLayout from "../../hooks/usePageLayout";
+import { setTranslateLocale } from "../../views/tenants/utils/i18nSettings";
 
-const Layout = ({ children }) => {
+const Layout = ({ stateCode, children }) => {
   const { user } = useAuth0();
   enableIntercomLauncherForUser(user);
   usePageLayout();
+  setTranslateLocale(stateCode);
 
   return (
     <div id="app">
@@ -31,6 +33,7 @@ const Layout = ({ children }) => {
 };
 
 Layout.propTypes = {
+  stateCode: PropTypes.string.isRequired,
   children: PropTypes.oneOfType([
     PropTypes.node,
     PropTypes.arrayOf(PropTypes.node),
