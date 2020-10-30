@@ -30,13 +30,10 @@ import TopBarTitle from "../topbar/TopBarTitle";
 import TopBarUserMenuForAuthenticatedUser from "../topbar/TopBarUserMenuForAuthenticatedUser";
 import Footer from "../Footer";
 import useSideBar from "../../hooks/useSideBar";
-import { disableIntercomLauncher } from "../../utils/intercomSettings";
 
 const CoreLayout = ({ children }) => {
-  disableIntercomLauncher();
-
   const { isSideBarCollapsed, toggleSideBar } = useSideBar();
-  const location = useLocation();
+  const { pathname } = useLocation();
 
   return (
     <div id="app" className={isSideBarCollapsed ? "is-collapsed" : ""}>
@@ -79,7 +76,7 @@ const CoreLayout = ({ children }) => {
         <TopBar>
           <ul className="nav-left">
             <TopBarHamburgerMenu onClick={toggleSideBar} />
-            <TopBarTitle pathname={location.pathname} />
+            <TopBarTitle pathname={pathname} />
           </ul>
           <ul className="nav-right">
             <TopBarUserMenuForAuthenticatedUser />

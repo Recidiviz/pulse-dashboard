@@ -32,7 +32,7 @@ import Loading from "./components/Loading";
 import LanternLayout from "./components/layouts/LanternLayout";
 import CoreLayout from "./components/layouts/CoreLayout";
 
-jest.mock("./utils/intercomSettings");
+jest.mock("./utils/initIntercomSettings");
 jest.mock("./utils/initFontAwesome");
 jest.mock("./views/tenants/utils/i18nSettings");
 jest.mock("./components/layouts/LanternLayout");

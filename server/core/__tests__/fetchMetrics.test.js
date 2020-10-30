@@ -43,6 +43,9 @@ describe("fetchMetrics tests", () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
+
+    // do not log the expected error - keep tests less verbose
+    jest.spyOn(console, "log").mockImplementation(() => {});
   });
 
   it("should successfully process response with local data", (done) => {
