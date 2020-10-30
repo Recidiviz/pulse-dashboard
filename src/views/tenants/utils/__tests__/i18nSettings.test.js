@@ -47,7 +47,9 @@ describe("i18nSettings", () => {
       });
 
       it("translates a known term", () => {
-        expect(translate("percentRevoked")).toEqual("Percent revoked");
+        expect(translate("violationReports")).toEqual(
+          "violation reports and notices of citation"
+        );
       });
 
       it("passes through an unknown term", () => {
@@ -61,7 +63,7 @@ describe("i18nSettings", () => {
       });
 
       it("translates a known term", () => {
-        expect(translate("percentRevoked")).toEqual("Admission rate");
+        expect(translate("violationReports")).toEqual("violation reports");
       });
 
       it("passes through an unknown term", () => {

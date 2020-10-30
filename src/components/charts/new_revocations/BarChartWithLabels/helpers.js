@@ -15,20 +15,15 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import filter from "lodash/fp/filter";
-import pipe from "lodash/fp/pipe";
-import sumBy from "lodash/fp/sumBy";
-import toInteger from "lodash/fp/toInteger";
+import { Chart } from "react-chartjs-2";
 
 /**
- * Sum population of revocation data
- *
- * @param {(string|number)} key
- * @param {Array} data
- * @returns {number}
+ * A hacky function to regenerate legend labels with custom colors.
+ * If a chart bar is not statistically significant we should change its color/pattern (i.e. add line shading).
+ * But labels/legends were generated ahead of time so the chart needs to be told to re-render them.
  */
-export const sumCounts = (key, data) =>
-  pipe(
-    filter((item) => item.district === "ALL"),
-    sumBy((item) => toInteger(item[key]))
-  )(data);
+export function generateLabelsWithCustomColors(chart, colors) {
+  return Chart.defaults.global.legend.labels
+    .generateLabels(chart)
+    .map((label, i) => ({ ...label, fillStyle: colors[i] }));
+}

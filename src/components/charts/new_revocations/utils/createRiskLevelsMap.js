@@ -15,20 +15,42 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import filter from "lodash/fp/filter";
 import pipe from "lodash/fp/pipe";
-import sumBy from "lodash/fp/sumBy";
+import set from "lodash/fp/set";
+import getOr from "lodash/fp/getOr";
 import toInteger from "lodash/fp/toInteger";
 
 /**
- * Sum population of revocation data
- *
- * @param {(string|number)} key
- * @param {Array} data
- * @returns {number}
+ * Transform to
+ * {
+ *   ASIAN: { LOW: [1, 4], HIGH: [5, 9], ... } }
+ *   HISPANIC: { LOW: [2, 9], HIGH: [2, 8], ... } }
+ * }
  */
-export const sumCounts = (key, data) =>
-  pipe(
-    filter((item) => item.district === "ALL"),
-    sumBy((item) => toInteger(item[key]))
-  )(data);
+const createRiskLevelsMap = (numeratorKey, denominatorKey, field) => (
+  acc,
+  data
+) => {
+  return pipe(
+    set(
+      [data[field], data.risk_level],
+      [
+        getOr(0, [data[field], data.risk_level, 0], acc) +
+          toInteger(data[numeratorKey]),
+        getOr(0, [data[field], data.risk_level, 1], acc) +
+          toInteger(data[denominatorKey]),
+      ]
+    ),
+    set(
+      [data[field], "OVERALL"],
+      [
+        getOr(0, [data[field], "OVERALL", 0], acc) +
+          toInteger(data[numeratorKey]),
+        getOr(0, [data[field], "OVERALL", 1], acc) +
+          toInteger(data[denominatorKey]),
+      ]
+    )
+  )(acc);
+};
+
+export default createRiskLevelsMap;
