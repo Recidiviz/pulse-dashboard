@@ -7,10 +7,12 @@ import TopBarUserMenuForAuthenticatedUser from "../topbar/TopBarUserMenuForAuthe
 import Footer from "../Footer";
 import usePageLayout from "../../hooks/usePageLayout";
 import useIntercom from "../../hooks/useIntercom";
+import { setTranslateLocale } from "../../views/tenants/utils/i18nSettings";
 
-const LanternLayout = ({ children }) => {
+const LanternLayout = ({ stateCode, children }) => {
   useIntercom();
   usePageLayout();
+  setTranslateLocale(stateCode);
 
   return (
     <div id="app">
@@ -30,6 +32,7 @@ const LanternLayout = ({ children }) => {
 
 LanternLayout.propTypes = {
   children: PropTypes.node.isRequired,
+  stateCode: PropTypes.string.isRequired,
 };
 
 export default LanternLayout;

@@ -17,11 +17,6 @@
 import "jest-extended";
 import "@testing-library/jest-dom/extend-expect";
 
-import {
-  setTranslateLocale,
-  initI18n,
-} from "./views/tenants/utils/i18nSettings";
-import * as lanternTenant from "./views/tenants/utils/lanternTenants";
+import { initI18n } from "./views/tenants/utils/i18nSettings";
 
 initI18n();
-setTranslateLocale(lanternTenant.PA);
