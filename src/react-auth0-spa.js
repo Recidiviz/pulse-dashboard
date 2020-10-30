@@ -17,18 +17,17 @@ const overrideIfDemoMode = (Auth0ContextValue) => {
   }
 };
 
-export const Auth0Context = React.createContext();
+const Auth0Context = React.createContext({});
 export const useAuth0 = () => useContext(Auth0Context);
 export const Auth0Provider = ({
   children,
   onRedirectCallback = DEFAULT_REDIRECT_CALLBACK,
   ...initOptions
 }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState();
-  const [user, setUser] = useState();
-  const [auth0Client, setAuth0] = useState();
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [user, setUser] = useState(null);
+  const [auth0Client, setAuth0] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [popupOpen, setPopupOpen] = useState(false);
 
   useEffect(() => {
     const initAuth0 = async () => {
@@ -55,41 +54,12 @@ export const Auth0Provider = ({
     // eslint-disable-next-line
   }, []);
 
-  const loginWithPopup = async (params = {}) => {
-    setPopupOpen(true);
-    try {
-      await auth0Client.loginWithPopup(params);
-    } catch (error) {
-      // eslint-disable-next-line no-console
-      console.error(error);
-    } finally {
-      setPopupOpen(false);
-    }
-    const newUser = await auth0Client.getUser();
-    setUser(newUser);
-    setIsAuthenticated(true);
-  };
-
-  const handleRedirectCallback = async () => {
-    setLoading(true);
-    await auth0Client.handleRedirectCallback();
-    const newUser = await auth0Client.getUser();
-    setLoading(false);
-    setIsAuthenticated(true);
-    setUser(newUser);
-  };
-
   const contextValue = {
     isAuthenticated,
     user,
     loading,
-    popupOpen,
-    loginWithPopup,
-    handleRedirectCallback,
-    getIdTokenClaims: (...p) => auth0Client.getIdTokenClaims(...p),
     loginWithRedirect: (...p) => auth0Client.loginWithRedirect(...p),
     getTokenSilently: (...p) => auth0Client.getTokenSilently(...p),
-    getTokenWithPopup: (...p) => auth0Client.getTokenWithPopup(...p),
     logout: (...p) => auth0Client.logout(...p),
   };
 
