@@ -15,20 +15,31 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import filter from "lodash/fp/filter";
-import pipe from "lodash/fp/pipe";
-import sumBy from "lodash/fp/sumBy";
-import toInteger from "lodash/fp/toInteger";
+import getOr from "lodash/fp/getOr";
+import { calculateRate } from "../helpers/rate";
 
-/**
- * Sum population of revocation data
- *
- * @param {(string|number)} key
- * @param {Array} data
- * @returns {number}
- */
-export const sumCounts = (key, data) =>
-  pipe(
-    filter((item) => item.district === "ALL"),
-    sumBy((item) => toInteger(item[key]))
-  )(data);
+const getCounts = (transformedData, riskLevels, dimensions) => {
+  const dataPoints = [];
+  const numerators = [];
+  const denominators = [];
+
+  dimensions.forEach((dimension, i) => {
+    dataPoints.push([]);
+    numerators.push([]);
+    denominators.push([]);
+
+    riskLevels.forEach((riskLevel) => {
+      const numerator = getOr(0, [dimension, riskLevel, 0], transformedData);
+      const denominator = getOr(0, [dimension, riskLevel, 1], transformedData);
+      const rate = calculateRate(numerator, denominator).toFixed(2);
+
+      numerators[i].push(numerator);
+      denominators[i].push(denominator);
+      dataPoints[i].push(rate);
+    });
+  });
+
+  return { dataPoints, numerators, denominators };
+};
+
+export default getCounts;

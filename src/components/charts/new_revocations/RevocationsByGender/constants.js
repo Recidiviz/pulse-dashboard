@@ -15,20 +15,9 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import filter from "lodash/fp/filter";
-import pipe from "lodash/fp/pipe";
-import sumBy from "lodash/fp/sumBy";
-import toInteger from "lodash/fp/toInteger";
+import { COLORS } from "../../../../assets/scripts/constants/colors";
 
-/**
- * Sum population of revocation data
- *
- * @param {(string|number)} key
- * @param {Array} data
- * @returns {number}
- */
-export const sumCounts = (key, data) =>
-  pipe(
-    filter((item) => item.district === "ALL"),
-    sumBy((item) => toInteger(item[key]))
-  )(data);
+export const CHART_COLORS = [
+  COLORS["lantern-light-blue"],
+  COLORS["lantern-orange"],
+];

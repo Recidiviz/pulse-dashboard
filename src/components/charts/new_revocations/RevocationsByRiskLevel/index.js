@@ -15,20 +15,4 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import filter from "lodash/fp/filter";
-import pipe from "lodash/fp/pipe";
-import sumBy from "lodash/fp/sumBy";
-import toInteger from "lodash/fp/toInteger";
-
-/**
- * Sum population of revocation data
- *
- * @param {(string|number)} key
- * @param {Array} data
- * @returns {number}
- */
-export const sumCounts = (key, data) =>
-  pipe(
-    filter((item) => item.district === "ALL"),
-    sumBy((item) => toInteger(item[key]))
-  )(data);
+export { default } from "./RevocationsByRiskLevel";

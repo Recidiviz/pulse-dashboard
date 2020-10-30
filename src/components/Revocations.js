@@ -13,7 +13,7 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
-// =======
+// =============================================================================
 
 import React, { useCallback, useState } from "react";
 import Sticky from "react-sticky-fill";
@@ -96,7 +96,6 @@ const Revocations = () => {
     filters,
     userDistricts
   );
-  const allDataFilter = applyAllFilters(transformedFilters);
 
   const timeDescription = getTimeDescription(
     filters[METRIC_PERIOD_MONTHS],
@@ -169,8 +168,10 @@ const Revocations = () => {
       <div className="bgc-white p-20 m-20">
         <ErrorBoundary>
           <RevocationCountOverTime
-            dataFilter={allDataFilter}
-            skippedFilters={[METRIC_PERIOD_MONTHS]}
+            dataFilter={applyAllFilters({
+              filters: transformedFilters,
+              skippedFilters: [METRIC_PERIOD_MONTHS],
+            })}
             filterStates={filters}
             metricPeriodMonths={filters[METRIC_PERIOD_MONTHS]}
             stateCode={stateCode}
@@ -181,7 +182,7 @@ const Revocations = () => {
         <div className="matrix-container bgc-white p-20 mR-20">
           <ErrorBoundary>
             <RevocationMatrix
-              dataFilter={applyTopLevelFilters(transformedFilters)}
+              dataFilter={applyTopLevelFilters({ filters: transformedFilters })}
               filterStates={filters}
               updateFilters={updateFilters}
               timeDescription={timeDescription}
@@ -197,7 +198,7 @@ const Revocations = () => {
         riskLevelChart={
           <ErrorBoundary>
             <RevocationsByRiskLevel
-              dataFilter={allDataFilter}
+              dataFilter={applyAllFilters({ filters: transformedFilters })}
               filterStates={filters}
               stateCode={stateCode}
               timeDescription={timeDescription}
@@ -207,7 +208,7 @@ const Revocations = () => {
         violationChart={
           <ErrorBoundary>
             <RevocationsByViolation
-              dataFilter={allDataFilter}
+              dataFilter={applyAllFilters({ filters: transformedFilters })}
               filterStates={filters}
               stateCode={stateCode}
               timeDescription={timeDescription}
@@ -218,7 +219,7 @@ const Revocations = () => {
         genderChart={
           <ErrorBoundary>
             <RevocationsByGender
-              dataFilter={allDataFilter}
+              dataFilter={applyAllFilters({ filters: transformedFilters })}
               filterStates={filters}
               stateCode={stateCode}
               timeDescription={timeDescription}
@@ -228,7 +229,7 @@ const Revocations = () => {
         raceChart={
           <ErrorBoundary>
             <RevocationsByRace
-              dataFilter={allDataFilter}
+              dataFilter={applyAllFilters({ filters: transformedFilters })}
               filterStates={filters}
               stateCode={stateCode}
               timeDescription={timeDescription}
@@ -238,8 +239,10 @@ const Revocations = () => {
         districtChart={
           <ErrorBoundary>
             <RevocationsByDistrict
-              dataFilter={allDataFilter}
-              skippedFilters={[DISTRICT]}
+              dataFilter={applyAllFilters({
+                filters: transformedFilters,
+                skippedFilters: [DISTRICT],
+              })}
               filterStates={filters}
               currentDistricts={
                 stateCode === lanternTenant.MO
@@ -256,8 +259,10 @@ const Revocations = () => {
       <div className="bgc-white m-20 p-20">
         <ErrorBoundary>
           <CaseTable
-            dataFilter={allDataFilter}
-            treatCategoryAllAsAbsent
+            dataFilter={applyAllFilters({
+              filters: transformedFilters,
+              treatCategoryAllAsAbsent: true,
+            })}
             filterStates={filters}
             metricPeriodMonths={filters[METRIC_PERIOD_MONTHS]}
             stateCode={stateCode}

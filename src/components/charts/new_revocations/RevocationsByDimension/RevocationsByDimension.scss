@@ -15,20 +15,20 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import filter from "lodash/fp/filter";
-import pipe from "lodash/fp/pipe";
-import sumBy from "lodash/fp/sumBy";
-import toInteger from "lodash/fp/toInteger";
+.RevocationsByDimension {
+  &__time {
+    padding-bottom: 20px;
+  }
 
-/**
- * Sum population of revocation data
- *
- * @param {(string|number)} key
- * @param {Array} data
- * @returns {number}
- */
-export const sumCounts = (key, data) =>
-  pipe(
-    filter((item) => item.district === "ALL"),
-    sumBy((item) => toInteger(item[key]))
-  )(data);
+  &__chart-wrapper {
+    position: relative;
+    margin: auto;
+    height: 60vh;
+    width: 80vw;
+    &--revocationsOverTime {
+      position: relative;
+      height: 240px;
+      width: auto;
+    }
+  }
+}

@@ -60,8 +60,6 @@ const RevocationMatrix = ({
   stateCode,
   dataFilter,
   filterStates,
-  skippedFilters = [],
-  treatCategoryAllAsAbsent = false,
   timeDescription,
   updateFilters,
   violationTypes,
@@ -85,7 +83,7 @@ const RevocationMatrix = ({
   const filteredData = pipe(
     dataFilter,
     filter((data) => violationTypes.includes(data.violation_type))
-  )(apiData, skippedFilters, treatCategoryAllAsAbsent);
+  )(apiData);
 
   const dataMatrix = pipe(
     groupBy("violation_type"),
@@ -215,16 +213,9 @@ const RevocationMatrix = ({
   );
 };
 
-RevocationMatrix.defaultProps = {
-  treatCategoryAllAsAbsent: false,
-  skippedFilters: [],
-};
-
 RevocationMatrix.propTypes = {
   dataFilter: PropTypes.func.isRequired,
   filterStates: filtersPropTypes.isRequired,
-  skippedFilters: PropTypes.arrayOf(PropTypes.string),
-  treatCategoryAllAsAbsent: PropTypes.bool,
   stateCode: PropTypes.string.isRequired,
   timeDescription: PropTypes.string.isRequired,
   updateFilters: PropTypes.func.isRequired,

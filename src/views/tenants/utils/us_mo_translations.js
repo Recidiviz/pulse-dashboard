@@ -30,7 +30,6 @@ export default {
   revoked: "revoked",
   Revocation: "Revocation",
   Revocations: "Revocations",
-  percentRevoked: "Percent revoked",
   percentOfPopulationRevoked: "Percent of standing population revoked",
   matrixExplanationP1: `This chart plots all people who were revoked to prison
 during the selected time period, according to their most serious violation
