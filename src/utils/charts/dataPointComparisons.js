@@ -15,7 +15,6 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-
 const nullSafeComparison = (field, filter) => {
   if (!field && !filter) return true;
   if (!field) return false;

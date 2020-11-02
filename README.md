@@ -20,6 +20,10 @@ Bringing criminal justice analysis to decision makers to help reduce incarcerati
 
    `git clone git@github.com:Recidiviz/pulse-dashboard.git`
 
+1. Ensure you are using the correct version of Node (if you don't use NVM, just check the .nvmrc file and ensure you are using that version).
+
+  `nvm use`
+
 1. Install Yarn package manager:
 
    `brew install yarn`
@@ -36,7 +40,7 @@ That's it! We suggest installing a linting package for your preferred code edito
 
 Second and last, set up your environment variables.
 
-For Recidiviz staff, download and unzip the `pulse_dashboard_env_vars.zip` from the shared 1Password vault and copy the files into the project directory. 
+For Recidiviz staff, download and unzip the `pulse_dashboard_env_vars.zip` from the shared 1Password vault and copy the files into the project directory.
 For anyone trying to set this up independently, construct environment variables by hand based on the explanations below.
 
 Explanation of frontend env files:
@@ -55,6 +59,7 @@ Expected frontend environment variables include:
 - `REACT_APP_AUTH_ENV` - a string indicating the "auth environment" used to point to the correct Auth0 tenant. Either "development" or "production". Must match the backend `AUTH_ENV` variable.
 - `REACT_APP_FEEDBACK_URL` - the URL of the Recidiviz Dashboard Feedback form.
 - `REACT_APP_IS_DEMO (OPTIONAL)` - whether or not to run the frontend in demo mode, which will run the app without requiring authentication. This should only be set when running locally and should be provided through the command line, along with the backend sibling below. To run the app in demo mode, use the following command: `./run_in_demo_mode.sh`
+- `REACT_APP_INTERCOM_APP_ID` - the APP_ID for Intercom, the customer engagement and support tool. Should be included in local, development, and production environments. The local and development environments point at the 'Recidiviz - [TEST]' Intercom workspace, and production environment points at the live 'Recidiviz' Intercom workspace.
 
 
 Expected backend environment variables include:

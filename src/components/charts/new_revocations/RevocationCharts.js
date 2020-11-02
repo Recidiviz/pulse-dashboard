@@ -17,6 +17,7 @@
 
 import React, { useState } from "react";
 import PropTypes from "prop-types";
+import { translate } from "../../../views/tenants/utils/i18nSettings";
 
 const CHARTS = ["District", "Risk level", "Violation", "Gender", "Race"];
 
@@ -45,7 +46,7 @@ const RevocationCharts = ({
   };
 
   return (
-    <div className="static-charts d-f bgc-white m-20">
+    <div className="RevocationCharts static-charts d-f bgc-white m-20">
       <div className="chart-type-labels p-20">
         {CHARTS.map((chart) => (
           <div key={chart}>
@@ -56,7 +57,7 @@ const RevocationCharts = ({
               }`}
               onClick={() => setSelectedChart(chart)}
             >
-              {chart}
+              {translate(chart)}
             </button>
           </div>
         ))}

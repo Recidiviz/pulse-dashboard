@@ -33,7 +33,11 @@ import { COLORS } from "../../assets/scripts/constants/colors";
 import { configureDownloadButtons } from "../../assets/scripts/utils/downloads";
 import geographyObject from "../../assets/static/maps/us_nd.json";
 import { colorForValue } from "../../utils/charts/choropleth";
-import { toHtmlFriendly } from "../../utils/transforms/labels";
+import {
+  toHtmlFriendly,
+  toHumanReadable,
+  toTitleCase,
+} from "../../utils/transforms/labels";
 import { metricTypePropType } from "./propTypes";
 import { METRIC_TYPES } from "../constants";
 
@@ -302,7 +306,13 @@ class GeoViewTimeChart extends Component {
         this.props.supervisionType
       );
 
-      officeNames.push(officeName);
+      officeNames.push(
+        toTitleCase(
+          toHumanReadable(
+            officeName.toLowerCase().replace(this.props.stateCode, "")
+          )
+        )
+      );
       dataPointsByOffice.push(officeDataValue);
     });
 
@@ -561,7 +571,7 @@ class GeoViewTimeChart extends Component {
       return (
         <div
           id={chartId}
-          className="map-container"
+          className="GeoViewTimeChart map-container"
           style={RATIO_CONTAINER_OUTER_STYLE}
         >
           <div style={RATIO_CONTAINER_INNER_STYLE}>

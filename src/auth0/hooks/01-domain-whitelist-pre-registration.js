@@ -17,20 +17,18 @@
 @param {function} cb - function (error, response)
 */
 module.exports = function (user, context, cb) {
-  var response = {};
+  const response = {};
 
-  const whitelist = []; //add authorized domains here
-  const userHasAccess = whitelist.some(
-    function (domain) {
-      const emailSplit = user.email.split('@');
-      return emailSplit[emailSplit.length - 1].toLowerCase() === domain;
-    }
-  );
+  const whitelist = []; // add authorized domains here
+  const userHasAccess = whitelist.some(function (domain) {
+    const emailSplit = user.email.split("@");
+    return emailSplit[emailSplit.length - 1].toLowerCase() === domain;
+  });
 
   if (userHasAccess) {
     response.user = user;
     cb(null, response);
   } else {
-    cb('Access denied.', null);
+    cb("Access denied.", null);
   }
 };

@@ -25,8 +25,8 @@ import {
   downloadHtmlElementAsImage,
   downloadHtmlElementAsData,
 } from "../../assets/scripts/utils/downloads";
-import chartIdToInfo from "../../utils/charts/info";
 import { filtersPropTypes } from "./propTypes";
+import { translate } from "../../views/tenants/utils/i18nSettings";
 
 const ExportMenu = ({
   chartId,
@@ -43,7 +43,7 @@ const ExportMenu = ({
   tableLabels = null,
 }) => {
   const [isModalOpened, setIsModalOpened] = useState(false);
-  const additionalInfo = chartIdToInfo[chartId] || [];
+  const additionalInfo = translate("methodology")[chartId] || [];
 
   const exportedStructureCallback = () => ({
     metric: metricTitle,
@@ -59,7 +59,7 @@ const ExportMenu = ({
   }, []);
 
   return (
-    <span className="fa-pull-right">
+    <span className="ExportMenu fa-pull-right">
       <Dropdown drop="down" alignRight>
         <Dropdown.Toggle
           variant="link"
@@ -208,8 +208,8 @@ const ExportMenu = ({
           <Modal.Body>
             {additionalInfo.length > 0 ? (
               <ul>
-                {additionalInfo.map((info, i) => (
-                  <div key={i}>
+                {additionalInfo.map((info) => (
+                  <div key={info.header}>
                     <h6>{info.header}</h6>
                     <p>{info.body}</p>
                   </div>
@@ -258,7 +258,8 @@ ExportMenu.propTypes = {
       data: PropTypes.arrayOf(PropTypes.number),
     })
   ),
-  chart: PropTypes.node,
+  // eslint-disable-next-line react/forbid-prop-types
+  chart: PropTypes.any,
   isTable: PropTypes.bool,
   elementLabels: PropTypes.arrayOf(PropTypes.string),
   tableData: PropTypes.arrayOf(

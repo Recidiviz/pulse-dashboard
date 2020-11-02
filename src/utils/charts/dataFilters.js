@@ -21,7 +21,6 @@ import {
   getDimensionKey,
   getDimensionValue,
   getValueKey,
-  convertFromStringToUnflattenedMatrix,
   validateMetadata,
 } from "../../api/metrics/optimizedFormatHelpers";
 
@@ -40,7 +39,7 @@ function filterOptimizedDataFormat(unflattenedValues, metadata, filterFn) {
     let j = 0;
     for (j = 0; j < dimensions.length; j += 1) {
       const dimensionValueIndex = unflattenedValues[j][i];
-      const dimensionKeyIndex = i;
+      // const dimensionKeyIndex = i;
 
       const dimensionKey = getDimensionKey(dimensions, j);
       const dimensionValue = getDimensionValue(
@@ -48,8 +47,10 @@ function filterOptimizedDataFormat(unflattenedValues, metadata, filterFn) {
         j,
         dimensionValueIndex
       );
-
-      matchesFilter = filterFn({[dimensionKey]: dimensionValue}, dimensionKey);
+      matchesFilter = filterFn(
+        { [dimensionKey]: dimensionValue },
+        dimensionKey
+      );
       if (!matchesFilter) {
         break;
       }
@@ -58,6 +59,7 @@ function filterOptimizedDataFormat(unflattenedValues, metadata, filterFn) {
     }
 
     if (!matchesFilter) {
+      /* eslint-disable-next-line no-continue */
       continue;
     }
 
@@ -77,25 +79,34 @@ function filterOptimizedDataFormat(unflattenedValues, metadata, filterFn) {
   return filteredDataPoints;
 }
 
+function filterDatasetByMetricPeriodMonths(dataset, metricPeriodMonths) {
+  return dataset.filter(
+    (element) => element.metric_period_months === metricPeriodMonths
+  );
+}
+
 function filterDatasetByToggleFilters(dataset, toggleFilters) {
   const toggleKey = Object.keys(toggleFilters)[0];
   const toggleValue = toggleFilters[toggleKey].toUpperCase();
 
-  return dataset.filter((element) => String(element[toggleKey]).toUpperCase() === String(toggleValue));
-}
-
-function filterDatasetByMetricPeriodMonths(dataset, metricPeriodMonths) {
-  return dataset.filter((element) => element.metric_period_months === metricPeriodMonths);
+  return dataset.filter(
+    (element) =>
+      String(element[toggleKey]).toUpperCase() === String(toggleValue)
+  );
 }
 
 function filterDatasetByDistrict(dataset, districts) {
   return dataset.filter((element) =>
-    districts.map(d => d.toUpperCase()).includes(String(element.district).toUpperCase())
+    districts
+      .map((d) => d.toUpperCase())
+      .includes(String(element.district).toUpperCase())
   );
 }
 
 function filterDatasetBySupervisionType(dataset, supervisionType) {
-  return filterDatasetByToggleFilters(dataset, { supervision_type: supervisionType });
+  return filterDatasetByToggleFilters(dataset, {
+    supervision_type: supervisionType,
+  });
 }
 
 export {

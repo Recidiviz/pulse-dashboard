@@ -23,7 +23,6 @@ import map from "lodash/fp/map";
 import pipe from "lodash/fp/pipe";
 
 import { groupByMonth } from "../common/bars/utils";
-import ExportMenu from "../ExportMenu";
 import Loading from "../../Loading";
 import Error from "../../Error";
 
@@ -43,14 +42,14 @@ import { sortFilterAndSupplementMostRecentMonths } from "../../../utils/transfor
 import { monthNamesAllWithYearsFromNumbers } from "../../../utils/transforms/months";
 import { generateTrendlineDataset } from "../../../utils/charts/trendline";
 import { filtersPropTypes } from "../propTypes";
+import { translate } from "../../../views/tenants/utils/i18nSettings";
+import RevocationsByDimensionComponent from "./RevocationsByDimension/RevocationsByDimensionComponent";
 
 const chartId = "revocationsOverTime";
 
 const RevocationsOverTime = ({
   stateCode,
   dataFilter,
-  skippedFilters,
-  treatCategoryAllAsAbsent,
   metricPeriodMonths,
   filterStates,
 }) => {
@@ -68,14 +67,12 @@ const RevocationsOverTime = ({
     return <Error />;
   }
 
-  const filterFn = dataFilter(skippedFilters, treatCategoryAllAsAbsent);
-
   const chartData = pipe(
     (metricFile) =>
       filterOptimizedDataFormat(
         unflattenedValues,
         metricFile.metadata,
-        filterFn
+        dataFilter
       ),
     groupByMonth(["total_revocations"]),
     (dataset) =>
@@ -100,7 +97,7 @@ const RevocationsOverTime = ({
 
   const datasets = [
     {
-      label: "Revocations",
+      label: translate("Revocations"),
       borderColor: COLORS["lantern-light-blue"],
       pointBackgroundColor: COLORS["lantern-light-blue"],
       fill: false,
@@ -134,7 +131,7 @@ const RevocationsOverTime = ({
         {
           scaleLabel: {
             display: true,
-            labelString: "People revoked",
+            labelString: `Number of people ${translate("revoked")}`,
           },
           ticks: {
             min: 0,
@@ -142,7 +139,7 @@ const RevocationsOverTime = ({
               if (value % 1 === 0) {
                 return value;
               }
-              return 0;
+              return null;
             },
             suggestedMax: maxValue,
           },
@@ -194,43 +191,25 @@ const RevocationsOverTime = ({
   const chart = countZero / metricPeriodMonths >= 0.33 ? barChart : lineChart;
 
   return (
-    <div>
-      <h4>
-        Number of admissions per month
-        <ExportMenu
-          chartId={chartId}
-          chart={chart}
-          metricTitle="Number of admissions per month"
-          timeWindowDescription={getTrailingLabelFromMetricPeriodMonthsToggle(
-            metricPeriodMonths
-          )}
-          filters={filterStates}
-        />
-      </h4>
-      <h6 className="pB-20">
-        {getTrailingLabelFromMetricPeriodMonthsToggle(metricPeriodMonths)}
-      </h6>
-
-      <div
-        className="chart-container fs-block"
-        style={{ position: "relative", height: "180px" }}
-      >
-        {chart}
-      </div>
-    </div>
+    <RevocationsByDimensionComponent
+      chartTitle={translate("revocationsOverTimeXAxis")}
+      timeDescription={getTrailingLabelFromMetricPeriodMonthsToggle(
+        metricPeriodMonths
+      )}
+      labels={chartLabels}
+      chartId={chartId}
+      datasets={datasets}
+      metricTitle={translate("revocationsOverTimeXAxis")}
+      filterStates={filterStates}
+      chart={chart}
+      classModifier={chartId}
+    />
   );
-};
-
-RevocationsOverTime.defaultProps = {
-  skippedFilters: [],
-  treatCategoryAllAsAbsent: false,
 };
 
 RevocationsOverTime.propTypes = {
   stateCode: PropTypes.string.isRequired,
   dataFilter: PropTypes.func.isRequired,
-  skippedFilters: PropTypes.arrayOf(PropTypes.string),
-  treatCategoryAllAsAbsent: PropTypes.bool,
   metricPeriodMonths: PropTypes.string.isRequired,
   filterStates: filtersPropTypes.isRequired,
 };

@@ -15,15 +15,15 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import moment from 'moment';
+import moment from "moment";
 
 function timeStamp() {
   const now = new Date();
   const date = [now.getMonth() + 1, now.getDate(), now.getFullYear()];
   const time = [now.getHours(), now.getMinutes(), now.getSeconds()];
-  const suffix = (time[0] < 12) ? 'AM' : 'PM';
+  const suffix = time[0] < 12 ? "AM" : "PM";
 
-  time[0] = (time[0] < 12) ? time[0] : time[0] - 12;
+  time[0] = time[0] < 12 ? time[0] : time[0] - 12;
   time[0] = time[0] || 12;
 
   for (let i = 1; i < 3; i += 1) {
@@ -31,7 +31,7 @@ function timeStamp() {
       time[i] = `0${time[i]}`;
     }
   }
-  return `${date.join('-')}-${time.join('-')}-${suffix}`;
+  return `${date.join("-")}-${time.join("-")}-${suffix}`;
 }
 
 function getMonthsBetween(startDateValue, endDateValue) {
@@ -40,13 +40,10 @@ function getMonthsBetween(startDateValue, endDateValue) {
   const months = [];
 
   while (!startDate.isAfter(endDate)) {
-    months.push(startDate.format('MMMM'));
-    startDate.add(1, 'month');
+    months.push(startDate.format("MMMM"));
+    startDate.add(1, "month");
   }
   return months;
 }
 
-export {
-  timeStamp,
-  getMonthsBetween,
-};
+export { timeStamp, getMonthsBetween };

@@ -15,205 +15,53 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React, { useState } from "react";
+import React from "react";
 import PropTypes from "prop-types";
-import { Bar } from "react-chartjs-2";
 
-import pipe from "lodash/fp/pipe";
-import reduce from "lodash/fp/reduce";
-
-import {
-  dataTransformer,
-  findDenominatorKeyByMode,
-  getCounts,
-  getLabelByMode,
-} from "./helpers";
-import ModeSwitcher from "../ModeSwitcher";
-import DataSignificanceWarningIcon from "../../DataSignificanceWarningIcon";
-import ExportMenu from "../../ExportMenu";
-import Loading from "../../../Loading";
-import Error from "../../../Error";
-
-import flags from "../../../../flags";
-import {
-  COLORS,
-  COLORS_LANTERN_SET,
-} from "../../../../assets/scripts/constants/colors";
-import useChartData from "../../../../hooks/useChartData";
-import { axisCallbackForPercentage } from "../../../../utils/charts/axis";
-import { filterOptimizedDataFormat } from "../../../../utils/charts/dataFilters";
-import {
-  generateLabelsWithCustomColors,
-  getBarBackgroundColor,
-  isDenominatorsMatrixStatisticallySignificant,
-  tooltipForFooterWithNestedCounts,
-} from "../../../../utils/charts/significantStatistics";
-import { tooltipForRateMetricWithNestedCounts } from "../../../../utils/charts/toggles";
+import BarChartWithLabels from "../BarChartWithLabels";
+import RevocationsByDimension from "../RevocationsByDimension";
+import createGenerateChartData from "./createGenerateChartData";
+import getLabelByMode from "../utils/getLabelByMode";
+import { COLORS_LANTERN_SET } from "../../../../assets/scripts/constants/colors";
 import { filtersPropTypes } from "../../propTypes";
-import { riskLevelLabels } from "../../../../utils/transforms/labels";
-
-const modeButtons = [
-  { label: "Percent revoked of standing population", value: "rates" },
-  { label: "Percent revoked of exits", value: "exits" },
-];
-
-const chartId = "revocationsByRace";
+import flags from "../../../../flags";
 
 const RevocationsByRace = ({
   stateCode,
   dataFilter,
-  skippedFilters,
-  treatCategoryAllAsAbsent,
   filterStates,
   timeDescription,
-}) => {
-  const [mode, setMode] = useState("rates"); // rates | exits
-
-  const numeratorKey = "population_count";
-  const denominatorKey = findDenominatorKeyByMode(mode);
-
-  const { isLoading, isError, apiData, unflattenedValues } = useChartData(
-    `${stateCode}/newRevocations`,
-    "revocations_matrix_distribution_by_race",
-    false
-  );
-
-  if (isLoading) {
-    return <Loading />;
-  }
-
-  if (isError) {
-    return <Error />;
-  }
-
-  const filterFn = dataFilter(skippedFilters, treatCategoryAllAsAbsent);
-
-  const { dataPoints, numerators, denominators } = pipe(
-    (metricFile) =>
-      filterOptimizedDataFormat(
-        unflattenedValues,
-        metricFile.metadata,
-        filterFn
-      ),
-    reduce(dataTransformer(numeratorKey, denominatorKey), {}),
-    getCounts
-  )(apiData);
-
-  const showWarning = !isDenominatorsMatrixStatisticallySignificant(
-    denominators
-  );
-
-  const generateDataset = (label, index) => ({
-    label,
-    backgroundColor: getBarBackgroundColor(
-      COLORS_LANTERN_SET[index],
-      denominators
-    ),
-    data: dataPoints[index],
-  });
-
-  const chart = (
-    <Bar
-      id={chartId}
-      data={{
-        labels: riskLevelLabels(stateCode),
-        datasets: [
-          generateDataset("Caucasian", 0),
-          generateDataset("African American", 1),
-          generateDataset("Hispanic", 2),
-          generateDataset("Asian", 3),
-          generateDataset("Native American", 4),
-          generateDataset("Pacific Islander", 5),
-        ],
-      }}
-      options={{
-        legend: {
-          position: "bottom",
-          labels: {
-            generateLabels: (ch) =>
-              generateLabelsWithCustomColors(ch, COLORS_LANTERN_SET),
-          },
-        },
-        responsive: true,
-        maintainAspectRatio: false,
-        scales: {
-          xAxes: [
-            {
-              scaleLabel: {
-                display: true,
-                labelString: "Race/ethnicity and risk level",
-              },
-            },
-          ],
-          yAxes: [
-            {
-              ticks: {
-                beginAtZero: true,
-                callback: axisCallbackForPercentage(),
-              },
-              scaleLabel: {
-                display: true,
-                labelString: getLabelByMode(mode),
-              },
-            },
-          ],
-        },
-        tooltips: {
-          backgroundColor: COLORS["grey-800-light"],
-          footerFontSize: 9,
-          mode: "index",
-          intersect: false,
-          callbacks: {
-            label: (tooltipItem, data) =>
-              tooltipForRateMetricWithNestedCounts(
-                tooltipItem,
-                data,
-                numerators,
-                denominators
-              ),
-            footer: (tooltipItem) =>
-              tooltipForFooterWithNestedCounts(tooltipItem, denominators),
-          },
-        },
-      }}
-    />
-  );
-
-  return (
-    <div>
-      <h4>
-        Admissions by race/ethnicity and risk level
-        {showWarning === true && <DataSignificanceWarningIcon />}
-        <ExportMenu
-          chartId={chartId}
-          chart={chart}
-          metricTitle={`${getLabelByMode(
-            mode
-          )} by race/ethnicity and risk level`}
-          timeWindowDescription={timeDescription}
-          filters={filterStates}
-        />
-      </h4>
-      <h6 className="pB-20">{timeDescription}</h6>
-      {flags.enableRevocationRateByExit && (
-        <ModeSwitcher mode={mode} setMode={setMode} buttons={modeButtons} />
-      )}
-      <div className="static-chart-container fs-block">{chart}</div>
-    </div>
-  );
-};
-
-RevocationsByRace.defaultProps = {
-  skippedFilters: [],
-  treatCategoryAllAsAbsent: false,
-};
+}) => (
+  <RevocationsByDimension
+    chartId="revocationsByRace"
+    apiUrl={`${stateCode}/newRevocations`}
+    apiFile="revocations_matrix_distribution_by_race"
+    renderChart={({ chartId, data, denominators, numerators, mode }) => (
+      <BarChartWithLabels
+        id={chartId}
+        data={data}
+        labelColors={COLORS_LANTERN_SET}
+        xAxisLabel="Race/ethnicity and risk level"
+        yAxisLabel={getLabelByMode(mode)}
+        numerators={numerators}
+        denominators={denominators}
+      />
+    )}
+    generateChartData={createGenerateChartData(dataFilter)}
+    chartTitle="Admissions by race/ethnicity and risk level"
+    metricTitle={(mode) =>
+      `${getLabelByMode(mode)} by race/ethnicity and risk level`
+    }
+    filterStates={filterStates}
+    timeDescription={timeDescription}
+    modes={flags.enableRevocationRateByExit ? ["rates", "exits"] : []}
+    defaultMode="rates"
+  />
+);
 
 RevocationsByRace.propTypes = {
   stateCode: PropTypes.string.isRequired,
   dataFilter: PropTypes.func.isRequired,
-  skippedFilters: PropTypes.arrayOf(PropTypes.string),
-  treatCategoryAllAsAbsent: PropTypes.bool,
-  // eslint-disable-next-line react/forbid-prop-types
   filterStates: filtersPropTypes.isRequired,
   timeDescription: PropTypes.string.isRequired,
 };

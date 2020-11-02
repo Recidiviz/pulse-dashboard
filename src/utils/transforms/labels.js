@@ -15,62 +15,40 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import lowerCase from "lodash/fp/lowerCase"
+import lowerCase from "lodash/fp/lowerCase";
 import pipe from "lodash/fp/pipe";
-import startCase from "lodash/fp/startCase"
-import * as lanternState from "../lanternConstants";
+import startCase from "lodash/fp/startCase";
+import { translate } from "../../views/tenants/utils/i18nSettings";
 
-const riskLevels = [
-  "NOT_ASSESSED",
-  "LOW",
-  "MEDIUM",
-  "HIGH",
-  "VERY_HIGH",
-]
+export function getRiskLevels() {
+  return Object.keys(translate("riskLevelsMap"));
+}
 
-const riskLevelValueToLabelByStateCode = {
-  [lanternState.MO]: {
-    OVERALL: 'Overall',
-    NOT_ASSESSED: 'Not Assessed',
-    LOW: 'Low Risk',
-    MEDIUM: 'Moderate  Risk',
-    HIGH: 'High Risk',
-    VERY_HIGH: 'Very High  Risk',
-  },
-  [lanternState.PA]: {
-    OVERALL: 'Overall',
-    NOT_ASSESSED: 'Not Assessed',
-    LOW: 'Low  Risk',
-    MEDIUM: 'Medium  Risk',
-    HIGH: 'High Risk',
-  },
-};
-
-export function riskLevelLabels(stateCode) {
-  return Object.values(riskLevelValueToLabelByStateCode[stateCode]);
+export function getRiskLevelLabels() {
+  return Object.values(translate("riskLevelsMap"));
 }
 
 const genderValueToLabel = {
-  FEMALE: 'Female',
-  MALE: 'Male',
-  TRANS: 'Trans',
-  TRANS_FEMALE: 'Trans Female',
-  TRANS_MALE: 'Trans Male',
+  FEMALE: "Female",
+  MALE: "Male",
+  TRANS: "Trans",
+  TRANS_FEMALE: "Trans Female",
+  TRANS_MALE: "Trans Male",
 };
 
 const raceValueToLabel = {
-  AMERICAN_INDIAN_ALASKAN_NATIVE: 'American Indian Alaskan Native',
-  ASIAN: 'Asian',
-  BLACK: 'Black',
-  HISPANIC: 'Hispanic',
-  NATIVE_HAWAIIAN_PACIFIC_ISLANDER: 'Native Hawaiian Pacific Islander',
-  WHITE: 'White',
-  OTHER: 'Other',
+  AMERICAN_INDIAN_ALASKAN_NATIVE: "American Indian Alaskan Native",
+  ASIAN: "Asian",
+  BLACK: "Black",
+  HISPANIC: "Hispanic",
+  NATIVE_HAWAIIAN_PACIFIC_ISLANDER: "Native Hawaiian Pacific Islander",
+  WHITE: "White",
+  OTHER: "Other",
 };
 
 const matrixViolationTypeToLabel = {
   TECHNICAL: "Technical",
-  SUBSTANCE_ABUSE: "Subs. Use",
+  SUBSTANCE_ABUSE: "Subs. use",
   MUNICIPAL: "Municipal",
   ABSCONDED: "Absconsion",
   MISDEMEANOR: "Misdemeanor",
@@ -82,6 +60,7 @@ const matrixViolationTypeToLabel = {
   ABSCONDING: "Absconding",
   HIGH_TECH: "High tech.",
   SUMMARY_OFFENSE: "Summary offense",
+  LAW: "Law",
 };
 
 function genderValueToHumanReadable(genderValue) {
@@ -93,13 +72,11 @@ function raceValueToHumanReadable(raceValue) {
 }
 
 function toHtmlFriendly(string) {
-  return string.replace(/ /g, '-');
+  return string.replace(/\W+/g, "-");
 }
 
 function toHumanReadable(string) {
-  let newString = string.replace(/-/g, ' ');
-  newString = newString.replace(/_/g, ' ');
-  return newString;
+  return string.replace(/[-_]/g, " ");
 }
 
 function toInt(nonInt) {
@@ -109,7 +86,7 @@ function toInt(nonInt) {
 function toTitleCase(str) {
   return str.replace(
     /\w\S*/g,
-    (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase(),
+    (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase()
   );
 }
 
@@ -123,26 +100,14 @@ function numberFromOfficerId(officerId) {
   return toInt(officerId);
 }
 
-/*
- * Returns the officer name from the canonical id format, '123: Firstname Lastname'.
- */
-function nameFromOfficerId(officerId) {
-  if (!officerId) {
-    return '';
-  }
+const violationCountLabel = (count) => (count === "8" ? "8+" : count);
 
-  const parts = officerId.split(':');
-  if (parts.length === 1) {
-    return officerId;
-  }
-  return parts[1].trim();
-}
-
-const violationCountLabel = (count) => (count === '8' ? '8+' : count);
+const pluralize = (count, term) => {
+  const base = `${count} ${term}`;
+  return count > 1 ? `${base}s` : base;
+};
 
 export {
-  riskLevels,
-  riskLevelValueToLabelByStateCode,
   matrixViolationTypeToLabel,
   genderValueToHumanReadable,
   raceValueToHumanReadable,
@@ -152,6 +117,6 @@ export {
   toTitleCase,
   humanReadableTitleCase,
   numberFromOfficerId,
-  nameFromOfficerId,
   violationCountLabel,
+  pluralize,
 };

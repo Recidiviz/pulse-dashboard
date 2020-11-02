@@ -19,6 +19,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import cx from "classnames";
 
+import { usePageState } from "../../../contexts/PageContext";
 import "./Chip.scss";
 
 const Chip = ({
@@ -26,31 +27,35 @@ const Chip = ({
   onClick = () => {},
   onDelete = null,
   isSelected = false,
-  isShrinking = false,
-}) => (
-  <div
-    className={cx({
-      chip: true,
-      selected: isSelected,
-      shrinking: isShrinking,
-    })}
-  >
-    <button type="button" className="label" onClick={onClick}>
-      {label}
-    </button>
-    {onDelete && (
-      <button type="button" className="delete" onClick={onDelete}>
-        <i className="ti-close fw-900" />
+}) => {
+  const { isTopBarShrinking } = usePageState();
+  return (
+    <div
+      className={cx("Chip", {
+        "Chip--selected": isSelected,
+        "Chip--shrinking": isTopBarShrinking,
+      })}
+    >
+      <button type="button" className="Chip__label" onClick={onClick}>
+        {label}
       </button>
-    )}
-  </div>
-);
+      {onDelete && (
+        <button
+          type="button"
+          className="Chip__delete-button"
+          onClick={onDelete}
+        >
+          <i className="ti-close fw-900" />
+        </button>
+      )}
+    </div>
+  );
+};
 
 Chip.defaultProps = {
   onClick: () => {},
   onDelete: null,
   isSelected: false,
-  isShrinking: false,
 };
 
 Chip.propTypes = {
@@ -58,7 +63,6 @@ Chip.propTypes = {
   onClick: PropTypes.func,
   onDelete: PropTypes.func,
   isSelected: PropTypes.bool,
-  isShrinking: PropTypes.bool,
 };
 
 export default Chip;

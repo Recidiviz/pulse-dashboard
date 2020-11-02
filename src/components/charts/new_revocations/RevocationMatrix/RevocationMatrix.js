@@ -41,9 +41,13 @@ import Loading from "../../../Loading";
 import Error from "../../../Error";
 
 import useChartData from "../../../../hooks/useChartData";
+import {
+  matrixViolationTypeToLabel,
+  violationCountLabel,
+} from "../../../../utils/transforms/labels";
 import { filterOptimizedDataFormat } from "../../../../utils/charts/dataFilters";
-import { violationCountLabel } from "../../../../utils/transforms/labels";
 import { filtersPropTypes } from "../../propTypes";
+import { translate } from "../../../../views/tenants/utils/i18nSettings";
 
 const TITLE =
   "Admissions by violation history (in year prior to their last reported violation)";
@@ -57,8 +61,6 @@ const RevocationMatrix = ({
   stateCode,
   dataFilter,
   filterStates,
-  skippedFilters = [],
-  treatCategoryAllAsAbsent = false,
   timeDescription,
   updateFilters,
   violationTypes,
@@ -80,14 +82,12 @@ const RevocationMatrix = ({
   const isFiltered =
     filterStates.violationType || filterStates.reportedViolations;
 
-  const filterFn = dataFilter(skippedFilters, treatCategoryAllAsAbsent);
-
   const filteredData = pipe(
     (metricFile) =>
       filterOptimizedDataFormat(
         unflattenedValues,
         metricFile.metadata,
-        filterFn
+        dataFilter
       ),
     filter((data) => violationTypes.includes(data.violation_type))
   )(apiData);
@@ -137,14 +137,14 @@ const RevocationMatrix = ({
   };
 
   const exportableMatrixData = violationTypes.map((rowLabel) => ({
-    label: rowLabel,
+    label: matrixViolationTypeToLabel[rowLabel],
     data: VIOLATION_COUNTS.map((columnLabel) =>
       getOr(0, [rowLabel, columnLabel], dataMatrix)
     ),
   }));
 
   return (
-    <div className="revocation-matrix">
+    <div className="RevocationMatrix">
       <h4>
         {TITLE}
         <ExportMenu
@@ -158,9 +158,7 @@ const RevocationMatrix = ({
         />
       </h4>
       <h6>{timeDescription}</h6>
-      <div className="x-label pY-30">
-        # of violation reports and notices of citation
-      </div>
+      <div className="x-label pY-30"># of {translate("violationReports")}</div>
       <div className="matrix-content">
         <div id="revocationMatrix" className="d-f matrix-chart-container">
           <div className="y-label" data-html2canvas-ignore>
@@ -222,16 +220,9 @@ const RevocationMatrix = ({
   );
 };
 
-RevocationMatrix.defaultProps = {
-  treatCategoryAllAsAbsent: false,
-  skippedFilters: [],
-};
-
 RevocationMatrix.propTypes = {
   dataFilter: PropTypes.func.isRequired,
   filterStates: filtersPropTypes.isRequired,
-  skippedFilters: PropTypes.arrayOf(PropTypes.string),
-  treatCategoryAllAsAbsent: PropTypes.bool,
   stateCode: PropTypes.string.isRequired,
   timeDescription: PropTypes.string.isRequired,
   updateFilters: PropTypes.func.isRequired,

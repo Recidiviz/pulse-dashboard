@@ -26,9 +26,11 @@ const maxRadius = 50;
 
 const RevocationMatrixCell = ({ count, maxCount, isSelected, onClick }) => {
   const ratio = maxCount > 0 ? count / maxCount : 0;
-  const radius = Math.max(minRadius, Math.ceil(ratio * maxRadius));
+  const radius = Math.max(minRadius, Math.ceil(ratio * maxRadius) + 15);
 
   const containerStyle = {
+    position: "relative",
+    zIndex: 1,
     background: "white",
     display: "inline-block",
     width: radius,
@@ -37,7 +39,9 @@ const RevocationMatrixCell = ({ count, maxCount, isSelected, onClick }) => {
   };
 
   const cellStyle = {
-    background: `rgba(0, 44, 66, ${ratio})`, // lantern-dark-blue with opacity
+    // lantern-dark-blue with opacity
+    background:
+      ratio === 0 ? COLORS.white : `rgba(0, 44, 66, ${Math.max(ratio, 0.05)})`,
     width: "100%",
     height: "100%",
     borderRadius: Math.ceil(radius / 2),
@@ -45,7 +49,7 @@ const RevocationMatrixCell = ({ count, maxCount, isSelected, onClick }) => {
   };
 
   return (
-    <div className="cell">
+    <div className="RevocationMatrix__cell cell">
       <div style={containerStyle}>
         <button
           type="button"

@@ -17,7 +17,15 @@
 
 import compose from "lodash/fp/compose";
 
-const VIOLATION_SEVERITY = ["fel", "misd", "absc", "muni", "subs", "tech"];
+const VIOLATION_SEVERITY = [
+  "fel",
+  "misd",
+  "law",
+  "absc",
+  "muni",
+  "subs",
+  "tech",
+];
 
 const recordPartRegex = /(?<number>\d+)(?<abbreviation>\w+)/;
 
@@ -25,7 +33,6 @@ function parseViolationRecord(recordLabel = "") {
   if (!recordLabel) {
     return [];
   }
-
   return recordLabel.split(";").map((recordPart) => {
     const record = recordPart.match(recordPartRegex).groups;
     record.number = parseInt(record.number, 0);
@@ -36,10 +43,6 @@ function parseViolationRecord(recordLabel = "") {
 export function sumViolationRecords(records) {
   return records.reduce((acc, record) => acc + record.number, 0);
 }
-
-export const violationComparator = (a, b) =>
-  VIOLATION_SEVERITY.indexOf(a.abbreviation) -
-  VIOLATION_SEVERITY.indexOf(b.abbreviation);
 
 export function compareViolationRecords(aRecordLabel, bRecordLabel, order) {
   const aRecords = parseViolationRecord(aRecordLabel);
@@ -77,11 +80,7 @@ export function formatViolationRecord(records) {
     return "";
   }
 
-  return records
-    .slice()
-    .sort(violationComparator)
-    .map(violationFormatter)
-    .join(", ");
+  return records.slice().map(violationFormatter).join(", ");
 }
 
 export const parseAndFormatViolationRecord = compose(

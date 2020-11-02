@@ -15,58 +15,67 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import '@testing-library/jest-dom/extend-expect';
-import * as filterMethods from '../dataFilters';
-import tk from 'timekeeper';
+import "@testing-library/jest-dom/extend-expect";
+import * as filterMethods from "../dataFilters";
 
-describe('test for dataFilters toggle functions', () => {
-  it('filters dataset by metric period months', () => {
+describe("test for dataFilters toggle functions", () => {
+  it("filters dataset by metric period months", () => {
     const dataset = [
       {
-        supervision_type: 'ALL',
-        district: 'ALL',
-        state_code: 'US_DEMO',
-        metric_period_months: '3',
-        new_admissions: '190',
-        technicals: '138',
-        non_technicals: '115',
-        unknown_revocations: '46'
-      }, {
-        supervision_type: 'ALL',
-        district: 'ALL',
-        state_code: 'US_DEMO',
-        metric_period_months: '1',
-        new_admissions: '84',
-        technicals: '50',
-        non_technicals: '65',
-        unknown_revocations: '26',
-      }
-    ];
-
-    const expectedFilterDataset =  [
+        supervision_type: "ALL",
+        district: "ALL",
+        state_code: "US_DEMO",
+        metric_period_months: "3",
+        new_admissions: "190",
+        technicals: "138",
+        non_technicals: "115",
+        unknown_revocations: "46",
+      },
       {
-        supervision_type: 'ALL',
-        district: 'ALL',
-        state_code: 'US_DEMO',
-        metric_period_months: '1',
-        new_admissions: '84',
-        technicals: '50',
-        non_technicals: '65',
-        unknown_revocations: '26'
-      }
+        supervision_type: "ALL",
+        district: "ALL",
+        state_code: "US_DEMO",
+        metric_period_months: "1",
+        new_admissions: "84",
+        technicals: "50",
+        non_technicals: "65",
+        unknown_revocations: "26",
+      },
     ];
 
-    const filterDataset = filterMethods.filterDatasetByMetricPeriodMonths(dataset, '1');
+    const expectedFilterDataset = [
+      {
+        supervision_type: "ALL",
+        district: "ALL",
+        state_code: "US_DEMO",
+        metric_period_months: "1",
+        new_admissions: "84",
+        technicals: "50",
+        non_technicals: "65",
+        unknown_revocations: "26",
+      },
+    ];
+
+    const filterDataset = filterMethods.filterDatasetByMetricPeriodMonths(
+      dataset,
+      "1"
+    );
     expect(filterDataset).toEqual(expectedFilterDataset);
 
-    const filterEmptyDataset = filterMethods.filterDatasetByMetricPeriodMonths([], 0);
+    const filterEmptyDataset = filterMethods.filterDatasetByMetricPeriodMonths(
+      [],
+      0
+    );
     expect(filterEmptyDataset).toEqual([]);
 
-    const filterDatasetPeriodIsNotExist = filterMethods.filterDatasetByMetricPeriodMonths([], 4);
+    const filterDatasetPeriodIsNotExist = filterMethods.filterDatasetByMetricPeriodMonths(
+      [],
+      4
+    );
     expect(filterDatasetPeriodIsNotExist).toEqual([]);
   });
 
-  it('filters dataset by supervision type', () => {
+  it("filters dataset by supervision type", () => {
     const dataset = [
       {
         supervision_type: "PAROLE",
@@ -76,7 +85,7 @@ describe('test for dataFilters toggle functions', () => {
         new_admissions: "32",
         technicals: "20",
         non_technicals: "30",
-        unknown_revocations: "12"
+        unknown_revocations: "12",
       },
       {
         supervision_type: "PROBATION",
@@ -86,7 +95,7 @@ describe('test for dataFilters toggle functions', () => {
         new_admissions: "85",
         technicals: "64",
         non_technicals: "55",
-        unknown_revocations: "22"
+        unknown_revocations: "22",
       },
       {
         supervision_type: "PAROLE",
@@ -96,39 +105,42 @@ describe('test for dataFilters toggle functions', () => {
         new_admissions: "141",
         technicals: "109",
         non_technicals: "91",
-        unknown_revocations: "37"
-      }
+        unknown_revocations: "37",
+      },
     ];
 
     const expectedFilterDataset = [
       {
-        supervision_type: 'PAROLE',
-        district: 'ALL',
-        state_code: 'US_DEMO',
-        metric_period_months: '1',
-        new_admissions: '32',
-        technicals: '20',
-        non_technicals: '30',
-        unknown_revocations: '12'
+        supervision_type: "PAROLE",
+        district: "ALL",
+        state_code: "US_DEMO",
+        metric_period_months: "1",
+        new_admissions: "32",
+        technicals: "20",
+        non_technicals: "30",
+        unknown_revocations: "12",
       },
       {
-        supervision_type: 'PAROLE',
-        district: 'No',
-        state_code: 'US_DEMO',
-        metric_period_months: '6',
-        new_admissions: '141',
-        technicals: '109',
-        non_technicals: '91',
-        unknown_revocations: '37'
-      }
+        supervision_type: "PAROLE",
+        district: "No",
+        state_code: "US_DEMO",
+        metric_period_months: "6",
+        new_admissions: "141",
+        technicals: "109",
+        non_technicals: "91",
+        unknown_revocations: "37",
+      },
     ];
 
-    const filterDataset = filterMethods.filterDatasetBySupervisionType(dataset, 'PAROLE');
+    const filterDataset = filterMethods.filterDatasetBySupervisionType(
+      dataset,
+      "PAROLE"
+    );
     expect(filterDataset).toEqual(expectedFilterDataset);
   });
 
-  it('filters dataset by district', () => {
-    const district = ['all'];
+  it("filters dataset by district", () => {
+    const district = ["all"];
 
     const dataset = [
       {
@@ -139,7 +151,7 @@ describe('test for dataFilters toggle functions', () => {
         new_admissions: "32",
         technicals: "20",
         non_technicals: "30",
-        unknown_revocations: "12"
+        unknown_revocations: "12",
       },
       {
         supervision_type: "PAROLE",
@@ -149,29 +161,32 @@ describe('test for dataFilters toggle functions', () => {
         new_admissions: "141",
         technicals: "109",
         non_technicals: "91",
-        unknown_revocations: "37"
-      }
+        unknown_revocations: "37",
+      },
     ];
 
-    const expectedToggleFiltersTest =  [
+    const expectedToggleFiltersTest = [
       {
-        supervision_type: 'PAROLE',
-        district: ['all'],
-        state_code: 'US_DEMO',
-        metric_period_months: '1',
-        new_admissions: '32',
-        technicals: '20',
-        non_technicals: '30',
-        unknown_revocations: '12'
-      }
+        supervision_type: "PAROLE",
+        district: ["all"],
+        state_code: "US_DEMO",
+        metric_period_months: "1",
+        new_admissions: "32",
+        technicals: "20",
+        non_technicals: "30",
+        unknown_revocations: "12",
+      },
     ];
 
-    const toggleFiltersTest = filterMethods.filterDatasetByDistrict(dataset, district);
+    const toggleFiltersTest = filterMethods.filterDatasetByDistrict(
+      dataset,
+      district
+    );
     expect(toggleFiltersTest).toEqual(expectedToggleFiltersTest);
   });
 });
 
-describe('test for filterOptimizedDataFormat', () => {
+describe("test for filterOptimizedDataFormat", () => {
   const metadata = {
     total_data_points: "11",
     value_keys: ["total_revocations"],
@@ -184,11 +199,11 @@ describe('test for filterOptimizedDataFormat', () => {
   };
 
   const unflattenedValues = [
-    ['0','0','1','1','2','0','0','1','1','2','2'],
-    ['0','0','0','0','0','1','1','1','1','1','1'],
-    ['0','1','0','1','0','0','1','0','1','0','1'],
-    ['0','0','0','0','0','0','0','0','0','0','0'],
-    ['100','68','73','41','10','30','36','51','38','15','4'],
+    ["0", "0", "1", "1", "2", "0", "0", "1", "1", "2", "2"],
+    ["0", "0", "0", "0", "0", "1", "1", "1", "1", "1", "1"],
+    ["0", "1", "0", "1", "0", "0", "1", "0", "1", "0", "1"],
+    ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"],
+    ["100", "68", "73", "41", "10", "30", "36", "51", "38", "15", "4"],
   ];
 
   const fullOutput = [
@@ -271,20 +286,22 @@ describe('test for filterOptimizedDataFormat', () => {
     },
   ];
 
-  it('correctly parses data points, regardless of filtering', () => {
+  it("correctly parses data points, regardless of filtering", () => {
     const filtered = filterMethods.filterOptimizedDataFormat(
       unflattenedValues,
       metadata,
-      () => true,
+      () => true
     );
     expect(filtered).toEqual(fullOutput);
   });
 
-  it('correctly parses and filter data points', () => {
+  it("correctly parses and filter data points", () => {
     const filtered = filterMethods.filterOptimizedDataFormat(
       unflattenedValues,
       metadata,
-      (item, dimensionKey) => dimensionKey !== 'supervision_type' || item.supervision_type.toUpperCase() === 'PAROLE',
+      (item, dimensionKey) =>
+        dimensionKey !== "supervision_type" ||
+        item.supervision_type.toUpperCase() === "PAROLE"
     );
 
     const expected = [
@@ -298,33 +315,30 @@ describe('test for filterOptimizedDataFormat', () => {
     expect(filtered).toEqual(expected);
   });
 
-  it('correctly parses and filter data points with multiple filters', () => {
+  it("correctly parses and filter data points with multiple filters", () => {
     const filtered = filterMethods.filterOptimizedDataFormat(
       unflattenedValues,
       metadata,
       (item, dimensionKey) => {
-        if (dimensionKey === 'supervision_type') {
-          return item.supervision_type.toUpperCase() === 'PAROLE';
-        } else if (dimensionKey === 'month') {
-          return item.month === '11';
+        if (dimensionKey === "supervision_type") {
+          return item.supervision_type.toUpperCase() === "PAROLE";
+        }
+        if (dimensionKey === "month") {
+          return item.month === "11";
         }
         return true;
-      },
+      }
     );
 
-    const expected = [
-      fullOutput[0],
-      fullOutput[2],
-      fullOutput[4],
-    ];
+    const expected = [fullOutput[0], fullOutput[2], fullOutput[4]];
     expect(filtered).toEqual(expected);
   });
 
-  it('correctly returns an empty list with a falsey filter', () => {
+  it("correctly returns an empty list with a falsey filter", () => {
     const filtered = filterMethods.filterOptimizedDataFormat(
       unflattenedValues,
       metadata,
-      () => false,
+      () => false
     );
 
     expect(filtered).toEqual([]);

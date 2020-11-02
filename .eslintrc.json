@@ -1,12 +1,32 @@
 {
-  "extends": ["react-app", "airbnb", "plugin:prettier/recommended"],
+  "extends": [
+    "react-app",
+    "airbnb",
+    "plugin:prettier/recommended",
+    "prettier/react"
+  ],
   "rules": {
     "react/jsx-filename-extension": ["error", { "extensions": [".js"] }],
     "import/no-extraneous-dependencies": ["error", { "packageDir": "./" }],
     "no-new": 1,
     "react/jsx-props-no-spreading": 0,
     "func-names": 0,
-    "react/jsx-wrap-multilines": ["error", {"declaration": false, "assignment": false}]
+    "react/jsx-wrap-multilines": [
+      "error",
+      { "declaration": false, "assignment": false }
+    ],
+    "react/jsx-one-expression-per-line": 0,
+    "jsx-a11y/label-has-associated-control": [
+      "error",
+      {
+        "required": {
+          "some": ["nesting", "id"]
+        }
+      }
+    ],
+    "radix": "off",
+    "no-console": ["error", { "allow": ["warn", "error"] }],
+    "import/prefer-default-export": "off"
   },
   "env": {
     "browser": true,
@@ -17,6 +37,16 @@
       "files": ["./server.js", "./server/**/*.js"],
       "env": {
         "node": true
+      }
+    },
+    {
+      "files": ["**/*.test.js"],
+      "env": {
+        "jest": true
+      },
+      "rules": {
+        "global-require": "off",
+        "no-shadow": "off"
       }
     }
   ]

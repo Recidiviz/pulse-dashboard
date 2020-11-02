@@ -25,76 +25,81 @@ import {
 
 import TenantRoutes from "./components/TenantRoutes";
 import { StateCodeProvider } from "./contexts/StateCodeContext";
+import { PageProvider } from "./contexts/PageContext";
 import NotFound from "./views/NotFound";
 import Profile from "./views/Profile";
 import VerificationNeeded from "./views/VerificationNeeded";
-import UsMoLayout from "./views/tenants/us_mo/Layout";
-import UsMoCommunityRevocations from "./views/tenants/us_mo/community/Revocations";
-import UsNdLayout from "./views/tenants/us_nd/Layout";
+import LanternLayout from "./components/layouts/LanternLayout";
+import CoreLayout from "./components/layouts/CoreLayout";
+import Revocations from "./components/Revocations";
 import UsNdCommunityGoals from "./views/tenants/us_nd/community/Goals";
 import UsNdCommunityExplore from "./views/tenants/us_nd/community/Explore";
 import UsNdFacilitiesGoals from "./views/tenants/us_nd/facilities/Goals";
 import UsNdFacilitiesExplore from "./views/tenants/us_nd/facilities/Explore";
 import UsNdProgrammingExplore from "./views/tenants/us_nd/programming/Explore";
-import UsPaLayout from "./views/tenants/us_pa/Layout";
-import UsPaCommunityRevocations from "./views/tenants/us_pa/community/Revocations";
 import initFontAwesome from "./utils/initFontAwesome";
+import initIntercomSettings from "./utils/initIntercomSettings";
+import { initI18n } from "./views/tenants/utils/i18nSettings";
+import * as lanternTenant from "./views/tenants/utils/lanternTenants";
+import * as coreTenant from "./views/tenants/utils/coreTenants";
 
 import "./assets/scripts/index";
 import "./assets/styles/index.scss";
-import * as lanternState from "./utils/lanternConstants";
-import * as coreState from "./utils/coreConstants";
 
 initFontAwesome();
+initIntercomSettings();
+initI18n();
 
 // prettier-ignore
 const App = () => (
-  <StateCodeProvider>
-    <Router>
-      <Switch>
-        <Route path="/verify" component={VerificationNeeded} />
+  <PageProvider>
+    <StateCodeProvider>
+      <Router>
+        <Switch>
+          <Route path="/verify" component={VerificationNeeded} />
 
-        <TenantRoutes>
-          <UsMoLayout stateCode={lanternState.MO}>
-            <Switch>
-              <Route path="/community/revocations" component={UsMoCommunityRevocations} />
-              <Route path="/profile" component={Profile} />
-              <Redirect exact from="/" to="/community/revocations" />
-              <Redirect from="/revocations" to="/community/revocations" />
-              <NotFound />
-            </Switch>
-          </UsMoLayout>
+          <TenantRoutes>
+            <LanternLayout stateCode={lanternTenant.MO}>
+              <Switch>
+                <Route path="/community/revocations" component={Revocations} />
+                <Route path="/profile" component={Profile} />
+                <Redirect exact from="/" to="/community/revocations" />
+                <Redirect from="/revocations" to="/community/revocations" />
+                <NotFound />
+              </Switch>
+            </LanternLayout>
 
-          <UsNdLayout stateCode={coreState.ND}>
-            <Switch>
-              <Route path="/community/goals" component={UsNdCommunityGoals} />
-              <Route path="/community/explore" component={UsNdCommunityExplore} />
-              <Route path="/facilities/goals" component={UsNdFacilitiesGoals} />
-              <Route path="/facilities/explore" component={UsNdFacilitiesExplore} />
-              <Route path="/programming/explore" component={UsNdProgrammingExplore} />
-              <Route path="/profile" component={Profile} />
-              <Redirect exact from="/" to="/community/goals" />
-              <Redirect from="/snapshots" to="/community/goals" />
-              <Redirect from="/revocations" to="/community/goals" />
-              <Redirect from="/reincarcerations" to="/facilities/goals" />
-              <Redirect from="/programEvaluation/freeThroughRecovery" to="/programming/explore" />
-              <NotFound />
-            </Switch>
-          </UsNdLayout>
+            <CoreLayout stateCode={coreTenant.ND}>
+              <Switch>
+                <Route path="/community/goals" component={UsNdCommunityGoals} />
+                <Route path="/community/explore" component={UsNdCommunityExplore} />
+                <Route path="/facilities/goals" component={UsNdFacilitiesGoals} />
+                <Route path="/facilities/explore" component={UsNdFacilitiesExplore} />
+                <Route path="/programming/explore" component={UsNdProgrammingExplore} />
+                <Route path="/profile" component={Profile} />
+                <Redirect exact from="/" to="/community/goals" />
+                <Redirect from="/snapshots" to="/community/goals" />
+                <Redirect from="/revocations" to="/community/goals" />
+                <Redirect from="/reincarcerations" to="/facilities/goals" />
+                <Redirect from="/programEvaluation/freeThroughRecovery" to="/programming/explore" />
+                <NotFound />
+              </Switch>
+            </CoreLayout>
 
-          <UsPaLayout stateCode={lanternState.PA}>
-            <Switch>
-              <Route path="/community/revocations" component={UsPaCommunityRevocations} />
-              <Route path="/profile" component={Profile} />
-              <Redirect exact from="/" to="/community/revocations" />
-              <Redirect from="/revocations" to="/community/revocations" />
-              <NotFound />
-            </Switch>
-          </UsPaLayout>
-        </TenantRoutes>
-      </Switch>
-    </Router>
-  </StateCodeProvider>
+            <LanternLayout stateCode={lanternTenant.PA}>
+              <Switch>
+                <Route path="/community/revocations" component={Revocations} />
+                <Route path="/profile" component={Profile} />
+                <Redirect exact from="/" to="/community/revocations" />
+                <Redirect from="/revocations" to="/community/revocations" />
+                <NotFound />
+              </Switch>
+            </LanternLayout>
+          </TenantRoutes>
+        </Switch>
+      </Router>
+    </StateCodeProvider>
+  </PageProvider>
 );
 
 export default App;

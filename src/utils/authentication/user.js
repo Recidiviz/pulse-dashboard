@@ -17,7 +17,7 @@
 
 import tenants from "../../tenants";
 
-const METADATA_NAMESPACE = "https://dashboard.recidiviz.org/";
+export const METADATA_NAMESPACE = "https://dashboard.recidiviz.org/";
 
 /**
  * Returns the Auth0 app_metadata for the given user id token.

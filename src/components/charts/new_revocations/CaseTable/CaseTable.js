@@ -21,34 +21,20 @@ import PropTypes from "prop-types";
 import Pagination from "./Pagination";
 import Sortable from "./Sortable";
 import useSort from "./useSort";
-
 import ExportMenu from "../../ExportMenu";
 import Loading from "../../../Loading";
 import Error from "../../../Error";
-
 import usePrevious from "../../../../hooks/usePrevious";
-
-import { COLORS } from "../../../../assets/scripts/constants/colors";
 import {
   getTrailingLabelFromMetricPeriodMonthsToggle,
   getPeriodLabelFromMetricPeriodMonthsToggle,
 } from "../../../../utils/charts/toggles";
-import { parseAndFormatViolationRecord } from "../../../../utils/charts/violationRecord";
-import {
-  humanReadableTitleCase,
-  nameFromOfficerId,
-  riskLevelValueToLabelByStateCode,
-} from "../../../../utils/transforms/labels";
 import { filtersPropTypes } from "../../propTypes";
 import useChartData from "../../../../hooks/useChartData";
+import { translate } from "../../../../views/tenants/utils/i18nSettings";
+import { nullSafeCell, formatData, formatExportData } from "./helpers";
 
 const CASES_PER_PAGE = 15;
-
-const unknownStyle = {
-  fontStyle: "italic",
-  fontSize: "13px",
-  color: COLORS["grey-500"],
-};
 
 const chartId = "filteredCaseTable";
 
@@ -56,8 +42,6 @@ const CaseTable = ({
   dataFilter,
   filterStates,
   metricPeriodMonths,
-  skippedFilters,
-  treatCategoryAllAsAbsent,
   stateCode,
 }) => {
   const [index, setIndex] = useState(0);
@@ -74,6 +58,18 @@ const CaseTable = ({
   // working exactly as intended. We are relying on the commented safe-guard near the end only.
   const prevCount = usePrevious(countData);
 
+  const options = [
+    { key: "state_id", label: "DOC ID" },
+    { key: "district", label: "District" },
+    { key: "officer", label: translate("Officer") },
+    { key: "risk_level", label: "Risk level" },
+    {
+      key: "officer_recommendation",
+      label: translate("lastRecommendation"),
+    },
+    { key: "violation_record", label: "Violation record" },
+  ];
+
   useEffect(() => {
     setCountData(apiData.length);
   }, [apiData.length]);
@@ -86,11 +82,7 @@ const CaseTable = ({
     return <Error />;
   }
 
-  const filteredData = dataFilter(
-    apiData,
-    skippedFilters,
-    treatCategoryAllAsAbsent
-  );
+  const filteredData = dataFilter(apiData);
 
   // Sort case load first by district, second by officer name, third by person id (all ascending)
   const caseLoad = filteredData.sort(comparator);
@@ -115,45 +107,7 @@ const CaseTable = ({
   }
 
   const page = caseLoad.slice(beginning, end);
-
-  const normalizeLabel = (label) =>
-    label ? humanReadableTitleCase(label) : "";
-  const nullSafeLabel = (label) => label || "Unknown";
-  const nullSafeCell = (label) => {
-    if (label) {
-      return <td>{label}</td>;
-    }
-    return <td style={unknownStyle}>{nullSafeLabel(label)}</td>;
-  };
-
-  const labels = [
-    "DOC ID",
-    "District",
-    "Officer",
-    "Risk level",
-    "Officer Recommendation",
-    "Violation record",
-  ];
-
-  const tableData = (filteredData || []).map((record) => ({
-    data: [
-      nullSafeLabel(record.state_id),
-      nullSafeLabel(record.district),
-      nullSafeLabel(nameFromOfficerId(record.officer)),
-      nullSafeLabel(
-        riskLevelValueToLabelByStateCode[stateCode][record.risk_level]
-      ),
-      nullSafeLabel(normalizeLabel(record.officer_recommendation)),
-      nullSafeLabel(parseAndFormatViolationRecord(record.violation_record)),
-    ],
-  }));
-
-  const trailingLabel = getTrailingLabelFromMetricPeriodMonthsToggle(
-    metricPeriodMonths
-  );
-  const periodLabel = getPeriodLabelFromMetricPeriodMonthsToggle(
-    metricPeriodMonths
-  );
+  const tableData = formatData(page);
 
   const sortableProps = (field) => ({
     order: getOrder(field),
@@ -163,17 +117,24 @@ const CaseTable = ({
     },
   });
 
+  const trailingLabel = getTrailingLabelFromMetricPeriodMonthsToggle(
+    metricPeriodMonths
+  );
+  const periodLabel = getPeriodLabelFromMetricPeriodMonthsToggle(
+    metricPeriodMonths
+  );
+
   return (
-    <div className="case-table">
+    <div className="CaseTable">
       <h4>
         Admitted individuals
         <ExportMenu
           chartId={chartId}
           shouldExport={false}
-          tableData={tableData}
+          tableData={formatExportData(filteredData)}
           metricTitle="Admitted individuals"
           isTable
-          tableLabels={labels}
+          tableLabels={options.map((o) => o.label)}
           timeWindowDescription={`${trailingLabel} (${periodLabel})`}
           filters={filterStates}
         />
@@ -182,45 +143,24 @@ const CaseTable = ({
       <table>
         <thead>
           <tr>
-            <th>
-              <Sortable {...sortableProps("state_id")}>DOC ID</Sortable>
-            </th>
-            <th>
-              <Sortable {...sortableProps("district")}>District</Sortable>
-            </th>
-            <th>
-              <Sortable {...sortableProps("officer")}>Officer</Sortable>
-            </th>
-            <th>
-              <Sortable {...sortableProps("risk_level")}>Risk level</Sortable>
-            </th>
-            <th className="long-title">
-              <Sortable {...sortableProps("officer_recommendation")}>
-                Last Rec. (Including Supplemental)
-              </Sortable>
-            </th>
-            <th>
-              <Sortable {...sortableProps("violation_record")}>
-                Violation record
-              </Sortable>
-            </th>
+            {options.map((o) => {
+              return (
+                <th key={o.key}>
+                  <Sortable {...sortableProps(o.key)}>{o.label}</Sortable>
+                </th>
+              );
+            })}
           </tr>
         </thead>
         <tbody className="fs-block">
-          {page.map((details, i) => (
-            // Need to know unique set of fields for uniq key
-            // eslint-disable-next-line react/no-array-index-key
-            <tr key={i}>
+          {tableData.map((details) => (
+            <tr key={details.state_id}>
               <td>{details.state_id}</td>
               {nullSafeCell(details.district)}
-              {nullSafeCell(nameFromOfficerId(details.officer))}
-              {nullSafeCell(
-                riskLevelValueToLabelByStateCode[stateCode][details.risk_level]
-              )}
-              {nullSafeCell(normalizeLabel(details.officer_recommendation))}
-              {nullSafeCell(
-                parseAndFormatViolationRecord(details.violation_record)
-              )}
+              {nullSafeCell(details.officer)}
+              {nullSafeCell(details.risk_level)}
+              {nullSafeCell(details.officer_recommendation)}
+              {nullSafeCell(details.violation_record)}
             </tr>
           ))}
         </tbody>
@@ -237,10 +177,6 @@ const CaseTable = ({
   );
 };
 
-CaseTable.defaultProps = {
-  skippedFilters: [],
-};
-
 const metricPeriodMonthsType = PropTypes.oneOfType([
   PropTypes.string,
   PropTypes.number,
@@ -249,8 +185,6 @@ const metricPeriodMonthsType = PropTypes.oneOfType([
 CaseTable.propTypes = {
   dataFilter: PropTypes.func.isRequired,
   filterStates: filtersPropTypes.isRequired,
-  skippedFilters: PropTypes.arrayOf(PropTypes.string),
-  treatCategoryAllAsAbsent: PropTypes.bool.isRequired,
   metricPeriodMonths: metricPeriodMonthsType.isRequired,
   stateCode: PropTypes.string.isRequired,
 };

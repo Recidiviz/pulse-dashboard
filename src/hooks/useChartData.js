@@ -18,7 +18,6 @@
 import { useState, useCallback, useEffect } from "react";
 import toInteger from "lodash/fp/toInteger";
 import { useAuth0 } from "../react-auth0-spa";
-import logger from "../utils/logger";
 import {
   parseResponseByFileFormat,
   parseResponsesByFileFormat,
@@ -93,7 +92,7 @@ function useChartData(url, file, eagerExpand = true) {
     } catch (error) {
       setAwaitingApi(false);
       setIsError(true);
-      logger.error(error);
+      console.error(error);
     }
   }, [eagerExpand, file, getTokenSilently, url]);
 

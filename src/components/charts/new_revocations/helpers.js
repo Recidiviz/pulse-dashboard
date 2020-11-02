@@ -20,163 +20,175 @@ import {
   toInt,
   violationCountLabel,
 } from "../../../utils/transforms/labels";
-
 import {
   nullSafeComparison,
   nullSafeComparisonForArray,
   isAllItem,
   includesAllItemFirst,
 } from "../../../utils/charts/dataPointComparisons";
+import {
+  ADMISSION_TYPE,
+  CHARGE_CATEGORY,
+  DISTRICT,
+  METRIC_PERIOD_MONTHS,
+  REPORTED_VIOLATIONS,
+  SUPERVISION_LEVEL,
+  SUPERVISION_TYPE,
+  VIOLATION_TYPE,
+} from "../../../constants/filterTypes";
 
-export const matchesTopLevelFilters = (
+export const matchesTopLevelFilters = ({
   filters,
-  applySupervisionLevel = true
-) => (skippedFilters = [], treatCategoryAllAsAbsent = false) => (
-  item,
-  dimensionKey = undefined
-) => {
+  skippedFilters = [],
+  treatCategoryAllAsAbsent = false,
+}) => (item, dimensionKey = undefined) => {
+  // console.log({filters})
+  // console.log({skippedFilters})
+  // console.log({filters})
+  // console.log({item})
+  // console.log({dimensionKey})
   if (
     (dimensionKey === undefined || dimensionKey === "metric_period_months") &&
-    filters.metricPeriodMonths &&
-    !skippedFilters.includes("metricPeriodMonths") &&
-    !nullSafeComparison(item.metric_period_months, filters.metricPeriodMonths)
+    filters[METRIC_PERIOD_MONTHS] &&
+    !skippedFilters.includes(METRIC_PERIOD_MONTHS) &&
+    !nullSafeComparison(
+      item.metric_period_months,
+      filters[METRIC_PERIOD_MONTHS]
+    )
   ) {
     return false;
   }
 
   if (
     (dimensionKey === undefined || dimensionKey === "district") &&
-    filters.district &&
-    !skippedFilters.includes("district") &&
-    !(treatCategoryAllAsAbsent && includesAllItemFirst(filters.district)) &&
-    !nullSafeComparisonForArray(item.district, filters.district)
+    filters[DISTRICT] &&
+    !skippedFilters.includes(DISTRICT) &&
+    !(treatCategoryAllAsAbsent && includesAllItemFirst(filters[DISTRICT])) &&
+    !nullSafeComparisonForArray(item.district, filters[DISTRICT])
   ) {
     return false;
   }
 
   if (
     (dimensionKey === undefined || dimensionKey === "charge_category") &&
-    filters.chargeCategory &&
-    !skippedFilters.includes("chargeCategory") &&
-    !(treatCategoryAllAsAbsent && isAllItem(filters.chargeCategory)) &&
-    !nullSafeComparison(item.charge_category, filters.chargeCategory)
+    filters[CHARGE_CATEGORY] &&
+    !skippedFilters.includes(CHARGE_CATEGORY) &&
+    !(treatCategoryAllAsAbsent && isAllItem(filters[CHARGE_CATEGORY])) &&
+    !nullSafeComparison(item.charge_category, filters[CHARGE_CATEGORY])
   ) {
     return false;
   }
   if (
     (dimensionKey === undefined || dimensionKey === "supervision_type") &&
-    filters.supervisionType &&
-    !skippedFilters.includes("supervisionType") &&
-    !(treatCategoryAllAsAbsent && isAllItem(filters.supervisionType)) &&
-    !nullSafeComparison(item.supervision_type, filters.supervisionType)
+    filters[SUPERVISION_TYPE] &&
+    !skippedFilters.includes(SUPERVISION_TYPE) &&
+    !(treatCategoryAllAsAbsent && isAllItem(filters[SUPERVISION_TYPE])) &&
+    !nullSafeComparison(item.supervision_type, filters[SUPERVISION_TYPE])
   ) {
     return false;
   }
   if (
     (dimensionKey === undefined || dimensionKey === "admission_type") &&
-    filters.admissionType &&
-    !skippedFilters.includes("admissionType") &&
-    !includesAllItemFirst(filters.admissionType) &&
-    !nullSafeComparisonForArray(item.admission_type, filters.admissionType)
+    filters[ADMISSION_TYPE] &&
+    !skippedFilters.includes(ADMISSION_TYPE) &&
+    !includesAllItemFirst(filters[ADMISSION_TYPE]) &&
+    !nullSafeComparisonForArray(item.admission_type, filters[ADMISSION_TYPE])
   ) {
     return false;
   }
   if (
     (dimensionKey === undefined || dimensionKey === "supervision_level") &&
-    ((filters.supervisionLevel &&
-      !skippedFilters.includes("supervisionLevel") &&
-      !isAllItem(filters.supervisionLevel) &&
-      !nullSafeComparison(item.supervision_level, filters.supervisionLevel)) ||
-      (!applySupervisionLevel &&
-        item.supervision_level &&
-        isAllItem(item.supervision_level)))
+    filters[SUPERVISION_LEVEL] &&
+    !skippedFilters.includes(SUPERVISION_LEVEL) &&
+    !nullSafeComparison(item.supervision_level, filters[SUPERVISION_LEVEL]) &&
+    !(treatCategoryAllAsAbsent && isAllItem(filters[SUPERVISION_LEVEL]))
   ) {
     return false;
   }
   return true;
 };
 
-export const applyTopLevelFilters = (filters, applySupervisionLevel = true) => (
-  data,
+export const applyTopLevelFilters = ({
+  filters,
   skippedFilters = [],
-  treatCategoryAllAsAbsent = false
-) => {
-  const filterFn = matchesTopLevelFilters(filters, applySupervisionLevel)(
+  treatCategoryAllAsAbsent = false,
+}) => (data) => {
+  const filterFn = matchesTopLevelFilters({
+    filters,
     skippedFilters,
-    treatCategoryAllAsAbsent
-  );
+    treatCategoryAllAsAbsent,
+  });
   return data.filter((item) => filterFn(item));
 };
 
-export const matchesMatrixFilters = (filters) => (
-  item,
-  dimensionKey = undefined
-) => {
+export const matchesMatrixFilters = (filters) => (item, dimensionKey) => {
   if (
     (dimensionKey === undefined || dimensionKey === "violation_type") &&
-    filters.violationType &&
-    !nullSafeComparison(item.violation_type, filters.violationType)
+    filters[VIOLATION_TYPE] &&
+    !nullSafeComparison(item.violation_type, filters[VIOLATION_TYPE])
   ) {
     return false;
   }
 
   if (
     (dimensionKey === undefined || dimensionKey === "reported_violations") &&
-    filters.reportedViolations &&
-    toInt(item.reported_violations) !== toInt(filters.reportedViolations)
+    filters[REPORTED_VIOLATIONS] &&
+    toInt(item.reported_violations) !== toInt(filters[REPORTED_VIOLATIONS])
   ) {
     return false;
   }
-
   return true;
 };
 
-const applyMatrixFilters = (filters) => (data) => {
+export const applyMatrixFilters = (filters) => (data) => {
   const filterFn = matchesMatrixFilters(filters);
   return data.filter((item) => filterFn(item));
 };
 
-export const matchesAllFilters = (filters, applySupervisionLevel = true) => (
+export const matchesAllFilters = ({
+  filters,
   skippedFilters = [],
-  treatCategoryAllAsAbsent = false
-) => (item, dimensionKey = undefined) => {
-  const topLevelFilterFn = matchesTopLevelFilters(
+  treatCategoryAllAsAbsent = false,
+}) => (item, dimensionKey = undefined) => {
+  const topLevelFilterFn = matchesTopLevelFilters({
     filters,
-    applySupervisionLevel
-  )(skippedFilters, treatCategoryAllAsAbsent);
+    skippedFilters,
+    treatCategoryAllAsAbsent,
+  });
   const matrixFilterFn = matchesMatrixFilters(filters);
   return (
     topLevelFilterFn(item, dimensionKey) && matrixFilterFn(item, dimensionKey)
   );
 };
 
-export const applyAllFilters = (filters, applySupervisionLevel = true) => (
-  data,
+export const applyAllFilters = ({
+  filters,
   skippedFilters = [],
-  treatCategoryAllAsAbsent = false
-) => {
-  const filteredData = applyTopLevelFilters(filters, applySupervisionLevel)(
-    data,
+  treatCategoryAllAsAbsent = false,
+}) => (data) => {
+  const filteredData = applyTopLevelFilters({
+    filters,
     skippedFilters,
     treatCategoryAllAsAbsent,
-    applySupervisionLevel
-  );
+  })(data);
   return applyMatrixFilters(filters)(filteredData);
 };
 
 export const formattedMatrixFilters = (filters) => {
   const parts = [];
-  if (filters.violationType) {
-    parts.push(matrixViolationTypeToLabel[filters.violationType]);
+  if (filters[VIOLATION_TYPE]) {
+    parts.push(matrixViolationTypeToLabel[filters[VIOLATION_TYPE]]);
   }
-  if (filters.reportedViolations) {
-    parts.push(`${violationCountLabel(filters.reportedViolations)} violations`);
+  if (filters[REPORTED_VIOLATIONS]) {
+    parts.push(
+      `${violationCountLabel(filters[REPORTED_VIOLATIONS])} violations`
+    );
   }
   return parts.join(", ");
 };
 
 export const limitFiltersToUserDistricts = (filters, userDistricts) => {
-  if (userDistricts !== null && includesAllItemFirst(filters.district)) {
+  if (userDistricts !== null && includesAllItemFirst(filters[DISTRICT])) {
     return { ...filters, district: userDistricts };
   }
 

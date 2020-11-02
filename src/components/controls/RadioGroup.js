@@ -14,9 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-
 /* eslint-disable jsx-a11y/label-has-associated-control */
-
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 
@@ -26,10 +24,11 @@ const RadioGroup = ({ defaultValue, onChange, options }) => {
   const [state, setState] = useState(defaultValue);
 
   return (
-    <div className="radio-group">
+    <div className="RadioGroup">
       {options.map(({ value, label }) => (
-        <label key={value}>
+        <label className="RadioGroup__label" key={value}>
           <input
+            className="RadioGroup__input"
             type="radio"
             checked={state === value}
             onChange={() => {

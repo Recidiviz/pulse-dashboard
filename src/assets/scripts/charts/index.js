@@ -15,10 +15,10 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import Chart from 'chart.js';
-import ChartAnnotationsPlugin from 'chartjs-plugin-annotation';
+import Chart from "chart.js";
+import ChartAnnotationsPlugin from "chartjs-plugin-annotation";
 
 export default (function () {
   // Extras required for our Chart.js configuration
   Chart.plugins.register(ChartAnnotationsPlugin);
-}());
+})();

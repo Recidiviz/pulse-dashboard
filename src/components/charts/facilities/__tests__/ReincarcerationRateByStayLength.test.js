@@ -18,7 +18,6 @@
 import React from "react";
 
 import ShallowRenderer from "react-test-renderer/shallow";
-import "@testing-library/jest-dom/extend-expect";
 import ReincarcerationRateByStayLength from "../ReincarcerationRateByStayLength";
 import { METRIC_TYPES } from "../../../constants";
 

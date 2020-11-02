@@ -14,32 +14,42 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-
 import React from "react";
 import PropTypes from "prop-types";
+import cn from "classnames";
+import "./FilterField.scss";
 
-import useTopBarShrinking from "../../../../hooks/useTopBarShrinking";
+import { usePageState } from "../../../../contexts/PageContext";
 
-const FilterField = ({ label, children }) => {
-  const isTopBarShrinking = useTopBarShrinking();
-  const topLevelFilterClassName = isTopBarShrinking
-    ? "top-level-filter top-level-active d-f align-items-center"
-    : "top-level-filter";
-  const titleLevelClassName = isTopBarShrinking
-    ? "title-level top-level-filters-title"
-    : "title-level";
+const FilterField = ({ label, children, className }) => {
+  const { isTopBarShrinking } = usePageState();
 
   return (
-    <div className={topLevelFilterClassName}>
-      <h4 className={titleLevelClassName}>{label}</h4>
+    <div
+      className={cn("FilterField", `${className}`, {
+        "FilterField--shrink": isTopBarShrinking,
+      })}
+    >
+      <h4
+        className={cn("FilterField__label", {
+          "FilterField__label--shrink": isTopBarShrinking,
+        })}
+      >
+        {label}
+      </h4>
       {children}
     </div>
   );
 };
 
+FilterField.defaultProps = {
+  className: null,
+};
+
 FilterField.propTypes = {
   label: PropTypes.string.isRequired,
   children: PropTypes.node.isRequired,
+  className: PropTypes.string,
 };
 
 export default FilterField;

@@ -14,89 +14,101 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-import React from 'react';
-import '@testing-library/jest-dom/extend-expect';
-import * as labelsMethods from '../labels';
+import * as labelsMethods from "../labels";
 
-describe('test label', () => {
+describe("test label", () => {
+  it("get gender from array genderValuetoLabel", () => {
+    const testValueGender = "FEMALE";
+    const dataAfterTest = labelsMethods.genderValueToHumanReadable(
+      testValueGender
+    );
+    expect(dataAfterTest).toBe("Female");
 
- it('get gender from array genderValuetoLabel', () => {
-   const testValueGender = 'FEMALE';
-   const dataAfterTest = labelsMethods.genderValueToHumanReadable(testValueGender);
-   expect(dataAfterTest).toBe('Female');
+    const dataErrorAfterTest = labelsMethods.genderValueToHumanReadable(
+      "White"
+    );
+    expect(dataErrorAfterTest).toBe(undefined);
+  });
 
-   const dataErrorAfterTest = labelsMethods.genderValueToHumanReadable('White');
-   expect(dataErrorAfterTest).toBe(undefined);
- });
+  it("get race from  array raceValuetoLabel", () => {
+    const testValueRace = "WHITE";
+    const dataAfterTest = labelsMethods.raceValueToHumanReadable(testValueRace);
+    expect(dataAfterTest).toBe("White");
+  });
 
- it('get race from  array raceValuetoLabel', () => {
-   const testValueRace = 'WHITE';
-   const dataAfterTest = labelsMethods.raceValueToHumanReadable(testValueRace);
-   expect(dataAfterTest).toBe('White');
- });
+  it("to Html friendly", () => {
+    const dataAfterTest = labelsMethods.toHtmlFriendly("Los Angeles");
+    expect(dataAfterTest.toString()).toEqual("Los-Angeles");
+  });
 
- it('to Html friendly', () => {
-   const dataAfterTest = labelsMethods.toHtmlFriendly('Los Angeles');
-   expect(dataAfterTest.toString()).toEqual('Los-Angeles');
- });
+  it("to Html friendly with multiple spaces", () => {
+    const dataAfterTest = labelsMethods.toHtmlFriendly(
+      "Los Angeles  California"
+    );
+    expect(dataAfterTest.toString()).toEqual("Los-Angeles-California");
+  });
 
- it('to Html friendly with multiple spaces', () => {
-   const dataAfterTest = labelsMethods.toHtmlFriendly('Los Angeles California');
-   expect(dataAfterTest.toString()).toEqual('Los-Angeles-California');
- });
+  it("to Html friendly with html forbidden symbols", () => {
+    const dataAfterTest = labelsMethods.toHtmlFriendly(
+      "A&P Grocery in California"
+    );
+    expect(dataAfterTest.toString()).toEqual("A-P-Grocery-in-California");
+  });
 
- it('to human readable', () => {
-   const dataAfterTest = labelsMethods.toHumanReadable('Los-Angeles');
-   expect(dataAfterTest.toString()).toEqual('Los Angeles');
- });
+  it("to human readable", () => {
+    const dataAfterTest = labelsMethods.toHumanReadable("Los-Angeles");
+    expect(dataAfterTest.toString()).toEqual("Los Angeles");
+  });
 
- it('toInt', () => {
-  const dataForTest = '999: Lavena Banbridge';
-  const dataAfterTest = labelsMethods.toInt(dataForTest);
-  expect(dataAfterTest).toBe(999);
+  it("toInt", () => {
+    const dataForTest = "999: Lavena Banbridge";
+    const dataAfterTest = labelsMethods.toInt(dataForTest);
+    expect(dataAfterTest).toBe(999);
 
-  const dataErrorAfterTest = labelsMethods.toInt('Banbridge');
-  expect(dataErrorAfterTest).toBe(NaN);
- });
+    const dataErrorAfterTest = labelsMethods.toInt("Banbridge");
+    expect(dataErrorAfterTest).toBe(NaN);
+  });
 
- it('to title case', () => {
-   const dataForTest = 'LOS ANGELES';
-   const dataAfterTest = labelsMethods.toTitleCase(dataForTest);
-   expect(dataAfterTest).toEqual('Los Angeles');
+  it("to title case", () => {
+    const dataForTest = "LOS ANGELES";
+    const dataAfterTest = labelsMethods.toTitleCase(dataForTest);
+    expect(dataAfterTest).toEqual("Los Angeles");
 
-   const dataErrorAfterTest = labelsMethods.toTitleCase('');
-   expect(dataErrorAfterTest).toEqual('');
- });
+    const dataErrorAfterTest = labelsMethods.toTitleCase("");
+    expect(dataErrorAfterTest).toEqual("");
+  });
 
- it('human readable title case with underscores', () => {
-   const dataForTesting = 'SAN_FRANCISCO_CALIFORNIA';
-   const dataAfterTest = labelsMethods.humanReadableTitleCase(dataForTesting);
-   expect(dataAfterTest).toEqual('San Francisco California');
- });
+  it("human readable title case with underscores", () => {
+    const dataForTesting = "SAN_FRANCISCO_CALIFORNIA";
+    const dataAfterTest = labelsMethods.humanReadableTitleCase(dataForTesting);
+    expect(dataAfterTest).toEqual("San Francisco California");
+  });
 
- it('human readable title case with hyphens', () => {
-   const dataForTesting = 'SAN-FRANCISCO-CALIFORNIA';
-   const dataAfterTest = labelsMethods.humanReadableTitleCase(dataForTesting);
-   expect(dataAfterTest).toEqual('San Francisco California');
- });
+  it("human readable title case with hyphens", () => {
+    const dataForTesting = "SAN-FRANCISCO-CALIFORNIA";
+    const dataAfterTest = labelsMethods.humanReadableTitleCase(dataForTesting);
+    expect(dataAfterTest).toEqual("San Francisco California");
+  });
 
- it('human readable title case with a mix of punctuation', () => {
-   const dataForTesting = 'SAN_FRANCISCO-CALIFORNIA';
-   const dataAfterTest = labelsMethods.humanReadableTitleCase(dataForTesting);
-   expect(dataAfterTest).toEqual('San Francisco California');
- });
+  it("human readable title case with a mix of punctuation", () => {
+    const dataForTesting = "SAN_FRANCISCO-CALIFORNIA";
+    const dataAfterTest = labelsMethods.humanReadableTitleCase(dataForTesting);
+    expect(dataAfterTest).toEqual("San Francisco California");
+  });
 
- it('number from officer id', () => {
-   const dataForTest = '27: Patricia Mayonnaise';
-   const dataAfterTest = labelsMethods.numberFromOfficerId(dataForTest);
-   expect(dataAfterTest).toBe(27);
- });
+  it("number from officer id", () => {
+    const dataForTest = "27: Patricia Mayonnaise";
+    const dataAfterTest = labelsMethods.numberFromOfficerId(dataForTest);
+    expect(dataAfterTest).toBe(27);
+  });
 
- it('nameFromOfficerId', () => {
-   const dataForTest = '104: Mike Giacobbo';
-   const dataAfterTest = labelsMethods.nameFromOfficerId(dataForTest);
-   const dataExpected = 'Mike Giacobbo';
-   expect(dataAfterTest).toEqual(dataExpected);
- });
+  it("pluralize when it should not pluralize", () => {
+    const result = labelsMethods.pluralize(1, "violation");
+    expect(result).toEqual("1 violation");
+  });
 
+  it("pluralize when it should pluralize", () => {
+    const result = labelsMethods.pluralize(2, "violation");
+    expect(result).toEqual("2 violations");
+  });
 });

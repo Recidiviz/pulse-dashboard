@@ -72,7 +72,6 @@ export const StateCodeProvider = ({ children }) => {
   const contextValue = {
     currentStateCode,
     updateCurrentStateCode,
-    getAvailableStateCodes,
     refreshCurrentStateCode,
   };
 
