@@ -72,7 +72,11 @@ export const Auth0Provider = ({
   );
 };
 
+Auth0Provider.defaultProps = {
+  onRedirectCallback: DEFAULT_REDIRECT_CALLBACK,
+};
+
 Auth0Provider.propTypes = {
   children: PropTypes.node.isRequired,
-  onRedirectCallback: PropTypes.func.isRequired,
+  onRedirectCallback: PropTypes.func,
 };

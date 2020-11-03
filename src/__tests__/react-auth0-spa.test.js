@@ -9,17 +9,26 @@ jest.mock("@auth0/auth0-spa-js");
 jest.mock("../utils/authentication/demoMode");
 describe("react auth0 tests", () => {
   const mockUser = { name: "some name" };
+  const mockAppState = "some state";
 
-  const mockRedirectCallback = () => {};
-  const mockHandleRedirectCallback = jest.fn();
+  const mockRedirectCallback = jest.fn();
+  const mockHandleRedirectCallback = jest
+    .fn()
+    .mockResolvedValue({ appState: mockAppState });
   const mockGetIsAuthenticated = jest.fn();
   const mockGetUser = jest.fn().mockReturnValue(mockUser);
+  const mockLoginWithRedirect = jest.fn();
+  const mockGetTokenSilently = jest.fn();
+  const mockLogout = jest.fn();
   isDemoMode.mockReturnValue(false);
 
   const mockAuth0Client = {
     handleRedirectCallback: mockHandleRedirectCallback,
     isAuthenticated: mockGetIsAuthenticated,
     getUser: mockGetUser,
+    loginWithRedirect: mockLoginWithRedirect,
+    getTokenSilently: mockGetTokenSilently,
+    logout: mockLogout,
   };
 
   createAuth0Client.mockResolvedValue(mockAuth0Client);
@@ -69,6 +78,24 @@ describe("react auth0 tests", () => {
     await cleanup();
   });
 
+  it("should call auth0Client functions", async () => {
+    const { result, waitForNextUpdate } = renderHook(() => useAuth0(), {
+      wrapper: Auth0Provider,
+      initialProps: {
+        onRedirectCallback: mockRedirectCallback,
+      },
+    });
+
+    await waitForNextUpdate();
+
+    await result.current.loginWithRedirect();
+    expect(mockLoginWithRedirect).toHaveBeenCalled();
+    await result.current.getTokenSilently();
+    expect(mockGetTokenSilently).toHaveBeenCalled();
+    await result.current.logout();
+    expect(mockLogout).toHaveBeenCalled();
+  });
+
   it("should be authenticated with demo user when demo mode is on", async () => {
     isDemoMode.mockReturnValue(true);
 
@@ -87,5 +114,36 @@ describe("react auth0 tests", () => {
 
     expect(result.current.isAuthenticated).toBeTrue();
     expect(result.current.user).toEqual(demoUser);
+    expect(result.current.getTokenSilently()).toBe("");
+  });
+
+  it("should authenticate user and call callback if url contains code and callback is defined", async () => {
+    window.history.pushState({}, "", "/some/url?code=123");
+
+    const { waitForNextUpdate } = renderHook(() => useAuth0(), {
+      wrapper: Auth0Provider,
+      initialProps: {
+        onRedirectCallback: mockRedirectCallback,
+      },
+    });
+
+    await waitForNextUpdate();
+
+    expect(mockHandleRedirectCallback).toHaveBeenCalled();
+    expect(mockRedirectCallback).toHaveBeenCalledWith(mockAppState);
+  });
+
+  it(`should authenticate user and redirect to the same url but without 
+     code if url contains code and callback is not defined`, async () => {
+    window.history.pushState({}, "", "/some/url?code=123");
+
+    const { waitForNextUpdate } = renderHook(() => useAuth0(), {
+      wrapper: Auth0Provider,
+      initialProps: {},
+    });
+
+    await waitForNextUpdate();
+
+    expect(window.location.pathname).toBe("/some/url");
   });
 });
