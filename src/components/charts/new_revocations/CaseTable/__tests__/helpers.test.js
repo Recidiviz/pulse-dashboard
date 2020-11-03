@@ -114,7 +114,7 @@ describe("helper", () => {
             "FRED FLINSTONE",
             "Moderate Risk",
             "Any Normal Recommendation",
-            "1 fel, 2 low_tech",
+            "1 fel",
           ],
         },
       ];

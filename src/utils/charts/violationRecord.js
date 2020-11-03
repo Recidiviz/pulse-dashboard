@@ -16,71 +16,78 @@
 // =============================================================================
 
 import compose from "lodash/fp/compose";
-
-const VIOLATION_SEVERITY = [
-  "fel",
-  "misd",
-  "law",
-  "absc",
-  "muni",
-  "subs",
-  "tech",
-];
-
-const recordPartRegex = /(?<number>\d+)(?<abbreviation>\w+)/;
+import { translate } from "../../views/tenants/utils/i18nSettings";
 
 function parseViolationRecord(recordLabel = "") {
   if (!recordLabel) {
-    return [];
+    return {};
   }
-  return recordLabel.split(";").map((recordPart) => {
-    const record = recordPart.match(recordPartRegex).groups;
-    record.number = parseInt(record.number, 0);
-    return record;
-  });
+
+  return recordLabel.split(";").reduce((acc, recordPart) => {
+    const match = recordPart.match(/(?<number>\d+)(?<abbreviation>\w+)/);
+
+    if (!match) return acc;
+
+    return {
+      ...acc,
+      [match.groups.abbreviation]: parseInt(match.groups.number),
+    };
+  }, {});
 }
 
 export function sumViolationRecords(records) {
-  return records.reduce((acc, record) => acc + record.number, 0);
+  return Object.values(records).reduce((acc, record) => acc + record, 0);
 }
 
-export function compareViolationRecords(aRecordLabel, bRecordLabel, order) {
+export function compareViolationRecords(aRecordLabel, bRecordLabel) {
   const aRecords = parseViolationRecord(aRecordLabel);
   const bRecords = parseViolationRecord(bRecordLabel);
 
   const aSum = sumViolationRecords(aRecords);
   const bSum = sumViolationRecords(bRecords);
+  if (!aSum || !bSum) return aSum - bSum;
 
-  if (aSum > bSum) return 1;
-  if (aSum < bSum) return -1;
+  const violationsBySeverity = translate("violationsBySeverity");
 
-  for (let i = VIOLATION_SEVERITY.length - 1; i >= 0; i -= 1) {
-    const violationSeverity = VIOLATION_SEVERITY[i];
+  const aMostSevereViolation = violationsBySeverity.find(
+    (violation) => aRecords[violation]
+  );
+  const bMostSevereViolation = violationsBySeverity.find(
+    (violation) => bRecords[violation]
+  );
 
-    const aRecord = aRecords.find((r) => r.abbreviation === violationSeverity);
-    const bRecord = bRecords.find((r) => r.abbreviation === violationSeverity);
+  const aMostSevereViolationIndex = violationsBySeverity.indexOf(
+    aMostSevereViolation
+  );
+  const bMostSevereViolationIndex = violationsBySeverity.indexOf(
+    bMostSevereViolation
+  );
 
-    if (aRecord && !bRecord) return order === "desc" ? -1 : 1;
-    if (!aRecord && bRecord) return order === "desc" ? 1 : -1;
-
-    if (aRecord && bRecord) {
-      if (aRecord.number > bRecord.number) return order === "desc" ? -1 : 1;
-      if (aRecord.number < bRecord.number) return order === "desc" ? 1 : -1;
-    }
+  if (aMostSevereViolationIndex !== bMostSevereViolationIndex) {
+    return bMostSevereViolationIndex - aMostSevereViolationIndex;
   }
 
-  return 0;
+  const aMostSevereViolationCount = aRecords[aMostSevereViolation];
+  const bMostSevereViolationCount = bRecords[bMostSevereViolation];
+  if (aMostSevereViolationCount !== bMostSevereViolationCount) {
+    return aMostSevereViolationCount - bMostSevereViolationCount;
+  }
+
+  return aSum - bSum;
 }
 
-const violationFormatter = (record) =>
-  `${record.number} ${record.abbreviation}`;
-
 export function formatViolationRecord(records) {
-  if (records.length === 0) {
-    return "";
-  }
+  const violationSeverities = translate("violationsBySeverity");
 
-  return records.slice().map(violationFormatter).join(", ");
+  const notEmptySeverities = violationSeverities.reduce((acc, violation) => {
+    if (records[violation]) {
+      acc.push(`${records[violation]} ${violation}`);
+    }
+
+    return acc;
+  }, []);
+
+  return notEmptySeverities.join(", ");
 }
 
 export const parseAndFormatViolationRecord = compose(
