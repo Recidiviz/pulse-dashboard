@@ -42,11 +42,6 @@ export const matchesTopLevelFilters = ({
   skippedFilters = [],
   treatCategoryAllAsAbsent = false,
 }) => (item, dimensionKey = undefined) => {
-  // console.log({filters})
-  // console.log({skippedFilters})
-  // console.log({filters})
-  // console.log({item})
-  // console.log({dimensionKey})
   if (
     (dimensionKey === undefined || dimensionKey === "metric_period_months") &&
     filters[METRIC_PERIOD_MONTHS] &&

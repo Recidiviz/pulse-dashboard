@@ -86,6 +86,7 @@ const RevocationMatrix = ({
     (metricFile) =>
       filterOptimizedDataFormat(
         unflattenedValues,
+        apiData,
         metricFile.metadata,
         dataFilter
       ),

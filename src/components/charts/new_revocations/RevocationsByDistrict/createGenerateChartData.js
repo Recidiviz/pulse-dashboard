@@ -141,6 +141,7 @@ const createGenerateChartData = (dataFilter, currentDistricts) => (
   const filteredData = pipe((metricFile) =>
     filterOptimizedDataFormat(
       unflattenedValues,
+      apiData,
       metricFile.metadata,
       dataFilter
     )

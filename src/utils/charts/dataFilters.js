@@ -24,56 +24,65 @@ import {
   validateMetadata,
 } from "../../api/metrics/optimizedFormatHelpers";
 
-function filterOptimizedDataFormat(unflattenedValues, metadata, filterFn) {
-  validateMetadata(metadata);
-  const totalDataPoints = toInteger(metadata.total_data_points);
-  const dimensions = metadata.dimension_manifest;
-  const valueKeys = metadata.value_keys;
+function filterOptimizedDataFormat(
+  unflattenedValues,
+  apiData,
+  metadata,
+  filterFn
+) {
+  let filteredDataPoints = [];
+  if (unflattenedValues.length > 0) {
+    validateMetadata(metadata);
+    const totalDataPoints = toInteger(metadata.total_data_points);
+    const dimensions = metadata.dimension_manifest;
+    const valueKeys = metadata.value_keys;
 
-  const filteredDataPoints = [];
-  let i = 0;
-  for (i = 0; i < totalDataPoints; i += 1) {
-    const dataPoint = {};
-    let matchesFilter = true;
+    let i = 0;
+    for (i = 0; i < totalDataPoints; i += 1) {
+      const dataPoint = {};
+      let matchesFilter = true;
 
-    let j = 0;
-    for (j = 0; j < dimensions.length; j += 1) {
-      const dimensionValueIndex = unflattenedValues[j][i];
-      // const dimensionKeyIndex = i;
+      let j = 0;
+      for (j = 0; j < dimensions.length; j += 1) {
+        const dimensionValueIndex = unflattenedValues[j][i];
+        // const dimensionKeyIndex = i;
 
-      const dimensionKey = getDimensionKey(dimensions, j);
-      const dimensionValue = getDimensionValue(
-        dimensions,
-        j,
-        dimensionValueIndex
-      );
-      matchesFilter = filterFn(
-        { [dimensionKey]: dimensionValue },
-        dimensionKey
-      );
-      if (!matchesFilter) {
-        break;
+        const dimensionKey = getDimensionKey(dimensions, j);
+        const dimensionValue = getDimensionValue(
+          dimensions,
+          j,
+          dimensionValueIndex
+        );
+        matchesFilter = filterFn(
+          { [dimensionKey]: dimensionValue },
+          dimensionKey
+        );
+        if (!matchesFilter) {
+          break;
+        }
+
+        dataPoint[dimensionKey] = dimensionValue;
       }
 
-      dataPoint[dimensionKey] = dimensionValue;
-    }
+      if (!matchesFilter) {
+        /* eslint-disable-next-line no-continue */
+        continue;
+      }
 
-    if (!matchesFilter) {
-      /* eslint-disable-next-line no-continue */
-      continue;
-    }
+      for (
+        j = dimensions.length;
+        j < dimensions.length + valueKeys.length;
+        j += 1
+      ) {
+        const valueValue = unflattenedValues[j][i];
+        const valueKey = getValueKey(valueKeys, j - dimensions.length);
+        dataPoint[valueKey] = valueValue;
+      }
 
-    for (
-      j = dimensions.length;
-      j < dimensions.length + valueKeys.length;
-      j += 1
-    ) {
-      const valueValue = unflattenedValues[j][i];
-      const valueKey = getValueKey(valueKeys, j - dimensions.length);
-      dataPoint[valueKey] = valueValue;
+      filteredDataPoints.push(dataPoint);
     }
-
-    filteredDataPoints.push(dataPoint);
+  } else {
+    filteredDataPoints = apiData.filter((item) => filterFn(item));
   }
 
   return filteredDataPoints;

@@ -71,6 +71,7 @@ const RevocationsOverTime = ({
     (metricFile) =>
       filterOptimizedDataFormat(
         unflattenedValues,
+        apiData,
         metricFile.metadata,
         dataFilter
       ),

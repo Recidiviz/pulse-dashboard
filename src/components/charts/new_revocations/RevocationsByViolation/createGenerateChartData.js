@@ -34,11 +34,11 @@ const createGenerateChartData = (dataFilter, violationTypes) => (
   const violationCountKey = "violation_count";
 
   const allViolationTypeKeys = map("key", violationTypes);
-
   const violationToCount = pipe(
     (metricFile) =>
       filterOptimizedDataFormat(
         unflattenedValues,
+        apiData,
         metricFile.metadata,
         dataFilter
       ),

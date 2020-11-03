@@ -49,6 +49,7 @@ const createGenerateChartData = (dataFilter, stateCode) => (
     (metricFile) =>
       filterOptimizedDataFormat(
         unflattenedValues,
+        apiData,
         metricFile.metadata,
         dataFilter
       ),

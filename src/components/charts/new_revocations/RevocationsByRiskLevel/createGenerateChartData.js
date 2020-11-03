@@ -45,6 +45,7 @@ const createGenerateChartData = (dataFilter) => (
     (metricFile) =>
       filterOptimizedDataFormat(
         unflattenedValues,
+        apiData,
         metricFile.metadata,
         dataFilter
       ),
