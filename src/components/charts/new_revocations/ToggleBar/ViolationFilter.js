@@ -39,7 +39,6 @@ const ViolationFilter = ({ reportedViolations, violationType, onClick }) => {
     }
     return parts.join(", ");
   }, [reportedViolations, violationType]);
-
   if (!formattedMatrixFilters) return null;
 
   return (
@@ -53,6 +52,7 @@ const ViolationFilter = ({ reportedViolations, violationType, onClick }) => {
           onDelete={() => {
             onClick({ violationType: "", reportedViolations: "" });
           }}
+          isShrinkable
         />
       </FilterField>
     </div>
