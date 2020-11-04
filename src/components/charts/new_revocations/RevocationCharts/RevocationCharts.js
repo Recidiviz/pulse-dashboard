@@ -16,14 +16,18 @@
 // =============================================================================
 
 import React, { useState } from "react";
+import cn from "classnames";
 import PropTypes from "prop-types";
 import RenderInBrowser from "react-render-in-browser";
-import { translate } from "../../../views/tenants/utils/i18nSettings";
+import { translate } from "../../../../views/tenants/utils/i18nSettings";
+import "./RevocationCharts.scss";
 
-const CHARTS = ["District", "Risk level", "Violation", "Gender", "Race"];
+// prettier-ignore
+const CHARTS = ["District", "Agent", "Risk level", "Violation", "Gender", "Race"];
 
 const RevocationCharts = ({
   riskLevelChart,
+  agentChart,
   violationChart,
   genderChart,
   raceChart,
@@ -33,33 +37,39 @@ const RevocationCharts = ({
 
   // This will ensure that we proactively load each chart component and their data now, but only
   // display the selected chart
-  const conditionallyHide = (chart, chartName, chartComponent, index) => (
+  const conditionallyHide = (chart, chartName, chartComponent) => (
     <div
-      key={index}
-      style={{ display: chart === chartName ? "block" : "none" }}
+      key={chartName}
+      className={cn("RevocationCharts__chart", {
+        "RevocationCharts__chart--selected": chart === chartName,
+      })}
     >
       {chartComponent}
     </div>
   );
 
   const renderSelectedChartSimultaneousLoad = () => [
-    conditionallyHide(selectedChart, "Risk level", riskLevelChart, 0),
-    conditionallyHide(selectedChart, "Violation", violationChart, 1),
-    conditionallyHide(selectedChart, "Gender", genderChart, 2),
-    conditionallyHide(selectedChart, "Race", raceChart, 3),
-    conditionallyHide(selectedChart, "District", districtChart, 4),
+    conditionallyHide(selectedChart, "Risk level", riskLevelChart),
+    conditionallyHide(selectedChart, "Agent", agentChart),
+    conditionallyHide(selectedChart, "Violation", violationChart),
+    conditionallyHide(selectedChart, "Gender", genderChart),
+    conditionallyHide(selectedChart, "Race", raceChart),
+    conditionallyHide(selectedChart, "District", districtChart),
   ];
 
   const renderSelectedChartSingularLoad = () => {
     switch (selectedChart) {
       case "Risk level":
         return riskLevelChart;
+      case "Agent":
+        return agentChart;
       case "Violation":
         return violationChart;
       case "Gender":
         return genderChart;
       case "Race":
         return raceChart;
+      case "District":
       default:
         return districtChart;
     }
@@ -82,15 +92,15 @@ const RevocationCharts = ({
   );
 
   return (
-    <div className="RevocationCharts static-charts d-f bgc-white m-20">
-      <div className="chart-type-labels p-20">
+    <div className="RevocationCharts">
+      <div className="RevocationCharts__labels">
         {CHARTS.map((chart) => (
-          <div key={chart}>
+          <div className="RevocationCharts__label" key={chart}>
             <button
               type="button"
-              className={`chart-type-label ${
-                selectedChart === chart ? "selected" : ""
-              }`}
+              className={cn("RevocationCharts__button", {
+                "RevocationCharts__button--selected": selectedChart === chart,
+              })}
               onClick={() => setSelectedChart(chart)}
             >
               {translate(chart)}
@@ -98,13 +108,14 @@ const RevocationCharts = ({
           </div>
         ))}
       </div>
-      <div className="selected-chart p-20">{renderSelectedChart()}</div>
+      {renderSelectedChart()}
     </div>
   );
 };
 
 RevocationCharts.propTypes = {
   riskLevelChart: PropTypes.node.isRequired,
+  agentChart: PropTypes.node.isRequired,
   violationChart: PropTypes.node.isRequired,
   genderChart: PropTypes.node.isRequired,
   raceChart: PropTypes.node.isRequired,

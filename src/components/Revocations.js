@@ -205,6 +205,7 @@ const Revocations = () => {
             />
           </ErrorBoundary>
         }
+        agentChart={null}
         violationChart={
           <ErrorBoundary>
             <RevocationsByViolation

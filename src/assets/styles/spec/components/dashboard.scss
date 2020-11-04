@@ -281,42 +281,6 @@
   max-height: 300px;
 }
 
-.static-charts {
-  .chart-type-labels {
-    width: 130px;
-    border-right: 1px solid $border-color;
-
-    .chart-type-label {
-      padding: 0;
-      background: transparent;
-      border: 0;
-      border-bottom: 2px solid transparent;
-      color: rgb(162, 169, 174);
-      text-transform: uppercase;
-      font-size: 16px;
-      font-weight: 600;
-      margin-bottom: 20px;
-      text-align: left;
-
-      &.selected {
-        color: rgb(39, 128, 194);
-        border-color: rgb(39, 128, 194);
-      }
-    }
-  }
-
-  .selected-chart {
-    flex: 1;
-  }
-}
-
-.static-chart-container {
-  position: relative;
-  margin: auto;
-  height: 60vh;
-  width: 80vw;
-}
-
 .CaseTable {
   table {
     width: 100%;
