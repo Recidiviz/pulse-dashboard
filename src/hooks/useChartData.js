@@ -41,8 +41,7 @@ import { callMetricsApi, awaitingResults } from "../api/metrics/metricsClient";
  * ensure we do not need to proactively and repeatedly unflatten the value matrix
  * on subsequent filter operations.
  */
-function useChartData(url, file) {
-  const eagerExpand = true;
+function useChartData(url, file, eagerExpand = true) {
   const { loading, user, getTokenSilently } = useAuth0();
   const [apiData, setApiData] = useState([]);
   const [unflattenedValues, setUnflattenedValues] = useState([]);
