@@ -16,7 +16,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import { sumCounts } from "../helpers";
+import { sumCounts } from "../sumCounts";
 import { calculateRate } from "../../helpers/rate";
 
 describe("#calculateAverageRate", () => {

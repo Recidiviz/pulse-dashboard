@@ -26,20 +26,19 @@ import RevocationCountChart from "../RevocationCountChart";
 import createGenerateChartData from "./createGenerateChartData";
 import flags from "../../../../flags";
 
-const RevocationsByDistrict = ({
-  currentDistricts,
+const RevocationsByAgent = ({
   dataFilter,
   filterStates,
   stateCode,
   timeDescription,
 }) => {
-  const chartTitle = `${translate("Revocations")} by district`;
+  const chartTitle = `${translate("Revocations")} by agent`;
 
   return (
     <RevocationsByDimension
-      chartId="revocationsByDistrict"
+      chartId="revocationsByAgent"
       apiUrl={`${stateCode}/newRevocations`}
-      apiFile="revocations_matrix_distribution_by_district"
+      apiFile="revocations_matrix_distribution_by_officer"
       renderChart={({
         chartId,
         data,
@@ -52,7 +51,7 @@ const RevocationsByDistrict = ({
           <RevocationCountChart
             chartId={chartId}
             data={data}
-            xAxisLabel="District"
+            xAxisLabel="District-Agent ID"
           />
         ) : (
           <PercentRevokedChart
@@ -61,7 +60,7 @@ const RevocationsByDistrict = ({
             numerators={numerators}
             denominators={denominators}
             averageRate={averageRate}
-            xAxisLabel="District"
+            xAxisLabel="District-Agent ID"
             yAxisLabel={
               mode === "rates"
                 ? translate("percentOfPopulationRevoked")
@@ -70,7 +69,7 @@ const RevocationsByDistrict = ({
           />
         )
       }
-      generateChartData={createGenerateChartData(dataFilter, currentDistricts)}
+      generateChartData={createGenerateChartData(dataFilter)}
       chartTitle={chartTitle}
       metricTitle={chartTitle}
       filterStates={filterStates}
@@ -85,12 +84,11 @@ const RevocationsByDistrict = ({
   );
 };
 
-RevocationsByDistrict.propTypes = {
+RevocationsByAgent.propTypes = {
   dataFilter: PropTypes.func.isRequired,
   filterStates: filtersPropTypes.isRequired,
-  currentDistricts: PropTypes.arrayOf(PropTypes.string).isRequired,
   stateCode: PropTypes.string.isRequired,
   timeDescription: PropTypes.string.isRequired,
 };
 
-export default RevocationsByDistrict;
+export default RevocationsByAgent;
