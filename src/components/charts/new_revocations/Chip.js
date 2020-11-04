@@ -19,17 +19,19 @@ import React from "react";
 import PropTypes from "prop-types";
 import cn from "classnames";
 
+import { usePageState } from "../../../contexts/PageContext";
 import "./Chip.scss";
 
-const Chip = ({
-  label,
-  onClick = () => {},
-  onDelete = null,
-  isSelected = false,
-  className,
-}) => {
+const Chip = ({ label, onClick, onDelete, isSelected, isShrinkable }) => {
+  const { isTopBarShrinking } = usePageState();
+
   return (
-    <div className={cn("Chip", { "Chip--selected": isSelected }, className)}>
+    <div
+      className={cn("Chip", {
+        "Chip--selected": isSelected,
+        "Chip--shrinking": isTopBarShrinking && isShrinkable,
+      })}
+    >
       <button type="button" className="Chip__label" onClick={onClick}>
         {label}
       </button>
@@ -50,7 +52,7 @@ Chip.defaultProps = {
   onClick: () => {},
   onDelete: null,
   isSelected: false,
-  className: "",
+  isShrinkable: false,
 };
 
 Chip.propTypes = {
@@ -58,7 +60,7 @@ Chip.propTypes = {
   onClick: PropTypes.func,
   onDelete: PropTypes.func,
   isSelected: PropTypes.bool,
-  className: PropTypes.string,
+  isShrinkable: PropTypes.bool,
 };
 
 export default Chip;

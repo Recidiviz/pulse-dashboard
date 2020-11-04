@@ -17,7 +17,6 @@
 
 import React, { useMemo } from "react";
 import PropTypes from "prop-types";
-import cn from "classnames";
 
 import FilterField from "./FilterField";
 import Chip from "../Chip";
@@ -26,10 +25,8 @@ import {
   matrixViolationTypeToLabel,
   pluralize,
 } from "../../../../utils/transforms/labels";
-import { usePageState } from "../../../../contexts/PageContext";
 
 const ViolationFilter = ({ reportedViolations, violationType, onClick }) => {
-  const { isTopBarShrinking } = usePageState();
   const formattedMatrixFilters = useMemo(() => {
     const parts = [];
     if (violationType) {
@@ -52,10 +49,10 @@ const ViolationFilter = ({ reportedViolations, violationType, onClick }) => {
       >
         <Chip
           label={formattedMatrixFilters}
-          className={cn({ "Chip--shrinking": isTopBarShrinking })}
           onDelete={() => {
             onClick({ violationType: "", reportedViolations: "" });
           }}
+          isShrinkable
         />
       </FilterField>
     </div>
