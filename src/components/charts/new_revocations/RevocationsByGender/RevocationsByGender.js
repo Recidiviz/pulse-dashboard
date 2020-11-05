@@ -47,6 +47,8 @@ const RevocationsByGender = ({
         labelColors={CHART_COLORS}
         denominators={denominators}
         numerators={numerators}
+        withLegend
+        isNested
       />
     )}
     generateChartData={createGenerateChartData(dataFilter, stateCode)}

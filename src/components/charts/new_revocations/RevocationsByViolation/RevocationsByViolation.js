@@ -19,9 +19,9 @@ import React from "react";
 import PropTypes from "prop-types";
 
 import RevocationsByDimension from "../RevocationsByDimension";
-import RevocationsByViolationChart from "./RevocationsByViolationChart";
 import createGenerateChartData from "./createGenerateChartData";
 import { filtersPropTypes } from "../../propTypes";
+import BarChartWithLabels from "../BarChartWithLabels";
 
 const RevocationsByViolation = ({
   dataFilter,
@@ -35,11 +35,13 @@ const RevocationsByViolation = ({
     apiUrl={`${stateCode}/newRevocations`}
     apiFile="revocations_matrix_distribution_by_violation"
     renderChart={({ chartId, data, denominators, numerators }) => (
-      <RevocationsByViolationChart
+      <BarChartWithLabels
+        data={data}
         numerators={numerators}
         denominators={denominators}
-        chartId={chartId}
-        data={data}
+        id={chartId}
+        yAxisLabel="Percent of total reported violations"
+        xAxisLabel="Violation type and condition violated"
       />
     )}
     generateChartData={createGenerateChartData(dataFilter, violationTypes)}

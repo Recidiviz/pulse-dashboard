@@ -45,6 +45,8 @@ const RevocationsByRace = ({
         yAxisLabel={getLabelByMode(mode)}
         numerators={numerators}
         denominators={denominators}
+        isNested
+        withLegend
       />
     )}
     generateChartData={createGenerateChartData(dataFilter)}
