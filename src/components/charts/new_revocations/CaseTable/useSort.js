@@ -16,8 +16,8 @@
 // =============================================================================
 
 import { useState } from "react";
-import { compareViolationRecords } from "../../../../utils/charts/violationRecord";
-import { nameFromOfficerId } from "./helpers";
+import { compareViolationRecords } from "./utils/compareViolationRecords";
+import { nameFromOfficerId } from "./utils/helpers";
 
 const RISK_LEVEL_PRIORITY = [
   "NOT_ASSESSED",

@@ -15,29 +15,11 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import compose from "lodash/fp/compose";
-import { translate } from "../../views/tenants/utils/i18nSettings";
+import { parseViolationRecord } from "./violationRecord";
+import { translate } from "../../../../../views/tenants/utils/i18nSettings";
 
-function parseViolationRecord(recordLabel = "") {
-  if (!recordLabel) {
-    return {};
-  }
-
-  return recordLabel.split(";").reduce((acc, recordPart) => {
-    const match = recordPart.match(/(?<number>\d+)(?<abbreviation>\w+)/);
-
-    if (!match) return acc;
-
-    return {
-      ...acc,
-      [match.groups.abbreviation]: parseInt(match.groups.number),
-    };
-  }, {});
-}
-
-export function sumViolationRecords(records) {
-  return Object.values(records).reduce((acc, record) => acc + record, 0);
-}
+const sumViolationRecords = (records) =>
+  Object.values(records).reduce((acc, record) => acc + record, 0);
 
 export function compareViolationRecords(aRecordLabel, bRecordLabel) {
   const aRecords = parseViolationRecord(aRecordLabel);
@@ -75,22 +57,3 @@ export function compareViolationRecords(aRecordLabel, bRecordLabel) {
 
   return aSum - bSum;
 }
-
-export function formatViolationRecord(records) {
-  const violationSeverities = translate("violationsBySeverity");
-
-  const notEmptySeverities = violationSeverities.reduce((acc, violation) => {
-    if (records[violation]) {
-      acc.push(`${records[violation]} ${violation}`);
-    }
-
-    return acc;
-  }, []);
-
-  return notEmptySeverities.join(", ");
-}
-
-export const parseAndFormatViolationRecord = compose(
-  formatViolationRecord,
-  parseViolationRecord
-);
