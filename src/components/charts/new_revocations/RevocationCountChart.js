@@ -74,7 +74,11 @@ RevocationCountChart.propTypes = {
     datasets: PropTypes.arrayOf(
       PropTypes.shape({
         label: PropTypes.string,
-        backgroundColor: PropTypes.func,
+        backgroundColor: PropTypes.oneOfType([
+          PropTypes.func,
+          PropTypes.arrayOf(PropTypes.string),
+          PropTypes.string,
+        ]),
         data: PropTypes.arrayOf(PropTypes.number),
       })
     ),

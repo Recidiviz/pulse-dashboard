@@ -15,4 +15,16 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-export { default } from "./RevocationsByAgent";
+function getNameFromOfficerId(officerId) {
+  if (!officerId) {
+    return "";
+  }
+
+  const parts = officerId.split(":");
+  if (parts.length === 1) {
+    return officerId;
+  }
+  return parts[1].trim();
+}
+
+export default getNameFromOfficerId;

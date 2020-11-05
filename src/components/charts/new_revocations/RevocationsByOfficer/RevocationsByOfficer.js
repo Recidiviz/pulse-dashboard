@@ -26,13 +26,13 @@ import RevocationCountChart from "../RevocationCountChart";
 import createGenerateChartData from "./createGenerateChartData";
 import flags from "../../../../flags";
 
-const RevocationsByAgent = ({
+const RevocationsByOfficer = ({
   dataFilter,
   filterStates,
   stateCode,
   timeDescription,
 }) => {
-  const chartTitle = `${translate("Revocations")} by agent`;
+  const chartTitle = `${translate("Revocations")} by ${translate("officer")}`;
 
   return (
     <RevocationsByDimension
@@ -51,7 +51,7 @@ const RevocationsByAgent = ({
           <RevocationCountChart
             chartId={chartId}
             data={data}
-            xAxisLabel="District-Agent ID"
+            xAxisLabel={`District-${translate("Officer")} ID`}
           />
         ) : (
           <PercentRevokedChart
@@ -60,7 +60,7 @@ const RevocationsByAgent = ({
             numerators={numerators}
             denominators={denominators}
             averageRate={averageRate}
-            xAxisLabel="District-Agent ID"
+            xAxisLabel={`District-${translate("Officer")} ID`}
             yAxisLabel={
               mode === "rates"
                 ? translate("percentOfPopulationRevoked")
@@ -84,11 +84,11 @@ const RevocationsByAgent = ({
   );
 };
 
-RevocationsByAgent.propTypes = {
+RevocationsByOfficer.propTypes = {
   dataFilter: PropTypes.func.isRequired,
   filterStates: filtersPropTypes.isRequired,
   stateCode: PropTypes.string.isRequired,
   timeDescription: PropTypes.string.isRequired,
 };
 
-export default RevocationsByAgent;
+export default RevocationsByOfficer;

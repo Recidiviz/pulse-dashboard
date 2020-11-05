@@ -23,11 +23,11 @@ import { translate } from "../../../../views/tenants/utils/i18nSettings";
 import "./RevocationCharts.scss";
 
 // prettier-ignore
-const CHARTS = ["District", "Agent", "Risk level", "Violation", "Gender", "Race"];
+const CHARTS = ["District", "Officer", "Risk level", "Violation", "Gender", "Race"];
 
 const RevocationCharts = ({
   riskLevelChart,
-  agentChart,
+  officerChart,
   violationChart,
   genderChart,
   raceChart,
@@ -50,7 +50,7 @@ const RevocationCharts = ({
 
   const renderSelectedChartSimultaneousLoad = () => [
     conditionallyHide(selectedChart, "Risk level", riskLevelChart),
-    conditionallyHide(selectedChart, "Agent", agentChart),
+    conditionallyHide(selectedChart, translate("Officer"), officerChart),
     conditionallyHide(selectedChart, "Violation", violationChart),
     conditionallyHide(selectedChart, "Gender", genderChart),
     conditionallyHide(selectedChart, "Race", raceChart),
@@ -61,8 +61,8 @@ const RevocationCharts = ({
     switch (selectedChart) {
       case "Risk level":
         return riskLevelChart;
-      case "Agent":
-        return agentChart;
+      case translate("Officer"):
+        return officerChart;
       case "Violation":
         return violationChart;
       case "Gender":
@@ -115,7 +115,7 @@ const RevocationCharts = ({
 
 RevocationCharts.propTypes = {
   riskLevelChart: PropTypes.node.isRequired,
-  agentChart: PropTypes.node.isRequired,
+  officerChart: PropTypes.node.isRequired,
   violationChart: PropTypes.node.isRequired,
   genderChart: PropTypes.node.isRequired,
   raceChart: PropTypes.node.isRequired,

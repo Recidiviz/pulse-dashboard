@@ -24,6 +24,7 @@ import getLabelByMode from "../utils/getLabelByMode";
 import createGenerateChartData from "./createGenerateChartData";
 import RevocationsByDimension from "../RevocationsByDimension";
 import RevocationsByRiskLevelChart from "./RevocationsByRiskLevelChart";
+import { translate } from "../../../../views/tenants/utils/i18nSettings";
 
 const RevocationsByRiskLevel = ({
   stateCode,
@@ -44,7 +45,7 @@ const RevocationsByRiskLevel = ({
       />
     )}
     generateChartData={createGenerateChartData(dataFilter)}
-    chartTitle="Admissions by risk level"
+    chartTitle={`${translate("Revocations")} by risk level`}
     metricTitle={(mode) => `${getLabelByMode(mode)} by risk level`}
     filterStates={filterStates}
     timeDescription={timeDescription}

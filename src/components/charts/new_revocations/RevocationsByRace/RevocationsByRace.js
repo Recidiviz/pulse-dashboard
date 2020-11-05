@@ -25,6 +25,7 @@ import getLabelByMode from "../utils/getLabelByMode";
 import { COLORS_LANTERN_SET } from "../../../../assets/scripts/constants/colors";
 import { filtersPropTypes } from "../../propTypes";
 import flags from "../../../../flags";
+import { translate } from "../../../../views/tenants/utils/i18nSettings";
 
 const RevocationsByRace = ({
   stateCode,
@@ -48,7 +49,7 @@ const RevocationsByRace = ({
       />
     )}
     generateChartData={createGenerateChartData(dataFilter)}
-    chartTitle="Admissions by race/ethnicity and risk level"
+    chartTitle={`${translate("Revocations")} by race/ethnicity and risk level`}
     metricTitle={(mode) =>
       `${getLabelByMode(mode)} by race/ethnicity and risk level`
     }

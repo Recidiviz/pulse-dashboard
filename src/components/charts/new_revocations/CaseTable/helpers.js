@@ -19,6 +19,7 @@ import React from "react";
 
 import { humanReadableTitleCase } from "../../../../utils/transforms/labels";
 import { parseAndFormatViolationRecord } from "../../../../utils/charts/violationRecord";
+import getNameFromOfficerId from "../utils/getNameFromOfficerId";
 import { translate } from "../../../../views/tenants/utils/i18nSettings";
 import { COLORS } from "../../../../assets/scripts/constants/colors";
 
@@ -35,24 +36,12 @@ const normalizeOfficerRecommendation = (value) => {
   }
 };
 
-function nameFromOfficerId(officerId) {
-  if (!officerId) {
-    return "";
-  }
-
-  const parts = officerId.split(":");
-  if (parts.length === 1) {
-    return officerId;
-  }
-  return parts[1].trim();
-}
-
 const formatData = (data) => {
   return data.map((record) => {
     return {
       state_id: nullSafeLabel(record.state_id),
       district: nullSafeLabel(record.district),
-      officer: nullSafeLabel(nameFromOfficerId(record.officer)),
+      officer: nullSafeLabel(getNameFromOfficerId(record.officer)),
       risk_level: nullSafeLabel(translate("riskLevelsMap")[record.risk_level]),
       officer_recommendation: nullSafeLabel(
         normalizeOfficerRecommendation(record.officer_recommendation)
@@ -88,5 +77,4 @@ export {
   nullSafeCell,
   formatExportData,
   normalizeOfficerRecommendation,
-  nameFromOfficerId,
 };

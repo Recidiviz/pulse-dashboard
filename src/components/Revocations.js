@@ -58,7 +58,7 @@ import {
   SUPERVISION_TYPE,
   VIOLATION_TYPE,
 } from "../constants/filterTypes";
-import RevocationsByAgent from "./charts/new_revocations/RevocationsByAgent";
+import RevocationsByOfficer from "./charts/new_revocations/RevocationsByOfficer";
 
 const Revocations = () => {
   const { user } = useAuth0();
@@ -206,12 +206,12 @@ const Revocations = () => {
             />
           </ErrorBoundary>
         }
-        agentChart={
+        officerChart={
           <ErrorBoundary>
-            <RevocationsByAgent
+            <RevocationsByOfficer
               dataFilter={applyAllFilters({
                 filters: transformedFilters,
-                skippedFilters: [DISTRICT],
+                treatCategoryAllAsAbsent: true,
               })}
               filterStates={filters}
               stateCode={stateCode}

@@ -29,7 +29,10 @@ import { calculateRate } from "../helpers/rate";
 import { translate } from "../../../../views/tenants/utils/i18nSettings";
 import { isDenominatorStatisticallySignificant } from "../../../../utils/charts/significantStatistics";
 import { sumCounts } from "../utils/sumCounts";
+import getNameFromOfficerId from "../utils/getNameFromOfficerId";
 import { COLORS } from "../../../../assets/scripts/constants/colors";
+
+const MAX_OFFICERS_COUNT = 50;
 
 const generatePercentChartData = (apiData, currentDistricts, mode) => {
   const [fieldName, totalFieldName] =
@@ -42,7 +45,9 @@ const generatePercentChartData = (apiData, currentDistricts, mode) => {
     groupBy("officer"),
     values,
     map((dataset) => ({
-      officer: dataset[0].officer,
+      officer: `${dataset[0].district}-${getNameFromOfficerId(
+        dataset[0].officer
+      )}`,
       count: sumBy((item) => toInteger(item.population_count), dataset),
       [fieldName]: sumBy((item) => toInteger(item[totalFieldName]), dataset),
     })),
@@ -52,7 +57,8 @@ const generatePercentChartData = (apiData, currentDistricts, mode) => {
       [fieldName]: dataPoint[fieldName],
       rate: calculateRate(dataPoint.count, dataPoint[fieldName]),
     })),
-    orderBy(["rate"], ["desc"])
+    orderBy(["rate"], ["desc"]),
+    (dataset) => dataset.slice(0, MAX_OFFICERS_COUNT)
   )(apiData);
 
   const dataPoints = map((item) => item.rate.toFixed(2), filteredData);
@@ -98,10 +104,13 @@ const generateCountChartData = (apiData) => {
     groupBy("officer"),
     values,
     map((dataset) => ({
-      officer: `${dataset[0].district}-${dataset[0].officer}`,
+      officer: `${dataset[0].district}-${getNameFromOfficerId(
+        dataset[0].officer
+      )}`,
       count: sumBy((item) => toInteger(item.population_count), dataset),
     })),
-    orderBy(["count"], ["desc"])
+    orderBy(["count"], ["desc"]),
+    (dataset) => dataset.slice(0, MAX_OFFICERS_COUNT)
   )(apiData);
 
   const labels = map("officer", transformedData);
