@@ -34,6 +34,7 @@ import RevocationMatrix from "./charts/new_revocations/RevocationMatrix/Revocati
 import RevocationMatrixExplanation from "./charts/new_revocations/RevocationMatrix/RevocationMatrixExplanation";
 import RevocationCharts from "./charts/new_revocations/RevocationCharts";
 import RevocationsByRiskLevel from "./charts/new_revocations/RevocationsByRiskLevel/RevocationsByRiskLevel";
+import RevocationsByOfficer from "./charts/new_revocations/RevocationsByOfficer";
 import RevocationsByViolation from "./charts/new_revocations/RevocationsByViolation";
 import RevocationsByGender from "./charts/new_revocations/RevocationsByGender/RevocationsByGender";
 import RevocationsByRace from "./charts/new_revocations/RevocationsByRace/RevocationsByRace";
@@ -58,7 +59,6 @@ import {
   SUPERVISION_TYPE,
   VIOLATION_TYPE,
 } from "../constants/filterTypes";
-import RevocationsByOfficer from "./charts/new_revocations/RevocationsByOfficer";
 
 const Revocations = () => {
   const { user } = useAuth0();

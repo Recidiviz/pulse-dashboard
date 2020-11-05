@@ -21,9 +21,9 @@ import PropTypes from "prop-types";
 import { filtersPropTypes } from "../../propTypes";
 import RevocationsByDimension from "../RevocationsByDimension";
 import PercentRevokedChart from "../PercentRevokedChart";
-import { translate } from "../../../../views/tenants/utils/i18nSettings";
 import RevocationCountChart from "../RevocationCountChart";
 import createGenerateChartData from "./createGenerateChartData";
+import { translate } from "../../../../views/tenants/utils/i18nSettings";
 import flags from "../../../../flags";
 
 const RevocationsByDistrict = ({
