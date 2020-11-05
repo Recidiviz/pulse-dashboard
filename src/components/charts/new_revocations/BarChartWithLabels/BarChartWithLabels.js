@@ -20,14 +20,8 @@ import PropTypes from "prop-types";
 import { Bar } from "react-chartjs-2";
 
 import { axisCallbackForPercentage } from "../../../../utils/charts/axis";
-import {
-  tooltipForFooterWithCounts,
-  tooltipForFooterWithNestedCounts,
-} from "../../../../utils/charts/significantStatistics";
-import {
-  tooltipForRateMetricWithCounts,
-  tooltipForRateMetricWithNestedCounts,
-} from "../../../../utils/charts/toggles";
+import { tooltipForFooterWithCounts } from "../../../../utils/charts/significantStatistics";
+import { tooltipForRateMetricWithCounts } from "../../../../utils/charts/toggles";
 import { generateLabelsWithCustomColors } from "./helpers";
 import { COLORS } from "../../../../assets/scripts/constants/colors";
 
@@ -39,7 +33,6 @@ const BarChartWithLabels = ({
   yAxisLabel,
   numerators,
   denominators,
-  isNested,
 }) => (
   <Bar
     id={id}
@@ -85,18 +78,14 @@ const BarChartWithLabels = ({
         intersect: false,
         callbacks: {
           label: (tooltipItem, tooltipData) =>
-            (isNested
-              ? tooltipForRateMetricWithNestedCounts
-              : tooltipForRateMetricWithCounts)(
+            tooltipForRateMetricWithCounts(
               tooltipItem,
               tooltipData,
               numerators,
               denominators
             ),
           footer: (tooltipItem) =>
-            (isNested
-              ? tooltipForFooterWithNestedCounts
-              : tooltipForFooterWithCounts)(tooltipItem, denominators),
+            tooltipForFooterWithCounts(tooltipItem, denominators),
         },
       },
     }}
@@ -105,7 +94,6 @@ const BarChartWithLabels = ({
 
 BarChartWithLabels.defaultProps = {
   labelColors: [],
-  isNested: false,
 };
 
 BarChartWithLabels.propTypes = {
@@ -125,7 +113,6 @@ BarChartWithLabels.propTypes = {
   numerators: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)).isRequired,
   denominators: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number))
     .isRequired,
-  isNested: PropTypes.bool,
   labelColors: PropTypes.arrayOf(PropTypes.string),
 };
 export default BarChartWithLabels;

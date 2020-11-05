@@ -19,7 +19,6 @@ import {
   isDenominatorStatisticallySignificant,
   isDenominatorsMatrixStatisticallySignificant,
   tooltipForFooterWithCounts,
-  tooltipForFooterWithNestedCounts,
 } from "../significantStatistics";
 
 const statisticallySignificantDenominators = [0, 100, 1019];
@@ -67,7 +66,7 @@ describe("isDenominatorsMatrixStatisticallySignificant function", () => {
   it("should be statistically significant", () => {
     const given = statisticallySignificantDenominatorMatrix;
 
-    expect(isDenominatorsMatrixStatisticallySignificant(given)).toBeTrue(true);
+    expect(isDenominatorsMatrixStatisticallySignificant(given)).toBeTrue();
   });
 });
 
@@ -87,22 +86,20 @@ describe("tooltipForFooterWithCounts function", () => {
 
     expect(tooltipForFooterWithCounts([{ index }], given)).toBe("");
   });
-});
 
-describe("tooltipForFooterWithNestedCounts function", () => {
-  it("returns warning footnote", () => {
+  it("returns warning footnote for matrix", () => {
     const given = statisticallyNotSignificantDenominatorMatrix;
     const index = 2;
 
-    expect(tooltipForFooterWithNestedCounts([{ index }], given)).toBe(
+    expect(tooltipForFooterWithCounts([{ index }], given)).toBe(
       "* indicates the group is too small to make generalizations"
     );
   });
 
-  it("returns empty footnote", () => {
+  it("returns empty footnote for matrix", () => {
     const given = statisticallyNotSignificantDenominatorMatrix;
     const index = 3;
 
-    expect(tooltipForFooterWithNestedCounts([{ index }], given)).toBe("");
+    expect(tooltipForFooterWithCounts([{ index }], given)).toBe("");
   });
 });

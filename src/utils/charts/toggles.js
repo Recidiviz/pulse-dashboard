@@ -158,32 +158,13 @@ function tooltipForRateMetricWithCounts(
   const { datasetIndex, index: dataPointIndex } = tooltipItem;
   const label = data.datasets[datasetIndex].label || "";
 
-  const numerator = numerators[dataPointIndex];
-  const denominator = denominators[dataPointIndex];
-  let appendedCounts = "";
-  if (numerator !== undefined && denominator !== undefined) {
-    appendedCounts = ` (${numerator}/${denominator})`;
-  }
-  const cue = isDenominatorStatisticallySignificant(denominator) ? "" : " *";
-
-  return `${label}: ${getTooltipWithoutTrendline(
-    tooltipItem,
-    data,
-    "%"
-  )}${appendedCounts}${cue}`;
-}
-
-function tooltipForRateMetricWithNestedCounts(
-  tooltipItem,
-  data,
-  numerators,
-  denominators
-) {
-  const { datasetIndex, index: dataPointIndex } = tooltipItem;
-  const label = data.datasets[datasetIndex].label || "";
-
-  const numerator = numerators[datasetIndex][dataPointIndex];
-  const denominator = denominators[datasetIndex][dataPointIndex];
+  const isNested = Array.isArray(numerators[datasetIndex]);
+  const numerator = isNested
+    ? numerators[datasetIndex][dataPointIndex]
+    : numerators[dataPointIndex];
+  const denominator = isNested
+    ? denominators[datasetIndex][dataPointIndex]
+    : denominators[dataPointIndex];
   let appendedCounts = "";
   if (numerator !== undefined && denominator !== undefined) {
     appendedCounts = ` (${numerator}/${denominator})`;
@@ -281,7 +262,6 @@ export {
   standardTooltipForCountMetric,
   standardTooltipForRateMetric,
   tooltipForRateMetricWithCounts,
-  tooltipForRateMetricWithNestedCounts,
   updateTooltipForMetricType,
   filterDatasetByMetricPeriodMonths,
   filterDatasetByDistrict,
