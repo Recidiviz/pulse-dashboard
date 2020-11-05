@@ -103,16 +103,23 @@ BarChartWithLabels.propTypes = {
     datasets: PropTypes.arrayOf(
       PropTypes.shape({
         label: PropTypes.string,
-        backgroundColor: PropTypes.func,
+        backgroundColor: PropTypes.oneOfType([
+          PropTypes.func,
+          PropTypes.arrayOf(PropTypes.string),
+          PropTypes.string,
+        ]),
         data: PropTypes.arrayOf(PropTypes.string),
       })
     ),
   }).isRequired,
   xAxisLabel: PropTypes.string.isRequired,
   yAxisLabel: PropTypes.string.isRequired,
-  numerators: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)).isRequired,
-  denominators: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number))
-    .isRequired,
+  numerators: PropTypes.arrayOf(
+    PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.number), PropTypes.number])
+  ).isRequired,
+  denominators: PropTypes.arrayOf(
+    PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.number), PropTypes.number])
+  ).isRequired,
   labelColors: PropTypes.arrayOf(PropTypes.string),
 };
 export default BarChartWithLabels;
