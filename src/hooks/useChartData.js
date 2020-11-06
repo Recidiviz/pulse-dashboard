@@ -38,15 +38,16 @@ function useChartData(url, file) {
   const [awaitingApi, setAwaitingApi] = useState(true);
   const [isError, setIsError] = useState(false);
 
-  const cacheKey = `${url}-${file}`;
-
   const fetchChartData = useCallback(async () => {
+    const cacheKey = `${url}-${file}`;
+
     try {
       if (apiCache[cacheKey] && apiCache[cacheKey].loading) {
         apiCache[cacheKey].callbacks.push((newData) => setApiData(newData));
       } else if (
         apiCache[cacheKey] &&
-        moment(apiCache[cacheKey].date).diff(moment()) < CACHE_LIFETIME
+        Math.abs(moment(apiCache[cacheKey].date).diff(moment())) <
+          CACHE_LIFETIME
       ) {
         setApiData(apiCache[cacheKey].data);
       } else {
@@ -69,6 +70,7 @@ function useChartData(url, file) {
           loading: false,
           callbacks: [],
           data,
+          date: moment(),
         };
       }
       setAwaitingApi(false);
@@ -78,7 +80,7 @@ function useChartData(url, file) {
       delete apiCache[cacheKey];
       console.error(error);
     }
-  }, [cacheKey, file, getTokenSilently, url]);
+  }, [file, getTokenSilently, url]);
 
   useEffect(() => {
     fetchChartData();
