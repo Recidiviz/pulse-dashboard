@@ -16,12 +16,16 @@
 // =============================================================================
 
 import { useState, useCallback, useEffect } from "react";
+import moment from "moment";
 import { useAuth0 } from "../react-auth0-spa";
-import {
-  parseResponseByFileFormat,
-  parseResponsesByFileFormat,
-} from "../api/metrics/fileParser";
+
+import parseResponseByFileFormat from "../api/metrics/parseResponseByFileFormat";
 import { callMetricsApi, awaitingResults } from "../api/metrics/metricsClient";
+
+// 5 minutes now
+const CACHE_LIFETIME = 300000;
+
+const apiCache = {};
 
 /**
  * A hook which fetches the given file at the given API service URL. Returns
@@ -34,29 +38,47 @@ function useChartData(url, file) {
   const [awaitingApi, setAwaitingApi] = useState(true);
   const [isError, setIsError] = useState(false);
 
+  const cacheKey = `${url}-${file}`;
+
   const fetchChartData = useCallback(async () => {
     try {
-      if (file) {
+      if (apiCache[cacheKey] && apiCache[cacheKey].loading) {
+        apiCache[cacheKey].callbacks.push((newData) => setApiData(newData));
+      } else if (
+        apiCache[cacheKey] &&
+        moment(apiCache[cacheKey].date).diff(moment()) < CACHE_LIFETIME
+      ) {
+        setApiData(apiCache[cacheKey].data);
+      } else {
+        apiCache[cacheKey] = {
+          loading: true,
+          callbacks: [],
+        };
         const responseData = await callMetricsApi(
-          `${url}/${file}`,
+          file ? `${url}/${file}` : url,
           getTokenSilently
         );
 
-        const metricFile = parseResponseByFileFormat(responseData, file);
-        setApiData(metricFile);
-      } else {
-        const responseData = await callMetricsApi(url, getTokenSilently);
-
-        const metricFiles = parseResponsesByFileFormat(responseData);
-        setApiData(metricFiles);
+        const metricFiles = parseResponseByFileFormat(responseData, file);
+        const data = file ? metricFiles[file] : metricFiles;
+        setApiData(data);
+        apiCache[cacheKey].callbacks.forEach((cb) => {
+          cb(data);
+        });
+        apiCache[cacheKey] = {
+          loading: false,
+          callbacks: [],
+          data,
+        };
       }
       setAwaitingApi(false);
     } catch (error) {
       setAwaitingApi(false);
       setIsError(true);
+      delete apiCache[cacheKey];
       console.error(error);
     }
-  }, [file, getTokenSilently, url]);
+  }, [cacheKey, file, getTokenSilently, url]);
 
   useEffect(() => {
     fetchChartData();

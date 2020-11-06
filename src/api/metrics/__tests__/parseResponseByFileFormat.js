@@ -15,7 +15,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import * as methods from "../fileParser";
+import parseResponseByFileFormat from "../parseResponseByFileFormat";
 
 // This fixture data provides the inverse of unit tests on the publishing side in our data platform
 const FLATTENED_VALUES =
@@ -120,33 +120,29 @@ describe("Test fileParser.parseResponseByFileFormat", () => {
         metadata,
       },
     };
-    const parsedResponse = methods.parseResponseByFileFormat(
+    const parsedResponse = parseResponseByFileFormat(
       response,
       "my_metric_file"
     );
-    expect(parsedResponse).toEqual(EXPECTED_OUTPUT);
+    expect(parsedResponse).toEqual({ my_metric_file: EXPECTED_OUTPUT });
   });
 
   it("produces the correct output for a json lines metric file input", () => {
     const response = {
       my_metric_file: EXPECTED_OUTPUT,
     };
-    const parsedResponse = methods.parseResponseByFileFormat(
+    const parsedResponse = parseResponseByFileFormat(
       response,
       "my_metric_file"
     );
-    expect(parsedResponse).toEqual(EXPECTED_OUTPUT);
+    expect(parsedResponse).toEqual({ my_metric_file: EXPECTED_OUTPUT });
   });
-});
 
-describe("Test fileParser.parseResponsesByFileFormat", () => {
   it("produces the correct output for a mix of input types", () => {
-    const contents = FLATTENED_VALUES;
-    const metadata = METADATA;
     const response = {
       my_optimized_metric_file: {
-        flattenedValueMatrix: contents,
-        metadata,
+        flattenedValueMatrix: FLATTENED_VALUES,
+        metadata: METADATA,
       },
       my_metric_file: EXPECTED_OUTPUT,
     };
@@ -155,7 +151,7 @@ describe("Test fileParser.parseResponsesByFileFormat", () => {
       my_metric_file: EXPECTED_OUTPUT,
     };
 
-    const parsedResponse = methods.parseResponsesByFileFormat(response);
+    const parsedResponse = parseResponseByFileFormat(response);
     expect(parsedResponse).toEqual(expectedOutput);
   });
 });
