@@ -66,4 +66,13 @@ of that column.`,
     "HIGH_TECH",
     "LAW",
   ],
+  violationsBySeverity: [
+    "law",
+    "high_tech",
+    "absc",
+    "subs",
+    "em",
+    "med_tech",
+    "low_tech",
+  ],
 };

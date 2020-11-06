@@ -32,7 +32,7 @@ import {
 import { filtersPropTypes } from "../../propTypes";
 import useChartData from "../../../../hooks/useChartData";
 import { translate } from "../../../../views/tenants/utils/i18nSettings";
-import { nullSafeCell, formatData, formatExportData } from "./helpers";
+import { nullSafeCell, formatData, formatExportData } from "./utils/helpers";
 
 const CASES_PER_PAGE = 15;
 
