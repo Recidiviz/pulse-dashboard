@@ -15,15 +15,21 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import {
-  parseAndFormatViolationRecord,
-  compareViolationRecords,
-} from "../violationRecord";
+import { parseAndFormatViolationRecord } from "../violationRecord";
+import { translate } from "../../../../../../views/tenants/utils/i18nSettings";
 
+jest.mock("../../../../../../views/tenants/utils/i18nSettings");
 describe("parseAndFormatViolationRecord function", () => {
-  test("reformats semicolon-separated strings", () => {
-    const rawInput = "1fel;1muni;4subs;3tech";
-    const expectedOutput = "1 fel, 1 muni, 4 subs, 3 tech";
+  const violationsBySeverity = ["fel", "misd", "absc", "muni", "tech"];
+  const mockTranslations = {
+    violationsBySeverity,
+  };
+  translate.mockImplementation((key) => mockTranslations[key]);
+
+  test("formats semicolon-separated strings", () => {
+    const rawInput = "1fel;4absc;1muni";
+    const expectedOutput = "1 fel, 4 absc, 1 muni";
+
     expect(parseAndFormatViolationRecord(rawInput)).toBe(expectedOutput);
   });
   test("returns a string even when there is no input", () => {
@@ -32,22 +38,15 @@ describe("parseAndFormatViolationRecord function", () => {
     expect(parseAndFormatViolationRecord(null)).toBe("");
   });
   test("handles multi-digit violation counts", () => {
-    const rawInput = "1fel;13muni;400subs";
-    const expectedOutput = "1 fel, 13 muni, 400 subs";
+    const rawInput = "1fel;13muni;400tech";
+    const expectedOutput = "1 fel, 13 muni, 400 tech";
+
     expect(parseAndFormatViolationRecord(rawInput)).toBe(expectedOutput);
   });
-});
+  test("sorts violations by severity", () => {
+    const rawInput = "4misd;1fel;9tech;2muni;1absc";
+    const expectedOutput = "1 fel, 4 misd, 1 absc, 2 muni, 9 tech";
 
-describe("compareViolationRecords function", () => {
-  test("compares violation records by asc", () => {
-    const given = ["1misd;1tech", "2absc", "3fel", "1fel;1muni", "2muni"];
-    given.sort((a, b) => compareViolationRecords(a, b, "asc"));
-    expect(given).toEqual([
-      "2absc",
-      "1fel;1muni",
-      "2muni",
-      "1misd;1tech",
-      "3fel",
-    ]);
+    expect(parseAndFormatViolationRecord(rawInput)).toBe(expectedOutput);
   });
 });
