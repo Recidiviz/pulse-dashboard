@@ -17,6 +17,7 @@
 
 import { useState, useCallback, useEffect } from "react";
 import moment from "moment";
+import makeCancellablePromise from "make-cancellable-promise";
 import { useAuth0 } from "../react-auth0-spa";
 
 import parseResponseByFileFormat from "../api/metrics/parseResponseByFileFormat";
@@ -43,48 +44,68 @@ function useChartData(url, file) {
 
     try {
       if (apiCache[cacheKey] && apiCache[cacheKey].loading) {
-        apiCache[cacheKey].callbacks.push((newData) => setApiData(newData));
-      } else if (
-        apiCache[cacheKey] &&
-        Math.abs(moment(apiCache[cacheKey].date).diff(moment())) <
-          CACHE_LIFETIME
-      ) {
-        setApiData(apiCache[cacheKey].data);
-      } else {
-        apiCache[cacheKey] = {
-          loading: true,
-          callbacks: [],
-        };
-        const responseData = await callMetricsApi(
-          file ? `${url}/${file}` : url,
-          getTokenSilently
-        );
-
-        const metricFiles = parseResponseByFileFormat(responseData, file);
-        const data = file ? metricFiles[file] : metricFiles;
-        setApiData(data);
-        apiCache[cacheKey].callbacks.forEach((cb) => {
-          cb(data);
+        const promise = new Promise((resolve) => {
+          apiCache[cacheKey].queue.push(resolve);
         });
-        apiCache[cacheKey] = {
-          loading: false,
-          callbacks: [],
-          data,
-          date: moment(),
-        };
+
+        return await promise;
       }
-      setAwaitingApi(false);
+
+      if (
+        apiCache[cacheKey] &&
+        moment().diff(apiCache[cacheKey].date) < CACHE_LIFETIME
+      ) {
+        return apiCache[cacheKey].data;
+      }
+
+      apiCache[cacheKey] = {
+        loading: true,
+        queue: [],
+      };
+
+      const responseData = await callMetricsApi(
+        file ? `${url}/${file}` : url,
+        getTokenSilently
+      );
+
+      apiCache[cacheKey].queue.forEach((promise) => {
+        promise(responseData);
+      });
+      apiCache[cacheKey] = {
+        loading: false,
+        queue: [],
+        data: responseData,
+        date: moment(),
+      };
+
+      return responseData;
     } catch (error) {
-      setAwaitingApi(false);
-      setIsError(true);
       delete apiCache[cacheKey];
       console.error(error);
+      throw error;
     }
   }, [file, getTokenSilently, url]);
 
   useEffect(() => {
-    fetchChartData();
-  }, [fetchChartData]);
+    const { promise, cancel } = makeCancellablePromise(fetchChartData());
+
+    promise
+      .then((response) => {
+        const metricFiles = parseResponseByFileFormat(response, file);
+        const data = file ? metricFiles[file] : metricFiles;
+        setApiData(data);
+      })
+      .catch(() => {
+        setIsError(true);
+      })
+      .finally(() => {
+        setAwaitingApi(false);
+      });
+
+    return () => {
+      cancel();
+    };
+  }, [fetchChartData, file]);
 
   const isLoading = awaitingResults(loading, user, awaitingApi);
 
