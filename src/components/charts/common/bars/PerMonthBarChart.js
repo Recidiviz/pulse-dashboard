@@ -35,11 +35,13 @@ import {
 import { COLORS } from "../../../../assets/scripts/constants/colors";
 import {
   filterDatasetByDistrict,
+  filterDatasetBySupervisionType,
+} from "../../../../utils/charts/dataFilters";
+import {
   getMonthCountFromMetricPeriodMonthsToggle,
   toggleLabel,
   toggleYAxisTicksStackedRateBasicCount,
   updateTooltipForMetricType,
-  filterDatasetBySupervisionType,
 } from "../../../../utils/charts/toggles";
 import { sortFilterAndSupplementMostRecentMonths } from "../../../../utils/transforms/datasets";
 import { monthNamesWithYearsFromNumbers } from "../../../../utils/transforms/months";

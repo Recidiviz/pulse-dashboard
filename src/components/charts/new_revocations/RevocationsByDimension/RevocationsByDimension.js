@@ -43,7 +43,11 @@ const RevocationsByDimension = ({
 }) => {
   const [mode, setMode] = useState(defaultMode);
 
-  const { isLoading, isError, apiData } = useChartData(apiUrl, apiFile);
+  const { isLoading, isError, apiData, unflattenedValues } = useChartData(
+    apiUrl,
+    apiFile,
+    false
+  );
 
   if (isLoading) {
     return <Loading />;
@@ -55,7 +59,8 @@ const RevocationsByDimension = ({
 
   const { data, numerators, denominators, averageRate } = generateChartData(
     apiData,
-    mode
+    mode,
+    unflattenedValues
   );
 
   const showWarning = !isDenominatorsMatrixStatisticallySignificant(

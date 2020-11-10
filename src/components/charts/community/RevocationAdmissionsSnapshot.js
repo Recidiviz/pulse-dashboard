@@ -33,6 +33,10 @@ import { configureDownloadButtons } from "../../../assets/scripts/utils/download
 import { sortFilterAndSupplementMostRecentMonths } from "../../../utils/transforms/datasets";
 import { monthNamesWithYearsFromNumbers } from "../../../utils/transforms/months";
 import {
+  filterDatasetByDistrict,
+  filterDatasetBySupervisionType,
+} from "../../../utils/charts/dataFilters";
+import {
   getGoalForChart,
   getMinForGoalAndData,
   getMaxForGoalAndData,
@@ -41,8 +45,6 @@ import {
 } from "../../../utils/charts/metricGoal";
 import {
   getMonthCountFromMetricPeriodMonthsToggle,
-  filterDatasetByDistrict,
-  filterDatasetBySupervisionType,
   updateTooltipForMetricType,
   toggleLabel,
   canDisplayGoal,

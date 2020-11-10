@@ -28,6 +28,7 @@ import values from "lodash/fp/values";
 
 import { COLORS } from "../../../assets/scripts/constants/colors";
 import { configureDownloadButtons } from "../../../assets/scripts/utils/downloads";
+import { filterDatasetByDistrict } from "../../../utils/charts/dataFilters";
 import {
   getGoalForChart,
   getMaxForGoalAndDataIfGoalDisplayable,
@@ -37,7 +38,6 @@ import {
   toggleLabel,
   getMonthCountFromMetricPeriodMonthsToggle,
   updateTooltipForMetricType,
-  filterDatasetByDistrict,
   canDisplayGoal,
   toggleYAxisTicksFor,
   centerSingleMonthDatasetIfNecessary,

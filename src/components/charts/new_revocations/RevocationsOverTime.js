@@ -32,6 +32,7 @@ import {
   labelCurrentMonth,
   currentMonthBox,
 } from "../../../utils/charts/currentSpan";
+import { filterOptimizedDataFormat } from "../../../utils/charts/dataFilters";
 import {
   getMonthCountFromMetricPeriodMonthsToggle,
   getTrailingLabelFromMetricPeriodMonthsToggle,
@@ -52,9 +53,10 @@ const RevocationsOverTime = ({
   metricPeriodMonths,
   filterStates,
 }) => {
-  const { isLoading, isError, apiData } = useChartData(
+  const { isLoading, isError, apiData, unflattenedValues } = useChartData(
     `${stateCode}/newRevocations`,
-    "revocations_matrix_by_month"
+    "revocations_matrix_by_month",
+    false
   );
 
   if (isLoading) {
@@ -66,7 +68,13 @@ const RevocationsOverTime = ({
   }
 
   const chartData = pipe(
-    dataFilter,
+    (metricFile) =>
+      filterOptimizedDataFormat(
+        unflattenedValues,
+        apiData,
+        metricFile.metadata,
+        dataFilter
+      ),
     groupByMonth(["total_revocations"]),
     (dataset) =>
       sortFilterAndSupplementMostRecentMonths(
