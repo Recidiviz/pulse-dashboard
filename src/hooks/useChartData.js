@@ -16,75 +16,63 @@
 // =============================================================================
 
 import { useState, useCallback, useEffect } from "react";
-import moment from "moment";
 import makeCancellablePromise from "make-cancellable-promise";
 import { useAuth0 } from "../react-auth0-spa";
 
 import parseResponseByFileFormat from "../api/metrics/parseResponseByFileFormat";
 import { callMetricsApi, awaitingResults } from "../api/metrics/metricsClient";
+import { useCachedChartData } from "../contexts/ChartDataContext";
 
-// 5 minutes now
-const CACHE_LIFETIME = 300000;
-
-const apiCache = {};
+const queues = {};
 
 /**
  * A hook which fetches the given file at the given API service URL. Returns
  * state which will populate with the response data and a flag indicating whether
  * or not the response is still loading, in the form of `{ apiData, isLoading }`.
  */
-function useChartData(url, file) {
+function useChartData(tenant, file) {
+  const { getCachedFile, setCachedFile } = useCachedChartData();
   const { loading, user, getTokenSilently } = useAuth0();
   const [apiData, setApiData] = useState([]);
   const [awaitingApi, setAwaitingApi] = useState(true);
   const [isError, setIsError] = useState(false);
 
   const fetchChartData = useCallback(async () => {
-    const cacheKey = `${url}-${file}`;
-
+    const cacheKey = `${tenant}-${file}`;
     try {
-      if (apiCache[cacheKey] && apiCache[cacheKey].loading) {
-        const promise = new Promise((resolve) => {
-          apiCache[cacheKey].queue.push(resolve);
+      if (queues[cacheKey]) {
+        return await new Promise((resolve) => {
+          queues[cacheKey].push(resolve);
         });
-
-        return await promise;
       }
 
-      if (
-        apiCache[cacheKey] &&
-        moment().diff(apiCache[cacheKey].date) < CACHE_LIFETIME
-      ) {
-        return apiCache[cacheKey].data;
+      const cachedFile = getCachedFile(tenant, file);
+      if (cachedFile) {
+        return cachedFile;
       }
 
-      apiCache[cacheKey] = {
-        loading: true,
-        queue: [],
-      };
+      queues[cacheKey] = [];
 
       const responseData = await callMetricsApi(
-        file ? `${url}/${file}` : url,
+        file ? `${tenant}/${file}` : tenant,
         getTokenSilently
       );
 
-      apiCache[cacheKey].queue.forEach((promise) => {
+      setCachedFile(tenant, file, responseData);
+
+      queues[cacheKey].forEach((promise) => {
         promise(responseData);
       });
-      apiCache[cacheKey] = {
-        loading: false,
-        queue: [],
-        data: responseData,
-        date: moment(),
-      };
+
+      delete queues[cacheKey];
 
       return responseData;
     } catch (error) {
-      delete apiCache[cacheKey];
+      delete queues[cacheKey];
       console.error(error);
       throw error;
     }
-  }, [file, getTokenSilently, url]);
+  }, [file, tenant, getTokenSilently, getCachedFile, setCachedFile]);
 
   useEffect(() => {
     const { promise, cancel } = makeCancellablePromise(fetchChartData());

@@ -14,30 +14,155 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-import { renderHook } from "@testing-library/react-hooks";
+
+import { renderHook, cleanup } from "@testing-library/react-hooks";
 
 import useChartData from "../useChartData";
-import { callMetricsApi } from "../../api/metrics/metricsClient";
+import {
+  callMetricsApi,
+  awaitingResults,
+} from "../../api/metrics/metricsClient";
 import { useAuth0 } from "../../react-auth0-spa";
+import { useCachedChartData } from "../../contexts/ChartDataContext";
+import parseResponseByFileFormat from "../../api/metrics/parseResponseByFileFormat";
 
 jest.mock("../../react-auth0-spa");
 jest.mock("../../api/metrics/metricsClient");
+jest.mock("../../contexts/ChartDataContext");
+jest.mock("../../api/metrics/parseResponseByFileFormat");
 describe("useChartData", () => {
-  describe("when an error is thrown", () => {
-    callMetricsApi.mockImplementation(() => {
-      throw new Error();
+  const mockTenant = "us_mo";
+  const mockFile = "some_file";
+  const mockResponse = "some response file";
+  const mockGetCachedFile = jest.fn();
+  const mockSetCachedFile = jest.fn();
+
+  useCachedChartData.mockReturnValue({
+    getCachedFile: mockGetCachedFile,
+    setCachedFile: mockSetCachedFile,
+  });
+
+  useAuth0.mockReturnValue({
+    user: {},
+    isAuthenticated: true,
+    loading: true,
+    loginWithRedirect: jest.fn(),
+    getTokenSilently: jest.fn(),
+  });
+
+  awaitingResults.mockImplementation(
+    (loading, user, awaitingApi) => awaitingApi
+  );
+
+  describe("successful responses", () => {
+    beforeAll(() => {
+      parseResponseByFileFormat.mockImplementation((response, fileName) => {
+        if (fileName) {
+          return {
+            [fileName]: response,
+          };
+        }
+        return {
+          some_file_name: response,
+          extra_file_name: response,
+        };
+      });
+      callMetricsApi.mockResolvedValue(mockResponse);
     });
 
-    useAuth0.mockReturnValue({
-      user: {},
-      isAuthenticated: true,
-      loading: true,
-      loginWithRedirect: jest.fn(),
-      getTokenSilently: jest.fn(),
+    beforeEach(() => {
+      jest.clearAllMocks();
     });
 
-    // do not log the expected error - keep tests less verbose
-    jest.spyOn(console, "error").mockImplementation(() => {});
+    it("should load data if no cached files found", async () => {
+      mockGetCachedFile.mockReturnValue(null);
+
+      const { result, waitForNextUpdate } = renderHook(() =>
+        useChartData(mockTenant, mockFile)
+      );
+      expect(callMetricsApi).toHaveBeenCalledTimes(1);
+      expect(callMetricsApi.mock.calls[0][0]).toBe(`${mockTenant}/${mockFile}`);
+      await waitForNextUpdate();
+
+      expect(mockSetCachedFile).toHaveBeenCalledTimes(1);
+      expect(result.current.apiData).toBe(mockResponse);
+      expect(result.current.isLoading).toBeFalse();
+      expect(result.current.isError).toBeFalse();
+
+      await cleanup();
+    });
+
+    it("should do only one request if 2 components request same file", async () => {
+      const { result: firstResult, waitForNextUpdate } = renderHook(() =>
+        useChartData(mockTenant, mockFile)
+      );
+      const { result: secondResult } = renderHook(() =>
+        useChartData(mockTenant, mockFile)
+      );
+
+      await waitForNextUpdate();
+
+      expect(callMetricsApi).toHaveBeenCalledTimes(1);
+      expect(firstResult.current.apiData).toEqual(mockResponse);
+      expect(firstResult.current.apiData).toEqual(secondResult.current.apiData);
+
+      await cleanup();
+    });
+
+    it("should get cached file if exists", async () => {
+      const mockCachedFile = "some cached file";
+      const { waitForNextUpdate } = renderHook(() =>
+        useChartData(mockTenant, mockFile)
+      );
+
+      await waitForNextUpdate();
+      expect(callMetricsApi).toHaveBeenCalledTimes(1);
+      expect(mockSetCachedFile).toHaveBeenCalledTimes(1);
+
+      mockGetCachedFile.mockReturnValue(mockCachedFile);
+
+      const {
+        result: secondResult,
+        waitForNextUpdate: waitForSecondNextUpdate,
+      } = renderHook(() => useChartData(mockTenant, mockFile));
+
+      await waitForSecondNextUpdate();
+      expect(callMetricsApi).toHaveBeenCalledTimes(1);
+      expect(secondResult.current.apiData).toBe(mockCachedFile);
+
+      mockGetCachedFile.mockReturnValue(null);
+      await cleanup();
+    });
+
+    it("should return object with files if file is not specified", async () => {
+      const { result, waitForNextUpdate } = renderHook(() =>
+        useChartData(mockTenant)
+      );
+
+      await waitForNextUpdate();
+      expect(callMetricsApi).toHaveBeenCalledTimes(1);
+      expect(callMetricsApi.mock.calls[0][0]).toBe(mockTenant);
+      expect(result.current.apiData).toEqual({
+        some_file_name: mockResponse,
+        extra_file_name: mockResponse,
+      });
+    });
+
+    it("should abort promise is component is unmounted (no console warning)", async () => {
+      const { unmount } = renderHook(() => useChartData(mockTenant, mockFile));
+
+      unmount();
+    });
+  });
+
+  describe("error responses", () => {
+    beforeAll(() => {
+      // do not log the expected error - keep tests less verbose
+      jest.spyOn(console, "error").mockImplementation(() => {});
+      callMetricsApi.mockImplementation(() => {
+        throw new Error();
+      });
+    });
 
     afterEach(() => {
       jest.clearAllMocks();
