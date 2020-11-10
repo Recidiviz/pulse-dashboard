@@ -28,11 +28,13 @@ import { groupByMonth } from "../common/bars/utils";
 import { COLORS } from "../../../assets/scripts/constants/colors";
 import { configureDownloadButtons } from "../../../assets/scripts/utils/downloads";
 import {
+  filterDatasetBySupervisionType,
+  filterDatasetByDistrict,
+} from "../../../utils/charts/dataFilters";
+import {
   toggleLabel,
   getMonthCountFromMetricPeriodMonthsToggle,
   updateTooltipForMetricType,
-  filterDatasetBySupervisionType,
-  filterDatasetByDistrict,
   centerSingleMonthDatasetIfNecessary,
 } from "../../../utils/charts/toggles";
 import { sortFilterAndSupplementMostRecentMonths } from "../../../utils/transforms/datasets";

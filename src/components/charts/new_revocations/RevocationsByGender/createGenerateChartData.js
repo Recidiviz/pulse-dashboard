@@ -27,6 +27,7 @@ import {
 import getDenominatorKeyByMode from "../utils/getDenominatorKeyByMode";
 import getCounts from "../utils/getCounts";
 import createRiskLevelsMap from "../utils/createRiskLevelsMap";
+import { filterOptimizedDataFormat } from "../../../../utils/charts/dataFilters";
 
 /**
  * These are the only genders that are apparent in the source data set,
@@ -34,14 +35,24 @@ import createRiskLevelsMap from "../utils/createRiskLevelsMap";
  */
 const GENDER_LABELS_MAP = { FEMALE: "Women", MALE: "Men" };
 
-const createGenerateChartData = (dataFilter, stateCode) => (apiData, mode) => {
+const createGenerateChartData = (dataFilter, stateCode) => (
+  apiData,
+  mode,
+  unflattenedValues
+) => {
   const numeratorKey = "population_count";
   const denominatorKey = getDenominatorKeyByMode(mode);
   const genders = Object.keys(GENDER_LABELS_MAP);
   const genderLabels = Object.values(GENDER_LABELS_MAP);
 
   const { dataPoints, numerators, denominators } = pipe(
-    dataFilter,
+    (metricFile) =>
+      filterOptimizedDataFormat(
+        unflattenedValues,
+        apiData,
+        metricFile.metadata,
+        dataFilter
+      ),
     reduce(createRiskLevelsMap(numeratorKey, denominatorKey, "gender"), {}),
     (data) => getCounts(data, getRiskLevels(stateCode), genders)
   )(apiData);

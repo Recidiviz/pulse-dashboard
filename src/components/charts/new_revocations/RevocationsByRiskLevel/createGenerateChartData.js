@@ -30,14 +30,25 @@ import { humanReadableTitleCase } from "../../../../utils/transforms/labels";
 import { isDenominatorStatisticallySignificant } from "../../../../utils/charts/significantStatistics";
 import getDenominatorKeyByMode from "../utils/getDenominatorKeyByMode";
 import getLabelByMode from "../utils/getLabelByMode";
+import { filterOptimizedDataFormat } from "../../../../utils/charts/dataFilters";
 import { COLORS } from "../../../../assets/scripts/constants/colors";
 
-const createGenerateChartData = (dataFilter) => (apiData, mode) => {
+const createGenerateChartData = (dataFilter) => (
+  apiData,
+  mode,
+  unflattenedValues
+) => {
   const denominatorKey = getDenominatorKeyByMode(mode);
   const riskLevels = translate("riskLevelsMap");
 
   const riskLevelCounts = pipe(
-    dataFilter,
+    (metricFile) =>
+      filterOptimizedDataFormat(
+        unflattenedValues,
+        apiData,
+        metricFile.metadata,
+        dataFilter
+      ),
     filter((data) => Object.keys(riskLevels).includes(data.risk_level)),
     groupBy("risk_level"),
     values,

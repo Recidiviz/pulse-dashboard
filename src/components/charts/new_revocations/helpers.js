@@ -21,6 +21,12 @@ import {
   violationCountLabel,
 } from "../../../utils/transforms/labels";
 import {
+  nullSafeComparison,
+  nullSafeComparisonForArray,
+  isAllItem,
+  includesAllItemFirst,
+} from "../../../utils/charts/dataPointComparisons";
+import {
   ADMISSION_TYPE,
   CHARGE_CATEGORY,
   DISTRICT,
@@ -31,106 +37,124 @@ import {
   VIOLATION_TYPE,
 } from "../../../constants/filterTypes";
 
-const nullSafeComparison = (field, filter) => {
-  if (!field && !filter) return true;
-  if (!field) return false;
-  if (!filter) return false;
-  return field.toLowerCase() === filter.toLowerCase();
-};
+export const matchesTopLevelFilters = ({
+  filters,
+  skippedFilters = [],
+  treatCategoryAllAsAbsent = false,
+}) => (item, dimensionKey = undefined) => {
+  if (
+    (dimensionKey === undefined || dimensionKey === "metric_period_months") &&
+    filters[METRIC_PERIOD_MONTHS] &&
+    !skippedFilters.includes(METRIC_PERIOD_MONTHS) &&
+    !nullSafeComparison(
+      item.metric_period_months,
+      filters[METRIC_PERIOD_MONTHS]
+    )
+  ) {
+    return false;
+  }
 
-const nullSafeComparisonForArray = (field, filters) => {
-  if (!field && !filters) return true;
-  if (!field) return false;
-  if (!filters) return false;
-  return (
-    filters.filter((value) => value.toLowerCase() === field.toLowerCase())
-      .length !== 0
-  );
-};
+  if (
+    (dimensionKey === undefined || dimensionKey === "district") &&
+    filters[DISTRICT] &&
+    !skippedFilters.includes(DISTRICT) &&
+    !(treatCategoryAllAsAbsent && includesAllItemFirst(filters[DISTRICT])) &&
+    !nullSafeComparisonForArray(item.district, filters[DISTRICT])
+  ) {
+    return false;
+  }
 
-const isAllItem = (item) => item.toLowerCase() === "all";
-const includesAllItemFirst = (items) => {
-  return items.length === 1 && isAllItem(items[0]);
+  if (
+    (dimensionKey === undefined || dimensionKey === "charge_category") &&
+    filters[CHARGE_CATEGORY] &&
+    !skippedFilters.includes(CHARGE_CATEGORY) &&
+    !(treatCategoryAllAsAbsent && isAllItem(filters[CHARGE_CATEGORY])) &&
+    !nullSafeComparison(item.charge_category, filters[CHARGE_CATEGORY])
+  ) {
+    return false;
+  }
+  if (
+    (dimensionKey === undefined || dimensionKey === "supervision_type") &&
+    filters[SUPERVISION_TYPE] &&
+    !skippedFilters.includes(SUPERVISION_TYPE) &&
+    !(treatCategoryAllAsAbsent && isAllItem(filters[SUPERVISION_TYPE])) &&
+    !nullSafeComparison(item.supervision_type, filters[SUPERVISION_TYPE])
+  ) {
+    return false;
+  }
+  if (
+    (dimensionKey === undefined || dimensionKey === "admission_type") &&
+    filters[ADMISSION_TYPE] &&
+    !skippedFilters.includes(ADMISSION_TYPE) &&
+    !includesAllItemFirst(filters[ADMISSION_TYPE]) &&
+    !nullSafeComparisonForArray(item.admission_type, filters[ADMISSION_TYPE])
+  ) {
+    return false;
+  }
+  if (
+    (dimensionKey === undefined || dimensionKey === "supervision_level") &&
+    filters[SUPERVISION_LEVEL] &&
+    !skippedFilters.includes(SUPERVISION_LEVEL) &&
+    !nullSafeComparison(item.supervision_level, filters[SUPERVISION_LEVEL]) &&
+    !(treatCategoryAllAsAbsent && isAllItem(filters[SUPERVISION_LEVEL]))
+  ) {
+    return false;
+  }
+  return true;
 };
 
 export const applyTopLevelFilters = ({
   filters,
   skippedFilters = [],
   treatCategoryAllAsAbsent = false,
-}) => (data) =>
-  data.filter((item) => {
-    if (
-      filters[METRIC_PERIOD_MONTHS] &&
-      !skippedFilters.includes(METRIC_PERIOD_MONTHS) &&
-      !nullSafeComparison(
-        item.metric_period_months,
-        filters[METRIC_PERIOD_MONTHS]
-      )
-    ) {
-      return false;
-    }
-
-    if (
-      filters[DISTRICT] &&
-      !skippedFilters.includes(DISTRICT) &&
-      !(treatCategoryAllAsAbsent && includesAllItemFirst(filters[DISTRICT])) &&
-      !nullSafeComparisonForArray(item.district, filters[DISTRICT])
-    ) {
-      return false;
-    }
-
-    if (
-      filters[CHARGE_CATEGORY] &&
-      !skippedFilters.includes(CHARGE_CATEGORY) &&
-      !(treatCategoryAllAsAbsent && isAllItem(filters[CHARGE_CATEGORY])) &&
-      !nullSafeComparison(item.charge_category, filters[CHARGE_CATEGORY])
-    ) {
-      return false;
-    }
-    if (
-      filters[SUPERVISION_TYPE] &&
-      !skippedFilters.includes(SUPERVISION_TYPE) &&
-      !(treatCategoryAllAsAbsent && isAllItem(filters[SUPERVISION_TYPE])) &&
-      !nullSafeComparison(item.supervision_type, filters[SUPERVISION_TYPE])
-    ) {
-      return false;
-    }
-    if (
-      filters[ADMISSION_TYPE] &&
-      !skippedFilters.includes(ADMISSION_TYPE) &&
-      !includesAllItemFirst(filters[ADMISSION_TYPE]) &&
-      !nullSafeComparisonForArray(item.admission_type, filters[ADMISSION_TYPE])
-    ) {
-      return false;
-    }
-    if (
-      filters[SUPERVISION_LEVEL] &&
-      !skippedFilters.includes(SUPERVISION_LEVEL) &&
-      !nullSafeComparison(item.supervision_level, filters[SUPERVISION_LEVEL]) &&
-      !(treatCategoryAllAsAbsent && isAllItem(filters[SUPERVISION_LEVEL]))
-    ) {
-      return false;
-    }
-    return true;
+}) => (data) => {
+  const filterFn = matchesTopLevelFilters({
+    filters,
+    skippedFilters,
+    treatCategoryAllAsAbsent,
   });
+  return data.filter((item) => filterFn(item));
+};
 
-export const applyMatrixFilters = (filters) => (data) =>
-  data.filter((item) => {
-    if (
-      filters[VIOLATION_TYPE] &&
-      !nullSafeComparison(item.violation_type, filters[VIOLATION_TYPE])
-    ) {
-      return false;
-    }
+export const matchesMatrixFilters = (filters) => (item, dimensionKey) => {
+  if (
+    (dimensionKey === undefined || dimensionKey === "violation_type") &&
+    filters[VIOLATION_TYPE] &&
+    !nullSafeComparison(item.violation_type, filters[VIOLATION_TYPE])
+  ) {
+    return false;
+  }
 
-    if (
-      filters[REPORTED_VIOLATIONS] &&
-      toInt(item.reported_violations) !== toInt(filters[REPORTED_VIOLATIONS])
-    ) {
-      return false;
-    }
-    return true;
+  if (
+    (dimensionKey === undefined || dimensionKey === "reported_violations") &&
+    filters[REPORTED_VIOLATIONS] &&
+    toInt(item.reported_violations) !== toInt(filters[REPORTED_VIOLATIONS])
+  ) {
+    return false;
+  }
+  return true;
+};
+
+export const applyMatrixFilters = (filters) => (data) => {
+  const filterFn = matchesMatrixFilters(filters);
+  return data.filter((item) => filterFn(item));
+};
+
+export const matchesAllFilters = ({
+  filters,
+  skippedFilters = [],
+  treatCategoryAllAsAbsent = false,
+}) => (item, dimensionKey = undefined) => {
+  const topLevelFilterFn = matchesTopLevelFilters({
+    filters,
+    skippedFilters,
+    treatCategoryAllAsAbsent,
   });
+  const matrixFilterFn = matchesMatrixFilters(filters);
+  return (
+    topLevelFilterFn(item, dimensionKey) && matrixFilterFn(item, dimensionKey)
+  );
+};
 
 export const applyAllFilters = ({
   filters,

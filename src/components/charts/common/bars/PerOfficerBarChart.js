@@ -46,6 +46,8 @@ import { COLORS } from "../../../../assets/scripts/constants/colors";
 import {
   filterDatasetBySupervisionType,
   filterDatasetByMetricPeriodMonths,
+} from "../../../../utils/charts/dataFilters";
+import {
   toggleLabel,
   toggleYAxisTicksStackedRateBasicCount,
   updateTooltipForMetricType,

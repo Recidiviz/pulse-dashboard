@@ -205,34 +205,24 @@ function updateTooltipForMetricType(metricType, tooltipItem, data) {
   return standardTooltipForCountMetric(tooltipItem, data);
 }
 
-function filterDatasetByMetricPeriodMonths(dataset, metricPeriodMonths) {
-  return dataset.filter(
-    (element) => element.metric_period_months === metricPeriodMonths
-  );
-}
+// TODO merge delete?
+function updateTooltipForMetricTypeWithCounts(
+  metricType,
+  tooltipItem,
+  data,
+  numerators,
+  denominators
+) {
+  if (metricType === "rates") {
+    return tooltipForRateMetricWithCounts(
+      tooltipItem,
+      data,
+      numerators,
+      denominators
+    );
+  }
 
-function filterDatasetByToggleFilters(dataset, toggleFilters) {
-  const toggleKey = Object.keys(toggleFilters)[0];
-  const toggleValue = toggleFilters[toggleKey].toUpperCase();
-
-  return dataset.filter(
-    (element) =>
-      String(element[toggleKey]).toUpperCase() === String(toggleValue)
-  );
-}
-
-function filterDatasetByDistrict(dataset, districts) {
-  return dataset.filter((element) =>
-    districts
-      .map((d) => d.toUpperCase())
-      .includes(String(element.district).toUpperCase())
-  );
-}
-
-function filterDatasetBySupervisionType(dataset, supervisionType) {
-  return filterDatasetByToggleFilters(dataset, {
-    supervision_type: supervisionType,
-  });
+  return standardTooltipForCountMetric(tooltipItem, data);
 }
 
 function canDisplayGoal(goal, toggles) {
@@ -283,9 +273,7 @@ export {
   tooltipForRateMetricWithCounts,
   tooltipForRateMetricWithNestedCounts,
   updateTooltipForMetricType,
-  filterDatasetByMetricPeriodMonths,
-  filterDatasetByDistrict,
-  filterDatasetBySupervisionType,
+  updateTooltipForMetricTypeWithCounts,
   canDisplayGoal,
   centerSingleMonthDatasetIfNecessary,
 };
