@@ -33,6 +33,7 @@ import { filtersPropTypes } from "../../propTypes";
 import useChartData from "../../../../hooks/useChartData";
 import { translate } from "../../../../views/tenants/utils/i18nSettings";
 import { nullSafeCell, formatData, formatExportData } from "./utils/helpers";
+import { METRIC_PERIOD_MONTHS } from "../../../../constants/filterTypes";
 
 const CASES_PER_PAGE = 15;
 
@@ -51,7 +52,8 @@ const CaseTable = ({
 
   const { isLoading, isError, apiData } = useChartData(
     `${stateCode}/newRevocations`,
-    "revocations_matrix_filtered_caseload"
+    "revocations_matrix_filtered_caseload",
+    filterStates[METRIC_PERIOD_MONTHS]
   );
 
   // TODO: After moving the API call inside this component, the pagination protections are not

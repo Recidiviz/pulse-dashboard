@@ -27,6 +27,7 @@ import Error from "../../../Error";
 import { isDenominatorsMatrixStatisticallySignificant } from "../../../../utils/charts/significantStatistics";
 import getLabelByMode from "../utils/getLabelByMode";
 import { filtersPropTypes } from "../../propTypes";
+import { METRIC_PERIOD_MONTHS } from "../../../../constants/filterTypes";
 
 const RevocationsByDimension = ({
   chartId,
@@ -43,7 +44,11 @@ const RevocationsByDimension = ({
 }) => {
   const [mode, setMode] = useState(defaultMode);
 
-  const { isLoading, isError, apiData } = useChartData(apiUrl, apiFile);
+  const { isLoading, isError, apiData } = useChartData(
+    apiUrl,
+    apiFile,
+    filterStates[METRIC_PERIOD_MONTHS]
+  );
 
   if (isLoading) {
     return <Loading />;

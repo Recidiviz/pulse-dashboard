@@ -47,6 +47,7 @@ import {
 } from "../../../../utils/transforms/labels";
 import { filtersPropTypes } from "../../propTypes";
 import { translate } from "../../../../views/tenants/utils/i18nSettings";
+import { METRIC_PERIOD_MONTHS } from "../../../../constants/filterTypes";
 
 const TITLE =
   "Admissions by violation history (in year prior to their last reported violation)";
@@ -66,7 +67,8 @@ const RevocationMatrix = ({
 }) => {
   const { apiData, isLoading, isError } = useChartData(
     `${stateCode}/newRevocations`,
-    "revocations_matrix_cells"
+    "revocations_matrix_cells",
+    filterStates[METRIC_PERIOD_MONTHS]
   );
 
   if (isLoading) {

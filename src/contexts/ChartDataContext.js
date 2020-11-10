@@ -5,8 +5,8 @@ import PropTypes from "prop-types";
 import { useStateCode } from "./StateCodeContext";
 
 const CACHE_LIFETIME = 300000;
+const NO_FILE_KEY = "no_file_key";
 const ChartDataContext = createContext({});
-
 /*
 Map({
   [tenantName]: Map({
@@ -18,8 +18,6 @@ Map({
 })
  */
 const apiCache = new Map();
-
-const NO_FILE_KEY = "no_file_key";
 
 export const ChartDataProvider = ({ children }) => {
   const { currentStateCode } = useStateCode();

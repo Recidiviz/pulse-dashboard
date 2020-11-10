@@ -22,6 +22,10 @@ import { useAuth0 } from "../react-auth0-spa";
 import parseResponseByFileFormat from "../api/metrics/parseResponseByFileFormat";
 import { callMetricsApi, awaitingResults } from "../api/metrics/metricsClient";
 import { useCachedChartData } from "../contexts/ChartDataContext";
+import separateMetricFilesByPeriods from "../utils/separateMetricDataByPeriods";
+
+export const THREE_YEARS = "3years";
+export const LESS_THEN_3_YEARS = "less";
 
 const queues = {};
 
@@ -30,7 +34,8 @@ const queues = {};
  * state which will populate with the response data and a flag indicating whether
  * or not the response is still loading, in the form of `{ apiData, isLoading }`.
  */
-function useChartData(tenant, file) {
+function useChartData(tenant, file, period) {
+  const periodKey = parseInt(period) === 36 ? THREE_YEARS : LESS_THEN_3_YEARS;
   const { getCachedFile, setCachedFile } = useCachedChartData();
   const { loading, user, getTokenSilently } = useAuth0();
   const [apiData, setApiData] = useState([]);
@@ -48,7 +53,7 @@ function useChartData(tenant, file) {
 
       const cachedFile = getCachedFile(tenant, file);
       if (cachedFile) {
-        return cachedFile;
+        return cachedFile[periodKey];
       }
 
       queues[cacheKey] = [];
@@ -58,28 +63,30 @@ function useChartData(tenant, file) {
         getTokenSilently
       );
 
-      setCachedFile(tenant, file, responseData);
+      const metricFilesByPeriods = separateMetricFilesByPeriods(
+        parseResponseByFileFormat(responseData, file)
+      );
 
+      setCachedFile(tenant, file, metricFilesByPeriods);
       queues[cacheKey].forEach((promise) => {
-        promise(responseData);
+        promise(metricFilesByPeriods[periodKey]);
       });
 
       delete queues[cacheKey];
 
-      return responseData;
+      return metricFilesByPeriods[periodKey];
     } catch (error) {
       delete queues[cacheKey];
       console.error(error);
       throw error;
     }
-  }, [file, tenant, getTokenSilently, getCachedFile, setCachedFile]);
+  }, [file, tenant, periodKey, getTokenSilently, getCachedFile, setCachedFile]);
 
   useEffect(() => {
     const { promise, cancel } = makeCancellablePromise(fetchChartData());
 
     promise
-      .then((response) => {
-        const metricFiles = parseResponseByFileFormat(response, file);
+      .then((metricFiles) => {
         const data = file ? metricFiles[file] : metricFiles;
         setApiData(data);
       })
@@ -93,7 +100,7 @@ function useChartData(tenant, file) {
     return () => {
       cancel();
     };
-  }, [fetchChartData, file]);
+  }, [fetchChartData, file, periodKey]);
 
   const isLoading = awaitingResults(loading, user, awaitingApi);
 

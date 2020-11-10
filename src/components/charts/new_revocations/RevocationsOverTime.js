@@ -43,6 +43,7 @@ import { generateTrendlineDataset } from "../../../utils/charts/trendline";
 import { filtersPropTypes } from "../propTypes";
 import { translate } from "../../../views/tenants/utils/i18nSettings";
 import RevocationsByDimensionComponent from "./RevocationsByDimension/RevocationsByDimensionComponent";
+import { METRIC_PERIOD_MONTHS } from "../../../constants/filterTypes";
 
 const chartId = "revocationsOverTime";
 
@@ -54,7 +55,8 @@ const RevocationsOverTime = ({
 }) => {
   const { isLoading, isError, apiData } = useChartData(
     `${stateCode}/newRevocations`,
-    "revocations_matrix_by_month"
+    "revocations_matrix_by_month",
+    filterStates[METRIC_PERIOD_MONTHS]
   );
 
   if (isLoading) {
