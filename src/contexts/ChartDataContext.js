@@ -19,6 +19,8 @@ Map({
  */
 const apiCache = new Map();
 
+const NO_FILE_KEY = "no_file_key";
+
 export const ChartDataProvider = ({ children }) => {
   const { currentStateCode } = useStateCode();
 
@@ -31,7 +33,7 @@ export const ChartDataProvider = ({ children }) => {
     apiCache.clear();
   }, [currentStateCode]);
 
-  const getFile = (tenantName, fileName) => {
+  const getFile = (tenantName, fileName = NO_FILE_KEY) => {
     const tenant = apiCache.get(tenantName);
     if (!tenant) return null;
 
@@ -43,14 +45,14 @@ export const ChartDataProvider = ({ children }) => {
     return file.data;
   };
 
-  const removeFile = (tenantName, fileName) => {
+  const removeFile = (tenantName, fileName = NO_FILE_KEY) => {
     const tenant = apiCache.get(tenantName);
     if (tenant) {
       tenant.delete(fileName);
     }
   };
 
-  const setFile = (tenantName, fileName, data) => {
+  const setFile = (tenantName, fileName = NO_FILE_KEY, data) => {
     const timeout = setTimeout(() => {
       removeFile(tenantName, fileName);
     }, CACHE_LIFETIME);
