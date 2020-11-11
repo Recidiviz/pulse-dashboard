@@ -28,8 +28,9 @@ import { calculateRate } from "../helpers/rate";
 
 import { translate } from "../../../../views/tenants/utils/i18nSettings";
 import { isDenominatorStatisticallySignificant } from "../../../../utils/charts/significantStatistics";
-import { sumCounts } from "../utils/sumCounts";
+import { filterOptimizedDataFormat } from "../../../../utils/charts/dataFilters";
 import { COLORS } from "../../../../assets/scripts/constants/colors";
+import { sumCounts } from "../utils/sumCounts";
 
 const generatePercentChartData = (apiData, currentDistricts, mode) => {
   const [fieldName, totalFieldName] =
@@ -134,9 +135,17 @@ const generateCountChartData = (apiData, currentDistricts) => {
 
 const createGenerateChartData = (dataFilter, currentDistricts) => (
   apiData,
-  mode
+  mode,
+  unflattenedValues
 ) => {
-  const filteredData = dataFilter(apiData);
+  const filteredData = pipe((metricFile) =>
+    filterOptimizedDataFormat(
+      unflattenedValues,
+      apiData,
+      metricFile.metadata,
+      dataFilter
+    )
+  )(apiData);
   switch (mode) {
     case "counts":
       return generateCountChartData(filteredData, currentDistricts);

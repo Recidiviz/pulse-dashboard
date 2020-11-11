@@ -16,7 +16,7 @@
 // =============================================================================
 
 import { useState } from "react";
-import { compareViolationRecords } from "../../../../utils/charts/violationRecord";
+import { compareViolationRecords } from "./utils/compareViolationRecords";
 import getNameFromOfficerId from "../utils/getNameFromOfficerId";
 
 const RISK_LEVEL_PRIORITY = [
@@ -108,25 +108,17 @@ function useSort() {
   function comparator(a1, b1) {
     const [a2, b2] = sort.order === "desc" ? [b1, a1] : [a1, b1];
 
+    const fieldComparator = {
+      state_id: comparePersonExternalIds,
+      district: compareDistricts,
+      officer: compareOfficers,
+      risk_level: compareRiskLevel,
+      officer_recommendation: compareOfficerRecomendations,
+      violation_record: compareViolationRecords,
+    }[sort.field];
+
     return (
-      (sort.field === "state_id" &&
-        comparePersonExternalIds(a2.state_id, b2.state_id)) ||
-      (sort.field === "district" &&
-        compareDistricts(a2.district, b2.district)) ||
-      (sort.field === "officer" && compareOfficers(a2.officer, b2.officer)) ||
-      (sort.field === "risk_level" &&
-        compareRiskLevel(a2.risk_level, b2.risk_level)) ||
-      (sort.field === "officer_recommendation" &&
-        compareOfficerRecomendations(
-          a2.officer_recommendation,
-          b2.officer_recommendation
-        )) ||
-      (sort.field === "violation_record" &&
-        compareViolationRecords(
-          a2.violation_record,
-          b2.violation_record,
-          sort.order
-        )) ||
+      (fieldComparator && fieldComparator(a2[sort.field], b2[sort.field])) ||
       // default sorts
       compareDistricts(a2.district, b2.district) ||
       compareOfficers(a2.officer, b2.officer) ||

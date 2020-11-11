@@ -31,6 +31,7 @@ import { isDenominatorStatisticallySignificant } from "../../../../utils/charts/
 import { sumCounts } from "../utils/sumCounts";
 import getNameFromOfficerId from "../utils/getNameFromOfficerId";
 import { COLORS } from "../../../../assets/scripts/constants/colors";
+import { filterOptimizedDataFormat } from "../../../../utils/charts/dataFilters";
 
 const MAX_OFFICERS_COUNT = 50;
 
@@ -129,9 +130,15 @@ const generateCountChartData = (apiData) => {
 
 const createGenerateChartData = (dataFilter, currentDistricts) => (
   apiData,
-  mode
+  mode,
+  unflattenedValues
 ) => {
-  const filteredData = dataFilter(apiData);
+  const filteredData = filterOptimizedDataFormat(
+    unflattenedValues,
+    apiData,
+    apiData.metadata,
+    dataFilter
+  );
   switch (mode) {
     case "counts":
       return generateCountChartData(filteredData);

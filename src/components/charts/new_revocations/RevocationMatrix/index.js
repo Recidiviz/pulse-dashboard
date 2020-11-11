@@ -15,34 +15,4 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-.RevocationCharts {
-  background-color: #fff;
-  margin: 20px;
-  display: flex;
-  &__labels {
-    width: 130px;
-    border-right: 1px solid rgba(0, 0, 0, 0.0625);
-    padding: 20px;
-  }
-  &__button {
-    padding: 0;
-    background: transparent;
-    border: 0;
-    border-bottom: 2px solid transparent;
-    color: rgb(162, 169, 174);
-    text-transform: uppercase;
-    font-size: 16px;
-    font-weight: 600;
-    margin-bottom: 20px;
-    text-align: left;
-    &--selected {
-      color: rgb(39, 128, 194);
-      border-color: rgb(39, 128, 194);
-    }
-  }
-  &__chart {
-    display: block;
-    padding: 20px;
-    flex: 1 1;
-  }
-}
+export { default } from "./RevocationMatrix";

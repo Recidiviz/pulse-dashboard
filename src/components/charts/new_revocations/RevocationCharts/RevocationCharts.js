@@ -18,8 +18,8 @@
 import React, { useState } from "react";
 import cn from "classnames";
 import PropTypes from "prop-types";
-import RenderInBrowser from "react-render-in-browser";
 import { translate } from "../../../../views/tenants/utils/i18nSettings";
+
 import "./RevocationCharts.scss";
 
 // prettier-ignore
@@ -35,33 +35,11 @@ const RevocationCharts = ({
 }) => {
   const [selectedChart, setSelectedChart] = useState(CHARTS[0]);
 
-  // This will ensure that we proactively load each chart component and their data now, but only
-  // display the selected chart
-  const conditionallyHide = (chart, chartName, chartComponent) => (
-    <div
-      key={chartName}
-      className={cn("RevocationCharts__chart", {
-        "RevocationCharts__chart--selected": chart === chartName,
-      })}
-    >
-      {chartComponent}
-    </div>
-  );
-
-  const renderSelectedChartSimultaneousLoad = () => [
-    conditionallyHide(selectedChart, "Risk level", riskLevelChart),
-    conditionallyHide(selectedChart, translate("Officer"), officerChart),
-    conditionallyHide(selectedChart, "Violation", violationChart),
-    conditionallyHide(selectedChart, "Gender", genderChart),
-    conditionallyHide(selectedChart, "Race", raceChart),
-    conditionallyHide(selectedChart, "District", districtChart),
-  ];
-
   const renderSelectedChartSingularLoad = () => {
     switch (selectedChart) {
       case "Risk level":
         return riskLevelChart;
-      case translate("Officer"):
+      case "Officer":
         return officerChart;
       case "Violation":
         return violationChart;
@@ -74,22 +52,6 @@ const RevocationCharts = ({
         return districtChart;
     }
   };
-
-  // IE11 has intermittent issues loading all of these charts simultaneously, most of the time
-  // returning errors of "Script7002: XMLHttpRequest: Network Error 0x2eff..."
-  // For IE users, we render each chart only when selected.
-  // For other users, we render each chart simultaneously so that toggling feels instant.
-  const renderSelectedChart = () => (
-    <>
-      <RenderInBrowser except ie>
-        {renderSelectedChartSimultaneousLoad()}
-      </RenderInBrowser>
-
-      <RenderInBrowser ie only>
-        {renderSelectedChartSingularLoad()}
-      </RenderInBrowser>
-    </>
-  );
 
   return (
     <div className="RevocationCharts">
@@ -108,7 +70,9 @@ const RevocationCharts = ({
           </div>
         ))}
       </div>
-      {renderSelectedChart()}
+      <div className="RevocationCharts__chart">
+        {renderSelectedChartSingularLoad()}
+      </div>
     </div>
   );
 };

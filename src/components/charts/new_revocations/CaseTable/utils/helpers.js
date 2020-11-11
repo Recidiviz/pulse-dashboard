@@ -17,15 +17,15 @@
 
 import React from "react";
 
-import { humanReadableTitleCase } from "../../../../utils/transforms/labels";
-import { parseAndFormatViolationRecord } from "../../../../utils/charts/violationRecord";
-import getNameFromOfficerId from "../utils/getNameFromOfficerId";
-import { translate } from "../../../../views/tenants/utils/i18nSettings";
-import { COLORS } from "../../../../assets/scripts/constants/colors";
+import { humanReadableTitleCase } from "../../../../../utils/transforms/labels";
+import { parseAndFormatViolationRecord } from "./violationRecord";
+import getNameFromOfficerId from "../../utils/getNameFromOfficerId";
+import { translate } from "../../../../../views/tenants/utils/i18nSettings";
+import { COLORS } from "../../../../../assets/scripts/constants/colors";
 
 const nullSafeLabel = (label) => label || "Unknown";
 
-const normalizeOfficerRecommendation = (value) => {
+export const normalizeOfficerRecommendation = (value) => {
   switch (value) {
     case "CODS":
       return value;
@@ -36,7 +36,7 @@ const normalizeOfficerRecommendation = (value) => {
   }
 };
 
-const formatData = (data) => {
+export const formatData = (data) => {
   return data.map((record) => {
     return {
       state_id: nullSafeLabel(record.state_id),
@@ -53,28 +53,21 @@ const formatData = (data) => {
   });
 };
 
-const formatExportData = (data) => {
+export const formatExportData = (data) => {
   return (formatData(data) || []).map((record) => ({
     data: Object.values(record),
   }));
 };
 
-const unknownStyle = {
-  fontStyle: "italic",
-  fontSize: "13px",
-  color: COLORS["grey-500"],
-};
-
-const nullSafeCell = (label) => {
+export const nullSafeCell = (label) => {
   if (label) {
     return <td>{label}</td>;
   }
-  return <td style={unknownStyle}>{label}</td>;
-};
 
-export {
-  formatData,
-  nullSafeCell,
-  formatExportData,
-  normalizeOfficerRecommendation,
+  const unknownStyle = {
+    fontStyle: "italic",
+    fontSize: "13px",
+    color: COLORS["grey-500"],
+  };
+  return <td style={unknownStyle}>{label}</td>;
 };

@@ -19,9 +19,10 @@ import React, { useCallback, useState } from "react";
 import Sticky from "react-sticky-fill";
 
 import {
-  applyAllFilters,
-  applyTopLevelFilters,
+  matchesAllFilters,
+  matchesTopLevelFilters,
   limitFiltersToUserDistricts,
+  applyAllFilters,
 } from "./charts/new_revocations/helpers";
 import { getTimeDescription } from "./charts/new_revocations/helpers/format";
 import ToggleBarFilter from "./charts/new_revocations/ToggleBar/ToggleBarFilter";
@@ -169,7 +170,7 @@ const Revocations = () => {
       <div className="bgc-white p-20 m-20">
         <ErrorBoundary>
           <RevocationCountOverTime
-            dataFilter={applyAllFilters({
+            dataFilter={matchesAllFilters({
               filters: transformedFilters,
               skippedFilters: [METRIC_PERIOD_MONTHS],
             })}
@@ -183,7 +184,9 @@ const Revocations = () => {
         <div className="matrix-container bgc-white p-20 mR-20">
           <ErrorBoundary>
             <RevocationMatrix
-              dataFilter={applyTopLevelFilters({ filters: transformedFilters })}
+              dataFilter={matchesTopLevelFilters({
+                filters: transformedFilters,
+              })}
               filterStates={filters}
               updateFilters={updateFilters}
               timeDescription={timeDescription}
@@ -199,7 +202,7 @@ const Revocations = () => {
         riskLevelChart={
           <ErrorBoundary>
             <RevocationsByRiskLevel
-              dataFilter={applyAllFilters({ filters: transformedFilters })}
+              dataFilter={matchesAllFilters({ filters: transformedFilters })}
               filterStates={filters}
               stateCode={stateCode}
               timeDescription={timeDescription}
@@ -209,10 +212,7 @@ const Revocations = () => {
         officerChart={
           <ErrorBoundary>
             <RevocationsByOfficer
-              dataFilter={applyAllFilters({
-                filters: transformedFilters,
-                treatCategoryAllAsAbsent: true,
-              })}
+              dataFilter={matchesAllFilters({ filters: transformedFilters })}
               filterStates={filters}
               stateCode={stateCode}
               timeDescription={timeDescription}
@@ -222,7 +222,7 @@ const Revocations = () => {
         violationChart={
           <ErrorBoundary>
             <RevocationsByViolation
-              dataFilter={applyAllFilters({ filters: transformedFilters })}
+              dataFilter={matchesAllFilters({ filters: transformedFilters })}
               filterStates={filters}
               stateCode={stateCode}
               timeDescription={timeDescription}
@@ -233,7 +233,7 @@ const Revocations = () => {
         genderChart={
           <ErrorBoundary>
             <RevocationsByGender
-              dataFilter={applyAllFilters({ filters: transformedFilters })}
+              dataFilter={matchesAllFilters({ filters: transformedFilters })}
               filterStates={filters}
               stateCode={stateCode}
               timeDescription={timeDescription}
@@ -243,7 +243,7 @@ const Revocations = () => {
         raceChart={
           <ErrorBoundary>
             <RevocationsByRace
-              dataFilter={applyAllFilters({ filters: transformedFilters })}
+              dataFilter={matchesAllFilters({ filters: transformedFilters })}
               filterStates={filters}
               stateCode={stateCode}
               timeDescription={timeDescription}
@@ -253,7 +253,7 @@ const Revocations = () => {
         districtChart={
           <ErrorBoundary>
             <RevocationsByDistrict
-              dataFilter={applyAllFilters({
+              dataFilter={matchesAllFilters({
                 filters: transformedFilters,
                 skippedFilters: [DISTRICT],
               })}

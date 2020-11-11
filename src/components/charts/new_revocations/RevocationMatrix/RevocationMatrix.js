@@ -45,6 +45,7 @@ import {
   matrixViolationTypeToLabel,
   violationCountLabel,
 } from "../../../../utils/transforms/labels";
+import { filterOptimizedDataFormat } from "../../../../utils/charts/dataFilters";
 import { filtersPropTypes } from "../../propTypes";
 import { translate } from "../../../../views/tenants/utils/i18nSettings";
 
@@ -64,9 +65,10 @@ const RevocationMatrix = ({
   updateFilters,
   violationTypes,
 }) => {
-  const { apiData, isLoading, isError } = useChartData(
+  const { apiData, isLoading, isError, unflattenedValues } = useChartData(
     `${stateCode}/newRevocations`,
-    "revocations_matrix_cells"
+    "revocations_matrix_cells",
+    false
   );
 
   if (isLoading) {
@@ -81,7 +83,13 @@ const RevocationMatrix = ({
     filterStates.violationType || filterStates.reportedViolations;
 
   const filteredData = pipe(
-    dataFilter,
+    (metricFile) =>
+      filterOptimizedDataFormat(
+        unflattenedValues,
+        apiData,
+        metricFile.metadata,
+        dataFilter
+      ),
     filter((data) => violationTypes.includes(data.violation_type))
   )(apiData);
 

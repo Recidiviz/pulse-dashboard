@@ -15,34 +15,32 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-.RevocationCharts {
-  background-color: #fff;
-  margin: 20px;
-  display: flex;
-  &__labels {
-    width: 130px;
-    border-right: 1px solid rgba(0, 0, 0, 0.0625);
-    padding: 20px;
-  }
-  &__button {
-    padding: 0;
-    background: transparent;
-    border: 0;
-    border-bottom: 2px solid transparent;
-    color: rgb(162, 169, 174);
-    text-transform: uppercase;
-    font-size: 16px;
-    font-weight: 600;
-    margin-bottom: 20px;
-    text-align: left;
-    &--selected {
-      color: rgb(39, 128, 194);
-      border-color: rgb(39, 128, 194);
-    }
-  }
-  &__chart {
-    display: block;
-    padding: 20px;
-    flex: 1 1;
-  }
-}
+const nullSafeComparison = (field, filter) => {
+  if (!field && !filter) return true;
+  if (!field) return false;
+  if (!filter) return false;
+  return field.toLowerCase() === filter.toLowerCase();
+};
+
+const nullSafeComparisonForArray = (field, filters) => {
+  if (!field && !filters) return true;
+  if (!field) return false;
+  if (!filters) return false;
+  return (
+    filters.filter((value) => value.toLowerCase() === field.toLowerCase())
+      .length !== 0
+  );
+};
+
+const isAllItem = (item) => item.toLowerCase() === "all";
+
+const includesAllItemFirst = (items) => {
+  return items.length === 1 && isAllItem(items[0]);
+};
+
+export {
+  nullSafeComparison,
+  nullSafeComparisonForArray,
+  isAllItem,
+  includesAllItemFirst,
+};

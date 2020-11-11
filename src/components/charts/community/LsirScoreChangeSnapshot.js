@@ -36,9 +36,11 @@ import {
   chartAnnotationForGoal,
 } from "../../../utils/charts/metricGoal";
 import {
-  getMonthCountFromMetricPeriodMonthsToggle,
   filterDatasetBySupervisionType,
   filterDatasetByDistrict,
+} from "../../../utils/charts/dataFilters";
+import {
+  getMonthCountFromMetricPeriodMonthsToggle,
   canDisplayGoal,
   centerSingleMonthDatasetIfNecessary,
 } from "../../../utils/charts/toggles";
