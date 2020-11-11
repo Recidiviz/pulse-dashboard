@@ -56,7 +56,11 @@ function getFilters(toggleStates) {
   }
 
   if (toggleStates.chargeCategory) {
-    filters.push(formatChargeCategory(toggleStates.chargeCategory));
+    filters.push(
+      Array.isArray(toggleStates.chargeCategory)
+        ? formatChargeCategory(toggleStates.chargeCategory[0])
+        : formatChargeCategory(toggleStates.chargeCategory)
+    );
   }
 
   if (toggleStates.supervisionType) {

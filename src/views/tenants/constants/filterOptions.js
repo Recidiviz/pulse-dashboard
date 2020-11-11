@@ -83,11 +83,14 @@ const MOFilterOptions = {
     filterEnabled: false,
     componentEnabled: false,
   },
+  // temporarily we will be accepting either SEX_OFFENSE or SEX_OFFENDER
+  // in the charge_category field. Once the BE transition to SEX_OFFENSE
+  // has been made, we will revert this to the single value
   [CHARGE_CATEGORY]: {
     options: [
       { value: "All", label: "All" },
       { value: "GENERAL", label: "General" },
-      { value: "SEX_OFFENDER", label: "Sex Offense" },
+      { value: ["SEX_OFFENSE", "SEX_OFFENDER"], label: "Sex Offense" },
       { value: "DOMESTIC_VIOLENCE", label: "Domestic Violence" },
       { value: "SERIOUS_MENTAL_ILLNESS", label: "Serious Mental Illness" },
     ],
@@ -168,11 +171,14 @@ const PAFilterOptions = {
     filterEnabled: false,
     componentEnabled: false,
   },
+  // temporarily we will be accepting either SEX_OFFENSE or SEX_OFFENDER
+  // in the charge_category field. Once the BE transition to SEX_OFFENSE
+  // has been made, we will revert this to the single value
   [CHARGE_CATEGORY]: {
     options: [
       { value: "All", label: "All" },
       { value: "GENERAL", label: "General" },
-      { value: "SEX_OFFENDER", label: "Sex Offense" },
+      { value: ["SEX_OFFENSE", "SEX_OFFENDER"], label: "Sex Offense" },
       { value: "DOMESTIC_VIOLENCE", label: "Domestic Violence" },
       { value: "SERIOUS_MENTAL_ILLNESS", label: "Mental Health" },
       { value: "ALCOHOL_DRUG", label: "AOD" },

@@ -9,7 +9,7 @@ export const metricTypePropType = PropTypes.oneOf([
 export const filtersPropTypes = PropTypes.shape({
   metricPeriodMonths: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
     .isRequired,
-  chargeCategory: PropTypes.string.isRequired,
+  chargeCategory: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
   district: PropTypes.arrayOf(PropTypes.string).isRequired,
   supervisionType: PropTypes.string,
   reportedViolations: PropTypes.string.isRequired,
