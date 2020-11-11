@@ -71,35 +71,39 @@ describe("isDenominatorsMatrixStatisticallySignificant function", () => {
 });
 
 describe("tooltipForFooterWithCounts function", () => {
-  it("returns warning footnote", () => {
-    const given = statisticallyNotSignificantDenominators;
-    const index = 2;
+  describe("when the denominators are not significantly significant", () => {
+    it("returns warning footnote", () => {
+      const given = statisticallyNotSignificantDenominators;
+      const index = 2;
 
-    expect(tooltipForFooterWithCounts([{ index }], given)).toBe(
-      "* indicates the group is too small to make generalizations"
-    );
+      expect(tooltipForFooterWithCounts([{ index }], given)).toBe(
+        "* indicates the group is too small to make generalizations"
+      );
+    });
+
+    it("returns empty footnote", () => {
+      const given = statisticallySignificantDenominators;
+      const index = 1;
+
+      expect(tooltipForFooterWithCounts([{ index }], given)).toBe("");
+    });
   });
 
-  it("returns empty footnote", () => {
-    const given = statisticallySignificantDenominators;
-    const index = 1;
+  describe("when the denominators are significantly significant", () => {
+    it("returns warning footnote for matrix", () => {
+      const given = statisticallyNotSignificantDenominatorMatrix;
+      const index = 2;
 
-    expect(tooltipForFooterWithCounts([{ index }], given)).toBe("");
-  });
+      expect(tooltipForFooterWithCounts([{ index }], given)).toBe(
+        "* indicates the group is too small to make generalizations"
+      );
+    });
 
-  it("returns warning footnote for matrix", () => {
-    const given = statisticallyNotSignificantDenominatorMatrix;
-    const index = 2;
+    it("returns empty footnote for matrix", () => {
+      const given = statisticallyNotSignificantDenominatorMatrix;
+      const index = 3;
 
-    expect(tooltipForFooterWithCounts([{ index }], given)).toBe(
-      "* indicates the group is too small to make generalizations"
-    );
-  });
-
-  it("returns empty footnote for matrix", () => {
-    const given = statisticallyNotSignificantDenominatorMatrix;
-    const index = 3;
-
-    expect(tooltipForFooterWithCounts([{ index }], given)).toBe("");
+      expect(tooltipForFooterWithCounts([{ index }], given)).toBe("");
+    });
   });
 });
