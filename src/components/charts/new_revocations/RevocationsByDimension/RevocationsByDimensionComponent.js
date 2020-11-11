@@ -44,7 +44,7 @@ const RevocationsByDimensionComponent = ({
       {showWarning && <DataSignificanceWarningIcon />}
       <ExportMenu
         chartId={chartId}
-        chart={{ props: { data: { datasets, labels } } }}
+        chartData={{ datasets, labels }}
         metricTitle={metricTitle}
         timeWindowDescription={timeDescription}
         filters={filterStates}

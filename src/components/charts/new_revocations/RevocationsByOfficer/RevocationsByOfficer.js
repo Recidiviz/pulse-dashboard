@@ -26,6 +26,8 @@ import RevocationCountChart from "../RevocationCountChart";
 import createGenerateChartData from "./createGenerateChartData";
 import flags from "../../../../flags";
 
+const MAX_OFFICERS_COUNT = 50;
+
 const RevocationsByOfficer = ({
   dataFilter,
   filterStates,
@@ -36,7 +38,7 @@ const RevocationsByOfficer = ({
 
   return (
     <RevocationsByDimension
-      chartId="revocationsByAgent"
+      chartId="revocationsByOfficer"
       apiUrl={`${stateCode}/newRevocations`}
       apiFile="revocations_matrix_distribution_by_officer"
       renderChart={({
@@ -46,16 +48,24 @@ const RevocationsByOfficer = ({
         numerators,
         averageRate,
         mode,
-      }) =>
-        mode === "counts" ? (
+      }) => {
+        const slicedData = {
+          datasets: data.datasets.map((dataset) => ({
+            ...dataset,
+            data: dataset.data.slice(0, MAX_OFFICERS_COUNT),
+          })),
+          labels: data.labels.slice(0, MAX_OFFICERS_COUNT),
+        };
+
+        return mode === "counts" ? (
           <RevocationCountChart
             chartId={chartId}
-            data={data}
+            data={slicedData}
             xAxisLabel={`District-${translate("Officer")} ID`}
           />
         ) : (
           <PercentRevokedChart
-            data={data}
+            data={slicedData}
             chartId={chartId}
             numerators={numerators}
             denominators={denominators}
@@ -67,8 +77,8 @@ const RevocationsByOfficer = ({
                 : `Percent ${translate("revoked")} out of all exits`
             }
           />
-        )
-      }
+        );
+      }}
       generateChartData={createGenerateChartData(dataFilter)}
       chartTitle={chartTitle}
       metricTitle={chartTitle}

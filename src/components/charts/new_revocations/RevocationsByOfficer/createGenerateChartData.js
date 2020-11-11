@@ -33,8 +33,6 @@ import getNameFromOfficerId from "../utils/getNameFromOfficerId";
 import { COLORS } from "../../../../assets/scripts/constants/colors";
 import { filterOptimizedDataFormat } from "../../../../utils/charts/dataFilters";
 
-const MAX_OFFICERS_COUNT = 50;
-
 const generatePercentChartData = (apiData, currentDistricts, mode) => {
   const [fieldName, totalFieldName] =
     mode === "exits"
@@ -58,8 +56,7 @@ const generatePercentChartData = (apiData, currentDistricts, mode) => {
       [fieldName]: dataPoint[fieldName],
       rate: calculateRate(dataPoint.count, dataPoint[fieldName]),
     })),
-    orderBy(["rate"], ["desc"]),
-    (dataset) => dataset.slice(0, MAX_OFFICERS_COUNT)
+    orderBy(["rate"], ["desc"])
   )(apiData);
 
   const dataPoints = map((item) => item.rate.toFixed(2), filteredData);
@@ -110,8 +107,7 @@ const generateCountChartData = (apiData) => {
       )}`,
       count: sumBy((item) => toInteger(item.population_count), dataset),
     })),
-    orderBy(["count"], ["desc"]),
-    (dataset) => dataset.slice(0, MAX_OFFICERS_COUNT)
+    orderBy(["count"], ["desc"])
   )(apiData);
 
   const labels = map("officer", transformedData);

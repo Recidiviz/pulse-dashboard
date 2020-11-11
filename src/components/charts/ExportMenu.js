@@ -36,7 +36,7 @@ const ExportMenu = ({
   shouldExport = true,
   regularElement = false,
   isTable = false,
-  chart = null,
+  chartData,
   elementDatasets = null,
   elementLabels = null,
   tableData = null,
@@ -83,8 +83,8 @@ const ExportMenu = ({
                 downloadChartAsImage(
                   chartId,
                   metricTitle,
-                  chart.props.data.datasets,
-                  chart.props.data.labels,
+                  chartData.datasets,
+                  chartData.labels,
                   exportedStructureCallback,
                   filters,
                   undefined,
@@ -104,8 +104,8 @@ const ExportMenu = ({
                 downloadChartAsData(
                   chartId,
                   metricTitle,
-                  chart.props.data.datasets,
-                  chart.props.data.labels,
+                  chartData.datasets,
+                  chartData.labels,
                   exportedStructureCallback,
                   filters,
                   undefined,
@@ -238,8 +238,8 @@ ExportMenu.defaultProps = {
   regularElement: false,
   shouldExport: true,
   elementDatasets: null,
-  chart: null,
   isTable: false,
+  chartData: null,
   elementLabels: null,
   tableData: null,
   tableLabels: null,
@@ -258,8 +258,10 @@ ExportMenu.propTypes = {
       data: PropTypes.arrayOf(PropTypes.number),
     })
   ),
-  // eslint-disable-next-line react/forbid-prop-types
-  chart: PropTypes.any,
+  chartData: PropTypes.shape({
+    datasets: PropTypes.array,
+    labels: PropTypes.array,
+  }),
   isTable: PropTypes.bool,
   elementLabels: PropTypes.arrayOf(PropTypes.string),
   tableData: PropTypes.arrayOf(
