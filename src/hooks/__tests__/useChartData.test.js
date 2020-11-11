@@ -14,41 +14,87 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-import React from "react";
-import { render } from "@testing-library/react";
+import { renderHook, cleanup } from "@testing-library/react-hooks";
 
 import useChartData from "../useChartData";
 import Error from "../../components/Error";
-import { callMetricsApi } from "../../api/metrics/metricsClient";
+import {
+  callMetricsApi,
+  awaitingResults,
+} from "../../api/metrics/metricsClient";
 import { useAuth0 } from "../../react-auth0-spa";
+import { parseResponseByFileFormat } from "../../api/metrics/fileParser";
 
 jest.mock("../../react-auth0-spa");
 jest.mock("../../api/metrics/metricsClient");
-
-const TestComponent = () => {
-  const { apiData, isError } = useChartData("anyURL", "anyFile");
-
-  return (
-    <>
-      <div data-testid="apiData">{apiData}</div>
-      {isError && <div>Error</div>}
-    </>
-  );
-};
-
+jest.mock("../../api/metrics/fileParser");
 describe("useChartData", () => {
-  describe("when an error is thrown", () => {
+  beforeAll(() => {
+    parseResponseByFileFormat.mockImplementation((v) => v);
+    useAuth0.mockReturnValue({
+      user: {},
+      isAuthenticated: true,
+      loading: true,
+      loginWithRedirect: jest.fn(),
+      getTokenSilently: jest.fn(),
+    });
+    awaitingResults.mockImplementation(
+      (loading, user, awaitingApi) => awaitingApi
+    );
+  });
+
+  describe("success responses", () => {
+    const mockUrl = "us_mo/newRevocations";
+    const mockFile = "matrix_cells";
+    const mockResponse = "some response";
+
+    beforeAll(() => {
+      callMetricsApi.mockResolvedValue(mockResponse);
+    });
+
     beforeEach(() => {
+      jest.clearAllMocks();
+    });
+
+    it("should load data", async () => {
+      const { result, waitForNextUpdate } = renderHook(() =>
+        useChartData(mockUrl, mockFile)
+      );
+
+      expect(callMetricsApi).toHaveBeenCalledTimes(1);
+      expect(callMetricsApi.mock.calls[0][0]).toBe(`${mockUrl}/${mockFile}`);
+
+      await waitForNextUpdate();
+
+      expect(result.current.apiData).toBe(mockResponse);
+      expect(result.current.isLoading).toBeFalse();
+      expect(result.current.isError).toBeFalse();
+
+      await cleanup();
+    });
+
+    it("should do only one request if 2 components request same file", async () => {
+      const { result: firstResult, waitForNextUpdate } = renderHook(() =>
+        useChartData(mockUrl, mockFile)
+      );
+      const { result: secondResult } = renderHook(() =>
+        useChartData(mockUrl, mockFile)
+      );
+
+      await waitForNextUpdate();
+
+      expect(callMetricsApi).toHaveBeenCalledTimes(1);
+      expect(firstResult.current.apiData).toEqual(mockResponse);
+      expect(firstResult.current.apiData).toEqual(secondResult.current.apiData);
+
+      await cleanup();
+    });
+  });
+
+  describe("error responses", () => {
+    beforeAll(() => {
       callMetricsApi.mockImplementation(() => {
         throw new Error();
-      });
-
-      useAuth0.mockReturnValue({
-        user: {},
-        isAuthenticated: true,
-        loading: true,
-        loginWithRedirect: jest.fn(),
-        getTokenSilently: jest.fn(),
       });
 
       // do not log the expected error - keep tests less verbose
@@ -59,16 +105,14 @@ describe("useChartData", () => {
       jest.clearAllMocks();
     });
 
-    it("returns an empty array for apiData", () => {
-      const { getByTestId } = render(<TestComponent />);
+    it("returns isError = true", async () => {
+      const { result, waitForNextUpdate } = renderHook(() =>
+        useChartData("anyURL", "anyFile")
+      );
+      await waitForNextUpdate();
 
-      expect(getByTestId("apiData")).toHaveTextContent([]);
-    });
-
-    it("returns isError = true", () => {
-      const { getByText } = render(<TestComponent />);
-
-      expect(getByText("Error")).toBeTruthy();
+      expect(result.current.isError).toBe(true);
+      expect(result.current.apiData).toEqual([]);
     });
   });
 });
