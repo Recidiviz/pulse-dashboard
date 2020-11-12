@@ -539,13 +539,13 @@ describe("test for file toggles", () => {
   });
 
   it("tooltip for rate metric with nested counts", () => {
-    const tooltipTest = toggleMethods.tooltipForRateMetricWithNestedCounts(
+    const tooltipTest = toggleMethods.tooltipForRateMetricWithCounts(
       tooltipItemRate,
       dataMetric,
-      numbers,
-      denominators
+      [numbers],
+      [denominators]
     );
-    expect(tooltipTest).toBe("Percent revoked: 10.56%");
+    expect(tooltipTest).toBe("Percent revoked: 10.56% (19/180)");
   });
 
   it("update tooltip for metric type", () => {

@@ -20,8 +20,8 @@ import PropTypes from "prop-types";
 import { Bar } from "react-chartjs-2";
 
 import { axisCallbackForPercentage } from "../../../../utils/charts/axis";
-import { tooltipForFooterWithNestedCounts } from "../../../../utils/charts/significantStatistics";
-import { tooltipForRateMetricWithNestedCounts } from "../../../../utils/charts/toggles";
+import { tooltipForFooterWithCounts } from "../../../../utils/charts/significantStatistics";
+import { tooltipForRateMetricWithCounts } from "../../../../utils/charts/toggles";
 import { generateLabelsWithCustomColors } from "./helpers";
 import { COLORS } from "../../../../assets/scripts/constants/colors";
 
@@ -38,13 +38,15 @@ const BarChartWithLabels = ({
     id={id}
     data={data}
     options={{
-      legend: {
-        position: "bottom",
-        labels: {
-          generateLabels: (ch) =>
-            generateLabelsWithCustomColors(ch, labelColors),
-        },
-      },
+      legend: labelColors.length
+        ? {
+            position: "bottom",
+            labels: {
+              generateLabels: (ch) =>
+                generateLabelsWithCustomColors(ch, labelColors),
+            },
+          }
+        : { display: false },
       responsive: true,
       maintainAspectRatio: false,
       scales: {
@@ -76,19 +78,23 @@ const BarChartWithLabels = ({
         intersect: false,
         callbacks: {
           label: (tooltipItem, tooltipData) =>
-            tooltipForRateMetricWithNestedCounts(
+            tooltipForRateMetricWithCounts(
               tooltipItem,
               tooltipData,
               numerators,
               denominators
             ),
           footer: (tooltipItem) =>
-            tooltipForFooterWithNestedCounts(tooltipItem, denominators),
+            tooltipForFooterWithCounts(tooltipItem, denominators),
         },
       },
     }}
   />
 );
+
+BarChartWithLabels.defaultProps = {
+  labelColors: [],
+};
 
 BarChartWithLabels.propTypes = {
   id: PropTypes.string.isRequired,
@@ -97,16 +103,23 @@ BarChartWithLabels.propTypes = {
     datasets: PropTypes.arrayOf(
       PropTypes.shape({
         label: PropTypes.string,
-        backgroundColor: PropTypes.func,
+        backgroundColor: PropTypes.oneOfType([
+          PropTypes.func,
+          PropTypes.arrayOf(PropTypes.string),
+          PropTypes.string,
+        ]),
         data: PropTypes.arrayOf(PropTypes.string),
       })
     ),
   }).isRequired,
-  labelColors: PropTypes.arrayOf(PropTypes.string).isRequired,
   xAxisLabel: PropTypes.string.isRequired,
   yAxisLabel: PropTypes.string.isRequired,
-  numerators: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)).isRequired,
-  denominators: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number))
-    .isRequired,
+  numerators: PropTypes.arrayOf(
+    PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.number), PropTypes.number])
+  ).isRequired,
+  denominators: PropTypes.arrayOf(
+    PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.number), PropTypes.number])
+  ).isRequired,
+  labelColors: PropTypes.arrayOf(PropTypes.string),
 };
 export default BarChartWithLabels;
