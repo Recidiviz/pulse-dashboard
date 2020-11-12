@@ -16,6 +16,7 @@
 // =============================================================================
 
 import { useState, useCallback, useEffect } from "react";
+import makeCancellablePromise from "make-cancellable-promise";
 import toInteger from "lodash/fp/toInteger";
 import { useAuth0 } from "../react-auth0-spa";
 import {
@@ -24,6 +25,8 @@ import {
 } from "../api/metrics/fileParser";
 import { convertFromStringToUnflattenedMatrix } from "../api/metrics/optimizedFormatHelpers";
 import { callMetricsApi, awaitingResults } from "../api/metrics/metricsClient";
+
+const queues = {};
 
 /**
  * A hook which fetches the given file at the given API service URL. Returns
@@ -50,55 +53,78 @@ function useChartData(url, file, eagerExpand = true) {
 
   const fetchChartData = useCallback(async () => {
     try {
-      if (file) {
-        const responseData = await callMetricsApi(
-          `${url}/${file}`,
-          getTokenSilently
-        );
+      const fileKey = `${url}-${file}`;
 
-        const metricFile = parseResponseByFileFormat(
-          responseData,
-          file,
-          eagerExpand
-        );
-        setApiData(metricFile);
-
-        // If we are not eagerly expanding a single file request, then proactively
-        // unflatten the data matrix to avoid repeated unflattening operations in
-        // filtering operations later on.
-        if (!eagerExpand) {
-          const totalDataPoints = toInteger(
-            metricFile.metadata.total_data_points
-          );
-          const unflattened =
-            totalDataPoints === 0
-              ? []
-              : convertFromStringToUnflattenedMatrix(
-                  metricFile.flattenedValueMatrix,
-                  totalDataPoints
-                );
-          setUnflattenedValues(unflattened);
-        }
-      } else {
-        const responseData = await callMetricsApi(url, getTokenSilently);
-
-        const metricFiles = parseResponsesByFileFormat(
-          responseData,
-          eagerExpand
-        );
-        setApiData(metricFiles);
+      if (queues[fileKey]) {
+        return new Promise((resolve) => {
+          queues[fileKey].push(resolve);
+        });
       }
-      setAwaitingApi(false);
+
+      queues[fileKey] = [];
+
+      const responseData = await callMetricsApi(
+        file ? `${url}/${file}` : url,
+        getTokenSilently
+      );
+      queues[fileKey].forEach((resolve) => resolve(responseData));
+      delete queues[fileKey];
+
+      return await responseData;
     } catch (error) {
-      setAwaitingApi(false);
-      setIsError(true);
       console.error(error);
+      throw error;
     }
-  }, [eagerExpand, file, getTokenSilently, url]);
+  }, [file, getTokenSilently, url]);
 
   useEffect(() => {
-    fetchChartData();
-  }, [fetchChartData]);
+    const { cancel, promise } = makeCancellablePromise(fetchChartData());
+
+    promise
+      .then((responseData) => {
+        if (file) {
+          const metricFile = parseResponseByFileFormat(
+            responseData,
+            file,
+            eagerExpand
+          );
+          setApiData(metricFile);
+
+          // If we are not eagerly expanding a single file request, then proactively
+          // unflatten the data matrix to avoid repeated unflattening operations in
+          // filtering operations later on.
+          if (!eagerExpand) {
+            const totalDataPoints = toInteger(
+              metricFile.metadata.total_data_points
+            );
+            const unflattened =
+              totalDataPoints === 0
+                ? []
+                : convertFromStringToUnflattenedMatrix(
+                    metricFile.flattenedValueMatrix,
+                    totalDataPoints
+                  );
+            setUnflattenedValues(unflattened);
+          }
+        } else {
+          const metricFiles = parseResponsesByFileFormat(
+            responseData,
+            eagerExpand
+          );
+          setApiData(metricFiles);
+        }
+      })
+      .catch(() => {
+        setIsError(true);
+      })
+      .finally(() => {
+        setAwaitingApi(false);
+      });
+
+    return () => {
+      cancel();
+    };
+  }, [eagerExpand, fetchChartData, file]);
 
   const isLoading = awaitingResults(loading, user, awaitingApi);
 
