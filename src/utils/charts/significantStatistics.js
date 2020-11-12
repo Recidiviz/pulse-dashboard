@@ -16,7 +16,6 @@
 // =============================================================================
 
 import pattern from "patternomaly";
-import { Chart } from "react-chartjs-2";
 
 function isDenominatorStatisticallySignificant(denominator = 0) {
   return denominator === 0 || denominator >= 100;
@@ -40,40 +39,25 @@ function getBarBackgroundColor(color, denominators) {
 }
 
 function tooltipForFooterWithCounts([{ index }], denominators) {
-  if (isDenominatorStatisticallySignificant(denominators[index])) {
+  const isNested = denominators.every((denominator) =>
+    Array.isArray(denominator)
+  );
+  const isStatisticsSignificant = (isNested
+    ? denominators
+    : [denominators]
+  ).every((denominator) =>
+    isDenominatorStatisticallySignificant(denominator[index])
+  );
+
+  if (isStatisticsSignificant) {
     return "";
   }
   return "* indicates the group is too small to make generalizations";
 }
 
-function tooltipForFooterWithNestedCounts([{ index }], denominatorCounts) {
-  const isStatisticsImplicit = denominatorCounts.some(
-    (denominators) =>
-      !isDenominatorStatisticallySignificant(denominators[index])
-  );
-
-  if (isStatisticsImplicit) {
-    return "* indicates the group is too small to make generalizations";
-  }
-  return "";
-}
-
-/**
- * A hacky function to regenerate legend labels with custom colors.
- * If a chart bar is not statistically significant we should change its color/pattern (i.e. add line shading).
- * But labels/legends were generated ahead of time so the chart needs to be told to re-render them.
- */
-function generateLabelsWithCustomColors(chart, colors) {
-  return Chart.defaults.global.legend.labels
-    .generateLabels(chart)
-    .map((label, i) => ({ ...label, fillStyle: colors[i] }));
-}
-
 export {
-  generateLabelsWithCustomColors,
   getBarBackgroundColor,
   isDenominatorStatisticallySignificant,
   isDenominatorsMatrixStatisticallySignificant,
   tooltipForFooterWithCounts,
-  tooltipForFooterWithNestedCounts,
 };
