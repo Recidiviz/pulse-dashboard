@@ -279,6 +279,7 @@ describe("applyTopLevelFilters", () => {
       });
     });
 
+    // TODO: #610
     // temporarily we will be accepting either SEX_OFFENSE or SEX_OFFENDER
     // in the charge_category field. Once the BE transition to SEX_OFFENSE
     // has been made, we will revert this to the single value
