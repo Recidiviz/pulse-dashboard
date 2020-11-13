@@ -48,6 +48,7 @@ import {
 import { filterOptimizedDataFormat } from "../../../../utils/charts/dataFilters";
 import { filtersPropTypes } from "../../propTypes";
 import { translate } from "../../../../views/tenants/utils/i18nSettings";
+import "./RevocationMatrix.scss";
 
 const TITLE =
   "Admissions by violation history (in year prior to their last reported violation)";
@@ -146,7 +147,7 @@ const RevocationMatrix = ({
 
   return (
     <div className="RevocationMatrix">
-      <h4>
+      <h4 className="RevocationMatrix__title">
         {TITLE}
         <ExportMenu
           chartId="revocationMatrix"
@@ -158,22 +159,36 @@ const RevocationMatrix = ({
           filters={filterStates}
         />
       </h4>
-      <h6>{timeDescription}</h6>
-      <div className="x-label pY-30"># of {translate("violationReports")}</div>
-      <div className="matrix-content">
-        <div id="revocationMatrix" className="d-f matrix-chart-container">
-          <div className="y-label" data-html2canvas-ignore>
+      <h6 className="RevocationMatrix__dates">{timeDescription}</h6>
+      <div className="RevocationMatrix__x-label">
+        # of {translate("violationReports")}
+      </div>
+      <div className="RevocationMatrix__content">
+        <div
+          id="revocationMatrix"
+          className="RevocationMatrix__chart-container"
+        >
+          <div className="RevocationMatrix__y-label" data-html2canvas-ignore>
             Most severe violation reported
           </div>
-          <div className={cx("matrix fs-block", { "is-filtered": isFiltered })}>
-            <div className="violation-counts">
-              <span className="empty-cell" />
+          <div
+            className={cx("RevocationMatrix__matrix", {
+              "RevocationMatrix__matrix--is-filtered": isFiltered,
+            })}
+          >
+            <div className="RevocationMatrix__violation-counts">
+              <span className="RevocationMatrix__empty-cell" />
               {VIOLATION_COUNTS.map((count, i) => (
-                <span key={i} className="violation-column">
+                <span key={i} className="RevocationMatrix__violation-column">
                   {violationCountLabel(count)}
                 </span>
               ))}
-              <span className="violation-sum-column top-right-total">
+              <span
+                className={cx(
+                  "RevocationMatrix__violation-sum-column",
+                  "RevocationMatrix__top-right-total"
+                )}
+              >
                 Total
               </span>
             </div>
@@ -202,15 +217,27 @@ const RevocationMatrix = ({
               </RevocationMatrixRow>
             ))}
 
-            <div className="violation-sum-row">
-              <span className="empty-cell" />
+            <div className="RevocationMatrix__violation-sum-row">
+              <span className="RevocationMatrix__empty-cell" />
               {VIOLATION_COUNTS.map((count, i) => (
-                <span key={i} className="violation-column violation-sum">
+                <span
+                  key={i}
+                  className={cx(
+                    "RevocationMatrix__violation-column",
+                    "RevocationMatrix__violation-sum"
+                  )}
+                >
                   {reportedViolationsSum(count)}
                 </span>
               ))}
 
-              <span className="violation-sum-column violation-sum bottom-right-total">
+              <span
+                className={cx(
+                  "RevocationMatrix__violation-sum-column",
+                  "RevocationMatrix__violation-sum",
+                  "RevocationMatrix__bottom-right-total"
+                )}
+              >
                 {violationsSum}
               </span>
             </div>

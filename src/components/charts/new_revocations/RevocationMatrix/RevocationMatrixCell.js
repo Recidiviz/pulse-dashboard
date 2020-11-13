@@ -49,11 +49,13 @@ const RevocationMatrixCell = ({ count, maxCount, isSelected, onClick }) => {
   };
 
   return (
-    <div className="RevocationMatrix__cell cell">
+    <div className="RevocationMatrix__cell">
       <div style={containerStyle}>
         <button
           type="button"
-          className={cx("total-revocations", { "is-selected": isSelected })}
+          className={cx("RevocationMatrix__total-revocations", {
+            "is-selected": isSelected,
+          })}
           onClick={onClick}
           style={cellStyle}
         >

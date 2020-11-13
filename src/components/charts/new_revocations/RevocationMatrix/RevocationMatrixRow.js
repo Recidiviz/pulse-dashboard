@@ -30,17 +30,28 @@ const RevocationMatrixRow = ({
 }) => {
   return (
     <div
-      className={cx("RevocationMatrix__row", "violation-row", {
-        "is-selected": isSelected,
+      className={cx("RevocationMatrix__row", {
+        "RevocationMatrix__row--is-selected": isSelected,
       })}
     >
-      <div className="violation-type-label">
-        <button type="button" onClick={onClick}>
+      <div className="RevocationMatrix__violation-type-label">
+        <button
+          className="RevocationMatrix__violation-type-button"
+          type="button"
+          onClick={onClick}
+        >
           {matrixViolationTypeToLabel[violationType]}
         </button>
       </div>
       {children}
-      <span className="violation-sum violation-sum-column">{sum}</span>
+      <span
+        className={cx(
+          "RevocationMatrix__violation-sum",
+          "RevocationMatrix__violation-sum-column"
+        )}
+      >
+        {sum}
+      </span>
     </div>
   );
 };

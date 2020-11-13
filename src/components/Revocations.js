@@ -60,6 +60,8 @@ import {
   VIOLATION_TYPE,
 } from "../constants/filterTypes";
 
+import "./Revocations.scss";
+
 const Revocations = () => {
   const { user } = useAuth0();
   const { currentStateCode: stateCode } = useStateCode();
@@ -105,7 +107,7 @@ const Revocations = () => {
   );
 
   return (
-    <main className="dashboard bgc-grey-100">
+    <main className="Revocations">
       <Sticky style={{ zIndex: 700, top: 65 }}>
         <>
           <div className="top-level-filters d-f">
@@ -180,7 +182,7 @@ const Revocations = () => {
         </ErrorBoundary>
       </div>
       <div className="d-f m-20 container-all-charts">
-        <div className="matrix-container bgc-white p-20 mR-20">
+        <div className="Revocations__matrix">
           <ErrorBoundary>
             <RevocationMatrix
               dataFilter={matchesTopLevelFilters({
