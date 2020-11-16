@@ -15,7 +15,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { compareViolationRecords } from "./utils/compareViolationRecords";
 import { nameFromOfficerId } from "./utils/helpers";
 
@@ -74,62 +74,64 @@ function compareOfficerRecomendations(a, b) {
   return 0;
 }
 
+function getNextOrder(order) {
+  switch (order) {
+    case "asc":
+      return "desc";
+    case "desc":
+      return null;
+    default:
+      return "asc";
+  }
+}
+
 function useSort() {
-  const [sort, setSort] = useState({});
-
-  function getOrder(field) {
-    return sort.field === field ? sort.order : null;
-  }
-
-  function getNextOrder(order) {
-    switch (order) {
-      case "asc":
-        return "desc";
-      case "desc":
-        return null;
-      default:
-        return "asc";
-    }
-  }
+  const [sort, setSort] = useState({
+    field: null,
+    order: null,
+  });
 
   function toggleOrder(field) {
     if (sort.field === field) {
       const order = getNextOrder(sort.order);
-      if (!order) {
-        setSort({});
+      if (order) {
+        setSort({ field, order });
       } else {
-        setSort({ ...sort, order });
+        setSort({ field: null, order: null });
       }
     } else {
       setSort({ field, order: "asc" });
     }
   }
 
-  function comparator(a1, b1) {
-    const [a2, b2] = sort.order === "desc" ? [b1, a1] : [a1, b1];
+  const comparator = useCallback(
+    (a1, b1) => {
+      const [a2, b2] = sort.order === "desc" ? [b1, a1] : [a1, b1];
 
-    const fieldComparator = {
-      state_id: comparePersonExternalIds,
-      district: compareDistricts,
-      officer: compareOfficers,
-      risk_level: compareRiskLevel,
-      officer_recommendation: compareOfficerRecomendations,
-      violation_record: compareViolationRecords,
-    }[sort.field];
+      const fieldComparator = {
+        state_id: comparePersonExternalIds,
+        district: compareDistricts,
+        officer: compareOfficers,
+        risk_level: compareRiskLevel,
+        officer_recommendation: compareOfficerRecomendations,
+        violation_record: compareViolationRecords,
+      }[sort.field];
 
-    return (
-      (fieldComparator && fieldComparator(a2[sort.field], b2[sort.field])) ||
-      // default sorts
-      compareDistricts(a2.district, b2.district) ||
-      compareOfficers(a2.officer, b2.officer) ||
-      comparePersonExternalIds(a2.state_id, b2.state_id) ||
-      0
-    );
-  }
+      return (
+        (fieldComparator && fieldComparator(a2[sort.field], b2[sort.field])) ||
+        // default sorts
+        compareDistricts(a2.district, b2.district) ||
+        compareOfficers(a2.officer, b2.officer) ||
+        comparePersonExternalIds(a2.state_id, b2.state_id) ||
+        0
+      );
+    },
+    [sort.order, sort.field]
+  );
 
   return {
+    sortOrder: sort.order,
     comparator,
-    getOrder,
     toggleOrder,
   };
 }
