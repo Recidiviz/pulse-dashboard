@@ -17,7 +17,6 @@
 
 import pattern from "patternomaly";
 import pipe from "lodash/fp/pipe";
-import filter from "lodash/fp/filter";
 import groupBy from "lodash/fp/groupBy";
 import values from "lodash/fp/values";
 import map from "lodash/fp/map";
@@ -40,7 +39,6 @@ const generatePercentChartData = (apiData, currentDistricts, mode) => {
       : ["supervision_count", "total_supervision_count"];
 
   const filteredData = pipe(
-    filter((item) => item.district !== "ALL"),
     groupBy("officer"),
     values,
     map((dataset) => ({
@@ -98,7 +96,6 @@ const generatePercentChartData = (apiData, currentDistricts, mode) => {
 
 const generateCountChartData = (apiData) => {
   const transformedData = pipe(
-    filter((item) => item.district !== "ALL"),
     groupBy("officer"),
     values,
     map((dataset) => ({
