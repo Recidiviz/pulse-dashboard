@@ -29,7 +29,7 @@ describe("test for component CaseTablePaging", () => {
         beginning={0}
         end={15}
         total={1000}
-        onUpdatePage={updatePage}
+        createUpdatePage={updatePage}
       />
     );
 

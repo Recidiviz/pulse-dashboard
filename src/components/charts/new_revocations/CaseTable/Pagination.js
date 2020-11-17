@@ -18,28 +18,24 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-const Pagination = ({ beginning, end, total, onUpdatePage }) => {
-  const arrowLeft = beginning !== 0 && (
-    <button type="button" onClick={() => onUpdatePage(-1)}>
-      &#10094;
-    </button>
-  );
-
-  const arrowRight = end < total && (
-    <button type="button" onClick={() => onUpdatePage(1)}>
-      &#10095;
-    </button>
-  );
-
+const Pagination = ({ beginning, end, total, createUpdatePage }) => {
   const start = beginning + 1;
 
   const range = start !== end ? `${start}-${end}` : beginning + 1;
 
   return (
     <div className="Pagination fs-block">
-      {arrowLeft}
+      {beginning !== 0 && (
+        <button type="button" onClick={createUpdatePage(-1)}>
+          &#10094;
+        </button>
+      )}
       <span>{`Showing ${range} of ${total}`}</span>
-      {arrowRight}
+      {end < total && (
+        <button type="button" onClick={createUpdatePage(1)}>
+          &#10095;
+        </button>
+      )}
     </div>
   );
 };
@@ -48,7 +44,7 @@ Pagination.propTypes = {
   beginning: PropTypes.number.isRequired,
   end: PropTypes.number.isRequired,
   total: PropTypes.number.isRequired,
-  onUpdatePage: PropTypes.func.isRequired,
+  createUpdatePage: PropTypes.func.isRequired,
 };
 
 export default Pagination;
