@@ -1,0 +1,152 @@
+.Matrix {
+  &__x-label {
+    padding-top: 30px;
+    padding-bottom: 30px;
+    text-align: center;
+    margin-top: 20px;
+  }
+
+  &__chart-container {
+    display: flex;
+    @media screen and (max-width: 1350px) {
+      width: 910px;
+      overflow-x: auto;
+      overflow-y: hidden;
+    }
+  }
+
+  &__y-label {
+    text-align: center;
+    margin-right: 40px;
+    writing-mode: tb-rl;
+    transform: rotate(-180deg);
+    flex-shrink: 0;
+  }
+
+  &__matrix {
+    flex-grow: 1;
+  }
+
+  &__violation-counts {
+    margin-bottom: 20px;
+  }
+
+  &__row {
+    position: relative;
+    line-height: 70px;
+    height: 70px;
+  }
+
+  &__empty-cell {
+    display: inline-block;
+    width: 125px;
+    margin-right: 20px;
+  }
+
+  &__violation-type-label {
+    text-align: right;
+    display: inline-block;
+    width: 125px;
+    margin-right: 20px;
+  }
+
+  &__violation-type-button {
+    background: white;
+    border-radius: 12px;
+    padding: 0 12px;
+    border: 1px solid rgb(1, 85, 131);
+    color: rgb(1, 85, 131);
+    line-height: 24px;
+    font-size: 12px;
+    font-weight: 600;
+    white-space: nowrap;
+    &:focus {
+      outline: none;
+    }
+
+    .Matrix__row--is-selected & {
+      background: rgb(1, 85, 131);
+      color: white;
+    }
+  }
+
+  &__total-revocations {
+    background: transparent;
+    border: 0;
+    padding: 0;
+    font-weight: 600;
+    .Matrix__matrix--is-filtered & {
+      opacity: 0.2;
+      &.is-selected {
+        opacity: 1;
+      }
+    }
+
+    .Matrix__matrix--is-filtered .Matrix__row--is-selected & {
+      opacity: 1;
+    }
+  }
+
+  &__cell {
+    position: relative;
+    &:before {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 0;
+      width: 1px;
+      background-color: #e6ecf5;
+      height: 100%;
+    }
+    &:after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 0;
+      height: 1px;
+      width: 100%;
+      background-color: #e6ecf5;
+    }
+  }
+
+  &__cell,
+  &__violation-column {
+    display: inline-block;
+    width: 10%;
+    text-align: center;
+    @media screen and (max-width: 1868px) {
+      width: 9%;
+    }
+    @media screen and (max-width: 1420px) {
+      width: 8%;
+    }
+    @media screen and (max-width: 1350px) {
+      width: 9%;
+    }
+  }
+
+  &__violation-sum-row {
+    margin-top: 10px;
+  }
+
+  &__violation-sum-column {
+    margin-left: 20px;
+  }
+
+  &__top-right-total {
+    color: #b9c2d0;
+    font-size: 14px;
+    font-weight: 600;
+    font-style: italic;
+  }
+
+  &__violation-sum {
+    color: #015583;
+    font-size: 16px;
+    font-weight: 600;
+  }
+
+  &__bottom-right-total {
+    font-weight: 900;
+  }
+}
