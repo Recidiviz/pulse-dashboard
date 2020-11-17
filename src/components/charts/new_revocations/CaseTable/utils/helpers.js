@@ -48,24 +48,24 @@ export function nameFromOfficerId(officerId) {
 }
 
 export const formatData = (data) => {
-  return data.map((record) => {
-    return {
-      state_id: nullSafeLabel(record.state_id),
-      district: nullSafeLabel(record.district),
-      officer: nullSafeLabel(nameFromOfficerId(record.officer)),
-      risk_level: nullSafeLabel(translate("riskLevelsMap")[record.risk_level]),
-      officer_recommendation: nullSafeLabel(
-        normalizeOfficerRecommendation(record.officer_recommendation)
-      ),
-      violation_record: nullSafeLabel(
-        parseAndFormatViolationRecord(record.violation_record)
-      ),
-    };
-  });
+  return data.map((record) => ({
+    state_id: nullSafeLabel(record.state_id),
+    district: nullSafeLabel(record.district),
+    officer: nullSafeLabel(nameFromOfficerId(record.officer)),
+    risk_level: nullSafeLabel(translate("riskLevelsMap")[record.risk_level]),
+    officer_recommendation: nullSafeLabel(
+      normalizeOfficerRecommendation(record.officer_recommendation)
+    ),
+    violation_record: nullSafeLabel(
+      parseAndFormatViolationRecord(record.violation_record)
+    ),
+    // Added because this is the only unique field in fake data
+    admissionType: nullSafeLabel(record.admission_type),
+  }));
 };
 
 export const formatExportData = (data) => {
-  return (formatData(data) || []).map((record) => ({
+  return (formatData(data) || []).map(({ admissionType, ...record }) => ({
     data: Object.values(record),
   }));
 };
