@@ -31,8 +31,8 @@ import DistrictFilter from "./charts/new_revocations/ToggleBar/DistrictFilter";
 import AdmissionTypeFilter from "./charts/new_revocations/ToggleBar/AdmissionTypeFilter";
 import ViolationFilter from "./charts/new_revocations/ToggleBar/ViolationFilter";
 import RevocationCountOverTime from "./charts/new_revocations/RevocationsOverTime";
-import RevocationMatrix from "./charts/new_revocations/RevocationMatrix/RevocationMatrix";
-import RevocationMatrixExplanation from "./charts/new_revocations/RevocationMatrix/RevocationMatrixExplanation";
+import Matrix from "./charts/new_revocations/Matrix";
+import MatrixExplanation from "./charts/new_revocations/Matrix/MatrixExplanation";
 import RevocationCharts from "./charts/new_revocations/RevocationCharts";
 import RevocationsByRiskLevel from "./charts/new_revocations/RevocationsByRiskLevel/RevocationsByRiskLevel";
 import RevocationsByViolation from "./charts/new_revocations/RevocationsByViolation";
@@ -184,7 +184,7 @@ const Revocations = () => {
       <div className="d-f m-20 container-all-charts">
         <div className="Revocations__matrix">
           <ErrorBoundary>
-            <RevocationMatrix
+            <Matrix
               dataFilter={matchesTopLevelFilters({
                 filters: transformedFilters,
               })}
@@ -196,7 +196,7 @@ const Revocations = () => {
             />
           </ErrorBoundary>
         </div>
-        <RevocationMatrixExplanation />
+        <MatrixExplanation />
       </div>
 
       <RevocationCharts

@@ -21,22 +21,16 @@ import cx from "classnames";
 
 import { matrixViolationTypeToLabel } from "../../../../utils/transforms/labels";
 
-const RevocationMatrixRow = ({
-  children,
-  violationType,
-  isSelected,
-  sum,
-  onClick,
-}) => {
+const MatrixRow = ({ children, violationType, isSelected, sum, onClick }) => {
   return (
     <div
-      className={cx("RevocationMatrix__row", {
-        "RevocationMatrix__row--is-selected": isSelected,
+      className={cx("Matrix__row", {
+        "Matrix__row--is-selected": isSelected,
       })}
     >
-      <div className="RevocationMatrix__violation-type-label">
+      <div className="Matrix__violation-type-label">
         <button
-          className="RevocationMatrix__violation-type-button"
+          className="Matrix__violation-type-button"
           type="button"
           onClick={onClick}
         >
@@ -45,10 +39,7 @@ const RevocationMatrixRow = ({
       </div>
       {children}
       <span
-        className={cx(
-          "RevocationMatrix__violation-sum",
-          "RevocationMatrix__violation-sum-column"
-        )}
+        className={cx("Matrix__violation-sum", "Matrix__violation-sum-column")}
       >
         {sum}
       </span>
@@ -56,7 +47,7 @@ const RevocationMatrixRow = ({
   );
 };
 
-RevocationMatrixRow.propTypes = {
+MatrixRow.propTypes = {
   children: PropTypes.arrayOf(PropTypes.node).isRequired,
   violationType: PropTypes.string.isRequired,
   sum: PropTypes.number.isRequired,
@@ -64,4 +55,4 @@ RevocationMatrixRow.propTypes = {
   onClick: PropTypes.func.isRequired,
 };
 
-export default RevocationMatrixRow;
+export default MatrixRow;
