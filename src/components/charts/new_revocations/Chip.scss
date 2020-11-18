@@ -2,7 +2,8 @@
   $color1: #235781;
   $color2: white;
 
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
   height: 32px;
   border: 1px solid $color1;
   background-color: $color2;
@@ -11,6 +12,7 @@
   margin-right: 10px;
   width: auto;
   vertical-align: middle;
+  line-height: 1;
 
   &--selected {
     background-color: $color1;
@@ -52,7 +54,7 @@
     background: transparent;
     color: $color1;
     vertical-align: middle;
-    line-height: 21px;
+    line-height: 1;
 
     .Chip--selected & {
       color: $color2;
@@ -60,7 +62,6 @@
 
     .Chip--shrinking & {
       margin-top: 0;
-      line-height: 18px;
     }
   }
 }
