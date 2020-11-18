@@ -265,25 +265,17 @@ const SupervisionSuccessSnapshot = ({
     />
   );
 
-  const exportedStructureCallback = function exportedStructureCallback() {
-    return {
-      metric: "Percentage of successful completion of supervision",
-      series: [],
-    };
-  };
-
   useEffect(() => {
-    configureDownloadButtons(
+    configureDownloadButtons({
       chartId,
-      "SUCCESSFUL COMPLETION OF SUPERVISION",
-      chart.props.data.datasets,
-      chart.props.data.labels,
-      document.getElementById(chartId),
-      exportedStructureCallback,
-      { metricType, metricPeriodMonths, supervisionType, district },
-      true,
-      true
-    );
+      chartTitle: "SUCCESSFUL COMPLETION OF SUPERVISION",
+      chartDatasets: chart.props.data.datasets,
+      chartLabels: chart.props.data.labels,
+      chartBox: document.getElementById(chartId),
+      filters: { metricType, metricPeriodMonths, supervisionType, district },
+      convertValuesToNumbers: true,
+      handleTimeStringLabels: true,
+    });
   }, [
     metricType,
     metricPeriodMonths,

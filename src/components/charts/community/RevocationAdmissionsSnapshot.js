@@ -281,25 +281,17 @@ const RevocationAdmissionsSnapshot = ({
     />
   );
 
-  const exportedStructureCallback = function exportedStructureCallback() {
-    return {
-      metric: "Percentage of admissions from revocations",
-      series: [],
-    };
-  };
-
   useEffect(() => {
-    configureDownloadButtons(
+    configureDownloadButtons({
       chartId,
-      "PRISON ADMISSIONS DUE TO REVOCATION",
-      chart.props.data.datasets,
-      chart.props.data.labels,
-      document.getElementById(chartId),
-      exportedStructureCallback,
-      toggles,
-      true,
-      true
-    );
+      chartTitle: "PRISON ADMISSIONS DUE TO REVOCATION",
+      chartDatasets: chart.props.data.datasets,
+      chartLabels: chart.props.data.labels,
+      chartBox: document.getElementById(chartId),
+      filters: toggles,
+      convertValuesToNumbers: true,
+      handleTimeStringLabels: true,
+    });
   }, [
     metricType,
     metricPeriodMonths,

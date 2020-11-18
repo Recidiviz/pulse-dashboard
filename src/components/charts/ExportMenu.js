@@ -45,11 +45,6 @@ const ExportMenu = ({
   const [isModalOpened, setIsModalOpened] = useState(false);
   const additionalInfo = translate("methodology")[chartId] || [];
 
-  const exportedStructureCallback = () => ({
-    metric: metricTitle,
-    series: [],
-  });
-
   const toggleModal = useCallback(() => {
     setIsModalOpened(!isModalOpened);
   }, [isModalOpened]);
@@ -80,18 +75,13 @@ const ExportMenu = ({
             <Dropdown.Item
               as="button"
               onClick={() =>
-                downloadChartAsImage(
+                downloadChartAsImage({
                   chartId,
-                  metricTitle,
-                  chart.props.data.datasets,
-                  chart.props.data.labels,
-                  exportedStructureCallback,
+                  chartTitle: metricTitle,
                   filters,
-                  undefined,
-                  undefined,
                   timeWindowDescription,
-                  true
-                )
+                  shouldZipDownload: true,
+                })
               }
             >
               Export image
@@ -101,18 +91,15 @@ const ExportMenu = ({
             <Dropdown.Item
               as="button"
               onClick={() =>
-                downloadChartAsData(
+                downloadChartAsData({
                   chartId,
-                  metricTitle,
-                  chart.props.data.datasets,
-                  chart.props.data.labels,
-                  exportedStructureCallback,
+                  chartTitle: metricTitle,
+                  chartDatasets: chart.props.data.datasets,
+                  chartLabels: chart.props.data.labels,
                   filters,
-                  undefined,
-                  undefined,
                   timeWindowDescription,
-                  true
-                )
+                  shouldZipDownload: true,
+                })
               }
             >
               Export data
@@ -122,18 +109,13 @@ const ExportMenu = ({
             <Dropdown.Item
               as="button"
               onClick={() =>
-                downloadHtmlElementAsImage(
+                downloadHtmlElementAsImage({
                   chartId,
-                  metricTitle,
-                  elementDatasets,
-                  elementLabels,
-                  exportedStructureCallback,
+                  chartTitle: metricTitle,
                   filters,
-                  undefined,
-                  undefined,
                   timeWindowDescription,
-                  true
-                )
+                  shouldZipDownload: true,
+                })
               }
             >
               Export image
@@ -143,18 +125,15 @@ const ExportMenu = ({
             <Dropdown.Item
               as="button"
               onClick={() =>
-                downloadHtmlElementAsData(
+                downloadHtmlElementAsData({
                   chartId,
-                  metricTitle,
-                  elementDatasets,
-                  elementLabels,
-                  exportedStructureCallback,
+                  chartTitle: metricTitle,
+                  chartDatasets: elementDatasets,
+                  chartLabels: elementLabels,
                   filters,
-                  undefined,
-                  undefined,
                   timeWindowDescription,
-                  true
-                )
+                  shouldZipDownload: true,
+                })
               }
             >
               Export data
@@ -164,19 +143,16 @@ const ExportMenu = ({
             <Dropdown.Item
               as="button"
               onClick={() =>
-                downloadHtmlElementAsData(
+                downloadHtmlElementAsData({
                   chartId,
-                  metricTitle,
-                  tableData,
-                  tableLabels,
-                  exportedStructureCallback,
+                  chartTitle: metricTitle,
+                  chartDatasets: tableData,
+                  chartLabels: tableLabels,
                   filters,
-                  undefined,
-                  undefined,
                   timeWindowDescription,
-                  true,
-                  isTable
-                )
+                  shouldZipDownload: true,
+                  isTable,
+                })
               }
             >
               Export data

@@ -163,21 +163,15 @@ const ReincarcerationRateByStayLength = ({
     />
   );
 
-  const exportedStructureCallback = () => ({
-    metric: "Reincarcerations by previous stay length",
-    series: [],
-  });
-
   useEffect(() => {
-    configureDownloadButtons(
+    configureDownloadButtons({
       chartId,
-      "REINCARCERATIONS BY PREVIOUS STAY LENGTH",
-      chart.props.data.datasets,
-      chart.props.data.labels,
-      document.getElementById(chartId),
-      exportedStructureCallback,
-      { district, metricType }
-    );
+      chartTitle: "REINCARCERATIONS BY PREVIOUS STAY LENGTH",
+      chartDatasets: chart.props.data.datasets,
+      chartLabels: chart.props.data.labels,
+      chartBox: document.getElementById(chartId),
+      filters: { district, metricType },
+    });
   }, [
     chart.props.data.datasets,
     chart.props.data.labels,

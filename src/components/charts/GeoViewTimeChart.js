@@ -290,11 +290,6 @@ class GeoViewTimeChart extends Component {
   }
 
   reconfigureExports() {
-    const exportedStructureCallback = () => ({
-      metric: "Events by P&P office",
-      series: [],
-    });
-
     const dataPointsByOffice = [];
     const officeNames = [];
     this.chartDataPoints.forEach((data) => {
@@ -323,15 +318,14 @@ class GeoViewTimeChart extends Component {
       },
     ];
 
-    configureDownloadButtons(
-      this.props.chartId,
-      this.props.chartTitle,
-      downloadableDataFormat,
-      officeNames,
-      document.getElementById(this.props.chartId),
-      exportedStructureCallback,
-      this.props
-    );
+    configureDownloadButtons({
+      chartId: this.props.chartId,
+      chartTitle: this.props.chartTitle,
+      chartDatasets: downloadableDataFormat,
+      chartLabels: officeNames,
+      chartBox: document.getElementById(this.props.chartId),
+      filters: this.props,
+    });
   }
 
   initializeMaxValues() {

@@ -300,21 +300,15 @@ const FtrReferralsByAge = ({
     activeChart = ratesChart;
   }
 
-  const exportedStructureCallback = () => ({
-    metric: "FTR Referrals by Age",
-    series: [],
-  });
-
   useEffect(() => {
-    configureDownloadButtons(
+    configureDownloadButtons({
       chartId,
-      "FTR REFERRALS BY AGE",
-      activeChart.props.data.datasets,
-      activeChart.props.data.labels,
-      document.getElementById(chartId),
-      exportedStructureCallback,
-      { supervisionType, district, metricPeriodMonths, metricType }
-    );
+      chartTitle: "FTR REFERRALS BY AGE",
+      chartDatasets: activeChart.props.data.datasets,
+      chartLabels: activeChart.props.data.labels,
+      chartBox: document.getElementById(chartId),
+      filters: { supervisionType, district, metricPeriodMonths, metricType },
+    });
   }, [
     supervisionType,
     district,

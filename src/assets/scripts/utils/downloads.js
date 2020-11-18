@@ -16,7 +16,7 @@
 // =============================================================================
 
 import downloadjs from "downloadjs";
-import * as csvExport from "jsonexport/dist";
+import csvExport from "jsonexport";
 import moment from "moment";
 import JSZip from "jszip";
 
@@ -30,35 +30,28 @@ import getViolation from "./getViolation";
 const isIE = /* @cc_on!@ */ false || !!document.documentMode;
 const isEdge = !isIE && !!window.StyleMedia;
 
-function configureFilename(chartId, toggleStates, shouldZipDownload) {
+function configureFilename(chartId, filters, shouldZipDownload) {
   let filename = `${chartId}-${timeStamp()}`;
   if (shouldZipDownload) {
     return filename;
   }
 
-  if (toggleStates.metricType !== undefined) {
-    filename = filename.concat("-", toggleStates.metricType);
+  if (filters.metricType) {
+    filename += `-${filters.metricType}`;
   }
-  if (toggleStates.metricPeriodMonths) {
-    filename = filename.concat("-", toggleStates.metricPeriodMonths);
+  if (filters.metricPeriodMonths) {
+    filename += `-${filters.metricPeriodMonths}`;
   }
-  if (toggleStates.supervisionType) {
-    filename = filename.concat("-", toggleStates.supervisionType);
+  if (filters.supervisionType) {
+    filename += `-${filters.supervisionType}`;
   }
-  if (toggleStates.district) {
-    filename = filename.concat("-", toggleStates.district);
+  if (filters.district) {
+    filename += `-${filters.district}`;
   }
   return filename;
 }
 
-// eslint-disable-next-line consistent-return
-function downloadCanvasImage(
-  canvas,
-  filename,
-  chartTitle,
-  toggleStates,
-  shouldZipDownload
-) {
+export function transformCanvasToBase64(canvas, chartTitle, filters) {
   const topPadding = 120;
   const temporaryCanvas = document.createElement("canvas");
   temporaryCanvas.width = canvas.width;
@@ -73,50 +66,42 @@ function downloadCanvasImage(
   destinationCtx.font = "30px Helvetica Neue";
   destinationCtx.fillText(chartTitle, canvas.width / 2, 50);
 
-  if (toggleStates) {
+  if (filters) {
     destinationCtx.fillStyle = "#B8B8B8";
     destinationCtx.textAlign = "center";
     destinationCtx.font = "16px Helvetica Neue";
     destinationCtx.fillText(
-      `Applied filters: ${getFilters(toggleStates)}`,
+      `Applied filters: ${getFilters(filters)}`,
       canvas.width / 2,
       topPadding - 40
     );
     destinationCtx.fillText(
-      getViolation(toggleStates),
+      getViolation(filters),
       canvas.width / 2,
       topPadding - 20
     );
   }
   destinationCtx.drawImage(canvas, 0, topPadding);
 
-  const data = temporaryCanvas.toDataURL("image/png;base64");
-  if (shouldZipDownload) {
-    return {
-      name: filename,
-      data: data.substring(22),
-      type: "base64",
-    };
-  }
-  downloadjs(data, filename, "image/png;base64");
+  return temporaryCanvas.toDataURL("image/png;base64");
 }
 
-function downloadMethodologyFile(
+function createMethodologyFile(
   chartId,
   chartTitle,
   timeWindowDescription,
-  toggleStates
+  filters
 ) {
   const filename = "methodology.txt";
   const infoChart = translate("methodology")[chartId] || [];
   const exportDate = moment().format("M/D/YYYY");
-  const filters = getFilters(toggleStates);
-  const violation = getViolation(toggleStates);
+  const filtersText = getFilters(filters);
+  const violation = getViolation(filters);
 
   let text = `Chart: ${chartTitle}\r\n`;
   text += `Dates: ${timeWindowDescription}\r\n`;
   text += `Applied filters:\r\n`;
-  text += `- ${filters}\r\n`;
+  text += `- ${filtersText}\r\n`;
 
   if (violation) {
     text += `- ${violation}\r\n`;
@@ -154,204 +139,192 @@ function downloadZipFile(files, zipFilename) {
   });
 }
 
-function downloadObjectAsCsv(exportObj, exportName, shouldZipDownload) {
-  const options = {
-    mapHeaders: (header) => header.replace(/label|values./, ""),
-  };
-  const obj = [];
-
-  csvExport(exportObj.series, options, (err, csv) => {
-    if (err) throw err;
-    const filename = `${exportName}.csv`;
-
-    if ((isIE || isEdge) && !shouldZipDownload) {
-      // User is on Windows
-      const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
-      navigator.msSaveBlob(blob, filename);
-    } else {
-      // User is not on Windows
-      const encodedCsv = encodeURIComponent(csv);
-      const dataStr = `data:text/csv;charset=utf-8,${encodedCsv}`;
-      obj.name = filename;
-      obj.data = csv;
-      obj.type = "binary";
-      if (!shouldZipDownload) {
-        downloadjs(dataStr, filename, "text/csv");
-      }
-    }
-  });
-
-  // We don't need to worry about Windows or not here,
-  // because the downstream zip download works across browsers
-  return obj;
-}
-
-function configureDataDownloadButton(
-  chartId,
-  chartDatasets,
-  chartLabels,
-  exportedStructureCallback,
-  toggleStates,
+export async function transformChartDataToCsv(
+  datasets,
+  labels,
   convertValuesToNumbers,
-  handleTimeStringLabels,
-  chartTitle,
-  timeWindowDescription,
-  shouldZipDownload,
   isTable
 ) {
-  return function downloadChartData() {
-    const exportData = exportedStructureCallback();
+  const datasetsWithoutTrendLine = datasets.filter(
+    (dataset) => dataset.label !== "trendline"
+  );
 
-    chartDatasets.forEach((dataset) => {
-      if (dataset.label !== "trendline") {
-        const values = {};
-        let i = 0;
-        let currentYear = "";
+  let formattedData;
 
-        dataset.data.forEach((dataPoint) => {
-          let csvLabel = chartLabels[i];
-          if (handleTimeStringLabels) {
-            const currentLabelParts = chartLabels[i].split(" ");
-            if (currentLabelParts.length > 1) {
-              // eslint-disable-next-line prefer-destructuring
-              currentYear = currentLabelParts[1];
-            }
-            if (currentLabelParts.length === 1 && currentYear.length > 1) {
-              csvLabel = `${csvLabel} ${currentYear}`;
-            }
-          }
+  if (!isTable && labels.length > datasetsWithoutTrendLine.length) {
+    formattedData = labels.map((label, index) => {
+      const dataPoints = datasetsWithoutTrendLine.reduce((acc, dataset) => {
+        let dataPoint = dataset.data[index];
 
-          if (
-            (convertValuesToNumbers === undefined || convertValuesToNumbers) &&
-            !Number.isNaN(Number(dataPoint))
-          ) {
-            values[csvLabel] = Number(dataPoint);
-          } else {
-            values[csvLabel] = dataPoint;
-          }
-          i += 1;
-        });
-
-        const obj = {};
-        if (!isTable) {
-          obj.label = dataset.label;
+        if (convertValuesToNumbers && !Number.isNaN(Number(dataPoint))) {
+          dataPoint = Number(dataPoint);
         }
-        obj.values = values;
-        exportData.series.push(obj);
-      }
+
+        return { ...acc, [dataset.label]: dataPoint };
+      }, {});
+
+      return {
+        dimension: label,
+        ...dataPoints,
+      };
     });
-
-    const filename = configureFilename(
-      chartId,
-      toggleStates,
-      shouldZipDownload
-    );
-    if (shouldZipDownload) {
-      const methodologyFile = downloadMethodologyFile(
-        chartId,
-        chartTitle,
-        timeWindowDescription,
-        toggleStates
-      );
-      const csvFile = downloadObjectAsCsv(
-        exportData,
-        filename,
-        shouldZipDownload
-      );
-      const files = [methodologyFile, csvFile];
-      downloadZipFile(files, "export_data.zip");
-    } else {
-      downloadObjectAsCsv(exportData, filename);
-    }
-  };
-}
-
-function configureImageDownload(
-  canvas,
-  filename,
-  chartTitle,
-  toggleStates,
-  chartId,
-  timeWindowDescription,
-  shouldZipDownload
-) {
-  if (shouldZipDownload) {
-    const methodologyFile = downloadMethodologyFile(
-      chartId,
-      chartTitle,
-      timeWindowDescription,
-      toggleStates
-    );
-    const imageFile = downloadCanvasImage(
-      canvas,
-      filename,
-      chartTitle,
-      toggleStates,
-      shouldZipDownload
-    );
-    const files = [methodologyFile, imageFile];
-    downloadZipFile(files, "export_image.zip");
   } else {
-    downloadCanvasImage(canvas, filename, chartTitle);
+    formattedData = datasetsWithoutTrendLine.map((dataset) => {
+      return dataset.data.reduce(
+        (acc, dataPoint, index) => ({
+          ...acc,
+          [labels[index]]: dataPoint,
+        }),
+        dataset.label ? { dimension: dataset.label } : {}
+      );
+    });
+  }
+
+  try {
+    return await csvExport(formattedData, {
+      mapHeaders: (header) => header.replace("dimension", ""),
+    });
+  } catch (e) {
+    // eslint-disable-next-line no-console
+    console.log(e);
+    throw e;
   }
 }
 
-function downloadHtmlElementAsImage(
+function configureDataDownloadButton({
   chartId,
-  chartTitle,
   chartDatasets,
   chartLabels,
-  exportedStructureCallback,
-  toggleStates,
+  filters,
   convertValuesToNumbers,
-  handleTimeStringLabels,
+  chartTitle,
   timeWindowDescription,
-  shouldZipDownload
-) {
+  shouldZipDownload,
+  isTable,
+}) {
+  return function downloadChartData() {
+    const filename = configureFilename(chartId, filters, shouldZipDownload);
+    const exportName = `${filename}.csv`;
+
+    transformChartDataToCsv(
+      chartDatasets,
+      chartLabels,
+      convertValuesToNumbers,
+      isTable
+    ).then((csv) => {
+      if (shouldZipDownload) {
+        const methodologyFile = createMethodologyFile(
+          chartId,
+          chartTitle,
+          timeWindowDescription,
+          filters
+        );
+        const files = [
+          methodologyFile,
+          {
+            name: exportName,
+            data: csv,
+            type: "binary",
+          },
+        ];
+
+        downloadZipFile(files, "export_data.zip");
+      } else if (isIE || isEdge) {
+        const blob = new Blob([csv], {
+          type: "text/csv;charset=utf-8;",
+        });
+        navigator.msSaveBlob(blob, exportName);
+      } else {
+        const encodedCsv = encodeURIComponent(csv);
+        const dataStr = `data:text/csv;charset=utf-8,${encodedCsv}`;
+        downloadjs(dataStr, exportName, "text/csv");
+      }
+    });
+  };
+}
+
+function configureImageDownload({
+  canvas,
+  filename,
+  chartTitle,
+  filters,
+  chartId,
+  timeWindowDescription,
+  shouldZipDownload,
+}) {
+  const imageData = transformCanvasToBase64(canvas, chartTitle, filters);
+
+  if (shouldZipDownload) {
+    const methodologyFile = createMethodologyFile(
+      chartId,
+      chartTitle,
+      timeWindowDescription,
+      filters
+    );
+
+    const imageFile = {
+      name: filename,
+      data: imageData.substring(22),
+      type: "base64",
+    };
+
+    const files = [methodologyFile, imageFile];
+
+    downloadZipFile(files, "export_image.zip");
+  } else {
+    downloadjs(imageData, filename, "image/png;base64");
+  }
+}
+
+export function downloadHtmlElementAsImage({
+  chartId,
+  chartTitle,
+  filters,
+  timeWindowDescription,
+  shouldZipDownload,
+}) {
   const element = document.getElementById(chartId);
 
   window.html2canvas(element, {}).then((canvas) => {
-    configureImageDownload(
+    configureImageDownload({
       canvas,
-      `${chartId}-${timeStamp()}.png`,
+      filename: `${chartId}-${timeStamp()}.png`,
       chartTitle,
-      toggleStates,
+      filters,
       chartId,
       timeWindowDescription,
-      shouldZipDownload
-    );
+      shouldZipDownload,
+    });
   });
 }
 
-function configureDownloadButtons(
+export function configureDownloadButtons({
   chartId,
   chartTitle,
   chartDatasets,
   chartLabels,
   chartBox,
-  exportedStructureCallback,
-  toggleStates,
+  filters,
   convertValuesToNumbers,
-  handleTimeStringLabels,
   timeWindowDescription,
-  shouldZipDownload
-) {
-  const filename = configureFilename(chartId, toggleStates, shouldZipDownload);
+  shouldZipDownload,
+}) {
+  const filename = configureFilename(chartId, filters, shouldZipDownload);
   const downloadChartAsImageButton = document.getElementById(
     `downloadChartAsImage-${chartId}`
   );
 
   if (downloadChartAsImageButton) {
     downloadChartAsImageButton.onclick = function downloadChartImage() {
-      configureImageDownload(
-        chartBox || document.getElementById(chartId),
-        `${filename}.png`,
+      configureImageDownload({
+        canvas: chartBox || document.getElementById(chartId),
+        filename: `${filename}.png`,
         chartTitle,
-        toggleStates,
+        filters,
         chartId,
         timeWindowDescription,
-        shouldZipDownload
-      );
+        shouldZipDownload,
+      });
     };
   }
 
@@ -359,18 +332,16 @@ function configureDownloadButtons(
     `downloadChartData-${chartId}`
   );
   if (downloadChartDataButton) {
-    downloadChartDataButton.onclick = configureDataDownloadButton(
+    downloadChartDataButton.onclick = configureDataDownloadButton({
       chartId,
       chartDatasets,
       chartLabels,
-      exportedStructureCallback,
-      toggleStates,
+      filters,
       convertValuesToNumbers,
-      handleTimeStringLabels,
       chartTitle,
       timeWindowDescription,
-      shouldZipDownload
-    );
+      shouldZipDownload,
+    });
   }
 
   const downloadMapAsImageButton = document.getElementById(
@@ -378,108 +349,76 @@ function configureDownloadButtons(
   );
   if (downloadMapAsImageButton) {
     downloadMapAsImageButton.onclick = function downloadMapImage() {
-      downloadHtmlElementAsImage(
+      downloadHtmlElementAsImage({
         chartId,
         chartTitle,
-        chartDatasets,
-        chartLabels,
-        exportedStructureCallback,
-        toggleStates,
-        convertValuesToNumbers,
-        handleTimeStringLabels,
+        filters,
         timeWindowDescription,
-        shouldZipDownload
-      );
+        shouldZipDownload,
+      });
     };
   }
 }
 
-function downloadChartAsImage(
+export function downloadChartAsImage({
   chartId,
   chartTitle,
-  chartDatasets,
-  chartLabels,
-  exportedStructureCallback,
-  toggleStates,
-  convertValuesToNumbers,
-  handleTimeStringLabels,
-  timeWindowDescription,
-  shouldZipDownload
-) {
-  const filename = configureFilename(chartId, toggleStates, shouldZipDownload);
-  configureImageDownload(
-    document.getElementById(chartId),
-    `${filename}.png`,
-    chartTitle,
-    toggleStates,
-    chartId,
-    timeWindowDescription,
-    shouldZipDownload
-  );
-}
-
-function downloadChartAsData(
-  chartId,
-  chartTitle,
-  chartDatasets,
-  chartLabels,
-  exportedStructureCallback,
-  toggleStates,
-  convertValuesToNumbers,
-  handleTimeStringLabels,
-  timeWindowDescription,
-  shouldZipDownload
-) {
-  const downloadChartData = configureDataDownloadButton(
-    chartId,
-    chartDatasets,
-    chartLabels,
-    exportedStructureCallback,
-    toggleStates,
-    convertValuesToNumbers,
-    handleTimeStringLabels,
-    chartTitle,
-    timeWindowDescription,
-    shouldZipDownload
-  );
-  downloadChartData();
-}
-
-function downloadHtmlElementAsData(
-  chartId,
-  chartTitle,
-  chartDatasets,
-  chartLabels,
-  exportedStructureCallback,
-  toggleStates,
-  convertValuesToNumbers,
-  handleTimeStringLabels,
+  filters,
   timeWindowDescription,
   shouldZipDownload,
-  isTable
-) {
-  const downloadChartData = configureDataDownloadButton(
+}) {
+  const filename = configureFilename(chartId, filters, shouldZipDownload);
+  configureImageDownload({
+    canvas: document.getElementById(chartId),
+    filename: `${filename}.png`,
+    chartTitle,
+    filters,
+    chartId,
+    timeWindowDescription,
+    shouldZipDownload,
+  });
+}
+
+export function downloadChartAsData({
+  chartId,
+  chartTitle,
+  chartDatasets,
+  chartLabels,
+  filters,
+  timeWindowDescription,
+  shouldZipDownload,
+}) {
+  const downloadChartData = configureDataDownloadButton({
     chartId,
     chartDatasets,
     chartLabels,
-    exportedStructureCallback,
-    toggleStates,
-    convertValuesToNumbers,
-    handleTimeStringLabels,
+    filters,
     chartTitle,
     timeWindowDescription,
     shouldZipDownload,
-    isTable
-  );
+  });
   downloadChartData();
 }
 
-export {
-  downloadCanvasImage,
-  downloadObjectAsCsv,
-  configureDownloadButtons,
-  downloadChartAsImage,
-  downloadChartAsData,
-  downloadHtmlElementAsImage,
-  downloadHtmlElementAsData,
-};
+export function downloadHtmlElementAsData({
+  chartId,
+  chartTitle,
+  chartDatasets,
+  chartLabels,
+  filters,
+  timeWindowDescription,
+  shouldZipDownload,
+  isTable,
+}) {
+  const downloadChartData = configureDataDownloadButton({
+    chartId,
+    chartDatasets,
+    chartLabels,
+    filters,
+    chartTitle,
+    timeWindowDescription,
+    shouldZipDownload,
+    isTable,
+  });
+  downloadChartData();
+}

@@ -99,12 +99,6 @@ export function configureDownloads(
   bars,
   toggles
 ) {
-  const exportedStructureCallback = () => ({
-    office: visibleOffices.join(", "),
-    metric: exportLabel,
-    series: [],
-  });
-
   const downloadableDataFormat = bars.map((bar) => ({
     label: bar.label,
     data: countsByType[bar.key],
@@ -112,18 +106,15 @@ export function configureDownloads(
 
   const chartTitle = upperCase(exportLabel);
 
-  const convertValuesToNumbers = false;
-
-  configureDownloadButtons(
+  configureDownloadButtons({
     chartId,
     chartTitle,
-    downloadableDataFormat,
+    chartDatasets: downloadableDataFormat,
     chartLabels,
-    document.getElementById(chartId),
-    exportedStructureCallback,
-    toggles,
-    convertValuesToNumbers
-  );
+    chartBox: document.getElementById(chartId),
+    filters: toggles,
+    convertValuesToNumbers: false,
+  });
 }
 
 export const isOfficerIdsHidden = (offices) =>

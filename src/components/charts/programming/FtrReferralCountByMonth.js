@@ -166,23 +166,17 @@ const FtrReferralCountByMonth = ({
     />
   );
 
-  const exportedStructureCallback = () => ({
-    metric: "FTR referral counts by month",
-    series: [],
-  });
-
   useEffect(() => {
-    configureDownloadButtons(
+    configureDownloadButtons({
       chartId,
-      "FTR REFERRAL COUNT BY MONTH",
-      chart.props.data.datasets,
-      chart.props.data.labels,
-      document.getElementById(chartId),
-      exportedStructureCallback,
-      { supervisionType, district, metricType, metricPeriodMonths },
-      true,
-      true
-    );
+      chartTitle: "FTR REFERRAL COUNT BY MONTH",
+      chartDatasets: chart.props.data.datasets,
+      chartLabels: chart.props.data.labels,
+      chartBox: document.getElementById(chartId),
+      filters: { supervisionType, district, metricType, metricPeriodMonths },
+      convertValuesToNumbers: true,
+      handleTimeStringLabels: true,
+    });
   }, [
     supervisionType,
     district,

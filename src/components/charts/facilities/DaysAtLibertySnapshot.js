@@ -185,25 +185,17 @@ const DaysAtLibertySnapshot = ({
     />
   );
 
-  const exportedStructureCallback = function exportedStructureCallback() {
-    return {
-      metric: "Average days at liberty",
-      series: [],
-    };
-  };
-
   useEffect(() => {
-    configureDownloadButtons(
+    configureDownloadButtons({
       chartId,
-      "DAYS AT LIBERTY (AVERAGE)",
-      chart.props.data.datasets,
-      chart.props.data.labels,
-      document.getElementById(chartId),
-      exportedStructureCallback,
-      {},
-      true,
-      true
-    );
+      chartTitle: "DAYS AT LIBERTY (AVERAGE)",
+      chartDatasets: chart.props.data.datasets,
+      chartLabels: chart.props.data.labels,
+      chartBox: document.getElementById(chartId),
+      filters: {},
+      convertValuesToNumbers: true,
+      handleTimeStringLabels: true,
+    });
   }, [chart.props.data.datasets, chart.props.data.labels, metricPeriodMonths]);
 
   useEffect(() => {
