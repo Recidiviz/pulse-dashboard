@@ -49,12 +49,14 @@ const GroupHeading = ({
 
   return (
     <div className="MultiSelect__group-heading">
-      <label className="MultiSelect__checkbox-container" onClick={onClick}>
+      <label className="MultiSelect__checkbox-container">
         {label}
         <input
           className="MultiSelect__checkbox-input"
           type="checkbox"
           checked={isAllOptionsSelected}
+          onClick={onClick}
+          onKeyPress={onClick}
           disabled
         />
         <span className="MultiSelect__checkbox" />

@@ -15,7 +15,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import PropTypes from "prop-types";
 import { Line } from "react-chartjs-2";
 
@@ -113,13 +113,15 @@ const RevocationAdmissionsSnapshot = ({
   metricType,
   metricPeriodMonths,
 }) => {
-  const toggles = {
-    supervisionType,
-    district,
-    metricType,
-    metricPeriodMonths,
-    disableGoal,
-  };
+  const toggles = useMemo(() => {
+    return {
+      supervisionType,
+      district,
+      metricType,
+      metricPeriodMonths,
+      disableGoal,
+    };
+  }, [supervisionType, district, metricType, metricPeriodMonths, disableGoal]);
   const goal = getGoalForChart(stateCode, chartId);
   const displayGoal = canDisplayGoal(goal, toggles);
   const months = getMonthCountFromMetricPeriodMonthsToggle(metricPeriodMonths);
