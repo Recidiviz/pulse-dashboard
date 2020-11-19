@@ -24,9 +24,9 @@ import { optionPropType } from "../../propTypes";
 const ValueContainer = ({ allOptions, summingOption, children, ...props }) => {
   const { selectProps, getValue } = props;
   const values = getValue();
-  const selectInput = React.Children.toArray(children).find((child) =>
-    child.type === components.Input ? child : null
-  );
+  const selectInput = React.Children.map(children, (child) => {
+    return child.type === components.Input ? child : null;
+  });
 
   const isAll =
     !selectProps.inputValue &&

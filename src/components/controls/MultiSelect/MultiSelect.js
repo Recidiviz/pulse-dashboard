@@ -82,9 +82,10 @@ const MultiSelect = ({
       hideSelectedOptions={false}
       onChange={handleChange}
       options={options}
+      onFocus={() => ref.current.setState({ menuIsOpen: true })}
       value={value}
-      {...props}
       isMulti
+      {...props}
     />
   );
 };
