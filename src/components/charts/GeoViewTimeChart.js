@@ -30,7 +30,7 @@ import { geoAlbersUsa } from "d3-geo";
 import { scaleLinear } from "d3-scale";
 
 import { COLORS } from "../../assets/scripts/constants/colors";
-import { configureDownloadButtons } from "../../assets/scripts/utils/downloads";
+import { configureDownloadButtons } from "../../utils/downloads/downloads";
 import geographyObject from "../../assets/static/maps/us_nd.json";
 import { colorForValue } from "../../utils/charts/choropleth";
 import {

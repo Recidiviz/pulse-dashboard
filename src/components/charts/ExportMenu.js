@@ -23,8 +23,7 @@ import {
   downloadChartAsImage,
   downloadChartAsData,
   downloadHtmlElementAsImage,
-  downloadHtmlElementAsData,
-} from "../../assets/scripts/utils/downloads";
+} from "../../utils/downloads/downloads";
 import { filtersPropTypes } from "./propTypes";
 import { translate } from "../../views/tenants/utils/i18nSettings";
 
@@ -125,7 +124,7 @@ const ExportMenu = ({
             <Dropdown.Item
               as="button"
               onClick={() =>
-                downloadHtmlElementAsData({
+                downloadChartAsData({
                   chartId,
                   chartTitle: metricTitle,
                   chartDatasets: elementDatasets,
@@ -143,7 +142,7 @@ const ExportMenu = ({
             <Dropdown.Item
               as="button"
               onClick={() =>
-                downloadHtmlElementAsData({
+                downloadChartAsData({
                   chartId,
                   chartTitle: metricTitle,
                   chartDatasets: tableData,
@@ -151,7 +150,7 @@ const ExportMenu = ({
                   filters,
                   timeWindowDescription,
                   shouldZipDownload: true,
-                  isTable,
+                  isTable: true,
                 })
               }
             >

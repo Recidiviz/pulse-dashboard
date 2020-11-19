@@ -27,7 +27,7 @@ import toInteger from "lodash/fp/toInteger";
 import values from "lodash/fp/values";
 
 import { COLORS } from "../../../assets/scripts/constants/colors";
-import { configureDownloadButtons } from "../../../assets/scripts/utils/downloads";
+import { configureDownloadButtons } from "../../../utils/downloads/downloads";
 import {
   getGoalForChart,
   getMinForGoalAndData,
