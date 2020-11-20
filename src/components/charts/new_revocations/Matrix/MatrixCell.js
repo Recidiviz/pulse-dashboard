@@ -24,7 +24,7 @@ import { COLORS } from "../../../../assets/scripts/constants/colors";
 const minRadius = 25;
 const maxRadius = 50;
 
-const RevocationMatrixCell = ({ count, maxCount, isSelected, onClick }) => {
+const MatrixCell = ({ count, maxCount, isSelected, onClick }) => {
   const ratio = maxCount > 0 ? count / maxCount : 0;
   const radius = Math.max(minRadius, Math.ceil(ratio * maxRadius) + 15);
 
@@ -49,11 +49,13 @@ const RevocationMatrixCell = ({ count, maxCount, isSelected, onClick }) => {
   };
 
   return (
-    <div className="RevocationMatrix__cell cell">
+    <div className="Matrix__cell">
       <div style={containerStyle}>
         <button
           type="button"
-          className={cx("total-revocations", { "is-selected": isSelected })}
+          className={cx("Matrix__total-revocations", {
+            "is-selected": isSelected,
+          })}
           onClick={onClick}
           style={cellStyle}
         >
@@ -64,11 +66,11 @@ const RevocationMatrixCell = ({ count, maxCount, isSelected, onClick }) => {
   );
 };
 
-RevocationMatrixCell.propTypes = {
+MatrixCell.propTypes = {
   count: PropTypes.number.isRequired,
   maxCount: PropTypes.number.isRequired,
   isSelected: PropTypes.bool.isRequired,
   onClick: PropTypes.func.isRequired,
 };
 
-export default RevocationMatrixCell;
+export default MatrixCell;

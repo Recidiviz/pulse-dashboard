@@ -1,0 +1,15 @@
+.Revocations {
+  padding-top: 65px;
+  padding-bottom: 5px;
+  background-color: #f9fafb;
+
+  &__matrix {
+    background-color: #ffffff;
+    padding: 20px;
+    margin-right: 20px;
+    flex: 2 1 0;
+    @media screen and (max-width: 1350px) {
+      margin-bottom: 20px;
+    }
+  }
+}
