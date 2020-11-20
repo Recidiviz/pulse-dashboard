@@ -1,4 +1,4 @@
-/* eslint-disable import/prefer-default-export */
+/* eslint-disable import/prefer-default-export, react/forbid-prop-types */
 import PropTypes from "prop-types";
 
 export const optionPropType = PropTypes.shape({
