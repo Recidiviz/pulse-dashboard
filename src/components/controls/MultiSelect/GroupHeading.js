@@ -56,7 +56,7 @@ const GroupHeading = ({
           type="checkbox"
           checked={isAllOptionsSelected}
           onClick={onClick}
-          onKeyPress={onClick}
+          onKeyDown={onClick}
           disabled
         />
         <span className="MultiSelect__checkbox" />
