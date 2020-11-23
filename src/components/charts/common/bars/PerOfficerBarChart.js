@@ -138,15 +138,20 @@ const PerOfficerBarChart = ({
   )(normalizedData);
 
   useEffect(() => {
-    configureDownloads(
+    configureDownloads({
       chartId,
-      map((officer) => `Officer ${officer}`, officerLabels),
+      chartLabels: map((officer) => `Officer ${officer}`, officerLabels),
       countsByType,
-      visibleOffices,
       exportLabel,
       bars,
-      { metricType, metricPeriodMonths, supervisionType, visibleOffices }
-    );
+      filters: {
+        metricType,
+        metricPeriodMonths,
+        supervisionType,
+        visibleOffices,
+      },
+      dimension: "Officer/Type",
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [metricType, metricPeriodMonths, supervisionType, visibleOffices]);
 

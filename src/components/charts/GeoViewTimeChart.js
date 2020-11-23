@@ -325,6 +325,7 @@ class GeoViewTimeChart extends Component {
       chartLabels: officeNames,
       chartBox: document.getElementById(this.props.chartId),
       filters: this.props,
+      dimension: "Region",
     });
   }
 

@@ -3,8 +3,9 @@ import csvExport from "jsonexport";
 async function transformChartDataToCsv(
   datasets,
   labels,
+  dimension,
   convertValuesToNumbers,
-  isTable
+  fixLabelsInColumns = null
 ) {
   const datasetsWithoutTrendLine = datasets.filter(
     (dataset) => dataset.label !== "trendline"
@@ -12,7 +13,7 @@ async function transformChartDataToCsv(
 
   let formattedData;
 
-  if (!isTable && labels.length > datasetsWithoutTrendLine.length) {
+  if (!fixLabelsInColumns && labels.length >= datasetsWithoutTrendLine.length) {
     formattedData = labels.map((label, index) => {
       const dataPoints = datasetsWithoutTrendLine.reduce((acc, dataset) => {
         let dataPoint = dataset.data[index];
@@ -25,7 +26,7 @@ async function transformChartDataToCsv(
       }, {});
 
       return {
-        dimension: label,
+        [dimension]: label,
         ...dataPoints,
       };
     });
@@ -36,18 +37,17 @@ async function transformChartDataToCsv(
           ...acc,
           [labels[index]]: dataPoint,
         }),
-        dataset.label ? { dimension: dataset.label } : {}
+        dataset.label ? { [dimension]: dataset.label } : {}
       );
     });
   }
 
   try {
     return await csvExport(formattedData, {
-      mapHeaders: (header) => header.replace("dimension", ""),
+      headers: dimension ? [dimension] : [],
     });
   } catch (e) {
-    // eslint-disable-next-line no-console
-    console.log(e);
+    console.error(e);
     throw e;
   }
 }

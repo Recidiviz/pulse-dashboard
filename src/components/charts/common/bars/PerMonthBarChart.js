@@ -93,6 +93,7 @@ const PerMonthBarChart = ({
   bars,
   yAxisLabel,
   barColorPalette,
+  dimension,
 }) => {
   const months = getMonthCountFromMetricPeriodMonthsToggle(numMonths);
   const barKeys = map("key", bars);
@@ -132,15 +133,16 @@ const PerMonthBarChart = ({
   )(dataPoints);
 
   useEffect(() => {
-    configureDownloads(
+    configureDownloads({
       chartId,
       chartLabels,
-      dataArrays,
+      countsByType: dataArrays,
       visibleOffices,
       exportLabel,
       bars,
-      { metricType, visibleOffices }
-    );
+      filters: { metricType, visibleOffices },
+      dimension,
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [metricType, visibleOffices]);
 
@@ -207,6 +209,7 @@ const PerMonthBarChart = ({
 PerMonthBarChart.defaultProps = {
   countsByMonth: [],
   filters: {},
+  dimension: "Month",
 };
 
 PerMonthBarChart.propTypes = {
@@ -227,6 +230,7 @@ PerMonthBarChart.propTypes = {
   ).isRequired,
   yAxisLabel: PropTypes.string.isRequired,
   barColorPalette: PropTypes.arrayOf(PropTypes.string).isRequired,
+  dimension: PropTypes.string,
 };
 
 export default PerMonthBarChart;

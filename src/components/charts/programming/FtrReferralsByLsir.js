@@ -302,6 +302,7 @@ const FtrReferralsByLsir = ({
       chartLabels: activeChart.props.data.labels,
       chartBox: document.getElementById(chartId),
       filters: { supervisionType, district, metricPeriodMonths, metricType },
+      dimension: "LSI-R Score",
     });
   }, [
     supervisionType,

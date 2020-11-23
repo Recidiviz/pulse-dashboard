@@ -55,6 +55,7 @@ const CaseTerminationsByTerminationType = ({
       metricType === METRIC_TYPES.COUNTS ? "Case terminations" : "Percentage"
     }
     barColorPalette={COLORS_SEVEN_VALUES}
+    dimension="Month\Termination Type"
   />
 );
 

@@ -9,32 +9,31 @@ function createMethodologyFile(
   timeWindowDescription,
   filters
 ) {
-  const filename = "methodology.txt";
   const infoChart = translate("methodology")[chartId] || [];
   const exportDate = moment().format("M/D/YYYY");
   const filtersText = getFilters(filters);
   const violation = getViolation(filters);
 
-  let text = `Chart: ${chartTitle}\r\n`;
-  text += `Dates: ${timeWindowDescription}\r\n`;
-  text += `Applied filters:\r\n`;
-  text += `- ${filtersText}\r\n`;
+  let text = `Chart: ${chartTitle}\n`;
+  text += `Dates: ${timeWindowDescription}\n`;
+  text += `Applied filters:\n`;
+  text += `- ${filtersText}\n`;
 
   if (violation) {
-    text += `- ${violation}\r\n`;
+    text += `- ${violation}\n`;
   }
 
-  text += "\r\n";
-  text += `Export Date: ${exportDate}\r\n\n`;
+  text += "\n";
+  text += `Export Date: ${exportDate}\n\n`;
 
   infoChart.forEach((chart) => {
-    text += `${chart.header}\r\n`;
-    text += `${chart.body}\r\n`;
-    text += "\r\n";
+    text += `${chart.header}\n`;
+    text += `${chart.body}\n`;
+    text += "\n";
   });
 
   return {
-    name: filename,
+    name: "methodology.txt",
     data: text,
     type: "binary",
   };

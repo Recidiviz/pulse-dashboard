@@ -258,6 +258,7 @@ const RevocationProportionByRace = ({
       chartLabels: activeChart.props.data.labels,
       chartBox: document.getElementById(chartId),
       filters: { metricPeriodMonths, district, supervisionType },
+      dimension: "Race",
     });
   }, [
     metricType,

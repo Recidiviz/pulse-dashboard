@@ -308,6 +308,7 @@ const FtrReferralsByAge = ({
       chartLabels: activeChart.props.data.labels,
       chartBox: document.getElementById(chartId),
       filters: { supervisionType, district, metricPeriodMonths, metricType },
+      dimension: "Age",
     });
   }, [
     supervisionType,

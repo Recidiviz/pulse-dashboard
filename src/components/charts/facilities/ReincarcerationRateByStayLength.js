@@ -171,6 +171,7 @@ const ReincarcerationRateByStayLength = ({
       chartLabels: chart.props.data.labels,
       chartBox: document.getElementById(chartId),
       filters: { district, metricType },
+      dimension: "Stay length",
     });
   }, [
     chart.props.data.datasets,

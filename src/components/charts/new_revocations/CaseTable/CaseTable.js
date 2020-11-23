@@ -117,10 +117,10 @@ const CaseTable = ({
         <ExportMenu
           chartId="filteredCaseTable"
           shouldExport={false}
-          tableData={formatExportData(sortedData)}
+          datasets={formatExportData(sortedData)}
+          labels={options.map((o) => o.label)}
           metricTitle="Admitted individuals"
-          isTable
-          tableLabels={options.map((o) => o.label)}
+          fixLabelsInColumns
           timeWindowDescription={timeWindowDescription}
           filters={filterStates}
         />

@@ -60,7 +60,7 @@ describe("transformChartDataToCsv", () => {
       );
     });
 
-    it("isTable = true", () => {
+    it("fixLabelsInColumns = true", () => {
       expect(
         transformChartDataToCsv(
           [

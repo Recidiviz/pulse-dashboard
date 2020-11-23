@@ -90,15 +90,15 @@ export const groupByMonth = (barKeys) => (dataset) =>
     }))
   )(dataset);
 
-export function configureDownloads(
+export function configureDownloads({
   chartId,
   chartLabels,
   countsByType,
-  visibleOffices,
   exportLabel,
   bars,
-  toggles
-) {
+  filters,
+  dimension,
+}) {
   const downloadableDataFormat = bars.map((bar) => ({
     label: bar.label,
     data: countsByType[bar.key],
@@ -112,8 +112,9 @@ export function configureDownloads(
     chartDatasets: downloadableDataFormat,
     chartLabels,
     chartBox: document.getElementById(chartId),
-    filters: toggles,
+    filters,
     convertValuesToNumbers: false,
+    dimension,
   });
 }
 

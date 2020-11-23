@@ -33,12 +33,13 @@ function configureDataDownloadButton({
   chartId,
   chartDatasets,
   chartLabels,
+  dimension,
   filters,
   convertValuesToNumbers,
   chartTitle,
   timeWindowDescription,
   shouldZipDownload,
-  isTable,
+  fixLabelsInColumns,
 }) {
   return () => {
     const filename = configureFilename(chartId, filters, shouldZipDownload);
@@ -47,8 +48,9 @@ function configureDataDownloadButton({
     transformChartDataToCsv(
       chartDatasets,
       chartLabels,
+      dimension,
       convertValuesToNumbers,
-      isTable
+      fixLabelsInColumns
     ).then((csv) => {
       if (shouldZipDownload) {
         const methodologyFile = createMethodologyFile(
@@ -113,6 +115,8 @@ export function configureDownloadButtons({
   convertValuesToNumbers,
   timeWindowDescription,
   shouldZipDownload,
+  fixLabelsInColumns = false,
+  dimension = "Month",
 }) {
   const filename = configureFilename(chartId, filters, shouldZipDownload);
   const downloadChartAsImageButton = document.getElementById(
@@ -146,6 +150,8 @@ export function configureDownloadButtons({
       chartTitle,
       timeWindowDescription,
       shouldZipDownload,
+      dimension,
+      fixLabelsInColumns,
     });
   }
 
@@ -189,20 +195,22 @@ export function downloadChartAsData({
   chartTitle,
   chartDatasets,
   chartLabels,
+  dimension,
   filters,
   timeWindowDescription,
   shouldZipDownload,
-  isTable = false,
+  fixLabelsInColumns = false,
 }) {
   const downloadChartData = configureDataDownloadButton({
     chartId,
     chartDatasets,
     chartLabels,
+    dimension,
     filters,
     chartTitle,
     timeWindowDescription,
     shouldZipDownload,
-    isTable,
+    fixLabelsInColumns,
   });
   downloadChartData();
 }

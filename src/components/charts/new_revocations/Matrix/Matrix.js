@@ -152,11 +152,13 @@ const Matrix = ({
         <ExportMenu
           chartId="revocationMatrix"
           regularElement
-          elementDatasets={exportableMatrixData}
-          elementLabels={VIOLATION_COUNTS.map(violationCountLabel)}
+          datasets={exportableMatrixData}
+          labels={VIOLATION_COUNTS.map(violationCountLabel)}
           metricTitle={TITLE}
           timeWindowDescription={timeDescription}
           filters={filterStates}
+          fixLabelsInColumns
+          dimension="Violation type"
         />
       </h4>
       <h6 className="Matrix__dates">{timeDescription}</h6>

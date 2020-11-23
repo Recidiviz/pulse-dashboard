@@ -240,6 +240,7 @@ const AdmissionCountsByType = ({
       chartLabels: activeChart.props.data.labels,
       chartBox: document.getElementById(chartId),
       filters: { metricPeriodMonths, metricType, district, supervisionType },
+      dimension: "Type",
     });
   }, [
     metricPeriodMonths,
