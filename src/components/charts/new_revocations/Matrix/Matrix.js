@@ -150,7 +150,7 @@ const Matrix = ({
       <h4 className="Matrix__title">
         {TITLE}
         <ExportMenu
-          chartId="revocationMatrix"
+          chartId={`${translate("revocation")}Matrix`}
           regularElement
           elementDatasets={exportableMatrixData}
           elementLabels={VIOLATION_COUNTS.map(violationCountLabel)}
