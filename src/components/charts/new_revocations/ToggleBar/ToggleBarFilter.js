@@ -46,10 +46,7 @@ const ToggleBarFilter = ({
 
 ToggleBarFilter.propTypes = {
   label: PropTypes.string.isRequired,
-  value: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.arrayOf(PropTypes.string),
-  ]).isRequired,
+  value: PropTypes.string.isRequired,
   options: PropTypes.arrayOf(optionPropType).isRequired,
   defaultOption: optionPropType.isRequired,
   onChange: PropTypes.func.isRequired,
