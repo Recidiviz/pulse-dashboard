@@ -37,7 +37,7 @@ const ExportMenu = ({
   fixLabelsInColumns = false,
   datasets,
   labels,
-  dimension,
+  dataExportLabel,
 }) => {
   const [isModalOpened, setIsModalOpened] = useState(false);
   const additionalInfo = translate("methodology")[chartId] || [];
@@ -108,7 +108,7 @@ const ExportMenu = ({
                 chartTitle: metricTitle,
                 chartDatasets: datasets,
                 chartLabels: labels,
-                dimension,
+                dataExportLabel,
                 filters,
                 timeWindowDescription,
                 shouldZipDownload: true,
@@ -176,7 +176,7 @@ ExportMenu.defaultProps = {
   datasets: null,
   labels: null,
   fixLabelsInColumns: false,
-  dimension: null,
+  dataExportLabel: null,
 };
 
 ExportMenu.propTypes = {
@@ -194,7 +194,7 @@ ExportMenu.propTypes = {
   ),
   labels: PropTypes.arrayOf(PropTypes.string),
   fixLabelsInColumns: PropTypes.bool,
-  dimension: PropTypes.string,
+  dataExportLabel: PropTypes.string,
 };
 
 export default ExportMenu;

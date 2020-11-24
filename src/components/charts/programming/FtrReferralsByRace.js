@@ -286,7 +286,7 @@ const FtrReferralsByRace = ({
       chartLabels: activeChart.props.data.labels,
       chartBox: document.getElementById(chartId),
       filters: { supervisionType, district, metricPeriodMonths, metricType },
-      dimension: "Race",
+      dataExportLabel: "Race",
     });
   }, [
     supervisionType,

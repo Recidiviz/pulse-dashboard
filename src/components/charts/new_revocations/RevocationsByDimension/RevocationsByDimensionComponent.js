@@ -37,7 +37,7 @@ const RevocationsByDimensionComponent = ({
   showWarning,
   modeSwitcher,
   classModifier,
-  dimension,
+  dataExportLabel,
 }) => (
   <div className="RevocationsByDimension">
     <h4 className="RevocationsByDimension__title">
@@ -50,7 +50,7 @@ const RevocationsByDimensionComponent = ({
         metricTitle={metricTitle}
         timeWindowDescription={timeDescription}
         filters={filterStates}
-        dimension={dimension}
+        dataExportLabel={dataExportLabel}
       />
     </h4>
     <h6 className="RevocationsByDimension__time">{timeDescription}</h6>
@@ -69,7 +69,7 @@ RevocationsByDimensionComponent.defaultProps = {
   showWarning: false,
   modeSwitcher: null,
   classModifier: "",
-  dimension: null,
+  dataExportLabel: null,
 };
 
 RevocationsByDimensionComponent.propTypes = {
@@ -96,7 +96,7 @@ RevocationsByDimensionComponent.propTypes = {
   showWarning: PropTypes.bool,
   modeSwitcher: PropTypes.element,
   classModifier: PropTypes.string,
-  dimension: PropTypes.string,
+  dataExportLabel: PropTypes.string,
 };
 
 export default RevocationsByDimensionComponent;

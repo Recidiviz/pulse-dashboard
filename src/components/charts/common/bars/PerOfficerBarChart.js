@@ -150,7 +150,7 @@ const PerOfficerBarChart = ({
         supervisionType,
         visibleOffices,
       },
-      dimension: "Officer/Type",
+      dataExportLabel: "Officer",
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [metricType, metricPeriodMonths, supervisionType, visibleOffices]);

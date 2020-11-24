@@ -3,7 +3,7 @@ import csvExport from "jsonexport";
 async function transformChartDataToCsv(
   datasets,
   labels,
-  dimension,
+  dataExportLabel,
   convertValuesToNumbers,
   fixLabelsInColumns = null
 ) {
@@ -26,7 +26,7 @@ async function transformChartDataToCsv(
       }, {});
 
       return {
-        [dimension]: label,
+        [dataExportLabel]: `'${label}`,
         ...dataPoints,
       };
     });
@@ -37,14 +37,14 @@ async function transformChartDataToCsv(
           ...acc,
           [labels[index]]: dataPoint,
         }),
-        dataset.label ? { [dimension]: dataset.label } : {}
+        dataset.label ? { [dataExportLabel]: dataset.label } : {}
       );
     });
   }
 
   try {
     return await csvExport(formattedData, {
-      headers: dimension ? [dimension] : [],
+      headers: dataExportLabel ? [dataExportLabel] : [],
     });
   } catch (e) {
     console.error(e);

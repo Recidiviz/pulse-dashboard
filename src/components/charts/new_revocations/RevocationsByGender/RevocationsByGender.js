@@ -58,7 +58,7 @@ const RevocationsByGender = ({
     timeDescription={timeDescription}
     modes={flags.enableRevocationRateByExit ? ["rates", "exits"] : []}
     defaultMode="rates"
-    dimension="Risk Level\Gender"
+    dataExportLabel="Risk Level\Gender"
   />
 );
 

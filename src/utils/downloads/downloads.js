@@ -33,7 +33,7 @@ function configureDataDownloadButton({
   chartId,
   chartDatasets,
   chartLabels,
-  dimension,
+  dataExportLabel,
   filters,
   convertValuesToNumbers,
   chartTitle,
@@ -48,7 +48,7 @@ function configureDataDownloadButton({
     transformChartDataToCsv(
       chartDatasets,
       chartLabels,
-      dimension,
+      dataExportLabel,
       convertValuesToNumbers,
       fixLabelsInColumns
     ).then((csv) => {
@@ -116,7 +116,7 @@ export function configureDownloadButtons({
   timeWindowDescription,
   shouldZipDownload,
   fixLabelsInColumns = false,
-  dimension = "Month",
+  dataExportLabel = "Month",
 }) {
   const filename = configureFilename(chartId, filters, shouldZipDownload);
   const downloadChartAsImageButton = document.getElementById(
@@ -150,7 +150,7 @@ export function configureDownloadButtons({
       chartTitle,
       timeWindowDescription,
       shouldZipDownload,
-      dimension,
+      dataExportLabel,
       fixLabelsInColumns,
     });
   }
@@ -195,7 +195,7 @@ export function downloadChartAsData({
   chartTitle,
   chartDatasets,
   chartLabels,
-  dimension,
+  dataExportLabel,
   filters,
   timeWindowDescription,
   shouldZipDownload,
@@ -205,7 +205,7 @@ export function downloadChartAsData({
     chartId,
     chartDatasets,
     chartLabels,
-    dimension,
+    dataExportLabel,
     filters,
     chartTitle,
     timeWindowDescription,

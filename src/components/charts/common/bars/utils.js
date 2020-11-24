@@ -97,7 +97,7 @@ export function configureDownloads({
   exportLabel,
   bars,
   filters,
-  dimension,
+  dataExportLabel,
 }) {
   const downloadableDataFormat = bars.map((bar) => ({
     label: bar.label,
@@ -114,7 +114,7 @@ export function configureDownloads({
     chartBox: document.getElementById(chartId),
     filters,
     convertValuesToNumbers: false,
-    dimension,
+    dataExportLabel,
   });
 }
 

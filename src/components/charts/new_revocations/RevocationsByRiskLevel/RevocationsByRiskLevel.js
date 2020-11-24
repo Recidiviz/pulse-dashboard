@@ -53,7 +53,7 @@ const RevocationsByRiskLevel = ({
     timeDescription={timeDescription}
     modes={flags.enableRevocationRateByExit ? ["rates", "exits"] : []}
     defaultMode="rates"
-    dimension="Risk Level"
+    dataExportLabel="Risk Level"
   />
 );
 

@@ -75,7 +75,7 @@ const RevocationsByDistrict = ({
         : ["counts", "rates"]
     }
     defaultMode="counts"
-    dimension="District"
+    dataExportLabel="District"
   />
 );
 

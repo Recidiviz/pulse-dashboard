@@ -57,7 +57,7 @@ const FtrReferralsByParticipationStatus = ({
     ]}
     yAxisLabel={metricType === METRIC_TYPES.COUNTS ? "Count" : "Percentage"}
     barColorPalette={chartColors}
-    dimension="Month\Status"
+    dataExportLabel="Month\Status"
   />
 );
 

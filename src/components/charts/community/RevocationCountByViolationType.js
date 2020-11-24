@@ -52,7 +52,7 @@ const RevocationCountByViolationType = ({
       metricType === METRIC_TYPES.COUNTS ? "Revocation count" : "Percentage"
     }
     barColorPalette={COLORS_FIVE_VALUES}
-    dimension="Month\Violation Type"
+    dataExportLabel="Month"
   />
 );
 

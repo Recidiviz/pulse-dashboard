@@ -40,7 +40,7 @@ const RevocationsByDimension = ({
   timeDescription,
   modes,
   defaultMode,
-  dimension,
+  dataExportLabel,
 }) => {
   const [mode, setMode] = useState(defaultMode);
 
@@ -99,7 +99,7 @@ const RevocationsByDimension = ({
         ) : null
       }
       classModifier={chartId}
-      dimension={dimension}
+      dataExportLabel={dataExportLabel}
     />
   );
 };
@@ -107,7 +107,7 @@ const RevocationsByDimension = ({
 RevocationsByDimension.defaultProps = {
   modes: [],
   defaultMode: null,
-  dimension: null,
+  dataExportLabel: null,
 };
 
 RevocationsByDimension.propTypes = {
@@ -123,7 +123,7 @@ RevocationsByDimension.propTypes = {
   timeDescription: PropTypes.string.isRequired,
   modes: PropTypes.arrayOf(PropTypes.string),
   defaultMode: PropTypes.string,
-  dimension: PropTypes.string,
+  dataExportLabel: PropTypes.string,
 };
 
 export default RevocationsByDimension;
