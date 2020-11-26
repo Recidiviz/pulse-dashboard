@@ -99,17 +99,17 @@ const RevocationsOverTime = ({
   const datasets = [
     {
       label: translate("Revocations"),
-      borderColor: COLORS["lantern-light-blue"],
-      pointBackgroundColor: COLORS["lantern-light-blue"],
+      borderColor: "#02BFF0",
+      pointBackgroundColor: "#02BFF0",
       fill: false,
       lineTension: 0,
       borderWidth: 2,
       data: chartDataPoints,
-      backgroundColor: COLORS["lantern-light-blue"],
-      hoverBackgroundColor: COLORS["lantern-light-blue"],
-      hoverBorderColor: COLORS["lantern-light-blue"],
+      backgroundColor: "#02BFF0",
+      hoverBackgroundColor: "#02BFF0",
+      hoverBorderColor: "#02BFF0",
     },
-    generateTrendlineDataset(chartDataPoints, COLORS["blue-standard-light"]),
+    generateTrendlineDataset(chartDataPoints, "#88C0E6"),
   ];
   const maxElement = Math.max(...chartDataPoints);
   const maxValue = maxElement <= 3 ? 5 : maxElement;
@@ -125,6 +125,13 @@ const RevocationsOverTime = ({
         {
           ticks: {
             autoSkip: false,
+            fontSize: 12,
+            lineHeight: "15px",
+            padding: 14,
+            fontColor: "#4F4E4D",
+          },
+          gridLines: {
+            display: false,
           },
         },
       ],
@@ -132,7 +139,14 @@ const RevocationsOverTime = ({
         {
           scaleLabel: {
             display: true,
-            labelString: `Number of people ${translate("revoked")}`,
+            labelString: `# of ${translate("revocations")}`,
+            lineHeight: "26px",
+            padding: { bottom: 16 },
+            fontWeight: 500,
+            fontColor: "#4F4E4D",
+            gridLines: {
+              drawBorder: false,
+            },
           },
           ticks: {
             min: 0,
@@ -143,6 +157,10 @@ const RevocationsOverTime = ({
               return null;
             },
             suggestedMax: maxValue,
+            fontSize: 12,
+            lineHeight: "15px",
+            padding: 14,
+            fontColor: "#4F4E4D",
           },
         },
       ],

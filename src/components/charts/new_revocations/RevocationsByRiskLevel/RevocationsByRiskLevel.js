@@ -42,7 +42,6 @@ const RevocationsByRiskLevel = ({
         data={data}
         denominators={denominators}
         numerators={numerators}
-        xAxisLabel="Risk level"
         yAxisLabel={getLabelByMode(mode)}
       />
     )}

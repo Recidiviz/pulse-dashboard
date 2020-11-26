@@ -29,7 +29,6 @@ const BarChartWithLabels = ({
   id,
   data,
   labelColors,
-  xAxisLabel,
   yAxisLabel,
   numerators,
   denominators,
@@ -40,10 +39,13 @@ const BarChartWithLabels = ({
     options={{
       legend: labelColors.length
         ? {
-            position: "bottom",
+            position: "top",
+            align: "end",
             labels: {
               generateLabels: (ch) =>
                 generateLabelsWithCustomColors(ch, labelColors),
+              usePointStyle: true,
+              boxWidth: 8,
             },
           }
         : { display: false },
@@ -52,9 +54,15 @@ const BarChartWithLabels = ({
       scales: {
         xAxes: [
           {
-            scaleLabel: {
-              display: true,
-              labelString: xAxisLabel,
+            ticks: {
+              padding: 18,
+              fontSize: 12,
+              fontWeight: 500,
+              lineHeight: "15px",
+              fontColor: "#4F4E4D",
+            },
+            gridLines: {
+              display: false,
             },
           },
         ],
@@ -63,10 +71,21 @@ const BarChartWithLabels = ({
             ticks: {
               beginAtZero: true,
               callback: axisCallbackForPercentage(),
+              fontSize: 12,
+              lineHeight: "15px",
+              padding: 14,
+              fontColor: "#4F4E4D",
             },
             scaleLabel: {
               display: true,
               labelString: yAxisLabel,
+              lineHeight: "26px",
+              padding: { bottom: 16 },
+              fontWeight: 500,
+              fontColor: "#4F4E4D",
+            },
+            gridLines: {
+              drawBorder: false,
             },
           },
         ],
@@ -112,7 +131,6 @@ BarChartWithLabels.propTypes = {
       })
     ),
   }).isRequired,
-  xAxisLabel: PropTypes.string.isRequired,
   yAxisLabel: PropTypes.string.isRequired,
   numerators: PropTypes.arrayOf(
     PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.number), PropTypes.number])

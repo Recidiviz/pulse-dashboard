@@ -1,0 +1,42 @@
+.RevocationCharts {
+  display: flex;
+  background-color: #fff;
+  margin: 20px;
+  border-radius: 8px;
+  &__buttons {
+    display: flex;
+    width: 160px;
+    flex-direction: column;
+    align-items: flex-start;
+    border-right: 1px solid #e6ecf5;
+  }
+
+  &__button {
+    padding: 0;
+    background: transparent;
+    border: 0;
+    border-bottom: 2px solid transparent;
+    color: #4f4e4d;
+    text-transform: uppercase;
+    font-size: 15px;
+    line-height: 18px;
+    font-weight: 500;
+    height: 28px;
+    margin-bottom: 20px;
+    text-align: left;
+    transition: color 0.2s, font-weight 0.2s, border-bottom-color 0.2s;
+    &:hover {
+      color: #015583;
+    }
+
+    &--selected {
+      font-weight: 700;
+      color: #015583;
+      border-bottom-color: #015583;
+    }
+  }
+
+  .selected-chart {
+    flex: 1;
+  }
+}

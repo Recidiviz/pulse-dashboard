@@ -42,7 +42,6 @@ const RevocationsByGender = ({
       <BarChartWithLabels
         id={chartId}
         data={data}
-        xAxisLabel={`${translate("Gender")} and risk level`}
         yAxisLabel={getLabelByMode(mode)}
         labelColors={CHART_COLORS}
         denominators={denominators}

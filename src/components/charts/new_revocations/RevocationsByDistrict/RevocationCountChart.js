@@ -36,11 +36,16 @@ const RevocationCountChart = ({ chartId, data }) => (
       scales: {
         xAxes: [
           {
-            scaleLabel: {
-              display: true,
-              labelString: "District",
+            ticks: {
+              padding: 18,
+              fontSize: 12,
+              fontWeight: 500,
+              lineHeight: "15px",
+              fontColor: "#4F4E4D",
             },
-            stacked: true,
+            gridLines: {
+              display: false,
+            },
           },
         ],
         yAxes: [
@@ -49,6 +54,19 @@ const RevocationCountChart = ({ chartId, data }) => (
             scaleLabel: {
               display: true,
               labelString: `Number of people ${translate("revoked")}`,
+              lineHeight: "26px",
+              padding: { bottom: 16 },
+              fontWeight: 500,
+              fontColor: "#4F4E4D",
+            },
+            gridLines: {
+              drawBorder: false,
+            },
+            ticks: {
+              fontSize: 12,
+              lineHeight: "15px",
+              padding: 14,
+              fontColor: "#4F4E4D",
             },
             stacked: true,
           },

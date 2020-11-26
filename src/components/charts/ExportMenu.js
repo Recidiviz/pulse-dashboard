@@ -27,6 +27,7 @@ import {
 } from "../../assets/scripts/utils/downloads";
 import { filtersPropTypes } from "./propTypes";
 import { translate } from "../../views/tenants/utils/i18nSettings";
+import ExportIcon from "../icons/ExportIcon";
 
 const ExportMenu = ({
   chartId,
@@ -67,7 +68,7 @@ const ExportMenu = ({
           id={`exportDropdownMenuButton-${chartId}`}
           className="no-after text-decoration-none"
         >
-          <span className="h4">...</span>
+          <ExportIcon />
         </Dropdown.Toggle>
         <Dropdown.Menu
           className="dropdown-menu"

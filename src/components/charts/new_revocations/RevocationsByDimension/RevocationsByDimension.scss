@@ -16,13 +16,26 @@
 // =============================================================================
 
 .RevocationsByDimension {
+  display: flex;
+  flex-direction: column;
+  &__title {
+    margin-bottom: 0;
+    color: #2b2b2a;
+    font-weight: 500;
+    font-size: 19px;
+    line-height: 23px;
+  }
+
   &__time {
-    padding-bottom: 20px;
+    margin-bottom: 16px;
+    font-size: 14px;
+    line-height: 23px;
+    color: #2b2b2a;
   }
 
   &__chart-wrapper {
     position: relative;
-    margin: auto;
+    margin-top: 40px;
     height: 60vh;
     width: 80vw;
     &--revocationsOverTime {

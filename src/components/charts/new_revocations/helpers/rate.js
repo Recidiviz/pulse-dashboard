@@ -30,7 +30,7 @@ export const getRateAnnotation = (averageRate) => ({
       mode: "horizontal",
       scaleID: "y-axis-0",
       value: averageRate,
-      borderColor: "#72777a",
+      borderColor: "rgba(242, 104, 37, 0.5)",
       borderWidth: 2,
       label: {
         backgroundColor: "transparent",

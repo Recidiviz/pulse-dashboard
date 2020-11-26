@@ -17,7 +17,10 @@
 
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import { translate } from "../../../views/tenants/utils/i18nSettings";
+import cn from "classnames";
+
+import { translate } from "../../../../views/tenants/utils/i18nSettings";
+import "./RevocationCharts.scss";
 
 const CHARTS = ["District", "Risk level", "Violation", "Gender", "Race"];
 
@@ -46,20 +49,18 @@ const RevocationCharts = ({
   };
 
   return (
-    <div className="RevocationCharts static-charts d-f bgc-white m-20">
-      <div className="chart-type-labels p-20">
+    <div className="RevocationCharts">
+      <div className="RevocationCharts__buttons chart-type-labels p-20">
         {CHARTS.map((chart) => (
-          <div key={chart}>
-            <button
-              type="button"
-              className={`chart-type-label ${
-                selectedChart === chart ? "selected" : ""
-              }`}
-              onClick={() => setSelectedChart(chart)}
-            >
-              {translate(chart)}
-            </button>
-          </div>
+          <button
+            type="button"
+            className={cn("RevocationCharts__button", "chart-type-label", {
+              "RevocationCharts__button--selected": selectedChart === chart,
+            })}
+            onClick={() => setSelectedChart(chart)}
+          >
+            {translate(chart)}
+          </button>
         ))}
       </div>
       <div className="selected-chart p-20">

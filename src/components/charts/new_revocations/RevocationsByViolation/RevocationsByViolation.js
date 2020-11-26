@@ -41,7 +41,6 @@ const RevocationsByViolation = ({
         denominators={denominators}
         id={chartId}
         yAxisLabel="Percent of total reported violations"
-        xAxisLabel="Violation type and condition violated"
       />
     )}
     generateChartData={createGenerateChartData(dataFilter, violationTypes)}
