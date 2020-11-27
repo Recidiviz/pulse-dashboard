@@ -17,11 +17,11 @@ const CaseTableComponent = ({
   totalCases,
 }) => (
   <div className="CaseTable">
-    <h4>
+    <h4 className="CaseTable__title">
       Admitted individuals
       {exportMenu}
     </h4>
-    <h6 className="pB-20">{timeWindowDescription}</h6>
+    <h6 className="CaseTable__time">{timeWindowDescription}</h6>
     <table>
       <thead>
         <tr>

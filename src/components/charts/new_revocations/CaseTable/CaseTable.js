@@ -32,6 +32,8 @@ import useChartData from "../../../../hooks/useChartData";
 import { translate } from "../../../../views/tenants/utils/i18nSettings";
 import { formatData, formatExportData } from "./utils/helpers";
 
+import "./CaseTable.scss";
+
 export const CASES_PER_PAGE = 15;
 
 const CaseTable = ({
