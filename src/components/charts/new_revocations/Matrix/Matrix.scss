@@ -1,5 +1,23 @@
 .Matrix {
+  &__title {
+    margin-bottom: 0;
+    font-weight: 500;
+    font-size: 19px;
+    line-height: 26px;
+    color: #2b2b2a;
+  }
+
+  &__dates {
+    margin-bottom: 0;
+    font-size: 14px;
+    line-height: 26px;
+    color: #2b2b2a;
+  }
   &__x-label {
+    font-size: 14px;
+    line-height: 17px;
+    font-weight: 500;
+    color: rgba(79, 78, 77, 0.8);
     padding-top: 30px;
     padding-bottom: 30px;
     text-align: center;
@@ -18,6 +36,10 @@
   &__y-label {
     text-align: center;
     margin-right: 40px;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 17px;
+    color: rgba(79, 78, 77, 0.8);
     writing-mode: tb-rl;
     transform: rotate(-180deg);
     flex-shrink: 0;
@@ -44,7 +66,6 @@
   }
 
   &__violation-type-label {
-    text-align: right;
     display: inline-block;
     width: 125px;
     margin-right: 20px;
@@ -126,24 +147,37 @@
   }
 
   &__violation-sum-row {
-    margin-top: 10px;
+    margin-top: 20px;
   }
 
   &__violation-sum-column {
-    margin-left: 20px;
+    margin-left: 14px;
   }
 
   &__top-right-total {
-    color: #b9c2d0;
+    color: #979999;
+    font-size: 15px;
+    line-height: 18px;
+    font-weight: 500;
+    letter-spacing: 0.0945px;
+  }
+
+  &__bottom-left-total {
+    display: inline-block;
+    margin-right: 20px;
+    color: rgba(124, 140, 141, 0.8);
     font-size: 14px;
-    font-weight: 600;
-    font-style: italic;
+    line-height: 17px;
+    font-weight: 500;
+    letter-spacing: 0.0945px;
+    width: 125px;
   }
 
   &__violation-sum {
-    color: #015583;
-    font-size: 16px;
-    font-weight: 600;
+    color: #002c42;
+    font-size: 19px;
+    line-height: 23px;
+    font-weight: 500;
   }
 
   &__bottom-right-total {

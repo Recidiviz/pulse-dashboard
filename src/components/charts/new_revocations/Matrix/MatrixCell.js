@@ -20,13 +20,14 @@ import PropTypes from "prop-types";
 import cx from "classnames";
 
 import { COLORS } from "../../../../assets/scripts/constants/colors";
+import getCellBgColor from "./utils/getCellBgColor";
 
 const minRadius = 25;
 const maxRadius = 50;
 
 const MatrixCell = ({ count, maxCount, isSelected, onClick }) => {
   const ratio = maxCount > 0 ? count / maxCount : 0;
-  const radius = Math.max(minRadius, Math.ceil(ratio * maxRadius) + 15);
+  const radius = Math.max(minRadius, Math.ceil(ratio * maxRadius) + minRadius);
 
   const containerStyle = {
     position: "relative",
@@ -40,8 +41,7 @@ const MatrixCell = ({ count, maxCount, isSelected, onClick }) => {
 
   const cellStyle = {
     // lantern-dark-blue with opacity
-    background:
-      ratio === 0 ? COLORS.white : `rgba(0, 44, 66, ${Math.max(ratio, 0.05)})`,
+    background: getCellBgColor(ratio),
     width: "100%",
     height: "100%",
     borderRadius: Math.ceil(radius / 2),

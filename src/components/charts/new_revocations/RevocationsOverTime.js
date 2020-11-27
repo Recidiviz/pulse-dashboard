@@ -87,7 +87,7 @@ const RevocationsOverTime = ({
 
   const labels = monthNamesAllWithYearsFromNumbers(
     map("month", chartData),
-    false
+    true
   );
   const dataPoints = map("total_revocations", chartData);
 
@@ -127,7 +127,7 @@ const RevocationsOverTime = ({
             autoSkip: false,
             fontSize: 12,
             lineHeight: "15px",
-            padding: 14,
+            padding: 6,
             fontColor: "#4F4E4D",
           },
           gridLines: {
@@ -161,6 +161,9 @@ const RevocationsOverTime = ({
             lineHeight: "15px",
             padding: 14,
             fontColor: "#4F4E4D",
+          },
+          gridLines: {
+            drawBorder: false,
           },
         },
       ],

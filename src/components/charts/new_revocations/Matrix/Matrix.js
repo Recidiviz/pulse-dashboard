@@ -160,9 +160,7 @@ const Matrix = ({
         />
       </h4>
       <h6 className="Matrix__dates">{timeDescription}</h6>
-      <div className="Matrix__x-label">
-        # of {translate("violationReports")}
-      </div>
+      <div className="Matrix__x-label">Number of {translate("violations")}</div>
       <div id="revocationMatrix" className="Matrix__chart-container">
         <div className="Matrix__y-label" data-html2canvas-ignore>
           Most severe violation reported
@@ -210,7 +208,7 @@ const Matrix = ({
           ))}
 
           <div className="Matrix__violation-sum-row">
-            <span className="Matrix__empty-cell" />
+            <span className="Matrix__bottom-left-total">Total</span>
             {VIOLATION_COUNTS.map((count, i) => (
               <span
                 key={i}

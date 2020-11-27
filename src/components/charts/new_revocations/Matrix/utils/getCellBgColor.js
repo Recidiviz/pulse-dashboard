@@ -15,34 +15,11 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-.RevocationsByDimension {
-  display: flex;
-  flex-direction: column;
-  &__title {
-    margin-bottom: 0;
-    color: #2b2b2a;
-    font-weight: 500;
-    font-size: 19px;
-    line-height: 23px;
-  }
+const getCellBgColor = (ratio) => {
+  if (ratio < 0.25) return "#CEDFF0";
+  if (ratio < 0.5) return "#B5C6D8";
+  if (ratio < 0.75) return "#015583";
+  return "#002C42";
+};
 
-  &__time {
-    margin-bottom: 16px;
-    font-size: 14px;
-    line-height: 23px;
-    color: #2b2b2a;
-  }
-
-  &__chart-wrapper {
-    position: relative;
-    margin-top: 40px;
-    height: 60vh;
-    width: 80vw;
-    &--revocationsOverTime {
-      margin-top: 24px;
-      position: relative;
-      height: 240px;
-      width: auto;
-    }
-  }
-}
+export default getCellBgColor;

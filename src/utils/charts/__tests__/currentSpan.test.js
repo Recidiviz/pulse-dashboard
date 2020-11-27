@@ -90,8 +90,7 @@ describe("test for currentSpan", () => {
     expect(annotations[0].id).toBe("currentMonthBoxRevocationsOverTime");
     expect(annotations[0].xScaleID).toBe("x-axis-0");
     expect(annotations[0].drawTime).toBe("beforeDatasetsDraw");
-    expect(annotations[0].borderColor).toBe("#e0e0e0");
-    expect(annotations[0].borderWidth).toBe(1);
+    expect(annotations[0].borderColor).toBe("transparent");
     expect(annotations[0].backgroundColor).toBe("rgba(2, 191, 240, 0.1)");
     expect(annotations[0].xMin).toBe("February '20");
 

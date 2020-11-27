@@ -15,7 +15,6 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import { COLORS } from "../../assets/scripts/constants/colors";
 import { getCurrentMonthName } from "../transforms/months";
 
 function labelCurrentMonth(tooltipItems, labels) {
@@ -55,27 +54,15 @@ function currentMonthBox(annotationId, chartLabels) {
     drawTime: "beforeDatasetsDraw",
     events: ["click"],
 
-    // Array of annotation configuration objects
-    // See below for detailed descriptions of the annotation options
     annotations: [
       {
         type: "box",
-
-        // optional annotation ID (must be unique)
         id: annotationId,
         xScaleID: "x-axis-0",
-
         drawTime: "beforeDatasetsDraw",
-
-        borderColor: COLORS["grey-300"],
-        borderWidth: 1,
         backgroundColor: "rgba(2, 191, 240, 0.1)",
-
+        borderColor: "transparent",
         xMin: previousMonthTick,
-
-        onClick(e) {
-          return e;
-        },
       },
     ],
   };
