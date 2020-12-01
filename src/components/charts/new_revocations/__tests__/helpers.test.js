@@ -61,7 +61,7 @@ describe("applyTopLevelFilters", () => {
         year: "2020",
       },
       {
-        charge_category: "SEX_OFFENDER",
+        charge_category: "SEX_OFFENSE",
         district: "ALL",
         month: "1",
         reported_violations: "1",
@@ -264,39 +264,35 @@ describe("applyTopLevelFilters", () => {
   });
 
   describe("chargeCategory filter", () => {
-    let filteredChargeCategries = [];
+    let filteredChargeCategories = [];
 
     describe("with chargeCategory = 'ALL' filter applied", () => {
       beforeEach(() => {
         filters = { chargeCategory: "ALL" };
         filtered = applyTopLevelFilters({ filters })(data);
-        filteredChargeCategries = filtered.map((f) => f.charge_category);
+        filteredChargeCategories = filtered.map((f) => f.charge_category);
       });
 
       it("correctly returns charge_category items matching the filter term", () => {
         const expected = ["ALL", "ALL"];
-        expect(filteredChargeCategries).toEqual(expected);
+        expect(filteredChargeCategories).toEqual(expected);
       });
     });
 
-    // TODO: #610
-    // temporarily we will be accepting either SEX_OFFENSE or SEX_OFFENDER
-    // in the charge_category field. Once the BE transition to SEX_OFFENSE
-    // has been made, we will revert this to the single value
-    describe("with chargeCategory = ['SEX_OFFENSE', 'SEX_OFFENDER'] filter applied", () => {
+    describe("with chargeCategory = 'SEX_OFFENSE' filter applied", () => {
       beforeEach(() => {
-        filters = { chargeCategory: ["SEX_OFFENSE", "SEX_OFFENDER"] };
+        filters = { chargeCategory: "SEX_OFFENSE" };
         filtered = applyTopLevelFilters({ filters })(data);
-        filteredChargeCategries = filtered.map((f) => f.charge_category);
+        filteredChargeCategories = filtered.map((f) => f.charge_category);
       });
 
-      it("correctly returns charge_category items matching either sex offense value", () => {
-        const expected = ["SEX_OFFENSE", "SEX_OFFENDER"];
-        expect(filteredChargeCategries).toEqual(expected);
+      it("correctly returns charge_category items matching sex offense value", () => {
+        const expected = ["SEX_OFFENSE", "SEX_OFFENSE"];
+        expect(filteredChargeCategories).toEqual(expected);
       });
 
       it("does not double count the 'ALL' item", () => {
-        expect(filteredChargeCategries).not.toContain("ALL");
+        expect(filteredChargeCategories).not.toContain("ALL");
       });
     });
   });
