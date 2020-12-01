@@ -29,7 +29,7 @@ import {
   COLORS_FIVE_VALUES,
   COLORS,
 } from "../../../assets/scripts/constants/colors";
-import { configureDownloadButtons } from "../../../assets/scripts/utils/downloads";
+import { configureDownloadButtons } from "../../../utils/downloads/downloads";
 import {
   filterDatasetBySupervisionType,
   filterDatasetByDistrict,
@@ -278,21 +278,16 @@ const FtrReferralsByRace = ({
     activeChart = ratesChart;
   }
 
-  const exportedStructureCallback = () => ({
-    metric: "FTR Referrals by Race",
-    series: [],
-  });
-
   useEffect(() => {
-    configureDownloadButtons(
+    configureDownloadButtons({
       chartId,
-      "FTR REFERRALS BY RACE",
-      activeChart.props.data.datasets,
-      activeChart.props.data.labels,
-      document.getElementById(chartId),
-      exportedStructureCallback,
-      { supervisionType, district, metricPeriodMonths, metricType }
-    );
+      chartTitle: "FTR REFERRALS BY RACE",
+      chartDatasets: activeChart.props.data.datasets,
+      chartLabels: activeChart.props.data.labels,
+      chartBox: document.getElementById(chartId),
+      filters: { supervisionType, district, metricPeriodMonths, metricType },
+      dataExportLabel: "Race",
+    });
   }, [
     supervisionType,
     district,

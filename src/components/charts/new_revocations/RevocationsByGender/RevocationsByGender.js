@@ -35,7 +35,7 @@ const RevocationsByGender = ({
   timeDescription,
 }) => (
   <RevocationsByDimension
-    chartId="revocationsByGender"
+    chartId={`${translate("revocations")}By${translate("Gender")}`}
     apiUrl={`${stateCode}/newRevocations`}
     apiFile="revocations_matrix_distribution_by_gender"
     renderChart={({ chartId, data, denominators, numerators, mode }) => (
@@ -58,6 +58,7 @@ const RevocationsByGender = ({
     timeDescription={timeDescription}
     modes={flags.enableRevocationRateByExit ? ["rates", "exits"] : []}
     defaultMode="rates"
+    dataExportLabel="Risk Level"
   />
 );
 

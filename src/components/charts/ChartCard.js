@@ -18,7 +18,7 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 
-import TenantExportMenu from "./TenantExportMenu";
+import ChartCardExportMenu from "./ChartCardExportMenu";
 import GeoViewToggle from "../toggles/GeoViewToggle";
 
 const ChartCard = ({
@@ -50,7 +50,10 @@ const ChartCard = ({
                 )}
 
                 {hasExport === true && (
-                  <TenantExportMenu chartId={chartId} chartType={chartType} />
+                  <ChartCardExportMenu
+                    chartId={chartId}
+                    chartType={chartType}
+                  />
                 )}
               </span>
             </h6>

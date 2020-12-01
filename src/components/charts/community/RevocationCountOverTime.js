@@ -23,7 +23,7 @@ import map from "lodash/fp/map";
 import pipe from "lodash/fp/pipe";
 
 import { COLORS } from "../../../assets/scripts/constants/colors";
-import { configureDownloadButtons } from "../../../assets/scripts/utils/downloads";
+import { configureDownloadButtons } from "../../../utils/downloads/downloads";
 import {
   filterDatasetBySupervisionType,
   filterDatasetByDistrict,
@@ -192,23 +192,17 @@ const RevocationCountOverTime = ({
     />
   );
 
-  const exportedStructureCallback = () => ({
-    metric: "Revocation counts by month",
-    series: [],
-  });
-
   useEffect(() => {
-    configureDownloadButtons(
+    configureDownloadButtons({
       chartId,
-      "REVOCATION ADMISSIONS BY MONTH",
-      chart.props.data.datasets,
-      chart.props.data.labels,
-      document.getElementById(chartId),
-      exportedStructureCallback,
-      { metricType, supervisionType, district },
-      true,
-      true
-    );
+      chartTitle: "REVOCATION ADMISSIONS BY MONTH",
+      chartDatasets: chart.props.data.datasets,
+      chartLabels: chart.props.data.labels,
+      chartBox: document.getElementById(chartId),
+      filters: { metricType, supervisionType, district },
+      convertValuesToNumbers: true,
+      handleTimeStringLabels: true,
+    });
   }, [
     metricType,
     district,

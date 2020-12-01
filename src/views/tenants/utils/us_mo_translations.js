@@ -29,6 +29,8 @@ export default {
   revocationsOverTimeXAxis: "Number of admissions per month",
   revoked: "revoked",
   Revocation: "Revocation",
+  revocations: "revocations",
+  revocation: "revocation",
   Revocations: "Revocations",
   percentOfPopulationRevoked: "Percent of standing population revoked",
   matrixExplanationP1: `This chart plots all people who were revoked to prison

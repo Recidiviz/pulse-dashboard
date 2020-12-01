@@ -32,7 +32,7 @@ import {
   COLORS_STACKED_TWO_VALUES_ALT,
   COLORS,
 } from "../../../assets/scripts/constants/colors";
-import { configureDownloadButtons } from "../../../assets/scripts/utils/downloads";
+import { configureDownloadButtons } from "../../../utils/downloads/downloads";
 import {
   filterDatasetBySupervisionType,
   filterDatasetByDistrict,
@@ -224,21 +224,16 @@ const FtrReferralsByGender = ({
     activeChart = ratesChart;
   }
 
-  const exportedStructureCallback = () => ({
-    metric: "FTR Referrals by Gender",
-    series: [],
-  });
-
   useEffect(() => {
-    configureDownloadButtons(
+    configureDownloadButtons({
       chartId,
-      "FTR REFERRALS BY GENDER",
-      activeChart.props.data.datasets,
-      activeChart.props.data.labels,
-      document.getElementById(chartId),
-      exportedStructureCallback,
-      { supervisionType, district, metricPeriodMonths, metricType }
-    );
+      chartTitle: "FTR REFERRALS BY GENDER",
+      chartDatasets: activeChart.props.data.datasets,
+      chartLabels: activeChart.props.data.labels,
+      chartBox: document.getElementById(chartId),
+      filters: { supervisionType, district, metricPeriodMonths, metricType },
+      dataExportLabel: "Gender",
+    });
   }, [
     supervisionType,
     district,

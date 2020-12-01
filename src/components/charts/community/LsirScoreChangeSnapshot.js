@@ -27,7 +27,7 @@ import toInteger from "lodash/fp/toInteger";
 import values from "lodash/fp/values";
 
 import { COLORS } from "../../../assets/scripts/constants/colors";
-import { configureDownloadButtons } from "../../../assets/scripts/utils/downloads";
+import { configureDownloadButtons } from "../../../utils/downloads/downloads";
 import {
   getGoalForChart,
   getMinForGoalAndData,
@@ -214,26 +214,17 @@ const LsirScoreChangeSnapshot = ({
     />
   );
 
-  const exportedStructureCallback = function exportedStructureCallback() {
-    return {
-      metric:
-        "Average change in LSI-R score between termination and first reassessment",
-      series: [],
-    };
-  };
-
   useEffect(() => {
-    configureDownloadButtons(
+    configureDownloadButtons({
       chartId,
-      "LSI-R SCORE CHANGES (AVERAGE)",
-      chart.props.data.datasets,
-      chart.props.data.labels,
-      document.getElementById(chartId),
-      exportedStructureCallback,
-      { supervisionType, district, metricPeriodMonths },
-      true,
-      true
-    );
+      chartTitle: "LSI-R SCORE CHANGES (AVERAGE)",
+      chartDatasets: chart.props.data.datasets,
+      chartLabels: chart.props.data.labels,
+      chartBox: document.getElementById(chartId),
+      filters: { supervisionType, district, metricPeriodMonths },
+      convertValuesToNumbers: true,
+      handleTimeStringLabels: true,
+    });
   }, [
     metricPeriodMonths,
     district,

@@ -29,7 +29,7 @@ import sortBy from "lodash/fp/sortBy";
 import toInteger from "lodash/fp/toInteger";
 
 import { COLORS } from "../../../assets/scripts/constants/colors";
-import { configureDownloadButtons } from "../../../assets/scripts/utils/downloads";
+import { configureDownloadButtons } from "../../../utils/downloads/downloads";
 import { sortFilterAndSupplementMostRecentMonths } from "../../../utils/transforms/datasets";
 import { monthNamesWithYearsFromNumbers } from "../../../utils/transforms/months";
 import {
@@ -283,25 +283,17 @@ const RevocationAdmissionsSnapshot = ({
     />
   );
 
-  const exportedStructureCallback = function exportedStructureCallback() {
-    return {
-      metric: "Percentage of admissions from revocations",
-      series: [],
-    };
-  };
-
   useEffect(() => {
-    configureDownloadButtons(
+    configureDownloadButtons({
       chartId,
-      "PRISON ADMISSIONS DUE TO REVOCATION",
-      chart.props.data.datasets,
-      chart.props.data.labels,
-      document.getElementById(chartId),
-      exportedStructureCallback,
-      toggles,
-      true,
-      true
-    );
+      chartTitle: "PRISON ADMISSIONS DUE TO REVOCATION",
+      chartDatasets: chart.props.data.datasets,
+      chartLabels: chart.props.data.labels,
+      chartBox: document.getElementById(chartId),
+      filters: toggles,
+      convertValuesToNumbers: true,
+      handleTimeStringLabels: true,
+    });
   }, [
     metricType,
     metricPeriodMonths,

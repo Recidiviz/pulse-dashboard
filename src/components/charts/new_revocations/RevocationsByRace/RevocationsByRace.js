@@ -25,6 +25,7 @@ import getLabelByMode from "../utils/getLabelByMode";
 import { COLORS_LANTERN_SET } from "../../../../assets/scripts/constants/colors";
 import { filtersPropTypes } from "../../propTypes";
 import flags from "../../../../flags";
+import { translate } from "../../../../views/tenants/utils/i18nSettings";
 
 const RevocationsByRace = ({
   stateCode,
@@ -33,7 +34,7 @@ const RevocationsByRace = ({
   timeDescription,
 }) => (
   <RevocationsByDimension
-    chartId="revocationsByRace"
+    chartId={`${translate("revocations")}ByRace`}
     apiUrl={`${stateCode}/newRevocations`}
     apiFile="revocations_matrix_distribution_by_race"
     renderChart={({ chartId, data, denominators, numerators, mode }) => (
@@ -56,6 +57,7 @@ const RevocationsByRace = ({
     timeDescription={timeDescription}
     modes={flags.enableRevocationRateByExit ? ["rates", "exits"] : []}
     defaultMode="rates"
+    dataExportLabel="Risk Level"
   />
 );
 

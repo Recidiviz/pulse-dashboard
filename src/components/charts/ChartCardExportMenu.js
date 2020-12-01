@@ -19,7 +19,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Dropdown } from "react-bootstrap";
 
-const TenantExportMenu = ({ chartId, chartType }) => {
+const ChartCardExportMenu = ({ chartId, chartType }) => {
   function getDownloadFunctionName() {
     switch (chartType) {
       case "canvas":
@@ -58,9 +58,9 @@ const TenantExportMenu = ({ chartId, chartType }) => {
   );
 };
 
-TenantExportMenu.propTypes = {
+ChartCardExportMenu.propTypes = {
   chartId: PropTypes.string.isRequired,
   chartType: PropTypes.oneOf(["canvas", "svg"]).isRequired,
 };
 
-export default TenantExportMenu;
+export default ChartCardExportMenu;
