@@ -204,6 +204,7 @@ const RevocationsOverTime = ({
       filterStates={filterStates}
       chart={chart}
       classModifier={chartId}
+      dataExportLabel="Month"
     />
   );
 };
