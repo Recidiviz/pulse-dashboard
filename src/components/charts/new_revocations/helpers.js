@@ -37,17 +37,6 @@ import {
   VIOLATION_TYPE,
 } from "../../../constants/filterTypes";
 
-const matchesChargeCategoryFilter = (
-  item,
-  filters,
-  treatCategoryAllAsAbsent
-) => {
-  return Array.isArray(filters[CHARGE_CATEGORY])
-    ? filters[CHARGE_CATEGORY].includes(item.charge_category)
-    : (treatCategoryAllAsAbsent && isAllItem(filters[CHARGE_CATEGORY])) ||
-        nullSafeComparison(item.charge_category, filters[CHARGE_CATEGORY]);
-};
-
 export const matchesTopLevelFilters = ({
   filters,
   skippedFilters = [],
@@ -79,7 +68,8 @@ export const matchesTopLevelFilters = ({
     (dimensionKey === undefined || dimensionKey === "charge_category") &&
     filters[CHARGE_CATEGORY] &&
     !skippedFilters.includes(CHARGE_CATEGORY) &&
-    !matchesChargeCategoryFilter(item, filters, treatCategoryAllAsAbsent)
+    !(treatCategoryAllAsAbsent && isAllItem(filters[CHARGE_CATEGORY])) &&
+    !nullSafeComparison(item.charge_category, filters[CHARGE_CATEGORY])
   ) {
     return false;
   }
