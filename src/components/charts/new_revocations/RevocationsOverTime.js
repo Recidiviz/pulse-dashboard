@@ -45,14 +45,14 @@ import { filtersPropTypes } from "../propTypes";
 import { translate } from "../../../views/tenants/utils/i18nSettings";
 import RevocationsByDimensionComponent from "./RevocationsByDimension/RevocationsByDimensionComponent";
 
-const chartId = "revocationsOverTime";
-
 const RevocationsOverTime = ({
   stateCode,
   dataFilter,
   metricPeriodMonths,
   filterStates,
 }) => {
+  const chartId = `${translate("revocations")}OverTime`;
+
   const { isLoading, isError, apiData, unflattenedValues } = useChartData(
     `${stateCode}/newRevocations`,
     "revocations_matrix_by_month",
@@ -204,6 +204,7 @@ const RevocationsOverTime = ({
       filterStates={filterStates}
       chart={chart}
       classModifier={chartId}
+      dataExportLabel="Month"
     />
   );
 };

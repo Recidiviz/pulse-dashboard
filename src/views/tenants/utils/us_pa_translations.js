@@ -30,6 +30,8 @@ export default {
   revoked: "admitted",
   Revocation: "Admission",
   Revocations: "Admissions",
+  revocation: "admission",
+  revocations: "admissions",
   percentOfPopulationRevoked: "Admission rate of standing population",
   matrixExplanationP1: `This chart plots all people who were admitted to SCIs
 from parole during the selected time period, according to their most serious

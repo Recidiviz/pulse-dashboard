@@ -150,13 +150,15 @@ const Matrix = ({
       <h4 className="Matrix__title">
         {TITLE}
         <ExportMenu
-          chartId="revocationMatrix"
+          chartId={`${translate("revocation")}Matrix`}
           regularElement
-          elementDatasets={exportableMatrixData}
-          elementLabels={VIOLATION_COUNTS.map(violationCountLabel)}
+          datasets={exportableMatrixData}
+          labels={VIOLATION_COUNTS.map(violationCountLabel)}
           metricTitle={TITLE}
           timeWindowDescription={timeDescription}
           filters={filterStates}
+          fixLabelsInColumns
+          dataExportLabel="Violations"
         />
       </h4>
       <h6 className="Matrix__dates">{timeDescription}</h6>

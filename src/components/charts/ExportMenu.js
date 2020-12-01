@@ -23,8 +23,7 @@ import {
   downloadChartAsImage,
   downloadChartAsData,
   downloadHtmlElementAsImage,
-  downloadHtmlElementAsData,
-} from "../../assets/scripts/utils/downloads";
+} from "../../utils/downloads/downloads";
 import { filtersPropTypes } from "./propTypes";
 import { translate } from "../../views/tenants/utils/i18nSettings";
 
@@ -35,20 +34,13 @@ const ExportMenu = ({
   filters,
   shouldExport = true,
   regularElement = false,
-  isTable = false,
-  chart = null,
-  elementDatasets = null,
-  elementLabels = null,
-  tableData = null,
-  tableLabels = null,
+  fixLabelsInColumns = false,
+  datasets,
+  labels,
+  dataExportLabel,
 }) => {
   const [isModalOpened, setIsModalOpened] = useState(false);
   const additionalInfo = translate("methodology")[chartId] || [];
-
-  const exportedStructureCallback = () => ({
-    metric: metricTitle,
-    series: [],
-  });
 
   const toggleModal = useCallback(() => {
     setIsModalOpened(!isModalOpened);
@@ -80,60 +72,13 @@ const ExportMenu = ({
             <Dropdown.Item
               as="button"
               onClick={() =>
-                downloadChartAsImage(
+                downloadChartAsImage({
                   chartId,
-                  metricTitle,
-                  chart.props.data.datasets,
-                  chart.props.data.labels,
-                  exportedStructureCallback,
+                  chartTitle: metricTitle,
                   filters,
-                  undefined,
-                  undefined,
                   timeWindowDescription,
-                  true
-                )
-              }
-            >
-              Export image
-            </Dropdown.Item>
-          )}
-          {shouldExport && !regularElement && (
-            <Dropdown.Item
-              as="button"
-              onClick={() =>
-                downloadChartAsData(
-                  chartId,
-                  metricTitle,
-                  chart.props.data.datasets,
-                  chart.props.data.labels,
-                  exportedStructureCallback,
-                  filters,
-                  undefined,
-                  undefined,
-                  timeWindowDescription,
-                  true
-                )
-              }
-            >
-              Export data
-            </Dropdown.Item>
-          )}
-          {shouldExport && regularElement && (
-            <Dropdown.Item
-              as="button"
-              onClick={() =>
-                downloadHtmlElementAsImage(
-                  chartId,
-                  metricTitle,
-                  elementDatasets,
-                  elementLabels,
-                  exportedStructureCallback,
-                  filters,
-                  undefined,
-                  undefined,
-                  timeWindowDescription,
-                  true
-                )
+                  shouldZipDownload: true,
+                })
               }
             >
               Export image
@@ -143,45 +88,36 @@ const ExportMenu = ({
             <Dropdown.Item
               as="button"
               onClick={() =>
-                downloadHtmlElementAsData(
+                downloadHtmlElementAsImage({
                   chartId,
-                  metricTitle,
-                  elementDatasets,
-                  elementLabels,
-                  exportedStructureCallback,
+                  chartTitle: metricTitle,
                   filters,
-                  undefined,
-                  undefined,
                   timeWindowDescription,
-                  true
-                )
+                  shouldZipDownload: true,
+                })
               }
             >
-              Export data
+              Export image
             </Dropdown.Item>
           )}
-          {isTable && !regularElement && (
-            <Dropdown.Item
-              as="button"
-              onClick={() =>
-                downloadHtmlElementAsData(
-                  chartId,
-                  metricTitle,
-                  tableData,
-                  tableLabels,
-                  exportedStructureCallback,
-                  filters,
-                  undefined,
-                  undefined,
-                  timeWindowDescription,
-                  true,
-                  isTable
-                )
-              }
-            >
-              Export data
-            </Dropdown.Item>
-          )}
+          <Dropdown.Item
+            as="button"
+            onClick={() =>
+              downloadChartAsData({
+                chartId,
+                chartTitle: metricTitle,
+                chartDatasets: datasets,
+                chartLabels: labels,
+                dataExportLabel,
+                filters,
+                timeWindowDescription,
+                shouldZipDownload: true,
+                fixLabelsInColumns,
+              })
+            }
+          >
+            Export data
+          </Dropdown.Item>
         </Dropdown.Menu>
       </Dropdown>
 
@@ -237,12 +173,10 @@ const ExportMenu = ({
 ExportMenu.defaultProps = {
   regularElement: false,
   shouldExport: true,
-  elementDatasets: null,
-  chart: null,
-  isTable: false,
-  elementLabels: null,
-  tableData: null,
-  tableLabels: null,
+  datasets: null,
+  labels: null,
+  fixLabelsInColumns: false,
+  dataExportLabel: null,
 };
 
 ExportMenu.propTypes = {
@@ -252,22 +186,18 @@ ExportMenu.propTypes = {
   filters: filtersPropTypes.isRequired,
   regularElement: PropTypes.bool,
   shouldExport: PropTypes.bool,
-  elementDatasets: PropTypes.arrayOf(
+  datasets: PropTypes.arrayOf(
     PropTypes.shape({
       label: PropTypes.string,
-      data: PropTypes.arrayOf(PropTypes.number),
+      data: PropTypes.oneOfType([
+        PropTypes.arrayOf(PropTypes.string),
+        PropTypes.arrayOf(PropTypes.number),
+      ]).isRequired,
     })
   ),
-  // eslint-disable-next-line react/forbid-prop-types
-  chart: PropTypes.any,
-  isTable: PropTypes.bool,
-  elementLabels: PropTypes.arrayOf(PropTypes.string),
-  tableData: PropTypes.arrayOf(
-    PropTypes.shape({
-      data: PropTypes.arrayOf(PropTypes.any),
-    })
-  ),
-  tableLabels: PropTypes.arrayOf(PropTypes.string),
+  labels: PropTypes.arrayOf(PropTypes.string),
+  fixLabelsInColumns: PropTypes.bool,
+  dataExportLabel: PropTypes.string,
 };
 
 export default ExportMenu;

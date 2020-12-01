@@ -22,6 +22,7 @@ import RevocationsByDimension from "../RevocationsByDimension";
 import createGenerateChartData from "./createGenerateChartData";
 import { filtersPropTypes } from "../../propTypes";
 import BarChartWithLabels from "../BarChartWithLabels";
+import { translate } from "../../../../views/tenants/utils/i18nSettings";
 
 const RevocationsByViolation = ({
   dataFilter,
@@ -31,7 +32,7 @@ const RevocationsByViolation = ({
   violationTypes,
 }) => (
   <RevocationsByDimension
-    chartId="revocationsByViolationType"
+    chartId={`${translate("revocations")}ByViolationType`}
     apiUrl={`${stateCode}/newRevocations`}
     apiFile="revocations_matrix_distribution_by_violation"
     renderChart={({ chartId, data, denominators, numerators }) => (
@@ -49,6 +50,7 @@ const RevocationsByViolation = ({
     metricTitle="Relative frequency of violation types"
     filterStates={filterStates}
     timeDescription={timeDescription}
+    dataExportLabel="Violation"
   />
 );
 

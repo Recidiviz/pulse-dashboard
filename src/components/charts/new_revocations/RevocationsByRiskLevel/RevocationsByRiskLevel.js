@@ -33,7 +33,7 @@ const RevocationsByRiskLevel = ({
   timeDescription,
 }) => (
   <RevocationsByDimension
-    chartId="revocationsByRiskLevel"
+    chartId={`${translate("revocations")}ByRiskLevel`}
     apiUrl={`${stateCode}/newRevocations`}
     apiFile="revocations_matrix_distribution_by_risk_level"
     renderChart={({ chartId, data, denominators, numerators, mode }) => (
@@ -53,6 +53,7 @@ const RevocationsByRiskLevel = ({
     timeDescription={timeDescription}
     modes={flags.enableRevocationRateByExit ? ["rates", "exits"] : []}
     defaultMode="rates"
+    dataExportLabel="Risk Level"
   />
 );
 

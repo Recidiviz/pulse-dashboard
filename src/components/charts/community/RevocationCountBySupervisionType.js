@@ -46,6 +46,7 @@ const RevocationCountBySupervisionType = ({
       metricType === METRIC_TYPES.COUNTS ? "Revocation count" : "Percentage"
     }
     barColorPalette={COLORS_STACKED_TWO_VALUES}
+    dataExportLabel="Month"
   />
 );
 

@@ -8279,10 +8279,10 @@ json5@^2.1.2:
   dependencies:
     minimist "^1.2.5"
 
-jsonexport@^2.4.1:
-  version "2.5.2"
-  resolved "https://registry.yarnpkg.com/jsonexport/-/jsonexport-2.5.2.tgz#fafbcdb2cb8e12d0a2a92cda6e0634c8d48005ac"
-  integrity sha512-4joNLCxxUAmS22GN3GA5os/MYFnq8oqXOKvoCymmcT0MPz/QPZ5eA+Fh5sIPxUji45RKq8DdQ1yoKq91p4E9VA==
+jsonexport@^3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/jsonexport/-/jsonexport-3.0.1.tgz#918980b7506aa9377eec95cceee99d488b5d7317"
+  integrity sha512-lxDoAZxmWDt1wa4S75CUYe/ZASdmOYyhV7iYbF4npTWxrDv19ofZpJMGbt20W5Orx0hYuid65zGHpt6rRW0Z3A==
 
 jsonfile@^4.0.0:
   version "4.0.0"
