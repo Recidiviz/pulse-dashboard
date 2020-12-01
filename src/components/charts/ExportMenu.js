@@ -189,7 +189,10 @@ ExportMenu.propTypes = {
   datasets: PropTypes.arrayOf(
     PropTypes.shape({
       label: PropTypes.string,
-      data: PropTypes.arrayOf(PropTypes.number).isRequired,
+      data: PropTypes.oneOfType([
+        PropTypes.arrayOf(PropTypes.string),
+        PropTypes.arrayOf(PropTypes.number),
+      ]).isRequired,
     })
   ),
   labels: PropTypes.arrayOf(PropTypes.string),

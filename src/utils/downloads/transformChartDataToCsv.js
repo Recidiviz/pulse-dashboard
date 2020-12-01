@@ -26,7 +26,7 @@ async function transformChartDataToCsv(
       }, {});
 
       return {
-        [dataExportLabel]: `'${label}`,
+        [dataExportLabel]: label,
         ...dataPoints,
       };
     });

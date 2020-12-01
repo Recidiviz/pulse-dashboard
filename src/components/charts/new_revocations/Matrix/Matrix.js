@@ -158,7 +158,7 @@ const Matrix = ({
           timeWindowDescription={timeDescription}
           filters={filterStates}
           fixLabelsInColumns
-          dataExportLabel="Violation type"
+          dataExportLabel="Violations"
         />
       </h4>
       <h6 className="Matrix__dates">{timeDescription}</h6>
