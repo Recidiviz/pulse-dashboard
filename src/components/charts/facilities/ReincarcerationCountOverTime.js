@@ -27,7 +27,7 @@ import toInteger from "lodash/fp/toInteger";
 import values from "lodash/fp/values";
 
 import { COLORS } from "../../../assets/scripts/constants/colors";
-import { configureDownloadButtons } from "../../../assets/scripts/utils/downloads";
+import { configureDownloadButtons } from "../../../utils/downloads/downloads";
 import { filterDatasetByDistrict } from "../../../utils/charts/dataFilters";
 import {
   getGoalForChart,
@@ -215,23 +215,17 @@ const ReincarcerationCountOverTime = ({
     />
   );
 
-  const exportedStructureCallback = () => ({
-    metric: "Reincarceration counts by month",
-    series: [],
-  });
-
   useEffect(() => {
-    configureDownloadButtons(
+    configureDownloadButtons({
       chartId,
-      "REINCARCERATIONS BY MONTH",
-      chart.props.data.datasets,
-      chart.props.data.labels,
-      document.getElementById(chartId),
-      exportedStructureCallback,
-      { district, metricType, metricPeriodMonths },
-      true,
-      true
-    );
+      chartTitle: "REINCARCERATIONS BY MONTH",
+      chartDatasets: chart.props.data.datasets,
+      chartLabels: chart.props.data.labels,
+      chartBox: document.getElementById(chartId),
+      filters: { district, metricType, metricPeriodMonths },
+      convertValuesToNumbers: true,
+      handleTimeStringLabels: true,
+    });
   }, [
     chart.props.data.datasets,
     chart.props.data.labels,

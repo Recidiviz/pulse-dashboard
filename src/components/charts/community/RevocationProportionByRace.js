@@ -29,7 +29,7 @@ import {
   COLORS_FIVE_VALUES,
   COLORS,
 } from "../../../assets/scripts/constants/colors";
-import { configureDownloadButtons } from "../../../assets/scripts/utils/downloads";
+import { configureDownloadButtons } from "../../../utils/downloads/downloads";
 import {
   filterDatasetBySupervisionType,
   filterDatasetByDistrict,
@@ -245,26 +245,21 @@ const RevocationProportionByRace = ({
     />
   );
 
-  const exportedStructureCallback = () => ({
-    metric: "Revocations by race",
-    series: [],
-  });
-
   let activeChart = countsChart;
   if (metricType === METRIC_TYPES.RATES) {
     activeChart = ratesChart;
   }
 
   useEffect(() => {
-    configureDownloadButtons(
+    configureDownloadButtons({
       chartId,
-      "REVOCATIONS BY RACE",
-      activeChart.props.data.datasets,
-      activeChart.props.data.labels,
-      document.getElementById("revocationsByRace"),
-      exportedStructureCallback,
-      { metricPeriodMonths, district, supervisionType }
-    );
+      chartTitle: "REVOCATIONS BY RACE",
+      chartDatasets: activeChart.props.data.datasets,
+      chartLabels: activeChart.props.data.labels,
+      chartBox: document.getElementById(chartId),
+      filters: { metricPeriodMonths, district, supervisionType },
+      dataExportLabel: "Race",
+    });
   }, [
     metricType,
     metricPeriodMonths,

@@ -19,10 +19,10 @@ import * as lantern from "./views/tenants/utils/lanternTenants";
 import * as core from "./views/tenants/utils/coreTenants";
 
 export default {
+  // prettier-ignore
   [lantern.MO]: {
     name: "Missouri",
     availableStateCodes: [lantern.MO],
-    // prettier-ignore
     regions: {
       "Western Region": ["1", "4", "4C", "WN", "4W", "19", "24"],
       "North Central Region": ["2", "5", "6", "20", "27", "29", "32", "XCRC", "MCC", "MTC", "WMCC", "WRDCC"],

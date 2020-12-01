@@ -33,7 +33,7 @@ import {
   COLORS,
   COLORS_FIVE_VALUES,
 } from "../../../assets/scripts/constants/colors";
-import { configureDownloadButtons } from "../../../assets/scripts/utils/downloads";
+import { configureDownloadButtons } from "../../../utils/downloads/downloads";
 import {
   filterDatasetByDistrict,
   filterDatasetBySupervisionType,
@@ -232,21 +232,16 @@ const AdmissionCountsByType = ({
   const activeChart =
     metricType === METRIC_TYPES.RATES ? ratesChart : countsChart;
 
-  const exportedStructureCallback = () => ({
-    metric: "Admissions by type",
-    series: [],
-  });
-
   useEffect(() => {
-    configureDownloadButtons(
+    configureDownloadButtons({
       chartId,
-      "ADMISSIONS BY TYPE",
-      activeChart.props.data.datasets,
-      activeChart.props.data.labels,
-      document.getElementById(chartId),
-      exportedStructureCallback,
-      { metricPeriodMonths, metricType, district, supervisionType }
-    );
+      chartTitle: "ADMISSIONS BY TYPE",
+      chartDatasets: activeChart.props.data.datasets,
+      chartLabels: activeChart.props.data.labels,
+      chartBox: document.getElementById(chartId),
+      filters: { metricPeriodMonths, metricType, district, supervisionType },
+      dataExportLabel: "Type",
+    });
   }, [
     metricPeriodMonths,
     metricType,

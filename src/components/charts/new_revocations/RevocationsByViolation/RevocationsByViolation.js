@@ -50,6 +50,7 @@ const RevocationsByViolation = ({
     metricTitle="Relative frequency of violation types"
     filterStates={filterStates}
     timeDescription={timeDescription}
+    dataExportLabel="Violation"
   />
 );
 

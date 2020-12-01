@@ -24,7 +24,7 @@ import toInteger from "lodash/fp/toInteger";
 import values from "lodash/fp/values";
 import upperCase from "lodash/fp/upperCase";
 
-import { configureDownloadButtons } from "../../../../assets/scripts/utils/downloads";
+import { configureDownloadButtons } from "../../../../utils/downloads/downloads";
 
 /**
  * Casts arguments to integer and sum it.
@@ -90,21 +90,15 @@ export const groupByMonth = (barKeys) => (dataset) =>
     }))
   )(dataset);
 
-export function configureDownloads(
+export function configureDownloads({
   chartId,
   chartLabels,
   countsByType,
-  visibleOffices,
   exportLabel,
   bars,
-  toggles
-) {
-  const exportedStructureCallback = () => ({
-    office: visibleOffices.join(", "),
-    metric: exportLabel,
-    series: [],
-  });
-
+  filters,
+  dataExportLabel,
+}) {
   const downloadableDataFormat = bars.map((bar) => ({
     label: bar.label,
     data: countsByType[bar.key],
@@ -112,18 +106,16 @@ export function configureDownloads(
 
   const chartTitle = upperCase(exportLabel);
 
-  const convertValuesToNumbers = false;
-
-  configureDownloadButtons(
+  configureDownloadButtons({
     chartId,
     chartTitle,
-    downloadableDataFormat,
+    chartDatasets: downloadableDataFormat,
     chartLabels,
-    document.getElementById(chartId),
-    exportedStructureCallback,
-    toggles,
-    convertValuesToNumbers
-  );
+    chartBox: document.getElementById(chartId),
+    filters,
+    convertValuesToNumbers: false,
+    dataExportLabel,
+  });
 }
 
 export const isOfficerIdsHidden = (offices) =>

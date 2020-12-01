@@ -32,7 +32,7 @@ import {
   COLORS,
   COLORS_FIVE_VALUES,
 } from "../../../assets/scripts/constants/colors";
-import { configureDownloadButtons } from "../../../assets/scripts/utils/downloads";
+import { configureDownloadButtons } from "../../../utils/downloads/downloads";
 import {
   filterDatasetBySupervisionType,
   filterDatasetByDistrict,
@@ -294,21 +294,16 @@ const FtrReferralsByLsir = ({
     activeChart = ratesChart;
   }
 
-  const exportedStructureCallback = () => ({
-    metric: "FTR Referrals by LSI-R Scores",
-    series: [],
-  });
-
   useEffect(() => {
-    configureDownloadButtons(
+    configureDownloadButtons({
       chartId,
-      "FTR REFERRALS BY LSI-R",
-      activeChart.props.data.datasets,
-      activeChart.props.data.labels,
-      document.getElementById(chartId),
-      exportedStructureCallback,
-      { supervisionType, district, metricPeriodMonths, metricType }
-    );
+      chartTitle: "FTR REFERRALS BY LSI-R",
+      chartDatasets: activeChart.props.data.datasets,
+      chartLabels: activeChart.props.data.labels,
+      chartBox: document.getElementById(chartId),
+      filters: { supervisionType, district, metricPeriodMonths, metricType },
+      dataExportLabel: "LSI-R Score",
+    });
   }, [
     supervisionType,
     district,
