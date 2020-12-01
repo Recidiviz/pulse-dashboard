@@ -36,7 +36,7 @@ const RevocationsByDistrict = ({
   timeDescription,
 }) => (
   <RevocationsByDimension
-    chartId="revocationsByDistrict"
+    chartId={`${translate("revocations")}ByDistrict`}
     apiUrl={`${stateCode}/newRevocations`}
     apiFile="revocations_matrix_distribution_by_district"
     renderChart={({
