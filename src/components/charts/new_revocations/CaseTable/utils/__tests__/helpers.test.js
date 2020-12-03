@@ -87,6 +87,7 @@ describe("helper", () => {
 
   describe("#formatExportData", () => {
     beforeEach(() => {
+      setTranslateLocale(lanternTenant.MO);
       data = {
         charge_category: "ALCOHOL_DRUG",
         district: "01",

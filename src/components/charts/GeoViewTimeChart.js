@@ -30,7 +30,7 @@ import { geoAlbersUsa } from "d3-geo";
 import { scaleLinear } from "d3-scale";
 
 import { COLORS } from "../../assets/scripts/constants/colors";
-import { configureDownloadButtons } from "../../assets/scripts/utils/downloads";
+import { configureDownloadButtons } from "../../utils/downloads/downloads";
 import geographyObject from "../../assets/static/maps/us_nd.json";
 import { colorForValue } from "../../utils/charts/choropleth";
 import {
@@ -290,11 +290,6 @@ class GeoViewTimeChart extends Component {
   }
 
   reconfigureExports() {
-    const exportedStructureCallback = () => ({
-      metric: "Events by P&P office",
-      series: [],
-    });
-
     const dataPointsByOffice = [];
     const officeNames = [];
     this.chartDataPoints.forEach((data) => {
@@ -323,15 +318,15 @@ class GeoViewTimeChart extends Component {
       },
     ];
 
-    configureDownloadButtons(
-      this.props.chartId,
-      this.props.chartTitle,
-      downloadableDataFormat,
-      officeNames,
-      document.getElementById(this.props.chartId),
-      exportedStructureCallback,
-      this.props
-    );
+    configureDownloadButtons({
+      chartId: this.props.chartId,
+      chartTitle: this.props.chartTitle,
+      chartDatasets: downloadableDataFormat,
+      chartLabels: officeNames,
+      chartBox: document.getElementById(this.props.chartId),
+      filters: this.props,
+      dataExportLabel: "County",
+    });
   }
 
   initializeMaxValues() {

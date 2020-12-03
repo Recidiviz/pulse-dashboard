@@ -7,7 +7,7 @@ import DistrictFilter from "../charts/new_revocations/ToggleBar/DistrictFilter";
 import AdmissionTypeFilter from "../charts/new_revocations/ToggleBar/AdmissionTypeFilter";
 import ViolationFilter from "../charts/new_revocations/ToggleBar/ViolationFilter";
 import RevocationCountOverTime from "../charts/new_revocations/RevocationsOverTime";
-import RevocationMatrix from "../charts/new_revocations/RevocationMatrix/RevocationMatrix";
+import Matrix from "../charts/new_revocations/Matrix";
 import RevocationCharts from "../charts/new_revocations/RevocationCharts";
 import CaseTable from "../charts/new_revocations/CaseTable/CaseTable";
 import { useAuth0 } from "../../react-auth0-spa";
@@ -40,7 +40,7 @@ jest.mock("../charts/new_revocations/ToggleBar/DistrictFilter");
 jest.mock("../charts/new_revocations/ToggleBar/AdmissionTypeFilter");
 jest.mock("../charts/new_revocations/ToggleBar/ViolationFilter");
 jest.mock("../charts/new_revocations/RevocationsOverTime");
-jest.mock("../charts/new_revocations/RevocationMatrix/RevocationMatrix");
+jest.mock("../charts/new_revocations/Matrix");
 jest.mock("../charts/new_revocations/RevocationCharts");
 jest.mock("../charts/new_revocations/CaseTable/CaseTable");
 jest.mock("../../views/tenants/constants/filterOptions");
@@ -70,7 +70,7 @@ describe("Revocations component tests", () => {
   RevocationCountOverTime.mockReturnValue(
     mockWithTestId(revocationCountOverTimeId)
   );
-  RevocationMatrix.mockReturnValue(mockWithTestId(revocationMatrixId));
+  Matrix.mockReturnValue(mockWithTestId(revocationMatrixId));
   RevocationCharts.mockReturnValue(mockWithTestId(revocationChartsId));
   CaseTable.mockReturnValue(mockWithTestId(caseTableId));
   useStateCode.mockReturnValue({ currentStateCode: mockStateCode });

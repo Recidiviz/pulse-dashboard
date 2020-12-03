@@ -34,7 +34,7 @@ const RevocationsByOfficer = ({
   stateCode,
   timeDescription,
 }) => {
-  const chartTitle = `${translate("Revocations")} by ${translate("officer")}`;
+  const chartTitle = `Admissions by ${translate("officer")}`;
 
   return (
     <RevocationsByDimension

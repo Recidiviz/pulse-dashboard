@@ -143,7 +143,7 @@ describe("filterOptionsMap", () => {
           },
           {
             label: "Sex Offense",
-            value: "SEX_OFFENDER",
+            value: "SEX_OFFENSE",
           },
           {
             label: "Domestic Violence",
@@ -401,7 +401,7 @@ describe("filterOptionsMap", () => {
           },
           {
             label: "Sex Offense",
-            value: "SEX_OFFENDER",
+            value: "SEX_OFFENSE",
           },
           {
             label: "Domestic Violence",

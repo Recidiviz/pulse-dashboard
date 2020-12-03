@@ -17,6 +17,7 @@
 
 import React from "react";
 import PropTypes from "prop-types";
+import { Helmet } from "react-helmet";
 
 import TopBar from "../topbar/TopBar";
 import TopBarLogo from "../topbar/TopBarLogo";
@@ -26,13 +27,21 @@ import usePageLayout from "../../hooks/usePageLayout";
 import useIntercom from "../../hooks/useIntercom";
 import { setTranslateLocale } from "../../views/tenants/utils/i18nSettings";
 
+import "./LanternLayout.scss";
+
 const LanternLayout = ({ stateCode, children }) => {
   useIntercom();
   usePageLayout();
   setTranslateLocale(stateCode);
 
   return (
-    <div id="app">
+    <div className="LanternLayout" id="app">
+      <Helmet>
+        <link
+          href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@400;500;600;700&display=swap"
+          rel="stylesheet"
+        />
+      </Helmet>
       <div className="wide-page-container">
         <TopBar isWide>
           <TopBarLogo />

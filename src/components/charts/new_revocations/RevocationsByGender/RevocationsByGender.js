@@ -35,7 +35,7 @@ const RevocationsByGender = ({
   timeDescription,
 }) => (
   <RevocationsByDimension
-    chartId="revocationsByGender"
+    chartId={`${translate("revocations")}By${translate("Gender")}`}
     apiUrl={`${stateCode}/newRevocations`}
     apiFile="revocations_matrix_distribution_by_gender"
     renderChart={({ chartId, data, denominators, numerators, mode }) => (
@@ -50,9 +50,7 @@ const RevocationsByGender = ({
       />
     )}
     generateChartData={createGenerateChartData(dataFilter, stateCode)}
-    chartTitle={`${translate("Revocations")} by ${translate(
-      "gender"
-    )} and risk level`}
+    chartTitle={`Admissions by ${translate("gender")} and risk level`}
     metricTitle={(mode) =>
       `${getLabelByMode(mode)} by ${translate("gender")} and risk level`
     }
@@ -60,6 +58,7 @@ const RevocationsByGender = ({
     timeDescription={timeDescription}
     modes={flags.enableRevocationRateByExit ? ["rates", "exits"] : []}
     defaultMode="rates"
+    dataExportLabel="Risk Level"
   />
 );
 

@@ -15,7 +15,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import PropTypes from "prop-types";
 import { Line } from "react-chartjs-2";
 
@@ -29,7 +29,7 @@ import sortBy from "lodash/fp/sortBy";
 import toInteger from "lodash/fp/toInteger";
 
 import { COLORS } from "../../../assets/scripts/constants/colors";
-import { configureDownloadButtons } from "../../../assets/scripts/utils/downloads";
+import { configureDownloadButtons } from "../../../utils/downloads/downloads";
 import { sortFilterAndSupplementMostRecentMonths } from "../../../utils/transforms/datasets";
 import { monthNamesWithYearsFromNumbers } from "../../../utils/transforms/months";
 import {
@@ -113,13 +113,15 @@ const RevocationAdmissionsSnapshot = ({
   metricType,
   metricPeriodMonths,
 }) => {
-  const toggles = {
-    supervisionType,
-    district,
-    metricType,
-    metricPeriodMonths,
-    disableGoal,
-  };
+  const toggles = useMemo(() => {
+    return {
+      supervisionType,
+      district,
+      metricType,
+      metricPeriodMonths,
+      disableGoal,
+    };
+  }, [supervisionType, district, metricType, metricPeriodMonths, disableGoal]);
   const goal = getGoalForChart(stateCode, chartId);
   const displayGoal = canDisplayGoal(goal, toggles);
   const months = getMonthCountFromMetricPeriodMonthsToggle(metricPeriodMonths);
@@ -281,25 +283,17 @@ const RevocationAdmissionsSnapshot = ({
     />
   );
 
-  const exportedStructureCallback = function exportedStructureCallback() {
-    return {
-      metric: "Percentage of admissions from revocations",
-      series: [],
-    };
-  };
-
   useEffect(() => {
-    configureDownloadButtons(
+    configureDownloadButtons({
       chartId,
-      "PRISON ADMISSIONS DUE TO REVOCATION",
-      chart.props.data.datasets,
-      chart.props.data.labels,
-      document.getElementById(chartId),
-      exportedStructureCallback,
-      toggles,
-      true,
-      true
-    );
+      chartTitle: "PRISON ADMISSIONS DUE TO REVOCATION",
+      chartDatasets: chart.props.data.datasets,
+      chartLabels: chart.props.data.labels,
+      chartBox: document.getElementById(chartId),
+      filters: toggles,
+      convertValuesToNumbers: true,
+      handleTimeStringLabels: true,
+    });
   }, [
     metricType,
     metricPeriodMonths,

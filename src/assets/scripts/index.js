@@ -17,4 +17,3 @@
 
 import "../styles/index.scss";
 import "./charts";
-import "./utils";

@@ -34,8 +34,8 @@ import sumBy from "lodash/fp/sumBy";
 import toInteger from "lodash/fp/toInteger";
 import values from "lodash/fp/values";
 
-import RevocationMatrixCell from "./RevocationMatrixCell";
-import RevocationMatrixRow from "./RevocationMatrixRow";
+import MatrixCell from "./MatrixCell";
+import MatrixRow from "./MatrixRow";
 import ExportMenu from "../../ExportMenu";
 import Loading from "../../../Loading";
 import Error from "../../../Error";
@@ -48,6 +48,7 @@ import {
 import { filterOptimizedDataFormat } from "../../../../utils/charts/dataFilters";
 import { filtersPropTypes } from "../../propTypes";
 import { translate } from "../../../../views/tenants/utils/i18nSettings";
+import "./Matrix.scss";
 
 const TITLE =
   "Admissions by violation history (in year prior to their last reported violation)";
@@ -57,7 +58,7 @@ const getInteger = (field) => pipe(get(field), toInteger);
 const sumByInteger = (field) => sumBy(getInteger(field));
 const sumRow = pipe(values, sum);
 
-const RevocationMatrix = ({
+const Matrix = ({
   stateCode,
   dataFilter,
   filterStates,
@@ -145,75 +146,94 @@ const RevocationMatrix = ({
   }));
 
   return (
-    <div className="RevocationMatrix">
-      <h4>
+    <div className="Matrix">
+      <h4 className="Matrix__title">
         {TITLE}
         <ExportMenu
-          chartId="revocationMatrix"
+          chartId={`${translate("revocation")}Matrix`}
           regularElement
-          elementDatasets={exportableMatrixData}
-          elementLabels={VIOLATION_COUNTS.map(violationCountLabel)}
+          datasets={exportableMatrixData}
+          labels={VIOLATION_COUNTS.map(violationCountLabel)}
           metricTitle={TITLE}
           timeWindowDescription={timeDescription}
           filters={filterStates}
+          fixLabelsInColumns
+          dataExportLabel="Violations"
         />
       </h4>
-      <h6>{timeDescription}</h6>
-      <div className="x-label pY-30"># of {translate("violationReports")}</div>
-      <div className="matrix-content">
-        <div id="revocationMatrix" className="d-f matrix-chart-container">
-          <div className="y-label" data-html2canvas-ignore>
-            Most severe violation reported
-          </div>
-          <div className={cx("matrix fs-block", { "is-filtered": isFiltered })}>
-            <div className="violation-counts">
-              <span className="empty-cell" />
-              {VIOLATION_COUNTS.map((count, i) => (
-                <span key={i} className="violation-column">
-                  {violationCountLabel(count)}
-                </span>
-              ))}
-              <span className="violation-sum-column top-right-total">
-                Total
+      <h6 className="Matrix__dates">{timeDescription}</h6>
+      <div className="Matrix__x-label">
+        # of {translate("violationReports")}
+      </div>
+      <div id="revocationMatrix" className="Matrix__chart-container">
+        <div className="Matrix__y-label" data-html2canvas-ignore>
+          Most severe violation reported
+        </div>
+        <div
+          className={cx("Matrix__matrix", {
+            "Matrix__matrix--is-filtered": isFiltered,
+          })}
+        >
+          <div className="Matrix__violation-counts">
+            <span className="Matrix__empty-cell" />
+            {VIOLATION_COUNTS.map((count, i) => (
+              <span key={i} className="Matrix__violation-column">
+                {violationCountLabel(count)}
               </span>
-            </div>
+            ))}
+            <span
+              className={cx(
+                "Matrix__violation-sum-column",
+                "Matrix__top-right-total"
+              )}
+            >
+              Total
+            </span>
+          </div>
 
-            {violationTypes.map((violationType, i) => (
-              <RevocationMatrixRow
+          {violationTypes.map((violationType, i) => (
+            <MatrixRow
+              key={i}
+              violationType={violationType}
+              sum={sumRow(dataMatrix[violationType])}
+              isSelected={isSelected(violationType, "")}
+              onClick={() => toggleFilter(violationType, "")}
+            >
+              {VIOLATION_COUNTS.map((violationCount, j) => (
+                <MatrixCell
+                  key={j}
+                  count={getOr(0, [violationType, violationCount], dataMatrix)}
+                  maxCount={maxRevocations}
+                  isSelected={isSelected(violationType, violationCount)}
+                  onClick={() => toggleFilter(violationType, violationCount)}
+                />
+              ))}
+            </MatrixRow>
+          ))}
+
+          <div className="Matrix__violation-sum-row">
+            <span className="Matrix__empty-cell" />
+            {VIOLATION_COUNTS.map((count, i) => (
+              <span
                 key={i}
-                violationType={violationType}
-                sum={sumRow(dataMatrix[violationType])}
-                isSelected={isSelected(violationType, "")}
-                onClick={() => toggleFilter(violationType, "")}
+                className={cx(
+                  "Matrix__violation-column",
+                  "Matrix__violation-sum"
+                )}
               >
-                {VIOLATION_COUNTS.map((violationCount, j) => (
-                  <RevocationMatrixCell
-                    key={j}
-                    count={getOr(
-                      0,
-                      [violationType, violationCount],
-                      dataMatrix
-                    )}
-                    maxCount={maxRevocations}
-                    isSelected={isSelected(violationType, violationCount)}
-                    onClick={() => toggleFilter(violationType, violationCount)}
-                  />
-                ))}
-              </RevocationMatrixRow>
+                {reportedViolationsSum(count)}
+              </span>
             ))}
 
-            <div className="violation-sum-row">
-              <span className="empty-cell" />
-              {VIOLATION_COUNTS.map((count, i) => (
-                <span key={i} className="violation-column violation-sum">
-                  {reportedViolationsSum(count)}
-                </span>
-              ))}
-
-              <span className="violation-sum-column violation-sum bottom-right-total">
-                {violationsSum}
-              </span>
-            </div>
+            <span
+              className={cx(
+                "Matrix__violation-sum-column",
+                "Matrix__violation-sum",
+                "Matrix__bottom-right-total"
+              )}
+            >
+              {violationsSum}
+            </span>
           </div>
         </div>
       </div>
@@ -221,7 +241,7 @@ const RevocationMatrix = ({
   );
 };
 
-RevocationMatrix.propTypes = {
+Matrix.propTypes = {
   dataFilter: PropTypes.func.isRequired,
   filterStates: filtersPropTypes.isRequired,
   stateCode: PropTypes.string.isRequired,
@@ -230,4 +250,4 @@ RevocationMatrix.propTypes = {
   violationTypes: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
-export default RevocationMatrix;
+export default Matrix;

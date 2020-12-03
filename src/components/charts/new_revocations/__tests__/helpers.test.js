@@ -49,7 +49,7 @@ describe("applyTopLevelFilters", () => {
         year: "2020",
       },
       {
-        charge_category: "ALL",
+        charge_category: "SEX_OFFENSE",
         district: "ALL",
         month: "1",
         reported_violations: "1",
@@ -61,7 +61,7 @@ describe("applyTopLevelFilters", () => {
         year: "2020",
       },
       {
-        charge_category: "ALL",
+        charge_category: "SEX_OFFENSE",
         district: "ALL",
         month: "1",
         reported_violations: "1",
@@ -259,6 +259,40 @@ describe("applyTopLevelFilters", () => {
             expect(filteredSupervisionLevels).toEqual(expected);
           });
         });
+      });
+    });
+  });
+
+  describe("chargeCategory filter", () => {
+    let filteredChargeCategories = [];
+
+    describe("with chargeCategory = 'ALL' filter applied", () => {
+      beforeEach(() => {
+        filters = { chargeCategory: "ALL" };
+        filtered = applyTopLevelFilters({ filters })(data);
+        filteredChargeCategories = filtered.map((f) => f.charge_category);
+      });
+
+      it("correctly returns charge_category items matching the filter term", () => {
+        const expected = ["ALL", "ALL"];
+        expect(filteredChargeCategories).toEqual(expected);
+      });
+    });
+
+    describe("with chargeCategory = 'SEX_OFFENSE' filter applied", () => {
+      beforeEach(() => {
+        filters = { chargeCategory: "SEX_OFFENSE" };
+        filtered = applyTopLevelFilters({ filters })(data);
+        filteredChargeCategories = filtered.map((f) => f.charge_category);
+      });
+
+      it("correctly returns charge_category items matching sex offense value", () => {
+        const expected = ["SEX_OFFENSE", "SEX_OFFENSE"];
+        expect(filteredChargeCategories).toEqual(expected);
+      });
+
+      it("does not double count the 'ALL' item", () => {
+        expect(filteredChargeCategories).not.toContain("ALL");
       });
     });
   });

@@ -23,7 +23,7 @@ import { filtersPropTypes } from "../../propTypes";
 import getLabelByMode from "../utils/getLabelByMode";
 import createGenerateChartData from "./createGenerateChartData";
 import RevocationsByDimension from "../RevocationsByDimension";
-import RevocationsByRiskLevelChart from "./RevocationsByRiskLevelChart";
+import BarChartWithLabels from "../BarChartWithLabels";
 import { translate } from "../../../../views/tenants/utils/i18nSettings";
 
 const RevocationsByRiskLevel = ({
@@ -33,24 +33,27 @@ const RevocationsByRiskLevel = ({
   timeDescription,
 }) => (
   <RevocationsByDimension
-    chartId="revocationsByRiskLevel"
+    chartId={`${translate("revocations")}ByRiskLevel`}
     apiUrl={`${stateCode}/newRevocations`}
     apiFile="revocations_matrix_distribution_by_risk_level"
-    renderChart={({ chartId, data, denominators, numerators }) => (
-      <RevocationsByRiskLevelChart
-        chartId={chartId}
+    renderChart={({ chartId, data, denominators, numerators, mode }) => (
+      <BarChartWithLabels
+        id={chartId}
         data={data}
         denominators={denominators}
         numerators={numerators}
+        xAxisLabel="Risk level"
+        yAxisLabel={getLabelByMode(mode)}
       />
     )}
     generateChartData={createGenerateChartData(dataFilter)}
-    chartTitle={`${translate("Revocations")} by risk level`}
+    chartTitle="Admissions by risk level"
     metricTitle={(mode) => `${getLabelByMode(mode)} by risk level`}
     filterStates={filterStates}
     timeDescription={timeDescription}
     modes={flags.enableRevocationRateByExit ? ["rates", "exits"] : []}
     defaultMode="rates"
+    dataExportLabel="Risk Level"
   />
 );
 

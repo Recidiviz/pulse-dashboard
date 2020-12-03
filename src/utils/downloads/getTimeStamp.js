@@ -14,17 +14,10 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
+import moment from "moment";
 
-import { useEffect, useRef } from "react";
-
-function usePrevious(value) {
-  const ref = useRef();
-
-  useEffect(() => {
-    ref.current = value;
-  }, [value]);
-
-  return ref.current;
+function getTimeStamp() {
+  return moment().format("MM-DD-YYYY-hh-mm-ss-A");
 }
 
-export default usePrevious;
+export default getTimeStamp;

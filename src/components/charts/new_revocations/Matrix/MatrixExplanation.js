@@ -16,17 +16,17 @@
 // =============================================================================
 
 import React from "react";
-
 import { translate } from "../../../../views/tenants/utils/i18nSettings";
+import "./MatrixExplanation.scss";
 
-const RevocationMatrixExplanation = () => (
-  <div className="RevocationMatrixExplanation bgc-white p-20">
+const MatrixExplanation = () => (
+  <div className="MatrixExplanation">
     <h4>Using this chart</h4>
     <p className="fw-400">{translate("matrixExplanationP1")}</p>
     <p className="fw-400">{translate("matrixExplanationP2")}</p>
     <div className="d-f mT-20">
-      <div className="example-icon-container">
-        <div className="example-violation-total">35</div>
+      <div className="MatrixExplanation__example">
+        <div className="MatrixExplanation__example-total">35</div>
       </div>
       <p className="fs-i fw-600">
         Click on a bubble to filter all charts on this dashboard to the group of
@@ -35,8 +35,10 @@ const RevocationMatrixExplanation = () => (
       </p>
     </div>
     <div className="d-f mT-20">
-      <div className="example-icon-container">
-        <div className="example-violation-type">{translate("Technical")}</div>
+      <div className="MatrixExplanation__example">
+        <div className="MatrixExplanation__example-violation-type">
+          {translate("Technical")}
+        </div>
       </div>
       <p className="fs-i fw-600">
         Click on a row label to filter all charts on this dashboard to the group
@@ -47,4 +49,4 @@ const RevocationMatrixExplanation = () => (
   </div>
 );
 
-export default RevocationMatrixExplanation;
+export default MatrixExplanation;

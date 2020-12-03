@@ -26,64 +26,63 @@ import createGenerateChartData from "./createGenerateChartData";
 import { translate } from "../../../../views/tenants/utils/i18nSettings";
 import flags from "../../../../flags";
 
+const chartTitle = "Admissions by district";
+
 const RevocationsByDistrict = ({
   currentDistricts,
   dataFilter,
   filterStates,
   stateCode,
   timeDescription,
-}) => {
-  const chartTitle = `${translate("Revocations")} by district`;
-
-  return (
-    <RevocationsByDimension
-      chartId="revocationsByDistrict"
-      apiUrl={`${stateCode}/newRevocations`}
-      apiFile="revocations_matrix_distribution_by_district"
-      renderChart={({
-        chartId,
-        data,
-        denominators,
-        numerators,
-        averageRate,
-        mode,
-      }) =>
-        mode === "counts" ? (
-          <RevocationCountChart
-            chartId={chartId}
-            data={data}
-            xAxisLabel="District"
-          />
-        ) : (
-          <PercentRevokedChart
-            data={data}
-            chartId={chartId}
-            numerators={numerators}
-            denominators={denominators}
-            averageRate={averageRate}
-            xAxisLabel="District"
-            yAxisLabel={
-              mode === "rates"
-                ? translate("percentOfPopulationRevoked")
-                : `Percent ${translate("revoked")} out of all exits`
-            }
-          />
-        )
-      }
-      generateChartData={createGenerateChartData(dataFilter, currentDistricts)}
-      chartTitle={chartTitle}
-      metricTitle={chartTitle}
-      filterStates={filterStates}
-      timeDescription={timeDescription}
-      modes={
-        flags.enableRevocationRateByExit
-          ? ["counts", "rates", "exits"]
-          : ["counts", "rates"]
-      }
-      defaultMode="counts"
-    />
-  );
-};
+}) => (
+  <RevocationsByDimension
+    chartId={`${translate("revocations")}ByDistrict`}
+    apiUrl={`${stateCode}/newRevocations`}
+    apiFile="revocations_matrix_distribution_by_district"
+    renderChart={({
+      chartId,
+      data,
+      denominators,
+      numerators,
+      averageRate,
+      mode,
+    }) =>
+      mode === "counts" ? (
+        <RevocationCountChart
+          chartId={chartId}
+          data={data}
+          xAxisLabel="District"
+        />
+      ) : (
+        <PercentRevokedChart
+          data={data}
+          chartId={chartId}
+          numerators={numerators}
+          denominators={denominators}
+          averageRate={averageRate}
+          xAxisLabel="District"
+          yAxisLabel={
+            mode === "rates"
+              ? translate("percentOfPopulationRevoked")
+              : "Percent revoked out of all exits"
+          }
+        />
+      )
+    }
+    generateChartData={createGenerateChartData(dataFilter, currentDistricts)}
+    chartTitle={chartTitle}
+    metricTitle={chartTitle}
+    filterStates={filterStates}
+    timeDescription={timeDescription}
+    modes={
+      flags.enableRevocationRateByExit
+        ? ["counts", "rates", "exits"]
+        : ["counts", "rates"]
+    }
+    defaultMode="counts"
+    dataExportLabel="District"
+  />
+);
 
 RevocationsByDistrict.propTypes = {
   dataFilter: PropTypes.func.isRequired,

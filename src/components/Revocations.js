@@ -31,8 +31,8 @@ import DistrictFilter from "./charts/new_revocations/ToggleBar/DistrictFilter";
 import AdmissionTypeFilter from "./charts/new_revocations/ToggleBar/AdmissionTypeFilter";
 import ViolationFilter from "./charts/new_revocations/ToggleBar/ViolationFilter";
 import RevocationCountOverTime from "./charts/new_revocations/RevocationsOverTime";
-import RevocationMatrix from "./charts/new_revocations/RevocationMatrix/RevocationMatrix";
-import RevocationMatrixExplanation from "./charts/new_revocations/RevocationMatrix/RevocationMatrixExplanation";
+import Matrix from "./charts/new_revocations/Matrix";
+import MatrixExplanation from "./charts/new_revocations/Matrix/MatrixExplanation";
 import RevocationCharts from "./charts/new_revocations/RevocationCharts";
 import RevocationsByRiskLevel from "./charts/new_revocations/RevocationsByRiskLevel/RevocationsByRiskLevel";
 import RevocationsByOfficer from "./charts/new_revocations/RevocationsByOfficer";
@@ -60,6 +60,8 @@ import {
   SUPERVISION_TYPE,
   VIOLATION_TYPE,
 } from "../constants/filterTypes";
+
+import "./Revocations.scss";
 
 const Revocations = () => {
   const { user } = useAuth0();
@@ -106,7 +108,7 @@ const Revocations = () => {
   );
 
   return (
-    <main className="dashboard bgc-grey-100">
+    <main className="Revocations">
       <Sticky style={{ zIndex: 700, top: 65 }}>
         <>
           <div className="top-level-filters d-f">
@@ -181,9 +183,9 @@ const Revocations = () => {
         </ErrorBoundary>
       </div>
       <div className="d-f m-20 container-all-charts">
-        <div className="matrix-container bgc-white p-20 mR-20">
+        <div className="Revocations__matrix">
           <ErrorBoundary>
-            <RevocationMatrix
+            <Matrix
               dataFilter={matchesTopLevelFilters({
                 filters: transformedFilters,
               })}
@@ -195,7 +197,7 @@ const Revocations = () => {
             />
           </ErrorBoundary>
         </div>
-        <RevocationMatrixExplanation />
+        <MatrixExplanation />
       </div>
 
       <RevocationCharts
