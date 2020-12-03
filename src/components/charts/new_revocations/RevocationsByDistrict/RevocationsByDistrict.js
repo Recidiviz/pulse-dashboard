@@ -20,10 +20,10 @@ import PropTypes from "prop-types";
 
 import { filtersPropTypes } from "../../propTypes";
 import RevocationsByDimension from "../RevocationsByDimension";
-import PercentRevokedChart from "./PercentRevokedChart";
-import { translate } from "../../../../views/tenants/utils/i18nSettings";
-import RevocationCountChart from "./RevocationCountChart";
+import PercentRevokedChart from "../PercentRevokedChart";
+import RevocationCountChart from "../RevocationCountChart";
 import createGenerateChartData from "./createGenerateChartData";
+import { translate } from "../../../../views/tenants/utils/i18nSettings";
 import flags from "../../../../flags";
 
 const chartTitle = "Admissions by district";
@@ -48,7 +48,11 @@ const RevocationsByDistrict = ({
       mode,
     }) =>
       mode === "counts" ? (
-        <RevocationCountChart chartId={chartId} data={data} />
+        <RevocationCountChart
+          chartId={chartId}
+          data={data}
+          xAxisLabel="District"
+        />
       ) : (
         <PercentRevokedChart
           data={data}
@@ -56,6 +60,7 @@ const RevocationsByDistrict = ({
           numerators={numerators}
           denominators={denominators}
           averageRate={averageRate}
+          xAxisLabel="District"
           yAxisLabel={
             mode === "rates"
               ? translate("percentOfPopulationRevoked")

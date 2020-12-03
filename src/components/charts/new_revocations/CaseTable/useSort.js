@@ -17,7 +17,7 @@
 
 import { useCallback, useState } from "react";
 import { compareViolationRecords } from "./utils/compareViolationRecords";
-import { nameFromOfficerId } from "./utils/helpers";
+import getNameFromOfficerId from "../utils/getNameFromOfficerId";
 
 const RISK_LEVEL_PRIORITY = [
   "NOT_ASSESSED",
@@ -48,8 +48,8 @@ function compareDistricts(a, b) {
 }
 
 function compareOfficers(a, b) {
-  const aOfficer = nameFromOfficerId(a);
-  const bOfficer = nameFromOfficerId(b);
+  const aOfficer = getNameFromOfficerId(a);
+  const bOfficer = getNameFromOfficerId(b);
 
   if (!aOfficer && bOfficer) return 1;
   if (!bOfficer && aOfficer) return -1;

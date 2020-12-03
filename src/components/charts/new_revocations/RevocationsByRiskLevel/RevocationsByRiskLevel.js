@@ -47,7 +47,7 @@ const RevocationsByRiskLevel = ({
       />
     )}
     generateChartData={createGenerateChartData(dataFilter)}
-    chartTitle={`${translate("Revocations")} by risk level`}
+    chartTitle="Admissions by risk level"
     metricTitle={(mode) => `${getLabelByMode(mode)} by risk level`}
     filterStates={filterStates}
     timeDescription={timeDescription}

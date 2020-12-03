@@ -35,6 +35,7 @@ import Matrix from "./charts/new_revocations/Matrix";
 import MatrixExplanation from "./charts/new_revocations/Matrix/MatrixExplanation";
 import RevocationCharts from "./charts/new_revocations/RevocationCharts";
 import RevocationsByRiskLevel from "./charts/new_revocations/RevocationsByRiskLevel/RevocationsByRiskLevel";
+import RevocationsByOfficer from "./charts/new_revocations/RevocationsByOfficer";
 import RevocationsByViolation from "./charts/new_revocations/RevocationsByViolation";
 import RevocationsByGender from "./charts/new_revocations/RevocationsByGender/RevocationsByGender";
 import RevocationsByRace from "./charts/new_revocations/RevocationsByRace/RevocationsByRace";
@@ -59,6 +60,7 @@ import {
   SUPERVISION_TYPE,
   VIOLATION_TYPE,
 } from "../constants/filterTypes";
+import flags from "../flags";
 
 import "./Revocations.scss";
 
@@ -209,6 +211,18 @@ const Revocations = () => {
               timeDescription={timeDescription}
             />
           </ErrorBoundary>
+        }
+        officerChart={
+          flags.enableOfficerChart && (
+            <ErrorBoundary>
+              <RevocationsByOfficer
+                dataFilter={matchesAllFilters({ filters: transformedFilters })}
+                filterStates={filters}
+                stateCode={stateCode}
+                timeDescription={timeDescription}
+              />
+            </ErrorBoundary>
+          )
         }
         violationChart={
           <ErrorBoundary>

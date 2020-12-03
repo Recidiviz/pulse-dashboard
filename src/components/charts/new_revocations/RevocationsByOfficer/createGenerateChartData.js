@@ -17,7 +17,6 @@
 
 import pattern from "patternomaly";
 import pipe from "lodash/fp/pipe";
-import filter from "lodash/fp/filter";
 import groupBy from "lodash/fp/groupBy";
 import values from "lodash/fp/values";
 import map from "lodash/fp/map";
@@ -28,9 +27,10 @@ import { calculateRate } from "../helpers/rate";
 
 import { translate } from "../../../../views/tenants/utils/i18nSettings";
 import { isDenominatorStatisticallySignificant } from "../../../../utils/charts/significantStatistics";
-import { filterOptimizedDataFormat } from "../../../../utils/charts/dataFilters";
-import { COLORS } from "../../../../assets/scripts/constants/colors";
 import { sumCounts } from "../utils/sumCounts";
+import getNameFromOfficerId from "../utils/getNameFromOfficerId";
+import { COLORS } from "../../../../assets/scripts/constants/colors";
+import { filterOptimizedDataFormat } from "../../../../utils/charts/dataFilters";
 
 const generatePercentChartData = (apiData, currentDistricts, mode) => {
   const [fieldName, totalFieldName] =
@@ -39,16 +39,17 @@ const generatePercentChartData = (apiData, currentDistricts, mode) => {
       : ["supervision_count", "total_supervision_count"];
 
   const filteredData = pipe(
-    filter((item) => item.district !== "ALL"),
-    groupBy("district"),
+    groupBy("officer"),
     values,
     map((dataset) => ({
-      district: dataset[0].district,
+      officer: `${dataset[0].district}-${getNameFromOfficerId(
+        dataset[0].officer
+      )}`,
       count: sumBy((item) => toInteger(item.population_count), dataset),
       [fieldName]: sumBy((item) => toInteger(item[totalFieldName]), dataset),
     })),
     map((dataPoint) => ({
-      district: dataPoint.district,
+      officer: dataPoint.officer,
       count: dataPoint.count,
       [fieldName]: dataPoint[fieldName],
       rate: calculateRate(dataPoint.count, dataPoint[fieldName]),
@@ -58,19 +59,12 @@ const generatePercentChartData = (apiData, currentDistricts, mode) => {
 
   const dataPoints = map((item) => item.rate.toFixed(2), filteredData);
 
-  const labels = map("district", filteredData);
+  const labels = map("officer", filteredData);
   const denominators = map("supervision_count", filteredData);
   const numerators = map("count", filteredData);
 
   const getBarBackgroundColor = ({ dataIndex }) => {
-    let color =
-      currentDistricts &&
-      currentDistricts.find(
-        (currentDistrict) =>
-          currentDistrict.toLowerCase() === labels[dataIndex].toLowerCase()
-      )
-        ? COLORS["lantern-light-blue"]
-        : COLORS["lantern-orange"];
+    let color = COLORS["lantern-orange"];
 
     if (!isDenominatorStatisticallySignificant(denominators[dataIndex])) {
       color = pattern.draw("diagonal-right-left", color, "#ffffff", 5);
@@ -100,32 +94,26 @@ const generatePercentChartData = (apiData, currentDistricts, mode) => {
   return { data, numerators, denominators, averageRate };
 };
 
-const generateCountChartData = (apiData, currentDistricts) => {
+const generateCountChartData = (apiData) => {
   const transformedData = pipe(
-    filter((item) => item.district !== "ALL"),
-    groupBy("district"),
+    groupBy("officer"),
     values,
     map((dataset) => ({
-      district: dataset[0].district,
+      officer: `${dataset[0].district}-${getNameFromOfficerId(
+        dataset[0].officer
+      )}`,
       count: sumBy((item) => toInteger(item.population_count), dataset),
     })),
     orderBy(["count"], ["desc"])
   )(apiData);
 
-  const labels = map("district", transformedData);
+  const labels = map("officer", transformedData);
   const dataPoints = transformedData.map((item) => item.count);
-  const getBarBackgroundColor = ({ dataIndex }) =>
-    currentDistricts.find(
-      (currentDistrict) =>
-        currentDistrict.toLowerCase() === labels[dataIndex].toLowerCase()
-    )
-      ? COLORS["lantern-light-blue"]
-      : COLORS["lantern-orange"];
 
   const datasets = [
     {
       label: translate("Revocations"),
-      backgroundColor: getBarBackgroundColor,
+      backgroundColor: COLORS["lantern-orange"],
       data: dataPoints,
     },
   ];
@@ -138,17 +126,15 @@ const createGenerateChartData = (dataFilter, currentDistricts) => (
   mode,
   unflattenedValues
 ) => {
-  const filteredData = pipe((metricFile) =>
-    filterOptimizedDataFormat(
-      unflattenedValues,
-      apiData,
-      metricFile.metadata,
-      dataFilter
-    )
-  )(apiData);
+  const filteredData = filterOptimizedDataFormat(
+    unflattenedValues,
+    apiData,
+    apiData.metadata,
+    dataFilter
+  );
   switch (mode) {
     case "counts":
-      return generateCountChartData(filteredData, currentDistricts);
+      return generateCountChartData(filteredData);
     case "exits":
     case "rates":
     default:

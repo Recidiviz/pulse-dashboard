@@ -16,13 +16,25 @@
 // =============================================================================
 
 import React, { useState } from "react";
+import cn from "classnames";
 import PropTypes from "prop-types";
-import { translate } from "../../../views/tenants/utils/i18nSettings";
+import { translate } from "../../../../views/tenants/utils/i18nSettings";
+import flags from "../../../../flags";
 
-const CHARTS = ["District", "Risk level", "Violation", "Gender", "Race"];
+import "./RevocationCharts.scss";
+
+const CHARTS = [
+  "District",
+  flags.enableOfficerChart && "Officer",
+  "Risk level",
+  "Violation",
+  "Gender",
+  "Race",
+].filter(Boolean);
 
 const RevocationCharts = ({
   riskLevelChart,
+  officerChart,
   violationChart,
   genderChart,
   raceChart,
@@ -34,27 +46,30 @@ const RevocationCharts = ({
     switch (selectedChart) {
       case "Risk level":
         return riskLevelChart;
+      case "Officer":
+        return officerChart;
       case "Violation":
         return violationChart;
       case "Gender":
         return genderChart;
       case "Race":
         return raceChart;
+      case "District":
       default:
         return districtChart;
     }
   };
 
   return (
-    <div className="RevocationCharts static-charts d-f bgc-white m-20">
-      <div className="chart-type-labels p-20">
+    <div className="RevocationCharts">
+      <div className="RevocationCharts__labels">
         {CHARTS.map((chart) => (
-          <div key={chart}>
+          <div className="RevocationCharts__label" key={chart}>
             <button
               type="button"
-              className={`chart-type-label ${
-                selectedChart === chart ? "selected" : ""
-              }`}
+              className={cn("RevocationCharts__button", {
+                "RevocationCharts__button--selected": selectedChart === chart,
+              })}
               onClick={() => setSelectedChart(chart)}
             >
               {translate(chart)}
@@ -62,7 +77,7 @@ const RevocationCharts = ({
           </div>
         ))}
       </div>
-      <div className="selected-chart p-20">
+      <div className="RevocationCharts__chart">
         {renderSelectedChartSingularLoad()}
       </div>
     </div>
@@ -71,6 +86,7 @@ const RevocationCharts = ({
 
 RevocationCharts.propTypes = {
   riskLevelChart: PropTypes.node.isRequired,
+  officerChart: PropTypes.node.isRequired,
   violationChart: PropTypes.node.isRequired,
   genderChart: PropTypes.node.isRequired,
   raceChart: PropTypes.node.isRequired,

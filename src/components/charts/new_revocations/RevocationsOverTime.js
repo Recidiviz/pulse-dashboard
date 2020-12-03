@@ -51,7 +51,7 @@ const RevocationsOverTime = ({
   metricPeriodMonths,
   filterStates,
 }) => {
-  const chartId = `${translate("revocations")}OverTime`;
+  const chartId = `revocationsOverTime`;
 
   const { isLoading, isError, apiData, unflattenedValues } = useChartData(
     `${stateCode}/newRevocations`,
@@ -198,7 +198,7 @@ const RevocationsOverTime = ({
         metricPeriodMonths
       )}
       labels={chartLabels}
-      chartId={chartId}
+      chartId={`${translate("revocations")}OverTime`}
       datasets={datasets}
       metricTitle={translate("revocationsOverTimeXAxis")}
       filterStates={filterStates}

@@ -19,15 +19,26 @@ import React from "react";
 import { Bar } from "react-chartjs-2";
 import PropTypes from "prop-types";
 
-import { translate } from "../../../../views/tenants/utils/i18nSettings";
-import { standardTooltipForCountMetric } from "../../../../utils/charts/toggles";
-import { COLORS } from "../../../../assets/scripts/constants/colors";
+import { getRateAnnotation } from "./helpers/rate";
+import { axisCallbackForPercentage } from "../../../utils/charts/axis";
+import { tooltipForRateMetricWithCounts } from "../../../utils/charts/toggles";
+import { tooltipForFooterWithCounts } from "../../../utils/charts/significantStatistics";
+import { COLORS } from "../../../assets/scripts/constants/colors";
 
-const RevocationCountChart = ({ chartId, data }) => (
+const PercentRevokedChart = ({
+  chartId,
+  data,
+  averageRate,
+  numerators,
+  denominators,
+  xAxisLabel,
+  yAxisLabel,
+}) => (
   <Bar
     id={chartId}
     data={data}
     options={{
+      annotation: getRateAnnotation(averageRate),
       legend: {
         display: false,
       },
@@ -38,7 +49,7 @@ const RevocationCountChart = ({ chartId, data }) => (
           {
             scaleLabel: {
               display: true,
-              labelString: "District",
+              labelString: xAxisLabel,
             },
             stacked: true,
           },
@@ -48,9 +59,12 @@ const RevocationCountChart = ({ chartId, data }) => (
             id: "y-axis-0",
             scaleLabel: {
               display: true,
-              labelString: `Number of people ${translate("revoked")}`,
+              labelString: yAxisLabel,
             },
             stacked: true,
+            ticks: {
+              callback: axisCallbackForPercentage(),
+            },
           },
         ],
       },
@@ -60,14 +74,22 @@ const RevocationCountChart = ({ chartId, data }) => (
         mode: "index",
         intersect: false,
         callbacks: {
-          label: standardTooltipForCountMetric,
+          label: (tooltipItem, tooltipData) =>
+            tooltipForRateMetricWithCounts(
+              tooltipItem,
+              tooltipData,
+              numerators,
+              denominators
+            ),
+          footer: (tooltipItem) =>
+            tooltipForFooterWithCounts(tooltipItem, denominators),
         },
       },
     }}
   />
 );
 
-RevocationCountChart.propTypes = {
+PercentRevokedChart.propTypes = {
   chartId: PropTypes.string.isRequired,
   data: PropTypes.shape({
     labels: PropTypes.arrayOf(PropTypes.string),
@@ -75,10 +97,15 @@ RevocationCountChart.propTypes = {
       PropTypes.shape({
         label: PropTypes.string,
         backgroundColor: PropTypes.func,
-        data: PropTypes.arrayOf(PropTypes.number),
+        data: PropTypes.arrayOf(PropTypes.string),
       })
     ),
   }).isRequired,
+  numerators: PropTypes.arrayOf(PropTypes.number).isRequired,
+  denominators: PropTypes.arrayOf(PropTypes.number).isRequired,
+  xAxisLabel: PropTypes.string.isRequired,
+  yAxisLabel: PropTypes.string.isRequired,
+  averageRate: PropTypes.number.isRequired,
 };
 
-export default RevocationCountChart;
+export default PercentRevokedChart;
