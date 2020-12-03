@@ -60,6 +60,7 @@ import {
   SUPERVISION_TYPE,
   VIOLATION_TYPE,
 } from "../constants/filterTypes";
+import flags from "../flags";
 
 import "./Revocations.scss";
 
@@ -212,14 +213,16 @@ const Revocations = () => {
           </ErrorBoundary>
         }
         officerChart={
-          <ErrorBoundary>
-            <RevocationsByOfficer
-              dataFilter={matchesAllFilters({ filters: transformedFilters })}
-              filterStates={filters}
-              stateCode={stateCode}
-              timeDescription={timeDescription}
-            />
-          </ErrorBoundary>
+          flags.enableOfficerChart && (
+            <ErrorBoundary>
+              <RevocationsByOfficer
+                dataFilter={matchesAllFilters({ filters: transformedFilters })}
+                filterStates={filters}
+                stateCode={stateCode}
+                timeDescription={timeDescription}
+              />
+            </ErrorBoundary>
+          )
         }
         violationChart={
           <ErrorBoundary>

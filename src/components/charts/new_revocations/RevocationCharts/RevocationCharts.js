@@ -19,11 +19,18 @@ import React, { useState } from "react";
 import cn from "classnames";
 import PropTypes from "prop-types";
 import { translate } from "../../../../views/tenants/utils/i18nSettings";
+import flags from "../../../../flags";
 
 import "./RevocationCharts.scss";
 
-// prettier-ignore
-const CHARTS = ["District", "Officer", "Risk level", "Violation", "Gender", "Race"];
+const CHARTS = [
+  "District",
+  flags.enableOfficerChart && "Officer",
+  "Risk level",
+  "Violation",
+  "Gender",
+  "Race",
+].filter(Boolean);
 
 const RevocationCharts = ({
   riskLevelChart,
