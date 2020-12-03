@@ -38,7 +38,7 @@ const RevocationsByOfficer = ({
 
   return (
     <RevocationsByDimension
-      chartId="revocationsByOfficer"
+      chartId={`${translate("revocations")}by${translate("Officer")}`}
       apiUrl={`${stateCode}/newRevocations`}
       apiFile="revocations_matrix_distribution_by_officer"
       renderChart={({
@@ -90,6 +90,7 @@ const RevocationsByOfficer = ({
           : ["counts", "rates"]
       }
       defaultMode="counts"
+      dataExportLabel={translate("Officer")}
     />
   );
 };
