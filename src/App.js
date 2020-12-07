@@ -25,7 +25,7 @@ import {
 
 import TenantRoutes from "./components/TenantRoutes";
 import { StateCodeProvider } from "./contexts/StateCodeContext";
-import { PageProvider } from "./contexts/PageContext";
+import StoreProvider from "./StoreProvider";
 import NotFound from "./views/NotFound";
 import Profile from "./views/Profile";
 import VerificationNeeded from "./views/VerificationNeeded";
@@ -52,7 +52,7 @@ initI18n();
 
 // prettier-ignore
 const App = () => (
-  <PageProvider>
+  <StoreProvider>
     <StateCodeProvider>
       <Router>
         <Switch>
@@ -99,7 +99,7 @@ const App = () => (
         </Switch>
       </Router>
     </StateCodeProvider>
-  </PageProvider>
+  </StoreProvider>
 );
 
 export default App;

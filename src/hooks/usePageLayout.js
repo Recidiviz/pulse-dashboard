@@ -16,27 +16,20 @@
 // =============================================================================
 
 import { useLayoutEffect, useRef } from "react";
-import { usePageState, usePageDispatch } from "../contexts/PageContext";
+import { usePageStore } from "../StoreProvider";
 
 const usePageLayout = () => {
-  const pageDispatch = usePageDispatch();
-  const { isTopBarShrinking } = usePageState();
+  const pageStore = usePageStore();
   const frame = useRef(0);
 
   useLayoutEffect(() => {
     const handler = () => {
       cancelAnimationFrame(frame.current);
       frame.current = requestAnimationFrame(() => {
-        if (!isTopBarShrinking && window.pageYOffset > 90) {
-          pageDispatch({
-            type: "update",
-            payload: { isTopBarShrinking: true },
-          });
-        } else if (isTopBarShrinking && window.pageYOffset < 5) {
-          pageDispatch({
-            type: "update",
-            payload: { isTopBarShrinking: false },
-          });
+        if (!pageStore.isTopBarShrinking && window.pageYOffset > 90) {
+          pageStore.isTopBarShrinking = true;
+        } else if (pageStore.isTopBarShrinking && window.pageYOffset < 5) {
+          pageStore.isTopBarShrinking = false;
           window.scrollTo({ top: 0, behavior: "smooth" });
         }
       });

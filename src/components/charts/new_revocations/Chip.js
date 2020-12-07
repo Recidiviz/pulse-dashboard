@@ -16,20 +16,21 @@
 // =============================================================================
 
 import React from "react";
+import { observer } from "mobx-react-lite";
 import PropTypes from "prop-types";
 import cn from "classnames";
 
-import { usePageState } from "../../../contexts/PageContext";
+import { usePageStore } from "../../../StoreProvider";
 import "./Chip.scss";
 
 const Chip = ({ label, onClick, onDelete, isSelected, isShrinkable }) => {
-  const { isTopBarShrinking } = usePageState();
+  const pageStore = usePageStore();
 
   return (
     <div
       className={cn("Chip", {
         "Chip--selected": isSelected,
-        "Chip--shrinking": isTopBarShrinking && isShrinkable,
+        "Chip--shrinking": pageStore.isTopBarShrinking && isShrinkable,
       })}
     >
       <button type="button" className="Chip__label" onClick={onClick}>
@@ -63,4 +64,4 @@ Chip.propTypes = {
   isShrinkable: PropTypes.bool,
 };
 
-export default Chip;
+export default observer(Chip);

@@ -14,43 +14,36 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-import React from "react";
-import { observer } from "mobx-react-lite";
+
+import React, { useContext, createContext } from "react";
 import PropTypes from "prop-types";
-import cn from "classnames";
-import "./FilterField.scss";
+import RootStore from "../stores/RootStore";
 
-import { usePageStore } from "../../../../StoreProvider";
+const StoreContext = createContext(null);
 
-const FilterField = ({ label, children, className }) => {
-  const pageStore = usePageStore();
-
+const StoreProvider = ({ children }) => {
   return (
-    <div
-      className={cn("FilterField", `${className}`, {
-        "FilterField--shrink": pageStore.isTopBarShrinking,
-      })}
-    >
-      <h4
-        className={cn("FilterField__label", {
-          "FilterField__label--shrink": pageStore.isTopBarShrinking,
-        })}
-      >
-        {label}
-      </h4>
+    <StoreContext.Provider value={new RootStore()}>
       {children}
-    </div>
+    </StoreContext.Provider>
   );
 };
 
-FilterField.defaultProps = {
-  className: null,
+StoreProvider.propTypes = {
+  children: PropTypes.element.isRequired,
 };
 
-FilterField.propTypes = {
-  label: PropTypes.string.isRequired,
-  children: PropTypes.node.isRequired,
-  className: PropTypes.string,
-};
+export default StoreProvider;
 
-export default observer(FilterField);
+export function useRootStore() {
+  const context = useContext(StoreContext);
+  if (context === undefined) {
+    throw new Error("useStore must be used within a StoreProvider");
+  }
+  return context;
+}
+
+export function usePageStore() {
+  const { pageStore } = useRootStore();
+  return pageStore;
+}
