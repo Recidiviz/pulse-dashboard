@@ -15,8 +15,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-function forceEmailVerification (user, context, callback) {
-  console.log('here')
+export default function (user, context, callback) {
   if (!user.email_verified) {
     context.redirect = {
         url: "https://dashboard.recidiviz.org/verify"

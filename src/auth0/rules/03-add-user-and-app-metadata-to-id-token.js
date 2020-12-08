@@ -15,7 +15,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-function setAppMetadata(user, context, callback) {
+export default function (user, context, callback) {
   const namespace = 'https://dashboard.recidiviz.org/';
   context.idToken[namespace + 'user_metadata'] = user.user_metadata;
   context.idToken[namespace + 'app_metadata'] = user.app_metadata;

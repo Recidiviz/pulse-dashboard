@@ -15,7 +15,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-function setStateCodeMetadata(user, context, callback) {
+export default function (user, context, callback) {
   user.app_metadata = user.app_metadata || {};
 
   const emailSplit = user.email.split('@');

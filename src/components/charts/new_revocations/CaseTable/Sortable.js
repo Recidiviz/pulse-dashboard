@@ -31,12 +31,12 @@ function SortableIcon({ order = null }) {
 
 const orderPropType = PropTypes.oneOf(["asc", "desc"]);
 
-SortableIcon.propTypes = {
-  order: orderPropType,
-};
-
 SortableIcon.defaultProps = {
   order: null,
+};
+
+SortableIcon.propTypes = {
+  order: orderPropType,
 };
 
 const Sortable = ({ children, order = null, onClick }) => (
