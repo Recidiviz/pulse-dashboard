@@ -1,6 +1,7 @@
 import transformChartDataToCsv from "../transformChartDataToCsv";
 
 describe("transformChartDataToCsv", () => {
+  const exportLabel = "Export Label";
   describe("when labels count more than datasets count should place labels in rows", () => {
     const datasets = [
       {
@@ -11,8 +12,10 @@ describe("transformChartDataToCsv", () => {
     const labels = ["Low", "Medium", "High", "Not assessed"];
 
     it("standard case", () => {
-      expect(transformChartDataToCsv(datasets, labels)).resolves.toEqual(
-        `,Revocations\nLow,1\nMedium,2\nHigh,6\nNot assessed,8`
+      expect(
+        transformChartDataToCsv(datasets, labels, exportLabel)
+      ).resolves.toEqual(
+        `Export Label,Revocations\nLow,1\nMedium,2\nHigh,6\nNot assessed,8`
       );
     });
 
@@ -25,10 +28,11 @@ describe("transformChartDataToCsv", () => {
               data: [2, 3, 4, 6],
             },
           ]),
-          labels
+          labels,
+          exportLabel
         )
       ).resolves.toEqual(
-        `,Revocations\nLow,1\nMedium,2\nHigh,6\nNot assessed,8`
+        `Export Label,Revocations\nLow,1\nMedium,2\nHigh,6\nNot assessed,8`
       );
     });
   });
@@ -55,8 +59,10 @@ describe("transformChartDataToCsv", () => {
     const labels = ["Low", "Medium", "High"];
 
     it("datasets more than labels", () => {
-      expect(transformChartDataToCsv(datasets, labels)).resolves.toEqual(
-        `,Low,Medium,High\nWomen,1,2,6\nMen,2,4,6\nDog,3,3,4\nCat,1,6,8`
+      expect(
+        transformChartDataToCsv(datasets, labels, exportLabel)
+      ).resolves.toEqual(
+        `Export Label,Low,Medium,High\nWomen,1,2,6\nMen,2,4,6\nDog,3,3,4\nCat,1,6,8`
       );
     });
 
