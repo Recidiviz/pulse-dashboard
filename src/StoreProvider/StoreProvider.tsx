@@ -15,13 +15,13 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React, { useContext, createContext } from "react";
-import PropTypes from "prop-types";
+import React, { useContext } from "react";
 import RootStore from "../stores/RootStore";
+import PageStore from "../stores/PageStore";
 
-const StoreContext = createContext(null);
+const StoreContext = React.createContext<RootStore | undefined>(undefined);
 
-const StoreProvider = ({ children }) => {
+const StoreProvider: React.FC = ({ children }) => {
   return (
     <StoreContext.Provider value={new RootStore()}>
       {children}
@@ -29,13 +29,9 @@ const StoreProvider = ({ children }) => {
   );
 };
 
-StoreProvider.propTypes = {
-  children: PropTypes.element.isRequired,
-};
-
 export default StoreProvider;
 
-export function useRootStore() {
+export function useRootStore(): RootStore {
   const context = useContext(StoreContext);
   if (context === undefined) {
     throw new Error("useStore must be used within a StoreProvider");
@@ -43,7 +39,7 @@ export function useRootStore() {
   return context;
 }
 
-export function usePageStore() {
+export function usePageStore(): PageStore {
   const { pageStore } = useRootStore();
   return pageStore;
 }

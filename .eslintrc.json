@@ -27,13 +27,22 @@
       }
     },
     {
+      "extends": [
+        // From @typescript-eslint/eslint-plugin
+        "plugin:@typescript-eslint/recommended",
+        // From eslint-config-prettier
+        "prettier/@typescript-eslint"
+      ],
       "files": ["*.ts", "*.tsx"],
       "parser": "@typescript-eslint/parser",
-      "plugins": ["@typescript-eslint"]
+      "plugins": ["@typescript-eslint"],
+      "rules": {
+        "react/prop-types": "off"
+      }
     }
   ],
   "rules": {
-    "react/jsx-filename-extension": ["error", { "extensions": [".js"] }],
+    "react/jsx-filename-extension": ["error", { "extensions": [".tsx", ".js"] }],
     "import/no-extraneous-dependencies": ["error", { "packageDir": "./" }],
     "no-new": 1,
     "react/jsx-props-no-spreading": 0,
