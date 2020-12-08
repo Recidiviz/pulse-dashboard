@@ -33,11 +33,6 @@ export const useStateCode = () => useContext(StateCodeContext);
 export const StateCodeProvider = ({ children }) => {
   const { user } = useAuth0();
 
-  const [currentStateCode, setCurrentStateCode] = useState(
-    // eslint-disable-next-line no-use-before-define
-    getCurrentStateCode()
-  );
-
   /*
    * Returns the current state that should be viewed. This is retrieved from
    * the sessionStorage cache if already set. Otherwise, picks the first available state in ABC order.
@@ -53,6 +48,11 @@ export const StateCodeProvider = ({ children }) => {
     }
     return fromStorage;
   }
+
+  const [currentStateCode, setCurrentStateCode] = useState(
+    // eslint-disable-next-line no-use-before-define
+    getCurrentStateCode()
+  );
 
   /**
    * For admin users, sets the current state that should be viewed in the sessionStorage cache.
