@@ -15,14 +15,12 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import { makeAutoObservable } from "mobx";
+import PageStore from "./PageStore";
 
-export default class PageStore {
-  isTopBarShrinking = false;
+export default class RootStore {
+  pageStore: PageStore;
 
-  constructor(rootStore) {
-    makeAutoObservable(this);
-
-    this.rootStore = rootStore;
+  constructor() {
+    this.pageStore = new PageStore(this);
   }
 }
