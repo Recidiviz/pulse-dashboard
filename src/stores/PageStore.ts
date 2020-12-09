@@ -29,4 +29,8 @@ export default class PageStore {
     this.isTopBarShrinking = false;
     this.rootStore = rootStore;
   }
+
+  setIsTopBarShrinking(value: boolean): void {
+    this.isTopBarShrinking = value;
+  }
 }

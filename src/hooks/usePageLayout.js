@@ -16,7 +16,6 @@
 // =============================================================================
 
 import { useLayoutEffect, useRef } from "react";
-import { runInAction, set } from "mobx";
 import { usePageStore } from "../StoreProvider";
 
 const usePageLayout = () => {
@@ -28,14 +27,13 @@ const usePageLayout = () => {
       cancelAnimationFrame(frame.current);
       frame.current = requestAnimationFrame(() => {
         if (!pageStore.isTopBarShrinking && window.pageYOffset > 90) {
-          runInAction(() => set(pageStore, "isTopBarShrinking", true));
+          pageStore.setIsTopBarShrinking(true);
         } else if (pageStore.isTopBarShrinking && window.pageYOffset < 5) {
-          runInAction(() => set(pageStore, "isTopBarShrinking", false));
+          pageStore.setIsTopBarShrinking(false);
           window.scrollTo({ top: 0, behavior: "smooth" });
         }
       });
     };
-
     window.addEventListener("scroll", handler, {
       capture: false,
       passive: true,

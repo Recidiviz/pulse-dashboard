@@ -19,7 +19,9 @@ import React, { useContext } from "react";
 import RootStore from "../stores/RootStore";
 import PageStore from "../stores/PageStore";
 
-const StoreContext = React.createContext<RootStore | undefined>(undefined);
+export const StoreContext = React.createContext<RootStore | undefined>(
+  undefined
+);
 
 const StoreProvider: React.FC = ({ children }) => {
   return (
