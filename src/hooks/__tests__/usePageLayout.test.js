@@ -107,4 +107,24 @@ describe("usePageLayout hook tests", () => {
       });
     });
   });
+
+  describe("when pageStore.isTopBarShrinking is changed in the store", () => {
+    beforeEach(() => {
+      rootStore.pageStore.setIsTopBarShrinking(true);
+
+      const { pageStore } = rootStore;
+      setIsTopBarShrinkingSpy = jest.spyOn(pageStore, "setIsTopBarShrinking");
+    });
+
+    it("triggers the effect to run", () => {
+      window.pageYOffset = 100;
+      expect(setIsTopBarShrinkingSpy).toHaveBeenCalledTimes(0);
+
+      rootStore.pageStore.setIsTopBarShrinking(false);
+      rootStore.pageStore.setIsTopBarShrinking(true);
+      rootStore.pageStore.setIsTopBarShrinking(false);
+
+      expect(setIsTopBarShrinkingSpy).toHaveBeenCalledTimes(3);
+    });
+  });
 });
