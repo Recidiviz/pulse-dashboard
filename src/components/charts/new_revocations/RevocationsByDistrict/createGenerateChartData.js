@@ -65,6 +65,7 @@ const generatePercentChartData = (apiData, currentDistricts, mode) => {
   const getBarBackgroundColor = ({ dataIndex }) => {
     let color =
       currentDistricts &&
+      labels[dataIndex] &&
       currentDistricts.find(
         (currentDistrict) =>
           currentDistrict.toLowerCase() === labels[dataIndex].toLowerCase()
@@ -115,6 +116,8 @@ const generateCountChartData = (apiData, currentDistricts) => {
   const labels = map("district", transformedData);
   const dataPoints = transformedData.map((item) => item.count);
   const getBarBackgroundColor = ({ dataIndex }) =>
+    currentDistricts &&
+    labels[dataIndex] &&
     currentDistricts.find(
       (currentDistrict) =>
         currentDistrict.toLowerCase() === labels[dataIndex].toLowerCase()
