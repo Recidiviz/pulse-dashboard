@@ -153,7 +153,8 @@ function tooltipForRateMetricWithCounts(
   tooltipItem,
   data,
   numerators,
-  denominators
+  denominators,
+  includeWarning
 ) {
   const { datasetIndex, index: dataPointIndex } = tooltipItem;
   const label = data.datasets[datasetIndex].label || "";
@@ -169,7 +170,11 @@ function tooltipForRateMetricWithCounts(
   if (numerator !== undefined && denominator !== undefined) {
     appendedCounts = ` (${numerator}/${denominator})`;
   }
-  const cue = isDenominatorStatisticallySignificant(denominator) ? "" : " *";
+
+  const cue =
+    includeWarning && !isDenominatorStatisticallySignificant(denominator)
+      ? " *"
+      : "";
 
   return `${label}: ${getTooltipWithoutTrendline(
     tooltipItem,

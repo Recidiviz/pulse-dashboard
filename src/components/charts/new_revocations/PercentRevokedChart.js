@@ -33,6 +33,7 @@ const PercentRevokedChart = ({
   denominators,
   xAxisLabel,
   yAxisLabel,
+  includeWarning,
 }) => (
   <Bar
     id={chartId}
@@ -79,9 +80,11 @@ const PercentRevokedChart = ({
               tooltipItem,
               tooltipData,
               numerators,
-              denominators
+              denominators,
+              includeWarning
             ),
           footer: (tooltipItem) =>
+            includeWarning &&
             tooltipForFooterWithCounts(tooltipItem, denominators),
         },
       },
@@ -106,6 +109,11 @@ PercentRevokedChart.propTypes = {
   xAxisLabel: PropTypes.string.isRequired,
   yAxisLabel: PropTypes.string.isRequired,
   averageRate: PropTypes.number.isRequired,
+  includeWarning: PropTypes.bool,
+};
+
+PercentRevokedChart.defaultProps = {
+  includeWarning: true,
 };
 
 export default PercentRevokedChart;
