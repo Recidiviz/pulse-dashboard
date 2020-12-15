@@ -35,12 +35,14 @@ const RevocationsByOfficer = ({
   timeDescription,
 }) => {
   const chartTitle = `Admissions by ${translate("officer")}`;
+  const includeWarning = false;
 
   return (
     <RevocationsByDimension
       chartId={`${translate("revocations")}by${translate("Officer")}`}
       apiUrl={`${stateCode}/newRevocations`}
       apiFile="revocations_matrix_distribution_by_officer"
+      includeWarning={includeWarning}
       renderChart={({
         chartId,
         data,
@@ -76,6 +78,7 @@ const RevocationsByOfficer = ({
                 ? translate("percentOfPopulationRevoked")
                 : `Percent ${translate("revoked")} out of all exits`
             }
+            includeWarning={includeWarning}
           />
         );
       }}
