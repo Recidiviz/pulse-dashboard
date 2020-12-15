@@ -19,7 +19,7 @@ import pipe from "lodash/fp/pipe";
 import reduce from "lodash/fp/reduce";
 
 import { CHART_COLORS } from "./constants";
-import { getBarBackgroundColor } from "../../../../utils/charts/significantStatistics";
+import { applyStatisticallySignificantShadingToDataset } from "../../../../utils/charts/significantStatistics";
 import {
   getRiskLevels,
   getRiskLevelLabels,
@@ -59,7 +59,10 @@ const createGenerateChartData = (dataFilter, stateCode) => (
 
   const generateDataset = (label, index) => ({
     label,
-    backgroundColor: getBarBackgroundColor(CHART_COLORS[index], denominators),
+    backgroundColor: applyStatisticallySignificantShadingToDataset(
+      CHART_COLORS[index],
+      denominators
+    ),
     data: dataPoints[index],
   });
 

@@ -27,15 +27,21 @@ function isDenominatorsMatrixStatisticallySignificant(denominatorsMatrix) {
     .some((d) => !isDenominatorStatisticallySignificant(d));
 }
 
-function getBarBackgroundColor(color, denominators) {
+function applyStatisticallySignificantShading(color, denominator) {
   const shadingSize = 5;
+  return isDenominatorStatisticallySignificant(denominator)
+    ? color
+    : pattern.draw("diagonal-right-left", color, "#ffffff", shadingSize);
+}
 
-  return ({ datasetIndex: i, dataIndex: j }) => {
-    if (isDenominatorStatisticallySignificant(denominators[i][j])) {
-      return color;
-    }
-    return pattern.draw("diagonal-right-left", color, "#ffffff", shadingSize);
-  };
+function applyStatisticallySignificantShadingToDataset(color, denominators) {
+  return Array.isArray(denominators[0])
+    ? ({ datasetIndex: i, dataIndex: j }) => {
+        return applyStatisticallySignificantShading(color, denominators[i][j]);
+      }
+    : ({ dataIndex: j }) => {
+        return applyStatisticallySignificantShading(color, denominators[j]);
+      };
 }
 
 function tooltipForFooterWithCounts([{ index }], denominators) {
@@ -56,7 +62,8 @@ function tooltipForFooterWithCounts([{ index }], denominators) {
 }
 
 export {
-  getBarBackgroundColor,
+  applyStatisticallySignificantShadingToDataset,
+  applyStatisticallySignificantShading,
   isDenominatorStatisticallySignificant,
   isDenominatorsMatrixStatisticallySignificant,
   tooltipForFooterWithCounts,

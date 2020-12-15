@@ -15,7 +15,6 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import pattern from "patternomaly";
 import pipe from "lodash/fp/pipe";
 import groupBy from "lodash/fp/groupBy";
 import values from "lodash/fp/values";
@@ -26,7 +25,7 @@ import orderBy from "lodash/fp/orderBy";
 import { calculateRate } from "../helpers/rate";
 
 import { translate } from "../../../../views/tenants/utils/i18nSettings";
-import { isDenominatorStatisticallySignificant } from "../../../../utils/charts/significantStatistics";
+import { applyStatisticallySignificantShadingToDataset } from "../../../../utils/charts/significantStatistics";
 import { sumCounts } from "../utils/sumCounts";
 import getNameFromOfficerId from "../utils/getNameFromOfficerId";
 import { COLORS } from "../../../../assets/scripts/constants/colors";
@@ -63,20 +62,13 @@ const generatePercentChartData = (apiData, currentDistricts, mode) => {
   const denominators = map("supervision_count", filteredData);
   const numerators = map("count", filteredData);
 
-  const getBarBackgroundColor = ({ dataIndex }) => {
-    let color = COLORS["lantern-orange"];
-
-    if (!isDenominatorStatisticallySignificant(denominators[dataIndex])) {
-      color = pattern.draw("diagonal-right-left", color, "#ffffff", 5);
-    }
-
-    return color;
-  };
-
   const datasets = [
     {
       label: translate("percentOfPopulationRevoked"),
-      backgroundColor: getBarBackgroundColor,
+      backgroundColor: applyStatisticallySignificantShadingToDataset(
+        COLORS["lantern-orange"],
+        denominators
+      ),
       data: dataPoints,
     },
   ];

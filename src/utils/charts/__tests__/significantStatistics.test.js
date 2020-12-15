@@ -15,10 +15,14 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
+import pattern from "patternomaly";
+
 import {
   isDenominatorStatisticallySignificant,
   isDenominatorsMatrixStatisticallySignificant,
   tooltipForFooterWithCounts,
+  applyStatisticallySignificantShading,
+  applyStatisticallySignificantShadingToDataset,
 } from "../significantStatistics";
 
 const statisticallySignificantDenominators = [0, 100, 1019];
@@ -67,6 +71,93 @@ describe("isDenominatorsMatrixStatisticallySignificant function", () => {
     const given = statisticallySignificantDenominatorMatrix;
 
     expect(isDenominatorsMatrixStatisticallySignificant(given)).toBeTrue();
+  });
+});
+
+describe("applyStatisticallySignificantShading function", () => {
+  it("should not apply shading when statistically significant", () => {
+    const given = statisticallySignificantDenominators;
+    const color = "anyColor";
+
+    given.forEach((denominator) => {
+      expect(applyStatisticallySignificantShading(color, denominator)).toBe(
+        color
+      );
+    });
+  });
+
+  it("should apply shading when not statistically significant", () => {
+    const drawSpy = jest.spyOn(pattern, "draw");
+    drawSpy.mockReturnValue("#ffffff");
+
+    const given = statisticallyNotSignificantDenominators;
+    const color = "anyColor";
+
+    given.forEach((denominator) => {
+      expect(applyStatisticallySignificantShading(color, denominator)).toBe(
+        "#ffffff"
+      );
+    });
+  });
+});
+
+describe("applyStatisticallySignificantShadingToDataset function", () => {
+  let color;
+  let insignificantColor;
+
+  beforeEach(() => {
+    color = "anyColor";
+    insignificantColor = "#ffffff";
+
+    const drawSpy = jest.spyOn(pattern, "draw");
+    drawSpy.mockReturnValue(insignificantColor);
+  });
+
+  it("should not apply shading when statistically significant", () => {
+    const dataset = statisticallySignificantDenominators;
+
+    const backgroundColorFn = applyStatisticallySignificantShadingToDataset(
+      color,
+      dataset
+    );
+    dataset.forEach((_denominator, idx) => {
+      expect(backgroundColorFn({ dataIndex: idx })).toBe(color);
+    });
+  });
+
+  it("should apply shading when not statistically significant", () => {
+    const dataset = statisticallyNotSignificantDenominators;
+
+    const backgroundColorFn = applyStatisticallySignificantShadingToDataset(
+      color,
+      dataset
+    );
+    dataset.forEach((_denominator, idx) => {
+      expect(backgroundColorFn({ dataIndex: idx })).toBe(insignificantColor);
+    });
+  });
+
+  describe("when the dataset is a matrix with an insignificant datapoint", () => {
+    let backgroundColorFn;
+
+    beforeEach(() => {
+      const dataset = statisticallyNotSignificantDenominatorMatrix;
+
+      backgroundColorFn = applyStatisticallySignificantShadingToDataset(
+        color,
+        dataset
+      );
+    });
+
+    it("should not apply the shading to a statistically significant datapoint", () => {
+      expect(backgroundColorFn({ datasetIndex: 2, dataIndex: 1 })).toBe(color);
+    });
+
+    it("should not apply the shading to the statistically insignificant datapoint", () => {
+      expect(backgroundColorFn({ datasetIndex: 2, dataIndex: 2 })).toBe(
+        insignificantColor
+      );
+    });
   });
 });
 
