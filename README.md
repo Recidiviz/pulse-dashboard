@@ -40,7 +40,10 @@ That's it! We suggest installing a linting package for your preferred code edito
 
 Second and last, set up your environment variables.
 
-For Recidiviz staff, download and unzip the `pulse_dashboard_env_vars.zip` from the shared 1Password vault and copy the files into the project directory.
+For Recidiviz staff, download and unzip the `pulse_dashboard_env_vars.zip` from the shared 1Password vault and copy the files into the project directory. 
+
+IMPORTANT: Be sure to use `Shift+Command+.` in your Finder window to show the hidden files, and copy all of the files, including the hidden `.env` files. Follow the directory structure in the zip file, so if the file is nested in the `/src` directory in the zip, copy it into the `/src` directory in the repo. 
+
 For anyone trying to set this up independently, construct environment variables by hand based on the explanations below.
 
 Explanation of frontend env files:
