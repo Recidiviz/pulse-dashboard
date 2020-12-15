@@ -52,7 +52,6 @@
     "express": "^4.16.4",
     "express-jwt": "^6.0.0",
     "helmet": "^3.21.2",
-    "highlight.js": "^9.15.6",
     "http-errors": "~1.6.2",
     "i18n": "^0.13.2",
     "jest-environment-jsdom-sixteen": "^1.0.3",
