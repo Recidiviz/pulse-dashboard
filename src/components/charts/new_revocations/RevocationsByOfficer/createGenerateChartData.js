@@ -25,13 +25,12 @@ import orderBy from "lodash/fp/orderBy";
 import { calculateRate } from "../helpers/rate";
 
 import { translate } from "../../../../views/tenants/utils/i18nSettings";
-import { applyStatisticallySignificantShadingToDataset } from "../../../../utils/charts/significantStatistics";
 import { sumCounts } from "../utils/sumCounts";
 import getNameFromOfficerId from "../utils/getNameFromOfficerId";
 import { COLORS } from "../../../../assets/scripts/constants/colors";
 import { filterOptimizedDataFormat } from "../../../../utils/charts/dataFilters";
 
-const generatePercentChartData = (apiData, currentDistricts, mode) => {
+const generatePercentChartData = (apiData, mode) => {
   const [fieldName, totalFieldName] =
     mode === "exits"
       ? ["exit_count", "total_exit_count"]
@@ -65,10 +64,7 @@ const generatePercentChartData = (apiData, currentDistricts, mode) => {
   const datasets = [
     {
       label: translate("percentOfPopulationRevoked"),
-      backgroundColor: applyStatisticallySignificantShadingToDataset(
-        COLORS["lantern-orange"],
-        denominators
-      ),
+      backgroundColor: COLORS["lantern-orange"],
       data: dataPoints,
     },
   ];
@@ -113,7 +109,7 @@ const generateCountChartData = (apiData) => {
   return { data: { datasets, labels }, denominators: [] };
 };
 
-const createGenerateChartData = (dataFilter, currentDistricts) => (
+const createGenerateChartData = (dataFilter) => (
   apiData,
   mode,
   unflattenedValues
@@ -130,7 +126,7 @@ const createGenerateChartData = (dataFilter, currentDistricts) => (
     case "exits":
     case "rates":
     default:
-      return generatePercentChartData(filteredData, currentDistricts, mode);
+      return generatePercentChartData(filteredData, mode);
   }
 };
 

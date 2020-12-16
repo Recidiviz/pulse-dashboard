@@ -41,6 +41,7 @@ const RevocationsByDimension = ({
   modes,
   defaultMode,
   dataExportLabel,
+  includeWarning,
 }) => {
   const [mode, setMode] = useState(defaultMode);
 
@@ -64,9 +65,9 @@ const RevocationsByDimension = ({
     unflattenedValues
   );
 
-  const showWarning = !isDenominatorsMatrixStatisticallySignificant(
-    denominators
-  );
+  const showWarning =
+    includeWarning &&
+    !isDenominatorsMatrixStatisticallySignificant(denominators);
 
   const modeButtons = modes.map((item) => ({
     label: getLabelByMode(item),
@@ -108,6 +109,7 @@ RevocationsByDimension.defaultProps = {
   modes: [],
   defaultMode: null,
   dataExportLabel: null,
+  includeWarning: true,
 };
 
 RevocationsByDimension.propTypes = {
@@ -124,6 +126,7 @@ RevocationsByDimension.propTypes = {
   modes: PropTypes.arrayOf(PropTypes.string),
   defaultMode: PropTypes.string,
   dataExportLabel: PropTypes.string,
+  includeWarning: PropTypes.bool,
 };
 
 export default RevocationsByDimension;

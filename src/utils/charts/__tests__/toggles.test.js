@@ -548,6 +548,32 @@ describe("test for file toggles", () => {
     expect(tooltipTest).toBe("Percent revoked: 10.56% (19/180)");
   });
 
+  it("tooltip for rate metric with warning", () => {
+    const includeWarning = true;
+    tooltipItemRate.index = 4;
+    const tooltipTest = toggleMethods.tooltipForRateMetricWithCounts(
+      tooltipItemRate,
+      dataMetric,
+      [numbers],
+      [denominators],
+      includeWarning
+    );
+    expect(tooltipTest).toBe("Percent revoked: 10.56% (2/3) *");
+  });
+
+  it("tooltip for rate metric without warning", () => {
+    const includeWarning = false;
+    tooltipItemRate.index = 4;
+    const tooltipTest = toggleMethods.tooltipForRateMetricWithCounts(
+      tooltipItemRate,
+      dataMetric,
+      [numbers],
+      [denominators],
+      includeWarning
+    );
+    expect(tooltipTest).toBe("Percent revoked: 10.56% (2/3)");
+  });
+
   it("update tooltip for metric type", () => {
     const tooltipTest = toggleMethods.updateTooltipForMetricType(
       "rates",
