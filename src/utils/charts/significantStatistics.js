@@ -14,8 +14,10 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-
 import pattern from "patternomaly";
+import { COLORS } from "../../assets/scripts/constants/colors";
+
+const STATISTICALLY_INSIGNIFICANT_PATTERN = "diagonal-right-left";
 
 function isDenominatorStatisticallySignificant(denominator = 0) {
   return denominator === 0 || denominator >= 100;
@@ -29,9 +31,15 @@ function isDenominatorsMatrixStatisticallySignificant(denominatorsMatrix) {
 
 function applyStatisticallySignificantShading(color, denominator) {
   const shadingSize = 5;
+
   return isDenominatorStatisticallySignificant(denominator)
     ? color
-    : pattern.draw("diagonal-right-left", color, "#ffffff", shadingSize);
+    : pattern.draw(
+        STATISTICALLY_INSIGNIFICANT_PATTERN,
+        color,
+        COLORS.white,
+        shadingSize
+      );
 }
 
 function applyStatisticallySignificantShadingToDataset(color, denominators) {
@@ -67,4 +75,5 @@ export {
   isDenominatorStatisticallySignificant,
   isDenominatorsMatrixStatisticallySignificant,
   tooltipForFooterWithCounts,
+  STATISTICALLY_INSIGNIFICANT_PATTERN,
 };
