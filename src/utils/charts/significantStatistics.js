@@ -14,8 +14,10 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-
 import pattern from "patternomaly";
+import { COLORS } from "../../assets/scripts/constants/colors";
+
+const STATISTICALLY_INSIGNIFICANT_PATTERN = "diagonal-right-left";
 
 function isDenominatorStatisticallySignificant(denominator = 0) {
   return denominator === 0 || denominator >= 100;
@@ -27,15 +29,27 @@ function isDenominatorsMatrixStatisticallySignificant(denominatorsMatrix) {
     .some((d) => !isDenominatorStatisticallySignificant(d));
 }
 
-function getBarBackgroundColor(color, denominators) {
+function applyStatisticallySignificantShading(color, denominator) {
   const shadingSize = 5;
 
-  return ({ datasetIndex: i, dataIndex: j }) => {
-    if (isDenominatorStatisticallySignificant(denominators[i][j])) {
-      return color;
-    }
-    return pattern.draw("diagonal-right-left", color, "#ffffff", shadingSize);
-  };
+  return isDenominatorStatisticallySignificant(denominator)
+    ? color
+    : pattern.draw(
+        STATISTICALLY_INSIGNIFICANT_PATTERN,
+        color,
+        COLORS.white,
+        shadingSize
+      );
+}
+
+function applyStatisticallySignificantShadingToDataset(color, denominators) {
+  return Array.isArray(denominators[0])
+    ? ({ datasetIndex: i, dataIndex: j }) => {
+        return applyStatisticallySignificantShading(color, denominators[i][j]);
+      }
+    : ({ dataIndex: j }) => {
+        return applyStatisticallySignificantShading(color, denominators[j]);
+      };
 }
 
 function tooltipForFooterWithCounts([{ index }], denominators) {
@@ -56,8 +70,10 @@ function tooltipForFooterWithCounts([{ index }], denominators) {
 }
 
 export {
-  getBarBackgroundColor,
+  applyStatisticallySignificantShadingToDataset,
+  applyStatisticallySignificantShading,
   isDenominatorStatisticallySignificant,
   isDenominatorsMatrixStatisticallySignificant,
   tooltipForFooterWithCounts,
+  STATISTICALLY_INSIGNIFICANT_PATTERN,
 };

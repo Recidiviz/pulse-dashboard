@@ -104,6 +104,7 @@
     "eslint-config-prettier": "^6.11.1",
     "eslint-plugin-prettier": "^3.1.4",
     "husky": "^4.2.3",
+    "jest-canvas-mock": "^2.3.0",
     "jest-environment-jsdom-sixteen": "^1.0.3",
     "jest-extended": "^0.11.5",
     "lint-staged": "^10.0.9",
@@ -136,7 +137,8 @@
   "jest": {
     "setupFilesAfterEnv": [
       "./src/setupTests.js",
-      "@testing-library/react-hooks/dont-cleanup-after-each.js"
+      "@testing-library/react-hooks/dont-cleanup-after-each.js",
+      "jest-canvas-mock"
     ],
     "moduleNameMapper": {
       "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/__mocks__/fileMock.js",
