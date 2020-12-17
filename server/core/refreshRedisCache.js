@@ -31,27 +31,14 @@ function cacheEachFile(files, cacheKeyPrefix) {
   Object.keys(files).forEach((fileKey) => {
     const cacheKey = `${cacheKeyPrefix}-${fileKey}`;
     const metricFile = files[fileKey];
-    redisCache
-      .get(cacheKey)
-      .then((cachedFile) => {
-        // Update the cache if it exists and is out of date, or if it does not exist at all.
-        // Skip if it exists and is not out of date.
-        if (cachedFile) {
-          if (metricFile.metadata.updated !== cachedFile.metadata.updated) {
-            console.log(`Setting cache for: ${cacheKey}...`);
-            redisCache.set(cacheKey, metricFile);
-          }
-        } else {
-          redisCache.set(cacheKey, metricFile);
-        }
-      })
-      .catch((error) => {
-        console.error(
-          `Error occurred while refreshing cache for key: ${cacheKey}`,
-          error
-        );
-        cachingErrors.push(error);
-      });
+    console.log(`Setting cache for: ${cacheKey}...`);
+    redisCache.set(cacheKey, metricFile).catch((error) => {
+      console.error(
+        `Error occurred while refreshing cache for key: ${cacheKey}`,
+        error
+      );
+      cachingErrors.push(error);
+    });
   });
   return { errors: cachingErrors.length > 0 ? cachingErrors : null };
 }
