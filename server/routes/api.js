@@ -20,11 +20,16 @@
  * in server.js.
  */
 
-const { fetchMetrics } = require("../core");
+const {
+  refreshRedisCache,
+  fetchMetrics,
+  cacheInRedis,
+  cacheInMemory,
+} = require("../core");
 const { default: isDemoMode } = require("../utils/isDemoMode");
 
 /**
- * A callback which returns either either an error payload or a data payload.
+ * A callback which returns either an error payload or a data payload.
  */
 function responder(res) {
   return (err, data) => {
@@ -38,72 +43,82 @@ function responder(res) {
 
 // TODO: Generalize this API to take in the metric type and file as request parameters in all calls
 
-function newRevocations(req, res) {
-  fetchMetrics(
-    req.params.stateCode,
+function refreshCache(req, res) {
+  const { stateCode } = req.params;
+  refreshRedisCache(
+    () => fetchMetrics(stateCode, "newRevocation", null, isDemoMode),
+    stateCode,
     "newRevocation",
-    null,
-    isDemoMode,
+    responder(res)
+  );
+}
+
+function newRevocations(req, res) {
+  const { stateCode } = req.params;
+  const cacheKey = `${stateCode}-newRevocation`;
+  cacheInRedis(
+    cacheKey,
+    () => fetchMetrics(stateCode, "newRevocation", null, isDemoMode),
     responder(res)
   );
 }
 
 function newRevocationFile(req, res) {
-  fetchMetrics(
-    req.params.stateCode,
-    "newRevocation",
-    req.params.file,
-    isDemoMode,
+  const { stateCode, file } = req.params;
+  const cacheKey = `${stateCode}-newRevocation-${file}`;
+  cacheInRedis(
+    cacheKey,
+    () => fetchMetrics(stateCode, "newRevocation", file, isDemoMode),
     responder(res)
   );
 }
 
 function communityGoals(req, res) {
-  fetchMetrics(
-    req.params.stateCode,
-    "communityGoals",
-    null,
-    isDemoMode,
+  const { stateCode } = req.params;
+  const cacheKey = `${stateCode}-communityGoals`;
+  cacheInMemory(
+    cacheKey,
+    () => fetchMetrics(stateCode, "communityGoals", null, isDemoMode),
     responder(res)
   );
 }
 
 function communityExplore(req, res) {
-  fetchMetrics(
-    req.params.stateCode,
-    "communityExplore",
-    null,
-    isDemoMode,
+  const { stateCode } = req.params;
+  const cacheKey = `${stateCode}-communityExplore`;
+  cacheInMemory(
+    cacheKey,
+    () => fetchMetrics(stateCode, "communityExplore", null, isDemoMode),
     responder(res)
   );
 }
 
 function facilitiesGoals(req, res) {
-  fetchMetrics(
-    req.params.stateCode,
-    "facilitiesGoals",
-    null,
-    isDemoMode,
+  const { stateCode } = req.params;
+  const cacheKey = `${stateCode}-facilitiesGoals`;
+  cacheInMemory(
+    cacheKey,
+    () => fetchMetrics(stateCode, "facilitiesGoals", null, isDemoMode),
     responder(res)
   );
 }
 
 function facilitiesExplore(req, res) {
-  fetchMetrics(
-    req.params.stateCode,
-    "facilitiesExplore",
-    null,
-    isDemoMode,
+  const { stateCode } = req.params;
+  const cacheKey = `${stateCode}-facilitiesExplore`;
+  cacheInMemory(
+    cacheKey,
+    () => fetchMetrics(stateCode, "facilitiesExplore", null, isDemoMode),
     responder(res)
   );
 }
 
 function programmingExplore(req, res) {
-  fetchMetrics(
-    req.params.stateCode,
-    "programmingExplore",
-    null,
-    isDemoMode,
+  const { stateCode } = req.params;
+  const cacheKey = `${stateCode}-programmingExplore`;
+  cacheInMemory(
+    cacheKey,
+    () => fetchMetrics(stateCode, "programmingExplore", null, isDemoMode),
     responder(res)
   );
 }
@@ -117,4 +132,5 @@ module.exports = {
   facilitiesExplore,
   programmingExplore,
   responder,
+  refreshCache,
 };

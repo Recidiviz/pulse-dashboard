@@ -77,6 +77,8 @@ if (isDemoMode) {
   };
 }
 
+// TODO: require admin role / auth for this endpoint / secure endpoint
+app.get("/api/:stateCode/refreshCache", checkJwt, api.refreshCache);
 app.get("/api/:stateCode/newRevocations", checkJwt, api.newRevocations);
 app.get(
   "/api/:stateCode/newRevocations/:file",
