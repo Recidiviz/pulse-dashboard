@@ -35,6 +35,8 @@ const REDISPORT = process.env.REDISPORT || 6379;
 
 // Expire items in cache after 1 day
 const REDIS_CACHE_TTL_SECONDS = 60 * 60 * 24;
+// Set refresh threshold to 1 hour
+const REDIS_CACHE_REFRESH_THRESHOLD = 60 * 60;
 
 const redisInstance = new Redis({
   host: REDISHOST,
@@ -45,17 +47,16 @@ const redisInstance = new Redis({
 
 const redisCache = cacheManager.caching({
   store: redisStore,
+  refreshThreshold: REDIS_CACHE_REFRESH_THRESHOLD,
   redisInstance,
 });
 
-// Timestamp will change after 24 hours, at which point the cache will refresh
-const CACHE_KEY_TIMESTAMP = new Date().getDate();
 const redisClient = redisCache.store.getClient();
 redisClient.on("error", (error) => console.error("ERR:REDIS:", error));
 
 function cacheInRedis(cacheKey, fetchValue, callback) {
   redisCache.wrap(
-    `${cacheKey}-${CACHE_KEY_TIMESTAMP}`,
+    cacheKey,
     (cacheCb) => {
       fetchValue()
         .then((value) => {
@@ -70,4 +71,4 @@ function cacheInRedis(cacheKey, fetchValue, callback) {
   );
 }
 
-module.exports = { cacheInRedis, CACHE_KEY_TIMESTAMP };
+module.exports = { cacheInRedis, redisCache };
