@@ -32,7 +32,7 @@ describe("createMemoryCache tests", () => {
     jest.mock("../../utils/isDemoMode", () => ({
       default: true,
     }));
-    const { default: createMemoryCache } = require("../createMemoryCache");
+    const { createMemoryCache } = require("../createMemoryCache");
     createMemoryCache(mockTtl, mockRefreshThreshold);
     expect(cachingSpy).toHaveBeenCalledWith({
       store: "none",
@@ -45,7 +45,7 @@ describe("createMemoryCache tests", () => {
     jest.mock("../../utils/isDemoMode", () => ({
       default: false,
     }));
-    const { default: createMemoryCache } = require("../createMemoryCache");
+    const { createMemoryCache } = require("../createMemoryCache");
     createMemoryCache(mockTtl, mockRefreshThreshold);
     expect(cachingSpy).toHaveBeenCalledWith({
       store: "memory",

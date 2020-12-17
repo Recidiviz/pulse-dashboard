@@ -45,4 +45,4 @@ function cacheInMemory(cacheKey, fetchValue) {
   });
 }
 
-module.exports = { cacheInMemory };
+module.exports = { createMemoryCache, cacheInMemory };
