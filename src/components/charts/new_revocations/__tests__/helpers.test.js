@@ -27,6 +27,8 @@ describe("applyTopLevelFilters", () => {
       {
         charge_category: "ALL",
         district: "ALL",
+        level_1_supervision_location: "ALL",
+        level_2_supervision_location: "ROCKYROAD",
         month: "1",
         reported_violations: "1",
         state_code: "US_PA",
@@ -39,6 +41,8 @@ describe("applyTopLevelFilters", () => {
       {
         charge_category: "ALL",
         district: "ALL",
+        level_1_supervision_location: "04B",
+        level_2_supervision_location: "ALL",
         month: "1",
         reported_violations: "1",
         state_code: "US_PA",
@@ -51,6 +55,8 @@ describe("applyTopLevelFilters", () => {
       {
         charge_category: "SEX_OFFENSE",
         district: "ALL",
+        level_1_supervision_location: "ALL",
+        level_2_supervision_location: "ALL",
         month: "1",
         reported_violations: "1",
         state_code: "US_PA",
@@ -63,6 +69,8 @@ describe("applyTopLevelFilters", () => {
       {
         charge_category: "SEX_OFFENSE",
         district: "ALL",
+        level_1_supervision_location: "05X",
+        level_2_supervision_location: "VANILLA",
         month: "1",
         reported_violations: "1",
         state_code: "US_PA",
@@ -293,6 +301,134 @@ describe("applyTopLevelFilters", () => {
 
       it("does not double count the 'ALL' item", () => {
         expect(filteredChargeCategories).not.toContain("ALL");
+      });
+    });
+  });
+
+  describe("levelOneSupervisionLocation filter", () => {
+    let filteredSupervisionLocations = [];
+
+    describe("with levelOneSupervisionLocation = 'ALL' filter applied", () => {
+      beforeEach(() => {
+        filters = { levelOneSupervisionLocation: ["ALL"] };
+        filtered = applyTopLevelFilters({ filters })(data);
+        filteredSupervisionLocations = filtered.map(
+          (f) => f.level_1_supervision_location
+        );
+      });
+
+      it("correctly returns level_1_supervision_location items matching the filter term", () => {
+        const expected = ["ALL", "ALL"];
+        expect(filteredSupervisionLocations).toEqual(expected);
+      });
+    });
+
+    describe("with levelOneSupervisionLocation = '04B' filter applied", () => {
+      beforeEach(() => {
+        filters = { levelOneSupervisionLocation: ["04B"] };
+        filtered = applyTopLevelFilters({ filters })(data);
+        filteredSupervisionLocations = filtered.map(
+          (f) => f.level_1_supervision_location
+        );
+      });
+
+      it("correctly returns level_1_supervision_location items matching filter value", () => {
+        const expected = ["04B"];
+        expect(filteredSupervisionLocations).toEqual(expected);
+      });
+
+      it("does not double count the 'ALL' item", () => {
+        expect(filteredSupervisionLocations).not.toContain("ALL");
+      });
+    });
+
+    // This is the case for the CaseTable because the
+    // revocations_matrix_filtered_caseload endpoint has the following condition:
+    // For US_PA the level_1_supervision_location (for now) is always ALL
+    // For US_MO the level_1_supervision_location (for now) is never ALL
+    // Therefore, continue to 'treatCategoryAllAsAbsent' for both of these cases
+    describe("when the treatCategoryAllAsAbsent flag is true", () => {
+      const treatCategoryAllAsAbsent = true;
+
+      beforeEach(() => {
+        filters = { levelOneSupervisionLocation: ["ALL"] };
+        filtered = applyTopLevelFilters({
+          filters,
+          skippedFilters: [],
+          treatCategoryAllAsAbsent,
+        })(data);
+        filteredSupervisionLocations = filtered.map(
+          (f) => f.level_1_supervision_location
+        );
+      });
+
+      it("returns all of the rows", () => {
+        const expected = ["ALL", "04B", "ALL", "05X"];
+        expect(filteredSupervisionLocations).toEqual(expected);
+      });
+    });
+  });
+
+  describe("levelTwoSupervisionLocation filter", () => {
+    let filteredSupervisionLocations = [];
+
+    describe("with levelTwoSupervisionLocation = 'ALL' filter applied", () => {
+      beforeEach(() => {
+        filters = { levelTwoSupervisionLocation: ["ALL"] };
+        filtered = applyTopLevelFilters({ filters })(data);
+        filteredSupervisionLocations = filtered.map(
+          (f) => f.level_2_supervision_location
+        );
+      });
+
+      it("correctly returns level_2_supervision_location items matching the filter term", () => {
+        const expected = ["ALL", "ALL"];
+        expect(filteredSupervisionLocations).toEqual(expected);
+      });
+    });
+
+    describe("with levelTwoSupervisionLocation = 'ROCKYROAD' filter applied", () => {
+      beforeEach(() => {
+        filters = { levelTwoSupervisionLocation: ["ROCKYROAD"] };
+        filtered = applyTopLevelFilters({ filters })(data);
+        filteredSupervisionLocations = filtered.map(
+          (f) => f.level_2_supervision_location
+        );
+      });
+
+      it("correctly returns level_2_supervision_location items matching filter value", () => {
+        const expected = ["ROCKYROAD"];
+        expect(filteredSupervisionLocations).toEqual(expected);
+      });
+
+      it("does not double count the 'ALL' item", () => {
+        expect(filteredSupervisionLocations).not.toContain("ALL");
+      });
+    });
+
+    // This is the case for the CaseTable because the
+    // revocations_matrix_filtered_caseload endpoint has the following condition:
+    // For US_PA the level_2_supervision_location (for now) is never ALL
+    // For US_MO the level_2_supervision_location (for now) is always ALL
+    // Therefore, continue to 'treatCategoryAllAsAbsent' for both of these cases
+    describe("when the treatCategoryAllAsAbsent flag is true", () => {
+      const treatCategoryAllAsAbsent = true;
+
+      beforeEach(() => {
+        filters = { levelTwoSupervisionLocation: ["ALL"] };
+        filtered = applyTopLevelFilters({
+          filters,
+          skippedFilters: [],
+          treatCategoryAllAsAbsent,
+        })(data);
+        filteredSupervisionLocations = filtered.map(
+          (f) => f.level_2_supervision_location
+        );
+      });
+
+      it("returns all of the rows", () => {
+        const expected = ["ROCKYROAD", "ALL", "ALL", "VANILLA"];
+        expect(filteredSupervisionLocations).toEqual(expected);
       });
     });
   });

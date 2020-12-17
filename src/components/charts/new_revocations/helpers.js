@@ -35,6 +35,8 @@ import {
   SUPERVISION_LEVEL,
   SUPERVISION_TYPE,
   VIOLATION_TYPE,
+  LEVEL_1_SUPERVISION_LOCATION,
+  LEVEL_2_SUPERVISION_LOCATION,
 } from "../../../constants/filterTypes";
 
 export const matchesTopLevelFilters = ({
@@ -60,6 +62,40 @@ export const matchesTopLevelFilters = ({
     !skippedFilters.includes(DISTRICT) &&
     !(treatCategoryAllAsAbsent && includesAllItemFirst(filters[DISTRICT])) &&
     !nullSafeComparisonForArray(item.district, filters[DISTRICT])
+  ) {
+    return false;
+  }
+
+  if (
+    (dimensionKey === undefined ||
+      dimensionKey === "level_1_supervision_location") &&
+    filters[LEVEL_1_SUPERVISION_LOCATION] &&
+    !skippedFilters.includes(LEVEL_1_SUPERVISION_LOCATION) &&
+    !(
+      treatCategoryAllAsAbsent &&
+      includesAllItemFirst(filters[LEVEL_1_SUPERVISION_LOCATION])
+    ) &&
+    !nullSafeComparisonForArray(
+      item.level_1_supervision_location,
+      filters[LEVEL_1_SUPERVISION_LOCATION]
+    )
+  ) {
+    return false;
+  }
+
+  if (
+    (dimensionKey === undefined ||
+      dimensionKey === "level_2_supervision_location") &&
+    filters[LEVEL_2_SUPERVISION_LOCATION] &&
+    !skippedFilters.includes(LEVEL_2_SUPERVISION_LOCATION) &&
+    !(
+      treatCategoryAllAsAbsent &&
+      includesAllItemFirst(filters[LEVEL_2_SUPERVISION_LOCATION])
+    ) &&
+    !nullSafeComparisonForArray(
+      item.level_2_supervision_location,
+      filters[LEVEL_2_SUPERVISION_LOCATION]
+    )
   ) {
     return false;
   }

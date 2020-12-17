@@ -7,7 +7,13 @@ import {
   SUPERVISION_LEVEL,
   SUPERVISION_TYPE,
   VIOLATION_TYPE,
+  LEVEL_1_SUPERVISION_LOCATION,
+  LEVEL_2_SUPERVISION_LOCATION,
 } from "../../../../constants/filterTypes";
+
+export const DISTRICT_CHART_SKIPPED_FILTERS = {
+  test_state: [DISTRICT, LEVEL_2_SUPERVISION_LOCATION],
+};
 
 export default {
   test_state: {
@@ -104,5 +110,7 @@ export default {
       },
       defaultValue: `${DISTRICT}-0`,
     },
+    [LEVEL_1_SUPERVISION_LOCATION]: { defaultValue: "All" },
+    [LEVEL_2_SUPERVISION_LOCATION]: { defaultValue: "All" },
   },
 };

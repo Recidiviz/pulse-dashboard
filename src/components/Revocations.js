@@ -48,12 +48,16 @@ import {
 } from "../utils/authentication/user";
 import { useStateCode } from "../contexts/StateCodeContext";
 import * as lanternTenant from "../views/tenants/utils/lanternTenants";
-import filterOptionsMap from "../views/tenants/constants/filterOptions";
+import filterOptionsMap, {
+  DISTRICT_CHART_SKIPPED_FILTERS,
+} from "../views/tenants/constants/filterOptions";
 import { translate } from "../views/tenants/utils/i18nSettings";
 import {
   ADMISSION_TYPE,
   CHARGE_CATEGORY,
   DISTRICT,
+  LEVEL_1_SUPERVISION_LOCATION,
+  LEVEL_2_SUPERVISION_LOCATION,
   METRIC_PERIOD_MONTHS,
   REPORTED_VIOLATIONS,
   SUPERVISION_LEVEL,
@@ -84,6 +88,12 @@ const Revocations = () => {
       ? { [ADMISSION_TYPE]: filterOptions[ADMISSION_TYPE].defaultValue }
       : {}),
     [DISTRICT]: [district || filterOptions[DISTRICT].defaultValue],
+    [LEVEL_1_SUPERVISION_LOCATION]: [
+      district || filterOptions[LEVEL_1_SUPERVISION_LOCATION].defaultValue,
+    ],
+    [LEVEL_2_SUPERVISION_LOCATION]: [
+      district || filterOptions[LEVEL_2_SUPERVISION_LOCATION].defaultValue,
+    ],
   });
 
   const updateFilters = (newFilters) => {
@@ -260,7 +270,7 @@ const Revocations = () => {
             <RevocationsByDistrict
               dataFilter={matchesAllFilters({
                 filters: transformedFilters,
-                skippedFilters: [DISTRICT],
+                skippedFilters: DISTRICT_CHART_SKIPPED_FILTERS[stateCode],
               })}
               filterStates={filters}
               currentDistricts={

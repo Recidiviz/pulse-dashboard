@@ -7,8 +7,15 @@ import {
   SUPERVISION_LEVEL,
   SUPERVISION_TYPE,
   VIOLATION_TYPE,
+  LEVEL_1_SUPERVISION_LOCATION,
+  LEVEL_2_SUPERVISION_LOCATION,
 } from "../../../constants/filterTypes";
 import { MO, PA } from "../utils/lanternTenants";
+
+export const DISTRICT_CHART_SKIPPED_FILTERS = {
+  [MO]: [DISTRICT, LEVEL_2_SUPERVISION_LOCATION],
+  [PA]: [DISTRICT, LEVEL_1_SUPERVISION_LOCATION],
+};
 
 const METRIC_PERIODS = {
   options: [
@@ -134,6 +141,8 @@ const MOFilterOptions = {
   [SUPERVISION_TYPE]: { ...SUPERVISION_TYPES, componentEnabled: true },
   [REPORTED_VIOLATIONS]: { defaultValue: "" },
   [DISTRICT]: { defaultValue: "All" },
+  [LEVEL_1_SUPERVISION_LOCATION]: { defaultValue: "All" },
+  [LEVEL_2_SUPERVISION_LOCATION]: { defaultValue: "All" },
 };
 
 const PAFilterOptions = {
@@ -205,6 +214,8 @@ const PAFilterOptions = {
   [SUPERVISION_TYPE]: { defaultValue: "All", componentEnabled: false },
   [REPORTED_VIOLATIONS]: { defaultValue: "" },
   [DISTRICT]: { defaultValue: "All" },
+  [LEVEL_1_SUPERVISION_LOCATION]: { defaultValue: "All" },
+  [LEVEL_2_SUPERVISION_LOCATION]: { defaultValue: "All" },
 };
 
 export default {
