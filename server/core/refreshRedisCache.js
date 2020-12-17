@@ -23,31 +23,37 @@
  */
 
 /* eslint-disable no-console */
-const { cacheInRedis } = require("./redisCache");
+const { redisCache } = require("./redisCache");
 
 function cacheEachFile(files, cacheKeyPrefix) {
-  const cacheInRedisErrors = [];
+  const cachingErrors = [];
 
   Object.keys(files).forEach((fileKey) => {
     const cacheKey = `${cacheKeyPrefix}-${fileKey}`;
-    console.log(`Setting cache for: ${cacheKey}...`);
-    cacheInRedis(
-      cacheKey,
-      () => {
-        return Promise.resolve(files[fileKey]);
-      },
-      (err) => {
-        if (err) {
-          console.error(
-            `Error occurred while refreshing cache for key: ${cacheKey}`,
-            err
-          );
-          cacheInRedisErrors.push(err);
+    const metricFile = files[fileKey];
+    redisCache
+      .get(cacheKey)
+      .then((cachedFile) => {
+        // Update the cache if it exists and is out of date, or if it does not exist at all.
+        // Skip if it exists and is not out of date.
+        if (cachedFile) {
+          if (metricFile.metadata.updated !== cachedFile.metadata.updated) {
+            console.log(`Setting cache for: ${cacheKey}...`);
+            redisCache.set(cacheKey, metricFile);
+          }
+        } else {
+          redisCache.set(cacheKey, metricFile);
         }
-      }
-    );
+      })
+      .catch((error) => {
+        console.error(
+          `Error occurred while refreshing cache for key: ${cacheKey}`,
+          error
+        );
+        cachingErrors.push(error);
+      });
   });
-  return { errors: cacheInRedisErrors.length > 0 ? cacheInRedisErrors : null };
+  return { errors: cachingErrors.length > 0 ? cachingErrors : null };
 }
 
 function refreshRedisCache(fetchMetrics, stateCode, metricType, callback) {

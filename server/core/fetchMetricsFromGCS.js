@@ -52,21 +52,25 @@ function fetchMetricsFromGCS(stateCode, metricType, file) {
       );
 
       promises.push(
-        Promise.all([filePromise, metadataPromise]).then((bothResults) => {
-          const contents = bothResults[0];
-          const rawMetadata = bothResults[1][0] && bothResults[1][0].metadata;
+        Promise.all([filePromise, metadataPromise]).then(
+          ([fileContents, fileMetadata]) => {
+            const contents = fileContents;
+            const lastUpdated = fileMetadata[0] && fileMetadata[0].updated;
+            const rawMetadata = fileMetadata[0] && fileMetadata[0].metadata;
 
-          const metadata = {};
-          if (rawMetadata) {
-            metadata.value_keys = JSON.parse(rawMetadata.value_keys);
-            metadata.total_data_points = rawMetadata.total_data_points;
-            metadata.dimension_manifest = JSON.parse(
-              rawMetadata.dimension_manifest
-            );
+            const metadata = {};
+            if (rawMetadata) {
+              metadata.updated = JSON.parse(lastUpdated);
+              metadata.value_keys = JSON.parse(rawMetadata.value_keys);
+              metadata.total_data_points = rawMetadata.total_data_points;
+              metadata.dimension_manifest = JSON.parse(
+                rawMetadata.dimension_manifest
+              );
+            }
+
+            return { fileKey, extension, metadata, contents };
           }
-
-          return { fileKey, extension, metadata, contents };
-        })
+        )
       );
     });
   } catch (e) {
