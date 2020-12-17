@@ -1,35 +1,3 @@
-// Recidiviz - a data platform for criminal justice reform
-// Copyright (C) 2020 Recidiviz, Inc.
-//
-// This program is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with this program.  If not, see <https://www.gnu.org/licenses/>.
-// =============================================================================
-
-/* eslint-disable no-console */
-
-const { default: processMetricFile } = require("./processMetricFile");
-const { default: fetchMetricsFromLocal } = require("./fetchMetricsFromLocal");
-const { default: fetchMetricsFromGCS } = require("./fetchMetricsFromGCS");
-const { default: createMemoryCache } = require("./createMemoryCache");
-
-const METRIC_CACHE_TTL_SECONDS = 60 * 60; // Expire items in the cache after 1 hour
-const METRIC_REFRESH_SECONDS = 60 * 10;
-
-const memoryCache = createMemoryCache(
-  METRIC_CACHE_TTL_SECONDS,
-  METRIC_REFRESH_SECONDS
-);
-
 /**
  * Retrieves the metrics for the given metric type and passes them into the given callback.
  *
@@ -44,41 +12,32 @@ const memoryCache = createMemoryCache(
  * If we are in demo mode, then fetches the files from a static directory, /server/core/demo_data/.
  * Otherwise, fetches from Google Cloud Storage.
  */
-function fetchMetrics(stateCode, metricType, file, isDemo, callback) {
-  const cacheKey = `${stateCode}-${metricType}-${file}`;
-  console.log(`Handling call to fetch ${cacheKey} metrics...`);
+/* eslint-disable no-console */
 
-  return memoryCache.wrap(
-    cacheKey,
-    (cacheCb) => {
-      const fetcher = isDemo ? fetchMetricsFromLocal : fetchMetricsFromGCS;
-      const source = isDemo ? "local" : "GCS";
+const { default: processMetricFile } = require("./processMetricFile");
+const { default: fetchMetricsFromLocal } = require("./fetchMetricsFromLocal");
+const { default: fetchMetricsFromGCS } = require("./fetchMetricsFromGCS");
 
-      console.log(`Fetching ${cacheKey} metrics from ${source}...`);
-      const metricPromises = fetcher(stateCode.toUpperCase(), metricType, file);
+function fetchMetrics(stateCode, metricType, file, isDemo) {
+  const fetcher = isDemo ? fetchMetricsFromLocal : fetchMetricsFromGCS;
+  const source = isDemo ? "local" : "GCS";
 
-      Promise.all(metricPromises)
-        .then((allFileContents) => {
-          const results = {};
-          allFileContents.forEach((contents) => {
-            console.log(`Fetched contents for fileKey ${contents.fileKey}`);
-            results[contents.fileKey] = processMetricFile(
-              contents.contents,
-              contents.metadata,
-              contents.extension
-            );
-          });
+  console.log(`Fetching ${metricType} metrics from ${source}...`);
+  const metricPromises = fetcher(stateCode.toUpperCase(), metricType, file);
 
-          console.log(`Fetched all ${cacheKey} metrics from ${source}`);
-          cacheCb(null, results);
-        })
-        .catch((err) => {
-          console.log(err);
-          cacheCb(err, null);
-        });
-    },
-    callback
-  );
+  return Promise.all(metricPromises).then((allFileContents) => {
+    const results = {};
+    allFileContents.forEach((contents) => {
+      console.log(`Fetched contents for fileKey ${contents.fileKey}`);
+      results[contents.fileKey] = processMetricFile(
+        contents.contents,
+        contents.metadata,
+        contents.extension
+      );
+    });
+    console.log(`Fetched all ${metricType} metrics from ${source}`);
+    return results;
+  });
 }
 
 exports.default = fetchMetrics;
