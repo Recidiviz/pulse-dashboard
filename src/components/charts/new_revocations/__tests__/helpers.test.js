@@ -347,8 +347,22 @@ describe("applyTopLevelFilters", () => {
     // For US_PA the level_1_supervision_location (for now) is always ALL
     // For US_MO the level_1_supervision_location (for now) is never ALL
     // Therefore, continue to 'treatCategoryAllAsAbsent' for both of these cases
-    describe("when the treatCategoryAllAsAbsent flag is true", () => {
+    describe("when the treatCategoryAllAsAbsent flag is true  and levelOneSupervisionLocation is ALL", () => {
       const treatCategoryAllAsAbsent = true;
+      const categoryAllAbsentData = [
+        {
+          level_1_supervision_location: "01",
+        },
+        {
+          level_1_supervision_location: "02",
+        },
+        {
+          level_1_supervision_location: "03",
+        },
+        {
+          level_1_supervision_location: "04",
+        },
+      ];
 
       beforeEach(() => {
         filters = { levelOneSupervisionLocation: ["ALL"] };
@@ -356,14 +370,14 @@ describe("applyTopLevelFilters", () => {
           filters,
           skippedFilters: [],
           treatCategoryAllAsAbsent,
-        })(data);
+        })(categoryAllAbsentData);
         filteredSupervisionLocations = filtered.map(
           (f) => f.level_1_supervision_location
         );
       });
 
       it("returns all of the rows", () => {
-        const expected = ["ALL", "04B", "ALL", "05X"];
+        const expected = ["01", "02", "03", "04"];
         expect(filteredSupervisionLocations).toEqual(expected);
       });
     });
@@ -411,8 +425,22 @@ describe("applyTopLevelFilters", () => {
     // For US_PA the level_2_supervision_location (for now) is never ALL
     // For US_MO the level_2_supervision_location (for now) is always ALL
     // Therefore, continue to 'treatCategoryAllAsAbsent' for both of these cases
-    describe("when the treatCategoryAllAsAbsent flag is true", () => {
+    describe("when the treatCategoryAllAsAbsent flag is true and levelTwoSupervisionLocation is ALL", () => {
       const treatCategoryAllAsAbsent = true;
+      const categoryAllAbsentData = [
+        {
+          level_2_supervision_location: "01",
+        },
+        {
+          level_2_supervision_location: "02",
+        },
+        {
+          level_2_supervision_location: "03",
+        },
+        {
+          level_2_supervision_location: "04",
+        },
+      ];
 
       beforeEach(() => {
         filters = { levelTwoSupervisionLocation: ["ALL"] };
@@ -420,14 +448,14 @@ describe("applyTopLevelFilters", () => {
           filters,
           skippedFilters: [],
           treatCategoryAllAsAbsent,
-        })(data);
+        })(categoryAllAbsentData);
         filteredSupervisionLocations = filtered.map(
           (f) => f.level_2_supervision_location
         );
       });
 
       it("returns all of the rows", () => {
-        const expected = ["ROCKYROAD", "ALL", "ALL", "VANILLA"];
+        const expected = ["01", "02", "03", "04"];
         expect(filteredSupervisionLocations).toEqual(expected);
       });
     });
