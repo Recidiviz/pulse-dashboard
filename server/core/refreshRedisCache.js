@@ -16,52 +16,50 @@
 // =============================================================================
 
 /**
- * Retrieves the metrics for a given state code and metric type and stores each dataset in that metric type
- * in a redis cache. The cache key for each file follows the pattern: stateCode-metricType-fileName-date
+ * Refresh all of the datasets returned from the provided fetch function in the redis cache.
+ * The cache key for each dataset follows the pattern: stateCode-metricType-fileName.
  *
- * The callback should be a function with a signature of `function (error, results)`.
+ * The callback should be a function with a signature of `function (error, results)`. When one of the
+ * set cache promises fail, they all fail and an error is sent to the server response.
+ *
  */
 
 /* eslint-disable no-console */
 const { redisCache } = require("./redisCache");
 
 function cacheEachFile(files, cacheKeyPrefix) {
-  const cachingErrors = [];
+  const cachePromises = [];
 
   Object.keys(files).forEach((fileKey) => {
     const cacheKey = `${cacheKeyPrefix}-${fileKey}`;
     const metricFile = files[fileKey];
     console.log(`Setting cache for: ${cacheKey}...`);
-    redisCache.set(cacheKey, metricFile).catch((error) => {
-      console.error(
-        `Error occurred while refreshing cache for key: ${cacheKey}`,
-        error
-      );
-      cachingErrors.push(error);
-    });
+    cachePromises.push(redisCache.set(cacheKey, metricFile));
   });
-  return { errors: cachingErrors.length > 0 ? cachingErrors : null };
+
+  return Promise.all(cachePromises);
 }
 
 function refreshRedisCache(fetchMetrics, stateCode, metricType, callback) {
   const cacheKeyPrefix = `${stateCode}-${metricType}`;
   console.log(`Handling call to refresh cache for ${cacheKeyPrefix}...`);
 
-  let response = {};
+  let responseError = null;
 
   fetchMetrics()
     .then((results) => {
-      response = cacheEachFile(results, cacheKeyPrefix);
+      cacheEachFile(results, cacheKeyPrefix);
     })
     .catch((error) => {
       console.error(
         `Error occurred while caching files for metricType: ${metricType}`,
         error
       );
-      response.errors = [error];
+      responseError = error;
+    })
+    .finally(() => {
+      callback(responseError, "OK");
     });
-
-  callback(response.errors, "OK");
 }
 
 exports.default = refreshRedisCache;

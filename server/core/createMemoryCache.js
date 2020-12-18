@@ -34,15 +34,19 @@ const memoryCache = createMemoryCache(
   METRIC_REFRESH_SECONDS
 );
 
-function cacheInMemory(cacheKey, fetchValue) {
-  memoryCache.wrap(cacheKey, (cacheCb) => {
-    fetchValue()
-      .then((value) => cacheCb(null, value))
-      .catch((err) => {
-        console.error(err);
-        cacheCb(err, null);
-      });
-  });
+function cacheInMemory(cacheKey, fetchValue, callback) {
+  memoryCache.wrap(
+    cacheKey,
+    (cacheCb) => {
+      fetchValue()
+        .then((value) => cacheCb(null, value))
+        .catch((err) => {
+          console.error(err);
+          cacheCb(err, null);
+        });
+    },
+    callback
+  );
 }
 
 module.exports = { createMemoryCache, cacheInMemory };

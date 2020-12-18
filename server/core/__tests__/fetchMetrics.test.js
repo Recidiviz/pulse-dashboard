@@ -24,8 +24,7 @@ jest.mock("../processMetricFile");
 jest.mock("../fetchMetricsFromLocal");
 jest.mock("../fetchMetricsFromGCS");
 
-// TODO: Update test and separate callback testing
-xdescribe("fetchMetrics tests", () => {
+describe("fetchMetrics tests", () => {
   const stateCode = "demo_code";
   const upperCasedStateCode = "DEMO_CODE";
   const file = "file";
@@ -40,7 +39,6 @@ xdescribe("fetchMetrics tests", () => {
     fileKey,
   };
   const deserializedFile = "some deserialized file";
-  const error = new Error("some error");
 
   beforeEach(() => {
     jest.clearAllMocks();
@@ -49,68 +47,51 @@ xdescribe("fetchMetrics tests", () => {
     jest.spyOn(console, "log").mockImplementation(() => {});
   });
 
-  it("should successfully process response with local data", (done) => {
+  it("should successfully return a promise with results of local data", () => {
     const metricType = "metric_type";
     const isDemo = true;
     fetchMetricsFromLocal.mockReturnValue([Promise.resolve(promiseData)]);
     processMetricFile.mockReturnValue(deserializedFile);
 
-    fetchMetrics(stateCode, metricType, file, isDemo, (err, result) => {
-      expect(err).toBeNull();
-      expect(result).toStrictEqual({
-        [fileKey]: deserializedFile,
-      });
+    return fetchMetrics(stateCode, metricType, file, isDemo).then((results) => {
       expect(fetchMetricsFromLocal).toHaveBeenCalledTimes(1);
       expect(fetchMetricsFromLocal).toHaveBeenCalledWith(
         upperCasedStateCode,
         metricType,
         file
       );
+
       expect(processMetricFile).toHaveBeenCalledTimes(1);
       expect(processMetricFile).toHaveBeenCalledWith(
         contents,
         metadata,
         extension
       );
-      done();
+      expect(results).toStrictEqual({ [fileKey]: deserializedFile });
     });
   });
 
-  it("should successfully process response with GCS data", (done) => {
+  it("should successfully return a promise with results from GCS data", () => {
     const metricType = "metric_type_2";
     const isDemo = false;
     fetchMetricsFromGCS.mockReturnValue([Promise.resolve(promiseData)]);
     processMetricFile.mockReturnValue(deserializedFile);
 
-    fetchMetrics(stateCode, metricType, file, isDemo, (err, result) => {
-      expect(err).toBeNull();
-      expect(result).toStrictEqual({
-        [fileKey]: deserializedFile,
-      });
+    return fetchMetrics(stateCode, metricType, file, isDemo).then((results) => {
       expect(fetchMetricsFromGCS).toHaveBeenCalledTimes(1);
       expect(fetchMetricsFromGCS).toHaveBeenCalledWith(
         upperCasedStateCode,
         metricType,
         file
       );
+
       expect(processMetricFile).toHaveBeenCalledTimes(1);
       expect(processMetricFile).toHaveBeenCalledWith(
         contents,
         metadata,
         extension
       );
-      done();
-    });
-  });
-
-  it("should process response with error", (done) => {
-    const metricType = "metric_type_3";
-    const isDemo = true;
-    fetchMetricsFromLocal.mockReturnValue([Promise.reject(error)]);
-    fetchMetrics(stateCode, metricType, file, isDemo, (err, result) => {
-      expect(err).toStrictEqual(error);
-      expect(result).toBeFalsy();
-      done();
+      expect(results).toStrictEqual({ [fileKey]: deserializedFile });
     });
   });
 });
