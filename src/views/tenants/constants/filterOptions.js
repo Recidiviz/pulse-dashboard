@@ -12,11 +12,6 @@ import {
 } from "../../../constants/filterTypes";
 import { MO, PA } from "../utils/lanternTenants";
 
-export const DISTRICT_CHART_SKIPPED_FILTERS = {
-  [MO]: [DISTRICT, LEVEL_2_SUPERVISION_LOCATION],
-  [PA]: [DISTRICT, LEVEL_1_SUPERVISION_LOCATION],
-};
-
 const METRIC_PERIODS = {
   options: [
     { value: "36", label: "3 years" },

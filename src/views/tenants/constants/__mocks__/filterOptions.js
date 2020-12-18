@@ -11,10 +11,6 @@ import {
   LEVEL_2_SUPERVISION_LOCATION,
 } from "../../../../constants/filterTypes";
 
-export const DISTRICT_CHART_SKIPPED_FILTERS = {
-  test_state: [DISTRICT, LEVEL_2_SUPERVISION_LOCATION],
-};
-
 export default {
   test_state: {
     [METRIC_PERIOD_MONTHS]: {

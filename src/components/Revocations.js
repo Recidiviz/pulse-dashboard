@@ -48,9 +48,7 @@ import {
 } from "../utils/authentication/user";
 import { useStateCode } from "../contexts/StateCodeContext";
 import * as lanternTenant from "../views/tenants/utils/lanternTenants";
-import filterOptionsMap, {
-  DISTRICT_CHART_SKIPPED_FILTERS,
-} from "../views/tenants/constants/filterOptions";
+import filterOptionsMap from "../views/tenants/constants/filterOptions";
 import { translate } from "../views/tenants/utils/i18nSettings";
 import {
   ADMISSION_TYPE,
@@ -261,7 +259,7 @@ const Revocations = () => {
             <RevocationsByDistrict
               dataFilter={matchesAllFilters({
                 filters: transformedFilters,
-                skippedFilters: DISTRICT_CHART_SKIPPED_FILTERS[stateCode],
+                skippedFilters: [DISTRICT],
               })}
               filterStates={filters}
               currentDistricts={
