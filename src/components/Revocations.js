@@ -56,8 +56,6 @@ import {
   ADMISSION_TYPE,
   CHARGE_CATEGORY,
   DISTRICT,
-  LEVEL_1_SUPERVISION_LOCATION,
-  LEVEL_2_SUPERVISION_LOCATION,
   METRIC_PERIOD_MONTHS,
   REPORTED_VIOLATIONS,
   SUPERVISION_LEVEL,
@@ -76,7 +74,6 @@ const Revocations = () => {
   const violationTypes = translate("violationTypes");
 
   const filterOptions = filterOptionsMap[stateCode];
-
   const [filters, setFilters] = useState({
     [METRIC_PERIOD_MONTHS]: filterOptions[METRIC_PERIOD_MONTHS].defaultValue,
     [CHARGE_CATEGORY]: filterOptions[CHARGE_CATEGORY].defaultValue,
@@ -88,12 +85,6 @@ const Revocations = () => {
       ? { [ADMISSION_TYPE]: filterOptions[ADMISSION_TYPE].defaultValue }
       : {}),
     [DISTRICT]: [district || filterOptions[DISTRICT].defaultValue],
-    [LEVEL_1_SUPERVISION_LOCATION]: [
-      district || filterOptions[LEVEL_1_SUPERVISION_LOCATION].defaultValue,
-    ],
-    [LEVEL_2_SUPERVISION_LOCATION]: [
-      district || filterOptions[LEVEL_2_SUPERVISION_LOCATION].defaultValue,
-    ],
   });
 
   const updateFilters = (newFilters) => {
