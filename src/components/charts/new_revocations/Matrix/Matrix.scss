@@ -1,4 +1,6 @@
 .Matrix {
+  overflow-y: hidden;
+
   &__x-label {
     padding-top: 30px;
     padding-bottom: 30px;
@@ -10,8 +12,6 @@
     display: flex;
     @media screen and (max-width: 1350px) {
       width: 910px;
-      overflow-x: auto;
-      overflow-y: hidden;
     }
   }
 
