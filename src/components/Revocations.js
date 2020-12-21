@@ -72,7 +72,6 @@ const Revocations = () => {
   const violationTypes = translate("violationTypes");
 
   const filterOptions = filterOptionsMap[stateCode];
-
   const [filters, setFilters] = useState({
     [METRIC_PERIOD_MONTHS]: filterOptions[METRIC_PERIOD_MONTHS].defaultValue,
     [CHARGE_CATEGORY]: filterOptions[CHARGE_CATEGORY].defaultValue,
