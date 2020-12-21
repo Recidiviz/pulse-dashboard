@@ -7,6 +7,8 @@ import {
   SUPERVISION_LEVEL,
   SUPERVISION_TYPE,
   VIOLATION_TYPE,
+  LEVEL_1_SUPERVISION_LOCATION,
+  LEVEL_2_SUPERVISION_LOCATION,
 } from "../../../../constants/filterTypes";
 
 export default {
@@ -104,5 +106,7 @@ export default {
       },
       defaultValue: `${DISTRICT}-0`,
     },
+    [LEVEL_1_SUPERVISION_LOCATION]: { defaultValue: "All" },
+    [LEVEL_2_SUPERVISION_LOCATION]: { defaultValue: "All" },
   },
 };
