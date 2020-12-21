@@ -60,7 +60,7 @@ function fetchMetricsFromGCS(stateCode, metricType, file) {
 
             const metadata = {};
             if (rawMetadata) {
-              metadata.updated = JSON.parse(lastUpdated);
+              metadata.updated = lastUpdated;
               metadata.value_keys = JSON.parse(rawMetadata.value_keys);
               metadata.total_data_points = rawMetadata.total_data_points;
               metadata.dimension_manifest = JSON.parse(
