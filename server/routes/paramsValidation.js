@@ -45,13 +45,20 @@ const VIOLATION_TYPES = [
 
 const newRevocationsParamValidations = [
   param("stateCode").toUpperCase().isIn(VALID_STATE_CODES),
-  query("district").exists(),
-  query("chargeCategory").toLowerCase().isIn(CHARGE_CATEGORIES),
-  query("metricPeriodMonths").toLowerCase().isIn(METRIC_PERIOD_MONTHS),
-  query("reportedViolations").toLowerCase().isIn(REPORTED_VIOLATIONS),
-  query("supervisionLevel").toLowerCase().isIn(SUPERVISION_LEVELS),
-  query("supervisionType").toLowerCase().isIn(SUPERVISION_TYPES),
-  query("violationType").toLowerCase().isIn(VIOLATION_TYPES),
+  // TODO[#657]: Remove optional check for params when the FE starts sending the query
+  query("district").optional(),
+  query("chargeCategory").toLowerCase().optional().isIn(CHARGE_CATEGORIES),
+  query("metricPeriodMonths")
+    .toLowerCase()
+    .optional()
+    .isIn(METRIC_PERIOD_MONTHS),
+  query("reportedViolations")
+    .toLowerCase()
+    .optional()
+    .isIn(REPORTED_VIOLATIONS),
+  query("supervisionLevel").toLowerCase().optional().isIn(SUPERVISION_LEVELS),
+  query("supervisionType").toLowerCase().optional().isIn(SUPERVISION_TYPES),
+  query("violationType").toLowerCase().optional().isIn(VIOLATION_TYPES),
 ];
 
 module.exports = { newRevocationsParamValidations };
