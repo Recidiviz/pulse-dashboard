@@ -26,7 +26,9 @@ const jwksRsa = require("jwks-rsa");
 const devAuthConfig = require("./src/auth_config_dev.json");
 const productionAuthConfig = require("./src/auth_config_production.json");
 const api = require("./server/routes/api");
-const newRevocationsParamValidations = require("./server/routes/paramsValidation");
+const {
+  newRevocationsParamValidations,
+} = require("./server/routes/paramsValidation");
 
 const app = express();
 

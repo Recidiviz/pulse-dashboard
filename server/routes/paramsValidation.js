@@ -1,6 +1,9 @@
 const { query, param } = require("express-validator");
+const { default: isDemoMode } = require("../utils/isDemoMode");
 
-const VALID_STATE_CODES = ["US_PA", "US_MO"];
+const VALID_STATE_CODES = ["US_PA", "US_MO"].concat(
+  isDemoMode ? ["US_DEMO"] : []
+);
 const CHARGE_CATEGORIES = [
   "alcohol_drug",
   "all",
@@ -41,14 +44,14 @@ const VIOLATION_TYPES = [
 ];
 
 const newRevocationsParamValidations = [
-  param("stateCode").isIn(VALID_STATE_CODES),
+  param("stateCode").toUpperCase().isIn(VALID_STATE_CODES),
   query("district").exists(),
-  query("chargeCategory").isIn(CHARGE_CATEGORIES),
-  query("metricPeriodMonths").isIn(METRIC_PERIOD_MONTHS),
-  query("reportedViolations").isIn(REPORTED_VIOLATIONS),
-  query("supervisionLevel").isIn(SUPERVISION_LEVELS),
-  query("supervisionType").isIn(SUPERVISION_TYPES),
-  query("violationType").isIn(VIOLATION_TYPES),
+  query("chargeCategory").toLowerCase().isIn(CHARGE_CATEGORIES),
+  query("metricPeriodMonths").toLowerCase().isIn(METRIC_PERIOD_MONTHS),
+  query("reportedViolations").toLowerCase().isIn(REPORTED_VIOLATIONS),
+  query("supervisionLevel").toLowerCase().isIn(SUPERVISION_LEVELS),
+  query("supervisionType").toLowerCase().isIn(SUPERVISION_TYPES),
+  query("violationType").toLowerCase().isIn(VIOLATION_TYPES),
 ];
 
 module.exports = { newRevocationsParamValidations };

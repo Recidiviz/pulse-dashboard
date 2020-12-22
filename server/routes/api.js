@@ -20,21 +20,24 @@
  * in server.js.
  */
 
+const { validationResult } = require("express-validator");
 const { fetchMetrics } = require("../core");
 const { default: isDemoMode } = require("../utils/isDemoMode");
-
 /**
  * A callback which returns either either an error payload or a data payload.
  */
 function responder(res) {
   return (err, data) => {
     if (err) {
-      res.send(err);
+      const status = err.status || 500;
+      res.status(status).send(err);
     } else {
       res.send(data);
     }
   };
 }
+
+const BAD_REQUEST = 400;
 
 // TODO: Generalize this API to take in the metric type and file as request parameters in all calls
 
@@ -49,13 +52,19 @@ function newRevocations(req, res) {
 }
 
 function newRevocationFile(req, res) {
-  fetchMetrics(
-    req.params.stateCode,
-    "newRevocation",
-    req.params.file,
-    isDemoMode,
-    responder(res)
-  );
+  const validations = validationResult(req);
+  const hasErrors = !validations.isEmpty();
+  if (hasErrors) {
+    responder(res)({ status: BAD_REQUEST, errors: validations.array() }, null);
+  } else {
+    fetchMetrics(
+      req.params.stateCode,
+      "newRevocation",
+      req.params.file,
+      isDemoMode,
+      responder(res)
+    );
+  }
 }
 
 function communityGoals(req, res) {
