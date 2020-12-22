@@ -26,6 +26,7 @@ const jwksRsa = require("jwks-rsa");
 const devAuthConfig = require("./src/auth_config_dev.json");
 const productionAuthConfig = require("./src/auth_config_production.json");
 const api = require("./server/routes/api");
+const newRevocationsParamValidations = require("./server/routes/paramsValidation");
 
 const app = express();
 
@@ -80,7 +81,7 @@ if (isDemoMode) {
 app.get("/api/:stateCode/newRevocations", checkJwt, api.newRevocations);
 app.get(
   "/api/:stateCode/newRevocations/:file",
-  checkJwt,
+  [checkJwt, ...newRevocationsParamValidations],
   api.newRevocationFile
 );
 app.get("/api/:stateCode/community/goals", checkJwt, api.communityGoals);
