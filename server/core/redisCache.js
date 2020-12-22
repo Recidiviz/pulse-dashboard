@@ -25,11 +25,10 @@
  * The callback should be a function with a signature of `function (error, results)`.
  *
  */
-
 const cacheManager = require("cache-manager");
 const redisStore = require("cache-manager-ioredis");
 const Redis = require("ioredis");
-const { default: isDemoMode } = require("../utils/isDemoMode");
+// const { default: isDemoMode } = require("../utils/isDemoMode");
 
 const REDISHOST = process.env.REDISHOST || "localhost";
 const REDISPORT = process.env.REDISPORT || 6379;
@@ -40,15 +39,13 @@ const REDIS_CACHE_TTL_SECONDS = 60 * 60 * 24;
 // Set refresh threshold to 1 hour
 const REDIS_CACHE_REFRESH_THRESHOLD = 60 * 60;
 
-// Use TLS to connect to REDISHOST, REDISPORT, with REDISAUTH, db 0
-const uri = isDemoMode ? "redis" : "rediss"; // use TLS encryption
-
-const redisInstance = new Redis(
-  `${uri}://:${REDISAUTH}@${REDISHOST}:${REDISPORT}/0`,
-  {
-    ttl: REDIS_CACHE_TTL_SECONDS,
-  }
-);
+const redisInstance = new Redis({
+  host: REDISHOST,
+  port: REDISPORT,
+  password: REDISAUTH,
+  ttl: REDIS_CACHE_TTL_SECONDS,
+  db: 0,
+});
 
 const redisCache = cacheManager.caching({
   store: redisStore,
