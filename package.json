@@ -14,8 +14,10 @@
     "test-client": "TZ=UTC jest ./src",
     "test": "TZ=UTC jest",
     "spa": "react-scripts start",
-    "server": "node server.js",
-    "server:dev": "nodemon server.js",
+    "server": "nodemon server.js",
+    "server:dev": "npm-run-all --parallel server redis-server",
+    "server:demo": "IS_DEMO=true npm-run-all --parallel server redis-server",
+    "redis-server": "redis-server",
     "lint": "eslint .",
     "dev": "npm-run-all --parallel spa server:dev"
   },
