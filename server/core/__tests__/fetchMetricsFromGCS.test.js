@@ -32,6 +32,7 @@ describe("fetchMetricsFromGCS tests", () => {
   const returnedFile = "some_file.json";
   const returnedFileKey = "some_file";
   const returnedFileExtension = ".json";
+  const fileUpdatedAt = "Fri, 31 Oct 2020 00:39:20 GMT";
   const returnedFiles = [returnedFile];
   const downloadFileResponse = "resolved value";
   const valueKeys = "some value keys";
@@ -39,6 +40,7 @@ describe("fetchMetricsFromGCS tests", () => {
   const dimensionManifest = "some dimension manifest";
   const downloadFileMetadataResponse = [
     {
+      updated: fileUpdatedAt,
       metadata: {
         value_keys: JSON.stringify(valueKeys),
         total_data_points: totalDataPoints,
@@ -47,7 +49,7 @@ describe("fetchMetricsFromGCS tests", () => {
     },
   ];
 
-  it("should return array with data and metadata", () => {
+  it("should return array with data and metadata", (done) => {
     getFilesByMetricType.mockImplementation(() => returnedFiles);
 
     const downloadFileSpy = jest.spyOn(objectStorage, "downloadFile");
@@ -60,24 +62,29 @@ describe("fetchMetricsFromGCS tests", () => {
       Promise.resolve(downloadFileMetadataResponse)
     );
 
-    fetchMetricsFromGCS(stateCode, metricType, file).forEach((promise) => {
-      expect(promise).resolves.toStrictEqual({
-        contents: downloadFileResponse,
-        fileKey: returnedFileKey,
-        extension: returnedFileExtension,
-        metadata: {
-          value_keys: valueKeys,
-          total_data_points: totalDataPoints,
-          dimension_manifest: dimensionManifest,
-        },
-      });
-    });
+    const fetchPromises = fetchMetricsFromGCS(stateCode, metricType, file).map(
+      (promise) => {
+        return expect(promise).resolves.toStrictEqual({
+          contents: downloadFileResponse,
+          fileKey: returnedFileKey,
+          extension: returnedFileExtension,
+          metadata: {
+            updated: "Fri, 31 Oct 2020 00:39:20 GMT",
+            value_keys: valueKeys,
+            total_data_points: totalDataPoints,
+            dimension_manifest: dimensionManifest,
+          },
+        });
+      }
+    );
+
+    Promise.all(fetchPromises).then(() => done());
 
     expect(downloadFileSpy).toHaveBeenCalledTimes(1);
     expect(downloadFileMetadataSpy).toHaveBeenCalledTimes(1);
   });
 
-  it("should return array with data and without metadata", () => {
+  it("should return array with data and without metadata", (done) => {
     getFilesByMetricType.mockImplementation(() => returnedFiles);
 
     const downloadFileSpy = jest.spyOn(objectStorage, "downloadFile");
@@ -88,24 +95,31 @@ describe("fetchMetricsFromGCS tests", () => {
     downloadFileSpy.mockReturnValue(Promise.resolve(downloadFileResponse));
     downloadFileMetadataSpy.mockReturnValue(Promise.resolve([]));
 
-    fetchMetricsFromGCS(stateCode, metricType, file).forEach((promise) => {
-      expect(promise).resolves.toStrictEqual({
-        contents: downloadFileResponse,
-        fileKey: returnedFileKey,
-        extension: returnedFileExtension,
-        metadata: {},
-      });
-    });
+    const fetchPromises = fetchMetricsFromGCS(stateCode, metricType, file).map(
+      (promise) => {
+        return expect(promise).resolves.toStrictEqual({
+          contents: downloadFileResponse,
+          fileKey: returnedFileKey,
+          extension: returnedFileExtension,
+          metadata: {},
+        });
+      }
+    );
+
+    Promise.all(fetchPromises).then(() => done());
   });
 
-  it("should return array with rejected promises", () => {
+  it("should return array with rejected promises", (done) => {
     const error = new Error("some error");
     getFilesByMetricType.mockImplementation(() => {
       throw error;
     });
 
-    fetchMetricsFromGCS(stateCode, metricType, file).forEach((promise) => {
-      expect(promise).rejects.toStrictEqual(error);
-    });
+    const fetchPromises = fetchMetricsFromGCS(stateCode, metricType, file).map(
+      (promise) => {
+        return expect(promise).rejects.toStrictEqual(error);
+      }
+    );
+    Promise.all(fetchPromises).then(() => done());
   });
 });
