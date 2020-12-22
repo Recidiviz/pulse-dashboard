@@ -15,7 +15,6 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import pattern from "patternomaly";
 import pipe from "lodash/fp/pipe";
 import filter from "lodash/fp/filter";
 import groupBy from "lodash/fp/groupBy";
@@ -27,7 +26,7 @@ import { sumIntBy } from "../helpers/counts";
 import { calculateRate } from "../helpers/rate";
 import { translate } from "../../../../views/tenants/utils/i18nSettings";
 import { humanReadableTitleCase } from "../../../../utils/transforms/labels";
-import { isDenominatorStatisticallySignificant } from "../../../../utils/charts/significantStatistics";
+import { applyStatisticallySignificantShadingToDataset } from "../../../../utils/charts/significantStatistics";
 import getDenominatorKeyByMode from "../utils/getDenominatorKeyByMode";
 import getLabelByMode from "../utils/getLabelByMode";
 import { filterOptimizedDataFormat } from "../../../../utils/charts/dataFilters";
@@ -72,20 +71,15 @@ const createGenerateChartData = (dataFilter) => (
   const numerators = map("numerator", riskLevelCounts);
   const denominators = map("denominator", riskLevelCounts);
 
-  const barBackgroundColor = ({ dataIndex }) => {
-    const color = COLORS["lantern-orange"];
-    if (isDenominatorStatisticallySignificant(denominators[dataIndex])) {
-      return color;
-    }
-    return pattern.draw("diagonal-right-left", color, "#ffffff", 5);
-  };
-
   const data = {
     labels: map("label", riskLevelCounts),
     datasets: [
       {
         label: getLabelByMode(mode),
-        backgroundColor: barBackgroundColor,
+        backgroundColor: applyStatisticallySignificantShadingToDataset(
+          COLORS["lantern-orange"],
+          denominators
+        ),
         data: chartDataPoints,
       },
     ],

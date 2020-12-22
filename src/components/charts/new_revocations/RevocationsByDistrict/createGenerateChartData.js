@@ -15,7 +15,6 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import pattern from "patternomaly";
 import pipe from "lodash/fp/pipe";
 import filter from "lodash/fp/filter";
 import groupBy from "lodash/fp/groupBy";
@@ -27,7 +26,7 @@ import orderBy from "lodash/fp/orderBy";
 import { calculateRate } from "../helpers/rate";
 
 import { translate } from "../../../../views/tenants/utils/i18nSettings";
-import { isDenominatorStatisticallySignificant } from "../../../../utils/charts/significantStatistics";
+import { applyStatisticallySignificantShading } from "../../../../utils/charts/significantStatistics";
 import { filterOptimizedDataFormat } from "../../../../utils/charts/dataFilters";
 import { COLORS } from "../../../../assets/scripts/constants/colors";
 import { sumCounts } from "../utils/sumCounts";
@@ -63,20 +62,16 @@ const generatePercentChartData = (apiData, currentDistricts, mode) => {
   const numerators = map("count", filteredData);
 
   const getBarBackgroundColor = ({ dataIndex }) => {
-    let color =
+    const color =
       currentDistricts &&
+      labels[dataIndex] &&
       currentDistricts.find(
         (currentDistrict) =>
           currentDistrict.toLowerCase() === labels[dataIndex].toLowerCase()
       )
         ? COLORS["lantern-light-blue"]
         : COLORS["lantern-orange"];
-
-    if (!isDenominatorStatisticallySignificant(denominators[dataIndex])) {
-      color = pattern.draw("diagonal-right-left", color, "#ffffff", 5);
-    }
-
-    return color;
+    return applyStatisticallySignificantShading(color, denominators[dataIndex]);
   };
 
   const datasets = [
@@ -115,6 +110,8 @@ const generateCountChartData = (apiData, currentDistricts) => {
   const labels = map("district", transformedData);
   const dataPoints = transformedData.map((item) => item.count);
   const getBarBackgroundColor = ({ dataIndex }) =>
+    currentDistricts &&
+    labels[dataIndex] &&
     currentDistricts.find(
       (currentDistrict) =>
         currentDistrict.toLowerCase() === labels[dataIndex].toLowerCase()
@@ -129,7 +126,6 @@ const generateCountChartData = (apiData, currentDistricts) => {
       data: dataPoints,
     },
   ];
-
   return { data: { datasets, labels }, denominators: [] };
 };
 

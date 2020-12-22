@@ -1,6 +1,8 @@
 export const METRIC_PERIOD_MONTHS = "metricPeriodMonths";
 export const CHARGE_CATEGORY = "chargeCategory";
 export const DISTRICT = "district";
+export const LEVEL_1_SUPERVISION_LOCATION = "levelOneSupervisionLocation";
+export const LEVEL_2_SUPERVISION_LOCATION = "levelTwoSupervisionLocation";
 export const SUPERVISION_TYPE = "supervisionType";
 export const SUPERVISION_LEVEL = "supervisionLevel";
 export const REPORTED_VIOLATIONS = "reportedViolations";

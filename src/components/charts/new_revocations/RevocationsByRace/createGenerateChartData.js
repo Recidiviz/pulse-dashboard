@@ -18,7 +18,6 @@
 import pipe from "lodash/fp/pipe";
 import reduce from "lodash/fp/reduce";
 
-import { getBarBackgroundColor } from "../../../../utils/charts/significantStatistics";
 import {
   getRiskLevelLabels,
   getRiskLevels,
@@ -29,6 +28,7 @@ import createRiskLevelsMap from "../utils/createRiskLevelsMap";
 import { filterOptimizedDataFormat } from "../../../../utils/charts/dataFilters";
 import { translate } from "../../../../views/tenants/utils/i18nSettings";
 import { COLORS_LANTERN_SET } from "../../../../assets/scripts/constants/colors";
+import { applyStatisticallySignificantShadingToDataset } from "../../../../utils/charts/significantStatistics";
 
 export const generateDatasets = (dataPoints, denominators) => {
   const raceLabelMap = translate("raceLabelMap");
@@ -36,7 +36,7 @@ export const generateDatasets = (dataPoints, denominators) => {
 
   return raceLabels.map((raceLabel, index) => ({
     label: raceLabel,
-    backgroundColor: getBarBackgroundColor(
+    backgroundColor: applyStatisticallySignificantShadingToDataset(
       COLORS_LANTERN_SET[index],
       denominators
     ),
