@@ -1,0 +1,10 @@
+cron:
+  - description: "Refresh US_PA external cache"
+    url: /api/US_PA/refreshCache
+    # Every day at 18:00 UTC / 13:00 EST / 10:00 PST
+    schedule: every day 18:00
+
+  - description: "Refresh US_MO external cache"
+    url: /api/US_MO/refreshCache
+    # Every day at 18:30 UTC / 13:30 EST / 10:30 PST
+    schedule: every day 18:30
