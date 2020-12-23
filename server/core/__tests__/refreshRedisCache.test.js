@@ -1,14 +1,3 @@
-// it("should process response with error", (done) => {
-//   const metricType = "metric_type_3";
-//   const isDemo = true;
-//   fetchMetricsFromLocal.mockReturnValue([Promise.reject(error)]);
-//   fetchMetrics(stateCode, metricType, file, isDemo, (err, result) => {
-//     expect(err).toStrictEqual(error);
-//     expect(result).toBeFalsy();
-//     done();
-//   });
-// });
-// const error = new Error("some error");
 // Recidiviz - a data platform for criminal justice reform
 // Copyright (C) 2020 Recidiviz, Inc.
 //
