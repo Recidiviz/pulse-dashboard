@@ -3,7 +3,7 @@ const request = require("supertest");
 const OLD_ENV = process.env;
 process.env = Object.assign(process.env, { IS_DEMO: "true", AUTH_ENV: "test" });
 
-const { app } = require("../../../server");
+const { app, server } = require("../../../server");
 
 describe("GET api/:stateCode/newRevocations/:file", () => {
   beforeAll(() => {
@@ -14,6 +14,7 @@ describe("GET api/:stateCode/newRevocations/:file", () => {
 
   afterAll(() => {
     jest.clearAllMocks();
+    server.close();
     process.env = OLD_ENV;
   });
 
