@@ -71,13 +71,22 @@ let checkJwt = jwt({
   algorithms: ["RS256"],
 });
 
+// See: https://cloud.google.com/appengine/docs/standard/nodejs/scheduling-jobs-with-cron-yaml#validating_cron_requests
+// eslint-disable-next-line consistent-return
+function validateCronRequest(req, res, next) {
+  if (req.get("X-Appengine-Cron") !== "true") {
+    return res.status(403);
+  }
+  next();
+}
+
 if (isDemoMode) {
   checkJwt = (req, res, next) => {
     next();
   };
 }
 
-app.get("/api/:stateCode/refreshCache", checkJwt, api.refreshCache);
+app.get("/api/:stateCode/refreshCache", validateCronRequest, api.refreshCache);
 app.get("/api/:stateCode/newRevocations", checkJwt, api.newRevocations);
 app.get(
   "/api/:stateCode/newRevocations/:file",
