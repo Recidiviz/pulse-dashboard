@@ -53,7 +53,7 @@ describe("App tests", () => {
 
   LanternLayout.mockImplementation(({ children }) => children);
   CoreLayout.mockImplementation(({ children }) => children);
-  Revocations.mockReturnValue(mockWithTestId(mockRevocationsId));
+  Revocations.type.mockReturnValue(mockWithTestId(mockRevocationsId));
   UsNDCommunityGoals.mockReturnValue(mockWithTestId(mockNDCommunityGoalsId));
   NotFound.mockReturnValue(mockWithTestId(mockNotFoundId));
   Loading.mockReturnValue(mockWithTestId(mockLoadingTestId));

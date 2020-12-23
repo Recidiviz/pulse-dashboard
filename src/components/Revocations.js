@@ -15,7 +15,8 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect } from "react";
+import { observer } from "mobx-react-lite";
 import Sticky from "react-sticky-fill";
 
 import {
@@ -43,12 +44,11 @@ import RevocationsByDistrict from "./charts/new_revocations/RevocationsByDistric
 import CaseTable from "./charts/new_revocations/CaseTable/CaseTable";
 import { useAuth0 } from "../react-auth0-spa";
 import {
-  getUserAppMetadata,
   getUserDistricts,
+  getUserAppMetadata,
 } from "../utils/authentication/user";
 import { useStateCode } from "../contexts/StateCodeContext";
 import * as lanternTenant from "../views/tenants/utils/lanternTenants";
-import filterOptionsMap from "../views/tenants/constants/filterOptions";
 import { translate } from "../views/tenants/utils/i18nSettings";
 import {
   ADMISSION_TYPE,
@@ -61,39 +61,35 @@ import {
   VIOLATION_TYPE,
 } from "../constants/filterTypes";
 import flags from "../flags";
+import { useRootStore } from "../StoreProvider";
 
 import "./Revocations.scss";
 
 const Revocations = () => {
+  const { filtersStore } = useRootStore();
+  const { filters, filterOptions } = filtersStore;
   const { user } = useAuth0();
   const { currentStateCode: stateCode } = useStateCode();
+
   const { district } = getUserAppMetadata(user);
+  useEffect(() => {
+    if (district) {
+      filtersStore.setRestrictedDistrict(district);
+    }
+  }, [district, filtersStore]);
+
   const userDistricts = getUserDistricts(user);
   const violationTypes = translate("violationTypes");
 
-  const filterOptions = filterOptionsMap[stateCode];
-  const [filters, setFilters] = useState({
-    [METRIC_PERIOD_MONTHS]: filterOptions[METRIC_PERIOD_MONTHS].defaultValue,
-    [CHARGE_CATEGORY]: filterOptions[CHARGE_CATEGORY].defaultValue,
-    [REPORTED_VIOLATIONS]: filterOptions[REPORTED_VIOLATIONS].defaultValue,
-    [VIOLATION_TYPE]: filterOptions[VIOLATION_TYPE].defaultValue,
-    [SUPERVISION_TYPE]: filterOptions[SUPERVISION_TYPE].defaultValue,
-    [SUPERVISION_LEVEL]: filterOptions[SUPERVISION_LEVEL].defaultValue,
-    ...(filterOptions[ADMISSION_TYPE].filterEnabled
-      ? { [ADMISSION_TYPE]: filterOptions[ADMISSION_TYPE].defaultValue }
-      : {}),
-    [DISTRICT]: [district || filterOptions[DISTRICT].defaultValue],
-  });
-
   const updateFilters = (newFilters) => {
-    setFilters({ ...filters, ...newFilters });
+    filtersStore.setFilters({ ...filters, ...newFilters });
   };
 
   const createOnFilterChange = useCallback(
     (field) => (value) => {
-      setFilters({ ...filters, [field]: value });
+      filtersStore.setFilters({ ...filters, [field]: value });
     },
-    [filters]
+    [filtersStore, filters]
   );
 
   const transformedFilters = limitFiltersToUserDistricts(
@@ -293,4 +289,4 @@ const Revocations = () => {
 
 Revocations.propTypes = {};
 
-export default Revocations;
+export default observer(Revocations);

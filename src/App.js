@@ -26,6 +26,7 @@ import {
 import TenantRoutes from "./components/TenantRoutes";
 import { StateCodeProvider } from "./contexts/StateCodeContext";
 import { PageProvider } from "./contexts/PageContext";
+import StoreProvider from "./StoreProvider";
 import NotFound from "./views/NotFound";
 import Profile from "./views/Profile";
 import VerificationNeeded from "./views/VerificationNeeded";
@@ -59,15 +60,18 @@ const App = () => (
           <Route path="/verify" component={VerificationNeeded} />
 
           <TenantRoutes>
-            <LanternLayout stateCode={lanternTenant.MO}>
-              <Switch>
-                <Route path="/community/revocations" component={Revocations} />
-                <Route path="/profile" component={Profile} />
-                <Redirect exact from="/" to="/community/revocations" />
-                <Redirect from="/revocations" to="/community/revocations" />
-                <NotFound />
-              </Switch>
-            </LanternLayout>
+            <StoreProvider stateCode={lanternTenant.MO}>
+              <LanternLayout stateCode={lanternTenant.MO}>
+                <Switch>
+                  <Route path="/community/revocations" component={Revocations} />
+                  <Route path="/profile" component={Profile} />
+                  <Redirect exact from="/" to="/community/revocations" />
+                  <Redirect from="/revocations" to="/community/revocations" />
+                  <NotFound />
+                </Switch>
+              </LanternLayout>
+            </StoreProvider>
+
 
             <CoreLayout stateCode={coreTenant.ND}>
               <Switch>
@@ -86,15 +90,18 @@ const App = () => (
               </Switch>
             </CoreLayout>
 
-            <LanternLayout stateCode={lanternTenant.PA}>
-              <Switch>
-                <Route path="/community/revocations" component={Revocations} />
-                <Route path="/profile" component={Profile} />
-                <Redirect exact from="/" to="/community/revocations" />
-                <Redirect from="/revocations" to="/community/revocations" />
-                <NotFound />
-              </Switch>
-            </LanternLayout>
+            <StoreProvider stateCode={lanternTenant.PA}>
+              <LanternLayout stateCode={lanternTenant.PA}>
+                <Switch>
+                  <Route path="/community/revocations" component={Revocations} />
+                  <Route path="/profile" component={Profile} />
+                  <Redirect exact from="/" to="/community/revocations" />
+                  <Redirect from="/revocations" to="/community/revocations" />
+                  <NotFound />
+                </Switch>
+              </LanternLayout>
+            </StoreProvider>
+
           </TenantRoutes>
         </Switch>
       </Router>
