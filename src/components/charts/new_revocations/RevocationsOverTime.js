@@ -45,8 +45,10 @@ import { generateTrendlineDataset } from "../../../utils/charts/trendline";
 import { translate } from "../../../views/tenants/utils/i18nSettings";
 import RevocationsByDimensionComponent from "./RevocationsByDimension/RevocationsByDimensionComponent";
 import { useRootStore } from "../../../StoreProvider";
+import { METRIC_PERIOD_MONTHS } from "../../../constants/filterTypes";
+import { matchesAllFilters } from "./helpers";
 
-const RevocationsOverTime = ({ stateCode, dataFilter }) => {
+const RevocationsOverTime = ({ stateCode }) => {
   const { filters } = useRootStore();
   const chartId = `revocationsOverTime`;
 
@@ -63,6 +65,11 @@ const RevocationsOverTime = ({ stateCode, dataFilter }) => {
   if (isError) {
     return <Error />;
   }
+
+  const dataFilter = matchesAllFilters({
+    filters,
+    skippedFilters: [METRIC_PERIOD_MONTHS],
+  });
 
   const chartData = pipe(
     (metricFile) =>
@@ -209,7 +216,6 @@ const RevocationsOverTime = ({ stateCode, dataFilter }) => {
 
 RevocationsOverTime.propTypes = {
   stateCode: PropTypes.string.isRequired,
-  dataFilter: PropTypes.func.isRequired,
 };
 
 export default observer(RevocationsOverTime);
