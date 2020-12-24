@@ -15,6 +15,8 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
+import { computed, makeObservable } from "mobx";
+
 import FiltersStore from "./FiltersStore";
 
 export default class RootStore {
@@ -23,10 +25,16 @@ export default class RootStore {
   stateCode;
 
   constructor({ stateCode }) {
+    makeObservable(this, { filters: computed });
+
     this.stateCode = stateCode;
     this.filtersStore = new FiltersStore({
       rootStore: this,
       stateCode,
     });
+  }
+
+  get filters() {
+    return this.filtersStore.filters;
   }
 }

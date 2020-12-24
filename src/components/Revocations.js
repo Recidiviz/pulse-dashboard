@@ -172,8 +172,6 @@ const Revocations = () => {
               filters: transformedFilters,
               skippedFilters: [METRIC_PERIOD_MONTHS],
             })}
-            filterStates={filters}
-            metricPeriodMonths={filters[METRIC_PERIOD_MONTHS]}
             stateCode={stateCode}
           />
         </ErrorBoundary>

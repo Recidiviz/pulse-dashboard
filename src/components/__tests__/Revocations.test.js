@@ -84,7 +84,7 @@ describe("Revocations component tests", () => {
   DistrictFilter.mockReturnValue(mockWithTestId(districtFilterId));
   AdmissionTypeFilter.mockReturnValue(mockWithTestId(admissionTypeFilterId));
   ViolationFilter.mockReturnValue(mockWithTestId(violationFilterId));
-  RevocationCountOverTime.mockReturnValue(
+  RevocationCountOverTime.type.mockReturnValue(
     mockWithTestId(revocationCountOverTimeId)
   );
   Matrix.mockReturnValue(mockWithTestId(revocationMatrixId));

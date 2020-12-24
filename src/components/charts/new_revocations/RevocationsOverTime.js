@@ -18,6 +18,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Bar, Line } from "react-chartjs-2";
+import { observer } from "mobx-react-lite";
 
 import map from "lodash/fp/map";
 import pipe from "lodash/fp/pipe";
@@ -41,16 +42,12 @@ import {
 import { sortFilterAndSupplementMostRecentMonths } from "../../../utils/transforms/datasets";
 import { monthNamesAllWithYearsFromNumbers } from "../../../utils/transforms/months";
 import { generateTrendlineDataset } from "../../../utils/charts/trendline";
-import { filtersPropTypes } from "../propTypes";
 import { translate } from "../../../views/tenants/utils/i18nSettings";
 import RevocationsByDimensionComponent from "./RevocationsByDimension/RevocationsByDimensionComponent";
+import { useRootStore } from "../../../StoreProvider";
 
-const RevocationsOverTime = ({
-  stateCode,
-  dataFilter,
-  metricPeriodMonths,
-  filterStates,
-}) => {
+const RevocationsOverTime = ({ stateCode, dataFilter }) => {
+  const { filters } = useRootStore();
   const chartId = `revocationsOverTime`;
 
   const { isLoading, isError, apiData, unflattenedValues } = useChartData(
@@ -79,7 +76,7 @@ const RevocationsOverTime = ({
     (dataset) =>
       sortFilterAndSupplementMostRecentMonths(
         dataset,
-        getMonthCountFromMetricPeriodMonthsToggle(metricPeriodMonths),
+        getMonthCountFromMetricPeriodMonthsToggle(filters.metricPeriodMonths),
         "total_revocations",
         0
       )
@@ -189,19 +186,20 @@ const RevocationsOverTime = ({
   );
 
   // If at least a third of all points are 0, show bar chart. Otherwise, show line chart.
-  const chart = countZero / metricPeriodMonths >= 0.33 ? barChart : lineChart;
+  const chart =
+    countZero / filters.metricPeriodMonths >= 0.33 ? barChart : lineChart;
 
   return (
     <RevocationsByDimensionComponent
       chartTitle={translate("revocationsOverTimeXAxis")}
       timeDescription={getTrailingLabelFromMetricPeriodMonthsToggle(
-        metricPeriodMonths
+        filters.metricPeriodMonths
       )}
       labels={chartLabels}
       chartId={`${translate("revocations")}OverTime`}
       datasets={datasets}
       metricTitle={translate("revocationsOverTimeXAxis")}
-      filterStates={filterStates}
+      filterStates={filters}
       chart={chart}
       classModifier={chartId}
       dataExportLabel="Month"
@@ -212,8 +210,6 @@ const RevocationsOverTime = ({
 RevocationsOverTime.propTypes = {
   stateCode: PropTypes.string.isRequired,
   dataFilter: PropTypes.func.isRequired,
-  metricPeriodMonths: PropTypes.string.isRequired,
-  filterStates: filtersPropTypes.isRequired,
 };
 
-export default RevocationsOverTime;
+export default observer(RevocationsOverTime);
