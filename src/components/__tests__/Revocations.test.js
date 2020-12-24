@@ -29,10 +29,7 @@ import RevocationCharts from "../charts/new_revocations/RevocationCharts";
 import CaseTable from "../charts/new_revocations/CaseTable/CaseTable";
 import { useAuth0 } from "../../react-auth0-spa";
 import { useStateCode } from "../../contexts/StateCodeContext";
-import {
-  getUserAppMetadata,
-  getUserDistricts,
-} from "../../utils/authentication/user";
+import { getUserAppMetadata } from "../../utils/authentication/user";
 import { setTranslateLocale } from "../../views/tenants/utils/i18nSettings";
 
 import { MO } from "../../views/tenants/utils/lanternTenants";
@@ -65,7 +62,6 @@ jest.mock("../../views/tenants/constants/filterOptions");
 describe("Revocations component tests", () => {
   const mockUser = {};
   const mockDistrict = "some district";
-  const mockUserDistricts = ["some district1"];
   const mockStateCode = "test_state";
   const toggleBarIdPrefix = "toggle-bar-";
   const districtFilterId = "district-filter";
@@ -77,7 +73,6 @@ describe("Revocations component tests", () => {
   const caseTableId = "case-table";
 
   useAuth0.mockReturnValue({ user: mockUser });
-  getUserDistricts.mockReturnValue(mockUserDistricts);
   ToggleBarFilter.mockImplementation(({ label }) =>
     mockWithTestId(`${toggleBarIdPrefix}${label}`)
   );

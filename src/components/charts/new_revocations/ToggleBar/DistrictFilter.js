@@ -28,10 +28,7 @@ import FilterField from "./FilterField";
 import Select from "../../../controls/Select";
 import useChartData from "../../../../hooks/useChartData";
 import { useAuth0 } from "../../../../react-auth0-spa";
-import {
-  getUserDistricts,
-  getUserAppMetadata,
-} from "../../../../utils/authentication/user";
+import { getUserAppMetadata } from "../../../../utils/authentication/user";
 import MultiSelect from "../../../controls/MultiSelect";
 
 const allDistrictsOption = { label: "All", value: "All" };
@@ -43,12 +40,11 @@ const DistrictFilter = ({ value, stateCode, onChange }) => {
     "revocations_matrix_cells"
   );
 
-  const { district, region } = getUserAppMetadata(user);
-  const userDistricts = getUserDistricts(user);
+  const { district } = getUserAppMetadata(user);
 
   const select = useMemo(() => {
     if (district) {
-      const singleValue = { label: userDistricts[0], value: userDistricts[0] };
+      const singleValue = { label: district, value: district };
 
       return (
         <Select
@@ -60,28 +56,17 @@ const DistrictFilter = ({ value, stateCode, onChange }) => {
         />
       );
     }
-
-    const { options, summingOption, defaultValue } = region
-      ? {
-          options: [allDistrictsOption].concat(
-            map((d) => ({ label: d, value: d }), userDistricts)
-          ),
-          summingOption: allDistrictsOption,
-          defaultValue: [allDistrictsOption],
-        }
-      : {
-          options: [allDistrictsOption].concat(
-            pipe(
-              map("district"),
-              filter((d) => d.toLowerCase() !== "all"),
-              uniq,
-              sortBy(identity),
-              map((d) => ({ value: d, label: d }))
-            )(apiData)
-          ),
-          summingOption: allDistrictsOption,
-          defaultValue: [allDistrictsOption],
-        };
+    const options = [allDistrictsOption].concat(
+      pipe(
+        map("district"),
+        filter((d) => d.toLowerCase() !== "all"),
+        uniq,
+        sortBy(identity),
+        map((d) => ({ value: d, label: d }))
+      )(apiData)
+    );
+    const summingOption = allDistrictsOption;
+    const defaultValue = [allDistrictsOption];
 
     const onValueChange = (newOptions) => onChange(map("value", newOptions));
 
@@ -101,7 +86,7 @@ const DistrictFilter = ({ value, stateCode, onChange }) => {
         isSearchable
       />
     );
-  }, [district, userDistricts, region, isLoading, apiData, onChange, value]);
+  }, [district, isLoading, apiData, onChange, value]);
 
   return <FilterField label="District">{select}</FilterField>;
 };

@@ -25,6 +25,7 @@ export const METADATA_NAMESPACE = "https://dashboard.recidiviz.org/";
 export function getUserAppMetadata(user) {
   const appMetadataKey = `${METADATA_NAMESPACE}app_metadata`;
   return user[appMetadataKey];
+  // return { state_code: "us_mo", district: "01", region: "Western Region" }
 }
 
 /**
@@ -73,24 +74,4 @@ export function getAvailableStateCodes(user) {
  */
 export function doesUserHaveAccess(user, stateCode) {
   return getAvailableStateCodes(user).includes(stateCode);
-}
-
-/**
- * Returns the district or districts that a user should be limited
- * to viewing data for, if there is user metadata in Auth0 specifying
- * a district or region (group of districts) for the user.
- */
-export function getUserDistricts(user) {
-  const stateCode = getUserStateCode(user);
-  const { region, district } = getUserAppMetadata(user);
-
-  if (district) {
-    return [district];
-  }
-
-  if (region && tenants[stateCode].regions) {
-    return tenants[stateCode].regions[region];
-  }
-
-  return null;
 }

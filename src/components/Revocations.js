@@ -22,7 +22,6 @@ import Sticky from "react-sticky-fill";
 import {
   matchesAllFilters,
   matchesTopLevelFilters,
-  limitFiltersToUserDistricts,
   applyAllFilters,
 } from "./charts/new_revocations/helpers";
 import { getTimeDescription } from "./charts/new_revocations/helpers/format";
@@ -43,12 +42,8 @@ import RevocationsByRace from "./charts/new_revocations/RevocationsByRace/Revoca
 import RevocationsByDistrict from "./charts/new_revocations/RevocationsByDistrict/RevocationsByDistrict";
 import CaseTable from "./charts/new_revocations/CaseTable/CaseTable";
 import { useAuth0 } from "../react-auth0-spa";
-import {
-  getUserDistricts,
-  getUserAppMetadata,
-} from "../utils/authentication/user";
+import { getUserAppMetadata } from "../utils/authentication/user";
 import { useStateCode } from "../contexts/StateCodeContext";
-import * as lanternTenant from "../views/tenants/utils/lanternTenants";
 import { translate } from "../views/tenants/utils/i18nSettings";
 import {
   ADMISSION_TYPE,
@@ -78,7 +73,6 @@ const Revocations = () => {
     }
   }, [district, filtersStore]);
 
-  const userDistricts = getUserDistricts(user);
   const violationTypes = translate("violationTypes");
 
   const updateFilters = (newFilters) => {
@@ -90,11 +84,6 @@ const Revocations = () => {
       filtersStore.setFilters({ ...filters, [field]: value });
     },
     [filtersStore, filters]
-  );
-
-  const transformedFilters = limitFiltersToUserDistricts(
-    filters,
-    userDistricts
   );
 
   const timeDescription = getTimeDescription(
@@ -168,11 +157,11 @@ const Revocations = () => {
       <div className="bgc-white p-20 m-20">
         <ErrorBoundary>
           <RevocationCountOverTime
+            stateCode={stateCode}
             dataFilter={matchesAllFilters({
-              filters: transformedFilters,
+              filters,
               skippedFilters: [METRIC_PERIOD_MONTHS],
             })}
-            stateCode={stateCode}
           />
         </ErrorBoundary>
       </div>
@@ -181,7 +170,7 @@ const Revocations = () => {
           <ErrorBoundary>
             <Matrix
               dataFilter={matchesTopLevelFilters({
-                filters: transformedFilters,
+                filters,
               })}
               filterStates={filters}
               updateFilters={updateFilters}
@@ -198,7 +187,7 @@ const Revocations = () => {
         riskLevelChart={
           <ErrorBoundary>
             <RevocationsByRiskLevel
-              dataFilter={matchesAllFilters({ filters: transformedFilters })}
+              dataFilter={matchesAllFilters({ filters })}
               filterStates={filters}
               stateCode={stateCode}
               timeDescription={timeDescription}
@@ -209,7 +198,7 @@ const Revocations = () => {
           flags.enableOfficerChart && (
             <ErrorBoundary>
               <RevocationsByOfficer
-                dataFilter={matchesAllFilters({ filters: transformedFilters })}
+                dataFilter={matchesAllFilters({ filters })}
                 filterStates={filters}
                 stateCode={stateCode}
                 timeDescription={timeDescription}
@@ -220,7 +209,7 @@ const Revocations = () => {
         violationChart={
           <ErrorBoundary>
             <RevocationsByViolation
-              dataFilter={matchesAllFilters({ filters: transformedFilters })}
+              dataFilter={matchesAllFilters({ filters })}
               filterStates={filters}
               stateCode={stateCode}
               timeDescription={timeDescription}
@@ -231,7 +220,7 @@ const Revocations = () => {
         genderChart={
           <ErrorBoundary>
             <RevocationsByGender
-              dataFilter={matchesAllFilters({ filters: transformedFilters })}
+              dataFilter={matchesAllFilters({ filters })}
               filterStates={filters}
               stateCode={stateCode}
               timeDescription={timeDescription}
@@ -241,7 +230,7 @@ const Revocations = () => {
         raceChart={
           <ErrorBoundary>
             <RevocationsByRace
-              dataFilter={matchesAllFilters({ filters: transformedFilters })}
+              dataFilter={matchesAllFilters({ filters })}
               filterStates={filters}
               stateCode={stateCode}
               timeDescription={timeDescription}
@@ -252,15 +241,11 @@ const Revocations = () => {
           <ErrorBoundary>
             <RevocationsByDistrict
               dataFilter={matchesAllFilters({
-                filters: transformedFilters,
+                filters,
                 skippedFilters: [DISTRICT],
               })}
               filterStates={filters}
-              currentDistricts={
-                stateCode === lanternTenant.MO
-                  ? transformedFilters[DISTRICT]
-                  : filters[DISTRICT]
-              }
+              currentDistricts={filters[DISTRICT]}
               stateCode={stateCode}
               timeDescription={timeDescription}
             />
@@ -272,7 +257,7 @@ const Revocations = () => {
         <ErrorBoundary>
           <CaseTable
             dataFilter={applyAllFilters({
-              filters: transformedFilters,
+              filters,
               treatCategoryAllAsAbsent: true,
             })}
             filterStates={filters}
