@@ -46,7 +46,6 @@ import {
   getUserAppMetadata,
   getUserDistricts,
 } from "../utils/authentication/user";
-import { useStateCode } from "../contexts/StateCodeContext";
 import * as lanternTenant from "../views/tenants/utils/lanternTenants";
 import filterOptionsMap from "../views/tenants/constants/filterOptions";
 import { translate } from "../views/tenants/utils/i18nSettings";
@@ -61,17 +60,18 @@ import {
   VIOLATION_TYPE,
 } from "../constants/filterTypes";
 import flags from "../flags";
+import { useRootStore } from "../StoreProvider";
 
 import "./Revocations.scss";
 
 const Revocations = () => {
+  const { currentTenantId } = useRootStore();
   const { user } = useAuth0();
-  const { currentStateCode: stateCode } = useStateCode();
   const { district } = getUserAppMetadata(user);
   const userDistricts = getUserDistricts(user);
   const violationTypes = translate("violationTypes");
 
-  const filterOptions = filterOptionsMap[stateCode];
+  const filterOptions = filterOptionsMap[currentTenantId];
   const [filters, setFilters] = useState({
     [METRIC_PERIOD_MONTHS]: filterOptions[METRIC_PERIOD_MONTHS].defaultValue,
     [CHARGE_CATEGORY]: filterOptions[CHARGE_CATEGORY].defaultValue,
@@ -122,7 +122,7 @@ const Revocations = () => {
             <ErrorBoundary>
               <DistrictFilter
                 value={filters[DISTRICT]}
-                stateCode={stateCode}
+                stateCode={currentTenantId}
                 onChange={createOnFilterChange(DISTRICT)}
               />
             </ErrorBoundary>
@@ -178,7 +178,7 @@ const Revocations = () => {
             })}
             filterStates={filters}
             metricPeriodMonths={filters[METRIC_PERIOD_MONTHS]}
-            stateCode={stateCode}
+            stateCode={currentTenantId}
           />
         </ErrorBoundary>
       </div>
@@ -192,7 +192,7 @@ const Revocations = () => {
               filterStates={filters}
               updateFilters={updateFilters}
               timeDescription={timeDescription}
-              stateCode={stateCode}
+              stateCode={currentTenantId}
               violationTypes={violationTypes}
             />
           </ErrorBoundary>
@@ -206,7 +206,7 @@ const Revocations = () => {
             <RevocationsByRiskLevel
               dataFilter={matchesAllFilters({ filters: transformedFilters })}
               filterStates={filters}
-              stateCode={stateCode}
+              stateCode={currentTenantId}
               timeDescription={timeDescription}
             />
           </ErrorBoundary>
@@ -217,7 +217,7 @@ const Revocations = () => {
               <RevocationsByOfficer
                 dataFilter={matchesAllFilters({ filters: transformedFilters })}
                 filterStates={filters}
-                stateCode={stateCode}
+                stateCode={currentTenantId}
                 timeDescription={timeDescription}
               />
             </ErrorBoundary>
@@ -228,7 +228,7 @@ const Revocations = () => {
             <RevocationsByViolation
               dataFilter={matchesAllFilters({ filters: transformedFilters })}
               filterStates={filters}
-              stateCode={stateCode}
+              stateCode={currentTenantId}
               timeDescription={timeDescription}
               violationTypes={filterOptions[VIOLATION_TYPE].options}
             />
@@ -239,7 +239,7 @@ const Revocations = () => {
             <RevocationsByGender
               dataFilter={matchesAllFilters({ filters: transformedFilters })}
               filterStates={filters}
-              stateCode={stateCode}
+              stateCode={currentTenantId}
               timeDescription={timeDescription}
             />
           </ErrorBoundary>
@@ -249,7 +249,7 @@ const Revocations = () => {
             <RevocationsByRace
               dataFilter={matchesAllFilters({ filters: transformedFilters })}
               filterStates={filters}
-              stateCode={stateCode}
+              stateCode={currentTenantId}
               timeDescription={timeDescription}
             />
           </ErrorBoundary>
@@ -263,11 +263,11 @@ const Revocations = () => {
               })}
               filterStates={filters}
               currentDistricts={
-                stateCode === lanternTenant.US_MO
+                currentTenantId === lanternTenant.US_MO
                   ? transformedFilters[DISTRICT]
                   : filters[DISTRICT]
               }
-              stateCode={stateCode}
+              stateCode={currentTenantId}
               timeDescription={timeDescription}
             />
           </ErrorBoundary>
@@ -283,7 +283,7 @@ const Revocations = () => {
             })}
             filterStates={filters}
             metricPeriodMonths={filters[METRIC_PERIOD_MONTHS]}
-            stateCode={stateCode}
+            stateCode={currentTenantId}
           />
         </ErrorBoundary>
       </div>

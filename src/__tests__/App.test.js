@@ -31,6 +31,7 @@ import NotFound from "../views/NotFound";
 import Loading from "../components/Loading";
 import LanternLayout from "../components/layouts/LanternLayout";
 import CoreLayout from "../components/layouts/CoreLayout";
+import StoreProvider, { useRootStore } from "../StoreProvider";
 
 jest.mock("../utils/initIntercomSettings");
 jest.mock("../utils/initFontAwesome");
@@ -42,6 +43,7 @@ jest.mock("../views/tenants/us_nd/community/Goals");
 jest.mock("../views/NotFound");
 jest.mock("../components/Loading");
 jest.mock("../react-auth0-spa");
+jest.mock("../StoreProvider");
 
 describe("App tests", () => {
   const metadataField = `${METADATA_NAMESPACE}app_metadata`;
@@ -51,8 +53,11 @@ describe("App tests", () => {
   const mockNotFoundId = "not-found-id";
   const mockLoadingTestId = "loading-test-id";
 
-  LanternLayout.mockImplementation(({ children }) => children);
+  const LanternLayoutMock = LanternLayout.type;
+
+  LanternLayoutMock.mockImplementation(({ children }) => children);
   CoreLayout.mockImplementation(({ children }) => children);
+  StoreProvider.mockImplementation(({ children }) => children);
   Revocations.mockReturnValue(mockWithTestId(mockRevocationsId));
   UsNDCommunityGoals.mockReturnValue(mockWithTestId(mockNDCommunityGoalsId));
   NotFound.mockReturnValue(mockWithTestId(mockNotFoundId));
@@ -72,11 +77,17 @@ describe("App tests", () => {
       loginWithRedirect: jest.fn(),
       getTokenSilently: jest.fn(),
     });
+    useRootStore.mockReturnValue({
+      currentTenantId: US_MO,
+    });
 
-    const { getByTestId } = render(<App />);
+    const { getByTestId } = render(
+      <StoreProvider>
+        <App />
+      </StoreProvider>
+    );
 
-    expect(LanternLayout).toHaveBeenCalledTimes(1);
-    expect(LanternLayout.mock.calls[0][0].stateCode).toBe(US_MO);
+    expect(LanternLayoutMock).toHaveBeenCalledTimes(1);
     expect(getByTestId(mockRevocationsId)).toBeInTheDocument();
   });
 
@@ -91,11 +102,17 @@ describe("App tests", () => {
       loginWithRedirect: jest.fn(),
       getTokenSilently: jest.fn(),
     });
+    useRootStore.mockReturnValue({
+      currentTenantId: US_ND,
+    });
 
-    const { getByTestId } = render(<App />);
+    const { getByTestId } = render(
+      <StoreProvider>
+        <App />
+      </StoreProvider>
+    );
 
     expect(CoreLayout).toHaveBeenCalledTimes(1);
-    expect(CoreLayout.mock.calls[0][0].stateCode).toBe(US_ND);
     expect(getByTestId(mockNDCommunityGoalsId)).toBeInTheDocument();
   });
 
@@ -109,17 +126,23 @@ describe("App tests", () => {
       loginWithRedirect: jest.fn(),
       getTokenSilently: jest.fn(),
     });
+    useRootStore.mockReturnValue({
+      currentTenantId: US_PA,
+    });
 
     const { getByTestId } = render(<App />);
 
-    expect(LanternLayout).toHaveBeenCalledTimes(1);
-    expect(LanternLayout.mock.calls[0][0].stateCode).toBe(US_PA);
+    expect(LanternLayoutMock).toHaveBeenCalledTimes(1);
     expect(getByTestId(mockRevocationsId)).toBeInTheDocument();
   });
 
   it("should render Not Found page ", () => {
     window.history.pushState({}, "", "/some/page");
-    const { container, getByTestId } = render(<App />);
+    const { container, getByTestId } = render(
+      <StoreProvider>
+        <App />
+      </StoreProvider>
+    );
 
     expect(container.children.length).toBe(1);
     expect(getByTestId(mockNotFoundId)).toBeInTheDocument();
@@ -133,7 +156,11 @@ describe("App tests", () => {
       getTokenSilently: jest.fn(),
     });
 
-    const { container } = render(<App />);
+    const { container } = render(
+      <StoreProvider>
+        <App />
+      </StoreProvider>
+    );
 
     expect(container.children.length).toBe(1);
     expect(container.firstChild.dataset.testid).toBe(mockLoadingTestId);
@@ -148,7 +175,11 @@ describe("App tests", () => {
       getTokenSilently: jest.fn(),
     });
 
-    render(<App />);
+    render(
+      <StoreProvider defaultTenantId="US_PA">
+        <App />
+      </StoreProvider>
+    );
 
     expect(loginWithRedirect).toHaveBeenCalled();
   });

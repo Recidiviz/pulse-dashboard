@@ -24,7 +24,6 @@ import {
 } from "react-router-dom";
 
 import TenantRoutes from "./components/TenantRoutes";
-import { StateCodeProvider } from "./contexts/StateCodeContext";
 import { PageProvider } from "./contexts/PageContext";
 import NotFound from "./views/NotFound";
 import Profile from "./views/Profile";
@@ -40,8 +39,9 @@ import UsNdProgrammingExplore from "./views/tenants/us_nd/programming/Explore";
 import initFontAwesome from "./utils/initFontAwesome";
 import initIntercomSettings from "./utils/initIntercomSettings";
 import { initI18n } from "./views/tenants/utils/i18nSettings";
-import * as lanternTenant from "./views/tenants/utils/lanternTenants";
-import * as coreTenant from "./views/tenants/utils/coreTenants";
+import { LANTERN_TENANTS } from "./views/tenants/utils/lanternTenants";
+import { CORE_TENANTS } from "./views/tenants/utils/coreTenants";
+import StoreProvider from "./StoreProvider";
 
 import "./assets/scripts/index";
 import "./assets/styles/index.scss";
@@ -52,25 +52,24 @@ initI18n();
 
 // prettier-ignore
 const App = () => (
-  <PageProvider>
-    <StateCodeProvider>
+  <StoreProvider>
+    <PageProvider>
       <Router>
         <Switch>
           <Route path="/verify" component={VerificationNeeded} />
 
           <TenantRoutes>
-            <LanternLayout stateCode={lanternTenant.US_MO}>
+            <LanternLayout tenantIds={LANTERN_TENANTS}>
               <Switch>
                 <Route path="/community/revocations" component={Revocations} />
-              <Route path="/profile" component={Profile} />
+                <Route path="/profile" component={Profile} />
                 <Redirect exact from="/" to="/community/revocations" />
                 <Redirect from="/revocations" to="/community/revocations" />
                 <NotFound />
               </Switch>
             </LanternLayout>
 
-
-            <CoreLayout stateCode={coreTenant.US_ND}>
+            <CoreLayout tenantIds={CORE_TENANTS}>
               <Switch>
                 <Route path="/community/goals" component={UsNdCommunityGoals} />
                 <Route path="/community/explore" component={UsNdCommunityExplore} />
@@ -86,21 +85,11 @@ const App = () => (
                 <NotFound />
               </Switch>
             </CoreLayout>
-
-            <LanternLayout stateCode={lanternTenant.US_PA}>
-              <Switch>
-                <Route path="/community/revocations" component={Revocations} />
-                <Route path="/profile" component={Profile} />
-                <Redirect exact from="/" to="/community/revocations" />
-                <Redirect from="/revocations" to="/community/revocations" />
-                <NotFound />
-              </Switch>
-              </LanternLayout>
           </TenantRoutes>
         </Switch>
       </Router>
-    </StateCodeProvider>
-  </PageProvider>
+    </PageProvider>
+  </StoreProvider>
 );
 
 export default App;

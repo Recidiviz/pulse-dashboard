@@ -21,15 +21,14 @@ import { useLocation } from "react-router-dom";
 
 import Loading from "./Loading";
 import { useAuth0 } from "../react-auth0-spa";
-import { useStateCode } from "../contexts/StateCodeContext";
 import { doesUserHaveAccess } from "../utils/authentication/user";
 import NotFound from "../views/NotFound";
+import { useRootStore } from "../StoreProvider";
 
 const TenantRoutes = ({ children }) => {
+  const { currentTenantId } = useRootStore();
   const { user, loading, isAuthenticated, loginWithRedirect } = useAuth0();
   const { pathname } = useLocation();
-  const { currentStateCode, refreshCurrentStateCode } = useStateCode();
-
   useEffect(() => {
     const fn = async () => {
       if (!isAuthenticated && !loading) {
@@ -42,24 +41,20 @@ const TenantRoutes = ({ children }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isAuthenticated, loading]);
 
-  useEffect(() => {
-    if (user) {
-      refreshCurrentStateCode();
-    }
-  }, [refreshCurrentStateCode, isAuthenticated, user]);
-
   if (loading) {
     return <Loading />;
   }
 
-  if (!isAuthenticated || !user || !currentStateCode) {
+  if (!isAuthenticated || !user || !currentTenantId) {
     return null;
   }
 
   return Children.toArray(children).reduce((node, child) => {
-    const { stateCode } = child.props;
-
-    if (doesUserHaveAccess(user, stateCode) && stateCode === currentStateCode) {
+    const { tenantIds } = child.props;
+    if (
+      doesUserHaveAccess(user, currentTenantId) &&
+      tenantIds.includes(currentTenantId)
+    ) {
       return child;
     }
 
