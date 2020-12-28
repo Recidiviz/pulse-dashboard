@@ -49,7 +49,7 @@ describe("Revocations component tests", () => {
   const mockUser = {};
   const mockDistrict = "some district";
   const mockUserDistricts = ["some district1"];
-  const mockStateCode = "TEST_STATE";
+  const mockTenantId = "TEST_TENANT";
   const toggleBarIdPrefix = "toggle-bar-";
   const districtFilterId = "district-filter";
   const admissionTypeFilterId = "admission-type-filter";
@@ -82,7 +82,7 @@ describe("Revocations component tests", () => {
   setTranslateLocale(US_MO);
   StoreProvider.mockImplementation(({ children }) => children);
   useRootStore.mockReturnValue({
-    currentTenantId: "TEST_STATE",
+    currentTenantId: "TEST_TENANT",
   });
 
   beforeEach(() => {
@@ -115,10 +115,10 @@ describe("Revocations component tests", () => {
   });
 
   it("should not render supervision type and supervision level if they are not enabled", () => {
-    filterOptionsMap[mockStateCode][SUPERVISION_LEVEL].componentEnabled = false;
-    filterOptionsMap[mockStateCode][SUPERVISION_TYPE].componentEnabled = false;
-    filterOptionsMap[mockStateCode][ADMISSION_TYPE].componentEnabled = false;
-    filterOptionsMap[mockStateCode][ADMISSION_TYPE].filterEnabled = false;
+    filterOptionsMap[mockTenantId][SUPERVISION_LEVEL].componentEnabled = false;
+    filterOptionsMap[mockTenantId][SUPERVISION_TYPE].componentEnabled = false;
+    filterOptionsMap[mockTenantId][ADMISSION_TYPE].componentEnabled = false;
+    filterOptionsMap[mockTenantId][ADMISSION_TYPE].filterEnabled = false;
     const { queryByTestId } = render(
       <StoreProvider>
         <Revocations />
@@ -131,10 +131,10 @@ describe("Revocations component tests", () => {
   });
 
   it("should pass correct defaultValues to filters", () => {
-    filterOptionsMap[mockStateCode][SUPERVISION_LEVEL].componentEnabled = true;
-    filterOptionsMap[mockStateCode][SUPERVISION_TYPE].componentEnabled = true;
-    filterOptionsMap[mockStateCode][ADMISSION_TYPE].componentEnabled = true;
-    filterOptionsMap[mockStateCode][ADMISSION_TYPE].filterEnabled = true;
+    filterOptionsMap[mockTenantId][SUPERVISION_LEVEL].componentEnabled = true;
+    filterOptionsMap[mockTenantId][SUPERVISION_TYPE].componentEnabled = true;
+    filterOptionsMap[mockTenantId][ADMISSION_TYPE].componentEnabled = true;
+    filterOptionsMap[mockTenantId][ADMISSION_TYPE].filterEnabled = true;
     render(<Revocations />);
 
     const timePeriodFilterMocks = ToggleBarFilter.mock.calls.filter(
@@ -150,7 +150,7 @@ describe("Revocations component tests", () => {
       (call) => call[0].label === "Supervision Level"
     );
 
-    const filterOptions = filterOptionsMap[mockStateCode];
+    const filterOptions = filterOptionsMap[mockTenantId];
 
     expect(timePeriodFilterMocks[0][0].value).toBe(
       filterOptions[METRIC_PERIOD_MONTHS].defaultValue

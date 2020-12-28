@@ -23,14 +23,14 @@ import {
   doesUserHaveAccess,
 } from "../utils/authentication/user";
 
-const CURRENT_STATE_IN_SESSION = "adminUserCurrentStateInSession";
+export const CURRENT_TENANT_IN_SESSION = "adminUserCurrentTenantInSession";
 
 /*
  * Returns the current state that should be viewed. This is retrieved from
  * the sessionStorage cache if already set. Otherwise, picks the first available state in ABC order.
  */
 function getTenantIdFromUser(user) {
-  const fromStorage = sessionStorage.getItem(CURRENT_STATE_IN_SESSION);
+  const fromStorage = sessionStorage.getItem(CURRENT_TENANT_IN_SESSION);
   if (user) {
     const availableStateCodes = getAvailableStateCodes(user);
     if (fromStorage && doesUserHaveAccess(user, fromStorage)) {
@@ -44,7 +44,8 @@ function getTenantIdFromUser(user) {
 export default class TenantStore {
   rootStore;
 
-  currentTenantId = sessionStorage.getItem(CURRENT_STATE_IN_SESSION) || "US_MO";
+  currentTenantId =
+    sessionStorage.getItem(CURRENT_TENANT_IN_SESSION) || "US_MO";
 
   constructor({ rootStore }) {
     makeAutoObservable(this);
@@ -56,6 +57,6 @@ export default class TenantStore {
 
   setCurrentTenantId(tenantId) {
     this.currentTenantId = tenantId;
-    sessionStorage.setItem(CURRENT_STATE_IN_SESSION, tenantId);
+    sessionStorage.setItem(CURRENT_TENANT_IN_SESSION, tenantId);
   }
 }

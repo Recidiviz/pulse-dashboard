@@ -12,7 +12,7 @@ import {
 } from "../../../../constants/filterTypes";
 
 export default {
-  TEST_STATE: {
+  TEST_TENANT: {
     [METRIC_PERIOD_MONTHS]: {
       options: Array.from({ length: 5 }).map((_, i) => ({
         label: `${METRIC_PERIOD_MONTHS}-${i}-label`,
