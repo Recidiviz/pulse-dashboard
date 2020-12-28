@@ -149,7 +149,15 @@ describe("api tests", () => {
     const callback = responder(res);
     callback(error, null);
 
-    expect(status).toHaveBeenCalledWith(400);
+    expect(status).toHaveBeenCalledWith(error.status);
+  });
+
+  it("should send the error's status code when the error has a code property", () => {
+    const error = { code: 404, error: "File not found" };
+    const callback = responder(res);
+    callback(error, null);
+
+    expect(status).toHaveBeenCalledWith(error.code);
   });
 
   it("should send data", () => {
