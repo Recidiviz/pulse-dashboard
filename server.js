@@ -40,8 +40,10 @@ const authEnv = process.env.AUTH_ENV;
 let authConfig = null;
 if (authEnv === "production") {
   authConfig = productionAuthConfig;
-} else {
+} else if (authEnv === "development") {
   authConfig = devAuthConfig;
+} else {
+  authConfig = { domain: "test", audience: "test" };
 }
 
 if (!authConfig.domain || !authConfig.audience) {
