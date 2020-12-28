@@ -19,8 +19,8 @@
  *
  * The function `cacheInRedis`  wraps fetches and caches the values returned.
  * The `wrap` helper from cache-manager first checks the cache to see if the metrics with the given key
- * are already in cache and not. If not, it calls the fetch function invokes the callback only once
- * all files have been retrieved and cached.
+ * are already in cache. If it is not in cache, it calls the fetch function and invokes the callback only
+ * once all files have been retrieved and cached.
  *
  * The callback should be a function with a signature of `function (error, results)`.
  *
