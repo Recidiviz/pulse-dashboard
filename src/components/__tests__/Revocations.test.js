@@ -49,7 +49,7 @@ describe("Revocations component tests", () => {
   const mockUser = {};
   const mockDistrict = "some district";
   const mockUserDistricts = ["some district1"];
-  const mockStateCode = "test_state";
+  const mockStateCode = "TEST_STATE";
   const toggleBarIdPrefix = "toggle-bar-";
   const districtFilterId = "district-filter";
   const admissionTypeFilterId = "admission-type-filter";
@@ -77,7 +77,7 @@ describe("Revocations component tests", () => {
   setTranslateLocale(US_MO);
   StoreProvider.mockImplementation(({ children }) => children);
   useRootStore.mockReturnValue({
-    currentTenantId: "test_state",
+    currentTenantId: "TEST_STATE",
   });
 
   beforeEach(() => {

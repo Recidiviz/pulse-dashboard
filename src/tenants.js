@@ -23,6 +23,14 @@ export default {
   [lantern.US_MO]: {
     name: "Missouri",
     availableStateCodes: [lantern.US_MO],
+    regions: {	
+      "Western Region": ["1", "4", "4C", "WN", "4W", "19", "24"],	
+      "North Central Region": ["2", "5", "6", "20", "27", "29", "32", "XCRC", "MCC", "MTC", "WMCC", "WRDCC"],	
+      "Southwest Region": ["9", "10", "10N", "10R", "13", "21", "30", "33", "42", "43", "44", "ATC", "CTCC", "FRDC", "JCCC", "OCC", "SCCC", "OCC"],	
+      "Northeast Region": ["3", "11", "16", "17", "18", "26", "38", "BCC", "CCC", "NECC", "WERDCC"],	
+      "Eastern Region": ["7B", "7C", "7S", "8C", "8E", "8N", "8S", "EP", "ERV", "TCSTL"],	
+      "Southeast Region": ["12", "14", "15", "22", "23", "25", "31", "36", "37", "ERDCC", "FCC", "MECC", "PCC", "SECC"],	
+    },
   },
   [core.US_ND]: {
     name: "North Dakota",
