@@ -29,7 +29,7 @@ export function getUserAppMetadata(user) {
 
 /**
  * Returns the human-readable state name for the given state code,
- * e.g. getStateNameForCode('us_nd') = 'North Dakota'
+ * e.g. getStateNameForCode('US_ND') = 'North Dakota'
  */
 export function getStateNameForCode(stateCode) {
   return tenants[stateCode].name;
@@ -47,7 +47,7 @@ export function getUserStateCode(user) {
 
   const stateCode = appMetadata.state_code;
   if (stateCode) {
-    return stateCode.toLowerCase();
+    return stateCode.toUpperCase();
   }
   throw Error("No state code set for user");
 }

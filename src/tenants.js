@@ -32,11 +32,11 @@ export default {
     name: "Pennsylvania",
     availableStateCodes: [lantern.US_PA],
   },
-  recidiviz: {
+  RECIDIVIZ: {
     name: "Recidiviz",
     availableStateCodes: lantern.LANTERN_TENANTS.concat(core.CORE_TENANTS),
   },
-  lantern: {
+  LANTERN: {
     name: "Lantern",
     availableStateCodes: lantern.LANTERN_TENANTS,
   },
