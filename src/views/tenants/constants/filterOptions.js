@@ -10,7 +10,7 @@ import {
   LEVEL_1_SUPERVISION_LOCATION,
   LEVEL_2_SUPERVISION_LOCATION,
 } from "../../../constants/filterTypes";
-import { MO, PA } from "../utils/lanternTenants";
+import { US_MO, US_PA } from "../utils/lanternTenants";
 
 const METRIC_PERIODS = {
   options: [
@@ -214,6 +214,6 @@ const PAFilterOptions = {
 };
 
 export default {
-  [MO]: MOFilterOptions,
-  [PA]: PAFilterOptions,
+  [US_MO]: MOFilterOptions,
+  [US_PA]: PAFilterOptions,
 };

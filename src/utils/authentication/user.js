@@ -65,7 +65,7 @@ export function getUserStateName(user) {
  */
 export function getAvailableStateCodes(user) {
   const stateCode = getUserStateCode(user);
-  return tenants[stateCode].availableStateCodes;
+  return tenants[stateCode.toUpperCase()].availableStateCodes;
 }
 
 /**

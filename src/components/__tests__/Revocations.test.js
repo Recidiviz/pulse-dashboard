@@ -18,7 +18,7 @@ import {
 } from "../../utils/authentication/user";
 import { setTranslateLocale } from "../../views/tenants/utils/i18nSettings";
 
-import { MO } from "../../views/tenants/utils/lanternTenants";
+import { US_MO } from "../../views/tenants/utils/lanternTenants";
 import mockWithTestId from "../../../__helpers__/mockWithTestId";
 import filterOptionsMap from "../../views/tenants/constants/filterOptions";
 import {
@@ -74,7 +74,7 @@ describe("Revocations component tests", () => {
   RevocationCharts.mockReturnValue(mockWithTestId(revocationChartsId));
   CaseTable.mockReturnValue(mockWithTestId(caseTableId));
   useStateCode.mockReturnValue({ currentStateCode: mockStateCode });
-  setTranslateLocale(MO);
+  setTranslateLocale(US_MO);
 
   beforeEach(() => {
     jest.clearAllMocks();

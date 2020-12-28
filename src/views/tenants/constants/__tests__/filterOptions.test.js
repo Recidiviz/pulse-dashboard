@@ -27,8 +27,8 @@ describe("filterOptionsMap", () => {
         defaultValue: "All",
       };
 
-      expect(result.us_mo.district).toEqual(expected);
-      expect(result.us_pa.district).toEqual(expected);
+      expect(result.US_MO.district).toEqual(expected);
+      expect(result.US_PA.district).toEqual(expected);
     });
   });
 
@@ -65,8 +65,8 @@ describe("filterOptionsMap", () => {
         ],
       };
 
-      expect(result.us_mo.metricPeriodMonths).toEqual(expected);
-      expect(result.us_pa.metricPeriodMonths).toEqual(expected);
+      expect(result.US_MO.metricPeriodMonths).toEqual(expected);
+      expect(result.US_PA.metricPeriodMonths).toEqual(expected);
     });
   });
 
@@ -77,14 +77,14 @@ describe("filterOptionsMap", () => {
         defaultValue: "",
       };
 
-      expect(result.us_mo.reportedViolations).toEqual(expected);
-      expect(result.us_pa.reportedViolations).toEqual(expected);
+      expect(result.US_MO.reportedViolations).toEqual(expected);
+      expect(result.US_PA.reportedViolations).toEqual(expected);
     });
   });
 
-  describe("when the stateCode is us_mo", () => {
+  describe("when the stateCode is US_MO", () => {
     beforeAll(() => {
-      result = filterOptionsMap.us_mo;
+      result = filterOptionsMap.US_MO;
     });
 
     it("returns the correct filter admissionType option", () => {
@@ -314,9 +314,9 @@ describe("filterOptionsMap", () => {
     });
   });
 
-  describe("when the stateCode is us_pa", () => {
+  describe("when the stateCode is US_PA", () => {
     beforeAll(() => {
-      result = filterOptionsMap.us_pa;
+      result = filterOptionsMap.US_PA;
     });
 
     it("returns the correct admissionType filter options", () => {

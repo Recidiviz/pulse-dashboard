@@ -23,7 +23,7 @@ describe("helper", () => {
 
   describe("#formatData", () => {
     beforeEach(() => {
-      setTranslateLocale(lanternTenant.MO);
+      setTranslateLocale(lanternTenant.US_MO);
       data = {
         charge_category: "ALCOHOL_DRUG",
         district: "01",
@@ -48,7 +48,7 @@ describe("helper", () => {
 
     describe("when the tenant is MO", () => {
       it("formats the risk level for MO", () => {
-        setTranslateLocale(lanternTenant.MO);
+        setTranslateLocale(lanternTenant.US_MO);
         const result = helpers.formatData([data]);
         expect(result[0].risk_level).toEqual("Moderate Risk");
       });
@@ -56,7 +56,7 @@ describe("helper", () => {
 
     describe("when the tenant is PA", () => {
       it("formats the risk level for PA", () => {
-        setTranslateLocale(lanternTenant.PA);
+        setTranslateLocale(lanternTenant.US_PA);
         const result = helpers.formatData([data]);
         expect(result[0].risk_level).toEqual("Medium Risk");
       });
@@ -87,7 +87,7 @@ describe("helper", () => {
 
   describe("#formatExportData", () => {
     beforeEach(() => {
-      setTranslateLocale(lanternTenant.MO);
+      setTranslateLocale(lanternTenant.US_MO);
       data = {
         charge_category: "ALCOHOL_DRUG",
         district: "01",

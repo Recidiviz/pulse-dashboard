@@ -263,7 +263,7 @@ const Revocations = () => {
               })}
               filterStates={filters}
               currentDistricts={
-                stateCode === lanternTenant.MO
+                stateCode === lanternTenant.US_MO
                   ? transformedFilters[DISTRICT]
                   : filters[DISTRICT]
               }

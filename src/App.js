@@ -59,17 +59,18 @@ const App = () => (
           <Route path="/verify" component={VerificationNeeded} />
 
           <TenantRoutes>
-            <LanternLayout stateCode={lanternTenant.MO}>
+            <LanternLayout stateCode={lanternTenant.US_MO}>
               <Switch>
                 <Route path="/community/revocations" component={Revocations} />
-                <Route path="/profile" component={Profile} />
+              <Route path="/profile" component={Profile} />
                 <Redirect exact from="/" to="/community/revocations" />
                 <Redirect from="/revocations" to="/community/revocations" />
                 <NotFound />
               </Switch>
             </LanternLayout>
 
-            <CoreLayout stateCode={coreTenant.ND}>
+
+            <CoreLayout stateCode={coreTenant.US_ND}>
               <Switch>
                 <Route path="/community/goals" component={UsNdCommunityGoals} />
                 <Route path="/community/explore" component={UsNdCommunityExplore} />
@@ -86,7 +87,7 @@ const App = () => (
               </Switch>
             </CoreLayout>
 
-            <LanternLayout stateCode={lanternTenant.PA}>
+            <LanternLayout stateCode={lanternTenant.US_PA}>
               <Switch>
                 <Route path="/community/revocations" component={Revocations} />
                 <Route path="/profile" component={Profile} />
@@ -94,7 +95,7 @@ const App = () => (
                 <Redirect from="/revocations" to="/community/revocations" />
                 <NotFound />
               </Switch>
-            </LanternLayout>
+              </LanternLayout>
           </TenantRoutes>
         </Switch>
       </Router>
