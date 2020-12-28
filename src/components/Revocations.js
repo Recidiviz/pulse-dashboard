@@ -16,6 +16,7 @@
 // =============================================================================
 
 import React, { useCallback, useState } from "react";
+import { observer } from "mobx-react-lite";
 import Sticky from "react-sticky-fill";
 
 import {
@@ -122,7 +123,6 @@ const Revocations = () => {
             <ErrorBoundary>
               <DistrictFilter
                 value={filters[DISTRICT]}
-                stateCode={currentTenantId}
                 onChange={createOnFilterChange(DISTRICT)}
               />
             </ErrorBoundary>
@@ -178,7 +178,6 @@ const Revocations = () => {
             })}
             filterStates={filters}
             metricPeriodMonths={filters[METRIC_PERIOD_MONTHS]}
-            stateCode={currentTenantId}
           />
         </ErrorBoundary>
       </div>
@@ -192,7 +191,6 @@ const Revocations = () => {
               filterStates={filters}
               updateFilters={updateFilters}
               timeDescription={timeDescription}
-              stateCode={currentTenantId}
               violationTypes={violationTypes}
             />
           </ErrorBoundary>
@@ -206,7 +204,6 @@ const Revocations = () => {
             <RevocationsByRiskLevel
               dataFilter={matchesAllFilters({ filters: transformedFilters })}
               filterStates={filters}
-              stateCode={currentTenantId}
               timeDescription={timeDescription}
             />
           </ErrorBoundary>
@@ -217,7 +214,6 @@ const Revocations = () => {
               <RevocationsByOfficer
                 dataFilter={matchesAllFilters({ filters: transformedFilters })}
                 filterStates={filters}
-                stateCode={currentTenantId}
                 timeDescription={timeDescription}
               />
             </ErrorBoundary>
@@ -228,7 +224,6 @@ const Revocations = () => {
             <RevocationsByViolation
               dataFilter={matchesAllFilters({ filters: transformedFilters })}
               filterStates={filters}
-              stateCode={currentTenantId}
               timeDescription={timeDescription}
               violationTypes={filterOptions[VIOLATION_TYPE].options}
             />
@@ -239,7 +234,6 @@ const Revocations = () => {
             <RevocationsByGender
               dataFilter={matchesAllFilters({ filters: transformedFilters })}
               filterStates={filters}
-              stateCode={currentTenantId}
               timeDescription={timeDescription}
             />
           </ErrorBoundary>
@@ -249,7 +243,6 @@ const Revocations = () => {
             <RevocationsByRace
               dataFilter={matchesAllFilters({ filters: transformedFilters })}
               filterStates={filters}
-              stateCode={currentTenantId}
               timeDescription={timeDescription}
             />
           </ErrorBoundary>
@@ -267,7 +260,6 @@ const Revocations = () => {
                   ? transformedFilters[DISTRICT]
                   : filters[DISTRICT]
               }
-              stateCode={currentTenantId}
               timeDescription={timeDescription}
             />
           </ErrorBoundary>
@@ -283,7 +275,6 @@ const Revocations = () => {
             })}
             filterStates={filters}
             metricPeriodMonths={filters[METRIC_PERIOD_MONTHS]}
-            stateCode={currentTenantId}
           />
         </ErrorBoundary>
       </div>
@@ -293,4 +284,4 @@ const Revocations = () => {
 
 Revocations.propTypes = {};
 
-export default Revocations;
+export default observer(Revocations);

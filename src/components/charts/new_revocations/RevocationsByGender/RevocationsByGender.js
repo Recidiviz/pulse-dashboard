@@ -17,6 +17,7 @@
 
 import React from "react";
 import PropTypes from "prop-types";
+import { observer } from "mobx-react-lite";
 
 import { translate } from "../../../../views/tenants/utils/i18nSettings";
 import { filtersPropTypes } from "../../propTypes";
@@ -27,46 +28,44 @@ import BarChartWithLabels from "../BarChartWithLabels";
 import { CHART_COLORS } from "./constants";
 import createGenerateChartData from "./createGenerateChartData";
 import flags from "../../../../flags";
+import { useRootStore } from "../../../../StoreProvider";
 
-const RevocationsByGender = ({
-  stateCode,
-  dataFilter,
-  filterStates,
-  timeDescription,
-}) => (
-  <RevocationsByDimension
-    chartId={`${translate("revocations")}By${translate("Gender")}`}
-    apiUrl={`${stateCode}/newRevocations`}
-    apiFile="revocations_matrix_distribution_by_gender"
-    renderChart={({ chartId, data, denominators, numerators, mode }) => (
-      <BarChartWithLabels
-        id={chartId}
-        data={data}
-        xAxisLabel={`${translate("Gender")} and risk level`}
-        yAxisLabel={getLabelByMode(mode)}
-        labelColors={CHART_COLORS}
-        denominators={denominators}
-        numerators={numerators}
-      />
-    )}
-    generateChartData={createGenerateChartData(dataFilter, stateCode)}
-    chartTitle={`Admissions by ${translate("gender")} and risk level`}
-    metricTitle={(mode) =>
-      `${getLabelByMode(mode)} by ${translate("gender")} and risk level`
-    }
-    filterStates={filterStates}
-    timeDescription={timeDescription}
-    modes={flags.enableRevocationRateByExit ? ["rates", "exits"] : []}
-    defaultMode="rates"
-    dataExportLabel="Risk Level"
-  />
-);
+const RevocationsByGender = ({ dataFilter, filterStates, timeDescription }) => {
+  const { currentTenantId } = useRootStore();
+  return (
+    <RevocationsByDimension
+      chartId={`${translate("revocations")}By${translate("Gender")}`}
+      apiUrl={`${currentTenantId}/newRevocations`}
+      apiFile="revocations_matrix_distribution_by_gender"
+      renderChart={({ chartId, data, denominators, numerators, mode }) => (
+        <BarChartWithLabels
+          id={chartId}
+          data={data}
+          xAxisLabel={`${translate("Gender")} and risk level`}
+          yAxisLabel={getLabelByMode(mode)}
+          labelColors={CHART_COLORS}
+          denominators={denominators}
+          numerators={numerators}
+        />
+      )}
+      generateChartData={createGenerateChartData(dataFilter, currentTenantId)}
+      chartTitle={`Admissions by ${translate("gender")} and risk level`}
+      metricTitle={(mode) =>
+        `${getLabelByMode(mode)} by ${translate("gender")} and risk level`
+      }
+      filterStates={filterStates}
+      timeDescription={timeDescription}
+      modes={flags.enableRevocationRateByExit ? ["rates", "exits"] : []}
+      defaultMode="rates"
+      dataExportLabel="Risk Level"
+    />
+  );
+};
 
 RevocationsByGender.propTypes = {
-  stateCode: PropTypes.string.isRequired,
   dataFilter: PropTypes.func.isRequired,
   filterStates: filtersPropTypes.isRequired,
   timeDescription: PropTypes.string.isRequired,
 };
 
-export default RevocationsByGender;
+export default observer(RevocationsByGender);

@@ -54,11 +54,12 @@ describe("App tests", () => {
   const mockLoadingTestId = "loading-test-id";
 
   const LanternLayoutMock = LanternLayout.type;
+  const RevocationsMock = Revocations.type;
 
   LanternLayoutMock.mockImplementation(({ children }) => children);
   CoreLayout.mockImplementation(({ children }) => children);
   StoreProvider.mockImplementation(({ children }) => children);
-  Revocations.mockReturnValue(mockWithTestId(mockRevocationsId));
+  RevocationsMock.mockReturnValue(mockWithTestId(mockRevocationsId));
   UsNDCommunityGoals.mockReturnValue(mockWithTestId(mockNDCommunityGoalsId));
   NotFound.mockReturnValue(mockWithTestId(mockNotFoundId));
   Loading.mockReturnValue(mockWithTestId(mockLoadingTestId));

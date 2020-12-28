@@ -18,6 +18,7 @@
 import React, { Children, useEffect } from "react";
 import PropTypes from "prop-types";
 import { useLocation } from "react-router-dom";
+import { observer } from "mobx-react-lite";
 
 import Loading from "./Loading";
 import { useAuth0 } from "../react-auth0-spa";
@@ -66,4 +67,4 @@ TenantRoutes.propTypes = {
   children: PropTypes.node.isRequired,
 };
 
-export default TenantRoutes;
+export default observer(TenantRoutes);

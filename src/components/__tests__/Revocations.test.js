@@ -59,21 +59,26 @@ describe("Revocations component tests", () => {
   const revocationChartsId = "revocation-charts";
   const caseTableId = "case-table";
 
+  const DistrictFilterMock = DistrictFilter.type;
+  const RevocationCountOverTimeMock = RevocationCountOverTime.type;
+  const MatrixMock = Matrix.type;
+  const CaseTableMock = CaseTable.type;
+
   useAuth0.mockReturnValue({ user: mockUser });
   getUserAppMetadata.mockReturnValue({ district: undefined });
   getUserDistricts.mockReturnValue(mockUserDistricts);
   ToggleBarFilter.mockImplementation(({ label }) =>
     mockWithTestId(`${toggleBarIdPrefix}${label}`)
   );
-  DistrictFilter.mockReturnValue(mockWithTestId(districtFilterId));
+  DistrictFilterMock.mockReturnValue(mockWithTestId(districtFilterId));
   AdmissionTypeFilter.mockReturnValue(mockWithTestId(admissionTypeFilterId));
   ViolationFilter.mockReturnValue(mockWithTestId(violationFilterId));
-  RevocationCountOverTime.mockReturnValue(
+  RevocationCountOverTimeMock.mockReturnValue(
     mockWithTestId(revocationCountOverTimeId)
   );
-  Matrix.mockReturnValue(mockWithTestId(revocationMatrixId));
+  MatrixMock.mockReturnValue(mockWithTestId(revocationMatrixId));
   RevocationCharts.mockReturnValue(mockWithTestId(revocationChartsId));
-  CaseTable.mockReturnValue(mockWithTestId(caseTableId));
+  CaseTableMock.mockReturnValue(mockWithTestId(caseTableId));
   setTranslateLocale(US_MO);
   StoreProvider.mockImplementation(({ children }) => children);
   useRootStore.mockReturnValue({
@@ -159,7 +164,7 @@ describe("Revocations component tests", () => {
     expect(supervisionLevelFilterMocks[0][0].value).toBe(
       filterOptions[SUPERVISION_LEVEL].defaultValue
     );
-    expect(DistrictFilter.mock.calls[0][0].value).toEqual([
+    expect(DistrictFilterMock.mock.calls[0][0].value).toEqual([
       filterOptions[DISTRICT].defaultValue,
     ]);
     expect(AdmissionTypeFilter.mock.calls[0][0].value).toBe(
@@ -179,7 +184,7 @@ describe("Revocations component tests", () => {
       </StoreProvider>
     );
 
-    expect(DistrictFilter.mock.calls[0][0].value).toEqual([mockDistrict]);
+    expect(DistrictFilterMock.mock.calls[0][0].value).toEqual([mockDistrict]);
   });
 
   it("should change filter value when onChange is called", () => {
@@ -191,11 +196,13 @@ describe("Revocations component tests", () => {
     );
 
     act(() => {
-      DistrictFilter.mock.calls[0][0].onChange(mockNewDistrictValue);
+      DistrictFilterMock.mock.calls[0][0].onChange(mockNewDistrictValue);
     });
 
-    expect(DistrictFilter).toHaveBeenCalledTimes(2);
-    expect(DistrictFilter.mock.calls[1][0].value).toEqual(mockNewDistrictValue);
+    expect(DistrictFilterMock).toHaveBeenCalledTimes(2);
+    expect(DistrictFilterMock.mock.calls[1][0].value).toEqual(
+      mockNewDistrictValue
+    );
   });
 
   it("should update filter values when updateFilters is called", () => {
