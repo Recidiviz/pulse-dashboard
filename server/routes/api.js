@@ -23,21 +23,26 @@
 const { validationResult } = require("express-validator");
 const { fetchMetrics } = require("../core");
 const { default: isDemoMode } = require("../utils/isDemoMode");
+
+const BAD_REQUEST = 400;
+const SERVER_ERROR = 500;
+
 /**
  * A callback which returns either either an error payload or a data payload.
+ *
+ * Structure of error responses from GCS
+ * https://cloud.google.com/storage/docs/json_api/v1/status-codes#404-not-found
  */
 function responder(res) {
   return (err, data) => {
     if (err) {
-      const status = err.status || 500;
+      const status = err.status || err.code || SERVER_ERROR;
       res.status(status).send(err);
     } else {
       res.send(data);
     }
   };
 }
-
-const BAD_REQUEST = 400;
 
 // TODO: Generalize this API to take in the metric type and file as request parameters in all calls
 
