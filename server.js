@@ -72,12 +72,12 @@ let checkJwt = jwt({
 });
 
 // See: https://cloud.google.com/appengine/docs/standard/nodejs/scheduling-jobs-with-cron-yaml#validating_cron_requests
-// eslint-disable-next-line consistent-return
 function validateCronRequest(req, res, next) {
-  if (req.get("X-Appengine-Cron") !== "true") {
-    return res.status(403);
+  if (req.get("X-Appengine-Cron") !== "true" && !isDemoMode) {
+    res.sendStatus(403);
+  } else {
+    next();
   }
-  next();
 }
 
 if (isDemoMode) {
@@ -151,3 +151,5 @@ function onListening() {
 server.listen(port, () => console.log(`Server listening on port ${port}`));
 server.on("error", onError);
 server.on("listening", onListening);
+
+module.exports = { app, server };

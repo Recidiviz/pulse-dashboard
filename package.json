@@ -16,7 +16,7 @@
     "spa": "react-scripts start",
     "server": "nodemon server.js",
     "server:dev": "npm-run-all --parallel server redis-server",
-    "server:demo": "IS_DEMO=true npm-run-all --parallel server redis-server",
+    "server:demo": "IS_DEMO=true yarn server:dev",
     "redis-server": "redis-server",
     "lint": "eslint .",
     "dev": "npm-run-all --parallel spa server:dev"
@@ -93,6 +93,7 @@
     "reactstrap": "^8.0.0",
     "sass-graph": "^2.2.4",
     "skycons": "^1.0.0",
+    "supertest": "^6.0.1",
     "terser-webpack-plugin": "^1.4.3",
     "typescript": "^3.8.3"
   },
