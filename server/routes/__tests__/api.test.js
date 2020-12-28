@@ -28,7 +28,7 @@ const {
 } = require("../api");
 const { default: refreshRedisCache } = require("../../core/refreshRedisCache");
 const redisCache = require("../../core/redisCache");
-const memoryCache = require("../../core/createMemoryCache");
+const memoryCache = require("../../core/memoryCache");
 
 jest.mock("../../core/refreshRedisCache");
 jest.mock("../../core/redisCache", () => {
@@ -36,7 +36,7 @@ jest.mock("../../core/redisCache", () => {
     cacheInRedis: jest.fn(),
   };
 });
-jest.mock("../../core/createMemoryCache", () => {
+jest.mock("../../core/memoryCache", () => {
   return {
     cacheInMemory: jest.fn(),
   };
