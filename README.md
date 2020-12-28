@@ -30,9 +30,27 @@ Bringing criminal justice analysis to decision makers to help reduce incarcerati
 
    For alternative Yarn installation options, see [Yarn Installation](https://yarnpkg.com/en/docs/install).
 
-1. Install Redis via Homebrew:
+1. [Install Redis Version 4](https://redis.io/download#installation) (matches Memorystore for Redis version):
 
-   `brew install redis`
+   Via Homebrew:
+   `brew install redis@4.0`
+
+   Using wget:
+
+   ```sh
+   :> wget https://download.redis.io/releases/redis-4.0.14.tar.gz
+   :> tar xzf redis-4.0.14.tar.gz
+   :> cd redis-4.0.14
+   :> make
+
+   <!-- Run redis with: -->
+   :> src/redis-server
+
+   <!-- Interact with Redis -->
+   :> src/redis-cli
+   ```
+
+   [Instructions for installing Redis 4.0.14 on Windows](https://github.com/tporadowski/redis#redis-4014-for-windows)
 
 1. Install dependencies:
 
@@ -44,9 +62,9 @@ That's it! We suggest installing a linting package for your preferred code edito
 
 Second and last, set up your environment variables.
 
-For Recidiviz staff, download and unzip the `pulse_dashboard_env_vars.zip` from the shared 1Password vault and copy the files into the project directory. 
+For Recidiviz staff, download and unzip the `pulse_dashboard_env_vars.zip` from the shared 1Password vault and copy the files into the project directory.
 
-IMPORTANT: Be sure to use `Shift+Command+.` in your Finder window to show the hidden files, and copy all of the files, including the hidden `.env` files. Follow the directory structure in the zip file, so if the file is nested in the `/src` directory in the zip, copy it into the `/src` directory in the repo. 
+IMPORTANT: Be sure to use `Shift+Command+.` in your Finder window to show the hidden files, and copy all of the files, including the hidden `.env` files. Follow the directory structure in the zip file, so if the file is nested in the `/src` directory in the zip, copy it into the `/src` directory in the repo.
 
 For anyone trying to set this up independently, construct environment variables by hand based on the explanations below.
 
@@ -122,11 +140,15 @@ To run eslint manually:
 
 ### Running the BackEnd application locally
 
-To run the backend locally, you will need to run it in demo mode. This can be done with the following yarn script:
+To hit the backend API directly from localhost, you will need to run it in demo mode, which will fetch data files from the `server/core/demo_data` directory. This can be done with the following yarn script:
 
 `yarn server:demo`
 
-This will start both the API Express server on port `3001` and the Redis server on port `6379`, and will fetch data files from the `server/core/demo_data` directory.
+You can also run the backend locally to point to the GCS bucket (you may want to do this if you want to view the server and frontend logs separately):
+
+`yarn server:dev`
+
+This will start both the API Express server on port `3001` and the Redis server on port `6379`. You could start the frontend server separately using `yarn spa`.
 
 ### Running the FrontEnd application locally
 
