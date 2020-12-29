@@ -23,6 +23,7 @@ const morgan = require("morgan");
 const helmet = require("helmet");
 const jwt = require("express-jwt");
 const jwksRsa = require("jwks-rsa");
+const compression = require("compression");
 const devAuthConfig = require("./src/auth_config_dev.json");
 const productionAuthConfig = require("./src/auth_config_production.json");
 const api = require("./server/routes/api");
@@ -30,6 +31,7 @@ const api = require("./server/routes/api");
 const app = express();
 
 app.use(cors());
+app.use(compression());
 
 const port = process.env.PORT || 3001;
 app.set("port", port);
