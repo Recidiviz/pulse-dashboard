@@ -55,7 +55,7 @@ function refreshCache(req, res) {
 
 function newRevocations(req, res) {
   const { stateCode } = req.params;
-  const cacheKey = `${stateCode}-newRevocation`;
+  const cacheKey = `${stateCode.toUpperCase()}-newRevocation`;
   cacheInRedis(
     cacheKey,
     () => fetchMetrics(stateCode, "newRevocation", null, isDemoMode),
@@ -65,7 +65,7 @@ function newRevocations(req, res) {
 
 function newRevocationFile(req, res) {
   const { stateCode, file } = req.params;
-  const cacheKey = `${stateCode}-newRevocation-${file}`;
+  const cacheKey = `${stateCode.toUpperCase()}-newRevocation-${file}`;
   cacheInRedis(
     cacheKey,
     () => fetchMetrics(stateCode, "newRevocation", file, isDemoMode),
@@ -75,7 +75,7 @@ function newRevocationFile(req, res) {
 
 function communityGoals(req, res) {
   const { stateCode } = req.params;
-  const cacheKey = `${stateCode}-communityGoals`;
+  const cacheKey = `${stateCode.toUpperCase()}-communityGoals`;
   cacheInMemory(
     cacheKey,
     () => fetchMetrics(stateCode, "communityGoals", null, isDemoMode),
@@ -85,8 +85,8 @@ function communityGoals(req, res) {
 
 function communityExplore(req, res) {
   const { stateCode } = req.params;
-  const cacheKey = `${stateCode}-communityExplore`;
-  cacheInMemory(
+  const cacheKey = `${stateCode.toUpperCase()}-communityExplore`;
+  return cacheInMemory(
     cacheKey,
     () => fetchMetrics(stateCode, "communityExplore", null, isDemoMode),
     responder(res)
@@ -95,7 +95,7 @@ function communityExplore(req, res) {
 
 function facilitiesGoals(req, res) {
   const { stateCode } = req.params;
-  const cacheKey = `${stateCode}-facilitiesGoals`;
+  const cacheKey = `${stateCode.toUpperCase()}-facilitiesGoals`;
   cacheInMemory(
     cacheKey,
     () => fetchMetrics(stateCode, "facilitiesGoals", null, isDemoMode),
@@ -105,7 +105,7 @@ function facilitiesGoals(req, res) {
 
 function facilitiesExplore(req, res) {
   const { stateCode } = req.params;
-  const cacheKey = `${stateCode}-facilitiesExplore`;
+  const cacheKey = `${stateCode.toUpperCase()}-facilitiesExplore`;
   cacheInMemory(
     cacheKey,
     () => fetchMetrics(stateCode, "facilitiesExplore", null, isDemoMode),
@@ -115,7 +115,7 @@ function facilitiesExplore(req, res) {
 
 function programmingExplore(req, res) {
   const { stateCode } = req.params;
-  const cacheKey = `${stateCode}-programmingExplore`;
+  const cacheKey = `${stateCode.toUpperCase()}-programmingExplore`;
   cacheInMemory(
     cacheKey,
     () => fetchMetrics(stateCode, "programmingExplore", null, isDemoMode),

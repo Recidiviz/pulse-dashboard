@@ -53,7 +53,10 @@ const redisCache = cacheManager.caching({
 });
 
 const redisClient = redisCache.store.getClient();
-redisClient.on("error", (error) => console.error("ERR:REDIS:", error));
+redisClient.on("error", (error) => {
+  console.error("ERR:REDIS:", error);
+  throw new Error(error);
+});
 
 function cacheInRedis(cacheKey, fetchValue, callback) {
   redisCache.wrap(

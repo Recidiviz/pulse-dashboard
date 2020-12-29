@@ -37,18 +37,18 @@ function cacheEachFile(files, cacheKeyPrefix) {
     cachePromises.push(redisCache.set(cacheKey, metricFile));
   });
 
-  return Promise.all(cachePromises);
+  return cachePromises;
 }
 
 function refreshRedisCache(fetchMetrics, stateCode, metricType, callback) {
-  const cacheKeyPrefix = `${stateCode}-${metricType}`;
+  const cacheKeyPrefix = `${stateCode.toUpperCase()}-${metricType}`;
   console.log(`Handling call to refresh cache for ${cacheKeyPrefix}...`);
 
   let responseError = null;
 
   fetchMetrics()
     .then((results) => {
-      cacheEachFile(results, cacheKeyPrefix);
+      return Promise.all(cacheEachFile(results, cacheKeyPrefix));
     })
     .catch((error) => {
       console.error(
