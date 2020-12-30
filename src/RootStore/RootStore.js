@@ -15,6 +15,20 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-export const US_ND = "US_ND";
+import { computed, makeObservable } from "mobx";
 
-export const CORE_TENANTS = [US_ND];
+import TenantStore from "./TenantStore";
+
+export default class RootStore {
+  tenantStore;
+
+  constructor() {
+    makeObservable(this, { currentTenantId: computed });
+
+    this.tenantStore = new TenantStore({ rootStore: this });
+  }
+
+  get currentTenantId() {
+    return this.tenantStore.currentTenantId;
+  }
+}

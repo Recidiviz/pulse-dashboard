@@ -40,9 +40,9 @@ describe("generateDatasets", () => {
     ];
   });
 
-  describe("when the locale is MO", () => {
+  describe("when the locale is US_MO", () => {
     beforeEach(() => {
-      setTranslateLocale(lanternTenant.MO);
+      setTranslateLocale(lanternTenant.US_MO);
     });
 
     it("generates the dataset data and label correctly", () => {
@@ -78,9 +78,9 @@ describe("generateDatasets", () => {
     });
   });
 
-  describe("when the locale is PA", () => {
+  describe("when the locale is US_PA", () => {
     beforeEach(() => {
-      setTranslateLocale(lanternTenant.PA);
+      setTranslateLocale(lanternTenant.US_PA);
     });
 
     it("generates the dataset data and label correctly", () => {

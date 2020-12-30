@@ -18,6 +18,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Bar, Line } from "react-chartjs-2";
+import { observer } from "mobx-react-lite";
 
 import map from "lodash/fp/map";
 import pipe from "lodash/fp/pipe";
@@ -44,17 +45,19 @@ import { generateTrendlineDataset } from "../../../utils/charts/trendline";
 import { filtersPropTypes } from "../propTypes";
 import { translate } from "../../../views/tenants/utils/i18nSettings";
 import RevocationsByDimensionComponent from "./RevocationsByDimension/RevocationsByDimensionComponent";
+import { useRootStore } from "../../../StoreProvider";
 
 const RevocationsOverTime = ({
-  stateCode,
   dataFilter,
   metricPeriodMonths,
   filterStates,
 }) => {
+  const { currentTenantId } = useRootStore();
+
   const chartId = `revocationsOverTime`;
 
   const { isLoading, isError, apiData, unflattenedValues } = useChartData(
-    `${stateCode}/newRevocations`,
+    `${currentTenantId}/newRevocations`,
     "revocations_matrix_by_month",
     false
   );
@@ -210,10 +213,9 @@ const RevocationsOverTime = ({
 };
 
 RevocationsOverTime.propTypes = {
-  stateCode: PropTypes.string.isRequired,
   dataFilter: PropTypes.func.isRequired,
   metricPeriodMonths: PropTypes.string.isRequired,
   filterStates: filtersPropTypes.isRequired,
 };
 
-export default RevocationsOverTime;
+export default observer(RevocationsOverTime);

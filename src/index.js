@@ -20,6 +20,7 @@ import "react-app-polyfill/stable";
 
 import React from "react";
 import ReactDOM from "react-dom";
+import { configure } from "mobx";
 
 import "./index.css";
 import App from "./App";
@@ -45,6 +46,15 @@ const onRedirectCallback = (appState) => {
       : window.location.pathname
   );
 };
+
+configure({
+  // make proxies optional for IE 11 support
+  useProxies: "ifavailable",
+  // activate runtime linting
+  computedRequiresReaction: true,
+  reactionRequiresObservable: true,
+  observableRequiresReaction: true,
+});
 
 ReactDOM.render(
   <Auth0Provider

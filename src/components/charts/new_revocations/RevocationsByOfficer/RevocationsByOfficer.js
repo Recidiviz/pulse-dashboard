@@ -17,6 +17,7 @@
 
 import React from "react";
 import PropTypes from "prop-types";
+import { observer } from "mobx-react-lite";
 
 import { filtersPropTypes } from "../../propTypes";
 import RevocationsByDimension from "../RevocationsByDimension";
@@ -25,22 +26,24 @@ import { translate } from "../../../../views/tenants/utils/i18nSettings";
 import RevocationCountChart from "../RevocationCountChart";
 import createGenerateChartData from "./createGenerateChartData";
 import flags from "../../../../flags";
+import { useRootStore } from "../../../../StoreProvider";
 
 const MAX_OFFICERS_COUNT = 50;
 
 const RevocationsByOfficer = ({
   dataFilter,
   filterStates,
-  stateCode,
   timeDescription,
 }) => {
+  const { currentTenantId } = useRootStore();
+
   const chartTitle = `Admissions by ${translate("officer")}`;
   const includeWarning = false;
 
   return (
     <RevocationsByDimension
       chartId={`${translate("revocations")}by${translate("Officer")}`}
-      apiUrl={`${stateCode}/newRevocations`}
+      apiUrl={`${currentTenantId}/newRevocations`}
       apiFile="revocations_matrix_distribution_by_officer"
       includeWarning={includeWarning}
       renderChart={({
@@ -101,8 +104,7 @@ const RevocationsByOfficer = ({
 RevocationsByOfficer.propTypes = {
   dataFilter: PropTypes.func.isRequired,
   filterStates: filtersPropTypes.isRequired,
-  stateCode: PropTypes.string.isRequired,
   timeDescription: PropTypes.string.isRequired,
 };
 
-export default RevocationsByOfficer;
+export default observer(RevocationsByOfficer);

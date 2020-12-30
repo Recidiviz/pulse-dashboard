@@ -24,12 +24,12 @@ describe("i18nSettings", () => {
 
   describe("setTranslateLocale", () => {
     describe("when the locale is known", () => {
-      it("does not throw an error for us_pa", () => {
-        expect(() => setTranslateLocale("us_pa")).not.toThrow();
+      it("does not throw an error for US_PA", () => {
+        expect(() => setTranslateLocale("US_PA")).not.toThrow();
       });
 
-      it("does not throw an error for us_mo", () => {
-        expect(() => setTranslateLocale("us_mo")).not.toThrow();
+      it("does not throw an error for US_MO", () => {
+        expect(() => setTranslateLocale("US_MO")).not.toThrow();
       });
     });
 
@@ -41,9 +41,9 @@ describe("i18nSettings", () => {
   });
 
   describe("translate", () => {
-    describe("when translate locale is us_mo", () => {
+    describe("when translate locale is US_MO", () => {
       beforeAll(() => {
-        setTranslateLocale("us_mo");
+        setTranslateLocale("US_MO");
       });
 
       it("translates a known term", () => {
@@ -57,9 +57,9 @@ describe("i18nSettings", () => {
       });
     });
 
-    describe("when translate locale is us_pa", () => {
+    describe("when translate locale is US_PA", () => {
       beforeAll(() => {
-        setTranslateLocale("us_pa");
+        setTranslateLocale("US_PA");
       });
 
       it("translates a known term", () => {
@@ -76,8 +76,8 @@ describe("i18nSettings", () => {
         expect(() => translate("percentRevoked")).not.toThrow();
       });
 
-      it("defaults to us_pa locale", () => {
-        expect(i18n.getLocale()).toEqual("us_pa");
+      it("defaults to US_PA locale", () => {
+        expect(i18n.getLocale()).toEqual("US_PA");
       });
     });
   });
