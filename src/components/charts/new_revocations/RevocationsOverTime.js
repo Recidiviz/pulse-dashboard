@@ -59,6 +59,7 @@ const RevocationsOverTime = ({
   const { isLoading, isError, apiData, unflattenedValues } = useChartData(
     `${currentTenantId}/newRevocations`,
     "revocations_matrix_by_month",
+    filterStates,
     false
   );
 

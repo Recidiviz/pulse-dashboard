@@ -43,7 +43,8 @@ const CaseTable = ({ dataFilter, filterStates, metricPeriodMonths }) => {
 
   const { isLoading, isError, apiData } = useChartData(
     `${currentTenantId}/newRevocations`,
-    "revocations_matrix_filtered_caseload"
+    "revocations_matrix_filtered_caseload",
+    filterStates
   );
 
   const sortedData = useMemo(() => {

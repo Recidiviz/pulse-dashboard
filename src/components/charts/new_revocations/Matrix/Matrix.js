@@ -72,6 +72,7 @@ const Matrix = ({
   const { apiData, isLoading, isError, unflattenedValues } = useChartData(
     `${currentTenantId}/newRevocations`,
     "revocations_matrix_cells",
+    filterStates,
     false
   );
 

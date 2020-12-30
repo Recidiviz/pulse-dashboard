@@ -89,6 +89,30 @@ describe("useChartData", () => {
 
       await cleanup();
     });
+
+    it("should do only one request if 2 components request same file and query params", async () => {
+      const filterStates = { chargeCategory: "All" };
+      const expectedQuery = "?chargeCategory=All";
+
+      const { result: firstResult, waitForNextUpdate } = renderHook(() =>
+        useChartData(mockUrl, mockFile, filterStates)
+      );
+      const { result: secondResult } = renderHook(() =>
+        useChartData(mockUrl, mockFile, filterStates)
+      );
+
+      expect(callMetricsApi.mock.calls[0][0]).toBe(
+        `${mockUrl}/${mockFile}${expectedQuery}`
+      );
+
+      await waitForNextUpdate();
+
+      expect(callMetricsApi).toHaveBeenCalledTimes(1);
+      expect(firstResult.current.apiData).toEqual(mockResponse);
+      expect(firstResult.current.apiData).toEqual(secondResult.current.apiData);
+
+      await cleanup();
+    });
   });
 
   describe("error responses", () => {

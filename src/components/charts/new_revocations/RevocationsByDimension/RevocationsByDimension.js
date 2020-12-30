@@ -48,6 +48,7 @@ const RevocationsByDimension = ({
   const { isLoading, isError, apiData, unflattenedValues } = useChartData(
     apiUrl,
     apiFile,
+    filterStates,
     false
   );
 

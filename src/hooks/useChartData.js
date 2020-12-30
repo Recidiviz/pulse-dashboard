@@ -14,7 +14,6 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-
 import { useState, useCallback, useEffect } from "react";
 import makeCancellablePromise from "make-cancellable-promise";
 import toInteger from "lodash/fp/toInteger";
@@ -25,13 +24,14 @@ import {
 } from "../api/metrics/fileParser";
 import { convertFromStringToUnflattenedMatrix } from "../api/metrics/optimizedFormatHelpers";
 import { callMetricsApi, awaitingResults } from "../api/metrics/metricsClient";
+import { getQueryStringFromFilters } from "../api/metrics/urlHelpers";
 
 const queues = {};
 
 /**
  * A hook which fetches the given file at the given API service URL. Returns
  * state which will populate with the response data and a flag indicating whether
- * or not the response is still loading, in the form of `{ apiData, isLoading, unflattenedValues }`.
+ * or not the response is still loading, in the form of `{ apiData, isLoading, isError, unflattenedValues }`.
  *
  * `unflattenValues` is the unflattened value matrix from the apiData and is only
  * populated if the request was for a specific file, if that file was in the optimized
@@ -44,12 +44,14 @@ const queues = {};
  * ensure we do not need to proactively and repeatedly unflatten the value matrix
  * on subsequent filter operations.
  */
-function useChartData(url, file, eagerExpand = true) {
+function useChartData(url, file, filterStates = {}, eagerExpand = true) {
   const { loading, user, getTokenSilently } = useAuth0();
   const [apiData, setApiData] = useState([]);
   const [unflattenedValues, setUnflattenedValues] = useState([]);
   const [awaitingApi, setAwaitingApi] = useState(true);
   const [isError, setIsError] = useState(false);
+
+  const queryString = getQueryStringFromFilters(filterStates);
 
   const fetchChartData = useCallback(async () => {
     try {
@@ -64,7 +66,7 @@ function useChartData(url, file, eagerExpand = true) {
       queues[fileKey] = [];
 
       const responseData = await callMetricsApi(
-        file ? `${url}/${file}` : url,
+        file ? `${url}/${file}${queryString}` : `${url}${queryString}`,
         getTokenSilently
       );
       queues[fileKey].forEach((resolve) => resolve(responseData));
@@ -75,7 +77,7 @@ function useChartData(url, file, eagerExpand = true) {
       console.error(error);
       throw error;
     }
-  }, [file, getTokenSilently, url]);
+  }, [file, queryString, getTokenSilently, url]);
 
   useEffect(() => {
     const { cancel, promise } = makeCancellablePromise(fetchChartData());
