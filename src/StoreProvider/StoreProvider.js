@@ -15,6 +15,31 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-export const US_ND = "US_ND";
+import React, { useContext } from "react";
+import PropTypes from "prop-types";
 
-export const CORE_TENANTS = [US_ND];
+import RootStore from "../RootStore";
+
+const StoreContext = React.createContext(undefined);
+
+const StoreProvider = ({ children }) => {
+  return (
+    <StoreContext.Provider value={new RootStore()}>
+      {children}
+    </StoreContext.Provider>
+  );
+};
+
+StoreProvider.propTypes = {
+  children: PropTypes.node.isRequired,
+};
+
+export default StoreProvider;
+
+export function useRootStore() {
+  const context = useContext(StoreContext);
+  if (context === undefined) {
+    throw new Error("useStore must be used within a StoreProvider");
+  }
+  return context;
+}

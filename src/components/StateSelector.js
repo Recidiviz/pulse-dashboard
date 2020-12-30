@@ -19,12 +19,13 @@ import React from "react";
 import PropTypes from "prop-types";
 import Select from "react-select";
 import { useHistory } from "react-router-dom";
+import { observer } from "mobx-react-lite";
 
-import { useStateCode } from "../contexts/StateCodeContext";
 import { getStateNameForCode } from "../utils/authentication/user";
+import { useRootStore } from "../StoreProvider";
 
 const StateSelector = ({ availableStateCodes }) => {
-  const { currentStateCode, updateCurrentStateCode } = useStateCode();
+  const { tenantStore } = useRootStore();
   const { push } = useHistory();
   const availableStatesOptions = availableStateCodes.sort().map((code) => ({
     value: code,
@@ -32,11 +33,11 @@ const StateSelector = ({ availableStateCodes }) => {
   }));
 
   const defaultValue = availableStatesOptions.find(
-    (availableState) => availableState.value === currentStateCode
+    (availableState) => availableState.value === tenantStore.currentTenantId
   );
 
   const selectState = (selectedOption) => {
-    updateCurrentStateCode(selectedOption.value);
+    tenantStore.setCurrentTenantId(selectedOption.value);
     push({ pathname: "/profile" });
   };
 
@@ -54,4 +55,4 @@ StateSelector.propTypes = {
   availableStateCodes: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
-export default StateSelector;
+export default observer(StateSelector);

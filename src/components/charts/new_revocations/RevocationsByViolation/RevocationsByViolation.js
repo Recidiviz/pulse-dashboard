@@ -17,47 +17,51 @@
 
 import React from "react";
 import PropTypes from "prop-types";
+import { observer } from "mobx-react-lite";
 
 import RevocationsByDimension from "../RevocationsByDimension";
 import createGenerateChartData from "./createGenerateChartData";
 import { filtersPropTypes } from "../../propTypes";
 import BarChartWithLabels from "../BarChartWithLabels";
 import { translate } from "../../../../views/tenants/utils/i18nSettings";
+import { useRootStore } from "../../../../StoreProvider";
 
 const RevocationsByViolation = ({
   dataFilter,
   filterStates,
-  stateCode,
   timeDescription,
   violationTypes,
-}) => (
-  <RevocationsByDimension
-    chartId={`${translate("revocations")}ByViolationType`}
-    apiUrl={`${stateCode}/newRevocations`}
-    apiFile="revocations_matrix_distribution_by_violation"
-    renderChart={({ chartId, data, denominators, numerators }) => (
-      <BarChartWithLabels
-        data={data}
-        numerators={numerators}
-        denominators={denominators}
-        id={chartId}
-        yAxisLabel="Percent of total reported violations"
-        xAxisLabel="Violation type and condition violated"
-      />
-    )}
-    generateChartData={createGenerateChartData(dataFilter, violationTypes)}
-    chartTitle="Relative frequency of violation types"
-    metricTitle="Relative frequency of violation types"
-    filterStates={filterStates}
-    timeDescription={timeDescription}
-    dataExportLabel="Violation"
-  />
-);
+}) => {
+  const { currentTenantId } = useRootStore();
+
+  return (
+    <RevocationsByDimension
+      chartId={`${translate("revocations")}ByViolationType`}
+      apiUrl={`${currentTenantId}/newRevocations`}
+      apiFile="revocations_matrix_distribution_by_violation"
+      renderChart={({ chartId, data, denominators, numerators }) => (
+        <BarChartWithLabels
+          data={data}
+          numerators={numerators}
+          denominators={denominators}
+          id={chartId}
+          yAxisLabel="Percent of total reported violations"
+          xAxisLabel="Violation type and condition violated"
+        />
+      )}
+      generateChartData={createGenerateChartData(dataFilter, violationTypes)}
+      chartTitle="Relative frequency of violation types"
+      metricTitle="Relative frequency of violation types"
+      filterStates={filterStates}
+      timeDescription={timeDescription}
+      dataExportLabel="Violation"
+    />
+  );
+};
 
 RevocationsByViolation.propTypes = {
   dataFilter: PropTypes.func.isRequired,
   filterStates: filtersPropTypes.isRequired,
-  stateCode: PropTypes.string.isRequired,
   timeDescription: PropTypes.string.isRequired,
   violationTypes: PropTypes.arrayOf(
     PropTypes.shape({
@@ -68,4 +72,4 @@ RevocationsByViolation.propTypes = {
   ).isRequired,
 };
 
-export default RevocationsByViolation;
+export default observer(RevocationsByViolation);

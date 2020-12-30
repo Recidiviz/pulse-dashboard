@@ -18,7 +18,7 @@
 // Note: Each time you add a translation you will need to restart your dev
 // server before you will see the translation rendered properly
 
-import { MO_METHODOLOGY } from "./us_mo_methodology";
+import { US_MO_METHODOLOGY } from "./us_mo_methodology";
 
 export default {
   officer: "officer",
@@ -44,7 +44,7 @@ the head of that row, and who have the number of prior violations at the head
 of that column.`,
   Technical: "Technical",
   lastRecommendation: "Last Rec. (Incl. Supplementals)",
-  methodology: MO_METHODOLOGY,
+  methodology: US_MO_METHODOLOGY,
   riskLevelsMap: {
     OVERALL: "Overall",
     NOT_ASSESSED: "Not Assessed",

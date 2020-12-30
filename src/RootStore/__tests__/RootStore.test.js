@@ -14,7 +14,28 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
+import RootStore from "../RootStore";
+import { useAuth0 } from "../../react-auth0-spa";
+import { US_MO } from "../../views/tenants/utils/lanternTenants";
+import { METADATA_NAMESPACE } from "../../utils/authentication/user";
 
-export const US_ND = "US_ND";
+jest.mock("../../react-auth0-spa");
 
-export const CORE_TENANTS = [US_ND];
+let rootStore;
+const metadataField = `${METADATA_NAMESPACE}app_metadata`;
+const user = { [metadataField]: { state_code: US_MO } };
+
+describe("RootStore", () => {
+  it("contains a TenantStore", () => {
+    useAuth0.mockReturnValue({
+      user,
+      isAuthenticated: true,
+      loading: false,
+      loginWithRedirect: jest.fn(),
+      getTokenSilently: jest.fn(),
+    });
+
+    rootStore = new RootStore();
+    expect(rootStore.tenantStore).toBeDefined();
+  });
+});
