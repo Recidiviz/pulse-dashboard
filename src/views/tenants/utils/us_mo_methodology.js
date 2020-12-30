@@ -15,7 +15,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-export const MO_METHODOLOGY = {
+export const US_MO_METHODOLOGY = {
   revocationsOverTime: [
     {
       id: 1,
@@ -244,4 +244,4 @@ citation filed within one year prior to the last reported violation before the p
   ],
 };
 
-export default { MO_METHODOLOGY };
+export default { US_MO_METHODOLOGY };

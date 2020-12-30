@@ -15,6 +15,5 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-export const US_ND = "US_ND";
-
-export const CORE_TENANTS = [US_ND];
+export { default } from "./StoreProvider";
+export * from "./StoreProvider";

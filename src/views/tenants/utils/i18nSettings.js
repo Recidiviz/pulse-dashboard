@@ -24,10 +24,10 @@ export const i18n = new I18n();
 export function initI18n() {
   i18n.configure({
     staticCatalog: {
-      us_mo: TRANSLATIONS.MO,
-      us_pa: TRANSLATIONS.PA,
+      US_MO: TRANSLATIONS.US_MO,
+      US_PA: TRANSLATIONS.US_PA,
     },
-    defaultLocale: "us_pa",
+    defaultLocale: "US_PA",
     missingKeyFn(locale, value) {
       return value;
     },

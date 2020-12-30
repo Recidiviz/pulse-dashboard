@@ -17,6 +17,7 @@
 
 import React from "react";
 import PropTypes from "prop-types";
+import { observer } from "mobx-react-lite";
 
 import { filtersPropTypes } from "../../propTypes";
 import RevocationsByDimension from "../RevocationsByDimension";
@@ -25,6 +26,7 @@ import RevocationCountChart from "../RevocationCountChart";
 import createGenerateChartData from "./createGenerateChartData";
 import { translate } from "../../../../views/tenants/utils/i18nSettings";
 import flags from "../../../../flags";
+import { useRootStore } from "../../../../StoreProvider";
 
 const chartTitle = "Admissions by district";
 
@@ -32,64 +34,66 @@ const RevocationsByDistrict = ({
   currentDistricts,
   dataFilter,
   filterStates,
-  stateCode,
   timeDescription,
-}) => (
-  <RevocationsByDimension
-    chartId={`${translate("revocations")}ByDistrict`}
-    apiUrl={`${stateCode}/newRevocations`}
-    apiFile="revocations_matrix_distribution_by_district"
-    renderChart={({
-      chartId,
-      data,
-      denominators,
-      numerators,
-      averageRate,
-      mode,
-    }) =>
-      mode === "counts" ? (
-        <RevocationCountChart
-          chartId={chartId}
-          data={data}
-          xAxisLabel="District"
-        />
-      ) : (
-        <PercentRevokedChart
-          data={data}
-          chartId={chartId}
-          numerators={numerators}
-          denominators={denominators}
-          averageRate={averageRate}
-          xAxisLabel="District"
-          yAxisLabel={
-            mode === "rates"
-              ? translate("percentOfPopulationRevoked")
-              : "Percent revoked out of all exits"
-          }
-        />
-      )
-    }
-    generateChartData={createGenerateChartData(dataFilter, currentDistricts)}
-    chartTitle={chartTitle}
-    metricTitle={chartTitle}
-    filterStates={filterStates}
-    timeDescription={timeDescription}
-    modes={
-      flags.enableRevocationRateByExit
-        ? ["counts", "rates", "exits"]
-        : ["counts", "rates"]
-    }
-    defaultMode="counts"
-    dataExportLabel="District"
-  />
-);
+}) => {
+  const { currentTenantId } = useRootStore();
+
+  return (
+    <RevocationsByDimension
+      chartId={`${translate("revocations")}ByDistrict`}
+      apiUrl={`${currentTenantId}/newRevocations`}
+      apiFile="revocations_matrix_distribution_by_district"
+      renderChart={({
+        chartId,
+        data,
+        denominators,
+        numerators,
+        averageRate,
+        mode,
+      }) =>
+        mode === "counts" ? (
+          <RevocationCountChart
+            chartId={chartId}
+            data={data}
+            xAxisLabel="District"
+          />
+        ) : (
+          <PercentRevokedChart
+            data={data}
+            chartId={chartId}
+            numerators={numerators}
+            denominators={denominators}
+            averageRate={averageRate}
+            xAxisLabel="District"
+            yAxisLabel={
+              mode === "rates"
+                ? translate("percentOfPopulationRevoked")
+                : "Percent revoked out of all exits"
+            }
+          />
+        )
+      }
+      generateChartData={createGenerateChartData(dataFilter, currentDistricts)}
+      chartTitle={chartTitle}
+      metricTitle={chartTitle}
+      filterStates={filterStates}
+      timeDescription={timeDescription}
+      modes={
+        flags.enableRevocationRateByExit
+          ? ["counts", "rates", "exits"]
+          : ["counts", "rates"]
+      }
+      defaultMode="counts"
+      dataExportLabel="District"
+    />
+  );
+};
 
 RevocationsByDistrict.propTypes = {
   dataFilter: PropTypes.func.isRequired,
   filterStates: filtersPropTypes.isRequired,
   currentDistricts: PropTypes.arrayOf(PropTypes.string).isRequired,
-  stateCode: PropTypes.string.isRequired,
   timeDescription: PropTypes.string.isRequired,
 };
 
-export default RevocationsByDistrict;
+export default observer(RevocationsByDistrict);

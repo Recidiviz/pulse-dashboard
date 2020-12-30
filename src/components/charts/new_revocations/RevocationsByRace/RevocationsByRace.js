@@ -17,6 +17,7 @@
 
 import React from "react";
 import PropTypes from "prop-types";
+import { observer } from "mobx-react-lite";
 
 import BarChartWithLabels from "../BarChartWithLabels";
 import RevocationsByDimension from "../RevocationsByDimension";
@@ -26,46 +27,45 @@ import { COLORS_LANTERN_SET } from "../../../../assets/scripts/constants/colors"
 import { filtersPropTypes } from "../../propTypes";
 import flags from "../../../../flags";
 import { translate } from "../../../../views/tenants/utils/i18nSettings";
+import { useRootStore } from "../../../../StoreProvider";
 
-const RevocationsByRace = ({
-  stateCode,
-  dataFilter,
-  filterStates,
-  timeDescription,
-}) => (
-  <RevocationsByDimension
-    chartId={`${translate("revocations")}ByRace`}
-    apiUrl={`${stateCode}/newRevocations`}
-    apiFile="revocations_matrix_distribution_by_race"
-    renderChart={({ chartId, data, denominators, numerators, mode }) => (
-      <BarChartWithLabels
-        id={chartId}
-        data={data}
-        labelColors={COLORS_LANTERN_SET}
-        xAxisLabel="Race/ethnicity and risk level"
-        yAxisLabel={getLabelByMode(mode)}
-        numerators={numerators}
-        denominators={denominators}
-      />
-    )}
-    generateChartData={createGenerateChartData(dataFilter)}
-    chartTitle="Admissions by race/ethnicity and risk level"
-    metricTitle={(mode) =>
-      `${getLabelByMode(mode)} by race/ethnicity and risk level`
-    }
-    filterStates={filterStates}
-    timeDescription={timeDescription}
-    modes={flags.enableRevocationRateByExit ? ["rates", "exits"] : []}
-    defaultMode="rates"
-    dataExportLabel="Risk Level"
-  />
-);
+const RevocationsByRace = ({ dataFilter, filterStates, timeDescription }) => {
+  const { currentTenantId } = useRootStore();
+
+  return (
+    <RevocationsByDimension
+      chartId={`${translate("revocations")}ByRace`}
+      apiUrl={`${currentTenantId}/newRevocations`}
+      apiFile="revocations_matrix_distribution_by_race"
+      renderChart={({ chartId, data, denominators, numerators, mode }) => (
+        <BarChartWithLabels
+          id={chartId}
+          data={data}
+          labelColors={COLORS_LANTERN_SET}
+          xAxisLabel="Race/ethnicity and risk level"
+          yAxisLabel={getLabelByMode(mode)}
+          numerators={numerators}
+          denominators={denominators}
+        />
+      )}
+      generateChartData={createGenerateChartData(dataFilter)}
+      chartTitle="Admissions by race/ethnicity and risk level"
+      metricTitle={(mode) =>
+        `${getLabelByMode(mode)} by race/ethnicity and risk level`
+      }
+      filterStates={filterStates}
+      timeDescription={timeDescription}
+      modes={flags.enableRevocationRateByExit ? ["rates", "exits"] : []}
+      defaultMode="rates"
+      dataExportLabel="Risk Level"
+    />
+  );
+};
 
 RevocationsByRace.propTypes = {
-  stateCode: PropTypes.string.isRequired,
   dataFilter: PropTypes.func.isRequired,
   filterStates: filtersPropTypes.isRequired,
   timeDescription: PropTypes.string.isRequired,
 };
 
-export default RevocationsByRace;
+export default observer(RevocationsByRace);

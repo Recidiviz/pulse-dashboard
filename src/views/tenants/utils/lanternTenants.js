@@ -16,12 +16,15 @@
 // =============================================================================
 
 // Used for I18n copy translations
-import MO_TRANSLATIONS from "./us_mo_translations";
-import PA_TRANSLATIONS from "./us_pa_translations";
+import US_MO_TRANSLATIONS from "./us_mo_translations";
+import US_PA_TRANSLATIONS from "./us_pa_translations";
 
-export const MO = "us_mo";
-export const PA = "us_pa";
+export const US_MO = "US_MO";
+export const US_PA = "US_PA";
 
-export const LANTERN_STATES = [MO, PA];
+export const LANTERN_TENANTS = [US_MO, US_PA];
 
-export const TRANSLATIONS = { MO: MO_TRANSLATIONS, PA: PA_TRANSLATIONS };
+export const TRANSLATIONS = {
+  US_MO: US_MO_TRANSLATIONS,
+  US_PA: US_PA_TRANSLATIONS,
+};

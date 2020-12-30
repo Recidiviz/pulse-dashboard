@@ -20,9 +20,9 @@ import * as core from "./views/tenants/utils/coreTenants";
 
 export default {
   // prettier-ignore
-  [lantern.MO]: {
+  [lantern.US_MO]: {
     name: "Missouri",
-    availableStateCodes: [lantern.MO],
+    availableStateCodes: [lantern.US_MO],
     regions: {
       "Western Region": ["1", "4", "4C", "WN", "4W", "19", "24"],
       "North Central Region": ["2", "5", "6", "20", "27", "29", "32", "XCRC", "MCC", "MTC", "WMCC", "WRDCC"],
@@ -32,20 +32,20 @@ export default {
       "Southeast Region": ["12", "14", "15", "22", "23", "25", "31", "36", "37", "ERDCC", "FCC", "MECC", "PCC", "SECC"],
     },
   },
-  [core.ND]: {
+  [core.US_ND]: {
     name: "North Dakota",
-    availableStateCodes: [core.ND],
+    availableStateCodes: [core.US_ND],
   },
-  [lantern.PA]: {
+  [lantern.US_PA]: {
     name: "Pennsylvania",
-    availableStateCodes: [lantern.PA],
+    availableStateCodes: [lantern.US_PA],
   },
-  recidiviz: {
+  RECIDIVIZ: {
     name: "Recidiviz",
-    availableStateCodes: lantern.LANTERN_STATES.concat(core.CORE_STATES),
+    availableStateCodes: lantern.LANTERN_TENANTS.concat(core.CORE_TENANTS),
   },
-  lantern: {
+  LANTERN: {
     name: "Lantern",
-    availableStateCodes: lantern.LANTERN_STATES,
+    availableStateCodes: lantern.LANTERN_TENANTS,
   },
 };
