@@ -43,7 +43,7 @@ jest.mock("../../core/memoryCache", () => {
 });
 
 describe("api tests", () => {
-  const stateCode = "test_id";
+  const stateCode = "TEST_ID";
   const send = jest.fn();
   const req = { params: { stateCode } };
   const res = { send };
@@ -85,7 +85,7 @@ describe("api tests", () => {
     );
   });
 
-  it("should call fetchMetrics for communityGoals with cacheKey ", () => {
+  it("should call cacheInMemory for communityGoals with cacheKey ", () => {
     const cacheKey = `${stateCode.toUpperCase()}-communityGoals`;
     communityGoals(req, res);
     expect(memoryCache.cacheInMemory).toHaveBeenCalledWith(
@@ -95,7 +95,7 @@ describe("api tests", () => {
     );
   });
 
-  it("should call fetchMetrics for communityExplore with cacheKey ", () => {
+  it("should call cacheInMemory for communityExplore with cacheKey ", () => {
     const cacheKey = `${stateCode.toUpperCase()}-communityExplore`;
     communityExplore(req, res);
 
@@ -106,7 +106,7 @@ describe("api tests", () => {
     );
   });
 
-  it("should call fetchMetrics for facilitiesGoals with cacheKey ", () => {
+  it("should call cacheInMemory for facilitiesGoals with cacheKey ", () => {
     const cacheKey = `${stateCode.toUpperCase().toUpperCase()}-facilitiesGoals`;
     facilitiesGoals(req, res);
 
@@ -117,7 +117,7 @@ describe("api tests", () => {
     );
   });
 
-  it("should call fetchMetrics for facilitiesExplore with cacheKey ", () => {
+  it("should call cacheInMemory for facilitiesExplore with cacheKey ", () => {
     const cacheKey = `${stateCode.toUpperCase()}-facilitiesExplore`;
     facilitiesExplore(req, res);
 
@@ -128,7 +128,7 @@ describe("api tests", () => {
     );
   });
 
-  it("should call fetchMetrics for programmingExplore with cacheKey ", () => {
+  it("should call cacheInMemory for programmingExplore with cacheKey ", () => {
     const cacheKey = `${stateCode.toUpperCase()}-programmingExplore`;
     programmingExplore(req, res);
 
