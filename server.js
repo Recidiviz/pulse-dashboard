@@ -26,6 +26,9 @@ const jwksRsa = require("jwks-rsa");
 const devAuthConfig = require("./src/auth_config_dev.json");
 const productionAuthConfig = require("./src/auth_config_production.json");
 const api = require("./server/routes/api");
+const {
+  newRevocationsParamValidations,
+} = require("./server/routes/paramsValidation");
 
 const app = express();
 
@@ -37,11 +40,14 @@ app.set("port", port);
 const isDemoMode = process.env.IS_DEMO === "true";
 
 const authEnv = process.env.AUTH_ENV;
+
 let authConfig = null;
 if (authEnv === "production") {
   authConfig = productionAuthConfig;
-} else {
+} else if (authEnv === "development") {
   authConfig = devAuthConfig;
+} else {
+  authConfig = { domain: "test", audience: "test" };
 }
 
 if (!authConfig.domain || !authConfig.audience) {
@@ -80,7 +86,7 @@ if (isDemoMode) {
 app.get("/api/:stateCode/newRevocations", checkJwt, api.newRevocations);
 app.get(
   "/api/:stateCode/newRevocations/:file",
-  checkJwt,
+  [checkJwt, ...newRevocationsParamValidations],
   api.newRevocationFile
 );
 app.get("/api/:stateCode/community/goals", checkJwt, api.communityGoals);
@@ -141,3 +147,5 @@ function onListening() {
 server.listen(port, () => console.log(`Server listening on port ${port}`));
 server.on("error", onError);
 server.on("listening", onListening);
+
+module.exports = { app, server };
