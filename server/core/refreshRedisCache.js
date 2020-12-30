@@ -32,7 +32,7 @@ function cacheEachFile(files, cacheKeyPrefix) {
 
   Object.keys(files).forEach((fileKey) => {
     const cacheKey = `${cacheKeyPrefix}-${fileKey}`;
-    const metricFile = files[fileKey];
+    const metricFile = { [fileKey]: files[fileKey] };
     console.log(`Setting cache for: ${cacheKey}...`);
     cachePromises.push(redisCache.set(cacheKey, metricFile));
   });

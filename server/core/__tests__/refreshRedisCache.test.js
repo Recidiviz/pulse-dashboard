@@ -33,14 +33,18 @@ describe("refreshRedisCache", () => {
   const fileContents = "a bunch of numbers";
 
   beforeEach(() => {
-    jest.resetModules();
-    jest.clearAllMocks();
     // do not log the expected error - keep tests less verbose
     jest.spyOn(console, "log").mockImplementation(() => {});
+    jest.spyOn(console, "error").mockImplementation(() => {});
 
     mockFetchValue = jest.fn(() =>
       Promise.resolve({ [fileName]: fileContents })
     );
+  });
+
+  afterEach(() => {
+    jest.resetModules();
+    jest.clearAllMocks();
   });
 
   it("calls redisCache with the correct key and value", (done) => {
@@ -53,7 +57,9 @@ describe("refreshRedisCache", () => {
       expect(mockFetchValue).toHaveBeenCalledTimes(1);
 
       expect(redisCache.set).toHaveBeenCalledTimes(1);
-      expect(redisCache.set).toHaveBeenCalledWith(cachekey, fileContents);
+      expect(redisCache.set).toHaveBeenCalledWith(cachekey, {
+        [fileName]: fileContents,
+      });
       done();
     });
   });
