@@ -20,6 +20,7 @@
  * in server.js.
  */
 
+const { validationResult } = require("express-validator");
 const {
   refreshRedisCache,
   fetchMetrics,
@@ -28,13 +29,20 @@ const {
 } = require("../core");
 const { default: isDemoMode } = require("../utils/isDemoMode");
 
+const BAD_REQUEST = 400;
+const SERVER_ERROR = 500;
+
 /**
  * A callback which returns either an error payload or a data payload.
+ *
+ * Structure of error responses from GCS
+ * https://cloud.google.com/storage/docs/json_api/v1/status-codes#404-not-found
  */
 function responder(res) {
   return (err, data) => {
     if (err) {
-      res.send(err);
+      const status = err.status || err.code || SERVER_ERROR;
+      res.status(status).send(err);
     } else {
       res.send(data);
     }
@@ -64,13 +72,19 @@ function newRevocations(req, res) {
 }
 
 function newRevocationFile(req, res) {
-  const { stateCode, file } = req.params;
-  const cacheKey = `${stateCode.toUpperCase()}-newRevocation-${file}`;
-  cacheInRedis(
-    cacheKey,
-    () => fetchMetrics(stateCode, "newRevocation", file, isDemoMode),
-    responder(res)
-  );
+  const validations = validationResult(req);
+  const hasErrors = !validations.isEmpty();
+  if (hasErrors) {
+    responder(res)({ status: BAD_REQUEST, errors: validations.array() }, null);
+  } else {
+    const { stateCode, file } = req.params;
+    const cacheKey = `${stateCode.toUpperCase()}-newRevocation-${file}`;
+    cacheInRedis(
+      cacheKey,
+      () => fetchMetrics(stateCode, "newRevocation", file, isDemoMode),
+      responder(res)
+    );
+  }
 }
 
 function communityGoals(req, res) {

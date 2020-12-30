@@ -45,8 +45,11 @@ jest.mock("../../core/memoryCache", () => {
 describe("api tests", () => {
   const stateCode = "TEST_ID";
   const send = jest.fn();
+  const status = jest.fn().mockImplementation(() => {
+    return { send };
+  });
   const req = { params: { stateCode } };
-  const res = { send };
+  const res = { send, status };
 
   beforeEach(() => {
     jest.clearAllMocks();
@@ -145,6 +148,30 @@ describe("api tests", () => {
     callback(error, null);
 
     expect(send).toHaveBeenCalledWith(error);
+  });
+
+  it("should send error status code 500 when no status is on error", () => {
+    const error = "some error";
+    const callback = responder(res);
+    callback(error, null);
+
+    expect(status).toHaveBeenCalledWith(500);
+  });
+
+  it("should send the error's status code when the status is on the error", () => {
+    const error = { status: 400, errors: ["some error"] };
+    const callback = responder(res);
+    callback(error, null);
+
+    expect(status).toHaveBeenCalledWith(error.status);
+  });
+
+  it("should send the error's status code when the error has a code property", () => {
+    const error = { code: 404, error: "File not found" };
+    const callback = responder(res);
+    callback(error, null);
+
+    expect(status).toHaveBeenCalledWith(error.code);
   });
 
   it("should send data", () => {

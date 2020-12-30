@@ -16,21 +16,24 @@
 // =============================================================================
 
 const request = require("supertest");
-const { app, server } = require("../../../server");
+
+const OLD_ENV = process.env;
 
 jest.mock("../../core/redisCache", () => {
   return {
     redisCache: { set: jest.fn() },
+    cacheInRedis: jest
+      .fn()
+      .mockImplementation((cacheKey, fetcher, callback) => {
+        callback(null, { revocations_matrix_by_month: "data" });
+      }),
   };
 });
 
-jest.mock("../../core/fetchMetrics", () => {
-  return {
-    default: jest.fn(() => Promise.resolve("data")),
-  };
-});
+describe("Server tests", () => {
+  const { server } = require("../../../server");
+  let app;
 
-describe("GET /api/:stateCode/refreshCache", () => {
   beforeAll(() => {
     // Reduce noise in the test
     jest.spyOn(console, "log").mockImplementation(() => {});
@@ -41,22 +44,96 @@ describe("GET /api/:stateCode/refreshCache", () => {
     jest.resetModules();
     jest.restoreAllMocks();
     server.close();
+    process.env = OLD_ENV;
   });
 
-  it("should respond with a 403 when cron job header is invalid", () => {
-    return request(app)
-      .get("/api/US_PA/refreshCache")
-      .then((response) => {
-        expect(response.statusCode).toEqual(403);
+  describe("GET api/:stateCode/newRevocations/:file", () => {
+    beforeEach(() => {
+      process.env = Object.assign(process.env, {
+        IS_DEMO: "true",
+        AUTH_ENV: "test",
       });
+      jest.resetModules();
+      app = require("../../app").app;
+    });
+
+    it("should respond with a 200 for a valid stateCode", function () {
+      return request(app)
+        .get("/api/US_DEMO/newRevocations/revocations_matrix_by_month")
+        .then((response) => {
+          expect(response.statusCode).toEqual(200);
+          expect(response.body).toHaveProperty("revocations_matrix_by_month");
+        });
+    });
+
+    it("should respond with a 400 for an invalid stateCode", function () {
+      const expectedErrors = {
+        errors: [
+          {
+            location: "params",
+            msg: "Invalid value",
+            param: "stateCode",
+            value: "HI",
+          },
+        ],
+        status: 400,
+      };
+      return request(app)
+        .get("/api/HI/newRevocations/revocations_matrix_by_month")
+        .then((response) => {
+          expect(response.statusCode).toEqual(400);
+          expect(response.body).toEqual(expectedErrors);
+        });
+    });
+
+    it("should respond with a 400 for an invalid query param", function () {
+      const expectedErrors = {
+        errors: [
+          {
+            location: "query",
+            msg: "Invalid value",
+            param: "metricPeriodMonths",
+            value: "1",
+          },
+        ],
+        status: 400,
+      };
+      return request(app)
+        .get(
+          "/api/US_DEMO/newRevocations/revocations_matrix_by_month?metricPeriodMonths=1"
+        )
+        .then((response) => {
+          expect(response.statusCode).toEqual(400);
+          expect(response.body).toEqual(expectedErrors);
+        });
+    });
   });
 
-  it("should respond successfully when cron job header is valid", () => {
-    return request(app)
-      .get("/api/US_PA/refreshCache")
-      .set("X-Appengine-Cron", "true")
-      .then((response) => {
-        expect(response.statusCode).toEqual(200);
+  describe("GET /api/:stateCode/refreshCache", () => {
+    beforeEach(() => {
+      process.env = Object.assign(process.env, {
+        IS_DEMO: "false",
+        AUTH_ENV: "test",
       });
+      jest.resetModules();
+      app = require("../../app").app;
+    });
+
+    it("should respond with a 403 when cron job header is invalid", () => {
+      return request(app)
+        .get("/api/US_PA/refreshCache")
+        .then((response) => {
+          expect(response.statusCode).toEqual(403);
+        });
+    });
+
+    it("should respond successfully when cron job header is valid", () => {
+      return request(app)
+        .get("/api/US_PA/refreshCache")
+        .set("X-Appengine-Cron", "true")
+        .then((response) => {
+          expect(response.statusCode).toEqual(200);
+        });
+    });
   });
 });
