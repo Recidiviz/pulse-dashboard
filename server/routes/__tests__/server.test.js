@@ -16,6 +16,7 @@
 // =============================================================================
 
 const request = require("supertest");
+const { server } = require("../../../server");
 
 const OLD_ENV = process.env;
 
@@ -30,8 +31,13 @@ jest.mock("../../core/redisCache", () => {
   };
 });
 
+jest.mock("../../core/fetchMetrics", () => {
+  return {
+    default: jest.fn(() => Promise.resolve("data")),
+  };
+});
+
 describe("Server tests", () => {
-  const { server } = require("../../../server");
   let app;
 
   beforeAll(() => {
