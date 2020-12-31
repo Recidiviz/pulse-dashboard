@@ -74,8 +74,6 @@ let checkJwt = jwt({
   algorithms: ["RS256"],
 });
 
-// eslint-disable-next-line no-console
-console.log({ isDemoMode, authEnv });
 // See: https://cloud.google.com/appengine/docs/standard/nodejs/scheduling-jobs-with-cron-yaml#validating_cron_requests
 function validateCronRequest(req, res, next) {
   if (req.get("X-Appengine-Cron") !== "true" && !isDemoMode) {
