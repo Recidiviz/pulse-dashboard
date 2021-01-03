@@ -27,19 +27,19 @@ const memoryCache = cacheManager.caching({
   refreshThreshold: METRIC_REFRESH_SECONDS,
 });
 
+function clearMemoryCache() {
+  return memoryCache.reset();
+}
+
 function cacheInMemory(cacheKey, fetchValue, callback) {
-  memoryCache.wrap(
-    cacheKey,
-    (cacheCb) => {
-      fetchValue()
-        .then((value) => cacheCb(null, value))
-        .catch((err) => {
-          console.error(err);
-          cacheCb(err, null);
-        });
+  return memoryCache.wrap(cacheKey, fetchValue).then(
+    (result) => {
+      callback(null, result);
     },
-    callback
+    (err) => {
+      callback(err, null);
+    }
   );
 }
 
-module.exports = { cacheInMemory };
+module.exports = { cacheInMemory, clearMemoryCache };

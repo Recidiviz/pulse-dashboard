@@ -46,32 +46,34 @@ const redisInstance = new Redis({
   db: 0,
 });
 
+const testEnv = process.env.NODE_ENV === "test";
+
 const redisCache = cacheManager.caching({
-  store: redisStore,
+  store: testEnv ? "memory" : redisStore,
   refreshThreshold: REDIS_CACHE_REFRESH_THRESHOLD,
   redisInstance,
 });
 
-const redisClient = redisCache.store.getClient();
-redisClient.on("error", (error) => {
-  console.error("ERR:REDIS:", error);
-});
+if (process.env.NODE_ENV === "production") {
+  const redisClient = redisCache.store.getClient();
+  redisClient.on("error", (error) => {
+    console.error("ERR:REDIS:", error);
+  });
+}
+
+function clearRedisCache() {
+  return redisCache.reset();
+}
 
 function cacheInRedis(cacheKey, fetchValue, callback) {
-  redisCache.wrap(
-    cacheKey,
-    (cacheCb) => {
-      fetchValue()
-        .then((value) => {
-          cacheCb(null, value);
-        })
-        .catch((err) => {
-          console.error(err);
-          cacheCb(err, null);
-        });
+  return redisCache.wrap(cacheKey, fetchValue).then(
+    (result) => {
+      callback(null, result);
     },
-    callback
+    (err) => {
+      callback(err, null);
+    }
   );
 }
 
-module.exports = { cacheInRedis, redisCache };
+module.exports = { cacheInRedis, redisCache, clearRedisCache };
