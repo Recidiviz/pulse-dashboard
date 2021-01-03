@@ -17,25 +17,10 @@
 
 const request = require("supertest");
 const { server } = require("../../../server");
+const { clearMemoryCache } = require("../../core/memoryCache");
+const { clearRedisCache } = require("../../core/redisCache");
 
 const OLD_ENV = process.env;
-
-jest.mock("../../core/redisCache", () => {
-  return {
-    redisCache: { set: jest.fn() },
-    cacheInRedis: jest
-      .fn()
-      .mockImplementation((cacheKey, fetcher, callback) => {
-        callback(null, { revocations_matrix_by_month: "data" });
-      }),
-  };
-});
-
-jest.mock("../../core/fetchMetrics", () => {
-  return {
-    default: jest.fn(() => Promise.resolve("data")),
-  };
-});
 
 describe("Server tests", () => {
   let app;
@@ -46,11 +31,31 @@ describe("Server tests", () => {
     jest.spyOn(console, "error").mockImplementation(() => {});
   });
 
-  afterAll(() => {
+  afterAll(async () => {
+    await clearMemoryCache();
+    await clearRedisCache();
     jest.resetModules();
     jest.restoreAllMocks();
     server.close();
     process.env = OLD_ENV;
+  });
+
+  describe("GET api/:stateCode/facilities/goals", () => {
+    beforeEach(() => {
+      process.env = Object.assign(process.env, {
+        IS_DEMO: "true",
+        AUTH_ENV: "test",
+      });
+      jest.resetModules();
+      app = require("../../app").app;
+    });
+    it("should respond with a 200 for a valid stateCode", function () {
+      return request(app)
+        .get("/api/US_DEMO/facilities/goals")
+        .then((response) => {
+          expect(response.statusCode).toEqual(200);
+        });
+    });
   });
 
   describe("GET api/:stateCode/newRevocations/:file", () => {
@@ -69,6 +74,12 @@ describe("Server tests", () => {
         .then((response) => {
           expect(response.statusCode).toEqual(200);
           expect(response.body).toHaveProperty("revocations_matrix_by_month");
+          expect(response.body.revocations_matrix_by_month).toHaveProperty(
+            "flattenedValueMatrix"
+          );
+          expect(response.body.revocations_matrix_by_month).toHaveProperty(
+            "metadata"
+          );
         });
     });
 

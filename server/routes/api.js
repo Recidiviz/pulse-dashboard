@@ -100,7 +100,7 @@ function communityGoals(req, res) {
 function communityExplore(req, res) {
   const { stateCode } = req.params;
   const cacheKey = `${stateCode.toUpperCase()}-communityExplore`;
-  return cacheInMemory(
+  cacheInMemory(
     cacheKey,
     () => fetchMetrics(stateCode, "communityExplore", null, isDemoMode),
     responder(res)
