@@ -125,8 +125,6 @@ describe("API tests", () => {
         file,
         false
       );
-
-      await clearRedisCache();
     });
 
     it("refreshCache - calls fetchMetrics with the correct args", async () => {
@@ -151,8 +149,6 @@ describe("API tests", () => {
         `${stateCode.toUpperCase()}-newRevocation-file_2`,
         { file_2: "content_2" }
       );
-
-      await clearRedisCache();
     });
   });
 
