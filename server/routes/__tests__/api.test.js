@@ -23,14 +23,27 @@ const {
   facilitiesGoals,
   facilitiesExplore,
   programmingExplore,
+  refreshCache,
   responder,
 } = require("../api");
-const { default: fetchMetrics } = require("../../core/fetchMetrics");
+const { default: refreshRedisCache } = require("../../core/refreshRedisCache");
+const redisCache = require("../../core/redisCache");
+const memoryCache = require("../../core/memoryCache");
 
-jest.mock("../../core/fetchMetrics");
+jest.mock("../../core/refreshRedisCache");
+jest.mock("../../core/redisCache", () => {
+  return {
+    cacheInRedis: jest.fn(),
+  };
+});
+jest.mock("../../core/memoryCache", () => {
+  return {
+    cacheInMemory: jest.fn(),
+  };
+});
 
 describe("api tests", () => {
-  const stateCode = "some code";
+  const stateCode = "TEST_ID";
   const send = jest.fn();
   const status = jest.fn().mockImplementation(() => {
     return { send };
@@ -42,88 +55,89 @@ describe("api tests", () => {
     jest.clearAllMocks();
   });
 
-  it("should call fetchMetrics for newRevocation ", () => {
-    newRevocations(req, res);
-
-    expect(fetchMetrics).toHaveBeenCalledWith(
+  it("should call refreshRedisCache for refreshCache ", () => {
+    refreshCache(req, res);
+    expect(refreshRedisCache).toHaveBeenCalledWith(
+      expect.any(Function),
       stateCode,
       "newRevocation",
-      null,
-      false,
       expect.any(Function)
     );
   });
 
-  it("should call fetchMetrics for newRevocation with file ", () => {
+  it("should call cacheInRedis for newRevocation with cacheKey ", () => {
+    newRevocations(req, res);
+    const cacheKey = `${stateCode.toUpperCase()}-newRevocation`;
+    expect(redisCache.cacheInRedis).toHaveBeenCalledWith(
+      cacheKey,
+      expect.any(Function),
+      expect.any(Function)
+    );
+  });
+
+  it("should call cacheInRedis for newRevocation with file cacheKey ", () => {
     const file = "some file";
     const reqWithFile = { params: { stateCode, file } };
+    const cacheKey = `${stateCode.toUpperCase()}-newRevocation-${file}`;
     newRevocationFile(reqWithFile, res);
 
-    expect(fetchMetrics).toHaveBeenCalledWith(
-      stateCode,
-      "newRevocation",
-      file,
-      false,
+    expect(redisCache.cacheInRedis).toHaveBeenCalledWith(
+      cacheKey,
+      expect.any(Function),
       expect.any(Function)
     );
   });
 
-  it("should call fetchMetrics for communityGoals ", () => {
+  it("should call cacheInMemory for communityGoals with cacheKey ", () => {
+    const cacheKey = `${stateCode.toUpperCase()}-communityGoals`;
     communityGoals(req, res);
-
-    expect(fetchMetrics).toHaveBeenCalledWith(
-      stateCode,
-      "communityGoals",
-      null,
-      false,
+    expect(memoryCache.cacheInMemory).toHaveBeenCalledWith(
+      cacheKey,
+      expect.any(Function),
       expect.any(Function)
     );
   });
 
-  it("should call fetchMetrics for communityExplore ", () => {
+  it("should call cacheInMemory for communityExplore with cacheKey ", () => {
+    const cacheKey = `${stateCode.toUpperCase()}-communityExplore`;
     communityExplore(req, res);
 
-    expect(fetchMetrics).toHaveBeenCalledWith(
-      stateCode,
-      "communityExplore",
-      null,
-      false,
+    expect(memoryCache.cacheInMemory).toHaveBeenCalledWith(
+      cacheKey,
+      expect.any(Function),
       expect.any(Function)
     );
   });
 
-  it("should call fetchMetrics for facilitiesGoals ", () => {
+  it("should call cacheInMemory for facilitiesGoals with cacheKey ", () => {
+    const cacheKey = `${stateCode.toUpperCase().toUpperCase()}-facilitiesGoals`;
     facilitiesGoals(req, res);
 
-    expect(fetchMetrics).toHaveBeenCalledWith(
-      stateCode,
-      "facilitiesGoals",
-      null,
-      false,
+    expect(memoryCache.cacheInMemory).toHaveBeenCalledWith(
+      cacheKey,
+      expect.any(Function),
       expect.any(Function)
     );
   });
 
-  it("should call fetchMetrics for facilitiesExplore ", () => {
+  it("should call cacheInMemory for facilitiesExplore with cacheKey ", () => {
+    const cacheKey = `${stateCode.toUpperCase()}-facilitiesExplore`;
     facilitiesExplore(req, res);
 
-    expect(fetchMetrics).toHaveBeenCalledWith(
-      stateCode,
-      "facilitiesExplore",
-      null,
-      false,
+    expect(memoryCache.cacheInMemory).toHaveBeenCalledWith(
+      cacheKey,
+      expect.any(Function),
       expect.any(Function)
     );
   });
 
-  it("should call fetchMetrics for programmingExplore ", () => {
+  it("should call cacheInMemory for programmingExplore with cacheKey ", () => {
+    const cacheKey = `${stateCode.toUpperCase()}-programmingExplore`;
     programmingExplore(req, res);
 
-    expect(fetchMetrics).toHaveBeenCalledWith(
-      stateCode,
-      "programmingExplore",
-      null,
-      false,
+    expect(memoryCache.cacheInMemory).toHaveBeenCalledWith(
+      cacheKey,
+      expect.any(Function),
       expect.any(Function)
     );
   });

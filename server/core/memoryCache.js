@@ -18,12 +18,28 @@
 const cacheManager = require("cache-manager");
 const { default: isDemoMode } = require("../utils/isDemoMode");
 
-function createMemoryCache(ttl, refreshThreshold) {
-  return cacheManager.caching({
-    store: isDemoMode ? "none" : "memory",
-    ttl,
-    refreshThreshold,
-  });
+const METRIC_CACHE_TTL_SECONDS = 60 * 60; // Expire items in the cache after 1 hour
+const METRIC_REFRESH_SECONDS = 60 * 10;
+
+const memoryCache = cacheManager.caching({
+  store: isDemoMode ? "none" : "memory",
+  ttl: METRIC_CACHE_TTL_SECONDS,
+  refreshThreshold: METRIC_REFRESH_SECONDS,
+});
+
+function cacheInMemory(cacheKey, fetchValue, callback) {
+  memoryCache.wrap(
+    cacheKey,
+    (cacheCb) => {
+      fetchValue()
+        .then((value) => cacheCb(null, value))
+        .catch((err) => {
+          console.error(err);
+          cacheCb(err, null);
+        });
+    },
+    callback
+  );
 }
 
-exports.default = createMemoryCache;
+module.exports = { cacheInMemory };
