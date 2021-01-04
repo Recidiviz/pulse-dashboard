@@ -54,7 +54,7 @@ const redisCache = cacheManager.caching({
   redisInstance,
 });
 
-if (process.env.NODE_ENV === "production") {
+if (!testEnv) {
   const redisClient = redisCache.store.getClient();
   redisClient.on("error", (error) => {
     console.error("ERR:REDIS:", error);
