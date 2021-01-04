@@ -134,6 +134,13 @@ describe("Server tests", () => {
       });
       jest.resetModules();
       app = require("../../app").app;
+      jest.mock("../../core/fetchMetrics", () => {
+        return {
+          default: jest.fn(() =>
+            Promise.resolve({ file_1: "content_1", file_2: "content_2" })
+          ),
+        };
+      });
     });
 
     it("should respond with a 403 when cron job header is invalid", () => {
