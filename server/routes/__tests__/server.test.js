@@ -54,14 +54,14 @@ describe("GET api/:stateCode/newRevocations/:file", () => {
           location: "query",
           msg: "Invalid value",
           param: "metricPeriodMonths",
-          value: "1",
+          value: "42",
         },
       ],
       status: 400,
     };
     return request(app)
       .get(
-        "/api/US_DEMO/newRevocations/revocations_matrix_by_month?metricPeriodMonths=1"
+        "/api/US_DEMO/newRevocations/revocations_matrix_by_month?metricPeriodMonths=42"
       )
       .then((response) => {
         expect(response.statusCode).toEqual(400);
