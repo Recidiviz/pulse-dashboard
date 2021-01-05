@@ -120,11 +120,8 @@ function useChartData(url, file, filterStates = {}, eagerExpand = true) {
       })
       .finally(() => {
         setAwaitingApi(false);
+        cancel();
       });
-
-    return () => {
-      cancel();
-    };
   }, [eagerExpand, fetchChartData, file]);
 
   const isLoading = awaitingResults(loading, user, awaitingApi);
