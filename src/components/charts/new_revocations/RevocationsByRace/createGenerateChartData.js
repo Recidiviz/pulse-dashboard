@@ -44,11 +44,11 @@ export const generateDatasets = (dataPoints, denominators) => {
   }));
 };
 
-const createGenerateChartData = (dataFilter) => (
-  apiData,
+const createGenerateChartData = (dataFilter) => ({
+  metadata,
   mode,
-  unflattenedValues
-) => {
+  apiData,
+}) => {
   const numeratorKey = "population_count";
   const denominatorKey = getDenominatorKeyByMode(mode);
 
@@ -56,16 +56,11 @@ const createGenerateChartData = (dataFilter) => (
   const races = Object.keys(raceLabelMap);
 
   const { dataPoints, numerators, denominators } = pipe(
-    (metricFile) =>
-      filterOptimizedDataFormat(
-        unflattenedValues,
-        apiData,
-        metricFile.metadata,
-        dataFilter
-      ),
+    () =>
+      filterOptimizedDataFormat({ apiData, metadata, filterFn: dataFilter }),
     reduce(createRiskLevelsMap(numeratorKey, denominatorKey, "race"), {}),
     (data) => getCounts(data, getRiskLevels(), races)
-  )(apiData);
+  )();
 
   const data = {
     labels: getRiskLevelLabels(),

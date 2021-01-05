@@ -46,8 +46,8 @@ const queues = {};
  */
 function useChartData(url, file, eagerExpand = true) {
   const { loading, user, getTokenSilently } = useAuth0();
+  const [metadata, setMetadata] = useState({});
   const [apiData, setApiData] = useState([]);
-  const [unflattenedValues, setUnflattenedValues] = useState([]);
   const [awaitingApi, setAwaitingApi] = useState(true);
   const [isError, setIsError] = useState(false);
 
@@ -79,7 +79,6 @@ function useChartData(url, file, eagerExpand = true) {
 
   useEffect(() => {
     const { cancel, promise } = makeCancellablePromise(fetchChartData());
-
     promise
       .then((responseData) => {
         if (file) {
@@ -88,7 +87,7 @@ function useChartData(url, file, eagerExpand = true) {
             file,
             eagerExpand
           );
-          setApiData(metricFile);
+          setMetadata(metricFile.metadata);
 
           // If we are not eagerly expanding a single file request, then proactively
           // unflatten the data matrix to avoid repeated unflattening operations in
@@ -104,8 +103,8 @@ function useChartData(url, file, eagerExpand = true) {
                     metricFile.flattenedValueMatrix,
                     totalDataPoints
                   );
-            setUnflattenedValues(unflattened);
-          }
+            setApiData(unflattened);
+          } else setApiData(metricFile);
         } else {
           const metricFiles = parseResponsesByFileFormat(
             responseData,
@@ -128,7 +127,7 @@ function useChartData(url, file, eagerExpand = true) {
 
   const isLoading = awaitingResults(loading, user, awaitingApi);
 
-  return { apiData, isLoading, isError, unflattenedValues };
+  return { metadata, isLoading, isError, apiData };
 }
 
 export default useChartData;

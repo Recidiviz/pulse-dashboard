@@ -32,22 +32,17 @@ import getLabelByMode from "../utils/getLabelByMode";
 import { filterOptimizedDataFormat } from "../../../../utils/charts/dataFilters";
 import { COLORS } from "../../../../assets/scripts/constants/colors";
 
-const createGenerateChartData = (dataFilter) => (
-  apiData,
+const createGenerateChartData = (dataFilter) => ({
+  metadata,
   mode,
-  unflattenedValues
-) => {
+  apiData,
+}) => {
   const denominatorKey = getDenominatorKeyByMode(mode);
   const riskLevels = translate("riskLevelsMap");
 
   const riskLevelCounts = pipe(
-    (metricFile) =>
-      filterOptimizedDataFormat(
-        unflattenedValues,
-        apiData,
-        metricFile.metadata,
-        dataFilter
-      ),
+    () =>
+      filterOptimizedDataFormat({ apiData, metadata, filterFn: dataFilter }),
     filter((data) => Object.keys(riskLevels).includes(data.risk_level)),
     groupBy("risk_level"),
     values,
@@ -65,7 +60,7 @@ const createGenerateChartData = (dataFilter) => (
         rate: rate.toFixed(2),
       };
     })
-  )(apiData);
+  )();
 
   const chartDataPoints = map("rate", riskLevelCounts);
   const numerators = map("numerator", riskLevelCounts);

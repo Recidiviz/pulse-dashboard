@@ -53,7 +53,7 @@ const RevocationsOverTime = ({ dataFilter }) => {
 
   const chartId = `${translate("revocations")}OverTime`;
 
-  const { isLoading, isError, apiData, unflattenedValues } = useChartData(
+  const { isLoading, isError, metadata, apiData } = useChartData(
     `${currentTenantId}/newRevocations`,
     "revocations_matrix_by_month",
     false
@@ -68,13 +68,8 @@ const RevocationsOverTime = ({ dataFilter }) => {
   }
 
   const chartData = pipe(
-    (metricFile) =>
-      filterOptimizedDataFormat(
-        unflattenedValues,
-        apiData,
-        metricFile.metadata,
-        dataFilter
-      ),
+    () =>
+      filterOptimizedDataFormat({ apiData, metadata, filterFn: dataFilter }),
     groupByMonth(["total_revocations"]),
     (dataset) =>
       sortFilterAndSupplementMostRecentMonths(
@@ -85,7 +80,7 @@ const RevocationsOverTime = ({ dataFilter }) => {
         "total_revocations",
         0
       )
-  )(apiData);
+  )();
 
   const labels = monthNamesAllWithYearsFromNumbers(
     map("month", chartData),

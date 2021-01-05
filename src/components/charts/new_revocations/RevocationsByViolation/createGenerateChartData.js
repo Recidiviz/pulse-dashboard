@@ -26,25 +26,19 @@ import { filterOptimizedDataFormat } from "../../../../utils/charts/dataFilters"
 import { calculateRate } from "../helpers/rate";
 import { COLORS } from "../../../../assets/scripts/constants/colors";
 
-const createGenerateChartData = (dataFilter, violationTypes) => (
+const createGenerateChartData = (dataFilter, violationTypes) => ({
+  metadata,
   apiData,
-  mode,
-  unflattenedValues
-) => {
+}) => {
   const violationCountKey = "violation_count";
 
   const allViolationTypeKeys = map("key", violationTypes);
   const violationToCount = pipe(
-    (metricFile) =>
-      filterOptimizedDataFormat(
-        unflattenedValues,
-        apiData,
-        metricFile.metadata,
-        dataFilter
-      ),
+    () =>
+      filterOptimizedDataFormat({ apiData, metadata, filterFn: dataFilter }),
     map(pick(concat(allViolationTypeKeys, violationCountKey))),
     mergeAllWith((a, b) => toInteger(a) + toInteger(b))
-  )(apiData);
+  )();
 
   const totalViolationCount = toInteger(violationToCount[violationCountKey]);
   const numerators = map(
