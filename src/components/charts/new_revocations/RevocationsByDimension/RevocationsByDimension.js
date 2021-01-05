@@ -45,7 +45,7 @@ const RevocationsByDimension = ({
 }) => {
   const [mode, setMode] = useState(defaultMode);
 
-  const { isLoading, isError, apiData, unflattenedValues } = useChartData(
+  const { isLoading, isError, metadata, apiData } = useChartData(
     apiUrl,
     apiFile,
     filterStates,
@@ -59,12 +59,11 @@ const RevocationsByDimension = ({
   if (isError) {
     return <Error />;
   }
-
-  const { data, numerators, denominators, averageRate } = generateChartData(
-    apiData,
+  const { data, numerators, denominators, averageRate } = generateChartData({
+    metadata,
     mode,
-    unflattenedValues
-  );
+    apiData,
+  });
 
   const showWarning =
     includeWarning &&

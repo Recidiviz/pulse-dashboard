@@ -198,10 +198,8 @@ describe("test for filterOptimizedDataFormat", () => {
     ],
   };
 
-  describe("when there are unflattenedValues", () => {
-    const apiData = [];
-
-    const unflattenedValues = [
+  describe("when apiData is the are unflattenedValues", () => {
+    const apiData = [
       ["0", "0", "1", "1", "2", "0", "0", "1", "1", "2", "2"],
       ["0", "0", "0", "0", "0", "1", "1", "1", "1", "1", "1"],
       ["0", "1", "0", "1", "0", "0", "1", "0", "1", "0", "1"],
@@ -290,24 +288,22 @@ describe("test for filterOptimizedDataFormat", () => {
     ];
 
     it("correctly parses data points, regardless of filtering", () => {
-      const filtered = filterMethods.filterOptimizedDataFormat(
-        unflattenedValues,
+      const filtered = filterMethods.filterOptimizedDataFormat({
         apiData,
         metadata,
-        () => true
-      );
+        filterFn: () => true,
+      });
       expect(filtered).toEqual(fullOutput);
     });
 
     it("correctly parses and filter data points", () => {
-      const filtered = filterMethods.filterOptimizedDataFormat(
-        unflattenedValues,
+      const filtered = filterMethods.filterOptimizedDataFormat({
         apiData,
         metadata,
-        (item, dimensionKey) =>
+        filterFn: (item, dimensionKey) =>
           dimensionKey !== "supervision_type" ||
-          item.supervision_type.toUpperCase() === "PAROLE"
-      );
+          item.supervision_type.toUpperCase() === "PAROLE",
+      });
 
       const expected = [
         fullOutput[0],
@@ -321,11 +317,10 @@ describe("test for filterOptimizedDataFormat", () => {
     });
 
     it("correctly parses and filter data points with multiple filters", () => {
-      const filtered = filterMethods.filterOptimizedDataFormat(
-        unflattenedValues,
+      const filtered = filterMethods.filterOptimizedDataFormat({
         apiData,
         metadata,
-        (item, dimensionKey) => {
+        filterFn: (item, dimensionKey) => {
           if (dimensionKey === "supervision_type") {
             return item.supervision_type.toUpperCase() === "PAROLE";
           }
@@ -333,27 +328,25 @@ describe("test for filterOptimizedDataFormat", () => {
             return item.month === "11";
           }
           return true;
-        }
-      );
+        },
+      });
 
       const expected = [fullOutput[0], fullOutput[2], fullOutput[4]];
       expect(filtered).toEqual(expected);
     });
 
     it("correctly returns an empty list with a falsey filter", () => {
-      const filtered = filterMethods.filterOptimizedDataFormat(
-        unflattenedValues,
+      const filtered = filterMethods.filterOptimizedDataFormat({
         apiData,
         metadata,
-        () => false
-      );
+        filterFn: () => false,
+      });
 
       expect(filtered).toEqual([]);
     });
   });
 
-  describe("when unflattenValues = []", () => {
-    const unflattenedValues = [];
+  describe("when apiData is the expanded objects", () => {
     const apiData = [
       {
         district: "4",
@@ -435,22 +428,20 @@ describe("test for filterOptimizedDataFormat", () => {
     ];
 
     it("correctly parses data points, regardless of filtering", () => {
-      const filtered = filterMethods.filterOptimizedDataFormat(
-        unflattenedValues,
+      const filtered = filterMethods.filterOptimizedDataFormat({
         apiData,
         metadata,
-        () => true
-      );
+        filterFn: () => true,
+      });
       expect(filtered).toEqual(apiData);
     });
 
     it("correctly parses and filter data points", () => {
-      const filtered = filterMethods.filterOptimizedDataFormat(
-        unflattenedValues,
+      const filtered = filterMethods.filterOptimizedDataFormat({
         apiData,
         metadata,
-        (item) => item.supervision_type.toUpperCase() === "PAROLE"
-      );
+        filterFn: (item) => item.supervision_type.toUpperCase() === "PAROLE",
+      });
 
       const expected = [
         apiData[0],
@@ -464,29 +455,27 @@ describe("test for filterOptimizedDataFormat", () => {
     });
 
     it("correctly parses and filter data points with multiple filters", () => {
-      const filtered = filterMethods.filterOptimizedDataFormat(
-        unflattenedValues,
+      const filtered = filterMethods.filterOptimizedDataFormat({
         apiData,
         metadata,
-        (item) => {
+        filterFn: (item) => {
           return (
             item.supervision_type.toUpperCase() === "PAROLE" &&
             item.month === "11"
           );
-        }
-      );
+        },
+      });
 
       const expected = [apiData[0], apiData[2], apiData[4]];
       expect(filtered).toEqual(expected);
     });
 
     it("correctly returns an empty list with a falsey filter", () => {
-      const filtered = filterMethods.filterOptimizedDataFormat(
-        unflattenedValues,
+      const filtered = filterMethods.filterOptimizedDataFormat({
         apiData,
         metadata,
-        () => false
-      );
+        filterFn: () => false,
+      });
 
       expect(filtered).toEqual([]);
     });

@@ -69,13 +69,12 @@ const Matrix = ({
 }) => {
   const { currentTenantId } = useRootStore();
 
-  const { apiData, isLoading, isError, unflattenedValues } = useChartData(
+  const { metadata, isLoading, isError, apiData } = useChartData(
     `${currentTenantId}/newRevocations`,
     "revocations_matrix_cells",
     filterStates,
     false
   );
-
   if (isLoading) {
     return <Loading />;
   }
@@ -88,15 +87,10 @@ const Matrix = ({
     filterStates.violationType || filterStates.reportedViolations;
 
   const filteredData = pipe(
-    (metricFile) =>
-      filterOptimizedDataFormat(
-        unflattenedValues,
-        apiData,
-        metricFile.metadata,
-        dataFilter
-      ),
+    () =>
+      filterOptimizedDataFormat({ apiData, metadata, filterFn: dataFilter }),
     filter((data) => violationTypes.includes(data.violation_type))
-  )(apiData);
+  )();
 
   const dataMatrix = pipe(
     groupBy("violation_type"),

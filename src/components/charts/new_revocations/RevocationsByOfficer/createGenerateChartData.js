@@ -30,13 +30,13 @@ import getNameFromOfficerId from "../utils/getNameFromOfficerId";
 import { COLORS } from "../../../../assets/scripts/constants/colors";
 import { filterOptimizedDataFormat } from "../../../../utils/charts/dataFilters";
 
-const generatePercentChartData = (apiData, mode) => {
+const generatePercentChartData = (filteredData, mode) => {
   const [fieldName, totalFieldName] =
     mode === "exits"
       ? ["exit_count", "total_exit_count"]
       : ["supervision_count", "total_supervision_count"];
 
-  const filteredData = pipe(
+  const transformedData = pipe(
     groupBy("officer"),
     values,
     map((dataset) => ({
@@ -53,13 +53,13 @@ const generatePercentChartData = (apiData, mode) => {
       rate: calculateRate(dataPoint.count, dataPoint[fieldName]),
     })),
     orderBy(["rate"], ["desc"])
-  )(apiData);
+  )(filteredData);
 
-  const dataPoints = map((item) => item.rate.toFixed(2), filteredData);
+  const dataPoints = map((item) => item.rate.toFixed(2), transformedData);
 
-  const labels = map("officer", filteredData);
-  const denominators = map("supervision_count", filteredData);
-  const numerators = map("count", filteredData);
+  const labels = map("officer", transformedData);
+  const denominators = map("supervision_count", transformedData);
+  const numerators = map("count", transformedData);
 
   const datasets = [
     {
@@ -75,14 +75,14 @@ const generatePercentChartData = (apiData, mode) => {
   };
 
   const averageRate = calculateRate(
-    sumCounts("population_count", apiData),
-    sumCounts("total_supervision_count", apiData)
+    sumCounts("population_count", filteredData),
+    sumCounts("total_supervision_count", filteredData)
   );
 
   return { data, numerators, denominators, averageRate };
 };
 
-const generateCountChartData = (apiData) => {
+const generateCountChartData = (filteredData) => {
   const transformedData = pipe(
     groupBy("officer"),
     values,
@@ -93,7 +93,7 @@ const generateCountChartData = (apiData) => {
       count: sumBy((item) => toInteger(item.population_count), dataset),
     })),
     orderBy(["count"], ["desc"])
-  )(apiData);
+  )(filteredData);
 
   const labels = map("officer", transformedData);
   const dataPoints = transformedData.map((item) => item.count);
@@ -109,17 +109,16 @@ const generateCountChartData = (apiData) => {
   return { data: { datasets, labels }, denominators: [] };
 };
 
-const createGenerateChartData = (dataFilter) => (
-  apiData,
+const createGenerateChartData = (dataFilter) => ({
+  metadata,
   mode,
-  unflattenedValues
-) => {
-  const filteredData = filterOptimizedDataFormat(
-    unflattenedValues,
+  apiData,
+}) => {
+  const filteredData = filterOptimizedDataFormat({
     apiData,
-    apiData.metadata,
-    dataFilter
-  );
+    metadata,
+    filterFn: dataFilter,
+  });
   switch (mode) {
     case "counts":
       return generateCountChartData(filteredData);
