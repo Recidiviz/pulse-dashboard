@@ -8,7 +8,7 @@ const FILES_BY_METRIC_TYPE = {
     "revocations_matrix_distribution_by_race.txt",
     "revocations_matrix_distribution_by_risk_level.txt",
     "revocations_matrix_distribution_by_violation.txt",
-    "revocations_matrix_filtered_caseload.json",
+    "revocations_matrix_filtered_caseload.txt",
   ],
   communityGoals: [
     "admissions_by_type_by_month.txt",
