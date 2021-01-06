@@ -15,7 +15,13 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import { makeAutoObservable } from "mobx";
+import {
+  makeAutoObservable,
+  computed,
+  action,
+  autorun,
+  observable,
+} from "mobx";
 
 import {
   ADMISSION_TYPE,
@@ -29,36 +35,55 @@ import {
 } from "../constants/filterTypes";
 import filterOptionsMap from "../views/tenants/constants/filterOptions";
 
-const defaultFilters = (filterOptions) => {
-  return {
-    [METRIC_PERIOD_MONTHS]: filterOptions[METRIC_PERIOD_MONTHS].defaultValue,
-    [CHARGE_CATEGORY]: filterOptions[CHARGE_CATEGORY].defaultValue,
-    [REPORTED_VIOLATIONS]: filterOptions[REPORTED_VIOLATIONS].defaultValue,
-    [VIOLATION_TYPE]: filterOptions[VIOLATION_TYPE].defaultValue,
-    [SUPERVISION_TYPE]: filterOptions[SUPERVISION_TYPE].defaultValue,
-    [SUPERVISION_LEVEL]: filterOptions[SUPERVISION_LEVEL].defaultValue,
-    ...(filterOptions[ADMISSION_TYPE].filterEnabled
-      ? { [ADMISSION_TYPE]: filterOptions[ADMISSION_TYPE].defaultValue }
-      : {}),
-    [DISTRICT]: [filterOptions[DISTRICT].defaultValue],
-  };
-};
-
 export default class FiltersStore {
   rootStore;
 
-  filterOptions = {};
-
-  filters = {};
+  filters = {
+    metricPeriodMonths: "",
+    chargeCategory: "",
+    reportedViolation: "",
+    violationtype: "",
+    supervisionLevel: "",
+    admissionType: "",
+    district: "",
+  };
 
   restrictedDistrict = undefined;
 
-  constructor({ rootStore, stateCode }) {
-    makeAutoObservable(this);
+  constructor({ rootStore }) {
+    makeAutoObservable(this, {
+      defaultFilters: computed,
+      filterOptions: computed,
+      setFilters: action,
+      filters: observable,
+    });
 
     this.rootStore = rootStore;
-    this.filterOptions = filterOptionsMap[stateCode];
-    this.filters = defaultFilters(this.filterOptions);
+
+    autorun(() => {
+      this.setFilters(this.defaultFilters);
+    });
+  }
+
+  get defaultFilters() {
+    return {
+      [METRIC_PERIOD_MONTHS]: this.filterOptions[METRIC_PERIOD_MONTHS]
+        .defaultValue,
+      [CHARGE_CATEGORY]: this.filterOptions[CHARGE_CATEGORY].defaultValue,
+      [REPORTED_VIOLATIONS]: this.filterOptions[REPORTED_VIOLATIONS]
+        .defaultValue,
+      [VIOLATION_TYPE]: this.filterOptions[VIOLATION_TYPE].defaultValue,
+      [SUPERVISION_TYPE]: this.filterOptions[SUPERVISION_TYPE].defaultValue,
+      [SUPERVISION_LEVEL]: this.filterOptions[SUPERVISION_LEVEL].defaultValue,
+      ...(this.filterOptions[ADMISSION_TYPE].filterEnabled
+        ? { [ADMISSION_TYPE]: this.filterOptions[ADMISSION_TYPE].defaultValue }
+        : {}),
+      [DISTRICT]: [this.filterOptions[DISTRICT].defaultValue],
+    };
+  }
+
+  get filterOptions() {
+    return filterOptionsMap[this.rootStore.currentTenantId];
   }
 
   setFilters(newFilters) {

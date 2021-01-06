@@ -14,21 +14,15 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-import RootStore from "./RootStore";
+import RootStore from "../RootStore";
+import { useAuth0 } from "../../react-auth0-spa";
+import { METADATA_NAMESPACE } from "../../utils/authentication/user";
+import { LANTERN_TENANTS } from "../../views/tenants/utils/lanternTenants";
+
+jest.mock("../../react-auth0-spa");
 
 let rootStore;
-let stateCode;
-
-describe("RootStore", () => {
-  beforeEach(() => {
-    stateCode = "us_mo";
-    rootStore = new RootStore({ stateCode });
-  });
-
-  it("contains a FiltersStore", () => {
-    expect(rootStore.filtersStore).toBeDefined();
-  });
-});
+const metadataField = `${METADATA_NAMESPACE}app_metadata`;
 
 describe("FiltersStore", () => {
   const defaultFilters = {
@@ -43,8 +37,11 @@ describe("FiltersStore", () => {
 
   describe("filters", () => {
     it("are set correctly by default", () => {
-      ["us_mo", "us_pa"].forEach((stateCode) => {
-        rootStore = new RootStore({ stateCode });
+      LANTERN_TENANTS.forEach((stateCode) => {
+        const mockUser = { [metadataField]: { state_code: stateCode } };
+        useAuth0.mockReturnValue({ user: mockUser });
+        rootStore = new RootStore();
+
         expect(expect(rootStore.filtersStore.filters).toEqual(defaultFilters));
       });
     });
@@ -53,13 +50,15 @@ describe("FiltersStore", () => {
   describe("setRestrictedDistrict", () => {
     it("sets the restrictedDistrict and updates filters", () => {
       const restrictedDistrict = "district 1";
-      rootStore = new RootStore({ stateCode });
+      rootStore = new RootStore();
       rootStore.filtersStore.setRestrictedDistrict(restrictedDistrict);
+
       expect(
         expect(rootStore.filtersStore.restrictedDistrict).toEqual(
           restrictedDistrict
         )
       );
+
       expect(
         expect(rootStore.filtersStore.filters.district).toEqual([
           restrictedDistrict,

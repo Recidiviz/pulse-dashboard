@@ -14,37 +14,33 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-
-import React, { useContext } from "react";
-import PropTypes from "prop-types";
-
 import RootStore from "../RootStore";
+import { useAuth0 } from "../../react-auth0-spa";
+import { METADATA_NAMESPACE } from "../../utils/authentication/user";
 
-const StoreContext = React.createContext(undefined);
+let rootStore;
 
-const StoreProvider = ({ children }) => {
-  return (
-    <StoreContext.Provider value={new RootStore()}>
-      {children}
-    </StoreContext.Provider>
-  );
-};
+jest.mock("../../react-auth0-spa");
 
-StoreProvider.propTypes = {
-  children: PropTypes.node.isRequired,
-};
+const metadataField = `${METADATA_NAMESPACE}app_metadata`;
 
-export default StoreProvider;
+describe("RootStore", () => {
+  const mockUser = { [metadataField]: { state_code: "US_MO" } };
+  useAuth0.mockReturnValue({ user: mockUser });
 
-export function useRootStore() {
-  const context = useContext(StoreContext);
-  if (context === undefined) {
-    throw new Error("useStore must be used within a StoreProvider");
-  }
-  return context;
-}
+  beforeEach(() => {
+    rootStore = new RootStore();
+  });
 
-export function useFiltersStore() {
-  const { filtersStore } = useRootStore();
-  return filtersStore;
-}
+  it("contains a FiltersStore", () => {
+    expect(rootStore.filtersStore).toBeDefined();
+  });
+
+  it("contains a TenantStore", () => {
+    expect(rootStore.tenantStore).toBeDefined();
+  });
+
+  it("contains a currentTenantId", () => {
+    expect(rootStore.currentTenantId).toBeDefined();
+  });
+});
