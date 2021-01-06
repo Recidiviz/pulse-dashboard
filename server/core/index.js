@@ -30,8 +30,7 @@ const { default: refreshRedisCache } = require("./refreshRedisCache");
 const { default: fetchMetricsFromLocal } = require("./fetchMetricsFromLocal");
 const { default: fetchMetricsFromGCS } = require("./fetchMetricsFromGCS");
 const { default: getFilesByMetricType } = require("./getFilesByMetricType");
-const { cacheInRedis } = require("./redisCache");
-const { cacheInMemory } = require("./memoryCache");
+const { cacheResponse } = require("./cacheManager");
 
 module.exports = {
   fetchMetrics,
@@ -39,6 +38,5 @@ module.exports = {
   fetchMetricsFromGCS,
   getFilesByMetricType,
   refreshRedisCache,
-  cacheInMemory,
-  cacheInRedis,
+  cacheResponse,
 };

@@ -25,16 +25,17 @@
  */
 
 /* eslint-disable no-console */
-const { redisCache } = require("./redisCache");
+const { getCache } = require("./cacheManager");
 
 function cacheEachFile(files, cacheKeyPrefix) {
+  const cache = getCache(cacheKeyPrefix);
   const cachePromises = [];
 
   Object.keys(files).forEach((fileKey) => {
     const cacheKey = `${cacheKeyPrefix}-${fileKey}`;
     const metricFile = { [fileKey]: files[fileKey] };
     console.log(`Setting cache for: ${cacheKey}...`);
-    cachePromises.push(redisCache.set(cacheKey, metricFile));
+    cachePromises.push(cache.set(cacheKey, metricFile));
   });
 
   return cachePromises;

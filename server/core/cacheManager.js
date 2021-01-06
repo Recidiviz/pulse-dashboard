@@ -15,9 +15,10 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 /**
- * Creates the redis caching manager and client and provides the helper function `cacheInRedis`.
+ * Creates the redis and memory caching managers and the redis client and
+ * provides the helper function `cacheResponse` which takes an argument to determine which caching service to use.
  *
- * The function `cacheInRedis`  wraps fetches and caches the values returned.
+ * The function `cacheResponse`  wraps fetches and caches the values returned.
  * The `wrap` helper from cache-manager first checks the cache to see if the metrics with the given key
  * are already in cache. If it is not in cache, it calls the fetch function and invokes the callback only
  * once all files have been retrieved and cached.
@@ -28,15 +29,21 @@
 const cacheManager = require("cache-manager");
 const redisStore = require("cache-manager-ioredis");
 const Redis = require("ioredis");
+const { default: isDemoMode } = require("../utils/isDemoMode");
 
 const REDISHOST = process.env.REDISHOST || "localhost";
 const REDISPORT = process.env.REDISPORT || 6379;
 const REDISAUTH = process.env.REDISAUTH || "";
 
-// Expire items in cache after 1 day
+// Expire items in the redis cache after 1 day
 const REDIS_CACHE_TTL_SECONDS = 60 * 60 * 24;
-// Set refresh threshold to 1 hour
 const REDIS_CACHE_REFRESH_THRESHOLD = 60 * 60;
+
+// Expire items in the memory cache after 1 hour
+const MEMORY_CACHE_TTL_SECONDS = 60 * 60;
+const MEMORY_REFRESH_SECONDS = 60 * 10;
+
+const testEnv = process.env.NODE_ENV === "test";
 
 const redisInstance = new Redis({
   host: REDISHOST,
@@ -46,32 +53,56 @@ const redisInstance = new Redis({
   db: 0,
 });
 
+const memoryCache = cacheManager.caching({
+  store: isDemoMode ? "none" : "memory",
+  ttl: MEMORY_CACHE_TTL_SECONDS,
+  refreshThreshold: MEMORY_REFRESH_SECONDS,
+});
+
 const redisCache = cacheManager.caching({
   store: redisStore,
   refreshThreshold: REDIS_CACHE_REFRESH_THRESHOLD,
   redisInstance,
 });
 
-const redisClient = redisCache.store.getClient();
-redisClient.on("error", (error) => {
-  console.error("ERR:REDIS:", error);
-});
+if (!testEnv) {
+  const redisClient = redisCache.store.getClient();
+  redisClient.on("error", (error) => {
+    console.error("ERR:REDIS:", error);
+  });
+}
 
-function cacheInRedis(cacheKey, fetchValue, callback) {
-  redisCache.wrap(
-    cacheKey,
-    (cacheCb) => {
-      fetchValue()
-        .then((value) => {
-          cacheCb(null, value);
-        })
-        .catch((err) => {
-          console.error(err);
-          cacheCb(err, null);
-        });
+function getCache(cacheKey) {
+  if (testEnv || isDemoMode) {
+    return memoryCache;
+  }
+
+  if (cacheKey.includes("-newRevocation")) {
+    return redisCache;
+  }
+
+  return memoryCache;
+}
+
+function clearMemoryCache() {
+  memoryCache.reset();
+}
+
+function cacheResponse(cacheKey, fetchValue, callback) {
+  const cache = getCache(cacheKey);
+
+  return cache.wrap(cacheKey, fetchValue).then(
+    (result) => {
+      callback(null, result);
     },
-    callback
+    (err) => {
+      callback(err, null);
+    }
   );
 }
 
-module.exports = { cacheInRedis, redisCache };
+module.exports = {
+  cacheResponse,
+  getCache,
+  clearMemoryCache,
+};
