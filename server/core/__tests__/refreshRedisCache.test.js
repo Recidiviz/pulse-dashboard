@@ -15,13 +15,14 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 const { default: refreshRedisCache } = require("../refreshRedisCache");
-const { redisCache } = require("../redisCache");
 
-jest.mock("../redisCache", () => {
+const mockCache = {
+  set: jest.fn(() => Promise.resolve(true)),
+};
+
+jest.mock("../cacheManager", () => {
   return {
-    redisCache: {
-      set: jest.fn(() => Promise.resolve(true)),
-    },
+    getCache: () => mockCache,
   };
 });
 
@@ -47,7 +48,7 @@ describe("refreshRedisCache", () => {
     jest.clearAllMocks();
   });
 
-  it("calls redisCache with the correct key and value", (done) => {
+  it("calls the cache with the correct key and value", (done) => {
     const cachekey = `${stateCode}-${metricType}-${fileName}`;
 
     refreshRedisCache(mockFetchValue, stateCode, metricType, (err, result) => {
@@ -55,9 +56,8 @@ describe("refreshRedisCache", () => {
       expect(result).toEqual("OK");
 
       expect(mockFetchValue).toHaveBeenCalledTimes(1);
-
-      expect(redisCache.set).toHaveBeenCalledTimes(1);
-      expect(redisCache.set).toHaveBeenCalledWith(cachekey, {
+      expect(mockCache.set).toHaveBeenCalledTimes(1);
+      expect(mockCache.set).toHaveBeenCalledWith(cachekey, {
         [fileName]: fileContents,
       });
       done();
@@ -66,12 +66,12 @@ describe("refreshRedisCache", () => {
 
   it("returns a responds with an error when caching fails", (done) => {
     const error = new Error("Error setting cache value");
-    redisCache.set.mockImplementation(() => {
+    mockCache.set.mockImplementation(() => {
       throw error;
     });
 
     refreshRedisCache(mockFetchValue, stateCode, metricType, (err) => {
-      expect(redisCache.set).toHaveBeenCalledTimes(1);
+      expect(mockCache.set).toHaveBeenCalledTimes(1);
       expect(err).toEqual(error);
       done();
     });

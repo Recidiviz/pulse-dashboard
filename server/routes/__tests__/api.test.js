@@ -35,8 +35,7 @@ const {
   responder,
 } = require("../api");
 
-const { redisCache, clearRedisCache } = require("../../core/redisCache");
-const { clearMemoryCache } = require("../../core/memoryCache");
+const { clearMemoryCache } = require("../../core/cacheManager");
 
 describe("API tests", () => {
   const stateCode = "test_id";
@@ -52,33 +51,33 @@ describe("API tests", () => {
     jest.restoreAllMocks();
   });
 
+  function fakeRequest(routeHandler, req = { params: { stateCode } }) {
+    return new Promise((resolve) => {
+      const send = resolve;
+      const status = jest.fn().mockImplementation(() => {
+        return { send };
+      });
+      const res = { send, status };
+      routeHandler(req, res);
+    });
+  }
+
   describe("API fetching and caching", () => {
     const metricControllers = [
-      [newRevocations, "redis", clearRedisCache],
-      [newRevocationFile, "redis", clearRedisCache],
-      [communityGoals, "memory", clearMemoryCache],
-      [communityExplore, "memory", clearMemoryCache],
-      [facilitiesGoals, "memory", clearMemoryCache],
-      [facilitiesExplore, "memory", clearMemoryCache],
-      [programmingExplore, "memory", clearMemoryCache],
+      [newRevocations],
+      [newRevocationFile],
+      [communityGoals],
+      [communityExplore],
+      [facilitiesGoals],
+      [facilitiesExplore],
+      [programmingExplore],
     ];
 
     afterEach(async () => {
       await clearMemoryCache();
-      await clearRedisCache();
       fetchMetrics.mockClear();
+      jest.resetModules();
     });
-
-    function fakeRequest(routeHandler, req = { params: { stateCode } }) {
-      return new Promise((resolve) => {
-        const send = resolve;
-        const status = jest.fn().mockImplementation(() => {
-          return { send };
-        });
-        const res = { send, status };
-        routeHandler(req, res);
-      });
-    }
 
     async function requestAndExpectFetchMetricsCalled(controllerFn, numCalls) {
       await fakeRequest(controllerFn);
@@ -86,14 +85,15 @@ describe("API tests", () => {
       fetchMetrics.mockClear();
     }
 
+    metricControllers.forEach(() => {});
     test.each(metricControllers)(
-      "%p fetches metrics only if data is not cached in %s store",
-      async (controllerFn, _source, clearCache, done) => {
+      "%p fetches metrics only if data is not cached in store",
+      async (controllerFn, done) => {
         await requestAndExpectFetchMetricsCalled(controllerFn, 1);
 
         await requestAndExpectFetchMetricsCalled(controllerFn, 0);
 
-        await clearCache();
+        await clearMemoryCache();
 
         await requestAndExpectFetchMetricsCalled(controllerFn, 1);
         await requestAndExpectFetchMetricsCalled(controllerFn, 0);
@@ -104,15 +104,12 @@ describe("API tests", () => {
 
     it("newRevocations - calls fetchMetrics with the correct args", async () => {
       await fakeRequest(newRevocations);
-
       expect(fetchMetrics).toHaveBeenCalledWith(
         stateCode,
         "newRevocation",
         null,
         false
       );
-
-      await clearRedisCache();
     });
 
     it("newRevocationFile - calls fetchMetrics with the correct args", async () => {
@@ -128,7 +125,6 @@ describe("API tests", () => {
     });
 
     it("refreshCache - calls fetchMetrics with the correct args", async () => {
-      const redisCacheSpy = jest.spyOn(redisCache, "set");
       await fakeRequest(refreshCache);
 
       expect(fetchMetrics).toHaveBeenCalledWith(
@@ -136,18 +132,6 @@ describe("API tests", () => {
         "newRevocation",
         null,
         false
-      );
-
-      expect(redisCacheSpy).nthCalledWith(
-        1,
-        `${stateCode.toUpperCase()}-newRevocation-file_1`,
-        { file_1: "content_1" }
-      );
-
-      expect(redisCacheSpy).nthCalledWith(
-        2,
-        `${stateCode.toUpperCase()}-newRevocation-file_2`,
-        { file_2: "content_2" }
       );
     });
   });
