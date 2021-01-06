@@ -15,29 +15,10 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import * as lantern from "./views/tenants/utils/lanternTenants";
-import * as core from "./views/tenants/utils/coreTenants";
-
 export default {
   // prettier-ignore
-  [lantern.US_MO]: {
-    name: "Missouri",
-    availableStateCodes: [lantern.US_MO],
-  },
-  [core.US_ND]: {
-    name: "North Dakota",
-    availableStateCodes: [core.US_ND],
-  },
-  [lantern.US_PA]: {
-    name: "Pennsylvania",
-    availableStateCodes: [lantern.US_PA],
-  },
-  RECIDIVIZ: {
-    name: "Recidiviz",
-    availableStateCodes: lantern.LANTERN_TENANTS.concat(core.CORE_TENANTS),
-  },
-  LANTERN: {
-    name: "Lantern",
-    availableStateCodes: lantern.LANTERN_TENANTS,
+  "TEST_TENANT": {
+    name: "Test",
+    availableStateCodes: ["TEST_TENANT"],
   },
 };

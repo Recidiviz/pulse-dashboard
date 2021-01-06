@@ -25,12 +25,11 @@ export const METADATA_NAMESPACE = "https://dashboard.recidiviz.org/";
 export function getUserAppMetadata(user) {
   const appMetadataKey = `${METADATA_NAMESPACE}app_metadata`;
   return user[appMetadataKey];
-  // return { state_code: "us_mo", district: "01", region: "Western Region" }
 }
 
 /**
  * Returns the human-readable state name for the given state code,
- * e.g. getStateNameForCode('us_nd') = 'North Dakota'
+ * e.g. getStateNameForCode('US_ND') = 'North Dakota'
  */
 export function getStateNameForCode(stateCode) {
   return tenants[stateCode].name;
@@ -48,7 +47,7 @@ export function getUserStateCode(user) {
 
   const stateCode = appMetadata.state_code;
   if (stateCode) {
-    return stateCode.toLowerCase();
+    return stateCode.toUpperCase();
   }
   throw Error("No state code set for user");
 }
@@ -66,7 +65,7 @@ export function getUserStateName(user) {
  */
 export function getAvailableStateCodes(user) {
   const stateCode = getUserStateCode(user);
-  return tenants[stateCode].availableStateCodes;
+  return tenants[stateCode.toUpperCase()].availableStateCodes;
 }
 
 /**

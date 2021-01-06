@@ -18,6 +18,7 @@
 import React from "react";
 import cn from "classnames";
 import PropTypes from "prop-types";
+import { observer } from "mobx-react-lite";
 
 import DataSignificanceWarningIcon from "../../DataSignificanceWarningIcon";
 import ExportMenu from "../../ExportMenu";
@@ -99,4 +100,4 @@ RevocationsByDimensionComponent.propTypes = {
   dataExportLabel: PropTypes.string,
 };
 
-export default RevocationsByDimensionComponent;
+export default observer(RevocationsByDimensionComponent);

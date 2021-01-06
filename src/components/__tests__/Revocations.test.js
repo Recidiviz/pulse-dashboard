@@ -28,11 +28,10 @@ import Matrix from "../charts/new_revocations/Matrix";
 import RevocationCharts from "../charts/new_revocations/RevocationCharts";
 import CaseTable from "../charts/new_revocations/CaseTable/CaseTable";
 import { useAuth0 } from "../../react-auth0-spa";
-import { useStateCode } from "../../contexts/StateCodeContext";
-import { getUserAppMetadata } from "../../utils/authentication/user";
+import { METADATA_NAMESPACE } from "../../utils/authentication/user";
 import { setTranslateLocale } from "../../views/tenants/utils/i18nSettings";
 
-import { MO } from "../../views/tenants/utils/lanternTenants";
+import { US_MO } from "../../views/tenants/utils/lanternTenants";
 import mockWithTestId from "../../../__helpers__/mockWithTestId";
 import filterOptionsMap from "../../views/tenants/constants/filterOptions";
 import {
@@ -48,8 +47,7 @@ import {
 import StoreProvider from "../../StoreProvider";
 
 jest.mock("../../react-auth0-spa");
-jest.mock("../../contexts/StateCodeContext");
-jest.mock("../../utils/authentication/user");
+// jest.mock("../../utils/authentication/user");
 jest.mock("../charts/new_revocations/ToggleBar/ToggleBarFilter");
 jest.mock("../charts/new_revocations/ToggleBar/DistrictFilter");
 jest.mock("../charts/new_revocations/ToggleBar/AdmissionTypeFilter");
@@ -59,10 +57,13 @@ jest.mock("../charts/new_revocations/Matrix");
 jest.mock("../charts/new_revocations/RevocationCharts");
 jest.mock("../charts/new_revocations/CaseTable/CaseTable");
 jest.mock("../../views/tenants/constants/filterOptions");
+jest.mock("../../tenants");
+
 describe("Revocations component tests", () => {
-  const mockUser = {};
+  const metadataField = `${METADATA_NAMESPACE}app_metadata`;
+  const mockTenantId = "TEST_TENANT";
+  const mockUser = { [metadataField]: { state_code: mockTenantId } };
   const mockDistrict = "some district";
-  const mockStateCode = "test_state";
   const toggleBarIdPrefix = "toggle-bar-";
   const districtFilterId = "district-filter";
   const admissionTypeFilterId = "admission-type-filter";
@@ -72,30 +73,33 @@ describe("Revocations component tests", () => {
   const revocationChartsId = "revocation-charts";
   const caseTableId = "case-table";
 
+  const DistrictFilterMock = DistrictFilter.type;
+  const RevocationCountOverTimeMock = RevocationCountOverTime.type;
+  const MatrixMock = Matrix.type;
+  const CaseTableMock = CaseTable.type;
+
   useAuth0.mockReturnValue({ user: mockUser });
   ToggleBarFilter.mockImplementation(({ label }) =>
     mockWithTestId(`${toggleBarIdPrefix}${label}`)
   );
-  DistrictFilter.mockReturnValue(mockWithTestId(districtFilterId));
+  DistrictFilterMock.mockReturnValue(mockWithTestId(districtFilterId));
   AdmissionTypeFilter.mockReturnValue(mockWithTestId(admissionTypeFilterId));
   ViolationFilter.mockReturnValue(mockWithTestId(violationFilterId));
-  RevocationCountOverTime.type.mockReturnValue(
+  RevocationCountOverTimeMock.mockReturnValue(
     mockWithTestId(revocationCountOverTimeId)
   );
-  Matrix.mockReturnValue(mockWithTestId(revocationMatrixId));
+  MatrixMock.mockReturnValue(mockWithTestId(revocationMatrixId));
   RevocationCharts.mockReturnValue(mockWithTestId(revocationChartsId));
-  CaseTable.mockReturnValue(mockWithTestId(caseTableId));
-  useStateCode.mockReturnValue({ currentStateCode: mockStateCode });
-  setTranslateLocale(MO);
+  CaseTableMock.mockReturnValue(mockWithTestId(caseTableId));
+  setTranslateLocale(US_MO);
 
   beforeEach(() => {
     jest.clearAllMocks();
-    getUserAppMetadata.mockReturnValue({ district: undefined });
   });
 
   it("should render Revocations component with proper filters and charts", () => {
     const { getByTestId } = render(
-      <StoreProvider stateCode={mockStateCode}>
+      <StoreProvider>
         <Revocations />
       </StoreProvider>
     );
@@ -119,12 +123,12 @@ describe("Revocations component tests", () => {
   });
 
   it("should not render supervision type and supervision level if they are not enabled", () => {
-    filterOptionsMap[mockStateCode][SUPERVISION_LEVEL].componentEnabled = false;
-    filterOptionsMap[mockStateCode][SUPERVISION_TYPE].componentEnabled = false;
-    filterOptionsMap[mockStateCode][ADMISSION_TYPE].componentEnabled = false;
-    filterOptionsMap[mockStateCode][ADMISSION_TYPE].filterEnabled = false;
+    filterOptionsMap[mockTenantId][SUPERVISION_LEVEL].componentEnabled = false;
+    filterOptionsMap[mockTenantId][SUPERVISION_TYPE].componentEnabled = false;
+    filterOptionsMap[mockTenantId][ADMISSION_TYPE].componentEnabled = false;
+    filterOptionsMap[mockTenantId][ADMISSION_TYPE].filterEnabled = false;
     const { queryByTestId } = render(
-      <StoreProvider stateCode={mockStateCode}>
+      <StoreProvider>
         <Revocations />
       </StoreProvider>
     );
@@ -135,12 +139,12 @@ describe("Revocations component tests", () => {
   });
 
   it("should pass correct defaultValues to filters", () => {
-    filterOptionsMap[mockStateCode][SUPERVISION_LEVEL].componentEnabled = true;
-    filterOptionsMap[mockStateCode][SUPERVISION_TYPE].componentEnabled = true;
-    filterOptionsMap[mockStateCode][ADMISSION_TYPE].componentEnabled = true;
-    filterOptionsMap[mockStateCode][ADMISSION_TYPE].filterEnabled = true;
+    filterOptionsMap[mockTenantId][SUPERVISION_LEVEL].componentEnabled = true;
+    filterOptionsMap[mockTenantId][SUPERVISION_TYPE].componentEnabled = true;
+    filterOptionsMap[mockTenantId][ADMISSION_TYPE].componentEnabled = true;
+    filterOptionsMap[mockTenantId][ADMISSION_TYPE].filterEnabled = true;
     render(
-      <StoreProvider stateCode={mockStateCode}>
+      <StoreProvider>
         <Revocations />
       </StoreProvider>
     );
@@ -158,7 +162,7 @@ describe("Revocations component tests", () => {
       (call) => call[0].label === "Supervision Level"
     );
 
-    const filterOptions = filterOptionsMap[mockStateCode];
+    const filterOptions = filterOptionsMap[mockTenantId];
 
     expect(timePeriodFilterMocks[0][0].value).toBe(
       filterOptions[METRIC_PERIOD_MONTHS].defaultValue
@@ -172,7 +176,7 @@ describe("Revocations component tests", () => {
     expect(supervisionLevelFilterMocks[0][0].value).toBe(
       filterOptions[SUPERVISION_LEVEL].defaultValue
     );
-    expect(DistrictFilter.mock.calls[0][0].value).toEqual([
+    expect(DistrictFilterMock.mock.calls[0][0].value).toEqual([
       filterOptions[DISTRICT].defaultValue,
     ]);
     expect(AdmissionTypeFilter.mock.calls[0][0].value).toEqual(
@@ -184,31 +188,35 @@ describe("Revocations component tests", () => {
   });
 
   it("should set user district as default filter value if it is defined", () => {
-    getUserAppMetadata.mockReturnValue({ district: mockDistrict });
-
+    const mockUserWithDistrict = {
+      [metadataField]: { state_code: mockTenantId, district: mockDistrict },
+    };
+    useAuth0.mockReturnValue({ user: mockUserWithDistrict });
     render(
-      <StoreProvider stateCode={mockStateCode}>
+      <StoreProvider>
         <Revocations />
       </StoreProvider>
     );
 
-    expect(DistrictFilter.mock.calls[1][0].value).toEqual([mockDistrict]);
+    expect(DistrictFilterMock.mock.calls[1][0].value).toEqual([mockDistrict]);
   });
 
   it("should change filter value when onChange is called", () => {
     const mockNewDistrictValue = ["some new value"];
     render(
-      <StoreProvider stateCode={mockStateCode}>
+      <StoreProvider>
         <Revocations />
       </StoreProvider>
     );
 
     act(() => {
-      DistrictFilter.mock.calls[0][0].onChange(mockNewDistrictValue);
+      DistrictFilterMock.mock.calls[0][0].onChange(mockNewDistrictValue);
     });
 
-    expect(DistrictFilter).toHaveBeenCalledTimes(2);
-    expect(DistrictFilter.mock.calls[1][0].value).toEqual(mockNewDistrictValue);
+    expect(DistrictFilterMock).toHaveBeenCalledTimes(3);
+    expect(DistrictFilterMock.mock.calls[2][0].value).toEqual(
+      mockNewDistrictValue
+    );
   });
 
   it("should update filter values when updateFilters is called", () => {
@@ -216,7 +224,7 @@ describe("Revocations component tests", () => {
     const mockNewReportedViolationsValue = "some new value 1";
 
     render(
-      <StoreProvider stateCode={mockStateCode}>
+      <StoreProvider>
         <Revocations />
       </StoreProvider>
     );
@@ -228,10 +236,10 @@ describe("Revocations component tests", () => {
       });
     });
 
-    expect(ViolationFilter.mock.calls[1][0].violationType).toBe(
+    expect(ViolationFilter.mock.calls[2][0].violationType).toBe(
       mockNewViolationTypeValue
     );
-    expect(ViolationFilter.mock.calls[1][0].reportedViolations).toBe(
+    expect(ViolationFilter.mock.calls[2][0].reportedViolations).toBe(
       mockNewReportedViolationsValue
     );
   });

@@ -17,6 +17,7 @@
 
 import React, { useState, useMemo } from "react";
 import PropTypes from "prop-types";
+import { observer } from "mobx-react-lite";
 
 import CaseTableComponent from "./CaseTableComponent";
 import useSort from "./useSort";
@@ -31,20 +32,17 @@ import { filtersPropTypes } from "../../propTypes";
 import useChartData from "../../../../hooks/useChartData";
 import { translate } from "../../../../views/tenants/utils/i18nSettings";
 import { formatData, formatExportData } from "./utils/helpers";
+import { useRootStore } from "../../../../StoreProvider";
 
 export const CASES_PER_PAGE = 15;
 
-const CaseTable = ({
-  dataFilter,
-  filterStates,
-  metricPeriodMonths,
-  stateCode,
-}) => {
+const CaseTable = ({ dataFilter, filterStates, metricPeriodMonths }) => {
+  const { currentTenantId } = useRootStore();
   const [page, setPage] = useState(0);
   const { sortOrder, toggleOrder, comparator } = useSort();
 
   const { isLoading, isError, apiData } = useChartData(
-    `${stateCode}/newRevocations`,
+    `${currentTenantId}/newRevocations`,
     "revocations_matrix_filtered_caseload"
   );
 
@@ -138,7 +136,6 @@ CaseTable.propTypes = {
   dataFilter: PropTypes.func.isRequired,
   filterStates: filtersPropTypes.isRequired,
   metricPeriodMonths: metricPeriodMonthsType.isRequired,
-  stateCode: PropTypes.string.isRequired,
 };
 
-export default CaseTable;
+export default observer(CaseTable);

@@ -18,6 +18,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Helmet } from "react-helmet";
+import { observer } from "mobx-react-lite";
 
 import TopBar from "../topbar/TopBar";
 import TopBarLogo from "../topbar/TopBarLogo";
@@ -26,13 +27,15 @@ import Footer from "../Footer";
 import usePageLayout from "../../hooks/usePageLayout";
 import useIntercom from "../../hooks/useIntercom";
 import { setTranslateLocale } from "../../views/tenants/utils/i18nSettings";
+import { useRootStore } from "../../StoreProvider";
 
 import "./LanternLayout.scss";
 
-const LanternLayout = ({ stateCode, children }) => {
+const LanternLayout = ({ children }) => {
+  const { currentTenantId } = useRootStore();
   useIntercom();
   usePageLayout();
-  setTranslateLocale(stateCode);
+  setTranslateLocale(currentTenantId);
 
   return (
     <div className="LanternLayout" id="app">
@@ -58,7 +61,6 @@ const LanternLayout = ({ stateCode, children }) => {
 
 LanternLayout.propTypes = {
   children: PropTypes.node.isRequired,
-  stateCode: PropTypes.string.isRequired,
 };
 
-export default LanternLayout;
+export default observer(LanternLayout);

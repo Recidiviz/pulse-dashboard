@@ -18,6 +18,7 @@
 import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 import { Line } from "react-chartjs-2";
+import { observer } from "mobx-react-lite";
 
 import map from "lodash/fp/map";
 import pipe from "lodash/fp/pipe";
@@ -253,4 +254,4 @@ RevocationCountOverTime.propTypes = {
   disableGoal: PropTypes.bool,
 };
 
-export default RevocationCountOverTime;
+export default observer(RevocationCountOverTime);

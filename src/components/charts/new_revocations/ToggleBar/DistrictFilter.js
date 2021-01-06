@@ -16,6 +16,7 @@
 // =============================================================================
 import React, { useMemo } from "react";
 import PropTypes from "prop-types";
+import { observer } from "mobx-react-lite";
 
 import filter from "lodash/fp/filter";
 import identity from "lodash/fp/identity";
@@ -30,13 +31,15 @@ import useChartData from "../../../../hooks/useChartData";
 import { useAuth0 } from "../../../../react-auth0-spa";
 import { getUserAppMetadata } from "../../../../utils/authentication/user";
 import MultiSelect from "../../../controls/MultiSelect";
+import { useRootStore } from "../../../../StoreProvider";
 
 const allDistrictsOption = { label: "All", value: "All" };
 
-const DistrictFilter = ({ value, stateCode, onChange }) => {
+const DistrictFilter = ({ value, onChange }) => {
+  const { currentTenantId } = useRootStore();
   const { user } = useAuth0();
   const { isLoading, apiData } = useChartData(
-    `${stateCode}/newRevocations`,
+    `${currentTenantId}/newRevocations`,
     "revocations_matrix_cells"
   );
 
@@ -93,8 +96,7 @@ const DistrictFilter = ({ value, stateCode, onChange }) => {
 
 DistrictFilter.propTypes = {
   value: PropTypes.arrayOf(PropTypes.string).isRequired,
-  stateCode: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
 };
 
-export default DistrictFilter;
+export default observer(DistrictFilter);

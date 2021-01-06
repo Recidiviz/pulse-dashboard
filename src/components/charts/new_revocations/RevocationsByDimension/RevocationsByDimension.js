@@ -17,6 +17,7 @@
 
 import React, { useState } from "react";
 import PropTypes from "prop-types";
+import { observer } from "mobx-react-lite";
 
 import ModeSwitcher from "../ModeSwitcher";
 import RevocationsByDimensionComponent from "./RevocationsByDimensionComponent";
@@ -129,4 +130,4 @@ RevocationsByDimension.propTypes = {
   includeWarning: PropTypes.bool,
 };
 
-export default RevocationsByDimension;
+export default observer(RevocationsByDimension);

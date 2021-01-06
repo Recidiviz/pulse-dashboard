@@ -16,7 +16,6 @@
 // =============================================================================
 
 import React from "react";
-import PropTypes from "prop-types";
 import { Bar, Line } from "react-chartjs-2";
 import { observer } from "mobx-react-lite";
 
@@ -48,12 +47,13 @@ import { useRootStore } from "../../../StoreProvider";
 import { METRIC_PERIOD_MONTHS } from "../../../constants/filterTypes";
 import { matchesAllFilters } from "./helpers";
 
-const RevocationsOverTime = ({ stateCode }) => {
-  const { filters } = useRootStore();
+const RevocationsOverTime = () => {
+  const { filters, currentTenantId } = useRootStore();
+
   const chartId = `revocationsOverTime`;
 
   const { isLoading, isError, apiData, unflattenedValues } = useChartData(
-    `${stateCode}/newRevocations`,
+    `${currentTenantId}/newRevocations`,
     "revocations_matrix_by_month",
     false
   );
@@ -212,10 +212,6 @@ const RevocationsOverTime = ({ stateCode }) => {
       dataExportLabel="Month"
     />
   );
-};
-
-RevocationsOverTime.propTypes = {
-  stateCode: PropTypes.string.isRequired,
 };
 
 export default observer(RevocationsOverTime);

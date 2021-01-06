@@ -1,3 +1,20 @@
+// Recidiviz - a data platform for criminal justice reform
+// Copyright (C) 2020 Recidiviz, Inc.
+//
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <https://www.gnu.org/licenses/>.
+// =============================================================================
+
 import {
   ADMISSION_TYPE,
   CHARGE_CATEGORY,
@@ -10,7 +27,7 @@ import {
   LEVEL_1_SUPERVISION_LOCATION,
   LEVEL_2_SUPERVISION_LOCATION,
 } from "../../../constants/filterTypes";
-import { MO, PA } from "../utils/lanternTenants";
+import { US_MO, US_PA } from "../utils/lanternTenants";
 
 const METRIC_PERIODS = {
   options: [
@@ -214,6 +231,6 @@ const PAFilterOptions = {
 };
 
 export default {
-  [MO]: MOFilterOptions,
-  [PA]: PAFilterOptions,
+  [US_MO]: MOFilterOptions,
+  [US_PA]: PAFilterOptions,
 };

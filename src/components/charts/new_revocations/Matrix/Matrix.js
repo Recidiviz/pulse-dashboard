@@ -20,6 +20,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import cx from "classnames";
+import { observer } from "mobx-react-lite";
 
 import filter from "lodash/fp/filter";
 import get from "lodash/fp/get";
@@ -48,6 +49,7 @@ import {
 import { filterOptimizedDataFormat } from "../../../../utils/charts/dataFilters";
 import { filtersPropTypes } from "../../propTypes";
 import { translate } from "../../../../views/tenants/utils/i18nSettings";
+import { useRootStore } from "../../../../StoreProvider";
 import "./Matrix.scss";
 
 const TITLE =
@@ -59,15 +61,16 @@ const sumByInteger = (field) => sumBy(getInteger(field));
 const sumRow = pipe(values, sum);
 
 const Matrix = ({
-  stateCode,
   dataFilter,
   filterStates,
   timeDescription,
   updateFilters,
   violationTypes,
 }) => {
+  const { currentTenantId } = useRootStore();
+
   const { apiData, isLoading, isError, unflattenedValues } = useChartData(
-    `${stateCode}/newRevocations`,
+    `${currentTenantId}/newRevocations`,
     "revocations_matrix_cells",
     false
   );
@@ -244,10 +247,9 @@ const Matrix = ({
 Matrix.propTypes = {
   dataFilter: PropTypes.func.isRequired,
   filterStates: filtersPropTypes.isRequired,
-  stateCode: PropTypes.string.isRequired,
   timeDescription: PropTypes.string.isRequired,
   updateFilters: PropTypes.func.isRequired,
   violationTypes: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
-export default Matrix;
+export default observer(Matrix);

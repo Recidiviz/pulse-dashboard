@@ -15,7 +15,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-export const PA_METHODOLOGY = {
+export const US_PA_METHODOLOGY = {
   revocationsOverTime: [
     {
       header: "What this chart shows",
@@ -142,4 +142,4 @@ export const PA_METHODOLOGY = {
   ],
 };
 
-export default { PA_METHODOLOGY };
+export default { US_PA_METHODOLOGY };
