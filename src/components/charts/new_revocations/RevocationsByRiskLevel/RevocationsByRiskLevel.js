@@ -20,7 +20,6 @@ import PropTypes from "prop-types";
 import { observer } from "mobx-react-lite";
 
 import flags from "../../../../flags";
-import { filtersPropTypes } from "../../propTypes";
 import getLabelByMode from "../utils/getLabelByMode";
 import createGenerateChartData from "./createGenerateChartData";
 import RevocationsByDimension from "../RevocationsByDimension";
@@ -28,13 +27,8 @@ import BarChartWithLabels from "../BarChartWithLabels";
 import { translate } from "../../../../views/tenants/utils/i18nSettings";
 import { useRootStore } from "../../../../StoreProvider";
 
-const RevocationsByRiskLevel = ({
-  dataFilter,
-  filterStates,
-  timeDescription,
-}) => {
+const RevocationsByRiskLevel = ({ dataFilter, timeDescription }) => {
   const { currentTenantId } = useRootStore();
-
   return (
     <RevocationsByDimension
       chartId={`${translate("revocations")}ByRiskLevel`}
@@ -53,7 +47,6 @@ const RevocationsByRiskLevel = ({
       generateChartData={createGenerateChartData(dataFilter)}
       chartTitle="Admissions by risk level"
       metricTitle={(mode) => `${getLabelByMode(mode)} by risk level`}
-      filterStates={filterStates}
       timeDescription={timeDescription}
       modes={flags.enableRevocationRateByExit ? ["rates", "exits"] : []}
       defaultMode="rates"
@@ -64,7 +57,6 @@ const RevocationsByRiskLevel = ({
 
 RevocationsByRiskLevel.propTypes = {
   dataFilter: PropTypes.func.isRequired,
-  filterStates: filtersPropTypes.isRequired,
   timeDescription: PropTypes.string.isRequired,
 };
 

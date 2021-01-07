@@ -47,7 +47,6 @@ import {
   violationCountLabel,
 } from "../../../../utils/transforms/labels";
 import { filterOptimizedDataFormat } from "../../../../utils/charts/dataFilters";
-import { filtersPropTypes } from "../../propTypes";
 import { translate } from "../../../../views/tenants/utils/i18nSettings";
 import { useRootStore } from "../../../../StoreProvider";
 import "./Matrix.scss";
@@ -62,12 +61,11 @@ const sumRow = pipe(values, sum);
 
 const Matrix = ({
   dataFilter,
-  filterStates,
   timeDescription,
   updateFilters,
   violationTypes,
 }) => {
-  const { currentTenantId } = useRootStore();
+  const { filters, currentTenantId } = useRootStore();
 
   const { apiData, isLoading, isError, unflattenedValues } = useChartData(
     `${currentTenantId}/newRevocations`,
@@ -83,8 +81,7 @@ const Matrix = ({
     return <Error />;
   }
 
-  const isFiltered =
-    filterStates.violationType || filterStates.reportedViolations;
+  const isFiltered = filters.violationType || filters.reportedViolations;
 
   const filteredData = pipe(
     (metricFile) =>
@@ -130,8 +127,8 @@ const Matrix = ({
   );
 
   const isSelected = (violationType, reportedViolations) =>
-    filterStates.violationType === violationType &&
-    filterStates.reportedViolations === reportedViolations;
+    filters.violationType === violationType &&
+    filters.reportedViolations === reportedViolations;
 
   const toggleFilter = (violationType, reportedViolations) => {
     if (isSelected(violationType, reportedViolations)) {
@@ -159,7 +156,7 @@ const Matrix = ({
           labels={VIOLATION_COUNTS.map(violationCountLabel)}
           metricTitle={TITLE}
           timeWindowDescription={timeDescription}
-          filters={filterStates}
+          filters={filters}
           fixLabelsInColumns
           dataExportLabel="Violations"
         />
@@ -246,7 +243,6 @@ const Matrix = ({
 
 Matrix.propTypes = {
   dataFilter: PropTypes.func.isRequired,
-  filterStates: filtersPropTypes.isRequired,
   timeDescription: PropTypes.string.isRequired,
   updateFilters: PropTypes.func.isRequired,
   violationTypes: PropTypes.arrayOf(PropTypes.string).isRequired,

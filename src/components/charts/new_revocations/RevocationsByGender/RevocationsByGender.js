@@ -20,7 +20,6 @@ import PropTypes from "prop-types";
 import { observer } from "mobx-react-lite";
 
 import { translate } from "../../../../views/tenants/utils/i18nSettings";
-import { filtersPropTypes } from "../../propTypes";
 import getLabelByMode from "../utils/getLabelByMode";
 
 import RevocationsByDimension from "../RevocationsByDimension";
@@ -30,7 +29,7 @@ import createGenerateChartData from "./createGenerateChartData";
 import flags from "../../../../flags";
 import { useRootStore } from "../../../../StoreProvider";
 
-const RevocationsByGender = ({ dataFilter, filterStates, timeDescription }) => {
+const RevocationsByGender = ({ dataFilter, timeDescription }) => {
   const { currentTenantId } = useRootStore();
   return (
     <RevocationsByDimension
@@ -53,7 +52,6 @@ const RevocationsByGender = ({ dataFilter, filterStates, timeDescription }) => {
       metricTitle={(mode) =>
         `${getLabelByMode(mode)} by ${translate("gender")} and risk level`
       }
-      filterStates={filterStates}
       timeDescription={timeDescription}
       modes={flags.enableRevocationRateByExit ? ["rates", "exits"] : []}
       defaultMode="rates"
@@ -64,7 +62,6 @@ const RevocationsByGender = ({ dataFilter, filterStates, timeDescription }) => {
 
 RevocationsByGender.propTypes = {
   dataFilter: PropTypes.func.isRequired,
-  filterStates: filtersPropTypes.isRequired,
   timeDescription: PropTypes.string.isRequired,
 };
 

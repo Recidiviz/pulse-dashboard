@@ -19,7 +19,6 @@ import React from "react";
 import PropTypes from "prop-types";
 import { observer } from "mobx-react-lite";
 
-import { filtersPropTypes } from "../../propTypes";
 import RevocationsByDimension from "../RevocationsByDimension";
 import PercentRevokedChart from "../PercentRevokedChart";
 import { translate } from "../../../../views/tenants/utils/i18nSettings";
@@ -30,11 +29,7 @@ import { useRootStore } from "../../../../StoreProvider";
 
 const MAX_OFFICERS_COUNT = 50;
 
-const RevocationsByOfficer = ({
-  dataFilter,
-  filterStates,
-  timeDescription,
-}) => {
+const RevocationsByOfficer = ({ dataFilter, timeDescription }) => {
   const { currentTenantId } = useRootStore();
 
   const chartTitle = `Admissions by ${translate("officer")}`;
@@ -88,7 +83,6 @@ const RevocationsByOfficer = ({
       generateChartData={createGenerateChartData(dataFilter)}
       chartTitle={chartTitle}
       metricTitle={chartTitle}
-      filterStates={filterStates}
       timeDescription={timeDescription}
       modes={
         flags.enableRevocationRateByExit
@@ -103,7 +97,6 @@ const RevocationsByOfficer = ({
 
 RevocationsByOfficer.propTypes = {
   dataFilter: PropTypes.func.isRequired,
-  filterStates: filtersPropTypes.isRequired,
   timeDescription: PropTypes.string.isRequired,
 };
 

@@ -21,14 +21,12 @@ import { observer } from "mobx-react-lite";
 
 import RevocationsByDimension from "../RevocationsByDimension";
 import createGenerateChartData from "./createGenerateChartData";
-import { filtersPropTypes } from "../../propTypes";
 import BarChartWithLabels from "../BarChartWithLabels";
 import { translate } from "../../../../views/tenants/utils/i18nSettings";
 import { useRootStore } from "../../../../StoreProvider";
 
 const RevocationsByViolation = ({
   dataFilter,
-  filterStates,
   timeDescription,
   violationTypes,
 }) => {
@@ -52,7 +50,6 @@ const RevocationsByViolation = ({
       generateChartData={createGenerateChartData(dataFilter, violationTypes)}
       chartTitle="Relative frequency of violation types"
       metricTitle="Relative frequency of violation types"
-      filterStates={filterStates}
       timeDescription={timeDescription}
       dataExportLabel="Violation"
     />
@@ -61,7 +58,6 @@ const RevocationsByViolation = ({
 
 RevocationsByViolation.propTypes = {
   dataFilter: PropTypes.func.isRequired,
-  filterStates: filtersPropTypes.isRequired,
   timeDescription: PropTypes.string.isRequired,
   violationTypes: PropTypes.arrayOf(
     PropTypes.shape({

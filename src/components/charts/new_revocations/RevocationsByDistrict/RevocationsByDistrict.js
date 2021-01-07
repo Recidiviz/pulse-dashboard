@@ -19,7 +19,6 @@ import React from "react";
 import PropTypes from "prop-types";
 import { observer } from "mobx-react-lite";
 
-import { filtersPropTypes } from "../../propTypes";
 import RevocationsByDimension from "../RevocationsByDimension";
 import PercentRevokedChart from "../PercentRevokedChart";
 import RevocationCountChart from "../RevocationCountChart";
@@ -30,12 +29,7 @@ import { useRootStore } from "../../../../StoreProvider";
 
 const chartTitle = "Admissions by district";
 
-const RevocationsByDistrict = ({
-  currentDistricts,
-  dataFilter,
-  filterStates,
-  timeDescription,
-}) => {
+const RevocationsByDistrict = ({ timeDescription, dataFilter }) => {
   const { currentTenantId } = useRootStore();
 
   return (
@@ -73,10 +67,9 @@ const RevocationsByDistrict = ({
           />
         )
       }
-      generateChartData={createGenerateChartData(dataFilter, currentDistricts)}
+      generateChartData={createGenerateChartData(dataFilter)}
       chartTitle={chartTitle}
       metricTitle={chartTitle}
-      filterStates={filterStates}
       timeDescription={timeDescription}
       modes={
         flags.enableRevocationRateByExit
@@ -91,8 +84,6 @@ const RevocationsByDistrict = ({
 
 RevocationsByDistrict.propTypes = {
   dataFilter: PropTypes.func.isRequired,
-  filterStates: filtersPropTypes.isRequired,
-  currentDistricts: PropTypes.arrayOf(PropTypes.string).isRequired,
   timeDescription: PropTypes.string.isRequired,
 };
 

@@ -38,7 +38,7 @@ import filterOptionsMap from "../views/tenants/constants/filterOptions";
 export default class FiltersStore {
   rootStore;
 
-  filters = {
+  filters = observable.map({
     metricPeriodMonths: "",
     chargeCategory: "",
     reportedViolation: "",
@@ -46,7 +46,7 @@ export default class FiltersStore {
     supervisionLevel: "",
     admissionType: "",
     district: "",
-  };
+  });
 
   restrictedDistrict = undefined;
 

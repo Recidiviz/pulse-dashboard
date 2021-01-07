@@ -28,7 +28,6 @@ import {
   getTrailingLabelFromMetricPeriodMonthsToggle,
   getPeriodLabelFromMetricPeriodMonthsToggle,
 } from "../../../../utils/charts/toggles";
-import { filtersPropTypes } from "../../propTypes";
 import useChartData from "../../../../hooks/useChartData";
 import { translate } from "../../../../views/tenants/utils/i18nSettings";
 import { formatData, formatExportData } from "./utils/helpers";
@@ -36,8 +35,8 @@ import { useRootStore } from "../../../../StoreProvider";
 
 export const CASES_PER_PAGE = 15;
 
-const CaseTable = ({ dataFilter, filterStates, metricPeriodMonths }) => {
-  const { currentTenantId } = useRootStore();
+const CaseTable = ({ dataFilter, metricPeriodMonths }) => {
+  const { filters, currentTenantId } = useRootStore();
   const [page, setPage] = useState(0);
   const { sortOrder, toggleOrder, comparator } = useSort();
 
@@ -101,7 +100,7 @@ const CaseTable = ({ dataFilter, filterStates, metricPeriodMonths }) => {
 
   return (
     <CaseTableComponent
-      filterStates={filterStates}
+      filters={filters}
       timeWindowDescription={timeWindowDescription}
       options={options}
       createSortableProps={createSortableProps}
@@ -120,7 +119,7 @@ const CaseTable = ({ dataFilter, filterStates, metricPeriodMonths }) => {
           metricTitle="Admitted individuals"
           fixLabelsInColumns
           timeWindowDescription={timeWindowDescription}
-          filters={filterStates}
+          filters={filters}
         />
       }
     />
@@ -134,7 +133,6 @@ const metricPeriodMonthsType = PropTypes.oneOfType([
 
 CaseTable.propTypes = {
   dataFilter: PropTypes.func.isRequired,
-  filterStates: filtersPropTypes.isRequired,
   metricPeriodMonths: metricPeriodMonthsType.isRequired,
 };
 

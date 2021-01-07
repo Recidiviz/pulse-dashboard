@@ -30,7 +30,7 @@ import ErrorBoundary from "./ErrorBoundary";
 import DistrictFilter from "./charts/new_revocations/ToggleBar/DistrictFilter";
 import AdmissionTypeFilter from "./charts/new_revocations/ToggleBar/AdmissionTypeFilter";
 import ViolationFilter from "./charts/new_revocations/ToggleBar/ViolationFilter";
-import RevocationCountOverTime from "./charts/new_revocations/RevocationsOverTime";
+import RevocationsOverTime from "./charts/new_revocations/RevocationsOverTime";
 import Matrix from "./charts/new_revocations/Matrix";
 import MatrixExplanation from "./charts/new_revocations/Matrix/MatrixExplanation";
 import RevocationCharts from "./charts/new_revocations/RevocationCharts";
@@ -100,10 +100,7 @@ const Revocations = () => {
               onChange={createOnFilterChange(METRIC_PERIOD_MONTHS)}
             />
             <ErrorBoundary>
-              <DistrictFilter
-                value={filters[DISTRICT]}
-                onChange={createOnFilterChange(DISTRICT)}
-              />
+              <DistrictFilter onChange={createOnFilterChange(DISTRICT)} />
             </ErrorBoundary>
             <ToggleBarFilter
               label="Case Type"
@@ -150,7 +147,7 @@ const Revocations = () => {
 
       <div className="bgc-white p-20 m-20">
         <ErrorBoundary>
-          <RevocationCountOverTime />
+          <RevocationsOverTime />
         </ErrorBoundary>
       </div>
       <div className="d-f m-20 container-all-charts">
@@ -160,7 +157,6 @@ const Revocations = () => {
               dataFilter={matchesTopLevelFilters({
                 filters,
               })}
-              filterStates={filters}
               updateFilters={updateFilters}
               timeDescription={timeDescription}
               violationTypes={violationTypes}
@@ -175,7 +171,6 @@ const Revocations = () => {
           <ErrorBoundary>
             <RevocationsByRiskLevel
               dataFilter={matchesAllFilters({ filters })}
-              filterStates={filters}
               timeDescription={timeDescription}
             />
           </ErrorBoundary>
@@ -185,7 +180,6 @@ const Revocations = () => {
             <ErrorBoundary>
               <RevocationsByOfficer
                 dataFilter={matchesAllFilters({ filters })}
-                filterStates={filters}
                 timeDescription={timeDescription}
               />
             </ErrorBoundary>
@@ -195,7 +189,6 @@ const Revocations = () => {
           <ErrorBoundary>
             <RevocationsByViolation
               dataFilter={matchesAllFilters({ filters })}
-              filterStates={filters}
               timeDescription={timeDescription}
               violationTypes={filterOptions[VIOLATION_TYPE].options}
             />
@@ -205,7 +198,6 @@ const Revocations = () => {
           <ErrorBoundary>
             <RevocationsByGender
               dataFilter={matchesAllFilters({ filters })}
-              filterStates={filters}
               timeDescription={timeDescription}
             />
           </ErrorBoundary>
@@ -214,7 +206,6 @@ const Revocations = () => {
           <ErrorBoundary>
             <RevocationsByRace
               dataFilter={matchesAllFilters({ filters })}
-              filterStates={filters}
               timeDescription={timeDescription}
             />
           </ErrorBoundary>
@@ -226,8 +217,6 @@ const Revocations = () => {
                 filters,
                 skippedFilters: [DISTRICT],
               })}
-              filterStates={filters}
-              currentDistricts={filters[DISTRICT]}
               timeDescription={timeDescription}
             />
           </ErrorBoundary>
@@ -241,7 +230,6 @@ const Revocations = () => {
               filters,
               treatCategoryAllAsAbsent: true,
             })}
-            filterStates={filters}
             metricPeriodMonths={filters[METRIC_PERIOD_MONTHS]}
           />
         </ErrorBoundary>

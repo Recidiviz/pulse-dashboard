@@ -18,11 +18,9 @@
 import React from "react";
 import cn from "classnames";
 import PropTypes from "prop-types";
-import { observer } from "mobx-react-lite";
 
 import DataSignificanceWarningIcon from "../../DataSignificanceWarningIcon";
 import ExportMenu from "../../ExportMenu";
-import { filtersPropTypes } from "../../propTypes";
 
 import "./RevocationsByDimension.scss";
 
@@ -33,7 +31,6 @@ const RevocationsByDimensionComponent = ({
   labels,
   metricTitle,
   timeDescription,
-  filterStates,
   chart,
   showWarning,
   modeSwitcher,
@@ -50,7 +47,6 @@ const RevocationsByDimensionComponent = ({
         labels={labels}
         metricTitle={metricTitle}
         timeWindowDescription={timeDescription}
-        filters={filterStates}
         dataExportLabel={dataExportLabel}
       />
     </h4>
@@ -92,7 +88,6 @@ RevocationsByDimensionComponent.propTypes = {
   labels: PropTypes.arrayOf(PropTypes.string).isRequired,
   metricTitle: PropTypes.string.isRequired,
   timeDescription: PropTypes.string.isRequired,
-  filterStates: filtersPropTypes.isRequired,
   chart: PropTypes.element.isRequired,
   showWarning: PropTypes.bool,
   modeSwitcher: PropTypes.element,
@@ -100,4 +95,4 @@ RevocationsByDimensionComponent.propTypes = {
   dataExportLabel: PropTypes.string,
 };
 
-export default observer(RevocationsByDimensionComponent);
+export default RevocationsByDimensionComponent;
