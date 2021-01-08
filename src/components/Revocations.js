@@ -32,7 +32,7 @@ import DistrictFilter from "./charts/new_revocations/ToggleBar/DistrictFilter";
 import AdmissionTypeFilter from "./charts/new_revocations/ToggleBar/AdmissionTypeFilter";
 import ViolationFilter from "./charts/new_revocations/ToggleBar/ViolationFilter";
 import RevocationCountOverTime from "./charts/new_revocations/RevocationsOverTime";
-import Matrix from "./charts/new_revocations/Matrix";
+import MatrixContainer from "./charts/new_revocations/Matrix/MatrixContainer";
 import MatrixExplanation from "./charts/new_revocations/Matrix/MatrixExplanation";
 import RevocationCharts from "./charts/new_revocations/RevocationCharts";
 import RevocationsByRiskLevel from "./charts/new_revocations/RevocationsByRiskLevel/RevocationsByRiskLevel";
@@ -49,7 +49,6 @@ import {
 } from "../utils/authentication/user";
 import * as lanternTenant from "../views/tenants/utils/lanternTenants";
 import filterOptionsMap from "../views/tenants/constants/filterOptions";
-import { translate } from "../views/tenants/utils/i18nSettings";
 import {
   ADMISSION_TYPE,
   CHARGE_CATEGORY,
@@ -70,7 +69,6 @@ const Revocations = () => {
   const { user } = useAuth0();
   const { district } = getUserAppMetadata(user);
   const userDistricts = getUserDistricts(user);
-  const violationTypes = translate("violationTypes");
 
   const filterOptions = filterOptionsMap[currentTenantId];
   const [filters, setFilters] = useState({
@@ -184,14 +182,13 @@ const Revocations = () => {
       <div className="d-f m-20 container-all-charts">
         <div className="Revocations__matrix">
           <ErrorBoundary>
-            <Matrix
+            <MatrixContainer
               dataFilter={matchesTopLevelFilters({
                 filters: transformedFilters,
               })}
               filterStates={filters}
               updateFilters={updateFilters}
               timeDescription={timeDescription}
-              violationTypes={violationTypes}
             />
           </ErrorBoundary>
         </div>

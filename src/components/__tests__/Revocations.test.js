@@ -7,7 +7,7 @@ import DistrictFilter from "../charts/new_revocations/ToggleBar/DistrictFilter";
 import AdmissionTypeFilter from "../charts/new_revocations/ToggleBar/AdmissionTypeFilter";
 import ViolationFilter from "../charts/new_revocations/ToggleBar/ViolationFilter";
 import RevocationCountOverTime from "../charts/new_revocations/RevocationsOverTime";
-import Matrix from "../charts/new_revocations/Matrix";
+import MatrixContainer from "../charts/new_revocations/Matrix/MatrixContainer";
 import RevocationCharts from "../charts/new_revocations/RevocationCharts";
 import CaseTable from "../charts/new_revocations/CaseTable/CaseTable";
 import { useAuth0 } from "../../react-auth0-spa";
@@ -39,7 +39,7 @@ jest.mock("../charts/new_revocations/ToggleBar/DistrictFilter");
 jest.mock("../charts/new_revocations/ToggleBar/AdmissionTypeFilter");
 jest.mock("../charts/new_revocations/ToggleBar/ViolationFilter");
 jest.mock("../charts/new_revocations/RevocationsOverTime");
-jest.mock("../charts/new_revocations/Matrix");
+jest.mock("../charts/new_revocations/Matrix/MatrixContainer");
 jest.mock("../charts/new_revocations/RevocationCharts");
 jest.mock("../charts/new_revocations/CaseTable/CaseTable");
 jest.mock("../../views/tenants/constants/filterOptions");
@@ -61,7 +61,7 @@ describe("Revocations component tests", () => {
 
   const DistrictFilterMock = DistrictFilter.type;
   const RevocationCountOverTimeMock = RevocationCountOverTime.type;
-  const MatrixMock = Matrix.type;
+  const MatrixMock = MatrixContainer.type;
   const CaseTableMock = CaseTable.type;
 
   useAuth0.mockReturnValue({ user: mockUser });

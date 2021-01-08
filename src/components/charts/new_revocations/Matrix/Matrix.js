@@ -16,132 +16,59 @@
 // =============================================================================
 
 /* eslint-disable react/no-array-index-key */
-
 import React from "react";
 import PropTypes from "prop-types";
 import cx from "classnames";
-import { observer } from "mobx-react-lite";
 
-import filter from "lodash/fp/filter";
-import get from "lodash/fp/get";
 import getOr from "lodash/fp/getOr";
-import groupBy from "lodash/fp/groupBy";
-import mapValues from "lodash/fp/mapValues";
-import max from "lodash/fp/max";
-import flatten from "lodash/fp/flatten";
 import pipe from "lodash/fp/pipe";
 import sum from "lodash/fp/sum";
-import sumBy from "lodash/fp/sumBy";
-import toInteger from "lodash/fp/toInteger";
 import values from "lodash/fp/values";
 
 import MatrixCell from "./MatrixCell";
 import MatrixRow from "./MatrixRow";
 import ExportMenu from "../../ExportMenu";
-import Loading from "../../../Loading";
-import Error from "../../../Error";
+import { violationCountLabel } from "../../../../utils/transforms/labels";
 
-import useChartData from "../../../../hooks/useChartData";
-import {
-  matrixViolationTypeToLabel,
-  violationCountLabel,
-} from "../../../../utils/transforms/labels";
-import { filterOptimizedDataFormat } from "../../../../utils/charts/dataFilters";
-import { filtersPropTypes } from "../../propTypes";
+import { VIOLATION_COUNTS, getExportableMatrixData } from "./helpers";
+import { filtersPropTypes, dataMatrixPropTypes } from "../../propTypes";
 import { translate } from "../../../../views/tenants/utils/i18nSettings";
-import { useRootStore } from "../../../../StoreProvider";
 import "./Matrix.scss";
 
 const TITLE =
   "Admissions by violation history (in year prior to their last reported violation)";
-const VIOLATION_COUNTS = ["1", "2", "3", "4", "5", "6", "7", "8"];
 
-const getInteger = (field) => pipe(get(field), toInteger);
-const sumByInteger = (field) => sumBy(getInteger(field));
 const sumRow = pipe(values, sum);
 
 const Matrix = ({
-  dataFilter,
+  maxRevocations,
+  dataMatrix,
+  violationsSum,
   filterStates,
   timeDescription,
   updateFilters,
   violationTypes,
+  reportedViolationsSums,
 }) => {
-  const { currentTenantId } = useRootStore();
-
-  const { metadata, isLoading, isError, apiData } = useChartData(
-    `${currentTenantId}/newRevocations`,
-    "revocations_matrix_cells",
-    filterStates,
-    false
-  );
-  if (isLoading) {
-    return <Loading />;
-  }
-
-  if (isError) {
-    return <Error />;
-  }
-
   const isFiltered =
     filterStates.violationType || filterStates.reportedViolations;
 
-  const filteredData = pipe(
-    () =>
-      filterOptimizedDataFormat({ apiData, metadata, filterFn: dataFilter }),
-    filter((data) => violationTypes.includes(data.violation_type))
-  )();
-
-  const dataMatrix = pipe(
-    groupBy("violation_type"),
-    mapValues(
-      pipe(
-        groupBy("reported_violations"),
-        mapValues(sumByInteger("total_revocations"))
-      )
-    )
-  )(filteredData);
-
-  if (!dataMatrix) {
-    return null;
-  }
-
-  const maxRevocations = pipe(
-    () =>
-      violationTypes.map((rowLabel) =>
-        VIOLATION_COUNTS.map((columnLabel) =>
-          getOr(0, [rowLabel, columnLabel], dataMatrix)
-        )
-      ),
-    flatten,
-    max
-  )();
-
-  const violationsSum = sumByInteger("total_revocations")(filteredData);
-  const reportedViolationsSum = pipe(
-    (count) =>
-      filter((data) => data.reported_violations === count, filteredData),
-    sumByInteger("total_revocations")
+  const exportableMatrixData = getExportableMatrixData(
+    dataMatrix,
+    violationTypes
   );
 
   const isSelected = (violationType, reportedViolations) =>
     filterStates.violationType === violationType &&
     filterStates.reportedViolations === reportedViolations;
 
-  const toggleFilter = (violationType, reportedViolations) => {
+  const toggleFilter = function (violationType, reportedViolations) {
     if (isSelected(violationType, reportedViolations)) {
       updateFilters({ violationType: "", reportedViolations: "" });
     } else {
       updateFilters({ violationType, reportedViolations });
     }
   };
-
-  const exportableMatrixData = violationTypes.map((rowLabel) => ({
-    label: matrixViolationTypeToLabel[rowLabel],
-    data: VIOLATION_COUNTS.map((columnLabel) =>
-      getOr(0, [rowLabel, columnLabel], dataMatrix)
-    ),
-  }));
 
   return (
     <div className="Matrix">
@@ -189,29 +116,39 @@ const Matrix = ({
             </span>
           </div>
 
-          {violationTypes.map((violationType, i) => (
-            <MatrixRow
-              key={i}
-              violationType={violationType}
-              sum={sumRow(dataMatrix[violationType])}
-              isSelected={isSelected(violationType, "")}
-              onClick={() => toggleFilter(violationType, "")}
-            >
-              {VIOLATION_COUNTS.map((violationCount, j) => (
-                <MatrixCell
-                  key={j}
-                  count={getOr(0, [violationType, violationCount], dataMatrix)}
-                  maxCount={maxRevocations}
-                  isSelected={isSelected(violationType, violationCount)}
-                  onClick={() => toggleFilter(violationType, violationCount)}
-                />
-              ))}
-            </MatrixRow>
-          ))}
+          {violationTypes.map(function (violationType, i) {
+            return (
+              <MatrixRow
+                key={`${violationType}-${i}`}
+                violationType={violationType}
+                sum={sumRow(dataMatrix[violationType])}
+                isSelected={isSelected(violationType, "")}
+                onClick={() => toggleFilter(violationType, "")}
+              >
+                {VIOLATION_COUNTS.map(function (violationCount, j) {
+                  return (
+                    <MatrixCell
+                      key={`${violationType}-${violationCount}-${j}`}
+                      count={getOr(
+                        0,
+                        [violationType, violationCount],
+                        dataMatrix
+                      )}
+                      maxCount={maxRevocations}
+                      isSelected={isSelected(violationType, violationCount)}
+                      onClick={() =>
+                        toggleFilter(violationType, violationCount)
+                      }
+                    />
+                  );
+                })}
+              </MatrixRow>
+            );
+          })}
 
           <div className="Matrix__violation-sum-row">
             <span className="Matrix__empty-cell" />
-            {VIOLATION_COUNTS.map((count, i) => (
+            {reportedViolationsSums.map((reportedViolationSum, i) => (
               <span
                 key={i}
                 className={cx(
@@ -219,7 +156,7 @@ const Matrix = ({
                   "Matrix__violation-sum"
                 )}
               >
-                {reportedViolationsSum(count)}
+                {reportedViolationSum}
               </span>
             ))}
 
@@ -240,11 +177,14 @@ const Matrix = ({
 };
 
 Matrix.propTypes = {
-  dataFilter: PropTypes.func.isRequired,
+  maxRevocations: PropTypes.number.isRequired,
+  dataMatrix: dataMatrixPropTypes.isRequired,
+  violationsSum: PropTypes.number.isRequired,
   filterStates: filtersPropTypes.isRequired,
   timeDescription: PropTypes.string.isRequired,
   updateFilters: PropTypes.func.isRequired,
   violationTypes: PropTypes.arrayOf(PropTypes.string).isRequired,
+  reportedViolationsSums: PropTypes.arrayOf(PropTypes.number).isRequired,
 };
 
-export default observer(Matrix);
+export default Matrix;
