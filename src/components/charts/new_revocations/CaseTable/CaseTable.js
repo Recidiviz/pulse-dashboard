@@ -70,16 +70,6 @@ const CaseTable = ({ dataFilter, filterStates, metricPeriodMonths }) => {
     return <Error />;
   }
 
-  const createUpdatePage = (diff) => () => setPage(page + diff);
-
-  const createSortableProps = (field) => ({
-    order: sortOrder,
-    onClick: () => {
-      toggleOrder(field);
-      setPage(0);
-    },
-  });
-
   const trailingLabel = getTrailingLabelFromMetricPeriodMonthsToggle(
     metricPeriodMonths
   );
@@ -105,13 +95,15 @@ const CaseTable = ({ dataFilter, filterStates, metricPeriodMonths }) => {
       filterStates={filterStates}
       timeWindowDescription={timeWindowDescription}
       options={options}
-      createSortableProps={createSortableProps}
+      page={page}
+      setPage={setPage}
+      toggleOrder={toggleOrder}
+      sortOrder={sortOrder}
       pageData={pageData}
       startCase={startCase}
       endCase={endCase}
       totalCases={sortedData.length}
       casesPerPage={CASES_PER_PAGE}
-      createUpdatePage={createUpdatePage}
       exportMenu={
         <ExportMenu
           chartId="filteredCaseTable"

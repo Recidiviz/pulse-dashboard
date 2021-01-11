@@ -7,63 +7,79 @@ import Pagination from "./Pagination";
 const CaseTableComponent = ({
   options,
   timeWindowDescription,
-  createSortableProps,
-  createUpdatePage,
+  page,
+  setPage,
+  toggleOrder,
+  sortOrder,
   pageData,
   startCase,
   endCase,
   casesPerPage,
   exportMenu,
   totalCases,
-}) => (
-  <div className="CaseTable">
-    <h4>
-      Admitted individuals
-      {exportMenu}
-    </h4>
-    <h6 className="pB-20">{timeWindowDescription}</h6>
-    <table>
-      <thead>
-        <tr>
-          {options.map((option) => (
-            <th key={option.key}>
-              <Sortable {...createSortableProps(option.key)}>
-                {option.label}
-              </Sortable>
-            </th>
-          ))}
-        </tr>
-      </thead>
-      <tbody className="fs-block">
-        {pageData.map((details) => (
-          <tr key={`${details.state_id}-${details.admissionType}`}>
-            <td>{details.state_id}</td>
-            {nullSafeCell(details.district)}
-            {nullSafeCell(details.officer)}
-            {nullSafeCell(details.risk_level)}
-            {nullSafeCell(details.officer_recommendation)}
-            {nullSafeCell(details.violation_record)}
+}) => {
+  const createUpdatePage = (diff) => () => setPage(page + diff);
+  const createSortableProps = (field) => ({
+    order: sortOrder,
+    onClick: () => {
+      toggleOrder(field);
+      setPage(0);
+    },
+  });
+
+  return (
+    <div className="CaseTable">
+      <h4>
+        Admitted individuals
+        {exportMenu}
+      </h4>
+      <h6 className="pB-20">{timeWindowDescription}</h6>
+      <table>
+        <thead>
+          <tr>
+            {options.map((option) => (
+              <th key={option.key}>
+                <Sortable {...createSortableProps(option.key)}>
+                  {option.label}
+                </Sortable>
+              </th>
+            ))}
           </tr>
-        ))}
-      </tbody>
-    </table>
-    {totalCases > casesPerPage && (
-      <Pagination
-        beginning={startCase}
-        end={endCase}
-        total={totalCases}
-        createUpdatePage={createUpdatePage}
-      />
-    )}
-  </div>
-);
+        </thead>
+        <tbody className="fs-block">
+          {pageData.map((details) => (
+            <tr key={`${details.state_id}-${details.admissionType}`}>
+              <td>{details.state_id}</td>
+              {nullSafeCell(details.district)}
+              {nullSafeCell(details.officer)}
+              {nullSafeCell(details.risk_level)}
+              {nullSafeCell(details.officer_recommendation)}
+              {nullSafeCell(details.violation_record)}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      {totalCases > casesPerPage && (
+        <Pagination
+          beginning={startCase}
+          end={endCase}
+          total={totalCases}
+          createUpdatePage={createUpdatePage}
+        />
+      )}
+    </div>
+  );
+};
 
 CaseTableComponent.propTypes = {
   options: PropTypes.arrayOf(
     PropTypes.shape({ key: PropTypes.string, label: PropTypes.string })
   ).isRequired,
   timeWindowDescription: PropTypes.string.isRequired,
-  createSortableProps: PropTypes.func.isRequired,
+  page: PropTypes.number.isRequired,
+  setPage: PropTypes.func.isRequired,
+  toggleOrder: PropTypes.func.isRequired,
+  sortOrder: PropTypes.string.isRequired,
   createUpdatePage: PropTypes.func.isRequired,
   pageData: PropTypes.arrayOf(
     PropTypes.shape({
