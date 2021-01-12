@@ -20,16 +20,24 @@
  * in server.js.
  */
 
-const { fetchMetrics } = require("../core");
+const { validationResult } = require("express-validator");
+const { refreshRedisCache, fetchMetrics, cacheResponse } = require("../core");
 const { default: isDemoMode } = require("../utils/isDemoMode");
 
+const BAD_REQUEST = 400;
+const SERVER_ERROR = 500;
+
 /**
- * A callback which returns either either an error payload or a data payload.
+ * A callback which returns either an error payload or a data payload.
+ *
+ * Structure of error responses from GCS
+ * https://cloud.google.com/storage/docs/json_api/v1/status-codes#404-not-found
  */
 function responder(res) {
   return (err, data) => {
     if (err) {
-      res.send(err);
+      const status = err.status || err.code || SERVER_ERROR;
+      res.status(status).send(err);
     } else {
       res.send(data);
     }
@@ -38,72 +46,88 @@ function responder(res) {
 
 // TODO: Generalize this API to take in the metric type and file as request parameters in all calls
 
-function newRevocations(req, res) {
-  fetchMetrics(
-    req.params.stateCode,
+function refreshCache(req, res) {
+  const { stateCode } = req.params;
+  refreshRedisCache(
+    () => fetchMetrics(stateCode, "newRevocation", null, isDemoMode),
+    stateCode,
     "newRevocation",
-    null,
-    isDemoMode,
+    responder(res)
+  );
+}
+
+function newRevocations(req, res) {
+  const { stateCode } = req.params;
+  const cacheKey = `${stateCode.toUpperCase()}-newRevocation`;
+  cacheResponse(
+    cacheKey,
+    () => fetchMetrics(stateCode, "newRevocation", null, isDemoMode),
     responder(res)
   );
 }
 
 function newRevocationFile(req, res) {
-  fetchMetrics(
-    req.params.stateCode,
-    "newRevocation",
-    req.params.file,
-    isDemoMode,
-    responder(res)
-  );
+  const validations = validationResult(req);
+  const hasErrors = !validations.isEmpty();
+  if (hasErrors) {
+    responder(res)({ status: BAD_REQUEST, errors: validations.array() }, null);
+  } else {
+    const { stateCode, file } = req.params;
+    const cacheKey = `${stateCode.toUpperCase()}-newRevocation-${file}`;
+    cacheResponse(
+      cacheKey,
+      () => fetchMetrics(stateCode, "newRevocation", file, isDemoMode),
+      responder(res)
+    );
+  }
 }
 
 function communityGoals(req, res) {
-  fetchMetrics(
-    req.params.stateCode,
-    "communityGoals",
-    null,
-    isDemoMode,
+  const { stateCode } = req.params;
+  const cacheKey = `${stateCode.toUpperCase()}-communityGoals`;
+  cacheResponse(
+    cacheKey,
+    () => fetchMetrics(stateCode, "communityGoals", null, isDemoMode),
     responder(res)
   );
 }
 
 function communityExplore(req, res) {
-  fetchMetrics(
-    req.params.stateCode,
-    "communityExplore",
-    null,
-    isDemoMode,
+  const { stateCode } = req.params;
+  const cacheKey = `${stateCode.toUpperCase()}-communityExplore`;
+  cacheResponse(
+    cacheKey,
+    () => fetchMetrics(stateCode, "communityExplore", null, isDemoMode),
     responder(res)
   );
 }
 
 function facilitiesGoals(req, res) {
-  fetchMetrics(
-    req.params.stateCode,
-    "facilitiesGoals",
-    null,
-    isDemoMode,
+  const { stateCode } = req.params;
+  const cacheKey = `${stateCode.toUpperCase()}-facilitiesGoals`;
+  cacheResponse(
+    cacheKey,
+    () => fetchMetrics(stateCode, "facilitiesGoals", null, isDemoMode),
     responder(res)
   );
 }
 
 function facilitiesExplore(req, res) {
-  fetchMetrics(
-    req.params.stateCode,
-    "facilitiesExplore",
-    null,
-    isDemoMode,
+  const { stateCode } = req.params;
+  const cacheKey = `${stateCode.toUpperCase()}-facilitiesExplore`;
+  cacheResponse(
+    cacheKey,
+    () => fetchMetrics(stateCode, "facilitiesExplore", null, isDemoMode),
     responder(res)
   );
 }
 
 function programmingExplore(req, res) {
-  fetchMetrics(
-    req.params.stateCode,
-    "programmingExplore",
-    null,
-    isDemoMode,
+  const { stateCode } = req.params;
+  const cacheKey = `${stateCode.toUpperCase()}-programmingExplore`;
+  cacheResponse(
+    cacheKey,
+    () => fetchMetrics(stateCode, "programmingExplore", null, isDemoMode),
     responder(res)
   );
 }
@@ -117,4 +141,5 @@ module.exports = {
   facilitiesExplore,
   programmingExplore,
   responder,
+  refreshCache,
 };
