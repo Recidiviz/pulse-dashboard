@@ -26,13 +26,17 @@
  * those files to be quickly reflected in the app without frequent requests to GCS.
  */
 const { default: fetchMetrics } = require("./fetchMetrics");
+const { default: refreshRedisCache } = require("./refreshRedisCache");
 const { default: fetchMetricsFromLocal } = require("./fetchMetricsFromLocal");
 const { default: fetchMetricsFromGCS } = require("./fetchMetricsFromGCS");
 const { default: getFilesByMetricType } = require("./getFilesByMetricType");
+const { cacheResponse } = require("./cacheManager");
 
 module.exports = {
   fetchMetrics,
   fetchMetricsFromLocal,
   fetchMetricsFromGCS,
   getFilesByMetricType,
+  refreshRedisCache,
+  cacheResponse,
 };

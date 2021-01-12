@@ -22,13 +22,35 @@ Bringing criminal justice analysis to decision makers to help reduce incarcerati
 
 1. Ensure you are using the correct version of Node (if you don't use NVM, just check the .nvmrc file and ensure you are using that version).
 
-  `nvm use`
+   `nvm use`
 
 1. Install Yarn package manager:
 
    `brew install yarn`
 
    For alternative Yarn installation options, see [Yarn Installation](https://yarnpkg.com/en/docs/install).
+
+1. [Install Redis Version 4](https://redis.io/download#installation) (matches Memorystore for Redis version):
+
+   Via Homebrew:
+   `brew install redis@4.0`
+
+   Using wget:
+
+   ```sh
+   :> wget https://download.redis.io/releases/redis-4.0.14.tar.gz
+   :> tar xzf redis-4.0.14.tar.gz
+   :> cd redis-4.0.14
+   :> make
+
+   <!-- Run redis with: -->
+   :> src/redis-server
+
+   <!-- Interact with Redis -->
+   :> src/redis-cli
+   ```
+
+   [Instructions for installing Redis 4.0.14 on Windows](https://github.com/tporadowski/redis#redis-4014-for-windows)
 
 1. Install dependencies:
 
@@ -40,21 +62,22 @@ That's it! We suggest installing a linting package for your preferred code edito
 
 Second and last, set up your environment variables.
 
-For Recidiviz staff, download and unzip the `pulse_dashboard_env_vars.zip` from the shared 1Password vault and copy the files into the project directory. 
+For Recidiviz staff, download and unzip the `pulse_dashboard_env_vars.zip` from the shared 1Password vault and copy the files into the project directory.
 
-IMPORTANT: Be sure to use `Shift+Command+.` in your Finder window to show the hidden files, and copy all of the files, including the hidden `.env` files. Follow the directory structure in the zip file, so if the file is nested in the `/src` directory in the zip, copy it into the `/src` directory in the repo. 
+IMPORTANT: Be sure to use `Shift+Command+.` in your Finder window to show the hidden files, and copy all of the files, including the hidden `.env` files. Follow the directory structure in the zip file, so if the file is nested in the `/src` directory in the zip, copy it into the `/src` directory in the repo.
 
 For anyone trying to set this up independently, construct environment variables by hand based on the explanations below.
 
 Explanation of frontend env files:
+
 - `.env.frontend.example` - example file for frontend variables that are required
 - `.env.development` - variables used during the staging deploy
 - `.env.production` - variables used during the production deploy
 - `.env.development.local` - variables used when the environment is started locally using `yarn dev`
 
 Explanation of backend env files:
-- `.env` - variables used for the backend API
 
+- `.env` - variables used for the backend API
 
 Expected frontend environment variables include:
 
@@ -64,7 +87,6 @@ Expected frontend environment variables include:
 - `REACT_APP_IS_DEMO (OPTIONAL)` - whether or not to run the frontend in demo mode, which will run the app without requiring authentication. This should only be set when running locally and should be provided through the command line, along with the backend sibling below. To run the app in demo mode, use the following command: `./run_in_demo_mode.sh`
 - `REACT_APP_INTERCOM_APP_ID` - the APP_ID for Intercom, the customer engagement and support tool. Should be included in local, development, and production environments. The local and development environments point at the 'Recidiviz - [TEST]' Intercom workspace, and production environment points at the live 'Recidiviz' Intercom workspace.
 
-
 Expected backend environment variables include:
 
 - `AUTH_ENV` - a string indicating the "auth environment" used to point to the correct Auth0 tenant. Either "development" or "production". Must match the frontend `REACT_APP_AUTH_ENV` variable.
@@ -72,9 +94,7 @@ Expected backend environment variables include:
 - `METRIC_BUCKET` - the name of the Google Cloud Storage bucket where the metrics reside.
 - `IS_DEMO` (OPTIONAL) - whether or not to run the backend in demo mode, which will retrieve static fixture data from the `server/core/demo_data` directory instead of pulling data from dynamic, live sources. This should only be set when running locally and should be provided through the command line, along with the frontend sibling above. To run the app in demo mode, use the following command: `./run_in_demo_mode.sh`
 
-
 The build process, as described below, ensures that the proper values are compiled and included in the static bundle at build time, for the right environment.
-
 
 ### Authentication
 
@@ -118,9 +138,21 @@ To run eslint manually:
 
 > **Note**: we are gradually adding linting enforcement to our existing code, so not everything may be subject to linting yet. Refer to the [ignore file](https://github.com/Recidiviz/pulse-dashboard/.eslintignore) for details. While this transition is underway, if you are adding new files or substantially rewriting existing ones, you are encouraged to whitelist them for linting by updating the configuration file.
 
-### Running the application locally
+### Running the BackEnd application locally
 
-A yarn script is available for starting the development servers. The React frontend is served out of port `3000` and the Node/Express backend is served out of port 3001. This will also automatically open a browser to localhost on the appropriate port, pointing to the frontend.
+To hit the backend API directly from localhost, you will need to run it in demo mode, which will fetch data files from the `server/core/demo_data` directory. This can be done with the following yarn script:
+
+`yarn server:demo`
+
+You can also run the backend locally to point to the GCS bucket (you may want to do this if you want to view the server and frontend logs separately):
+
+`yarn server:dev`
+
+This will start both the API Express server on port `3001` and the Redis server on port `6379`. You could start the frontend server separately using `yarn spa`.
+
+### Running the FrontEnd application locally
+
+A yarn script is available for starting the development servers. The React frontend is served out of port `3000` and the Node/Express backend is served out of port `3001`. A Redis server will be started on the default port `6379`. This will also automatically open a browser to localhost on the appropriate port, pointing to the frontend.
 
 `yarn dev`
 
@@ -128,7 +160,7 @@ The development servers will remain active until you either close your terminal 
 
 **Note:** The development servers do not need to be restarted when source code is modified. The assets will automatically be recompiled and the browser will be refreshed (when there's a frontend change). Thanks, Webpack!
 
-### Demo mode
+### Running the Frontend and Backend together in Demo mode
 
 When running locally, you can run the app in demo mode to point the app to static data contained in `server/core/demo_data`. This is useful for debugging issues that materialize under specific data circumstances, for demonstrating the tool without exposing real data, for development when you don't have Internet access, and other use cases.
 
@@ -179,6 +211,27 @@ If the package is not required in production it should be added as a development
 `yarn add --dev package`
 
 See the [Yarn documentation](https://yarnpkg.com/en/docs) for more details and a full list of commands available via the CLI.
+
+### Redis
+
+We use [Memorystore for Redis](https://cloud.google.com/memorystore/docs/redis/redis-overview) as an external cache for the backend API. When developing locally, the `redis-server` will be started with the `yarn server:demo` script.
+
+Here are a few helpful commands for inspecting the local redis cache:
+
+```bash
+# Follow along with commands sent to the redis-server
+:> redis-cli MONITOR
+
+# Clear your local redis cache
+:> redis-cli FLUSHALL
+
+:> redis-cli
+# List all the available keys in the cache
+[localhost:6379]> KEYS *
+
+# Get the value of the key
+[localhost:6379]> GET key_name
+```
 
 ### Webpack
 
