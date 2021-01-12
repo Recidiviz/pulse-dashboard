@@ -17,6 +17,7 @@
 
 import React from "react";
 import { render } from "@testing-library/react";
+import { reaction } from "mobx";
 
 import Revocations from "../Revocations";
 import ToggleBarFilter from "../charts/new_revocations/ToggleBar/ToggleBarFilter";
@@ -154,8 +155,11 @@ describe("Revocations component tests", () => {
     );
 
     expect(getByTestId(districtFilterId)).toBeInTheDocument();
-    setTimeout(() => {
-      expect(rootStore.filtersStore.restrictedDistrict).toBe(mockDistrict);
-    }, 100);
+    reaction(
+      () => rootStore.filtersStore.restrictedDistrict,
+      (restrictedDistrict) => {
+        expect(restrictedDistrict).toBe(mockDistrict);
+      }
+    );
   });
 });

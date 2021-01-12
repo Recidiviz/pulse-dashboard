@@ -44,7 +44,7 @@ describe("RootStore", () => {
     expect(rootStore.currentTenantId).toBeDefined();
   });
 
-  it("contains a currentTenantId", () => {
+  it("contains filters", () => {
     expect(rootStore.filters).toBeDefined();
   });
 });

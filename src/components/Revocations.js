@@ -108,7 +108,12 @@ const Revocations = () => {
 
       <div className="bgc-white p-20 m-20">
         <ErrorBoundary>
-          <RevocationsOverTime />
+          <RevocationsOverTime
+            dataFilter={matchesAllFilters({
+              filters,
+              skippedFilters: [METRIC_PERIOD_MONTHS],
+            })}
+          />
         </ErrorBoundary>
       </div>
       <div className="d-f m-20 container-all-charts">
