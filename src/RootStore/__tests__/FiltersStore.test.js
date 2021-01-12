@@ -43,13 +43,7 @@ describe("FiltersStore", () => {
         useAuth0.mockReturnValue({ user: mockUser });
         rootStore = new RootStore();
 
-        // filtersStore.filters is an observable.map so we must compare
-        // one key at a time rather than comparing objects
-        Object.keys(defaultFilters).forEach((filterName) => {
-          expect(rootStore.filtersStore.filters[filterName]).toEqual(
-            defaultFilters[filterName]
-          );
-        });
+        expect(rootStore.filtersStore.defaultFilters).toEqual(defaultFilters);
       });
     });
   });

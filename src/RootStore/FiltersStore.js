@@ -38,24 +38,15 @@ import filterOptionsMap from "../views/tenants/constants/filterOptions";
 export default class FiltersStore {
   rootStore;
 
-  filters = observable.map({
-    metricPeriodMonths: "",
-    chargeCategory: "",
-    reportedViolation: "",
-    violationtype: "",
-    supervisionLevel: "",
-    admissionType: "",
-    district: "",
-  });
+  filters = observable.map();
 
-  restrictedDistrict = undefined;
+  restrictedDistrict;
 
   constructor({ rootStore }) {
     makeAutoObservable(this, {
       defaultFilters: computed,
       filterOptions: computed,
       setFilters: action,
-      filters: observable,
     });
 
     this.rootStore = rootStore;
