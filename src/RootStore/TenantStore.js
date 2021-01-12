@@ -38,7 +38,7 @@ function getTenantIdFromUser(user) {
     }
     return availableStateCodes[0];
   }
-  // TODO fiture out better default return
+  // TODO figure out better default return
   return fromStorage || "US_MO";
 }
 
