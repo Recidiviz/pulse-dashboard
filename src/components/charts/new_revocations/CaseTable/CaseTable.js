@@ -36,7 +36,7 @@ import { useRootStore } from "../../../../StoreProvider";
 export const CASES_PER_PAGE = 15;
 
 const CaseTable = ({ dataFilter, metricPeriodMonths }) => {
-  const { filters, currentTenantId } = useRootStore();
+  const { currentTenantId } = useRootStore();
   const [page, setPage] = useState(0);
   const { sortOrder, toggleOrder, comparator } = useSort();
 
@@ -100,7 +100,6 @@ const CaseTable = ({ dataFilter, metricPeriodMonths }) => {
 
   return (
     <CaseTableComponent
-      filters={filters}
       timeWindowDescription={timeWindowDescription}
       options={options}
       createSortableProps={createSortableProps}
@@ -119,7 +118,6 @@ const CaseTable = ({ dataFilter, metricPeriodMonths }) => {
           metricTitle="Admitted individuals"
           fixLabelsInColumns
           timeWindowDescription={timeWindowDescription}
-          filters={filters}
         />
       }
     />

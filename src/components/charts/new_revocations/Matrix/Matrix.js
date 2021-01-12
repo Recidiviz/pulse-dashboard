@@ -157,7 +157,6 @@ const Matrix = ({ dataFilter, timeDescription }) => {
           labels={VIOLATION_COUNTS.map(violationCountLabel)}
           metricTitle={TITLE}
           timeWindowDescription={timeDescription}
-          filters={filters}
           fixLabelsInColumns
           dataExportLabel="Violations"
         />

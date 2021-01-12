@@ -200,7 +200,6 @@ const RevocationsOverTime = ({ dataFilter }) => {
       chartId={`${translate("revocations")}OverTime`}
       datasets={datasets}
       metricTitle={translate("revocationsOverTimeXAxis")}
-      filterStates={filters}
       chart={chart}
       classModifier={chartId}
       dataExportLabel="Month"

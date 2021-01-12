@@ -15,7 +15,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import { makeAutoObservable, action } from "mobx";
+import { makeAutoObservable } from "mobx";
 
 import { useAuth0 } from "../react-auth0-spa";
 import {
@@ -51,9 +51,7 @@ export default class TenantStore {
   user;
 
   constructor({ rootStore }) {
-    makeAutoObservable(this, {
-      setCurrentTenantId: action,
-    });
+    makeAutoObservable(this);
 
     this.rootStore = rootStore;
 
