@@ -17,7 +17,6 @@
 
 import React from "react";
 import { render } from "@testing-library/react";
-import { reaction } from "mobx";
 
 import Revocations from "../Revocations";
 import ToggleBarFilter from "../charts/new_revocations/ToggleBar/ToggleBarFilter";
@@ -41,7 +40,7 @@ import {
   SUPERVISION_TYPE,
 } from "../../constants/filterTypes";
 import StoreProvider from "../../StoreProvider";
-import RootStore from "../../RootStore";
+import FiltersStore from "../../RootStore/FiltersStore";
 
 jest.mock("../../react-auth0-spa");
 jest.mock("../charts/new_revocations/ToggleBar/ToggleBarFilter");
@@ -140,26 +139,20 @@ describe("Revocations component tests", () => {
   });
 
   it("should set user district as default filter value if it is defined", () => {
-    const rootStore = new RootStore();
-    jest.spyOn(RootStore, "constructor").mockReturnValue(rootStore);
+    const setRestrictedDistrictSpy = jest.fn();
+    FiltersStore.prototype.setRestrictedDistrict = setRestrictedDistrictSpy;
 
     const mockUserWithDistrict = {
       [metadataField]: { state_code: mockTenantId, district: mockDistrict },
     };
-
     useAuth0.mockReturnValue({ user: mockUserWithDistrict });
-    const { getByTestId } = render(
-      <StoreProvider rootStore={rootStore}>
+
+    render(
+      <StoreProvider>
         <Revocations />
       </StoreProvider>
     );
 
-    expect(getByTestId(districtFilterId)).toBeInTheDocument();
-    reaction(
-      () => rootStore.filtersStore.restrictedDistrict,
-      (restrictedDistrict) => {
-        expect(restrictedDistrict).toBe(mockDistrict);
-      }
-    );
+    expect(setRestrictedDistrictSpy).toHaveBeenCalledWith(mockDistrict);
   });
 });

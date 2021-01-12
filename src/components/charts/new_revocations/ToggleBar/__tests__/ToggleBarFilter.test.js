@@ -17,7 +17,6 @@
 
 import React from "react";
 import { act, render } from "@testing-library/react";
-import { reaction } from "mobx";
 
 import ToggleBarFilter from "../ToggleBarFilter";
 import Select from "../../../../controls/Select";
@@ -28,11 +27,12 @@ import {
   SUPERVISION_TYPE,
 } from "../../../../../constants/filterTypes";
 import StoreProvider from "../../../../../StoreProvider";
-import RootStore from "../../../../../RootStore";
 import { useAuth0 } from "../../../../../react-auth0-spa";
 import { METADATA_NAMESPACE } from "../../../../../utils/authentication/user";
 import { setTranslateLocale } from "../../../../../views/tenants/utils/i18nSettings";
 import { US_MO } from "../../../../../views/tenants/utils/lanternTenants";
+import FiltersStore from "../../../../../RootStore/FiltersStore";
+import filterOptions from "../../../../../views/tenants/constants/filterOptions";
 
 jest.mock("../../../../controls/Select", () => ({
   __esModule: true,
@@ -63,9 +63,6 @@ describe("ToggleBarFilter tests", () => {
     });
 
     it("should pass valid props to Select", () => {
-      const rootStore = new RootStore();
-      jest.spyOn(RootStore, "constructor").mockReturnValue(rootStore);
-
       render(
         <StoreProvider>
           <ToggleBarFilter label={props.label} dimension={props.dimension} />
@@ -74,42 +71,42 @@ describe("ToggleBarFilter tests", () => {
 
       expect(Select).toHaveBeenCalledTimes(1);
       expect(Select.mock.calls[0][0]).toMatchObject({
-        value:
-          rootStore.filtersStore.filterOptions[props.dimension].defaultOption,
-        options: rootStore.filtersStore.filterOptions[props.dimension].options,
-        defaultValue:
-          rootStore.filtersStore.filterOptions[props.dimension].defaultOption,
+        value: filterOptions[US_MO][props.dimension].defaultOption,
+        options: filterOptions[US_MO][props.dimension].options,
+        defaultValue: filterOptions[US_MO][props.dimension].defaultOption,
       });
+    });
+  });
+
+  [
+    { label: "Time Period", dimension: METRIC_PERIOD_MONTHS },
+    { label: "Supervision Level", dimension: SUPERVISION_LEVEL },
+    { label: "Supervision Type", dimension: SUPERVISION_TYPE },
+  ].forEach((props) => {
+    beforeEach(() => {
+      jest.clearAllMocks();
     });
 
     it("onChange should change the filter value", () => {
-      const rootStore = new RootStore();
-      jest.spyOn(RootStore, "constructor").mockReturnValue(rootStore);
+      const setFiltersSpy = jest.fn();
+      FiltersStore.prototype.setFilters = setFiltersSpy;
+
+      const updatedfilters = {
+        [props.dimension]: 99,
+      };
 
       render(
         <StoreProvider>
-          <ToggleBarFilter
-            label="Time Period"
-            dimension={METRIC_PERIOD_MONTHS}
-          />
+          <ToggleBarFilter label="Time Period" dimension={props.dimension} />
         </StoreProvider>
       );
 
       act(() => {
-        Select.mock.calls[0][0].onChange(
-          rootStore.filtersStore.filterOptions[props.dimension].options[3]
-        );
+        Select.mock.calls[0][0].onChange({ value: 99 });
       });
 
-      reaction(
-        () => rootStore.filtersStore.filters.METRIC_PERIOD_MONTHS,
-        (value) => {
-          expect(value).toBe(
-            rootStore.filtersStore.filterOptions[props.dimension].options[3]
-              .value
-          );
-        }
-      );
+      expect(setFiltersSpy).toHaveBeenCalledTimes(2);
+      expect(setFiltersSpy.mock.calls[1][0]).toMatchObject(updatedfilters);
     });
   });
 });
