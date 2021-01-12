@@ -86,8 +86,8 @@ export default class FiltersStore {
     return filterOptionsMap[this.rootStore.currentTenantId];
   }
 
-  setFilters(newFilters) {
-    this.filters = { ...newFilters };
+  setFilters(updatedFilters) {
+    this.filters = { ...this.filters, ...updatedFilters };
   }
 
   setRestrictedDistrict(restrictedDistrict) {

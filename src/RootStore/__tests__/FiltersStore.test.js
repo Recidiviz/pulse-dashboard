@@ -14,6 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
+
 import RootStore from "../RootStore";
 import { useAuth0 } from "../../react-auth0-spa";
 import { METADATA_NAMESPACE } from "../../utils/authentication/user";
@@ -42,7 +43,13 @@ describe("FiltersStore", () => {
         useAuth0.mockReturnValue({ user: mockUser });
         rootStore = new RootStore();
 
-        expect(expect(rootStore.filtersStore.filters).toEqual(defaultFilters));
+        // filtersStore.filters is an observable.map so we must compare
+        // one key at a time rather than comparing objects
+        Object.keys(defaultFilters).forEach((filterName) => {
+          expect(rootStore.filtersStore.filters[filterName]).toEqual(
+            defaultFilters[filterName]
+          );
+        });
       });
     });
   });

@@ -16,7 +16,7 @@
 // =============================================================================
 
 import React from "react";
-import { act, render } from "@testing-library/react";
+import { render } from "@testing-library/react";
 
 import Revocations from "../Revocations";
 import ToggleBarFilter from "../charts/new_revocations/ToggleBar/ToggleBarFilter";
@@ -36,18 +36,13 @@ import mockWithTestId from "../../../__helpers__/mockWithTestId";
 import filterOptionsMap from "../../views/tenants/constants/filterOptions";
 import {
   ADMISSION_TYPE,
-  CHARGE_CATEGORY,
-  DISTRICT,
-  METRIC_PERIOD_MONTHS,
-  REPORTED_VIOLATIONS,
   SUPERVISION_LEVEL,
   SUPERVISION_TYPE,
-  VIOLATION_TYPE,
 } from "../../constants/filterTypes";
 import StoreProvider from "../../StoreProvider";
+import RootStore from "../../RootStore";
 
 jest.mock("../../react-auth0-spa");
-// jest.mock("../../utils/authentication/user");
 jest.mock("../charts/new_revocations/ToggleBar/ToggleBarFilter");
 jest.mock("../charts/new_revocations/ToggleBar/DistrictFilter");
 jest.mock("../charts/new_revocations/ToggleBar/AdmissionTypeFilter");
@@ -77,14 +72,19 @@ describe("Revocations component tests", () => {
   const RevocationCountOverTimeMock = RevocationCountOverTime.type;
   const MatrixMock = Matrix.type;
   const CaseTableMock = CaseTable.type;
+  const ToggleBarFilterMock = ToggleBarFilter.type;
+  const AdmissionTypeFilterMock = AdmissionTypeFilter.type;
+  const ViolationFilterMock = ViolationFilter.type;
 
   useAuth0.mockReturnValue({ user: mockUser });
-  ToggleBarFilter.mockImplementation(({ label }) =>
+  ToggleBarFilterMock.mockImplementation(({ label }) =>
     mockWithTestId(`${toggleBarIdPrefix}${label}`)
   );
   DistrictFilterMock.mockReturnValue(mockWithTestId(districtFilterId));
-  AdmissionTypeFilter.mockReturnValue(mockWithTestId(admissionTypeFilterId));
-  ViolationFilter.mockReturnValue(mockWithTestId(violationFilterId));
+  AdmissionTypeFilterMock.mockReturnValue(
+    mockWithTestId(admissionTypeFilterId)
+  );
+  ViolationFilterMock.mockReturnValue(mockWithTestId(violationFilterId));
   RevocationCountOverTimeMock.mockReturnValue(
     mockWithTestId(revocationCountOverTimeId)
   );
@@ -138,109 +138,24 @@ describe("Revocations component tests", () => {
     expect(queryByTestId(admissionTypeFilterId)).toBeNull();
   });
 
-  it("should pass correct defaultValues to filters", () => {
-    filterOptionsMap[mockTenantId][SUPERVISION_LEVEL].componentEnabled = true;
-    filterOptionsMap[mockTenantId][SUPERVISION_TYPE].componentEnabled = true;
-    filterOptionsMap[mockTenantId][ADMISSION_TYPE].componentEnabled = true;
-    filterOptionsMap[mockTenantId][ADMISSION_TYPE].filterEnabled = true;
-    render(
-      <StoreProvider>
-        <Revocations />
-      </StoreProvider>
-    );
-
-    const timePeriodFilterMocks = ToggleBarFilter.mock.calls.filter(
-      (call) => call[0].label === "Time Period"
-    );
-    const caseTypeFilterMocks = ToggleBarFilter.mock.calls.filter(
-      (call) => call[0].label === "Case Type"
-    );
-    const supervisionTypeFilterMocks = ToggleBarFilter.mock.calls.filter(
-      (call) => call[0].label === "Supervision Type"
-    );
-    const supervisionLevelFilterMocks = ToggleBarFilter.mock.calls.filter(
-      (call) => call[0].label === "Supervision Level"
-    );
-
-    const filterOptions = filterOptionsMap[mockTenantId];
-
-    expect(timePeriodFilterMocks[0][0].value).toBe(
-      filterOptions[METRIC_PERIOD_MONTHS].defaultValue
-    );
-    expect(caseTypeFilterMocks[0][0].value).toBe(
-      filterOptions[CHARGE_CATEGORY].defaultValue
-    );
-    expect(supervisionTypeFilterMocks[0][0].value).toBe(
-      filterOptions[SUPERVISION_TYPE].defaultValue
-    );
-    expect(supervisionLevelFilterMocks[0][0].value).toBe(
-      filterOptions[SUPERVISION_LEVEL].defaultValue
-    );
-    expect(DistrictFilterMock.mock.calls[0][0].value).toEqual([
-      filterOptions[DISTRICT].defaultValue,
-    ]);
-    expect(AdmissionTypeFilter.mock.calls[0][0].value).toEqual(
-      filterOptions[ADMISSION_TYPE].defaultValue
-    );
-    expect(ViolationFilter.mock.calls[0][0].violationType).toBe(
-      filterOptions[VIOLATION_TYPE].defaultValue
-    );
-  });
-
   it("should set user district as default filter value if it is defined", () => {
+    const rootStore = new RootStore();
+    jest.spyOn(RootStore, "constructor").mockReturnValue(rootStore);
+
     const mockUserWithDistrict = {
       [metadataField]: { state_code: mockTenantId, district: mockDistrict },
     };
+
     useAuth0.mockReturnValue({ user: mockUserWithDistrict });
-    render(
-      <StoreProvider>
+    const { getByTestId } = render(
+      <StoreProvider rootStore={rootStore}>
         <Revocations />
       </StoreProvider>
     );
 
-    expect(DistrictFilterMock.mock.calls[1][0].value).toEqual([mockDistrict]);
-  });
-
-  it("should change filter value when onChange is called", () => {
-    const mockNewDistrictValue = ["some new value"];
-    render(
-      <StoreProvider>
-        <Revocations />
-      </StoreProvider>
-    );
-
-    act(() => {
-      DistrictFilterMock.mock.calls[0][0].onChange(mockNewDistrictValue);
-    });
-
-    expect(DistrictFilterMock).toHaveBeenCalledTimes(3);
-    expect(DistrictFilterMock.mock.calls[2][0].value).toEqual(
-      mockNewDistrictValue
-    );
-  });
-
-  it("should update filter values when updateFilters is called", () => {
-    const mockNewViolationTypeValue = "some new value";
-    const mockNewReportedViolationsValue = "some new value 1";
-
-    render(
-      <StoreProvider>
-        <Revocations />
-      </StoreProvider>
-    );
-
-    act(() => {
-      ViolationFilter.mock.calls[0][0].onClick({
-        [VIOLATION_TYPE]: mockNewViolationTypeValue,
-        [REPORTED_VIOLATIONS]: mockNewReportedViolationsValue,
-      });
-    });
-
-    expect(ViolationFilter.mock.calls[2][0].violationType).toBe(
-      mockNewViolationTypeValue
-    );
-    expect(ViolationFilter.mock.calls[2][0].reportedViolations).toBe(
-      mockNewReportedViolationsValue
-    );
+    expect(getByTestId(districtFilterId)).toBeInTheDocument();
+    setTimeout(() => {
+      expect(rootStore.filtersStore.restrictedDistrict).toBe(mockDistrict);
+    }, 100);
   });
 });

@@ -59,13 +59,10 @@ const getInteger = (field) => pipe(get(field), toInteger);
 const sumByInteger = (field) => sumBy(getInteger(field));
 const sumRow = pipe(values, sum);
 
-const Matrix = ({
-  dataFilter,
-  timeDescription,
-  updateFilters,
-  violationTypes,
-}) => {
-  const { filters, currentTenantId } = useRootStore();
+const Matrix = ({ dataFilter, timeDescription }) => {
+  const { filters, filtersStore, currentTenantId } = useRootStore();
+
+  const violationTypes = translate("violationTypes");
 
   const { apiData, isLoading, isError, unflattenedValues } = useChartData(
     `${currentTenantId}/newRevocations`,
@@ -80,6 +77,10 @@ const Matrix = ({
   if (isError) {
     return <Error />;
   }
+
+  const updateFilters = (updatedFilters) => {
+    filtersStore.setFilters(updatedFilters);
+  };
 
   const isFiltered = filters.violationType || filters.reportedViolations;
 
@@ -244,8 +245,6 @@ const Matrix = ({
 Matrix.propTypes = {
   dataFilter: PropTypes.func.isRequired,
   timeDescription: PropTypes.string.isRequired,
-  updateFilters: PropTypes.func.isRequired,
-  violationTypes: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
 export default observer(Matrix);

@@ -15,7 +15,6 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 import React, { useMemo } from "react";
-import PropTypes from "prop-types";
 import { observer } from "mobx-react-lite";
 
 import filter from "lodash/fp/filter";
@@ -32,11 +31,12 @@ import { useAuth0 } from "../../../../react-auth0-spa";
 import { getUserAppMetadata } from "../../../../utils/authentication/user";
 import MultiSelect from "../../../controls/MultiSelect";
 import { useRootStore } from "../../../../StoreProvider";
+import { DISTRICT } from "../../../../constants/filterTypes";
 
 const allDistrictsOption = { label: "All", value: "All" };
 
-const DistrictFilter = ({ value, onChange }) => {
-  const { currentTenantId } = useRootStore();
+const DistrictFilter = () => {
+  const { filters, filtersStore, currentTenantId } = useRootStore();
   const { user } = useAuth0();
   const { isLoading, apiData } = useChartData(
     `${currentTenantId}/newRevocations`,
@@ -71,10 +71,13 @@ const DistrictFilter = ({ value, onChange }) => {
     const summingOption = allDistrictsOption;
     const defaultValue = [allDistrictsOption];
 
-    const onValueChange = (newOptions) => onChange(map("value", newOptions));
+    const onValueChange = (newOptions) => {
+      const districts = map("value", newOptions);
+      filtersStore.setFilters({ [DISTRICT]: districts });
+    };
 
     const selectValue = options.filter((option) =>
-      value.includes(option.value)
+      filters[DISTRICT].includes(option.value)
     );
 
     return (
@@ -89,14 +92,9 @@ const DistrictFilter = ({ value, onChange }) => {
         isSearchable
       />
     );
-  }, [district, isLoading, apiData, onChange, value]);
+  }, [district, isLoading, apiData, filtersStore, filters]);
 
   return <FilterField label="District">{select}</FilterField>;
-};
-
-DistrictFilter.propTypes = {
-  value: PropTypes.arrayOf(PropTypes.string).isRequired,
-  onChange: PropTypes.func.isRequired,
 };
 
 export default observer(DistrictFilter);

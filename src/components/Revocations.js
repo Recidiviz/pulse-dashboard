@@ -15,7 +15,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React, { useCallback, useEffect } from "react";
+import React, { useEffect } from "react";
 import { observer } from "mobx-react-lite";
 import Sticky from "react-sticky-fill";
 
@@ -43,16 +43,13 @@ import RevocationsByDistrict from "./charts/new_revocations/RevocationsByDistric
 import CaseTable from "./charts/new_revocations/CaseTable/CaseTable";
 import { useAuth0 } from "../react-auth0-spa";
 import { getUserAppMetadata } from "../utils/authentication/user";
-import { translate } from "../views/tenants/utils/i18nSettings";
 import {
   ADMISSION_TYPE,
   CHARGE_CATEGORY,
   DISTRICT,
   METRIC_PERIOD_MONTHS,
-  REPORTED_VIOLATIONS,
   SUPERVISION_LEVEL,
   SUPERVISION_TYPE,
-  VIOLATION_TYPE,
 } from "../constants/filterTypes";
 import flags from "../flags";
 import { useRootStore } from "../StoreProvider";
@@ -70,23 +67,12 @@ const Revocations = () => {
     }
   }, [district, filtersStore]);
 
-  const violationTypes = translate("violationTypes");
-
-  const updateFilters = (newFilters) => {
-    filtersStore.setFilters({ ...filters, ...newFilters });
-  };
-
-  const createOnFilterChange = useCallback(
-    (field) => (value) => {
-      filtersStore.setFilters({ ...filters, [field]: value });
-    },
-    [filtersStore, filters]
-  );
   const timeDescription = getTimeDescription(
     filters[METRIC_PERIOD_MONTHS],
     filterOptions[ADMISSION_TYPE].options,
     filters[ADMISSION_TYPE]
   );
+
   return (
     <main className="Revocations">
       <Sticky style={{ zIndex: 700, top: 65 }}>
@@ -94,54 +80,29 @@ const Revocations = () => {
           <div className="top-level-filters d-f">
             <ToggleBarFilter
               label="Time Period"
-              value={filters[METRIC_PERIOD_MONTHS]}
-              options={filterOptions[METRIC_PERIOD_MONTHS].options}
-              defaultOption={filterOptions[METRIC_PERIOD_MONTHS].defaultOption}
-              onChange={createOnFilterChange(METRIC_PERIOD_MONTHS)}
+              dimension={METRIC_PERIOD_MONTHS}
             />
             <ErrorBoundary>
-              <DistrictFilter onChange={createOnFilterChange(DISTRICT)} />
+              <DistrictFilter />
             </ErrorBoundary>
-            <ToggleBarFilter
-              label="Case Type"
-              value={filters[CHARGE_CATEGORY]}
-              options={filterOptions[CHARGE_CATEGORY].options}
-              defaultOption={filterOptions[CHARGE_CATEGORY].defaultOption}
-              onChange={createOnFilterChange(CHARGE_CATEGORY)}
-            />
+            <ToggleBarFilter label="Case Type" dimension={CHARGE_CATEGORY} />
             {filterOptions[SUPERVISION_LEVEL].componentEnabled && (
               <ToggleBarFilter
                 label="Supervision Level"
-                value={filters[SUPERVISION_LEVEL]}
-                options={filterOptions[SUPERVISION_LEVEL].options}
-                defaultOption={filterOptions[SUPERVISION_LEVEL].defaultOption}
-                onChange={createOnFilterChange(SUPERVISION_LEVEL)}
+                dimension={SUPERVISION_LEVEL}
               />
             )}
             {filterOptions[ADMISSION_TYPE].componentEnabled && (
-              <AdmissionTypeFilter
-                value={filters[ADMISSION_TYPE]}
-                options={filterOptions[ADMISSION_TYPE].options}
-                summingOption={filterOptions[ADMISSION_TYPE].summingOption}
-                defaultValue={filterOptions[ADMISSION_TYPE].defaultValue}
-                onChange={createOnFilterChange(ADMISSION_TYPE)}
-              />
+              <AdmissionTypeFilter />
             )}
             {filterOptions[SUPERVISION_TYPE].componentEnabled && (
               <ToggleBarFilter
                 label="Supervision Type"
-                value={filters[SUPERVISION_TYPE]}
-                options={filterOptions[SUPERVISION_TYPE].options}
-                defaultOption={filterOptions[SUPERVISION_TYPE].defaultOption}
-                onChange={createOnFilterChange(SUPERVISION_TYPE)}
+                dimension={SUPERVISION_TYPE}
               />
             )}
           </div>
-          <ViolationFilter
-            violationType={filters[VIOLATION_TYPE]}
-            reportedViolations={filters[REPORTED_VIOLATIONS]}
-            onClick={updateFilters}
-          />
+          <ViolationFilter />
         </>
       </Sticky>
 
@@ -157,9 +118,7 @@ const Revocations = () => {
               dataFilter={matchesTopLevelFilters({
                 filters,
               })}
-              updateFilters={updateFilters}
               timeDescription={timeDescription}
-              violationTypes={violationTypes}
             />
           </ErrorBoundary>
         </div>
@@ -190,7 +149,6 @@ const Revocations = () => {
             <RevocationsByViolation
               dataFilter={matchesAllFilters({ filters })}
               timeDescription={timeDescription}
-              violationTypes={filterOptions[VIOLATION_TYPE].options}
             />
           </ErrorBoundary>
         }
