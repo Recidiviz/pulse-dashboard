@@ -22,6 +22,7 @@ import {
   getAvailableStateCodes,
   doesUserHaveAccess,
 } from "../utils/authentication/user";
+import { LANTERN_TENANTS } from "../views/tenants/utils/lanternTenants";
 
 export const CURRENT_TENANT_IN_SESSION = "adminUserCurrentTenantInSession";
 
@@ -38,23 +39,27 @@ function getTenantIdFromUser(user) {
     }
     return availableStateCodes[0];
   }
-  // TODO figure out better default return
-  return fromStorage || "US_MO";
+
+  return fromStorage;
 }
 
 export default class TenantStore {
   rootStore;
 
-  // TODO figure out better default
-  currentTenantId = "US_MO";
+  currentTenantId = LANTERN_TENANTS[0];
 
   user;
 
   constructor({ rootStore }) {
-    makeAutoObservable(this, { setCurrentTenantId: action });
+    makeAutoObservable(this, {
+      setCurrentTenantId: action,
+    });
 
     this.rootStore = rootStore;
 
+    // TODO create a UserStore and setCurrentTenantId on line 63
+    // as a reaction to the user being updated, rather than setting
+    // default currentTenantId on line 49
     const { user } = useAuth0();
 
     this.setCurrentTenantId(getTenantIdFromUser(user));
