@@ -109,16 +109,8 @@ const generateCountChartData = (filteredData) => {
   return { data: { datasets, labels }, denominators: [] };
 };
 
-const createGenerateChartData = (dataFilter) => ({
-  metadata,
-  mode,
-  apiData,
-}) => {
-  const filteredData = filterOptimizedDataFormat({
-    apiData,
-    metadata,
-    filterFn: dataFilter,
-  });
+const createGenerateChartData = (dataStore) => (mode) => {
+  const { filteredData } = dataStore;
   switch (mode) {
     case "counts":
       return generateCountChartData(filteredData);

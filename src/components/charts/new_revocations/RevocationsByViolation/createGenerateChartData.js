@@ -22,23 +22,17 @@ import concat from "lodash/fp/concat";
 import mergeAllWith from "lodash/fp/mergeAllWith";
 import toInteger from "lodash/fp/toInteger";
 
-import { filterOptimizedDataFormat } from "../../../../utils/charts/dataFilters";
 import { calculateRate } from "../helpers/rate";
 import { COLORS } from "../../../../assets/scripts/constants/colors";
 
-const createGenerateChartData = (dataFilter, violationTypes) => ({
-  metadata,
-  apiData,
-}) => {
+const createGenerateChartData = (dataStore, violationTypes) => () => {
   const violationCountKey = "violation_count";
 
   const allViolationTypeKeys = map("key", violationTypes);
   const violationToCount = pipe(
-    () =>
-      filterOptimizedDataFormat({ apiData, metadata, filterFn: dataFilter }),
     map(pick(concat(allViolationTypeKeys, violationCountKey))),
     mergeAllWith((a, b) => toInteger(a) + toInteger(b))
-  )();
+  )(dataStore.filteredData);
 
   const totalViolationCount = toInteger(violationToCount[violationCountKey]);
   const numerators = map(

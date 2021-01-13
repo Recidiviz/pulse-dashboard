@@ -80,7 +80,6 @@ CaseTableComponent.propTypes = {
   setPage: PropTypes.func.isRequired,
   toggleOrder: PropTypes.func.isRequired,
   sortOrder: PropTypes.string.isRequired,
-  createUpdatePage: PropTypes.func.isRequired,
   pageData: PropTypes.arrayOf(
     PropTypes.shape({
       state_id: PropTypes.string.isRequired,

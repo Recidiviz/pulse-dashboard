@@ -29,20 +29,13 @@ import { humanReadableTitleCase } from "../../../../utils/transforms/labels";
 import { applyStatisticallySignificantShadingToDataset } from "../../../../utils/charts/significantStatistics";
 import getDenominatorKeyByMode from "../utils/getDenominatorKeyByMode";
 import getLabelByMode from "../utils/getLabelByMode";
-import { filterOptimizedDataFormat } from "../../../../utils/charts/dataFilters";
 import { COLORS } from "../../../../assets/scripts/constants/colors";
 
-const createGenerateChartData = (dataFilter) => ({
-  metadata,
-  mode,
-  apiData,
-}) => {
+const createGenerateChartData = (dataStore) => (mode) => {
   const denominatorKey = getDenominatorKeyByMode(mode);
   const riskLevels = translate("riskLevelsMap");
 
   const riskLevelCounts = pipe(
-    () =>
-      filterOptimizedDataFormat({ apiData, metadata, filterFn: dataFilter }),
     filter((data) => Object.keys(riskLevels).includes(data.risk_level)),
     groupBy("risk_level"),
     values,
@@ -60,7 +53,7 @@ const createGenerateChartData = (dataFilter) => ({
         rate: rate.toFixed(2),
       };
     })
-  )();
+  )(dataStore.filteredData);
 
   const chartDataPoints = map("rate", riskLevelCounts);
   const numerators = map("numerator", riskLevelCounts);

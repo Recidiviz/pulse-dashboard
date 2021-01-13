@@ -1,5 +1,5 @@
 // Recidiviz - a data platform for criminal justice reform
-// Copyright (C) 2020 Recidiviz, Inc.
+// Copyright (C) 2021 Recidiviz, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -28,27 +28,18 @@ import {
   getTrailingLabelFromMetricPeriodMonthsToggle,
   getPeriodLabelFromMetricPeriodMonthsToggle,
 } from "../../../../utils/charts/toggles";
-import useChartData from "../../../../hooks/useChartData";
 import { translate } from "../../../../views/tenants/utils/i18nSettings";
 import { formatData, formatExportData } from "./utils/helpers";
-import { useRootStore } from "../../../../StoreProvider";
 
 export const CASES_PER_PAGE = 15;
 
-const CaseTable = ({ dataFilter, metricPeriodMonths }) => {
-  const { filters, currentTenantId } = useRootStore();
+const CaseTable = ({ dataStore, metricPeriodMonths }) => {
   const [page, setPage] = useState(0);
   const { sortOrder, toggleOrder, comparator } = useSort();
 
-  const { isLoading, isError, apiData } = useChartData(
-    `${currentTenantId}/newRevocations`,
-    "revocations_matrix_filtered_caseload",
-    filters
-  );
-
   const sortedData = useMemo(() => {
-    return dataFilter(apiData || []).sort(comparator);
-  }, [dataFilter, apiData, comparator]);
+    return dataStore.filteredData.sort(comparator);
+  }, [dataStore.filteredData, comparator]);
 
   const { pageData, startCase, endCase } = useMemo(() => {
     const start = page * CASES_PER_PAGE;
@@ -61,11 +52,12 @@ const CaseTable = ({ dataFilter, metricPeriodMonths }) => {
     };
   }, [sortedData, page]);
 
-  if (isLoading) {
+  console.log("CaseTable: ", dataStore);
+  if (dataStore.isLoading) {
     return <Loading />;
   }
 
-  if (isError) {
+  if (dataStore.isError) {
     return <Error />;
   }
 
@@ -123,7 +115,11 @@ const metricPeriodMonthsType = PropTypes.oneOfType([
 ]);
 
 CaseTable.propTypes = {
-  dataFilter: PropTypes.func.isRequired,
+  dataStore: PropTypes.shape({
+    filteredData: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+    isLoading: PropTypes.bool.isRequired,
+    isError: PropTypes.bool.isRequired,
+  }).isRequired,
   metricPeriodMonths: metricPeriodMonthsType.isRequired,
 };
 

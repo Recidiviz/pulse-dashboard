@@ -25,7 +25,6 @@ import {
 import getDenominatorKeyByMode from "../utils/getDenominatorKeyByMode";
 import getCounts from "../utils/getCounts";
 import createRiskLevelsMap from "../utils/createRiskLevelsMap";
-import { filterOptimizedDataFormat } from "../../../../utils/charts/dataFilters";
 import { translate } from "../../../../views/tenants/utils/i18nSettings";
 import { COLORS_LANTERN_SET } from "../../../../assets/scripts/constants/colors";
 import { applyStatisticallySignificantShadingToDataset } from "../../../../utils/charts/significantStatistics";
@@ -44,11 +43,7 @@ export const generateDatasets = (dataPoints, denominators) => {
   }));
 };
 
-const createGenerateChartData = (dataFilter) => ({
-  metadata,
-  mode,
-  apiData,
-}) => {
+const createGenerateChartData = (dataStore) => (mode) => {
   const numeratorKey = "population_count";
   const denominatorKey = getDenominatorKeyByMode(mode);
 
@@ -56,11 +51,9 @@ const createGenerateChartData = (dataFilter) => ({
   const races = Object.keys(raceLabelMap);
 
   const { dataPoints, numerators, denominators } = pipe(
-    () =>
-      filterOptimizedDataFormat({ apiData, metadata, filterFn: dataFilter }),
     reduce(createRiskLevelsMap(numeratorKey, denominatorKey, "race"), {}),
     (data) => getCounts(data, getRiskLevels(), races)
-  )();
+  )(dataStore.filteredData);
 
   const data = {
     labels: getRiskLevelLabels(),

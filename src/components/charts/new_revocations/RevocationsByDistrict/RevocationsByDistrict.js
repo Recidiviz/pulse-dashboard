@@ -25,18 +25,14 @@ import RevocationCountChart from "../RevocationCountChart";
 import createGenerateChartData from "./createGenerateChartData";
 import { translate } from "../../../../views/tenants/utils/i18nSettings";
 import flags from "../../../../flags";
-import { useRootStore } from "../../../../StoreProvider";
 
 const chartTitle = "Admissions by district";
 
-const RevocationsByDistrict = ({ timeDescription, dataFilter }) => {
-  const { currentTenantId } = useRootStore();
-
+const RevocationsByDistrict = ({ timeDescription, dataStore }) => {
   return (
     <RevocationsByDimension
       chartId={`${translate("revocations")}ByDistrict`}
-      apiUrl={`${currentTenantId}/newRevocations`}
-      apiFile="revocations_matrix_distribution_by_district"
+      dataStore={dataStore}
       renderChart={({
         chartId,
         data,
@@ -67,7 +63,7 @@ const RevocationsByDistrict = ({ timeDescription, dataFilter }) => {
           />
         )
       }
-      generateChartData={createGenerateChartData(dataFilter)}
+      generateChartData={createGenerateChartData(dataStore.filteredData)}
       chartTitle={chartTitle}
       metricTitle={chartTitle}
       timeDescription={timeDescription}
@@ -83,7 +79,11 @@ const RevocationsByDistrict = ({ timeDescription, dataFilter }) => {
 };
 
 RevocationsByDistrict.propTypes = {
-  dataFilter: PropTypes.func.isRequired,
+  dataStore: PropTypes.shape({
+    filteredData: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+    isLoading: PropTypes.bool.isRequired,
+    isError: PropTypes.bool.isRequired,
+  }).isRequired,
   timeDescription: PropTypes.string.isRequired,
 };
 

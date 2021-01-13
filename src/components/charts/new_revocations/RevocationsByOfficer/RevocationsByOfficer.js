@@ -25,21 +25,17 @@ import { translate } from "../../../../views/tenants/utils/i18nSettings";
 import RevocationCountChart from "../RevocationCountChart";
 import createGenerateChartData from "./createGenerateChartData";
 import flags from "../../../../flags";
-import { useRootStore } from "../../../../StoreProvider";
 
 const MAX_OFFICERS_COUNT = 50;
 
-const RevocationsByOfficer = ({ dataFilter, timeDescription }) => {
-  const { currentTenantId } = useRootStore();
-
+const RevocationsByOfficer = ({ dataStore, timeDescription }) => {
   const chartTitle = `Admissions by ${translate("officer")}`;
   const includeWarning = false;
 
   return (
     <RevocationsByDimension
       chartId={`${translate("revocations")}by${translate("Officer")}`}
-      apiUrl={`${currentTenantId}/newRevocations`}
-      apiFile="revocations_matrix_distribution_by_officer"
+      dataStore={dataStore}
       includeWarning={includeWarning}
       renderChart={({
         chartId,
@@ -80,7 +76,7 @@ const RevocationsByOfficer = ({ dataFilter, timeDescription }) => {
           />
         );
       }}
-      generateChartData={createGenerateChartData(dataFilter)}
+      generateChartData={createGenerateChartData(dataStore)}
       chartTitle={chartTitle}
       metricTitle={chartTitle}
       timeDescription={timeDescription}
@@ -96,7 +92,11 @@ const RevocationsByOfficer = ({ dataFilter, timeDescription }) => {
 };
 
 RevocationsByOfficer.propTypes = {
-  dataFilter: PropTypes.func.isRequired,
+  dataStore: PropTypes.shape({
+    filteredData: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+    isLoading: PropTypes.bool.isRequired,
+    isError: PropTypes.bool.isRequired,
+  }).isRequired,
   timeDescription: PropTypes.string.isRequired,
 };
 

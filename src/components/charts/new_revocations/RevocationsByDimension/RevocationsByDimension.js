@@ -22,7 +22,6 @@ import { observer } from "mobx-react-lite";
 import ModeSwitcher from "../ModeSwitcher";
 import RevocationsByDimensionComponent from "./RevocationsByDimensionComponent";
 
-import useChartData from "../../../../hooks/useChartData";
 import Loading from "../../../Loading";
 import Error from "../../../Error";
 import { isDenominatorsMatrixStatisticallySignificant } from "../../../../utils/charts/significantStatistics";
@@ -32,8 +31,7 @@ import { useRootStore } from "../../../../StoreProvider";
 
 const RevocationsByDimension = ({
   chartId,
-  apiUrl,
-  apiFile,
+  dataStore,
   renderChart,
   generateChartData,
   metricTitle,
@@ -48,24 +46,15 @@ const RevocationsByDimension = ({
   const currentDistricts = filters[DISTRICT];
   const [mode, setMode] = useState(defaultMode);
 
-  const { isLoading, isError, metadata, apiData } = useChartData(
-    apiUrl,
-    apiFile,
-    filters,
-    false
-  );
-
-  if (isLoading) {
+  if (dataStore.isLoading) {
     return <Loading />;
   }
 
-  if (isError) {
+  if (dataStore.isError) {
     return <Error />;
   }
   const { data, numerators, denominators, averageRate } = generateChartData(
-    apiData,
     mode,
-    metadata,
     currentDistricts.map((d) => d.toLowerCase())
   );
 
@@ -116,9 +105,12 @@ RevocationsByDimension.defaultProps = {
 };
 
 RevocationsByDimension.propTypes = {
+  dataStore: PropTypes.shape({
+    filteredData: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+    isLoading: PropTypes.bool.isRequired,
+    isError: PropTypes.bool.isRequired,
+  }).isRequired,
   chartId: PropTypes.string.isRequired,
-  apiUrl: PropTypes.string.isRequired,
-  apiFile: PropTypes.string.isRequired,
   renderChart: PropTypes.func.isRequired,
   generateChartData: PropTypes.func.isRequired,
   metricTitle: PropTypes.oneOfType([PropTypes.func, PropTypes.string])
