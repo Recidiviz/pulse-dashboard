@@ -29,7 +29,6 @@ import {
 import StoreProvider from "../../../../../StoreProvider";
 import { useAuth0 } from "../../../../../react-auth0-spa";
 import { METADATA_NAMESPACE } from "../../../../../utils/authentication/user";
-import { setTranslateLocale } from "../../../../../views/tenants/utils/i18nSettings";
 import { US_MO } from "../../../../../views/tenants/utils/lanternTenants";
 import FiltersStore from "../../../../../RootStore/FiltersStore";
 import filterOptions from "../../../../../views/tenants/constants/filterOptions";
@@ -43,12 +42,26 @@ jest.mock("../FilterField", () => ({
   default: jest.fn(),
 }));
 jest.mock("../../../../../react-auth0-spa");
+jest.mock("../../../../../RootStore/FiltersStore");
 
 describe("ToggleBarFilter tests", () => {
   const metadataField = `${METADATA_NAMESPACE}app_metadata`;
   const mockUser = { [metadataField]: { state_code: US_MO } };
   useAuth0.mockReturnValue({ user: mockUser });
-  setTranslateLocale(US_MO);
+
+  const setFiltersMock = jest.fn();
+  FiltersStore.mockImplementation(() => {
+    return {
+      filters: {
+        metricPeriodMonths:
+          filterOptions[US_MO][METRIC_PERIOD_MONTHS].defaultValue,
+        supervisionLevel: filterOptions[US_MO][SUPERVISION_LEVEL].defaultValue,
+        supervisionType: filterOptions[US_MO][SUPERVISION_TYPE].defaultValue,
+      },
+      filterOptions: filterOptions[US_MO],
+      setFilters: setFiltersMock,
+    };
+  });
 
   FilterField.mockImplementation(({ children }) => children);
   Select.mockReturnValue(null);
@@ -88,9 +101,6 @@ describe("ToggleBarFilter tests", () => {
     });
 
     it("onChange should change the filter value", () => {
-      const setFiltersSpy = jest.fn();
-      FiltersStore.prototype.setFilters = setFiltersSpy;
-
       const updatedfilters = {
         [props.dimension]: 99,
       };
@@ -105,8 +115,8 @@ describe("ToggleBarFilter tests", () => {
         Select.mock.calls[0][0].onChange({ value: 99 });
       });
 
-      expect(setFiltersSpy).toHaveBeenCalledTimes(2);
-      expect(setFiltersSpy.mock.calls[1][0]).toMatchObject(updatedfilters);
+      expect(setFiltersMock).toHaveBeenCalledTimes(1);
+      expect(setFiltersMock.mock.calls[0][0]).toMatchObject(updatedfilters);
     });
   });
 });

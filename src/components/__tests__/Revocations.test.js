@@ -53,6 +53,7 @@ jest.mock("../charts/new_revocations/RevocationCharts");
 jest.mock("../charts/new_revocations/CaseTable/CaseTable");
 jest.mock("../../views/tenants/constants/filterOptions");
 jest.mock("../../tenants");
+jest.mock("../../RootStore/FiltersStore");
 
 describe("Revocations component tests", () => {
   const metadataField = `${METADATA_NAMESPACE}app_metadata`;
@@ -92,6 +93,24 @@ describe("Revocations component tests", () => {
   RevocationCharts.mockReturnValue(mockWithTestId(revocationChartsId));
   CaseTableMock.mockReturnValue(mockWithTestId(caseTableId));
   setTranslateLocale(US_MO);
+
+  const setRestrictedDistrictMock = jest.fn();
+  FiltersStore.mockImplementation(() => {
+    return {
+      filters: {
+        metricPeriodMonths: "",
+        chargeCategory: "",
+        reportedViolation: "",
+        violationtype: "",
+        supervisionLevel: "",
+        supervisionType: "",
+        admissionType: "",
+        district: "",
+      },
+      filterOptions: filterOptionsMap[mockTenantId],
+      setRestrictedDistrict: setRestrictedDistrictMock,
+    };
+  });
 
   beforeEach(() => {
     jest.clearAllMocks();
@@ -139,9 +158,6 @@ describe("Revocations component tests", () => {
   });
 
   it("should set user district as default filter value if it is defined", () => {
-    const setRestrictedDistrictSpy = jest.fn();
-    FiltersStore.prototype.setRestrictedDistrict = setRestrictedDistrictSpy;
-
     const mockUserWithDistrict = {
       [metadataField]: { state_code: mockTenantId, district: mockDistrict },
     };
@@ -153,6 +169,6 @@ describe("Revocations component tests", () => {
       </StoreProvider>
     );
 
-    expect(setRestrictedDistrictSpy).toHaveBeenCalledWith(mockDistrict);
+    expect(setRestrictedDistrictMock).toHaveBeenCalledWith(mockDistrict);
   });
 });
