@@ -19,11 +19,6 @@ import React, { useEffect } from "react";
 import { observer } from "mobx-react-lite";
 import Sticky from "react-sticky-fill";
 
-import {
-  matchesAllFilters,
-  matchesTopLevelFilters,
-  applyAllFilters,
-} from "./charts/new_revocations/helpers";
 import { getTimeDescription } from "./charts/new_revocations/helpers/format";
 import ToggleBarFilter from "./charts/new_revocations/ToggleBar/ToggleBarFilter";
 import ErrorBoundary from "./ErrorBoundary";
@@ -33,45 +28,46 @@ import ViolationFilter from "./charts/new_revocations/ToggleBar/ViolationFilter"
 import RevocationsOverTime from "./charts/new_revocations/RevocationsOverTime";
 import Matrix from "./charts/new_revocations/Matrix";
 import MatrixExplanation from "./charts/new_revocations/Matrix/MatrixExplanation";
-import RevocationCharts from "./charts/new_revocations/RevocationCharts";
-import RevocationsByRiskLevel from "./charts/new_revocations/RevocationsByRiskLevel/RevocationsByRiskLevel";
-import RevocationsByOfficer from "./charts/new_revocations/RevocationsByOfficer";
-import RevocationsByViolation from "./charts/new_revocations/RevocationsByViolation";
-import RevocationsByGender from "./charts/new_revocations/RevocationsByGender/RevocationsByGender";
-import RevocationsByRace from "./charts/new_revocations/RevocationsByRace/RevocationsByRace";
-import RevocationsByDistrict from "./charts/new_revocations/RevocationsByDistrict/RevocationsByDistrict";
-import CaseTable from "./charts/new_revocations/CaseTable/CaseTable";
+// import RevocationCharts from "./charts/new_revocations/RevocationCharts";
+// import RevocationsByRiskLevel from "./charts/new_revocations/RevocationsByRiskLevel/RevocationsByRiskLevel";
+// import RevocationsByOfficer from "./charts/new_revocations/RevocationsByOfficer";
+// import RevocationsByViolation from "./charts/new_revocations/RevocationsByViolation";
+// import RevocationsByGender from "./charts/new_revocations/RevocationsByGender/RevocationsByGender";
+// import RevocationsByRace from "./charts/new_revocations/RevocationsByRace/RevocationsByRace";
+// import RevocationsByDistrict from "./charts/new_revocations/RevocationsByDistrict/RevocationsByDistrict";
+// import CaseTable from "./charts/new_revocations/CaseTable/CaseTable";
 import { useAuth0 } from "../react-auth0-spa";
 import { getUserAppMetadata } from "../utils/authentication/user";
 import {
   ADMISSION_TYPE,
   CHARGE_CATEGORY,
-  DISTRICT,
+  // DISTRICT,
   METRIC_PERIOD_MONTHS,
   SUPERVISION_LEVEL,
   SUPERVISION_TYPE,
 } from "../constants/filterTypes";
-import flags from "../flags";
+// import flags from "../flags";
 import { useRootStore } from "../StoreProvider";
 
 import "./Revocations.scss";
 
 const Revocations = () => {
-  const { filtersStore } = useRootStore();
+  const { dataStore, filtersStore } = useRootStore();
   const { filters, filterOptions } = filtersStore;
   const { user } = useAuth0();
   const { district } = getUserAppMetadata(user);
-  useEffect(() => {
-    if (district) {
-      filtersStore.setRestrictedDistrict(district);
-    }
-  }, [district, filtersStore]);
 
   const timeDescription = getTimeDescription(
     filters[METRIC_PERIOD_MONTHS],
     filterOptions[ADMISSION_TYPE].options,
     filters[ADMISSION_TYPE]
   );
+
+  useEffect(() => {
+    if (district) {
+      filtersStore.setRestrictedDistrict(district);
+    }
+  }, [district, filtersStore]);
 
   return (
     <main className="Revocations">
@@ -109,10 +105,7 @@ const Revocations = () => {
       <div className="bgc-white p-20 m-20">
         <ErrorBoundary>
           <RevocationsOverTime
-            dataFilter={matchesAllFilters({
-              filters,
-              skippedFilters: [METRIC_PERIOD_MONTHS],
-            })}
+            dataStore={dataStore.storeByMetricType("revocationsOverTime")}
           />
         </ErrorBoundary>
       </div>
@@ -120,17 +113,15 @@ const Revocations = () => {
         <div className="Revocations__matrix">
           <ErrorBoundary>
             <Matrix
-              dataFilter={matchesTopLevelFilters({
-                filters,
-              })}
               timeDescription={timeDescription}
+              dataStore={dataStore.storeByMetricType("matrix")}
             />
           </ErrorBoundary>
         </div>
         <MatrixExplanation />
       </div>
 
-      <RevocationCharts
+      {/* <RevocationCharts
         riskLevelChart={
           <ErrorBoundary>
             <RevocationsByRiskLevel
@@ -196,7 +187,7 @@ const Revocations = () => {
             metricPeriodMonths={filters[METRIC_PERIOD_MONTHS]}
           />
         </ErrorBoundary>
-      </div>
+      </div> */}
     </main>
   );
 };
