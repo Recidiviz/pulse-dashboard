@@ -28,10 +28,8 @@ import { groupByMonth } from "../common/bars/utils";
 import Loading from "../../Loading";
 import Error from "../../Error";
 
-import useChartData from "../../../hooks/useChartData";
 import { COLORS } from "../../../assets/scripts/constants/colors";
 import { currentMonthBox } from "../../../utils/charts/currentSpan";
-import { filterOptimizedDataFormat } from "../../../utils/charts/dataFilters";
 import {
   getMonthCountFromMetricPeriodMonthsToggle,
   getTrailingLabelFromMetricPeriodMonthsToggle,
@@ -45,39 +43,28 @@ import RevocationsByDimensionComponent from "./RevocationsByDimension/Revocation
 import { useRootStore } from "../../../StoreProvider";
 import { METRIC_PERIOD_MONTHS } from "../../../constants/filterTypes";
 
-const RevocationsOverTime = ({ dataFilter }) => {
-  const { filters, currentTenantId } = useRootStore();
-
+const RevocationsOverTime = ({ dataStore }) => {
+  const { filters } = useRootStore();
   const chartId = `${translate("revocations")}OverTime`;
 
-  const { isLoading, isError, metadata, apiData } = useChartData(
-    `${currentTenantId}/newRevocations`,
-    "revocations_matrix_by_month",
-    false
-  );
-
-  if (isLoading) {
+  if (dataStore.isLoading) {
     return <Loading />;
   }
 
-  if (isError) {
+  if (dataStore.isError) {
     return <Error />;
   }
 
-  const chartData = pipe(
-    () =>
-      filterOptimizedDataFormat({ apiData, metadata, filterFn: dataFilter }),
-    groupByMonth(["total_revocations"]),
-    (dataset) =>
-      sortFilterAndSupplementMostRecentMonths(
-        dataset,
-        getMonthCountFromMetricPeriodMonthsToggle(
-          get(filters, METRIC_PERIOD_MONTHS)
-        ),
-        "total_revocations",
-        0
-      )
-  )();
+  const chartData = pipe(groupByMonth(["total_revocations"]), (dataset) =>
+    sortFilterAndSupplementMostRecentMonths(
+      dataset,
+      getMonthCountFromMetricPeriodMonthsToggle(
+        get(filters, METRIC_PERIOD_MONTHS)
+      ),
+      "total_revocations",
+      0
+    )
+  )(dataStore.filteredData);
 
   const labels = monthNamesAllWithYearsFromNumbers(
     map("month", chartData),
@@ -197,7 +184,12 @@ const RevocationsOverTime = ({ dataFilter }) => {
 };
 
 RevocationsOverTime.propTypes = {
-  dataFilter: PropTypes.func.isRequired,
+  // TODO: Setup propTypes for data
+  dataStore: PropTypes.shape({
+    filteredData: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+    isLoading: PropTypes.bool.isRequired,
+    isError: PropTypes.bool.isRequired,
+  }).isRequired,
 };
 
 export default observer(RevocationsOverTime);

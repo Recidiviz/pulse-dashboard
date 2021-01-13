@@ -19,6 +19,7 @@ import { computed, makeObservable } from "mobx";
 
 import FiltersStore from "./FiltersStore";
 import TenantStore from "./TenantStore";
+import DataStore from "./DataStore/DataStore";
 
 export default class RootStore {
   filtersStore;
@@ -31,8 +32,11 @@ export default class RootStore {
     makeObservable(this, { filters: computed, currentTenantId: computed });
 
     this.tenantStore = new TenantStore({ rootStore: this });
-
     this.filtersStore = new FiltersStore({ rootStore: this });
+    this.dataStore = new DataStore({
+      rootStore: this,
+      filtersStore: this.filtersStore,
+    });
   }
 
   get filters() {

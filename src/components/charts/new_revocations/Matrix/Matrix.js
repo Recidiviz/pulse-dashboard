@@ -42,12 +42,10 @@ import ExportMenu from "../../ExportMenu";
 import Loading from "../../../Loading";
 import Error from "../../../Error";
 
-import useChartData from "../../../../hooks/useChartData";
 import {
   matrixViolationTypeToLabel,
   violationCountLabel,
 } from "../../../../utils/transforms/labels";
-import { filterOptimizedDataFormat } from "../../../../utils/charts/dataFilters";
 import { translate } from "../../../../views/tenants/utils/i18nSettings";
 import { useRootStore } from "../../../../StoreProvider";
 import {
@@ -64,21 +62,16 @@ const getInteger = (field) => pipe(get(field), toInteger);
 const sumByInteger = (field) => sumBy(getInteger(field));
 const sumRow = pipe(values, sum);
 
-const Matrix = ({ dataFilter, timeDescription }) => {
-  const { filters, filtersStore, currentTenantId } = useRootStore();
+const Matrix = ({ dataStore, timeDescription }) => {
+  const { filters, filtersStore } = useRootStore();
 
   const violationTypes = translate("violationTypes");
 
-  const { metadata, isLoading, isError, apiData } = useChartData(
-    `${currentTenantId}/newRevocations`,
-    "revocations_matrix_cells",
-    false
-  );
-  if (isLoading) {
+  if (dataStore.isLoading) {
     return <Loading />;
   }
 
-  if (isError) {
+  if (dataStore.isError) {
     return <Error />;
   }
 
@@ -90,10 +83,8 @@ const Matrix = ({ dataFilter, timeDescription }) => {
     mobxGet(filters, VIOLATION_TYPE) || mobxGet(filters, REPORTED_VIOLATIONS);
 
   const filteredData = pipe(
-    () =>
-      filterOptimizedDataFormat({ apiData, metadata, filterFn: dataFilter }),
     filter((data) => violationTypes.includes(data.violation_type))
-  )();
+  )(dataStore.filteredData);
 
   const dataMatrix = pipe(
     groupBy("violation_type"),
@@ -242,7 +233,11 @@ const Matrix = ({ dataFilter, timeDescription }) => {
 };
 
 Matrix.propTypes = {
-  dataFilter: PropTypes.func.isRequired,
+  dataStore: PropTypes.shape({
+    filteredData: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+    isError: PropTypes.bool.isRequired,
+    isLoading: PropTypes.bool.isRequired,
+  }).isRequired,
   timeDescription: PropTypes.string.isRequired,
 };
 
