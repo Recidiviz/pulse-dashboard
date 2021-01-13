@@ -15,6 +15,8 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
+import { get } from "mobx";
+
 import {
   matrixViolationTypeToLabel,
   toInt,
@@ -46,11 +48,11 @@ export const matchesTopLevelFilters = ({
 }) => (item, dimensionKey = undefined) => {
   if (
     (dimensionKey === undefined || dimensionKey === "metric_period_months") &&
-    filters[METRIC_PERIOD_MONTHS] &&
+    get(filters, METRIC_PERIOD_MONTHS) &&
     !skippedFilters.includes(METRIC_PERIOD_MONTHS) &&
     !nullSafeComparison(
       item.metric_period_months,
-      filters[METRIC_PERIOD_MONTHS]
+      get(filters, METRIC_PERIOD_MONTHS)
     )
   ) {
     return false;
@@ -58,10 +60,12 @@ export const matchesTopLevelFilters = ({
 
   if (
     (dimensionKey === undefined || dimensionKey === "district") &&
-    filters[DISTRICT] &&
+    get(filters, DISTRICT) &&
     !skippedFilters.includes(DISTRICT) &&
-    !(treatCategoryAllAsAbsent && includesAllItemFirst(filters[DISTRICT])) &&
-    !nullSafeComparisonForArray(item.district, filters[DISTRICT])
+    !(
+      treatCategoryAllAsAbsent && includesAllItemFirst(get(filters, DISTRICT))
+    ) &&
+    !nullSafeComparisonForArray(item.district, get(filters, DISTRICT))
   ) {
     return false;
   }
@@ -69,15 +73,15 @@ export const matchesTopLevelFilters = ({
   if (
     (dimensionKey === undefined ||
       dimensionKey === "level_1_supervision_location") &&
-    filters[LEVEL_1_SUPERVISION_LOCATION] &&
+    get(filters, LEVEL_1_SUPERVISION_LOCATION) &&
     !skippedFilters.includes(LEVEL_1_SUPERVISION_LOCATION) &&
     !(
       treatCategoryAllAsAbsent &&
-      includesAllItemFirst(filters[LEVEL_1_SUPERVISION_LOCATION])
+      includesAllItemFirst(get(filters, LEVEL_1_SUPERVISION_LOCATION))
     ) &&
     !nullSafeComparisonForArray(
       item.level_1_supervision_location,
-      filters[LEVEL_1_SUPERVISION_LOCATION]
+      get(filters, LEVEL_1_SUPERVISION_LOCATION)
     )
   ) {
     return false;
@@ -86,15 +90,15 @@ export const matchesTopLevelFilters = ({
   if (
     (dimensionKey === undefined ||
       dimensionKey === "level_2_supervision_location") &&
-    filters[LEVEL_2_SUPERVISION_LOCATION] &&
+    get(filters, LEVEL_2_SUPERVISION_LOCATION) &&
     !skippedFilters.includes(LEVEL_2_SUPERVISION_LOCATION) &&
     !(
       treatCategoryAllAsAbsent &&
-      includesAllItemFirst(filters[LEVEL_2_SUPERVISION_LOCATION])
+      includesAllItemFirst(get(filters, LEVEL_2_SUPERVISION_LOCATION))
     ) &&
     !nullSafeComparisonForArray(
       item.level_2_supervision_location,
-      filters[LEVEL_2_SUPERVISION_LOCATION]
+      get(filters, LEVEL_2_SUPERVISION_LOCATION)
     )
   ) {
     return false;
@@ -102,37 +106,43 @@ export const matchesTopLevelFilters = ({
 
   if (
     (dimensionKey === undefined || dimensionKey === "charge_category") &&
-    filters[CHARGE_CATEGORY] &&
+    get(filters, CHARGE_CATEGORY) &&
     !skippedFilters.includes(CHARGE_CATEGORY) &&
-    !(treatCategoryAllAsAbsent && isAllItem(filters[CHARGE_CATEGORY])) &&
-    !nullSafeComparison(item.charge_category, filters[CHARGE_CATEGORY])
+    !(treatCategoryAllAsAbsent && isAllItem(get(filters, CHARGE_CATEGORY))) &&
+    !nullSafeComparison(item.charge_category, get(filters, CHARGE_CATEGORY))
   ) {
     return false;
   }
   if (
     (dimensionKey === undefined || dimensionKey === "supervision_type") &&
-    filters[SUPERVISION_TYPE] &&
+    get(filters, SUPERVISION_TYPE) &&
     !skippedFilters.includes(SUPERVISION_TYPE) &&
-    !(treatCategoryAllAsAbsent && isAllItem(filters[SUPERVISION_TYPE])) &&
-    !nullSafeComparison(item.supervision_type, filters[SUPERVISION_TYPE])
+    !(treatCategoryAllAsAbsent && isAllItem(get(filters, SUPERVISION_TYPE))) &&
+    !nullSafeComparison(item.supervision_type, get(filters, SUPERVISION_TYPE))
   ) {
     return false;
   }
   if (
     (dimensionKey === undefined || dimensionKey === "admission_type") &&
-    filters[ADMISSION_TYPE] &&
+    get(filters, ADMISSION_TYPE) &&
     !skippedFilters.includes(ADMISSION_TYPE) &&
-    !includesAllItemFirst(filters[ADMISSION_TYPE]) &&
-    !nullSafeComparisonForArray(item.admission_type, filters[ADMISSION_TYPE])
+    !includesAllItemFirst(get(filters, ADMISSION_TYPE)) &&
+    !nullSafeComparisonForArray(
+      item.admission_type,
+      get(filters, ADMISSION_TYPE)
+    )
   ) {
     return false;
   }
   if (
     (dimensionKey === undefined || dimensionKey === "supervision_level") &&
-    filters[SUPERVISION_LEVEL] &&
+    get(filters, SUPERVISION_LEVEL) &&
     !skippedFilters.includes(SUPERVISION_LEVEL) &&
-    !nullSafeComparison(item.supervision_level, filters[SUPERVISION_LEVEL]) &&
-    !(treatCategoryAllAsAbsent && isAllItem(filters[SUPERVISION_LEVEL]))
+    !nullSafeComparison(
+      item.supervision_level,
+      get(filters, SUPERVISION_LEVEL)
+    ) &&
+    !(treatCategoryAllAsAbsent && isAllItem(get(filters, SUPERVISION_LEVEL)))
   ) {
     return false;
   }
@@ -155,16 +165,16 @@ export const applyTopLevelFilters = ({
 export const matchesMatrixFilters = (filters) => (item, dimensionKey) => {
   if (
     (dimensionKey === undefined || dimensionKey === "violation_type") &&
-    filters[VIOLATION_TYPE] &&
-    !nullSafeComparison(item.violation_type, filters[VIOLATION_TYPE])
+    get(filters, VIOLATION_TYPE) &&
+    !nullSafeComparison(item.violation_type, get(filters, VIOLATION_TYPE))
   ) {
     return false;
   }
 
   if (
     (dimensionKey === undefined || dimensionKey === "reported_violations") &&
-    filters[REPORTED_VIOLATIONS] &&
-    toInt(item.reported_violations) !== toInt(filters[REPORTED_VIOLATIONS])
+    get(filters, REPORTED_VIOLATIONS) &&
+    toInt(item.reported_violations) !== toInt(get(filters, REPORTED_VIOLATIONS))
   ) {
     return false;
   }

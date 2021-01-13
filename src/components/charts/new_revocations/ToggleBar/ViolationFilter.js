@@ -17,6 +17,7 @@
 
 import React, { useMemo } from "react";
 import { observer } from "mobx-react-lite";
+import { get } from "mobx";
 
 import FilterField from "./FilterField";
 import Chip from "../Chip";
@@ -33,8 +34,8 @@ import {
 
 const ViolationFilter = () => {
   const { filtersStore, filters } = useRootStore();
-  const reportedViolations = filters[REPORTED_VIOLATIONS];
-  const violationType = filters[VIOLATION_TYPE];
+  const reportedViolations = get(filters, REPORTED_VIOLATIONS);
+  const violationType = get(filters, VIOLATION_TYPE);
 
   const clearViolationFilters = () => {
     filtersStore.setFilters({

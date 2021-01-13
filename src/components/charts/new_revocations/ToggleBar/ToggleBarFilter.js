@@ -18,6 +18,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { observer } from "mobx-react-lite";
+import { get } from "mobx";
 
 import Select from "../../../controls/Select";
 import FilterField from "./FilterField";
@@ -26,7 +27,7 @@ import { useRootStore } from "../../../../StoreProvider";
 const ToggleBarFilter = ({ label, dimension }) => {
   const { filtersStore } = useRootStore();
   const { filters, filterOptions } = filtersStore;
-  const value = filters[dimension];
+  const value = get(filters, dimension);
   const { options, defaultOption } = filterOptions[dimension];
 
   const onValueChange = (option) => {

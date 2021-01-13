@@ -17,6 +17,7 @@
 
 import React from "react";
 import { act, render } from "@testing-library/react";
+import { observable } from "mobx";
 
 import ToggleBarFilter from "../ToggleBarFilter";
 import Select from "../../../../controls/Select";
@@ -52,12 +53,12 @@ describe("ToggleBarFilter tests", () => {
   const setFiltersMock = jest.fn();
   FiltersStore.mockImplementation(() => {
     return {
-      filters: {
+      filters: observable.map({
         metricPeriodMonths:
           filterOptions[US_MO][METRIC_PERIOD_MONTHS].defaultValue,
         supervisionLevel: filterOptions[US_MO][SUPERVISION_LEVEL].defaultValue,
         supervisionType: filterOptions[US_MO][SUPERVISION_TYPE].defaultValue,
-      },
+      }),
       filterOptions: filterOptions[US_MO],
       setFilters: setFiltersMock,
     };

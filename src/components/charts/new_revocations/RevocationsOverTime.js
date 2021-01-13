@@ -19,6 +19,7 @@ import React from "react";
 import { Bar, Line } from "react-chartjs-2";
 import { observer } from "mobx-react-lite";
 import PropTypes from "prop-types";
+import { get } from "mobx";
 
 import map from "lodash/fp/map";
 import pipe from "lodash/fp/pipe";
@@ -45,11 +46,12 @@ import { generateTrendlineDataset } from "../../../utils/charts/trendline";
 import { translate } from "../../../views/tenants/utils/i18nSettings";
 import RevocationsByDimensionComponent from "./RevocationsByDimension/RevocationsByDimensionComponent";
 import { useRootStore } from "../../../StoreProvider";
+import { METRIC_PERIOD_MONTHS } from "../../../constants/filterTypes";
 
 const RevocationsOverTime = ({ dataFilter }) => {
   const { filters, currentTenantId } = useRootStore();
 
-  const chartId = `revocationsOverTime`;
+  const chartId = `${translate("revocations")}OverTime`;
 
   const { isLoading, isError, apiData, unflattenedValues } = useChartData(
     `${currentTenantId}/newRevocations`,
@@ -77,7 +79,9 @@ const RevocationsOverTime = ({ dataFilter }) => {
     (dataset) =>
       sortFilterAndSupplementMostRecentMonths(
         dataset,
-        getMonthCountFromMetricPeriodMonthsToggle(filters.metricPeriodMonths),
+        getMonthCountFromMetricPeriodMonthsToggle(
+          get(filters, METRIC_PERIOD_MONTHS)
+        ),
         "total_revocations",
         0
       )
@@ -188,13 +192,15 @@ const RevocationsOverTime = ({ dataFilter }) => {
 
   // If at least a third of all points are 0, show bar chart. Otherwise, show line chart.
   const chart =
-    countZero / filters.metricPeriodMonths >= 0.33 ? barChart : lineChart;
+    countZero / get(filters, METRIC_PERIOD_MONTHS) >= 0.33
+      ? barChart
+      : lineChart;
 
   return (
     <RevocationsByDimensionComponent
       chartTitle={translate("revocationsOverTimeXAxis")}
       timeDescription={getTrailingLabelFromMetricPeriodMonthsToggle(
-        filters.metricPeriodMonths
+        get(filters, METRIC_PERIOD_MONTHS)
       )}
       labels={chartLabels}
       chartId={`${translate("revocations")}OverTime`}

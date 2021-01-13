@@ -18,6 +18,7 @@
 import React, { useState, useMemo } from "react";
 import PropTypes from "prop-types";
 import { observer } from "mobx-react-lite";
+import { get } from "mobx";
 
 import CaseTableComponent from "./CaseTableComponent";
 import useSort from "./useSort";
@@ -32,11 +33,14 @@ import useChartData from "../../../../hooks/useChartData";
 import { translate } from "../../../../views/tenants/utils/i18nSettings";
 import { formatData, formatExportData } from "./utils/helpers";
 import { useRootStore } from "../../../../StoreProvider";
+import { METRIC_PERIOD_MONTHS } from "../../../../constants/filterTypes";
 
 export const CASES_PER_PAGE = 15;
 
-const CaseTable = ({ dataFilter, metricPeriodMonths }) => {
-  const { currentTenantId } = useRootStore();
+const CaseTable = ({ dataFilter }) => {
+  const { currentTenantId, filtersStore } = useRootStore();
+  const { filters } = filtersStore;
+
   const [page, setPage] = useState(0);
   const { sortOrder, toggleOrder, comparator } = useSort();
 
@@ -79,10 +83,10 @@ const CaseTable = ({ dataFilter, metricPeriodMonths }) => {
   });
 
   const trailingLabel = getTrailingLabelFromMetricPeriodMonthsToggle(
-    metricPeriodMonths
+    get(filters, METRIC_PERIOD_MONTHS)
   );
   const periodLabel = getPeriodLabelFromMetricPeriodMonthsToggle(
-    metricPeriodMonths
+    get(filters, METRIC_PERIOD_MONTHS)
   );
   const timeWindowDescription = `${trailingLabel} (${periodLabel})`;
 
@@ -124,14 +128,8 @@ const CaseTable = ({ dataFilter, metricPeriodMonths }) => {
   );
 };
 
-const metricPeriodMonthsType = PropTypes.oneOfType([
-  PropTypes.string,
-  PropTypes.number,
-]);
-
 CaseTable.propTypes = {
   dataFilter: PropTypes.func.isRequired,
-  metricPeriodMonths: metricPeriodMonthsType.isRequired,
 };
 
 export default observer(CaseTable);

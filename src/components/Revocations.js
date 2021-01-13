@@ -18,6 +18,7 @@
 import React, { useEffect } from "react";
 import { observer } from "mobx-react-lite";
 import Sticky from "react-sticky-fill";
+import { get } from "mobx";
 
 import {
   matchesAllFilters,
@@ -68,9 +69,9 @@ const Revocations = () => {
   }, [district, filtersStore]);
 
   const timeDescription = getTimeDescription(
-    filters[METRIC_PERIOD_MONTHS],
+    get(filters, METRIC_PERIOD_MONTHS),
     filterOptions[ADMISSION_TYPE].options,
-    filters[ADMISSION_TYPE]
+    get(filters, ADMISSION_TYPE)
   );
 
   return (
@@ -193,7 +194,6 @@ const Revocations = () => {
               filters,
               treatCategoryAllAsAbsent: true,
             })}
-            metricPeriodMonths={filters[METRIC_PERIOD_MONTHS]}
           />
         </ErrorBoundary>
       </div>
