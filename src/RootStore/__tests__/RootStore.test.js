@@ -16,26 +16,35 @@
 // =============================================================================
 import RootStore from "../RootStore";
 import { useAuth0 } from "../../react-auth0-spa";
-import { US_MO } from "../../views/tenants/utils/lanternTenants";
 import { METADATA_NAMESPACE } from "../../utils/authentication/user";
+
+let rootStore;
 
 jest.mock("../../react-auth0-spa");
 
-let rootStore;
 const metadataField = `${METADATA_NAMESPACE}app_metadata`;
-const user = { [metadataField]: { state_code: US_MO } };
 
 describe("RootStore", () => {
-  it("contains a TenantStore", () => {
-    useAuth0.mockReturnValue({
-      user,
-      isAuthenticated: true,
-      loading: false,
-      loginWithRedirect: jest.fn(),
-      getTokenSilently: jest.fn(),
-    });
+  const mockUser = { [metadataField]: { state_code: "US_MO" } };
+  useAuth0.mockReturnValue({ user: mockUser });
 
+  beforeEach(() => {
     rootStore = new RootStore();
+  });
+
+  it("contains a FiltersStore", () => {
+    expect(rootStore.filtersStore).toBeDefined();
+  });
+
+  it("contains a TenantStore", () => {
     expect(rootStore.tenantStore).toBeDefined();
+  });
+
+  it("contains a currentTenantId", () => {
+    expect(rootStore.currentTenantId).toBeDefined();
+  });
+
+  it("contains filters", () => {
+    expect(rootStore.filters).toBeDefined();
   });
 });

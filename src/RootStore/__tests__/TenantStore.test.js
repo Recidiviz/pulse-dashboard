@@ -32,7 +32,7 @@ const metadataField = `${METADATA_NAMESPACE}app_metadata`;
 const user = { [metadataField]: { state_code: US_MO } };
 
 describe("TenantStore", () => {
-  const tenantId = "SESSION_TENANT";
+  const tenantId = "US_MO";
 
   describe("when there is a CURRENT_TENANT_IN_SESSION", () => {
     beforeEach(() => {
@@ -62,6 +62,13 @@ describe("TenantStore", () => {
     });
 
     it("currentTenantId is set to availableStateCodes if the user does not have access", () => {
+      useAuth0.mockReturnValue({
+        user,
+        isAuthenticated: true,
+        loading: false,
+        loginWithRedirect: jest.fn(),
+        getTokenSilently: jest.fn(),
+      });
       const availableStateCodes = ["US_MO", "US_PA"];
       doesUserHaveAccess.mockReturnValue(false);
       getAvailableStateCodes.mockReturnValue(availableStateCodes);

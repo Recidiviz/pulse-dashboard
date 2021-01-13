@@ -28,11 +28,24 @@ import values from "lodash/fp/values";
 import MatrixCell from "./MatrixCell";
 import MatrixRow from "./MatrixRow";
 import ExportMenu from "../../ExportMenu";
-import { violationCountLabel } from "../../../../utils/transforms/labels";
+import Loading from "../../../Loading";
+import Error from "../../../Error";
 
-import { VIOLATION_COUNTS, getExportableMatrixData } from "./helpers";
-import { filtersPropTypes, dataMatrixPropTypes } from "../../propTypes";
+import useChartData from "../../../../hooks/useChartData";
 import { translate } from "../../../../views/tenants/utils/i18nSettings";
+
+import { filterOptimizedDataFormat } from "../../../../utils/charts/dataFilters";
+import {
+  VIOLATION_COUNTS,
+  sumByInteger,
+  getReportedViolationsSum,
+  getMaxRevocations,
+  getDataMatrix,
+  getExportableMatrixData,
+  getDataFilteredByViolationType,
+} from "./helpers";
+import { violationCountLabel } from "../../../../utils/transforms/labels";
+import { useRootStore } from "../../../../StoreProvider";
 import "./Matrix.scss";
 
 const TITLE =
@@ -40,27 +53,59 @@ const TITLE =
 
 const sumRow = pipe(values, sum);
 
-const Matrix = ({
-  maxRevocations,
-  dataMatrix,
-  violationsSum,
-  filterStates,
-  timeDescription,
-  updateFilters,
-  violationTypes,
-  reportedViolationsSums,
-}) => {
-  const isFiltered =
-    filterStates.violationType || filterStates.reportedViolations;
+const Matrix = ({ dataFilter, timeDescription }) => {
+  const { filters, filtersStore, currentTenantId } = useRootStore();
+  const violationTypes = translate("violationTypes");
+
+  const { metadata, isLoading, isError, apiData } = useChartData(
+    `${currentTenantId}/newRevocations`,
+    "revocations_matrix_cells",
+    filters,
+    false
+  );
+
+  if (isLoading) {
+    return <Loading />;
+  }
+
+  if (isError) {
+    return <Error />;
+  }
+
+  const filteredData = getDataFilteredByViolationType(
+    () =>
+      filterOptimizedDataFormat({ apiData, metadata, filterFn: dataFilter }),
+    violationTypes
+  )();
+
+  const dataMatrix = getDataMatrix(filteredData);
+
+  if (!dataMatrix) {
+    return null;
+  }
+
+  const updateFilters = (updatedFilters) => {
+    filtersStore.setFilters(updatedFilters);
+  };
+
+  const isFiltered = filters.violationType || filters.reportedViolations;
 
   const exportableMatrixData = getExportableMatrixData(
     dataMatrix,
     violationTypes
   );
 
+  const maxRevocations = getMaxRevocations(dataMatrix, violationTypes)();
+
+  const violationsSum = sumByInteger("total_revocations")(filteredData);
+
+  const reportedViolationsSums = VIOLATION_COUNTS.map(
+    getReportedViolationsSum(filteredData)
+  );
+
   const isSelected = (violationType, reportedViolations) =>
-    filterStates.violationType === violationType &&
-    filterStates.reportedViolations === reportedViolations;
+    filters.violationType === violationType &&
+    filters.reportedViolations === reportedViolations;
 
   const toggleFilter = function (violationType, reportedViolations) {
     if (isSelected(violationType, reportedViolations)) {
@@ -81,7 +126,6 @@ const Matrix = ({
           labels={VIOLATION_COUNTS.map(violationCountLabel)}
           metricTitle={TITLE}
           timeWindowDescription={timeDescription}
-          filters={filterStates}
           fixLabelsInColumns
           dataExportLabel="Violations"
         />
@@ -177,14 +221,8 @@ const Matrix = ({
 };
 
 Matrix.propTypes = {
-  maxRevocations: PropTypes.number.isRequired,
-  dataMatrix: dataMatrixPropTypes.isRequired,
-  violationsSum: PropTypes.number.isRequired,
-  filterStates: filtersPropTypes.isRequired,
+  dataFilter: PropTypes.func.isRequired,
   timeDescription: PropTypes.string.isRequired,
-  updateFilters: PropTypes.func.isRequired,
-  violationTypes: PropTypes.arrayOf(PropTypes.string).isRequired,
-  reportedViolationsSums: PropTypes.arrayOf(PropTypes.number).isRequired,
 };
 
 export default Matrix;

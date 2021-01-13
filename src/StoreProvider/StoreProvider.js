@@ -43,3 +43,8 @@ export function useRootStore() {
   }
   return context;
 }
+
+export function useFiltersStore() {
+  const { filtersStore } = useRootStore();
+  return filtersStore;
+}

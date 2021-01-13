@@ -66,8 +66,7 @@ const generatePercentChartData = (filteredData, currentDistricts, mode) => {
       currentDistricts &&
       labels[dataIndex] &&
       currentDistricts.find(
-        (currentDistrict) =>
-          currentDistrict.toLowerCase() === labels[dataIndex].toLowerCase()
+        (currentDistrict) => currentDistrict === labels[dataIndex].toLowerCase()
       )
         ? COLORS["lantern-light-blue"]
         : COLORS["lantern-orange"];
@@ -113,8 +112,7 @@ const generateCountChartData = (filteredData, currentDistricts) => {
     currentDistricts &&
     labels[dataIndex] &&
     currentDistricts.find(
-      (currentDistrict) =>
-        currentDistrict.toLowerCase() === labels[dataIndex].toLowerCase()
+      (currentDistrict) => currentDistrict === labels[dataIndex].toLowerCase()
     )
       ? COLORS["lantern-light-blue"]
       : COLORS["lantern-orange"];
@@ -129,16 +127,19 @@ const generateCountChartData = (filteredData, currentDistricts) => {
   return { data: { datasets, labels }, denominators: [] };
 };
 
-const createGenerateChartData = (dataFilter, currentDistricts) => ({
-  metadata,
-  mode,
+const createGenerateChartData = (dataFilter) => (
   apiData,
-}) => {
-  const filteredData = filterOptimizedDataFormat({
-    apiData,
-    metadata,
-    filterFn: dataFilter,
-  });
+  mode,
+  metadata,
+  currentDistricts
+) => {
+  const filteredData = pipe(() =>
+    filterOptimizedDataFormat({
+      metadata,
+      apiData,
+      filterFn: dataFilter,
+    })
+  )(apiData);
   switch (mode) {
     case "counts":
       return generateCountChartData(filteredData, currentDistricts);

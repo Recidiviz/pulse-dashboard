@@ -1,5 +1,22 @@
+// Recidiviz - a data platform for criminal justice reform
+// Copyright (C) 2020 Recidiviz, Inc.
+//
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <https://www.gnu.org/licenses/>.
+// =============================================================================
+
 import React from "react";
-import { act, render } from "@testing-library/react";
+import { render } from "@testing-library/react";
 
 import Revocations from "../Revocations";
 import ToggleBarFilter from "../charts/new_revocations/ToggleBar/ToggleBarFilter";
@@ -7,14 +24,11 @@ import DistrictFilter from "../charts/new_revocations/ToggleBar/DistrictFilter";
 import AdmissionTypeFilter from "../charts/new_revocations/ToggleBar/AdmissionTypeFilter";
 import ViolationFilter from "../charts/new_revocations/ToggleBar/ViolationFilter";
 import RevocationCountOverTime from "../charts/new_revocations/RevocationsOverTime";
-import MatrixContainer from "../charts/new_revocations/Matrix/MatrixContainer";
+import Matrix from "../charts/new_revocations/Matrix";
 import RevocationCharts from "../charts/new_revocations/RevocationCharts";
 import CaseTable from "../charts/new_revocations/CaseTable/CaseTable";
 import { useAuth0 } from "../../react-auth0-spa";
-import {
-  getUserAppMetadata,
-  getUserDistricts,
-} from "../../utils/authentication/user";
+import { METADATA_NAMESPACE } from "../../utils/authentication/user";
 import { setTranslateLocale } from "../../views/tenants/utils/i18nSettings";
 
 import { US_MO } from "../../views/tenants/utils/lanternTenants";
@@ -22,18 +36,13 @@ import mockWithTestId from "../../../__helpers__/mockWithTestId";
 import filterOptionsMap from "../../views/tenants/constants/filterOptions";
 import {
   ADMISSION_TYPE,
-  CHARGE_CATEGORY,
-  DISTRICT,
-  METRIC_PERIOD_MONTHS,
-  REPORTED_VIOLATIONS,
   SUPERVISION_LEVEL,
   SUPERVISION_TYPE,
-  VIOLATION_TYPE,
 } from "../../constants/filterTypes";
-import StoreProvider, { useRootStore } from "../../StoreProvider";
+import StoreProvider from "../../StoreProvider";
+import FiltersStore from "../../RootStore/FiltersStore";
 
 jest.mock("../../react-auth0-spa");
-jest.mock("../../utils/authentication/user");
 jest.mock("../charts/new_revocations/ToggleBar/ToggleBarFilter");
 jest.mock("../charts/new_revocations/ToggleBar/DistrictFilter");
 jest.mock("../charts/new_revocations/ToggleBar/AdmissionTypeFilter");
@@ -43,13 +52,14 @@ jest.mock("../charts/new_revocations/Matrix/MatrixContainer");
 jest.mock("../charts/new_revocations/RevocationCharts");
 jest.mock("../charts/new_revocations/CaseTable/CaseTable");
 jest.mock("../../views/tenants/constants/filterOptions");
-jest.mock("../../StoreProvider");
+jest.mock("../../tenants");
+jest.mock("../../RootStore/FiltersStore");
 
 describe("Revocations component tests", () => {
-  const mockUser = {};
-  const mockDistrict = "some district";
-  const mockUserDistricts = ["some district1"];
+  const metadataField = `${METADATA_NAMESPACE}app_metadata`;
   const mockTenantId = "TEST_TENANT";
+  const mockUser = { [metadataField]: { state_code: mockTenantId } };
+  const mockDistrict = "some district";
   const toggleBarIdPrefix = "toggle-bar-";
   const districtFilterId = "district-filter";
   const admissionTypeFilterId = "admission-type-filter";
@@ -61,18 +71,21 @@ describe("Revocations component tests", () => {
 
   const DistrictFilterMock = DistrictFilter.type;
   const RevocationCountOverTimeMock = RevocationCountOverTime.type;
-  const MatrixMock = MatrixContainer.type;
+  const MatrixMock = Matrix.type;
   const CaseTableMock = CaseTable.type;
+  const ToggleBarFilterMock = ToggleBarFilter.type;
+  const AdmissionTypeFilterMock = AdmissionTypeFilter.type;
+  const ViolationFilterMock = ViolationFilter.type;
 
   useAuth0.mockReturnValue({ user: mockUser });
-  getUserAppMetadata.mockReturnValue({ district: undefined });
-  getUserDistricts.mockReturnValue(mockUserDistricts);
-  ToggleBarFilter.mockImplementation(({ label }) =>
+  ToggleBarFilterMock.mockImplementation(({ label }) =>
     mockWithTestId(`${toggleBarIdPrefix}${label}`)
   );
   DistrictFilterMock.mockReturnValue(mockWithTestId(districtFilterId));
-  AdmissionTypeFilter.mockReturnValue(mockWithTestId(admissionTypeFilterId));
-  ViolationFilter.mockReturnValue(mockWithTestId(violationFilterId));
+  AdmissionTypeFilterMock.mockReturnValue(
+    mockWithTestId(admissionTypeFilterId)
+  );
+  ViolationFilterMock.mockReturnValue(mockWithTestId(violationFilterId));
   RevocationCountOverTimeMock.mockReturnValue(
     mockWithTestId(revocationCountOverTimeId)
   );
@@ -80,9 +93,23 @@ describe("Revocations component tests", () => {
   RevocationCharts.mockReturnValue(mockWithTestId(revocationChartsId));
   CaseTableMock.mockReturnValue(mockWithTestId(caseTableId));
   setTranslateLocale(US_MO);
-  StoreProvider.mockImplementation(({ children }) => children);
-  useRootStore.mockReturnValue({
-    currentTenantId: "TEST_TENANT",
+
+  const setRestrictedDistrictMock = jest.fn();
+  FiltersStore.mockImplementation(() => {
+    return {
+      filters: {
+        metricPeriodMonths: "",
+        chargeCategory: "",
+        reportedViolation: "",
+        violationtype: "",
+        supervisionLevel: "",
+        supervisionType: "",
+        admissionType: "",
+        district: "",
+      },
+      filterOptions: filterOptionsMap[mockTenantId],
+      setRestrictedDistrict: setRestrictedDistrictMock,
+    };
   });
 
   beforeEach(() => {
@@ -130,53 +157,11 @@ describe("Revocations component tests", () => {
     expect(queryByTestId(admissionTypeFilterId)).toBeNull();
   });
 
-  it("should pass correct defaultValues to filters", () => {
-    filterOptionsMap[mockTenantId][SUPERVISION_LEVEL].componentEnabled = true;
-    filterOptionsMap[mockTenantId][SUPERVISION_TYPE].componentEnabled = true;
-    filterOptionsMap[mockTenantId][ADMISSION_TYPE].componentEnabled = true;
-    filterOptionsMap[mockTenantId][ADMISSION_TYPE].filterEnabled = true;
-    render(<Revocations />);
-
-    const timePeriodFilterMocks = ToggleBarFilter.mock.calls.filter(
-      (call) => call[0].label === "Time Period"
-    );
-    const caseTypeFilterMocks = ToggleBarFilter.mock.calls.filter(
-      (call) => call[0].label === "Case Type"
-    );
-    const supervisionTypeFilterMocks = ToggleBarFilter.mock.calls.filter(
-      (call) => call[0].label === "Supervision Type"
-    );
-    const supervisionLevelFilterMocks = ToggleBarFilter.mock.calls.filter(
-      (call) => call[0].label === "Supervision Level"
-    );
-
-    const filterOptions = filterOptionsMap[mockTenantId];
-
-    expect(timePeriodFilterMocks[0][0].value).toBe(
-      filterOptions[METRIC_PERIOD_MONTHS].defaultValue
-    );
-    expect(caseTypeFilterMocks[0][0].value).toBe(
-      filterOptions[CHARGE_CATEGORY].defaultValue
-    );
-    expect(supervisionTypeFilterMocks[0][0].value).toBe(
-      filterOptions[SUPERVISION_TYPE].defaultValue
-    );
-    expect(supervisionLevelFilterMocks[0][0].value).toBe(
-      filterOptions[SUPERVISION_LEVEL].defaultValue
-    );
-    expect(DistrictFilterMock.mock.calls[0][0].value).toEqual([
-      filterOptions[DISTRICT].defaultValue,
-    ]);
-    expect(AdmissionTypeFilter.mock.calls[0][0].value).toBe(
-      filterOptions[ADMISSION_TYPE].defaultValue
-    );
-    expect(ViolationFilter.mock.calls[0][0].violationType).toBe(
-      filterOptions[VIOLATION_TYPE].defaultValue
-    );
-  });
-
   it("should set user district as default filter value if it is defined", () => {
-    getUserAppMetadata.mockReturnValue({ district: mockDistrict });
+    const mockUserWithDistrict = {
+      [metadataField]: { state_code: mockTenantId, district: mockDistrict },
+    };
+    useAuth0.mockReturnValue({ user: mockUserWithDistrict });
 
     render(
       <StoreProvider>
@@ -184,49 +169,6 @@ describe("Revocations component tests", () => {
       </StoreProvider>
     );
 
-    expect(DistrictFilterMock.mock.calls[0][0].value).toEqual([mockDistrict]);
-  });
-
-  it("should change filter value when onChange is called", () => {
-    const mockNewDistrictValue = ["some new value"];
-    render(
-      <StoreProvider>
-        <Revocations />
-      </StoreProvider>
-    );
-
-    act(() => {
-      DistrictFilterMock.mock.calls[0][0].onChange(mockNewDistrictValue);
-    });
-
-    expect(DistrictFilterMock).toHaveBeenCalledTimes(2);
-    expect(DistrictFilterMock.mock.calls[1][0].value).toEqual(
-      mockNewDistrictValue
-    );
-  });
-
-  it("should update filter values when updateFilters is called", () => {
-    const mockNewViolationTypeValue = "some new value";
-    const mockNewReportedViolationsValue = "some new value 1";
-
-    render(
-      <StoreProvider>
-        <Revocations />
-      </StoreProvider>
-    );
-
-    act(() => {
-      ViolationFilter.mock.calls[0][0].onClick({
-        [VIOLATION_TYPE]: mockNewViolationTypeValue,
-        [REPORTED_VIOLATIONS]: mockNewReportedViolationsValue,
-      });
-    });
-
-    expect(ViolationFilter.mock.calls[1][0].violationType).toBe(
-      mockNewViolationTypeValue
-    );
-    expect(ViolationFilter.mock.calls[1][0].reportedViolations).toBe(
-      mockNewReportedViolationsValue
-    );
+    expect(setRestrictedDistrictMock).toHaveBeenCalledWith(mockDistrict);
   });
 });

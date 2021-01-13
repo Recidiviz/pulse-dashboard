@@ -25,6 +25,7 @@ import {
 
 import TenantRoutes from "./components/TenantRoutes";
 import { PageProvider } from "./contexts/PageContext";
+import StoreProvider from "./StoreProvider";
 import NotFound from "./views/NotFound";
 import Profile from "./views/Profile";
 import VerificationNeeded from "./views/VerificationNeeded";
@@ -41,7 +42,6 @@ import initIntercomSettings from "./utils/initIntercomSettings";
 import { initI18n } from "./views/tenants/utils/i18nSettings";
 import { LANTERN_TENANTS } from "./views/tenants/utils/lanternTenants";
 import { CORE_TENANTS } from "./views/tenants/utils/coreTenants";
-import StoreProvider from "./StoreProvider";
 
 import "./assets/scripts/index";
 import "./assets/styles/index.scss";

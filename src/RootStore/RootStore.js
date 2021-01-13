@@ -17,15 +17,26 @@
 
 import { computed, makeObservable } from "mobx";
 
+import FiltersStore from "./FiltersStore";
 import TenantStore from "./TenantStore";
 
 export default class RootStore {
+  filtersStore;
+
   tenantStore;
 
+  stateCode;
+
   constructor() {
-    makeObservable(this, { currentTenantId: computed });
+    makeObservable(this, { filters: computed, currentTenantId: computed });
 
     this.tenantStore = new TenantStore({ rootStore: this });
+
+    this.filtersStore = new FiltersStore({ rootStore: this });
+  }
+
+  get filters() {
+    return this.filtersStore.filters;
   }
 
   get currentTenantId() {

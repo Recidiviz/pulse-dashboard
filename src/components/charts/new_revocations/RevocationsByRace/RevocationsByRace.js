@@ -24,12 +24,11 @@ import RevocationsByDimension from "../RevocationsByDimension";
 import createGenerateChartData from "./createGenerateChartData";
 import getLabelByMode from "../utils/getLabelByMode";
 import { COLORS_LANTERN_SET } from "../../../../assets/scripts/constants/colors";
-import { filtersPropTypes } from "../../propTypes";
 import flags from "../../../../flags";
 import { translate } from "../../../../views/tenants/utils/i18nSettings";
 import { useRootStore } from "../../../../StoreProvider";
 
-const RevocationsByRace = ({ dataFilter, filterStates, timeDescription }) => {
+const RevocationsByRace = ({ dataFilter, timeDescription }) => {
   const { currentTenantId } = useRootStore();
 
   return (
@@ -53,7 +52,6 @@ const RevocationsByRace = ({ dataFilter, filterStates, timeDescription }) => {
       metricTitle={(mode) =>
         `${getLabelByMode(mode)} by race/ethnicity and risk level`
       }
-      filterStates={filterStates}
       timeDescription={timeDescription}
       modes={flags.enableRevocationRateByExit ? ["rates", "exits"] : []}
       defaultMode="rates"
@@ -64,7 +62,6 @@ const RevocationsByRace = ({ dataFilter, filterStates, timeDescription }) => {
 
 RevocationsByRace.propTypes = {
   dataFilter: PropTypes.func.isRequired,
-  filterStates: filtersPropTypes.isRequired,
   timeDescription: PropTypes.string.isRequired,
 };
 
