@@ -16,6 +16,7 @@
 // =============================================================================
 import React, { useMemo } from "react";
 import { observer } from "mobx-react-lite";
+import { get } from "mobx";
 
 import filter from "lodash/fp/filter";
 import identity from "lodash/fp/identity";
@@ -77,7 +78,7 @@ const DistrictFilter = () => {
     };
 
     const selectValue = options.filter((option) =>
-      filters[DISTRICT].includes(option.value)
+      get(filters, DISTRICT).includes(option.value)
     );
 
     return (

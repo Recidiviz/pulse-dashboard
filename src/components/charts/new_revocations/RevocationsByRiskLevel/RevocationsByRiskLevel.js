@@ -25,6 +25,7 @@ import createGenerateChartData from "./createGenerateChartData";
 import RevocationsByDimension from "../RevocationsByDimension";
 import BarChartWithLabels from "../BarChartWithLabels";
 import { translate } from "../../../../views/tenants/utils/i18nSettings";
+import { dataStorePropTypes } from "../../propTypes";
 
 const RevocationsByRiskLevel = ({ dataStore, timeDescription }) => {
   return (
@@ -53,11 +54,7 @@ const RevocationsByRiskLevel = ({ dataStore, timeDescription }) => {
 };
 
 RevocationsByRiskLevel.propTypes = {
-  dataStore: PropTypes.shape({
-    filteredData: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
-    isLoading: PropTypes.bool.isRequired,
-    isError: PropTypes.bool.isRequired,
-  }).isRequired,
+  dataStore: dataStorePropTypes.isRequired,
   timeDescription: PropTypes.string.isRequired,
 };
 

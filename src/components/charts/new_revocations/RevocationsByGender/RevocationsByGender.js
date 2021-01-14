@@ -28,6 +28,7 @@ import { CHART_COLORS } from "./constants";
 import createGenerateChartData from "./createGenerateChartData";
 import flags from "../../../../flags";
 import { useRootStore } from "../../../../StoreProvider";
+import { dataStorePropTypes } from "../../propTypes";
 
 const RevocationsByGender = ({ dataStore, timeDescription }) => {
   const { currentTenantId } = useRootStore();
@@ -60,11 +61,7 @@ const RevocationsByGender = ({ dataStore, timeDescription }) => {
 };
 
 RevocationsByGender.propTypes = {
-  dataStore: PropTypes.shape({
-    filteredData: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
-    isLoading: PropTypes.bool.isRequired,
-    isError: PropTypes.bool.isRequired,
-  }).isRequired,
+  dataStore: dataStorePropTypes.isRequired,
   timeDescription: PropTypes.string.isRequired,
 };
 

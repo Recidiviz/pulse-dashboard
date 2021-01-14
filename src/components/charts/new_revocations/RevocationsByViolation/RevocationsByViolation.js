@@ -25,6 +25,7 @@ import BarChartWithLabels from "../BarChartWithLabels";
 import { translate } from "../../../../views/tenants/utils/i18nSettings";
 import { useRootStore } from "../../../../StoreProvider";
 import { VIOLATION_TYPE } from "../../../../constants/filterTypes";
+import { dataStorePropTypes } from "../../propTypes";
 
 const RevocationsByViolation = ({ dataStore, timeDescription }) => {
   const { filtersStore } = useRootStore();
@@ -54,11 +55,7 @@ const RevocationsByViolation = ({ dataStore, timeDescription }) => {
 };
 
 RevocationsByViolation.propTypes = {
-  dataStore: PropTypes.shape({
-    filteredData: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
-    isLoading: PropTypes.bool.isRequired,
-    isError: PropTypes.bool.isRequired,
-  }).isRequired,
+  dataStore: dataStorePropTypes.isRequired,
   timeDescription: PropTypes.string.isRequired,
 };
 

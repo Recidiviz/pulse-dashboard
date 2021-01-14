@@ -17,6 +17,7 @@
 
 import React from "react";
 import { render } from "@testing-library/react";
+import { observable } from "mobx";
 
 import Revocations from "../Revocations";
 import ToggleBarFilter from "../charts/new_revocations/ToggleBar/ToggleBarFilter";
@@ -97,7 +98,7 @@ describe("Revocations component tests", () => {
   const setRestrictedDistrictMock = jest.fn();
   FiltersStore.mockImplementation(() => {
     return {
-      filters: {
+      filters: observable.map({
         metricPeriodMonths: "",
         chargeCategory: "",
         reportedViolation: "",
@@ -106,7 +107,7 @@ describe("Revocations component tests", () => {
         supervisionType: "",
         admissionType: "",
         district: "",
-      },
+      }),
       filterOptions: filterOptionsMap[mockTenantId],
       setRestrictedDistrict: setRestrictedDistrictMock,
     };

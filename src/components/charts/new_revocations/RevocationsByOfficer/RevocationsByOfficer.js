@@ -25,6 +25,7 @@ import { translate } from "../../../../views/tenants/utils/i18nSettings";
 import RevocationCountChart from "../RevocationCountChart";
 import createGenerateChartData from "./createGenerateChartData";
 import flags from "../../../../flags";
+import { dataStorePropTypes } from "../../propTypes";
 
 const MAX_OFFICERS_COUNT = 50;
 
@@ -92,11 +93,7 @@ const RevocationsByOfficer = ({ dataStore, timeDescription }) => {
 };
 
 RevocationsByOfficer.propTypes = {
-  dataStore: PropTypes.shape({
-    filteredData: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
-    isLoading: PropTypes.bool.isRequired,
-    isError: PropTypes.bool.isRequired,
-  }).isRequired,
+  dataStore: dataStorePropTypes.isRequired,
   timeDescription: PropTypes.string.isRequired,
 };
 

@@ -18,6 +18,7 @@
 import React, { useEffect } from "react";
 import { observer } from "mobx-react-lite";
 import Sticky from "react-sticky-fill";
+import { get } from "mobx";
 
 import { getTimeDescription } from "./charts/new_revocations/helpers/format";
 import ToggleBarFilter from "./charts/new_revocations/ToggleBar/ToggleBarFilter";
@@ -33,6 +34,7 @@ import RevocationCharts from "./charts/new_revocations/RevocationCharts";
 import CaseTable from "./charts/new_revocations/CaseTable/CaseTable";
 import { useAuth0 } from "../react-auth0-spa";
 import { getUserAppMetadata } from "../utils/authentication/user";
+import { useRootStore } from "../StoreProvider/StoreProvider";
 import {
   ADMISSION_TYPE,
   CHARGE_CATEGORY,
@@ -40,7 +42,6 @@ import {
   SUPERVISION_LEVEL,
   SUPERVISION_TYPE,
 } from "../constants/filterTypes";
-import { useRootStore } from "../StoreProvider";
 
 import "./Revocations.scss";
 
@@ -50,10 +51,16 @@ const Revocations = () => {
   const { user } = useAuth0();
   const { district } = getUserAppMetadata(user);
 
+  useEffect(() => {
+    if (district) {
+      filtersStore.setRestrictedDistrict(district);
+    }
+  }, [district, filtersStore]);
+
   const timeDescription = getTimeDescription(
-    filters[METRIC_PERIOD_MONTHS],
+    get(filters, METRIC_PERIOD_MONTHS),
     filterOptions[ADMISSION_TYPE].options,
-    filters[ADMISSION_TYPE]
+    get(filters, ADMISSION_TYPE)
   );
 
   useEffect(() => {

@@ -18,6 +18,7 @@
 import React from "react";
 import map from "lodash/fp/map";
 import { observer } from "mobx-react-lite";
+import { get } from "mobx";
 
 import FilterField from "./FilterField";
 import MultiSelect from "../../../controls/MultiSelect";
@@ -28,7 +29,7 @@ import { ADMISSION_TYPE } from "../../../../constants/filterTypes";
 const AdmissionTypeFilter = () => {
   const { filtersStore } = useRootStore();
   const { filters, filterOptions } = filtersStore;
-  const value = filters[ADMISSION_TYPE];
+  const value = get(filters, ADMISSION_TYPE);
   const { options, defaultValue, summingOption } = filterOptions[
     ADMISSION_TYPE
   ];

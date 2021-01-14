@@ -18,6 +18,7 @@
 import React from "react";
 import { Bar, Line } from "react-chartjs-2";
 import { observer } from "mobx-react-lite";
+import { get } from "mobx";
 
 import map from "lodash/fp/map";
 import pipe from "lodash/fp/pipe";
@@ -41,10 +42,11 @@ import { useRootStore } from "../../../StoreProvider";
 import { dataStorePropTypes } from "../propTypes";
 
 import RevocationsByDimensionComponent from "./RevocationsByDimension/RevocationsByDimensionComponent";
+import { METRIC_PERIOD_MONTHS } from "../../../constants/filterTypes";
 
 const RevocationsOverTime = ({ dataStore }) => {
   const { filters } = useRootStore();
-  const chartId = `revocationsOverTime`;
+  const chartId = `${translate("revocations")}OverTime`;
 
   if (dataStore.isLoading) {
     return <Loading />;
@@ -57,7 +59,9 @@ const RevocationsOverTime = ({ dataStore }) => {
   const chartData = pipe(groupByMonth(["total_revocations"]), (dataset) =>
     sortFilterAndSupplementMostRecentMonths(
       dataset,
-      getMonthCountFromMetricPeriodMonthsToggle(filters.metricPeriodMonths),
+      getMonthCountFromMetricPeriodMonthsToggle(
+        get(filters, METRIC_PERIOD_MONTHS)
+      ),
       "total_revocations",
       0
     )
@@ -158,13 +162,15 @@ const RevocationsOverTime = ({ dataStore }) => {
 
   // If at least a third of all points are 0, show bar chart. Otherwise, show line chart.
   const chart =
-    countZero / filters.metricPeriodMonths >= 0.33 ? barChart : lineChart;
+    countZero / get(filters, METRIC_PERIOD_MONTHS) >= 0.33
+      ? barChart
+      : lineChart;
 
   return (
     <RevocationsByDimensionComponent
       chartTitle={translate("revocationsOverTimeXAxis")}
       timeDescription={getTrailingLabelFromMetricPeriodMonthsToggle(
-        filters.metricPeriodMonths
+        get(filters, METRIC_PERIOD_MONTHS)
       )}
       labels={chartLabels}
       chartId={`${translate("revocations")}OverTime`}

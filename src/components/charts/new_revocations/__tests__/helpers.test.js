@@ -15,6 +15,8 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
+import { observable } from "mobx";
+
 import { applyTopLevelFilters, applyMatrixFilters } from "../helpers";
 
 describe("applyTopLevelFilters", () => {
@@ -88,7 +90,7 @@ describe("applyTopLevelFilters", () => {
 
     describe("with supervisionLevel = 'MEDIUM' filter applied", () => {
       beforeEach(() => {
-        filters = { supervisionLevel: "MEDIUM" };
+        filters = observable.map({ supervisionLevel: "MEDIUM" });
         filtered = applyTopLevelFilters({ filters })(data);
         filteredSupervisionLevels = filtered.map((f) => f.supervision_level);
       });
@@ -106,7 +108,7 @@ describe("applyTopLevelFilters", () => {
 
     describe("with supervisionLevel = 'ALL' filter applied", () => {
       beforeEach(() => {
-        filters = { supervisionLevel: "ALL" };
+        filters = observable.map({ supervisionLevel: "ALL" });
         filtered = applyTopLevelFilters({ filters })(data);
         filteredSupervisionLevels = filtered.map((f) => f.supervision_level);
       });
@@ -120,7 +122,7 @@ describe("applyTopLevelFilters", () => {
 
     describe("when the filters do not include supervisionLevel attribute", () => {
       beforeEach(() => {
-        filters = {};
+        filters = observable.map({});
         filtered = applyTopLevelFilters({ filters })(data);
       });
 
@@ -137,7 +139,7 @@ describe("applyTopLevelFilters", () => {
 
       beforeEach(() => {
         missingCategoryAllData = data.slice(1);
-        filters = { supervisionLevel: "ALL" };
+        filters = observable.map({ supervisionLevel: "ALL" });
         filtered = applyTopLevelFilters({
           filters,
           skippedFilters: [],
@@ -169,7 +171,7 @@ describe("applyTopLevelFilters", () => {
         // treatCategoryAllAsAbsent = true and the filter = 'ALL'
         describe("with supervisionLevel = 'ALL' filter applied", () => {
           beforeEach(() => {
-            filters = { supervisionLevel: "ALL" };
+            filters = observable.map({ supervisionLevel: "ALL" });
             filtered = applyTopLevelFilters({
               filters,
               skippedFilters: [],
@@ -190,7 +192,7 @@ describe("applyTopLevelFilters", () => {
         // if the supervisionLevel filter is not 'ALL'
         describe("with supervisionLevel = 'MEDIUM' filter applied", () => {
           beforeEach(() => {
-            filters = { supervisionLevel: "MEDIUM" };
+            filters = observable.map({ supervisionLevel: "MEDIUM" });
             filtered = applyTopLevelFilters({
               filters,
               skippedFilters: [],
@@ -232,7 +234,7 @@ describe("applyTopLevelFilters", () => {
 
         describe("with supervisionLevel = 'ALL' filter applied", () => {
           beforeEach(() => {
-            filters = { supervisionLevel: "ALL" };
+            filters = observable.map({ supervisionLevel: "ALL" });
             filtered = applyTopLevelFilters({
               filters,
               skippedFilters: [],
@@ -251,7 +253,7 @@ describe("applyTopLevelFilters", () => {
 
         describe("with supervisionLevel = 'MEDIUM' filter applied", () => {
           beforeEach(() => {
-            filters = { supervisionLevel: "MEDIUM" };
+            filters = observable.map({ supervisionLevel: "MEDIUM" });
             filtered = applyTopLevelFilters({
               filters,
               skippedFilters: [],
@@ -276,7 +278,7 @@ describe("applyTopLevelFilters", () => {
 
     describe("with chargeCategory = 'ALL' filter applied", () => {
       beforeEach(() => {
-        filters = { chargeCategory: "ALL" };
+        filters = observable.map({ chargeCategory: "ALL" });
         filtered = applyTopLevelFilters({ filters })(data);
         filteredChargeCategories = filtered.map((f) => f.charge_category);
       });
@@ -289,7 +291,7 @@ describe("applyTopLevelFilters", () => {
 
     describe("with chargeCategory = 'SEX_OFFENSE' filter applied", () => {
       beforeEach(() => {
-        filters = { chargeCategory: "SEX_OFFENSE" };
+        filters = observable.map({ chargeCategory: "SEX_OFFENSE" });
         filtered = applyTopLevelFilters({ filters })(data);
         filteredChargeCategories = filtered.map((f) => f.charge_category);
       });
@@ -310,7 +312,7 @@ describe("applyTopLevelFilters", () => {
 
     describe("with levelOneSupervisionLocation = 'ALL' filter applied", () => {
       beforeEach(() => {
-        filters = { levelOneSupervisionLocation: ["ALL"] };
+        filters = observable.map({ levelOneSupervisionLocation: ["ALL"] });
         filtered = applyTopLevelFilters({ filters })(data);
         filteredSupervisionLocations = filtered.map(
           (f) => f.level_1_supervision_location
@@ -325,7 +327,7 @@ describe("applyTopLevelFilters", () => {
 
     describe("with levelOneSupervisionLocation = '04B' filter applied", () => {
       beforeEach(() => {
-        filters = { levelOneSupervisionLocation: ["04B"] };
+        filters = observable.map({ levelOneSupervisionLocation: ["04B"] });
         filtered = applyTopLevelFilters({ filters })(data);
         filteredSupervisionLocations = filtered.map(
           (f) => f.level_1_supervision_location
@@ -365,7 +367,7 @@ describe("applyTopLevelFilters", () => {
       ];
 
       beforeEach(() => {
-        filters = { levelOneSupervisionLocation: ["ALL"] };
+        filters = observable.map({ levelOneSupervisionLocation: ["ALL"] });
         filtered = applyTopLevelFilters({
           filters,
           skippedFilters: [],
@@ -388,7 +390,7 @@ describe("applyTopLevelFilters", () => {
 
     describe("with levelTwoSupervisionLocation = 'ALL' filter applied", () => {
       beforeEach(() => {
-        filters = { levelTwoSupervisionLocation: ["ALL"] };
+        filters = observable.map({ levelTwoSupervisionLocation: ["ALL"] });
         filtered = applyTopLevelFilters({ filters })(data);
         filteredSupervisionLocations = filtered.map(
           (f) => f.level_2_supervision_location
@@ -403,7 +405,9 @@ describe("applyTopLevelFilters", () => {
 
     describe("with levelTwoSupervisionLocation = 'ROCKYROAD' filter applied", () => {
       beforeEach(() => {
-        filters = { levelTwoSupervisionLocation: ["ROCKYROAD"] };
+        filters = observable.map({
+          levelTwoSupervisionLocation: ["ROCKYROAD"],
+        });
         filtered = applyTopLevelFilters({ filters })(data);
         filteredSupervisionLocations = filtered.map(
           (f) => f.level_2_supervision_location
@@ -443,7 +447,7 @@ describe("applyTopLevelFilters", () => {
       ];
 
       beforeEach(() => {
-        filters = { levelTwoSupervisionLocation: ["ALL"] };
+        filters = observable.map({ levelTwoSupervisionLocation: ["ALL"] });
         filtered = applyTopLevelFilters({
           filters,
           skippedFilters: [],
@@ -463,7 +467,7 @@ describe("applyTopLevelFilters", () => {
 });
 
 describe("applyMatrixFilters", () => {
-  let filters = {};
+  let filters = observable.map({});
   let filtered = [];
   let data = [];
 
@@ -527,7 +531,7 @@ describe("applyMatrixFilters", () => {
 
     describe("with violationType = 'MED_TECH' filter applied", () => {
       beforeEach(() => {
-        filters = { violationType: "MED_TECH" };
+        filters = observable.map({ violationType: "MED_TECH" });
         filtered = applyMatrixFilters(filters)(data);
         filteredViolationTypes = filtered.map((f) => f.violation_type);
       });
@@ -541,7 +545,7 @@ describe("applyMatrixFilters", () => {
 
     describe("with violationType = 'LAW' filter applied", () => {
       beforeEach(() => {
-        filters = { violationType: "LAW" };
+        filters = observable.map({ violationType: "LAW" });
         filtered = applyMatrixFilters(filters)(data);
         filteredViolationTypes = filtered.map((f) => f.violation_type);
       });
@@ -555,7 +559,7 @@ describe("applyMatrixFilters", () => {
 
     describe("with violationType = 'BOGUS' filter applied", () => {
       beforeEach(() => {
-        filters = { violationType: "BOGUS" };
+        filters = observable.map({ violationType: "BOGUS" });
         filtered = applyMatrixFilters(filters)(data);
         filteredViolationTypes = filtered.map((f) => f.violationType);
       });

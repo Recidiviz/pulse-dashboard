@@ -18,6 +18,7 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { observer } from "mobx-react-lite";
+import { get } from "mobx";
 
 import ModeSwitcher from "../ModeSwitcher";
 import RevocationsByDimensionComponent from "./RevocationsByDimensionComponent";
@@ -43,7 +44,7 @@ const RevocationsByDimension = ({
   includeWarning,
 }) => {
   const { filters } = useRootStore();
-  const currentDistricts = filters[DISTRICT];
+  const currentDistricts = get(filters, DISTRICT);
   const [mode, setMode] = useState(defaultMode);
 
   if (dataStore.isLoading) {

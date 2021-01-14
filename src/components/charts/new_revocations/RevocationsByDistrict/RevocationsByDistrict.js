@@ -25,6 +25,7 @@ import RevocationCountChart from "../RevocationCountChart";
 import createGenerateChartData from "./createGenerateChartData";
 import { translate } from "../../../../views/tenants/utils/i18nSettings";
 import flags from "../../../../flags";
+import { dataStorePropTypes } from "../../propTypes";
 
 const chartTitle = "Admissions by district";
 
@@ -79,11 +80,7 @@ const RevocationsByDistrict = ({ timeDescription, dataStore }) => {
 };
 
 RevocationsByDistrict.propTypes = {
-  dataStore: PropTypes.shape({
-    filteredData: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
-    isLoading: PropTypes.bool.isRequired,
-    isError: PropTypes.bool.isRequired,
-  }).isRequired,
+  dataStore: dataStorePropTypes.isRequired,
   timeDescription: PropTypes.string.isRequired,
 };
 

@@ -79,7 +79,7 @@ export default class FiltersStore {
   }
 
   setFilters(updatedFilters) {
-    this.filters = { ...this.filters, ...updatedFilters };
+    this.filters.merge(updatedFilters);
   }
 
   setRestrictedDistrict(restrictedDistrict) {

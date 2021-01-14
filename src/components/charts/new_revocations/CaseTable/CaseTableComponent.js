@@ -15,50 +15,50 @@ const CaseTableComponent = ({
   casesPerPage,
   exportMenu,
   totalCases,
-}) => {
-  return (
-    <div className="CaseTable">
-      <h4>
-        Admitted individuals
-        {exportMenu}
-      </h4>
-      <h6 className="pB-20">{timeWindowDescription}</h6>
-      <table>
-        <thead>
-          <tr>
-            {options.map((option) => (
-              <th key={option.key}>
-                <Sortable {...createSortableProps(option.key)}>
-                  {option.label}
-                </Sortable>
-              </th>
-            ))}
-          </tr>
-        </thead>
-        <tbody className="fs-block">
-          {pageData.map((details) => (
-            <tr key={`${details.state_id}-${details.admissionType}`}>
-              <td>{details.state_id}</td>
-              {nullSafeCell(details.district)}
-              {nullSafeCell(details.officer)}
-              {nullSafeCell(details.risk_level)}
-              {nullSafeCell(details.officer_recommendation)}
-              {nullSafeCell(details.violation_record)}
-            </tr>
+}) => (
+  <div className="CaseTable">
+    <h4>
+      Admitted individuals
+      {exportMenu}
+    </h4>
+    <h6 className="pB-20">{timeWindowDescription}</h6>
+    <table>
+      <thead>
+        <tr>
+          {options.map((option) => (
+            <th key={option.key}>
+              <Sortable {...createSortableProps(option.key)}>
+                {option.label}
+              </Sortable>
+            </th>
           ))}
-        </tbody>
-      </table>
-      {totalCases > casesPerPage && (
-        <Pagination
-          beginning={startCase}
-          end={endCase}
-          total={totalCases}
-          createUpdatePage={createUpdatePage}
-        />
-      )}
-    </div>
-  );
-};
+        </tr>
+      </thead>
+      <tbody className="fs-block">
+        {pageData.map((details) => (
+          <tr
+            key={`${details.state_id}-${details.admissionType}-${details.officer_recommendation}`}
+          >
+            <td>{details.state_id}</td>
+            {nullSafeCell(details.district)}
+            {nullSafeCell(details.officer)}
+            {nullSafeCell(details.risk_level)}
+            {nullSafeCell(details.officer_recommendation)}
+            {nullSafeCell(details.violation_record)}
+          </tr>
+        ))}
+      </tbody>
+    </table>
+    {totalCases > casesPerPage && (
+      <Pagination
+        beginning={startCase}
+        end={endCase}
+        total={totalCases}
+        createUpdatePage={createUpdatePage}
+      />
+    )}
+  </div>
+);
 
 CaseTableComponent.propTypes = {
   options: PropTypes.arrayOf(

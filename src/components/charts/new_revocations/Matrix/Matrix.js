@@ -20,6 +20,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import cx from "classnames";
 import { observer } from "mobx-react-lite";
+import { get as mobxGet } from "mobx";
 
 import getOr from "lodash/fp/getOr";
 import pipe from "lodash/fp/pipe";
@@ -45,6 +46,11 @@ import Error from "../../../Error";
 import MatrixCell from "./MatrixCell";
 import MatrixRow from "./MatrixRow";
 import ExportMenu from "../../ExportMenu";
+
+import {
+  VIOLATION_TYPE,
+  REPORTED_VIOLATIONS,
+} from "../../../../constants/filterTypes";
 import "./Matrix.scss";
 
 const TITLE =
@@ -69,7 +75,8 @@ const Matrix = ({ dataStore, timeDescription }) => {
     filtersStore.setFilters(updatedFilters);
   };
 
-  const isFiltered = filters.violationType || filters.reportedViolations;
+  const isFiltered =
+    mobxGet(filters, VIOLATION_TYPE) || mobxGet(filters, REPORTED_VIOLATIONS);
 
   const dataMatrix = pipe(
     groupBy("violation_type"),
@@ -101,8 +108,8 @@ const Matrix = ({ dataStore, timeDescription }) => {
   );
 
   const isSelected = (violationType, reportedViolations) =>
-    filters.violationType === violationType &&
-    filters.reportedViolations === reportedViolations;
+    mobxGet(filters, VIOLATION_TYPE) === violationType &&
+    mobxGet(filters, REPORTED_VIOLATIONS) === reportedViolations;
 
   const toggleFilter = function (violationType, reportedViolations) {
     if (isSelected(violationType, reportedViolations)) {

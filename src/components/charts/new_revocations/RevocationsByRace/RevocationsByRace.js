@@ -26,6 +26,7 @@ import getLabelByMode from "../utils/getLabelByMode";
 import { COLORS_LANTERN_SET } from "../../../../assets/scripts/constants/colors";
 import flags from "../../../../flags";
 import { translate } from "../../../../views/tenants/utils/i18nSettings";
+import { dataStorePropTypes } from "../../propTypes";
 
 const RevocationsByRace = ({ dataStore, timeDescription }) => {
   return (
@@ -57,11 +58,7 @@ const RevocationsByRace = ({ dataStore, timeDescription }) => {
 };
 
 RevocationsByRace.propTypes = {
-  dataStore: PropTypes.shape({
-    filteredData: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
-    isLoading: PropTypes.bool.isRequired,
-    isError: PropTypes.bool.isRequired,
-  }).isRequired,
+  dataStore: dataStorePropTypes.isRequired,
   timeDescription: PropTypes.string.isRequired,
 };
 
