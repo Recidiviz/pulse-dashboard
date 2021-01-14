@@ -21,14 +21,14 @@ import {
   when,
   observable,
   computed,
-  action,
   get,
+  toJS,
 } from "mobx";
 
-import { useAuth0 } from "../../react-auth0-spa";
 import { callMetricsApi } from "../../api/metrics/metricsClient";
-import { processResponseData } from "./processDataUtils";
-import { applyTopLevelFilters } from "../../components/charts/new_revocations/helpers";
+import { processResponseData } from "./helpers";
+import { matchesTopLevelFilters } from "../../components/charts/new_revocations/helpers";
+import { filterOptimizedDataFormat } from "../../utils/charts/dataFilters";
 
 export default class MatrixStore {
   rootStore;
@@ -41,17 +41,18 @@ export default class MatrixStore {
 
   apiData = [];
 
+  metadata = observable.map({});
+
   auth0Context = observable.map({ loading: true });
 
   file = `revocations_matrix_cells`;
 
-  violationTypes;
+  eagerExpand = false;
 
   constructor({ rootStore }) {
     makeAutoObservable(this, {
       fetchData: flow,
       apiData: observable.shallow,
-      setAuth0Context: action,
       filteredData: computed,
     });
 
@@ -59,19 +60,12 @@ export default class MatrixStore {
 
     this.filtersStore = rootStore.filtersStore;
 
-    this.setAuth0Context();
-
     when(
-      () => !get(this.auth0Context, "loading"),
+      () => !get(this.rootStore.auth0Context, "loading"),
       () => {
         this.fetchData();
       }
     );
-  }
-
-  setAuth0Context() {
-    const auth0Context = useAuth0();
-    this.auth0Context.merge(auth0Context);
   }
 
   *fetchData() {
@@ -79,9 +73,15 @@ export default class MatrixStore {
     try {
       const responseData = yield callMetricsApi(
         endpoint,
-        get(this.auth0Context, "getTokenSilently")
+        this.rootStore.getTokenSilently
       );
-      this.apiData = processResponseData(responseData, this.file).data;
+      const processedData = processResponseData(
+        responseData,
+        this.file,
+        this.eagerExpand
+      );
+      this.apiData = processedData.data;
+      this.metadata = processedData.metadata;
       this.isLoading = false;
     } catch (error) {
       console.error(error);
@@ -93,6 +93,11 @@ export default class MatrixStore {
   get filteredData() {
     if (!this.apiData) return [];
     const { filters } = this.filtersStore;
-    return applyTopLevelFilters({ filters })(this.apiData);
+    const dataFilter = matchesTopLevelFilters({ filters });
+    return filterOptimizedDataFormat({
+      apiData: toJS(this.apiData),
+      metadata: this.metadata,
+      filterFn: dataFilter,
+    });
   }
 }

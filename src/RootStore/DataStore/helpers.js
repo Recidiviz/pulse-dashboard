@@ -12,17 +12,19 @@ export function unflattenValues(metricFile) {
       );
 }
 
-export function processResponseData(data, metricType, eagerExpand = true) {
-  const metricFile = parseResponseByFileFormat(data, metricType, eagerExpand);
-
-  if (!Array.isArray(metricFile)) {
+export function processResponseData(data, file, eagerExpand = true) {
+  console.log(data, file, eagerExpand);
+  const metricFile = parseResponseByFileFormat(data, file, eagerExpand);
+  const { metadata } = metricFile;
+  // If we are not eagerly expanding a single file request, then proactively
+  // unflatten the data matrix to avoid repeated unflattening operations in
+  // filtering operations later on.
+  if (!eagerExpand) {
     return {
-      metadata: metricFile.metadata,
+      metadata,
       data: unflattenValues(metricFile),
     };
   }
 
-  return {
-    data: metricFile,
-  };
+  return metricFile;
 }

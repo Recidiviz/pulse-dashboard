@@ -19,18 +19,29 @@ import {
   flow,
   makeAutoObservable,
   when,
+  reaction,
   observable,
   computed,
+  action,
   get,
   toJS,
 } from "mobx";
 import { callMetricsApi } from "../../api/metrics/metricsClient";
 import { processResponseData } from "./helpers";
-import { matchesAllFilters } from "../../components/charts/new_revocations/helpers";
-import { METRIC_PERIOD_MONTHS } from "../../constants/filterTypes";
 import { filterOptimizedDataFormat } from "../../utils/charts/dataFilters";
+import { matchesAllFilters } from "../../components/charts/new_revocations/helpers";
+import { DISTRICT } from "../../constants/filterTypes";
 
-export default class RevocationsOverTimeStore {
+const CHART_TO_FILENAME = {
+  District: "revocations_matrix_distribution_by_district",
+  "Risk level": "revocations_matrix_distribution_by_risk_level",
+  Gender: "revocations_matrix_distribution_by_gender",
+  Officer: "revocations_matrix_distribution_by_officer",
+  Race: "revocations_matrix_distribution_by_race",
+  Violation: "revocations_matrix_distribution_by_violation",
+};
+
+export default class RevocationsChartsStore {
   rootStore;
 
   filtersStore;
@@ -43,15 +54,19 @@ export default class RevocationsOverTimeStore {
 
   metadata = observable.map({});
 
+  selectedChart = "District";
+
   eagerExpand = false;
 
-  file = `revocations_matrix_by_month`;
+  auth0Context = observable.map({ loading: true });
 
   constructor({ rootStore }) {
     makeAutoObservable(this, {
       fetchData: flow,
       apiData: observable.shallow,
       filteredData: computed,
+      selectedChart: observable,
+      setSelectedChart: action.bound,
     });
 
     this.rootStore = rootStore;
@@ -60,25 +75,33 @@ export default class RevocationsOverTimeStore {
 
     when(
       () => !get(this.rootStore.auth0Context, "loading"),
-      () => {
-        this.fetchData();
-      }
+      () => this.fetchData()
+    );
+
+    reaction(
+      () => this.selectedChart,
+      () => this.fetchData()
     );
   }
 
+  setSelectedChart(chartId) {
+    this.selectedChart = chartId;
+  }
+
   *fetchData() {
-    const endpoint = `${this.rootStore.currentTenantId}/newRevocations/${this.file}`;
+    const filename = CHART_TO_FILENAME[this.selectedChart];
+    const endpoint = `${this.rootStore.currentTenantId}/newRevocations/${filename}`;
     try {
+      this.isLoading = true;
       const responseData = yield callMetricsApi(
         endpoint,
         this.rootStore.getTokenSilently
       );
       const processedData = processResponseData(
         responseData,
-        this.file,
+        filename,
         this.eagerExpand
       );
-      console.log(processedData.data.length);
       this.apiData = processedData.data;
       this.metadata = processedData.metadata;
       this.isLoading = false;
@@ -92,11 +115,13 @@ export default class RevocationsOverTimeStore {
   get filteredData() {
     if (!this.apiData) return [];
     const { filters } = this.filtersStore;
+    const filteringOptions = {
+      District: { skippedFilters: [DISTRICT] },
+    };
     const dataFilter = matchesAllFilters({
       filters,
-      skippedFilters: [METRIC_PERIOD_MONTHS],
+      ...filteringOptions[this.selectedChart],
     });
-
     return filterOptimizedDataFormat({
       apiData: toJS(this.apiData),
       metadata: this.metadata,

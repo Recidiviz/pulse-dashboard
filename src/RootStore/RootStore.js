@@ -15,7 +15,8 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import { computed, makeObservable } from "mobx";
+import { get, computed, makeObservable, action, observable } from "mobx";
+import { useAuth0 } from "../react-auth0-spa";
 
 import FiltersStore from "./FiltersStore";
 import TenantStore from "./TenantStore";
@@ -26,14 +27,33 @@ export default class RootStore {
 
   tenantStore;
 
+  dataStore;
+
   stateCode;
 
+  auth0Context = observable.map({ loading: true });
+
   constructor() {
-    makeObservable(this, { filters: computed, currentTenantId: computed });
+    makeObservable(this, {
+      filters: computed,
+      currentTenantId: computed,
+      setAuth0Context: action,
+    });
+
+    this.setAuth0Context();
 
     this.tenantStore = new TenantStore({ rootStore: this });
     this.filtersStore = new FiltersStore({ rootStore: this });
     this.dataStore = new DataStore({ rootStore: this });
+  }
+
+  setAuth0Context() {
+    const auth0Context = useAuth0();
+    this.auth0Context.merge(auth0Context);
+  }
+
+  get getTokenSilently() {
+    return get(this.auth0Context, "getTokenSilently");
   }
 
   get filters() {
