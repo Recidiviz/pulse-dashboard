@@ -48,7 +48,7 @@ const CaseTable = ({ dataFilter }) => {
   const { isLoading, isError, apiData, unflattenedValues } = useChartData(
     `${currentTenantId}/newRevocations`,
     "revocations_matrix_filtered_caseload",
-    true
+    false
   );
 
   if (isLoading) {
