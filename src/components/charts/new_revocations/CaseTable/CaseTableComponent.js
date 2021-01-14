@@ -7,10 +7,8 @@ import Pagination from "./Pagination";
 const CaseTableComponent = ({
   options,
   timeWindowDescription,
-  page,
-  setPage,
-  toggleOrder,
-  sortOrder,
+  createSortableProps,
+  createUpdatePage,
   pageData,
   startCase,
   endCase,
@@ -18,15 +16,6 @@ const CaseTableComponent = ({
   exportMenu,
   totalCases,
 }) => {
-  const createUpdatePage = (diff) => () => setPage(page + diff);
-  const createSortableProps = (field) => ({
-    order: sortOrder,
-    onClick: () => {
-      toggleOrder(field);
-      setPage(0);
-    },
-  });
-
   return (
     <div className="CaseTable">
       <h4>
@@ -76,10 +65,8 @@ CaseTableComponent.propTypes = {
     PropTypes.shape({ key: PropTypes.string, label: PropTypes.string })
   ).isRequired,
   timeWindowDescription: PropTypes.string.isRequired,
-  page: PropTypes.number.isRequired,
-  setPage: PropTypes.func.isRequired,
-  toggleOrder: PropTypes.func.isRequired,
-  sortOrder: PropTypes.string.isRequired,
+  createSortableProps: PropTypes.func.isRequired,
+  createUpdatePage: PropTypes.func.isRequired,
   pageData: PropTypes.arrayOf(
     PropTypes.shape({
       state_id: PropTypes.string.isRequired,

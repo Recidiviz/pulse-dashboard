@@ -15,7 +15,15 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import { flow, makeAutoObservable, when, observable, computed } from "mobx";
+import {
+  flow,
+  makeAutoObservable,
+  when,
+  observable,
+  computed,
+  get,
+  action,
+} from "mobx";
 import { useAuth0 } from "../../react-auth0-spa";
 import { callMetricsApi } from "../../api/metrics/metricsClient";
 import { processResponseData } from "./processDataUtils";
@@ -23,7 +31,7 @@ import { applyAllFilters } from "../../components/charts/new_revocations/helpers
 import { METRIC_PERIOD_MONTHS } from "../../constants/filterTypes";
 
 export default class RevocationsOverTimeStore {
-  dataStore;
+  rootStore;
 
   filtersStore;
 
@@ -31,52 +39,61 @@ export default class RevocationsOverTimeStore {
 
   isError = false;
 
-  apiData = observable.map({ data: [], metadata: {} });
+  apiData = [];
 
-  auth0Context;
+  auth0Context = observable.map({ loading: true });
 
   file = `revocations_matrix_by_month`;
 
-  constructor({ dataStore, filtersStore }) {
+  constructor({ rootStore }) {
     makeAutoObservable(this, {
       fetchData: flow,
+      apiData: observable.shallow,
+      setAuth0Context: action,
       filteredData: computed,
     });
 
-    this.dataStore = dataStore;
+    this.rootStore = rootStore;
 
-    this.filtersStore = filtersStore;
+    this.filtersStore = rootStore.filtersStore;
 
-    this.auth0Context = useAuth0();
+    this.setAuth0Context();
 
     when(
-      () => !this.auth0Context.loading,
-      () => this.fetchData()
+      () => !get(this.auth0Context, "loading"),
+      () => {
+        this.fetchData();
+      }
     );
   }
 
-  get filteredData() {
-    if (!this.apiData.data) return [];
-    const { filters } = this.filtersStore;
-    return applyAllFilters({
-      filters,
-      skippedFilters: [METRIC_PERIOD_MONTHS],
-    })(this.apiData.data);
+  setAuth0Context() {
+    const auth0Context = useAuth0();
+    this.auth0Context.merge(auth0Context);
   }
 
   *fetchData() {
-    const endpoint = `${this.dataStore.currentTenantId}/newRevocations/${this.file}`;
+    const endpoint = `${this.rootStore.currentTenantId}/newRevocations/${this.file}`;
     try {
       const responseData = yield callMetricsApi(
         endpoint,
-        this.auth0Context.getTokenSilently
+        get(this.auth0Context, "getTokenSilently")
       );
-      this.apiData = processResponseData(responseData, this.file);
+      this.apiData = processResponseData(responseData, this.file).data;
       this.isLoading = false;
     } catch (error) {
       console.error(error);
       this.isError = true;
       this.isLoading = false;
     }
+  }
+
+  get filteredData() {
+    if (!this.apiData) return [];
+    const { filters } = this.filtersStore;
+    return applyAllFilters({
+      filters,
+      skippedFilters: [METRIC_PERIOD_MONTHS],
+    })(this.apiData);
   }
 }

@@ -27,7 +27,6 @@ import { calculateRate } from "../helpers/rate";
 
 import { translate } from "../../../../views/tenants/utils/i18nSettings";
 import { applyStatisticallySignificantShading } from "../../../../utils/charts/significantStatistics";
-import { filterOptimizedDataFormat } from "../../../../utils/charts/dataFilters";
 import { COLORS } from "../../../../assets/scripts/constants/colors";
 import { sumCounts } from "../utils/sumCounts";
 

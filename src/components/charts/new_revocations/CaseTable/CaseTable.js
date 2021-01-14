@@ -52,7 +52,6 @@ const CaseTable = ({ dataStore, metricPeriodMonths }) => {
     };
   }, [sortedData, page]);
 
-  console.log("CaseTable: ", dataStore);
   if (dataStore.isLoading) {
     return <Loading />;
   }
@@ -81,14 +80,21 @@ const CaseTable = ({ dataStore, metricPeriodMonths }) => {
     { key: "violation_record", label: "Violation record" },
   ];
 
+  const createUpdatePage = (diff) => () => setPage(page + diff);
+  const createSortableProps = (field) => ({
+    order: sortOrder,
+    onClick: () => {
+      toggleOrder(field);
+      setPage(0);
+    },
+  });
+
   return (
     <CaseTableComponent
       timeWindowDescription={timeWindowDescription}
       options={options}
-      page={page}
-      setPage={setPage}
-      toggleOrder={toggleOrder}
-      sortOrder={sortOrder}
+      createUpdatePage={createUpdatePage}
+      createSortableProps={createSortableProps}
       pageData={pageData}
       startCase={startCase}
       endCase={endCase}

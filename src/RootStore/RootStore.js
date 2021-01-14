@@ -33,10 +33,7 @@ export default class RootStore {
 
     this.tenantStore = new TenantStore({ rootStore: this });
     this.filtersStore = new FiltersStore({ rootStore: this });
-    this.dataStore = new DataStore({
-      rootStore: this,
-      filtersStore: this.filtersStore,
-    });
+    this.dataStore = new DataStore({ rootStore: this });
   }
 
   get filters() {

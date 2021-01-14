@@ -28,7 +28,6 @@ import { translate } from "../../../../views/tenants/utils/i18nSettings";
 import { sumCounts } from "../utils/sumCounts";
 import getNameFromOfficerId from "../utils/getNameFromOfficerId";
 import { COLORS } from "../../../../assets/scripts/constants/colors";
-import { filterOptimizedDataFormat } from "../../../../utils/charts/dataFilters";
 
 const generatePercentChartData = (filteredData, mode) => {
   const [fieldName, totalFieldName] =
