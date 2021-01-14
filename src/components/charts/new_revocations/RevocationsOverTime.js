@@ -16,9 +16,10 @@
 // =============================================================================
 
 import React from "react";
-import PropTypes from "prop-types";
 import { Bar, Line } from "react-chartjs-2";
 import { observer } from "mobx-react-lite";
+import PropTypes from "prop-types";
+import { get } from "mobx";
 
 import map from "lodash/fp/map";
 import pipe from "lodash/fp/pipe";
@@ -42,19 +43,15 @@ import {
 import { sortFilterAndSupplementMostRecentMonths } from "../../../utils/transforms/datasets";
 import { monthNamesAllWithYearsFromNumbers } from "../../../utils/transforms/months";
 import { generateTrendlineDataset } from "../../../utils/charts/trendline";
-import { filtersPropTypes } from "../propTypes";
 import { translate } from "../../../views/tenants/utils/i18nSettings";
 import RevocationsByDimensionComponent from "./RevocationsByDimension/RevocationsByDimensionComponent";
 import { useRootStore } from "../../../StoreProvider";
+import { METRIC_PERIOD_MONTHS } from "../../../constants/filterTypes";
 
-const RevocationsOverTime = ({
-  dataFilter,
-  metricPeriodMonths,
-  filterStates,
-}) => {
-  const { currentTenantId } = useRootStore();
+const RevocationsOverTime = ({ dataFilter }) => {
+  const { filters, currentTenantId } = useRootStore();
 
-  const chartId = `revocationsOverTime`;
+  const chartId = `${translate("revocations")}OverTime`;
 
   const { isLoading, isError, apiData, unflattenedValues } = useChartData(
     `${currentTenantId}/newRevocations`,
@@ -82,7 +79,9 @@ const RevocationsOverTime = ({
     (dataset) =>
       sortFilterAndSupplementMostRecentMonths(
         dataset,
-        getMonthCountFromMetricPeriodMonthsToggle(metricPeriodMonths),
+        getMonthCountFromMetricPeriodMonthsToggle(
+          get(filters, METRIC_PERIOD_MONTHS)
+        ),
         "total_revocations",
         0
       )
@@ -192,19 +191,21 @@ const RevocationsOverTime = ({
   );
 
   // If at least a third of all points are 0, show bar chart. Otherwise, show line chart.
-  const chart = countZero / metricPeriodMonths >= 0.33 ? barChart : lineChart;
+  const chart =
+    countZero / get(filters, METRIC_PERIOD_MONTHS) >= 0.33
+      ? barChart
+      : lineChart;
 
   return (
     <RevocationsByDimensionComponent
       chartTitle={translate("revocationsOverTimeXAxis")}
       timeDescription={getTrailingLabelFromMetricPeriodMonthsToggle(
-        metricPeriodMonths
+        get(filters, METRIC_PERIOD_MONTHS)
       )}
       labels={chartLabels}
       chartId={`${translate("revocations")}OverTime`}
       datasets={datasets}
       metricTitle={translate("revocationsOverTimeXAxis")}
-      filterStates={filterStates}
       chart={chart}
       classModifier={chartId}
       dataExportLabel="Month"
@@ -214,8 +215,6 @@ const RevocationsOverTime = ({
 
 RevocationsOverTime.propTypes = {
   dataFilter: PropTypes.func.isRequired,
-  metricPeriodMonths: PropTypes.string.isRequired,
-  filterStates: filtersPropTypes.isRequired,
 };
 
 export default observer(RevocationsOverTime);

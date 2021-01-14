@@ -36,7 +36,9 @@ const CaseTableComponent = ({
       </thead>
       <tbody className="fs-block">
         {pageData.map((details) => (
-          <tr key={`${details.state_id}-${details.admissionType}`}>
+          <tr
+            key={`${details.state_id}-${details.admissionType}-${details.officer_recommendation}`}
+          >
             <td>{details.state_id}</td>
             {nullSafeCell(details.district)}
             {nullSafeCell(details.officer)}

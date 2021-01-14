@@ -66,8 +66,7 @@ const generatePercentChartData = (apiData, currentDistricts, mode) => {
       currentDistricts &&
       labels[dataIndex] &&
       currentDistricts.find(
-        (currentDistrict) =>
-          currentDistrict.toLowerCase() === labels[dataIndex].toLowerCase()
+        (currentDistrict) => currentDistrict === labels[dataIndex].toLowerCase()
       )
         ? COLORS["lantern-light-blue"]
         : COLORS["lantern-orange"];
@@ -113,8 +112,7 @@ const generateCountChartData = (apiData, currentDistricts) => {
     currentDistricts &&
     labels[dataIndex] &&
     currentDistricts.find(
-      (currentDistrict) =>
-        currentDistrict.toLowerCase() === labels[dataIndex].toLowerCase()
+      (currentDistrict) => currentDistrict === labels[dataIndex].toLowerCase()
     )
       ? COLORS["lantern-light-blue"]
       : COLORS["lantern-orange"];
@@ -129,10 +127,11 @@ const generateCountChartData = (apiData, currentDistricts) => {
   return { data: { datasets, labels }, denominators: [] };
 };
 
-const createGenerateChartData = (dataFilter, currentDistricts) => (
+const createGenerateChartData = (dataFilter) => (
   apiData,
   mode,
-  unflattenedValues
+  unflattenedValues,
+  currentDistricts
 ) => {
   const filteredData = pipe((metricFile) =>
     filterOptimizedDataFormat(

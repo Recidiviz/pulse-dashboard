@@ -17,6 +17,8 @@
 
 import React, { useState } from "react";
 import PropTypes from "prop-types";
+import { observer } from "mobx-react-lite";
+import { get } from "mobx";
 
 import ModeSwitcher from "../ModeSwitcher";
 import RevocationsByDimensionComponent from "./RevocationsByDimensionComponent";
@@ -26,7 +28,8 @@ import Loading from "../../../Loading";
 import Error from "../../../Error";
 import { isDenominatorsMatrixStatisticallySignificant } from "../../../../utils/charts/significantStatistics";
 import getLabelByMode from "../utils/getLabelByMode";
-import { filtersPropTypes } from "../../propTypes";
+import { DISTRICT } from "../../../../constants/filterTypes";
+import { useRootStore } from "../../../../StoreProvider";
 
 const RevocationsByDimension = ({
   chartId,
@@ -36,13 +39,14 @@ const RevocationsByDimension = ({
   generateChartData,
   metricTitle,
   chartTitle,
-  filterStates,
   timeDescription,
   modes,
   defaultMode,
   dataExportLabel,
   includeWarning,
 }) => {
+  const { filters } = useRootStore();
+  const currentDistricts = get(filters, DISTRICT);
   const [mode, setMode] = useState(defaultMode);
 
   const { isLoading, isError, apiData, unflattenedValues } = useChartData(
@@ -58,11 +62,11 @@ const RevocationsByDimension = ({
   if (isError) {
     return <Error />;
   }
-
   const { data, numerators, denominators, averageRate } = generateChartData(
     apiData,
     mode,
-    unflattenedValues
+    unflattenedValues,
+    currentDistricts.map((d) => d.toLowerCase())
   );
 
   const showWarning =
@@ -77,7 +81,6 @@ const RevocationsByDimension = ({
   return (
     <RevocationsByDimensionComponent
       timeDescription={timeDescription}
-      filterStates={filterStates}
       chartId={chartId}
       datasets={data.datasets}
       labels={data.labels}
@@ -121,7 +124,6 @@ RevocationsByDimension.propTypes = {
   metricTitle: PropTypes.oneOfType([PropTypes.func, PropTypes.string])
     .isRequired,
   chartTitle: PropTypes.string.isRequired,
-  filterStates: filtersPropTypes.isRequired,
   timeDescription: PropTypes.string.isRequired,
   modes: PropTypes.arrayOf(PropTypes.string),
   defaultMode: PropTypes.string,
@@ -129,4 +131,4 @@ RevocationsByDimension.propTypes = {
   includeWarning: PropTypes.bool,
 };
 
-export default RevocationsByDimension;
+export default observer(RevocationsByDimension);

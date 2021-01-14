@@ -21,18 +21,14 @@ import { observer } from "mobx-react-lite";
 
 import RevocationsByDimension from "../RevocationsByDimension";
 import createGenerateChartData from "./createGenerateChartData";
-import { filtersPropTypes } from "../../propTypes";
 import BarChartWithLabels from "../BarChartWithLabels";
 import { translate } from "../../../../views/tenants/utils/i18nSettings";
 import { useRootStore } from "../../../../StoreProvider";
+import { VIOLATION_TYPE } from "../../../../constants/filterTypes";
 
-const RevocationsByViolation = ({
-  dataFilter,
-  filterStates,
-  timeDescription,
-  violationTypes,
-}) => {
-  const { currentTenantId } = useRootStore();
+const RevocationsByViolation = ({ dataFilter, timeDescription }) => {
+  const { currentTenantId, filtersStore } = useRootStore();
+  const violationTypes = filtersStore.filterOptions[VIOLATION_TYPE].options;
 
   return (
     <RevocationsByDimension
@@ -52,7 +48,6 @@ const RevocationsByViolation = ({
       generateChartData={createGenerateChartData(dataFilter, violationTypes)}
       chartTitle="Relative frequency of violation types"
       metricTitle="Relative frequency of violation types"
-      filterStates={filterStates}
       timeDescription={timeDescription}
       dataExportLabel="Violation"
     />
@@ -61,15 +56,7 @@ const RevocationsByViolation = ({
 
 RevocationsByViolation.propTypes = {
   dataFilter: PropTypes.func.isRequired,
-  filterStates: filtersPropTypes.isRequired,
   timeDescription: PropTypes.string.isRequired,
-  violationTypes: PropTypes.arrayOf(
-    PropTypes.shape({
-      key: PropTypes.string.isRequired,
-      label: PropTypes.string.isRequired,
-      type: PropTypes.string.isRequired,
-    })
-  ).isRequired,
 };
 
 export default observer(RevocationsByViolation);

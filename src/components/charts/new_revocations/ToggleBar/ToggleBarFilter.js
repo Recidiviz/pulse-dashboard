@@ -17,19 +17,23 @@
 
 import React from "react";
 import PropTypes from "prop-types";
+import { observer } from "mobx-react-lite";
+import { get } from "mobx";
 
 import Select from "../../../controls/Select";
 import FilterField from "./FilterField";
-import { optionPropType } from "../../../propTypes";
+import { useRootStore } from "../../../../StoreProvider";
 
-const ToggleBarFilter = ({
-  label,
-  value,
-  options,
-  defaultOption,
-  onChange,
-}) => {
-  const onValueChange = (option) => onChange(option.value);
+const ToggleBarFilter = ({ label, dimension }) => {
+  const { filtersStore } = useRootStore();
+  const { filters, filterOptions } = filtersStore;
+  const value = get(filters, dimension);
+  const { options, defaultOption } = filterOptions[dimension];
+
+  const onValueChange = (option) => {
+    filtersStore.setFilters({ [dimension]: option.value });
+  };
+
   const selectedOption = options.find((option) => option.value === value);
 
   return (
@@ -46,10 +50,7 @@ const ToggleBarFilter = ({
 
 ToggleBarFilter.propTypes = {
   label: PropTypes.string.isRequired,
-  value: PropTypes.string.isRequired,
-  options: PropTypes.arrayOf(optionPropType).isRequired,
-  defaultOption: optionPropType.isRequired,
-  onChange: PropTypes.func.isRequired,
+  dimension: PropTypes.string.isRequired,
 };
 
-export default ToggleBarFilter;
+export default observer(ToggleBarFilter);

@@ -16,7 +16,8 @@
 // =============================================================================
 
 import React, { useMemo } from "react";
-import PropTypes from "prop-types";
+import { observer } from "mobx-react-lite";
+import { get } from "mobx";
 
 import FilterField from "./FilterField";
 import Chip from "../Chip";
@@ -25,10 +26,27 @@ import {
   matrixViolationTypeToLabel,
   pluralize,
 } from "../../../../utils/transforms/labels";
+import { useRootStore } from "../../../../StoreProvider";
+import {
+  VIOLATION_TYPE,
+  REPORTED_VIOLATIONS,
+} from "../../../../constants/filterTypes";
 
-const ViolationFilter = ({ reportedViolations, violationType, onClick }) => {
+const ViolationFilter = () => {
+  const { filtersStore, filters } = useRootStore();
+  const reportedViolations = get(filters, REPORTED_VIOLATIONS);
+  const violationType = get(filters, VIOLATION_TYPE);
+
+  const clearViolationFilters = () => {
+    filtersStore.setFilters({
+      [VIOLATION_TYPE]: "",
+      [REPORTED_VIOLATIONS]: "",
+    });
+  };
+
   const formattedMatrixFilters = useMemo(() => {
     const parts = [];
+
     if (violationType) {
       parts.push(matrixViolationTypeToLabel[violationType]);
     }
@@ -39,6 +57,7 @@ const ViolationFilter = ({ reportedViolations, violationType, onClick }) => {
     }
     return parts.join(", ");
   }, [reportedViolations, violationType]);
+
   if (!formattedMatrixFilters) return null;
 
   return (
@@ -49,9 +68,7 @@ const ViolationFilter = ({ reportedViolations, violationType, onClick }) => {
       >
         <Chip
           label={formattedMatrixFilters}
-          onDelete={() => {
-            onClick({ violationType: "", reportedViolations: "" });
-          }}
+          onDelete={clearViolationFilters}
           isShrinkable
         />
       </FilterField>
@@ -59,16 +76,4 @@ const ViolationFilter = ({ reportedViolations, violationType, onClick }) => {
   );
 };
 
-ViolationFilter.defaultProps = {
-  onClick: () => {},
-  reportedViolations: "",
-  violationType: "",
-};
-
-ViolationFilter.propTypes = {
-  onClick: PropTypes.func,
-  reportedViolations: PropTypes.string,
-  violationType: PropTypes.string,
-};
-
-export default ViolationFilter;
+export default observer(ViolationFilter);

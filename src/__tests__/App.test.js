@@ -53,8 +53,8 @@ describe("App tests", () => {
   const mockNotFoundId = "not-found-id";
   const mockLoadingTestId = "loading-test-id";
 
-  const LanternLayoutMock = LanternLayout.type;
   const RevocationsMock = Revocations.type;
+  const LanternLayoutMock = LanternLayout.type;
 
   LanternLayoutMock.mockImplementation(({ children }) => children);
   CoreLayout.mockImplementation(({ children }) => children);

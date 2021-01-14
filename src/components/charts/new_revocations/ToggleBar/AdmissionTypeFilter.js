@@ -16,22 +16,27 @@
 // =============================================================================
 
 import React from "react";
-import PropTypes from "prop-types";
 import map from "lodash/fp/map";
+import { observer } from "mobx-react-lite";
+import { get } from "mobx";
 
 import FilterField from "./FilterField";
 import MultiSelect from "../../../controls/MultiSelect";
-import { optionPropType } from "../../../propTypes";
 import { flatOptions } from "../../../controls/utils";
+import { useRootStore } from "../../../../StoreProvider";
+import { ADMISSION_TYPE } from "../../../../constants/filterTypes";
 
-const AdmissionTypeFilter = ({
-  defaultValue,
-  value,
-  summingOption,
-  onChange,
-  options = [],
-}) => {
-  const onValueChange = (selected) => onChange(map("value", selected));
+const AdmissionTypeFilter = () => {
+  const { filtersStore } = useRootStore();
+  const { filters, filterOptions } = filtersStore;
+  const value = get(filters, ADMISSION_TYPE);
+  const { options, defaultValue, summingOption } = filterOptions[
+    ADMISSION_TYPE
+  ];
+
+  const onValueChange = (selected) => {
+    filtersStore.setFilters({ [ADMISSION_TYPE]: map("value", selected) });
+  };
 
   const selectValue = flatOptions(options).filter((option) =>
     value.includes(option.value)
@@ -50,26 +55,4 @@ const AdmissionTypeFilter = ({
   );
 };
 
-AdmissionTypeFilter.defaultProps = {
-  options: [],
-};
-
-AdmissionTypeFilter.propTypes = {
-  defaultValue: PropTypes.arrayOf(optionPropType).isRequired,
-  value: PropTypes.arrayOf(PropTypes.string).isRequired,
-  summingOption: optionPropType.isRequired,
-  onChange: PropTypes.func.isRequired,
-  options: PropTypes.arrayOf(
-    PropTypes.oneOfType([
-      optionPropType,
-      // Grouped options
-      PropTypes.shape({
-        label: PropTypes.string,
-        allSelectedLabel: PropTypes.string,
-        options: PropTypes.arrayOf(optionPropType),
-      }),
-    ])
-  ),
-};
-
-export default AdmissionTypeFilter;
+export default observer(AdmissionTypeFilter);

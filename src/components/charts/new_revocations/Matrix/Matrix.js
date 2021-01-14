@@ -21,6 +21,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import cx from "classnames";
 import { observer } from "mobx-react-lite";
+import { get as mobxGet } from "mobx";
 
 import filter from "lodash/fp/filter";
 import get from "lodash/fp/get";
@@ -47,9 +48,12 @@ import {
   violationCountLabel,
 } from "../../../../utils/transforms/labels";
 import { filterOptimizedDataFormat } from "../../../../utils/charts/dataFilters";
-import { filtersPropTypes } from "../../propTypes";
 import { translate } from "../../../../views/tenants/utils/i18nSettings";
 import { useRootStore } from "../../../../StoreProvider";
+import {
+  VIOLATION_TYPE,
+  REPORTED_VIOLATIONS,
+} from "../../../../constants/filterTypes";
 import "./Matrix.scss";
 
 const TITLE =
@@ -60,14 +64,10 @@ const getInteger = (field) => pipe(get(field), toInteger);
 const sumByInteger = (field) => sumBy(getInteger(field));
 const sumRow = pipe(values, sum);
 
-const Matrix = ({
-  dataFilter,
-  filterStates,
-  timeDescription,
-  updateFilters,
-  violationTypes,
-}) => {
-  const { currentTenantId } = useRootStore();
+const Matrix = ({ dataFilter, timeDescription }) => {
+  const { filters, filtersStore, currentTenantId } = useRootStore();
+
+  const violationTypes = translate("violationTypes");
 
   const { apiData, isLoading, isError, unflattenedValues } = useChartData(
     `${currentTenantId}/newRevocations`,
@@ -83,8 +83,12 @@ const Matrix = ({
     return <Error />;
   }
 
+  const updateFilters = (updatedFilters) => {
+    filtersStore.setFilters(updatedFilters);
+  };
+
   const isFiltered =
-    filterStates.violationType || filterStates.reportedViolations;
+    mobxGet(filters, VIOLATION_TYPE) || mobxGet(filters, REPORTED_VIOLATIONS);
 
   const filteredData = pipe(
     (metricFile) =>
@@ -130,8 +134,8 @@ const Matrix = ({
   );
 
   const isSelected = (violationType, reportedViolations) =>
-    filterStates.violationType === violationType &&
-    filterStates.reportedViolations === reportedViolations;
+    mobxGet(filters, VIOLATION_TYPE) === violationType &&
+    mobxGet(filters, REPORTED_VIOLATIONS) === reportedViolations;
 
   const toggleFilter = (violationType, reportedViolations) => {
     if (isSelected(violationType, reportedViolations)) {
@@ -159,7 +163,6 @@ const Matrix = ({
           labels={VIOLATION_COUNTS.map(violationCountLabel)}
           metricTitle={TITLE}
           timeWindowDescription={timeDescription}
-          filters={filterStates}
           fixLabelsInColumns
           dataExportLabel="Violations"
         />
@@ -246,10 +249,7 @@ const Matrix = ({
 
 Matrix.propTypes = {
   dataFilter: PropTypes.func.isRequired,
-  filterStates: filtersPropTypes.isRequired,
   timeDescription: PropTypes.string.isRequired,
-  updateFilters: PropTypes.func.isRequired,
-  violationTypes: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
 export default observer(Matrix);

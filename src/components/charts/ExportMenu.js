@@ -18,20 +18,21 @@
 import React, { useCallback, useState } from "react";
 import { Dropdown, Modal } from "react-bootstrap";
 import PropTypes from "prop-types";
+import { observer } from "mobx-react-lite";
+import { toJS } from "mobx";
 
 import {
   downloadChartAsImage,
   downloadChartAsData,
   downloadHtmlElementAsImage,
 } from "../../utils/downloads/downloads";
-import { filtersPropTypes } from "./propTypes";
 import { translate } from "../../views/tenants/utils/i18nSettings";
+import { useRootStore } from "../../StoreProvider";
 
 const ExportMenu = ({
   chartId,
   timeWindowDescription,
   metricTitle,
-  filters,
   shouldExport = true,
   regularElement = false,
   fixLabelsInColumns = false,
@@ -39,6 +40,7 @@ const ExportMenu = ({
   labels,
   dataExportLabel,
 }) => {
+  const { filters } = useRootStore();
   const [isModalOpened, setIsModalOpened] = useState(false);
   const additionalInfo = translate("methodology")[chartId] || [];
 
@@ -49,6 +51,8 @@ const ExportMenu = ({
   const hideModal = useCallback(() => {
     setIsModalOpened(false);
   }, []);
+
+  const staticFilters = Object.fromEntries(toJS(filters));
 
   return (
     <span className="ExportMenu fa-pull-right">
@@ -75,7 +79,7 @@ const ExportMenu = ({
                 downloadChartAsImage({
                   chartId,
                   chartTitle: metricTitle,
-                  filters,
+                  filters: staticFilters,
                   timeWindowDescription,
                   shouldZipDownload: true,
                 })
@@ -91,7 +95,7 @@ const ExportMenu = ({
                 downloadHtmlElementAsImage({
                   chartId,
                   chartTitle: metricTitle,
-                  filters,
+                  filters: staticFilters,
                   timeWindowDescription,
                   shouldZipDownload: true,
                 })
@@ -109,7 +113,7 @@ const ExportMenu = ({
                 chartDatasets: datasets,
                 chartLabels: labels,
                 dataExportLabel,
-                filters,
+                filters: staticFilters,
                 timeWindowDescription,
                 shouldZipDownload: true,
                 fixLabelsInColumns,
@@ -183,7 +187,6 @@ ExportMenu.propTypes = {
   chartId: PropTypes.string.isRequired,
   timeWindowDescription: PropTypes.string.isRequired,
   metricTitle: PropTypes.string.isRequired,
-  filters: filtersPropTypes.isRequired,
   regularElement: PropTypes.bool,
   shouldExport: PropTypes.bool,
   datasets: PropTypes.arrayOf(
@@ -200,4 +203,4 @@ ExportMenu.propTypes = {
   dataExportLabel: PropTypes.string,
 };
 
-export default ExportMenu;
+export default observer(ExportMenu);
