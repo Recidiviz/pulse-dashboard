@@ -31,6 +31,7 @@ import { processResponseData } from "./helpers";
 import { filterOptimizedDataFormat } from "../../utils/charts/dataFilters";
 import { matchesAllFilters } from "../../components/charts/new_revocations/helpers";
 import { DISTRICT } from "../../constants/filterTypes";
+import { getQueryStringFromFilters } from "../../api/metrics/urlHelpers";
 
 const CHART_TO_FILENAME = {
   District: "revocations_matrix_distribution_by_district",
@@ -67,6 +68,7 @@ export default class RevocationsChartsStore {
       filteredData: computed,
       selectedChart: observable,
       setSelectedChart: action.bound,
+      queryFilters: computed,
     });
 
     this.rootStore = rootStore;
@@ -75,22 +77,30 @@ export default class RevocationsChartsStore {
 
     when(
       () => !get(this.rootStore.auth0Context, "loading"),
-      () => this.fetchData()
+      () => this.fetchData(getQueryStringFromFilters(this.queryFilters))
     );
 
     reaction(
-      () => this.selectedChart,
-      () => this.fetchData()
+      () => {
+        return (
+          this.selectedChart && getQueryStringFromFilters(this.queryFilters)
+        );
+      },
+      (queryString) => this.fetchData(queryString)
     );
+  }
+
+  get queryFilters() {
+    return Object.fromEntries(toJS(this.filtersStore.filters));
   }
 
   setSelectedChart(chartId) {
     this.selectedChart = chartId;
   }
 
-  *fetchData() {
+  *fetchData(queryString) {
     const filename = CHART_TO_FILENAME[this.selectedChart];
-    const endpoint = `${this.rootStore.currentTenantId}/newRevocations/${filename}`;
+    const endpoint = `${this.rootStore.currentTenantId}/newRevocations/${filename}${queryString}`;
     try {
       this.isLoading = true;
       const responseData = yield callMetricsApi(
