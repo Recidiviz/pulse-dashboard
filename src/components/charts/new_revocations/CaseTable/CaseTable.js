@@ -15,8 +15,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React, { useState } from "react";
-import PropTypes from "prop-types";
+import React, { useState, useMemo } from "react";
 import { observer } from "mobx-react-lite";
 import { get } from "mobx";
 
@@ -34,6 +33,7 @@ import { formatData, formatExportData } from "./utils/helpers";
 import { useRootStore } from "../../../../StoreProvider";
 import { filterOptimizedDataFormat } from "../../../../utils/charts/dataFilters";
 import { METRIC_PERIOD_MONTHS } from "../../../../constants/filterTypes";
+import { dataStorePropTypes } from "../../propTypes";
 
 export const CASES_PER_PAGE = 15;
 
@@ -134,11 +134,7 @@ const CaseTable = ({ dataStore }) => {
 };
 
 CaseTable.propTypes = {
-  dataStore: PropTypes.shape({
-    filteredData: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
-    isLoading: PropTypes.bool.isRequired,
-    isError: PropTypes.bool.isRequired,
-  }).isRequired,
+  dataStore: dataStorePropTypes.isRequired,
 };
 
 export default observer(CaseTable);

@@ -52,6 +52,7 @@ import {
   VIOLATION_TYPE,
   REPORTED_VIOLATIONS,
 } from "../../../../constants/filterTypes";
+import { dataStorePropTypes } from "../../propTypes";
 import "./Matrix.scss";
 
 const TITLE =
@@ -233,11 +234,7 @@ const Matrix = ({ dataStore, timeDescription }) => {
 };
 
 Matrix.propTypes = {
-  dataStore: PropTypes.shape({
-    filteredData: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
-    isError: PropTypes.bool.isRequired,
-    isLoading: PropTypes.bool.isRequired,
-  }).isRequired,
+  dataStore: dataStorePropTypes.isRequired,
   timeDescription: PropTypes.string.isRequired,
 };
 

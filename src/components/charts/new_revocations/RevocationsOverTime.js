@@ -18,7 +18,6 @@
 import React from "react";
 import { Bar, Line } from "react-chartjs-2";
 import { observer } from "mobx-react-lite";
-import PropTypes from "prop-types";
 import { get } from "mobx";
 
 import map from "lodash/fp/map";
@@ -39,9 +38,11 @@ import { sortFilterAndSupplementMostRecentMonths } from "../../../utils/transfor
 import { monthNamesAllWithYearsFromNumbers } from "../../../utils/transforms/months";
 import { generateTrendlineDataset } from "../../../utils/charts/trendline";
 import { translate } from "../../../views/tenants/utils/i18nSettings";
-import RevocationsByDimensionComponent from "./RevocationsByDimension/RevocationsByDimensionComponent";
 import { useRootStore } from "../../../StoreProvider";
 import { METRIC_PERIOD_MONTHS } from "../../../constants/filterTypes";
+import { dataStorePropTypes } from "../propTypes";
+
+import RevocationsByDimensionComponent from "./RevocationsByDimension/RevocationsByDimensionComponent";
 
 const RevocationsOverTime = ({ dataStore }) => {
   const { filters } = useRootStore();
@@ -184,12 +185,7 @@ const RevocationsOverTime = ({ dataStore }) => {
 };
 
 RevocationsOverTime.propTypes = {
-  // TODO: Setup propTypes for data
-  dataStore: PropTypes.shape({
-    filteredData: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
-    isLoading: PropTypes.bool.isRequired,
-    isError: PropTypes.bool.isRequired,
-  }).isRequired,
+  dataStore: dataStorePropTypes.isRequired,
 };
 
 export default observer(RevocationsOverTime);
