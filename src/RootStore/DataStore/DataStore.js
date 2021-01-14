@@ -18,12 +18,7 @@
 import { makeAutoObservable } from "mobx";
 import MatrixStore from "./Matrix";
 import RevocationsOverTimeStore from "./RevocationsOverTime";
-import RevocationsByRiskLevelStore from "./RevocationsByRiskLevel";
-import RevocationsByOfficerStore from "./RevocationsByOfficer";
-import RevocationsByGenderStore from "./RevocationsByGender";
-import RevocationsByDistrictStore from "./RevocationsByDistrict";
-import RevocationsByRaceStore from "./RevocationsByRace";
-import RevocationsByViolationStore from "./RevocationsByViolation";
+import RevocationsChartsStore from "./RevocationsCharts";
 import CaseTableStore from "./CaseTable";
 
 export default class DataStore {
@@ -33,58 +28,21 @@ export default class DataStore {
 
   matrixStore;
 
-  revocationsByDistrictStore;
-
-  revocationsByGenderStore;
-
-  revocationsByOfficerStore;
-
-  revocationsByRaceStore;
-
-  revocationsByRiskLevelStore;
-
-  revocationsByViolationStore;
+  revocationsCharts;
 
   caseTableStore;
 
   constructor({ rootStore }) {
     makeAutoObservable(this);
+
     this.rootStore = rootStore;
 
     this.revocationsOverTimeStore = new RevocationsOverTimeStore({ rootStore });
 
     this.matrixStore = new MatrixStore({ rootStore });
 
-    this.revocationsByRiskLevelStore = new RevocationsByRiskLevelStore({
-      rootStore,
-    });
-
-    this.revocationsByGenderStore = new RevocationsByGenderStore({ rootStore });
-
-    this.revocationsByRaceStore = new RevocationsByRaceStore({ rootStore });
-
-    this.revocationsByDistrictStore = new RevocationsByDistrictStore({
-      rootStore,
-    });
-
-    this.revocationsByViolationStore = new RevocationsByViolationStore({
-      rootStore,
-    });
-
-    this.revocationsByOfficerStore = new RevocationsByOfficerStore({
-      rootStore,
-    });
+    this.revocationsChartsStore = new RevocationsChartsStore({ rootStore });
 
     this.caseTableStore = new CaseTableStore({ rootStore });
-  }
-
-  storeByMetricType(metricType) {
-    const storeName = `${metricType}Store`;
-
-    return {
-      filteredData: this[storeName].filteredData,
-      isError: this[storeName].isError,
-      isLoading: this[storeName].isLoading,
-    };
   }
 }

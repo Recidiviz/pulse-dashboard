@@ -21,12 +21,10 @@ import {
   when,
   observable,
   computed,
-  action,
   get,
 } from "mobx";
-import { useAuth0 } from "../../react-auth0-spa";
 import { callMetricsApi } from "../../api/metrics/metricsClient";
-import { processResponseData } from "./processDataUtils";
+import { processResponseData } from "./helpers";
 import { applyAllFilters } from "../../components/charts/new_revocations/helpers";
 
 export default class CaseTableStore {
@@ -40,7 +38,11 @@ export default class CaseTableStore {
 
   apiData = [];
 
+  metadata = observable.map({});
+
   auth0Context = observable.map({ loading: true });
+
+  eagerExpand = true;
 
   file = `revocations_matrix_filtered_caseload`;
 
@@ -48,7 +50,6 @@ export default class CaseTableStore {
     makeAutoObservable(this, {
       fetchData: flow,
       apiData: observable.shallow,
-      setAuth0Context: action,
       filteredData: computed,
     });
 
@@ -56,19 +57,12 @@ export default class CaseTableStore {
 
     this.filtersStore = rootStore.filtersStore;
 
-    this.setAuth0Context();
-
     when(
-      () => !get(this.auth0Context, "loading"),
+      () => !get(this.rootStore.auth0Context, "loading"),
       () => {
         this.fetchData();
       }
     );
-  }
-
-  setAuth0Context() {
-    const auth0Context = useAuth0();
-    this.auth0Context.merge(auth0Context);
   }
 
   *fetchData() {
@@ -76,9 +70,15 @@ export default class CaseTableStore {
     try {
       const responseData = yield callMetricsApi(
         endpoint,
-        get(this.auth0Context, "getTokenSilently")
+        this.rootStore.getTokenSilently
       );
-      this.apiData = processResponseData(responseData, this.file).data;
+      const processedData = processResponseData(
+        responseData,
+        this.file,
+        this.eagerExpand
+      );
+      this.apiData = processedData.data;
+      this.metadata = processedData.metadata;
       this.isLoading = false;
     } catch (error) {
       console.error(error);
