@@ -23,12 +23,14 @@ import {
   computed,
   get,
   toJS,
+  reaction,
 } from "mobx";
 import { callMetricsApi } from "../../api/metrics/metricsClient";
 import { processResponseData } from "./helpers";
 import { matchesAllFilters } from "../../components/charts/new_revocations/helpers";
 import { METRIC_PERIOD_MONTHS } from "../../constants/filterTypes";
 import { filterOptimizedDataFormat } from "../../utils/charts/dataFilters";
+import { getQueryStringFromFilters } from "../../api/metrics/urlHelpers";
 
 export default class RevocationsOverTimeStore {
   rootStore;
@@ -52,6 +54,7 @@ export default class RevocationsOverTimeStore {
       fetchData: flow,
       apiData: observable.shallow,
       filteredData: computed,
+      queryFilters: computed,
     });
 
     this.rootStore = rootStore;
@@ -60,14 +63,21 @@ export default class RevocationsOverTimeStore {
 
     when(
       () => !get(this.rootStore.auth0Context, "loading"),
-      () => {
-        this.fetchData();
-      }
+      () => this.fetchData(getQueryStringFromFilters(this.queryFilters))
+    );
+
+    reaction(
+      () => getQueryStringFromFilters(this.queryFilters),
+      (queryString) => this.fetchData(queryString)
     );
   }
 
-  *fetchData() {
-    const endpoint = `${this.rootStore.currentTenantId}/newRevocations/${this.file}`;
+  get queryFilters() {
+    return Object.fromEntries(toJS(this.filtersStore.filters));
+  }
+
+  *fetchData(queryString = "") {
+    const endpoint = `${this.rootStore.currentTenantId}/newRevocations/${this.file}${queryString}`;
     try {
       const responseData = yield callMetricsApi(
         endpoint,

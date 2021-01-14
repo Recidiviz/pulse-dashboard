@@ -49,7 +49,7 @@ jest.mock("../charts/new_revocations/ToggleBar/DistrictFilter");
 jest.mock("../charts/new_revocations/ToggleBar/AdmissionTypeFilter");
 jest.mock("../charts/new_revocations/ToggleBar/ViolationFilter");
 jest.mock("../charts/new_revocations/RevocationsOverTime");
-jest.mock("../charts/new_revocations/Matrix/MatrixContainer");
+jest.mock("../charts/new_revocations/Matrix");
 jest.mock("../charts/new_revocations/RevocationCharts");
 jest.mock("../charts/new_revocations/CaseTable/CaseTable");
 jest.mock("../../views/tenants/constants/filterOptions");
@@ -77,6 +77,7 @@ describe("Revocations component tests", () => {
   const ToggleBarFilterMock = ToggleBarFilter.type;
   const AdmissionTypeFilterMock = AdmissionTypeFilter.type;
   const ViolationFilterMock = ViolationFilter.type;
+  const RevocationChartsMock = RevocationCharts.type;
 
   useAuth0.mockReturnValue({ user: mockUser });
   ToggleBarFilterMock.mockImplementation(({ label }) =>
@@ -91,7 +92,7 @@ describe("Revocations component tests", () => {
     mockWithTestId(revocationCountOverTimeId)
   );
   MatrixMock.mockReturnValue(mockWithTestId(revocationMatrixId));
-  RevocationCharts.mockReturnValue(mockWithTestId(revocationChartsId));
+  RevocationChartsMock.mockReturnValue(mockWithTestId(revocationChartsId));
   CaseTableMock.mockReturnValue(mockWithTestId(caseTableId));
   setTranslateLocale(US_MO);
 
