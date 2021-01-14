@@ -37,19 +37,20 @@ import { sortFilterAndSupplementMostRecentMonths } from "../../../utils/transfor
 import { monthNamesAllWithYearsFromNumbers } from "../../../utils/transforms/months";
 import { generateTrendlineDataset } from "../../../utils/charts/trendline";
 import { translate } from "../../../views/tenants/utils/i18nSettings";
-import RevocationsByDimensionComponent from "./RevocationsByDimension/RevocationsByDimensionComponent";
 import { useRootStore } from "../../../StoreProvider";
+import { dataStorePropTypes } from "../propTypes";
 
-const RevocationsOverTime = () => {
-  const { filters, dataStore } = useRootStore();
+import RevocationsByDimensionComponent from "./RevocationsByDimension/RevocationsByDimensionComponent";
+
+const RevocationsOverTime = ({ dataStore }) => {
+  const { filters } = useRootStore();
   const chartId = `revocationsOverTime`;
-  const store = dataStore.revocationsOverTimeStore;
 
-  if (store.isLoading) {
+  if (dataStore.isLoading) {
     return <Loading />;
   }
 
-  if (store.isError) {
+  if (dataStore.isError) {
     return <Error />;
   }
 
@@ -60,7 +61,7 @@ const RevocationsOverTime = () => {
       "total_revocations",
       0
     )
-  )(store.filteredData);
+  )(dataStore.filteredData);
 
   const labels = monthNamesAllWithYearsFromNumbers(
     map("month", chartData),
@@ -174,6 +175,10 @@ const RevocationsOverTime = () => {
       dataExportLabel="Month"
     />
   );
+};
+
+RevocationsOverTime.propTypes = {
+  dataStore: dataStorePropTypes.isRequired,
 };
 
 export default observer(RevocationsOverTime);

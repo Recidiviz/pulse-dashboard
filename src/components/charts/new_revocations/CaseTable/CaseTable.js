@@ -30,19 +30,17 @@ import {
 } from "../../../../utils/charts/toggles";
 import { translate } from "../../../../views/tenants/utils/i18nSettings";
 import { formatData, formatExportData } from "./utils/helpers";
-import { useRootStore } from "../../../../StoreProvider";
+import { dataStorePropTypes } from "../../propTypes";
 
 export const CASES_PER_PAGE = 15;
 
-const CaseTable = ({ metricPeriodMonths }) => {
-  const { dataStore } = useRootStore();
-  const store = dataStore.caseTableStore;
+const CaseTable = ({ dataStore, metricPeriodMonths }) => {
   const [page, setPage] = useState(0);
   const { sortOrder, toggleOrder, comparator } = useSort();
-
+  console.log(dataStore);
   const sortedData = useMemo(() => {
-    return store.filteredData.sort(comparator);
-  }, [store.filteredData, comparator]);
+    return dataStore.filteredData.sort(comparator);
+  }, [dataStore.filteredData, comparator]);
 
   const { pageData, startCase, endCase } = useMemo(() => {
     const start = page * CASES_PER_PAGE;
@@ -55,11 +53,11 @@ const CaseTable = ({ metricPeriodMonths }) => {
     };
   }, [sortedData, page]);
 
-  if (store.isLoading) {
+  if (dataStore.isLoading) {
     return <Loading />;
   }
 
-  if (store.isError) {
+  if (dataStore.isError) {
     return <Error />;
   }
 
@@ -124,6 +122,7 @@ const metricPeriodMonthsType = PropTypes.oneOfType([
 ]);
 
 CaseTable.propTypes = {
+  dataStore: dataStorePropTypes.isRequired,
   metricPeriodMonths: metricPeriodMonthsType.isRequired,
 };
 

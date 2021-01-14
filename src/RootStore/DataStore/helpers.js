@@ -13,7 +13,6 @@ export function unflattenValues(metricFile) {
 }
 
 export function processResponseData(data, file, eagerExpand = true) {
-  console.log(data, file, eagerExpand);
   const metricFile = parseResponseByFileFormat(data, file, eagerExpand);
   const { metadata } = metricFile;
   // If we are not eagerly expanding a single file request, then proactively
@@ -26,5 +25,8 @@ export function processResponseData(data, file, eagerExpand = true) {
     };
   }
 
-  return metricFile;
+  return {
+    data: metricFile,
+    metadata: {},
+  };
 }

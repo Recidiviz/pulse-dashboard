@@ -38,6 +38,7 @@ import {
 } from "./helpers";
 import { violationCountLabel } from "../../../../utils/transforms/labels";
 import { useRootStore } from "../../../../StoreProvider";
+import { dataStorePropTypes } from "../../propTypes";
 
 import Loading from "../../../Loading";
 import Error from "../../../Error";
@@ -51,17 +52,16 @@ const TITLE =
 
 const sumRow = pipe(values, sum);
 
-const Matrix = ({ timeDescription }) => {
-  const { filters, filtersStore, dataStore } = useRootStore();
-  const store = dataStore.matrixStore;
+const Matrix = ({ dataStore, timeDescription }) => {
+  const { filters, filtersStore } = useRootStore();
 
   const violationTypes = translate("violationTypes");
 
-  if (store.isLoading) {
+  if (dataStore.isLoading) {
     return <Loading />;
   }
 
-  if (store.isError) {
+  if (dataStore.isError) {
     return <Error />;
   }
 
@@ -79,7 +79,7 @@ const Matrix = ({ timeDescription }) => {
         mapValues(sumByInteger("total_revocations"))
       )
     )
-  )(store.filteredData);
+  )(dataStore.filteredData);
 
   if (!dataMatrix) {
     return null;
@@ -87,10 +87,12 @@ const Matrix = ({ timeDescription }) => {
 
   const maxRevocations = getMaxRevocations(dataMatrix, violationTypes)();
 
-  const violationsSum = sumByInteger("total_revocations")(store.filteredData);
+  const violationsSum = sumByInteger("total_revocations")(
+    dataStore.filteredData
+  );
 
   const reportedViolationsSums = VIOLATION_COUNTS.map(
-    getReportedViolationsSum(store.filteredData)
+    getReportedViolationsSum(dataStore.filteredData)
   );
 
   const exportableMatrixData = getExportableMatrixData(
@@ -216,6 +218,7 @@ const Matrix = ({ timeDescription }) => {
 };
 
 Matrix.propTypes = {
+  dataStore: dataStorePropTypes.isRequired,
   timeDescription: PropTypes.string.isRequired,
 };
 

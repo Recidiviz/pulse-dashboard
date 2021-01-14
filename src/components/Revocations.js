@@ -45,7 +45,7 @@ import { useRootStore } from "../StoreProvider";
 import "./Revocations.scss";
 
 const Revocations = () => {
-  const { filtersStore } = useRootStore();
+  const { filtersStore, dataStore } = useRootStore();
   const { filters, filterOptions } = filtersStore;
   const { user } = useAuth0();
   const { district } = getUserAppMetadata(user);
@@ -97,23 +97,32 @@ const Revocations = () => {
 
       <div className="bgc-white p-20 m-20">
         <ErrorBoundary>
-          <RevocationsOverTime />
+          <RevocationsOverTime dataStore={dataStore.revocationsOverTimeStore} />
         </ErrorBoundary>
       </div>
       <div className="d-f m-20 container-all-charts">
         <div className="Revocations__matrix">
           <ErrorBoundary>
-            <Matrix timeDescription={timeDescription} />
+            <Matrix
+              dataStore={dataStore.matrixStore}
+              timeDescription={timeDescription}
+            />
           </ErrorBoundary>
         </div>
         <MatrixExplanation />
       </div>
 
-      <RevocationCharts timeDescription={timeDescription} />
+      <RevocationCharts
+        dataStore={dataStore.revocationsChartsStore}
+        timeDescription={timeDescription}
+      />
 
       <div className="bgc-white m-20 p-20">
         <ErrorBoundary>
-          <CaseTable metricPeriodMonths={filters[METRIC_PERIOD_MONTHS]} />
+          <CaseTable
+            dataStore={dataStore.caseTableStore}
+            metricPeriodMonths={filters[METRIC_PERIOD_MONTHS]}
+          />
         </ErrorBoundary>
       </div>
     </main>
