@@ -37,7 +37,6 @@ export const CASES_PER_PAGE = 15;
 const CaseTable = ({ dataStore, metricPeriodMonths }) => {
   const [page, setPage] = useState(0);
   const { sortOrder, toggleOrder, comparator } = useSort();
-  console.log(dataStore);
   const sortedData = useMemo(() => {
     return dataStore.filteredData.sort(comparator);
   }, [dataStore.filteredData, comparator]);

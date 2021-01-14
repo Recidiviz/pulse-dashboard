@@ -57,6 +57,7 @@ export default class FiltersStore {
   }
 
   get defaultFilters() {
+    if (!this.filterOptions) return {};
     return {
       [METRIC_PERIOD_MONTHS]: this.filterOptions[METRIC_PERIOD_MONTHS]
         .defaultValue,
