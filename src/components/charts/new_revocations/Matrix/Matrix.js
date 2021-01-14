@@ -51,16 +51,17 @@ const TITLE =
 
 const sumRow = pipe(values, sum);
 
-const Matrix = ({ dataStore, timeDescription }) => {
-  const { filters, filtersStore } = useRootStore();
+const Matrix = ({ timeDescription }) => {
+  const { filters, filtersStore, dataStore } = useRootStore();
+  const store = dataStore.matrixStore;
 
   const violationTypes = translate("violationTypes");
 
-  if (dataStore.isLoading) {
+  if (store.isLoading) {
     return <Loading />;
   }
 
-  if (dataStore.isError) {
+  if (store.isError) {
     return <Error />;
   }
 
@@ -78,7 +79,7 @@ const Matrix = ({ dataStore, timeDescription }) => {
         mapValues(sumByInteger("total_revocations"))
       )
     )
-  )(dataStore.filteredData);
+  )(store.filteredData);
 
   if (!dataMatrix) {
     return null;
@@ -86,12 +87,10 @@ const Matrix = ({ dataStore, timeDescription }) => {
 
   const maxRevocations = getMaxRevocations(dataMatrix, violationTypes)();
 
-  const violationsSum = sumByInteger("total_revocations")(
-    dataStore.filteredData
-  );
+  const violationsSum = sumByInteger("total_revocations")(store.filteredData);
 
   const reportedViolationsSums = VIOLATION_COUNTS.map(
-    getReportedViolationsSum(dataStore.filteredData)
+    getReportedViolationsSum(store.filteredData)
   );
 
   const exportableMatrixData = getExportableMatrixData(
@@ -217,11 +216,6 @@ const Matrix = ({ dataStore, timeDescription }) => {
 };
 
 Matrix.propTypes = {
-  dataStore: PropTypes.shape({
-    filteredData: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
-    isError: PropTypes.bool.isRequired,
-    isLoading: PropTypes.bool.isRequired,
-  }).isRequired,
   timeDescription: PropTypes.string.isRequired,
 };
 

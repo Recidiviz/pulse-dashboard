@@ -18,7 +18,6 @@
 import React from "react";
 import { Bar, Line } from "react-chartjs-2";
 import { observer } from "mobx-react-lite";
-import PropTypes from "prop-types";
 
 import map from "lodash/fp/map";
 import pipe from "lodash/fp/pipe";
@@ -41,15 +40,16 @@ import { translate } from "../../../views/tenants/utils/i18nSettings";
 import RevocationsByDimensionComponent from "./RevocationsByDimension/RevocationsByDimensionComponent";
 import { useRootStore } from "../../../StoreProvider";
 
-const RevocationsOverTime = ({ dataStore }) => {
-  const { filters } = useRootStore();
+const RevocationsOverTime = () => {
+  const { filters, dataStore } = useRootStore();
   const chartId = `revocationsOverTime`;
+  const store = dataStore.revocationsOverTimeStore;
 
-  if (dataStore.isLoading) {
+  if (store.isLoading) {
     return <Loading />;
   }
 
-  if (dataStore.isError) {
+  if (store.isError) {
     return <Error />;
   }
 
@@ -60,7 +60,7 @@ const RevocationsOverTime = ({ dataStore }) => {
       "total_revocations",
       0
     )
-  )(dataStore.filteredData);
+  )(store.filteredData);
 
   const labels = monthNamesAllWithYearsFromNumbers(
     map("month", chartData),
@@ -72,7 +72,6 @@ const RevocationsOverTime = ({ dataStore }) => {
 
   const chartLabels = labels;
   const chartDataPoints = dataPoints;
-
   const datasets = [
     {
       label: translate("Revocations"),
@@ -175,15 +174,6 @@ const RevocationsOverTime = ({ dataStore }) => {
       dataExportLabel="Month"
     />
   );
-};
-
-RevocationsOverTime.propTypes = {
-  // TODO: Setup propTypes for data
-  dataStore: PropTypes.shape({
-    filteredData: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
-    isLoading: PropTypes.bool.isRequired,
-    isError: PropTypes.bool.isRequired,
-  }).isRequired,
 };
 
 export default observer(RevocationsOverTime);
