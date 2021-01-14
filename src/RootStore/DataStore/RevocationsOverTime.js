@@ -78,7 +78,6 @@ export default class RevocationsOverTimeStore {
         this.file,
         this.eagerExpand
       );
-      console.log(processedData.data.length);
       this.apiData = processedData.data;
       this.metadata = processedData.metadata;
       this.isLoading = false;
