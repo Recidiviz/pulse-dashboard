@@ -42,6 +42,7 @@ import initIntercomSettings from "./utils/initIntercomSettings";
 import { initI18n } from "./views/tenants/utils/i18nSettings";
 import { LANTERN_TENANTS } from "./views/tenants/utils/lanternTenants";
 import { CORE_TENANTS } from "./views/tenants/utils/coreTenants";
+import AuthWall from "./AuthWall";
 
 import "./assets/scripts/index";
 import "./assets/styles/index.scss";
@@ -53,12 +54,12 @@ initI18n();
 // prettier-ignore
 const App = () => (
   <StoreProvider>
-    <PageProvider>
-      <Router>
-        <Switch>
-          <Route path="/verify" component={VerificationNeeded} />
+    <AuthWall>
+      <PageProvider>
+        <Router>
+          <Switch>
+            <Route path="/verify" component={VerificationNeeded} />
 
-          <TenantRoutes>
             <LanternLayout tenantIds={LANTERN_TENANTS}>
               <Switch>
                 <Route path="/community/revocations" component={Revocations} />
@@ -85,10 +86,10 @@ const App = () => (
                 <NotFound />
               </Switch>
             </CoreLayout>
-          </TenantRoutes>
-        </Switch>
-      </Router>
-    </PageProvider>
+          </Switch>
+        </Router>
+      </PageProvider>
+    </AuthWall>
   </StoreProvider>
 );
 
