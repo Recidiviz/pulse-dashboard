@@ -46,7 +46,7 @@ import { useRootStore } from "../StoreProvider";
 import "./Revocations.scss";
 
 const Revocations = () => {
-  const { filtersStore, dataStore } = useRootStore();
+  const { filtersStore } = useRootStore();
   const { filters, filterOptions } = filtersStore;
   const { user } = useAuth0();
   const { district } = getUserAppMetadata(user);
@@ -73,7 +73,7 @@ const Revocations = () => {
               dimension={METRIC_PERIOD_MONTHS}
             />
             <ErrorBoundary>
-              <DistrictFilter dataStore={dataStore.revocationsOverTimeStore} />
+              <DistrictFilter />
             </ErrorBoundary>
             <ToggleBarFilter label="Case Type" dimension={CHARGE_CATEGORY} />
             {filterOptions[SUPERVISION_LEVEL].componentEnabled && (
@@ -98,32 +98,23 @@ const Revocations = () => {
 
       <div className="bgc-white p-20 m-20">
         <ErrorBoundary>
-          <RevocationsOverTime dataStore={dataStore.revocationsOverTimeStore} />
+          <RevocationsOverTime />
         </ErrorBoundary>
       </div>
       <div className="d-f m-20 container-all-charts">
         <div className="Revocations__matrix">
           <ErrorBoundary>
-            <Matrix
-              dataStore={dataStore.matrixStore}
-              timeDescription={timeDescription}
-            />
+            <Matrix timeDescription={timeDescription} />
           </ErrorBoundary>
         </div>
         <MatrixExplanation />
       </div>
 
-      <RevocationCharts
-        dataStore={dataStore.revocationsChartsStore}
-        timeDescription={timeDescription}
-      />
+      <RevocationCharts timeDescription={timeDescription} />
 
       <div className="bgc-white m-20 p-20">
         <ErrorBoundary>
-          <CaseTable
-            dataStore={dataStore.caseTableStore}
-            metricPeriodMonths={filters[METRIC_PERIOD_MONTHS]}
-          />
+          <CaseTable />
         </ErrorBoundary>
       </div>
     </main>

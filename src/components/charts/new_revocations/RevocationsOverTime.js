@@ -40,19 +40,19 @@ import { generateTrendlineDataset } from "../../../utils/charts/trendline";
 import { translate } from "../../../views/tenants/utils/i18nSettings";
 import { useRootStore } from "../../../StoreProvider";
 import { METRIC_PERIOD_MONTHS } from "../../../constants/filterTypes";
-import { dataStorePropTypes } from "../propTypes";
 
 import RevocationsByDimensionComponent from "./RevocationsByDimension/RevocationsByDimensionComponent";
 
-const RevocationsOverTime = ({ dataStore }) => {
-  const { filters } = useRootStore();
+const RevocationsOverTime = () => {
+  const { filters, dataStore } = useRootStore();
+  const store = dataStore.revocationsOverTimeStore;
   const chartId = `${translate("revocations")}OverTime`;
 
-  if (dataStore.isLoading) {
+  if (store.isLoading) {
     return <Loading />;
   }
 
-  if (dataStore.isError) {
+  if (store.isError) {
     return <Error />;
   }
 
@@ -65,7 +65,7 @@ const RevocationsOverTime = ({ dataStore }) => {
       "total_revocations",
       0
     )
-  )(dataStore.filteredData);
+  )(store.filteredData);
 
   const labels = monthNamesAllWithYearsFromNumbers(
     map("month", chartData),
@@ -182,10 +182,6 @@ const RevocationsOverTime = ({ dataStore }) => {
       dataExportLabel="Month"
     />
   );
-};
-
-RevocationsOverTime.propTypes = {
-  dataStore: dataStorePropTypes.isRequired,
 };
 
 export default observer(RevocationsOverTime);

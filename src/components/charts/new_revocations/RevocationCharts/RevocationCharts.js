@@ -29,9 +29,9 @@ import RevocationsByViolation from "../RevocationsByViolation";
 import RevocationsByGender from "../RevocationsByGender/RevocationsByGender";
 import RevocationsByRace from "../RevocationsByRace/RevocationsByRace";
 import RevocationsByDistrict from "../RevocationsByDistrict/RevocationsByDistrict";
+import { useRootStore } from "../../../../StoreProvider";
 
 import "./RevocationCharts.scss";
-import { dataStorePropTypes } from "../../propTypes";
 
 const CHARTS = [
   "District",
@@ -42,7 +42,9 @@ const CHARTS = [
   "Race",
 ].filter(Boolean);
 
-const RevocationCharts = ({ dataStore, timeDescription }) => {
+const RevocationCharts = ({ timeDescription }) => {
+  const { dataStore } = useRootStore();
+  const store = dataStore.revocationsChartsStore;
   const { selectedChart, setSelectedChart } = dataStore;
 
   const renderSelectedChartSingularLoad = () => {
@@ -51,35 +53,35 @@ const RevocationCharts = ({ dataStore, timeDescription }) => {
         return (
           <RevocationsByRiskLevel
             timeDescription={timeDescription}
-            dataStore={dataStore}
+            dataStore={store}
           />
         );
       case "Officer":
         return (
           <RevocationsByOfficer
             timeDescription={timeDescription}
-            dataStore={dataStore}
+            dataStore={store}
           />
         );
       case "Violation":
         return (
           <RevocationsByViolation
             timeDescription={timeDescription}
-            dataStore={dataStore}
+            dataStore={store}
           />
         );
       case "Gender":
         return (
           <RevocationsByGender
             timeDescription={timeDescription}
-            dataStore={dataStore}
+            dataStore={store}
           />
         );
       case "Race":
         return (
           <RevocationsByRace
             timeDescription={timeDescription}
-            dataStore={dataStore}
+            dataStore={store}
           />
         );
       case "District":
@@ -87,7 +89,7 @@ const RevocationCharts = ({ dataStore, timeDescription }) => {
         return (
           <RevocationsByDistrict
             timeDescription={timeDescription}
-            dataStore={dataStore}
+            dataStore={store}
           />
         );
     }
@@ -118,7 +120,6 @@ const RevocationCharts = ({ dataStore, timeDescription }) => {
 };
 
 RevocationCharts.propTypes = {
-  dataStore: dataStorePropTypes.isRequired,
   timeDescription: PropTypes.string.isRequired,
 };
 

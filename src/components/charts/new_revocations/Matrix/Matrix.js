@@ -52,7 +52,6 @@ import {
   VIOLATION_TYPE,
   REPORTED_VIOLATIONS,
 } from "../../../../constants/filterTypes";
-import { dataStorePropTypes } from "../../propTypes";
 import "./Matrix.scss";
 
 const TITLE =
@@ -63,16 +62,17 @@ const getInteger = (field) => pipe(get(field), toInteger);
 const sumByInteger = (field) => sumBy(getInteger(field));
 const sumRow = pipe(values, sum);
 
-const Matrix = ({ dataStore, timeDescription }) => {
-  const { filters, filtersStore } = useRootStore();
+const Matrix = ({ timeDescription }) => {
+  const { dataStore, filters, filtersStore } = useRootStore();
+  const store = dataStore.matrixStore;
 
   const violationTypes = translate("violationTypes");
 
-  if (dataStore.isLoading) {
+  if (store.isLoading) {
     return <Loading />;
   }
 
-  if (dataStore.isError) {
+  if (store.isError) {
     return <Error />;
   }
 
@@ -85,7 +85,7 @@ const Matrix = ({ dataStore, timeDescription }) => {
 
   const filteredData = pipe(
     filter((data) => violationTypes.includes(data.violation_type))
-  )(dataStore.filteredData);
+  )(store.filteredData);
 
   const dataMatrix = pipe(
     groupBy("violation_type"),
@@ -234,7 +234,6 @@ const Matrix = ({ dataStore, timeDescription }) => {
 };
 
 Matrix.propTypes = {
-  dataStore: dataStorePropTypes.isRequired,
   timeDescription: PropTypes.string.isRequired,
 };
 

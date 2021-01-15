@@ -28,12 +28,12 @@ import { getUserAppMetadata } from "../../../../utils/authentication/user";
 import MultiSelect from "../../../controls/MultiSelect";
 import { useRootStore } from "../../../../StoreProvider";
 import { DISTRICT } from "../../../../constants/filterTypes";
-import { dataStorePropTypes } from "../../propTypes";
 
 const allDistrictsOption = { label: "All", value: "All" };
 
-const DistrictFilter = ({ dataStore }) => {
-  const { filters, filtersStore } = useRootStore();
+const DistrictFilter = () => {
+  const { filters, filtersStore, dataStore } = useRootStore();
+  const store = dataStore.revocationsOverTimeStore;
   const { user } = useAuth0();
   const { district } = getUserAppMetadata(user);
 
@@ -51,7 +51,7 @@ const DistrictFilter = ({ dataStore }) => {
         />
       );
     }
-    const { districts, isLoading } = dataStore;
+    const { districts, isLoading } = store;
     const options = [allDistrictsOption].concat(districts);
     const summingOption = allDistrictsOption;
     const defaultValue = [allDistrictsOption];
@@ -80,10 +80,6 @@ const DistrictFilter = ({ dataStore }) => {
   };
 
   return <FilterField label="District">{getSelectElement()}</FilterField>;
-};
-
-DistrictFilter.propTypes = {
-  dataStore: dataStorePropTypes.isRequired,
 };
 
 export default observer(DistrictFilter);

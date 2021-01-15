@@ -33,19 +33,19 @@ import { formatData, formatExportData } from "./utils/helpers";
 import { useRootStore } from "../../../../StoreProvider";
 import { filterOptimizedDataFormat } from "../../../../utils/charts/dataFilters";
 import { METRIC_PERIOD_MONTHS } from "../../../../constants/filterTypes";
-import { dataStorePropTypes } from "../../propTypes";
 
 export const CASES_PER_PAGE = 15;
 
-const CaseTable = ({ dataStore }) => {
-  const { filtersStore } = useRootStore();
+const CaseTable = () => {
+  const { filtersStore, dataStore } = useRootStore();
+  const store = dataStore.caseTableStore;
   const { filters } = filtersStore;
   const [page, setPage] = useState(0);
   const { sortOrder, toggleOrder, comparator } = useSort();
 
   const sortedData = useMemo(() => {
-    return dataStore.filteredData.sort(comparator);
-  }, [dataStore.filteredData, comparator]);
+    return store.filteredData.sort(comparator);
+  }, [store.filteredData, comparator]);
 
   const { pageData, startCase, endCase } = useMemo(() => {
     const start = page * CASES_PER_PAGE;
@@ -58,11 +58,11 @@ const CaseTable = ({ dataStore }) => {
     };
   }, [sortedData, page]);
 
-  if (dataStore.isLoading) {
+  if (store.isLoading) {
     return <Loading />;
   }
 
-  if (dataStore.isError) {
+  if (store.isError) {
     return <Error />;
   }
 
@@ -131,10 +131,6 @@ const CaseTable = ({ dataStore }) => {
       }
     />
   );
-};
-
-CaseTable.propTypes = {
-  dataStore: dataStorePropTypes.isRequired,
 };
 
 export default observer(CaseTable);
