@@ -41,8 +41,6 @@ export default class CaseTableStore {
 
   apiData = [];
 
-  metadata = observable.map({});
-
   auth0Context = observable.map({ loading: true });
 
   eagerExpand = true;
@@ -88,8 +86,7 @@ export default class CaseTableStore {
         this.file,
         this.eagerExpand
       );
-      this.apiData = processedData.data;
-      this.metadata = processedData.metadata;
+      this.apiData = processedData;
       this.isLoading = false;
     } catch (error) {
       console.error(error);
@@ -102,7 +99,7 @@ export default class CaseTableStore {
     if (!this.apiData) return [];
     const { filters } = this.filtersStore;
     return applyAllFilters({ filters, treatCategoryAllAsAbsent: true })(
-      this.apiData
+      this.apiData.slice()
     );
   }
 }
