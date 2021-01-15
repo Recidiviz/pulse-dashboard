@@ -1,12 +1,39 @@
 {
+  "env": {
+    "browser": true,
+    "jest": true
+  },
   "extends": [
     "react-app",
     "airbnb",
     "plugin:prettier/recommended",
     "prettier/react"
   ],
+  "overrides": [
+    {
+      "files": ["./server.js", "./server/**/*.js"],
+      "env": {
+        "node": true
+      }
+    },
+    {
+      "files": ["**/*.test.js"],
+      "env": {
+        "jest": true
+      },
+      "rules": {
+        "global-require": "off",
+        "no-shadow": "off"
+      }
+    },
+    {
+      "files": ["*.ts", "*.tsx"],
+      "parser": "@typescript-eslint/parser",
+      "plugins": ["@typescript-eslint"]
+    }
+  ],
   "rules": {
-    "react/jsx-filename-extension": ["error", { "extensions": [".js"] }],
+    "react/jsx-filename-extension": ["error", { "extensions": [".js", "tsx"] }],
     "import/no-extraneous-dependencies": ["error", { "packageDir": "./" }],
     "no-new": 1,
     "react/jsx-props-no-spreading": 0,
@@ -26,28 +53,27 @@
     ],
     "radix": "off",
     "no-console": ["error", { "allow": ["warn", "error"] }],
-    "import/prefer-default-export": "off"
+    "import/prefer-default-export": "off",
+    // the bare eslint rule breaks in typescript
+    // https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-use-before-define.md#how-to-use
+    "no-use-before-define": "off",
+    "@typescript-eslint/no-use-before-define": ["error"],
+    // don't require extensions for typescript modules
+    "import/extensions": [
+      "error",
+      "always",
+      { "js": "never", "ts": "never", "tsx": "never" }
+    ]
   },
-  "env": {
-    "browser": true,
-    "jest": true
-  },
-  "overrides": [
-    {
-      "files": ["./server.js", "./server/**/*.js"],
-      "env": {
-        "node": true
-      }
-    },
-    {
-      "files": ["**/*.test.js"],
-      "env": {
-        "jest": true
-      },
-      "rules": {
-        "global-require": "off",
-        "no-shadow": "off"
+
+  "settings": {
+    "import/resolver": {
+      // use <root>/tsconfig.json
+      "typescript": {
+        // always try to resolve types under `<root>@types` directory
+        // even it doesn't contain any source code, like `@types/unist`
+        "alwaysTryTypes": true
       }
     }
-  ]
+  }
 }

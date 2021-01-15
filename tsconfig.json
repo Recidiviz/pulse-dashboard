@@ -1,0 +1,28 @@
+{
+  "compilerOptions": {
+    // Target language and language features
+    "allowJs": true,
+    "esModuleInterop": true,
+    "jsx": "react",
+    "module": "esnext",
+    "target": "es5",
+
+    // what to check
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+
+    // where to check
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+
+    // output
+    "incremental": true,
+    "isolatedModules": true,
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "moduleResolution": "node",
+    "noEmit": true,
+    "useDefineForClassFields": true
+  },
+  "include": ["src"]
+}
