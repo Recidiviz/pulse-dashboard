@@ -23,7 +23,6 @@ import { get } from "mobx";
 import {
   matchesAllFilters,
   matchesTopLevelFilters,
-  applyAllFilters,
 } from "./charts/new_revocations/helpers";
 import { getTimeDescription } from "./charts/new_revocations/helpers/format";
 import ToggleBarFilter from "./charts/new_revocations/ToggleBar/ToggleBarFilter";
@@ -190,7 +189,7 @@ const Revocations = () => {
       <div className="bgc-white m-20 p-20">
         <ErrorBoundary>
           <CaseTable
-            dataFilter={applyAllFilters({
+            dataFilter={matchesAllFilters({
               filters,
               treatCategoryAllAsAbsent: true,
             })}
