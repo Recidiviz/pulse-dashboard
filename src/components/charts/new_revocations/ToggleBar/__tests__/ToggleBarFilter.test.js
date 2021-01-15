@@ -29,7 +29,7 @@ import {
 } from "../../../../../constants/filterTypes";
 import StoreProvider from "../../../../../StoreProvider";
 import { useAuth0 } from "../../../../../react-auth0-spa";
-import { METADATA_NAMESPACE } from "../../../../../utils/authentication/user";
+import { METADATA_NAMESPACE } from "../../../../../constants";
 import { US_MO } from "../../../../../views/tenants/utils/lanternTenants";
 import FiltersStore from "../../../../../RootStore/FiltersStore";
 import filterOptions from "../../../../../views/tenants/constants/filterOptions";

@@ -20,7 +20,7 @@ import { render } from "@testing-library/react";
 
 import App from "../App";
 import { useAuth0 } from "../react-auth0-spa";
-import { METADATA_NAMESPACE } from "../utils/authentication/user";
+import { METADATA_NAMESPACE } from "../constants";
 import { US_ND } from "../views/tenants/utils/coreTenants";
 import { US_MO, US_PA } from "../views/tenants/utils/lanternTenants";
 

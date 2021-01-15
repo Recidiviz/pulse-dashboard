@@ -29,7 +29,7 @@ import Matrix from "../charts/new_revocations/Matrix";
 import RevocationCharts from "../charts/new_revocations/RevocationCharts";
 import CaseTable from "../charts/new_revocations/CaseTable/CaseTable";
 import { useAuth0 } from "../../react-auth0-spa";
-import { METADATA_NAMESPACE } from "../../utils/authentication/user";
+import { METADATA_NAMESPACE } from "../../constants";
 import { setTranslateLocale } from "../../views/tenants/utils/i18nSettings";
 
 import { US_MO } from "../../views/tenants/utils/lanternTenants";

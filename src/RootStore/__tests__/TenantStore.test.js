@@ -18,11 +18,8 @@ import RootStore from "../RootStore";
 import { CURRENT_TENANT_IN_SESSION } from "../TenantStore";
 import { useAuth0 } from "../../react-auth0-spa";
 import { US_MO } from "../../views/tenants/utils/lanternTenants";
-import {
-  doesUserHaveAccess,
-  getAvailableStateCodes,
-  METADATA_NAMESPACE,
-} from "../../utils/authentication/user";
+import { doesUserHaveAccess, getAvailableStateCodes } from "../utils/user";
+import { METADATA_NAMESPACE } from "../../constants";
 
 jest.mock("../../react-auth0-spa");
 jest.mock("../../utils/authentication/user");

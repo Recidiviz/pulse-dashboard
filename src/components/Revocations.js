@@ -42,8 +42,6 @@ import RevocationsByGender from "./charts/new_revocations/RevocationsByGender/Re
 import RevocationsByRace from "./charts/new_revocations/RevocationsByRace/RevocationsByRace";
 import RevocationsByDistrict from "./charts/new_revocations/RevocationsByDistrict/RevocationsByDistrict";
 import CaseTable from "./charts/new_revocations/CaseTable/CaseTable";
-import { useAuth0 } from "../react-auth0-spa";
-import { getUserAppMetadata } from "../utils/authentication/user";
 import {
   ADMISSION_TYPE,
   CHARGE_CATEGORY,
@@ -58,10 +56,9 @@ import { useRootStore } from "../StoreProvider";
 import "./Revocations.scss";
 
 const Revocations = () => {
-  const { filtersStore } = useRootStore();
+  const { filtersStore, userStore } = useRootStore();
   const { filters, filterOptions } = filtersStore;
-  const { user } = useAuth0();
-  const { district } = getUserAppMetadata(user);
+  const { district } = userStore;
   useEffect(() => {
     if (district) {
       filtersStore.setRestrictedDistrict(district);

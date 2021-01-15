@@ -16,7 +16,7 @@
 // =============================================================================
 import RootStore from "../RootStore";
 import { useAuth0 } from "../../react-auth0-spa";
-import { METADATA_NAMESPACE } from "../../utils/authentication/user";
+import { METADATA_NAMESPACE } from "../../constants";
 
 let rootStore;
 
