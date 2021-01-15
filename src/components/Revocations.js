@@ -30,12 +30,7 @@ import RevocationsOverTime from "./charts/new_revocations/RevocationsOverTime";
 import Matrix from "./charts/new_revocations/Matrix";
 import MatrixExplanation from "./charts/new_revocations/Matrix/MatrixExplanation";
 import RevocationCharts from "./charts/new_revocations/RevocationCharts";
-import RevocationsByRiskLevel from "./charts/new_revocations/RevocationsByRiskLevel/RevocationsByRiskLevel";
-import RevocationsByOfficer from "./charts/new_revocations/RevocationsByOfficer";
-import RevocationsByViolation from "./charts/new_revocations/RevocationsByViolation";
-import RevocationsByGender from "./charts/new_revocations/RevocationsByGender/RevocationsByGender";
-import RevocationsByRace from "./charts/new_revocations/RevocationsByRace/RevocationsByRace";
-import RevocationsByDistrict from "./charts/new_revocations/RevocationsByDistrict/RevocationsByDistrict";
+
 import CaseTable from "./charts/new_revocations/CaseTable/CaseTable";
 import { useAuth0 } from "../react-auth0-spa";
 import { getUserAppMetadata } from "../utils/authentication/user";
@@ -46,13 +41,12 @@ import {
   SUPERVISION_LEVEL,
   SUPERVISION_TYPE,
 } from "../constants/filterTypes";
-import flags from "../flags";
 import { useRootStore } from "../StoreProvider";
 
 import "./Revocations.scss";
 
 const Revocations = () => {
-  const { dataStore, filtersStore } = useRootStore();
+  const { filtersStore } = useRootStore();
   const { filters, filterOptions } = filtersStore;
   const { user } = useAuth0();
   const { district } = getUserAppMetadata(user);
@@ -104,79 +98,23 @@ const Revocations = () => {
 
       <div className="bgc-white p-20 m-20">
         <ErrorBoundary>
-          <RevocationsOverTime
-            dataStore={dataStore.storeByMetricType("revocationsOverTime")}
-          />
+          <RevocationsOverTime />
         </ErrorBoundary>
       </div>
       <div className="d-f m-20 container-all-charts">
         <div className="Revocations__matrix">
           <ErrorBoundary>
-            <Matrix
-              timeDescription={timeDescription}
-              dataStore={dataStore.storeByMetricType("matrix")}
-            />
+            <Matrix timeDescription={timeDescription} />
           </ErrorBoundary>
         </div>
         <MatrixExplanation />
       </div>
 
-      <RevocationCharts
-        riskLevelChart={
-          <ErrorBoundary>
-            <RevocationsByRiskLevel
-              dataStore={dataStore.storeByMetricType("revocationsByRiskLevel")}
-              timeDescription={timeDescription}
-            />
-          </ErrorBoundary>
-        }
-        officerChart={
-          flags.enableOfficerChart && (
-            <ErrorBoundary>
-              <RevocationsByOfficer
-                dataStore={dataStore.storeByMetricType("revocationsByOfficer")}
-                timeDescription={timeDescription}
-              />
-            </ErrorBoundary>
-          )
-        }
-        violationChart={
-          <ErrorBoundary>
-            <RevocationsByViolation
-              dataStore={dataStore.storeByMetricType("revocationsByViolation")}
-              timeDescription={timeDescription}
-            />
-          </ErrorBoundary>
-        }
-        genderChart={
-          <ErrorBoundary>
-            <RevocationsByGender
-              dataStore={dataStore.storeByMetricType("revocationsByGender")}
-              timeDescription={timeDescription}
-            />
-          </ErrorBoundary>
-        }
-        raceChart={
-          <ErrorBoundary>
-            <RevocationsByRace
-              dataStore={dataStore.storeByMetricType("revocationsByRace")}
-              timeDescription={timeDescription}
-            />
-          </ErrorBoundary>
-        }
-        districtChart={
-          <ErrorBoundary>
-            <RevocationsByDistrict
-              dataStore={dataStore.storeByMetricType("revocationsByDistrict")}
-              timeDescription={timeDescription}
-            />
-          </ErrorBoundary>
-        }
-      />
+      <RevocationCharts timeDescription={timeDescription} />
 
       <div className="bgc-white m-20 p-20">
         <ErrorBoundary>
-          <CaseTable dataStore={dataStore.storeByMetricType("caseTable")} />
+          <CaseTable metricPeriodMonths={filters[METRIC_PERIOD_MONTHS]} />
         </ErrorBoundary>
       </div>
     </main>
