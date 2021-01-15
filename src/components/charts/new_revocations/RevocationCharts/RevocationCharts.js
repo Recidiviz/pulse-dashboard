@@ -45,7 +45,7 @@ const CHARTS = [
 const RevocationCharts = ({ timeDescription }) => {
   const { dataStore } = useRootStore();
   const store = dataStore.revocationsChartsStore;
-  const { selectedChart, setSelectedChart } = dataStore;
+  const { selectedChart, setSelectedChart } = store;
 
   const renderSelectedChartSingularLoad = () => {
     switch (selectedChart) {
