@@ -15,7 +15,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React, { useState, useMemo } from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { observer } from "mobx-react-lite";
 import { get } from "mobx";
@@ -33,6 +33,7 @@ import useChartData from "../../../../hooks/useChartData";
 import { translate } from "../../../../views/tenants/utils/i18nSettings";
 import { formatData, formatExportData } from "./utils/helpers";
 import { useRootStore } from "../../../../StoreProvider";
+import { filterOptimizedDataFormat } from "../../../../utils/charts/dataFilters";
 import { METRIC_PERIOD_MONTHS } from "../../../../constants/filterTypes";
 
 export const CASES_PER_PAGE = 15;
@@ -44,25 +45,11 @@ const CaseTable = ({ dataFilter }) => {
   const [page, setPage] = useState(0);
   const { sortOrder, toggleOrder, comparator } = useSort();
 
-  const { isLoading, isError, apiData } = useChartData(
+  const { isLoading, isError, apiData, unflattenedValues } = useChartData(
     `${currentTenantId}/newRevocations`,
-    "revocations_matrix_filtered_caseload"
+    "revocations_matrix_filtered_caseload",
+    false
   );
-
-  const sortedData = useMemo(() => {
-    return dataFilter(apiData || []).sort(comparator);
-  }, [dataFilter, apiData, comparator]);
-
-  const { pageData, startCase, endCase } = useMemo(() => {
-    const start = page * CASES_PER_PAGE;
-    const end = Math.min(sortedData.length, start + CASES_PER_PAGE);
-
-    return {
-      pageData: formatData(sortedData.slice(start, end)),
-      startCase: start,
-      endCase: end,
-    };
-  }, [sortedData, page]);
 
   if (isLoading) {
     return <Loading />;
@@ -71,6 +58,17 @@ const CaseTable = ({ dataFilter }) => {
   if (isError) {
     return <Error />;
   }
+
+  const sortedData = filterOptimizedDataFormat(
+    unflattenedValues,
+    apiData,
+    apiData.metadata,
+    dataFilter
+  ).sort(comparator);
+
+  const startCase = page * CASES_PER_PAGE;
+  const endCase = Math.min(sortedData.length, startCase + CASES_PER_PAGE);
+  const pageData = formatData(sortedData.slice(startCase, endCase));
 
   const createUpdatePage = (diff) => () => setPage(page + diff);
 
