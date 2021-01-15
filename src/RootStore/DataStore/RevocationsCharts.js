@@ -51,6 +51,8 @@ export default class RevocationsChartsStore {
 
   apiData = [];
 
+  filteredData = [];
+
   metadata = {};
 
   selectedChart = "District";
@@ -63,7 +65,7 @@ export default class RevocationsChartsStore {
     makeAutoObservable(this, {
       fetchData: flow,
       apiData: observable.shallow,
-      filteredData: computed,
+      filteredData: observable.shallow,
       selectedChart: observable,
       setSelectedChart: action.bound,
       queryFilters: computed,
@@ -112,6 +114,7 @@ export default class RevocationsChartsStore {
       );
       this.apiData = processedData.data;
       this.metadata = processedData.metadata;
+      this.filteredData = this.filterData(processedData);
       this.isLoading = false;
     } catch (error) {
       console.error(error);
@@ -120,8 +123,7 @@ export default class RevocationsChartsStore {
     }
   }
 
-  get filteredData() {
-    if (!this.apiData) return [];
+  filterData({ data, metadata }) {
     const { filters } = this.rootStore;
     const filteringOptions = {
       District: { skippedFilters: [DISTRICT] },
@@ -131,8 +133,8 @@ export default class RevocationsChartsStore {
       ...filteringOptions[this.selectedChart],
     });
     return filterOptimizedDataFormat({
-      apiData: this.apiData.slice(),
-      metadata: this.metadata,
+      apiData: data,
+      metadata,
       filterFn: dataFilter,
     });
   }

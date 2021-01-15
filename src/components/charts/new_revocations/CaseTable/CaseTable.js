@@ -43,9 +43,11 @@ const CaseTable = () => {
   const [page, setPage] = useState(0);
   const { sortOrder, toggleOrder, comparator } = useSort();
 
+  const filteredData = store.filteredData.slice();
+
   const sortedData = useMemo(() => {
-    return store.filteredData.sort(comparator);
-  }, [store.filteredData, comparator]);
+    return filteredData.sort(comparator);
+  }, [filteredData, comparator]);
 
   const { pageData, startCase, endCase } = useMemo(() => {
     const start = page * CASES_PER_PAGE;

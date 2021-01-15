@@ -49,6 +49,8 @@ export default class RevocationsOverTimeStore {
 
   expandedData = [];
 
+  filteredData = [];
+
   metadata = {};
 
   eagerExpand = false;
@@ -59,9 +61,9 @@ export default class RevocationsOverTimeStore {
     makeAutoObservable(this, {
       fetchData: flow,
       apiData: observable.shallow,
-      filteredData: computed,
       queryFilters: computed,
       expandedData: observable.shallow,
+      filteredData: observable.shallow,
       // TODO: Remove once we get a separate districts file
       districts: computed,
       metadata: false,
@@ -101,6 +103,7 @@ export default class RevocationsOverTimeStore {
       this.expandedData = expandedData;
       this.apiData = processedData.data;
       this.metadata = processedData.metadata;
+      this.filteredData = this.filterData(processedData);
       this.isLoading = false;
     } catch (error) {
       console.error(error);
@@ -109,8 +112,7 @@ export default class RevocationsOverTimeStore {
     }
   }
 
-  get filteredData() {
-    if (!this.apiData) return [];
+  filterData({ data, metadata }) {
     const { filters } = this.rootStore;
     const dataFilter = matchesAllFilters({
       filters,
@@ -118,8 +120,8 @@ export default class RevocationsOverTimeStore {
     });
 
     return filterOptimizedDataFormat({
-      apiData: this.apiData.slice(),
-      metadata: this.metadata,
+      apiData: data,
+      metadata,
       filterFn: dataFilter,
     });
   }

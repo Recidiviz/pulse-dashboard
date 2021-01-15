@@ -39,6 +39,8 @@ export default class CaseTableStore {
 
   apiData = [];
 
+  filteredData = [];
+
   auth0Context = observable.map({ loading: true });
 
   eagerExpand = true;
@@ -49,7 +51,7 @@ export default class CaseTableStore {
     makeAutoObservable(this, {
       fetchData: flow,
       apiData: observable.shallow,
-      filteredData: computed,
+      filteredData: observable.shallow,
       queryFilters: computed,
     });
 
@@ -83,6 +85,7 @@ export default class CaseTableStore {
         this.eagerExpand
       );
       this.apiData = processedData;
+      this.filteredData = this.filterData(processedData);
       this.isLoading = false;
     } catch (error) {
       console.error(error);
@@ -91,11 +94,11 @@ export default class CaseTableStore {
     }
   }
 
-  get filteredData() {
-    if (!this.apiData) return [];
+  filterData(data) {
     const { filters } = this.rootStore;
-    return applyAllFilters({ filters, treatCategoryAllAsAbsent: true })(
-      this.apiData.slice()
-    );
+    return applyAllFilters({
+      filters,
+      treatCategoryAllAsAbsent: true,
+    })(data);
   }
 }

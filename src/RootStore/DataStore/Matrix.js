@@ -41,6 +41,8 @@ export default class MatrixStore {
 
   apiData = [];
 
+  filteredData = [];
+
   metadata = {};
 
   auth0Context = observable.map({ loading: true });
@@ -53,7 +55,7 @@ export default class MatrixStore {
     makeAutoObservable(this, {
       fetchData: flow,
       apiData: observable.shallow,
-      filteredData: computed,
+      filteredData: observable.shallow,
       queryFilters: computed,
       metadata: false,
     });
@@ -89,6 +91,7 @@ export default class MatrixStore {
       );
       this.apiData = processedData.data;
       this.metadata = processedData.metadata;
+      this.filteredData = this.filterData(processedData);
       this.isLoading = false;
     } catch (error) {
       console.error(error);
@@ -97,13 +100,12 @@ export default class MatrixStore {
     }
   }
 
-  get filteredData() {
-    if (!this.apiData) return [];
+  filterData({ data, metadata }) {
     const { filters } = this.rootStore;
     const dataFilter = matchesTopLevelFilters({ filters });
     return filterOptimizedDataFormat({
-      apiData: this.apiData.slice(),
-      metadata: this.metadata,
+      apiData: data,
+      metadata,
       filterFn: dataFilter,
     });
   }
