@@ -18,20 +18,15 @@
 import React from "react";
 import { Container, Row, Col } from "reactstrap";
 
-import { useAuth0 } from "../react-auth0-spa";
+import { useRootStore } from "../StoreProvider";
 import Loading from "../components/Loading";
 import StateSelector from "../components/StateSelector";
-import {
-  getUserStateName,
-  getAvailableStateCodes,
-} from "../utils/authentication/user";
 
 const Profile = () => {
-  const { loading, user } = useAuth0();
+  const { userStore } = useRootStore();
+  const { isLoading, user } = userStore;
 
-  const availableStateCodes = getAvailableStateCodes(user);
-
-  if (loading || !user) {
+  if (isLoading || !user) {
     return <Loading />;
   }
 
@@ -50,11 +45,11 @@ const Profile = () => {
             <Col md>
               <h2>{user.name}</h2>
               <p className="lead text-muted">{user.email}</p>
-              <p className="lead text-muted">{getUserStateName(user)}</p>
-              {availableStateCodes.length > 1 && (
+              <p className="lead text-muted">{userStore.stateName}</p>
+              {userStore.availableStateCodes.length > 1 && (
                 <div style={{ maxWidth: "33%" }}>
                   <p className="lead text-muted">Current view state:</p>
-                  <StateSelector availableStateCodes={availableStateCodes} />
+                  <StateSelector />
                 </div>
               )}
             </Col>

@@ -131,7 +131,7 @@ export default class UserStore {
           this.isAuthorized = true;
           this.awaitingVerification = false;
           this.getTokenSilently = (...p: any) => auth0.getTokenSilently(...p);
-          this.logout = auth0.logout;
+          this.logout = (...p: any) => auth0.logout(...p);
           this.user = user;
           this.stateCode = getUserStateCode(user);
         } else {
