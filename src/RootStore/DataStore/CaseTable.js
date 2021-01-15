@@ -27,7 +27,8 @@ import {
 } from "mobx";
 import { callMetricsApi } from "../../api/metrics/metricsClient";
 import { processResponseData } from "./helpers";
-import { applyAllFilters } from "../../components/charts/new_revocations/helpers";
+import { matchesAllFilters } from "../../components/charts/new_revocations/helpers";
+import { filterOptimizedDataFormat } from "../../utils/charts/dataFilters";
 import { getQueryStringFromFilters } from "../../api/metrics/urlHelpers";
 
 export default class CaseTableStore {
@@ -41,9 +42,11 @@ export default class CaseTableStore {
 
   filteredData = [];
 
+  metadata = {};
+
   auth0Context = observable.map({ loading: true });
 
-  eagerExpand = true;
+  eagerExpand = false;
 
   file = `revocations_matrix_filtered_caseload`;
 
@@ -53,6 +56,7 @@ export default class CaseTableStore {
       apiData: observable.shallow,
       filteredData: observable.shallow,
       queryFilters: computed,
+      metadata: false,
     });
 
     this.rootStore = rootStore;
@@ -86,7 +90,8 @@ export default class CaseTableStore {
         this.file,
         this.eagerExpand
       );
-      this.apiData = processedData;
+      this.apiData = processedData.data;
+      this.metadata = processedData.metadata;
       this.filteredData = this.filterData(processedData);
       this.isLoading = false;
       this.isError = false;
@@ -97,11 +102,16 @@ export default class CaseTableStore {
     }
   }
 
-  filterData(data) {
+  filterData({ data, metadata }) {
     const { filters } = this.rootStore;
-    return applyAllFilters({
+    const dataFilter = matchesAllFilters({
       filters,
       treatCategoryAllAsAbsent: true,
-    })(data);
+    });
+    return filterOptimizedDataFormat({
+      apiData: data,
+      metadata,
+      filterFn: dataFilter,
+    });
   }
 }

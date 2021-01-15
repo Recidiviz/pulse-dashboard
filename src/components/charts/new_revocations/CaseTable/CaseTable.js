@@ -15,7 +15,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React, { useState, useMemo } from "react";
+import React, { useState } from "react";
 import { observer } from "mobx-react-lite";
 import { get } from "mobx";
 
@@ -31,7 +31,6 @@ import {
 import { translate } from "../../../../views/tenants/utils/i18nSettings";
 import { formatData, formatExportData } from "./utils/helpers";
 import { useRootStore } from "../../../../StoreProvider";
-import { filterOptimizedDataFormat } from "../../../../utils/charts/dataFilters";
 import { METRIC_PERIOD_MONTHS } from "../../../../constants/filterTypes";
 
 export const CASES_PER_PAGE = 15;
@@ -44,21 +43,7 @@ const CaseTable = () => {
   const { sortOrder, toggleOrder, comparator } = useSort();
 
   const filteredData = store.filteredData.slice();
-
-  const sortedData = useMemo(() => {
-    return filteredData.sort(comparator);
-  }, [filteredData, comparator]);
-
-  const { pageData, startCase, endCase } = useMemo(() => {
-    const start = page * CASES_PER_PAGE;
-    const end = Math.min(sortedData.length, start + CASES_PER_PAGE);
-
-    return {
-      pageData: formatData(sortedData.slice(start, end)),
-      startCase: start,
-      endCase: end,
-    };
-  }, [sortedData, page]);
+  const sortedData = filteredData.sort(comparator);
 
   if (store.isLoading) {
     return <Loading />;
@@ -67,13 +52,6 @@ const CaseTable = () => {
   if (store.isError) {
     return <Error />;
   }
-
-  const sortedData = filterOptimizedDataFormat(
-    unflattenedValues,
-    apiData,
-    apiData.metadata,
-    dataFilter
-  ).sort(comparator);
 
   const startCase = page * CASES_PER_PAGE;
   const endCase = Math.min(sortedData.length, startCase + CASES_PER_PAGE);
