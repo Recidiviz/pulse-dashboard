@@ -118,6 +118,7 @@ export default class RevocationsChartsStore {
       this.metadata = processedData.metadata;
       this.filteredData = this.filterData(processedData);
       this.isLoading = false;
+      this.isError = false;
     } catch (error) {
       console.error(error);
       this.isError = true;
