@@ -21,7 +21,6 @@ import { useRootStore } from "../StoreProvider";
 const useIntercom = () => {
   const { userStore, tenantStore } = useRootStore();
   const { user } = userStore;
-
   useEffect(() => {
     window.Intercom("update", {
       state_code: tenantStore.currentTenantId,

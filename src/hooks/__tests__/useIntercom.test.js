@@ -1,5 +1,5 @@
 // Recidiviz - a data platform for criminal justice reform
-// Copyright (C) 2020 Recidiviz, Inc.
+// Copyright (C) 2021 Recidiviz, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -17,11 +17,9 @@
 
 import { renderHook } from "@testing-library/react-hooks";
 import useIntercom from "../useIntercom";
-import { useAuth0 } from "../../react-auth0-spa";
-import { getUserStateCode } from "../../utils/authentication/user";
+import { useRootStore } from "../../StoreProvider";
 
-jest.mock("../../react-auth0-spa");
-jest.mock("../../utils/authentication/user");
+jest.mock("../../StoreProvider");
 
 describe("useIntercom hook tests", () => {
   const mockName = "some user name";
@@ -36,11 +34,14 @@ describe("useIntercom hook tests", () => {
     sub: mockUserId,
   };
 
-  const intercom = jest.fn();
-  useAuth0.mockReturnValue({ user: mockUser });
-  getUserStateCode.mockReturnValue(mockStateCode);
+  useRootStore.mockReturnValue({
+    userStore: { user: mockUser },
+    tenantStore: { currentTenantId: mockStateCode },
+  });
 
+  const intercom = jest.fn();
   window.Intercom = intercom;
+
   const { rerender, unmount } = renderHook(() => useIntercom());
 
   it("should update intercom with user data", () => {
@@ -61,7 +62,12 @@ describe("useIntercom hook tests", () => {
   it("should update intercom if user data changed", () => {
     const mockNewName = "some new user name";
     mockUser.name = mockNewName;
-    useAuth0.mockReturnValue({ user: mockUser });
+
+    useRootStore.mockReturnValue({
+      userStore: { user: mockUser },
+      tenantStore: { currentTenantId: mockStateCode },
+    });
+
     rerender();
 
     expect(intercom).toHaveBeenCalledTimes(2);
