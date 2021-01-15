@@ -26,15 +26,14 @@ import { translate } from "../../../../views/tenants/utils/i18nSettings";
 import { useRootStore } from "../../../../StoreProvider";
 import { VIOLATION_TYPE } from "../../../../constants/filterTypes";
 
-const RevocationsByViolation = ({ dataFilter, timeDescription }) => {
-  const { currentTenantId, filtersStore } = useRootStore();
+const RevocationsByViolation = ({ dataStore, timeDescription }) => {
+  const { filtersStore } = useRootStore();
   const violationTypes = filtersStore.filterOptions[VIOLATION_TYPE].options;
 
   return (
     <RevocationsByDimension
       chartId={`${translate("revocations")}ByViolationType`}
-      apiUrl={`${currentTenantId}/newRevocations`}
-      apiFile="revocations_matrix_distribution_by_violation"
+      dataStore={dataStore}
       renderChart={({ chartId, data, denominators, numerators }) => (
         <BarChartWithLabels
           data={data}
@@ -45,7 +44,7 @@ const RevocationsByViolation = ({ dataFilter, timeDescription }) => {
           xAxisLabel="Violation type and condition violated"
         />
       )}
-      generateChartData={createGenerateChartData(dataFilter, violationTypes)}
+      generateChartData={createGenerateChartData(dataStore, violationTypes)}
       chartTitle="Relative frequency of violation types"
       metricTitle="Relative frequency of violation types"
       timeDescription={timeDescription}
@@ -55,7 +54,11 @@ const RevocationsByViolation = ({ dataFilter, timeDescription }) => {
 };
 
 RevocationsByViolation.propTypes = {
-  dataFilter: PropTypes.func.isRequired,
+  dataStore: PropTypes.shape({
+    filteredData: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+    isLoading: PropTypes.bool.isRequired,
+    isError: PropTypes.bool.isRequired,
+  }).isRequired,
   timeDescription: PropTypes.string.isRequired,
 };
 

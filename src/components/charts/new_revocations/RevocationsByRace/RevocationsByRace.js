@@ -26,16 +26,12 @@ import getLabelByMode from "../utils/getLabelByMode";
 import { COLORS_LANTERN_SET } from "../../../../assets/scripts/constants/colors";
 import flags from "../../../../flags";
 import { translate } from "../../../../views/tenants/utils/i18nSettings";
-import { useRootStore } from "../../../../StoreProvider";
 
-const RevocationsByRace = ({ dataFilter, timeDescription }) => {
-  const { currentTenantId } = useRootStore();
-
+const RevocationsByRace = ({ dataStore, timeDescription }) => {
   return (
     <RevocationsByDimension
       chartId={`${translate("revocations")}ByRace`}
-      apiUrl={`${currentTenantId}/newRevocations`}
-      apiFile="revocations_matrix_distribution_by_race"
+      dataStore={dataStore}
       renderChart={({ chartId, data, denominators, numerators, mode }) => (
         <BarChartWithLabels
           id={chartId}
@@ -47,7 +43,7 @@ const RevocationsByRace = ({ dataFilter, timeDescription }) => {
           denominators={denominators}
         />
       )}
-      generateChartData={createGenerateChartData(dataFilter)}
+      generateChartData={createGenerateChartData(dataStore)}
       chartTitle="Admissions by race/ethnicity and risk level"
       metricTitle={(mode) =>
         `${getLabelByMode(mode)} by race/ethnicity and risk level`
@@ -61,7 +57,11 @@ const RevocationsByRace = ({ dataFilter, timeDescription }) => {
 };
 
 RevocationsByRace.propTypes = {
-  dataFilter: PropTypes.func.isRequired,
+  dataStore: PropTypes.shape({
+    filteredData: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+    isLoading: PropTypes.bool.isRequired,
+    isError: PropTypes.bool.isRequired,
+  }).isRequired,
   timeDescription: PropTypes.string.isRequired,
 };
 

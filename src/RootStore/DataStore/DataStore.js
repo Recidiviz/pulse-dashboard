@@ -18,19 +18,17 @@
 import { makeAutoObservable } from "mobx";
 
 import MatrixStore from "./Matrix";
+
 import RevocationsOverTimeStore from "./RevocationsOverTime";
 
-// const fileToMetricType = {
-//   revocations_matrix_by_month: "revocationsOverTime",
-//   revocations_matrix_filtered_caseload: "caseTable",
-//   revocations_matrix_cells: "violationReportMatrix",
-//   revocations_matrix_distribution_by_district: "revocationsByDistrict",
-//   revocations_matrix_distribution_by_race: "revocationsByRace",
-//   revocations_matrix_distribution_by_gender: "revocationsByGender",
-//   revocations_matrix_distribution_by_officer: "revocationsByOfficer",
-//   revocations_matrix_distribution_by_risk_level: "revocationsByRiskLevel",
-//   revocations_matrix_distribution_by_violation: "revocationsByViolation",
-// };
+import RevocationsByRiskLevelStore from "./RevocationsByRiskLevel";
+import RevocationsByOfficerStore from "./RevocationsByOfficer";
+import RevocationsByGenderStore from "./RevocationsByGender";
+import RevocationsByDistrictStore from "./RevocationsByDistrict";
+import RevocationsByRaceStore from "./RevocationsByRace";
+import RevocationsByViolationStore from "./RevocationsByViolation";
+
+import CaseTableStore from "./CaseTable";
 
 export default class DataStore {
   rootStore;
@@ -43,19 +41,19 @@ export default class DataStore {
 
   matrixStore;
 
-  // revocationsByDistrictStore;
+  revocationsByDistrictStore;
 
-  // revocationsByGenderStore;
+  revocationsByGenderStore;
 
-  // revocationsByOfficerStore;
+  revocationsByOfficerStore;
 
-  // revocationsByRaceStore;
+  revocationsByRaceStore;
 
-  // revocationsByRiskLevelStore;
+  revocationsByRiskLevelStore;
 
-  // revocationsByViolationStore;
+  revocationsByViolationStore;
 
-  // caseTableStore;
+  caseTableStore;
 
   constructor({ rootStore, filtersStore }) {
     makeAutoObservable(this);
@@ -69,6 +67,41 @@ export default class DataStore {
     });
 
     this.matrixStore = new MatrixStore({
+      dataStore: this,
+      filtersStore,
+    });
+
+    this.revocationsByRiskLevelStore = new RevocationsByRiskLevelStore({
+      dataStore: this,
+      filtersStore,
+    });
+
+    this.revocationsByGenderStore = new RevocationsByGenderStore({
+      dataStore: this,
+      filtersStore,
+    });
+
+    this.revocationsByRaceStore = new RevocationsByRaceStore({
+      dataStore: this,
+      filtersStore,
+    });
+
+    this.revocationsByDistrictStore = new RevocationsByDistrictStore({
+      dataStore: this,
+      filtersStore,
+    });
+
+    this.revocationsByViolationStore = new RevocationsByViolationStore({
+      dataStore: this,
+      filtersStore,
+    });
+
+    this.revocationsByOfficerStore = new RevocationsByOfficerStore({
+      dataStore: this,
+      filtersStore,
+    });
+
+    this.caseTableStore = new CaseTableStore({
       dataStore: this,
       filtersStore,
     });

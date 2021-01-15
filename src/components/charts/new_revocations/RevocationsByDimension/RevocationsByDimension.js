@@ -18,20 +18,21 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { observer } from "mobx-react-lite";
+import { get } from "mobx";
 
 import ModeSwitcher from "../ModeSwitcher";
 import RevocationsByDimensionComponent from "./RevocationsByDimensionComponent";
 
-import useChartData from "../../../../hooks/useChartData";
 import Loading from "../../../Loading";
 import Error from "../../../Error";
 import { isDenominatorsMatrixStatisticallySignificant } from "../../../../utils/charts/significantStatistics";
 import getLabelByMode from "../utils/getLabelByMode";
+import { useRootStore } from "../../../../StoreProvider";
+import { DISTRICT } from "../../../../constants/filterTypes";
 
 const RevocationsByDimension = ({
   chartId,
-  apiUrl,
-  apiFile,
+  dataStore,
   renderChart,
   generateChartData,
   metricTitle,
@@ -43,25 +44,20 @@ const RevocationsByDimension = ({
   includeWarning,
 }) => {
   const [mode, setMode] = useState(defaultMode);
+  const { filters } = useRootStore();
+  const currentDistricts = get(filters, DISTRICT);
 
-  const { isLoading, isError, metadata, apiData } = useChartData(
-    apiUrl,
-    apiFile,
-    false
-  );
-
-  if (isLoading) {
+  if (dataStore.isLoading) {
     return <Loading />;
   }
 
-  if (isError) {
+  if (dataStore.isError) {
     return <Error />;
   }
-  const { data, numerators, denominators, averageRate } = generateChartData({
-    metadata,
+  const { data, numerators, denominators, averageRate } = generateChartData(
     mode,
-    apiData,
-  });
+    currentDistricts.map((d) => d.toLowerCase())
+  );
 
   const showWarning =
     includeWarning &&
@@ -110,9 +106,12 @@ RevocationsByDimension.defaultProps = {
 };
 
 RevocationsByDimension.propTypes = {
+  dataStore: PropTypes.shape({
+    filteredData: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+    isLoading: PropTypes.bool.isRequired,
+    isError: PropTypes.bool.isRequired,
+  }).isRequired,
   chartId: PropTypes.string.isRequired,
-  apiUrl: PropTypes.string.isRequired,
-  apiFile: PropTypes.string.isRequired,
   renderChart: PropTypes.func.isRequired,
   generateChartData: PropTypes.func.isRequired,
   metricTitle: PropTypes.oneOfType([PropTypes.func, PropTypes.string])

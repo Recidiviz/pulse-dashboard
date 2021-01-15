@@ -28,7 +28,6 @@ import { translate } from "../../../../views/tenants/utils/i18nSettings";
 import { sumCounts } from "../utils/sumCounts";
 import getNameFromOfficerId from "../utils/getNameFromOfficerId";
 import { COLORS } from "../../../../assets/scripts/constants/colors";
-import { filterOptimizedDataFormat } from "../../../../utils/charts/dataFilters";
 
 const generatePercentChartData = (filteredData, mode) => {
   const [fieldName, totalFieldName] =
@@ -109,16 +108,8 @@ const generateCountChartData = (filteredData) => {
   return { data: { datasets, labels }, denominators: [] };
 };
 
-const createGenerateChartData = (dataFilter) => ({
-  metadata,
-  mode,
-  apiData,
-}) => {
-  const filteredData = filterOptimizedDataFormat({
-    apiData,
-    metadata,
-    filterFn: dataFilter,
-  });
+const createGenerateChartData = (dataStore) => (mode) => {
+  const { filteredData } = dataStore;
   switch (mode) {
     case "counts":
       return generateCountChartData(filteredData);

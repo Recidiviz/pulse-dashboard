@@ -29,25 +29,24 @@ import ViolationFilter from "./charts/new_revocations/ToggleBar/ViolationFilter"
 import RevocationsOverTime from "./charts/new_revocations/RevocationsOverTime";
 import Matrix from "./charts/new_revocations/Matrix";
 import MatrixExplanation from "./charts/new_revocations/Matrix/MatrixExplanation";
-// import RevocationCharts from "./charts/new_revocations/RevocationCharts";
-// import RevocationsByRiskLevel from "./charts/new_revocations/RevocationsByRiskLevel/RevocationsByRiskLevel";
-// import RevocationsByOfficer from "./charts/new_revocations/RevocationsByOfficer";
-// import RevocationsByViolation from "./charts/new_revocations/RevocationsByViolation";
-// import RevocationsByGender from "./charts/new_revocations/RevocationsByGender/RevocationsByGender";
-// import RevocationsByRace from "./charts/new_revocations/RevocationsByRace/RevocationsByRace";
-// import RevocationsByDistrict from "./charts/new_revocations/RevocationsByDistrict/RevocationsByDistrict";
-// import CaseTable from "./charts/new_revocations/CaseTable/CaseTable";
+import RevocationCharts from "./charts/new_revocations/RevocationCharts";
+import RevocationsByRiskLevel from "./charts/new_revocations/RevocationsByRiskLevel/RevocationsByRiskLevel";
+import RevocationsByOfficer from "./charts/new_revocations/RevocationsByOfficer";
+import RevocationsByViolation from "./charts/new_revocations/RevocationsByViolation";
+import RevocationsByGender from "./charts/new_revocations/RevocationsByGender/RevocationsByGender";
+import RevocationsByRace from "./charts/new_revocations/RevocationsByRace/RevocationsByRace";
+import RevocationsByDistrict from "./charts/new_revocations/RevocationsByDistrict/RevocationsByDistrict";
+import CaseTable from "./charts/new_revocations/CaseTable/CaseTable";
 import { useAuth0 } from "../react-auth0-spa";
 import { getUserAppMetadata } from "../utils/authentication/user";
 import {
   ADMISSION_TYPE,
   CHARGE_CATEGORY,
-  // DISTRICT,
   METRIC_PERIOD_MONTHS,
   SUPERVISION_LEVEL,
   SUPERVISION_TYPE,
 } from "../constants/filterTypes";
-// import flags from "../flags";
+import flags from "../flags";
 import { useRootStore } from "../StoreProvider";
 
 import "./Revocations.scss";
@@ -122,11 +121,11 @@ const Revocations = () => {
         <MatrixExplanation />
       </div>
 
-      {/* <RevocationCharts
+      <RevocationCharts
         riskLevelChart={
           <ErrorBoundary>
             <RevocationsByRiskLevel
-              dataFilter={matchesAllFilters({ filters })}
+              dataStore={dataStore.storeByMetricType("revocationsByRiskLevel")}
               timeDescription={timeDescription}
             />
           </ErrorBoundary>
@@ -135,7 +134,7 @@ const Revocations = () => {
           flags.enableOfficerChart && (
             <ErrorBoundary>
               <RevocationsByOfficer
-                dataFilter={matchesAllFilters({ filters })}
+                dataStore={dataStore.storeByMetricType("revocationsByOfficer")}
                 timeDescription={timeDescription}
               />
             </ErrorBoundary>
@@ -144,7 +143,7 @@ const Revocations = () => {
         violationChart={
           <ErrorBoundary>
             <RevocationsByViolation
-              dataFilter={matchesAllFilters({ filters })}
+              dataStore={dataStore.storeByMetricType("revocationsByViolation")}
               timeDescription={timeDescription}
             />
           </ErrorBoundary>
@@ -152,7 +151,7 @@ const Revocations = () => {
         genderChart={
           <ErrorBoundary>
             <RevocationsByGender
-              dataFilter={matchesAllFilters({ filters })}
+              dataStore={dataStore.storeByMetricType("revocationsByGender")}
               timeDescription={timeDescription}
             />
           </ErrorBoundary>
@@ -160,7 +159,7 @@ const Revocations = () => {
         raceChart={
           <ErrorBoundary>
             <RevocationsByRace
-              dataFilter={matchesAllFilters({ filters })}
+              dataStore={dataStore.storeByMetricType("revocationsByRace")}
               timeDescription={timeDescription}
             />
           </ErrorBoundary>
@@ -168,10 +167,7 @@ const Revocations = () => {
         districtChart={
           <ErrorBoundary>
             <RevocationsByDistrict
-              dataFilter={matchesAllFilters({
-                filters,
-                skippedFilters: [DISTRICT],
-              })}
+              dataStore={dataStore.storeByMetricType("revocationsByDistrict")}
               timeDescription={timeDescription}
             />
           </ErrorBoundary>
@@ -180,14 +176,9 @@ const Revocations = () => {
 
       <div className="bgc-white m-20 p-20">
         <ErrorBoundary>
-          <CaseTable
-            dataFilter={matchesAllFilters({
-              filters,
-              treatCategoryAllAsAbsent: true,
-            })}
-          />
+          <CaseTable dataStore={dataStore.storeByMetricType("caseTable")} />
         </ErrorBoundary>
-      </div> */}
+      </div>
     </main>
   );
 };

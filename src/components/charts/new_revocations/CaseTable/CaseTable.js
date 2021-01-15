@@ -1,5 +1,5 @@
 // Recidiviz - a data platform for criminal justice reform
-// Copyright (C) 2020 Recidiviz, Inc.
+// Copyright (C) 2021 Recidiviz, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -29,7 +29,6 @@ import {
   getTrailingLabelFromMetricPeriodMonthsToggle,
   getPeriodLabelFromMetricPeriodMonthsToggle,
 } from "../../../../utils/charts/toggles";
-import useChartData from "../../../../hooks/useChartData";
 import { translate } from "../../../../views/tenants/utils/i18nSettings";
 import { formatData, formatExportData } from "./utils/helpers";
 import { useRootStore } from "../../../../StoreProvider";
@@ -38,24 +37,32 @@ import { METRIC_PERIOD_MONTHS } from "../../../../constants/filterTypes";
 
 export const CASES_PER_PAGE = 15;
 
-const CaseTable = ({ dataFilter }) => {
-  const { currentTenantId, filtersStore } = useRootStore();
+const CaseTable = ({ dataStore }) => {
+  const { filtersStore } = useRootStore();
   const { filters } = filtersStore;
-
   const [page, setPage] = useState(0);
   const { sortOrder, toggleOrder, comparator } = useSort();
 
-  const { isLoading, isError, apiData, unflattenedValues } = useChartData(
-    `${currentTenantId}/newRevocations`,
-    "revocations_matrix_filtered_caseload",
-    false
-  );
+  const sortedData = useMemo(() => {
+    return dataStore.filteredData.sort(comparator);
+  }, [dataStore.filteredData, comparator]);
 
-  if (isLoading) {
+  const { pageData, startCase, endCase } = useMemo(() => {
+    const start = page * CASES_PER_PAGE;
+    const end = Math.min(sortedData.length, start + CASES_PER_PAGE);
+
+    return {
+      pageData: formatData(sortedData.slice(start, end)),
+      startCase: start,
+      endCase: end,
+    };
+  }, [sortedData, page]);
+
+  if (dataStore.isLoading) {
     return <Loading />;
   }
 
-  if (isError) {
+  if (dataStore.isError) {
     return <Error />;
   }
 
@@ -127,7 +134,11 @@ const CaseTable = ({ dataFilter }) => {
 };
 
 CaseTable.propTypes = {
-  dataFilter: PropTypes.func.isRequired,
+  dataStore: PropTypes.shape({
+    filteredData: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+    isLoading: PropTypes.bool.isRequired,
+    isError: PropTypes.bool.isRequired,
+  }).isRequired,
 };
 
 export default observer(CaseTable);
