@@ -129,7 +129,7 @@ export default class RevocationsOverTimeStore {
 
   get districts() {
     if (!this.expandedData) return [];
-    const data = get(this.expandedData, "data");
+    const data = [...this.expandedData];
     return pipe(
       map("district"),
       filter((d) => d.toLowerCase() !== "all"),

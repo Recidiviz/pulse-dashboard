@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-import React, { useMemo } from "react";
+import React from "react";
 
 import { observer } from "mobx-react-lite";
 import { get } from "mobx";
@@ -35,10 +35,9 @@ const allDistrictsOption = { label: "All", value: "All" };
 const DistrictFilter = ({ dataStore }) => {
   const { filters, filtersStore } = useRootStore();
   const { user } = useAuth0();
-
   const { district } = getUserAppMetadata(user);
 
-  const select = useMemo(() => {
+  const getSelectElement = () => {
     if (district) {
       const singleValue = { label: district, value: district };
 
@@ -78,9 +77,9 @@ const DistrictFilter = ({ dataStore }) => {
         isSearchable
       />
     );
-  }, [dataStore, district, filtersStore, filters]);
+  };
 
-  return <FilterField label="District">{select}</FilterField>;
+  return <FilterField label="District">{getSelectElement()}</FilterField>;
 };
 
 DistrictFilter.propTypes = {

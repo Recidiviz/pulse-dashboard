@@ -25,8 +25,5 @@ export function processResponseData(data, file, eagerExpand = true) {
     };
   }
 
-  return {
-    data: metricFile,
-    metadata: {},
-  };
+  return metricFile;
 }
