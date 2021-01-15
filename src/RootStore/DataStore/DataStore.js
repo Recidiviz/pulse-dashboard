@@ -16,26 +16,18 @@
 // =============================================================================
 
 import { makeAutoObservable } from "mobx";
-
 import MatrixStore from "./Matrix";
-
 import RevocationsOverTimeStore from "./RevocationsOverTime";
-
 import RevocationsByRiskLevelStore from "./RevocationsByRiskLevel";
 import RevocationsByOfficerStore from "./RevocationsByOfficer";
 import RevocationsByGenderStore from "./RevocationsByGender";
 import RevocationsByDistrictStore from "./RevocationsByDistrict";
 import RevocationsByRaceStore from "./RevocationsByRace";
 import RevocationsByViolationStore from "./RevocationsByViolation";
-
 import CaseTableStore from "./CaseTable";
 
 export default class DataStore {
   rootStore;
-
-  filtersStore;
-
-  currentTenantId;
 
   revocationsOverTimeStore;
 
@@ -55,56 +47,35 @@ export default class DataStore {
 
   caseTableStore;
 
-  constructor({ rootStore, filtersStore }) {
+  constructor({ rootStore }) {
     makeAutoObservable(this);
     this.rootStore = rootStore;
 
-    this.currentTenantId = this.rootStore.currentTenantId;
+    this.revocationsOverTimeStore = new RevocationsOverTimeStore({ rootStore });
 
-    this.revocationsOverTimeStore = new RevocationsOverTimeStore({
-      dataStore: this,
-      filtersStore,
-    });
-
-    this.matrixStore = new MatrixStore({
-      dataStore: this,
-      filtersStore,
-    });
+    this.matrixStore = new MatrixStore({ rootStore });
 
     this.revocationsByRiskLevelStore = new RevocationsByRiskLevelStore({
-      dataStore: this,
-      filtersStore,
+      rootStore,
     });
 
-    this.revocationsByGenderStore = new RevocationsByGenderStore({
-      dataStore: this,
-      filtersStore,
-    });
+    this.revocationsByGenderStore = new RevocationsByGenderStore({ rootStore });
 
-    this.revocationsByRaceStore = new RevocationsByRaceStore({
-      dataStore: this,
-      filtersStore,
-    });
+    this.revocationsByRaceStore = new RevocationsByRaceStore({ rootStore });
 
     this.revocationsByDistrictStore = new RevocationsByDistrictStore({
-      dataStore: this,
-      filtersStore,
+      rootStore,
     });
 
     this.revocationsByViolationStore = new RevocationsByViolationStore({
-      dataStore: this,
-      filtersStore,
+      rootStore,
     });
 
     this.revocationsByOfficerStore = new RevocationsByOfficerStore({
-      dataStore: this,
-      filtersStore,
+      rootStore,
     });
 
-    this.caseTableStore = new CaseTableStore({
-      dataStore: this,
-      filtersStore,
-    });
+    this.caseTableStore = new CaseTableStore({ rootStore });
   }
 
   storeByMetricType(metricType) {

@@ -15,14 +15,22 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import { flow, makeAutoObservable, when, observable, computed } from "mobx";
+import {
+  flow,
+  makeAutoObservable,
+  when,
+  observable,
+  computed,
+  action,
+  get,
+} from "mobx";
 import { useAuth0 } from "../../react-auth0-spa";
 import { callMetricsApi } from "../../api/metrics/metricsClient";
 import { processResponseData } from "./processDataUtils";
 import { applyAllFilters } from "../../components/charts/new_revocations/helpers";
 
 export default class RevocationsByViolationStore {
-  dataStore;
+  rootStore;
 
   filtersStore;
 
@@ -30,44 +38,53 @@ export default class RevocationsByViolationStore {
 
   isError = false;
 
-  apiData = observable.map({ data: [], metadata: {} });
+  apiData = [];
 
-  auth0Context;
+  auth0Context = observable.map({ loading: true });
 
   file = `revocations_matrix_distribution_by_violation`;
 
-  constructor({ dataStore, filtersStore }) {
+  constructor({ rootStore }) {
     makeAutoObservable(this, {
       fetchData: flow,
+      apiData: observable.shallow,
+      setAuth0Context: action,
       filteredData: computed,
     });
 
-    this.dataStore = dataStore;
+    this.rootStore = rootStore;
 
-    this.filtersStore = filtersStore;
+    this.filtersStore = rootStore.filtersStore;
 
-    this.auth0Context = useAuth0();
+    this.setAuth0Context();
 
     when(
-      () => !this.auth0Context.loading,
-      () => this.fetchData()
+      () => !get(this.auth0Context, "loading"),
+      () => {
+        this.fetchData();
+      }
     );
   }
 
+  setAuth0Context() {
+    const auth0Context = useAuth0();
+    this.auth0Context.merge(auth0Context);
+  }
+
   get filteredData() {
-    if (!this.apiData.data) return [];
+    if (!this.apiData) return [];
     const { filters } = this.filtersStore;
-    return applyAllFilters({ filters })(this.apiData.data);
+    return applyAllFilters({ filters })(this.apiData);
   }
 
   *fetchData() {
-    const endpoint = `${this.dataStore.currentTenantId}/newRevocations/${this.file}`;
+    const endpoint = `${this.rootStore.currentTenantId}/newRevocations/${this.file}`;
     try {
       const responseData = yield callMetricsApi(
         endpoint,
-        this.auth0Context.getTokenSilently
+        get(this.auth0Context, "getTokenSilently")
       );
-      this.apiData = processResponseData(responseData, this.file);
+      this.apiData = processResponseData(responseData, this.file).data;
       this.isLoading = false;
     } catch (error) {
       console.error(error);

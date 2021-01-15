@@ -111,13 +111,13 @@ const CaseTable = ({ dataStore }) => {
     <CaseTableComponent
       timeWindowDescription={timeWindowDescription}
       options={options}
+      createUpdatePage={createUpdatePage}
       createSortableProps={createSortableProps}
       pageData={pageData}
       startCase={startCase}
       endCase={endCase}
       totalCases={sortedData.length}
       casesPerPage={CASES_PER_PAGE}
-      createUpdatePage={createUpdatePage}
       exportMenu={
         <ExportMenu
           chartId="filteredCaseTable"
