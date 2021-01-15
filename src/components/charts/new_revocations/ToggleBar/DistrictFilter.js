@@ -15,34 +15,27 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 import React, { useMemo } from "react";
+import PropTypes from "prop-types";
+
 import { observer } from "mobx-react-lite";
 import { get } from "mobx";
 
-import filter from "lodash/fp/filter";
-import identity from "lodash/fp/identity";
 import map from "lodash/fp/map";
-import pipe from "lodash/fp/pipe";
-import sortBy from "lodash/fp/sortBy";
-import uniq from "lodash/fp/uniq";
 
 import FilterField from "./FilterField";
 import Select from "../../../controls/Select";
-import useChartData from "../../../../hooks/useChartData";
 import { useAuth0 } from "../../../../react-auth0-spa";
 import { getUserAppMetadata } from "../../../../utils/authentication/user";
 import MultiSelect from "../../../controls/MultiSelect";
 import { useRootStore } from "../../../../StoreProvider";
 import { DISTRICT } from "../../../../constants/filterTypes";
+import { optionPropType } from "../../../propTypes";
 
 const allDistrictsOption = { label: "All", value: "All" };
 
-const DistrictFilter = () => {
-  const { filters, filtersStore, currentTenantId } = useRootStore();
+const DistrictFilter = ({ districts, isLoading }) => {
+  const { filters, filtersStore } = useRootStore();
   const { user } = useAuth0();
-  const { isLoading, apiData } = useChartData(
-    `${currentTenantId}/newRevocations`,
-    "revocations_matrix_cells"
-  );
 
   const { district } = getUserAppMetadata(user);
 
@@ -60,21 +53,13 @@ const DistrictFilter = () => {
         />
       );
     }
-    const options = [allDistrictsOption].concat(
-      pipe(
-        map("district"),
-        filter((d) => d.toLowerCase() !== "all"),
-        uniq,
-        sortBy(identity),
-        map((d) => ({ value: d, label: d }))
-      )(apiData)
-    );
+    const options = [allDistrictsOption].concat(districts);
     const summingOption = allDistrictsOption;
     const defaultValue = [allDistrictsOption];
 
     const onValueChange = (newOptions) => {
-      const districts = map("value", newOptions);
-      filtersStore.setFilters({ [DISTRICT]: districts });
+      const filteredDistricts = map("value", newOptions);
+      filtersStore.setFilters({ [DISTRICT]: filteredDistricts });
     };
 
     const selectValue = options.filter((option) =>
@@ -93,9 +78,14 @@ const DistrictFilter = () => {
         isSearchable
       />
     );
-  }, [district, isLoading, apiData, filtersStore, filters]);
+  }, [district, districts, isLoading, filtersStore, filters]);
 
   return <FilterField label="District">{select}</FilterField>;
+};
+
+DistrictFilter.propTypes = {
+  districts: PropTypes.arrayOf(optionPropType).isRequired,
+  isLoading: PropTypes.bool.isRequired,
 };
 
 export default observer(DistrictFilter);

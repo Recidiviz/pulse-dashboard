@@ -73,7 +73,10 @@ const Revocations = () => {
               dimension={METRIC_PERIOD_MONTHS}
             />
             <ErrorBoundary>
-              <DistrictFilter />
+              <DistrictFilter
+                districts={dataStore.revocationsOverTimeStore.districts}
+                isLoading={dataStore.revocationsOverTimeStore.isLoading}
+              />
             </ErrorBoundary>
             <ToggleBarFilter label="Case Type" dimension={CHARGE_CATEGORY} />
             {filterOptions[SUPERVISION_LEVEL].componentEnabled && (

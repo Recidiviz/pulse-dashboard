@@ -25,6 +25,12 @@ import {
   toJS,
   reaction,
 } from "mobx";
+import filter from "lodash/fp/filter";
+import identity from "lodash/fp/identity";
+import map from "lodash/fp/map";
+import pipe from "lodash/fp/pipe";
+import sortBy from "lodash/fp/sortBy";
+import uniq from "lodash/fp/uniq";
 import { callMetricsApi } from "../../api/metrics/metricsClient";
 import { processResponseData } from "./helpers";
 import { matchesAllFilters } from "../../components/charts/new_revocations/helpers";
@@ -43,6 +49,8 @@ export default class RevocationsOverTimeStore {
 
   apiData = [];
 
+  expandedData = [];
+
   metadata = observable.map({});
 
   eagerExpand = false;
@@ -55,6 +63,9 @@ export default class RevocationsOverTimeStore {
       apiData: observable.shallow,
       filteredData: computed,
       queryFilters: computed,
+      expandedData: observable.shallow,
+      // TODO: Remove once we get a separate districts file
+      districts: computed,
     });
 
     this.rootStore = rootStore;
@@ -88,6 +99,9 @@ export default class RevocationsOverTimeStore {
         this.file,
         this.eagerExpand
       );
+
+      const expandedData = processResponseData(responseData, this.file, true);
+      this.expandedData = expandedData;
       this.apiData = processedData.data;
       this.metadata = processedData.metadata;
       this.isLoading = false;
@@ -111,5 +125,17 @@ export default class RevocationsOverTimeStore {
       metadata: this.metadata,
       filterFn: dataFilter,
     });
+  }
+
+  get districts() {
+    if (!this.expandedData) return [];
+    const data = get(this.expandedData, "data");
+    return pipe(
+      map("district"),
+      filter((d) => d.toLowerCase() !== "all"),
+      uniq,
+      sortBy(identity),
+      map((d) => ({ value: d, label: d }))
+    )(data);
   }
 }
