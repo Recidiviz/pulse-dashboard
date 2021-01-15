@@ -81,12 +81,13 @@ export default class RevocationsChartsStore {
     );
 
     reaction(
-      () => {
-        return (
-          this.selectedChart && getQueryStringFromFilters(this.queryFilters)
-        );
-      },
-      (queryString) => this.fetchData(queryString)
+      () => this.selectedChart,
+      () => this.fetchData(getQueryStringFromFilters(this.queryFilters))
+    );
+
+    reaction(
+      () => getQueryStringFromFilters(this.queryFilters),
+      (queryString) => this.fetchData(queryString, false)
     );
   }
 
@@ -98,11 +99,11 @@ export default class RevocationsChartsStore {
     this.selectedChart = chartId;
   }
 
-  *fetchData(queryString) {
+  *fetchData(queryString, isLoading = true) {
     const filename = CHART_TO_FILENAME[this.selectedChart];
     const endpoint = `${this.rootStore.currentTenantId}/newRevocations/${filename}${queryString}`;
     try {
-      this.isLoading = true;
+      this.isLoading = isLoading;
       const responseData = yield callMetricsApi(
         endpoint,
         this.rootStore.getTokenSilently
