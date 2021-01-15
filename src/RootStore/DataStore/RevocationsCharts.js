@@ -45,15 +45,13 @@ const CHART_TO_FILENAME = {
 export default class RevocationsChartsStore {
   rootStore;
 
-  filtersStore;
-
   isLoading = true;
 
   isError = false;
 
   apiData = [];
 
-  metadata = observable.map({});
+  metadata = {};
 
   selectedChart = "District";
 
@@ -69,11 +67,10 @@ export default class RevocationsChartsStore {
       selectedChart: observable,
       setSelectedChart: action.bound,
       queryFilters: computed,
+      metadata: false,
     });
 
     this.rootStore = rootStore;
-
-    this.filtersStore = rootStore.filtersStore;
 
     when(
       () => !get(this.rootStore.auth0Context, "loading"),
@@ -92,7 +89,7 @@ export default class RevocationsChartsStore {
   }
 
   get queryFilters() {
-    return Object.fromEntries(toJS(this.filtersStore.filters));
+    return Object.fromEntries(toJS(this.rootStore.filters));
   }
 
   setSelectedChart(chartId) {
@@ -125,7 +122,7 @@ export default class RevocationsChartsStore {
 
   get filteredData() {
     if (!this.apiData) return [];
-    const { filters } = this.filtersStore;
+    const { filters } = this.rootStore;
     const filteringOptions = {
       District: { skippedFilters: [DISTRICT] },
     };
@@ -134,7 +131,7 @@ export default class RevocationsChartsStore {
       ...filteringOptions[this.selectedChart],
     });
     return filterOptimizedDataFormat({
-      apiData: toJS(this.apiData),
+      apiData: this.apiData.slice(),
       metadata: this.metadata,
       filterFn: dataFilter,
     });

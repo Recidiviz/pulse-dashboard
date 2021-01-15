@@ -41,8 +41,6 @@ import { getQueryStringFromFilters } from "../../api/metrics/urlHelpers";
 export default class RevocationsOverTimeStore {
   rootStore;
 
-  filtersStore;
-
   isLoading = true;
 
   isError = false;
@@ -51,7 +49,7 @@ export default class RevocationsOverTimeStore {
 
   expandedData = [];
 
-  metadata = observable.map({});
+  metadata = {};
 
   eagerExpand = false;
 
@@ -66,11 +64,10 @@ export default class RevocationsOverTimeStore {
       expandedData: observable.shallow,
       // TODO: Remove once we get a separate districts file
       districts: computed,
+      metadata: false,
     });
 
     this.rootStore = rootStore;
-
-    this.filtersStore = rootStore.filtersStore;
 
     when(
       () => !get(this.rootStore.auth0Context, "loading"),
@@ -84,7 +81,7 @@ export default class RevocationsOverTimeStore {
   }
 
   get queryFilters() {
-    return Object.fromEntries(toJS(this.filtersStore.filters));
+    return Object.fromEntries(toJS(this.rootStore.filters));
   }
 
   *fetchData(queryString = "") {
@@ -114,14 +111,14 @@ export default class RevocationsOverTimeStore {
 
   get filteredData() {
     if (!this.apiData) return [];
-    const { filters } = this.filtersStore;
+    const { filters } = this.rootStore;
     const dataFilter = matchesAllFilters({
       filters,
       skippedFilters: [METRIC_PERIOD_MONTHS],
     });
 
     return filterOptimizedDataFormat({
-      apiData: toJS(this.apiData),
+      apiData: this.apiData.slice(),
       metadata: this.metadata,
       filterFn: dataFilter,
     });
@@ -129,7 +126,7 @@ export default class RevocationsOverTimeStore {
 
   get districts() {
     if (!this.expandedData) return [];
-    const data = [...this.expandedData];
+    const data = this.expandedData.slice();
     return pipe(
       map("district"),
       filter((d) => d.toLowerCase() !== "all"),

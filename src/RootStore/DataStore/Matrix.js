@@ -35,15 +35,13 @@ import { getQueryStringFromFilters } from "../../api/metrics/urlHelpers";
 export default class MatrixStore {
   rootStore;
 
-  filtersStore;
-
   isLoading = true;
 
   isError = false;
 
   apiData = [];
 
-  metadata = observable.map({});
+  metadata = {};
 
   auth0Context = observable.map({ loading: true });
 
@@ -57,11 +55,10 @@ export default class MatrixStore {
       apiData: observable.shallow,
       filteredData: computed,
       queryFilters: computed,
+      metadata: false,
     });
 
     this.rootStore = rootStore;
-
-    this.filtersStore = rootStore.filtersStore;
 
     when(
       () => !get(this.rootStore.auth0Context, "loading"),
@@ -75,7 +72,7 @@ export default class MatrixStore {
   }
 
   get queryFilters() {
-    return Object.fromEntries(toJS(this.filtersStore.filters));
+    return Object.fromEntries(toJS(this.rootStore.filters));
   }
 
   *fetchData(queryString) {
@@ -102,10 +99,10 @@ export default class MatrixStore {
 
   get filteredData() {
     if (!this.apiData) return [];
-    const { filters } = this.filtersStore;
+    const { filters } = this.rootStore;
     const dataFilter = matchesTopLevelFilters({ filters });
     return filterOptimizedDataFormat({
-      apiData: toJS(this.apiData),
+      apiData: this.apiData.slice(),
       metadata: this.metadata,
       filterFn: dataFilter,
     });

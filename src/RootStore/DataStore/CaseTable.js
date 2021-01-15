@@ -33,8 +33,6 @@ import { getQueryStringFromFilters } from "../../api/metrics/urlHelpers";
 export default class CaseTableStore {
   rootStore;
 
-  filtersStore;
-
   isLoading = true;
 
   isError = false;
@@ -57,8 +55,6 @@ export default class CaseTableStore {
 
     this.rootStore = rootStore;
 
-    this.filtersStore = rootStore.filtersStore;
-
     when(
       () => !get(this.rootStore.auth0Context, "loading"),
       () => this.fetchData(getQueryStringFromFilters(this.queryFilters))
@@ -71,7 +67,7 @@ export default class CaseTableStore {
   }
 
   get queryFilters() {
-    return Object.fromEntries(toJS(this.filtersStore.filters));
+    return Object.fromEntries(toJS(this.rootStore.filters));
   }
 
   *fetchData(queryString) {
@@ -97,7 +93,7 @@ export default class CaseTableStore {
 
   get filteredData() {
     if (!this.apiData) return [];
-    const { filters } = this.filtersStore;
+    const { filters } = this.rootStore;
     return applyAllFilters({ filters, treatCategoryAllAsAbsent: true })(
       this.apiData.slice()
     );
