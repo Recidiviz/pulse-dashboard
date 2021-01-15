@@ -15,7 +15,6 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 import React, { useMemo } from "react";
-import PropTypes from "prop-types";
 
 import { observer } from "mobx-react-lite";
 import { get } from "mobx";
@@ -29,11 +28,11 @@ import { getUserAppMetadata } from "../../../../utils/authentication/user";
 import MultiSelect from "../../../controls/MultiSelect";
 import { useRootStore } from "../../../../StoreProvider";
 import { DISTRICT } from "../../../../constants/filterTypes";
-import { optionPropType } from "../../../propTypes";
+import { dataStorePropTypes } from "../../propTypes";
 
 const allDistrictsOption = { label: "All", value: "All" };
 
-const DistrictFilter = ({ districts, isLoading }) => {
+const DistrictFilter = ({ dataStore }) => {
   const { filters, filtersStore } = useRootStore();
   const { user } = useAuth0();
 
@@ -53,6 +52,7 @@ const DistrictFilter = ({ districts, isLoading }) => {
         />
       );
     }
+    const { districts, isLoading } = dataStore;
     const options = [allDistrictsOption].concat(districts);
     const summingOption = allDistrictsOption;
     const defaultValue = [allDistrictsOption];
@@ -78,14 +78,13 @@ const DistrictFilter = ({ districts, isLoading }) => {
         isSearchable
       />
     );
-  }, [district, districts, isLoading, filtersStore, filters]);
+  }, [dataStore, district, filtersStore, filters]);
 
   return <FilterField label="District">{select}</FilterField>;
 };
 
 DistrictFilter.propTypes = {
-  districts: PropTypes.arrayOf(optionPropType).isRequired,
-  isLoading: PropTypes.bool.isRequired,
+  dataStore: dataStorePropTypes.isRequired,
 };
 
 export default observer(DistrictFilter);
