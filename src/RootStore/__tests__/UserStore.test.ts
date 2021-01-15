@@ -16,8 +16,8 @@
 // =============================================================================
 
 import createAuth0Client from "@auth0/auth0-spa-js";
-// import { ERROR_MESSAGES } from "../constants";git add
-import { reactImmediately } from "../testUtils";
+import { ERROR_MESSAGES } from "../../constants/errorMessages";
+import { reactImmediately } from "../../testUtils";
 import UserStore from "../UserStore";
 
 jest.mock("@auth0/auth0-spa-js");
@@ -70,7 +70,7 @@ test("authorize requires Auth0 client settings", async () => {
   await store.authorize();
   reactImmediately(() => {
     const error = store.authError;
-    expect(error?.message).toMatch("this is an error");
+    expect(error?.message).toMatch(ERROR_MESSAGES.auth0Configuration);
   });
   expect.hasAssertions();
 });
