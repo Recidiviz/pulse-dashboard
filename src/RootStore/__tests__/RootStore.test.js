@@ -40,6 +40,10 @@ describe("RootStore", () => {
     expect(rootStore.tenantStore).toBeDefined();
   });
 
+  it("contains a UserStore", () => {
+    expect(rootStore.userStore).toBeDefined();
+  });
+
   it("contains a currentTenantId", () => {
     expect(rootStore.currentTenantId).toBeDefined();
   });

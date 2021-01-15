@@ -18,12 +18,16 @@
 import createAuth0Client, { Auth0ClientOptions } from "@auth0/auth0-spa-js";
 import { makeAutoObservable, runInAction } from "mobx";
 import qs from "qs";
-import { ERROR_MESSAGES } from "../constants";
-import RootStore from "./RootStore";
+import { ERROR_MESSAGES } from "../constants/errorMessages";
+import type RootStore from "./RootStore";
+import {
+  getUserStateCode,
+  getStateNameForCode,
+  getAvailableStateCodes,
+} from "./utils/user";
 
 type ConstructorProps = {
   authSettings?: Auth0ClientOptions;
-  isAuthRequired: boolean;
   rootStore?: RootStore;
 };
 
@@ -55,22 +59,30 @@ export default class UserStore {
 
   isLoading: boolean;
 
+  // TODO TS create user type
+  user: any;
+
+  district: string;
+
+  stateCode?: string;
+
+  getTokenSilently?: Function;
+
+  logout?: Function;
+
   readonly rootStore?: RootStore;
 
-  constructor({ authSettings, isAuthRequired, rootStore }: ConstructorProps) {
+  constructor({ authSettings, rootStore }: ConstructorProps) {
     makeAutoObservable(this, { rootStore: false, authSettings: false });
 
     this.authSettings = authSettings;
     this.rootStore = rootStore;
 
     this.awaitingVerification = false;
-    if (!isAuthRequired) {
-      this.isAuthorized = true;
-      this.isLoading = false;
-    } else {
-      this.isAuthorized = false;
-      this.isLoading = true;
-    }
+    this.isAuthorized = false;
+    this.isLoading = true;
+    // TODO restricted district
+    this.district = "01";
   }
 
   /**
@@ -84,6 +96,7 @@ export default class UserStore {
   async authorize({
     handleTargetUrl,
   }: {
+    // eslint-disable-next-line no-unused-vars
     handleTargetUrl?: (targetUrl: string) => void;
   } = {}): Promise<void> {
     if (!this.authSettings) {
@@ -117,6 +130,10 @@ export default class UserStore {
         if (user.email_verified) {
           this.isAuthorized = true;
           this.awaitingVerification = false;
+          this.getTokenSilently = (...p: any) => auth0.getTokenSilently(...p);
+          this.logout = auth0.logout;
+          this.user = user;
+          this.stateCode = getUserStateCode(user);
         } else {
           this.isAuthorized = false;
           this.awaitingVerification = true;
@@ -127,5 +144,21 @@ export default class UserStore {
         appState: { targetUrl: window.location.href },
       });
     }
+  }
+
+  /**
+   * Returns the list of states which are accessible to users to view data for.
+   *
+   */
+  // TODO pull logic in utils/user into this store once tenants utils are ported to TS
+  get availableStateCodes() {
+    return getAvailableStateCodes(this.user);
+  }
+
+  /**
+   * Returns the human-readable state name for the authorized state code for the given usere.
+   */
+  get stateName() {
+    return getStateNameForCode(this.stateCode);
   }
 }

@@ -19,8 +19,14 @@ import createAuth0Client from "@auth0/auth0-spa-js";
 import { ERROR_MESSAGES } from "../../constants/errorMessages";
 import { reactImmediately } from "../../testUtils";
 import UserStore from "../UserStore";
+import { METADATA_NAMESPACE } from "../../constants";
+import { LANTERN_TENANTS } from "../../views/tenants/utils/lanternTenants";
+import tenants from "../../tenants";
 
 jest.mock("@auth0/auth0-spa-js");
+
+const metadataField = `${METADATA_NAMESPACE}app_metadata`;
+const metadata = { [metadataField]: { state_code: "US_MO" } };
 
 const mockCreateAuth0Client = createAuth0Client as jest.Mock;
 const mockGetUser = jest.fn();
@@ -35,6 +41,7 @@ const testAuthSettings = {
 };
 
 beforeEach(() => {
+  mockGetUser.mockResolvedValue(metadata);
   mockCreateAuth0Client.mockResolvedValue({
     getUser: mockGetUser,
     handleRedirectCallback: mockHandleRedirectCallback,
@@ -47,17 +54,8 @@ afterEach(() => {
   jest.resetAllMocks();
 });
 
-test("immediately authorized when auth is not required", async () => {
-  const store = new UserStore({ isAuthRequired: false });
-  reactImmediately(() => {
-    expect(store.isAuthorized).toBe(true);
-    expect(store.isLoading).toBe(false);
-  });
-  expect.hasAssertions();
-});
-
-test("authorization immediately pending when required", async () => {
-  const store = new UserStore({ isAuthRequired: true });
+test("authorization immediately pending", async () => {
+  const store = new UserStore({});
   reactImmediately(() => {
     expect(store.isAuthorized).toBe(false);
     expect(store.isLoading).toBe(true);
@@ -66,7 +64,7 @@ test("authorization immediately pending when required", async () => {
 });
 
 test("authorize requires Auth0 client settings", async () => {
-  const store = new UserStore({ isAuthRequired: true });
+  const store = new UserStore({});
   await store.authorize();
   reactImmediately(() => {
     const error = store.authError;
@@ -77,11 +75,10 @@ test("authorize requires Auth0 client settings", async () => {
 
 test("authorized when authenticated", async () => {
   mockIsAuthenticated.mockResolvedValue(true);
-  mockGetUser.mockResolvedValue({ email_verified: true });
+  mockGetUser.mockResolvedValue({ email_verified: true, ...metadata });
 
   const store = new UserStore({
     authSettings: testAuthSettings,
-    isAuthRequired: true,
   });
   await store.authorize();
   reactImmediately(() => {
@@ -97,7 +94,6 @@ test("redirect to Auth0 when unauthenticated", async () => {
 
   const store = new UserStore({
     authSettings: testAuthSettings,
-    isAuthRequired: true,
   });
   await store.authorize();
   expect(mockLoginWithRedirect.mock.calls.length).toBe(1);
@@ -107,14 +103,11 @@ test("redirect to Auth0 when unauthenticated", async () => {
 });
 
 test("requires email verification", async () => {
-  process.env.REACT_APP_AUTH_ENV = "development";
-
-  mockGetUser.mockResolvedValue({ email_verified: false });
+  mockGetUser.mockResolvedValue({ email_verified: false, ...metadata });
   mockIsAuthenticated.mockResolvedValue(true);
 
   const store = new UserStore({
     authSettings: testAuthSettings,
-    isAuthRequired: true,
   });
   await store.authorize();
 
@@ -137,7 +130,6 @@ test("handles Auth0 token params", async () => {
 
   const store = new UserStore({
     authSettings: testAuthSettings,
-    isAuthRequired: true,
   });
   await store.authorize();
 
@@ -156,7 +148,6 @@ test("redirect to targetUrl after callback", async () => {
 
   const store = new UserStore({
     authSettings: testAuthSettings,
-    isAuthRequired: true,
   });
   await store.authorize();
   expect(window.location.href).toBe(targetUrl);
@@ -173,7 +164,6 @@ test("passes target URL to callback", async () => {
 
   const store = new UserStore({
     authSettings: testAuthSettings,
-    isAuthRequired: true,
   });
 
   const callback = jest.fn();
@@ -181,3 +171,33 @@ test("passes target URL to callback", async () => {
   await store.authorize({ handleTargetUrl: callback });
   expect(callback.mock.calls[0][0]).toBe(targetUrl);
 });
+
+test.each(Object.keys(tenants))(
+  "gets metadata for the user %s",
+  async (tenantId) => {
+    const tenantMetadata = { [metadataField]: { state_code: tenantId } };
+    mockIsAuthenticated.mockResolvedValue(true);
+    mockGetUser.mockResolvedValue({
+      email_verified: true,
+      ...tenantMetadata,
+    });
+
+    const store = new UserStore({
+      authSettings: testAuthSettings,
+    });
+    await store.authorize();
+    reactImmediately(() => {
+      expect(store.availableStateCodes).toBe(
+        // TODO TS remove when tenants is ported to TS
+        // @ts-ignore
+        tenants[tenantId].availableStateCodes
+      );
+      expect(store.stateName).toBe(
+        // TODO TS remove when tenants is ported to TS
+        // @ts-ignore
+        tenants[tenantId].name
+      );
+    });
+    expect.hasAssertions();
+  }
+);
