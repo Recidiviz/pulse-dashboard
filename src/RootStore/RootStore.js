@@ -38,6 +38,7 @@ export default class RootStore {
       filters: computed,
       currentTenantId: computed,
       setAuth0Context: action,
+      getTokenSilently: computed,
     });
 
     this.setAuth0Context();

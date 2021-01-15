@@ -76,22 +76,24 @@ export default class RevocationsChartsStore {
 
     when(
       () => !get(this.rootStore.auth0Context, "loading"),
-      () => this.fetchData(getQueryStringFromFilters(this.queryFilters))
+      () => this.fetchData(this.queryFilters)
     );
 
     reaction(
       () => this.selectedChart,
-      () => this.fetchData(getQueryStringFromFilters(this.queryFilters))
+      () => this.fetchData(this.queryFilters)
     );
 
     reaction(
-      () => getQueryStringFromFilters(this.queryFilters),
+      () => this.queryFilters,
       (queryString) => this.fetchData(queryString, false)
     );
   }
 
   get queryFilters() {
-    return Object.fromEntries(toJS(this.rootStore.filters));
+    return getQueryStringFromFilters(
+      Object.fromEntries(toJS(this.rootStore.filters))
+    );
   }
 
   setSelectedChart(chartId) {

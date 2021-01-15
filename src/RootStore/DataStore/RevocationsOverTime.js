@@ -73,17 +73,19 @@ export default class RevocationsOverTimeStore {
 
     when(
       () => !get(this.rootStore.auth0Context, "loading"),
-      () => this.fetchData(getQueryStringFromFilters(this.queryFilters))
+      () => this.fetchData(this.queryFilters)
     );
 
     reaction(
-      () => getQueryStringFromFilters(this.queryFilters),
+      () => this.queryFilters,
       (queryString) => this.fetchData(queryString)
     );
   }
 
   get queryFilters() {
-    return Object.fromEntries(toJS(this.rootStore.filters));
+    return getQueryStringFromFilters(
+      Object.fromEntries(toJS(this.rootStore.filters))
+    );
   }
 
   *fetchData(queryString = "") {

@@ -22,7 +22,7 @@ import qs from "qs";
  * @param {string} filters.chargeCategory - A charge category or "All"
  * @param {Array} filters.district - District IDs or "All"
  * @param {string} filters.metricPeriodMonths - The number of months in the time period
- * @param {string} filters.supervisionType - Supervision Type of "All"
+ * @param {string} filters.supervisionType - Supervision Type or "All"
  * @param {string} filters.reportedViolations - Number of reported violations or "All"
  * @param {string} filters.violationType - Violation type or "All"
  */
