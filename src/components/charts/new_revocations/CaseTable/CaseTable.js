@@ -45,7 +45,7 @@ const CaseTable = ({ dataFilter }) => {
   const [page, setPage] = useState(0);
   const { sortOrder, toggleOrder, comparator } = useSort();
 
-  const { isLoading, isError, apiData, unflattenedValues } = useChartData(
+  const { isLoading, isError, metadata, apiData } = useChartData(
     `${currentTenantId}/newRevocations`,
     "revocations_matrix_filtered_caseload",
     false
@@ -59,12 +59,11 @@ const CaseTable = ({ dataFilter }) => {
     return <Error />;
   }
 
-  const sortedData = filterOptimizedDataFormat(
-    unflattenedValues,
+  const sortedData = filterOptimizedDataFormat({
     apiData,
-    apiData.metadata,
-    dataFilter
-  ).sort(comparator);
+    metadata,
+    filterFn: dataFilter,
+  }).sort(comparator);
 
   const startCase = page * CASES_PER_PAGE;
   const endCase = Math.min(sortedData.length, startCase + CASES_PER_PAGE);
