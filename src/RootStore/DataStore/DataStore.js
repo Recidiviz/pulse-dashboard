@@ -28,7 +28,7 @@ export default class DataStore {
 
   matrixStore;
 
-  revocationsCharts;
+  revocationsChartStore;
 
   caseTableStore;
 

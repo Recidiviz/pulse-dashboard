@@ -14,50 +14,45 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
+import DataStore from "../DataStore";
 import RootStore from "../RootStore";
 import { useAuth0 } from "../../react-auth0-spa";
 import { METADATA_NAMESPACE } from "../../utils/authentication/user";
 
 let rootStore;
+let dataStore;
 
 jest.mock("../../react-auth0-spa");
 jest.mock("../../api/metrics/metricsClient");
 
 const metadataField = `${METADATA_NAMESPACE}app_metadata`;
+const mockUser = { [metadataField]: { state_code: "US_MO" } };
 
 describe("RootStore", () => {
-  const mockUser = { [metadataField]: { state_code: "US_MO" } };
   useAuth0.mockReturnValue({ user: mockUser, getTokenSilently: () => {} });
 
   beforeEach(() => {
     rootStore = new RootStore();
+    dataStore = new DataStore({ rootStore });
   });
 
   afterAll(() => {
     jest.resetAllMocks();
   });
 
-  it("contains a FiltersStore", () => {
-    expect(rootStore.filtersStore).toBeDefined();
+  it("contains a RevocationsOverTimeStore", () => {
+    expect(dataStore.revocationsOverTimeStore).toBeDefined();
   });
 
-  it("contains a TenantStore", () => {
-    expect(rootStore.tenantStore).toBeDefined();
+  it("contains a MatrixStore", () => {
+    expect(dataStore.matrixStore).toBeDefined();
   });
 
-  it("contains a currentTenantId", () => {
-    expect(rootStore.currentTenantId).toBeDefined();
+  it("contains a RevocationsChartsStore", () => {
+    expect(dataStore.revocationsChartStore).toBeDefined();
   });
 
-  it("contains filters", () => {
-    expect(rootStore.filters).toBeDefined();
-  });
-
-  it("contains the DataStore", () => {
-    expect(rootStore.dataStore).toBeDefined();
-  });
-
-  it("contains getTokenSilently", () => {
-    expect(rootStore.getTokenSilently).toBeDefined();
+  it("contains a CaseTableStore", () => {
+    expect(dataStore.caseTableStore).toBeDefined();
   });
 });

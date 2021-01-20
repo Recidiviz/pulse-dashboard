@@ -29,8 +29,6 @@ export default class RootStore {
 
   dataStore;
 
-  stateCode;
-
   auth0Context = observable.map({ loading: true });
 
   constructor() {
