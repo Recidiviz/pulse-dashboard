@@ -20,7 +20,6 @@ import { METADATA_NAMESPACE } from "../../constants";
 import { LANTERN_TENANTS } from "../../views/tenants/utils/lanternTenants";
 import { useRootStore } from "../../StoreProvider";
 
-jest.mock("../../react-auth0-spa");
 jest.mock("../../StoreProvider");
 
 let rootStore;

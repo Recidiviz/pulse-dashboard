@@ -40,7 +40,6 @@ jest.mock("../FilterField", () => ({
   __esModule: true,
   default: jest.fn(),
 }));
-jest.mock("../../../../../react-auth0-spa");
 jest.mock("../../../../../StoreProvider");
 
 describe("ToggleBarFilter tests", () => {

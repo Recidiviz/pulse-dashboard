@@ -41,7 +41,6 @@ import {
 } from "../../constants/filterTypes";
 import { useRootStore } from "../../StoreProvider";
 
-jest.mock("../../react-auth0-spa");
 jest.mock("../charts/new_revocations/ToggleBar/ToggleBarFilter");
 jest.mock("../charts/new_revocations/ToggleBar/DistrictFilter");
 jest.mock("../charts/new_revocations/ToggleBar/AdmissionTypeFilter");

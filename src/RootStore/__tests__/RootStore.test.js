@@ -14,20 +14,12 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
+
 import RootStore from "../RootStore";
-import { useAuth0 } from "../../react-auth0-spa";
-import { METADATA_NAMESPACE } from "../../constants";
 
 let rootStore;
 
-jest.mock("../../react-auth0-spa");
-
-const metadataField = `${METADATA_NAMESPACE}app_metadata`;
-
 describe("RootStore", () => {
-  const mockUser = { [metadataField]: { state_code: "US_MO" } };
-  useAuth0.mockReturnValue({ user: mockUser });
-
   beforeEach(() => {
     rootStore = new RootStore();
   });

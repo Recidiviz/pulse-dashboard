@@ -97,7 +97,6 @@ export default class UserStore {
     }
 
     const auth0 = await createAuth0Client(this.authSettings);
-
     const urlQuery = qs.parse(window.location.search, {
       ignoreQueryPrefix: true,
     });
@@ -118,8 +117,7 @@ export default class UserStore {
       const user = await auth0.getUser();
       runInAction(() => {
         this.isLoading = false;
-
-        if (user.email_verified) {
+        if (user && user.email_verified) {
           this.isAuthorized = true;
           this.awaitingVerification = false;
           this.getTokenSilently = (...p: any) => auth0.getTokenSilently(...p);
