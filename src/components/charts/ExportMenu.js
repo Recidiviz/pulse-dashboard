@@ -19,6 +19,7 @@ import React, { useCallback, useState } from "react";
 import { Dropdown, Modal } from "react-bootstrap";
 import PropTypes from "prop-types";
 import { observer } from "mobx-react-lite";
+import { toJS } from "mobx";
 
 import {
   downloadChartAsImage,
@@ -50,7 +51,8 @@ const ExportMenu = ({
   const hideModal = useCallback(() => {
     setIsModalOpened(false);
   }, []);
-  const staticFilters = {};
+
+  const staticFilters = Object.fromEntries(toJS(filters));
 
   return (
     <span className="ExportMenu fa-pull-right">
@@ -77,7 +79,7 @@ const ExportMenu = ({
                 downloadChartAsImage({
                   chartId,
                   chartTitle: metricTitle,
-                  filters,
+                  filters: staticFilters,
                   timeWindowDescription,
                   shouldZipDownload: true,
                 })

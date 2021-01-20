@@ -24,10 +24,6 @@ import { useRootStore } from "../StoreProvider";
 import VerificationNeeded from "../views/VerificationNeeded";
 import NotFound from "../views/NotFound";
 
-// type AuthWallProps = {
-//   children: ReactNode,
-// }
-
 /**
  * Verifies authorization before rendering its children.
  */

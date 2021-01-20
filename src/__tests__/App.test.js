@@ -79,7 +79,7 @@ describe("App tests", () => {
     const user = { [metadataField]: { state_code: US_MO } };
     useRootStore.mockReturnValue({
       userStore: { user, isAuthorized: true },
-      currentTenantId: "US_MO",
+      currentTenantId: US_MO,
     });
 
     const { getByTestId } = render(<App />);
@@ -100,6 +100,7 @@ describe("App tests", () => {
     const { getByTestId } = render(<App />);
 
     expect(CoreLayout).toHaveBeenCalledTimes(1);
+    expect(LanternLayoutMock).toHaveBeenCalledTimes(0);
     expect(getByTestId(mockNDCommunityGoalsId)).toBeInTheDocument();
   });
 

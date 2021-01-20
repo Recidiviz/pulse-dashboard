@@ -33,13 +33,12 @@ type ConstructorProps = {
 
 /**
  * Reactive wrapper around Auth0 client.
- * If auth is disabled for this environment, all users will be immediately authorized.
- * Otherwise, call `authorize` to retrieve credentials or start login flow.
+ * Call `authorize` to retrieve credentials or start login flow.
  *
  * @example
  *
  * ```js
- * const store = new UserStore({ isAuthRequired: true, authSettings: { domain, client_id, redirect_uri } });
+ * const store = new UserStore({ authSettings: { domain, client_id, redirect_uri } });
  * if (!store.isAuthorized) {
  *   await store.authorize();
  *   // this may trigger a redirect to the Auth0 login domain;
@@ -88,9 +87,7 @@ export default class UserStore {
   /**
    * If user already has a valid Auth0 credential, this method will retrieve it
    * and update class properties accordingly. If not, user will be redirected
-   * to the Auth0 login domain for fresh authentication. After successful login,
-   * optional `handleTargetUrl` callback will be called with post-redirect target URL
-   * (useful for, e.g., client-side router that does not listen to history events).
+   * to the Auth0 login domain for fresh authentication.
    * Returns an Error if Auth0 configuration is not present.
    */
   async authorize(): Promise<void> {
