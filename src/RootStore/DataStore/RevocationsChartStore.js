@@ -42,7 +42,7 @@ const CHART_TO_FILENAME = {
   Violation: "revocations_matrix_distribution_by_violation",
 };
 
-export default class RevocationsChartsStore {
+export default class RevocationsChartStore {
   rootStore;
 
   isLoading = true;

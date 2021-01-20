@@ -18,7 +18,7 @@
 import { makeAutoObservable } from "mobx";
 import MatrixStore from "./MatrixStore";
 import RevocationsOverTimeStore from "./RevocationsOverTimeStore";
-import RevocationsChartsStore from "./RevocationsChartStore";
+import RevocationsChartStore from "./RevocationsChartStore";
 import CaseTableStore from "./CaseTableStore";
 
 export default class DataStore {
@@ -41,7 +41,7 @@ export default class DataStore {
 
     this.matrixStore = new MatrixStore({ rootStore });
 
-    this.revocationsChartsStore = new RevocationsChartsStore({ rootStore });
+    this.revocationsChartStore = new RevocationsChartStore({ rootStore });
 
     this.caseTableStore = new CaseTableStore({ rootStore });
   }

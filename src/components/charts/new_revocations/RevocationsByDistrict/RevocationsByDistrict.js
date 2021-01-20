@@ -31,14 +31,15 @@ import { DISTRICT } from "../../../../constants/filterTypes";
 
 const chartTitle = "Admissions by district";
 
-const RevocationsByDistrict = ({ timeDescription, dataStore }) => {
-  const { filters } = useRootStore();
+const RevocationsByDistrict = ({ timeDescription }) => {
+  const { filters, dataStore } = useRootStore();
+  const { revocationsChartStore } = dataStore;
   const currentDistricts = get(filters, DISTRICT);
 
   return (
     <RevocationsByDimension
       chartId={`${translate("revocations")}ByDistrict`}
-      dataStore={dataStore}
+      dataStore={revocationsChartStore}
       renderChart={({
         chartId,
         data,
@@ -70,7 +71,7 @@ const RevocationsByDistrict = ({ timeDescription, dataStore }) => {
         )
       }
       generateChartData={createGenerateChartData(
-        dataStore.filteredData,
+        revocationsChartStore.filteredData,
         currentDistricts
       )}
       chartTitle={chartTitle}
@@ -88,11 +89,6 @@ const RevocationsByDistrict = ({ timeDescription, dataStore }) => {
 };
 
 RevocationsByDistrict.propTypes = {
-  dataStore: PropTypes.shape({
-    filteredData: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
-    isLoading: PropTypes.bool.isRequired,
-    isError: PropTypes.bool.isRequired,
-  }).isRequired,
   timeDescription: PropTypes.string.isRequired,
 };
 

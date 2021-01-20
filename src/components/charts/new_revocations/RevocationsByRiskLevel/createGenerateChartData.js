@@ -31,7 +31,7 @@ import getDenominatorKeyByMode from "../utils/getDenominatorKeyByMode";
 import getLabelByMode from "../utils/getLabelByMode";
 import { COLORS } from "../../../../assets/scripts/constants/colors";
 
-const createGenerateChartData = (dataStore) => (mode) => {
+const createGenerateChartData = (filteredData) => (mode) => {
   const denominatorKey = getDenominatorKeyByMode(mode);
   const riskLevels = translate("riskLevelsMap");
 
@@ -53,7 +53,7 @@ const createGenerateChartData = (dataStore) => (mode) => {
         rate: rate.toFixed(2),
       };
     })
-  )(dataStore.filteredData);
+  )(filteredData);
 
   const chartDataPoints = map("rate", riskLevelCounts);
   const numerators = map("numerator", riskLevelCounts);

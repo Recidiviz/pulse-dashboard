@@ -25,12 +25,16 @@ import createGenerateChartData from "./createGenerateChartData";
 import RevocationsByDimension from "../RevocationsByDimension";
 import BarChartWithLabels from "../BarChartWithLabels";
 import { translate } from "../../../../views/tenants/utils/i18nSettings";
+import { useDataStore } from "../../../../StoreProvider";
 
-const RevocationsByRiskLevel = ({ dataStore, timeDescription }) => {
+const RevocationsByRiskLevel = ({ timeDescription }) => {
+  const dataStore = useDataStore();
+  const { revocationsChartStore } = dataStore;
+
   return (
     <RevocationsByDimension
       chartId={`${translate("revocations")}ByRiskLevel`}
-      dataStore={dataStore}
+      dataStore={revocationsChartStore}
       renderChart={({ chartId, data, denominators, numerators, mode }) => (
         <BarChartWithLabels
           id={chartId}
@@ -41,7 +45,9 @@ const RevocationsByRiskLevel = ({ dataStore, timeDescription }) => {
           yAxisLabel={getLabelByMode(mode)}
         />
       )}
-      generateChartData={createGenerateChartData(dataStore)}
+      generateChartData={createGenerateChartData(
+        revocationsChartStore.filteredData
+      )}
       chartTitle="Admissions by risk level"
       metricTitle={(mode) => `${getLabelByMode(mode)} by risk level`}
       timeDescription={timeDescription}
@@ -53,11 +59,6 @@ const RevocationsByRiskLevel = ({ dataStore, timeDescription }) => {
 };
 
 RevocationsByRiskLevel.propTypes = {
-  dataStore: PropTypes.shape({
-    filteredData: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
-    isLoading: PropTypes.bool.isRequired,
-    isError: PropTypes.bool.isRequired,
-  }).isRequired,
   timeDescription: PropTypes.string.isRequired,
 };
 

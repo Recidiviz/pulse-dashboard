@@ -43,54 +43,23 @@ const CHARTS = [
 
 const RevocationCharts = ({ timeDescription }) => {
   const { dataStore } = useRootStore();
-  const store = dataStore.revocationsChartsStore;
-  const { selectedChart, setSelectedChart } = store;
+  const { selectedChart, setSelectedChart } = dataStore.revocationsChartStore;
 
   const renderSelectedChartSingularLoad = () => {
     switch (selectedChart) {
       case "Risk level":
-        return (
-          <RevocationsByRiskLevel
-            timeDescription={timeDescription}
-            dataStore={store}
-          />
-        );
+        return <RevocationsByRiskLevel timeDescription={timeDescription} />;
       case "Officer":
-        return (
-          <RevocationsByOfficer
-            timeDescription={timeDescription}
-            dataStore={store}
-          />
-        );
+        return <RevocationsByOfficer timeDescription={timeDescription} />;
       case "Violation":
-        return (
-          <RevocationsByViolation
-            timeDescription={timeDescription}
-            dataStore={store}
-          />
-        );
+        return <RevocationsByViolation timeDescription={timeDescription} />;
       case "Gender":
-        return (
-          <RevocationsByGender
-            timeDescription={timeDescription}
-            dataStore={store}
-          />
-        );
+        return <RevocationsByGender timeDescription={timeDescription} />;
       case "Race":
-        return (
-          <RevocationsByRace
-            timeDescription={timeDescription}
-            dataStore={store}
-          />
-        );
+        return <RevocationsByRace timeDescription={timeDescription} />;
       case "District":
       default:
-        return (
-          <RevocationsByDistrict
-            timeDescription={timeDescription}
-            dataStore={store}
-          />
-        );
+        return <RevocationsByDistrict timeDescription={timeDescription} />;
     }
   };
 

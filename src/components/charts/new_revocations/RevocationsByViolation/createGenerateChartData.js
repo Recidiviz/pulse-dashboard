@@ -25,14 +25,14 @@ import toInteger from "lodash/fp/toInteger";
 import { calculateRate } from "../helpers/rate";
 import { COLORS } from "../../../../assets/scripts/constants/colors";
 
-const createGenerateChartData = (dataStore, violationTypes) => () => {
+const createGenerateChartData = (filteredData, violationTypes) => () => {
   const violationCountKey = "violation_count";
 
   const allViolationTypeKeys = map("key", violationTypes);
   const violationToCount = pipe(
     map(pick(concat(allViolationTypeKeys, violationCountKey))),
     mergeAllWith((a, b) => toInteger(a) + toInteger(b))
-  )(dataStore.filteredData);
+  )(filteredData);
 
   const totalViolationCount = toInteger(violationToCount[violationCountKey]);
   const numerators = map(

@@ -55,7 +55,7 @@ configure({
   reactionRequiresObservable: true,
   // This linter gives too many false positives when propTypes is defined
   // https://mobx.js.org/configuration.html#observablerequiresreaction-boolean
-  // observableRequiresReaction: true,
+  observableRequiresReaction: false,
 });
 
 ReactDOM.render(

@@ -43,7 +43,7 @@ export const generateDatasets = (dataPoints, denominators) => {
   }));
 };
 
-const createGenerateChartData = (dataStore) => (mode) => {
+const createGenerateChartData = (filteredData) => (mode) => {
   const numeratorKey = "population_count";
   const denominatorKey = getDenominatorKeyByMode(mode);
 
@@ -53,7 +53,7 @@ const createGenerateChartData = (dataStore) => (mode) => {
   const { dataPoints, numerators, denominators } = pipe(
     reduce(createRiskLevelsMap(numeratorKey, denominatorKey, "race"), {}),
     (data) => getCounts(data, getRiskLevels(), races)
-  )(dataStore.filteredData);
+  )(filteredData);
 
   const data = {
     labels: getRiskLevelLabels(),

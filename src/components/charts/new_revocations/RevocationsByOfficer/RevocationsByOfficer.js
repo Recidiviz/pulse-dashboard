@@ -25,17 +25,19 @@ import { translate } from "../../../../views/tenants/utils/i18nSettings";
 import RevocationCountChart from "../RevocationCountChart";
 import createGenerateChartData from "./createGenerateChartData";
 import flags from "../../../../flags";
+import { useDataStore } from "../../../../StoreProvider";
 
 const MAX_OFFICERS_COUNT = 50;
 
-const RevocationsByOfficer = ({ dataStore, timeDescription }) => {
+const RevocationsByOfficer = ({ timeDescription }) => {
+  const dataStore = useDataStore();
+  const { revocationsChartStore } = dataStore;
   const chartTitle = `Admissions by ${translate("officer")}`;
   const includeWarning = false;
-
   return (
     <RevocationsByDimension
       chartId={`${translate("revocations")}by${translate("Officer")}`}
-      dataStore={dataStore}
+      dataStore={revocationsChartStore}
       includeWarning={includeWarning}
       renderChart={({
         chartId,
@@ -76,7 +78,9 @@ const RevocationsByOfficer = ({ dataStore, timeDescription }) => {
           />
         );
       }}
-      generateChartData={createGenerateChartData(dataStore)}
+      generateChartData={createGenerateChartData(
+        revocationsChartStore.filteredData
+      )}
       chartTitle={chartTitle}
       metricTitle={chartTitle}
       timeDescription={timeDescription}
@@ -92,11 +96,6 @@ const RevocationsByOfficer = ({ dataStore, timeDescription }) => {
 };
 
 RevocationsByOfficer.propTypes = {
-  dataStore: PropTypes.shape({
-    filteredData: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
-    isLoading: PropTypes.bool.isRequired,
-    isError: PropTypes.bool.isRequired,
-  }).isRequired,
   timeDescription: PropTypes.string.isRequired,
 };
 

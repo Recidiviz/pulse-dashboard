@@ -34,7 +34,7 @@ import createRiskLevelsMap from "../utils/createRiskLevelsMap";
  */
 const GENDER_LABELS_MAP = { FEMALE: "Women", MALE: "Men" };
 
-const createGenerateChartData = (dataStore, currentTenantId) => (mode) => {
+const createGenerateChartData = (filteredData, currentTenantId) => (mode) => {
   const numeratorKey = "population_count";
   const denominatorKey = getDenominatorKeyByMode(mode);
   const genders = Object.keys(GENDER_LABELS_MAP);
@@ -43,7 +43,7 @@ const createGenerateChartData = (dataStore, currentTenantId) => (mode) => {
   const { dataPoints, numerators, denominators } = pipe(
     reduce(createRiskLevelsMap(numeratorKey, denominatorKey, "gender"), {}),
     (data) => getCounts(data, getRiskLevels(currentTenantId), genders)
-  )(dataStore.filteredData);
+  )(filteredData);
 
   const generateDataset = (label, index) => ({
     label,

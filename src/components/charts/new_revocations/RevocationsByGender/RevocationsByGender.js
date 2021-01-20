@@ -29,12 +29,14 @@ import createGenerateChartData from "./createGenerateChartData";
 import flags from "../../../../flags";
 import { useRootStore } from "../../../../StoreProvider";
 
-const RevocationsByGender = ({ dataStore, timeDescription }) => {
-  const { currentTenantId } = useRootStore();
+const RevocationsByGender = ({ timeDescription }) => {
+  const { currentTenantId, dataStore } = useRootStore();
+  const { revocationsChartStore } = dataStore;
+
   return (
     <RevocationsByDimension
       chartId={`${translate("revocations")}By${translate("Gender")}`}
-      dataStore={dataStore}
+      dataStore={revocationsChartStore}
       renderChart={({ chartId, data, denominators, numerators, mode }) => (
         <BarChartWithLabels
           id={chartId}
@@ -46,7 +48,10 @@ const RevocationsByGender = ({ dataStore, timeDescription }) => {
           numerators={numerators}
         />
       )}
-      generateChartData={createGenerateChartData(dataStore, currentTenantId)}
+      generateChartData={createGenerateChartData(
+        revocationsChartStore.filteredData,
+        currentTenantId
+      )}
       chartTitle={`Admissions by ${translate("gender")} and risk level`}
       metricTitle={(mode) =>
         `${getLabelByMode(mode)} by ${translate("gender")} and risk level`
@@ -60,11 +65,6 @@ const RevocationsByGender = ({ dataStore, timeDescription }) => {
 };
 
 RevocationsByGender.propTypes = {
-  dataStore: PropTypes.shape({
-    filteredData: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
-    isLoading: PropTypes.bool.isRequired,
-    isError: PropTypes.bool.isRequired,
-  }).isRequired,
   timeDescription: PropTypes.string.isRequired,
 };
 
