@@ -79,6 +79,7 @@ export default class CaseTableStore {
   *fetchData(queryString) {
     const endpoint = `${this.rootStore.currentTenantId}/newRevocations/${this.file}${queryString}`;
     try {
+      this.isLoading = true;
       const responseData = yield callMetricsApi(
         endpoint,
         this.rootStore.getTokenSilently
