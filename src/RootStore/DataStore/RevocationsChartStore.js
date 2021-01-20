@@ -19,19 +19,30 @@ import {
   flow,
   makeAutoObservable,
   when,
+  reaction,
   observable,
   computed,
+  action,
   get,
   toJS,
-  reaction,
 } from "mobx";
 import { callMetricsApi } from "../../api/metrics/metricsClient";
 import { processResponseData } from "./helpers";
-import { matchesAllFilters } from "../../components/charts/new_revocations/helpers";
 import { filterOptimizedDataFormat } from "../../utils/charts/dataFilters";
+import { matchesAllFilters } from "../../components/charts/new_revocations/helpers";
+import { DISTRICT } from "../../constants/filterTypes";
 import { getQueryStringFromFilters } from "../../api/metrics/urlHelpers";
 
-export default class CaseTableStore {
+const CHART_TO_FILENAME = {
+  District: "revocations_matrix_distribution_by_district",
+  "Risk level": "revocations_matrix_distribution_by_risk_level",
+  Gender: "revocations_matrix_distribution_by_gender",
+  Officer: "revocations_matrix_distribution_by_officer",
+  Race: "revocations_matrix_distribution_by_race",
+  Violation: "revocations_matrix_distribution_by_violation",
+};
+
+export default class RevocationsChartsStore {
   rootStore;
 
   isLoading = true;
@@ -44,17 +55,17 @@ export default class CaseTableStore {
 
   metadata = {};
 
-  auth0Context = observable.map({ loading: true });
+  selectedChart = "District";
 
   eagerExpand = false;
-
-  file = `revocations_matrix_filtered_caseload`;
 
   constructor({ rootStore }) {
     makeAutoObservable(this, {
       fetchData: flow,
       apiData: observable.shallow,
       filteredData: observable.shallow,
+      selectedChart: observable,
+      setSelectedChart: action.bound,
       queryFilters: computed,
       metadata: false,
     });
@@ -67,8 +78,13 @@ export default class CaseTableStore {
     );
 
     reaction(
+      () => this.selectedChart,
+      () => this.fetchData(this.queryFilters)
+    );
+
+    reaction(
       () => this.queryFilters,
-      (queryString) => this.fetchData(queryString)
+      (queryString) => this.fetchData(queryString, false)
     );
   }
 
@@ -78,16 +94,22 @@ export default class CaseTableStore {
     );
   }
 
-  *fetchData(queryString) {
-    const endpoint = `${this.rootStore.currentTenantId}/newRevocations/${this.file}${queryString}`;
+  setSelectedChart(chartId) {
+    this.selectedChart = chartId;
+  }
+
+  *fetchData(queryString, isLoading = true) {
+    const filename = CHART_TO_FILENAME[this.selectedChart];
+    const endpoint = `${this.rootStore.currentTenantId}/newRevocations/${filename}${queryString}`;
     try {
+      this.isLoading = isLoading;
       const responseData = yield callMetricsApi(
         endpoint,
         this.rootStore.getTokenSilently
       );
       const processedData = processResponseData(
         responseData,
-        this.file,
+        filename,
         this.eagerExpand
       );
       this.apiData = processedData.data;
@@ -104,9 +126,12 @@ export default class CaseTableStore {
 
   filterData({ data, metadata }) {
     const { filters } = this.rootStore;
+    const filteringOptions = {
+      District: { skippedFilters: [DISTRICT] },
+    };
     const dataFilter = matchesAllFilters({
       filters,
-      treatCategoryAllAsAbsent: true,
+      ...filteringOptions[this.selectedChart],
     });
     return filterOptimizedDataFormat({
       apiData: data,

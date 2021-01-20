@@ -45,8 +45,6 @@ export default class MatrixStore {
 
   metadata = {};
 
-  auth0Context = observable.map({ loading: true });
-
   file = `revocations_matrix_cells`;
 
   eagerExpand = false;
