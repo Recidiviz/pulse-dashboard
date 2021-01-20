@@ -31,7 +31,8 @@ const app = express();
 
 app.use(cors());
 
-const port = process.env.PORT || 3001;
+const port = process.env.NODE_ENV === "test" ? 3002 : process.env.PORT || 3001;
+
 app.set("port", port);
 
 const isDemoMode = process.env.IS_DEMO === "true";
