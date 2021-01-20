@@ -15,7 +15,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React, { useEffect } from "react";
+import React from "react";
 import { observer } from "mobx-react-lite";
 import Sticky from "react-sticky-fill";
 import { get } from "mobx";

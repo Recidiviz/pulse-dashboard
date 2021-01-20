@@ -60,7 +60,6 @@ describe("Revocations component tests", () => {
   const metadataField = `${METADATA_NAMESPACE}app_metadata`;
   const mockTenantId = "TEST_TENANT";
   const mockUser = { [metadataField]: { state_code: mockTenantId } };
-  const mockDistrict = "some district";
   const toggleBarIdPrefix = "toggle-bar-";
   const districtFilterId = "district-filter";
   const admissionTypeFilterId = "admission-type-filter";

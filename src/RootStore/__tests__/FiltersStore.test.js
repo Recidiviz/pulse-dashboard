@@ -15,13 +15,10 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import { get } from "mobx";
-
 import RootStore from "../RootStore";
 import { useAuth0 } from "../../react-auth0-spa";
 import { METADATA_NAMESPACE } from "../../constants";
 import { LANTERN_TENANTS } from "../../views/tenants/utils/lanternTenants";
-import { DISTRICT } from "../../constants/filterTypes";
 
 jest.mock("../../react-auth0-spa");
 
