@@ -95,7 +95,6 @@ describe("Revocations component tests", () => {
   CaseTableMock.mockReturnValue(mockWithTestId(caseTableId));
   setTranslateLocale(US_MO);
 
-  const setRestrictedDistrictMock = jest.fn();
   FiltersStore.mockImplementation(() => {
     return {
       filters: observable.map({
@@ -109,7 +108,6 @@ describe("Revocations component tests", () => {
         district: "",
       }),
       filterOptions: filterOptionsMap[mockTenantId],
-      setRestrictedDistrict: setRestrictedDistrictMock,
     };
   });
 
@@ -156,20 +154,5 @@ describe("Revocations component tests", () => {
     expect(queryByTestId(`${toggleBarIdPrefix}Supervision Level`)).toBeNull();
     expect(queryByTestId(`${toggleBarIdPrefix}Supervision Type`)).toBeNull();
     expect(queryByTestId(admissionTypeFilterId)).toBeNull();
-  });
-
-  it("should set user district as default filter value if it is defined", () => {
-    const mockUserWithDistrict = {
-      [metadataField]: { state_code: mockTenantId, district: mockDistrict },
-    };
-    useAuth0.mockReturnValue({ user: mockUserWithDistrict });
-
-    render(
-      <StoreProvider>
-        <Revocations />
-      </StoreProvider>
-    );
-
-    expect(setRestrictedDistrictMock).toHaveBeenCalledWith(mockDistrict);
   });
 });

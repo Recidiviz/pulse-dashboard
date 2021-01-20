@@ -56,14 +56,8 @@ import { useRootStore } from "../StoreProvider";
 import "./Revocations.scss";
 
 const Revocations = () => {
-  const { filtersStore, userStore } = useRootStore();
+  const { filtersStore } = useRootStore();
   const { filters, filterOptions } = filtersStore;
-  const { district } = userStore;
-  useEffect(() => {
-    if (district) {
-      filtersStore.setRestrictedDistrict(district);
-    }
-  }, [district, filtersStore]);
 
   const timeDescription = getTimeDescription(
     get(filters, METRIC_PERIOD_MONTHS),

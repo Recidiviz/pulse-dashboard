@@ -83,7 +83,6 @@ export default class UserStore {
     this.isLoading = true;
 
     // TODO 670 set restricted district based on user district
-    this.district = "01";
   }
 
   /**

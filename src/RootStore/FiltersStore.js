@@ -81,9 +81,4 @@ export default class FiltersStore {
   setFilters(updatedFilters) {
     this.filters.merge(updatedFilters);
   }
-
-  setRestrictedDistrict(restrictedDistrict) {
-    this.restrictedDistrict = restrictedDistrict;
-    this.setFilters({ ...this.filters, ...{ district: [restrictedDistrict] } });
-  }
 }

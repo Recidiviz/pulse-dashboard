@@ -50,24 +50,4 @@ describe("FiltersStore", () => {
       });
     });
   });
-
-  describe("setRestrictedDistrict", () => {
-    it("sets the restrictedDistrict and updates filters", () => {
-      const restrictedDistrict = "district 1";
-      rootStore = new RootStore();
-      rootStore.filtersStore.setRestrictedDistrict(restrictedDistrict);
-
-      expect(
-        expect(rootStore.filtersStore.restrictedDistrict).toEqual(
-          restrictedDistrict
-        )
-      );
-
-      expect(
-        expect(get(rootStore.filtersStore.filters, DISTRICT)).toEqual([
-          restrictedDistrict,
-        ])
-      );
-    });
-  });
 });
