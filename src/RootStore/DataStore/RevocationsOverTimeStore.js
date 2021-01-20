@@ -18,12 +18,11 @@
 import {
   flow,
   makeAutoObservable,
-  when,
+  autorun,
   observable,
   computed,
   get,
   toJS,
-  reaction,
 } from "mobx";
 import filter from "lodash/fp/filter";
 import identity from "lodash/fp/identity";
@@ -71,15 +70,11 @@ export default class RevocationsOverTimeStore {
 
     this.rootStore = rootStore;
 
-    when(
-      () => !get(this.rootStore.auth0Context, "loading"),
-      () => this.fetchData(this.queryFilters)
-    );
-
-    reaction(
-      () => this.queryFilters,
-      (queryString) => this.fetchData(queryString)
-    );
+    autorun(() => {
+      if (!get(this.rootStore.auth0Context, "loading")) {
+        this.fetchData(this.queryFilters);
+      }
+    });
   }
 
   get queryFilters() {

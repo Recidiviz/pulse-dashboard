@@ -18,12 +18,11 @@
 import {
   flow,
   makeAutoObservable,
-  when,
   observable,
   computed,
   get,
   toJS,
-  reaction,
+  autorun,
 } from "mobx";
 import { callMetricsApi } from "../../api/metrics/metricsClient";
 import { processResponseData } from "./helpers";
@@ -59,15 +58,11 @@ export default class CaseTableStore {
 
     this.rootStore = rootStore;
 
-    when(
-      () => !get(this.rootStore.auth0Context, "loading"),
-      () => this.fetchData(this.queryFilters)
-    );
-
-    reaction(
-      () => this.queryFilters,
-      (queryString) => this.fetchData(queryString)
-    );
+    autorun(() => {
+      if (!get(this.rootStore.auth0Context, "loading")) {
+        this.fetchData(this.queryFilters);
+      }
+    });
   }
 
   get queryFilters() {

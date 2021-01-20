@@ -18,7 +18,7 @@
 import {
   flow,
   makeAutoObservable,
-  when,
+  autorun,
   reaction,
   observable,
   computed,
@@ -72,19 +72,15 @@ export default class RevocationsChartsStore {
 
     this.rootStore = rootStore;
 
-    when(
-      () => !get(this.rootStore.auth0Context, "loading"),
-      () => this.fetchData(this.queryFilters)
-    );
+    autorun(() => {
+      if (!get(this.rootStore.auth0Context, "loading")) {
+        this.fetchData(this.queryFilters);
+      }
+    });
 
     reaction(
       () => this.selectedChart,
       () => this.fetchData(this.queryFilters)
-    );
-
-    reaction(
-      () => this.queryFilters,
-      (queryString) => this.fetchData(queryString)
     );
   }
 
