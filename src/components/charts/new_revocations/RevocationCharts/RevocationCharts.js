@@ -22,7 +22,6 @@ import { observer } from "mobx-react-lite";
 
 import { translate } from "../../../../views/tenants/utils/i18nSettings";
 import flags from "../../../../flags";
-import ErrorBoundary from "../../../ErrorBoundary";
 import RevocationsByRiskLevel from "../RevocationsByRiskLevel/RevocationsByRiskLevel";
 import RevocationsByOfficer from "../RevocationsByOfficer";
 import RevocationsByViolation from "../RevocationsByViolation";
@@ -113,7 +112,7 @@ const RevocationCharts = ({ timeDescription }) => {
         ))}
       </div>
       <div className="RevocationCharts__chart">
-        <ErrorBoundary>{renderSelectedChartSingularLoad()}</ErrorBoundary>
+        {renderSelectedChartSingularLoad()}
       </div>
     </div>
   );

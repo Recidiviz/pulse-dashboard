@@ -110,7 +110,9 @@ const Revocations = () => {
         <MatrixExplanation />
       </div>
 
-      <RevocationCharts timeDescription={timeDescription} />
+      <ErrorBoundary>
+        <RevocationCharts timeDescription={timeDescription} />
+      </ErrorBoundary>
 
       <div className="bgc-white m-20 p-20">
         <ErrorBoundary>
