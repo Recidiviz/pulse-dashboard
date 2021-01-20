@@ -65,9 +65,9 @@ export default class UserStore {
 
   stateCode?: string;
 
-  getTokenSilently?: Function;
+  getTokenSilently?: () => void;
 
-  logout?: Function;
+  logout?: () => void;
 
   readonly rootStore?: RootStore;
 
@@ -141,14 +141,14 @@ export default class UserStore {
    *
    */
   // TODO TS pull logic in utils/user into this store once tenants utils are ported to TS
-  get availableStateCodes() {
+  get availableStateCodes(): Array<string> {
     return getAvailableStateCodes(this.user);
   }
 
   /**
    * Returns the human-readable state name for the authorized state code for the given usere.
    */
-  get stateName() {
+  get stateName(): string {
     return getStateNameForCode(this.stateCode);
   }
 }

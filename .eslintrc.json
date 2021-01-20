@@ -8,6 +8,7 @@
     "airbnb",
     "plugin:prettier/recommended",
     "prettier/react"
+
   ],
   "overrides": [
     {
@@ -28,14 +29,36 @@
     },
     {
       "files": ["*.ts", "*.tsx"],
+      "extends": [
+        // From @typescript-eslint/eslint-plugin
+        "plugin:@typescript-eslint/recommended",
+        // From eslint-config-prettier
+        "prettier/@typescript-eslint"
+      ],
       "parser": "@typescript-eslint/parser",
-      "plugins": ["@typescript-eslint"]
+      "plugins": ["@typescript-eslint"],
+
+      "rules": {
+        // with static typing this rule is not so useful
+        "consistent-return": "off",
+        // these bare ESLint rules are superseded by TS equivalents
+        "@typescript-eslint/no-use-before-define": ["error"],
+        "no-shadow": "off",
+        "@typescript-eslint/no-shadow": "error",
+        // TypeScript is largely redundant with PropTypes
+        "react/prop-types": "off",
+        // TODO TS re-enable this after repo is ported to TS
+        "@typescript-eslint/no-explicit-any": "off",
+        // TODO TS re-enable this after repo is ported to TS
+        "@typescript-eslint/ban-ts-comment": "off"
+      }
     }
   ],
   "rules": {
     "react/jsx-filename-extension": ["error", { "extensions": [".js", "tsx"] }],
     "import/no-extraneous-dependencies": ["error", { "packageDir": "./" }],
     "no-new": 1,
+    "no-use-before-define": "off",
     "react/jsx-props-no-spreading": 0,
     "func-names": 0,
     "react/jsx-wrap-multilines": [
@@ -54,10 +77,7 @@
     "radix": "off",
     "no-console": ["error", { "allow": ["warn", "error"] }],
     "import/prefer-default-export": "off",
-    // the bare eslint rule breaks in typescript
-    // https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-use-before-define.md#how-to-use
-    "no-use-before-define": "off",
-    "@typescript-eslint/no-use-before-define": ["error"],
+
     // don't require extensions for typescript modules
     "import/extensions": [
       "error",
