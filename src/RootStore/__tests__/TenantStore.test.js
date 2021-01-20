@@ -22,7 +22,7 @@ import { doesUserHaveAccess, getAvailableStateCodes } from "../utils/user";
 import { METADATA_NAMESPACE } from "../../constants";
 
 jest.mock("../../react-auth0-spa");
-jest.mock("../../utils/authentication/user");
+jest.mock("../utils/user");
 
 let rootStore;
 const metadataField = `${METADATA_NAMESPACE}app_metadata`;

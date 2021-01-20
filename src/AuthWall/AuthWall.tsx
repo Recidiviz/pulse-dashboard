@@ -15,36 +15,31 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-// import { navigate } from "@reach/router";
 import { when } from "mobx";
 import { observer } from "mobx-react-lite";
 import React, { useEffect } from "react";
-import { withErrorBoundary } from "react-error-boundary";
 import { ERROR_MESSAGES } from "../constants/errorMessages";
-import ErrorMessage from "../components/Error";
 import Loading from "../components/Loading";
 import { useRootStore } from "../StoreProvider";
 import VerificationNeeded from "../views/VerificationNeeded";
+import NotFound from "../views/NotFound";
 
-function replaceCurrentUrl(targetUrl: string) {
-  console.log("*****", targetUrl)
-  // navigate(targetUrl, { replace: true });
-}
+// type AuthWallProps = {
+//   children: ReactNode,
+// }
 
 /**
  * Verifies authorization before rendering its children.
  */
 const AuthWall: React.FC = ({ children }) => {
-  const { userStore } = useRootStore();
+  const { userStore, currentTenantId } = useRootStore();
 
   useEffect(
     () =>
       // return when's disposer so it is cleaned up if it never runs
       when(
         () => !userStore.isAuthorized,
-        // handler keeps Reach Router in sync with URL changes
-        // that may happen in `authorize` after redirect
-        () => userStore.authorize({ handleTargetUrl: replaceCurrentUrl })
+        () => userStore.authorize()
       ),
     [userStore]
   );
@@ -62,7 +57,16 @@ const AuthWall: React.FC = ({ children }) => {
   }
 
   if (userStore.isAuthorized) {
-    return <>{children}</>;
+    const authorizedChildren = React.Children.map(children, (child: any) => {
+      const { tenantIds } = child.props;
+      return tenantIds.includes(currentTenantId) ? child : null;
+    });
+ 
+    return authorizedChildren && authorizedChildren.length > 0 ? (
+      <>{authorizedChildren}</>
+    ) : (
+      <NotFound />
+    );
   }
 
   // it should not actually be possible to reach this branch
@@ -71,5 +75,4 @@ const AuthWall: React.FC = ({ children }) => {
   throw new Error(ERROR_MESSAGES.unauthorized);
 };
 
-// TODO add back in the error boundary
 export default observer(AuthWall);

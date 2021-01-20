@@ -20,8 +20,7 @@ import { ERROR_MESSAGES } from "../../constants/errorMessages";
 import { reactImmediately } from "../../testUtils";
 import UserStore from "../UserStore";
 import { METADATA_NAMESPACE } from "../../constants";
-import { LANTERN_TENANTS } from "../../views/tenants/utils/lanternTenants";
-import tenants from "../../tenants";
+import TENANTS from "../../tenants";
 
 jest.mock("@auth0/auth0-spa-js");
 
@@ -153,26 +152,7 @@ test("redirect to targetUrl after callback", async () => {
   expect(window.location.href).toBe(targetUrl);
 });
 
-test("passes target URL to callback", async () => {
-  const targetUrl = "http://localhost/somePage?id=1";
-  mockHandleRedirectCallback.mockResolvedValue({ appState: { targetUrl } });
-
-  const auth0LoginParams = "code=123456&state=abcdef";
-  const urlWithToken = new URL(window.location.href);
-  urlWithToken.search = `?${auth0LoginParams}`;
-  window.history.pushState({}, "Test", urlWithToken.href);
-
-  const store = new UserStore({
-    authSettings: testAuthSettings,
-  });
-
-  const callback = jest.fn();
-
-  await store.authorize({ handleTargetUrl: callback });
-  expect(callback.mock.calls[0][0]).toBe(targetUrl);
-});
-
-test.each(Object.keys(tenants))(
+test.each(Object.keys(TENANTS))(
   "gets metadata for the user %s",
   async (tenantId) => {
     const tenantMetadata = { [metadataField]: { state_code: tenantId } };
@@ -190,12 +170,12 @@ test.each(Object.keys(tenants))(
       expect(store.availableStateCodes).toBe(
         // TODO TS remove when tenants is ported to TS
         // @ts-ignore
-        tenants[tenantId].availableStateCodes
+        TENANTS[tenantId].availableStateCodes
       );
       expect(store.stateName).toBe(
         // TODO TS remove when tenants is ported to TS
         // @ts-ignore
-        tenants[tenantId].name
+        TENANTS[tenantId].name
       );
     });
     expect.hasAssertions();

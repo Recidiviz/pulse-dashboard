@@ -23,7 +23,6 @@ import {
   BrowserRouter as Router,
 } from "react-router-dom";
 
-import TenantRoutes from "./components/TenantRoutes";
 import { PageProvider } from "./contexts/PageContext";
 import StoreProvider from "./StoreProvider";
 import NotFound from "./views/NotFound";
@@ -43,6 +42,7 @@ import { initI18n } from "./views/tenants/utils/i18nSettings";
 import { LANTERN_TENANTS } from "./views/tenants/utils/lanternTenants";
 import { CORE_TENANTS } from "./views/tenants/utils/coreTenants";
 import AuthWall from "./AuthWall";
+import ErrorBoundary from "./components/ErrorBoundary";
 
 import "./assets/scripts/index";
 import "./assets/styles/index.scss";
@@ -54,42 +54,43 @@ initI18n();
 // prettier-ignore
 const App = () => (
   <StoreProvider>
-    <AuthWall>
+    <ErrorBoundary>
       <PageProvider>
         <Router>
           <Switch>
             <Route path="/verify" component={VerificationNeeded} />
+              <AuthWall>
+                <LanternLayout tenantIds={LANTERN_TENANTS}>
+                  <Switch>
+                    <Route path="/community/revocations" component={Revocations} />
+                    <Route path="/profile" component={Profile} />
+                    <Redirect exact from="/" to="/community/revocations" />
+                    <Redirect from="/revocations" to="/community/revocations" />
+                    <NotFound />
+                  </Switch>
+                </LanternLayout>
 
-            <LanternLayout tenantIds={LANTERN_TENANTS}>
-              <Switch>
-                <Route path="/community/revocations" component={Revocations} />
-                <Route path="/profile" component={Profile} />
-                <Redirect exact from="/" to="/community/revocations" />
-                <Redirect from="/revocations" to="/community/revocations" />
-                <NotFound />
-              </Switch>
-            </LanternLayout>
-
-            <CoreLayout tenantIds={CORE_TENANTS}>
-              <Switch>
-                <Route path="/community/goals" component={UsNdCommunityGoals} />
-                <Route path="/community/explore" component={UsNdCommunityExplore} />
-                <Route path="/facilities/goals" component={UsNdFacilitiesGoals} />
-                <Route path="/facilities/explore" component={UsNdFacilitiesExplore} />
-                <Route path="/programming/explore" component={UsNdProgrammingExplore} />
-                <Route path="/profile" component={Profile} />
-                <Redirect exact from="/" to="/community/goals" />
-                <Redirect from="/snapshots" to="/community/goals" />
-                <Redirect from="/revocations" to="/community/goals" />
-                <Redirect from="/reincarcerations" to="/facilities/goals" />
-                <Redirect from="/programEvaluation/freeThroughRecovery" to="/programming/explore" />
-                <NotFound />
-              </Switch>
-            </CoreLayout>
-          </Switch>
-        </Router>
-      </PageProvider>
-    </AuthWall>
+                <CoreLayout tenantIds={CORE_TENANTS}>
+                  <Switch>
+                    <Route path="/community/goals" component={UsNdCommunityGoals} />
+                    <Route path="/community/explore" component={UsNdCommunityExplore} />
+                    <Route path="/facilities/goals" component={UsNdFacilitiesGoals} />
+                    <Route path="/facilities/explore" component={UsNdFacilitiesExplore} />
+                    <Route path="/programming/explore" component={UsNdProgrammingExplore} />
+                    <Route path="/profile" component={Profile} />
+                    <Redirect exact from="/" to="/community/goals" />
+                    <Redirect from="/snapshots" to="/community/goals" />
+                    <Redirect from="/revocations" to="/community/goals" />
+                    <Redirect from="/reincarcerations" to="/facilities/goals" />
+                    <Redirect from="/programEvaluation/freeThroughRecovery" to="/programming/explore" />
+                    <NotFound />
+                  </Switch>
+                </CoreLayout>
+              </AuthWall>
+            </Switch>
+          </Router>
+        </PageProvider>
+    </ErrorBoundary>
   </StoreProvider>
 );
 

@@ -69,4 +69,8 @@ export default class RootStore {
   get currentTenantId() {
     return this.tenantStore.currentTenantId;
   }
+
+  get user() {
+    return this.userStore.user;
+  }
 }

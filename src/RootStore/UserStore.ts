@@ -93,12 +93,7 @@ export default class UserStore {
    * (useful for, e.g., client-side router that does not listen to history events).
    * Returns an Error if Auth0 configuration is not present.
    */
-  async authorize({
-    handleTargetUrl,
-  }: {
-    // eslint-disable-next-line no-unused-vars
-    handleTargetUrl?: (targetUrl: string) => void;
-  } = {}): Promise<void> {
+  async authorize(): Promise<void> {
     if (!this.authSettings) {
       this.authError = new Error(ERROR_MESSAGES.auth0Configuration);
       return;
@@ -120,13 +115,13 @@ export default class UserStore {
         replacementUrl = `${window.location.origin}${window.location.pathname}`;
       }
       window.history.replaceState({}, document.title, replacementUrl);
-      if (handleTargetUrl) handleTargetUrl(replacementUrl);
     }
 
     if (await auth0.isAuthenticated()) {
       const user = await auth0.getUser();
       runInAction(() => {
         this.isLoading = false;
+
         if (user.email_verified) {
           this.isAuthorized = true;
           this.awaitingVerification = false;
