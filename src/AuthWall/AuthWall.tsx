@@ -22,7 +22,6 @@ import { observer } from "mobx-react-lite";
 import { ERROR_MESSAGES } from "../constants/errorMessages";
 import Loading from "../components/Loading";
 import { useRootStore } from "../StoreProvider";
-import VerificationNeeded from "../views/VerificationNeeded";
 import NotFound from "../views/NotFound";
 
 /**
@@ -47,10 +46,6 @@ const AuthWall: React.FC = ({ children }) => {
 
   if (userStore.isLoading) {
     return <Loading />;
-  }
-
-  if (userStore.awaitingVerification) {
-    return <VerificationNeeded />;
   }
 
   if (userStore.isAuthorized) {

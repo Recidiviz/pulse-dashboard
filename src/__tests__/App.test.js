@@ -32,6 +32,7 @@ import LanternLayout from "../components/layouts/LanternLayout";
 import CoreLayout from "../components/layouts/CoreLayout";
 import StoreProvider, { useRootStore } from "../StoreProvider";
 import Error from "../components/Error";
+import VerificationNeeded from "../views/VerificationNeeded";
 
 jest.mock("../utils/initIntercomSettings");
 jest.mock("../utils/initFontAwesome");
@@ -44,6 +45,7 @@ jest.mock("../views/NotFound");
 jest.mock("../components/Loading");
 jest.mock("../StoreProvider");
 jest.mock("../components/Error");
+jest.mock("../views/VerificationNeeded");
 
 describe("App tests", () => {
   const metadataField = `${METADATA_NAMESPACE}app_metadata`;
@@ -53,6 +55,7 @@ describe("App tests", () => {
   const mockNotFoundId = "not-found-id";
   const mockLoadingTestId = "loading-test-id";
   const mockErrorId = "error-test-id";
+  const mockVerificationNeededId = "verification-needed-test-id";
 
   const RevocationsMock = Revocations.type;
   const LanternLayoutMock = LanternLayout.type;
@@ -65,13 +68,14 @@ describe("App tests", () => {
   NotFound.mockReturnValue(mockWithTestId(mockNotFoundId));
   Loading.mockReturnValue(mockWithTestId(mockLoadingTestId));
   Error.mockReturnValue(mockWithTestId(mockErrorId));
+  VerificationNeeded.mockReturnValue(mockWithTestId(mockVerificationNeededId));
 
   beforeEach(() => {
     jest.clearAllMocks();
   });
 
   afterAll(() => {
-    jest.resetAllMocks();
+    jest.restoreAllMocks();
   });
 
   it("should render MO Layout with Revocations page", () => {
@@ -160,7 +164,7 @@ describe("App tests", () => {
 
   it("should render the Error component if there is an error", () => {
     useRootStore.mockReturnValue({
-      userStore: { isLoading: false, isauthorized: false },
+      userStore: { isLoading: false, isAuthorized: false },
     });
 
     // do not log the expected error - keep tests less verbose
@@ -169,5 +173,18 @@ describe("App tests", () => {
     const { getByTestId } = render(<App />);
 
     expect(getByTestId(mockErrorId)).toBeInTheDocument();
+  });
+
+  it("should be render the Verification Needed component", () => {
+    window.history.pushState({}, "", "/verify");
+    useRootStore.mockReturnValue({
+      userStore: { user: {}, isAuthorized: true },
+      currentTenantId: US_PA,
+    });
+
+    const { container, getByTestId } = render(<App />);
+
+    expect(container.children.length).toBe(1);
+    expect(getByTestId(mockVerificationNeededId)).toBeInTheDocument();
   });
 });

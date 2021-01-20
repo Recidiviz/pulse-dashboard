@@ -47,10 +47,16 @@ export default class RootStore {
 
   tenantStore;
 
+  userStore;
+
   stateCode;
 
   constructor() {
-    makeObservable(this, { filters: computed, currentTenantId: computed });
+    makeObservable(this, {
+      filters: computed,
+      currentTenantId: computed,
+      user: computed,
+    });
 
     this.userStore = new UserStore({
       authSettings: getAuthSettings(),

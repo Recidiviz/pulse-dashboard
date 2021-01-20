@@ -112,7 +112,6 @@ test("requires email verification", async () => {
 
   reactImmediately(() => {
     expect(store.isAuthorized).toBe(false);
-    expect(store.awaitingVerification).toBe(true);
   });
   expect.hasAssertions();
 });

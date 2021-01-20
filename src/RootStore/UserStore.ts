@@ -52,8 +52,6 @@ export default class UserStore {
 
   readonly authSettings?: Auth0ClientOptions;
 
-  awaitingVerification: boolean;
-
   isAuthorized: boolean;
 
   isLoading: boolean;
@@ -77,7 +75,6 @@ export default class UserStore {
     this.authSettings = authSettings;
     this.rootStore = rootStore;
 
-    this.awaitingVerification = false;
     this.isAuthorized = false;
     this.isLoading = true;
 
@@ -119,14 +116,12 @@ export default class UserStore {
         this.isLoading = false;
         if (user && user.email_verified) {
           this.isAuthorized = true;
-          this.awaitingVerification = false;
           this.getTokenSilently = (...p: any) => auth0.getTokenSilently(...p);
           this.logout = (...p: any) => auth0.logout(...p);
           this.user = user;
           this.stateCode = getUserStateCode(user);
         } else {
           this.isAuthorized = false;
-          this.awaitingVerification = true;
         }
       });
     } else {

@@ -15,7 +15,12 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
+import createAuth0Client from "@auth0/auth0-spa-js";
+
 import RootStore from "../RootStore";
+import { METADATA_NAMESPACE } from "../../constants";
+
+jest.mock("@auth0/auth0-spa-js");
 
 let rootStore;
 
@@ -42,5 +47,21 @@ describe("RootStore", () => {
 
   it("contains filters", () => {
     expect(rootStore.filters).toBeDefined();
+  });
+
+  it("contains user", async () => {
+    const metadataField = `${METADATA_NAMESPACE}app_metadata`;
+    const user = {
+      [metadataField]: { state_code: "US_MO" },
+      email_verified: true,
+    };
+    createAuth0Client.mockResolvedValue({
+      getUser: () => user,
+      isAuthenticated: () => true,
+    });
+
+    await rootStore.userStore.authorize();
+
+    expect(rootStore.user).toBeDefined();
   });
 });

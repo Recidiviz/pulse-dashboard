@@ -27,7 +27,7 @@ const Profile = () => {
   const { userStore } = useRootStore();
   const { isLoading, user } = userStore;
 
-  if (isLoading || !user) {
+  if (isLoading) {
     return <Loading />;
   }
 
