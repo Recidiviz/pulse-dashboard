@@ -15,23 +15,11 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import {
-  flow,
-  makeAutoObservable,
-  autorun,
-  reaction,
-  observable,
-  computed,
-  action,
-  get,
-  toJS,
-} from "mobx";
-import { callMetricsApi } from "../../api/metrics/metricsClient";
-import { processResponseData } from "./helpers";
+import { makeObservable, reaction, observable, action } from "mobx";
+import BaseDataStore from "./BaseDataStore";
 import { filterOptimizedDataFormat } from "../../utils/charts/dataFilters";
 import { matchesAllFilters } from "../../components/charts/new_revocations/helpers";
 import { DISTRICT } from "../../constants/filterTypes";
-import { getQueryStringFromFilters } from "../../api/metrics/urlHelpers";
 
 const CHART_TO_FILENAME = {
   District: "revocations_matrix_distribution_by_district",
@@ -42,82 +30,29 @@ const CHART_TO_FILENAME = {
   Violation: "revocations_matrix_distribution_by_violation",
 };
 
-export default class RevocationsChartStore {
-  rootStore;
+const DEFAULT_SELECTED_CHART = "District";
 
-  isLoading = true;
-
-  isError = false;
-
-  apiData = [];
-
-  filteredData = [];
-
-  metadata = {};
-
-  selectedChart = "District";
-
-  eagerExpand = false;
+export default class RevocationsChartStore extends BaseDataStore {
+  selectedChart = DEFAULT_SELECTED_CHART;
 
   constructor({ rootStore }) {
-    makeAutoObservable(this, {
-      fetchData: flow,
-      apiData: observable.shallow,
-      filteredData: observable.shallow,
+    super({ rootStore, file: CHART_TO_FILENAME[DEFAULT_SELECTED_CHART] });
+    makeObservable(this, {
       selectedChart: observable,
       setSelectedChart: action.bound,
-      queryFilters: computed,
-      metadata: false,
-    });
-
-    this.rootStore = rootStore;
-
-    autorun(() => {
-      if (!get(this.rootStore.auth0Context, "loading")) {
-        this.fetchData(this.queryFilters);
-      }
     });
 
     reaction(
       () => this.selectedChart,
-      () => this.fetchData(this.queryFilters)
-    );
-  }
-
-  get queryFilters() {
-    return getQueryStringFromFilters(
-      Object.fromEntries(toJS(this.rootStore.filters))
+      () => {
+        super.file = CHART_TO_FILENAME[this.selectedChart];
+        this.fetchData(this.queryFilters);
+      }
     );
   }
 
   setSelectedChart(chartId) {
     this.selectedChart = chartId;
-  }
-
-  *fetchData(queryString) {
-    const filename = CHART_TO_FILENAME[this.selectedChart];
-    const endpoint = `${this.rootStore.currentTenantId}/newRevocations/${filename}${queryString}`;
-    try {
-      this.isLoading = true;
-      const responseData = yield callMetricsApi(
-        endpoint,
-        this.rootStore.getTokenSilently
-      );
-      const processedData = processResponseData(
-        responseData,
-        filename,
-        this.eagerExpand
-      );
-      this.apiData = processedData.data;
-      this.metadata = processedData.metadata;
-      this.filteredData = this.filterData(processedData);
-      this.isLoading = false;
-      this.isError = false;
-    } catch (error) {
-      console.error(error);
-      this.isError = true;
-      this.isLoading = false;
-    }
   }
 
   filterData({ data, metadata }) {

@@ -14,18 +14,20 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
+import BaseDataStore from "../DataStore/BaseDataStore";
 import RootStore from "../RootStore";
 import { useAuth0 } from "../../react-auth0-spa";
 import { METADATA_NAMESPACE } from "../../utils/authentication/user";
 import { callMetricsApi } from "../../api/metrics/metricsClient";
 
 let rootStore;
-let dataStore;
+let baseStore;
 
+jest.mock("../../react-auth0-spa");
 jest.mock("../DataStore/MatrixStore");
 jest.mock("../DataStore/CaseTableStore");
+jest.mock("../DataStore/RevocationsChartStore");
 jest.mock("../DataStore/RevocationsOverTimeStore");
-jest.mock("../../react-auth0-spa");
 jest.mock("../../api/metrics/metricsClient", () => {
   return {
     callMetricsApi: jest.fn().mockResolvedValue({
@@ -45,8 +47,9 @@ const tenantId = "US_MO";
 const metadataField = `${METADATA_NAMESPACE}app_metadata`;
 const mockUser = { [metadataField]: { state_code: tenantId } };
 
-describe("RevocationsChartStore", () => {
+describe("BaseDataStore", () => {
   const mockGetTokenSilently = jest.fn();
+  const file = "revocations_matrix_distribution_by_district";
 
   describe("when user is authenticated", () => {
     beforeAll(() => {
@@ -56,7 +59,7 @@ describe("RevocationsChartStore", () => {
         loading: false,
       });
       rootStore = new RootStore();
-      dataStore = rootStore.dataStore.revocationsChartStore;
+      baseStore = new BaseDataStore({ rootStore, file });
     });
 
     afterAll(() => {
@@ -65,15 +68,11 @@ describe("RevocationsChartStore", () => {
 
     describe("default store properties", () => {
       it("has a reference to the rootStore", () => {
-        expect(dataStore.rootStore).toBeDefined();
-      });
-
-      it("sets default selectedChart to 'District'", () => {
-        expect(dataStore.selectedChart).toEqual("District");
+        expect(baseStore.rootStore).toBeDefined();
       });
 
       it("sets eagerExpand to false'", () => {
-        expect(dataStore.eagerExpand).toBe(false);
+        expect(baseStore.eagerExpand).toBe(false);
       });
     });
 
@@ -91,18 +90,12 @@ describe("RevocationsChartStore", () => {
       });
 
       it("sets isLoading to false and isError to false", () => {
-        expect(dataStore.isLoading).toEqual(false);
-        expect(dataStore.isError).toEqual(false);
+        expect(baseStore.isLoading).toEqual(false);
+        expect(baseStore.isError).toEqual(false);
       });
 
       it("sets apiData", () => {
-        expect(dataStore.apiData).toEqual([["0"], ["0"]]);
-      });
-
-      it("sets filteredData", () => {
-        expect(dataStore.filteredData).toEqual([
-          { population_count: "0", reported_violations: "0" },
-        ]);
+        expect(baseStore.apiData).toEqual([["0"], ["0"]]);
       });
     });
   });
@@ -117,21 +110,20 @@ describe("RevocationsChartStore", () => {
       });
       callMetricsApi.mockRejectedValueOnce(new Error("API Error"));
       rootStore = new RootStore();
-      dataStore = rootStore.dataStore.revocationsChartStore;
+      baseStore = new BaseDataStore({ rootStore, file });
     });
 
     afterAll(() => {
       jest.resetAllMocks();
     });
 
-    it("does not set apiData or filteredData", () => {
-      expect(dataStore.apiData).toStrictEqual([]);
-      expect(dataStore.filteredData).toStrictEqual([]);
+    it("does not set apiData", () => {
+      expect(baseStore.apiData).toStrictEqual([]);
     });
 
     it("sets isError to true and isLoading to false", () => {
-      expect(dataStore.isError).toBe(true);
-      expect(dataStore.isLoading).toBe(false);
+      expect(baseStore.isError).toBe(true);
+      expect(baseStore.isLoading).toBe(false);
     });
   });
 
@@ -144,7 +136,7 @@ describe("RevocationsChartStore", () => {
         loading: true,
       });
       rootStore = new RootStore();
-      dataStore = rootStore.dataStore.revocationsChartStore;
+      baseStore = new BaseDataStore({ rootStore, file });
     });
 
     afterAll(() => {
@@ -156,8 +148,8 @@ describe("RevocationsChartStore", () => {
     });
 
     it("sets isError to false and isLoading to false", () => {
-      expect(dataStore.isError).toBe(false);
-      expect(dataStore.isLoading).toBe(true);
+      expect(baseStore.isError).toBe(false);
+      expect(baseStore.isLoading).toBe(true);
     });
   });
 });

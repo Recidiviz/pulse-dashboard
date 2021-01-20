@@ -14,86 +14,13 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-
-import {
-  flow,
-  makeAutoObservable,
-  observable,
-  computed,
-  get,
-  toJS,
-  autorun,
-} from "mobx";
-import { callMetricsApi } from "../../api/metrics/metricsClient";
-import { processResponseData } from "./helpers";
+import BaseDataStore from "./BaseDataStore";
 import { matchesAllFilters } from "../../components/charts/new_revocations/helpers";
 import { filterOptimizedDataFormat } from "../../utils/charts/dataFilters";
-import { getQueryStringFromFilters } from "../../api/metrics/urlHelpers";
 
-export default class CaseTableStore {
-  rootStore;
-
-  isLoading = true;
-
-  isError = false;
-
-  apiData = [];
-
-  filteredData = [];
-
-  metadata = {};
-
-  eagerExpand = false;
-
-  file = `revocations_matrix_filtered_caseload`;
-
+export default class CaseTableStore extends BaseDataStore {
   constructor({ rootStore }) {
-    makeAutoObservable(this, {
-      fetchData: flow,
-      apiData: observable.shallow,
-      filteredData: observable.shallow,
-      queryFilters: computed,
-      metadata: false,
-    });
-
-    this.rootStore = rootStore;
-
-    autorun(() => {
-      if (!get(this.rootStore.auth0Context, "loading")) {
-        this.fetchData(this.queryFilters);
-      }
-    });
-  }
-
-  get queryFilters() {
-    return getQueryStringFromFilters(
-      Object.fromEntries(toJS(this.rootStore.filters))
-    );
-  }
-
-  *fetchData(queryString) {
-    const endpoint = `${this.rootStore.currentTenantId}/newRevocations/${this.file}${queryString}`;
-    try {
-      this.isLoading = true;
-      const responseData = yield callMetricsApi(
-        endpoint,
-        this.rootStore.getTokenSilently
-      );
-      const processedData = processResponseData(
-        responseData,
-        this.file,
-        this.eagerExpand
-      );
-      this.apiData = processedData.data;
-      this.metadata = processedData.metadata;
-      this.filteredData = this.filterData(processedData);
-      this.isLoading = false;
-      this.isError = false;
-    } catch (error) {
-      console.error(error);
-      this.isError = true;
-      this.isLoading = false;
-    }
+    super({ rootStore, file: `revocations_matrix_filtered_caseload` });
   }
 
   filterData({ data, metadata }) {

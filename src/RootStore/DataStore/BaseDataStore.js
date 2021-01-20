@@ -15,34 +15,71 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import { flow, makeObservable, observable, computed } from "mobx";
-import filter from "lodash/fp/filter";
-import identity from "lodash/fp/identity";
-import map from "lodash/fp/map";
-import pipe from "lodash/fp/pipe";
-import sortBy from "lodash/fp/sortBy";
-import uniq from "lodash/fp/uniq";
-import BaseDataStore from "./BaseDataStore";
+import {
+  flow,
+  makeObservable,
+  observable,
+  computed,
+  get,
+  toJS,
+  autorun,
+} from "mobx";
+
 import { callMetricsApi } from "../../api/metrics/metricsClient";
 import { processResponseData } from "./helpers";
-import { matchesAllFilters } from "../../components/charts/new_revocations/helpers";
-import { METRIC_PERIOD_MONTHS } from "../../constants/filterTypes";
-import { filterOptimizedDataFormat } from "../../utils/charts/dataFilters";
+import { getQueryStringFromFilters } from "../../api/metrics/urlHelpers";
 
-export default class RevocationsOverTimeStore extends BaseDataStore {
-  expandedData = [];
+/**
+ * BaseDataStore is an abstract class that should never be directly instantiated.
+ * It acts as a parent class to all the other data stores.
+ */
+export default class BaseDataStore {
+  rootStore;
 
-  constructor({ rootStore }) {
-    super({ rootStore, file: `revocations_matrix_by_month` });
+  isLoading = true;
+
+  isError = false;
+
+  apiData = [];
+
+  filteredData = [];
+
+  metadata = {};
+
+  file;
+
+  eagerExpand = false;
+
+  constructor({ rootStore, file }) {
     makeObservable(this, {
       fetchData: flow,
-      expandedData: observable.shallow,
-      // TODO: Remove once we get a separate districts file
-      districts: computed,
+      apiData: observable.shallow,
+      filteredData: observable.shallow,
+      queryFilters: computed,
+      metadata: false,
+      isLoading: true,
+      isError: true,
+      eagerExpand: true,
+    });
+
+    this.file = file;
+
+    this.rootStore = rootStore;
+
+    autorun(() => {
+      if (!get(this.rootStore.auth0Context, "loading")) {
+        this.fetchData(this.queryFilters);
+      }
     });
   }
 
-  *fetchData(queryString = "") {
+  get queryFilters() {
+    return getQueryStringFromFilters(
+      Object.fromEntries(toJS(this.rootStore.filters))
+    );
+  }
+
+  *fetchData(queryString) {
     const endpoint = `${this.rootStore.currentTenantId}/newRevocations/${this.file}${queryString}`;
     try {
       this.isLoading = true;
@@ -55,9 +92,6 @@ export default class RevocationsOverTimeStore extends BaseDataStore {
         this.file,
         this.eagerExpand
       );
-
-      const expandedData = processResponseData(responseData, this.file, true);
-      this.expandedData = expandedData;
       this.apiData = processedData.data;
       this.metadata = processedData.metadata;
       this.filteredData = this.filterData(processedData);
@@ -70,29 +104,8 @@ export default class RevocationsOverTimeStore extends BaseDataStore {
     }
   }
 
-  filterData({ data, metadata }) {
-    const { filters } = this.rootStore;
-    const dataFilter = matchesAllFilters({
-      filters,
-      skippedFilters: [METRIC_PERIOD_MONTHS],
-    });
-
-    return filterOptimizedDataFormat({
-      apiData: data,
-      metadata,
-      filterFn: dataFilter,
-    });
-  }
-
-  get districts() {
-    if (!this.expandedData) return [];
-    const data = this.expandedData.slice();
-    return pipe(
-      map("district"),
-      filter((d) => d.toLowerCase() !== "all"),
-      uniq,
-      sortBy(identity),
-      map((d) => ({ value: d, label: d }))
-    )(data);
+  filterData() {
+    console.error(`filterData must be defined in the subclass.`);
+    this.filteredData = [];
   }
 }

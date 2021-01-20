@@ -28,7 +28,7 @@ jest.mock("../../api/metrics/metricsClient");
 const metadataField = `${METADATA_NAMESPACE}app_metadata`;
 const mockUser = { [metadataField]: { state_code: "US_MO" } };
 
-describe("RootStore", () => {
+describe("DataStore", () => {
   useAuth0.mockReturnValue({ user: mockUser, getTokenSilently: () => {} });
 
   beforeEach(() => {
