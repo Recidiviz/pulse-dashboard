@@ -16,11 +16,12 @@
 // =============================================================================
 
 import RootStore from "../RootStore";
-import { useAuth0 } from "../../react-auth0-spa";
 import { METADATA_NAMESPACE } from "../../constants";
 import { LANTERN_TENANTS } from "../../views/tenants/utils/lanternTenants";
+import { useRootStore } from "../../StoreProvider";
 
 jest.mock("../../react-auth0-spa");
+jest.mock("../../StoreProvider");
 
 let rootStore;
 const metadataField = `${METADATA_NAMESPACE}app_metadata`;
@@ -40,7 +41,9 @@ describe("FiltersStore", () => {
     it("are set correctly by default", () => {
       LANTERN_TENANTS.forEach((stateCode) => {
         const mockUser = { [metadataField]: { state_code: stateCode } };
-        useAuth0.mockReturnValue({ user: mockUser });
+        useRootStore.mockReturnValue({
+          userStore: { user: mockUser, isAuthorized: true },
+        });
         rootStore = new RootStore();
 
         expect(rootStore.filtersStore.defaultFilters).toEqual(defaultFilters);

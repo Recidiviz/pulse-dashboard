@@ -27,11 +27,9 @@ import {
   SUPERVISION_LEVEL,
   SUPERVISION_TYPE,
 } from "../../../../../constants/filterTypes";
-import StoreProvider from "../../../../../StoreProvider";
-import { useAuth0 } from "../../../../../react-auth0-spa";
+import { useRootStore } from "../../../../../StoreProvider";
 import { METADATA_NAMESPACE } from "../../../../../constants";
 import { US_MO } from "../../../../../views/tenants/utils/lanternTenants";
-import FiltersStore from "../../../../../RootStore/FiltersStore";
 import filterOptions from "../../../../../views/tenants/constants/filterOptions";
 
 jest.mock("../../../../controls/Select", () => ({
@@ -43,16 +41,16 @@ jest.mock("../FilterField", () => ({
   default: jest.fn(),
 }));
 jest.mock("../../../../../react-auth0-spa");
-jest.mock("../../../../../RootStore/FiltersStore");
+jest.mock("../../../../../StoreProvider");
 
 describe("ToggleBarFilter tests", () => {
   const metadataField = `${METADATA_NAMESPACE}app_metadata`;
   const mockUser = { [metadataField]: { state_code: US_MO } };
-  useAuth0.mockReturnValue({ user: mockUser });
-
   const setFiltersMock = jest.fn();
-  FiltersStore.mockImplementation(() => {
-    return {
+  useRootStore.mockReturnValue({
+    userStore: { user: mockUser, isAuthorized: true },
+    currentTenantId: US_MO,
+    filtersStore: {
       filters: observable.map({
         metricPeriodMonths:
           filterOptions[US_MO][METRIC_PERIOD_MONTHS].defaultValue,
@@ -61,7 +59,7 @@ describe("ToggleBarFilter tests", () => {
       }),
       filterOptions: filterOptions[US_MO],
       setFilters: setFiltersMock,
-    };
+    },
   });
 
   FilterField.mockImplementation(({ children }) => children);
@@ -78,9 +76,7 @@ describe("ToggleBarFilter tests", () => {
 
     it("should pass valid props to Select", () => {
       render(
-        <StoreProvider>
-          <ToggleBarFilter label={props.label} dimension={props.dimension} />
-        </StoreProvider>
+        <ToggleBarFilter label={props.label} dimension={props.dimension} />
       );
 
       expect(Select).toHaveBeenCalledTimes(1);
@@ -107,9 +103,7 @@ describe("ToggleBarFilter tests", () => {
       };
 
       render(
-        <StoreProvider>
-          <ToggleBarFilter label="Time Period" dimension={props.dimension} />
-        </StoreProvider>
+        <ToggleBarFilter label="Time Period" dimension={props.dimension} />
       );
 
       act(() => {
