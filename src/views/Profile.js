@@ -17,6 +17,7 @@
 
 import React from "react";
 import { Container, Row, Col } from "reactstrap";
+import { observer } from "mobx-react-lite";
 
 import { useRootStore } from "../StoreProvider";
 import Loading from "../components/Loading";
@@ -60,4 +61,4 @@ const Profile = () => {
   );
 };
 
-export default Profile;
+export default observer(Profile);

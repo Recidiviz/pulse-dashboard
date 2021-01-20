@@ -62,7 +62,7 @@ export default class UserStore {
   // TODO TS create user type
   user: any;
 
-  district: string;
+  district?: string;
 
   stateCode?: string;
 
@@ -81,7 +81,8 @@ export default class UserStore {
     this.awaitingVerification = false;
     this.isAuthorized = false;
     this.isLoading = true;
-    // TODO restricted district
+
+    // TODO 670 set restricted district based on user district
     this.district = "01";
   }
 
@@ -145,7 +146,7 @@ export default class UserStore {
    * Returns the list of states which are accessible to users to view data for.
    *
    */
-  // TODO pull logic in utils/user into this store once tenants utils are ported to TS
+  // TODO TS pull logic in utils/user into this store once tenants utils are ported to TS
   get availableStateCodes() {
     return getAvailableStateCodes(this.user);
   }

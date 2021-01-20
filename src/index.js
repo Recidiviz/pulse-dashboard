@@ -32,7 +32,7 @@ configure({
   // activate runtime linting
   computedRequiresReaction: true,
   reactionRequiresObservable: true,
-  observableRequiresReaction: true,
+  observableRequiresReaction: false,
 });
 
 ReactDOM.render(<App />, document.getElementById("root"));

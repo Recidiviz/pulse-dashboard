@@ -18,7 +18,6 @@
 import { useState, useCallback, useEffect } from "react";
 import makeCancellablePromise from "make-cancellable-promise";
 import toInteger from "lodash/fp/toInteger";
-import { useAuth0 } from "../react-auth0-spa";
 import {
   parseResponseByFileFormat,
   parseResponsesByFileFormat,

@@ -61,7 +61,7 @@ const AuthWall: React.FC = ({ children }) => {
       const { tenantIds } = child.props;
       return tenantIds.includes(currentTenantId) ? child : null;
     });
- 
+
     return authorizedChildren && authorizedChildren.length > 0 ? (
       <>{authorizedChildren}</>
     ) : (
