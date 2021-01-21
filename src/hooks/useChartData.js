@@ -18,13 +18,13 @@
 import { useState, useCallback, useEffect } from "react";
 import makeCancellablePromise from "make-cancellable-promise";
 import toInteger from "lodash/fp/toInteger";
-import { useAuth0 } from "../react-auth0-spa";
 import {
   parseResponseByFileFormat,
   parseResponsesByFileFormat,
 } from "../api/metrics/fileParser";
 import { convertFromStringToUnflattenedMatrix } from "../api/metrics/optimizedFormatHelpers";
 import { callMetricsApi, awaitingResults } from "../api/metrics/metricsClient";
+import { useRootStore } from "../StoreProvider";
 
 const queues = {};
 
@@ -45,7 +45,8 @@ const queues = {};
  * on subsequent filter operations.
  */
 function useChartData(url, file, eagerExpand = true) {
-  const { loading, user, getTokenSilently } = useAuth0();
+  const { userStore } = useRootStore();
+  const { loading, user, getTokenSilently } = userStore;
   const [apiData, setApiData] = useState([]);
   const [unflattenedValues, setUnflattenedValues] = useState([]);
   const [awaitingApi, setAwaitingApi] = useState(true);

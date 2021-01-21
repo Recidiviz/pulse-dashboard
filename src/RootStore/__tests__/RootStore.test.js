@@ -14,20 +14,17 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
+
+import createAuth0Client from "@auth0/auth0-spa-js";
+
 import RootStore from "../RootStore";
-import { useAuth0 } from "../../react-auth0-spa";
-import { METADATA_NAMESPACE } from "../../utils/authentication/user";
+import { METADATA_NAMESPACE } from "../../constants";
+
+jest.mock("@auth0/auth0-spa-js");
 
 let rootStore;
 
-jest.mock("../../react-auth0-spa");
-
-const metadataField = `${METADATA_NAMESPACE}app_metadata`;
-
 describe("RootStore", () => {
-  const mockUser = { [metadataField]: { state_code: "US_MO" } };
-  useAuth0.mockReturnValue({ user: mockUser });
-
   beforeEach(() => {
     rootStore = new RootStore();
   });
@@ -40,11 +37,31 @@ describe("RootStore", () => {
     expect(rootStore.tenantStore).toBeDefined();
   });
 
+  it("contains a UserStore", () => {
+    expect(rootStore.userStore).toBeDefined();
+  });
+
   it("contains a currentTenantId", () => {
     expect(rootStore.currentTenantId).toBeDefined();
   });
 
   it("contains filters", () => {
     expect(rootStore.filters).toBeDefined();
+  });
+
+  it("contains user", async () => {
+    const metadataField = `${METADATA_NAMESPACE}app_metadata`;
+    const user = {
+      [metadataField]: { state_code: "US_MO" },
+      email_verified: true,
+    };
+    createAuth0Client.mockResolvedValue({
+      getUser: () => user,
+      isAuthenticated: () => true,
+    });
+
+    await rootStore.userStore.authorize();
+
+    expect(rootStore.user).toBeDefined();
   });
 });

@@ -19,11 +19,11 @@ import React, { useCallback } from "react";
 import { Dropdown } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
-import { useAuth0 } from "../../react-auth0-spa";
-import { getUserStateName } from "../../utils/authentication/user";
+import { getUserStateName } from "../../RootStore/utils/user";
+import { useUserStore } from "../../StoreProvider";
 
 const TopBarUserMenuForAuthenticatedUser = () => {
-  const { user, logout } = useAuth0();
+  const { user, logout } = useUserStore();
 
   const onLogout = useCallback(
     (e) => {

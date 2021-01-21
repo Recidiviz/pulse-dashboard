@@ -18,6 +18,27 @@
 import React from "react";
 import PropTypes from "prop-types";
 
+function SortableIcon({ order = null }) {
+  switch (order) {
+    case "asc":
+      return <i className="fa fa-sort-up" />;
+    case "desc":
+      return <i className="fa fa-sort-down" />;
+    default:
+      return <i className="fa fa-unsorted op-50p" />;
+  }
+}
+
+const orderPropType = PropTypes.oneOf(["asc", "desc"]);
+
+SortableIcon.propTypes = {
+  order: orderPropType,
+};
+
+SortableIcon.defaultProps = {
+  order: null,
+};
+
 const Sortable = ({ children, order = null, onClick }) => (
   <button
     className="Sortable"
@@ -31,8 +52,6 @@ const Sortable = ({ children, order = null, onClick }) => (
   </button>
 );
 
-const orderPropType = PropTypes.oneOf(["asc", "desc"]);
-
 Sortable.defaultProps = {
   order: null,
 };
@@ -41,25 +60,6 @@ Sortable.propTypes = {
   children: PropTypes.node.isRequired,
   order: orderPropType,
   onClick: PropTypes.func.isRequired,
-};
-
-function SortableIcon({ order = null }) {
-  switch (order) {
-    case "asc":
-      return <i className="fa fa-sort-up" />;
-    case "desc":
-      return <i className="fa fa-sort-down" />;
-    default:
-      return <i className="fa fa-unsorted op-50p" />;
-  }
-}
-
-SortableIcon.propTypes = {
-  order: orderPropType,
-};
-
-SortableIcon.defaultProps = {
-  order: null,
 };
 
 export default Sortable;

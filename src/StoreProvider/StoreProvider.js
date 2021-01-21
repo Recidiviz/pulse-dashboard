@@ -48,3 +48,8 @@ export function useFiltersStore() {
   const { filtersStore } = useRootStore();
   return filtersStore;
 }
+
+export function useUserStore() {
+  const { userStore } = useRootStore();
+  return userStore;
+}

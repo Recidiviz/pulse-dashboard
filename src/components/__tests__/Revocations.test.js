@@ -28,8 +28,7 @@ import RevocationCountOverTime from "../charts/new_revocations/RevocationsOverTi
 import Matrix from "../charts/new_revocations/Matrix";
 import RevocationCharts from "../charts/new_revocations/RevocationCharts";
 import CaseTable from "../charts/new_revocations/CaseTable/CaseTable";
-import { useAuth0 } from "../../react-auth0-spa";
-import { METADATA_NAMESPACE } from "../../utils/authentication/user";
+import { METADATA_NAMESPACE } from "../../constants";
 import { setTranslateLocale } from "../../views/tenants/utils/i18nSettings";
 
 import { US_MO } from "../../views/tenants/utils/lanternTenants";
@@ -40,10 +39,8 @@ import {
   SUPERVISION_LEVEL,
   SUPERVISION_TYPE,
 } from "../../constants/filterTypes";
-import StoreProvider from "../../StoreProvider";
-import FiltersStore from "../../RootStore/FiltersStore";
+import { useRootStore } from "../../StoreProvider";
 
-jest.mock("../../react-auth0-spa");
 jest.mock("../charts/new_revocations/ToggleBar/ToggleBarFilter");
 jest.mock("../charts/new_revocations/ToggleBar/DistrictFilter");
 jest.mock("../charts/new_revocations/ToggleBar/AdmissionTypeFilter");
@@ -54,13 +51,12 @@ jest.mock("../charts/new_revocations/RevocationCharts");
 jest.mock("../charts/new_revocations/CaseTable/CaseTable");
 jest.mock("../../views/tenants/constants/filterOptions");
 jest.mock("../../tenants");
-jest.mock("../../RootStore/FiltersStore");
+jest.mock("../../StoreProvider");
 
 describe("Revocations component tests", () => {
   const metadataField = `${METADATA_NAMESPACE}app_metadata`;
   const mockTenantId = "TEST_TENANT";
   const mockUser = { [metadataField]: { state_code: mockTenantId } };
-  const mockDistrict = "some district";
   const toggleBarIdPrefix = "toggle-bar-";
   const districtFilterId = "district-filter";
   const admissionTypeFilterId = "admission-type-filter";
@@ -78,7 +74,6 @@ describe("Revocations component tests", () => {
   const AdmissionTypeFilterMock = AdmissionTypeFilter.type;
   const ViolationFilterMock = ViolationFilter.type;
 
-  useAuth0.mockReturnValue({ user: mockUser });
   ToggleBarFilterMock.mockImplementation(({ label }) =>
     mockWithTestId(`${toggleBarIdPrefix}${label}`)
   );
@@ -95,9 +90,10 @@ describe("Revocations component tests", () => {
   CaseTableMock.mockReturnValue(mockWithTestId(caseTableId));
   setTranslateLocale(US_MO);
 
-  const setRestrictedDistrictMock = jest.fn();
-  FiltersStore.mockImplementation(() => {
-    return {
+  useRootStore.mockReturnValue({
+    userStore: { user: mockUser, isAuthorized: true },
+    currentTenantId: US_MO,
+    filtersStore: {
       filters: observable.map({
         metricPeriodMonths: "",
         chargeCategory: "",
@@ -109,8 +105,7 @@ describe("Revocations component tests", () => {
         district: "",
       }),
       filterOptions: filterOptionsMap[mockTenantId],
-      setRestrictedDistrict: setRestrictedDistrictMock,
-    };
+    },
   });
 
   beforeEach(() => {
@@ -118,11 +113,7 @@ describe("Revocations component tests", () => {
   });
 
   it("should render Revocations component with proper filters and charts", () => {
-    const { getByTestId } = render(
-      <StoreProvider>
-        <Revocations />
-      </StoreProvider>
-    );
+    const { getByTestId } = render(<Revocations />);
 
     expect(getByTestId(`${toggleBarIdPrefix}Time Period`)).toBeInTheDocument();
     expect(getByTestId(`${toggleBarIdPrefix}Case Type`)).toBeInTheDocument();
@@ -147,29 +138,10 @@ describe("Revocations component tests", () => {
     filterOptionsMap[mockTenantId][SUPERVISION_TYPE].componentEnabled = false;
     filterOptionsMap[mockTenantId][ADMISSION_TYPE].componentEnabled = false;
     filterOptionsMap[mockTenantId][ADMISSION_TYPE].filterEnabled = false;
-    const { queryByTestId } = render(
-      <StoreProvider>
-        <Revocations />
-      </StoreProvider>
-    );
+    const { queryByTestId } = render(<Revocations />);
 
     expect(queryByTestId(`${toggleBarIdPrefix}Supervision Level`)).toBeNull();
     expect(queryByTestId(`${toggleBarIdPrefix}Supervision Type`)).toBeNull();
     expect(queryByTestId(admissionTypeFilterId)).toBeNull();
-  });
-
-  it("should set user district as default filter value if it is defined", () => {
-    const mockUserWithDistrict = {
-      [metadataField]: { state_code: mockTenantId, district: mockDistrict },
-    };
-    useAuth0.mockReturnValue({ user: mockUserWithDistrict });
-
-    render(
-      <StoreProvider>
-        <Revocations />
-      </StoreProvider>
-    );
-
-    expect(setRestrictedDistrictMock).toHaveBeenCalledWith(mockDistrict);
   });
 });
