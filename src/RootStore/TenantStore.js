@@ -15,13 +15,9 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import { makeAutoObservable } from "mobx";
+import { makeAutoObservable, when } from "mobx";
 
-import { useAuth0 } from "../react-auth0-spa";
-import {
-  getAvailableStateCodes,
-  doesUserHaveAccess,
-} from "../utils/authentication/user";
+import { getAvailableStateCodes, doesUserHaveAccess } from "./utils/user";
 import { LANTERN_TENANTS } from "../views/tenants/utils/lanternTenants";
 
 export const CURRENT_TENANT_IN_SESSION = "adminUserCurrentTenantInSession";
@@ -55,12 +51,10 @@ export default class TenantStore {
 
     this.rootStore = rootStore;
 
-    // TODO create a UserStore and setCurrentTenantId on line 63
-    // as a reaction to the user being updated, rather than setting
-    // default currentTenantId on line 49
-    const { user } = useAuth0();
-
-    this.setCurrentTenantId(getTenantIdFromUser(user));
+    when(
+      () => !this.rootStore.userStore.isLoading,
+      () => this.setCurrentTenantId(getTenantIdFromUser(this.rootStore.user))
+    );
   }
 
   setCurrentTenantId(tenantId) {

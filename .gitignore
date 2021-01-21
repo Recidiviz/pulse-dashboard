@@ -42,3 +42,6 @@ package-lock.json
 
 # Redis dump
 dump.rdb
+
+# Typescript build artifacts
+*.tsbuildinfo

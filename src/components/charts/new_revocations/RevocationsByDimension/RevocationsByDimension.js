@@ -18,7 +18,6 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { observer } from "mobx-react-lite";
-import { get } from "mobx";
 
 import ModeSwitcher from "../ModeSwitcher";
 import RevocationsByDimensionComponent from "./RevocationsByDimensionComponent";
@@ -27,8 +26,6 @@ import Loading from "../../../Loading";
 import Error from "../../../Error";
 import { isDenominatorsMatrixStatisticallySignificant } from "../../../../utils/charts/significantStatistics";
 import getLabelByMode from "../utils/getLabelByMode";
-import { useRootStore } from "../../../../StoreProvider";
-import { DISTRICT } from "../../../../constants/filterTypes";
 
 const RevocationsByDimension = ({
   chartId,
@@ -44,8 +41,6 @@ const RevocationsByDimension = ({
   includeWarning,
 }) => {
   const [mode, setMode] = useState(defaultMode);
-  const { filters } = useRootStore();
-  const currentDistricts = get(filters, DISTRICT);
 
   if (dataStore.isLoading) {
     return <Loading />;
@@ -55,8 +50,7 @@ const RevocationsByDimension = ({
     return <Error />;
   }
   const { data, numerators, denominators, averageRate } = generateChartData(
-    mode,
-    currentDistricts.map((d) => d.toLowerCase())
+    mode
   );
 
   const showWarning =

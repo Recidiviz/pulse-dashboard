@@ -15,7 +15,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React, { useEffect } from "react";
+import React from "react";
 import { observer } from "mobx-react-lite";
 import Sticky from "react-sticky-fill";
 import { get } from "mobx";
@@ -32,8 +32,6 @@ import MatrixExplanation from "./charts/new_revocations/Matrix/MatrixExplanation
 import RevocationCharts from "./charts/new_revocations/RevocationCharts";
 
 import CaseTable from "./charts/new_revocations/CaseTable/CaseTable";
-import { useAuth0 } from "../react-auth0-spa";
-import { getUserAppMetadata } from "../utils/authentication/user";
 import {
   ADMISSION_TYPE,
   CHARGE_CATEGORY,
@@ -48,20 +46,12 @@ import "./Revocations.scss";
 const Revocations = () => {
   const { filtersStore } = useRootStore();
   const { filters, filterOptions } = filtersStore;
-  const { user } = useAuth0();
-  const { district } = getUserAppMetadata(user);
 
   const timeDescription = getTimeDescription(
     get(filters, METRIC_PERIOD_MONTHS),
     filterOptions[ADMISSION_TYPE].options,
     get(filters, ADMISSION_TYPE)
   );
-
-  useEffect(() => {
-    if (district) {
-      filtersStore.setRestrictedDistrict(district);
-    }
-  }, [district, filtersStore]);
 
   return (
     <main className="Revocations">

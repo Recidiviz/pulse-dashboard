@@ -14,25 +14,25 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
+
+import createAuth0Client from "@auth0/auth0-spa-js";
+
 import RootStore from "../RootStore";
 import { CURRENT_TENANT_IN_SESSION } from "../TenantStore";
-import { useAuth0 } from "../../react-auth0-spa";
 import { US_MO } from "../../views/tenants/utils/lanternTenants";
-import {
-  doesUserHaveAccess,
-  getAvailableStateCodes,
-  METADATA_NAMESPACE,
-} from "../../utils/authentication/user";
+import { doesUserHaveAccess, getAvailableStateCodes } from "../utils/user";
+import { METADATA_NAMESPACE } from "../../constants";
 
-jest.mock("../../react-auth0-spa");
-jest.mock("../../utils/authentication/user");
+jest.mock("@auth0/auth0-spa-js");
+jest.mock("../utils/user");
+jest.mock("../../StoreProvider");
 
 let rootStore;
 const metadataField = `${METADATA_NAMESPACE}app_metadata`;
-const user = { [metadataField]: { state_code: US_MO } };
+const user = { [metadataField]: { state_code: US_MO }, email_verified: true };
 
 describe("TenantStore", () => {
-  const tenantId = "US_MO";
+  const tenantId = "TEST_TENANT";
 
   describe("when there is a CURRENT_TENANT_IN_SESSION", () => {
     beforeEach(() => {
@@ -40,40 +40,44 @@ describe("TenantStore", () => {
       jest.clearAllMocks();
     });
 
-    it("currentTenantId is set to CURRENT_TENANT_IN_SESSION if there is not a user", () => {
-      useAuth0.mockReturnValue({});
-
-      rootStore = new RootStore();
-      expect(rootStore.tenantStore.currentTenantId).toEqual(tenantId);
-    });
-
-    it("currentTenantId is set to CURRENT_TENANT_IN_SESSION if the user has access", () => {
-      useAuth0.mockReturnValue({
-        user,
-        isAuthenticated: true,
-        loading: false,
-        loginWithRedirect: jest.fn(),
-        getTokenSilently: jest.fn(),
+    it("currentTenantId is set to CURRENT_TENANT_IN_SESSION if there is not a user", async () => {
+      createAuth0Client.mockResolvedValue({
+        getUser: () => null,
+        isAuthenticated: () => true,
       });
       doesUserHaveAccess.mockReturnValue(true);
 
       rootStore = new RootStore();
+      await rootStore.userStore.authorize();
       expect(rootStore.tenantStore.currentTenantId).toEqual(tenantId);
     });
 
-    it("currentTenantId is set to availableStateCodes if the user does not have access", () => {
-      useAuth0.mockReturnValue({
-        user,
-        isAuthenticated: true,
-        loading: false,
-        loginWithRedirect: jest.fn(),
-        getTokenSilently: jest.fn(),
+    it("currentTenantId is set to CURRENT_TENANT_IN_SESSION if the user has access", async () => {
+      createAuth0Client.mockResolvedValue({
+        getUser: () => user,
+        isAuthenticated: () => true,
       });
-      const availableStateCodes = ["US_MO", "US_PA"];
+      doesUserHaveAccess.mockReturnValue(true);
+
+      rootStore = new RootStore();
+      await rootStore.userStore.authorize();
+
+      expect(rootStore.tenantStore.currentTenantId).toEqual(tenantId);
+    });
+
+    it("currentTenantId is set to availableStateCodes if the user does not have access", async () => {
+      createAuth0Client.mockResolvedValue({
+        getUser: () => user,
+        isAuthenticated: () => true,
+      });
       doesUserHaveAccess.mockReturnValue(false);
+
+      const availableStateCodes = ["BARNEY", "RUBBLE"];
       getAvailableStateCodes.mockReturnValue(availableStateCodes);
 
       rootStore = new RootStore();
+      await rootStore.userStore.authorize();
+
       expect(rootStore.tenantStore.currentTenantId).toEqual(
         availableStateCodes[0]
       );

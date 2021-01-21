@@ -198,7 +198,7 @@ describe("test for filterOptimizedDataFormat", () => {
     ],
   };
 
-  describe("when apiData is the are unflattenedValues", () => {
+  describe("when apiData is the unflattenedValues", () => {
     const apiData = [
       ["0", "0", "1", "1", "2", "0", "0", "1", "1", "2", "2"],
       ["0", "0", "0", "0", "0", "1", "1", "1", "1", "1", "1"],

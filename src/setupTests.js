@@ -16,6 +16,8 @@
 // =============================================================================
 import "jest-extended";
 import "@testing-library/jest-dom/extend-expect";
+import "@testing-library/react-hooks/dont-cleanup-after-each";
+import "jest-canvas-mock";
 
 import { initI18n } from "./views/tenants/utils/i18nSettings";
 

@@ -23,8 +23,6 @@ import map from "lodash/fp/map";
 
 import FilterField from "./FilterField";
 import Select from "../../../controls/Select";
-import { useAuth0 } from "../../../../react-auth0-spa";
-import { getUserAppMetadata } from "../../../../utils/authentication/user";
 import MultiSelect from "../../../controls/MultiSelect";
 import { useRootStore } from "../../../../StoreProvider";
 import { DISTRICT } from "../../../../constants/filterTypes";
@@ -32,10 +30,9 @@ import { DISTRICT } from "../../../../constants/filterTypes";
 const allDistrictsOption = { label: "All", value: "All" };
 
 const DistrictFilter = () => {
-  const { filters, filtersStore, dataStore } = useRootStore();
+  const { filters, filtersStore, dataStore, userStore } = useRootStore();
   const store = dataStore.revocationsOverTimeStore;
-  const { user } = useAuth0();
-  const { district } = getUserAppMetadata(user);
+  const { district } = userStore;
 
   const getSelectElement = () => {
     if (district) {
