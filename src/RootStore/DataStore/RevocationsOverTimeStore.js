@@ -57,7 +57,7 @@ export default class RevocationsOverTimeStore extends BaseDataStore {
       );
 
       const expandedData = processResponseData(responseData, this.file, true);
-      this.expandedData = expandedData;
+      this.expandedData = expandedData.data;
       this.apiData = processedData.data;
       this.metadata = processedData.metadata;
       this.filteredData = this.filterData(processedData);
