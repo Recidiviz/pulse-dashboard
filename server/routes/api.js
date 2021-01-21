@@ -23,6 +23,7 @@
 const { validationResult } = require("express-validator");
 const { refreshRedisCache, fetchMetrics, cacheResponse } = require("../core");
 const { default: isDemoMode } = require("../utils/isDemoMode");
+const { getCacheKey } = require("../utils/getCacheKey");
 
 const BAD_REQUEST = 400;
 const SERVER_ERROR = 500;
@@ -58,25 +59,33 @@ function refreshCache(req, res) {
 
 function newRevocations(req, res) {
   const { stateCode } = req.params;
-  const cacheKey = `${stateCode.toUpperCase()}-newRevocation`;
+  const metricType = "newRevocation";
+  const cacheKeys = getCacheKey({ stateCode, metricType });
   cacheResponse(
-    cacheKey,
-    () => fetchMetrics(stateCode, "newRevocation", null, isDemoMode),
+    cacheKeys,
+    () => fetchMetrics(stateCode, metricType, null, isDemoMode),
     responder(res)
   );
 }
 
 function newRevocationFile(req, res) {
+  const metricType = "newRevocation";
   const validations = validationResult(req);
   const hasErrors = !validations.isEmpty();
   if (hasErrors) {
     responder(res)({ status: BAD_REQUEST, errors: validations.array() }, null);
   } else {
     const { stateCode, file } = req.params;
-    const cacheKey = `${stateCode.toUpperCase()}-newRevocation-${file}`;
+    const queryParams = req.query;
+    const cacheKey = getCacheKey({
+      stateCode,
+      metricType,
+      file,
+      cacheKeySubset: queryParams,
+    });
     cacheResponse(
       cacheKey,
-      () => fetchMetrics(stateCode, "newRevocation", file, isDemoMode),
+      () => fetchMetrics(stateCode, metricType, file, isDemoMode),
       responder(res)
     );
   }
@@ -84,50 +93,55 @@ function newRevocationFile(req, res) {
 
 function communityGoals(req, res) {
   const { stateCode } = req.params;
-  const cacheKey = `${stateCode.toUpperCase()}-communityGoals`;
+  const metricType = "communityGoals";
+  const cacheKey = getCacheKey({ stateCode, metricType });
   cacheResponse(
     cacheKey,
-    () => fetchMetrics(stateCode, "communityGoals", null, isDemoMode),
+    () => fetchMetrics(stateCode, metricType, null, isDemoMode),
     responder(res)
   );
 }
 
 function communityExplore(req, res) {
   const { stateCode } = req.params;
-  const cacheKey = `${stateCode.toUpperCase()}-communityExplore`;
+  const metricType = "communityExplore";
+  const cacheKey = getCacheKey({ stateCode, metricType });
   cacheResponse(
     cacheKey,
-    () => fetchMetrics(stateCode, "communityExplore", null, isDemoMode),
+    () => fetchMetrics(stateCode, metricType, null, isDemoMode),
     responder(res)
   );
 }
 
 function facilitiesGoals(req, res) {
   const { stateCode } = req.params;
-  const cacheKey = `${stateCode.toUpperCase()}-facilitiesGoals`;
+  const metricType = "facilitiesGoals";
+  const cacheKey = getCacheKey({ stateCode, metricType });
   cacheResponse(
     cacheKey,
-    () => fetchMetrics(stateCode, "facilitiesGoals", null, isDemoMode),
+    () => fetchMetrics(stateCode, metricType, null, isDemoMode),
     responder(res)
   );
 }
 
 function facilitiesExplore(req, res) {
   const { stateCode } = req.params;
-  const cacheKey = `${stateCode.toUpperCase()}-facilitiesExplore`;
+  const metricType = "facilitiesExplore";
+  const cacheKey = getCacheKey({ stateCode, metricType });
   cacheResponse(
     cacheKey,
-    () => fetchMetrics(stateCode, "facilitiesExplore", null, isDemoMode),
+    () => fetchMetrics(stateCode, metricType, null, isDemoMode),
     responder(res)
   );
 }
 
 function programmingExplore(req, res) {
   const { stateCode } = req.params;
-  const cacheKey = `${stateCode.toUpperCase()}-programmingExplore`;
+  const metricType = "programmingExplore";
+  const cacheKey = getCacheKey({ stateCode, metricType });
   cacheResponse(
     cacheKey,
-    () => fetchMetrics(stateCode, "programmingExplore", null, isDemoMode),
+    () => fetchMetrics(stateCode, metricType, null, isDemoMode),
     responder(res)
   );
 }
