@@ -26,14 +26,15 @@
 
 /* eslint-disable no-console */
 const { getCache } = require("./cacheManager");
+const { getCacheKey } = require("../utils/getCacheKey");
 
-function cacheEachFile(files, cacheKeyPrefix) {
+function cacheEachFile({ files, stateCode, metricType, cacheKeyPrefix }) {
   const cache = getCache(cacheKeyPrefix);
   const cachePromises = [];
 
-  Object.keys(files).forEach((fileKey) => {
-    const cacheKey = `${cacheKeyPrefix}-${fileKey}`;
-    const metricFile = { [fileKey]: files[fileKey] };
+  Object.keys(files).forEach((file) => {
+    const cacheKey = getCacheKey({ stateCode, metricType, file });
+    const metricFile = { [file]: files[file] };
     console.log(`Setting cache for: ${cacheKey}...`);
     cachePromises.push(cache.set(cacheKey, metricFile));
   });
@@ -48,8 +49,10 @@ function refreshRedisCache(fetchMetrics, stateCode, metricType, callback) {
   let responseError = null;
 
   fetchMetrics()
-    .then((results) => {
-      return Promise.all(cacheEachFile(results, cacheKeyPrefix));
+    .then((files) => {
+      return Promise.all(
+        cacheEachFile({ files, stateCode, metricType, cacheKeyPrefix })
+      );
     })
     .catch((error) => {
       console.error(

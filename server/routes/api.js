@@ -60,9 +60,9 @@ function refreshCache(req, res) {
 function newRevocations(req, res) {
   const { stateCode } = req.params;
   const metricType = "newRevocation";
-  const cacheKeys = getCacheKey({ stateCode, metricType });
+  const cacheKey = getCacheKey({ stateCode, metricType });
   cacheResponse(
-    cacheKeys,
+    cacheKey,
     () => fetchMetrics(stateCode, metricType, null, isDemoMode),
     responder(res)
   );
