@@ -25,9 +25,3 @@ export const officeDataPropTypes = PropTypes.shape({
   state_code: PropTypes.string,
   title_side: PropTypes.string,
 });
-
-export const dataStorePropTypes = PropTypes.shape({
-  filteredData: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
-  isLoading: PropTypes.bool.isRequired,
-  isError: PropTypes.bool.isRequired,
-});
