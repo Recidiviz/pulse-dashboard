@@ -57,6 +57,7 @@ export default class FiltersStore {
   }
 
   get defaultFilters() {
+    if (!this.filterOptions) return {};
     return {
       [METRIC_PERIOD_MONTHS]: this.filterOptions[METRIC_PERIOD_MONTHS]
         .defaultValue,
@@ -79,10 +80,5 @@ export default class FiltersStore {
 
   setFilters(updatedFilters) {
     this.filters.merge(updatedFilters);
-  }
-
-  setRestrictedDistrict(restrictedDistrict) {
-    this.restrictedDistrict = restrictedDistrict;
-    this.setFilters({ ...this.filters, ...{ district: [restrictedDistrict] } });
   }
 }

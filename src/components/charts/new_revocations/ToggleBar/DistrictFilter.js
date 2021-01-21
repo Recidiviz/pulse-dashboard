@@ -28,8 +28,6 @@ import uniq from "lodash/fp/uniq";
 import FilterField from "./FilterField";
 import Select from "../../../controls/Select";
 import useChartData from "../../../../hooks/useChartData";
-import { useAuth0 } from "../../../../react-auth0-spa";
-import { getUserAppMetadata } from "../../../../utils/authentication/user";
 import MultiSelect from "../../../controls/MultiSelect";
 import { useRootStore } from "../../../../StoreProvider";
 import { DISTRICT } from "../../../../constants/filterTypes";
@@ -37,14 +35,13 @@ import { DISTRICT } from "../../../../constants/filterTypes";
 const allDistrictsOption = { label: "All", value: "All" };
 
 const DistrictFilter = () => {
-  const { filters, filtersStore, currentTenantId } = useRootStore();
-  const { user } = useAuth0();
+  const { filters, filtersStore, currentTenantId, userStore } = useRootStore();
   const { isLoading, apiData } = useChartData(
     `${currentTenantId}/newRevocations`,
     "revocations_matrix_cells"
   );
 
-  const { district } = getUserAppMetadata(user);
+  const { district } = userStore;
 
   const select = useMemo(() => {
     if (district) {

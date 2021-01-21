@@ -1,5 +1,5 @@
 // Recidiviz - a data platform for criminal justice reform
-// Copyright (C) 2021 Recidiviz, Inc.
+// Copyright (C) 2020 Recidiviz, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -15,34 +15,9 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import { useEffect } from "react";
-import { useRootStore } from "../StoreProvider";
+import { ERROR_MESSAGES } from "./errorMessages";
+import * as filterTypes from "./filterTypes";
 
-const useIntercom = () => {
-  const { userStore, tenantStore } = useRootStore();
-  const { user } = userStore;
-  useEffect(() => {
-    window.Intercom("update", {
-      state_code: tenantStore.currentTenantId,
-      name: user.name,
-      nickname: user.nickname,
-      email: user.email,
-      user_id: user.sub,
-      hide_default_launcher: false,
-    });
-  }, [
-    tenantStore.currentTenantId,
-    user.name,
-    user.nickname,
-    user.email,
-    user.sub,
-  ]);
+export const METADATA_NAMESPACE = "https://dashboard.recidiviz.org/";
 
-  useEffect(() => {
-    return () => {
-      window.Intercom("update", { hide_default_launcher: true });
-    };
-  }, []);
-};
-
-export default useIntercom;
+export { ERROR_MESSAGES, filterTypes };

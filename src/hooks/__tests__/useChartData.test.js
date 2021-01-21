@@ -22,22 +22,19 @@ import {
   callMetricsApi,
   awaitingResults,
 } from "../../api/metrics/metricsClient";
-import { useAuth0 } from "../../react-auth0-spa";
 import { parseResponseByFileFormat } from "../../api/metrics/fileParser";
+import { useRootStore } from "../../StoreProvider";
 
-jest.mock("../../react-auth0-spa");
 jest.mock("../../api/metrics/metricsClient");
 jest.mock("../../api/metrics/fileParser");
+jest.mock("../../StoreProvider");
+
 describe("useChartData", () => {
   beforeAll(() => {
     parseResponseByFileFormat.mockImplementation((v) => v);
-    useAuth0.mockReturnValue({
-      user: {},
-      isAuthenticated: true,
-      loading: true,
-      loginWithRedirect: jest.fn(),
-      getTokenSilently: jest.fn(),
-    });
+
+    useRootStore.mockReturnValue({ userStore: {} });
+
     awaitingResults.mockImplementation(
       (loading, user, awaitingApi) => awaitingApi
     );

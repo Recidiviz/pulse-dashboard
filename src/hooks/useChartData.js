@@ -18,13 +18,13 @@
 import { useState, useCallback, useEffect } from "react";
 import makeCancellablePromise from "make-cancellable-promise";
 import toInteger from "lodash/fp/toInteger";
-import { useAuth0 } from "../react-auth0-spa";
 import {
   parseResponseByFileFormat,
   parseResponsesByFileFormat,
 } from "../api/metrics/fileParser";
 import { convertFromStringToUnflattenedMatrix } from "../api/metrics/optimizedFormatHelpers";
 import { callMetricsApi, awaitingResults } from "../api/metrics/metricsClient";
+import { useRootStore } from "../StoreProvider";
 
 const queues = {};
 
@@ -44,8 +44,10 @@ const queues = {};
  * ensure we do not need to proactively and repeatedly unflatten the value matrix
  * on subsequent filter operations.
  */
-function useChartData(url, file, eagerExpand = true) {
-  const { loading, user, getTokenSilently } = useAuth0();
+function useChartData(url, file) {
+  const eagerExpand = true;
+  const { userStore } = useRootStore();
+  const { loading, user, getTokenSilently } = userStore;
   const [metadata, setMetadata] = useState({});
   const [apiData, setApiData] = useState([]);
   const [awaitingApi, setAwaitingApi] = useState(true);

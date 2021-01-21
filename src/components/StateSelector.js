@@ -16,21 +16,22 @@
 // =============================================================================
 
 import React from "react";
-import PropTypes from "prop-types";
 import Select from "react-select";
 import { useHistory } from "react-router-dom";
 import { observer } from "mobx-react-lite";
 
-import { getStateNameForCode } from "../utils/authentication/user";
+import { getStateNameForCode } from "../RootStore/utils/user";
 import { useRootStore } from "../StoreProvider";
 
-const StateSelector = ({ availableStateCodes }) => {
-  const { tenantStore } = useRootStore();
+const StateSelector = () => {
+  const { tenantStore, userStore } = useRootStore();
   const { push } = useHistory();
-  const availableStatesOptions = availableStateCodes.sort().map((code) => ({
-    value: code,
-    label: getStateNameForCode(code),
-  }));
+  const availableStatesOptions = userStore.availableStateCodes
+    .sort()
+    .map((code) => ({
+      value: code,
+      label: getStateNameForCode(code),
+    }));
 
   const defaultValue = availableStatesOptions.find(
     (availableState) => availableState.value === tenantStore.currentTenantId
@@ -49,10 +50,6 @@ const StateSelector = ({ availableStateCodes }) => {
       isSearchable
     />
   );
-};
-
-StateSelector.propTypes = {
-  availableStateCodes: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
 export default observer(StateSelector);

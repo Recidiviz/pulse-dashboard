@@ -15,34 +15,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import { useEffect } from "react";
-import { useRootStore } from "../StoreProvider";
-
-const useIntercom = () => {
-  const { userStore, tenantStore } = useRootStore();
-  const { user } = userStore;
-  useEffect(() => {
-    window.Intercom("update", {
-      state_code: tenantStore.currentTenantId,
-      name: user.name,
-      nickname: user.nickname,
-      email: user.email,
-      user_id: user.sub,
-      hide_default_launcher: false,
-    });
-  }, [
-    tenantStore.currentTenantId,
-    user.name,
-    user.nickname,
-    user.email,
-    user.sub,
-  ]);
-
-  useEffect(() => {
-    return () => {
-      window.Intercom("update", { hide_default_launcher: true });
-    };
-  }, []);
+export const ERROR_MESSAGES = {
+  auth0Configuration: "No Auth0 configuration found.",
+  unauthorized: "You do not have permission to view this content.",
 };
-
-export default useIntercom;

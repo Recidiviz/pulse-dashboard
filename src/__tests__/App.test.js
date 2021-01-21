@@ -19,8 +19,7 @@ import React from "react";
 import { render } from "@testing-library/react";
 
 import App from "../App";
-import { useAuth0 } from "../react-auth0-spa";
-import { METADATA_NAMESPACE } from "../utils/authentication/user";
+import { METADATA_NAMESPACE } from "../constants";
 import { US_ND } from "../views/tenants/utils/coreTenants";
 import { US_MO, US_PA } from "../views/tenants/utils/lanternTenants";
 
@@ -32,6 +31,8 @@ import Loading from "../components/Loading";
 import LanternLayout from "../components/layouts/LanternLayout";
 import CoreLayout from "../components/layouts/CoreLayout";
 import StoreProvider, { useRootStore } from "../StoreProvider";
+import Error from "../components/Error";
+import VerificationNeeded from "../views/VerificationNeeded";
 
 jest.mock("../utils/initIntercomSettings");
 jest.mock("../utils/initFontAwesome");
@@ -42,8 +43,9 @@ jest.mock("../components/Revocations");
 jest.mock("../views/tenants/us_nd/community/Goals");
 jest.mock("../views/NotFound");
 jest.mock("../components/Loading");
-jest.mock("../react-auth0-spa");
 jest.mock("../StoreProvider");
+jest.mock("../components/Error");
+jest.mock("../views/VerificationNeeded");
 
 describe("App tests", () => {
   const metadataField = `${METADATA_NAMESPACE}app_metadata`;
@@ -52,6 +54,8 @@ describe("App tests", () => {
   const mockNDCommunityGoalsId = "nd-community-goals-id";
   const mockNotFoundId = "not-found-id";
   const mockLoadingTestId = "loading-test-id";
+  const mockErrorId = "error-test-id";
+  const mockVerificationNeededId = "verification-needed-test-id";
 
   const RevocationsMock = Revocations.type;
   const LanternLayoutMock = LanternLayout.type;
@@ -63,30 +67,26 @@ describe("App tests", () => {
   UsNDCommunityGoals.mockReturnValue(mockWithTestId(mockNDCommunityGoalsId));
   NotFound.mockReturnValue(mockWithTestId(mockNotFoundId));
   Loading.mockReturnValue(mockWithTestId(mockLoadingTestId));
+  Error.mockReturnValue(mockWithTestId(mockErrorId));
+  VerificationNeeded.mockReturnValue(mockWithTestId(mockVerificationNeededId));
 
   beforeEach(() => {
     jest.clearAllMocks();
   });
 
+  afterAll(() => {
+    jest.restoreAllMocks();
+  });
+
   it("should render MO Layout with Revocations page", () => {
     window.history.pushState({}, "", "/community/revocations");
     const user = { [metadataField]: { state_code: US_MO } };
-    useAuth0.mockReturnValue({
-      user,
-      isAuthenticated: true,
-      loading: false,
-      loginWithRedirect: jest.fn(),
-      getTokenSilently: jest.fn(),
-    });
     useRootStore.mockReturnValue({
+      userStore: { user, isAuthorized: true },
       currentTenantId: US_MO,
     });
 
-    const { getByTestId } = render(
-      <StoreProvider>
-        <App />
-      </StoreProvider>
-    );
+    const { getByTestId } = render(<App />);
 
     expect(LanternLayoutMock).toHaveBeenCalledTimes(1);
     expect(getByTestId(mockRevocationsId)).toBeInTheDocument();
@@ -96,92 +96,95 @@ describe("App tests", () => {
     window.history.pushState({}, "", "/community/goals");
     const user = { [metadataField]: { state_code: US_ND } };
 
-    useAuth0.mockReturnValue({
-      user,
-      isAuthenticated: true,
-      loading: false,
-      loginWithRedirect: jest.fn(),
-      getTokenSilently: jest.fn(),
-    });
     useRootStore.mockReturnValue({
+      userStore: { user, isAuthorized: true },
       currentTenantId: US_ND,
     });
 
-    const { getByTestId } = render(
-      <StoreProvider>
-        <App />
-      </StoreProvider>
-    );
+    const { getByTestId } = render(<App />);
 
     expect(CoreLayout).toHaveBeenCalledTimes(1);
+    expect(LanternLayoutMock).toHaveBeenCalledTimes(0);
     expect(getByTestId(mockNDCommunityGoalsId)).toBeInTheDocument();
   });
 
   it("should render PA Layout with Revocations page", () => {
     window.history.pushState({}, "", "/community/revocations");
     const user = { [metadataField]: { state_code: US_PA } };
-    useAuth0.mockReturnValue({
-      user,
-      isAuthenticated: true,
-      loading: false,
-      loginWithRedirect: jest.fn(),
-      getTokenSilently: jest.fn(),
-    });
     useRootStore.mockReturnValue({
+      userStore: { user, isAuthorized: true },
       currentTenantId: US_PA,
     });
 
     const { getByTestId } = render(<App />);
 
     expect(LanternLayoutMock).toHaveBeenCalledTimes(1);
+    expect(CoreLayout).toHaveBeenCalledTimes(0);
     expect(getByTestId(mockRevocationsId)).toBeInTheDocument();
   });
 
-  it("should render Not Found page ", () => {
-    window.history.pushState({}, "", "/some/page");
-    const { container, getByTestId } = render(
-      <StoreProvider>
-        <App />
-      </StoreProvider>
-    );
+  describe("Not Found page", () => {
+    it("should be rendered given an incorrect path", () => {
+      window.history.pushState({}, "", "/some/page");
+      useRootStore.mockReturnValue({
+        userStore: { user: {}, isAuthorized: true },
+        currentTenantId: US_PA,
+      });
 
-    expect(container.children.length).toBe(1);
-    expect(getByTestId(mockNotFoundId)).toBeInTheDocument();
+      const { container, getByTestId } = render(<App />);
+
+      expect(container.children.length).toBe(1);
+      expect(getByTestId(mockNotFoundId)).toBeInTheDocument();
+    });
+
+    it("should be rendered when the currentTenantId is not authorized for a layout", () => {
+      window.history.pushState({}, "", "/some/page");
+      useRootStore.mockReturnValue({
+        userStore: { user: {}, isAuthorized: true },
+        currentTenantId: "US_XX",
+      });
+
+      const { container, getByTestId } = render(<App />);
+
+      expect(container.children.length).toBe(1);
+      expect(getByTestId(mockNotFoundId)).toBeInTheDocument();
+    });
   });
 
   it("should render Loading component while user is loading", () => {
-    useAuth0.mockReturnValue({
-      isAuthenticated: false,
-      loading: true,
-      loginWithRedirect: jest.fn(),
-      getTokenSilently: jest.fn(),
+    useRootStore.mockReturnValue({
+      userStore: { user: {}, isLoading: true, authorize: () => {} },
     });
 
-    const { container } = render(
-      <StoreProvider>
-        <App />
-      </StoreProvider>
-    );
+    const { container } = render(<App />);
 
     expect(container.children.length).toBe(1);
     expect(container.firstChild.dataset.testid).toBe(mockLoadingTestId);
   });
 
-  it("should redirect to login page is user is not authenticated", () => {
-    const loginWithRedirect = jest.fn();
-    useAuth0.mockReturnValue({
-      isAuthenticated: false,
-      loading: false,
-      loginWithRedirect,
-      getTokenSilently: jest.fn(),
+  it("should render the Error component if there is an error", () => {
+    useRootStore.mockReturnValue({
+      userStore: { isLoading: false, isAuthorized: false },
     });
 
-    render(
-      <StoreProvider defaultTenantId="US_PA">
-        <App />
-      </StoreProvider>
-    );
+    // do not log the expected error - keep tests less verbose
+    jest.spyOn(console, "error").mockImplementation(() => {});
+    jest.spyOn(console, "log").mockImplementation(() => {});
+    const { getByTestId } = render(<App />);
 
-    expect(loginWithRedirect).toHaveBeenCalled();
+    expect(getByTestId(mockErrorId)).toBeInTheDocument();
+  });
+
+  it("should be render the Verification Needed component", () => {
+    window.history.pushState({}, "", "/verify");
+    useRootStore.mockReturnValue({
+      userStore: { user: {}, isAuthorized: true },
+      currentTenantId: US_PA,
+    });
+
+    const { container, getByTestId } = render(<App />);
+
+    expect(container.children.length).toBe(1);
+    expect(getByTestId(mockVerificationNeededId)).toBeInTheDocument();
   });
 });

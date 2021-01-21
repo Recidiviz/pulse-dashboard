@@ -15,15 +15,12 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import { get } from "mobx";
-
 import RootStore from "../RootStore";
-import { useAuth0 } from "../../react-auth0-spa";
-import { METADATA_NAMESPACE } from "../../utils/authentication/user";
+import { METADATA_NAMESPACE } from "../../constants";
 import { LANTERN_TENANTS } from "../../views/tenants/utils/lanternTenants";
-import { DISTRICT } from "../../constants/filterTypes";
+import { useRootStore } from "../../StoreProvider";
 
-jest.mock("../../react-auth0-spa");
+jest.mock("../../StoreProvider");
 
 let rootStore;
 const metadataField = `${METADATA_NAMESPACE}app_metadata`;
@@ -43,31 +40,13 @@ describe("FiltersStore", () => {
     it("are set correctly by default", () => {
       LANTERN_TENANTS.forEach((stateCode) => {
         const mockUser = { [metadataField]: { state_code: stateCode } };
-        useAuth0.mockReturnValue({ user: mockUser });
+        useRootStore.mockReturnValue({
+          userStore: { user: mockUser, isAuthorized: true },
+        });
         rootStore = new RootStore();
 
         expect(rootStore.filtersStore.defaultFilters).toEqual(defaultFilters);
       });
-    });
-  });
-
-  describe("setRestrictedDistrict", () => {
-    it("sets the restrictedDistrict and updates filters", () => {
-      const restrictedDistrict = "district 1";
-      rootStore = new RootStore();
-      rootStore.filtersStore.setRestrictedDistrict(restrictedDistrict);
-
-      expect(
-        expect(rootStore.filtersStore.restrictedDistrict).toEqual(
-          restrictedDistrict
-        )
-      );
-
-      expect(
-        expect(get(rootStore.filtersStore.filters, DISTRICT)).toEqual([
-          restrictedDistrict,
-        ])
-      );
     });
   });
 });
