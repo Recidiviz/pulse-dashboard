@@ -15,15 +15,15 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 import BaseDataStore from "../DataStore/BaseDataStore";
+import UserStore from "../UserStore";
 import RootStore from "../RootStore";
-import { useAuth0 } from "../../react-auth0-spa";
-import { METADATA_NAMESPACE } from "../../utils/authentication/user";
+import { METADATA_NAMESPACE } from "../../constants";
 import { callMetricsApi } from "../../api/metrics/metricsClient";
 
 let rootStore;
 let baseStore;
 
-jest.mock("../../react-auth0-spa");
+jest.mock("../UserStore");
 jest.mock("../DataStore/MatrixStore");
 jest.mock("../DataStore/CaseTableStore");
 jest.mock("../DataStore/RevocationsChartStore");
@@ -53,11 +53,14 @@ describe("BaseDataStore", () => {
 
   describe("when user is authenticated", () => {
     beforeAll(() => {
-      useAuth0.mockReturnValue({
-        user: mockUser,
-        getTokenSilently: mockGetTokenSilently,
-        loading: false,
+      UserStore.mockImplementationOnce(() => {
+        return {
+          user: mockUser,
+          isLoading: false,
+          getTokenSilently: mockGetTokenSilently,
+        };
       });
+
       rootStore = new RootStore();
       baseStore = new BaseDataStore({ rootStore, file });
     });
@@ -97,43 +100,34 @@ describe("BaseDataStore", () => {
       it("sets apiData", () => {
         expect(baseStore.apiData).toEqual([["0"], ["0"]]);
       });
-    });
-  });
 
-  describe("when API responds with an error", () => {
-    beforeAll(() => {
-      jest.resetAllMocks();
-      useAuth0.mockReturnValue({
-        user: mockUser,
-        getTokenSilently: mockGetTokenSilently,
-        loading: false,
+      describe("when API responds with an error", () => {
+        beforeAll(() => {
+          callMetricsApi.mockRejectedValueOnce(new Error("API Error"));
+          baseStore = new BaseDataStore({ rootStore, file });
+        });
+
+        it("does not set apiData", () => {
+          expect(baseStore.apiData).toStrictEqual([]);
+        });
+
+        it("sets isError to true and isLoading to false", () => {
+          expect(baseStore.isError).toBe(true);
+          expect(baseStore.isLoading).toBe(false);
+        });
       });
-      callMetricsApi.mockRejectedValueOnce(new Error("API Error"));
-      rootStore = new RootStore();
-      baseStore = new BaseDataStore({ rootStore, file });
-    });
-
-    afterAll(() => {
-      jest.resetAllMocks();
-    });
-
-    it("does not set apiData", () => {
-      expect(baseStore.apiData).toStrictEqual([]);
-    });
-
-    it("sets isError to true and isLoading to false", () => {
-      expect(baseStore.isError).toBe(true);
-      expect(baseStore.isLoading).toBe(false);
     });
   });
 
   describe("when user is pending authentication", () => {
     beforeAll(() => {
       jest.resetAllMocks();
-      useAuth0.mockReturnValue({
-        user: mockUser,
-        getTokenSilently: mockGetTokenSilently,
-        loading: true,
+      UserStore.mockImplementationOnce(() => {
+        return {
+          user: null,
+          isLoading: true,
+          getTokenSilently: mockGetTokenSilently,
+        };
       });
       rootStore = new RootStore();
       baseStore = new BaseDataStore({ rootStore, file });

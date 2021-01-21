@@ -20,7 +20,6 @@ import {
   makeObservable,
   observable,
   computed,
-  get,
   toJS,
   autorun,
 } from "mobx";
@@ -67,7 +66,9 @@ export default class BaseDataStore {
     this.rootStore = rootStore;
 
     autorun(() => {
-      if (!get(this.rootStore.auth0Context, "loading")) {
+      const { userStore } = this.rootStore;
+
+      if (userStore && !userStore.isLoading) {
         this.fetchData(this.queryFilters);
       }
     });
@@ -79,13 +80,17 @@ export default class BaseDataStore {
     );
   }
 
+  get getTokenSilently() {
+    return this.rootStore.userStore.getTokenSilently;
+  }
+
   *fetchData(queryString) {
     const endpoint = `${this.rootStore.currentTenantId}/newRevocations/${this.file}${queryString}`;
     try {
       this.isLoading = true;
       const responseData = yield callMetricsApi(
         endpoint,
-        this.rootStore.getTokenSilently
+        this.getTokenSilently
       );
       const processedData = processResponseData(
         responseData,

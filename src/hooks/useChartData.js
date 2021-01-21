@@ -47,7 +47,7 @@ const queues = {};
 function useChartData(url, file) {
   const eagerExpand = true;
   const { userStore } = useRootStore();
-  const { loading, user, getTokenSilently } = userStore;
+  const { isLoading: userLoading, user, getTokenSilently } = userStore;
   const [metadata, setMetadata] = useState({});
   const [apiData, setApiData] = useState([]);
   const [awaitingApi, setAwaitingApi] = useState(true);
@@ -128,7 +128,7 @@ function useChartData(url, file) {
     };
   }, [eagerExpand, fetchChartData, file]);
 
-  const isLoading = awaitingResults(loading, user, awaitingApi);
+  const isLoading = awaitingResults(userLoading, user, awaitingApi);
 
   return { metadata, isLoading, isError, apiData };
 }

@@ -48,7 +48,7 @@ export default class RevocationsOverTimeStore extends BaseDataStore {
       this.isLoading = true;
       const responseData = yield callMetricsApi(
         endpoint,
-        this.rootStore.getTokenSilently
+        this.getTokenSilently
       );
       const processedData = processResponseData(
         responseData,

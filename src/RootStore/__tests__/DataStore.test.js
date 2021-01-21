@@ -16,21 +16,14 @@
 // =============================================================================
 import DataStore from "../DataStore";
 import RootStore from "../RootStore";
-import { useAuth0 } from "../../react-auth0-spa";
-import { METADATA_NAMESPACE } from "../../utils/authentication/user";
 
 let rootStore;
 let dataStore;
 
-jest.mock("../../react-auth0-spa");
+jest.mock("@auth0/auth0-spa-js");
 jest.mock("../../api/metrics/metricsClient");
 
-const metadataField = `${METADATA_NAMESPACE}app_metadata`;
-const mockUser = { [metadataField]: { state_code: "US_MO" } };
-
 describe("DataStore", () => {
-  useAuth0.mockReturnValue({ user: mockUser, getTokenSilently: () => {} });
-
   beforeEach(() => {
     rootStore = new RootStore();
     dataStore = new DataStore({ rootStore });
