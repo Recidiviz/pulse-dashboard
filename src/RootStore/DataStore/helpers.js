@@ -2,6 +2,7 @@ import qs from "qs";
 import toInteger from "lodash/fp/toInteger";
 import { convertFromStringToUnflattenedMatrix } from "../../api/metrics/optimizedFormatHelpers";
 import { parseResponseByFileFormat } from "../../api/metrics/fileParser";
+import { VIOLATION_TYPE } from "../../constants/filterTypes";
 
 export function unflattenValues(metricFile) {
   const totalDataPoints = toInteger(metricFile.metadata.total_data_points);
@@ -38,12 +39,17 @@ export function processResponseData(data, file, eagerExpand = true) {
  * @param {string} filters.supervisionType - Supervision Type or "All"
  * @param {string} filters.supervisionLevel - Supervision level or "All"
  * @param {string} filters.reportedViolations - Number of reported violations or "All"
- * @param {string} filters.violationType - Violation type or "All"
+ * @param {string} filters.violationType - Violation type
  */
 export function getQueryStringFromFilters(filters = {}) {
   return qs.stringify(filters, {
     encode: false,
     addQueryPrefix: true,
-    filter: (_, value) => (value !== "" ? value : undefined),
+    filter: (key, value) => {
+      if (key === VIOLATION_TYPE && value === "") {
+        return "All";
+      }
+      return value !== "" ? value : undefined;
+    },
   });
 }
