@@ -25,21 +25,19 @@ import { translate } from "../../../../views/tenants/utils/i18nSettings";
 import RevocationCountChart from "../RevocationCountChart";
 import createGenerateChartData from "./createGenerateChartData";
 import flags from "../../../../flags";
-import { useRootStore } from "../../../../StoreProvider";
+import { useDataStore } from "../../../../StoreProvider";
 
 const MAX_OFFICERS_COUNT = 50;
 
-const RevocationsByOfficer = ({ dataFilter, timeDescription }) => {
-  const { currentTenantId } = useRootStore();
-
+const RevocationsByOfficer = ({ timeDescription }) => {
+  const dataStore = useDataStore();
+  const { revocationsChartStore } = dataStore;
   const chartTitle = `Admissions by ${translate("officer")}`;
   const includeWarning = false;
-
   return (
     <RevocationsByDimension
       chartId={`${translate("revocations")}by${translate("Officer")}`}
-      apiUrl={`${currentTenantId}/newRevocations`}
-      apiFile="revocations_matrix_distribution_by_officer"
+      dataStore={revocationsChartStore}
       includeWarning={includeWarning}
       renderChart={({
         chartId,
@@ -80,7 +78,9 @@ const RevocationsByOfficer = ({ dataFilter, timeDescription }) => {
           />
         );
       }}
-      generateChartData={createGenerateChartData(dataFilter)}
+      generateChartData={createGenerateChartData(
+        revocationsChartStore.filteredData
+      )}
       chartTitle={chartTitle}
       metricTitle={chartTitle}
       timeDescription={timeDescription}
@@ -96,7 +96,6 @@ const RevocationsByOfficer = ({ dataFilter, timeDescription }) => {
 };
 
 RevocationsByOfficer.propTypes = {
-  dataFilter: PropTypes.func.isRequired,
   timeDescription: PropTypes.string.isRequired,
 };
 

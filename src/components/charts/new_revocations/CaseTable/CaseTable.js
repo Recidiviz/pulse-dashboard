@@ -1,5 +1,5 @@
 // Recidiviz - a data platform for criminal justice reform
-// Copyright (C) 2020 Recidiviz, Inc.
+// Copyright (C) 2021 Recidiviz, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -16,7 +16,6 @@
 // =============================================================================
 
 import React, { useState } from "react";
-import PropTypes from "prop-types";
 import { observer } from "mobx-react-lite";
 import { get } from "mobx";
 
@@ -29,41 +28,30 @@ import {
   getTrailingLabelFromMetricPeriodMonthsToggle,
   getPeriodLabelFromMetricPeriodMonthsToggle,
 } from "../../../../utils/charts/toggles";
-import useChartData from "../../../../hooks/useChartData";
 import { translate } from "../../../../views/tenants/utils/i18nSettings";
 import { formatData, formatExportData } from "./utils/helpers";
 import { useRootStore } from "../../../../StoreProvider";
-import { filterOptimizedDataFormat } from "../../../../utils/charts/dataFilters";
 import { METRIC_PERIOD_MONTHS } from "../../../../constants/filterTypes";
 
 export const CASES_PER_PAGE = 15;
 
-const CaseTable = ({ dataFilter }) => {
-  const { currentTenantId, filtersStore } = useRootStore();
+const CaseTable = () => {
+  const { filtersStore, dataStore } = useRootStore();
+  const store = dataStore.caseTableStore;
   const { filters } = filtersStore;
-
   const [page, setPage] = useState(0);
   const { sortOrder, toggleOrder, comparator } = useSort();
 
-  const { isLoading, isError, metadata, apiData } = useChartData(
-    `${currentTenantId}/newRevocations`,
-    "revocations_matrix_filtered_caseload",
-    false
-  );
+  const filteredData = store.filteredData.slice();
+  const sortedData = filteredData.sort(comparator);
 
-  if (isLoading) {
+  if (store.isLoading) {
     return <Loading />;
   }
 
-  if (isError) {
+  if (store.isError) {
     return <Error />;
   }
-
-  const sortedData = filterOptimizedDataFormat({
-    apiData,
-    metadata,
-    filterFn: dataFilter,
-  }).sort(comparator);
 
   const startCase = page * CASES_PER_PAGE;
   const endCase = Math.min(sortedData.length, startCase + CASES_PER_PAGE);
@@ -103,13 +91,13 @@ const CaseTable = ({ dataFilter }) => {
     <CaseTableComponent
       timeWindowDescription={timeWindowDescription}
       options={options}
+      createUpdatePage={createUpdatePage}
       createSortableProps={createSortableProps}
       pageData={pageData}
       startCase={startCase}
       endCase={endCase}
       totalCases={sortedData.length}
       casesPerPage={CASES_PER_PAGE}
-      createUpdatePage={createUpdatePage}
       exportMenu={
         <ExportMenu
           chartId="filteredCaseTable"
@@ -123,10 +111,6 @@ const CaseTable = ({ dataFilter }) => {
       }
     />
   );
-};
-
-CaseTable.propTypes = {
-  dataFilter: PropTypes.func.isRequired,
 };
 
 export default observer(CaseTable);

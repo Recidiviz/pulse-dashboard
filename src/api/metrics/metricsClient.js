@@ -33,8 +33,7 @@ async function callMetricsApi(endpoint, getTokenSilently) {
       }
     );
 
-    const responseData = await response.json();
-    return responseData;
+    return response.json();
   } catch (error) {
     console.error(error);
     return null;

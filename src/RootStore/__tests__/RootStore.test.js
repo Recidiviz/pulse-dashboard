@@ -1,5 +1,5 @@
 // Recidiviz - a data platform for criminal justice reform
-// Copyright (C) 2020 Recidiviz, Inc.
+// Copyright (C) 2021 Recidiviz, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -29,6 +29,10 @@ describe("RootStore", () => {
     rootStore = new RootStore();
   });
 
+  afterAll(() => {
+    jest.resetAllMocks();
+  });
+
   it("contains a FiltersStore", () => {
     expect(rootStore.filtersStore).toBeDefined();
   });
@@ -47,6 +51,10 @@ describe("RootStore", () => {
 
   it("contains filters", () => {
     expect(rootStore.filters).toBeDefined();
+  });
+
+  it("contains the DataStore", () => {
+    expect(rootStore.dataStore).toBeDefined();
   });
 
   it("contains user", async () => {

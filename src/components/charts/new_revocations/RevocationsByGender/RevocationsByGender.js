@@ -29,13 +29,14 @@ import createGenerateChartData from "./createGenerateChartData";
 import flags from "../../../../flags";
 import { useRootStore } from "../../../../StoreProvider";
 
-const RevocationsByGender = ({ dataFilter, timeDescription }) => {
-  const { currentTenantId } = useRootStore();
+const RevocationsByGender = ({ timeDescription }) => {
+  const { currentTenantId, dataStore } = useRootStore();
+  const { revocationsChartStore } = dataStore;
+
   return (
     <RevocationsByDimension
       chartId={`${translate("revocations")}By${translate("Gender")}`}
-      apiUrl={`${currentTenantId}/newRevocations`}
-      apiFile="revocations_matrix_distribution_by_gender"
+      dataStore={revocationsChartStore}
       renderChart={({ chartId, data, denominators, numerators, mode }) => (
         <BarChartWithLabels
           id={chartId}
@@ -47,7 +48,10 @@ const RevocationsByGender = ({ dataFilter, timeDescription }) => {
           numerators={numerators}
         />
       )}
-      generateChartData={createGenerateChartData(dataFilter, currentTenantId)}
+      generateChartData={createGenerateChartData(
+        revocationsChartStore.filteredData,
+        currentTenantId
+      )}
       chartTitle={`Admissions by ${translate("gender")} and risk level`}
       metricTitle={(mode) =>
         `${getLabelByMode(mode)} by ${translate("gender")} and risk level`
@@ -61,7 +65,6 @@ const RevocationsByGender = ({ dataFilter, timeDescription }) => {
 };
 
 RevocationsByGender.propTypes = {
-  dataFilter: PropTypes.func.isRequired,
   timeDescription: PropTypes.string.isRequired,
 };
 

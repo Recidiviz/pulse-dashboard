@@ -25,15 +25,16 @@ import createGenerateChartData from "./createGenerateChartData";
 import RevocationsByDimension from "../RevocationsByDimension";
 import BarChartWithLabels from "../BarChartWithLabels";
 import { translate } from "../../../../views/tenants/utils/i18nSettings";
-import { useRootStore } from "../../../../StoreProvider";
+import { useDataStore } from "../../../../StoreProvider";
 
-const RevocationsByRiskLevel = ({ dataFilter, timeDescription }) => {
-  const { currentTenantId } = useRootStore();
+const RevocationsByRiskLevel = ({ timeDescription }) => {
+  const dataStore = useDataStore();
+  const { revocationsChartStore } = dataStore;
+
   return (
     <RevocationsByDimension
       chartId={`${translate("revocations")}ByRiskLevel`}
-      apiUrl={`${currentTenantId}/newRevocations`}
-      apiFile="revocations_matrix_distribution_by_risk_level"
+      dataStore={revocationsChartStore}
       renderChart={({ chartId, data, denominators, numerators, mode }) => (
         <BarChartWithLabels
           id={chartId}
@@ -44,7 +45,9 @@ const RevocationsByRiskLevel = ({ dataFilter, timeDescription }) => {
           yAxisLabel={getLabelByMode(mode)}
         />
       )}
-      generateChartData={createGenerateChartData(dataFilter)}
+      generateChartData={createGenerateChartData(
+        revocationsChartStore.filteredData
+      )}
       chartTitle="Admissions by risk level"
       metricTitle={(mode) => `${getLabelByMode(mode)} by risk level`}
       timeDescription={timeDescription}
@@ -56,7 +59,6 @@ const RevocationsByRiskLevel = ({ dataFilter, timeDescription }) => {
 };
 
 RevocationsByRiskLevel.propTypes = {
-  dataFilter: PropTypes.func.isRequired,
   timeDescription: PropTypes.string.isRequired,
 };
 

@@ -44,6 +44,11 @@ export function useRootStore() {
   return context;
 }
 
+export function useDataStore() {
+  const { dataStore } = useRootStore();
+  return dataStore;
+}
+
 export function useFiltersStore() {
   const { filtersStore } = useRootStore();
   return filtersStore;

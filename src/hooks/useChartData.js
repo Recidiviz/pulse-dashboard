@@ -17,14 +17,10 @@
 
 import { useState, useCallback, useEffect } from "react";
 import makeCancellablePromise from "make-cancellable-promise";
-import toInteger from "lodash/fp/toInteger";
-import {
-  parseResponseByFileFormat,
-  parseResponsesByFileFormat,
-} from "../api/metrics/fileParser";
-import { convertFromStringToUnflattenedMatrix } from "../api/metrics/optimizedFormatHelpers";
+import { parseResponsesByFileFormat } from "../api/metrics/fileParser";
 import { callMetricsApi, awaitingResults } from "../api/metrics/metricsClient";
 import { useRootStore } from "../StoreProvider";
+import { processResponseData } from "../RootStore/DataStore/helpers";
 
 const queues = {};
 
@@ -47,7 +43,7 @@ const queues = {};
 function useChartData(url, file) {
   const eagerExpand = true;
   const { userStore } = useRootStore();
-  const { loading, user, getTokenSilently } = userStore;
+  const { isLoading: userLoading, user, getTokenSilently } = userStore;
   const [metadata, setMetadata] = useState({});
   const [apiData, setApiData] = useState([]);
   const [awaitingApi, setAwaitingApi] = useState(true);
@@ -84,29 +80,13 @@ function useChartData(url, file) {
     promise
       .then((responseData) => {
         if (file) {
-          const metricFile = parseResponseByFileFormat(
+          const { data, metadata: responseMetadata } = processResponseData(
             responseData,
             file,
             eagerExpand
           );
-          setMetadata(metricFile.metadata);
-
-          // If we are not eagerly expanding a single file request, then proactively
-          // unflatten the data matrix to avoid repeated unflattening operations in
-          // filtering operations later on.
-          if (!eagerExpand) {
-            const totalDataPoints = toInteger(
-              metricFile.metadata.total_data_points
-            );
-            const unflattened =
-              totalDataPoints === 0
-                ? []
-                : convertFromStringToUnflattenedMatrix(
-                    metricFile.flattenedValueMatrix,
-                    totalDataPoints
-                  );
-            setApiData(unflattened);
-          } else setApiData(metricFile);
+          setMetadata(responseMetadata);
+          setApiData(data);
         } else {
           const metricFiles = parseResponsesByFileFormat(
             responseData,
@@ -128,7 +108,7 @@ function useChartData(url, file) {
     };
   }, [eagerExpand, fetchChartData, file]);
 
-  const isLoading = awaitingResults(loading, user, awaitingApi);
+  const isLoading = awaitingResults(userLoading, user, awaitingApi);
 
   return { metadata, isLoading, isError, apiData };
 }

@@ -15,11 +15,20 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React, { useState } from "react";
+import React from "react";
 import cn from "classnames";
 import PropTypes from "prop-types";
+import { observer } from "mobx-react-lite";
+
 import { translate } from "../../../../views/tenants/utils/i18nSettings";
 import flags from "../../../../flags";
+import RevocationsByRiskLevel from "../RevocationsByRiskLevel/RevocationsByRiskLevel";
+import RevocationsByOfficer from "../RevocationsByOfficer";
+import RevocationsByViolation from "../RevocationsByViolation";
+import RevocationsByGender from "../RevocationsByGender/RevocationsByGender";
+import RevocationsByRace from "../RevocationsByRace/RevocationsByRace";
+import RevocationsByDistrict from "../RevocationsByDistrict/RevocationsByDistrict";
+import { useRootStore } from "../../../../StoreProvider";
 
 import "./RevocationCharts.scss";
 
@@ -32,31 +41,25 @@ const CHARTS = [
   "Race",
 ].filter(Boolean);
 
-const RevocationCharts = ({
-  riskLevelChart,
-  officerChart,
-  violationChart,
-  genderChart,
-  raceChart,
-  districtChart,
-}) => {
-  const [selectedChart, setSelectedChart] = useState(CHARTS[0]);
+const RevocationCharts = ({ timeDescription }) => {
+  const { dataStore } = useRootStore();
+  const { selectedChart, setSelectedChart } = dataStore.revocationsChartStore;
 
   const renderSelectedChartSingularLoad = () => {
     switch (selectedChart) {
       case "Risk level":
-        return riskLevelChart;
+        return <RevocationsByRiskLevel timeDescription={timeDescription} />;
       case "Officer":
-        return officerChart;
+        return <RevocationsByOfficer timeDescription={timeDescription} />;
       case "Violation":
-        return violationChart;
+        return <RevocationsByViolation timeDescription={timeDescription} />;
       case "Gender":
-        return genderChart;
+        return <RevocationsByGender timeDescription={timeDescription} />;
       case "Race":
-        return raceChart;
+        return <RevocationsByRace timeDescription={timeDescription} />;
       case "District":
       default:
-        return districtChart;
+        return <RevocationsByDistrict timeDescription={timeDescription} />;
     }
   };
 
@@ -85,12 +88,7 @@ const RevocationCharts = ({
 };
 
 RevocationCharts.propTypes = {
-  riskLevelChart: PropTypes.node.isRequired,
-  officerChart: PropTypes.node.isRequired,
-  violationChart: PropTypes.node.isRequired,
-  genderChart: PropTypes.node.isRequired,
-  raceChart: PropTypes.node.isRequired,
-  districtChart: PropTypes.node.isRequired,
+  timeDescription: PropTypes.string.isRequired,
 };
 
-export default RevocationCharts;
+export default observer(RevocationCharts);

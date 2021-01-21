@@ -18,7 +18,6 @@
 import React from "react";
 import { Bar, Line } from "react-chartjs-2";
 import { observer } from "mobx-react-lite";
-import PropTypes from "prop-types";
 import { get } from "mobx";
 
 import map from "lodash/fp/map";
@@ -28,10 +27,8 @@ import { groupByMonth } from "../common/bars/utils";
 import Loading from "../../Loading";
 import Error from "../../Error";
 
-import useChartData from "../../../hooks/useChartData";
 import { COLORS } from "../../../assets/scripts/constants/colors";
 import { currentMonthBox } from "../../../utils/charts/currentSpan";
-import { filterOptimizedDataFormat } from "../../../utils/charts/dataFilters";
 import {
   getMonthCountFromMetricPeriodMonthsToggle,
   getTrailingLabelFromMetricPeriodMonthsToggle,
@@ -41,43 +38,34 @@ import { sortFilterAndSupplementMostRecentMonths } from "../../../utils/transfor
 import { monthNamesAllWithYearsFromNumbers } from "../../../utils/transforms/months";
 import { generateTrendlineDataset } from "../../../utils/charts/trendline";
 import { translate } from "../../../views/tenants/utils/i18nSettings";
-import RevocationsByDimensionComponent from "./RevocationsByDimension/RevocationsByDimensionComponent";
 import { useRootStore } from "../../../StoreProvider";
 import { METRIC_PERIOD_MONTHS } from "../../../constants/filterTypes";
 
-const RevocationsOverTime = ({ dataFilter }) => {
-  const { filters, currentTenantId } = useRootStore();
+import RevocationsByDimensionComponent from "./RevocationsByDimension/RevocationsByDimensionComponent";
 
+const RevocationsOverTime = () => {
+  const { filters, dataStore } = useRootStore();
+  const store = dataStore.revocationsOverTimeStore;
   const chartId = `${translate("revocations")}OverTime`;
 
-  const { isLoading, isError, metadata, apiData } = useChartData(
-    `${currentTenantId}/newRevocations`,
-    "revocations_matrix_by_month",
-    false
-  );
-
-  if (isLoading) {
+  if (store.isLoading) {
     return <Loading />;
   }
 
-  if (isError) {
+  if (store.isError) {
     return <Error />;
   }
 
-  const chartData = pipe(
-    () =>
-      filterOptimizedDataFormat({ apiData, metadata, filterFn: dataFilter }),
-    groupByMonth(["total_revocations"]),
-    (dataset) =>
-      sortFilterAndSupplementMostRecentMonths(
-        dataset,
-        getMonthCountFromMetricPeriodMonthsToggle(
-          get(filters, METRIC_PERIOD_MONTHS)
-        ),
-        "total_revocations",
-        0
-      )
-  )();
+  const chartData = pipe(groupByMonth(["total_revocations"]), (dataset) =>
+    sortFilterAndSupplementMostRecentMonths(
+      dataset,
+      getMonthCountFromMetricPeriodMonthsToggle(
+        get(filters, METRIC_PERIOD_MONTHS)
+      ),
+      "total_revocations",
+      0
+    )
+  )(store.filteredData);
 
   const labels = monthNamesAllWithYearsFromNumbers(
     map("month", chartData),
@@ -194,10 +182,6 @@ const RevocationsOverTime = ({ dataFilter }) => {
       dataExportLabel="Month"
     />
   );
-};
-
-RevocationsOverTime.propTypes = {
-  dataFilter: PropTypes.func.isRequired,
 };
 
 export default observer(RevocationsOverTime);

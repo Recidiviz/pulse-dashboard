@@ -31,15 +31,15 @@ import { DISTRICT } from "../../../../constants/filterTypes";
 
 const chartTitle = "Admissions by district";
 
-const RevocationsByDistrict = ({ timeDescription, dataFilter }) => {
-  const { filters, currentTenantId } = useRootStore();
+const RevocationsByDistrict = ({ timeDescription }) => {
+  const { filters, dataStore } = useRootStore();
+  const { revocationsChartStore } = dataStore;
   const currentDistricts = get(filters, DISTRICT);
 
   return (
     <RevocationsByDimension
       chartId={`${translate("revocations")}ByDistrict`}
-      apiUrl={`${currentTenantId}/newRevocations`}
-      apiFile="revocations_matrix_distribution_by_district"
+      dataStore={revocationsChartStore}
       renderChart={({
         chartId,
         data,
@@ -70,7 +70,10 @@ const RevocationsByDistrict = ({ timeDescription, dataFilter }) => {
           />
         )
       }
-      generateChartData={createGenerateChartData(dataFilter, currentDistricts)}
+      generateChartData={createGenerateChartData(
+        revocationsChartStore.filteredData,
+        currentDistricts
+      )}
       chartTitle={chartTitle}
       metricTitle={chartTitle}
       timeDescription={timeDescription}
@@ -86,7 +89,6 @@ const RevocationsByDistrict = ({ timeDescription, dataFilter }) => {
 };
 
 RevocationsByDistrict.propTypes = {
-  dataFilter: PropTypes.func.isRequired,
   timeDescription: PropTypes.string.isRequired,
 };
 

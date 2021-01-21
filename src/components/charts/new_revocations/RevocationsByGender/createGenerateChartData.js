@@ -27,7 +27,6 @@ import {
 import getDenominatorKeyByMode from "../utils/getDenominatorKeyByMode";
 import getCounts from "../utils/getCounts";
 import createRiskLevelsMap from "../utils/createRiskLevelsMap";
-import { filterOptimizedDataFormat } from "../../../../utils/charts/dataFilters";
 
 /**
  * These are the only genders that are apparent in the source data set,
@@ -35,22 +34,16 @@ import { filterOptimizedDataFormat } from "../../../../utils/charts/dataFilters"
  */
 const GENDER_LABELS_MAP = { FEMALE: "Women", MALE: "Men" };
 
-const createGenerateChartData = (dataFilter, stateCode) => ({
-  metadata,
-  mode,
-  apiData,
-}) => {
+const createGenerateChartData = (filteredData, currentTenantId) => (mode) => {
   const numeratorKey = "population_count";
   const denominatorKey = getDenominatorKeyByMode(mode);
   const genders = Object.keys(GENDER_LABELS_MAP);
   const genderLabels = Object.values(GENDER_LABELS_MAP);
 
   const { dataPoints, numerators, denominators } = pipe(
-    () =>
-      filterOptimizedDataFormat({ apiData, metadata, filterFn: dataFilter }),
     reduce(createRiskLevelsMap(numeratorKey, denominatorKey, "gender"), {}),
-    (data) => getCounts(data, getRiskLevels(stateCode), genders)
-  )();
+    (data) => getCounts(data, getRiskLevels(currentTenantId), genders)
+  )(filteredData);
 
   const generateDataset = (label, index) => ({
     label,
@@ -62,7 +55,7 @@ const createGenerateChartData = (dataFilter, stateCode) => ({
   });
 
   const data = {
-    labels: getRiskLevelLabels(stateCode),
+    labels: getRiskLevelLabels(currentTenantId),
     datasets: genderLabels.map(generateDataset),
   };
 

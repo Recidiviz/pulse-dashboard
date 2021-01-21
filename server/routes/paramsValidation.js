@@ -12,7 +12,7 @@ const CHARGE_CATEGORIES = [
   "serious_mental_illness",
   "sex_offense",
 ];
-const METRIC_PERIOD_MONTHS = ["12", "3", "36", "6"];
+const METRIC_PERIOD_MONTHS = ["12", "3", "36", "6", "1"];
 const REPORTED_VIOLATIONS = ["1", "2", "3", "4", "5", "6", "7", "8", "all"];
 const SUPERVISION_LEVELS = [
   "all",

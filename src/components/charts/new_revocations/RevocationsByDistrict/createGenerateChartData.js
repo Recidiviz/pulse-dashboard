@@ -27,7 +27,6 @@ import { calculateRate } from "../helpers/rate";
 
 import { translate } from "../../../../views/tenants/utils/i18nSettings";
 import { applyStatisticallySignificantShading } from "../../../../utils/charts/significantStatistics";
-import { filterOptimizedDataFormat } from "../../../../utils/charts/dataFilters";
 import { COLORS } from "../../../../assets/scripts/constants/colors";
 import { sumCounts } from "../utils/sumCounts";
 
@@ -127,16 +126,7 @@ const generateCountChartData = (filteredData, currentDistricts) => {
   return { data: { datasets, labels }, denominators: [] };
 };
 
-const createGenerateChartData = (dataFilter, currentDistricts) => ({
-  metadata,
-  mode,
-  apiData,
-}) => {
-  const filteredData = filterOptimizedDataFormat({
-    apiData,
-    metadata,
-    filterFn: dataFilter,
-  });
+const createGenerateChartData = (filteredData, currentDistricts) => (mode) => {
   switch (mode) {
     case "counts":
       return generateCountChartData(filteredData, currentDistricts);

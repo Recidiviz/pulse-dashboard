@@ -20,10 +20,6 @@ import { observer } from "mobx-react-lite";
 import Sticky from "react-sticky-fill";
 import { get } from "mobx";
 
-import {
-  matchesAllFilters,
-  matchesTopLevelFilters,
-} from "./charts/new_revocations/helpers";
 import { getTimeDescription } from "./charts/new_revocations/helpers/format";
 import ToggleBarFilter from "./charts/new_revocations/ToggleBar/ToggleBarFilter";
 import ErrorBoundary from "./ErrorBoundary";
@@ -34,22 +30,15 @@ import RevocationsOverTime from "./charts/new_revocations/RevocationsOverTime";
 import Matrix from "./charts/new_revocations/Matrix";
 import MatrixExplanation from "./charts/new_revocations/Matrix/MatrixExplanation";
 import RevocationCharts from "./charts/new_revocations/RevocationCharts";
-import RevocationsByRiskLevel from "./charts/new_revocations/RevocationsByRiskLevel/RevocationsByRiskLevel";
-import RevocationsByOfficer from "./charts/new_revocations/RevocationsByOfficer";
-import RevocationsByViolation from "./charts/new_revocations/RevocationsByViolation";
-import RevocationsByGender from "./charts/new_revocations/RevocationsByGender/RevocationsByGender";
-import RevocationsByRace from "./charts/new_revocations/RevocationsByRace/RevocationsByRace";
-import RevocationsByDistrict from "./charts/new_revocations/RevocationsByDistrict/RevocationsByDistrict";
+
 import CaseTable from "./charts/new_revocations/CaseTable/CaseTable";
 import {
   ADMISSION_TYPE,
   CHARGE_CATEGORY,
-  DISTRICT,
   METRIC_PERIOD_MONTHS,
   SUPERVISION_LEVEL,
   SUPERVISION_TYPE,
 } from "../constants/filterTypes";
-import flags from "../flags";
 import { useRootStore } from "../StoreProvider";
 
 import "./Revocations.scss";
@@ -99,92 +88,25 @@ const Revocations = () => {
 
       <div className="bgc-white p-20 m-20">
         <ErrorBoundary>
-          <RevocationsOverTime
-            dataFilter={matchesAllFilters({
-              filters,
-              skippedFilters: [METRIC_PERIOD_MONTHS],
-            })}
-          />
+          <RevocationsOverTime />
         </ErrorBoundary>
       </div>
       <div className="d-f m-20 container-all-charts">
         <div className="Revocations__matrix">
           <ErrorBoundary>
-            <Matrix
-              dataFilter={matchesTopLevelFilters({
-                filters,
-              })}
-              timeDescription={timeDescription}
-            />
+            <Matrix timeDescription={timeDescription} />
           </ErrorBoundary>
         </div>
         <MatrixExplanation />
       </div>
 
-      <RevocationCharts
-        riskLevelChart={
-          <ErrorBoundary>
-            <RevocationsByRiskLevel
-              dataFilter={matchesAllFilters({ filters })}
-              timeDescription={timeDescription}
-            />
-          </ErrorBoundary>
-        }
-        officerChart={
-          flags.enableOfficerChart && (
-            <ErrorBoundary>
-              <RevocationsByOfficer
-                dataFilter={matchesAllFilters({ filters })}
-                timeDescription={timeDescription}
-              />
-            </ErrorBoundary>
-          )
-        }
-        violationChart={
-          <ErrorBoundary>
-            <RevocationsByViolation
-              dataFilter={matchesAllFilters({ filters })}
-              timeDescription={timeDescription}
-            />
-          </ErrorBoundary>
-        }
-        genderChart={
-          <ErrorBoundary>
-            <RevocationsByGender
-              dataFilter={matchesAllFilters({ filters })}
-              timeDescription={timeDescription}
-            />
-          </ErrorBoundary>
-        }
-        raceChart={
-          <ErrorBoundary>
-            <RevocationsByRace
-              dataFilter={matchesAllFilters({ filters })}
-              timeDescription={timeDescription}
-            />
-          </ErrorBoundary>
-        }
-        districtChart={
-          <ErrorBoundary>
-            <RevocationsByDistrict
-              dataFilter={matchesAllFilters({
-                filters,
-                skippedFilters: [DISTRICT],
-              })}
-              timeDescription={timeDescription}
-            />
-          </ErrorBoundary>
-        }
-      />
+      <ErrorBoundary>
+        <RevocationCharts timeDescription={timeDescription} />
+      </ErrorBoundary>
 
       <div className="bgc-white m-20 p-20">
         <ErrorBoundary>
-          <CaseTable
-            dataFilter={matchesAllFilters({
-              filters,
-              treatCategoryAllAsAbsent: true,
-            })}
-          />
+          <CaseTable />
         </ErrorBoundary>
       </div>
     </main>
