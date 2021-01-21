@@ -35,27 +35,22 @@ import { filterOptimizedDataFormat } from "../../../../utils/charts/dataFilters"
  */
 const GENDER_LABELS_MAP = { FEMALE: "Women", MALE: "Men" };
 
-const createGenerateChartData = (dataFilter, stateCode) => (
-  apiData,
+const createGenerateChartData = (dataFilter, stateCode) => ({
+  metadata,
   mode,
-  unflattenedValues
-) => {
+  apiData,
+}) => {
   const numeratorKey = "population_count";
   const denominatorKey = getDenominatorKeyByMode(mode);
   const genders = Object.keys(GENDER_LABELS_MAP);
   const genderLabels = Object.values(GENDER_LABELS_MAP);
 
   const { dataPoints, numerators, denominators } = pipe(
-    (metricFile) =>
-      filterOptimizedDataFormat(
-        unflattenedValues,
-        apiData,
-        metricFile.metadata,
-        dataFilter
-      ),
+    () =>
+      filterOptimizedDataFormat({ apiData, metadata, filterFn: dataFilter }),
     reduce(createRiskLevelsMap(numeratorKey, denominatorKey, "gender"), {}),
     (data) => getCounts(data, getRiskLevels(stateCode), genders)
-  )(apiData);
+  )();
 
   const generateDataset = (label, index) => ({
     label,

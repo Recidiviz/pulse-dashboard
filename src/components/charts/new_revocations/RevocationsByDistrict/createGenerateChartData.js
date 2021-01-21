@@ -31,13 +31,13 @@ import { filterOptimizedDataFormat } from "../../../../utils/charts/dataFilters"
 import { COLORS } from "../../../../assets/scripts/constants/colors";
 import { sumCounts } from "../utils/sumCounts";
 
-const generatePercentChartData = (apiData, currentDistricts, mode) => {
+const generatePercentChartData = (filteredData, currentDistricts, mode) => {
   const [fieldName, totalFieldName] =
     mode === "exits"
       ? ["exit_count", "total_exit_count"]
       : ["supervision_count", "total_supervision_count"];
 
-  const filteredData = pipe(
+  const transformedData = pipe(
     filter((item) => item.district !== "ALL"),
     groupBy("district"),
     values,
@@ -53,13 +53,13 @@ const generatePercentChartData = (apiData, currentDistricts, mode) => {
       rate: calculateRate(dataPoint.count, dataPoint[fieldName]),
     })),
     orderBy(["rate"], ["desc"])
-  )(apiData);
+  )(filteredData);
 
-  const dataPoints = map((item) => item.rate.toFixed(2), filteredData);
+  const dataPoints = map((item) => item.rate.toFixed(2), transformedData);
 
-  const labels = map("district", filteredData);
-  const denominators = map("supervision_count", filteredData);
-  const numerators = map("count", filteredData);
+  const labels = map("district", transformedData);
+  const denominators = map("supervision_count", transformedData);
+  const numerators = map("count", transformedData);
 
   const getBarBackgroundColor = ({ dataIndex }) => {
     const color =
@@ -87,14 +87,14 @@ const generatePercentChartData = (apiData, currentDistricts, mode) => {
   };
 
   const averageRate = calculateRate(
-    sumCounts("population_count", apiData),
-    sumCounts("total_supervision_count", apiData)
+    sumCounts("population_count", filteredData),
+    sumCounts("total_supervision_count", filteredData)
   );
 
   return { data, numerators, denominators, averageRate };
 };
 
-const generateCountChartData = (apiData, currentDistricts) => {
+const generateCountChartData = (filteredData, currentDistricts) => {
   const transformedData = pipe(
     filter((item) => item.district !== "ALL"),
     groupBy("district"),
@@ -104,7 +104,7 @@ const generateCountChartData = (apiData, currentDistricts) => {
       count: sumBy((item) => toInteger(item.population_count), dataset),
     })),
     orderBy(["count"], ["desc"])
-  )(apiData);
+  )(filteredData);
 
   const labels = map("district", transformedData);
   const dataPoints = transformedData.map((item) => item.count);
@@ -127,20 +127,16 @@ const generateCountChartData = (apiData, currentDistricts) => {
   return { data: { datasets, labels }, denominators: [] };
 };
 
-const createGenerateChartData = (dataFilter) => (
-  apiData,
+const createGenerateChartData = (dataFilter, currentDistricts) => ({
+  metadata,
   mode,
-  unflattenedValues,
-  currentDistricts
-) => {
-  const filteredData = pipe((metricFile) =>
-    filterOptimizedDataFormat(
-      unflattenedValues,
-      apiData,
-      metricFile.metadata,
-      dataFilter
-    )
-  )(apiData);
+  apiData,
+}) => {
+  const filteredData = filterOptimizedDataFormat({
+    apiData,
+    metadata,
+    filterFn: dataFilter,
+  });
   switch (mode) {
     case "counts":
       return generateCountChartData(filteredData, currentDistricts);

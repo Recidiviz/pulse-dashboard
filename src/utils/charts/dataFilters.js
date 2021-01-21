@@ -24,14 +24,9 @@ import {
   validateMetadata,
 } from "../../api/metrics/optimizedFormatHelpers";
 
-function filterOptimizedDataFormat(
-  unflattenedValues,
-  apiData,
-  metadata,
-  filterFn
-) {
+function filterOptimizedDataFormat({ apiData, metadata, filterFn }) {
   let filteredDataPoints = [];
-  if (unflattenedValues.length > 0) {
+  if (Array.isArray(apiData[0])) {
     validateMetadata(metadata);
     const totalDataPoints = toInteger(metadata.total_data_points);
     const dimensions = metadata.dimension_manifest;
@@ -44,8 +39,7 @@ function filterOptimizedDataFormat(
 
       let j = 0;
       for (j = 0; j < dimensions.length; j += 1) {
-        const dimensionValueIndex = unflattenedValues[j][i];
-        // const dimensionKeyIndex = i;
+        const dimensionValueIndex = apiData[j][i];
 
         const dimensionKey = getDimensionKey(dimensions, j);
         const dimensionValue = getDimensionValue(
@@ -74,7 +68,7 @@ function filterOptimizedDataFormat(
         j < dimensions.length + valueKeys.length;
         j += 1
       ) {
-        const valueValue = unflattenedValues[j][i];
+        const valueValue = apiData[j][i];
         const valueKey = getValueKey(valueKeys, j - dimensions.length);
         dataPoint[valueKey] = valueValue;
       }

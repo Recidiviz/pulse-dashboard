@@ -30,10 +30,7 @@ import Error from "../../Error";
 
 import useChartData from "../../../hooks/useChartData";
 import { COLORS } from "../../../assets/scripts/constants/colors";
-import {
-  labelCurrentMonth,
-  currentMonthBox,
-} from "../../../utils/charts/currentSpan";
+import { currentMonthBox } from "../../../utils/charts/currentSpan";
 import { filterOptimizedDataFormat } from "../../../utils/charts/dataFilters";
 import {
   getMonthCountFromMetricPeriodMonthsToggle,
@@ -53,7 +50,7 @@ const RevocationsOverTime = ({ dataFilter }) => {
 
   const chartId = `${translate("revocations")}OverTime`;
 
-  const { isLoading, isError, apiData, unflattenedValues } = useChartData(
+  const { isLoading, isError, metadata, apiData } = useChartData(
     `${currentTenantId}/newRevocations`,
     "revocations_matrix_by_month",
     false
@@ -68,13 +65,8 @@ const RevocationsOverTime = ({ dataFilter }) => {
   }
 
   const chartData = pipe(
-    (metricFile) =>
-      filterOptimizedDataFormat(
-        unflattenedValues,
-        apiData,
-        metricFile.metadata,
-        dataFilter
-      ),
+    () =>
+      filterOptimizedDataFormat({ apiData, metadata, filterFn: dataFilter }),
     groupByMonth(["total_revocations"]),
     (dataset) =>
       sortFilterAndSupplementMostRecentMonths(
@@ -85,7 +77,7 @@ const RevocationsOverTime = ({ dataFilter }) => {
         "total_revocations",
         0
       )
-  )(apiData);
+  )();
 
   const labels = monthNamesAllWithYearsFromNumbers(
     map("month", chartData),
@@ -114,7 +106,7 @@ const RevocationsOverTime = ({ dataFilter }) => {
     generateTrendlineDataset(chartDataPoints, COLORS["blue-standard-light"]),
   ];
   const maxElement = Math.max(...chartDataPoints);
-  const maxValue = maxElement <= 3 ? 5 : maxElement;
+  const maxValue = maxElement <= 7 ? 7 : maxElement;
 
   const options = {
     maintainAspectRatio: false,
@@ -138,12 +130,6 @@ const RevocationsOverTime = ({ dataFilter }) => {
           },
           ticks: {
             min: 0,
-            callback(value) {
-              if (value % 1 === 0) {
-                return value;
-              }
-              return null;
-            },
             suggestedMax: maxValue,
           },
         },
@@ -152,9 +138,6 @@ const RevocationsOverTime = ({ dataFilter }) => {
     tooltips: {
       backgroundColor: COLORS["grey-800-light"],
       mode: "x",
-      callbacks: {
-        title: (tooltipItem) => labelCurrentMonth(tooltipItem, chartLabels),
-      },
     },
     annotation: currentMonthBox(
       "currentMonthBoxRevocationsOverTime",

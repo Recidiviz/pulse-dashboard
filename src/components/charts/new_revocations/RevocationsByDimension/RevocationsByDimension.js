@@ -18,7 +18,6 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { observer } from "mobx-react-lite";
-import { get } from "mobx";
 
 import ModeSwitcher from "../ModeSwitcher";
 import RevocationsByDimensionComponent from "./RevocationsByDimensionComponent";
@@ -28,8 +27,6 @@ import Loading from "../../../Loading";
 import Error from "../../../Error";
 import { isDenominatorsMatrixStatisticallySignificant } from "../../../../utils/charts/significantStatistics";
 import getLabelByMode from "../utils/getLabelByMode";
-import { DISTRICT } from "../../../../constants/filterTypes";
-import { useRootStore } from "../../../../StoreProvider";
 
 const RevocationsByDimension = ({
   chartId,
@@ -45,11 +42,9 @@ const RevocationsByDimension = ({
   dataExportLabel,
   includeWarning,
 }) => {
-  const { filters } = useRootStore();
-  const currentDistricts = get(filters, DISTRICT);
   const [mode, setMode] = useState(defaultMode);
 
-  const { isLoading, isError, apiData, unflattenedValues } = useChartData(
+  const { isLoading, isError, metadata, apiData } = useChartData(
     apiUrl,
     apiFile,
     false
@@ -62,12 +57,11 @@ const RevocationsByDimension = ({
   if (isError) {
     return <Error />;
   }
-  const { data, numerators, denominators, averageRate } = generateChartData(
-    apiData,
+  const { data, numerators, denominators, averageRate } = generateChartData({
+    metadata,
     mode,
-    unflattenedValues,
-    currentDistricts.map((d) => d.toLowerCase())
-  );
+    apiData,
+  });
 
   const showWarning =
     includeWarning &&

@@ -18,6 +18,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { observer } from "mobx-react-lite";
+import { get } from "mobx";
 
 import RevocationsByDimension from "../RevocationsByDimension";
 import PercentRevokedChart from "../PercentRevokedChart";
@@ -26,11 +27,13 @@ import createGenerateChartData from "./createGenerateChartData";
 import { translate } from "../../../../views/tenants/utils/i18nSettings";
 import flags from "../../../../flags";
 import { useRootStore } from "../../../../StoreProvider";
+import { DISTRICT } from "../../../../constants/filterTypes";
 
 const chartTitle = "Admissions by district";
 
 const RevocationsByDistrict = ({ timeDescription, dataFilter }) => {
-  const { currentTenantId } = useRootStore();
+  const { filters, currentTenantId } = useRootStore();
+  const currentDistricts = get(filters, DISTRICT);
 
   return (
     <RevocationsByDimension
@@ -67,7 +70,7 @@ const RevocationsByDistrict = ({ timeDescription, dataFilter }) => {
           />
         )
       }
-      generateChartData={createGenerateChartData(dataFilter)}
+      generateChartData={createGenerateChartData(dataFilter, currentDistricts)}
       chartTitle={chartTitle}
       metricTitle={chartTitle}
       timeDescription={timeDescription}
