@@ -25,8 +25,7 @@ import {
 } from "mobx";
 
 import { callMetricsApi } from "../../api/metrics/metricsClient";
-import { processResponseData } from "./helpers";
-import { getQueryStringFromFilters } from "../../api/metrics/urlHelpers";
+import { processResponseData, getQueryStringFromFilters } from "./helpers";
 
 /**
  * BaseDataStore is an abstract class that should never be directly instantiated.
