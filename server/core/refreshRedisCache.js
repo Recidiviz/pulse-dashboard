@@ -53,6 +53,11 @@ function cacheEachFile({ files, cacheKeyPrefix }) {
     const metricFile = { [file]: files[file] };
 
     if (FILES_WITH_SUBSETS.includes(file)) {
+      // TODO: Remove line 57 once the front end is ready to receive the subset files.
+      // This is the "original" cacheKey that will continue to return the full file
+      // until both the FE and BE are ready to work with split files.
+      cachePromises.push(cache.set(cacheKey, metricFile));
+      // Cache the file with all of the subset cache keys
       cachePromises.concat(cacheEachSubsetFile(cache, cacheKey, metricFile));
     } else {
       console.log(`Setting cache for: ${cacheKey}...`);

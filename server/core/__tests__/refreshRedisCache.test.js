@@ -114,18 +114,21 @@ describe("refreshRedisCache", () => {
         (err, result) => {
           expect(err).toEqual(null);
           expect(result).toEqual("OK");
-          expect(mockCache.set).toHaveBeenCalledTimes(6);
+          // TODO: Change this expectation to 6 when we remove caching the original cache key
+          // Also remove the empty string on line 121.
+          expect(mockCache.set).toHaveBeenCalledTimes(7);
           [
-            "violationType=0-chargeCategory=0",
-            "violationType=0-chargeCategory=1",
-            "violationType=0-chargeCategory=2",
-            "violationType=1-chargeCategory=0",
-            "violationType=1-chargeCategory=1",
-            "violationType=1-chargeCategory=2",
+            "",
+            "-violationType=0-chargeCategory=0",
+            "-violationType=0-chargeCategory=1",
+            "-violationType=0-chargeCategory=2",
+            "-violationType=1-chargeCategory=0",
+            "-violationType=1-chargeCategory=1",
+            "-violationType=1-chargeCategory=2",
           ].forEach((subsetKey, index) => {
             expect(mockCache.set).toHaveBeenNthCalledWith(
               index + 1,
-              `${cacheKeyPrefix}-${subsetKey}`,
+              `${cacheKeyPrefix}${subsetKey}`,
               {
                 [fileName]: fileContents,
               }

@@ -24,6 +24,7 @@ const { validationResult } = require("express-validator");
 const { refreshRedisCache, fetchMetrics, cacheResponse } = require("../core");
 const { default: isDemoMode } = require("../utils/isDemoMode");
 const { getCacheKey } = require("../utils/cacheKeys");
+const { FILES_WITH_SUBSETS } = require("../constants/subsetManifest");
 
 const BAD_REQUEST = 400;
 const SERVER_ERROR = 500;
@@ -81,13 +82,28 @@ function newRevocationFile(req, res) {
       stateCode,
       metricType,
       file,
+    });
+    const cacheKeyWithSubsetKeys = getCacheKey({
+      stateCode,
+      metricType,
+      file,
       cacheKeySubset: queryParams,
     });
     cacheResponse(
-      cacheKey,
+      cacheKeyWithSubsetKeys,
       () => fetchMetrics(stateCode, metricType, file, isDemoMode),
       responder(res)
     );
+    if (FILES_WITH_SUBSETS.includes(file)) {
+      // TODO: Remove this second cache once the front end is ready to receive the subset files.
+      // This is the "original" cache key that will continue to return the full file contents
+      // until both the FE and BE are ready to work with split files.
+      cacheResponse(
+        cacheKey,
+        () => fetchMetrics(stateCode, metricType, file, isDemoMode),
+        responder(res)
+      );
+    }
   }
 }
 
