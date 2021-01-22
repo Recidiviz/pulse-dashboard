@@ -1,21 +1,24 @@
-const SUBSET_MANIFEST = {
-  violationType: [
+const SUBSET_MANIFEST = [
+  [
+    "violationType",
     [
-      "absconded",
-      "all",
-      "elec_monitoring",
-      "escaped",
-      "high_tech",
-      "low_tech",
-      "med_tech",
-      "municipal",
-      "no_violations",
-      "substance_abuse",
-      "technical",
+      [
+        "absconded",
+        "all",
+        "elec_monitoring",
+        "escaped",
+        "high_tech",
+        "low_tech",
+        "med_tech",
+        "municipal",
+        "no_violations",
+        "substance_abuse",
+        "technical",
+      ],
+      ["felony", "law", "misdemeanor"],
     ],
-    ["felony", "law", "misdemeanor"],
   ],
-};
+];
 
 const FILES_WITH_SUBSETS = [
   "revocations_matrix_distribution_by_district",
