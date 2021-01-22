@@ -26,11 +26,22 @@ jest.mock("../cacheManager", () => {
   };
 });
 
+jest.mock("../../constants/subsetManifest", () => {
+  return {
+    SUBSET_MANIFEST: [
+      ["violationType", [["all"], ["felony"]]],
+      ["chargeCategory", [["all"], ["domestic_violence"], ["sex_offense"]]],
+    ],
+    FILES_WITH_SUBSETS: ["revocations_matrix_distribution_by_district"],
+  };
+});
+
 describe("refreshRedisCache", () => {
+  let fileName;
   let mockFetchValue;
+  let cacheKey;
   const stateCode = "US_DEMO";
   const metricType = "metric_type";
-  const fileName = "lots_of_numbers";
   const fileContents = "a bunch of numbers";
 
   beforeEach(() => {
@@ -48,32 +59,94 @@ describe("refreshRedisCache", () => {
     jest.clearAllMocks();
   });
 
-  it("calls the cache with the correct key and value", (done) => {
-    const cachekey = `${stateCode}-${metricType}-${fileName}`;
+  describe("refreshing the cache without subset files", () => {
+    beforeEach(() => {
+      fileName = "random_file_name";
+      cacheKey = `${stateCode}-${metricType}-${fileName}`;
+    });
 
-    refreshRedisCache(mockFetchValue, stateCode, metricType, (err, result) => {
-      expect(err).toBeNull();
-      expect(result).toEqual("OK");
+    it("calls the cache with the correct key and value", (done) => {
+      refreshRedisCache(
+        mockFetchValue,
+        stateCode,
+        metricType,
+        (err, result) => {
+          expect(err).toBeNull();
+          expect(result).toEqual("OK");
 
-      expect(mockFetchValue).toHaveBeenCalledTimes(1);
-      expect(mockCache.set).toHaveBeenCalledTimes(1);
-      expect(mockCache.set).toHaveBeenCalledWith(cachekey, {
-        [fileName]: fileContents,
+          expect(mockFetchValue).toHaveBeenCalledTimes(1);
+          expect(mockCache.set).toHaveBeenCalledTimes(1);
+          expect(mockCache.set).toHaveBeenCalledWith(cacheKey, {
+            [fileName]: fileContents,
+          });
+          done();
+        }
+      );
+    });
+
+    it("returns a responds with an error when caching fails", (done) => {
+      const error = new Error("Error setting cache value");
+      mockCache.set.mockImplementationOnce(() => {
+        throw error;
       });
-      done();
+
+      refreshRedisCache(mockFetchValue, stateCode, metricType, (err) => {
+        expect(mockCache.set).toHaveBeenCalledTimes(1);
+        expect(err).toEqual(error);
+        done();
+      });
     });
   });
 
-  it("returns a responds with an error when caching fails", (done) => {
-    const error = new Error("Error setting cache value");
-    mockCache.set.mockImplementation(() => {
-      throw error;
+  describe("refreshing the cache with subset files", () => {
+    beforeEach(() => {
+      fileName = "revocations_matrix_distribution_by_district";
+      cacheKey = `${stateCode}-${metricType}-${fileName}`;
     });
 
-    refreshRedisCache(mockFetchValue, stateCode, metricType, (err) => {
-      expect(mockCache.set).toHaveBeenCalledTimes(1);
-      expect(err).toEqual(error);
-      done();
+    it("sets the cache key for each possible subset", (done) => {
+      const cacheKeyPrefix = `${stateCode}-${metricType}-${fileName}`;
+
+      refreshRedisCache(
+        mockFetchValue,
+        stateCode,
+        metricType,
+        (err, result) => {
+          expect(err).toEqual(null);
+          expect(result).toEqual("OK");
+          expect(mockCache.set).toHaveBeenCalledTimes(6);
+          [
+            "violationType=0-chargeCategory=0",
+            "violationType=0-chargeCategory=1",
+            "violationType=0-chargeCategory=2",
+            "violationType=1-chargeCategory=0",
+            "violationType=1-chargeCategory=1",
+            "violationType=1-chargeCategory=2",
+          ].forEach((subsetKey, index) => {
+            expect(mockCache.set).toHaveBeenNthCalledWith(
+              index + 1,
+              `${cacheKeyPrefix}-${subsetKey}`,
+              {
+                [fileName]: fileContents,
+              }
+            );
+          });
+          done();
+        }
+      );
+    });
+
+    it("returns an error when caching fails", (done) => {
+      const error = new Error("Error setting cache value");
+      mockCache.set.mockImplementationOnce(() => {
+        throw error;
+      });
+
+      refreshRedisCache(mockFetchValue, stateCode, metricType, (err) => {
+        expect(mockCache.set).toHaveBeenCalledTimes(1);
+        expect(err).toEqual(error);
+        done();
+      });
     });
   });
 });

@@ -27,20 +27,37 @@
 /* eslint-disable no-console */
 const { getCache } = require("./cacheManager");
 const { getSubsetCacheKeyCombinations } = require("../utils/cacheKeys");
-const { SUBSET_MANIFEST } = require("../constants/subsetManifest");
+const {
+  SUBSET_MANIFEST,
+  FILES_WITH_SUBSETS,
+} = require("../constants/subsetManifest");
 
-function cacheEachSubsetFile({ files, cacheKeyPrefix }) {
+const allSubsetCacheKeys = getSubsetCacheKeyCombinations(SUBSET_MANIFEST);
+
+function cacheEachSubsetFile(cache, cacheKey, metricFile) {
+  const cachePromises = [];
+  allSubsetCacheKeys.forEach((subsetKey) => {
+    const cacheKeyWithSubset = `${cacheKey}-${subsetKey}`;
+    console.log(`Setting cache for: ${cacheKeyWithSubset}...`);
+    cachePromises.push(cache.set(cacheKeyWithSubset, metricFile));
+  });
+  return cachePromises;
+}
+
+function cacheEachFile({ files, cacheKeyPrefix }) {
   const cache = getCache(cacheKeyPrefix);
   const cachePromises = [];
-  const allSubsetCacheKeys = getSubsetCacheKeyCombinations(SUBSET_MANIFEST);
 
   Object.keys(files).forEach((file) => {
-    allSubsetCacheKeys.forEach((subsetKey) => {
-      const cacheKey = `${cacheKeyPrefix}-${file}-${subsetKey}`;
-      const metricFile = { [file]: files[file] };
+    const cacheKey = `${cacheKeyPrefix}-${file}`;
+    const metricFile = { [file]: files[file] };
+
+    if (FILES_WITH_SUBSETS.includes(file)) {
+      cachePromises.concat(cacheEachSubsetFile(cache, cacheKey, metricFile));
+    } else {
       console.log(`Setting cache for: ${cacheKey}...`);
       cachePromises.push(cache.set(cacheKey, metricFile));
-    });
+    }
   });
 
   return cachePromises;
@@ -55,7 +72,7 @@ function refreshRedisCache(fetchMetrics, stateCode, metricType, callback) {
   fetchMetrics()
     .then((files) => {
       return Promise.all(
-        cacheEachSubsetFile({ files, stateCode, metricType, cacheKeyPrefix })
+        cacheEachFile({ files, stateCode, metricType, cacheKeyPrefix })
       );
     })
     .catch((error) => {
