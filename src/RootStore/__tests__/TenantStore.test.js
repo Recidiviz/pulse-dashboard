@@ -18,7 +18,7 @@
 import createAuth0Client from "@auth0/auth0-spa-js";
 
 import RootStore from "../RootStore";
-import { CURRENT_TENANT_IN_SESSION } from "../TenantStore";
+import TenantStore, { CURRENT_TENANT_IN_SESSION } from "../TenantStore";
 import { US_MO } from "../../views/tenants/utils/lanternTenants";
 import { doesUserHaveAccess, getAvailableStateCodes } from "../utils/user";
 import { METADATA_NAMESPACE } from "../../constants";
@@ -83,6 +83,28 @@ describe("TenantStore", () => {
       expect(rootStore.tenantStore.currentTenantId).toEqual(
         availableStateCodes[0]
       );
+    });
+
+    it("setDisticts sets district and districtIsLoading attributes", async () => {
+      const apiData = [
+        { district: "02" },
+        { district: "01" },
+        { district: "ALL" },
+      ];
+      const rootStore = {
+        userStore: {
+          userIsLoading: false,
+          user,
+        },
+      };
+      const tenantStore = new TenantStore({ rootStore });
+
+      expect(tenantStore.districtsIsLoading).toEqual(true);
+
+      tenantStore.setDistricts(apiData);
+
+      expect(tenantStore.districts).toEqual(["01", "02"]);
+      expect(tenantStore.districtsIsLoading).toEqual(false);
     });
   });
 });

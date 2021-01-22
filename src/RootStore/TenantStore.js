@@ -15,7 +15,13 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import { makeAutoObservable, when } from "mobx";
+import { makeAutoObservable, when, action } from "mobx";
+import filter from "lodash/fp/filter";
+import identity from "lodash/fp/identity";
+import map from "lodash/fp/map";
+import pipe from "lodash/fp/pipe";
+import sortBy from "lodash/fp/sortBy";
+import uniq from "lodash/fp/uniq";
 
 import { getAvailableStateCodes, doesUserHaveAccess } from "./utils/user";
 import { LANTERN_TENANTS } from "../views/tenants/utils/lanternTenants";
@@ -44,10 +50,15 @@ export default class TenantStore {
 
   currentTenantId = LANTERN_TENANTS[0];
 
-  user;
+  districts = [];
+
+  districtsIsLoading = true;
 
   constructor({ rootStore }) {
-    makeAutoObservable(this);
+    makeAutoObservable(this, {
+      setDistricts: action,
+      setCurrentTenantId: action,
+    });
 
     this.rootStore = rootStore;
 
@@ -60,5 +71,19 @@ export default class TenantStore {
   setCurrentTenantId(tenantId) {
     this.currentTenantId = tenantId;
     sessionStorage.setItem(CURRENT_TENANT_IN_SESSION, tenantId);
+  }
+
+  setDistricts(apiData) {
+    if (apiData) {
+      const data = apiData.slice();
+
+      this.districts = pipe(
+        map("district"),
+        filter((d) => d.toLowerCase() !== "all"),
+        uniq,
+        sortBy(identity)
+      )(data);
+      this.districtsIsLoading = false;
+    }
   }
 }
