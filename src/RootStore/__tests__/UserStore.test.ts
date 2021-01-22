@@ -44,10 +44,17 @@ const testAuthSettings = {
   client_id: "abc123",
   redirect_url: window.location.href,
 };
+const userEmail = "thirteen@mo.gov";
+const userDistrict = "13";
 
 beforeEach(() => {
   mockRootStore.mockImplementation(() => {
-    return { currentTenantId: tenantId };
+    return {
+      currentTenantId: tenantId,
+      tenantStore: {
+        districts: [userDistrict],
+      },
+    };
   });
   mockGetUser.mockResolvedValue(metadata);
   mockCreateAuth0Client.mockResolvedValue({
@@ -193,8 +200,6 @@ test.each(Object.keys(TENANTS))(
 describe("fetchRestrictedDistrictData", () => {
   let userStore: UserStore;
   let endpoint: string;
-  const userEmail = "thirteen@mo.gov";
-  const userDistrict = "13";
 
   describe("when API responds with success", () => {
     beforeEach(async () => {
@@ -244,6 +249,45 @@ describe("fetchRestrictedDistrictData", () => {
 
     it("sets the restrictedDistrict", () => {
       expect(userStore.restrictedDistrict).toEqual(userDistrict);
+    });
+  });
+
+  describe("when the restrictedDistrict is invalid", () => {
+    beforeEach(async () => {
+      mockCallMetricsApi.mockResolvedValue({
+        supervision_location_restricted_access_emails: [
+          {
+            restricted_user_email: userEmail.toUpperCase(),
+            allowed_level_1_supervision_location_ids: "INVALID_DISRTRICT_ID",
+          },
+        ],
+      });
+      mockIsAuthenticated.mockResolvedValue(true);
+      mockGetUser.mockResolvedValue({
+        email_verified: true,
+        ...metadata,
+        email: userEmail,
+      });
+
+      userStore = new UserStore({
+        authSettings: testAuthSettings,
+        rootStore: new RootStore(),
+      });
+
+      await userStore.authorize();
+      endpoint = `${tenantId}/newRevocations/supervision_location_restricted_access_emails`;
+    });
+
+    afterEach(() => {
+      jest.resetAllMocks();
+    });
+
+    it("sets the an authError", () => {
+      expect(userStore.authError).toEqual(
+        new Error(ERROR_MESSAGES.unauthorized)
+      );
+      expect(userStore.restrictedDistrict).toBe(undefined);
+      expect(userStore.restrictedDistrictIsLoading).toBe(false);
     });
   });
 

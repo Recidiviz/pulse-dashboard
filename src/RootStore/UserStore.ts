@@ -209,10 +209,20 @@ export default class UserStore {
           this.user.email.toLowerCase()
         );
       });
-
-    // TODO verify district
-
     this.restrictedDistrict =
       restrictedEmail?.allowed_level_1_supervision_location_ids;
+    this.verifyRestrictedDistrict();
+  }
+
+  verifyRestrictedDistrict(): void {
+    if (
+      this.restrictedDistrict &&
+      !this.rootStore?.tenantStore.districtsIsLoading &&
+      !this.rootStore?.tenantStore.districts.includes(this.restrictedDistrict)
+    ) {
+      this.authError = new Error(ERROR_MESSAGES.unauthorized);
+      this.restrictedDistrictIsLoading = false;
+      this.restrictedDistrict = undefined;
+    }
   }
 }
