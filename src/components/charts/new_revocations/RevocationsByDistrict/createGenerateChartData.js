@@ -111,7 +111,8 @@ const generateCountChartData = (filteredData, currentDistricts) => {
     currentDistricts &&
     labels[dataIndex] &&
     currentDistricts.find(
-      (currentDistrict) => currentDistrict === labels[dataIndex].toLowerCase()
+      (currentDistrict) =>
+        currentDistrict.toLowerCase() === labels[dataIndex].toLowerCase()
     )
       ? COLORS["lantern-light-blue"]
       : COLORS["lantern-orange"];

@@ -201,7 +201,10 @@ export default class UserStore {
     const restrictedEmail =
       restrictedEmails &&
       restrictedEmails.find((u) => {
-        return u.restricted_user_email === this.user.email;
+        return (
+          u.restricted_user_email.toLowerCase() ===
+          this.user.email.toLowerCase()
+        );
       });
 
     // TODO verify district

@@ -201,7 +201,7 @@ describe("fetchRestrictedDistrictData", () => {
       mockCallMetricsApi.mockResolvedValue({
         supervision_location_restricted_access_emails: [
           {
-            restricted_user_email: userEmail,
+            restricted_user_email: userEmail.toUpperCase(),
             allowed_level_1_supervision_location_ids: userDistrict,
           },
           {
