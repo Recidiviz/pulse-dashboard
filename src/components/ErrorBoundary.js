@@ -14,6 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
+
 import React from "react";
 import PropTypes from "prop-types";
 import Error from "./Error";
@@ -24,20 +25,20 @@ class ErrorBoundary extends React.Component {
     this.state = { isError: false };
   }
 
-  static getDerivedStateFromError() {
-    return { isError: true };
+  static getDerivedStateFromError(error) {
+    return { isError: true, errorMessage: error.message };
   }
 
   componentDidCatch(error, errorInfo) {
     // eslint-disable-next-line no-console
-    console.log(error, errorInfo);
+    console.log("error", error, errorInfo);
   }
 
   render() {
-    const { isError } = this.state;
+    const { isError, errorMessage } = this.state;
     const { children } = this.props;
     if (isError) {
-      return <Error />;
+      return <Error text={errorMessage} />;
     }
 
     return children;
