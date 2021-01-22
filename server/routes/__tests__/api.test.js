@@ -89,6 +89,7 @@ describe("API tests", () => {
     test.each(metricControllers)(
       "%p fetches metrics only if data is not cached in store",
       async (controllerFn, done) => {
+        // TODO: Set this expectation back to 1 when we remove the "original" cache keys
         await requestAndExpectFetchMetricsCalled(controllerFn, 1);
 
         await requestAndExpectFetchMetricsCalled(controllerFn, 0);

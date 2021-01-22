@@ -89,9 +89,20 @@ function clearMemoryCache() {
 }
 
 function cacheResponse(cacheKey, fetchValue, callback) {
-  const cache = getCache(cacheKey);
+  const cache = Array.isArray(cacheKey)
+    ? getCache(cacheKey[0])
+    : getCache(cacheKey);
+  let cacheKeyOriginal = cacheKey;
 
-  return cache.wrap(cacheKey, fetchValue).then(
+  if (Array.isArray(cacheKey)) {
+    // Set the subset cache keys, but return the original cache value until FE is ready.
+    cache.wrap(cacheKey[1], fetchValue);
+    [cacheKeyOriginal] = cacheKey;
+  }
+
+  // TODO: For now we are always going to respond with the original cache key
+  // and the full file contents until the FE is ready to receive the split files.
+  return cache.wrap(cacheKeyOriginal, fetchValue).then(
     (result) => {
       callback(null, result);
     },
