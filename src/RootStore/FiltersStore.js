@@ -70,7 +70,10 @@ export default class FiltersStore {
       ...(this.filterOptions[ADMISSION_TYPE].filterEnabled
         ? { [ADMISSION_TYPE]: this.filterOptions[ADMISSION_TYPE].defaultValue }
         : {}),
-      [DISTRICT]: [this.filterOptions[DISTRICT].defaultValue],
+      [DISTRICT]: [
+        this.rootStore.userStore.restrictedDistrict ||
+          this.filterOptions[DISTRICT].defaultValue,
+      ],
     };
   }
 

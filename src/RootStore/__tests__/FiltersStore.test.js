@@ -15,15 +15,14 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
+import { runInAction } from "mobx";
+
 import RootStore from "../RootStore";
-import { METADATA_NAMESPACE } from "../../constants";
 import { LANTERN_TENANTS } from "../../views/tenants/utils/lanternTenants";
-import { useRootStore } from "../../StoreProvider";
 
 jest.mock("../../StoreProvider");
 
 let rootStore;
-const metadataField = `${METADATA_NAMESPACE}app_metadata`;
 
 describe("FiltersStore", () => {
   const defaultFilters = {
@@ -38,15 +37,27 @@ describe("FiltersStore", () => {
 
   describe("filters", () => {
     it("are set correctly by default", () => {
-      LANTERN_TENANTS.forEach((stateCode) => {
-        const mockUser = { [metadataField]: { state_code: stateCode } };
-        useRootStore.mockReturnValue({
-          userStore: { user: mockUser, isAuthorized: true },
-        });
+      LANTERN_TENANTS.forEach((tenantId) => {
         rootStore = new RootStore();
+        runInAction(() => {
+          rootStore.tenantStore.currentTenantId = tenantId;
+        });
 
         expect(rootStore.filtersStore.defaultFilters).toEqual(defaultFilters);
       });
+    });
+
+    it("sets the defaultFilters to restrictedDistrict if it exists", () => {
+      const userDistrict = "99";
+
+      rootStore = new RootStore();
+      runInAction(() => {
+        rootStore.userStore.restrictedDistrict = userDistrict;
+      });
+
+      expect(rootStore.filtersStore.defaultFilters.district).toEqual([
+        userDistrict,
+      ]);
     });
   });
 });
