@@ -42,8 +42,8 @@ export default class RevocationsOverTimeStore extends BaseDataStore {
     });
   }
 
-  *fetchData(queryString = "") {
-    const endpoint = `${this.rootStore.currentTenantId}/newRevocations/${this.file}${queryString}`;
+  *fetchData({ tenantId, queryString = "" }) {
+    const endpoint = `${tenantId}/newRevocations/${this.file}${queryString}`;
     try {
       this.isLoading = true;
       const responseData = yield callMetricsApi(

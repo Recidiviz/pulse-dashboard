@@ -95,7 +95,7 @@ export default class UserStore {
 
     when(
       () => !this.userIsLoading,
-      () => this.fetchRestrictedDistrictData()
+      () => this.fetchRestrictedDistrictData(this.rootStore?.currentTenantId)
     );
   }
 
@@ -180,9 +180,11 @@ export default class UserStore {
     return getUserStateCode(this.user);
   }
 
-  async fetchRestrictedDistrictData(): Promise<void> {
+  async fetchRestrictedDistrictData(
+    tenantId: string | undefined
+  ): Promise<void> {
     const file = "supervision_location_restricted_access_emails";
-    const endpoint = `${this.rootStore?.currentTenantId}/newRevocations/${file}`;
+    const endpoint = `${tenantId}/newRevocations/${file}`;
     try {
       this.restrictedDistrictIsLoading = true;
       this.restrictedDistrict = undefined;
