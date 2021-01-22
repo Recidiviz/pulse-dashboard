@@ -23,7 +23,7 @@
 const { validationResult } = require("express-validator");
 const { refreshRedisCache, fetchMetrics, cacheResponse } = require("../core");
 const { default: isDemoMode } = require("../utils/isDemoMode");
-const { getCacheKey } = require("../utils/getCacheKey");
+const { getCacheKey } = require("../utils/cacheKeys");
 
 const BAD_REQUEST = 400;
 const SERVER_ERROR = 500;
