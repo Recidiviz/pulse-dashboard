@@ -56,7 +56,7 @@ describe("BaseDataStore", () => {
       UserStore.mockImplementationOnce(() => {
         return {
           user: mockUser,
-          isLoading: false,
+          userIsLoading: false,
           getTokenSilently: mockGetTokenSilently,
         };
       });
@@ -125,7 +125,7 @@ describe("BaseDataStore", () => {
       UserStore.mockImplementationOnce(() => {
         return {
           user: null,
-          isLoading: true,
+          userIsLoading: true,
           getTokenSilently: mockGetTokenSilently,
         };
       });
