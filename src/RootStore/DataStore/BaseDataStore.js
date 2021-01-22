@@ -67,7 +67,7 @@ export default class BaseDataStore {
     autorun(() => {
       const { userStore } = this.rootStore;
 
-      if (userStore && !userStore.isLoading) {
+      if (userStore && !userStore.userIsLoading) {
         this.fetchData(this.queryFilters);
       }
     });

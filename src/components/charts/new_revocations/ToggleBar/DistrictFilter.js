@@ -32,11 +32,14 @@ const allDistrictsOption = { label: "All", value: "All" };
 const DistrictFilter = () => {
   const { filters, filtersStore, dataStore, userStore } = useRootStore();
   const store = dataStore.revocationsOverTimeStore;
-  const { district } = userStore;
+  const { restrictedDistrict } = userStore;
 
   const getSelectElement = () => {
-    if (district) {
-      const singleValue = { label: district, value: district };
+    if (restrictedDistrict) {
+      const singleValue = {
+        label: restrictedDistrict,
+        value: restrictedDistrict,
+      };
 
       return (
         <Select

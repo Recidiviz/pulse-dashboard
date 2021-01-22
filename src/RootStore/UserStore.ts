@@ -16,8 +16,9 @@
 // =============================================================================
 
 import createAuth0Client, { Auth0ClientOptions } from "@auth0/auth0-spa-js";
-import { makeAutoObservable, runInAction } from "mobx";
+import { makeAutoObservable, runInAction, when } from "mobx";
 import qs from "qs";
+
 import { ERROR_MESSAGES } from "../constants/errorMessages";
 import type RootStore from "./RootStore";
 import {
@@ -25,10 +26,20 @@ import {
   getStateNameForCode,
   getAvailableStateCodes,
 } from "./utils/user";
+import { callMetricsApi } from "../api/metrics/metricsClient";
+import isDemoMode from "../utils/authentication/demoMode";
+import { getDemoUser } from "../utils/authentication/viewAuthentication";
 
 type ConstructorProps = {
   authSettings?: Auth0ClientOptions;
   rootStore?: RootStore;
+};
+
+type RestrictedAccessEmails = {
+  // eslint-disable-next-line camelcase
+  restricted_user_email: string;
+  // eslint-disable-next-line camelcase
+  allowed_level_1_supervision_location_ids: string;
 };
 
 /**
@@ -54,31 +65,38 @@ export default class UserStore {
 
   isAuthorized: boolean;
 
-  isLoading: boolean;
+  userIsLoading: boolean;
 
   // TODO TS create user type
   user: any;
-
-  district?: string;
-
-  stateCode?: string;
 
   getTokenSilently?: () => void;
 
   logout?: () => void;
 
+  restrictedDistrict?: string;
+
+  restrictedDistrictIsLoading: boolean;
+
   readonly rootStore?: RootStore;
 
   constructor({ authSettings, rootStore }: ConstructorProps) {
-    makeAutoObservable(this, { rootStore: false, authSettings: false });
+    makeAutoObservable(this, {
+      rootStore: false,
+      authSettings: false,
+    });
 
     this.authSettings = authSettings;
     this.rootStore = rootStore;
 
     this.isAuthorized = false;
-    this.isLoading = true;
+    this.userIsLoading = true;
+    this.restrictedDistrictIsLoading = true;
 
-    // TODO 670 set restricted district based on user district
+    when(
+      () => !this.userIsLoading,
+      () => this.fetchRestrictedDistrictData()
+    );
   }
 
   /**
@@ -88,6 +106,15 @@ export default class UserStore {
    * Returns an Error if Auth0 configuration is not present.
    */
   async authorize(): Promise<void> {
+    if (isDemoMode()) {
+      this.isAuthorized = true;
+      this.userIsLoading = false;
+      this.user = getDemoUser();
+      this.getTokenSilently = () => "";
+
+      return;
+    }
+
     if (!this.authSettings) {
       this.authError = new Error(ERROR_MESSAGES.auth0Configuration);
       return;
@@ -109,17 +136,15 @@ export default class UserStore {
       }
       window.history.replaceState({}, document.title, replacementUrl);
     }
-
     if (await auth0.isAuthenticated()) {
       const user = await auth0.getUser();
       runInAction(() => {
-        this.isLoading = false;
+        this.userIsLoading = false;
         if (user && user.email_verified) {
-          this.isAuthorized = true;
+          this.user = user;
           this.getTokenSilently = (...p: any) => auth0.getTokenSilently(...p);
           this.logout = (...p: any) => auth0.logout(...p);
-          this.user = user;
-          this.stateCode = getUserStateCode(user);
+          this.isAuthorized = true;
         } else {
           this.isAuthorized = false;
         }
@@ -145,5 +170,43 @@ export default class UserStore {
    */
   get stateName(): string {
     return getStateNameForCode(this.stateCode);
+  }
+
+  /**
+   * Returns the state code of the authorized state for the given user.
+   * For Recidiviz users or users in demo mode, this will be 'recidiviz'.
+   */
+  get stateCode(): string {
+    return getUserStateCode(this.user);
+  }
+
+  async fetchRestrictedDistrictData(): Promise<void> {
+    const file = "supervision_location_restricted_access_emails";
+    const endpoint = `${this.rootStore?.currentTenantId}/newRevocations/${file}`;
+    try {
+      this.restrictedDistrictIsLoading = true;
+      const responseData = await callMetricsApi(
+        endpoint,
+        this.getTokenSilently
+      );
+      this.setRestrictedDistrict(responseData[file]);
+      this.restrictedDistrictIsLoading = false;
+    } catch (error) {
+      this.authError = new Error(ERROR_MESSAGES.unauthorized);
+      this.restrictedDistrictIsLoading = false;
+    }
+  }
+
+  setRestrictedDistrict(restrictedEmails: Array<RestrictedAccessEmails>): void {
+    const restrictedEmail =
+      restrictedEmails &&
+      restrictedEmails.find((u) => {
+        return u.restricted_user_email === this.user.email;
+      });
+
+    // TODO verify district
+
+    this.restrictedDistrict =
+      restrictedEmail?.allowed_level_1_supervision_location_ids;
   }
 }

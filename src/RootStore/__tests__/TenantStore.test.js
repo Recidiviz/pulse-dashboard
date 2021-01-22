@@ -26,6 +26,7 @@ import { METADATA_NAMESPACE } from "../../constants";
 jest.mock("@auth0/auth0-spa-js");
 jest.mock("../utils/user");
 jest.mock("../../StoreProvider");
+jest.mock("../../api/metrics/metricsClient");
 
 let rootStore;
 const metadataField = `${METADATA_NAMESPACE}app_metadata`;

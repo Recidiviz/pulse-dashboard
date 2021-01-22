@@ -52,7 +52,7 @@ export default class TenantStore {
     this.rootStore = rootStore;
 
     when(
-      () => !this.rootStore.userStore.isLoading,
+      () => !this.rootStore.userStore.userIsLoading,
       () => this.setCurrentTenantId(getTenantIdFromUser(this.rootStore.user))
     );
   }

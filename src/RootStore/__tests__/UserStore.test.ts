@@ -21,18 +21,24 @@ import { reactImmediately } from "../../testUtils";
 import UserStore from "../UserStore";
 import { METADATA_NAMESPACE } from "../../constants";
 import TENANTS from "../../tenants";
+import { callMetricsApi } from "../../api/metrics/metricsClient";
+import RootStore from "../RootStore";
 
 jest.mock("@auth0/auth0-spa-js");
-
-const metadataField = `${METADATA_NAMESPACE}app_metadata`;
-const metadata = { [metadataField]: { state_code: "US_MO" } };
+jest.mock("../RootStore");
+jest.mock("../../api/metrics/metricsClient");
 
 const mockCreateAuth0Client = createAuth0Client as jest.Mock;
+const mockCallMetricsApi = callMetricsApi as jest.Mock;
 const mockGetUser = jest.fn();
 const mockHandleRedirectCallback = jest.fn();
 const mockIsAuthenticated = jest.fn();
 const mockLoginWithRedirect = jest.fn();
+const mockRootStore = RootStore as jest.Mock;
 
+const tenantId = "US_MO";
+const metadataField = `${METADATA_NAMESPACE}app_metadata`;
+const metadata = { [metadataField]: { state_code: tenantId } };
 const testAuthSettings = {
   domain: "example.com",
   client_id: "abc123",
@@ -40,24 +46,27 @@ const testAuthSettings = {
 };
 
 beforeEach(() => {
+  mockRootStore.mockImplementation(() => {
+    return { currentTenantId: tenantId };
+  });
   mockGetUser.mockResolvedValue(metadata);
   mockCreateAuth0Client.mockResolvedValue({
     getUser: mockGetUser,
     handleRedirectCallback: mockHandleRedirectCallback,
     isAuthenticated: mockIsAuthenticated,
     loginWithRedirect: mockLoginWithRedirect,
+    getTokenSilently: jest.fn(),
   });
 });
 
 afterEach(() => {
   jest.resetAllMocks();
 });
-
 test("authorization immediately pending", async () => {
   const store = new UserStore({});
   reactImmediately(() => {
     expect(store.isAuthorized).toBe(false);
-    expect(store.isLoading).toBe(true);
+    expect(store.userIsLoading).toBe(true);
   });
   expect.hasAssertions();
 });
@@ -82,7 +91,7 @@ test("authorized when authenticated", async () => {
   await store.authorize();
   reactImmediately(() => {
     expect(store.isAuthorized).toBe(true);
-    expect(store.isLoading).toBe(false);
+    expect(store.userIsLoading).toBe(false);
   });
   expect.hasAssertions();
 });
@@ -153,8 +162,8 @@ test("redirect to targetUrl after callback", async () => {
 
 test.each(Object.keys(TENANTS))(
   "gets metadata for the user %s",
-  async (tenantId) => {
-    const tenantMetadata = { [metadataField]: { state_code: tenantId } };
+  async (currentTenantId) => {
+    const tenantMetadata = { [metadataField]: { state_code: currentTenantId } };
     mockIsAuthenticated.mockResolvedValue(true);
     mockGetUser.mockResolvedValue({
       email_verified: true,
@@ -169,14 +178,102 @@ test.each(Object.keys(TENANTS))(
       expect(store.availableStateCodes).toBe(
         // TODO TS remove when tenants is ported to TS
         // @ts-ignore
-        TENANTS[tenantId].availableStateCodes
+        TENANTS[currentTenantId].availableStateCodes
       );
       expect(store.stateName).toBe(
         // TODO TS remove when tenants is ported to TS
         // @ts-ignore
-        TENANTS[tenantId].name
+        TENANTS[currentTenantId].name
       );
     });
     expect.hasAssertions();
   }
 );
+
+describe("fetchRestrictedDistrictData", () => {
+  let userStore: UserStore;
+  let endpoint: string;
+  const userEmail = "thirteen@mo.gov";
+  const userDistrict = "13";
+
+  describe("when API responds with success", () => {
+    beforeEach(async () => {
+      mockCallMetricsApi.mockResolvedValue({
+        supervision_location_restricted_access_emails: [
+          {
+            restricted_user_email: userEmail,
+            allowed_level_1_supervision_location_ids: userDistrict,
+          },
+          {
+            restricted_user_email: "twentyOne@mo.gov",
+            allowed_level_1_supervision_location_ids: "21",
+          },
+        ],
+      });
+      mockIsAuthenticated.mockResolvedValue(true);
+      mockGetUser.mockResolvedValue({
+        email_verified: true,
+        ...metadata,
+        email: userEmail,
+      });
+
+      userStore = new UserStore({
+        authSettings: testAuthSettings,
+        rootStore: new RootStore(),
+      });
+
+      await userStore.authorize();
+      endpoint = `${tenantId}/newRevocations/supervision_location_restricted_access_emails`;
+    });
+
+    afterEach(() => {
+      jest.resetAllMocks();
+    });
+
+    it("makes a request to the correct endpoint for the data", async () => {
+      expect(callMetricsApi).toHaveBeenCalledTimes(1);
+      expect(callMetricsApi).toHaveBeenCalledWith(
+        endpoint,
+        expect.any(Function)
+      );
+    });
+
+    it("sets isLoading to false and isError to false", () => {
+      expect(userStore.restrictedDistrictIsLoading).toEqual(false);
+    });
+
+    it("sets the restrictedDistrict", () => {
+      expect(userStore.restrictedDistrict).toEqual(userDistrict);
+    });
+  });
+
+  describe("when API responds with an error", () => {
+    beforeEach(async () => {
+      mockCallMetricsApi.mockRejectedValueOnce(new Error());
+
+      mockIsAuthenticated.mockResolvedValue(true);
+      userStore = new UserStore({
+        authSettings: testAuthSettings,
+        rootStore: new RootStore(),
+      });
+
+      await userStore.authorize();
+      endpoint = `${tenantId}/newRevocations/supervision_location_restricted_access_emails`;
+    });
+
+    afterEach(() => {
+      jest.resetAllMocks();
+    });
+
+    it("does not set the restrictedDistrict", () => {
+      expect(userStore.restrictedDistrict).toBeFalsy();
+    });
+
+    it("sets an authError and isLoading to false", () => {
+      expect(userStore.authError).toEqual(
+        new Error(ERROR_MESSAGES.unauthorized)
+      );
+      expect(userStore.restrictedDistrictIsLoading).toBe(false);
+    });
+  });
+});
