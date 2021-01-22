@@ -185,6 +185,7 @@ export default class UserStore {
     const endpoint = `${this.rootStore?.currentTenantId}/newRevocations/${file}`;
     try {
       this.restrictedDistrictIsLoading = true;
+      this.restrictedDistrict = undefined;
       const responseData = await callMetricsApi(
         endpoint,
         this.getTokenSilently
