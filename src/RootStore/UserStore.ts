@@ -16,7 +16,7 @@
 // =============================================================================
 
 import createAuth0Client, { Auth0ClientOptions } from "@auth0/auth0-spa-js";
-import { makeAutoObservable, runInAction, when } from "mobx";
+import { makeAutoObservable, runInAction, autorun } from "mobx";
 import qs from "qs";
 
 import { ERROR_MESSAGES } from "../constants/errorMessages";
@@ -93,10 +93,11 @@ export default class UserStore {
     this.userIsLoading = true;
     this.restrictedDistrictIsLoading = true;
 
-    when(
-      () => !this.userIsLoading,
-      () => this.fetchRestrictedDistrictData(this.rootStore?.currentTenantId)
-    );
+    autorun(() => {
+      if (!this.userIsLoading) {
+        this.fetchRestrictedDistrictData(this.rootStore?.currentTenantId);
+      }
+    });
   }
 
   /**

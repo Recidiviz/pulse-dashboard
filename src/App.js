@@ -53,12 +53,12 @@ initI18n();
 
 // prettier-ignore
 const App = () => (
-<StoreProvider>
-    <PageProvider>
-      <Router>
-        <Switch>
-          <Route path="/verify" component={VerificationNeeded} />
-            <ErrorBoundary>
+  <StoreProvider>
+    <ErrorBoundary>
+      <PageProvider>
+        <Router>
+          <Switch>
+            <Route path="/verify" component={VerificationNeeded} />
               <AuthWall>
                 <LanternLayout tenantIds={LANTERN_TENANTS}>
                   <Switch>
@@ -87,10 +87,10 @@ const App = () => (
                   </Switch>
                 </CoreLayout>
               </AuthWall>
-            </ErrorBoundary>
-          </Switch>
-        </Router>
-      </PageProvider>
+            </Switch>
+          </Router>
+        </PageProvider>
+    </ErrorBoundary>
   </StoreProvider>
 );
 
