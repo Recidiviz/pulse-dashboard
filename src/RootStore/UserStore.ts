@@ -16,7 +16,7 @@
 // =============================================================================
 
 import createAuth0Client, { Auth0ClientOptions } from "@auth0/auth0-spa-js";
-import { makeAutoObservable, runInAction, autorun } from "mobx";
+import { makeAutoObservable, runInAction, autorun, flow } from "mobx";
 import qs from "qs";
 
 import { ERROR_MESSAGES } from "../constants/errorMessages";
@@ -181,15 +181,16 @@ export default class UserStore {
     return getUserStateCode(this.user);
   }
 
-  async fetchRestrictedDistrictData(
+  fetchRestrictedDistrictData = flow(function* (
+    this: UserStore,
     tenantId: string | undefined
-  ): Promise<void> {
+  ) {
     const file = "supervision_location_restricted_access_emails";
     const endpoint = `${tenantId}/newRevocations/${file}`;
     try {
       this.restrictedDistrictIsLoading = true;
       this.restrictedDistrict = undefined;
-      const responseData = await callMetricsApi(
+      const responseData = yield callMetricsApi(
         endpoint,
         this.getTokenSilently
       );
@@ -199,7 +200,7 @@ export default class UserStore {
       this.authError = new Error(ERROR_MESSAGES.unauthorized);
       this.restrictedDistrictIsLoading = false;
     }
-  }
+  });
 
   setRestrictedDistrict(restrictedEmails: Array<RestrictedAccessEmails>): void {
     const restrictedEmail =
