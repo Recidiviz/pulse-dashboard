@@ -1,14 +1,30 @@
+// Recidiviz - a data platform for criminal justice reform
+// Copyright (C) 2021 Recidiviz, Inc.
+//
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <https://www.gnu.org/licenses/>.
+// =============================================================================
 const {
-  SUBSET_MANIFEST,
+  getSubsetManifest,
   FILES_WITH_SUBSETS,
 } = require("../constants/subsetManifest");
 
 /**
  *
- * @param {string[][]} collection - A nested array of strings, [["dimensionKeyA=0"], ["dimensionKeyB=0"]]
+ * @param {string[][]} collection - A nested array of strings, [["dimensionKeyA=0"], ["dimensionKeyB=0", "dimensionKeyB=1"]]
  * @param {number} max - The max number of items to include in each combination.
  *
- * @returns {string[][]} - A nested array of all the combinations. [["dimensionKeyA=0", "dimensionKeyB=0"]]
+ * @returns {string[][]} - A nested array of all the combinations. [["dimensionKeyA=0", "dimensionKeyB=0"], ["dimensionKeyA=0", "dimensionKeyB=1"]]
  */
 function getCombinations(collection, max = 0) {
   const combinations = [];
@@ -97,7 +113,7 @@ function getCacheKey({
     return cacheKey;
   }
 
-  SUBSET_MANIFEST.forEach(([dimensionKey, dimensionSubsets]) => {
+  getSubsetManifest().forEach(([dimensionKey, dimensionSubsets]) => {
     const subsetValue = cacheKeySubset[dimensionKey];
     const subsetIndex = dimensionSubsets.findIndex(
       (subset) => subsetValue && subset.includes(subsetValue)

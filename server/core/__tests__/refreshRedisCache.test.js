@@ -28,10 +28,12 @@ jest.mock("../cacheManager", () => {
 
 jest.mock("../../constants/subsetManifest", () => {
   return {
-    SUBSET_MANIFEST: [
-      ["violationType", [["all"], ["felony"]]],
-      ["chargeCategory", [["all"], ["domestic_violence"], ["sex_offense"]]],
-    ],
+    getSubsetManifest: jest.fn().mockImplementation(() => {
+      return [
+        ["violationType", [["all"], ["felony"]]],
+        ["chargeCategory", [["all"], ["domestic_violence"], ["sex_offense"]]],
+      ];
+    }),
     FILES_WITH_SUBSETS: ["revocations_matrix_distribution_by_district"],
   };
 });
@@ -39,7 +41,6 @@ jest.mock("../../constants/subsetManifest", () => {
 describe("refreshRedisCache", () => {
   let fileName;
   let mockFetchValue;
-  let cacheKey;
   const stateCode = "US_DEMO";
   const metricType = "metric_type";
   const fileContents = "a bunch of numbers";
@@ -62,10 +63,10 @@ describe("refreshRedisCache", () => {
   describe("refreshing the cache without subset files", () => {
     beforeEach(() => {
       fileName = "random_file_name";
-      cacheKey = `${stateCode}-${metricType}-${fileName}`;
     });
 
     it("calls the cache with the correct key and value", (done) => {
+      const cacheKey = `${stateCode}-${metricType}-${fileName}`;
       refreshRedisCache(
         mockFetchValue,
         stateCode,
@@ -84,7 +85,7 @@ describe("refreshRedisCache", () => {
       );
     });
 
-    it("returns a responds with an error when caching fails", (done) => {
+    it("returns an error response when caching fails", (done) => {
       const error = new Error("Error setting cache value");
       mockCache.set.mockImplementationOnce(() => {
         throw error;
@@ -101,7 +102,6 @@ describe("refreshRedisCache", () => {
   describe("refreshing the cache with subset files", () => {
     beforeEach(() => {
       fileName = "revocations_matrix_distribution_by_district";
-      cacheKey = `${stateCode}-${metricType}-${fileName}`;
     });
 
     it("sets the cache key for each possible subset", (done) => {

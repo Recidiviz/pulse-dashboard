@@ -28,11 +28,11 @@
 const { getCache } = require("./cacheManager");
 const { getSubsetCacheKeyCombinations } = require("../utils/cacheKeys");
 const {
-  SUBSET_MANIFEST,
+  getSubsetManifest,
   FILES_WITH_SUBSETS,
 } = require("../constants/subsetManifest");
 
-const allSubsetCacheKeys = getSubsetCacheKeyCombinations(SUBSET_MANIFEST);
+const allSubsetCacheKeys = getSubsetCacheKeyCombinations(getSubsetManifest());
 
 function cacheEachSubsetFile(cache, cacheKey, metricFile) {
   const cachePromises = [];
@@ -53,7 +53,7 @@ function cacheEachFile({ files, cacheKeyPrefix }) {
     const metricFile = { [file]: files[file] };
 
     if (FILES_WITH_SUBSETS.includes(file)) {
-      // TODO: Remove line 57 once the front end is ready to receive the subset files.
+      // TODO: Remove line 59 once the front end is ready to receive the subset files.
       // This is the "original" cacheKey that will continue to return the full file
       // until both the FE and BE are ready to work with split files.
       cachePromises.push(cache.set(cacheKey, metricFile));
