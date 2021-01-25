@@ -11,7 +11,7 @@ const SUBSET_MANIFEST = [
         "low_tech",
         "med_tech",
         "municipal",
-        "no_violations",
+        "no_violation_type",
         "substance_abuse",
         "technical",
       ],
