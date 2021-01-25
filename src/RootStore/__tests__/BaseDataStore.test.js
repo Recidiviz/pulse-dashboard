@@ -82,7 +82,7 @@ describe("BaseDataStore", () => {
     describe("fetchData", () => {
       it("makes a request to the correct endpoint for the apiData", () => {
         const expectedEndpoint = `${tenantId}/newRevocations/revocations_matrix_distribution_by_district
-        ?metricPeriodMonths=12&chargeCategory=All&supervisionType=All
+        ?metricPeriodMonths=12&chargeCategory=All&violationType=All&supervisionType=All
         &supervisionLevel=All&district[0]=All`.replace(/\n\s+/g, "");
 
         expect(callMetricsApi).toHaveBeenCalledTimes(1);

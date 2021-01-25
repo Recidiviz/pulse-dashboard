@@ -22,7 +22,7 @@ import { METADATA_NAMESPACE } from "../../constants";
 
 jest.mock("@auth0/auth0-spa-js");
 jest.mock("../../api/metrics/metricsClient");
-jest.mock("../DataStore/BaseDataStore");
+jest.mock("../DataStore/DataStore");
 
 let rootStore;
 

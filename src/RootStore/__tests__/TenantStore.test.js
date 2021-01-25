@@ -27,7 +27,7 @@ jest.mock("@auth0/auth0-spa-js");
 jest.mock("../utils/user");
 jest.mock("../../StoreProvider");
 jest.mock("../../api/metrics/metricsClient");
-jest.mock("../DataStore/BaseDataStore");
+jest.mock("../DataStore/DataStore");
 
 let rootStore;
 const metadataField = `${METADATA_NAMESPACE}app_metadata`;
