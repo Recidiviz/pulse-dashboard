@@ -235,7 +235,7 @@ describe("fetchRestrictedDistrictData", () => {
       jest.resetAllMocks();
     });
 
-    it("makes a request to the correct endpoint for the data", async () => {
+    it("makes a request to the correct endpoint for the data", () => {
       expect(callMetricsApi).toHaveBeenCalledTimes(1);
       expect(callMetricsApi).toHaveBeenCalledWith(
         endpoint,
