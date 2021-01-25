@@ -37,7 +37,7 @@ describe("getQueryStringFromFilters", () => {
   it("filters out empty values", () => {
     filters = { ...filters, violationType: "", supervisionType: "All" };
     expect(getQueryStringFromFilters(filters)).toEqual(
-      "?district[0]=All&chargeCategory=GENERAL&supervisionType=All"
+      "?district[0]=All&chargeCategory=GENERAL&violationType=All&supervisionType=All"
     );
   });
 });
