@@ -20,7 +20,7 @@ const Error = ({ text }) => {
 };
 
 Error.defaultProps = {
-  text: "Something went wrong while loading this chart",
+  text: "Something went wrong while loading this chart.",
 };
 
 Error.propTypes = {
