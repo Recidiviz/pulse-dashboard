@@ -106,6 +106,12 @@ app.get(
   checkJwt,
   api.programmingExplore
 );
+app.post(
+  "/api/:stateCode/restrictedAccess",
+  checkJwt,
+  express.json(),
+  api.restrictedAccess
+);
 
 // An App Engine-specific API for handling warmup requests on new instance initialization
 app.get("/_ah/warmup", () => {

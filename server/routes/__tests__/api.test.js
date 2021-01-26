@@ -32,12 +32,13 @@ const {
   facilitiesExplore,
   programmingExplore,
   refreshCache,
+  restrictedAccess,
   responder,
 } = require("../api");
 
 const { clearMemoryCache } = require("../../core/cacheManager");
 
-describe("API tests", () => {
+describe("API GET tests", () => {
   const stateCode = "test_id";
 
   beforeAll(() => {
@@ -62,7 +63,17 @@ describe("API tests", () => {
     });
   }
 
-  describe("API fetching and caching", () => {
+  async function requestAndExpectFetchMetricsCalled(
+    controllerFn,
+    numCalls,
+    request
+  ) {
+    await fakeRequest(controllerFn, request);
+    expect(fetchMetrics.mock.calls.length).toBe(numCalls);
+    fetchMetrics.mockClear();
+  }
+
+  describe("API fetching and caching for GET requests", () => {
     const metricControllers = [
       [newRevocations],
       [newRevocationFile],
@@ -79,19 +90,12 @@ describe("API tests", () => {
       jest.resetModules();
     });
 
-    async function requestAndExpectFetchMetricsCalled(controllerFn, numCalls) {
-      await fakeRequest(controllerFn);
-      expect(fetchMetrics.mock.calls.length).toBe(numCalls);
-      fetchMetrics.mockClear();
-    }
-
     metricControllers.forEach(() => {});
     test.each(metricControllers)(
       "%p fetches metrics only if data is not cached in store",
       async (controllerFn, done) => {
         // TODO: Set this expectation back to 1 when we remove the "original" cache keys
         await requestAndExpectFetchMetricsCalled(controllerFn, 1);
-
         await requestAndExpectFetchMetricsCalled(controllerFn, 0);
 
         await clearMemoryCache();
@@ -132,6 +136,55 @@ describe("API tests", () => {
         stateCode,
         "newRevocation",
         null,
+        false
+      );
+    });
+  });
+
+  describe("API fetching and caching for POST requests", () => {
+    const userEmail = "thirteen@state.gov";
+    const postRequest = { params: { stateCode }, body: { userEmail } };
+    const file = "supervision_location_restricted_access_emails";
+
+    afterEach(async () => {
+      await clearMemoryCache();
+      fetchMetrics.mockClear();
+      jest.resetModules();
+    });
+
+    it("restrictedAccess fetches file only if data is not cached in store", async () => {
+      await requestAndExpectFetchMetricsCalled(
+        restrictedAccess,
+        1,
+        postRequest
+      );
+
+      await requestAndExpectFetchMetricsCalled(
+        restrictedAccess,
+        0,
+        postRequest
+      );
+
+      await clearMemoryCache();
+
+      await requestAndExpectFetchMetricsCalled(
+        restrictedAccess,
+        1,
+        postRequest
+      );
+      await requestAndExpectFetchMetricsCalled(
+        restrictedAccess,
+        0,
+        postRequest
+      );
+    });
+
+    it("restrictedAccess - calls fetchMetrics with the correct args", async () => {
+      await fakeRequest(restrictedAccess, postRequest);
+      expect(fetchMetrics).toHaveBeenCalledWith(
+        stateCode,
+        "newRevocation",
+        file,
         false
       );
     });
