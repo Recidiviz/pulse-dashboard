@@ -35,6 +35,7 @@ const mockHandleRedirectCallback = jest.fn();
 const mockIsAuthenticated = jest.fn();
 const mockLoginWithRedirect = jest.fn();
 const mockRootStore = RootStore as jest.Mock;
+const mockGetTokenSilently = jest.fn();
 
 const tenantId = "US_MO";
 const metadataField = `${METADATA_NAMESPACE}app_metadata`;
@@ -215,19 +216,18 @@ describe("fetchRestrictedDistrictData", () => {
           },
         ],
       });
-      mockIsAuthenticated.mockResolvedValue(true);
-      mockGetUser.mockResolvedValue({
-        email_verified: true,
-        ...metadata,
-        email: userEmail,
+
+      reactImmediately(() => {
+        userStore = new UserStore({
+          authSettings: testAuthSettings,
+          rootStore: new RootStore(),
+        });
+
+        userStore.user = { email: userEmail };
+        userStore.getTokenSilently = mockGetTokenSilently;
+        userStore.userIsLoading = false;
       });
 
-      userStore = new UserStore({
-        authSettings: testAuthSettings,
-        rootStore: new RootStore(),
-      });
-
-      await userStore.authorize();
       endpoint = `${tenantId}/newRevocations/supervision_location_restricted_access_emails`;
     });
 
@@ -239,7 +239,7 @@ describe("fetchRestrictedDistrictData", () => {
       expect(callMetricsApi).toHaveBeenCalledTimes(1);
       expect(callMetricsApi).toHaveBeenCalledWith(
         endpoint,
-        expect.any(Function)
+        mockGetTokenSilently
       );
     });
 
