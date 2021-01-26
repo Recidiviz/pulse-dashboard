@@ -23,7 +23,7 @@ const mockJsonFile = `${mockSecondFileName}.json`;
 const mockMetricTypeFiles = [mockTxtFile, mockJsonFile];
 const mockMetricTypes = { [mockMetricType]: mockMetricTypeFiles };
 
-jest.mock("../constants", () => ({
+jest.mock("../../constants/filesByMetricType", () => ({
   FILES_BY_METRIC_TYPE: mockMetricTypes,
 }));
 const { getFilesByMetricType } = require("../getFilesByMetricType");
@@ -43,7 +43,7 @@ describe("getFilesByMetricType tests", () => {
   it("should return txt if for given file name both txt and json files exist", () => {
     const mockTxtFile = `${mockFileName}.txt`;
     const mockJsonFile = `${mockFileName}.json`;
-    jest.mock("../constants", () => ({
+    jest.mock("../../constants/filesByMetricType", () => ({
       FILES_BY_METRIC_TYPE: {
         [mockMetricType]: [mockJsonFile, mockTxtFile],
       },

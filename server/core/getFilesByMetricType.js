@@ -15,7 +15,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-const { FILES_BY_METRIC_TYPE } = require("./constants");
+const { FILES_BY_METRIC_TYPE } = require("../constants/filesByMetricType");
 
 /**
  * Retrieves the names of all of the files which are available for the given metric type,
