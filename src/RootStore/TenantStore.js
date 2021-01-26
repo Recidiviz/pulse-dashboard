@@ -15,7 +15,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import { makeAutoObservable, when, action } from "mobx";
+import { makeAutoObservable, when } from "mobx";
 import filter from "lodash/fp/filter";
 import identity from "lodash/fp/identity";
 import map from "lodash/fp/map";
@@ -55,10 +55,7 @@ export default class TenantStore {
   districtsIsLoading = true;
 
   constructor({ rootStore }) {
-    makeAutoObservable(this, {
-      setDistricts: action,
-      setCurrentTenantId: action,
-    });
+    makeAutoObservable(this);
 
     this.rootStore = rootStore;
 
@@ -71,6 +68,7 @@ export default class TenantStore {
   setCurrentTenantId(tenantId) {
     this.currentTenantId = tenantId;
     sessionStorage.setItem(CURRENT_TENANT_IN_SESSION, tenantId);
+    this.districtsIsLoading = true;
   }
 
   setDistricts(apiData) {

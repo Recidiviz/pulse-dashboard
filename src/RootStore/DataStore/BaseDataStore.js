@@ -67,7 +67,11 @@ export default class BaseDataStore {
     autorun(() => {
       const { userStore } = this.rootStore;
 
-      if (userStore && !userStore.userIsLoading) {
+      if (
+        userStore &&
+        !userStore.userIsLoading &&
+        !userStore.restrictedDistrictIsLoading
+      ) {
         this.fetchData({
           tenantId: this.rootStore.currentTenantId,
           queryString: this.queryFilters,

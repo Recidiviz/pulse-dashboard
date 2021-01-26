@@ -58,6 +58,7 @@ describe("BaseDataStore", () => {
           user: mockUser,
           userIsLoading: false,
           getTokenSilently: mockGetTokenSilently,
+          restrictedDistrictIsLoading: false,
         };
       });
 
@@ -127,6 +128,36 @@ describe("BaseDataStore", () => {
           user: null,
           userIsLoading: true,
           getTokenSilently: mockGetTokenSilently,
+          restrictedDistrictIsLoading: false,
+        };
+      });
+      rootStore = new RootStore();
+      baseStore = new BaseDataStore({ rootStore, file });
+    });
+
+    afterAll(() => {
+      jest.resetAllMocks();
+    });
+
+    it("does not fetch data", () => {
+      expect(callMetricsApi).toHaveBeenCalledTimes(0);
+    });
+
+    it("sets isError to false and isLoading to false", () => {
+      expect(baseStore.isError).toBe(false);
+      expect(baseStore.isLoading).toBe(true);
+    });
+  });
+
+  describe("when restrictedDistrict is loading", () => {
+    beforeAll(() => {
+      jest.resetAllMocks();
+      UserStore.mockImplementationOnce(() => {
+        return {
+          user: mockUser,
+          userIsLoading: false,
+          getTokenSilently: mockGetTokenSilently,
+          restrictedDistrictIsLoading: true,
         };
       });
       rootStore = new RootStore();
