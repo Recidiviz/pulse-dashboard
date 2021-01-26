@@ -26,7 +26,7 @@ import {
   getStateNameForCode,
   getAvailableStateCodes,
 } from "./utils/user";
-import { callMetricsApi } from "../api/metrics/metricsClient";
+import { callRestrictedAccessApi } from "../api/metrics/metricsClient";
 import isDemoMode from "../utils/authentication/demoMode";
 import { getDemoUser } from "../utils/authentication/viewAuthentication";
 
@@ -94,7 +94,7 @@ export default class UserStore {
     this.restrictedDistrictIsLoading = true;
 
     autorun(() => {
-      if (!this.userIsLoading) {
+      if (!this.userIsLoading && this.rootStore?.currentTenantId) {
         this.fetchRestrictedDistrictData(this.rootStore?.currentTenantId);
       }
     });
@@ -186,12 +186,13 @@ export default class UserStore {
     tenantId: string | undefined
   ) {
     const file = "supervision_location_restricted_access_emails";
-    const endpoint = `${tenantId}/newRevocations/${file}`;
+    const endpoint = `${tenantId}/restrictedAccess`;
     try {
       this.restrictedDistrictIsLoading = true;
       this.restrictedDistrict = undefined;
-      const responseData = yield callMetricsApi(
+      const responseData = yield callRestrictedAccessApi(
         endpoint,
+        this.user.email,
         this.getTokenSilently
       );
       this.setRestrictedDistrict(responseData[file]);
