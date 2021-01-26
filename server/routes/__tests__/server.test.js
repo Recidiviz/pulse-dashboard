@@ -142,13 +142,11 @@ describe("Server tests", () => {
         })
         .then((response) => {
           expect(response.statusCode).toEqual(200);
-          expect(response.body).toHaveProperty(
-            "supervision_location_restricted_access_emails"
-          );
+          expect(response.body).toEqual({});
         });
     });
 
-    it("should respond with a 400 if the request body is missing uerEmail", function () {
+    it("should respond with a 400 if the request body is missing userEmail", function () {
       const expectedErrors = {
         error: "request is missing userEmail parameter",
       };

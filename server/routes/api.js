@@ -59,7 +59,20 @@ function restrictedAccess(req, res) {
     cacheResponse(
       cacheKey,
       () => fetchMetrics(stateCode, metricType, file, isDemoMode),
-      responder(res)
+      responder(res),
+      (result) => {
+        const restrictedEmails = result[file];
+        return restrictedEmails
+          ? {
+              [file]: restrictedEmails.find((u) => {
+                return (
+                  u.restricted_user_email.toLowerCase() ===
+                  userEmail.toLowerCase()
+                );
+              }),
+            }
+          : {};
+      }
     );
   }
 }

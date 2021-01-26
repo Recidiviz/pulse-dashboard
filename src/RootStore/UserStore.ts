@@ -35,7 +35,7 @@ type ConstructorProps = {
   rootStore?: RootStore;
 };
 
-type RestrictedAccessEmails = {
+type RestrictedAccessEmail = {
   // eslint-disable-next-line camelcase
   restricted_user_email: string;
   // eslint-disable-next-line camelcase
@@ -188,7 +188,6 @@ export default class UserStore {
     const file = "supervision_location_restricted_access_emails";
     const endpoint = `${tenantId}/restrictedAccess`;
     try {
-      this.restrictedDistrictIsLoading = true;
       this.restrictedDistrict = undefined;
       const responseData = yield callRestrictedAccessApi(
         endpoint,
@@ -203,17 +202,10 @@ export default class UserStore {
     }
   });
 
-  setRestrictedDistrict(restrictedEmails: Array<RestrictedAccessEmails>): void {
-    const restrictedEmail =
-      restrictedEmails &&
-      restrictedEmails.find((u) => {
-        return (
-          u.restricted_user_email.toLowerCase() ===
-          this.user.email.toLowerCase()
-        );
-      });
+  setRestrictedDistrict(restrictedEmail: RestrictedAccessEmail): void {
     this.restrictedDistrict =
-      restrictedEmail?.allowed_level_1_supervision_location_ids;
+      restrictedEmail &&
+      restrictedEmail.allowed_level_1_supervision_location_ids;
     this.verifyRestrictedDistrict();
   }
 

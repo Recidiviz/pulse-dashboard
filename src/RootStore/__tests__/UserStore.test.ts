@@ -21,7 +21,7 @@ import { reactImmediately } from "../../testUtils";
 import UserStore from "../UserStore";
 import { METADATA_NAMESPACE } from "../../constants";
 import TENANTS from "../../tenants";
-import { callMetricsApi } from "../../api/metrics/metricsClient";
+import { callRestrictedAccessApi } from "../../api/metrics/metricsClient";
 import RootStore from "../RootStore";
 
 jest.mock("@auth0/auth0-spa-js");
@@ -29,7 +29,7 @@ jest.mock("../RootStore");
 jest.mock("../../api/metrics/metricsClient");
 
 const mockCreateAuth0Client = createAuth0Client as jest.Mock;
-const mockCallMetricsApi = callMetricsApi as jest.Mock;
+const mockCallRestrictedAccessApi = callRestrictedAccessApi as jest.Mock;
 const mockGetUser = jest.fn();
 const mockHandleRedirectCallback = jest.fn();
 const mockIsAuthenticated = jest.fn();
@@ -204,17 +204,11 @@ describe("fetchRestrictedDistrictData", () => {
 
   describe("when API responds with success", () => {
     beforeEach(async () => {
-      mockCallMetricsApi.mockResolvedValue({
-        supervision_location_restricted_access_emails: [
-          {
-            restricted_user_email: userEmail.toUpperCase(),
-            allowed_level_1_supervision_location_ids: userDistrict,
-          },
-          {
-            restricted_user_email: "twentyOne@mo.gov",
-            allowed_level_1_supervision_location_ids: "21",
-          },
-        ],
+      mockCallRestrictedAccessApi.mockResolvedValue({
+        supervision_location_restricted_access_emails: {
+          restricted_user_email: userEmail.toUpperCase(),
+          allowed_level_1_supervision_location_ids: userDistrict,
+        },
       });
 
       reactImmediately(() => {
@@ -228,7 +222,7 @@ describe("fetchRestrictedDistrictData", () => {
         userStore.userIsLoading = false;
       });
 
-      endpoint = `${tenantId}/newRevocations/supervision_location_restricted_access_emails`;
+      endpoint = `${tenantId}/restrictedAccess`;
     });
 
     afterEach(() => {
@@ -236,9 +230,10 @@ describe("fetchRestrictedDistrictData", () => {
     });
 
     it("makes a request to the correct endpoint for the data", () => {
-      expect(callMetricsApi).toHaveBeenCalledTimes(1);
-      expect(callMetricsApi).toHaveBeenCalledWith(
+      expect(callRestrictedAccessApi).toHaveBeenCalledTimes(1);
+      expect(callRestrictedAccessApi).toHaveBeenCalledWith(
         endpoint,
+        userEmail,
         mockGetTokenSilently
       );
     });
@@ -254,13 +249,11 @@ describe("fetchRestrictedDistrictData", () => {
 
   describe("when the restrictedDistrict is invalid", () => {
     beforeEach(async () => {
-      mockCallMetricsApi.mockResolvedValue({
-        supervision_location_restricted_access_emails: [
-          {
-            restricted_user_email: userEmail.toUpperCase(),
-            allowed_level_1_supervision_location_ids: "INVALID_DISRTRICT_ID",
-          },
-        ],
+      mockCallRestrictedAccessApi.mockResolvedValue({
+        supervision_location_restricted_access_emails: {
+          restricted_user_email: userEmail.toUpperCase(),
+          allowed_level_1_supervision_location_ids: "INVALID_DISRTRICT_ID",
+        },
       });
       mockIsAuthenticated.mockResolvedValue(true);
       mockGetUser.mockResolvedValue({
@@ -275,7 +268,7 @@ describe("fetchRestrictedDistrictData", () => {
       });
 
       await userStore.authorize();
-      endpoint = `${tenantId}/newRevocations/supervision_location_restricted_access_emails`;
+      endpoint = `${tenantId}/restrictedAccess`;
     });
 
     afterEach(() => {
@@ -293,7 +286,7 @@ describe("fetchRestrictedDistrictData", () => {
 
   describe("when API responds with an error", () => {
     beforeEach(async () => {
-      mockCallMetricsApi.mockRejectedValueOnce(new Error());
+      mockCallRestrictedAccessApi.mockRejectedValueOnce(new Error());
 
       mockIsAuthenticated.mockResolvedValue(true);
       userStore = new UserStore({
@@ -302,7 +295,7 @@ describe("fetchRestrictedDistrictData", () => {
       });
 
       await userStore.authorize();
-      endpoint = `${tenantId}/newRevocations/supervision_location_restricted_access_emails`;
+      endpoint = `${tenantId}/restrictedAccess`;
     });
 
     afterEach(() => {
