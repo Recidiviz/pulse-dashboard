@@ -52,6 +52,7 @@ describe("FiltersStore", () => {
 
       rootStore = new RootStore();
       runInAction(() => {
+        rootStore.tenantStore.currentTenantId = "US_MO";
         rootStore.userStore.restrictedDistrict = userDistrict;
       });
 

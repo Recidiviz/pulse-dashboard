@@ -18,9 +18,9 @@
 import {
   makeAutoObservable,
   computed,
-  action,
   autorun,
   observable,
+  action,
 } from "mobx";
 
 import {
