@@ -26,16 +26,43 @@
 
 /* eslint-disable no-console */
 const { getCache } = require("./cacheManager");
+const { getSubsetCacheKeyCombinations } = require("../utils/cacheKeys");
+const {
+  getSubsetManifest,
+  FILES_WITH_SUBSETS,
+} = require("../constants/subsetManifest");
 
-function cacheEachFile(files, cacheKeyPrefix) {
+const allSubsetCacheKeys = getSubsetCacheKeyCombinations(getSubsetManifest());
+
+function cacheEachSubsetFile(cache, cacheKey, metricFile) {
+  const cachePromises = [];
+  allSubsetCacheKeys.forEach((subsetKey) => {
+    const cacheKeyWithSubset = `${cacheKey}-${subsetKey}`;
+    console.log(`Setting cache for: ${cacheKeyWithSubset}...`);
+    cachePromises.push(cache.set(cacheKeyWithSubset, metricFile));
+  });
+  return cachePromises;
+}
+
+function cacheEachFile({ files, cacheKeyPrefix }) {
   const cache = getCache(cacheKeyPrefix);
   const cachePromises = [];
 
-  Object.keys(files).forEach((fileKey) => {
-    const cacheKey = `${cacheKeyPrefix}-${fileKey}`;
-    const metricFile = { [fileKey]: files[fileKey] };
-    console.log(`Setting cache for: ${cacheKey}...`);
-    cachePromises.push(cache.set(cacheKey, metricFile));
+  Object.keys(files).forEach((file) => {
+    const cacheKey = `${cacheKeyPrefix}-${file}`;
+    const metricFile = { [file]: files[file] };
+
+    if (FILES_WITH_SUBSETS.includes(file)) {
+      // TODO: Remove line 59 once the front end is ready to receive the subset files.
+      // This is the "original" cacheKey that will continue to return the full file
+      // until both the FE and BE are ready to work with split files.
+      cachePromises.push(cache.set(cacheKey, metricFile));
+      // Cache the file with all of the subset cache keys
+      cachePromises.concat(cacheEachSubsetFile(cache, cacheKey, metricFile));
+    } else {
+      console.log(`Setting cache for: ${cacheKey}...`);
+      cachePromises.push(cache.set(cacheKey, metricFile));
+    }
   });
 
   return cachePromises;
@@ -48,8 +75,10 @@ function refreshRedisCache(fetchMetrics, stateCode, metricType, callback) {
   let responseError = null;
 
   fetchMetrics()
-    .then((results) => {
-      return Promise.all(cacheEachFile(results, cacheKeyPrefix));
+    .then((files) => {
+      return Promise.all(
+        cacheEachFile({ files, stateCode, metricType, cacheKeyPrefix })
+      );
     })
     .catch((error) => {
       console.error(
