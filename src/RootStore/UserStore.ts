@@ -25,6 +25,8 @@ import {
   getStateNameForCode,
   getAvailableStateCodes,
 } from "./utils/user";
+import isDemoMode from "../utils/authentication/demoMode";
+import { getDemoUser } from "../utils/authentication/viewAuthentication";
 
 type ConstructorProps = {
   authSettings?: Auth0ClientOptions;
@@ -61,8 +63,6 @@ export default class UserStore {
 
   district?: string;
 
-  stateCode?: string;
-
   getTokenSilently?: () => void;
 
   logout?: () => void;
@@ -88,6 +88,15 @@ export default class UserStore {
    * Returns an Error if Auth0 configuration is not present.
    */
   async authorize(): Promise<void> {
+    if (isDemoMode()) {
+      this.isAuthorized = true;
+      this.isLoading = false;
+      this.user = getDemoUser();
+      this.getTokenSilently = () => "";
+
+      return;
+    }
+
     if (!this.authSettings) {
       this.authError = new Error(ERROR_MESSAGES.auth0Configuration);
       return;
@@ -119,7 +128,6 @@ export default class UserStore {
           this.getTokenSilently = (...p: any) => auth0.getTokenSilently(...p);
           this.logout = (...p: any) => auth0.logout(...p);
           this.user = user;
-          this.stateCode = getUserStateCode(user);
         } else {
           this.isAuthorized = false;
         }
@@ -145,5 +153,13 @@ export default class UserStore {
    */
   get stateName(): string {
     return getStateNameForCode(this.stateCode);
+  }
+
+  /**
+   * Returns the state code of the authorized state for the given user.
+   * For Recidiviz users or users in demo mode, this will be 'recidiviz'.
+   */
+  get stateCode(): string {
+    return getUserStateCode(this.user);
   }
 }
