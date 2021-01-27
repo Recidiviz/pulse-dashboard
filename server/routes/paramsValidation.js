@@ -38,7 +38,7 @@ const VIOLATION_TYPES = [
   "med_tech",
   "misdemeanor",
   "municipal",
-  "no_violations",
+  "no_violation_type",
   "substance_abuse",
   "technical",
 ];
