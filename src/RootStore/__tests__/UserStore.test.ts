@@ -15,6 +15,8 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
+import { runInAction } from "mobx";
+
 import createAuth0Client from "@auth0/auth0-spa-js";
 import { ERROR_MESSAGES } from "../../constants/errorMessages";
 import { reactImmediately } from "../../testUtils";
@@ -238,8 +240,9 @@ describe("fetchRestrictedDistrictData", () => {
       );
     });
 
-    it("sets isLoading to false and isError to false", () => {
+    it("sets restrictedDistrictIsLoading to false and authError remains undefined ", () => {
       expect(userStore.restrictedDistrictIsLoading).toEqual(false);
+      expect(userStore.authError).toBeUndefined();
     });
 
     it("sets the restrictedDistrict", () => {
@@ -255,30 +258,27 @@ describe("fetchRestrictedDistrictData", () => {
           allowed_level_1_supervision_location_ids: "INVALID_DISRTRICT_ID",
         },
       });
-      mockIsAuthenticated.mockResolvedValue(true);
-      mockGetUser.mockResolvedValue({
-        email_verified: true,
-        ...metadata,
-        email: userEmail,
-      });
 
       userStore = new UserStore({
-        authSettings: testAuthSettings,
         rootStore: new RootStore(),
       });
 
-      await userStore.authorize();
-      endpoint = `${tenantId}/restrictedAccess`;
+      runInAction(() => {
+        userStore.userIsLoading = false;
+      });
     });
 
     afterEach(() => {
       jest.resetAllMocks();
     });
 
-    it("sets the an authError", () => {
+    it("sets an authError", () => {
       expect(userStore.authError).toEqual(
         new Error(ERROR_MESSAGES.unauthorized)
       );
+    });
+
+    it("sets restricted to undefined and restrictedDistrictIsLoading to false", () => {
       expect(userStore.restrictedDistrict).toBe(undefined);
       expect(userStore.restrictedDistrictIsLoading).toBe(false);
     });
@@ -287,26 +287,25 @@ describe("fetchRestrictedDistrictData", () => {
   describe("when API responds with an error", () => {
     beforeEach(async () => {
       mockCallRestrictedAccessApi.mockRejectedValueOnce(new Error());
-
       mockIsAuthenticated.mockResolvedValue(true);
       userStore = new UserStore({
-        authSettings: testAuthSettings,
         rootStore: new RootStore(),
       });
 
-      await userStore.authorize();
-      endpoint = `${tenantId}/restrictedAccess`;
+      runInAction(() => {
+        userStore.userIsLoading = false;
+      });
     });
 
     afterEach(() => {
       jest.resetAllMocks();
     });
 
-    it("does not set the restrictedDistrict", () => {
-      expect(userStore.restrictedDistrict).toBeFalsy();
+    it("restrictedDistrict is undefined", () => {
+      expect(userStore.restrictedDistrict).toBeUndefined();
     });
 
-    it("sets an authError and isLoading to false", () => {
+    it("sets an authError and restrictedDistrictIsLoading to false", () => {
       expect(userStore.authError).toEqual(
         new Error(ERROR_MESSAGES.unauthorized)
       );

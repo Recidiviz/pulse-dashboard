@@ -183,7 +183,7 @@ export default class UserStore {
 
   fetchRestrictedDistrictData = flow(function* (
     this: UserStore,
-    tenantId: string | undefined
+    tenantId: string
   ) {
     const file = "supervision_location_restricted_access_emails";
     const endpoint = `${tenantId}/restrictedAccess`;
