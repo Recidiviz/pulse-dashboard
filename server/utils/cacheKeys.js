@@ -14,6 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
+const { camelCase } = require("lodash");
 const {
   getSubsetManifest,
   FILES_WITH_SUBSETS,
@@ -114,7 +115,7 @@ function getCacheKey({
   }
 
   getSubsetManifest().forEach(([dimensionKey, dimensionSubsets]) => {
-    const subsetValue = cacheKeySubset[dimensionKey];
+    const subsetValue = cacheKeySubset[camelCase(dimensionKey)];
     const subsetIndex = dimensionSubsets.findIndex(
       (subset) => subsetValue && subset.includes(subsetValue)
     );

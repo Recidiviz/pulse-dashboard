@@ -19,11 +19,11 @@
  * This file contains route handlers for calls to our Metrics API, to be mapped to app routes
  * in server.js.
  */
-
 const { validationResult } = require("express-validator");
 const { refreshRedisCache, fetchMetrics, cacheResponse } = require("../core");
 const { default: isDemoMode } = require("../utils/isDemoMode");
 const { getCacheKey } = require("../utils/cacheKeys");
+const { applyFilters } = require("../filters");
 
 const BAD_REQUEST = 400;
 const SERVER_ERROR = 500;
@@ -45,6 +45,15 @@ function responder(res) {
   };
 }
 
+function processAndRespond(responderFn, processResultsFn) {
+  return (err, data) => {
+    if (data) {
+      responderFn(null, processResultsFn(data));
+    } else {
+      responderFn(err, null);
+    }
+  };
+}
 // TODO: Generalize this API to take in the metric type and file as request parameters in all calls
 
 function refreshCache(req, res) {
@@ -91,7 +100,7 @@ function newRevocationFile(req, res) {
     cacheResponse(
       [cacheKey, cacheKeyWithSubsetKeys],
       () => fetchMetrics(stateCode, metricType, file, isDemoMode),
-      responder(res)
+      processAndRespond(responder(res), applyFilters(file, queryParams))
     );
   }
 }

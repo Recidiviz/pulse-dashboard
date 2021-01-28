@@ -17,23 +17,32 @@
 const { intersection } = require("lodash");
 
 const SUBSET_MANIFEST = [
+  // TODO: Uncomment "violation_type" and remove "charge_category" when the frontend is ready for unnested violation type values
+  // Keeping this commented here so that it's easy to test locally while reviewing the PR.
+  // [
+  //   "violation_type",
+  //   [
+  //     [
+  //       "absconded",
+  //       "all",
+  //       "elec_monitoring",
+  //       "escaped",
+  //       "high_tech",
+  //       "low_tech",
+  //       "med_tech",
+  //       "municipal",
+  //       "no_violation_type",
+  //       "substance_abuse",
+  //       "technical",
+  //     ],
+  //     ["felony", "law", "misdemeanor"],
+  //   ],
+  // ],
   [
-    "violationType",
+    "charge_category",
     [
-      [
-        "absconded",
-        "all",
-        "elec_monitoring",
-        "escaped",
-        "high_tech",
-        "low_tech",
-        "med_tech",
-        "municipal",
-        "no_violation_type",
-        "substance_abuse",
-        "technical",
-      ],
-      ["felony", "law", "misdemeanor"],
+      ["all", "domestic_violence", "general", "serious_mental_illness"],
+      ["sex_offense"],
     ],
   ],
 ];
