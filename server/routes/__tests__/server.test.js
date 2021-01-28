@@ -147,15 +147,13 @@ describe("Server tests", () => {
     });
 
     it("should respond with a 400 if the request body is missing userEmail", function () {
-      const expectedErrors = {
-        error: "request is missing userEmail parameter",
-      };
+      const expectedError = "request is missing userEmail parameter";
       return request(app)
         .post("/api/US_DEMO/restrictedAccess/")
         .send()
         .then((response) => {
           expect(response.statusCode).toEqual(400);
-          expect(response.body).toEqual(expectedErrors);
+          expect(response.body.errors).toEqual(expectedError);
         });
     });
   });

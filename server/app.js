@@ -25,7 +25,10 @@ const jwksRsa = require("jwks-rsa");
 const devAuthConfig = require("../src/auth_config_dev.json");
 const productionAuthConfig = require("../src/auth_config_production.json");
 const api = require("./routes/api");
-const { newRevocationsParamValidations } = require("./routes/paramsValidation");
+const {
+  newRevocationsParamValidations,
+  restrictedAccessParamValidations,
+} = require("./routes/paramsValidation");
 
 const app = express();
 
@@ -108,8 +111,8 @@ app.get(
 );
 app.post(
   "/api/:stateCode/restrictedAccess",
-  checkJwt,
   express.json(),
+  [checkJwt, ...restrictedAccessParamValidations],
   api.restrictedAccess
 );
 

@@ -48,13 +48,21 @@ function responder(res) {
 // TODO: Generalize this API to take in the metric type and file as request parameters in all calls
 
 function restrictedAccess(req, res) {
-  const { stateCode } = req.params;
-  const { userEmail } = req.body;
-  const metricType = "newRevocation";
-  const file = "supervision_location_restricted_access_emails";
-  if (!userEmail) {
-    res.status(400).json({ error: "request is missing userEmail parameter" });
+  const validations = validationResult(req);
+  const hasErrors = !validations.isEmpty();
+  if (hasErrors) {
+    responder(res)(
+      {
+        status: BAD_REQUEST,
+        errors: "request is missing userEmail parameter",
+      },
+      null
+    );
   } else {
+    const { stateCode } = req.params;
+    const { userEmail } = req.body;
+    const metricType = "newRevocation";
+    const file = "supervision_location_restricted_access_emails";
     const cacheKey = `${stateCode.toUpperCase()}-restrictedAccess`;
     cacheResponse(
       cacheKey,
