@@ -21,7 +21,12 @@
  */
 
 const { validationResult } = require("express-validator");
-const { refreshRedisCache, fetchMetrics, cacheResponse } = require("../core");
+const {
+  refreshRedisCache,
+  fetchMetrics,
+  cacheResponse,
+  fetchAndProcessRestrictedAccessEmails,
+} = require("../core");
 const { default: isDemoMode } = require("../utils/isDemoMode");
 const { getCacheKey } = require("../utils/cacheKeys");
 
@@ -66,21 +71,15 @@ function restrictedAccess(req, res) {
     const cacheKey = `${stateCode.toUpperCase()}-restrictedAccess`;
     cacheResponse(
       cacheKey,
-      () => fetchMetrics(stateCode, metricType, file, isDemoMode),
-      responder(res),
-      (result) => {
-        const restrictedEmails = result[file];
-        return restrictedEmails
-          ? {
-              [file]: restrictedEmails.find((u) => {
-                return (
-                  u.restricted_user_email.toLowerCase() ===
-                  userEmail.toLowerCase()
-                );
-              }),
-            }
-          : {};
-      }
+      () =>
+        fetchAndProcessRestrictedAccessEmails(
+          stateCode,
+          metricType,
+          file,
+          isDemoMode,
+          userEmail
+        ),
+      responder(res)
     );
   }
 }

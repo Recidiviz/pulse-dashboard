@@ -88,12 +88,11 @@ function clearMemoryCache() {
   memoryCache.reset();
 }
 
-function cacheResponse(cacheKey, fetchValue, callback, processResponseFn) {
+function cacheResponse(cacheKey, fetchValue, callback) {
   const cache = Array.isArray(cacheKey)
     ? getCache(cacheKey[0])
     : getCache(cacheKey);
   let cacheKeyOriginal = cacheKey;
-
   // cacheKey will be an array for the `newRevocationFile` endpoint until we finish implementing the subset cache values.
   // If cacheKey is an array, then the first element will be the original cacheKey and the second element is the subset cache key.
   // Example: cacheKey = [cacheKeyOriginal, cacheKeySubset]
@@ -108,8 +107,7 @@ function cacheResponse(cacheKey, fetchValue, callback, processResponseFn) {
   // const cache = getCache(cacheKey);
   return cache.wrap(cacheKeyOriginal, fetchValue).then(
     (result) => {
-      const response = processResponseFn ? processResponseFn(result) : result;
-      callback(null, response);
+      callback(null, result);
     },
     (err) => {
       callback(err, null);
