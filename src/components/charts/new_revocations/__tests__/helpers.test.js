@@ -19,7 +19,7 @@ import { observable } from "mobx";
 
 import { applyTopLevelFilters, applyMatrixFilters } from "../helpers";
 
-describe("applyTopLevelFilters", () => {
+xdescribe("applyTopLevelFilters", () => {
   let filters = {};
   let filtered = [];
   let data = [];
@@ -521,13 +521,37 @@ describe("applyMatrixFilters", () => {
         violation_type: "LAW",
         year: "2020",
       },
+      {
+        charge_category: "ALL",
+        district: "ALL",
+        month: "1",
+        reported_violations: "ALL",
+        state_code: "US_PA",
+        supervision_level: "MINIMUM",
+        supervision_type: "PROBATION",
+        total_revocations: "20",
+        violation_type: "ALL",
+        year: "2020",
+      },
     ];
   });
 
-  // For the applyMatrixFilters we do not need to worry about ALL values
-  // All values do not exist in violation_type and reported_violations fields
   describe("violationType filter", () => {
     let filteredViolationTypes = [];
+
+    describe("with violationType = 'ALL' filter applied", () => {
+      beforeEach(() => {
+        filters = observable.map({ violationType: "ALL" });
+        filtered = applyMatrixFilters(filters)(data);
+        filteredViolationTypes = filtered.map((f) => f.violation_type);
+      });
+
+      it("returns the 'ALL' row", () => {
+        const expected = ["ALL"];
+
+        expect(filteredViolationTypes).toEqual(expected);
+      });
+    });
 
     describe("with violationType = 'MED_TECH' filter applied", () => {
       beforeEach(() => {
@@ -540,6 +564,10 @@ describe("applyMatrixFilters", () => {
         const expected = ["MED_TECH", "MED_TECH"];
 
         expect(filteredViolationTypes).toEqual(expected);
+      });
+
+      it("does not double count the 'ALL' item", () => {
+        expect(filteredViolationTypes).not.toContain("ALL");
       });
     });
 
@@ -555,6 +583,10 @@ describe("applyMatrixFilters", () => {
 
         expect(filteredViolationTypes).toEqual(expected);
       });
+
+      it("does not double count the 'ALL' item", () => {
+        expect(filteredViolationTypes).not.toContain("ALL");
+      });
     });
 
     describe("with violationType = 'BOGUS' filter applied", () => {
@@ -568,6 +600,56 @@ describe("applyMatrixFilters", () => {
         const expected = [];
 
         expect(filteredViolationTypes).toEqual(expected);
+      });
+    });
+  });
+
+  describe("reportedViolations filter", () => {
+    let filteredReportedViolations = [];
+
+    describe("with reportedViolations = 'ALL' filter applied", () => {
+      beforeEach(() => {
+        filters = observable.map({ reportedViolations: "ALL" });
+        filtered = applyMatrixFilters(filters)(data);
+        filteredReportedViolations = filtered.map((f) => f.reported_violations);
+      });
+
+      it("returns the 'ALL' row", () => {
+        const expected = ["ALL"];
+
+        expect(filteredReportedViolations).toEqual(expected);
+      });
+    });
+
+    describe("with reportedViolations = '1' filter applied", () => {
+      beforeEach(() => {
+        filters = observable.map({ reportedViolations: "1" });
+        filtered = applyMatrixFilters(filters)(data);
+        filteredReportedViolations = filtered.map((f) => f.reported_violations);
+      });
+
+      it("correctly returns all reported_violations items matching the filter term", () => {
+        const expected = ["1", "1", "1", "1"];
+
+        expect(filteredReportedViolations).toEqual(expected);
+      });
+
+      it("does not double count the 'ALL' item", () => {
+        expect(filteredReportedViolations).not.toContain("ALL");
+      });
+    });
+
+    describe("with reportedViolations = 'BOGUS' filter applied", () => {
+      beforeEach(() => {
+        filters = observable.map({ reportedViolations: "BOGUS" });
+        filtered = applyMatrixFilters(filters)(data);
+        filteredReportedViolations = filtered.map((f) => f.reportedViolations);
+      });
+
+      it("returns an empty array and does not throw an error", () => {
+        const expected = [];
+
+        expect(filteredReportedViolations).toEqual(expected);
       });
     });
   });
