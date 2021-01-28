@@ -98,6 +98,7 @@
     "react-tooltip": "^3.11.1",
     "reactstrap": "^8.0.0",
     "sass-graph": "^2.2.4",
+    "shared-filters": "file:./shared-filters",
     "skycons": "^1.0.0",
     "supertest": "^6.0.1",
     "terser-webpack-plugin": "^1.4.3",
