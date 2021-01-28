@@ -18,7 +18,20 @@
 jest.mock("../../core/fetchMetrics", () => {
   return {
     default: jest.fn(() =>
-      Promise.resolve({ file_1: "content_1", file_2: "content_2" })
+      Promise.resolve({
+        file_1: "content_1",
+        file_2: "content_2",
+        supervision_location_restricted_access_emails: [
+          {
+            restricted_user_email: "thirteen@state.gov",
+            allowed_level_1_supervision_location_ids: "13",
+          },
+          {
+            restricted_user_email: "one@state.gov",
+            allowed_level_1_supervision_location_ids: "1",
+          },
+        ],
+      })
     ),
   };
 });
@@ -143,7 +156,8 @@ describe("API GET tests", () => {
 
   describe("API fetching and caching for POST requests", () => {
     const userEmail = "thirteen@state.gov";
-    const postRequest = { params: { stateCode }, body: { userEmail } };
+    const userDistrict = "13";
+    let postRequest = { params: { stateCode }, body: { userEmail } };
     const file = "supervision_location_restricted_access_emails";
 
     afterEach(async () => {
@@ -177,6 +191,31 @@ describe("API GET tests", () => {
         0,
         postRequest
       );
+    });
+
+    it("restrictedAccess correctly responds to subsequent requests from different users from cached file ", async () => {
+      let result = await fakeRequest(restrictedAccess, postRequest);
+      expect(result[file].restricted_user_email).toEqual(userEmail);
+      expect(result[file].allowed_level_1_supervision_location_ids).toEqual(
+        userDistrict
+      );
+      expect(fetchMetrics.mock.calls.length).toBe(1);
+      fetchMetrics.mockClear();
+
+      const newUserEmail = "one@state.gov";
+      const newUserDistrict = "1";
+      postRequest = {
+        params: { stateCode },
+        body: { userEmail: newUserEmail },
+      };
+
+      result = await fakeRequest(restrictedAccess, postRequest);
+      expect(result[file].restricted_user_email).toEqual(newUserEmail);
+      expect(result[file].allowed_level_1_supervision_location_ids).toEqual(
+        newUserDistrict
+      );
+      expect(fetchMetrics.mock.calls.length).toBe(0);
+      fetchMetrics.mockClear();
     });
 
     it("restrictedAccess - calls fetchMetrics with the correct args", async () => {

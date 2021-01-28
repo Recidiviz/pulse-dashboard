@@ -25,7 +25,7 @@ const {
   refreshRedisCache,
   fetchMetrics,
   cacheResponse,
-  fetchAndProcessRestrictedAccessEmails,
+  filterRestrictedAccessEmails,
 } = require("../core");
 const { default: isDemoMode } = require("../utils/isDemoMode");
 const { getCacheKey } = require("../utils/cacheKeys");
@@ -50,6 +50,17 @@ function responder(res) {
   };
 }
 
+/**
+ * A callback which processes fetch result data with a given
+ * processResultFn before passing the processed result to
+ * the responder function.
+ */
+function processAndRespond(responderFn, processResultFn) {
+  return (err, data) => {
+    responderFn(err, processResultFn(data));
+  };
+}
+
 // TODO: Generalize this API to take in the metric type and file as request parameters in all calls
 
 function restrictedAccess(req, res) {
@@ -71,15 +82,11 @@ function restrictedAccess(req, res) {
     const cacheKey = `${stateCode.toUpperCase()}-restrictedAccess`;
     cacheResponse(
       cacheKey,
-      () =>
-        fetchAndProcessRestrictedAccessEmails(
-          stateCode,
-          metricType,
-          file,
-          isDemoMode,
-          userEmail
-        ),
-      responder(res)
+      () => fetchMetrics(stateCode, metricType, file, isDemoMode),
+      processAndRespond(
+        responder(res),
+        filterRestrictedAccessEmails(userEmail, file)
+      )
     );
   }
 }
