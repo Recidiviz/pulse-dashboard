@@ -11,7 +11,6 @@
     "build": "react-scripts build",
     "build-staging": "env-cmd -f .env.development react-scripts build",
     "test-server": "TZ=UTC jest ./server",
-    "test-client": "TZ=UTC jest ./src",
     "test": "TZ=UTC react-scripts test",
     "spa": "react-scripts start",
     "server": "nodemon server.js",

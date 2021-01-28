@@ -16,9 +16,14 @@
 // =============================================================================
 
 import { makeAutoObservable, when } from "mobx";
+import filter from "lodash/fp/filter";
+import identity from "lodash/fp/identity";
+import map from "lodash/fp/map";
+import pipe from "lodash/fp/pipe";
+import sortBy from "lodash/fp/sortBy";
+import uniq from "lodash/fp/uniq";
 
 import { getAvailableStateCodes, doesUserHaveAccess } from "./utils/user";
-import { LANTERN_TENANTS } from "../views/tenants/utils/lanternTenants";
 
 export const CURRENT_TENANT_IN_SESSION = "adminUserCurrentTenantInSession";
 
@@ -42,9 +47,11 @@ function getTenantIdFromUser(user) {
 export default class TenantStore {
   rootStore;
 
-  currentTenantId = LANTERN_TENANTS[0];
+  currentTenantId = null;
 
-  user;
+  districts = [];
+
+  districtsIsLoading = true;
 
   constructor({ rootStore }) {
     makeAutoObservable(this);
@@ -52,7 +59,7 @@ export default class TenantStore {
     this.rootStore = rootStore;
 
     when(
-      () => !this.rootStore.userStore.isLoading,
+      () => !this.rootStore.userStore.userIsLoading,
       () => this.setCurrentTenantId(getTenantIdFromUser(this.rootStore.user))
     );
   }
@@ -60,5 +67,20 @@ export default class TenantStore {
   setCurrentTenantId(tenantId) {
     this.currentTenantId = tenantId;
     sessionStorage.setItem(CURRENT_TENANT_IN_SESSION, tenantId);
+    this.districtsIsLoading = true;
+  }
+
+  setDistricts(apiData) {
+    if (apiData) {
+      const data = apiData.slice();
+
+      this.districts = pipe(
+        map("district"),
+        filter((d) => d.toLowerCase() !== "all"),
+        uniq,
+        sortBy(identity)
+      )(data);
+      this.districtsIsLoading = false;
+    }
   }
 }

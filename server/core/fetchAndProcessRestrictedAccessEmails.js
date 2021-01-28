@@ -15,38 +15,32 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React from "react";
-import PropTypes from "prop-types";
-import Error from "./Error";
+const { default: fetchMetrics } = require("./fetchMetrics");
 
-class ErrorBoundary extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { isError: false };
-  }
-
-  static getDerivedStateFromError(error) {
-    return { isError: true, errorMessage: error.message };
-  }
-
-  componentDidCatch(error, errorInfo) {
-    // eslint-disable-next-line no-console
-    console.log(error, errorInfo);
-  }
-
-  render() {
-    const { isError, errorMessage } = this.state;
-    const { children } = this.props;
-    if (isError) {
-      return <Error text={errorMessage} />;
-    }
-
-    return children;
-  }
+/**
+ * Fetches and processes the supervision_location_restricted_access_emails.
+ * Returns an object that contains the restricted district matching
+ * userEmail param, or an empty object if none of the values match.
+ */
+function fetchAndProcessRestrictedAccessEmails(
+  stateCode,
+  metricType,
+  file,
+  isDemo,
+  userEmail
+) {
+  return fetchMetrics(stateCode, metricType, file, isDemo).then((result) => {
+    const restrictedEmails = result[file];
+    return restrictedEmails
+      ? {
+          [file]: restrictedEmails.find((u) => {
+            return (
+              u.restricted_user_email.toLowerCase() === userEmail.toLowerCase()
+            );
+          }),
+        }
+      : {};
+  });
 }
 
-ErrorBoundary.propTypes = {
-  children: PropTypes.element.isRequired,
-};
-
-export default ErrorBoundary;
+exports.default = fetchAndProcessRestrictedAccessEmails;

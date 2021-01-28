@@ -41,6 +41,36 @@ async function callMetricsApi(endpoint, getTokenSilently) {
 }
 
 /**
+ * An asynchronous function that returns a promise which will eventually return the results from
+ * invoking the given API endpoint. Takes in the |endpoint| as a string, the |userEmail| as a string,
+ * and the |getTokenSilently| function, which will be used to authenticate the client against the API.
+ */
+async function callRestrictedAccessApi(endpoint, userEmail, getTokenSilently) {
+  try {
+    const token = await getTokenSilently();
+
+    const response = await fetch(
+      `${process.env.REACT_APP_API_URL}/api/${endpoint}`,
+      {
+        body: JSON.stringify({
+          userEmail,
+        }),
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        method: "POST",
+      }
+    );
+
+    return response.json();
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+}
+
+/**
  * A convenience function returning whether or not the client is still awaiting what it needs to
  * display results to the user. We are ready if we are no longer loading the view, if we are no
  * longer awaiting the API, and if we have an authenticated user.
@@ -49,4 +79,4 @@ function awaitingResults(loading, user, awaitingApi) {
   return loading || !user || awaitingApi;
 }
 
-export { callMetricsApi, awaitingResults };
+export { callMetricsApi, callRestrictedAccessApi, awaitingResults };

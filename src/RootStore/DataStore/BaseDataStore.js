@@ -67,8 +67,15 @@ export default class BaseDataStore {
     autorun(() => {
       const { userStore } = this.rootStore;
 
-      if (userStore && !userStore.isLoading) {
-        this.fetchData(this.queryFilters);
+      if (
+        userStore &&
+        !userStore.userIsLoading &&
+        !userStore.restrictedDistrictIsLoading
+      ) {
+        this.fetchData({
+          tenantId: this.rootStore.currentTenantId,
+          queryString: this.queryFilters,
+        });
       }
     });
   }
@@ -83,8 +90,8 @@ export default class BaseDataStore {
     return this.rootStore.userStore.getTokenSilently;
   }
 
-  *fetchData(queryString) {
-    const endpoint = `${this.rootStore.currentTenantId}/newRevocations/${this.file}${queryString}`;
+  *fetchData({ tenantId, queryString }) {
+    const endpoint = `${tenantId}/newRevocations/${this.file}${queryString}`;
     try {
       this.isLoading = true;
       const responseData = yield callMetricsApi(

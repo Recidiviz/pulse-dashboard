@@ -15,13 +15,8 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import { flow, makeObservable, observable, computed } from "mobx";
-import filter from "lodash/fp/filter";
-import identity from "lodash/fp/identity";
-import map from "lodash/fp/map";
-import pipe from "lodash/fp/pipe";
-import sortBy from "lodash/fp/sortBy";
-import uniq from "lodash/fp/uniq";
+import { flow, makeObservable } from "mobx";
+
 import BaseDataStore from "./BaseDataStore";
 import { callMetricsApi } from "../../api/metrics/metricsClient";
 import { processResponseData } from "./helpers";
@@ -36,14 +31,11 @@ export default class RevocationsOverTimeStore extends BaseDataStore {
     super({ rootStore, file: `revocations_matrix_by_month` });
     makeObservable(this, {
       fetchData: flow,
-      expandedData: observable.shallow,
-      // TODO: Remove once we get a separate districts file
-      districts: computed,
     });
   }
 
-  *fetchData(queryString = "") {
-    const endpoint = `${this.rootStore.currentTenantId}/newRevocations/${this.file}${queryString}`;
+  *fetchData({ tenantId, queryString = "" }) {
+    const endpoint = `${tenantId}/newRevocations/${this.file}${queryString}`;
     try {
       this.isLoading = true;
       const responseData = yield callMetricsApi(
@@ -57,7 +49,9 @@ export default class RevocationsOverTimeStore extends BaseDataStore {
       );
 
       const expandedData = processResponseData(responseData, this.file, true);
-      this.expandedData = expandedData.data;
+      // TODO epic #593 - setDistricts based on supervision_location_ids_to_names.json
+      // and remove this fetchData override
+      this.rootStore.tenantStore.setDistricts(expandedData.data);
       this.apiData = processedData.data;
       this.metadata = processedData.metadata;
       this.filteredData = this.filterData(processedData);
@@ -82,17 +76,5 @@ export default class RevocationsOverTimeStore extends BaseDataStore {
       metadata,
       filterFn: dataFilter,
     });
-  }
-
-  get districts() {
-    if (!this.expandedData) return [];
-    const data = this.expandedData.slice();
-    return pipe(
-      map("district"),
-      filter((d) => d.toLowerCase() !== "all"),
-      uniq,
-      sortBy(identity),
-      map((d) => ({ value: d, label: d }))
-    )(data);
   }
 }
