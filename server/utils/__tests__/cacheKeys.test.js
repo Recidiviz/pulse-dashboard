@@ -21,7 +21,7 @@ describe("getSubsetCacheKeyCombinations", () => {
   const subsetManifest = [
     ...getSubsetManifest(),
     [
-      "chargeCategory",
+      "charge_category",
       [
         ["all"],
         [
@@ -37,12 +37,12 @@ describe("getSubsetCacheKeyCombinations", () => {
 
   it("returns an array of possible cache keys subsets from the subset manifest", () => {
     expect(getSubsetCacheKeyCombinations(subsetManifest)).toEqual([
-      "violationType=0-chargeCategory=0",
-      "violationType=0-chargeCategory=1",
-      "violationType=0-chargeCategory=2",
-      "violationType=1-chargeCategory=0",
-      "violationType=1-chargeCategory=1",
-      "violationType=1-chargeCategory=2",
+      "violation_type=0-charge_category=0",
+      "violation_type=0-charge_category=1",
+      "violation_type=0-charge_category=2",
+      "violation_type=1-charge_category=0",
+      "violation_type=1-charge_category=1",
+      "violation_type=1-charge_category=2",
     ]);
   });
 });
@@ -86,7 +86,7 @@ describe("getCacheKey", () => {
           },
         })
       ).toEqual(
-        "US_MO-newRevocations-revocations_matrix_distribution_by_district-violationType=1"
+        "US_MO-newRevocations-revocations_matrix_distribution_by_district-violation_type=1"
       );
 
       expect(
@@ -99,7 +99,7 @@ describe("getCacheKey", () => {
           },
         })
       ).toEqual(
-        "US_MO-newRevocations-revocations_matrix_distribution_by_district-violationType=0"
+        "US_MO-newRevocations-revocations_matrix_distribution_by_district-violation_type=0"
       );
     });
   });
