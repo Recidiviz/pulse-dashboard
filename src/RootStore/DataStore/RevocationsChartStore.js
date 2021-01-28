@@ -16,9 +16,8 @@
 // =============================================================================
 
 import { makeObservable, reaction, observable, action } from "mobx";
+import { matchesAllFilters, filterOptimizedDataFormat } from "shared-filters";
 import BaseDataStore from "./BaseDataStore";
-import { filterOptimizedDataFormat } from "../../utils/charts/dataFilters";
-import { matchesAllFilters } from "../../components/charts/new_revocations/helpers";
 import { DISTRICT } from "../../constants/filterTypes";
 
 const CHART_TO_FILENAME = {
@@ -56,18 +55,13 @@ export default class RevocationsChartStore extends BaseDataStore {
   }
 
   filterData({ data, metadata }) {
-    const { filters } = this.rootStore;
     const filteringOptions = {
       District: { skippedFilters: [DISTRICT] },
     };
     const dataFilter = matchesAllFilters({
-      filters,
+      filters: this.filters,
       ...filteringOptions[this.selectedChart],
     });
-    return filterOptimizedDataFormat({
-      apiData: data,
-      metadata,
-      filterFn: dataFilter,
-    });
+    return filterOptimizedDataFormat(data, metadata, dataFilter);
   }
 }

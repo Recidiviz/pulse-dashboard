@@ -16,6 +16,7 @@
 // =============================================================================
 
 import { flow, makeObservable, observable, computed } from "mobx";
+import { matchesAllFilters, filterOptimizedDataFormat } from "shared-filters";
 import filter from "lodash/fp/filter";
 import identity from "lodash/fp/identity";
 import map from "lodash/fp/map";
@@ -25,9 +26,7 @@ import uniq from "lodash/fp/uniq";
 import BaseDataStore from "./BaseDataStore";
 import { callMetricsApi } from "../../api/metrics/metricsClient";
 import { processResponseData } from "./helpers";
-import { matchesAllFilters } from "../../components/charts/new_revocations/helpers";
 import { METRIC_PERIOD_MONTHS } from "../../constants/filterTypes";
-import { filterOptimizedDataFormat } from "../../utils/charts/dataFilters";
 
 export default class RevocationsOverTimeStore extends BaseDataStore {
   expandedData = [];
@@ -71,17 +70,12 @@ export default class RevocationsOverTimeStore extends BaseDataStore {
   }
 
   filterData({ data, metadata }) {
-    const { filters } = this.rootStore;
     const dataFilter = matchesAllFilters({
-      filters,
+      filters: this.filters,
       skippedFilters: [METRIC_PERIOD_MONTHS],
     });
 
-    return filterOptimizedDataFormat({
-      apiData: data,
-      metadata,
-      filterFn: dataFilter,
-    });
+    return filterOptimizedDataFormat(data, metadata, dataFilter);
   }
 
   get districts() {

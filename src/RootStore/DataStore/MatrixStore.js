@@ -14,9 +14,11 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
+import {
+  matchesTopLevelFilters,
+  filterOptimizedDataFormat,
+} from "shared-filters";
 import BaseDataStore from "./BaseDataStore";
-import { matchesTopLevelFilters } from "../../components/charts/new_revocations/helpers";
-import { filterOptimizedDataFormat } from "../../utils/charts/dataFilters";
 
 export default class MatrixStore extends BaseDataStore {
   constructor({ rootStore }) {
@@ -24,12 +26,7 @@ export default class MatrixStore extends BaseDataStore {
   }
 
   filterData({ data, metadata }) {
-    const { filters } = this.rootStore;
-    const dataFilter = matchesTopLevelFilters({ filters });
-    return filterOptimizedDataFormat({
-      apiData: data,
-      metadata,
-      filterFn: dataFilter,
-    });
+    const dataFilter = matchesTopLevelFilters({ filters: this.filters });
+    return filterOptimizedDataFormat(data, metadata, dataFilter);
   }
 }

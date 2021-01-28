@@ -74,9 +74,11 @@ export default class BaseDataStore {
   }
 
   get queryFilters() {
-    return getQueryStringFromFilters(
-      Object.fromEntries(toJS(this.rootStore.filters))
-    );
+    return getQueryStringFromFilters(this.filters);
+  }
+
+  get filters() {
+    return Object.fromEntries(toJS(this.rootStore.filters));
   }
 
   get getTokenSilently() {

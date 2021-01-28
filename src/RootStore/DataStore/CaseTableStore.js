@@ -14,9 +14,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
+import { matchesAllFilters, filterOptimizedDataFormat } from "shared-filters";
 import BaseDataStore from "./BaseDataStore";
-import { matchesAllFilters } from "../../components/charts/new_revocations/helpers";
-import { filterOptimizedDataFormat } from "../../utils/charts/dataFilters";
 
 export default class CaseTableStore extends BaseDataStore {
   constructor({ rootStore }) {
@@ -24,15 +23,10 @@ export default class CaseTableStore extends BaseDataStore {
   }
 
   filterData({ data, metadata }) {
-    const { filters } = this.rootStore;
     const dataFilter = matchesAllFilters({
-      filters,
+      filters: this.filters,
       treatCategoryAllAsAbsent: true,
     });
-    return filterOptimizedDataFormat({
-      apiData: data,
-      metadata,
-      filterFn: dataFilter,
-    });
+    return filterOptimizedDataFormat(data, metadata, dataFilter);
   }
 }
