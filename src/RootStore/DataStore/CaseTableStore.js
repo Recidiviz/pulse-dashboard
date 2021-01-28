@@ -27,6 +27,9 @@ export default class CaseTableStore extends BaseDataStore {
       filters: this.filters,
       treatCategoryAllAsAbsent: true,
     });
+    if (this.eagerExpand) {
+      return data.filter((item) => dataFilter(item));
+    }
     return filterOptimizedDataFormat(data, metadata, dataFilter);
   }
 }

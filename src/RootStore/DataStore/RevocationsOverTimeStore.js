@@ -67,7 +67,9 @@ export default class RevocationsOverTimeStore extends BaseDataStore {
       filters: this.filters,
       skippedFilters: [METRIC_PERIOD_MONTHS],
     });
-
+    if (this.eagerExpand) {
+      return data.filter((item) => dataFilter(item));
+    }
     return filterOptimizedDataFormat(data, metadata, dataFilter);
   }
 }
