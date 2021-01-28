@@ -1,4 +1,4 @@
-const { query, param } = require("express-validator");
+const { query, param, body } = require("express-validator");
 const { default: isDemoMode } = require("../utils/isDemoMode");
 
 const VALID_STATE_CODES = ["US_PA", "US_MO"].concat(
@@ -61,4 +61,9 @@ const newRevocationsParamValidations = [
   query("violationType").toLowerCase().optional().isIn(VIOLATION_TYPES),
 ];
 
-module.exports = { newRevocationsParamValidations };
+const restrictedAccessParamValidations = [body("userEmail").exists()];
+
+module.exports = {
+  newRevocationsParamValidations,
+  restrictedAccessParamValidations,
+};

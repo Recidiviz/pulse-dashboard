@@ -30,13 +30,15 @@ import { DISTRICT } from "../../../../constants/filterTypes";
 const allDistrictsOption = { label: "All", value: "All" };
 
 const DistrictFilter = () => {
-  const { filters, filtersStore, dataStore, userStore } = useRootStore();
-  const store = dataStore.revocationsOverTimeStore;
-  const { district } = userStore;
+  const { filters, filtersStore, tenantStore, userStore } = useRootStore();
+  const { restrictedDistrict } = userStore;
 
   const getSelectElement = () => {
-    if (district) {
-      const singleValue = { label: district, value: district };
+    if (restrictedDistrict) {
+      const singleValue = {
+        label: restrictedDistrict,
+        value: restrictedDistrict,
+      };
 
       return (
         <Select
@@ -48,8 +50,10 @@ const DistrictFilter = () => {
         />
       );
     }
-    const { districts, isLoading } = store;
-    const options = [allDistrictsOption].concat(districts);
+    const { districts, districtsIsLoading } = tenantStore;
+    const options = [allDistrictsOption].concat(
+      districts.map((d) => ({ value: d, label: d }))
+    );
     const summingOption = allDistrictsOption;
     const defaultValue = [allDistrictsOption];
 
@@ -70,7 +74,7 @@ const DistrictFilter = () => {
         value={selectValue}
         onChange={onValueChange}
         isMulti
-        isLoading={isLoading}
+        isLoading={districtsIsLoading}
         isSearchable
       />
     );

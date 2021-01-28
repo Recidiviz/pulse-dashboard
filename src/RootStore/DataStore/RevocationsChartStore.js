@@ -45,7 +45,10 @@ export default class RevocationsChartStore extends BaseDataStore {
       () => this.selectedChart,
       () => {
         super.file = CHART_TO_FILENAME[this.selectedChart];
-        this.fetchData(this.queryFilters);
+        this.fetchData({
+          tenantId: this.rootStore.currentTenantId,
+          queryString: this.queryFilters,
+        });
       }
     );
   }

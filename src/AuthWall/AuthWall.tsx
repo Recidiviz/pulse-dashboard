@@ -44,7 +44,7 @@ const AuthWall: React.FC = ({ children }) => {
     throw userStore.authError;
   }
 
-  if (userStore.isLoading) {
+  if (userStore.userIsLoading || userStore.restrictedDistrictIsLoading) {
     return <Loading />;
   }
 

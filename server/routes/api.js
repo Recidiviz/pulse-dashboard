@@ -20,7 +20,12 @@
  * in server.js.
  */
 const { validationResult } = require("express-validator");
-const { refreshRedisCache, fetchMetrics, cacheResponse } = require("../core");
+const {
+  refreshRedisCache,
+  fetchMetrics,
+  cacheResponse,
+  fetchAndProcessRestrictedAccessEmails,
+} = require("../core");
 const { default: isDemoMode } = require("../utils/isDemoMode");
 const { getCacheKey } = require("../utils/cacheKeys");
 const { applyFilters } = require("../filters");
@@ -56,10 +61,43 @@ function processAndRespond(responderFn, processResultsFn) {
 }
 // TODO: Generalize this API to take in the metric type and file as request parameters in all calls
 
+function restrictedAccess(req, res) {
+  const validations = validationResult(req);
+  const hasErrors = !validations.isEmpty();
+  if (hasErrors) {
+    responder(res)(
+      {
+        status: BAD_REQUEST,
+        errors: "request is missing userEmail parameter",
+      },
+      null
+    );
+  } else {
+    const { stateCode } = req.params;
+    const { userEmail } = req.body;
+    const metricType = "newRevocation";
+    const file = "supervision_location_restricted_access_emails";
+    const cacheKey = `${stateCode.toUpperCase()}-restrictedAccess`;
+    cacheResponse(
+      cacheKey,
+      () =>
+        fetchAndProcessRestrictedAccessEmails(
+          stateCode,
+          metricType,
+          file,
+          isDemoMode,
+          userEmail
+        ),
+      responder(res)
+    );
+  }
+}
+
 function refreshCache(req, res) {
   const { stateCode } = req.params;
+  const metricType = "newRevocation";
   refreshRedisCache(
-    () => fetchMetrics(stateCode, "newRevocation", null, isDemoMode),
+    () => fetchMetrics(stateCode, metricType, null, isDemoMode),
     stateCode,
     "newRevocation",
     responder(res)
@@ -161,6 +199,7 @@ function programmingExplore(req, res) {
 }
 
 module.exports = {
+  restrictedAccess,
   newRevocations,
   newRevocationFile,
   communityGoals,
