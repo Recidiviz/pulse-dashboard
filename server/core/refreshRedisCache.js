@@ -26,20 +26,33 @@
 
 /* eslint-disable no-console */
 const { getCache } = require("./cacheManager");
-const { getSubsetCacheKeyCombinations } = require("../utils/cacheKeys");
+const { applyFilters, transformFilters } = require("../filters");
+const {
+  getSubsetCombinations,
+  getCacheKeyForSubsetCombination,
+} = require("../utils/cacheKeys");
 const {
   getSubsetManifest,
   FILES_WITH_SUBSETS,
 } = require("../constants/subsetManifest");
 
-const allSubsetCacheKeys = getSubsetCacheKeyCombinations(getSubsetManifest());
+const subsetCombinations = getSubsetCombinations(getSubsetManifest());
 
-function cacheEachSubsetFile(cache, cacheKey, metricFile) {
+function cacheEachSubsetFile(cache, cacheKey, fileKey, metricFile) {
   const cachePromises = [];
-  allSubsetCacheKeys.forEach((subsetKey) => {
-    const cacheKeyWithSubset = `${cacheKey}-${subsetKey}`;
-    console.log(`Setting cache for: ${cacheKeyWithSubset}...`);
-    cachePromises.push(cache.set(cacheKeyWithSubset, metricFile));
+  subsetCombinations.forEach((subsetCombination) => {
+    const subsetCacheKey = `${cacheKey}-${getCacheKeyForSubsetCombination(
+      subsetCombination
+    )}`;
+    const subsetFilters = transformFilters({
+      filters: subsetCombination,
+      useIndexValue: true,
+    });
+    const subsetFile = applyFilters(fileKey, subsetFilters, metricFile);
+
+    console.log(`Setting cache for: ${subsetCacheKey}...`);
+
+    cachePromises.push(cache.set(subsetCacheKey, subsetFile));
   });
   return cachePromises;
 }
@@ -48,17 +61,19 @@ function cacheEachFile({ files, cacheKeyPrefix }) {
   const cache = getCache(cacheKeyPrefix);
   const cachePromises = [];
 
-  Object.keys(files).forEach((file) => {
-    const cacheKey = `${cacheKeyPrefix}-${file}`;
-    const metricFile = { [file]: files[file] };
+  Object.keys(files).forEach((fileKey) => {
+    const cacheKey = `${cacheKeyPrefix}-${fileKey}`;
+    const metricFile = { [fileKey]: files[fileKey] };
 
-    if (FILES_WITH_SUBSETS.includes(file)) {
+    if (FILES_WITH_SUBSETS.includes(fileKey)) {
       // TODO: Remove line 59 once the front end is ready to receive the subset files.
       // This is the "original" cacheKey that will continue to return the full file
       // until both the FE and BE are ready to work with split files.
       cachePromises.push(cache.set(cacheKey, metricFile));
       // Cache the file with all of the subset cache keys
-      cachePromises.concat(cacheEachSubsetFile(cache, cacheKey, metricFile));
+      cachePromises.concat(
+        cacheEachSubsetFile(cache, cacheKey, fileKey, metricFile)
+      );
     } else {
       console.log(`Setting cache for: ${cacheKey}...`);
       cachePromises.push(cache.set(cacheKey, metricFile));

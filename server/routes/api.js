@@ -1,5 +1,5 @@
 // Recidiviz - a data platform for criminal justice reform
-// Copyright (C) 2020 Recidiviz, Inc.
+// Copyright (C) 2021 Recidiviz, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -25,10 +25,10 @@ const {
   fetchMetrics,
   cacheResponse,
   fetchAndProcessRestrictedAccessEmails,
+  filterNewRevocationFile,
 } = require("../core");
 const { default: isDemoMode } = require("../utils/isDemoMode");
 const { getCacheKey } = require("../utils/cacheKeys");
-const { applyFilters } = require("../filters");
 
 const BAD_REQUEST = 400;
 const SERVER_ERROR = 500;
@@ -138,7 +138,10 @@ function newRevocationFile(req, res) {
     cacheResponse(
       [cacheKey, cacheKeyWithSubsetKeys],
       () => fetchMetrics(stateCode, metricType, file, isDemoMode),
-      processAndRespond(responder(res), applyFilters(file, queryParams))
+      processAndRespond(
+        responder(res),
+        filterNewRevocationFile(file, queryParams)
+      )
     );
   }
 }

@@ -21,11 +21,29 @@ const SUBSET_MANIFEST = getSubsetManifest();
 const getSubsetDimensionKeys = () =>
   SUBSET_MANIFEST.map((dimension) => dimension[0]);
 
-const getSubsetDimensionValues = (key, value) => {
+/**
+ * Get all values from the subset manifest for the given dimension key and value.
+ *
+ * @param {string} key - Dimension key, i.e. "violation_type"
+ * @param {number|string} value - Dimension value, can be either the actual value for the dimension key,
+ * or an index to access all of the dimension values.
+ * @param {boolean} useIndexValue - Whether or not to treat the value param as a value or an index.
+ */
+const getSubsetDimensionValues = (key, value, useIndexValue = false) => {
   const subsets = Object.fromEntries(SUBSET_MANIFEST)[key];
+  if (useIndexValue) return subsets[value];
   return subsets.find((subset) => subset.includes(value.toLowerCase()));
 };
 
+/**
+ * Convert an array of objects into a flattened value matrix string
+ *
+ * @param {Object[]} filteredDataPoints - An array of filtered objects
+ * @param {Object} subsetMetadata - A metadata object with subset values in the dimension_manifest
+ *
+ * @returns {string} A string of all of the values in the filteredDataPoints, ordered by the subsetMetadata's
+ * dimension_manifest and value_keys
+ */
 function createFlattenedValueMatrix(filteredDataPoints, subsetMetadata) {
   const dimensions = subsetMetadata.dimension_manifest;
   const valueKeys = subsetMetadata.value_keys;
@@ -65,6 +83,16 @@ function createFlattenedValueMatrix(filteredDataPoints, subsetMetadata) {
   return unflattenedMatrix.flat().join(",");
 }
 
+/**
+ * Transforms a dimensionManifest from a metric file to only include the values from the subset filters
+ * if the dimension key is in the subset manifest. All dimension keys/values that are not in the subset manifest
+ * are also included.
+ *
+ * @param {String[][]} dimensionManifest - The original dimension manifest from a metric file
+ * @param {Object} subsetFilters - Filters with all the dimension values from the subset manifest
+ *
+ * @returns {String[][]}
+ */
 function createSubsetDimensionManifest(dimensionManifest, subsetFilters) {
   const subsetKeys = getSubsetDimensionKeys();
   const transformedDimensionManifest = [];
@@ -81,6 +109,12 @@ function createSubsetDimensionManifest(dimensionManifest, subsetFilters) {
   return transformedDimensionManifest;
 }
 
+/**
+ * Transforms the metadata to include the filtered total_data_points and the transformed dimension_manifest
+ * @param {number} totalDataPoints - The total data points in the filtered data
+ * @param {Object} metadata - The original metadata object from the metric file
+ * @param {Object} subsetFilters - The filters with all of the subset values
+ */
 function createSubsetMetadata(totalDataPoints, metadata, subsetFilters) {
   return {
     ...metadata,

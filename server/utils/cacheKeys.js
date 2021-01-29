@@ -21,21 +21,36 @@ const {
 } = require("../constants/subsetManifest");
 
 /**
+ * Returns the cache key suffix for the given subset combination.
+ * @param {Object} subsetCombination - A subset filter combination, { dimension_a: 0, dimension_b: 1 }
+ * @returns {string} The cache key suffix, example: "dimension_a=0-dimension_b=1"
+ */
+function getCacheKeyForSubsetCombination(subsetCombination) {
+  return Object.entries(subsetCombination)
+    .map((subsetDimension) => subsetDimension.join("="))
+    .join("-");
+}
+
+/**
+ * Given a nested array of all dimension key/value pairs, returns all possible combinations as an array of objects.
  *
- * @param {string[][]} collection - A nested array of strings, [["dimensionKeyA=0"], ["dimensionKeyB=0", "dimensionKeyB=1"]]
+ * @param {Object[][]} collection - A nested array of all possible dimension key/value pairs, [{dimension_a: 0, dimension_a: 1}, {dimension_b: 0, dimension_b: 1}]
  * @param {number} max - The max number of items to include in each combination.
  *
- * @returns {string[][]} - A nested array of all the combinations. [["dimensionKeyA=0", "dimensionKeyB=0"], ["dimensionKeyA=0", "dimensionKeyB=1"]]
+ * @returns {Object[][]} - A nested array of all the combinations. [{dimension_a: 0, dimension_b: 0}, {dimension_a: 0, dimension_b: 1},
  */
-function getCombinations(collection, max = 0) {
+function getAllSubsetCombinations(collection, max = 0) {
   const combinations = [];
 
-  function createCombination(start = 0, previousResults = []) {
+  function createCombination(start = 0, previousResults = {}) {
     for (let i = start; i < collection.length; i += 1) {
       for (let j = 0; j < collection[i].length; j += 1) {
         const item = collection[i][j];
-        const currentResults = previousResults.concat(item);
-        if (currentResults.length === max) {
+        const currentResults = {
+          ...item,
+          ...previousResults,
+        };
+        if (Object.keys(currentResults).length === max) {
           combinations.push(currentResults);
         }
         createCombination(i + 1, currentResults);
@@ -47,38 +62,37 @@ function getCombinations(collection, max = 0) {
 }
 
 /**
- * Utility for generating an array of subset keys from a provided subset manifest.
- * This is used to create combinations for all the subset keys.
- * @param {string[][]} subsetManifest - A nested array of dimension keys and subsets. For example, [["dimensionKey", [["subset_1"], ["subset_2"]]]
- *
- * @returns {string[][]} - Returns a nested array of strings formatted as "dimensionKey=subsetIndex" for each dimension key's subset array.
- *                         Example: [["dimensionKey=0", "dimensionKey=1"]]
+ * Creates a nested array of all dimension key/value pairs
+ * [[{dimension_a: 0}, {dimension_a: 1}], [{dimension_b: 0}, {dimension_b: 1}]]
+ * @param {Array[][]} subsetManifest
  */
-function getAllSubsetKeyStrings(subsetManifest) {
-  const subsetKeys = [];
+function getAllSubsetKeyValues(subsetManifest) {
+  const subsetKeyValues = [];
 
   subsetManifest.forEach(([dimensionKey, subsets], index) => {
     for (let i = 0; i < subsets.length; i += 1) {
-      if (!Array.isArray(subsetKeys[index])) {
-        subsetKeys[index] = [];
+      if (!Array.isArray(subsetKeyValues[index])) {
+        subsetKeyValues[index] = [];
       }
-      subsetKeys[index].push(`${dimensionKey}=${i}`);
+      subsetKeyValues[index].push({ [dimensionKey]: i });
     }
   });
-  return subsetKeys;
+  return subsetKeyValues;
 }
 
 /**
- * Utility for generating an array all subset cache key combinations
- * @param {string[][]} subsetManifest - A nested array of dimension keys and subsets. For example, [["dimensionKey", [["subset_1"], ["subset_2"]]]
+ * Generates an array of all subset filter combinations
+ * @param {string[][]} subsetManifest - A nested array of dimension keys and subsets.
+ *                     [["dimension_a", [["subset_1"], ["subset_2"]],
+ *                      ["dimension_b", [["subset_1"], ["subset_2"]]]]
  *
- * @returns {string[]} - Returns an array of strings formatted as "dimensionKeyA=subsetIndex-dimensionKeyB=subsetIndex" for each dimension key
- * and subset index defined in the subsetManifest.
+ * @returns {Object[]} - Returns an array of subset filters.
+ *                     [{ dimension_a: 0, dimension_b: 0 },
+ *                      { dimension_a: 0, dimension_b: 1 }]
  */
-function getSubsetCacheKeyCombinations(subsetManifest) {
-  const subsetKeys = getAllSubsetKeyStrings(subsetManifest);
-  const combinations = getCombinations(subsetKeys, subsetKeys.length);
-  return combinations.map((subsets) => subsets.join("-"));
+function getSubsetCombinations(subsetManifest) {
+  const subsetKeyValues = getAllSubsetKeyValues(subsetManifest);
+  return getAllSubsetCombinations(subsetKeyValues, subsetKeyValues.length);
 }
 
 /**
@@ -127,4 +141,8 @@ function getCacheKey({
   return cacheKey;
 }
 
-module.exports = { getCacheKey, getSubsetCacheKeyCombinations };
+module.exports = {
+  getCacheKey,
+  getCacheKeyForSubsetCombination,
+  getSubsetCombinations,
+};

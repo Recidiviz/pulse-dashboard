@@ -15,6 +15,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 const { default: refreshRedisCache } = require("../refreshRedisCache");
+const { applyFilters, transformFilters } = require("../../filters");
 
 const mockCache = {
   set: jest.fn(() => Promise.resolve(true)),
@@ -30,29 +31,36 @@ jest.mock("../../constants/subsetManifest", () => {
   return {
     getSubsetManifest: jest.fn().mockImplementation(() => {
       return [
-        ["violationType", [["all"], ["felony"]]],
-        ["chargeCategory", [["all"], ["domestic_violence"], ["sex_offense"]]],
+        ["violation_type", [["all"], ["felony"]]],
+        ["charge_category", [["all"], ["domestic_violence"], ["sex_offense"]]],
       ];
     }),
     FILES_WITH_SUBSETS: ["revocations_matrix_distribution_by_district"],
   };
 });
 
+jest.mock("../../filters/applyFilters");
+
 describe("refreshRedisCache", () => {
   let fileName;
+  let metricFile;
   let mockFetchValue;
   const stateCode = "US_DEMO";
   const metricType = "metric_type";
-  const fileContents = "a bunch of numbers";
+  const fileContents = {
+    flattenedValueMatrix: "a bunch of numbers",
+    metadata: {
+      total_data_points: 1,
+      dimension_manifest: [],
+    },
+  };
 
   beforeEach(() => {
     // do not log the expected error - keep tests less verbose
     jest.spyOn(console, "log").mockImplementation(() => {});
     jest.spyOn(console, "error").mockImplementation(() => {});
 
-    mockFetchValue = jest.fn(() =>
-      Promise.resolve({ [fileName]: fileContents })
-    );
+    mockFetchValue = jest.fn(() => Promise.resolve(metricFile));
   });
 
   afterEach(() => {
@@ -60,9 +68,10 @@ describe("refreshRedisCache", () => {
     jest.clearAllMocks();
   });
 
-  describe("refreshing the cache without subset files", () => {
+  describe("refreshing the cache for files without subsets", () => {
     beforeEach(() => {
       fileName = "random_file_name";
+      metricFile = { [fileName]: fileContents };
     });
 
     it("calls the cache with the correct key and value", (done) => {
@@ -77,9 +86,7 @@ describe("refreshRedisCache", () => {
 
           expect(mockFetchValue).toHaveBeenCalledTimes(1);
           expect(mockCache.set).toHaveBeenCalledTimes(1);
-          expect(mockCache.set).toHaveBeenCalledWith(cacheKey, {
-            [fileName]: fileContents,
-          });
+          expect(mockCache.set).toHaveBeenCalledWith(cacheKey, metricFile);
           done();
         }
       );
@@ -99,9 +106,44 @@ describe("refreshRedisCache", () => {
     });
   });
 
-  describe("refreshing the cache with subset files", () => {
+  describe("refreshing the cache for files that have subsets", () => {
     beforeEach(() => {
       fileName = "revocations_matrix_distribution_by_district";
+      metricFile = { [fileName]: fileContents };
+      applyFilters.mockImplementation(() => metricFile);
+    });
+
+    it("calls caches a subset file for each subset combination", (done) => {
+      refreshRedisCache(
+        mockFetchValue,
+        stateCode,
+        metricType,
+        (err, result) => {
+          expect(err).toEqual(null);
+          expect(result).toEqual("OK");
+          expect(applyFilters).toHaveBeenCalledTimes(6);
+          [
+            { violation_type: 0, charge_category: 0 },
+            { violation_type: 0, charge_category: 1 },
+            { violation_type: 0, charge_category: 2 },
+            { violation_type: 1, charge_category: 0 },
+            { violation_type: 1, charge_category: 1 },
+            { violation_type: 1, charge_category: 2 },
+          ].forEach((subsetCombination, index) => {
+            const transformedFilters = transformFilters({
+              filters: subsetCombination,
+              useIndexValue: true,
+            });
+            expect(applyFilters).toHaveBeenNthCalledWith(
+              index + 1,
+              fileName,
+              transformedFilters,
+              metricFile
+            );
+          });
+          done();
+        }
+      );
     });
 
     it("sets the cache key for each possible subset", (done) => {
@@ -115,23 +157,21 @@ describe("refreshRedisCache", () => {
           expect(err).toEqual(null);
           expect(result).toEqual("OK");
           // TODO: Change this expectation to 6 when we remove caching the original cache key
-          // Also remove the empty string on line 121.
+          // Also remove the empty string expectation.
           expect(mockCache.set).toHaveBeenCalledTimes(7);
           [
             "",
-            "-violationType=0-chargeCategory=0",
-            "-violationType=0-chargeCategory=1",
-            "-violationType=0-chargeCategory=2",
-            "-violationType=1-chargeCategory=0",
-            "-violationType=1-chargeCategory=1",
-            "-violationType=1-chargeCategory=2",
+            "-charge_category=0-violation_type=0",
+            "-charge_category=1-violation_type=0",
+            "-charge_category=2-violation_type=0",
+            "-charge_category=0-violation_type=1",
+            "-charge_category=1-violation_type=1",
+            "-charge_category=2-violation_type=1",
           ].forEach((subsetKey, index) => {
             expect(mockCache.set).toHaveBeenNthCalledWith(
               index + 1,
               `${cacheKeyPrefix}${subsetKey}`,
-              {
-                [fileName]: fileContents,
-              }
+              metricFile
             );
           });
           done();
@@ -146,6 +186,21 @@ describe("refreshRedisCache", () => {
       });
 
       refreshRedisCache(mockFetchValue, stateCode, metricType, (err) => {
+        expect(mockCache.set).toHaveBeenCalledTimes(1);
+        expect(err).toEqual(error);
+        done();
+      });
+    });
+
+    it("returns an error when filtering fails", (done) => {
+      const error = new Error("Error setting cache value");
+      applyFilters.mockReset();
+      applyFilters.mockImplementationOnce(() => {
+        throw error;
+      });
+
+      refreshRedisCache(mockFetchValue, stateCode, metricType, (err) => {
+        // TODO: Set this expectation to 0 when we are no longer caching the original file.
         expect(mockCache.set).toHaveBeenCalledTimes(1);
         expect(err).toEqual(error);
         done();

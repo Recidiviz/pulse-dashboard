@@ -32,6 +32,9 @@ const {
 const { default: refreshRedisCache } = require("./refreshRedisCache");
 const { default: fetchMetricsFromLocal } = require("./fetchMetricsFromLocal");
 const { default: fetchMetricsFromGCS } = require("./fetchMetricsFromGCS");
+const {
+  default: filterNewRevocationFile,
+} = require("./filterNewRevocationFile");
 const { default: getFilesByMetricType } = require("./getFilesByMetricType");
 const { cacheResponse } = require("./cacheManager");
 
@@ -40,6 +43,7 @@ module.exports = {
   fetchAndProcessRestrictedAccessEmails,
   fetchMetricsFromLocal,
   fetchMetricsFromGCS,
+  filterNewRevocationFile,
   getFilesByMetricType,
   refreshRedisCache,
   cacheResponse,

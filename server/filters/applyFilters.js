@@ -25,8 +25,17 @@ const {
   createSubsetMetadata,
 } = require("./subsetFileHelpers");
 const { FILES_WITH_SUBSETS } = require("../constants/subsetManifest");
-const { transformFilters, getFilterFnByFile } = require("./filterHelpers");
+const { getFilterFnByFile } = require("./filterHelpers");
 
+/**
+ * Convert the flattenedValueMatrix into a nested array and apply the filters
+ *
+ * @param {string} flattenedValueMatrix
+ * @param {Object} metadata
+ * @param {(item: object, dimensionKey: string) => boolean} filterFn - Filter function to determine which items are filtered out
+ *
+ * @returns {Object[]} - Returns an array of filtered objects
+ */
 function getFilteredDataPoints(flattenedValueMatrix, metadata, filterFn) {
   const subsetDimensions = getSubsetDimensionKeys();
   const totalDataPoints = toInteger(metadata.total_data_points);
@@ -46,37 +55,50 @@ function getFilteredDataPoints(flattenedValueMatrix, metadata, filterFn) {
   );
 }
 
-function applyFilters(fileKey, filters) {
-  return function (metricFile) {
-    if (!FILES_WITH_SUBSETS.includes(fileKey)) {
-      return metricFile;
-    }
-    const { flattenedValueMatrix, metadata } = metricFile[fileKey];
-    const subsetFilters = transformFilters(filters);
-    const filterFn = getFilterFnByFile(fileKey, subsetFilters);
-    const filteredData = getFilteredDataPoints(
-      flattenedValueMatrix,
-      metadata,
-      filterFn
-    );
+/**
+ * Apply the subset filters to the metric file
+ *
+ * @param {string} fileKey - Name of the metric file
+ * @param {Object} subsetFilters - Filters with all the dimension values from the subset manifest
+ * @param {Object} metricFile
+ * @param {string} metricFile.flattenedValueMatrix
+ * @param {Object} metricFile.metadata
+ * @param {string} metricFile.metadata.total_data_points
+ * @param {string} metricFile.metadata.total_data_points
+ * @param {String[][]} metricFile.metadata.dimension_manifest
+ * @param {String[]} metricFile.metadata.value_keys
+ *
+ * @returns {Object} Returns an object with the subset file with the filters applied and a metadata
+ * object with a dimension_manifest reflecting the subset values.
+ */
+function applyFilters(fileKey, subsetFilters, metricFile) {
+  if (!FILES_WITH_SUBSETS.includes(fileKey)) {
+    return metricFile;
+  }
+  const { flattenedValueMatrix, metadata } = metricFile[fileKey];
+  const filterFn = getFilterFnByFile(fileKey, subsetFilters);
+  const filteredData = getFilteredDataPoints(
+    flattenedValueMatrix,
+    metadata,
+    filterFn
+  );
 
-    const subsetMetadata = createSubsetMetadata(
-      filteredData.length,
-      metadata,
-      subsetFilters
-    );
+  const subsetMetadata = createSubsetMetadata(
+    filteredData.length,
+    metadata,
+    subsetFilters
+  );
 
-    const subsetFlattenedValueMatrix = createFlattenedValueMatrix(
-      filteredData,
-      subsetMetadata
-    );
+  const subsetFlattenedValueMatrix = createFlattenedValueMatrix(
+    filteredData,
+    subsetMetadata
+  );
 
-    return {
-      [fileKey]: {
-        flattenedValueMatrix: subsetFlattenedValueMatrix,
-        metadata: subsetMetadata,
-      },
-    };
+  return {
+    [fileKey]: {
+      flattenedValueMatrix: subsetFlattenedValueMatrix,
+      metadata: subsetMetadata,
+    },
   };
 }
 
