@@ -34,9 +34,32 @@ jest.mock("../filterHelpers", () => {
   };
 });
 
+jest.mock("../../constants/subsetManifest", () => {
+  return {
+    getSubsetManifest: jest.fn().mockImplementation(() => {
+      return [
+        [
+          "violation_type",
+          [
+            ["all", "absconsion"],
+            ["felony", "law"],
+          ],
+        ],
+        ["charge_category", [["all", "general"], ["sex_offense"]]],
+      ];
+    }),
+    FILES_WITH_SUBSETS: ["revocations_matrix_distribution_by_district"],
+  };
+});
+
 describe("applyFilters", () => {
   let fileKey;
   let metricFile;
+
+  afterAll(() => {
+    jest.resetModules();
+    jest.clearAllMocks();
+  });
 
   describe("Given a file without subsets", () => {
     it("does not filter the metric file", () => {

@@ -128,7 +128,6 @@ function createSubsetMetadata(totalDataPoints, metadata, subsetFilters) {
 
 module.exports = {
   createFlattenedValueMatrix,
-  createSubsetDimensionManifest,
   createSubsetMetadata,
   getSubsetDimensionKeys,
   getSubsetDimensionValues,
