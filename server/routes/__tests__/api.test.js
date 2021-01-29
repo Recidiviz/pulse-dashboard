@@ -14,39 +14,39 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
+const mockMetricFiles = {
+  file_1: "content_1",
+  file_2: "content_2",
+  supervision_location_restricted_access_emails: [
+    {
+      restricted_user_email: "thirteen@state.gov",
+      allowed_level_1_supervision_location_ids: "13",
+    },
+    {
+      restricted_user_email: "one@state.gov",
+      allowed_level_1_supervision_location_ids: "1",
+    },
+  ],
+};
 
 jest.mock("../../core/fetchMetrics", () => {
   return {
-    default: jest.fn(() =>
-      Promise.resolve({
-        file_1: "content_1",
-        file_2: "content_2",
-        supervision_location_restricted_access_emails: [
-          {
-            restricted_user_email: "thirteen@state.gov",
-            allowed_level_1_supervision_location_ids: "13",
-          },
-          {
-            restricted_user_email: "one@state.gov",
-            allowed_level_1_supervision_location_ids: "1",
-          },
-        ],
-      })
-    ),
+    default: jest.fn(() => Promise.resolve(mockMetricFiles)),
   };
 });
-jest.mock("../../core/filterNewRevocationFile", () => {
+
+jest.mock("../../filters", () => {
   return {
-    default: jest.fn(() => {
-      return () => {};
+    applyFilters: jest.fn(),
+    transformFilters: jest.fn(() => {
+      return { violationType: "ALL" };
     }),
   };
 });
 
 const { default: fetchMetrics } = require("../../core/fetchMetrics");
-const {
-  default: filterNewRevocationFile,
-} = require("../../core/filterNewRevocationFile");
+const { applyFilters, transformFilters } = require("../../filters");
+
 const {
   newRevocations,
   newRevocationFile,
@@ -101,7 +101,6 @@ describe("API GET tests", () => {
   describe("API fetching and caching for GET requests", () => {
     const metricControllers = [
       [newRevocations],
-      [newRevocationFile],
       [communityGoals],
       [communityExplore],
       [facilitiesGoals],
@@ -118,7 +117,6 @@ describe("API GET tests", () => {
     test.each(metricControllers)(
       "%p fetches metrics only if data is not cached in store",
       async (controllerFn, done) => {
-        // TODO: Set this expectation back to 1 when we remove the "original" cache keys
         await requestAndExpectFetchMetricsCalled(controllerFn, 1);
         await requestAndExpectFetchMetricsCalled(controllerFn, 0);
 
@@ -143,6 +141,7 @@ describe("API GET tests", () => {
 
     it("newRevocationFile - calls fetchMetrics with the correct args", async () => {
       const file = "test_file";
+
       await fakeRequest(newRevocationFile, { params: { stateCode, file } });
 
       expect(fetchMetrics).toHaveBeenCalledWith(
@@ -153,16 +152,16 @@ describe("API GET tests", () => {
       );
     });
 
-    it("newRevocationFile - passes the file and the query params to filterNewRevocationFile", async () => {
-      const file = "test_file";
+    it("newRevocationFile - calls transformFilters and applyFilters", async () => {
+      const file = "file_1";
+      const filters = { violationType: "ALL" };
       await fakeRequest(newRevocationFile, {
         params: { stateCode, file },
-        query: { violationType: "ALL" },
+        query: filters,
       });
 
-      expect(filterNewRevocationFile).toHaveBeenCalledWith(file, {
-        violationType: "ALL",
-      });
+      expect(transformFilters).toHaveBeenLastCalledWith({ filters });
+      expect(applyFilters).toHaveBeenCalledWith(file, filters, mockMetricFiles);
     });
 
     it("refreshCache - calls fetchMetrics with the correct args", async () => {

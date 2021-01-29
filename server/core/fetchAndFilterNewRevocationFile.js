@@ -14,12 +14,21 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-const { applyFilters } = require("../filters");
-const { transformFilters } = require("../filters/filterHelpers");
+const { applyFilters, transformFilters } = require("../filters");
+const { default: fetchMetrics } = require("./fetchMetrics");
 
-function filterNewRevocationFile(fileKey, filters) {
-  const subsetFilters = transformFilters({ filters });
-  return (metricFile) => applyFilters(fileKey, subsetFilters, metricFile);
+function fetchAndFilterNewRevocationFile({
+  file: fileKey,
+  queryParams: filters,
+  ...fetchArgs
+}) {
+  const { stateCode, metricType, isDemoMode } = fetchArgs;
+  return fetchMetrics(stateCode, metricType, fileKey, isDemoMode).then(
+    (metricFile) => {
+      const subsetFilters = transformFilters({ filters });
+      return applyFilters(fileKey, subsetFilters, metricFile);
+    }
+  );
 }
 
-exports.default = filterNewRevocationFile;
+exports.default = fetchAndFilterNewRevocationFile;

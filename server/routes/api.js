@@ -24,7 +24,7 @@ const {
   refreshRedisCache,
   fetchMetrics,
   cacheResponse,
-  filterNewRevocationFile,
+  fetchAndFilterNewRevocationFile,
   filterRestrictedAccessEmails,
 } = require("../core");
 const { default: isDemoMode } = require("../utils/isDemoMode");
@@ -129,20 +129,19 @@ function newRevocationFile(req, res) {
       stateCode,
       metricType,
       file,
-    });
-    const cacheKeyWithSubsetKeys = getCacheKey({
-      stateCode,
-      metricType,
-      file,
       cacheKeySubset: queryParams,
     });
     cacheResponse(
-      [cacheKey, cacheKeyWithSubsetKeys],
-      () => fetchMetrics(stateCode, metricType, file, isDemoMode),
-      processAndRespond(
-        responder(res),
-        filterNewRevocationFile(file, queryParams)
-      )
+      cacheKey,
+      () =>
+        fetchAndFilterNewRevocationFile({
+          stateCode,
+          metricType,
+          file,
+          queryParams,
+          isDemoMode,
+        }),
+      responder(res)
     );
   }
 }

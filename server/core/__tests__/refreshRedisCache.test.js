@@ -156,11 +156,8 @@ describe("refreshRedisCache", () => {
         (err, result) => {
           expect(err).toEqual(null);
           expect(result).toEqual("OK");
-          // TODO: Change this expectation to 6 when we remove caching the original cache key
-          // Also remove the empty string expectation.
-          expect(mockCache.set).toHaveBeenCalledTimes(7);
+          expect(mockCache.set).toHaveBeenCalledTimes(6);
           [
-            "",
             "-charge_category=0-violation_type=0",
             "-charge_category=1-violation_type=0",
             "-charge_category=2-violation_type=0",
@@ -200,8 +197,7 @@ describe("refreshRedisCache", () => {
       });
 
       refreshRedisCache(mockFetchValue, stateCode, metricType, (err) => {
-        // TODO: Set this expectation to 0 when we are no longer caching the original file.
-        expect(mockCache.set).toHaveBeenCalledTimes(1);
+        expect(mockCache.set).toHaveBeenCalledTimes(0);
         expect(err).toEqual(error);
         done();
       });
