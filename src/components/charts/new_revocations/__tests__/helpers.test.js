@@ -541,7 +541,7 @@ describe("applyMatrixFilters", () => {
 
     describe("with violationType = 'ALL' filter applied", () => {
       beforeEach(() => {
-        filters = observable.map({ violationType: "ALL" });
+        filters = observable.map({ violationType: "All" });
         filtered = applyMatrixFilters(filters)(data);
         filteredViolationTypes = filtered.map((f) => f.violation_type);
       });

@@ -74,7 +74,7 @@ describe("filterOptionsMap", () => {
     it("is the same for both tenants", () => {
       result = filterOptionsMap;
       const expected = {
-        defaultValue: "ALL",
+        defaultValue: "All",
       };
 
       expect(result.US_MO.reportedViolations).toEqual(expected);
@@ -192,7 +192,7 @@ describe("filterOptionsMap", () => {
 
     it("returns the correct filter violationType option", () => {
       const expected = {
-        defaultValue: "ALL",
+        defaultValue: "All",
         options: [
           {
             key: "travel_count",
@@ -432,7 +432,7 @@ describe("filterOptionsMap", () => {
 
     it("returns the correct violationType filter options", () => {
       const expected = {
-        defaultValue: "ALL",
+        defaultValue: "All",
         options: [
           {
             key: "low_tech_count",
