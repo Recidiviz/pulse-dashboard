@@ -15,22 +15,15 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-const { default: fetchMetrics } = require("./fetchMetrics");
-
 /**
- * Fetches and processes the supervision_location_restricted_access_emails.
+ * Processes the supervision_location_restricted_access_emails.
  * Returns an object that contains the restricted district matching
  * userEmail param, or an empty object if none of the values match.
  */
-function fetchAndProcessRestrictedAccessEmails(
-  stateCode,
-  metricType,
-  file,
-  isDemo,
-  userEmail
-) {
-  return fetchMetrics(stateCode, metricType, file, isDemo).then((result) => {
+function filterRestrictedAccessEmails(userEmail, file) {
+  return (result) => {
     const restrictedEmails = result[file];
+
     return restrictedEmails
       ? {
           [file]: restrictedEmails.find((u) => {
@@ -40,7 +33,7 @@ function fetchAndProcessRestrictedAccessEmails(
           }),
         }
       : {};
-  });
+  };
 }
 
-exports.default = fetchAndProcessRestrictedAccessEmails;
+exports.default = filterRestrictedAccessEmails;
