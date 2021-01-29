@@ -55,9 +55,13 @@ function responder(res) {
  * processResultFn before passing the processed result to
  * the responder function.
  */
-function processAndRespond(responderFn, processResultFn) {
+function processAndRespond(responderFn, processResultsFn) {
   return (err, data) => {
-    responderFn(err, processResultFn(data));
+    if (data) {
+      responderFn(null, processResultsFn(data));
+    } else {
+      responderFn(err, null);
+    }
   };
 }
 
