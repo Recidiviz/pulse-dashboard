@@ -24,8 +24,8 @@ const {
   refreshRedisCache,
   fetchMetrics,
   cacheResponse,
-  fetchAndProcessRestrictedAccessEmails,
   filterNewRevocationFile,
+  filterRestrictedAccessEmails,
 } = require("../core");
 const { default: isDemoMode } = require("../utils/isDemoMode");
 const { getCacheKey } = require("../utils/cacheKeys");
@@ -50,6 +50,11 @@ function responder(res) {
   };
 }
 
+/**
+ * A callback which processes fetch result data with a given
+ * processResultFn before passing the processed result to
+ * the responder function.
+ */
 function processAndRespond(responderFn, processResultsFn) {
   return (err, data) => {
     if (data) {
@@ -80,15 +85,11 @@ function restrictedAccess(req, res) {
     const cacheKey = `${stateCode.toUpperCase()}-restrictedAccess`;
     cacheResponse(
       cacheKey,
-      () =>
-        fetchAndProcessRestrictedAccessEmails(
-          stateCode,
-          metricType,
-          file,
-          isDemoMode,
-          userEmail
-        ),
-      responder(res)
+      () => fetchMetrics(stateCode, metricType, file, isDemoMode),
+      processAndRespond(
+        responder(res),
+        filterRestrictedAccessEmails(userEmail, file)
+      )
     );
   }
 }
