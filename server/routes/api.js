@@ -123,7 +123,7 @@ function newRevocationFile(req, res) {
     responder(res)({ status: BAD_REQUEST, errors: validations.array() }, null);
   } else {
     const { stateCode, file } = req.params;
-    const queryParams = req.query;
+    const queryParams = req.query || {};
     const cacheKey = getCacheKey({
       stateCode,
       metricType,

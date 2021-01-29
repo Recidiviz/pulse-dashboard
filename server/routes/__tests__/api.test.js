@@ -22,7 +22,18 @@ jest.mock("../../core/fetchMetrics", () => {
     ),
   };
 });
+jest.mock("../../core/filterNewRevocationFile", () => {
+  return {
+    default: jest.fn(() => {
+      return () => {};
+    }),
+  };
+});
+
 const { default: fetchMetrics } = require("../../core/fetchMetrics");
+const {
+  default: filterNewRevocationFile,
+} = require("../../core/filterNewRevocationFile");
 const {
   newRevocations,
   newRevocationFile,
@@ -50,6 +61,7 @@ describe("API GET tests", () => {
   afterAll(() => {
     jest.resetModules();
     jest.restoreAllMocks();
+    clearMemoryCache();
   });
 
   function fakeRequest(routeHandler, req = { params: { stateCode } }) {
@@ -90,7 +102,6 @@ describe("API GET tests", () => {
       jest.resetModules();
     });
 
-    metricControllers.forEach(() => {});
     test.each(metricControllers)(
       "%p fetches metrics only if data is not cached in store",
       async (controllerFn, done) => {
@@ -127,6 +138,18 @@ describe("API GET tests", () => {
         file,
         false
       );
+    });
+
+    it("newRevocationFile - passes the file and the query params to filterNewRevocationFile", async () => {
+      const file = "test_file";
+      await fakeRequest(newRevocationFile, {
+        params: { stateCode, file },
+        query: { violationType: "ALL" },
+      });
+
+      expect(filterNewRevocationFile).toHaveBeenCalledWith(file, {
+        violationType: "ALL",
+      });
     });
 
     it("refreshCache - calls fetchMetrics with the correct args", async () => {

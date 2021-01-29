@@ -157,17 +157,15 @@ const matchesMatrixFilters = (filters) => (item, dimensionKey) => {
 
 const matchesAllFilters = ({
   filters,
-  attrAccessors,
   skippedFilters = [],
   treatCategoryAllAsAbsent = false,
 }) => (item, dimensionKey = undefined) => {
   const topLevelFilterFn = matchesTopLevelFilters({
     filters,
-    attrAccessors,
     skippedFilters,
     treatCategoryAllAsAbsent,
   });
-  const matrixFilterFn = matchesMatrixFilters(filters, attrAccessors);
+  const matrixFilterFn = matchesMatrixFilters(filters);
   return (
     topLevelFilterFn(item, dimensionKey) && matrixFilterFn(item, dimensionKey)
   );
