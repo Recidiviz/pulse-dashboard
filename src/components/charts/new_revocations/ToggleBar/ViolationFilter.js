@@ -31,26 +31,27 @@ import {
   VIOLATION_TYPE,
   REPORTED_VIOLATIONS,
 } from "../../../../constants/filterTypes";
+import { isAllItem } from "../../../../utils/charts/dataPointComparisons";
 
 const ViolationFilter = () => {
   const { filtersStore, filters } = useRootStore();
+  const { filterOptions } = filtersStore;
   const reportedViolations = get(filters, REPORTED_VIOLATIONS);
   const violationType = get(filters, VIOLATION_TYPE);
 
   const clearViolationFilters = () => {
     filtersStore.setFilters({
-      [VIOLATION_TYPE]: "",
-      [REPORTED_VIOLATIONS]: "",
+      [VIOLATION_TYPE]: filterOptions[VIOLATION_TYPE].defaultValue,
+      [REPORTED_VIOLATIONS]: filterOptions[REPORTED_VIOLATIONS].defaultValue,
     });
   };
 
   const formattedMatrixFilters = useMemo(() => {
     const parts = [];
-
-    if (violationType) {
+    if (violationType && !isAllItem(violationType)) {
       parts.push(matrixViolationTypeToLabel[violationType]);
     }
-    if (reportedViolations) {
+    if (reportedViolations && !isAllItem(reportedViolations)) {
       parts.push(
         pluralize(violationCountLabel(reportedViolations), "violation")
       );
