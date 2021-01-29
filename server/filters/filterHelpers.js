@@ -16,13 +16,13 @@
 // =============================================================================
 
 const { snakeCase } = require("lodash");
-const { matchesAllFilters, getFilterKeys } = require("shared-filters");
+const { matchesAllFilters } = require("shared-filters");
 const {
   getSubsetDimensionKeys,
   getSubsetDimensionValues,
 } = require("./subsetFileHelpers");
 
-const { DISTRICT } = getFilterKeys();
+const DISTRICT = "district";
 
 /**
  * Transform a filter's value to include all values in the subset manifest.

@@ -1,6 +1,6 @@
 import qs from "qs";
 import toInteger from "lodash/fp/toInteger";
-import { convertFromStringToUnflattenedMatrix } from "../../api/metrics/optimizedFormatHelpers";
+import { convertFromStringToUnflattenedMatrix } from "shared-filters";
 import { parseResponseByFileFormat } from "../../api/metrics/fileParser";
 import { VIOLATION_TYPE } from "../../constants/filterTypes";
 
