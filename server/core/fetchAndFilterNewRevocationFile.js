@@ -24,9 +24,9 @@ function fetchAndFilterNewRevocationFile({
 }) {
   const { stateCode, metricType, isDemoMode } = fetchArgs;
   return fetchMetrics(stateCode, metricType, fileKey, isDemoMode).then(
-    (metricFile) => {
+    (metricFiles) => {
       const subsetFilters = transformFilters({ filters });
-      return applyFilters(fileKey, subsetFilters, metricFile);
+      return applyFilters(fileKey, subsetFilters, metricFiles);
     }
   );
 }

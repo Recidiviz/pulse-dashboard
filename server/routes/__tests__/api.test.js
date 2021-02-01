@@ -35,17 +35,16 @@ jest.mock("../../core/fetchMetrics", () => {
   };
 });
 
-jest.mock("../../filters", () => {
+jest.mock("../../core/fetchAndFilterNewRevocationFile", () => {
   return {
-    applyFilters: jest.fn(),
-    transformFilters: jest.fn(() => {
-      return { violationType: "ALL" };
-    }),
+    default: jest.fn(() => Promise.resolve(mockMetricFiles)),
   };
 });
 
 const { default: fetchMetrics } = require("../../core/fetchMetrics");
-const { applyFilters, transformFilters } = require("../../filters");
+const {
+  default: fetchAndFilterNewRevocationFile,
+} = require("../../core/fetchAndFilterNewRevocationFile");
 
 const {
   newRevocations,
@@ -91,11 +90,12 @@ describe("API GET tests", () => {
   async function requestAndExpectFetchMetricsCalled(
     controllerFn,
     numCalls,
-    request
+    request,
+    mockFetch = fetchMetrics
   ) {
     await fakeRequest(controllerFn, request);
-    expect(fetchMetrics.mock.calls.length).toBe(numCalls);
-    fetchMetrics.mockClear();
+    expect(mockFetch.mock.calls.length).toBe(numCalls);
+    mockFetch.mockClear();
   }
 
   describe("API fetching and caching for GET requests", () => {
@@ -139,31 +139,6 @@ describe("API GET tests", () => {
       );
     });
 
-    it("newRevocationFile - calls fetchMetrics with the correct args", async () => {
-      const file = "test_file";
-
-      await fakeRequest(newRevocationFile, { params: { stateCode, file } });
-
-      expect(fetchMetrics).toHaveBeenCalledWith(
-        stateCode,
-        "newRevocation",
-        file,
-        false
-      );
-    });
-
-    it("newRevocationFile - calls transformFilters and applyFilters", async () => {
-      const file = "file_1";
-      const filters = { violationType: "ALL" };
-      await fakeRequest(newRevocationFile, {
-        params: { stateCode, file },
-        query: filters,
-      });
-
-      expect(transformFilters).toHaveBeenLastCalledWith({ filters });
-      expect(applyFilters).toHaveBeenCalledWith(file, filters, mockMetricFiles);
-    });
-
     it("refreshCache - calls fetchMetrics with the correct args", async () => {
       await fakeRequest(refreshCache);
 
@@ -172,6 +147,64 @@ describe("API GET tests", () => {
         "newRevocation",
         null,
         false
+      );
+    });
+  });
+
+  describe("newRevocationFile endpoint", () => {
+    const file = "file_1";
+    const filters = { violationType: "ALL" };
+    const request = {
+      params: { stateCode, file },
+      query: filters,
+    };
+
+    it("newRevocationFile - calls fetchAndFilterNewReocationFile with correct args", async () => {
+      await fakeRequest(newRevocationFile, request);
+      expect(fetchAndFilterNewRevocationFile).toHaveBeenCalledWith({
+        file,
+        stateCode,
+        metricType: "newRevocation",
+        queryParams: filters,
+        isDemoMode: false,
+      });
+    });
+
+    it("newRevocationFile - calls fetchAndFilterNewRevocationFile if data is not cached", async () => {
+      const file = "file_1";
+      const filters = { violationType: "ALL" };
+      const request = {
+        params: { stateCode, file },
+        query: filters,
+      };
+      await requestAndExpectFetchMetricsCalled(
+        newRevocationFile,
+        1,
+        request,
+        fetchAndFilterNewRevocationFile
+      );
+
+      await requestAndExpectFetchMetricsCalled(
+        newRevocationFile,
+        0,
+        request,
+        fetchAndFilterNewRevocationFile
+      );
+
+      await clearMemoryCache();
+
+      await requestAndExpectFetchMetricsCalled(
+        newRevocationFile,
+        1,
+        request,
+        fetchAndFilterNewRevocationFile
+      );
+
+      await requestAndExpectFetchMetricsCalled(
+        newRevocationFile,
+        0,
+        request,
+        fetchAndFilterNewRevocationFile
       );
     });
   });
