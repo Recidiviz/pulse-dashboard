@@ -31,12 +31,14 @@ import { useDataStore } from "../../../../StoreProvider";
 const RevocationsByRace = ({ timeDescription }) => {
   const dataStore = useDataStore();
   const { revocationsChartStore } = dataStore;
+
   return (
     <RevocationsByDimension
       chartId={`${translate("revocations")}ByRace`}
       dataStore={revocationsChartStore}
       renderChart={({ chartId, data, denominators, numerators, mode }) => (
         <BarChartWithLabels
+          activeTab={mode}
           id={chartId}
           data={data}
           labelColors={COLORS_LANTERN_SET}
@@ -54,8 +56,18 @@ const RevocationsByRace = ({ timeDescription }) => {
         `${getLabelByMode(mode)} by race/ethnicity and risk level`
       }
       timeDescription={timeDescription}
-      modes={flags.enableRevocationRateByExit ? ["rates", "exits"] : []}
-      defaultMode="rates"
+      modes={
+        flags.enableRevocationRateByExit
+          ? ["rates", "exits"]
+          : [
+              "caucasian",
+              "african american",
+              "hispanic",
+              "asian",
+              "native american",
+            ]
+      }
+      defaultMode="caucasian"
       dataExportLabel="Risk Level"
     />
   );
