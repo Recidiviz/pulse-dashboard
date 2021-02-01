@@ -63,8 +63,10 @@ function getAllSubsetCombinations(collection, max = 0) {
 
 /**
  * Creates a nested array of all dimension key/value pairs
- * [[{dimension_a: 0}, {dimension_a: 1}], [{dimension_b: 0}, {dimension_b: 1}]]
+ *
  * @param {Array[][]} subsetManifest
+ * @returns {Object[][]} - A nested array of all dimension key/value pairs
+ * [[{dimension_a: 0}, {dimension_a: 1}], [{dimension_b: 0}, {dimension_b: 1}]]
  */
 function getAllSubsetKeyValues(subsetManifest) {
   const subsetKeyValues = [];

@@ -36,7 +36,7 @@ const DISTRICT = "district";
  * @returns {Object} - An object with each filter key and all possible values from the subset dimension
  * Example: { violation_type: ["felony", "law", "misdemeanor"], charge_category: ["sex_offense"] }
  */
-function transformFilters({ filters, useIndexValue = false }) {
+function transformFilters({ filters }) {
   const transformedFilters = {};
   const subsetDimensionKeys = getSubsetDimensionKeys();
 
@@ -45,8 +45,7 @@ function transformFilters({ filters, useIndexValue = false }) {
     if (subsetDimensionKeys.includes(formattedKey)) {
       transformedFilters[formattedKey] = getSubsetDimensionValues(
         formattedKey,
-        filters[filterKey],
-        useIndexValue
+        filters[filterKey]
       );
     } else {
       transformedFilters[formattedKey] = filters[filterKey];

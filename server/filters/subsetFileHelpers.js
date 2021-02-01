@@ -29,9 +29,9 @@ const getSubsetDimensionKeys = () =>
  * or an index to access all of the dimension values.
  * @param {boolean} useIndexValue - Whether or not to treat the value param as a value or an index.
  */
-const getSubsetDimensionValues = (key, value, useIndexValue = false) => {
+const getSubsetDimensionValues = (key, value) => {
   const subsets = Object.fromEntries(SUBSET_MANIFEST)[key];
-  if (useIndexValue) return subsets[value];
+  if (typeof value === "number") return subsets[value];
   return subsets.find((subset) => subset.includes(value.toLowerCase()));
 };
 
