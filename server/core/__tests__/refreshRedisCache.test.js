@@ -15,7 +15,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 const { default: refreshRedisCache } = require("../refreshRedisCache");
-const { applyFilters, transformFilters } = require("../../filters");
+const { createSubset, transformFilters } = require("../../filters");
 
 const mockCache = {
   set: jest.fn(() => Promise.resolve(true)),
@@ -39,7 +39,7 @@ jest.mock("../../constants/subsetManifest", () => {
   };
 });
 
-jest.mock("../../filters/applyFilters");
+jest.mock("../../filters/createSubset");
 
 describe("refreshRedisCache", () => {
   let fileName;
@@ -110,7 +110,7 @@ describe("refreshRedisCache", () => {
     beforeEach(() => {
       fileName = "revocations_matrix_distribution_by_district";
       metricFile = { [fileName]: fileContents };
-      applyFilters.mockImplementation(() => metricFile);
+      createSubset.mockImplementation(() => metricFile);
     });
 
     it("calls caches a subset file for each subset combination", (done) => {
@@ -121,7 +121,7 @@ describe("refreshRedisCache", () => {
         (err, result) => {
           expect(err).toEqual(null);
           expect(result).toEqual("OK");
-          expect(applyFilters).toHaveBeenCalledTimes(6);
+          expect(createSubset).toHaveBeenCalledTimes(6);
           [
             { violation_type: 0, charge_category: 0 },
             { violation_type: 0, charge_category: 1 },
@@ -132,9 +132,8 @@ describe("refreshRedisCache", () => {
           ].forEach((subsetCombination, index) => {
             const transformedFilters = transformFilters({
               filters: subsetCombination,
-              useIndexValue: true,
             });
-            expect(applyFilters).toHaveBeenNthCalledWith(
+            expect(createSubset).toHaveBeenNthCalledWith(
               index + 1,
               fileName,
               transformedFilters,
@@ -191,8 +190,8 @@ describe("refreshRedisCache", () => {
 
     it("returns an error when filtering fails", (done) => {
       const error = new Error("Error setting cache value");
-      applyFilters.mockReset();
-      applyFilters.mockImplementationOnce(() => {
+      createSubset.mockReset();
+      createSubset.mockImplementationOnce(() => {
         throw error;
       });
 

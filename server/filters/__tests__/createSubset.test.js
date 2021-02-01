@@ -15,7 +15,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-const { default: applyFilters } = require("../applyFilters");
+const { default: createSubset } = require("../createSubset");
 
 const violationTypeFilters = ["felony", "law", "misdemeanor"];
 const chargeCategoryFilters = ["sex_offense"];
@@ -52,7 +52,7 @@ jest.mock("../../constants/subsetManifest", () => {
   };
 });
 
-describe("applyFilters", () => {
+describe("createSubset", () => {
   let fileKey;
   let metricFile;
 
@@ -65,7 +65,7 @@ describe("applyFilters", () => {
     it("does not filter the metric file", () => {
       metricFile = "lots of great data";
       fileKey = "not_in_the_subset_manifest";
-      expect(applyFilters(fileKey, {}, metricFile)).toEqual(metricFile);
+      expect(createSubset(fileKey, {}, metricFile)).toEqual(metricFile);
     });
   });
 
@@ -116,7 +116,7 @@ describe("applyFilters", () => {
         value_keys: ["total_revocations"],
       };
       expectedFilteredValues = "0,0,0,0,0,0,1,1,0,10,10,10";
-      output = applyFilters(fileKey, subsetFilters, metricFile);
+      output = createSubset(fileKey, subsetFilters, metricFile);
     });
 
     it("returns a metric file in the expected format", () => {

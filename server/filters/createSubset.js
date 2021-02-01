@@ -71,7 +71,7 @@ function getFilteredDataPoints(flattenedValueMatrix, metadata, filterFn) {
  * @returns {Object} Returns an object with the subset file with the filters applied and a metadata
  * object with a dimension_manifest reflecting the subset values.
  */
-function applyFilters(fileKey, subsetFilters, metricFile) {
+function createSubset(fileKey, subsetFilters, metricFile) {
   if (!FILES_WITH_SUBSETS.includes(fileKey)) {
     return metricFile;
   }
@@ -102,4 +102,4 @@ function applyFilters(fileKey, subsetFilters, metricFile) {
   };
 }
 
-exports.default = applyFilters;
+exports.default = createSubset;

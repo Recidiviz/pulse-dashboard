@@ -1,7 +1,7 @@
 const { transformFilters } = require("./filterHelpers");
-const { default: applyFilters } = require("./applyFilters");
+const { default: createSubset } = require("./createSubset");
 
 module.exports = {
-  applyFilters,
+  createSubset,
   transformFilters,
 };

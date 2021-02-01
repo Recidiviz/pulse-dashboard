@@ -17,7 +17,7 @@
 
 const { fetchAndFilterNewRevocationFile } = require("..");
 const { default: fetchMetrics } = require("../fetchMetrics");
-const { applyFilters, transformFilters } = require("../../filters");
+const { createSubset, transformFilters } = require("../../filters");
 
 const mockMetricFiles = { file_1: "content_1" };
 const mockTransformedFilters = { violation_type: "All" };
@@ -29,7 +29,7 @@ jest.mock("../../core/fetchMetrics", () => {
 });
 jest.mock("../../filters", () => {
   return {
-    applyFilters: jest.fn(),
+    createSubset: jest.fn(),
     transformFilters: jest.fn(() => mockTransformedFilters),
   };
 });
@@ -44,7 +44,6 @@ describe("fetchAndFilterNewRevocationFile", () => {
 
   afterAll(() => {
     jest.resetModules();
-    jest.restoreAllMocks();
   });
 
   beforeEach(() => {
@@ -53,7 +52,6 @@ describe("fetchAndFilterNewRevocationFile", () => {
       queryParams,
       ...fetchArgs,
     });
-    transformFilters.mockImplementationOnce(() => mockTransformedFilters);
   });
 
   it("calls fetchMetrics with the correct args", async () => {
@@ -71,8 +69,8 @@ describe("fetchAndFilterNewRevocationFile", () => {
     });
   });
 
-  it("calls applyFilters with the correct args", async () => {
-    expect(applyFilters).toHaveBeenCalledWith(
+  it("calls createSubset with the correct args", async () => {
+    expect(createSubset).toHaveBeenCalledWith(
       file,
       mockTransformedFilters,
       mockMetricFiles
