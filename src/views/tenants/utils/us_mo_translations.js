@@ -36,7 +36,7 @@ export default {
   matrixExplanationP1: `This chart plots all people who were revoked to prison
 during the selected time period, according to their most serious violation
 and the total number of violation reports and notices of citation that
-were filed within 9 months prior to the last reported violation before
+were filed within one year prior to the last reported violation before
 the person was revoked. (See methodology for more details.)`,
   matrixExplanationP2: `The numbers inside the bubbles represent the number of
 people who were revoked, whose most serious violation matches the violation at
