@@ -3,10 +3,8 @@ import toInteger from "lodash/fp/toInteger";
 import { convertFromStringToUnflattenedMatrix } from "../../api/metrics/optimizedFormatHelpers";
 import { parseResponseByFileFormat } from "../../api/metrics/fileParser";
 import {
-  FILTER_TYPE_MAP,
   REPORTED_VIOLATIONS,
   VIOLATION_TYPE,
-  DISTRICT,
 } from "../../constants/filterTypes";
 
 export function unflattenValues(metricFile) {
@@ -80,6 +78,11 @@ export function dimensionManifestIncludesFilterValues({
       (filters[filterType].toLowerCase() === "all" && treatCategoryAllAsAbsent)
     ) {
       return true;
+    }
+    if (dimensionManifest[filterType] === undefined) {
+      throw new Error(
+        `Expected to find ${filterType} in the dimension manifest. Should this filter be skipped?`
+      );
     }
     return dimensionManifest[filterType].includes(
       filters[filterType].toLowerCase()

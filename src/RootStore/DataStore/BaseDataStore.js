@@ -82,7 +82,7 @@ export default class BaseDataStore {
     reaction(
       () => this.shouldFetchNewSubsetFile,
       (shouldFetchNewSubsetFile) => {
-        if (!this.isLoading && !shouldFetchNewSubsetFile) {
+        if (!this.isLoading && shouldFetchNewSubsetFile) {
           this.fetchData({
             tenantId: this.rootStore.currentTenantId,
           });
@@ -104,7 +104,7 @@ export default class BaseDataStore {
   }
 
   get shouldFetchNewSubsetFile() {
-    return dimensionManifestIncludesFilterValues({
+    return !dimensionManifestIncludesFilterValues({
       filters: this.filters,
       dimensionManifest: this.dimensionManifest,
       skippedFilters: this.skippedFilters,
@@ -135,6 +135,11 @@ export default class BaseDataStore {
       }
       return acc;
     }, {});
+  }
+
+  get filteredData() {
+    console.error(`filteredData should be defined in the subclass.`);
+    return this.filteredData;
   }
 
   *fetchData({ tenantId }) {

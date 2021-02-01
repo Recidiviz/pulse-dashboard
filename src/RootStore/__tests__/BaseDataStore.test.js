@@ -35,7 +35,15 @@ jest.mock("../../api/metrics/metricsClient", () => {
         flattenedValueMatrix: "0,0",
         metadata: {
           total_data_points: 1,
-          dimension_manifest: [["reported_violations", ["0"]]],
+          dimension_manifest: [
+            ["metric_period_months", ["12"]],
+            ["charge_category", ["all"]],
+            ["reported_violations", ["0"]],
+            ["violation_type", ["felony"]],
+            ["supervision_level", ["all"]],
+            ["supervision_type", ["all"]],
+            ["district", ["all"]],
+          ],
           value_keys: ["population_count"],
         },
       },
@@ -66,10 +74,6 @@ describe("BaseDataStore", () => {
       baseStore = new BaseDataStore({ rootStore, file });
     });
 
-    afterAll(() => {
-      jest.resetAllMocks();
-    });
-
     describe("default store properties", () => {
       it("has a reference to the rootStore", () => {
         expect(baseStore.rootStore).toBeDefined();
@@ -98,8 +102,21 @@ describe("BaseDataStore", () => {
         expect(baseStore.isError).toEqual(false);
       });
 
-      it("sets apiData", () => {
-        expect(baseStore.apiData).toEqual([["0"], ["0"]]);
+      it("sets both the data and metadata values as apiData", () => {
+        expect(baseStore.apiData.data).toEqual([["0"], ["0"]]);
+        expect(baseStore.apiData.metadata).toEqual({
+          total_data_points: 1,
+          dimension_manifest: [
+            ["metric_period_months", ["12"]],
+            ["charge_category", ["all"]],
+            ["reported_violations", ["0"]],
+            ["violation_type", ["felony"]],
+            ["supervision_level", ["all"]],
+            ["supervision_type", ["all"]],
+            ["district", ["all"]],
+          ],
+          value_keys: ["population_count"],
+        });
       });
 
       describe("when API responds with an error", () => {
@@ -109,7 +126,7 @@ describe("BaseDataStore", () => {
         });
 
         it("does not set apiData", () => {
-          expect(baseStore.apiData).toStrictEqual([]);
+          expect(baseStore.apiData).toStrictEqual({});
         });
 
         it("sets isError to true and isLoading to false", () => {
@@ -117,6 +134,22 @@ describe("BaseDataStore", () => {
           expect(baseStore.isLoading).toBe(false);
         });
       });
+    });
+  });
+
+  describe("when a filter value is not included in the dimension manifest", () => {
+    it("fetches a new subset file with new filter query params", () => {
+      const expectedEndpoint = `${tenantId}/newRevocations/revocations_matrix_distribution_by_district?
+      metricPeriodMonths=12&chargeCategory=All&violationType=LAW&supervisionType=All&supervisionLevel=All
+      &district[0]=All`.replace(/\n\s+/g, "");
+
+      rootStore.filtersStore.setFilters({
+        violationType: "LAW",
+      });
+      expect(callMetricsApi).toHaveBeenCalledWith(
+        expectedEndpoint,
+        mockGetTokenSilently
+      );
     });
   });
 
