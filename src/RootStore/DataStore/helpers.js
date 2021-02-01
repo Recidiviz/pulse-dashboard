@@ -2,7 +2,12 @@ import qs from "qs";
 import toInteger from "lodash/fp/toInteger";
 import { convertFromStringToUnflattenedMatrix } from "../../api/metrics/optimizedFormatHelpers";
 import { parseResponseByFileFormat } from "../../api/metrics/fileParser";
-import { VIOLATION_TYPE } from "../../constants/filterTypes";
+import {
+  FILTER_TYPE_MAP,
+  REPORTED_VIOLATIONS,
+  VIOLATION_TYPE,
+  DISTRICT,
+} from "../../constants/filterTypes";
 
 export function unflattenValues(metricFile) {
   const totalDataPoints = toInteger(metricFile.metadata.total_data_points);
@@ -52,5 +57,32 @@ export function getQueryStringFromFilters(filters = {}) {
       }
       return value !== "" ? value : undefined;
     },
+  });
+}
+
+export function dimensionManifestIncludesFilterValues({
+  filters,
+  dimensionManifest,
+  ignoredSubsetDimensions = [],
+  skippedFilters = [],
+  treatCategoryAllAsAbsent = false,
+}) {
+  if (!filters || !dimensionManifest) return false;
+  return Object.keys(filters).every((filterType) => {
+    if (
+      skippedFilters.includes(filterType) ||
+      ignoredSubsetDimensions.includes(filterType) ||
+      // TODO - remove these two specific checks once reported_violations
+      // and violation_type are unnested
+      (filterType === REPORTED_VIOLATIONS && filters[filterType] === "") ||
+      (filterType === VIOLATION_TYPE && filters[filterType] === "") ||
+      // This is for the CaseTable
+      (filters[filterType].toLowerCase() === "all" && treatCategoryAllAsAbsent)
+    ) {
+      return true;
+    }
+    return dimensionManifest[filterType].includes(
+      filters[filterType].toLowerCase()
+    );
   });
 }
