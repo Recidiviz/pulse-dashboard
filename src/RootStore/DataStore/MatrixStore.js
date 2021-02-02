@@ -27,7 +27,7 @@ export default class MatrixStore extends BaseDataStore {
 
   filterData({ data, metadata }) {
     const dataFilter = matchesTopLevelFilters({ filters: this.filters });
-    if (this.eagerExpand) {
+    if (this.eagerExpand || !Array.isArray(data[0])) {
       return data.filter((item) => dataFilter(item));
     }
     return filterOptimizedDataFormat(data, metadata, dataFilter);

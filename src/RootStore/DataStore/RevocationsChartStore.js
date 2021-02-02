@@ -65,7 +65,8 @@ export default class RevocationsChartStore extends BaseDataStore {
       filters: this.filters,
       ...filteringOptions[this.selectedChart],
     });
-    if (this.eagerExpand) {
+
+    if (this.eagerExpand || !Array.isArray(data[0])) {
       return data.filter((item) => dataFilter(item));
     }
     return filterOptimizedDataFormat(data, metadata, dataFilter);

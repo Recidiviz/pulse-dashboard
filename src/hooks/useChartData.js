@@ -17,10 +17,13 @@
 
 import { useState, useCallback, useEffect } from "react";
 import makeCancellablePromise from "make-cancellable-promise";
-import { parseResponsesByFileFormat } from "../api/metrics/fileParser";
-import { callMetricsApi, awaitingResults } from "../api/metrics/metricsClient";
+import {
+  callMetricsApi,
+  awaitingResults,
+  parseResponseByFileFormat,
+  parseResponsesByFileFormat,
+} from "../api/metrics";
 import { useRootStore } from "../StoreProvider";
-import { processResponseData } from "../RootStore/DataStore/helpers";
 
 const queues = {};
 
@@ -80,11 +83,10 @@ function useChartData(url, file) {
     promise
       .then((responseData) => {
         if (file) {
-          const { data, metadata: responseMetadata } = processResponseData(
-            responseData,
-            file,
-            eagerExpand
-          );
+          const {
+            data,
+            metadata: responseMetadata,
+          } = parseResponseByFileFormat(responseData, file, eagerExpand);
           setMetadata(responseMetadata);
           setApiData(data);
         } else {

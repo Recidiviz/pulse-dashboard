@@ -24,8 +24,8 @@ import {
   autorun,
 } from "mobx";
 
-import { callMetricsApi } from "../../api/metrics/metricsClient";
-import { processResponseData, getQueryStringFromFilters } from "./helpers";
+import { callMetricsApi, parseResponseByFileFormat } from "../../api/metrics";
+import { getQueryStringFromFilters } from "./helpers";
 
 /**
  * BaseDataStore is an abstract class that should never be directly instantiated.
@@ -100,7 +100,7 @@ export default class BaseDataStore {
         endpoint,
         this.getTokenSilently
       );
-      const processedData = processResponseData(
+      const processedData = parseResponseByFileFormat(
         responseData,
         this.file,
         this.eagerExpand

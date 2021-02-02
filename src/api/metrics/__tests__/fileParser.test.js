@@ -30,7 +30,14 @@ const METADATA = {
     ["year", ["2020"]],
   ],
 };
-const EXPECTED_OUTPUT = [
+const UNFLATTENED_VALUES = [
+  ["0", "0", "1", "1", "2", "0", "0", "1", "1", "2", "2"],
+  ["0", "0", "0", "0", "0", "1", "1", "1", "1", "1", "1"],
+  ["0", "1", "0", "1", "0", "0", "1", "0", "1", "0", "1"],
+  ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"],
+  ["100", "68", "73", "41", "10", "30", "36", "51", "38", "15", "4"],
+];
+const VERBOSE_FORMAT = [
   {
     district: "4",
     year: "2020",
@@ -124,10 +131,13 @@ describe("Test fileParser.parseResponseByFileFormat", () => {
       response,
       "my_metric_file"
     );
-    expect(parsedResponse).toEqual(EXPECTED_OUTPUT);
+    expect(parsedResponse).toEqual({
+      data: VERBOSE_FORMAT,
+      metadata,
+    });
   });
 
-  it("produces the correct output for an unexpanded optimized metric file input", () => {
+  it("produces the correct output given an optimized format when eagerExpand=false", () => {
     const contents = FLATTENED_VALUES;
     const metadata = METADATA;
     const response = {
@@ -141,38 +151,70 @@ describe("Test fileParser.parseResponseByFileFormat", () => {
       "my_metric_file",
       false
     );
-    expect(parsedResponse).toEqual(response.my_metric_file);
+    expect(parsedResponse).toEqual({
+      data: UNFLATTENED_VALUES,
+      metadata,
+    });
   });
 
-  it("produces the correct output for a json lines metric file input", () => {
+  it("produces the correct output for given a metric file with json data", () => {
     const response = {
-      my_metric_file: EXPECTED_OUTPUT,
+      my_metric_file: {
+        data: VERBOSE_FORMAT,
+        metadata: {},
+      },
     };
     const parsedResponse = methods.parseResponseByFileFormat(
       response,
       "my_metric_file"
     );
-    expect(parsedResponse).toEqual(EXPECTED_OUTPUT);
+    expect(parsedResponse).toEqual(response.my_metric_file);
   });
 });
 
 describe("Test fileParser.parseResponsesByFileFormat", () => {
-  it("produces the correct output for a mix of input types", () => {
-    const contents = FLATTENED_VALUES;
-    const metadata = METADATA;
-    const response = {
+  const contents = FLATTENED_VALUES;
+  const metadata = METADATA;
+  const response = {
+    my_optimized_metric_file: {
+      flattenedValueMatrix: contents,
+      metadata,
+    },
+    my_metric_file: {
+      data: VERBOSE_FORMAT,
+      metadata,
+    },
+  };
+
+  it("produces the correct output for a mix of input types when eagerExpand = true", () => {
+    const expectedOutput = {
       my_optimized_metric_file: {
-        flattenedValueMatrix: contents,
+        data: VERBOSE_FORMAT,
         metadata,
       },
-      my_metric_file: EXPECTED_OUTPUT,
-    };
-    const expectedOutput = {
-      my_optimized_metric_file: EXPECTED_OUTPUT,
-      my_metric_file: EXPECTED_OUTPUT,
+      my_metric_file: {
+        data: VERBOSE_FORMAT,
+        metadata,
+      },
     };
 
     const parsedResponse = methods.parseResponsesByFileFormat(response);
+    expect(parsedResponse).toEqual(expectedOutput);
+  });
+
+  it("produces the correct output for a mix of input types when eagerExpand = false", () => {
+    const expectedOutput = {
+      my_optimized_metric_file: {
+        data: UNFLATTENED_VALUES,
+        metadata,
+      },
+      my_metric_file: {
+        data: VERBOSE_FORMAT,
+        metadata,
+      },
+    };
+
+    const parsedResponse = methods.parseResponsesByFileFormat(response, false);
     expect(parsedResponse).toEqual(expectedOutput);
   });
 });
