@@ -46,10 +46,8 @@ export const generateDatasets = (dataPoints, denominators) => {
 const createGenerateChartData = (filteredData) => (mode) => {
   const numeratorKey = "population_count";
   const denominatorKey = getDenominatorKeyByMode(mode);
-
   const raceLabelMap = translate("raceLabelMap");
   const races = Object.keys(raceLabelMap);
-
   const { dataPoints, numerators, denominators } = pipe(
     reduce(createRiskLevelsMap(numeratorKey, denominatorKey, "race"), {}),
     (data) => getCounts(data, getRiskLevels(), races)

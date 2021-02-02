@@ -23,6 +23,7 @@ import { tooltipForFooterWithCounts } from "../../../../utils/charts/significant
 import { tooltipForRateMetricWithCounts } from "../../../../utils/charts/toggles";
 import { generateLabelsWithCustomColors } from "./helpers";
 import { COLORS } from "../../../../assets/scripts/constants/colors";
+import { translate } from "../../../../views/tenants/utils/i18nSettings";
 import "chartjs-plugin-datalabels";
 
 const BarChartWithLabels = ({
@@ -35,15 +36,16 @@ const BarChartWithLabels = ({
   numerators,
   denominators,
 }) => {
+  const translateRaceLabels = translate("raceLabelMap");
   const filteredData = React.useMemo(() => {
     const cloneData = JSON.parse(JSON.stringify(data));
     cloneData.datasets = data?.datasets?.filter(
-      ({ label }) => label.toLowerCase() === activeTab
+      ({ label }) => label === translateRaceLabels[activeTab]
     );
     return cloneData;
-  }, [activeTab, data]);
+  }, [activeTab, data, translateRaceLabels]);
 
-  return id !== "revocationsByRace" ? (
+  return id !== `${translate("revocations")}ByRace` ? (
     <Bar
       id={id}
       data={data}

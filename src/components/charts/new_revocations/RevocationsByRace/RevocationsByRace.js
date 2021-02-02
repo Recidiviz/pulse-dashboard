@@ -36,18 +36,20 @@ const RevocationsByRace = ({ timeDescription }) => {
     <RevocationsByDimension
       chartId={`${translate("revocations")}ByRace`}
       dataStore={revocationsChartStore}
-      renderChart={({ chartId, data, denominators, numerators, mode }) => (
-        <BarChartWithLabels
-          activeTab={mode}
-          id={chartId}
-          data={data}
-          labelColors={COLORS_LANTERN_SET}
-          xAxisLabel="Race/ethnicity and risk level"
-          yAxisLabel={getLabelByMode(mode)}
-          numerators={numerators}
-          denominators={denominators}
-        />
-      )}
+      renderChart={({ chartId, data, denominators, numerators, mode }) => {
+        return (
+          <BarChartWithLabels
+            activeTab={mode}
+            id={chartId}
+            data={data}
+            labelColors={COLORS_LANTERN_SET}
+            xAxisLabel="Race/ethnicity and risk level"
+            yAxisLabel={getLabelByMode(mode)}
+            numerators={numerators}
+            denominators={denominators}
+          />
+        );
+      }}
       generateChartData={createGenerateChartData(
         revocationsChartStore.filteredData
       )}
@@ -59,15 +61,9 @@ const RevocationsByRace = ({ timeDescription }) => {
       modes={
         flags.enableRevocationRateByExit
           ? ["rates", "exits"]
-          : [
-              "caucasian",
-              "african american",
-              "hispanic",
-              "asian",
-              "native american",
-            ]
+          : Object.keys(translate("raceLabelMap"))
       }
-      defaultMode="caucasian"
+      defaultMode="WHITE"
       dataExportLabel="Risk Level"
     />
   );
