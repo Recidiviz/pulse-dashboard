@@ -20,73 +20,46 @@ const {
   convertFromStringToUnflattenedMatrix,
 } = require("shared-filters");
 const {
-  getSubsetDimensionKeys,
   createFlattenedValueMatrix,
   createSubsetMetadata,
+  getSubsetDimensionKeys,
 } = require("./subsetFileHelpers");
-const { FILES_WITH_SUBSETS } = require("../constants/subsetManifest");
+const {
+  FILES_WITH_SUBSETS,
+  getSubsetManifest,
+} = require("../constants/subsetManifest");
 const { getFilterFnByFile } = require("./filterHelpers");
 
 /**
- * Convert the flattenedValueMatrix into a nested array and apply the filters
+ * Given a metric file with a flattened value matrix and metadata, it converts the flattenedValueMatrix
+ * into a nested array and applies the filters.
  *
- * @param {string} flattenedValueMatrix
- * @param {Object} metadata
+ * @param {Object} data - An object with the properties `flattenedValueMatrix` and `metadata`.
+ * @param {Object} filters - The filters to apply to the metric data
  * @param {(item: object, dimensionKey: string) => boolean} filterFn - Filter function to determine which items are filtered out
  *
- * @returns {Object[]} - Returns an array of filtered objects
+ * @returns {Object[]} - Returns an object with the property `flattenedValueMatrix`, which has the filtered subset values,
+ * and the property `metadata`, which has a dimension manifest reflecting the values in the subset.
  */
-function getFilteredDataPoints(flattenedValueMatrix, metadata, filterFn) {
-  const subsetDimensions = getSubsetDimensionKeys();
+function applyFiltersToOptimizedFormat(data, filters, filterFn, skipFilterFn) {
+  const { flattenedValueMatrix, metadata } = data;
   const totalDataPoints = toInteger(metadata.total_data_points);
-  const skipFilterFn = (dimensionKey) =>
-    !subsetDimensions.includes(dimensionKey);
-
   const unflattenedMatrix = convertFromStringToUnflattenedMatrix(
     flattenedValueMatrix,
     totalDataPoints
   );
 
-  return filterOptimizedDataFormat(
+  const filteredData = filterOptimizedDataFormat(
     unflattenedMatrix,
     metadata,
     filterFn,
     skipFilterFn
   );
-}
-
-/**
- * Apply the subset filters to the metric file
- *
- * @param {string} fileKey - Name of the metric file
- * @param {Object} subsetFilters - Filters with all the dimension values from the subset manifest
- * @param {Object} metricFile
- * @param {string} metricFile.flattenedValueMatrix
- * @param {Object} metricFile.metadata
- * @param {string} metricFile.metadata.total_data_points
- * @param {string} metricFile.metadata.total_data_points
- * @param {String[][]} metricFile.metadata.dimension_manifest
- * @param {String[]} metricFile.metadata.value_keys
- *
- * @returns {Object} Returns an object with the subset file with the filters applied and a metadata
- * object with a dimension_manifest reflecting the subset values.
- */
-function createSubset(fileKey, subsetFilters, metricFile) {
-  if (!FILES_WITH_SUBSETS.includes(fileKey)) {
-    return metricFile;
-  }
-  const { flattenedValueMatrix, metadata } = metricFile[fileKey];
-  const filterFn = getFilterFnByFile(fileKey, subsetFilters);
-  const filteredData = getFilteredDataPoints(
-    flattenedValueMatrix,
-    metadata,
-    filterFn
-  );
 
   const subsetMetadata = createSubsetMetadata(
     filteredData.length,
     metadata,
-    subsetFilters
+    filters
   );
 
   const subsetFlattenedValueMatrix = createFlattenedValueMatrix(
@@ -95,10 +68,80 @@ function createSubset(fileKey, subsetFilters, metricFile) {
   );
 
   return {
-    [fileKey]: {
-      flattenedValueMatrix: subsetFlattenedValueMatrix,
-      metadata: subsetMetadata,
-    },
+    flattenedValueMatrix: subsetFlattenedValueMatrix,
+    metadata: subsetMetadata,
+  };
+}
+
+/**
+ * Given a metric file with an array of datapoints, it applies the filter function to the datapoints and
+ * returns a subset of the data alongside a metadata object.
+ *
+ * @param {Object[]} dataPoints - An array of data points to filter
+ * @param {Object} filters - The filters to apply to the metric data
+ * @param {(item: object, dimensionKey: string) => boolean} filterFn - Filter function to determine which items are filtered out
+ *
+ * @returns {Object[]} - Returns an object with the property `data`, which has the filtered subset values as an array of objects,
+ * and the property `metadata`, which has a dimension manifest reflecting the values in the subset.
+ */
+function applyFiltersToDataPoints(dataPoints, filters, filterFn) {
+  const filteredData = dataPoints.filter((dataPoint) => filterFn(dataPoint));
+  const subsetManifest = getSubsetManifest();
+  const metadata = {
+    dimension_manifest: subsetManifest,
+    total_data_points: filteredData.length,
+  };
+  return {
+    data: filteredData,
+    metadata: createSubsetMetadata(filteredData.length, metadata, filters),
+  };
+}
+
+/**
+ * Apply the subset filters to the data in the metric file and return and object keyed by the metric name that includes the
+ * data and the metadata for the subset.
+ *
+ * @param {string} fileKey - Name of the metric file
+ * @param {Object} subsetFilters - Filters with all the dimension values from the subset manifest
+ * @param {Object.<string, fileKey>} metricFile - An object with the fileKey as key and value may either include a flattened value matrix with metadata, or an array of data point objects.
+ * @param {Object[]} [metricFile.fileKey] - Optional array of data point objects
+ * @param {string} [metricFile.fileKey.flattenedValueMatrix] - Optional flattened value matrix string
+ * @param {Object} [metricFile.fileKey.metadata] - Optional metadata for parsing the flattened value matrix
+ * @param {string} [metricFile.fileKey.metadata.total_data_points] - Number of data points in the flattened value matrix for a single dimension
+ * @param {String[][]} [metricFile.fileKey.metadata.dimension_manifest] - The enum dimensions included in the flattened value matrix
+ * @param {String[]} [metricFile.fileKey.metadata.value_keys] - The value dimensions included in the flattened value matrix
+ *
+ * @returns {Object} Returns an object keyed by the metric name with the subset data and a metadata
+ * object with a dimension_manifest reflecting the subset values. If a flattened value matrix was provided, the data
+ * is under the key `flattenedValueMatrix`, otherwise if an array of datapoints was provided, the subset data is under
+ * the `data` key.
+ */
+function createSubset(fileKey, subsetFilters, metricFile) {
+  if (!FILES_WITH_SUBSETS.includes(fileKey)) {
+    return metricFile;
+  }
+
+  const filterFn = getFilterFnByFile(fileKey, subsetFilters);
+
+  if (Array.isArray(metricFile[fileKey])) {
+    return {
+      [fileKey]: applyFiltersToDataPoints(
+        metricFile[fileKey],
+        subsetFilters,
+        filterFn
+      ),
+    };
+  }
+  const skipFilterFn = (dimensionKey) =>
+    !getSubsetDimensionKeys().includes(dimensionKey);
+
+  return {
+    [fileKey]: applyFiltersToOptimizedFormat(
+      metricFile[fileKey],
+      subsetFilters,
+      filterFn,
+      skipFilterFn
+    ),
   };
 }
 

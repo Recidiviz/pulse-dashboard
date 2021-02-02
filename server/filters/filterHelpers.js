@@ -22,8 +22,6 @@ const {
   getSubsetDimensionValues,
 } = require("./subsetFileHelpers");
 
-const DISTRICT = "district";
-
 /**
  * Transform a filter's value to include all values in the subset manifest. Only returns filter dimensions that are
  * in the subset manifest.
@@ -69,9 +67,6 @@ const getFilterFnByFile = (file, subsetFilters) => {
     case "revocations_matrix_distribution_by_violation":
       return matchesAllFilters({
         filters: subsetFilters,
-        skippedFilters: [
-          file === "revocations_matrix_distribution_by_district" && DISTRICT,
-        ],
       });
     default:
       return () => true;
