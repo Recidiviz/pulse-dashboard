@@ -26,7 +26,7 @@
 
 /* eslint-disable no-console */
 const { getCache } = require("./cacheManager");
-const { createSubset, transformFilters } = require("../filters");
+const { createSubset, createSubsetFilters } = require("../filters");
 const {
   getSubsetCombinations,
   getCacheKeyForSubsetCombination,
@@ -44,7 +44,7 @@ function cacheEachSubsetFile(cache, cacheKey, fileKey, metricFile) {
     const subsetCacheKey = `${cacheKey}-${getCacheKeyForSubsetCombination(
       subsetCombination
     )}`;
-    const subsetFilters = transformFilters({
+    const subsetFilters = createSubsetFilters({
       filters: subsetCombination,
     });
     const subsetFile = createSubset(fileKey, subsetFilters, metricFile);
