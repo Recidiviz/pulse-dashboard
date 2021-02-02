@@ -13,7 +13,7 @@
     "test-react": "TZ=UTC react-scripts test",
     "test-server": "TZ=UTC jest ./server",
     "test-filters": "TZ=UTC jest ./shared-filters",
-    "test": "npm-run-all --sequential test-server test-filters test-react",
+    "test": "yarn test-server && yarn test-filters && yarn test-react",
     "spa": "react-scripts start",
     "server": "nodemon server.js",
     "server:dev": "npm-run-all --parallel server redis-server",
