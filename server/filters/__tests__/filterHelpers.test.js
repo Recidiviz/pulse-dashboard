@@ -50,7 +50,6 @@ describe("transformFilters", () => {
       expect(transformFilters({ filters })).toEqual({
         violation_type: ["felony", "law"],
         charge_category: ["all", "domestic_violence"],
-        supervision_type: "DUAL",
         metric_period_months: "12",
       });
     });
