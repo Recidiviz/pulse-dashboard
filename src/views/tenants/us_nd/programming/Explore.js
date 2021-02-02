@@ -63,7 +63,7 @@ const ProgrammingExplore = () => {
       setChartMetricPeriodMonths={setMetricPeriodMonths}
       setChartSupervisionType={setSupervisionType}
       setChartDistrict={setDistrict}
-      districtOffices={apiData.site_offices}
+      districtOffices={apiData.site_offices.data}
       availableDistricts={availableDistricts}
     />
   );
@@ -79,7 +79,7 @@ const ProgrammingExplore = () => {
             metricPeriodMonths={metricPeriodMonths}
             supervisionType={supervisionType}
             district={district}
-            ftrReferralCountByMonth={apiData.ftr_referrals_by_month}
+            ftrReferralCountByMonth={apiData.ftr_referrals_by_month.data}
           />
         }
         geoChart={
@@ -90,8 +90,8 @@ const ProgrammingExplore = () => {
             metricPeriodMonths={metricPeriodMonths}
             supervisionType={supervisionType}
             keyedByOffice
-            officeData={apiData.site_offices}
-            dataPointsByOffice={apiData.ftr_referrals_by_period}
+            officeData={apiData.site_offices.data}
+            dataPointsByOffice={apiData.ftr_referrals_by_period.data}
             numeratorKeys={["count"]}
             denominatorKeys={["total_supervision_count"]}
             centerLat={47.3}
@@ -111,7 +111,7 @@ const ProgrammingExplore = () => {
             supervisionType={supervisionType}
             district={district}
             ftrReferralsByParticipationStatus={
-              apiData.ftr_referrals_by_participation_status
+              apiData.ftr_referrals_by_participation_status.data
             }
           />
         }
@@ -133,9 +133,9 @@ const ProgrammingExplore = () => {
             supervisionType={supervisionType}
             district={district}
             ftrReferralsByRace={
-              apiData.ftr_referrals_by_race_and_ethnicity_by_period
+              apiData.ftr_referrals_by_race_and_ethnicity_by_period.data
             }
-            statePopulationByRace={apiData.race_proportions}
+            statePopulationByRace={apiData.race_proportions.data}
           />
         }
         footer={
@@ -155,7 +155,7 @@ const ProgrammingExplore = () => {
             metricPeriodMonths={metricPeriodMonths}
             supervisionType={supervisionType}
             district={district}
-            ftrReferralsByLsir={apiData.ftr_referrals_by_lsir_by_period}
+            ftrReferralsByLsir={apiData.ftr_referrals_by_lsir_by_period.data}
           />
         }
         footer={
@@ -175,7 +175,9 @@ const ProgrammingExplore = () => {
             metricPeriodMonths={metricPeriodMonths}
             supervisionType={supervisionType}
             district={district}
-            ftrReferralsByGender={apiData.ftr_referrals_by_gender_by_period}
+            ftrReferralsByGender={
+              apiData.ftr_referrals_by_gender_by_period.data
+            }
           />
         }
         footer={
@@ -195,7 +197,7 @@ const ProgrammingExplore = () => {
             metricPeriodMonths={metricPeriodMonths}
             supervisionType={supervisionType}
             district={district}
-            ftrReferralsByAge={apiData.ftr_referrals_by_age_by_period}
+            ftrReferralsByAge={apiData.ftr_referrals_by_age_by_period.data}
           />
         }
         footer={

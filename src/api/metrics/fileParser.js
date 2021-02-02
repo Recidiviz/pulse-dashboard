@@ -35,9 +35,17 @@ const parseResponseByFileFormat = (responseData, file, eagerExpand = true) => {
   const metricFile = responseData[file];
 
   // If it's verbose json data format that is ready to go, return that.
-  // The metricFile format should be { data, metadata }
+  // The metricFile format should be { data, metadata } for all dashboards except US_ND
   if (Array.isArray(metricFile.data)) {
     return metricFile;
+  }
+
+  // TODO: Align US_ND endpoint responses with the other dashboards to return { data, metadata }
+  if (Array.isArray(metricFile)) {
+    return {
+      data: metricFile,
+      metadata: {},
+    };
   }
 
   // If it has the key flattenedValueMatrix, it's the optimized format.

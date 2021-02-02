@@ -97,7 +97,8 @@ function useChartData(url, file) {
           setApiData(metricFiles);
         }
       })
-      .catch(() => {
+      .catch((error) => {
+        console.error(`Error parsing response data: `, error);
         setIsError(true);
       })
       .finally(() => {
