@@ -116,6 +116,7 @@ const MOFilterOptions = {
     get defaultValue() {
       return this.defaultOption.value;
     },
+    componentEnabled: true,
   },
   [VIOLATION_TYPE]: {
     options: [
@@ -189,22 +190,7 @@ const PAFilterOptions = {
     filterEnabled: false,
     componentEnabled: false,
   },
-  [CHARGE_CATEGORY]: {
-    options: [
-      { value: "All", label: "All" },
-      { value: "GENERAL", label: "General" },
-      { value: "SEX_OFFENSE", label: "Sex Offense" },
-      { value: "DOMESTIC_VIOLENCE", label: "Domestic Violence" },
-      { value: "SERIOUS_MENTAL_ILLNESS", label: "Mental Health" },
-      { value: "ALCOHOL_DRUG", label: "AOD" },
-    ],
-    get defaultOption() {
-      return this.options[0];
-    },
-    get defaultValue() {
-      return this.defaultOption.value;
-    },
-  },
+  [CHARGE_CATEGORY]: { defaultValue: "All", componentEnabled: false },
   [VIOLATION_TYPE]: {
     options: [
       { key: "low_tech_count", label: "Low tech.", type: "TECHNICAL" },

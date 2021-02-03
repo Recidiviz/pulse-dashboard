@@ -127,6 +127,7 @@ describe("filterOptionsMap", () => {
 
     it("returns the correct filter chargeCategory option", () => {
       const expected = {
+        componentEnabled: true,
         defaultOption: {
           label: "All",
           value: "All",
@@ -385,37 +386,8 @@ describe("filterOptionsMap", () => {
 
     it("returns the correct chargeCategory filter options", () => {
       const expected = {
-        defaultOption: {
-          label: "All",
-          value: "All",
-        },
+        componentEnabled: false,
         defaultValue: "All",
-        options: [
-          {
-            label: "All",
-            value: "All",
-          },
-          {
-            label: "General",
-            value: "GENERAL",
-          },
-          {
-            label: "Sex Offense",
-            value: "SEX_OFFENSE",
-          },
-          {
-            label: "Domestic Violence",
-            value: "DOMESTIC_VIOLENCE",
-          },
-          {
-            label: "Mental Health",
-            value: "SERIOUS_MENTAL_ILLNESS",
-          },
-          {
-            label: "AOD",
-            value: "ALCOHOL_DRUG",
-          },
-        ],
       };
 
       expect(result.chargeCategory).toEqual(expected);
