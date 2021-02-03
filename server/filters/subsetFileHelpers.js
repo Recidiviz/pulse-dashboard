@@ -30,9 +30,10 @@ const getSubsetDimensionKeys = () =>
  * @param {boolean} useIndexValue - Whether or not to treat the value param as a value or an index.
  */
 const getSubsetDimensionValues = (key, value) => {
-  const subsets = Object.fromEntries(SUBSET_MANIFEST)[key];
-  if (typeof value === "number") return subsets[value];
-  return subsets.find((subset) => subset.includes(value.toLowerCase()));
+  const subset = SUBSET_MANIFEST.find((s) => s[0] === key);
+  if (typeof value === "number") return subset[1][value];
+  const subsetValues = subset[1].find((s) => s.includes(value.toLowerCase()));
+  return subsetValues;
 };
 
 /**
@@ -80,7 +81,7 @@ function createFlattenedValueMatrix(filteredDataPoints, subsetMetadata) {
       }
     }
   }
-  return unflattenedMatrix.flat().join(",");
+  return [].concat(...unflattenedMatrix).join(",");
 }
 
 /**
