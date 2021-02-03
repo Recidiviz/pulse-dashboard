@@ -20,20 +20,6 @@ const { default: createSubset } = require("../createSubset");
 const violationTypeFilters = ["felony", "law", "misdemeanor"];
 const chargeCategoryFilters = ["sex_offense"];
 
-const mockGetFilterFnByFile = jest
-  .fn()
-  .mockImplementation((item, dimensionKey) => {
-    return [...violationTypeFilters, ...chargeCategoryFilters].includes(
-      item[dimensionKey].toLowerCase()
-    );
-  });
-
-jest.mock("../filterHelpers", () => {
-  return {
-    getFilterFnByFile: () => mockGetFilterFnByFile,
-  };
-});
-
 jest.mock("../../constants/subsetManifest", () => {
   return {
     getSubsetManifest: jest.fn().mockImplementation(() => {
@@ -41,7 +27,7 @@ jest.mock("../../constants/subsetManifest", () => {
         [
           "violation_type",
           [
-            ["all", "absconsion"],
+            ["all", "absconded"],
             ["felony", "law"],
           ],
         ],
@@ -55,6 +41,9 @@ jest.mock("../../constants/subsetManifest", () => {
 describe("createSubset", () => {
   let fileKey;
   let metricFile;
+  let output;
+  let expectedFilteredValues;
+  let expectedMetadata;
 
   afterAll(() => {
     jest.resetModules();
@@ -63,17 +52,13 @@ describe("createSubset", () => {
 
   describe("Given a file without subsets", () => {
     it("does not filter the metric file", () => {
-      metricFile = "lots of great data";
       fileKey = "not_in_the_subset_manifest";
+      metricFile = { [fileKey]: "lots of great data" };
       expect(createSubset(fileKey, {}, metricFile)).toEqual(metricFile);
     });
   });
 
-  describe("Given a file with subsets", () => {
-    let output;
-    let expectedFilteredValues;
-    let expectedMetadata;
-
+  describe("Given an optimized data format", () => {
     beforeEach(() => {
       fileKey = "revocations_matrix_distribution_by_district";
       const chargeCategoryValues = "2,2,2,2,2";
@@ -98,7 +83,7 @@ describe("createSubset", () => {
               ["charge_category", ["all", "general", "sex_offense"]],
               [
                 "violation_type",
-                ["all", "absconsion", "felony", "law", "misdemeanor"],
+                ["all", "absconded", "felony", "law", "misdemeanor"],
               ],
               ["supervision_type", ["all", "dual", "parole", "probation"]],
             ],
@@ -136,6 +121,65 @@ describe("createSubset", () => {
       expect(output[fileKey].flattenedValueMatrix).toEqual(
         expectedFilteredValues
       );
+    });
+  });
+
+  describe("Given a metric file with JSON data points", () => {
+    beforeEach(() => {
+      fileKey = "revocations_matrix_distribution_by_district";
+      const subsetFilters = {
+        violation_type: violationTypeFilters,
+        charge_category: chargeCategoryFilters,
+      };
+      metricFile = {
+        [fileKey]: [
+          {
+            charge_category: "sex_offense",
+            violation_type: "felony",
+            supervision_type: "dual",
+          },
+          {
+            charge_category: "sex_offense",
+            violation_type: "felony",
+            supervision_type: "probation",
+          },
+          {
+            charge_category: "general",
+            violation_type: "law",
+            supervision_type: "parole",
+          },
+          {
+            charge_category: "all",
+            violation_type: "absconded",
+            supervision_type: "all",
+          },
+        ],
+      };
+      expectedMetadata = {
+        total_data_points: 2,
+        dimension_manifest: [
+          ["violation_type", ["felony", "law", "misdemeanor"]],
+          ["charge_category", ["sex_offense"]],
+        ],
+      };
+      expectedFilteredValues = [metricFile[fileKey][0], metricFile[fileKey][1]];
+      output = createSubset(fileKey, subsetFilters, metricFile);
+    });
+
+    it("returns a metric file in the expected format", () => {
+      expect(output).toHaveProperty(fileKey);
+      expect(output[fileKey]).toHaveProperty("data");
+      expect(output[fileKey]).toHaveProperty("metadata");
+      expect(output[fileKey]).toHaveProperty("metadata.total_data_points");
+      expect(output[fileKey]).toHaveProperty("metadata.dimension_manifest");
+    });
+
+    it("returns a transformed metadata to reflect the subsets", () => {
+      expect(output[fileKey].metadata).toEqual(expectedMetadata);
+    });
+
+    it("returns a filtered dataset as a flattenedValueMatrix", () => {
+      expect(output[fileKey].data).toEqual(expectedFilteredValues);
     });
   });
 });

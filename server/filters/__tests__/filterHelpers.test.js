@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-const { transformFilters } = require("../filterHelpers");
+const { createSubsetFilters } = require("../filterHelpers");
 
 jest.mock("../../constants/subsetManifest", () => {
   return {
@@ -34,7 +34,7 @@ jest.mock("../../constants/subsetManifest", () => {
   };
 });
 
-describe("transformFilters", () => {
+describe("createSubsetFilters", () => {
   afterAll(() => {
     jest.resetModules();
     jest.clearAllMocks();
@@ -44,23 +44,19 @@ describe("transformFilters", () => {
     const filters = {
       violationType: "FELONY",
       chargeCategory: "DOMESTIC_VIOLENCE",
-      metricPeriodMonths: "12",
     };
     it("replaces the filter value with an array of values from the subset manifest", () => {
-      expect(transformFilters({ filters })).toEqual({
+      expect(createSubsetFilters({ filters })).toEqual({
         violation_type: ["felony", "law"],
         charge_category: ["all", "domestic_violence"],
-        metric_period_months: "12",
       });
     });
 
-    it("does not transform filter values that are not in the subset manifest", () => {
+    it("does not include filter values that are not in the subset manifest", () => {
       filters.supervisionType = "DUAL";
-      expect(transformFilters({ filters })).toEqual({
+      expect(createSubsetFilters({ filters })).toEqual({
         violation_type: ["felony", "law"],
         charge_category: ["all", "domestic_violence"],
-        supervision_type: "DUAL",
-        metric_period_months: "12",
       });
     });
   });
@@ -71,7 +67,7 @@ describe("transformFilters", () => {
       charge_category: 1,
     };
     it("replaces the filter value with an array of values from the subset manifest", () => {
-      expect(transformFilters({ filters })).toEqual({
+      expect(createSubsetFilters({ filters })).toEqual({
         violation_type: ["all", "absconsion"],
         charge_category: ["sex_offense"],
       });

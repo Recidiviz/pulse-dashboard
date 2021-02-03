@@ -22,17 +22,21 @@ import {
   callMetricsApi,
   awaitingResults,
 } from "../../api/metrics/metricsClient";
-import { parseResponseByFileFormat } from "../../api/metrics/fileParser";
+import {
+  parseResponseByFileFormat,
+  parseResponsesByFileFormat,
+} from "../../api/metrics/fileParser";
 import { useRootStore } from "../../StoreProvider";
 
 jest.mock("../../api/metrics/metricsClient");
 jest.mock("../../api/metrics/fileParser");
 jest.mock("../../StoreProvider");
 
+const mockUrl = "us_mo/newRevocations";
+const mockFile = "matrix_cells";
+
 describe("useChartData", () => {
   beforeAll(() => {
-    parseResponseByFileFormat.mockImplementation((v) => v);
-
     useRootStore.mockReturnValue({ userStore: {} });
 
     awaitingResults.mockImplementation(
@@ -41,11 +45,15 @@ describe("useChartData", () => {
   });
 
   describe("success responses", () => {
-    const mockUrl = "us_mo/newRevocations";
-    const mockFile = "matrix_cells";
-    const mockResponse = "some response";
+    const mockResponse = {
+      [mockFile]: {
+        data: ["some data"],
+        metadata: { total_data_points: 1 },
+      },
+    };
 
     beforeAll(() => {
+      parseResponseByFileFormat.mockImplementation((v) => v[mockFile]);
       callMetricsApi.mockResolvedValue(mockResponse);
     });
 
@@ -63,7 +71,8 @@ describe("useChartData", () => {
 
       await waitForNextUpdate();
 
-      expect(result.current.apiData).toBe(mockResponse);
+      expect(result.current.apiData).toBe(mockResponse[mockFile].data);
+      expect(result.current.metadata).toBe(mockResponse[mockFile].metadata);
       expect(result.current.isLoading).toBeFalse();
       expect(result.current.isError).toBeFalse();
 
@@ -81,10 +90,33 @@ describe("useChartData", () => {
       await waitForNextUpdate();
 
       expect(callMetricsApi).toHaveBeenCalledTimes(1);
-      expect(firstResult.current.apiData).toEqual(mockResponse);
+      expect(firstResult.current.apiData).toEqual(mockResponse[mockFile].data);
       expect(firstResult.current.apiData).toEqual(secondResult.current.apiData);
 
       await cleanup();
+    });
+
+    describe("when requesting multiple files", () => {
+      beforeAll(() => {
+        parseResponsesByFileFormat.mockImplementation((v) => v);
+      });
+
+      it("should load data", async () => {
+        const { result, waitForNextUpdate } = renderHook(() =>
+          useChartData(mockUrl)
+        );
+
+        expect(callMetricsApi).toHaveBeenCalledTimes(1);
+        expect(callMetricsApi.mock.calls[0][0]).toBe(`${mockUrl}`);
+
+        await waitForNextUpdate();
+
+        expect(result.current.apiData).toBe(mockResponse);
+        expect(result.current.isLoading).toBeFalse();
+        expect(result.current.isError).toBeFalse();
+
+        await cleanup();
+      });
     });
   });
 

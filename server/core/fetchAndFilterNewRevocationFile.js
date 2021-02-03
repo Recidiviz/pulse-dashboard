@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-const { createSubset, transformFilters } = require("../filters");
+const { createSubset, createSubsetFilters } = require("../filters");
 const { default: fetchMetrics } = require("./fetchMetrics");
 
 function fetchAndFilterNewRevocationFile({
@@ -25,7 +25,7 @@ function fetchAndFilterNewRevocationFile({
   const { stateCode, metricType, isDemoMode } = fetchArgs;
   return fetchMetrics(stateCode, metricType, fileKey, isDemoMode).then(
     (metricFiles) => {
-      const subsetFilters = transformFilters({ filters });
+      const subsetFilters = createSubsetFilters({ filters });
       return createSubset(fileKey, subsetFilters, metricFiles);
     }
   );

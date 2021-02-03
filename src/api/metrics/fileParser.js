@@ -14,8 +14,19 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-
+import toInteger from "lodash/fp/toInteger";
+import { convertFromStringToUnflattenedMatrix } from "shared-filters";
 import expandMetricRepresentation from "./optimizedMetricFileParser";
+
+export function unflattenValues(metricFile) {
+  const totalDataPoints = toInteger(metricFile.metadata.total_data_points);
+  return totalDataPoints === 0
+    ? []
+    : convertFromStringToUnflattenedMatrix(
+        metricFile.flattenedValueMatrix,
+        totalDataPoints
+      );
+}
 
 /**
  * Parses the given metric response based on the format of the given data.
@@ -23,18 +34,39 @@ import expandMetricRepresentation from "./optimizedMetricFileParser";
 const parseResponseByFileFormat = (responseData, file, eagerExpand = true) => {
   const metricFile = responseData[file];
 
-  // If it has the key flattenedValueMatrix, it's the optimized format.
-  if (metricFile.flattenedValueMatrix && eagerExpand) {
-    return expandMetricRepresentation(
-      metricFile.flattenedValueMatrix,
-      metricFile.metadata
-    );
+  // If it's verbose json data format that is ready to go, return that.
+  // The metricFile format should be { data, metadata } for all dashboards except US_ND
+  if (Array.isArray(metricFile.data)) {
+    return metricFile;
   }
 
-  // If it's verbose json lines format that is ready to go, return that.
-  // If it's the optimized format but we don't want to eagerly expand it to
-  // the json lines format, return it unaltered for later processing.
-  return metricFile;
+  // TODO: Align US_ND endpoint responses with the other dashboards to return { data, metadata }
+  if (Array.isArray(metricFile)) {
+    return {
+      data: metricFile,
+      metadata: {},
+    };
+  }
+
+  // If it has the key flattenedValueMatrix, it's the optimized format.
+  // If eagerExpand is true, convert the optimized format to an array of js objects
+  if (metricFile.flattenedValueMatrix && eagerExpand) {
+    return {
+      data: expandMetricRepresentation(
+        metricFile.flattenedValueMatrix,
+        metricFile.metadata
+      ),
+      metadata: metricFile.metadata,
+    };
+  }
+
+  // If it's the optimized format but we don't want to eagerly expand,
+  // then proactively unflatten the data matrix to avoid repeated unflattening operations in
+  // filtering operations later on.
+  return {
+    data: unflattenValues(metricFile),
+    metadata: metricFile.metadata,
+  };
 };
 
 /**

@@ -15,7 +15,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 const { default: refreshRedisCache } = require("../refreshRedisCache");
-const { createSubset, transformFilters } = require("../../filters");
+const { createSubset, createSubsetFilters } = require("../../filters");
 
 const mockCache = {
   set: jest.fn(() => Promise.resolve(true)),
@@ -130,7 +130,7 @@ describe("refreshRedisCache", () => {
             { violation_type: 1, charge_category: 1 },
             { violation_type: 1, charge_category: 2 },
           ].forEach((subsetCombination, index) => {
-            const transformedFilters = transformFilters({
+            const transformedFilters = createSubsetFilters({
               filters: subsetCombination,
             });
             expect(createSubset).toHaveBeenNthCalledWith(
