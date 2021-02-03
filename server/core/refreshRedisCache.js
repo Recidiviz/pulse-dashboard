@@ -56,37 +56,38 @@ function cacheEachSubsetFile(cache, cacheKey, fileKey, metricFile) {
   return cachePromises;
 }
 
-function cacheEachFile({ files, cacheKeyPrefix }) {
+function cacheFile({ file, cacheKeyPrefix, fileKey }) {
   const cache = getCache(cacheKeyPrefix);
-  const cachePromises = [];
+  const cacheKey = `${cacheKeyPrefix}-${fileKey}`;
+  const metricFile = { [fileKey]: file[fileKey] };
 
-  Object.keys(files).forEach((fileKey) => {
-    const cacheKey = `${cacheKeyPrefix}-${fileKey}`;
-    const metricFile = { [fileKey]: files[fileKey] };
+  let cachePromises = [];
 
-    if (FILES_WITH_SUBSETS.includes(fileKey)) {
-      cachePromises.concat(
-        cacheEachSubsetFile(cache, cacheKey, fileKey, metricFile)
-      );
-    } else {
-      console.log(`Setting cache for: ${cacheKey}...`);
-      cachePromises.push(cache.set(cacheKey, metricFile));
-    }
-  });
-
+  if (FILES_WITH_SUBSETS.includes(fileKey)) {
+    cachePromises = cachePromises.concat(
+      cacheEachSubsetFile(cache, cacheKey, fileKey, metricFile)
+    );
+  } else {
+    console.log(`Setting cache for: ${cacheKey}...`);
+    cachePromises.push(cache.set(cacheKey, metricFile));
+  }
   return cachePromises;
 }
 
-function refreshRedisCache(fetchMetrics, stateCode, metricType, callback) {
+function refreshRedisCache(
+  fetchMetrics,
+  stateCode,
+  metricType,
+  fileKey,
+  responseErrors = null
+) {
   const cacheKeyPrefix = `${stateCode.toUpperCase()}-${metricType}`;
   console.log(`Handling call to refresh cache for ${cacheKeyPrefix}...`);
 
-  let responseError = null;
-
-  fetchMetrics()
-    .then((files) => {
+  return fetchMetrics()
+    .then((file) => {
       return Promise.all(
-        cacheEachFile({ files, stateCode, metricType, cacheKeyPrefix })
+        cacheFile({ file, cacheKeyPrefix, fileKey, responseErrors })
       );
     })
     .catch((error) => {
@@ -94,10 +95,11 @@ function refreshRedisCache(fetchMetrics, stateCode, metricType, callback) {
         `Error occurred while caching files for metricType: ${metricType}`,
         error
       );
-      responseError = error;
+      responseErrors.push(error.message);
+      return responseErrors;
     })
     .finally(() => {
-      callback(responseError, "OK");
+      return responseErrors;
     });
 }
 

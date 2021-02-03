@@ -34,8 +34,11 @@ describe("Server tests", () => {
     await clearMemoryCache();
     jest.resetModules();
     jest.restoreAllMocks();
-    server.close();
     process.env = OLD_ENV;
+  });
+
+  afterEach(async () => {
+    await server.close();
   });
 
   describe("GET api/:stateCode/facilities/goals", () => {
@@ -159,6 +162,8 @@ describe("Server tests", () => {
   });
 
   describe("GET /api/:stateCode/refreshCache", () => {
+    let mockRefreshRedisCache;
+
     beforeEach(() => {
       process.env = Object.assign(process.env, {
         IS_DEMO: "false",
@@ -166,16 +171,13 @@ describe("Server tests", () => {
       });
       jest.resetModules();
       app = require("../../app").app;
-      jest.mock("../../core/fetchMetrics", () => {
-        return {
-          default: jest.fn(() =>
-            Promise.resolve({ file_1: "content_1", file_2: "content_2" })
-          ),
-        };
-      });
+      jest.mock("../../core/refreshRedisCache");
+
+      mockRefreshRedisCache = require("../../core/refreshRedisCache").default;
     });
 
     it("should respond with a 403 when cron job header is invalid", () => {
+      mockRefreshRedisCache.mockResolvedValueOnce();
       return request(app)
         .get("/api/US_PA/refreshCache")
         .then((response) => {
@@ -184,11 +186,30 @@ describe("Server tests", () => {
     });
 
     it("should respond successfully when cron job header is valid", () => {
+      mockRefreshRedisCache.mockResolvedValueOnce();
       return request(app)
         .get("/api/US_PA/refreshCache")
         .set("X-Appengine-Cron", "true")
         .then((response) => {
-          expect(response.statusCode).toEqual(200);
+          expect(response.status).toEqual(200);
+        });
+    });
+
+    it("should respond with a 500 when there are errors", (done) => {
+      const error = "error refreshing cache";
+      mockRefreshRedisCache.mockImplementationOnce(
+        (_fetchValue, _stateCode, _metricType, _file, responseErrors) => {
+          responseErrors.push(error);
+          return Promise.resolve(responseErrors);
+        }
+      );
+      return request(app)
+        .get("/api/US_PA/refreshCache")
+        .set("X-Appengine-Cron", "true")
+        .then((response) => {
+          expect(response.status).toEqual(500);
+          expect(response.body).toEqual([error]);
+          done();
         });
     });
   });

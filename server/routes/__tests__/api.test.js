@@ -14,6 +14,10 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
+
+const { getFileName } = require("../../utils/fileName");
+const { FILES_BY_METRIC_TYPE } = require("../../constants/filesByMetricType");
+
 const mockMetricFiles = {
   file_1: "content_1",
   file_2: "content_2",
@@ -141,13 +145,16 @@ describe("API GET tests", () => {
 
     it("refreshCache - calls fetchMetrics with the correct args", async () => {
       await fakeRequest(refreshCache);
-
-      expect(fetchMetrics).toHaveBeenCalledWith(
-        stateCode,
-        "newRevocation",
-        null,
-        false
-      );
+      const metricType = "newRevocation";
+      expect(fetchMetrics.mock.calls.length).toBe(10);
+      FILES_BY_METRIC_TYPE[metricType].forEach((file) => {
+        expect(fetchMetrics).toHaveBeenCalledWith(
+          stateCode,
+          metricType,
+          getFileName(file),
+          false
+        );
+      });
     });
   });
 

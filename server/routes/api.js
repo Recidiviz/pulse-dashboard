@@ -29,6 +29,8 @@ const {
 } = require("../core");
 const { default: isDemoMode } = require("../utils/isDemoMode");
 const { getCacheKey } = require("../utils/cacheKeys");
+const { getFileName } = require("../utils/fileName");
+const { FILES_BY_METRIC_TYPE } = require("../constants/filesByMetricType");
 
 const BAD_REQUEST = 400;
 const SERVER_ERROR = 500;
@@ -97,12 +99,23 @@ function restrictedAccess(req, res) {
 function refreshCache(req, res) {
   const { stateCode } = req.params;
   const metricType = "newRevocation";
-  refreshRedisCache(
-    () => fetchMetrics(stateCode, metricType, null, isDemoMode),
-    stateCode,
-    "newRevocation",
-    responder(res)
-  );
+  const responseErrors = [];
+
+  Promise.all(
+    FILES_BY_METRIC_TYPE[metricType].map((file) => {
+      const fileKey = getFileName(file);
+      return refreshRedisCache(
+        () => fetchMetrics(stateCode, metricType, fileKey, isDemoMode),
+        stateCode,
+        metricType,
+        file,
+        responseErrors
+      );
+    })
+  ).then(() => {
+    const err = responseErrors.length > 0 ? responseErrors : null;
+    responder(res)(err);
+  });
 }
 
 function newRevocations(req, res) {
