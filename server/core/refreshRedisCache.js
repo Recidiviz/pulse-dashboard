@@ -74,7 +74,7 @@ function cacheFile({ file, cacheKeyPrefix, fileKey }) {
   return cachePromises;
 }
 
-function refreshRedisCache(
+async function refreshRedisCache(
   fetchMetrics,
   stateCode,
   metricType,
@@ -86,19 +86,23 @@ function refreshRedisCache(
 
   return fetchMetrics()
     .then((file) => {
-      return Promise.all(
-        cacheFile({ file, cacheKeyPrefix, fileKey, responseErrors })
-      );
+      return Promise.all(cacheFile({ file, cacheKeyPrefix, fileKey }));
     })
     .catch((error) => {
       console.error(
         `Error occurred while caching files for metricType: ${metricType}`,
         error
       );
-      responseErrors.push(error.message);
+      console.log(
+        "if responseErrors, push error.message: ",
+        responseErrors,
+        error.message
+      );
+      if (responseErrors) responseErrors.push(error.message);
       return responseErrors;
     })
     .finally(() => {
+      console.log({ responseErrors });
       return responseErrors;
     });
 }

@@ -42,9 +42,10 @@ jest.mock("../../constants/subsetManifest", () => {
 jest.mock("../../filters/createSubset");
 
 describe("refreshRedisCache", () => {
-  let fileName;
+  let fileKey;
   let metricFile;
   let mockFetchValue;
+  let responseErrors = null;
   const stateCode = "US_DEMO";
   const metricType = "metric_type";
   const fileContents = {
@@ -70,135 +71,161 @@ describe("refreshRedisCache", () => {
 
   describe("refreshing the cache for files without subsets", () => {
     beforeEach(() => {
-      fileName = "random_file_name";
-      metricFile = { [fileName]: fileContents };
+      fileKey = "random_file_name";
+      metricFile = { [fileKey]: fileContents };
     });
 
-    it("calls the cache with the correct key and value", (done) => {
-      const cacheKey = `${stateCode}-${metricType}-${fileName}`;
-      refreshRedisCache(
+    it("calls the cache with the correct key and value", async () => {
+      const cacheKey = `${stateCode}-${metricType}-${fileKey}`;
+
+      await refreshRedisCache(
         mockFetchValue,
         stateCode,
         metricType,
-        (err, result) => {
-          expect(err).toBeNull();
-          expect(result).toEqual("OK");
-
-          expect(mockFetchValue).toHaveBeenCalledTimes(1);
-          expect(mockCache.set).toHaveBeenCalledTimes(1);
-          expect(mockCache.set).toHaveBeenCalledWith(cacheKey, metricFile);
-          done();
-        }
-      );
+        fileKey
+      ).then(() => {
+        expect(responseErrors).toBeNull();
+        expect(mockFetchValue).toHaveBeenCalledTimes(1);
+        expect(mockCache.set).toHaveBeenCalledTimes(1);
+        expect(mockCache.set).toHaveBeenCalledWith(cacheKey, metricFile);
+      });
+      expect.hasAssertions();
     });
 
-    it("returns an error response when caching fails", (done) => {
+    it("returns an array of errors when caching fails", async () => {
       const error = new Error("Error setting cache value");
-      mockCache.set.mockImplementationOnce(() => {
-        throw error;
+      responseErrors = [];
+      mockCache.set.mockRejectedValueOnce(error);
+
+      await refreshRedisCache(
+        mockFetchValue,
+        stateCode,
+        metricType,
+        fileKey,
+        responseErrors
+      ).then((errors) => {
+        expect(mockCache.set).toHaveBeenCalledTimes(1);
+        expect(errors).toEqual([error.message]);
       });
 
-      refreshRedisCache(mockFetchValue, stateCode, metricType, (err) => {
-        expect(mockCache.set).toHaveBeenCalledTimes(1);
-        expect(err).toEqual(error);
-        done();
-      });
+      expect.hasAssertions();
     });
   });
 
   describe("refreshing the cache for files that have subsets", () => {
     beforeEach(() => {
-      fileName = "revocations_matrix_distribution_by_district";
-      metricFile = { [fileName]: fileContents };
+      fileKey = "revocations_matrix_distribution_by_district";
+      metricFile = { [fileKey]: fileContents };
+      responseErrors = [];
       createSubset.mockImplementation(() => metricFile);
     });
 
-    it("calls caches a subset file for each subset combination", (done) => {
-      refreshRedisCache(
+    it("calls createSubset for each subset combination", async () => {
+      await refreshRedisCache(
         mockFetchValue,
         stateCode,
         metricType,
-        (err, result) => {
-          expect(err).toEqual(null);
-          expect(result).toEqual("OK");
-          expect(createSubset).toHaveBeenCalledTimes(6);
-          [
-            { violation_type: 0, charge_category: 0 },
-            { violation_type: 0, charge_category: 1 },
-            { violation_type: 0, charge_category: 2 },
-            { violation_type: 1, charge_category: 0 },
-            { violation_type: 1, charge_category: 1 },
-            { violation_type: 1, charge_category: 2 },
-          ].forEach((subsetCombination, index) => {
-            const transformedFilters = createSubsetFilters({
-              filters: subsetCombination,
-            });
-            expect(createSubset).toHaveBeenNthCalledWith(
-              index + 1,
-              fileName,
-              transformedFilters,
-              metricFile
-            );
+        fileKey,
+        responseErrors
+      ).then(() => {
+        expect(responseErrors).toEqual([]);
+        expect(createSubset).toHaveBeenCalledTimes(6);
+        [
+          { violation_type: 0, charge_category: 0 },
+          { violation_type: 0, charge_category: 1 },
+          { violation_type: 0, charge_category: 2 },
+          { violation_type: 1, charge_category: 0 },
+          { violation_type: 1, charge_category: 1 },
+          { violation_type: 1, charge_category: 2 },
+        ].forEach((subsetCombination, index) => {
+          const transformedFilters = createSubsetFilters({
+            filters: subsetCombination,
           });
-          done();
-        }
-      );
+          expect(createSubset).toHaveBeenNthCalledWith(
+            index + 1,
+            fileKey,
+            transformedFilters,
+            metricFile
+          );
+        });
+      });
     });
 
-    it("sets the cache key for each possible subset", (done) => {
-      const cacheKeyPrefix = `${stateCode}-${metricType}-${fileName}`;
+    it("sets the cache key for each possible subset", async () => {
+      const cacheKeyPrefix = `${stateCode}-${metricType}-${fileKey}`;
 
-      refreshRedisCache(
+      await refreshRedisCache(
         mockFetchValue,
         stateCode,
         metricType,
-        (err, result) => {
-          expect(err).toEqual(null);
-          expect(result).toEqual("OK");
-          expect(mockCache.set).toHaveBeenCalledTimes(6);
-          [
-            "-charge_category=0-violation_type=0",
-            "-charge_category=1-violation_type=0",
-            "-charge_category=2-violation_type=0",
-            "-charge_category=0-violation_type=1",
-            "-charge_category=1-violation_type=1",
-            "-charge_category=2-violation_type=1",
-          ].forEach((subsetKey, index) => {
-            expect(mockCache.set).toHaveBeenNthCalledWith(
-              index + 1,
-              `${cacheKeyPrefix}${subsetKey}`,
-              metricFile
-            );
-          });
-          done();
-        }
-      );
+        fileKey,
+        responseErrors
+      ).then(() => {
+        expect(responseErrors).toEqual([]);
+        expect(mockCache.set).toHaveBeenCalledTimes(6);
+        [
+          "-charge_category=0-violation_type=0",
+          "-charge_category=1-violation_type=0",
+          "-charge_category=2-violation_type=0",
+          "-charge_category=0-violation_type=1",
+          "-charge_category=1-violation_type=1",
+          "-charge_category=2-violation_type=1",
+        ].forEach((subsetKey, index) => {
+          expect(mockCache.set).toHaveBeenNthCalledWith(
+            index + 1,
+            `${cacheKeyPrefix}${subsetKey}`,
+            metricFile
+          );
+        });
+      });
     });
 
-    it("returns an error when caching fails", (done) => {
+    it("returns an array of error messages when caching fails", async () => {
       const error = new Error("Error setting cache value");
-      mockCache.set.mockImplementationOnce(() => {
-        throw error;
-      });
+      mockCache.set.mockRejectedValueOnce(error);
 
-      refreshRedisCache(mockFetchValue, stateCode, metricType, (err) => {
-        expect(mockCache.set).toHaveBeenCalledTimes(1);
-        expect(err).toEqual(error);
-        done();
+      await refreshRedisCache(
+        mockFetchValue,
+        stateCode,
+        metricType,
+        fileKey,
+        responseErrors
+      ).then(() => {
+        expect(responseErrors).toEqual([error.message]);
       });
     });
 
-    it("returns an error when filtering fails", (done) => {
+    it("continues to set the other cache keys when one cachekey causes an error", async () => {
+      const error = new Error("Error setting cache value");
+      mockCache.set.mockRejectedValueOnce(error);
+
+      await refreshRedisCache(
+        mockFetchValue,
+        stateCode,
+        metricType,
+        fileKey,
+        responseErrors
+      ).then(() => {
+        expect(mockCache.set).toHaveBeenCalledTimes(6);
+      });
+    });
+
+    it("does not call set cache if filtering fails", async () => {
       const error = new Error("Error setting cache value");
       createSubset.mockReset();
       createSubset.mockImplementationOnce(() => {
         throw error;
       });
 
-      refreshRedisCache(mockFetchValue, stateCode, metricType, (err) => {
+      await refreshRedisCache(
+        mockFetchValue,
+        stateCode,
+        metricType,
+        fileKey,
+        responseErrors
+      ).then(() => {
         expect(mockCache.set).toHaveBeenCalledTimes(0);
-        expect(err).toEqual(error);
-        done();
+        expect(responseErrors).toEqual([error.message]);
       });
     });
   });
