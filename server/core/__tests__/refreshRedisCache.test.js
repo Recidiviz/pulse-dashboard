@@ -82,7 +82,7 @@ describe("refreshRedisCache", () => {
         mockFetchValue,
         stateCode,
         metricType,
-        fileKey
+        `${fileKey}.txt`
       ).then(() => {
         expect(responseErrors).toBeNull();
         expect(mockFetchValue).toHaveBeenCalledTimes(1);
@@ -101,7 +101,7 @@ describe("refreshRedisCache", () => {
         mockFetchValue,
         stateCode,
         metricType,
-        fileKey,
+        `${fileKey}.txt`,
         responseErrors
       ).then((errors) => {
         expect(mockCache.set).toHaveBeenCalledTimes(1);
@@ -125,7 +125,7 @@ describe("refreshRedisCache", () => {
         mockFetchValue,
         stateCode,
         metricType,
-        fileKey,
+        `${fileKey}.txt`,
         responseErrors
       ).then(() => {
         expect(responseErrors).toEqual([]);
@@ -158,7 +158,7 @@ describe("refreshRedisCache", () => {
         mockFetchValue,
         stateCode,
         metricType,
-        fileKey,
+        `${fileKey}.txt`,
         responseErrors
       ).then(() => {
         expect(responseErrors).toEqual([]);
@@ -188,7 +188,7 @@ describe("refreshRedisCache", () => {
         mockFetchValue,
         stateCode,
         metricType,
-        fileKey,
+        `${fileKey}.txt`,
         responseErrors
       ).then(() => {
         expect(responseErrors).toEqual([error.message]);
@@ -203,7 +203,7 @@ describe("refreshRedisCache", () => {
         mockFetchValue,
         stateCode,
         metricType,
-        fileKey,
+        `${fileKey}.txt`,
         responseErrors
       ).then(() => {
         expect(mockCache.set).toHaveBeenCalledTimes(6);
@@ -221,7 +221,7 @@ describe("refreshRedisCache", () => {
         mockFetchValue,
         stateCode,
         metricType,
-        fileKey,
+        `${fileKey}.txt`,
         responseErrors
       ).then(() => {
         expect(mockCache.set).toHaveBeenCalledTimes(0);

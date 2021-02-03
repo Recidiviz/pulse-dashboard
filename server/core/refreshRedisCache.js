@@ -78,10 +78,11 @@ async function refreshRedisCache(
   fetchMetrics,
   stateCode,
   metricType,
-  fileKey,
+  fileName,
   responseErrors = null
 ) {
   const cacheKeyPrefix = `${stateCode.toUpperCase()}-${metricType}`;
+  const fileKey = fileName.replace(/.(txt|json)/g, "");
   console.log(`Handling call to refresh cache for ${cacheKeyPrefix}...`);
 
   return fetchMetrics()
