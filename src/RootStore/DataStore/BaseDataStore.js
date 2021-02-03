@@ -22,10 +22,16 @@ import {
   computed,
   toJS,
   autorun,
+  reaction,
 } from "mobx";
 
 import { callMetricsApi } from "../../api/metrics/metricsClient";
-import { processResponseData, getQueryStringFromFilters } from "./helpers";
+import {
+  processResponseData,
+  getQueryStringFromFilters,
+  dimensionManifestIncludesFilterValues,
+} from "./helpers";
+import { FILTER_TYPE_MAP, DISTRICT } from "../../constants/filterTypes";
 
 /**
  * BaseDataStore is an abstract class that should never be directly instantiated.
@@ -38,35 +44,53 @@ export default class BaseDataStore {
 
   isError = false;
 
-  apiData = [];
-
-  filteredData = [];
-
-  metadata = {};
+  apiData = {};
 
   file;
 
   eagerExpand = false;
 
-  constructor({ rootStore, file }) {
+  treatCategoryAllAsAbsent = false;
+
+  ignoredSubsetDimensions = [DISTRICT];
+
+  constructor({
+    rootStore,
+    file,
+    skippedFilters = [],
+    treatCategoryAllAsAbsent = false,
+  }) {
     makeObservable(this, {
       fetchData: flow,
-      apiData: observable.shallow,
-      filteredData: observable.shallow,
-      queryFilters: computed,
-      metadata: false,
+      apiData: observable.ref,
+      filteredData: computed,
+      filtersQueryParams: computed,
+      dimensionManifest: computed,
+      shouldFetchNewSubsetFile: computed,
       isLoading: true,
       isError: true,
       eagerExpand: true,
     });
 
     this.file = file;
-
+    this.skippedFilters = skippedFilters;
+    this.treatCategoryAllAsAbsent = treatCategoryAllAsAbsent;
     this.rootStore = rootStore;
 
-    autorun(() => {
-      const { userStore } = this.rootStore;
+    const { userStore } = this.rootStore;
 
+    reaction(
+      () => this.shouldFetchNewSubsetFile,
+      (shouldFetchNewSubsetFile) => {
+        if (!this.isLoading && shouldFetchNewSubsetFile) {
+          this.fetchData({
+            tenantId: this.rootStore.currentTenantId,
+          });
+        }
+      }
+    );
+
+    autorun(() => {
       if (
         userStore &&
         !userStore.userIsLoading &&
@@ -74,38 +98,62 @@ export default class BaseDataStore {
       ) {
         this.fetchData({
           tenantId: this.rootStore.currentTenantId,
-          queryString: this.queryFilters,
         });
       }
     });
   }
 
-  get queryFilters() {
-    return getQueryStringFromFilters(
-      Object.fromEntries(toJS(this.rootStore.filters))
-    );
+  get shouldFetchNewSubsetFile() {
+    return !dimensionManifestIncludesFilterValues({
+      filters: this.filters,
+      dimensionManifest: this.dimensionManifest,
+      skippedFilters: this.skippedFilters,
+      ignoredSubsetDimensions: this.ignoredSubsetDimensions,
+      treatCategoryAllAsAbsent: this.treatCategoryAllAsAbsent,
+    });
+  }
+
+  get filtersQueryParams() {
+    return getQueryStringFromFilters(this.filters);
+  }
+
+  get filters() {
+    return Object.fromEntries(toJS(this.rootStore.filters));
   }
 
   get getTokenSilently() {
     return this.rootStore.userStore.getTokenSilently;
   }
 
-  *fetchData({ tenantId, queryString }) {
-    const endpoint = `${tenantId}/newRevocations/${this.file}${queryString}`;
+  get dimensionManifest() {
+    if (!this.apiData.metadata) return null;
+
+    return this.apiData.metadata.dimension_manifest.reduce((acc, dimension) => {
+      const [name, values] = dimension;
+      if (FILTER_TYPE_MAP[name]) {
+        acc[FILTER_TYPE_MAP[name]] = values;
+      }
+      return acc;
+    }, {});
+  }
+
+  get filteredData() {
+    throw new Error(`filteredData should be defined in the subclass.`, this);
+  }
+
+  *fetchData({ tenantId }) {
+    const endpoint = `${tenantId}/newRevocations/${this.file}${this.filtersQueryParams}`;
     try {
       this.isLoading = true;
       const responseData = yield callMetricsApi(
         endpoint,
         this.getTokenSilently
       );
-      const processedData = processResponseData(
+      this.apiData = processResponseData(
         responseData,
         this.file,
         this.eagerExpand
       );
-      this.apiData = processedData.data;
-      this.metadata = processedData.metadata;
-      this.filteredData = this.filterData(processedData);
       this.isLoading = false;
       this.isError = false;
     } catch (error) {
@@ -113,10 +161,5 @@ export default class BaseDataStore {
       this.isError = true;
       this.isLoading = false;
     }
-  }
-
-  filterData() {
-    console.error(`filterData must be defined in the subclass.`);
-    this.filteredData = [];
   }
 }

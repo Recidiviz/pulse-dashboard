@@ -25,17 +25,19 @@ import { METRIC_PERIOD_MONTHS } from "../../constants/filterTypes";
 import { filterOptimizedDataFormat } from "../../utils/charts/dataFilters";
 
 export default class RevocationsOverTimeStore extends BaseDataStore {
-  expandedData = [];
-
   constructor({ rootStore }) {
-    super({ rootStore, file: `revocations_matrix_by_month` });
+    super({
+      rootStore,
+      file: `revocations_matrix_by_month`,
+      skippedFilters: [METRIC_PERIOD_MONTHS],
+    });
     makeObservable(this, {
       fetchData: flow,
     });
   }
 
-  *fetchData({ tenantId, queryString = "" }) {
-    const endpoint = `${tenantId}/newRevocations/${this.file}${queryString}`;
+  *fetchData({ tenantId }) {
+    const endpoint = `${tenantId}/newRevocations/${this.file}${this.filtersQueryParams}`;
     try {
       this.isLoading = true;
       const responseData = yield callMetricsApi(
@@ -52,9 +54,7 @@ export default class RevocationsOverTimeStore extends BaseDataStore {
       // TODO epic #593 - setDistricts based on supervision_location_ids_to_names.json
       // and remove this fetchData override
       this.rootStore.tenantStore.setDistricts(expandedData.data);
-      this.apiData = processedData.data;
-      this.metadata = processedData.metadata;
-      this.filteredData = this.filterData(processedData);
+      this.apiData = processedData;
       this.isLoading = false;
       this.isError = false;
     } catch (error) {
@@ -64,15 +64,18 @@ export default class RevocationsOverTimeStore extends BaseDataStore {
     }
   }
 
-  filterData({ data, metadata }) {
+  get filteredData() {
+    if (!this.apiData.data) return [];
+    const { data, metadata } = this.apiData;
     const { filters } = this.rootStore;
+
     const dataFilter = matchesAllFilters({
       filters,
-      skippedFilters: [METRIC_PERIOD_MONTHS],
+      skippedFilters: this.skippedFilters,
     });
 
     return filterOptimizedDataFormat({
-      apiData: data,
+      apiData: [...data],
       metadata,
       filterFn: dataFilter,
     });

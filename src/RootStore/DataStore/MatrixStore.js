@@ -23,11 +23,14 @@ export default class MatrixStore extends BaseDataStore {
     super({ rootStore, file: `revocations_matrix_cells` });
   }
 
-  filterData({ data, metadata }) {
+  get filteredData() {
+    if (!this.apiData.data) return [];
+    const { data, metadata } = this.apiData;
     const { filters } = this.rootStore;
     const dataFilter = matchesTopLevelFilters({ filters });
+
     return filterOptimizedDataFormat({
-      apiData: data,
+      apiData: [...data],
       metadata,
       filterFn: dataFilter,
     });
