@@ -11,7 +11,7 @@
     "build": "react-scripts build",
     "build-staging": "env-cmd -f .env.development react-scripts build",
     "test-react": "TZ=UTC react-scripts test",
-    "test-server": "TZ=UTC jest ./server",
+    "test-server": "TZ=UTC jest ./server --forceExit",
     "test-filters": "TZ=UTC jest ./shared-filters",
     "test": "yarn test-server && yarn test-filters && yarn test-react",
     "spa": "react-scripts start",
