@@ -82,6 +82,12 @@ describe("BaseDataStore", () => {
       it("sets eagerExpand to false'", () => {
         expect(baseStore.eagerExpand).toBe(false);
       });
+
+      it("throws an error if filteredData is accessed by the parent class", () => {
+        expect(() => baseStore.filteredData).toThrowError(
+          `filteredData should be defined in the subclass.`
+        );
+      });
     });
 
     describe("fetchData", () => {

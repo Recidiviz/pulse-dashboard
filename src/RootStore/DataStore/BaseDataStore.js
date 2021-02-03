@@ -138,8 +138,7 @@ export default class BaseDataStore {
   }
 
   get filteredData() {
-    console.error(`filteredData should be defined in the subclass.`);
-    return this.filteredData;
+    throw new Error(`filteredData should be defined in the subclass.`, this);
   }
 
   *fetchData({ tenantId }) {
