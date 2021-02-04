@@ -19,13 +19,20 @@ import BaseDataStore from "./BaseDataStore";
 
 export default class CaseTableStore extends BaseDataStore {
   constructor({ rootStore }) {
-    super({ rootStore, file: `revocations_matrix_filtered_caseload` });
+    super({
+      rootStore,
+      file: `revocations_matrix_filtered_caseload`,
+      treatCategoryAllAsAbsent: true,
+    });
   }
 
-  filterData({ data, metadata }) {
+  get filteredData() {
+    if (!this.apiData.data) return [];
+    const { data, metadata } = this.apiData;
+
     const dataFilter = matchesAllFilters({
       filters: this.filters,
-      treatCategoryAllAsAbsent: true,
+      treatCategoryAllAsAbsent: this.treatCategoryAllAsAbsent,
     });
     if (this.eagerExpand || !Array.isArray(data[0])) {
       return data.filter((item) => dataFilter(item));

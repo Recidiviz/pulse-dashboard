@@ -20,7 +20,8 @@
     "server:demo": "IS_DEMO=true yarn server:dev",
     "redis-server": "redis-server",
     "lint": "tsc && eslint '**/*.{js,ts,tsx}'",
-    "dev": "npm-run-all --parallel spa server:dev"
+    "dev": "npm-run-all --parallel spa server:dev",
+    "demo": "npm-run-all --parallel spa server:demo"
   },
   "dependencies": {
     "@auth0/auth0-spa-js": "^1.12.1",

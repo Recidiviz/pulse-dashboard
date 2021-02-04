@@ -20,13 +20,26 @@ import { matchesAllFilters, filterOptimizedDataFormat } from "shared-filters";
 import BaseDataStore from "./BaseDataStore";
 import { DISTRICT } from "../../constants/filterTypes";
 
-const CHART_TO_FILENAME = {
-  District: "revocations_matrix_distribution_by_district",
-  "Risk level": "revocations_matrix_distribution_by_risk_level",
-  Gender: "revocations_matrix_distribution_by_gender",
-  Officer: "revocations_matrix_distribution_by_officer",
-  Race: "revocations_matrix_distribution_by_race",
-  Violation: "revocations_matrix_distribution_by_violation",
+const CHARTS = {
+  District: {
+    file: "revocations_matrix_distribution_by_district",
+    skippedFilters: [DISTRICT],
+  },
+  "Risk level": {
+    file: "revocations_matrix_distribution_by_risk_level",
+  },
+  Gender: {
+    file: "revocations_matrix_distribution_by_gender",
+  },
+  Officer: {
+    file: "revocations_matrix_distribution_by_officer",
+  },
+  Race: {
+    file: "revocations_matrix_distribution_by_race",
+  },
+  Violation: {
+    file: "revocations_matrix_distribution_by_violation",
+  },
 };
 
 const DEFAULT_SELECTED_CHART = "District";
@@ -35,19 +48,21 @@ export default class RevocationsChartStore extends BaseDataStore {
   selectedChart = DEFAULT_SELECTED_CHART;
 
   constructor({ rootStore }) {
-    super({ rootStore, file: CHART_TO_FILENAME[DEFAULT_SELECTED_CHART] });
+    super({
+      rootStore,
+      file: CHARTS[DEFAULT_SELECTED_CHART].file,
+      skippedFilters: CHARTS[DEFAULT_SELECTED_CHART].skippedFilters,
+    });
     makeObservable(this, {
       selectedChart: observable,
       setSelectedChart: action.bound,
     });
-
     reaction(
       () => this.selectedChart,
       () => {
-        super.file = CHART_TO_FILENAME[this.selectedChart];
+        super.file = CHARTS[this.selectedChart].file;
         this.fetchData({
           tenantId: this.rootStore.currentTenantId,
-          queryString: this.queryFilters,
         });
       }
     );
@@ -57,15 +72,13 @@ export default class RevocationsChartStore extends BaseDataStore {
     this.selectedChart = chartId;
   }
 
-  filterData({ data, metadata }) {
-    const filteringOptions = {
-      District: { skippedFilters: [DISTRICT] },
-    };
+  get filteredData() {
+    if (!this.apiData.data) return [];
+    const { data, metadata } = this.apiData;
     const dataFilter = matchesAllFilters({
       filters: this.filters,
-      ...filteringOptions[this.selectedChart],
+      skippedFilters: this.skippedFilters,
     });
-
     if (this.eagerExpand || !Array.isArray(data[0])) {
       return data.filter((item) => dataFilter(item));
     }

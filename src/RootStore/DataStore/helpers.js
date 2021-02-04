@@ -1,5 +1,8 @@
 import qs from "qs";
-import { VIOLATION_TYPE } from "../../constants/filterTypes";
+import {
+  REPORTED_VIOLATIONS,
+  VIOLATION_TYPE,
+} from "../../constants/filterTypes";
 
 /**
  *
@@ -23,5 +26,37 @@ export function getQueryStringFromFilters(filters = {}) {
       }
       return value !== "" ? value : undefined;
     },
+  });
+}
+
+export function dimensionManifestIncludesFilterValues({
+  filters,
+  dimensionManifest,
+  ignoredSubsetDimensions = [],
+  skippedFilters = [],
+  treatCategoryAllAsAbsent = false,
+}) {
+  if (!filters || !dimensionManifest) return false;
+  return Object.keys(filters).every((filterType) => {
+    if (
+      skippedFilters.includes(filterType) ||
+      ignoredSubsetDimensions.includes(filterType) ||
+      // TODO - remove these two specific checks once reported_violations
+      // and violation_type are unnested
+      (filterType === REPORTED_VIOLATIONS && filters[filterType] === "") ||
+      (filterType === VIOLATION_TYPE && filters[filterType] === "") ||
+      // This is for the CaseTable
+      (filters[filterType].toLowerCase() === "all" && treatCategoryAllAsAbsent)
+    ) {
+      return true;
+    }
+    if (dimensionManifest[filterType] === undefined) {
+      throw new Error(
+        `Expected to find ${filterType} in the dimension manifest. Should this filter be skipped?`
+      );
+    }
+    return dimensionManifest[filterType].includes(
+      filters[filterType].toLowerCase()
+    );
   });
 }
