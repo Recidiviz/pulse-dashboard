@@ -2,10 +2,6 @@ import qs from "qs";
 import toInteger from "lodash/fp/toInteger";
 import { convertFromStringToUnflattenedMatrix } from "../../api/metrics/optimizedFormatHelpers";
 import { parseResponseByFileFormat } from "../../api/metrics/fileParser";
-import {
-  REPORTED_VIOLATIONS,
-  VIOLATION_TYPE,
-} from "../../constants/filterTypes";
 
 export function unflattenValues(metricFile) {
   const totalDataPoints = toInteger(metricFile.metadata.total_data_points);
@@ -50,9 +46,6 @@ export function getQueryStringFromFilters(filters = {}) {
     addQueryPrefix: true,
     // TODO[#641]: Remove adding "All" for violationType when the values are available in the metric file.
     filter: (key, value) => {
-      if (key === VIOLATION_TYPE && value === "") {
-        return "All";
-      }
       return value !== "" ? value : undefined;
     },
   });
@@ -70,10 +63,6 @@ export function dimensionManifestIncludesFilterValues({
     if (
       skippedFilters.includes(filterType) ||
       ignoredSubsetDimensions.includes(filterType) ||
-      // TODO - remove these two specific checks once reported_violations
-      // and violation_type are unnested
-      (filterType === REPORTED_VIOLATIONS && filters[filterType] === "") ||
-      (filterType === VIOLATION_TYPE && filters[filterType] === "") ||
       // This is for the CaseTable
       (filters[filterType].toLowerCase() === "all" && treatCategoryAllAsAbsent)
     ) {

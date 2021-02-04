@@ -38,7 +38,7 @@ jest.mock("../../api/metrics/metricsClient", () => {
           dimension_manifest: [
             ["metric_period_months", ["12"]],
             ["charge_category", ["all"]],
-            ["reported_violations", ["0"]],
+            ["reported_violations", ["all"]],
             ["violation_type", ["felony"]],
             ["supervision_level", ["all"]],
             ["supervision_type", ["all"]],
@@ -115,7 +115,7 @@ describe("BaseDataStore", () => {
           dimension_manifest: [
             ["metric_period_months", ["12"]],
             ["charge_category", ["all"]],
-            ["reported_violations", ["0"]],
+            ["reported_violations", ["all"]],
             ["violation_type", ["felony"]],
             ["supervision_level", ["all"]],
             ["supervision_type", ["all"]],
@@ -144,14 +144,24 @@ describe("BaseDataStore", () => {
   });
 
   describe("when a filter value is not included in the dimension manifest", () => {
+    beforeEach(() => {
+      rootStore.filtersStore.setFilters({
+        violationType: "FELONY",
+      });
+    });
+
     it("fetches a new subset file with new filter query params", () => {
       const expectedEndpoint = `${tenantId}/newRevocations/revocations_matrix_distribution_by_district?
-      metricPeriodMonths=12&chargeCategory=All&violationType=LAW&supervisionType=All&supervisionLevel=All
-      &district[0]=All`.replace(/\n\s+/g, "");
+      metricPeriodMonths=12&chargeCategory=All&reportedViolations=All&violationType=LAW&
+      supervisionType=All&supervisionLevel=All&district[0]=All`.replace(
+        /\n\s+/g,
+        ""
+      );
 
       rootStore.filtersStore.setFilters({
         violationType: "LAW",
       });
+
       expect(callMetricsApi).toHaveBeenCalledWith(
         expectedEndpoint,
         mockGetTokenSilently

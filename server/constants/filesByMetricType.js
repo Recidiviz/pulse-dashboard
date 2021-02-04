@@ -16,15 +16,15 @@
 // =============================================================================
 const FILES_BY_METRIC_TYPE = {
   newRevocation: [
-    "revocations_matrix_by_month.txt",
-    "revocations_matrix_cells.txt",
-    "revocations_matrix_distribution_by_district.txt",
-    "revocations_matrix_distribution_by_gender.txt",
-    "revocations_matrix_distribution_by_officer.txt",
-    "revocations_matrix_distribution_by_race.txt",
-    "revocations_matrix_distribution_by_risk_level.txt",
-    "revocations_matrix_distribution_by_violation.txt",
-    "revocations_matrix_filtered_caseload.txt",
+    "revocations_matrix_by_month.json",
+    "revocations_matrix_cells.json",
+    "revocations_matrix_distribution_by_district.json",
+    "revocations_matrix_distribution_by_gender.json",
+    "revocations_matrix_distribution_by_officer.json",
+    "revocations_matrix_distribution_by_race.json",
+    "revocations_matrix_distribution_by_risk_level.json",
+    "revocations_matrix_distribution_by_violation.json",
+    "revocations_matrix_filtered_caseload.json",
     "supervision_location_restricted_access_emails.json",
   ],
   communityGoals: [

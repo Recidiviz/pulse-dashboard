@@ -39,9 +39,9 @@ describe("DataStore helpers", () => {
     });
 
     it("filters out empty values", () => {
-      filters = { ...filters, violationType: "", supervisionType: "All" };
+      filters = { ...filters, supervisionLevel: "", supervisionType: "All" };
       expect(getQueryStringFromFilters(filters)).toEqual(
-        "?district[0]=All&chargeCategory=GENERAL&violationType=All&supervisionType=All"
+        "?district[0]=All&chargeCategory=GENERAL&supervisionType=All"
       );
     });
   });
@@ -56,13 +56,13 @@ describe("DataStore helpers", () => {
     it("returns true when the dimension manifest has all the filter values", () => {
       filters = {
         chargeCategory: "All",
-        violationType: "",
+        violationType: "All",
         metricPeriodMonths: "12",
       };
 
       dimensionManifest = {
         chargeCategory: ["all", "domestic_violence", "general"],
-        violationType: ["absconded", "escaped", "felony"],
+        violationType: ["all", "absconded", "escaped", "felony"],
         metricPeriodMonths: ["1", "12", "3", "36", "6"],
       };
       expect(
@@ -90,14 +90,14 @@ describe("DataStore helpers", () => {
     it("raises an error when the dimension manifest is missing a filter key", () => {
       filters = {
         chargeCategory: "All",
-        violationType: "",
+        violationType: "All",
         metricPeriodMonths: "12",
         supervisionType: "All",
       };
 
       dimensionManifest = {
         chargeCategory: ["all", "domestic_violence", "general"],
-        violationType: ["absconded", "escaped", "felony"],
+        violationType: ["all", "absconded", "escaped", "felony"],
         metricPeriodMonths: ["1", "12", "3", "36", "6"],
       };
       expect(() =>
@@ -113,13 +113,13 @@ describe("DataStore helpers", () => {
       beforeEach(() => {
         filters = {
           chargeCategory: "All",
-          violationType: "",
+          violationType: "All",
           metricPeriodMonths: "9",
         };
 
         dimensionManifest = {
           chargeCategory: ["all", "domestic_violence", "general"],
-          violationType: ["absconded", "escaped", "felony"],
+          violationType: ["all", "absconded", "escaped", "felony"],
           metricPeriodMonths: ["1", "12", "3", "36", "6"],
         };
 
@@ -152,7 +152,7 @@ describe("DataStore helpers", () => {
       it("ignores that filter type when all other values match the dimension manifest", () => {
         filters = {
           chargeCategory: "All",
-          violationType: "",
+          violationType: "All",
           metricPeriodMonths: "12",
           district: "01",
         };
@@ -160,7 +160,7 @@ describe("DataStore helpers", () => {
         dimensionManifest = {
           district: ["all", "02"],
           chargeCategory: ["all", "domestic_violence", "general"],
-          violationType: ["absconded", "escaped", "felony"],
+          violationType: ["all", "absconded", "escaped", "felony"],
           metricPeriodMonths: ["1", "12", "3", "36", "6"],
         };
 
