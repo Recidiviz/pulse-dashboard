@@ -30,7 +30,11 @@ import {
   getQueryStringFromFilters,
   dimensionManifestIncludesFilterValues,
 } from "./helpers";
-import { FILTER_TYPE_MAP, DISTRICT } from "../../constants/filterTypes";
+import {
+  FILTER_TYPE_MAP,
+  DISTRICT,
+  METRIC_PERIOD_MONTHS,
+} from "../../constants/filterTypes";
 
 /**
  * BaseDataStore is an abstract class that should never be directly instantiated.
@@ -51,7 +55,7 @@ export default class BaseDataStore {
 
   treatCategoryAllAsAbsent = false;
 
-  ignoredSubsetDimensions = [DISTRICT];
+  ignoredSubsetDimensions = [DISTRICT, METRIC_PERIOD_MONTHS];
 
   constructor({
     rootStore,
