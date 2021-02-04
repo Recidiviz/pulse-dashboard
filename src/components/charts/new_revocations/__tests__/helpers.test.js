@@ -19,7 +19,7 @@ import { observable } from "mobx";
 
 import { applyTopLevelFilters, applyMatrixFilters } from "../helpers";
 
-xdescribe("applyTopLevelFilters", () => {
+describe("applyTopLevelFilters", () => {
   let filters = {};
   let filtered = [];
   let data = [];
