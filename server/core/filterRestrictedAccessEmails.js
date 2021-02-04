@@ -1,5 +1,5 @@
 // Recidiviz - a data platform for criminal justice reform
-// Copyright (C) 2021 Recidiviz, Inc.
+// Copyright (C) 2020 Recidiviz, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -14,25 +14,26 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-import BaseDataStore from "./BaseDataStore";
-import { matchesTopLevelFilters } from "../../components/charts/new_revocations/helpers";
-import { filterOptimizedDataFormat } from "../../utils/charts/dataFilters";
 
-export default class MatrixStore extends BaseDataStore {
-  constructor({ rootStore }) {
-    super({ rootStore, file: `revocations_matrix_cells` });
-  }
+/**
+ * Processes the supervision_location_restricted_access_emails.
+ * Returns an object that contains the restricted district matching
+ * userEmail param, or an empty object if none of the values match.
+ */
+function filterRestrictedAccessEmails(userEmail, file) {
+  return (result) => {
+    const restrictedEmails = result[file];
 
-  get filteredData() {
-    if (!this.apiData.data) return [];
-    const { data, metadata } = this.apiData;
-    const { filters } = this.rootStore;
-    const dataFilter = matchesTopLevelFilters({ filters });
-
-    return filterOptimizedDataFormat({
-      apiData: [...data],
-      metadata,
-      filterFn: dataFilter,
-    });
-  }
+    return restrictedEmails
+      ? {
+          [file]: restrictedEmails.find((u) => {
+            return (
+              u.restricted_user_email.toLowerCase() === userEmail.toLowerCase()
+            );
+          }),
+        }
+      : {};
+  };
 }
+
+exports.default = filterRestrictedAccessEmails;

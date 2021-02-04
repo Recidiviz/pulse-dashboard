@@ -20,17 +20,24 @@ import { filterOptimizedDataFormat } from "../../utils/charts/dataFilters";
 
 export default class CaseTableStore extends BaseDataStore {
   constructor({ rootStore }) {
-    super({ rootStore, file: `revocations_matrix_filtered_caseload` });
-  }
-
-  filterData({ data, metadata }) {
-    const { filters } = this.rootStore;
-    const dataFilter = matchesAllFilters({
-      filters,
+    super({
+      rootStore,
+      file: `revocations_matrix_filtered_caseload`,
       treatCategoryAllAsAbsent: true,
     });
+  }
+
+  get filteredData() {
+    if (!this.apiData.data) return [];
+    const { data, metadata } = this.apiData;
+    const { filters } = this.rootStore;
+
+    const dataFilter = matchesAllFilters({
+      filters,
+      treatCategoryAllAsAbsent: this.treatCategoryAllAsAbsent,
+    });
     return filterOptimizedDataFormat({
-      apiData: data,
+      apiData: [...data],
       metadata,
       filterFn: dataFilter,
     });

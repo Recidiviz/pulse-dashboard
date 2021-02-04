@@ -55,7 +55,7 @@ import {
 import "./Matrix.scss";
 
 const TITLE =
-  "Admissions by violation history (in 9 months prior to their last reported violation)";
+  "Admissions by violation history (in year prior to their last reported violation)";
 const VIOLATION_COUNTS = ["1", "2", "3", "4", "5", "6", "7", "8"];
 
 const getInteger = (field) => pipe(get(field), toInteger);

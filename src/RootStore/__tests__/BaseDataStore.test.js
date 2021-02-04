@@ -35,7 +35,15 @@ jest.mock("../../api/metrics/metricsClient", () => {
         flattenedValueMatrix: "0,0",
         metadata: {
           total_data_points: 1,
-          dimension_manifest: [["reported_violations", ["0"]]],
+          dimension_manifest: [
+            ["metric_period_months", ["12"]],
+            ["charge_category", ["all"]],
+            ["reported_violations", ["0"]],
+            ["violation_type", ["felony"]],
+            ["supervision_level", ["all"]],
+            ["supervision_type", ["all"]],
+            ["district", ["all"]],
+          ],
           value_keys: ["population_count"],
         },
       },
@@ -56,17 +64,14 @@ describe("BaseDataStore", () => {
       UserStore.mockImplementationOnce(() => {
         return {
           user: mockUser,
-          isLoading: false,
+          userIsLoading: false,
           getTokenSilently: mockGetTokenSilently,
+          restrictedDistrictIsLoading: false,
         };
       });
 
       rootStore = new RootStore();
       baseStore = new BaseDataStore({ rootStore, file });
-    });
-
-    afterAll(() => {
-      jest.resetAllMocks();
     });
 
     describe("default store properties", () => {
@@ -76,6 +81,12 @@ describe("BaseDataStore", () => {
 
       it("sets eagerExpand to false'", () => {
         expect(baseStore.eagerExpand).toBe(false);
+      });
+
+      it("throws an error if filteredData is accessed by the parent class", () => {
+        expect(() => baseStore.filteredData).toThrowError(
+          `filteredData should be defined in the subclass.`
+        );
       });
     });
 
@@ -97,8 +108,21 @@ describe("BaseDataStore", () => {
         expect(baseStore.isError).toEqual(false);
       });
 
-      it("sets apiData", () => {
-        expect(baseStore.apiData).toEqual([["0"], ["0"]]);
+      it("sets both the data and metadata values as apiData", () => {
+        expect(baseStore.apiData.data).toEqual([["0"], ["0"]]);
+        expect(baseStore.apiData.metadata).toEqual({
+          total_data_points: 1,
+          dimension_manifest: [
+            ["metric_period_months", ["12"]],
+            ["charge_category", ["all"]],
+            ["reported_violations", ["0"]],
+            ["violation_type", ["felony"]],
+            ["supervision_level", ["all"]],
+            ["supervision_type", ["all"]],
+            ["district", ["all"]],
+          ],
+          value_keys: ["population_count"],
+        });
       });
 
       describe("when API responds with an error", () => {
@@ -108,7 +132,7 @@ describe("BaseDataStore", () => {
         });
 
         it("does not set apiData", () => {
-          expect(baseStore.apiData).toStrictEqual([]);
+          expect(baseStore.apiData).toStrictEqual({});
         });
 
         it("sets isError to true and isLoading to false", () => {
@@ -119,14 +143,60 @@ describe("BaseDataStore", () => {
     });
   });
 
+  describe("when a filter value is not included in the dimension manifest", () => {
+    it("fetches a new subset file with new filter query params", () => {
+      const expectedEndpoint = `${tenantId}/newRevocations/revocations_matrix_distribution_by_district?
+      metricPeriodMonths=12&chargeCategory=All&violationType=LAW&supervisionType=All&supervisionLevel=All
+      &district[0]=All`.replace(/\n\s+/g, "");
+
+      rootStore.filtersStore.setFilters({
+        violationType: "LAW",
+      });
+      expect(callMetricsApi).toHaveBeenCalledWith(
+        expectedEndpoint,
+        mockGetTokenSilently
+      );
+    });
+  });
+
   describe("when user is pending authentication", () => {
     beforeAll(() => {
       jest.resetAllMocks();
       UserStore.mockImplementationOnce(() => {
         return {
           user: null,
-          isLoading: true,
+          userIsLoading: true,
           getTokenSilently: mockGetTokenSilently,
+          restrictedDistrictIsLoading: false,
+        };
+      });
+      rootStore = new RootStore();
+      baseStore = new BaseDataStore({ rootStore, file });
+    });
+
+    afterAll(() => {
+      jest.resetAllMocks();
+    });
+
+    it("does not fetch data", () => {
+      expect(callMetricsApi).toHaveBeenCalledTimes(0);
+    });
+
+    it("sets isError to false and isLoading to false", () => {
+      expect(baseStore.isError).toBe(false);
+      expect(baseStore.isLoading).toBe(true);
+    });
+  });
+
+  describe("when restrictedDistrict is loading", () => {
+    beforeAll(() => {
+      jest.resetAllMocks();
+      UserStore.mockImplementationOnce(() => {
+        return {
+          user: mockUser,
+          userIsLoading: false,
+          getTokenSilently: mockGetTokenSilently,
+          restrictedDistrictIsLoading: true,
         };
       });
       rootStore = new RootStore();

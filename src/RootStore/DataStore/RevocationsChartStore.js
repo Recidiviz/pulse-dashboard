@@ -21,13 +21,26 @@ import { filterOptimizedDataFormat } from "../../utils/charts/dataFilters";
 import { matchesAllFilters } from "../../components/charts/new_revocations/helpers";
 import { DISTRICT } from "../../constants/filterTypes";
 
-const CHART_TO_FILENAME = {
-  District: "revocations_matrix_distribution_by_district",
-  "Risk level": "revocations_matrix_distribution_by_risk_level",
-  Gender: "revocations_matrix_distribution_by_gender",
-  Officer: "revocations_matrix_distribution_by_officer",
-  Race: "revocations_matrix_distribution_by_race",
-  Violation: "revocations_matrix_distribution_by_violation",
+const CHARTS = {
+  District: {
+    file: "revocations_matrix_distribution_by_district",
+    skippedFilters: [DISTRICT],
+  },
+  "Risk level": {
+    file: "revocations_matrix_distribution_by_risk_level",
+  },
+  Gender: {
+    file: "revocations_matrix_distribution_by_gender",
+  },
+  Officer: {
+    file: "revocations_matrix_distribution_by_officer",
+  },
+  Race: {
+    file: "revocations_matrix_distribution_by_race",
+  },
+  Violation: {
+    file: "revocations_matrix_distribution_by_violation",
+  },
 };
 
 const DEFAULT_SELECTED_CHART = "District";
@@ -36,17 +49,22 @@ export default class RevocationsChartStore extends BaseDataStore {
   selectedChart = DEFAULT_SELECTED_CHART;
 
   constructor({ rootStore }) {
-    super({ rootStore, file: CHART_TO_FILENAME[DEFAULT_SELECTED_CHART] });
+    super({
+      rootStore,
+      file: CHARTS[DEFAULT_SELECTED_CHART].file,
+      skippedFilters: CHARTS[DEFAULT_SELECTED_CHART].skippedFilters,
+    });
     makeObservable(this, {
       selectedChart: observable,
       setSelectedChart: action.bound,
     });
-
     reaction(
       () => this.selectedChart,
       () => {
-        super.file = CHART_TO_FILENAME[this.selectedChart];
-        this.fetchData(this.queryFilters);
+        super.file = CHARTS[this.selectedChart].file;
+        this.fetchData({
+          tenantId: this.rootStore.currentTenantId,
+        });
       }
     );
   }
@@ -55,17 +73,16 @@ export default class RevocationsChartStore extends BaseDataStore {
     this.selectedChart = chartId;
   }
 
-  filterData({ data, metadata }) {
+  get filteredData() {
+    if (!this.apiData.data) return [];
+    const { data, metadata } = this.apiData;
     const { filters } = this.rootStore;
-    const filteringOptions = {
-      District: { skippedFilters: [DISTRICT] },
-    };
     const dataFilter = matchesAllFilters({
       filters,
-      ...filteringOptions[this.selectedChart],
+      skippedFilters: this.skippedFilters,
     });
     return filterOptimizedDataFormat({
-      apiData: data,
+      apiData: [...data],
       metadata,
       filterFn: dataFilter,
     });
