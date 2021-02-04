@@ -71,6 +71,7 @@ export default class RevocationsChartStore extends BaseDataStore {
 
   setSelectedChart(chartId) {
     this.selectedChart = chartId;
+    this.skippedFilters = CHARTS[chartId].skippedFilters || [];
   }
 
   get filteredData() {
