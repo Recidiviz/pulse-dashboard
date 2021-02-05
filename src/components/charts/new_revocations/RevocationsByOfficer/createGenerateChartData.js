@@ -32,7 +32,7 @@ import { COLORS } from "../../../../assets/scripts/constants/colors";
 const generatePercentChartData = (filteredData, mode) => {
   const [fieldName, totalFieldName] =
     mode === "exits"
-      ? ["exit_count", "total_exit_count"]
+      ? ["exit_count", "exit_count"]
       : ["supervision_count", "total_supervision_count"];
 
   const transformedData = pipe(

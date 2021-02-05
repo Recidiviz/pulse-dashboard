@@ -33,7 +33,7 @@ import { sumCounts } from "../utils/sumCounts";
 const generatePercentChartData = (filteredData, currentDistricts, mode) => {
   const [fieldName, totalFieldName] =
     mode === "exits"
-      ? ["exit_count", "total_exit_count"]
+      ? ["exit_count", "exit_count"]
       : ["supervision_count", "total_supervision_count"];
 
   const transformedData = pipe(

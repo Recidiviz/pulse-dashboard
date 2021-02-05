@@ -21,7 +21,7 @@ const getDenominatorKeyByMode = (mode) => {
     default:
       return "total_supervision_count";
     case "exits":
-      return "total_exit_count";
+      return "exit_count";
   }
 };
 
