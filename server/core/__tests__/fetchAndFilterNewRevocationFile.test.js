@@ -20,7 +20,27 @@ const { default: fetchMetrics } = require("../fetchMetrics");
 const { createSubset, createSubsetFilters } = require("../../filters");
 
 const mockMetricFiles = { file_1: "content_1" };
-const mockSubsetFilters = { violation_type: "All" };
+const mockSubsetFilters = {
+  violation_type: [
+    "absconded",
+    "all",
+    "elec_monitoring",
+    "escaped",
+    "high_tech",
+    "low_tech",
+    "med_tech",
+    "municipal",
+    "no_violation_type",
+    "substance_abuse",
+    "technical",
+  ],
+  charge_category: [
+    "all",
+    "domestic_violence",
+    "general",
+    "serious_mental_illness",
+  ],
+};
 
 jest.mock("../../core/fetchMetrics", () => {
   return {
