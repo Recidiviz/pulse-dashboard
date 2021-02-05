@@ -17,7 +17,7 @@
 import { useState, useCallback } from "react";
 
 export function useContainerHeight() {
-  const [containerHeight, setContainerHeight] = useState(0);
+  const [containerHeight, setContainerHeight] = useState();
 
   const containerRef = useCallback((node) => {
     if (node !== null) {

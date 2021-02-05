@@ -21,9 +21,10 @@ import { observer } from "mobx-react-lite";
 
 import ModeSwitcher from "../ModeSwitcher";
 import RevocationsByDimensionComponent from "./RevocationsByDimensionComponent";
-
-import Loading from "../../../Loading";
+import LoadingChart from "../LoadingChart";
 import Error from "../../../Error";
+
+import { useContainerHeight } from "../../../../hooks/useContainerHeight";
 import { isDenominatorsMatrixStatisticallySignificant } from "../../../../utils/charts/significantStatistics";
 import getLabelByMode from "../utils/getLabelByMode";
 
@@ -41,9 +42,10 @@ const RevocationsByDimension = ({
   includeWarning,
 }) => {
   const [mode, setMode] = useState(defaultMode);
+  const { containerHeight, containerRef } = useContainerHeight();
 
   if (dataStore.isLoading) {
-    return <Loading />;
+    return <LoadingChart containerHeight={containerHeight} />;
   }
 
   if (dataStore.isError) {
@@ -63,32 +65,34 @@ const RevocationsByDimension = ({
   }));
 
   return (
-    <RevocationsByDimensionComponent
-      timeDescription={timeDescription}
-      chartId={chartId}
-      datasets={data.datasets}
-      labels={data.labels}
-      metricTitle={
-        typeof metricTitle === "function" ? metricTitle(mode) : metricTitle
-      }
-      showWarning={showWarning}
-      chartTitle={chartTitle}
-      chart={renderChart({
-        chartId,
-        data,
-        denominators,
-        numerators,
-        mode,
-        averageRate,
-      })}
-      modeSwitcher={
-        modes.length ? (
-          <ModeSwitcher mode={mode} setMode={setMode} buttons={modeButtons} />
-        ) : null
-      }
-      classModifier={chartId}
-      dataExportLabel={dataExportLabel}
-    />
+    <div ref={containerRef}>
+      <RevocationsByDimensionComponent
+        timeDescription={timeDescription}
+        chartId={chartId}
+        datasets={data.datasets}
+        labels={data.labels}
+        metricTitle={
+          typeof metricTitle === "function" ? metricTitle(mode) : metricTitle
+        }
+        showWarning={showWarning}
+        chartTitle={chartTitle}
+        chart={renderChart({
+          chartId,
+          data,
+          denominators,
+          numerators,
+          mode,
+          averageRate,
+        })}
+        modeSwitcher={
+          modes.length ? (
+            <ModeSwitcher mode={mode} setMode={setMode} buttons={modeButtons} />
+          ) : null
+        }
+        classModifier={chartId}
+        dataExportLabel={dataExportLabel}
+      />
+    </div>
   );
 };
 

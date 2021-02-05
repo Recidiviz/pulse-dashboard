@@ -19,12 +19,15 @@ import PropTypes from "prop-types";
 import Loading from "../../Loading";
 
 const LoadingChart = ({ containerHeight }) => {
-  const loadingContainerStyles = {
-    height: `${containerHeight}px`,
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-  };
+  const loadingContainerStyles =
+    containerHeight > 0
+      ? {
+          height: `${containerHeight}px`,
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }
+      : {};
 
   return (
     <div className="LoadingChart" style={loadingContainerStyles}>
