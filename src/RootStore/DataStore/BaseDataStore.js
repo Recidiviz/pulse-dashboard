@@ -52,13 +52,14 @@ export default class BaseDataStore {
 
   treatCategoryAllAsAbsent = false;
 
-  ignoredSubsetDimensions = [DISTRICT];
+  ignoredSubsetDimensions;
 
   constructor({
     rootStore,
     file,
     skippedFilters = [],
     treatCategoryAllAsAbsent = false,
+    ignoredSubsetDimensions = [DISTRICT],
   }) {
     makeObservable(this, {
       fetchData: flow,
@@ -75,6 +76,7 @@ export default class BaseDataStore {
     this.file = file;
     this.skippedFilters = skippedFilters;
     this.treatCategoryAllAsAbsent = treatCategoryAllAsAbsent;
+    this.ignoredSubsetDimensions = ignoredSubsetDimensions;
     this.rootStore = rootStore;
 
     const { userStore } = this.rootStore;
