@@ -124,6 +124,40 @@ describe("Server tests", () => {
     });
   });
 
+  describe("GET api/:stateCode/restrictedAccess/", () => {
+    beforeEach(() => {
+      process.env = Object.assign(process.env, {
+        IS_DEMO: "true",
+        AUTH_ENV: "test",
+      });
+      jest.resetModules();
+      app = require("../../app").app;
+    });
+
+    it("should respond with a 200 for a valid stateCode", function () {
+      return request(app)
+        .post("/api/US_DEMO/restrictedAccess/")
+        .send({
+          userEmail: "thirteen@state.gov",
+        })
+        .then((response) => {
+          expect(response.statusCode).toEqual(200);
+          expect(response.body).toEqual({});
+        });
+    });
+
+    it("should respond with a 400 if the request body is missing userEmail", function () {
+      const expectedError = "request is missing userEmail parameter";
+      return request(app)
+        .post("/api/US_DEMO/restrictedAccess/")
+        .send()
+        .then((response) => {
+          expect(response.statusCode).toEqual(400);
+          expect(response.body.errors).toEqual(expectedError);
+        });
+    });
+  });
+
   describe("GET /api/:stateCode/refreshCache", () => {
     beforeEach(() => {
       process.env = Object.assign(process.env, {

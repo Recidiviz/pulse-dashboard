@@ -1,7 +1,6 @@
 .DS_Store
 .idea/
 .vscode/
-.history/
 .env
 .env.local
 .env.development

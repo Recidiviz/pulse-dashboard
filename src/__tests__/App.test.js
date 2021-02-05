@@ -153,7 +153,7 @@ describe("App tests", () => {
 
   it("should render Loading component while user is loading", () => {
     useRootStore.mockReturnValue({
-      userStore: { user: {}, isLoading: true, authorize: () => {} },
+      userStore: { user: {}, userIsLoading: true, authorize: () => {} },
     });
 
     const { container } = render(<App />);
