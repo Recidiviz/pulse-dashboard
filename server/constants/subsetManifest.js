@@ -40,6 +40,7 @@ const SUBSET_MANIFEST = [
 
 const INVALID_SUBSET_DIMENSIONS = ["district"];
 
+// revocations_matrix_cells should never be added to this list
 const FILES_WITH_SUBSETS = [
   "revocations_matrix_distribution_by_district",
   "revocations_matrix_distribution_by_gender",

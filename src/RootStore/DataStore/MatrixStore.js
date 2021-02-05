@@ -17,10 +17,19 @@
 import BaseDataStore from "./BaseDataStore";
 import { matchesTopLevelFilters } from "../../components/charts/new_revocations/helpers";
 import { filterOptimizedDataFormat } from "../../utils/charts/dataFilters";
+import {
+  REPORTED_VIOLATIONS,
+  VIOLATION_TYPE,
+  DISTRICT,
+} from "../../constants/filterTypes";
 
 export default class MatrixStore extends BaseDataStore {
   constructor({ rootStore }) {
-    super({ rootStore, file: `revocations_matrix_cells` });
+    super({
+      rootStore,
+      file: `revocations_matrix_cells`,
+      ignoredSubsetDimensions: [DISTRICT, VIOLATION_TYPE, REPORTED_VIOLATIONS],
+    });
   }
 
   get filteredData() {

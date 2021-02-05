@@ -18,13 +18,26 @@
 import React from "react";
 import PropTypes from "prop-types";
 import cx from "classnames";
+import { get } from "mobx";
 
+import { useRootStore } from "../../../../StoreProvider";
+import {
+  VIOLATION_TYPE,
+  REPORTED_VIOLATIONS,
+} from "../../../../constants/filterTypes";
 import { COLORS } from "../../../../assets/scripts/constants/colors";
 
 const minRadius = 25;
 const maxRadius = 50;
 
-const MatrixCell = ({ count, maxCount, isSelected, onClick }) => {
+const MatrixCell = ({
+  count,
+  maxCount,
+  violationType,
+  reportedViolations,
+  onClick,
+}) => {
+  const { filters } = useRootStore();
   const ratio = maxCount > 0 ? count / maxCount : 0;
   const radius = Math.max(minRadius, Math.ceil(ratio * maxRadius) + 15);
 
@@ -48,13 +61,19 @@ const MatrixCell = ({ count, maxCount, isSelected, onClick }) => {
     color: ratio >= 0.5 ? COLORS.white : COLORS["lantern-dark-blue"],
   };
 
+  const isCellSelected =
+    (get(filters, VIOLATION_TYPE) === "All" ||
+      get(filters, VIOLATION_TYPE) === violationType) &&
+    (get(filters, REPORTED_VIOLATIONS) === "All" ||
+      get(filters, REPORTED_VIOLATIONS) === reportedViolations);
+
   return (
     <div className="Matrix__cell">
       <div style={containerStyle}>
         <button
           type="button"
           className={cx("Matrix__total-revocations", {
-            "is-selected": isSelected,
+            "is-selected": isCellSelected,
           })}
           onClick={onClick}
           style={cellStyle}
@@ -69,7 +88,8 @@ const MatrixCell = ({ count, maxCount, isSelected, onClick }) => {
 MatrixCell.propTypes = {
   count: PropTypes.number.isRequired,
   maxCount: PropTypes.number.isRequired,
-  isSelected: PropTypes.bool.isRequired,
+  violationType: PropTypes.string.isRequired,
+  reportedViolations: PropTypes.string.isRequired,
   onClick: PropTypes.func.isRequired,
 };
 
