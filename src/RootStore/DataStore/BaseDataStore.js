@@ -23,6 +23,7 @@ import {
   toJS,
   autorun,
   reaction,
+  action,
 } from "mobx";
 
 import { callMetricsApi } from "../../api/metrics/metricsClient";
@@ -70,6 +71,7 @@ export default class BaseDataStore {
       isLoading: true,
       isError: true,
       eagerExpand: true,
+      addIgnoredSubsetDimensions: action,
     });
 
     this.file = file;
@@ -101,6 +103,12 @@ export default class BaseDataStore {
         });
       }
     });
+  }
+
+  addIgnoredSubsetDimensions(additionalDimensions) {
+    this.ignoredSubsetDimensions = this.ignoredSubsetDimensions.concat(
+      additionalDimensions
+    );
   }
 
   get shouldFetchNewSubsetFile() {
