@@ -25,6 +25,7 @@ import {
   reaction,
 } from "mobx";
 
+import { filterOptimizedDataFormat } from "shared-filters";
 import { callMetricsApi, parseResponseByFileFormat } from "../../api/metrics";
 import {
   getQueryStringFromFilters,
@@ -142,6 +143,16 @@ export default class BaseDataStore {
 
   get filteredData() {
     throw new Error(`filteredData should be defined in the subclass.`, this);
+  }
+
+  filterData(apiData, dataFilter) {
+    if (!apiData.data) return [];
+    const { data, metadata } = apiData;
+    const isExpandedFormat = !Array.isArray(data[0]);
+    if (this.eagerExpand || isExpandedFormat) {
+      return data.filter((item) => dataFilter(item));
+    }
+    return filterOptimizedDataFormat(data, metadata, dataFilter);
   }
 
   *fetchData({ tenantId }) {

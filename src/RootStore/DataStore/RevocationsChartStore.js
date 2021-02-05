@@ -16,7 +16,7 @@
 // =============================================================================
 
 import { makeObservable, reaction, observable, action } from "mobx";
-import { matchesAllFilters, filterOptimizedDataFormat } from "shared-filters";
+import { matchesAllFilters } from "shared-filters";
 import BaseDataStore from "./BaseDataStore";
 import { DISTRICT } from "../../constants/filterTypes";
 
@@ -73,15 +73,10 @@ export default class RevocationsChartStore extends BaseDataStore {
   }
 
   get filteredData() {
-    if (!this.apiData.data) return [];
-    const { data, metadata } = this.apiData;
     const dataFilter = matchesAllFilters({
       filters: this.filters,
       skippedFilters: this.skippedFilters,
     });
-    if (this.eagerExpand || !Array.isArray(data[0])) {
-      return data.filter((item) => dataFilter(item));
-    }
-    return filterOptimizedDataFormat(data, metadata, dataFilter);
+    return this.filterData(this.apiData, dataFilter);
   }
 }

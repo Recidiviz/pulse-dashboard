@@ -14,10 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-import {
-  matchesTopLevelFilters,
-  filterOptimizedDataFormat,
-} from "shared-filters";
+import { matchesTopLevelFilters } from "shared-filters";
 import BaseDataStore from "./BaseDataStore";
 
 export default class MatrixStore extends BaseDataStore {
@@ -26,14 +23,7 @@ export default class MatrixStore extends BaseDataStore {
   }
 
   get filteredData() {
-    if (!this.apiData.data) return [];
-    const { data, metadata } = this.apiData;
     const dataFilter = matchesTopLevelFilters({ filters: this.filters });
-
-    if (this.eagerExpand || !Array.isArray(data[0])) {
-      return data.filter((item) => dataFilter(item));
-    }
-
-    return filterOptimizedDataFormat(data, metadata, dataFilter);
+    return this.filterData(this.apiData, dataFilter);
   }
 }

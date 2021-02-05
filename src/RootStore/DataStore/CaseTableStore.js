@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-import { matchesAllFilters, filterOptimizedDataFormat } from "shared-filters";
+import { matchesAllFilters } from "shared-filters";
 import BaseDataStore from "./BaseDataStore";
 
 export default class CaseTableStore extends BaseDataStore {
@@ -27,16 +27,10 @@ export default class CaseTableStore extends BaseDataStore {
   }
 
   get filteredData() {
-    if (!this.apiData.data) return [];
-    const { data, metadata } = this.apiData;
-
     const dataFilter = matchesAllFilters({
       filters: this.filters,
       treatCategoryAllAsAbsent: this.treatCategoryAllAsAbsent,
     });
-    if (this.eagerExpand || !Array.isArray(data[0])) {
-      return data.filter((item) => dataFilter(item));
-    }
-    return filterOptimizedDataFormat(data, metadata, dataFilter);
+    return this.filterData(this.apiData, dataFilter);
   }
 }
