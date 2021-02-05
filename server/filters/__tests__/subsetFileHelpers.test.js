@@ -61,7 +61,7 @@ describe("subsetFileHelpers", () => {
       ]);
     });
     it("given an index, it returns all of the subset values for the given dimension key", () => {
-      expect(getSubsetDimensionValues("violation_type", 0, true)).toEqual([
+      expect(getSubsetDimensionValues("violation_type", 0)).toEqual([
         "all",
         "absconsion",
       ]);

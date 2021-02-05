@@ -37,7 +37,7 @@ const UNFLATTENED_VALUES = [
   ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"],
   ["100", "68", "73", "41", "10", "30", "36", "51", "38", "15", "4"],
 ];
-const VERBOSE_FORMAT = [
+const EXPANDED_FORMAT = [
   {
     district: "4",
     year: "2020",
@@ -132,7 +132,7 @@ describe("Test fileParser.parseResponseByFileFormat", () => {
       "my_metric_file"
     );
     expect(parsedResponse).toEqual({
-      data: VERBOSE_FORMAT,
+      data: EXPANDED_FORMAT,
       metadata,
     });
   });
@@ -160,7 +160,7 @@ describe("Test fileParser.parseResponseByFileFormat", () => {
   it("produces the correct output for given a metric file with json data", () => {
     const response = {
       my_metric_file: {
-        data: VERBOSE_FORMAT,
+        data: EXPANDED_FORMAT,
         metadata: {},
       },
     };
@@ -181,7 +181,7 @@ describe("Test fileParser.parseResponsesByFileFormat", () => {
       metadata,
     },
     my_metric_file: {
-      data: VERBOSE_FORMAT,
+      data: EXPANDED_FORMAT,
       metadata,
     },
   };
@@ -189,11 +189,11 @@ describe("Test fileParser.parseResponsesByFileFormat", () => {
   it("produces the correct output for a mix of input types when eagerExpand = true", () => {
     const expectedOutput = {
       my_optimized_metric_file: {
-        data: VERBOSE_FORMAT,
+        data: EXPANDED_FORMAT,
         metadata,
       },
       my_metric_file: {
-        data: VERBOSE_FORMAT,
+        data: EXPANDED_FORMAT,
         metadata,
       },
     };
@@ -209,7 +209,7 @@ describe("Test fileParser.parseResponsesByFileFormat", () => {
         metadata,
       },
       my_metric_file: {
-        data: VERBOSE_FORMAT,
+        data: EXPANDED_FORMAT,
         metadata,
       },
     };

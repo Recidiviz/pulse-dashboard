@@ -98,7 +98,7 @@ function applyFiltersToDataPoints(dataPoints, filters, filterFn) {
 }
 
 /**
- * Apply the subset filters to the data in the metric file and return and object keyed by the metric name that includes the
+ * Apply the subset filters to the data in the metric file and return an object keyed by the metric name that includes the
  * data and the metadata for the subset.
  *
  * @param {string} fileKey - Name of the metric file

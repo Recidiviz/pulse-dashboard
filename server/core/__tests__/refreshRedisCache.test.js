@@ -113,7 +113,7 @@ describe("refreshRedisCache", () => {
       createSubset.mockImplementation(() => metricFile);
     });
 
-    it("calls caches a subset file for each subset combination", (done) => {
+    it("caches a subset file for each subset combination", (done) => {
       refreshRedisCache(
         mockFetchValue,
         stateCode,

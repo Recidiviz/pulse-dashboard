@@ -32,8 +32,8 @@ jest.mock("../../api/metrics/metricsClient");
 jest.mock("../../api/metrics/fileParser");
 jest.mock("../../StoreProvider");
 
-const mockUrl = "us_mo/newRevocations";
-const mockFile = "matrix_cells";
+const mockUrl = "us_nd/community/goals";
+const mockFile = "admissions_by_type_by_month";
 
 describe("useChartData", () => {
   beforeAll(() => {
@@ -47,7 +47,7 @@ describe("useChartData", () => {
   describe("success responses", () => {
     const mockResponse = {
       [mockFile]: {
-        data: ["some data"],
+        flattenedValueMatrix: ["some data"],
         metadata: { total_data_points: 1 },
       },
     };

@@ -178,7 +178,7 @@ describe("createSubset", () => {
       expect(output[fileKey].metadata).toEqual(expectedMetadata);
     });
 
-    it("returns a filtered dataset as a flattenedValueMatrix", () => {
+    it("returns a filtered dataset in the expanded format", () => {
       expect(output[fileKey].data).toEqual(expectedFilteredValues);
     });
   });

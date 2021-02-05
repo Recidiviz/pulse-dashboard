@@ -27,7 +27,8 @@ const getSubsetDimensionKeys = () =>
  * @param {string} key - Dimension key, i.e. "violation_type"
  * @param {number|string} value - Dimension value, can be either the actual value for the dimension key,
  * or an index to access all of the dimension values.
- * @param {boolean} useIndexValue - Whether or not to treat the value param as a value or an index.
+ *
+ * @returns {String[]} - An array of all the subset dimension values for a given dimension key and value
  */
 const getSubsetDimensionValues = (key, value) => {
   const subset = SUBSET_MANIFEST.find((s) => s[0] === key);
@@ -115,6 +116,9 @@ function createSubsetDimensionManifest(dimensionManifest, subsetFilters) {
  * @param {number} totalDataPoints - The total data points in the filtered data
  * @param {Object} metadata - The original metadata object from the metric file
  * @param {Object} subsetFilters - The filters with all of the subset values
+ *
+ * @returns {Object} - Returns the subset metadata with provided total data points and the new subset dimension manifest.
+ *
  */
 function createSubsetMetadata(totalDataPoints, metadata, subsetFilters) {
   return {
