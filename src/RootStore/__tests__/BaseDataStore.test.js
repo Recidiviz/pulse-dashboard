@@ -145,6 +145,7 @@ describe("BaseDataStore", () => {
 
   describe("when a filter value is not included in the dimension manifest", () => {
     beforeEach(() => {
+      baseStore = new BaseDataStore({ rootStore, file });
       rootStore.filtersStore.setFilters({
         violationType: "FELONY",
       });

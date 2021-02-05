@@ -44,10 +44,7 @@ export function getQueryStringFromFilters(filters = {}) {
   return qs.stringify(filters, {
     encode: false,
     addQueryPrefix: true,
-    // TODO[#641]: Remove adding "All" for violationType when the values are available in the metric file.
-    filter: (key, value) => {
-      return value !== "" ? value : undefined;
-    },
+    filter: (_, value) => (value !== "" ? value : undefined),
   });
 }
 
