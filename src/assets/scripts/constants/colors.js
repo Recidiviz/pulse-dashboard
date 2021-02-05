@@ -338,12 +338,11 @@ const COLORS_SEVEN_VALUES = [
 ];
 
 const COLORS_LANTERN_SET = [
-  "#F07132",
-  "#03A9F4",
-  "#5C384D",
-  "#8B2D21",
-  "#182B5E",
-  "#0E2C16",
+  "#F26825",
+  "#02BFF0",
+  "#037FC2",
+  "#CC79A7",
+  "#049E73",
 ];
 
 export {

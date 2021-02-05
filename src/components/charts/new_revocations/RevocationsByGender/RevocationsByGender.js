@@ -37,17 +37,20 @@ const RevocationsByGender = ({ timeDescription }) => {
     <RevocationsByDimension
       chartId={`${translate("revocations")}By${translate("Gender")}`}
       dataStore={revocationsChartStore}
-      renderChart={({ chartId, data, denominators, numerators, mode }) => (
-        <BarChartWithLabels
-          id={chartId}
-          data={data}
-          xAxisLabel={`${translate("Gender")} and risk level`}
-          yAxisLabel={getLabelByMode(mode)}
-          labelColors={CHART_COLORS}
-          denominators={denominators}
-          numerators={numerators}
-        />
-      )}
+      renderChart={({ chartId, data, denominators, numerators, mode }) => {
+        return (
+          <BarChartWithLabels
+            activeTab={mode}
+            id={chartId}
+            data={data}
+            labelColors={CHART_COLORS}
+            xAxisLabel={`${translate("Gender")} and risk level`}
+            yAxisLabel={getLabelByMode(mode)}
+            numerators={numerators}
+            denominators={denominators}
+          />
+        );
+      }}
       generateChartData={createGenerateChartData(
         revocationsChartStore.filteredData,
         currentTenantId

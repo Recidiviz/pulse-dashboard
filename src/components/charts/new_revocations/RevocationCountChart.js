@@ -28,6 +28,11 @@ const RevocationCountChart = ({ chartId, data, xAxisLabel }) => (
     id={chartId}
     data={data}
     options={{
+      plugins: {
+        datalabels: {
+          display: false,
+        },
+      },
       legend: {
         display: false,
       },

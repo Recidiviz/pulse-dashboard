@@ -34,7 +34,7 @@ const ModeSwitcher = ({ mode, setMode, buttons }) => (
 );
 
 ModeSwitcher.propTypes = {
-  mode: PropTypes.oneOf(["counts", "rates", "exits"]).isRequired,
+  mode: PropTypes.string.isRequired,
   setMode: PropTypes.func.isRequired,
   buttons: PropTypes.arrayOf(
     PropTypes.shape({
