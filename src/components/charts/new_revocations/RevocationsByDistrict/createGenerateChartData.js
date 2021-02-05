@@ -34,7 +34,7 @@ const generatePercentChartData = (filteredData, currentDistricts, mode) => {
   const [fieldName, totalFieldName] =
     mode === "exits"
       ? ["exit_count", "exit_count"]
-      : ["supervision_count", "total_supervision_count"];
+      : ["supervision_count", "supervision_population_count"];
 
   const transformedData = pipe(
     filter((item) => item.district !== "ALL"),
@@ -88,7 +88,7 @@ const generatePercentChartData = (filteredData, currentDistricts, mode) => {
 
   const averageRate = calculateRate(
     sumCounts("population_count", filteredData),
-    sumCounts("total_supervision_count", filteredData)
+    sumCounts("supervision_population_count", filteredData)
   );
 
   return { data, numerators, denominators, averageRate };

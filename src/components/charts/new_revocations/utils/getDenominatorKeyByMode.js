@@ -19,7 +19,7 @@ const getDenominatorKeyByMode = (mode) => {
   switch (mode) {
     case "rates":
     default:
-      return "total_supervision_count";
+      return "supervision_population_count";
     case "exits":
       return "exit_count";
   }
