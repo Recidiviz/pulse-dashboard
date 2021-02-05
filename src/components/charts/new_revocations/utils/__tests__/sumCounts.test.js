@@ -25,7 +25,7 @@ describe("#calculateAverageRate", () => {
       state_code: "US_MO",
       violation_type: "FELONY",
       reported_violations: "5",
-      population_count: "0",
+      revocation_count: "0",
       supervision_population_count: "83",
       supervision_type: "ALL",
       charge_category: "ALL",
@@ -36,7 +36,7 @@ describe("#calculateAverageRate", () => {
       state_code: "US_MO",
       violation_type: "MISDEMEANOR",
       reported_violations: "2",
-      population_count: "2",
+      revocation_count: "2",
       supervision_population_count: "28",
       supervision_type: "ALL",
       charge_category: "ALL",
@@ -47,7 +47,7 @@ describe("#calculateAverageRate", () => {
       state_code: "US_MO",
       violation_type: "MISDEMEANOR",
       reported_violations: "6",
-      population_count: "3",
+      revocation_count: "3",
       supervision_population_count: "219",
       supervision_type: "ALL",
       charge_category: "ALL",
@@ -58,7 +58,7 @@ describe("#calculateAverageRate", () => {
       state_code: "US_MO",
       violation_type: "MISDEMEANOR",
       reported_violations: "7",
-      population_count: "0",
+      revocation_count: "0",
       supervision_population_count: "104",
       supervision_type: "ALL",
       charge_category: "ALL",
@@ -69,7 +69,7 @@ describe("#calculateAverageRate", () => {
       state_code: "US_MO",
       violation_type: "MUNICIPAL",
       reported_violations: "6",
-      population_count: "0",
+      revocation_count: "0",
       supervision_population_count: "5",
       supervision_type: "ALL",
       charge_category: "ALL",
@@ -80,7 +80,7 @@ describe("#calculateAverageRate", () => {
       state_code: "US_MO",
       violation_type: "SUBSTANCE_ABUSE",
       reported_violations: "1",
-      population_count: "0",
+      revocation_count: "0",
       supervision_population_count: "1350",
       supervision_type: "ALL",
       charge_category: "ALL",
@@ -91,7 +91,7 @@ describe("#calculateAverageRate", () => {
       state_code: "US_MO",
       violation_type: "SUBSTANCE_ABUSE",
       reported_violations: "7",
-      population_count: "0",
+      revocation_count: "0",
       supervision_population_count: "116",
       supervision_type: "ALL",
       charge_category: "ALL",
@@ -176,7 +176,7 @@ describe("#calculateAverageRate", () => {
   it("calculate avarage rate from filtered datasets", () => {
     expect(
       calculateRate(
-        sumCounts("population_count", revocationData),
+        sumCounts("revocation_count", revocationData),
         sumCounts("total_population", supervisionData)
       )
     ).toEqual(25);

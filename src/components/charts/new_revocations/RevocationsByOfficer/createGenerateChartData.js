@@ -42,7 +42,7 @@ const generatePercentChartData = (filteredData, mode) => {
       officer: `${dataset[0].district}-${getNameFromOfficerId(
         dataset[0].officer
       )}`,
-      count: sumBy((item) => toInteger(item.population_count), dataset),
+      count: sumBy((item) => toInteger(item.revocation_count), dataset),
       [fieldName]: sumBy((item) => toInteger(item[totalFieldName]), dataset),
     })),
     map((dataPoint) => ({
@@ -74,7 +74,7 @@ const generatePercentChartData = (filteredData, mode) => {
   };
 
   const averageRate = calculateRate(
-    sumCounts("population_count", filteredData),
+    sumCounts("revocation_count", filteredData),
     sumCounts("supervision_population_count", filteredData)
   );
 
@@ -89,7 +89,7 @@ const generateCountChartData = (filteredData) => {
       officer: `${dataset[0].district}-${getNameFromOfficerId(
         dataset[0].officer
       )}`,
-      count: sumBy((item) => toInteger(item.population_count), dataset),
+      count: sumBy((item) => toInteger(item.revocation_count), dataset),
     })),
     orderBy(["count"], ["desc"])
   )(filteredData);
