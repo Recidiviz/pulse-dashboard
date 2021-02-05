@@ -23,7 +23,6 @@ import {
   toJS,
   autorun,
   reaction,
-  action,
 } from "mobx";
 
 import { callMetricsApi } from "../../api/metrics/metricsClient";
@@ -53,13 +52,14 @@ export default class BaseDataStore {
 
   treatCategoryAllAsAbsent = false;
 
-  ignoredSubsetDimensions = [DISTRICT];
+  ignoredSubsetDimensions;
 
   constructor({
     rootStore,
     file,
     skippedFilters = [],
     treatCategoryAllAsAbsent = false,
+    ignoredSubsetDimensions = [DISTRICT],
   }) {
     makeObservable(this, {
       fetchData: flow,
@@ -71,12 +71,12 @@ export default class BaseDataStore {
       isLoading: true,
       isError: true,
       eagerExpand: true,
-      addIgnoredSubsetDimensions: action,
     });
 
     this.file = file;
     this.skippedFilters = skippedFilters;
     this.treatCategoryAllAsAbsent = treatCategoryAllAsAbsent;
+    this.ignoredSubsetDimensions = ignoredSubsetDimensions;
     this.rootStore = rootStore;
 
     const { userStore } = this.rootStore;
@@ -103,12 +103,6 @@ export default class BaseDataStore {
         });
       }
     });
-  }
-
-  addIgnoredSubsetDimensions(additionalDimensions) {
-    this.ignoredSubsetDimensions = this.ignoredSubsetDimensions.concat(
-      additionalDimensions
-    );
   }
 
   get shouldFetchNewSubsetFile() {

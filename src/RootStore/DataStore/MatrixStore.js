@@ -20,6 +20,7 @@ import { filterOptimizedDataFormat } from "../../utils/charts/dataFilters";
 import {
   REPORTED_VIOLATIONS,
   VIOLATION_TYPE,
+  DISTRICT,
 } from "../../constants/filterTypes";
 
 export default class MatrixStore extends BaseDataStore {
@@ -27,9 +28,8 @@ export default class MatrixStore extends BaseDataStore {
     super({
       rootStore,
       file: `revocations_matrix_cells`,
+      ignoredSubsetDimensions: [DISTRICT, VIOLATION_TYPE, REPORTED_VIOLATIONS],
     });
-
-    this.addIgnoredSubsetDimensions([VIOLATION_TYPE, REPORTED_VIOLATIONS]);
   }
 
   get filteredData() {
