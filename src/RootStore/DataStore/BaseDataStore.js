@@ -37,6 +37,8 @@ import {
   METRIC_PERIOD_MONTHS,
 } from "../../constants/filterTypes";
 
+const DEFAULT_IGNORED_DIMENSIONS = [DISTRICT, METRIC_PERIOD_MONTHS];
+
 /**
  * BaseDataStore is an abstract class that should never be directly instantiated.
  * It acts as a parent class to all the other data stores.
@@ -56,13 +58,14 @@ export default class BaseDataStore {
 
   treatCategoryAllAsAbsent = false;
 
-  ignoredSubsetDimensions = [DISTRICT, METRIC_PERIOD_MONTHS];
+  ignoredSubsetDimensions;
 
   constructor({
     rootStore,
     file,
     skippedFilters = [],
     treatCategoryAllAsAbsent = false,
+    ignoredSubsetDimensions = DEFAULT_IGNORED_DIMENSIONS,
   }) {
     makeObservable(this, {
       fetchData: flow,
@@ -79,6 +82,9 @@ export default class BaseDataStore {
     this.file = file;
     this.skippedFilters = skippedFilters;
     this.treatCategoryAllAsAbsent = treatCategoryAllAsAbsent;
+    this.ignoredSubsetDimensions = DEFAULT_IGNORED_DIMENSIONS.concat(
+      ignoredSubsetDimensions
+    );
     this.rootStore = rootStore;
 
     const { userStore } = this.rootStore;

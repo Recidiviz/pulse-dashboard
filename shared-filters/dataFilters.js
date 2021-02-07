@@ -14,7 +14,6 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-const { toInteger } = require("lodash/fp");
 const { getFilterKeys } = require("./getFilterKeys");
 const {
   nullSafeComparison,
@@ -135,11 +134,15 @@ const matchesTopLevelFilters = ({
   return true;
 };
 
-const matchesMatrixFilters = (filters) => (item, dimensionKey) => {
+const matchesMatrixFilters = (filters, treatCategoryAllAsAbsent) => (
+  item,
+  dimensionKey
+) => {
   if (
     (dimensionKey === undefined || dimensionKey === "violation_type") &&
     filters[VIOLATION_TYPE] &&
-    !nullSafeComparison(item.violation_type, filters[VIOLATION_TYPE])
+    !nullSafeComparison(item.violation_type, filters[VIOLATION_TYPE]) &&
+    !(treatCategoryAllAsAbsent && isAllItem(filters[VIOLATION_TYPE]))
   ) {
     return false;
   }
@@ -147,8 +150,11 @@ const matchesMatrixFilters = (filters) => (item, dimensionKey) => {
   if (
     (dimensionKey === undefined || dimensionKey === "reported_violations") &&
     filters[REPORTED_VIOLATIONS] &&
-    toInteger(item.reported_violations) !==
-      toInteger(filters[REPORTED_VIOLATIONS])
+    !nullSafeComparison(
+      item.reported_violations,
+      filters[REPORTED_VIOLATIONS]
+    ) &&
+    !(treatCategoryAllAsAbsent && isAllItem(filters[REPORTED_VIOLATIONS]))
   ) {
     return false;
   }
@@ -165,7 +171,10 @@ const matchesAllFilters = ({
     skippedFilters,
     treatCategoryAllAsAbsent,
   });
-  const matrixFilterFn = matchesMatrixFilters(filters);
+  const matrixFilterFn = matchesMatrixFilters(
+    filters,
+    treatCategoryAllAsAbsent
+  );
   return (
     topLevelFilterFn(item, dimensionKey) && matrixFilterFn(item, dimensionKey)
   );

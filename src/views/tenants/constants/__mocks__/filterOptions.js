@@ -34,6 +34,7 @@ export default {
         value: `${CHARGE_CATEGORY}-0`,
       },
       defaultValue: `${CHARGE_CATEGORY}-0`,
+      componentEnabled: true,
     },
     [REPORTED_VIOLATIONS]: {
       options: Array.from({ length: 3 }).map((_, i) => ({

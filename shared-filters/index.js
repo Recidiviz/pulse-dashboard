@@ -8,6 +8,7 @@ const {
 } = require("./optimizedFormatHelpers");
 const { filterOptimizedDataFormat } = require("./filterOptimizedDataFormat");
 const { matchesAllFilters, matchesTopLevelFilters } = require("./dataFilters");
+const { isAllItem } = require("./dataPointComparisons");
 
 module.exports = {
   convertFromStringToUnflattenedMatrix,
@@ -15,6 +16,7 @@ module.exports = {
   getDimensionKey,
   getDimensionValue,
   getValueKey,
+  isAllItem,
   matchesAllFilters,
   matchesTopLevelFilters,
   unflattenValues,

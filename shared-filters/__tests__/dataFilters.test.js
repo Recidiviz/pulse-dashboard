@@ -556,15 +556,39 @@ describe("matchesAllFilters", () => {
         violation_type: "LAW",
         year: "2020",
       },
+      {
+        charge_category: "ALL",
+        district: "ALL",
+        month: "1",
+        reported_violations: "ALL",
+        state_code: "US_PA",
+        supervision_level: "MINIMUM",
+        supervision_type: "PROBATION",
+        total_revocations: "20",
+        violation_type: "ALL",
+        year: "2020",
+      },
     ];
   });
 
-  // For the matrix filters we do not need to worry about ALL values
-  // All values do not exist in violation_type and reported_violations fields
-  describe("violation_type filter", () => {
+  describe("violationType filter", () => {
     let filteredViolationTypes = [];
 
-    describe("with violation_type = 'MED_TECH' filter applied", () => {
+    describe("with violation_type = 'ALL' filter applied", () => {
+      beforeEach(() => {
+        filters = { violation_type: "All" };
+        filtered = data.filter((item) => matchesAllFilters({ filters })(item));
+        filteredViolationTypes = filtered.map((f) => f.violation_type);
+      });
+
+      it("returns the 'ALL' row", () => {
+        const expected = ["ALL"];
+
+        expect(filteredViolationTypes).toEqual(expected);
+      });
+    });
+
+    describe("with violationType = 'MED_TECH' filter applied", () => {
       beforeEach(() => {
         filters = { violation_type: "MED_TECH" };
         filtered = data.filter((item) => matchesAllFilters({ filters })(item));
@@ -575,6 +599,10 @@ describe("matchesAllFilters", () => {
         const expected = ["MED_TECH", "MED_TECH"];
 
         expect(filteredViolationTypes).toEqual(expected);
+      });
+
+      it("does not double count the 'ALL' item", () => {
+        expect(filteredViolationTypes).not.toContain("ALL");
       });
     });
 
@@ -590,6 +618,10 @@ describe("matchesAllFilters", () => {
 
         expect(filteredViolationTypes).toEqual(expected);
       });
+
+      it("does not double count the 'ALL' item", () => {
+        expect(filteredViolationTypes).not.toContain("ALL");
+      });
     });
 
     describe("with violation_type = 'BOGUS' filter applied", () => {
@@ -603,6 +635,56 @@ describe("matchesAllFilters", () => {
         const expected = [];
 
         expect(filteredViolationTypes).toEqual(expected);
+      });
+    });
+  });
+
+  describe("reported_violations filter", () => {
+    let filteredReportedViolations = [];
+
+    describe("with reported_violations = 'ALL' filter applied", () => {
+      beforeEach(() => {
+        filters = { reported_violations: "ALL" };
+        filtered = data.filter((item) => matchesAllFilters({ filters })(item));
+        filteredReportedViolations = filtered.map((f) => f.reported_violations);
+      });
+
+      it("returns the 'ALL' row", () => {
+        const expected = ["ALL"];
+
+        expect(filteredReportedViolations).toEqual(expected);
+      });
+    });
+
+    describe("with reported_violations = '1' filter applied", () => {
+      beforeEach(() => {
+        filters = { reported_violations: "1" };
+        filtered = data.filter((item) => matchesAllFilters({ filters })(item));
+        filteredReportedViolations = filtered.map((f) => f.reported_violations);
+      });
+
+      it("correctly returns all reported_violations items matching the filter term", () => {
+        const expected = ["1", "1", "1", "1"];
+
+        expect(filteredReportedViolations).toEqual(expected);
+      });
+
+      it("does not double count the 'ALL' item", () => {
+        expect(filteredReportedViolations).not.toContain("ALL");
+      });
+    });
+
+    describe("with reported_violations = 'BOGUS' filter applied", () => {
+      beforeEach(() => {
+        filters = { reported_violations: "BOGUS" };
+        filtered = data.filter((item) => matchesAllFilters({ filters })(item));
+        filteredReportedViolations = filtered.map((f) => f.reported_violations);
+      });
+
+      it("returns an empty array and does not throw an error", () => {
+        const expected = [];
+
+        expect(filteredReportedViolations).toEqual(expected);
       });
     });
   });
