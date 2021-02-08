@@ -17,7 +17,6 @@
 import { renderHook, cleanup } from "@testing-library/react-hooks";
 
 import useChartData from "../useChartData";
-import Error from "../../components/Error";
 import {
   callMetricsApi,
   awaitingResults,
