@@ -15,7 +15,9 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 import * as sharedFilters from "shared-filters";
-import BaseDataStore from "../DataStore/BaseDataStore";
+import BaseDataStore, {
+  DEFAULT_IGNORED_DIMENSIONS,
+} from "../DataStore/BaseDataStore";
 import UserStore from "../UserStore";
 import RootStore from "../RootStore";
 import { METADATA_NAMESPACE } from "../../constants";
@@ -104,6 +106,12 @@ describe("BaseDataStore", () => {
       it("throws an error if filteredData is accessed by the parent class", () => {
         expect(() => baseStore.filteredData).toThrowError(
           `filteredData should be defined in the subclass.`
+        );
+      });
+
+      it("sets ignoredSubsetDimensions to the default values", () => {
+        expect(baseStore.ignoredSubsetDimensions).toEqual(
+          DEFAULT_IGNORED_DIMENSIONS
         );
       });
     });
