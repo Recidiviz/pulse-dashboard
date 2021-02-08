@@ -29,10 +29,10 @@ describe("FiltersStore", () => {
     chargeCategory: "All",
     district: ["All"],
     metricPeriodMonths: "12",
-    reportedViolations: "",
+    reportedViolations: "All",
     supervisionLevel: "All",
     supervisionType: "All",
-    violationType: "",
+    violationType: "All",
   };
 
   describe("filters", () => {

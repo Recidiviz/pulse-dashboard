@@ -65,7 +65,9 @@ const Revocations = () => {
             <ErrorBoundary>
               <DistrictFilter />
             </ErrorBoundary>
-            <ToggleBarFilter label="Case Type" dimension={CHARGE_CATEGORY} />
+            {filterOptions[CHARGE_CATEGORY].componentEnabled && (
+              <ToggleBarFilter label="Case Type" dimension={CHARGE_CATEGORY} />
+            )}
             {filterOptions[SUPERVISION_LEVEL].componentEnabled && (
               <ToggleBarFilter
                 label="Supervision Level"
