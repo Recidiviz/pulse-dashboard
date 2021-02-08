@@ -68,7 +68,7 @@ const Profile = () => {
                     variant="dark"
                     onClick={handleOnClick}
                   >
-                    Navigate
+                    View dashboard
                   </Button>
                 </div>
               )}
