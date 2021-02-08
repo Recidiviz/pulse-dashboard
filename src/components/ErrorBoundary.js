@@ -27,12 +27,15 @@ function ErrorBoundary({ children }) {
   const { user, currentTenantId, filters } = useRootStore();
 
   const handleBeforeCapture = (scope) => {
-    const parsedFilters = Object.fromEntries(toJS(filters));
-    const parsedUser = toJS(user);
-
     if (currentTenantId) scope.setTag("currentTenantId", currentTenantId);
-    if (user) scope.setUser(parsedUser);
-    if (parsedFilters) scope.setContext("filters", parsedFilters);
+    if (user) {
+      const parsedUser = toJS(user);
+      scope.setUser(parsedUser);
+    }
+    if (filters) {
+      const parsedFilters = Object.fromEntries(toJS(filters));
+      scope.setContext("filters", parsedFilters);
+    }
   };
 
   return (

@@ -44,7 +44,7 @@ jest.mock("../views/tenants/us_nd/community/Goals");
 jest.mock("../views/NotFound");
 jest.mock("../components/Loading");
 jest.mock("../StoreProvider");
-jest.mock("../components/Error");
+jest.mock("../components/ErrorMessage");
 jest.mock("../views/VerificationNeeded");
 
 describe("App tests", () => {
