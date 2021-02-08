@@ -1,5 +1,5 @@
 // Recidiviz - a data platform for criminal justice reform
-// Copyright (C) 2020 Recidiviz, Inc.
+// Copyright (C) 2021 Recidiviz, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -16,40 +16,37 @@
 // =============================================================================
 
 import React from "react";
+import PropTypes from "prop-types";
 import Select from "react-select";
-import { useHistory } from "react-router-dom";
 import { observer } from "mobx-react-lite";
 
 import { getStateNameForCode } from "../RootStore/utils/user";
 import { useRootStore } from "../StoreProvider";
 
-const StateSelector = () => {
-  const { tenantStore, userStore } = useRootStore();
-  const { push } = useHistory();
+const StateSelector = ({ onChange }) => {
+  const { userStore, tenantStore } = useRootStore();
   const availableStatesOptions = userStore.availableStateCodes
     .sort()
     .map((code) => ({
       value: code,
       label: getStateNameForCode(code),
     }));
-
   const defaultValue = availableStatesOptions.find(
     (availableState) => availableState.value === tenantStore.currentTenantId
   );
 
-  const selectState = (selectedOption) => {
-    tenantStore.setCurrentTenantId(selectedOption.value);
-    push({ pathname: "/profile" });
-  };
-
   return (
     <Select
       defaultValue={defaultValue}
-      onChange={selectState}
+      onChange={onChange}
       options={availableStatesOptions}
       isSearchable
     />
   );
+};
+
+StateSelector.propTypes = {
+  onChange: PropTypes.func.isRequired,
 };
 
 export default observer(StateSelector);

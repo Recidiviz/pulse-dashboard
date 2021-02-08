@@ -1,5 +1,5 @@
 // Recidiviz - a data platform for criminal justice reform
-// Copyright (C) 2020 Recidiviz, Inc.
+// Copyright (C) 2021 Recidiviz, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -15,8 +15,9 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React from "react";
-import { Container, Row, Col } from "reactstrap";
+import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
+import { Button, Container, Row, Col } from "reactstrap";
 import { observer } from "mobx-react-lite";
 
 import { useRootStore } from "../StoreProvider";
@@ -24,8 +25,19 @@ import Loading from "../components/Loading";
 import StateSelector from "../components/StateSelector";
 
 const Profile = () => {
-  const { userStore } = useRootStore();
+  const { tenantStore, userStore } = useRootStore();
   const { isLoading, user } = userStore;
+  const { push } = useHistory();
+  const [selectedState, setSelectedState] = useState();
+
+  const handleOnChange = (option) => setSelectedState(option.value);
+
+  const handleOnClick = () => {
+    if (selectedState) {
+      tenantStore.setCurrentTenantId(selectedState);
+    }
+    push({ pathname: "/" });
+  };
 
   if (isLoading) {
     return <Loading />;
@@ -50,7 +62,14 @@ const Profile = () => {
               {userStore.availableStateCodes.length > 1 && (
                 <div style={{ maxWidth: "33%" }}>
                   <p className="lead text-muted">Current view state:</p>
-                  <StateSelector />
+                  <StateSelector onChange={handleOnChange} />
+                  <Button
+                    className="mt-3"
+                    variant="dark"
+                    onClick={handleOnClick}
+                  >
+                    Navigate
+                  </Button>
                 </div>
               )}
             </Col>
