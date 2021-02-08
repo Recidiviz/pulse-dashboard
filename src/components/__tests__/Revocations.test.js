@@ -36,6 +36,7 @@ import mockWithTestId from "../../../__helpers__/mockWithTestId";
 import filterOptionsMap from "../../views/tenants/constants/filterOptions";
 import {
   ADMISSION_TYPE,
+  CHARGE_CATEGORY,
   SUPERVISION_LEVEL,
   SUPERVISION_TYPE,
 } from "../../constants/filterTypes";
@@ -137,12 +138,14 @@ describe("Revocations component tests", () => {
   it("should not render supervision type and supervision level if they are not enabled", () => {
     filterOptionsMap[mockTenantId][SUPERVISION_LEVEL].componentEnabled = false;
     filterOptionsMap[mockTenantId][SUPERVISION_TYPE].componentEnabled = false;
+    filterOptionsMap[mockTenantId][CHARGE_CATEGORY].componentEnabled = false;
     filterOptionsMap[mockTenantId][ADMISSION_TYPE].componentEnabled = false;
     filterOptionsMap[mockTenantId][ADMISSION_TYPE].filterEnabled = false;
     const { queryByTestId } = render(<Revocations />);
 
     expect(queryByTestId(`${toggleBarIdPrefix}Supervision Level`)).toBeNull();
     expect(queryByTestId(`${toggleBarIdPrefix}Supervision Type`)).toBeNull();
+    expect(queryByTestId(`${toggleBarIdPrefix}Case Type`)).toBeNull();
     expect(queryByTestId(admissionTypeFilterId)).toBeNull();
   });
 });

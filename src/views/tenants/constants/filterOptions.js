@@ -116,6 +116,7 @@ const MOFilterOptions = {
     get defaultValue() {
       return this.defaultOption.value;
     },
+    componentEnabled: true,
   },
   [VIOLATION_TYPE]: {
     options: [
@@ -146,12 +147,12 @@ const MOFilterOptions = {
       { key: "misdemeanor_count", label: "Misdemeanor", type: "LAW" },
       { key: "felony_count", label: "Felony", type: "LAW" },
     ],
-    defaultValue: "",
+    defaultValue: "All",
   },
   [METRIC_PERIOD_MONTHS]: METRIC_PERIODS,
   [SUPERVISION_LEVEL]: { ...SUPERVISION_LEVELS, componentEnabled: false },
   [SUPERVISION_TYPE]: { ...SUPERVISION_TYPES, componentEnabled: true },
-  [REPORTED_VIOLATIONS]: { defaultValue: "" },
+  [REPORTED_VIOLATIONS]: { defaultValue: "All" },
   [DISTRICT]: { defaultValue: "All" },
   [LEVEL_1_SUPERVISION_LOCATION]: { defaultValue: "All" },
   [LEVEL_2_SUPERVISION_LOCATION]: { defaultValue: "All" },
@@ -189,22 +190,7 @@ const PAFilterOptions = {
     filterEnabled: false,
     componentEnabled: false,
   },
-  [CHARGE_CATEGORY]: {
-    options: [
-      { value: "All", label: "All" },
-      { value: "GENERAL", label: "General" },
-      { value: "SEX_OFFENSE", label: "Sex Offense" },
-      { value: "DOMESTIC_VIOLENCE", label: "Domestic Violence" },
-      { value: "SERIOUS_MENTAL_ILLNESS", label: "Mental Health" },
-      { value: "ALCOHOL_DRUG", label: "AOD" },
-    ],
-    get defaultOption() {
-      return this.options[0];
-    },
-    get defaultValue() {
-      return this.defaultOption.value;
-    },
-  },
+  [CHARGE_CATEGORY]: { defaultValue: "All", componentEnabled: false },
   [VIOLATION_TYPE]: {
     options: [
       { key: "low_tech_count", label: "Low tech.", type: "TECHNICAL" },
@@ -219,12 +205,12 @@ const PAFilterOptions = {
       { key: "high_tech_count", label: "High tech.", type: "TECHNICAL" },
       { key: "law_count", label: "Law", type: "LAW" },
     ],
-    defaultValue: "",
+    defaultValue: "All",
   },
   [METRIC_PERIOD_MONTHS]: METRIC_PERIODS,
   [SUPERVISION_LEVEL]: { ...SUPERVISION_LEVELS, componentEnabled: true },
   [SUPERVISION_TYPE]: { defaultValue: "All", componentEnabled: false },
-  [REPORTED_VIOLATIONS]: { defaultValue: "" },
+  [REPORTED_VIOLATIONS]: { defaultValue: "All" },
   [DISTRICT]: { defaultValue: "All" },
   [LEVEL_1_SUPERVISION_LOCATION]: { defaultValue: "All" },
   [LEVEL_2_SUPERVISION_LOCATION]: { defaultValue: "All" },

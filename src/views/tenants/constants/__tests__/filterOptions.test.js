@@ -74,7 +74,7 @@ describe("filterOptionsMap", () => {
     it("is the same for both tenants", () => {
       result = filterOptionsMap;
       const expected = {
-        defaultValue: "",
+        defaultValue: "All",
       };
 
       expect(result.US_MO.reportedViolations).toEqual(expected);
@@ -127,6 +127,7 @@ describe("filterOptionsMap", () => {
 
     it("returns the correct filter chargeCategory option", () => {
       const expected = {
+        componentEnabled: true,
         defaultOption: {
           label: "All",
           value: "All",
@@ -192,7 +193,7 @@ describe("filterOptionsMap", () => {
 
     it("returns the correct filter violationType option", () => {
       const expected = {
-        defaultValue: "",
+        defaultValue: "All",
         options: [
           {
             key: "travel_count",
@@ -385,37 +386,8 @@ describe("filterOptionsMap", () => {
 
     it("returns the correct chargeCategory filter options", () => {
       const expected = {
-        defaultOption: {
-          label: "All",
-          value: "All",
-        },
+        componentEnabled: false,
         defaultValue: "All",
-        options: [
-          {
-            label: "All",
-            value: "All",
-          },
-          {
-            label: "General",
-            value: "GENERAL",
-          },
-          {
-            label: "Sex Offense",
-            value: "SEX_OFFENSE",
-          },
-          {
-            label: "Domestic Violence",
-            value: "DOMESTIC_VIOLENCE",
-          },
-          {
-            label: "Mental Health",
-            value: "SERIOUS_MENTAL_ILLNESS",
-          },
-          {
-            label: "AOD",
-            value: "ALCOHOL_DRUG",
-          },
-        ],
       };
 
       expect(result.chargeCategory).toEqual(expected);
@@ -432,7 +404,7 @@ describe("filterOptionsMap", () => {
 
     it("returns the correct violationType filter options", () => {
       const expected = {
-        defaultValue: "",
+        defaultValue: "All",
         options: [
           {
             key: "low_tech_count",

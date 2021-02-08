@@ -18,14 +18,26 @@
 import React from "react";
 import PropTypes from "prop-types";
 import cx from "classnames";
+import { get } from "mobx";
 
 import { matrixViolationTypeToLabel } from "../../../../utils/transforms/labels";
+import { useRootStore } from "../../../../StoreProvider";
+import {
+  VIOLATION_TYPE,
+  REPORTED_VIOLATIONS,
+} from "../../../../constants/filterTypes";
 
-const MatrixRow = ({ children, violationType, isSelected, sum, onClick }) => {
+const MatrixRow = ({ children, violationType, sum, onClick }) => {
+  const { filters } = useRootStore();
+
+  const isRowSelected =
+    get(filters, VIOLATION_TYPE) === violationType &&
+    get(filters, REPORTED_VIOLATIONS) === "All";
+
   return (
     <div
       className={cx("Matrix__row", {
-        "Matrix__row--is-selected": isSelected,
+        "Matrix__row--is-selected": isRowSelected,
       })}
     >
       <div className="Matrix__violation-type-label">
@@ -51,7 +63,6 @@ MatrixRow.propTypes = {
   children: PropTypes.arrayOf(PropTypes.node).isRequired,
   violationType: PropTypes.string.isRequired,
   sum: PropTypes.number.isRequired,
-  isSelected: PropTypes.bool.isRequired,
   onClick: PropTypes.func.isRequired,
 };
 
