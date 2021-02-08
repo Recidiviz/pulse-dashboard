@@ -17,10 +17,10 @@
 
 import "react-app-polyfill/ie11";
 import "react-app-polyfill/stable";
-
 import React from "react";
 import ReactDOM from "react-dom";
 import { configure } from "mobx";
+import * as Sentry from "@sentry/react";
 
 import "./index.css";
 import App from "./App";
@@ -35,6 +35,11 @@ configure({
   // This linter gives too many false positives when propTypes is defined
   // https://mobx.js.org/configuration.html#observablerequiresreaction-boolean
   observableRequiresReaction: false,
+});
+
+Sentry.init({
+  environment: process.env.REACT_APP_SENTRY_ENV,
+  dsn: process.env.REACT_APP_SENTRY_DSN,
 });
 
 ReactDOM.render(<App />, document.getElementById("root"));
