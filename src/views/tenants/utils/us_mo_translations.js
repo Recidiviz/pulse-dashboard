@@ -53,6 +53,11 @@ of that column.`,
     HIGH: "High Risk",
     VERY_HIGH: "Very High Risk",
   },
+  raceChartAttributes: {
+    REVOKED: "Those who were revoked",
+    SUPERVISION_POPULATION: "Supervision population",
+    STATE_NAME_POPULATION: "[State name] population",
+  },
   raceLabelMap: {
     WHITE: "Caucasian",
     BLACK: "African American",
