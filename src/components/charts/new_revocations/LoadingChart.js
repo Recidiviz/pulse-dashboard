@@ -36,8 +36,10 @@ const LoadingChart = ({ containerHeight }) => {
   );
 };
 
+LoadingChart.defaultProps = { containerHeight: null };
+
 LoadingChart.propTypes = {
-  containerHeight: PropTypes.number.isRequired,
+  containerHeight: PropTypes.number,
 };
 
 export default LoadingChart;

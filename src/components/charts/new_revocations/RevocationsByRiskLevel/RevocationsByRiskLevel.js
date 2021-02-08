@@ -1,5 +1,5 @@
 // Recidiviz - a data platform for criminal justice reform
-// Copyright (C) 2020 Recidiviz, Inc.
+// Copyright (C) 2021 Recidiviz, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -27,39 +27,46 @@ import BarChartWithLabels from "../BarChartWithLabels";
 import { translate } from "../../../../views/tenants/utils/i18nSettings";
 import { useDataStore } from "../../../../StoreProvider";
 
-const RevocationsByRiskLevel = ({ timeDescription }) => {
-  const dataStore = useDataStore();
-  const { revocationsChartStore } = dataStore;
+const RevocationsByRiskLevel = observer(
+  ({ containerHeight, timeDescription }, ref) => {
+    const dataStore = useDataStore();
+    const { revocationsChartStore } = dataStore;
+    return (
+      <RevocationsByDimension
+        ref={ref}
+        chartId={`${translate("revocations")}ByRiskLevel`}
+        dataStore={revocationsChartStore}
+        containerHeight={containerHeight}
+        renderChart={({ chartId, data, denominators, numerators, mode }) => (
+          <BarChartWithLabels
+            id={chartId}
+            data={data}
+            denominators={denominators}
+            numerators={numerators}
+            xAxisLabel="Risk level"
+            yAxisLabel={getLabelByMode(mode)}
+          />
+        )}
+        generateChartData={createGenerateChartData(
+          revocationsChartStore.filteredData
+        )}
+        chartTitle="Admissions by risk level"
+        metricTitle={(mode) => `${getLabelByMode(mode)} by risk level`}
+        timeDescription={timeDescription}
+        modes={flags.enableRevocationRateByExit ? ["rates", "exits"] : []}
+        defaultMode="rates"
+        dataExportLabel="Risk Level"
+      />
+    );
+  },
+  { forwardRef: true }
+);
 
-  return (
-    <RevocationsByDimension
-      chartId={`${translate("revocations")}ByRiskLevel`}
-      dataStore={revocationsChartStore}
-      renderChart={({ chartId, data, denominators, numerators, mode }) => (
-        <BarChartWithLabels
-          id={chartId}
-          data={data}
-          denominators={denominators}
-          numerators={numerators}
-          xAxisLabel="Risk level"
-          yAxisLabel={getLabelByMode(mode)}
-        />
-      )}
-      generateChartData={createGenerateChartData(
-        revocationsChartStore.filteredData
-      )}
-      chartTitle="Admissions by risk level"
-      metricTitle={(mode) => `${getLabelByMode(mode)} by risk level`}
-      timeDescription={timeDescription}
-      modes={flags.enableRevocationRateByExit ? ["rates", "exits"] : []}
-      defaultMode="rates"
-      dataExportLabel="Risk Level"
-    />
-  );
-};
+RevocationsByRiskLevel.defaultProps = { containerHeight: null };
 
 RevocationsByRiskLevel.propTypes = {
+  containerHeight: PropTypes.number,
   timeDescription: PropTypes.string.isRequired,
 };
 
-export default observer(RevocationsByRiskLevel);
+export default RevocationsByRiskLevel;

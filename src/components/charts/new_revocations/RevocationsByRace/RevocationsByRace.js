@@ -1,5 +1,5 @@
 // Recidiviz - a data platform for criminal justice reform
-// Copyright (C) 2020 Recidiviz, Inc.
+// Copyright (C) 2021 Recidiviz, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -28,41 +28,49 @@ import flags from "../../../../flags";
 import { translate } from "../../../../views/tenants/utils/i18nSettings";
 import { useDataStore } from "../../../../StoreProvider";
 
-const RevocationsByRace = ({ timeDescription }) => {
-  const dataStore = useDataStore();
-  const { revocationsChartStore } = dataStore;
-  return (
-    <RevocationsByDimension
-      chartId={`${translate("revocations")}ByRace`}
-      dataStore={revocationsChartStore}
-      renderChart={({ chartId, data, denominators, numerators, mode }) => (
-        <BarChartWithLabels
-          id={chartId}
-          data={data}
-          labelColors={COLORS_LANTERN_SET}
-          xAxisLabel="Race/ethnicity and risk level"
-          yAxisLabel={getLabelByMode(mode)}
-          numerators={numerators}
-          denominators={denominators}
-        />
-      )}
-      generateChartData={createGenerateChartData(
-        revocationsChartStore.filteredData
-      )}
-      chartTitle="Admissions by race/ethnicity and risk level"
-      metricTitle={(mode) =>
-        `${getLabelByMode(mode)} by race/ethnicity and risk level`
-      }
-      timeDescription={timeDescription}
-      modes={flags.enableRevocationRateByExit ? ["rates", "exits"] : []}
-      defaultMode="rates"
-      dataExportLabel="Risk Level"
-    />
-  );
-};
+const RevocationsByRace = observer(
+  ({ containerHeight, timeDescription }, ref) => {
+    const dataStore = useDataStore();
+    const { revocationsChartStore } = dataStore;
+    return (
+      <RevocationsByDimension
+        ref={ref}
+        chartId={`${translate("revocations")}ByRace`}
+        dataStore={revocationsChartStore}
+        containerHeight={containerHeight}
+        renderChart={({ chartId, data, denominators, numerators, mode }) => (
+          <BarChartWithLabels
+            id={chartId}
+            data={data}
+            labelColors={COLORS_LANTERN_SET}
+            xAxisLabel="Race/ethnicity and risk level"
+            yAxisLabel={getLabelByMode(mode)}
+            numerators={numerators}
+            denominators={denominators}
+          />
+        )}
+        generateChartData={createGenerateChartData(
+          revocationsChartStore.filteredData
+        )}
+        chartTitle="Admissions by race/ethnicity and risk level"
+        metricTitle={(mode) =>
+          `${getLabelByMode(mode)} by race/ethnicity and risk level`
+        }
+        timeDescription={timeDescription}
+        modes={flags.enableRevocationRateByExit ? ["rates", "exits"] : []}
+        defaultMode="rates"
+        dataExportLabel="Risk Level"
+      />
+    );
+  },
+  { forwardRef: true }
+);
+
+RevocationsByRace.defaultProps = { containerHeight: null };
 
 RevocationsByRace.propTypes = {
+  containerHeight: PropTypes.number,
   timeDescription: PropTypes.string.isRequired,
 };
 
-export default observer(RevocationsByRace);
+export default RevocationsByRace;

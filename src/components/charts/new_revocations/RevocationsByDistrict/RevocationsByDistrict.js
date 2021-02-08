@@ -1,5 +1,5 @@
 // Recidiviz - a data platform for criminal justice reform
-// Copyright (C) 2020 Recidiviz, Inc.
+// Copyright (C) 2021 Recidiviz, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -31,65 +31,73 @@ import { DISTRICT } from "../../../../constants/filterTypes";
 
 const chartTitle = "Admissions by district";
 
-const RevocationsByDistrict = ({ timeDescription }) => {
-  const { filters, dataStore } = useRootStore();
-  const { revocationsChartStore } = dataStore;
-  const currentDistricts = get(filters, DISTRICT);
+const RevocationsByDistrict = observer(
+  ({ containerHeight, timeDescription }, ref) => {
+    const { filters, dataStore } = useRootStore();
+    const { revocationsChartStore } = dataStore;
+    const currentDistricts = get(filters, DISTRICT);
 
-  return (
-    <RevocationsByDimension
-      chartId={`${translate("revocations")}ByDistrict`}
-      dataStore={revocationsChartStore}
-      renderChart={({
-        chartId,
-        data,
-        denominators,
-        numerators,
-        averageRate,
-        mode,
-      }) =>
-        mode === "counts" ? (
-          <RevocationCountChart
-            chartId={chartId}
-            data={data}
-            xAxisLabel="District"
-          />
-        ) : (
-          <PercentRevokedChart
-            data={data}
-            chartId={chartId}
-            numerators={numerators}
-            denominators={denominators}
-            averageRate={averageRate}
-            xAxisLabel="District"
-            yAxisLabel={
-              mode === "rates"
-                ? translate("percentOfPopulationRevoked")
-                : "Percent revoked out of all exits"
-            }
-          />
-        )
-      }
-      generateChartData={createGenerateChartData(
-        revocationsChartStore.filteredData,
-        currentDistricts
-      )}
-      chartTitle={chartTitle}
-      metricTitle={chartTitle}
-      timeDescription={timeDescription}
-      modes={
-        flags.enableRevocationRateByExit
-          ? ["counts", "rates", "exits"]
-          : ["counts", "rates"]
-      }
-      defaultMode="counts"
-      dataExportLabel="District"
-    />
-  );
-};
+    return (
+      <RevocationsByDimension
+        ref={ref}
+        chartId={`${translate("revocations")}ByDistrict`}
+        dataStore={revocationsChartStore}
+        containerHeight={containerHeight}
+        renderChart={({
+          chartId,
+          data,
+          denominators,
+          numerators,
+          averageRate,
+          mode,
+        }) =>
+          mode === "counts" ? (
+            <RevocationCountChart
+              chartId={chartId}
+              data={data}
+              xAxisLabel="District"
+            />
+          ) : (
+            <PercentRevokedChart
+              data={data}
+              chartId={chartId}
+              numerators={numerators}
+              denominators={denominators}
+              averageRate={averageRate}
+              xAxisLabel="District"
+              yAxisLabel={
+                mode === "rates"
+                  ? translate("percentOfPopulationRevoked")
+                  : "Percent revoked out of all exits"
+              }
+            />
+          )
+        }
+        generateChartData={createGenerateChartData(
+          revocationsChartStore.filteredData,
+          currentDistricts
+        )}
+        chartTitle={chartTitle}
+        metricTitle={chartTitle}
+        timeDescription={timeDescription}
+        modes={
+          flags.enableRevocationRateByExit
+            ? ["counts", "rates", "exits"]
+            : ["counts", "rates"]
+        }
+        defaultMode="counts"
+        dataExportLabel="District"
+      />
+    );
+  },
+  { forwardRef: true }
+);
+
+RevocationsByDistrict.defaultProps = { containerHeight: null };
 
 RevocationsByDistrict.propTypes = {
+  containerHeight: PropTypes.number,
   timeDescription: PropTypes.string.isRequired,
 };
 
-export default observer(RevocationsByDistrict);
+export default RevocationsByDistrict;
