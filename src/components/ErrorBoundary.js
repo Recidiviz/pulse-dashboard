@@ -17,36 +17,36 @@
 
 import React from "react";
 import PropTypes from "prop-types";
-import Error from "./Error";
+import { observer } from "mobx-react-lite";
+import { toJS } from "mobx";
+import * as Sentry from "@sentry/react";
+import ErrorMessage from "./ErrorMessage";
+import { useRootStore } from "../StoreProvider";
 
-class ErrorBoundary extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { isError: false };
-  }
+function ErrorBoundary({ children }) {
+  const { user, currentTenantId, filters } = useRootStore();
 
-  static getDerivedStateFromError(error) {
-    return { isError: true, errorMessage: error.message };
-  }
+  const handleBeforeCapture = (scope) => {
+    const parsedFilters = Object.fromEntries(toJS(filters));
+    const parsedUser = toJS(user);
 
-  componentDidCatch(error, errorInfo) {
-    // eslint-disable-next-line no-console
-    console.log(error, errorInfo);
-  }
+    if (currentTenantId) scope.setTag("currentTenantId", currentTenantId);
+    if (user) scope.setUser(parsedUser);
+    if (parsedFilters) scope.setContext("filters", parsedFilters);
+  };
 
-  render() {
-    const { isError, errorMessage } = this.state;
-    const { children } = this.props;
-    if (isError) {
-      return <Error text={errorMessage} />;
-    }
-
-    return children;
-  }
+  return (
+    <Sentry.ErrorBoundary
+      fallback={({ error }) => <ErrorMessage error={error} />}
+      beforeCapture={handleBeforeCapture}
+    >
+      {children}
+    </Sentry.ErrorBoundary>
+  );
 }
 
 ErrorBoundary.propTypes = {
   children: PropTypes.element.isRequired,
 };
 
-export default ErrorBoundary;
+export default observer(ErrorBoundary);
