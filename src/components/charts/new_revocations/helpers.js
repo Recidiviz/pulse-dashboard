@@ -19,7 +19,6 @@ import { get } from "mobx";
 
 import {
   matrixViolationTypeToLabel,
-  toInt,
   violationCountLabel,
 } from "../../../utils/transforms/labels";
 import {
@@ -162,27 +161,36 @@ export const applyTopLevelFilters = ({
   return data.filter((item) => filterFn(item));
 };
 
-export const matchesMatrixFilters = (filters) => (item, dimensionKey) => {
+export const matchesMatrixFilters = (filters, treatCategoryAllAsAbsent) => (
+  item,
+  dimensionKey
+) => {
   if (
     (dimensionKey === undefined || dimensionKey === "violation_type") &&
     get(filters, VIOLATION_TYPE) &&
-    !nullSafeComparison(item.violation_type, get(filters, VIOLATION_TYPE))
+    !nullSafeComparison(item.violation_type, get(filters, VIOLATION_TYPE)) &&
+    !(treatCategoryAllAsAbsent && isAllItem(get(filters, VIOLATION_TYPE)))
   ) {
     return false;
   }
-
   if (
     (dimensionKey === undefined || dimensionKey === "reported_violations") &&
     get(filters, REPORTED_VIOLATIONS) &&
-    toInt(item.reported_violations) !== toInt(get(filters, REPORTED_VIOLATIONS))
+    !nullSafeComparison(
+      item.reported_violations,
+      get(filters, REPORTED_VIOLATIONS)
+    ) &&
+    !(treatCategoryAllAsAbsent && isAllItem(get(filters, REPORTED_VIOLATIONS)))
   ) {
     return false;
   }
   return true;
 };
 
-export const applyMatrixFilters = (filters) => (data) => {
-  const filterFn = matchesMatrixFilters(filters);
+export const applyMatrixFilters = (filters, treatCategoryAllAsAbsent) => (
+  data
+) => {
+  const filterFn = matchesMatrixFilters(filters, treatCategoryAllAsAbsent);
   return data.filter((item) => filterFn(item));
 };
 
@@ -196,23 +204,13 @@ export const matchesAllFilters = ({
     skippedFilters,
     treatCategoryAllAsAbsent,
   });
-  const matrixFilterFn = matchesMatrixFilters(filters);
+  const matrixFilterFn = matchesMatrixFilters(
+    filters,
+    treatCategoryAllAsAbsent
+  );
   return (
     topLevelFilterFn(item, dimensionKey) && matrixFilterFn(item, dimensionKey)
   );
-};
-
-export const applyAllFilters = ({
-  filters,
-  skippedFilters = [],
-  treatCategoryAllAsAbsent = false,
-}) => (data) => {
-  const filteredData = applyTopLevelFilters({
-    filters,
-    skippedFilters,
-    treatCategoryAllAsAbsent,
-  })(data);
-  return applyMatrixFilters(filters)(filteredData);
 };
 
 export const formattedMatrixFilters = (filters) => {
@@ -226,12 +224,4 @@ export const formattedMatrixFilters = (filters) => {
     );
   }
   return parts.join(", ");
-};
-
-export const limitFiltersToUserDistricts = (filters, userDistricts) => {
-  if (userDistricts !== null && includesAllItemFirst(filters[DISTRICT])) {
-    return { ...filters, district: userDistricts };
-  }
-
-  return filters;
 };

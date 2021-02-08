@@ -65,6 +65,7 @@ const sumRow = pipe(values, sum);
 
 const Matrix = ({ timeDescription }) => {
   const { dataStore, filters, filtersStore } = useRootStore();
+  const { filterOptions } = filtersStore;
   const store = dataStore.matrixStore;
   const { containerHeight, containerRef } = useContainerHeight();
   const violationTypes = translate("violationTypes");
@@ -126,7 +127,10 @@ const Matrix = ({ timeDescription }) => {
 
   const toggleFilter = (violationType, reportedViolations) => {
     if (isSelected(violationType, reportedViolations)) {
-      updateFilters({ violationType: "", reportedViolations: "" });
+      updateFilters({
+        violationType: filterOptions[VIOLATION_TYPE].defaultValue,
+        reportedViolations: filterOptions[REPORTED_VIOLATIONS].defaultValue,
+      });
     } else {
       updateFilters({ violationType, reportedViolations });
     }
@@ -189,15 +193,15 @@ const Matrix = ({ timeDescription }) => {
               key={i}
               violationType={violationType}
               sum={sumRow(dataMatrix[violationType])}
-              isSelected={isSelected(violationType, "")}
-              onClick={() => toggleFilter(violationType, "")}
+              onClick={() => toggleFilter(violationType, "All")}
             >
               {VIOLATION_COUNTS.map((violationCount, j) => (
                 <MatrixCell
                   key={j}
                   count={getOr(0, [violationType, violationCount], dataMatrix)}
                   maxCount={maxRevocations}
-                  isSelected={isSelected(violationType, violationCount)}
+                  violationType={violationType}
+                  reportedViolations={violationCount}
                   onClick={() => toggleFilter(violationType, violationCount)}
                 />
               ))}

@@ -86,7 +86,7 @@ export const US_PA_METHODOLOGY = {
       body: `Counts include only violation records for people who were admitted to SCIs from parole. This includes people on parole who were admitted for non-revocation sanctions and those who were admitted for revocation. Counts do not include (1) people with Parole Violator Pending status who have been detained pending a revocation hearing but have not been legally revoked; (2) people who are serving a State Indeterminate Punishment sentence; (3) placements in Parole Violator Centers. This chart (like all charts on the page) will automatically repopulate to match whatever filter(s) the user has selected. For example, if the user has selected "District 2" from the drop-down menus at the top of the screen, this chart will automatically update to include only people from District 2.`,
     },
   ],
-  admissionsByGender: [
+  admissionsBySex: [
     {
       header: "What this chart shows",
       body: `When no violation history filters are selected in the "Admissions by violation history" plot, this chart compares the percent of women and men who were admitted, overall and broken out by risk level. These percentages are 	calculated as follows: overall and for each risk level, the number of women (or men) admitted divided by the total number of women (or men) in that risk level group. Risk level is defined based only on the LSI-R tool and no other assessment. Those without LSI-R scores are counted in the Unassessed category. LSI-R scores above 54 are not counted. When hovering over any column, users can see the total number of people on supervision assessed at that specific risk level and sex as the denominator and the total number of people admitted at that risk level and sex as the numerator.`,
