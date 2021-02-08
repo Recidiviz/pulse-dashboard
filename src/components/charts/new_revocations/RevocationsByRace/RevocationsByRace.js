@@ -21,7 +21,7 @@ import { observer } from "mobx-react-lite";
 
 import BarChartWithLabels from "../BarChartWithLabels";
 import RevocationsByDimension from "../RevocationsByDimension";
-import createGenerateChartData from "./createGenerateChartData";
+import newCreateGenerateChartData from "./newCreateGenerateChartData";
 import getLabelByMode from "../utils/getLabelByMode";
 import { COLORS_LANTERN_SET } from "../../../../assets/scripts/constants/colors";
 import flags from "../../../../flags";
@@ -50,7 +50,7 @@ const RevocationsByRace = ({ timeDescription }) => {
           />
         );
       }}
-      generateChartData={createGenerateChartData(
+      generateChartData={newCreateGenerateChartData(
         revocationsChartStore.filteredData
       )}
       chartTitle="Admissions by race/ethnicity and risk level"
@@ -64,7 +64,7 @@ const RevocationsByRace = ({ timeDescription }) => {
           : Object.keys(translate("raceLabelMap"))
       }
       defaultMode="WHITE"
-      dataExportLabel="Risk Level"
+      dataExportLabel="Race"
     />
   );
 };
