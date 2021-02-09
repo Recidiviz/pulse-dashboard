@@ -14,6 +14,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
+import { runInAction } from "mobx";
+
 import BaseDataStore from "../DataStore/BaseDataStore";
 import UserStore from "../UserStore";
 import RootStore from "../RootStore";
@@ -225,6 +227,37 @@ describe("BaseDataStore", () => {
     it("sets isError to false and isLoading to false", () => {
       expect(baseStore.isError).toBe(false);
       expect(baseStore.isLoading).toBe(true);
+    });
+  });
+
+  describe("when the tenant is not a Lantern tenant", () => {
+    beforeAll(() => {
+      jest.resetAllMocks();
+      UserStore.mockImplementationOnce(() => {
+        return {
+          user: mockUser,
+          userIsLoading: false,
+          getTokenSilently: false,
+        };
+      });
+      rootStore = new RootStore();
+      runInAction(() => {
+        rootStore.tenantStore.currentTenantId = "US_ND";
+        baseStore = new BaseDataStore({ rootStore, file });
+      });
+    });
+
+    afterAll(() => {
+      jest.resetAllMocks();
+    });
+
+    it("does not fetch data", () => {
+      expect(callMetricsApi).toHaveBeenCalledTimes(0);
+    });
+
+    it("sets isError to false and isLoading to false", () => {
+      expect(baseStore.isError).toBe(false);
+      expect(baseStore.isLoading).toBe(false);
     });
   });
 });
