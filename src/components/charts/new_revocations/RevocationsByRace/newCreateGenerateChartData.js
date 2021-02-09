@@ -40,7 +40,10 @@ export const generateDatasets = (dataPoints, denominators) => {
     data: dataPoints[index],
   }));
 };
-const newCreateGenerateChartData = (filteredData) => () => {
+const newCreateGenerateChartData = ({
+  filteredData,
+  statePopulationData,
+}) => () => {
   const numeratorKey = [
     "revocation_count",
     "supervision_population_count",
@@ -55,7 +58,8 @@ const newCreateGenerateChartData = (filteredData) => () => {
   const races = Object.keys(raceLabelMap);
   const { dataPoints, numerators, denominators } = pipe(
     reduce(createRaceRiskLevelsMap(numeratorKey, denominatorKey, "race"), {}),
-    (data) => getCounts(data, getRaceChartAttributes(), races)
+    (data) =>
+      getCounts(data, getRaceChartAttributes(), races, statePopulationData)
   )(filteredData);
 
   const data = {

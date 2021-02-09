@@ -49,9 +49,7 @@ const RevocationsByRace = ({ timeDescription }) => {
           />
         );
       }}
-      generateChartData={newCreateGenerateChartData(
-        revocationsChartStore.filteredData
-      )}
+      generateChartData={newCreateGenerateChartData(revocationsChartStore)}
       chartTitle="Admissions by race/ethnicity and risk level"
       metricTitle={(mode) =>
         `${getLabelByMode(mode)} by race/ethnicity and risk level`
