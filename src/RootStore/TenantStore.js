@@ -24,6 +24,7 @@ import sortBy from "lodash/fp/sortBy";
 import uniq from "lodash/fp/uniq";
 
 import { getAvailableStateCodes, doesUserHaveAccess } from "./utils/user";
+import { LANTERN_TENANTS } from "../views/tenants/utils/lanternTenants";
 
 export const CURRENT_TENANT_IN_SESSION = "adminUserCurrentTenantInSession";
 
@@ -82,5 +83,9 @@ export default class TenantStore {
       )(data);
       this.districtsIsLoading = false;
     }
+  }
+
+  get isLanternTenant() {
+    return LANTERN_TENANTS.includes(this.currentTenantId);
   }
 }

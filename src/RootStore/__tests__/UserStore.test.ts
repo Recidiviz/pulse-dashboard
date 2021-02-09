@@ -56,6 +56,7 @@ beforeEach(() => {
       currentTenantId: tenantId,
       tenantStore: {
         districts: [userDistrict],
+        isLanternTenant: true,
       },
     };
   });
@@ -310,6 +311,40 @@ describe("fetchRestrictedDistrictData", () => {
         new Error(ERROR_MESSAGES.unauthorized)
       );
       expect(userStore.restrictedDistrictIsLoading).toBe(false);
+    });
+  });
+
+  describe("when the tenant is not a Lantern tennant", () => {
+    beforeEach(async () => {
+      mockRootStore.mockImplementation(() => {
+        return {
+          currentTenantId: "US_ND",
+          tenantStore: {
+            isLanternTenant: false,
+          },
+        };
+      });
+
+      reactImmediately(() => {
+        userStore = new UserStore({
+          authSettings: testAuthSettings,
+          rootStore: new RootStore(),
+        });
+
+        userStore.userIsLoading = false;
+      });
+    });
+
+    afterEach(() => {
+      jest.resetAllMocks();
+    });
+
+    it("does not call the API", () => {
+      expect(callRestrictedAccessApi).toHaveBeenCalledTimes(0);
+    });
+
+    it("sets restrictedDistrictIsLoading to false", () => {
+      expect(userStore.restrictedDistrictIsLoading).toBeFalse();
     });
   });
 });
