@@ -21,7 +21,6 @@ import {
   callMetricsApi,
   awaitingResults,
 } from "../../api/metrics/metricsClient";
-import { parseResponsesByFileFormat } from "../../api/metrics/fileParser";
 import { useRootStore } from "../../StoreProvider";
 
 jest.mock("../../api/metrics/metricsClient");
