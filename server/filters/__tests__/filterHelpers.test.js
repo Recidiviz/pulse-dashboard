@@ -14,8 +14,9 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
+const { matchesAllFilters } = require("shared-filters");
+
 const { createSubsetFilters, getFilterFnByFile } = require("../filterHelpers");
-const { matchesAllFilters } = require("../../../shared-filters/dataFilters");
 
 jest.mock("../../constants/subsetManifest", () => {
   return {
@@ -34,9 +35,12 @@ jest.mock("../../constants/subsetManifest", () => {
     FILES_WITH_SUBSETS: ["revocations_matrix_distribution_by_district"],
   };
 });
-jest.mock("../../../shared-filters/dataFilters", () => {
+jest.mock("shared-filters/", () => {
   return {
     matchesAllFilters: jest.fn(),
+    getFilterKeys: () => {
+      return { METRIC_PERIOD_MONTHS: "metric_period_months" };
+    },
   };
 });
 
