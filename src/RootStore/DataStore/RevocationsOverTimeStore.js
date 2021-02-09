@@ -34,6 +34,12 @@ export default class RevocationsOverTimeStore extends BaseDataStore {
   }
 
   *fetchData({ tenantId }) {
+    if (!this.rootStore?.tenantStore.isLanternTenant) {
+      this.isLoading = false;
+      this.isError = false;
+      return;
+    }
+
     const endpoint = `${tenantId}/newRevocations/${this.file}${this.filtersQueryParams}`;
     try {
       this.isLoading = true;

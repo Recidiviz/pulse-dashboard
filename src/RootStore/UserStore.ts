@@ -185,6 +185,10 @@ export default class UserStore {
     this: UserStore,
     tenantId: string
   ) {
+    if (!this.rootStore?.tenantStore.isLanternTenant) {
+      this.restrictedDistrictIsLoading = false;
+      return;
+    }
     const file = "supervision_location_restricted_access_emails";
     const endpoint = `${tenantId}/restrictedAccess`;
     try {
