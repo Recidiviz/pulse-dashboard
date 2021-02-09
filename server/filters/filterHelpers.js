@@ -68,6 +68,11 @@ const getFilterFnByFile = (file, subsetFilters) => {
       return matchesAllFilters({
         filters: subsetFilters,
       });
+    case "revocations_matrix_by_month":
+      return matchesAllFilters({
+        filters: subsetFilters,
+        skippedFilters: "metric_period_months",
+      });
     default:
       return () => true;
   }
