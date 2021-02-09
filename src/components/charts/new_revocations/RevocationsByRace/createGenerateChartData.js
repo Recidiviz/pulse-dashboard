@@ -44,7 +44,7 @@ export const generateDatasets = (dataPoints, denominators) => {
 };
 
 const createGenerateChartData = (filteredData) => (mode) => {
-  const numeratorKey = "population_count";
+  const numeratorKey = "revocation_count";
   const denominatorKey = getDenominatorKeyByMode(mode);
 
   const raceLabelMap = translate("raceLabelMap");
