@@ -15,6 +15,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 import { runInAction } from "mobx";
+import * as Sentry from "@sentry/react";
 
 import * as sharedFilters from "shared-filters";
 import BaseDataStore, {
@@ -28,6 +29,7 @@ import { callMetricsApi } from "../../api/metrics/metricsClient";
 let rootStore;
 let baseStore;
 
+jest.mock("@sentry/react");
 jest.mock("../UserStore");
 jest.mock("../DataStore/MatrixStore");
 jest.mock("../DataStore/CaseTableStore");
@@ -207,8 +209,9 @@ describe("BaseDataStore", () => {
       });
 
       describe("when API responds with an error", () => {
+        const apiError = new Error("API Error");
         beforeEach(() => {
-          callMetricsApi.mockRejectedValueOnce(new Error("API Error"));
+          callMetricsApi.mockRejectedValueOnce(apiError);
           baseStore = new BaseDataStore({ rootStore, file });
         });
 
@@ -219,6 +222,13 @@ describe("BaseDataStore", () => {
         it("sets isError to true and isLoading to false", () => {
           expect(baseStore.isError).toBe(true);
           expect(baseStore.isLoading).toBe(false);
+        });
+
+        it("sends an error and context information to Sentry", () => {
+          expect(Sentry.captureException).toHaveBeenCalledWith(
+            apiError,
+            expect.any(Function)
+          );
         });
       });
     });
