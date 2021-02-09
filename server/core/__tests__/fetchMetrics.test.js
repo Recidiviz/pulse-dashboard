@@ -47,6 +47,10 @@ describe("fetchMetrics tests", () => {
     jest.spyOn(console, "log").mockImplementation(() => {});
   });
 
+  afterAll(() => {
+    jest.restoreAllMocks();
+  });
+
   it("should successfully return a promise with results of local data", () => {
     const metricType = "metric_type";
     const isDemo = true;

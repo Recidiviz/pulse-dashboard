@@ -1,7 +1,7 @@
 const { query, param, body } = require("express-validator");
 const { default: isDemoMode } = require("../utils/isDemoMode");
 
-const VALID_STATE_CODES = ["US_PA", "US_MO"].concat(
+const VALID_STATE_CODES = ["US_PA", "US_MO", "US_ND"].concat(
   isDemoMode ? ["US_DEMO"] : []
 );
 const CHARGE_CATEGORIES = [

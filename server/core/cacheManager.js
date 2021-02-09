@@ -89,23 +89,8 @@ function clearMemoryCache() {
 }
 
 function cacheResponse(cacheKey, fetchValue, callback) {
-  const cache = Array.isArray(cacheKey)
-    ? getCache(cacheKey[0])
-    : getCache(cacheKey);
-  let cacheKeyOriginal = cacheKey;
-  // cacheKey will be an array for the `newRevocationFile` endpoint until we finish implementing the subset cache values.
-  // If cacheKey is an array, then the first element will be the original cacheKey and the second element is the subset cache key.
-  // Example: cacheKey = [cacheKeyOriginal, cacheKeySubset]
-  if (Array.isArray(cacheKey)) {
-    // Set the subset cache key and assign the cacheKeyOriginal value for the API response.
-    cache.wrap(cacheKey[1], fetchValue);
-    [cacheKeyOriginal] = cacheKey;
-  }
-  // TODO: For now we are always going to respond with the original cache key
-  // and the full file contents until the FE is ready to receive the split files.
-  // Once the FE is ready, we can replace lines 92-104 with the previous implementation:
-  // const cache = getCache(cacheKey);
-  return cache.wrap(cacheKeyOriginal, fetchValue).then(
+  const cache = getCache(cacheKey);
+  return cache.wrap(cacheKey, fetchValue).then(
     (result) => {
       callback(null, result);
     },

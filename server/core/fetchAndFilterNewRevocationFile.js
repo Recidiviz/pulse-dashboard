@@ -14,24 +14,21 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-import { matchesTopLevelFilters } from "shared-filters";
-import BaseDataStore from "./BaseDataStore";
-import {
-  REPORTED_VIOLATIONS,
-  VIOLATION_TYPE,
-} from "../../constants/filterTypes";
+const { createSubset, createSubsetFilters } = require("../filters");
+const { default: fetchMetrics } = require("./fetchMetrics");
 
-export default class MatrixStore extends BaseDataStore {
-  constructor({ rootStore }) {
-    super({
-      rootStore,
-      file: `revocations_matrix_cells`,
-      ignoredSubsetDimensions: [VIOLATION_TYPE, REPORTED_VIOLATIONS],
-    });
-  }
-
-  get filteredData() {
-    const dataFilter = matchesTopLevelFilters({ filters: this.filters });
-    return this.filterData(this.apiData, dataFilter);
-  }
+function fetchAndFilterNewRevocationFile({
+  file: fileKey,
+  queryParams: filters,
+  ...fetchArgs
+}) {
+  const { stateCode, metricType, isDemoMode } = fetchArgs;
+  return fetchMetrics(stateCode, metricType, fileKey, isDemoMode).then(
+    (metricFile) => {
+      const subsetFilters = createSubsetFilters({ filters });
+      return createSubset(fileKey, subsetFilters, metricFile);
+    }
+  );
 }
+
+exports.default = fetchAndFilterNewRevocationFile;

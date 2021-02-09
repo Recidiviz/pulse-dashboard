@@ -1,5 +1,5 @@
 // Recidiviz - a data platform for criminal justice reform
-// Copyright (C) 2020 Recidiviz, Inc.
+// Copyright (C) 2021 Recidiviz, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -15,11 +15,9 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import { observable } from "mobx";
+const { matchesTopLevelFilters, matchesAllFilters } = require("../dataFilters");
 
-import { applyTopLevelFilters, applyMatrixFilters } from "../helpers";
-
-describe("applyTopLevelFilters", () => {
+describe("matchesTopLevelFilters", () => {
   let filters = {};
   let filtered = [];
   let data = [];
@@ -27,6 +25,7 @@ describe("applyTopLevelFilters", () => {
   beforeEach(() => {
     data = [
       {
+        admission_type: "ALL",
         charge_category: "ALL",
         district: "ALL",
         level_1_supervision_location: "ALL",
@@ -41,6 +40,7 @@ describe("applyTopLevelFilters", () => {
         year: "2020",
       },
       {
+        admission_type: "ALL",
         charge_category: "ALL",
         district: "ALL",
         level_1_supervision_location: "04B",
@@ -55,6 +55,7 @@ describe("applyTopLevelFilters", () => {
         year: "2020",
       },
       {
+        admission_type: "REVOCATION",
         charge_category: "SEX_OFFENSE",
         district: "ALL",
         level_1_supervision_location: "ALL",
@@ -69,6 +70,7 @@ describe("applyTopLevelFilters", () => {
         year: "2020",
       },
       {
+        admission_type: "PVC",
         charge_category: "SEX_OFFENSE",
         district: "ALL",
         level_1_supervision_location: "05X",
@@ -90,8 +92,10 @@ describe("applyTopLevelFilters", () => {
 
     describe("with supervisionLevel = 'MEDIUM' filter applied", () => {
       beforeEach(() => {
-        filters = observable.map({ supervisionLevel: "MEDIUM" });
-        filtered = applyTopLevelFilters({ filters })(data);
+        filters = { supervision_level: "MEDIUM" };
+        filtered = data.filter((item) =>
+          matchesTopLevelFilters({ filters })(item)
+        );
         filteredSupervisionLevels = filtered.map((f) => f.supervision_level);
       });
 
@@ -108,8 +112,10 @@ describe("applyTopLevelFilters", () => {
 
     describe("with supervisionLevel = 'ALL' filter applied", () => {
       beforeEach(() => {
-        filters = observable.map({ supervisionLevel: "ALL" });
-        filtered = applyTopLevelFilters({ filters })(data);
+        filters = { supervision_level: "ALL" };
+        filtered = data.filter((item) =>
+          matchesTopLevelFilters({ filters })(item)
+        );
         filteredSupervisionLevels = filtered.map((f) => f.supervision_level);
       });
 
@@ -122,8 +128,10 @@ describe("applyTopLevelFilters", () => {
 
     describe("when the filters do not include supervisionLevel attribute", () => {
       beforeEach(() => {
-        filters = observable.map({});
-        filtered = applyTopLevelFilters({ filters })(data);
+        filters = {};
+        filtered = data.filter((item) =>
+          matchesTopLevelFilters({ filters })(item)
+        );
       });
 
       it("returns the input data", () => {
@@ -139,12 +147,14 @@ describe("applyTopLevelFilters", () => {
 
       beforeEach(() => {
         missingCategoryAllData = data.slice(1);
-        filters = observable.map({ supervisionLevel: "ALL" });
-        filtered = applyTopLevelFilters({
-          filters,
-          skippedFilters: [],
-          treatCategoryAllAsAbsent,
-        })(missingCategoryAllData);
+        filters = { supervision_level: "ALL" };
+        filtered = missingCategoryAllData.filter((item) =>
+          matchesTopLevelFilters({
+            filters,
+            skippedFilters: [],
+            treatCategoryAllAsAbsent,
+          })(item)
+        );
       });
 
       it("returns all of the rows", () => {
@@ -171,18 +181,21 @@ describe("applyTopLevelFilters", () => {
         // treatCategoryAllAsAbsent = true and the filter = 'ALL'
         describe("with supervisionLevel = 'ALL' filter applied", () => {
           beforeEach(() => {
-            filters = observable.map({ supervisionLevel: "ALL" });
-            filtered = applyTopLevelFilters({
-              filters,
-              skippedFilters: [],
-              treatCategoryAllAsAbsent,
-            })(missingCategoryAllData);
+            filters = { supervision_level: "ALL" };
+            filtered = missingCategoryAllData.filter((item) =>
+              matchesTopLevelFilters({
+                filters,
+                skippedFilters: [],
+                treatCategoryAllAsAbsent,
+              })(item)
+            );
+
             filteredSupervisionLevels = filtered.map(
               (f) => f.supervision_level
             );
           });
 
-          it("returns the all of the rows including the null row", () => {
+          it("returns all of the rows including the null row", () => {
             const expected = ["MEDIUM", "MEDIUM", "MINIMUM", null];
             expect(filteredSupervisionLevels).toEqual(expected);
           });
@@ -192,12 +205,14 @@ describe("applyTopLevelFilters", () => {
         // if the supervisionLevel filter is not 'ALL'
         describe("with supervisionLevel = 'MEDIUM' filter applied", () => {
           beforeEach(() => {
-            filters = observable.map({ supervisionLevel: "MEDIUM" });
-            filtered = applyTopLevelFilters({
-              filters,
-              skippedFilters: [],
-              treatCategoryAllAsAbsent,
-            })(missingCategoryAllData);
+            filters = { supervision_level: "MEDIUM" };
+            filtered = missingCategoryAllData.filter((item) =>
+              matchesTopLevelFilters({
+                filters,
+                skippedFilters: [],
+                treatCategoryAllAsAbsent,
+              })(item)
+            );
             filteredSupervisionLevels = filtered.map(
               (f) => f.supervision_level
             );
@@ -234,12 +249,14 @@ describe("applyTopLevelFilters", () => {
 
         describe("with supervisionLevel = 'ALL' filter applied", () => {
           beforeEach(() => {
-            filters = observable.map({ supervisionLevel: "ALL" });
-            filtered = applyTopLevelFilters({
-              filters,
-              skippedFilters: [],
-              treatCategoryAllAsAbsent,
-            })(data);
+            filters = { supervision_level: "ALL" };
+            filtered = data.filter((item) =>
+              matchesTopLevelFilters({
+                filters,
+                skippedFilters: [],
+                treatCategoryAllAsAbsent,
+              })(item)
+            );
             filteredSupervisionLevels = filtered.map(
               (f) => f.supervision_level
             );
@@ -253,12 +270,14 @@ describe("applyTopLevelFilters", () => {
 
         describe("with supervisionLevel = 'MEDIUM' filter applied", () => {
           beforeEach(() => {
-            filters = observable.map({ supervisionLevel: "MEDIUM" });
-            filtered = applyTopLevelFilters({
-              filters,
-              skippedFilters: [],
-              treatCategoryAllAsAbsent,
-            })(data);
+            filters = { supervision_level: "MEDIUM" };
+            filtered = data.filter((item) =>
+              matchesTopLevelFilters({
+                filters,
+                skippedFilters: [],
+                treatCategoryAllAsAbsent,
+              })(item)
+            );
             filteredSupervisionLevels = filtered.map(
               (f) => f.supervision_level
             );
@@ -278,8 +297,10 @@ describe("applyTopLevelFilters", () => {
 
     describe("with chargeCategory = 'ALL' filter applied", () => {
       beforeEach(() => {
-        filters = observable.map({ chargeCategory: "ALL" });
-        filtered = applyTopLevelFilters({ filters })(data);
+        filters = { charge_category: "ALL" };
+        filtered = data.filter((item) =>
+          matchesTopLevelFilters({ filters })(item)
+        );
         filteredChargeCategories = filtered.map((f) => f.charge_category);
       });
 
@@ -291,8 +312,10 @@ describe("applyTopLevelFilters", () => {
 
     describe("with chargeCategory = 'SEX_OFFENSE' filter applied", () => {
       beforeEach(() => {
-        filters = observable.map({ chargeCategory: "SEX_OFFENSE" });
-        filtered = applyTopLevelFilters({ filters })(data);
+        filters = { charge_category: "SEX_OFFENSE" };
+        filtered = data.filter((item) =>
+          matchesTopLevelFilters({ filters })(item)
+        );
         filteredChargeCategories = filtered.map((f) => f.charge_category);
       });
 
@@ -312,8 +335,10 @@ describe("applyTopLevelFilters", () => {
 
     describe("with levelOneSupervisionLocation = 'ALL' filter applied", () => {
       beforeEach(() => {
-        filters = observable.map({ levelOneSupervisionLocation: ["ALL"] });
-        filtered = applyTopLevelFilters({ filters })(data);
+        filters = { level_one_supervision_location: ["ALL"] };
+        filtered = data.filter((item) =>
+          matchesTopLevelFilters({ filters })(item)
+        );
         filteredSupervisionLocations = filtered.map(
           (f) => f.level_1_supervision_location
         );
@@ -327,8 +352,10 @@ describe("applyTopLevelFilters", () => {
 
     describe("with levelOneSupervisionLocation = '04B' filter applied", () => {
       beforeEach(() => {
-        filters = observable.map({ levelOneSupervisionLocation: ["04B"] });
-        filtered = applyTopLevelFilters({ filters })(data);
+        filters = { level_one_supervision_location: ["04B"] };
+        filtered = data.filter((item) =>
+          matchesTopLevelFilters({ filters })(item)
+        );
         filteredSupervisionLocations = filtered.map(
           (f) => f.level_1_supervision_location
         );
@@ -367,12 +394,14 @@ describe("applyTopLevelFilters", () => {
       ];
 
       beforeEach(() => {
-        filters = observable.map({ levelOneSupervisionLocation: ["ALL"] });
-        filtered = applyTopLevelFilters({
-          filters,
-          skippedFilters: [],
-          treatCategoryAllAsAbsent,
-        })(categoryAllAbsentData);
+        filters = { level_one_supervision_location: ["ALL"] };
+        filtered = categoryAllAbsentData.filter((item) =>
+          matchesTopLevelFilters({
+            filters,
+            skippedFilters: [],
+            treatCategoryAllAsAbsent,
+          })(item)
+        );
         filteredSupervisionLocations = filtered.map(
           (f) => f.level_1_supervision_location
         );
@@ -385,13 +414,15 @@ describe("applyTopLevelFilters", () => {
     });
   });
 
-  describe("levelTwoSupervisionLocation filter", () => {
+  describe("level_two_supervision_location filter", () => {
     let filteredSupervisionLocations = [];
 
-    describe("with levelTwoSupervisionLocation = 'ALL' filter applied", () => {
+    describe("with level_two_supervision_location = 'ALL' filter applied", () => {
       beforeEach(() => {
-        filters = observable.map({ levelTwoSupervisionLocation: ["ALL"] });
-        filtered = applyTopLevelFilters({ filters })(data);
+        filters = { level_two_supervision_location: ["ALL"] };
+        filtered = data.filter((item) =>
+          matchesTopLevelFilters({ filters })(item)
+        );
         filteredSupervisionLocations = filtered.map(
           (f) => f.level_2_supervision_location
         );
@@ -403,12 +434,14 @@ describe("applyTopLevelFilters", () => {
       });
     });
 
-    describe("with levelTwoSupervisionLocation = 'ROCKYROAD' filter applied", () => {
+    describe("with level_two_supervision_location = 'ROCKYROAD' filter applied", () => {
       beforeEach(() => {
-        filters = observable.map({
-          levelTwoSupervisionLocation: ["ROCKYROAD"],
-        });
-        filtered = applyTopLevelFilters({ filters })(data);
+        filters = {
+          level_two_supervision_location: ["ROCKYROAD"],
+        };
+        filtered = data.filter((item) =>
+          matchesTopLevelFilters({ filters })(item)
+        );
         filteredSupervisionLocations = filtered.map(
           (f) => f.level_2_supervision_location
         );
@@ -447,12 +480,14 @@ describe("applyTopLevelFilters", () => {
       ];
 
       beforeEach(() => {
-        filters = observable.map({ levelTwoSupervisionLocation: ["ALL"] });
-        filtered = applyTopLevelFilters({
-          filters,
-          skippedFilters: [],
-          treatCategoryAllAsAbsent,
-        })(categoryAllAbsentData);
+        filters = { level_two_supervision_location: ["ALL"] };
+        filtered = categoryAllAbsentData.filter((item) =>
+          matchesTopLevelFilters({
+            filters,
+            skippedFilters: [],
+            treatCategoryAllAsAbsent,
+          })(item)
+        );
         filteredSupervisionLocations = filtered.map(
           (f) => f.level_2_supervision_location
         );
@@ -466,8 +501,8 @@ describe("applyTopLevelFilters", () => {
   });
 });
 
-describe("applyMatrixFilters", () => {
-  let filters = observable.map({});
+describe("matchesAllFilters", () => {
+  let filters = {};
   let filtered = [];
   let data = [];
 
@@ -539,10 +574,10 @@ describe("applyMatrixFilters", () => {
   describe("violationType filter", () => {
     let filteredViolationTypes = [];
 
-    describe("with violationType = 'ALL' filter applied", () => {
+    describe("with violation_type = 'ALL' filter applied", () => {
       beforeEach(() => {
-        filters = observable.map({ violationType: "All" });
-        filtered = applyMatrixFilters(filters)(data);
+        filters = { violation_type: "All" };
+        filtered = data.filter((item) => matchesAllFilters({ filters })(item));
         filteredViolationTypes = filtered.map((f) => f.violation_type);
       });
 
@@ -555,8 +590,8 @@ describe("applyMatrixFilters", () => {
 
     describe("with violationType = 'MED_TECH' filter applied", () => {
       beforeEach(() => {
-        filters = observable.map({ violationType: "MED_TECH" });
-        filtered = applyMatrixFilters(filters)(data);
+        filters = { violation_type: "MED_TECH" };
+        filtered = data.filter((item) => matchesAllFilters({ filters })(item));
         filteredViolationTypes = filtered.map((f) => f.violation_type);
       });
 
@@ -571,10 +606,10 @@ describe("applyMatrixFilters", () => {
       });
     });
 
-    describe("with violationType = 'LAW' filter applied", () => {
+    describe("with violation_type = 'LAW' filter applied", () => {
       beforeEach(() => {
-        filters = observable.map({ violationType: "LAW" });
-        filtered = applyMatrixFilters(filters)(data);
+        filters = { violation_type: "LAW" };
+        filtered = data.filter((item) => matchesAllFilters({ filters })(item));
         filteredViolationTypes = filtered.map((f) => f.violation_type);
       });
 
@@ -589,11 +624,11 @@ describe("applyMatrixFilters", () => {
       });
     });
 
-    describe("with violationType = 'BOGUS' filter applied", () => {
+    describe("with violation_type = 'BOGUS' filter applied", () => {
       beforeEach(() => {
-        filters = observable.map({ violationType: "BOGUS" });
-        filtered = applyMatrixFilters(filters)(data);
-        filteredViolationTypes = filtered.map((f) => f.violationType);
+        filters = { violation_type: "BOGUS" };
+        filtered = data.filter((item) => matchesAllFilters({ filters })(item));
+        filteredViolationTypes = filtered.map((f) => f.violation_type);
       });
 
       it("returns an empty array and does not throw an error", () => {
@@ -604,13 +639,13 @@ describe("applyMatrixFilters", () => {
     });
   });
 
-  describe("reportedViolations filter", () => {
+  describe("reported_violations filter", () => {
     let filteredReportedViolations = [];
 
-    describe("with reportedViolations = 'ALL' filter applied", () => {
+    describe("with reported_violations = 'ALL' filter applied", () => {
       beforeEach(() => {
-        filters = observable.map({ reportedViolations: "ALL" });
-        filtered = applyMatrixFilters(filters)(data);
+        filters = { reported_violations: "ALL" };
+        filtered = data.filter((item) => matchesAllFilters({ filters })(item));
         filteredReportedViolations = filtered.map((f) => f.reported_violations);
       });
 
@@ -621,10 +656,10 @@ describe("applyMatrixFilters", () => {
       });
     });
 
-    describe("with reportedViolations = '1' filter applied", () => {
+    describe("with reported_violations = '1' filter applied", () => {
       beforeEach(() => {
-        filters = observable.map({ reportedViolations: "1" });
-        filtered = applyMatrixFilters(filters)(data);
+        filters = { reported_violations: "1" };
+        filtered = data.filter((item) => matchesAllFilters({ filters })(item));
         filteredReportedViolations = filtered.map((f) => f.reported_violations);
       });
 
@@ -639,11 +674,11 @@ describe("applyMatrixFilters", () => {
       });
     });
 
-    describe("with reportedViolations = 'BOGUS' filter applied", () => {
+    describe("with reported_violations = 'BOGUS' filter applied", () => {
       beforeEach(() => {
-        filters = observable.map({ reportedViolations: "BOGUS" });
-        filtered = applyMatrixFilters(filters)(data);
-        filteredReportedViolations = filtered.map((f) => f.reportedViolations);
+        filters = { reported_violations: "BOGUS" };
+        filtered = data.filter((item) => matchesAllFilters({ filters })(item));
+        filteredReportedViolations = filtered.map((f) => f.reported_violations);
       });
 
       it("returns an empty array and does not throw an error", () => {

@@ -1,5 +1,5 @@
 // Recidiviz - a data platform for criminal justice reform
-// Copyright (C) 2020 Recidiviz, Inc.
+// Copyright (C) 2021 Recidiviz, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -15,8 +15,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import "@testing-library/jest-dom/extend-expect";
-import * as methods from "../optimizedFormatHelpers";
+const helpers = require("../optimizedFormatHelpers");
 
 const FLATTENED_VALUES =
   "0,0,1,1,2,0,0,1,1,2,2,0,0,0,0,0,1,1,1,1,1,1,0,1,0,1,0,0,1,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,100,68,73,41,10,30,36,51,38,15,4";
@@ -34,7 +33,7 @@ const METADATA = {
 
 describe("Test getDimensionValue", () => {
   it("returns the correct value for properly formatted input", () => {
-    const dimensionValue = methods.getDimensionValue(
+    const dimensionValue = helpers.getDimensionValue(
       METADATA.dimension_manifest,
       0,
       2
@@ -45,7 +44,7 @@ describe("Test getDimensionValue", () => {
   it("throws an error for improperly formatted input", () => {
     const dimensions = ["district", "4", "5", "6", "month", "11", "12"];
     expect(() => {
-      methods.getDimensionValue(dimensions, 1, 0);
+      helpers.getDimensionValue(dimensions, 1, 0);
     }).toThrow(
       `Could not parse dimension manifest of ${dimensions} with dimension index of 1 and dimension value index of 0`
     );
@@ -55,7 +54,7 @@ describe("Test getDimensionValue", () => {
 describe("Test unflattenValues", () => {
   it("unflattens a flat array into a proper number and size of arrays", () => {
     const contents = FLATTENED_VALUES.split(",");
-    const unflattened = methods.unflattenValues(contents, 11);
+    const unflattened = helpers.unflattenValues(contents, 11);
     expect(unflattened).toEqual([
       ["0", "0", "1", "1", "2", "0", "0", "1", "1", "2", "2"],
       ["0", "0", "0", "0", "0", "1", "1", "1", "1", "1", "1"],
@@ -67,7 +66,7 @@ describe("Test unflattenValues", () => {
 
   it("returns an empty list if it receives an empty list", () => {
     const contents = [];
-    const unflattened = methods.unflattenValues(contents, 0);
+    const unflattened = helpers.unflattenValues(contents, 0);
     expect(unflattened).toEqual([]);
   });
 });
@@ -75,7 +74,7 @@ describe("Test unflattenValues", () => {
 describe("Test convertFromStringToUnflattenedMatrix", () => {
   it("unflattens a comma-separated string into a proper number and size of arrays", () => {
     const contents = FLATTENED_VALUES;
-    const unflattened = methods.convertFromStringToUnflattenedMatrix(
+    const unflattened = helpers.convertFromStringToUnflattenedMatrix(
       contents,
       11
     );
@@ -89,7 +88,7 @@ describe("Test convertFromStringToUnflattenedMatrix", () => {
   });
 
   it("returns an empty list if it receives an empty string", () => {
-    const unflattened = methods.convertFromStringToUnflattenedMatrix("", 0);
+    const unflattened = helpers.convertFromStringToUnflattenedMatrix("", 0);
     expect(unflattened).toEqual([]);
   });
 });
@@ -107,7 +106,7 @@ describe("Test validateMetadata", () => {
     };
 
     expect(() => {
-      methods.validateMetadata(metadata);
+      helpers.validateMetadata(metadata);
     }).toThrow(
       'Given metric file metadata has undefined or null "total_data_points"'
     );
@@ -126,7 +125,7 @@ describe("Test validateMetadata", () => {
     };
 
     expect(() => {
-      methods.validateMetadata(metadata);
+      helpers.validateMetadata(metadata);
     }).toThrow(
       'Given metric file metadata has undefined or null "total_data_points"'
     );
@@ -145,7 +144,7 @@ describe("Test validateMetadata", () => {
     };
 
     expect(() => {
-      methods.validateMetadata(metadata);
+      helpers.validateMetadata(metadata);
     }).toThrow(
       'Given metric file metadata has a non-numeric value for "total_data_points": lots of em'
     );
@@ -164,7 +163,7 @@ describe("Test validateMetadata", () => {
     };
 
     expect(() => {
-      methods.validateMetadata(metadata);
+      helpers.validateMetadata(metadata);
     }).toThrow(
       'Given metric file metadata requires a non-empty array of value keys, but "value_keys" equals total_revocations'
     );
@@ -183,7 +182,7 @@ describe("Test validateMetadata", () => {
     };
 
     expect(() => {
-      methods.validateMetadata(metadata);
+      helpers.validateMetadata(metadata);
     }).toThrow(
       'Given metric file metadata requires a non-empty array of value keys, but "value_keys" equals '
     );
@@ -197,7 +196,7 @@ describe("Test validateMetadata", () => {
     };
 
     expect(() => {
-      methods.validateMetadata(metadata);
+      helpers.validateMetadata(metadata);
     }).toThrow(
       'Given metric file metadata requires a non-empty array of dimension ranges, but "dimension_manifest" equals something else entirely'
     );
@@ -211,7 +210,7 @@ describe("Test validateMetadata", () => {
     };
 
     expect(() => {
-      methods.validateMetadata(metadata);
+      helpers.validateMetadata(metadata);
     }).toThrow(
       'Given metric file metadata requires a non-empty array of dimension ranges, but "dimension_manifest" equals '
     );
@@ -230,7 +229,7 @@ describe("Test validateMetadata", () => {
     };
 
     expect(() => {
-      methods.validateMetadata(metadata);
+      helpers.validateMetadata(metadata);
     }).toThrow(
       "Given metric file dimension manifest contains malformed dimensions that are not tuples: month, supervision_type,parole,probation"
     );
@@ -249,7 +248,7 @@ describe("Test validateMetadata", () => {
     };
 
     expect(() => {
-      methods.validateMetadata(metadata);
+      helpers.validateMetadata(metadata);
     }).toThrow(
       "Given metric file dimension manifest contains dimensions with a set of possible values that is not an array: month"
     );
