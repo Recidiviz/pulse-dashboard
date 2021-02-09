@@ -16,7 +16,7 @@
 // =============================================================================
 
 const { snakeCase } = require("lodash");
-const { matchesAllFilters } = require("shared-filters");
+const { matchesAllFilters, getFilterKeys } = require("shared-filters");
 const {
   getSubsetDimensionKeys,
   getSubsetDimensionValues,
@@ -58,6 +58,8 @@ function createSubsetFilters({ filters }) {
  * and returns whether or not the item should be filtered out.
  */
 const getFilterFnByFile = (file, subsetFilters) => {
+  const filterKeys = getFilterKeys();
+
   switch (file) {
     case "revocations_matrix_distribution_by_district":
     case "revocations_matrix_distribution_by_risk_level":
@@ -67,6 +69,11 @@ const getFilterFnByFile = (file, subsetFilters) => {
     case "revocations_matrix_distribution_by_violation":
       return matchesAllFilters({
         filters: subsetFilters,
+      });
+    case "revocations_matrix_by_month":
+      return matchesAllFilters({
+        filters: subsetFilters,
+        skippedFilters: [filterKeys.METRIC_PERIOD_MONTHS],
       });
     default:
       return () => true;

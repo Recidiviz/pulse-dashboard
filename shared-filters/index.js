@@ -9,6 +9,7 @@ const {
 const { filterOptimizedDataFormat } = require("./filterOptimizedDataFormat");
 const { matchesAllFilters, matchesTopLevelFilters } = require("./dataFilters");
 const { isAllItem } = require("./dataPointComparisons");
+const { getFilterKeys } = require("./getFilterKeys");
 
 module.exports = {
   convertFromStringToUnflattenedMatrix,
@@ -21,4 +22,5 @@ module.exports = {
   matchesTopLevelFilters,
   unflattenValues,
   validateMetadata,
+  getFilterKeys,
 };
