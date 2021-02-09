@@ -31,7 +31,6 @@ import { useDataStore } from "../../../../StoreProvider";
 const RevocationsByRace = ({ timeDescription }) => {
   const dataStore = useDataStore();
   const { revocationsChartStore } = dataStore;
-
   return (
     <RevocationsByDimension
       chartId={`${translate("revocations")}ByRace`}

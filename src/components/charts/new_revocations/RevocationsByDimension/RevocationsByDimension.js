@@ -42,11 +42,11 @@ const RevocationsByDimension = ({
 }) => {
   const [mode, setMode] = useState(defaultMode);
 
-  if (dataStore.isLoading) {
+  if (dataStore.isLoading || dataStore.isStatePopulationLoading) {
     return <Loading />;
   }
 
-  if (dataStore.isError) {
+  if (dataStore.isError || dataStore.isStatePopulationError) {
     return <Error />;
   }
   const { data, numerators, denominators, averageRate } = generateChartData(
@@ -104,6 +104,8 @@ RevocationsByDimension.propTypes = {
     filteredData: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
     isLoading: PropTypes.bool.isRequired,
     isError: PropTypes.bool.isRequired,
+    isStatePopulationLoading: PropTypes.bool.isRequired,
+    isStatePopulationError: PropTypes.bool.isRequired,
   }).isRequired,
   chartId: PropTypes.string.isRequired,
   renderChart: PropTypes.func.isRequired,
