@@ -18,7 +18,7 @@ const { intersection } = require("lodash");
 
 const SUBSET_MANIFEST = [
   [
-    "violationType",
+    "violation_type",
     [
       [
         "absconded",

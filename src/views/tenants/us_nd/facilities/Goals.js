@@ -43,7 +43,7 @@ const FacilitiesGoals = () => {
         chart={
           <DaysAtLibertySnapshot
             metricPeriodMonths={metrics.metricPeriodMonths}
-            daysAtLibertyByMonth={apiData.avg_days_at_liberty_by_month}
+            daysAtLibertyByMonth={apiData.avg_days_at_liberty_by_month.data}
             header="daysAtLibertySnapshot-header"
             stateCode="US_ND"
           />
@@ -59,7 +59,9 @@ const FacilitiesGoals = () => {
             metricType="counts"
             metricPeriodMonths={metrics.metricPeriodMonths}
             district={metrics.district}
-            reincarcerationCountsByMonth={apiData.reincarcerations_by_month}
+            reincarcerationCountsByMonth={
+              apiData.reincarcerations_by_month.data
+            }
             header="reincarcerationCountsByMonth-header"
             stateCode="US_ND"
           />
@@ -71,7 +73,7 @@ const FacilitiesGoals = () => {
             metricType="counts"
             metricPeriodMonths={metrics.metricPeriodMonths}
             stateCode="us_nd"
-            dataPointsByOffice={apiData.reincarcerations_by_period}
+            dataPointsByOffice={apiData.reincarcerations_by_period.data}
             numeratorKeys={["returns"]}
             denominatorKeys={["total_admissions"]}
             centerLat={47.3}

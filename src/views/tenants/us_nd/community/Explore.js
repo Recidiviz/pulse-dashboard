@@ -72,7 +72,7 @@ const CommunityExplore = () => {
       setChartMetricPeriodMonths={setMetricPeriodMonths}
       setChartSupervisionType={setSupervisionType}
       setChartDistrict={setDistrict}
-      districtOffices={apiData.site_offices}
+      districtOffices={apiData.site_offices.data}
       availableDistricts={availableDistricts}
     />
   );
@@ -90,8 +90,8 @@ const CommunityExplore = () => {
             supervisionType={supervisionType}
             district={district}
             disableGoal
-            officeData={apiData.site_offices}
-            revocationCountsByMonth={apiData.revocations_by_month}
+            officeData={apiData.site_offices.data}
+            revocationCountsByMonth={apiData.revocations_by_month.data}
             stateCode="US_ND"
           />
         }
@@ -103,8 +103,8 @@ const CommunityExplore = () => {
             metricPeriodMonths={metricPeriodMonths}
             supervisionType={supervisionType}
             keyedByOffice
-            officeData={apiData.site_offices}
-            dataPointsByOffice={apiData.revocations_by_period}
+            officeData={apiData.site_offices.data}
+            dataPointsByOffice={apiData.revocations_by_period.data}
             numeratorKeys={["revocation_count"]}
             denominatorKeys={["total_supervision_count"]}
             centerLat={47.3}
@@ -134,8 +134,10 @@ const CommunityExplore = () => {
             metricPeriodMonths={metricPeriodMonths}
             supervisionType={supervisionType}
             district={district}
-            revocationCountsByOfficer={apiData.revocations_by_officer_by_period}
-            officeData={apiData.site_offices}
+            revocationCountsByOfficer={
+              apiData.revocations_by_officer_by_period.data
+            }
+            officeData={apiData.site_offices.data}
           />
         }
         footer={
@@ -157,7 +159,9 @@ const CommunityExplore = () => {
             supervisionType={supervisionType}
             district={district}
             disableGoal
-            revocationAdmissionsByMonth={apiData.admissions_by_type_by_month}
+            revocationAdmissionsByMonth={
+              apiData.admissions_by_type_by_month.data
+            }
           />
         }
         geoChart={
@@ -169,8 +173,8 @@ const CommunityExplore = () => {
             supervisionType={supervisionType}
             keyedByOffice
             shareDenominatorAcrossRates
-            officeData={apiData.site_offices}
-            dataPointsByOffice={apiData.admissions_by_type_by_period}
+            officeData={apiData.site_offices.data}
+            dataPointsByOffice={apiData.admissions_by_type_by_period.data}
             numeratorKeys={[
               "technicals",
               "non_technicals",
@@ -210,7 +214,7 @@ const CommunityExplore = () => {
             supervisionType={supervisionType}
             metricPeriodMonths={metricPeriodMonths}
             district={district}
-            admissionCountsByType={apiData.admissions_by_type_by_period}
+            admissionCountsByType={apiData.admissions_by_type_by_period.data}
           />
         }
         footer={
@@ -241,7 +245,7 @@ const CommunityExplore = () => {
             metricPeriodMonths={metricPeriodMonths}
             district={district}
             revocationCountsByMonthBySupervisionType={
-              apiData.revocations_by_supervision_type_by_month
+              apiData.revocations_by_supervision_type_by_month.data
             }
           />
         }
@@ -258,7 +262,7 @@ const CommunityExplore = () => {
             supervisionType={supervisionType}
             district={district}
             revocationCountsByMonthByViolationType={
-              apiData.revocations_by_violation_type_by_month
+              apiData.revocations_by_violation_type_by_month.data
             }
           />
         }
@@ -276,9 +280,9 @@ const CommunityExplore = () => {
             supervisionType={supervisionType}
             district={district}
             revocationProportionByRace={
-              apiData.revocations_by_race_and_ethnicity_by_period
+              apiData.revocations_by_race_and_ethnicity_by_period.data
             }
-            statePopulationByRace={apiData.race_proportions}
+            statePopulationByRace={apiData.race_proportions.data}
           />
         }
         footer={
@@ -302,7 +306,7 @@ const CommunityExplore = () => {
             disableGoal
             stateCode="US_ND"
             supervisionSuccessRates={
-              apiData.supervision_termination_by_type_by_month
+              apiData.supervision_termination_by_type_by_month.data
             }
           />
         }
@@ -314,9 +318,9 @@ const CommunityExplore = () => {
             metricPeriodMonths={metricPeriodMonths}
             supervisionType={supervisionType}
             keyedByOffice
-            officeData={apiData.site_offices}
+            officeData={apiData.site_offices.data}
             dataPointsByOffice={
-              apiData.supervision_termination_by_type_by_period
+              apiData.supervision_termination_by_type_by_period.data
             }
             numeratorKeys={["successful_termination"]}
             denominatorKeys={[
@@ -341,7 +345,7 @@ const CommunityExplore = () => {
             supervisionType={supervisionType}
             district={district}
             caseTerminationCountsByMonthByTerminationType={
-              apiData.case_terminations_by_type_by_month
+              apiData.case_terminations_by_type_by_month.data
             }
           />
         }
@@ -369,9 +373,9 @@ const CommunityExplore = () => {
             supervisionType={supervisionType}
             district={district}
             terminationCountsByOfficer={
-              apiData.case_terminations_by_type_by_officer_by_period
+              apiData.case_terminations_by_type_by_officer_by_period.data
             }
-            officeData={apiData.site_offices}
+            officeData={apiData.site_offices.data}
           />
         }
         footer={<Methodology chartId="caseTerminationsByOfficer" />}
@@ -403,7 +407,9 @@ const CommunityExplore = () => {
             supervisionType={supervisionType}
             district={district}
             disableGoal
-            lsirScoreChangeByMonth={apiData.average_change_lsir_score_by_month}
+            lsirScoreChangeByMonth={
+              apiData.average_change_lsir_score_by_month.data
+            }
           />
         }
         geoChart={
@@ -415,8 +421,10 @@ const CommunityExplore = () => {
             supervisionType={supervisionType}
             keyedByOffice
             possibleNegativeValues
-            officeData={apiData.site_offices}
-            dataPointsByOffice={apiData.average_change_lsir_score_by_period}
+            officeData={apiData.site_offices.data}
+            dataPointsByOffice={
+              apiData.average_change_lsir_score_by_period.data
+            }
             numeratorKeys={["average_change"]}
             denominatorKeys={[]}
             centerLat={47.3}
