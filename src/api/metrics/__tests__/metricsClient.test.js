@@ -14,12 +14,9 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-import * as Sentry from "@sentry/react";
 import { callMetricsApi, callRestrictedAccessApi } from "../metricsClient";
 
 const OLD_ENV = process.env;
-
-jest.mock("@sentry/react");
 
 global.fetch = jest.fn().mockResolvedValue({
   ok: true,
@@ -123,19 +120,6 @@ describe("metricsClient", () => {
         );
       }
     });
-
-    it("calls Sentry with the error and context", async () => {
-      Sentry.captureException.mockClear();
-      expect.assertions(1);
-      try {
-        await callMetricsApi(endpoint, getTokenSilently);
-      } catch (error) {
-        expect(Sentry.captureException).toHaveBeenCalledWith(
-          error,
-          expect.any(Function)
-        );
-      }
-    });
   });
 
   describe("when callRestrictedAccessApi fails", () => {
@@ -162,19 +146,6 @@ describe("metricsClient", () => {
           new Error(
             `Fetching data from API failed.\nStatus: 400 - Bad Request\nErrors: ["API error"]`
           )
-        );
-      }
-    });
-
-    it("calls Sentry with the error and context", async () => {
-      Sentry.captureException.mockClear();
-      expect.assertions(1);
-      try {
-        await callRestrictedAccessApi(endpoint, userEmail, getTokenSilently);
-      } catch (error) {
-        expect(Sentry.captureException).toHaveBeenCalledWith(
-          error,
-          expect.any(Function)
         );
       }
     });
