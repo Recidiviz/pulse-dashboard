@@ -17,8 +17,6 @@
 const { intersection } = require("lodash");
 
 const SUBSET_MANIFEST = [
-  // Comment out "violation_type" and uncomment "charge_category" to test this locally until the frontend is ready for unnested violation type values.
-  // Keeping this commented here so that it's easy to test locally while reviewing the PR.
   [
     "violation_type",
     [
@@ -38,13 +36,6 @@ const SUBSET_MANIFEST = [
       ["felony", "law", "misdemeanor"],
     ],
   ],
-  // [
-  //   "charge_category",
-  //   [
-  //     ["all", "domestic_violence", "general", "serious_mental_illness"],
-  //     ["sex_offense"],
-  //   ],
-  // ],
 ];
 
 const INVALID_SUBSET_DIMENSIONS = ["district"];
