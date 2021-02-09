@@ -65,6 +65,11 @@ function useChartData(url) {
       return await responseData;
     } catch (error) {
       console.error(error);
+      Sentry.captureException(error, (scope) => {
+        scope.setContext("useChartData.fetchChartData", {
+          url,
+        });
+      });
       throw error;
     }
   }, [getTokenSilently, url]);
@@ -79,13 +84,7 @@ function useChartData(url) {
         );
         setApiData(metricFiles);
       })
-      .catch((error) => {
-        console.error(`Error parsing response data: `, error);
-        Sentry.captureException(error, (scope) => {
-          scope.setContext("useChartData.fetchChartData", {
-            url,
-          });
-        });
+      .catch(() => {
         setIsError(true);
       })
       .finally(() => {

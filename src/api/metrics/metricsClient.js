@@ -14,8 +14,6 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-import * as Sentry from "@sentry/react";
-
 /**
  * Validates the response object from fetch and returns the resolved response data.
  * Throws an error if response is not OK (status >= 400)
@@ -40,29 +38,19 @@ async function validateResponse(response) {
  * function, which will be used to authenticate the client against the API.
  */
 async function callMetricsApi(endpoint, getTokenSilently) {
-  try {
-    const token = await getTokenSilently();
+  const token = await getTokenSilently();
 
-    const response = await fetch(
-      `${process.env.REACT_APP_API_URL}/api/${endpoint}`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
-    const responseJson = await validateResponse(response);
+  const response = await fetch(
+    `${process.env.REACT_APP_API_URL}/api/${endpoint}`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+  const responseJson = await validateResponse(response);
 
-    return responseJson;
-  } catch (error) {
-    console.error(error);
-    Sentry.captureException(error, (scope) => {
-      scope.setContext("callMetricsApi", {
-        endpoint,
-      });
-    });
-    throw error;
-  }
+  return responseJson;
 }
 
 /**
@@ -71,33 +59,23 @@ async function callMetricsApi(endpoint, getTokenSilently) {
  * and the |getTokenSilently| function, which will be used to authenticate the client against the API.
  */
 async function callRestrictedAccessApi(endpoint, userEmail, getTokenSilently) {
-  try {
-    const token = await getTokenSilently();
+  const token = await getTokenSilently();
 
-    const response = await fetch(
-      `${process.env.REACT_APP_API_URL}/api/${endpoint}`,
-      {
-        body: JSON.stringify({
-          userEmail,
-        }),
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-        method: "POST",
-      }
-    );
-    const responseJson = await validateResponse(response);
-    return responseJson;
-  } catch (error) {
-    console.error(error);
-    Sentry.captureException(error, (scope) => {
-      scope.setContext("callRestrictedAccessApi", {
-        endpoint,
-      });
-    });
-    throw error;
-  }
+  const response = await fetch(
+    `${process.env.REACT_APP_API_URL}/api/${endpoint}`,
+    {
+      body: JSON.stringify({
+        userEmail,
+      }),
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      method: "POST",
+    }
+  );
+  const responseJson = await validateResponse(response);
+  return responseJson;
 }
 
 /**
