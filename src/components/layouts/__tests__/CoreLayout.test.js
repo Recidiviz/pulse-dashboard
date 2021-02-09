@@ -1,6 +1,6 @@
 import React from "react";
 import { render } from "@testing-library/react";
-import { useLocation } from "react-router-dom";
+import { useLocation, matchPath } from "react-router-dom";
 
 import CoreLayout from "../CoreLayout";
 import TopBarUserMenuForAuthenticatedUser from "../../topbar/TopBarUserMenuForAuthenticatedUser";
@@ -10,6 +10,7 @@ import mockWithTestId from "../../../../__helpers__/mockWithTestId";
 
 jest.mock("react-router-dom", () => ({
   useLocation: jest.fn(),
+  matchPath: jest.fn().mockReturnValue(false),
   Link: jest.fn().mockReturnValue(null),
   NavLink: jest.fn().mockReturnValue(null),
 }));
@@ -53,6 +54,13 @@ describe("CoreLayout tests", () => {
 
     expect(useSideBar).toHaveBeenCalled();
     expect(container.firstChild.className).not.toContain("is-collapsed");
+  });
+
+  it("should hide the SideBar on the profile page", () => {
+    matchPath.mockReturnValueOnce(true);
+    const { container } = render(<CoreLayout>{mockChildren}</CoreLayout>);
+
+    expect(container.firstChild.className).toContain("is-hidden");
   });
 
   it("should show right pathname in TopBarTitle", () => {

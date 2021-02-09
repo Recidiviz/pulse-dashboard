@@ -17,7 +17,8 @@
 
 import React from "react";
 import PropTypes from "prop-types";
-import { useLocation } from "react-router-dom";
+import cn from "classnames";
+import { useLocation, matchPath } from "react-router-dom";
 
 import SideBarHeader from "../sidebar/SideBarHeader";
 import SideBarMenu from "../sidebar/SideBarMenu";
@@ -34,9 +35,17 @@ import useSideBar from "../../hooks/useSideBar";
 const CoreLayout = ({ children }) => {
   const { isSideBarCollapsed, toggleSideBar } = useSideBar();
   const { pathname } = useLocation();
+  const onProfilePage = !!matchPath(pathname, {
+    path: "/profile",
+    exact: true,
+  });
+  const classNames = cn({
+    "is-collapsed": isSideBarCollapsed,
+    "is-hidden": onProfilePage,
+  });
 
   return (
-    <div id="app" className={isSideBarCollapsed ? "is-collapsed" : ""}>
+    <div id="app" className={classNames}>
       <div className="sidebar">
         <div className="sidebar-inner">
           <SideBarHeader toggleSideBar={toggleSideBar} />
