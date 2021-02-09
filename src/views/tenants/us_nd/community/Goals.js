@@ -48,8 +48,8 @@ const CommunityGoals = () => {
             metricPeriodMonths={metrics.metricPeriodMonths}
             supervisionType={metrics.supervisionType}
             district={metrics.district}
-            officeData={apiData.site_offices}
-            revocationCountsByMonth={apiData.revocations_by_month}
+            officeData={apiData.site_offices.data}
+            revocationCountsByMonth={apiData.revocations_by_month.data}
             header="revocationCountsByMonth-header"
             stateCode="US_ND"
           />
@@ -62,8 +62,8 @@ const CommunityGoals = () => {
             metricPeriodMonths={metrics.metricPeriodMonths}
             supervisionType={metrics.supervisionType}
             keyedByOffice
-            officeData={apiData.site_offices}
-            dataPointsByOffice={apiData.revocations_by_period}
+            officeData={apiData.site_offices.data}
+            dataPointsByOffice={apiData.revocations_by_period.data}
             numeratorKeys={["revocation_count"]}
             denominatorKeys={["total_supervision_count"]}
             centerLat={47.3}
@@ -89,7 +89,7 @@ const CommunityGoals = () => {
             supervisionType={metrics.supervisionType}
             district={metrics.district}
             supervisionSuccessRates={
-              apiData.supervision_termination_by_type_by_month
+              apiData.supervision_termination_by_type_by_month.data
             }
             header="supervisionSuccessSnapshot-header"
             stateCode="US_ND"
@@ -103,9 +103,9 @@ const CommunityGoals = () => {
             metricPeriodMonths={metrics.metricPeriodMonths}
             supervisionType={metrics.supervisionType}
             keyedByOffice
-            officeData={apiData.site_offices}
+            officeData={apiData.site_offices.data}
             dataPointsByOffice={
-              apiData.supervision_termination_by_type_by_period
+              apiData.supervision_termination_by_type_by_period.data
             }
             numeratorKeys={["successful_termination"]}
             denominatorKeys={[
@@ -133,7 +133,9 @@ const CommunityGoals = () => {
             metricPeriodMonths={metrics.metricPeriodMonths}
             supervisionType={metrics.supervisionType}
             district={metrics.district}
-            lsirScoreChangeByMonth={apiData.average_change_lsir_score_by_month}
+            lsirScoreChangeByMonth={
+              apiData.average_change_lsir_score_by_month.data
+            }
             header="lsirScoreChangeSnapshot-header"
             stateCode="US_ND"
           />
@@ -147,8 +149,10 @@ const CommunityGoals = () => {
             supervisionType={metrics.supervisionType}
             keyedByOffice
             possibleNegativeValues
-            officeData={apiData.site_offices}
-            dataPointsByOffice={apiData.average_change_lsir_score_by_period}
+            officeData={apiData.site_offices.data}
+            dataPointsByOffice={
+              apiData.average_change_lsir_score_by_period.data
+            }
             numeratorKeys={["average_change"]}
             denominatorKeys={[]}
             centerLat={47.3}
@@ -173,7 +177,9 @@ const CommunityGoals = () => {
             metricPeriodMonths={metrics.metricPeriodMonths}
             supervisionType={metrics.supervisionType}
             district={metrics.district}
-            revocationAdmissionsByMonth={apiData.admissions_by_type_by_month}
+            revocationAdmissionsByMonth={
+              apiData.admissions_by_type_by_month.data
+            }
             header="revocationAdmissionsSnapshot-header"
             stateCode="US_ND"
           />
@@ -187,8 +193,8 @@ const CommunityGoals = () => {
             supervisionType={metrics.supervisionType}
             keyedByOffice
             shareDenominatorAcrossRates
-            officeData={apiData.site_offices}
-            dataPointsByOffice={apiData.admissions_by_type_by_period}
+            officeData={apiData.site_offices.data}
+            dataPointsByOffice={apiData.admissions_by_type_by_period.data}
             numeratorKeys={[
               "technicals",
               "non_technicals",

@@ -1,5 +1,5 @@
 // Recidiviz - a data platform for criminal justice reform
-// Copyright (C) 2020 Recidiviz, Inc.
+// Copyright (C) 2021 Recidiviz, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -14,44 +14,38 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-
-import { get } from "mobx";
-
-import {
-  matrixViolationTypeToLabel,
-  violationCountLabel,
-} from "../../../utils/transforms/labels";
-import {
+const { getFilterKeys } = require("./getFilterKeys");
+const {
   nullSafeComparison,
-  nullSafeComparisonForArray,
   isAllItem,
   includesAllItemFirst,
-} from "../../../utils/charts/dataPointComparisons";
-import {
-  ADMISSION_TYPE,
+} = require("./dataPointComparisons");
+
+const {
+  METRIC_PERIOD_MONTHS,
   CHARGE_CATEGORY,
   DISTRICT,
-  METRIC_PERIOD_MONTHS,
-  REPORTED_VIOLATIONS,
-  SUPERVISION_LEVEL,
-  SUPERVISION_TYPE,
-  VIOLATION_TYPE,
   LEVEL_1_SUPERVISION_LOCATION,
   LEVEL_2_SUPERVISION_LOCATION,
-} from "../../../constants/filterTypes";
+  SUPERVISION_TYPE,
+  SUPERVISION_LEVEL,
+  REPORTED_VIOLATIONS,
+  VIOLATION_TYPE,
+  ADMISSION_TYPE,
+} = getFilterKeys();
 
-export const matchesTopLevelFilters = ({
+const matchesTopLevelFilters = ({
   filters,
   skippedFilters = [],
   treatCategoryAllAsAbsent = false,
 }) => (item, dimensionKey = undefined) => {
   if (
     (dimensionKey === undefined || dimensionKey === "metric_period_months") &&
-    get(filters, METRIC_PERIOD_MONTHS) &&
+    filters[METRIC_PERIOD_MONTHS] &&
     !skippedFilters.includes(METRIC_PERIOD_MONTHS) &&
     !nullSafeComparison(
       item.metric_period_months,
-      get(filters, METRIC_PERIOD_MONTHS)
+      filters[METRIC_PERIOD_MONTHS]
     )
   ) {
     return false;
@@ -59,12 +53,10 @@ export const matchesTopLevelFilters = ({
 
   if (
     (dimensionKey === undefined || dimensionKey === "district") &&
-    get(filters, DISTRICT) &&
+    filters[DISTRICT] &&
     !skippedFilters.includes(DISTRICT) &&
-    !(
-      treatCategoryAllAsAbsent && includesAllItemFirst(get(filters, DISTRICT))
-    ) &&
-    !nullSafeComparisonForArray(item.district, get(filters, DISTRICT))
+    !(treatCategoryAllAsAbsent && includesAllItemFirst(filters[DISTRICT])) &&
+    !nullSafeComparison(item.district, filters[DISTRICT])
   ) {
     return false;
   }
@@ -72,15 +64,15 @@ export const matchesTopLevelFilters = ({
   if (
     (dimensionKey === undefined ||
       dimensionKey === "level_1_supervision_location") &&
-    get(filters, LEVEL_1_SUPERVISION_LOCATION) &&
+    filters[LEVEL_1_SUPERVISION_LOCATION] &&
     !skippedFilters.includes(LEVEL_1_SUPERVISION_LOCATION) &&
     !(
       treatCategoryAllAsAbsent &&
-      includesAllItemFirst(get(filters, LEVEL_1_SUPERVISION_LOCATION))
+      includesAllItemFirst(filters[LEVEL_1_SUPERVISION_LOCATION])
     ) &&
-    !nullSafeComparisonForArray(
+    !nullSafeComparison(
       item.level_1_supervision_location,
-      get(filters, LEVEL_1_SUPERVISION_LOCATION)
+      filters[LEVEL_1_SUPERVISION_LOCATION]
     )
   ) {
     return false;
@@ -89,15 +81,15 @@ export const matchesTopLevelFilters = ({
   if (
     (dimensionKey === undefined ||
       dimensionKey === "level_2_supervision_location") &&
-    get(filters, LEVEL_2_SUPERVISION_LOCATION) &&
+    filters[LEVEL_2_SUPERVISION_LOCATION] &&
     !skippedFilters.includes(LEVEL_2_SUPERVISION_LOCATION) &&
     !(
       treatCategoryAllAsAbsent &&
-      includesAllItemFirst(get(filters, LEVEL_2_SUPERVISION_LOCATION))
+      includesAllItemFirst(filters[LEVEL_2_SUPERVISION_LOCATION])
     ) &&
-    !nullSafeComparisonForArray(
+    !nullSafeComparison(
       item.level_2_supervision_location,
-      get(filters, LEVEL_2_SUPERVISION_LOCATION)
+      filters[LEVEL_2_SUPERVISION_LOCATION]
     )
   ) {
     return false;
@@ -105,96 +97,71 @@ export const matchesTopLevelFilters = ({
 
   if (
     (dimensionKey === undefined || dimensionKey === "charge_category") &&
-    get(filters, CHARGE_CATEGORY) &&
+    filters[CHARGE_CATEGORY] &&
     !skippedFilters.includes(CHARGE_CATEGORY) &&
-    !(treatCategoryAllAsAbsent && isAllItem(get(filters, CHARGE_CATEGORY))) &&
-    !nullSafeComparison(item.charge_category, get(filters, CHARGE_CATEGORY))
+    !(treatCategoryAllAsAbsent && isAllItem(filters[CHARGE_CATEGORY])) &&
+    !nullSafeComparison(item.charge_category, filters[CHARGE_CATEGORY])
   ) {
     return false;
   }
   if (
     (dimensionKey === undefined || dimensionKey === "supervision_type") &&
-    get(filters, SUPERVISION_TYPE) &&
+    filters[SUPERVISION_TYPE] &&
     !skippedFilters.includes(SUPERVISION_TYPE) &&
-    !(treatCategoryAllAsAbsent && isAllItem(get(filters, SUPERVISION_TYPE))) &&
-    !nullSafeComparison(item.supervision_type, get(filters, SUPERVISION_TYPE))
+    !(treatCategoryAllAsAbsent && isAllItem(filters[SUPERVISION_TYPE])) &&
+    !nullSafeComparison(item.supervision_type, filters[SUPERVISION_TYPE])
   ) {
     return false;
   }
   if (
     (dimensionKey === undefined || dimensionKey === "admission_type") &&
-    get(filters, ADMISSION_TYPE) &&
+    filters[ADMISSION_TYPE] &&
     !skippedFilters.includes(ADMISSION_TYPE) &&
-    !includesAllItemFirst(get(filters, ADMISSION_TYPE)) &&
-    !nullSafeComparisonForArray(
-      item.admission_type,
-      get(filters, ADMISSION_TYPE)
-    )
+    !includesAllItemFirst(filters[ADMISSION_TYPE]) &&
+    !nullSafeComparison(item.admission_type, filters[ADMISSION_TYPE])
   ) {
     return false;
   }
   if (
     (dimensionKey === undefined || dimensionKey === "supervision_level") &&
-    get(filters, SUPERVISION_LEVEL) &&
+    filters[SUPERVISION_LEVEL] &&
     !skippedFilters.includes(SUPERVISION_LEVEL) &&
-    !nullSafeComparison(
-      item.supervision_level,
-      get(filters, SUPERVISION_LEVEL)
-    ) &&
-    !(treatCategoryAllAsAbsent && isAllItem(get(filters, SUPERVISION_LEVEL)))
+    !nullSafeComparison(item.supervision_level, filters[SUPERVISION_LEVEL]) &&
+    !(treatCategoryAllAsAbsent && isAllItem(filters[SUPERVISION_LEVEL]))
   ) {
     return false;
   }
   return true;
 };
 
-export const applyTopLevelFilters = ({
-  filters,
-  skippedFilters = [],
-  treatCategoryAllAsAbsent = false,
-}) => (data) => {
-  const filterFn = matchesTopLevelFilters({
-    filters,
-    skippedFilters,
-    treatCategoryAllAsAbsent,
-  });
-  return data.filter((item) => filterFn(item));
-};
-
-export const matchesMatrixFilters = (filters, treatCategoryAllAsAbsent) => (
+const matchesMatrixFilters = (filters, treatCategoryAllAsAbsent) => (
   item,
   dimensionKey
 ) => {
   if (
     (dimensionKey === undefined || dimensionKey === "violation_type") &&
-    get(filters, VIOLATION_TYPE) &&
-    !nullSafeComparison(item.violation_type, get(filters, VIOLATION_TYPE)) &&
-    !(treatCategoryAllAsAbsent && isAllItem(get(filters, VIOLATION_TYPE)))
+    filters[VIOLATION_TYPE] &&
+    !nullSafeComparison(item.violation_type, filters[VIOLATION_TYPE]) &&
+    !(treatCategoryAllAsAbsent && isAllItem(filters[VIOLATION_TYPE]))
   ) {
     return false;
   }
+
   if (
     (dimensionKey === undefined || dimensionKey === "reported_violations") &&
-    get(filters, REPORTED_VIOLATIONS) &&
+    filters[REPORTED_VIOLATIONS] &&
     !nullSafeComparison(
       item.reported_violations,
-      get(filters, REPORTED_VIOLATIONS)
+      filters[REPORTED_VIOLATIONS]
     ) &&
-    !(treatCategoryAllAsAbsent && isAllItem(get(filters, REPORTED_VIOLATIONS)))
+    !(treatCategoryAllAsAbsent && isAllItem(filters[REPORTED_VIOLATIONS]))
   ) {
     return false;
   }
   return true;
 };
 
-export const applyMatrixFilters = (filters, treatCategoryAllAsAbsent) => (
-  data
-) => {
-  const filterFn = matchesMatrixFilters(filters, treatCategoryAllAsAbsent);
-  return data.filter((item) => filterFn(item));
-};
-
-export const matchesAllFilters = ({
+const matchesAllFilters = ({
   filters,
   skippedFilters = [],
   treatCategoryAllAsAbsent = false,
@@ -213,15 +180,7 @@ export const matchesAllFilters = ({
   );
 };
 
-export const formattedMatrixFilters = (filters) => {
-  const parts = [];
-  if (filters[VIOLATION_TYPE]) {
-    parts.push(matrixViolationTypeToLabel[filters[VIOLATION_TYPE]]);
-  }
-  if (filters[REPORTED_VIOLATIONS]) {
-    parts.push(
-      `${violationCountLabel(filters[REPORTED_VIOLATIONS])} violations`
-    );
-  }
-  return parts.join(", ");
+module.exports = {
+  matchesAllFilters,
+  matchesTopLevelFilters,
 };

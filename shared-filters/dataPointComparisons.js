@@ -1,5 +1,5 @@
 // Recidiviz - a data platform for criminal justice reform
-// Copyright (C) 2020 Recidiviz, Inc.
+// Copyright (C) 2021 Recidiviz, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -16,6 +16,9 @@
 // =============================================================================
 
 const nullSafeComparison = (field, filter) => {
+  if (Array.isArray(filter)) {
+    return nullSafeComparisonForArray(field, filter);
+  }
   if (!field && !filter) return true;
   if (!field) return false;
   if (!filter) return false;
@@ -38,7 +41,7 @@ const includesAllItemFirst = (items) => {
   return items.length === 1 && isAllItem(items[0]);
 };
 
-export {
+module.exports = {
   nullSafeComparison,
   nullSafeComparisonForArray,
   isAllItem,

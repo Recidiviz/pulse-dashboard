@@ -23,7 +23,7 @@ import {
   getValueKey,
   convertFromStringToUnflattenedMatrix,
   validateMetadata,
-} from "./optimizedFormatHelpers";
+} from "shared-filters";
 
 /**
  * Expands the optimized metric file format into an array of json objects.
