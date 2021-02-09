@@ -1,5 +1,5 @@
 // Recidiviz - a data platform for criminal justice reform
-// Copyright (C) 2020 Recidiviz, Inc.
+// Copyright (C) 2021 Recidiviz, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -26,39 +26,47 @@ import { translate } from "../../../../views/tenants/utils/i18nSettings";
 import { useRootStore } from "../../../../StoreProvider";
 import { VIOLATION_TYPE } from "../../../../constants/filterTypes";
 
-const RevocationsByViolation = ({ timeDescription }) => {
-  const { filtersStore, dataStore } = useRootStore();
-  const { revocationsChartStore } = dataStore;
-  const violationTypes = filtersStore.filterOptions[VIOLATION_TYPE].options;
+const RevocationsByViolation = observer(
+  ({ containerHeight, timeDescription }, ref) => {
+    const { filtersStore, dataStore } = useRootStore();
+    const { revocationsChartStore } = dataStore;
+    const violationTypes = filtersStore.filterOptions[VIOLATION_TYPE].options;
 
-  return (
-    <RevocationsByDimension
-      chartId={`${translate("revocations")}ByViolationType`}
-      dataStore={revocationsChartStore}
-      renderChart={({ chartId, data, denominators, numerators }) => (
-        <BarChartWithLabels
-          data={data}
-          numerators={numerators}
-          denominators={denominators}
-          id={chartId}
-          yAxisLabel="Percent of total reported violations"
-          xAxisLabel="Violation type and condition violated"
-        />
-      )}
-      generateChartData={createGenerateChartData(
-        revocationsChartStore.filteredData,
-        violationTypes
-      )}
-      chartTitle="Relative frequency of violation types"
-      metricTitle="Relative frequency of violation types"
-      timeDescription={timeDescription}
-      dataExportLabel="Violation"
-    />
-  );
-};
+    return (
+      <RevocationsByDimension
+        ref={ref}
+        chartId={`${translate("revocations")}ByViolationType`}
+        dataStore={revocationsChartStore}
+        containerHeight={containerHeight}
+        renderChart={({ chartId, data, denominators, numerators }) => (
+          <BarChartWithLabels
+            data={data}
+            numerators={numerators}
+            denominators={denominators}
+            id={chartId}
+            yAxisLabel="Percent of total reported violations"
+            xAxisLabel="Violation type and condition violated"
+          />
+        )}
+        generateChartData={createGenerateChartData(
+          revocationsChartStore.filteredData,
+          violationTypes
+        )}
+        chartTitle="Relative frequency of violation types"
+        metricTitle="Relative frequency of violation types"
+        timeDescription={timeDescription}
+        dataExportLabel="Violation"
+      />
+    );
+  },
+  { forwardRef: true }
+);
+
+RevocationsByViolation.defaultProps = { containerHeight: null };
 
 RevocationsByViolation.propTypes = {
+  containerHeight: PropTypes.number,
   timeDescription: PropTypes.string.isRequired,
 };
 
-export default observer(RevocationsByViolation);
+export default RevocationsByViolation;
