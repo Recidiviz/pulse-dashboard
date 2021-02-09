@@ -7,6 +7,7 @@ install:
   - yarn install
 script:
   - yarn test-server
+  - yarn test-filters
   - yarn test  --coverage --forceExit && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage
   - yarn lint
 cache:

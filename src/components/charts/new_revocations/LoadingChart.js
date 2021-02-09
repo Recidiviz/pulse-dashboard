@@ -1,5 +1,5 @@
 // Recidiviz - a data platform for criminal justice reform
-// Copyright (C) 2020 Recidiviz, Inc.
+// Copyright (C) 2021 Recidiviz, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -14,33 +14,32 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
+import React from "react";
+import PropTypes from "prop-types";
+import Loading from "../../Loading";
 
-const nullSafeComparison = (field, filter) => {
-  if (!field && !filter) return true;
-  if (!field) return false;
-  if (!filter) return false;
-  return field.toLowerCase() === filter.toLowerCase();
-};
+const LoadingChart = ({ containerHeight }) => {
+  const loadingContainerStyles =
+    containerHeight > 0
+      ? {
+          height: `${containerHeight}px`,
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }
+      : {};
 
-const nullSafeComparisonForArray = (field, filters) => {
-  if (!field && !filters) return true;
-  if (!field) return false;
-  if (!filters) return false;
   return (
-    filters.filter((value) => value.toLowerCase() === field.toLowerCase())
-      .length !== 0
+    <div className="LoadingChart" style={loadingContainerStyles}>
+      <Loading />
+    </div>
   );
 };
 
-const isAllItem = (item) => item.toLowerCase() === "all";
+LoadingChart.defaultProps = { containerHeight: null };
 
-const includesAllItemFirst = (items) => {
-  return items.length === 1 && isAllItem(items[0]);
+LoadingChart.propTypes = {
+  containerHeight: PropTypes.number,
 };
 
-export {
-  nullSafeComparison,
-  nullSafeComparisonForArray,
-  isAllItem,
-  includesAllItemFirst,
-};
+export default LoadingChart;

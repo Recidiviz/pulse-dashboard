@@ -14,13 +14,11 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
+import { matchesTopLevelFilters } from "shared-filters";
 import BaseDataStore from "./BaseDataStore";
-import { matchesTopLevelFilters } from "../../components/charts/new_revocations/helpers";
-import { filterOptimizedDataFormat } from "../../utils/charts/dataFilters";
 import {
   REPORTED_VIOLATIONS,
   VIOLATION_TYPE,
-  DISTRICT,
 } from "../../constants/filterTypes";
 
 export default class MatrixStore extends BaseDataStore {
@@ -28,20 +26,12 @@ export default class MatrixStore extends BaseDataStore {
     super({
       rootStore,
       file: `revocations_matrix_cells`,
-      ignoredSubsetDimensions: [DISTRICT, VIOLATION_TYPE, REPORTED_VIOLATIONS],
+      ignoredSubsetDimensions: [VIOLATION_TYPE, REPORTED_VIOLATIONS],
     });
   }
 
   get filteredData() {
-    if (!this.apiData.data) return [];
-    const { data, metadata } = this.apiData;
-    const { filters } = this.rootStore;
-    const dataFilter = matchesTopLevelFilters({ filters });
-
-    return filterOptimizedDataFormat({
-      apiData: [...data],
-      metadata,
-      filterFn: dataFilter,
-    });
+    const dataFilter = matchesTopLevelFilters({ filters: this.filters });
+    return this.filterData(this.apiData, dataFilter);
   }
 }

@@ -6,6 +6,7 @@
 // + @Main Content
 // + @Full Container
 // + @Collapsed State
+// + @Hidden Sidebar State
 
 // ---------------------------------------------------------
 // @Page Container
@@ -92,5 +93,22 @@
       left: $offscreen-size;
       padding-left: 0;
     }
+  }
+}
+// ---------------------------------------------------------
+// @Hidden Sidebar State
+// ---------------------------------------------------------
+
+.is-hidden {
+  .sidebar {
+    display: none;
+  }
+
+  .page-container {
+    padding-left: 0;
+  }
+
+  .header {
+    width: 100%;
   }
 }

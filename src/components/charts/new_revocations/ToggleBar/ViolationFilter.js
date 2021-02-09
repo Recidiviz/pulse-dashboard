@@ -18,6 +18,7 @@
 import React, { useMemo } from "react";
 import { observer } from "mobx-react-lite";
 import { get } from "mobx";
+import { isAllItem } from "shared-filters";
 
 import FilterField from "./FilterField";
 import Chip from "../Chip";
@@ -31,7 +32,6 @@ import {
   VIOLATION_TYPE,
   REPORTED_VIOLATIONS,
 } from "../../../../constants/filterTypes";
-import { isAllItem } from "../../../../utils/charts/dataPointComparisons";
 
 const ViolationFilter = () => {
   const { filtersStore, filters } = useRootStore();

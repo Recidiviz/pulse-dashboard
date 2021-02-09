@@ -77,7 +77,9 @@ const FacilitiesExplore = () => {
             metricPeriodMonths={metricPeriodMonths}
             district={district}
             disableGoal
-            reincarcerationCountsByMonth={apiData.reincarcerations_by_month}
+            reincarcerationCountsByMonth={
+              apiData.reincarcerations_by_month.data
+            }
             stateCode="US_ND"
           />
         }
@@ -89,7 +91,7 @@ const FacilitiesExplore = () => {
             metricPeriodMonths={metricPeriodMonths}
             keyedByOffice={false}
             stateCode="us_nd"
-            dataPointsByOffice={apiData.reincarcerations_by_period}
+            dataPointsByOffice={apiData.reincarcerations_by_period.data}
             numeratorKeys={["returns"]}
             denominatorKeys={["total_admissions"]}
             centerLat={47.3}
@@ -116,7 +118,7 @@ const FacilitiesExplore = () => {
           <DaysAtLibertySnapshot
             metricPeriodMonths={metricPeriodMonths}
             disableGoal
-            daysAtLibertyByMonth={apiData.avg_days_at_liberty_by_month}
+            daysAtLibertyByMonth={apiData.avg_days_at_liberty_by_month.data}
             stateCode="US_ND"
           />
         }
@@ -131,7 +133,9 @@ const FacilitiesExplore = () => {
             metricType={metricType}
             metricPeriodMonths={metricPeriodMonths}
             district={district}
-            admissionsVsReleases={apiData.admissions_versus_releases_by_month}
+            admissionsVsReleases={
+              apiData.admissions_versus_releases_by_month.data
+            }
           />
         }
         geoChart={
@@ -143,7 +147,9 @@ const FacilitiesExplore = () => {
             keyedByOffice={false}
             possibleNegativeValues
             stateCode="us_nd"
-            dataPointsByOffice={apiData.admissions_versus_releases_by_period}
+            dataPointsByOffice={
+              apiData.admissions_versus_releases_by_period.data
+            }
             numeratorKeys={["population_change"]}
             denominatorKeys={["month_end_population"]}
             centerLat={47.3}
@@ -172,7 +178,7 @@ const FacilitiesExplore = () => {
             supervisionType="all"
             metricPeriodMonths={metricPeriodMonths}
             district={["all"]}
-            admissionCountsByType={apiData.admissions_by_type_by_period}
+            admissionCountsByType={apiData.admissions_by_type_by_period.data}
           />
         }
         footer={
@@ -233,7 +239,7 @@ const FacilitiesExplore = () => {
           <ReincarcerationRateByStayLength
             metricType={metricType}
             district={district}
-            ratesByStayLength={apiData.reincarceration_rate_by_stay_length}
+            ratesByStayLength={apiData.reincarceration_rate_by_stay_length.data}
           />
         }
         footer={

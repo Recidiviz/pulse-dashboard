@@ -43,7 +43,7 @@ const createGenerateChartData = (filteredData) => (mode) => {
     map((dataset) => {
       const riskLevelLabel = riskLevels[dataset[0].risk_level];
       const label = humanReadableTitleCase(riskLevelLabel);
-      const numerator = sumIntBy("population_count", dataset);
+      const numerator = sumIntBy("revocation_count", dataset);
       const denominator = sumIntBy(denominatorKey, dataset);
       const rate = calculateRate(numerator, denominator);
       return {
