@@ -44,7 +44,7 @@ jest.mock("../../api/metrics/metricsClient", () => {
             ["supervision_type", ["all"]],
             ["district", ["all"]],
           ],
-          value_keys: ["population_count"],
+          value_keys: ["revocation_count"],
         },
       },
     }),
@@ -121,7 +121,7 @@ describe("BaseDataStore", () => {
             ["supervision_type", ["all"]],
             ["district", ["all"]],
           ],
-          value_keys: ["population_count"],
+          value_keys: ["revocation_count"],
         });
       });
 

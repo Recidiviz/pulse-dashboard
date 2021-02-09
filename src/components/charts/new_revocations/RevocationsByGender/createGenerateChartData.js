@@ -35,7 +35,7 @@ import createRiskLevelsMap from "../utils/createRiskLevelsMap";
 const GENDER_LABELS_MAP = { FEMALE: "Women", MALE: "Men" };
 
 const createGenerateChartData = (filteredData, currentTenantId) => (mode) => {
-  const numeratorKey = "population_count";
+  const numeratorKey = "revocation_count";
   const denominatorKey = getDenominatorKeyByMode(mode);
   const genders = Object.keys(GENDER_LABELS_MAP);
   const genderLabels = Object.values(GENDER_LABELS_MAP);
