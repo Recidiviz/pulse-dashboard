@@ -14,6 +14,25 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
+import * as Sentry from "@sentry/react";
+
+/**
+ * Validates the response object from fetch and returns the resolved response data.
+ * Throws an error if response is not OK (status >= 400)
+ * @param {*} response - The Response object from the Fetch API
+ */
+async function validateResponse(response) {
+  const responseJson = await response.json();
+  if (!response.ok) {
+    throw new Error(
+      `Fetching data from API failed.\nStatus: ${responseJson.status} - ${
+        response.statusText
+      }\nErrors: ${JSON.stringify(responseJson.errors)}`
+    );
+  } else {
+    return responseJson;
+  }
+}
 
 /**
  * An asynchronous function that returns a promise which will eventually return the results from
@@ -32,11 +51,17 @@ async function callMetricsApi(endpoint, getTokenSilently) {
         },
       }
     );
+    const responseJson = await validateResponse(response);
 
-    return response.json();
+    return responseJson;
   } catch (error) {
     console.error(error);
-    return null;
+    Sentry.captureException(error, (scope) => {
+      scope.setContext("callMetricsApi", {
+        endpoint,
+      });
+    });
+    throw error;
   }
 }
 
@@ -62,11 +87,16 @@ async function callRestrictedAccessApi(endpoint, userEmail, getTokenSilently) {
         method: "POST",
       }
     );
-
-    return response.json();
+    const responseJson = await validateResponse(response);
+    return responseJson;
   } catch (error) {
     console.error(error);
-    return null;
+    Sentry.captureException(error, (scope) => {
+      scope.setContext("callRestrictedAccessApi", {
+        endpoint,
+      });
+    });
+    throw error;
   }
 }
 
