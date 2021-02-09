@@ -14,7 +14,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-const { createSubsetFilters } = require("../filterHelpers");
+const { createSubsetFilters, getFilterFnByFile } = require("../filterHelpers");
+const { matchesAllFilters } = require("../../../shared-filters/dataFilters");
 
 jest.mock("../../constants/subsetManifest", () => {
   return {
@@ -31,6 +32,11 @@ jest.mock("../../constants/subsetManifest", () => {
       ];
     }),
     FILES_WITH_SUBSETS: ["revocations_matrix_distribution_by_district"],
+  };
+});
+jest.mock("../../../shared-filters/dataFilters", () => {
+  return {
+    matchesAllFilters: jest.fn(),
   };
 });
 
@@ -70,6 +76,26 @@ describe("createSubsetFilters", () => {
       expect(createSubsetFilters({ filters })).toEqual({
         violation_type: ["all", "absconsion"],
         charge_category: ["sex_offense"],
+      });
+    });
+  });
+});
+
+describe("getFilterFnByFile", () => {
+  afterAll(() => {
+    jest.resetModules();
+    jest.clearAllMocks();
+  });
+
+  describe("given file=revocations_matrix_by_month", () => {
+    const filters = {};
+    const file = "revocations_matrix_by_month";
+
+    it("matchesAllFilters is called with correct skippedFilters param", () => {
+      getFilterFnByFile(file, filters);
+      expect(matchesAllFilters).toHaveBeenCalledWith({
+        filters,
+        skippedFilters: ["metric_period_months"],
       });
     });
   });
