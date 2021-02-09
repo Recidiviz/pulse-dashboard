@@ -22,7 +22,6 @@ import makeCancellablePromise from "make-cancellable-promise";
 import {
   callMetricsApi,
   awaitingResults,
-  parseResponseByFileFormat,
   parseResponsesByFileFormat,
 } from "../api/metrics";
 import { useRootStore } from "../StoreProvider";
@@ -82,6 +81,11 @@ function useChartData(url) {
       })
       .catch((error) => {
         console.error(`Error parsing response data: `, error);
+        Sentry.captureException(error, (scope) => {
+          scope.setContext("useChartData.fetchChartData", {
+            url,
+          });
+        });
         setIsError(true);
       })
       .finally(() => {
@@ -92,7 +96,7 @@ function useChartData(url) {
     return () => {
       cancel();
     };
-  }, [eagerExpand, fetchChartData]);
+  }, [eagerExpand, fetchChartData, url]);
 
   const isLoading = awaitingResults(userLoading, user, awaitingApi);
 
