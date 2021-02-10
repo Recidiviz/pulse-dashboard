@@ -29,7 +29,7 @@ import RevocationsOverTime from "./charts/new_revocations/RevocationsOverTime";
 import Matrix from "./charts/new_revocations/Matrix";
 import MatrixExplanation from "./charts/new_revocations/Matrix/MatrixExplanation";
 import RevocationCharts from "./charts/new_revocations/RevocationCharts";
-
+import ErrorBoundary from "./ErrorBoundary";
 import CaseTable from "./charts/new_revocations/CaseTable/CaseTable";
 import {
   ADMISSION_TYPE,
@@ -55,13 +55,15 @@ const Revocations = () => {
   return (
     <main className="Revocations">
       <Sticky style={{ zIndex: 700, top: 65 }}>
-        <>
+        <ErrorBoundary>
           <div className="top-level-filters d-f">
             <ToggleBarFilter
               label="Time Period"
               dimension={METRIC_PERIOD_MONTHS}
             />
-            <DistrictFilter />
+            <ErrorBoundary>
+              <DistrictFilter />
+            </ErrorBoundary>
             {filterOptions[CHARGE_CATEGORY].componentEnabled && (
               <ToggleBarFilter label="Case Type" dimension={CHARGE_CATEGORY} />
             )}
@@ -82,21 +84,29 @@ const Revocations = () => {
             )}
           </div>
           <ViolationFilter />
-        </>
+        </ErrorBoundary>
       </Sticky>
 
       <div className="bgc-white p-20 m-20">
-        <RevocationsOverTime />
+        <ErrorBoundary>
+          <RevocationsOverTime />
+        </ErrorBoundary>
       </div>
       <div className="d-f m-20 container-all-charts">
         <div className="Revocations__matrix">
-          <Matrix timeDescription={timeDescription} />
+          <ErrorBoundary>
+            <Matrix timeDescription={timeDescription} />
+          </ErrorBoundary>
         </div>
         <MatrixExplanation />
       </div>
-      <RevocationCharts timeDescription={timeDescription} />
+      <ErrorBoundary>
+        <RevocationCharts timeDescription={timeDescription} />
+      </ErrorBoundary>
       <div className="bgc-white m-20 p-20">
-        <CaseTable />
+        <ErrorBoundary>
+          <CaseTable />
+        </ErrorBoundary>
       </div>
     </main>
   );

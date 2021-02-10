@@ -24,13 +24,12 @@ import ErrorMessage from "./ErrorMessage";
 import { useRootStore } from "../StoreProvider";
 
 function ErrorBoundary({ children }) {
-  const { user, currentTenantId, filters } = useRootStore();
+  const { restrictedDistrict, currentTenantId, filters } = useRootStore();
 
   const handleBeforeCapture = (scope) => {
     if (currentTenantId) scope.setTag("currentTenantId", currentTenantId);
-    if (user) {
-      const parsedUser = toJS(user);
-      scope.setUser(parsedUser);
+    if (restrictedDistrict) {
+      scope.setTag("restrictedDistrict", restrictedDistrict);
     }
     if (filters) {
       const parsedFilters = Object.fromEntries(toJS(filters));
