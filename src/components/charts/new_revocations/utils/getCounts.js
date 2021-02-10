@@ -36,7 +36,7 @@ const getCounts = (
       let numerator = 0;
       let denominator = 0;
       let rate = 0;
-      if (riskLevel === "STATE_NAME_POPULATION") {
+      if (riskLevel === "STATE_POPULATION") {
         numerator = statePopulationData.reduce((result, item) => {
           if (item.race_or_ethnicity === dimension) {
             return result + Number(item.population_count);

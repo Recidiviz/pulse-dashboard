@@ -51,11 +51,11 @@ const createRaceRiskLevelsMap = (numeratorKey, denominatorKey, field) => (
       ]
     ),
     set(
-      [data[field], "STATE_NAME_POPULATION"],
+      [data[field], "STATE_POPULATION"],
       [
-        getOr(0, [data[field], "STATE_NAME_POPULATION", 0], acc) +
+        getOr(0, [data[field], "STATE_POPULATION", 0], acc) +
           toInteger(data[numeratorKey[2]]),
-        getOr(0, [data[field], "STATE_NAME_POPULATION", 1], acc) +
+        getOr(0, [data[field], "STATE_POPULATION", 1], acc) +
           toInteger(data[denominatorKey[2]]),
       ]
     )

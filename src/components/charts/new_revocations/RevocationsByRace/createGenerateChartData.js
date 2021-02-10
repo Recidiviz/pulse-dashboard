@@ -27,7 +27,7 @@ import getCounts from "../utils/getCounts";
 import createRiskLevelsMap from "../utils/createRiskLevelsMap";
 import { translate } from "../../../../views/tenants/utils/i18nSettings";
 import { COLORS_LANTERN_SET } from "../../../../assets/scripts/constants/colors";
-import { applyStatisticallySignificantShadingToDataset } from "../../../../utils/charts/significantStatistics";
+import { applyStatisticallySignificantShading } from "../../../../utils/charts/significantStatistics";
 
 export const generateDatasets = (dataPoints, denominators) => {
   const raceLabelMap = translate("raceLabelMap");
@@ -35,7 +35,7 @@ export const generateDatasets = (dataPoints, denominators) => {
 
   return raceLabels.map((raceLabel, index) => ({
     label: raceLabel,
-    backgroundColor: applyStatisticallySignificantShadingToDataset(
+    backgroundColor: applyStatisticallySignificantShading(
       COLORS_LANTERN_SET[index],
       denominators
     ),

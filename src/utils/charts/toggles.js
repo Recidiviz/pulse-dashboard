@@ -18,6 +18,7 @@
 import moment from "moment";
 import { getTooltipWithoutTrendline } from "./trendline";
 import { isDenominatorStatisticallySignificant } from "./significantStatistics";
+import { translate } from "../../views/tenants/utils/i18nSettings";
 
 function toggleLabel(labelsByToggle, toggledValue) {
   if (labelsByToggle[toggledValue]) {
@@ -150,6 +151,7 @@ function standardTooltipForRateMetric(tooltipItem, data) {
 }
 
 function tooltipForRateMetricWithCounts(
+  id,
   tooltipItem,
   data,
   numerators,
@@ -176,11 +178,17 @@ function tooltipForRateMetricWithCounts(
       ? " *"
       : "";
 
-  return `${label}: ${getTooltipWithoutTrendline(
-    tooltipItem,
-    data,
-    "%"
-  )}${appendedCounts}${cue}`;
+  return id !== `${translate("revocations")}ByRace`
+    ? `${label}: ${getTooltipWithoutTrendline(
+        tooltipItem,
+        data,
+        "%"
+      )}${appendedCounts}${cue}`
+    : `${getTooltipWithoutTrendline(
+        tooltipItem,
+        data,
+        ""
+      )}${appendedCounts}${cue}`;
 }
 
 function updateTooltipForMetricType(metricType, tooltipItem, data) {

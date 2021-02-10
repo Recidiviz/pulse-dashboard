@@ -97,6 +97,7 @@ const BarChartWithLabels = ({
           callbacks: {
             label: (tooltipItem, tooltipData) =>
               tooltipForRateMetricWithCounts(
+                id,
                 tooltipItem,
                 tooltipData,
                 numerators,
@@ -116,6 +117,7 @@ const BarChartWithLabels = ({
         legend: { display: false },
         plugins: {
           datalabels: {
+            clamp: true,
             align: "end",
             anchor: "end",
             offset: 16,
@@ -125,7 +127,7 @@ const BarChartWithLabels = ({
               weight: 500,
             },
             formatter(value) {
-              return `${Math.round(value)}%`;
+              return `${Math.trunc(value)} %`;
             },
           },
         },
@@ -160,16 +162,19 @@ const BarChartWithLabels = ({
         tooltips: {
           backgroundColor: COLORS["grey-800-light"],
           footerFontSize: 9,
-          mode: "index",
-          intersect: false,
+          mode: "dataset",
+          intersect: true,
+          position: "nearest",
           callbacks: {
-            label: (tooltipItem, tooltipData) =>
-              tooltipForRateMetricWithCounts(
+            label: (tooltipItem, tooltipData) => {
+              return tooltipForRateMetricWithCounts(
+                id,
                 tooltipItem,
                 tooltipData,
                 numerators,
                 denominators
-              ),
+              );
+            },
             footer: (tooltipItem) =>
               tooltipForFooterWithCounts(tooltipItem, denominators),
           },

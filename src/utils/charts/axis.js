@@ -16,6 +16,6 @@
 // =============================================================================
 export function axisCallbackForPercentage() {
   return function (value) {
-    return `${value}%`;
+    return `${value}`;
   };
 }
