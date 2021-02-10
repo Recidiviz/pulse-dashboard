@@ -24,9 +24,10 @@ import map from "lodash/fp/map";
 import pipe from "lodash/fp/pipe";
 
 import { groupByMonth } from "../common/bars/utils";
-import Loading from "../../Loading";
+import LoadingChart from "./LoadingChart";
 import Error from "../../Error";
 
+import { useContainerHeight } from "../../../hooks/useContainerHeight";
 import { COLORS } from "../../../assets/scripts/constants/colors";
 import { currentMonthBox } from "../../../utils/charts/currentSpan";
 import {
@@ -47,9 +48,10 @@ const RevocationsOverTime = () => {
   const { filters, dataStore } = useRootStore();
   const store = dataStore.revocationsOverTimeStore;
   const chartId = `${translate("revocations")}OverTime`;
+  const { containerHeight, containerRef } = useContainerHeight();
 
   if (store.isLoading) {
-    return <Loading />;
+    return <LoadingChart containerHeight={containerHeight} />;
   }
 
   if (store.isError) {
@@ -173,19 +175,21 @@ const RevocationsOverTime = () => {
       : lineChart;
 
   return (
-    <RevocationsByDimensionComponent
-      chartTitle={translate("revocationsOverTimeXAxis")}
-      timeDescription={getTrailingLabelFromMetricPeriodMonthsToggle(
-        get(filters, METRIC_PERIOD_MONTHS)
-      )}
-      labels={chartLabels}
-      chartId={`${translate("revocations")}OverTime`}
-      datasets={datasets}
-      metricTitle={translate("revocationsOverTimeXAxis")}
-      chart={chart}
-      classModifier={chartId}
-      dataExportLabel="Month"
-    />
+    <div ref={containerRef}>
+      <RevocationsByDimensionComponent
+        chartTitle={translate("revocationsOverTimeXAxis")}
+        timeDescription={getTrailingLabelFromMetricPeriodMonthsToggle(
+          get(filters, METRIC_PERIOD_MONTHS)
+        )}
+        labels={chartLabels}
+        chartId={`${translate("revocations")}OverTime`}
+        datasets={datasets}
+        metricTitle={translate("revocationsOverTimeXAxis")}
+        chart={chart}
+        classModifier={chartId}
+        dataExportLabel="Month"
+      />
+    </div>
   );
 };
 

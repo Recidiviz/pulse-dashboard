@@ -1,5 +1,5 @@
 // Recidiviz - a data platform for criminal justice reform
-// Copyright (C) 2020 Recidiviz, Inc.
+// Copyright (C) 2021 Recidiviz, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -29,7 +29,7 @@ import RevocationsByGender from "../RevocationsByGender/RevocationsByGender";
 import RevocationsByRace from "../RevocationsByRace/RevocationsByRace";
 import RevocationsByDistrict from "../RevocationsByDistrict/RevocationsByDistrict";
 import { useRootStore } from "../../../../StoreProvider";
-
+import { useContainerHeight } from "../../../../hooks/useContainerHeight";
 import "./RevocationCharts.scss";
 
 const CHARTS = [
@@ -44,22 +44,24 @@ const CHARTS = [
 const RevocationCharts = ({ timeDescription }) => {
   const { dataStore } = useRootStore();
   const { selectedChart, setSelectedChart } = dataStore.revocationsChartStore;
+  const { containerHeight, containerRef } = useContainerHeight();
+  const props = { ref: containerRef, timeDescription, containerHeight };
 
   const renderSelectedChartSingularLoad = () => {
     switch (selectedChart) {
       case "Risk level":
-        return <RevocationsByRiskLevel timeDescription={timeDescription} />;
+        return <RevocationsByRiskLevel {...props} />;
       case "Officer":
-        return <RevocationsByOfficer timeDescription={timeDescription} />;
+        return <RevocationsByOfficer {...props} />;
       case "Violation":
-        return <RevocationsByViolation timeDescription={timeDescription} />;
+        return <RevocationsByViolation {...props} />;
       case "Gender":
-        return <RevocationsByGender timeDescription={timeDescription} />;
+        return <RevocationsByGender {...props} />;
       case "Race":
-        return <RevocationsByRace timeDescription={timeDescription} />;
+        return <RevocationsByRace {...props} />;
       case "District":
       default:
-        return <RevocationsByDistrict timeDescription={timeDescription} />;
+        return <RevocationsByDistrict {...props} />;
     }
   };
 

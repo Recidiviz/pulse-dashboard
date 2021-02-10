@@ -33,8 +33,8 @@ import { sumCounts } from "../utils/sumCounts";
 const generatePercentChartData = (filteredData, currentDistricts, mode) => {
   const [fieldName, totalFieldName] =
     mode === "exits"
-      ? ["exit_count", "total_exit_count"]
-      : ["supervision_count", "total_supervision_count"];
+      ? ["exit_count", "exit_count"]
+      : ["supervision_count", "supervision_population_count"];
 
   const transformedData = pipe(
     filter((item) => item.district !== "ALL"),
@@ -42,7 +42,7 @@ const generatePercentChartData = (filteredData, currentDistricts, mode) => {
     values,
     map((dataset) => ({
       district: dataset[0].district,
-      count: sumBy((item) => toInteger(item.population_count), dataset),
+      count: sumBy((item) => toInteger(item.revocation_count), dataset),
       [fieldName]: sumBy((item) => toInteger(item[totalFieldName]), dataset),
     })),
     map((dataPoint) => ({
@@ -87,8 +87,8 @@ const generatePercentChartData = (filteredData, currentDistricts, mode) => {
   };
 
   const averageRate = calculateRate(
-    sumCounts("population_count", filteredData),
-    sumCounts("total_supervision_count", filteredData)
+    sumCounts("revocation_count", filteredData),
+    sumCounts("supervision_population_count", filteredData)
   );
 
   return { data, numerators, denominators, averageRate };
@@ -101,7 +101,7 @@ const generateCountChartData = (filteredData, currentDistricts) => {
     values,
     map((dataset) => ({
       district: dataset[0].district,
-      count: sumBy((item) => toInteger(item.population_count), dataset),
+      count: sumBy((item) => toInteger(item.revocation_count), dataset),
     })),
     orderBy(["count"], ["desc"])
   )(filteredData);

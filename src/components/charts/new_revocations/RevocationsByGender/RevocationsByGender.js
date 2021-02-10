@@ -1,5 +1,5 @@
 // Recidiviz - a data platform for criminal justice reform
-// Copyright (C) 2020 Recidiviz, Inc.
+// Copyright (C) 2021 Recidiviz, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -29,43 +29,51 @@ import createGenerateChartData from "./createGenerateChartData";
 import flags from "../../../../flags";
 import { useRootStore } from "../../../../StoreProvider";
 
-const RevocationsByGender = ({ timeDescription }) => {
-  const { currentTenantId, dataStore } = useRootStore();
-  const { revocationsChartStore } = dataStore;
+const RevocationsByGender = observer(
+  ({ containerHeight, timeDescription }, ref) => {
+    const { currentTenantId, dataStore } = useRootStore();
+    const { revocationsChartStore } = dataStore;
 
-  return (
-    <RevocationsByDimension
-      chartId={`${translate("revocations")}By${translate("Gender")}`}
-      dataStore={revocationsChartStore}
-      renderChart={({ chartId, data, denominators, numerators, mode }) => (
-        <BarChartWithLabels
-          id={chartId}
-          data={data}
-          xAxisLabel={`${translate("Gender")} and risk level`}
-          yAxisLabel={getLabelByMode(mode)}
-          labelColors={CHART_COLORS}
-          denominators={denominators}
-          numerators={numerators}
-        />
-      )}
-      generateChartData={createGenerateChartData(
-        revocationsChartStore.filteredData,
-        currentTenantId
-      )}
-      chartTitle={`Admissions by ${translate("gender")} and risk level`}
-      metricTitle={(mode) =>
-        `${getLabelByMode(mode)} by ${translate("gender")} and risk level`
-      }
-      timeDescription={timeDescription}
-      modes={flags.enableRevocationRateByExit ? ["rates", "exits"] : []}
-      defaultMode="rates"
-      dataExportLabel="Risk Level"
-    />
-  );
-};
+    return (
+      <RevocationsByDimension
+        ref={ref}
+        chartId={`${translate("revocations")}By${translate("Gender")}`}
+        dataStore={revocationsChartStore}
+        containerHeight={containerHeight}
+        renderChart={({ chartId, data, denominators, numerators, mode }) => (
+          <BarChartWithLabels
+            id={chartId}
+            data={data}
+            xAxisLabel={`${translate("Gender")} and risk level`}
+            yAxisLabel={getLabelByMode(mode)}
+            labelColors={CHART_COLORS}
+            denominators={denominators}
+            numerators={numerators}
+          />
+        )}
+        generateChartData={createGenerateChartData(
+          revocationsChartStore.filteredData,
+          currentTenantId
+        )}
+        chartTitle={`Admissions by ${translate("gender")} and risk level`}
+        metricTitle={(mode) =>
+          `${getLabelByMode(mode)} by ${translate("gender")} and risk level`
+        }
+        timeDescription={timeDescription}
+        modes={flags.enableRevocationRateByExit ? ["rates", "exits"] : []}
+        defaultMode="rates"
+        dataExportLabel="Risk Level"
+      />
+    );
+  },
+  { forwardRef: true }
+);
+
+RevocationsByGender.defaultProps = { containerHeight: null };
 
 RevocationsByGender.propTypes = {
+  containerHeight: PropTypes.number,
   timeDescription: PropTypes.string.isRequired,
 };
 
-export default observer(RevocationsByGender);
+export default RevocationsByGender;
