@@ -27,30 +27,39 @@ import toInteger from "lodash/fp/toInteger";
  *   HISPANIC: { LOW: [2, 9], HIGH: [2, 8], ... } }
  * }
  */
-const createRiskLevelsMap = (numeratorKey, denominatorKey, field) => (
+const createRaceRiskLevelsMap = (numeratorKey, denominatorKey, field) => (
   acc,
   data
 ) => {
   return pipe(
     set(
-      [data[field], data.risk_level],
+      [data[field], "SUPERVISION_POPULATION"],
       [
-        getOr(0, [data[field], data.risk_level, 0], acc) +
-          toInteger(data[numeratorKey]),
-        getOr(0, [data[field], data.risk_level, 1], acc) +
-          toInteger(data[denominatorKey]),
+        getOr(0, [data[field], "SUPERVISION_POPULATION", 0], acc) +
+          toInteger(data[numeratorKey[1]]),
+        getOr(0, [data[field], "SUPERVISION_POPULATION", 1], acc) +
+          toInteger(data[denominatorKey[1]]),
       ]
     ),
     set(
-      [data[field], "OVERALL"],
+      [data[field], "REVOKED"],
       [
-        getOr(0, [data[field], "OVERALL", 0], acc) +
-          toInteger(data[numeratorKey]),
-        getOr(0, [data[field], "OVERALL", 1], acc) +
-          toInteger(data[denominatorKey]),
+        getOr(0, [data[field], "REVOKED", 0], acc) +
+          toInteger(data[numeratorKey[0]]),
+        getOr(0, [data[field], "REVOKED", 1], acc) +
+          toInteger(data[denominatorKey[0]]),
+      ]
+    ),
+    set(
+      [data[field], "STATE_POPULATION"],
+      [
+        getOr(0, [data[field], "STATE_POPULATION", 0], acc) +
+          toInteger(data[numeratorKey[2]]),
+        getOr(0, [data[field], "STATE_POPULATION", 1], acc) +
+          toInteger(data[denominatorKey[2]]),
       ]
     )
   )(acc);
 };
 
-export default createRiskLevelsMap;
+export default createRaceRiskLevelsMap;

@@ -45,3 +45,5 @@ dump.rdb
 
 # Typescript build artifacts
 *.tsbuildinfo
+
+run_in_demo_mode.bat

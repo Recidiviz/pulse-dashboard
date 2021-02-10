@@ -54,7 +54,10 @@
         // TODO TS re-enable this after repo is ported to TS
         "@typescript-eslint/ban-ts-comment": "off",
         // don't require extensions for typescript modules
-        "react/jsx-filename-extension": ["error", { "extensions": [".js", "tsx"] }],
+        "react/jsx-filename-extension": [
+          "error",
+          { "extensions": [".js", "tsx"] }
+        ],
         "import/no-extraneous-dependencies": ["error", { "packageDir": "./" }],
         "no-new": 1,
         "no-use-before-define": "off",
@@ -76,7 +79,7 @@
         "radix": "off",
         "no-console": ["error", { "allow": ["warn", "error"] }],
         "import/prefer-default-export": "off",
-    
+
         // don't require extensions for typescript modules
         "import/extensions": [
           "error",
