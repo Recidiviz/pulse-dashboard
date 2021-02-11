@@ -43,7 +43,11 @@ function responder(res) {
   return (err, data) => {
     if (err) {
       const status = err.status || err.code || SERVER_ERROR;
-      res.status(status).send(err);
+      const errors = err.message || err.errors;
+      res.status(status).send({
+        status,
+        errors: [].concat(errors),
+      });
     } else {
       res.send(data);
     }
@@ -57,10 +61,13 @@ function responder(res) {
  */
 function processAndRespond(responderFn, processResultsFn) {
   return (err, data) => {
+    if (err) responderFn(err, null);
     if (data) {
-      responderFn(null, processResultsFn(data));
-    } else {
-      responderFn(err, null);
+      try {
+        responderFn(null, processResultsFn(data));
+      } catch (error) {
+        responderFn(error, null);
+      }
     }
   };
 }
@@ -73,7 +80,7 @@ function restrictedAccess(req, res) {
     responder(res)(
       {
         status: BAD_REQUEST,
-        errors: "request is missing userEmail parameter",
+        errors: validations.array(),
       },
       null
     );
@@ -212,4 +219,5 @@ module.exports = {
   programmingExplore,
   responder,
   refreshCache,
+  SERVER_ERROR,
 };
