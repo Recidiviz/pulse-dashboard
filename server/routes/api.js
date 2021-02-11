@@ -61,10 +61,13 @@ function responder(res) {
  */
 function processAndRespond(responderFn, processResultsFn) {
   return (err, data) => {
+    if (err) responderFn(err, null);
     if (data) {
-      responderFn(null, processResultsFn(data));
-    } else {
-      responderFn(err, null);
+      try {
+        responderFn(null, processResultsFn(data));
+      } catch (error) {
+        responderFn(error, null);
+      }
     }
   };
 }
