@@ -80,4 +80,8 @@ export default class RootStore {
   get user() {
     return this.userStore.user;
   }
+
+  get restrictedDistrict() {
+    return this.userStore.restrictedDistrict;
+  }
 }

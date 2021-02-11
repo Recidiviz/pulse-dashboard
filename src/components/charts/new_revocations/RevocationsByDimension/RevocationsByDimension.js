@@ -22,8 +22,7 @@ import { observer } from "mobx-react-lite";
 import ModeSwitcher from "../ModeSwitcher";
 import RevocationsByDimensionComponent from "./RevocationsByDimensionComponent";
 import LoadingChart from "../LoadingChart";
-import Error from "../../../Error";
-
+import ErrorMessage from "../../../ErrorMessage";
 import { isDenominatorsMatrixStatisticallySignificant } from "../../../../utils/charts/significantStatistics";
 import getLabelByMode from "../utils/getLabelByMode";
 
@@ -52,7 +51,7 @@ const RevocationsByDimension = observer(
     }
 
     if (dataStore.isError) {
-      return <Error />;
+      return <ErrorMessage />;
     }
     const { data, numerators, denominators, averageRate } = generateChartData(
       mode

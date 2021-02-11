@@ -18,6 +18,7 @@
 import createAuth0Client, { Auth0ClientOptions } from "@auth0/auth0-spa-js";
 import { makeAutoObservable, runInAction, autorun, flow } from "mobx";
 import qs from "qs";
+import * as Sentry from "@sentry/react";
 
 import { ERROR_MESSAGES } from "../constants/errorMessages";
 import type RootStore from "./RootStore";
@@ -205,6 +206,13 @@ export default class UserStore {
       this.setRestrictedDistrict(responseData[file]);
       this.restrictedDistrictIsLoading = false;
     } catch (error) {
+      Sentry.captureException(error, {
+        tags: {
+          tenantId,
+          endpoint,
+          availableStateCodes: this.availableStateCodes.join(","),
+        },
+      });
       this.authError = new Error(ERROR_MESSAGES.unauthorized);
       this.restrictedDistrictIsLoading = false;
     }
@@ -223,7 +231,13 @@ export default class UserStore {
       !this.rootStore?.tenantStore.districtsIsLoading &&
       !this.rootStore?.tenantStore.districts.includes(this.restrictedDistrict)
     ) {
-      this.authError = new Error(ERROR_MESSAGES.unauthorized);
+      const authError = new Error(ERROR_MESSAGES.unauthorized);
+      Sentry.captureException(authError, {
+        tags: {
+          restrictedDistrict: this.restrictedDistrict,
+        },
+      });
+      this.authError = authError;
       this.restrictedDistrictIsLoading = false;
       this.restrictedDistrict = undefined;
     }
