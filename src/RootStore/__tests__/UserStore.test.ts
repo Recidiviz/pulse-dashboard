@@ -96,6 +96,19 @@ test("authorize requires Auth0 client settings", async () => {
   expect.hasAssertions();
 });
 
+test("error thrown in authorize sets authError", async () => {
+  mockCreateAuth0Client.mockResolvedValue("INALID_AUTH_OBJECT");
+  const store = new UserStore({
+    authSettings: testAuthSettings,
+  });
+  await store.authorize();
+  reactImmediately(() => {
+    const error = store.authError;
+    expect(error?.message).toBeDefined();
+  });
+  expect.hasAssertions();
+});
+
 test("authorized when authenticated", async () => {
   mockIsAuthenticated.mockResolvedValue(true);
   mockGetUser.mockResolvedValue({ email_verified: true, ...metadata });
