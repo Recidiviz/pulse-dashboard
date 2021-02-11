@@ -43,7 +43,11 @@ function responder(res) {
   return (err, data) => {
     if (err) {
       const status = err.status || err.code || SERVER_ERROR;
-      res.status(status).send(err);
+      const errors = err.message || err.errors;
+      res.status(status).send({
+        status,
+        errors: [].concat(errors),
+      });
     } else {
       res.send(data);
     }
@@ -73,7 +77,7 @@ function restrictedAccess(req, res) {
     responder(res)(
       {
         status: BAD_REQUEST,
-        errors: "request is missing userEmail parameter",
+        errors: validations.array(),
       },
       null
     );

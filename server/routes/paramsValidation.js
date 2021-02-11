@@ -61,7 +61,9 @@ const newRevocationsParamValidations = [
   query("violationType").toLowerCase().optional().isIn(VIOLATION_TYPES),
 ];
 
-const restrictedAccessParamValidations = [body("userEmail").exists()];
+const restrictedAccessParamValidations = [
+  body("userEmail", "Request is missing userEmail parameter").exists(),
+];
 
 module.exports = {
   newRevocationsParamValidations,
