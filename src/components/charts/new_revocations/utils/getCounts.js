@@ -20,7 +20,7 @@ import { calculateRate } from "../helpers/rate";
 
 const getCounts = (
   transformedData,
-  riskLevels,
+  labels,
   dimensions,
   statePopulationData
 ) => {
@@ -32,7 +32,7 @@ const getCounts = (
     numerators.push([]);
     denominators.push([]);
 
-    riskLevels.forEach((riskLevel) => {
+    labels.forEach((riskLevel) => {
       let numerator = 0;
       let denominator = 0;
       let rate = 0;

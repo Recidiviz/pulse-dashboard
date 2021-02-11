@@ -28,11 +28,11 @@ export function getRiskLevelLabels() {
   return Object.values(translate("riskLevelsMap"));
 }
 
-export function getRaceChartAttributes() {
+export function getStateRacePopulation() {
   return Object.keys(translate("raceChartAttributes"));
 }
 
-export function getRaceChartAttributeLabels() {
+export function getStateRacePopulationLabels() {
   return Object.values(translate("raceChartAttributes"));
 }
 

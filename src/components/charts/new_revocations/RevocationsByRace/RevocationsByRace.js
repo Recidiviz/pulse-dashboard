@@ -21,7 +21,7 @@ import { observer } from "mobx-react-lite";
 
 import BarChartWithLabels from "../BarChartWithLabels";
 import RevocationsByDimension from "../RevocationsByDimension";
-import newCreateGenerateChartData from "./newCreateGenerateChartData";
+import newCreateGenerateChartData from "./createGenerateChartData";
 import getLabelByMode from "../utils/getLabelByMode";
 import { COLORS_LANTERN_SET } from "../../../../assets/scripts/constants/colors";
 import flags from "../../../../flags";
