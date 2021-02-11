@@ -19,14 +19,13 @@ import React from "react";
 import PropTypes from "prop-types";
 import { observer } from "mobx-react-lite";
 
-import BarChartWithLabels from "../BarChartWithLabels";
 import RevocationsByDimension from "../RevocationsByDimension";
 import newCreateGenerateChartData from "./createGenerateChartData";
 import getLabelByMode from "../utils/getLabelByMode";
-import { COLORS_LANTERN_SET } from "../../../../assets/scripts/constants/colors";
 import flags from "../../../../flags";
 import { translate } from "../../../../views/tenants/utils/i18nSettings";
 import { useDataStore } from "../../../../StoreProvider";
+import HorizontalBarChartWithLabels from "../BarChartWithLabels/HorizontalBarChartWithLabels";
 
 const RevocationsByRace = observer(
   ({ containerHeight, timeDescription }, ref) => {
@@ -39,13 +38,10 @@ const RevocationsByRace = observer(
         dataStore={revocationsChartStore}
         containerHeight={containerHeight}
         renderChart={({ chartId, data, denominators, numerators, mode }) => (
-          <BarChartWithLabels
+          <HorizontalBarChartWithLabels
             activeTab={mode}
             id={chartId}
             data={data}
-            labelColors={COLORS_LANTERN_SET}
-            xAxisLabel="Race/ethnicity and risk level"
-            yAxisLabel={getLabelByMode(mode)}
             numerators={numerators}
             denominators={denominators}
           />

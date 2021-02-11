@@ -17,17 +17,15 @@
 
 import React from "react";
 import PropTypes from "prop-types";
-import { Bar, HorizontalBar } from "react-chartjs-2";
+import { Bar } from "react-chartjs-2";
 import { axisCallbackForPercentage } from "../../../../utils/charts/axis";
 import { tooltipForFooterWithCounts } from "../../../../utils/charts/significantStatistics";
 import { tooltipForRateMetricWithCounts } from "../../../../utils/charts/toggles";
 import { generateLabelsWithCustomColors } from "./helpers";
 import { COLORS } from "../../../../assets/scripts/constants/colors";
-import { translate } from "../../../../views/tenants/utils/i18nSettings";
 import "chartjs-plugin-datalabels";
 
 const BarChartWithLabels = ({
-  activeTab,
   id,
   data,
   labelColors,
@@ -35,154 +33,71 @@ const BarChartWithLabels = ({
   yAxisLabel,
   numerators,
   denominators,
-}) => {
-  const translateRaceLabels = translate("raceLabelMap");
-  const filteredData = React.useMemo(() => {
-    const cloneData = JSON.parse(JSON.stringify(data));
-    cloneData.datasets = data?.datasets?.filter(
-      ({ label }) => label === translateRaceLabels[activeTab]
-    );
-    return cloneData;
-  }, [activeTab, data, translateRaceLabels]);
-
-  return id !== `${translate("revocations")}ByRace` ? (
-    <Bar
-      id={id}
-      data={data}
-      options={{
-        plugins: {
-          datalabels: {
-            display: false,
-          },
+}) => (
+  <Bar
+    id={id}
+    data={data}
+    options={{
+      plugins: {
+        datalabels: {
+          display: false,
         },
-        legend: labelColors.length
-          ? {
-              position: "bottom",
-              labels: {
-                generateLabels: (ch) =>
-                  generateLabelsWithCustomColors(ch, labelColors),
-              },
-            }
-          : { display: false },
-        responsive: true,
-        maintainAspectRatio: false,
-        scales: {
-          xAxes: [
-            {
-              scaleLabel: {
-                display: true,
-                labelString: xAxisLabel,
-              },
+      },
+      legend: labelColors.length
+        ? {
+            position: "bottom",
+            labels: {
+              generateLabels: (ch) =>
+                generateLabelsWithCustomColors(ch, labelColors),
             },
-          ],
-          yAxes: [
-            {
-              ticks: {
-                beginAtZero: true,
-                callback: axisCallbackForPercentage(),
-              },
-              scaleLabel: {
-                display: true,
-                labelString: yAxisLabel,
-              },
-              stacked: true,
-            },
-          ],
-        },
-        tooltips: {
-          backgroundColor: COLORS["grey-800-light"],
-          footerFontSize: 9,
-          mode: "index",
-          intersect: false,
-          callbacks: {
-            label: (tooltipItem, tooltipData) =>
-              tooltipForRateMetricWithCounts(
-                id,
-                tooltipItem,
-                tooltipData,
-                numerators,
-                denominators
-              ),
-            footer: (tooltipItem) =>
-              tooltipForFooterWithCounts(tooltipItem, denominators),
-          },
-        },
-      }}
-    />
-  ) : (
-    <HorizontalBar
-      id={id}
-      data={filteredData}
-      options={{
-        legend: { display: false },
-        plugins: {
-          datalabels: {
-            clamp: true,
-            align: "end",
-            anchor: "end",
-            offset: 16,
-            color: "#2B2B2A",
-            font: {
-              size: 20,
-              weight: 500,
-            },
-            formatter(value) {
-              return `${Math.trunc(value)} %`;
+          }
+        : { display: false },
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        xAxes: [
+          {
+            scaleLabel: {
+              display: true,
+              labelString: xAxisLabel,
             },
           },
-        },
-        responsive: true,
-        maintainAspectRatio: false,
-        scales: {
-          xAxes: [
-            {
-              ticks: {
-                beginAtZero: false,
-              },
-              gridLines: {
-                display: false,
-              },
+        ],
+        yAxes: [
+          {
+            ticks: {
+              beginAtZero: true,
+              callback: axisCallbackForPercentage(),
             },
-          ],
-          yAxes: [
-            {
-              gridLines: {
-                display: false,
-              },
-              ticks: {
-                fontSize: 14,
-                fontStyle: "normal",
-                fontColor: "#4F4E4D",
-                beginAtZero: false,
-                callback: axisCallbackForPercentage(),
-              },
+            scaleLabel: {
+              display: true,
+              labelString: yAxisLabel,
             },
-          ],
-        },
-        tooltips: {
-          backgroundColor: COLORS["grey-800-light"],
-          footerFontSize: 9,
-          mode: "dataset",
-          intersect: true,
-          position: "nearest",
-          callbacks: {
-            label: (tooltipItem, tooltipData) => {
-              return tooltipForRateMetricWithCounts(
-                id,
-                tooltipItem,
-                tooltipData,
-                numerators,
-                denominators
-              );
-            },
-            footer: (tooltipItem) =>
-              tooltipForFooterWithCounts(tooltipItem, denominators),
+            stacked: true,
           },
+        ],
+      },
+      tooltips: {
+        backgroundColor: COLORS["grey-800-light"],
+        footerFontSize: 9,
+        mode: "index",
+        intersect: false,
+        callbacks: {
+          label: (tooltipItem, tooltipData) =>
+            tooltipForRateMetricWithCounts(
+              id,
+              tooltipItem,
+              tooltipData,
+              numerators,
+              denominators
+            ),
+          footer: (tooltipItem) =>
+            tooltipForFooterWithCounts(tooltipItem, denominators),
         },
-      }}
-    />
-  );
-};
+      },
+    }}
+  />
+);
 
 BarChartWithLabels.defaultProps = {
   labelColors: [],
@@ -190,7 +105,6 @@ BarChartWithLabels.defaultProps = {
 
 BarChartWithLabels.propTypes = {
   id: PropTypes.string.isRequired,
-  activeTab: PropTypes.string.isRequired,
   data: PropTypes.shape({
     labels: PropTypes.arrayOf(PropTypes.string),
     datasets: PropTypes.arrayOf(
