@@ -89,7 +89,8 @@ function restrictedAccess(req, res) {
     const { userEmail } = req.body;
     const metricType = "newRevocation";
     const file = "supervision_location_restricted_access_emails";
-    const cacheKey = `${stateCode.toUpperCase()}-restrictedAccess`;
+    const cacheKey = `${stateCode.toUpperCase()}-${metricType}-restrictedAccess`;
+
     cacheResponse(
       cacheKey,
       () => fetchMetrics(stateCode, metricType, file, isDemoMode),
