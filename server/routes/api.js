@@ -219,4 +219,5 @@ module.exports = {
   programmingExplore,
   responder,
   refreshCache,
+  SERVER_ERROR,
 };
