@@ -141,4 +141,5 @@ HorizontalBarChartWithLabels.propTypes = {
     PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.number), PropTypes.number])
   ).isRequired,
 };
-export default HorizontalBarChartWithLabels;
+
+export default React.memo(HorizontalBarChartWithLabels);
