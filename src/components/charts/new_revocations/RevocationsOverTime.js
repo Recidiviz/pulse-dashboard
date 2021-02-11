@@ -93,7 +93,7 @@ const RevocationsOverTime = () => {
       hoverBackgroundColor: COLORS["lantern-light-blue"],
       hoverBorderColor: COLORS["lantern-light-blue"],
     },
-    generateTrendlineDataset(chartDataPoints, COLORS["blue-standard-light"]),
+    generateTrendlineDataset(chartDataPoints, COLORS["lantern-soft-blue"]),
   ];
   const maxElement = Math.max(...chartDataPoints);
   const maxValue = maxElement <= 7 ? 7 : maxElement;
