@@ -18,7 +18,6 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { HorizontalBar } from "react-chartjs-2";
-import cloneDeep from "lodash/fp/cloneDeep";
 import { axisCallbackForPercentage } from "../../../../utils/charts/axis";
 import { tooltipForFooterWithCounts } from "../../../../utils/charts/significantStatistics";
 import { tooltipForRateMetricWithCounts } from "../../../../utils/charts/toggles";
@@ -34,18 +33,20 @@ const HorizontalBarChartWithLabels = ({
   denominators,
 }) => {
   const translateRaceLabels = translate("raceLabelMap");
-  const filteredData = React.useMemo(() => {
-    const cloneData = cloneDeep(data);
-    cloneData.datasets = data?.datasets?.filter(
-      ({ label }) => label === translateRaceLabels[activeTab]
-    );
-    return cloneData;
-  }, [activeTab, data, translateRaceLabels]);
+  const datasetIndex = data.datasets.findIndex(
+    (d) => d.label === translateRaceLabels[activeTab]
+  );
+  const activeTabData = {
+    datasets: [data.datasets[datasetIndex]],
+    labels: data.labels,
+  };
+  const activeTabNumerator = numerators[datasetIndex];
+  const activeTabDenominator = denominators[datasetIndex];
 
   return (
     <HorizontalBar
       id={id}
-      data={filteredData}
+      data={activeTabData}
       options={{
         legend: { display: false },
         plugins: {
@@ -108,8 +109,8 @@ const HorizontalBarChartWithLabels = ({
                 id,
                 tooltipItem,
                 tooltipData,
-                numerators,
-                denominators
+                activeTabNumerator,
+                activeTabDenominator
               );
             },
             footer: (tooltipItem) =>
