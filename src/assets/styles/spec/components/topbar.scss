@@ -18,9 +18,19 @@
   margin-bottom: 0;
   padding: 0;
   position: fixed;
-  transition: all 0.2s ease;
+  transform: translateY(0);
+  transition: all 0.2s ease, transform 0.6s;
   width: calc(100% - #{$offscreen-size});
   z-index: 800;
+
+  &.hidden-navbar {
+    overflow: hidden;
+    transform: translateY(-100%);
+  }
+
+  &.wide-navbar {
+    width: 100%;
+  }
 
   @include to($breakpoint-md) {
     width: 100%;
@@ -136,8 +146,8 @@
       .dropdown {
         .dropdown-toggle {
           ul {
-            margin-left: 0px;
-            padding-left: 0px;
+            margin-left: 0;
+            padding-left: 0;
           }
         }
       }

@@ -19,22 +19,31 @@ import React from "react";
 import PropTypes from "prop-types";
 import cn from "classnames";
 
-const TopBar = ({ children, isWide = false }) => (
-  <div
-    className={cn("TopBar", "header", "navbar", {
-      "wide-navbar": isWide,
-    })}
-  >
-    <div className="TopBar__container header-container">{children}</div>
-  </div>
-);
+import { usePageState } from "../../contexts/PageContext";
+
+const TopBar = ({ children, isHidable = false, isWide = false }) => {
+  const { hideTopBar } = usePageState();
+
+  return (
+    <div
+      className={cn("TopBar", "header", "navbar", {
+        "wide-navbar": isWide,
+        "hidden-navbar": hideTopBar && isHidable,
+      })}
+    >
+      <div className="TopBar__container header-container">{children}</div>
+    </div>
+  );
+};
 
 TopBar.defaultProps = {
+  isHidable: false,
   isWide: false,
 };
 
 TopBar.propTypes = {
   children: PropTypes.node.isRequired,
+  isHidable: PropTypes.bool,
   isWide: PropTypes.bool,
 };
 
