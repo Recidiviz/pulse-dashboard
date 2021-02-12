@@ -14,6 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
+import "chartjs-plugin-datalabels";
 
 import React from "react";
 import PropTypes from "prop-types";
@@ -23,7 +24,6 @@ import { tooltipForFooterWithCounts } from "../../../../utils/charts/significant
 import { tooltipForRateMetricWithCounts } from "../../../../utils/charts/toggles";
 import { generateLabelsWithCustomColors } from "./helpers";
 import { COLORS } from "../../../../assets/scripts/constants/colors";
-import "chartjs-plugin-datalabels";
 
 const BarChartWithLabels = ({
   id,

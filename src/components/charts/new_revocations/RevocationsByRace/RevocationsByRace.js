@@ -20,7 +20,7 @@ import PropTypes from "prop-types";
 import { observer } from "mobx-react-lite";
 
 import RevocationsByDimension from "../RevocationsByDimension";
-import newCreateGenerateChartData from "./createGenerateChartData";
+import createGenerateChartData from "./createGenerateChartData";
 import getLabelByMode from "../utils/getLabelByMode";
 import flags from "../../../../flags";
 import { translate } from "../../../../views/tenants/utils/i18nSettings";
@@ -46,7 +46,7 @@ const RevocationsByRace = observer(
             denominators={denominators}
           />
         )}
-        generateChartData={newCreateGenerateChartData(revocationsChartStore)}
+        generateChartData={createGenerateChartData(revocationsChartStore)}
         chartTitle="Admissions by race/ethnicity and risk level"
         metricTitle={(mode) =>
           `${getLabelByMode(mode)} by race/ethnicity and risk level`

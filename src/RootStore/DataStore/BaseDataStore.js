@@ -30,7 +30,6 @@ import { callMetricsApi, parseResponseByFileFormat } from "../../api/metrics";
 import {
   getQueryStringFromFilters,
   dimensionManifestIncludesFilterValues,
-  processResponseData,
 } from "./helpers";
 import {
   FILTER_TYPE_MAP,
@@ -219,7 +218,7 @@ export default class BaseDataStore {
       );
       // The state population files will never be optimized format
       // so always use eagerExpand = true when processing response data
-      const { data } = processResponseData(
+      const { data } = parseResponseByFileFormat(
         responseData,
         this.statePopulationFile,
         true

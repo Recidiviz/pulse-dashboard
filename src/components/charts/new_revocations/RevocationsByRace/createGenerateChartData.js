@@ -40,7 +40,7 @@ export const generateDatasets = (dataPoints, denominators) => {
     data: dataPoints[index],
   }));
 };
-const newCreateGenerateChartData = ({
+const createGenerateChartData = ({
   filteredData,
   statePopulationData,
 }) => () => {
@@ -70,4 +70,4 @@ const newCreateGenerateChartData = ({
   return { data, numerators, denominators };
 };
 
-export default newCreateGenerateChartData;
+export default createGenerateChartData;

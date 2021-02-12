@@ -1,6 +1,4 @@
 import qs from "qs";
-import { parseResponseByFileFormat } from "../../api/metrics";
-import { unflattenValues } from "../../api/metrics/fileParser";
 
 /**
  *
@@ -21,24 +19,7 @@ export function getQueryStringFromFilters(filters = {}) {
     filter: (_, value) => (value !== "" ? value : undefined),
   });
 }
-export function processResponseData(data, file, eagerExpand = true) {
-  const metricFile = parseResponseByFileFormat(data, file, eagerExpand);
 
-  const { metadata } = metricFile;
-
-  // If we are not eagerly expanding a single file request, then proactively
-  // unflatten the data matrix to avoid repeated unflattening operations in
-  // filtering operations later on.
-  if (!eagerExpand) {
-    return {
-      metadata,
-      data: unflattenValues(metricFile),
-    };
-  }
-  return {
-    data: data[file],
-  };
-}
 export function dimensionManifestIncludesFilterValues({
   filters,
   dimensionManifest,
