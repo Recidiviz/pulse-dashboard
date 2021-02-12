@@ -44,9 +44,7 @@ class BaseMetrics {
   }
 
   getAllFiles() {
-    return Object.keys(this.metrics).map(
-      (metric) => this.metrics[metric].filename
-    );
+    return Object.keys(this.metrics).map((fileKey) => this.getFile(fileKey));
   }
 
   getFile(fileKey) {
