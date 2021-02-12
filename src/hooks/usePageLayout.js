@@ -52,7 +52,7 @@ const usePageLayout = () => {
           });
         } else if (
           hideTopBar &&
-          (scrollUpCount > 3 || window.pageYOffset < 25)
+          (scrollUpCount > 2 || window.pageYOffset < 60)
         ) {
           pageDispatch({
             type: "update",
