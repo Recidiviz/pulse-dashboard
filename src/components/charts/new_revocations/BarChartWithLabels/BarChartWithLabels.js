@@ -73,7 +73,6 @@ const BarChartWithLabels = ({
               display: true,
               labelString: yAxisLabel,
             },
-            stacked: true,
           },
         ],
       },
