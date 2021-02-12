@@ -21,39 +21,65 @@ import { calculateRate } from "../helpers/rate";
 const getCounts = (
   transformedData,
   labels,
-  dimensions,
+  dimensionValues,
   statePopulationData
 ) => {
   const dataPoints = [];
   const numerators = [];
   const denominators = [];
-  dimensions.forEach((dimension, i) => {
+  dimensionValues.forEach((dimensionValue, i) => {
     dataPoints.push([]);
     numerators.push([]);
     denominators.push([]);
 
-    labels.forEach((riskLevel) => {
+    labels.forEach((label) => {
       let numerator = 0;
       let denominator = 0;
       let rate = 0;
-      if (riskLevel === "STATE_POPULATION") {
+      if (label === "STATE_POPULATION") {
         numerator = statePopulationData.reduce((result, item) => {
-          if (item.race_or_ethnicity === dimension) {
+          if (item.race_or_ethnicity === dimensionValue) {
             return result + Number(item.population_count);
           }
           return result;
         }, 0);
         denominator = statePopulationData.reduce((result, item) => {
-          if (item.race_or_ethnicity === dimension) {
+          if (item.race_or_ethnicity === dimensionValue) {
             return result + Number(item.total_state_population_count);
           }
           return result;
         }, 0);
       } else {
-        numerator = getOr(0, [dimension, riskLevel, 0], transformedData);
-        denominator = getOr(0, [dimension, riskLevel, 1], transformedData);
+        numerator = getOr(0, [dimensionValue, label, 0], transformedData);
+        denominator = getOr(0, [dimensionValue, label, 1], transformedData);
       }
       rate = calculateRate(numerator, denominator).toFixed(2);
+
+      numerators[i].push(numerator);
+      denominators[i].push(denominator);
+      dataPoints[i].push(rate);
+    });
+  });
+  return { dataPoints, numerators, denominators };
+};
+
+// This is a temporary rename - previously getCounts.
+// The Gender chart is undergoing a redesign and will use the new getCounts.
+// Once that is done this function will no longer be needed
+const getCountsByRiskLevel = (transformedData, riskLevels, dimensions) => {
+  const dataPoints = [];
+  const numerators = [];
+  const denominators = [];
+
+  dimensions.forEach((dimension, i) => {
+    dataPoints.push([]);
+    numerators.push([]);
+    denominators.push([]);
+
+    riskLevels.forEach((riskLevel) => {
+      const numerator = getOr(0, [dimension, riskLevel, 0], transformedData);
+      const denominator = getOr(0, [dimension, riskLevel, 1], transformedData);
+      const rate = calculateRate(numerator, denominator).toFixed(2);
 
       numerators[i].push(numerator);
       denominators[i].push(denominator);
@@ -64,4 +90,4 @@ const getCounts = (
   return { dataPoints, numerators, denominators };
 };
 
-export default getCounts;
+export { getCounts, getCountsByRiskLevel };

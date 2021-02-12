@@ -22,8 +22,8 @@ import {
   getStateRacePopulationLabels,
   getStateRacePopulation,
 } from "../../../../utils/transforms/labels";
-import getCounts from "../utils/getCounts";
-import createRaceRiskLevelsMap from "../utils/createStateRacePopulationMap";
+import { getCounts } from "../utils/getCounts";
+import createRacePopulationMap from "../utils/createRacePopulationMap";
 import { translate } from "../../../../views/tenants/utils/i18nSettings";
 import { COLORS_LANTERN_SET } from "../../../../assets/scripts/constants/colors";
 import { applyStatisticallySignificantShadingToDataset } from "../../../../utils/charts/significantStatistics";
@@ -40,6 +40,7 @@ export const generateDatasets = (dataPoints, denominators) => {
     data: dataPoints[index],
   }));
 };
+
 const createGenerateChartData = ({
   filteredData,
   statePopulationData,
@@ -57,7 +58,7 @@ const createGenerateChartData = ({
   const raceLabelMap = translate("raceLabelMap");
   const races = Object.keys(raceLabelMap);
   const { dataPoints, numerators, denominators } = pipe(
-    reduce(createRaceRiskLevelsMap(numeratorKey, denominatorKey, "race"), {}),
+    reduce(createRacePopulationMap(numeratorKey, denominatorKey, "race"), {}),
     (data) =>
       getCounts(data, getStateRacePopulation(), races, statePopulationData)
   )(filteredData);

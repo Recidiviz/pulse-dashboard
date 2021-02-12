@@ -27,7 +27,7 @@ import toInteger from "lodash/fp/toInteger";
  *   HISPANIC: { LOW: [2, 9], HIGH: [2, 8], ... } }
  * }
  */
-const createRaceRiskLevelsMap = (numeratorKey, denominatorKey, field) => (
+const createRacePopulationMap = (numeratorKey, denominatorKey, field) => (
   acc,
   data
 ) => {
@@ -49,17 +49,8 @@ const createRaceRiskLevelsMap = (numeratorKey, denominatorKey, field) => (
         getOr(0, [data[field], "REVOKED", 1], acc) +
           toInteger(data[denominatorKey[0]]),
       ]
-    ),
-    set(
-      [data[field], "STATE_POPULATION"],
-      [
-        getOr(0, [data[field], "STATE_POPULATION", 0], acc) +
-          toInteger(data[numeratorKey[2]]),
-        getOr(0, [data[field], "STATE_POPULATION", 1], acc) +
-          toInteger(data[denominatorKey[2]]),
-      ]
     )
   )(acc);
 };
 
-export default createRaceRiskLevelsMap;
+export default createRacePopulationMap;
