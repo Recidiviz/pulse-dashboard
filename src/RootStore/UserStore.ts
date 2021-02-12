@@ -18,6 +18,7 @@
 import createAuth0Client, { Auth0ClientOptions } from "@auth0/auth0-spa-js";
 import { makeAutoObservable, runInAction, autorun, flow } from "mobx";
 import qs from "qs";
+import * as Sentry from "@sentry/react";
 
 import { ERROR_MESSAGES } from "../constants/errorMessages";
 import type RootStore from "./RootStore";
@@ -121,39 +122,43 @@ export default class UserStore {
       return;
     }
 
-    const auth0 = await createAuth0Client(this.authSettings);
-    const urlQuery = qs.parse(window.location.search, {
-      ignoreQueryPrefix: true,
-    });
-    if (urlQuery.code && urlQuery.state) {
-      const { appState } = await auth0.handleRedirectCallback();
-      // auth0 params are single-use, must be removed from history or they can cause errors
-      let replacementUrl;
-      if (appState && appState.targetUrl) {
-        replacementUrl = appState.targetUrl;
-      } else {
-        // strip away all query params just to be safe
-        replacementUrl = `${window.location.origin}${window.location.pathname}`;
-      }
-      window.history.replaceState({}, document.title, replacementUrl);
-    }
-    if (await auth0.isAuthenticated()) {
-      const user = await auth0.getUser();
-      runInAction(() => {
-        this.userIsLoading = false;
-        if (user && user.email_verified) {
-          this.user = user;
-          this.getTokenSilently = (...p: any) => auth0.getTokenSilently(...p);
-          this.logout = (...p: any) => auth0.logout(...p);
-          this.isAuthorized = true;
+    try {
+      const auth0 = await createAuth0Client(this.authSettings);
+      const urlQuery = qs.parse(window.location.search, {
+        ignoreQueryPrefix: true,
+      });
+      if (urlQuery.code && urlQuery.state) {
+        const { appState } = await auth0.handleRedirectCallback();
+        // auth0 params are single-use, must be removed from history or they can cause errors
+        let replacementUrl;
+        if (appState && appState.targetUrl) {
+          replacementUrl = appState.targetUrl;
         } else {
-          this.isAuthorized = false;
+          // strip away all query params just to be safe
+          replacementUrl = `${window.location.origin}${window.location.pathname}`;
         }
-      });
-    } else {
-      auth0.loginWithRedirect({
-        appState: { targetUrl: window.location.href },
-      });
+        window.history.replaceState({}, document.title, replacementUrl);
+      }
+      if (await auth0.isAuthenticated()) {
+        const user = await auth0.getUser();
+        runInAction(() => {
+          this.userIsLoading = false;
+          if (user && user.email_verified) {
+            this.user = user;
+            this.getTokenSilently = (...p: any) => auth0.getTokenSilently(...p);
+            this.logout = (...p: any) => auth0.logout(...p);
+            this.isAuthorized = true;
+          } else {
+            this.isAuthorized = false;
+          }
+        });
+      } else {
+        auth0.loginWithRedirect({
+          appState: { targetUrl: window.location.href },
+        });
+      }
+    } catch (error) {
+      this.authError = error;
     }
   }
 
@@ -185,6 +190,10 @@ export default class UserStore {
     this: UserStore,
     tenantId: string
   ) {
+    if (!this.rootStore?.tenantStore.isLanternTenant) {
+      this.restrictedDistrictIsLoading = false;
+      return;
+    }
     const file = "supervision_location_restricted_access_emails";
     const endpoint = `${tenantId}/restrictedAccess`;
     try {
@@ -197,6 +206,13 @@ export default class UserStore {
       this.setRestrictedDistrict(responseData[file]);
       this.restrictedDistrictIsLoading = false;
     } catch (error) {
+      Sentry.captureException(error, {
+        tags: {
+          tenantId,
+          endpoint,
+          availableStateCodes: this.availableStateCodes.join(","),
+        },
+      });
       this.authError = new Error(ERROR_MESSAGES.unauthorized);
       this.restrictedDistrictIsLoading = false;
     }
@@ -215,7 +231,13 @@ export default class UserStore {
       !this.rootStore?.tenantStore.districtsIsLoading &&
       !this.rootStore?.tenantStore.districts.includes(this.restrictedDistrict)
     ) {
-      this.authError = new Error(ERROR_MESSAGES.unauthorized);
+      const authError = new Error(ERROR_MESSAGES.unauthorized);
+      Sentry.captureException(authError, {
+        tags: {
+          restrictedDistrict: this.restrictedDistrict,
+        },
+      });
+      this.authError = authError;
       this.restrictedDistrictIsLoading = false;
       this.restrictedDistrict = undefined;
     }

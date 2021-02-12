@@ -69,7 +69,7 @@ function currentMonthBox(annotationId, chartLabels) {
 
         borderColor: COLORS["grey-300"],
         borderWidth: 1,
-        backgroundColor: "rgba(224, 224, 224, 0.5)",
+        backgroundColor: "rgba(2, 191, 240, 0.1)",
 
         xMin: previousMonthTick,
 

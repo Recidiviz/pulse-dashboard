@@ -1,5 +1,5 @@
 // Recidiviz - a data platform for criminal justice reform
-// Copyright (C) 2020 Recidiviz, Inc.
+// Copyright (C) 2021 Recidiviz, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -21,82 +21,95 @@ import { observer } from "mobx-react-lite";
 
 import ModeSwitcher from "../ModeSwitcher";
 import RevocationsByDimensionComponent from "./RevocationsByDimensionComponent";
-
-import Loading from "../../../Loading";
-import Error from "../../../Error";
+import LoadingChart from "../LoadingChart";
+import ErrorMessage from "../../../ErrorMessage";
 import { isDenominatorsMatrixStatisticallySignificant } from "../../../../utils/charts/significantStatistics";
 import getLabelByMode from "../utils/getLabelByMode";
 
-const RevocationsByDimension = ({
-  chartId,
-  dataStore,
-  renderChart,
-  generateChartData,
-  metricTitle,
-  chartTitle,
-  timeDescription,
-  modes,
-  defaultMode,
-  dataExportLabel,
-  includeWarning,
-}) => {
-  const [mode, setMode] = useState(defaultMode);
+const RevocationsByDimension = observer(
+  (
+    {
+      chartId,
+      dataStore,
+      containerHeight,
+      renderChart,
+      generateChartData,
+      metricTitle,
+      chartTitle,
+      timeDescription,
+      modes,
+      defaultMode,
+      dataExportLabel,
+      includeWarning,
+    },
+    ref
+  ) => {
+    const [mode, setMode] = useState(defaultMode);
 
-  if (dataStore.isLoading) {
-    return <Loading />;
-  }
+    if (dataStore.isLoading) {
+      return <LoadingChart containerHeight={containerHeight} />;
+    }
 
-  if (dataStore.isError) {
-    return <Error />;
-  }
-  const { data, numerators, denominators, averageRate } = generateChartData(
-    mode
-  );
+    if (dataStore.isError) {
+      return <ErrorMessage />;
+    }
+    const { data, numerators, denominators, averageRate } = generateChartData(
+      mode
+    );
 
-  const showWarning =
-    includeWarning &&
-    !isDenominatorsMatrixStatisticallySignificant(denominators);
+    const showWarning =
+      includeWarning &&
+      !isDenominatorsMatrixStatisticallySignificant(denominators);
 
-  const modeButtons = modes.map((item) => ({
-    label: getLabelByMode(item),
-    value: item,
-  }));
+    const modeButtons = modes.map((item) => ({
+      label: getLabelByMode(item),
+      value: item,
+    }));
 
-  return (
-    <RevocationsByDimensionComponent
-      timeDescription={timeDescription}
-      chartId={chartId}
-      datasets={data.datasets}
-      labels={data.labels}
-      metricTitle={
-        typeof metricTitle === "function" ? metricTitle(mode) : metricTitle
-      }
-      showWarning={showWarning}
-      chartTitle={chartTitle}
-      chart={renderChart({
-        chartId,
-        data,
-        denominators,
-        numerators,
-        mode,
-        averageRate,
-      })}
-      modeSwitcher={
-        modes.length ? (
-          <ModeSwitcher mode={mode} setMode={setMode} buttons={modeButtons} />
-        ) : null
-      }
-      classModifier={chartId}
-      dataExportLabel={dataExportLabel}
-    />
-  );
-};
+    return (
+      <div ref={ref}>
+        <RevocationsByDimensionComponent
+          timeDescription={timeDescription}
+          chartId={chartId}
+          datasets={data.datasets}
+          labels={data.labels}
+          metricTitle={
+            typeof metricTitle === "function" ? metricTitle(mode) : metricTitle
+          }
+          showWarning={showWarning}
+          chartTitle={chartTitle}
+          chart={renderChart({
+            chartId,
+            data,
+            denominators,
+            numerators,
+            mode,
+            averageRate,
+          })}
+          modeSwitcher={
+            modes.length ? (
+              <ModeSwitcher
+                mode={mode}
+                setMode={setMode}
+                buttons={modeButtons}
+              />
+            ) : null
+          }
+          classModifier={chartId}
+          dataExportLabel={dataExportLabel}
+        />
+      </div>
+    );
+  },
+  { forwardRef: true }
+);
 
 RevocationsByDimension.defaultProps = {
   modes: [],
   defaultMode: null,
   dataExportLabel: null,
   includeWarning: true,
+  containerHeight: null,
 };
 
 RevocationsByDimension.propTypes = {
@@ -105,6 +118,7 @@ RevocationsByDimension.propTypes = {
     isLoading: PropTypes.bool.isRequired,
     isError: PropTypes.bool.isRequired,
   }).isRequired,
+  containerHeight: PropTypes.number,
   chartId: PropTypes.string.isRequired,
   renderChart: PropTypes.func.isRequired,
   generateChartData: PropTypes.func.isRequired,
@@ -118,4 +132,4 @@ RevocationsByDimension.propTypes = {
   includeWarning: PropTypes.bool,
 };
 
-export default observer(RevocationsByDimension);
+export default RevocationsByDimension;

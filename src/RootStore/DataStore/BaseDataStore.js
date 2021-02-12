@@ -24,14 +24,21 @@ import {
   autorun,
   reaction,
 } from "mobx";
+import * as Sentry from "@sentry/react";
 
-import { callMetricsApi } from "../../api/metrics/metricsClient";
+import { filterOptimizedDataFormat } from "shared-filters";
+import { callMetricsApi, parseResponseByFileFormat } from "../../api/metrics";
 import {
-  processResponseData,
   getQueryStringFromFilters,
   dimensionManifestIncludesFilterValues,
 } from "./helpers";
-import { FILTER_TYPE_MAP, DISTRICT } from "../../constants/filterTypes";
+import {
+  FILTER_TYPE_MAP,
+  DISTRICT,
+  METRIC_PERIOD_MONTHS,
+} from "../../constants/filterTypes";
+
+export const DEFAULT_IGNORED_DIMENSIONS = [DISTRICT, METRIC_PERIOD_MONTHS];
 
 /**
  * BaseDataStore is an abstract class that should never be directly instantiated.
@@ -59,7 +66,7 @@ export default class BaseDataStore {
     file,
     skippedFilters = [],
     treatCategoryAllAsAbsent = false,
-    ignoredSubsetDimensions = [DISTRICT],
+    ignoredSubsetDimensions = [],
   }) {
     makeObservable(this, {
       fetchData: flow,
@@ -76,7 +83,9 @@ export default class BaseDataStore {
     this.file = file;
     this.skippedFilters = skippedFilters;
     this.treatCategoryAllAsAbsent = treatCategoryAllAsAbsent;
-    this.ignoredSubsetDimensions = ignoredSubsetDimensions;
+    this.ignoredSubsetDimensions = DEFAULT_IGNORED_DIMENSIONS.concat(
+      ignoredSubsetDimensions
+    );
     this.rootStore = rootStore;
 
     const { userStore } = this.rootStore;
@@ -143,7 +152,22 @@ export default class BaseDataStore {
     throw new Error(`filteredData should be defined in the subclass.`, this);
   }
 
+  filterData(apiData, dataFilter) {
+    if (!apiData.data) return [];
+    const { data, metadata } = apiData;
+    const isExpandedFormat = !Array.isArray(data[0]);
+    if (this.eagerExpand || isExpandedFormat) {
+      return data.filter((item) => dataFilter(item));
+    }
+    return filterOptimizedDataFormat(data, metadata, dataFilter);
+  }
+
   *fetchData({ tenantId }) {
+    if (!this.rootStore?.tenantStore.isLanternTenant) {
+      this.isLoading = false;
+      this.isError = false;
+      return;
+    }
     const endpoint = `${tenantId}/newRevocations/${this.file}${this.filtersQueryParams}`;
     try {
       this.isLoading = true;
@@ -151,7 +175,7 @@ export default class BaseDataStore {
         endpoint,
         this.getTokenSilently
       );
-      this.apiData = processResponseData(
+      this.apiData = parseResponseByFileFormat(
         responseData,
         this.file,
         this.eagerExpand
@@ -160,6 +184,11 @@ export default class BaseDataStore {
       this.isError = false;
     } catch (error) {
       console.error(error);
+      Sentry.captureException(error, (scope) => {
+        scope.setContext("BaseDataStore.fetchData", {
+          endpoint,
+        });
+      });
       this.isError = true;
       this.isLoading = false;
     }

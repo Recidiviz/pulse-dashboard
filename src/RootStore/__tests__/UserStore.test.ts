@@ -15,8 +15,9 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import { runInAction } from "mobx";
+import { runInAction, when } from "mobx";
 
+import * as Sentry from "@sentry/react";
 import createAuth0Client from "@auth0/auth0-spa-js";
 import { ERROR_MESSAGES } from "../../constants/errorMessages";
 import { reactImmediately } from "../../testUtils";
@@ -26,6 +27,7 @@ import TENANTS from "../../tenants";
 import { callRestrictedAccessApi } from "../../api/metrics/metricsClient";
 import RootStore from "../RootStore";
 
+jest.mock("@sentry/react");
 jest.mock("@auth0/auth0-spa-js");
 jest.mock("../RootStore");
 jest.mock("../../api/metrics/metricsClient");
@@ -49,6 +51,8 @@ const testAuthSettings = {
 };
 const userEmail = "thirteen@mo.gov";
 const userDistrict = "13";
+const authError = new Error(ERROR_MESSAGES.unauthorized);
+const apiError = new Error("API Failed");
 
 beforeEach(() => {
   mockRootStore.mockImplementation(() => {
@@ -56,6 +60,7 @@ beforeEach(() => {
       currentTenantId: tenantId,
       tenantStore: {
         districts: [userDistrict],
+        isLanternTenant: true,
       },
     };
   });
@@ -87,6 +92,19 @@ test("authorize requires Auth0 client settings", async () => {
   reactImmediately(() => {
     const error = store.authError;
     expect(error?.message).toMatch(ERROR_MESSAGES.auth0Configuration);
+  });
+  expect.hasAssertions();
+});
+
+test("error thrown in authorize sets authError", async () => {
+  mockCreateAuth0Client.mockResolvedValue("INALID_AUTH_OBJECT");
+  const store = new UserStore({
+    authSettings: testAuthSettings,
+  });
+  await store.authorize();
+  reactImmediately(() => {
+    const error = store.authError;
+    expect(error?.message).toBeDefined();
   });
   expect.hasAssertions();
 });
@@ -251,17 +269,20 @@ describe("fetchRestrictedDistrictData", () => {
   });
 
   describe("when the restrictedDistrict is invalid", () => {
+    const invalidId = "INVALID_DISRTRICT_ID";
     beforeEach(async () => {
       mockCallRestrictedAccessApi.mockResolvedValue({
         supervision_location_restricted_access_emails: {
           restricted_user_email: userEmail.toUpperCase(),
-          allowed_level_1_supervision_location_ids: "INVALID_DISRTRICT_ID",
+          allowed_level_1_supervision_location_ids: invalidId,
         },
       });
 
       userStore = new UserStore({
         rootStore: new RootStore(),
       });
+
+      userStore.user = { email: userEmail, ...metadata };
 
       runInAction(() => {
         userStore.userIsLoading = false;
@@ -273,26 +294,93 @@ describe("fetchRestrictedDistrictData", () => {
     });
 
     it("sets an authError", () => {
-      expect(userStore.authError).toEqual(
-        new Error(ERROR_MESSAGES.unauthorized)
-      );
+      expect(userStore.authError).toEqual(authError);
     });
 
     it("sets restricted to undefined and restrictedDistrictIsLoading to false", () => {
       expect(userStore.restrictedDistrict).toBe(undefined);
       expect(userStore.restrictedDistrictIsLoading).toBe(false);
     });
+
+    it("sends authError and context information to Sentry", (done) => {
+      expect.assertions(1);
+      when(
+        () => !userStore.userIsLoading,
+        () => {
+          expect(Sentry.captureException).toHaveBeenCalledWith(authError, {
+            tags: {
+              restrictedDistrict: invalidId,
+            },
+          });
+          done();
+        }
+      );
+    });
   });
 
   describe("when API responds with an error", () => {
     beforeEach(async () => {
-      mockCallRestrictedAccessApi.mockRejectedValueOnce(new Error());
+      mockCallRestrictedAccessApi.mockRejectedValueOnce(apiError);
       mockIsAuthenticated.mockResolvedValue(true);
       userStore = new UserStore({
         rootStore: new RootStore(),
       });
 
       runInAction(() => {
+        userStore.user = { email: userEmail, ...metadata };
+        userStore.userIsLoading = false;
+      });
+    });
+
+    afterEach(() => {
+      jest.resetAllMocks();
+      jest.restoreAllMocks();
+    });
+
+    it("restrictedDistrict is undefined", () => {
+      expect(userStore.restrictedDistrict).toBeUndefined();
+    });
+
+    it("sets an authError and restrictedDistrictIsLoading to false", () => {
+      expect(userStore.authError).toEqual(authError);
+      expect(userStore.restrictedDistrictIsLoading).toBe(false);
+    });
+
+    it("sends the apiError and context information to Sentry", (done) => {
+      expect.assertions(1);
+      when(
+        () => !userStore.userIsLoading,
+        () => {
+          expect(Sentry.captureException).toHaveBeenCalledWith(apiError, {
+            tags: {
+              availableStateCodes: tenantId,
+              endpoint: `${tenantId}/restrictedAccess`,
+              tenantId,
+            },
+          });
+          done();
+        }
+      );
+    });
+  });
+
+  describe("when the tenant is not a Lantern tenant", () => {
+    beforeEach(async () => {
+      mockRootStore.mockImplementation(() => {
+        return {
+          currentTenantId: "US_ND",
+          tenantStore: {
+            isLanternTenant: false,
+          },
+        };
+      });
+
+      reactImmediately(() => {
+        userStore = new UserStore({
+          authSettings: testAuthSettings,
+          rootStore: new RootStore(),
+        });
+
         userStore.userIsLoading = false;
       });
     });
@@ -301,15 +389,12 @@ describe("fetchRestrictedDistrictData", () => {
       jest.resetAllMocks();
     });
 
-    it("restrictedDistrict is undefined", () => {
-      expect(userStore.restrictedDistrict).toBeUndefined();
+    it("does not call the API", () => {
+      expect(callRestrictedAccessApi).toHaveBeenCalledTimes(0);
     });
 
-    it("sets an authError and restrictedDistrictIsLoading to false", () => {
-      expect(userStore.authError).toEqual(
-        new Error(ERROR_MESSAGES.unauthorized)
-      );
-      expect(userStore.restrictedDistrictIsLoading).toBe(false);
+    it("sets restrictedDistrictIsLoading to false", () => {
+      expect(userStore.restrictedDistrictIsLoading).toBeFalse();
     });
   });
 });

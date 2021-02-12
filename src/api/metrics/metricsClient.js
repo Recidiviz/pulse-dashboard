@@ -14,6 +14,23 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
+/**
+ * Validates the response object from fetch and returns the resolved response data.
+ * Throws an error if response is not OK (status >= 400)
+ * @param {*} response - The Response object from the Fetch API
+ */
+async function validateResponse(response) {
+  const responseJson = await response.json();
+  if (!response.ok) {
+    throw new Error(
+      `Fetching data from API failed.\nStatus: ${responseJson.status} - ${
+        response.statusText
+      }\nErrors: ${JSON.stringify(responseJson.errors)}`
+    );
+  } else {
+    return responseJson;
+  }
+}
 
 /**
  * An asynchronous function that returns a promise which will eventually return the results from
@@ -21,23 +38,19 @@
  * function, which will be used to authenticate the client against the API.
  */
 async function callMetricsApi(endpoint, getTokenSilently) {
-  try {
-    const token = await getTokenSilently();
+  const token = await getTokenSilently();
 
-    const response = await fetch(
-      `${process.env.REACT_APP_API_URL}/api/${endpoint}`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
+  const response = await fetch(
+    `${process.env.REACT_APP_API_URL}/api/${endpoint}`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+  const responseJson = await validateResponse(response);
 
-    return response.json();
-  } catch (error) {
-    console.error(error);
-    return null;
-  }
+  return responseJson;
 }
 
 /**
@@ -46,28 +59,23 @@ async function callMetricsApi(endpoint, getTokenSilently) {
  * and the |getTokenSilently| function, which will be used to authenticate the client against the API.
  */
 async function callRestrictedAccessApi(endpoint, userEmail, getTokenSilently) {
-  try {
-    const token = await getTokenSilently();
+  const token = await getTokenSilently();
 
-    const response = await fetch(
-      `${process.env.REACT_APP_API_URL}/api/${endpoint}`,
-      {
-        body: JSON.stringify({
-          userEmail,
-        }),
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-        method: "POST",
-      }
-    );
-
-    return response.json();
-  } catch (error) {
-    console.error(error);
-    return null;
-  }
+  const response = await fetch(
+    `${process.env.REACT_APP_API_URL}/api/${endpoint}`,
+    {
+      body: JSON.stringify({
+        userEmail,
+      }),
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      method: "POST",
+    }
+  );
+  const responseJson = await validateResponse(response);
+  return responseJson;
 }
 
 /**

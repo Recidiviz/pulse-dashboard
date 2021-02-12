@@ -39,14 +39,15 @@ import values from "lodash/fp/values";
 import MatrixCell from "./MatrixCell";
 import MatrixRow from "./MatrixRow";
 import ExportMenu from "../../ExportMenu";
-import Loading from "../../../Loading";
-import Error from "../../../Error";
+import LoadingChart from "../LoadingChart";
+import ErrorMessage from "../../../ErrorMessage";
 
 import {
   matrixViolationTypeToLabel,
   violationCountLabel,
 } from "../../../../utils/transforms/labels";
 import { translate } from "../../../../views/tenants/utils/i18nSettings";
+import { useContainerHeight } from "../../../../hooks/useContainerHeight";
 import { useRootStore } from "../../../../StoreProvider";
 import {
   VIOLATION_TYPE,
@@ -66,15 +67,15 @@ const Matrix = ({ timeDescription }) => {
   const { dataStore, filters, filtersStore } = useRootStore();
   const { filterOptions } = filtersStore;
   const store = dataStore.matrixStore;
-
+  const { containerHeight, containerRef } = useContainerHeight();
   const violationTypes = translate("violationTypes");
 
   if (store.isLoading) {
-    return <Loading />;
+    return <LoadingChart containerHeight={containerHeight} />;
   }
 
   if (store.isError) {
-    return <Error />;
+    return <ErrorMessage />;
   }
 
   const updateFilters = (updatedFilters) => {
@@ -143,7 +144,7 @@ const Matrix = ({ timeDescription }) => {
   }));
 
   return (
-    <div className="Matrix">
+    <div ref={containerRef} className="Matrix">
       <h4 className="Matrix__title">
         {TITLE}
         <ExportMenu

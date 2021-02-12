@@ -147,13 +147,22 @@ describe("Server tests", () => {
     });
 
     it("should respond with a 400 if the request body is missing userEmail", function () {
-      const expectedError = "request is missing userEmail parameter";
+      const expectedErrors = {
+        errors: [
+          {
+            location: "body",
+            msg: "Request is missing userEmail parameter",
+            param: "userEmail",
+          },
+        ],
+        status: 400,
+      };
       return request(app)
         .post("/api/US_DEMO/restrictedAccess/")
         .send()
         .then((response) => {
           expect(response.statusCode).toEqual(400);
-          expect(response.body.errors).toEqual(expectedError);
+          expect(response.body).toEqual(expectedErrors);
         });
     });
   });
@@ -189,6 +198,30 @@ describe("Server tests", () => {
         .set("X-Appengine-Cron", "true")
         .then((response) => {
           expect(response.statusCode).toEqual(200);
+        });
+    });
+  });
+
+  describe("When a route handler throws an error", () => {
+    beforeEach(() => {
+      process.env = Object.assign(process.env, {
+        IS_DEMO: "false",
+        AUTH_ENV: "test",
+      });
+      jest.resetModules();
+      app = require("../../app").app;
+    });
+
+    it("responds with a formatted error resposne", () => {
+      return request(app)
+        .post("/api/US_DEMO/restrictedAccess/")
+        .send()
+        .then((response) => {
+          expect(response.statusCode).toEqual(500);
+          expect(response.body.errors).toEqual([
+            "No authorization token was found",
+          ]);
+          expect(response.body.status).toEqual(500);
         });
     });
   });

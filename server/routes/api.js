@@ -1,5 +1,5 @@
 // Recidiviz - a data platform for criminal justice reform
-// Copyright (C) 2020 Recidiviz, Inc.
+// Copyright (C) 2021 Recidiviz, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -19,12 +19,12 @@
  * This file contains route handlers for calls to our Metrics API, to be mapped to app routes
  * in server.js.
  */
-
 const { validationResult } = require("express-validator");
 const {
   refreshRedisCache,
   fetchMetrics,
   cacheResponse,
+  fetchAndFilterNewRevocationFile,
   filterRestrictedAccessEmails,
 } = require("../core");
 const { default: isDemoMode } = require("../utils/isDemoMode");
@@ -43,7 +43,11 @@ function responder(res) {
   return (err, data) => {
     if (err) {
       const status = err.status || err.code || SERVER_ERROR;
-      res.status(status).send(err);
+      const errors = err.message || err.errors;
+      res.status(status).send({
+        status,
+        errors: [].concat(errors),
+      });
     } else {
       res.send(data);
     }
@@ -57,14 +61,16 @@ function responder(res) {
  */
 function processAndRespond(responderFn, processResultsFn) {
   return (err, data) => {
+    if (err) responderFn(err, null);
     if (data) {
-      responderFn(null, processResultsFn(data));
-    } else {
-      responderFn(err, null);
+      try {
+        responderFn(null, processResultsFn(data));
+      } catch (error) {
+        responderFn(error, null);
+      }
     }
   };
 }
-
 // TODO: Generalize this API to take in the metric type and file as request parameters in all calls
 
 function restrictedAccess(req, res) {
@@ -74,7 +80,7 @@ function restrictedAccess(req, res) {
     responder(res)(
       {
         status: BAD_REQUEST,
-        errors: "request is missing userEmail parameter",
+        errors: validations.array(),
       },
       null
     );
@@ -125,21 +131,23 @@ function newRevocationFile(req, res) {
     responder(res)({ status: BAD_REQUEST, errors: validations.array() }, null);
   } else {
     const { stateCode, file } = req.params;
-    const queryParams = req.query;
+    const queryParams = req.query || {};
     const cacheKey = getCacheKey({
-      stateCode,
-      metricType,
-      file,
-    });
-    const cacheKeyWithSubsetKeys = getCacheKey({
       stateCode,
       metricType,
       file,
       cacheKeySubset: queryParams,
     });
     cacheResponse(
-      [cacheKey, cacheKeyWithSubsetKeys],
-      () => fetchMetrics(stateCode, metricType, file, isDemoMode),
+      cacheKey,
+      () =>
+        fetchAndFilterNewRevocationFile({
+          stateCode,
+          metricType,
+          file,
+          queryParams,
+          isDemoMode,
+        }),
       responder(res)
     );
   }
@@ -211,4 +219,5 @@ module.exports = {
   programmingExplore,
   responder,
   refreshCache,
+  SERVER_ERROR,
 };

@@ -17,22 +17,20 @@
 import { renderHook, cleanup } from "@testing-library/react-hooks";
 
 import useChartData from "../useChartData";
-import Error from "../../components/Error";
 import {
   callMetricsApi,
   awaitingResults,
 } from "../../api/metrics/metricsClient";
-import { parseResponseByFileFormat } from "../../api/metrics/fileParser";
 import { useRootStore } from "../../StoreProvider";
 
 jest.mock("../../api/metrics/metricsClient");
-jest.mock("../../api/metrics/fileParser");
 jest.mock("../../StoreProvider");
+
+const mockUrl = "us_nd/community/goals";
+const mockFile = "admissions_by_type_by_month";
 
 describe("useChartData", () => {
   beforeAll(() => {
-    parseResponseByFileFormat.mockImplementation((v) => v);
-
     useRootStore.mockReturnValue({ userStore: {} });
 
     awaitingResults.mockImplementation(
@@ -41,9 +39,24 @@ describe("useChartData", () => {
   });
 
   describe("success responses", () => {
-    const mockUrl = "us_mo/newRevocations";
-    const mockFile = "matrix_cells";
-    const mockResponse = "some response";
+    const mockMetadata = {
+      total_data_points: 1,
+      dimension_manifest: [["age_bucket", ["25-29", "30-34"]]],
+      value_keys: ["count"],
+    };
+    const mockResponse = {
+      [mockFile]: {
+        flattenedValueMatrix: "1,1,1",
+        metadata: mockMetadata,
+      },
+    };
+
+    const expectedApiData = {
+      [mockFile]: {
+        data: [{ age_bucket: "30-34", count: "1" }],
+        metadata: mockMetadata,
+      },
+    };
 
     beforeAll(() => {
       callMetricsApi.mockResolvedValue(mockResponse);
@@ -55,33 +68,31 @@ describe("useChartData", () => {
 
     it("should load data", async () => {
       const { result, waitForNextUpdate } = renderHook(() =>
-        useChartData(mockUrl, mockFile)
+        useChartData(mockUrl)
       );
 
       expect(callMetricsApi).toHaveBeenCalledTimes(1);
-      expect(callMetricsApi.mock.calls[0][0]).toBe(`${mockUrl}/${mockFile}`);
+      expect(callMetricsApi.mock.calls[0][0]).toBe(`${mockUrl}`);
 
       await waitForNextUpdate();
 
-      expect(result.current.apiData).toBe(mockResponse);
+      expect(result.current.apiData).toEqual(expectedApiData);
       expect(result.current.isLoading).toBeFalse();
       expect(result.current.isError).toBeFalse();
 
       await cleanup();
     });
 
-    it("should do only one request if 2 components request same file", async () => {
+    it("only fire one request if 2 components request same file", async () => {
       const { result: firstResult, waitForNextUpdate } = renderHook(() =>
-        useChartData(mockUrl, mockFile)
+        useChartData(mockUrl)
       );
-      const { result: secondResult } = renderHook(() =>
-        useChartData(mockUrl, mockFile)
-      );
+      const { result: secondResult } = renderHook(() => useChartData(mockUrl));
 
       await waitForNextUpdate();
 
       expect(callMetricsApi).toHaveBeenCalledTimes(1);
-      expect(firstResult.current.apiData).toEqual(mockResponse);
+      expect(firstResult.current.apiData).toEqual(expectedApiData);
       expect(firstResult.current.apiData).toEqual(secondResult.current.apiData);
 
       await cleanup();

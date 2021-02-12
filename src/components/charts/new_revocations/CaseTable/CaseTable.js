@@ -19,17 +19,19 @@ import React, { useState } from "react";
 import { observer } from "mobx-react-lite";
 import { get } from "mobx";
 
-import CaseTableComponent from "./CaseTableComponent";
 import useSort from "./useSort";
 import ExportMenu from "../../ExportMenu";
-import Loading from "../../../Loading";
-import Error from "../../../Error";
+import LoadingChart from "../LoadingChart";
+import ErrorMessage from "../../../ErrorMessage";
+import Sortable from "./Sortable";
+import Pagination from "./Pagination";
+import { useContainerHeight } from "../../../../hooks/useContainerHeight";
 import {
   getTrailingLabelFromMetricPeriodMonthsToggle,
   getPeriodLabelFromMetricPeriodMonthsToggle,
 } from "../../../../utils/charts/toggles";
 import { translate } from "../../../../views/tenants/utils/i18nSettings";
-import { formatData, formatExportData } from "./utils/helpers";
+import { nullSafeCell, formatData, formatExportData } from "./utils/helpers";
 import { useRootStore } from "../../../../StoreProvider";
 import { METRIC_PERIOD_MONTHS } from "../../../../constants/filterTypes";
 
@@ -41,16 +43,17 @@ const CaseTable = () => {
   const { filters } = filtersStore;
   const [page, setPage] = useState(0);
   const { sortOrder, toggleOrder, comparator } = useSort();
+  const { containerHeight, containerRef } = useContainerHeight();
 
   const filteredData = store.filteredData.slice();
   const sortedData = filteredData.sort(comparator);
 
   if (store.isLoading) {
-    return <Loading />;
+    return <LoadingChart containerHeight={containerHeight} />;
   }
 
   if (store.isError) {
-    return <Error />;
+    return <ErrorMessage />;
   }
 
   const startCase = page * CASES_PER_PAGE;
@@ -88,17 +91,9 @@ const CaseTable = () => {
   ];
 
   return (
-    <CaseTableComponent
-      timeWindowDescription={timeWindowDescription}
-      options={options}
-      createUpdatePage={createUpdatePage}
-      createSortableProps={createSortableProps}
-      pageData={pageData}
-      startCase={startCase}
-      endCase={endCase}
-      totalCases={sortedData.length}
-      casesPerPage={CASES_PER_PAGE}
-      exportMenu={
+    <div ref={containerRef} className="CaseTable">
+      <h4>
+        Admitted individuals
         <ExportMenu
           chartId="filteredCaseTable"
           shouldExport={false}
@@ -108,8 +103,44 @@ const CaseTable = () => {
           fixLabelsInColumns
           timeWindowDescription={timeWindowDescription}
         />
-      }
-    />
+      </h4>
+      <h6 className="pB-20">{timeWindowDescription}</h6>
+      <table>
+        <thead>
+          <tr>
+            {options.map((option) => (
+              <th key={option.key}>
+                <Sortable {...createSortableProps(option.key)}>
+                  {option.label}
+                </Sortable>
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody className="fs-block">
+          {pageData.map((details) => (
+            <tr
+              key={`${details.state_id}-${details.admissionType}-${details.officer_recommendation}`}
+            >
+              <td>{details.state_id}</td>
+              {nullSafeCell(details.district)}
+              {nullSafeCell(details.officer)}
+              {nullSafeCell(details.risk_level)}
+              {nullSafeCell(details.officer_recommendation)}
+              {nullSafeCell(details.violation_record)}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      {sortedData.length > CASES_PER_PAGE && (
+        <Pagination
+          beginning={startCase}
+          end={endCase}
+          total={sortedData.length}
+          createUpdatePage={createUpdatePage}
+        />
+      )}
+    </div>
   );
 };
 

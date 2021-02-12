@@ -24,9 +24,10 @@ import map from "lodash/fp/map";
 import pipe from "lodash/fp/pipe";
 
 import { groupByMonth } from "../common/bars/utils";
-import Loading from "../../Loading";
-import Error from "../../Error";
+import LoadingChart from "./LoadingChart";
+import ErrorMessage from "../../ErrorMessage";
 
+import { useContainerHeight } from "../../../hooks/useContainerHeight";
 import { COLORS } from "../../../assets/scripts/constants/colors";
 import { currentMonthBox } from "../../../utils/charts/currentSpan";
 import {
@@ -47,13 +48,14 @@ const RevocationsOverTime = () => {
   const { filters, dataStore } = useRootStore();
   const store = dataStore.revocationsOverTimeStore;
   const chartId = `${translate("revocations")}OverTime`;
+  const { containerHeight, containerRef } = useContainerHeight();
 
   if (store.isLoading) {
-    return <Loading />;
+    return <LoadingChart containerHeight={containerHeight} />;
   }
 
   if (store.isError) {
-    return <Error />;
+    return <ErrorMessage />;
   }
 
   const chartData = pipe(groupByMonth(["total_revocations"]), (dataset) =>
@@ -91,7 +93,7 @@ const RevocationsOverTime = () => {
       hoverBackgroundColor: COLORS["lantern-light-blue"],
       hoverBorderColor: COLORS["lantern-light-blue"],
     },
-    generateTrendlineDataset(chartDataPoints, COLORS["blue-standard-light"]),
+    generateTrendlineDataset(chartDataPoints, COLORS["lantern-soft-blue"]),
   ];
   const maxElement = Math.max(...chartDataPoints);
   const maxValue = maxElement <= 7 ? 7 : maxElement;
@@ -168,19 +170,21 @@ const RevocationsOverTime = () => {
       : lineChart;
 
   return (
-    <RevocationsByDimensionComponent
-      chartTitle={translate("revocationsOverTimeXAxis")}
-      timeDescription={getTrailingLabelFromMetricPeriodMonthsToggle(
-        get(filters, METRIC_PERIOD_MONTHS)
-      )}
-      labels={chartLabels}
-      chartId={`${translate("revocations")}OverTime`}
-      datasets={datasets}
-      metricTitle={translate("revocationsOverTimeXAxis")}
-      chart={chart}
-      classModifier={chartId}
-      dataExportLabel="Month"
-    />
+    <div ref={containerRef}>
+      <RevocationsByDimensionComponent
+        chartTitle={translate("revocationsOverTimeXAxis")}
+        timeDescription={getTrailingLabelFromMetricPeriodMonthsToggle(
+          get(filters, METRIC_PERIOD_MONTHS)
+        )}
+        labels={chartLabels}
+        chartId={`${translate("revocations")}OverTime`}
+        datasets={datasets}
+        metricTitle={translate("revocationsOverTimeXAxis")}
+        chart={chart}
+        classModifier={chartId}
+        dataExportLabel="Month"
+      />
+    </div>
   );
 };
 
