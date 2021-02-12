@@ -60,7 +60,9 @@ const HorizontalBarChartWithLabels = ({
               weight: 500,
             },
             formatter(value) {
-              return `${Math.trunc(value)} %`;
+              return value < 1
+                ? `${parseFloat(value).toFixed(1)}%`
+                : `${Math.trunc(value)}%`;
             },
           },
         },
@@ -70,7 +72,9 @@ const HorizontalBarChartWithLabels = ({
           xAxes: [
             {
               ticks: {
-                beginAtZero: false,
+                beginAtZero: true,
+                max: 100,
+                display: false,
               },
               gridLines: {
                 display: false,
