@@ -92,7 +92,7 @@ describe("test for currentSpan", () => {
     expect(annotations[0].drawTime).toBe("beforeDatasetsDraw");
     expect(annotations[0].borderColor).toBe("#e0e0e0");
     expect(annotations[0].borderWidth).toBe(1);
-    expect(annotations[0].backgroundColor).toBe("rgba(224, 224, 224, 0.5)");
+    expect(annotations[0].backgroundColor).toBe("rgba(2, 191, 240, 0.1)");
     expect(annotations[0].xMin).toBe("February '20");
 
     const smallCurrentMonthBox = currentSpanMethods.currentMonthBox(
