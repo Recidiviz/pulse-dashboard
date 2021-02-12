@@ -87,6 +87,16 @@ function validateCronRequest(req, res, next) {
   }
 }
 
+function errorHandler(err, _req, res, next) {
+  if (err && err.message) {
+    res
+      .status(api.SERVER_ERROR)
+      .send({ status: api.SERVER_ERROR, errors: [err.message] });
+  } else {
+    next(err);
+  }
+}
+
 if (isDemoMode) {
   checkJwt = (req, res, next) => {
     next();
@@ -122,5 +132,7 @@ app.get("/_ah/warmup", () => {
   // eslint-disable-next-line no-console
   console.log("Responding to warmup request...");
 });
+
+app.use(errorHandler);
 
 module.exports = { app, port };

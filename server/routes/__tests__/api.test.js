@@ -322,5 +322,22 @@ describe("API GET tests", () => {
 
       expect(send).toHaveBeenCalledWith(data);
     });
+
+    it("should send the status and error message in the response body", () => {
+      const error = new Error("API error");
+      const callback = responder(res);
+      callback(error, null);
+      expect(send).toHaveBeenCalledWith({
+        status: 500,
+        errors: [error.message],
+      });
+    });
+
+    it("should send the validation errors in the response body", () => {
+      const error = { status: 400, errors: ["Validation errors"] };
+      const callback = responder(res);
+      callback(error, null);
+      expect(send).toHaveBeenCalledWith(error);
+    });
   });
 });

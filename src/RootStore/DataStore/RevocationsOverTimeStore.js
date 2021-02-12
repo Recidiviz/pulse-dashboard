@@ -17,6 +17,8 @@
 
 import { flow, makeObservable } from "mobx";
 import { matchesAllFilters } from "shared-filters";
+import * as Sentry from "@sentry/react";
+
 import BaseDataStore from "./BaseDataStore";
 import { callMetricsApi, parseResponseByFileFormat } from "../../api/metrics";
 import { METRIC_PERIOD_MONTHS } from "../../constants/filterTypes";
@@ -66,6 +68,11 @@ export default class RevocationsOverTimeStore extends BaseDataStore {
       this.isError = false;
     } catch (error) {
       console.error(error);
+      Sentry.captureException(error, (scope) => {
+        scope.setContext("RevocationsOverTimeStore.fetchData", {
+          endpoint,
+        });
+      });
       this.isError = true;
       this.isLoading = false;
     }

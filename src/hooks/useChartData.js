@@ -16,11 +16,12 @@
 // =============================================================================
 
 import { useState, useCallback, useEffect } from "react";
+import * as Sentry from "@sentry/react";
+
 import makeCancellablePromise from "make-cancellable-promise";
 import {
   callMetricsApi,
   awaitingResults,
-  parseResponseByFileFormat,
   parseResponsesByFileFormat,
 } from "../api/metrics";
 import { useRootStore } from "../StoreProvider";
@@ -28,13 +29,9 @@ import { useRootStore } from "../StoreProvider";
 const queues = {};
 
 /**
- * A hook which fetches the given file at the given API service URL. Returns
+ * A hook which fetches data at the given API service URL. Returns
  * state which will populate with the response data and a flag indicating whether
- * or not the response is still loading, in the form of `{ apiData, isLoading, unflattenedValues }`.
- *
- * `unflattenValues` is the unflattened value matrix from the apiData and is only
- * populated if the request was for a specific file, if that file was in the optimized
- * format, and if eagerExpand is set to false.
+ * or not the response is still loading, in the form of `{ apiData, isLoading, isError }`.
  *
  * `eagerExpand` defaults to true, which means that by default we immediately expand
  * the optimized format into an array of deserialized objects. If set to false, this
@@ -43,62 +40,51 @@ const queues = {};
  * ensure we do not need to proactively and repeatedly unflatten the value matrix
  * on subsequent filter operations.
  */
-function useChartData(url, file) {
+function useChartData(url) {
   const eagerExpand = true;
   const { userStore } = useRootStore();
   const { isLoading: userLoading, user, getTokenSilently } = userStore;
-  const [metadata, setMetadata] = useState({});
   const [apiData, setApiData] = useState([]);
   const [awaitingApi, setAwaitingApi] = useState(true);
   const [isError, setIsError] = useState(false);
 
   const fetchChartData = useCallback(async () => {
     try {
-      const fileKey = `${url}-${file}`;
-
-      if (queues[fileKey]) {
+      if (queues[url]) {
         return new Promise((resolve) => {
-          queues[fileKey].push(resolve);
+          queues[url].push(resolve);
         });
       }
 
-      queues[fileKey] = [];
+      queues[url] = [];
 
-      const responseData = await callMetricsApi(
-        file ? `${url}/${file}` : url,
-        getTokenSilently
-      );
-      queues[fileKey].forEach((resolve) => resolve(responseData));
-      delete queues[fileKey];
+      const responseData = await callMetricsApi(url, getTokenSilently);
+      queues[url].forEach((resolve) => resolve(responseData));
+      delete queues[url];
 
       return await responseData;
     } catch (error) {
       console.error(error);
+      Sentry.captureException(error, (scope) => {
+        scope.setContext("useChartData.fetchChartData", {
+          url,
+        });
+      });
       throw error;
     }
-  }, [file, getTokenSilently, url]);
+  }, [getTokenSilently, url]);
 
   useEffect(() => {
     const { cancel, promise } = makeCancellablePromise(fetchChartData());
     promise
       .then((responseData) => {
-        if (file) {
-          const {
-            data,
-            metadata: responseMetadata,
-          } = parseResponseByFileFormat(responseData, file, eagerExpand);
-          setMetadata(responseMetadata);
-          setApiData(data);
-        } else {
-          const metricFiles = parseResponsesByFileFormat(
-            responseData,
-            eagerExpand
-          );
-          setApiData(metricFiles);
-        }
+        const metricFiles = parseResponsesByFileFormat(
+          responseData,
+          eagerExpand
+        );
+        setApiData(metricFiles);
       })
-      .catch((error) => {
-        console.error(`Error parsing response data: `, error);
+      .catch(() => {
         setIsError(true);
       })
       .finally(() => {
@@ -109,11 +95,11 @@ function useChartData(url, file) {
     return () => {
       cancel();
     };
-  }, [eagerExpand, fetchChartData, file]);
+  }, [eagerExpand, fetchChartData, url]);
 
   const isLoading = awaitingResults(userLoading, user, awaitingApi);
 
-  return { metadata, isLoading, isError, apiData };
+  return { isLoading, isError, apiData };
 }
 
 export default useChartData;

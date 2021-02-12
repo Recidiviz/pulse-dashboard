@@ -22,7 +22,6 @@ import { get } from "mobx";
 
 import { getTimeDescription } from "./charts/new_revocations/helpers/format";
 import ToggleBarFilter from "./charts/new_revocations/ToggleBar/ToggleBarFilter";
-import ErrorBoundary from "./ErrorBoundary";
 import DistrictFilter from "./charts/new_revocations/ToggleBar/DistrictFilter";
 import AdmissionTypeFilter from "./charts/new_revocations/ToggleBar/AdmissionTypeFilter";
 import ViolationFilter from "./charts/new_revocations/ToggleBar/ViolationFilter";
@@ -30,7 +29,7 @@ import RevocationsOverTime from "./charts/new_revocations/RevocationsOverTime";
 import Matrix from "./charts/new_revocations/Matrix";
 import MatrixExplanation from "./charts/new_revocations/Matrix/MatrixExplanation";
 import RevocationCharts from "./charts/new_revocations/RevocationCharts";
-
+import ErrorBoundary from "./ErrorBoundary";
 import CaseTable from "./charts/new_revocations/CaseTable/CaseTable";
 import {
   ADMISSION_TYPE,
@@ -56,7 +55,7 @@ const Revocations = () => {
   return (
     <main className="Revocations">
       <Sticky style={{ zIndex: 700, top: 65 }}>
-        <>
+        <ErrorBoundary>
           <div className="top-level-filters d-f">
             <ToggleBarFilter
               label="Time Period"
@@ -85,7 +84,7 @@ const Revocations = () => {
             )}
           </div>
           <ViolationFilter />
-        </>
+        </ErrorBoundary>
       </Sticky>
 
       <div className="bgc-white p-20 m-20">
@@ -101,11 +100,9 @@ const Revocations = () => {
         </div>
         <MatrixExplanation />
       </div>
-
       <ErrorBoundary>
         <RevocationCharts timeDescription={timeDescription} />
       </ErrorBoundary>
-
       <div className="bgc-white m-20 p-20">
         <ErrorBoundary>
           <CaseTable />

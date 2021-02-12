@@ -22,6 +22,7 @@ import {
   Switch,
   BrowserRouter as Router,
 } from "react-router-dom";
+import * as Sentry from "@sentry/react";
 
 import { PageProvider } from "./contexts/PageContext";
 import StoreProvider from "./StoreProvider";
@@ -50,6 +51,11 @@ import "./assets/styles/index.scss";
 initFontAwesome();
 initIntercomSettings();
 initI18n();
+
+Sentry.init({
+  environment: process.env.REACT_APP_SENTRY_ENV,
+  dsn: process.env.REACT_APP_SENTRY_DSN,
+});
 
 // prettier-ignore
 const App = () => (

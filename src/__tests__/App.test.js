@@ -31,7 +31,7 @@ import Loading from "../components/Loading";
 import LanternLayout from "../components/layouts/LanternLayout";
 import CoreLayout from "../components/layouts/CoreLayout";
 import StoreProvider, { useRootStore } from "../StoreProvider";
-import Error from "../components/Error";
+import ErrorMessage from "../components/ErrorMessage";
 import VerificationNeeded from "../views/VerificationNeeded";
 
 jest.mock("../utils/initIntercomSettings");
@@ -44,7 +44,7 @@ jest.mock("../views/tenants/us_nd/community/Goals");
 jest.mock("../views/NotFound");
 jest.mock("../components/Loading");
 jest.mock("../StoreProvider");
-jest.mock("../components/Error");
+jest.mock("../components/ErrorMessage");
 jest.mock("../views/VerificationNeeded");
 
 describe("App tests", () => {
@@ -67,7 +67,7 @@ describe("App tests", () => {
   UsNDCommunityGoals.mockReturnValue(mockWithTestId(mockNDCommunityGoalsId));
   NotFound.mockReturnValue(mockWithTestId(mockNotFoundId));
   Loading.mockReturnValue(mockWithTestId(mockLoadingTestId));
-  Error.mockReturnValue(mockWithTestId(mockErrorId));
+  ErrorMessage.mockReturnValue(mockWithTestId(mockErrorId));
   VerificationNeeded.mockReturnValue(mockWithTestId(mockVerificationNeededId));
 
   beforeEach(() => {
