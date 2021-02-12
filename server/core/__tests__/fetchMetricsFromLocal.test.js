@@ -1,5 +1,5 @@
 // Recidiviz - a data platform for criminal justice reform
-// Copyright (C) 2020 Recidiviz, Inc.
+// Copyright (C) 2021 Recidiviz, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -18,27 +18,37 @@
 const fs = require("fs");
 const path = require("path");
 const { default: fetchMetricsFromLocal } = require("../fetchMetricsFromLocal");
-const { getFilesByMetricType } = require("../getFilesByMetricType");
+const getMetricsByType = require("../../models/getMetricsByType");
 
-jest.mock("../getFilesByMetricType", () => ({
-  getFilesByMetricType: jest.fn(),
-}));
+jest.mock("../../models/getMetricsByType");
+
 jest.mock("fs");
 
 describe("fetchMetricsFromLocal tests", () => {
-  const stateCode = "some code";
-  const metricType = "some type";
-  const file = "some file";
+  const stateCode = "US_DEMO";
+  const metricType = "newRevocation";
+  const file = "revocations_matrix_by_month";
 
   const promiseResValue = "resolved value";
   const metadata = "some metadata";
 
-  it("should return array with resolving promises without metadata", () => {
-    const returnedFile = "some_file.json";
-    const returnedFileKey = "some_file";
+  beforeEach(() => {
+    jest.resetModules();
+  });
+
+  afterAll(() => {
+    jest.restoreAllMocks();
+  });
+
+  it("JSON should return with empty metadata object", async () => {
+    const returnedFile = "revocations_matrix_by_month.json";
     const returnedFileExtension = ".json";
-    const returnedFiles = [returnedFile];
-    getFilesByMetricType.mockImplementation(() => returnedFiles);
+    const mockReturnedFiles = [returnedFile];
+    getMetricsByType.default.mockImplementationOnce(() => {
+      return {
+        getFiles: jest.fn().mockReturnValue(mockReturnedFiles),
+      };
+    });
 
     jest.spyOn(path, "resolve");
     const readFileSpy = jest.spyOn(fs, "readFile");
@@ -48,22 +58,28 @@ describe("fetchMetricsFromLocal tests", () => {
     );
     readFileSyncSpy.mockReturnValue(JSON.stringify(metadata));
 
-    fetchMetricsFromLocal(stateCode, metricType, file).forEach((promise) => {
-      expect(promise).resolves.toStrictEqual({
+    const fetchPromises = fetchMetricsFromLocal(stateCode, metricType, file);
+    const results = await Promise.all(fetchPromises);
+
+    results.forEach((result) => {
+      expect(result).toStrictEqual({
         contents: promiseResValue,
-        fileKey: returnedFileKey,
+        fileKey: file,
         metadata: {},
         extension: returnedFileExtension,
       });
     });
   });
 
-  it("should return array with resolving promises with metadata", () => {
-    const returnedFileKey = "some_file";
-    const returnedFile = "some_file.txt";
+  it("txt should return array with metadata", async () => {
+    const returnedFile = "revocations_matrix_by_month.txt";
     const returnedFileExtension = ".txt";
-    const returnedFiles = [returnedFile];
-    getFilesByMetricType.mockImplementation(() => returnedFiles);
+    const mockReturnedFiles = [returnedFile];
+    getMetricsByType.default.mockImplementationOnce(() => {
+      return {
+        getFiles: jest.fn().mockReturnValue(mockReturnedFiles),
+      };
+    });
 
     jest.spyOn(path, "resolve");
     const readFileSpy = jest.spyOn(fs, "readFile");
@@ -73,24 +89,66 @@ describe("fetchMetricsFromLocal tests", () => {
     );
     readFileSyncSpy.mockReturnValue(JSON.stringify(metadata));
 
-    fetchMetricsFromLocal(stateCode, metricType, file).forEach((promise) => {
-      expect(promise).resolves.toStrictEqual({
+    const fetchPromises = fetchMetricsFromLocal(stateCode, metricType, file);
+    const results = await Promise.all(fetchPromises);
+
+    results.forEach((result) => {
+      expect(result).toStrictEqual({
         contents: promiseResValue,
-        fileKey: returnedFileKey,
+        fileKey: file,
         metadata,
         extension: returnedFileExtension,
       });
     });
   });
 
-  it("should return array with rejected promises", () => {
-    const error = new Error("some error");
-    getFilesByMetricType.mockImplementation(() => {
-      throw error;
+  describe("when there's an error", () => {
+    beforeEach(() => {
+      jest.restoreAllMocks();
+      jest.resetAllMocks();
     });
 
-    fetchMetricsFromLocal(stateCode, metricType, file).forEach((promise) => {
-      expect(promise).rejects.toStrictEqual(error);
+    it("errors getting files return an array with rejected promises", async () => {
+      const error = new Error("some error");
+      getMetricsByType.default.mockImplementationOnce(() => {
+        return {
+          getFiles: () => {
+            throw error;
+          },
+        };
+      });
+
+      const fetchPromises = Promise.all(
+        fetchMetricsFromLocal(stateCode, metricType, file)
+      );
+
+      await expect(fetchPromises).rejects.toEqual(error);
+
+      expect.assertions(1);
+    });
+
+    it("errors parsing files return an array with rejected promises", async () => {
+      const error = new Error("read file sync error");
+      const readFileSyncSpy = jest.spyOn(fs, "readFileSync");
+      const returnedFile = "revocations_matrix_by_month.txt";
+      const mockReturnedFiles = [returnedFile];
+
+      getMetricsByType.default.mockImplementationOnce(() => {
+        return {
+          getFiles: jest.fn().mockReturnValue(mockReturnedFiles),
+        };
+      });
+      readFileSyncSpy.mockImplementationOnce(() => {
+        throw error;
+      });
+
+      const fetchPromises = Promise.all(
+        fetchMetricsFromLocal(stateCode, metricType, file)
+      );
+
+      await expect(fetchPromises).rejects.toEqual(error);
+
+      expect.assertions(1);
     });
   });
 });

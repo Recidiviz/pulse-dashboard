@@ -17,8 +17,8 @@
 const { default: BaseMetrics } = require("./BaseMetrics");
 
 class NewRevocationsMetrics extends BaseMetrics {
-  getValidDimensionsForMetric(metricName) {
-    return this.metrics[metricName].dimensions;
+  getValidDimensionsForMetric(fileName) {
+    return this.metrics[fileName].dimensions;
   }
 
   static formatInvalidDimensions(invalidDimensions) {
@@ -29,9 +29,15 @@ class NewRevocationsMetrics extends BaseMetrics {
       .join(", ");
   }
 
-  validateDimensionsForFile(metricName, sourceDimensions) {
-    const validDimensions = this.getValidDimensionsForMetric(metricName);
+  validateDimensionsForFile(fileName, sourceDimensions) {
+    const validDimensions = this.getValidDimensionsForMetric(fileName);
     const invalidDimensions = {};
+
+    if (!validDimensions || !sourceDimensions) {
+      // eslint-disable-next-line no-console
+      console.log(`Skipping dimensions validations for ${fileName}`);
+      return;
+    }
 
     sourceDimensions.forEach(([dimensionKey, sourceDimensionValues]) => {
       const validDimensionValues = validDimensions[dimensionKey];
@@ -52,7 +58,7 @@ class NewRevocationsMetrics extends BaseMetrics {
 
     if (Object.keys(invalidDimensions).length > 0) {
       throw new Error(
-        `${metricName} includes unexpected dimension values: ${this.formatInvalidDimensions(
+        `${fileName} includes unexpected dimension values: ${this.constructor.formatInvalidDimensions(
           invalidDimensions
         )}`
       );

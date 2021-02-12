@@ -18,8 +18,8 @@
 const fs = require("fs");
 const util = require("util");
 const path = require("path");
-const { getFilesByMetricType } = require("./getFilesByMetricType");
 const { getFileExtension, getFileName } = require("../utils/fileName");
+const { default: getMetricsByType } = require("../models/getMetricsByType");
 
 const asyncReadFile = util.promisify(fs.readFile);
 
@@ -32,7 +32,9 @@ function fetchMetricsFromLocal(_, metricType, file) {
   const promises = [];
 
   try {
-    const files = getFilesByMetricType(metricType, file);
+    const metric = getMetricsByType(metricType, "US_DEMO");
+    const files = metric.getFiles(file);
+
     files.forEach((filename) => {
       const fileKey = getFileName(filename);
       const extension = getFileExtension(filename);

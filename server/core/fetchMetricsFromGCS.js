@@ -17,9 +17,8 @@
 
 const BUCKET_NAME = process.env.METRIC_BUCKET;
 const objectStorage = require("./objectStorage");
-const { getFilesByMetricType } = require("./getFilesByMetricType");
 const { getFileExtension, getFileName } = require("../utils/fileName");
-
+const { default: getMetricsByType } = require("../models/getMetricsByType");
 /**
  * Retrieves all metric files for the given metric type from Google Cloud Storage.
  *
@@ -35,7 +34,9 @@ function fetchMetricsFromGCS(stateCode, metricType, file) {
   const promises = [];
 
   try {
-    const files = getFilesByMetricType(metricType, file);
+    const metric = getMetricsByType(metricType, stateCode);
+    const files = metric.getFiles(file);
+
     files.forEach((filename) => {
       const fileKey = getFileName(filename);
       const extension = getFileExtension(filename);
@@ -67,6 +68,10 @@ function fetchMetricsFromGCS(stateCode, metricType, file) {
                 rawMetadata.dimension_manifest
               );
             }
+            metric.validateDimensionsForFile(
+              fileKey,
+              metadata.dimension_manifest
+            );
 
             return { fileKey, extension, metadata, contents };
           }
