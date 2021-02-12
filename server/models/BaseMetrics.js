@@ -29,7 +29,7 @@ class BaseMetrics {
   constructor(metricType, stateCode) {
     this.stateCode = stateCode;
     this.metricType = metricType;
-    this.metrics = METRICS[stateCode][this.metricType];
+    this.metrics = METRICS[stateCode][metricType];
   }
 
   getAllFiles() {

@@ -15,14 +15,11 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 const {
+  METRIC_TYPES,
+  METRICS,
   DEFAULT_MONTH,
   DEFAULT_REPORTED_VIOLATIONS,
   DEFAULT_METRIC_PERIOD_MONTHS,
-  COMMUNITY_GOALS,
-  COMMUNITY_EXPLORE,
-  FACILITIES_GOALS,
-  FACILITIES_EXPLORE,
-  PROGRAMMING_EXPLORE,
 } = require("./shared");
 
 const DEFAULT_SUPERVISION_LEVEL = [
@@ -50,116 +47,114 @@ const DEFAULT_VIOLATION_TYPE = [
 
 const DEFAULT_GENDER = ["external_unknown", "female", "male"];
 
-const NEW_REVOCATIONS = {
-  supervision_location_restricted_access_emails: {
-    filename: "supervision_location_restricted_access_emails.json",
-  },
-  revocations_matrix_by_month: {
-    filename: "revocations_matrix_by_month.txt",
-    dimensions: {
-      month: DEFAULT_MONTH,
-      reported_violations: DEFAULT_REPORTED_VIOLATIONS.concat(["all"]),
-      supervision_level: DEFAULT_SUPERVISION_LEVEL.concat(["all"]),
-      violation_type: DEFAULT_VIOLATION_TYPE.concat(["all"]),
+const US_PA_METRICS = {
+  [METRIC_TYPES.NEW_REVOCATIONS]: {
+    supervision_location_restricted_access_emails: {
+      filename: "supervision_location_restricted_access_emails.json",
     },
-  },
-  revocations_matrix_cells: {
-    filename: "revocations_matrix_cells.txt",
-    dimensions: {
-      metric_period_months: DEFAULT_METRIC_PERIOD_MONTHS,
-      reported_violations: DEFAULT_REPORTED_VIOLATIONS,
-      supervision_level: DEFAULT_SUPERVISION_LEVEL.concat(["all"]),
-      violation_type: [
-        "absconded",
-        "elec_monitoring",
-        "high_tech",
-        "law",
-        "low_tech",
-        "med_tech",
-        "substance_abuse",
-      ],
+    revocations_matrix_by_month: {
+      filename: "revocations_matrix_by_month.txt",
+      dimensions: {
+        month: DEFAULT_MONTH,
+        reported_violations: DEFAULT_REPORTED_VIOLATIONS.concat(["all"]),
+        supervision_level: DEFAULT_SUPERVISION_LEVEL.concat(["all"]),
+        violation_type: DEFAULT_VIOLATION_TYPE.concat(["all"]),
+      },
     },
-  },
-  revocations_matrix_distribution_by_district: {
-    filename: "revocations_matrix_distribution_by_district.txt",
-    dimensions: {
-      metric_period_months: DEFAULT_METRIC_PERIOD_MONTHS,
-      reported_violations: DEFAULT_REPORTED_VIOLATIONS.concat(["all"]),
-      supervision_level: DEFAULT_SUPERVISION_LEVEL.concat(["all"]),
-      violation_type: DEFAULT_VIOLATION_TYPE.concat(["all"]),
+    revocations_matrix_cells: {
+      filename: "revocations_matrix_cells.txt",
+      dimensions: {
+        metric_period_months: DEFAULT_METRIC_PERIOD_MONTHS,
+        reported_violations: DEFAULT_REPORTED_VIOLATIONS,
+        supervision_level: DEFAULT_SUPERVISION_LEVEL.concat(["all"]),
+        violation_type: [
+          "absconded",
+          "elec_monitoring",
+          "high_tech",
+          "law",
+          "low_tech",
+          "med_tech",
+          "substance_abuse",
+        ],
+      },
     },
-  },
-  revocations_matrix_distribution_by_gender: {
-    filename: "revocations_matrix_distribution_by_gender.txt",
-    dimensions: {
-      gender: DEFAULT_GENDER,
-      metric_period_months: DEFAULT_METRIC_PERIOD_MONTHS,
-      reported_violations: DEFAULT_REPORTED_VIOLATIONS.concat(["all"]),
-      supervision_level: DEFAULT_SUPERVISION_LEVEL.concat(["all"]),
-      violation_type: DEFAULT_VIOLATION_TYPE.concat(["all"]),
+    revocations_matrix_distribution_by_district: {
+      filename: "revocations_matrix_distribution_by_district.txt",
+      dimensions: {
+        metric_period_months: DEFAULT_METRIC_PERIOD_MONTHS,
+        reported_violations: DEFAULT_REPORTED_VIOLATIONS.concat(["all"]),
+        supervision_level: DEFAULT_SUPERVISION_LEVEL.concat(["all"]),
+        violation_type: DEFAULT_VIOLATION_TYPE.concat(["all"]),
+      },
     },
-  },
-  revocations_matrix_distribution_by_officer: {
-    filename: "revocations_matrix_distribution_by_officer.txt",
-    dimensions: {
-      metric_period_months: DEFAULT_METRIC_PERIOD_MONTHS,
-      reported_violations: DEFAULT_REPORTED_VIOLATIONS.concat(["all"]),
-      supervision_level: DEFAULT_SUPERVISION_LEVEL.concat(["all"]),
-      violation_type: DEFAULT_VIOLATION_TYPE.concat(["all"]),
+    revocations_matrix_distribution_by_gender: {
+      filename: "revocations_matrix_distribution_by_gender.txt",
+      dimensions: {
+        gender: DEFAULT_GENDER,
+        metric_period_months: DEFAULT_METRIC_PERIOD_MONTHS,
+        reported_violations: DEFAULT_REPORTED_VIOLATIONS.concat(["all"]),
+        supervision_level: DEFAULT_SUPERVISION_LEVEL.concat(["all"]),
+        violation_type: DEFAULT_VIOLATION_TYPE.concat(["all"]),
+      },
     },
-  },
-  revocations_matrix_distribution_by_race: {
-    filename: "revocations_matrix_distribution_by_race.txt",
-    dimensions: {
-      metric_period_months: DEFAULT_METRIC_PERIOD_MONTHS,
-      reported_violations: DEFAULT_REPORTED_VIOLATIONS.concat(["all"]),
-      supervision_level: DEFAULT_SUPERVISION_LEVEL.concat(["all"]),
-      violation_type: DEFAULT_VIOLATION_TYPE.concat(["all"]),
+    revocations_matrix_distribution_by_officer: {
+      filename: "revocations_matrix_distribution_by_officer.txt",
+      dimensions: {
+        metric_period_months: DEFAULT_METRIC_PERIOD_MONTHS,
+        reported_violations: DEFAULT_REPORTED_VIOLATIONS.concat(["all"]),
+        supervision_level: DEFAULT_SUPERVISION_LEVEL.concat(["all"]),
+        violation_type: DEFAULT_VIOLATION_TYPE.concat(["all"]),
+      },
     },
-  },
-  revocations_matrix_distribution_by_risk_level: {
-    filename: "revocations_matrix_distribution_by_risk_level.txt",
-    dimensions: {
-      metric_period_months: DEFAULT_METRIC_PERIOD_MONTHS,
-      reported_violations: DEFAULT_REPORTED_VIOLATIONS.concat(["all"]),
-      supervision_level: DEFAULT_SUPERVISION_LEVEL.concat(["all"]),
-      violation_type: DEFAULT_VIOLATION_TYPE.concat(["all"]),
+    revocations_matrix_distribution_by_race: {
+      filename: "revocations_matrix_distribution_by_race.txt",
+      dimensions: {
+        metric_period_months: DEFAULT_METRIC_PERIOD_MONTHS,
+        reported_violations: DEFAULT_REPORTED_VIOLATIONS.concat(["all"]),
+        supervision_level: DEFAULT_SUPERVISION_LEVEL.concat(["all"]),
+        violation_type: DEFAULT_VIOLATION_TYPE.concat(["all"]),
+      },
     },
-  },
-  revocations_matrix_distribution_by_violation: {
-    filename: "revocations_matrix_distribution_by_violation.txt",
-    dimensions: {
-      metric_period_months: DEFAULT_METRIC_PERIOD_MONTHS,
-      reported_violations: DEFAULT_REPORTED_VIOLATIONS.concat(["all"]),
-      supervision_level: DEFAULT_SUPERVISION_LEVEL.concat(["all"]),
-      violation_type: DEFAULT_VIOLATION_TYPE.concat(["all"]),
+    revocations_matrix_distribution_by_risk_level: {
+      filename: "revocations_matrix_distribution_by_risk_level.txt",
+      dimensions: {
+        metric_period_months: DEFAULT_METRIC_PERIOD_MONTHS,
+        reported_violations: DEFAULT_REPORTED_VIOLATIONS.concat(["all"]),
+        supervision_level: DEFAULT_SUPERVISION_LEVEL.concat(["all"]),
+        violation_type: DEFAULT_VIOLATION_TYPE.concat(["all"]),
+      },
     },
-  },
-  revocations_matrix_filtered_caseload: {
-    filename: "revocations_matrix_filtered_caseload.txt",
-    dimensions: {
-      metric_period_months: DEFAULT_METRIC_PERIOD_MONTHS,
-      reported_violations: DEFAULT_REPORTED_VIOLATIONS,
-      supervision_level: DEFAULT_SUPERVISION_LEVEL,
-      violation_type: [
-        "absconded",
-        "elec_monitoring",
-        "high_tech",
-        "law",
-        "low_tech",
-        "med_tech",
-        "no_violation_type",
-        "substance_abuse",
-      ],
+    revocations_matrix_distribution_by_violation: {
+      filename: "revocations_matrix_distribution_by_violation.txt",
+      dimensions: {
+        metric_period_months: DEFAULT_METRIC_PERIOD_MONTHS,
+        reported_violations: DEFAULT_REPORTED_VIOLATIONS.concat(["all"]),
+        supervision_level: DEFAULT_SUPERVISION_LEVEL.concat(["all"]),
+        violation_type: DEFAULT_VIOLATION_TYPE.concat(["all"]),
+      },
+    },
+    revocations_matrix_filtered_caseload: {
+      filename: "revocations_matrix_filtered_caseload.txt",
+      dimensions: {
+        metric_period_months: DEFAULT_METRIC_PERIOD_MONTHS,
+        reported_violations: DEFAULT_REPORTED_VIOLATIONS,
+        supervision_level: DEFAULT_SUPERVISION_LEVEL,
+        violation_type: [
+          "absconded",
+          "elec_monitoring",
+          "high_tech",
+          "law",
+          "low_tech",
+          "med_tech",
+          "no_violation_type",
+          "substance_abuse",
+        ],
+      },
     },
   },
 };
 
 module.exports = {
-  NEW_REVOCATIONS,
-  COMMUNITY_GOALS,
-  COMMUNITY_EXPLORE,
-  FACILITIES_GOALS,
-  FACILITIES_EXPLORE,
-  PROGRAMMING_EXPLORE,
+  ...US_PA_METRICS,
+  ...METRICS,
 };

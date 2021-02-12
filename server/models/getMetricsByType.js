@@ -1,14 +1,6 @@
 const { default: NewRevocationsMetrics } = require("./NewRevocationsMetrics");
 const { default: BaseMetrics } = require("./BaseMetrics");
-
-const METRIC_TYPES = {
-  NEW_REVOCATION: "newRevocation",
-  COMMUNITY_GOALS: "communityGoals",
-  COMMUNITY_EXPLORE: "communityExplore",
-  FACILITIES_GOALS: "facilitiesGoals",
-  FACILITIES_EXPLORE: "facilitiesExplore",
-  PROGRAMMING_EXPLORE: "programmingExplore",
-};
+const { METRIC_TYPES } = require("./metrics/shared");
 
 function getMetricsByType(metricType, stateCode) {
   switch (metricType) {
@@ -25,4 +17,4 @@ function getMetricsByType(metricType, stateCode) {
   }
 }
 
-module.exports = { getMetricsByType };
+exports.default = getMetricsByType;
