@@ -68,6 +68,7 @@ function fetchMetricsFromGCS(stateCode, metricType, file) {
                 rawMetadata.dimension_manifest
               );
             }
+
             metric.validateDimensionsForFile(
               fileKey,
               metadata.dimension_manifest

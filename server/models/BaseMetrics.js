@@ -15,6 +15,8 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 const { default: METRICS } = require("./metrics");
+const { METRIC_TYPES } = require("./metrics/shared");
+
 /**
  * The base class for all metrics. Use the helper `getMetricsByType` to instantiate a metric
  * by metricType and stateCode.
@@ -27,9 +29,18 @@ class BaseMetrics {
   metrics;
 
   constructor(metricType, stateCode) {
+    this.constructor.validateMetricType(metricType);
     this.stateCode = stateCode;
     this.metricType = metricType;
     this.metrics = METRICS[stateCode][metricType];
+  }
+
+  static validateMetricType(metricType) {
+    if (!Object.values(METRIC_TYPES).includes(metricType)) {
+      throw new Error(
+        `Cannot instantiate BaseMetrics with metricType: ${metricType}`
+      );
+    }
   }
 
   getAllFiles() {

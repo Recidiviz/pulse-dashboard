@@ -13,7 +13,7 @@ function getMetricsByType(metricType, stateCode) {
     case METRIC_TYPES.PROGRAMMING_EXPLORE:
       return new BaseMetrics(metricType, stateCode);
     default:
-      throw new Error(`No such metric type ${metricType}`);
+      throw new Error(`No such metric type ${metricType} for ${stateCode}`);
   }
 }
 
