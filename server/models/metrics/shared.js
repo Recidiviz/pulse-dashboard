@@ -23,7 +23,7 @@ const METRIC_TYPES = {
   PROGRAMMING_EXPLORE: "programmingExplore",
 };
 
-const DEFAULT_MONTH = [
+const DEFAULT_MONTHS = [
   "1",
   "10",
   "11",
@@ -51,133 +51,11 @@ const DEFAULT_REPORTED_VIOLATIONS = [
   "8",
 ];
 
-const DEFAULT_METRIC_PERIOD_MONTHS = ["12", "36", "6", "1", "3"];
-
-const METRICS = {
-  [METRIC_TYPES.COMMUNITY_GOALS]: {
-    admissions_by_type_by_month: {
-      filename: "admissions_by_type_by_month.txt",
-    },
-    admissions_by_type_by_period: {
-      filename: "admissions_by_type_by_period.txt",
-    },
-    average_change_lsir_score_by_month: {
-      filename: "average_change_lsir_score_by_month.txt",
-    },
-    average_change_lsir_score_by_period: {
-      filename: "average_change_lsir_score_by_period.txt",
-    },
-    revocations_by_month: {
-      filename: "revocations_by_month.txt",
-    },
-    revocations_by_period: {
-      filename: "revocations_by_period.txt",
-    },
-    supervision_termination_by_type_by_month: {
-      filename: "supervision_termination_by_type_by_month.txt",
-    },
-    supervision_termination_by_type_by_period: {
-      filename: "supervision_termination_by_type_by_period.txt",
-    },
-    site_offices: {
-      filename: "site_offices.json",
-    },
-  },
-  [METRIC_TYPES.COMMUNITY_EXPLORE]: {
-    admissions_by_type_by_month: {
-      filename: "admissions_by_type_by_month.txt",
-    },
-    admissions_by_type_by_period: {
-      filename: "admissions_by_type_by_period.txt",
-    },
-    average_change_lsir_score_by_month: {
-      filename: "average_change_lsir_score_by_month.txt",
-    },
-    average_change_lsir_score_by_period: {
-      filename: "average_change_lsir_score_by_period.txt",
-    },
-    case_terminations_by_type_by_month: {
-      filename: "case_terminations_by_type_by_month.txt",
-    },
-    case_terminations_by_type_by_officer_by_period: {
-      filename: "case_terminations_by_type_by_officer_by_period.txt",
-    },
-    race_proportions: { filename: "race_proportions.json" },
-    revocations_by_month: { filename: "revocations_by_month.txt" },
-    revocations_by_officer_by_period: {
-      filename: "revocations_by_officer_by_period.txt",
-    },
-    revocations_by_period: { filename: "revocations_by_period.txt" },
-    revocations_by_race_and_ethnicity_by_period: {
-      filename: "revocations_by_race_and_ethnicity_by_period.txt",
-    },
-    revocations_by_supervision_type_by_month: {
-      filename: "revocations_by_supervision_type_by_month.txt",
-    },
-    revocations_by_violation_type_by_month: {
-      filename: "revocations_by_violation_type_by_month.txt",
-    },
-    supervision_termination_by_type_by_month: {
-      filename: "supervision_termination_by_type_by_month.txt",
-    },
-    supervision_termination_by_type_by_period: {
-      filename: "supervision_termination_by_type_by_period.txt",
-    },
-    site_offices: { filename: "site_offices.json" },
-  },
-  [METRIC_TYPES.FACILITIES_GOALS]: {
-    avg_days_at_liberty_by_month: {
-      filename: "avg_days_at_liberty_by_month.txt",
-    },
-    reincarcerations_by_month: { filename: "reincarcerations_by_month.txt" },
-    reincarcerations_by_period: { filename: "reincarcerations_by_period.txt" },
-  },
-  [METRIC_TYPES.FACILITIES_EXPLORE]: {
-    admissions_by_type_by_period: {
-      filename: "admissions_by_type_by_period.txt",
-    },
-    admissions_versus_releases_by_month: {
-      filename: "admissions_versus_releases_by_month.txt",
-    },
-    admissions_versus_releases_by_period: {
-      filename: "admissions_versus_releases_by_period.txt",
-    },
-    avg_days_at_liberty_by_month: {
-      filename: "avg_days_at_liberty_by_month.txt",
-    },
-    reincarceration_rate_by_stay_length: {
-      filename: "reincarceration_rate_by_stay_length.txt",
-    },
-    reincarcerations_by_month: { filename: "reincarcerations_by_month.txt" },
-    reincarcerations_by_period: { filename: "reincarcerations_by_period.txt" },
-  },
-  [METRIC_TYPES.PROGRAMMING_EXPLORE]: {
-    ftr_referrals_by_age_by_period: {
-      filename: "ftr_referrals_by_age_by_period.txt",
-    },
-    ftr_referrals_by_gender_by_period: {
-      filename: "ftr_referrals_by_gender_by_period.txt",
-    },
-    ftr_referrals_by_lsir_by_period: {
-      filename: "ftr_referrals_by_lsir_by_period.txt",
-    },
-    ftr_referrals_by_month: { filename: "ftr_referrals_by_month.txt" },
-    ftr_referrals_by_participation_status: {
-      filename: "ftr_referrals_by_participation_status.txt",
-    },
-    ftr_referrals_by_period: { filename: "ftr_referrals_by_period.txt" },
-    ftr_referrals_by_race_and_ethnicity_by_period: {
-      filename: "ftr_referrals_by_race_and_ethnicity_by_period.txt",
-    },
-    race_proportions: { filename: "race_proportions.json" },
-    site_offices: { filename: "site_offices.json" },
-  },
-};
+const DEFAULT_METRIC_PERIOD_MONTHS = ["1", "12", "3", "36", "6"];
 
 module.exports = {
   METRIC_TYPES,
-  DEFAULT_MONTH,
+  DEFAULT_MONTHS,
   DEFAULT_REPORTED_VIOLATIONS,
   DEFAULT_METRIC_PERIOD_MONTHS,
-  METRICS,
 };

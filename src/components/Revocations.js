@@ -56,34 +56,39 @@ const Revocations = () => {
     <main className="Revocations">
       <Sticky style={{ zIndex: 700, top: 65 }}>
         <ErrorBoundary>
-          <div className="top-level-filters d-f">
-            <ToggleBarFilter
-              label="Time Period"
-              dimension={METRIC_PERIOD_MONTHS}
-            />
-            <ErrorBoundary>
-              <DistrictFilter />
-            </ErrorBoundary>
-            {filterOptions[CHARGE_CATEGORY].componentEnabled && (
-              <ToggleBarFilter label="Case Type" dimension={CHARGE_CATEGORY} />
-            )}
-            {filterOptions[SUPERVISION_LEVEL].componentEnabled && (
+          <>
+            <div className="top-level-filters d-f">
               <ToggleBarFilter
-                label="Supervision Level"
-                dimension={SUPERVISION_LEVEL}
+                label="Time Period"
+                dimension={METRIC_PERIOD_MONTHS}
               />
-            )}
-            {filterOptions[ADMISSION_TYPE].componentEnabled && (
-              <AdmissionTypeFilter />
-            )}
-            {filterOptions[SUPERVISION_TYPE].componentEnabled && (
-              <ToggleBarFilter
-                label="Supervision Type"
-                dimension={SUPERVISION_TYPE}
-              />
-            )}
-          </div>
-          <ViolationFilter />
+              <ErrorBoundary>
+                <DistrictFilter />
+              </ErrorBoundary>
+              {filterOptions[CHARGE_CATEGORY].componentEnabled && (
+                <ToggleBarFilter
+                  label="Case Type"
+                  dimension={CHARGE_CATEGORY}
+                />
+              )}
+              {filterOptions[SUPERVISION_LEVEL].componentEnabled && (
+                <ToggleBarFilter
+                  label="Supervision Level"
+                  dimension={SUPERVISION_LEVEL}
+                />
+              )}
+              {filterOptions[ADMISSION_TYPE].componentEnabled && (
+                <AdmissionTypeFilter />
+              )}
+              {filterOptions[SUPERVISION_TYPE].componentEnabled && (
+                <ToggleBarFilter
+                  label="Supervision Type"
+                  dimension={SUPERVISION_TYPE}
+                />
+              )}
+            </div>
+            <ViolationFilter />
+          </>
         </ErrorBoundary>
       </Sticky>
 
