@@ -199,26 +199,6 @@ function updateTooltipForMetricType(metricType, tooltipItem, data) {
   return standardTooltipForCountMetric(tooltipItem, data);
 }
 
-// TODO merge delete?
-function updateTooltipForMetricTypeWithCounts(
-  metricType,
-  tooltipItem,
-  data,
-  numerators,
-  denominators
-) {
-  if (metricType === "rates") {
-    return tooltipForRateMetricWithCounts(
-      tooltipItem,
-      data,
-      numerators,
-      denominators
-    );
-  }
-
-  return standardTooltipForCountMetric(tooltipItem, data);
-}
-
 function canDisplayGoal(goal, toggles) {
   if (toggles.disableGoal === true) {
     return false;
@@ -266,7 +246,6 @@ export {
   standardTooltipForRateMetric,
   tooltipForRateMetricWithCounts,
   updateTooltipForMetricType,
-  updateTooltipForMetricTypeWithCounts,
   canDisplayGoal,
   centerSingleMonthDatasetIfNecessary,
 };
