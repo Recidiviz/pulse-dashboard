@@ -24,6 +24,7 @@ import {
   autorun,
   reaction,
 } from "mobx";
+import * as Sentry from "@sentry/react";
 
 import { filterOptimizedDataFormat } from "shared-filters";
 import { callMetricsApi, parseResponseByFileFormat } from "../../api/metrics";
@@ -197,6 +198,11 @@ export default class BaseDataStore {
       this.isError = false;
     } catch (error) {
       console.error(error);
+      Sentry.captureException(error, (scope) => {
+        scope.setContext("BaseDataStore.fetchData", {
+          endpoint,
+        });
+      });
       this.isError = true;
       this.isLoading = false;
     }

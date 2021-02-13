@@ -5,11 +5,11 @@ import "./Error.scss";
 
 import warningIcon from "../assets/static/images/warning.svg";
 
-const Error = ({ text }) => {
+const ErrorMessage = ({ error }) => {
   return (
     <div className="Error">
       <img src={warningIcon} alt="Error icon" className="Error__icon" />
-      <p className="Error__text">{text}</p>
+      <p className="Error__text">{error.toString()}</p>
       <p className="Error__text">
         Check back later or contact{" "}
         <a href="mailto:feedback@recidiviz.org">feedback@recidiviz.org</a> if
@@ -19,12 +19,12 @@ const Error = ({ text }) => {
   );
 };
 
-Error.defaultProps = {
-  text: "Something went wrong while loading this chart.",
+ErrorMessage.defaultProps = {
+  error: new Error("Something went wrong while loading this chart."),
 };
 
-Error.propTypes = {
-  text: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
+ErrorMessage.propTypes = {
+  error: PropTypes.instanceOf(Error),
 };
 
-export default Error;
+export default ErrorMessage;

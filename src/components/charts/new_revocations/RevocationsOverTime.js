@@ -25,7 +25,7 @@ import pipe from "lodash/fp/pipe";
 
 import { groupByMonth } from "../common/bars/utils";
 import LoadingChart from "./LoadingChart";
-import Error from "../../Error";
+import ErrorMessage from "../../ErrorMessage";
 
 import { useContainerHeight } from "../../../hooks/useContainerHeight";
 import { COLORS } from "../../../assets/scripts/constants/colors";
@@ -55,7 +55,7 @@ const RevocationsOverTime = () => {
   }
 
   if (store.isError) {
-    return <Error />;
+    return <ErrorMessage />;
   }
 
   const chartData = pipe(groupByMonth(["total_revocations"]), (dataset) =>
@@ -93,7 +93,7 @@ const RevocationsOverTime = () => {
       hoverBackgroundColor: COLORS["lantern-light-blue"],
       hoverBorderColor: COLORS["lantern-light-blue"],
     },
-    generateTrendlineDataset(chartDataPoints, COLORS["blue-standard-light"]),
+    generateTrendlineDataset(chartDataPoints, COLORS["lantern-soft-blue"]),
   ];
   const maxElement = Math.max(...chartDataPoints);
   const maxValue = maxElement <= 7 ? 7 : maxElement;

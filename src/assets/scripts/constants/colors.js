@@ -283,6 +283,8 @@ const COLORS = {
   "lantern-burnt-orange": "#8B2D21",
   "lantern-blue": "#182B5E",
   "lantern-dark-blue": "#002C42",
+  "lantern-soft-blue": "#88C0E6",
+  "lantern-medium-blue": "#037FC2",
 };
 
 const GREYS = {

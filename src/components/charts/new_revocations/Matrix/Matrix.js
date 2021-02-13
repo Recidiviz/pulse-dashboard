@@ -40,7 +40,7 @@ import MatrixCell from "./MatrixCell";
 import MatrixRow from "./MatrixRow";
 import ExportMenu from "../../ExportMenu";
 import LoadingChart from "../LoadingChart";
-import Error from "../../../Error";
+import ErrorMessage from "../../../ErrorMessage";
 
 import {
   matrixViolationTypeToLabel,
@@ -75,7 +75,7 @@ const Matrix = ({ timeDescription }) => {
   }
 
   if (store.isError) {
-    return <Error />;
+    return <ErrorMessage />;
   }
 
   const updateFilters = (updatedFilters) => {

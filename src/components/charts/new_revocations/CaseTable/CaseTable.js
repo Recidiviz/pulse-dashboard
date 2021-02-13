@@ -22,7 +22,7 @@ import { get } from "mobx";
 import useSort from "./useSort";
 import ExportMenu from "../../ExportMenu";
 import LoadingChart from "../LoadingChart";
-import Error from "../../../Error";
+import ErrorMessage from "../../../ErrorMessage";
 import Sortable from "./Sortable";
 import Pagination from "./Pagination";
 import { useContainerHeight } from "../../../../hooks/useContainerHeight";
@@ -53,7 +53,7 @@ const CaseTable = () => {
   }
 
   if (store.isError) {
-    return <Error />;
+    return <ErrorMessage />;
   }
 
   const startCase = page * CASES_PER_PAGE;

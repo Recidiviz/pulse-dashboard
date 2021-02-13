@@ -46,15 +46,15 @@ const createGenerateChartData = (filteredData, violationTypes) => () => {
     allViolationTypeKeys
   );
 
-  // This sets bar color to light-blue-500 when it's a technical violation, orange when it's law
+  // This sets bar color to lantern-medium-blue when it's a technical violation, orange when it's law
   const colorTechnicalAndLaw = violationTypes.map((violationType) => {
     switch (violationType.type) {
       case "TECHNICAL":
-        return COLORS["lantern-light-blue"];
+        return COLORS["lantern-medium-blue"];
       case "LAW":
         return COLORS["lantern-orange"];
       default:
-        return COLORS["lantern-light-blue"];
+        return COLORS["lantern-medium-blue"];
     }
   });
 
