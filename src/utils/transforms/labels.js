@@ -127,4 +127,5 @@ export {
   numberFromOfficerId,
   violationCountLabel,
   pluralize,
+  raceValueToLabel,
 };

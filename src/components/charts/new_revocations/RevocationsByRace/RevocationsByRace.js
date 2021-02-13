@@ -22,7 +22,6 @@ import { observer } from "mobx-react-lite";
 import RevocationsByDimension from "../RevocationsByDimension";
 import createGenerateChartData from "./createGenerateChartData";
 import getLabelByMode from "../utils/getLabelByMode";
-import flags from "../../../../flags";
 import { translate } from "../../../../views/tenants/utils/i18nSettings";
 import { useDataStore } from "../../../../StoreProvider";
 import HorizontalBarChartWithLabels from "../BarChartWithLabels/HorizontalBarChartWithLabels";
@@ -52,11 +51,7 @@ const RevocationsByRace = observer(
           `${getLabelByMode(mode)} by race/ethnicity and risk level`
         }
         timeDescription={timeDescription}
-        modes={
-          flags.enableRevocationRateByExit
-            ? ["rates", "exits"]
-            : Object.keys(translate("raceLabelMap"))
-        }
+        modes={Object.keys(translate("raceLabelMap"))}
         defaultMode="WHITE"
         dataExportLabel="Race"
       />

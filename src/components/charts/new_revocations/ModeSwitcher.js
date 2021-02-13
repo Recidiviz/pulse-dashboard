@@ -19,6 +19,7 @@ import React from "react";
 import PropTypes from "prop-types";
 
 import Chip from "./Chip";
+import { raceValueToLabel } from "../../../utils/transforms/labels";
 
 const ModeSwitcher = ({ mode, setMode, buttons }) => (
   <div className="ModeSwitcher pB-20">
@@ -34,7 +35,9 @@ const ModeSwitcher = ({ mode, setMode, buttons }) => (
 );
 
 ModeSwitcher.propTypes = {
-  mode: PropTypes.string.isRequired,
+  mode: PropTypes.oneOf(
+    ["counts", "rates", "exits"].concat(Object.keys(raceValueToLabel))
+  ).isRequired,
   setMode: PropTypes.func.isRequired,
   buttons: PropTypes.arrayOf(
     PropTypes.shape({
