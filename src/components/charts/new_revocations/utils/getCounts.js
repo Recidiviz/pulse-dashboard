@@ -22,7 +22,8 @@ const getCounts = (
   transformedData,
   labels,
   dimensionValues,
-  statePopulationData
+  statePopulationData,
+  dimensionName
 ) => {
   const dataPoints = [];
   const numerators = [];
@@ -38,13 +39,13 @@ const getCounts = (
       let rate = 0;
       if (label === "STATE_POPULATION") {
         numerator = statePopulationData.reduce((result, item) => {
-          if (item.race_or_ethnicity === dimensionValue) {
+          if (item[dimensionName] === dimensionValue) {
             return result + Number(item.population_count);
           }
           return result;
         }, 0);
         denominator = statePopulationData.reduce((result, item) => {
-          if (item.race_or_ethnicity === dimensionValue) {
+          if (item[dimensionName] === dimensionValue) {
             return result + Number(item.total_state_population_count);
           }
           return result;
@@ -63,31 +64,4 @@ const getCounts = (
   return { dataPoints, numerators, denominators };
 };
 
-// This is a temporary rename - previously getCounts.
-// The Gender chart is undergoing a redesign and will use the new getCounts.
-// Once that is done this function will no longer be needed
-const getCountsByRiskLevel = (transformedData, riskLevels, dimensions) => {
-  const dataPoints = [];
-  const numerators = [];
-  const denominators = [];
-
-  dimensions.forEach((dimension, i) => {
-    dataPoints.push([]);
-    numerators.push([]);
-    denominators.push([]);
-
-    riskLevels.forEach((riskLevel) => {
-      const numerator = getOr(0, [dimension, riskLevel, 0], transformedData);
-      const denominator = getOr(0, [dimension, riskLevel, 1], transformedData);
-      const rate = calculateRate(numerator, denominator).toFixed(2);
-
-      numerators[i].push(numerator);
-      denominators[i].push(denominator);
-      dataPoints[i].push(rate);
-    });
-  });
-
-  return { dataPoints, numerators, denominators };
-};
-
-export { getCounts, getCountsByRiskLevel };
+export default getCounts;

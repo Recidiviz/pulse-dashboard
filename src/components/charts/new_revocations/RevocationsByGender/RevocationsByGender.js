@@ -21,17 +21,15 @@ import { observer } from "mobx-react-lite";
 
 import { translate } from "../../../../views/tenants/utils/i18nSettings";
 import getLabelByMode from "../utils/getLabelByMode";
-
 import RevocationsByDimension from "../RevocationsByDimension";
-import BarChartWithLabels from "../BarChartWithLabels";
-import { CHART_COLORS } from "./constants";
+import HorizontalBarChartWithLabels from "../BarCharts/HorizontalBarChartWithLabels";
 import createGenerateChartData from "./createGenerateChartData";
-import flags from "../../../../flags";
 import { useRootStore } from "../../../../StoreProvider";
+import { genderValueToLabel } from "../../../../utils/transforms/labels";
 
 const RevocationsByGender = observer(
   ({ containerHeight, timeDescription }, ref) => {
-    const { currentTenantId, dataStore } = useRootStore();
+    const { dataStore } = useRootStore();
     const { revocationsChartStore } = dataStore;
 
     return (
@@ -41,28 +39,24 @@ const RevocationsByGender = observer(
         dataStore={revocationsChartStore}
         containerHeight={containerHeight}
         renderChart={({ chartId, data, denominators, numerators, mode }) => (
-          <BarChartWithLabels
+          <HorizontalBarChartWithLabels
+            activeTab={mode}
             id={chartId}
             data={data}
-            xAxisLabel={`${translate("Gender")} and risk level`}
-            yAxisLabel={getLabelByMode(mode)}
-            labelColors={CHART_COLORS}
-            denominators={denominators}
             numerators={numerators}
+            denominators={denominators}
+            labelsMap={genderValueToLabel}
           />
         )}
-        generateChartData={createGenerateChartData(
-          revocationsChartStore.filteredData,
-          currentTenantId
-        )}
-        chartTitle={`Admissions by ${translate("gender")} and risk level`}
+        generateChartData={createGenerateChartData(revocationsChartStore)}
+        chartTitle={`Admissions by ${translate("gender")}`}
         metricTitle={(mode) =>
-          `${getLabelByMode(mode)} by ${translate("gender")} and risk level`
+          `${getLabelByMode(mode)} by ${translate("gender")}`
         }
         timeDescription={timeDescription}
-        modes={flags.enableRevocationRateByExit ? ["rates", "exits"] : []}
-        defaultMode="rates"
-        dataExportLabel="Risk Level"
+        modes={Object.keys(genderValueToLabel)}
+        defaultMode="MALE"
+        dataExportLabel="Gender"
       />
     );
   },

@@ -43,13 +43,12 @@ const RevocationsByRace = observer(
             data={data}
             numerators={numerators}
             denominators={denominators}
+            labelsMap={translate("raceLabelMap")}
           />
         )}
         generateChartData={createGenerateChartData(revocationsChartStore)}
-        chartTitle="Admissions by race/ethnicity and risk level"
-        metricTitle={(mode) =>
-          `${getLabelByMode(mode)} by race/ethnicity and risk level`
-        }
+        chartTitle="Admissions by race/ethnicity"
+        metricTitle={(mode) => `${getLabelByMode(mode)} by race/ethnicity`}
         timeDescription={timeDescription}
         modes={Object.keys(translate("raceLabelMap"))}
         defaultMode="WHITE"

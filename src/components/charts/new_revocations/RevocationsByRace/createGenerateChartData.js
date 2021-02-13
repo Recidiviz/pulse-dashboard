@@ -19,10 +19,10 @@ import pipe from "lodash/fp/pipe";
 import reduce from "lodash/fp/reduce";
 
 import {
-  getRacePopulationLabels,
-  getStateRacePopulation,
+  getStatePopulations,
+  getStatePopulationsLabels,
 } from "../../../../utils/transforms/labels";
-import { getCounts } from "../utils/getCounts";
+import getCounts from "../utils/getCounts";
 import createRacePopulationMap from "../utils/createRacePopulationMap";
 import { translate } from "../../../../views/tenants/utils/i18nSettings";
 import { COLORS_LANTERN_SET } from "../../../../assets/scripts/constants/colors";
@@ -60,11 +60,17 @@ const createGenerateChartData = ({
   const { dataPoints, numerators, denominators } = pipe(
     reduce(createRacePopulationMap(numeratorKey, denominatorKey, "race"), {}),
     (data) =>
-      getCounts(data, getStateRacePopulation(), races, statePopulationData)
+      getCounts(
+        data,
+        getStatePopulations(),
+        races,
+        statePopulationData,
+        "race_or_ethnicity"
+      )
   )(filteredData);
 
   const data = {
-    labels: getRacePopulationLabels(),
+    labels: getStatePopulationsLabels(),
     datasets: generateDatasets(dataPoints, denominators),
   };
 
