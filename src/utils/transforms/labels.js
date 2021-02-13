@@ -28,8 +28,8 @@ export function getRiskLevelLabels() {
   return Object.values(translate("riskLevelsMap"));
 }
 
-export function getStateRacePopulation() {
-  return Object.keys(translate("raceChartAttributes"));
+export function getStatePopulations() {
+  return Object.keys(translate("populationChartAttributes"));
 }
 
 export function getRacePopulationLabels() {
@@ -37,11 +37,8 @@ export function getRacePopulationLabels() {
 }
 
 const genderValueToLabel = {
-  FEMALE: "Female",
   MALE: "Male",
-  TRANS: "Trans",
-  TRANS_FEMALE: "Trans Female",
-  TRANS_MALE: "Trans Male",
+  FEMALE: "Female",
 };
 
 const raceValueToLabel = {
@@ -128,4 +125,5 @@ export {
   violationCountLabel,
   pluralize,
   raceValueToLabel,
+  genderValueToLabel,
 };
