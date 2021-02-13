@@ -20,19 +20,19 @@ import { getCounts } from "../getCounts";
 
 describe("getCounts", () => {
   const transformedData = {
-    ORANGE: {
-      REVOKED: [5, 50],
+    DAISY: {
+      POPPY: [5, 50],
       SUPERVISION_POPULATION: [5, 500],
     },
     PURPLE: {
-      REVOKED: [10, 100],
+      POPPY: [10, 100],
       SUPERVISION_POPULATION: [100, 1000],
     }
   }
-  const labels = ["REVOKED", "SUPERVISION_POPULATION", "STATE_POPULATION"];
-  const dimensions = ["ORANGE", "PURPLE"];
+  const labels = ["POPPY", "SUPERVISION_POPULATION", "STATE_POPULATION"];
+  const dimensions = ["DAISY", "PURPLE"];
   const populationData = [
-    { race_or_ethnicity: "ORANGE", population_count: "60", total_state_population_count: "6000" },
+    { race_or_ethnicity: "DAISY", population_count: "60", total_state_population_count: "6000" },
     { race_or_ethnicity: "PURPLE", population_count: "70", total_state_population_count: "6000" },
   ];
 
