@@ -21,7 +21,6 @@ import { observer } from "mobx-react-lite";
 
 import RevocationsByDimension from "../RevocationsByDimension";
 import createGenerateChartData from "./createGenerateChartData";
-import getLabelByMode from "../utils/getLabelByMode";
 import { translate } from "../../../../views/tenants/utils/i18nSettings";
 import { useDataStore } from "../../../../StoreProvider";
 import HorizontalBarChartWithLabels from "../BarChartWithLabels/HorizontalBarChartWithLabels";
@@ -46,10 +45,7 @@ const RevocationsByRace = observer(
           />
         )}
         generateChartData={createGenerateChartData(revocationsChartStore)}
-        chartTitle="Admissions by race/ethnicity and risk level"
-        metricTitle={(mode) =>
-          `${getLabelByMode(mode)} by race/ethnicity and risk level`
-        }
+        chartTitle="Admissions by race/ethnicity"
         timeDescription={timeDescription}
         modes={Object.keys(translate("raceLabelMap"))}
         defaultMode="WHITE"
