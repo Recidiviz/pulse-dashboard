@@ -24,7 +24,7 @@ import createGenerateChartData from "./createGenerateChartData";
 import getLabelByMode from "../utils/getLabelByMode";
 import { translate } from "../../../../views/tenants/utils/i18nSettings";
 import { useDataStore } from "../../../../StoreProvider";
-import HorizontalBarChartWithLabels from "../BarChartWithLabels/HorizontalBarChartWithLabels";
+import HorizontalBarChartWithLabels from "../BarCharts/HorizontalBarChartWithLabels";
 
 const RevocationsByRace = observer(
   ({ containerHeight, timeDescription }, ref) => {

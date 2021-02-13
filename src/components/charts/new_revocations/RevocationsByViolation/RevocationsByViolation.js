@@ -21,7 +21,7 @@ import { observer } from "mobx-react-lite";
 
 import RevocationsByDimension from "../RevocationsByDimension";
 import createGenerateChartData from "./createGenerateChartData";
-import BarChartWithLabels from "../BarChartWithLabels";
+import BarChartWithLabels from "../BarCharts";
 import { translate } from "../../../../views/tenants/utils/i18nSettings";
 import { useRootStore } from "../../../../StoreProvider";
 import { VIOLATION_TYPE } from "../../../../constants/filterTypes";
