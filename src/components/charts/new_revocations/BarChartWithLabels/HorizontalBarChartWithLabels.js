@@ -18,8 +18,6 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { HorizontalBar } from "react-chartjs-2";
-import { axisCallbackForPercentage } from "../../../../utils/charts/axis";
-import { tooltipForFooterWithCounts } from "../../../../utils/charts/significantStatistics";
 import { tooltipForRateMetricWithCounts } from "../../../../utils/charts/toggles";
 import { COLORS } from "../../../../assets/scripts/constants/colors";
 import { translate } from "../../../../views/tenants/utils/i18nSettings";
@@ -91,19 +89,18 @@ const HorizontalBarChartWithLabels = ({
                 fontSize: 14,
                 fontStyle: "normal",
                 fontColor: "#4F4E4D",
-                beginAtZero: false,
-                callback: axisCallbackForPercentage(),
               },
             },
           ],
         },
         tooltips: {
           backgroundColor: COLORS["grey-800-light"],
-          footerFontSize: 9,
           mode: "dataset",
           intersect: true,
           position: "nearest",
+          displayColors: false,
           callbacks: {
+            title: () => {},
             label: (tooltipItem, tooltipData) => {
               return tooltipForRateMetricWithCounts(
                 id,
@@ -113,8 +110,6 @@ const HorizontalBarChartWithLabels = ({
                 activeTabDenominator
               );
             },
-            footer: (tooltipItem) =>
-              tooltipForFooterWithCounts(tooltipItem, denominators),
           },
         },
       }}
