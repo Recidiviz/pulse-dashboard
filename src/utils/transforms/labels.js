@@ -32,7 +32,7 @@ export function getStateRacePopulation() {
   return Object.keys(translate("raceChartAttributes"));
 }
 
-export function getStateRacePopulationLabels() {
+export function getRacePopulationLabels() {
   return Object.values(translate("raceChartAttributes"));
 }
 

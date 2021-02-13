@@ -19,7 +19,7 @@ import pipe from "lodash/fp/pipe";
 import reduce from "lodash/fp/reduce";
 
 import {
-  getStateRacePopulationLabels,
+  getRacePopulationLabels,
   getStateRacePopulation,
 } from "../../../../utils/transforms/labels";
 import { getCounts } from "../utils/getCounts";
@@ -64,7 +64,7 @@ const createGenerateChartData = ({
   )(filteredData);
 
   const data = {
-    labels: getStateRacePopulationLabels(),
+    labels: getRacePopulationLabels(),
     datasets: generateDatasets(dataPoints, denominators),
   };
 
