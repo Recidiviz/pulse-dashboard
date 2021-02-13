@@ -23,7 +23,7 @@ import flags from "../../../../flags";
 import getLabelByMode from "../utils/getLabelByMode";
 import createGenerateChartData from "./createGenerateChartData";
 import RevocationsByDimension from "../RevocationsByDimension";
-import BarChartWithLabels from "../BarChartWithLabels";
+import BarChartWithLabels from "../BarCharts";
 import { translate } from "../../../../views/tenants/utils/i18nSettings";
 import { useDataStore } from "../../../../StoreProvider";
 

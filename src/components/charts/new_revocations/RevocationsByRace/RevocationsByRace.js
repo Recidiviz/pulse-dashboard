@@ -23,7 +23,7 @@ import RevocationsByDimension from "../RevocationsByDimension";
 import createGenerateChartData from "./createGenerateChartData";
 import { translate } from "../../../../views/tenants/utils/i18nSettings";
 import { useDataStore } from "../../../../StoreProvider";
-import HorizontalBarChartWithLabels from "../BarChartWithLabels/HorizontalBarChartWithLabels";
+import HorizontalBarChartWithLabels from "../BarCharts/HorizontalBarChartWithLabels";
 
 const RevocationsByRace = observer(
   ({ containerHeight, timeDescription }, ref) => {
