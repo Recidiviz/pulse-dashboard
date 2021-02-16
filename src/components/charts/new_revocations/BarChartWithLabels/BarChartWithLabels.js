@@ -25,6 +25,18 @@ import { tooltipForRateMetricWithCounts } from "../../../../utils/charts/toggles
 import { generateLabelsWithCustomColors } from "./helpers";
 import { COLORS } from "../../../../assets/scripts/constants/colors";
 
+const getDefaultLegendOptions = (labelColors) => {
+  return labelColors.length
+    ? {
+        position: "bottom",
+        labels: {
+          generateLabels: (ch) =>
+            generateLabelsWithCustomColors(ch, labelColors),
+        },
+      }
+    : { display: false };
+};
+
 const BarChartWithLabels = ({
   id,
   data,
@@ -33,6 +45,7 @@ const BarChartWithLabels = ({
   yAxisLabel,
   numerators,
   denominators,
+  legendOptions,
 }) => (
   <Bar
     id={id}
@@ -43,15 +56,7 @@ const BarChartWithLabels = ({
           display: false,
         },
       },
-      legend: labelColors.length
-        ? {
-            position: "bottom",
-            labels: {
-              generateLabels: (ch) =>
-                generateLabelsWithCustomColors(ch, labelColors),
-            },
-          }
-        : { display: false },
+      legend: legendOptions || getDefaultLegendOptions(labelColors),
       responsive: true,
       maintainAspectRatio: false,
       scales: {
@@ -100,6 +105,7 @@ const BarChartWithLabels = ({
 
 BarChartWithLabels.defaultProps = {
   labelColors: [],
+  legendOptions: null,
 };
 
 BarChartWithLabels.propTypes = {
@@ -127,5 +133,16 @@ BarChartWithLabels.propTypes = {
     PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.number), PropTypes.number])
   ).isRequired,
   labelColors: PropTypes.arrayOf(PropTypes.string),
+  legendOptions: PropTypes.shape({
+    position: PropTypes.string,
+    align: PropTypes.string,
+    rtl: PropTypes.bool,
+    reverse: PropTypes.bool,
+    labels: PropTypes.shape({
+      usePointStyle: PropTypes.bool,
+      boxWidth: PropTypes.number,
+      generateLabels: PropTypes.func,
+    }),
+  }),
 };
 export default BarChartWithLabels;

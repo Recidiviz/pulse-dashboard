@@ -25,12 +25,35 @@ import BarChartWithLabels from "../BarChartWithLabels";
 import { translate } from "../../../../views/tenants/utils/i18nSettings";
 import { useRootStore } from "../../../../StoreProvider";
 import { VIOLATION_TYPE } from "../../../../constants/filterTypes";
+import { COLORS } from "../../../../assets/scripts/constants/colors";
 
 const RevocationsByViolation = observer(
   ({ containerHeight, timeDescription }, ref) => {
     const { filtersStore, dataStore } = useRootStore();
     const { revocationsChartStore } = dataStore;
     const violationTypes = filtersStore.filterOptions[VIOLATION_TYPE].options;
+    const violationLegend = {
+      position: "top",
+      align: "start",
+      rtl: true,
+      reverse: true,
+      labels: {
+        usePointStyle: true,
+        boxWidth: 8,
+        generateLabels: () => [
+          {
+            text: "Technical",
+            fillStyle: COLORS["lantern-medium-blue"],
+            lineWidth: 0,
+          },
+          {
+            text: "Law",
+            fillStyle: COLORS["lantern-orange"],
+            lineWidth: 0,
+          },
+        ],
+      },
+    };
 
     return (
       <RevocationsByDimension
@@ -46,6 +69,7 @@ const RevocationsByViolation = observer(
             id={chartId}
             yAxisLabel="Percent of total reported violations"
             xAxisLabel="Violation type and condition violated"
+            legendOptions={violationLegend}
           />
         )}
         generateChartData={createGenerateChartData(
