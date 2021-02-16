@@ -17,7 +17,7 @@
 
 import React from "react";
 import PropTypes from "prop-types";
-import "./Sortable.css";
+import "./Sortable.scss";
 
 function SortableIcon({ order = null }) {
   switch (order) {
