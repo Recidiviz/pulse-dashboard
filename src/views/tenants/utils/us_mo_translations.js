@@ -54,7 +54,7 @@ of that column.`,
     VERY_HIGH: "Very High Risk",
   },
   raceChartAttributes: {
-    REVOKED: "Those who were revoked",
+    REVOKED: "Admitted Population",
     SUPERVISION_POPULATION: "Supervision population",
     STATE_POPULATION: "Missouri population",
   },
