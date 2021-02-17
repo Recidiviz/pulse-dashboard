@@ -1,5 +1,5 @@
 // Recidiviz - a data platform for criminal justice reform
-// Copyright (C) 2020 Recidiviz, Inc.
+// Copyright (C) 2021 Recidiviz, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -26,11 +26,13 @@ import { METADATA_NAMESPACE } from "../../constants";
 import TENANTS from "../../tenants";
 import { callRestrictedAccessApi } from "../../api/metrics/metricsClient";
 import RootStore from "../RootStore";
+import SupervisionLocationsStore from "../SupervisionLocationsStore";
 
 jest.mock("@sentry/react");
 jest.mock("@auth0/auth0-spa-js");
 jest.mock("../RootStore");
 jest.mock("../../api/metrics/metricsClient");
+jest.mock("../SupervisionLocationsStore");
 
 const mockCreateAuth0Client = createAuth0Client as jest.Mock;
 const mockCallRestrictedAccessApi = callRestrictedAccessApi as jest.Mock;
@@ -50,7 +52,7 @@ const testAuthSettings = {
   redirect_url: window.location.href,
 };
 const userEmail = "thirteen@mo.gov";
-const userDistrict = "13";
+const userSupervisionLocation = "13";
 const authError = new Error(ERROR_MESSAGES.unauthorized);
 const apiError = new Error("API Failed");
 
@@ -59,8 +61,11 @@ beforeEach(() => {
     return {
       currentTenantId: tenantId,
       tenantStore: {
-        districts: [userDistrict],
         isLanternTenant: true,
+      },
+      supervisionLocationsStore: {
+        isLoading: false,
+        supervisionLocations: [userSupervisionLocation],
       },
     };
   });
@@ -227,7 +232,7 @@ describe("fetchRestrictedDistrictData", () => {
       mockCallRestrictedAccessApi.mockResolvedValue({
         supervision_location_restricted_access_emails: {
           restricted_user_email: userEmail.toUpperCase(),
-          allowed_level_1_supervision_location_ids: userDistrict,
+          allowed_level_1_supervision_location_ids: userSupervisionLocation,
         },
       });
 
@@ -264,7 +269,7 @@ describe("fetchRestrictedDistrictData", () => {
     });
 
     it("sets the restrictedDistrict", () => {
-      expect(userStore.restrictedDistrict).toEqual(userDistrict);
+      expect(userStore.restrictedDistrict).toEqual(userSupervisionLocation);
     });
   });
 
@@ -318,6 +323,72 @@ describe("fetchRestrictedDistrictData", () => {
     });
   });
 
+  describe("when supervisionLocations is loading", () => {
+    beforeEach(async () => {
+      mockRootStore.mockImplementationOnce(() => {
+        return {
+          currentTenantId: "US_ND",
+          tenantStore: {
+            isLanternTenant: false,
+          },
+          supervisionLocationsStore: {
+            isLoading: true,
+            supervisionLocations: null,
+          },
+        };
+      });
+
+      reactImmediately(() => {
+        userStore = new UserStore({
+          authSettings: testAuthSettings,
+          rootStore: new RootStore(),
+        });
+
+        userStore.userIsLoading = false;
+      });
+    });
+
+    afterEach(() => {
+      jest.resetAllMocks();
+    });
+
+    it("does not call the API", () => {
+      expect(callRestrictedAccessApi).toHaveBeenCalledTimes(0);
+    });
+  });
+
+  describe("when user is loading", () => {
+    beforeEach(async () => {
+      mockRootStore.mockImplementationOnce(() => {
+        return {
+          currentTenantId: "US_ND",
+          tenantStore: {
+            isLanternTenant: false,
+          },
+          supervisionLocationsStore: {
+            isLoading: true,
+            supervisionLocations: null,
+          },
+        };
+      });
+
+      reactImmediately(() => {
+        userStore = new UserStore({
+          authSettings: testAuthSettings,
+          rootStore: new RootStore(),
+        });
+      });
+    });
+
+    afterEach(() => {
+      jest.resetAllMocks();
+    });
+
+    it("does not call the API", () => {
+      expect(callRestrictedAccessApi).toHaveBeenCalledTimes(0);
+    });
+  });
+
   describe("when API responds with an error", () => {
     beforeEach(async () => {
       mockCallRestrictedAccessApi.mockRejectedValueOnce(apiError);
@@ -366,11 +437,15 @@ describe("fetchRestrictedDistrictData", () => {
 
   describe("when the tenant is not a Lantern tenant", () => {
     beforeEach(async () => {
-      mockRootStore.mockImplementation(() => {
+      mockRootStore.mockImplementationOnce(() => {
         return {
           currentTenantId: "US_ND",
           tenantStore: {
             isLanternTenant: false,
+          },
+          supervisionLocationsStore: {
+            isLoading: false,
+            supervisionLocations: [userSupervisionLocation],
           },
         };
       });

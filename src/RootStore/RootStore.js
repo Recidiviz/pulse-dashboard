@@ -57,6 +57,7 @@ export default class RootStore {
     makeObservable(this, {
       filters: computed,
       currentTenantId: computed,
+      getTokenSilently: computed,
       user: computed,
     });
 

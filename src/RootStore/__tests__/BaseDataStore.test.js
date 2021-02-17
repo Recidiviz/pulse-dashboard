@@ -31,6 +31,7 @@ let baseStore;
 
 jest.mock("@sentry/react");
 jest.mock("../UserStore");
+jest.mock("../SupervisionLocationsStore");
 jest.mock("../DataStore/MatrixStore");
 jest.mock("../DataStore/CaseTableStore");
 jest.mock("../DataStore/RevocationsChartStore");
@@ -293,6 +294,7 @@ describe("BaseDataStore", () => {
   describe("when restrictedDistrict is loading", () => {
     beforeAll(() => {
       jest.resetAllMocks();
+
       UserStore.mockImplementationOnce(() => {
         return {
           user: mockUser,
