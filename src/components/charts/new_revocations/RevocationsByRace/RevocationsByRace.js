@@ -35,9 +35,8 @@ const RevocationsByRace = observer(
         chartId={`${translate("revocations")}ByRace`}
         dataStore={revocationsChartStore}
         containerHeight={containerHeight}
-        renderChart={({ chartId, data, denominators, numerators, mode }) => (
+        renderChart={({ chartId, data, denominators, numerators }) => (
           <HorizontalBarChartWithLabels
-            activeTab={mode}
             id={chartId}
             data={data}
             numerators={numerators}
@@ -46,6 +45,7 @@ const RevocationsByRace = observer(
         )}
         generateChartData={createGenerateChartData(revocationsChartStore)}
         chartTitle="Admissions by race/ethnicity"
+        metricTitle="Admissions by race/ethnicity"
         timeDescription={timeDescription}
         modes={Object.keys(translate("raceLabelMap"))}
         defaultMode="WHITE"

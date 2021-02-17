@@ -41,10 +41,9 @@ export const generateDatasets = (dataPoints, denominators) => {
   }));
 };
 
-const createGenerateChartData = ({
-  filteredData,
-  statePopulationData,
-}) => () => {
+const createGenerateChartData = ({ filteredData, statePopulationData }) => (
+  mode
+) => {
   const numeratorKey = [
     "revocation_count",
     "supervision_population_count",
@@ -63,12 +62,21 @@ const createGenerateChartData = ({
       getCounts(data, getStateRacePopulation(), races, statePopulationData)
   )(filteredData);
 
+  const datasets = generateDatasets(dataPoints, denominators);
+  const translateRaceLabels = translate("raceLabelMap");
+  const datasetIndex = datasets.findIndex(
+    (d) => d.label === translateRaceLabels[mode]
+  );
   const data = {
     labels: getRacePopulationLabels(),
-    datasets: generateDatasets(dataPoints, denominators),
+    datasets: [datasets[datasetIndex]],
   };
 
-  return { data, numerators, denominators };
+  return {
+    data,
+    numerators: numerators[datasetIndex],
+    denominators: denominators[datasetIndex],
+  };
 };
 
 export default createGenerateChartData;

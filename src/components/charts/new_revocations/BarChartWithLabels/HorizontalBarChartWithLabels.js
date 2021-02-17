@@ -14,37 +14,24 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
+import "chartjs-plugin-datalabels";
 
 import React from "react";
 import PropTypes from "prop-types";
 import { HorizontalBar } from "react-chartjs-2";
 import { tooltipForRateMetricWithCounts } from "../../../../utils/charts/toggles";
 import { COLORS } from "../../../../assets/scripts/constants/colors";
-import { translate } from "../../../../views/tenants/utils/i18nSettings";
-import "chartjs-plugin-datalabels";
 
 const HorizontalBarChartWithLabels = ({
-  activeTab,
   id,
   data,
   numerators,
   denominators,
 }) => {
-  const translateRaceLabels = translate("raceLabelMap");
-  const datasetIndex = data.datasets.findIndex(
-    (d) => d.label === translateRaceLabels[activeTab]
-  );
-  const activeTabData = {
-    datasets: [data.datasets[datasetIndex]],
-    labels: data.labels,
-  };
-  const activeTabNumerator = numerators[datasetIndex];
-  const activeTabDenominator = denominators[datasetIndex];
-
   return (
     <HorizontalBar
       id={id}
-      data={activeTabData}
+      data={data}
       options={{
         legend: { display: false },
         plugins: {
@@ -106,8 +93,8 @@ const HorizontalBarChartWithLabels = ({
                 id,
                 tooltipItem,
                 tooltipData,
-                activeTabNumerator,
-                activeTabDenominator
+                numerators,
+                denominators
               );
             },
           },
@@ -119,7 +106,6 @@ const HorizontalBarChartWithLabels = ({
 
 HorizontalBarChartWithLabels.propTypes = {
   id: PropTypes.string.isRequired,
-  activeTab: PropTypes.string.isRequired,
   data: PropTypes.shape({
     labels: PropTypes.arrayOf(PropTypes.string),
     datasets: PropTypes.arrayOf(
