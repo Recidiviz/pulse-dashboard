@@ -53,6 +53,11 @@ of that column.`,
     HIGH: "High Risk",
     VERY_HIGH: "Very High Risk",
   },
+  raceChartAttributes: {
+    REVOKED: "Admitted Population",
+    SUPERVISION_POPULATION: "Supervision Population",
+    STATE_POPULATION: "Missouri Population",
+  },
   raceLabelMap: {
     WHITE: "Caucasian",
     BLACK: "African American",

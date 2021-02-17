@@ -18,6 +18,8 @@ import tk from "timekeeper";
 import * as toggleMethods from "../toggles";
 
 describe("test for file toggles", () => {
+  const id = "revocationsByRace";
+
   const tooltipItemRate = {
     xLabel: "High",
     yLabel: 10.56,
@@ -530,6 +532,7 @@ describe("test for file toggles", () => {
 
   it("tooltip for rate metric with counts", () => {
     const tooltipWithCount = toggleMethods.tooltipForRateMetricWithCounts(
+      id,
       tooltipItemRate,
       dataMetric,
       numbers,
@@ -540,6 +543,7 @@ describe("test for file toggles", () => {
 
   it("tooltip for rate metric with nested counts", () => {
     const tooltipTest = toggleMethods.tooltipForRateMetricWithCounts(
+      id,
       tooltipItemRate,
       dataMetric,
       [numbers],
@@ -552,6 +556,7 @@ describe("test for file toggles", () => {
     const includeWarning = true;
     tooltipItemRate.index = 4;
     const tooltipTest = toggleMethods.tooltipForRateMetricWithCounts(
+      id,
       tooltipItemRate,
       dataMetric,
       [numbers],
@@ -565,6 +570,7 @@ describe("test for file toggles", () => {
     const includeWarning = false;
     tooltipItemRate.index = 4;
     const tooltipTest = toggleMethods.tooltipForRateMetricWithCounts(
+      id,
       tooltipItemRate,
       dataMetric,
       [numbers],

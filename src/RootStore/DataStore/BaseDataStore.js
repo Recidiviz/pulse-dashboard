@@ -55,6 +55,14 @@ export default class BaseDataStore {
 
   file;
 
+  isStatePopulationLoading = true;
+
+  isStatePopulationError = false;
+
+  statePopulationData = {};
+
+  statePopulationFile = undefined;
+
   eagerExpand = false;
 
   treatCategoryAllAsAbsent = false;
@@ -64,12 +72,14 @@ export default class BaseDataStore {
   constructor({
     rootStore,
     file,
+    statePopulationFile,
     skippedFilters = [],
     treatCategoryAllAsAbsent = false,
     ignoredSubsetDimensions = [],
   }) {
     makeObservable(this, {
       fetchData: flow,
+      fetchStatePopulationData: flow,
       apiData: observable.ref,
       filteredData: computed,
       filtersQueryParams: computed,
@@ -81,6 +91,7 @@ export default class BaseDataStore {
     });
 
     this.file = file;
+    this.statePopulationFile = statePopulationFile;
     this.skippedFilters = skippedFilters;
     this.treatCategoryAllAsAbsent = treatCategoryAllAsAbsent;
     this.ignoredSubsetDimensions = DEFAULT_IGNORED_DIMENSIONS.concat(
@@ -108,6 +119,9 @@ export default class BaseDataStore {
         !userStore.restrictedDistrictIsLoading
       ) {
         this.fetchData({
+          tenantId: this.rootStore.currentTenantId,
+        });
+        this.fetchStatePopulationData({
           tenantId: this.rootStore.currentTenantId,
         });
       }
@@ -191,6 +205,37 @@ export default class BaseDataStore {
       });
       this.isError = true;
       this.isLoading = false;
+    }
+  }
+
+  *fetchStatePopulationData({ tenantId }) {
+    if (!this.statePopulationFile) {
+      this.isStatePopulationLoading = false;
+      this.isStatePopulationError = false;
+      return;
+    }
+
+    const endpoint = `${tenantId}/newRevocations/${this.statePopulationFile}`;
+    try {
+      this.isStatePopulationLoading = true;
+      const responseData = yield callMetricsApi(
+        endpoint,
+        this.getTokenSilently
+      );
+      // The state population files will never be optimized format
+      // so always use eagerExpand = true when processing response data
+      const { data } = parseResponseByFileFormat(
+        responseData,
+        this.statePopulationFile,
+        true
+      );
+      this.statePopulationData = data;
+      this.isStatePopulationLoading = false;
+      this.isStatePopulationError = false;
+    } catch (error) {
+      console.error(error);
+      this.isStatePopulationError = true;
+      this.isStatePopulationLoading = false;
     }
   }
 }

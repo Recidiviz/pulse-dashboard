@@ -52,6 +52,11 @@ of that column.`,
     MEDIUM: "Medium Risk",
     HIGH: "High Risk",
   },
+  raceChartAttributes: {
+    REVOKED: "Admitted Population",
+    SUPERVISION_POPULATION: "Supervision Population",
+    STATE_POPULATION: "Pennsylvania Population",
+  },
   raceLabelMap: {
     WHITE: "White",
     BLACK: "Black",

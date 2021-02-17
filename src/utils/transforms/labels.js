@@ -28,6 +28,14 @@ export function getRiskLevelLabels() {
   return Object.values(translate("riskLevelsMap"));
 }
 
+export function getStateRacePopulation() {
+  return Object.keys(translate("raceChartAttributes"));
+}
+
+export function getRacePopulationLabels() {
+  return Object.values(translate("raceChartAttributes"));
+}
+
 const genderValueToLabel = {
   FEMALE: "Female",
   MALE: "Male",
@@ -119,4 +127,5 @@ export {
   numberFromOfficerId,
   violationCountLabel,
   pluralize,
+  raceValueToLabel,
 };

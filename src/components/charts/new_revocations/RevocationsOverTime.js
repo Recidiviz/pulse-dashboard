@@ -99,6 +99,11 @@ const RevocationsOverTime = () => {
   const maxValue = maxElement <= 7 ? 7 : maxElement;
 
   const options = {
+    plugins: {
+      datalabels: {
+        display: false,
+      },
+    },
     maintainAspectRatio: false,
     responsive: true,
     legend: {
