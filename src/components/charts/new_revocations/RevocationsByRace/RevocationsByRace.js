@@ -32,7 +32,7 @@ const RevocationsByRace = observer(
     return (
       <RevocationsByDimension
         ref={ref}
-        chartId={`${translate("revocations")}ByRace`}
+        chartId="admissionsByRace"
         dataStore={revocationsChartStore}
         containerHeight={containerHeight}
         renderChart={({ chartId, data, denominators, numerators }) => (
@@ -45,7 +45,9 @@ const RevocationsByRace = observer(
         )}
         generateChartData={createGenerateChartData(revocationsChartStore)}
         chartTitle="Admissions by race/ethnicity"
-        metricTitle="Admissions by race/ethnicity"
+        metricTitle={(mode) =>
+          `Admissions by race/ethnicity: ${translate("raceLabelMap")[mode]}`
+        }
         timeDescription={timeDescription}
         modes={Object.keys(translate("raceLabelMap"))}
         defaultMode="WHITE"

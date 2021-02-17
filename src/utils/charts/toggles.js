@@ -18,7 +18,6 @@
 import moment from "moment";
 import { getTooltipWithoutTrendline } from "./trendline";
 import { isDenominatorStatisticallySignificant } from "./significantStatistics";
-import { translate } from "../../views/tenants/utils/i18nSettings";
 
 function toggleLabel(labelsByToggle, toggledValue) {
   if (labelsByToggle[toggledValue]) {
@@ -178,7 +177,7 @@ function tooltipForRateMetricWithCounts(
       ? " *"
       : "";
 
-  return id !== `${translate("revocations")}ByRace`
+  return id !== "admissionsByRace"
     ? `${label}: ${getTooltipWithoutTrendline(
         tooltipItem,
         data,
