@@ -22,7 +22,7 @@ import { get } from "mobx";
 
 import { getTimeDescription } from "./charts/new_revocations/helpers/format";
 import ToggleBarFilter from "./charts/new_revocations/ToggleBar/ToggleBarFilter";
-import DistrictFilter from "./charts/new_revocations/ToggleBar/DistrictFilter";
+import SupervisionLocationFilter from "./charts/new_revocations/ToggleBar/SupervisionLocationFilter";
 import AdmissionTypeFilter from "./charts/new_revocations/ToggleBar/AdmissionTypeFilter";
 import ViolationFilter from "./charts/new_revocations/ToggleBar/ViolationFilter";
 import RevocationsOverTime from "./charts/new_revocations/RevocationsOverTime";
@@ -63,7 +63,7 @@ const Revocations = () => {
                 dimension={METRIC_PERIOD_MONTHS}
               />
               <ErrorBoundary>
-                <DistrictFilter />
+                <SupervisionLocationFilter />
               </ErrorBoundary>
               {filterOptions[CHARGE_CATEGORY].componentEnabled && (
                 <ToggleBarFilter

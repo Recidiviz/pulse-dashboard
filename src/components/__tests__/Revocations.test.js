@@ -21,7 +21,7 @@ import { observable } from "mobx";
 
 import Revocations from "../Revocations";
 import ToggleBarFilter from "../charts/new_revocations/ToggleBar/ToggleBarFilter";
-import DistrictFilter from "../charts/new_revocations/ToggleBar/DistrictFilter";
+import SupervisionLocationFilter from "../charts/new_revocations/ToggleBar/SupervisionLocationFilter";
 import AdmissionTypeFilter from "../charts/new_revocations/ToggleBar/AdmissionTypeFilter";
 import ViolationFilter from "../charts/new_revocations/ToggleBar/ViolationFilter";
 import RevocationCountOverTime from "../charts/new_revocations/RevocationsOverTime";
@@ -43,7 +43,7 @@ import {
 import { useRootStore } from "../../StoreProvider";
 
 jest.mock("../charts/new_revocations/ToggleBar/ToggleBarFilter");
-jest.mock("../charts/new_revocations/ToggleBar/DistrictFilter");
+jest.mock("../charts/new_revocations/ToggleBar/SupervisionLocationFilter");
 jest.mock("../charts/new_revocations/ToggleBar/AdmissionTypeFilter");
 jest.mock("../charts/new_revocations/ToggleBar/ViolationFilter");
 jest.mock("../charts/new_revocations/RevocationsOverTime");
@@ -59,7 +59,7 @@ describe("Revocations component tests", () => {
   const mockTenantId = "TEST_TENANT";
   const mockUser = { [metadataField]: { state_code: mockTenantId } };
   const toggleBarIdPrefix = "toggle-bar-";
-  const districtFilterId = "district-filter";
+  const SupervisionLocationFilterId = "district-filter";
   const admissionTypeFilterId = "admission-type-filter";
   const violationFilterId = "violation-filter-id";
   const revocationCountOverTimeId = "revocation-count-over-time";
@@ -67,7 +67,7 @@ describe("Revocations component tests", () => {
   const revocationChartsId = "revocation-charts";
   const caseTableId = "case-table";
 
-  const DistrictFilterMock = DistrictFilter.type;
+  const SupervisionLocationFilterMock = SupervisionLocationFilter.type;
   const RevocationCountOverTimeMock = RevocationCountOverTime.type;
   const MatrixMock = Matrix.type;
   const CaseTableMock = CaseTable.type;
@@ -79,7 +79,9 @@ describe("Revocations component tests", () => {
   ToggleBarFilterMock.mockImplementation(({ label }) =>
     mockWithTestId(`${toggleBarIdPrefix}${label}`)
   );
-  DistrictFilterMock.mockReturnValue(mockWithTestId(districtFilterId));
+  SupervisionLocationFilterMock.mockReturnValue(
+    mockWithTestId(SupervisionLocationFilterId)
+  );
   AdmissionTypeFilterMock.mockReturnValue(
     mockWithTestId(admissionTypeFilterId)
   );
@@ -126,7 +128,7 @@ describe("Revocations component tests", () => {
       getByTestId(`${toggleBarIdPrefix}Supervision Level`)
     ).toBeInTheDocument();
 
-    expect(getByTestId(districtFilterId)).toBeInTheDocument();
+    expect(getByTestId(SupervisionLocationFilterId)).toBeInTheDocument();
     expect(getByTestId(admissionTypeFilterId)).toBeInTheDocument();
     expect(getByTestId(violationFilterId)).toBeInTheDocument();
     expect(getByTestId(revocationCountOverTimeId)).toBeInTheDocument();
