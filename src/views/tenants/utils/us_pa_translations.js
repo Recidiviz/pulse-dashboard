@@ -54,8 +54,8 @@ of that column.`,
   },
   raceChartAttributes: {
     REVOKED: "Admitted Population",
-    SUPERVISION_POPULATION: "Supervision population",
-    STATE_POPULATION: "Pennsylvania population",
+    SUPERVISION_POPULATION: "Supervision Population",
+    STATE_POPULATION: "Pennsylvania Population",
   },
   raceLabelMap: {
     WHITE: "White",

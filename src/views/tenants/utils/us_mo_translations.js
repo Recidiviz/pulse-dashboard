@@ -55,8 +55,8 @@ of that column.`,
   },
   raceChartAttributes: {
     REVOKED: "Admitted Population",
-    SUPERVISION_POPULATION: "Supervision population",
-    STATE_POPULATION: "Missouri population",
+    SUPERVISION_POPULATION: "Supervision Population",
+    STATE_POPULATION: "Missouri Population",
   },
   raceLabelMap: {
     WHITE: "Caucasian",
