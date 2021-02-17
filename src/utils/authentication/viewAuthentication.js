@@ -24,8 +24,8 @@ export function getDemoUser() {
     picture:
       "https://ui-avatars.com/api/?name=Demo+Jones&background=0D8ABC&color=fff&rounded=true",
     name: "Demo Jones",
-    // email: "notarealemail@recidiviz.org",
-    email: "thirteen@mo.gov",
+    email: "notarealemail@recidiviz.org",
+    // email: "thirteen@mo.gov",
     "https://dashboard.recidiviz.org/app_metadata": {
       state_code: "recidiviz",
       // state_code: 'us_mo',
