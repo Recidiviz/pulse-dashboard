@@ -32,8 +32,6 @@ export default class DataStore {
 
   caseTableStore;
 
-  supervisionLocationsStore;
-
   constructor({ rootStore }) {
     makeAutoObservable(this);
 
