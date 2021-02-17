@@ -25,6 +25,7 @@ const FILES_BY_METRIC_TYPE = {
     "revocations_matrix_distribution_by_risk_level.txt",
     "revocations_matrix_distribution_by_violation.txt",
     "revocations_matrix_filtered_caseload.txt",
+    "supervision_location_ids_to_names.json",
     "supervision_location_restricted_access_emails.json",
   ],
   communityGoals: [
