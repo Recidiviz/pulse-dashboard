@@ -11,7 +11,6 @@ import qs from "qs";
  * @param {string} filters.reportedViolations - Number of reported violations or "All"
  * @param {string} filters.violationType - Violation type
  */
-
 export function getQueryStringFromFilters(filters = {}) {
   return qs.stringify(filters, {
     encode: false,

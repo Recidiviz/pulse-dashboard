@@ -14,11 +14,12 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-import "chartjs-plugin-datalabels";
 
 import React from "react";
 import PropTypes from "prop-types";
 import { Bar } from "react-chartjs-2";
+import "chartjs-plugin-datalabels";
+
 import { axisCallbackForPercentage } from "../../../../utils/charts/axis";
 import { tooltipForFooterWithCounts } from "../../../../utils/charts/significantStatistics";
 import { tooltipForRateMetricWithCounts } from "../../../../utils/charts/toggles";
