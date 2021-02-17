@@ -28,9 +28,13 @@ import { DISTRICT } from "../../../../constants/filterTypes";
 const allOption = { label: "All", value: "All" };
 
 const SupervisionLocationFilter = () => {
-  const { filters, filtersStore, userStore, dataStore } = useRootStore();
+  const {
+    filters,
+    filtersStore,
+    userStore,
+    supervisionLocationsStore,
+  } = useRootStore();
   const { restrictedDistrict } = userStore;
-  const { supervisionLocationsStore } = dataStore;
   const { supervisionLocations, isLoading } = supervisionLocationsStore;
 
   const options = [allOption].concat(

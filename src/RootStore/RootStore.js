@@ -23,6 +23,7 @@ import DataStore from "./DataStore/DataStore";
 import UserStore from "./UserStore";
 import devAuthConfig from "../auth_config_dev.json";
 import productionAuthConfig from "../auth_config_production.json";
+import SupervisionLocationsStore from "./SupervisionLocationsStore";
 
 /**
  * Returns the auth settings configured for the current environment, if any.
@@ -67,6 +68,10 @@ export default class RootStore {
     this.tenantStore = new TenantStore({ rootStore: this });
     this.filtersStore = new FiltersStore({ rootStore: this });
     this.dataStore = new DataStore({ rootStore: this });
+
+    this.supervisionLocationsStore = new SupervisionLocationsStore({
+      rootStore: this,
+    });
   }
 
   get filters() {
@@ -83,5 +88,9 @@ export default class RootStore {
 
   get restrictedDistrict() {
     return this.userStore.restrictedDistrict;
+  }
+
+  get getTokenSilently() {
+    return this.userStore.getTokenSilently;
   }
 }
