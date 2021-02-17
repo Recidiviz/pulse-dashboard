@@ -118,9 +118,11 @@ const CaseTable = () => {
           </tr>
         </thead>
         <tbody className="fs-block">
-          {pageData.map((details) => (
+          {pageData.map((details, idx) => (
             <tr
-              key={`${details.state_id}-${details.admissionType}-${details.officer_recommendation}`}
+              key={`${details.state_id}-${details.officer
+                .split(" ")
+                .join("")}-${idx + 1}`}
             >
               <td>{details.state_id}</td>
               {nullSafeCell(details.district)}
