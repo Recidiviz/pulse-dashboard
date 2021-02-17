@@ -42,7 +42,7 @@ const CaseTable = () => {
   const store = dataStore.caseTableStore;
   const { filters } = filtersStore;
   const [page, setPage] = useState(0);
-  const { sortOrder, toggleOrder, comparator } = useSort();
+  const { sortOrder, sortField, toggleOrder, comparator } = useSort();
   const { containerHeight, containerRef } = useContainerHeight();
 
   const filteredData = store.filteredData.slice();
@@ -63,7 +63,7 @@ const CaseTable = () => {
   const createUpdatePage = (diff) => () => setPage(page + diff);
 
   const createSortableProps = (field) => ({
-    order: sortOrder,
+    order: field === sortField ? sortOrder : null,
     onClick: () => {
       toggleOrder(field);
       setPage(0);
