@@ -131,6 +131,11 @@ const FtrReferralsByRace = ({
         ],
       }}
       options={{
+        plugins: {
+          datalabels: {
+            display: false,
+          },
+        },
         responsive: true,
         legend: {
           display: true,
@@ -206,6 +211,11 @@ const FtrReferralsByRace = ({
         ),
       }}
       options={{
+        plugins: {
+          datalabels: {
+            display: false,
+          },
+        },
         scales: {
           xAxes: [
             {
