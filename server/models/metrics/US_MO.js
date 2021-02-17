@@ -146,7 +146,7 @@ module.exports = {
         charge_category: DEFAULT_CHARGE_CATEGORIES,
         metric_period_months: DEFAULT_METRIC_PERIOD_MONTHS,
         reported_violations: DEFAULT_REPORTED_VIOLATIONS,
-        supervision_type: DEFAULT_SUPERVISION_TYPES,
+        supervision_type: DEFAULT_SUPERVISION_TYPES.concat(["all"]),
         supervision_level: DEFAULT_SUPERVISION_LEVELS,
         violation_type: DEFAULT_VIOLATION_TYPES,
       },
