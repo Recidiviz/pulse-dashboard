@@ -77,4 +77,7 @@ of that column.`,
     "med_tech",
     "low_tech",
   ],
+  supervisionLocationValueKey: "level_2_supervision_location_external_id",
+  supervisionLocationLabelKey: "level_2_supervision_location_external_id",
+  supervisionLocationFilterKey: "levelTwoSupervisionLocation",
 };

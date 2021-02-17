@@ -68,7 +68,7 @@ SelectDropdown.defaultProps = {
 };
 
 SelectDropdown.propTypes = {
-  singleValueOption: PropTypes.shape(SelectOption),
+  singleValueOption: PropTypes.string,
   selected: PropTypes.arrayOf(PropTypes.shape(SelectOption)).isRequired,
   options: PropTypes.arrayOf(PropTypes.shape(SelectOption)).isRequired,
   isLoading: PropTypes.bool.isRequired,

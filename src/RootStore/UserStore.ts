@@ -232,7 +232,7 @@ export default class UserStore {
   verifyRestrictedDistrict(): void {
     if (
       this.restrictedDistrict &&
-      !this.rootStore?.tenantStore.districtsIsLoading &&
+      !this.rootStore?.supervisionLocationsStore.isLoading &&
       !this.rootStore?.supervisionLocationsStore.supervisionLocations.includes(
         this.restrictedDistrict
       )

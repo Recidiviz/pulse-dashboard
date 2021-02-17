@@ -35,11 +35,9 @@ const SupervisionLocationFilter = () => {
     supervisionLocationsStore,
   } = useRootStore();
   const { restrictedDistrict } = userStore;
-  const { supervisionLocations, isLoading } = supervisionLocationsStore;
+  const { filterOptions, isLoading } = supervisionLocationsStore;
 
-  const options = [allOption].concat(
-    supervisionLocations.map((d) => ({ value: d, label: d }))
-  );
+  const options = [allOption].concat(filterOptions);
 
   const onValueChange = (newOptions) => {
     const filteredDistricts = map("value", newOptions);

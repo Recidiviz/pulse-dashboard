@@ -15,8 +15,10 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 import { flow, autorun, makeAutoObservable, computed } from "mobx";
+import uniqBy from "lodash/uniqBy";
 import * as Sentry from "@sentry/react";
 import { callMetricsApi, parseResponseByFileFormat } from "../api/metrics";
+import { translate } from "../views/tenants/utils/i18nSettings";
 
 export default class SupervisionLocationsStore {
   apiData = {};
@@ -32,6 +34,7 @@ export default class SupervisionLocationsStore {
   constructor({ rootStore }) {
     makeAutoObservable(this, {
       fetchSupervisionLocations: flow,
+      filterOptions: computed,
       supervisionLocations: computed,
     });
 
@@ -85,14 +88,18 @@ export default class SupervisionLocationsStore {
   }
 
   get supervisionLocations() {
-    if (!this.apiData.data) return [];
-
-    return [...this.apiData.data].map(
-      (d) => d.level_1_supervision_location_external_id
-    );
+    const valueKey = translate("supervisionLocationValueKey");
+    return this.apiData.data.map((d) => d[valueKey]);
   }
 
-  get filteredData() {
-    return [...this.apiData.data];
+  get filterOptions() {
+    if (!this.apiData.data) return [];
+    const valueKey = translate("supervisionLocationValueKey");
+    const labelKey = translate("supervisionLocationLabelKey");
+
+    return uniqBy(this.apiData.data, valueKey).map((d) => ({
+      value: d[valueKey],
+      label: d[labelKey],
+    }));
   }
 }
