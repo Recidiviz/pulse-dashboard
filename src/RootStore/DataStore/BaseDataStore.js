@@ -137,7 +137,8 @@ export default class BaseDataStore {
   }
 
   get dimensionManifest() {
-    if (!this.apiData.metadata) return null;
+    if (!this.apiData.metadata || !this.apiData.metadata.dimension_manifest)
+      return null;
 
     return this.apiData.metadata.dimension_manifest.reduce((acc, dimension) => {
       const [name, values] = dimension;

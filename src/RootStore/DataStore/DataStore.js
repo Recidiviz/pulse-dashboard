@@ -20,6 +20,7 @@ import MatrixStore from "./MatrixStore";
 import RevocationsOverTimeStore from "./RevocationsOverTimeStore";
 import RevocationsChartStore from "./RevocationsChartStore";
 import CaseTableStore from "./CaseTableStore";
+import SupervisionLocationsStore from "./SupervisionLocationsStore";
 
 export default class DataStore {
   rootStore;
@@ -31,6 +32,8 @@ export default class DataStore {
   revocationsChartStore;
 
   caseTableStore;
+
+  supervisionLocationsStore;
 
   constructor({ rootStore }) {
     makeAutoObservable(this);
@@ -44,5 +47,9 @@ export default class DataStore {
     this.revocationsChartStore = new RevocationsChartStore({ rootStore });
 
     this.caseTableStore = new CaseTableStore({ rootStore });
+
+    this.supervisionLocationsStore = new SupervisionLocationsStore({
+      rootStore,
+    });
   }
 }
