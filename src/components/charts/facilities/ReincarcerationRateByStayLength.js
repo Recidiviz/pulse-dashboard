@@ -118,6 +118,11 @@ const ReincarcerationRateByStayLength = ({
         ],
       }}
       options={{
+        plugins: {
+          datalabels: {
+            display: false,
+          },
+        },
         responsive: true,
         legend: {
           display: false,
