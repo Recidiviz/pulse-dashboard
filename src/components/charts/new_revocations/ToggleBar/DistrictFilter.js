@@ -21,26 +21,63 @@ import { get } from "mobx";
 import map from "lodash/fp/map";
 
 import FilterField from "./FilterField";
-import SelectDropdown from "../../../controls/SelectDropdown";
+// import Select from "../../../controls/Select";
+import MultiSelect from "../../../controls/MultiSelect";
 import { useRootStore } from "../../../../StoreProvider";
 
 const allOption = { label: "All", value: "All" };
 
 const DistrictFilter = () => {
-  const { filters, filtersStore, userStore } = useRootStore();
-  const { restrictedDistrict } = userStore;
-  const {
-    filterOptions,
-    districtsIsLoading: isLoading,
-    districtKeys: { filterKey },
-  } = filtersStore;
+  const { filters, filtersStore, tenantStore } = useRootStore();
+  // const { restrictedDistrict } = userStore;
 
-  const options = [allOption].concat(filterOptions[filterKey].options);
+  const getSelectElement = () => {
+    // if (restrictedDistrict) {
+    //   const singleValue = {
+    //     label: restrictedDistrict,
+    //     value: restrictedDistrict,
+    //   };
 
-  const onValueChange = (newOptions) => {
-    const filteredDistricts = map("value", newOptions);
-    filtersStore.setFilters({ [filterKey]: filteredDistricts });
-  };
+    //   return (
+    //     <Select
+    //       value={singleValue}
+    //       options={[singleValue]}
+    //       defaultValue={singleValue}
+    //       onChange={() => {}}
+    //       isDisabled
+    //     />
+    //   );
+    // }
+    const { districts, districtsIsLoading } = tenantStore;
+    const options = [allDistrictsOption].concat(
+      districts.map((d) => ({ value: d, label: d }))
+    );
+    const summingOption = allDistrictsOption;
+    const defaultValue = [allDistrictsOption];
+
+    const onValueChange = (newOptions) => {
+      if (newOptions.some((item) => item.value === "All")) {
+        const filterAllDistricts = map("value", options);
+        filtersStore.setFilters({ [DISTRICT]: filterAllDistricts });
+      } else if (
+        newOptions.some(
+          (item) =>
+            options.filter((item2) => item2.value.includes(item.value)).length >
+            1
+        )
+      ) {
+        const filteredOptions = newOptions
+          .map((item) =>
+            options.filter((item2) => item2.value.includes(item.value))
+          )
+          .flat(1);
+        const filterEveryDistricts = map("value", filteredOptions);
+        filtersStore.setFilters({ [DISTRICT]: filterEveryDistricts });
+      } else {
+        const filteredDistricts = map("value", newOptions);
+        filtersStore.setFilters({ [DISTRICT]: filteredDistricts });
+      }
+    };
 
   const selectedValues = options.filter((option) =>
     get(filters, filterKey).includes(option.value)
