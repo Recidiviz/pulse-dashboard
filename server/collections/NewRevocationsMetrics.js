@@ -15,11 +15,11 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 const { default: BaseMetrics } = require("./BaseMetrics");
-const { METRIC_TYPES } = require("./metrics/shared");
+const { COLLECTIONS } = require("./resources");
 
 class NewRevocationsMetrics extends BaseMetrics {
   constructor(metricType, stateCode) {
-    if (metricType !== METRIC_TYPES.NEW_REVOCATION) {
+    if (metricType !== COLLECTIONS.NEW_REVOCATION) {
       throw new Error(
         `Incorrect metricType for metric class NewRevocationsMetrics: ${metricType}`
       );

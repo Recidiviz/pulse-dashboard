@@ -19,7 +19,9 @@ const fs = require("fs");
 const util = require("util");
 const path = require("path");
 const { getFileExtension, getFileName } = require("../utils/fileName");
-const { default: getMetricsByType } = require("../models/getMetricsByType");
+const {
+  default: getMetricsByType,
+} = require("../collections/getMetricsByType");
 
 const asyncReadFile = util.promisify(fs.readFile);
 

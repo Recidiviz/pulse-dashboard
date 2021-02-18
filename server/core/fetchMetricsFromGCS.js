@@ -18,7 +18,9 @@
 const BUCKET_NAME = process.env.METRIC_BUCKET;
 const objectStorage = require("./objectStorage");
 const { getFileExtension, getFileName } = require("../utils/fileName");
-const { default: getMetricsByType } = require("../models/getMetricsByType");
+const {
+  default: getMetricsByType,
+} = require("../collections/getMetricsByType");
 /**
  * Retrieves all metric files for the given metric type from Google Cloud Storage.
  *

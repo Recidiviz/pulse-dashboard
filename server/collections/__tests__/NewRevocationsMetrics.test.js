@@ -17,9 +17,9 @@
 
 const { default: NewRevocationsMetrics } = require("../NewRevocationsMetrics");
 const {
-  METRIC_TYPES,
+  COLLECTIONS,
   DEFAULT_METRIC_PERIOD_MONTHS,
-} = require("../metrics/shared");
+} = require("../resources/shared");
 
 describe("NewRevocationsMetrics", () => {
   const stateCode = "US_MO";
@@ -27,14 +27,14 @@ describe("NewRevocationsMetrics", () => {
   let metric;
 
   beforeEach(() => {
-    metric = new NewRevocationsMetrics(METRIC_TYPES.NEW_REVOCATION, stateCode);
+    metric = new NewRevocationsMetrics(COLLECTIONS.NEW_REVOCATION, stateCode);
   });
 
   it("throws an error if instantiated with wrong metric type", () => {
     expect(
-      () => new NewRevocationsMetrics(METRIC_TYPES.COMMUNITY_EXPLORE, stateCode)
+      () => new NewRevocationsMetrics(COLLECTIONS.COMMUNITY_EXPLORE, stateCode)
     ).toThrowError(
-      `Incorrect metricType for metric class NewRevocationsMetrics: ${METRIC_TYPES.COMMUNITY_EXPLORE}`
+      `Incorrect metricType for metric class NewRevocationsMetrics: ${COLLECTIONS.COMMUNITY_EXPLORE}`
     );
   });
 

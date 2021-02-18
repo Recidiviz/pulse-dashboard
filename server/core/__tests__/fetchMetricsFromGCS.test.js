@@ -16,7 +16,7 @@
 // =============================================================================
 
 const { default: fetchMetricsFromGCS } = require("../fetchMetricsFromGCS");
-const getMetricsByType = require("../../models/getMetricsByType");
+const getMetricsByType = require("../../collections/getMetricsByType");
 const objectStorage = require("../objectStorage");
 
 jest.mock("../../models/getMetricsByType");

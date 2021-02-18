@@ -14,10 +14,10 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-const { METRIC_TYPES } = require("./shared");
+const { COLLECTIONS } = require("./shared");
 
 module.exports = {
-  [METRIC_TYPES.COMMUNITY_GOALS]: {
+  [COLLECTIONS.COMMUNITY_GOALS]: {
     admissions_by_type_by_month: {
       filename: "admissions_by_type_by_month.txt",
     },
@@ -46,7 +46,7 @@ module.exports = {
       filename: "site_offices.json",
     },
   },
-  [METRIC_TYPES.COMMUNITY_EXPLORE]: {
+  [COLLECTIONS.COMMUNITY_EXPLORE]: {
     admissions_by_type_by_month: {
       filename: "admissions_by_type_by_month.txt",
     },
@@ -88,14 +88,14 @@ module.exports = {
     },
     site_offices: { filename: "site_offices.json" },
   },
-  [METRIC_TYPES.FACILITIES_GOALS]: {
+  [COLLECTIONS.FACILITIES_GOALS]: {
     avg_days_at_liberty_by_month: {
       filename: "avg_days_at_liberty_by_month.txt",
     },
     reincarcerations_by_month: { filename: "reincarcerations_by_month.txt" },
     reincarcerations_by_period: { filename: "reincarcerations_by_period.txt" },
   },
-  [METRIC_TYPES.FACILITIES_EXPLORE]: {
+  [COLLECTIONS.FACILITIES_EXPLORE]: {
     admissions_by_type_by_period: {
       filename: "admissions_by_type_by_period.txt",
     },
@@ -114,7 +114,7 @@ module.exports = {
     reincarcerations_by_month: { filename: "reincarcerations_by_month.txt" },
     reincarcerations_by_period: { filename: "reincarcerations_by_period.txt" },
   },
-  [METRIC_TYPES.PROGRAMMING_EXPLORE]: {
+  [COLLECTIONS.PROGRAMMING_EXPLORE]: {
     ftr_referrals_by_age_by_period: {
       filename: "ftr_referrals_by_age_by_period.txt",
     },

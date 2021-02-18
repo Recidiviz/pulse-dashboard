@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-const METRIC_TYPES = {
+const COLLECTIONS = {
   NEW_REVOCATION: "newRevocation",
   COMMUNITY_GOALS: "communityGoals",
   COMMUNITY_EXPLORE: "communityExplore",
@@ -54,7 +54,7 @@ const DEFAULT_REPORTED_VIOLATIONS = [
 const DEFAULT_METRIC_PERIOD_MONTHS = ["1", "12", "3", "36", "6"];
 
 module.exports = {
-  METRIC_TYPES,
+  COLLECTIONS,
   DEFAULT_MONTHS,
   DEFAULT_REPORTED_VIOLATIONS,
   DEFAULT_METRIC_PERIOD_MONTHS,

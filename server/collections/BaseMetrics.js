@@ -14,11 +14,9 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-const { default: METRICS } = require("./metrics");
-const { METRIC_TYPES } = require("./metrics/shared");
-
+const { default: RESOURCES, COLLECTIONS } = require("./resources");
 /**
- * The base class for all metrics. Use the helper `getMetricsByType` to instantiate a metric
+ * The base class for all metrics. Use the helper `getResourcesByType` to instantiate a metric
  * by metricType and stateCode.
  */
 class BaseMetrics {
@@ -32,36 +30,38 @@ class BaseMetrics {
     this.constructor.validateMetricType(metricType);
     this.stateCode = stateCode;
     this.metricType = metricType;
-    this.metrics = METRICS[stateCode][metricType];
+    this.metrics = RESOURCES[stateCode][metricType];
   }
 
   static validateMetricType(metricType) {
-    if (!Object.values(METRIC_TYPES).includes(metricType)) {
+    if (!Object.values(COLLECTIONS).includes(metricType)) {
       throw new Error(
         `Cannot instantiate BaseMetrics with metricType: ${metricType}`
       );
     }
   }
 
-  getAllFiles() {
-    return Object.keys(this.metrics).map((fileKey) => this.getFile(fileKey));
+  getAllFileNames() {
+    return Object.keys(this.metrics).map((metricName) =>
+      this.getFile(metricName)
+    );
   }
 
-  getFile(fileKey) {
-    const metric = this.metrics[fileKey];
+  getFileName(metricName) {
+    const metric = this.metrics[metricName];
     if (!metric) {
       throw new Error(
-        `${fileKey} not found with either txt or json extension for metric type ${this.metricType}`
+        `${metricName} file not found with either txt or json extension for metric type ${this.metricType}`
       );
     }
     return metric.filename;
   }
 
-  getFiles(file = null) {
-    if (file) {
-      return [this.getFile(file)];
+  getFileNamesList(metricName = null) {
+    if (metricName) {
+      return [this.getFileName(metricName)];
     }
-    return this.getAllFiles();
+    return this.getAllFileNames();
   }
 
   validateDimensionsForFile(metricName, sourceDimensions) {

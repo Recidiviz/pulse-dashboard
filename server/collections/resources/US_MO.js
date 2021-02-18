@@ -15,7 +15,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 const {
-  METRIC_TYPES,
+  COLLECTIONS,
   DEFAULT_MONTHS,
   DEFAULT_REPORTED_VIOLATIONS,
   DEFAULT_METRIC_PERIOD_MONTHS,
@@ -28,7 +28,12 @@ const DEFAULT_CHARGE_CATEGORIES = [
   "sex_offense",
 ];
 
-const DEFAULT_SUPERVISION_TYPES = ["dual", "parole", "probation"];
+const DEFAULT_SUPERVISION_TYPES = [
+  "dual",
+  "parole",
+  "probation",
+  "external_unknown",
+];
 
 const DEFAULT_SUPERVISION_LEVELS = ["all"];
 
@@ -48,7 +53,7 @@ const DEFAULT_VIOLATION_TYPES = [
 ];
 
 module.exports = {
-  [METRIC_TYPES.NEW_REVOCATION]: {
+  [COLLECTIONS.NEW_REVOCATION]: {
     supervision_location_restricted_access_emails: {
       filename: "supervision_location_restricted_access_emails.json",
     },

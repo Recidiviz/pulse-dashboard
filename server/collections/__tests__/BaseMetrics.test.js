@@ -16,19 +16,18 @@
 // =============================================================================
 
 const { default: BaseMetrics } = require("../BaseMetrics");
-const { METRIC_TYPES } = require("../metrics/shared");
-const { default: METRICS } = require("../metrics");
+const { default: RESOURCES, COLLECTIONS } = require("../resources");
 
 describe("BaseMetrics", () => {
   const stateCode = "US_MO";
   const filename = "revocations_matrix_by_month";
   let metric;
   beforeEach(() => {
-    metric = new BaseMetrics(METRIC_TYPES.NEW_REVOCATION, stateCode);
+    metric = new BaseMetrics(COLLECTIONS.NEW_REVOCATION, stateCode);
   });
 
   it("sets the metricType property", () => {
-    expect(metric.metricType).toEqual(METRIC_TYPES.NEW_REVOCATION);
+    expect(metric.metricType).toEqual(COLLECTIONS.NEW_REVOCATION);
   });
 
   it("sets the stateCode property", () => {
@@ -37,7 +36,7 @@ describe("BaseMetrics", () => {
 
   it("sets the metrics property", () => {
     expect(metric.metrics).toEqual(
-      METRICS[stateCode][METRIC_TYPES.NEW_REVOCATION]
+      RESOURCES[stateCode][COLLECTIONS.NEW_REVOCATION]
     );
     expect(metric.metrics).toHaveProperty(filename);
   });
@@ -48,13 +47,13 @@ describe("BaseMetrics", () => {
     );
   });
 
-  describe(".getFiles", () => {
-    it("given a file it returns an array with the file", () => {
-      expect(metric.getFiles(filename)).toEqual([`${filename}.txt`]);
+  describe(".getFileNamesList", () => {
+    it("given a file name it returns an array with the filename and its extension", () => {
+      expect(metric.getFileNamesList(filename)).toEqual([`${filename}.txt`]);
     });
 
-    it("given no file names it returns an array with all files", () => {
-      expect(metric.getFiles()).toEqual([
+    it("given no file names it returns an array with all files and extensions", () => {
+      expect(metric.getFileNamesList()).toEqual([
         "supervision_location_restricted_access_emails.json",
         "revocations_matrix_by_month.txt",
         "revocations_matrix_cells.txt",

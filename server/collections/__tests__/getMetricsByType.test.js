@@ -18,18 +18,18 @@
 const { default: getMetricsByType } = require("../getMetricsByType");
 const { default: NewRevocationsMetrics } = require("../NewRevocationsMetrics");
 const { default: BaseMetrics } = require("../BaseMetrics");
-const { METRIC_TYPES } = require("../metrics/shared");
+const { COLLECTIONS } = require("../resources/shared");
 
 describe("getMetricsByType", () => {
   test.each([
-    ["US_MO", METRIC_TYPES.NEW_REVOCATION, NewRevocationsMetrics],
-    ["US_PA", METRIC_TYPES.NEW_REVOCATION, NewRevocationsMetrics],
-    ["US_DEMO", METRIC_TYPES.NEW_REVOCATION, NewRevocationsMetrics],
-    ["US_ND", METRIC_TYPES.COMMUNITY_GOALS, BaseMetrics],
-    ["US_ND", METRIC_TYPES.COMMUNITY_EXPLORE, BaseMetrics],
-    ["US_ND", METRIC_TYPES.FACILITIES_GOALS, BaseMetrics],
-    ["US_ND", METRIC_TYPES.FACILITIES_EXPLORE, BaseMetrics],
-    ["US_ND", METRIC_TYPES.PROGRAMMING_EXPLORE, BaseMetrics],
+    ["US_MO", COLLECTIONS.NEW_REVOCATION, NewRevocationsMetrics],
+    ["US_PA", COLLECTIONS.NEW_REVOCATION, NewRevocationsMetrics],
+    ["US_DEMO", COLLECTIONS.NEW_REVOCATION, NewRevocationsMetrics],
+    ["US_ND", COLLECTIONS.COMMUNITY_GOALS, BaseMetrics],
+    ["US_ND", COLLECTIONS.COMMUNITY_EXPLORE, BaseMetrics],
+    ["US_ND", COLLECTIONS.FACILITIES_GOALS, BaseMetrics],
+    ["US_ND", COLLECTIONS.FACILITIES_EXPLORE, BaseMetrics],
+    ["US_ND", COLLECTIONS.PROGRAMMING_EXPLORE, BaseMetrics],
   ])(
     "stateCode %s for metric %s returns a %p metric class",
     (stateCode, metricType, metricClass) => {

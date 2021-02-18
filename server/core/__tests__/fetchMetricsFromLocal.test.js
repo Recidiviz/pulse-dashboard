@@ -18,7 +18,7 @@
 const fs = require("fs");
 const path = require("path");
 const { default: fetchMetricsFromLocal } = require("../fetchMetricsFromLocal");
-const getMetricsByType = require("../../models/getMetricsByType");
+const getMetricsByType = require("../../collections/getMetricsByType");
 
 jest.mock("../../models/getMetricsByType");
 
