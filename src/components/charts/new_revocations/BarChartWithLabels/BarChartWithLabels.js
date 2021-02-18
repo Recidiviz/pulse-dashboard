@@ -18,12 +18,25 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Bar } from "react-chartjs-2";
+import "chartjs-plugin-datalabels";
 
 import { axisCallbackForPercentage } from "../../../../utils/charts/axis";
 import { tooltipForFooterWithCounts } from "../../../../utils/charts/significantStatistics";
 import { tooltipForRateMetricWithCounts } from "../../../../utils/charts/toggles";
 import { generateLabelsWithCustomColors } from "./helpers";
 import { COLORS } from "../../../../assets/scripts/constants/colors";
+
+const getDefaultLegendOptions = (labelColors) => {
+  return labelColors.length
+    ? {
+        position: "bottom",
+        labels: {
+          generateLabels: (ch) =>
+            generateLabelsWithCustomColors(ch, labelColors),
+        },
+      }
+    : { display: false };
+};
 
 const BarChartWithLabels = ({
   id,
@@ -33,20 +46,18 @@ const BarChartWithLabels = ({
   yAxisLabel,
   numerators,
   denominators,
+  legendOptions,
 }) => (
   <Bar
     id={id}
     data={data}
     options={{
-      legend: labelColors.length
-        ? {
-            position: "bottom",
-            labels: {
-              generateLabels: (ch) =>
-                generateLabelsWithCustomColors(ch, labelColors),
-            },
-          }
-        : { display: false },
+      plugins: {
+        datalabels: {
+          display: false,
+        },
+      },
+      legend: legendOptions || getDefaultLegendOptions(labelColors),
       responsive: true,
       maintainAspectRatio: false,
       scales: {
@@ -79,6 +90,7 @@ const BarChartWithLabels = ({
         callbacks: {
           label: (tooltipItem, tooltipData) =>
             tooltipForRateMetricWithCounts(
+              id,
               tooltipItem,
               tooltipData,
               numerators,
@@ -94,6 +106,7 @@ const BarChartWithLabels = ({
 
 BarChartWithLabels.defaultProps = {
   labelColors: [],
+  legendOptions: null,
 };
 
 BarChartWithLabels.propTypes = {
@@ -121,5 +134,16 @@ BarChartWithLabels.propTypes = {
     PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.number), PropTypes.number])
   ).isRequired,
   labelColors: PropTypes.arrayOf(PropTypes.string),
+  legendOptions: PropTypes.shape({
+    position: PropTypes.string,
+    align: PropTypes.string,
+    rtl: PropTypes.bool,
+    reverse: PropTypes.bool,
+    labels: PropTypes.shape({
+      usePointStyle: PropTypes.bool,
+      boxWidth: PropTypes.number,
+      generateLabels: PropTypes.func,
+    }),
+  }),
 };
 export default BarChartWithLabels;

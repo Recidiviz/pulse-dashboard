@@ -118,6 +118,11 @@ const FtrReferralsByGender = ({
         ],
       }}
       options={{
+        plugins: {
+          datalabels: {
+            display: false,
+          },
+        },
         responsive: true,
         legend: {
           display: true,

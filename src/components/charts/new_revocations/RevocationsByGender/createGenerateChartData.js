@@ -25,7 +25,7 @@ import {
   getRiskLevelLabels,
 } from "../../../../utils/transforms/labels";
 import getDenominatorKeyByMode from "../utils/getDenominatorKeyByMode";
-import getCounts from "../utils/getCounts";
+import { getCountsByRiskLevel } from "../utils/getCounts";
 import createRiskLevelsMap from "../utils/createRiskLevelsMap";
 
 /**
@@ -42,7 +42,8 @@ const createGenerateChartData = (filteredData, currentTenantId) => (mode) => {
 
   const { dataPoints, numerators, denominators } = pipe(
     reduce(createRiskLevelsMap(numeratorKey, denominatorKey, "gender"), {}),
-    (data) => getCounts(data, getRiskLevels(currentTenantId), genders)
+    (data) =>
+      getCountsByRiskLevel(data, getRiskLevels(currentTenantId), genders)
   )(filteredData);
 
   const generateDataset = (label, index) => ({

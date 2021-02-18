@@ -152,6 +152,11 @@ const FtrReferralsByLsir = ({
         ],
       }}
       options={{
+        plugins: {
+          datalabels: {
+            display: false,
+          },
+        },
         responsive: true,
         legend: {
           display: true,

@@ -132,6 +132,11 @@ const RevocationProportionByRace = ({
         ),
       }}
       options={{
+        plugins: {
+          datalabels: {
+            display: false,
+          },
+        },
         scales: {
           xAxes: [
             {
@@ -216,6 +221,11 @@ const RevocationProportionByRace = ({
         ),
       }}
       options={{
+        plugins: {
+          datalabels: {
+            display: false,
+          },
+        },
         responsive: true,
         legend: {
           position: "bottom",

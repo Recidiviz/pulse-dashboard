@@ -123,6 +123,11 @@ const FtrReferralCountByMonth = ({
         ],
       }}
       options={{
+        plugins: {
+          datalabels: {
+            display: false,
+          },
+        },
         legend: {
           display: false,
           position: "bottom",

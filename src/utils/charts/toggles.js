@@ -150,6 +150,7 @@ function standardTooltipForRateMetric(tooltipItem, data) {
 }
 
 function tooltipForRateMetricWithCounts(
+  id,
   tooltipItem,
   data,
   numerators,
@@ -176,36 +177,22 @@ function tooltipForRateMetricWithCounts(
       ? " *"
       : "";
 
-  return `${label}: ${getTooltipWithoutTrendline(
-    tooltipItem,
-    data,
-    "%"
-  )}${appendedCounts}${cue}`;
+  return id !== "admissionsByRace"
+    ? `${label}: ${getTooltipWithoutTrendline(
+        tooltipItem,
+        data,
+        "%"
+      )}${appendedCounts}${cue}`
+    : `${getTooltipWithoutTrendline(
+        tooltipItem,
+        data,
+        ""
+      )}${appendedCounts}${cue}`;
 }
 
 function updateTooltipForMetricType(metricType, tooltipItem, data) {
   if (metricType === "rates") {
     return standardTooltipForRateMetric(tooltipItem, data);
-  }
-
-  return standardTooltipForCountMetric(tooltipItem, data);
-}
-
-// TODO merge delete?
-function updateTooltipForMetricTypeWithCounts(
-  metricType,
-  tooltipItem,
-  data,
-  numerators,
-  denominators
-) {
-  if (metricType === "rates") {
-    return tooltipForRateMetricWithCounts(
-      tooltipItem,
-      data,
-      numerators,
-      denominators
-    );
   }
 
   return standardTooltipForCountMetric(tooltipItem, data);
@@ -258,7 +245,6 @@ export {
   standardTooltipForRateMetric,
   tooltipForRateMetricWithCounts,
   updateTooltipForMetricType,
-  updateTooltipForMetricTypeWithCounts,
   canDisplayGoal,
   centerSingleMonthDatasetIfNecessary,
 };

@@ -26,6 +26,8 @@ const FILES_BY_METRIC_TYPE = {
     "revocations_matrix_distribution_by_violation.txt",
     "revocations_matrix_filtered_caseload.txt",
     "supervision_location_restricted_access_emails.json",
+    "state_race_ethnicity_population.json",
+    "state_gender_population.json",
   ],
   communityGoals: [
     "admissions_by_type_by_month.txt",
