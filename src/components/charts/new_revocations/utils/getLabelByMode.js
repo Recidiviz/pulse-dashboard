@@ -24,6 +24,8 @@ const getLabelByMode = (mode) => {
       return genderValueToLabel.FEMALE;
     case "MALE":
       return genderValueToLabel.MALE;
+    case "WHITE":
+      return translate("raceLabelMap").WHITE;
     case "BLACK":
       return translate("raceLabelMap").BLACK;
     case "HISPANIC":

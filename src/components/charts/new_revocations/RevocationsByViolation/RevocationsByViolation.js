@@ -27,6 +27,8 @@ import { useRootStore } from "../../../../StoreProvider";
 import { VIOLATION_TYPE } from "../../../../constants/filterTypes";
 import { COLORS } from "../../../../assets/scripts/constants/colors";
 
+const CHART_TITLE = "Relative frequency of violation types";
+
 const RevocationsByViolation = observer(
   ({ containerHeight, timeDescription }, ref) => {
     const { filtersStore, dataStore } = useRootStore();
@@ -76,8 +78,8 @@ const RevocationsByViolation = observer(
           revocationsChartStore.filteredData,
           violationTypes
         )}
-        chartTitle="Relative frequency of violation types"
-        metricTitle="Relative frequency of violation types"
+        chartTitle={CHART_TITLE}
+        metricTitle={CHART_TITLE}
         timeDescription={timeDescription}
         dataExportLabel="Violation"
       />

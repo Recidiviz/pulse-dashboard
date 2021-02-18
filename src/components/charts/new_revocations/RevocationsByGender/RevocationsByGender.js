@@ -26,10 +26,14 @@ import createGenerateChartData from "./createGenerateChartData";
 import { useRootStore } from "../../../../StoreProvider";
 import { genderValueToLabel } from "../../../../utils/transforms/labels";
 
+const DEFAULT_MODE = "MALE";
+
 const RevocationsByGender = observer(
   ({ containerHeight, timeDescription }, ref) => {
     const { dataStore } = useRootStore();
     const { revocationsChartStore } = dataStore;
+
+    const CHART_TITLE = `Admissions by ${translate("gender")}`;
 
     return (
       <RevocationsByDimension
@@ -48,11 +52,11 @@ const RevocationsByGender = observer(
           />
         )}
         generateChartData={createGenerateChartData(revocationsChartStore)}
-        chartTitle={`Admissions by ${translate("gender")}`}
-        metricTitle={(mode) => `Admissions by ${translate("gender")}: ${mode}`}
+        chartTitle={CHART_TITLE}
+        metricTitle={(mode) => `{CHART_TITLE}: ${mode}`}
         timeDescription={timeDescription}
         modes={Object.keys(genderValueToLabel)}
-        defaultMode="MALE"
+        defaultMode={DEFAULT_MODE}
         dataExportLabel="Gender"
       />
     );
