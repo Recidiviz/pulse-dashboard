@@ -59,8 +59,8 @@ describe("RootStore", () => {
     expect(rootStore.dataStore).toBeDefined();
   });
 
-  it("contains the SupervisionLocationsStore", () => {
-    expect(rootStore.supervisionLocationsStore).toBeDefined();
+  it("contains the DistrictsStore", () => {
+    expect(rootStore.districtsStore).toBeDefined();
   });
 
   it("contains user", async () => {

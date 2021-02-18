@@ -18,7 +18,7 @@ import * as Sentry from "@sentry/react";
 import { reactImmediately } from "../../testUtils";
 import { callMetricsApi } from "../../api/metrics/metricsClient";
 import RootStore from "../RootStore";
-import SupervisionLocationsStore from "../SupervisionLocationsStore";
+import DistrictsStore from "../DistrictsStore";
 
 jest.mock("@sentry/react");
 jest.mock("../RootStore");
@@ -37,7 +37,7 @@ const mockRootStore = {
   getTokenSilently: mockGetTokenSilently,
 };
 
-describe("SupervisionLocationsStore", () => {
+describe("DistrictsStore", () => {
   let store;
 
   afterEach(() => {
@@ -46,7 +46,7 @@ describe("SupervisionLocationsStore", () => {
 
   describe("fetching supervision locations", () => {
     const file = "supervision_location_ids_to_names";
-    const mockSupervisionLocations = [
+    const mockDistricts = [
       {
         level_2_supervision_location_external_id: "TCSTL",
         level_2_supervision_location_name: "TCSTL",
@@ -65,11 +65,11 @@ describe("SupervisionLocationsStore", () => {
       RootStore.mockImplementation(() => mockRootStore);
 
       callMetricsApi.mockResolvedValue({
-        [file]: mockSupervisionLocations,
+        [file]: mockDistricts,
       });
 
       reactImmediately(() => {
-        store = new SupervisionLocationsStore({
+        store = new DistrictsStore({
           rootStore: new RootStore(),
         });
       });
@@ -98,7 +98,7 @@ describe("SupervisionLocationsStore", () => {
     });
 
     it("sets the apiData", () => {
-      expect(store.apiData.data).toEqual(mockSupervisionLocations);
+      expect(store.apiData.data).toEqual(mockDistricts);
       expect(store.apiData.metadata).toEqual({});
     });
 
@@ -106,8 +106,8 @@ describe("SupervisionLocationsStore", () => {
       expect(store.filterOptions).toEqual([{ value: "TCSTL", label: "TCSTL" }]);
     });
 
-    it("sets the supervisionLocations to all values", () => {
-      expect(store.supervisionLocations).toEqual(["TCSTL", "TCSTL"]);
+    it("sets the Districts to all values", () => {
+      expect(store.Districts).toEqual(["TCSTL", "TCSTL"]);
     });
   });
 
@@ -117,7 +117,7 @@ describe("SupervisionLocationsStore", () => {
       jest.spyOn(console, "error").mockImplementation(() => {});
       RootStore.mockImplementation(() => mockRootStore);
       callMetricsApi.mockRejectedValueOnce(apiError);
-      store = new SupervisionLocationsStore({ rootStore: new RootStore() });
+      store = new DistrictsStore({ rootStore: new RootStore() });
     });
 
     afterEach(() => {
@@ -152,7 +152,7 @@ describe("SupervisionLocationsStore", () => {
         };
       });
       reactImmediately(() => {
-        store = new SupervisionLocationsStore({
+        store = new DistrictsStore({
           rootStore: new RootStore(),
         });
       });

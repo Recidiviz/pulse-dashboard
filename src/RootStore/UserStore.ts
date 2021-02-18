@@ -97,7 +97,7 @@ export default class UserStore {
     autorun(() => {
       if (
         !this.userIsLoading &&
-        !this.rootStore?.supervisionLocationsStore.isLoading &&
+        !this.rootStore?.districtsStore.isLoading &&
         this.rootStore?.currentTenantId
       ) {
         this.fetchRestrictedDistrictData(this.rootStore?.currentTenantId);
@@ -232,7 +232,7 @@ export default class UserStore {
   verifyRestrictedDistrict(): void {
     if (
       this.restrictedDistrict &&
-      !this.rootStore?.supervisionLocationsStore.supervisionLocations.includes(
+      !this.rootStore?.districtsStore.districts.includes(
         this.restrictedDistrict
       )
     ) {

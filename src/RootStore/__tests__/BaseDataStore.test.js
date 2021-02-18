@@ -31,7 +31,7 @@ let baseStore;
 
 jest.mock("@sentry/react");
 jest.mock("../UserStore");
-jest.mock("../SupervisionLocationsStore");
+jest.mock("../DistrictsStore");
 jest.mock("../DataStore/MatrixStore");
 jest.mock("../DataStore/CaseTableStore");
 jest.mock("../DataStore/RevocationsChartStore");

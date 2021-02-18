@@ -20,7 +20,7 @@ import * as Sentry from "@sentry/react";
 import { callMetricsApi, parseResponseByFileFormat } from "../api/metrics";
 import { translate } from "../views/tenants/utils/i18nSettings";
 
-export default class SupervisionLocationsStore {
+export default class DistrictsStore {
   apiData = {};
 
   isLoading = true;
@@ -33,9 +33,9 @@ export default class SupervisionLocationsStore {
 
   constructor({ rootStore }) {
     makeAutoObservable(this, {
-      fetchSupervisionLocations: flow,
+      fetchDistricts: flow,
       filterOptions: computed,
-      supervisionLocations: computed,
+      districts: computed,
     });
 
     this.rootStore = rootStore;
@@ -48,14 +48,14 @@ export default class SupervisionLocationsStore {
         !userStore.userIsLoading &&
         this.rootStore.currentTenantId
       ) {
-        this.fetchSupervisionLocations({
+        this.fetchDistricts({
           tenantId: this.rootStore.currentTenantId,
         });
       }
     });
   }
 
-  *fetchSupervisionLocations({ tenantId }) {
+  *fetchDistricts({ tenantId }) {
     if (!this.rootStore?.tenantStore.isLanternTenant) {
       this.isLoading = false;
       this.isError = false;
@@ -78,7 +78,7 @@ export default class SupervisionLocationsStore {
     } catch (error) {
       console.error(error);
       Sentry.captureException(error, (scope) => {
-        scope.setContext("SupervisionLocationsStore.fetchData", {
+        scope.setContext("DistrictsStore.fetchData", {
           endpoint,
         });
       });
@@ -87,7 +87,7 @@ export default class SupervisionLocationsStore {
     }
   }
 
-  get supervisionLocations() {
+  get districts() {
     const valueKey = translate("supervisionLocationValueKey");
     return this.apiData.data.map((d) => d[valueKey]);
   }

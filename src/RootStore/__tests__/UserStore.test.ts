@@ -26,13 +26,13 @@ import { METADATA_NAMESPACE } from "../../constants";
 import TENANTS from "../../tenants";
 import { callRestrictedAccessApi } from "../../api/metrics/metricsClient";
 import RootStore from "../RootStore";
-import SupervisionLocationsStore from "../SupervisionLocationsStore";
+import DistrictsStore from "../DistrictsStore";
 
 jest.mock("@sentry/react");
 jest.mock("@auth0/auth0-spa-js");
 jest.mock("../RootStore");
 jest.mock("../../api/metrics/metricsClient");
-jest.mock("../SupervisionLocationsStore");
+jest.mock("../DistrictsStore");
 
 const mockCreateAuth0Client = createAuth0Client as jest.Mock;
 const mockCallRestrictedAccessApi = callRestrictedAccessApi as jest.Mock;
@@ -52,7 +52,7 @@ const testAuthSettings = {
   redirect_url: window.location.href,
 };
 const userEmail = "thirteen@mo.gov";
-const userSupervisionLocation = "13";
+const userDistrict = "13";
 const authError = new Error(ERROR_MESSAGES.unauthorized);
 const apiError = new Error("API Failed");
 
@@ -63,9 +63,9 @@ beforeEach(() => {
       tenantStore: {
         isLanternTenant: true,
       },
-      supervisionLocationsStore: {
+      districtsStore: {
         isLoading: false,
-        supervisionLocations: [userSupervisionLocation],
+        districts: [userDistrict],
       },
     };
   });
@@ -232,7 +232,7 @@ describe("fetchRestrictedDistrictData", () => {
       mockCallRestrictedAccessApi.mockResolvedValue({
         supervision_location_restricted_access_emails: {
           restricted_user_email: userEmail.toUpperCase(),
-          allowed_level_1_supervision_location_ids: userSupervisionLocation,
+          allowed_level_1_supervision_location_ids: userDistrict,
         },
       });
 
@@ -269,7 +269,7 @@ describe("fetchRestrictedDistrictData", () => {
     });
 
     it("sets the restrictedDistrict", () => {
-      expect(userStore.restrictedDistrict).toEqual(userSupervisionLocation);
+      expect(userStore.restrictedDistrict).toEqual(userDistrict);
     });
   });
 
@@ -323,7 +323,7 @@ describe("fetchRestrictedDistrictData", () => {
     });
   });
 
-  describe("when supervisionLocations is loading", () => {
+  describe("when districts is loading", () => {
     beforeEach(async () => {
       mockRootStore.mockImplementationOnce(() => {
         return {
@@ -331,9 +331,9 @@ describe("fetchRestrictedDistrictData", () => {
           tenantStore: {
             isLanternTenant: false,
           },
-          supervisionLocationsStore: {
+          districtsStore: {
             isLoading: true,
-            supervisionLocations: null,
+            districts: null,
           },
         };
       });
@@ -365,9 +365,9 @@ describe("fetchRestrictedDistrictData", () => {
           tenantStore: {
             isLanternTenant: false,
           },
-          supervisionLocationsStore: {
+          districtsStore: {
             isLoading: true,
-            supervisionLocations: null,
+            districts: null,
           },
         };
       });
@@ -443,9 +443,9 @@ describe("fetchRestrictedDistrictData", () => {
           tenantStore: {
             isLanternTenant: false,
           },
-          supervisionLocationsStore: {
+          districtsStore: {
             isLoading: false,
-            supervisionLocations: [userSupervisionLocation],
+            districts: [userDistrict],
           },
         };
       });

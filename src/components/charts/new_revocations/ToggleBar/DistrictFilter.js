@@ -27,15 +27,10 @@ import { DISTRICT } from "../../../../constants/filterTypes";
 
 const allOption = { label: "All", value: "All" };
 
-const SupervisionLocationFilter = () => {
-  const {
-    filters,
-    filtersStore,
-    userStore,
-    supervisionLocationsStore,
-  } = useRootStore();
+const DistrictFilter = () => {
+  const { filters, filtersStore, userStore, districtsStore } = useRootStore();
   const { restrictedDistrict } = userStore;
-  const { filterOptions, isLoading } = supervisionLocationsStore;
+  const { filterOptions, isLoading } = districtsStore;
 
   const options = [allOption].concat(filterOptions);
 
@@ -62,4 +57,4 @@ const SupervisionLocationFilter = () => {
   );
 };
 
-export default observer(SupervisionLocationFilter);
+export default observer(DistrictFilter);
