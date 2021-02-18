@@ -30,12 +30,14 @@ const CHARTS = {
   },
   Gender: {
     file: "revocations_matrix_distribution_by_gender",
+    statePopulationFile: "state_gender_population",
   },
   Officer: {
     file: "revocations_matrix_distribution_by_officer",
   },
   Race: {
     file: "revocations_matrix_distribution_by_race",
+    statePopulationFile: "state_race_ethnicity_population",
   },
   Violation: {
     file: "revocations_matrix_distribution_by_violation",
@@ -51,17 +53,25 @@ export default class RevocationsChartStore extends BaseDataStore {
     super({
       rootStore,
       file: CHARTS[DEFAULT_SELECTED_CHART].file,
+      statePopulationFile: CHARTS[DEFAULT_SELECTED_CHART].statePopulationFile,
       skippedFilters: CHARTS[DEFAULT_SELECTED_CHART].skippedFilters,
     });
     makeObservable(this, {
       selectedChart: observable,
       setSelectedChart: action.bound,
     });
+
     reaction(
       () => this.selectedChart,
       () => {
         super.file = CHARTS[this.selectedChart].file;
         this.fetchData({
+          tenantId: this.rootStore.currentTenantId,
+        });
+
+        super.statePopulationFile =
+          CHARTS[this.selectedChart].statePopulationFile;
+        this.fetchStatePopulationData({
           tenantId: this.rootStore.currentTenantId,
         });
       }

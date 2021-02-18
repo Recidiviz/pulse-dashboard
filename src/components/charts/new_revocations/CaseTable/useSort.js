@@ -131,6 +131,7 @@ function useSort() {
 
   return {
     sortOrder: sort.order,
+    sortField: sort.field,
     comparator,
     toggleOrder,
   };

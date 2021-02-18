@@ -179,7 +179,7 @@ population in District 2.`,
       body: `If the user has filtered the page by clicking on a specific violation type (i.e., technical) or bubble (i.e., technical, 3) within the revocation plot, this chart will show the percentage of people revoked with the selected violation history, for each gender and risk level group among those on supervision with the same gender and risk level. For example, if the user selected the technical row on the revocations plot, the chart would show: For men and women overall, and for each risk level, the number of people revoked whose most serious violation was a technical, divided by the total number of people on supervision whose most serious violation was a technical, regardless of whether they were revoked. Continuing with this example, if a user hovers their mouse over the low risk column for women, the numerator would be all low risk women admitted for a technical violation and the denominator would be all low risk women who committed a technical violation, whether or not they were revoked. Comparing these percentages will indicate whether revocation practices differ between men and women. That is, whether men are likelier (or less likely) to be revoked compared to women with the same risk level and violation history. For people who have not been revoked, the most serious violation is identified by considering all violations reported within one year from either the current date (if the person is still on supervision) or the date that the person was discharged from supervision.`,
     },
   ],
-  revocationsByRace: [
+  admissionsByRace: [
     {
       id: 1,
       header: "What this chart shows",

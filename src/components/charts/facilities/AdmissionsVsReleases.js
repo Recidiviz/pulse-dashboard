@@ -126,6 +126,11 @@ const AdmissionsVsReleases = ({
         ],
       }}
       options={{
+        plugins: {
+          datalabels: {
+            display: false,
+          },
+        },
         legend: {
           display: false,
           position: "right",
