@@ -54,7 +54,7 @@ describe("fetchMetricsFromGCS tests", () => {
     "downloadFileMetadata"
   );
 
-  it("files with metadata should return array with data and metadata", async () => {
+  it("returns data and metadata when both are provided in the downloaded file", async () => {
     getMetricsByType.default.mockImplementation(() => {
       return {
         getFiles: jest.fn().mockReturnValue(mockReturnedFiles),
@@ -87,7 +87,7 @@ describe("fetchMetricsFromGCS tests", () => {
     expect.assertions(3);
   });
 
-  it("files without metadata should return array with data", async () => {
+  it("returns data and an empty object when metadata is provided in the downloaded file", async () => {
     getMetricsByType.default.mockImplementation(() => {
       return {
         getFiles: jest.fn().mockReturnValue(mockReturnedFiles),
@@ -120,7 +120,7 @@ describe("fetchMetricsFromGCS tests", () => {
       jest.resetAllMocks();
     });
 
-    it("errors getting files returns an array with rejected promises", async () => {
+    it("returns a rejected promise when there's an error getting file names", async () => {
       const error = new Error("getFiles error");
       getMetricsByType.default.mockImplementationOnce(() => {
         return {
@@ -139,7 +139,7 @@ describe("fetchMetricsFromGCS tests", () => {
       expect.assertions(1);
     });
 
-    it("errors downloading files returns an array with rejected promises", async () => {
+    it("returns a rejected promise when there's an error downloading files", async () => {
       const error = new Error("downloadFile error");
 
       getMetricsByType.default.mockImplementationOnce(() => {
@@ -160,7 +160,7 @@ describe("fetchMetricsFromGCS tests", () => {
       expect.assertions(1);
     });
 
-    it("errors validating dimensions returns an array with rejected promises", async () => {
+    it("returns a rejected promise when there's an error validating dimensions", async () => {
       const error = new Error("Error validating dimensions!");
       downloadFileSpy.mockResolvedValue(downloadFileResponse);
       downloadFileMetadataSpy.mockResolvedValue([]);
