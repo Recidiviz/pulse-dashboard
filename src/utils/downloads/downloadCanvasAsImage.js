@@ -1,5 +1,4 @@
-import downloadjs from "downloadjs";
-
+import JsFileDownloader from "js-file-downloader";
 import createMethodologyFile from "./createMethodologyFile";
 import downloadZipFile from "./downloadZipFile";
 import getFilters from "./getFilters";
@@ -69,7 +68,10 @@ function downloadCanvasAsImage({
 
     downloadZipFile(files, "export_image.zip");
   } else {
-    downloadjs(imageData, filename, "image/png;base64");
+    new JsFileDownloader({
+      url: `data:image/png;base64,${imageData}`,
+      filename,
+    });
   }
 }
 

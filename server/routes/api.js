@@ -20,6 +20,8 @@
  * in server.js.
  */
 const { validationResult } = require("express-validator");
+const fs = require("fs");
+const path = require("path");
 const {
   refreshRedisCache,
   fetchMetrics,
@@ -208,6 +210,37 @@ function programmingExplore(req, res) {
   );
 }
 
+function generateFileLink(req, res) {
+  const { file } = req;
+  fs.writeFile(`server/tmp/${file.originalname}`, file.buffer, function (err) {
+    if (err) {
+      /* eslint-disable-next-line no-console */
+      console.log("File upload error!");
+      /* eslint-disable-next-line no-console */
+      console.log(err);
+    }
+  });
+  res.send(`http://${req.headers.host}/file/${file.originalname}`);
+}
+
+function upload(req, res) {
+  const options = {
+    root: path.join(__dirname, "../tmp"),
+    dotfiles: "deny",
+    headers: {
+      "x-timestamp": Date.now(),
+      "x-sent": true,
+    },
+  };
+
+  const fileName = req.params.id;
+  res.sendFile(fileName, options, function (err) {
+    if (err) {
+      res.send("File is not found!");
+    }
+  });
+}
+
 module.exports = {
   restrictedAccess,
   newRevocations,
@@ -219,5 +252,7 @@ module.exports = {
   programmingExplore,
   responder,
   refreshCache,
+  generateFileLink,
+  upload,
   SERVER_ERROR,
 };

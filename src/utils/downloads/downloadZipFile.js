@@ -1,7 +1,7 @@
 import JSZip from "jszip";
-import downloadjs from "downloadjs";
+import JsFileDownloader from "js-file-downloader";
 
-function downloadZipFile(files, zipFilename) {
+function downloadZipFile(files, filename) {
   const zip = new JSZip();
 
   files.forEach((file) => {
@@ -14,8 +14,24 @@ function downloadZipFile(files, zipFilename) {
     }
   });
 
-  zip.generateAsync({ type: "blob" }).then(function (content) {
-    downloadjs(content, zipFilename);
+  zip.generateAsync({ type: "blob" }).then((content) => {
+    const formData = new FormData();
+    formData.append("zip", content, filename);
+    fetch(`${process.env.REACT_APP_API_URL}/api/generateFileLink`, {
+      method: "POST",
+      body: formData,
+    })
+      .then((response) => response.text())
+      .then((url) => {
+        new JsFileDownloader({
+          url,
+          filename,
+        });
+      })
+      .catch((error) => {
+        /* eslint-disable-next-line no-console */
+        console.log(`error.message ⏩ :`, error.message);
+      });
   });
 }
 
