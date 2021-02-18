@@ -88,15 +88,15 @@ function restrictedAccess(req, res) {
     const { stateCode } = req.params;
     const { userEmail } = req.body;
     const metricType = "newRevocation";
-    const file = "supervision_location_restricted_access_emails";
+    const metricName = "supervision_location_restricted_access_emails";
     const cacheKey = `${stateCode.toUpperCase()}-${metricType}-restrictedAccess`;
 
     cacheResponse(
       cacheKey,
-      () => fetchMetrics(stateCode, metricType, file, isDemoMode),
+      () => fetchMetrics(stateCode, metricType, metricName, isDemoMode),
       processAndRespond(
         responder(res),
-        filterRestrictedAccessEmails(userEmail, file)
+        filterRestrictedAccessEmails(userEmail, metricName)
       )
     );
   }
@@ -131,12 +131,12 @@ function newRevocationFile(req, res) {
   if (hasErrors) {
     responder(res)({ status: BAD_REQUEST, errors: validations.array() }, null);
   } else {
-    const { stateCode, file } = req.params;
+    const { stateCode, file: metricName } = req.params;
     const queryParams = req.query || {};
     const cacheKey = getCacheKey({
       stateCode,
       metricType,
-      file,
+      metricName,
       cacheKeySubset: queryParams,
     });
     cacheResponse(
@@ -145,7 +145,7 @@ function newRevocationFile(req, res) {
         fetchAndFilterNewRevocationFile({
           stateCode,
           metricType,
-          file,
+          metricName,
           queryParams,
           isDemoMode,
         }),

@@ -20,7 +20,7 @@ const path = require("path");
 const { default: fetchMetricsFromLocal } = require("../fetchMetricsFromLocal");
 const getMetricsByType = require("../../collections/getMetricsByType");
 
-jest.mock("../../models/getMetricsByType");
+jest.mock("../../collections/getMetricsByType");
 
 jest.mock("fs");
 
@@ -46,7 +46,7 @@ describe("fetchMetricsFromLocal tests", () => {
     const mockReturnedFiles = [returnedFile];
     getMetricsByType.default.mockImplementationOnce(() => {
       return {
-        getFiles: jest.fn().mockReturnValue(mockReturnedFiles),
+        getFileNamesList: jest.fn().mockReturnValue(mockReturnedFiles),
       };
     });
 
@@ -77,7 +77,7 @@ describe("fetchMetricsFromLocal tests", () => {
     const mockReturnedFiles = [returnedFile];
     getMetricsByType.default.mockImplementationOnce(() => {
       return {
-        getFiles: jest.fn().mockReturnValue(mockReturnedFiles),
+        getFileNamesList: jest.fn().mockReturnValue(mockReturnedFiles),
       };
     });
 
@@ -112,7 +112,7 @@ describe("fetchMetricsFromLocal tests", () => {
       const error = new Error("some error");
       getMetricsByType.default.mockImplementationOnce(() => {
         return {
-          getFiles: () => {
+          getFileNamesList: () => {
             throw error;
           },
         };
@@ -135,7 +135,7 @@ describe("fetchMetricsFromLocal tests", () => {
 
       getMetricsByType.default.mockImplementationOnce(() => {
         return {
-          getFiles: jest.fn().mockReturnValue(mockReturnedFiles),
+          getFileNamesList: jest.fn().mockReturnValue(mockReturnedFiles),
         };
       });
       readFileSyncSpy.mockImplementationOnce(() => {

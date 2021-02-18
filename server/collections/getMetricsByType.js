@@ -1,6 +1,6 @@
 const { default: NewRevocationsMetrics } = require("./NewRevocationsMetrics");
 const { default: BaseMetrics } = require("./BaseMetrics");
-const { COLLECTIONS } = require("./resources");
+const { COLLECTIONS } = require("./resources/shared");
 
 function getMetricsByType(metricType, stateCode) {
   switch (metricType) {

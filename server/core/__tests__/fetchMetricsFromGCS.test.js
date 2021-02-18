@@ -19,7 +19,7 @@ const { default: fetchMetricsFromGCS } = require("../fetchMetricsFromGCS");
 const getMetricsByType = require("../../collections/getMetricsByType");
 const objectStorage = require("../objectStorage");
 
-jest.mock("../../models/getMetricsByType");
+jest.mock("../../collections/getMetricsByType");
 
 jest.mock("../objectStorage");
 
@@ -57,7 +57,7 @@ describe("fetchMetricsFromGCS tests", () => {
   it("returns data and metadata when both are provided in the downloaded file", async () => {
     getMetricsByType.default.mockImplementation(() => {
       return {
-        getFiles: jest.fn().mockReturnValue(mockReturnedFiles),
+        getFileNamesList: jest.fn().mockReturnValue(mockReturnedFiles),
         validateDimensionsForFile: () => true,
       };
     });
@@ -90,7 +90,7 @@ describe("fetchMetricsFromGCS tests", () => {
   it("returns data and an empty object when metadata is provided in the downloaded file", async () => {
     getMetricsByType.default.mockImplementation(() => {
       return {
-        getFiles: jest.fn().mockReturnValue(mockReturnedFiles),
+        getFileNamesList: jest.fn().mockReturnValue(mockReturnedFiles),
         validateDimensionsForFile: () => true,
       };
     });
@@ -121,10 +121,10 @@ describe("fetchMetricsFromGCS tests", () => {
     });
 
     it("returns a rejected promise when there's an error getting file names", async () => {
-      const error = new Error("getFiles error");
+      const error = new Error("getFileNamesList error");
       getMetricsByType.default.mockImplementationOnce(() => {
         return {
-          getFiles: () => {
+          getFileNamesList: () => {
             throw error;
           },
         };
@@ -144,7 +144,7 @@ describe("fetchMetricsFromGCS tests", () => {
 
       getMetricsByType.default.mockImplementationOnce(() => {
         return {
-          getFiles: jest.fn().mockReturnValue(mockReturnedFiles),
+          getFileNamesList: jest.fn().mockReturnValue(mockReturnedFiles),
         };
       });
       downloadFileSpy.mockImplementationOnce(() => {
@@ -166,7 +166,7 @@ describe("fetchMetricsFromGCS tests", () => {
       downloadFileMetadataSpy.mockResolvedValue([]);
       getMetricsByType.default.mockImplementationOnce(() => {
         return {
-          getFiles: jest.fn().mockReturnValue(mockReturnedFiles),
+          getFileNamesList: jest.fn().mockReturnValue(mockReturnedFiles),
           validateDimensionsForFile: () => {
             throw error;
           },

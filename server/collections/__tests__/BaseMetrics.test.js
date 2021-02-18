@@ -16,7 +16,8 @@
 // =============================================================================
 
 const { default: BaseMetrics } = require("../BaseMetrics");
-const { default: RESOURCES, COLLECTIONS } = require("../resources");
+const { default: RESOURCES } = require("../resources");
+const { COLLECTIONS } = require("../resources/shared");
 
 describe("BaseMetrics", () => {
   const stateCode = "US_MO";

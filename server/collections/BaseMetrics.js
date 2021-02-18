@@ -14,7 +14,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-const { default: RESOURCES, COLLECTIONS } = require("./resources");
+const { default: RESOURCES } = require("./resources");
+const { COLLECTIONS } = require("./resources/shared");
 /**
  * The base class for all metrics. Use the helper `getResourcesByType` to instantiate a metric
  * by metricType and stateCode.
@@ -43,7 +44,7 @@ class BaseMetrics {
 
   getAllFileNames() {
     return Object.keys(this.metrics).map((metricName) =>
-      this.getFile(metricName)
+      this.getFileName(metricName)
     );
   }
 
