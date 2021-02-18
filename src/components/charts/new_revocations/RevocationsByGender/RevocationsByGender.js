@@ -38,7 +38,7 @@ const RevocationsByGender = observer(
     return (
       <RevocationsByDimension
         ref={ref}
-        chartId={`${translate("revocations")}By${translate("Gender")}`}
+        chartId={`admissionsBy${translate("Gender")}`}
         dataStore={revocationsChartStore}
         containerHeight={containerHeight}
         renderChart={({ chartId, data, denominators, numerators, mode }) => (
@@ -53,7 +53,7 @@ const RevocationsByGender = observer(
         )}
         generateChartData={createGenerateChartData(revocationsChartStore)}
         chartTitle={CHART_TITLE}
-        metricTitle={(mode) => `{CHART_TITLE}: ${mode}`}
+        metricTitle={(mode) => `${CHART_TITLE}: ${mode}`}
         timeDescription={timeDescription}
         modes={Object.keys(genderValueToLabel)}
         defaultMode={DEFAULT_MODE}

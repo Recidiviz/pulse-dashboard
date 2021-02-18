@@ -23,7 +23,7 @@ import {
   getStatePopulationsLabels,
 } from "../../../../utils/transforms/labels";
 import getCounts from "../utils/getCounts";
-import createRacePopulationMap from "../utils/createRacePopulationMap";
+import createPopulationMap from "../utils/createPopulationMap";
 import { translate } from "../../../../views/tenants/utils/i18nSettings";
 import { COLORS_LANTERN_SET } from "../../../../assets/scripts/constants/colors";
 import { applyStatisticallySignificantShadingToDataset } from "../../../../utils/charts/significantStatistics";
@@ -57,7 +57,7 @@ const createGenerateChartData = ({ filteredData, statePopulationData }) => (
   const raceLabelMap = translate("raceLabelMap");
   const races = Object.keys(raceLabelMap);
   const { dataPoints, numerators, denominators } = pipe(
-    reduce(createRacePopulationMap(numeratorKey, denominatorKey, "race"), {}),
+    reduce(createPopulationMap(numeratorKey, denominatorKey, "race"), {}),
     (data) =>
       getCounts(
         data,

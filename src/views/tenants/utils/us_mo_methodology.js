@@ -162,7 +162,7 @@ population in District 2.`,
       body: `This chart includes only violation records for people who were revoked to prison. Counts do not include (1) people who were revoked to termination or to a new form of supervision (i.e., SIS to SES); (2) people who were admitted to prison for reasons aside from revocation, such as treatment or short term sanctions; and (3) people who have been detained pending a revocation hearing, but who have not been legally revoked. This chart (like all charts on the page) will automatically repopulate to match whatever filters the user has selected. For example, if the user has selected "District 2" and "Probation" from the drop down menus at the top of the screen, this chart will automatically update to include only people from the probation population in District 2.`,
     },
   ],
-  revocationsByGender: [
+  admissionsByGender: [
     {
       id: 1,
       header: "What this chart shows",
