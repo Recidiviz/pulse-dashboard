@@ -1,5 +1,5 @@
 // Recidiviz - a data platform for criminal justice reform
-// Copyright (C) 2020 Recidiviz, Inc.
+// Copyright (C) 2021 Recidiviz, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -15,30 +15,51 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import { useLayoutEffect, useRef } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 import { usePageState, usePageDispatch } from "../contexts/PageContext";
 
 const usePageLayout = () => {
   const pageDispatch = usePageDispatch();
-  const { isTopBarShrinking } = usePageState();
+  const { hideTopBar } = usePageState();
   const frame = useRef(0);
+  const [lastOffset, setLastOffset] = useState(window.pageYOffset);
+  const [scrollUpCount, setScrollUpCount] = useState(0);
+
+  if (hideTopBar === undefined) {
+    pageDispatch({
+      type: "update",
+      payload: { hideTopBar: false },
+    });
+  }
 
   useLayoutEffect(() => {
     const handler = () => {
       cancelAnimationFrame(frame.current);
       frame.current = requestAnimationFrame(() => {
-        if (!isTopBarShrinking && window.pageYOffset > 90) {
-          pageDispatch({
-            type: "update",
-            payload: { isTopBarShrinking: true },
-          });
-        } else if (isTopBarShrinking && window.pageYOffset < 5) {
-          pageDispatch({
-            type: "update",
-            payload: { isTopBarShrinking: false },
-          });
-          window.scrollTo({ top: 0, behavior: "smooth" });
+        if (window.pageYOffset < lastOffset) {
+          setScrollUpCount(scrollUpCount + 1);
+        } else if (window.pageYOffset > lastOffset) {
+          setScrollUpCount(0);
         }
+        if (
+          !hideTopBar &&
+          window.pageYOffset > 90 &&
+          window.pageYOffset > lastOffset
+        ) {
+          pageDispatch({
+            type: "update",
+            payload: { hideTopBar: true },
+          });
+        } else if (
+          hideTopBar &&
+          (scrollUpCount > 2 || window.pageYOffset < 60)
+        ) {
+          pageDispatch({
+            type: "update",
+            payload: { hideTopBar: false },
+          });
+        }
+        setLastOffset(window.pageYOffset);
       });
     };
 

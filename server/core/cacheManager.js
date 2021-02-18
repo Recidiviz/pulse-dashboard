@@ -35,8 +35,8 @@ const REDISHOST = process.env.REDISHOST || "localhost";
 const REDISPORT = process.env.REDISPORT || 6379;
 const REDISAUTH = process.env.REDISAUTH || "";
 
-// Expire items in the redis cache after 1 day
-const REDIS_CACHE_TTL_SECONDS = 60 * 60 * 24;
+// Expire items in the redis cache after 2 days
+const REDIS_CACHE_TTL_SECONDS = 60 * 60 * 24 * 2;
 const REDIS_CACHE_REFRESH_THRESHOLD = 60 * 60;
 
 // Expire items in the memory cache after 1 hour
