@@ -40,6 +40,7 @@ const DEFAULT_MONTHS = [
 
 // TODO #763 - Remove "0" reported violations from the validation
 const DEFAULT_REPORTED_VIOLATIONS = [
+  "all",
   "0",
   "1",
   "2",
@@ -51,11 +52,33 @@ const DEFAULT_REPORTED_VIOLATIONS = [
   "8",
 ];
 
+const DEFAULT_GENDERS = ["external_unknown", "female", "male"];
+
 const DEFAULT_METRIC_PERIOD_MONTHS = ["1", "12", "3", "36", "6"];
+
+const DEFAULT_RACE = [
+  "american_indian_alaskan_native",
+  "asian",
+  "black",
+  "external_unknown",
+  "hispanic",
+  "white",
+];
+
+function removeAllValue(dimensionValues) {
+  const allIndex = dimensionValues.indexOf("all");
+  if (allIndex < 0) return dimensionValues;
+  const dimensionValuesCopy = [...dimensionValues];
+  dimensionValuesCopy.splice(allIndex, 1);
+  return dimensionValuesCopy;
+}
 
 module.exports = {
   COLLECTIONS,
+  DEFAULT_GENDERS,
+  DEFAULT_RACE,
   DEFAULT_MONTHS,
   DEFAULT_REPORTED_VIOLATIONS,
   DEFAULT_METRIC_PERIOD_MONTHS,
+  removeAllValue,
 };

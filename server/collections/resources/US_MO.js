@@ -19,16 +19,22 @@ const {
   DEFAULT_MONTHS,
   DEFAULT_REPORTED_VIOLATIONS,
   DEFAULT_METRIC_PERIOD_MONTHS,
+  DEFAULT_GENDERS,
+  DEFAULT_RACE,
+  removeAllValue,
 } = require("./shared");
 
 const DEFAULT_CHARGE_CATEGORIES = [
+  "all",
   "domestic_violence",
   "general",
   "serious_mental_illness",
   "sex_offense",
+  "external_unknown",
 ];
 
 const DEFAULT_SUPERVISION_TYPES = [
+  "all",
   "dual",
   "parole",
   "probation",
@@ -39,6 +45,7 @@ const DEFAULT_SUPERVISION_LEVELS = ["all"];
 
 const DEFAULT_VIOLATION_TYPES = [
   "absconded",
+  "all",
   "elec_monitoring",
   "escaped",
   "felony",
@@ -52,6 +59,14 @@ const DEFAULT_VIOLATION_TYPES = [
   "technical",
 ];
 
+const DEFAULT_RISK_LEVEL = [
+  "high",
+  "low",
+  "medium",
+  "not_assessed",
+  "very_high",
+];
+
 module.exports = {
   [COLLECTIONS.NEW_REVOCATION]: {
     supervision_location_restricted_access_emails: {
@@ -60,100 +75,106 @@ module.exports = {
     revocations_matrix_by_month: {
       filename: "revocations_matrix_by_month.txt",
       dimensions: {
-        charge_category: DEFAULT_CHARGE_CATEGORIES.concat(["all"]),
+        charge_category: DEFAULT_CHARGE_CATEGORIES,
         month: DEFAULT_MONTHS,
-        reported_violations: DEFAULT_REPORTED_VIOLATIONS.concat(["all"]),
-        supervision_type: DEFAULT_SUPERVISION_TYPES.concat(["all"]),
+        reported_violations: DEFAULT_REPORTED_VIOLATIONS,
+        supervision_type: DEFAULT_SUPERVISION_TYPES,
         supervision_level: DEFAULT_SUPERVISION_LEVELS,
-        violation_type: DEFAULT_VIOLATION_TYPES.concat(["all"]),
+        violation_type: DEFAULT_VIOLATION_TYPES,
       },
     },
     revocations_matrix_cells: {
       filename: "revocations_matrix_cells.txt",
       dimensions: {
-        charge_category: DEFAULT_CHARGE_CATEGORIES.concat(["all"]),
+        charge_category: DEFAULT_CHARGE_CATEGORIES,
         metric_period_months: DEFAULT_METRIC_PERIOD_MONTHS,
-        reported_violations: DEFAULT_REPORTED_VIOLATIONS,
-        supervision_type: DEFAULT_SUPERVISION_TYPES.concat(["all"]),
+        reported_violations: removeAllValue(DEFAULT_REPORTED_VIOLATIONS),
+        supervision_type: DEFAULT_SUPERVISION_TYPES,
         supervision_level: DEFAULT_SUPERVISION_LEVELS,
-        violation_type: DEFAULT_VIOLATION_TYPES,
+        violation_type: removeAllValue(DEFAULT_VIOLATION_TYPES),
       },
     },
     revocations_matrix_distribution_by_district: {
       filename: "revocations_matrix_distribution_by_district.txt",
       dimensions: {
-        charge_category: DEFAULT_CHARGE_CATEGORIES.concat(["all"]),
+        charge_category: DEFAULT_CHARGE_CATEGORIES,
         metric_period_months: DEFAULT_METRIC_PERIOD_MONTHS,
-        reported_violations: DEFAULT_REPORTED_VIOLATIONS.concat(["all"]),
-        supervision_type: DEFAULT_SUPERVISION_TYPES.concat(["all"]),
+        reported_violations: DEFAULT_REPORTED_VIOLATIONS,
+        supervision_type: DEFAULT_SUPERVISION_TYPES,
         supervision_level: DEFAULT_SUPERVISION_LEVELS,
-        violation_type: DEFAULT_VIOLATION_TYPES.concat(["all"]),
+        violation_type: DEFAULT_VIOLATION_TYPES,
       },
     },
     revocations_matrix_distribution_by_gender: {
       filename: "revocations_matrix_distribution_by_gender.txt",
       dimensions: {
-        charge_category: DEFAULT_CHARGE_CATEGORIES.concat(["all"]),
+        risk_level: DEFAULT_RISK_LEVEL,
+        gender: DEFAULT_GENDERS,
+        charge_category: DEFAULT_CHARGE_CATEGORIES,
         metric_period_months: DEFAULT_METRIC_PERIOD_MONTHS,
-        reported_violations: DEFAULT_REPORTED_VIOLATIONS.concat(["all"]),
-        supervision_type: DEFAULT_SUPERVISION_TYPES.concat(["all"]),
+        reported_violations: DEFAULT_REPORTED_VIOLATIONS,
+        supervision_type: DEFAULT_SUPERVISION_TYPES,
         supervision_level: DEFAULT_SUPERVISION_LEVELS,
-        violation_type: DEFAULT_VIOLATION_TYPES.concat(["all"]),
+        violation_type: DEFAULT_VIOLATION_TYPES,
       },
     },
     revocations_matrix_distribution_by_officer: {
       filename: "revocations_matrix_distribution_by_officer.txt",
       dimensions: {
-        charge_category: DEFAULT_CHARGE_CATEGORIES.concat(["all"]),
+        risk_level: DEFAULT_RISK_LEVEL,
+        charge_category: DEFAULT_CHARGE_CATEGORIES,
         metric_period_months: DEFAULT_METRIC_PERIOD_MONTHS,
-        reported_violations: DEFAULT_REPORTED_VIOLATIONS.concat(["all"]),
-        supervision_type: DEFAULT_SUPERVISION_TYPES.concat(["all"]),
+        reported_violations: DEFAULT_REPORTED_VIOLATIONS,
+        supervision_type: DEFAULT_SUPERVISION_TYPES,
         supervision_level: DEFAULT_SUPERVISION_LEVELS,
-        violation_type: DEFAULT_VIOLATION_TYPES.concat(["all"]),
+        violation_type: DEFAULT_VIOLATION_TYPES,
       },
     },
     revocations_matrix_distribution_by_race: {
       filename: "revocations_matrix_distribution_by_race.txt",
       dimensions: {
-        charge_category: DEFAULT_CHARGE_CATEGORIES.concat(["all"]),
+        risk_level: DEFAULT_RISK_LEVEL,
+        race: DEFAULT_RACE,
+        charge_category: DEFAULT_CHARGE_CATEGORIES,
         metric_period_months: DEFAULT_METRIC_PERIOD_MONTHS,
-        reported_violations: DEFAULT_REPORTED_VIOLATIONS.concat(["all"]),
-        supervision_type: DEFAULT_SUPERVISION_TYPES.concat(["all"]),
+        reported_violations: DEFAULT_REPORTED_VIOLATIONS,
+        supervision_type: DEFAULT_SUPERVISION_TYPES,
         supervision_level: DEFAULT_SUPERVISION_LEVELS,
-        violation_type: DEFAULT_VIOLATION_TYPES.concat(["all"]),
+        violation_type: DEFAULT_VIOLATION_TYPES,
       },
     },
     revocations_matrix_distribution_by_risk_level: {
       filename: "revocations_matrix_distribution_by_risk_level.txt",
       dimensions: {
-        charge_category: DEFAULT_CHARGE_CATEGORIES.concat(["all"]),
+        risk_level: DEFAULT_RISK_LEVEL,
+        charge_category: DEFAULT_CHARGE_CATEGORIES,
         metric_period_months: DEFAULT_METRIC_PERIOD_MONTHS,
-        reported_violations: DEFAULT_REPORTED_VIOLATIONS.concat(["all"]),
-        supervision_type: DEFAULT_SUPERVISION_TYPES.concat(["all"]),
+        reported_violations: DEFAULT_REPORTED_VIOLATIONS,
+        supervision_type: DEFAULT_SUPERVISION_TYPES,
         supervision_level: DEFAULT_SUPERVISION_LEVELS,
-        violation_type: DEFAULT_VIOLATION_TYPES.concat(["all"]),
+        violation_type: DEFAULT_VIOLATION_TYPES,
       },
     },
     revocations_matrix_distribution_by_violation: {
       filename: "revocations_matrix_distribution_by_violation.txt",
       dimensions: {
-        charge_category: DEFAULT_CHARGE_CATEGORIES.concat(["all"]),
+        charge_category: DEFAULT_CHARGE_CATEGORIES,
         metric_period_months: DEFAULT_METRIC_PERIOD_MONTHS,
-        reported_violations: DEFAULT_REPORTED_VIOLATIONS.concat(["all"]),
-        supervision_type: DEFAULT_SUPERVISION_TYPES.concat(["all"]),
+        reported_violations: DEFAULT_REPORTED_VIOLATIONS,
+        supervision_type: DEFAULT_SUPERVISION_TYPES,
         supervision_level: DEFAULT_SUPERVISION_LEVELS,
-        violation_type: DEFAULT_VIOLATION_TYPES.concat(["all"]),
+        violation_type: DEFAULT_VIOLATION_TYPES,
       },
     },
     revocations_matrix_filtered_caseload: {
       filename: "revocations_matrix_filtered_caseload.txt",
       dimensions: {
-        charge_category: DEFAULT_CHARGE_CATEGORIES,
+        charge_category: removeAllValue(DEFAULT_CHARGE_CATEGORIES),
         metric_period_months: DEFAULT_METRIC_PERIOD_MONTHS,
-        reported_violations: DEFAULT_REPORTED_VIOLATIONS,
-        supervision_type: DEFAULT_SUPERVISION_TYPES.concat(["all"]),
+        reported_violations: removeAllValue(DEFAULT_REPORTED_VIOLATIONS),
+        supervision_type: removeAllValue(DEFAULT_SUPERVISION_TYPES),
         supervision_level: DEFAULT_SUPERVISION_LEVELS,
-        violation_type: DEFAULT_VIOLATION_TYPES,
+        violation_type: removeAllValue(DEFAULT_VIOLATION_TYPES),
       },
     },
   },
