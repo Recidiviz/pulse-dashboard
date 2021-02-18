@@ -20,7 +20,6 @@ import PropTypes from "prop-types";
 import { observer } from "mobx-react-lite";
 
 import { translate } from "../../../../views/tenants/utils/i18nSettings";
-import getLabelByMode from "../utils/getLabelByMode";
 import RevocationsByDimension from "../RevocationsByDimension";
 import HorizontalBarChartWithLabels from "../BarCharts/HorizontalBarChartWithLabels";
 import createGenerateChartData from "./createGenerateChartData";
@@ -50,9 +49,7 @@ const RevocationsByGender = observer(
         )}
         generateChartData={createGenerateChartData(revocationsChartStore)}
         chartTitle={`Admissions by ${translate("gender")}`}
-        metricTitle={(mode) =>
-          `${getLabelByMode(mode)} by ${translate("gender")}`
-        }
+        metricTitle={(mode) => `Admissions by ${translate("gender")}: ${mode}`}
         timeDescription={timeDescription}
         modes={Object.keys(genderValueToLabel)}
         defaultMode="MALE"

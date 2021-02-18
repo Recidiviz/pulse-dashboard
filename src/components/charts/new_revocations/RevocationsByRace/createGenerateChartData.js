@@ -69,9 +69,8 @@ const createGenerateChartData = ({ filteredData, statePopulationData }) => (
   )(filteredData);
 
   const datasets = generateDatasets(dataPoints, denominators);
-  const translateRaceLabels = translate("raceLabelMap");
   const datasetIndex = datasets.findIndex(
-    (d) => d.label === translateRaceLabels[mode]
+    (d) => d.label === translate("raceLabelMap")[mode]
   );
   const data = {
     labels: getStatePopulationsLabels(),

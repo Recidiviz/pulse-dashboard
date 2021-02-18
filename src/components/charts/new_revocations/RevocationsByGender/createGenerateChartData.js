@@ -40,10 +40,9 @@ export const generateDatasets = (dataPoints, denominators) => {
   }));
 };
 
-const createGenerateChartData = ({
-  filteredData,
-  statePopulationData,
-}) => () => {
+const createGenerateChartData = ({ filteredData, statePopulationData }) => (
+  mode
+) => {
   const numeratorKey = [
     "revocation_count",
     "supervision_population_count",
@@ -66,10 +65,16 @@ const createGenerateChartData = ({
         "gender"
       )
   )(filteredData);
+
+  const datasets = generateDatasets(dataPoints, denominators);
+  const datasetIndex = datasets.findIndex(
+    (d) => d.label === genderValueToLabel[mode]
+  );
   const data = {
     labels: getStatePopulationsLabels(),
-    datasets: generateDatasets(dataPoints, denominators),
+    datasets: [datasets[datasetIndex]],
   };
+
   return { data, numerators, denominators };
 };
 
