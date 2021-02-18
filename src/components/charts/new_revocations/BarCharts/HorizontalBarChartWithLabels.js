@@ -14,11 +14,11 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-import "chartjs-plugin-datalabels";
 
 import React from "react";
 import PropTypes from "prop-types";
 import { HorizontalBar } from "react-chartjs-2";
+import "chartjs-plugin-datalabels";
 
 import { tooltipForRateMetricWithCounts } from "../../../../utils/charts/toggles";
 import { COLORS } from "../../../../assets/scripts/constants/colors";
@@ -127,8 +127,6 @@ HorizontalBarChartWithLabels.propTypes = {
   denominators: PropTypes.arrayOf(
     PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.number), PropTypes.number])
   ).isRequired,
-  // eslint-disable-next-line react/forbid-prop-types
-  labelsMap: PropTypes.object.isRequired,
 };
 
 export default React.memo(HorizontalBarChartWithLabels);

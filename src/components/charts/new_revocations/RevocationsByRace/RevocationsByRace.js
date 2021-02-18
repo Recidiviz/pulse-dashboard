@@ -44,7 +44,6 @@ const RevocationsByRace = observer(
             data={data}
             numerators={numerators}
             denominators={denominators}
-            labelsMap={translate("raceLabelMap")}
           />
         )}
         generateChartData={createGenerateChartData(revocationsChartStore)}

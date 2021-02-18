@@ -41,14 +41,12 @@ const RevocationsByGender = observer(
         chartId={`admissionsBy${translate("Gender")}`}
         dataStore={revocationsChartStore}
         containerHeight={containerHeight}
-        renderChart={({ chartId, data, denominators, numerators, mode }) => (
+        renderChart={({ chartId, data, denominators, numerators }) => (
           <HorizontalBarChartWithLabels
-            activeTab={mode}
             id={chartId}
             data={data}
             numerators={numerators}
             denominators={denominators}
-            labelsMap={genderValueToLabel}
           />
         )}
         generateChartData={createGenerateChartData(revocationsChartStore)}

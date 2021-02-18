@@ -16,7 +16,6 @@
 // =============================================================================
 const FILES_BY_METRIC_TYPE = {
   newRevocation: [
-    "state_race_ethnicity_population.json",
     "revocations_matrix_by_month.txt",
     "revocations_matrix_cells.txt",
     "revocations_matrix_distribution_by_district.txt",
