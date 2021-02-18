@@ -21,7 +21,7 @@ import { get } from "mobx";
 import map from "lodash/fp/map";
 
 import FilterField from "./FilterField";
-import SelectDropdown from "./SelectDropdown";
+import SelectDropdown from "../../../controls/SelectDropdown";
 import { useRootStore } from "../../../../StoreProvider";
 import { DISTRICT } from "../../../../constants/filterTypes";
 

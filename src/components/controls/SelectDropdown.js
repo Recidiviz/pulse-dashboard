@@ -16,8 +16,8 @@
 // =============================================================================
 import React from "react";
 import PropTypes from "prop-types";
-import Select from "../../../controls/Select";
-import MultiSelect from "../../../controls/MultiSelect";
+import Select from "./Select";
+import MultiSelect from "./MultiSelect";
 
 const SelectDropdown = ({
   singleValueOption,
