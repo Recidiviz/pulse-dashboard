@@ -41,10 +41,12 @@ import {
 import { useRootStore } from "../StoreProvider";
 
 import "./Revocations.scss";
+import { usePageState } from "../contexts/PageContext";
 
 const Revocations = () => {
   const { filtersStore } = useRootStore();
   const { filters, filterOptions } = filtersStore;
+  const { hideTopBar } = usePageState();
 
   const timeDescription = getTimeDescription(
     get(filters, METRIC_PERIOD_MONTHS),
@@ -54,7 +56,10 @@ const Revocations = () => {
 
   return (
     <main className="Revocations">
-      <Sticky style={{ zIndex: 700, top: 65 }}>
+      <Sticky
+        className="FilterBar"
+        style={{ zIndex: 700, top: hideTopBar ? 0 : 65 }}
+      >
         <ErrorBoundary>
           <div className="top-level-filters d-f">
             <ToggleBarFilter

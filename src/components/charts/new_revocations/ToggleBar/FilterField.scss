@@ -1,7 +1,7 @@
 .FilterField {
   display: flex;
   flex-direction: column;
-  padding: 1.5rem 3rem;
+  padding: 0.8rem 2rem 1.1rem 2rem;
   flex-grow: 1;
   flex-basis: 100%;
   border-right: 1px solid rgba(0, 0, 0, 0.0625);
@@ -23,6 +23,8 @@
 
   &--additional {
     display: inline-block;
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
 
     .FilterField__label {
       display: inline;
@@ -32,9 +34,12 @@
 
   &__label {
     @media (max-width: 768px) {
-      font-size: 0.9rem;
+      font-size: 0.6rem;
     }
 
+    font-size: 0.8rem;
+    font-weight: 600;
+    margin-bottom: 0.3rem;
     vertical-align: middle;
 
     &--shrink {

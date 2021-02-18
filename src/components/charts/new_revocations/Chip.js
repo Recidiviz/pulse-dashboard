@@ -1,5 +1,5 @@
 // Recidiviz - a data platform for criminal justice reform
-// Copyright (C) 2020 Recidiviz, Inc.
+// Copyright (C) 2021 Recidiviz, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -19,17 +19,14 @@ import React from "react";
 import PropTypes from "prop-types";
 import cn from "classnames";
 
-import { usePageState } from "../../../contexts/PageContext";
 import "./Chip.scss";
 
-const Chip = ({ label, onClick, onDelete, isSelected, isShrinkable }) => {
-  const { isTopBarShrinking } = usePageState();
-
+const Chip = ({ label, onClick, onDelete, isSelected, isSmall }) => {
   return (
     <div
       className={cn("Chip", {
         "Chip--selected": isSelected,
-        "Chip--shrinking": isTopBarShrinking && isShrinkable,
+        "Chip--small": isSmall,
       })}
     >
       <button type="button" className="Chip__label" onClick={onClick}>
@@ -52,7 +49,7 @@ Chip.defaultProps = {
   onClick: () => {},
   onDelete: null,
   isSelected: false,
-  isShrinkable: false,
+  isSmall: false,
 };
 
 Chip.propTypes = {
@@ -60,7 +57,7 @@ Chip.propTypes = {
   onClick: PropTypes.func,
   onDelete: PropTypes.func,
   isSelected: PropTypes.bool,
-  isShrinkable: PropTypes.bool,
+  isSmall: PropTypes.bool,
 };
 
 export default Chip;
