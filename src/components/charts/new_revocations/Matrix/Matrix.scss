@@ -40,14 +40,12 @@
   &__empty-cell {
     display: inline-block;
     width: 125px;
-    margin-right: 20px;
   }
 
   &__violation-type-label {
     text-align: left;
     display: inline-block;
     width: 125px;
-    margin-right: 20px;
   }
 
   &__violation-type-button {
@@ -96,7 +94,7 @@
       top: 0;
       width: 1px;
       background-color: #e6ecf5;
-      height: 100%;
+      height: 105%;
     }
     &:after {
       content: "";
@@ -126,7 +124,7 @@
   }
 
   &__violation-sum-row {
-    margin-top: 10px;
+    margin-top: 25px;
   }
 
   &__violation-sum-column {
