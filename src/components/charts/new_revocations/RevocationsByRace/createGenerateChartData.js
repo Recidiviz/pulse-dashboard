@@ -20,7 +20,7 @@ import reduce from "lodash/fp/reduce";
 
 import {
   getStatePopulations,
-  getRacePopulationLabels,
+  getStatePopulationsLabels,
 } from "../../../../utils/transforms/labels";
 import getCounts from "../utils/getCounts";
 import createRacePopulationMap from "../utils/createRacePopulationMap";
@@ -74,7 +74,7 @@ const createGenerateChartData = ({ filteredData, statePopulationData }) => (
     (d) => d.label === translateRaceLabels[mode]
   );
   const data = {
-    labels: getRacePopulationLabels(),
+    labels: getStatePopulationsLabels(),
     datasets: [datasets[datasetIndex]],
   };
 

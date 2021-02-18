@@ -52,7 +52,7 @@ of that column.`,
     MEDIUM: "Medium Risk",
     HIGH: "High Risk",
   },
-  raceChartAttributes: {
+  populationChartAttributes: {
     REVOKED: "Admitted Population",
     SUPERVISION_POPULATION: "Supervision Population",
     STATE_POPULATION: "Pennsylvania Population",

@@ -53,7 +53,7 @@ of that column.`,
     HIGH: "High Risk",
     VERY_HIGH: "Very High Risk",
   },
-  raceChartAttributes: {
+  populationChartAttributes: {
     REVOKED: "Admitted Population",
     SUPERVISION_POPULATION: "Supervision Population",
     STATE_POPULATION: "Missouri Population",
