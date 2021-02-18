@@ -23,15 +23,6 @@
   width: calc(100% - #{$offscreen-size});
   z-index: 800;
 
-  &.hidden-navbar {
-    overflow: hidden;
-    transform: translateY(-100%);
-  }
-
-  &.wide-navbar {
-    width: 100%;
-  }
-
   @include to($breakpoint-md) {
     width: 100%;
   }
@@ -213,6 +204,18 @@
     }
   }
 }
+
+.TopBar {
+  &--hidden {
+    overflow: hidden;
+    transform: translateY(-100%);
+  }
+
+  &--wide {
+    width: 100%;
+  }
+}
+
 
 // ---------------------------------------------------------
 // @Collapsed State

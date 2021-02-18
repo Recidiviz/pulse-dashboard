@@ -27,8 +27,8 @@ const TopBar = ({ children, isHidable = false, isWide = false }) => {
   return (
     <div
       className={cn("TopBar", "header", "navbar", {
-        "wide-navbar": isWide,
-        "hidden-navbar": hideTopBar && isHidable,
+        "TopBar--wide": isWide,
+        "TopBar--hidden": hideTopBar && isHidable,
       })}
     >
       <div className="TopBar__container header-container">{children}</div>
