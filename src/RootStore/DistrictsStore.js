@@ -87,8 +87,8 @@ export default class DistrictsStore {
   }
 
   get districts() {
-    const { tenants } = this.rootStore.tenantStore;
-    const { districtValueKey } = tenants;
+    const { tenantMappings } = this.rootStore.tenantStore;
+    const { districtValueKey } = tenantMappings;
     return uniqBy(this.apiData.data, districtValueKey)
       .map((d) => d[districtValueKey])
       .sort();
