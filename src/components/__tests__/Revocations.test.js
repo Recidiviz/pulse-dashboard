@@ -41,6 +41,7 @@ import {
   SUPERVISION_TYPE,
 } from "../../constants/filterTypes";
 import { useRootStore } from "../../StoreProvider";
+import { PageProvider } from "../../contexts/PageContext";
 
 jest.mock("../charts/new_revocations/ToggleBar/ToggleBarFilter");
 jest.mock("../charts/new_revocations/ToggleBar/DistrictFilter");
@@ -115,7 +116,11 @@ describe("Revocations component tests", () => {
   });
 
   it("should render Revocations component with proper filters and charts", () => {
-    const { getByTestId } = render(<Revocations />);
+    const { getByTestId } = render(
+      <PageProvider>
+        <Revocations />
+      </PageProvider>
+    );
 
     expect(getByTestId(`${toggleBarIdPrefix}Time Period`)).toBeInTheDocument();
     expect(getByTestId(`${toggleBarIdPrefix}Case Type`)).toBeInTheDocument();
@@ -141,7 +146,11 @@ describe("Revocations component tests", () => {
     filterOptionsMap[mockTenantId][CHARGE_CATEGORY].componentEnabled = false;
     filterOptionsMap[mockTenantId][ADMISSION_TYPE].componentEnabled = false;
     filterOptionsMap[mockTenantId][ADMISSION_TYPE].filterEnabled = false;
-    const { queryByTestId } = render(<Revocations />);
+    const { queryByTestId } = render(
+      <PageProvider>
+        <Revocations />
+      </PageProvider>
+    );
 
     expect(queryByTestId(`${toggleBarIdPrefix}Supervision Level`)).toBeNull();
     expect(queryByTestId(`${toggleBarIdPrefix}Supervision Type`)).toBeNull();

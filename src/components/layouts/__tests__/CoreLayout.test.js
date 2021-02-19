@@ -7,6 +7,7 @@ import TopBarUserMenuForAuthenticatedUser from "../../topbar/TopBarUserMenuForAu
 import useSideBar from "../../../hooks/useSideBar";
 
 import mockWithTestId from "../../../../__helpers__/mockWithTestId";
+import { PageProvider } from "../../../contexts/PageContext";
 
 jest.mock("react-router-dom", () => ({
   useLocation: jest.fn(),
@@ -32,14 +33,22 @@ describe("CoreLayout tests", () => {
     jest.clearAllMocks();
   });
 
+  const renderCoreLayout = () => {
+    return render(
+      <PageProvider>
+        <CoreLayout>{mockChildren}</CoreLayout>
+      </PageProvider>
+    );
+  };
+
   it("should render children", () => {
-    const { getByTestId } = render(<CoreLayout>{mockChildren}</CoreLayout>);
+    const { getByTestId } = renderCoreLayout();
 
     expect(getByTestId(mockChildrenId)).toBeInTheDocument();
   });
 
   it("should call useSideBar hook and collapse layout", () => {
-    const { container } = render(<CoreLayout>{mockChildren}</CoreLayout>);
+    const { container } = renderCoreLayout();
 
     expect(useSideBar).toHaveBeenCalled();
     expect(container.firstChild.className).toContain("is-collapsed");
@@ -50,7 +59,7 @@ describe("CoreLayout tests", () => {
       isSideBarCollapsed: false,
       toggleSideBar: jest.fn(),
     });
-    const { container } = render(<CoreLayout>{mockChildren}</CoreLayout>);
+    const { container } = renderCoreLayout();
 
     expect(useSideBar).toHaveBeenCalled();
     expect(container.firstChild.className).not.toContain("is-collapsed");
@@ -58,13 +67,13 @@ describe("CoreLayout tests", () => {
 
   it("should hide the SideBar on the profile page", () => {
     matchPath.mockReturnValueOnce(true);
-    const { container } = render(<CoreLayout>{mockChildren}</CoreLayout>);
+    const { container } = renderCoreLayout();
 
     expect(container.firstChild.className).toContain("is-hidden");
   });
 
   it("should show right pathname in TopBarTitle", () => {
-    const { getByText } = render(<CoreLayout>{mockChildren}</CoreLayout>);
+    const { getByText } = renderCoreLayout();
 
     expect(getByText("Some > Nested > Pathname")).toBeInTheDocument();
   });

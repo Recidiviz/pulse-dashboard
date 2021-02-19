@@ -25,26 +25,26 @@ const MatrixExplanation = () => (
     <p className="fw-400">{translate("matrixExplanationP1")}</p>
     <p className="fw-400">{translate("matrixExplanationP2")}</p>
     <div className="d-f mT-20">
-      <div className="MatrixExplanation__example">
-        <div className="MatrixExplanation__example-total">35</div>
-      </div>
-      <p className="fs-i fw-600">
+      <p className="fs-i fw-600 MatrixExplanation__description">
         Click on a bubble to filter all charts on this dashboard to the group of
         people who are in that bubble. Click the bubble again to undo the
         selection.
       </p>
+      <div className="MatrixExplanation__example">
+        <div className="MatrixExplanation__example-total">35</div>
+      </div>
     </div>
     <div className="d-f mT-20">
+      <p className="fs-i fw-600 MatrixExplanation__description">
+        Click on a row label to filter all charts on this dashboard to the group
+        of people who are in that row. Click the label again to undo the
+        selection.
+      </p>
       <div className="MatrixExplanation__example">
         <div className="MatrixExplanation__example-violation-type">
           {translate("Technical")}
         </div>
       </div>
-      <p className="fs-i fw-600">
-        Click on a row label to filter all charts on this dashboard to the group
-        of people who are in that row. Click the label again to undo the
-        selection.
-      </p>
     </div>
   </div>
 );

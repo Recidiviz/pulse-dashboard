@@ -10,9 +10,14 @@
     font-size: 14px;
   }
 
+  &__description {
+    margin-right: 35px;
+  }
+
   &__example {
     flex: 0 0 85px;
-    margin-right: 20px;
+    margin-right: 35px;
+    justify-content: flex-end;
   }
 
   &__example-total {
