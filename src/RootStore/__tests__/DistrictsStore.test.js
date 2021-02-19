@@ -113,13 +113,6 @@ describe("DistrictsStore", () => {
       expect(store.apiData.metadata).toEqual({});
     });
 
-    it("sets the filterOptions to sorted unique values", () => {
-      expect(store.filterOptions).toEqual([
-        { value: "ABCD", label: "ABCD" },
-        { value: "TCSTL", label: "TCSTL" },
-      ]);
-    });
-
     it("sets districts to a sorted list of all unique values", () => {
       expect(store.districts).toEqual(["ABCD", "TCSTL"]);
     });
@@ -176,7 +169,7 @@ describe("DistrictsStore", () => {
       jest.resetAllMocks();
     });
 
-    it("does not fetch supervision locations", () => {
+    it("does not fetch districts", () => {
       expect(callMetricsApi).toHaveBeenCalledTimes(0);
     });
 
@@ -198,7 +191,7 @@ describe("DistrictsStore", () => {
       });
     });
 
-    it("does not fetch supervision locations", () => {
+    it("does not fetch districts", () => {
       expect(callMetricsApi).toHaveBeenCalledTimes(0);
     });
   });

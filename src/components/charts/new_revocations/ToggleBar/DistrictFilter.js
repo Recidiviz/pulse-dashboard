@@ -23,24 +23,27 @@ import map from "lodash/fp/map";
 import FilterField from "./FilterField";
 import SelectDropdown from "../../../controls/SelectDropdown";
 import { useRootStore } from "../../../../StoreProvider";
-import { DISTRICT } from "../../../../constants/filterTypes";
 
 const allOption = { label: "All", value: "All" };
 
 const DistrictFilter = () => {
-  const { filters, filtersStore, userStore, districtsStore } = useRootStore();
+  const { filters, filtersStore, userStore } = useRootStore();
   const { restrictedDistrict } = userStore;
-  const { filterOptions, isLoading } = districtsStore;
+  const {
+    filterOptions,
+    districtsIsLoading: isLoading,
+    districtKeys: { filterKey },
+  } = filtersStore;
 
-  const options = [allOption].concat(filterOptions);
+  const options = [allOption].concat(filterOptions[filterKey].options);
 
   const onValueChange = (newOptions) => {
     const filteredDistricts = map("value", newOptions);
-    filtersStore.setFilters({ [DISTRICT]: filteredDistricts });
+    filtersStore.setFilters({ [filterKey]: filteredDistricts });
   };
 
   const selectedValues = options.filter((option) =>
-    get(filters, DISTRICT).includes(option.value)
+    get(filters, filterKey).includes(option.value)
   );
 
   return (

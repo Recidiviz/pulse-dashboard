@@ -61,7 +61,6 @@ export default class TenantStore {
   setCurrentTenantId(tenantId) {
     this.currentTenantId = tenantId;
     sessionStorage.setItem(CURRENT_TENANT_IN_SESSION, tenantId);
-    this.districtsIsLoading = true;
   }
 
   get isLanternTenant() {

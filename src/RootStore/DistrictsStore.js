@@ -18,7 +18,6 @@ import { flow, autorun, makeAutoObservable, computed } from "mobx";
 import uniqBy from "lodash/uniqBy";
 import * as Sentry from "@sentry/react";
 
-import { compareStrings } from "./utils";
 import { callMetricsApi, parseResponseByFileFormat } from "../api/metrics";
 
 export default class DistrictsStore {
@@ -35,7 +34,6 @@ export default class DistrictsStore {
   constructor({ rootStore }) {
     makeAutoObservable(this, {
       fetchDistricts: flow,
-      filterOptions: computed,
       districts: computed,
     });
 
@@ -88,27 +86,11 @@ export default class DistrictsStore {
     }
   }
 
-  get districtKeys() {
-    const { tenants } = this.rootStore.tenantStore;
-    return {
-      valueKey: tenants.districtValueKey,
-      labelKey: tenants.districtLabelKey,
-    };
-  }
-
   get districts() {
-    return uniqBy(this.apiData.data, this.districtKeys.valueKey)
-      .map((d) => d[this.districtKeys.valueKey])
+    const { tenants } = this.rootStore.tenantStore;
+    const { districtValueKey } = tenants;
+    return uniqBy(this.apiData.data, districtValueKey)
+      .map((d) => d[districtValueKey])
       .sort();
-  }
-
-  get filterOptions() {
-    if (!this.apiData.data) return [];
-    return uniqBy(this.apiData.data, this.districtKeys.valueKey)
-      .map((d) => ({
-        value: d[this.districtKeys.valueKey],
-        label: d[this.districtKeys.labelKey],
-      }))
-      .sort(compareStrings("value"));
   }
 }

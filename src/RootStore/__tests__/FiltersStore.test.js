@@ -18,6 +18,7 @@
 import { runInAction } from "mobx";
 
 import RootStore from "../RootStore";
+import FiltersStore from "../FiltersStore";
 import { LANTERN_TENANTS } from "../../views/tenants/utils/lanternTenants";
 
 jest.mock("../../StoreProvider");
@@ -59,6 +60,75 @@ describe("FiltersStore", () => {
       expect(rootStore.filtersStore.defaultFilters.district).toEqual([
         userDistrict,
       ]);
+    });
+  });
+
+  describe("districts filter", () => {
+    let filtersStore;
+    const mockDistricts = [
+      {
+        level_2_supervision_location_external_id: "TCSTL-Level-2",
+        level_2_supervision_location_name: "TCSTL-Level-2",
+        level_1_supervision_location_external_id: "SLCRC-Level-1",
+        level_1_supervision_location_name: "St. Louis Community Release Center",
+      },
+      {
+        level_2_supervision_location_external_id: "TCSTL-Level-2",
+        level_2_supervision_location_name: "TCSTL-Level-2",
+        level_1_supervision_location_external_id: "TCSTL-Level-1",
+        level_1_supervision_location_name: "Transition Center of St. Louis",
+      },
+      {
+        level_2_supervision_location_external_id: "ABCD-Level-2",
+        level_2_supervision_location_name: "ABCD-Level-2",
+        level_1_supervision_location_external_id: "ABCD-Level-1",
+        level_1_supervision_location_name: "ABC Location",
+      },
+    ];
+
+    beforeEach(() => {
+      rootStore = new RootStore();
+      filtersStore = new FiltersStore({ rootStore });
+    });
+
+    describe("when districts are loading", () => {
+      it("returns an empty array", () => {
+        runInAction(() => {
+          rootStore.districtsStore.isLoading = true;
+        });
+        expect(filtersStore.districtFilterOptions).toEqual([]);
+        expect(filtersStore.districtsIsLoading).toEqual(true);
+      });
+    });
+
+    describe("when districts are loaded", () => {
+      beforeEach(() => {
+        runInAction(() => {
+          rootStore.districtsStore.apiData = { data: mockDistricts };
+          rootStore.districtsStore.isLoading = false;
+        });
+      });
+
+      it("sets the districtFilterOptions to sorted unique values", () => {
+        runInAction(() => {
+          rootStore.tenantStore.currentTenantId = "US_PA";
+        });
+        expect(filtersStore.districtFilterOptions).toEqual([
+          { value: "ABCD-Level-2", label: "ABCD-Level-2" },
+          { value: "TCSTL-Level-2", label: "TCSTL-Level-2" },
+        ]);
+      });
+
+      it("uses the district keys defined for the tenant", () => {
+        runInAction(() => {
+          rootStore.tenantStore.currentTenantId = "US_MO";
+        });
+        expect(filtersStore.districtFilterOptions).toEqual([
+          { value: "ABCD-Level-1", label: "ABCD-Level-1" },
+          { value: "SLCRC-Level-1", label: "SLCRC-Level-1" },
+          { value: "TCSTL-Level-1", label: "TCSTL-Level-1" },
+        ]);
+      });
     });
   });
 });
