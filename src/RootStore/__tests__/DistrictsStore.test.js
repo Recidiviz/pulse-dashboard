@@ -38,8 +38,8 @@ const mockRootStore = {
   },
   userStore: {
     userIsLoading: false,
+    getTokenSilently: mockGetTokenSilently,
   },
-  getTokenSilently: mockGetTokenSilently,
 };
 
 describe("DistrictsStore", () => {

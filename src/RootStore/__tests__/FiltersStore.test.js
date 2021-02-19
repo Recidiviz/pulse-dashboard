@@ -25,26 +25,35 @@ jest.mock("../../StoreProvider");
 
 let rootStore;
 
-describe("FiltersStore", () => {
-  const defaultFilters = {
-    chargeCategory: "All",
-    district: ["All"],
-    metricPeriodMonths: "12",
-    reportedViolations: "All",
-    supervisionLevel: "All",
-    supervisionType: "All",
-    violationType: "All",
-  };
+function getDistrictFilterKey(tenantId) {
+  if (tenantId === "US_MO") return "levelOneSupervisionLocation";
+  if (tenantId === "US_PA") return "levelTwoSupervisionLocation";
+  return "district";
+}
+const getDefaultFilters = (tenantId) => ({
+  chargeCategory: "All",
+  [getDistrictFilterKey(tenantId)]: ["All"],
+  metricPeriodMonths: "12",
+  reportedViolations: "All",
+  supervisionLevel: "All",
+  supervisionType: "All",
+  violationType: "All",
+});
 
-  describe("filters", () => {
+describe("FiltersStore", () => {
+  describe("default filter values", () => {
     it("are set correctly by default", () => {
       LANTERN_TENANTS.forEach((tenantId) => {
         rootStore = new RootStore();
         runInAction(() => {
+          rootStore.districtsStore.isLoading = false;
+
           rootStore.tenantStore.currentTenantId = tenantId;
         });
 
-        expect(rootStore.filtersStore.defaultFilters).toEqual(defaultFilters);
+        expect(rootStore.filtersStore.defaultFilterValues).toEqual(
+          getDefaultFilters(tenantId)
+        );
       });
     });
 
@@ -52,19 +61,24 @@ describe("FiltersStore", () => {
       const userDistrict = "99";
 
       rootStore = new RootStore();
+      const tenantId = "US_MO";
       runInAction(() => {
-        rootStore.tenantStore.currentTenantId = "US_MO";
+        rootStore.tenantStore.currentTenantId = tenantId;
+        rootStore.districtsStore.isLoading = false;
         rootStore.userStore.restrictedDistrict = userDistrict;
       });
 
-      expect(rootStore.filtersStore.defaultFilters.district).toEqual([
-        userDistrict,
-      ]);
+      expect(
+        rootStore.filtersStore.defaultFilterValues[
+          getDistrictFilterKey(tenantId)
+        ]
+      ).toStrictEqual([userDistrict]);
     });
   });
 
   describe("districts filter", () => {
     let filtersStore;
+    const tenantId = "US_MO";
     const mockDistricts = [
       {
         level_2_supervision_location_external_id: "TCSTL-Level-2",
@@ -94,26 +108,26 @@ describe("FiltersStore", () => {
     describe("when districts are loading", () => {
       it("returns an empty array", () => {
         runInAction(() => {
+          rootStore.tenantStore.currentTenantId = tenantId;
           rootStore.districtsStore.isLoading = true;
         });
-        expect(filtersStore.districtFilterOptions).toEqual([]);
+        expect(
+          filtersStore.filterOptions[getDistrictFilterKey(tenantId)].options
+        ).toEqual([]);
         expect(filtersStore.districtsIsLoading).toEqual(true);
       });
     });
 
     describe("when districts are loaded", () => {
-      beforeEach(() => {
+      it("sets the district filter options to sorted unique values", () => {
         runInAction(() => {
           rootStore.districtsStore.apiData = { data: mockDistricts };
           rootStore.districtsStore.isLoading = false;
-        });
-      });
-
-      it("sets the districtFilterOptions to sorted unique values", () => {
-        runInAction(() => {
           rootStore.tenantStore.currentTenantId = "US_PA";
         });
-        expect(filtersStore.districtFilterOptions).toEqual([
+        expect(
+          filtersStore.filterOptions[getDistrictFilterKey("US_PA")].options
+        ).toEqual([
           { value: "ABCD-Level-2", label: "ABCD-Level-2" },
           { value: "TCSTL-Level-2", label: "TCSTL-Level-2" },
         ]);
@@ -121,9 +135,13 @@ describe("FiltersStore", () => {
 
       it("uses the district keys defined for the tenant", () => {
         runInAction(() => {
+          rootStore.districtsStore.apiData = { data: mockDistricts };
+          rootStore.districtsStore.isLoading = false;
           rootStore.tenantStore.currentTenantId = "US_MO";
         });
-        expect(filtersStore.districtFilterOptions).toEqual([
+        expect(
+          filtersStore.filterOptions[getDistrictFilterKey("US_MO")].options
+        ).toEqual([
           { value: "ABCD-Level-1", label: "ABCD-Level-1" },
           { value: "SLCRC-Level-1", label: "SLCRC-Level-1" },
           { value: "TCSTL-Level-1", label: "TCSTL-Level-1" },

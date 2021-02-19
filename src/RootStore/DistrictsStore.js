@@ -65,7 +65,7 @@ export default class DistrictsStore {
       this.isLoading = true;
       const responseData = yield callMetricsApi(
         endpoint,
-        this.rootStore.getTokenSilently
+        this.rootStore.userStore.getTokenSilently
       );
       this.apiData = parseResponseByFileFormat(
         responseData,

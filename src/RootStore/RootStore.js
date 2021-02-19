@@ -59,7 +59,6 @@ export default class RootStore {
     makeObservable(this, {
       filters: computed,
       currentTenantId: computed,
-      getTokenSilently: computed,
       user: computed,
     });
 
@@ -90,9 +89,5 @@ export default class RootStore {
 
   get restrictedDistrict() {
     return this.userStore.restrictedDistrict;
-  }
-
-  get getTokenSilently() {
-    return this.userStore.getTokenSilently;
   }
 }
