@@ -31,7 +31,7 @@ const mockRootStore = {
   currentTenantId: tenantId,
   tenantStore: {
     isLanternTenant: true,
-    tenants: {
+    tenantMappings: {
       districtValueKey: "level_2_supervision_location_external_id",
       districtLabelKey: "level_2_supervision_location_external_id",
     },
