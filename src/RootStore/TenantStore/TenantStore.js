@@ -45,10 +45,10 @@ export default class TenantStore {
 
   currentTenantId = null;
 
-  tenants;
+  tenantMappings;
 
   constructor({ rootStore }) {
-    makeAutoObservable(this, { tenants: computed });
+    makeAutoObservable(this, { tenantMappings: computed });
 
     this.rootStore = rootStore;
 
@@ -67,7 +67,7 @@ export default class TenantStore {
     return LANTERN_TENANTS.includes(this.currentTenantId);
   }
 
-  get tenants() {
+  get tenantMappings() {
     if (!this.currentTenantId) return {};
     return getTenantMappings(this.currentTenantId);
   }

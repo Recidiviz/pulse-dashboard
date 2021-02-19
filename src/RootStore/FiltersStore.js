@@ -92,11 +92,11 @@ export default class FiltersStore {
   }
 
   get districtKeys() {
-    const { tenants } = this.rootStore.tenantStore;
+    const { tenantMappings } = this.rootStore.tenantStore;
     return {
-      valueKey: tenants.districtValueKey,
-      labelKey: tenants.districtLabelKey,
-      filterKey: tenants.districtFilterKey,
+      valueKey: tenantMappings.districtValueKey,
+      labelKey: tenantMappings.districtLabelKey,
+      filterKey: tenantMappings.districtFilterKey,
     };
   }
 
