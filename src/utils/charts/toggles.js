@@ -176,7 +176,9 @@ function tooltipForRateMetricWithCounts(
       ? " *"
       : "";
 
-  return id === "admissionsByRace" || id === "admissionsByGender"
+  return id === "admissionsByRace" ||
+    id === "admissionsByGender" ||
+    id === "admissionsBySex"
     ? `${getTooltipWithoutTrendline(
         tooltipItem,
         data,
