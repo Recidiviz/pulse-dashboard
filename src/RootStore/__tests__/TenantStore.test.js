@@ -18,7 +18,7 @@
 import createAuth0Client from "@auth0/auth0-spa-js";
 
 import RootStore from "../RootStore";
-import { CURRENT_TENANT_IN_SESSION } from "../TenantStore";
+import { CURRENT_TENANT_IN_SESSION } from "../TenantStore/TenantStore";
 import { US_MO } from "../../views/tenants/utils/lanternTenants";
 import { doesUserHaveAccess, getAvailableStateCodes } from "../utils/user";
 import { METADATA_NAMESPACE } from "../../constants";

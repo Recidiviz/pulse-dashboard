@@ -15,10 +15,11 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import { makeAutoObservable, when } from "mobx";
+import { computed, makeAutoObservable, when } from "mobx";
 
-import { getAvailableStateCodes, doesUserHaveAccess } from "./utils/user";
-import { LANTERN_TENANTS } from "../views/tenants/utils/lanternTenants";
+import { getAvailableStateCodes, doesUserHaveAccess } from "../utils/user";
+import { LANTERN_TENANTS } from "../../views/tenants/utils/lanternTenants";
+import getTenantMappings from "./tenants";
 
 export const CURRENT_TENANT_IN_SESSION = "adminUserCurrentTenantInSession";
 
@@ -44,8 +45,10 @@ export default class TenantStore {
 
   currentTenantId = null;
 
+  tenants;
+
   constructor({ rootStore }) {
-    makeAutoObservable(this);
+    makeAutoObservable(this, { tenants: computed });
 
     this.rootStore = rootStore;
 
@@ -63,5 +66,10 @@ export default class TenantStore {
 
   get isLanternTenant() {
     return LANTERN_TENANTS.includes(this.currentTenantId);
+  }
+
+  get tenants() {
+    if (!this.currentTenantId) return {};
+    return getTenantMappings(this.currentTenantId);
   }
 }

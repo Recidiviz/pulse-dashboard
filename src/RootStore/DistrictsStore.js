@@ -17,8 +17,9 @@
 import { flow, autorun, makeAutoObservable, computed } from "mobx";
 import uniqBy from "lodash/uniqBy";
 import * as Sentry from "@sentry/react";
+
+import { compareStrings } from "./utils";
 import { callMetricsApi, parseResponseByFileFormat } from "../api/metrics";
-import { translate } from "../views/tenants/utils/i18nSettings";
 
 export default class DistrictsStore {
   apiData = {};
@@ -56,7 +57,7 @@ export default class DistrictsStore {
   }
 
   *fetchDistricts({ tenantId }) {
-    if (!this.rootStore?.tenantStore.isLanternTenant) {
+    if (!this.rootStore.tenantStore.isLanternTenant) {
       this.isLoading = false;
       this.isError = false;
       return;
@@ -87,19 +88,27 @@ export default class DistrictsStore {
     }
   }
 
+  get districtKeys() {
+    const { tenants } = this.rootStore.tenantStore;
+    return {
+      valueKey: tenants.districtValueKey,
+      labelKey: tenants.districtLabelKey,
+    };
+  }
+
   get districts() {
-    const valueKey = translate("supervisionLocationValueKey");
-    return this.apiData.data.map((d) => d[valueKey]);
+    return uniqBy(this.apiData.data, this.districtKeys.valueKey)
+      .map((d) => d[this.districtKeys.valueKey])
+      .sort();
   }
 
   get filterOptions() {
     if (!this.apiData.data) return [];
-    const valueKey = translate("supervisionLocationValueKey");
-    const labelKey = translate("supervisionLocationLabelKey");
-
-    return uniqBy(this.apiData.data, valueKey).map((d) => ({
-      value: d[valueKey],
-      label: d[labelKey],
-    }));
+    return uniqBy(this.apiData.data, this.districtKeys.valueKey)
+      .map((d) => ({
+        value: d[this.districtKeys.valueKey],
+        label: d[this.districtKeys.labelKey],
+      }))
+      .sort(compareStrings("value"));
   }
 }

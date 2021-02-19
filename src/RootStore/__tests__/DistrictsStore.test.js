@@ -26,10 +26,15 @@ jest.mock("../../api/metrics/metricsClient");
 
 const tenantId = "US_MO";
 const mockGetTokenSilently = jest.fn();
+
 const mockRootStore = {
   currentTenantId: tenantId,
   tenantStore: {
     isLanternTenant: true,
+    tenants: {
+      districtValueKey: "level_2_supervision_location_external_id",
+      districtLabelKey: "level_2_supervision_location_external_id",
+    },
   },
   userStore: {
     userIsLoading: false,
@@ -44,7 +49,7 @@ describe("DistrictsStore", () => {
     jest.resetAllMocks();
   });
 
-  describe("fetching supervision locations", () => {
+  describe("fetching districts", () => {
     const file = "supervision_location_ids_to_names";
     const mockDistricts = [
       {
@@ -58,6 +63,12 @@ describe("DistrictsStore", () => {
         level_2_supervision_location_name: "TCSTL",
         level_1_supervision_location_external_id: "TCSTL",
         level_1_supervision_location_name: "Transition Center of St. Louis",
+      },
+      {
+        level_2_supervision_location_external_id: "ABCD",
+        level_2_supervision_location_name: "ABCD",
+        level_1_supervision_location_external_id: "ABCD-Level-1",
+        level_1_supervision_location_name: "ABC Location",
       },
     ];
 
@@ -102,12 +113,15 @@ describe("DistrictsStore", () => {
       expect(store.apiData.metadata).toEqual({});
     });
 
-    it("sets the filterOptions to unique values", () => {
-      expect(store.filterOptions).toEqual([{ value: "TCSTL", label: "TCSTL" }]);
+    it("sets the filterOptions to sorted unique values", () => {
+      expect(store.filterOptions).toEqual([
+        { value: "ABCD", label: "ABCD" },
+        { value: "TCSTL", label: "TCSTL" },
+      ]);
     });
 
-    it("sets the Districts to all values", () => {
-      expect(store.Districts).toEqual(["TCSTL", "TCSTL"]);
+    it("sets districts to a sorted list of all unique values", () => {
+      expect(store.districts).toEqual(["ABCD", "TCSTL"]);
     });
   });
 
