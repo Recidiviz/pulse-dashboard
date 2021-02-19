@@ -258,7 +258,7 @@ describe("BaseDataStore", () => {
     it("fetches a new subset file with new filter query params", () => {
       const expectedEndpoint = `${tenantId}/newRevocations/revocations_matrix_distribution_by_district?
       metricPeriodMonths=12&chargeCategory=All&reportedViolations=All&violationType=LAW&
-      supervisionType=All&supervisionLevel=All&levelOneSupervisionLocation[0]=All&qlevelTwoSupervisionLocation[0]=All`.replace(
+      supervisionType=All&supervisionLevel=All&levelOneSupervisionLocation[0]=All&levelTwoSupervisionLocation[0]=All`.replace(
         /\n\s+/g,
         ""
       );
