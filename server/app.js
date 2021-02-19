@@ -20,6 +20,7 @@ const express = require("express");
 const cors = require("cors");
 const morgan = require("morgan");
 const helmet = require("helmet");
+const multer = require("multer");
 const jwt = require("express-jwt");
 const jwksRsa = require("jwks-rsa");
 const devAuthConfig = require("../src/auth_config_dev.json");
@@ -32,6 +33,7 @@ const {
 
 const app = express();
 
+const upload = multer();
 app.use(cors());
 
 const port = process.env.NODE_ENV === "test" ? 3002 : process.env.PORT || 3001;
@@ -125,6 +127,13 @@ app.post(
   [checkJwt, ...restrictedAccessParamValidations],
   api.restrictedAccess
 );
+app.post(
+  "/api/generateFileLink",
+  checkJwt,
+  upload.single("zip"),
+  api.generateFileLink
+);
+app.get("/file/:name", api.upload);
 
 // An App Engine-specific API for handling warmup requests on new instance initialization
 app.get("/_ah/warmup", () => {

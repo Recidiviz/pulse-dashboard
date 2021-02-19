@@ -1,5 +1,4 @@
-import downloadjs from "downloadjs";
-
+import JsFileDownloader from "js-file-downloader";
 import createMethodologyFile from "./createMethodologyFile";
 import downloadZipFile from "./downloadZipFile";
 import getFilters from "./getFilters";
@@ -10,7 +9,6 @@ function transformCanvasToBase64(canvas, chartTitle, filters) {
   const temporaryCanvas = document.createElement("canvas");
   temporaryCanvas.width = canvas.width;
   temporaryCanvas.height = canvas.height + topPadding;
-
   // Fill the canvas with a white background and the original image
   const destinationCtx = temporaryCanvas.getContext("2d");
   destinationCtx.fillStyle = "#FFFFFF";
@@ -50,6 +48,11 @@ function downloadCanvasAsImage({
   shouldZipDownload,
 }) {
   const imageData = transformCanvasToBase64(canvas, chartTitle, filters);
+  const jsFileDownload = new JsFileDownloader({
+    autoStart: false,
+    filename,
+    url: `data:image/png;base64,${imageData}`,
+  });
 
   if (shouldZipDownload) {
     const methodologyFile = createMethodologyFile(
@@ -69,7 +72,7 @@ function downloadCanvasAsImage({
 
     downloadZipFile(files, "export_image.zip");
   } else {
-    downloadjs(imageData, filename, "image/png;base64");
+    jsFileDownload.start();
   }
 }
 

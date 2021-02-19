@@ -20,6 +20,9 @@
  * in server.js.
  */
 const { validationResult } = require("express-validator");
+const uuid = require("uuid");
+const fs = require("fs");
+const path = require("path");
 const {
   refreshRedisCache,
   fetchMetrics,
@@ -208,6 +211,43 @@ function programmingExplore(req, res) {
   );
 }
 
+function generateFileLink(req, res) {
+  const { file } = req;
+  const fileName = `${uuid.v4()}-${file.originalname}`;
+  fs.writeFile(`server/tmp/${fileName}`, file.buffer, function (err) {
+    if (err) {
+      /* eslint-disable-next-line no-console */
+      console.log(err);
+    }
+  });
+  res.send(`http://${req.headers.host}/file/${fileName}`);
+}
+
+function upload(req, res) {
+  const options = {
+    root: path.join(__dirname, "../tmp"),
+    headers: {
+      "x-timestamp": Date.now(),
+      "x-sent": true,
+    },
+  };
+
+  const fileName = req.params.name;
+  res.sendFile(fileName, options, (sendErr) => {
+    if (sendErr) {
+      /* eslint-disable-next-line no-console */
+      console.log(sendErr);
+      res.send("File is not found!");
+    }
+    fs.unlink(path.join(__dirname, "../tmp", fileName), (delErr) => {
+      if (delErr) {
+        /* eslint-disable-next-line no-console */
+        console.log(delErr);
+      }
+    });
+  });
+}
+
 module.exports = {
   restrictedAccess,
   newRevocations,
@@ -219,5 +259,7 @@ module.exports = {
   programmingExplore,
   responder,
   refreshCache,
+  generateFileLink,
+  upload,
   SERVER_ERROR,
 };

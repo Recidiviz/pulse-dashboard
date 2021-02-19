@@ -50,7 +50,6 @@
     "debug": "~2.6.9",
     "dot-prop": "^5.1.0",
     "dotenv": "^8.0.0",
-    "downloadjs": "^1.4.7",
     "easy-pie-chart": "^2.1.7",
     "env-cmd": "^9.0.3",
     "eslint-config-airbnb": "^18.2.0",
@@ -65,6 +64,7 @@
     "i18n": "^0.13.2",
     "ioredis": "^4.19.4",
     "jest-environment-jsdom-sixteen": "^1.0.3",
+    "js-file-downloader": "^1.1.15",
     "jsonexport": "^3.0.1",
     "jszip": "^3.3.0",
     "jwks-rsa": "^1.4.0",
@@ -75,6 +75,7 @@
     "mobx-react-lite": "^3.1.6",
     "moment": "^2.24.0",
     "morgan": "^1.9.1",
+    "multer": "^1.4.2",
     "node-cache": "^5.1.0",
     "node-sass": "^4.14.1",
     "npm-run-all": "^4.1.5",
@@ -105,7 +106,8 @@
     "skycons": "^1.0.0",
     "supertest": "^6.0.1",
     "terser-webpack-plugin": "^1.4.3",
-    "typescript": "^4.1.2"
+    "typescript": "^4.1.2",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "@babel/plugin-transform-runtime": "^7.11.5",
