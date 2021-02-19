@@ -30,15 +30,16 @@ function getDistrictFilterKey(tenantId) {
   if (tenantId === "US_PA") return "levelTwoSupervisionLocation";
   return "district";
 }
-const getDefaultFilters = (tenantId) => ({
+const defaultFilters = {
   chargeCategory: "All",
-  [getDistrictFilterKey(tenantId)]: ["All"],
   metricPeriodMonths: "12",
   reportedViolations: "All",
   supervisionLevel: "All",
   supervisionType: "All",
   violationType: "All",
-});
+  levelOneSupervisionLocation: ["All"],
+  levelTwoSupervisionLocation: ["All"],
+};
 
 describe("FiltersStore", () => {
   describe("default filter values", () => {
@@ -52,16 +53,17 @@ describe("FiltersStore", () => {
         });
 
         expect(rootStore.filtersStore.defaultFilterValues).toEqual(
-          getDefaultFilters(tenantId)
+          defaultFilters
         );
       });
     });
 
     it("sets the defaultFilters to restrictedDistrict if it exists", () => {
+      const tenantId = "US_MO";
       const userDistrict = "99";
 
       rootStore = new RootStore();
-      const tenantId = "US_MO";
+
       runInAction(() => {
         rootStore.tenantStore.currentTenantId = tenantId;
         rootStore.districtsStore.isLoading = false;
@@ -73,6 +75,49 @@ describe("FiltersStore", () => {
           getDistrictFilterKey(tenantId)
         ]
       ).toStrictEqual([userDistrict]);
+    });
+
+    it("clears the filters when switching tenants", () => {
+      rootStore = new RootStore();
+
+      // Set tenant to US_MO
+      runInAction(() => {
+        rootStore.districtsStore.isLoading = false;
+        rootStore.tenantStore.currentTenantId = "US_MO";
+      });
+
+      // Expect default filters
+      expect(rootStore.filtersStore.defaultFilterValues).toEqual(
+        defaultFilters
+      );
+
+      // Set district filter for US_MO
+      rootStore.filtersStore.setFilters({
+        levelOneSupervisionLocation: ["01"],
+      });
+
+      // Expect level_1 filter set
+      expect(
+        Object.fromEntries(rootStore.filtersStore.filters)
+          .levelOneSupervisionLocation
+      ).toEqual(["01"]);
+
+      // Switch tenant to US_PA
+      runInAction(() => {
+        rootStore.tenantStore.currentTenantId = "US_PA";
+      });
+
+      // Expect level_2 filter set to "All"
+      expect(
+        Object.fromEntries(rootStore.filtersStore.filters)
+          .levelTwoSupervisionLocation
+      ).toEqual(["All"]);
+
+      // Expect level_1 filter to reset to "All"
+      expect(
+        Object.fromEntries(rootStore.filtersStore.filters)
+          .levelOneSupervisionLocation
+      ).toEqual(["All"]);
     });
   });
 
