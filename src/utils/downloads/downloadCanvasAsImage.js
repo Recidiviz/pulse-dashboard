@@ -48,11 +48,6 @@ function downloadCanvasAsImage({
   shouldZipDownload,
 }) {
   const imageData = transformCanvasToBase64(canvas, chartTitle, filters);
-  const jsFileDownload = new JsFileDownloader({
-    autoStart: false,
-    filename,
-    url: `data:image/png;base64,${imageData}`,
-  });
 
   if (shouldZipDownload) {
     const methodologyFile = createMethodologyFile(
@@ -72,6 +67,11 @@ function downloadCanvasAsImage({
 
     downloadZipFile(files, "export_image.zip");
   } else {
+    const jsFileDownload = new JsFileDownloader({
+      autoStart: false,
+      filename,
+      url: imageData,
+    });
     jsFileDownload.start();
   }
 }

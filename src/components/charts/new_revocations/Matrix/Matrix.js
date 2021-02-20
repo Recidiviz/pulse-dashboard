@@ -162,7 +162,10 @@ const Matrix = ({ timeDescription }) => {
       <div className="Matrix__x-label">
         # of {translate("violationReports")}
       </div>
-      <div id="revocationMatrix" className="Matrix__chart-container">
+      <div
+        id={`${translate("revocation")}Matrix`}
+        className="Matrix__chart-container"
+      >
         <div className="Matrix__y-label" data-html2canvas-ignore>
           Most severe violation reported
         </div>

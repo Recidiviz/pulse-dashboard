@@ -15,7 +15,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import jsFileDownloader from "js-file-downloader";
+import JsFileDownloader from "js-file-downloader";
 
 import getTimeStamp from "./getTimeStamp";
 import configureFilename from "./configureFileName";
@@ -77,10 +77,12 @@ function configureDataDownloadButton({
       } else {
         const encodedCsv = encodeURIComponent(csv);
         const dataStr = `data:text/csv;charset=utf-8,${encodedCsv}`;
-        jsFileDownloader({
+        const jsFileDownload = new JsFileDownloader({
+          autoStart: false,
           url: dataStr,
           filename: exportName,
         });
+        jsFileDownload.start();
       }
     });
   };

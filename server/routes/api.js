@@ -214,6 +214,7 @@ function programmingExplore(req, res) {
 function generateFileLink(req, res) {
   const { file } = req;
   const fileName = `${uuid.v4()}-${file.originalname}`;
+
   fs.writeFile(`server/tmp/${fileName}`, file.buffer, function (err) {
     if (err) {
       /* eslint-disable-next-line no-console */
@@ -233,18 +234,24 @@ function upload(req, res) {
   };
 
   const fileName = req.params.name;
+
   res.sendFile(fileName, options, (sendErr) => {
     if (sendErr) {
       /* eslint-disable-next-line no-console */
-      console.log(sendErr);
-      res.send("File is not found!");
+      console.error(sendErr);
     }
-    fs.unlink(path.join(__dirname, "../tmp", fileName), (delErr) => {
-      if (delErr) {
-        /* eslint-disable-next-line no-console */
-        console.log(delErr);
-      }
-    });
+    /* Checking on Chrome iOS */
+    if (!req.headers["upgrade-insecure-requests"]) {
+      fs.unlink(path.join(__dirname, "../tmp", fileName), (delErr) => {
+        if (delErr) {
+          /* eslint-disable-next-line no-console */
+          console.error(delErr);
+        }
+      });
+    } else {
+      /* eslint-disable-next-line no-console */
+      console.log("Wait download request!"); /* for Chrome iOS */
+    }
   });
 }
 
