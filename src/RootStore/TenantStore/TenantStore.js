@@ -15,16 +15,11 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import { makeAutoObservable, when } from "mobx";
-import filter from "lodash/fp/filter";
-import identity from "lodash/fp/identity";
-import map from "lodash/fp/map";
-import pipe from "lodash/fp/pipe";
-import sortBy from "lodash/fp/sortBy";
-import uniq from "lodash/fp/uniq";
+import { computed, makeAutoObservable, when } from "mobx";
 
-import { getAvailableStateCodes, doesUserHaveAccess } from "./utils/user";
-import { LANTERN_TENANTS } from "../views/tenants/utils/lanternTenants";
+import { getAvailableStateCodes, doesUserHaveAccess } from "../utils/user";
+import { LANTERN_TENANTS } from "../../views/tenants/utils/lanternTenants";
+import getTenantMappings from "./tenants";
 
 export const CURRENT_TENANT_IN_SESSION = "adminUserCurrentTenantInSession";
 
@@ -50,12 +45,10 @@ export default class TenantStore {
 
   currentTenantId = null;
 
-  districts = [];
-
-  districtsIsLoading = true;
+  tenantMappings;
 
   constructor({ rootStore }) {
-    makeAutoObservable(this);
+    makeAutoObservable(this, { tenantMappings: computed });
 
     this.rootStore = rootStore;
 
@@ -68,24 +61,14 @@ export default class TenantStore {
   setCurrentTenantId(tenantId) {
     this.currentTenantId = tenantId;
     sessionStorage.setItem(CURRENT_TENANT_IN_SESSION, tenantId);
-    this.districtsIsLoading = true;
-  }
-
-  setDistricts(apiData) {
-    if (apiData) {
-      const data = apiData.slice();
-
-      this.districts = pipe(
-        map("district"),
-        filter((d) => d.toLowerCase() !== "all"),
-        uniq,
-        sortBy(identity)
-      )(data);
-      this.districtsIsLoading = false;
-    }
   }
 
   get isLanternTenant() {
     return LANTERN_TENANTS.includes(this.currentTenantId);
+  }
+
+  get tenantMappings() {
+    if (!this.currentTenantId) return {};
+    return getTenantMappings(this.currentTenantId);
   }
 }

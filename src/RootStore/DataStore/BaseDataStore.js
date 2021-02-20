@@ -35,10 +35,17 @@ import {
 import {
   FILTER_TYPE_MAP,
   DISTRICT,
+  LEVEL_1_SUPERVISION_LOCATION,
+  LEVEL_2_SUPERVISION_LOCATION,
   METRIC_PERIOD_MONTHS,
 } from "../../constants/filterTypes";
 
-export const DEFAULT_IGNORED_DIMENSIONS = [DISTRICT, METRIC_PERIOD_MONTHS];
+export const DEFAULT_IGNORED_DIMENSIONS = [
+  LEVEL_1_SUPERVISION_LOCATION,
+  LEVEL_2_SUPERVISION_LOCATION,
+  DISTRICT,
+  METRIC_PERIOD_MONTHS,
+];
 
 /**
  * BaseDataStore is an abstract class that should never be directly instantiated.
@@ -99,8 +106,6 @@ export default class BaseDataStore {
     );
     this.rootStore = rootStore;
 
-    const { userStore } = this.rootStore;
-
     reaction(
       () => this.shouldFetchNewSubsetFile,
       (shouldFetchNewSubsetFile) => {
@@ -114,9 +119,9 @@ export default class BaseDataStore {
 
     autorun(() => {
       if (
-        userStore &&
-        !userStore.userIsLoading &&
-        !userStore.restrictedDistrictIsLoading
+        this.rootStore.userStore &&
+        !this.rootStore.userStore.userIsLoading &&
+        !this.rootStore.userStore.restrictedDistrictIsLoading
       ) {
         this.fetchData({
           tenantId: this.rootStore.currentTenantId,
@@ -151,7 +156,8 @@ export default class BaseDataStore {
   }
 
   get dimensionManifest() {
-    if (!this.apiData.metadata) return null;
+    if (!this.apiData.metadata || !this.apiData.metadata.dimension_manifest)
+      return null;
 
     return this.apiData.metadata.dimension_manifest.reduce((acc, dimension) => {
       const [name, values] = dimension;

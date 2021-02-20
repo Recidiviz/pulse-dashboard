@@ -1,5 +1,5 @@
 // Recidiviz - a data platform for criminal justice reform
-// Copyright (C) 2021 Recidiviz, Inc.
+// Copyright (C) 2020 Recidiviz, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -15,25 +15,4 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import { matchesAllFilters } from "shared-filters";
-
-import BaseDataStore from "./BaseDataStore";
-import { METRIC_PERIOD_MONTHS } from "../../constants/filterTypes";
-
-export default class RevocationsOverTimeStore extends BaseDataStore {
-  constructor({ rootStore }) {
-    super({
-      rootStore,
-      file: `revocations_matrix_by_month`,
-      skippedFilters: [METRIC_PERIOD_MONTHS],
-    });
-  }
-
-  get filteredData() {
-    const dataFilter = matchesAllFilters({
-      filters: this.filters,
-      skippedFilters: this.skippedFilters,
-    });
-    return this.filterData(this.apiData, dataFilter);
-  }
-}
+export { default } from "./TenantStore";

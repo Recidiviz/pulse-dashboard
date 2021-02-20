@@ -18,12 +18,20 @@
 import { makeObservable, reaction, observable, action } from "mobx";
 import { matchesAllFilters } from "shared-filters";
 import BaseDataStore from "./BaseDataStore";
-import { DISTRICT } from "../../constants/filterTypes";
+import {
+  DISTRICT,
+  LEVEL_1_SUPERVISION_LOCATION,
+  LEVEL_2_SUPERVISION_LOCATION,
+} from "../../constants/filterTypes";
 
 const CHARTS = {
   District: {
     file: "revocations_matrix_distribution_by_district",
-    skippedFilters: [DISTRICT],
+    skippedFilters: [
+      DISTRICT,
+      LEVEL_1_SUPERVISION_LOCATION,
+      LEVEL_2_SUPERVISION_LOCATION,
+    ],
   },
   "Risk level": {
     file: "revocations_matrix_distribution_by_risk_level",

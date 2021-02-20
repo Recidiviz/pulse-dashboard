@@ -15,25 +15,27 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import { matchesAllFilters } from "shared-filters";
+import { US_MO, US_PA } from "../../views/tenants/utils/lanternTenants";
 
-import BaseDataStore from "./BaseDataStore";
-import { METRIC_PERIOD_MONTHS } from "../../constants/filterTypes";
+const tenantMappings = {
+  districtValueKey: {
+    [US_MO]: "level_1_supervision_location_external_id",
+    [US_PA]: "level_2_supervision_location_external_id",
+  },
+  districtLabelKey: {
+    [US_MO]: "level_1_supervision_location_external_id",
+    [US_PA]: "level_2_supervision_location_external_id",
+  },
+  districtFilterKey: {
+    [US_MO]: "levelOneSupervisionLocation",
+    [US_PA]: "levelTwoSupervisionLocation",
+  },
+};
 
-export default class RevocationsOverTimeStore extends BaseDataStore {
-  constructor({ rootStore }) {
-    super({
-      rootStore,
-      file: `revocations_matrix_by_month`,
-      skippedFilters: [METRIC_PERIOD_MONTHS],
-    });
-  }
-
-  get filteredData() {
-    const dataFilter = matchesAllFilters({
-      filters: this.filters,
-      skippedFilters: this.skippedFilters,
-    });
-    return this.filterData(this.apiData, dataFilter);
-  }
+export default function getTenantMappings(tenantId) {
+  const tenant = {};
+  Object.keys(tenantMappings).forEach((key) => {
+    tenant[key] = tenantMappings[key][tenantId];
+  });
+  return tenant;
 }
