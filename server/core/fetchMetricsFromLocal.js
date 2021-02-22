@@ -18,8 +18,10 @@
 const fs = require("fs");
 const util = require("util");
 const path = require("path");
-const { getFilesByMetricType } = require("./getFilesByMetricType");
 const { getFileExtension, getFileName } = require("../utils/fileName");
+const {
+  default: getMetricsByType,
+} = require("../collections/getMetricsByType");
 
 const asyncReadFile = util.promisify(fs.readFile);
 
@@ -28,11 +30,13 @@ const asyncReadFile = util.promisify(fs.readFile);
  * file system. The return format, a list of Promises that resolve to an object with the
  * keys described therein, is identical.
  */
-function fetchMetricsFromLocal(_, metricType, file) {
+function fetchMetricsFromLocal(_, metricType, metricName) {
   const promises = [];
 
   try {
-    const files = getFilesByMetricType(metricType, file);
+    const metric = getMetricsByType(metricType, "US_DEMO");
+    const files = metric.getFileNamesList(metricName);
+
     files.forEach((filename) => {
       const fileKey = getFileName(filename);
       const extension = getFileExtension(filename);

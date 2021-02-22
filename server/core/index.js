@@ -35,7 +35,6 @@ const { default: fetchMetricsFromGCS } = require("./fetchMetricsFromGCS");
 const {
   default: fetchAndFilterNewRevocationFile,
 } = require("./fetchAndFilterNewRevocationFile");
-const { default: getFilesByMetricType } = require("./getFilesByMetricType");
 const { cacheResponse } = require("./cacheManager");
 
 module.exports = {
@@ -44,7 +43,6 @@ module.exports = {
   fetchMetricsFromLocal,
   fetchMetricsFromGCS,
   fetchAndFilterNewRevocationFile,
-  getFilesByMetricType,
   refreshRedisCache,
   cacheResponse,
 };

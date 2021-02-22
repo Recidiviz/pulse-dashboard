@@ -20,28 +20,17 @@ import pipe from "lodash/fp/pipe";
 import startCase from "lodash/fp/startCase";
 import { translate } from "../../views/tenants/utils/i18nSettings";
 
-export function getRiskLevels() {
-  return Object.keys(translate("riskLevelsMap"));
+function getStatePopulations() {
+  return Object.keys(translate("populationChartAttributes"));
 }
 
-export function getRiskLevelLabels() {
-  return Object.values(translate("riskLevelsMap"));
-}
-
-export function getStateRacePopulation() {
-  return Object.keys(translate("raceChartAttributes"));
-}
-
-export function getRacePopulationLabels() {
-  return Object.values(translate("raceChartAttributes"));
+function getStatePopulationsLabels() {
+  return Object.values(translate("populationChartAttributes"));
 }
 
 const genderValueToLabel = {
-  FEMALE: "Female",
   MALE: "Male",
-  TRANS: "Trans",
-  TRANS_FEMALE: "Trans Female",
-  TRANS_MALE: "Trans Male",
+  FEMALE: "Female",
 };
 
 const raceValueToLabel = {
@@ -128,4 +117,7 @@ export {
   violationCountLabel,
   pluralize,
   raceValueToLabel,
+  genderValueToLabel,
+  getStatePopulations,
+  getStatePopulationsLabels,
 };

@@ -162,7 +162,7 @@ describe("API GET tests", () => {
     it("newRevocationFile - calls fetchAndFilterNewReocationFile with correct args", async () => {
       await fakeRequest(newRevocationFile, request);
       expect(fetchAndFilterNewRevocationFile).toHaveBeenCalledWith({
-        file,
+        metricName: file,
         stateCode,
         metricType: "newRevocation",
         queryParams: filters,

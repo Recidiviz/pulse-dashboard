@@ -18,15 +18,15 @@ const { createSubset, createSubsetFilters } = require("../filters");
 const { default: fetchMetrics } = require("./fetchMetrics");
 
 function fetchAndFilterNewRevocationFile({
-  file: fileKey,
+  metricName,
   queryParams: filters,
   ...fetchArgs
 }) {
   const { stateCode, metricType, isDemoMode } = fetchArgs;
-  return fetchMetrics(stateCode, metricType, fileKey, isDemoMode).then(
+  return fetchMetrics(stateCode, metricType, metricName, isDemoMode).then(
     (metricFile) => {
       const subsetFilters = createSubsetFilters({ filters });
-      return createSubset(fileKey, subsetFilters, metricFile);
+      return createSubset(metricName, subsetFilters, metricFile);
     }
   );
 }

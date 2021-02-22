@@ -159,7 +159,6 @@ function tooltipForRateMetricWithCounts(
 ) {
   const { datasetIndex, index: dataPointIndex } = tooltipItem;
   const label = data.datasets[datasetIndex].label || "";
-
   const isNested = Array.isArray(numerators[datasetIndex]);
   const numerator = isNested
     ? numerators[datasetIndex][dataPointIndex]
@@ -177,16 +176,18 @@ function tooltipForRateMetricWithCounts(
       ? " *"
       : "";
 
-  return id !== "admissionsByRace"
-    ? `${label}: ${getTooltipWithoutTrendline(
-        tooltipItem,
-        data,
-        "%"
-      )}${appendedCounts}${cue}`
-    : `${getTooltipWithoutTrendline(
+  return id === "admissionsByRace" ||
+    id === "admissionsByGender" ||
+    id === "admissionsBySex"
+    ? `${getTooltipWithoutTrendline(
         tooltipItem,
         data,
         ""
+      )}${appendedCounts}${cue}`
+    : `${label}: ${getTooltipWithoutTrendline(
+        tooltipItem,
+        data,
+        "%"
       )}${appendedCounts}${cue}`;
 }
 

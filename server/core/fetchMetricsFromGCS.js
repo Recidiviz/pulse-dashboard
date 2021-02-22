@@ -17,25 +17,32 @@
 
 const BUCKET_NAME = process.env.METRIC_BUCKET;
 const objectStorage = require("./objectStorage");
-const { getFilesByMetricType } = require("./getFilesByMetricType");
 const { getFileExtension, getFileName } = require("../utils/fileName");
-
+const {
+  default: getMetricsByType,
+} = require("../collections/getMetricsByType");
 /**
  * Retrieves all metric files for the given metric type from Google Cloud Storage.
  *
- * Returns a list of Promises, one per metric file for the given type, where each Promise will
- * eventually return either an error or an object with the following keys:
+ * @param {string} stateCode - The stateCode, i.e. US_MO
+ * @param {string} metricType - The name of the metric type, i.e. newRevocations
+ * @param {string} [metricName] - Optional metric name, i.e. revocations_by_month
+ * 
+ * @returns {Promise<Object | Error>} Returns a list of Promises, one per metric file for the given type, 
+ * where each Promise will eventually return either an error or an object with the following keys:
  *   - `fileKey`: a unique key for identifying the metric file, e.g. 'revocations_by_month'
  *   - `extension`: the extension of the metric file, either .txt or .json
  *   - `contents`: the contents of the file deserialized into JS objects/arrays
  *   - `metadata`: (optional) the metadata of the metric file, if it is in the
  optimized (compressed .txt) format
  */
-function fetchMetricsFromGCS(stateCode, metricType, file) {
+function fetchMetricsFromGCS(stateCode, metricType, metricName) {
   const promises = [];
 
   try {
-    const files = getFilesByMetricType(metricType, file);
+    const metric = getMetricsByType(metricType, stateCode);
+    const files = metric.getFileNamesList(metricName);
+
     files.forEach((filename) => {
       const fileKey = getFileName(filename);
       const extension = getFileExtension(filename);
@@ -67,6 +74,11 @@ function fetchMetricsFromGCS(stateCode, metricType, file) {
                 rawMetadata.dimension_manifest
               );
             }
+
+            metric.validateDimensionsForFile(
+              fileKey,
+              metadata.dimension_manifest
+            );
 
             return { fileKey, extension, metadata, contents };
           }
