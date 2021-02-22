@@ -55,6 +55,8 @@ const selectOptions = [
   },
 ];
 
+import "./CoreLayout.scss";
+
 const CoreLayout = ({ children }) => {
   const history = useHistory();
   const { pathname } = useLocation();
