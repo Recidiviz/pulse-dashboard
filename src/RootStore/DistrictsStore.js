@@ -29,6 +29,8 @@ export default class DistrictsStore {
 
   file = `supervision_location_ids_to_names`;
 
+  filteredDistricts = [];
+
   rootStore;
 
   constructor({ rootStore }) {
@@ -86,11 +88,30 @@ export default class DistrictsStore {
     }
   }
 
+  get tenantMappings() {
+    return this.rootStore.tenantStore.tenantMappings;
+  }
+
   get districts() {
-    const { tenantMappings } = this.rootStore.tenantStore;
-    const { districtValueKey } = tenantMappings;
+    const { districtValueKey } = this.tenantMappings;
     return uniqBy(this.apiData.data, districtValueKey)
       .map((d) => d[districtValueKey])
       .sort();
+  }
+
+  // TODO: Remove the filtered districts when backend has the filtered supervision locations
+  setFilteredDistricts(apiData) {
+    if (apiData && this.apiData.data) {
+      this.isLoading = true;
+      const { districtFilteringKey, districtValueKey } = this.tenantMappings;
+      const data = apiData.slice();
+
+      const validDistricts = data.map((d) => d[districtFilteringKey]);
+
+      this.filteredDistricts = this.apiData.data.filter((d) =>
+        validDistricts.includes(d[districtValueKey])
+      );
+      this.isLoading = false;
+    }
   }
 }
