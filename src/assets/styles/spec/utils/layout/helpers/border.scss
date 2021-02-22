@@ -33,7 +33,7 @@
 // @Border Radius
 // ---------------------------------------------------------
 
-@for $i from 0 to 5 {
+@for $i from 0 to 9 {
   .bdrs-#{$i} { border-radius: #{$i}px !important; }
 
   .bdrsT-#{$i} {

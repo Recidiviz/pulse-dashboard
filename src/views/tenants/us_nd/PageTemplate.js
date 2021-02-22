@@ -20,11 +20,12 @@ import PropTypes from "prop-types";
 
 import ImportantNotesBar from "../../../components/ImportantNotesBar";
 import "../../../assets/styles/index.scss";
+import "./PageTemplate.scss";
 
 const PageTemplate = ({ children, importantNotes, toggleBar = null }) => (
   <>
     {toggleBar}
-    <main className="main-content bgc-grey-100">
+    <main className="main-content PageTemplate">
       <div id="mainContent">
         <div
           className="row gap-20 pos-r"
