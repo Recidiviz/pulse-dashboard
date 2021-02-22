@@ -14,15 +14,6 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-const COLLECTIONS = {
-  NEW_REVOCATION: "newRevocation",
-  COMMUNITY_GOALS: "communityGoals",
-  COMMUNITY_EXPLORE: "communityExplore",
-  FACILITIES_GOALS: "facilitiesGoals",
-  FACILITIES_EXPLORE: "facilitiesExplore",
-  PROGRAMMING_EXPLORE: "programmingExplore",
-};
-
 const DEFAULT_MONTHS = [
   "1",
   "10",
@@ -63,9 +54,14 @@ const DEFAULT_RACE = [
   "external_unknown",
   "hispanic",
   "white",
+  "other",
 ];
 
 function removeAllValue(dimensionValues) {
+  // Do not remove "All" value if it's the only value
+  if (dimensionValues.length === 1 && dimensionValues[0] === "all") {
+    return dimensionValues;
+  }
   const allIndex = dimensionValues.indexOf("all");
   if (allIndex < 0) return dimensionValues;
   const dimensionValuesCopy = [...dimensionValues];
@@ -74,7 +70,6 @@ function removeAllValue(dimensionValues) {
 }
 
 module.exports = {
-  COLLECTIONS,
   DEFAULT_GENDERS,
   DEFAULT_RACE,
   DEFAULT_MONTHS,

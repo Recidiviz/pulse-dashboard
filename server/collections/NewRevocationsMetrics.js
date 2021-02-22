@@ -15,7 +15,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 const { default: BaseMetrics } = require("./BaseMetrics");
-const { COLLECTIONS } = require("./resources/shared");
+const { COLLECTIONS } = require("../constants/collections");
 
 class NewRevocationsMetrics extends BaseMetrics {
   constructor(metricType, stateCode) {
