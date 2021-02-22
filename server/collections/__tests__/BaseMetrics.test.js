@@ -16,7 +16,7 @@
 // =============================================================================
 
 const { default: BaseMetrics } = require("../BaseMetrics");
-const { default: RESOURCES } = require("../resources");
+const { default: collectionsByStateCode } = require("../resources");
 const { COLLECTIONS } = require("../../constants/collections");
 
 describe("BaseMetrics", () => {
@@ -37,7 +37,7 @@ describe("BaseMetrics", () => {
 
   it("sets the metrics property", () => {
     expect(metric.metrics).toEqual(
-      RESOURCES[stateCode][COLLECTIONS.NEW_REVOCATION]
+      collectionsByStateCode[stateCode][COLLECTIONS.NEW_REVOCATION]
     );
     expect(metric.metrics).toHaveProperty(filename);
   });
