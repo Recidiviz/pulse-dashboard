@@ -19,77 +19,60 @@ import React from "react";
 import { observer } from "mobx-react-lite";
 import { get } from "mobx";
 import map from "lodash/fp/map";
+import SelectDropdown from "../../../controls/SelectDropdown";
 
 import FilterField from "./FilterField";
-import Select from "../../../controls/Select";
-import MultiSelect from "../../../controls/MultiSelect";
 import { useRootStore } from "../../../../StoreProvider";
 
 const allOption = { label: "All", value: "All" };
 
 const DistrictFilter = () => {
-  const { filters, filtersStore, tenantStore, userStore } = useRootStore();
+  const { filters, filtersStore, userStore } = useRootStore();
   const { restrictedDistrict } = userStore;
 
-  const getSelectElement = () => {
-    if (restrictedDistrict) {
-      const singleValue = {
-        label: restrictedDistrict,
-        value: restrictedDistrict,
-      };
+  const {
+    filterOptions,
+    districtsIsLoading: isLoading,
+    districtKeys: { filterKey },
+  } = filtersStore;
 
-      return (
-        <Select
-          value={singleValue}
-          options={[singleValue]}
-          defaultValue={singleValue}
-          onChange={() => {}}
-          isDisabled
-        />
-      );
-    }
-    const { districts, districtsIsLoading } = tenantStore;
-    const options = [allDistrictsOption].concat(
-      districts.map((d) => ({ value: d, label: d }))
+  const options = [allOption].concat(filterOptions[filterKey].options);
+
+  const onValueReady = (newOptions) => {
+    const filteredDistricts = map("value", newOptions);
+    filtersStore.setFilters({ [filterKey]: filteredDistricts });
+  };
+
+  const onValueChange = (newOptions, action) => {
+    const isHaveChildren = options.filter(
+      (option) =>
+        option.value.includes(action.option.value) &&
+        option.value !== action.option.value
     );
-    const summingOption = allDistrictsOption;
-    const defaultValue = [allDistrictsOption];
-
-    const onValueChanged = (newOptions) =>
-      filtersStore.setFilters({ [DISTRICT]: map("value", newOptions) });
-
-    const onValueChange = (newOptions, action) => {
-      const isHaveChildren = options.filter(
-        (option) =>
-          option.value.includes(action.option.value) &&
-          option.value !== action.option.value
-      );
-      if (action.action === "select-option") {
-        if (action.option.value === "All") {
-          return onValueChanged(options);
-        }
-
-        if (isHaveChildren.length > 1) {
-          return onValueChanged(newOptions.concat(isHaveChildren));
-        }
+    if (action.action === "select-option") {
+      if (action.option.value === "All") {
+        return onValueReady(options);
       }
-      if (action.action === "deselect-option") {
-        if (action.option.value === "All") {
-          return onValueChanged();
-        }
-        if (isHaveChildren.length > 1) {
-          return onValueChanged(
-            newOptions.filter(
-              (item) =>
-                !isHaveChildren.some(
-                  (children) => children.value === item.value
-                )
-            )
-          );
-        }
+
+      if (isHaveChildren.length > 1) {
+        return onValueReady(newOptions.concat(isHaveChildren));
       }
-      return onValueChanged(newOptions);
-    };
+    }
+    if (action.action === "deselect-option") {
+      if (action.option.value === "All") {
+        return onValueReady();
+      }
+      if (isHaveChildren.length > 1) {
+        return onValueReady(
+          newOptions.filter(
+            (item) =>
+              !isHaveChildren.some((children) => children.value === item.value)
+          )
+        );
+      }
+    }
+    return onValueReady(newOptions);
+  };
 
   const selectedValues = options.filter((option) =>
     get(filters, filterKey).includes(option.value)
