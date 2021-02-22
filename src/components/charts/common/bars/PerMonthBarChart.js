@@ -160,6 +160,11 @@ const PerMonthBarChart = ({
         })),
       }}
       options={{
+        plugins: {
+          datalabels: {
+            display: false,
+          },
+        },
         responsive: true,
         legend: {
           position: "bottom",

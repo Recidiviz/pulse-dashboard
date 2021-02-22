@@ -23,6 +23,16 @@ const getLabelByMode = (mode) => {
       return `${translate("Revocation")} count`;
     case "exits":
       return "Percent revoked out of all exits";
+    case "WHITE":
+      return translate("raceLabelMap").WHITE;
+    case "BLACK":
+      return translate("raceLabelMap").BLACK;
+    case "HISPANIC":
+      return translate("raceLabelMap").HISPANIC;
+    case "ASIAN":
+      return translate("raceLabelMap").ASIAN;
+    case "AMERICAN_INDIAN_ALASKAN_NATIVE":
+      return translate("raceLabelMap").AMERICAN_INDIAN_ALASKAN_NATIVE;
     case "rates":
     default:
       return translate("percentOfPopulationRevoked");

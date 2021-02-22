@@ -15,12 +15,9 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import { flow, makeObservable } from "mobx";
 import { matchesAllFilters } from "shared-filters";
-import * as Sentry from "@sentry/react";
 
 import BaseDataStore from "./BaseDataStore";
-import { callMetricsApi, parseResponseByFileFormat } from "../../api/metrics";
 import { METRIC_PERIOD_MONTHS } from "../../constants/filterTypes";
 
 export default class RevocationsOverTimeStore extends BaseDataStore {
@@ -30,52 +27,6 @@ export default class RevocationsOverTimeStore extends BaseDataStore {
       file: `revocations_matrix_by_month`,
       skippedFilters: [METRIC_PERIOD_MONTHS],
     });
-    makeObservable(this, {
-      fetchData: flow,
-    });
-  }
-
-  *fetchData({ tenantId }) {
-    if (!this.rootStore?.tenantStore.isLanternTenant) {
-      this.isLoading = false;
-      this.isError = false;
-      return;
-    }
-
-    const endpoint = `${tenantId}/newRevocations/${this.file}${this.filtersQueryParams}`;
-    try {
-      this.isLoading = true;
-      const responseData = yield callMetricsApi(
-        endpoint,
-        this.getTokenSilently
-      );
-      const processedData = parseResponseByFileFormat(
-        responseData,
-        this.file,
-        this.eagerExpand
-      );
-
-      const expandedData = parseResponseByFileFormat(
-        responseData,
-        this.file,
-        true
-      );
-      // TODO epic #593 - setDistricts based on supervision_location_ids_to_names.json
-      // and remove this fetchData override
-      this.rootStore.tenantStore.setDistricts(expandedData.data);
-      this.apiData = processedData;
-      this.isLoading = false;
-      this.isError = false;
-    } catch (error) {
-      console.error(error);
-      Sentry.captureException(error, (scope) => {
-        scope.setContext("RevocationsOverTimeStore.fetchData", {
-          endpoint,
-        });
-      });
-      this.isError = true;
-      this.isLoading = false;
-    }
   }
 
   get filteredData() {

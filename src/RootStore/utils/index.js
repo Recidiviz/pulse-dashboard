@@ -1,5 +1,5 @@
 // Recidiviz - a data platform for criminal justice reform
-// Copyright (C) 2020 Recidiviz, Inc.
+// Copyright (C) 2021 Recidiviz, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -15,36 +15,14 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React from "react";
-import PropTypes from "prop-types";
-import cn from "classnames";
-
-import { usePageState } from "../../contexts/PageContext";
-
-const TopBar = ({ children, isHidable = false, isWide = false }) => {
-  const { hideTopBar } = usePageState();
-
-  return (
-    <div
-      className={cn("TopBar", "header", "navbar", {
-        "TopBar--wide": isWide,
-        "TopBar--hidden": hideTopBar && isHidable,
-      })}
-    >
-      <div className="TopBar__container header-container">{children}</div>
-    </div>
-  );
-};
-
-TopBar.defaultProps = {
-  isHidable: false,
-  isWide: false,
-};
-
-TopBar.propTypes = {
-  children: PropTypes.node.isRequired,
-  isHidable: PropTypes.bool,
-  isWide: PropTypes.bool,
-};
-
-export default TopBar;
+export function compareStrings(valueKey) {
+  return (a, b) => {
+    if (a[valueKey].toLowerCase() < b[valueKey].toLowerCase()) {
+      return -1;
+    }
+    if (a[valueKey].toLowerCase() > b[valueKey].toLowerCase()) {
+      return 1;
+    }
+    return 0;
+  };
+}

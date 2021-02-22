@@ -18,9 +18,9 @@
     background-color: $color1;
   }
 
-  &--shrinking {
+  &--small {
     height: 28px;
-    border-radius: 24px;
+    border-radius: 14px;
   }
 
   &__label {
@@ -42,13 +42,14 @@
       background-color: $color1;
     }
 
-    .Chip--shrinking & {
+    .Chip--small & {
       line-height: 18px;
+      font-size: 0.75rem;
+      font-weight: 600;
     }
   }
 
   &__delete-button {
-    margin-left: 4px;
     margin-top: 2px;
     border: none;
     background: transparent;
@@ -60,8 +61,9 @@
       color: $color2;
     }
 
-    .Chip--shrinking & {
+    .Chip--small & {
       margin-top: 0;
+      transform: scale(0.7);
     }
   }
 }

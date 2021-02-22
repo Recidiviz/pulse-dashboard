@@ -1,5 +1,5 @@
 // Recidiviz - a data platform for criminal justice reform
-// Copyright (C) 2020 Recidiviz, Inc.
+// Copyright (C) 2021 Recidiviz, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -15,36 +15,27 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React from "react";
-import PropTypes from "prop-types";
-import cn from "classnames";
+import { US_MO, US_PA } from "../../views/tenants/utils/lanternTenants";
 
-import { usePageState } from "../../contexts/PageContext";
-
-const TopBar = ({ children, isHidable = false, isWide = false }) => {
-  const { hideTopBar } = usePageState();
-
-  return (
-    <div
-      className={cn("TopBar", "header", "navbar", {
-        "TopBar--wide": isWide,
-        "TopBar--hidden": hideTopBar && isHidable,
-      })}
-    >
-      <div className="TopBar__container header-container">{children}</div>
-    </div>
-  );
+const tenantMappings = {
+  districtValueKey: {
+    [US_MO]: "level_1_supervision_location_external_id",
+    [US_PA]: "level_2_supervision_location_external_id",
+  },
+  districtLabelKey: {
+    [US_MO]: "level_1_supervision_location_external_id",
+    [US_PA]: "level_2_supervision_location_external_id",
+  },
+  districtFilterKey: {
+    [US_MO]: "levelOneSupervisionLocation",
+    [US_PA]: "levelTwoSupervisionLocation",
+  },
 };
 
-TopBar.defaultProps = {
-  isHidable: false,
-  isWide: false,
-};
-
-TopBar.propTypes = {
-  children: PropTypes.node.isRequired,
-  isHidable: PropTypes.bool,
-  isWide: PropTypes.bool,
-};
-
-export default TopBar;
+export default function getTenantMappings(tenantId) {
+  const tenant = {};
+  Object.keys(tenantMappings).forEach((key) => {
+    tenant[key] = tenantMappings[key][tenantId];
+  });
+  return tenant;
+}

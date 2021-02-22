@@ -15,36 +15,4 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React from "react";
-import PropTypes from "prop-types";
-
-import Chip from "./Chip";
-import { raceValueToLabel } from "../../../utils/transforms/labels";
-
-const ModeSwitcher = ({ mode, setMode, buttons }) => (
-  <div className="ModeSwitcher pB-20">
-    {buttons.map(({ label, value }) => (
-      <Chip
-        key={value}
-        label={label}
-        isSelected={value === mode}
-        onClick={() => setMode(value)}
-      />
-    ))}
-  </div>
-);
-
-ModeSwitcher.propTypes = {
-  mode: PropTypes.oneOf(
-    ["counts", "rates", "exits"].concat(Object.keys(raceValueToLabel))
-  ).isRequired,
-  setMode: PropTypes.func.isRequired,
-  buttons: PropTypes.arrayOf(
-    PropTypes.shape({
-      label: PropTypes.string.isRequired,
-      value: PropTypes.string.isRequired,
-    })
-  ).isRequired,
-};
-
-export default ModeSwitcher;
+export { default } from "./TenantStore";

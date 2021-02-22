@@ -41,6 +41,7 @@ import {
   SUPERVISION_TYPE,
 } from "../../constants/filterTypes";
 import { useRootStore } from "../../StoreProvider";
+import { PageProvider } from "../../contexts/PageContext";
 
 jest.mock("../charts/new_revocations/ToggleBar/ToggleBarFilter");
 jest.mock("../charts/new_revocations/ToggleBar/DistrictFilter");
@@ -59,7 +60,7 @@ describe("Revocations component tests", () => {
   const mockTenantId = "TEST_TENANT";
   const mockUser = { [metadataField]: { state_code: mockTenantId } };
   const toggleBarIdPrefix = "toggle-bar-";
-  const districtFilterId = "district-filter";
+  const DistrictFilterId = "district-filter";
   const admissionTypeFilterId = "admission-type-filter";
   const violationFilterId = "violation-filter-id";
   const revocationCountOverTimeId = "revocation-count-over-time";
@@ -79,7 +80,7 @@ describe("Revocations component tests", () => {
   ToggleBarFilterMock.mockImplementation(({ label }) =>
     mockWithTestId(`${toggleBarIdPrefix}${label}`)
   );
-  DistrictFilterMock.mockReturnValue(mockWithTestId(districtFilterId));
+  DistrictFilterMock.mockReturnValue(mockWithTestId(DistrictFilterId));
   AdmissionTypeFilterMock.mockReturnValue(
     mockWithTestId(admissionTypeFilterId)
   );
@@ -115,7 +116,11 @@ describe("Revocations component tests", () => {
   });
 
   it("should render Revocations component with proper filters and charts", () => {
-    const { getByTestId } = render(<Revocations />);
+    const { getByTestId } = render(
+      <PageProvider>
+        <Revocations />
+      </PageProvider>
+    );
 
     expect(getByTestId(`${toggleBarIdPrefix}Time Period`)).toBeInTheDocument();
     expect(getByTestId(`${toggleBarIdPrefix}Case Type`)).toBeInTheDocument();
@@ -126,7 +131,7 @@ describe("Revocations component tests", () => {
       getByTestId(`${toggleBarIdPrefix}Supervision Level`)
     ).toBeInTheDocument();
 
-    expect(getByTestId(districtFilterId)).toBeInTheDocument();
+    expect(getByTestId(DistrictFilterId)).toBeInTheDocument();
     expect(getByTestId(admissionTypeFilterId)).toBeInTheDocument();
     expect(getByTestId(violationFilterId)).toBeInTheDocument();
     expect(getByTestId(revocationCountOverTimeId)).toBeInTheDocument();
@@ -141,7 +146,11 @@ describe("Revocations component tests", () => {
     filterOptionsMap[mockTenantId][CHARGE_CATEGORY].componentEnabled = false;
     filterOptionsMap[mockTenantId][ADMISSION_TYPE].componentEnabled = false;
     filterOptionsMap[mockTenantId][ADMISSION_TYPE].filterEnabled = false;
-    const { queryByTestId } = render(<Revocations />);
+    const { queryByTestId } = render(
+      <PageProvider>
+        <Revocations />
+      </PageProvider>
+    );
 
     expect(queryByTestId(`${toggleBarIdPrefix}Supervision Level`)).toBeNull();
     expect(queryByTestId(`${toggleBarIdPrefix}Supervision Type`)).toBeNull();

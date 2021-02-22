@@ -200,6 +200,11 @@ const SupervisionSuccessSnapshot = ({
         datasets: datasetsWithTrendlineIfApplicable(),
       }}
       options={{
+        plugins: {
+          datalabels: {
+            display: false,
+          },
+        },
         legend: {
           display: false,
           position: "right",

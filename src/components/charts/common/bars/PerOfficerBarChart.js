@@ -173,6 +173,11 @@ const PerOfficerBarChart = ({
         })),
       }}
       options={{
+        plugins: {
+          datalabels: {
+            display: false,
+          },
+        },
         responsive: true,
         legend: {
           position: "bottom",

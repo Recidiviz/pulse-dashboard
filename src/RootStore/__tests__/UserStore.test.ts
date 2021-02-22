@@ -1,5 +1,5 @@
 // Recidiviz - a data platform for criminal justice reform
-// Copyright (C) 2020 Recidiviz, Inc.
+// Copyright (C) 2021 Recidiviz, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -26,11 +26,13 @@ import { METADATA_NAMESPACE } from "../../constants";
 import TENANTS from "../../tenants";
 import { callRestrictedAccessApi } from "../../api/metrics/metricsClient";
 import RootStore from "../RootStore";
+import DistrictsStore from "../DistrictsStore";
 
 jest.mock("@sentry/react");
 jest.mock("@auth0/auth0-spa-js");
 jest.mock("../RootStore");
 jest.mock("../../api/metrics/metricsClient");
+jest.mock("../DistrictsStore");
 
 const mockCreateAuth0Client = createAuth0Client as jest.Mock;
 const mockCallRestrictedAccessApi = callRestrictedAccessApi as jest.Mock;
@@ -59,8 +61,11 @@ beforeEach(() => {
     return {
       currentTenantId: tenantId,
       tenantStore: {
-        districts: [userDistrict],
         isLanternTenant: true,
+      },
+      districtsStore: {
+        isLoading: false,
+        districts: [userDistrict],
       },
     };
   });
@@ -318,6 +323,72 @@ describe("fetchRestrictedDistrictData", () => {
     });
   });
 
+  describe("when districts is loading", () => {
+    beforeEach(async () => {
+      mockRootStore.mockImplementationOnce(() => {
+        return {
+          currentTenantId: "US_ND",
+          tenantStore: {
+            isLanternTenant: false,
+          },
+          districtsStore: {
+            isLoading: true,
+            districts: null,
+          },
+        };
+      });
+
+      reactImmediately(() => {
+        userStore = new UserStore({
+          authSettings: testAuthSettings,
+          rootStore: new RootStore(),
+        });
+
+        userStore.userIsLoading = false;
+      });
+    });
+
+    afterEach(() => {
+      jest.resetAllMocks();
+    });
+
+    it("does not call the API", () => {
+      expect(callRestrictedAccessApi).toHaveBeenCalledTimes(0);
+    });
+  });
+
+  describe("when user is loading", () => {
+    beforeEach(async () => {
+      mockRootStore.mockImplementationOnce(() => {
+        return {
+          currentTenantId: "US_ND",
+          tenantStore: {
+            isLanternTenant: false,
+          },
+          districtsStore: {
+            isLoading: true,
+            districts: null,
+          },
+        };
+      });
+
+      reactImmediately(() => {
+        userStore = new UserStore({
+          authSettings: testAuthSettings,
+          rootStore: new RootStore(),
+        });
+      });
+    });
+
+    afterEach(() => {
+      jest.resetAllMocks();
+    });
+
+    it("does not call the API", () => {
+      expect(callRestrictedAccessApi).toHaveBeenCalledTimes(0);
+    });
+  });
+
   describe("when API responds with an error", () => {
     beforeEach(async () => {
       mockCallRestrictedAccessApi.mockRejectedValueOnce(apiError);
@@ -366,11 +437,15 @@ describe("fetchRestrictedDistrictData", () => {
 
   describe("when the tenant is not a Lantern tenant", () => {
     beforeEach(async () => {
-      mockRootStore.mockImplementation(() => {
+      mockRootStore.mockImplementationOnce(() => {
         return {
           currentTenantId: "US_ND",
           tenantStore: {
             isLanternTenant: false,
+          },
+          districtsStore: {
+            isLoading: false,
+            districts: [userDistrict],
           },
         };
       });
