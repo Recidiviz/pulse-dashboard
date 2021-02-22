@@ -83,4 +83,7 @@ of that column.`,
     "subs",
     "tech",
   ],
+  supervisionLocationValueKey: "level_1_supervision_location_external_id",
+  supervisionLocationLabelKey: "level_1_supervision_location_external_id",
+  supervisionLocationFilterKey: "levelOneSupervisionLocation",
 };

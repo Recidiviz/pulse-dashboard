@@ -27,16 +27,18 @@ import createGenerateChartData from "./createGenerateChartData";
 import { translate } from "../../../../views/tenants/utils/i18nSettings";
 import flags from "../../../../flags";
 import { useRootStore } from "../../../../StoreProvider";
-import { DISTRICT } from "../../../../constants/filterTypes";
 
 const CHART_TITLE = "Admissions by district";
 const DEFAULT_MODE = "counts";
 
 const RevocationsByDistrict = observer(
   ({ containerHeight, timeDescription }, ref) => {
-    const { filters, dataStore } = useRootStore();
+    const { filters, dataStore, filtersStore } = useRootStore();
+    const {
+      districtKeys: { filterKey: districtFilterKey },
+    } = filtersStore;
     const { revocationsChartStore } = dataStore;
-    const currentDistricts = get(filters, DISTRICT);
+    const currentDistricts = get(filters, districtFilterKey);
 
     return (
       <RevocationsByDimension

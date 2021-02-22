@@ -23,6 +23,7 @@ import DataStore from "./DataStore/DataStore";
 import UserStore from "./UserStore";
 import devAuthConfig from "../auth_config_dev.json";
 import productionAuthConfig from "../auth_config_production.json";
+import DistrictsStore from "./DistrictsStore";
 
 /**
  * Returns the auth settings configured for the current environment, if any.
@@ -52,6 +53,8 @@ export default class RootStore {
 
   userStore;
 
+  districtsStore;
+
   constructor() {
     makeObservable(this, {
       filters: computed,
@@ -65,6 +68,9 @@ export default class RootStore {
     });
 
     this.tenantStore = new TenantStore({ rootStore: this });
+    this.districtsStore = new DistrictsStore({
+      rootStore: this,
+    });
     this.filtersStore = new FiltersStore({ rootStore: this });
     this.dataStore = new DataStore({ rootStore: this });
   }

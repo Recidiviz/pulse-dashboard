@@ -39,7 +39,7 @@ const MatrixCell = ({
 }) => {
   const { filters } = useRootStore();
   const ratio = maxCount > 0 ? count / maxCount : 0;
-  const radius = Math.max(minRadius, Math.ceil(ratio * maxRadius) + 15);
+  const radius = Math.max(minRadius, Math.ceil(ratio * maxRadius) + 25);
 
   const containerStyle = {
     position: "relative",
@@ -59,6 +59,7 @@ const MatrixCell = ({
     height: "100%",
     borderRadius: Math.ceil(radius / 2),
     color: ratio >= 0.5 ? COLORS.white : COLORS["lantern-dark-blue"],
+    fontSize: 15,
   };
 
   const isCellSelected =
