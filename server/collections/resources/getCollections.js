@@ -80,7 +80,6 @@ function newRevocations(dimensions) {
       revocations_matrix_distribution_by_officer: {
         filename: "revocations_matrix_distribution_by_officer.txt",
         dimensions: {
-          risk_level: dimensions.risk_level,
           charge_category: dimensions.charge_category,
           metric_period_months: dimensions.metric_period_months,
           reported_violations: dimensions.reported_violations,
