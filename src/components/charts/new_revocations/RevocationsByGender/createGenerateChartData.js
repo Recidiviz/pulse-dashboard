@@ -20,47 +20,59 @@ import reduce from "lodash/fp/reduce";
 
 import { CHART_COLORS } from "./constants";
 import { applyStatisticallySignificantShadingToDataset } from "../../../../utils/charts/significantStatistics";
+
 import {
-  getRiskLevels,
-  getRiskLevelLabels,
+  getStatePopulations,
+  getStatePopulationsLabels,
+  genderValueToLabel,
 } from "../../../../utils/transforms/labels";
-import getDenominatorKeyByMode from "../utils/getDenominatorKeyByMode";
-import { getCountsByRiskLevel } from "../utils/getCounts";
-import createRiskLevelsMap from "../utils/createRiskLevelsMap";
+import getCounts from "../utils/getCounts";
+import createPopulationMap, {
+  sumCountsAcrossRiskLevels,
+} from "../utils/createPopulationMap";
 
-/**
- * These are the only genders that are apparent in the source data set,
- * not all of the genders we would like to represent.
- */
-const GENDER_LABELS_MAP = { FEMALE: "Women", MALE: "Men" };
-
-const createGenerateChartData = (filteredData, currentTenantId) => (mode) => {
-  const numeratorKey = "revocation_count";
-  const denominatorKey = getDenominatorKeyByMode(mode);
-  const genders = Object.keys(GENDER_LABELS_MAP);
-  const genderLabels = Object.values(GENDER_LABELS_MAP);
-
-  const { dataPoints, numerators, denominators } = pipe(
-    reduce(createRiskLevelsMap(numeratorKey, denominatorKey, "gender"), {}),
-    (data) =>
-      getCountsByRiskLevel(data, getRiskLevels(currentTenantId), genders)
-  )(filteredData);
-
-  const generateDataset = (label, index) => ({
-    label,
+export const generateDatasets = (dataPoints, denominators) => {
+  return Object.values(genderValueToLabel).map((genderLabel, index) => ({
+    label: genderLabel,
     backgroundColor: applyStatisticallySignificantShadingToDataset(
       CHART_COLORS[index],
       denominators
     ),
     data: dataPoints[index],
-  });
+  }));
+};
 
+const createGenerateChartData = ({ filteredData, statePopulationData }) => (
+  mode
+) => {
+  const genders = Object.keys(genderValueToLabel);
+  const { dataPoints, numerators, denominators } = pipe(
+    reduce(sumCountsAcrossRiskLevels("gender"), []),
+    reduce(createPopulationMap("gender"), {}),
+    (data) =>
+      getCounts(
+        data,
+        getStatePopulations(),
+        genders,
+        statePopulationData,
+        "gender"
+      )
+  )(filteredData);
+
+  const datasets = generateDatasets(dataPoints, denominators);
+  const datasetIndex = datasets.findIndex(
+    (d) => d.label === genderValueToLabel[mode]
+  );
   const data = {
-    labels: getRiskLevelLabels(currentTenantId),
-    datasets: genderLabels.map(generateDataset),
+    labels: getStatePopulationsLabels(),
+    datasets: [datasets[datasetIndex]],
   };
 
-  return { data, numerators, denominators };
+  return {
+    data,
+    numerators: numerators[datasetIndex],
+    denominators: denominators[datasetIndex],
+  };
 };
 
 export default createGenerateChartData;
