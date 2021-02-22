@@ -55,6 +55,9 @@ describe("BaseMetrics", () => {
 
     it("given no file names it returns an array with all files and extensions", () => {
       expect(metric.getFileNamesList()).toEqual([
+        "supervision_location_ids_to_names.json",
+        "state_race_ethnicity_population.json",
+        "state_gender_population.json",
         "supervision_location_restricted_access_emails.json",
         "revocations_matrix_by_month.txt",
         "revocations_matrix_cells.txt",
