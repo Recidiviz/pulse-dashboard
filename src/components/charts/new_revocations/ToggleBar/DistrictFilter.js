@@ -21,33 +21,33 @@ import { get } from "mobx";
 import map from "lodash/fp/map";
 
 import FilterField from "./FilterField";
-// import Select from "../../../controls/Select";
+import Select from "../../../controls/Select";
 import MultiSelect from "../../../controls/MultiSelect";
 import { useRootStore } from "../../../../StoreProvider";
 
 const allOption = { label: "All", value: "All" };
 
 const DistrictFilter = () => {
-  const { filters, filtersStore, tenantStore } = useRootStore();
-  // const { restrictedDistrict } = userStore;
+  const { filters, filtersStore, tenantStore, userStore } = useRootStore();
+  const { restrictedDistrict } = userStore;
 
   const getSelectElement = () => {
-    // if (restrictedDistrict) {
-    //   const singleValue = {
-    //     label: restrictedDistrict,
-    //     value: restrictedDistrict,
-    //   };
+    if (restrictedDistrict) {
+      const singleValue = {
+        label: restrictedDistrict,
+        value: restrictedDistrict,
+      };
 
-    //   return (
-    //     <Select
-    //       value={singleValue}
-    //       options={[singleValue]}
-    //       defaultValue={singleValue}
-    //       onChange={() => {}}
-    //       isDisabled
-    //     />
-    //   );
-    // }
+      return (
+        <Select
+          value={singleValue}
+          options={[singleValue]}
+          defaultValue={singleValue}
+          onChange={() => {}}
+          isDisabled
+        />
+      );
+    }
     const { districts, districtsIsLoading } = tenantStore;
     const options = [allDistrictsOption].concat(
       districts.map((d) => ({ value: d, label: d }))
@@ -55,28 +55,40 @@ const DistrictFilter = () => {
     const summingOption = allDistrictsOption;
     const defaultValue = [allDistrictsOption];
 
-    const onValueChange = (newOptions) => {
-      if (newOptions.some((item) => item.value === "All")) {
-        const filterAllDistricts = map("value", options);
-        filtersStore.setFilters({ [DISTRICT]: filterAllDistricts });
-      } else if (
-        newOptions.some(
-          (item) =>
-            options.filter((item2) => item2.value.includes(item.value)).length >
-            1
-        )
-      ) {
-        const filteredOptions = newOptions
-          .map((item) =>
-            options.filter((item2) => item2.value.includes(item.value))
-          )
-          .flat(1);
-        const filterEveryDistricts = map("value", filteredOptions);
-        filtersStore.setFilters({ [DISTRICT]: filterEveryDistricts });
-      } else {
-        const filteredDistricts = map("value", newOptions);
-        filtersStore.setFilters({ [DISTRICT]: filteredDistricts });
+    const onValueChanged = (newOptions) =>
+      filtersStore.setFilters({ [DISTRICT]: map("value", newOptions) });
+
+    const onValueChange = (newOptions, action) => {
+      const isHaveChildren = options.filter(
+        (option) =>
+          option.value.includes(action.option.value) &&
+          option.value !== action.option.value
+      );
+      if (action.action === "select-option") {
+        if (action.option.value === "All") {
+          return onValueChanged(options);
+        }
+
+        if (isHaveChildren.length > 1) {
+          return onValueChanged(newOptions.concat(isHaveChildren));
+        }
       }
+      if (action.action === "deselect-option") {
+        if (action.option.value === "All") {
+          return onValueChanged();
+        }
+        if (isHaveChildren.length > 1) {
+          return onValueChanged(
+            newOptions.filter(
+              (item) =>
+                !isHaveChildren.some(
+                  (children) => children.value === item.value
+                )
+            )
+          );
+        }
+      }
+      return onValueChanged(newOptions);
     };
 
   const selectedValues = options.filter((option) =>

@@ -45,9 +45,9 @@ const MultiSelect = ({
   }, [value]);
 
   const handleChange = useCallback(
-    (selectedOptions) => {
+    (selectedOptions, action) => {
       const newOptions = getNewOptions(options, summingOption, selectedOptions);
-      onChange(newOptions);
+      onChange(newOptions, action);
     },
     [onChange, options, summingOption]
   );
