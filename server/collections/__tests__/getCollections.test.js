@@ -17,10 +17,10 @@
 
 const { default: getCollections } = require("../resources/getCollections");
 const { COLLECTIONS } = require("../../constants/collections");
-const dimensionsByStateCode = require("../resources/dimensions");
+const dimensionsByStateCode = require("../resources/dimensionValues");
 
 describe("getCollections", () => {
-  describe("when a stateCode does not have a collection with dimensions", () => {
+  describe("when a stateCode does not have a collection with dimensions requiring validation", () => {
     it("does not include newRevocations collection", () => {
       const collections = getCollections("US_ND");
       expect(collections).not.toHaveProperty(COLLECTIONS.NEW_REVOCATION);
@@ -36,7 +36,7 @@ describe("getCollections", () => {
     });
   });
 
-  describe("when a stateCode has a collection with dimensions", () => {
+  describe("when a stateCode has a collection with dimensions requiring validation", () => {
     it("returns the collection with the correct dimension keys", () => {
       ["US_PA", "US_MO"].forEach((stateCode) => {
         const collections = getCollections(stateCode);

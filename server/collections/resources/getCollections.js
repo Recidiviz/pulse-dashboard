@@ -15,8 +15,8 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 const { COLLECTIONS } = require("../../constants/collections");
-const { removeAllValue } = require("./dimensions/shared");
-const dimensionsByStateCode = require("./dimensions");
+const { removeAllValue } = require("./dimensionValues/shared");
+const dimensionsByStateCode = require("./dimensionValues");
 
 function newRevocations(dimensions) {
   return {

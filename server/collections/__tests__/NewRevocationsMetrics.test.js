@@ -18,7 +18,7 @@
 const { default: NewRevocationsMetrics } = require("../NewRevocationsMetrics");
 const {
   DEFAULT_METRIC_PERIOD_MONTHS,
-} = require("../resources/dimensions/shared");
+} = require("../resources/dimensionValues/shared");
 const { COLLECTIONS } = require("../../constants/collections");
 
 describe("NewRevocationsMetrics", () => {

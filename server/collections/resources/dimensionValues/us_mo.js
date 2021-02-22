@@ -22,39 +22,50 @@ const {
   DEFAULT_RACE,
 } = require("./shared");
 
-const DEFAULT_SUPERVISION_LEVELS = [
+const DEFAULT_CHARGE_CATEGORIES = [
   "all",
-  "electronic_monitoring_only",
-  "enhanced",
+  "domestic_violence",
+  "general",
+  "serious_mental_illness",
+  "sex_offense",
   "external_unknown",
-  "maximum",
-  "medium",
-  "minimum",
-  "special",
 ];
+
+const DEFAULT_SUPERVISION_TYPES = [
+  "all",
+  "dual",
+  "parole",
+  "probation",
+  "external_unknown",
+];
+
+const DEFAULT_SUPERVISION_LEVELS = ["all"];
 
 const DEFAULT_VIOLATION_TYPES = [
   "absconded",
   "all",
   "elec_monitoring",
   "escaped",
+  "felony",
   "high_tech",
-  "law",
   "low_tech",
   "med_tech",
+  "misdemeanor",
   "municipal",
   "no_violation_type",
   "substance_abuse",
   "technical",
 ];
 
-const DEFAULT_SUPERVISION_TYPES = ["all"];
+const DEFAULT_RISK_LEVEL = [
+  "high",
+  "low",
+  "medium",
+  "not_assessed",
+  "very_high",
+];
 
-const DEFAULT_CHARGE_CATEGORIES = ["all"];
-
-const DEFAULT_RISK_LEVEL = ["high", "low", "medium", "not_assessed"];
-
-const US_PA_DIMENSIONS = {
+const US_MO_DIMENSION_VALUES = {
   charge_category: DEFAULT_CHARGE_CATEGORIES,
   gender: DEFAULT_GENDERS,
   metric_period_months: DEFAULT_METRIC_PERIOD_MONTHS,
@@ -67,4 +78,4 @@ const US_PA_DIMENSIONS = {
   violation_type: DEFAULT_VIOLATION_TYPES,
 };
 
-module.exports = { US_PA_DIMENSIONS };
+module.exports = { US_MO_DIMENSION_VALUES };
