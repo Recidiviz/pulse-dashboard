@@ -44,12 +44,8 @@ const DEFAULT_SUPERVISION_LEVELS = ["all"];
 const DEFAULT_VIOLATION_TYPES = [
   "absconded",
   "all",
-  "elec_monitoring",
   "escaped",
   "felony",
-  "high_tech",
-  "low_tech",
-  "med_tech",
   "misdemeanor",
   "municipal",
   "no_violation_type",

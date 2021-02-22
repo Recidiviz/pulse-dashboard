@@ -37,15 +37,12 @@ const DEFAULT_VIOLATION_TYPES = [
   "absconded",
   "all",
   "elec_monitoring",
-  "escaped",
   "high_tech",
   "law",
   "low_tech",
   "med_tech",
-  "municipal",
   "no_violation_type",
   "substance_abuse",
-  "technical",
 ];
 
 const DEFAULT_SUPERVISION_TYPES = ["all"];
