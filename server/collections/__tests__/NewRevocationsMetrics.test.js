@@ -17,9 +17,9 @@
 
 const { default: NewRevocationsMetrics } = require("../NewRevocationsMetrics");
 const {
-  COLLECTIONS,
   DEFAULT_METRIC_PERIOD_MONTHS,
-} = require("../resources/shared");
+} = require("../resources/dimensions/shared");
+const { COLLECTIONS } = require("../../constants/collections");
 
 describe("NewRevocationsMetrics", () => {
   const stateCode = "US_MO";

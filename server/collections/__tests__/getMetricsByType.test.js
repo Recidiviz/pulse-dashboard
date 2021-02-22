@@ -18,7 +18,7 @@
 const { default: getMetricsByType } = require("../getMetricsByType");
 const { default: NewRevocationsMetrics } = require("../NewRevocationsMetrics");
 const { default: BaseMetrics } = require("../BaseMetrics");
-const { COLLECTIONS } = require("../resources/shared");
+const { COLLECTIONS } = require("../../constants/collections");
 
 describe("getMetricsByType", () => {
   test.each([
