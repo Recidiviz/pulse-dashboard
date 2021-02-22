@@ -15,90 +15,118 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import cn from "classnames";
-import { useLocation, matchPath } from "react-router-dom";
+import Select from "react-select";
+import { useLocation, useHistory } from "react-router-dom";
 
-import SideBarHeader from "../sidebar/SideBarHeader";
-import SideBarMenu from "../sidebar/SideBarMenu";
-import SideBarGroup from "../sidebar/SideBarGroup";
-import SideBarLink from "../sidebar/SideBarLink";
-import SideBarFeedback from "../sidebar/SideBarFeedback";
 import TopBar from "../topbar/TopBar";
-import TopBarHamburgerMenu from "../topbar/TopBarHamburgerMenu";
-import TopBarTitle from "../topbar/TopBarTitle";
 import TopBarUserMenuForAuthenticatedUser from "../topbar/TopBarUserMenuForAuthenticatedUser";
 import Footer from "../Footer";
-import useSideBar from "../../hooks/useSideBar";
 
 import "./CoreLayout.scss";
 
+const selectOptions = [
+  {
+    value: "Community",
+    label: "Community",
+    defaultPath: "/community",
+    pages: {
+      goals: "goals",
+      explore: "explore",
+    },
+  },
+  {
+    value: "Facilities",
+    label: "Facilities",
+    defaultPath: "/facilities",
+    pages: {
+      goals: "goals",
+      explore: "explore",
+    },
+  },
+  {
+    value: "Programming",
+    label: "Programming",
+    defaultPath: "/programming",
+    pages: {
+      explore: "explore",
+    },
+  },
+];
+
 const CoreLayout = ({ children }) => {
-  const { isSideBarCollapsed, toggleSideBar } = useSideBar();
+  const history = useHistory();
   const { pathname } = useLocation();
-  const onProfilePage = !!matchPath(pathname, {
-    path: "/profile",
-    exact: true,
-  });
-  const classNames = cn({
-    "is-collapsed": isSideBarCollapsed,
-    "is-hidden": onProfilePage,
-  });
+  const getSelectedOption = selectOptions.find((item) =>
+    pathname.includes(item.value.toLowerCase())
+  );
+  const [activeOption, setActiveOption] = useState(getSelectedOption);
+
+  const routeOnClick = useCallback(
+    (path) => {
+      history.push(path);
+    },
+    [history]
+  );
+
+  useEffect(() => {
+    setActiveOption(getSelectedOption);
+  }, [getSelectedOption, pathname]);
+
+  const capitalizeFirstLetter = (string) =>
+    string.charAt(0).toUpperCase() + string.slice(1);
 
   return (
-    <div id="app" className={classNames}>
-      <div className="sidebar">
-        <div className="sidebar-inner">
-          <SideBarHeader toggleSideBar={toggleSideBar} />
-          <SideBarMenu>
-            <SideBarGroup
-              key="Community"
-              name="Community"
-              url="/community"
-              icon={<i className="c-blue-500 ti-dashboard" />}
-            >
-              <SideBarLink name="Goals" url="/community/goals" />
-              <SideBarLink name="Explore" url="/community/explore" />
-            </SideBarGroup>
-            <SideBarGroup
-              key="Facilities"
-              name="Facilities"
-              url="/facilities"
-              icon={<i className="c-red-500 ti-reload" />}
-            >
-              <SideBarLink name="Goals" url="/facilities/goals" />
-              <SideBarLink name="Explore" url="/facilities/explore" />
-            </SideBarGroup>
-            <SideBarGroup
-              key="Programming"
-              name="Programming"
-              url="/programming"
-              icon={<i className="c-green-500 ti-location-arrow" />}
-            >
-              <SideBarLink name="Explore" url="/programming/explore" />
-            </SideBarGroup>
-            <SideBarFeedback />
-          </SideBarMenu>
+    <div id="app">
+      <TopBar>
+        <div className="CoreHeader">
+          <ul className="nav-left">
+            <div className="select-wrapper">
+              <Select
+                value={activeOption}
+                isClearable={false}
+                isSearchable={false}
+                onChange={(newOption) =>
+                  routeOnClick(
+                    `${newOption.defaultPath}/${
+                      Object.values(newOption.pages)[0]
+                    }`
+                  )
+                }
+                options={selectOptions}
+              />
+            </div>
+          </ul>
+          <ul className="nav-right">
+            <ul className="page-toggle">
+              {Object.keys(activeOption.pages).map((option) => {
+                const key = activeOption.defaultPath + option;
+                const pagePath = `${activeOption.defaultPath}/${option}`;
+                return (
+                  <li key={key}>
+                    <input
+                      type="checkbox"
+                      className="visually-hidden"
+                      id={key}
+                      name="page"
+                      checked={pathname === pagePath}
+                      onClick={() => routeOnClick(pagePath)}
+                    />
+                    <label className="page-label" htmlFor={key}>
+                      {capitalizeFirstLetter(activeOption.pages[option])}
+                    </label>
+                  </li>
+                );
+              })}
+            </ul>
+            <TopBarUserMenuForAuthenticatedUser />
+          </ul>
         </div>
-      </div>
+      </TopBar>
+      {children}
 
-      <div className="page-container">
-        <TopBar>
-          <div className="CoreHeader">
-            <ul className="nav-left">
-              <TopBarHamburgerMenu onClick={toggleSideBar} />
-              <TopBarTitle pathname={pathname} />
-            </ul>
-            <ul className="nav-right">
-              <TopBarUserMenuForAuthenticatedUser />
-            </ul>
-          </div>
-        </TopBar>
-        {children}
-
-        <Footer />
-      </div>
+      <Footer />
     </div>
   );
 };

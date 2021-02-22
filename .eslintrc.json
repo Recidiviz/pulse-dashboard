@@ -73,10 +73,18 @@
             }
           }
         ],
+        "jsx-a11y/label-has-for": [
+          "error",
+          {
+            "required": {
+              "some": ["nesting", "id"]
+            }
+          }
+        ],
         "radix": "off",
         "no-console": ["error", { "allow": ["warn", "error"] }],
         "import/prefer-default-export": "off",
-    
+
         // don't require extensions for typescript modules
         "import/extensions": [
           "error",
