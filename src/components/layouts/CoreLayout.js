@@ -32,6 +32,8 @@ import TopBarUserMenuForAuthenticatedUser from "../topbar/TopBarUserMenuForAuthe
 import Footer from "../Footer";
 import useSideBar from "../../hooks/useSideBar";
 
+import "./CoreLayout.scss";
+
 const CoreLayout = ({ children }) => {
   const { isSideBarCollapsed, toggleSideBar } = useSideBar();
   const { pathname } = useLocation();
@@ -83,15 +85,16 @@ const CoreLayout = ({ children }) => {
 
       <div className="page-container">
         <TopBar>
-          <ul className="nav-left">
-            <TopBarHamburgerMenu onClick={toggleSideBar} />
-            <TopBarTitle pathname={pathname} />
-          </ul>
-          <ul className="nav-right">
-            <TopBarUserMenuForAuthenticatedUser />
-          </ul>
+          <div className="CoreHeader">
+            <ul className="nav-left">
+              <TopBarHamburgerMenu onClick={toggleSideBar} />
+              <TopBarTitle pathname={pathname} />
+            </ul>
+            <ul className="nav-right">
+              <TopBarUserMenuForAuthenticatedUser />
+            </ul>
+          </div>
         </TopBar>
-
         {children}
 
         <Footer />
