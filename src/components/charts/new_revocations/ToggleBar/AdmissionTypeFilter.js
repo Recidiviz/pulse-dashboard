@@ -50,6 +50,7 @@ const AdmissionTypeFilter = () => {
         onChange={onValueChange}
         summingOption={summingOption}
         defaultValue={defaultOption}
+        isSearchable
       />
     </FilterField>
   );

@@ -17,12 +17,14 @@
 import React from "react";
 import PropTypes from "prop-types";
 import cn from "classnames";
+import { components } from "react-select";
 import { optionPropType } from "../../propTypes";
 
 const GroupHeading = ({
   children: label,
   selectProps: { options, value: previousOptions },
   onChange,
+  ...props
 }) => {
   const groupOptions = options.find((o) => o.label === label).options;
 
@@ -56,7 +58,12 @@ const GroupHeading = ({
   });
 
   return (
-    <div className="MultiSelect__group-heading">
+    <components.GroupHeading
+      className="MultiSelect__group-heading"
+      isSelected={allOptionsSelected}
+      onClick={onClick}
+      {...props}
+    >
       <label className="MultiSelect__checkbox-container">
         {label}
         <input
@@ -69,7 +76,7 @@ const GroupHeading = ({
         />
         <span className={checkboxClassNames} />
       </label>
-    </div>
+    </components.GroupHeading>
   );
 };
 
