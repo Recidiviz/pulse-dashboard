@@ -64,6 +64,7 @@ const GroupHeading = ({
           type="checkbox"
           checked={allOptionsSelected}
           onClick={onClick}
+          onChange={onClick}
           onKeyDown={onClick}
         />
         <span className={checkboxClassNames} />
