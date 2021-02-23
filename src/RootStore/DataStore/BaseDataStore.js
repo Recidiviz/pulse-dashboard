@@ -119,7 +119,7 @@ export default class BaseDataStore {
       }
     );
 
-    // TODO: Remove once districts store can stand on its own
+    // TODO #798: Remove once districts store can stand on its own
     reaction(
       () =>
         !this.isLoading &&

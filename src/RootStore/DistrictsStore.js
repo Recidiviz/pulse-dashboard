@@ -114,7 +114,7 @@ export default class DistrictsStore {
     };
   }
 
-  // TODO: Remove the filtered districts when backend has the filtered supervision locations
+  // TODO #798: Remove the filtered districts when backend has the filtered supervision locations
   setFilteredDistricts(apiData) {
     if (apiData && this.apiData.data) {
       const { districtFilterByKey, districtValueKey } = this.tenantMappings;
