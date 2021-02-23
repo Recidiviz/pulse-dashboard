@@ -22,7 +22,6 @@ import { observer } from "mobx-react-lite";
 import RevocationsByDimension from "../RevocationsByDimension";
 import createGenerateChartData from "./createGenerateChartData";
 import BarChartWithLabels from "../BarCharts";
-import { translate } from "../../../../views/tenants/utils/i18nSettings";
 import { useRootStore } from "../../../../StoreProvider";
 import { VIOLATION_TYPE } from "../../../../constants/filterTypes";
 import { COLORS } from "../../../../assets/scripts/constants/colors";
@@ -60,7 +59,7 @@ const RevocationsByViolation = observer(
     return (
       <RevocationsByDimension
         ref={ref}
-        chartId={`${translate("revocations")}ByViolationType`}
+        chartId="admissionsByViolationType"
         dataStore={revocationsChartStore}
         containerHeight={containerHeight}
         renderChart={({ chartId, data, denominators, numerators }) => (

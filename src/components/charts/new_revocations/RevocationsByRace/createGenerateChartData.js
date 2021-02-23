@@ -26,7 +26,7 @@ import getCounts from "../utils/getCounts";
 import createPopulationMap, {
   sumCountsAcrossRiskLevels,
 } from "../utils/createPopulationMap";
-import { translate } from "../../../../views/tenants/utils/i18nSettings";
+import { translate } from "../../../../utils/i18nSettings";
 import { COLORS_LANTERN_SET } from "../../../../assets/scripts/constants/colors";
 import { applyStatisticallySignificantShadingToDataset } from "../../../../utils/charts/significantStatistics";
 

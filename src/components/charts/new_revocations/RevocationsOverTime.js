@@ -38,7 +38,7 @@ import {
 import { sortFilterAndSupplementMostRecentMonths } from "../../../utils/transforms/datasets";
 import { monthNamesAllWithYearsFromNumbers } from "../../../utils/transforms/months";
 import { generateTrendlineDataset } from "../../../utils/charts/trendline";
-import { translate } from "../../../views/tenants/utils/i18nSettings";
+import { translate } from "../../../utils/i18nSettings";
 import { useRootStore } from "../../../StoreProvider";
 import { METRIC_PERIOD_MONTHS } from "../../../constants/filterTypes";
 
@@ -182,7 +182,7 @@ const RevocationsOverTime = () => {
           get(filters, METRIC_PERIOD_MONTHS)
         )}
         labels={chartLabels}
-        chartId={`${translate("revocations")}OverTime`}
+        chartId="admissionsOverTime"
         datasets={datasets}
         metricTitle={translate("revocationsOverTimeXAxis")}
         chart={chart}

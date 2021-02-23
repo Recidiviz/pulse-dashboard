@@ -90,4 +90,8 @@ export default class RootStore {
   get restrictedDistrict() {
     return this.userStore.restrictedDistrict;
   }
+
+  get methodology() {
+    return this.tenantStore.methodology;
+  }
 }
