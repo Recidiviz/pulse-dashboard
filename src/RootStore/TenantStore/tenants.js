@@ -28,7 +28,7 @@ const tenantMappings = {
   },
   districtLabelKey: {
     [US_MO]: "level_1_supervision_location_external_id",
-    [US_PA]: "level_2_supervision_location_external_id",
+    [US_PA]: "level_2_supervision_location_name",
   },
   districtFilterKey: {
     [US_MO]: "levelOneSupervisionLocation",
