@@ -120,9 +120,11 @@ export default class FiltersStore {
   }
 
   get districts() {
-    const { apiData } = this.rootStore.districtsStore;
-    if (!apiData || !apiData.data) return [];
-    return uniqBy(apiData.data, this.districtKeys.valueKey)
+    // TODO: Use apiData.data from districts store when supervision locations are
+    // filtered on the backend
+    const { filteredDistricts } = this.rootStore.districtsStore;
+    if (!filteredDistricts) return [];
+    return uniqBy(filteredDistricts, this.districtKeys.valueKey)
       .map((d) => ({
         value: d[this.districtKeys.valueKey],
         label: d[this.districtKeys.labelKey],

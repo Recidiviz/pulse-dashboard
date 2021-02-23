@@ -167,6 +167,8 @@ describe("FiltersStore", () => {
       it("sets the district filter options to sorted unique values", () => {
         runInAction(() => {
           rootStore.districtsStore.apiData = { data: mockDistricts };
+          // TODO: Remove the filteredDistricts when supervision locations are filtered on backend
+          rootStore.districtsStore.filteredDistricts = mockDistricts;
           rootStore.districtsStore.isLoading = false;
           rootStore.tenantStore.currentTenantId = "US_PA";
         });
@@ -181,6 +183,8 @@ describe("FiltersStore", () => {
       it("uses the district keys defined for the tenant", () => {
         runInAction(() => {
           rootStore.districtsStore.apiData = { data: mockDistricts };
+          // TODO: Remove the filteredDistricts when supervision locations are filtered on backend
+          rootStore.districtsStore.filteredDistricts = mockDistricts;
           rootStore.districtsStore.isLoading = false;
           rootStore.tenantStore.currentTenantId = "US_MO";
         });

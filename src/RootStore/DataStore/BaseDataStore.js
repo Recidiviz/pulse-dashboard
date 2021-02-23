@@ -200,6 +200,15 @@ export default class BaseDataStore {
         this.file,
         this.eagerExpand
       );
+      // TODO: Remove this when supervision locations are filtered on the backend
+      if (this.file === "revocations_matrix_by_month") {
+        const expandedData = parseResponseByFileFormat(
+          responseData,
+          this.file,
+          true
+        );
+        this.rootStore.districtsStore.setFilteredDistricts(expandedData.data);
+      }
       this.isLoading = false;
       this.isError = false;
     } catch (error) {
