@@ -24,7 +24,6 @@ import getLabelByMode from "../utils/getLabelByMode";
 import createGenerateChartData from "./createGenerateChartData";
 import RevocationsByDimension from "../RevocationsByDimension";
 import BarChartWithLabels from "../BarCharts";
-import { translate } from "../../../../views/tenants/utils/i18nSettings";
 import { useDataStore } from "../../../../StoreProvider";
 
 const CHART_TITLE = "Admissions by risk level";
@@ -37,7 +36,7 @@ const RevocationsByRiskLevel = observer(
     return (
       <RevocationsByDimension
         ref={ref}
-        chartId={`${translate("revocations")}ByRiskLevel`}
+        chartId="admissionsByRiskLevel"
         dataStore={revocationsChartStore}
         containerHeight={containerHeight}
         renderChart={({ chartId, data, denominators, numerators, mode }) => (
