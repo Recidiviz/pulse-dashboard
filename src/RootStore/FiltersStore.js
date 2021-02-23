@@ -131,7 +131,7 @@ export default class FiltersStore {
         value: d[this.districtKeys.valueKey],
         label: d[this.districtKeys.labelKey],
       }))
-      .sort(compareStrings("value"));
+      .sort(compareStrings("label"));
   }
 
   setFilters(updatedFilters) {
