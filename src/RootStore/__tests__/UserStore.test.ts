@@ -65,7 +65,7 @@ beforeEach(() => {
       },
       districtsStore: {
         isLoading: false,
-        districts: [userDistrict],
+        districtIds: [userDistrict],
       },
     };
   });
@@ -333,7 +333,7 @@ describe("fetchRestrictedDistrictData", () => {
           },
           districtsStore: {
             isLoading: true,
-            districts: null,
+            districtIds: null,
           },
         };
       });
@@ -367,7 +367,7 @@ describe("fetchRestrictedDistrictData", () => {
           },
           districtsStore: {
             isLoading: true,
-            districts: null,
+            districtIds: null,
           },
         };
       });
@@ -445,7 +445,7 @@ describe("fetchRestrictedDistrictData", () => {
           },
           districtsStore: {
             isLoading: false,
-            districts: [userDistrict],
+            districtIds: [userDistrict],
           },
         };
       });
