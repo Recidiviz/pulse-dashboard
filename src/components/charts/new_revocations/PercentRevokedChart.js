@@ -82,6 +82,7 @@ const PercentRevokedChart = ({
         callbacks: {
           label: (tooltipItem, tooltipData) =>
             tooltipForRateMetricWithCounts(
+              chartId,
               tooltipItem,
               tooltipData,
               numerators,
