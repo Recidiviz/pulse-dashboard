@@ -25,13 +25,13 @@ describe("transformChartDataToCsv", () => {
         data: [1, 2, 6, 8],
       },
     ];
-    const labels = ["Low", "Medium", "High", "Not assessed"];
+    const labels = ["Low", "Medium", "High", "No Score"];
 
     it("standard case", async () => {
       expect(
         await transformChartDataToCsv(datasets, labels, exportLabel)
       ).toEqual(
-        `Export Label,Revocations\nLow,1\nMedium,2\nHigh,6\nNot assessed,8`
+        `Export Label,Revocations\nLow,1\nMedium,2\nHigh,6\nNo Score,8`
       );
     });
 
@@ -48,7 +48,7 @@ describe("transformChartDataToCsv", () => {
           exportLabel
         )
       ).toEqual(
-        `Export Label,Revocations\nLow,1\nMedium,2\nHigh,6\nNot assessed,8`
+        `Export Label,Revocations\nLow,1\nMedium,2\nHigh,6\nNo Score,8`
       );
     });
   });

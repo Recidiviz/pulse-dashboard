@@ -47,7 +47,7 @@ of that column.`,
   methodology: US_PA_METHODOLOGY,
   riskLevelsMap: {
     OVERALL: "Overall",
-    NOT_ASSESSED: "Not Assessed",
+    NOT_ASSESSED: "No Score",
     LOW: "Low Risk",
     MEDIUM: "Medium Risk",
     HIGH: "High Risk",

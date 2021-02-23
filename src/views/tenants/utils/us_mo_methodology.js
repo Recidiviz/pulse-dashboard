@@ -136,7 +136,7 @@ population in District 2.`,
     {
       id: 1,
       header: "What this chart shows",
-      body: `When no violation history filters are selected in the "Admissions by violation history" plot, this chart shows the percentage of people who were revoked in each risk level group. This is calculated as the number of people of each risk level who were revoked divided by the total number of people on supervision at that risk level. Risk level is based only on the Community Supervision Screening Tool and/or the Community Supervision Tool (if relevant) and no other assessment (i.e., Prison Intake Tool). Those without Community Supervision Screening Tool/Community Supervision Tool scores are counted in the Unassessed category. When hovering a mouse over any risk column, users can see the total number of people on supervision assessed at that specific risk level as the denominator and the total number of people revoked at that risk level as the numerator. `,
+      body: `When no violation history filters are selected in the "Admissions by violation history" plot, this chart shows the percentage of people who were revoked in each risk level group. This is calculated as the number of people of each risk level who were revoked divided by the total number of people on supervision at that risk level. Risk level is based only on the Community Supervision Screening Tool and/or the Community Supervision Tool (if relevant) and no other assessment (i.e., Prison Intake Tool). Those without Community Supervision Screening Tool/Community Supervision Tool scores are counted in the No Score category. When hovering a mouse over any risk column, users can see the total number of people on supervision assessed at that specific risk level as the denominator and the total number of people revoked at that risk level as the numerator. `,
     },
     {
       id: 2,
@@ -249,7 +249,7 @@ active supervision period at any point within the two years prior to the revocat
       body: `Risk level is defined based only on the Community Supervision Screening Tool and/or
 the Community Supervision Tool (if relevant) and no other assessment (i.e., Prison Intake Tool).
 Those without Community Supervision Screening Tool/Community Supervision Tool scores are counted
-in the Unassessed category.`,
+in the No Score category.`,
     },
     {
       id: 5,
