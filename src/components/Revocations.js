@@ -99,7 +99,7 @@ const Revocations = () => {
 
       <div className="bgc-white p-20 m-20">
         <ErrorBoundary>
-          <RevocationsOverTime />
+          <RevocationsOverTime timeDescription={timeDescription} />
         </ErrorBoundary>
       </div>
       <div className="d-f m-20 container-all-charts">
@@ -115,7 +115,7 @@ const Revocations = () => {
       </ErrorBoundary>
       <div className="bgc-white m-20 p-20">
         <ErrorBoundary>
-          <CaseTable />
+          <CaseTable timeDescription={timeDescription} />
         </ErrorBoundary>
       </div>
     </main>
