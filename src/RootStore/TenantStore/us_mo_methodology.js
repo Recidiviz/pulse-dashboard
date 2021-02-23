@@ -132,7 +132,7 @@ population in District 2.`,
       body: `If the user has filtered the page by clicking on a specific violation type (i.e., low technical) or bubble (i.e., low technical and 3 violation reports) within the "Admissions by violation history" plot, this chart will show the percentage of people admitted with the selected violation history among those with a similar violation history within each district. For example, if the user selected the low technical row on the plot, the chart would show: For each district, the number of people admitted whose most serious violation was a low technical, divided by the total number of people on supervision whose most serious violation was a low technical, regardless of whether they were admitted. Continuing with this example, if a user hovers their mouse over the district column, the numerator would be all people admitted for a low technical violation in that district and the denominator would be all people who committed a low technical violation, whether or not they were admitted to a DOC facility. Comparing these percentages will indicate whether admission practices differ by district for various violation histories. That is, whether people with similar violation histories are admitted more frequently in one district than another. For people who have not been admitted, the most serious violation is identified by considering all violations reported within one year from either the current date (if the person is still on supervision) or the date that the person was discharged from supervision.`,
     },
   ],
-  revocationsByRiskLevel: [
+  admissionsByRiskLevel: [
     {
       id: 1,
       header: "What this chart shows",
