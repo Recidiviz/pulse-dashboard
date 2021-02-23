@@ -16,6 +16,7 @@
 // =============================================================================
 import React from "react";
 import PropTypes from "prop-types";
+import cn from "classnames";
 import { optionPropType } from "../../propTypes";
 
 const GroupHeading = ({
@@ -28,10 +29,11 @@ const GroupHeading = ({
   const getIsOptionSelected = (option) =>
     previousOptions.some(({ value }) => value === option.value);
 
-  const isAllOptionsSelected = groupOptions.every(getIsOptionSelected);
+  const anyOptionSelected = groupOptions.some(getIsOptionSelected);
+  const allOptionsSelected = groupOptions.every(getIsOptionSelected);
 
   const onClick = () => {
-    if (isAllOptionsSelected) {
+    if (allOptionsSelected) {
       const newOptions = previousOptions.filter(
         (previousOption) =>
           !groupOptions.some(({ value }) => value === previousOption.value)
@@ -47,6 +49,12 @@ const GroupHeading = ({
     }
   };
 
+  const checkboxClassNames = cn("MultiSelect__checkbox__group-heading", {
+    "MultiSelect__checkbox__group-heading--all": allOptionsSelected,
+    "MultiSelect__checkbox__group-heading--partial":
+      anyOptionSelected && !allOptionsSelected,
+  });
+
   return (
     <div className="MultiSelect__group-heading">
       <label className="MultiSelect__checkbox-container">
@@ -54,12 +62,11 @@ const GroupHeading = ({
         <input
           className="MultiSelect__checkbox-input"
           type="checkbox"
-          checked={isAllOptionsSelected}
+          checked={allOptionsSelected}
           onClick={onClick}
           onKeyDown={onClick}
-          disabled
         />
-        <span className="MultiSelect__checkbox" />
+        <span className={checkboxClassNames} />
       </label>
     </div>
   );
