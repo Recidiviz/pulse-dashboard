@@ -26,6 +26,10 @@ const tenantMappings = {
     [US_MO]: "level_1_supervision_location",
     [US_PA]: "level_2_supervision_location",
   },
+  districtSecondaryFilterByKey: {
+    [US_MO]: "level_2_supervision_location",
+    [US_PA]: "level_1_supervision_location",
+  },
   districtValueKey: {
     [US_MO]: "level_1_supervision_location_external_id",
     [US_PA]: "level_2_supervision_location_external_id",

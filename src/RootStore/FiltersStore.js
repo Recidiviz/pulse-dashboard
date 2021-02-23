@@ -108,6 +108,7 @@ export default class FiltersStore {
       labelKey: tenantMappings.districtLabelKey,
       filterKey: tenantMappings.districtFilterKey,
       filterByKey: tenantMappings.districtFilterByKey,
+      secondaryFilterByKey: tenantMappings.districtSecondaryFilterByKey,
     };
   }
 

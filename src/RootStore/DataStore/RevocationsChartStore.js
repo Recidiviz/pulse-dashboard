@@ -110,12 +110,13 @@ export default class RevocationsChartStore extends BaseDataStore {
   get transformedData() {
     const { districtIdToLabel } = this.rootStore.districtsStore;
     const {
-      districtKeys: { filterByKey },
+      districtKeys: { filterByKey, secondaryFilterByKey },
     } = this.rootStore.filtersStore;
     return this.filteredData.map((data) => {
       return {
         ...data,
-        district: districtIdToLabel[data[filterByKey]],
+        districtPrimary: districtIdToLabel[data[filterByKey]],
+        districtSecondary: districtIdToLabel[data[secondaryFilterByKey]],
       };
     });
   }
