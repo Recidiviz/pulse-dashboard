@@ -1,5 +1,21 @@
+// Recidiviz - a data platform for criminal justice reform
+// Copyright (C) 2021 Recidiviz, Inc.
+//
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <https://www.gnu.org/licenses/>.
+// =============================================================================
+
 import createMethodologyFile from "../createMethodologyFile";
-import { translate } from "../../../views/tenants/utils/i18nSettings";
 import getFilters from "../getFilters";
 import getViolation from "../getViolation";
 
@@ -13,22 +29,19 @@ describe("createMethodologyFile functions", () => {
   const mockFilters = {};
   const mockMethodologyHeader = "methodology header";
   const mockMethodologyBody = "methodology body";
-  const mockTranslations = {
-    methodology: {
-      [mockChartId]: [
-        {
-          header: mockMethodologyHeader,
-          body: mockMethodologyBody,
-        },
-      ],
-    },
+  const methodology = {
+    [mockChartId]: [
+      {
+        header: mockMethodologyHeader,
+        body: mockMethodologyBody,
+      },
+    ],
   };
   const mockFiltersText = "some filters text";
   const mockViolationText = "some violation text";
 
   const nowSpy = jest.spyOn(Date, "now");
   nowSpy.mockReturnValue(1605866733144);
-  translate.mockImplementation((t) => mockTranslations[t]);
   getFilters.mockReturnValue(mockFiltersText);
   getViolation.mockReturnValue(mockViolationText);
 
@@ -37,7 +50,8 @@ describe("createMethodologyFile functions", () => {
       mockChartId,
       mockChartTitle,
       mockTimeWindowDescription,
-      mockFilters
+      mockFilters,
+      methodology
     );
 
     expect(actual.data).toBe(

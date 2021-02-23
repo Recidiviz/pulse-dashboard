@@ -20,8 +20,8 @@ import { render } from "@testing-library/react";
 
 import App from "../App";
 import { METADATA_NAMESPACE } from "../constants";
-import { US_ND } from "../views/tenants/utils/coreTenants";
-import { US_MO, US_PA } from "../views/tenants/utils/lanternTenants";
+import { US_ND } from "../RootStore/TenantStore/coreTenants";
+import { US_MO, US_PA } from "../RootStore/TenantStore/lanternTenants";
 
 import mockWithTestId from "../../__helpers__/mockWithTestId";
 import Revocations from "../components/Revocations";

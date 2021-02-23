@@ -27,7 +27,7 @@ import {
   LEVEL_1_SUPERVISION_LOCATION,
   LEVEL_2_SUPERVISION_LOCATION,
 } from "../../../constants/filterTypes";
-import { US_MO, US_PA } from "../utils/lanternTenants";
+import { US_MO, US_PA } from "../../../RootStore/TenantStore/lanternTenants";
 
 const METRIC_PERIODS = {
   options: [

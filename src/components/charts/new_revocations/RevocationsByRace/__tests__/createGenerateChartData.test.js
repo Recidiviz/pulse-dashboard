@@ -16,7 +16,7 @@
 // =============================================================================
 
 import { setTranslateLocale } from "../../../../../views/tenants/utils/i18nSettings";
-import * as lanternTenant from "../../../../../views/tenants/utils/lanternTenants";
+import * as lanternTenant from "../../../../../RootStore/TenantStore/lanternTenants";
 import { generateDatasets } from "../createGenerateChartData";
 
 describe("generateDatasets", () => {

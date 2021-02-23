@@ -18,72 +18,68 @@
 // Note: Each time you add a translation you will need to restart your dev
 // server before you will see the translation rendered properly
 
-import { US_MO_METHODOLOGY } from "./us_mo_methodology";
-
 export default {
-  officer: "officer",
-  Officer: "Officer",
-  gender: "gender",
-  Gender: "Gender",
-  violationReports: "violation reports and notices of citation",
-  revocationsOverTimeXAxis: "Number of admissions per month",
-  revoked: "revoked",
-  Revocation: "Revocation",
-  revocations: "revocations",
-  revocation: "revocation",
-  Revocations: "Revocations",
-  percentOfPopulationRevoked: "Percent of standing population revoked",
-  matrixExplanationP1: `This chart plots all people who were revoked to prison
-during the selected time period, according to their most serious violation
-and the total number of violation reports and notices of citation that
-were filed within one year prior to the last reported violation before
-the person was revoked. (See methodology for more details.)`,
+  officer: "agent",
+  Officer: "Agent",
+  gender: "sex",
+  Gender: "Sex",
+  violationReports: "violation reports",
+  revocationsOverTimeXAxis: "Number of SCI admissions from parole",
+  revoked: "admitted",
+  Revocation: "Admission",
+  Revocations: "Admissions",
+  revocation: "admission",
+  revocations: "admissions",
+  percentOfPopulationRevoked: "Admission rate of standing population",
+  matrixExplanationP1: `This chart plots all people who were admitted to SCIs
+from parole during the selected time period, according to their most serious
+violation and the total number of violation reports that were filed within
+one year prior to the last reported violation before the person was admitted.
+(See “Additional Info” for more details.)`,
   matrixExplanationP2: `The numbers inside the bubbles represent the number of
-people who were revoked, whose most serious violation matches the violation at
+people who were admitted, whose most serious violation matches the violation at
 the head of that row, and who have the number of prior violations at the head
 of that column.`,
-  Technical: "Technical",
-  lastRecommendation: "Last Rec. (Incl. Supplementals)",
-  methodology: US_MO_METHODOLOGY,
+  Technical: "Low tech.",
+  lastRecommendation: "Last recommendation",
   riskLevelsMap: {
     OVERALL: "Overall",
     NOT_ASSESSED: "No Score",
     LOW: "Low Risk",
-    MEDIUM: "Moderate Risk",
+    MEDIUM: "Medium Risk",
     HIGH: "High Risk",
-    VERY_HIGH: "Very High Risk",
   },
   populationChartAttributes: {
     REVOKED: "Admitted Population",
     SUPERVISION_POPULATION: "Supervision Population",
-    STATE_POPULATION: "Missouri Population",
+    STATE_POPULATION: "Pennsylvania Population",
   },
   raceLabelMap: {
-    WHITE: "Caucasian",
-    BLACK: "African American",
+    WHITE: "White",
+    BLACK: "Black",
     HISPANIC: "Hispanic",
     ASIAN: "Asian",
     AMERICAN_INDIAN_ALASKAN_NATIVE: "Native American",
   },
   violationTypes: [
-    "TECHNICAL",
+    "LOW_TECH",
+    "MED_TECH",
+    "ELEC_MONITORING",
     "SUBSTANCE_ABUSE",
-    "MUNICIPAL",
     "ABSCONDED",
-    "MISDEMEANOR",
-    "FELONY",
+    "HIGH_TECH",
+    "LAW",
   ],
   violationsBySeverity: [
-    "fel",
-    "misd",
-    "law_cit",
-    "esc",
+    "law",
+    "high_tech",
     "absc",
-    "muni",
     "subs",
-    "tech",
+    "em",
+    "med_tech",
+    "low_tech",
   ],
-  supervisionLocationValueKey: "level_1_supervision_location_external_id",
-  supervisionLocationLabelKey: "level_1_supervision_location_external_id",
-  supervisionLocationFilterKey: "levelOneSupervisionLocation",
+  supervisionLocationValueKey: "level_2_supervision_location_external_id",
+  supervisionLocationLabelKey: "level_2_supervision_location_external_id",
+  supervisionLocationFilterKey: "levelTwoSupervisionLocation",
 };

@@ -40,8 +40,8 @@ import UsNdProgrammingExplore from "./views/tenants/us_nd/programming/Explore";
 import initFontAwesome from "./utils/initFontAwesome";
 import initIntercomSettings from "./utils/initIntercomSettings";
 import { initI18n } from "./views/tenants/utils/i18nSettings";
-import { LANTERN_TENANTS } from "./views/tenants/utils/lanternTenants";
-import { CORE_TENANTS } from "./views/tenants/utils/coreTenants";
+import { LANTERN_TENANTS } from "./RootStore/TenantStore/lanternTenants";
+import { CORE_TENANTS } from "./RootStore/TenantStore/coreTenants";
 import AuthWall from "./AuthWall";
 import ErrorBoundary from "./components/ErrorBoundary";
 
