@@ -51,16 +51,16 @@ function createSubsetFilters({ filters }) {
 /**
  * Get the filtering function to use by metric file name
  *
- * @param {String} file
+ * @param {String} metricName
  * @param {Object} subsetFilters - Filters with all the dimension values from the subset manifest
  *
  * @returns {(item: object, dimensionKey: string) => boolean} - A filter that takes each datapoint and dimension key
  * and returns whether or not the item should be filtered out.
  */
-const getFilterFnByFile = (file, subsetFilters) => {
+const getFilterFnByMetricName = (metricName, subsetFilters) => {
   const filterKeys = getFilterKeys();
 
-  switch (file) {
+  switch (metricName) {
     case "revocations_matrix_distribution_by_district":
     case "revocations_matrix_distribution_by_risk_level":
     case "revocations_matrix_distribution_by_gender":
@@ -80,4 +80,4 @@ const getFilterFnByFile = (file, subsetFilters) => {
   }
 };
 
-module.exports = { getFilterFnByFile, createSubsetFilters };
+module.exports = { getFilterFnByMetricName, createSubsetFilters };

@@ -16,7 +16,10 @@
 // =============================================================================
 const { matchesAllFilters } = require("shared-filters");
 
-const { createSubsetFilters, getFilterFnByFile } = require("../filterHelpers");
+const {
+  createSubsetFilters,
+  getFilterFnByMetricName,
+} = require("../filterHelpers");
 
 jest.mock("../../constants/subsetManifest", () => {
   return {
@@ -85,18 +88,18 @@ describe("createSubsetFilters", () => {
   });
 });
 
-describe("getFilterFnByFile", () => {
+describe("getFilterFnByMetricName", () => {
   afterAll(() => {
     jest.resetModules();
     jest.clearAllMocks();
   });
 
-  describe("given file=revocations_matrix_by_month", () => {
+  describe("given metricName=revocations_matrix_by_month", () => {
     const filters = {};
-    const file = "revocations_matrix_by_month";
+    const metricName = "revocations_matrix_by_month";
 
     it("matchesAllFilters is called with correct skippedFilters param", () => {
-      getFilterFnByFile(file, filters);
+      getFilterFnByMetricName(metricName, filters);
       expect(matchesAllFilters).toHaveBeenCalledWith({
         filters,
         skippedFilters: ["metric_period_months"],

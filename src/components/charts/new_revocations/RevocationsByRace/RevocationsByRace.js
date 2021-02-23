@@ -23,7 +23,10 @@ import RevocationsByDimension from "../RevocationsByDimension";
 import createGenerateChartData from "./createGenerateChartData";
 import { translate } from "../../../../views/tenants/utils/i18nSettings";
 import { useDataStore } from "../../../../StoreProvider";
-import HorizontalBarChartWithLabels from "../BarChartWithLabels/HorizontalBarChartWithLabels";
+import HorizontalBarChartWithLabels from "../BarCharts/HorizontalBarChartWithLabels";
+
+const CHART_TITLE = "Admissions by race/ethnicity";
+const DEFAULT_MODE = "WHITE";
 
 const RevocationsByRace = observer(
   ({ containerHeight, timeDescription }, ref) => {
@@ -44,13 +47,13 @@ const RevocationsByRace = observer(
           />
         )}
         generateChartData={createGenerateChartData(revocationsChartStore)}
-        chartTitle="Admissions by race/ethnicity"
+        chartTitle={CHART_TITLE}
         metricTitle={(mode) =>
-          `Admissions by race/ethnicity: ${translate("raceLabelMap")[mode]}`
+          `${CHART_TITLE}: ${translate("raceLabelMap")[mode]}`
         }
         timeDescription={timeDescription}
         modes={Object.keys(translate("raceLabelMap"))}
-        defaultMode="WHITE"
+        defaultMode={DEFAULT_MODE}
         dataExportLabel="Race"
       />
     );
