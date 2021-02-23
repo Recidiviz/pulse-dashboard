@@ -23,7 +23,7 @@ import RevocationsByDimension from "../RevocationsByDimension";
 import PercentRevokedChart from "../PercentRevokedChart";
 import RevocationCountChart from "../RevocationCountChart";
 import createGenerateChartData from "./createGenerateChartData";
-import { translate } from "../../../../views/tenants/utils/i18nSettings";
+import { translate } from "../../../../utils/i18nSettings";
 import flags from "../../../../flags";
 import { useRootStore } from "../../../../StoreProvider";
 
@@ -39,7 +39,7 @@ const RevocationsByDistrict = observer(
     return (
       <RevocationsByDimension
         ref={ref}
-        chartId={`${translate("revocations")}ByDistrict`}
+        chartId="admissionsByDistrict"
         dataStore={revocationsChartStore}
         containerHeight={containerHeight}
         renderChart={({

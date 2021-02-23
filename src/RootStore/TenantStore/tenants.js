@@ -15,7 +15,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import { US_MO, US_PA } from "../../views/tenants/utils/lanternTenants";
+import { US_MO, US_PA } from "./lanternTenants";
 
 const tenantMappings = {
   districtIdKey: {

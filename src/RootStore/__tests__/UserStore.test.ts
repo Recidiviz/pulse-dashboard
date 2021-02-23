@@ -26,7 +26,6 @@ import { METADATA_NAMESPACE } from "../../constants";
 import TENANTS from "../../tenants";
 import { callRestrictedAccessApi } from "../../api/metrics/metricsClient";
 import RootStore from "../RootStore";
-import DistrictsStore from "../DistrictsStore";
 
 jest.mock("@sentry/react");
 jest.mock("@auth0/auth0-spa-js");

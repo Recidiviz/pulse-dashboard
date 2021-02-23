@@ -65,7 +65,7 @@ export const US_PA_METHODOLOGY = {
   admissionsByRiskLevel: [
     {
       header: "What this chart shows",
-      body: `When no violation history filters are selected in the "Admissions by violation history" plot, this chart shows the percentage of people who were admitted in each risk level group. This is calculated as the number of people in each risk level who were admitted divided by the total number of people on supervision at that risk level. Risk level is defined based only on the LSI-R tool and no other assessment. Those without LSI-R scores are counted in the Unassessed category. LSI-R scores above 54 are not counted. When hovering over any risk column, users can see the total number of people on supervision assessed at that specific risk level as the denominator and the total number of people admitted at that risk level as the numerator.`,
+      body: `When no violation history filters are selected in the "Admissions by violation history" plot, this chart shows the percentage of people who were admitted in each risk level group. This is calculated as the number of people in each risk level who were admitted divided by the total number of people on supervision at that risk level. Risk level is defined based only on the LSI-R tool and no other assessment. Those without LSI-R scores are counted in the No Score category. LSI-R scores above 54 are not counted. When hovering over any risk column, users can see the total number of people on supervision assessed at that specific risk level as the denominator and the total number of people admitted at that risk level as the numerator.`,
     },
     {
       header: "Who is included",
@@ -145,7 +145,7 @@ export const US_PA_METHODOLOGY = {
     },
     {
       header: "Risk Level",
-      body: `Risk level is defined based only on the LSI-R tool and no other assessment. Those without LSI-R scores are counted in the Unassessed category. LSI-R scores above 54 are not counted.`,
+      body: `Risk level is defined based only on the LSI-R tool and no other assessment. Those without LSI-R scores are counted in the No Score category. LSI-R scores above 54 are not counted.`,
     },
     {
       header: "Last Recommendation",

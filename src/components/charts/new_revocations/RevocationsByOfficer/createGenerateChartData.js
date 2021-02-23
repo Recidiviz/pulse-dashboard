@@ -24,7 +24,7 @@ import toInteger from "lodash/fp/toInteger";
 import orderBy from "lodash/fp/orderBy";
 import { calculateRate } from "../helpers/rate";
 
-import { translate } from "../../../../views/tenants/utils/i18nSettings";
+import { translate } from "../../../../utils/i18nSettings";
 import { sumCounts } from "../utils/sumCounts";
 import getNameFromOfficerId from "../utils/getNameFromOfficerId";
 import { COLORS } from "../../../../assets/scripts/constants/colors";
