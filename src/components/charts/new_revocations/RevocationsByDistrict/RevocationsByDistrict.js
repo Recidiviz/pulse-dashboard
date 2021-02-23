@@ -18,7 +18,6 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { observer } from "mobx-react-lite";
-import { get } from "mobx";
 
 import RevocationsByDimension from "../RevocationsByDimension";
 import PercentRevokedChart from "../PercentRevokedChart";
@@ -33,12 +32,9 @@ const DEFAULT_MODE = "counts";
 
 const RevocationsByDistrict = observer(
   ({ containerHeight, timeDescription }, ref) => {
-    const { filters, dataStore, filtersStore } = useRootStore();
-    const {
-      districtKeys: { filterKey: districtFilterKey },
-    } = filtersStore;
+    const { dataStore } = useRootStore();
     const { revocationsChartStore } = dataStore;
-    const currentDistricts = get(filters, districtFilterKey);
+    const { transformedData, currentDistricts } = revocationsChartStore;
 
     return (
       <RevocationsByDimension
@@ -77,7 +73,7 @@ const RevocationsByDistrict = observer(
           )
         }
         generateChartData={createGenerateChartData(
-          revocationsChartStore.filteredData,
+          transformedData,
           currentDistricts
         )}
         chartTitle={CHART_TITLE}

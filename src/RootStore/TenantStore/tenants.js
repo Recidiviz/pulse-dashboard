@@ -18,9 +18,17 @@
 import { US_MO, US_PA } from "./lanternTenants";
 
 const tenantMappings = {
-  districtFilteringKey: {
+  districtIdKey: {
+    [US_MO]: "level_1_supervision_location_external_id",
+    [US_PA]: "level_2_supervision_location_external_id",
+  },
+  districtFilterByKey: {
     [US_MO]: "level_1_supervision_location",
     [US_PA]: "level_2_supervision_location",
+  },
+  districtSecondaryFilterByKey: {
+    [US_MO]: "level_2_supervision_location",
+    [US_PA]: "level_1_supervision_location",
   },
   districtValueKey: {
     [US_MO]: "level_1_supervision_location_external_id",
@@ -28,7 +36,7 @@ const tenantMappings = {
   },
   districtLabelKey: {
     [US_MO]: "level_1_supervision_location_external_id",
-    [US_PA]: "level_2_supervision_location_external_id",
+    [US_PA]: "level_2_supervision_location_name",
   },
   districtFilterKey: {
     [US_MO]: "levelOneSupervisionLocation",

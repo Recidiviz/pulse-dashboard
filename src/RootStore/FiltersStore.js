@@ -107,6 +107,8 @@ export default class FiltersStore {
       valueKey: tenantMappings.districtValueKey,
       labelKey: tenantMappings.districtLabelKey,
       filterKey: tenantMappings.districtFilterKey,
+      filterByKey: tenantMappings.districtFilterByKey,
+      secondaryFilterByKey: tenantMappings.districtSecondaryFilterByKey,
     };
   }
 
@@ -129,7 +131,7 @@ export default class FiltersStore {
         value: d[this.districtKeys.valueKey],
         label: d[this.districtKeys.labelKey],
       }))
-      .sort(compareStrings("value"));
+      .sort(compareStrings("label"));
   }
 
   setFilters(updatedFilters) {

@@ -76,6 +76,8 @@ export default class BaseDataStore {
 
   ignoredSubsetDimensions;
 
+  districtsData = {};
+
   constructor({
     rootStore,
     file,
@@ -114,6 +116,19 @@ export default class BaseDataStore {
             tenantId: this.rootStore.currentTenantId,
           });
         }
+      }
+    );
+
+    // TODO #798: Remove once districts store can stand on its own
+    reaction(
+      () =>
+        !this.isLoading &&
+        this.rootStore.districtsStore.apiData.data &&
+        this.rootStore.districtsStore.apiData.data.length > 0,
+      () => {
+        this.rootStore.districtsStore.setFilteredDistricts(
+          this.districtsData.data
+        );
       }
     );
 
@@ -202,12 +217,11 @@ export default class BaseDataStore {
       );
       // TODO: Remove this when supervision locations are filtered on the backend
       if (this.file === "revocations_matrix_by_month") {
-        const expandedData = parseResponseByFileFormat(
+        this.districtsData = parseResponseByFileFormat(
           responseData,
           this.file,
           true
         );
-        this.rootStore.districtsStore.setFilteredDistricts(expandedData.data);
       }
       this.isLoading = false;
       this.isError = false;
