@@ -15,7 +15,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 import * as helpers from "../helpers";
-import { setTranslateLocale } from "../../../../../../views/tenants/utils/i18nSettings";
+import { setTranslateLocale } from "../../../../../../utils/i18nSettings";
 import * as lanternTenant from "../../../../../../RootStore/TenantStore/lanternTenants";
 
 describe("helper", () => {

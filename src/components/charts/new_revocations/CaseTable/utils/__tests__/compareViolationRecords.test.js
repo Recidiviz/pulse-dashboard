@@ -15,10 +15,10 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import { translate } from "../../../../../../views/tenants/utils/i18nSettings";
+import { translate } from "../../../../../../utils/i18nSettings";
 import { compareViolationRecords } from "../compareViolationRecords";
 
-jest.mock("../../../../../../views/tenants/utils/i18nSettings");
+jest.mock("../../../../../../utils/i18nSettings");
 describe("compareViolationRecords function", () => {
   const violationsBySeverity = ["fel", "misd", "absc", "muni", "tech"];
   const mockTranslations = {

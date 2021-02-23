@@ -29,7 +29,7 @@ import Matrix from "../charts/new_revocations/Matrix";
 import RevocationCharts from "../charts/new_revocations/RevocationCharts";
 import CaseTable from "../charts/new_revocations/CaseTable/CaseTable";
 import { METADATA_NAMESPACE } from "../../constants";
-import { setTranslateLocale } from "../../views/tenants/utils/i18nSettings";
+import { setTranslateLocale } from "../../utils/i18nSettings";
 
 import { US_MO } from "../../RootStore/TenantStore/lanternTenants";
 import mockWithTestId from "../../../__helpers__/mockWithTestId";

@@ -19,7 +19,7 @@ import createMethodologyFile from "../createMethodologyFile";
 import getFilters from "../getFilters";
 import getViolation from "../getViolation";
 
-jest.mock("../../../views/tenants/utils/i18nSettings");
+jest.mock("../../../utils/i18nSettings");
 jest.mock("../getFilters");
 jest.mock("../getViolation");
 describe("createMethodologyFile functions", () => {

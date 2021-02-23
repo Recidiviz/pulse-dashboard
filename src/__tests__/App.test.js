@@ -36,7 +36,7 @@ import VerificationNeeded from "../views/VerificationNeeded";
 
 jest.mock("../utils/initIntercomSettings");
 jest.mock("../utils/initFontAwesome");
-jest.mock("../views/tenants/utils/i18nSettings");
+jest.mock("../utils/i18nSettings");
 jest.mock("../components/layouts/LanternLayout");
 jest.mock("../components/layouts/CoreLayout");
 jest.mock("../components/Revocations");

@@ -26,7 +26,7 @@ import TopBarUserMenuForAuthenticatedUser from "../topbar/TopBarUserMenuForAuthe
 import Footer from "../Footer";
 import usePageLayout from "../../hooks/usePageLayout";
 import useIntercom from "../../hooks/useIntercom";
-import { setTranslateLocale } from "../../views/tenants/utils/i18nSettings";
+import { setTranslateLocale } from "../../utils/i18nSettings";
 import { useRootStore } from "../../StoreProvider";
 
 import "./LanternLayout.scss";
