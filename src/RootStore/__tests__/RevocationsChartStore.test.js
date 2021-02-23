@@ -38,6 +38,8 @@ const mockRootStore = {
     districtIdToLabel: {
       "03": "Philadelphia",
       "04": "Mississippi",
+      CBA: "CBA",
+      ABC: "ABC",
     },
   },
   filters: new Map([["levelTwoSupervisionLocation", ["03"]]]),
@@ -45,6 +47,7 @@ const mockRootStore = {
     districtKeys: {
       filterKey: "levelTwoSupervisionLocation",
       filterByKey: "level_2_supervision_location",
+      secondaryFilterByKey: "level_1_supervision_location",
     },
   },
 };
@@ -63,12 +66,14 @@ describe("RevocationsChartStore", () => {
     it("transforms the district attribute to use district label", () => {
       expect(revocationsChartStore.transformedData).toEqual([
         {
-          district: "Philadelphia",
+          districtPrimary: "Philadelphia",
+          districtSecondary: "ABC",
           level_2_supervision_location: "03",
           level_1_supervision_location: "ABC",
         },
         {
-          district: "Mississippi",
+          districtPrimary: "Mississippi",
+          districtSecondary: "CBA",
           level_2_supervision_location: "04",
           level_1_supervision_location: "CBA",
         },
