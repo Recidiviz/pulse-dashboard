@@ -31,6 +31,10 @@
     flex-wrap: nowrap !important;
   }
 
+  &__group .MultiSelect__option {
+    padding-left: 30px;
+  }
+
   &__group-heading {
     padding-bottom: 8px;
   }
