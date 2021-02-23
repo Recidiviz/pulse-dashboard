@@ -30,18 +30,26 @@ import { applyStatisticallySignificantShading } from "../../../../utils/charts/s
 import { COLORS } from "../../../../assets/scripts/constants/colors";
 import { sumCounts } from "../utils/sumCounts";
 
-const generatePercentChartData = (filteredData, currentDistricts, mode) => {
+const generatePercentChartData = (
+  filteredData,
+  currentDistricts,
+  mode,
+  districtKeys
+) => {
   const [fieldName, totalFieldName] =
     mode === "exits"
       ? ["exit_count", "exit_count"]
       : ["supervision_count", "supervision_population_count"];
-
   const transformedData = pipe(
-    filter((item) => item.district !== "ALL"),
-    groupBy("district"),
+    filter(
+      (item) =>
+        item[districtKeys.filteringKey] !== "ALL" &&
+        item[districtKeys.secondaryFilteringKey] === "ALL"
+    ),
+    groupBy(districtKeys.filteringKey),
     values,
     map((dataset) => ({
-      district: dataset[0].district,
+      district: dataset[0][districtKeys.filteringKey],
       count: sumBy((item) => toInteger(item.revocation_count), dataset),
       [fieldName]: sumBy((item) => toInteger(item[totalFieldName]), dataset),
     })),
@@ -94,10 +102,18 @@ const generatePercentChartData = (filteredData, currentDistricts, mode) => {
   return { data, numerators, denominators, averageRate };
 };
 
-const generateCountChartData = (filteredData, currentDistricts) => {
+const generateCountChartData = (
+  filteredData,
+  currentDistricts,
+  districtKeys
+) => {
   const transformedData = pipe(
-    filter((item) => item.district !== "ALL"),
-    groupBy("district"),
+    filter(
+      (item) =>
+        item[districtKeys.filteringKey] !== "ALL" &&
+        item[districtKeys.secondaryFilteringKey] === "ALL"
+    ),
+    groupBy(districtKeys.filteringKey),
     values,
     map((dataset) => ({
       district: dataset[0].district,
@@ -128,14 +144,27 @@ const generateCountChartData = (filteredData, currentDistricts) => {
   return { data: { datasets, labels }, denominators: [] };
 };
 
-const createGenerateChartData = (filteredData, currentDistricts) => (mode) => {
+const createGenerateChartData = (
+  filteredData,
+  currentDistricts,
+  districtKeys
+) => (mode) => {
   switch (mode) {
     case "counts":
-      return generateCountChartData(filteredData, currentDistricts);
+      return generateCountChartData(
+        filteredData,
+        currentDistricts,
+        districtKeys
+      );
     case "exits":
     case "rates":
     default:
-      return generatePercentChartData(filteredData, currentDistricts, mode);
+      return generatePercentChartData(
+        filteredData,
+        currentDistricts,
+        mode,
+        districtKeys
+      );
   }
 };
 

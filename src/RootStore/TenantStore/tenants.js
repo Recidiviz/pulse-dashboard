@@ -34,6 +34,10 @@ const tenantMappings = {
     [US_MO]: "levelOneSupervisionLocation",
     [US_PA]: "levelTwoSupervisionLocation",
   },
+  secondaryDistrictFilteringKey: {
+    [US_MO]: "level_2_supervision_location",
+    [US_PA]: "level_1_supervision_location",
+  },
 };
 
 export default function getTenantMappings(tenantId) {

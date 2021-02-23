@@ -78,7 +78,8 @@ const RevocationsByDistrict = observer(
         }
         generateChartData={createGenerateChartData(
           revocationsChartStore.filteredData,
-          currentDistricts
+          currentDistricts,
+          filtersStore.districtKeys
         )}
         chartTitle={CHART_TITLE}
         metricTitle={CHART_TITLE}
