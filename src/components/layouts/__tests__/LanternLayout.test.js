@@ -6,7 +6,7 @@ import usePageLayout from "../../../hooks/usePageLayout";
 import TopBarUserMenuForAuthenticatedUser from "../../topbar/TopBarUserMenuForAuthenticatedUser";
 import mockWithTestId from "../../../../__helpers__/mockWithTestId";
 import StoreProvider, { useRootStore } from "../../../StoreProvider";
-import { US_MO } from "../../../views/tenants/utils/lanternTenants";
+import { US_MO } from "../../../RootStore/TenantStore/lanternTenants";
 import { PageProvider } from "../../../contexts/PageContext";
 
 jest.mock("react-router-dom");

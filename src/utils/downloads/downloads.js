@@ -40,6 +40,7 @@ function configureDataDownloadButton({
   timeWindowDescription,
   shouldZipDownload,
   fixLabelsInColumns,
+  methodology,
 }) {
   return () => {
     const filename = configureFilename(chartId, filters, shouldZipDownload);
@@ -57,7 +58,8 @@ function configureDataDownloadButton({
           chartId,
           chartTitle,
           timeWindowDescription,
-          filters
+          filters,
+          methodology
         );
         const files = [
           methodologyFile,
@@ -89,6 +91,7 @@ export function downloadHtmlElementAsImage({
   filters,
   timeWindowDescription,
   shouldZipDownload,
+  methodology,
 }) {
   const element = document.getElementById(chartId);
 
@@ -101,6 +104,7 @@ export function downloadHtmlElementAsImage({
       chartId,
       timeWindowDescription,
       shouldZipDownload,
+      methodology,
     });
   });
 }
@@ -117,6 +121,7 @@ export function configureDownloadButtons({
   shouldZipDownload,
   fixLabelsInColumns = false,
   dataExportLabel = "Month",
+  methodology,
 }) {
   const filename = configureFilename(chartId, filters, shouldZipDownload);
   const downloadChartAsImageButton = document.getElementById(
@@ -152,6 +157,7 @@ export function configureDownloadButtons({
       shouldZipDownload,
       dataExportLabel,
       fixLabelsInColumns,
+      methodology,
     });
   }
 
@@ -177,6 +183,7 @@ export function downloadChartAsImage({
   filters,
   timeWindowDescription,
   shouldZipDownload,
+  methodology,
 }) {
   const filename = configureFilename(chartId, filters, shouldZipDownload);
   downloadCanvasAsImage({
@@ -187,6 +194,7 @@ export function downloadChartAsImage({
     chartId,
     timeWindowDescription,
     shouldZipDownload,
+    methodology,
   });
 }
 
@@ -200,6 +208,7 @@ export function downloadChartAsData({
   timeWindowDescription,
   shouldZipDownload,
   fixLabelsInColumns = false,
+  methodology,
 }) {
   const downloadChartData = configureDataDownloadButton({
     chartId,
@@ -211,6 +220,7 @@ export function downloadChartAsData({
     timeWindowDescription,
     shouldZipDownload,
     fixLabelsInColumns,
+    methodology,
   });
   downloadChartData();
 }

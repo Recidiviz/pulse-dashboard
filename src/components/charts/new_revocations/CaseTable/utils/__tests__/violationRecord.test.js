@@ -16,9 +16,9 @@
 // =============================================================================
 
 import { parseAndFormatViolationRecord } from "../violationRecord";
-import { translate } from "../../../../../../views/tenants/utils/i18nSettings";
+import { translate } from "../../../../../../utils/i18nSettings";
 
-jest.mock("../../../../../../views/tenants/utils/i18nSettings");
+jest.mock("../../../../../../utils/i18nSettings");
 describe("parseAndFormatViolationRecord function", () => {
   const violationsBySeverity = ["fel", "misd", "absc", "muni", "tech"];
   const mockTranslations = {

@@ -19,7 +19,7 @@ import { runInAction } from "mobx";
 
 import RootStore from "../RootStore";
 import FiltersStore from "../FiltersStore";
-import { LANTERN_TENANTS } from "../../views/tenants/utils/lanternTenants";
+import { LANTERN_TENANTS } from "../TenantStore/lanternTenants";
 
 jest.mock("../../StoreProvider");
 

@@ -20,8 +20,8 @@ import { render } from "@testing-library/react";
 
 import App from "../App";
 import { METADATA_NAMESPACE } from "../constants";
-import { US_ND } from "../views/tenants/utils/coreTenants";
-import { US_MO, US_PA } from "../views/tenants/utils/lanternTenants";
+import { US_ND } from "../RootStore/TenantStore/coreTenants";
+import { US_MO, US_PA } from "../RootStore/TenantStore/lanternTenants";
 
 import mockWithTestId from "../../__helpers__/mockWithTestId";
 import Revocations from "../components/Revocations";
@@ -36,7 +36,7 @@ import VerificationNeeded from "../views/VerificationNeeded";
 
 jest.mock("../utils/initIntercomSettings");
 jest.mock("../utils/initFontAwesome");
-jest.mock("../views/tenants/utils/i18nSettings");
+jest.mock("../utils/i18nSettings");
 jest.mock("../components/layouts/LanternLayout");
 jest.mock("../components/layouts/CoreLayout");
 jest.mock("../components/Revocations");

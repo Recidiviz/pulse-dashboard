@@ -18,8 +18,9 @@
 import { computed, makeAutoObservable, when } from "mobx";
 
 import { getAvailableStateCodes, doesUserHaveAccess } from "../utils/user";
-import { LANTERN_TENANTS } from "../../views/tenants/utils/lanternTenants";
+import { LANTERN_TENANTS } from "./lanternTenants";
 import getTenantMappings from "./tenants";
+import methodology from "./methodology";
 
 export const CURRENT_TENANT_IN_SESSION = "adminUserCurrentTenantInSession";
 
@@ -70,5 +71,9 @@ export default class TenantStore {
   get tenantMappings() {
     if (!this.currentTenantId) return {};
     return getTenantMappings(this.currentTenantId);
+  }
+
+  get methodology() {
+    return methodology[this.currentTenantId];
   }
 }

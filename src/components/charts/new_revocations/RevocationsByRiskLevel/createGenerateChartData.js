@@ -24,7 +24,7 @@ import map from "lodash/fp/map";
 
 import { sumIntBy } from "../helpers/counts";
 import { calculateRate } from "../helpers/rate";
-import { translate } from "../../../../views/tenants/utils/i18nSettings";
+import { translate } from "../../../../utils/i18nSettings";
 import { humanReadableTitleCase } from "../../../../utils/transforms/labels";
 import { applyStatisticallySignificantShadingToDataset } from "../../../../utils/charts/significantStatistics";
 import getDenominatorKeyByMode from "../utils/getDenominatorKeyByMode";

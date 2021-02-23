@@ -32,7 +32,7 @@ describe("test for file toggles", () => {
   };
 
   const dataMetric = {
-    labels: ["Not Assessed", "Low", "Moderate", "High", "Very High"],
+    labels: ["No Score", "Low", "Moderate", "High", "Very High"],
     datasets: [
       {
         label: "Percent revoked",

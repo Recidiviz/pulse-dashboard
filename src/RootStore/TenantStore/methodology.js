@@ -1,5 +1,5 @@
 // Recidiviz - a data platform for criminal justice reform
-// Copyright (C) 2021 Recidiviz, Inc.
+// Copyright (C) 2020 Recidiviz, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -15,31 +15,11 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
+import { US_MO_METHODOLOGY } from "./us_mo_methodology";
+import { US_PA_METHODOLOGY } from "./us_pa_methodology";
 import { US_MO, US_PA } from "./lanternTenants";
 
-const tenantMappings = {
-  districtFilteringKey: {
-    [US_MO]: "level_1_supervision_location",
-    [US_PA]: "level_2_supervision_location",
-  },
-  districtValueKey: {
-    [US_MO]: "level_1_supervision_location_external_id",
-    [US_PA]: "level_2_supervision_location_external_id",
-  },
-  districtLabelKey: {
-    [US_MO]: "level_1_supervision_location_external_id",
-    [US_PA]: "level_2_supervision_location_external_id",
-  },
-  districtFilterKey: {
-    [US_MO]: "levelOneSupervisionLocation",
-    [US_PA]: "levelTwoSupervisionLocation",
-  },
+export default {
+  [US_MO]: US_MO_METHODOLOGY,
+  [US_PA]: US_PA_METHODOLOGY,
 };
-
-export default function getTenantMappings(tenantId) {
-  const tenant = {};
-  Object.keys(tenantMappings).forEach((key) => {
-    tenant[key] = tenantMappings[key][tenantId];
-  });
-  return tenant;
-}
