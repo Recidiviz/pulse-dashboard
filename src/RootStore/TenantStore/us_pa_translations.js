@@ -18,8 +18,6 @@
 // Note: Each time you add a translation you will need to restart your dev
 // server before you will see the translation rendered properly
 
-import { US_PA_METHODOLOGY } from "./us_pa_methodology";
-
 export default {
   officer: "agent",
   Officer: "Agent",
@@ -44,10 +42,9 @@ the head of that row, and who have the number of prior violations at the head
 of that column.`,
   Technical: "Low tech.",
   lastRecommendation: "Last recommendation",
-  methodology: US_PA_METHODOLOGY,
   riskLevelsMap: {
     OVERALL: "Overall",
-    NOT_ASSESSED: "Not Assessed",
+    NOT_ASSESSED: "No Score",
     LOW: "Low Risk",
     MEDIUM: "Medium Risk",
     HIGH: "High Risk",

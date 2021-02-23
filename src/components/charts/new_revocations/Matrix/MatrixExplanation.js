@@ -16,7 +16,7 @@
 // =============================================================================
 
 import React from "react";
-import { translate } from "../../../../views/tenants/utils/i18nSettings";
+import { translate } from "../../../../utils/i18nSettings";
 import "./MatrixExplanation.scss";
 
 const MatrixExplanation = () => (

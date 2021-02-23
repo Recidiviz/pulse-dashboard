@@ -30,7 +30,7 @@ import {
   getTrailingLabelFromMetricPeriodMonthsToggle,
   getPeriodLabelFromMetricPeriodMonthsToggle,
 } from "../../../../utils/charts/toggles";
-import { translate } from "../../../../views/tenants/utils/i18nSettings";
+import { translate } from "../../../../utils/i18nSettings";
 import { nullSafeCell, formatData, formatExportData } from "./utils/helpers";
 import { useRootStore } from "../../../../StoreProvider";
 import { METRIC_PERIOD_MONTHS } from "../../../../constants/filterTypes";

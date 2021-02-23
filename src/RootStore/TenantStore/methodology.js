@@ -15,29 +15,11 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import * as lantern from "./RootStore/TenantStore/lanternTenants";
-import * as core from "./RootStore/TenantStore/coreTenants";
+import { US_MO_METHODOLOGY } from "./us_mo_methodology";
+import { US_PA_METHODOLOGY } from "./us_pa_methodology";
+import { US_MO, US_PA } from "./lanternTenants";
 
 export default {
-  // prettier-ignore
-  [lantern.US_MO]: {
-    name: "Missouri",
-    availableStateCodes: [lantern.US_MO],
-  },
-  [core.US_ND]: {
-    name: "North Dakota",
-    availableStateCodes: [core.US_ND],
-  },
-  [lantern.US_PA]: {
-    name: "Pennsylvania",
-    availableStateCodes: [lantern.US_PA],
-  },
-  RECIDIVIZ: {
-    name: "Recidiviz",
-    availableStateCodes: lantern.LANTERN_TENANTS.concat(core.CORE_TENANTS),
-  },
-  LANTERN: {
-    name: "Lantern",
-    availableStateCodes: lantern.LANTERN_TENANTS,
-  },
+  [US_MO]: US_MO_METHODOLOGY,
+  [US_PA]: US_PA_METHODOLOGY,
 };

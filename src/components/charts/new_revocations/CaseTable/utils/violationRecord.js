@@ -16,7 +16,7 @@
 // =============================================================================
 
 import compose from "lodash/fp/compose";
-import { translate } from "../../../../../views/tenants/utils/i18nSettings";
+import { translate } from "../../../../../utils/i18nSettings";
 
 export function parseViolationRecord(recordLabel = "") {
   if (!recordLabel) {

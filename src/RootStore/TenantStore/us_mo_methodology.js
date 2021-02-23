@@ -16,7 +16,7 @@
 // =============================================================================
 
 export const US_MO_METHODOLOGY = {
-  revocationsOverTime: [
+  admissionsOverTime: [
     {
       id: 1,
       header: "What this chart shows",
@@ -96,7 +96,7 @@ this chart will automatically update to include only people from the probation p
 District 2.`,
     },
   ],
-  revocationsByDistrict: [
+  admissionsByDistrict: [
     {
       id: 1,
       header: `What the "revocation count" chart shows`,
@@ -132,11 +132,11 @@ population in District 2.`,
       body: `If the user has filtered the page by clicking on a specific violation type (i.e., low technical) or bubble (i.e., low technical and 3 violation reports) within the "Admissions by violation history" plot, this chart will show the percentage of people admitted with the selected violation history among those with a similar violation history within each district. For example, if the user selected the low technical row on the plot, the chart would show: For each district, the number of people admitted whose most serious violation was a low technical, divided by the total number of people on supervision whose most serious violation was a low technical, regardless of whether they were admitted. Continuing with this example, if a user hovers their mouse over the district column, the numerator would be all people admitted for a low technical violation in that district and the denominator would be all people who committed a low technical violation, whether or not they were admitted to a DOC facility. Comparing these percentages will indicate whether admission practices differ by district for various violation histories. That is, whether people with similar violation histories are admitted more frequently in one district than another. For people who have not been admitted, the most serious violation is identified by considering all violations reported within one year from either the current date (if the person is still on supervision) or the date that the person was discharged from supervision.`,
     },
   ],
-  revocationsByRiskLevel: [
+  admissionsByRiskLevel: [
     {
       id: 1,
       header: "What this chart shows",
-      body: `When no violation history filters are selected in the "Admissions by violation history" plot, this chart shows the percentage of people who were revoked in each risk level group. This is calculated as the number of people of each risk level who were revoked divided by the total number of people on supervision at that risk level. Risk level is based only on the Community Supervision Screening Tool and/or the Community Supervision Tool (if relevant) and no other assessment (i.e., Prison Intake Tool). Those without Community Supervision Screening Tool/Community Supervision Tool scores are counted in the Unassessed category. When hovering a mouse over any risk column, users can see the total number of people on supervision assessed at that specific risk level as the denominator and the total number of people revoked at that risk level as the numerator. `,
+      body: `When no violation history filters are selected in the "Admissions by violation history" plot, this chart shows the percentage of people who were revoked in each risk level group. This is calculated as the number of people of each risk level who were revoked divided by the total number of people on supervision at that risk level. Risk level is based only on the Community Supervision Screening Tool and/or the Community Supervision Tool (if relevant) and no other assessment (i.e., Prison Intake Tool). Those without Community Supervision Screening Tool/Community Supervision Tool scores are counted in the No Score category. When hovering a mouse over any risk column, users can see the total number of people on supervision assessed at that specific risk level as the denominator and the total number of people revoked at that risk level as the numerator. `,
     },
     {
       id: 2,
@@ -150,7 +150,7 @@ population in District 2.`,
 `,
     },
   ],
-  revocationsByViolationType: [
+  admissionsByViolationType: [
     {
       id: 1,
       header: "What this chart shows",
@@ -249,7 +249,7 @@ active supervision period at any point within the two years prior to the revocat
       body: `Risk level is defined based only on the Community Supervision Screening Tool and/or
 the Community Supervision Tool (if relevant) and no other assessment (i.e., Prison Intake Tool).
 Those without Community Supervision Screening Tool/Community Supervision Tool scores are counted
-in the Unassessed category.`,
+in the No Score category.`,
     },
     {
       id: 5,

@@ -16,7 +16,7 @@
 // =============================================================================
 
 import { parseViolationRecord } from "./violationRecord";
-import { translate } from "../../../../../views/tenants/utils/i18nSettings";
+import { translate } from "../../../../../utils/i18nSettings";
 
 const sumViolationRecords = (records) =>
   Object.values(records).reduce((acc, record) => acc + record, 0);

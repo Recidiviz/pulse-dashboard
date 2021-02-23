@@ -21,7 +21,7 @@ import { observer } from "mobx-react-lite";
 
 import RevocationsByDimension from "../RevocationsByDimension";
 import PercentRevokedChart from "../PercentRevokedChart";
-import { translate } from "../../../../views/tenants/utils/i18nSettings";
+import { translate } from "../../../../utils/i18nSettings";
 import RevocationCountChart from "../RevocationCountChart";
 import createGenerateChartData from "./createGenerateChartData";
 import flags from "../../../../flags";
@@ -41,7 +41,7 @@ const RevocationsByOfficer = observer(
     return (
       <RevocationsByDimension
         ref={ref}
-        chartId={`${translate("revocations")}by${translate("Officer")}`}
+        chartId={`admissionsBy${translate("Officer")}`}
         dataStore={revocationsChartStore}
         containerHeight={containerHeight}
         includeWarning={includeWarning}

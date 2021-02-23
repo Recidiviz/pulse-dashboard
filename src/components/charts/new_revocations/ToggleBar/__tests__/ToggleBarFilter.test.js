@@ -29,7 +29,7 @@ import {
 } from "../../../../../constants/filterTypes";
 import { useRootStore } from "../../../../../StoreProvider";
 import { METADATA_NAMESPACE } from "../../../../../constants";
-import { US_MO } from "../../../../../views/tenants/utils/lanternTenants";
+import { US_MO } from "../../../../../RootStore/TenantStore/lanternTenants";
 import filterOptions from "../../../../../views/tenants/constants/filterOptions";
 
 jest.mock("../../../../controls/Select", () => ({

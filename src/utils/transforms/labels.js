@@ -18,7 +18,7 @@
 import lowerCase from "lodash/fp/lowerCase";
 import pipe from "lodash/fp/pipe";
 import startCase from "lodash/fp/startCase";
-import { translate } from "../../views/tenants/utils/i18nSettings";
+import { translate } from "../i18nSettings";
 
 function getStatePopulations() {
   return Object.keys(translate("populationChartAttributes"));

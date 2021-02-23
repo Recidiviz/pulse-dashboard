@@ -26,7 +26,6 @@ import {
   downloadChartAsData,
   downloadHtmlElementAsImage,
 } from "../../utils/downloads/downloads";
-import { translate } from "../../views/tenants/utils/i18nSettings";
 import { useRootStore } from "../../StoreProvider";
 
 const ExportMenu = ({
@@ -40,9 +39,9 @@ const ExportMenu = ({
   labels,
   dataExportLabel,
 }) => {
-  const { filters } = useRootStore();
+  const { filters, methodology } = useRootStore();
   const [isModalOpened, setIsModalOpened] = useState(false);
-  const additionalInfo = translate("methodology")[chartId] || [];
+  const additionalInfo = methodology[chartId] || [];
 
   const toggleModal = useCallback(() => {
     setIsModalOpened(!isModalOpened);
@@ -82,6 +81,7 @@ const ExportMenu = ({
                   filters: staticFilters,
                   timeWindowDescription,
                   shouldZipDownload: true,
+                  methodology,
                 })
               }
             >
@@ -98,6 +98,7 @@ const ExportMenu = ({
                   filters: staticFilters,
                   timeWindowDescription,
                   shouldZipDownload: true,
+                  methodology,
                 })
               }
             >
@@ -117,6 +118,7 @@ const ExportMenu = ({
                 timeWindowDescription,
                 shouldZipDownload: true,
                 fixLabelsInColumns,
+                methodology,
               })
             }
           >
