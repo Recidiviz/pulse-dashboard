@@ -43,7 +43,7 @@ const RevocationsByDistrict = observer(
     return (
       <RevocationsByDimension
         ref={ref}
-        chartId={`${translate("revocations")}ByDistrict`}
+        chartId="admissionsByDistrict"
         dataStore={revocationsChartStore}
         containerHeight={containerHeight}
         renderChart={({

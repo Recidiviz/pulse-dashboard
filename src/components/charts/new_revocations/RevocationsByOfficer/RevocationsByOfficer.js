@@ -41,7 +41,7 @@ const RevocationsByOfficer = observer(
     return (
       <RevocationsByDimension
         ref={ref}
-        chartId={`${translate("revocations")}by${translate("Officer")}`}
+        chartId={`admissionsBy${translate("Officer")}`}
         dataStore={revocationsChartStore}
         containerHeight={containerHeight}
         includeWarning={includeWarning}

@@ -182,7 +182,7 @@ const RevocationsOverTime = () => {
           get(filters, METRIC_PERIOD_MONTHS)
         )}
         labels={chartLabels}
-        chartId={`${translate("revocations")}OverTime`}
+        chartId="admissionsOverTime"
         datasets={datasets}
         metricTitle={translate("revocationsOverTimeXAxis")}
         chart={chart}

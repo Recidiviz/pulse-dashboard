@@ -16,7 +16,7 @@
 // =============================================================================
 
 export const US_MO_METHODOLOGY = {
-  revocationsOverTime: [
+  admissionsOverTime: [
     {
       id: 1,
       header: "What this chart shows",
@@ -96,7 +96,7 @@ this chart will automatically update to include only people from the probation p
 District 2.`,
     },
   ],
-  revocationsByDistrict: [
+  admissionsByDistrict: [
     {
       id: 1,
       header: `What the "revocation count" chart shows`,
@@ -150,7 +150,7 @@ population in District 2.`,
 `,
     },
   ],
-  revocationsByViolationType: [
+  admissionsByViolationType: [
     {
       id: 1,
       header: "What this chart shows",
