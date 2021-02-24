@@ -16,8 +16,8 @@
 // =============================================================================
 
 import React, { useState } from "react";
+import PropTypes from "prop-types";
 import { observer } from "mobx-react-lite";
-import { get } from "mobx";
 
 import useSort from "./useSort";
 import ExportMenu from "../../ExportMenu";
@@ -26,21 +26,15 @@ import ErrorMessage from "../../../ErrorMessage";
 import Sortable from "./Sortable";
 import Pagination from "./Pagination";
 import { useContainerHeight } from "../../../../hooks/useContainerHeight";
-import {
-  getTrailingLabelFromMetricPeriodMonthsToggle,
-  getPeriodLabelFromMetricPeriodMonthsToggle,
-} from "../../../../utils/charts/toggles";
-import { translate } from "../../../../views/tenants/utils/i18nSettings";
+import { translate } from "../../../../utils/i18nSettings";
 import { nullSafeCell, formatData, formatExportData } from "./utils/helpers";
 import { useRootStore } from "../../../../StoreProvider";
-import { METRIC_PERIOD_MONTHS } from "../../../../constants/filterTypes";
 
 export const CASES_PER_PAGE = 15;
 
-const CaseTable = () => {
-  const { filtersStore, dataStore } = useRootStore();
+const CaseTable = ({ timeDescription }) => {
+  const { dataStore } = useRootStore();
   const store = dataStore.caseTableStore;
-  const { filters } = filtersStore;
   const [page, setPage] = useState(0);
   const { sortOrder, sortField, toggleOrder, comparator } = useSort();
   const { containerHeight, containerRef } = useContainerHeight();
@@ -70,14 +64,6 @@ const CaseTable = () => {
     },
   });
 
-  const trailingLabel = getTrailingLabelFromMetricPeriodMonthsToggle(
-    get(filters, METRIC_PERIOD_MONTHS)
-  );
-  const periodLabel = getPeriodLabelFromMetricPeriodMonthsToggle(
-    get(filters, METRIC_PERIOD_MONTHS)
-  );
-  const timeWindowDescription = `${trailingLabel} (${periodLabel})`;
-
   const options = [
     { key: "state_id", label: "DOC ID" },
     { key: "district", label: "District" },
@@ -101,10 +87,10 @@ const CaseTable = () => {
           labels={options.map((o) => o.label)}
           metricTitle="Admitted individuals"
           fixLabelsInColumns
-          timeWindowDescription={timeWindowDescription}
+          timeWindowDescription={timeDescription}
         />
       </h4>
-      <h6 className="pB-20">{timeWindowDescription}</h6>
+      <h6 className="pB-20">{timeDescription}</h6>
       <table>
         <thead>
           <tr>
@@ -118,9 +104,11 @@ const CaseTable = () => {
           </tr>
         </thead>
         <tbody className="fs-block">
-          {pageData.map((details) => (
+          {pageData.map((details, idx) => (
             <tr
-              key={`${details.state_id}-${details.admissionType}-${details.officer_recommendation}`}
+              key={`${details.state_id}-${details.officer
+                .split(" ")
+                .join("")}-${idx + 1}`}
             >
               <td>{details.state_id}</td>
               {nullSafeCell(details.district)}
@@ -142,6 +130,10 @@ const CaseTable = () => {
       )}
     </div>
   );
+};
+
+CaseTable.propTypes = {
+  timeDescription: PropTypes.string.isRequired,
 };
 
 export default observer(CaseTable);

@@ -39,6 +39,11 @@ const PercentRevokedChart = ({
     id={chartId}
     data={data}
     options={{
+      plugins: {
+        datalabels: {
+          display: false,
+        },
+      },
       annotation: getRateAnnotation(averageRate),
       legend: {
         display: false,
@@ -77,6 +82,7 @@ const PercentRevokedChart = ({
         callbacks: {
           label: (tooltipItem, tooltipData) =>
             tooltipForRateMetricWithCounts(
+              chartId,
               tooltipItem,
               tooltipData,
               numerators,

@@ -15,10 +15,25 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import { translate } from "../../../../views/tenants/utils/i18nSettings";
+import { translate } from "../../../../utils/i18nSettings";
+import { genderValueToLabel } from "../../../../utils/transforms/labels";
 
 const getLabelByMode = (mode) => {
   switch (mode) {
+    case "FEMALE":
+      return genderValueToLabel.FEMALE;
+    case "MALE":
+      return genderValueToLabel.MALE;
+    case "WHITE":
+      return translate("raceLabelMap").WHITE;
+    case "BLACK":
+      return translate("raceLabelMap").BLACK;
+    case "HISPANIC":
+      return translate("raceLabelMap").HISPANIC;
+    case "ASIAN":
+      return translate("raceLabelMap").ASIAN;
+    case "AMERICAN_INDIAN_ALASKAN_NATIVE":
+      return translate("raceLabelMap").AMERICAN_INDIAN_ALASKAN_NATIVE;
     case "counts":
       return `${translate("Revocation")} count`;
     case "exits":

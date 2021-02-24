@@ -19,14 +19,14 @@ import React from "react";
 import PropTypes from "prop-types";
 import { observer } from "mobx-react-lite";
 
-import BarChartWithLabels from "../BarChartWithLabels";
 import RevocationsByDimension from "../RevocationsByDimension";
 import createGenerateChartData from "./createGenerateChartData";
-import getLabelByMode from "../utils/getLabelByMode";
-import { COLORS_LANTERN_SET } from "../../../../assets/scripts/constants/colors";
-import flags from "../../../../flags";
-import { translate } from "../../../../views/tenants/utils/i18nSettings";
+import { translate } from "../../../../utils/i18nSettings";
 import { useDataStore } from "../../../../StoreProvider";
+import HorizontalBarChartWithLabels from "../BarCharts/HorizontalBarChartWithLabels";
+
+const CHART_TITLE = "Admissions by race/ethnicity";
+const DEFAULT_MODE = "WHITE";
 
 const RevocationsByRace = observer(
   ({ containerHeight, timeDescription }, ref) => {
@@ -35,31 +35,26 @@ const RevocationsByRace = observer(
     return (
       <RevocationsByDimension
         ref={ref}
-        chartId={`${translate("revocations")}ByRace`}
+        chartId="admissionsByRace"
         dataStore={revocationsChartStore}
         containerHeight={containerHeight}
-        renderChart={({ chartId, data, denominators, numerators, mode }) => (
-          <BarChartWithLabels
+        renderChart={({ chartId, data, denominators, numerators }) => (
+          <HorizontalBarChartWithLabels
             id={chartId}
             data={data}
-            labelColors={COLORS_LANTERN_SET}
-            xAxisLabel="Race/ethnicity and risk level"
-            yAxisLabel={getLabelByMode(mode)}
             numerators={numerators}
             denominators={denominators}
           />
         )}
-        generateChartData={createGenerateChartData(
-          revocationsChartStore.filteredData
-        )}
-        chartTitle="Admissions by race/ethnicity and risk level"
+        generateChartData={createGenerateChartData(revocationsChartStore)}
+        chartTitle={CHART_TITLE}
         metricTitle={(mode) =>
-          `${getLabelByMode(mode)} by race/ethnicity and risk level`
+          `${CHART_TITLE}: ${translate("raceLabelMap")[mode]}`
         }
         timeDescription={timeDescription}
-        modes={flags.enableRevocationRateByExit ? ["rates", "exits"] : []}
-        defaultMode="rates"
-        dataExportLabel="Risk Level"
+        modes={Object.keys(translate("raceLabelMap"))}
+        defaultMode={DEFAULT_MODE}
+        dataExportLabel="Race"
       />
     );
   },

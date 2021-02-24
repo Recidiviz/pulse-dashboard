@@ -46,7 +46,7 @@ import {
   matrixViolationTypeToLabel,
   violationCountLabel,
 } from "../../../../utils/transforms/labels";
-import { translate } from "../../../../views/tenants/utils/i18nSettings";
+import { translate } from "../../../../utils/i18nSettings";
 import { useContainerHeight } from "../../../../hooks/useContainerHeight";
 import { useRootStore } from "../../../../StoreProvider";
 import {

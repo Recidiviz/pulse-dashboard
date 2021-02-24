@@ -20,7 +20,7 @@ import React from "react";
 import { humanReadableTitleCase } from "../../../../../utils/transforms/labels";
 import { parseAndFormatViolationRecord } from "./violationRecord";
 import getNameFromOfficerId from "../../utils/getNameFromOfficerId";
-import { translate } from "../../../../../views/tenants/utils/i18nSettings";
+import { translate } from "../../../../../utils/i18nSettings";
 import { COLORS } from "../../../../../assets/scripts/constants/colors";
 
 const nullSafeLabel = (label) => label || "Unknown";

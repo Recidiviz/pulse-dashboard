@@ -1,6 +1,9 @@
 {
   "name": "pulse-dashboard",
   "version": "0.3.0",
+  "engines": {
+    "node": "12.x.x"
+  },
   "description": "Bringing criminal justice analysis to decision makers to help reduce incarceration",
   "private": true,
   "repository": "git@github.com:Recidiviz/pulse-dashboard.git",
@@ -40,6 +43,7 @@
     "chart.js": "^2.8.0",
     "chartjs-funnel": "^1.0.5",
     "chartjs-plugin-annotation": "^0.5.7",
+    "chartjs-plugin-datalabels": "^0.7.0",
     "chartjs-plugin-trendline": "^0.1.2",
     "classnames": "^2.2.6",
     "connect-flash": "^0.1.1",

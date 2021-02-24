@@ -15,8 +15,8 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import * as lantern from "./views/tenants/utils/lanternTenants";
-import * as core from "./views/tenants/utils/coreTenants";
+import * as lantern from "./RootStore/TenantStore/lanternTenants";
+import * as core from "./RootStore/TenantStore/coreTenants";
 
 export default {
   // prettier-ignore

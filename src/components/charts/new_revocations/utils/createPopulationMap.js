@@ -1,0 +1,77 @@
+// Recidiviz - a data platform for criminal justice reform
+// Copyright (C) 2020 Recidiviz, Inc.
+//
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <https://www.gnu.org/licenses/>.
+// =============================================================================
+
+import pipe from "lodash/fp/pipe";
+import set from "lodash/fp/set";
+import getOr from "lodash/fp/getOr";
+import toInteger from "lodash/fp/toInteger";
+
+const NUMERATOR_KEYS = ["revocation_count", "supervision_population_count"];
+const DENOMINATOR_KEYS = ["revocation_count_all", "supervision_count_all"];
+
+// TODO # 784 once the risk_level dimension has been removed from race and gender
+// metric files, we can remove this sum function
+export const sumCountsAcrossRiskLevels = (field) => (acc, data) => {
+  if (acc.length === 0) acc.push({ ...data });
+  else {
+    const match = acc.find((dataPoint) => {
+      return (
+        dataPoint[field] === data[field] && dataPoint.district === data.district
+      );
+    });
+    if (match) {
+      NUMERATOR_KEYS.forEach((numeratorKey) => {
+        match[numeratorKey] =
+          parseInt(match[numeratorKey]) + parseInt(data[numeratorKey]);
+      });
+    } else acc.push({ ...data });
+  }
+  return acc;
+};
+
+/**
+ * Transform to
+ *   ASIAN: { REVOKED: [1, 4], SUPERVISION_POPULATION: [5, 9], ... } }
+ *   HISPANIC: { REVOKED: [2, 9], SUPERVISION_POPULATION: [2, 8], ... } }
+ * OR
+ *   MALE: { REVOKED: [1, 4], SUPERVISION_POPULATION: [5, 9], ... } }
+ *   FEMALE: { REVOKED: [2, 9], SUPERVISION_POPULATION: [2, 8], ... } }
+ */
+const createPopulationMap = (field) => (acc, data) => {
+  return pipe(
+    set(
+      [data[field], "SUPERVISION_POPULATION"],
+      [
+        getOr(0, [data[field], "SUPERVISION_POPULATION", 0], acc) +
+          toInteger(data[NUMERATOR_KEYS[1]]),
+        getOr(0, [data[field], "SUPERVISION_POPULATION", 1], acc) +
+          toInteger(data[DENOMINATOR_KEYS[1]]),
+      ]
+    ),
+    set(
+      [data[field], "REVOKED"],
+      [
+        getOr(0, [data[field], "REVOKED", 0], acc) +
+          toInteger(data[NUMERATOR_KEYS[0]]),
+        getOr(0, [data[field], "REVOKED", 1], acc) +
+          toInteger(data[DENOMINATOR_KEYS[0]]),
+      ]
+    )
+  )(acc);
+};
+
+export default createPopulationMap;

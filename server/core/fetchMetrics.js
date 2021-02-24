@@ -35,17 +35,21 @@ const { default: processMetricFile } = require("./processMetricFile");
 const { default: fetchMetricsFromLocal } = require("./fetchMetricsFromLocal");
 const { default: fetchMetricsFromGCS } = require("./fetchMetricsFromGCS");
 
-function fetchMetrics(stateCode, metricType, file, isDemo) {
+function fetchMetrics(stateCode, metricType, metricName, isDemo) {
   const fetcher = isDemo ? fetchMetricsFromLocal : fetchMetricsFromGCS;
   const source = isDemo ? "local" : "GCS";
 
   console.log(`Fetching ${metricType} metrics from ${source}...`);
-  const metricPromises = fetcher(stateCode.toUpperCase(), metricType, file);
+  const metricPromises = fetcher(
+    stateCode.toUpperCase(),
+    metricType,
+    metricName
+  );
 
   return Promise.all(metricPromises).then((allFileContents) => {
     const results = {};
     allFileContents.forEach((contents) => {
-      console.log(`Fetched contents for fileKey ${contents.fileKey}`);
+      console.log(`Fetched contents for metricName ${contents.fileKey}`);
       results[contents.fileKey] = processMetricFile(
         contents.contents,
         contents.metadata,

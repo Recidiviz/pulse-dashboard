@@ -19,20 +19,20 @@ import pipe from "lodash/fp/pipe";
 import reduce from "lodash/fp/reduce";
 
 import {
-  getRiskLevelLabels,
-  getRiskLevels,
+  getStatePopulations,
+  getStatePopulationsLabels,
 } from "../../../../utils/transforms/labels";
-import getDenominatorKeyByMode from "../utils/getDenominatorKeyByMode";
 import getCounts from "../utils/getCounts";
-import createRiskLevelsMap from "../utils/createRiskLevelsMap";
-import { translate } from "../../../../views/tenants/utils/i18nSettings";
+import createPopulationMap, {
+  sumCountsAcrossRiskLevels,
+} from "../utils/createPopulationMap";
+import { translate } from "../../../../utils/i18nSettings";
 import { COLORS_LANTERN_SET } from "../../../../assets/scripts/constants/colors";
 import { applyStatisticallySignificantShadingToDataset } from "../../../../utils/charts/significantStatistics";
 
 export const generateDatasets = (dataPoints, denominators) => {
   const raceLabelMap = translate("raceLabelMap");
   const raceLabels = Object.values(raceLabelMap);
-
   return raceLabels.map((raceLabel, index) => ({
     label: raceLabel,
     backgroundColor: applyStatisticallySignificantShadingToDataset(
@@ -43,24 +43,38 @@ export const generateDatasets = (dataPoints, denominators) => {
   }));
 };
 
-const createGenerateChartData = (filteredData) => (mode) => {
-  const numeratorKey = "revocation_count";
-  const denominatorKey = getDenominatorKeyByMode(mode);
-
+const createGenerateChartData = ({ filteredData, statePopulationData }) => (
+  mode
+) => {
   const raceLabelMap = translate("raceLabelMap");
   const races = Object.keys(raceLabelMap);
-
   const { dataPoints, numerators, denominators } = pipe(
-    reduce(createRiskLevelsMap(numeratorKey, denominatorKey, "race"), {}),
-    (data) => getCounts(data, getRiskLevels(), races)
+    reduce(sumCountsAcrossRiskLevels("race"), []),
+    reduce(createPopulationMap("race"), {}),
+    (data) =>
+      getCounts(
+        data,
+        getStatePopulations(),
+        races,
+        statePopulationData,
+        "race_or_ethnicity"
+      )
   )(filteredData);
 
+  const datasets = generateDatasets(dataPoints, denominators);
+  const datasetIndex = datasets.findIndex(
+    (d) => d.label === translate("raceLabelMap")[mode]
+  );
   const data = {
-    labels: getRiskLevelLabels(),
-    datasets: generateDatasets(dataPoints, denominators),
+    labels: getStatePopulationsLabels(),
+    datasets: [datasets[datasetIndex]],
   };
 
-  return { data, numerators, denominators };
+  return {
+    data,
+    numerators: numerators[datasetIndex],
+    denominators: denominators[datasetIndex],
+  };
 };
 
 export default createGenerateChartData;

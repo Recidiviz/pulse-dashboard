@@ -1,5 +1,5 @@
 // Recidiviz - a data platform for criminal justice reform
-// Copyright (C) 2020 Recidiviz, Inc.
+// Copyright (C) 2021 Recidiviz, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -26,7 +26,7 @@ import TopBarUserMenuForAuthenticatedUser from "../topbar/TopBarUserMenuForAuthe
 import Footer from "../Footer";
 import usePageLayout from "../../hooks/usePageLayout";
 import useIntercom from "../../hooks/useIntercom";
-import { setTranslateLocale } from "../../views/tenants/utils/i18nSettings";
+import { setTranslateLocale } from "../../utils/i18nSettings";
 import { useRootStore } from "../../StoreProvider";
 
 import "./LanternLayout.scss";
@@ -46,7 +46,7 @@ const LanternLayout = ({ children }) => {
         />
       </Helmet>
       <div className="wide-page-container">
-        <TopBar isWide>
+        <TopBar isHidable isWide>
           <TopBarLogo />
           <ul className="nav-right">
             <TopBarUserMenuForAuthenticatedUser />

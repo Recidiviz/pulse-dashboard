@@ -18,29 +18,28 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { observer } from "mobx-react-lite";
-import { get } from "mobx";
 
 import RevocationsByDimension from "../RevocationsByDimension";
 import PercentRevokedChart from "../PercentRevokedChart";
 import RevocationCountChart from "../RevocationCountChart";
 import createGenerateChartData from "./createGenerateChartData";
-import { translate } from "../../../../views/tenants/utils/i18nSettings";
+import { translate } from "../../../../utils/i18nSettings";
 import flags from "../../../../flags";
 import { useRootStore } from "../../../../StoreProvider";
-import { DISTRICT } from "../../../../constants/filterTypes";
 
-const chartTitle = "Admissions by district";
+const CHART_TITLE = "Admissions by district";
+const DEFAULT_MODE = "counts";
 
 const RevocationsByDistrict = observer(
   ({ containerHeight, timeDescription }, ref) => {
-    const { filters, dataStore } = useRootStore();
+    const { dataStore } = useRootStore();
     const { revocationsChartStore } = dataStore;
-    const currentDistricts = get(filters, DISTRICT);
+    const { transformedData, currentDistricts } = revocationsChartStore;
 
     return (
       <RevocationsByDimension
         ref={ref}
-        chartId={`${translate("revocations")}ByDistrict`}
+        chartId="admissionsByDistrict"
         dataStore={revocationsChartStore}
         containerHeight={containerHeight}
         renderChart={({
@@ -74,18 +73,18 @@ const RevocationsByDistrict = observer(
           )
         }
         generateChartData={createGenerateChartData(
-          revocationsChartStore.filteredData,
+          transformedData,
           currentDistricts
         )}
-        chartTitle={chartTitle}
-        metricTitle={chartTitle}
+        chartTitle={CHART_TITLE}
+        metricTitle={CHART_TITLE}
         timeDescription={timeDescription}
         modes={
           flags.enableRevocationRateByExit
             ? ["counts", "rates", "exits"]
             : ["counts", "rates"]
         }
-        defaultMode="counts"
+        defaultMode={DEFAULT_MODE}
         dataExportLabel="District"
       />
     );

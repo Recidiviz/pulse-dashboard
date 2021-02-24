@@ -27,7 +27,7 @@ import {
   LEVEL_1_SUPERVISION_LOCATION,
   LEVEL_2_SUPERVISION_LOCATION,
 } from "../../../constants/filterTypes";
-import { US_MO, US_PA } from "../utils/lanternTenants";
+import { US_MO, US_PA } from "../../../RootStore/TenantStore/lanternTenants";
 
 const METRIC_PERIODS = {
   options: [
@@ -90,7 +90,7 @@ const MOFilterOptions = {
       { value: "BOARDS_RETURN", label: "Board Returns" },
     ],
     get defaultOption() {
-      return [this.options[1]];
+      return [this.options[0]];
     },
     get defaultValue() {
       return this.defaultOption.map(({ value }) => value);
@@ -178,7 +178,7 @@ const PAFilterOptions = {
       { value: "MENTAL_HEALTH", label: "Mental Health" },
     ],
     get defaultOption() {
-      return [this.options[1]];
+      return [this.options[0]];
     },
     get defaultValue() {
       return this.defaultOption.map(({ value }) => value);

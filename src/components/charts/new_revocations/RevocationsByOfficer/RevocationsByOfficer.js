@@ -21,24 +21,27 @@ import { observer } from "mobx-react-lite";
 
 import RevocationsByDimension from "../RevocationsByDimension";
 import PercentRevokedChart from "../PercentRevokedChart";
-import { translate } from "../../../../views/tenants/utils/i18nSettings";
+import { translate } from "../../../../utils/i18nSettings";
 import RevocationCountChart from "../RevocationCountChart";
 import createGenerateChartData from "./createGenerateChartData";
 import flags from "../../../../flags";
 import { useDataStore } from "../../../../StoreProvider";
 
 const MAX_OFFICERS_COUNT = 50;
+const DEFAULT_MODE = "counts";
 
 const RevocationsByOfficer = observer(
   ({ containerHeight, timeDescription }, ref) => {
     const dataStore = useDataStore();
     const { revocationsChartStore } = dataStore;
-    const chartTitle = `Admissions by ${translate("officer")}`;
+
+    const CHART_TITLE = `Admissions by ${translate("officer")}`;
     const includeWarning = false;
+
     return (
       <RevocationsByDimension
         ref={ref}
-        chartId={`${translate("revocations")}by${translate("Officer")}`}
+        chartId={`admissionsBy${translate("Officer")}`}
         dataStore={revocationsChartStore}
         containerHeight={containerHeight}
         includeWarning={includeWarning}
@@ -84,15 +87,15 @@ const RevocationsByOfficer = observer(
         generateChartData={createGenerateChartData(
           revocationsChartStore.filteredData
         )}
-        chartTitle={chartTitle}
-        metricTitle={chartTitle}
+        chartTitle={CHART_TITLE}
+        metricTitle={CHART_TITLE}
         timeDescription={timeDescription}
         modes={
           flags.enableRevocationRateByExit
             ? ["counts", "rates", "exits"]
             : ["counts", "rates"]
         }
-        defaultMode="counts"
+        defaultMode={DEFAULT_MODE}
         dataExportLabel={translate("Officer")}
       />
     );

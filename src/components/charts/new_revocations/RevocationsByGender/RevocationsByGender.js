@@ -19,50 +19,43 @@ import React from "react";
 import PropTypes from "prop-types";
 import { observer } from "mobx-react-lite";
 
-import { translate } from "../../../../views/tenants/utils/i18nSettings";
-import getLabelByMode from "../utils/getLabelByMode";
-
+import { translate } from "../../../../utils/i18nSettings";
 import RevocationsByDimension from "../RevocationsByDimension";
-import BarChartWithLabels from "../BarChartWithLabels";
-import { CHART_COLORS } from "./constants";
+import HorizontalBarChartWithLabels from "../BarCharts/HorizontalBarChartWithLabels";
 import createGenerateChartData from "./createGenerateChartData";
-import flags from "../../../../flags";
 import { useRootStore } from "../../../../StoreProvider";
+import { genderValueToLabel } from "../../../../utils/transforms/labels";
+
+const DEFAULT_MODE = "MALE";
 
 const RevocationsByGender = observer(
   ({ containerHeight, timeDescription }, ref) => {
-    const { currentTenantId, dataStore } = useRootStore();
+    const { dataStore } = useRootStore();
     const { revocationsChartStore } = dataStore;
+
+    const CHART_TITLE = `Admissions by ${translate("gender")}`;
 
     return (
       <RevocationsByDimension
         ref={ref}
-        chartId={`${translate("revocations")}By${translate("Gender")}`}
+        chartId={`admissionsBy${translate("Gender")}`}
         dataStore={revocationsChartStore}
         containerHeight={containerHeight}
-        renderChart={({ chartId, data, denominators, numerators, mode }) => (
-          <BarChartWithLabels
+        renderChart={({ chartId, data, denominators, numerators }) => (
+          <HorizontalBarChartWithLabels
             id={chartId}
             data={data}
-            xAxisLabel={`${translate("Gender")} and risk level`}
-            yAxisLabel={getLabelByMode(mode)}
-            labelColors={CHART_COLORS}
-            denominators={denominators}
             numerators={numerators}
+            denominators={denominators}
           />
         )}
-        generateChartData={createGenerateChartData(
-          revocationsChartStore.filteredData,
-          currentTenantId
-        )}
-        chartTitle={`Admissions by ${translate("gender")} and risk level`}
-        metricTitle={(mode) =>
-          `${getLabelByMode(mode)} by ${translate("gender")} and risk level`
-        }
+        generateChartData={createGenerateChartData(revocationsChartStore)}
+        chartTitle={CHART_TITLE}
+        metricTitle={(mode) => `${CHART_TITLE}: ${mode}`}
         timeDescription={timeDescription}
-        modes={flags.enableRevocationRateByExit ? ["rates", "exits"] : []}
-        defaultMode="rates"
-        dataExportLabel="Risk Level"
+        modes={Object.keys(genderValueToLabel)}
+        defaultMode={DEFAULT_MODE}
+        dataExportLabel="Gender"
       />
     );
   },

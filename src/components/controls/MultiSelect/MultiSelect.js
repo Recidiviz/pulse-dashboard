@@ -69,6 +69,20 @@ const MultiSelect = ({
     [handleChange, options, summingOption]
   );
 
+  const CustomStyles = {
+    groupHeading: (base) => ({
+      ...base,
+      paddingLeft: "0px",
+      fontSize: "inherit",
+    }),
+    group: (base) => ({ ...base, marginLeft: "0px", paddingLeft: "12px" }),
+    option: (base) => ({
+      ...base,
+      backgroundColor: "transparent",
+      color: "inherit",
+    }),
+  };
+
   return (
     <Select
       classNamePrefix="MultiSelect"
@@ -82,6 +96,7 @@ const MultiSelect = ({
       hideSelectedOptions={false}
       onChange={handleChange}
       options={options}
+      styles={CustomStyles}
       onFocus={() => ref.current.setState({ menuIsOpen: true })}
       value={value}
       isMulti

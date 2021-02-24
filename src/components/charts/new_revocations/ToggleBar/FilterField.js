@@ -1,5 +1,5 @@
 // Recidiviz - a data platform for criminal justice reform
-// Copyright (C) 2020 Recidiviz, Inc.
+// Copyright (C) 2021 Recidiviz, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -19,24 +19,10 @@ import PropTypes from "prop-types";
 import cn from "classnames";
 import "./FilterField.scss";
 
-import { usePageState } from "../../../../contexts/PageContext";
-
 const FilterField = ({ label, children, className }) => {
-  const { isTopBarShrinking } = usePageState();
-
   return (
-    <div
-      className={cn("FilterField", `${className}`, {
-        "FilterField--shrink": isTopBarShrinking,
-      })}
-    >
-      <h4
-        className={cn("FilterField__label", {
-          "FilterField__label--shrink": isTopBarShrinking,
-        })}
-      >
-        {label}
-      </h4>
+    <div className={cn("FilterField", `${className}`)}>
+      <h4 className={cn("FilterField__label")}>{label}</h4>
       {children}
     </div>
   );

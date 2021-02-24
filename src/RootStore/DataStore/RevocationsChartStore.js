@@ -15,29 +15,45 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import { makeObservable, reaction, observable, action } from "mobx";
+import { makeObservable, reaction, observable, action, computed } from "mobx";
 import { matchesAllFilters } from "shared-filters";
 import BaseDataStore from "./BaseDataStore";
-import { DISTRICT } from "../../constants/filterTypes";
+import {
+  DISTRICT,
+  LEVEL_1_SUPERVISION_LOCATION,
+  LEVEL_2_SUPERVISION_LOCATION,
+} from "../../constants/filterTypes";
 
 const CHARTS = {
   District: {
+    name: "District",
     file: "revocations_matrix_distribution_by_district",
-    skippedFilters: [DISTRICT],
+    skippedFilters: [
+      DISTRICT,
+      LEVEL_1_SUPERVISION_LOCATION,
+      LEVEL_2_SUPERVISION_LOCATION,
+    ],
   },
   "Risk level": {
+    name: "Risk level",
     file: "revocations_matrix_distribution_by_risk_level",
   },
   Gender: {
+    name: "Gender",
     file: "revocations_matrix_distribution_by_gender",
+    statePopulationFile: "state_gender_population",
   },
   Officer: {
+    name: "Officer",
     file: "revocations_matrix_distribution_by_officer",
   },
   Race: {
+    name: "Race",
     file: "revocations_matrix_distribution_by_race",
+    statePopulationFile: "state_race_ethnicity_population",
   },
   Violation: {
+    name: "Violation",
     file: "revocations_matrix_distribution_by_violation",
   },
 };
@@ -51,17 +67,27 @@ export default class RevocationsChartStore extends BaseDataStore {
     super({
       rootStore,
       file: CHARTS[DEFAULT_SELECTED_CHART].file,
+      statePopulationFile: CHARTS[DEFAULT_SELECTED_CHART].statePopulationFile,
       skippedFilters: CHARTS[DEFAULT_SELECTED_CHART].skippedFilters,
     });
     makeObservable(this, {
       selectedChart: observable,
       setSelectedChart: action.bound,
+      currentDistricts: computed,
+      transformedData: computed,
     });
+
     reaction(
       () => this.selectedChart,
       () => {
         super.file = CHARTS[this.selectedChart].file;
         this.fetchData({
+          tenantId: this.rootStore.currentTenantId,
+        });
+
+        super.statePopulationFile =
+          CHARTS[this.selectedChart].statePopulationFile;
+        this.fetchStatePopulationData({
           tenantId: this.rootStore.currentTenantId,
         });
       }
@@ -79,5 +105,31 @@ export default class RevocationsChartStore extends BaseDataStore {
       skippedFilters: this.skippedFilters,
     });
     return this.filterData(this.apiData, dataFilter);
+  }
+
+  get transformedData() {
+    const { districtIdToLabel } = this.rootStore.districtsStore;
+    const {
+      districtKeys: { filterByKey, secondaryFilterByKey },
+    } = this.rootStore.filtersStore;
+    return this.filteredData.map((data) => {
+      return {
+        ...data,
+        districtPrimary: districtIdToLabel[data[filterByKey]],
+        districtSecondary: districtIdToLabel[data[secondaryFilterByKey]],
+      };
+    });
+  }
+
+  get currentDistricts() {
+    if (this.selectedChart !== CHARTS.District.name) return [];
+    const { districtIdToLabel } = this.rootStore.districtsStore;
+    const {
+      districtKeys: { filterKey },
+    } = this.rootStore.filtersStore;
+    return this.filters[filterKey].map((district) => {
+      if (district === "All") return district;
+      return districtIdToLabel[district];
+    });
   }
 }

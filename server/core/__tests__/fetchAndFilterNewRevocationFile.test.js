@@ -55,7 +55,7 @@ jest.mock("../../filters", () => {
 });
 
 describe("fetchAndFilterNewRevocationFile", () => {
-  const file = "file_1";
+  const metricName = "file_1";
   const metricType = "newRevocationFile";
   const queryParams = { violationType: "All" };
   const isDemoMode = false;
@@ -68,7 +68,7 @@ describe("fetchAndFilterNewRevocationFile", () => {
 
   beforeEach(() => {
     fetchAndFilterNewRevocationFile({
-      file,
+      metricName,
       queryParams,
       ...fetchArgs,
     });
@@ -78,7 +78,7 @@ describe("fetchAndFilterNewRevocationFile", () => {
     expect(fetchMetrics).toHaveBeenCalledWith(
       stateCode,
       metricType,
-      file,
+      metricName,
       isDemoMode
     );
   });
@@ -91,7 +91,7 @@ describe("fetchAndFilterNewRevocationFile", () => {
 
   it("calls createSubset with the correct args", async () => {
     expect(createSubset).toHaveBeenCalledWith(
-      file,
+      metricName,
       mockSubsetFilters,
       mockMetricFiles
     );

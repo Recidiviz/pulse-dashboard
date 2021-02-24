@@ -21,11 +21,12 @@ import { observer } from "mobx-react-lite";
 
 import RevocationsByDimension from "../RevocationsByDimension";
 import createGenerateChartData from "./createGenerateChartData";
-import BarChartWithLabels from "../BarChartWithLabels";
-import { translate } from "../../../../views/tenants/utils/i18nSettings";
+import BarChartWithLabels from "../BarCharts";
 import { useRootStore } from "../../../../StoreProvider";
 import { VIOLATION_TYPE } from "../../../../constants/filterTypes";
 import { COLORS } from "../../../../assets/scripts/constants/colors";
+
+const CHART_TITLE = "Relative frequency of violation types";
 
 const RevocationsByViolation = observer(
   ({ containerHeight, timeDescription }, ref) => {
@@ -58,7 +59,7 @@ const RevocationsByViolation = observer(
     return (
       <RevocationsByDimension
         ref={ref}
-        chartId={`${translate("revocations")}ByViolationType`}
+        chartId="admissionsByViolationType"
         dataStore={revocationsChartStore}
         containerHeight={containerHeight}
         renderChart={({ chartId, data, denominators, numerators }) => (
@@ -76,8 +77,8 @@ const RevocationsByViolation = observer(
           revocationsChartStore.filteredData,
           violationTypes
         )}
-        chartTitle="Relative frequency of violation types"
-        metricTitle="Relative frequency of violation types"
+        chartTitle={CHART_TITLE}
+        metricTitle={CHART_TITLE}
         timeDescription={timeDescription}
         dataExportLabel="Violation"
       />

@@ -35,10 +35,17 @@ import {
 import {
   FILTER_TYPE_MAP,
   DISTRICT,
+  LEVEL_1_SUPERVISION_LOCATION,
+  LEVEL_2_SUPERVISION_LOCATION,
   METRIC_PERIOD_MONTHS,
 } from "../../constants/filterTypes";
 
-export const DEFAULT_IGNORED_DIMENSIONS = [DISTRICT, METRIC_PERIOD_MONTHS];
+export const DEFAULT_IGNORED_DIMENSIONS = [
+  LEVEL_1_SUPERVISION_LOCATION,
+  LEVEL_2_SUPERVISION_LOCATION,
+  DISTRICT,
+  METRIC_PERIOD_MONTHS,
+];
 
 /**
  * BaseDataStore is an abstract class that should never be directly instantiated.
@@ -55,21 +62,33 @@ export default class BaseDataStore {
 
   file;
 
+  isStatePopulationLoading = true;
+
+  isStatePopulationError = false;
+
+  statePopulationData = {};
+
+  statePopulationFile = undefined;
+
   eagerExpand = false;
 
   treatCategoryAllAsAbsent = false;
 
   ignoredSubsetDimensions;
 
+  districtsData = {};
+
   constructor({
     rootStore,
     file,
+    statePopulationFile,
     skippedFilters = [],
     treatCategoryAllAsAbsent = false,
     ignoredSubsetDimensions = [],
   }) {
     makeObservable(this, {
       fetchData: flow,
+      fetchStatePopulationData: flow,
       apiData: observable.ref,
       filteredData: computed,
       filtersQueryParams: computed,
@@ -81,14 +100,13 @@ export default class BaseDataStore {
     });
 
     this.file = file;
+    this.statePopulationFile = statePopulationFile;
     this.skippedFilters = skippedFilters;
     this.treatCategoryAllAsAbsent = treatCategoryAllAsAbsent;
     this.ignoredSubsetDimensions = DEFAULT_IGNORED_DIMENSIONS.concat(
       ignoredSubsetDimensions
     );
     this.rootStore = rootStore;
-
-    const { userStore } = this.rootStore;
 
     reaction(
       () => this.shouldFetchNewSubsetFile,
@@ -101,13 +119,29 @@ export default class BaseDataStore {
       }
     );
 
+    // TODO #798: Remove once districts store can stand on its own
+    reaction(
+      () =>
+        !this.isLoading &&
+        this.rootStore.districtsStore.apiData.data &&
+        this.rootStore.districtsStore.apiData.data.length > 0,
+      () => {
+        this.rootStore.districtsStore.setFilteredDistricts(
+          this.districtsData.data
+        );
+      }
+    );
+
     autorun(() => {
       if (
-        userStore &&
-        !userStore.userIsLoading &&
-        !userStore.restrictedDistrictIsLoading
+        this.rootStore.userStore &&
+        !this.rootStore.userStore.userIsLoading &&
+        !this.rootStore.userStore.restrictedDistrictIsLoading
       ) {
         this.fetchData({
+          tenantId: this.rootStore.currentTenantId,
+        });
+        this.fetchStatePopulationData({
           tenantId: this.rootStore.currentTenantId,
         });
       }
@@ -137,7 +171,8 @@ export default class BaseDataStore {
   }
 
   get dimensionManifest() {
-    if (!this.apiData.metadata) return null;
+    if (!this.apiData.metadata || !this.apiData.metadata.dimension_manifest)
+      return null;
 
     return this.apiData.metadata.dimension_manifest.reduce((acc, dimension) => {
       const [name, values] = dimension;
@@ -180,6 +215,14 @@ export default class BaseDataStore {
         this.file,
         this.eagerExpand
       );
+      // TODO: Remove this when supervision locations are filtered on the backend
+      if (this.file === "revocations_matrix_by_month") {
+        this.districtsData = parseResponseByFileFormat(
+          responseData,
+          this.file,
+          true
+        );
+      }
       this.isLoading = false;
       this.isError = false;
     } catch (error) {
@@ -191,6 +234,37 @@ export default class BaseDataStore {
       });
       this.isError = true;
       this.isLoading = false;
+    }
+  }
+
+  *fetchStatePopulationData({ tenantId }) {
+    if (!this.statePopulationFile) {
+      this.isStatePopulationLoading = false;
+      this.isStatePopulationError = false;
+      return;
+    }
+
+    const endpoint = `${tenantId}/newRevocations/${this.statePopulationFile}`;
+    try {
+      this.isStatePopulationLoading = true;
+      const responseData = yield callMetricsApi(
+        endpoint,
+        this.getTokenSilently
+      );
+      // The state population files will never be optimized format
+      // so always use eagerExpand = true when processing response data
+      const { data } = parseResponseByFileFormat(
+        responseData,
+        this.statePopulationFile,
+        true
+      );
+      this.statePopulationData = data;
+      this.isStatePopulationLoading = false;
+      this.isStatePopulationError = false;
+    } catch (error) {
+      console.error(error);
+      this.isStatePopulationError = true;
+      this.isStatePopulationLoading = false;
     }
   }
 }

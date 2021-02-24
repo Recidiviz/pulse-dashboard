@@ -129,6 +129,11 @@ const AdmissionCountsByType = ({
         labels: chartLabels,
       }}
       options={{
+        plugins: {
+          datalabels: {
+            display: false,
+          },
+        },
         responsive: true,
         legend: {
           position: "right",
@@ -197,6 +202,11 @@ const AdmissionCountsByType = ({
         ],
       }}
       options={{
+        plugins: {
+          datalabels: {
+            display: false,
+          },
+        },
         responsive: true,
         legend: {
           position: "right",

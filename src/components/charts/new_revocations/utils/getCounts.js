@@ -18,27 +18,49 @@
 import getOr from "lodash/fp/getOr";
 import { calculateRate } from "../helpers/rate";
 
-const getCounts = (transformedData, riskLevels, dimensions) => {
+const getCounts = (
+  transformedData,
+  labels,
+  dimensionValues,
+  statePopulationData,
+  dimensionName
+) => {
   const dataPoints = [];
   const numerators = [];
   const denominators = [];
-
-  dimensions.forEach((dimension, i) => {
+  dimensionValues.forEach((dimensionValue, i) => {
     dataPoints.push([]);
     numerators.push([]);
     denominators.push([]);
 
-    riskLevels.forEach((riskLevel) => {
-      const numerator = getOr(0, [dimension, riskLevel, 0], transformedData);
-      const denominator = getOr(0, [dimension, riskLevel, 1], transformedData);
-      const rate = calculateRate(numerator, denominator).toFixed(2);
+    labels.forEach((label) => {
+      let numerator = 0;
+      let denominator = 0;
+      let rate = 0;
+      if (label === "STATE_POPULATION") {
+        numerator = statePopulationData.reduce((result, item) => {
+          if (item[dimensionName] === dimensionValue) {
+            return result + Number(item.population_count);
+          }
+          return result;
+        }, 0);
+        denominator = statePopulationData.reduce((result, item) => {
+          if (item[dimensionName] === dimensionValue) {
+            return result + Number(item.total_state_population_count);
+          }
+          return result;
+        }, 0);
+      } else {
+        numerator = getOr(0, [dimensionValue, label, 0], transformedData);
+        denominator = getOr(0, [dimensionValue, label, 1], transformedData);
+      }
+      rate = calculateRate(numerator, denominator).toFixed(2);
 
       numerators[i].push(numerator);
       denominators[i].push(denominator);
       dataPoints[i].push(rate);
     });
   });
-
   return { dataPoints, numerators, denominators };
 };
 

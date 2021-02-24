@@ -46,6 +46,7 @@ function downloadCanvasAsImage({
   chartId,
   timeWindowDescription,
   shouldZipDownload,
+  methodology,
 }) {
   const imageData = transformCanvasToBase64(canvas, chartTitle, filters);
 
@@ -54,7 +55,8 @@ function downloadCanvasAsImage({
       chartId,
       chartTitle,
       timeWindowDescription,
-      filters
+      filters,
+      methodology
     );
 
     const imageFile = {

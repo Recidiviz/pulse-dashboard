@@ -17,7 +17,7 @@
 
 import { I18n } from "i18n";
 
-import { TRANSLATIONS } from "./lanternTenants";
+import { TRANSLATIONS } from "../RootStore/TenantStore/lanternTenants";
 
 export const i18n = new I18n();
 

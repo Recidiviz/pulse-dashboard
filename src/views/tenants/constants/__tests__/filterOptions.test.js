@@ -91,11 +91,11 @@ describe("filterOptionsMap", () => {
       const expected = {
         defaultOption: [
           {
-            label: "Revocation",
-            value: "REVOCATION",
+            label: "ALL",
+            value: "All",
           },
         ],
-        defaultValue: ["REVOCATION"],
+        defaultValue: ["All"],
         options: [
           {
             label: "ALL",
@@ -324,11 +324,11 @@ describe("filterOptionsMap", () => {
       const expected = {
         defaultOption: [
           {
-            label: "Revocation",
-            value: "REVOCATION",
+            label: "ALL",
+            value: "All",
           },
         ],
-        defaultValue: ["REVOCATION"],
+        defaultValue: ["All"],
         options: [
           {
             label: "ALL",

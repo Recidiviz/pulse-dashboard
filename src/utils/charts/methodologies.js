@@ -351,10 +351,11 @@ const methodologies = {
         </li>
         <li>Source of race proportions in ND: US Census Bureau.</li>
         <li>
-          If an individual has more than one race or ethnicity recorded from
-          different data systems, they are counted once for each unique race and
-          ethnicity. This means that the total count in this chart may be larger
-          than the total number of individuals it describes.
+          Individuals may have more than one reported race or ethnicity. For the
+          purpose of this dashboard, distributions by race count individuals
+          with more than one reported race or ethnicity towards the racial or
+          ethnic identity that is least represented in North Dakota’s
+          population. This does not apply to the ND Population values.
         </li>
       </ul>
     </div>
@@ -642,22 +643,16 @@ const methodologies = {
           from the U.S. Census Bureau.
         </li>
         <li>
-          If an individual has more than one race or ethnicity recorded from
-          different data systems, then they are counted once for each unique
-          race and ethnicity. This means that the total count in this chart may
-          be larger than the total number of individuals it describes. This does
-          not apply to the ND Population values.
+          Individuals may have more than one reported race or ethnicity. For the
+          purpose of this dashboard, distributions by race count individuals
+          with more than one reported race or ethnicity towards the racial or
+          ethnic identity that is least represented in North Dakota’s
+          population. This does not apply to the ND Population values.
         </li>
         <li>
           Individuals on both parole and probation will count towards either
           selection. As a result, parole FTR referrals and probation FTR
           referrals may sum to more than the total number of FTR referrals.
-        </li>
-        <li>
-          If an individual has more than one race or ethnicity recorded from
-          different data systems, they are counted once for each unique race and
-          ethnicity. This means that the total count in this chart may be larger
-          than the total number of individuals it describes.
         </li>
       </ul>
     </div>

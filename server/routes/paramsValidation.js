@@ -47,6 +47,8 @@ const newRevocationsParamValidations = [
   param("stateCode").toUpperCase().isIn(VALID_STATE_CODES),
   // TODO[#657]: Remove optional check for params when the FE starts sending the query
   query("district").optional(),
+  query("levelOneSupervisionLocation").optional(),
+  query("levelTwoSupervisionLocation").optional(),
   query("chargeCategory").toLowerCase().optional().isIn(CHARGE_CATEGORIES),
   query("metricPeriodMonths")
     .toLowerCase()

@@ -18,6 +18,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Bar } from "react-chartjs-2";
+import "chartjs-plugin-datalabels";
 
 import { axisCallbackForPercentage } from "../../../../utils/charts/axis";
 import { tooltipForFooterWithCounts } from "../../../../utils/charts/significantStatistics";
@@ -51,6 +52,11 @@ const BarChartWithLabels = ({
     id={id}
     data={data}
     options={{
+      plugins: {
+        datalabels: {
+          display: false,
+        },
+      },
       legend: legendOptions || getDefaultLegendOptions(labelColors),
       responsive: true,
       maintainAspectRatio: false,
@@ -84,6 +90,7 @@ const BarChartWithLabels = ({
         callbacks: {
           label: (tooltipItem, tooltipData) =>
             tooltipForRateMetricWithCounts(
+              id,
               tooltipItem,
               tooltipData,
               numerators,
