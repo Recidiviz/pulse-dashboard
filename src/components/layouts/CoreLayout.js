@@ -15,8 +15,9 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React from "react";
-import PropTypes from "prop-types";
+import React, { useCallback, useEffect, useState } from "react";
+import { useLocation, useHistory } from "react-router-dom";
+
 import TopBar from "../topbar/TopBar";
 import TopBarDropdown from "../topbar/TopBarDropdown";
 import TopBarUserMenuForAuthenticatedUser from "../topbar/TopBarUserMenuForAuthenticatedUser";
@@ -24,7 +25,57 @@ import Footer from "../Footer";
 
 import "./CoreLayout.scss";
 
+const selectOptions = [
+  {
+    value: "Community",
+    label: "Community",
+    defaultPath: "/community",
+    pages: {
+      goals: "goals",
+      explore: "explore",
+    },
+  },
+  {
+    value: "Facilities",
+    label: "Facilities",
+    defaultPath: "/facilities",
+    pages: {
+      goals: "goals",
+      explore: "explore",
+    },
+  },
+  {
+    value: "Programming",
+    label: "Programming",
+    defaultPath: "/programming",
+    pages: {
+      explore: "explore",
+    },
+  },
+];
+
 const CoreLayout = ({ children }) => {
+  const history = useHistory();
+  const { pathname } = useLocation();
+  const getSelectedOption = selectOptions.find((item) =>
+    pathname.includes(item.value.toLowerCase())
+  );
+  const [activeOption, setActiveOption] = useState(getSelectedOption);
+
+  const routeOnClick = useCallback(
+    (path) => {
+      history.push(path);
+    },
+    [history]
+  );
+
+  useEffect(() => {
+    setActiveOption(getSelectedOption);
+  }, [getSelectedOption, pathname]);
+
+  const capitalizeFirstLetter = (string) =>
+    string.charAt(0).toUpperCase() + string.slice(1);
+
   return (
     <div id="app">
       <div className="page-container">
@@ -34,14 +85,34 @@ const CoreLayout = ({ children }) => {
               <TopBarDropdown />
             </ul>
             <ul className="nav-right">
+              <ul className="page-toggle">
+                {Object.keys(activeOption.pages).map((option) => {
+                  const key = activeOption.defaultPath + option;
+                  const pagePath = `${activeOption.defaultPath}/${option}`;
+                  return (
+                    <li key={key}>
+                      <input
+                        type="checkbox"
+                        className="visually-hidden"
+                        id={key}
+                        name="page"
+                        checked={pathname === pagePath}
+                        onClick={() => routeOnClick(pagePath)}
+                      />
+                      <label className="page-label" htmlFor={key}>
+                        {capitalizeFirstLetter(activeOption.pages[option])}
+                      </label>
+                    </li>
+                  );
+                })}
+              </ul>
               <TopBarUserMenuForAuthenticatedUser />
             </ul>
           </div>
         </TopBar>
         {children}
 
-        <Footer />
-      </div>
+      <Footer />
     </div>
   );
 };
