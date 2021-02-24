@@ -41,6 +41,7 @@ import "./ToggleBar.scss";
 const TOGGLE_STYLE = {
   zIndex: 700,
   top: 65,
+  backgroundColor: "#F4F5F5",
 };
 
 const ToggleBar = ({
@@ -83,8 +84,8 @@ const ToggleBar = ({
   return (
     <Sticky style={TOGGLE_STYLE}>
       <div className="ToggleBar row pB-10">
-        <div className="col-md-12">
-          <div className="bd bgc-white" style={{ marginLeft: -2 }}>
+        <div className="col-md-8">
+          <div style={{ marginLeft: -2 }}>
             <div className="row toggle-filters">
               {setChartMetricType && (
                 <div className="toggle-filters__filter" id="metricTypeToggle">
