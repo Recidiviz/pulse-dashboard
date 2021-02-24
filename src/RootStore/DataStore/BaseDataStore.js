@@ -216,7 +216,7 @@ export default class BaseDataStore {
         this.eagerExpand
       );
       // TODO: Remove this when supervision locations are filtered on the backend
-      if (this.file === "revocations_matrix_by_month") {
+      if (this.file === "revocations_matrix_cells") {
         this.districtsData = parseResponseByFileFormat(
           responseData,
           this.file,
