@@ -34,7 +34,7 @@ const RevocationsByDistrict = observer(
   ({ containerHeight, timeDescription }, ref) => {
     const { dataStore } = useRootStore();
     const { revocationsChartStore } = dataStore;
-    const { transformedData, currentDistricts } = revocationsChartStore;
+    const { districtChartData, currentDistricts } = revocationsChartStore;
 
     return (
       <RevocationsByDimension
@@ -73,7 +73,7 @@ const RevocationsByDistrict = observer(
           )
         }
         generateChartData={createGenerateChartData(
-          transformedData,
+          districtChartData,
           currentDistricts
         )}
         chartTitle={CHART_TITLE}

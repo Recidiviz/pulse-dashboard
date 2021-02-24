@@ -64,16 +64,14 @@ describe("RevocationsChartStore", () => {
 
   describe("transformedData", () => {
     it("transforms the district attribute to use district label", () => {
-      expect(revocationsChartStore.transformedData).toEqual([
+      expect(revocationsChartStore.districtChartData).toEqual([
         {
           districtPrimary: "Philadelphia",
-          districtSecondary: "ABC",
           level_2_supervision_location: "03",
           level_1_supervision_location: "ABC",
         },
         {
           districtPrimary: "Mississippi",
-          districtSecondary: "CBA",
           level_2_supervision_location: "04",
           level_1_supervision_location: "CBA",
         },
