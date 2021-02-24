@@ -65,7 +65,7 @@ const RevocationsByOfficer = observer(
             <RevocationCountChart
               chartId={chartId}
               data={slicedData}
-              xAxisLabel={`District-${translate("Officer")} ID`}
+              xAxisLabel={`District-${translate("Officer")} name`}
             />
           ) : (
             <PercentRevokedChart
@@ -74,7 +74,7 @@ const RevocationsByOfficer = observer(
               numerators={numerators}
               denominators={denominators}
               averageRate={averageRate}
-              xAxisLabel={`District-${translate("Officer")} ID`}
+              xAxisLabel={`District-${translate("Officer")} name`}
               yAxisLabel={
                 mode === "rates"
                   ? translate("percentOfPopulationRevoked")
