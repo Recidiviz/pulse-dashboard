@@ -36,7 +36,8 @@ export default class DistrictsStore {
   constructor({ rootStore }) {
     makeAutoObservable(this, {
       fetchDistricts: flow,
-      districts: computed,
+      districtIds: computed,
+      districtIdToLabel: computed,
     });
 
     this.rootStore = rootStore;
@@ -92,21 +93,34 @@ export default class DistrictsStore {
     return this.rootStore.tenantStore.tenantMappings;
   }
 
-  get districts() {
-    const { districtValueKey } = this.tenantMappings;
-    return uniqBy(this.apiData.data, districtValueKey)
-      .map((d) => d[districtValueKey])
+  get districtIds() {
+    const { districtIdKey } = this.tenantMappings;
+    return uniqBy(this.apiData.data, districtIdKey)
+      .map((d) => d[districtIdKey])
       .sort();
   }
 
-  // TODO: Remove the filtered districts when backend has the filtered supervision locations
+  get districtIdToLabel() {
+    if (!this.apiData.data) return {};
+    const { districtIdKey, districtLabelKey } = this.tenantMappings;
+    const districtIdToLabel = {};
+    this.apiData.data.forEach((d) => {
+      districtIdToLabel[d[districtIdKey]] = d[districtLabelKey];
+    });
+    return {
+      ...districtIdToLabel,
+      ALL: "ALL",
+      all: "ALL",
+    };
+  }
+
+  // TODO #798: Remove the filtered districts when backend has the filtered supervision locations
   setFilteredDistricts(apiData) {
     if (apiData && this.apiData.data) {
-      this.isLoading = true;
-      const { districtFilteringKey, districtValueKey } = this.tenantMappings;
+      const { districtFilterByKey, districtValueKey } = this.tenantMappings;
       const data = apiData.slice();
 
-      const validDistricts = data.map((d) => d[districtFilteringKey]);
+      const validDistricts = data.map((d) => d[districtFilterByKey]);
 
       this.filteredDistricts = this.apiData.data.filter((d) =>
         validDistricts.includes(d[districtValueKey])

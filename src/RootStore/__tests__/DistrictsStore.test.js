@@ -32,8 +32,9 @@ const mockRootStore = {
   tenantStore: {
     isLanternTenant: true,
     tenantMappings: {
+      districtIdKey: "level_2_supervision_location_external_id",
       districtValueKey: "level_2_supervision_location_external_id",
-      districtLabelKey: "level_2_supervision_location_external_id",
+      districtLabelKey: "level_2_supervision_location_name",
     },
   },
   userStore: {
@@ -54,19 +55,19 @@ describe("DistrictsStore", () => {
     const mockDistricts = [
       {
         level_2_supervision_location_external_id: "TCSTL",
-        level_2_supervision_location_name: "TCSTL",
+        level_2_supervision_location_name: "TCSTL-name",
         level_1_supervision_location_external_id: "SLCRC",
         level_1_supervision_location_name: "St. Louis Community Release Center",
       },
       {
         level_2_supervision_location_external_id: "TCSTL",
-        level_2_supervision_location_name: "TCSTL",
+        level_2_supervision_location_name: "TCSTL-name",
         level_1_supervision_location_external_id: "TCSTL",
         level_1_supervision_location_name: "Transition Center of St. Louis",
       },
       {
         level_2_supervision_location_external_id: "ABCD",
-        level_2_supervision_location_name: "ABCD",
+        level_2_supervision_location_name: "ABCD-name",
         level_1_supervision_location_external_id: "ABCD-Level-1",
         level_1_supervision_location_name: "ABC Location",
       },
@@ -113,8 +114,17 @@ describe("DistrictsStore", () => {
       expect(store.apiData.metadata).toEqual({});
     });
 
-    it("sets districts to a sorted list of all unique values", () => {
-      expect(store.districts).toEqual(["ABCD", "TCSTL"]);
+    it("sets districtIds to a sorted list of all unique values", () => {
+      expect(store.districtIds).toEqual(["ABCD", "TCSTL"]);
+    });
+
+    it("sets districtIdToLabel and includes all values", () => {
+      expect(store.districtIdToLabel).toEqual({
+        ABCD: "ABCD-name",
+        TCSTL: "TCSTL-name",
+        ALL: "ALL",
+        all: "ALL",
+      });
     });
   });
 

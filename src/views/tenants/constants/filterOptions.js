@@ -90,7 +90,7 @@ const MOFilterOptions = {
       { value: "BOARDS_RETURN", label: "Board Returns" },
     ],
     get defaultOption() {
-      return [this.options[1]];
+      return [this.options[0]];
     },
     get defaultValue() {
       return this.defaultOption.map(({ value }) => value);
@@ -178,7 +178,7 @@ const PAFilterOptions = {
       { value: "MENTAL_HEALTH", label: "Mental Health" },
     ],
     get defaultOption() {
-      return [this.options[1]];
+      return [this.options[0]];
     },
     get defaultValue() {
       return this.defaultOption.map(({ value }) => value);

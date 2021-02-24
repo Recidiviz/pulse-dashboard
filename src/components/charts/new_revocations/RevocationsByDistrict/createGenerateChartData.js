@@ -37,11 +37,14 @@ const generatePercentChartData = (filteredData, currentDistricts, mode) => {
       : ["supervision_count", "supervision_population_count"];
 
   const transformedData = pipe(
-    filter((item) => item.district !== "ALL"),
-    groupBy("district"),
+    filter(
+      (item) =>
+        item.districtPrimary !== "ALL" && item.districtSecondary === "ALL"
+    ),
+    groupBy("districtPrimary"),
     values,
     map((dataset) => ({
-      district: dataset[0].district,
+      district: dataset[0].districtPrimary,
       count: sumBy((item) => toInteger(item.revocation_count), dataset),
       [fieldName]: sumBy((item) => toInteger(item[totalFieldName]), dataset),
     })),
@@ -96,11 +99,14 @@ const generatePercentChartData = (filteredData, currentDistricts, mode) => {
 
 const generateCountChartData = (filteredData, currentDistricts) => {
   const transformedData = pipe(
-    filter((item) => item.district !== "ALL"),
-    groupBy("district"),
+    filter(
+      (item) =>
+        item.districtPrimary !== "ALL" && item.districtSecondary === "ALL"
+    ),
+    groupBy("districtPrimary"),
     values,
     map((dataset) => ({
-      district: dataset[0].district,
+      district: dataset[0].districtPrimary,
       count: sumBy((item) => toInteger(item.revocation_count), dataset),
     })),
     orderBy(["count"], ["desc"])

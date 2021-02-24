@@ -107,6 +107,8 @@ export default class FiltersStore {
       valueKey: tenantMappings.districtValueKey,
       labelKey: tenantMappings.districtLabelKey,
       filterKey: tenantMappings.districtFilterKey,
+      filterByKey: tenantMappings.districtFilterByKey,
+      secondaryFilterByKey: tenantMappings.districtSecondaryFilterByKey,
     };
   }
 
@@ -120,7 +122,7 @@ export default class FiltersStore {
   }
 
   get districts() {
-    // TODO: Use apiData.data from districts store when supervision locations are
+    // TODO #798: Use apiData.data from districts store when supervision locations are
     // filtered on the backend
     const { filteredDistricts } = this.rootStore.districtsStore;
     if (!filteredDistricts) return [];
@@ -129,7 +131,7 @@ export default class FiltersStore {
         value: d[this.districtKeys.valueKey],
         label: d[this.districtKeys.labelKey],
       }))
-      .sort(compareStrings("value"));
+      .sort(compareStrings("label"));
   }
 
   setFilters(updatedFilters) {
