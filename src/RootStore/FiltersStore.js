@@ -122,7 +122,7 @@ export default class FiltersStore {
   }
 
   get districts() {
-    // TODO: Use apiData.data from districts store when supervision locations are
+    // TODO #798: Use apiData.data from districts store when supervision locations are
     // filtered on the backend
     const { filteredDistricts } = this.rootStore.districtsStore;
     if (!filteredDistricts) return [];
