@@ -14,6 +14,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
+const Sentry = require("@sentry/node");
+
 const { default: refreshRedisCache } = require("../refreshRedisCache");
 const { createSubset, createSubsetFilters } = require("../../filters");
 
@@ -21,6 +23,7 @@ const mockCache = {
   set: jest.fn(() => Promise.resolve(true)),
 };
 
+jest.mock("@sentry/node");
 jest.mock("../cacheManager", () => {
   return {
     getCache: () => mockCache,
@@ -101,6 +104,10 @@ describe("refreshRedisCache", () => {
       refreshRedisCache(mockFetchValue, stateCode, metricType, (err) => {
         expect(mockCache.set).toHaveBeenCalledTimes(1);
         expect(err).toEqual(error);
+        expect(Sentry.captureException).toHaveBeenCalledWith(
+          "Error occurred while caching files for metricType: metric_type",
+          error
+        );
         done();
       });
     });
@@ -184,6 +191,11 @@ describe("refreshRedisCache", () => {
       refreshRedisCache(mockFetchValue, stateCode, metricType, (err) => {
         expect(mockCache.set).toHaveBeenCalledTimes(1);
         expect(err).toEqual(error);
+        expect(err).toEqual(error);
+        expect(Sentry.captureException).toHaveBeenCalledWith(
+          "Error occurred while caching files for metricType: metric_type",
+          error
+        );
         done();
       });
     });

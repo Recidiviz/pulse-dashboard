@@ -22,6 +22,8 @@ const morgan = require("morgan");
 const helmet = require("helmet");
 const jwt = require("express-jwt");
 const jwksRsa = require("jwks-rsa");
+const Sentry = require("@sentry/node");
+
 const devAuthConfig = require("../src/auth_config_dev.json");
 const productionAuthConfig = require("../src/auth_config_production.json");
 const api = require("./routes/api");
@@ -29,6 +31,11 @@ const {
   newRevocationsParamValidations,
   restrictedAccessParamValidations,
 } = require("./routes/paramsValidation");
+
+Sentry.init({
+  environment: process.env.SENTRY_ENV,
+  dsn: process.env.SENTRY_DNS,
+});
 
 const app = express();
 
@@ -56,6 +63,9 @@ if (!authConfig.domain || !authConfig.audience) {
     "Please make sure that auth_config.json is in place and populated"
   );
 }
+
+// The Sentry request handler must be the first middleware on the app
+// app.use(Sentry.Handlers.requestHandler());
 
 app.use(morgan("dev"));
 app.use(helmet());
@@ -132,6 +142,19 @@ app.get("/_ah/warmup", () => {
   // eslint-disable-next-line no-console
   console.log("Responding to warmup request...");
 });
+
+// The Sentry error handler must be before any other error middleware and after all controllers
+// app.use(
+//   Sentry.Handlers.errorHandler({
+//     shouldHandleError(error) {
+//       // Capture all 404 and 500 errors
+//       if (error.status === 404 || error.status === 500) {
+//         return true;
+//       }
+//       return false;
+//     },
+//   })
+// );
 
 app.use(errorHandler);
 
