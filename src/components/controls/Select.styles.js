@@ -17,14 +17,29 @@
 import { COLORS } from "../../assets/scripts/constants/colors";
 
 const fontStyles = {
-  color: "rgba(114, 119, 122, 0.8)",
+  color: "#00413E",
   textTransform: "uppercase",
+  weight: 500,
+  size: "0.8rem",
 };
 
 export default {
   container: (base) => ({
     ...base,
     flexGrow: 1,
+  }),
+  control: (base, state) => ({
+    ...base,
+    border: "1px solid #D2D8D8",
+    borderRadius: "15px",
+    borderBottomRightRadius: state.menuIsOpen && 0,
+    borderBottomLeftRadius: state.menuIsOpen && 0,
+    // borderBottomRightRadius: state.menuIsOpen ? "0px" : "15px",
+    // borderBottomLeftRadius: state.menuIsOpen ? "0px" : "15px",
+  }),
+  menu: (base) => ({
+    ...base,
+    margin: 0,
   }),
   option: (base, state) => ({
     ...base,

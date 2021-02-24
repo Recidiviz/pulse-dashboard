@@ -27,6 +27,30 @@ const Select = forwardRef((props, ref) => (
     styles={styles}
     className="Select"
     classNamePrefix="Select"
+    components={{
+      IndicatorSeparator: () => null,
+      DropdownIndicator: () => (
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            width: 36,
+            height: 36,
+          }}
+        >
+          <span
+            style={{
+              width: 0,
+              height: 0,
+              borderStyle: "solid",
+              borderWidth: "4px 4px 0 4px",
+              borderColor: "#014C48 transparent transparent transparent",
+            }}
+          />
+        </div>
+      ),
+    }}
     {...props}
   />
 ));
