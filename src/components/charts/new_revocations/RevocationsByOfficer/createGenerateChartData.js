@@ -26,7 +26,6 @@ import { calculateRate } from "../helpers/rate";
 
 import { translate } from "../../../../utils/i18nSettings";
 import { sumCounts } from "../utils/sumCounts";
-import getNameFromOfficerId from "../utils/getNameFromOfficerId";
 import { COLORS } from "../../../../assets/scripts/constants/colors";
 
 const generatePercentChartData = (filteredData, mode) => {
@@ -39,9 +38,7 @@ const generatePercentChartData = (filteredData, mode) => {
     groupBy("officer"),
     values,
     map((dataset) => ({
-      officer: `${dataset[0].district}-${getNameFromOfficerId(
-        dataset[0].officer
-      )}`,
+      officer: dataset[0].officer_label,
       count: sumBy((item) => toInteger(item.revocation_count), dataset),
       [fieldName]: sumBy((item) => toInteger(item[totalFieldName]), dataset),
     })),
@@ -86,9 +83,7 @@ const generateCountChartData = (filteredData) => {
     groupBy("officer"),
     values,
     map((dataset) => ({
-      officer: `${dataset[0].district}-${getNameFromOfficerId(
-        dataset[0].officer
-      )}`,
+      officer: dataset[0].officer_label,
       count: sumBy((item) => toInteger(item.revocation_count), dataset),
     })),
     orderBy(["count"], ["desc"])
