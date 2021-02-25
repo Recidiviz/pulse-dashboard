@@ -19,11 +19,13 @@
 // server before you will see the translation rendered properly
 
 export default {
+  District: "Sub-office",
   officer: "agent",
   Officer: "Agent",
   gender: "sex",
   Gender: "Sex",
   violationReports: "violation reports",
+  revocationsByDistrictChartTitle: "Admissions by district and sub-office",
   revocationsOverTimeXAxis: "Number of SCI admissions from parole",
   revoked: "admitted",
   Revocation: "Admission",

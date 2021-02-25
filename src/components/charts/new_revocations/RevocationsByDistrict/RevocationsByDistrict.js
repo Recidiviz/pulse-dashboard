@@ -34,6 +34,8 @@ const RevocationsByDistrict = observer(
     const { dataStore } = useRootStore();
     const { revocationsChartStore } = dataStore;
     const { districtChartData, currentDistricts } = revocationsChartStore;
+    const CHART_TITLE = translate("revocationsByDistrictChartTitle");
+    const xAxisLabel = translate("District");
 
     return (
       <RevocationsByDimension
@@ -53,7 +55,7 @@ const RevocationsByDistrict = observer(
             <RevocationCountChart
               chartId={chartId}
               data={data}
-              xAxisLabel="Sub-office"
+              xAxisLabel={xAxisLabel}
             />
           ) : (
             <PercentRevokedChart
@@ -62,7 +64,7 @@ const RevocationsByDistrict = observer(
               numerators={numerators}
               denominators={denominators}
               averageRate={averageRate}
-              xAxisLabel="Sub-office"
+              xAxisLabel={xAxisLabel}
               yAxisLabel={
                 mode === "rates"
                   ? translate("percentOfPopulationRevoked")
@@ -75,8 +77,8 @@ const RevocationsByDistrict = observer(
           districtChartData,
           currentDistricts
         )}
-        chartTitle={revocationsChartStore.districtChartTitle}
-        metricTitle={revocationsChartStore.districtChartTitle}
+        chartTitle={CHART_TITLE}
+        metricTitle={CHART_TITLE}
         timeDescription={timeDescription}
         modes={
           flags.enableRevocationRateByExit
@@ -84,7 +86,7 @@ const RevocationsByDistrict = observer(
             : ["counts", "rates"]
         }
         defaultMode={DEFAULT_MODE}
-        dataExportLabel="Sub-office"
+        dataExportLabel={xAxisLabel}
       />
     );
   },
