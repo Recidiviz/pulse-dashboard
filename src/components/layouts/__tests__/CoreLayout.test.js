@@ -4,7 +4,6 @@ import { useLocation } from "react-router-dom";
 
 import CoreLayout from "../CoreLayout";
 import TopBarUserMenuForAuthenticatedUser from "../../topbar/TopBarUserMenuForAuthenticatedUser";
-import useSideBar from "../../../hooks/useSideBar";
 
 import mockWithTestId from "../../../../__helpers__/mockWithTestId";
 import { PageProvider } from "../../../contexts/PageContext";
@@ -24,10 +23,6 @@ describe("CoreLayout tests", () => {
   const mockChildren = mockWithTestId(mockChildrenId);
   const mockPathname = "/some/nested/pathname";
   useLocation.mockReturnValue({ pathname: mockPathname });
-  useSideBar.mockReturnValue({
-    isSideBarCollapsed: true,
-    toggleSideBar: jest.fn(),
-  });
 
   beforeEach(() => {
     jest.clearAllMocks();

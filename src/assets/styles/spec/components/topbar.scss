@@ -25,6 +25,7 @@
 
   .header-container {
     @include clearfix;
+    display: flex;
 
     height: $header-height;
 
