@@ -18,7 +18,6 @@ import { COLORS } from "../../assets/scripts/constants/colors";
 
 const fontStyles = {
   color: "#00413E",
-  textTransform: "uppercase",
   weight: 500,
   size: "0.8rem",
 };
@@ -31,28 +30,38 @@ export default {
   control: (base, state) => ({
     ...base,
     border: "1px solid #D2D8D8",
+    boxShadow: "1px solid #D2D8D8",
     borderRadius: "15px",
     borderBottomRightRadius: state.menuIsOpen && 0,
     borderBottomLeftRadius: state.menuIsOpen && 0,
-    // borderBottomRightRadius: state.menuIsOpen ? "0px" : "15px",
-    // borderBottomLeftRadius: state.menuIsOpen ? "0px" : "15px",
+
+    "&:hover": {
+      borderColor: "#D2D8D8",
+    },
   }),
   menu: (base) => ({
     ...base,
     margin: 0,
+    border: "1px solid #D2D8D8",
+    borderBottomRightRadius: "15px",
+    borderBottomLeftRadius: "15px",
+    borderTop: "none",
   }),
   option: (base, state) => ({
     ...base,
     ...fontStyles,
-    backgroundColor: state.isMulti ? "transparent" : base.backgroundColor,
+    backgroundColor:
+      state.isSelected && !state.isMulti ? "#006C67" : "transparent",
     color: state.isSelected && !state.isMulti ? COLORS.white : fontStyles.color,
     ":active": {
-      backgroundColor: state.isMulti ? "transparent" : base.backgroundColor,
+      background: "#E3E6E6",
+    },
+    ":hover": {
+      background: "#E3E6E6",
     },
   }),
   valueContainer: (base) => ({
     ...base,
-    textTransform: "uppercase",
     whiteSpace: "nowrap",
     textOverflow: "ellipsis",
   }),
