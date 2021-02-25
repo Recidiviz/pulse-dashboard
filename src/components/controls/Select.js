@@ -18,13 +18,12 @@ import React, { forwardRef } from "react";
 import PropTypes from "prop-types";
 import ReactSelect from "react-select";
 
-import styles from "./Select.styles";
 import { optionPropType } from "../propTypes";
+import "./Select.scss";
 
 const Select = forwardRef((props, ref) => (
   <ReactSelect
     ref={ref}
-    styles={styles}
     className="Select"
     classNamePrefix="Select"
     components={{
