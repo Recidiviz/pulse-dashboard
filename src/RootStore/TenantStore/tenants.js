@@ -18,6 +18,10 @@
 import { US_MO, US_PA } from "./lanternTenants";
 
 export const tenantMappings = {
+  districtChartTitle: {
+    [US_MO]: "Admissions by district",
+    [US_PA]: "Admissions by district and sub-office",
+  },
   districtPrimaryIdKey: {
     [US_MO]: "level_1_supervision_location_external_id",
     [US_PA]: "level_2_supervision_location_external_id",

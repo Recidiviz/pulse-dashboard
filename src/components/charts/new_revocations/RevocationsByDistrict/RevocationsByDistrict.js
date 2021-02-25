@@ -27,7 +27,6 @@ import { translate } from "../../../../utils/i18nSettings";
 import flags from "../../../../flags";
 import { useRootStore } from "../../../../StoreProvider";
 
-const CHART_TITLE = "Admissions by district";
 const DEFAULT_MODE = "counts";
 
 const RevocationsByDistrict = observer(
@@ -76,8 +75,8 @@ const RevocationsByDistrict = observer(
           districtChartData,
           currentDistricts
         )}
-        chartTitle={CHART_TITLE}
-        metricTitle={CHART_TITLE}
+        chartTitle={revocationsChartStore.districtChartTitle}
+        metricTitle={revocationsChartStore.districtChartTitle}
         timeDescription={timeDescription}
         modes={
           flags.enableRevocationRateByExit
