@@ -19,6 +19,7 @@ import {
   makeAutoObservable,
   computed,
   autorun,
+  reaction,
   observable,
   action,
 } from "mobx";
@@ -31,11 +32,10 @@ import {
   SUPERVISION_LEVEL,
   SUPERVISION_TYPE,
   VIOLATION_TYPE,
-  LEVEL_2_SUPERVISION_LOCATION,
-  LEVEL_1_SUPERVISION_LOCATION,
 } from "../constants/filterTypes";
 import filterOptionsMap from "../views/tenants/constants/filterOptions";
 import { compareStrings } from "./utils";
+import { generateNestedOptions } from "./utils/districtOptions";
 
 export default class FiltersStore {
   rootStore;
@@ -56,6 +56,16 @@ export default class FiltersStore {
 
     this.rootStore = rootStore;
 
+    reaction(
+      () => this.rootStore.currentTenantId,
+      (currentTenantId, previousTenantId) => {
+        if (currentTenantId !== previousTenantId) {
+          this.filters.clear();
+          this.setFilters(this.defaultFilterValues);
+        }
+      }
+    );
+
     autorun(() => {
       this.setFilters(this.defaultFilterValues);
     });
@@ -75,12 +85,6 @@ export default class FiltersStore {
       ...(this.filterOptions[ADMISSION_TYPE].filterEnabled
         ? { [ADMISSION_TYPE]: this.filterOptions[ADMISSION_TYPE].defaultValue }
         : {}),
-      [LEVEL_1_SUPERVISION_LOCATION]: [
-        this.filterOptions[LEVEL_1_SUPERVISION_LOCATION].defaultValue,
-      ],
-      [LEVEL_2_SUPERVISION_LOCATION]: [
-        this.filterOptions[LEVEL_2_SUPERVISION_LOCATION].defaultValue,
-      ],
       ...{
         [this.districtKeys.filterKey]: [
           this.rootStore.userStore.restrictedDistrict ||
@@ -102,14 +106,7 @@ export default class FiltersStore {
   }
 
   get districtKeys() {
-    const { tenantMappings } = this.rootStore.tenantStore;
-    return {
-      valueKey: tenantMappings.districtValueKey,
-      labelKey: tenantMappings.districtLabelKey,
-      filterKey: tenantMappings.districtFilterKey,
-      filterByKey: tenantMappings.districtFilterByKey,
-      secondaryFilterByKey: tenantMappings.districtSecondaryFilterByKey,
-    };
+    return this.rootStore.districtsStore.districtKeys;
   }
 
   get districtFilterOptions() {
@@ -126,11 +123,18 @@ export default class FiltersStore {
     // filtered on the backend
     const { filteredDistricts } = this.rootStore.districtsStore;
     if (!filteredDistricts) return [];
-    return uniqBy(filteredDistricts, this.districtKeys.valueKey)
-      .map((d) => ({
-        value: d[this.districtKeys.valueKey],
-        label: d[this.districtKeys.labelKey],
-      }))
+    const { primaryLabelKey, secondaryLabelKey, valueKey } = this.districtKeys;
+
+    if (secondaryLabelKey) {
+      return generateNestedOptions([...filteredDistricts], this.districtKeys);
+    }
+    return uniqBy(filteredDistricts, valueKey)
+      .map((district) => {
+        return {
+          value: district[valueKey],
+          label: district[primaryLabelKey],
+        };
+      })
       .sort(compareStrings("label"));
   }
 

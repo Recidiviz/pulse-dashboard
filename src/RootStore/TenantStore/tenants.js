@@ -17,30 +17,38 @@
 
 import { US_MO, US_PA } from "./lanternTenants";
 
-const tenantMappings = {
-  districtIdKey: {
+export const tenantMappings = {
+  districtPrimaryIdKey: {
     [US_MO]: "level_1_supervision_location_external_id",
     [US_PA]: "level_2_supervision_location_external_id",
   },
-  districtFilterByKey: {
-    [US_MO]: "level_1_supervision_location",
-    [US_PA]: "level_2_supervision_location",
-  },
-  districtSecondaryFilterByKey: {
-    [US_MO]: "level_2_supervision_location",
-    [US_PA]: "level_1_supervision_location",
-  },
-  districtValueKey: {
-    [US_MO]: "level_1_supervision_location_external_id",
-    [US_PA]: "level_2_supervision_location_external_id",
-  },
-  districtLabelKey: {
+  districtPrimaryLabelKey: {
     [US_MO]: "level_1_supervision_location_external_id",
     [US_PA]: "level_2_supervision_location_name",
   },
+  districtSecondaryIdKey: {
+    [US_MO]: "level_2_supervision_location_external_id",
+    [US_PA]: "level_1_supervision_location_external_id",
+  },
+  districtSecondaryLabelKey: {
+    [US_MO]: null,
+    [US_PA]: "level_1_supervision_location_name",
+  },
+  districtSecondaryFilterByKey: {
+    [US_MO]: "level_2_supervision_location",
+    [US_PA]: "level_2_supervision_location",
+  },
+  districtFilterByKey: {
+    [US_MO]: "level_1_supervision_location",
+    [US_PA]: "level_1_supervision_location",
+  },
   districtFilterKey: {
     [US_MO]: "levelOneSupervisionLocation",
-    [US_PA]: "levelTwoSupervisionLocation",
+    [US_PA]: "levelOneSupervisionLocation",
+  },
+  districtFilterValueKey: {
+    [US_MO]: "level_1_supervision_location_external_id",
+    [US_PA]: "level_1_supervision_location_external_id",
   },
 };
 

@@ -25,6 +25,7 @@ import UserStore from "../UserStore";
 import RootStore from "../RootStore";
 import { METADATA_NAMESPACE } from "../../constants";
 import { callMetricsApi } from "../../api/metrics/metricsClient";
+import DistrictsStore from "../DistrictsStore";
 
 let rootStore;
 let baseStore;
@@ -76,10 +77,19 @@ describe("BaseDataStore", () => {
 
   beforeAll(() => {
     jest.spyOn(console, "error").mockImplementation(() => {});
+    DistrictsStore.mockImplementation(() => {
+      return {
+        apiData: { data: [] },
+        districtKeys: {
+          filterKey: "levelOneSupervisionLocation",
+        },
+      };
+    });
   });
 
   afterAll(() => {
     jest.resetModules();
+    jest.restoreAllMocks();
   });
 
   describe("when user is authenticated", () => {
@@ -175,10 +185,11 @@ describe("BaseDataStore", () => {
         jest.clearAllMocks();
         baseStore = new BaseDataStore({ rootStore, file });
       });
+
       it("makes a request to the correct endpoint for the apiData", () => {
         const expectedEndpoint = `${tenantId}/newRevocations/revocations_matrix_distribution_by_district
         ?metricPeriodMonths=12&chargeCategory=All&reportedViolations=All&violationType=All&supervisionType=All
-        &supervisionLevel=All&levelOneSupervisionLocation[0]=All&levelTwoSupervisionLocation[0]=All`.replace(
+        &supervisionLevel=All&levelOneSupervisionLocation[0]=All`.replace(
           /\n\s+/g,
           ""
         );
@@ -248,7 +259,11 @@ describe("BaseDataStore", () => {
           restrictedDistrictIsLoading: false,
         };
       });
+
       rootStore = new RootStore();
+      runInAction(() => {
+        rootStore.tenantStore.currentTenantId = tenantId;
+      });
       baseStore = new BaseDataStore({ rootStore, file });
       rootStore.filtersStore.setFilters({
         violationType: "FELONY",
@@ -258,7 +273,7 @@ describe("BaseDataStore", () => {
     it("fetches a new subset file with new filter query params", () => {
       const expectedEndpoint = `${tenantId}/newRevocations/revocations_matrix_distribution_by_district?
       metricPeriodMonths=12&chargeCategory=All&reportedViolations=All&violationType=LAW&
-      supervisionType=All&supervisionLevel=All&levelOneSupervisionLocation[0]=All&levelTwoSupervisionLocation[0]=All`.replace(
+      supervisionType=All&supervisionLevel=All&levelOneSupervisionLocation[0]=All`.replace(
         /\n\s+/g,
         ""
       );

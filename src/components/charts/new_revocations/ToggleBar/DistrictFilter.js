@@ -23,8 +23,9 @@ import map from "lodash/fp/map";
 import FilterField from "./FilterField";
 import SelectDropdown from "../../../controls/SelectDropdown";
 import { useRootStore } from "../../../../StoreProvider";
+import { flatOptions } from "../../../controls/utils";
 
-const allOption = { label: "All", value: "All" };
+const allOption = { label: "ALL", value: "All" };
 
 const DistrictFilter = () => {
   const { filters, filtersStore, userStore } = useRootStore();
@@ -42,7 +43,7 @@ const DistrictFilter = () => {
     filtersStore.setFilters({ [filterKey]: filteredDistricts });
   };
 
-  const selectedValues = options.filter((option) =>
+  const selectedValues = flatOptions(options).filter((option) =>
     get(filters, filterKey).includes(option.value)
   );
 
