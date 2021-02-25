@@ -38,12 +38,6 @@ import { getDistrictOptions } from "./helpers";
 
 import "./ToggleBar.scss";
 
-const TOGGLE_STYLE = {
-  zIndex: 700,
-  top: 65,
-  backgroundColor: "#F4F5F5",
-};
-
 const ToggleBar = ({
   setChartMetricType = null,
   setChartSupervisionType = null,
@@ -82,7 +76,7 @@ const ToggleBar = ({
   );
 
   return (
-    <Sticky style={TOGGLE_STYLE}>
+    <Sticky className="toggle-bar">
       <div className="ToggleBar row pB-10">
         <div className="col-md-8">
           <div style={{ marginLeft: -2 }}>

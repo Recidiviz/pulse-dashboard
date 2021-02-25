@@ -1,3 +1,4 @@
+@import "../../assets/styles/spec/settings/index";
 .toggle-filters {
   display: flex;
   font-weight: 400;
@@ -40,4 +41,9 @@
   #districtToggle {
     flex-grow: 4;
   }
+}
+.toggle-bar {
+  z-index: 700;
+  top: 65px !important;
+  background-color: $core-background;
 }
