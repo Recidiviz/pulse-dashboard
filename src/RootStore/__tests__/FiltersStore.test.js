@@ -206,7 +206,18 @@ describe("FiltersStore", () => {
             filtersStore.filterOptions[getDistrictFilterKey(tenantId)].options
           ).toEqual([
             {
+              label: "CO - Central Office",
+              sortByLabel: "Central Office",
+              options: [
+                {
+                  label: "CO - Central Office",
+                  value: "CO - CENTRAL OFFICE",
+                },
+              ],
+            },
+            {
               label: "03 - Harrisburg",
+              sortByLabel: "Harrisburg DO",
               options: [
                 {
                   label: "03 - Harrisburg DO",
@@ -219,15 +230,6 @@ describe("FiltersStore", () => {
                 {
                   label: "03 - York DO",
                   value: "03 - YORK",
-                },
-              ],
-            },
-            {
-              label: "CO - Central Office",
-              options: [
-                {
-                  label: "CO - Central Office",
-                  value: "CO - CENTRAL OFFICE",
                 },
               ],
             },

@@ -28,9 +28,8 @@ export function generateNestedOptions(districts, districtKeys) {
     valueKey,
   } = districtKeys;
   const filterOptions = {};
-  const sortedDistricts = districts.sort(compareStrings(valueKey));
 
-  sortedDistricts.forEach((district) => {
+  districts.forEach((district) => {
     const primaryId = district[primaryIdKey];
     const primaryLabel = district[primaryLabelKey];
     const nestedLabel = district[secondaryLabelKey];
@@ -40,6 +39,7 @@ export function generateNestedOptions(districts, districtKeys) {
     if (!filterOptions[primaryId]) {
       Object.assign(filterOptions, {
         [primaryId]: {
+          sortByLabel: primaryLabel,
           label: formatPrimaryLabel(primaryId, primaryLabel),
           options: [option],
         },
@@ -51,8 +51,13 @@ export function generateNestedOptions(districts, districtKeys) {
     const labels = filterOptions[primaryId].options.map((o) => o.label);
     if (!labels.includes(nestedLabel)) {
       filterOptions[primaryId].options.push(option);
+      filterOptions[primaryId].options.sort(compareStrings("label"));
     }
   });
 
-  return Object.values(filterOptions);
+  const sortedOptions = Object.values(filterOptions).sort(
+    compareStrings("sortByLabel")
+  );
+
+  return sortedOptions;
 }
