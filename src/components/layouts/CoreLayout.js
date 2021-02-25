@@ -57,9 +57,11 @@ const selectOptions = [
 const CoreLayout = ({ children }) => {
   const history = useHistory();
   const { pathname } = useLocation();
-  const getSelectedOption = selectOptions.find((item) =>
-    pathname.includes(item.value.toLowerCase())
-  );
+
+  const getSelectedOption =
+    selectOptions.find((item) => pathname.includes(item.value.toLowerCase())) ??
+    selectOptions[0];
+
   const [activeOption, setActiveOption] = useState(getSelectedOption);
 
   const routeOnClick = useCallback(
