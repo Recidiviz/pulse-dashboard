@@ -25,7 +25,7 @@ import SelectDropdown from "../../../controls/SelectDropdown";
 import { useRootStore } from "../../../../StoreProvider";
 import { flatOptions } from "../../../controls/utils";
 
-const allOption = { label: "ALL", value: "All" };
+const allOption = { label: "ALL", value: "All", secondaryValue: "All" };
 
 const DistrictFilter = () => {
   const { filters, filtersStore, userStore, districtsStore } = useRootStore();
