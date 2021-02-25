@@ -206,29 +206,31 @@ describe("FiltersStore", () => {
             filtersStore.filterOptions[getDistrictFilterKey(tenantId)].options
           ).toEqual([
             {
-              label: "CO - Central Office",
+              label: "CO - CENTRAL OFFICE",
+              allSelectedLabel: "ALL",
               sortByLabel: "Central Office",
               options: [
                 {
-                  label: "CO - Central Office",
+                  label: "CO - CENTRAL OFFICE",
                   value: "CO - CENTRAL OFFICE",
                 },
               ],
             },
             {
-              label: "03 - Harrisburg",
+              label: "03 - HARRISBURG",
+              allSelectedLabel: "ALL",
               sortByLabel: "Harrisburg DO",
               options: [
                 {
-                  label: "03 - Harrisburg DO",
+                  label: "03 - HARRISBURG DO",
                   value: "03 - HARRISBURG",
                 },
                 {
-                  label: "03 - Lancaster DO",
+                  label: "03 - LANCASTER DO",
                   value: "03 - LANCASTER",
                 },
                 {
-                  label: "03 - York DO",
+                  label: "03 - YORK DO",
                   value: "03 - YORK",
                 },
               ],
