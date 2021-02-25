@@ -47,7 +47,6 @@ const mockRootStore = {
     districtKeys: {
       filterKey: "levelTwoSupervisionLocation",
       filterByKey: "level_2_supervision_location",
-      secondaryFilterByKey: "level_1_supervision_location",
     },
   },
 };

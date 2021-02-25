@@ -97,7 +97,6 @@ export default class DistrictsStore {
       filterKey: tenantMappings.districtFilterKey,
       filterByKey: tenantMappings.districtFilterByKey,
       filterValueKey: tenantMappings.districtFilterValueKey,
-      secondaryFilterByKey: tenantMappings.districtSecondaryFilterByKey,
       primaryIdKey: tenantMappings.districtPrimaryIdKey,
       primaryLabelKey: tenantMappings.districtPrimaryLabelKey,
       secondaryIdKey: tenantMappings.districtSecondaryIdKey,

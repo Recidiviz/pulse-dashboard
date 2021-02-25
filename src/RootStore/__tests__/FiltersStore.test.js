@@ -19,7 +19,6 @@ import { runInAction } from "mobx";
 
 import RootStore from "../RootStore";
 import FiltersStore from "../FiltersStore";
-// import DistrictsStore from "../DistrictsStore";
 import getTenantMappings, { tenantMappings } from "../TenantStore/tenants";
 import { LANTERN_TENANTS } from "../TenantStore/lanternTenants";
 

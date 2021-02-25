@@ -34,10 +34,6 @@ export const tenantMappings = {
     [US_MO]: null,
     [US_PA]: "level_1_supervision_location_name",
   },
-  districtSecondaryFilterByKey: {
-    [US_MO]: "level_2_supervision_location",
-    [US_PA]: "level_2_supervision_location",
-  },
   districtFilterByKey: {
     [US_MO]: "level_1_supervision_location",
     [US_PA]: "level_1_supervision_location",
