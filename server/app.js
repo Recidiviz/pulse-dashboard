@@ -22,6 +22,8 @@ const morgan = require("morgan");
 const helmet = require("helmet");
 const jwt = require("express-jwt");
 const jwksRsa = require("jwks-rsa");
+const Sentry = require("@sentry/node");
+
 const devAuthConfig = require("../src/auth_config_dev.json");
 const productionAuthConfig = require("../src/auth_config_production.json");
 const api = require("./routes/api");
@@ -31,6 +33,14 @@ const {
 } = require("./routes/paramsValidation");
 
 const app = express();
+
+Sentry.init({
+  environment: process.env.SENTRY_ENV,
+  dsn: process.env.SENTRY_DNS,
+});
+
+// The Sentry request handler must be the first middleware on the app
+app.use(Sentry.Handlers.requestHandler());
 
 app.use(cors());
 
@@ -132,6 +142,9 @@ app.get("/_ah/warmup", () => {
   // eslint-disable-next-line no-console
   console.log("Responding to warmup request...");
 });
+
+// The Sentry error handler must be before any other error middleware and after all controllers
+app.use(Sentry.Handlers.errorHandler());
 
 app.use(errorHandler);
 
