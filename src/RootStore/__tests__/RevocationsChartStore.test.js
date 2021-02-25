@@ -65,12 +65,12 @@ describe("RevocationsChartStore", () => {
     it("transforms the district attribute to use district label", () => {
       expect(revocationsChartStore.districtChartData).toEqual([
         {
-          districtPrimary: "Philadelphia",
+          district: "Philadelphia",
           level_2_supervision_location: "03",
           level_1_supervision_location: "ABC",
         },
         {
-          districtPrimary: "Mississippi",
+          district: "Mississippi",
           level_2_supervision_location: "04",
           level_1_supervision_location: "CBA",
         },

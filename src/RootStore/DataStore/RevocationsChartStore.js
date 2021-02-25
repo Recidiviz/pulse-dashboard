@@ -118,14 +118,12 @@ export default class RevocationsChartStore extends BaseDataStore {
       districtKeys: { filterByKey },
     } = this.rootStore.filtersStore;
 
-    return this.filteredData
-      .filter((d) => d[filterByKey] !== "ALL")
-      .map((data) => {
-        return {
-          ...data,
-          districtPrimary: districtIdToLabel[data[filterByKey]],
-        };
-      });
+    return this.filteredData.map((data) => {
+      return {
+        ...data,
+        district: districtIdToLabel[data[filterByKey]],
+      };
+    });
   }
 
   get currentDistricts() {

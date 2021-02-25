@@ -18,6 +18,7 @@
 import pipe from "lodash/fp/pipe";
 import groupBy from "lodash/fp/groupBy";
 import values from "lodash/fp/values";
+import filter from "lodash/fp/filter";
 import map from "lodash/fp/map";
 import sumBy from "lodash/fp/sumBy";
 import toInteger from "lodash/fp/toInteger";
@@ -38,12 +39,12 @@ const generatePercentChartData = (
     mode === "exits"
       ? ["exit_count", "exit_count"]
       : ["supervision_count", "supervision_population_count"];
-
   const transformedData = pipe(
-    groupBy("districtPrimary"),
+    filter((item) => item.district !== "ALL"),
+    groupBy("district"),
     values,
     map((dataset) => ({
-      district: dataset[0].districtPrimary,
+      district: dataset[0].district,
       count: sumBy((item) => toInteger(item.revocation_count), dataset),
       [fieldName]: sumBy((item) => toInteger(item[totalFieldName]), dataset),
     })),
@@ -55,11 +56,10 @@ const generatePercentChartData = (
     })),
     orderBy(["rate"], ["desc"])
   )(districtChartData);
-
   const dataPoints = map((item) => item.rate.toFixed(2), transformedData);
 
   const labels = map("district", transformedData);
-  const denominators = map("supervision_count", transformedData);
+  const denominators = map(fieldName, transformedData);
   const numerators = map("count", transformedData);
 
   const getBarBackgroundColor = ({ dataIndex }) => {
@@ -98,10 +98,11 @@ const generatePercentChartData = (
 
 const generateCountChartData = (districtChartData, currentDistricts) => {
   const transformedData = pipe(
-    groupBy("districtPrimary"),
+    filter((item) => item.district !== "ALL"),
+    groupBy("district"),
     values,
     map((dataset) => ({
-      district: dataset[0].districtPrimary,
+      district: dataset[0].district,
       count: sumBy((item) => toInteger(item.revocation_count), dataset),
     })),
     orderBy(["count"], ["desc"])
