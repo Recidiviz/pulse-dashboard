@@ -49,8 +49,11 @@ export function generateNestedOptions(districts, districtKeys) {
     }
 
     // Options are a unique set
-    const labels = filterOptions[primaryId].options.map((o) => o.label);
-    if (!labels.includes(nestedLabel)) {
+    const labels = filterOptions[primaryId].options.map((o) =>
+      o.label.toLowerCase()
+    );
+
+    if (!labels.includes(nestedLabel.toLowerCase())) {
       filterOptions[primaryId].options.push(option);
       filterOptions[primaryId].options.sort(compareStrings("label"));
     }

@@ -60,7 +60,6 @@ const GroupHeading = ({
   return (
     <components.GroupHeading
       className="MultiSelect__group-heading"
-      isSelected={allOptionsSelected}
       onClick={onClick}
       {...props}
     >
