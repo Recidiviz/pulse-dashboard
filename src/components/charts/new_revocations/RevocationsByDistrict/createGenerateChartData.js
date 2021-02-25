@@ -59,7 +59,7 @@ const generatePercentChartData = (
   const dataPoints = map((item) => item.rate.toFixed(2), transformedData);
 
   const labels = map("district", transformedData);
-  const denominators = map(fieldName, transformedData);
+  const denominators = map("supervision_count", transformedData);
   const numerators = map("count", transformedData);
 
   const getBarBackgroundColor = ({ dataIndex }) => {

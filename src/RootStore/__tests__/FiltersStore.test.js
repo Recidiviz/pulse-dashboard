@@ -39,6 +39,8 @@ const defaultFilters = {
   supervisionLevel: "All",
   supervisionType: "All",
   violationType: "All",
+  levelOneSupervisionLocation: ["All"],
+  levelTwoSupervisionLocation: ["All"],
 };
 
 getTenantMappings.mockImplementation((tenantId) => {
@@ -63,17 +65,15 @@ describe("FiltersStore", () => {
     it("are set correctly by default", () => {
       LANTERN_TENANTS.forEach((tenantId) => {
         rootStore = new RootStore();
-        const districtFilterKey = getDistrictFilterKey(tenantId);
         runInAction(() => {
           rootStore.districtsStore.isLoading = false;
           rootStore.tenantStore.setCurrentTenantId(tenantId);
           rootStore.tenantStore.currentTenantId = tenantId;
         });
 
-        expect(rootStore.filtersStore.defaultFilterValues).toEqual({
-          ...defaultFilters,
-          [districtFilterKey]: ["All"],
-        });
+        expect(rootStore.filtersStore.defaultFilterValues).toEqual(
+          defaultFilters
+        );
       });
     });
 
@@ -108,38 +108,44 @@ describe("FiltersStore", () => {
       });
 
       // Expect default filters
-      expect(rootStore.filtersStore.defaultFilterValues).toEqual({
-        ...defaultFilters,
-        [usMOFilterKey]: ["All"],
-      });
+      expect(rootStore.filtersStore.defaultFilterValues).toEqual(
+        defaultFilters
+      );
 
       // Set district filter for US_MO
       rootStore.filtersStore.setFilters({
-        levelOneSupervisionLocation: ["01"],
+        [usMOFilterKey]: ["01"],
       });
 
       // Expect level_1 filter set
       expect(
-        Object.fromEntries(rootStore.filtersStore.filters)
-          .levelOneSupervisionLocation
+        Object.fromEntries(rootStore.filtersStore.filters)[usMOFilterKey]
       ).toEqual(["01"]);
 
-      // Expect US_PA filter key to not exist
-      expect(rootStore.filtersStore.filters.get(usPAFilterKey)).toBeUndefined();
+      // Expect US_PA filter key to be "ALL"
+      expect(rootStore.filtersStore.filters.get(usPAFilterKey)).toEqual([
+        "All",
+      ]);
 
       // Switch tenant to US_PA
       runInAction(() => {
         rootStore.tenantStore.currentTenantId = "US_PA";
       });
 
-      // Expect US_PA filter set to "All"
-      expect(rootStore.filtersStore.defaultFilterValues).toEqual({
-        ...defaultFilters,
-        [usPAFilterKey]: ["All"],
+      // Set district filter for US_PA
+      rootStore.filtersStore.setFilters({
+        [usPAFilterKey]: ["10 - PHILADELPHIA"],
       });
 
-      // Expect US_MO filter key to not exist
-      expect(rootStore.filtersStore.filters.get(usMOFilterKey)).toBeUndefined();
+      // Expect US_PA filter set to filter value
+      expect(
+        Object.fromEntries(rootStore.filtersStore.filters)[usPAFilterKey]
+      ).toEqual(["10 - PHILADELPHIA"]);
+
+      // Expect US_MO filter key to be "ALL"
+      expect(rootStore.filtersStore.filters.get(usMOFilterKey)).toEqual([
+        "All",
+      ]);
     });
   });
 
@@ -213,6 +219,7 @@ describe("FiltersStore", () => {
                 {
                   label: "CO - CENTRAL OFFICE",
                   value: "CO - CENTRAL OFFICE",
+                  secondaryValue: "CO",
                 },
               ],
             },
@@ -224,14 +231,17 @@ describe("FiltersStore", () => {
                 {
                   label: "03 - HARRISBURG DO",
                   value: "03 - HARRISBURG",
+                  secondaryValue: "03",
                 },
                 {
                   label: "03 - LANCASTER DO",
                   value: "03 - LANCASTER",
+                  secondaryValue: "03",
                 },
                 {
                   label: "03 - YORK DO",
                   value: "03 - YORK",
+                  secondaryValue: "03",
                 },
               ],
             },

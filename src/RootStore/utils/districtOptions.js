@@ -34,7 +34,11 @@ export function generateNestedOptions(districts, districtKeys) {
     const primaryLabel = district[primaryLabelKey];
     const nestedLabel = district[secondaryLabelKey];
     const value = district[valueKey];
-    const option = { label: nestedLabel.toUpperCase(), value };
+    const option = {
+      label: nestedLabel.toUpperCase(),
+      value,
+      secondaryValue: primaryId,
+    };
 
     if (!filterOptions[primaryId]) {
       Object.assign(filterOptions, {

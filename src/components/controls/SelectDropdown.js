@@ -65,6 +65,7 @@ const SelectOption = {
   allSelectedLabel: PropTypes.string,
   options: PropTypes.arrayOf(
     PropTypes.shape({
+      secondaryValue: PropTypes.string.isRequired,
       label: PropTypes.string.isRequired,
       value: PropTypes.string.isRequired,
     })

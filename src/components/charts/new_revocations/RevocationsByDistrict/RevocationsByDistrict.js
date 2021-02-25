@@ -53,7 +53,7 @@ const RevocationsByDistrict = observer(
             <RevocationCountChart
               chartId={chartId}
               data={data}
-              xAxisLabel="District"
+              xAxisLabel="Sub-office"
             />
           ) : (
             <PercentRevokedChart
@@ -62,7 +62,7 @@ const RevocationsByDistrict = observer(
               numerators={numerators}
               denominators={denominators}
               averageRate={averageRate}
-              xAxisLabel="District"
+              xAxisLabel="Sub-office"
               yAxisLabel={
                 mode === "rates"
                   ? translate("percentOfPopulationRevoked")
@@ -84,7 +84,7 @@ const RevocationsByDistrict = observer(
             : ["counts", "rates"]
         }
         defaultMode={DEFAULT_MODE}
-        dataExportLabel="District"
+        dataExportLabel="Sub-office"
       />
     );
   },

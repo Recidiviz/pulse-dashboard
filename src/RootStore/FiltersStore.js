@@ -32,6 +32,8 @@ import {
   SUPERVISION_LEVEL,
   SUPERVISION_TYPE,
   VIOLATION_TYPE,
+  LEVEL_2_SUPERVISION_LOCATION,
+  LEVEL_1_SUPERVISION_LOCATION,
 } from "../constants/filterTypes";
 import filterOptionsMap from "../views/tenants/constants/filterOptions";
 import { compareStrings } from "./utils";
@@ -85,6 +87,12 @@ export default class FiltersStore {
       ...(this.filterOptions[ADMISSION_TYPE].filterEnabled
         ? { [ADMISSION_TYPE]: this.filterOptions[ADMISSION_TYPE].defaultValue }
         : {}),
+      [LEVEL_1_SUPERVISION_LOCATION]: [
+        this.filterOptions[LEVEL_1_SUPERVISION_LOCATION].defaultValue,
+      ],
+      [LEVEL_2_SUPERVISION_LOCATION]: [
+        this.filterOptions[LEVEL_2_SUPERVISION_LOCATION].defaultValue,
+      ],
       ...{
         [this.districtKeys.filterKey]: [
           this.rootStore.userStore.restrictedDistrict ||

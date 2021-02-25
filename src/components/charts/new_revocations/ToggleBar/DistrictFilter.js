@@ -33,14 +33,20 @@ const DistrictFilter = () => {
   const {
     filterOptions,
     districtsIsLoading: isLoading,
-    districtKeys: { filterKey },
+    districtKeys: { filterKey, secondaryFilterKey },
   } = filtersStore;
 
   const options = [allOption].concat(filterOptions[filterKey].options);
 
   const onValueChange = (newOptions) => {
-    const filteredDistricts = map("value", newOptions);
-    filtersStore.setFilters({ [filterKey]: filteredDistricts });
+    const optionValues = map("value", newOptions);
+
+    filtersStore.setFilters({
+      [filterKey]: optionValues,
+      ...(secondaryFilterKey
+        ? { [secondaryFilterKey]: map("secondaryValue", newOptions) }
+        : {}),
+    });
   };
 
   const selectedValues = flatOptions(options).filter((option) =>
