@@ -26,8 +26,7 @@ import SideBarGroup from "../sidebar/SideBarGroup";
 import SideBarLink from "../sidebar/SideBarLink";
 import SideBarFeedback from "../sidebar/SideBarFeedback";
 import TopBar from "../topbar/TopBar";
-import TopBarHamburgerMenu from "../topbar/TopBarHamburgerMenu";
-import TopBarTitle from "../topbar/TopBarTitle";
+import TopBarDropdown from "../topbar/TopBarDropdown";
 import TopBarUserMenuForAuthenticatedUser from "../topbar/TopBarUserMenuForAuthenticatedUser";
 import Footer from "../Footer";
 import useSideBar from "../../hooks/useSideBar";
@@ -87,8 +86,7 @@ const CoreLayout = ({ children }) => {
         <TopBar>
           <div className="CoreHeader">
             <ul className="nav-left">
-              <TopBarHamburgerMenu onClick={toggleSideBar} />
-              <TopBarTitle pathname={pathname} />
+              <TopBarDropdown />
             </ul>
             <ul className="nav-right">
               <TopBarUserMenuForAuthenticatedUser />
