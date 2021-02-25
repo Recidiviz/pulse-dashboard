@@ -113,10 +113,10 @@ export default class RevocationsChartStore extends BaseDataStore {
   }
 
   get districtChartData() {
-    const { districtIdToLabel } = this.rootStore.districtsStore;
     const {
+      districtIdToLabel,
       districtKeys: { filterByKey },
-    } = this.rootStore.filtersStore;
+    } = this.rootStore.districtsStore;
 
     return this.filteredData.map((data) => {
       return {
@@ -128,10 +128,10 @@ export default class RevocationsChartStore extends BaseDataStore {
 
   get currentDistricts() {
     if (this.selectedChart !== CHARTS.District.name) return [];
-    const { districtIdToLabel } = this.rootStore.districtsStore;
     const {
+      districtIdToLabel,
       districtKeys: { filterKey },
-    } = this.rootStore.filtersStore;
+    } = this.rootStore.districtsStore;
     return this.filters[filterKey].map((district) => {
       if (district === "All") return district;
       return districtIdToLabel[district];

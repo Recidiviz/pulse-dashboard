@@ -193,7 +193,6 @@ describe("FiltersStore", () => {
         expect(
           filtersStore.filterOptions[getDistrictFilterKey(tenantId)].options
         ).toEqual([]);
-        expect(filtersStore.districtsIsLoading).toEqual(true);
       });
     });
 

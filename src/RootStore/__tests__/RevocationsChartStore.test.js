@@ -41,14 +41,12 @@ const mockRootStore = {
       CBA: "CBA",
       ABC: "ABC",
     },
-  },
-  filters: new Map([["levelTwoSupervisionLocation", ["03"]]]),
-  filtersStore: {
     districtKeys: {
       filterKey: "levelTwoSupervisionLocation",
       filterByKey: "level_2_supervision_location",
     },
   },
+  filters: new Map([["levelTwoSupervisionLocation", ["03"]]]),
 };
 describe("RevocationsChartStore", () => {
   beforeEach(() => {

@@ -28,13 +28,13 @@ import { flatOptions } from "../../../controls/utils";
 const allOption = { label: "ALL", value: "All" };
 
 const DistrictFilter = () => {
-  const { filters, filtersStore, userStore } = useRootStore();
+  const { filters, filtersStore, userStore, districtsStore } = useRootStore();
   const { restrictedDistrict } = userStore;
   const {
-    filterOptions,
-    districtsIsLoading: isLoading,
+    isLoading,
     districtKeys: { filterKey, secondaryFilterKey },
-  } = filtersStore;
+  } = districtsStore;
+  const { filterOptions } = filtersStore;
 
   const options = [allOption].concat(filterOptions[filterKey].options);
 

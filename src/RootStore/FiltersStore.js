@@ -51,8 +51,6 @@ export default class FiltersStore {
       defaultFilterValues: computed,
       filterOptions: computed,
       districtFilterOptions: computed,
-      districtKeys: computed,
-      districtsIsLoading: computed,
       setFilters: action,
     });
 
@@ -74,7 +72,9 @@ export default class FiltersStore {
   }
 
   get defaultFilterValues() {
-    if (!this.filterOptions || !this.districtKeys.filterKey) return {};
+    const { districtKeys } = this.rootStore.districtsStore;
+    if (!this.filterOptions || !districtKeys || !districtKeys.filterKey)
+      return {};
     return {
       [METRIC_PERIOD_MONTHS]: this.filterOptions[METRIC_PERIOD_MONTHS]
         .defaultValue,
@@ -94,9 +94,9 @@ export default class FiltersStore {
         this.filterOptions[LEVEL_2_SUPERVISION_LOCATION].defaultValue,
       ],
       ...{
-        [this.districtKeys.filterKey]: [
+        [districtKeys.filterKey]: [
           this.rootStore.userStore.restrictedDistrict ||
-            this.filterOptions[this.districtKeys.filterKey].defaultValue,
+            this.filterOptions[districtKeys.filterKey].defaultValue,
         ],
       },
     };
@@ -109,17 +109,11 @@ export default class FiltersStore {
     };
   }
 
-  get districtsIsLoading() {
-    return this.rootStore.districtsStore.isLoading;
-  }
-
-  get districtKeys() {
-    return this.rootStore.districtsStore.districtKeys;
-  }
-
   get districtFilterOptions() {
+    const { districtKeys } = this.rootStore.districtsStore;
+    if (!districtKeys) return {};
     return {
-      [this.districtKeys.filterKey]: {
+      [districtKeys.filterKey]: {
         defaultValue: "All",
         options: this.districts,
       },
@@ -129,12 +123,12 @@ export default class FiltersStore {
   get districts() {
     // TODO #798: Use apiData.data from districts store when supervision locations are
     // filtered on the backend
-    const { filteredDistricts } = this.rootStore.districtsStore;
+    const { filteredDistricts, districtKeys } = this.rootStore.districtsStore;
     if (!filteredDistricts) return [];
-    const { primaryLabelKey, secondaryLabelKey, valueKey } = this.districtKeys;
+    const { primaryLabelKey, secondaryLabelKey, valueKey } = districtKeys;
 
     if (secondaryLabelKey) {
-      return generateNestedOptions([...filteredDistricts], this.districtKeys);
+      return generateNestedOptions([...filteredDistricts], districtKeys);
     }
     return uniqBy(filteredDistricts, valueKey)
       .map((district) => {
