@@ -16,9 +16,9 @@
 // =============================================================================
 
 import pipe from "lodash/fp/pipe";
-import filter from "lodash/fp/filter";
 import groupBy from "lodash/fp/groupBy";
 import values from "lodash/fp/values";
+import filter from "lodash/fp/filter";
 import map from "lodash/fp/map";
 import sumBy from "lodash/fp/sumBy";
 import toInteger from "lodash/fp/toInteger";
@@ -30,21 +30,21 @@ import { applyStatisticallySignificantShading } from "../../../../utils/charts/s
 import { COLORS } from "../../../../assets/scripts/constants/colors";
 import { sumCounts } from "../utils/sumCounts";
 
-const generatePercentChartData = (filteredData, currentDistricts, mode) => {
+const generatePercentChartData = (
+  districtChartData,
+  currentDistricts,
+  mode
+) => {
   const [fieldName, totalFieldName] =
     mode === "exits"
       ? ["exit_count", "exit_count"]
       : ["supervision_count", "supervision_population_count"];
-
   const transformedData = pipe(
-    filter(
-      (item) =>
-        item.districtPrimary !== "ALL" && item.districtSecondary === "ALL"
-    ),
-    groupBy("districtPrimary"),
+    filter((item) => item.district !== "ALL"),
+    groupBy("district"),
     values,
     map((dataset) => ({
-      district: dataset[0].districtPrimary,
+      district: dataset[0].district,
       count: sumBy((item) => toInteger(item.revocation_count), dataset),
       [fieldName]: sumBy((item) => toInteger(item[totalFieldName]), dataset),
     })),
@@ -55,8 +55,7 @@ const generatePercentChartData = (filteredData, currentDistricts, mode) => {
       rate: calculateRate(dataPoint.count, dataPoint[fieldName]),
     })),
     orderBy(["rate"], ["desc"])
-  )(filteredData);
-
+  )(districtChartData);
   const dataPoints = map((item) => item.rate.toFixed(2), transformedData);
 
   const labels = map("district", transformedData);
@@ -90,27 +89,24 @@ const generatePercentChartData = (filteredData, currentDistricts, mode) => {
   };
 
   const averageRate = calculateRate(
-    sumCounts("revocation_count", filteredData),
-    sumCounts("supervision_population_count", filteredData)
+    sumCounts("revocation_count", districtChartData),
+    sumCounts("supervision_population_count", districtChartData)
   );
 
   return { data, numerators, denominators, averageRate };
 };
 
-const generateCountChartData = (filteredData, currentDistricts) => {
+const generateCountChartData = (districtChartData, currentDistricts) => {
   const transformedData = pipe(
-    filter(
-      (item) =>
-        item.districtPrimary !== "ALL" && item.districtSecondary === "ALL"
-    ),
-    groupBy("districtPrimary"),
+    filter((item) => item.district !== "ALL"),
+    groupBy("district"),
     values,
     map((dataset) => ({
-      district: dataset[0].districtPrimary,
+      district: dataset[0].district,
       count: sumBy((item) => toInteger(item.revocation_count), dataset),
     })),
     orderBy(["count"], ["desc"])
-  )(filteredData);
+  )(districtChartData);
 
   const labels = map("district", transformedData);
   const dataPoints = transformedData.map((item) => item.count);
@@ -134,14 +130,20 @@ const generateCountChartData = (filteredData, currentDistricts) => {
   return { data: { datasets, labels }, denominators: [] };
 };
 
-const createGenerateChartData = (filteredData, currentDistricts) => (mode) => {
+const createGenerateChartData = (districtChartData, currentDistricts) => (
+  mode
+) => {
   switch (mode) {
     case "counts":
-      return generateCountChartData(filteredData, currentDistricts);
+      return generateCountChartData(districtChartData, currentDistricts);
     case "exits":
     case "rates":
     default:
-      return generatePercentChartData(filteredData, currentDistricts, mode);
+      return generatePercentChartData(
+        districtChartData,
+        currentDistricts,
+        mode
+      );
   }
 };
 

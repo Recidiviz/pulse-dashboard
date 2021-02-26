@@ -10,16 +10,32 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-//
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
+const Sentry = require("@sentry/node");
 const request = require("supertest");
 const { server } = require("../../../server");
 const { clearMemoryCache } = require("../../core/cacheManager");
 
 const OLD_ENV = process.env;
+
+jest.mock("@sentry/node", () => ({
+  Handlers: {
+    errorHandler: jest.fn(() => {
+      return (error, _req, _res, next) => {
+        next(error);
+      };
+    }),
+    requestHandler: jest.fn(() => {
+      return (error, _req, _res, next) => {
+        next(error);
+      };
+    }),
+  },
+  init: () => {},
+}));
 
 describe("Server tests", () => {
   let app;
@@ -222,6 +238,7 @@ describe("Server tests", () => {
             "No authorization token was found",
           ]);
           expect(response.body.status).toEqual(500);
+          expect(Sentry.Handlers.errorHandler).toHaveBeenCalledTimes(1);
         });
     });
   });
