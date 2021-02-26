@@ -57,16 +57,6 @@ const DEFAULT_RACE = [
   "other",
 ];
 
-const DEFAULT_ADMISSION_TYPES = [
-  "all",
-  "legal_revocation",
-  "shock_incarceration_0_to_6_months",
-  "shock_incarceration_6_months",
-  "shock_incarceration_9_months",
-  "shock_incarceration_12_months",
-  "shock_incarceration_pvc",
-];
-
 function removeAllValue(dimensionValues) {
   // Do not remove "All" value if it's the only value
   if (dimensionValues.length === 1 && dimensionValues[0] === "all") {
@@ -85,6 +75,5 @@ module.exports = {
   DEFAULT_MONTHS,
   DEFAULT_REPORTED_VIOLATIONS,
   DEFAULT_METRIC_PERIOD_MONTHS,
-  DEFAULT_ADMISSION_TYPES,
   removeAllValue,
 };

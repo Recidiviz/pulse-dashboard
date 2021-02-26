@@ -20,7 +20,6 @@ const {
   DEFAULT_METRIC_PERIOD_MONTHS,
   DEFAULT_GENDERS,
   DEFAULT_RACE,
-  DEFAULT_ADMISSION_TYPES,
 } = require("./shared");
 
 const DEFAULT_CHARGE_CATEGORIES = [
@@ -61,6 +60,8 @@ const DEFAULT_RISK_LEVEL = [
   "not_assessed",
   "very_high",
 ];
+
+const DEFAULT_ADMISSION_TYPES = ["ALL"];
 
 const US_MO_DIMENSION_VALUES = {
   admission_type: DEFAULT_ADMISSION_TYPES,

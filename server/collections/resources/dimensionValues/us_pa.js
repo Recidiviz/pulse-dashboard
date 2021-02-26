@@ -20,8 +20,17 @@ const {
   DEFAULT_METRIC_PERIOD_MONTHS,
   DEFAULT_GENDERS,
   DEFAULT_RACE,
-  DEFAULT_ADMISSION_TYPES,
 } = require("./shared");
+
+const DEFAULT_ADMISSION_TYPES = [
+  "all",
+  "legal_revocation",
+  "shock_incarceration_0_to_6_months",
+  "shock_incarceration_6_months",
+  "shock_incarceration_9_months",
+  "shock_incarceration_12_months",
+  "shock_incarceration_pvc",
+];
 
 const DEFAULT_SUPERVISION_LEVELS = [
   "all",
