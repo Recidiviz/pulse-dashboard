@@ -27,6 +27,7 @@ import { calculateRate } from "../helpers/rate";
 import { translate } from "../../../../utils/i18nSettings";
 import { sumCounts } from "../utils/sumCounts";
 import { COLORS } from "../../../../assets/scripts/constants/colors";
+import { toTitleCase } from "../../../../utils/transforms/labels";
 
 const generatePercentChartData = (filteredData, mode) => {
   const [fieldName, totalFieldName] =
@@ -38,7 +39,7 @@ const generatePercentChartData = (filteredData, mode) => {
     groupBy("officer"),
     values,
     map((dataset) => ({
-      officer: dataset[0].officer_label,
+      officer: toTitleCase(dataset[0].officer_label),
       count: sumBy((item) => toInteger(item.revocation_count), dataset),
       [fieldName]: sumBy((item) => toInteger(item[totalFieldName]), dataset),
     })),
@@ -48,7 +49,7 @@ const generatePercentChartData = (filteredData, mode) => {
       [fieldName]: dataPoint[fieldName],
       rate: calculateRate(dataPoint.count, dataPoint[fieldName]),
     })),
-    orderBy(["rate"], ["desc"])
+    orderBy(["rate", "count"], ["desc", "desc"])
   )(filteredData);
 
   const dataPoints = map((item) => item.rate.toFixed(2), transformedData);
@@ -83,7 +84,7 @@ const generateCountChartData = (filteredData) => {
     groupBy("officer"),
     values,
     map((dataset) => ({
-      officer: dataset[0].officer_label,
+      officer: toTitleCase(dataset[0].officer_label),
       count: sumBy((item) => toInteger(item.revocation_count), dataset),
     })),
     orderBy(["count"], ["desc"])
