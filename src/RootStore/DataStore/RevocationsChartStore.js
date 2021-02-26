@@ -74,7 +74,7 @@ export default class RevocationsChartStore extends BaseDataStore {
       selectedChart: observable,
       setSelectedChart: action.bound,
       currentDistricts: computed,
-      transformedData: computed,
+      districtChartData: computed,
     });
 
     reaction(
@@ -107,26 +107,26 @@ export default class RevocationsChartStore extends BaseDataStore {
     return this.filterData(this.apiData, dataFilter);
   }
 
-  get transformedData() {
-    const { districtIdToLabel } = this.rootStore.districtsStore;
+  get districtChartData() {
     const {
-      districtKeys: { filterByKey, secondaryFilterByKey },
-    } = this.rootStore.filtersStore;
+      districtIdToLabel,
+      districtKeys: { filterByKey },
+    } = this.rootStore.districtsStore;
+
     return this.filteredData.map((data) => {
       return {
         ...data,
-        districtPrimary: districtIdToLabel[data[filterByKey]],
-        districtSecondary: districtIdToLabel[data[secondaryFilterByKey]],
+        district: districtIdToLabel[data[filterByKey]],
       };
     });
   }
 
   get currentDistricts() {
     if (this.selectedChart !== CHARTS.District.name) return [];
-    const { districtIdToLabel } = this.rootStore.districtsStore;
     const {
+      districtIdToLabel,
       districtKeys: { filterKey },
-    } = this.rootStore.filtersStore;
+    } = this.rootStore.districtsStore;
     return this.filters[filterKey].map((district) => {
       if (district === "All") return district;
       return districtIdToLabel[district];

@@ -19,11 +19,13 @@
 // server before you will see the translation rendered properly
 
 export default {
+  District: "Sub-office",
   officer: "agent",
   Officer: "Agent",
   gender: "sex",
   Gender: "Sex",
   violationReports: "violation reports",
+  revocationsByDistrictChartTitle: "Admissions by district and sub-office",
   revocationsOverTimeXAxis: "Number of SCI admissions from parole",
   revoked: "admitted",
   Revocation: "Admission",
@@ -79,7 +81,4 @@ of that column.`,
     "med_tech",
     "low_tech",
   ],
-  supervisionLocationValueKey: "level_2_supervision_location_external_id",
-  supervisionLocationLabelKey: "level_2_supervision_location_external_id",
-  supervisionLocationFilterKey: "levelTwoSupervisionLocation",
 };
