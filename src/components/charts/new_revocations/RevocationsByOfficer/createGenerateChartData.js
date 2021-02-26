@@ -22,6 +22,7 @@ import map from "lodash/fp/map";
 import sumBy from "lodash/fp/sumBy";
 import toInteger from "lodash/fp/toInteger";
 import orderBy from "lodash/fp/orderBy";
+import filter from "lodash/fp/filter";
 import { calculateRate } from "../helpers/rate";
 
 import { translate } from "../../../../utils/i18nSettings";
@@ -38,6 +39,7 @@ const generatePercentChartData = (filteredData, mode) => {
   const transformedData = pipe(
     groupBy("officer"),
     values,
+    filter((item) => item[0][totalFieldName] >= 10),
     map((dataset) => ({
       officer: formatOfficerLabel(dataset[0].officer_label),
       count: sumBy((item) => toInteger(item.revocation_count), dataset),
