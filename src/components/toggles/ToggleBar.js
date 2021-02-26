@@ -21,7 +21,6 @@ import React, { useCallback, useMemo } from "react";
 import PropTypes from "prop-types";
 import Sticky from "react-sticky-fill";
 
-import RadioGroup from "../controls/RadioGroup";
 import { CoreSelect } from "../controls/CoreSelect";
 import CoreMultiSelect from "../controls/MultiSelect/CoreMultiSelect";
 
@@ -37,6 +36,7 @@ import {
 import { getDistrictOptions } from "./helpers";
 
 import "./ToggleBar.scss";
+import { TogglePill } from "../controls/TogglePill";
 
 const TOGGLE_STYLE = {
   zIndex: 700,
@@ -88,7 +88,7 @@ const ToggleBar = ({
             <div className="row toggle-filters">
               {setChartMetricType && (
                 <div className="toggle-filters__filter" id="metricTypeToggle">
-                  <RadioGroup
+                  <TogglePill
                     options={metricTypeOptions}
                     onChange={setChartMetricType}
                     defaultValue={defaultMetricType}
