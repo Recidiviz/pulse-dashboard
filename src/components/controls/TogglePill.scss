@@ -15,11 +15,6 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-/**
- * Returns an artificial Auth0 id token for a fake/demo user.
- * You can uncomment code for testing different user metadata.
- */
-
 $ALL_PILL_WIDTH: 160px;
 
 .TogglePill {
@@ -49,6 +44,7 @@ $ALL_PILL_WIDTH: 160px;
     width: $ALL_PILL_WIDTH / 2;
     height: 40px;
     border: 1px solid #d2d8d8;
+    cursor: pointer;
 
     &:nth-of-type(1) {
       border-right: none;

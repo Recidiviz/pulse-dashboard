@@ -89,7 +89,8 @@ const ToggleBar = ({
               {setChartMetricType && (
                 <div className="toggle-filters__filter" id="metricTypeToggle">
                   <TogglePill
-                    options={metricTypeOptions}
+                    leftPill={metricTypeOptions[0]}
+                    rightPill={metricTypeOptions[1]}
                     onChange={setChartMetricType}
                     defaultValue={defaultMetricType}
                   />

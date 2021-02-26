@@ -1,5 +1,5 @@
 // Recidiviz - a data platform for criminal justice reform
-// Copyright (C) 2019 Recidiviz, Inc.
+// Copyright (C) 2021 Recidiviz, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -15,20 +15,16 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-/**
- * Returns an artificial Auth0 id token for a fake/demo user.
- * You can uncomment code for testing different user metadata.
- */
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import "./TogglePill.scss";
 
-export const TogglePill = ({ defaultValue, onChange, options }) => {
+export const TogglePill = ({ defaultValue, onChange, leftPill, rightPill }) => {
   const [state, setState] = useState(defaultValue);
 
   return (
     <div className="TogglePill">
-      {options.map(({ value, label }) => (
+      {[leftPill, rightPill].map(({ value, label }) => (
         <>
           <input
             className="TogglePill__input"
@@ -57,7 +53,12 @@ export const TogglePill = ({ defaultValue, onChange, options }) => {
 TogglePill.propTypes = {
   defaultValue: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
-  options: PropTypes.arrayOf(
-    PropTypes.shape({ label: PropTypes.string, value: PropTypes.string })
-  ).isRequired,
+  leftPill: PropTypes.shape({
+    label: PropTypes.string,
+    value: PropTypes.string,
+  }).isRequired,
+  rightPill: PropTypes.shape({
+    label: PropTypes.string,
+    value: PropTypes.string,
+  }).isRequired,
 };
