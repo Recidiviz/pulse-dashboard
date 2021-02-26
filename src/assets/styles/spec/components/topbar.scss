@@ -148,13 +148,13 @@
           justify-content: center;
           border-top: 0.25rem solid transparent;
           margin: 0;
-          color: #00413e;
+          color: $label-topbar;
           width: 400;
           font-size: 1rem;
           cursor: pointer;
 
           &:hover {
-            color: #25b894;
+            color: $action-topbar;
           }
         }
       }
@@ -168,7 +168,7 @@
       }
 
       input.visually-hidden:checked + .page-label {
-        border-top: 0.25rem solid #25b894;
+        border-top: 0.25rem solid $action-topbar;
       }
 
       .visually-hidden {

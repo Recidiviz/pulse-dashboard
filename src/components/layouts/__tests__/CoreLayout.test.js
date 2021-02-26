@@ -10,12 +10,14 @@ import { PageProvider } from "../../../contexts/PageContext";
 
 jest.mock("react-router-dom", () => ({
   useLocation: jest.fn(),
+  useHistory: () => ({
+    push: jest.fn(),
+  }),
   matchPath: jest.fn().mockReturnValue(false),
   Link: jest.fn().mockReturnValue(null),
   NavLink: jest.fn().mockReturnValue(null),
 }));
 jest.mock("../../topbar/TopBarUserMenuForAuthenticatedUser");
-jest.mock("../../../hooks/useSideBar");
 
 describe("CoreLayout tests", () => {
   TopBarUserMenuForAuthenticatedUser.mockReturnValue(null);
