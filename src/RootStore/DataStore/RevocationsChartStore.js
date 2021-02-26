@@ -75,7 +75,6 @@ export default class RevocationsChartStore extends BaseDataStore {
       setSelectedChart: action.bound,
       currentDistricts: computed,
       districtChartData: computed,
-      districtChartTitle: computed,
     });
 
     reaction(
@@ -106,10 +105,6 @@ export default class RevocationsChartStore extends BaseDataStore {
       skippedFilters: this.skippedFilters,
     });
     return this.filterData(this.apiData, dataFilter);
-  }
-
-  get districtChartTitle() {
-    return this.rootStore.tenantStore.tenantMappings.districtChartTitle;
   }
 
   get districtChartData() {

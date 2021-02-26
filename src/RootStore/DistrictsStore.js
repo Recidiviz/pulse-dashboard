@@ -29,6 +29,8 @@ export default class DistrictsStore {
 
   file = `supervision_location_ids_to_names`;
 
+  districtIdToLabel = {};
+
   filteredDistricts = [];
 
   rootStore;
@@ -38,7 +40,6 @@ export default class DistrictsStore {
       fetchDistricts: flow,
       districtIds: computed,
       districtKeys: computed,
-      districtIdToLabel: computed,
     });
 
     this.rootStore = rootStore;
@@ -76,6 +77,7 @@ export default class DistrictsStore {
         this.file,
         this.eagerExpand
       );
+      this.setDistrictIdToLabel();
       this.isLoading = false;
       this.isError = false;
     } catch (error) {
@@ -112,8 +114,8 @@ export default class DistrictsStore {
       .sort();
   }
 
-  get districtIdToLabel() {
-    if (!this.apiData.data) return {};
+  setDistrictIdToLabel() {
+    if (!this.apiData || !this.apiData.data) return;
     const districtIdToLabel = {};
     const {
       primaryIdKey,
@@ -129,7 +131,7 @@ export default class DistrictsStore {
       }
     });
 
-    return {
+    this.districtIdToLabel = {
       ...districtIdToLabel,
       ALL: "ALL",
       all: "ALL",

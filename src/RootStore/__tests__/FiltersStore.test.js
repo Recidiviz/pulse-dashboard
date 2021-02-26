@@ -43,6 +43,9 @@ const defaultFilters = {
   levelTwoSupervisionLocation: ["All"],
 };
 
+// We are mocking the return of districtFilterKey to test the logic when there are
+// different filter keys per tenant. This does not need to match the actual
+// tenant mappings.
 getTenantMappings.mockImplementation((tenantId) => {
   const mappings = {
     ...tenantMappings,
