@@ -19,6 +19,7 @@ import {
   makeAutoObservable,
   computed,
   autorun,
+  reaction,
   observable,
   action,
 } from "mobx";
@@ -36,6 +37,7 @@ import {
 } from "../constants/filterTypes";
 import filterOptionsMap from "../views/tenants/constants/filterOptions";
 import { compareStrings } from "./utils";
+import { generateNestedOptions } from "./utils/districtOptions";
 
 export default class FiltersStore {
   rootStore;
@@ -49,12 +51,20 @@ export default class FiltersStore {
       defaultFilterValues: computed,
       filterOptions: computed,
       districtFilterOptions: computed,
-      districtKeys: computed,
-      districtsIsLoading: computed,
       setFilters: action,
     });
 
     this.rootStore = rootStore;
+
+    reaction(
+      () => this.rootStore.currentTenantId,
+      (currentTenantId, previousTenantId) => {
+        if (currentTenantId !== previousTenantId) {
+          this.filters.clear();
+          this.setFilters(this.defaultFilterValues);
+        }
+      }
+    );
 
     autorun(() => {
       this.setFilters(this.defaultFilterValues);
@@ -62,7 +72,9 @@ export default class FiltersStore {
   }
 
   get defaultFilterValues() {
-    if (!this.filterOptions || !this.districtKeys.filterKey) return {};
+    const { districtKeys } = this.rootStore.districtsStore;
+    if (!this.filterOptions || !districtKeys || !districtKeys.filterKey)
+      return {};
     return {
       [METRIC_PERIOD_MONTHS]: this.filterOptions[METRIC_PERIOD_MONTHS]
         .defaultValue,
@@ -82,9 +94,9 @@ export default class FiltersStore {
         this.filterOptions[LEVEL_2_SUPERVISION_LOCATION].defaultValue,
       ],
       ...{
-        [this.districtKeys.filterKey]: [
+        [districtKeys.filterKey]: [
           this.rootStore.userStore.restrictedDistrict ||
-            this.filterOptions[this.districtKeys.filterKey].defaultValue,
+            this.filterOptions[districtKeys.filterKey].defaultValue,
         ],
       },
     };
@@ -97,24 +109,11 @@ export default class FiltersStore {
     };
   }
 
-  get districtsIsLoading() {
-    return this.rootStore.districtsStore.isLoading;
-  }
-
-  get districtKeys() {
-    const { tenantMappings } = this.rootStore.tenantStore;
-    return {
-      valueKey: tenantMappings.districtValueKey,
-      labelKey: tenantMappings.districtLabelKey,
-      filterKey: tenantMappings.districtFilterKey,
-      filterByKey: tenantMappings.districtFilterByKey,
-      secondaryFilterByKey: tenantMappings.districtSecondaryFilterByKey,
-    };
-  }
-
   get districtFilterOptions() {
+    const { districtKeys } = this.rootStore.districtsStore;
+    if (!districtKeys) return {};
     return {
-      [this.districtKeys.filterKey]: {
+      [districtKeys.filterKey]: {
         defaultValue: "All",
         options: this.districts,
       },
@@ -124,13 +123,20 @@ export default class FiltersStore {
   get districts() {
     // TODO #798: Use apiData.data from districts store when supervision locations are
     // filtered on the backend
-    const { filteredDistricts } = this.rootStore.districtsStore;
+    const { filteredDistricts, districtKeys } = this.rootStore.districtsStore;
     if (!filteredDistricts) return [];
-    return uniqBy(filteredDistricts, this.districtKeys.valueKey)
-      .map((d) => ({
-        value: d[this.districtKeys.valueKey],
-        label: d[this.districtKeys.labelKey],
-      }))
+    const { primaryLabelKey, secondaryLabelKey, valueKey } = districtKeys;
+
+    if (secondaryLabelKey) {
+      return generateNestedOptions([...filteredDistricts], districtKeys);
+    }
+    return uniqBy(filteredDistricts, valueKey)
+      .map((district) => {
+        return {
+          value: district[valueKey],
+          label: district[primaryLabelKey],
+        };
+      })
       .sort(compareStrings("label"));
   }
 

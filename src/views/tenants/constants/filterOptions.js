@@ -18,7 +18,6 @@
 import {
   ADMISSION_TYPE,
   CHARGE_CATEGORY,
-  DISTRICT,
   METRIC_PERIOD_MONTHS,
   REPORTED_VIOLATIONS,
   SUPERVISION_LEVEL,
@@ -153,7 +152,6 @@ const MOFilterOptions = {
   [SUPERVISION_LEVEL]: { ...SUPERVISION_LEVELS, componentEnabled: false },
   [SUPERVISION_TYPE]: { ...SUPERVISION_TYPES, componentEnabled: true },
   [REPORTED_VIOLATIONS]: { defaultValue: "All" },
-  [DISTRICT]: { defaultValue: "All" },
   [LEVEL_1_SUPERVISION_LOCATION]: { defaultValue: "All" },
   [LEVEL_2_SUPERVISION_LOCATION]: { defaultValue: "All" },
 };
@@ -211,7 +209,6 @@ const PAFilterOptions = {
   [SUPERVISION_LEVEL]: { ...SUPERVISION_LEVELS, componentEnabled: true },
   [SUPERVISION_TYPE]: { defaultValue: "All", componentEnabled: false },
   [REPORTED_VIOLATIONS]: { defaultValue: "All" },
-  [DISTRICT]: { defaultValue: "All" },
   [LEVEL_1_SUPERVISION_LOCATION]: { defaultValue: "All" },
   [LEVEL_2_SUPERVISION_LOCATION]: { defaultValue: "All" },
 };

@@ -32,9 +32,11 @@ const mockRootStore = {
   tenantStore: {
     isLanternTenant: true,
     tenantMappings: {
-      districtIdKey: "level_2_supervision_location_external_id",
-      districtValueKey: "level_2_supervision_location_external_id",
-      districtLabelKey: "level_2_supervision_location_name",
+      districtPrimaryIdKey: "level_2_supervision_location_external_id",
+      districtFilterValueKey: "level_2_supervision_location_external_id",
+      districtPrimaryLabelKey: "level_2_supervision_location_name",
+      districtSecondaryIdKey: "level_1_supervision_location_external_id",
+      districtSecondaryLabelKey: "level_1_supervision_location_name",
     },
   },
   userStore: {
@@ -121,7 +123,9 @@ describe("DistrictsStore", () => {
     it("sets districtIdToLabel and includes all values", () => {
       expect(store.districtIdToLabel).toEqual({
         ABCD: "ABCD-name",
-        TCSTL: "TCSTL-name",
+        "ABCD-Level-1": "ABC Location",
+        SLCRC: "St. Louis Community Release Center",
+        TCSTL: "Transition Center of St. Louis",
         ALL: "ALL",
         all: "ALL",
       });

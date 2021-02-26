@@ -27,14 +27,15 @@ import { translate } from "../../../../utils/i18nSettings";
 import flags from "../../../../flags";
 import { useRootStore } from "../../../../StoreProvider";
 
-const CHART_TITLE = "Admissions by district";
 const DEFAULT_MODE = "counts";
 
 const RevocationsByDistrict = observer(
   ({ containerHeight, timeDescription }, ref) => {
     const { dataStore } = useRootStore();
     const { revocationsChartStore } = dataStore;
-    const { transformedData, currentDistricts } = revocationsChartStore;
+    const { districtChartData, currentDistricts } = revocationsChartStore;
+    const CHART_TITLE = translate("revocationsByDistrictChartTitle");
+    const xAxisLabel = translate("District");
 
     return (
       <RevocationsByDimension
@@ -54,7 +55,7 @@ const RevocationsByDistrict = observer(
             <RevocationCountChart
               chartId={chartId}
               data={data}
-              xAxisLabel="District"
+              xAxisLabel={xAxisLabel}
             />
           ) : (
             <PercentRevokedChart
@@ -63,7 +64,7 @@ const RevocationsByDistrict = observer(
               numerators={numerators}
               denominators={denominators}
               averageRate={averageRate}
-              xAxisLabel="District"
+              xAxisLabel={xAxisLabel}
               yAxisLabel={
                 mode === "rates"
                   ? translate("percentOfPopulationRevoked")
@@ -73,7 +74,7 @@ const RevocationsByDistrict = observer(
           )
         }
         generateChartData={createGenerateChartData(
-          transformedData,
+          districtChartData,
           currentDistricts
         )}
         chartTitle={CHART_TITLE}
@@ -85,7 +86,7 @@ const RevocationsByDistrict = observer(
             : ["counts", "rates"]
         }
         defaultMode={DEFAULT_MODE}
-        dataExportLabel="District"
+        dataExportLabel={xAxisLabel}
       />
     );
   },
