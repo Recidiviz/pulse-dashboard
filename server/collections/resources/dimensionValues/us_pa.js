@@ -20,6 +20,7 @@ const {
   DEFAULT_METRIC_PERIOD_MONTHS,
   DEFAULT_GENDERS,
   DEFAULT_RACE,
+  DEFAULT_ADMISSION_TYPES,
 } = require("./shared");
 
 const DEFAULT_SUPERVISION_LEVELS = [
@@ -52,6 +53,7 @@ const DEFAULT_CHARGE_CATEGORIES = ["all"];
 const DEFAULT_RISK_LEVEL = ["high", "low", "medium", "not_assessed"];
 
 const US_PA_DIMENSION_VALUES = {
+  admission_type: DEFAULT_ADMISSION_TYPES,
   charge_category: DEFAULT_CHARGE_CATEGORIES,
   gender: DEFAULT_GENDERS,
   metric_period_months: DEFAULT_METRIC_PERIOD_MONTHS,
