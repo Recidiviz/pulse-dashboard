@@ -71,10 +71,4 @@ describe("CoreLayout tests", () => {
 
     expect(container.firstChild.className).toContain("is-hidden");
   });
-
-  it("should show right pathname in TopBarTitle", () => {
-    const { getByText } = renderCoreLayout();
-
-    expect(getByText("Some > Nested > Pathname")).toBeInTheDocument();
-  });
 });

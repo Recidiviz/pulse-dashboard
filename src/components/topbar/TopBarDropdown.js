@@ -30,7 +30,6 @@ const TopBarTitle = () => {
   const [selectedItem, setSelectedItem] = useState("Community");
   const menu = ["Community", "Facilities", "Programming", "Methodology"];
   const handleChange = (item) => () => setSelectedItem(item);
-
   return (
     <Dropdown
       className="recidiviz-dropdown-menu-text"
@@ -40,15 +39,29 @@ const TopBarTitle = () => {
       <DropdownToggle className="dropdown-toggle" tag="span">
         {selectedItem}
       </DropdownToggle>
-      <DropdownMenu
-        cssModule={{ transform: "translate3d(0px, 24px, 0px)" }}
-        center
-      >
+      <DropdownMenu cssModule={{ transform: "translate3d(0px, 24px, 0px)" }}>
         {menu
           .filter((item) => item !== selectedItem)
-          .map((item) => (
-            <DropdownItem onClick={handleChange(item)}>{item}</DropdownItem>
-          ))}
+          .map((item, index) =>
+            index ? (
+              <DropdownItem
+                tag="button"
+                onClick={handleChange(item)}
+                key={item}
+              >
+                {item}
+              </DropdownItem>
+            ) : (
+              <DropdownItem
+                tag="button"
+                autoFocus
+                onClick={handleChange(item)}
+                key={item}
+              >
+                {item}
+              </DropdownItem>
+            )
+          )}
       </DropdownMenu>
     </Dropdown>
   );
