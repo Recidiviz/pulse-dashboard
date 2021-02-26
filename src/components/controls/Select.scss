@@ -6,7 +6,7 @@
 
   &__control {
     border: 1px solid #d2d8d8 !important;
-    box-shadow: 0 0 0 1px #d2d8d8 !important;
+    box-shadow: none !important;
     border-radius: 15px !important;
 
     &:hover {
@@ -22,8 +22,8 @@
   &__menu {
     margin: 0 !important;
     border: 1px solid #d2d8d8;
-    border-bottom-right-radius: 15px !important;
-    border-bottom-left-radius: 15px !important;
+    box-shadow: none !important;
+    border-radius: 0px 0px 15px 15px !important;
     border-top: none !important;
   }
 
@@ -55,5 +55,21 @@
   &__value-container {
     white-space: nowrap;
     text-overflow: ellipsis;
+  }
+
+  &__custom-indicator {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+  }
+
+  &__custom-arrow {
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 4px 4px 0 4px;
+    border-color: #014c48 transparent transparent transparent;
   }
 }
