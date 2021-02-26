@@ -104,6 +104,11 @@ const pluralize = (count, term) => {
   return count > 1 ? `${base}s` : base;
 };
 
+const formatOfficerLabel = (label) => {
+  const groups = label.split(" - ");
+  return `${groups[0]} - ${toTitleCase(groups[1])}`;
+};
+
 export {
   matrixViolationTypeToLabel,
   genderValueToHumanReadable,
@@ -120,4 +125,5 @@ export {
   genderValueToLabel,
   getStatePopulations,
   getStatePopulationsLabels,
+  formatOfficerLabel,
 };
