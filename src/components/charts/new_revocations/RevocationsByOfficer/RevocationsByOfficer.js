@@ -37,6 +37,8 @@ const RevocationsByOfficer = observer(
 
     const CHART_TITLE = `Admissions by ${translate("officer")}`;
     const includeWarning = false;
+    // TODO 830 - re-enable rate line once data is ready
+    const hideRateLine = true;
 
     return (
       <RevocationsByDimension
@@ -81,6 +83,7 @@ const RevocationsByOfficer = observer(
                   : `Percent ${translate("revoked")} out of all exits`
               }
               includeWarning={includeWarning}
+              hideRateLine={hideRateLine}
             />
           );
         }}
