@@ -61,7 +61,7 @@ const getValueKey = (valueKeys, valueIndex) => {
  * Converts the given optimized array as a singular string into an array of values.
  */
 const stringToArray = (contentsAsString) => {
-  return contentsAsString.split(",");
+  return contentsAsString.split("|");
 };
 
 /**

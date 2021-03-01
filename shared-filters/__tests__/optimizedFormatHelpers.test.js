@@ -18,7 +18,7 @@
 const helpers = require("../optimizedFormatHelpers");
 
 const FLATTENED_VALUES =
-  "0,0,1,1,2,0,0,1,1,2,2,0,0,0,0,0,1,1,1,1,1,1,0,1,0,1,0,0,1,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,100,68,73,41,10,30,36,51,38,15,4";
+  "0|0|1|1|2|0|0|1|1|2|2|0|0|0|0|0|1|1|1|1|1|1|0|1|0|1|0|0|1|0|1|0|1|0|0|0|0|0|0|0|0|0|0|0|100|68|73|41|10|30|36|51|38|15|4";
 
 const METADATA = {
   total_data_points: "11",
@@ -53,7 +53,7 @@ describe("Test getDimensionValue", () => {
 
 describe("Test unflattenValues", () => {
   it("unflattens a flat array into a proper number and size of arrays", () => {
-    const contents = FLATTENED_VALUES.split(",");
+    const contents = FLATTENED_VALUES.split("|");
     const unflattened = helpers.unflattenValues(contents, 11);
     expect(unflattened).toEqual([
       ["0", "0", "1", "1", "2", "0", "0", "1", "1", "2", "2"],
