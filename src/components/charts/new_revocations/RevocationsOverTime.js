@@ -47,7 +47,7 @@ import RevocationsByDimensionComponent from "./RevocationsByDimension/Revocation
 const RevocationsOverTime = ({ timeDescription }) => {
   const { filters, dataStore } = useRootStore();
   const store = dataStore.revocationsOverTimeStore;
-  const chartId = `${translate("revocations")}OverTime`;
+  const chartId = `admissionsOverTime`;
   const { containerHeight, containerRef } = useContainerHeight();
 
   if (store.isLoading) {
@@ -180,7 +180,7 @@ const RevocationsOverTime = ({ timeDescription }) => {
         chartTitle={translate("revocationsOverTimeXAxis")}
         timeDescription={timeDescription}
         labels={chartLabels}
-        chartId="admissionsOverTime"
+        chartId={chartId}
         datasets={datasets}
         metricTitle={translate("revocationsOverTimeXAxis")}
         chart={chart}
