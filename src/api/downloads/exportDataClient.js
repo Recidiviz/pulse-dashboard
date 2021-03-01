@@ -15,6 +15,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 import JsFileDownloader from "js-file-downloader";
+import * as Sentry from "@sentry/react";
 
 export default async function exportDataClient(
   formData,
@@ -42,7 +43,11 @@ export default async function exportDataClient(
       jsFileDownload.start();
     })
     .catch((error) => {
-      /* eslint-disable-next-line no-console */
-      console.error(error.message);
+      console.error(error);
+      Sentry.captureException(error, (scope) => {
+        scope.setContext("exportDataClient", {
+          filename,
+        });
+      });
     });
 }
