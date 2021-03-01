@@ -158,20 +158,21 @@ const PAFilterOptions = {
   [ADMISSION_TYPE]: {
     options: [
       { value: "All", label: "ALL" },
-      { value: "REVOCATION", label: "Revocation" },
+      { value: "LEGAL_REVOCATION", label: "Revocation" },
       {
         label: "SCI",
         allSelectedLabel: "All Short Term",
         options: [
-          { value: "SCI_6", label: "SCI 6 months" },
-          { value: "SCI_9", label: "SCI 9 months" },
-          { value: "SCI_12", label: "SCI 12 months" },
+          {
+            value: "SHOCK_INCARCERATION_0_TO_6_MONTHS",
+            label: "SCI < 6 months",
+          },
+          { value: "SHOCK_INCARCERATION_6_MONTHS", label: "SCI 6 months" },
+          { value: "SHOCK_INCARCERATION_9_MONTHS", label: "SCI 9 months" },
+          { value: "SHOCK_INCARCERATION_12_MONTHS", label: "SCI 12 months" },
         ],
       },
-      { value: "PVC", label: "PVC" },
-      { value: "INPATIENT_DA", label: "Inpatient D&A" },
-      { value: "DA_DETOX", label: "D&A Detox" },
-      { value: "MENTAL_HEALTH", label: "Mental Health" },
+      { value: "SHOCK_INCARCERATION_PVC", label: "PVC" },
     ],
     get defaultOption() {
       return [this.options[0]];
