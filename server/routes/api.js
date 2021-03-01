@@ -218,8 +218,9 @@ function generateFileLink(req, res) {
 
   fs.writeFile(`server/tmp/${fileName}`, file.buffer, function (err) {
     if (err) {
-      /* eslint-disable-next-line no-console */
-      console.log(err);
+      throw new Error(
+        `Failed to write file for download: ${fileName}. ${err.message}`
+      );
     }
   });
   res.send(`http://${req.headers.host}/file/${fileName}`);
@@ -238,20 +239,21 @@ function upload(req, res) {
 
   res.sendFile(fileName, options, (sendErr) => {
     if (sendErr) {
-      /* eslint-disable-next-line no-console */
-      console.error(sendErr);
+      throw new Error(
+        `Failed to send file for download: ${fileName}. ${sendErr.message}`
+      );
     }
+
     /* Checking on Chrome iOS */
     if (!req.headers["upgrade-insecure-requests"]) {
       fs.unlink(path.join(__dirname, "../tmp", fileName), (delErr) => {
+        /* Delete temp file after it's been sent */
         if (delErr) {
-          /* eslint-disable-next-line no-console */
-          console.error(delErr);
+          throw new Error(
+            `Failed to delete file: ${fileName}. ${delErr.message}`
+          );
         }
       });
-    } else {
-      /* eslint-disable-next-line no-console */
-      console.log("Wait download request!"); /* for Chrome iOS */
     }
   });
 }
