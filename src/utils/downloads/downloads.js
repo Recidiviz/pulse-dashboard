@@ -14,15 +14,16 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-
-import JsFileDownloader from "js-file-downloader";
-
 import getTimeStamp from "./getTimeStamp";
 import configureFilename from "./configureFileName";
 import createMethodologyFile from "./createMethodologyFile";
-import downloadZipFile from "./downloadZipFile";
 import transformChartDataToCsv from "./transformChartDataToCsv";
 import downloadCanvasAsImage from "./downloadCanvasAsImage";
+import {
+  downloadZipFile,
+  downloadEncodedCSV,
+  downloadMsBlob,
+} from "../../api/downloads/downloadFiles";
 
 // Functions for flowing through browser-specific download functionality
 // https://stackoverflow.com/questions/9847580/how-to-detect-safari-chrome-ie-firefox-and-opera-browser
@@ -73,19 +74,9 @@ function configureDataDownloadButton({
 
         downloadZipFile(files, "export_data.zip", getTokenSilently);
       } else if (isIE || isEdge) {
-        const blob = new Blob([csv], {
-          type: "text/csv;charset=utf-8;",
-        });
-        navigator.msSaveBlob(blob, exportName);
+        downloadMsBlob(csv, exportName);
       } else {
-        const encodedCsv = encodeURIComponent(csv);
-        const dataStr = `data:text/csv;charset=utf-8,${encodedCsv}`;
-        const jsFileDownload = new JsFileDownloader({
-          autoStart: false,
-          url: dataStr,
-          filename: exportName,
-        });
-        jsFileDownload.start();
+        downloadEncodedCSV(csv, exportName);
       }
     });
   };

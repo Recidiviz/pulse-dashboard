@@ -1,6 +1,8 @@
-import JsFileDownloader from "js-file-downloader";
 import createMethodologyFile from "./createMethodologyFile";
-import downloadZipFile from "./downloadZipFile";
+import {
+  downloadZipFile,
+  downloadImage,
+} from "../../api/downloads/downloadFiles";
 import getFilters from "./getFilters";
 import getViolation from "./getViolation";
 
@@ -70,12 +72,7 @@ function downloadCanvasAsImage({
 
     downloadZipFile(files, "export_image.zip", getTokenSilently);
   } else {
-    const jsFileDownload = new JsFileDownloader({
-      autoStart: false,
-      filename,
-      url: imageData,
-    });
-    jsFileDownload.start();
+    downloadImage(filename, imageData);
   }
 }
 
