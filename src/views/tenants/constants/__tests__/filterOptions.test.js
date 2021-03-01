@@ -388,7 +388,7 @@ describe("filterOptionsMap", () => {
           label: "ALL",
           value: "All",
         },
-        componentEnabled: false,
+        componentEnabled: true,
       };
 
       expect(result.admissionType).toEqual(expected);
