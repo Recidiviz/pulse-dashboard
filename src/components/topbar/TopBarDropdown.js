@@ -16,6 +16,7 @@
 // =============================================================================
 
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 
 import {
   Dropdown,
@@ -24,12 +25,23 @@ import {
   DropdownItem,
 } from "reactstrap";
 
+const menu = [
+  { label: "Community", link: "/community/goals" },
+  { label: "Facilities", link: "/facilities/goals" },
+  { label: "Programming", link: "/programming/explore" },
+  { label: "Methodology", link: "/methodology" },
+];
+
 const TopBarTitle = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const toggle = () => setDropdownOpen((prevState) => !prevState);
-  const [selectedItem, setSelectedItem] = useState("Community");
-  const menu = ["Community", "Facilities", "Programming", "Methodology"];
-  const handleChange = (item) => () => setSelectedItem(item);
+  const [selectedItem, setSelectedItem] = useState(menu[0]);
+  const filteredMenu = menu.filter((item) => item.label !== selectedItem.label);
+
+  const handleChange = (item) => () => {
+    setSelectedItem(item);
+  };
+
   return (
     <Dropdown
       className="recidiviz-dropdown-menu-text"
@@ -37,34 +49,23 @@ const TopBarTitle = () => {
       toggle={toggle}
     >
       <DropdownToggle className="dropdown-toggle" tag="span">
-        {selectedItem}
+        {selectedItem.label}
       </DropdownToggle>
       <DropdownMenu cssModule={{ transform: "translate3d(0px, 24px, 0px)" }}>
-        {menu
-          .filter((item) => item !== selectedItem)
-          .map((item, index) =>
-            index ? (
-              <DropdownItem
-                tag="button"
-                onClick={handleChange(item)}
-                key={item}
-              >
-                {item}
-              </DropdownItem>
-            ) : (
-              <DropdownItem
-                tag="button"
-                autoFocus
-                onClick={handleChange(item)}
-                key={item}
-              >
-                {item}
-              </DropdownItem>
-            )
-          )}
+        {filteredMenu.map(({ label, link }, index) => (
+          <Link key={label} to={link}>
+            <DropdownItem
+              tag="button"
+              autoFocus={!index}
+              onClick={handleChange({ label, link })}
+            >
+              {label}
+            </DropdownItem>
+          </Link>
+        ))}
       </DropdownMenu>
     </Dropdown>
   );
 };
 
-export default TopBarTitle;
+export default React.memo(TopBarTitle);

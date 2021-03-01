@@ -20,7 +20,7 @@
   position: fixed;
   transform: translateY(0);
   transition: all 0.2s ease, transform 0.6s;
-  width: calc(100% - #{$offscreen-size});
+  width: 100%;
   z-index: 800;
 
   @include to($breakpoint-md) {
@@ -133,6 +133,7 @@
 
     .nav-right {
       float: right;
+      margin-right: 15px;
 
       .dropdown {
         .dropdown-toggle {

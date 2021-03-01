@@ -24,28 +24,32 @@
         border-radius: 1.66rem;
         outline: 0;
       }
-      .dropdown-menu {
+      &-menu {
         transform: translate3d(0px, 24px, 0px) !important;
         z-index: 1;
         border: none;
-        .dropdown-item {
-          font-size: 1.2rem;
-          font-weight: 400;
-          color: #00413e;
+        &.show {
+          a > button {
+            font-size: 1.2rem;
+            font-weight: 400;
+            color: #00413e;
+            border-radius: 0;
 
-          &:first-child {
+            &:focus,
+            &:hover {
+              background: #d2d8d8;
+              outline: 0;
+            }
+          }
+          a:first-child > button {
             margin-top: 5px;
           }
-          &:last-child {
+          a:last-child > button {
             border-radius: 0 0 1rem 1rem;
-          }
-          &:focus,
-          &:hover {
-            background: #d2d8d8;
-            outline: 0;
           }
         }
       }
+
       &.show {
         background-color: #e9ebeb;
         border-radius: 1.66rem;
