@@ -41,6 +41,7 @@ function configureDataDownloadButton({
   shouldZipDownload,
   fixLabelsInColumns,
   methodology,
+  getTokenSilently,
 }) {
   return () => {
     const filename = configureFilename(chartId, filters, shouldZipDownload);
@@ -70,7 +71,7 @@ function configureDataDownloadButton({
           },
         ];
 
-        downloadZipFile(files, "export_data.zip");
+        downloadZipFile(files, "export_data.zip", getTokenSilently);
       } else if (isIE || isEdge) {
         const blob = new Blob([csv], {
           type: "text/csv;charset=utf-8;",
@@ -97,6 +98,7 @@ export function downloadHtmlElementAsImage({
   timeWindowDescription,
   shouldZipDownload,
   methodology,
+  getTokenSilently,
 }) {
   const element = document.getElementById(chartId);
 
@@ -110,6 +112,7 @@ export function downloadHtmlElementAsImage({
       timeWindowDescription,
       shouldZipDownload,
       methodology,
+      getTokenSilently,
     });
   });
 }
@@ -127,6 +130,7 @@ export function configureDownloadButtons({
   fixLabelsInColumns = false,
   dataExportLabel = "Month",
   methodology,
+  getTokenSilently,
 }) {
   const filename = configureFilename(chartId, filters, shouldZipDownload);
   const downloadChartAsImageButton = document.getElementById(
@@ -143,6 +147,7 @@ export function configureDownloadButtons({
         chartId,
         timeWindowDescription,
         shouldZipDownload,
+        getTokenSilently,
       });
     };
   }
@@ -163,6 +168,7 @@ export function configureDownloadButtons({
       dataExportLabel,
       fixLabelsInColumns,
       methodology,
+      getTokenSilently,
     });
   }
 
@@ -177,6 +183,7 @@ export function configureDownloadButtons({
         filters,
         timeWindowDescription,
         shouldZipDownload,
+        getTokenSilently,
       });
     };
   }
@@ -189,6 +196,7 @@ export function downloadChartAsImage({
   timeWindowDescription,
   shouldZipDownload,
   methodology,
+  getTokenSilently,
 }) {
   const filename = configureFilename(chartId, filters, shouldZipDownload);
   downloadCanvasAsImage({
@@ -200,6 +208,7 @@ export function downloadChartAsImage({
     timeWindowDescription,
     shouldZipDownload,
     methodology,
+    getTokenSilently,
   });
 }
 
@@ -214,6 +223,7 @@ export function downloadChartAsData({
   shouldZipDownload,
   fixLabelsInColumns = false,
   methodology,
+  getTokenSilently,
 }) {
   const downloadChartData = configureDataDownloadButton({
     chartId,
@@ -226,6 +236,7 @@ export function downloadChartAsData({
     shouldZipDownload,
     fixLabelsInColumns,
     methodology,
+    getTokenSilently,
   });
   downloadChartData();
 }

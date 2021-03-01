@@ -94,6 +94,7 @@ const PerMonthBarChart = ({
   yAxisLabel,
   barColorPalette,
   dataExportLabel,
+  getTokenSilently,
 }) => {
   const months = getMonthCountFromMetricPeriodMonthsToggle(numMonths);
   const barKeys = map("key", bars);
@@ -142,9 +143,10 @@ const PerMonthBarChart = ({
       bars,
       filters: { metricType, visibleOffices },
       dataExportLabel,
+      getTokenSilently,
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [metricType, visibleOffices]);
+  }, [getTokenSilently, metricType, visibleOffices]);
 
   return (
     <Bar
@@ -218,6 +220,7 @@ PerMonthBarChart.defaultProps = {
 };
 
 PerMonthBarChart.propTypes = {
+  getTokenSilently: PropTypes.func.isRequired,
   chartId: PropTypes.string.isRequired,
   exportLabel: PropTypes.string.isRequired,
   countsByMonth: PropTypes.arrayOf(PropTypes.shape({})),

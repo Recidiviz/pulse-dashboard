@@ -56,6 +56,7 @@ const AdmissionCountsByType = ({
   metricType,
   district,
   supervisionType,
+  getTokenSilently,
 }) => {
   // This chart does not support district or supervision type breakdowns for rates, only counts
   const filterDistrict =
@@ -251,8 +252,10 @@ const AdmissionCountsByType = ({
       chartBox: document.getElementById(chartId),
       filters: { metricPeriodMonths, metricType, district, supervisionType },
       dataExportLabel: "Type",
+      getTokenSilently,
     });
   }, [
+    getTokenSilently,
     metricPeriodMonths,
     metricType,
     district,

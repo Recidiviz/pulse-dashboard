@@ -112,6 +112,7 @@ const RevocationAdmissionsSnapshot = ({
   district,
   metricType,
   metricPeriodMonths,
+  getTokenSilently,
 }) => {
   const toggles = useMemo(() => {
     return {
@@ -298,8 +299,10 @@ const RevocationAdmissionsSnapshot = ({
       filters: toggles,
       convertValuesToNumbers: true,
       handleTimeStringLabels: true,
+      getTokenSilently,
     });
   }, [
+    getTokenSilently,
     metricType,
     metricPeriodMonths,
     district,
@@ -331,6 +334,7 @@ RevocationAdmissionsSnapshot.defaultProps = {
 };
 
 RevocationAdmissionsSnapshot.propTypes = {
+  getTokenSilently: PropTypes.func.isRequired,
   stateCode: PropTypes.string.isRequired,
   disableGoal: PropTypes.bool,
   header: PropTypes.string,

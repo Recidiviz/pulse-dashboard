@@ -74,6 +74,7 @@ const ReincarcerationRateByStayLength = ({
   district,
   metricType,
   ratesByStayLength,
+  getTokenSilently,
 }) => {
   const label =
     metricType === METRIC_TYPES.COUNTS
@@ -177,8 +178,10 @@ const ReincarcerationRateByStayLength = ({
       chartBox: document.getElementById(chartId),
       filters: { district, metricType },
       dataExportLabel: "Stay length",
+      getTokenSilently,
     });
   }, [
+    getTokenSilently,
     chart.props.data.datasets,
     chart.props.data.labels,
     district,

@@ -79,6 +79,7 @@ const FtrReferralCountByMonth = ({
   district,
   metricType,
   metricPeriodMonths,
+  getTokenSilently,
   header = null,
 }) => {
   const dataPoints = pipe(
@@ -181,8 +182,10 @@ const FtrReferralCountByMonth = ({
       filters: { supervisionType, district, metricType, metricPeriodMonths },
       convertValuesToNumbers: true,
       handleTimeStringLabels: true,
+      getTokenSilently,
     });
   }, [
+    getTokenSilently,
     supervisionType,
     district,
     metricPeriodMonths,

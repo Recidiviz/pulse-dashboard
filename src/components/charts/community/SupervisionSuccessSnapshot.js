@@ -111,6 +111,7 @@ const SupervisionSuccessSnapshot = ({
   metricPeriodMonths,
   header = null,
   disableGoal = false,
+  getTokenSilently,
 }) => {
   const stepSize = 10;
 
@@ -280,8 +281,10 @@ const SupervisionSuccessSnapshot = ({
       filters: { metricType, metricPeriodMonths, supervisionType, district },
       convertValuesToNumbers: true,
       handleTimeStringLabels: true,
+      getTokenSilently,
     });
   }, [
+    getTokenSilently,
     metricType,
     metricPeriodMonths,
     supervisionType,

@@ -47,6 +47,7 @@ function downloadCanvasAsImage({
   timeWindowDescription,
   shouldZipDownload,
   methodology,
+  getTokenSilently,
 }) {
   const imageData = transformCanvasToBase64(canvas, chartTitle, filters);
 
@@ -67,7 +68,7 @@ function downloadCanvasAsImage({
 
     const files = [methodologyFile, imageFile];
 
-    downloadZipFile(files, "export_image.zip");
+    downloadZipFile(files, "export_image.zip", getTokenSilently);
   } else {
     const jsFileDownload = new JsFileDownloader({
       autoStart: false,

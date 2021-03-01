@@ -326,6 +326,7 @@ class GeoViewTimeChart extends Component {
       chartBox: document.getElementById(this.props.chartId),
       filters: this.props,
       dataExportLabel: "County",
+      getTokenSilently: this.props.getTokenSilently,
     });
   }
 

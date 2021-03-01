@@ -90,6 +90,7 @@ const ReincarcerationCountOverTime = ({
   disableGoal,
   header = null,
   stateCode,
+  getTokenSilently,
 }) => {
   const goal = getGoalForChart(stateCode, chartId);
   const goalProps = {
@@ -230,8 +231,10 @@ const ReincarcerationCountOverTime = ({
       filters: { district, metricType, metricPeriodMonths },
       convertValuesToNumbers: true,
       handleTimeStringLabels: true,
+      getTokenSilently,
     });
   }, [
+    getTokenSilently,
     chart.props.data.datasets,
     chart.props.data.labels,
     district,
