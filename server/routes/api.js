@@ -223,7 +223,7 @@ function generateFileLink(req, res) {
       );
     }
   });
-  res.send(`http://${req.headers.host}/file/${fileName}`);
+  res.send(`https://${req.headers.host}/file/${fileName}`);
 }
 
 function upload(req, res) {
