@@ -93,6 +93,7 @@ export default class FiltersStore {
       [LEVEL_2_SUPERVISION_LOCATION]: [
         this.filterOptions[LEVEL_2_SUPERVISION_LOCATION].defaultValue,
       ],
+      [ADMISSION_TYPE]: this.filterOptions[ADMISSION_TYPE].defaultValue,
       ...{
         [districtKeys.filterKey]: [
           this.rootStore.userStore.restrictedDistrict ||

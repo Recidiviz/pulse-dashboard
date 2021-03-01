@@ -117,7 +117,9 @@ const matchesTopLevelFilters = ({
     (dimensionKey === undefined || dimensionKey === "admission_type") &&
     filters[ADMISSION_TYPE] &&
     !skippedFilters.includes(ADMISSION_TYPE) &&
-    !includesAllItemFirst(filters[ADMISSION_TYPE]) &&
+    !(
+      treatCategoryAllAsAbsent && includesAllItemFirst(filters[ADMISSION_TYPE])
+    ) &&
     !nullSafeComparison(item.admission_type, filters[ADMISSION_TYPE])
   ) {
     return false;
