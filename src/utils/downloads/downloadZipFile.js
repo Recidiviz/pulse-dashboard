@@ -1,7 +1,8 @@
 import JSZip from "jszip";
 import JsFileDownloader from "js-file-downloader";
+import exportDataClient from "../../api/downloads/exportDataClient";
 
-function downloadZipFile(files, filename) {
+async function downloadZipFile(files, filename, getTokenSilently) {
   const zip = new JSZip();
 
   files.forEach((file) => {
@@ -14,10 +15,16 @@ function downloadZipFile(files, filename) {
     }
   });
 
+  // iOS mobile Safari needs forceDesktopMode=true to correctly
+  // download the file.
   const OSinfo = navigator.userAgent;
-  if (OSinfo.includes("iPad") && !OSinfo.includes("CriOS")) {
+  if (
+    (OSinfo.includes("iPhone") || OSinfo.includes("iPad")) &&
+    !OSinfo.includes("CriOS")
+  ) {
     zip.generateAsync({ type: "base64" }).then((content) => {
       const jsFileDownload = new JsFileDownloader({
+        forceDesktopMode: true,
         autoStart: false,
         filename,
         url: `data:application/zip;base64,${content}`,
@@ -25,27 +32,10 @@ function downloadZipFile(files, filename) {
       jsFileDownload.start();
     });
   } else {
-    zip.generateAsync({ type: "blob" }).then((content) => {
-      const formData = new FormData();
-      formData.append("zip", content, filename);
-      fetch(`${process.env.REACT_APP_API_URL}/api/generateFileLink`, {
-        method: "POST",
-        body: formData,
-      })
-        .then((response) => response.text())
-        .then((url) => {
-          const jsFileDownload = new JsFileDownloader({
-            autoStart: false,
-            filename,
-            url,
-          });
-          jsFileDownload.start();
-        })
-        .catch((error) => {
-          /* eslint-disable-next-line no-console */
-          console.log(error.message);
-        });
-    });
+    const content = await zip.generateAsync({ type: "blob" });
+    const formData = new FormData();
+    formData.append("zip", content, filename);
+    await exportDataClient(formData, filename, getTokenSilently);
   }
 }
 
