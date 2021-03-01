@@ -61,7 +61,7 @@ const DEFAULT_RISK_LEVEL = [
   "very_high",
 ];
 
-const DEFAULT_ADMISSION_TYPES = ["ALL"];
+const DEFAULT_ADMISSION_TYPES = ["all"];
 
 const US_MO_DIMENSION_VALUES = {
   admission_type: DEFAULT_ADMISSION_TYPES,
