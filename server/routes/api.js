@@ -216,7 +216,7 @@ function generateFileLink(req, res) {
   const { file } = req;
   const fileName = `${uuid.v4()}-${file.originalname}`;
 
-  fs.writeFile(`server/tmp/${fileName}`, file.buffer, function (err) {
+  fs.writeFile(`/tmp/${fileName}`, file.buffer, function (err) {
     if (err) {
       throw new Error(
         `Failed to write file for download: ${fileName}. ${err.message}`
@@ -228,7 +228,7 @@ function generateFileLink(req, res) {
 
 function upload(req, res) {
   const options = {
-    root: path.join(__dirname, "../tmp"),
+    root: "/tmp",
     headers: {
       "x-timestamp": Date.now(),
       "x-sent": true,
@@ -246,7 +246,7 @@ function upload(req, res) {
 
     /* Checking on Chrome iOS */
     if (!req.headers["upgrade-insecure-requests"]) {
-      fs.unlink(path.join(__dirname, "../tmp", fileName), (delErr) => {
+      fs.unlink(path.join("/tmp", fileName), (delErr) => {
         /* Delete temp file after it's been sent */
         if (delErr) {
           throw new Error(
