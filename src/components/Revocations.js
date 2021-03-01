@@ -18,6 +18,7 @@
 import React from "react";
 import { observer } from "mobx-react-lite";
 import Sticky from "react-sticky-fill";
+import cx from "classnames";
 import { get } from "mobx";
 
 import { getTimeDescription } from "./charts/new_revocations/helpers/format";
@@ -55,10 +56,13 @@ const Revocations = () => {
   );
 
   return (
-    <main className="Revocations">
+    <div className="Revocations">
       <Sticky
-        className="FilterBar"
-        style={{ zIndex: 700, top: hideTopBar ? 0 : 65 }}
+        className={cx("FilterBar", {
+          "Revocations__top-65": !hideTopBar,
+          "Revocations__top-0": hideTopBar,
+        })}
+        style={{ zIndex: 700 }}
       >
         <ErrorBoundary>
           <>
@@ -118,7 +122,7 @@ const Revocations = () => {
           <CaseTable timeDescription={timeDescription} />
         </ErrorBoundary>
       </div>
-    </main>
+    </div>
   );
 };
 
