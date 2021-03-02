@@ -12,37 +12,38 @@
       display: flex;
       font-size: 1.2rem;
       font-weight: 400;
-      color: #00413e;
+      color: $core-font-color;
       border: none;
       background: transparent;
       align-items: center;
       cursor: pointer;
+      user-select: none;
       &:hover,
       &:focus {
-        background-color: #e9ebeb;
-        box-shadow: inset 0px -1px 1px rgba(19, 44, 82, 0.3);
+        background-color: $core-dropdown-color;
+        box-shadow: inset 0px -0.1rem 0.1rem rgba(19, 44, 82, 0.3);
         border-radius: 1.66rem;
         outline: 0;
       }
       &-menu {
-        transform: translate3d(0px, 24px, 0px) !important;
+        transform: translate3d(0px, 1.5rem, 0px) !important;
         z-index: 1;
         border: none;
         &.show {
           a > button {
             font-size: 1.2rem;
             font-weight: 400;
-            color: #00413e;
+            color: $core-font-color;
             border-radius: 0;
 
             &:focus,
             &:hover {
-              background: #d2d8d8;
+              background: $core-element-hover-color;
               outline: 0;
             }
           }
           a:first-child > button {
-            margin-top: 5px;
+            margin-top: 0.31rem;
           }
           a:last-child > button {
             border-radius: 0 0 1rem 1rem;
@@ -51,26 +52,25 @@
       }
 
       &.show {
-        background-color: #e9ebeb;
+        background-color: $core-dropdown-color;
         border-radius: 1.66rem;
       }
       .show {
-        padding: 10px 0;
+        padding: 0.62rem 0;
         border-radius: 0 0 1.66rem 1.66rem;
-        box-shadow: inset 0px -1px 1px rgba(19, 44, 82, 0.3);
+        box-shadow: inset 0px -0.06rem 0.06rem rgba(19, 44, 82, 0.3);
       }
       &-toggle {
-        min-width: 189px;
-        min-height: 48px;
+        min-width: 11.81rem;
+        min-height: 3rem;
         display: flex;
         justify-content: space-between;
-        padding: 0 24px;
+        padding: 0 1.5rem;
         align-items: center;
         z-index: 2;
       }
       &-menu {
-        min-width: 189px;
-        background-color: #e9ebeb;
+        background-color: $core-dropdown-color;
       }
     }
     .dropdown-menu {
@@ -78,8 +78,8 @@
       margin: 0;
 
       .divider {
-        border-bottom: 1px solid $border-color;
-        height: 1px;
+        border-bottom: 0.06rem solid $border-color;
+        height: 0.06rem;
         overflow: hidden;
       }
     }
@@ -87,8 +87,8 @@
       .dropdown-menu {
         display: block;
         transform: scale(1, 1);
-        min-width: 189px;
-        background-color: #e9ebeb;
+        min-width: 11.81rem;
+        background-color: $core-dropdown-color;
       }
     }
   }
