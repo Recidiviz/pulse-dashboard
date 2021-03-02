@@ -61,7 +61,10 @@ const DEFAULT_RISK_LEVEL = [
   "very_high",
 ];
 
+const DEFAULT_ADMISSION_TYPES = ["all"];
+
 const US_MO_DIMENSION_VALUES = {
+  admission_type: DEFAULT_ADMISSION_TYPES,
   charge_category: DEFAULT_CHARGE_CATEGORIES,
   gender: DEFAULT_GENDERS,
   metric_period_months: DEFAULT_METRIC_PERIOD_MONTHS,
