@@ -50,7 +50,9 @@ const MultiSelect = ({
     if (ref.current && ref.current.state.menuIsOpen) {
       ref.current.select.focus();
       const input = document.getElementById("react-select-4-input");
-      input.setAttribute("readonly", true);
+      if (input) {
+        input.setAttribute("readonly", true);
+      }
     }
   }, [value]);
 
