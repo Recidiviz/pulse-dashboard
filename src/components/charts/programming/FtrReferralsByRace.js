@@ -34,6 +34,7 @@ import {
   filterDatasetBySupervisionType,
   filterDatasetByDistrict,
   filterDatasetByMetricPeriodMonths,
+  filterDatasetByLabels,
 } from "../../../utils/charts/dataFilters";
 import { tooltipForCountChart } from "../../../utils/charts/tooltips";
 import {
@@ -44,6 +45,7 @@ import {
 } from "../common/utils/races";
 import { metricTypePropType } from "../propTypes";
 import { METRIC_TYPES } from "../../constants";
+import { raceValueToLabel } from "../../../utils/transforms/labels";
 
 const chartId = "ftrReferralsByRace";
 const colors = [
@@ -74,6 +76,12 @@ const FtrReferralsByRace = ({
   )(statePopulationByRace);
 
   const filteredFtrReferrals = pipe(
+    (dataset) =>
+      filterDatasetByLabels(
+        dataset,
+        "race_or_ethnicity",
+        Object.keys(raceValueToLabel)
+      ),
     (dataset) => filterDatasetBySupervisionType(dataset, supervisionType),
     (dataset) => filterDatasetByDistrict(dataset, district),
     (dataset) => filterDatasetByMetricPeriodMonths(dataset, metricPeriodMonths),
