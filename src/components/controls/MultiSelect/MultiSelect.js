@@ -31,9 +31,9 @@ import "./MultiSelect.scss";
 
 const CustomScrollBarWrapper = ({ children }) => {
   return (
-    <div style={{ height: 300 }}>
-      <Scrollbars>{children}</Scrollbars>
-    </div>
+    <Scrollbars thumbSize={31} style={{ height: 250, marginBottom: -15 }}>
+      {children}
+    </Scrollbars>
   );
 };
 
@@ -49,6 +49,8 @@ const MultiSelect = ({
   useEffect(() => {
     if (ref.current && ref.current.state.menuIsOpen) {
       ref.current.select.focus();
+      const input = document.getElementById("react-select-4-input");
+      input.setAttribute("readonly", true);
     }
   }, [value]);
 
@@ -67,6 +69,11 @@ const MultiSelect = ({
       ),
       Option,
       MenuList: CustomScrollBarWrapper,
+      DropdownIndicator: () => (
+        <div className="MultiSelect__custom-indicator">
+          <span className="MultiSelect__custom-arrow" />
+        </div>
+      ),
       ValueContainer: (valueContainerProps) => (
         <ValueContainer
           allOptions={options}
@@ -78,25 +85,23 @@ const MultiSelect = ({
     [handleChange, options, summingOption]
   );
   return (
-    <>
-      <ReactSelect
-        classNamePrefix="MultiSelect"
-        className={cn("MultiSelect", className, {
-          "MultiSelect--summing-option-selected": summingOption === value[0],
-        })}
-        ref={ref}
-        isSearchable={false}
-        closeMenuOnSelect={false}
-        components={replacedComponents}
-        hideSelectedOptions={false}
-        onChange={handleChange}
-        options={options}
-        onFocus={() => ref.current.setState({ menuIsOpen: true })}
-        value={value}
-        isMulti
-        {...props}
-      />
-    </>
+    <ReactSelect
+      classNamePrefix="MultiSelect"
+      className={cn("MultiSelect", className, {
+        "MultiSelect--summing-option-selected": summingOption === value[0],
+      })}
+      ref={ref}
+      closeMenuOnSelect={false}
+      components={replacedComponents}
+      hideSelectedOptions={false}
+      onChange={handleChange}
+      options={options}
+      onFocus={() => ref.current.setState({ menuIsOpen: true })}
+      value={value}
+      isSearchable
+      isMulti
+      {...props}
+    />
   );
 };
 

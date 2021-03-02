@@ -84,7 +84,7 @@ export const formatSelectOptionValue = (
   }
 
   if (isShortFormat) {
-    return `${selectedOptions.length} Items`;
+    return `${selectedOptions[0].label} and ${selectedOptions.length - 1} more`;
   }
 
   const groupOptions = excludeOption(
