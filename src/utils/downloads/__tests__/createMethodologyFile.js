@@ -16,17 +16,12 @@
 // =============================================================================
 
 import createMethodologyFile from "../createMethodologyFile";
-import getFilters from "../getFilters";
-import getViolation from "../getViolation";
 
 jest.mock("../../../utils/i18nSettings");
-jest.mock("../getFilters");
-jest.mock("../getViolation");
 describe("createMethodologyFile functions", () => {
   const mockChartId = "revocations_count";
   const mockChartTitle = "Revocations Count";
   const mockTimeWindowDescription = "20 November 2019 - 20 November 2020";
-  const mockFilters = {};
   const mockMethodologyHeader = "methodology header";
   const mockMethodologyBody = "methodology body";
   const methodology = {
@@ -37,21 +32,20 @@ describe("createMethodologyFile functions", () => {
       },
     ],
   };
-  const mockFiltersText = "some filters text";
-  const mockViolationText = "some violation text";
+  const filtersText = "some filters text";
+  const violationText = "some violation text";
 
   const nowSpy = jest.spyOn(Date, "now");
   nowSpy.mockReturnValue(1605866733144);
-  getFilters.mockReturnValue(mockFiltersText);
-  getViolation.mockReturnValue(mockViolationText);
 
   it("should return methodology file for MO", () => {
     const actual = createMethodologyFile(
       mockChartId,
       mockChartTitle,
       mockTimeWindowDescription,
-      mockFilters,
-      methodology
+      filtersText,
+      methodology,
+      violationText
     );
 
     expect(actual.data).toBe(

@@ -143,12 +143,13 @@ const Matrix = ({ timeDescription }) => {
     ),
   }));
 
+  const CHART_ID = `${translate("revocation")}Matrix`;
   return (
     <div ref={containerRef} className="Matrix">
       <h4 className="Matrix__title">
         {TITLE}
         <ExportMenu
-          chartId={`${translate("revocation")}Matrix`}
+          chartId={CHART_ID}
           regularElement
           datasets={exportableMatrixData}
           labels={VIOLATION_COUNTS.map(violationCountLabel)}
@@ -162,7 +163,7 @@ const Matrix = ({ timeDescription }) => {
       <div className="Matrix__x-label">
         # of {translate("violationReports")}
       </div>
-      <div id="revocationMatrix" className="Matrix__chart-container">
+      <div id={CHART_ID} className="Matrix__chart-container">
         <div className="Matrix__y-label" data-html2canvas-ignore>
           Most severe violation reported
         </div>

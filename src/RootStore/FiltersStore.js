@@ -39,7 +39,8 @@ import {
 import filterOptionsMap from "./utils/filterOptions";
 import { compareStrings } from "./utils";
 import { generateNestedOptions } from "./utils/districtOptions";
-import getFilters from "../utils/downloads/getFilters";
+import getFilters from "./utils/getFilters";
+import getViolation from "./utils/getViolation";
 
 export default class FiltersStore {
   rootStore;
@@ -144,10 +145,19 @@ export default class FiltersStore {
     this.filters.merge(updatedFilters);
   }
 
-  get filtersStringForDownload() {
-    return getFilters(
-      Object.fromEntries(toJS(this.filters)),
-      this.filterOptions
+  get stringsForDownload() {
+    const filters = Object.fromEntries(toJS(this.filters));
+    const enabledFilters = Object.entries(filters).reduce(
+      (acc, [key, value]) => {
+        if (this.filterOptions[key].componentEnabled !== false)
+          acc[key] = value;
+        return acc;
+      },
+      {}
     );
+    return {
+      filtersString: getFilters(enabledFilters),
+      violationString: getViolation(enabledFilters),
+    };
   }
 }

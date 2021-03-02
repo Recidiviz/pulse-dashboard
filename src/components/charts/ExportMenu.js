@@ -19,7 +19,6 @@ import React, { useCallback, useState } from "react";
 import { Dropdown, Modal } from "react-bootstrap";
 import PropTypes from "prop-types";
 import { observer } from "mobx-react-lite";
-import { toJS } from "mobx";
 
 import {
   downloadChartAsImage,
@@ -28,6 +27,7 @@ import {
 } from "../../utils/downloads/downloads";
 import { useRootStore } from "../../StoreProvider";
 
+// ExportMenu used by Lantern charts only
 const ExportMenu = ({
   chartId,
   timeWindowDescription,
@@ -39,7 +39,7 @@ const ExportMenu = ({
   labels,
   dataExportLabel,
 }) => {
-  const { filters, methodology } = useRootStore();
+  const { methodology, filtersStore } = useRootStore();
   const [isModalOpened, setIsModalOpened] = useState(false);
   const additionalInfo = methodology[chartId] || [];
 
@@ -50,8 +50,6 @@ const ExportMenu = ({
   const hideModal = useCallback(() => {
     setIsModalOpened(false);
   }, []);
-
-  const staticFilters = Object.fromEntries(toJS(filters));
 
   return (
     <span className="ExportMenu fa-pull-right">
@@ -78,7 +76,7 @@ const ExportMenu = ({
                 downloadChartAsImage({
                   chartId,
                   chartTitle: metricTitle,
-                  filters: staticFilters,
+                  filters: filtersStore.stringsForDownload,
                   timeWindowDescription,
                   shouldZipDownload: true,
                   methodology,
@@ -95,7 +93,7 @@ const ExportMenu = ({
                 downloadHtmlElementAsImage({
                   chartId,
                   chartTitle: metricTitle,
-                  filters: staticFilters,
+                  filters: filtersStore.stringsForDownload,
                   timeWindowDescription,
                   shouldZipDownload: true,
                   methodology,
@@ -114,7 +112,7 @@ const ExportMenu = ({
                 chartDatasets: datasets,
                 chartLabels: labels,
                 dataExportLabel,
-                filters: staticFilters,
+                filters: filtersStore.stringsForDownload,
                 timeWindowDescription,
                 shouldZipDownload: true,
                 fixLabelsInColumns,

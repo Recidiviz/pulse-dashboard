@@ -64,4 +64,21 @@ describe("getFilters tests", () => {
 
     expect(getFilters(given)).toBe(expected);
   });
+
+  fit("outputs all expected admission type", () => {
+    const given = {
+      metricPeriodMonths: "12",
+      admissionType: [
+        "SHOCK_INCARCERATION_0_TO_6_MONTHS",
+        "SHOCK_INCARCERATION_6_MONTHS",
+        "SHOCK_INCARCERATION_9_MONTHS",
+        "SHOCK_INCARCERATION_12_MONTHS",
+      ],
+    };
+
+    const expected =
+      "1 year, Admission type: SCI < 6 months, SCI 6 months, SCI 9 months, SCI 12 months";
+
+    expect(getFilters(given)).toBe(expected);
+  });
 });

@@ -23,18 +23,21 @@ import createMethodologyFile from "./createMethodologyFile";
 import downloadZipFile from "./downloadZipFile";
 import transformChartDataToCsv from "./transformChartDataToCsv";
 import downloadCanvasAsImage from "./downloadCanvasAsImage";
+import getFilters from "../../RootStore/utils/getFilters";
 
 // Functions for flowing through browser-specific download functionality
 // https://stackoverflow.com/questions/9847580/how-to-detect-safari-chrome-ie-firefox-and-opera-browser
 const isIE = /* @cc_on!@ */ false || !!document.documentMode;
 const isEdge = !isIE && !!window.StyleMedia;
 
+// both
 function configureDataDownloadButton({
   chartId,
   chartDatasets,
   chartLabels,
   dataExportLabel,
   filters,
+  violation,
   convertValuesToNumbers,
   chartTitle,
   timeWindowDescription,
@@ -59,7 +62,8 @@ function configureDataDownloadButton({
           chartTitle,
           timeWindowDescription,
           filters,
-          methodology
+          methodology,
+          violation
         );
         const files = [
           methodologyFile,
@@ -85,30 +89,7 @@ function configureDataDownloadButton({
   };
 }
 
-export function downloadHtmlElementAsImage({
-  chartId,
-  chartTitle,
-  filters,
-  timeWindowDescription,
-  shouldZipDownload,
-  methodology,
-}) {
-  const element = document.getElementById(chartId);
-
-  window.html2canvas(element, {}).then((canvas) => {
-    downloadCanvasAsImage({
-      canvas,
-      filename: `${chartId}-${getTimeStamp()}.png`,
-      chartTitle,
-      filters,
-      chartId,
-      timeWindowDescription,
-      shouldZipDownload,
-      methodology,
-    });
-  });
-}
-
+// ND charts
 export function configureDownloadButtons({
   chartId,
   chartTitle,
@@ -134,7 +115,7 @@ export function configureDownloadButtons({
         canvas: chartBox || document.getElementById(chartId),
         filename: `${filename}.png`,
         chartTitle,
-        filters,
+        filters: getFilters(filters),
         chartId,
         timeWindowDescription,
         shouldZipDownload,
@@ -150,7 +131,7 @@ export function configureDownloadButtons({
       chartId,
       chartDatasets,
       chartLabels,
-      filters,
+      filters: getFilters(filters),
       convertValuesToNumbers,
       chartTitle,
       timeWindowDescription,
@@ -169,7 +150,7 @@ export function configureDownloadButtons({
       downloadHtmlElementAsImage({
         chartId,
         chartTitle,
-        filters,
+        filters: getFilters(filters),
         timeWindowDescription,
         shouldZipDownload,
       });
@@ -177,6 +158,33 @@ export function configureDownloadButtons({
   }
 }
 
+// BOTH
+export function downloadHtmlElementAsImage({
+  chartId,
+  chartTitle,
+  filters,
+  timeWindowDescription,
+  shouldZipDownload,
+  methodology,
+}) {
+  const element = document.getElementById(chartId);
+
+  window.html2canvas(element, {}).then((canvas) => {
+    downloadCanvasAsImage({
+      canvas,
+      filename: `${chartId}-${getTimeStamp()}.png`,
+      chartTitle,
+      filters: filters.filtersString,
+      violation: filters.violationString,
+      chartId,
+      timeWindowDescription,
+      shouldZipDownload,
+      methodology,
+    });
+  });
+}
+
+// LANTERN ONLY
 export function downloadChartAsImage({
   chartId,
   chartTitle,
@@ -190,7 +198,8 @@ export function downloadChartAsImage({
     canvas: document.getElementById(chartId),
     filename: `${filename}.png`,
     chartTitle,
-    filters,
+    filters: filters.filtersString,
+    violation: filters.violationString,
     chartId,
     timeWindowDescription,
     shouldZipDownload,
@@ -198,6 +207,7 @@ export function downloadChartAsImage({
   });
 }
 
+// LANTERN only
 export function downloadChartAsData({
   chartId,
   chartTitle,
@@ -215,7 +225,8 @@ export function downloadChartAsData({
     chartDatasets,
     chartLabels,
     dataExportLabel,
-    filters,
+    filters: filters.filtersString,
+    violation: filters.violationString,
     chartTitle,
     timeWindowDescription,
     shouldZipDownload,

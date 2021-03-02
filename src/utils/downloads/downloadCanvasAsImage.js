@@ -2,10 +2,8 @@ import downloadjs from "downloadjs";
 
 import createMethodologyFile from "./createMethodologyFile";
 import downloadZipFile from "./downloadZipFile";
-import getFilters from "./getFilters";
-import getViolation from "./getViolation";
 
-function transformCanvasToBase64(canvas, chartTitle, filters) {
+function transformCanvasToBase64(canvas, chartTitle, filters, violation) {
   const topPadding = 120;
   const temporaryCanvas = document.createElement("canvas");
   temporaryCanvas.width = canvas.width;
@@ -25,15 +23,17 @@ function transformCanvasToBase64(canvas, chartTitle, filters) {
     destinationCtx.textAlign = "center";
     destinationCtx.font = "16px Helvetica Neue";
     destinationCtx.fillText(
-      `Applied filters: ${getFilters(filters)}`,
+      `Applied filters: ${filters}`,
       canvas.width / 2,
       topPadding - 40
     );
-    destinationCtx.fillText(
-      getViolation(filters),
-      canvas.width / 2,
-      topPadding - 20
-    );
+    if (violation) {
+      destinationCtx.fillText(
+        `${violation}`,
+        canvas.width / 2,
+        topPadding - 20
+      );
+    }
   }
   destinationCtx.drawImage(canvas, 0, topPadding);
 
@@ -45,12 +45,18 @@ function downloadCanvasAsImage({
   filename,
   chartTitle,
   filters,
+  violation,
   chartId,
   timeWindowDescription,
   shouldZipDownload,
   methodology,
 }) {
-  const imageData = transformCanvasToBase64(canvas, chartTitle, filters);
+  const imageData = transformCanvasToBase64(
+    canvas,
+    chartTitle,
+    filters,
+    violation
+  );
 
   if (shouldZipDownload) {
     const methodologyFile = createMethodologyFile(
@@ -58,7 +64,8 @@ function downloadCanvasAsImage({
       chartTitle,
       timeWindowDescription,
       filters,
-      methodology
+      methodology,
+      violation
     );
 
     const imageFile = {
