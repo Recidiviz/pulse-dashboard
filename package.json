@@ -55,6 +55,7 @@
     "debug": "~2.6.9",
     "dot-prop": "^5.1.0",
     "dotenv": "^8.0.0",
+    "downloadjs": "^1.4.7",
     "easy-pie-chart": "^2.1.7",
     "env-cmd": "^9.0.3",
     "eslint-config-airbnb": "^18.2.0",
