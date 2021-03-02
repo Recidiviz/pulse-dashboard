@@ -22,6 +22,7 @@ import {
   reaction,
   observable,
   action,
+  toJS,
 } from "mobx";
 import uniqBy from "lodash/uniqBy";
 import {
@@ -35,9 +36,10 @@ import {
   LEVEL_2_SUPERVISION_LOCATION,
   LEVEL_1_SUPERVISION_LOCATION,
 } from "../constants/filterTypes";
-import filterOptionsMap from "../views/tenants/constants/filterOptions";
+import filterOptionsMap from "./utils/filterOptions";
 import { compareStrings } from "./utils";
 import { generateNestedOptions } from "./utils/districtOptions";
+import getFilters from "../utils/downloads/getFilters";
 
 export default class FiltersStore {
   rootStore;
@@ -140,5 +142,12 @@ export default class FiltersStore {
 
   setFilters(updatedFilters) {
     this.filters.merge(updatedFilters);
+  }
+
+  get filtersStringForDownload() {
+    return getFilters(
+      Object.fromEntries(toJS(this.filters)),
+      this.filterOptions
+    );
   }
 }

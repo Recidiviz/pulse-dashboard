@@ -33,7 +33,7 @@ import { setTranslateLocale } from "../../utils/i18nSettings";
 
 import { US_MO } from "../../RootStore/TenantStore/lanternTenants";
 import mockWithTestId from "../../../__helpers__/mockWithTestId";
-import filterOptionsMap from "../../views/tenants/constants/filterOptions";
+import filterOptionsMap from "../../RootStore/utils/filterOptions";
 import {
   ADMISSION_TYPE,
   CHARGE_CATEGORY,
@@ -51,7 +51,7 @@ jest.mock("../charts/new_revocations/RevocationsOverTime");
 jest.mock("../charts/new_revocations/Matrix");
 jest.mock("../charts/new_revocations/RevocationCharts");
 jest.mock("../charts/new_revocations/CaseTable/CaseTable");
-jest.mock("../../views/tenants/constants/filterOptions");
+jest.mock("../../RootStore/utils/filterOptions");
 jest.mock("../../tenants");
 jest.mock("../../StoreProvider");
 

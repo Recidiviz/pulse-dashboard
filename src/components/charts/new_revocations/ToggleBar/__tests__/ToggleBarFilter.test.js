@@ -30,7 +30,7 @@ import {
 import { useRootStore } from "../../../../../StoreProvider";
 import { METADATA_NAMESPACE } from "../../../../../constants";
 import { US_MO } from "../../../../../RootStore/TenantStore/lanternTenants";
-import filterOptions from "../../../../../views/tenants/constants/filterOptions";
+import filterOptions from "../../../../../RootStore/utils/filterOptions";
 
 jest.mock("../../../../controls/Select", () => ({
   __esModule: true,

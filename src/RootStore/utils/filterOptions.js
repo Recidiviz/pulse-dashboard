@@ -14,6 +14,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
+import map from "lodash/fp/map";
+import flattenDeep from "lodash/fp/flattenDeep";
 
 import {
   ADMISSION_TYPE,
@@ -25,8 +27,8 @@ import {
   VIOLATION_TYPE,
   LEVEL_1_SUPERVISION_LOCATION,
   LEVEL_2_SUPERVISION_LOCATION,
-} from "../../../constants/filterTypes";
-import { US_MO, US_PA } from "../../../RootStore/TenantStore/lanternTenants";
+} from "../../constants/filterTypes";
+import { US_MO, US_PA } from "../TenantStore/lanternTenants";
 
 const METRIC_PERIODS = {
   options: [
@@ -77,17 +79,45 @@ const SUPERVISION_TYPES = {
   },
 };
 
+export const ADMISSION_TYPES = {
+  options: [
+    { value: "All", label: "ALL" },
+    { value: "LEGAL_REVOCATION", label: "Revocation" },
+    {
+      label: "SCI",
+      allSelectedLabel: "All Short Term",
+      options: [
+        {
+          value: "SHOCK_INCARCERATION_0_TO_6_MONTHS",
+          label: "SCI < 6 months",
+        },
+        { value: "SHOCK_INCARCERATION_6_MONTHS", label: "SCI 6 months" },
+        { value: "SHOCK_INCARCERATION_9_MONTHS", label: "SCI 9 months" },
+        { value: "SHOCK_INCARCERATION_12_MONTHS", label: "SCI 12 months" },
+      ],
+    },
+    { value: "SHOCK_INCARCERATION_PVC", label: "PVC" },
+  ],
+  get defaultOption() {
+    return [this.options[0]];
+  },
+  get defaultValue() {
+    return this.defaultOption.map(({ value }) => value);
+  },
+  get summingOption() {
+    return this.options[0];
+  },
+  get flattenedOptions() {
+    const options = flattenDeep(
+      map("options", ADMISSION_TYPES.options).filter(Boolean)
+    );
+    return [...this.options, ...options];
+  },
+};
+
 const MOFilterOptions = {
   [ADMISSION_TYPE]: {
-    options: [
-      { value: "All", label: "ALL" },
-      { value: "REVOCATION", label: "Revocation" },
-      {
-        value: "INSTITUTIONAL TREATMENT",
-        label: "Institutional Treatment",
-      },
-      { value: "BOARDS_RETURN", label: "Board Returns" },
-    ],
+    options: [{ value: "All", label: "ALL" }],
     get defaultOption() {
       return [this.options[0]];
     },
@@ -155,36 +185,7 @@ const MOFilterOptions = {
 };
 
 const PAFilterOptions = {
-  [ADMISSION_TYPE]: {
-    options: [
-      { value: "All", label: "ALL" },
-      { value: "LEGAL_REVOCATION", label: "Revocation" },
-      {
-        label: "SCI",
-        allSelectedLabel: "All Short Term",
-        options: [
-          {
-            value: "SHOCK_INCARCERATION_0_TO_6_MONTHS",
-            label: "SCI < 6 months",
-          },
-          { value: "SHOCK_INCARCERATION_6_MONTHS", label: "SCI 6 months" },
-          { value: "SHOCK_INCARCERATION_9_MONTHS", label: "SCI 9 months" },
-          { value: "SHOCK_INCARCERATION_12_MONTHS", label: "SCI 12 months" },
-        ],
-      },
-      { value: "SHOCK_INCARCERATION_PVC", label: "PVC" },
-    ],
-    get defaultOption() {
-      return [this.options[0]];
-    },
-    get defaultValue() {
-      return this.defaultOption.map(({ value }) => value);
-    },
-    get summingOption() {
-      return this.options[0];
-    },
-    componentEnabled: true,
-  },
+  [ADMISSION_TYPE]: { ...ADMISSION_TYPES, componentEnabled: true },
   [CHARGE_CATEGORY]: { defaultValue: "All", componentEnabled: false },
   [VIOLATION_TYPE]: {
     options: [
