@@ -31,7 +31,7 @@ import Profile from "./views/Profile";
 import VerificationNeeded from "./views/VerificationNeeded";
 import LanternLayout from "./components/layouts/LanternLayout";
 import CoreLayout from "./components/layouts/CoreLayout";
-import Revocations from "./components/Revocations";
+import Revocations from "./lantern/Revocations";
 import UsNdCommunityGoals from "./views/tenants/us_nd/community/Goals";
 import UsNdCommunityExplore from "./views/tenants/us_nd/community/Explore";
 import UsNdFacilitiesGoals from "./views/tenants/us_nd/facilities/Goals";

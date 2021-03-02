@@ -23,7 +23,7 @@ import map from "lodash/fp/map";
 import pipe from "lodash/fp/pipe";
 import toInteger from "lodash/fp/toInteger";
 
-import { groupByMonth } from "../../components/charts/common/bars/utils";
+import { groupByMonth } from "../bars/utils";
 
 import { COLORS } from "../../assets/scripts/constants/colors";
 import { configureDownloadButtons } from "../../utils/downloads/downloads";
@@ -39,7 +39,7 @@ import {
 } from "../../utils/charts/toggles";
 import { sortFilterAndSupplementMostRecentMonths } from "../../utils/transforms/datasets";
 import { monthNamesWithYearsFromNumbers } from "../../utils/transforms/months";
-import { metricTypePropType } from "../../components/charts/propTypes";
+import { metricTypePropType } from "../propTypes";
 import { METRIC_TYPES } from "../../components/constants";
 
 const dataCountsMapper = ({ year, month, count }) => ({

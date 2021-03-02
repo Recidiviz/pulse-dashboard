@@ -42,8 +42,8 @@ import {
   countMapper,
   groupByRaceAndMap,
   stateCensusMapper,
-} from "../../components/charts/common/utils/races";
-import { metricTypePropType } from "../../components/charts/propTypes";
+} from "../utils/races";
+import { metricTypePropType } from "../propTypes";
 import { METRIC_TYPES } from "../../components/constants";
 import { raceValueToLabel } from "../../utils/transforms/labels";
 

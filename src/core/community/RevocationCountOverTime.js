@@ -43,11 +43,8 @@ import {
 } from "../../utils/charts/toggles";
 import { sortFilterAndSupplementMostRecentMonths } from "../../utils/transforms/datasets";
 import { monthNamesWithYearsFromNumbers } from "../../utils/transforms/months";
-import { groupByMonth } from "../../components/charts/common/bars/utils";
-import {
-  metricTypePropType,
-  officeDataPropTypes,
-} from "../../components/charts/propTypes";
+import { groupByMonth } from "../bars/utils";
+import { metricTypePropType, officeDataPropTypes } from "../propTypes";
 import { METRIC_TYPES } from "../../components/constants";
 
 const dataCountsMapper = ({ year, month, revocation_count: count }) => ({

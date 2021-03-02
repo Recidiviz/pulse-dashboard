@@ -18,10 +18,10 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import PerMonthBarChart from "../../components/charts/common/bars/PerMonthBarChart";
+import PerMonthBarChart from "../bars/PerMonthBarChart";
 import { COLORS_SEVEN_VALUES } from "../../assets/scripts/constants/colors";
 import { METRIC_TYPES } from "../../components/constants";
-import { metricTypePropType } from "../../components/charts/propTypes";
+import { metricTypePropType } from "../propTypes";
 
 const chartId = "caseTerminationsByTerminationType";
 

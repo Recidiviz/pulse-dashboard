@@ -31,7 +31,7 @@ import { configureDownloadButtons } from "../../utils/downloads/downloads";
 
 import { filterDatasetByDistrict } from "../../utils/charts/dataFilters";
 import { METRIC_TYPES } from "../../components/constants";
-import { metricTypePropType } from "../../components/charts/propTypes";
+import { metricTypePropType } from "../propTypes";
 
 const chartId = "reincarcerationRateByStayLength";
 const chartLabels = [

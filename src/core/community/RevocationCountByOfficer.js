@@ -18,12 +18,9 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import PerOfficerBarChart from "../../components/charts/common/bars/PerOfficerBarChart";
+import PerOfficerBarChart from "../bars/PerOfficerBarChart";
 import { COLORS_FIVE_VALUES } from "../../assets/scripts/constants/colors";
-import {
-  metricTypePropType,
-  officeDataPropTypes,
-} from "../../components/charts/propTypes";
+import { metricTypePropType, officeDataPropTypes } from "../propTypes";
 import { METRIC_TYPES } from "../../components/constants";
 
 const chartId = "revocationsByOfficer";

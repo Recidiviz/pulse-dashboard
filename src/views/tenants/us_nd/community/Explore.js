@@ -23,8 +23,8 @@ import ChartCard from "../../../../core/ChartCard";
 import GeoViewTimeChart from "../../../../core/GeoViewTimeChart";
 import Methodology from "../../../../core/Methodology";
 import PeriodLabel from "../../../../core/PeriodLabel";
-import WarningIcon from "../../../../components/charts/WarningIcon";
-import AdmissionCountsByType from "../../../../components/charts/common/AdmissionCountsByType";
+import WarningIcon from "../../../../controls/WarningIcon";
+import AdmissionCountsByType from "../../../../core/AdmissionCountsByType";
 import CaseTerminationsByOfficer from "../../../../core/community/CaseTerminationsByOfficer";
 import CaseTerminationsByTerminationType from "../../../../core/community/CaseTerminationsByTerminationType";
 import LsirScoreChangeSnapshot from "../../../../core/community/LsirScoreChangeSnapshot";
@@ -43,7 +43,7 @@ import {
   defaultSupervisionType,
 } from "../../../../components/toggles/options";
 import useChartData from "../../../../hooks/useChartData";
-import { isOfficerIdsHidden } from "../../../../components/charts/common/bars/utils";
+import { isOfficerIdsHidden } from "../../../../core/bars/utils";
 import { METRIC_TYPES } from "../../../../components/constants";
 import { availableDistricts, importantNotes } from "./constants";
 

@@ -19,11 +19,8 @@ import React from "react";
 import PropTypes from "prop-types";
 
 import { COLORS_SEVEN_VALUES } from "../../assets/scripts/constants/colors";
-import PerOfficerBarChart from "../../components/charts/common/bars/PerOfficerBarChart";
-import {
-  metricTypePropType,
-  officeDataPropTypes,
-} from "../../components/charts/propTypes";
+import PerOfficerBarChart from "../bars/PerOfficerBarChart";
+import { metricTypePropType, officeDataPropTypes } from "../propTypes";
 import { METRIC_TYPES } from "../../components/constants";
 
 const chartId = "caseTerminationsByOfficer";

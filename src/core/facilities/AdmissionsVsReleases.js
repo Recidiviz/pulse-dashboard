@@ -37,7 +37,7 @@ import {
 import { sortFilterAndSupplementMostRecentMonths } from "../../utils/transforms/datasets";
 import { monthNamesWithYearsFromNumbers } from "../../utils/transforms/months";
 import { METRIC_TYPES } from "../../components/constants";
-import { metricTypePropType } from "../../components/charts/propTypes";
+import { metricTypePropType } from "../propTypes";
 
 const dataCountsMapper = (dataset) => ({
   year: dataset[0].year,

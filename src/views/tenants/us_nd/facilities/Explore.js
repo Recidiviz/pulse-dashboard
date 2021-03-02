@@ -24,11 +24,11 @@ import GeoViewTimeChart from "../../../../core/GeoViewTimeChart";
 import Methodology from "../../../../core/Methodology";
 import MethodologyCollapse from "../../../../core/MethodologyCollapse";
 import PeriodLabel from "../../../../core/PeriodLabel";
-import WarningIcon from "../../../../components/charts/WarningIcon";
+import WarningIcon from "../../../../controls/WarningIcon";
 import AdmissionsVsReleases from "../../../../core/facilities/AdmissionsVsReleases";
 import ReincarcerationCountOverTime from "../../../../core/facilities/ReincarcerationCountOverTime";
 import ReincarcerationRateByStayLength from "../../../../core/facilities/ReincarcerationRateByStayLength";
-import AdmissionCountsByType from "../../../../components/charts/common/AdmissionCountsByType";
+import AdmissionCountsByType from "../../../../core/AdmissionCountsByType";
 import DaysAtLibertySnapshot from "../../../../core/facilities/DaysAtLibertySnapshot";
 import ToggleBar from "../../../../components/toggles/ToggleBar";
 import {

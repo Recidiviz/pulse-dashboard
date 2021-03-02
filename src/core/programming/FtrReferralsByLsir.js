@@ -42,7 +42,7 @@ import {
   tooltipForCountChart,
   tooltipForRateChart,
 } from "../../utils/charts/tooltips";
-import { metricTypePropType } from "../../components/charts/propTypes";
+import { metricTypePropType } from "../propTypes";
 import { METRIC_TYPES } from "../../components/constants";
 
 const chartId = "ftrReferralsByLsir";

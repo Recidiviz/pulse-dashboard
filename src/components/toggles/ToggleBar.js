@@ -21,9 +21,9 @@ import React, { useCallback, useMemo } from "react";
 import PropTypes from "prop-types";
 import Sticky from "react-sticky-fill";
 
-import RadioGroup from "../controls/RadioGroup";
-import Select from "../controls/Select";
-import MultiSelect from "../controls/MultiSelect";
+import RadioGroup from "../../controls/RadioGroup";
+import Select from "../../controls/Select";
+import MultiSelect from "../../controls/MultiSelect";
 
 import {
   defaultDistrictOption,

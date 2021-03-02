@@ -24,7 +24,7 @@ import { US_ND } from "../RootStore/TenantStore/coreTenants";
 import { US_MO, US_PA } from "../RootStore/TenantStore/lanternTenants";
 
 import mockWithTestId from "../../__helpers__/mockWithTestId";
-import Revocations from "../components/Revocations";
+import Revocations from "../lantern/Revocations";
 import UsNDCommunityGoals from "../views/tenants/us_nd/community/Goals";
 import NotFound from "../views/NotFound";
 import Loading from "../components/Loading";
@@ -39,7 +39,7 @@ jest.mock("../utils/initFontAwesome");
 jest.mock("../utils/i18nSettings");
 jest.mock("../components/layouts/LanternLayout");
 jest.mock("../components/layouts/CoreLayout");
-jest.mock("../components/Revocations");
+jest.mock("../lantern/Revocations");
 jest.mock("../views/tenants/us_nd/community/Goals");
 jest.mock("../views/NotFound");
 jest.mock("../components/Loading");
