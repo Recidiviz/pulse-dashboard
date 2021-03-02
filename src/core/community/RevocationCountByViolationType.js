@@ -18,10 +18,10 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import PerMonthBarChart from "../common/bars/PerMonthBarChart";
-import { COLORS_FIVE_VALUES } from "../../../assets/scripts/constants/colors";
-import { metricTypePropType } from "../propTypes";
-import { METRIC_TYPES } from "../../constants";
+import PerMonthBarChart from "../../components/charts/common/bars/PerMonthBarChart";
+import { COLORS_FIVE_VALUES } from "../../assets/scripts/constants/colors";
+import { metricTypePropType } from "../../components/charts/propTypes";
+import { METRIC_TYPES } from "../../components/constants";
 
 const chartId = "revocationsByViolationType";
 

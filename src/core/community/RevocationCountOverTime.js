@@ -22,17 +22,17 @@ import { Line } from "react-chartjs-2";
 import map from "lodash/fp/map";
 import pipe from "lodash/fp/pipe";
 
-import { COLORS } from "../../../assets/scripts/constants/colors";
-import { configureDownloadButtons } from "../../../utils/downloads/downloads";
+import { COLORS } from "../../assets/scripts/constants/colors";
+import { configureDownloadButtons } from "../../utils/downloads/downloads";
 import {
   filterDatasetBySupervisionType,
   filterDatasetByDistrict,
-} from "../../../utils/charts/dataFilters";
+} from "../../utils/charts/dataFilters";
 import {
   getGoalForChart,
   getMaxForGoalAndDataIfGoalDisplayable,
   chartAnnotationForGoal,
-} from "../../../utils/charts/metricGoal";
+} from "../../utils/charts/metricGoal";
 import {
   toggleLabel,
   getMonthCountFromMetricPeriodMonthsToggle,
@@ -40,12 +40,15 @@ import {
   canDisplayGoal,
   toggleYAxisTicksFor,
   centerSingleMonthDatasetIfNecessary,
-} from "../../../utils/charts/toggles";
-import { sortFilterAndSupplementMostRecentMonths } from "../../../utils/transforms/datasets";
-import { monthNamesWithYearsFromNumbers } from "../../../utils/transforms/months";
-import { groupByMonth } from "../common/bars/utils";
-import { metricTypePropType, officeDataPropTypes } from "../propTypes";
-import { METRIC_TYPES } from "../../constants";
+} from "../../utils/charts/toggles";
+import { sortFilterAndSupplementMostRecentMonths } from "../../utils/transforms/datasets";
+import { monthNamesWithYearsFromNumbers } from "../../utils/transforms/months";
+import { groupByMonth } from "../../components/charts/common/bars/utils";
+import {
+  metricTypePropType,
+  officeDataPropTypes,
+} from "../../components/charts/propTypes";
+import { METRIC_TYPES } from "../../components/constants";
 
 const dataCountsMapper = ({ year, month, revocation_count: count }) => ({
   year,

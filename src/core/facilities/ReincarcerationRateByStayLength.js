@@ -26,12 +26,12 @@ import meanBy from "lodash/fp/meanBy";
 import pipe from "lodash/fp/pipe";
 import sumBy from "lodash/fp/sumBy";
 
-import { COLORS } from "../../../assets/scripts/constants/colors";
-import { configureDownloadButtons } from "../../../utils/downloads/downloads";
+import { COLORS } from "../../assets/scripts/constants/colors";
+import { configureDownloadButtons } from "../../utils/downloads/downloads";
 
-import { filterDatasetByDistrict } from "../../../utils/charts/dataFilters";
-import { METRIC_TYPES } from "../../constants";
-import { metricTypePropType } from "../propTypes";
+import { filterDatasetByDistrict } from "../../utils/charts/dataFilters";
+import { METRIC_TYPES } from "../../components/constants";
+import { metricTypePropType } from "../../components/charts/propTypes";
 
 const chartId = "reincarcerationRateByStayLength";
 const chartLabels = [

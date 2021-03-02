@@ -26,14 +26,14 @@ import sumBy from "lodash/fp/sumBy";
 import toInteger from "lodash/fp/toInteger";
 import values from "lodash/fp/values";
 
-import { COLORS } from "../../../assets/scripts/constants/colors";
-import { configureDownloadButtons } from "../../../utils/downloads/downloads";
-import { filterDatasetByDistrict } from "../../../utils/charts/dataFilters";
+import { COLORS } from "../../assets/scripts/constants/colors";
+import { configureDownloadButtons } from "../../utils/downloads/downloads";
+import { filterDatasetByDistrict } from "../../utils/charts/dataFilters";
 import {
   getGoalForChart,
   getMaxForGoalAndDataIfGoalDisplayable,
   chartAnnotationForGoal,
-} from "../../../utils/charts/metricGoal";
+} from "../../utils/charts/metricGoal";
 import {
   toggleLabel,
   getMonthCountFromMetricPeriodMonthsToggle,
@@ -41,11 +41,11 @@ import {
   canDisplayGoal,
   toggleYAxisTicksFor,
   centerSingleMonthDatasetIfNecessary,
-} from "../../../utils/charts/toggles";
-import { sortFilterAndSupplementMostRecentMonths } from "../../../utils/transforms/datasets";
-import { monthNamesWithYearsFromNumbers } from "../../../utils/transforms/months";
-import { METRIC_TYPES } from "../../constants";
-import { metricTypePropType } from "../propTypes";
+} from "../../utils/charts/toggles";
+import { sortFilterAndSupplementMostRecentMonths } from "../../utils/transforms/datasets";
+import { monthNamesWithYearsFromNumbers } from "../../utils/transforms/months";
+import { METRIC_TYPES } from "../../components/constants";
+import { metricTypePropType } from "../../components/charts/propTypes";
 
 const chartId = "reincarcerationCountsByMonth";
 const stepSize = 5;

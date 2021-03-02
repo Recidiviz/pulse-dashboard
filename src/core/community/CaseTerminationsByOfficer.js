@@ -18,30 +18,33 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import PerMonthBarChart from "../common/bars/PerMonthBarChart";
-import { COLORS_SEVEN_VALUES } from "../../../assets/scripts/constants/colors";
-import { METRIC_TYPES } from "../../constants";
-import { metricTypePropType } from "../propTypes";
+import { COLORS_SEVEN_VALUES } from "../../assets/scripts/constants/colors";
+import PerOfficerBarChart from "../../components/charts/common/bars/PerOfficerBarChart";
+import {
+  metricTypePropType,
+  officeDataPropTypes,
+} from "../../components/charts/propTypes";
+import { METRIC_TYPES } from "../../components/constants";
 
-const chartId = "caseTerminationsByTerminationType";
+const chartId = "caseTerminationsByOfficer";
 
-const CaseTerminationsByTerminationType = ({
-  caseTerminationCountsByMonthByTerminationType,
+const CaseTerminationsByOfficer = ({
+  terminationCountsByOfficer,
+  officeData,
   metricType,
   metricPeriodMonths,
   supervisionType,
   district,
 }) => (
-  <PerMonthBarChart
+  <PerOfficerBarChart
     chartId={chartId}
-    exportLabel="Case termination counts by termination type"
-    countsByMonth={caseTerminationCountsByMonthByTerminationType}
+    exportLabel="Case terminations by officer"
+    countsPerPeriodPerOfficer={terminationCountsByOfficer}
+    officeData={officeData}
     metricType={metricType}
-    numMonths={metricPeriodMonths}
-    filters={{
-      district,
-      supervisionType,
-    }}
+    metricPeriodMonths={metricPeriodMonths}
+    supervisionType={supervisionType}
+    district={district}
     bars={[
       { key: "absconsion", label: "Absconsion" },
       { key: "revocation", label: "Revocation" },
@@ -55,31 +58,31 @@ const CaseTerminationsByTerminationType = ({
       metricType === METRIC_TYPES.COUNTS ? "Case terminations" : "Percentage"
     }
     barColorPalette={COLORS_SEVEN_VALUES}
-    dataExportLabel="Month"
   />
 );
 
-CaseTerminationsByTerminationType.propTypes = {
-  metricType: metricTypePropType.isRequired,
-  metricPeriodMonths: PropTypes.string.isRequired,
-  district: PropTypes.arrayOf(PropTypes.string).isRequired,
-  caseTerminationCountsByMonthByTerminationType: PropTypes.arrayOf(
+CaseTerminationsByOfficer.propTypes = {
+  terminationCountsByOfficer: PropTypes.arrayOf(
     PropTypes.shape({
       absconsion: PropTypes.string,
       death: PropTypes.string,
       discharge: PropTypes.string,
       district: PropTypes.string,
       expiration: PropTypes.string,
-      month: PropTypes.string,
+      metric_period_months: PropTypes.string,
+      officer_external_id: PropTypes.string,
       other: PropTypes.string,
       revocation: PropTypes.string,
       state_code: PropTypes.string,
       supervision_type: PropTypes.string,
       suspension: PropTypes.string,
-      year: PropTypes.string,
     })
   ).isRequired,
+  metricType: metricTypePropType.isRequired,
+  metricPeriodMonths: PropTypes.string.isRequired,
   supervisionType: PropTypes.string.isRequired,
+  district: PropTypes.arrayOf(PropTypes.string).isRequired,
+  officeData: PropTypes.arrayOf(officeDataPropTypes).isRequired,
 };
 
-export default CaseTerminationsByTerminationType;
+export default CaseTerminationsByOfficer;

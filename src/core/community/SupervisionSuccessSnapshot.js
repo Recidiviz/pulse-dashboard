@@ -15,143 +15,127 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React, { useEffect, useMemo } from "react";
+import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 import { Line } from "react-chartjs-2";
 
-import flatten from "lodash/fp/flatten";
-import keys from "lodash/fp/keys";
-import identity from "lodash/fp/identity";
+import groupBy from "lodash/fp/groupBy";
+import filter from "lodash/fp/filter";
 import map from "lodash/fp/map";
 import pipe from "lodash/fp/pipe";
-import reduce from "lodash/fp/reduce";
-import sortBy from "lodash/fp/sortBy";
+import sumBy from "lodash/fp/sumBy";
 import toInteger from "lodash/fp/toInteger";
+import values from "lodash/fp/values";
 
-import { COLORS } from "../../../assets/scripts/constants/colors";
-import { configureDownloadButtons } from "../../../utils/downloads/downloads";
-import { sortFilterAndSupplementMostRecentMonths } from "../../../utils/transforms/datasets";
-import { monthNamesWithYearsFromNumbers } from "../../../utils/transforms/months";
+import { COLORS } from "../../assets/scripts/constants/colors";
+import { configureDownloadButtons } from "../../utils/downloads/downloads";
+import { sortFilterAndSupplementMostRecentMonths } from "../../utils/transforms/datasets";
+import { monthNamesWithYearsFromNumbers } from "../../utils/transforms/months";
 import {
-  filterDatasetByDistrict,
   filterDatasetBySupervisionType,
-} from "../../../utils/charts/dataFilters";
+  filterDatasetByDistrict,
+} from "../../utils/charts/dataFilters";
 import {
   getGoalForChart,
   getMinForGoalAndData,
   getMaxForGoalAndData,
   trendlineGoalText,
   chartAnnotationForGoal,
-} from "../../../utils/charts/metricGoal";
+} from "../../utils/charts/metricGoal";
 import {
   getMonthCountFromMetricPeriodMonthsToggle,
   updateTooltipForMetricType,
   toggleLabel,
   canDisplayGoal,
-  toggleYAxisTicksBasedOnGoal,
+  toggleYAxisTicksAdditionalOptions,
   centerSingleMonthDatasetIfNecessary,
-} from "../../../utils/charts/toggles";
-import { generateTrendlineDataset } from "../../../utils/charts/trendline";
-import { metricTypePropType } from "../propTypes";
-import { METRIC_TYPES } from "../../constants";
+} from "../../utils/charts/toggles";
+import { generateTrendlineDataset } from "../../utils/charts/trendline";
+import { METRIC_TYPES } from "../../components/constants";
+import { metricTypePropType } from "../../components/charts/propTypes";
 
-const chartId = "revocationAdmissionsSnapshot";
-const stepSize = 10;
+const chartId = "supervisionSuccessSnapshot";
 
-const calculateTotalAdmissions = (data) =>
-  toInteger(data.new_admissions) +
-  toInteger(data.technicals) +
-  toInteger(data.non_technicals) +
-  toInteger(data.unknown_revocations);
+const isValidData = ({ month, year }) => {
+  const today = new Date();
+  const yearNow = today.getFullYear();
+  const monthNow = today.getMonth() + 1;
 
-const calculateTotalRevocations = (data) =>
-  toInteger(data.technicals) +
-  toInteger(data.non_technicals) +
-  toInteger(data.unknown_revocations);
+  const currentYear = toInteger(year);
+  const currentMonth = toInteger(month);
 
-const calculatePercentRevocations = (totalAdmissionsByYearAndMonth, data) => {
-  const totalAdmissions = totalAdmissionsByYearAndMonth[data.year][data.month];
-  return totalAdmissions
-    ? (100 * (data.value / totalAdmissions)).toFixed(2)
-    : 0.0;
+  return (
+    currentYear < yearNow ||
+    (currentYear === yearNow && currentMonth <= monthNow)
+  );
 };
 
-const toRevocationCountsList = (dataMap) =>
-  pipe(
-    keys,
-    sortBy(identity),
-    map((year) =>
-      pipe(
-        keys,
-        sortBy(Number),
-        map((month) => ({
-          year,
-          month,
-          value: dataMap[year][month],
-        }))
-      )(dataMap[year])
+const groupByMonthAndMap = pipe(
+  groupBy(
+    ({ projected_year: year, projected_month: month }) => `${year}-${month}`
+  ),
+  values,
+  map((dataset) => ({
+    year: toInteger(dataset[0].projected_year),
+    month: toInteger(dataset[0].projected_month),
+    successful: sumBy(
+      (data) => toInteger(data.successful_termination),
+      dataset
     ),
-    flatten
-  )(dataMap);
+    revocation: sumBy(
+      (data) => toInteger(data.revocation_termination),
+      dataset
+    ),
+  }))
+);
 
-const groupByMonth = (totalCalculator) =>
-  reduce((acc, data) => {
-    const { year, month } = data;
-    if (!acc[year]) acc[year] = {};
-    if (!acc[year][month]) acc[year][month] = 0;
-    acc[year][month] += totalCalculator(data);
-    return acc;
-  }, {});
+const dataCountsMapper = ({ year, month, successful }) => {
+  return { year, month, value: successful };
+};
 
-const RevocationAdmissionsSnapshot = ({
+const dataRatesMapper = ({ year, month, successful, revocation }) => {
+  const successRate =
+    successful + revocation !== 0
+      ? (100 * (successful / (successful + revocation))).toFixed(2)
+      : 0.0;
+
+  return { year, month, value: successRate };
+};
+
+const SupervisionSuccessSnapshot = ({
+  supervisionSuccessRates: countsByMonth,
   stateCode,
-  disableGoal,
-  header,
-  revocationAdmissionsByMonth: countsByMonth,
   supervisionType,
   district,
   metricType,
   metricPeriodMonths,
+  header = null,
+  disableGoal = false,
 }) => {
-  const toggles = useMemo(() => {
-    return {
-      supervisionType,
-      district,
-      metricType,
-      metricPeriodMonths,
-      disableGoal,
-    };
-  }, [supervisionType, district, metricType, metricPeriodMonths, disableGoal]);
+  const stepSize = 10;
+
   const goal = getGoalForChart(stateCode, chartId);
-  const displayGoal = canDisplayGoal(goal, toggles);
-  const months = getMonthCountFromMetricPeriodMonthsToggle(metricPeriodMonths);
+  const displayGoal = canDisplayGoal(goal, {
+    disableGoal,
+    metricType,
+    supervisionType,
+    district,
+  });
 
-  /**
-   * For this chart specifically, we want the denominator for rates to be the total admission
-   * count in a given month across all supervision types and districts, while the numerator
-   * remains scoped to the selected supervision type and/or district, if selected.
-   */
-  const totalPrisonAdmissions = pipe(
-    (dataset) => filterDatasetBySupervisionType(dataset, "ALL"),
-    (dataset) => filterDatasetByDistrict(dataset, ["ALL"]),
-    groupByMonth(calculateTotalAdmissions)
-  )(countsByMonth);
-
-  // Proceed with normal data filtering and processing
   const dataPoints = pipe(
     (dataset) => filterDatasetBySupervisionType(dataset, supervisionType),
     (dataset) => filterDatasetByDistrict(dataset, district),
-    groupByMonth(calculateTotalRevocations),
-    toRevocationCountsList,
-    metricType === METRIC_TYPES.COUNTS
-      ? identity
-      : map((data) => ({
-          ...data,
-          value: calculatePercentRevocations(totalPrisonAdmissions, data),
-        })),
-
+    // Don't add completion rates for months in the future
+    filter(isValidData),
+    groupByMonthAndMap,
+    map(metricType === METRIC_TYPES.RATES ? dataRatesMapper : dataCountsMapper),
     (dataset) =>
-      sortFilterAndSupplementMostRecentMonths(dataset, months, "value", "0")
+      sortFilterAndSupplementMostRecentMonths(
+        dataset,
+        getMonthCountFromMetricPeriodMonthsToggle(metricPeriodMonths),
+        "value",
+        "0"
+      )
   )(countsByMonth);
 
   const chartDataValues = map("value", dataPoints);
@@ -164,8 +148,8 @@ const RevocationAdmissionsSnapshot = ({
 
   centerSingleMonthDatasetIfNecessary(chartDataValues, monthNames);
 
-  const chartDataPoints = chartDataValues;
   const chartLabels = monthNames;
+  const chartDataPoints = chartDataValues;
   const chartMinValue = min;
   const chartMaxValue = max;
 
@@ -173,7 +157,7 @@ const RevocationAdmissionsSnapshot = ({
     if (displayGoal) {
       return chartAnnotationForGoal(
         goal,
-        "revocationAdmissionsSnapshotGoalLine",
+        "supervisionSuccessSnapshotGoalLine",
         { yAdjust: 10 }
       );
     }
@@ -184,10 +168,7 @@ const RevocationAdmissionsSnapshot = ({
     const datasets = [
       {
         label: toggleLabel(
-          {
-            counts: "Revocation admissions",
-            rates: "Percentage from revocations",
-          },
+          { counts: "Successful completions", rates: "Success rate" },
           metricType
         ),
         backgroundColor: COLORS["blue-standard"],
@@ -250,7 +231,7 @@ const RevocationAdmissionsSnapshot = ({
               },
               scaleLabel: {
                 display: true,
-                labelString: "Month",
+                labelString: "Month of scheduled supervision termination",
                 fontColor: COLORS["grey-500"],
                 fontStyle: "bold",
               },
@@ -261,8 +242,9 @@ const RevocationAdmissionsSnapshot = ({
           ],
           yAxes: [
             {
-              ticks: toggleYAxisTicksBasedOnGoal(
-                displayGoal,
+              ticks: toggleYAxisTicksAdditionalOptions(
+                METRIC_TYPES.RATES,
+                metricType,
                 chartMinValue,
                 chartMaxValue,
                 stepSize,
@@ -271,7 +253,7 @@ const RevocationAdmissionsSnapshot = ({
               scaleLabel: {
                 display: true,
                 labelString: toggleLabel(
-                  { counts: "Revocation admissions", rates: "% of admissions" },
+                  { counts: "Successful completions", rates: "% of people" },
                   metricType
                 ),
                 fontColor: COLORS["grey-500"],
@@ -291,22 +273,21 @@ const RevocationAdmissionsSnapshot = ({
   useEffect(() => {
     configureDownloadButtons({
       chartId,
-      chartTitle: "PRISON ADMISSIONS DUE TO REVOCATION",
+      chartTitle: "SUCCESSFUL COMPLETION OF SUPERVISION",
       chartDatasets: chart.props.data.datasets,
       chartLabels: chart.props.data.labels,
       chartBox: document.getElementById(chartId),
-      filters: toggles,
+      filters: { metricType, metricPeriodMonths, supervisionType, district },
       convertValuesToNumbers: true,
       handleTimeStringLabels: true,
     });
   }, [
     metricType,
     metricPeriodMonths,
-    district,
     supervisionType,
+    district,
     chart.props.data.datasets,
     chart.props.data.labels,
-    toggles,
   ]);
 
   useEffect(() => {
@@ -316,7 +297,7 @@ const RevocationAdmissionsSnapshot = ({
       const trendlineValues = chart.props.data.datasets[1].data;
       const trendlineText = trendlineGoalText(trendlineValues, goal);
 
-      const title = `The percent of prison admissions due to revocations of probation and parole has been <span class='fs-block header-highlight'>trending ${trendlineText}.</span>`;
+      const title = `The rate of successful completion of supervision has been <span class='fs-block header-highlight'>trending ${trendlineText}.</span>`;
       headerElement.innerHTML = title;
     } else if (headerElement) {
       headerElement.innerHTML = "";
@@ -326,31 +307,30 @@ const RevocationAdmissionsSnapshot = ({
   return chart;
 };
 
-RevocationAdmissionsSnapshot.defaultProps = {
+SupervisionSuccessSnapshot.defaultProps = {
+  header: null,
   disableGoal: false,
 };
 
-RevocationAdmissionsSnapshot.propTypes = {
-  stateCode: PropTypes.string.isRequired,
-  disableGoal: PropTypes.bool,
-  header: PropTypes.string,
-  revocationAdmissionsByMonth: PropTypes.arrayOf(
+SupervisionSuccessSnapshot.propTypes = {
+  supervisionSuccessRates: PropTypes.arrayOf(
     PropTypes.shape({
       district: PropTypes.string,
-      month: PropTypes.string,
-      new_admissions: PropTypes.string,
-      non_technicals: PropTypes.string,
+      projected_month: PropTypes.string,
+      projected_year: PropTypes.string,
+      revocation_termination: PropTypes.string,
       state_code: PropTypes.string,
+      successful_termination: PropTypes.string,
       supervision_type: PropTypes.string,
-      technicals: PropTypes.string,
-      unknown_revocations: PropTypes.string,
-      year: PropTypes.string,
     })
   ).isRequired,
-  supervisionType: PropTypes.string.isRequired,
-  district: PropTypes.arrayOf(PropTypes.string).isRequired,
   metricType: metricTypePropType.isRequired,
   metricPeriodMonths: PropTypes.string.isRequired,
+  district: PropTypes.arrayOf(PropTypes.string).isRequired,
+  supervisionType: PropTypes.string.isRequired,
+  stateCode: PropTypes.string.isRequired,
+  header: PropTypes.string,
+  disableGoal: PropTypes.bool,
 };
 
-export default RevocationAdmissionsSnapshot;
+export default SupervisionSuccessSnapshot;

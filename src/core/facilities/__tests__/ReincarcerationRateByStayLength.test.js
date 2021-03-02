@@ -19,7 +19,7 @@ import React from "react";
 
 import ShallowRenderer from "react-test-renderer/shallow";
 import ReincarcerationRateByStayLength from "../ReincarcerationRateByStayLength";
-import { METRIC_TYPES } from "../../../constants";
+import { METRIC_TYPES } from "../../../components/constants";
 
 const ratesByStayLength = [
   {

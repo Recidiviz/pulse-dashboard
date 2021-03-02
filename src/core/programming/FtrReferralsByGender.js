@@ -31,24 +31,24 @@ import values from "lodash/fp/values";
 import {
   COLORS_STACKED_TWO_VALUES_ALT,
   COLORS,
-} from "../../../assets/scripts/constants/colors";
-import { configureDownloadButtons } from "../../../utils/downloads/downloads";
+} from "../../assets/scripts/constants/colors";
+import { configureDownloadButtons } from "../../utils/downloads/downloads";
 import {
   filterDatasetBySupervisionType,
   filterDatasetByDistrict,
   filterDatasetByMetricPeriodMonths,
   filterDatasetByLabels,
-} from "../../../utils/charts/dataFilters";
+} from "../../utils/charts/dataFilters";
 import {
   tooltipForCountChart,
   tooltipForRateChart,
-} from "../../../utils/charts/tooltips";
+} from "../../utils/charts/tooltips";
 import {
   genderValueToHumanReadable,
   genderValueToLabel,
-} from "../../../utils/transforms/labels";
-import { metricTypePropType } from "../propTypes";
-import { METRIC_TYPES } from "../../constants";
+} from "../../utils/transforms/labels";
+import { metricTypePropType } from "../../components/charts/propTypes";
+import { METRIC_TYPES } from "../../components/constants";
 
 const chartId = "ftrReferralsByGender";
 

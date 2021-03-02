@@ -22,26 +22,26 @@ import { Line } from "react-chartjs-2";
 import map from "lodash/fp/map";
 import pipe from "lodash/fp/pipe";
 
-import { COLORS } from "../../../assets/scripts/constants/colors";
-import { configureDownloadButtons } from "../../../utils/downloads/downloads";
+import { COLORS } from "../../assets/scripts/constants/colors";
+import { configureDownloadButtons } from "../../utils/downloads/downloads";
 import {
   getGoalForChart,
   getMinForGoalAndData,
   getMaxForGoalAndData,
   trendlineGoalText,
   chartAnnotationForGoal,
-} from "../../../utils/charts/metricGoal";
+} from "../../utils/charts/metricGoal";
 import {
   getMonthCountFromMetricPeriodMonthsToggle,
   canDisplayGoal,
   centerSingleMonthDatasetIfNecessary,
-} from "../../../utils/charts/toggles";
+} from "../../utils/charts/toggles";
 import {
   generateTrendlineDataset,
   getTooltipWithoutTrendline,
-} from "../../../utils/charts/trendline";
-import { sortFilterAndSupplementMostRecentMonths } from "../../../utils/transforms/datasets";
-import { monthNamesWithYearsFromNumbers } from "../../../utils/transforms/months";
+} from "../../utils/charts/trendline";
+import { sortFilterAndSupplementMostRecentMonths } from "../../utils/transforms/datasets";
+import { monthNamesWithYearsFromNumbers } from "../../utils/transforms/months";
 
 const chartId = "daysAtLibertySnapshot";
 const stepSize = 200;

@@ -20,125 +20,84 @@ import PropTypes from "prop-types";
 import { Line } from "react-chartjs-2";
 
 import groupBy from "lodash/fp/groupBy";
-import filter from "lodash/fp/filter";
 import map from "lodash/fp/map";
 import pipe from "lodash/fp/pipe";
-import sumBy from "lodash/fp/sumBy";
+import meanBy from "lodash/fp/meanBy";
 import toInteger from "lodash/fp/toInteger";
 import values from "lodash/fp/values";
 
-import { COLORS } from "../../../assets/scripts/constants/colors";
-import { configureDownloadButtons } from "../../../utils/downloads/downloads";
-import { sortFilterAndSupplementMostRecentMonths } from "../../../utils/transforms/datasets";
-import { monthNamesWithYearsFromNumbers } from "../../../utils/transforms/months";
-import {
-  filterDatasetBySupervisionType,
-  filterDatasetByDistrict,
-} from "../../../utils/charts/dataFilters";
+import { COLORS } from "../../assets/scripts/constants/colors";
+import { configureDownloadButtons } from "../../utils/downloads/downloads";
 import {
   getGoalForChart,
   getMinForGoalAndData,
   getMaxForGoalAndData,
   trendlineGoalText,
   chartAnnotationForGoal,
-} from "../../../utils/charts/metricGoal";
+} from "../../utils/charts/metricGoal";
+import {
+  filterDatasetBySupervisionType,
+  filterDatasetByDistrict,
+} from "../../utils/charts/dataFilters";
 import {
   getMonthCountFromMetricPeriodMonthsToggle,
-  updateTooltipForMetricType,
-  toggleLabel,
   canDisplayGoal,
-  toggleYAxisTicksAdditionalOptions,
   centerSingleMonthDatasetIfNecessary,
-} from "../../../utils/charts/toggles";
-import { generateTrendlineDataset } from "../../../utils/charts/trendline";
-import { METRIC_TYPES } from "../../constants";
-import { metricTypePropType } from "../propTypes";
-
-const chartId = "supervisionSuccessSnapshot";
-
-const isValidData = ({ month, year }) => {
-  const today = new Date();
-  const yearNow = today.getFullYear();
-  const monthNow = today.getMonth() + 1;
-
-  const currentYear = toInteger(year);
-  const currentMonth = toInteger(month);
-
-  return (
-    currentYear < yearNow ||
-    (currentYear === yearNow && currentMonth <= monthNow)
-  );
-};
+} from "../../utils/charts/toggles";
+import {
+  generateTrendlineDataset,
+  getTooltipWithoutTrendline,
+} from "../../utils/charts/trendline";
+import { sortFilterAndSupplementMostRecentMonths } from "../../utils/transforms/datasets";
+import { monthNamesWithYearsFromNumbers } from "../../utils/transforms/months";
 
 const groupByMonthAndMap = pipe(
   groupBy(
-    ({ projected_year: year, projected_month: month }) => `${year}-${month}`
+    ({ termination_year: year, termination_month: month }) => `${year}-${month}`
   ),
   values,
   map((dataset) => ({
-    year: toInteger(dataset[0].projected_year),
-    month: toInteger(dataset[0].projected_month),
-    successful: sumBy(
-      (data) => toInteger(data.successful_termination),
+    year: toInteger(dataset[0].termination_year),
+    month: toInteger(dataset[0].termination_month),
+    change: meanBy(
+      (data) => parseFloat(data.average_change, 10),
       dataset
-    ),
-    revocation: sumBy(
-      (data) => toInteger(data.revocation_termination),
-      dataset
-    ),
+    ).toFixed(2),
   }))
 );
 
-const dataCountsMapper = ({ year, month, successful }) => {
-  return { year, month, value: successful };
-};
+const chartId = "lsirScoreChangeSnapshot";
+const stepSize = 0.5;
 
-const dataRatesMapper = ({ year, month, successful, revocation }) => {
-  const successRate =
-    successful + revocation !== 0
-      ? (100 * (successful / (successful + revocation))).toFixed(2)
-      : 0.0;
-
-  return { year, month, value: successRate };
-};
-
-const SupervisionSuccessSnapshot = ({
-  supervisionSuccessRates: countsByMonth,
-  stateCode,
+const LsirScoreChangeSnapshot = ({
+  lsirScoreChangeByMonth: changeByMonth,
   supervisionType,
   district,
-  metricType,
   metricPeriodMonths,
+  disableGoal,
   header = null,
-  disableGoal = false,
 }) => {
-  const stepSize = 10;
-
-  const goal = getGoalForChart(stateCode, chartId);
+  const goal = getGoalForChart("US_ND", chartId);
   const displayGoal = canDisplayGoal(goal, {
-    disableGoal,
-    metricType,
     supervisionType,
     district,
+    disableGoal,
   });
 
   const dataPoints = pipe(
     (dataset) => filterDatasetBySupervisionType(dataset, supervisionType),
     (dataset) => filterDatasetByDistrict(dataset, district),
-    // Don't add completion rates for months in the future
-    filter(isValidData),
     groupByMonthAndMap,
-    map(metricType === METRIC_TYPES.RATES ? dataRatesMapper : dataCountsMapper),
     (dataset) =>
       sortFilterAndSupplementMostRecentMonths(
         dataset,
         getMonthCountFromMetricPeriodMonthsToggle(metricPeriodMonths),
-        "value",
-        "0"
+        "change",
+        "0.0"
       )
-  )(countsByMonth);
+  )(changeByMonth);
 
-  const chartDataValues = map("value", dataPoints);
+  const chartDataValues = map("change", dataPoints);
   const min = getMinForGoalAndData(goal.value, chartDataValues, stepSize);
   const max = getMaxForGoalAndData(goal.value, chartDataValues, stepSize);
   const monthNames = monthNamesWithYearsFromNumbers(
@@ -155,11 +114,9 @@ const SupervisionSuccessSnapshot = ({
 
   function goalLineIfApplicable() {
     if (displayGoal) {
-      return chartAnnotationForGoal(
-        goal,
-        "supervisionSuccessSnapshotGoalLine",
-        { yAdjust: 10 }
-      );
+      return chartAnnotationForGoal(goal, "lsirScoreChangeSnapshotGoalLine", {
+        yAdjust: 10,
+      });
     }
     return null;
   }
@@ -167,10 +124,7 @@ const SupervisionSuccessSnapshot = ({
   function datasetsWithTrendlineIfApplicable() {
     const datasets = [
       {
-        label: toggleLabel(
-          { counts: "Successful completions", rates: "Success rate" },
-          metricType
-        ),
+        label: "LSI-R score changes (average)",
         backgroundColor: COLORS["blue-standard"],
         borderColor: COLORS["blue-standard"],
         pointBackgroundColor: COLORS["blue-standard"],
@@ -219,7 +173,7 @@ const SupervisionSuccessSnapshot = ({
           mode: "point",
           callbacks: {
             label: (tooltipItem, data) =>
-              updateTooltipForMetricType(metricType, tooltipItem, data),
+              getTooltipWithoutTrendline(tooltipItem, data),
           },
         },
         scales: {
@@ -231,7 +185,7 @@ const SupervisionSuccessSnapshot = ({
               },
               scaleLabel: {
                 display: true,
-                labelString: "Month of scheduled supervision termination",
+                labelString: "Month of supervision termination",
                 fontColor: COLORS["grey-500"],
                 fontStyle: "bold",
               },
@@ -242,20 +196,15 @@ const SupervisionSuccessSnapshot = ({
           ],
           yAxes: [
             {
-              ticks: toggleYAxisTicksAdditionalOptions(
-                METRIC_TYPES.RATES,
-                metricType,
-                chartMinValue,
-                chartMaxValue,
+              ticks: {
+                fontColor: COLORS["grey-600"],
+                min: chartMinValue,
+                max: chartMaxValue,
                 stepSize,
-                { fontColor: COLORS["grey-600"] }
-              ),
+              },
               scaleLabel: {
                 display: true,
-                labelString: toggleLabel(
-                  { counts: "Successful completions", rates: "% of people" },
-                  metricType
-                ),
+                labelString: "Change in LSI-R scores",
                 fontColor: COLORS["grey-500"],
                 fontStyle: "bold",
               },
@@ -273,31 +222,30 @@ const SupervisionSuccessSnapshot = ({
   useEffect(() => {
     configureDownloadButtons({
       chartId,
-      chartTitle: "SUCCESSFUL COMPLETION OF SUPERVISION",
+      chartTitle: "LSI-R SCORE CHANGES (AVERAGE)",
       chartDatasets: chart.props.data.datasets,
       chartLabels: chart.props.data.labels,
       chartBox: document.getElementById(chartId),
-      filters: { metricType, metricPeriodMonths, supervisionType, district },
+      filters: { supervisionType, district, metricPeriodMonths },
       convertValuesToNumbers: true,
       handleTimeStringLabels: true,
     });
   }, [
-    metricType,
     metricPeriodMonths,
-    supervisionType,
     district,
+    supervisionType,
     chart.props.data.datasets,
     chart.props.data.labels,
   ]);
 
   useEffect(() => {
-    const headerElement = document.getElementById(header);
+    const headerElement = header && document.getElementById(header);
 
     if (headerElement && displayGoal) {
       const trendlineValues = chart.props.data.datasets[1].data;
       const trendlineText = trendlineGoalText(trendlineValues, goal);
 
-      const title = `The rate of successful completion of supervision has been <span class='fs-block header-highlight'>trending ${trendlineText}.</span>`;
+      const title = `The average change in LSI-R scores between first reassessment and termination of supervision has been <span class='fs-block header-highlight'>trending ${trendlineText}.</span>`;
       headerElement.innerHTML = title;
     } else if (headerElement) {
       headerElement.innerHTML = "";
@@ -307,30 +255,27 @@ const SupervisionSuccessSnapshot = ({
   return chart;
 };
 
-SupervisionSuccessSnapshot.defaultProps = {
+LsirScoreChangeSnapshot.defaultProps = {
   header: null,
   disableGoal: false,
 };
 
-SupervisionSuccessSnapshot.propTypes = {
-  supervisionSuccessRates: PropTypes.arrayOf(
+LsirScoreChangeSnapshot.propTypes = {
+  lsirScoreChangeByMonth: PropTypes.arrayOf(
     PropTypes.shape({
+      average_change: PropTypes.string,
       district: PropTypes.string,
-      projected_month: PropTypes.string,
-      projected_year: PropTypes.string,
-      revocation_termination: PropTypes.string,
       state_code: PropTypes.string,
-      successful_termination: PropTypes.string,
       supervision_type: PropTypes.string,
+      termination_month: PropTypes.string,
+      termination_year: PropTypes.string,
     })
   ).isRequired,
-  metricType: metricTypePropType.isRequired,
   metricPeriodMonths: PropTypes.string.isRequired,
-  district: PropTypes.arrayOf(PropTypes.string).isRequired,
   supervisionType: PropTypes.string.isRequired,
-  stateCode: PropTypes.string.isRequired,
+  district: PropTypes.arrayOf(PropTypes.string).isRequired,
   header: PropTypes.string,
   disableGoal: PropTypes.bool,
 };
 
-export default SupervisionSuccessSnapshot;
+export default LsirScoreChangeSnapshot;

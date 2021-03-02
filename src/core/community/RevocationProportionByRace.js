@@ -28,26 +28,22 @@ import sumBy from "lodash/fp/sumBy";
 import {
   COLORS_FIVE_VALUES,
   COLORS,
-} from "../../../assets/scripts/constants/colors";
-import { configureDownloadButtons } from "../../../utils/downloads/downloads";
+} from "../../assets/scripts/constants/colors";
+import { configureDownloadButtons } from "../../utils/downloads/downloads";
 import {
   filterDatasetBySupervisionType,
   filterDatasetByDistrict,
   filterDatasetByMetricPeriodMonths,
-  filterDatasetByLabels,
-} from "../../../utils/charts/dataFilters";
-import { tooltipForCountChart } from "../../../utils/charts/tooltips";
+} from "../../utils/charts/dataFilters";
 import {
+  stateCensusMapper,
+  groupByRaceAndMap,
   addMissedRaceCounts,
   countMapper,
-  groupByRaceAndMap,
-  stateCensusMapper,
-} from "../common/utils/races";
-import { metricTypePropType } from "../propTypes";
-import { METRIC_TYPES } from "../../constants";
-import { raceValueToLabel } from "../../../utils/transforms/labels";
+} from "../../components/charts/common/utils/races";
+import { metricTypePropType } from "../../components/charts/propTypes";
+import { METRIC_TYPES } from "../../components/constants";
 
-const chartId = "ftrReferralsByRace";
 const colors = [
   COLORS_FIVE_VALUES[0],
   COLORS_FIVE_VALUES[1],
@@ -60,149 +56,66 @@ const colors = [
 
 const calculatePercents = (total) => ({ value }) => 100 * (value / total);
 
-const FtrReferralsByRace = ({
-  ftrReferralsByRace,
-  statePopulationByRace,
-  supervisionType,
-  district,
-  metricPeriodMonths,
+const chartId = "revocationsByRace";
+
+const RevocationProportionByRace = ({
   metricType,
+  metricPeriodMonths,
+  district,
+  supervisionType,
+  revocationProportionByRace,
+  statePopulationByRace,
 }) => {
-  const counts = ["count", "total_supervision_count"];
+  const counts = ["revocation_count", "total_supervision_count"];
   const stateCensusDataPoints = pipe(
     map(stateCensusMapper),
     sortBy("race")
   )(statePopulationByRace);
 
-  const filteredFtrReferrals = pipe(
-    (dataset) =>
-      filterDatasetByLabels(
-        dataset,
-        "race_or_ethnicity",
-        Object.keys(raceValueToLabel)
-      ),
+  const revocationProportion = pipe(
     (dataset) => filterDatasetBySupervisionType(dataset, supervisionType),
     (dataset) => filterDatasetByDistrict(dataset, district),
     (dataset) => filterDatasetByMetricPeriodMonths(dataset, metricPeriodMonths),
     groupByRaceAndMap(counts),
     addMissedRaceCounts(counts, stateCensusDataPoints),
     sortBy("race")
-  )(ftrReferralsByRace);
+  )(revocationProportionByRace);
 
-  const chartLabels = map("race", filteredFtrReferrals);
-  const statePopulationProportions = map("proportion", stateCensusDataPoints);
-
-  // ftr refereal
-  const ftrReferralDataPoints = map(countMapper("count"), filteredFtrReferrals);
-  const totalFtrReferrals = sumBy("count", filteredFtrReferrals);
-  const ftrReferralCounts = map("value", ftrReferralDataPoints);
-  const ftrReferralProportions = map(
-    calculatePercents(totalFtrReferrals),
-    ftrReferralDataPoints
+  const revocationDataPoints = map(
+    countMapper("revocation_count"),
+    revocationProportion
   );
-
-  // supervision
   const supervisionDataPoints = map(
     countMapper("total_supervision_count"),
-    filteredFtrReferrals
-  );
-  const totalSupervisionPopulation = sumBy(
-    "total_supervision_count",
-    filteredFtrReferrals
-  );
-  const stateSupervisionCounts = map("value", supervisionDataPoints);
-  const stateSupervisionProportions = map(
-    calculatePercents(totalSupervisionPopulation),
-    supervisionDataPoints
+    revocationProportion
   );
 
-  const countsChart = (
-    <Bar
-      id={chartId}
-      data={{
-        labels: chartLabels,
-        datasets: [
-          {
-            label: "Referrals",
-            backgroundColor: COLORS["blue-standard"],
-            hoverBackgroundColor: COLORS["blue-standard"],
-            yAxisID: "y-axis-left",
-            data: ftrReferralCounts,
-          },
-          {
-            label: "Supervision Population",
-            backgroundColor: COLORS["blue-standard-2"],
-            hoverBackgroundColor: COLORS["blue-standard-2"],
-            yAxisID: "y-axis-left",
-            data: stateSupervisionCounts,
-          },
-        ],
-      }}
-      options={{
-        plugins: {
-          datalabels: {
-            display: false,
-          },
-        },
-        responsive: true,
-        legend: {
-          display: true,
-          position: "bottom",
-        },
-        tooltips: {
-          backgroundColor: COLORS["grey-800-light"],
-          mode: "index",
-          callbacks: tooltipForCountChart(
-            ftrReferralCounts,
-            "Referral",
-            stateSupervisionCounts,
-            "Supervision"
-          ),
-        },
-        scaleShowValues: true,
-        scales: {
-          yAxes: [
-            {
-              stacked: false,
-              ticks: {
-                beginAtZero: true,
-              },
-              position: "left",
-              id: "y-axis-left",
-              scaleLabel: {
-                display: true,
-                labelString: "Count",
-              },
-            },
-          ],
-          xAxes: [
-            {
-              stacked: false,
-              ticks: {
-                autoSkip: false,
-                callback(value) {
-                  if (value.length > 12) {
-                    return `${value.substr(0, 12)}...`; // Truncate
-                  }
-                  return value;
-                },
-              },
-              scaleLabel: {
-                display: true,
-                labelString: "Race and Ethnicity",
-              },
-            },
-          ],
-        },
-      }}
-    />
+  const totalRevocationsCount = sumBy("revocation_count", revocationProportion);
+  const totalSupervisionPopulationCount = sumBy(
+    "total_supervision_count",
+    revocationProportion
   );
+
+  const chartLabels = map("race", revocationDataPoints);
+  const statePopulationProportions = map("proportion", stateCensusDataPoints);
+
+  const revocationProportions = map(
+    calculatePercents(totalRevocationsCount),
+    revocationDataPoints
+  );
+  const revocationCounts = map("value", revocationDataPoints);
+
+  const stateSupervisionProportions = map(
+    calculatePercents(totalSupervisionPopulationCount),
+    supervisionDataPoints
+  );
+  const stateSupervisionCounts = map("value", supervisionDataPoints);
 
   const ratesChart = (
     <HorizontalBar
       id={chartId}
       data={{
-        labels: ["Referrals", "Supervision Population", "ND Population"],
+        labels: ["Revocations", "Supervision Population", "ND Population"],
         datasets: map(
           (i) => ({
             label: chartLabels[i],
@@ -210,7 +123,7 @@ const FtrReferralsByRace = ({
             hoverBackgroundColor: colors[i],
             hoverBorderColor: colors[i],
             data: [
-              ftrReferralProportions[i],
+              revocationProportions[i],
               stateSupervisionProportions[i],
               statePopulationProportions[i],
             ],
@@ -262,8 +175,8 @@ const FtrReferralsByRace = ({
               const currentValue = dataset.data[tooltipItem.index];
 
               let datasetCounts = [];
-              if (data.labels[tooltipItem.index] === "Referrals") {
-                datasetCounts = ftrReferralCounts;
+              if (data.labels[tooltipItem.index] === "Revocations") {
+                datasetCounts = revocationCounts;
               } else if (
                 data.labels[tooltipItem.index] === "Supervision Population"
               ) {
@@ -291,6 +204,57 @@ const FtrReferralsByRace = ({
     />
   );
 
+  const countsChart = (
+    <Bar
+      id={chartId}
+      data={{
+        labels: ["Revocation Counts", "Supervision Population"],
+        datasets: map(
+          (i) => ({
+            label: chartLabels[i],
+            backgroundColor: colors[i],
+            hoverBackgroundColor: colors[i],
+            hoverBorderColor: colors[i],
+            data: [revocationCounts[i], stateSupervisionCounts[i]],
+          }),
+          range(0, chartLabels.length)
+        ),
+      }}
+      options={{
+        plugins: {
+          datalabels: {
+            display: false,
+          },
+        },
+        responsive: true,
+        legend: {
+          position: "bottom",
+        },
+        tooltips: {
+          mode: "index",
+          intersect: false,
+        },
+        scales: {
+          xAxes: [
+            {
+              ticks: {
+                autoSkip: false,
+              },
+            },
+          ],
+          yAxes: [
+            {
+              scaleLabel: {
+                display: true,
+                labelString: "Revocation counts",
+              },
+            },
+          ],
+        },
+      }}
+    />
+  );
+
   let activeChart = countsChart;
   if (metricType === METRIC_TYPES.RATES) {
     activeChart = ratesChart;
@@ -299,18 +263,18 @@ const FtrReferralsByRace = ({
   useEffect(() => {
     configureDownloadButtons({
       chartId,
-      chartTitle: "FTR REFERRALS BY RACE",
+      chartTitle: "REVOCATIONS BY RACE",
       chartDatasets: activeChart.props.data.datasets,
       chartLabels: activeChart.props.data.labels,
       chartBox: document.getElementById(chartId),
-      filters: { supervisionType, district, metricPeriodMonths, metricType },
+      filters: { metricPeriodMonths, district, supervisionType },
       dataExportLabel: "Race",
     });
   }, [
-    supervisionType,
-    district,
-    metricPeriodMonths,
     metricType,
+    metricPeriodMonths,
+    district,
+    supervisionType,
     activeChart.props.data.datasets,
     activeChart.props.data.labels,
   ]);
@@ -318,13 +282,17 @@ const FtrReferralsByRace = ({
   return activeChart;
 };
 
-FtrReferralsByRace.propTypes = {
-  ftrReferralsByRace: PropTypes.arrayOf(
+RevocationProportionByRace.propTypes = {
+  metricType: metricTypePropType.isRequired,
+  metricPeriodMonths: PropTypes.string.isRequired,
+  district: PropTypes.arrayOf(PropTypes.string).isRequired,
+  supervisionType: PropTypes.string.isRequired,
+  revocationProportionByRace: PropTypes.arrayOf(
     PropTypes.shape({
-      count: PropTypes.string,
       district: PropTypes.string,
       metric_period_months: PropTypes.string,
       race_or_ethnicity: PropTypes.string,
+      revocation_count: PropTypes.string,
       state_code: PropTypes.string,
       supervision_type: PropTypes.string,
       total_supervision_count: PropTypes.string,
@@ -337,10 +305,6 @@ FtrReferralsByRace.propTypes = {
       state_code: PropTypes.string,
     })
   ).isRequired,
-  supervisionType: PropTypes.string.isRequired,
-  district: PropTypes.arrayOf(PropTypes.string).isRequired,
-  metricType: metricTypePropType.isRequired,
-  metricPeriodMonths: PropTypes.string.isRequired,
 };
 
-export default FtrReferralsByRace;
+export default RevocationProportionByRace;

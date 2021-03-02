@@ -18,10 +18,10 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import PerMonthBarChart from "../common/bars/PerMonthBarChart";
-import { COLORS_STACKED_TWO_VALUES } from "../../../assets/scripts/constants/colors";
-import { METRIC_TYPES } from "../../constants";
-import { metricTypePropType } from "../propTypes";
+import PerMonthBarChart from "../../components/charts/common/bars/PerMonthBarChart";
+import { COLORS_STACKED_TWO_VALUES } from "../../assets/scripts/constants/colors";
+import { METRIC_TYPES } from "../../components/constants";
+import { metricTypePropType } from "../../components/charts/propTypes";
 
 const chartId = "revocationsBySupervisionType";
 

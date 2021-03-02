@@ -29,17 +29,17 @@ import ReactTooltip from "react-tooltip";
 import { geoAlbersUsa } from "d3-geo";
 import { scaleLinear } from "d3-scale";
 
-import { COLORS } from "../../assets/scripts/constants/colors";
-import { configureDownloadButtons } from "../../utils/downloads/downloads";
-import geographyObject from "../../assets/static/maps/us_nd.json";
-import { colorForValue } from "../../utils/charts/choropleth";
+import { COLORS } from "../assets/scripts/constants/colors";
+import { configureDownloadButtons } from "../utils/downloads/downloads";
+import geographyObject from "../assets/static/maps/us_nd.json";
+import { colorForValue } from "../utils/charts/choropleth";
 import {
   toHtmlFriendly,
   toHumanReadable,
   toTitleCase,
-} from "../../utils/transforms/labels";
-import { metricTypePropType } from "./propTypes";
-import { METRIC_TYPES } from "../constants";
+} from "../utils/transforms/labels";
+import { metricTypePropType } from "../components/charts/propTypes";
+import { METRIC_TYPES } from "../components/constants";
 
 const minMarkerRadius = 10;
 const maxMarkerRadius = 35;

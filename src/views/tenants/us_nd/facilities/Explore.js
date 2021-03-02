@@ -19,17 +19,17 @@ import React, { useState } from "react";
 
 import PageTemplate from "../PageTemplate";
 import Loading from "../../../../components/Loading";
-import ChartCard from "../../../../components/charts/ChartCard";
-import GeoViewTimeChart from "../../../../components/charts/GeoViewTimeChart";
-import Methodology from "../../../../components/charts/Methodology";
-import MethodologyCollapse from "../../../../components/charts/MethodologyCollapse";
-import PeriodLabel from "../../../../components/charts/PeriodLabel";
+import ChartCard from "../../../../core/ChartCard";
+import GeoViewTimeChart from "../../../../core/GeoViewTimeChart";
+import Methodology from "../../../../core/Methodology";
+import MethodologyCollapse from "../../../../core/MethodologyCollapse";
+import PeriodLabel from "../../../../core/PeriodLabel";
 import WarningIcon from "../../../../components/charts/WarningIcon";
-import AdmissionsVsReleases from "../../../../components/charts/facilities/AdmissionsVsReleases";
-import ReincarcerationCountOverTime from "../../../../components/charts/facilities/ReincarcerationCountOverTime";
-import ReincarcerationRateByStayLength from "../../../../components/charts/facilities/ReincarcerationRateByStayLength";
+import AdmissionsVsReleases from "../../../../core/facilities/AdmissionsVsReleases";
+import ReincarcerationCountOverTime from "../../../../core/facilities/ReincarcerationCountOverTime";
+import ReincarcerationRateByStayLength from "../../../../core/facilities/ReincarcerationRateByStayLength";
 import AdmissionCountsByType from "../../../../components/charts/common/AdmissionCountsByType";
-import DaysAtLibertySnapshot from "../../../../components/charts/facilities/DaysAtLibertySnapshot";
+import DaysAtLibertySnapshot from "../../../../core/facilities/DaysAtLibertySnapshot";
 import ToggleBar from "../../../../components/toggles/ToggleBar";
 import {
   defaultDistrict,

@@ -19,16 +19,16 @@ import React, { useState } from "react";
 
 import PageTemplate from "../PageTemplate";
 import Loading from "../../../../components/Loading";
-import ChartCard from "../../../../components/charts/ChartCard";
-import GeoViewTimeChart from "../../../../components/charts/GeoViewTimeChart";
-import Methodology from "../../../../components/charts/Methodology";
-import PeriodLabel from "../../../../components/charts/PeriodLabel";
-import FtrReferralsByAge from "../../../../components/charts/programming/FtrReferralsByAge";
-import FtrReferralsByGender from "../../../../components/charts/programming/FtrReferralsByGender";
-import FtrReferralsByLsir from "../../../../components/charts/programming/FtrReferralsByLsir";
-import FtrReferralsByParticipationStatus from "../../../../components/charts/programming/FtrReferralsByParticipationStatus";
-import FtrReferralsByRace from "../../../../components/charts/programming/FtrReferralsByRace";
-import FtrReferralCountByMonth from "../../../../components/charts/programming/FtrReferralCountByMonth";
+import ChartCard from "../../../../core/ChartCard";
+import GeoViewTimeChart from "../../../../core/GeoViewTimeChart";
+import Methodology from "../../../../core/Methodology";
+import PeriodLabel from "../../../../core/PeriodLabel";
+import FtrReferralsByAge from "../../../../core/programming/FtrReferralsByAge";
+import FtrReferralsByGender from "../../../../core/programming/FtrReferralsByGender";
+import FtrReferralsByLsir from "../../../../core/programming/FtrReferralsByLsir";
+import FtrReferralsByParticipationStatus from "../../../../core/programming/FtrReferralsByParticipationStatus";
+import FtrReferralsByRace from "../../../../core/programming/FtrReferralsByRace";
+import FtrReferralCountByMonth from "../../../../core/programming/FtrReferralCountByMonth";
 import ToggleBar from "../../../../components/toggles/ToggleBar";
 import {
   defaultDistrict,

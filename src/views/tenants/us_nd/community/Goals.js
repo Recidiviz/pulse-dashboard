@@ -19,14 +19,14 @@ import React from "react";
 
 import PageTemplate from "../PageTemplate";
 import Loading from "../../../../components/Loading";
-import ChartCard from "../../../../components/charts/ChartCard";
-import GeoViewTimeChart from "../../../../components/charts/GeoViewTimeChart";
-import Methodology from "../../../../components/charts/Methodology";
-import PeriodLabel from "../../../../components/charts/PeriodLabel";
-import LsirScoreChangeSnapshot from "../../../../components/charts/community/LsirScoreChangeSnapshot";
-import RevocationAdmissionsSnapshot from "../../../../components/charts/community/RevocationAdmissionsSnapshot";
-import RevocationCountOverTime from "../../../../components/charts/community/RevocationCountOverTime";
-import SupervisionSuccessSnapshot from "../../../../components/charts/community/SupervisionSuccessSnapshot";
+import ChartCard from "../../../../core/ChartCard";
+import GeoViewTimeChart from "../../../../core/GeoViewTimeChart";
+import Methodology from "../../../../core/Methodology";
+import PeriodLabel from "../../../../core/PeriodLabel";
+import LsirScoreChangeSnapshot from "../../../../core/community/LsirScoreChangeSnapshot";
+import RevocationAdmissionsSnapshot from "../../../../core/community/RevocationAdmissionsSnapshot";
+import RevocationCountOverTime from "../../../../core/community/RevocationCountOverTime";
+import SupervisionSuccessSnapshot from "../../../../core/community/SupervisionSuccessSnapshot";
 import useChartData from "../../../../hooks/useChartData";
 import { metrics } from "./constants";
 

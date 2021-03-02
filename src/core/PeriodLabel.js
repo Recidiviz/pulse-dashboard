@@ -18,7 +18,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import { getPeriodLabelFromMetricPeriodMonthsToggle } from "../../utils/charts/toggles";
+import { getPeriodLabelFromMetricPeriodMonthsToggle } from "../utils/charts/toggles";
 
 const PeriodLabel = ({ metricPeriodMonths }) => (
   <div className="PeriodLabel layer bdT p-20 w-100">

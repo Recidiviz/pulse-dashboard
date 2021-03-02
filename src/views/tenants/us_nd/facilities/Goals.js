@@ -19,12 +19,12 @@ import React from "react";
 
 import PageTemplate from "../PageTemplate";
 import Loading from "../../../../components/Loading";
-import ChartCard from "../../../../components/charts/ChartCard";
-import GeoViewTimeChart from "../../../../components/charts/GeoViewTimeChart";
-import Methodology from "../../../../components/charts/Methodology";
-import PeriodLabel from "../../../../components/charts/PeriodLabel";
-import DaysAtLibertySnapshot from "../../../../components/charts/facilities/DaysAtLibertySnapshot";
-import ReincarcerationCountOverTime from "../../../../components/charts/facilities/ReincarcerationCountOverTime";
+import ChartCard from "../../../../core/ChartCard";
+import GeoViewTimeChart from "../../../../core/GeoViewTimeChart";
+import Methodology from "../../../../core/Methodology";
+import PeriodLabel from "../../../../core/PeriodLabel";
+import DaysAtLibertySnapshot from "../../../../core/facilities/DaysAtLibertySnapshot";
+import ReincarcerationCountOverTime from "../../../../core/facilities/ReincarcerationCountOverTime";
 import useChartData from "../../../../hooks/useChartData";
 import { metrics } from "./constants";
 

@@ -18,22 +18,15 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import PerMonthBarChart from "../common/bars/PerMonthBarChart";
-import { COLORS_FIVE_VALUES } from "../../../assets/scripts/constants/colors";
-import { metricTypePropType } from "../propTypes";
-import { METRIC_TYPES } from "../../constants";
+import PerMonthBarChart from "../../components/charts/common/bars/PerMonthBarChart";
+import { COLORS_SEVEN_VALUES } from "../../assets/scripts/constants/colors";
+import { METRIC_TYPES } from "../../components/constants";
+import { metricTypePropType } from "../../components/charts/propTypes";
 
-const chartId = "ftrReferralsByParticipationStatus";
+const chartId = "caseTerminationsByTerminationType";
 
-const chartColors = [
-  COLORS_FIVE_VALUES[0],
-  COLORS_FIVE_VALUES[1],
-  COLORS_FIVE_VALUES[2],
-  COLORS_FIVE_VALUES[3],
-];
-
-const FtrReferralsByParticipationStatus = ({
-  ftrReferralsByParticipationStatus,
+const CaseTerminationsByTerminationType = ({
+  caseTerminationCountsByMonthByTerminationType,
   metricType,
   metricPeriodMonths,
   supervisionType,
@@ -41,8 +34,8 @@ const FtrReferralsByParticipationStatus = ({
 }) => (
   <PerMonthBarChart
     chartId={chartId}
-    exportLabel="FTR Referrals by Participation Status"
-    countsByMonth={ftrReferralsByParticipationStatus}
+    exportLabel="Case termination counts by termination type"
+    countsByMonth={caseTerminationCountsByMonthByTerminationType}
     metricType={metricType}
     numMonths={metricPeriodMonths}
     filters={{
@@ -50,35 +43,43 @@ const FtrReferralsByParticipationStatus = ({
       supervisionType,
     }}
     bars={[
-      { key: "pending", label: "Pending" },
-      { key: "in_progress", label: "In Progress" },
-      { key: "denied", label: "Denied" },
-      { key: "discharged", label: "Discharged" },
+      { key: "absconsion", label: "Absconsion" },
+      { key: "revocation", label: "Revocation" },
+      { key: "suspension", label: "Suspension" },
+      { key: "discharge", label: "Discharge" },
+      { key: "expiration", label: "Expiration" },
+      { key: "death", label: "Death" },
+      { key: "other", label: "Other" },
     ]}
-    yAxisLabel={metricType === METRIC_TYPES.COUNTS ? "Count" : "Percentage"}
-    barColorPalette={chartColors}
-    dataExportLabel="Month\Status"
+    yAxisLabel={
+      metricType === METRIC_TYPES.COUNTS ? "Case terminations" : "Percentage"
+    }
+    barColorPalette={COLORS_SEVEN_VALUES}
+    dataExportLabel="Month"
   />
 );
 
-FtrReferralsByParticipationStatus.propTypes = {
+CaseTerminationsByTerminationType.propTypes = {
   metricType: metricTypePropType.isRequired,
   metricPeriodMonths: PropTypes.string.isRequired,
-  supervisionType: PropTypes.string.isRequired,
   district: PropTypes.arrayOf(PropTypes.string).isRequired,
-  ftrReferralsByParticipationStatus: PropTypes.arrayOf(
+  caseTerminationCountsByMonthByTerminationType: PropTypes.arrayOf(
     PropTypes.shape({
-      denied: PropTypes.string,
-      discharged: PropTypes.string,
+      absconsion: PropTypes.string,
+      death: PropTypes.string,
+      discharge: PropTypes.string,
       district: PropTypes.string,
-      in_progress: PropTypes.string,
+      expiration: PropTypes.string,
       month: PropTypes.string,
-      pending: PropTypes.string,
+      other: PropTypes.string,
+      revocation: PropTypes.string,
       state_code: PropTypes.string,
       supervision_type: PropTypes.string,
+      suspension: PropTypes.string,
       year: PropTypes.string,
     })
   ).isRequired,
+  supervisionType: PropTypes.string.isRequired,
 };
 
-export default FtrReferralsByParticipationStatus;
+export default CaseTerminationsByTerminationType;

@@ -31,19 +31,19 @@ import values from "lodash/fp/values";
 import {
   COLORS,
   COLORS_FIVE_VALUES,
-} from "../../../assets/scripts/constants/colors";
-import { configureDownloadButtons } from "../../../utils/downloads/downloads";
+} from "../../assets/scripts/constants/colors";
+import { configureDownloadButtons } from "../../utils/downloads/downloads";
 import {
   filterDatasetBySupervisionType,
   filterDatasetByDistrict,
   filterDatasetByMetricPeriodMonths,
-} from "../../../utils/charts/dataFilters";
+} from "../../utils/charts/dataFilters";
 import {
   tooltipForCountChart,
   tooltipForRateChart,
-} from "../../../utils/charts/tooltips";
-import { metricTypePropType } from "../propTypes";
-import { METRIC_TYPES } from "../../constants";
+} from "../../utils/charts/tooltips";
+import { metricTypePropType } from "../../components/charts/propTypes";
+import { METRIC_TYPES } from "../../components/constants";
 
 const chartId = "ftrReferralsByLsir";
 

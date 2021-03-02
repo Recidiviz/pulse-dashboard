@@ -18,15 +18,18 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import { COLORS_SEVEN_VALUES } from "../../../assets/scripts/constants/colors";
-import PerOfficerBarChart from "../common/bars/PerOfficerBarChart";
-import { metricTypePropType, officeDataPropTypes } from "../propTypes";
-import { METRIC_TYPES } from "../../constants";
+import PerOfficerBarChart from "../../components/charts/common/bars/PerOfficerBarChart";
+import { COLORS_FIVE_VALUES } from "../../assets/scripts/constants/colors";
+import {
+  metricTypePropType,
+  officeDataPropTypes,
+} from "../../components/charts/propTypes";
+import { METRIC_TYPES } from "../../components/constants";
 
-const chartId = "caseTerminationsByOfficer";
+const chartId = "revocationsByOfficer";
 
-const CaseTerminationsByOfficer = ({
-  terminationCountsByOfficer,
+const RevocationCountByOfficer = ({
+  revocationCountsByOfficer,
   officeData,
   metricType,
   metricPeriodMonths,
@@ -35,46 +38,44 @@ const CaseTerminationsByOfficer = ({
 }) => (
   <PerOfficerBarChart
     chartId={chartId}
-    exportLabel="Case terminations by officer"
-    countsPerPeriodPerOfficer={terminationCountsByOfficer}
+    exportLabel="Revocations by officer"
+    countsPerPeriodPerOfficer={revocationCountsByOfficer}
     officeData={officeData}
     metricType={metricType}
     metricPeriodMonths={metricPeriodMonths}
     supervisionType={supervisionType}
     district={district}
     bars={[
-      { key: "absconsion", label: "Absconsion" },
-      { key: "revocation", label: "Revocation" },
-      { key: "suspension", label: "Suspension" },
-      { key: "discharge", label: "Discharge" },
-      { key: "expiration", label: "Expiration" },
-      { key: "death", label: "Death" },
-      { key: "other", label: "Other" },
+      { key: "absconsion_count", label: "Absconsion" },
+      { key: "felony_count", label: "New Offense" },
+      { key: "technical_count", label: "Technical" },
+      { key: "unknown_count", label: "Unknown Type" },
     ]}
     yAxisLabel={
-      metricType === METRIC_TYPES.COUNTS ? "Case terminations" : "Percentage"
+      metricType === METRIC_TYPES.COUNTS ? "Revocation count" : "Percentage"
     }
-    barColorPalette={COLORS_SEVEN_VALUES}
+    barColorPalette={COLORS_FIVE_VALUES}
   />
 );
 
-CaseTerminationsByOfficer.propTypes = {
-  terminationCountsByOfficer: PropTypes.arrayOf(
+RevocationCountByOfficer.defaultProps = {
+  revocationCountsByOfficer: [],
+};
+
+RevocationCountByOfficer.propTypes = {
+  revocationCountsByOfficer: PropTypes.arrayOf(
     PropTypes.shape({
-      absconsion: PropTypes.string,
-      death: PropTypes.string,
-      discharge: PropTypes.string,
+      absconsion_count: PropTypes.string,
       district: PropTypes.string,
-      expiration: PropTypes.string,
+      felony_count: PropTypes.string,
       metric_period_months: PropTypes.string,
       officer_external_id: PropTypes.string,
-      other: PropTypes.string,
-      revocation: PropTypes.string,
       state_code: PropTypes.string,
       supervision_type: PropTypes.string,
-      suspension: PropTypes.string,
+      technical_count: PropTypes.string,
+      unknown_count: PropTypes.string,
     })
-  ).isRequired,
+  ),
   metricType: metricTypePropType.isRequired,
   metricPeriodMonths: PropTypes.string.isRequired,
   supervisionType: PropTypes.string.isRequired,
@@ -82,4 +83,4 @@ CaseTerminationsByOfficer.propTypes = {
   officeData: PropTypes.arrayOf(officeDataPropTypes).isRequired,
 };
 
-export default CaseTerminationsByOfficer;
+export default RevocationCountByOfficer;
