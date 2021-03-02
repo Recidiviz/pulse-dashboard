@@ -30,7 +30,7 @@ import {
   COLORS,
   COLORS_GOOD_BAD,
 } from "../../../assets/scripts/constants/colors";
-import { configureDownloadButtons } from "../../../utils/downloads/downloads";
+import { configureDownloadButtons } from "../../../utils/downloads/configureDownloadButtons";
 import { filterDatasetByDistrict } from "../../../utils/charts/dataFilters";
 import {
   toggleLabel,

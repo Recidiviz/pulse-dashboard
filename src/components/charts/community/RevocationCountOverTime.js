@@ -23,7 +23,7 @@ import map from "lodash/fp/map";
 import pipe from "lodash/fp/pipe";
 
 import { COLORS } from "../../../assets/scripts/constants/colors";
-import { configureDownloadButtons } from "../../../utils/downloads/downloads";
+import { configureDownloadButtons } from "../../../utils/downloads/configureDownloadButtons";
 import {
   filterDatasetBySupervisionType,
   filterDatasetByDistrict,

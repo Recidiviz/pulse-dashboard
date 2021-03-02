@@ -27,7 +27,7 @@ import pipe from "lodash/fp/pipe";
 import sumBy from "lodash/fp/sumBy";
 
 import { COLORS } from "../../../assets/scripts/constants/colors";
-import { configureDownloadButtons } from "../../../utils/downloads/downloads";
+import { configureDownloadButtons } from "../../../utils/downloads/configureDownloadButtons";
 
 import { filterDatasetByDistrict } from "../../../utils/charts/dataFilters";
 import { METRIC_TYPES } from "../../constants";

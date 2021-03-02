@@ -29,7 +29,7 @@ import sortBy from "lodash/fp/sortBy";
 import toInteger from "lodash/fp/toInteger";
 
 import { COLORS } from "../../../assets/scripts/constants/colors";
-import { configureDownloadButtons } from "../../../utils/downloads/downloads";
+import { configureDownloadButtons } from "../../../utils/downloads/configureDownloadButtons";
 import { sortFilterAndSupplementMostRecentMonths } from "../../../utils/transforms/datasets";
 import { monthNamesWithYearsFromNumbers } from "../../../utils/transforms/months";
 import {

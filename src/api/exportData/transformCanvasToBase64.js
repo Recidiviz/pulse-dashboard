@@ -1,10 +1,21 @@
-import createMethodologyFile from "./createMethodologyFile";
-import {
-  downloadZipFile,
-  downloadImage,
-} from "../../api/downloads/downloadFiles";
-import getFilters from "./getFilters";
-import getViolation from "./getViolation";
+// Recidiviz - a data platform for criminal justice reform
+// Copyright (C) 2021 Recidiviz, Inc.
+//
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <https://www.gnu.org/licenses/>.
+// =============================================================================
+import getFilters from "../../utils/downloads/getFilters";
+import getViolation from "../../utils/downloads/getViolation";
 
 function transformCanvasToBase64(canvas, chartTitle, filters) {
   const topPadding = 120;
@@ -40,40 +51,4 @@ function transformCanvasToBase64(canvas, chartTitle, filters) {
   return temporaryCanvas.toDataURL("image/png;base64");
 }
 
-function downloadCanvasAsImage({
-  canvas,
-  filename,
-  chartTitle,
-  filters,
-  chartId,
-  timeWindowDescription,
-  shouldZipDownload,
-  methodology,
-  getTokenSilently,
-}) {
-  const imageData = transformCanvasToBase64(canvas, chartTitle, filters);
-
-  if (shouldZipDownload) {
-    const methodologyFile = createMethodologyFile(
-      chartId,
-      chartTitle,
-      timeWindowDescription,
-      filters,
-      methodology
-    );
-
-    const imageFile = {
-      name: filename,
-      data: imageData.substring(22),
-      type: "base64",
-    };
-
-    const files = [methodologyFile, imageFile];
-
-    downloadZipFile(files, "export_image.zip", getTokenSilently);
-  } else {
-    downloadImage(filename, imageData);
-  }
-}
-
-export default downloadCanvasAsImage;
+export default transformCanvasToBase64;

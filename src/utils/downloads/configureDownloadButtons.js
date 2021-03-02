@@ -1,5 +1,5 @@
 // Recidiviz - a data platform for criminal justice reform
-// Copyright (C) 2020 Recidiviz, Inc.
+// Copyright (C) 2021 Recidiviz, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -14,23 +14,12 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-import getTimeStamp from "./getTimeStamp";
 import configureFilename from "./configureFileName";
 import createMethodologyFile from "./createMethodologyFile";
 import transformChartDataToCsv from "./transformChartDataToCsv";
-import downloadCanvasAsImage from "./downloadCanvasAsImage";
-import {
-  downloadZipFile,
-  downloadEncodedCSV,
-  downloadMsBlob,
-} from "../../api/downloads/downloadFiles";
+import { downloadData, downloadCanvasAsImage } from "../../api/exportData";
 
-// Functions for flowing through browser-specific download functionality
-// https://stackoverflow.com/questions/9847580/how-to-detect-safari-chrome-ie-firefox-and-opera-browser
-const isIE = /* @cc_on!@ */ false || !!document.documentMode;
-const isEdge = !isIE && !!window.StyleMedia;
-
-function configureDataDownloadButton({
+export function configureDataDownloadButton({
   chartId,
   chartDatasets,
   chartLabels,
@@ -47,7 +36,15 @@ function configureDataDownloadButton({
   return () => {
     const filename = configureFilename(chartId, filters, shouldZipDownload);
     const exportName = `${filename}.csv`;
-
+    const methodologyFile =
+      shouldZipDownload &&
+      createMethodologyFile(
+        chartId,
+        chartTitle,
+        timeWindowDescription,
+        filters,
+        methodology
+      );
     transformChartDataToCsv(
       chartDatasets,
       chartLabels,
@@ -55,59 +52,17 @@ function configureDataDownloadButton({
       convertValuesToNumbers,
       fixLabelsInColumns
     ).then((csv) => {
-      if (shouldZipDownload) {
-        const methodologyFile = createMethodologyFile(
-          chartId,
-          chartTitle,
-          timeWindowDescription,
-          filters,
-          methodology
-        );
-        const files = [
-          methodologyFile,
-          {
-            name: exportName,
-            data: csv,
-            type: "binary",
-          },
-        ];
-
-        downloadZipFile(files, "export_data.zip", getTokenSilently);
-      } else if (isIE || isEdge) {
-        downloadMsBlob(csv, exportName);
-      } else {
-        downloadEncodedCSV(csv, exportName);
-      }
+      downloadData({
+        chartId,
+        shouldZipDownload,
+        csv,
+        getTokenSilently,
+        methodologyFile,
+        filename: exportName,
+      });
     });
   };
 }
-
-export function downloadHtmlElementAsImage({
-  chartId,
-  chartTitle,
-  filters,
-  timeWindowDescription,
-  shouldZipDownload,
-  methodology,
-  getTokenSilently,
-}) {
-  const element = document.getElementById(chartId);
-
-  window.html2canvas(element, {}).then((canvas) => {
-    downloadCanvasAsImage({
-      canvas,
-      filename: `${chartId}-${getTimeStamp()}.png`,
-      chartTitle,
-      filters,
-      chartId,
-      timeWindowDescription,
-      shouldZipDownload,
-      methodology,
-      getTokenSilently,
-    });
-  });
-}
-
 export function configureDownloadButtons({
   chartId,
   chartTitle,
@@ -178,6 +133,32 @@ export function configureDownloadButtons({
       });
     };
   }
+}
+
+export function downloadHtmlElementAsImage({
+  chartId,
+  chartTitle,
+  filters,
+  timeWindowDescription,
+  shouldZipDownload,
+  methodology,
+  getTokenSilently,
+}) {
+  const element = document.getElementById(chartId);
+
+  window.html2canvas(element, {}).then((canvas) => {
+    downloadCanvasAsImage({
+      canvas,
+      filename: `${configureFilename(chartId, {}, true)}.png`,
+      chartTitle,
+      filters,
+      chartId,
+      timeWindowDescription,
+      shouldZipDownload,
+      methodology,
+      getTokenSilently,
+    });
+  });
 }
 
 export function downloadChartAsImage({

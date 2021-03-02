@@ -25,7 +25,7 @@ import {
   downloadChartAsImage,
   downloadChartAsData,
   downloadHtmlElementAsImage,
-} from "../../utils/downloads/downloads";
+} from "../../utils/downloads/configureDownloadButtons";
 import { useRootStore } from "../../StoreProvider";
 
 const ExportMenu = ({
