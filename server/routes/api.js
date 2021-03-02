@@ -215,6 +215,7 @@ function programmingExplore(req, res) {
 function generateFileLink(req, res) {
   const { file } = req;
   const fileName = `${uuid.v4()}-${file.originalname}`;
+  const protocol = process.env.AUTH_ENV === "development" ? `http` : `https`;
 
   fs.writeFile(`/tmp/${fileName}`, file.buffer, function (err) {
     if (err) {
@@ -223,7 +224,7 @@ function generateFileLink(req, res) {
       );
     }
   });
-  res.send(`https://${req.headers.host}/file/${fileName}`);
+  res.send(`${protocol}://${req.headers.host}/file/${fileName}`);
 }
 
 function upload(req, res) {
