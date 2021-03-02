@@ -41,6 +41,7 @@ const raceValueToLabel = {
   NATIVE_HAWAIIAN_PACIFIC_ISLANDER: "Native Hawaiian Pacific Islander",
   WHITE: "White",
   OTHER: "Other",
+  EXTERNAL_UNKNOWN: "Unknown",
 };
 
 const matrixViolationTypeToLabel = {
