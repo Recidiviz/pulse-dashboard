@@ -20,8 +20,8 @@ import PropTypes from "prop-types";
 
 import { COLORS_SEVEN_VALUES } from "../../assets/scripts/constants/colors";
 import PerOfficerBarChart from "../bars/PerOfficerBarChart";
-import { metricTypePropType, officeDataPropTypes } from "../propTypes";
-import { METRIC_TYPES } from "../../components/constants";
+import { metricTypePropType, officeDataPropTypes } from "../utils/propTypes";
+import { METRIC_TYPES } from "../utils/constants";
 
 const chartId = "caseTerminationsByOfficer";
 

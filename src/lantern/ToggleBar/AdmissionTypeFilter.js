@@ -23,7 +23,7 @@ import { get } from "mobx";
 import FilterField from "./FilterField";
 import MultiSelect from "../../controls/MultiSelect";
 import { flatOptions } from "../../controls/utils";
-import { useRootStore } from "../../StoreProvider";
+import { useRootStore } from "../../components/StoreProvider";
 import { ADMISSION_TYPE } from "../../constants/filterTypes";
 
 const AdmissionTypeFilter = () => {

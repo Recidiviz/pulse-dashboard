@@ -44,8 +44,8 @@ import {
 import { sortFilterAndSupplementMostRecentMonths } from "../../utils/transforms/datasets";
 import { monthNamesWithYearsFromNumbers } from "../../utils/transforms/months";
 import { groupByMonth } from "../bars/utils";
-import { metricTypePropType, officeDataPropTypes } from "../propTypes";
-import { METRIC_TYPES } from "../../components/constants";
+import { metricTypePropType, officeDataPropTypes } from "../utils/propTypes";
+import { METRIC_TYPES } from "../utils/constants";
 
 const dataCountsMapper = ({ year, month, revocation_count: count }) => ({
   year,

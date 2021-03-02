@@ -21,7 +21,7 @@ import Select from "react-select";
 import { observer } from "mobx-react-lite";
 
 import { getStateNameForCode } from "../RootStore/utils/user";
-import { useRootStore } from "../StoreProvider";
+import { useRootStore } from "./StoreProvider";
 
 const StateSelector = ({ onChange }) => {
   const { userStore, tenantStore } = useRootStore();

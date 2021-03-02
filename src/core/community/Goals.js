@@ -18,16 +18,16 @@
 import React from "react";
 
 import PageTemplate from "../PageTemplate";
-import Loading from "../../../../components/Loading";
-import ChartCard from "../../../../core/ChartCard";
-import GeoViewTimeChart from "../../../../core/GeoViewTimeChart";
-import Methodology from "../../../../core/Methodology";
-import PeriodLabel from "../../../../core/PeriodLabel";
-import LsirScoreChangeSnapshot from "../../../../core/community/LsirScoreChangeSnapshot";
-import RevocationAdmissionsSnapshot from "../../../../core/community/RevocationAdmissionsSnapshot";
-import RevocationCountOverTime from "../../../../core/community/RevocationCountOverTime";
-import SupervisionSuccessSnapshot from "../../../../core/community/SupervisionSuccessSnapshot";
-import useChartData from "../../../../hooks/useChartData";
+import Loading from "../../components/Loading";
+import ChartCard from "../ChartCard";
+import GeoViewTimeChart from "../GeoViewTimeChart";
+import Methodology from "../Methodology";
+import PeriodLabel from "../PeriodLabel";
+import LsirScoreChangeSnapshot from "./LsirScoreChangeSnapshot";
+import RevocationAdmissionsSnapshot from "./RevocationAdmissionsSnapshot";
+import RevocationCountOverTime from "./RevocationCountOverTime";
+import SupervisionSuccessSnapshot from "./SupervisionSuccessSnapshot";
+import useChartData from "../../hooks/useChartData";
 import { metrics } from "./constants";
 
 const CommunityGoals = () => {

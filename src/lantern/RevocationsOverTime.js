@@ -39,7 +39,7 @@ import { sortFilterAndSupplementMostRecentMonths } from "../utils/transforms/dat
 import { monthNamesAllWithYearsFromNumbers } from "../utils/transforms/months";
 import { generateTrendlineDataset } from "../utils/charts/trendline";
 import { translate } from "../utils/i18nSettings";
-import { useRootStore } from "../StoreProvider";
+import { useRootStore } from "../components/StoreProvider";
 import { METRIC_PERIOD_MONTHS } from "../constants/filterTypes";
 
 import RevocationsByDimensionComponent from "./RevocationsByDimension/RevocationsByDimensionComponent";

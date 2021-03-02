@@ -51,8 +51,8 @@ import {
   centerSingleMonthDatasetIfNecessary,
 } from "../../utils/charts/toggles";
 import { generateTrendlineDataset } from "../../utils/charts/trendline";
-import { METRIC_TYPES } from "../../components/constants";
-import { metricTypePropType } from "../propTypes";
+import { METRIC_TYPES } from "../utils/constants";
+import { metricTypePropType } from "../utils/propTypes";
 
 const chartId = "supervisionSuccessSnapshot";
 

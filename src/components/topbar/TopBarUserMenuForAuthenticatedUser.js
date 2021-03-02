@@ -20,7 +20,7 @@ import { Dropdown } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
 import { getUserStateName } from "../../RootStore/utils/user";
-import { useUserStore } from "../../StoreProvider";
+import { useUserStore } from "../StoreProvider";
 
 const TopBarUserMenuForAuthenticatedUser = () => {
   const { user, logout } = useUserStore();

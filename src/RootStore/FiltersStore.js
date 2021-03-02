@@ -35,7 +35,7 @@ import {
   LEVEL_2_SUPERVISION_LOCATION,
   LEVEL_1_SUPERVISION_LOCATION,
 } from "../constants/filterTypes";
-import filterOptionsMap from "../views/tenants/constants/filterOptions";
+import filterOptionsMap from "../core/tenants/constants/filterOptions";
 import { compareStrings } from "./utils";
 import { generateNestedOptions } from "./utils/districtOptions";
 

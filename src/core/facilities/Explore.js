@@ -18,26 +18,26 @@
 import React, { useState } from "react";
 
 import PageTemplate from "../PageTemplate";
-import Loading from "../../../../components/Loading";
-import ChartCard from "../../../../core/ChartCard";
-import GeoViewTimeChart from "../../../../core/GeoViewTimeChart";
-import Methodology from "../../../../core/Methodology";
-import MethodologyCollapse from "../../../../core/MethodologyCollapse";
-import PeriodLabel from "../../../../core/PeriodLabel";
-import WarningIcon from "../../../../controls/WarningIcon";
-import AdmissionsVsReleases from "../../../../core/facilities/AdmissionsVsReleases";
-import ReincarcerationCountOverTime from "../../../../core/facilities/ReincarcerationCountOverTime";
-import ReincarcerationRateByStayLength from "../../../../core/facilities/ReincarcerationRateByStayLength";
-import AdmissionCountsByType from "../../../../core/AdmissionCountsByType";
-import DaysAtLibertySnapshot from "../../../../core/facilities/DaysAtLibertySnapshot";
-import ToggleBar from "../../../../components/toggles/ToggleBar";
+import Loading from "../../components/Loading";
+import ChartCard from "../ChartCard";
+import GeoViewTimeChart from "../GeoViewTimeChart";
+import Methodology from "../Methodology";
+import MethodologyCollapse from "../MethodologyCollapse";
+import PeriodLabel from "../PeriodLabel";
+import WarningIcon from "../../controls/WarningIcon";
+import AdmissionsVsReleases from "./AdmissionsVsReleases";
+import ReincarcerationCountOverTime from "./ReincarcerationCountOverTime";
+import ReincarcerationRateByStayLength from "./ReincarcerationRateByStayLength";
+import AdmissionCountsByType from "../AdmissionCountsByType";
+import DaysAtLibertySnapshot from "./DaysAtLibertySnapshot";
+import ToggleBar from "../toggles/ToggleBar";
 import {
   defaultDistrict,
   defaultMetricPeriod,
   defaultMetricType,
-} from "../../../../components/toggles/options";
-import useChartData from "../../../../hooks/useChartData";
-import { getYearFromNow } from "../../../../utils/transforms/years";
+} from "../toggles/options";
+import useChartData from "../../hooks/useChartData";
+import { getYearFromNow } from "../../utils/transforms/years";
 import { availableDistricts, importantNotes } from "./constants";
 
 const FacilitiesExplore = () => {

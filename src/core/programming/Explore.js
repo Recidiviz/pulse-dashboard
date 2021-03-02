@@ -18,25 +18,25 @@
 import React, { useState } from "react";
 
 import PageTemplate from "../PageTemplate";
-import Loading from "../../../../components/Loading";
-import ChartCard from "../../../../core/ChartCard";
-import GeoViewTimeChart from "../../../../core/GeoViewTimeChart";
-import Methodology from "../../../../core/Methodology";
-import PeriodLabel from "../../../../core/PeriodLabel";
-import FtrReferralsByAge from "../../../../core/programming/FtrReferralsByAge";
-import FtrReferralsByGender from "../../../../core/programming/FtrReferralsByGender";
-import FtrReferralsByLsir from "../../../../core/programming/FtrReferralsByLsir";
-import FtrReferralsByParticipationStatus from "../../../../core/programming/FtrReferralsByParticipationStatus";
-import FtrReferralsByRace from "../../../../core/programming/FtrReferralsByRace";
-import FtrReferralCountByMonth from "../../../../core/programming/FtrReferralCountByMonth";
-import ToggleBar from "../../../../components/toggles/ToggleBar";
+import Loading from "../../components/Loading";
+import ChartCard from "../ChartCard";
+import GeoViewTimeChart from "../GeoViewTimeChart";
+import Methodology from "../Methodology";
+import PeriodLabel from "../PeriodLabel";
+import FtrReferralsByAge from "./FtrReferralsByAge";
+import FtrReferralsByGender from "./FtrReferralsByGender";
+import FtrReferralsByLsir from "./FtrReferralsByLsir";
+import FtrReferralsByParticipationStatus from "./FtrReferralsByParticipationStatus";
+import FtrReferralsByRace from "./FtrReferralsByRace";
+import FtrReferralCountByMonth from "./FtrReferralCountByMonth";
+import ToggleBar from "../toggles/ToggleBar";
 import {
   defaultDistrict,
   defaultMetricPeriod,
   defaultMetricType,
   defaultSupervisionType,
-} from "../../../../components/toggles/options";
-import useChartData from "../../../../hooks/useChartData";
+} from "../toggles/options";
+import useChartData from "../../hooks/useChartData";
 import { availableDistricts, importantNotes } from "./constants";
 
 const ProgrammingExplore = () => {

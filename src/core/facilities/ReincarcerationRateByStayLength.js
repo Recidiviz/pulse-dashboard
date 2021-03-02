@@ -30,8 +30,8 @@ import { COLORS } from "../../assets/scripts/constants/colors";
 import { configureDownloadButtons } from "../../utils/downloads/downloads";
 
 import { filterDatasetByDistrict } from "../../utils/charts/dataFilters";
-import { METRIC_TYPES } from "../../components/constants";
-import { metricTypePropType } from "../propTypes";
+import { METRIC_TYPES } from "../utils/constants";
+import { metricTypePropType } from "../utils/propTypes";
 
 const chartId = "reincarcerationRateByStayLength";
 const chartLabels = [

@@ -38,8 +38,8 @@ import {
   toHumanReadable,
   toTitleCase,
 } from "../utils/transforms/labels";
-import { metricTypePropType } from "./propTypes";
-import { METRIC_TYPES } from "../components/constants";
+import { metricTypePropType } from "./utils/propTypes";
+import { METRIC_TYPES } from "./utils/constants";
 
 const minMarkerRadius = 10;
 const maxMarkerRadius = 35;

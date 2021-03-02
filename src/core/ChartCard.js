@@ -19,7 +19,7 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 
 import ChartCardExportMenu from "./ChartCardExportMenu";
-import GeoViewToggle from "../components/toggles/GeoViewToggle";
+import GeoViewToggle from "./toggles/GeoViewToggle";
 
 const ChartCard = ({
   chart,

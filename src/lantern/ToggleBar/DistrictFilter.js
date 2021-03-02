@@ -22,7 +22,7 @@ import map from "lodash/fp/map";
 
 import FilterField from "./FilterField";
 import SelectDropdown from "../../controls/SelectDropdown";
-import { useRootStore } from "../../StoreProvider";
+import { useRootStore } from "../../components/StoreProvider";
 import { flatOptions } from "../../controls/utils";
 
 const allOption = { label: "ALL", value: "All", secondaryValue: "All" };

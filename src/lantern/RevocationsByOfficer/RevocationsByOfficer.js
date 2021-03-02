@@ -25,7 +25,7 @@ import { translate } from "../../utils/i18nSettings";
 import RevocationCountChart from "../RevocationCountChart";
 import createGenerateChartData from "./createGenerateChartData";
 import flags from "../../flags";
-import { useDataStore } from "../../StoreProvider";
+import { useDataStore } from "../../components/StoreProvider";
 
 const MAX_OFFICERS_COUNT = 50;
 const DEFAULT_MODE = "counts";

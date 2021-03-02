@@ -21,7 +21,7 @@ import {
   defaultMetricType,
   defaultSupervisionType,
 } from "../options";
-import { METRIC_TYPES } from "../../constants";
+import { METRIC_TYPES } from "../../utils/constants";
 
 describe("Filter default values", () => {
   it("should be right", () => {

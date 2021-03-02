@@ -38,7 +38,7 @@ import {
   SUPERVISION_LEVEL,
   SUPERVISION_TYPE,
 } from "../constants/filterTypes";
-import { useRootStore } from "../StoreProvider";
+import { useRootStore } from "../components/StoreProvider";
 
 import "./Revocations.scss";
 import { usePageState } from "../contexts/PageContext";

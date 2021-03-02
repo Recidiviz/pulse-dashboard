@@ -20,14 +20,14 @@ import PropTypes from "prop-types";
 import { Helmet } from "react-helmet";
 import { observer } from "mobx-react-lite";
 
-import TopBar from "../topbar/TopBar";
-import TopBarLogo from "../topbar/TopBarLogo";
-import TopBarUserMenuForAuthenticatedUser from "../topbar/TopBarUserMenuForAuthenticatedUser";
-import Footer from "../Footer";
-import usePageLayout from "../../hooks/usePageLayout";
-import useIntercom from "../../hooks/useIntercom";
-import { setTranslateLocale } from "../../utils/i18nSettings";
-import { useRootStore } from "../../StoreProvider";
+import TopBar from "../components/TopBar/TopBar";
+import TopBarLogo from "../components/TopBar/TopBarLogo";
+import TopBarUserMenuForAuthenticatedUser from "../components/TopBar/TopBarUserMenuForAuthenticatedUser";
+import Footer from "../components/Footer";
+import usePageLayout from "../hooks/usePageLayout";
+import useIntercom from "../hooks/useIntercom";
+import { setTranslateLocale } from "../utils/i18nSettings";
+import { useRootStore } from "../components/StoreProvider";
 
 import "./LanternLayout.scss";
 

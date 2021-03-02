@@ -21,7 +21,7 @@ import cx from "classnames";
 import { get } from "mobx";
 
 import { matrixViolationTypeToLabel } from "../../utils/transforms/labels";
-import { useRootStore } from "../../StoreProvider";
+import { useRootStore } from "../../components/StoreProvider";
 import {
   VIOLATION_TYPE,
   REPORTED_VIOLATIONS,

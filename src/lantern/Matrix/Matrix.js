@@ -48,7 +48,7 @@ import {
 } from "../../utils/transforms/labels";
 import { translate } from "../../utils/i18nSettings";
 import { useContainerHeight } from "../../hooks/useContainerHeight";
-import { useRootStore } from "../../StoreProvider";
+import { useRootStore } from "../../components/StoreProvider";
 import {
   VIOLATION_TYPE,
   REPORTED_VIOLATIONS,

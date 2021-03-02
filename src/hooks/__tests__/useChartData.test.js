@@ -21,7 +21,7 @@ import {
   callMetricsApi,
   awaitingResults,
 } from "../../api/metrics/metricsClient";
-import { useRootStore } from "../../StoreProvider";
+import { useRootStore } from "../../components/StoreProvider";
 
 jest.mock("../../api/metrics/metricsClient");
 jest.mock("../../StoreProvider");

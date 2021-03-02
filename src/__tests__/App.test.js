@@ -25,14 +25,14 @@ import { US_MO, US_PA } from "../RootStore/TenantStore/lanternTenants";
 
 import mockWithTestId from "../../__helpers__/mockWithTestId";
 import Revocations from "../lantern/Revocations";
-import UsNDCommunityGoals from "../views/tenants/us_nd/community/Goals";
-import NotFound from "../views/NotFound";
+import UsNDCommunityGoals from "../core/community/Goals";
+import NotFound from "../components/NotFound";
 import Loading from "../components/Loading";
-import LanternLayout from "../components/layouts/LanternLayout";
-import CoreLayout from "../components/layouts/CoreLayout";
-import StoreProvider, { useRootStore } from "../StoreProvider";
+import LanternLayout from "../lantern/LanternLayout";
+import CoreLayout from "../core/CoreLayout";
+import StoreProvider, { useRootStore } from "../components/StoreProvider";
 import ErrorMessage from "../components/ErrorMessage";
-import VerificationNeeded from "../views/VerificationNeeded";
+import VerificationNeeded from "../components/VerificationNeeded";
 
 jest.mock("../utils/initIntercomSettings");
 jest.mock("../utils/initFontAwesome");

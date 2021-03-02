@@ -23,7 +23,7 @@ import { translate } from "../../utils/i18nSettings";
 import RevocationsByDimension from "../RevocationsByDimension";
 import HorizontalBarChartWithLabels from "../BarCharts/HorizontalBarChartWithLabels";
 import createGenerateChartData from "./createGenerateChartData";
-import { useRootStore } from "../../StoreProvider";
+import { useRootStore } from "../../components/StoreProvider";
 import { genderValueToLabel } from "../../utils/transforms/labels";
 
 const DEFAULT_MODE = "MALE";

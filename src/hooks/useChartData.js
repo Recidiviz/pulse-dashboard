@@ -24,7 +24,7 @@ import {
   awaitingResults,
   parseResponsesByFileFormat,
 } from "../api/metrics";
-import { useRootStore } from "../StoreProvider";
+import { useRootStore } from "../components/StoreProvider";
 
 const queues = {};
 

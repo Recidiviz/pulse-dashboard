@@ -52,8 +52,8 @@ import {
   centerSingleMonthDatasetIfNecessary,
 } from "../../utils/charts/toggles";
 import { generateTrendlineDataset } from "../../utils/charts/trendline";
-import { metricTypePropType } from "../propTypes";
-import { METRIC_TYPES } from "../../components/constants";
+import { metricTypePropType } from "../utils/propTypes";
+import { METRIC_TYPES } from "../utils/constants";
 
 const chartId = "revocationAdmissionsSnapshot";
 const stepSize = 10;

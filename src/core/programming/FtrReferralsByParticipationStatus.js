@@ -20,8 +20,8 @@ import PropTypes from "prop-types";
 
 import PerMonthBarChart from "../bars/PerMonthBarChart";
 import { COLORS_FIVE_VALUES } from "../../assets/scripts/constants/colors";
-import { metricTypePropType } from "../propTypes";
-import { METRIC_TYPES } from "../../components/constants";
+import { metricTypePropType } from "../utils/propTypes";
+import { METRIC_TYPES } from "../utils/constants";
 
 const chartId = "ftrReferralsByParticipationStatus";
 

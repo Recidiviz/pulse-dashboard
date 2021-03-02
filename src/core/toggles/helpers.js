@@ -24,7 +24,7 @@ import sortBy from "lodash/fp/sortBy";
 
 import { defaultDistrictOption } from "./options";
 
-export const normalizeDistrictName = (replaceLa, stateCode, district) => {
+const normalizeDistrictName = (replaceLa, stateCode, district) => {
   const isCounty = stateCode !== undefined;
 
   let normalized = district;
@@ -54,7 +54,7 @@ export const normalizeDistrictName = (replaceLa, stateCode, district) => {
   return normalized;
 };
 
-export const collectDistrictOfficesOptions = pipe(
+const collectDistrictOfficesOptions = pipe(
   sortBy("site_name"),
   map(({ district, site_name: siteName }) => ({
     label: siteName,
@@ -62,7 +62,7 @@ export const collectDistrictOfficesOptions = pipe(
   }))
 );
 
-export const collectDistrictsOptions = pipe(
+const collectDistrictsOptions = pipe(
   sortBy(identity),
   map((district) => ({
     label: district,
@@ -70,17 +70,14 @@ export const collectDistrictsOptions = pipe(
   }))
 );
 
-export const collectOptions = (districts, districtOffices) =>
+const collectOptions = (districts, districtOffices) =>
   districtOffices
     ? collectDistrictOfficesOptions(districtOffices)
     : collectDistrictsOptions(districts);
 
-export const prependAllOption = (options) => [
-  defaultDistrictOption,
-  ...options,
-];
+const prependAllOption = (options) => [defaultDistrictOption, ...options];
 
-export const normalizeLabel = (replaceLa, stateCode) => (option) => ({
+const normalizeLabel = (replaceLa, stateCode) => (option) => ({
   ...option,
   label: normalizeDistrictName(replaceLa, stateCode, option.label),
 });

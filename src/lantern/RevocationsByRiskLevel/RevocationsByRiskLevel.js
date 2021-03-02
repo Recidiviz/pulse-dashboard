@@ -24,7 +24,7 @@ import getLabelByMode from "../utils/getLabelByMode";
 import createGenerateChartData from "./createGenerateChartData";
 import RevocationsByDimension from "../RevocationsByDimension";
 import BarChartWithLabels from "../BarCharts";
-import { useDataStore } from "../../StoreProvider";
+import { useDataStore } from "../../components/StoreProvider";
 
 const CHART_TITLE = "Admissions by risk level";
 const DEFAULT_MODE = "rates";

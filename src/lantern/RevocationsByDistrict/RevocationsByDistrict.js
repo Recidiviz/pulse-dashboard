@@ -25,7 +25,7 @@ import RevocationCountChart from "../RevocationCountChart";
 import createGenerateChartData from "./createGenerateChartData";
 import { translate } from "../../utils/i18nSettings";
 import flags from "../../flags";
-import { useRootStore } from "../../StoreProvider";
+import { useRootStore } from "../../components/StoreProvider";
 
 const DEFAULT_MODE = "counts";
 

@@ -20,8 +20,8 @@ import PropTypes from "prop-types";
 
 import PerMonthBarChart from "../bars/PerMonthBarChart";
 import { COLORS_SEVEN_VALUES } from "../../assets/scripts/constants/colors";
-import { METRIC_TYPES } from "../../components/constants";
-import { metricTypePropType } from "../propTypes";
+import { METRIC_TYPES } from "../utils/constants";
+import { metricTypePropType } from "../utils/propTypes";
 
 const chartId = "caseTerminationsByTerminationType";
 

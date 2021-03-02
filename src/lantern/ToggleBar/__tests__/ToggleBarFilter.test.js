@@ -27,10 +27,10 @@ import {
   SUPERVISION_LEVEL,
   SUPERVISION_TYPE,
 } from "../../../constants/filterTypes";
-import { useRootStore } from "../../../StoreProvider";
+import { useRootStore } from "../../../components/StoreProvider";
 import { METADATA_NAMESPACE } from "../../../constants";
 import { US_MO } from "../../../RootStore/TenantStore/lanternTenants";
-import filterOptions from "../../../views/tenants/constants/filterOptions";
+import filterOptions from "../../../core/tenants/constants/filterOptions";
 
 jest.mock("../../../controls/Select", () => ({
   __esModule: true,

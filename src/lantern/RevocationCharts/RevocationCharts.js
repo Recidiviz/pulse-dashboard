@@ -28,7 +28,7 @@ import RevocationsByViolation from "../RevocationsByViolation";
 import RevocationsByGender from "../RevocationsByGender";
 import RevocationsByRace from "../RevocationsByRace";
 import RevocationsByDistrict from "../RevocationsByDistrict";
-import { useRootStore } from "../../StoreProvider";
+import { useRootStore } from "../../components/StoreProvider";
 import { useContainerHeight } from "../../hooks/useContainerHeight";
 import "./RevocationCharts.scss";
 

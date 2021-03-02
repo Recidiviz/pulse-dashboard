@@ -21,7 +21,7 @@ import { observer } from "mobx-react-lite";
 import { toJS } from "mobx";
 import * as Sentry from "@sentry/react";
 import ErrorMessage from "./ErrorMessage";
-import { useRootStore } from "../StoreProvider";
+import { useRootStore } from "./StoreProvider";
 
 function ErrorBoundary({ children }) {
   const { restrictedDistrict, currentTenantId, filters } = useRootStore();

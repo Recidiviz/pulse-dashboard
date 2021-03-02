@@ -35,8 +35,8 @@ import {
   tooltipForRateChart,
 } from "../../utils/charts/tooltips";
 import { toInt } from "../../utils/transforms/labels";
-import { metricTypePropType } from "../propTypes";
-import { METRIC_TYPES } from "../../components/constants";
+import { metricTypePropType } from "../utils/propTypes";
+import { METRIC_TYPES } from "../utils/constants";
 
 const chartId = "ftrReferralsByAge";
 const ageBucketLabels = ["<25", "25-29", "30-34", "35-39", "40<"];

@@ -20,9 +20,9 @@ import { useHistory } from "react-router-dom";
 import { Button, Container, Row, Col } from "reactstrap";
 import { observer } from "mobx-react-lite";
 
-import { useRootStore } from "../StoreProvider";
-import Loading from "../components/Loading";
-import StateSelector from "../components/StateSelector";
+import { useRootStore } from "./StoreProvider";
+import Loading from "./Loading";
+import StateSelector from "./StateSelector";
 
 const Profile = () => {
   const { tenantStore, userStore } = useRootStore();

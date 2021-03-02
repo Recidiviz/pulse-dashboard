@@ -53,8 +53,8 @@ import {
   updateTooltipForMetricType,
 } from "../../utils/charts/toggles";
 import { numberFromOfficerId } from "../../utils/transforms/labels";
-import { metricTypePropType } from "../propTypes";
-import { METRIC_TYPES } from "../../components/constants";
+import { metricTypePropType } from "../utils/propTypes";
+import { METRIC_TYPES } from "../utils/constants";
 
 /**
  * Organizes the labels and data points so the chart can display the values

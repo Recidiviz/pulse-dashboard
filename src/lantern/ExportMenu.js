@@ -26,7 +26,7 @@ import {
   downloadChartAsData,
   downloadHtmlElementAsImage,
 } from "../utils/downloads/downloads";
-import { useRootStore } from "../StoreProvider";
+import { useRootStore } from "../components/StoreProvider";
 
 const ExportMenu = ({
   chartId,

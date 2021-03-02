@@ -18,7 +18,7 @@
 import React, { useContext } from "react";
 import PropTypes from "prop-types";
 
-import RootStore from "../RootStore";
+import RootStore from "../../RootStore";
 
 const StoreContext = React.createContext(undefined);
 

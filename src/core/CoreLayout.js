@@ -20,17 +20,17 @@ import PropTypes from "prop-types";
 import cn from "classnames";
 import { useLocation, matchPath } from "react-router-dom";
 
-import SideBarHeader from "../sidebar/SideBarHeader";
-import SideBarMenu from "../sidebar/SideBarMenu";
-import SideBarGroup from "../sidebar/SideBarGroup";
-import SideBarLink from "../sidebar/SideBarLink";
-import SideBarFeedback from "../sidebar/SideBarFeedback";
-import TopBar from "../topbar/TopBar";
-import TopBarHamburgerMenu from "../topbar/TopBarHamburgerMenu";
-import TopBarTitle from "../topbar/TopBarTitle";
-import TopBarUserMenuForAuthenticatedUser from "../topbar/TopBarUserMenuForAuthenticatedUser";
-import Footer from "../Footer";
-import useSideBar from "../../hooks/useSideBar";
+import SideBarHeader from "./sidebar/SideBarHeader";
+import SideBarMenu from "./sidebar/SideBarMenu";
+import SideBarGroup from "./sidebar/SideBarGroup";
+import SideBarLink from "./sidebar/SideBarLink";
+import SideBarFeedback from "./sidebar/SideBarFeedback";
+import TopBar from "../components/TopBar/TopBar";
+import TopBarHamburgerMenu from "../components/TopBar/TopBarHamburgerMenu";
+import TopBarTitle from "../components/TopBar/TopBarTitle";
+import TopBarUserMenuForAuthenticatedUser from "../components/TopBar/TopBarUserMenuForAuthenticatedUser";
+import Footer from "../components/Footer";
+import useSideBar from "../hooks/useSideBar";
 
 const CoreLayout = ({ children }) => {
   const { isSideBarCollapsed, toggleSideBar } = useSideBar();

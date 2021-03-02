@@ -43,8 +43,8 @@ import {
   groupByRaceAndMap,
   stateCensusMapper,
 } from "../utils/races";
-import { metricTypePropType } from "../propTypes";
-import { METRIC_TYPES } from "../../components/constants";
+import { metricTypePropType } from "../utils/propTypes";
+import { METRIC_TYPES } from "../utils/constants";
 import { raceValueToLabel } from "../../utils/transforms/labels";
 
 const chartId = "ftrReferralsByRace";

@@ -22,7 +22,7 @@ import { observer } from "mobx-react-lite";
 import RevocationsByDimension from "../RevocationsByDimension";
 import createGenerateChartData from "./createGenerateChartData";
 import { translate } from "../../utils/i18nSettings";
-import { useDataStore } from "../../StoreProvider";
+import { useDataStore } from "../../components/StoreProvider";
 import HorizontalBarChartWithLabels from "../BarCharts/HorizontalBarChartWithLabels";
 
 const CHART_TITLE = "Admissions by race/ethnicity";

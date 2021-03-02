@@ -18,14 +18,14 @@
 import React from "react";
 
 import PageTemplate from "../PageTemplate";
-import Loading from "../../../../components/Loading";
-import ChartCard from "../../../../core/ChartCard";
-import GeoViewTimeChart from "../../../../core/GeoViewTimeChart";
-import Methodology from "../../../../core/Methodology";
-import PeriodLabel from "../../../../core/PeriodLabel";
-import DaysAtLibertySnapshot from "../../../../core/facilities/DaysAtLibertySnapshot";
-import ReincarcerationCountOverTime from "../../../../core/facilities/ReincarcerationCountOverTime";
-import useChartData from "../../../../hooks/useChartData";
+import Loading from "../../components/Loading";
+import ChartCard from "../ChartCard";
+import GeoViewTimeChart from "../GeoViewTimeChart";
+import Methodology from "../Methodology";
+import PeriodLabel from "../PeriodLabel";
+import DaysAtLibertySnapshot from "./DaysAtLibertySnapshot";
+import ReincarcerationCountOverTime from "./ReincarcerationCountOverTime";
+import useChartData from "../../hooks/useChartData";
 import { metrics } from "./constants";
 
 const FacilitiesGoals = () => {

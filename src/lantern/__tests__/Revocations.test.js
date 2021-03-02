@@ -33,14 +33,14 @@ import { setTranslateLocale } from "../../utils/i18nSettings";
 
 import { US_MO } from "../../RootStore/TenantStore/lanternTenants";
 import mockWithTestId from "../../../__helpers__/mockWithTestId";
-import filterOptionsMap from "../../views/tenants/constants/filterOptions";
+import filterOptionsMap from "../../core/tenants/constants/filterOptions";
 import {
   ADMISSION_TYPE,
   CHARGE_CATEGORY,
   SUPERVISION_LEVEL,
   SUPERVISION_TYPE,
 } from "../../constants/filterTypes";
-import { useRootStore } from "../../StoreProvider";
+import { useRootStore } from "../../components/StoreProvider";
 import { PageProvider } from "../../contexts/PageContext";
 
 jest.mock("../ToggleBar/ToggleBarFilter");

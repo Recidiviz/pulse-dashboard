@@ -27,7 +27,7 @@ import {
   matrixViolationTypeToLabel,
   pluralize,
 } from "../../utils/transforms/labels";
-import { useRootStore } from "../../StoreProvider";
+import { useRootStore } from "../../components/StoreProvider";
 import {
   VIOLATION_TYPE,
   REPORTED_VIOLATIONS,

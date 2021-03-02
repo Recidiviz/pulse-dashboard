@@ -22,7 +22,7 @@ import { observer } from "mobx-react-lite";
 import RevocationsByDimension from "../RevocationsByDimension";
 import createGenerateChartData from "./createGenerateChartData";
 import BarChartWithLabels from "../BarCharts";
-import { useRootStore } from "../../StoreProvider";
+import { useRootStore } from "../../components/StoreProvider";
 import { VIOLATION_TYPE } from "../../constants/filterTypes";
 import { COLORS } from "../../assets/scripts/constants/colors";
 

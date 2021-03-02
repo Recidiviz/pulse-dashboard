@@ -22,7 +22,7 @@ import { get } from "mobx";
 
 import Select from "../../controls/Select";
 import FilterField from "./FilterField";
-import { useRootStore } from "../../StoreProvider";
+import { useRootStore } from "../../components/StoreProvider";
 
 const ToggleBarFilter = ({ label, dimension }) => {
   const { filtersStore } = useRootStore();

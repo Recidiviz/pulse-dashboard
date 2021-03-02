@@ -18,33 +18,33 @@
 import React, { useState } from "react";
 
 import PageTemplate from "../PageTemplate";
-import Loading from "../../../../components/Loading";
-import ChartCard from "../../../../core/ChartCard";
-import GeoViewTimeChart from "../../../../core/GeoViewTimeChart";
-import Methodology from "../../../../core/Methodology";
-import PeriodLabel from "../../../../core/PeriodLabel";
-import WarningIcon from "../../../../controls/WarningIcon";
-import AdmissionCountsByType from "../../../../core/AdmissionCountsByType";
-import CaseTerminationsByOfficer from "../../../../core/community/CaseTerminationsByOfficer";
-import CaseTerminationsByTerminationType from "../../../../core/community/CaseTerminationsByTerminationType";
-import LsirScoreChangeSnapshot from "../../../../core/community/LsirScoreChangeSnapshot";
-import RevocationAdmissionsSnapshot from "../../../../core/community/RevocationAdmissionsSnapshot";
-import RevocationCountByOfficer from "../../../../core/community/RevocationCountByOfficer";
-import RevocationCountOverTime from "../../../../core/community/RevocationCountOverTime";
-import RevocationCountBySupervisionType from "../../../../core/community/RevocationCountBySupervisionType";
-import RevocationCountByViolationType from "../../../../core/community/RevocationCountByViolationType";
-import RevocationProportionByRace from "../../../../core/community/RevocationProportionByRace";
-import SupervisionSuccessSnapshot from "../../../../core/community/SupervisionSuccessSnapshot";
-import ToggleBar from "../../../../components/toggles/ToggleBar";
+import Loading from "../../components/Loading";
+import ChartCard from "../ChartCard";
+import GeoViewTimeChart from "../GeoViewTimeChart";
+import Methodology from "../Methodology";
+import PeriodLabel from "../PeriodLabel";
+import WarningIcon from "../../controls/WarningIcon";
+import AdmissionCountsByType from "../AdmissionCountsByType";
+import CaseTerminationsByOfficer from "./CaseTerminationsByOfficer";
+import CaseTerminationsByTerminationType from "./CaseTerminationsByTerminationType";
+import LsirScoreChangeSnapshot from "./LsirScoreChangeSnapshot";
+import RevocationAdmissionsSnapshot from "./RevocationAdmissionsSnapshot";
+import RevocationCountByOfficer from "./RevocationCountByOfficer";
+import RevocationCountOverTime from "./RevocationCountOverTime";
+import RevocationCountBySupervisionType from "./RevocationCountBySupervisionType";
+import RevocationCountByViolationType from "./RevocationCountByViolationType";
+import RevocationProportionByRace from "./RevocationProportionByRace";
+import SupervisionSuccessSnapshot from "./SupervisionSuccessSnapshot";
+import ToggleBar from "../toggles/ToggleBar";
 import {
   defaultDistrict,
   defaultMetricPeriod,
   defaultMetricType,
   defaultSupervisionType,
-} from "../../../../components/toggles/options";
-import useChartData from "../../../../hooks/useChartData";
-import { isOfficerIdsHidden } from "../../../../core/bars/utils";
-import { METRIC_TYPES } from "../../../../components/constants";
+} from "../toggles/options";
+import useChartData from "../../hooks/useChartData";
+import { isOfficerIdsHidden } from "../bars/utils";
+import { METRIC_TYPES } from "../utils/constants";
 import { availableDistricts, importantNotes } from "./constants";
 
 const CommunityExplore = () => {

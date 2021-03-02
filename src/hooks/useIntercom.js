@@ -16,7 +16,7 @@
 // =============================================================================
 
 import { useEffect } from "react";
-import { useRootStore } from "../StoreProvider";
+import { useRootStore } from "../components/StoreProvider";
 
 const useIntercom = () => {
   const { userStore, tenantStore } = useRootStore();
