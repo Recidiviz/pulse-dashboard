@@ -18,7 +18,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import cn from "classnames";
 import { components } from "react-select";
-import { optionPropType } from "../../components/propTypes";
+import { optionPropType } from "../propTypes";
 
 const GroupHeading = ({
   children: label,

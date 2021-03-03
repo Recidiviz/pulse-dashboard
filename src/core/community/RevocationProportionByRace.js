@@ -34,7 +34,7 @@ import {
   filterDatasetBySupervisionType,
   filterDatasetByDistrict,
   filterDatasetByMetricPeriodMonths,
-} from "../../utils/charts/dataFilters";
+} from "../utils/dataFilters";
 import {
   stateCensusMapper,
   groupByRaceAndMap,

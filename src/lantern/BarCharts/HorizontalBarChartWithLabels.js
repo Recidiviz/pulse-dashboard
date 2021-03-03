@@ -20,7 +20,7 @@ import PropTypes from "prop-types";
 import { HorizontalBar } from "react-chartjs-2";
 import "chartjs-plugin-datalabels";
 
-import { tooltipForRateMetricWithCounts } from "../../utils/charts/toggles";
+import { tooltipForRateMetricWithCounts } from "../utils/tooltips";
 import { COLORS } from "../../assets/scripts/constants/colors";
 
 const HorizontalBarChartWithLabels = ({

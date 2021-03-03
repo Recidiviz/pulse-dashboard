@@ -28,14 +28,11 @@ import values from "lodash/fp/values";
 import { toInteger } from "lodash";
 import { COLORS, COLORS_GOOD_BAD } from "../../assets/scripts/constants/colors";
 import { configureDownloadButtons } from "../../utils/downloads/downloads";
-import { filterDatasetByDistrict } from "../../utils/charts/dataFilters";
-import {
-  toggleLabel,
-  getMonthCountFromMetricPeriodMonthsToggle,
-  updateTooltipForMetricType,
-} from "../../utils/charts/toggles";
-import { sortFilterAndSupplementMostRecentMonths } from "../../utils/transforms/datasets";
-import { monthNamesWithYearsFromNumbers } from "../../utils/transforms/months";
+import { filterDatasetByDistrict } from "../utils/dataFilters";
+import { toggleLabel, updateTooltipForMetricType } from "../utils/tooltips";
+import { toNumber } from "../../utils";
+import { sortFilterAndSupplementMostRecentMonths } from "../../utils/datasets";
+import { monthNamesWithYearsFromNumbers } from "../utils/timePeriod";
 import { METRIC_TYPES } from "../utils/constants";
 import { metricTypePropType } from "../utils/propTypes";
 
@@ -91,7 +88,7 @@ const AdmissionsVsReleases = ({
     (dataset) =>
       sortFilterAndSupplementMostRecentMonths(
         dataset,
-        getMonthCountFromMetricPeriodMonthsToggle(metricPeriodMonths),
+        toNumber(metricPeriodMonths),
         "value",
         0
       )

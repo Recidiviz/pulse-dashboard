@@ -45,12 +45,6 @@ const MONTH_NAMES_ABBREVIATED = [
   "Dec",
 ];
 
-const getCurrentMonthName = function getCurrentMonthName() {
-  const now = new Date();
-  const thisMonth = now.getMonth();
-  return MONTH_NAMES[thisMonth];
-};
-
 const monthNamesFromNumbers = function monthNamesFromNumbers(
   monthNumbers,
   abbreviated
@@ -94,23 +88,4 @@ const monthNamesWithYears = function monthNamesWithyears(
   return monthNames;
 };
 
-const monthNamesWithYearsFromNumbers = function monthNamesShortWithYearsFromNumbers(
-  monthNumbers,
-  abbreviated
-) {
-  return monthNamesWithYears(monthNumbers, abbreviated, false);
-};
-
-const monthNamesAllWithYearsFromNumbers = function monthNamesShortWithYearsFromNumbers(
-  monthNumbers,
-  abbreviated
-) {
-  return monthNamesWithYears(monthNumbers, abbreviated, true);
-};
-
-export {
-  getCurrentMonthName,
-  monthNamesFromNumbers,
-  monthNamesWithYearsFromNumbers,
-  monthNamesAllWithYearsFromNumbers,
-};
+export { MONTH_NAMES, monthNamesWithYears, monthNamesFromNumbers };

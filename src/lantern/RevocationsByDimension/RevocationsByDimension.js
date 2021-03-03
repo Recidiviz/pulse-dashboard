@@ -23,7 +23,7 @@ import ModeSwitcher from "../ModeSwitcher";
 import RevocationsByDimensionComponent from "./RevocationsByDimensionComponent";
 import LoadingChart from "../LoadingChart";
 import ErrorMessage from "../../components/ErrorMessage";
-import { isDenominatorsMatrixStatisticallySignificant } from "../../utils/charts/significantStatistics";
+import { isDenominatorsMatrixStatisticallySignificant } from "../utils/significantStatistics";
 import getLabelByMode from "../utils/getLabelByMode";
 
 const RevocationsByDimension = observer(

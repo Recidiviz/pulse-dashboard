@@ -14,6 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
+import tk from "timekeeper";
 import * as labelsMethods from "../labels";
 
 describe("test label", () => {
@@ -110,5 +111,67 @@ describe("test label", () => {
   it("pluralize when it should pluralize", () => {
     const result = labelsMethods.pluralize(2, "violation");
     expect(result).toEqual("2 violations");
+  });
+  describe("labels formatting", () => {
+    describe("getPeriodLabelFromMetricPeriodMonthsToggle", () => {
+      it("formats the months label correctly", () => {
+        const testDate = new Date("2020-02-14T11:01:58.135Z");
+        tk.freeze(testDate);
+
+        const periodMonth = labelsMethods.getPeriodLabelFromMetricPeriodMonthsToggle(
+          12
+        );
+        expect(periodMonth).toBe("3/1/2019 to present");
+
+        const emptyPeriodMonth = labelsMethods.getPeriodLabelFromMetricPeriodMonthsToggle(
+          undefined
+        );
+        expect(emptyPeriodMonth).toBe("Invalid date to present");
+
+        const incorrectPeriodMonth = labelsMethods.getPeriodLabelFromMetricPeriodMonthsToggle(
+          "period month"
+        );
+        expect(incorrectPeriodMonth).toBe("Invalid date to present");
+      });
+    });
+
+    describe("getTrailingLabelFromMetricPeriodMonthsToggle", () => {
+      it("formats the trailing label for the time period correctly", () => {
+        const periodMonth = labelsMethods.getTrailingLabelFromMetricPeriodMonthsToggle(
+          5
+        );
+        expect(periodMonth).toBe("Last 0.4166666666666667 years");
+
+        const emptyPeriodMonth = labelsMethods.getTrailingLabelFromMetricPeriodMonthsToggle(
+          undefined
+        );
+        expect(emptyPeriodMonth).toBe("Last NaN years");
+
+        const periodLastMonth = labelsMethods.getTrailingLabelFromMetricPeriodMonthsToggle(
+          "12"
+        );
+        expect(periodLastMonth).toBe("Last 12 months");
+
+        const periodCurrentMonth = labelsMethods.getTrailingLabelFromMetricPeriodMonthsToggle(
+          "1"
+        );
+        expect(periodCurrentMonth).toBe("Current month");
+
+        const period3Month = labelsMethods.getTrailingLabelFromMetricPeriodMonthsToggle(
+          "3"
+        );
+        expect(period3Month).toBe("Last 3 months");
+
+        const period6Month = labelsMethods.getTrailingLabelFromMetricPeriodMonthsToggle(
+          "6"
+        );
+        expect(period6Month).toBe("Last 6 months");
+
+        const period36Month = labelsMethods.getTrailingLabelFromMetricPeriodMonthsToggle(
+          "36"
+        );
+        expect(period36Month).toBe("Last 3 years");
+      });
+    });
   });
 });

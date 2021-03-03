@@ -29,28 +29,30 @@ import values from "lodash/fp/values";
 
 import { COLORS } from "../../assets/scripts/constants/colors";
 import { configureDownloadButtons } from "../../utils/downloads/downloads";
-import { sortFilterAndSupplementMostRecentMonths } from "../../utils/transforms/datasets";
-import { monthNamesWithYearsFromNumbers } from "../../utils/transforms/months";
+import {
+  sortFilterAndSupplementMostRecentMonths,
+  centerSingleMonthDatasetIfNecessary,
+} from "../../utils/datasets";
+import { monthNamesWithYearsFromNumbers } from "../utils/timePeriod";
 import {
   filterDatasetBySupervisionType,
   filterDatasetByDistrict,
-} from "../../utils/charts/dataFilters";
+} from "../utils/dataFilters";
 import {
   getGoalForChart,
   getMinForGoalAndData,
   getMaxForGoalAndData,
   trendlineGoalText,
   chartAnnotationForGoal,
-} from "../../utils/charts/metricGoal";
+} from "../utils/metricGoal";
 import {
-  getMonthCountFromMetricPeriodMonthsToggle,
-  updateTooltipForMetricType,
-  toggleLabel,
-  canDisplayGoal,
   toggleYAxisTicksAdditionalOptions,
-  centerSingleMonthDatasetIfNecessary,
-} from "../../utils/charts/toggles";
-import { generateTrendlineDataset } from "../../utils/charts/trendline";
+  toggleLabel,
+  updateTooltipForMetricType,
+  canDisplayGoal,
+} from "../utils/tooltips";
+import { toNumber } from "../../utils";
+import { generateTrendlineDataset } from "../../utils/trendline";
 import { METRIC_TYPES } from "../utils/constants";
 import { metricTypePropType } from "../utils/propTypes";
 
@@ -132,7 +134,7 @@ const SupervisionSuccessSnapshot = ({
     (dataset) =>
       sortFilterAndSupplementMostRecentMonths(
         dataset,
-        getMonthCountFromMetricPeriodMonthsToggle(metricPeriodMonths),
+        toNumber(metricPeriodMonths),
         "value",
         "0"
       )

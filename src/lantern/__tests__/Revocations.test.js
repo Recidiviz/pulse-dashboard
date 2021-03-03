@@ -39,7 +39,7 @@ import {
   CHARGE_CATEGORY,
   SUPERVISION_LEVEL,
   SUPERVISION_TYPE,
-} from "../../constants/filterTypes";
+} from "../utils/constants";
 import { useRootStore } from "../../components/StoreProvider";
 import { PageProvider } from "../../contexts/PageContext";
 

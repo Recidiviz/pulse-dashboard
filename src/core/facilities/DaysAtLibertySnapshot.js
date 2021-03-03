@@ -30,18 +30,18 @@ import {
   getMaxForGoalAndData,
   trendlineGoalText,
   chartAnnotationForGoal,
-} from "../../utils/charts/metricGoal";
-import {
-  getMonthCountFromMetricPeriodMonthsToggle,
-  canDisplayGoal,
-  centerSingleMonthDatasetIfNecessary,
-} from "../../utils/charts/toggles";
+} from "../utils/metricGoal";
+import { canDisplayGoal } from "../utils/tooltips";
+import { toNumber } from "../../utils";
 import {
   generateTrendlineDataset,
   getTooltipWithoutTrendline,
-} from "../../utils/charts/trendline";
-import { sortFilterAndSupplementMostRecentMonths } from "../../utils/transforms/datasets";
-import { monthNamesWithYearsFromNumbers } from "../../utils/transforms/months";
+} from "../../utils/trendline";
+import {
+  sortFilterAndSupplementMostRecentMonths,
+  centerSingleMonthDatasetIfNecessary,
+} from "../../utils/datasets";
+import { monthNamesWithYearsFromNumbers } from "../utils/timePeriod";
 
 const chartId = "daysAtLibertySnapshot";
 const stepSize = 200;
@@ -65,7 +65,7 @@ const DaysAtLibertySnapshot = ({
     (dataset) =>
       sortFilterAndSupplementMostRecentMonths(
         dataset,
-        getMonthCountFromMetricPeriodMonthsToggle(metricPeriodMonths),
+        toNumber(metricPeriodMonths),
         "average",
         "0.0"
       )

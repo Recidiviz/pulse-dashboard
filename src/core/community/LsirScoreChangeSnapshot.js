@@ -34,22 +34,22 @@ import {
   getMaxForGoalAndData,
   trendlineGoalText,
   chartAnnotationForGoal,
-} from "../../utils/charts/metricGoal";
+} from "../utils/metricGoal";
+import { canDisplayGoal } from "../utils/tooltips";
 import {
   filterDatasetBySupervisionType,
   filterDatasetByDistrict,
-} from "../../utils/charts/dataFilters";
-import {
-  getMonthCountFromMetricPeriodMonthsToggle,
-  canDisplayGoal,
-  centerSingleMonthDatasetIfNecessary,
-} from "../../utils/charts/toggles";
+} from "../utils/dataFilters";
+import { toNumber } from "../../utils";
 import {
   generateTrendlineDataset,
   getTooltipWithoutTrendline,
-} from "../../utils/charts/trendline";
-import { sortFilterAndSupplementMostRecentMonths } from "../../utils/transforms/datasets";
-import { monthNamesWithYearsFromNumbers } from "../../utils/transforms/months";
+} from "../../utils/trendline";
+import {
+  centerSingleMonthDatasetIfNecessary,
+  sortFilterAndSupplementMostRecentMonths,
+} from "../../utils/datasets";
+import { monthNamesWithYearsFromNumbers } from "../utils/timePeriod";
 
 const groupByMonthAndMap = pipe(
   groupBy(
@@ -91,7 +91,7 @@ const LsirScoreChangeSnapshot = ({
     (dataset) =>
       sortFilterAndSupplementMostRecentMonths(
         dataset,
-        getMonthCountFromMetricPeriodMonthsToggle(metricPeriodMonths),
+        toNumber(metricPeriodMonths),
         "change",
         "0.0"
       )

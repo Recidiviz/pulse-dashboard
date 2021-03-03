@@ -27,15 +27,6 @@ export function sortByYearAndMonth(dataPoints) {
   );
 }
 
-/**
- * Sorts the data points by labels, ascending alphabetic order.
- *  -`labelIndex`: The index in the dataPoint array that contains the label
- *    to sort on
- */
-export function sortByLabel(dataPoints, labelKey) {
-  return dataPoints.sort((a, b) => a[labelKey].localeCompare(b[labelKey]));
-}
-
 export function filterMostRecentMonths(dataPoints, monthCount) {
   return dataPoints.slice(dataPoints.length - monthCount, dataPoints.length);
 }
@@ -106,4 +97,16 @@ export function sortFilterAndSupplementMostRecentMonths(
   );
   const sortedData = sortByYearAndMonth(updatedDataPoints);
   return filterMostRecentMonths(sortedData, monthCount);
+}
+
+export function centerSingleMonthDatasetIfNecessary(dataValues, labels) {
+  // Places empty, invisible data points on either side of the single datapoint to center it
+  if (dataValues.length === 1) {
+    dataValues.unshift(null);
+    dataValues.push(null);
+  }
+  if (labels.length === 1) {
+    labels.unshift("");
+    labels.push("");
+  }
 }

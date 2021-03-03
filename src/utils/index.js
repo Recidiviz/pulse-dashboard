@@ -14,26 +14,6 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-
-import { matchesAllFilters } from "shared-filters";
-
-import BaseDataStore from "./BaseDataStore";
-import { METRIC_PERIOD_MONTHS } from "../../lantern/utils/constants";
-
-export default class RevocationsOverTimeStore extends BaseDataStore {
-  constructor({ rootStore }) {
-    super({
-      rootStore,
-      file: `revocations_matrix_by_month`,
-      skippedFilters: [METRIC_PERIOD_MONTHS],
-    });
-  }
-
-  get filteredData() {
-    const dataFilter = matchesAllFilters({
-      filters: this.filters,
-      skippedFilters: this.skippedFilters,
-    });
-    return this.filterData(this.apiData, dataFilter);
-  }
+export function toNumber(stringValue) {
+  return !Number.isNaN(Number(stringValue)) ? Number(stringValue) : stringValue;
 }

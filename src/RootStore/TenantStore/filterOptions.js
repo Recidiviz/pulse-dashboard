@@ -25,7 +25,7 @@ import {
   VIOLATION_TYPE,
   LEVEL_1_SUPERVISION_LOCATION,
   LEVEL_2_SUPERVISION_LOCATION,
-} from "../../constants/filterTypes";
+} from "../../lantern/utils/constants";
 import { US_MO, US_PA } from "./lanternTenants";
 
 const METRIC_PERIODS = {

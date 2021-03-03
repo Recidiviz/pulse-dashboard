@@ -24,7 +24,7 @@ import FilterField from "./FilterField";
 import MultiSelect from "../../controls/MultiSelect";
 import { flatOptions } from "../../controls/utils";
 import { useRootStore } from "../../components/StoreProvider";
-import { ADMISSION_TYPE } from "../../constants/filterTypes";
+import { ADMISSION_TYPE } from "../utils/constants";
 
 const AdmissionTypeFilter = () => {
   const { filtersStore } = useRootStore();

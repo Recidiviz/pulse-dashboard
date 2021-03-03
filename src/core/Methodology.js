@@ -19,7 +19,7 @@ import React from "react";
 import PropTypes from "prop-types";
 
 import MethodologyCollapse from "./MethodologyCollapse";
-import methodologies from "../utils/charts/methodologies";
+import methodologies from "./utils/methodologies";
 
 function Methodology({ chartId }) {
   const methodology = methodologies[chartId];

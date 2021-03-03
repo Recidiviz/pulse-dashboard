@@ -17,7 +17,7 @@
 
 import React from "react";
 
-import { humanReadableTitleCase } from "../../../utils/transforms/labels";
+import { humanReadableTitleCase } from "../../../utils/labels";
 import { parseAndFormatViolationRecord } from "./violationRecord";
 import getNameFromOfficerId from "../../utils/getNameFromOfficerId";
 import { translate } from "../../../utils/i18nSettings";

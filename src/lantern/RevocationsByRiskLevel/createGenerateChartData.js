@@ -22,11 +22,11 @@ import values from "lodash/fp/values";
 import sortBy from "lodash/fp/sortBy";
 import map from "lodash/fp/map";
 
-import { sumIntBy } from "../helpers/counts";
-import { calculateRate } from "../helpers/rate";
+import { sumIntBy } from "../utils/counts";
+import { calculateRate } from "../utils/rate";
 import { translate } from "../../utils/i18nSettings";
-import { humanReadableTitleCase } from "../../utils/transforms/labels";
-import { applyStatisticallySignificantShadingToDataset } from "../../utils/charts/significantStatistics";
+import { humanReadableTitleCase } from "../../utils/labels";
+import { applyStatisticallySignificantShadingToDataset } from "../utils/significantStatistics";
 import getDenominatorKeyByMode from "../utils/getDenominatorKeyByMode";
 import getLabelByMode from "../utils/getLabelByMode";
 import { COLORS } from "../../assets/scripts/constants/colors";

@@ -17,7 +17,7 @@
 // =============================================================================
 
 import { sumCounts } from "../sumCounts";
-import { calculateRate } from "../../helpers/rate";
+import { calculateRate } from "../rate";
 
 describe("#calculateAverageRate", () => {
   const revocationData = [

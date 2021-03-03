@@ -37,7 +37,7 @@ import {
   defaultMetricType,
 } from "../toggles/options";
 import useChartData from "../hooks/useChartData";
-import { getYearFromNow } from "../../utils/transforms/years";
+import { getYearFromNow } from "../utils/timePeriod";
 import { availableDistricts, importantNotes } from "./constants";
 
 const FacilitiesExplore = () => {

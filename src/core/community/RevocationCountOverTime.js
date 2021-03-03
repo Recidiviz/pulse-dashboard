@@ -27,22 +27,24 @@ import { configureDownloadButtons } from "../../utils/downloads/downloads";
 import {
   filterDatasetBySupervisionType,
   filterDatasetByDistrict,
-} from "../../utils/charts/dataFilters";
+} from "../utils/dataFilters";
 import {
   getGoalForChart,
   getMaxForGoalAndDataIfGoalDisplayable,
   chartAnnotationForGoal,
-} from "../../utils/charts/metricGoal";
+} from "../utils/metricGoal";
 import {
-  toggleLabel,
-  getMonthCountFromMetricPeriodMonthsToggle,
   updateTooltipForMetricType,
-  canDisplayGoal,
+  toggleLabel,
   toggleYAxisTicksFor,
+  canDisplayGoal,
+} from "../utils/tooltips";
+import { toNumber } from "../../utils";
+import {
+  sortFilterAndSupplementMostRecentMonths,
   centerSingleMonthDatasetIfNecessary,
-} from "../../utils/charts/toggles";
-import { sortFilterAndSupplementMostRecentMonths } from "../../utils/transforms/datasets";
-import { monthNamesWithYearsFromNumbers } from "../../utils/transforms/months";
+} from "../../utils/datasets";
+import { monthNamesWithYearsFromNumbers } from "../utils/timePeriod";
 import { groupByMonth } from "../bars/utils";
 import { metricTypePropType, officeDataPropTypes } from "../utils/propTypes";
 import { METRIC_TYPES } from "../utils/constants";
@@ -87,7 +89,7 @@ const RevocationCountOverTime = ({
     (dataset) =>
       sortFilterAndSupplementMostRecentMonths(
         dataset,
-        getMonthCountFromMetricPeriodMonthsToggle(metricPeriodMonths),
+        toNumber(metricPeriodMonths),
         "value",
         0
       )

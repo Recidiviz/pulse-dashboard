@@ -23,10 +23,10 @@ import map from "lodash/fp/map";
 import sumBy from "lodash/fp/sumBy";
 import toInteger from "lodash/fp/toInteger";
 import orderBy from "lodash/fp/orderBy";
-import { calculateRate } from "../helpers/rate";
+import { calculateRate } from "../utils/rate";
 
 import { translate } from "../../utils/i18nSettings";
-import { applyStatisticallySignificantShading } from "../../utils/charts/significantStatistics";
+import { applyStatisticallySignificantShading } from "../utils/significantStatistics";
 import { COLORS } from "../../assets/scripts/constants/colors";
 import { sumCounts } from "../utils/sumCounts";
 

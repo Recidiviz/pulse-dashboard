@@ -20,7 +20,7 @@ import { Bar } from "react-chartjs-2";
 import PropTypes from "prop-types";
 
 import { translate } from "../utils/i18nSettings";
-import { standardTooltipForCountMetric } from "../utils/charts/toggles";
+import { standardTooltipForCountMetric } from "../utils/tooltips";
 import { COLORS } from "../assets/scripts/constants/colors";
 
 const RevocationCountChart = ({ chartId, data, xAxisLabel }) => (

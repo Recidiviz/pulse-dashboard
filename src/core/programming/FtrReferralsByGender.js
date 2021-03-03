@@ -38,15 +38,12 @@ import {
   filterDatasetByDistrict,
   filterDatasetByMetricPeriodMonths,
   filterDatasetByLabels,
-} from "../../utils/charts/dataFilters";
-import {
-  tooltipForCountChart,
-  tooltipForRateChart,
-} from "../../utils/charts/tooltips";
+} from "../utils/dataFilters";
+import { tooltipForCountChart, tooltipForRateChart } from "../utils/tooltips";
 import {
   genderValueToHumanReadable,
   genderValueToLabel,
-} from "../../utils/transforms/labels";
+} from "../../utils/labels";
 import { metricTypePropType } from "../utils/propTypes";
 import { METRIC_TYPES } from "../utils/constants";
 

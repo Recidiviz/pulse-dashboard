@@ -18,9 +18,9 @@ import tk from "timekeeper";
 
 import {
   sortByYearAndMonth,
-  sortByLabel,
   filterMostRecentMonths,
   sortFilterAndSupplementMostRecentMonths,
+  centerSingleMonthDatasetIfNecessary,
 } from "../datasets";
 
 const data = [
@@ -51,26 +51,6 @@ describe("test datasets", () => {
     expect(sortData.length).toEqual(sortingData.length);
     expect(sortData[0].year).toEqual(sortingData[0].year);
     expect(sortData[1].year).toEqual(sortingData[1].year);
-  });
-
-  it("sort by label", () => {
-    const dataSortLabel = [
-      { count: 3, label: "b" },
-      { count: 40, label: "a" },
-      { count: 20, label: "s" },
-      { count: 12, label: "d" },
-    ];
-
-    const dataAfterTestSortLabel = [
-      { count: 40, label: "a" },
-      { count: 3, label: "b" },
-      { count: 12, label: "d" },
-      { count: 20, label: "s" },
-    ];
-
-    const dataAfterSort = sortByLabel(dataSortLabel, "label");
-    expect(dataAfterSort).toEqual(dataAfterTestSortLabel);
-    expect(dataAfterSort.length).toBe(4);
   });
 
   it("filter most recent months", () => {
@@ -141,5 +121,51 @@ describe("test datasets", () => {
     expect(dataAfterFiltersByMethod).toEqual(
       dataFiltersSupplementMostRecentMonth
     );
+  });
+
+  describe("centerSingleMonthDatasetIfNecessary", () => {
+    it("center single month dataset if necessary", () => {
+      const dataValues = [
+        "26",
+        "49",
+        "33",
+        "41",
+        "39",
+        "23",
+        "31",
+        "46",
+        "40",
+        "94",
+        "61",
+        "43",
+      ];
+      const labels = [
+        "April '19",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December",
+        "January '20",
+        "February",
+        "March",
+      ];
+
+      centerSingleMonthDatasetIfNecessary(dataValues, labels);
+      expect(dataValues).toBe(dataValues);
+      expect(labels).toBe(labels);
+
+      const dataOneValue = ["26"];
+      const oneLabel = ["April '19"];
+      const expectedDataOneValue = [null, "26", null];
+      const expectedOneLabel = ["", "April '19", ""];
+
+      centerSingleMonthDatasetIfNecessary(dataOneValue, oneLabel);
+      expect(dataOneValue).toEqual(expectedDataOneValue);
+      expect(oneLabel).toEqual(expectedOneLabel);
+    });
   });
 });

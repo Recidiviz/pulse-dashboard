@@ -19,7 +19,7 @@ import PropTypes from "prop-types";
 import { components } from "react-select";
 
 import { formatSelectOptionValue } from "../utils";
-import { optionPropType } from "../../components/propTypes";
+import { optionPropType } from "../propTypes";
 
 const ValueContainer = ({ allOptions, summingOption, children, ...props }) => {
   const { selectProps, getValue } = props;

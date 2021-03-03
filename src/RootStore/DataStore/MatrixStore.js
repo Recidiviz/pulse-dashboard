@@ -19,7 +19,7 @@ import BaseDataStore from "./BaseDataStore";
 import {
   REPORTED_VIOLATIONS,
   VIOLATION_TYPE,
-} from "../../constants/filterTypes";
+} from "../../lantern/utils/constants";
 
 export default class MatrixStore extends BaseDataStore {
   constructor({ rootStore }) {

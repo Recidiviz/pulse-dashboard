@@ -30,15 +30,14 @@ import { configureDownloadButtons } from "../../utils/downloads/downloads";
 import {
   filterDatasetBySupervisionType,
   filterDatasetByDistrict,
-} from "../../utils/charts/dataFilters";
+} from "../utils/dataFilters";
+import { toggleLabel, updateTooltipForMetricType } from "../utils/tooltips";
+import { toNumber } from "../../utils";
 import {
-  toggleLabel,
-  getMonthCountFromMetricPeriodMonthsToggle,
-  updateTooltipForMetricType,
+  sortFilterAndSupplementMostRecentMonths,
   centerSingleMonthDatasetIfNecessary,
-} from "../../utils/charts/toggles";
-import { sortFilterAndSupplementMostRecentMonths } from "../../utils/transforms/datasets";
-import { monthNamesWithYearsFromNumbers } from "../../utils/transforms/months";
+} from "../../utils/datasets";
+import { monthNamesWithYearsFromNumbers } from "../utils/timePeriod";
 import { metricTypePropType } from "../utils/propTypes";
 import { METRIC_TYPES } from "../utils/constants";
 
@@ -66,7 +65,7 @@ const dataRatesMapper = ({
 const sortAndSupplementMostRecentMonths = (metricPeriodMonths) => (dataset) =>
   sortFilterAndSupplementMostRecentMonths(
     dataset,
-    getMonthCountFromMetricPeriodMonthsToggle(metricPeriodMonths),
+    toNumber(metricPeriodMonths),
     "value",
     0
   );

@@ -21,10 +21,7 @@ import cx from "classnames";
 import { get } from "mobx";
 
 import { useRootStore } from "../../components/StoreProvider";
-import {
-  VIOLATION_TYPE,
-  REPORTED_VIOLATIONS,
-} from "../../constants/filterTypes";
+import { VIOLATION_TYPE, REPORTED_VIOLATIONS } from "../utils/constants";
 import { COLORS } from "../../assets/scripts/constants/colors";
 
 const minRadius = 25;

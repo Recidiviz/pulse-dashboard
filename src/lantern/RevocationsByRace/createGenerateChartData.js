@@ -21,14 +21,14 @@ import reduce from "lodash/fp/reduce";
 import {
   getStatePopulations,
   getStatePopulationsLabels,
-} from "../../utils/transforms/labels";
+} from "../../utils/labels";
 import getCounts from "../utils/getCounts";
 import createPopulationMap, {
   sumCountsAcrossRiskLevels,
 } from "../utils/createPopulationMap";
 import { translate } from "../../utils/i18nSettings";
 import { COLORS_LANTERN_SET } from "../../assets/scripts/constants/colors";
-import { applyStatisticallySignificantShadingToDataset } from "../../utils/charts/significantStatistics";
+import { applyStatisticallySignificantShadingToDataset } from "../utils/significantStatistics";
 
 export const generateDatasets = (dataPoints, denominators) => {
   const raceLabelMap = translate("raceLabelMap");

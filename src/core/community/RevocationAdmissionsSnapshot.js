@@ -30,28 +30,30 @@ import toInteger from "lodash/fp/toInteger";
 
 import { COLORS } from "../../assets/scripts/constants/colors";
 import { configureDownloadButtons } from "../../utils/downloads/downloads";
-import { sortFilterAndSupplementMostRecentMonths } from "../../utils/transforms/datasets";
-import { monthNamesWithYearsFromNumbers } from "../../utils/transforms/months";
+import {
+  sortFilterAndSupplementMostRecentMonths,
+  centerSingleMonthDatasetIfNecessary,
+} from "../../utils/datasets";
+import { monthNamesWithYearsFromNumbers } from "../utils/timePeriod";
 import {
   filterDatasetByDistrict,
   filterDatasetBySupervisionType,
-} from "../../utils/charts/dataFilters";
+} from "../utils/dataFilters";
 import {
   getGoalForChart,
   getMinForGoalAndData,
   getMaxForGoalAndData,
   trendlineGoalText,
   chartAnnotationForGoal,
-} from "../../utils/charts/metricGoal";
+} from "../utils/metricGoal";
 import {
-  getMonthCountFromMetricPeriodMonthsToggle,
   updateTooltipForMetricType,
   toggleLabel,
-  canDisplayGoal,
   toggleYAxisTicksBasedOnGoal,
-  centerSingleMonthDatasetIfNecessary,
-} from "../../utils/charts/toggles";
-import { generateTrendlineDataset } from "../../utils/charts/trendline";
+  canDisplayGoal,
+} from "../utils/tooltips";
+import { toNumber } from "../../utils";
+import { generateTrendlineDataset } from "../../utils/trendline";
 import { metricTypePropType } from "../utils/propTypes";
 import { METRIC_TYPES } from "../utils/constants";
 
@@ -124,7 +126,7 @@ const RevocationAdmissionsSnapshot = ({
   }, [supervisionType, district, metricType, metricPeriodMonths, disableGoal]);
   const goal = getGoalForChart(stateCode, chartId);
   const displayGoal = canDisplayGoal(goal, toggles);
-  const months = getMonthCountFromMetricPeriodMonthsToggle(metricPeriodMonths);
+  const months = toNumber(metricPeriodMonths);
 
   /**
    * For this chart specifically, we want the denominator for rates to be the total admission

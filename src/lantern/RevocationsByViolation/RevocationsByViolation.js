@@ -23,7 +23,7 @@ import RevocationsByDimension from "../RevocationsByDimension";
 import createGenerateChartData from "./createGenerateChartData";
 import BarChartWithLabels from "../BarCharts";
 import { useRootStore } from "../../components/StoreProvider";
-import { VIOLATION_TYPE } from "../../constants/filterTypes";
+import { VIOLATION_TYPE } from "../utils/constants";
 import { COLORS } from "../../assets/scripts/constants/colors";
 
 const CHART_TITLE = "Relative frequency of violation types";

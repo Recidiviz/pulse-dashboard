@@ -29,12 +29,9 @@ import {
   filterDatasetBySupervisionType,
   filterDatasetByDistrict,
   filterDatasetByMetricPeriodMonths,
-} from "../../utils/charts/dataFilters";
-import {
-  tooltipForCountChart,
-  tooltipForRateChart,
-} from "../../utils/charts/tooltips";
-import { toInt } from "../../utils/transforms/labels";
+} from "../utils/dataFilters";
+import { tooltipForCountChart, tooltipForRateChart } from "../utils/tooltips";
+import { toInt } from "../../utils/labels";
 import { metricTypePropType } from "../utils/propTypes";
 import { METRIC_TYPES } from "../utils/constants";
 

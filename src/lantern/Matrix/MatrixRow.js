@@ -20,12 +20,9 @@ import PropTypes from "prop-types";
 import cx from "classnames";
 import { get } from "mobx";
 
-import { matrixViolationTypeToLabel } from "../../utils/transforms/labels";
+import { matrixViolationTypeToLabel } from "../../utils/labels";
 import { useRootStore } from "../../components/StoreProvider";
-import {
-  VIOLATION_TYPE,
-  REPORTED_VIOLATIONS,
-} from "../../constants/filterTypes";
+import { VIOLATION_TYPE, REPORTED_VIOLATIONS } from "../utils/constants";
 
 const MatrixRow = ({ children, violationType, sum, onClick }) => {
   const { filters } = useRootStore();

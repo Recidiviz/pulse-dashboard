@@ -28,22 +28,24 @@ import values from "lodash/fp/values";
 
 import { COLORS } from "../../assets/scripts/constants/colors";
 import { configureDownloadButtons } from "../../utils/downloads/downloads";
-import { filterDatasetByDistrict } from "../../utils/charts/dataFilters";
+import { filterDatasetByDistrict } from "../utils/dataFilters";
 import {
   getGoalForChart,
   getMaxForGoalAndDataIfGoalDisplayable,
   chartAnnotationForGoal,
-} from "../../utils/charts/metricGoal";
+} from "../utils/metricGoal";
 import {
   toggleLabel,
-  getMonthCountFromMetricPeriodMonthsToggle,
   updateTooltipForMetricType,
   canDisplayGoal,
   toggleYAxisTicksFor,
+} from "../utils/tooltips";
+import { toNumber } from "../../utils";
+import {
+  sortFilterAndSupplementMostRecentMonths,
   centerSingleMonthDatasetIfNecessary,
-} from "../../utils/charts/toggles";
-import { sortFilterAndSupplementMostRecentMonths } from "../../utils/transforms/datasets";
-import { monthNamesWithYearsFromNumbers } from "../../utils/transforms/months";
+} from "../../utils/datasets";
+import { monthNamesWithYearsFromNumbers } from "../utils/timePeriod";
 import { METRIC_TYPES } from "../utils/constants";
 import { metricTypePropType } from "../utils/propTypes";
 
@@ -77,7 +79,7 @@ const dataRatesMapper = (dataset) => {
 const sortAndSupplementMostRecentMonths = (metricPeriodMonths) => (dataset) =>
   sortFilterAndSupplementMostRecentMonths(
     dataset,
-    getMonthCountFromMetricPeriodMonthsToggle(metricPeriodMonths),
+    toNumber(metricPeriodMonths),
     "value",
     0
   );

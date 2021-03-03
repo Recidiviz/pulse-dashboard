@@ -22,7 +22,7 @@ import concat from "lodash/fp/concat";
 import mergeAllWith from "lodash/fp/mergeAllWith";
 import toInteger from "lodash/fp/toInteger";
 
-import { calculateRate } from "../helpers/rate";
+import { calculateRate } from "../utils/rate";
 import { COLORS } from "../../assets/scripts/constants/colors";
 
 const createGenerateChartData = (filteredData, violationTypes) => () => {

@@ -19,7 +19,7 @@ import PropTypes from "prop-types";
 import ReactSelect from "react-select";
 
 import styles from "./Select.styles";
-import { optionPropType } from "../components/propTypes";
+import { optionPropType } from "./propTypes";
 
 const Select = forwardRef((props, ref) => (
   <ReactSelect

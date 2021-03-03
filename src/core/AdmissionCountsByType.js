@@ -35,8 +35,7 @@ import {
   filterDatasetByDistrict,
   filterDatasetBySupervisionType,
   filterDatasetByMetricPeriodMonths,
-} from "../utils/charts/dataFilters";
-import { sortByLabel } from "../utils/transforms/datasets";
+} from "./utils/dataFilters";
 import { metricTypePropType } from "./utils/propTypes";
 import { METRIC_TYPES } from "./utils/constants";
 
@@ -46,6 +45,15 @@ const UNKNOWN_REVOCATION = "Revocations (Unknown Type)";
 const NEW_ADMISSION = "New Admissions";
 const NON_TECHNICAL = "Non-Technical Revocations";
 const TECHNICAL = "Technical Revocations";
+
+/**
+ * Sorts the data points by labels, ascending alphabetic order.
+ *  -`labelIndex`: The index in the dataPoint array that contains the label
+ *    to sort on
+ */
+export function sortByLabel(dataPoints, labelKey) {
+  return dataPoints.sort((a, b) => a[labelKey].localeCompare(b[labelKey]));
+}
 
 const AdmissionCountsByType = ({
   admissionCountsByType,

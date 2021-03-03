@@ -20,7 +20,7 @@ import { observer } from "mobx-react-lite";
 import Sticky from "react-sticky-fill";
 import { get } from "mobx";
 
-import { getTimeDescription } from "./helpers/format";
+import { getTimeDescription } from "./utils/format";
 import ToggleBarFilter from "./ToggleBar/ToggleBarFilter";
 import DistrictFilter from "./ToggleBar/DistrictFilter";
 import AdmissionTypeFilter from "./ToggleBar/AdmissionTypeFilter";
@@ -37,7 +37,7 @@ import {
   METRIC_PERIOD_MONTHS,
   SUPERVISION_LEVEL,
   SUPERVISION_TYPE,
-} from "../constants/filterTypes";
+} from "./utils/constants";
 import { useRootStore } from "../components/StoreProvider";
 
 import "./Revocations.scss";

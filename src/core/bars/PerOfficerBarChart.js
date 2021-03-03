@@ -46,13 +46,13 @@ import { COLORS } from "../../assets/scripts/constants/colors";
 import {
   filterDatasetBySupervisionType,
   filterDatasetByMetricPeriodMonths,
-} from "../../utils/charts/dataFilters";
+} from "../utils/dataFilters";
 import {
   toggleLabel,
   toggleYAxisTicksStackedRateBasicCount,
   updateTooltipForMetricType,
-} from "../../utils/charts/toggles";
-import { numberFromOfficerId } from "../../utils/transforms/labels";
+} from "../utils/tooltips";
+import { numberFromOfficerId } from "../../utils/labels";
 import { metricTypePropType } from "../utils/propTypes";
 import { METRIC_TYPES } from "../utils/constants";
 

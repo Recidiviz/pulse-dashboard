@@ -19,10 +19,7 @@ import React from "react";
 import PropTypes from "prop-types";
 
 import Chip from "./Chip";
-import {
-  raceValueToLabel,
-  genderValueToLabel,
-} from "../utils/transforms/labels";
+import { raceValueToLabel, genderValueToLabel } from "../utils/labels";
 
 const ModeSwitcher = ({ mode, setMode, buttons }) => (
   <div className="ModeSwitcher pB-20">

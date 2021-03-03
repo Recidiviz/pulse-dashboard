@@ -36,15 +36,15 @@ import { COLORS } from "../../assets/scripts/constants/colors";
 import {
   filterDatasetByDistrict,
   filterDatasetBySupervisionType,
-} from "../../utils/charts/dataFilters";
+} from "../utils/dataFilters";
 import {
-  getMonthCountFromMetricPeriodMonthsToggle,
   toggleLabel,
   toggleYAxisTicksStackedRateBasicCount,
   updateTooltipForMetricType,
-} from "../../utils/charts/toggles";
-import { sortFilterAndSupplementMostRecentMonths } from "../../utils/transforms/datasets";
-import { monthNamesWithYearsFromNumbers } from "../../utils/transforms/months";
+} from "../utils/tooltips";
+import { toNumber } from "../../utils";
+import { sortFilterAndSupplementMostRecentMonths } from "../../utils/datasets";
+import { monthNamesWithYearsFromNumbers } from "../utils/timePeriod";
 import { metricTypePropType } from "../utils/propTypes";
 import { METRIC_TYPES } from "../utils/constants";
 
@@ -95,7 +95,7 @@ const PerMonthBarChart = ({
   barColorPalette,
   dataExportLabel,
 }) => {
-  const months = getMonthCountFromMetricPeriodMonthsToggle(numMonths);
+  const months = toNumber(numMonths);
   const barKeys = map("key", bars);
   const emptyMonthDict = barKeys.reduce(
     (monthCounts, key) => ({ ...monthCounts, [key]: 0 }),

@@ -35,8 +35,8 @@ import {
   filterDatasetByDistrict,
   filterDatasetByMetricPeriodMonths,
   filterDatasetByLabels,
-} from "../../utils/charts/dataFilters";
-import { tooltipForCountChart } from "../../utils/charts/tooltips";
+} from "../utils/dataFilters";
+import { tooltipForCountChart } from "../utils/tooltips";
 import {
   addMissedRaceCounts,
   countMapper,
@@ -45,7 +45,7 @@ import {
 } from "../utils/races";
 import { metricTypePropType } from "../utils/propTypes";
 import { METRIC_TYPES } from "../utils/constants";
-import { raceValueToLabel } from "../../utils/transforms/labels";
+import { raceValueToLabel } from "../../utils/labels";
 
 const chartId = "ftrReferralsByRace";
 const colors = [

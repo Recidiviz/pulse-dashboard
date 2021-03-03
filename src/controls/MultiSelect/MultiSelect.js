@@ -24,7 +24,7 @@ import Option from "./Option";
 import Select from "../Select";
 
 import { getNewOptions } from "../utils";
-import { optionPropType } from "../../components/propTypes";
+import { optionPropType } from "../propTypes";
 
 import "./MultiSelect.scss";
 

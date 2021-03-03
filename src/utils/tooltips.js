@@ -1,5 +1,5 @@
 // Recidiviz - a data platform for criminal justice reform
-// Copyright (C) 2019 Recidiviz, Inc.
+// Copyright (C) 2020 Recidiviz, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -14,22 +14,19 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
+export function standardTooltipForCountMetric(tooltipItem, data) {
+  let label = data.datasets[tooltipItem.datasetIndex].label || "";
 
-import tk from "timekeeper";
-import { getYearFromNow } from "../years";
+  // The below logic is the default tooltip logic for ChartJS 2
+  if (label) {
+    label += ": ";
+  }
 
-describe("#getYearFromNow", () => {
-  let now;
-  beforeAll(() => {
-    now = new Date("2020-02-14T11:01:58.135Z");
-    tk.freeze(now);
-  });
+  if (tooltipItem.value) {
+    label += tooltipItem.value;
+  } else {
+    label += tooltipItem.yLabel;
+  }
 
-  it("get last year", () => {
-    expect(getYearFromNow(-1)).toEqual("2019");
-  });
-
-  it("get year before last", () => {
-    expect(getYearFromNow(-2)).toEqual("2018");
-  });
-});
+  return label;
+}

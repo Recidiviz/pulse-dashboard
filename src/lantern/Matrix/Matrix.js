@@ -45,14 +45,11 @@ import ErrorMessage from "../../components/ErrorMessage";
 import {
   matrixViolationTypeToLabel,
   violationCountLabel,
-} from "../../utils/transforms/labels";
+} from "../../utils/labels";
 import { translate } from "../../utils/i18nSettings";
 import { useContainerHeight } from "../hooks/useContainerHeight";
 import { useRootStore } from "../../components/StoreProvider";
-import {
-  VIOLATION_TYPE,
-  REPORTED_VIOLATIONS,
-} from "../../constants/filterTypes";
+import { VIOLATION_TYPE, REPORTED_VIOLATIONS } from "../utils/constants";
 import "./Matrix.scss";
 
 const TITLE =

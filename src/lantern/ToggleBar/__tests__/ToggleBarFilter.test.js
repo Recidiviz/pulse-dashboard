@@ -26,7 +26,7 @@ import {
   METRIC_PERIOD_MONTHS,
   SUPERVISION_LEVEL,
   SUPERVISION_TYPE,
-} from "../../../constants/filterTypes";
+} from "../../utils/constants";
 import { useRootStore } from "../../../components/StoreProvider";
 import { METADATA_NAMESPACE } from "../../../constants";
 import { US_MO } from "../../../RootStore/TenantStore/lanternTenants";

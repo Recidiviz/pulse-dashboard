@@ -16,27 +16,20 @@
 // =============================================================================
 
 import { COLORS } from "../../assets/scripts/constants/colors";
-import { getCurrentMonthName } from "../transforms/months";
+import { MONTH_NAMES, monthNamesWithYears } from "../../utils/months";
 
-function labelCurrentMonth(tooltipItems, labels) {
-  const tooltipItem = tooltipItems[0];
-  const { index, xLabel: label } = tooltipItem;
+const monthNamesAllWithYearsFromNumbers = function monthNamesShortWithYearsFromNumbers(
+  monthNumbers,
+  abbreviated
+) {
+  return monthNamesWithYears(monthNumbers, abbreviated, true);
+};
 
-  const onlyMonthInSet =
-    !labels[0] && !labels[labels.length - 1] && index === 1;
-  const lastMonthInSet = index === labels.length - 1;
-  const currentMonth = getCurrentMonthName();
-
-  if (
-    (lastMonthInSet || onlyMonthInSet) &&
-    label &&
-    label.startsWith(currentMonth)
-  ) {
-    return `${label} (in progress)`;
-  }
-
-  return label;
-}
+const getCurrentMonthName = function getCurrentMonthName() {
+  const now = new Date();
+  const thisMonth = now.getMonth();
+  return MONTH_NAMES[thisMonth];
+};
 
 function currentMonthBox(annotationId, chartLabels) {
   if (chartLabels.length < 2) {
@@ -81,4 +74,8 @@ function currentMonthBox(annotationId, chartLabels) {
   };
 }
 
-export { labelCurrentMonth, currentMonthBox };
+export {
+  currentMonthBox,
+  monthNamesAllWithYearsFromNumbers,
+  getCurrentMonthName,
+};

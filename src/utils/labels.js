@@ -18,7 +18,9 @@
 import lowerCase from "lodash/fp/lowerCase";
 import pipe from "lodash/fp/pipe";
 import startCase from "lodash/fp/startCase";
-import { translate } from "../i18nSettings";
+import moment from "moment";
+import { toNumber } from "./index";
+import { translate } from "./i18nSettings";
 
 function getStatePopulations() {
   return Object.keys(translate("populationChartAttributes"));
@@ -105,7 +107,29 @@ const pluralize = (count, term) => {
   return count > 1 ? `${base}s` : base;
 };
 
+function getPeriodLabelFromMetricPeriodMonthsToggle(toggledValue) {
+  const months = toNumber(toggledValue);
+
+  const startDate = new Date();
+  startDate.setMonth(startDate.getMonth() - (months - 1));
+  startDate.setDate(1);
+
+  return `${moment(startDate).format("M/D/YYYY")} to present`;
+}
+
+function getTrailingLabelFromMetricPeriodMonthsToggle(toggledValue) {
+  if (toggledValue === "1") {
+    return "Current month";
+  }
+  if (toggledValue === "3" || toggledValue === "6" || toggledValue === "12") {
+    return `Last ${toggledValue} months`;
+  }
+  return `Last ${parseInt(toggledValue, 10) / 12} years`;
+}
+
 export {
+  getPeriodLabelFromMetricPeriodMonthsToggle,
+  getTrailingLabelFromMetricPeriodMonthsToggle,
   matrixViolationTypeToLabel,
   genderValueToHumanReadable,
   raceValueToHumanReadable,

@@ -1,5 +1,5 @@
 // Recidiviz - a data platform for criminal justice reform
-// Copyright (C) 2020 Recidiviz, Inc.
+// Copyright (C) 2021 Recidiviz, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -14,13 +14,16 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
+import * as utils from "..";
 
-const fs = require("fs");
+describe("utils", () => {
+  describe("toNumber", () => {
+    it("returns an integer given a valid string value", () => {
+      expect(utils.toNumber("12")).toBe(12);
+    });
 
-export const readJsonLinesFile = (path) => {
-  return fs
-    .readFileSync(path, "utf8")
-    .trim()
-    .split("\n")
-    .map((line) => JSON.parse(line));
-};
+    it("returns the string value if it is not a number", () => {
+      expect(utils.toNumber("1b2")).toEqual("1b2");
+    });
+  });
+});

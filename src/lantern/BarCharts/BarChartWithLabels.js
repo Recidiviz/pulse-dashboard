@@ -20,9 +20,9 @@ import PropTypes from "prop-types";
 import { Bar } from "react-chartjs-2";
 import "chartjs-plugin-datalabels";
 
-import { axisCallbackForPercentage } from "../../utils/charts/axis";
-import { tooltipForFooterWithCounts } from "../../utils/charts/significantStatistics";
-import { tooltipForRateMetricWithCounts } from "../../utils/charts/toggles";
+import { axisCallbackForPercentage } from "../utils/axis";
+import { tooltipForFooterWithCounts } from "../utils/significantStatistics";
+import { tooltipForRateMetricWithCounts } from "../utils/tooltips";
 import { generateLabelsWithCustomColors } from "./helpers";
 import { COLORS } from "../../assets/scripts/constants/colors";
 

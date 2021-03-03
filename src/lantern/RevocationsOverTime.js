@@ -1,5 +1,5 @@
 // Recidiviz - a data platform for criminal justice reform
-// Copyright (C) 2020 Recidiviz, Inc.
+// Copyright (C) 2021 Recidiviz, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -30,17 +30,19 @@ import ErrorMessage from "../components/ErrorMessage";
 
 import { useContainerHeight } from "./hooks/useContainerHeight";
 import { COLORS } from "../assets/scripts/constants/colors";
-import { currentMonthBox } from "../utils/charts/currentSpan";
 import {
-  getMonthCountFromMetricPeriodMonthsToggle,
+  currentMonthBox,
+  monthNamesAllWithYearsFromNumbers,
+} from "./utils/currentSpan";
+import { toNumber } from "../utils";
+import {
+  sortFilterAndSupplementMostRecentMonths,
   centerSingleMonthDatasetIfNecessary,
-} from "../utils/charts/toggles";
-import { sortFilterAndSupplementMostRecentMonths } from "../utils/transforms/datasets";
-import { monthNamesAllWithYearsFromNumbers } from "../utils/transforms/months";
-import { generateTrendlineDataset } from "../utils/charts/trendline";
+} from "../utils/datasets";
+import { generateTrendlineDataset } from "../utils/trendline";
 import { translate } from "../utils/i18nSettings";
 import { useRootStore } from "../components/StoreProvider";
-import { METRIC_PERIOD_MONTHS } from "../constants/filterTypes";
+import { METRIC_PERIOD_MONTHS } from "./utils/constants";
 
 import RevocationsByDimensionComponent from "./RevocationsByDimension/RevocationsByDimensionComponent";
 
@@ -61,9 +63,7 @@ const RevocationsOverTime = ({ timeDescription }) => {
   const chartData = pipe(groupByMonth(["total_revocations"]), (dataset) =>
     sortFilterAndSupplementMostRecentMonths(
       dataset,
-      getMonthCountFromMetricPeriodMonthsToggle(
-        get(filters, METRIC_PERIOD_MONTHS)
-      ),
+      toNumber(get(filters, METRIC_PERIOD_MONTHS)),
       "total_revocations",
       0
     )

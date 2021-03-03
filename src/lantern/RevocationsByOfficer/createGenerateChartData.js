@@ -22,7 +22,7 @@ import map from "lodash/fp/map";
 import sumBy from "lodash/fp/sumBy";
 import toInteger from "lodash/fp/toInteger";
 import orderBy from "lodash/fp/orderBy";
-import { calculateRate } from "../helpers/rate";
+import { calculateRate } from "../utils/rate";
 
 import { translate } from "../../utils/i18nSettings";
 import { sumCounts } from "../utils/sumCounts";

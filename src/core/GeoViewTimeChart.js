@@ -32,12 +32,8 @@ import { scaleLinear } from "d3-scale";
 import { COLORS } from "../assets/scripts/constants/colors";
 import { configureDownloadButtons } from "../utils/downloads/downloads";
 import geographyObject from "../assets/static/maps/us_nd.json";
-import { colorForValue } from "../utils/charts/choropleth";
-import {
-  toHtmlFriendly,
-  toHumanReadable,
-  toTitleCase,
-} from "../utils/transforms/labels";
+import { colorForValue } from "./utils/choropleth";
+import { toHtmlFriendly, toHumanReadable, toTitleCase } from "../utils/labels";
 import { metricTypePropType } from "./utils/propTypes";
 import { METRIC_TYPES } from "./utils/constants";
 

@@ -26,12 +26,9 @@ import {
   violationCountLabel,
   matrixViolationTypeToLabel,
   pluralize,
-} from "../../utils/transforms/labels";
+} from "../../utils/labels";
 import { useRootStore } from "../../components/StoreProvider";
-import {
-  VIOLATION_TYPE,
-  REPORTED_VIOLATIONS,
-} from "../../constants/filterTypes";
+import { VIOLATION_TYPE, REPORTED_VIOLATIONS } from "../utils/constants";
 
 const ViolationFilter = () => {
   const { filtersStore, filters } = useRootStore();

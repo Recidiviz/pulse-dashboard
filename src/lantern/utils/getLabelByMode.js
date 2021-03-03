@@ -16,7 +16,7 @@
 // =============================================================================
 
 import { translate } from "../../utils/i18nSettings";
-import { genderValueToLabel } from "../../utils/transforms/labels";
+import { genderValueToLabel } from "../../utils/labels";
 
 const getLabelByMode = (mode) => {
   switch (mode) {

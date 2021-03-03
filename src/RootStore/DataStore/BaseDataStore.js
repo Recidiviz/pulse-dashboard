@@ -38,7 +38,7 @@ import {
   LEVEL_1_SUPERVISION_LOCATION,
   LEVEL_2_SUPERVISION_LOCATION,
   METRIC_PERIOD_MONTHS,
-} from "../../constants/filterTypes";
+} from "../../lantern/utils/constants";
 
 export const DEFAULT_IGNORED_DIMENSIONS = [
   LEVEL_1_SUPERVISION_LOCATION,

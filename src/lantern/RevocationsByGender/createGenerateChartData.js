@@ -19,13 +19,13 @@ import pipe from "lodash/fp/pipe";
 import reduce from "lodash/fp/reduce";
 
 import { CHART_COLORS } from "./constants";
-import { applyStatisticallySignificantShadingToDataset } from "../../utils/charts/significantStatistics";
+import { applyStatisticallySignificantShadingToDataset } from "../utils/significantStatistics";
 
 import {
   getStatePopulations,
   getStatePopulationsLabels,
   genderValueToLabel,
-} from "../../utils/transforms/labels";
+} from "../../utils/labels";
 import getCounts from "../utils/getCounts";
 import createPopulationMap, {
   sumCountsAcrossRiskLevels,
