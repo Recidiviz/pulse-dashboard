@@ -20,21 +20,20 @@ function createMethodologyFile(
   chartId,
   chartTitle,
   timeWindowDescription,
-  filters,
+  filtersText,
   methodology,
-  violation
+  violationText
 ) {
   const infoChart = methodology[chartId] || [];
   const exportDate = moment().format("M/D/YYYY");
-  const filtersText = filters;
 
   let text = `Chart: ${chartTitle}\n`;
   text += `Dates: ${timeWindowDescription}\n`;
   text += `Applied filters:\n`;
   text += `- ${filtersText}\n`;
 
-  if (violation) {
-    text += `- ${violation}\n`;
+  if (violationText) {
+    text += `- ${violationText}\n`;
   }
 
   text += "\n";

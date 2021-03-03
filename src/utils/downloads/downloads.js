@@ -23,7 +23,7 @@ import createMethodologyFile from "./createMethodologyFile";
 import downloadZipFile from "./downloadZipFile";
 import transformChartDataToCsv from "./transformChartDataToCsv";
 import downloadCanvasAsImage from "./downloadCanvasAsImage";
-import getFilters from "../../RootStore/utils/getFilters";
+import getFilterDescription from "../../RootStore/utils/getFilterDescription";
 
 // Functions for flowing through browser-specific download functionality
 // https://stackoverflow.com/questions/9847580/how-to-detect-safari-chrome-ie-firefox-and-opera-browser
@@ -115,7 +115,7 @@ export function configureDownloadButtons({
         canvas: chartBox || document.getElementById(chartId),
         filename: `${filename}.png`,
         chartTitle,
-        filters: getFilters(filters),
+        filters: getFilterDescription(filters),
         chartId,
         timeWindowDescription,
         shouldZipDownload,
@@ -131,7 +131,7 @@ export function configureDownloadButtons({
       chartId,
       chartDatasets,
       chartLabels,
-      filters: getFilters(filters),
+      filters: getFilterDescription(filters),
       convertValuesToNumbers,
       chartTitle,
       timeWindowDescription,
@@ -150,7 +150,7 @@ export function configureDownloadButtons({
       downloadHtmlElementAsImage({
         chartId,
         chartTitle,
-        filters: getFilters(filters),
+        filters: getFilterDescription(filters),
         timeWindowDescription,
         shouldZipDownload,
       });
@@ -174,8 +174,8 @@ export function downloadHtmlElementAsImage({
       canvas,
       filename: `${chartId}-${getTimeStamp()}.png`,
       chartTitle,
-      filters: filters.filtersString,
-      violation: filters.violationString,
+      filters: filters.filtersDescription,
+      violation: filters.violationTypeDescription,
       chartId,
       timeWindowDescription,
       shouldZipDownload,
@@ -198,8 +198,8 @@ export function downloadChartAsImage({
     canvas: document.getElementById(chartId),
     filename: `${filename}.png`,
     chartTitle,
-    filters: filters.filtersString,
-    violation: filters.violationString,
+    filters: filters.filtersDescription,
+    violation: filters.violationTypeDescription,
     chartId,
     timeWindowDescription,
     shouldZipDownload,
@@ -225,8 +225,8 @@ export function downloadChartAsData({
     chartDatasets,
     chartLabels,
     dataExportLabel,
-    filters: filters.filtersString,
-    violation: filters.violationString,
+    filters: filters.filtersDescription,
+    violation: filters.violationTypeDescription,
     chartTitle,
     timeWindowDescription,
     shouldZipDownload,

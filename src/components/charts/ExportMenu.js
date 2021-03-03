@@ -76,7 +76,7 @@ const ExportMenu = ({
                 downloadChartAsImage({
                   chartId,
                   chartTitle: metricTitle,
-                  filters: filtersStore.stringsForDownload,
+                  filters: filtersStore.filtersDescriptions,
                   timeWindowDescription,
                   shouldZipDownload: true,
                   methodology,
@@ -93,7 +93,7 @@ const ExportMenu = ({
                 downloadHtmlElementAsImage({
                   chartId,
                   chartTitle: metricTitle,
-                  filters: filtersStore.stringsForDownload,
+                  filters: filtersStore.filtersDescriptions,
                   timeWindowDescription,
                   shouldZipDownload: true,
                   methodology,
@@ -112,7 +112,7 @@ const ExportMenu = ({
                 chartDatasets: datasets,
                 chartLabels: labels,
                 dataExportLabel,
-                filters: filtersStore.stringsForDownload,
+                filters: filtersStore.filtersDescriptions,
                 timeWindowDescription,
                 shouldZipDownload: true,
                 fixLabelsInColumns,

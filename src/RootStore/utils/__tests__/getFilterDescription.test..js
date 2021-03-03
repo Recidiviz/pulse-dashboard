@@ -15,9 +15,9 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import getFilters from "../getFilters";
+import getFilterDescription from "../getFilterDescription";
 
-describe("getFilters tests", () => {
+describe("getFilterDescription tests", () => {
   it("outputs all filters with value 'All'", () => {
     const given = {
       metricPeriodMonths: "12",
@@ -30,7 +30,7 @@ describe("getFilters tests", () => {
     const expected =
       "1 year, All districts, All case types, All supervision types, All supervision levels";
 
-    expect(getFilters(given)).toBe(expected);
+    expect(getFilterDescription(given)).toBe(expected);
   });
 
   it("outputs all filters with custom values", () => {
@@ -45,12 +45,12 @@ describe("getFilters tests", () => {
     const expected =
       "3 years, District: SLCRC, Case type: Sex Offence, Supervision type: Probation, Supervision level: Enhanced Supervision";
 
-    expect(getFilters(given)).toBe(expected);
-    expect(getFilters({})).toBe("");
-    expect(getFilters({ metricPeriodMonths: "1" })).toBe("1 month");
-    expect(getFilters({ metricPeriodMonths: "3" })).toBe("3 months");
-    expect(getFilters({ metricPeriodMonths: "6" })).toBe("6 months");
-    expect(getFilters({ metricPeriodMonths: "any" })).toBe("1 month");
+    expect(getFilterDescription(given)).toBe(expected);
+    expect(getFilterDescription({})).toBe("");
+    expect(getFilterDescription({ metricPeriodMonths: "1" })).toBe("1 month");
+    expect(getFilterDescription({ metricPeriodMonths: "3" })).toBe("3 months");
+    expect(getFilterDescription({ metricPeriodMonths: "6" })).toBe("6 months");
+    expect(getFilterDescription({ metricPeriodMonths: "any" })).toBe("1 month");
   });
 
   it("outputs all expect supervision type", () => {
@@ -62,10 +62,10 @@ describe("getFilters tests", () => {
 
     const expected = "1 year, All districts, All case types";
 
-    expect(getFilters(given)).toBe(expected);
+    expect(getFilterDescription(given)).toBe(expected);
   });
 
-  fit("outputs all expected admission type", () => {
+  it("outputs all expected admission type", () => {
     const given = {
       metricPeriodMonths: "12",
       admissionType: [
@@ -79,6 +79,6 @@ describe("getFilters tests", () => {
     const expected =
       "1 year, Admission type: SCI < 6 months, SCI 6 months, SCI 9 months, SCI 12 months";
 
-    expect(getFilters(given)).toBe(expected);
+    expect(getFilterDescription(given)).toBe(expected);
   });
 });
