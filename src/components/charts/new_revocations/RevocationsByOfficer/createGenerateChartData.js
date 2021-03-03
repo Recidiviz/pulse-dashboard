@@ -63,7 +63,7 @@ const generatePercentChartData = (filteredData, mode) => {
   const datasets = [
     {
       label: translate("percentOfPopulationRevoked"),
-      backgroundColor: COLORS["lantern-orange"],
+      backgroundColor: () => COLORS["lantern-orange"],
       data: dataPoints,
     },
   ];
