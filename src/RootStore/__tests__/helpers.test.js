@@ -154,17 +154,17 @@ describe("DataStore helpers", () => {
           chargeCategory: "All",
           violationType: "All",
           metricPeriodMonths: "12",
-          district: "01",
+          admissionType: "01",
         };
 
         dimensionManifest = {
-          district: ["all", "02"],
+          admissionType: ["all", "02"],
           chargeCategory: ["all", "domestic_violence", "general"],
           violationType: ["all", "absconded", "escaped", "felony"],
           metricPeriodMonths: ["1", "12", "3", "36", "6"],
         };
 
-        ignoredSubsetDimensions = ["district"];
+        ignoredSubsetDimensions = ["admissionType"];
         expect(
           dimensionManifestIncludesFilterValues({
             filters,
