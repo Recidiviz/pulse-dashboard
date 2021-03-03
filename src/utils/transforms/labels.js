@@ -108,6 +108,7 @@ const pluralize = (count, term) => {
 };
 
 const formatOfficerLabel = (label) => {
+  if (!label) return "";
   const groups = label.split(" - ");
   return `${groups[0]} - ${toTitleCase(groups[1])}`;
 };
