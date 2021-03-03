@@ -9,7 +9,7 @@ import {
   VIOLATION_TYPE,
   LEVEL_1_SUPERVISION_LOCATION,
   LEVEL_2_SUPERVISION_LOCATION,
-} from "../../../../constants/filterTypes";
+} from "../../../constants/filterTypes";
 
 export default {
   TEST_TENANT: {

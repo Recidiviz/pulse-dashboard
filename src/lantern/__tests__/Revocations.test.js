@@ -33,7 +33,7 @@ import { setTranslateLocale } from "../../utils/i18nSettings";
 
 import { US_MO } from "../../RootStore/TenantStore/lanternTenants";
 import mockWithTestId from "../../../__helpers__/mockWithTestId";
-import filterOptionsMap from "../../core/tenants/constants/filterOptions";
+import filterOptionsMap from "../../RootStore/TenantStore/filterOptions";
 import {
   ADMISSION_TYPE,
   CHARGE_CATEGORY,
@@ -51,9 +51,8 @@ jest.mock("../RevocationsOverTime");
 jest.mock("../Matrix");
 jest.mock("../RevocationCharts");
 jest.mock("../CaseTable/CaseTable");
-jest.mock("../../views/tenants/constants/filterOptions");
-jest.mock("../../tenants");
-jest.mock("../../StoreProvider");
+jest.mock("../../RootStore/TenantStore/filterOptions");
+jest.mock("../../components/StoreProvider");
 
 describe("Revocations component tests", () => {
   const metadataField = `${METADATA_NAMESPACE}app_metadata`;

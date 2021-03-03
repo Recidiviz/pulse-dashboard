@@ -19,7 +19,7 @@ import { renderHook } from "@testing-library/react-hooks";
 import useIntercom from "../useIntercom";
 import { useRootStore } from "../../components/StoreProvider";
 
-jest.mock("../../StoreProvider");
+jest.mock("../../components/StoreProvider");
 
 describe("useIntercom hook tests", () => {
   const mockName = "some user name";

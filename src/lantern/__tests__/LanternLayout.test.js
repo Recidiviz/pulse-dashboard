@@ -10,10 +10,10 @@ import { US_MO } from "../../RootStore/TenantStore/lanternTenants";
 import { PageProvider } from "../../contexts/PageContext";
 
 jest.mock("react-router-dom");
-jest.mock("../../../hooks/useIntercom");
-jest.mock("../../../hooks/usePageLayout");
-jest.mock("../../topbar/TopBarUserMenuForAuthenticatedUser");
-jest.mock("../../../StoreProvider");
+jest.mock("../../hooks/useIntercom");
+jest.mock("../../hooks/usePageLayout");
+jest.mock("../../components/TopBar/TopBarUserMenuForAuthenticatedUser");
+jest.mock("../../components/StoreProvider");
 
 describe("LanternLayout tests", () => {
   TopBarUserMenuForAuthenticatedUser.mockReturnValue(null);

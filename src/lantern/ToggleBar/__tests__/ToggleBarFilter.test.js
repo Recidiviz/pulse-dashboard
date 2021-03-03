@@ -30,7 +30,7 @@ import {
 import { useRootStore } from "../../../components/StoreProvider";
 import { METADATA_NAMESPACE } from "../../../constants";
 import { US_MO } from "../../../RootStore/TenantStore/lanternTenants";
-import filterOptions from "../../../core/tenants/constants/filterOptions";
+import filterOptions from "../../../RootStore/TenantStore/filterOptions";
 
 jest.mock("../../../controls/Select", () => ({
   __esModule: true,
@@ -40,7 +40,7 @@ jest.mock("../FilterField", () => ({
   __esModule: true,
   default: jest.fn(),
 }));
-jest.mock("../../../StoreProvider");
+jest.mock("../../../components/StoreProvider");
 
 describe("ToggleBarFilter tests", () => {
   const metadataField = `${METADATA_NAMESPACE}app_metadata`;

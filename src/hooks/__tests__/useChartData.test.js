@@ -24,7 +24,7 @@ import {
 import { useRootStore } from "../../components/StoreProvider";
 
 jest.mock("../../api/metrics/metricsClient");
-jest.mock("../../StoreProvider");
+jest.mock("../../components/StoreProvider");
 
 const mockUrl = "us_nd/community/goals";
 const mockFile = "admissions_by_type_by_month";

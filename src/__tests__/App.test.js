@@ -37,15 +37,15 @@ import VerificationNeeded from "../components/VerificationNeeded";
 jest.mock("../utils/initIntercomSettings");
 jest.mock("../utils/initFontAwesome");
 jest.mock("../utils/i18nSettings");
-jest.mock("../components/layouts/LanternLayout");
-jest.mock("../components/layouts/CoreLayout");
+jest.mock("../lantern/LanternLayout");
 jest.mock("../lantern/Revocations");
-jest.mock("../views/tenants/us_nd/community/Goals");
-jest.mock("../views/NotFound");
+jest.mock("../core/CoreLayout");
+jest.mock("../core/community/Goals");
+jest.mock("../components/NotFound");
 jest.mock("../components/Loading");
-jest.mock("../StoreProvider");
+jest.mock("../components/StoreProvider");
 jest.mock("../components/ErrorMessage");
-jest.mock("../views/VerificationNeeded");
+jest.mock("../components/VerificationNeeded");
 
 describe("App tests", () => {
   const metadataField = `${METADATA_NAMESPACE}app_metadata`;

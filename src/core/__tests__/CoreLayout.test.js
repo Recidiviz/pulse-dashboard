@@ -15,8 +15,8 @@ jest.mock("react-router-dom", () => ({
   Link: jest.fn().mockReturnValue(null),
   NavLink: jest.fn().mockReturnValue(null),
 }));
-jest.mock("../../topbar/TopBarUserMenuForAuthenticatedUser");
-jest.mock("../../../hooks/useSideBar");
+jest.mock("../../components/TopBar/TopBarUserMenuForAuthenticatedUser");
+jest.mock("../../hooks/useSideBar");
 
 describe("CoreLayout tests", () => {
   TopBarUserMenuForAuthenticatedUser.mockReturnValue(null);
