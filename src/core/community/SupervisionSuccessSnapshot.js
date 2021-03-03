@@ -28,7 +28,7 @@ import toInteger from "lodash/fp/toInteger";
 import values from "lodash/fp/values";
 
 import { COLORS } from "../../assets/scripts/constants/colors";
-import { configureDownloadButtons } from "../../utils/downloads/downloads";
+import { configureDownloadButtons } from "../utils/configureDownloadButtons";
 import {
   sortFilterAndSupplementMostRecentMonths,
   centerSingleMonthDatasetIfNecessary,

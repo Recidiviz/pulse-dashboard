@@ -32,7 +32,7 @@ import {
   COLORS,
   COLORS_FIVE_VALUES,
 } from "../../assets/scripts/constants/colors";
-import { configureDownloadButtons } from "../../utils/downloads/downloads";
+import { configureDownloadButtons } from "../utils/configureDownloadButtons";
 import {
   filterDatasetBySupervisionType,
   filterDatasetByDistrict,

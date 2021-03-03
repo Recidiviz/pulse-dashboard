@@ -14,22 +14,93 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-
 import downloadjs from "downloadjs";
 
 import getTimeStamp from "./getTimeStamp";
 import configureFilename from "./configureFileName";
+import downloadCanvasAsImage from "./downloadCanvasAsImage";
 import createMethodologyFile from "./createMethodologyFile";
 import downloadZipFile from "./downloadZipFile";
 import transformChartDataToCsv from "./transformChartDataToCsv";
-import downloadCanvasAsImage from "./downloadCanvasAsImage";
 
 // Functions for flowing through browser-specific download functionality
 // https://stackoverflow.com/questions/9847580/how-to-detect-safari-chrome-ie-firefox-and-opera-browser
 const isIE = /* @cc_on!@ */ false || !!document.documentMode;
 const isEdge = !isIE && !!window.StyleMedia;
 
-function configureDataDownloadButton({
+export function downloadHtmlElementAsImage({
+  chartId,
+  chartTitle,
+  filters,
+  timeWindowDescription,
+  shouldZipDownload,
+  methodology,
+}) {
+  const element = document.getElementById(chartId);
+
+  window.html2canvas(element, {}).then((canvas) => {
+    downloadCanvasAsImage({
+      canvas,
+      filename: `${chartId}-${getTimeStamp()}.png`,
+      chartTitle,
+      filters,
+      chartId,
+      timeWindowDescription,
+      shouldZipDownload,
+      methodology,
+    });
+  });
+}
+
+export function downloadChartAsImage({
+  chartId,
+  chartTitle,
+  filters,
+  timeWindowDescription,
+  shouldZipDownload,
+  methodology,
+}) {
+  const filename = configureFilename(chartId, filters, shouldZipDownload);
+  downloadCanvasAsImage({
+    canvas: document.getElementById(chartId),
+    filename: `${filename}.png`,
+    chartTitle,
+    filters,
+    chartId,
+    timeWindowDescription,
+    shouldZipDownload,
+    methodology,
+  });
+}
+
+export function downloadChartAsData({
+  chartId,
+  chartTitle,
+  chartDatasets,
+  chartLabels,
+  dataExportLabel,
+  filters,
+  timeWindowDescription,
+  shouldZipDownload,
+  fixLabelsInColumns = false,
+  methodology,
+}) {
+  const downloadChartData = configureDataDownloadButton({
+    chartId,
+    chartDatasets,
+    chartLabels,
+    dataExportLabel,
+    filters,
+    chartTitle,
+    timeWindowDescription,
+    shouldZipDownload,
+    fixLabelsInColumns,
+    methodology,
+  });
+  downloadChartData();
+}
+
+export function configureDataDownloadButton({
   chartId,
   chartDatasets,
   chartLabels,
@@ -83,144 +154,4 @@ function configureDataDownloadButton({
       }
     });
   };
-}
-
-export function downloadHtmlElementAsImage({
-  chartId,
-  chartTitle,
-  filters,
-  timeWindowDescription,
-  shouldZipDownload,
-  methodology,
-}) {
-  const element = document.getElementById(chartId);
-
-  window.html2canvas(element, {}).then((canvas) => {
-    downloadCanvasAsImage({
-      canvas,
-      filename: `${chartId}-${getTimeStamp()}.png`,
-      chartTitle,
-      filters,
-      chartId,
-      timeWindowDescription,
-      shouldZipDownload,
-      methodology,
-    });
-  });
-}
-
-export function configureDownloadButtons({
-  chartId,
-  chartTitle,
-  chartDatasets,
-  chartLabels,
-  chartBox,
-  filters,
-  convertValuesToNumbers,
-  timeWindowDescription,
-  shouldZipDownload,
-  fixLabelsInColumns = false,
-  dataExportLabel = "Month",
-  methodology,
-}) {
-  const filename = configureFilename(chartId, filters, shouldZipDownload);
-  const downloadChartAsImageButton = document.getElementById(
-    `downloadChartAsImage-${chartId}`
-  );
-
-  if (downloadChartAsImageButton) {
-    downloadChartAsImageButton.onclick = function downloadChartImage() {
-      downloadCanvasAsImage({
-        canvas: chartBox || document.getElementById(chartId),
-        filename: `${filename}.png`,
-        chartTitle,
-        filters,
-        chartId,
-        timeWindowDescription,
-        shouldZipDownload,
-      });
-    };
-  }
-
-  const downloadChartDataButton = document.getElementById(
-    `downloadChartData-${chartId}`
-  );
-  if (downloadChartDataButton) {
-    downloadChartDataButton.onclick = configureDataDownloadButton({
-      chartId,
-      chartDatasets,
-      chartLabels,
-      filters,
-      convertValuesToNumbers,
-      chartTitle,
-      timeWindowDescription,
-      shouldZipDownload,
-      dataExportLabel,
-      fixLabelsInColumns,
-      methodology,
-    });
-  }
-
-  const downloadMapAsImageButton = document.getElementById(
-    `downloadHtmlElementAsImage-${chartId}`
-  );
-  if (downloadMapAsImageButton) {
-    downloadMapAsImageButton.onclick = function downloadMapImage() {
-      downloadHtmlElementAsImage({
-        chartId,
-        chartTitle,
-        filters,
-        timeWindowDescription,
-        shouldZipDownload,
-      });
-    };
-  }
-}
-
-export function downloadChartAsImage({
-  chartId,
-  chartTitle,
-  filters,
-  timeWindowDescription,
-  shouldZipDownload,
-  methodology,
-}) {
-  const filename = configureFilename(chartId, filters, shouldZipDownload);
-  downloadCanvasAsImage({
-    canvas: document.getElementById(chartId),
-    filename: `${filename}.png`,
-    chartTitle,
-    filters,
-    chartId,
-    timeWindowDescription,
-    shouldZipDownload,
-    methodology,
-  });
-}
-
-export function downloadChartAsData({
-  chartId,
-  chartTitle,
-  chartDatasets,
-  chartLabels,
-  dataExportLabel,
-  filters,
-  timeWindowDescription,
-  shouldZipDownload,
-  fixLabelsInColumns = false,
-  methodology,
-}) {
-  const downloadChartData = configureDataDownloadButton({
-    chartId,
-    chartDatasets,
-    chartLabels,
-    dataExportLabel,
-    filters,
-    chartTitle,
-    timeWindowDescription,
-    shouldZipDownload,
-    fixLabelsInColumns,
-    methodology,
-  });
-  downloadChartData();
 }

@@ -26,7 +26,7 @@ import toInteger from "lodash/fp/toInteger";
 import { groupByMonth } from "../bars/utils";
 
 import { COLORS } from "../../assets/scripts/constants/colors";
-import { configureDownloadButtons } from "../../utils/downloads/downloads";
+import { configureDownloadButtons } from "../utils/configureDownloadButtons";
 import {
   filterDatasetBySupervisionType,
   filterDatasetByDistrict,

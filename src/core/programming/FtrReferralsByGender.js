@@ -32,7 +32,7 @@ import {
   COLORS_STACKED_TWO_VALUES_ALT,
   COLORS,
 } from "../../assets/scripts/constants/colors";
-import { configureDownloadButtons } from "../../utils/downloads/downloads";
+import { configureDownloadButtons } from "../utils/configureDownloadButtons";
 import {
   filterDatasetBySupervisionType,
   filterDatasetByDistrict,

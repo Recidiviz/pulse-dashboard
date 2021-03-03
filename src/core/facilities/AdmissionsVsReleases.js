@@ -27,7 +27,7 @@ import values from "lodash/fp/values";
 
 import { toInteger } from "lodash";
 import { COLORS, COLORS_GOOD_BAD } from "../../assets/scripts/constants/colors";
-import { configureDownloadButtons } from "../../utils/downloads/downloads";
+import { configureDownloadButtons } from "../utils/configureDownloadButtons";
 import { filterDatasetByDistrict } from "../utils/dataFilters";
 import { toggleLabel, updateTooltipForMetricType } from "../utils/tooltips";
 import { toNumber } from "../../utils";
