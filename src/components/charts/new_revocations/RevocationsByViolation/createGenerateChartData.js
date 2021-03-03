@@ -36,7 +36,7 @@ const createGenerateChartData = (filteredData, violationTypes) => () => {
 
   const totalViolationCount = toInteger(violationToCount[violationCountKey]);
   const numerators = map(
-    (type) => violationToCount[type],
+    (type) => parseInt(violationToCount[type]),
     allViolationTypeKeys
   );
   const denominators = map(() => totalViolationCount, allViolationTypeKeys);

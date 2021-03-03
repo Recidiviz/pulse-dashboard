@@ -149,7 +149,7 @@ const ExportMenu = ({
             {additionalInfo.length > 0 ? (
               <ul>
                 {additionalInfo.map((info) => (
-                  <div key={info.header}>
+                  <div key={info.id}>
                     <h6>{info.header}</h6>
                     <p>{info.body}</p>
                   </div>
