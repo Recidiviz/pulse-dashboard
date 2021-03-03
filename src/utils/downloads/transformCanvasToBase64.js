@@ -14,8 +14,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-import getFilters from "../../utils/downloads/getFilters";
-import getViolation from "../../utils/downloads/getViolation";
+import getFilters from "./getFilters";
+import getViolation from "./getViolation";
 
 function transformCanvasToBase64(canvas, chartTitle, filters) {
   const topPadding = 120;

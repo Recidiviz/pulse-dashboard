@@ -17,46 +17,15 @@
 import * as Sentry from "@sentry/react";
 import JSZip from "jszip";
 import downloadjs from "downloadjs";
-import JsFileDownloader from "js-file-downloader";
-import exportDataClient from "./exportDataClient";
+import exportZipDataOnMobileDevices from "../../api/exportData/exportZipDataOnMobileDevices";
 import transformCanvasToBase64 from "./transformCanvasToBase64";
-import createMethodologyFile from "../../utils/downloads/createMethodologyFile";
-
+import createMethodologyFile from "./createMethodologyFile";
 // Functions for flowing through browser-specific download functionality
 // https://stackoverflow.com/questions/9847580/how-to-detect-safari-chrome-ie-firefox-and-opera-browser
 const isIE = /* @cc_on!@ */ false || !!document.documentMode;
 const isEdge = !isIE && !!window.StyleMedia;
-const isMobileSafari =
-  (navigator.userAgent.includes("iPhone") ||
-    navigator.userAgent.includes("iPad")) &&
-  !navigator.userAgent.includes("CriOS");
 
-function downloadMsBlob(csv, exportName) {
-  const blob = new Blob([csv], {
-    type: "text/csv;charset=utf-8;",
-  });
-  navigator.msSaveBlob(blob, exportName);
-}
-
-function downloadEncodedCSV(csv, filename) {
-  const encodedCsv = encodeURIComponent(csv);
-  const dataStr = `data:text/csv;charset=utf-8,${encodedCsv}`;
-  const downloader = new JsFileDownloader({
-    autoStart: false,
-    filename,
-    url: dataStr,
-  });
-  downloader.start();
-}
-
-function downloadImage(filename, imageData) {
-  const jsFileDownload = new JsFileDownloader({
-    autoStart: false,
-    filename,
-    url: imageData,
-  });
-  jsFileDownload.start();
-}
+const isMobile = navigator.userAgent.includes("Mobile");
 
 async function downloadZipFile({ files, filename, getTokenSilently }) {
   const zip = new JSZip();
@@ -71,27 +40,15 @@ async function downloadZipFile({ files, filename, getTokenSilently }) {
     }
   });
 
-  // iOS mobile Safari needs forceDesktopMode=true to correctly
-  // download the file.
-  if (isMobileSafari) {
-    zip.generateAsync({ type: "base64" }).then((content) => {
-      const jsFileDownload = new JsFileDownloader({
-        forceDesktopMode: true,
-        autoStart: false,
-        filename,
-        url: `data:application/zip;base64,${content}`,
-      });
-      jsFileDownload.start();
-    });
-  } else if (isIE || isEdge) {
-    zip.generateAsync({ type: "blob" }).then(function (content) {
-      downloadjs(content, filename);
-    });
-  } else {
+  if (isMobile) {
     const content = await zip.generateAsync({ type: "blob" });
     const formData = new FormData();
     formData.append("zip", content, filename);
-    await exportDataClient(formData, filename, getTokenSilently);
+    await exportZipDataOnMobileDevices(formData, filename, getTokenSilently);
+  } else {
+    zip.generateAsync({ type: "blob" }).then(function (content) {
+      downloadjs(content, filename);
+    });
   }
 }
 
@@ -130,10 +87,8 @@ export function downloadCanvasAsImage({
         filename: "export_image.zip",
         getTokenSilently,
       });
-    } else if (isIE || isEdge) {
-      downloadjs(imageData, filename, "image/png;base64");
     } else {
-      downloadImage(filename, imageData);
+      downloadjs(imageData, filename, "image/png;base64");
     }
   } catch (error) {
     console.error(error);
@@ -172,9 +127,14 @@ export function downloadData({
         getTokenSilently,
       });
     } else if (isIE || isEdge) {
-      downloadMsBlob(csv, filename);
+      const blob = new Blob([csv], {
+        type: "text/csv;charset=utf-8;",
+      });
+      navigator.msSaveBlob(blob, filename);
     } else {
-      downloadEncodedCSV(csv, filename);
+      const encodedCsv = encodeURIComponent(csv);
+      const dataStr = `data:text/csv;charset=utf-8,${encodedCsv}`;
+      downloadjs(dataStr, filename, "text/csv");
     }
   } catch (error) {
     console.error(error);

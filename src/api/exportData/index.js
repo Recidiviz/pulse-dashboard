@@ -1,3 +1,6 @@
-import { downloadData, downloadCanvasAsImage } from "./downloadData";
+import {
+  downloadData,
+  downloadCanvasAsImage,
+} from "../../utils/downloads/downloadData";
 
 export { downloadData, downloadCanvasAsImage };

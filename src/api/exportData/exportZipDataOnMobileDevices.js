@@ -17,7 +17,13 @@
 import JsFileDownloader from "js-file-downloader";
 import * as Sentry from "@sentry/react";
 
-export default async function exportDataClient(
+export const isMobileSafari =
+  (navigator.userAgent.includes("iPhone") ||
+    navigator.userAgent.includes("iPad")) &&
+  !navigator.userAgent.includes("CriOS") &&
+  !navigator.userAgent.includes("FxiOS");
+
+export default async function exportZipDataOnMobileDevices(
   formData,
   filename,
   getTokenSilently
@@ -33,19 +39,18 @@ export default async function exportDataClient(
   })
     .then((response) => response.text())
     .then((url) => {
-      // This file downloader should not be used for mobile Safari.
-      // The download for mobile Safari is handled in downloadZipFile.
       const jsFileDownload = new JsFileDownloader({
+        forceDesktopMode: isMobileSafari,
         autoStart: false,
         filename,
         url,
       });
-      jsFileDownload.start();
+      return jsFileDownload.start();
     })
     .catch((error) => {
       console.error(error);
       Sentry.captureException(error, (scope) => {
-        scope.setContext("exportDataClient", {
+        scope.setContext("exportDataOnMobileDevices", {
           filename,
         });
       });
