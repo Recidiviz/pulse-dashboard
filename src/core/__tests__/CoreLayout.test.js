@@ -4,7 +4,7 @@ import { useLocation, matchPath } from "react-router-dom";
 
 import CoreLayout from "../CoreLayout";
 import TopBarUserMenuForAuthenticatedUser from "../../components/TopBar/TopBarUserMenuForAuthenticatedUser";
-import useSideBar from "../../hooks/useSideBar";
+import useSideBar from "../hooks/useSideBar";
 
 import mockWithTestId from "../../../__helpers__/mockWithTestId";
 import { PageProvider } from "../../contexts/PageContext";
@@ -16,7 +16,7 @@ jest.mock("react-router-dom", () => ({
   NavLink: jest.fn().mockReturnValue(null),
 }));
 jest.mock("../../components/TopBar/TopBarUserMenuForAuthenticatedUser");
-jest.mock("../../hooks/useSideBar");
+jest.mock("../hooks/useSideBar");
 
 describe("CoreLayout tests", () => {
   TopBarUserMenuForAuthenticatedUser.mockReturnValue(null);

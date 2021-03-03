@@ -23,8 +23,8 @@ import {
   callMetricsApi,
   awaitingResults,
   parseResponsesByFileFormat,
-} from "../api/metrics";
-import { useRootStore } from "../components/StoreProvider";
+} from "../../api/metrics";
+import { useRootStore } from "../../components/StoreProvider";
 
 const queues = {};
 

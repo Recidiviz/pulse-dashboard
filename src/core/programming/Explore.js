@@ -36,7 +36,7 @@ import {
   defaultMetricType,
   defaultSupervisionType,
 } from "../toggles/options";
-import useChartData from "../../hooks/useChartData";
+import useChartData from "../hooks/useChartData";
 import { availableDistricts, importantNotes } from "./constants";
 
 const ProgrammingExplore = () => {

@@ -47,7 +47,7 @@ import {
   violationCountLabel,
 } from "../../utils/transforms/labels";
 import { translate } from "../../utils/i18nSettings";
-import { useContainerHeight } from "../../hooks/useContainerHeight";
+import { useContainerHeight } from "../hooks/useContainerHeight";
 import { useRootStore } from "../../components/StoreProvider";
 import {
   VIOLATION_TYPE,

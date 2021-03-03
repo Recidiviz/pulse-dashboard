@@ -28,7 +28,7 @@ import { groupByMonth } from "../core/bars/utils";
 import LoadingChart from "./LoadingChart";
 import ErrorMessage from "../components/ErrorMessage";
 
-import { useContainerHeight } from "../hooks/useContainerHeight";
+import { useContainerHeight } from "./hooks/useContainerHeight";
 import { COLORS } from "../assets/scripts/constants/colors";
 import { currentMonthBox } from "../utils/charts/currentSpan";
 import {

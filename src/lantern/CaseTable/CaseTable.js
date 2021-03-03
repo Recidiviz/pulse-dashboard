@@ -25,7 +25,7 @@ import LoadingChart from "../LoadingChart";
 import ErrorMessage from "../../components/ErrorMessage";
 import Sortable from "./Sortable";
 import Pagination from "./Pagination";
-import { useContainerHeight } from "../../hooks/useContainerHeight";
+import { useContainerHeight } from "../hooks/useContainerHeight";
 import { translate } from "../../utils/i18nSettings";
 import { nullSafeCell, formatData, formatExportData } from "./utils/helpers";
 import { useRootStore } from "../../components/StoreProvider";

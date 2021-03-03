@@ -36,7 +36,7 @@ import {
   defaultMetricPeriod,
   defaultMetricType,
 } from "../toggles/options";
-import useChartData from "../../hooks/useChartData";
+import useChartData from "../hooks/useChartData";
 import { getYearFromNow } from "../../utils/transforms/years";
 import { availableDistricts, importantNotes } from "./constants";
 

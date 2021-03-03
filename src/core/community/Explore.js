@@ -42,7 +42,7 @@ import {
   defaultMetricType,
   defaultSupervisionType,
 } from "../toggles/options";
-import useChartData from "../../hooks/useChartData";
+import useChartData from "../hooks/useChartData";
 import { isOfficerIdsHidden } from "../bars/utils";
 import { METRIC_TYPES } from "../utils/constants";
 import { availableDistricts, importantNotes } from "./constants";

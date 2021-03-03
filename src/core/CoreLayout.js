@@ -30,7 +30,7 @@ import TopBarHamburgerMenu from "../components/TopBar/TopBarHamburgerMenu";
 import TopBarTitle from "../components/TopBar/TopBarTitle";
 import TopBarUserMenuForAuthenticatedUser from "../components/TopBar/TopBarUserMenuForAuthenticatedUser";
 import Footer from "../components/Footer";
-import useSideBar from "../hooks/useSideBar";
+import useSideBar from "./hooks/useSideBar";
 
 const CoreLayout = ({ children }) => {
   const { isSideBarCollapsed, toggleSideBar } = useSideBar();

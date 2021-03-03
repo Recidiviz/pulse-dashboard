@@ -27,7 +27,7 @@ import LsirScoreChangeSnapshot from "./LsirScoreChangeSnapshot";
 import RevocationAdmissionsSnapshot from "./RevocationAdmissionsSnapshot";
 import RevocationCountOverTime from "./RevocationCountOverTime";
 import SupervisionSuccessSnapshot from "./SupervisionSuccessSnapshot";
-import useChartData from "../../hooks/useChartData";
+import useChartData from "../hooks/useChartData";
 import { metrics } from "./constants";
 
 const CommunityGoals = () => {

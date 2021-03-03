@@ -1,8 +1,8 @@
 import React from "react";
 import { render } from "@testing-library/react";
 import LanternLayout from "../LanternLayout";
-import useIntercom from "../../hooks/useIntercom";
-import usePageLayout from "../../hooks/usePageLayout";
+import useIntercom from "../hooks/useIntercom";
+import usePageLayout from "../hooks/usePageLayout";
 import TopBarUserMenuForAuthenticatedUser from "../../components/TopBar/TopBarUserMenuForAuthenticatedUser";
 import mockWithTestId from "../../../__helpers__/mockWithTestId";
 import StoreProvider, { useRootStore } from "../../components/StoreProvider";
@@ -10,8 +10,8 @@ import { US_MO } from "../../RootStore/TenantStore/lanternTenants";
 import { PageProvider } from "../../contexts/PageContext";
 
 jest.mock("react-router-dom");
-jest.mock("../../hooks/useIntercom");
-jest.mock("../../hooks/usePageLayout");
+jest.mock("../hooks/useIntercom");
+jest.mock("../hooks/usePageLayout");
 jest.mock("../../components/TopBar/TopBarUserMenuForAuthenticatedUser");
 jest.mock("../../components/StoreProvider");
 

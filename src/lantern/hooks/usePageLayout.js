@@ -16,7 +16,7 @@
 // =============================================================================
 
 import { useLayoutEffect, useRef, useState } from "react";
-import { usePageState, usePageDispatch } from "../contexts/PageContext";
+import { usePageState, usePageDispatch } from "../../contexts/PageContext";
 
 const usePageLayout = () => {
   const pageDispatch = usePageDispatch();

@@ -20,11 +20,11 @@ import useChartData from "../useChartData";
 import {
   callMetricsApi,
   awaitingResults,
-} from "../../api/metrics/metricsClient";
-import { useRootStore } from "../../components/StoreProvider";
+} from "../../../api/metrics/metricsClient";
+import { useRootStore } from "../../../components/StoreProvider";
 
-jest.mock("../../api/metrics/metricsClient");
-jest.mock("../../components/StoreProvider");
+jest.mock("../../../api/metrics/metricsClient");
+jest.mock("../../../components/StoreProvider");
 
 const mockUrl = "us_nd/community/goals";
 const mockFile = "admissions_by_type_by_month";

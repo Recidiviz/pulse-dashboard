@@ -25,7 +25,7 @@ import Methodology from "../Methodology";
 import PeriodLabel from "../PeriodLabel";
 import DaysAtLibertySnapshot from "./DaysAtLibertySnapshot";
 import ReincarcerationCountOverTime from "./ReincarcerationCountOverTime";
-import useChartData from "../../hooks/useChartData";
+import useChartData from "../hooks/useChartData";
 import { metrics } from "./constants";
 
 const FacilitiesGoals = () => {
