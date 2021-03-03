@@ -16,6 +16,9 @@
 // =============================================================================
 
 import React from "react";
+import pipe from "lodash/fp/pipe";
+import map from "lodash/fp/map";
+import pick from "lodash/fp/pick";
 
 import { humanReadableTitleCase } from "../../../../../utils/transforms/labels";
 import { parseAndFormatViolationRecord } from "./violationRecord";
@@ -36,27 +39,37 @@ export const normalizeOfficerRecommendation = (value) => {
   }
 };
 
-export const formatData = (data) => {
-  return data.map((record) => ({
-    state_id: nullSafeLabel(record.state_id),
-    district: nullSafeLabel(record.district),
-    officer: nullSafeLabel(getNameFromOfficerId(record.officer)),
-    risk_level: nullSafeLabel(translate("riskLevelsMap")[record.risk_level]),
-    officer_recommendation: nullSafeLabel(
-      normalizeOfficerRecommendation(record.officer_recommendation)
-    ),
-    violation_record: nullSafeLabel(
-      parseAndFormatViolationRecord(record.violation_record)
-    ),
-    // Added because this is the only unique field in fake data
-    admissionType: nullSafeLabel(record.admission_type),
-  }));
+export const formatData = (data, options) => {
+  const optionKeys = options.map((o) => o.key);
+  return pipe(
+    map(pick(optionKeys)),
+    map((record) => {
+      const obj = {
+        state_id: nullSafeLabel(record.state_id),
+        district: nullSafeLabel(record.district),
+        officer: nullSafeLabel(getNameFromOfficerId(record.officer)),
+        risk_level: nullSafeLabel(
+          translate("riskLevelsMap")[record.risk_level]
+        ),
+        violation_record: nullSafeLabel(
+          parseAndFormatViolationRecord(record.violation_record)
+        ),
+      };
+      if (record.officer_recommendation)
+        obj.officer_recommendation = nullSafeLabel(
+          normalizeOfficerRecommendation(record.officer_recommendation)
+        );
+      return obj;
+    })
+  )(data);
 };
 
-export const formatExportData = (data) => {
-  return (formatData(data) || []).map(({ admissionType, ...record }) => ({
-    data: Object.values(record),
-  }));
+export const formatExportData = (data, options) => {
+  return (formatData(data, options) || []).map(
+    ({ admissionType, ...record }) => ({
+      data: Object.values(record),
+    })
+  );
 };
 
 export const nullSafeCell = (label) => {
