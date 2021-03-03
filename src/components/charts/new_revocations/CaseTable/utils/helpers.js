@@ -72,9 +72,9 @@ export const formatExportData = (data, options) => {
   );
 };
 
-export const nullSafeCell = (label) => {
+export const nullSafeCell = (label, idx) => {
   if (label) {
-    return <td>{label}</td>;
+    return <td key={`${idx}-${label}`}>{label}</td>;
   }
 
   const unknownStyle = {
