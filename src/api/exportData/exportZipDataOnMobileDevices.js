@@ -23,11 +23,19 @@ export const isMobileSafari =
   !navigator.userAgent.includes("CriOS") &&
   !navigator.userAgent.includes("FxiOS");
 
+export const isMobile = navigator.userAgent.includes("Mobile");
+
 export default async function exportZipDataOnMobileDevices(
   formData,
   filename,
   getTokenSilently
 ) {
+  if (!isMobile) {
+    throw new Error(
+      `Invalid export data client for user agent: ${navigator.userAgent}. Expected mobile device.`
+    );
+  }
+
   const token = await getTokenSilently();
 
   return fetch(`${process.env.REACT_APP_API_URL}/api/generateFileLink`, {

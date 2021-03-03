@@ -17,15 +17,15 @@
 import * as Sentry from "@sentry/react";
 import JSZip from "jszip";
 import downloadjs from "downloadjs";
-import exportZipDataOnMobileDevices from "../../api/exportData/exportZipDataOnMobileDevices";
+import exportZipDataOnMobileDevices, {
+  isMobile,
+} from "../../api/exportData/exportZipDataOnMobileDevices";
 import transformCanvasToBase64 from "./transformCanvasToBase64";
 import createMethodologyFile from "./createMethodologyFile";
 // Functions for flowing through browser-specific download functionality
 // https://stackoverflow.com/questions/9847580/how-to-detect-safari-chrome-ie-firefox-and-opera-browser
 const isIE = /* @cc_on!@ */ false || !!document.documentMode;
 const isEdge = !isIE && !!window.StyleMedia;
-
-const isMobile = navigator.userAgent.includes("Mobile");
 
 async function downloadZipFile({ files, filename, getTokenSilently }) {
   const zip = new JSZip();
