@@ -138,6 +138,28 @@ describe("Server tests", () => {
           expect(response.body).toEqual(expectedErrors);
         });
     });
+
+    it("should respond with a 400 for an invalid admission type query param", function () {
+      const expectedErrors = {
+        errors: [
+          {
+            location: "query",
+            msg: "Invalid value",
+            param: "admissionType",
+            value: ["DOGWOOD"],
+          },
+        ],
+        status: 400,
+      };
+      return request(app)
+        .get(
+          "/api/US_DEMO/newRevocations/revocations_matrix_by_month?admissionType[0]=DOGWOOD"
+        )
+        .then((response) => {
+          expect(response.statusCode).toEqual(400);
+          expect(response.body).toEqual(expectedErrors);
+        });
+    });
   });
 
   describe("GET api/:stateCode/restrictedAccess/", () => {
