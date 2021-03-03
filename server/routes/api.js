@@ -244,8 +244,13 @@ function upload(req, res) {
         `Failed to send file for download: ${fileName}. ${sendErr.message}`
       );
     }
-
-    /* Checking on Chrome iOS */
+    /*
+    Chrome iOS sends two requests when downloading content. The first request has
+    this upgrade-insecure-requests header, which will open the download dialog on the browser.
+    Once the user clicks on the download link in the dialog, Chrome iOS will send a second request
+    to download the content. This second request does not include this header, so we wait for the
+    second request before deleting the file.
+    */
     if (!req.headers["upgrade-insecure-requests"]) {
       fs.unlink(path.join("/tmp", fileName), (delErr) => {
         /* Delete temp file after it's been sent */
