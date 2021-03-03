@@ -37,12 +37,16 @@ import {
   filterDatasetBySupervisionType,
   filterDatasetByDistrict,
   filterDatasetByMetricPeriodMonths,
+  filterDatasetByLabels,
 } from "../../../utils/charts/dataFilters";
 import {
   tooltipForCountChart,
   tooltipForRateChart,
 } from "../../../utils/charts/tooltips";
-import { genderValueToHumanReadable } from "../../../utils/transforms/labels";
+import {
+  genderValueToHumanReadable,
+  genderValueToLabel,
+} from "../../../utils/transforms/labels";
 import { metricTypePropType } from "../propTypes";
 import { METRIC_TYPES } from "../../constants";
 
@@ -56,6 +60,8 @@ const FtrReferralsByGender = ({
   metricType,
 }) => {
   const filteredFtrReferrals = pipe(
+    (dataset) =>
+      filterDatasetByLabels(dataset, "gender", Object.keys(genderValueToLabel)),
     (dataset) => filterDatasetBySupervisionType(dataset, supervisionType),
     (dataset) => filterDatasetByDistrict(dataset, district),
     (dataset) => filterDatasetByMetricPeriodMonths(dataset, metricPeriodMonths),
