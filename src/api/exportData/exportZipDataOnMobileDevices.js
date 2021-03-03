@@ -23,7 +23,9 @@ export const isMobileSafari =
   !navigator.userAgent.includes("CriOS") &&
   !navigator.userAgent.includes("FxiOS");
 
-export const isMobile = navigator.userAgent.includes("Mobile");
+export const isMobile =
+  navigator.userAgent.includes("Mobile") ||
+  navigator.userAgent.includes("Tablet");
 
 export default async function exportZipDataOnMobileDevices(
   formData,
