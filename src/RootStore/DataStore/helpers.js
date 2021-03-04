@@ -6,7 +6,7 @@ import qs from "qs";
  * @param {string} filters.chargeCategory - A charge category or "All"
  * @param {Array} filters.district - District IDs or "All"
  * @param {Array} filters.levelOneSupervisionLocation - level_1_supervision_location IDs or "All"
- * @param {Array} filters.levelOneSupervisionLocation - level_1_supervision_location IDs or "All"
+ * @param {Array} filters.levelTwoSupervisionLocation - level_2_supervision_location IDs or "All"
  * @param {string} filters.metricPeriodMonths - The number of months in the time period
  * @param {string} filters.supervisionType - Supervision Type or "All"
  * @param {string} filters.supervisionLevel - Supervision level or "All"

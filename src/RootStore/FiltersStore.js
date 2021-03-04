@@ -146,8 +146,8 @@ export default class FiltersStore {
   }
 
   get filtersDescriptions() {
-    const filters = Object.fromEntries(toJS(this.filters));
-    const enabledFilters = Object.entries(filters).reduce(
+    const filters = toJS(this.filters);
+    const enabledFilters = [...filters.entries()].reduce(
       (acc, [key, value]) => {
         if (this.filterOptions[key].componentEnabled !== false)
           acc[key] = value;
