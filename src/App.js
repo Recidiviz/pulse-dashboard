@@ -38,6 +38,7 @@ import UsNdCommunityExplore from "./core/community/Explore";
 import UsNdFacilitiesGoals from "./core/facilities/Goals";
 import UsNdFacilitiesExplore from "./core/facilities/Explore";
 import UsNdProgrammingExplore from "./core/programming/Explore";
+import Projections from "./core/Projections";
 import initFontAwesome from "./utils/initFontAwesome";
 import initIntercomSettings from "./utils/initIntercomSettings";
 import { initI18n } from "./utils/i18nSettings";
@@ -79,6 +80,7 @@ const App = () => (
 
                 <CoreLayout tenantIds={CORE_TENANTS}>
                   <Switch>
+                    <Route path="/projections" component={Projections} />
                     <Route path="/community/goals" component={UsNdCommunityGoals} />
                     <Route path="/community/explore" component={UsNdCommunityExplore} />
                     <Route path="/facilities/goals" component={UsNdFacilitiesGoals} />
