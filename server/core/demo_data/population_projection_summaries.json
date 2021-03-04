@@ -1,0 +1,26 @@
+[
+  {
+    "state_code": "US_DEMO",
+    "metric_period_months": "6",
+    "simulation_date": "2021-02-02",
+    "compartment": "INCARCERATION",
+    "legal_status": "PROBATION",
+    "simulation_group": "MALE",
+    "simulation_tag": "POLICY_A",
+    "admission_count": "400",
+    "release_count": "700",
+    "total_population": "13000"
+  },
+  {
+    "state_code": "US_DEMO",
+    "metric_period_months": "36",
+    "simulation_date": "2021-02-02",
+    "compartment": "INCARCERATION",
+    "legal_status": "PROBATION",
+    "simulation_group": "MALE",
+    "simulation_tag": "POLICY_A",
+    "admission_count": "2300",
+    "release_count": "5000",
+    "total_population": "11000"
+  }
+]
