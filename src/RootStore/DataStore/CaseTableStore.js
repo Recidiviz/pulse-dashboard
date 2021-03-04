@@ -16,6 +16,7 @@
 // =============================================================================
 import { matchesAllFilters } from "shared-filters";
 import BaseDataStore from "./BaseDataStore";
+import { US_PA } from "../TenantStore/lanternTenants";
 
 export default class CaseTableStore extends BaseDataStore {
   constructor({ rootStore }) {
@@ -32,5 +33,27 @@ export default class CaseTableStore extends BaseDataStore {
       treatCategoryAllAsAbsent: this.treatCategoryAllAsAbsent,
     });
     return this.filterData(this.apiData, dataFilter);
+  }
+
+  get options() {
+    return this.rootStore.currentTenantId === US_PA
+      ? [
+          { key: "state_id", label: "DOC ID" },
+          { key: "district", label: "District" },
+          { key: "officer", label: "Agent" },
+          { key: "risk_level", label: "Risk level" },
+          { key: "violation_record", label: "Violation record" },
+        ]
+      : [
+          { key: "state_id", label: "DOC ID" },
+          { key: "district", label: "District" },
+          { key: "officer", label: "Officer" },
+          { key: "risk_level", label: "Risk level" },
+          {
+            key: "officer_recommendation",
+            label: "Last Rec. (Incl. Supplementals)",
+          },
+          { key: "violation_record", label: "Violation record" },
+        ];
   }
 }

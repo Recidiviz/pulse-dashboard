@@ -20,6 +20,7 @@ import * as lanternTenant from "../../../../../../RootStore/TenantStore/lanternT
 
 describe("helper", () => {
   let data;
+  let options;
 
   describe("#formatData", () => {
     beforeEach(() => {
@@ -39,17 +40,28 @@ describe("helper", () => {
         violation_record: "1fel;2low_tech",
         violation_type: "FELONY",
       };
+      options = [
+        { key: "state_id", label: "DOC ID" },
+        { key: "district", label: "District" },
+        { key: "officer", label: "Officer" },
+        { key: "risk_level", label: "Risk level" },
+        {
+          key: "officer_recommendation",
+          label: "Last Rec. (Incl. Supplementals)",
+        },
+        { key: "violation_record", label: "Violation record" },
+      ];
     });
 
     it("formats the officer id", () => {
-      const result = helpers.formatData([data]);
+      const result = helpers.formatData([data], options);
       expect(result[0].officer).toEqual("FRED FLINSTONE");
     });
 
     describe("when the tenant is US_MO", () => {
       it("formats the risk level for US_MO", () => {
         setTranslateLocale(lanternTenant.US_MO);
-        const result = helpers.formatData([data]);
+        const result = helpers.formatData([data], options);
         expect(result[0].risk_level).toEqual("Moderate Risk");
       });
     });
@@ -57,7 +69,7 @@ describe("helper", () => {
     describe("when the tenant is US_PA", () => {
       it("formats the risk level for US_PA", () => {
         setTranslateLocale(lanternTenant.US_PA);
-        const result = helpers.formatData([data]);
+        const result = helpers.formatData([data], options);
         expect(result[0].risk_level).toEqual("Medium Risk");
       });
     });
@@ -65,22 +77,30 @@ describe("helper", () => {
     describe("officer recommendation", () => {
       it("when officer recommendation is DOC", () => {
         data.officer_recommendation = "PLACEMENT_IN_DOC_FACILITY";
-        const result = helpers.formatData([data]);
+        const result = helpers.formatData([data], options);
         const expected = "Placement In DOC Facility";
         expect(result[0].officer_recommendation).toEqual(expected);
       });
 
       it("when officer recommendation is CODS case", () => {
         data.officer_recommendation = "CODS";
-        const result = helpers.formatData([data]);
+        const result = helpers.formatData([data], options);
         const expected = "CODS";
         expect(result[0].officer_recommendation).toEqual(expected);
       });
 
       it("title cases everything else", () => {
-        const result = helpers.formatData([data]);
+        const result = helpers.formatData([data], options);
         const expected = "Any Normal Recommendation";
         expect(result[0].officer_recommendation).toEqual(expected);
+      });
+
+      it("is not exported when it is not in options", () => {
+        const filteredOptions = options.filter(
+          (option) => option.key !== "officer_recommendation"
+        );
+        const result = helpers.formatData([data], filteredOptions);
+        expect(result[0]).not.toHaveProperty("officer_recommendation");
       });
     });
   });
@@ -103,10 +123,21 @@ describe("helper", () => {
         violation_record: "1fel;2low_tech",
         violation_type: "FELONY",
       };
+      options = [
+        { key: "state_id", label: "DOC ID" },
+        { key: "district", label: "District" },
+        { key: "officer", label: "Officer" },
+        { key: "risk_level", label: "Risk level" },
+        {
+          key: "officer_recommendation",
+          label: "Last Rec. (Incl. Supplementals)",
+        },
+        { key: "violation_record", label: "Violation record" },
+      ];
     });
 
     it("formats the data correctly for export", () => {
-      const result = helpers.formatExportData([data]);
+      const result = helpers.formatExportData([data], options);
       const expected = [
         {
           data: [
@@ -114,9 +145,22 @@ describe("helper", () => {
             "01",
             "FRED FLINSTONE",
             "Moderate Risk",
-            "Any Normal Recommendation",
             "1 fel",
+            "Any Normal Recommendation",
           ],
+        },
+      ];
+      expect(result).toEqual(expected);
+    });
+
+    it("only only includes columns that are in options", () => {
+      const filteredOptions = options.filter(
+        (option) => option.key !== "officer_recommendation"
+      );
+      const result = helpers.formatExportData([data], filteredOptions);
+      const expected = [
+        {
+          data: ["75XXX", "01", "FRED FLINSTONE", "Moderate Risk", "1 fel"],
         },
       ];
       expect(result).toEqual(expected);
