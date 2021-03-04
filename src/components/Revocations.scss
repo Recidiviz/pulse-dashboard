@@ -3,16 +3,13 @@
   padding-bottom: 5px;
   background-color: #f9fafb;
 
-  &__top-0 {
+  &--top-bar-hidden {
     top: 0;
-  }
-
-  &__top-65 {
-    top: 65px;
   }
 
   .FilterBar {
     transition: top 0.6s;
+    top: 65px;
   }
 
   &__matrix {

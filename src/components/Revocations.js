@@ -59,8 +59,7 @@ const Revocations = () => {
     <div className="Revocations">
       <Sticky
         className={cx("FilterBar", {
-          "Revocations__top-65": !hideTopBar,
-          "Revocations__top-0": hideTopBar,
+          "Revocations--top-bar-hidden": hideTopBar,
         })}
         style={{ zIndex: 700 }}
       >
