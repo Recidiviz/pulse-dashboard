@@ -16,9 +16,6 @@
 // =============================================================================
 
 import React from "react";
-import pipe from "lodash/fp/pipe";
-import map from "lodash/fp/map";
-import pick from "lodash/fp/pick";
 
 import { humanReadableTitleCase } from "../../../../../utils/transforms/labels";
 import { parseAndFormatViolationRecord } from "./violationRecord";
@@ -40,28 +37,25 @@ export const normalizeOfficerRecommendation = (value) => {
 };
 
 export const formatData = (data, options) => {
-  const optionKeys = options.map((o) => o.key);
-  return pipe(
-    map(pick(optionKeys)),
-    map((record) => {
-      const obj = {
-        state_id: nullSafeLabel(record.state_id),
-        district: nullSafeLabel(record.district),
-        officer: nullSafeLabel(getNameFromOfficerId(record.officer)),
-        risk_level: nullSafeLabel(
-          translate("riskLevelsMap")[record.risk_level]
-        ),
-        violation_record: nullSafeLabel(
-          parseAndFormatViolationRecord(record.violation_record)
-        ),
-      };
-      if (record.officer_recommendation)
-        obj.officer_recommendation = nullSafeLabel(
-          normalizeOfficerRecommendation(record.officer_recommendation)
-        );
-      return obj;
-    })
-  )(data);
+  const includeOfficerRecommendation = options
+    .map((o) => o.key)
+    .includes("officer_recommendation");
+  return data.map((record) => {
+    const obj = {
+      state_id: nullSafeLabel(record.state_id),
+      district: nullSafeLabel(record.district),
+      officer: nullSafeLabel(getNameFromOfficerId(record.officer)),
+      risk_level: nullSafeLabel(translate("riskLevelsMap")[record.risk_level]),
+      violation_record: nullSafeLabel(
+        parseAndFormatViolationRecord(record.violation_record)
+      ),
+    };
+    if (includeOfficerRecommendation)
+      obj.officer_recommendation = nullSafeLabel(
+        normalizeOfficerRecommendation(record.officer_recommendation)
+      );
+    return obj;
+  });
 };
 
 export const formatExportData = (data, options) => {
