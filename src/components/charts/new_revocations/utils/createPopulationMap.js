@@ -20,16 +20,28 @@ import set from "lodash/fp/set";
 import getOr from "lodash/fp/getOr";
 import toInteger from "lodash/fp/toInteger";
 
-const NUMERATOR_KEYS = ["revocation_count", "supervision_population_count"];
-const DENOMINATOR_KEYS = ["revocation_count_all", "supervision_count_all"];
+const NUMERATOR_KEYS = [
+  "revocation_count",
+  "recommended_for_revocation_count",
+  "supervision_population_count",
+];
+const DENOMINATOR_KEYS = [
+  "revocation_count_all",
+  "recommended_for_revocation_count_all",
+  "supervision_count_all",
+];
 
 /**
  * Transform to
- *   ASIAN: { REVOKED: [1, 4], SUPERVISION_POPULATION: [5, 9], ... } }
- *   HISPANIC: { REVOKED: [2, 9], SUPERVISION_POPULATION: [2, 8], ... } }
+ *   ASIAN: { REVOKED: [1, 4], SUPERVISION_POPULATION: [5, 9],
+ *            RECOMMENDED_FOR_REVOCATION: [3, 6], ... } }
+ *   HISPANIC: { REVOKED: [2, 9], SUPERVISION_POPULATION: [2, 8],
+ *               RECOMMENDED_FOR_REVOCATION: [3, 6], ... } }
  * OR
- *   MALE: { REVOKED: [1, 4], SUPERVISION_POPULATION: [5, 9], ... } }
- *   FEMALE: { REVOKED: [2, 9], SUPERVISION_POPULATION: [2, 8], ... } }
+ *   MALE: { REVOKED: [1, 4], SUPERVISION_POPULATION: [5, 9],
+ *           RECOMMENDED_FOR_REVOCATION: [3, 6], ... } }
+ *   FEMALE: { REVOKED: [2, 9], SUPERVISION_POPULATION: [2, 8],
+ *             RECOMMENDED_FOR_REVOCATION: [3, 6], ... } }
  */
 const createPopulationMap = (field) => (acc, data) => {
   return pipe(
@@ -37,9 +49,9 @@ const createPopulationMap = (field) => (acc, data) => {
       [data[field], "SUPERVISION_POPULATION"],
       [
         getOr(0, [data[field], "SUPERVISION_POPULATION", 0], acc) +
-          toInteger(data[NUMERATOR_KEYS[1]]),
+          toInteger(data[NUMERATOR_KEYS[2]]),
         getOr(0, [data[field], "SUPERVISION_POPULATION", 1], acc) +
-          toInteger(data[DENOMINATOR_KEYS[1]]),
+          toInteger(data[DENOMINATOR_KEYS[2]]),
       ]
     ),
     set(
@@ -49,6 +61,15 @@ const createPopulationMap = (field) => (acc, data) => {
           toInteger(data[NUMERATOR_KEYS[0]]),
         getOr(0, [data[field], "REVOKED", 1], acc) +
           toInteger(data[DENOMINATOR_KEYS[0]]),
+      ]
+    ),
+    set(
+      [data[field], "RECOMMENDED_FOR_REVOCATION"],
+      [
+        getOr(0, [data[field], "RECOMMENDED_FOR_REVOCATION", 0], acc) +
+          toInteger(data[NUMERATOR_KEYS[1]]),
+        getOr(0, [data[field], "RECOMMENDED_FOR_REVOCATION", 1], acc) +
+          toInteger(data[DENOMINATOR_KEYS[1]]),
       ]
     )
   )(acc);
