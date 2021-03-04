@@ -43,7 +43,6 @@ people who were admitted, whose most serious violation matches the violation at
 the head of that row, and who have the number of prior violations at the head
 of that column.`,
   Technical: "Low tech.",
-  lastRecommendation: "Last recommendation",
   riskLevelsMap: {
     OVERALL: "Overall",
     NOT_ASSESSED: "No Score",

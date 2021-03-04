@@ -26,7 +26,6 @@ import ErrorMessage from "../../../ErrorMessage";
 import Sortable from "./Sortable";
 import Pagination from "./Pagination";
 import { useContainerHeight } from "../../../../hooks/useContainerHeight";
-import { translate } from "../../../../utils/i18nSettings";
 import { nullSafeCell, formatData, formatExportData } from "./utils/helpers";
 import { useRootStore } from "../../../../StoreProvider";
 
@@ -41,6 +40,7 @@ const CaseTable = ({ timeDescription }) => {
 
   const filteredData = store.filteredData.slice();
   const sortedData = filteredData.sort(comparator);
+  const { options } = store;
 
   if (store.isLoading) {
     return <LoadingChart containerHeight={containerHeight} />;
@@ -52,8 +52,7 @@ const CaseTable = ({ timeDescription }) => {
 
   const startCase = page * CASES_PER_PAGE;
   const endCase = Math.min(sortedData.length, startCase + CASES_PER_PAGE);
-  const pageData = formatData(sortedData.slice(startCase, endCase));
-
+  const pageData = formatData(sortedData.slice(startCase, endCase), options);
   const createUpdatePage = (diff) => () => setPage(page + diff);
 
   const createSortableProps = (field) => ({
@@ -64,18 +63,6 @@ const CaseTable = ({ timeDescription }) => {
     },
   });
 
-  const options = [
-    { key: "state_id", label: "DOC ID" },
-    { key: "district", label: "District" },
-    { key: "officer", label: translate("Officer") },
-    { key: "risk_level", label: "Risk level" },
-    {
-      key: "officer_recommendation",
-      label: translate("lastRecommendation"),
-    },
-    { key: "violation_record", label: "Violation record" },
-  ];
-
   return (
     <div ref={containerRef} className="CaseTable">
       <h4>
@@ -83,7 +70,7 @@ const CaseTable = ({ timeDescription }) => {
         <ExportMenu
           chartId="filteredCaseTable"
           shouldExport={false}
-          datasets={formatExportData(sortedData)}
+          datasets={formatExportData(sortedData, options)}
           labels={options.map((o) => o.label)}
           metricTitle="Admitted individuals"
           fixLabelsInColumns
@@ -110,12 +97,7 @@ const CaseTable = ({ timeDescription }) => {
                 .split(" ")
                 .join("")}-${idx + 1}`}
             >
-              <td>{details.state_id}</td>
-              {nullSafeCell(details.district)}
-              {nullSafeCell(details.officer)}
-              {nullSafeCell(details.risk_level)}
-              {nullSafeCell(details.officer_recommendation)}
-              {nullSafeCell(details.violation_record)}
+              {options.map((option) => nullSafeCell(details[option.key], idx))}
             </tr>
           ))}
         </tbody>

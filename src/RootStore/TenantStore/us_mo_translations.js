@@ -43,7 +43,6 @@ people who were revoked, whose most serious violation matches the violation at
 the head of that row, and who have the number of prior violations at the head
 of that column.`,
   Technical: "Technical",
-  lastRecommendation: "Last Rec. (Incl. Supplementals)",
   riskLevelsMap: {
     OVERALL: "Overall",
     NOT_ASSESSED: "No Score",
