@@ -82,9 +82,12 @@ function toInt(nonInt) {
 }
 
 function toTitleCase(str) {
-  return str.replace(
-    /\w\S*/g,
-    (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase()
+  return (
+    str &&
+    str.replace(
+      /\w\S*/g,
+      (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase()
+    )
   );
 }
 
@@ -105,6 +108,12 @@ const pluralize = (count, term) => {
   return count > 1 ? `${base}s` : base;
 };
 
+const formatOfficerLabel = (label) => {
+  if (!label) return "";
+  const groups = label.split(" - ");
+  return `${groups[0]} - ${toTitleCase(groups[1])}`;
+};
+
 export {
   matrixViolationTypeToLabel,
   genderValueToHumanReadable,
@@ -121,4 +130,5 @@ export {
   genderValueToLabel,
   getStatePopulations,
   getStatePopulationsLabels,
+  formatOfficerLabel,
 };
