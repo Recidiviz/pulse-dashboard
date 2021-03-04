@@ -14,36 +14,33 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-import React, { forwardRef } from "react";
-import PropTypes from "prop-types";
-import ReactSelect from "react-select";
+import { COLORS } from "../../assets/scripts/constants/colors";
 
-import styles from "./Select.styles";
-import { optionPropType } from "../propTypes";
-
-const Select = forwardRef((props, ref) => (
-  <ReactSelect
-    ref={ref}
-    styles={styles}
-    className="Select"
-    classNamePrefix="Select"
-    {...props}
-  />
-));
-
-Select.propTypes = {
-  value: PropTypes.oneOfType([
-    optionPropType,
-    PropTypes.arrayOf(optionPropType),
-  ]).isRequired,
-  defaultValue: PropTypes.oneOfType([
-    optionPropType,
-    PropTypes.arrayOf(optionPropType),
-  ]).isRequired,
-  onChange: PropTypes.func.isRequired,
-  options: PropTypes.arrayOf(optionPropType).isRequired,
+const fontStyles = {
+  color: "rgba(114, 119, 122, 0.8)",
+  textTransform: "uppercase",
 };
 
-Select.displayName = "Select";
-
-export default Select;
+export default {
+  container: (base) => ({
+    ...base,
+    flexGrow: 1,
+  }),
+  option: (base, state) => ({
+    ...base,
+    ...fontStyles,
+    backgroundColor: state.isMulti ? "transparent" : base.backgroundColor,
+    color: state.isSelected && !state.isMulti ? COLORS.white : fontStyles.color,
+    ":active": {
+      backgroundColor: state.isMulti ? "transparent" : base.backgroundColor,
+    },
+  }),
+  valueContainer: (base) => ({
+    ...base,
+    textTransform: "uppercase",
+    whiteSpace: "nowrap",
+    textOverflow: "ellipsis",
+  }),
+  singleValue: (base) => ({ ...base, ...fontStyles }),
+  group: (base) => ({ ...base, ...fontStyles, marginLeft: 20 }),
+};
