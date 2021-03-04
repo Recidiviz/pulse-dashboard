@@ -71,6 +71,7 @@ const PercentRevokedChart = ({
             stacked: true,
             ticks: {
               callback: axisCallbackForPercentage(),
+              precision: 0,
             },
           },
         ],
