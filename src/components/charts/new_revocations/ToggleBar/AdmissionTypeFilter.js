@@ -30,7 +30,7 @@ const AdmissionTypeFilter = () => {
   const { filtersStore } = useRootStore();
   const { filters, filterOptions } = filtersStore;
   const value = get(filters, ADMISSION_TYPE);
-  const { options, defaultValue, summingOption } = filterOptions[
+  const { options, defaultOption, summingOption } = filterOptions[
     ADMISSION_TYPE
   ];
 
@@ -49,7 +49,8 @@ const AdmissionTypeFilter = () => {
         options={options}
         onChange={onValueChange}
         summingOption={summingOption}
-        defaultValue={defaultValue}
+        defaultValue={defaultOption}
+        isSearchable
       />
     </FilterField>
   );

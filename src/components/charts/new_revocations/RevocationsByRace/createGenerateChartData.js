@@ -19,12 +19,14 @@ import pipe from "lodash/fp/pipe";
 import reduce from "lodash/fp/reduce";
 
 import {
-  getRacePopulationLabels,
-  getStateRacePopulation,
+  getStatePopulations,
+  getStatePopulationsLabels,
 } from "../../../../utils/transforms/labels";
-import { getCounts } from "../utils/getCounts";
-import createRacePopulationMap from "../utils/createRacePopulationMap";
-import { translate } from "../../../../views/tenants/utils/i18nSettings";
+import getCounts from "../utils/getCounts";
+import createPopulationMap, {
+  sumCountsAcrossRiskLevels,
+} from "../utils/createPopulationMap";
+import { translate } from "../../../../utils/i18nSettings";
 import { COLORS_LANTERN_SET } from "../../../../assets/scripts/constants/colors";
 import { applyStatisticallySignificantShadingToDataset } from "../../../../utils/charts/significantStatistics";
 
@@ -44,31 +46,27 @@ export const generateDatasets = (dataPoints, denominators) => {
 const createGenerateChartData = ({ filteredData, statePopulationData }) => (
   mode
 ) => {
-  const numeratorKey = [
-    "revocation_count",
-    "supervision_population_count",
-    "population_count",
-  ];
-  const denominatorKey = [
-    "revocation_count_all",
-    "supervision_count_all",
-    "total_state_population_count",
-  ];
   const raceLabelMap = translate("raceLabelMap");
   const races = Object.keys(raceLabelMap);
   const { dataPoints, numerators, denominators } = pipe(
-    reduce(createRacePopulationMap(numeratorKey, denominatorKey, "race"), {}),
+    reduce(sumCountsAcrossRiskLevels("race"), []),
+    reduce(createPopulationMap("race"), {}),
     (data) =>
-      getCounts(data, getStateRacePopulation(), races, statePopulationData)
+      getCounts(
+        data,
+        getStatePopulations(),
+        races,
+        statePopulationData,
+        "race_or_ethnicity"
+      )
   )(filteredData);
 
   const datasets = generateDatasets(dataPoints, denominators);
-  const translateRaceLabels = translate("raceLabelMap");
   const datasetIndex = datasets.findIndex(
-    (d) => d.label === translateRaceLabels[mode]
+    (d) => d.label === translate("raceLabelMap")[mode]
   );
   const data = {
-    labels: getRacePopulationLabels(),
+    labels: getStatePopulationsLabels(),
     datasets: [datasets[datasetIndex]],
   };
 

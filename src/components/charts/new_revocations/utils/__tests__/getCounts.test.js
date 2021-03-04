@@ -16,7 +16,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import { getCounts } from "../getCounts";
+import getCounts from "../getCounts";
 
 describe("getCounts", () => {
   const transformedData = {
@@ -52,7 +52,7 @@ describe("getCounts", () => {
       ],
     }
     expect(
-      getCounts(transformedData, labels, dimensions, populationData)
+      getCounts(transformedData, labels, dimensions, populationData, "race_or_ethnicity")
     ).toEqual(expected);
   });
 });

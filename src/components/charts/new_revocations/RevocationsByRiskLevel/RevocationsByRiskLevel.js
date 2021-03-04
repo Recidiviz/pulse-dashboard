@@ -23,9 +23,11 @@ import flags from "../../../../flags";
 import getLabelByMode from "../utils/getLabelByMode";
 import createGenerateChartData from "./createGenerateChartData";
 import RevocationsByDimension from "../RevocationsByDimension";
-import BarChartWithLabels from "../BarChartWithLabels";
-import { translate } from "../../../../views/tenants/utils/i18nSettings";
+import BarChartWithLabels from "../BarCharts";
 import { useDataStore } from "../../../../StoreProvider";
+
+const CHART_TITLE = "Admissions by risk level";
+const DEFAULT_MODE = "rates";
 
 const RevocationsByRiskLevel = observer(
   ({ containerHeight, timeDescription }, ref) => {
@@ -34,7 +36,7 @@ const RevocationsByRiskLevel = observer(
     return (
       <RevocationsByDimension
         ref={ref}
-        chartId={`${translate("revocations")}ByRiskLevel`}
+        chartId="admissionsByRiskLevel"
         dataStore={revocationsChartStore}
         containerHeight={containerHeight}
         renderChart={({ chartId, data, denominators, numerators, mode }) => (
@@ -50,11 +52,11 @@ const RevocationsByRiskLevel = observer(
         generateChartData={createGenerateChartData(
           revocationsChartStore.filteredData
         )}
-        chartTitle="Admissions by risk level"
+        chartTitle={CHART_TITLE}
         metricTitle={(mode) => `${getLabelByMode(mode)} by risk level`}
         timeDescription={timeDescription}
         modes={flags.enableRevocationRateByExit ? ["rates", "exits"] : []}
-        defaultMode="rates"
+        defaultMode={DEFAULT_MODE}
         dataExportLabel="Risk Level"
       />
     );

@@ -34,6 +34,7 @@ const PercentRevokedChart = ({
   xAxisLabel,
   yAxisLabel,
   includeWarning,
+  hideRateLine,
 }) => (
   <Bar
     id={chartId}
@@ -44,7 +45,7 @@ const PercentRevokedChart = ({
           display: false,
         },
       },
-      annotation: getRateAnnotation(averageRate),
+      annotation: !hideRateLine && getRateAnnotation(averageRate),
       legend: {
         display: false,
       },
@@ -82,6 +83,7 @@ const PercentRevokedChart = ({
         callbacks: {
           label: (tooltipItem, tooltipData) =>
             tooltipForRateMetricWithCounts(
+              chartId,
               tooltipItem,
               tooltipData,
               numerators,
@@ -115,10 +117,12 @@ PercentRevokedChart.propTypes = {
   yAxisLabel: PropTypes.string.isRequired,
   averageRate: PropTypes.number.isRequired,
   includeWarning: PropTypes.bool,
+  hideRateLine: PropTypes.bool,
 };
 
 PercentRevokedChart.defaultProps = {
   includeWarning: true,
+  hideRateLine: false,
 };
 
 export default PercentRevokedChart;

@@ -18,7 +18,6 @@
 import {
   ADMISSION_TYPE,
   CHARGE_CATEGORY,
-  DISTRICT,
   METRIC_PERIOD_MONTHS,
   REPORTED_VIOLATIONS,
   SUPERVISION_LEVEL,
@@ -27,7 +26,7 @@ import {
   LEVEL_1_SUPERVISION_LOCATION,
   LEVEL_2_SUPERVISION_LOCATION,
 } from "../../../constants/filterTypes";
-import { US_MO, US_PA } from "../utils/lanternTenants";
+import { US_MO, US_PA } from "../../../RootStore/TenantStore/lanternTenants";
 
 const METRIC_PERIODS = {
   options: [
@@ -90,7 +89,7 @@ const MOFilterOptions = {
       { value: "BOARDS_RETURN", label: "Board Returns" },
     ],
     get defaultOption() {
-      return [this.options[1]];
+      return [this.options[0]];
     },
     get defaultValue() {
       return this.defaultOption.map(({ value }) => value);
@@ -153,7 +152,6 @@ const MOFilterOptions = {
   [SUPERVISION_LEVEL]: { ...SUPERVISION_LEVELS, componentEnabled: false },
   [SUPERVISION_TYPE]: { ...SUPERVISION_TYPES, componentEnabled: true },
   [REPORTED_VIOLATIONS]: { defaultValue: "All" },
-  [DISTRICT]: { defaultValue: "All" },
   [LEVEL_1_SUPERVISION_LOCATION]: { defaultValue: "All" },
   [LEVEL_2_SUPERVISION_LOCATION]: { defaultValue: "All" },
 };
@@ -178,7 +176,7 @@ const PAFilterOptions = {
       { value: "MENTAL_HEALTH", label: "Mental Health" },
     ],
     get defaultOption() {
-      return [this.options[1]];
+      return [this.options[0]];
     },
     get defaultValue() {
       return this.defaultOption.map(({ value }) => value);
@@ -211,7 +209,6 @@ const PAFilterOptions = {
   [SUPERVISION_LEVEL]: { ...SUPERVISION_LEVELS, componentEnabled: true },
   [SUPERVISION_TYPE]: { defaultValue: "All", componentEnabled: false },
   [REPORTED_VIOLATIONS]: { defaultValue: "All" },
-  [DISTRICT]: { defaultValue: "All" },
   [LEVEL_1_SUPERVISION_LOCATION]: { defaultValue: "All" },
   [LEVEL_2_SUPERVISION_LOCATION]: { defaultValue: "All" },
 };

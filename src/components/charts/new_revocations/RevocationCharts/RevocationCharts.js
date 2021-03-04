@@ -20,8 +20,7 @@ import cn from "classnames";
 import PropTypes from "prop-types";
 import { observer } from "mobx-react-lite";
 
-import { translate } from "../../../../views/tenants/utils/i18nSettings";
-import flags from "../../../../flags";
+import { translate } from "../../../../utils/i18nSettings";
 import RevocationsByRiskLevel from "../RevocationsByRiskLevel/RevocationsByRiskLevel";
 import RevocationsByOfficer from "../RevocationsByOfficer";
 import RevocationsByViolation from "../RevocationsByViolation";
@@ -34,7 +33,7 @@ import "./RevocationCharts.scss";
 
 const CHARTS = [
   "District",
-  flags.enableOfficerChart && "Officer",
+  "Officer",
   "Risk level",
   "Violation",
   "Gender",

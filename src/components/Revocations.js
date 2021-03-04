@@ -61,40 +61,45 @@ const Revocations = () => {
         style={{ zIndex: 700, top: hideTopBar ? 0 : 65 }}
       >
         <ErrorBoundary>
-          <div className="top-level-filters d-f">
-            <ToggleBarFilter
-              label="Time Period"
-              dimension={METRIC_PERIOD_MONTHS}
-            />
-            <ErrorBoundary>
-              <DistrictFilter />
-            </ErrorBoundary>
-            {filterOptions[CHARGE_CATEGORY].componentEnabled && (
-              <ToggleBarFilter label="Case Type" dimension={CHARGE_CATEGORY} />
-            )}
-            {filterOptions[SUPERVISION_LEVEL].componentEnabled && (
+          <>
+            <div className="top-level-filters d-f">
               <ToggleBarFilter
-                label="Supervision Level"
-                dimension={SUPERVISION_LEVEL}
+                label="Time Period"
+                dimension={METRIC_PERIOD_MONTHS}
               />
-            )}
-            {filterOptions[ADMISSION_TYPE].componentEnabled && (
-              <AdmissionTypeFilter />
-            )}
-            {filterOptions[SUPERVISION_TYPE].componentEnabled && (
-              <ToggleBarFilter
-                label="Supervision Type"
-                dimension={SUPERVISION_TYPE}
-              />
-            )}
-          </div>
-          <ViolationFilter />
+              <ErrorBoundary>
+                <DistrictFilter />
+              </ErrorBoundary>
+              {filterOptions[CHARGE_CATEGORY].componentEnabled && (
+                <ToggleBarFilter
+                  label="Case Type"
+                  dimension={CHARGE_CATEGORY}
+                />
+              )}
+              {filterOptions[SUPERVISION_LEVEL].componentEnabled && (
+                <ToggleBarFilter
+                  label="Supervision Level"
+                  dimension={SUPERVISION_LEVEL}
+                />
+              )}
+              {filterOptions[ADMISSION_TYPE].componentEnabled && (
+                <AdmissionTypeFilter />
+              )}
+              {filterOptions[SUPERVISION_TYPE].componentEnabled && (
+                <ToggleBarFilter
+                  label="Supervision Type"
+                  dimension={SUPERVISION_TYPE}
+                />
+              )}
+            </div>
+            <ViolationFilter />
+          </>
         </ErrorBoundary>
       </Sticky>
 
       <div className="bgc-white p-20 m-20">
         <ErrorBoundary>
-          <RevocationsOverTime />
+          <RevocationsOverTime timeDescription={timeDescription} />
         </ErrorBoundary>
       </div>
       <div className="d-f m-20 container-all-charts">
@@ -110,7 +115,7 @@ const Revocations = () => {
       </ErrorBoundary>
       <div className="bgc-white m-20 p-20">
         <ErrorBoundary>
-          <CaseTable />
+          <CaseTable timeDescription={timeDescription} />
         </ErrorBoundary>
       </div>
     </main>

@@ -44,8 +44,13 @@ function filterDatasetBySupervisionType(dataset, supervisionType) {
   });
 }
 
+function filterDatasetByLabels(dataset, label, validLabels) {
+  return dataset.filter((element) => validLabels.includes(element[label]));
+}
+
 export {
   filterDatasetByMetricPeriodMonths,
   filterDatasetByDistrict,
   filterDatasetBySupervisionType,
+  filterDatasetByLabels,
 };

@@ -18,30 +18,19 @@
 import lowerCase from "lodash/fp/lowerCase";
 import pipe from "lodash/fp/pipe";
 import startCase from "lodash/fp/startCase";
-import { translate } from "../../views/tenants/utils/i18nSettings";
+import { translate } from "../i18nSettings";
 
-export function getRiskLevels() {
-  return Object.keys(translate("riskLevelsMap"));
+function getStatePopulations() {
+  return Object.keys(translate("populationChartAttributes"));
 }
 
-export function getRiskLevelLabels() {
-  return Object.values(translate("riskLevelsMap"));
-}
-
-export function getStateRacePopulation() {
-  return Object.keys(translate("raceChartAttributes"));
-}
-
-export function getRacePopulationLabels() {
-  return Object.values(translate("raceChartAttributes"));
+function getStatePopulationsLabels() {
+  return Object.values(translate("populationChartAttributes"));
 }
 
 const genderValueToLabel = {
-  FEMALE: "Female",
   MALE: "Male",
-  TRANS: "Trans",
-  TRANS_FEMALE: "Trans Female",
-  TRANS_MALE: "Trans Male",
+  FEMALE: "Female",
 };
 
 const raceValueToLabel = {
@@ -52,6 +41,7 @@ const raceValueToLabel = {
   NATIVE_HAWAIIAN_PACIFIC_ISLANDER: "Native Hawaiian Pacific Islander",
   WHITE: "White",
   OTHER: "Other",
+  EXTERNAL_UNKNOWN: "Unknown",
 };
 
 const matrixViolationTypeToLabel = {
@@ -92,9 +82,12 @@ function toInt(nonInt) {
 }
 
 function toTitleCase(str) {
-  return str.replace(
-    /\w\S*/g,
-    (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase()
+  return (
+    str &&
+    str.replace(
+      /\w\S*/g,
+      (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase()
+    )
   );
 }
 
@@ -115,6 +108,12 @@ const pluralize = (count, term) => {
   return count > 1 ? `${base}s` : base;
 };
 
+const formatOfficerLabel = (label) => {
+  if (!label) return "";
+  const groups = label.split(" - ");
+  return `${groups[0]} - ${toTitleCase(groups[1])}`;
+};
+
 export {
   matrixViolationTypeToLabel,
   genderValueToHumanReadable,
@@ -128,4 +127,8 @@ export {
   violationCountLabel,
   pluralize,
   raceValueToLabel,
+  genderValueToLabel,
+  getStatePopulations,
+  getStatePopulationsLabels,
+  formatOfficerLabel,
 };

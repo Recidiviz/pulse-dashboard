@@ -16,6 +16,7 @@
 // =============================================================================
 
 import React from "react";
+import PropTypes from "prop-types";
 import { Bar, Line } from "react-chartjs-2";
 import { observer } from "mobx-react-lite";
 import { get } from "mobx";
@@ -32,22 +33,21 @@ import { COLORS } from "../../../assets/scripts/constants/colors";
 import { currentMonthBox } from "../../../utils/charts/currentSpan";
 import {
   getMonthCountFromMetricPeriodMonthsToggle,
-  getTrailingLabelFromMetricPeriodMonthsToggle,
   centerSingleMonthDatasetIfNecessary,
 } from "../../../utils/charts/toggles";
 import { sortFilterAndSupplementMostRecentMonths } from "../../../utils/transforms/datasets";
 import { monthNamesAllWithYearsFromNumbers } from "../../../utils/transforms/months";
 import { generateTrendlineDataset } from "../../../utils/charts/trendline";
-import { translate } from "../../../views/tenants/utils/i18nSettings";
+import { translate } from "../../../utils/i18nSettings";
 import { useRootStore } from "../../../StoreProvider";
 import { METRIC_PERIOD_MONTHS } from "../../../constants/filterTypes";
 
 import RevocationsByDimensionComponent from "./RevocationsByDimension/RevocationsByDimensionComponent";
 
-const RevocationsOverTime = () => {
+const RevocationsOverTime = ({ timeDescription }) => {
   const { filters, dataStore } = useRootStore();
   const store = dataStore.revocationsOverTimeStore;
-  const chartId = `${translate("revocations")}OverTime`;
+  const chartId = `admissionsOverTime`;
   const { containerHeight, containerRef } = useContainerHeight();
 
   if (store.isLoading) {
@@ -178,11 +178,9 @@ const RevocationsOverTime = () => {
     <div ref={containerRef}>
       <RevocationsByDimensionComponent
         chartTitle={translate("revocationsOverTimeXAxis")}
-        timeDescription={getTrailingLabelFromMetricPeriodMonthsToggle(
-          get(filters, METRIC_PERIOD_MONTHS)
-        )}
+        timeDescription={timeDescription}
         labels={chartLabels}
-        chartId={`${translate("revocations")}OverTime`}
+        chartId={chartId}
         datasets={datasets}
         metricTitle={translate("revocationsOverTimeXAxis")}
         chart={chart}
@@ -191,6 +189,10 @@ const RevocationsOverTime = () => {
       />
     </div>
   );
+};
+
+RevocationsOverTime.propTypes = {
+  timeDescription: PropTypes.string.isRequired,
 };
 
 export default observer(RevocationsOverTime);

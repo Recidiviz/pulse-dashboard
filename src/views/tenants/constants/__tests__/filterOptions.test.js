@@ -20,15 +20,27 @@ import filterOptionsMap from "../filterOptions";
 describe("filterOptionsMap", () => {
   let result;
 
-  describe("district filter option", () => {
+  describe("levelOneSupervisionLocation filter option", () => {
     it("is the same for both tenants", () => {
       result = filterOptionsMap;
       const expected = {
         defaultValue: "All",
       };
 
-      expect(result.US_MO.district).toEqual(expected);
-      expect(result.US_PA.district).toEqual(expected);
+      expect(result.US_MO.levelOneSupervisionLocation).toEqual(expected);
+      expect(result.US_PA.levelOneSupervisionLocation).toEqual(expected);
+    });
+  });
+
+  describe("levelTwoSupervisionLocation filter option", () => {
+    it("is the same for both tenants", () => {
+      result = filterOptionsMap;
+      const expected = {
+        defaultValue: "All",
+      };
+
+      expect(result.US_MO.levelTwoSupervisionLocation).toEqual(expected);
+      expect(result.US_PA.levelTwoSupervisionLocation).toEqual(expected);
     });
   });
 
@@ -91,11 +103,11 @@ describe("filterOptionsMap", () => {
       const expected = {
         defaultOption: [
           {
-            label: "Revocation",
-            value: "REVOCATION",
+            label: "ALL",
+            value: "All",
           },
         ],
-        defaultValue: ["REVOCATION"],
+        defaultValue: ["All"],
         options: [
           {
             label: "ALL",
@@ -324,11 +336,11 @@ describe("filterOptionsMap", () => {
       const expected = {
         defaultOption: [
           {
-            label: "Revocation",
-            value: "REVOCATION",
+            label: "ALL",
+            value: "All",
           },
         ],
-        defaultValue: ["REVOCATION"],
+        defaultValue: ["All"],
         options: [
           {
             label: "ALL",

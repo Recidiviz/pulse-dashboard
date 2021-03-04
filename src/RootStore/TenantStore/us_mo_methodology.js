@@ -16,7 +16,7 @@
 // =============================================================================
 
 export const US_MO_METHODOLOGY = {
-  revocationsOverTime: [
+  admissionsOverTime: [
     {
       id: 1,
       header: "What this chart shows",
@@ -96,7 +96,7 @@ this chart will automatically update to include only people from the probation p
 District 2.`,
     },
   ],
-  revocationsByDistrict: [
+  admissionsByDistrict: [
     {
       id: 1,
       header: `What the "revocation count" chart shows`,
@@ -132,11 +132,33 @@ population in District 2.`,
       body: `If the user has filtered the page by clicking on a specific violation type (i.e., low technical) or bubble (i.e., low technical and 3 violation reports) within the "Admissions by violation history" plot, this chart will show the percentage of people admitted with the selected violation history among those with a similar violation history within each district. For example, if the user selected the low technical row on the plot, the chart would show: For each district, the number of people admitted whose most serious violation was a low technical, divided by the total number of people on supervision whose most serious violation was a low technical, regardless of whether they were admitted. Continuing with this example, if a user hovers their mouse over the district column, the numerator would be all people admitted for a low technical violation in that district and the denominator would be all people who committed a low technical violation, whether or not they were admitted to a DOC facility. Comparing these percentages will indicate whether admission practices differ by district for various violation histories. That is, whether people with similar violation histories are admitted more frequently in one district than another. For people who have not been admitted, the most serious violation is identified by considering all violations reported within one year from either the current date (if the person is still on supervision) or the date that the person was discharged from supervision.`,
     },
   ],
-  revocationsByRiskLevel: [
+  admissionsByOfficer: [
+    {
+      id: 1,
+      header: `What the "Admission count" chart shows`,
+      body: `This chart shows the total number of people revoked to prison by the 50 supervision officers with the most revocations during the time period selected in the "Time Period" drop-down menu. Supervision officers are positioned in descending order from left to right, with the officer with the highest number of people admitted from supervision at the left. If the chart shows fewer than 50 bars, there were less than 50 officers who had admissions during the selected time period. The officer associated with each admission from supervision is based on the officer who was assigned most recently to a supervision case at the time of admission.`,
+    },
+    {
+      id: 2,
+      header: `What the "Admission rate of standing population" chart shows`,
+      body: `When no violation history filters are selected in the "Admissions by violation history" plot, this chart shows the percentage of people revoked to prison from each supervision officer’s caseload. Admission rate of standing population is defined as the number of people revoked to prison per officer divided by the total number of people supervised by each officer. The 50 supervision officers with the highest admission rates are positioned in descending order from left to right. If the chart shows fewer than 50 bars, there were fewer than 50 officers who had admissions during the selected time period. The officer associated with each admission from supervision is based on the officer who most recently was assigned to a supervision case at the time of admission. When hovering over any officer column, users can see the total number of people on supervision on that officer’s caseload as the denominator and the total number of people admitted from that officer’s caseload as the numerator. officer caseloads vary widely, so admission rates by officer may be based on a relatively small number of cases and therefore less generalizable. `,
+    },
+    {
+      id: 3,
+      header: "Who is included",
+      body: `This chart includes only people who were revoked to prison. Counts do not include (1) people who were revoked to termination or to a new form of supervision (i.e., SIS to SES); (2) people who were admitted to prison for reasons aside from revocation, such as treatment or short term sanctions; and (3) people who have been detained pending a revocation hearing, but who have not been legally revoked. This chart (like all charts on the page) will automatically repopulate to match whatever filter(s) the user has selected. For example, if the user has selected "District 2" and "Probation" from the drop down menus at the top of the screen, this chart will automatically update to include only people from the probation population in District 2.`,
+    },
+    {
+      id: 4,
+      header: "Filtering by violation history",
+      body: `If the user has filtered the page by clicking on a specific violation type (i.e., low technical) or bubble (i.e., low technical and three violation reports) within the "Admissions by violation history" plot, this chart will show the percentage of people admitted with the selected violation history among those with a similar violation history within an officer’s caseload. For example, if the user selected the low technical row on the plot, the chart would show for each officer, the number of people admitted whose most serious violation was a low technical, divided by the total number of people supervised by that officer whose most serious violation was a low technical, regardless of whether they were admitted. Continuing with this example, if a user hovers over the officer column, the numerator would show all people admitted for a low technical violation on that officer’s caseload, and the denominator would show all people on that officer’s caseload who committed a low technical violation, whether they were admitted to a DOC facility or not. Comparing these percentages will indicate whether admission practices differ by officer for various violation histories. That is, whether people with similar violation histories are admitted more frequently by one officer than another. For people who have not been admitted, the most serious violation is identified by considering all violations reported within one year from either the current date (if the person is still on supervision) or the date that the person was discharged from supervision.`,
+    },
+  ],
+  admissionsByRiskLevel: [
     {
       id: 1,
       header: "What this chart shows",
-      body: `When no violation history filters are selected in the "Admissions by violation history" plot, this chart shows the percentage of people who were revoked in each risk level group. This is calculated as the number of people of each risk level who were revoked divided by the total number of people on supervision at that risk level. Risk level is based only on the Community Supervision Screening Tool and/or the Community Supervision Tool (if relevant) and no other assessment (i.e., Prison Intake Tool). Those without Community Supervision Screening Tool/Community Supervision Tool scores are counted in the Unassessed category. When hovering a mouse over any risk column, users can see the total number of people on supervision assessed at that specific risk level as the denominator and the total number of people revoked at that risk level as the numerator. `,
+      body: `When no violation history filters are selected in the "Admissions by violation history" plot, this chart shows the percentage of people who were revoked in each risk level group. This is calculated as the number of people of each risk level who were revoked divided by the total number of people on supervision at that risk level. Risk level is based only on the Community Supervision Screening Tool and/or the Community Supervision Tool (if relevant) and no other assessment (i.e., Prison Intake Tool). Those without Community Supervision Screening Tool/Community Supervision Tool scores are counted in the No Score category. When hovering a mouse over any risk column, users can see the total number of people on supervision assessed at that specific risk level as the denominator and the total number of people revoked at that risk level as the numerator. `,
     },
     {
       id: 2,
@@ -150,7 +172,7 @@ population in District 2.`,
 `,
     },
   ],
-  revocationsByViolationType: [
+  admissionsByViolationType: [
     {
       id: 1,
       header: "What this chart shows",
@@ -162,38 +184,60 @@ population in District 2.`,
       body: `This chart includes only violation records for people who were revoked to prison. Counts do not include (1) people who were revoked to termination or to a new form of supervision (i.e., SIS to SES); (2) people who were admitted to prison for reasons aside from revocation, such as treatment or short term sanctions; and (3) people who have been detained pending a revocation hearing, but who have not been legally revoked. This chart (like all charts on the page) will automatically repopulate to match whatever filters the user has selected. For example, if the user has selected "District 2" and "Probation" from the drop down menus at the top of the screen, this chart will automatically update to include only people from the probation population in District 2.`,
     },
   ],
-  revocationsByGender: [
+  admissionsByGender: [
     {
       id: 1,
       header: "What this chart shows",
-      body: `When no violation history filters are selected in the "Admissions by violation history" plot, this chart compares the percent of women and men who were revoked, overall and broken out by risk level. These percentages are calculated as follows: Overall and for each risk level, the number of women (or men) revoked divided by the total number of women (or men) in that risk level group. Risk level is defined based only on the Community Supervision Screening Tool and/or the Community Supervision Tool (if relevant) and no other assessment (i.e., Prison Intake Tool). Those without Community Supervision Screening Tool/Community Supervision Tool scores are counted in the Unassessed category. When hovering a mouse over any column, users can see the total number of people on supervision assessed at that specific risk level and gender as the denominator and the total number of people admitted at that risk level and gender as the numerator.`,
+      body: `When no violation history filters are selected in the "Admissions by violation history" plot, this chart shows the percent of each gender who were revoked, on supervision, and in Missouri’s general population. At a high level, comparing these percentages can indicate whether a given gender is over- or under-represented when compared to the broader population. If an individual does not have a known gender, they are excluded from this chart.`,
     },
     {
       id: 2,
-      header: "Who is included",
-      body: `This chart includes only people who were revoked to prison. Counts do not include (1) people who were revoked to termination or to a new form of supervision (i.e., SIS to SES); (2) people who were admitted to prison for reasons aside from revocation, such as treatment or short term sanctions; and (3) people who have been detained pending a revocation hearing, but who have not been legally revoked. This chart (like all charts on the page) will automatically repopulate to match whatever filter(s) the user has selected. For example, if the user has selected "District 2" and "Probation" from the drop down menus at the top of the screen, this chart will automatically update to include only people from the probation population in District 2.`,
+      body: `"Missouri Population" refers to the number of individuals of the selected gender divided by the total number of people in Missouri, according to the US Census Bureau. This value stays the same regardless of whether any filters are selected on the page.`,
     },
     {
       id: 3,
+      body: `The "Supervision Population" refers to the number of individuals of the selected gender divided by the total number of people on supervision during the selected time period.`,
+    },
+    {
+      id: 4,
+      body: `"Admitted Population" refers to the number of individuals of the selected gender who were admitted to a DOC facility for a revocation divided by the total number of people revoked during the selected time period. Revocation counts do not include (1) people who were revoked to termination or to a new form of supervision (i.e., SIS to SES); (2) people who were admitted to prison for reasons aside from revocation, such as treatment or short term sanctions; and (3) people who have been detained pending a revocation hearing, but who have not been legally revoked. `,
+    },
+    {
+      id: 5,
+      body: `If a specific district is selected, "Admitted Population" and the "Supervision Population" will only include individuals currently assigned to or terminated by an officer from that district. `,
+    },
+    {
+      id: 6,
       header: "Filtering by violation history",
-      body: `If the user has filtered the page by clicking on a specific violation type (i.e., technical) or bubble (i.e., technical, 3) within the revocation plot, this chart will show the percentage of people revoked with the selected violation history, for each gender and risk level group among those on supervision with the same gender and risk level. For example, if the user selected the technical row on the revocations plot, the chart would show: For men and women overall, and for each risk level, the number of people revoked whose most serious violation was a technical, divided by the total number of people on supervision whose most serious violation was a technical, regardless of whether they were revoked. Continuing with this example, if a user hovers their mouse over the low risk column for women, the numerator would be all low risk women admitted for a technical violation and the denominator would be all low risk women who committed a technical violation, whether or not they were revoked. Comparing these percentages will indicate whether revocation practices differ between men and women. That is, whether men are likelier (or less likely) to be revoked compared to women with the same risk level and violation history. For people who have not been revoked, the most serious violation is identified by considering all violations reported within one year from either the current date (if the person is still on supervision) or the date that the person was discharged from supervision.`,
+      body: `If the user has filtered the page by clicking on a specific violation type (i.e. technical) or bubble (i.e. technical, 3) within the revocation plot, the groups of "Admitted Population" and "Supervision Population" groups will be updated. If a user selected the row "Technical", the denominator of "Admitted Population" will now only be people who were revoked with a most serious violation of technical, and the numerator would be the subset of people who are of the selected gender and who have been revoked with a most serious violation of technical. Similarly, with the above example, the "Supervision Population" denominator would now be all people on supervision who committed a technical violation, whether or not they were revoked, and the numerator would be the subset of that population who were of the specified gender. For people who have not been revoked, the most serious violation is identified by considering all violations reported within one year from either the current date (if the person is still on supervision) or the date that the person was discharged from supervision.`,
     },
   ],
   admissionsByRace: [
     {
       id: 1,
       header: "What this chart shows",
-      body: `When no violation history filters are selected in the "Admissions by violation history" plot, this chart compares the percent of people in each race/ethnicity group who were revoked, overall and broken out by risk level. These percentages are calculated as follows: Overall and for each risk level, the number of people of a given race/ethnicity revoked divided by the total number of people of a given race/ethnicity in that risk level group. Risk level is defined based only on the Community Supervision Screening Tool and/or the Community Supervision Tool (if relevant) and no other assessment (i.e., Prison Intake Tool). Those without Community Supervision Screening Tool/Community Supervision Tool scores are counted in the Unassessed category. When hovering a mouse over any column, users can see the total number of people on supervision of a given race/ethnicity who were assessed at that specific risk level as the denominator and the total number of people admitted at that risk level and race/ethnicity as the numerator.`,
+      body: `When no violation history filters are selected in the "Admissions by violation history" plot, this chart shows the percent of people in each race/ethnicity group who were revoked, on supervision, and in Missouri’s general population. At a high level, comparing these percentages can indicate whether a given race/ethnicity is over- or under-represented when compared to the broader population. If an individual has more than one race/ethnicity recorded from different data systems, they are counted toward the least common race/ethnicity in the state. For example, if the individual is Caucasian and African American, they would count in the African American selection because there are fewer African Americans than Caucasians in the state. If an individual does not have a known race/ethnicity, they are excluded from this chart.`,
     },
     {
       id: 2,
-      header: "Who is included",
-      body: `This chart includes only people who were revoked to prison. Counts do not include (1) people who were revoked to termination or to a new form of supervision (i.e., SIS to SES); (2) people who were admitted to prison for reasons aside from revocation, such as treatment or short term sanctions; and (3) people who have been detained pending a revocation hearing, but who have not been legally revoked. This chart (like all charts on the page) will automatically repopulate to match whatever filter(s) the user has selected. For example, if the user has selected "District 2" and "Probation" from the drop down menus at the top of the screen, this chart will automatically update to include only people from the probation population in District 2`,
+      body: `"Missouri Population" refers to the number of individuals of the selected race/ethnicity divided by the total number of people in Missouri, according to the US Census Bureau. This value stays the same regardless of whether any filters are selected on the page.`,
     },
     {
       id: 3,
+      body: `The "Supervision Population" refers to the number of individuals of the selected race/ethnicity divided by the total number of people on supervision during the selected time period. `,
+    },
+    {
+      id: 4,
+      body: `"Admitted Population" refers to the number of individuals of the selected race/ethnicity who were admitted to a DOC facility for a revocation divided by the total number of people revoked during the selected time period. Revocation counts do not include (1) people who were revoked to termination or to a new form of supervision (i.e., SIS to SES); (2) people who were admitted to prison for reasons aside from revocation, such as treatment or short term sanctions; and (3) people who have been detained pending a revocation hearing, but who have not been legally revoked. `,
+    },
+    {
+      id: 5,
+      body: `If a specific district is selected, "Admitted Population" and the "Supervision Population" will only include individuals currently assigned to or terminated by an officer from that district. `,
+    },
+    {
+      id: 6,
       header: "Filtering by violation history",
-      body: `If the user has filtered the page by clicking on a specific violation type (i.e., technical) or bubble (i.e., technical, 3) within the revocation plot, this chart will show the percentage of people revoked with the selected violation history, for each race/ethnicity and risk level group among those on supervision with the same race/ethnicity and risk level. For example, if the user selected the technical row on the revocations plot, the chart would show: Overall and for each risk level, the number of people of each race/ethnicity who were revoked whose most serious violation was a technical, divided by the total number of people on supervision of that race/ethnicity whose most serious violation was a technical, regardless of whether they were revoked. Continuing with this example, if a user hovers their mouse over the low risk column for African Americans, the numerator would be all low risk African American people admitted for a technical violation and the denominator would be all low risk African American people who committed a technical violation, whether or not they were revoked. Comparing these percentages will indicate whether revocation practices differ between racial/ethnic groups. That is, whether individuals of one race/ethnicity are more (or less) frequently revoked compared to others with the same risk level and violation record. For people who have not been revoked, the most serious violation is identified by considering all violations reported within one year from either the current date (if the person is still on supervision) or the date that the person was discharged from supervision`,
+      body: `If the user has filtered the page by clicking on a specific violation type (i.e. technical) or bubble (i.e. technical, 3) within the revocation plot, the groups of "Admitted Population" and "Supervision Population" groups will be updated. If a user selected the row "Technical", the denominator of "Admitted Population" will now only be people who were revoked with a most serious violation of technical, and the numerator would be the subset of people who are of the selected race/ethnicity and who have been revoked with a most serious violation of technical. Similarly, with the above example, the "Supervision population" denominator would now be all people on supervision who committed a technical violation, whether or not they were revoked, and the numerator would be the subset of that population who were of the specified race/ethnicity. For people who have not been revoked, the most serious violation is identified by considering all violations reported within one year from either the current date (if the person is still on supervision) or the date that the person was discharged from supervision.`,
     },
   ],
   filteredCaseTable: [
@@ -227,7 +271,7 @@ active supervision period at any point within the two years prior to the revocat
       body: `Risk level is defined based only on the Community Supervision Screening Tool and/or
 the Community Supervision Tool (if relevant) and no other assessment (i.e., Prison Intake Tool).
 Those without Community Supervision Screening Tool/Community Supervision Tool scores are counted
-in the Unassessed category.`,
+in the No Score category.`,
     },
     {
       id: 5,

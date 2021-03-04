@@ -25,7 +25,7 @@ export const getRateAnnotation = (averageRate) => ({
   drawTime: "afterDatasetsDraw",
   annotations: [
     {
-      drawTime: "afterDraw",
+      drawTime: "afterDatasetsDraw",
       type: "line",
       mode: "horizontal",
       scaleID: "y-axis-0",

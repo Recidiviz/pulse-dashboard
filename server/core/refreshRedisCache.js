@@ -14,6 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
+const Sentry = require("@sentry/node");
 
 /**
  * Refresh all of the datasets returned from the provided fetch function in the redis cache.
@@ -90,11 +91,10 @@ function refreshRedisCache(fetchMetrics, stateCode, metricType, callback) {
       );
     })
     .catch((error) => {
-      console.error(
-        `Error occurred while caching files for metricType: ${metricType}`,
-        error
-      );
+      const message = `Error occurred while caching files for metricType: ${metricType}`;
+      console.error(message, error);
       responseError = error;
+      Sentry.captureException(message, responseError);
     })
     .finally(() => {
       callback(responseError, "OK");

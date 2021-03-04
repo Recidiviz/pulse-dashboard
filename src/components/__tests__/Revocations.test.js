@@ -29,9 +29,9 @@ import Matrix from "../charts/new_revocations/Matrix";
 import RevocationCharts from "../charts/new_revocations/RevocationCharts";
 import CaseTable from "../charts/new_revocations/CaseTable/CaseTable";
 import { METADATA_NAMESPACE } from "../../constants";
-import { setTranslateLocale } from "../../views/tenants/utils/i18nSettings";
+import { setTranslateLocale } from "../../utils/i18nSettings";
 
-import { US_MO } from "../../views/tenants/utils/lanternTenants";
+import { US_MO } from "../../RootStore/TenantStore/lanternTenants";
 import mockWithTestId from "../../../__helpers__/mockWithTestId";
 import filterOptionsMap from "../../views/tenants/constants/filterOptions";
 import {
@@ -60,7 +60,7 @@ describe("Revocations component tests", () => {
   const mockTenantId = "TEST_TENANT";
   const mockUser = { [metadataField]: { state_code: mockTenantId } };
   const toggleBarIdPrefix = "toggle-bar-";
-  const districtFilterId = "district-filter";
+  const DistrictFilterId = "district-filter";
   const admissionTypeFilterId = "admission-type-filter";
   const violationFilterId = "violation-filter-id";
   const revocationCountOverTimeId = "revocation-count-over-time";
@@ -80,7 +80,7 @@ describe("Revocations component tests", () => {
   ToggleBarFilterMock.mockImplementation(({ label }) =>
     mockWithTestId(`${toggleBarIdPrefix}${label}`)
   );
-  DistrictFilterMock.mockReturnValue(mockWithTestId(districtFilterId));
+  DistrictFilterMock.mockReturnValue(mockWithTestId(DistrictFilterId));
   AdmissionTypeFilterMock.mockReturnValue(
     mockWithTestId(admissionTypeFilterId)
   );
@@ -131,7 +131,7 @@ describe("Revocations component tests", () => {
       getByTestId(`${toggleBarIdPrefix}Supervision Level`)
     ).toBeInTheDocument();
 
-    expect(getByTestId(districtFilterId)).toBeInTheDocument();
+    expect(getByTestId(DistrictFilterId)).toBeInTheDocument();
     expect(getByTestId(admissionTypeFilterId)).toBeInTheDocument();
     expect(getByTestId(violationFilterId)).toBeInTheDocument();
     expect(getByTestId(revocationCountOverTimeId)).toBeInTheDocument();

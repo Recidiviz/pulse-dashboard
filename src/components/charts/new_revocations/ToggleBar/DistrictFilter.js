@@ -18,69 +18,53 @@ import React from "react";
 
 import { observer } from "mobx-react-lite";
 import { get } from "mobx";
-
 import map from "lodash/fp/map";
 
 import FilterField from "./FilterField";
-import Select from "../../../controls/Select";
-import MultiSelect from "../../../controls/MultiSelect";
+import SelectDropdown from "../../../controls/SelectDropdown";
 import { useRootStore } from "../../../../StoreProvider";
-import { DISTRICT } from "../../../../constants/filterTypes";
+import { flatOptions } from "../../../controls/utils";
 
-const allDistrictsOption = { label: "All", value: "All" };
+const allOption = { label: "ALL", value: "All", secondaryValue: "All" };
 
 const DistrictFilter = () => {
-  const { filters, filtersStore, tenantStore, userStore } = useRootStore();
+  const { filters, filtersStore, userStore, districtsStore } = useRootStore();
   const { restrictedDistrict } = userStore;
+  const {
+    isLoading,
+    districtKeys: { filterKey, secondaryFilterKey },
+  } = districtsStore;
+  const { filterOptions } = filtersStore;
 
-  const getSelectElement = () => {
-    if (restrictedDistrict) {
-      const singleValue = {
-        label: restrictedDistrict,
-        value: restrictedDistrict,
-      };
+  const options = [allOption].concat(filterOptions[filterKey].options);
 
-      return (
-        <Select
-          value={singleValue}
-          options={[singleValue]}
-          defaultValue={singleValue}
-          onChange={() => {}}
-          isDisabled
-        />
-      );
-    }
-    const { districts, districtsIsLoading } = tenantStore;
-    const options = [allDistrictsOption].concat(
-      districts.map((d) => ({ value: d, label: d }))
-    );
-    const summingOption = allDistrictsOption;
-    const defaultValue = [allDistrictsOption];
+  const onValueChange = (newOptions) => {
+    const optionValues = map("value", newOptions);
 
-    const onValueChange = (newOptions) => {
-      const filteredDistricts = map("value", newOptions);
-      filtersStore.setFilters({ [DISTRICT]: filteredDistricts });
-    };
-
-    const selectValue = options.filter((option) =>
-      get(filters, DISTRICT).includes(option.value)
-    );
-
-    return (
-      <MultiSelect
-        options={options}
-        summingOption={summingOption}
-        defaultValue={defaultValue}
-        value={selectValue}
-        onChange={onValueChange}
-        isMulti
-        isLoading={districtsIsLoading}
-        isSearchable
-      />
-    );
+    filtersStore.setFilters({
+      [filterKey]: optionValues,
+      ...(secondaryFilterKey
+        ? { [secondaryFilterKey]: map("secondaryValue", newOptions) }
+        : {}),
+    });
   };
 
-  return <FilterField label="District">{getSelectElement()}</FilterField>;
+  const selectedValues = flatOptions(options).filter((option) =>
+    get(filters, filterKey).includes(option.value)
+  );
+
+  return (
+    <FilterField label="District">
+      <SelectDropdown
+        singleValueOption={restrictedDistrict}
+        options={options}
+        selected={selectedValues}
+        onValueChange={onValueChange}
+        isLoading={isLoading}
+        defaultValue={allOption}
+      />
+    </FilterField>
+  );
 };
 
 export default observer(DistrictFilter);
