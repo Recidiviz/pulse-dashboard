@@ -57,6 +57,9 @@ const RevocationCountChart = ({ chartId, data, xAxisLabel }) => (
             },
             ticks: { precision: 0 },
             stacked: true,
+            ticks: {
+              precision: 0,
+            },
           },
         ],
       },
