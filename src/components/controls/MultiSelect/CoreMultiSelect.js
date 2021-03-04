@@ -18,6 +18,7 @@ import React, { useCallback, useMemo, useRef, useEffect } from "react";
 import PropTypes from "prop-types";
 import cn from "classnames";
 import ReactSelect from "react-select";
+import { Scrollbars } from "react-custom-scrollbars";
 
 import GroupHeading from "./GroupHeading";
 import ValueContainer from "./ValueContainer";
@@ -26,9 +27,20 @@ import Option from "./Option";
 import { getNewOptions } from "../utils";
 import { optionPropType } from "../../propTypes";
 
-import "./MultiSelect.scss";
+import "./CoreMultiSelect.scss";
 
-const MultiSelect = ({
+const CustomScrollBarWrapper = ({ children }) => {
+  return (
+    <Scrollbars
+      thumbSize={31}
+      style={{ height: 250, marginBottom: -15, width: 249 }}
+    >
+      {children}
+    </Scrollbars>
+  );
+};
+
+const CoreMultiSelect = ({
   summingOption,
   options,
   value,
@@ -37,11 +49,19 @@ const MultiSelect = ({
   ...props
 }) => {
   const ref = useRef();
+
   useEffect(() => {
     if (ref.current && ref.current.state.menuIsOpen) {
       ref.current.select.focus();
     }
   }, [value]);
+
+  useEffect(() => {
+    const input = document.querySelector(".CoreMultiSelect__input > input");
+    if (input) {
+      input.setAttribute("readonly", "");
+    }
+  });
 
   const handleChange = useCallback(
     (selectedOptions) => {
@@ -50,14 +70,23 @@ const MultiSelect = ({
     },
     [onChange, options, summingOption]
   );
+
   const replacedComponents = useMemo(
     () => ({
+      IndicatorSeparator: () => null,
       GroupHeading: (groupHeadingProps) => (
         <GroupHeading onChange={handleChange} {...groupHeadingProps} />
       ),
       Option,
+      MenuList: CustomScrollBarWrapper,
+      DropdownIndicator: () => (
+        <div className="CoreMultiSelect__custom-indicator">
+          <span className="CoreMultiSelect__custom-arrow" />
+        </div>
+      ),
       ValueContainer: (valueContainerProps) => (
         <ValueContainer
+          isCore
           allOptions={options}
           summingOption={summingOption}
           {...valueContainerProps}
@@ -66,11 +95,12 @@ const MultiSelect = ({
     }),
     [handleChange, options, summingOption]
   );
+
   return (
     <ReactSelect
-      classNamePrefix="MultiSelect"
-      className={cn("MultiSelect", className, {
-        "MultiSelect--summing-option-selected": summingOption === value[0],
+      classNamePrefix="CoreMultiSelect"
+      className={cn("CoreMultiSelect", className, {
+        "CoreMultiSelect--summing-option-selected": summingOption === value[0],
       })}
       ref={ref}
       closeMenuOnSelect={false}
@@ -87,10 +117,10 @@ const MultiSelect = ({
   );
 };
 
-MultiSelect.defaultProps = {
+CoreMultiSelect.defaultProps = {
   className: "",
 };
-MultiSelect.propTypes = {
+CoreMultiSelect.propTypes = {
   defaultValue: PropTypes.arrayOf(optionPropType).isRequired,
   value: PropTypes.arrayOf(optionPropType).isRequired,
   onChange: PropTypes.func.isRequired,
@@ -98,5 +128,8 @@ MultiSelect.propTypes = {
   className: PropTypes.string,
   summingOption: optionPropType.isRequired,
 };
+CustomScrollBarWrapper.propTypes = {
+  children: PropTypes.arrayOf(optionPropType).isRequired,
+};
 
-export default MultiSelect;
+export default CoreMultiSelect;
