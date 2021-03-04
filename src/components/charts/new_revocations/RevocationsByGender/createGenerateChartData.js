@@ -27,9 +27,7 @@ import {
   genderValueToLabel,
 } from "../../../../utils/transforms/labels";
 import getCounts from "../utils/getCounts";
-import createPopulationMap, {
-  sumCountsAcrossRiskLevels,
-} from "../utils/createPopulationMap";
+import createPopulationMap from "../utils/createPopulationMap";
 
 export const generateDatasets = (dataPoints, denominators) => {
   return Object.values(genderValueToLabel).map((genderLabel, index) => ({
@@ -47,7 +45,6 @@ const createGenerateChartData = ({ filteredData, statePopulationData }) => (
 ) => {
   const genders = Object.keys(genderValueToLabel);
   const { dataPoints, numerators, denominators } = pipe(
-    reduce(sumCountsAcrossRiskLevels("gender"), []),
     reduce(createPopulationMap("gender"), {}),
     (data) =>
       getCounts(
