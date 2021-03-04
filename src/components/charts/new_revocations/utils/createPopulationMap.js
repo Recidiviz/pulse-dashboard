@@ -23,26 +23,6 @@ import toInteger from "lodash/fp/toInteger";
 const NUMERATOR_KEYS = ["revocation_count", "supervision_population_count"];
 const DENOMINATOR_KEYS = ["revocation_count_all", "supervision_count_all"];
 
-// TODO # 784 once the risk_level dimension has been removed from race and gender
-// metric files, we can remove this sum function
-export const sumCountsAcrossRiskLevels = (field) => (acc, data) => {
-  if (acc.length === 0) acc.push({ ...data });
-  else {
-    const match = acc.find((dataPoint) => {
-      return (
-        dataPoint[field] === data[field] && dataPoint.district === data.district
-      );
-    });
-    if (match) {
-      NUMERATOR_KEYS.forEach((numeratorKey) => {
-        match[numeratorKey] =
-          parseInt(match[numeratorKey]) + parseInt(data[numeratorKey]);
-      });
-    } else acc.push({ ...data });
-  }
-  return acc;
-};
-
 /**
  * Transform to
  *   ASIAN: { REVOKED: [1, 4], SUPERVISION_POPULATION: [5, 9], ... } }
