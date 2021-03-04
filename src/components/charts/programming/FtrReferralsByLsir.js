@@ -46,8 +46,9 @@ import { metricTypePropType } from "../propTypes";
 import { METRIC_TYPES } from "../../constants";
 
 const chartId = "ftrReferralsByLsir";
+const chartLabels = ["No Score", "0-23", "24-29", "30-38", "39+"];
 
-const lsirScoreBuckets = ["0-23", "24-29", "30-38", "39+"];
+const lsirScoreBuckets = ["NOT_ASSESSED", "0-23", "24-29", "30-38", "39+"];
 const lsirDefaults = reduce(
   (acc, lsir) => ({
     ...acc,
@@ -123,7 +124,6 @@ const FtrReferralsByLsir = ({
     lsirScoreBuckets
   );
 
-  const chartLabels = lsirScoreBuckets;
   const ftrReferralCounts = referralsByAgeCounts;
   const ftrReferralProportions = referralsByAgeProportions;
   const stateSupervisionCounts = supervisionByAgeCounts;
