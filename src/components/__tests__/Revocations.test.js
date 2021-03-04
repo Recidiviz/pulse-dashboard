@@ -145,7 +145,6 @@ describe("Revocations component tests", () => {
     filterOptionsMap[mockTenantId][SUPERVISION_TYPE].componentEnabled = false;
     filterOptionsMap[mockTenantId][CHARGE_CATEGORY].componentEnabled = false;
     filterOptionsMap[mockTenantId][ADMISSION_TYPE].componentEnabled = false;
-    filterOptionsMap[mockTenantId][ADMISSION_TYPE].filterEnabled = false;
     const { queryByTestId } = render(
       <PageProvider>
         <Revocations />

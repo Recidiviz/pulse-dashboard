@@ -41,6 +41,7 @@ const defaultFilters = {
   violationType: "All",
   levelOneSupervisionLocation: ["All"],
   levelTwoSupervisionLocation: ["All"],
+  admissionType: ["All"],
 };
 
 // We are mocking the return of districtFilterKey to test the logic when there are

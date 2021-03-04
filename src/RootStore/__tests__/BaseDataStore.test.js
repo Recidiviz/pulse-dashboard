@@ -189,10 +189,8 @@ describe("BaseDataStore", () => {
       it("makes a request to the correct endpoint for the apiData", () => {
         const expectedEndpoint = `${tenantId}/newRevocations/revocations_matrix_distribution_by_district
         ?metricPeriodMonths=12&chargeCategory=All&reportedViolations=All&violationType=All&supervisionType=All
-        &supervisionLevel=All&levelOneSupervisionLocation[0]=All&levelTwoSupervisionLocation[0]=All`.replace(
-          /\n\s+/g,
-          ""
-        );
+        &supervisionLevel=All&levelOneSupervisionLocation[0]=All&levelTwoSupervisionLocation[0]=All&
+        admissionType[0]=All`.replace(/\n\s+/g, "");
 
         expect(callMetricsApi).toHaveBeenCalledTimes(1);
         expect(callMetricsApi).toHaveBeenCalledWith(
@@ -272,8 +270,9 @@ describe("BaseDataStore", () => {
 
     it("fetches a new subset file with new filter query params", () => {
       const expectedEndpoint = `${tenantId}/newRevocations/revocations_matrix_distribution_by_district?
-      metricPeriodMonths=12&chargeCategory=All&reportedViolations=All&violationType=LAW&
-      supervisionType=All&supervisionLevel=All&levelOneSupervisionLocation[0]=All&levelTwoSupervisionLocation[0]=All`.replace(
+      metricPeriodMonths=12&chargeCategory=All&reportedViolations=All&violationType=All&
+      supervisionType=All&supervisionLevel=All&levelOneSupervisionLocation[0]=All&
+      levelTwoSupervisionLocation[0]=All&admissionType[0]=All`.replace(
         /\n\s+/g,
         ""
       );

@@ -84,15 +84,13 @@ export default class FiltersStore {
       [VIOLATION_TYPE]: this.filterOptions[VIOLATION_TYPE].defaultValue,
       [SUPERVISION_TYPE]: this.filterOptions[SUPERVISION_TYPE].defaultValue,
       [SUPERVISION_LEVEL]: this.filterOptions[SUPERVISION_LEVEL].defaultValue,
-      ...(this.filterOptions[ADMISSION_TYPE].filterEnabled
-        ? { [ADMISSION_TYPE]: this.filterOptions[ADMISSION_TYPE].defaultValue }
-        : {}),
       [LEVEL_1_SUPERVISION_LOCATION]: [
         this.filterOptions[LEVEL_1_SUPERVISION_LOCATION].defaultValue,
       ],
       [LEVEL_2_SUPERVISION_LOCATION]: [
         this.filterOptions[LEVEL_2_SUPERVISION_LOCATION].defaultValue,
       ],
+      [ADMISSION_TYPE]: this.filterOptions[ADMISSION_TYPE].defaultValue,
       ...{
         [districtKeys.filterKey]: [
           this.rootStore.userStore.restrictedDistrict ||
