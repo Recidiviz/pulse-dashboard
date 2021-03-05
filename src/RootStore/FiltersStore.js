@@ -34,8 +34,8 @@ import {
   VIOLATION_TYPE,
   LEVEL_2_SUPERVISION_LOCATION,
   LEVEL_1_SUPERVISION_LOCATION,
-} from "../constants/filterTypes";
-import filterOptionsMap from "../views/tenants/constants/filterOptions";
+} from "../lantern/utils/constants";
+import filterOptionsMap from "./TenantStore/filterOptions";
 import { compareStrings } from "./utils";
 import { generateNestedOptions } from "./utils/districtOptions";
 

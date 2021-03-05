@@ -1,4 +1,4 @@
-import { humanReadableTitleCase } from "../transforms/labels";
+import { humanReadableTitleCase } from "../labels";
 
 function getViolation({ reportedViolations, violationType }) {
   let str = "";
