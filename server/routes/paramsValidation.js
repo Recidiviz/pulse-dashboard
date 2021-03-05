@@ -55,7 +55,6 @@ const VIOLATION_TYPES = [
   "med_tech",
   "misdemeanor",
   "municipal",
-  "no_violation_type",
   "substance_abuse",
   "technical",
 ];
@@ -66,7 +65,7 @@ const ADMISSION_TYPES = [
   "shock_incarceration_6_months",
   "shock_incarceration_9_months",
   "shock_incarceration_12_months",
-  "shock_incarceration_PVC",
+  "shock_incarceration_pvc",
 ];
 
 const newRevocationsParamValidations = [

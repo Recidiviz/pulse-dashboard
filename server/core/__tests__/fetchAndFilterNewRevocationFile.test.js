@@ -30,7 +30,6 @@ const mockSubsetFilters = {
     "low_tech",
     "med_tech",
     "municipal",
-    "no_violation_type",
     "substance_abuse",
     "technical",
   ],
