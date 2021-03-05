@@ -23,7 +23,7 @@ import Sticky from "react-sticky-fill";
 
 import RadioGroup from "../controls/RadioGroup";
 import { CoreSelect } from "../controls/CoreSelect";
-import MultiSelect from "../controls/MultiSelect";
+import CoreMultiSelect from "../controls/MultiSelect/CoreMultiSelect";
 
 import {
   defaultDistrictOption,
@@ -146,7 +146,7 @@ const ToggleBar = ({
                     {isCounty ? "County of Residence" : "Office"}
                   </span>
                   <div className="toggle-filters__select">
-                    <MultiSelect
+                    <CoreMultiSelect
                       value={districtOptions.filter((option) =>
                         district.includes(String(option.value))
                       )}
