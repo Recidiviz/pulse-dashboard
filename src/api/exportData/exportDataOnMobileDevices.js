@@ -27,7 +27,7 @@ export const isMobile =
   navigator.userAgent.includes("Mobile") ||
   navigator.userAgent.includes("Tablet");
 
-export default async function exportZipDataOnMobileDevices(
+export default async function exportDataOnMobileDevices(
   formData,
   filename,
   getTokenSilently
@@ -53,7 +53,7 @@ export default async function exportZipDataOnMobileDevices(
         forceDesktopMode: isMobileSafari,
         autoStart: false,
         filename,
-        url,
+        url: `${url}?url=${url}&filename=${filename}`,
       });
       return jsFileDownload.start();
     })

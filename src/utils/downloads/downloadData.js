@@ -17,11 +17,12 @@
 import * as Sentry from "@sentry/react";
 import JSZip from "jszip";
 import downloadjs from "downloadjs";
-import exportZipDataOnMobileDevices, {
+import exportDataOnMobileDevices, {
   isMobile,
-} from "../../api/exportData/exportZipDataOnMobileDevices";
+} from "../../api/exportData/exportDataOnMobileDevices";
 import transformCanvasToBase64 from "./transformCanvasToBase64";
 import createMethodologyFile from "./createMethodologyFile";
+
 // Functions for flowing through browser-specific download functionality
 // https://stackoverflow.com/questions/9847580/how-to-detect-safari-chrome-ie-firefox-and-opera-browser
 const isIE = /* @cc_on!@ */ false || !!document.documentMode;
@@ -44,7 +45,7 @@ async function downloadZipFile({ files, filename, getTokenSilently }) {
     const content = await zip.generateAsync({ type: "blob" });
     const formData = new FormData();
     formData.append("zip", content, filename);
-    await exportZipDataOnMobileDevices(formData, filename, getTokenSilently);
+    await exportDataOnMobileDevices(formData, filename, getTokenSilently);
   } else {
     zip.generateAsync({ type: "blob" }).then(function (content) {
       downloadjs(content, filename);
@@ -65,22 +66,28 @@ export function downloadCanvasAsImage({
 }) {
   const imageData = transformCanvasToBase64(canvas, chartTitle, filters);
   try {
-    if (shouldZipDownload) {
-      const methodologyFile = createMethodologyFile(
-        chartId,
-        chartTitle,
-        timeWindowDescription,
-        filters,
-        methodology
-      );
+    if (shouldZipDownload || isMobile) {
+      const methodologyFile =
+        shouldZipDownload &&
+        createMethodologyFile(
+          chartId,
+          chartTitle,
+          timeWindowDescription,
+          filters,
+          methodology
+        );
 
-      const imageFile = {
-        name: filename,
-        data: imageData.substring(22),
-        type: "base64",
-      };
+      const files = [
+        {
+          name: filename,
+          data: imageData.substring(22),
+          type: "base64",
+        },
+      ];
 
-      const files = [methodologyFile, imageFile];
+      if (methodologyFile) {
+        files.push(methodologyFile);
+      }
 
       downloadZipFile({
         files,
@@ -111,15 +118,18 @@ export function downloadData({
   methodologyFile = null,
 }) {
   try {
-    if (shouldZipDownload) {
+    if (shouldZipDownload || isMobile) {
       const files = [
-        methodologyFile,
         {
           name: filename,
           data: csv,
           type: "binary",
         },
       ];
+
+      if (methodologyFile) {
+        files.push(methodologyFile);
+      }
 
       downloadZipFile({
         files,
