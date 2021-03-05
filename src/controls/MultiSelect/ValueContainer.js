@@ -21,7 +21,13 @@ import { components } from "react-select";
 import { formatSelectOptionValue } from "../utils";
 import { optionPropType } from "../propTypes";
 
-const ValueContainer = ({ allOptions, summingOption, children, ...props }) => {
+const ValueContainer = ({
+  allOptions,
+  summingOption,
+  children,
+  isCore,
+  ...props
+}) => {
   const { selectProps, getValue } = props;
   const values = getValue();
   const selectInput = React.Children.map(children, (child) => {
@@ -36,7 +42,7 @@ const ValueContainer = ({ allOptions, summingOption, children, ...props }) => {
 
   const text = isAll
     ? summingOption.label
-    : formatSelectOptionValue(allOptions, summingOption, values);
+    : formatSelectOptionValue(allOptions, summingOption, values, isCore);
 
   return (
     <components.ValueContainer {...props}>
@@ -45,12 +51,14 @@ const ValueContainer = ({ allOptions, summingOption, children, ...props }) => {
     </components.ValueContainer>
   );
 };
+ValueContainer.defaultProps = { isCore: false };
 
 ValueContainer.propTypes = {
   allOptions: PropTypes.arrayOf(optionPropType).isRequired,
   summingOption: optionPropType.isRequired,
   children: PropTypes.node.isRequired,
   getValue: PropTypes.func.isRequired,
+  isCore: PropTypes.bool,
   selectProps: PropTypes.shape({
     inputValue: PropTypes.string,
   }).isRequired,
