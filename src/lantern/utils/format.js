@@ -16,8 +16,8 @@
 // =============================================================================
 
 import {
-  getTrailingLabelFromMetricPeriodMonthsToggle,
-  getPeriodLabelFromMetricPeriodMonthsToggle,
+  getTrailingLabelFromMetricPeriodMonthsFilter,
+  getPeriodLabelFromMetricPeriodMonthsFilter,
 } from "../../utils/labels";
 import {
   formatSelectOptionValue,
@@ -26,8 +26,8 @@ import {
 } from "../../controls/utils";
 
 export const getTimeDescription = (months, admissionOptions, admissionType) => {
-  const trailingLabel = getTrailingLabelFromMetricPeriodMonthsToggle(months);
-  const periodLabel = getPeriodLabelFromMetricPeriodMonthsToggle(months);
+  const trailingLabel = getTrailingLabelFromMetricPeriodMonthsFilter(months);
+  const periodLabel = getPeriodLabelFromMetricPeriodMonthsFilter(months);
 
   if (!admissionType) {
     return `${trailingLabel} (${periodLabel})`;

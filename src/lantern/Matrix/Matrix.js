@@ -122,7 +122,7 @@ const Matrix = ({ timeDescription }) => {
     mobxGet(filters, VIOLATION_TYPE) === violationType &&
     mobxGet(filters, REPORTED_VIOLATIONS) === reportedViolations;
 
-  const toggleFilter = (violationType, reportedViolations) => {
+  const updateFilter = (violationType, reportedViolations) => {
     if (isSelected(violationType, reportedViolations)) {
       updateFilters({
         violationType: filterOptions[VIOLATION_TYPE].defaultValue,
@@ -190,7 +190,7 @@ const Matrix = ({ timeDescription }) => {
               key={i}
               violationType={violationType}
               sum={sumRow(dataMatrix[violationType])}
-              onClick={() => toggleFilter(violationType, "All")}
+              onClick={() => updateFilter(violationType, "All")}
             >
               {VIOLATION_COUNTS.map((violationCount, j) => (
                 <MatrixCell
@@ -199,7 +199,7 @@ const Matrix = ({ timeDescription }) => {
                   maxCount={maxRevocations}
                   violationType={violationType}
                   reportedViolations={violationCount}
-                  onClick={() => toggleFilter(violationType, violationCount)}
+                  onClick={() => updateFilter(violationType, violationCount)}
                 />
               ))}
             </MatrixRow>

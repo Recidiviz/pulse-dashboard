@@ -18,7 +18,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import { getPeriodLabelFromMetricPeriodMonthsToggle } from "../utils/labels";
+import { getPeriodLabelFromMetricPeriodMonthsFilter } from "../utils/labels";
 
 const PeriodLabel = ({ metricPeriodMonths }) => (
   <div className="PeriodLabel layer bdT p-20 w-100">
@@ -26,7 +26,7 @@ const PeriodLabel = ({ metricPeriodMonths }) => (
       <div className="peer fw-600">
         <small className="c-grey-500 fw-600">Period </small>
         <span className="fsz-def fw-600 mR-10 c-grey-800">
-          {getPeriodLabelFromMetricPeriodMonthsToggle(metricPeriodMonths)}
+          {getPeriodLabelFromMetricPeriodMonthsFilter(metricPeriodMonths)}
         </span>
       </div>
     </div>

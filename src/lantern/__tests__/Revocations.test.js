@@ -20,10 +20,10 @@ import { render } from "@testing-library/react";
 import { observable } from "mobx";
 
 import Revocations from "../Revocations";
-import ToggleBarFilter from "../ToggleBar/ToggleBarFilter";
-import DistrictFilter from "../ToggleBar/DistrictFilter";
-import AdmissionTypeFilter from "../ToggleBar/AdmissionTypeFilter";
-import ViolationFilter from "../ToggleBar/ViolationFilter";
+import SelectFilter from "../FiltersBar/SelectFilter";
+import DistrictFilter from "../FiltersBar/DistrictFilter";
+import AdmissionTypeFilter from "../FiltersBar/AdmissionTypeFilter";
+import ViolationFilter from "../FiltersBar/ViolationFilter";
 import RevocationCountOverTime from "../RevocationsOverTime";
 import Matrix from "../Matrix";
 import RevocationCharts from "../RevocationCharts";
@@ -43,10 +43,10 @@ import {
 import { useRootStore } from "../../components/StoreProvider";
 import { PageProvider } from "../../contexts/PageContext";
 
-jest.mock("../ToggleBar/ToggleBarFilter");
-jest.mock("../ToggleBar/DistrictFilter");
-jest.mock("../ToggleBar/AdmissionTypeFilter");
-jest.mock("../ToggleBar/ViolationFilter");
+jest.mock("../FiltersBar/SelectFilter");
+jest.mock("../FiltersBar/DistrictFilter");
+jest.mock("../FiltersBar/AdmissionTypeFilter");
+jest.mock("../FiltersBar/ViolationFilter");
 jest.mock("../RevocationsOverTime");
 jest.mock("../Matrix");
 jest.mock("../RevocationCharts");
@@ -58,7 +58,7 @@ describe("Revocations component tests", () => {
   const metadataField = `${METADATA_NAMESPACE}app_metadata`;
   const mockTenantId = "TEST_TENANT";
   const mockUser = { [metadataField]: { state_code: mockTenantId } };
-  const toggleBarIdPrefix = "toggle-bar-";
+  const filtersBarIdPrefix = "filters-bar-";
   const DistrictFilterId = "district-filter";
   const admissionTypeFilterId = "admission-type-filter";
   const violationFilterId = "violation-filter-id";
@@ -71,13 +71,13 @@ describe("Revocations component tests", () => {
   const RevocationCountOverTimeMock = RevocationCountOverTime.type;
   const MatrixMock = Matrix.type;
   const CaseTableMock = CaseTable.type;
-  const ToggleBarFilterMock = ToggleBarFilter.type;
+  const SelectFilterMock = SelectFilter.type;
   const AdmissionTypeFilterMock = AdmissionTypeFilter.type;
   const ViolationFilterMock = ViolationFilter.type;
   const RevocationChartsMock = RevocationCharts.type;
 
-  ToggleBarFilterMock.mockImplementation(({ label }) =>
-    mockWithTestId(`${toggleBarIdPrefix}${label}`)
+  SelectFilterMock.mockImplementation(({ label }) =>
+    mockWithTestId(`${filtersBarIdPrefix}${label}`)
   );
   DistrictFilterMock.mockReturnValue(mockWithTestId(DistrictFilterId));
   AdmissionTypeFilterMock.mockReturnValue(
@@ -121,13 +121,13 @@ describe("Revocations component tests", () => {
       </PageProvider>
     );
 
-    expect(getByTestId(`${toggleBarIdPrefix}Time Period`)).toBeInTheDocument();
-    expect(getByTestId(`${toggleBarIdPrefix}Case Type`)).toBeInTheDocument();
+    expect(getByTestId(`${filtersBarIdPrefix}Time Period`)).toBeInTheDocument();
+    expect(getByTestId(`${filtersBarIdPrefix}Case Type`)).toBeInTheDocument();
     expect(
-      getByTestId(`${toggleBarIdPrefix}Supervision Type`)
+      getByTestId(`${filtersBarIdPrefix}Supervision Type`)
     ).toBeInTheDocument();
     expect(
-      getByTestId(`${toggleBarIdPrefix}Supervision Level`)
+      getByTestId(`${filtersBarIdPrefix}Supervision Level`)
     ).toBeInTheDocument();
 
     expect(getByTestId(DistrictFilterId)).toBeInTheDocument();
@@ -151,9 +151,9 @@ describe("Revocations component tests", () => {
       </PageProvider>
     );
 
-    expect(queryByTestId(`${toggleBarIdPrefix}Supervision Level`)).toBeNull();
-    expect(queryByTestId(`${toggleBarIdPrefix}Supervision Type`)).toBeNull();
-    expect(queryByTestId(`${toggleBarIdPrefix}Case Type`)).toBeNull();
+    expect(queryByTestId(`${filtersBarIdPrefix}Supervision Level`)).toBeNull();
+    expect(queryByTestId(`${filtersBarIdPrefix}Supervision Type`)).toBeNull();
+    expect(queryByTestId(`${filtersBarIdPrefix}Case Type`)).toBeNull();
     expect(queryByTestId(admissionTypeFilterId)).toBeNull();
   });
 });

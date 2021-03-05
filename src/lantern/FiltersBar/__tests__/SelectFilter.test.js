@@ -19,7 +19,7 @@ import React from "react";
 import { act, render } from "@testing-library/react";
 import { observable } from "mobx";
 
-import ToggleBarFilter from "../ToggleBarFilter";
+import SelectFilter from "../SelectFilter";
 import Select from "../../../controls/Select";
 import FilterField from "../FilterField";
 import {
@@ -42,7 +42,7 @@ jest.mock("../FilterField", () => ({
 }));
 jest.mock("../../../components/StoreProvider");
 
-describe("ToggleBarFilter tests", () => {
+describe("SelectFilter tests", () => {
   const metadataField = `${METADATA_NAMESPACE}app_metadata`;
   const mockUser = { [metadataField]: { state_code: US_MO } };
   const setFiltersMock = jest.fn();
@@ -74,9 +74,7 @@ describe("ToggleBarFilter tests", () => {
     });
 
     it("should pass valid props to Select", () => {
-      render(
-        <ToggleBarFilter label={props.label} dimension={props.dimension} />
-      );
+      render(<SelectFilter label={props.label} dimension={props.dimension} />);
 
       expect(Select).toHaveBeenCalledTimes(1);
       expect(Select.mock.calls[0][0]).toMatchObject({
@@ -101,9 +99,7 @@ describe("ToggleBarFilter tests", () => {
         [props.dimension]: 99,
       };
 
-      render(
-        <ToggleBarFilter label="Time Period" dimension={props.dimension} />
-      );
+      render(<SelectFilter label="Time Period" dimension={props.dimension} />);
 
       act(() => {
         Select.mock.calls[0][0].onChange({ value: 99 });

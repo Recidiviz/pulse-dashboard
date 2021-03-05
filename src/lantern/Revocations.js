@@ -21,10 +21,10 @@ import Sticky from "react-sticky-fill";
 import { get } from "mobx";
 
 import { getTimeDescription } from "./utils/format";
-import ToggleBarFilter from "./ToggleBar/ToggleBarFilter";
-import DistrictFilter from "./ToggleBar/DistrictFilter";
-import AdmissionTypeFilter from "./ToggleBar/AdmissionTypeFilter";
-import ViolationFilter from "./ToggleBar/ViolationFilter";
+import SelectFilter from "./FiltersBar/SelectFilter";
+import DistrictFilter from "./FiltersBar/DistrictFilter";
+import AdmissionTypeFilter from "./FiltersBar/AdmissionTypeFilter";
+import ViolationFilter from "./FiltersBar/ViolationFilter";
 import RevocationsOverTime from "./RevocationsOverTime";
 import Matrix from "./Matrix";
 import MatrixExplanation from "./Matrix/MatrixExplanation";
@@ -63,7 +63,7 @@ const Revocations = () => {
         <ErrorBoundary>
           <>
             <div className="top-level-filters d-f">
-              <ToggleBarFilter
+              <SelectFilter
                 label="Time Period"
                 dimension={METRIC_PERIOD_MONTHS}
               />
@@ -71,13 +71,10 @@ const Revocations = () => {
                 <DistrictFilter />
               </ErrorBoundary>
               {filterOptions[CHARGE_CATEGORY].componentEnabled && (
-                <ToggleBarFilter
-                  label="Case Type"
-                  dimension={CHARGE_CATEGORY}
-                />
+                <SelectFilter label="Case Type" dimension={CHARGE_CATEGORY} />
               )}
               {filterOptions[SUPERVISION_LEVEL].componentEnabled && (
-                <ToggleBarFilter
+                <SelectFilter
                   label="Supervision Level"
                   dimension={SUPERVISION_LEVEL}
                 />
@@ -86,7 +83,7 @@ const Revocations = () => {
                 <AdmissionTypeFilter />
               )}
               {filterOptions[SUPERVISION_TYPE].componentEnabled && (
-                <ToggleBarFilter
+                <SelectFilter
                   label="Supervision Type"
                   dimension={SUPERVISION_TYPE}
                 />

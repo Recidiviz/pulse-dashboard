@@ -24,7 +24,7 @@ import Select from "../../controls/Select";
 import FilterField from "./FilterField";
 import { useRootStore } from "../../components/StoreProvider";
 
-const ToggleBarFilter = ({ label, dimension }) => {
+const SelectFilter = ({ label, dimension }) => {
   const { filtersStore } = useRootStore();
   const { filters, filterOptions } = filtersStore;
   const value = get(filters, dimension);
@@ -48,9 +48,9 @@ const ToggleBarFilter = ({ label, dimension }) => {
   );
 };
 
-ToggleBarFilter.propTypes = {
+SelectFilter.propTypes = {
   label: PropTypes.string.isRequired,
   dimension: PropTypes.string.isRequired,
 };
 
-export default observer(ToggleBarFilter);
+export default observer(SelectFilter);

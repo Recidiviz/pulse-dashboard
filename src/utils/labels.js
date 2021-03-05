@@ -107,7 +107,7 @@ const pluralize = (count, term) => {
   return count > 1 ? `${base}s` : base;
 };
 
-function getPeriodLabelFromMetricPeriodMonthsToggle(toggledValue) {
+function getPeriodLabelFromMetricPeriodMonthsFilter(toggledValue) {
   const months = toNumber(toggledValue);
 
   const startDate = new Date();
@@ -117,7 +117,7 @@ function getPeriodLabelFromMetricPeriodMonthsToggle(toggledValue) {
   return `${moment(startDate).format("M/D/YYYY")} to present`;
 }
 
-function getTrailingLabelFromMetricPeriodMonthsToggle(toggledValue) {
+function getTrailingLabelFromMetricPeriodMonthsFilter(toggledValue) {
   if (toggledValue === "1") {
     return "Current month";
   }
@@ -128,8 +128,8 @@ function getTrailingLabelFromMetricPeriodMonthsToggle(toggledValue) {
 }
 
 export {
-  getPeriodLabelFromMetricPeriodMonthsToggle,
-  getTrailingLabelFromMetricPeriodMonthsToggle,
+  getPeriodLabelFromMetricPeriodMonthsFilter,
+  getTrailingLabelFromMetricPeriodMonthsFilter,
   matrixViolationTypeToLabel,
   genderValueToHumanReadable,
   raceValueToHumanReadable,
