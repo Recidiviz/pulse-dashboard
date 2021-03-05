@@ -23,7 +23,7 @@ import map from "lodash/fp/map";
 import pipe from "lodash/fp/pipe";
 
 import { COLORS } from "../../../assets/scripts/constants/colors";
-import { configureDownloadButtons } from "../../../utils/downloads/downloads";
+import { configureDownloadButtons } from "../../../utils/downloads/configureDownloadButtons";
 import {
   filterDatasetBySupervisionType,
   filterDatasetByDistrict,
@@ -76,6 +76,7 @@ const RevocationCountOverTime = ({
   disableGoal = false,
   header,
   stateCode,
+  getTokenSilently,
 }) => {
   const goal = getGoalForChart(stateCode, chartId);
 
@@ -207,8 +208,10 @@ const RevocationCountOverTime = ({
       filters: { metricType, supervisionType, district },
       convertValuesToNumbers: true,
       handleTimeStringLabels: true,
+      getTokenSilently,
     });
   }, [
+    getTokenSilently,
     metricType,
     district,
     supervisionType,

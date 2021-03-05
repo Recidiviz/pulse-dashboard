@@ -28,7 +28,7 @@ import toInteger from "lodash/fp/toInteger";
 import values from "lodash/fp/values";
 
 import { COLORS } from "../../../assets/scripts/constants/colors";
-import { configureDownloadButtons } from "../../../utils/downloads/downloads";
+import { configureDownloadButtons } from "../../../utils/downloads/configureDownloadButtons";
 import { sortFilterAndSupplementMostRecentMonths } from "../../../utils/transforms/datasets";
 import { monthNamesWithYearsFromNumbers } from "../../../utils/transforms/months";
 import {
@@ -111,6 +111,7 @@ const SupervisionSuccessSnapshot = ({
   metricPeriodMonths,
   header = null,
   disableGoal = false,
+  getTokenSilently,
 }) => {
   const stepSize = 10;
 
@@ -280,8 +281,10 @@ const SupervisionSuccessSnapshot = ({
       filters: { metricType, metricPeriodMonths, supervisionType, district },
       convertValuesToNumbers: true,
       handleTimeStringLabels: true,
+      getTokenSilently,
     });
   }, [
+    getTokenSilently,
     metricType,
     metricPeriodMonths,
     supervisionType,

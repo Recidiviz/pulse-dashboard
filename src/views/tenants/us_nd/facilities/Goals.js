@@ -29,7 +29,9 @@ import useChartData from "../../../../hooks/useChartData";
 import { metrics } from "./constants";
 
 const FacilitiesGoals = () => {
-  const { apiData, isLoading } = useChartData("us_nd/facilities/goals");
+  const { apiData, isLoading, getTokenSilently } = useChartData(
+    "us_nd/facilities/goals"
+  );
 
   if (isLoading) {
     return <Loading />;
@@ -46,6 +48,7 @@ const FacilitiesGoals = () => {
             daysAtLibertyByMonth={apiData.avg_days_at_liberty_by_month.data}
             header="daysAtLibertySnapshot-header"
             stateCode="US_ND"
+            getTokenSilently={getTokenSilently}
           />
         }
         footer={<Methodology chartId="daysAtLibertySnapshot" />}
@@ -64,6 +67,7 @@ const FacilitiesGoals = () => {
             }
             header="reincarcerationCountsByMonth-header"
             stateCode="US_ND"
+            getTokenSilently={getTokenSilently}
           />
         }
         geoChart={
@@ -78,6 +82,7 @@ const FacilitiesGoals = () => {
             denominatorKeys={["total_admissions"]}
             centerLat={47.3}
             centerLong={-100.5}
+            getTokenSilently={getTokenSilently}
           />
         }
         footer={<Methodology chartId="reincarcerationCountsByMonthGoal" />}

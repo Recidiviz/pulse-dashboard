@@ -24,7 +24,7 @@ import toInteger from "lodash/fp/toInteger";
 import values from "lodash/fp/values";
 import upperCase from "lodash/fp/upperCase";
 
-import { configureDownloadButtons } from "../../../../utils/downloads/downloads";
+import { configureDownloadButtons } from "../../../../utils/downloads/configureDownloadButtons";
 
 /**
  * Casts arguments to integer and sum it.
@@ -98,6 +98,7 @@ export function configureDownloads({
   bars,
   filters,
   dataExportLabel,
+  getTokenSilently,
 }) {
   const downloadableDataFormat = bars.map((bar) => ({
     label: bar.label,
@@ -115,6 +116,7 @@ export function configureDownloads({
     filters,
     convertValuesToNumbers: false,
     dataExportLabel,
+    getTokenSilently,
   });
 }
 

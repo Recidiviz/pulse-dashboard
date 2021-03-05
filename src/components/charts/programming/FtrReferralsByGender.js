@@ -32,7 +32,7 @@ import {
   COLORS_STACKED_TWO_VALUES_ALT,
   COLORS,
 } from "../../../assets/scripts/constants/colors";
-import { configureDownloadButtons } from "../../../utils/downloads/downloads";
+import { configureDownloadButtons } from "../../../utils/downloads/configureDownloadButtons";
 import {
   filterDatasetBySupervisionType,
   filterDatasetByDistrict,
@@ -58,6 +58,7 @@ const FtrReferralsByGender = ({
   district,
   metricPeriodMonths,
   metricType,
+  getTokenSilently,
 }) => {
   const filteredFtrReferrals = pipe(
     (dataset) =>
@@ -244,6 +245,7 @@ const FtrReferralsByGender = ({
       chartBox: document.getElementById(chartId),
       filters: { supervisionType, district, metricPeriodMonths, metricType },
       dataExportLabel: "Gender",
+      getTokenSilently,
     });
   }, [
     supervisionType,
@@ -252,6 +254,7 @@ const FtrReferralsByGender = ({
     metricType,
     activeChart.props.data.datasets,
     activeChart.props.data.labels,
+    getTokenSilently,
   ]);
 
   return activeChart;

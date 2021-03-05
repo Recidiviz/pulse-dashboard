@@ -30,7 +30,7 @@ import {
   COLORS,
   COLORS_GOOD_BAD,
 } from "../../../assets/scripts/constants/colors";
-import { configureDownloadButtons } from "../../../utils/downloads/downloads";
+import { configureDownloadButtons } from "../../../utils/downloads/configureDownloadButtons";
 import { filterDatasetByDistrict } from "../../../utils/charts/dataFilters";
 import {
   toggleLabel,
@@ -83,6 +83,7 @@ const AdmissionsVsReleases = ({
   metricType,
   metricPeriodMonths,
   header = null,
+  getTokenSilently,
 }) => {
   const dataPoints = pipe(
     (dataset) => filterDatasetByDistrict(dataset, district),
@@ -184,8 +185,10 @@ const AdmissionsVsReleases = ({
       filters: { district, metricType, metricPeriodMonths },
       convertValuesToNumbers: true,
       handleTimeStringLabels: true,
+      getTokenSilently,
     });
   }, [
+    getTokenSilently,
     chart.props.data.datasets,
     chart.props.data.labels,
     district,

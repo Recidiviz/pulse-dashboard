@@ -27,7 +27,7 @@ import toInteger from "lodash/fp/toInteger";
 import values from "lodash/fp/values";
 
 import { COLORS } from "../../../assets/scripts/constants/colors";
-import { configureDownloadButtons } from "../../../utils/downloads/downloads";
+import { configureDownloadButtons } from "../../../utils/downloads/configureDownloadButtons";
 import {
   getGoalForChart,
   getMinForGoalAndData,
@@ -76,6 +76,7 @@ const LsirScoreChangeSnapshot = ({
   metricPeriodMonths,
   disableGoal,
   header = null,
+  getTokenSilently,
 }) => {
   const goal = getGoalForChart("US_ND", chartId);
   const displayGoal = canDisplayGoal(goal, {
@@ -229,8 +230,10 @@ const LsirScoreChangeSnapshot = ({
       filters: { supervisionType, district, metricPeriodMonths },
       convertValuesToNumbers: true,
       handleTimeStringLabels: true,
+      getTokenSilently,
     });
   }, [
+    getTokenSilently,
     metricPeriodMonths,
     district,
     supervisionType,
@@ -261,6 +264,7 @@ LsirScoreChangeSnapshot.defaultProps = {
 };
 
 LsirScoreChangeSnapshot.propTypes = {
+  getTokenSilently: PropTypes.func.isRequired,
   lsirScoreChangeByMonth: PropTypes.arrayOf(
     PropTypes.shape({
       average_change: PropTypes.string,

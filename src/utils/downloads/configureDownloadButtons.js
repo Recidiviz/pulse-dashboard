@@ -1,5 +1,5 @@
 // Recidiviz - a data platform for criminal justice reform
-// Copyright (C) 2020 Recidiviz, Inc.
+// Copyright (C) 2021 Recidiviz, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -14,22 +14,12 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-
-import downloadjs from "downloadjs";
-
-import getTimeStamp from "./getTimeStamp";
 import configureFilename from "./configureFileName";
 import createMethodologyFile from "./createMethodologyFile";
-import downloadZipFile from "./downloadZipFile";
 import transformChartDataToCsv from "./transformChartDataToCsv";
-import downloadCanvasAsImage from "./downloadCanvasAsImage";
+import { downloadData, downloadCanvasAsImage } from "../../api/exportData";
 
-// Functions for flowing through browser-specific download functionality
-// https://stackoverflow.com/questions/9847580/how-to-detect-safari-chrome-ie-firefox-and-opera-browser
-const isIE = /* @cc_on!@ */ false || !!document.documentMode;
-const isEdge = !isIE && !!window.StyleMedia;
-
-function configureDataDownloadButton({
+export function configureDataDownloadButton({
   chartId,
   chartDatasets,
   chartLabels,
@@ -41,11 +31,20 @@ function configureDataDownloadButton({
   shouldZipDownload,
   fixLabelsInColumns,
   methodology,
+  getTokenSilently,
 }) {
   return () => {
     const filename = configureFilename(chartId, filters, shouldZipDownload);
     const exportName = `${filename}.csv`;
-
+    const methodologyFile =
+      shouldZipDownload &&
+      createMethodologyFile(
+        chartId,
+        chartTitle,
+        timeWindowDescription,
+        filters,
+        methodology
+      );
     transformChartDataToCsv(
       chartDatasets,
       chartLabels,
@@ -53,62 +52,17 @@ function configureDataDownloadButton({
       convertValuesToNumbers,
       fixLabelsInColumns
     ).then((csv) => {
-      if (shouldZipDownload) {
-        const methodologyFile = createMethodologyFile(
-          chartId,
-          chartTitle,
-          timeWindowDescription,
-          filters,
-          methodology
-        );
-        const files = [
-          methodologyFile,
-          {
-            name: exportName,
-            data: csv,
-            type: "binary",
-          },
-        ];
-
-        downloadZipFile(files, "export_data.zip");
-      } else if (isIE || isEdge) {
-        const blob = new Blob([csv], {
-          type: "text/csv;charset=utf-8;",
-        });
-        navigator.msSaveBlob(blob, exportName);
-      } else {
-        const encodedCsv = encodeURIComponent(csv);
-        const dataStr = `data:text/csv;charset=utf-8,${encodedCsv}`;
-        downloadjs(dataStr, exportName, "text/csv");
-      }
+      downloadData({
+        chartId,
+        shouldZipDownload,
+        csv,
+        getTokenSilently,
+        methodologyFile,
+        filename: exportName,
+      });
     });
   };
 }
-
-export function downloadHtmlElementAsImage({
-  chartId,
-  chartTitle,
-  filters,
-  timeWindowDescription,
-  shouldZipDownload,
-  methodology,
-}) {
-  const element = document.getElementById(chartId);
-
-  window.html2canvas(element, {}).then((canvas) => {
-    downloadCanvasAsImage({
-      canvas,
-      filename: `${chartId}-${getTimeStamp()}.png`,
-      chartTitle,
-      filters,
-      chartId,
-      timeWindowDescription,
-      shouldZipDownload,
-      methodology,
-    });
-  });
-}
-
 export function configureDownloadButtons({
   chartId,
   chartTitle,
@@ -122,6 +76,7 @@ export function configureDownloadButtons({
   fixLabelsInColumns = false,
   dataExportLabel = "Month",
   methodology,
+  getTokenSilently,
 }) {
   const filename = configureFilename(chartId, filters, shouldZipDownload);
   const downloadChartAsImageButton = document.getElementById(
@@ -138,6 +93,7 @@ export function configureDownloadButtons({
         chartId,
         timeWindowDescription,
         shouldZipDownload,
+        getTokenSilently,
       });
     };
   }
@@ -158,6 +114,7 @@ export function configureDownloadButtons({
       dataExportLabel,
       fixLabelsInColumns,
       methodology,
+      getTokenSilently,
     });
   }
 
@@ -172,9 +129,36 @@ export function configureDownloadButtons({
         filters,
         timeWindowDescription,
         shouldZipDownload,
+        getTokenSilently,
       });
     };
   }
+}
+
+export function downloadHtmlElementAsImage({
+  chartId,
+  chartTitle,
+  filters,
+  timeWindowDescription,
+  shouldZipDownload,
+  methodology,
+  getTokenSilently,
+}) {
+  const element = document.getElementById(chartId);
+
+  window.html2canvas(element, {}).then((canvas) => {
+    downloadCanvasAsImage({
+      canvas,
+      filename: `${configureFilename(chartId, {}, true)}.png`,
+      chartTitle,
+      filters,
+      chartId,
+      timeWindowDescription,
+      shouldZipDownload,
+      methodology,
+      getTokenSilently,
+    });
+  });
 }
 
 export function downloadChartAsImage({
@@ -184,6 +168,7 @@ export function downloadChartAsImage({
   timeWindowDescription,
   shouldZipDownload,
   methodology,
+  getTokenSilently,
 }) {
   const filename = configureFilename(chartId, filters, shouldZipDownload);
   downloadCanvasAsImage({
@@ -195,6 +180,7 @@ export function downloadChartAsImage({
     timeWindowDescription,
     shouldZipDownload,
     methodology,
+    getTokenSilently,
   });
 }
 
@@ -209,6 +195,7 @@ export function downloadChartAsData({
   shouldZipDownload,
   fixLabelsInColumns = false,
   methodology,
+  getTokenSilently,
 }) {
   const downloadChartData = configureDataDownloadButton({
     chartId,
@@ -221,6 +208,7 @@ export function downloadChartAsData({
     shouldZipDownload,
     fixLabelsInColumns,
     methodology,
+    getTokenSilently,
   });
   downloadChartData();
 }

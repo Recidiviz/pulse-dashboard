@@ -31,6 +31,7 @@ const CaseTerminationsByTerminationType = ({
   metricPeriodMonths,
   supervisionType,
   district,
+  getTokenSilently,
 }) => (
   <PerMonthBarChart
     chartId={chartId}
@@ -56,10 +57,12 @@ const CaseTerminationsByTerminationType = ({
     }
     barColorPalette={COLORS_SEVEN_VALUES}
     dataExportLabel="Month"
+    getTokenSilently={getTokenSilently}
   />
 );
 
 CaseTerminationsByTerminationType.propTypes = {
+  getTokenSilently: PropTypes.func.isRequired,
   metricType: metricTypePropType.isRequired,
   metricPeriodMonths: PropTypes.string.isRequired,
   district: PropTypes.arrayOf(PropTypes.string).isRequired,
