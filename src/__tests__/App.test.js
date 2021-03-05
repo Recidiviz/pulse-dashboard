@@ -24,28 +24,28 @@ import { US_ND } from "../RootStore/TenantStore/coreTenants";
 import { US_MO, US_PA } from "../RootStore/TenantStore/lanternTenants";
 
 import mockWithTestId from "../../__helpers__/mockWithTestId";
-import Revocations from "../components/Revocations";
-import UsNDCommunityGoals from "../views/tenants/us_nd/community/Goals";
-import NotFound from "../views/NotFound";
+import Revocations from "../lantern/Revocations";
+import UsNDCommunityGoals from "../core/community/Goals";
+import NotFound from "../components/NotFound";
 import Loading from "../components/Loading";
-import LanternLayout from "../components/layouts/LanternLayout";
-import CoreLayout from "../components/layouts/CoreLayout";
-import StoreProvider, { useRootStore } from "../StoreProvider";
+import LanternLayout from "../lantern/LanternLayout";
+import CoreLayout from "../core/CoreLayout";
+import StoreProvider, { useRootStore } from "../components/StoreProvider";
 import ErrorMessage from "../components/ErrorMessage";
-import VerificationNeeded from "../views/VerificationNeeded";
+import VerificationNeeded from "../components/VerificationNeeded";
 
 jest.mock("../utils/initIntercomSettings");
 jest.mock("../utils/initFontAwesome");
 jest.mock("../utils/i18nSettings");
-jest.mock("../components/layouts/LanternLayout");
-jest.mock("../components/layouts/CoreLayout");
-jest.mock("../components/Revocations");
-jest.mock("../views/tenants/us_nd/community/Goals");
-jest.mock("../views/NotFound");
+jest.mock("../lantern/LanternLayout");
+jest.mock("../lantern/Revocations");
+jest.mock("../core/CoreLayout");
+jest.mock("../core/community/Goals");
+jest.mock("../components/NotFound");
 jest.mock("../components/Loading");
-jest.mock("../StoreProvider");
+jest.mock("../components/StoreProvider");
 jest.mock("../components/ErrorMessage");
-jest.mock("../views/VerificationNeeded");
+jest.mock("../components/VerificationNeeded");
 
 describe("App tests", () => {
   const metadataField = `${METADATA_NAMESPACE}app_metadata`;

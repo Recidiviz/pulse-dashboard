@@ -22,7 +22,7 @@ import FiltersStore from "../FiltersStore";
 import getTenantMappings, { tenantMappings } from "../TenantStore/tenants";
 import { LANTERN_TENANTS } from "../TenantStore/lanternTenants";
 
-jest.mock("../../StoreProvider");
+jest.mock("../../components/StoreProvider");
 jest.mock("../TenantStore/tenants");
 
 let rootStore;
@@ -41,6 +41,7 @@ const defaultFilters = {
   violationType: "All",
   levelOneSupervisionLocation: ["All"],
   levelTwoSupervisionLocation: ["All"],
+  admissionType: ["All"],
 };
 
 // We are mocking the return of districtFilterKey to test the logic when there are

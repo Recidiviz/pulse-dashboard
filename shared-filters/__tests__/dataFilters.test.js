@@ -55,7 +55,7 @@ describe("matchesTopLevelFilters", () => {
         year: "2020",
       },
       {
-        admission_type: "REVOCATION",
+        admission_type: "LEGAL_REVOCATION",
         charge_category: "SEX_OFFENSE",
         district: "ALL",
         level_1_supervision_location: "ALL",
@@ -70,7 +70,7 @@ describe("matchesTopLevelFilters", () => {
         year: "2020",
       },
       {
-        admission_type: "PVC",
+        admission_type: "LEGAL_REVOCATION",
         charge_category: "SEX_OFFENSE",
         district: "ALL",
         level_1_supervision_location: "05X",
@@ -326,6 +326,44 @@ describe("matchesTopLevelFilters", () => {
 
       it("does not double count the 'ALL' item", () => {
         expect(filteredChargeCategories).not.toContain("ALL");
+      });
+    });
+  });
+
+  describe("admissionType filter", () => {
+    let filteredAdmissionTypes = [];
+
+    describe("with admissionType = 'ALL' filter applied", () => {
+      beforeEach(() => {
+        filters = { admission_type: "ALL" };
+        filtered = data.filter((item) =>
+          matchesTopLevelFilters({ filters })(item)
+        );
+        filteredAdmissionTypes = filtered.map((f) => f.admission_type);
+      });
+
+      it("correctly returns admission_type items matching the filter term", () => {
+        const expected = ["ALL", "ALL"];
+        expect(filteredAdmissionTypes).toEqual(expected);
+      });
+    });
+
+    describe("with admissionType = 'LEGAL_REVOCATION' filter applied", () => {
+      beforeEach(() => {
+        filters = { admission_type: "LEGAL_REVOCATION" };
+        filtered = data.filter((item) =>
+          matchesTopLevelFilters({ filters })(item)
+        );
+        filteredAdmissionTypes = filtered.map((f) => f.admission_type);
+      });
+
+      it("correctly returns admission_type items matching LEGAL_REVOCATION value", () => {
+        const expected = ["LEGAL_REVOCATION", "LEGAL_REVOCATION"];
+        expect(filteredAdmissionTypes).toEqual(expected);
+      });
+
+      it("does not double count the 'ALL' item", () => {
+        expect(filteredAdmissionTypes).not.toContain("ALL");
       });
     });
   });
