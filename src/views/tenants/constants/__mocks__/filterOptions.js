@@ -93,7 +93,6 @@ export default {
         value: `${ADMISSION_TYPE}-0`,
       },
       defaultValue: [`${ADMISSION_TYPE}-0`],
-      filterEnabled: true,
       componentEnabled: true,
     },
     [DISTRICT]: {
