@@ -35,13 +35,13 @@ import RevocationCountBySupervisionType from "./RevocationCountBySupervisionType
 import RevocationCountByViolationType from "./RevocationCountByViolationType";
 import RevocationProportionByRace from "./RevocationProportionByRace";
 import SupervisionSuccessSnapshot from "./SupervisionSuccessSnapshot";
-import ToggleBar from "../toggles/ToggleBar";
+import FiltersBar from "../FiltersBar";
 import {
   defaultDistrict,
   defaultMetricPeriod,
   defaultMetricType,
   defaultSupervisionType,
-} from "../toggles/options";
+} from "../utils/filterOptions";
 import useChartData from "../hooks/useChartData";
 import { isOfficerIdsHidden } from "../bars/utils";
 import { METRIC_TYPES } from "../utils/constants";
@@ -62,8 +62,8 @@ const CommunityExplore = () => {
     return <Loading />;
   }
 
-  const toggleBar = (
-    <ToggleBar
+  const filters = (
+    <FiltersBar
       metricType={metricType}
       metricPeriodMonths={metricPeriodMonths}
       district={district}
@@ -78,7 +78,7 @@ const CommunityExplore = () => {
   );
 
   return (
-    <PageTemplate importantNotes={importantNotes} toggleBar={toggleBar}>
+    <PageTemplate importantNotes={importantNotes} filters={filters}>
       <ChartCard
         key="revocationCountsByMonth"
         chartId="revocationCountsByMonth"

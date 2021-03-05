@@ -22,7 +22,7 @@ import map from "lodash/fp/map";
 import pipe from "lodash/fp/pipe";
 import sortBy from "lodash/fp/sortBy";
 
-import { defaultDistrictOption } from "./options";
+import { defaultDistrictOption } from "./filterOptions";
 
 const normalizeDistrictName = (replaceLa, stateCode, district) => {
   const isCounty = stateCode !== undefined;

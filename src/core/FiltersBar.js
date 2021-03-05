@@ -14,16 +14,15 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-// TODO: Compare with src/components/charts/new_revocations/ToggleBar/ToggleBar.js and merge
 /* eslint-disable jsx-a11y/label-has-associated-control */
 
 import React, { useCallback, useMemo } from "react";
 import PropTypes from "prop-types";
 import Sticky from "react-sticky-fill";
 
-import RadioGroup from "../../controls/RadioGroup";
-import Select from "../../controls/Select";
-import MultiSelect from "../../controls/MultiSelect";
+import RadioGroup from "../controls/RadioGroup";
+import Select from "../controls/Select";
+import MultiSelect from "../controls/MultiSelect";
 
 import {
   defaultDistrictOption,
@@ -33,17 +32,17 @@ import {
   metricPeriodOptions,
   metricTypeOptions,
   supervisionTypeOptions,
-} from "./options";
-import { getDistrictOptions } from "./helpers";
+} from "./utils/filterOptions";
+import { getDistrictOptions } from "./utils/filterHelpers";
 
-import "./ToggleBar.scss";
+import "./FiltersBar.scss";
 
-const TOGGLE_STYLE = {
+const FILTER_BAR_STYLE = {
   zIndex: 700,
   top: 65,
 };
 
-const ToggleBar = ({
+const FiltersBar = ({
   setChartMetricType = null,
   setChartSupervisionType = null,
   setChartMetricPeriodMonths = null,
@@ -81,13 +80,13 @@ const ToggleBar = ({
   );
 
   return (
-    <Sticky style={TOGGLE_STYLE}>
-      <div className="ToggleBar row pB-10">
+    <Sticky style={FILTER_BAR_STYLE}>
+      <div className="FiltersBar row pB-10">
         <div className="col-md-12">
           <div className="bd bgc-white" style={{ marginLeft: -2 }}>
-            <div className="row toggle-filters">
+            <div className="row filters">
               {setChartMetricType && (
-                <div className="toggle-filters__filter" id="metricTypeToggle">
+                <div className="filters__filter" id="metricTypeFilter">
                   <RadioGroup
                     options={metricTypeOptions}
                     onChange={setChartMetricType}
@@ -97,11 +96,9 @@ const ToggleBar = ({
               )}
 
               {setChartMetricPeriodMonths && (
-                <div className="toggle-filters__filter" id="metricPeriodToggle">
-                  <span className="toggle-filters__filter-title">
-                    Time period
-                  </span>
-                  <div className="toggle-filters__select">
+                <div className="filters__filter" id="metricPeriodFilter">
+                  <span className="filters__filter-title">Time period</span>
+                  <div className="filters__select">
                     <Select
                       value={getFilterValue(
                         metricPeriodMonths,
@@ -118,14 +115,11 @@ const ToggleBar = ({
               )}
 
               {setChartSupervisionType && (
-                <div
-                  className="toggle-filters__filter"
-                  id="supervisionTypeToggle"
-                >
-                  <span className="toggle-filters__filter-title">
+                <div className="filters__filter" id="supervisionTypeFilter">
+                  <span className="filters__filter-title">
                     Supervision type
                   </span>
-                  <div className="toggle-filters__select">
+                  <div className="filters__select">
                     <Select
                       value={getFilterValue(
                         supervisionType,
@@ -141,11 +135,11 @@ const ToggleBar = ({
               )}
 
               {setChartDistrict && (
-                <div className="toggle-filters__filter" id="districtToggle">
-                  <span className="toggle-filters__filter-title">
+                <div className="filters__filter" id="districtFilter">
+                  <span className="filters__filter-title">
                     {isCounty ? "County of Residence" : "Office"}
                   </span>
-                  <div className="toggle-filters__select">
+                  <div className="filters__select">
                     <MultiSelect
                       value={districtOptions.filter((option) =>
                         district.includes(String(option.value))
@@ -168,7 +162,7 @@ const ToggleBar = ({
   );
 };
 
-ToggleBar.defaultProps = {
+FiltersBar.defaultProps = {
   setChartMetricType: null,
   setChartSupervisionType: null,
   setChartMetricPeriodMonths: null,
@@ -182,7 +176,7 @@ ToggleBar.defaultProps = {
   supervisionType: null,
 };
 
-ToggleBar.propTypes = {
+FiltersBar.propTypes = {
   metricPeriodMonths: PropTypes.string,
   district: PropTypes.arrayOf(PropTypes.string),
   supervisionType: PropTypes.string,
@@ -201,4 +195,4 @@ ToggleBar.propTypes = {
   stateCode: PropTypes.string,
 };
 
-export default ToggleBar;
+export default FiltersBar;

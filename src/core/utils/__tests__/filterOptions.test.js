@@ -20,8 +20,8 @@ import {
   defaultMetricPeriod,
   defaultMetricType,
   defaultSupervisionType,
-} from "../options";
-import { METRIC_TYPES } from "../../utils/constants";
+} from "../filterOptions";
+import { METRIC_TYPES } from "../constants";
 
 describe("Filter default values", () => {
   it("should be right", () => {

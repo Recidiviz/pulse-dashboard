@@ -29,13 +29,13 @@ import FtrReferralsByLsir from "./FtrReferralsByLsir";
 import FtrReferralsByParticipationStatus from "./FtrReferralsByParticipationStatus";
 import FtrReferralsByRace from "./FtrReferralsByRace";
 import FtrReferralCountByMonth from "./FtrReferralCountByMonth";
-import ToggleBar from "../toggles/ToggleBar";
+import FiltersBar from "../FiltersBar";
 import {
   defaultDistrict,
   defaultMetricPeriod,
   defaultMetricType,
   defaultSupervisionType,
-} from "../toggles/options";
+} from "../utils/filterOptions";
 import useChartData from "../hooks/useChartData";
 import { availableDistricts, importantNotes } from "./constants";
 
@@ -54,8 +54,8 @@ const ProgrammingExplore = () => {
     return <Loading />;
   }
 
-  const toggleBar = (
-    <ToggleBar
+  const filters = (
+    <FiltersBar
       metricPeriodMonths={metricPeriodMonths}
       district={district}
       supervisionType={supervisionType}
@@ -69,7 +69,7 @@ const ProgrammingExplore = () => {
   );
 
   return (
-    <PageTemplate importantNotes={importantNotes} toggleBar={toggleBar}>
+    <PageTemplate importantNotes={importantNotes} filters={filters}>
       <ChartCard
         chartId="ftrReferralCountByMonth"
         chartTitle="FTR REFERRALS BY MONTH"

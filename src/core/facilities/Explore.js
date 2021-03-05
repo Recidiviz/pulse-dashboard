@@ -30,12 +30,12 @@ import ReincarcerationCountOverTime from "./ReincarcerationCountOverTime";
 import ReincarcerationRateByStayLength from "./ReincarcerationRateByStayLength";
 import AdmissionCountsByType from "../AdmissionCountsByType";
 import DaysAtLibertySnapshot from "./DaysAtLibertySnapshot";
-import ToggleBar from "../toggles/ToggleBar";
+import FiltersBar from "../FiltersBar";
 import {
   defaultDistrict,
   defaultMetricPeriod,
   defaultMetricType,
-} from "../toggles/options";
+} from "../utils/filterOptions";
 import useChartData from "../hooks/useChartData";
 import { getYearFromNow } from "../utils/timePeriod";
 import { availableDistricts, importantNotes } from "./constants";
@@ -52,8 +52,8 @@ const FacilitiesExplore = () => {
     return <Loading />;
   }
 
-  const toggleBar = (
-    <ToggleBar
+  const filters = (
+    <FiltersBar
       setChartMetricType={setMetricType}
       setChartMetricPeriodMonths={setMetricPeriodMonths}
       setChartDistrict={setDistrict}
@@ -67,7 +67,7 @@ const FacilitiesExplore = () => {
   );
 
   return (
-    <PageTemplate importantNotes={importantNotes} toggleBar={toggleBar}>
+    <PageTemplate importantNotes={importantNotes} filters={filters}>
       <ChartCard
         chartId="reincarcerationCountsByMonth"
         chartTitle="REINCARCERATIONS BY MONTH"

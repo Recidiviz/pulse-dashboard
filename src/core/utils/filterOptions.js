@@ -15,7 +15,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import { METRIC_TYPES } from "../utils/constants";
+import { METRIC_TYPES } from "./constants";
 
 export const metricTypeOptions = [
   { label: "Counts", value: METRIC_TYPES.COUNTS },

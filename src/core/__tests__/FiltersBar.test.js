@@ -18,11 +18,11 @@
 import React from "react";
 import { queryAllByAttribute } from "@testing-library/dom";
 import { render } from "@testing-library/react";
-import ToggleBar from "../ToggleBar";
+import FiltersBar from "../FiltersBar";
 
 const getAllById = queryAllByAttribute.bind(null, "id");
 
-describe("test for component ToggleBar", () => {
+describe("test for component FiltersBar", () => {
   const props = {
     stateCode: undefined,
     replaceLa: undefined,
@@ -33,8 +33,8 @@ describe("test for component ToggleBar", () => {
       ...props,
       setChartMetricType: jest.fn(),
     };
-    const { container } = render(<ToggleBar {...nextProps} />);
-    expect(getAllById(container, "metricTypeToggle")).toHaveLength(1);
+    const { container } = render(<FiltersBar {...nextProps} />);
+    expect(getAllById(container, "metricTypeFilter")).toHaveLength(1);
   });
 
   it("display metric period toggle", () => {
@@ -42,8 +42,8 @@ describe("test for component ToggleBar", () => {
       ...props,
       setChartMetricPeriodMonths: jest.fn(),
     };
-    const { container } = render(<ToggleBar {...nextProps} />);
-    expect(getAllById(container, "metricPeriodToggle")).toHaveLength(1);
+    const { container } = render(<FiltersBar {...nextProps} />);
+    expect(getAllById(container, "metricPeriodFilter")).toHaveLength(1);
   });
 
   it("display supervision type toggle", () => {
@@ -51,8 +51,8 @@ describe("test for component ToggleBar", () => {
       ...props,
       setChartSupervisionType: jest.fn(),
     };
-    const { container } = render(<ToggleBar {...nextProps} />);
-    expect(getAllById(container, "supervisionTypeToggle")).toHaveLength(1);
+    const { container } = render(<FiltersBar {...nextProps} />);
+    expect(getAllById(container, "supervisionTypeFilter")).toHaveLength(1);
   });
 
   it("display district toggle", () => {
@@ -72,7 +72,7 @@ describe("test for component ToggleBar", () => {
         },
       ],
     };
-    const { container } = render(<ToggleBar {...nextProps} />);
-    expect(getAllById(container, "districtToggle")).toHaveLength(1);
+    const { container } = render(<FiltersBar {...nextProps} />);
+    expect(getAllById(container, "districtFilter")).toHaveLength(1);
   });
 });
