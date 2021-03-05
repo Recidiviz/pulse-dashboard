@@ -19,12 +19,6 @@ import React from "react";
 import PropTypes from "prop-types";
 import cn from "classnames";
 import { useLocation, matchPath } from "react-router-dom";
-
-import SideBarHeader from "../sidebar/SideBarHeader";
-import SideBarMenu from "../sidebar/SideBarMenu";
-import SideBarGroup from "../sidebar/SideBarGroup";
-import SideBarLink from "../sidebar/SideBarLink";
-import SideBarFeedback from "../sidebar/SideBarFeedback";
 import TopBar from "../topbar/TopBar";
 import TopBarHamburgerMenu from "../topbar/TopBarHamburgerMenu";
 import TopBarTitle from "../topbar/TopBarTitle";
@@ -48,41 +42,6 @@ const CoreLayout = ({ children }) => {
 
   return (
     <div id="app" className={classNames}>
-      <div className="sidebar">
-        <div className="sidebar-inner">
-          <SideBarHeader toggleSideBar={toggleSideBar} />
-          <SideBarMenu>
-            <SideBarGroup
-              key="Community"
-              name="Community"
-              url="/community"
-              icon={<i className="c-blue-500 ti-dashboard" />}
-            >
-              <SideBarLink name="Goals" url="/community/goals" />
-              <SideBarLink name="Explore" url="/community/explore" />
-            </SideBarGroup>
-            <SideBarGroup
-              key="Facilities"
-              name="Facilities"
-              url="/facilities"
-              icon={<i className="c-red-500 ti-reload" />}
-            >
-              <SideBarLink name="Goals" url="/facilities/goals" />
-              <SideBarLink name="Explore" url="/facilities/explore" />
-            </SideBarGroup>
-            <SideBarGroup
-              key="Programming"
-              name="Programming"
-              url="/programming"
-              icon={<i className="c-green-500 ti-location-arrow" />}
-            >
-              <SideBarLink name="Explore" url="/programming/explore" />
-            </SideBarGroup>
-            <SideBarFeedback />
-          </SideBarMenu>
-        </div>
-      </div>
-
       <div className="page-container">
         <TopBar>
           <div className="CoreHeader">
