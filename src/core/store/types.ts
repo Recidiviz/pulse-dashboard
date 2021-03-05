@@ -14,19 +14,26 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-
-import React from "react";
-import { Card, CardSection } from "@recidiviz/case-triage-components";
-import PageTemplate from "./PageTemplate";
-
-const Projections = () => {
-  return (
-    <PageTemplate>
-      <Card>
-        <CardSection>Hello</CardSection>
-      </Card>
-    </PageTemplate>
-  );
+type PopulationProjectionSummaryRecord = {
+  stateCode?: string;
+  metricPeriodMonths?: number;
+  simulationDate?: Date;
+  compartment?: string;
+  legalStatus?: string;
+  simulationGroup?: string;
+  simulationTag?: string;
+  admissionCount: number;
+  releaseCount: number;
+  totalPopulation: number;
+  admissionPercentChange: number;
+  releasePercentChange: number;
+  populationPercentChange: number;
+  admissionCountMin?: number;
+  admissionCountMax?: number;
+  releaseCountMin?: number;
+  releaseCountMax?: number;
+  totalPopulationCountMin?: number;
+  totalPopulationCountMax?: number;
 };
 
-export default Projections;
+export type { PopulationProjectionSummaryRecord };
