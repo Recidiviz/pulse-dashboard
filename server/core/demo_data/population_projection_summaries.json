@@ -9,7 +9,10 @@
     "simulation_tag": "HISTORICAL",
     "admission_count": "400",
     "release_count": "700",
-    "total_population": "13000"
+    "total_population": "13000",
+    "admission_percent_change": "-5.5",
+    "release_percent_change": "7",
+    "population_percent_change": "-12"
   },
   {
     "state_code": "US_DEMO",
@@ -21,7 +24,10 @@
     "simulation_tag": "HISTORICAL",
     "admission_count": "2300",
     "release_count": "5000",
-    "total_population": "13000"
+    "total_population": "13000",
+    "admission_percent_change": "-3.2",
+    "release_percent_change": "-3",
+    "population_percent_change": "1.2"
   },
   {
     "state_code": "US_DEMO",
@@ -39,7 +45,10 @@
     "release_count_min": "800",
     "release_count_max": "1000",
     "total_population_count_min": "12890",
-    "total_population_count_max": "13110"
+    "total_population_count_max": "13110",
+    "admission_percent_change": "3.8",
+    "release_percent_change": "8",
+    "population_percent_change": "-3.1"
   },
   {
     "state_code": "US_DEMO",
@@ -57,6 +66,9 @@
     "release_count_min": "5000",
     "release_count_max": "6000",
     "total_population_count_min": "12460",
-    "total_population_count_max": "13540"
+    "total_population_count_max": "13540",
+    "admission_percent_change": "-2.8",
+    "release_percent_change": "10",
+    "population_percent_change": "-13.1"
   }
 ]
