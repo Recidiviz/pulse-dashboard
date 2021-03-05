@@ -21,7 +21,7 @@ import PropTypes from "prop-types";
 import Sticky from "react-sticky-fill";
 
 import RadioGroup from "../controls/RadioGroup";
-import Select from "../controls/Select";
+import { CoreSelect } from "../controls/CoreSelect";
 import MultiSelect from "../controls/MultiSelect";
 
 import {
@@ -99,7 +99,7 @@ const FiltersBar = ({
                 <div className="filters__filter" id="metricPeriodFilter">
                   <span className="filters__filter-title">Time period</span>
                   <div className="filters__select">
-                    <Select
+                    <CoreSelect
                       value={getFilterValue(
                         metricPeriodMonths,
                         metricPeriodOptions
@@ -120,7 +120,7 @@ const FiltersBar = ({
                     Supervision type
                   </span>
                   <div className="filters__select">
-                    <Select
+                    <CoreSelect
                       value={getFilterValue(
                         supervisionType,
                         supervisionTypeOptions
