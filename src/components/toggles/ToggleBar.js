@@ -22,7 +22,7 @@ import PropTypes from "prop-types";
 import Sticky from "react-sticky-fill";
 
 import RadioGroup from "../controls/RadioGroup";
-import Select from "../controls/Select";
+import { CoreSelect } from "../controls/CoreSelect";
 import CoreMultiSelect from "../controls/MultiSelect/CoreMultiSelect";
 
 import {
@@ -102,7 +102,7 @@ const ToggleBar = ({
                     Time period
                   </span>
                   <div className="toggle-filters__select">
-                    <Select
+                    <CoreSelect
                       value={getFilterValue(
                         metricPeriodMonths,
                         metricPeriodOptions
@@ -126,7 +126,7 @@ const ToggleBar = ({
                     Supervision type
                   </span>
                   <div className="toggle-filters__select">
-                    <Select
+                    <CoreSelect
                       value={getFilterValue(
                         supervisionType,
                         supervisionTypeOptions
