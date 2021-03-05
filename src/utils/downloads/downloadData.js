@@ -60,13 +60,19 @@ export function downloadCanvasAsImage({
   filename,
   chartTitle,
   filters,
+  violation,
   chartId,
   timeWindowDescription,
   shouldZipDownload,
   methodology,
   getTokenSilently,
 }) {
-  const imageData = transformCanvasToBase64(canvas, chartTitle, filters);
+  const imageData = transformCanvasToBase64(
+    canvas,
+    chartTitle,
+    filters,
+    violation
+  );
   try {
     if (shouldZipDownload || isMobile) {
       const methodologyFile =
@@ -76,7 +82,8 @@ export function downloadCanvasAsImage({
           chartTitle,
           timeWindowDescription,
           filters,
-          methodology
+          methodology,
+          violation
         );
 
       const files = [
@@ -176,7 +183,8 @@ export function downloadHtmlElementAsImage({
       canvas,
       filename: `${configureFilename(chartId, {}, true)}.png`,
       chartTitle,
-      filters,
+      filters: filters.filtersDescription,
+      violation: filters.violationTypeDescription,
       chartId,
       timeWindowDescription,
       shouldZipDownload,
@@ -200,7 +208,8 @@ export function downloadChartAsImage({
     canvas: document.getElementById(chartId),
     filename: `${filename}.png`,
     chartTitle,
-    filters,
+    filters: filters.filtersDescription,
+    violation: filters.violationTypeDescription,
     chartId,
     timeWindowDescription,
     shouldZipDownload,
@@ -227,7 +236,8 @@ export function downloadChartAsData({
     chartDatasets,
     chartLabels,
     dataExportLabel,
-    filters,
+    filters: filters.filtersDescription,
+    violation: filters.violationTypeDescription,
     chartTitle,
     timeWindowDescription,
     shouldZipDownload,

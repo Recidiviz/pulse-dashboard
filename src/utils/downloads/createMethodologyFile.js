@@ -14,30 +14,26 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-
 import moment from "moment";
-import getFilters from "./getFilters";
-import getViolation from "./getViolation";
 
 function createMethodologyFile(
   chartId,
   chartTitle,
   timeWindowDescription,
-  filters,
-  methodology
+  filtersText,
+  methodology,
+  violationText
 ) {
   const infoChart = methodology[chartId] || [];
   const exportDate = moment().format("M/D/YYYY");
-  const filtersText = getFilters(filters);
-  const violation = getViolation(filters);
 
   let text = `Chart: ${chartTitle}\n`;
   text += `Dates: ${timeWindowDescription}\n`;
   text += `Applied filters:\n`;
   text += `- ${filtersText}\n`;
 
-  if (violation) {
-    text += `- ${violation}\n`;
+  if (violationText) {
+    text += `- ${violationText}\n`;
   }
 
   text += "\n";

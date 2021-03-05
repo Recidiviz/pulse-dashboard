@@ -22,6 +22,7 @@ import {
   reaction,
   observable,
   action,
+  toJS,
 } from "mobx";
 import uniqBy from "lodash/uniqBy";
 import {
@@ -38,6 +39,8 @@ import {
 import filterOptionsMap from "./TenantStore/filterOptions";
 import { compareStrings } from "./utils";
 import { generateNestedOptions } from "./utils/districtOptions";
+import getFilters from "./utils/getFilterDescription";
+import getViolation from "./utils/getViolationTypeDescription";
 
 export default class FiltersStore {
   rootStore;
@@ -140,5 +143,21 @@ export default class FiltersStore {
 
   setFilters(updatedFilters) {
     this.filters.merge(updatedFilters);
+  }
+
+  get filtersDescriptions() {
+    const filters = toJS(this.filters);
+    const enabledFilters = [...filters.entries()].reduce(
+      (acc, [key, value]) => {
+        if (this.filterOptions[key].componentEnabled !== false)
+          acc[key] = value;
+        return acc;
+      },
+      {}
+    );
+    return {
+      filtersDescription: getFilters(enabledFilters),
+      violationTypeDescription: getViolation(enabledFilters),
+    };
   }
 }

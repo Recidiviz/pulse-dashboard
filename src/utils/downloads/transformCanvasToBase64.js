@@ -14,10 +14,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-import getFilters from "./getFilters";
-import getViolation from "./getViolation";
 
-function transformCanvasToBase64(canvas, chartTitle, filters) {
+function transformCanvasToBase64(canvas, chartTitle, filters, violation) {
   const topPadding = 120;
   const temporaryCanvas = document.createElement("canvas");
   temporaryCanvas.width = canvas.width;
@@ -36,15 +34,17 @@ function transformCanvasToBase64(canvas, chartTitle, filters) {
     destinationCtx.textAlign = "center";
     destinationCtx.font = "16px Helvetica Neue";
     destinationCtx.fillText(
-      `Applied filters: ${getFilters(filters)}`,
+      `Applied filters: ${filters}`,
       canvas.width / 2,
       topPadding - 40
     );
-    destinationCtx.fillText(
-      getViolation(filters),
-      canvas.width / 2,
-      topPadding - 20
-    );
+    if (violation) {
+      destinationCtx.fillText(
+        `${violation}`,
+        canvas.width / 2,
+        topPadding - 20
+      );
+    }
   }
   destinationCtx.drawImage(canvas, 0, topPadding);
 

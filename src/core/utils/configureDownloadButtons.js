@@ -20,6 +20,7 @@ import {
   downloadCanvasAsImage,
 } from "../../utils/downloads/downloadData";
 import configureFilename from "../../utils/downloads/configureFileName";
+import getFilterDescription from "../../RootStore/utils/getFilterDescription";
 
 export function configureDownloadButtons({
   chartId,
@@ -28,6 +29,7 @@ export function configureDownloadButtons({
   chartLabels,
   chartBox,
   filters,
+  violation,
   convertValuesToNumbers,
   timeWindowDescription,
   shouldZipDownload,
@@ -46,10 +48,11 @@ export function configureDownloadButtons({
         canvas: chartBox || document.getElementById(chartId),
         filename: `${filename}.png`,
         chartTitle,
-        filters,
+        filters: getFilterDescription(filters),
         chartId,
         timeWindowDescription,
         shouldZipDownload,
+        violation,
       });
     };
   }
@@ -62,7 +65,7 @@ export function configureDownloadButtons({
       chartId,
       chartDatasets,
       chartLabels,
-      filters,
+      filters: getFilterDescription(filters),
       convertValuesToNumbers,
       chartTitle,
       timeWindowDescription,
@@ -81,7 +84,7 @@ export function configureDownloadButtons({
       downloadHtmlElementAsImage({
         chartId,
         chartTitle,
-        filters,
+        filters: getFilterDescription(filters),
         timeWindowDescription,
         shouldZipDownload,
       });

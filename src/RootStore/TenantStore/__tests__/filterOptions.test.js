@@ -113,18 +113,6 @@ describe("filterOptionsMap", () => {
             label: "ALL",
             value: "All",
           },
-          {
-            label: "Revocation",
-            value: "REVOCATION",
-          },
-          {
-            label: "Institutional Treatment",
-            value: "INSTITUTIONAL TREATMENT",
-          },
-          {
-            label: "Board Returns",
-            value: "BOARDS_RETURN",
-          },
         ],
         summingOption: {
           label: "ALL",
@@ -341,56 +329,60 @@ describe("filterOptionsMap", () => {
         ],
         defaultValue: ["All"],
         options: [
+          { value: "All", label: "ALL" },
+          { value: "LEGAL_REVOCATION", label: "Revocation" },
           {
-            label: "ALL",
-            value: "All",
-          },
-          {
-            label: "Revocation",
-            value: "REVOCATION",
-          },
-          {
-            allSelectedLabel: "All Short Term",
             label: "SCI",
+            allSelectedLabel: "All Short Term",
             options: [
               {
-                label: "SCI 6 months",
-                value: "SCI_6",
+                value: "SHOCK_INCARCERATION_0_TO_6_MONTHS",
+                label: "SCI < 6 months",
               },
+              { value: "SHOCK_INCARCERATION_6_MONTHS", label: "SCI 6 months" },
+              { value: "SHOCK_INCARCERATION_9_MONTHS", label: "SCI 9 months" },
               {
-                label: "SCI 9 months",
-                value: "SCI_9",
-              },
-              {
+                value: "SHOCK_INCARCERATION_12_MONTHS",
                 label: "SCI 12 months",
-                value: "SCI_12",
               },
             ],
           },
-          {
-            label: "PVC",
-            value: "PVC",
-          },
-          {
-            label: "Inpatient D&A",
-            value: "INPATIENT_DA",
-          },
-          {
-            label: "D&A Detox",
-            value: "DA_DETOX",
-          },
-          {
-            label: "Mental Health",
-            value: "MENTAL_HEALTH",
-          },
+          { value: "SHOCK_INCARCERATION_PVC", label: "PVC" },
         ],
         summingOption: {
           label: "ALL",
           value: "All",
         },
-        componentEnabled: false,
+        flattenedOptions: [
+          { value: "All", label: "ALL" },
+          { value: "LEGAL_REVOCATION", label: "Revocation" },
+          {
+            label: "SCI",
+            allSelectedLabel: "All Short Term",
+            options: [
+              {
+                value: "SHOCK_INCARCERATION_0_TO_6_MONTHS",
+                label: "SCI < 6 months",
+              },
+              { value: "SHOCK_INCARCERATION_6_MONTHS", label: "SCI 6 months" },
+              { value: "SHOCK_INCARCERATION_9_MONTHS", label: "SCI 9 months" },
+              {
+                value: "SHOCK_INCARCERATION_12_MONTHS",
+                label: "SCI 12 months",
+              },
+            ],
+          },
+          { value: "SHOCK_INCARCERATION_PVC", label: "PVC" },
+          {
+            value: "SHOCK_INCARCERATION_0_TO_6_MONTHS",
+            label: "SCI < 6 months",
+          },
+          { value: "SHOCK_INCARCERATION_6_MONTHS", label: "SCI 6 months" },
+          { value: "SHOCK_INCARCERATION_9_MONTHS", label: "SCI 9 months" },
+          { value: "SHOCK_INCARCERATION_12_MONTHS", label: "SCI 12 months" },
+        ],
+        componentEnabled: true,
       };
-
       expect(result.admissionType).toEqual(expected);
     });
 

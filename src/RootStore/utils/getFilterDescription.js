@@ -1,8 +1,11 @@
 import pipe from "lodash/fp/pipe";
 import find from "lodash/fp/find";
 import get from "lodash/fp/get";
-import { humanReadableTitleCase } from "../labels";
-import { SUPERVISION_LEVELS } from "../../RootStore/TenantStore/filterOptions";
+import { humanReadableTitleCase } from "../../utils/labels";
+import {
+  SUPERVISION_LEVELS,
+  ADMISSION_TYPES,
+} from "../TenantStore/filterOptions";
 
 function formatMetricPeriodMonthsFilter(metricPeriodMonths) {
   switch (metricPeriodMonths) {
@@ -42,6 +45,22 @@ const formatSupervisionLevel = (supervisionLevel) =>
         get("label")
       )(SUPERVISION_LEVELS.options)}`;
 
+const formatAdmissionType = (admissionTypes) => {
+  return admissionTypes[0] === "All"
+    ? "All admission types"
+    : `Admission type: ${getLabelsString(
+        admissionTypes,
+        ADMISSION_TYPES.flattenedOptions
+      )}`;
+};
+
+const getLabelsString = (nestedFilterOptions, flattenedOptions) =>
+  nestedFilterOptions
+    .map((option) => {
+      return pipe(find({ value: option }), get("label"))(flattenedOptions);
+    })
+    .join(", ");
+
 function getFilters(toggleStates) {
   const filters = [];
 
@@ -65,6 +84,10 @@ function getFilters(toggleStates) {
 
   if (toggleStates.supervisionLevel) {
     filters.push(formatSupervisionLevel(toggleStates.supervisionLevel));
+  }
+
+  if (toggleStates.admissionType) {
+    filters.push(formatAdmissionType(toggleStates.admissionType));
   }
 
   return filters.join(", ");

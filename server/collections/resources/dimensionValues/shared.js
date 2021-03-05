@@ -43,7 +43,7 @@ const DEFAULT_REPORTED_VIOLATIONS = [
   "8",
 ];
 
-const DEFAULT_GENDERS = ["external_unknown", "female", "male"];
+const DEFAULT_GENDERS = ["external_unknown", "female", "male", "other"];
 
 const DEFAULT_METRIC_PERIOD_MONTHS = ["1", "12", "3", "36", "6"];
 

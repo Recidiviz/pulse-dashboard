@@ -1,8 +1,8 @@
-import getViolation from "../getViolation";
+import getViolationTypeDescription from "../getViolationTypeDescription";
 
-describe("getViolation tests", () => {
+describe("getViolationTypeDescription tests", () => {
   it("should return empty string if no reportedViolations, violationType provided", () => {
-    expect(getViolation({})).toBe("");
+    expect(getViolationTypeDescription({})).toBe("");
   });
 
   it("should return violations number and type", () => {
@@ -10,7 +10,7 @@ describe("getViolation tests", () => {
     const mockViolationType = "FELONY";
 
     expect(
-      getViolation({
+      getViolationTypeDescription({
         reportedViolations: mockReportedViolations,
         violationType: mockViolationType,
       })
