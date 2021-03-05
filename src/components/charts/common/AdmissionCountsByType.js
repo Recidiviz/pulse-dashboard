@@ -33,7 +33,7 @@ import {
   COLORS,
   COLORS_FIVE_VALUES,
 } from "../../../assets/scripts/constants/colors";
-import { configureDownloadButtons } from "../../../utils/downloads/downloads";
+import { configureDownloadButtons } from "../../../utils/downloads/configureDownloadButtons";
 import {
   filterDatasetByDistrict,
   filterDatasetBySupervisionType,
@@ -56,6 +56,7 @@ const AdmissionCountsByType = ({
   metricType,
   district,
   supervisionType,
+  getTokenSilently,
 }) => {
   // This chart does not support district or supervision type breakdowns for rates, only counts
   const filterDistrict =
@@ -251,8 +252,10 @@ const AdmissionCountsByType = ({
       chartBox: document.getElementById(chartId),
       filters: { metricPeriodMonths, metricType, district, supervisionType },
       dataExportLabel: "Type",
+      getTokenSilently,
     });
   }, [
+    getTokenSilently,
     metricPeriodMonths,
     metricType,
     district,

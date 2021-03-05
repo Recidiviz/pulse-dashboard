@@ -26,7 +26,7 @@ import toInteger from "lodash/fp/toInteger";
 import { groupByMonth } from "../common/bars/utils";
 
 import { COLORS } from "../../../assets/scripts/constants/colors";
-import { configureDownloadButtons } from "../../../utils/downloads/downloads";
+import { configureDownloadButtons } from "../../../utils/downloads/configureDownloadButtons";
 import {
   filterDatasetBySupervisionType,
   filterDatasetByDistrict,
@@ -79,6 +79,7 @@ const FtrReferralCountByMonth = ({
   district,
   metricType,
   metricPeriodMonths,
+  getTokenSilently,
   header = null,
 }) => {
   const dataPoints = pipe(
@@ -181,8 +182,10 @@ const FtrReferralCountByMonth = ({
       filters: { supervisionType, district, metricType, metricPeriodMonths },
       convertValuesToNumbers: true,
       handleTimeStringLabels: true,
+      getTokenSilently,
     });
   }, [
+    getTokenSilently,
     supervisionType,
     district,
     metricPeriodMonths,

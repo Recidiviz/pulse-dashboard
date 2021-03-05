@@ -40,7 +40,9 @@ import useChartData from "../../../../hooks/useChartData";
 import { availableDistricts, importantNotes } from "./constants";
 
 const ProgrammingExplore = () => {
-  const { apiData, isLoading } = useChartData("us_nd/programming/explore");
+  const { apiData, isLoading, getTokenSilently } = useChartData(
+    "us_nd/programming/explore"
+  );
   const [metricType, setMetricType] = useState(defaultMetricType);
   const [metricPeriodMonths, setMetricPeriodMonths] = useState(
     defaultMetricPeriod
@@ -80,6 +82,7 @@ const ProgrammingExplore = () => {
             supervisionType={supervisionType}
             district={district}
             ftrReferralCountByMonth={apiData.ftr_referrals_by_month.data}
+            getTokenSilently={getTokenSilently}
           />
         }
         geoChart={
@@ -96,6 +99,7 @@ const ProgrammingExplore = () => {
             denominatorKeys={["total_supervision_count"]}
             centerLat={47.3}
             centerLong={-100.5}
+            getTokenSilently={getTokenSilently}
           />
         }
         footer={<Methodology chartId="ftrReferralCountByMonth" />}
@@ -113,6 +117,7 @@ const ProgrammingExplore = () => {
             ftrReferralsByParticipationStatus={
               apiData.ftr_referrals_by_participation_status.data
             }
+            getTokenSilently={getTokenSilently}
           />
         }
         footer={
@@ -136,6 +141,7 @@ const ProgrammingExplore = () => {
               apiData.ftr_referrals_by_race_and_ethnicity_by_period.data
             }
             statePopulationByRace={apiData.race_proportions.data}
+            getTokenSilently={getTokenSilently}
           />
         }
         footer={
@@ -156,6 +162,7 @@ const ProgrammingExplore = () => {
             supervisionType={supervisionType}
             district={district}
             ftrReferralsByLsir={apiData.ftr_referrals_by_lsir_by_period.data}
+            getTokenSilently={getTokenSilently}
           />
         }
         footer={
@@ -178,6 +185,7 @@ const ProgrammingExplore = () => {
             ftrReferralsByGender={
               apiData.ftr_referrals_by_gender_by_period.data
             }
+            getTokenSilently={getTokenSilently}
           />
         }
         footer={
@@ -198,6 +206,7 @@ const ProgrammingExplore = () => {
             supervisionType={supervisionType}
             district={district}
             ftrReferralsByAge={apiData.ftr_referrals_by_age_by_period.data}
+            getTokenSilently={getTokenSilently}
           />
         }
         footer={

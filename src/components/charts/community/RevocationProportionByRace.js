@@ -29,7 +29,7 @@ import {
   COLORS_FIVE_VALUES,
   COLORS,
 } from "../../../assets/scripts/constants/colors";
-import { configureDownloadButtons } from "../../../utils/downloads/downloads";
+import { configureDownloadButtons } from "../../../utils/downloads/configureDownloadButtons";
 import {
   filterDatasetBySupervisionType,
   filterDatasetByDistrict,
@@ -65,6 +65,7 @@ const RevocationProportionByRace = ({
   supervisionType,
   revocationProportionByRace,
   statePopulationByRace,
+  getTokenSilently,
 }) => {
   const counts = ["revocation_count", "total_supervision_count"];
   const stateCensusDataPoints = pipe(
@@ -269,8 +270,10 @@ const RevocationProportionByRace = ({
       chartBox: document.getElementById(chartId),
       filters: { metricPeriodMonths, district, supervisionType },
       dataExportLabel: "Race",
+      getTokenSilently,
     });
   }, [
+    getTokenSilently,
     metricType,
     metricPeriodMonths,
     district,

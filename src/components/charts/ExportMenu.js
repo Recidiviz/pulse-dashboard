@@ -24,7 +24,7 @@ import {
   downloadChartAsImage,
   downloadChartAsData,
   downloadHtmlElementAsImage,
-} from "../../utils/downloads/downloads";
+} from "../../utils/downloads/configureDownloadButtons";
 import { useRootStore } from "../../StoreProvider";
 
 // ExportMenu used by Lantern charts only
@@ -39,7 +39,8 @@ const ExportMenu = ({
   labels,
   dataExportLabel,
 }) => {
-  const { methodology, filtersStore } = useRootStore();
+  const { filtersStore, methodology, userStore } = useRootStore();
+  const { getTokenSilently } = userStore;
   const [isModalOpened, setIsModalOpened] = useState(false);
   const additionalInfo = methodology[chartId] || [];
 
@@ -80,6 +81,7 @@ const ExportMenu = ({
                   timeWindowDescription,
                   shouldZipDownload: true,
                   methodology,
+                  getTokenSilently,
                 })
               }
             >
@@ -97,6 +99,7 @@ const ExportMenu = ({
                   timeWindowDescription,
                   shouldZipDownload: true,
                   methodology,
+                  getTokenSilently,
                 })
               }
             >
@@ -117,6 +120,7 @@ const ExportMenu = ({
                 shouldZipDownload: true,
                 fixLabelsInColumns,
                 methodology,
+                getTokenSilently,
               })
             }
           >

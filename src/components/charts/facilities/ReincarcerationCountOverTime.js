@@ -27,7 +27,7 @@ import toInteger from "lodash/fp/toInteger";
 import values from "lodash/fp/values";
 
 import { COLORS } from "../../../assets/scripts/constants/colors";
-import { configureDownloadButtons } from "../../../utils/downloads/downloads";
+import { configureDownloadButtons } from "../../../utils/downloads/configureDownloadButtons";
 import { filterDatasetByDistrict } from "../../../utils/charts/dataFilters";
 import {
   getGoalForChart,
@@ -90,6 +90,7 @@ const ReincarcerationCountOverTime = ({
   disableGoal,
   header = null,
   stateCode,
+  getTokenSilently,
 }) => {
   const goal = getGoalForChart(stateCode, chartId);
   const goalProps = {
@@ -230,8 +231,10 @@ const ReincarcerationCountOverTime = ({
       filters: { district, metricType, metricPeriodMonths },
       convertValuesToNumbers: true,
       handleTimeStringLabels: true,
+      getTokenSilently,
     });
   }, [
+    getTokenSilently,
     chart.props.data.datasets,
     chart.props.data.labels,
     district,

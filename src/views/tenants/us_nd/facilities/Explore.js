@@ -41,7 +41,9 @@ import { getYearFromNow } from "../../../../utils/transforms/years";
 import { availableDistricts, importantNotes } from "./constants";
 
 const FacilitiesExplore = () => {
-  const { apiData, isLoading } = useChartData("us_nd/facilities/explore");
+  const { apiData, isLoading, getTokenSilently } = useChartData(
+    "us_nd/facilities/explore"
+  );
   const [metricType, setMetricType] = useState(defaultMetricType);
   const [metricPeriodMonths, setMetricPeriodMonths] = useState(
     defaultMetricPeriod
@@ -81,6 +83,7 @@ const FacilitiesExplore = () => {
               apiData.reincarcerations_by_month.data
             }
             stateCode="US_ND"
+            getTokenSilently={getTokenSilently}
           />
         }
         geoChart={
@@ -96,6 +99,7 @@ const FacilitiesExplore = () => {
             denominatorKeys={["total_admissions"]}
             centerLat={47.3}
             centerLong={-100.5}
+            getTokenSilently={getTokenSilently}
           />
         }
         footer={<Methodology chartId="reincarcerationCountsByMonth" />}
@@ -120,6 +124,7 @@ const FacilitiesExplore = () => {
             disableGoal
             daysAtLibertyByMonth={apiData.avg_days_at_liberty_by_month.data}
             stateCode="US_ND"
+            getTokenSilently={getTokenSilently}
           />
         }
         footer={<Methodology chartId="daysAtLibertySnapshot" />}
@@ -136,6 +141,7 @@ const FacilitiesExplore = () => {
             admissionsVsReleases={
               apiData.admissions_versus_releases_by_month.data
             }
+            getTokenSilently={getTokenSilently}
           />
         }
         geoChart={
@@ -154,6 +160,7 @@ const FacilitiesExplore = () => {
             denominatorKeys={["month_end_population"]}
             centerLat={47.3}
             centerLong={-100.5}
+            getTokenSilently={getTokenSilently}
           />
         }
         footer={<Methodology chartId="admissionsVsReleases" />}
@@ -179,6 +186,7 @@ const FacilitiesExplore = () => {
             metricPeriodMonths={metricPeriodMonths}
             district={["all"]}
             admissionCountsByType={apiData.admissions_by_type_by_period.data}
+            getTokenSilently={getTokenSilently}
           />
         }
         footer={
@@ -240,6 +248,7 @@ const FacilitiesExplore = () => {
             metricType={metricType}
             district={district}
             ratesByStayLength={apiData.reincarceration_rate_by_stay_length.data}
+            getTokenSilently={getTokenSilently}
           />
         }
         footer={

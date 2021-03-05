@@ -1,14 +1,25 @@
-import downloadjs from "downloadjs";
-
-import createMethodologyFile from "./createMethodologyFile";
-import downloadZipFile from "./downloadZipFile";
+// Recidiviz - a data platform for criminal justice reform
+// Copyright (C) 2021 Recidiviz, Inc.
+//
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <https://www.gnu.org/licenses/>.
+// =============================================================================
 
 function transformCanvasToBase64(canvas, chartTitle, filters, violation) {
   const topPadding = 120;
   const temporaryCanvas = document.createElement("canvas");
   temporaryCanvas.width = canvas.width;
   temporaryCanvas.height = canvas.height + topPadding;
-
   // Fill the canvas with a white background and the original image
   const destinationCtx = temporaryCanvas.getContext("2d");
   destinationCtx.fillStyle = "#FFFFFF";
@@ -40,46 +51,4 @@ function transformCanvasToBase64(canvas, chartTitle, filters, violation) {
   return temporaryCanvas.toDataURL("image/png;base64");
 }
 
-function downloadCanvasAsImage({
-  canvas,
-  filename,
-  chartTitle,
-  filters,
-  violation,
-  chartId,
-  timeWindowDescription,
-  shouldZipDownload,
-  methodology,
-}) {
-  const imageData = transformCanvasToBase64(
-    canvas,
-    chartTitle,
-    filters,
-    violation
-  );
-
-  if (shouldZipDownload) {
-    const methodologyFile = createMethodologyFile(
-      chartId,
-      chartTitle,
-      timeWindowDescription,
-      filters,
-      methodology,
-      violation
-    );
-
-    const imageFile = {
-      name: filename,
-      data: imageData.substring(22),
-      type: "base64",
-    };
-
-    const files = [methodologyFile, imageFile];
-
-    downloadZipFile(files, "export_image.zip");
-  } else {
-    downloadjs(imageData, filename, "image/png;base64");
-  }
-}
-
-export default downloadCanvasAsImage;
+export default transformCanvasToBase64;

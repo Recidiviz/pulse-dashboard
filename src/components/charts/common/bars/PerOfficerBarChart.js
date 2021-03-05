@@ -108,6 +108,7 @@ const PerOfficerBarChart = ({
   bars,
   yAxisLabel,
   barColorPalette,
+  getTokenSilently,
 }) => {
   const offices = reduce(
     (acc, { district: officeId, site_name: officeName }) =>
@@ -151,9 +152,16 @@ const PerOfficerBarChart = ({
         visibleOffices,
       },
       dataExportLabel: "Officer",
+      getTokenSilently,
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [metricType, metricPeriodMonths, supervisionType, visibleOffices]);
+  }, [
+    getTokenSilently,
+    metricType,
+    metricPeriodMonths,
+    supervisionType,
+    visibleOffices,
+  ]);
 
   const chartLabels = officerLabels;
   const allDataPoints = countsByType;
@@ -242,6 +250,7 @@ PerOfficerBarChart.propTypes = {
   supervisionType: PropTypes.string.isRequired,
   district: PropTypes.arrayOf(PropTypes.string).isRequired,
   officeData: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  getTokenSilently: PropTypes.func.isRequired,
   bars: PropTypes.arrayOf(
     PropTypes.shape({
       key: PropTypes.string,

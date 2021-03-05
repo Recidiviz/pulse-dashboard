@@ -32,6 +32,7 @@ const CaseTerminationsByOfficer = ({
   metricPeriodMonths,
   supervisionType,
   district,
+  getTokenSilently,
 }) => (
   <PerOfficerBarChart
     chartId={chartId}
@@ -42,6 +43,7 @@ const CaseTerminationsByOfficer = ({
     metricPeriodMonths={metricPeriodMonths}
     supervisionType={supervisionType}
     district={district}
+    getTokenSilently={getTokenSilently}
     bars={[
       { key: "absconsion", label: "Absconsion" },
       { key: "revocation", label: "Revocation" },
@@ -59,6 +61,7 @@ const CaseTerminationsByOfficer = ({
 );
 
 CaseTerminationsByOfficer.propTypes = {
+  getTokenSilently: PropTypes.func.isRequired,
   terminationCountsByOfficer: PropTypes.arrayOf(
     PropTypes.shape({
       absconsion: PropTypes.string,

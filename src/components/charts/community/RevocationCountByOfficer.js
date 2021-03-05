@@ -32,6 +32,7 @@ const RevocationCountByOfficer = ({
   metricPeriodMonths,
   supervisionType,
   district,
+  getTokenSilently,
 }) => (
   <PerOfficerBarChart
     chartId={chartId}
@@ -52,6 +53,7 @@ const RevocationCountByOfficer = ({
       metricType === METRIC_TYPES.COUNTS ? "Revocation count" : "Percentage"
     }
     barColorPalette={COLORS_FIVE_VALUES}
+    getTokenSilently={getTokenSilently}
   />
 );
 
@@ -60,6 +62,7 @@ RevocationCountByOfficer.defaultProps = {
 };
 
 RevocationCountByOfficer.propTypes = {
+  getTokenSilently: PropTypes.func.isRequired,
   revocationCountsByOfficer: PropTypes.arrayOf(
     PropTypes.shape({
       absconsion_count: PropTypes.string,

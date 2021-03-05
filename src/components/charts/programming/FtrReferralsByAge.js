@@ -24,7 +24,7 @@ import {
   COLORS,
   COLORS_FIVE_VALUES,
 } from "../../../assets/scripts/constants/colors";
-import { configureDownloadButtons } from "../../../utils/downloads/downloads";
+import { configureDownloadButtons } from "../../../utils/downloads/configureDownloadButtons";
 import {
   filterDatasetBySupervisionType,
   filterDatasetByDistrict,
@@ -54,6 +54,7 @@ const FtrReferralsByAge = ({
   district,
   metricPeriodMonths,
   metricType,
+  getTokenSilently,
 }) => {
   const filteredFtrReferrals = pipe(
     (dataset) => filterDatasetBySupervisionType(dataset, supervisionType),
@@ -314,8 +315,10 @@ const FtrReferralsByAge = ({
       chartBox: document.getElementById(chartId),
       filters: { supervisionType, district, metricPeriodMonths, metricType },
       dataExportLabel: "Age",
+      getTokenSilently,
     });
   }, [
+    getTokenSilently,
     supervisionType,
     district,
     metricPeriodMonths,

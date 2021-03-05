@@ -29,7 +29,7 @@ import sortBy from "lodash/fp/sortBy";
 import toInteger from "lodash/fp/toInteger";
 
 import { COLORS } from "../../../assets/scripts/constants/colors";
-import { configureDownloadButtons } from "../../../utils/downloads/downloads";
+import { configureDownloadButtons } from "../../../utils/downloads/configureDownloadButtons";
 import { sortFilterAndSupplementMostRecentMonths } from "../../../utils/transforms/datasets";
 import { monthNamesWithYearsFromNumbers } from "../../../utils/transforms/months";
 import {
@@ -112,6 +112,7 @@ const RevocationAdmissionsSnapshot = ({
   district,
   metricType,
   metricPeriodMonths,
+  getTokenSilently,
 }) => {
   const toggles = useMemo(() => {
     return {
@@ -298,8 +299,10 @@ const RevocationAdmissionsSnapshot = ({
       filters: toggles,
       convertValuesToNumbers: true,
       handleTimeStringLabels: true,
+      getTokenSilently,
     });
   }, [
+    getTokenSilently,
     metricType,
     metricPeriodMonths,
     district,
@@ -331,6 +334,7 @@ RevocationAdmissionsSnapshot.defaultProps = {
 };
 
 RevocationAdmissionsSnapshot.propTypes = {
+  getTokenSilently: PropTypes.func.isRequired,
   stateCode: PropTypes.string.isRequired,
   disableGoal: PropTypes.bool,
   header: PropTypes.string,

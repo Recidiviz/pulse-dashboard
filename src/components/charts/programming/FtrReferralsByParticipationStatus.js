@@ -38,6 +38,7 @@ const FtrReferralsByParticipationStatus = ({
   metricPeriodMonths,
   supervisionType,
   district,
+  getTokenSilently,
 }) => (
   <PerMonthBarChart
     chartId={chartId}
@@ -58,10 +59,12 @@ const FtrReferralsByParticipationStatus = ({
     yAxisLabel={metricType === METRIC_TYPES.COUNTS ? "Count" : "Percentage"}
     barColorPalette={chartColors}
     dataExportLabel="Month\Status"
+    getTokenSilently={getTokenSilently}
   />
 );
 
 FtrReferralsByParticipationStatus.propTypes = {
+  getTokenSilently: PropTypes.func.isRequired,
   metricType: metricTypePropType.isRequired,
   metricPeriodMonths: PropTypes.string.isRequired,
   supervisionType: PropTypes.string.isRequired,
