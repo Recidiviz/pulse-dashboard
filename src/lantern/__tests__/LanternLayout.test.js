@@ -9,7 +9,11 @@ import StoreProvider, { useRootStore } from "../../components/StoreProvider";
 import { US_MO } from "../../RootStore/TenantStore/lanternTenants";
 import { PageProvider } from "../../contexts/PageContext";
 
-jest.mock("react-router-dom");
+jest.mock("react-router-dom", () => {
+  return {
+    Link: ({ children }) => children,
+  };
+});
 jest.mock("../hooks/useIntercom");
 jest.mock("../hooks/usePageLayout");
 jest.mock("../../components/TopBar/TopBarUserMenuForAuthenticatedUser");
