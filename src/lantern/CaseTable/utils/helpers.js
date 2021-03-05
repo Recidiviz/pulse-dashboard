@@ -36,32 +36,39 @@ export const normalizeOfficerRecommendation = (value) => {
   }
 };
 
-export const formatData = (data) => {
-  return data.map((record) => ({
-    state_id: nullSafeLabel(record.state_id),
-    district: nullSafeLabel(record.district),
-    officer: nullSafeLabel(getNameFromOfficerId(record.officer)),
-    risk_level: nullSafeLabel(translate("riskLevelsMap")[record.risk_level]),
-    officer_recommendation: nullSafeLabel(
-      normalizeOfficerRecommendation(record.officer_recommendation)
-    ),
-    violation_record: nullSafeLabel(
-      parseAndFormatViolationRecord(record.violation_record)
-    ),
-    // Added because this is the only unique field in fake data
-    admissionType: nullSafeLabel(record.admission_type),
-  }));
+export const formatData = (data, options) => {
+  const includeOfficerRecommendation = options
+    .map((o) => o.key)
+    .includes("officer_recommendation");
+  return data.map((record) => {
+    const obj = {
+      state_id: nullSafeLabel(record.state_id),
+      district: nullSafeLabel(record.district),
+      officer: nullSafeLabel(getNameFromOfficerId(record.officer)),
+      risk_level: nullSafeLabel(translate("riskLevelsMap")[record.risk_level]),
+      violation_record: nullSafeLabel(
+        parseAndFormatViolationRecord(record.violation_record)
+      ),
+    };
+    if (includeOfficerRecommendation)
+      obj.officer_recommendation = nullSafeLabel(
+        normalizeOfficerRecommendation(record.officer_recommendation)
+      );
+    return obj;
+  });
 };
 
-export const formatExportData = (data) => {
-  return (formatData(data) || []).map(({ admissionType, ...record }) => ({
-    data: Object.values(record),
-  }));
+export const formatExportData = (data, options) => {
+  return (formatData(data, options) || []).map(
+    ({ admissionType, ...record }) => ({
+      data: Object.values(record),
+    })
+  );
 };
 
-export const nullSafeCell = (label) => {
+export const nullSafeCell = (label, idx) => {
   if (label) {
-    return <td>{label}</td>;
+    return <td key={`${idx}-${label}`}>{label}</td>;
   }
 
   const unknownStyle = {

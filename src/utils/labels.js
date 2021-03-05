@@ -84,9 +84,12 @@ function toInt(nonInt) {
 }
 
 function toTitleCase(str) {
-  return str.replace(
-    /\w\S*/g,
-    (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase()
+  return (
+    str &&
+    str.replace(
+      /\w\S*/g,
+      (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase()
+    )
   );
 }
 
@@ -127,6 +130,12 @@ function getTrailingLabelFromMetricPeriodMonthsFilter(toggledValue) {
   return `Last ${parseInt(toggledValue, 10) / 12} years`;
 }
 
+const formatOfficerLabel = (label) => {
+  if (!label) return "";
+  const groups = label.split(" - ");
+  return `${groups[0]} - ${toTitleCase(groups[1])}`;
+};
+
 export {
   getPeriodLabelFromMetricPeriodMonthsFilter,
   getTrailingLabelFromMetricPeriodMonthsFilter,
@@ -145,4 +154,5 @@ export {
   genderValueToLabel,
   getStatePopulations,
   getStatePopulationsLabels,
+  formatOfficerLabel,
 };

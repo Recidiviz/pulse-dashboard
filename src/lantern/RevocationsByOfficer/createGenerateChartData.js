@@ -22,11 +22,12 @@ import map from "lodash/fp/map";
 import sumBy from "lodash/fp/sumBy";
 import toInteger from "lodash/fp/toInteger";
 import orderBy from "lodash/fp/orderBy";
+import filter from "lodash/fp/filter";
 import { calculateRate } from "../utils/rate";
 
 import { translate } from "../../utils/i18nSettings";
 import { sumCounts } from "../utils/sumCounts";
-import getNameFromOfficerId from "../utils/getNameFromOfficerId";
+import { formatOfficerLabel } from "../../utils/labels";
 import { COLORS } from "../../assets/scripts/constants/colors";
 
 const generatePercentChartData = (filteredData, mode) => {
@@ -38,10 +39,9 @@ const generatePercentChartData = (filteredData, mode) => {
   const transformedData = pipe(
     groupBy("officer"),
     values,
+    filter((item) => item[0][totalFieldName] >= 10),
     map((dataset) => ({
-      officer: `${dataset[0].district}-${getNameFromOfficerId(
-        dataset[0].officer
-      )}`,
+      officer: formatOfficerLabel(dataset[0].officer_label),
       count: sumBy((item) => toInteger(item.revocation_count), dataset),
       [fieldName]: sumBy((item) => toInteger(item[totalFieldName]), dataset),
     })),
@@ -51,7 +51,7 @@ const generatePercentChartData = (filteredData, mode) => {
       [fieldName]: dataPoint[fieldName],
       rate: calculateRate(dataPoint.count, dataPoint[fieldName]),
     })),
-    orderBy(["rate"], ["desc"])
+    orderBy(["rate", "count"], ["desc", "desc"])
   )(filteredData);
 
   const dataPoints = map((item) => item.rate.toFixed(2), transformedData);
@@ -63,7 +63,7 @@ const generatePercentChartData = (filteredData, mode) => {
   const datasets = [
     {
       label: translate("percentOfPopulationRevoked"),
-      backgroundColor: COLORS["lantern-orange"],
+      backgroundColor: () => COLORS["lantern-orange"],
       data: dataPoints,
     },
   ];
@@ -86,9 +86,7 @@ const generateCountChartData = (filteredData) => {
     groupBy("officer"),
     values,
     map((dataset) => ({
-      officer: `${dataset[0].district}-${getNameFromOfficerId(
-        dataset[0].officer
-      )}`,
+      officer: formatOfficerLabel(dataset[0].officer_label),
       count: sumBy((item) => toInteger(item.revocation_count), dataset),
     })),
     orderBy(["count"], ["desc"])

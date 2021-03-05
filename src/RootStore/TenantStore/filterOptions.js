@@ -98,7 +98,6 @@ const MOFilterOptions = {
       return this.options[0];
     },
     // TODO(425): Set to true when we are ready to launch admission type filters for MO
-    filterEnabled: false,
     componentEnabled: false,
   },
   [CHARGE_CATEGORY]: {
@@ -185,7 +184,6 @@ const PAFilterOptions = {
       return this.options[0];
     },
     // TODO(425): Set to true when we are ready to launch admission type filters for PA
-    filterEnabled: false,
     componentEnabled: false,
   },
   [CHARGE_CATEGORY]: { defaultValue: "All", componentEnabled: false },

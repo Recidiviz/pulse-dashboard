@@ -36,7 +36,7 @@ const MatrixCell = ({
 }) => {
   const { filters } = useRootStore();
   const ratio = maxCount > 0 ? count / maxCount : 0;
-  const radius = Math.max(minRadius, Math.ceil(ratio * maxRadius) + 25);
+  const radius = Math.max(minRadius, Math.ceil(ratio * maxRadius) + 20);
 
   const containerStyle = {
     position: "relative",

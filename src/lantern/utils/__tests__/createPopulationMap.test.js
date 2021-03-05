@@ -17,7 +17,7 @@
 // =============================================================================
 import reduce from "lodash/fp/reduce";
 
-import createPopulationMap, { sumCountsAcrossRiskLevels } from "../createPopulationMap";
+import createPopulationMap from "../createPopulationMap";
 
 describe("#createPopulationMap", () => {
   const revocationData = [
@@ -67,127 +67,6 @@ describe("#createPopulationMap", () => {
       }
     }
     const map = reduce(createPopulationMap("gender"), {})
-    expect(map(revocationData)).toEqual(expected);
-  });
-});
-
-
-describe("#sumCountsAcrossRiskLevels", () => {
-  const revocationData = [
-    {
-      revocation_count: 1,
-      supervision_population_count: 1,
-      gender: "MALE",
-      revocation_count_all: 10,
-      supervision_count_all: 100,
-      district: "01",
-      risk_level: "HIGH",
-    },
-    {
-      revocation_count: 2,
-      supervision_population_count: 2,
-      gender: "MALE",
-      revocation_count_all: 20,
-      supervision_count_all: 200,
-      district: "02",
-      risk_level: "HIGH",
-    },
-    {
-      revocation_count: 1,
-      supervision_population_count: 1,
-      gender: "MALE",
-      revocation_count_all: 10,
-      supervision_count_all: 100,
-      district: "01",
-      risk_level: "MEDIUM",
-    },
-    {
-      revocation_count: 2,
-      supervision_population_count: 2,
-      gender: "MALE",
-      revocation_count_all: 20,
-      supervision_count_all: 200,
-      district: "02",
-      risk_level: "MEDIUM",
-    },
-    {
-      revocation_count: 3,
-      supervision_population_count: 3,
-      gender: "FEMALE",
-      revocation_count_all: 30,
-      supervision_count_all: 300,
-      district: "01",
-      risk_level: "HIGH",
-    },
-    {
-      revocation_count: 4,
-      supervision_population_count: 4,
-      gender: "FEMALE",
-      revocation_count_all: 40,
-      supervision_count_all: 400,
-      district: "02",
-      risk_level: "HIGH",
-    },
-    {
-      revocation_count: 3,
-      supervision_population_count: 3,
-      gender: "FEMALE",
-      revocation_count_all: 30,
-      supervision_count_all: 300,
-      district: "01",
-      risk_level: "MEDIUM",
-    },
-    {
-      revocation_count: 4,
-      supervision_population_count: 4,
-      gender: "FEMALE",
-      revocation_count_all: 40,
-      supervision_count_all: 400,
-      district: "02",
-      risk_level: "MEDIUM",
-    },
-  ];
-
-  it("sums across risk levels", () => {
-    const expected = [
-      {
-        "district": "01",
-        "gender": "MALE",
-        "revocation_count": 2,
-        "revocation_count_all": 10,
-        "risk_level": "HIGH",
-        "supervision_count_all": 100,
-        "supervision_population_count": 2
-      },
-      {
-        "district": "02",
-        "gender": "MALE",
-        "revocation_count": 4,
-        "revocation_count_all": 20,
-        "risk_level": "HIGH",
-        "supervision_count_all": 200,
-        "supervision_population_count": 4
-      },
-      {
-        "district": "01",
-        "gender": "FEMALE",
-        "revocation_count": 6,
-        "revocation_count_all": 30,
-        "risk_level": "HIGH",
-        "supervision_count_all": 300,
-        "supervision_population_count": 6,
-      },
-      {
-        "district": "02",
-        "gender": "FEMALE",
-        "revocation_count": 8,
-        "revocation_count_all": 40,
-        "risk_level": "HIGH",
-        "supervision_count_all": 400,
-        "supervision_population_count": 8,
-     }
-    ]
-    const map = reduce(sumCountsAcrossRiskLevels("gender"), [])
     expect(map(revocationData)).toEqual(expected);
   });
 });

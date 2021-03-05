@@ -131,7 +131,6 @@ describe("filterOptionsMap", () => {
           value: "All",
         },
         componentEnabled: false,
-        filterEnabled: false,
       };
 
       expect(result.admissionType).toEqual(expected);
@@ -390,7 +389,6 @@ describe("filterOptionsMap", () => {
           value: "All",
         },
         componentEnabled: false,
-        filterEnabled: false,
       };
 
       expect(result.admissionType).toEqual(expected);

@@ -56,6 +56,9 @@ const RevocationCountChart = ({ chartId, data, xAxisLabel }) => (
               labelString: `Number of people ${translate("revoked")}`,
             },
             stacked: true,
+            ticks: {
+              precision: 0,
+            },
           },
         ],
       },

@@ -59,6 +59,15 @@ const VIOLATION_TYPES = [
   "substance_abuse",
   "technical",
 ];
+const ADMISSION_TYPES = [
+  "all",
+  "legal_revocation",
+  "shock_incarceration_0_to_6_months",
+  "shock_incarceration_6_months",
+  "shock_incarceration_9_months",
+  "shock_incarceration_12_months",
+  "shock_incarceration_PVC",
+];
 
 const newRevocationsParamValidations = [
   param("stateCode").toUpperCase().isIn(VALID_STATE_CODES),
@@ -78,6 +87,12 @@ const newRevocationsParamValidations = [
   query("supervisionLevel").toLowerCase().optional().isIn(SUPERVISION_LEVELS),
   query("supervisionType").toLowerCase().optional().isIn(SUPERVISION_TYPES),
   query("violationType").toLowerCase().optional().isIn(VIOLATION_TYPES),
+  query("admissionType")
+    .toLowerCase()
+    .optional()
+    .custom((values) =>
+      values.every((value) => ADMISSION_TYPES.includes(value.toLowerCase()))
+    ),
 ];
 
 const restrictedAccessParamValidations = [

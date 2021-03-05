@@ -37,6 +37,8 @@ const RevocationsByOfficer = observer(
 
     const CHART_TITLE = `Admissions by ${translate("officer")}`;
     const includeWarning = false;
+    // TODO 830 - re-enable rate line once data is ready
+    const hideRateLine = true;
 
     return (
       <RevocationsByDimension
@@ -65,7 +67,7 @@ const RevocationsByOfficer = observer(
             <RevocationCountChart
               chartId={chartId}
               data={slicedData}
-              xAxisLabel={`District-${translate("Officer")} ID`}
+              xAxisLabel={`District - ${translate("Officer")} name`}
             />
           ) : (
             <PercentRevokedChart
@@ -74,13 +76,14 @@ const RevocationsByOfficer = observer(
               numerators={numerators}
               denominators={denominators}
               averageRate={averageRate}
-              xAxisLabel={`District-${translate("Officer")} ID`}
+              xAxisLabel={`District-${translate("Officer")} name`}
               yAxisLabel={
                 mode === "rates"
                   ? translate("percentOfPopulationRevoked")
                   : `Percent ${translate("revoked")} out of all exits`
               }
               includeWarning={includeWarning}
+              hideRateLine={hideRateLine}
             />
           );
         }}

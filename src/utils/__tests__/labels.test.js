@@ -173,5 +173,16 @@ describe("test label", () => {
         expect(period36Month).toBe("Last 3 years");
       });
     });
+    it("correctly formats the officer label", () => {
+      const officerLabel = "01 - BARNEY RUBBLE";
+      const result = labelsMethods.formatOfficerLabel(officerLabel);
+      expect(result).toEqual("01 - Barney Rubble");
+    });
+
+    it("returns an empty string when officer label is undefined", () => {
+      const officerLabel = undefined;
+      const result = labelsMethods.formatOfficerLabel(officerLabel);
+      expect(result).toEqual("");
+    });
   });
 });
