@@ -59,6 +59,7 @@ export const formatSelectOptionValue = (
   allOptions,
   summingOption,
   selectedOptions,
+  isCore,
   isShortFormat = true
 ) => {
   const selectedValues = map("value", selectedOptions);
@@ -83,10 +84,13 @@ export const formatSelectOptionValue = (
     return `${selectedGroups[0].label} - ${selectedGroups[0].allSelectedLabel}`;
   }
 
+  if (isCore) {
+    return `${selectedOptions[0].label} and ${selectedOptions.length - 1} more`;
+  }
+
   if (isShortFormat) {
     return `${selectedOptions.length} Items`;
   }
-
   const groupOptions = excludeOption(
     flatOptions(selectedGroups),
     summingOption
