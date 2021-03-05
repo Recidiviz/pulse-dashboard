@@ -16,10 +16,10 @@
 // =============================================================================
 import React from "react";
 import PropTypes from "prop-types";
-import Select from "./Select";
-import MultiSelect from "./MultiSelect";
+import Select from "../../controls/Select";
+import MultiSelect from "../../controls/MultiSelect";
 
-const SelectDropdown = ({
+const DistrictFilterDropdown = ({
   singleValueOption,
   selected,
   options,
@@ -72,11 +72,11 @@ const SelectOption = {
   ),
 };
 
-SelectDropdown.defaultProps = {
+DistrictFilterDropdown.defaultProps = {
   singleValueOption: null,
 };
 
-SelectDropdown.propTypes = {
+DistrictFilterDropdown.propTypes = {
   singleValueOption: PropTypes.string,
   selected: PropTypes.arrayOf(PropTypes.shape(SelectOption)).isRequired,
   options: PropTypes.arrayOf(PropTypes.shape(SelectOption)).isRequired,
@@ -85,4 +85,4 @@ SelectDropdown.propTypes = {
   defaultValue: PropTypes.shape(SelectOption).isRequired,
 };
 
-export default SelectDropdown;
+export default DistrictFilterDropdown;

@@ -21,7 +21,7 @@ import { get } from "mobx";
 import map from "lodash/fp/map";
 
 import FilterField from "./FilterField";
-import SelectDropdown from "../../controls/SelectDropdown";
+import DistrictFilterDropown from "./DistrictFilterDropown";
 import { useRootStore } from "../../components/StoreProvider";
 import { flatOptions } from "../../controls/utils";
 
@@ -55,7 +55,7 @@ const DistrictFilter = () => {
 
   return (
     <FilterField label="District">
-      <SelectDropdown
+      <DistrictFilterDropown
         singleValueOption={restrictedDistrict}
         options={options}
         selected={selectedValues}
