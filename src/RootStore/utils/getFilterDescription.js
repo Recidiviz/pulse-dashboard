@@ -1,8 +1,11 @@
 import pipe from "lodash/fp/pipe";
 import find from "lodash/fp/find";
 import get from "lodash/fp/get";
-import { humanReadableTitleCase } from "../../utils/transforms/labels";
-import { SUPERVISION_LEVELS, ADMISSION_TYPES } from "./filterOptions";
+import { humanReadableTitleCase } from "../../utils/labels";
+import {
+  SUPERVISION_LEVELS,
+  ADMISSION_TYPES,
+} from "../TenantStore/filterOptions";
 
 function formatMetricPeriodMonthsFilter(metricPeriodMonths) {
   switch (metricPeriodMonths) {

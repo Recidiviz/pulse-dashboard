@@ -22,6 +22,8 @@ import exportDataOnMobileDevices, {
 } from "../../api/exportData/exportDataOnMobileDevices";
 import transformCanvasToBase64 from "./transformCanvasToBase64";
 import createMethodologyFile from "./createMethodologyFile";
+import configureFilename from "./configureFileName";
+import transformChartDataToCsv from "./transformChartDataToCsv";
 
 // Functions for flowing through browser-specific download functionality
 // https://stackoverflow.com/questions/9847580/how-to-detect-safari-chrome-ie-firefox-and-opera-browser
@@ -58,13 +60,19 @@ export function downloadCanvasAsImage({
   filename,
   chartTitle,
   filters,
+  violation,
   chartId,
   timeWindowDescription,
   shouldZipDownload,
   methodology,
   getTokenSilently,
 }) {
-  const imageData = transformCanvasToBase64(canvas, chartTitle, filters);
+  const imageData = transformCanvasToBase64(
+    canvas,
+    chartTitle,
+    filters,
+    violation
+  );
   try {
     if (shouldZipDownload || isMobile) {
       const methodologyFile =
@@ -74,7 +82,8 @@ export function downloadCanvasAsImage({
           chartTitle,
           timeWindowDescription,
           filters,
-          methodology
+          methodology,
+          violation
         );
 
       const files = [
@@ -156,4 +165,130 @@ export function downloadData({
       });
     });
   }
+}
+
+export function downloadHtmlElementAsImage({
+  chartId,
+  chartTitle,
+  filters,
+  timeWindowDescription,
+  shouldZipDownload,
+  methodology,
+  getTokenSilently,
+}) {
+  const element = document.getElementById(chartId);
+
+  window.html2canvas(element, {}).then((canvas) => {
+    downloadCanvasAsImage({
+      canvas,
+      filename: `${configureFilename(chartId, {}, true)}.png`,
+      chartTitle,
+      filters: filters.filtersDescription,
+      violation: filters.violationTypeDescription,
+      chartId,
+      timeWindowDescription,
+      shouldZipDownload,
+      methodology,
+      getTokenSilently,
+    });
+  });
+}
+
+export function downloadChartAsImage({
+  chartId,
+  chartTitle,
+  filters,
+  timeWindowDescription,
+  shouldZipDownload,
+  methodology,
+  getTokenSilently,
+}) {
+  const filename = configureFilename(chartId, filters, shouldZipDownload);
+  downloadCanvasAsImage({
+    canvas: document.getElementById(chartId),
+    filename: `${filename}.png`,
+    chartTitle,
+    filters: filters.filtersDescription,
+    violation: filters.violationTypeDescription,
+    chartId,
+    timeWindowDescription,
+    shouldZipDownload,
+    methodology,
+    getTokenSilently,
+  });
+}
+
+export function downloadChartAsData({
+  chartId,
+  chartTitle,
+  chartDatasets,
+  chartLabels,
+  dataExportLabel,
+  filters,
+  timeWindowDescription,
+  shouldZipDownload,
+  fixLabelsInColumns = false,
+  methodology,
+  getTokenSilently,
+}) {
+  const downloadChartData = configureDataDownloadButton({
+    chartId,
+    chartDatasets,
+    chartLabels,
+    dataExportLabel,
+    filters: filters.filtersDescription,
+    violation: filters.violationTypeDescription,
+    chartTitle,
+    timeWindowDescription,
+    shouldZipDownload,
+    fixLabelsInColumns,
+    methodology,
+    getTokenSilently,
+  });
+  downloadChartData();
+}
+
+export function configureDataDownloadButton({
+  chartId,
+  chartDatasets,
+  chartLabels,
+  dataExportLabel,
+  filters,
+  convertValuesToNumbers,
+  chartTitle,
+  timeWindowDescription,
+  shouldZipDownload,
+  fixLabelsInColumns,
+  methodology,
+  getTokenSilently,
+}) {
+  return () => {
+    const filename = configureFilename(chartId, filters, shouldZipDownload);
+    const exportName = `${filename}.csv`;
+    const methodologyFile =
+      shouldZipDownload &&
+      createMethodologyFile(
+        chartId,
+        chartTitle,
+        timeWindowDescription,
+        filters,
+        methodology
+      );
+    transformChartDataToCsv(
+      chartDatasets,
+      chartLabels,
+      dataExportLabel,
+      convertValuesToNumbers,
+      fixLabelsInColumns
+    ).then((csv) => {
+      downloadData({
+        chartId,
+        shouldZipDownload,
+        csv,
+        getTokenSilently,
+        methodologyFile,
+        filename: exportName,
+      });
+    });
+  };
 }
