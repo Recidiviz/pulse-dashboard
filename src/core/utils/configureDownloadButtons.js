@@ -14,13 +14,12 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-import downloadCanvasAsImage from "../../utils/downloads/downloadCanvasAsImage";
-import configureFilename from "../../utils/downloads/configureFileName";
-
 import {
   downloadHtmlElementAsImage,
   configureDataDownloadButton,
-} from "../../utils/downloads/downloads";
+  downloadCanvasAsImage,
+} from "../../utils/downloads/downloadData";
+import configureFilename from "../../utils/downloads/configureFileName";
 
 export function configureDownloadButtons({
   chartId,

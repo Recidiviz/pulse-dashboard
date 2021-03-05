@@ -55,6 +55,7 @@ const FtrReferralsByGender = ({
   district,
   metricPeriodMonths,
   metricType,
+  getTokenSilently,
 }) => {
   const filteredFtrReferrals = pipe(
     (dataset) =>
@@ -241,6 +242,7 @@ const FtrReferralsByGender = ({
       chartBox: document.getElementById(chartId),
       filters: { supervisionType, district, metricPeriodMonths, metricType },
       dataExportLabel: "Gender",
+      getTokenSilently,
     });
   }, [
     supervisionType,
@@ -249,6 +251,7 @@ const FtrReferralsByGender = ({
     metricType,
     activeChart.props.data.datasets,
     activeChart.props.data.labels,
+    getTokenSilently,
   ]);
 
   return activeChart;

@@ -52,6 +52,7 @@ const DaysAtLibertySnapshot = ({
   metricPeriodMonths,
   disableGoal = false,
   header = null,
+  getTokenSilently,
 }) => {
   const goal = getGoalForChart(stateCode, chartId);
   const displayGoal = canDisplayGoal(goal, { disableGoal, metricPeriodMonths });
@@ -200,8 +201,14 @@ const DaysAtLibertySnapshot = ({
       filters: {},
       convertValuesToNumbers: true,
       handleTimeStringLabels: true,
+      getTokenSilently,
     });
-  }, [chart.props.data.datasets, chart.props.data.labels, metricPeriodMonths]);
+  }, [
+    getTokenSilently,
+    chart.props.data.datasets,
+    chart.props.data.labels,
+    metricPeriodMonths,
+  ]);
 
   useEffect(() => {
     const headerElement = header && document.getElementById(header);

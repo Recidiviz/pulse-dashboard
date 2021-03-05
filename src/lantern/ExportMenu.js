@@ -25,7 +25,7 @@ import {
   downloadChartAsImage,
   downloadChartAsData,
   downloadHtmlElementAsImage,
-} from "../utils/downloads/downloads";
+} from "../utils/downloads/downloadData";
 import { useRootStore } from "../components/StoreProvider";
 
 const ExportMenu = ({
@@ -39,7 +39,8 @@ const ExportMenu = ({
   labels,
   dataExportLabel,
 }) => {
-  const { filters, methodology } = useRootStore();
+  const { filters, methodology, userStore } = useRootStore();
+  const { getTokenSilently } = userStore;
   const [isModalOpened, setIsModalOpened] = useState(false);
   const additionalInfo = methodology[chartId] || [];
 
@@ -82,6 +83,7 @@ const ExportMenu = ({
                   timeWindowDescription,
                   shouldZipDownload: true,
                   methodology,
+                  getTokenSilently,
                 })
               }
             >
@@ -99,6 +101,7 @@ const ExportMenu = ({
                   timeWindowDescription,
                   shouldZipDownload: true,
                   methodology,
+                  getTokenSilently,
                 })
               }
             >
@@ -119,6 +122,7 @@ const ExportMenu = ({
                 shouldZipDownload: true,
                 fixLabelsInColumns,
                 methodology,
+                getTokenSilently,
               })
             }
           >

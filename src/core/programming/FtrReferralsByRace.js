@@ -67,6 +67,7 @@ const FtrReferralsByRace = ({
   district,
   metricPeriodMonths,
   metricType,
+  getTokenSilently,
 }) => {
   const counts = ["count", "total_supervision_count"];
   const stateCensusDataPoints = pipe(
@@ -181,7 +182,7 @@ const FtrReferralsByRace = ({
               ticks: {
                 autoSkip: false,
                 callback(value) {
-                  if (value.length > 12) {
+                  if (value && value.length > 12) {
                     return `${value.substr(0, 12)}...`; // Truncate
                   }
                   return value;
@@ -305,8 +306,10 @@ const FtrReferralsByRace = ({
       chartBox: document.getElementById(chartId),
       filters: { supervisionType, district, metricPeriodMonths, metricType },
       dataExportLabel: "Race",
+      getTokenSilently,
     });
   }, [
+    getTokenSilently,
     supervisionType,
     district,
     metricPeriodMonths,

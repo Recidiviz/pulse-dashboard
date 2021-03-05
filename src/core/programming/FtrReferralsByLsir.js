@@ -66,6 +66,7 @@ const FtrReferralsByLsir = ({
   district,
   metricPeriodMonths,
   metricType,
+  getTokenSilently,
 }) => {
   const filteredFtrReferrals = pipe(
     (dataset) => filterDatasetBySupervisionType(dataset, supervisionType),
@@ -305,8 +306,10 @@ const FtrReferralsByLsir = ({
       chartBox: document.getElementById(chartId),
       filters: { supervisionType, district, metricPeriodMonths, metricType },
       dataExportLabel: "LSI-R Score",
+      getTokenSilently,
     });
   }, [
+    getTokenSilently,
     supervisionType,
     district,
     metricPeriodMonths,

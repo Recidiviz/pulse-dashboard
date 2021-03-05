@@ -51,6 +51,7 @@ const FtrReferralsByAge = ({
   district,
   metricPeriodMonths,
   metricType,
+  getTokenSilently,
 }) => {
   const filteredFtrReferrals = pipe(
     (dataset) => filterDatasetBySupervisionType(dataset, supervisionType),
@@ -311,8 +312,10 @@ const FtrReferralsByAge = ({
       chartBox: document.getElementById(chartId),
       filters: { supervisionType, district, metricPeriodMonths, metricType },
       dataExportLabel: "Age",
+      getTokenSilently,
     });
   }, [
+    getTokenSilently,
     supervisionType,
     district,
     metricPeriodMonths,

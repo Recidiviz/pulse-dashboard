@@ -30,6 +30,7 @@ const RevocationCountBySupervisionType = ({
   metricPeriodMonths,
   district,
   revocationCountsByMonthBySupervisionType,
+  getTokenSilently,
 }) => (
   <PerMonthBarChart
     chartId={chartId}
@@ -47,10 +48,12 @@ const RevocationCountBySupervisionType = ({
     }
     barColorPalette={COLORS_STACKED_TWO_VALUES}
     dataExportLabel="Month"
+    getTokenSilently={getTokenSilently}
   />
 );
 
 RevocationCountBySupervisionType.propTypes = {
+  getTokenSilently: PropTypes.func.isRequired,
   metricType: metricTypePropType.isRequired,
   metricPeriodMonths: PropTypes.string.isRequired,
   district: PropTypes.arrayOf(PropTypes.string).isRequired,

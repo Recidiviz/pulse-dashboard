@@ -48,7 +48,9 @@ import { METRIC_TYPES } from "../utils/constants";
 import { availableDistricts, importantNotes } from "./constants";
 
 const CommunityExplore = () => {
-  const { apiData, isLoading } = useChartData("us_nd/community/explore");
+  const { apiData, isLoading, getTokenSilently } = useChartData(
+    "us_nd/community/explore"
+  );
   const [metricType, setMetricType] = useState(defaultMetricType);
   const [metricPeriodMonths, setMetricPeriodMonths] = useState(
     defaultMetricPeriod
@@ -93,6 +95,7 @@ const CommunityExplore = () => {
             officeData={apiData.site_offices.data}
             revocationCountsByMonth={apiData.revocations_by_month.data}
             stateCode="US_ND"
+            getTokenSilently={getTokenSilently}
           />
         }
         geoChart={
@@ -109,6 +112,7 @@ const CommunityExplore = () => {
             denominatorKeys={["total_supervision_count"]}
             centerLat={47.3}
             centerLong={-100.5}
+            getTokenSilently={getTokenSilently}
           />
         }
         footer={<Methodology chartId="revocationCountsByMonth" />}
@@ -138,6 +142,7 @@ const CommunityExplore = () => {
               apiData.revocations_by_officer_by_period.data
             }
             officeData={apiData.site_offices.data}
+            getTokenSilently={getTokenSilently}
           />
         }
         footer={
@@ -162,6 +167,7 @@ const CommunityExplore = () => {
             revocationAdmissionsByMonth={
               apiData.admissions_by_type_by_month.data
             }
+            getTokenSilently={getTokenSilently}
           />
         }
         geoChart={
@@ -188,6 +194,7 @@ const CommunityExplore = () => {
             ]}
             centerLat={47.3}
             centerLong={-100.5}
+            getTokenSilently={getTokenSilently}
           />
         }
         footer={<Methodology chartId="revocationAdmissionsSnapshot" />}
@@ -215,6 +222,7 @@ const CommunityExplore = () => {
             metricPeriodMonths={metricPeriodMonths}
             district={district}
             admissionCountsByType={apiData.admissions_by_type_by_period.data}
+            getTokenSilently={getTokenSilently}
           />
         }
         footer={
@@ -247,6 +255,7 @@ const CommunityExplore = () => {
             revocationCountsByMonthBySupervisionType={
               apiData.revocations_by_supervision_type_by_month.data
             }
+            getTokenSilently={getTokenSilently}
           />
         }
         footer={<Methodology chartId="revocationsBySupervisionType" />}
@@ -264,6 +273,7 @@ const CommunityExplore = () => {
             revocationCountsByMonthByViolationType={
               apiData.revocations_by_violation_type_by_month.data
             }
+            getTokenSilently={getTokenSilently}
           />
         }
         footer={<Methodology chartId="revocationsByViolationType" />}
@@ -283,6 +293,7 @@ const CommunityExplore = () => {
               apiData.revocations_by_race_and_ethnicity_by_period.data
             }
             statePopulationByRace={apiData.race_proportions.data}
+            getTokenSilently={getTokenSilently}
           />
         }
         footer={
@@ -308,6 +319,7 @@ const CommunityExplore = () => {
             supervisionSuccessRates={
               apiData.supervision_termination_by_type_by_month.data
             }
+            getTokenSilently={getTokenSilently}
           />
         }
         geoChart={
@@ -329,6 +341,7 @@ const CommunityExplore = () => {
             ]}
             centerLat={47.3}
             centerLong={-100.5}
+            getTokenSilently={getTokenSilently}
           />
         }
         footer={<Methodology chartId="supervisionSuccessSnapshot" />}
@@ -347,6 +360,7 @@ const CommunityExplore = () => {
             caseTerminationCountsByMonthByTerminationType={
               apiData.case_terminations_by_type_by_month.data
             }
+            getTokenSilently={getTokenSilently}
           />
         }
         footer={<Methodology chartId="caseTerminationsByTerminationType" />}
@@ -376,6 +390,7 @@ const CommunityExplore = () => {
               apiData.case_terminations_by_type_by_officer_by_period.data
             }
             officeData={apiData.site_offices.data}
+            getTokenSilently={getTokenSilently}
           />
         }
         footer={<Methodology chartId="caseTerminationsByOfficer" />}
@@ -410,6 +425,7 @@ const CommunityExplore = () => {
             lsirScoreChangeByMonth={
               apiData.average_change_lsir_score_by_month.data
             }
+            getTokenSilently={getTokenSilently}
           />
         }
         geoChart={
@@ -429,6 +445,7 @@ const CommunityExplore = () => {
             denominatorKeys={[]}
             centerLat={47.3}
             centerLong={-100.5}
+            getTokenSilently={getTokenSilently}
           />
         }
         footer={<Methodology chartId="lsirScoreChangeSnapshot" />}

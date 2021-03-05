@@ -98,6 +98,7 @@ export function configureDownloads({
   bars,
   filters,
   dataExportLabel,
+  getTokenSilently,
 }) {
   const downloadableDataFormat = bars.map((bar) => ({
     label: bar.label,
@@ -115,6 +116,7 @@ export function configureDownloads({
     filters,
     convertValuesToNumbers: false,
     dataExportLabel,
+    getTokenSilently,
   });
 }
 

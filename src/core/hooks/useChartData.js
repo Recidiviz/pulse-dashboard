@@ -99,7 +99,7 @@ function useChartData(url) {
 
   const isLoading = awaitingResults(userLoading, user, awaitingApi);
 
-  return { isLoading, isError, apiData };
+  return { isLoading, isError, apiData, getTokenSilently };
 }
 
 export default useChartData;

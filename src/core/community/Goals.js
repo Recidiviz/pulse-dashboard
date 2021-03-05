@@ -31,7 +31,9 @@ import useChartData from "../hooks/useChartData";
 import { metrics } from "./constants";
 
 const CommunityGoals = () => {
-  const { apiData, isLoading } = useChartData("us_nd/community/goals");
+  const { apiData, isLoading, getTokenSilently } = useChartData(
+    "us_nd/community/goals"
+  );
 
   if (isLoading) {
     return <Loading />;
@@ -52,6 +54,7 @@ const CommunityGoals = () => {
             revocationCountsByMonth={apiData.revocations_by_month.data}
             header="revocationCountsByMonth-header"
             stateCode="US_ND"
+            getTokenSilently={getTokenSilently}
           />
         }
         geoChart={
@@ -68,6 +71,7 @@ const CommunityGoals = () => {
             denominatorKeys={["total_supervision_count"]}
             centerLat={47.3}
             centerLong={-100.5}
+            getTokenSilently={getTokenSilently}
           />
         }
         footer={<Methodology chartId="revocationCountsByMonthGoal" />}
@@ -93,6 +97,7 @@ const CommunityGoals = () => {
             }
             header="supervisionSuccessSnapshot-header"
             stateCode="US_ND"
+            getTokenSilently={getTokenSilently}
           />
         }
         geoChart={
@@ -114,6 +119,7 @@ const CommunityGoals = () => {
             ]}
             centerLat={47.3}
             centerLong={-100.5}
+            getTokenSilently={getTokenSilently}
           />
         }
         footer={<Methodology chartId="supervisionSuccessSnapshot" />}
@@ -138,6 +144,7 @@ const CommunityGoals = () => {
             }
             header="lsirScoreChangeSnapshot-header"
             stateCode="US_ND"
+            getTokenSilently={getTokenSilently}
           />
         }
         geoChart={
@@ -157,6 +164,7 @@ const CommunityGoals = () => {
             denominatorKeys={[]}
             centerLat={47.3}
             centerLong={-100.5}
+            getTokenSilently={getTokenSilently}
           />
         }
         footer={<Methodology chartId="lsirScoreChangeSnapshot" />}
@@ -182,6 +190,7 @@ const CommunityGoals = () => {
             }
             header="revocationAdmissionsSnapshot-header"
             stateCode="US_ND"
+            getTokenSilently={getTokenSilently}
           />
         }
         geoChart={
@@ -208,6 +217,7 @@ const CommunityGoals = () => {
             ]}
             centerLat={47.3}
             centerLong={-100.5}
+            getTokenSilently={getTokenSilently}
           />
         }
         footer={<Methodology chartId="revocationAdmissionsSnapshotGoal" />}

@@ -78,6 +78,7 @@ const RevocationCountOverTime = ({
   disableGoal = false,
   header,
   stateCode,
+  getTokenSilently,
 }) => {
   const goal = getGoalForChart(stateCode, chartId);
 
@@ -209,8 +210,10 @@ const RevocationCountOverTime = ({
       filters: { metricType, supervisionType, district },
       convertValuesToNumbers: true,
       handleTimeStringLabels: true,
+      getTokenSilently,
     });
   }, [
+    getTokenSilently,
     metricType,
     district,
     supervisionType,
