@@ -16,10 +16,17 @@
 // =============================================================================
 
 import React from "react";
+import { Card, CardSection } from "@recidiviz/case-triage-components";
 import PageTemplate from "./PageTemplate";
 
 const Projections = () => {
-  return <PageTemplate>Hello there!</PageTemplate>;
+  return (
+    <PageTemplate>
+      <Card>
+        <CardSection>Hello</CardSection>
+      </Card>
+    </PageTemplate>
+  );
 };
 
 export default Projections;
