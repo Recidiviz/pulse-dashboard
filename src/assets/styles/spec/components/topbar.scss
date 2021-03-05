@@ -23,10 +23,6 @@
   width: 100%;
   z-index: 800;
 
-  @include to($breakpoint-md) {
-    width: 100%;
-  }
-
   .header-container {
     @include clearfix;
 
