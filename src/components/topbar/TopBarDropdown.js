@@ -16,7 +16,7 @@
 // =============================================================================
 
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 import {
   Dropdown,
@@ -35,12 +35,13 @@ const menu = [
 const TopBarTitle = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const toggle = () => setDropdownOpen((prevState) => !prevState);
-  const [selectedItem, setSelectedItem] = useState(menu[0]);
-  const filteredMenu = menu.filter((item) => item.label !== selectedItem.label);
 
-  const handleChange = (item) => () => {
-    setSelectedItem(item);
-  };
+  const currentPath = useLocation().pathname;
+  const currentLabel = currentPath.split("/")[1];
+  const selectedItem = menu.find(
+    (item) => item.label.toLowerCase() === currentLabel
+  );
+  const filteredMenu = menu.filter((item) => item.label !== selectedItem.label);
 
   return (
     <Dropdown
@@ -54,11 +55,7 @@ const TopBarTitle = () => {
       <DropdownMenu cssModule={{ transform: "translate3d(0px, 24px, 0px)" }}>
         {filteredMenu.map(({ label, link }, index) => (
           <Link key={label} to={link}>
-            <DropdownItem
-              tag="button"
-              autoFocus={!index}
-              onClick={handleChange({ label, link })}
-            >
+            <DropdownItem tag="button" autoFocus={!index}>
               {label}
             </DropdownItem>
           </Link>
