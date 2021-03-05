@@ -6,7 +6,7 @@
     "compartment": "INCARCERATION",
     "legal_status": "PROBATION",
     "simulation_group": "MALE",
-    "simulation_tag": "POLICY_A",
+    "simulation_tag": "HISTORICAL",
     "admission_count": "400",
     "release_count": "700",
     "total_population": "13000"
@@ -18,9 +18,45 @@
     "compartment": "INCARCERATION",
     "legal_status": "PROBATION",
     "simulation_group": "MALE",
-    "simulation_tag": "POLICY_A",
+    "simulation_tag": "HISTORICAL",
     "admission_count": "2300",
     "release_count": "5000",
-    "total_population": "11000"
+    "total_population": "13000"
+  },
+  {
+    "state_code": "US_DEMO",
+    "metric_period_months": "6",
+    "simulation_date": "2021-02-02",
+    "compartment": "INCARCERATION",
+    "legal_status": "PROBATION",
+    "simulation_group": "MALE",
+    "simulation_tag": "POLICY_A",
+    "admission_count": "200",
+    "release_count": "900",
+    "total_population": "12300",
+    "admission_count_min": "150",
+    "admission_count_max": "250",
+    "release_count_min": "800",
+    "release_count_max": "1000",
+    "total_population_count_min": "12890",
+    "total_population_count_max": "13110"
+  },
+  {
+    "state_code": "US_DEMO",
+    "metric_period_months": "36",
+    "simulation_date": "2021-02-02",
+    "compartment": "INCARCERATION",
+    "legal_status": "PROBATION",
+    "simulation_group": "MALE",
+    "simulation_tag": "POLICY_A",
+    "admission_count": "2100",
+    "release_count": "5500",
+    "total_population": "13000",
+    "admission_count_min": "1800",
+    "admission_count_max": "2400",
+    "release_count_min": "5000",
+    "release_count_max": "6000",
+    "total_population_count_min": "12460",
+    "total_population_count_max": "13540"
   }
 ]
