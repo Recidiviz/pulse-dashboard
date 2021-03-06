@@ -41,6 +41,7 @@ describe("test for component ToggleBar", () => {
     const nextProps = {
       ...props,
       setChartMetricPeriodMonths: jest.fn(),
+      metricPeriodMonths: "36",
     };
     const { container } = render(<ToggleBar {...nextProps} />);
     expect(getAllById(container, "metricPeriodToggle")).toHaveLength(1);
@@ -50,6 +51,7 @@ describe("test for component ToggleBar", () => {
     const nextProps = {
       ...props,
       setChartSupervisionType: jest.fn(),
+      supervisionType: "all",
     };
     const { container } = render(<ToggleBar {...nextProps} />);
     expect(getAllById(container, "supervisionTypeToggle")).toHaveLength(1);
