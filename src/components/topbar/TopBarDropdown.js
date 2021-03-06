@@ -38,9 +38,8 @@ const TopBarTitle = () => {
 
   const currentPath = useLocation().pathname;
   const currentLabel = currentPath.split("/")[1];
-  const selectedItem = menu.find(
-    (item) => item.label.toLowerCase() === currentLabel
-  );
+  const selectedItem =
+    menu.find((item) => item.label.toLowerCase() === currentLabel) ?? menu[0];
   const filteredMenu = menu.filter((item) => item.label !== selectedItem.label);
 
   return (
