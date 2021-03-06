@@ -41,6 +41,7 @@ describe("test for component FiltersBar", () => {
     const nextProps = {
       ...props,
       setChartMetricPeriodMonths: jest.fn(),
+      metricPeriodMonths: "36",
     };
     const { container } = render(<FiltersBar {...nextProps} />);
     expect(getAllById(container, "metricPeriodFilter")).toHaveLength(1);
@@ -50,6 +51,7 @@ describe("test for component FiltersBar", () => {
     const nextProps = {
       ...props,
       setChartSupervisionType: jest.fn(),
+      supervisionType: "all",
     };
     const { container } = render(<FiltersBar {...nextProps} />);
     expect(getAllById(container, "supervisionTypeFilter")).toHaveLength(1);
