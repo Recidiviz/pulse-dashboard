@@ -1,5 +1,5 @@
 // Recidiviz - a data platform for criminal justice reform
-// Copyright (C) 2020 Recidiviz, Inc.
+// Copyright (C) 2021 Recidiviz, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -16,32 +16,23 @@
 // =============================================================================
 
 import React from "react";
+
 import PropTypes from "prop-types";
 import TopBar from "../topbar/TopBar";
-import TopBarDropdown from "../topbar/TopBarDropdown";
-import TopBarUserMenuForAuthenticatedUser from "../topbar/TopBarUserMenuForAuthenticatedUser";
 import Footer from "../Footer";
 
-import "./CoreLayout.scss";
+import CoreNavigation from "../topbar/CoreNavigation";
 
 const CoreLayout = ({ children }) => {
   return (
     <div id="app">
       <div className="page-container">
         <TopBar>
-          <div className="CoreHeader">
-            <ul className="nav-left">
-              <TopBarDropdown />
-            </ul>
-            <ul className="nav-right">
-              <TopBarUserMenuForAuthenticatedUser />
-            </ul>
-          </div>
+          <CoreNavigation />
         </TopBar>
         {children}
-
-        <Footer />
       </div>
+      <Footer />
     </div>
   );
 };
