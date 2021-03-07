@@ -58,6 +58,7 @@ const ProgrammingExplore = () => {
 
   const toggleBar = (
     <ToggleBar
+      metricType={metricType}
       metricPeriodMonths={metricPeriodMonths}
       district={district}
       supervisionType={supervisionType}

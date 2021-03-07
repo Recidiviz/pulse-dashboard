@@ -15,43 +15,32 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React, { useState } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import "./TogglePill.scss";
+import cx from "classnames";
 
-export const TogglePill = ({ defaultValue, onChange, leftPill, rightPill }) => {
-  const [state, setState] = useState(defaultValue);
-
+const TogglePill = ({ currentValue, onChange, leftPill, rightPill }) => {
   return (
     <div className="TogglePill">
       {[leftPill, rightPill].map(({ value, label }) => (
-        <>
-          <input
-            className="TogglePill__input"
-            type="radio"
-            id={label + value}
-            name="togglePill"
-            checked={state === value}
-            onChange={() => {
-              setState(value);
-              onChange(value);
-            }}
-          />
-          <label
-            className="TogglePill__label"
-            htmlFor={label + value}
-            key={label}
-          >
-            {label}
-          </label>
-        </>
+        <button
+          type="button"
+          key={label}
+          className={cx("TogglePill--button", {
+            "TogglePill--button-selected": currentValue === value,
+          })}
+          onClick={() => onChange(value)}
+        >
+          {label}
+        </button>
       ))}
     </div>
   );
 };
 
 TogglePill.propTypes = {
-  defaultValue: PropTypes.string.isRequired,
+  currentValue: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
   leftPill: PropTypes.shape({
     label: PropTypes.string,
@@ -62,3 +51,5 @@ TogglePill.propTypes = {
     value: PropTypes.string,
   }).isRequired,
 };
+
+export default TogglePill;

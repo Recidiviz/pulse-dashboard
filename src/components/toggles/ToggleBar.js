@@ -27,7 +27,6 @@ import CoreMultiSelect from "../controls/MultiSelect/CoreMultiSelect";
 import {
   defaultDistrictOption,
   defaultMetricPeriodOption,
-  defaultMetricType,
   defaultSupervisionTypeOption,
   metricPeriodOptions,
   metricTypeOptions,
@@ -36,7 +35,7 @@ import {
 import { getDistrictOptions } from "./helpers";
 
 import "./ToggleBar.scss";
-import { TogglePill } from "../controls/TogglePill";
+import TogglePill from "../controls/TogglePill";
 
 const TOGGLE_STYLE = {
   zIndex: 700,
@@ -44,6 +43,7 @@ const TOGGLE_STYLE = {
 };
 
 const ToggleBar = ({
+  metricType = null,
   setChartMetricType = null,
   setChartSupervisionType = null,
   setChartMetricPeriodMonths = null,
@@ -92,7 +92,7 @@ const ToggleBar = ({
                     leftPill={metricTypeOptions[0]}
                     rightPill={metricTypeOptions[1]}
                     onChange={setChartMetricType}
-                    defaultValue={defaultMetricType}
+                    currentValue={metricType}
                   />
                 </div>
               )}
@@ -170,6 +170,7 @@ const ToggleBar = ({
 };
 
 ToggleBar.defaultProps = {
+  metricType: null,
   setChartMetricType: null,
   setChartSupervisionType: null,
   setChartMetricPeriodMonths: null,
@@ -184,6 +185,7 @@ ToggleBar.defaultProps = {
 };
 
 ToggleBar.propTypes = {
+  metricType: PropTypes.string,
   metricPeriodMonths: PropTypes.string,
   district: PropTypes.arrayOf(PropTypes.string),
   supervisionType: PropTypes.string,

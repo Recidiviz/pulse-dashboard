@@ -32,6 +32,7 @@ describe("test for component ToggleBar", () => {
     const nextProps = {
       ...props,
       setChartMetricType: jest.fn(),
+      metricType: "counts",
     };
     const { container } = render(<ToggleBar {...nextProps} />);
     expect(getAllById(container, "metricTypeToggle")).toHaveLength(1);

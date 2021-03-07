@@ -15,39 +15,34 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-$ALL_PILL_WIDTH: 160px;
+import React from "react";
+import { configure, mount } from "enzyme";
+import Adapter from "enzyme-adapter-react-16";
+import TogglePill from "../TogglePill";
 
-.TogglePill {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
+configure({ adapter: new Adapter() });
 
-  &--button {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: $ALL_PILL_WIDTH / 2;
-    height: 2.33rem;
-    border: 1px solid #d2d8d8;
+describe("TogglePill tests", () => {
+  const renderTogglePill = () => {
+    return mount(
+      <TogglePill
+        currentValue="left"
+        leftPill={{ label: "Left", value: "left" }}
+        rightPill={{ label: "Right", value: "right" }}
+        onChange={() => {}}
+      />
+    );
+  };
 
-    &:focus {
-      outline: none;
-    }
+  it("Should render two options", () => {
+    const selector = renderTogglePill();
 
-    &:nth-of-type(1) {
-      border-right: none;
-      border-radius: 200px 0px 0px 200px;
-    }
+    expect(selector.find(".TogglePill--button")).toHaveLength(2);
+  });
 
-    &:nth-of-type(2) {
-      border-left: none;
-      border-radius: 0px 200px 200px 0px;
-    }
+  it("One one option should be checked", () => {
+    const selector = renderTogglePill();
 
-    &-selected {
-      color: white;
-      background-color: #006c67;
-    }
-  }
-}
+    expect(selector.find(".TogglePill--button-selected")).toHaveLength(1);
+  });
+});
