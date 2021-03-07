@@ -25,6 +25,7 @@
 
   .header-container {
     @include clearfix;
+    display: flex;
 
     height: $header-height;
 
@@ -119,13 +120,20 @@
     }
 
     .nav-left {
-      float: left;
       margin-left: 15px;
+      display: flex;
+      .select {
+        &-wrapper {
+          width: 141px;
+          padding: 0 5px;
+        }
+      }
     }
 
     .nav-right {
-      float: right;
       margin-right: 15px;
+      margin-left: auto;
+      display: flex;
 
       .dropdown {
         .dropdown-toggle {
@@ -215,14 +223,14 @@
 
 .is-collapsed {
   .header {
-    width: calc(100% - #{$collapsed-size});
+    width: 100%;
 
     @include to($breakpoint-md) {
       width: 100%;
     }
 
     @include between($breakpoint-md, $breakpoint-xl) {
-      width: calc(100% - #{$offscreen-size});
+      width: 100%;
     }
   }
 }
