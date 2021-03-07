@@ -16,62 +16,19 @@
 // =============================================================================
 
 import React from "react";
-import { useLocation } from "react-router-dom";
 
 import PropTypes from "prop-types";
 import TopBar from "../topbar/TopBar";
-import TopBarDropdown from "../topbar/TopBarDropdown";
-import TopBarUserMenuForAuthenticatedUser from "../topbar/TopBarUserMenuForAuthenticatedUser";
-import CorePageSelector from "../topbar/CorePageSelector";
 import Footer from "../Footer";
 
-import "./CoreLayout.scss";
-
-const selectOptions = {
-  communiity: {
-    value: "Community",
-    label: "Community",
-    defaultPath: "/community",
-    pages: ["goals", "explore"],
-  },
-  facilities: {
-    value: "Facilities",
-    label: "Facilities",
-    defaultPath: "/facilities",
-    pages: ["goals", "explore"],
-  },
-  programming: {
-    value: "Programming",
-    label: "Programming",
-    defaultPath: "/programming",
-    pages: ["explore"],
-  },
-};
+import CoreNavigation from "../topbar/CoreNavigation";
 
 const CoreLayout = ({ children }) => {
-  const { pathname } = useLocation();
-  const [currentSection, currentPage] = pathname.split("/").slice(1, 3);
-  const pageOptions = (
-    selectOptions[currentSection] ?? selectOptions.facilities
-  ).pages;
-
   return (
     <div id="app">
       <div className="page-container">
         <TopBar>
-          <div className="CoreHeader">
-            <ul className="nav-left">
-              <TopBarDropdown />
-            </ul>
-            <ul className="nav-right">
-              <CorePageSelector
-                currentSection={currentSection}
-                currentPage={currentPage}
-                pageOptions={pageOptions}
-              />
-              <TopBarUserMenuForAuthenticatedUser />
-            </ul>
-          </div>
+          <CoreNavigation />
         </TopBar>
         {children}
       </div>
