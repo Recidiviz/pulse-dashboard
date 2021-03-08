@@ -46,6 +46,7 @@ import { LANTERN_TENANTS } from "./RootStore/TenantStore/lanternTenants";
 import { CORE_TENANTS } from "./RootStore/TenantStore/coreTenants";
 import AuthWall from "./AuthWall";
 import ErrorBoundary from "./components/ErrorBoundary";
+import CoreCommunityVitals from "./core/community/CoreCommunityVitals";
 
 import "./assets/scripts/index";
 import "./assets/styles/index.scss";
@@ -85,6 +86,9 @@ const App = () => (
                   <ProtectedRoute path="/community/projections" component={PageProjections} />
                   <ProtectedRoute path="/facilities/explore" component={UsNdFacilitiesExplore} />
                   <ProtectedRoute path="/facilities/projections" component={PageProjections} />
+                  <Route path="/community/vitals">
+                      <CoreCommunityVitals stateCode="US_ND"/>
+                    </Route>
                   <ProtectedRoute path="/methodology" component={Methodology} />
                   <Route path="/profile" component={Profile} />
                   <RedirectHome />
