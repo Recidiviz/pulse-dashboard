@@ -18,7 +18,7 @@
 import { computed, makeAutoObservable, when } from "mobx";
 
 import { getAvailableStateCodes, doesUserHaveAccess } from "../utils/user";
-import { LANTERN_TENANTS } from "./lanternTenants";
+import { LANTERN_TENANTS, RESTRICTED_DISTRICT_TENANTS } from "./lanternTenants";
 import getTenantMappings from "./tenants";
 import methodology from "./methodology";
 
@@ -66,6 +66,10 @@ export default class TenantStore {
 
   get isLanternTenant() {
     return LANTERN_TENANTS.includes(this.currentTenantId);
+  }
+
+  get isRestrictedDistrictTenant() {
+    return RESTRICTED_DISTRICT_TENANTS.includes(this.currentTenantId);
   }
 
   get tenantMappings() {
