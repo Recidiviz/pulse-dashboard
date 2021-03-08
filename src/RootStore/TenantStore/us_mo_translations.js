@@ -53,6 +53,7 @@ of that column.`,
   },
   populationChartAttributes: {
     REVOKED: "Admitted Population",
+    RECOMMENDED_FOR_REVOCATION: "Recommended for Revocation",
     SUPERVISION_POPULATION: "Supervision Population",
     STATE_POPULATION: "Missouri Population",
   },
