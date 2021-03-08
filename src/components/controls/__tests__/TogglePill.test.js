@@ -37,12 +37,12 @@ describe("TogglePill tests", () => {
   it("Should render two options", () => {
     const selector = renderTogglePill();
 
-    expect(selector.find(".TogglePill--button")).toHaveLength(2);
+    expect(selector.find(".TogglePill__button")).toHaveLength(2);
   });
 
   it("One one option should be checked", () => {
     const selector = renderTogglePill();
 
-    expect(selector.find(".TogglePill--button-selected")).toHaveLength(1);
+    expect(selector.find(".TogglePill__button--selected")).toHaveLength(1);
   });
 });

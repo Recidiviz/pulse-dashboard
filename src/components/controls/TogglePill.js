@@ -27,8 +27,8 @@ const TogglePill = ({ currentValue, onChange, leftPill, rightPill }) => {
         <button
           type="button"
           key={label}
-          className={cx("TogglePill--button", {
-            "TogglePill--button-selected": currentValue === value,
+          className={cx("TogglePill__button", {
+            "TogglePill__button--selected": currentValue === value,
           })}
           onClick={() => onChange(value)}
         >

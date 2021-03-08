@@ -23,7 +23,7 @@ $ALL_PILL_WIDTH: 160px;
   justify-content: center;
   text-align: center;
 
-  &--button {
+  &__button {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -45,7 +45,7 @@ $ALL_PILL_WIDTH: 160px;
       border-radius: 0px 200px 200px 0px;
     }
 
-    &-selected {
+    &--selected {
       color: white;
       background-color: #006c67;
     }
