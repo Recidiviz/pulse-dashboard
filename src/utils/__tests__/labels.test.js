@@ -173,6 +173,7 @@ describe("test label", () => {
         expect(period36Month).toBe("Last 3 years");
       });
     });
+
     it("correctly formats the officer label", () => {
       const officerLabel = "01 - BARNEY RUBBLE";
       const result = labelsMethods.formatOfficerLabel(officerLabel);
@@ -183,6 +184,26 @@ describe("test label", () => {
       const officerLabel = undefined;
       const result = labelsMethods.formatOfficerLabel(officerLabel);
       expect(result).toEqual("");
+    });
+
+    describe("#formatLargeNumber", () => {
+      it("formats a number in the millions correctly", () => {
+        const number = 2540001;
+        const result = labelsMethods.formatLargeNumber(number);
+        expect(result).toEqual("2.5M");
+      });
+
+      it("formats a number in the thousands correctly", () => {
+        const number = 2501;
+        const result = labelsMethods.formatLargeNumber(number);
+        expect(result).toEqual("2,501");
+      });
+
+      it("formats a number in the hundreds correctly", () => {
+        const number = 25;
+        const result = labelsMethods.formatLargeNumber(number);
+        expect(result).toEqual("25");
+      });
     });
   });
 });
