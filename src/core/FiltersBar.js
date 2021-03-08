@@ -20,14 +20,12 @@ import React, { useCallback, useMemo } from "react";
 import PropTypes from "prop-types";
 import Sticky from "react-sticky-fill";
 
-import RadioGroup from "../controls/RadioGroup";
 import { CoreSelect } from "../controls/CoreSelect";
 import CoreMultiSelect from "../controls/MultiSelect/CoreMultiSelect";
 
 import {
   defaultDistrictOption,
   defaultMetricPeriodOption,
-  defaultMetricType,
   defaultSupervisionTypeOption,
   metricPeriodOptions,
   metricTypeOptions,
@@ -36,6 +34,7 @@ import {
 import { getDistrictOptions } from "./utils/filterHelpers";
 
 import "./FiltersBar.scss";
+import TogglePill from "../controls/TogglePill";
 
 const FILTER_BAR_STYLE = {
   zIndex: 700,
@@ -43,6 +42,7 @@ const FILTER_BAR_STYLE = {
 };
 
 const FiltersBar = ({
+  metricType = null,
   setChartMetricType = null,
   setChartSupervisionType = null,
   setChartMetricPeriodMonths = null,
@@ -87,10 +87,11 @@ const FiltersBar = ({
             <div className="row filters">
               {setChartMetricType && (
                 <div className="filters__filter" id="metricTypeFilter">
-                  <RadioGroup
-                    options={metricTypeOptions}
+                  <TogglePill
+                    leftPill={metricTypeOptions[0]}
+                    rightPill={metricTypeOptions[1]}
                     onChange={setChartMetricType}
-                    defaultValue={defaultMetricType}
+                    currentValue={metricType}
                   />
                 </div>
               )}
@@ -163,6 +164,7 @@ const FiltersBar = ({
 };
 
 FiltersBar.defaultProps = {
+  metricType: null,
   setChartMetricType: null,
   setChartSupervisionType: null,
   setChartMetricPeriodMonths: null,
@@ -177,6 +179,7 @@ FiltersBar.defaultProps = {
 };
 
 FiltersBar.propTypes = {
+  metricType: PropTypes.string,
   metricPeriodMonths: PropTypes.string,
   district: PropTypes.arrayOf(PropTypes.string),
   supervisionType: PropTypes.string,
