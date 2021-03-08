@@ -61,6 +61,7 @@ beforeEach(() => {
       currentTenantId: tenantId,
       tenantStore: {
         isLanternTenant: true,
+        isRestrictedDistrictTenant: true,
       },
       districtsStore: {
         isLoading: false,
@@ -434,11 +435,11 @@ describe("fetchRestrictedDistrictData", () => {
     });
   });
 
-  describe("when the tenant is not a Lantern tenant", () => {
+  describe("when the tenant is not in RESTRICTED_DISTRICT_TENANTS", () => {
     beforeEach(async () => {
       mockRootStore.mockImplementationOnce(() => {
         return {
-          currentTenantId: "US_ND",
+          currentTenantId: "US_PA",
           tenantStore: {
             isLanternTenant: false,
           },

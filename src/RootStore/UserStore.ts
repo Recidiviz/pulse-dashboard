@@ -194,7 +194,7 @@ export default class UserStore {
     this: UserStore,
     tenantId: string
   ) {
-    if (!this.rootStore?.tenantStore.isLanternTenant) {
+    if (!this.rootStore?.tenantStore.isRestrictedDistrictTenant) {
       this.restrictedDistrictIsLoading = false;
       return;
     }
