@@ -25,7 +25,7 @@ import recidivizLogo from "../assets/static/images/Logo.svg";
 import "./CoreNavigation.scss";
 
 const navigationLayout = {
-  community: ["goals", "explore"],
+  community: ["goals", "explore", "vitals"],
   facilities: ["goals", "explore"],
   programming: ["explore"],
 };

@@ -45,6 +45,7 @@ import { LANTERN_TENANTS } from "./RootStore/TenantStore/lanternTenants";
 import { CORE_TENANTS } from "./RootStore/TenantStore/coreTenants";
 import AuthWall from "./AuthWall";
 import ErrorBoundary from "./components/ErrorBoundary";
+import CoreCommunityVitals from "./core/community/CoreCommunityVitals";
 
 import "./assets/scripts/index";
 import "./assets/styles/index.scss";
@@ -81,6 +82,9 @@ const App = () => (
                   <Switch>
                     <Route path="/community/goals" component={UsNdCommunityGoals} />
                     <Route path="/community/explore" component={UsNdCommunityExplore} />
+                    <Route path="/community/vitals">
+                      <CoreCommunityVitals stateCode="US_ND"/>
+                    </Route>
                     <Route path="/facilities/goals" component={UsNdFacilitiesGoals} />
                     <Route path="/facilities/explore" component={UsNdFacilitiesExplore} />
                     <Route path="/programming/explore" component={UsNdProgrammingExplore} />
