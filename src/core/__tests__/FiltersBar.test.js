@@ -32,6 +32,7 @@ describe("test for component FiltersBar", () => {
     const nextProps = {
       ...props,
       setChartMetricType: jest.fn(),
+      metricType: "counts",
     };
     const { container } = render(<FiltersBar {...nextProps} />);
     expect(getAllById(container, "metricTypeFilter")).toHaveLength(1);
