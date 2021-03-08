@@ -170,6 +170,13 @@ describe("Test fileParser.parseResponseByFileFormat", () => {
     );
     expect(parsedResponse).toEqual(response.my_metric_file);
   });
+
+  it("throws an error if the response payload for given file is empty", () => {
+    const response = {};
+    expect(() => {
+      methods.parseResponseByFileFormat(response, "my_metric_file");
+    }).toThrow("Response payload for file my_metric_file is empty");
+  });
 });
 
 describe("Test fileParser.parseResponsesByFileFormat", () => {
