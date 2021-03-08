@@ -17,9 +17,9 @@
 
 import React from "react";
 import { useLocation } from "react-router-dom";
-import TopBarDropdown from "./TopBarDropdown";
+import TopBarDropdown from "../components/TopBar/TopBarDropdown";
 import CorePageSelector from "./CorePageSelector";
-import TopBarUserMenuForAuthenticatedUser from "./TopBarUserMenuForAuthenticatedUser";
+import TopBarUserMenuForAuthenticatedUser from "../components/TopBar/TopBarUserMenuForAuthenticatedUser";
 
 import "./CoreNavigation.scss";
 

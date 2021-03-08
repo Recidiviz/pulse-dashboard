@@ -19,7 +19,7 @@ import React from "react";
 import { configure, mount } from "enzyme";
 import { Link, StaticRouter } from "react-router-dom";
 
-import Adapter from "enzyme-adapter-react-16";
+import Adapter from "@wojtekmaj/enzyme-adapter-react-17";
 import CorePageSelector from "../CorePageSelector";
 
 configure({ adapter: new Adapter() });

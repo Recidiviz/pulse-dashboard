@@ -20,8 +20,8 @@ import React, { useCallback, useMemo } from "react";
 import PropTypes from "prop-types";
 import Sticky from "react-sticky-fill";
 
-import { CoreSelect } from "../controls/CoreSelect";
-import CoreMultiSelect from "../controls/MultiSelect/CoreMultiSelect";
+import { CoreSelect } from "./controls/CoreSelect";
+import CoreMultiSelect from "./controls/MultiSelect/CoreMultiSelect";
 
 import {
   defaultDistrictOption,
@@ -34,7 +34,7 @@ import {
 import { getDistrictOptions } from "./utils/filterHelpers";
 
 import "./FiltersBar.scss";
-import TogglePill from "../controls/TogglePill";
+import TogglePill from "./controls/TogglePill";
 
 const FILTER_BAR_STYLE = {
   zIndex: 700,

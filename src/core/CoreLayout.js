@@ -20,7 +20,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import TopBar from "../components/TopBar/TopBar";
 import Footer from "../components/Footer";
-import CoreNavigation from "../components/TopBar/CoreNavigation";
+import CoreNavigation from "./CoreNavigation";
 
 const CoreLayout = ({ children }) => {
   return (
