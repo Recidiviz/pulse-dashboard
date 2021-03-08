@@ -18,7 +18,7 @@ import React, { forwardRef } from "react";
 import PropTypes from "prop-types";
 import ReactSelect from "react-select";
 
-import { optionPropType } from "../propTypes";
+import { optionPropType } from "../../controls/propTypes";
 import "./CoreSelect.scss";
 
 export const CoreSelect = forwardRef((props, ref) => (

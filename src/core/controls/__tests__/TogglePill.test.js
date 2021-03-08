@@ -17,7 +17,7 @@
 
 import React from "react";
 import { configure, mount } from "enzyme";
-import Adapter from "enzyme-adapter-react-16";
+import Adapter from "@wojtekmaj/enzyme-adapter-react-17";
 import TogglePill from "../TogglePill";
 
 configure({ adapter: new Adapter() });
