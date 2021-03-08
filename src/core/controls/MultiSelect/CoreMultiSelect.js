@@ -20,12 +20,12 @@ import cn from "classnames";
 import ReactSelect from "react-select";
 import { Scrollbars } from "react-custom-scrollbars";
 
-import GroupHeading from "./GroupHeading";
-import ValueContainer from "./ValueContainer";
-import Option from "./Option";
+import GroupHeading from "../../../controls/MultiSelect/GroupHeading";
+import ValueContainer from "../../../controls/MultiSelect/ValueContainer";
+import Option from "../../../controls/MultiSelect/Option";
 
-import { getNewOptions } from "../utils";
-import { optionPropType } from "../../propTypes";
+import { getNewOptions } from "../../../controls/utils";
+import { optionPropType } from "../../../controls/propTypes";
 
 import "./CoreMultiSelect.scss";
 
