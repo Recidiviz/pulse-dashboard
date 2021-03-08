@@ -58,6 +58,7 @@ const ProgrammingExplore = () => {
 
   const filters = (
     <FiltersBar
+      metricType={metricType}
       metricPeriodMonths={metricPeriodMonths}
       district={district}
       supervisionType={supervisionType}
