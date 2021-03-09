@@ -153,19 +153,15 @@ const ModelInfrastructureBlock = () => {
           </p>
         </div>
 
-        <div className="col-6 align-items-end justify-content-end">
-          <Table
-            className="table"
-            bordered
-            style={{ height: 352, maxWidth: 728 }}
-          >
+        <div className="table col-md-6  col-12 align-items-end justify-content-end">
+          <Table bordered style={{ maxHeight: 352, maxWidth: 728 }}>
             <tbody>
               <tr>
                 <th aria-label="empty" />
-                <td>After 1 year Supervision</td>
-                <td>After 2 year Supervision</td>
-                <td>After 3 year Supervision</td>
-                <td>After 4 year Supervision</td>
+                <td>After 1 Year Supervision</td>
+                <td>After 2 Years Supervision</td>
+                <td>After 3 Years Supervision</td>
+                <td>After 4 Years Supervision</td>
               </tr>
               <tr>
                 <td>Remains on Supervision</td>
