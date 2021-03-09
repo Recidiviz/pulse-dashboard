@@ -26,26 +26,5 @@
 
       }
     }
-
-    &__select {
-      width: 100%;
-    }
-
-    #metricTypeFilter {
-      width: 215px;
-      margin-top: 8px;
-    }
-
-    #supervisionTypeFilter {
-      flex-grow: 4;
-    }
-
-    #metricPeriodFilter {
-      flex-grow: 3;
-    }
-
-    #districtFilter {
-      flex-grow: 4;
-    }
   }
 }
