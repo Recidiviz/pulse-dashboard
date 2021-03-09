@@ -136,6 +136,13 @@ const formatOfficerLabel = (label) => {
   return `${groups[0]} - ${toTitleCase(groups[1])}`;
 };
 
+const formatLargeNumber = (number) => {
+  const ONE_MILLION = 1000000;
+  return Math.abs(number) >= ONE_MILLION
+    ? `${(number / ONE_MILLION).toFixed(1)}M`
+    : number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+};
+
 export {
   getPeriodLabelFromMetricPeriodMonthsFilter,
   getTrailingLabelFromMetricPeriodMonthsFilter,
@@ -155,4 +162,5 @@ export {
   getStatePopulations,
   getStatePopulationsLabels,
   formatOfficerLabel,
+  formatLargeNumber,
 };

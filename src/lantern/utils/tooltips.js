@@ -16,6 +16,7 @@
 // =============================================================================
 import { isDenominatorStatisticallySignificant } from "./significantStatistics";
 import { getTooltipWithoutTrendline } from "../../utils/trendline";
+import { formatLargeNumber } from "../../utils/labels";
 
 export function tooltipForRateMetricWithCounts(
   id,
@@ -36,7 +37,9 @@ export function tooltipForRateMetricWithCounts(
     : denominators[dataPointIndex];
   let appendedCounts = "";
   if (numerator !== undefined && denominator !== undefined) {
-    appendedCounts = ` (${numerator}/${denominator})`;
+    appendedCounts = ` (${formatLargeNumber(numerator)}/${formatLargeNumber(
+      denominator
+    )})`;
   }
 
   const cue =
