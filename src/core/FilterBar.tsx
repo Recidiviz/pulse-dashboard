@@ -94,7 +94,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
   replaceLa = false,
   stateCode = null,
 }) => {
-  const isCounty = stateCode !== undefined;
+  const isCounty = stateCode != null;
   const districtOptions = useMemo(
     () =>
       getDistrictOptions(
@@ -148,10 +148,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
           {setChartSupervisionType && supervisionType && (
             <Filter title="Supervision Type" width="7rem">
               <CoreSelect
-                value={getFilterValue(
-                  supervisionType,
-                  supervisionTypeOptions
-                )}
+                value={getFilterValue(supervisionType, supervisionTypeOptions)}
                 options={supervisionTypeOptions}
                 onChange={createOnFilterChange(setChartSupervisionType)}
                 defaultValue={defaultSupervisionTypeOption}

@@ -1,5 +1,5 @@
 // Recidiviz - a data platform for criminal justice reform
-// Copyright (C) 2020 Recidiviz, Inc.
+// Copyright (C) 2021 Recidiviz, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -16,16 +16,19 @@
 // =============================================================================
 
 import React from "react";
-import { queryAllByAttribute } from "@testing-library/dom";
-import { render } from "@testing-library/react";
+import { configure, mount } from "enzyme";
+import Adapter from "@wojtekmaj/enzyme-adapter-react-17";
 import FilterBar from "../FilterBar";
 
-const getAllById = queryAllByAttribute.bind(null, "id");
+configure({ adapter: new Adapter() });
 
 describe("test for component FiltersBar", () => {
   const props = {
-    stateCode: undefined,
     replaceLa: undefined,
+  };
+
+  const renderFilterBar = (props) => {
+    return mount(<FilterBar {...props} />);
   };
 
   it("display metric type toggle", () => {
@@ -34,8 +37,9 @@ describe("test for component FiltersBar", () => {
       setChartMetricType: jest.fn(),
       metricType: "counts",
     };
-    const { container } = render(<FilterBar {...nextProps} />);
-    expect(getAllById(container, "metricTypeFilter")).toHaveLength(1);
+
+    const filterBar = renderFilterBar(nextProps);
+    expect(filterBar.find("TogglePill")).toHaveLength(1);
   });
 
   it("display metric period toggle", () => {
@@ -44,8 +48,9 @@ describe("test for component FiltersBar", () => {
       setChartMetricPeriodMonths: jest.fn(),
       metricPeriodMonths: "36",
     };
-    const { container } = render(<FilterBar {...nextProps} />);
-    expect(getAllById(container, "metricPeriodFilter")).toHaveLength(1);
+
+    const filterBar = renderFilterBar(nextProps);
+    expect(filterBar.find(".Filter__title").text()).toEqual("Time Period");
   });
 
   it("display supervision type toggle", () => {
@@ -54,8 +59,9 @@ describe("test for component FiltersBar", () => {
       setChartSupervisionType: jest.fn(),
       supervisionType: "all",
     };
-    const { container } = render(<FilterBar {...nextProps} />);
-    expect(getAllById(container, "supervisionTypeFilter")).toHaveLength(1);
+
+    const filterBar = renderFilterBar(nextProps);
+    expect(filterBar.find(".Filter__title").text()).toEqual("Supervision Type");
   });
 
   it("display district toggle", () => {
@@ -75,7 +81,18 @@ describe("test for component FiltersBar", () => {
         },
       ],
     };
-    const { container } = render(<FilterBar {...nextProps} />);
-    expect(getAllById(container, "districtFilter")).toHaveLength(1);
+
+    const filterBar = renderFilterBar(nextProps);
+    expect(filterBar.find(".Filter__title").text()).toEqual("Office");
+
+    const officeProps = {
+      ...nextProps,
+      stateCode: "US_DEMO",
+    };
+
+    const filterBarOffice = renderFilterBar(officeProps);
+    expect(filterBarOffice.find(".Filter__title").text()).toEqual(
+      "County of Residence"
+    );
   });
 });

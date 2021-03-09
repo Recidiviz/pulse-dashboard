@@ -24,15 +24,6 @@ type FilterOption = {
   value: any;
 };
 
-const coreSelectStyles = {
-  control: (styles: Record<string, unknown>) => ({
-    ...styles,
-    border: "1px solid #d2d8d8",
-    "box-shadow": "none",
-    "border-radius": "1rem",
-  }),
-};
-
 type CoreSelectProps = {
   value: FilterOption | FilterOption[];
   defaultValue: FilterOption | FilterOption[];
