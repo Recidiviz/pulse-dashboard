@@ -53,7 +53,7 @@ describe("DistrictsStore", () => {
   });
 
   describe("fetching districts", () => {
-    const file = "supervision_location_ids_to_names";
+    const file = "revocations_matrix_supervision_location_ids_to_names";
     const mockDistricts = [
       {
         level_2_supervision_location_external_id: "TCSTL",

@@ -121,19 +121,6 @@ export default class BaseDataStore {
       }
     );
 
-    // TODO #798: Remove once districts store can stand on its own
-    reaction(
-      () =>
-        !this.isLoading &&
-        this.rootStore.districtsStore.apiData.data &&
-        this.rootStore.districtsStore.apiData.data.length > 0,
-      () => {
-        this.rootStore.districtsStore.setFilteredDistricts(
-          this.districtsData.data
-        );
-      }
-    );
-
     autorun(() => {
       if (
         this.rootStore.userStore &&

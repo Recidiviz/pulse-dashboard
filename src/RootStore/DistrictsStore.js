@@ -27,11 +27,11 @@ export default class DistrictsStore {
 
   isError = false;
 
-  file = `supervision_location_ids_to_names`;
+  file = `revocations_matrix_supervision_location_ids_to_names`;
 
   districtIdToLabel = {};
 
-  filteredDistricts = [];
+  districts = [];
 
   rootStore;
 
@@ -77,6 +77,7 @@ export default class DistrictsStore {
         this.file,
         this.eagerExpand
       );
+      this.districts = this.apiData.data;
       this.setDistrictIdToLabel();
       this.isLoading = false;
       this.isError = false;
@@ -136,20 +137,5 @@ export default class DistrictsStore {
       ALL: "ALL",
       all: "ALL",
     };
-  }
-
-  // TODO #798: Remove the filtered districts when backend has the filtered supervision locations
-  setFilteredDistricts(apiData) {
-    if (apiData && this.apiData.data) {
-      const { filterByKey, filterValueKey } = this.districtKeys;
-      const data = apiData.slice();
-
-      const validDistricts = data.map((d) => d[filterByKey]);
-
-      this.filteredDistricts = this.apiData.data.filter((d) =>
-        validDistricts.includes(d[filterValueKey])
-      );
-      this.isLoading = false;
-    }
   }
 }

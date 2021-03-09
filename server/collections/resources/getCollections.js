@@ -21,8 +21,8 @@ const dimensionsByStateCode = require("./dimensionValues");
 function newRevocations(dimensions) {
   return {
     [COLLECTIONS.NEW_REVOCATION]: {
-      supervision_location_ids_to_names: {
-        filename: "supervision_location_ids_to_names.json",
+      revocations_matrix_supervision_location_ids_to_names: {
+        filename: "revocations_matrix_supervision_location_ids_to_names.json",
       },
       state_race_ethnicity_population: {
         filename: "state_race_ethnicity_population.json",
