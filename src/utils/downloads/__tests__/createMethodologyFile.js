@@ -59,4 +59,33 @@ describe("createMethodologyFile functions", () => {
         "methodology body\n\n"
     );
   });
+
+  describe("when the headers are undefined", () => {
+    it("should not insert the header line", () => {
+      const methodologyWithoutHeader = {
+        [mockChartId]: [
+          {
+            body: mockMethodologyBody,
+          },
+        ],
+      };
+      const actual = createMethodologyFile(
+        mockChartId,
+        mockChartTitle,
+        mockTimeWindowDescription,
+        filtersText,
+        methodologyWithoutHeader,
+        violationText
+      );
+      expect(actual.data).toBe(
+        "Chart: Revocations Count\n" +
+          "Dates: 20 November 2019 - 20 November 2020\n" +
+          "Applied filters:\n" +
+          "- some filters text\n" +
+          "- some violation text\n\n" +
+          "Export Date: 11/20/2020\n\n" +
+          "methodology body\n\n"
+      );
+    });
+  });
 });

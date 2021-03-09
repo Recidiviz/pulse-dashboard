@@ -21,6 +21,7 @@ import { HorizontalBar } from "react-chartjs-2";
 import "chartjs-plugin-datalabels";
 
 import { tooltipForRateMetricWithCounts } from "../utils/tooltips";
+import { tooltipForFooterWithCounts } from "../utils/significantStatistics";
 import { COLORS } from "../../assets/scripts/constants/colors";
 
 const HorizontalBarChartWithLabels = ({
@@ -28,6 +29,7 @@ const HorizontalBarChartWithLabels = ({
   data,
   numerators,
   denominators,
+  includeWarning,
 }) => {
   return (
     <HorizontalBar
@@ -95,9 +97,13 @@ const HorizontalBarChartWithLabels = ({
                 tooltipItem,
                 tooltipData,
                 numerators,
-                denominators
+                denominators,
+                includeWarning
               );
             },
+            footer: (tooltipItem) =>
+              includeWarning &&
+              tooltipForFooterWithCounts(tooltipItem, denominators),
           },
         },
       }}
@@ -127,6 +133,11 @@ HorizontalBarChartWithLabels.propTypes = {
   denominators: PropTypes.arrayOf(
     PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.number), PropTypes.number])
   ).isRequired,
+  includeWarning: PropTypes.bool,
+};
+
+HorizontalBarChartWithLabels.defaultProps = {
+  includeWarning: true,
 };
 
 export default React.memo(HorizontalBarChartWithLabels);

@@ -20,111 +20,51 @@ export const US_MO_METHODOLOGY = {
     {
       id: 1,
       header: "What this chart shows",
-      body: `This chart displays the total number of people who were admitted to prison during
-each month due to revocation by the parole board or the court.`,
+      body: `This chart displays the total number of people who were admitted to prison during each month due to revocation by the parole board or the court.`,
     },
     {
       id: 2,
       header: "Who is included",
-      body: `This chart includes only people who were revoked to prison. Counts do not include (1)
-people who were revoked to termination or to a new form of supervision (i.e., SIS to SES);
-(2) people who were admitted to prison for reasons aside from revocation, such as treatment
-or short term sanctions; and (3) people who have been detained pending a revocation hearing,
-but who have not been legally revoked. This chart (like all charts on the page) will
-automatically repopulate to match whatever filter(s) the user has selected. For example,
-if the user has selected "District 2" and "Probation" from the drop down menus at the top of
-the screen, this chart will automatically update to include only people from the probation
-population in District 2.`,
+      body: `This chart includes only people who were revoked to prison. Counts do not include (1) people who were revoked to termination or to a new form of supervision (i.e., SIS to SES); (2) people who were admitted to prison for reasons aside from revocation, such as treatment or short term sanctions; and (3) people who have been detained pending a revocation hearing, but who have not been legally revoked. This chart (like all charts on the page) will automatically repopulate to match whatever filter(s) the user has selected. For example, if the user has selected "District 2" and "Probation" from the drop down menus at the top of the screen, this chart will automatically update to include only people from the probation population in District 2.`,
     },
   ],
   revocationMatrix: [
     {
       id: 1,
       header: "What this chart shows",
-      body: `This chart plots all people who were revoked to prison during the time period
-selected by the user, according to their most serious violation and the total number of
-violation reports and notices of citation. The user can select the time period for revocations
-included in the chart by using the drop-down menu in the upper left corner of the page.
-The most serious violation and total number of reported violations are determined by looking back
-at all violation reports and notices of citation filed within one year prior to the last reported
-violation before their revocation. For example, if the last violation a person committed occurred
-on February 1, 2017, and they were revoked on January 15, 2018, the most serious violation and
-number of violations would be determined by looking over the period of February 1, 2016 -
-February 1, 2017. This methodology negates the lag time between the last violation report and the
-court's decision to revoke, and therefore gives a fuller picture of a person's behavioral record
-leading up to the decision to recommend revocation. Reports filed after the revocation are not
-included, since they were presumptively irrelevant to the revocation. These violation counts
-include citations as well as initial and interdistrict violation reports. No other types of
-violation reports are included. Hence, if a person had three initial violation reports and one
-interdistrict report, they would be counted as having four violations. They would be categorized
-according to the most severe violation reported in all of these reports, regardless of whether it
-was in the initial report or interdistrict report.`,
+      body: `This chart plots all people who were revoked to prison during the time period selected by the user, according to their most serious violation and the total number of violation reports and notices of citation. The user can select the time period for revocations included in the chart by using the drop-down menu in the upper left corner of the page. The most serious violation and total number of reported violations are determined by looking back at all violation reports and notices of citation filed within one year prior to the last reported violation before their revocation. For example, if the last violation a person committed occurred on February 1, 2017, and they were revoked on January 15, 2018, the most serious violation and number of violations would be determined by looking over the period of February 1, 2016 - February 1, 2017. This methodology negates the lag time between the last violation report and the court's decision to revoke, and therefore gives a fuller picture of a person's behavioral record leading up to the decision to recommend revocation. Reports filed after the revocation are not included, since they were presumptively irrelevant to the revocation. These violation counts include citations as well as initial and interdistrict violation reports. No other types of violation reports are included. Hence, if a person had three initial violation reports and one interdistrict report, they would be counted as having four violations. They would be categorized according to the most severe violation reported in all of these reports, regardless of whether it was in the initial report or interdistrict report.`,
     },
     {
       id: 2,
       header: "Most serious violation",
-      body: `Violations, starting with the least serious, are listed in order of severity:
-technical, substance use, municipal offense, absconsion, misdemeanor, felony. The most serious
-violation determines what row a person is placed in, regardless of whether it was the most recent
-violation. For example, if a person had one misdemeanor violation, then two technical violations,
-then one substance use violation, and then they were revoked, they would be placed in the
-misdemeanor row because a misdemeanor is their most serious violation.`,
+      body: `Violations, starting with the least serious, are listed in order of severity: technical, substance use, municipal offense, absconsion, misdemeanor, felony. The most serious violation determines what row a person is placed in, regardless of whether it was the most recent violation. For example, if a person had one misdemeanor violation, then two technical violations, then one substance use violation, and then they were revoked, they would be placed in the misdemeanor row because a misdemeanor is their most serious violation.`,
     },
     {
       id: 3,
       header: "Number of violation reports and notices of citation filed",
-      body: `This is determined by counting the total number of violation reports and notices of
-citation that were filed one year prior to the last reported violation before their revocation.
-For example, if a person had one notice of citation on February 10, 2016 and one violation report
-on February 1, 2017, and then they were revoked (without any new violations), they would be in the
-"2" column. This is the case even if several types of violations or conditions violated were
-listed within a single report.`,
+      body: `This is determined by counting the total number of violation reports and notices of citation that were filed one year prior to the last reported violation before their revocation. For example, if a person had one notice of citation on February 10, 2016 and one violation report on February 1, 2017, and then they were revoked (without any new violations), they would be in the "2" column. This is the case even if several types of violations or conditions violated were listed within a single report.`,
     },
     {
       id: 4,
       header: "Who is included",
-      body: `This chart includes only people who were revoked to prison. It does not include
-(1) people who were revoked to termination or to a new form of supervision
-(i.e., SIS to SES); (2) people who were admitted to prison for reasons aside from
-revocation, such as treatment or short term sanctions; (3) people who have been
-detained pending a revocation hearing, but who have not been legally revoked; and (4) people who
-have zero violation reports and notices of citation within the year leading up to their revocation
-(this is around 1% of the revoked population). This chart (like all charts on the page) will
-automatically repopulate to match whatever filters the user has selected. For example, if the user
-has selected "District 2" and "Probation" from the drop down menus at the top of the screen,
-this chart will automatically update to include only people from the probation population in
-District 2.`,
+      body: `This chart includes only people who were revoked to prison. It does not include (1) people who were revoked to termination or to a new form of supervision (i.e., SIS to SES); (2) people who were admitted to prison for reasons aside from revocation, such as treatment or short term sanctions; (3) people who have been detained pending a revocation hearing, but who have not been legally revoked; and (4) people who have zero violation reports and notices of citation within the year leading up to their revocation (this is around 1% of the revoked population). This chart (like all charts on the page) will automatically repopulate to match whatever filters the user has selected. For example, if the user has selected "District 2" and "Probation" from the drop down menus at the top of the screen, this chart will automatically update to include only people from the probation population in District 2.`,
     },
   ],
   admissionsByDistrict: [
     {
       id: 1,
       header: `What the "revocation count" chart shows`,
-      body: `When no violation history filters are selected in the "Admissions by violation history" plot, this chart shows the total number of people revoked to prison from each district during the time period selected in the "Time Period" drop down menu. The districts are positioned in descending order from left to right, with the district with the highest number of people revoked at the left. If a person’s district is unknown (meaning they were not under active supervision in any district within 2 years prior to the revocation), they are not included in the district counts or rates. When hovering a mouse over any district column, users can see the total number of people on supervision in that district as the denominator and the total number of people admitted in that district as the numerator.`,
+      body: `When no violation history filters are selected in the "Admissions by violation history" plot, this chart shows the total number of people revoked to prison from each district during the time period selected in the "Time Period" drop down menu. The districts are positioned in descending order from left to right, with the district with the highest number of people revoked at the left. If a person's district is unknown (meaning they were not under active supervision in any district within 2 years prior to the revocation), they are not included in the district counts or rates. When hovering a mouse over any district column, users can see the total number of people on supervision in that district as the denominator and the total number of people admitted in that district as the numerator.`,
     },
     {
       id: 2,
       header: `What the "percent revoked of standing population" chart shows`,
-      body: `This chart shows the percentage of people revoked in each district. Percent revoked is
-defined as the number of people revoked from that district in the selected time period divided by
-the total supervised population within that district during the same time period. The districts are
-positioned in descending order from left to right, with the district with the highest revocation
-rate at the left. If a person’s district is unknown (meaning they were not under active
-supervision in any district within 2 years prior to the revocation), they are not included in the
-district counts or rates.`,
+      body: `This chart shows the percentage of people revoked in each district. Percent revoked is defined as the number of people revoked from that district in the selected time period divided by the total supervised population within that district during the same time period. The districts are positioned in descending order from left to right, with the district with the highest revocation rate at the left. If a person's district is unknown (meaning they were not under active supervision in any district within 2 years prior to the revocation), they are not included in the district counts or rates.`,
     },
     {
       id: 3,
       header: "Who is included",
-      body: `This chart includes only people who were revoked to prison. Counts do not include (1)
-people who were revoked to termination or to a new form of supervision (i.e., SIS to SES);
-(2) people who were admitted to prison for reasons aside from revocation, such as treatment
-or short term sanctions; and (3) people who have been detained pending a revocation hearing,
-but who have not been legally revoked. This chart (like all charts on the page) will
-automatically repopulate to match whatever filter(s) the user has selected. For example,
-if the user has selected "District 2" and "Probation" from the drop down menus at the top of
-the screen, this chart will automatically update to include only people from the probation
-population in District 2.`,
+      body: `This chart includes only people who were revoked to prison. Counts do not include (1) people who were revoked to termination or to a new form of supervision (i.e., SIS to SES); (2) people who were admitted to prison for reasons aside from revocation, such as treatment or short term sanctions; and (3) people who have been detained pending a revocation hearing, but who have not been legally revoked. This chart (like all charts on the page) will automatically repopulate to match whatever filter(s) the user has selected. For example, if the user has selected "District 2" and "Probation" from the drop down menus at the top of the screen, this chart will automatically update to include only people from the probation population in District 2.`,
     },
     {
       id: 4,
@@ -135,13 +75,13 @@ population in District 2.`,
   admissionsByOfficer: [
     {
       id: 1,
-      header: `What the "Admission count" chart shows`,
+      header: `What the "revocation count" chart shows`,
       body: `This chart shows the total number of people revoked to prison by the 50 supervision officers with the most revocations during the time period selected in the "Time Period" drop-down menu. Supervision officers are positioned in descending order from left to right, with the officer with the highest number of people admitted from supervision at the left. If the chart shows fewer than 50 bars, there were less than 50 officers who had admissions during the selected time period. The officer associated with each admission from supervision is based on the officer who was assigned most recently to a supervision case at the time of admission.`,
     },
     {
       id: 2,
-      header: `What the "Admission rate of standing population" chart shows`,
-      body: `When no violation history filters are selected in the "Admissions by violation history" plot, this chart shows the percentage of people revoked to prison from each supervision officer’s caseload. Admission rate of standing population is defined as the number of people revoked to prison per officer divided by the total number of people supervised by each officer. The 50 supervision officers with the highest admission rates are positioned in descending order from left to right. If the chart shows fewer than 50 bars, there were fewer than 50 officers who had admissions during the selected time period. The officer associated with each admission from supervision is based on the officer who most recently was assigned to a supervision case at the time of admission. When hovering over any officer column, users can see the total number of people on supervision on that officer’s caseload as the denominator and the total number of people admitted from that officer’s caseload as the numerator. officer caseloads vary widely, so admission rates by officer may be based on a relatively small number of cases and therefore less generalizable. `,
+      header: `What the "percent revoked of standing population" chart shows`,
+      body: `When no violation history filters are selected in the "Admissions by violation history" plot, this chart shows the percentage of people revoked to prison from each supervision officer's caseload. Admission rate of standing population is defined as the number of people revoked to prison per officer divided by the total number of people supervised by each officer. The 50 supervision officers with the highest admission rates are positioned in descending order from left to right. If the chart shows fewer than 50 bars, there were fewer than 50 officers who had admissions during the selected time period. The officer associated with each admission from supervision is based on the officer who most recently was assigned to a supervision case at the time of admission. When hovering over any officer column, users can see the total number of people on supervision on that officer's caseload as the denominator and the total number of people admitted from that officer's caseload as the numerator. officer caseloads vary widely, so admission rates by officer may be based on a relatively small number of cases and therefore less generalizable. `,
     },
     {
       id: 3,
@@ -151,7 +91,7 @@ population in District 2.`,
     {
       id: 4,
       header: "Filtering by violation history",
-      body: `If the user has filtered the page by clicking on a specific violation type (i.e., low technical) or bubble (i.e., low technical and three violation reports) within the "Admissions by violation history" plot, this chart will show the percentage of people admitted with the selected violation history among those with a similar violation history within an officer’s caseload. For example, if the user selected the low technical row on the plot, the chart would show for each officer, the number of people admitted whose most serious violation was a low technical, divided by the total number of people supervised by that officer whose most serious violation was a low technical, regardless of whether they were admitted. Continuing with this example, if a user hovers over the officer column, the numerator would show all people admitted for a low technical violation on that officer’s caseload, and the denominator would show all people on that officer’s caseload who committed a low technical violation, whether they were admitted to a DOC facility or not. Comparing these percentages will indicate whether admission practices differ by officer for various violation histories. That is, whether people with similar violation histories are admitted more frequently by one officer than another. For people who have not been admitted, the most serious violation is identified by considering all violations reported within one year from either the current date (if the person is still on supervision) or the date that the person was discharged from supervision.`,
+      body: `If the user has filtered the page by clicking on a specific violation type (i.e., low technical) or bubble (i.e., low technical and three violation reports) within the "Admissions by violation history" plot, this chart will show the percentage of people admitted with the selected violation history among those with a similar violation history within an officer's caseload. For example, if the user selected the low technical row on the plot, the chart would show for each officer, the number of people admitted whose most serious violation was a low technical, divided by the total number of people supervised by that officer whose most serious violation was a low technical, regardless of whether they were admitted. Continuing with this example, if a user hovers over the officer column, the numerator would show all people admitted for a low technical violation on that officer's caseload, and the denominator would show all people on that officer's caseload who committed a low technical violation, whether they were admitted to a DOC facility or not. Comparing these percentages will indicate whether admission practices differ by officer for various violation histories. That is, whether people with similar violation histories are admitted more frequently by one officer than another. For people who have not been admitted, the most serious violation is identified by considering all violations reported within one year from either the current date (if the person is still on supervision) or the date that the person was discharged from supervision.`,
     },
   ],
   admissionsByRiskLevel: [
@@ -188,7 +128,7 @@ population in District 2.`,
     {
       id: 1,
       header: "What this chart shows",
-      body: `When no violation history filters are selected in the "Admissions by violation history" plot, this chart shows the percent of each gender who were revoked, on supervision, and in Missouri’s general population. At a high level, comparing these percentages can indicate whether a given gender is over- or under-represented when compared to the broader population. If an individual does not have a known gender, they are excluded from this chart.`,
+      body: `When no violation history filters are selected in the "Admissions by violation history" plot, this chart shows the percent of each gender who were revoked, on supervision, and in Missouri's general population. At a high level, comparing these percentages can indicate whether a given gender is over- or under-represented when compared to the broader population. If an individual does not have a known gender, they are excluded from this chart.`,
     },
     {
       id: 2,
@@ -216,7 +156,7 @@ population in District 2.`,
     {
       id: 1,
       header: "What this chart shows",
-      body: `When no violation history filters are selected in the "Admissions by violation history" plot, this chart shows the percent of people in each race/ethnicity group who were revoked, on supervision, and in Missouri’s general population. At a high level, comparing these percentages can indicate whether a given race/ethnicity is over- or under-represented when compared to the broader population. If an individual has more than one race/ethnicity recorded from different data systems, they are counted toward the least common race/ethnicity in the state. For example, if the individual is Caucasian and African American, they would count in the African American selection because there are fewer African Americans than Caucasians in the state. If an individual does not have a known race/ethnicity, they are excluded from this chart.`,
+      body: `When no violation history filters are selected in the "Admissions by violation history" plot, this chart shows the percent of people in each race/ethnicity group who were revoked, on supervision, and in Missouri's general population. At a high level, comparing these percentages can indicate whether a given race/ethnicity is over- or under-represented when compared to the broader population. If an individual has more than one race/ethnicity recorded from different data systems, they are counted toward the least common race/ethnicity in the state. For example, if the individual is Caucasian and African American, they would count in the African American selection because there are fewer African Americans than Caucasians in the state. If an individual does not have a known race/ethnicity, they are excluded from this chart.`,
     },
     {
       id: 2,
@@ -244,21 +184,12 @@ population in District 2.`,
     {
       id: 1,
       header: "What this list includes",
-      body: `This is a list of people who fall within the filters that have been selected on the
-page. In the default landing view, this includes all people who have been revoked to prison
-during the time period selected in the revocations plot. If the user has selected a
-different set of filters, this list will automatically repopulate to match whatever filters
-the user has selected. For example, if the user has selected "District 2" and "Probation" from
-the drop down menus at the top of the screen, this list would automatically update to
-include only people from the probation population in District 2.`,
+      body: `This is a list of people who fall within the filters that have been selected on the page. In the default landing view, this includes all people who have been revoked to prison during the time period selected in the revocations plot. If the user has selected a different set of filters, this list will automatically repopulate to match whatever filters the user has selected. For example, if the user has selected "District 2" and "Probation" from the drop down menus at the top of the screen, this list would automatically update to include only people from the probation population in District 2.`,
     },
     {
       id: 2,
       header: "District",
-      body: `The district within which a person was under supervision during their last active
-supervision period prior to revocation. For a small percentage of individuals (approx. 4–8 percent),
-the district and officer are unknown. This happens when the individual was not associated with an
-active supervision period at any point within the two years prior to the revocation.`,
+      body: `The district within which a person was under supervision during their last active supervision period prior to revocation. For a small percentage of individuals (approx. 4-8 percent), the district and officer are unknown. This happens when the individual was not associated with an active supervision period at any point within the two years prior to the revocation.`,
     },
     {
       id: 3,
@@ -268,22 +199,17 @@ active supervision period at any point within the two years prior to the revocat
     {
       id: 4,
       header: "Risk Level",
-      body: `Risk level is defined based only on the Community Supervision Screening Tool and/or
-the Community Supervision Tool (if relevant) and no other assessment (i.e., Prison Intake Tool).
-Those without Community Supervision Screening Tool/Community Supervision Tool scores are counted
-in the No Score category.`,
+      body: `Risk level is defined based only on the Community Supervision Screening Tool and/or the Community Supervision Tool (if relevant) and no other assessment (i.e., Prison Intake Tool). Those without Community Supervision Screening Tool/Community Supervision Tool scores are counted in the No Score category.`,
     },
     {
       id: 5,
       header: "Last Officer Recommendation (Including Supplemental)",
-      body: `The recommendation listed on the last violation report before the person was revoked,
-including any supplemental violation reports.`,
+      body: `The recommendation listed on the last violation report before the person was revoked, including any supplemental violation reports.`,
     },
     {
       id: 6,
       header: "Violation Record",
-      body: `A summary of the most severe reported violation on each violation report or notice of
-citation filed within one year prior to the last reported violation before the person was revoked.`,
+      body: `A summary of the most severe reported violation on each violation report or notice of citation filed within one year prior to the last reported violation before the person was revoked.`,
     },
   ],
 };

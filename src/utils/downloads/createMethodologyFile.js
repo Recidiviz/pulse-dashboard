@@ -40,7 +40,7 @@ function createMethodologyFile(
   text += `Export Date: ${exportDate}\n\n`;
 
   infoChart.forEach((chart) => {
-    text += `${chart.header}\n`;
+    if (chart.header) text += `${chart.header}\n`;
     text += `${chart.body}\n`;
     text += "\n";
   });
