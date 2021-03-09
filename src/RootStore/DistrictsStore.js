@@ -60,6 +60,8 @@ export default class DistrictsStore {
   }
 
   *fetchDistricts({ tenantId }) {
+    this.districts = [];
+
     if (!this.rootStore.tenantStore.isLanternTenant) {
       this.isLoading = false;
       this.isError = false;
