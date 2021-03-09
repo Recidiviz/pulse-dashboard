@@ -1,0 +1,68 @@
+@import "../../assets/styles/spec/settings/baseColors.scss";
+.main-content {
+  background-color: $core-background;
+}
+.methodology {
+  &__main-title {
+    padding-top: 96px;
+    font-family: "Libre Baskerville", serif;
+    font-size: 56px;
+    font-weight: 300;
+    line-height: 72px;
+    color: #00413e;
+  }
+  &__main-description {
+    font-family: "Libre Franklin", sans-serif;
+    font-size: 32px;
+    font-weight: 300;
+    line-height: 48px;
+    color: #00413e;
+  }
+  &__link-block {
+    font-family: "Libre Franklin", sans-serif;
+
+    h5 {
+      font-weight: 500;
+      color: #7d9897;
+      font-size: 13px;
+    }
+    a {
+      font-weight: 400;
+      font-size: 24px;
+      line-height: 40px;
+      color: #006c67;
+      width: fit-content;
+    }
+  }
+  &__sub-block {
+    &--title {
+      padding: 72px 0px 0px 0px !important;
+      font-family: "Libre Franklin", serif;
+      font-weight: 400;
+      font-size: 32px;
+      line-height: 40px;
+      color: #00413e;
+    }
+    &--description {
+      font-family: "Libre Franklin", sans-serif;
+      font-weight: 300;
+      font-size: 19px;
+      color: #012322;
+      line-height: 32px;
+      h4 {
+        padding-top: 40px 0px !important;
+        color: #00413e;
+        font-size: 24px;
+        line-height: 40px;
+        font-weight: 400;
+      }
+    }
+  }
+  .table {
+    &__description {
+      font-size: 19px;
+      font-weight: 300;
+      color: #526b78;
+    }
+  }
+}

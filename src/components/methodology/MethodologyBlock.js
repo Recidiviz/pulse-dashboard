@@ -6,18 +6,22 @@ import ModelInfrastructureBlock from "./ModelInfrastructureBlock";
 const MethodologyBlock = ({ contentBlock, target }) => {
   return (
     <div id={target}>
-      <h3>{contentBlock.label}</h3>
+      <h3 className="methodology__sub-block--title ">{contentBlock.label}</h3>
       <hr />
       {contentBlock.includeTable ? (
         <ModelInfrastructureBlock />
       ) : (
         <>
           {contentBlock.list === undefined ? (
-            <p>{contentBlock.text}</p>
+            <p className="methodology__sub-block--description">
+              {contentBlock.text}
+            </p>
           ) : (
             <>
-              <p>{contentBlock.text}</p>
-              <ul>
+              <p className="methodology__sub-block--description">
+                {contentBlock.text}
+              </p>
+              <ul className="methodology__sub-block--description">
                 {contentBlock.list.map((liText) => (
                   <li key={liText}>{liText}</li>
                 ))}

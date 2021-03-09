@@ -46,10 +46,10 @@ const Methodology = () => {
     });
   }, []);
   return (
-    <main className="main-content">
-      <Container className="col-sm-10 col-12 ">
-        <h1>Projections</h1>
-        <h2>
+    <main className="main-content methodology p-0">
+      <Container className="col-sm-9 col-12 ">
+        <h1 className="methodology__main-title">Projections</h1>
+        <h2 className="methodology__main-description">
           The case-level population projection model is designed to simulate the
           state criminal justice system in order to forecast incarcerated and
           supervised populations. The model is an agent-based stock and flow
@@ -65,9 +65,9 @@ const Methodology = () => {
           population groups. The model stays up to date and can be run as
           frequently as data is received from the DOC.
         </h2>
-        <span className="col-3">
+        <div className=" p-0 methodology__link-block col-3">
           <h5>CONTENTS</h5>
-          <nav className="d-flex flex-column">
+          <div className="d-flex flex-column">
             {mainBlocks.map((contentBlock) => (
               <a
                 key={`link${contentBlock.label}`}
@@ -78,9 +78,9 @@ const Methodology = () => {
                 {contentBlock.label}
               </a>
             ))}
-          </nav>
-        </span>
-        <scroll-container>
+          </div>
+        </div>
+        <div>
           {mainBlocks.map((contentBlock) => (
             <MethodologyBlock
               target={contentBlock.label.replace(/:|\s/g, "-").toLowerCase()}
@@ -88,7 +88,7 @@ const Methodology = () => {
               contentBlock={contentBlock}
             />
           ))}
-        </scroll-container>
+        </div>
       </Container>
     </main>
   );

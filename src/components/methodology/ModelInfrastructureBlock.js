@@ -3,26 +3,26 @@ import { Table } from "reactstrap";
 
 const ModelInfrastructureBlock = () => {
   return (
-    <>
+    <div className=" methodology__sub-block--description">
       <h4 className="col-12 p-0">Compartments</h4>
-      <span className="col-12 p-0">
-        <p>
+      <div className="col-12 p-0">
+        <span>
           The Compartments component represents an area of the criminal justice
           system, such as incarceration (termers, riders, parole violators, and
           supervision (parole, probation), and release/out of the system. The
           Compartment contains a list of all the Cohorts that have been in that
           area of the system at any point within the simulation.
-        </p>
-        <p>
+        </span>
+        <span>
           For instance, the Compartment that represents parole supervision would
           maintain the total number of people on parole for each time step of
           the simulation. If the time step is years, then it would count the
           year-end total parole population.
-        </p>
-      </span>
-      <div className="col-12 p-0  container-fluid">
+        </span>
+      </div>
+      <div className="col-12  p-0 row no-gutters">
         <h4 className="col-12 p-0">Cohorts</h4>
-        <span className="col-12 p-0">
+        <p className="col-12 p-0">
           The Cohort component is used to record the number of people entering
           part of the system at a certain time and track how many people within
           that group remain after each time step. For example, one Cohort could
@@ -31,86 +31,86 @@ const ModelInfrastructureBlock = () => {
           keeps a count for the number of people admitted in 2016 along with the
           total remaining population after 2017, 2018, and so on until the
           entire
-        </span>
-        <div className="col-12 row p-0">
-          <div className="col-12 col-sm-6">
-            <p>
-              group has left prison. As portions of this group are released over
-              time, additional Cohorts are created for each release period.
-              Cohorts are not only separated by the entry year, but also by the
-              relevant disaggregated attributes like crime type and gender.
-            </p>
-            <p>
-              As an example, if the yearly admissions to parole were 400 people
-              then the Cohorts in the parole Compartment would be represented in
-              the table (Fig. 1). In this example the simulation begins in 2017
-              and is initialized with the population that started parole before
-              2017 and then estimates the new admissions to parole and parole
-              terminations each year using the historical data. The number of
-              people leaving the Cohort each year is defined within the
-              Compartment Transitions explained below.
-            </p>
-          </div>
+        </p>
+        <div className="col-sm-6 col-12 p-0">
+          <p>
+            group has left prison. As portions of this group are released over
+            time, additional Cohorts are created for each release period.
+            Cohorts are not only separated by the entry year, but also by the
+            relevant disaggregated attributes like crime type and gender.
+          </p>
+          <p>
+            As an example, if the yearly admissions to parole were 400 people
+            then the Cohorts in the parole Compartment would be represented in
+            the table (Fig. 1). In this example the simulation begins in 2017
+            and is initialized with the population that started parole before
+            2017 and then estimates the new admissions to parole and parole
+            terminations each year using the historical data. The number of
+            people leaving the Cohort each year is defined within the
+            Compartment Transitions explained below.
+          </p>
+        </div>
 
-          <div className="col-12 col-sm-6 align-items-end justify-content-end">
-            <Table bordered style={{ height: 352, maxWidth: 728 }}>
-              <tbody>
-                <tr>
-                  <th>
-                    Parole Cohort <br />
-                    Start Year
-                  </th>
-                  <td>EOY 2017</td>
-                  <td>EOY 2018</td>
-                  <td>EOY 2019</td>
-                  <td>EOY 2020</td>
-                </tr>
-                <tr>
-                  <td>Pre-2017</td>
-                  <td>1,000</td>
-                  <td>700</td>
-                  <td>500</td>
-                  <td>400</td>
-                </tr>
-                <tr>
-                  <td>2017</td>
-                  <td>400</td>
-                  <td>300</td>
-                  <td>200</td>
-                  <td>100</td>
-                </tr>
-                <tr>
-                  <td>2018</td>
-                  <td>-</td>
-                  <td>400</td>
-                  <td>300</td>
-                  <td>200</td>
-                </tr>
-                <tr>
-                  <td>2019</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>400</td>
-                  <td>300</td>
-                </tr>
-                <tr>
-                  <td>2020</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>400</td>
-                </tr>
-                <tr>
-                  <th>Total Population</th>
-                  <td>1,400</td>
-                  <td>1,400</td>
-                  <td>1,400</td>
-                  <td>1,000</td>
-                </tr>
-              </tbody>
-            </Table>
-            <span>Fig.1 – Example Parole Cohort</span>
-          </div>
+        <div className="table col-sm-6  col-12 align-items-end justify-content-end">
+          <Table bordered style={{ height: 352, maxWidth: 728 }}>
+            <tbody>
+              <tr>
+                <th>
+                  Parole Cohort <br />
+                  Start Year
+                </th>
+                <td>EOY 2017</td>
+                <td>EOY 2018</td>
+                <td>EOY 2019</td>
+                <td>EOY 2020</td>
+              </tr>
+              <tr>
+                <td>Pre-2017</td>
+                <td>1,000</td>
+                <td>700</td>
+                <td>500</td>
+                <td>400</td>
+              </tr>
+              <tr>
+                <td>2017</td>
+                <td>400</td>
+                <td>300</td>
+                <td>200</td>
+                <td>100</td>
+              </tr>
+              <tr>
+                <td>2018</td>
+                <td>-</td>
+                <td>400</td>
+                <td>300</td>
+                <td>200</td>
+              </tr>
+              <tr>
+                <td>2019</td>
+                <td>-</td>
+                <td>-</td>
+                <td>400</td>
+                <td>300</td>
+              </tr>
+              <tr>
+                <td>2020</td>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+                <td>400</td>
+              </tr>
+              <tr>
+                <th>Total Population</th>
+                <td>1,400</td>
+                <td>1,400</td>
+                <td>1,400</td>
+                <td>1,000</td>
+              </tr>
+            </tbody>
+          </Table>
+          <span className="table__description">
+            Fig.1 – Example Parole Cohort
+          </span>
         </div>
       </div>
       <h4 className="col-12 p-0">Compartment Transitions</h4>
@@ -154,7 +154,11 @@ const ModelInfrastructureBlock = () => {
         </div>
 
         <div className="col-6 align-items-end justify-content-end">
-          <Table bordered style={{ height: 352, maxWidth: 728 }}>
+          <Table
+            className="table"
+            bordered
+            style={{ height: 352, maxWidth: 728 }}
+          >
             <tbody>
               <tr>
                 <th aria-label="empty" />
@@ -193,7 +197,9 @@ const ModelInfrastructureBlock = () => {
               </tr>
             </tbody>
           </Table>
-          <span>Fig. 2 – Example Compartment Transition Table</span>
+          <span className="table__description">
+            Fig. 2 – Example Compartment Transition Table
+          </span>
         </div>
       </div>
       <h4 className="col-12 p-0">Forecasting Admissions</h4>
@@ -230,7 +236,7 @@ const ModelInfrastructureBlock = () => {
         ofndr_loc_hst table in the future, but that table covers a much smaller
         subset of the unpaid County Jail population.
       </p>
-    </>
+    </div>
   );
 };
 export default ModelInfrastructureBlock;
