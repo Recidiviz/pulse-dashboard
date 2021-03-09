@@ -75,12 +75,12 @@ export const US_MO_METHODOLOGY = {
   admissionsByOfficer: [
     {
       id: 1,
-      header: `What the "Admission count" chart shows`,
+      header: `What the "revocation count" chart shows`,
       body: `This chart shows the total number of people revoked to prison by the 50 supervision officers with the most revocations during the time period selected in the "Time Period" drop-down menu. Supervision officers are positioned in descending order from left to right, with the officer with the highest number of people admitted from supervision at the left. If the chart shows fewer than 50 bars, there were less than 50 officers who had admissions during the selected time period. The officer associated with each admission from supervision is based on the officer who was assigned most recently to a supervision case at the time of admission.`,
     },
     {
       id: 2,
-      header: `What the "Admission rate of standing population" chart shows`,
+      header: `What the "percent revoked of standing population" chart shows`,
       body: `When no violation history filters are selected in the "Admissions by violation history" plot, this chart shows the percentage of people revoked to prison from each supervision officer's caseload. Admission rate of standing population is defined as the number of people revoked to prison per officer divided by the total number of people supervised by each officer. The 50 supervision officers with the highest admission rates are positioned in descending order from left to right. If the chart shows fewer than 50 bars, there were fewer than 50 officers who had admissions during the selected time period. The officer associated with each admission from supervision is based on the officer who most recently was assigned to a supervision case at the time of admission. When hovering over any officer column, users can see the total number of people on supervision on that officer's caseload as the denominator and the total number of people admitted from that officer's caseload as the numerator. officer caseloads vary widely, so admission rates by officer may be based on a relatively small number of cases and therefore less generalizable. `,
     },
     {
