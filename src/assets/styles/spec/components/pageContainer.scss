@@ -15,14 +15,6 @@
 .page-container {
   min-height: 100vh;
   transition: all 0.2s ease;
-
-  @include between($breakpoint-md, $breakpoint-xl) {
-    padding-left: $collapsed-size;
-  }
-
-  @include to($breakpoint-md) {
-    padding-left: 0;
-  }
 }
 
 // ---------------------------------------------------------

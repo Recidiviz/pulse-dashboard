@@ -1,5 +1,5 @@
 // Recidiviz - a data platform for criminal justice reform
-// Copyright (C) 2020 Recidiviz, Inc.
+// Copyright (C) 2021 Recidiviz, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -19,21 +19,28 @@ import {
   makeAutoObservable,
   computed,
   autorun,
+  reaction,
   observable,
   action,
+  toJS,
 } from "mobx";
-
+import uniqBy from "lodash/uniqBy";
 import {
   ADMISSION_TYPE,
   CHARGE_CATEGORY,
-  DISTRICT,
   METRIC_PERIOD_MONTHS,
   REPORTED_VIOLATIONS,
   SUPERVISION_LEVEL,
   SUPERVISION_TYPE,
   VIOLATION_TYPE,
-} from "../constants/filterTypes";
-import filterOptionsMap from "../views/tenants/constants/filterOptions";
+  LEVEL_2_SUPERVISION_LOCATION,
+  LEVEL_1_SUPERVISION_LOCATION,
+} from "../lantern/utils/constants";
+import filterOptionsMap from "./TenantStore/filterOptions";
+import { compareStrings } from "./utils";
+import { generateNestedOptions } from "./utils/districtOptions";
+import getFilters from "./utils/getFilterDescription";
+import getViolation from "./utils/getViolationTypeDescription";
 
 export default class FiltersStore {
   rootStore;
@@ -44,20 +51,33 @@ export default class FiltersStore {
 
   constructor({ rootStore }) {
     makeAutoObservable(this, {
-      defaultFilters: computed,
+      defaultFilterValues: computed,
       filterOptions: computed,
+      districtFilterOptions: computed,
       setFilters: action,
     });
 
     this.rootStore = rootStore;
 
+    reaction(
+      () => this.rootStore.currentTenantId,
+      (currentTenantId, previousTenantId) => {
+        if (currentTenantId !== previousTenantId) {
+          this.filters.clear();
+          this.setFilters(this.defaultFilterValues);
+        }
+      }
+    );
+
     autorun(() => {
-      this.setFilters(this.defaultFilters);
+      this.setFilters(this.defaultFilterValues);
     });
   }
 
-  get defaultFilters() {
-    if (!this.filterOptions) return {};
+  get defaultFilterValues() {
+    const { districtKeys } = this.rootStore.districtsStore;
+    if (!this.filterOptions || !districtKeys || !districtKeys.filterKey)
+      return {};
     return {
       [METRIC_PERIOD_MONTHS]: this.filterOptions[METRIC_PERIOD_MONTHS]
         .defaultValue,
@@ -67,21 +87,77 @@ export default class FiltersStore {
       [VIOLATION_TYPE]: this.filterOptions[VIOLATION_TYPE].defaultValue,
       [SUPERVISION_TYPE]: this.filterOptions[SUPERVISION_TYPE].defaultValue,
       [SUPERVISION_LEVEL]: this.filterOptions[SUPERVISION_LEVEL].defaultValue,
-      ...(this.filterOptions[ADMISSION_TYPE].filterEnabled
-        ? { [ADMISSION_TYPE]: this.filterOptions[ADMISSION_TYPE].defaultValue }
-        : {}),
-      [DISTRICT]: [
-        this.rootStore.userStore.restrictedDistrict ||
-          this.filterOptions[DISTRICT].defaultValue,
+      [LEVEL_1_SUPERVISION_LOCATION]: [
+        this.filterOptions[LEVEL_1_SUPERVISION_LOCATION].defaultValue,
       ],
+      [LEVEL_2_SUPERVISION_LOCATION]: [
+        this.filterOptions[LEVEL_2_SUPERVISION_LOCATION].defaultValue,
+      ],
+      [ADMISSION_TYPE]: this.filterOptions[ADMISSION_TYPE].defaultValue,
+      ...{
+        [districtKeys.filterKey]: [
+          this.rootStore.userStore.restrictedDistrict ||
+            this.filterOptions[districtKeys.filterKey].defaultValue,
+        ],
+      },
     };
   }
 
   get filterOptions() {
-    return filterOptionsMap[this.rootStore.currentTenantId];
+    return {
+      ...filterOptionsMap[this.rootStore.currentTenantId],
+      ...this.districtFilterOptions,
+    };
+  }
+
+  get districtFilterOptions() {
+    const { districtKeys } = this.rootStore.districtsStore;
+    if (!districtKeys) return {};
+    return {
+      [districtKeys.filterKey]: {
+        defaultValue: "All",
+        options: this.districts,
+      },
+    };
+  }
+
+  get districts() {
+    // TODO #798: Use apiData.data from districts store when supervision locations are
+    // filtered on the backend
+    const { filteredDistricts, districtKeys } = this.rootStore.districtsStore;
+    if (!filteredDistricts) return [];
+    const { primaryLabelKey, secondaryLabelKey, valueKey } = districtKeys;
+
+    if (secondaryLabelKey) {
+      return generateNestedOptions([...filteredDistricts], districtKeys);
+    }
+    return uniqBy(filteredDistricts, valueKey)
+      .map((district) => {
+        return {
+          value: district[valueKey],
+          label: district[primaryLabelKey],
+        };
+      })
+      .sort(compareStrings("label"));
   }
 
   setFilters(updatedFilters) {
     this.filters.merge(updatedFilters);
+  }
+
+  get filtersDescriptions() {
+    const filters = toJS(this.filters);
+    const enabledFilters = [...filters.entries()].reduce(
+      (acc, [key, value]) => {
+        if (this.filterOptions[key].componentEnabled !== false)
+          acc[key] = value;
+        return acc;
+      },
+      {}
+    );
+    return {
+      filtersDescription: getFilters(enabledFilters),
+      violationTypeDescription: getViolation(enabledFilters),
+    };
   }
 }

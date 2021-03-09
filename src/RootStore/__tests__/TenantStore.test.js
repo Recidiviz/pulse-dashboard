@@ -1,5 +1,5 @@
 // Recidiviz - a data platform for criminal justice reform
-// Copyright (C) 2020 Recidiviz, Inc.
+// Copyright (C) 2021 Recidiviz, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -18,14 +18,14 @@
 import createAuth0Client from "@auth0/auth0-spa-js";
 
 import RootStore from "../RootStore";
-import TenantStore, { CURRENT_TENANT_IN_SESSION } from "../TenantStore";
-import { US_MO } from "../../views/tenants/utils/lanternTenants";
+import { CURRENT_TENANT_IN_SESSION } from "../TenantStore/TenantStore";
+import { US_MO } from "../TenantStore/lanternTenants";
 import { doesUserHaveAccess, getAvailableStateCodes } from "../utils/user";
 import { METADATA_NAMESPACE } from "../../constants";
 
 jest.mock("@auth0/auth0-spa-js");
 jest.mock("../utils/user");
-jest.mock("../../StoreProvider");
+jest.mock("../../components/StoreProvider");
 jest.mock("../../api/metrics/metricsClient");
 jest.mock("../DataStore/DataStore");
 
@@ -83,28 +83,6 @@ describe("TenantStore", () => {
       expect(rootStore.tenantStore.currentTenantId).toEqual(
         availableStateCodes[0]
       );
-    });
-
-    it("setDisticts sets district and districtIsLoading attributes", async () => {
-      const apiData = [
-        { district: "02" },
-        { district: "01" },
-        { district: "ALL" },
-      ];
-      const rootStore = {
-        userStore: {
-          userIsLoading: false,
-          user,
-        },
-      };
-      const tenantStore = new TenantStore({ rootStore });
-
-      expect(tenantStore.districtsIsLoading).toEqual(true);
-
-      tenantStore.setDistricts(apiData);
-
-      expect(tenantStore.districts).toEqual(["01", "02"]);
-      expect(tenantStore.districtsIsLoading).toEqual(false);
     });
   });
 });

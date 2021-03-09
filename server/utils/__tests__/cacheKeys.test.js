@@ -53,39 +53,39 @@ describe("cacheKeys utils", () => {
   });
 
   describe("getCacheKey", () => {
-    describe("given no filename", () => {
-      it("returns the cacheKey without the file or subset keys", () => {
+    describe("given no metricName", () => {
+      it("returns the cacheKey without the metricName or subset keys", () => {
         expect(
           getCacheKey({
             stateCode: "US_MO",
             metricType: "communityGoals",
-            file: null,
+            metricName: null,
             cacheKeySubset: null,
           })
         ).toEqual("US_MO-communityGoals");
       });
     });
 
-    describe("given a file without a subset manifest", () => {
-      it("returns the cacheKey with the filename", () => {
+    describe("given a metricName without a subset manifest", () => {
+      it("returns the cacheKey with the metricName", () => {
         expect(
           getCacheKey({
             stateCode: "US_MO",
             metricType: "newRevocations",
-            file: "random_file_name",
+            metricName: "random_file_name",
             cacheKeySubset: null,
           })
         ).toEqual("US_MO-newRevocations-random_file_name");
       });
     });
 
-    describe("given a file with a subset manifest", () => {
-      it("returns a cacheKey with the filename and subset keys", () => {
+    describe("given a metricName with a subset manifest", () => {
+      it("returns a cacheKey with the metricName and subset keys", () => {
         expect(
           getCacheKey({
             stateCode: "US_MO",
             metricType: "newRevocations",
-            file: "revocations_matrix_distribution_by_district",
+            metricName: "revocations_matrix_distribution_by_district",
             cacheKeySubset: {
               violationType: "felony",
             },
@@ -98,7 +98,7 @@ describe("cacheKeys utils", () => {
           getCacheKey({
             stateCode: "US_MO",
             metricType: "newRevocations",
-            file: "revocations_matrix_distribution_by_district",
+            metricName: "revocations_matrix_distribution_by_district",
             cacheKeySubset: {
               violationType: "all",
             },

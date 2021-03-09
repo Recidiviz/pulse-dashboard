@@ -21,8 +21,8 @@ import { observer } from "mobx-react-lite";
 
 import { ERROR_MESSAGES } from "../constants/errorMessages";
 import Loading from "../components/Loading";
-import { useRootStore } from "../StoreProvider";
-import NotFound from "../views/NotFound";
+import { useRootStore } from "../components/StoreProvider";
+import NotFound from "../components/NotFound";
 
 /**
  * Verifies authorization before rendering its children.

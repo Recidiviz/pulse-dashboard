@@ -1,0 +1,47 @@
+.MatrixExplanation {
+  background-color: #ffffff;
+  padding: 20px;
+  flex: 1 1 0;
+  @media screen and (max-width: 1350px) {
+    margin-right: 20px;
+  }
+
+  p {
+    font-size: 14px;
+  }
+
+  &__description {
+    margin-right: 35px;
+  }
+
+  &__example {
+    flex: 0 0 85px;
+    margin-right: 35px;
+    justify-content: flex-end;
+  }
+
+  &__example-total {
+    width: 50px;
+    height: 50px;
+    line-height: 50px;
+    text-align: center;
+    border-radius: 25px;
+    background: rgb(0, 44, 66);
+    color: white;
+    font-weight: 600;
+    margin-left: 20px;
+  }
+
+  &__example-violation-type {
+    display: inline-block;
+    background: white;
+    border-radius: 25px;
+    width: 100%;
+    text-align: center;
+    border: 1px solid rgb(1, 85, 131);
+    color: rgb(1, 85, 131);
+    line-height: 24px;
+    font-size: 12px;
+    font-weight: 600;
+  }
+}

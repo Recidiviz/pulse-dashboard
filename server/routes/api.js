@@ -20,6 +20,9 @@
  * in server.js.
  */
 const { validationResult } = require("express-validator");
+const uuid = require("uuid");
+const fs = require("fs");
+const path = require("path");
 const {
   refreshRedisCache,
   fetchMetrics,
@@ -88,14 +91,15 @@ function restrictedAccess(req, res) {
     const { stateCode } = req.params;
     const { userEmail } = req.body;
     const metricType = "newRevocation";
-    const file = "supervision_location_restricted_access_emails";
-    const cacheKey = `${stateCode.toUpperCase()}-restrictedAccess`;
+    const metricName = "supervision_location_restricted_access_emails";
+    const cacheKey = `${stateCode.toUpperCase()}-${metricType}-restrictedAccess`;
+
     cacheResponse(
       cacheKey,
-      () => fetchMetrics(stateCode, metricType, file, isDemoMode),
+      () => fetchMetrics(stateCode, metricType, metricName, isDemoMode),
       processAndRespond(
         responder(res),
-        filterRestrictedAccessEmails(userEmail, file)
+        filterRestrictedAccessEmails(userEmail, metricName)
       )
     );
   }
@@ -130,12 +134,12 @@ function newRevocationFile(req, res) {
   if (hasErrors) {
     responder(res)({ status: BAD_REQUEST, errors: validations.array() }, null);
   } else {
-    const { stateCode, file } = req.params;
+    const { stateCode, file: metricName } = req.params;
     const queryParams = req.query || {};
     const cacheKey = getCacheKey({
       stateCode,
       metricType,
-      file,
+      metricName,
       cacheKeySubset: queryParams,
     });
     cacheResponse(
@@ -144,7 +148,7 @@ function newRevocationFile(req, res) {
         fetchAndFilterNewRevocationFile({
           stateCode,
           metricType,
-          file,
+          metricName,
           queryParams,
           isDemoMode,
         }),
@@ -208,6 +212,58 @@ function programmingExplore(req, res) {
   );
 }
 
+function generateFileLink(req, res) {
+  const { file } = req;
+  const fileName = `${uuid.v4()}-${file.originalname}`;
+  const protocol = process.env.AUTH_ENV === "development" ? `http` : `https`;
+
+  fs.writeFile(`/tmp/${fileName}`, file.buffer, function (err) {
+    if (err) {
+      throw new Error(
+        `Failed to write file for download: ${fileName}. ${err.message}`
+      );
+    }
+  });
+  res.send(`${protocol}://${req.headers.host}/file/${fileName}`);
+}
+
+function upload(req, res) {
+  const options = {
+    root: "/tmp",
+    headers: {
+      "x-timestamp": Date.now(),
+      "x-sent": true,
+    },
+  };
+
+  const fileName = req.params.name;
+
+  res.sendFile(fileName, options, (sendErr) => {
+    if (sendErr) {
+      throw new Error(
+        `Failed to send file for download: ${fileName}. ${sendErr.message}`
+      );
+    }
+    /*
+    Chrome iOS sends two requests when downloading content. The first request has
+    this upgrade-insecure-requests header, which will open the download dialog on the browser.
+    Once the user clicks on the download link in the dialog, Chrome iOS will send a second request
+    to download the content. This second request does not include this header, so we wait for the
+    second request before deleting the file.
+    */
+    if (!req.headers["upgrade-insecure-requests"]) {
+      fs.unlink(path.join("/tmp", fileName), (delErr) => {
+        /* Delete temp file after it's been sent */
+        if (delErr) {
+          throw new Error(
+            `Failed to delete file: ${fileName}. ${delErr.message}`
+          );
+        }
+      });
+    }
+  });
+}
+
 module.exports = {
   restrictedAccess,
   newRevocations,
@@ -219,5 +275,7 @@ module.exports = {
   programmingExplore,
   responder,
   refreshCache,
+  generateFileLink,
+  upload,
   SERVER_ERROR,
 };

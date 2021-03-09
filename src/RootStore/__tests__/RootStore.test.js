@@ -21,7 +21,7 @@ import RootStore from "../RootStore";
 import { METADATA_NAMESPACE } from "../../constants";
 
 jest.mock("@auth0/auth0-spa-js");
-jest.mock("../../api/metrics/metricsClient");
+jest.mock("../../api/metrics");
 jest.mock("../DataStore/DataStore");
 
 let rootStore;
@@ -57,6 +57,10 @@ describe("RootStore", () => {
 
   it("contains the DataStore", () => {
     expect(rootStore.dataStore).toBeDefined();
+  });
+
+  it("contains the DistrictsStore", () => {
+    expect(rootStore.districtsStore).toBeDefined();
   });
 
   it("contains user", async () => {

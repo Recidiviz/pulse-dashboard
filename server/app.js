@@ -20,8 +20,11 @@ const express = require("express");
 const cors = require("cors");
 const morgan = require("morgan");
 const helmet = require("helmet");
+const multer = require("multer");
 const jwt = require("express-jwt");
 const jwksRsa = require("jwks-rsa");
+const Sentry = require("@sentry/node");
+
 const devAuthConfig = require("../src/auth_config_dev.json");
 const productionAuthConfig = require("../src/auth_config_production.json");
 const api = require("./routes/api");
@@ -31,6 +34,16 @@ const {
 } = require("./routes/paramsValidation");
 
 const app = express();
+
+const upload = multer();
+
+Sentry.init({
+  environment: process.env.SENTRY_ENV,
+  dsn: process.env.SENTRY_DNS,
+});
+
+// The Sentry request handler must be the first middleware on the app
+app.use(Sentry.Handlers.requestHandler());
 
 app.use(cors());
 
@@ -125,6 +138,13 @@ app.post(
   [checkJwt, ...restrictedAccessParamValidations],
   api.restrictedAccess
 );
+app.post(
+  "/api/generateFileLink",
+  checkJwt,
+  upload.single("zip"),
+  api.generateFileLink
+);
+app.get("/file/:name", api.upload);
 
 // An App Engine-specific API for handling warmup requests on new instance initialization
 app.get("/_ah/warmup", () => {
@@ -132,6 +152,9 @@ app.get("/_ah/warmup", () => {
   // eslint-disable-next-line no-console
   console.log("Responding to warmup request...");
 });
+
+// The Sentry error handler must be before any other error middleware and after all controllers
+app.use(Sentry.Handlers.errorHandler());
 
 app.use(errorHandler);
 
