@@ -1,0 +1,58 @@
+.FilterBar {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+
+  &__filters {
+    display: flex;
+    font-weight: 500;
+
+    &:nth-child(1) {
+      padding-left: 216px;
+    }
+
+    .Filter {
+      //border-left: #f2f3f5 solid 2px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-right: 0.75rem;
+      padding-left: 0.75rem;
+      //padding: 20px;
+
+      &__title {
+        white-space: nowrap;
+        color: #72777a;
+        font-size: 0.8rem;
+        line-height: 1rem;
+        letter-spacing: 0.01em;
+        padding-right: 0.5rem;
+
+      }
+
+      &:nth-child(1) {
+        //border-left: none;
+      }
+    }
+
+    &__select {
+      width: 100%;
+    }
+
+    #metricTypeFilter {
+      width: 215px;
+      margin-top: 8px;
+    }
+
+    #supervisionTypeFilter {
+      flex-grow: 4;
+    }
+
+    #metricPeriodFilter {
+      flex-grow: 3;
+    }
+
+    #districtFilter {
+      flex-grow: 4;
+    }
+  }
+}

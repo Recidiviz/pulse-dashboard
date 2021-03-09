@@ -1,16 +1,18 @@
+@import "../../assets/styles/spec/settings/index";
+
 .Core-Select {
   flex-grow: 1;
   font-size: 0.8em;
   font-weight: 500;
-  color: #00413e;
 
   &__control {
-    border: 1px solid #d2d8d8 !important;
+    border: 1px solid $core-border-color !important;
     box-shadow: none !important;
-    border-radius: 15px !important;
+    border-radius: 1.25rem !important;
+    background-color: $core-background !important;
 
     &:hover {
-      border-color: #d2d8d8 !important;
+      border-color: $core-border-color !important;
     }
 
     &--menu-is-open {
@@ -19,12 +21,17 @@
     }
   }
 
+  &__container {
+    background-color: $core-background !important;
+  }
+
   &__menu {
     margin: 0 !important;
-    border: 1px solid #d2d8d8;
+    border: 1px solid $core-border-color;
     box-shadow: none !important;
-    border-radius: 0px 0px 15px 15px !important;
+    border-radius: 0rem 0rem 1.25rem 1.25rem !important;
     border-top: none !important;
+    background-color: $core-background !important;
   }
 
   &__option {
@@ -43,8 +50,8 @@
 
     &:active,
     &:hover {
-      background: #e3e6e6 !important;
-      color: #00413e !important;
+      background: $core-focused-color !important;
+      color: $core-font-color !important;
     }
   }
 

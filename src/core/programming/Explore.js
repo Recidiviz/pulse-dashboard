@@ -29,7 +29,7 @@ import FtrReferralsByLsir from "./FtrReferralsByLsir";
 import FtrReferralsByParticipationStatus from "./FtrReferralsByParticipationStatus";
 import FtrReferralsByRace from "./FtrReferralsByRace";
 import FtrReferralCountByMonth from "./FtrReferralCountByMonth";
-import FiltersBar from "../FiltersBar";
+import FilterBar from "../FilterBar";
 import {
   defaultDistrict,
   defaultMetricPeriod,
@@ -57,7 +57,7 @@ const ProgrammingExplore = () => {
   }
 
   const filters = (
-    <FiltersBar
+    <FilterBar
       metricType={metricType}
       metricPeriodMonths={metricPeriodMonths}
       district={district}

@@ -18,7 +18,7 @@
 import React from "react";
 import { queryAllByAttribute } from "@testing-library/dom";
 import { render } from "@testing-library/react";
-import FiltersBar from "../FiltersBar";
+import FilterBar from "../FilterBar";
 
 const getAllById = queryAllByAttribute.bind(null, "id");
 
@@ -34,7 +34,7 @@ describe("test for component FiltersBar", () => {
       setChartMetricType: jest.fn(),
       metricType: "counts",
     };
-    const { container } = render(<FiltersBar {...nextProps} />);
+    const { container } = render(<FilterBar {...nextProps} />);
     expect(getAllById(container, "metricTypeFilter")).toHaveLength(1);
   });
 
@@ -44,7 +44,7 @@ describe("test for component FiltersBar", () => {
       setChartMetricPeriodMonths: jest.fn(),
       metricPeriodMonths: "36",
     };
-    const { container } = render(<FiltersBar {...nextProps} />);
+    const { container } = render(<FilterBar {...nextProps} />);
     expect(getAllById(container, "metricPeriodFilter")).toHaveLength(1);
   });
 
@@ -54,7 +54,7 @@ describe("test for component FiltersBar", () => {
       setChartSupervisionType: jest.fn(),
       supervisionType: "all",
     };
-    const { container } = render(<FiltersBar {...nextProps} />);
+    const { container } = render(<FilterBar {...nextProps} />);
     expect(getAllById(container, "supervisionTypeFilter")).toHaveLength(1);
   });
 
@@ -75,7 +75,7 @@ describe("test for component FiltersBar", () => {
         },
       ],
     };
-    const { container } = render(<FiltersBar {...nextProps} />);
+    const { container } = render(<FilterBar {...nextProps} />);
     expect(getAllById(container, "districtFilter")).toHaveLength(1);
   });
 });
