@@ -1,6 +1,9 @@
+@import "../assets/styles/spec/settings/index";
+
 .FilterBar {
   padding-top: 1rem;
   padding-bottom: 1rem;
+  background: $core-background;
 
   &__filters {
     display: flex;
@@ -11,13 +14,11 @@
     }
 
     .Filter {
-      //border-left: #f2f3f5 solid 2px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       padding-right: 0.75rem;
       padding-left: 0.75rem;
-      //padding: 20px;
 
       &__title {
         white-space: nowrap;
