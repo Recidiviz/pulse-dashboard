@@ -32,7 +32,7 @@ const ModelInfrastructureBlock = () => {
           total remaining population after 2017, 2018, and so on until the
           entire
         </p>
-        <div className="col-sm-6 col-12 p-0">
+        <div className="col-xl-6 col-12 p-0">
           <p>
             group has left prison. As portions of this group are released over
             time, additional Cohorts are created for each release period.
@@ -51,7 +51,7 @@ const ModelInfrastructureBlock = () => {
           </p>
         </div>
 
-        <div className="table col-sm-6  col-12 align-items-end justify-content-end">
+        <div className="table col-xl-6  col-12 align-items-end justify-content-end">
           <Table bordered style={{ height: 352, maxWidth: 728 }}>
             <tbody>
               <tr>
@@ -130,7 +130,7 @@ const ModelInfrastructureBlock = () => {
         the existing compartment
       </p>
       <div className="col-12 row p-0">
-        <div className="col-md-6 col-12">
+        <div className="col-xl-6 col-12">
           <p>
             These probabilities are specific to the time spent in the
             Compartment and they are computed using the historical data. For
@@ -153,7 +153,7 @@ const ModelInfrastructureBlock = () => {
           </p>
         </div>
 
-        <div className="table col-md-6  col-12 align-items-end justify-content-end">
+        <div className="table col-xl-6  col-12 align-items-end justify-content-end">
           <Table bordered style={{ maxHeight: 352, maxWidth: 728 }}>
             <tbody>
               <tr>

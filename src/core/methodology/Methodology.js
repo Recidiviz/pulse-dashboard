@@ -49,7 +49,7 @@ const Methodology = () => {
   return (
     <PageTemplate>
       <main className="main-content methodology p-0">
-        <Container className="col-sm-10 col-12 ">
+        <Container className="col-md-10 col-12 ">
           <h1 className="methodology__main-title">Projections</h1>
           <h2 className="methodology__main-description">
             The case-level population projection model is designed to simulate
@@ -67,7 +67,7 @@ const Methodology = () => {
             and the cycles for distinct population groups. The model stays up to
             date and can be run as frequently as data is received from the DOC.
           </h2>
-          <div className=" methodology__link-block col-3">
+          <div className=" methodology__link-block col-md-5 col-12">
             <h5>CONTENTS</h5>
             <div className="d-flex flex-column">
               {mainBlocks.map((contentBlock) => (

@@ -36,10 +36,13 @@
       color: $core-link-color;
       width: fit-content;
       &:hover,
-      :focus {
+      &:focus {
         color: $core-link-color;
         cursor: pointer;
         text-decoration: underline;
+      }
+      &:active {
+        color: $core-link-color;
       }
     }
   }
