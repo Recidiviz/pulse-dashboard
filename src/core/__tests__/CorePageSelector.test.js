@@ -16,13 +16,10 @@
 // =============================================================================
 
 import React from "react";
-import { configure, mount } from "enzyme";
+import { mount } from "enzyme";
 import { Link, StaticRouter } from "react-router-dom";
 
-import Adapter from "@wojtekmaj/enzyme-adapter-react-17";
 import CorePageSelector from "../CorePageSelector";
-
-configure({ adapter: new Adapter() });
 
 describe("CoreLayout tests", () => {
   const mockSection = "section";

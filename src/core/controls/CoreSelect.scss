@@ -12,6 +12,7 @@
     border-radius: 1.25rem !important;
     background-color: $core-background !important;
     transition: border-radius 0s !important;
+    cursor: pointer !important;
 
     &:hover {
       border-color: $core-border-color !important;
@@ -48,6 +49,8 @@
   }
 
   &__option {
+    cursor: pointer !important;
+
     &--is-multi {
       background-color: transparent !important;
     }

@@ -16,11 +16,8 @@
 // =============================================================================
 
 import React from "react";
-import { configure, mount } from "enzyme";
-import Adapter from "@wojtekmaj/enzyme-adapter-react-17";
+import { mount } from "enzyme";
 import FilterBar from "../FilterBar";
-
-configure({ adapter: new Adapter() });
 
 describe("test for component FiltersBar", () => {
   const props = {

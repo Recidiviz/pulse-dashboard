@@ -141,6 +141,7 @@ div.CoreMultiSelect {
 
     div.CoreMultiSelect__option {
       padding: 8px 16px;
+      cursor: pointer;
       &--is-selected {
         background-color: unset;
         color: unset;
