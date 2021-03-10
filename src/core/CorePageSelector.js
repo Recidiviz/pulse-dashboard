@@ -25,7 +25,9 @@ import "./CorePageSelector.scss";
 const CorePageSelector = ({ currentSection, currentPage, pageOptions }) => {
   const capitalizeFirstLetter = (string) =>
     string.charAt(0).toUpperCase() + string.slice(1);
-
+  if (!currentPage) {
+    return <></>;
+  }
   return (
     <ul className="CorePageSelector">
       {pageOptions.map((page) => (

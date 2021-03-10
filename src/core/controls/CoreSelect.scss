@@ -1,3 +1,4 @@
+@import "../../assets/styles/spec/settings/baseColors.scss";
 .Core-Select {
   flex-grow: 1;
   font-size: 0.8em;
@@ -8,6 +9,7 @@
     border: 1px solid #d2d8d8 !important;
     box-shadow: none !important;
     border-radius: 15px !important;
+    background-color: inherit !important;
 
     &:hover {
       border-color: #d2d8d8 !important;
@@ -25,6 +27,7 @@
     box-shadow: none !important;
     border-radius: 0px 0px 15px 15px !important;
     border-top: none !important;
+    background-color: $core-background !important;
   }
 
   &__option {
@@ -55,8 +58,11 @@
   &__value-container {
     white-space: nowrap;
     text-overflow: ellipsis;
+    color: $core-font-color !important;
   }
-
+  &__single-value{
+    color: $core-font-color !important;
+  }
   &__custom-indicator {
     display: flex;
     align-items: center;

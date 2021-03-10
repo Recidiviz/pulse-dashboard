@@ -1,3 +1,7 @@
+@import "../assets/styles/spec/settings/baseColors.scss";
+.FiltersBar {
+  background-color: $core-background;
+}
 .filters {
   display: flex;
   font-weight: 400;
@@ -14,7 +18,7 @@
       white-space: nowrap;
       margin-right: 20px;
       font-size: 16px;
-      color: #72777a;
+      color: #5d747e;
       letter-spacing: 0.49px;
       line-height: 21px;
     }
@@ -30,14 +34,14 @@
   }
 
   #supervisionTypeFilter {
-    flex-grow: 4;
+    flex-grow: 1;
   }
 
   #metricPeriodFilter {
-    flex-grow: 3;
+    flex-grow: 1;
   }
 
   #districtFilter {
-    flex-grow: 4;
+    flex-grow: 0;
   }
 }

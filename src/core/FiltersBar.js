@@ -82,79 +82,81 @@ const FiltersBar = ({
   return (
     <Sticky style={FILTER_BAR_STYLE}>
       <div className="FiltersBar row pB-10">
-        <div className="col-md-12">
-          <div className="bd bgc-white" style={{ marginLeft: -2 }}>
-            <div className="row filters">
-              {setChartMetricType && (
-                <div className="filters__filter" id="metricTypeFilter">
-                  <TogglePill
-                    leftPill={metricTypeOptions[0]}
-                    rightPill={metricTypeOptions[1]}
-                    onChange={setChartMetricType}
-                    currentValue={metricType}
-                  />
-                </div>
-              )}
-
-              {setChartMetricPeriodMonths && (
-                <div className="filters__filter" id="metricPeriodFilter">
-                  <span className="filters__filter-title">Time period</span>
-                  <div className="filters__select">
-                    <CoreSelect
-                      value={getFilterValue(
-                        metricPeriodMonths,
-                        metricPeriodOptions
-                      )}
-                      options={metricPeriodOptions}
-                      onChange={createOnFilterChange(
-                        setChartMetricPeriodMonths
-                      )}
-                      defaultValue={defaultMetricPeriodOption}
+        <div className="col-12">
+          <div className="col-sm-10 col-12">
+            <div style={{ marginLeft: -2 }}>
+              <div className="row filters">
+                {setChartMetricType && (
+                  <div className="filters__filter" id="metricTypeFilter">
+                    <TogglePill
+                      leftPill={metricTypeOptions[0]}
+                      rightPill={metricTypeOptions[1]}
+                      onChange={setChartMetricType}
+                      currentValue={metricType}
                     />
                   </div>
-                </div>
-              )}
+                )}
 
-              {setChartSupervisionType && (
-                <div className="filters__filter" id="supervisionTypeFilter">
-                  <span className="filters__filter-title">
-                    Supervision type
-                  </span>
-                  <div className="filters__select">
-                    <CoreSelect
-                      value={getFilterValue(
-                        supervisionType,
-                        supervisionTypeOptions
-                      )}
-                      options={supervisionTypeOptions}
-                      onChange={createOnFilterChange(setChartSupervisionType)}
-                      defaultValue={defaultSupervisionTypeOption}
-                      isSearchable={false}
-                    />
+                {setChartMetricPeriodMonths && (
+                  <div className="filters__filter" id="metricPeriodFilter">
+                    <span className="filters__filter-title">Time period</span>
+                    <div className="filters__select">
+                      <CoreSelect
+                        value={getFilterValue(
+                          metricPeriodMonths,
+                          metricPeriodOptions
+                        )}
+                        options={metricPeriodOptions}
+                        onChange={createOnFilterChange(
+                          setChartMetricPeriodMonths
+                        )}
+                        defaultValue={defaultMetricPeriodOption}
+                      />
+                    </div>
                   </div>
-                </div>
-              )}
+                )}
 
-              {setChartDistrict && (
-                <div className="filters__filter" id="districtFilter">
-                  <span className="filters__filter-title">
-                    {isCounty ? "County of Residence" : "Office"}
-                  </span>
-                  <div className="filters__select">
-                    <CoreMultiSelect
-                      value={districtOptions.filter((option) =>
-                        district.includes(String(option.value))
-                      )}
-                      options={districtOptions}
-                      onChange={(options) => {
-                        setChartDistrict(options.map((o) => String(o.value)));
-                      }}
-                      summingOption={defaultDistrictOption}
-                      defaultValue={[defaultDistrictOption]}
-                    />
+                {setChartSupervisionType && (
+                  <div className="filters__filter" id="supervisionTypeFilter">
+                    <span className="filters__filter-title">
+                      Supervision type
+                    </span>
+                    <div className="filters__select">
+                      <CoreSelect
+                        value={getFilterValue(
+                          supervisionType,
+                          supervisionTypeOptions
+                        )}
+                        options={supervisionTypeOptions}
+                        onChange={createOnFilterChange(setChartSupervisionType)}
+                        defaultValue={defaultSupervisionTypeOption}
+                        isSearchable={false}
+                      />
+                    </div>
                   </div>
-                </div>
-              )}
+                )}
+
+                {setChartDistrict && (
+                  <div className="filters__filter" id="districtFilter">
+                    <span className="filters__filter-title">
+                      {isCounty ? "County of Residence" : "Office"}
+                    </span>
+                    <div className="filters__select">
+                      <CoreMultiSelect
+                        value={districtOptions.filter((option) =>
+                          district.includes(String(option.value))
+                        )}
+                        options={districtOptions}
+                        onChange={(options) => {
+                          setChartDistrict(options.map((o) => String(o.value)));
+                        }}
+                        summingOption={defaultDistrictOption}
+                        defaultValue={[defaultDistrictOption]}
+                      />
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </div>

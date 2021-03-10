@@ -109,6 +109,9 @@ div.CoreMultiSelect {
     outline: none;
     border: 1px solid $core-border-color;
     box-shadow: none;
+    background-color: inherit;
+    color: $core-font-color !important;
+
 
     &--menu-is-open {
       border-radius: 1.2rem 1.2rem 0 0;
@@ -125,6 +128,7 @@ div.CoreMultiSelect {
     border-top: none;
     box-shadow: none;
     overflow: hidden;
+    background-color: $core-background;
 
     &-list div:first-child {
       padding-top: none;
