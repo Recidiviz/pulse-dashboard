@@ -15,40 +15,41 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 import React, { forwardRef } from "react";
-import PropTypes from "prop-types";
 import ReactSelect from "react-select";
 
-import { optionPropType } from "../../controls/propTypes";
 import "./CoreSelect.scss";
 
-export const CoreSelect = forwardRef((props, ref) => (
-  <ReactSelect
-    ref={ref}
-    className="Core-Seleсt"
-    classNamePrefix="Core-Select"
-    components={{
-      IndicatorSeparator: () => null,
-      DropdownIndicator: () => (
-        <div className="Core-Select__custom-indicator">
-          <span className="Core-Select__custom-arrow" />
-        </div>
-      ),
-    }}
-    {...props}
-  />
-));
-
-CoreSelect.propTypes = {
-  value: PropTypes.oneOfType([
-    optionPropType,
-    PropTypes.arrayOf(optionPropType),
-  ]).isRequired,
-  defaultValue: PropTypes.oneOfType([
-    optionPropType,
-    PropTypes.arrayOf(optionPropType),
-  ]).isRequired,
-  onChange: PropTypes.func.isRequired,
-  options: PropTypes.arrayOf(optionPropType).isRequired,
+type FilterOption = {
+  label: string;
+  value: any;
 };
+
+type CoreSelectProps = {
+  value: FilterOption | FilterOption[];
+  defaultValue: FilterOption | FilterOption[];
+  options: FilterOption[];
+  onChange: (option: FilterOption) => void;
+  [key: string]: any;
+};
+
+export const CoreSelect = forwardRef<HTMLInputElement, CoreSelectProps>(
+  (props, ref) => (
+    <ReactSelect
+      // @ts-ignore
+      ref={ref}
+      className="Core-Seleсt"
+      classNamePrefix="Core-Select"
+      components={{
+        IndicatorSeparator: () => null,
+        DropdownIndicator: () => (
+          <div className="Core-Select__custom-indicator">
+            <span className="Core-Select__custom-arrow" />
+          </div>
+        ),
+      }}
+      {...props}
+    />
+  )
+);
 
 CoreSelect.displayName = "Select";

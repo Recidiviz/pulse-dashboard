@@ -45,7 +45,7 @@ const CoreMultiSelect = ({
   options,
   value,
   onChange,
-  className,
+  className = "",
   ...props
 }) => {
   const ref = useRef();
