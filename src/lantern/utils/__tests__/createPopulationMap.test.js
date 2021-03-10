@@ -24,33 +24,41 @@ describe("#createPopulationMap", () => {
     {
       revocation_count: 1,
       supervision_population_count: 1,
+      recommended_for_revocation_count: 1,
       gender: "MALE",
       revocation_count_all: 10,
       supervision_count_all: 100,
+      recommended_for_revocation_count_all: 100,
       district: "01",
     },
     {
       revocation_count: 2,
       supervision_population_count: 2,
+      recommended_for_revocation_count: 2,
       gender: "MALE",
       revocation_count_all: 20,
       supervision_count_all: 200,
+      recommended_for_revocation_count_all: 200,
       district: "02",
     },
     {
       revocation_count: 3,
       supervision_population_count: 3,
+      recommended_for_revocation_count: 3,
       gender: "FEMALE",
       revocation_count_all: 30,
       supervision_count_all: 300,
+      recommended_for_revocation_count_all: 300,
       district: "01",
     },
     {
       revocation_count: 4,
       supervision_population_count: 4,
+      recommended_for_revocation_count: 4,
       gender: "FEMALE",
       revocation_count_all: 40,
       supervision_count_all: 400,
+      recommended_for_revocation_count_all: 400,
       district: "01",
     },
   ];
@@ -59,10 +67,12 @@ describe("#createPopulationMap", () => {
     const expected = {
       FEMALE: {
         REVOKED: [7, 70],
-        SUPERVISION_POPULATION: [7, 700]
+        RECOMMENDED_FOR_REVOCATION: [7, 700],
+        SUPERVISION_POPULATION: [7, 700],
       },
       MALE: {
         REVOKED: [3, 30],
+        RECOMMENDED_FOR_REVOCATION: [3, 300],
         SUPERVISION_POPULATION: [3, 300]
       }
     }

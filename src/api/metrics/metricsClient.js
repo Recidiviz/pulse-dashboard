@@ -40,15 +40,16 @@ async function validateResponse(response) {
 async function callMetricsApi(endpoint, getTokenSilently) {
   const token = await getTokenSilently();
 
-  const response = await fetch(
+  const retryTimes = 3;
+  const responseJson = await fetchWithRetry(
     `${process.env.REACT_APP_API_URL}/api/${endpoint}`,
     {
       headers: {
         Authorization: `Bearer ${token}`,
       },
-    }
+    },
+    retryTimes
   );
-  const responseJson = await validateResponse(response);
 
   return responseJson;
 }

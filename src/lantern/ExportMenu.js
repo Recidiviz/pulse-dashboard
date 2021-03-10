@@ -164,15 +164,6 @@ const ExportMenu = ({
             )}
           </Modal.Body>
         </div>
-        <Modal.Footer>
-          <button
-            type="button"
-            className="btn btn-secondary"
-            onClick={hideModal}
-          >
-            Close
-          </button>
-        </Modal.Footer>
       </Modal>
     </span>
   );
