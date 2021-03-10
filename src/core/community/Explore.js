@@ -35,7 +35,7 @@ import RevocationCountBySupervisionType from "./RevocationCountBySupervisionType
 import RevocationCountByViolationType from "./RevocationCountByViolationType";
 import RevocationProportionByRace from "./RevocationProportionByRace";
 import SupervisionSuccessSnapshot from "./SupervisionSuccessSnapshot";
-import FiltersBar from "../FiltersBar";
+import FilterBar from "../FilterBar";
 import {
   defaultDistrict,
   defaultMetricPeriod,
@@ -65,7 +65,7 @@ const CommunityExplore = () => {
   }
 
   const filters = (
-    <FiltersBar
+    <FilterBar
       metricType={metricType}
       metricPeriodMonths={metricPeriodMonths}
       district={district}
