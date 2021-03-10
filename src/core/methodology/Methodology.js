@@ -17,7 +17,6 @@
 
 import React from "react";
 import { Container } from "reactstrap";
-import Scrollchor from "react-scrollchor";
 
 import MethodologyBlock from "./MethodologyBlock";
 import { mainBlocks } from "./constant/mainBlocks";
@@ -50,14 +49,14 @@ const Methodology = () => (
           <h5>CONTENTS</h5>
           <div className="d-flex flex-column">
             {mainBlocks.map((contentBlock) => (
-              <Scrollchor
+              <a
                 key={`link${contentBlock.label}`}
-                to={`#${contentBlock.label
+                href={`#${contentBlock.label
                   .replace(/:|\s/g, "-")
                   .toLowerCase()}`}
               >
                 {contentBlock.label}
-              </Scrollchor>
+              </a>
             ))}
           </div>
         </div>

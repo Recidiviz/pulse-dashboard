@@ -17,9 +17,9 @@
 
 import React from "react";
 import { useLocation } from "react-router-dom";
-import TopBarDropdown from "../components/topbar/TopBarDropdown";
+import TopBarDropdown from "../components/TopBar/TopBarDropdown";
 import CorePageSelector from "./CorePageSelector";
-import TopBarUserMenuForAuthenticatedUser from "../components/topbar/TopBarUserMenuForAuthenticatedUser";
+import TopBarUserMenuForAuthenticatedUser from "../components/TopBar/TopBarUserMenuForAuthenticatedUser";
 
 import "./CoreNavigation.scss";
 
@@ -27,7 +27,7 @@ const navigationLayout = {
   community: ["goals", "explore"],
   facilities: ["goals", "explore"],
   programming: ["explore"],
-  methodology: ["methodology"],
+  methodology: ["vitals", "projections", "explore"],
 };
 
 const CoreNavigation = () => {
@@ -35,7 +35,6 @@ const CoreNavigation = () => {
   const [currentSection, currentPage] = pathname.split("/").slice(1, 3);
   const pageOptions =
     navigationLayout[currentSection] ?? navigationLayout.facilities;
-
   return (
     <div className="CoreNavigation">
       <ul className="nav-left">

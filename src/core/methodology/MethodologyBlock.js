@@ -1,37 +1,40 @@
 import React from "react";
 import PropTypes from "prop-types";
+import ScrollableAnchor from "react-scrollable-anchor";
 
 import ModelInfrastructureBlock from "./ModelInfrastructureBlock";
 
 const MethodologyBlock = ({ contentBlock, target }) => {
   return (
-    <div id={target}>
-      <h3 className="methodology__sub-block--title ">{contentBlock.label}</h3>
-      <hr />
-      {contentBlock.includeTable ? (
-        <ModelInfrastructureBlock />
-      ) : (
-        <>
-          {contentBlock.list === undefined ? (
-            <p className="methodology__sub-block--description">
-              {contentBlock.text}
-            </p>
-          ) : (
-            <>
+    <ScrollableAnchor id={target}>
+      <div>
+        <h3 className="methodology__sub-block--title ">{contentBlock.label}</h3>
+        <hr />
+        {contentBlock.includeTable ? (
+          <ModelInfrastructureBlock />
+        ) : (
+          <>
+            {contentBlock.list === undefined ? (
               <p className="methodology__sub-block--description">
                 {contentBlock.text}
               </p>
-              <ul className="methodology__sub-block--description">
-                {contentBlock.list.map((liText) => (
-                  <li key={liText}>{liText}</li>
-                ))}
-              </ul>
-            </>
-          )}
-          <div className="row" />
-        </>
-      )}
-    </div>
+            ) : (
+              <>
+                <p className="methodology__sub-block--description">
+                  {contentBlock.text}
+                </p>
+                <ul className="methodology__sub-block--description">
+                  {contentBlock.list.map((liText) => (
+                    <li key={liText}>{liText}</li>
+                  ))}
+                </ul>
+              </>
+            )}
+            <div className="row" />
+          </>
+        )}
+      </div>
+    </ScrollableAnchor>
   );
 };
 MethodologyBlock.propTypes = {

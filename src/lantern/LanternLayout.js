@@ -20,9 +20,9 @@ import PropTypes from "prop-types";
 import { Helmet } from "react-helmet";
 import { observer } from "mobx-react-lite";
 
-import TopBar from "../components/topbar/TopBar";
-import TopBarLogo from "../components/topbar/TopBarLogo";
-import TopBarUserMenuForAuthenticatedUser from "../components/topbar/TopBarUserMenuForAuthenticatedUser";
+import TopBar from "../components/TopBar/TopBar";
+import TopBarLogo from "../components/TopBar/TopBarLogo";
+import TopBarUserMenuForAuthenticatedUser from "../components/TopBar/TopBarUserMenuForAuthenticatedUser";
 import Footer from "../components/Footer";
 import usePageLayout from "./hooks/usePageLayout";
 import useIntercom from "./hooks/useIntercom";
