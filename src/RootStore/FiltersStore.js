@@ -122,16 +122,17 @@ export default class FiltersStore {
   }
 
   get districts() {
-    // TODO #798: Use apiData.data from districts store when supervision locations are
-    // filtered on the backend
-    const { filteredDistricts, districtKeys } = this.rootStore.districtsStore;
-    if (!filteredDistricts) return [];
+    const { apiData, districtKeys } = this.rootStore.districtsStore;
+
+    if (!apiData || !apiData.data) return [];
+
+    const districts = apiData.data;
     const { primaryLabelKey, secondaryLabelKey, valueKey } = districtKeys;
 
     if (secondaryLabelKey) {
-      return generateNestedOptions([...filteredDistricts], districtKeys);
+      return generateNestedOptions([...districts], districtKeys);
     }
-    return uniqBy(filteredDistricts, valueKey)
+    return uniqBy(districts, valueKey)
       .map((district) => {
         return {
           value: district[valueKey],
