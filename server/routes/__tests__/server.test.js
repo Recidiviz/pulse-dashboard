@@ -10,16 +10,32 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-//
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
+const Sentry = require("@sentry/node");
 const request = require("supertest");
 const { server } = require("../../../server");
 const { clearMemoryCache } = require("../../core/cacheManager");
 
 const OLD_ENV = process.env;
+
+jest.mock("@sentry/node", () => ({
+  Handlers: {
+    errorHandler: jest.fn(() => {
+      return (error, _req, _res, next) => {
+        next(error);
+      };
+    }),
+    requestHandler: jest.fn(() => {
+      return (error, _req, _res, next) => {
+        next(error);
+      };
+    }),
+  },
+  init: () => {},
+}));
 
 describe("Server tests", () => {
   let app;
@@ -116,6 +132,28 @@ describe("Server tests", () => {
       return request(app)
         .get(
           "/api/US_DEMO/newRevocations/revocations_matrix_by_month?metricPeriodMonths=42"
+        )
+        .then((response) => {
+          expect(response.statusCode).toEqual(400);
+          expect(response.body).toEqual(expectedErrors);
+        });
+    });
+
+    it("should respond with a 400 for an invalid admission type query param", function () {
+      const expectedErrors = {
+        errors: [
+          {
+            location: "query",
+            msg: "Invalid value",
+            param: "admissionType",
+            value: ["DOGWOOD"],
+          },
+        ],
+        status: 400,
+      };
+      return request(app)
+        .get(
+          "/api/US_DEMO/newRevocations/revocations_matrix_by_month?admissionType[0]=DOGWOOD"
         )
         .then((response) => {
           expect(response.statusCode).toEqual(400);
@@ -222,6 +260,7 @@ describe("Server tests", () => {
             "No authorization token was found",
           ]);
           expect(response.body.status).toEqual(500);
+          expect(Sentry.Handlers.errorHandler).toHaveBeenCalledTimes(1);
         });
     });
   });

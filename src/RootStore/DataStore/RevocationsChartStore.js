@@ -15,31 +15,45 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import { makeObservable, reaction, observable, action } from "mobx";
+import { makeObservable, reaction, observable, action, computed } from "mobx";
 import { matchesAllFilters } from "shared-filters";
 import BaseDataStore from "./BaseDataStore";
-import { DISTRICT } from "../../constants/filterTypes";
+import {
+  DISTRICT,
+  LEVEL_1_SUPERVISION_LOCATION,
+  LEVEL_2_SUPERVISION_LOCATION,
+} from "../../lantern/utils/constants";
 
 const CHARTS = {
   District: {
+    name: "District",
     file: "revocations_matrix_distribution_by_district",
-    skippedFilters: [DISTRICT],
+    skippedFilters: [
+      DISTRICT,
+      LEVEL_1_SUPERVISION_LOCATION,
+      LEVEL_2_SUPERVISION_LOCATION,
+    ],
   },
   "Risk level": {
+    name: "Risk level",
     file: "revocations_matrix_distribution_by_risk_level",
   },
   Gender: {
+    name: "Gender",
     file: "revocations_matrix_distribution_by_gender",
     statePopulationFile: "state_gender_population",
   },
   Officer: {
+    name: "Officer",
     file: "revocations_matrix_distribution_by_officer",
   },
   Race: {
+    name: "Race",
     file: "revocations_matrix_distribution_by_race",
     statePopulationFile: "state_race_ethnicity_population",
   },
   Violation: {
+    name: "Violation",
     file: "revocations_matrix_distribution_by_violation",
   },
 };
@@ -59,6 +73,8 @@ export default class RevocationsChartStore extends BaseDataStore {
     makeObservable(this, {
       selectedChart: observable,
       setSelectedChart: action.bound,
+      currentDistricts: computed,
+      districtChartData: computed,
     });
 
     reaction(
@@ -89,5 +105,31 @@ export default class RevocationsChartStore extends BaseDataStore {
       skippedFilters: this.skippedFilters,
     });
     return this.filterData(this.apiData, dataFilter);
+  }
+
+  get districtChartData() {
+    const {
+      districtIdToLabel,
+      districtKeys: { filterByKey },
+    } = this.rootStore.districtsStore;
+
+    return this.filteredData.map((data) => {
+      return {
+        ...data,
+        district: districtIdToLabel[data[filterByKey]],
+      };
+    });
+  }
+
+  get currentDistricts() {
+    if (this.selectedChart !== CHARTS.District.name) return [];
+    const {
+      districtIdToLabel,
+      districtKeys: { filterKey },
+    } = this.rootStore.districtsStore;
+    return this.filters[filterKey].map((district) => {
+      if (district === "All") return district;
+      return districtIdToLabel[district];
+    });
   }
 }

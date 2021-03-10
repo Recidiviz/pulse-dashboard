@@ -16,8 +16,7 @@
 // =============================================================================
 
 import { ERROR_MESSAGES } from "./errorMessages";
-import * as filterTypes from "./filterTypes";
 
 export const METADATA_NAMESPACE = "https://dashboard.recidiviz.org/";
 
-export { ERROR_MESSAGES, filterTypes };
+export { ERROR_MESSAGES };

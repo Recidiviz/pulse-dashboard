@@ -95,7 +95,11 @@ export default class UserStore {
     this.restrictedDistrictIsLoading = true;
 
     autorun(() => {
-      if (!this.userIsLoading && this.rootStore?.currentTenantId) {
+      if (
+        !this.userIsLoading &&
+        !this.rootStore?.districtsStore.isLoading &&
+        this.rootStore?.currentTenantId
+      ) {
         this.fetchRestrictedDistrictData(this.rootStore?.currentTenantId);
       }
     });
@@ -190,7 +194,7 @@ export default class UserStore {
     this: UserStore,
     tenantId: string
   ) {
-    if (!this.rootStore?.tenantStore.isLanternTenant) {
+    if (!this.rootStore?.tenantStore.isRestrictedDistrictTenant) {
       this.restrictedDistrictIsLoading = false;
       return;
     }
@@ -228,8 +232,9 @@ export default class UserStore {
   verifyRestrictedDistrict(): void {
     if (
       this.restrictedDistrict &&
-      !this.rootStore?.tenantStore.districtsIsLoading &&
-      !this.rootStore?.tenantStore.districts.includes(this.restrictedDistrict)
+      !this.rootStore?.districtsStore.districtIds.includes(
+        this.restrictedDistrict
+      )
     ) {
       const authError = new Error(ERROR_MESSAGES.unauthorized);
       Sentry.captureException(authError, {

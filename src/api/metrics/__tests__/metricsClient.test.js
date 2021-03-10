@@ -98,7 +98,8 @@ describe("metricsClient", () => {
       process.env = Object.assign(process.env, {
         REACT_APP_API_URL: "test-url",
       });
-      global.fetch.mockResolvedValueOnce({
+      global.fetch.mockClear();
+      global.fetch.mockResolvedValue({
         ok: false,
         status: 400,
         statusText: "Bad Request",
@@ -106,6 +107,20 @@ describe("metricsClient", () => {
           .fn()
           .mockResolvedValue({ status: 400, errors: ["API error"] }),
       });
+    });
+
+    it("retries 2 more times before throwing an error", async () => {
+      expect.assertions(2);
+      try {
+        await callMetricsApi(endpoint, getTokenSilently);
+      } catch (error) {
+        expect(global.fetch.mock.calls.length).toEqual(3);
+        expect(error).toEqual(
+          new Error(
+            `Fetching data from API failed.\nStatus: 400 - Bad Request\nErrors: ["API error"]`
+          )
+        );
+      }
     });
 
     it("throws an error", async () => {
@@ -127,7 +142,9 @@ describe("metricsClient", () => {
       process.env = Object.assign(process.env, {
         REACT_APP_API_URL: "test-url",
       });
-      global.fetch.mockResolvedValueOnce({
+
+      global.fetch.mockClear();
+      global.fetch.mockResolvedValue({
         ok: false,
         status: 400,
         statusText: "Bad Request",
@@ -135,6 +152,20 @@ describe("metricsClient", () => {
           .fn()
           .mockResolvedValue({ status: 400, errors: ["API error"] }),
       });
+    });
+
+    it("retries 2 more times before throwing an error", async () => {
+      expect.assertions(2);
+      try {
+        await callRestrictedAccessApi(endpoint, userEmail, getTokenSilently);
+      } catch (error) {
+        expect(global.fetch.mock.calls.length).toEqual(3);
+        expect(error).toEqual(
+          new Error(
+            `Fetching data from API failed.\nStatus: 400 - Bad Request\nErrors: ["API error"]`
+          )
+        );
+      }
     });
 
     it("throws an error", async () => {

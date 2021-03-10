@@ -40,15 +40,16 @@ async function validateResponse(response) {
 async function callMetricsApi(endpoint, getTokenSilently) {
   const token = await getTokenSilently();
 
-  const response = await fetch(
+  const retryTimes = 3;
+  const responseJson = await fetchWithRetry(
     `${process.env.REACT_APP_API_URL}/api/${endpoint}`,
     {
       headers: {
         Authorization: `Bearer ${token}`,
       },
-    }
+    },
+    retryTimes
   );
-  const responseJson = await validateResponse(response);
 
   return responseJson;
 }
@@ -60,8 +61,8 @@ async function callMetricsApi(endpoint, getTokenSilently) {
  */
 async function callRestrictedAccessApi(endpoint, userEmail, getTokenSilently) {
   const token = await getTokenSilently();
-
-  const response = await fetch(
+  const retryTimes = 3;
+  const responseJson = await fetchWithRetry(
     `${process.env.REACT_APP_API_URL}/api/${endpoint}`,
     {
       body: JSON.stringify({
@@ -72,10 +73,22 @@ async function callRestrictedAccessApi(endpoint, userEmail, getTokenSilently) {
         "Content-Type": "application/json",
       },
       method: "POST",
-    }
+    },
+    retryTimes
   );
-  const responseJson = await validateResponse(response);
   return responseJson;
+}
+
+async function fetchWithRetry(endpoint, options, retryTimes) {
+  try {
+    const response = await fetch(endpoint, options);
+    return await validateResponse(response);
+  } catch (error) {
+    if (retryTimes === 1) {
+      throw error;
+    }
+    return fetchWithRetry(endpoint, options, retryTimes - 1);
+  }
 }
 
 /**

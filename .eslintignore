@@ -4,4 +4,4 @@ build/
 public/
 
 src/auth0/**/*.js
-src/components/charts/GeoViewTimeChart.js
+src/core/GeoViewTimeChart.js

@@ -1,0 +1,43 @@
+.filters {
+  display: flex;
+  font-weight: 400;
+  padding-right: 20px;
+  padding-left: 20px;
+
+  &__filter {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px;
+
+    &-title {
+      white-space: nowrap;
+      margin-right: 20px;
+      font-size: 16px;
+      color: #72777a;
+      letter-spacing: 0.49px;
+      line-height: 21px;
+    }
+  }
+
+  &__select {
+    width: 100%;
+  }
+
+  #metricTypeFilter {
+    width: 215px;
+    margin-top: 8px;
+  }
+
+  #supervisionTypeFilter {
+    flex-grow: 4;
+  }
+
+  #metricPeriodFilter {
+    flex-grow: 3;
+  }
+
+  #districtFilter {
+    flex-grow: 4;
+  }
+}
