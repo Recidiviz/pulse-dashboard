@@ -20,7 +20,7 @@ import { render } from "@testing-library/react";
 import { useLocation } from "react-router-dom";
 
 import CoreLayout from "../CoreLayout";
-import TopBarUserMenuForAuthenticatedUser from "../../components/topbar/TopBarUserMenuForAuthenticatedUser";
+import TopBarUserMenuForAuthenticatedUser from "../../components/TopBar/TopBarUserMenuForAuthenticatedUser";
 
 import mockWithTestId from "../../../__helpers__/mockWithTestId";
 import { PageProvider } from "../../contexts/PageContext";

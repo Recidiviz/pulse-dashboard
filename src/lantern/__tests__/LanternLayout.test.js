@@ -3,7 +3,7 @@ import { render } from "@testing-library/react";
 import LanternLayout from "../LanternLayout";
 import useIntercom from "../hooks/useIntercom";
 import usePageLayout from "../hooks/usePageLayout";
-import TopBarUserMenuForAuthenticatedUser from "../../components/topbar/TopBarUserMenuForAuthenticatedUser";
+import TopBarUserMenuForAuthenticatedUser from "../../components/TopBar/TopBarUserMenuForAuthenticatedUser";
 import mockWithTestId from "../../../__helpers__/mockWithTestId";
 import StoreProvider, { useRootStore } from "../../components/StoreProvider";
 import { US_MO } from "../../RootStore/TenantStore/lanternTenants";
