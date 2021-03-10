@@ -31,8 +31,6 @@ export default class DistrictsStore {
 
   districtIdToLabel = {};
 
-  districts = [];
-
   rootStore;
 
   constructor({ rootStore }) {

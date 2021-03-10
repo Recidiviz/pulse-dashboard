@@ -206,7 +206,6 @@ describe("FiltersStore", () => {
         it("sets the district filter options to sorted unique values", () => {
           runInAction(() => {
             rootStore.districtsStore.apiData = { data: mockDistricts };
-            rootStore.districtsStore.districts = mockDistricts;
             rootStore.districtsStore.isLoading = false;
             rootStore.tenantStore.currentTenantId = tenantId;
           });
@@ -254,7 +253,6 @@ describe("FiltersStore", () => {
         it("sets the district filter options to sorted unique values", () => {
           runInAction(() => {
             rootStore.districtsStore.apiData = { data: mockDistricts };
-            rootStore.districtsStore.districts = mockDistricts;
             rootStore.districtsStore.isLoading = false;
             rootStore.tenantStore.currentTenantId = tenantId;
           });

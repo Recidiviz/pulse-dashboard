@@ -122,8 +122,11 @@ export default class FiltersStore {
   }
 
   get districts() {
-    const { districts, districtKeys } = this.rootStore.districtsStore;
-    if (!districts) return [];
+    const { apiData, districtKeys } = this.rootStore.districtsStore;
+
+    if (!apiData || !apiData.data) return [];
+
+    const districts = apiData.data;
     const { primaryLabelKey, secondaryLabelKey, valueKey } = districtKeys;
 
     if (secondaryLabelKey) {
