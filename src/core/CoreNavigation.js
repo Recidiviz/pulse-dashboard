@@ -17,7 +17,6 @@
 
 import React from "react";
 import { useLocation } from "react-router-dom";
-/* eslint-disable-next-line */
 import TopBarDropdown from "../components/TopBar/TopBarDropdown";
 import CorePageSelector from "./CorePageSelector";
 import TopBarUserMenuForAuthenticatedUser from "../components/TopBar/TopBarUserMenuForAuthenticatedUser";
