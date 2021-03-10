@@ -52,7 +52,7 @@ export const tenantMappings = {
     [US_PA]: "level_2_supervision_location_external_id",
   },
   districtPrimaryLabelKey: {
-    [US_MO]: "level_1_supervision_location_external_id",
+    [US_MO]: "level_1_supervision_location_name",
     [US_PA]: "level_2_supervision_location_name",
   },
   districtSecondaryIdKey: {

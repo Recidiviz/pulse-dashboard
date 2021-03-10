@@ -61,7 +61,6 @@ const DistrictFilterDropdown = ({
 const SelectOption = {
   label: PropTypes.string.isRequired,
   value: PropTypes.string,
-  sortByLabel: PropTypes.string,
   allSelectedLabel: PropTypes.string,
   options: PropTypes.arrayOf(
     PropTypes.shape({

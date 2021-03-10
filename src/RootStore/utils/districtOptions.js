@@ -16,10 +16,6 @@
 // =============================================================================
 import { compareStrings } from ".";
 
-function formatPrimaryLabel(id, label) {
-  return `${id} - ${label.toUpperCase().replace(" DO", "")}`;
-}
-
 export function generateNestedOptions(districts, districtKeys) {
   const {
     secondaryLabelKey,
@@ -43,9 +39,8 @@ export function generateNestedOptions(districts, districtKeys) {
     if (!filterOptions[primaryId]) {
       Object.assign(filterOptions, {
         [primaryId]: {
-          sortByLabel: primaryLabel,
           allSelectedLabel: "ALL",
-          label: formatPrimaryLabel(primaryId, primaryLabel),
+          label: primaryLabel,
           options: [option],
         },
       });
@@ -64,7 +59,7 @@ export function generateNestedOptions(districts, districtKeys) {
   });
 
   const sortedOptions = Object.values(filterOptions).sort(
-    compareStrings("sortByLabel")
+    compareStrings("label")
   );
 
   return sortedOptions;

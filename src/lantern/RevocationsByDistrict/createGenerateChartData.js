@@ -29,6 +29,7 @@ import { translate } from "../../utils/i18nSettings";
 import { applyStatisticallySignificantShading } from "../utils/significantStatistics";
 import { COLORS } from "../../assets/scripts/constants/colors";
 import { sumCounts } from "../utils/sumCounts";
+import { formatDistrictLabel } from "../../utils/labels";
 
 const generatePercentChartData = (
   districtChartData,
@@ -44,7 +45,7 @@ const generatePercentChartData = (
     groupBy("district"),
     values,
     map((dataset) => ({
-      district: dataset[0].district,
+      district: formatDistrictLabel(dataset[0].district),
       count: sumBy((item) => toInteger(item.revocation_count), dataset),
       [fieldName]: sumBy((item) => toInteger(item[totalFieldName]), dataset),
     })),
@@ -102,7 +103,7 @@ const generateCountChartData = (districtChartData, currentDistricts) => {
     groupBy("district"),
     values,
     map((dataset) => ({
-      district: dataset[0].district,
+      district: formatDistrictLabel(dataset[0].district),
       count: sumBy((item) => toInteger(item.revocation_count), dataset),
     })),
     orderBy(["count"], ["desc"])

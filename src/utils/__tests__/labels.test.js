@@ -205,5 +205,25 @@ describe("test label", () => {
         expect(result).toEqual("25");
       });
     });
+
+    fdescribe("#formatDistrictLabel", () => {
+      it("formats a district name with DO correctly", () => {
+        const name = "BARNEY RUBBLE DO - 04";
+        const result = labelsMethods.formatDistrictLabel(name);
+        expect(result).toEqual("Barney Rubble DO - 04");
+      });
+
+      it("formats a district name with a - correctly", () => {
+        const name = "BARNEY RUBBLE - 04";
+        const result = labelsMethods.formatDistrictLabel(name);
+        expect(result).toEqual("Barney Rubble - 04");
+      });
+
+      it("formats a district name without a - ", () => {
+        const name = "BBDFLT";
+        const result = labelsMethods.formatDistrictLabel(name);
+        expect(result).toEqual(name);
+      });
+    });
   });
 });

@@ -159,27 +159,27 @@ describe("FiltersStore", () => {
     const mockDistricts = [
       {
         level_2_supervision_location_external_id: "03",
-        level_2_supervision_location_name: "Harrisburg DO",
-        level_1_supervision_location_external_id: "03 - LANCASTER",
-        level_1_supervision_location_name: "03 - Lancaster DO",
+        level_2_supervision_location_name: "HARRISBURG - 03",
+        level_1_supervision_location_external_id: "03 - LANCASTER DO",
+        level_1_supervision_location_name: "LANCASTER DO - 03",
       },
       {
         level_2_supervision_location_external_id: "03",
-        level_2_supervision_location_name: "Harrisburg DO",
+        level_2_supervision_location_name: "HARRISBURG - 03",
         level_1_supervision_location_external_id: "03 - YORK",
-        level_1_supervision_location_name: "03 - York DO",
+        level_1_supervision_location_name: "YORK - 03",
       },
       {
         level_2_supervision_location_external_id: "03",
-        level_2_supervision_location_name: "Harrisburg DO",
+        level_2_supervision_location_name: "HARRISBURG - 03",
         level_1_supervision_location_external_id: "03 - HARRISBURG",
-        level_1_supervision_location_name: "03 - Harrisburg DO",
+        level_1_supervision_location_name: "HARRISBURG - 03",
       },
       {
         level_2_supervision_location_external_id: "CO",
-        level_2_supervision_location_name: "Central Office",
+        level_2_supervision_location_name: "CENTRAL OFFICE - CO",
         level_1_supervision_location_external_id: "CO - CENTRAL OFFICE",
-        level_1_supervision_location_name: "CO - Central Office",
+        level_1_supervision_location_name: "CENTRAL OFFICE - CO",
       },
     ];
 
@@ -213,34 +213,32 @@ describe("FiltersStore", () => {
             filtersStore.filterOptions[getDistrictFilterKey(tenantId)].options
           ).toEqual([
             {
-              label: "CO - CENTRAL OFFICE",
+              label: "CENTRAL OFFICE - CO",
               allSelectedLabel: "ALL",
-              sortByLabel: "Central Office",
               options: [
                 {
-                  label: "CO - CENTRAL OFFICE",
+                  label: "CENTRAL OFFICE - CO",
                   value: "CO - CENTRAL OFFICE",
                   secondaryValue: "CO",
                 },
               ],
             },
             {
-              label: "03 - HARRISBURG",
+              label: "HARRISBURG - 03",
               allSelectedLabel: "ALL",
-              sortByLabel: "Harrisburg DO",
               options: [
                 {
-                  label: "03 - HARRISBURG DO",
+                  label: "HARRISBURG - 03",
                   value: "03 - HARRISBURG",
                   secondaryValue: "03",
                 },
                 {
-                  label: "03 - LANCASTER DO",
-                  value: "03 - LANCASTER",
+                  label: "LANCASTER DO - 03",
+                  value: "03 - LANCASTER DO",
                   secondaryValue: "03",
                 },
                 {
-                  label: "03 - YORK DO",
+                  label: "YORK - 03",
                   value: "03 - YORK",
                   secondaryValue: "03",
                 },
@@ -261,13 +259,13 @@ describe("FiltersStore", () => {
           expect(
             filtersStore.filterOptions[getDistrictFilterKey(tenantId)].options
           ).toEqual([
+            { value: "CO - CENTRAL OFFICE", label: "CENTRAL OFFICE - CO" },
             {
-              label: "03 - HARRISBURG",
+              label: "HARRISBURG - 03",
               value: "03 - HARRISBURG",
             },
-            { value: "03 - LANCASTER", label: "03 - LANCASTER" },
-            { value: "03 - YORK", label: "03 - YORK" },
-            { value: "CO - CENTRAL OFFICE", label: "CO - CENTRAL OFFICE" },
+            { value: "03 - LANCASTER DO", label: "LANCASTER DO - 03" },
+            { value: "03 - YORK", label: "YORK - 03" },
           ]);
         });
       });
