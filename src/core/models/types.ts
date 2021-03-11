@@ -1,5 +1,5 @@
 // Recidiviz - a data platform for criminal justice reform
-// Copyright (C) 2020 Recidiviz, Inc.
+// Copyright (C) 2021 Recidiviz, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -14,13 +14,27 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-type PopulationProjectionSummaryRecord = {
-  stateCode?: string;
-  metricPeriodMonths?: number;
-  simulationDate?: Date;
+/**
+ * All data comes back from the server as string values;
+ * it will be up to us to cast those strings to other types as needed
+ */
+export type RawMetricData = Record<string, string>[];
+
+export const TenantIdList = ["US_ND"] as const;
+
+export type TenantId = typeof TenantIdList[number];
+
+export type MetricTypeId = typeof MetricTypeIdList[number];
+
+export const MetricTypeIdList = ["PopulationProjectionSummaryMetric"] as const;
+
+export type MetricRecord = PopulationProjectionSummaryRecord;
+
+export type PopulationProjectionSummaryRecord = {
+  timePeriod?: number;
   compartment?: string;
   legalStatus?: string;
-  simulationGroup?: string;
+  gender?: string;
   simulationTag?: string;
   admissionCount: number;
   releaseCount: number;
@@ -35,5 +49,3 @@ type PopulationProjectionSummaryRecord = {
   totalPopulationCountMin?: number;
   totalPopulationCountMax?: number;
 };
-
-export type { PopulationProjectionSummaryRecord };

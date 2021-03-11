@@ -43,7 +43,7 @@ const CorePageSelector: React.FC<propTypes> = ({
             to={`/${currentSection}/${page}`}
             className={cx("CorePageSelector--Option", {
               "CorePageSelector--Option-Selected":
-                currentPage.toLowerCase() === page,
+                (currentPage && currentPage.toLowerCase()) === page,
             })}
           >
             {capitalizeFirstLetter(page)}

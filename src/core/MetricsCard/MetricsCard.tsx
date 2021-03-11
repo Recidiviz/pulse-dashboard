@@ -18,7 +18,7 @@ import React from "react";
 import styled from "styled-components/macro";
 import { Card, CardSection } from "@recidiviz/case-triage-components";
 import Metric from "./Metric";
-import type { PopulationProjectionSummaryRecord } from "../store/types";
+import type { PopulationProjectionSummaryRecord } from "../models/types";
 
 const MetricsCardComponent = styled(Card)`
   width: 100%;
