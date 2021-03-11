@@ -57,3 +57,36 @@ export const metrics = {
   metricPeriodMonths: "36",
   supervisionType: "all",
 };
+
+export const mockCardContent = [
+  {
+    title: "Overall",
+    percent: 79,
+    status: "NEEDS_IMPROVEMENT",
+    id: 1,
+  },
+  {
+    title: "Program availability",
+    percent: 56,
+    status: "POOR",
+    id: 2,
+  },
+  {
+    title: "Timely contacts",
+    percent: 100,
+    status: "GREAT",
+    id: 3,
+  },
+  {
+    title: "Timely risk assessments",
+    percent: 95,
+    status: "GREAT",
+    id: 4,
+  },
+  {
+    title: "Timely discharge",
+    percent: 79,
+    status: "GOOD",
+    id: 5,
+  },
+];
