@@ -14,12 +14,9 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-
-import { computed, makeObservable } from "mobx";
-import Metric, { MetricProps } from "./Metric";
 import { PopulationProjectionSummaryRecord, RawMetricData } from "./types";
 
-function recordMatchesSimulationTag(
+export function recordMatchesSimulationTag(
   simulationTag: string
 ): (record: PopulationProjectionSummaryRecord) => boolean {
   return (record) => record.simulationTag === simulationTag;
@@ -29,6 +26,21 @@ export function populationProjectionSummary(
   rawRecords: RawMetricData
 ): PopulationProjectionSummaryRecord[] {
   return rawRecords.map((record) => {
+    if (record.simulation_tag === "HISTORICAL") {
+      return {
+        simulationTag: record.simulation_tag,
+        timePeriod: Number(record.metric_period_months),
+        compartment: record.compartment,
+        legalStatus: record.legal_status,
+        gender: record.simulation_group,
+        admissionCount: Number(record.admission_count),
+        releaseCount: Number(record.release_count),
+        totalPopulation: Number(record.total_population),
+        admissionPercentChange: Number(record.admission_percent_change),
+        releasePercentChange: Number(record.release_percent_change),
+        populationPercentChange: Number(record.population_percent_change),
+      };
+    }
     return {
       simulationTag: record.simulation_tag,
       timePeriod: Number(record.metric_period_months),
@@ -49,28 +61,4 @@ export function populationProjectionSummary(
       totalPopulationCountMax: Number(record.total_population_count_max),
     };
   });
-}
-
-export default class PopulationProjectionSummaryMetric extends Metric<PopulationProjectionSummaryRecord> {
-  constructor(props: MetricProps<PopulationProjectionSummaryRecord>) {
-    super(props);
-    makeObservable(this, {
-      historicalRecords: computed,
-      projectedRecords: computed,
-    });
-  }
-
-  get historicalRecords(): PopulationProjectionSummaryRecord[] | undefined {
-    let records = this.getOrFetchRecords();
-    if (!records) return undefined;
-    records = records.filter(recordMatchesSimulationTag("HISTORICAL"));
-    return records;
-  }
-
-  get projectedRecords(): PopulationProjectionSummaryRecord[] | undefined {
-    let records = this.getOrFetchRecords();
-    if (!records) return undefined;
-    records = records.filter(recordMatchesSimulationTag("POLICY_A"));
-    return records;
-  }
 }

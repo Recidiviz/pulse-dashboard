@@ -18,6 +18,12 @@
  * All data comes back from the server as string values;
  * it will be up to us to cast those strings to other types as needed
  */
+export type ApiData = {
+  data: RawMetricData;
+  metadata: Record<string, string>;
+};
+
+export type RawApiData = Record<string, ApiData>;
 export type RawMetricData = Record<string, string>[];
 
 export const TenantIdList = ["US_ND"] as const;

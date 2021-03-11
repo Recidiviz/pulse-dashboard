@@ -44,7 +44,7 @@ function useChartData(url) {
   const eagerExpand = true;
   const { userStore } = useRootStore();
   const { isLoading: userLoading, user, getTokenSilently } = userStore;
-  const [apiData, setApiData] = useState([]);
+  const [apiData, setApiData] = useState({});
   const [awaitingApi, setAwaitingApi] = useState(true);
   const [isError, setIsError] = useState(false);
 

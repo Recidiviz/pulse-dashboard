@@ -19,7 +19,16 @@ import styled from "styled-components/macro";
 import { H4 } from "@recidiviz/case-triage-components";
 import PageTemplate from "../PageTemplate";
 import MetricsCard from "../MetricsCard";
-import type { PopulationProjectionSummaryRecord } from "../store/types";
+import useChartData from "../hooks/useChartData";
+
+import type {
+  PopulationProjectionSummaryRecord,
+  RawApiData,
+} from "../models/types";
+import {
+  recordMatchesSimulationTag,
+  populationProjectionSummary,
+} from "../models/PopulationProjectionSummaryMetric";
 
 const MetricSection = styled.div`
   display: flex;
@@ -33,41 +42,46 @@ const MetricHeading = styled(H4)`
   padding: 25px 40px;
 `;
 
+type ChartDataType = {
+  isLoading: boolean;
+  isError: boolean;
+  apiData: RawApiData;
+};
+
 const PageProjections: React.FC = () => {
-  const data: { [name: string]: PopulationProjectionSummaryRecord } = {
-    pastPopulationMetric: {
-      admissionCount: 400,
-      releaseCount: 700,
-      totalPopulation: 13000,
-      admissionPercentChange: -5.5,
-      releasePercentChange: 7,
-      populationPercentChange: -12,
-    },
-    projectedPopulationMetric: {
-      admissionCount: 200,
-      releaseCount: 900,
-      totalPopulation: 12300,
-      admissionPercentChange: 3.8,
-      releasePercentChange: 8,
-      populationPercentChange: -3.1,
-      admissionCountMin: 150,
-      admissionCountMax: 250,
-      releaseCountMin: 800,
-      releaseCountMax: 1000,
-      totalPopulationCountMin: 12890,
-      totalPopulationCountMax: 13110,
-    },
-  };
+  const { isLoading, isError, apiData }: ChartDataType = useChartData(
+    "us_id/projections"
+  ) as ChartDataType;
+
+  if (isLoading || isError) {
+    // TODO: Loading state
+    return null;
+  }
+
+  // Transform the records
+  const projectionSummaries: PopulationProjectionSummaryRecord[] = populationProjectionSummary(
+    apiData.population_projection_summaries.data
+  );
+
+  // Filter into historical and projected records
+  const historicalPopulationSummaries = projectionSummaries.filter(
+    recordMatchesSimulationTag("HISTORICAL")
+  );
+
+  const projectedPopulationSummaries = projectionSummaries.filter(
+    recordMatchesSimulationTag("POLICY_A")
+  );
+
   return (
     <PageTemplate>
       <MetricSection>
         <MetricsCard
           title={<MetricHeading>Past 6 months</MetricHeading>}
-          data={data.pastPopulationMetric}
+          data={historicalPopulationSummaries[0]}
         />
         <MetricsCard
           title={<MetricHeading>Next 6 months</MetricHeading>}
-          data={data.projectedPopulationMetric}
+          data={projectedPopulationSummaries[0]}
         />
       </MetricSection>
     </PageTemplate>
