@@ -3,7 +3,6 @@
 
 
 .CoreNavigation {
-  //@include clearfix;
   background: $core-background;
   height: 5rem;
   width: 100%;
@@ -121,7 +120,6 @@
     margin-bottom: 0;
     padding-left: 0;
     position: relative;
-    margin-right: 15px;
     display: flex;
     height: 100%;
 
@@ -147,13 +145,11 @@
           color: $default-dark;
           text-decoration: none;
         }
-
-        //@include to($breakpoint-md) {
-        //  padding: 0 15px;
-        //}
       }
     }
     .dropdown {
+      margin-left: 2rem;
+      margin-right: 2.375rem;
       .dropdown-toggle {
         ul {
           margin-left: 0;

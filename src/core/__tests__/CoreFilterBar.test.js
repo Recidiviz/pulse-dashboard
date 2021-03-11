@@ -17,7 +17,7 @@
 
 import React from "react";
 import { mount } from "enzyme";
-import FilterBar from "../FilterBar";
+import CoreFilterBar from "../CoreFilterBar";
 
 describe("test for component FiltersBar", () => {
   const props = {
@@ -25,7 +25,7 @@ describe("test for component FiltersBar", () => {
   };
 
   const renderFilterBar = (props) => {
-    return mount(<FilterBar {...props} />);
+    return mount(<CoreFilterBar {...props} />);
   };
 
   it("display metric type toggle", () => {

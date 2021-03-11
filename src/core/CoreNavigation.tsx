@@ -55,7 +55,7 @@ const CoreNavigation = () => {
           currentPage={currentPage ?? ""}
           pageOptions={pageOptions}
         />
-        <TopBarUserMenuForAuthenticatedUser />
+        <TopBarUserMenuForAuthenticatedUser hideUsername />
       </div>
     </nav>
   );

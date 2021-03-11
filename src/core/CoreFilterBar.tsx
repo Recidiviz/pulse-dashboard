@@ -33,7 +33,7 @@ import {
 } from "./utils/filterOptions";
 import { getDistrictOptions } from "./utils/filterHelpers";
 
-import "./FilterBar.scss";
+import "./CoreFilterBar.scss";
 import TogglePill from "./controls/TogglePill";
 
 const FILTER_BAR_STYLE = {
@@ -61,7 +61,7 @@ const Filter: React.FC<FilterProps> = ({ children, title, width }) => {
   );
 };
 
-type FilterBarProps = {
+type CoreFilterBarProps = {
   metricType?: string;
   metricPeriodMonths?: string;
   district?: string[];
@@ -80,7 +80,7 @@ type FilterBarProps = {
   stateCode?: string;
 };
 
-const FilterBar: React.FC<FilterBarProps> = ({
+const CoreFilterBar: React.FC<CoreFilterBarProps> = ({
   metricType = null,
   setChartMetricType = null,
   setChartSupervisionType = null,
@@ -180,4 +180,4 @@ const FilterBar: React.FC<FilterBarProps> = ({
   );
 };
 
-export default FilterBar;
+export default CoreFilterBar;

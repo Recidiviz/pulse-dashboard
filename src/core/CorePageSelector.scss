@@ -7,6 +7,10 @@
   padding: 0;
   height: 100%;
 
+  & > li {
+    margin-left: 1rem;
+  }
+
   &--Option {
     width: 6.33rem;
     height: 100%;
@@ -25,7 +29,10 @@
 
     &-Selected {
       border-top: 0.25rem solid $action-topbar;
-      color: $label-topbar;
+
+      &:focus {
+        color: $label-topbar;
+      }
     }
   }
 }
