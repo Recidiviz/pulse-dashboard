@@ -45,8 +45,6 @@ import { LANTERN_TENANTS } from "./RootStore/TenantStore/lanternTenants";
 import { CORE_TENANTS } from "./RootStore/TenantStore/coreTenants";
 import AuthWall from "./AuthWall";
 import ErrorBoundary from "./components/ErrorBoundary";
-import { CoreLoading } from "./components/CoreLoadingIndicator";
-import PageTemplate from "./core/PageTemplate";
 
 import "./assets/scripts/index";
 import "./assets/styles/index.scss";
