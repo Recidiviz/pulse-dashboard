@@ -34,7 +34,6 @@
       margin: $header-height/4;
     }
 
-    .nav-left,
     .nav-right {
       list-style: none;
       margin-bottom: 0;
@@ -116,17 +115,6 @@
     .show {
       .dropdown-menu {
         transform: scale(1, 1);
-      }
-    }
-
-    .nav-left {
-      margin-left: 15px;
-      display: flex;
-      .select {
-        &-wrapper {
-          width: 141px;
-          padding: 0 5px;
-        }
       }
     }
 
