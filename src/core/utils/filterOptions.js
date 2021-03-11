@@ -35,8 +35,8 @@ export const defaultMetricPeriod = defaultMetricPeriodOption.value;
 
 export const supervisionTypeOptions = [
   { label: "All", value: "all" },
-  { label: "Individuals on probation", value: "probation" },
-  { label: "Individuals on parole", value: "parole" },
+  { label: "Probation", value: "probation" },
+  { label: "Parole", value: "parole" },
 ];
 export const defaultSupervisionTypeOption = supervisionTypeOptions[0];
 export const defaultSupervisionType = defaultSupervisionTypeOption.value;

@@ -17,7 +17,7 @@
 
 import React from "react";
 import { useLocation } from "react-router-dom";
-import TopBarDropdown from "../components/TopBar/TopBarDropdown";
+import CoreSectionSelector from "./CoreSectionSelector";
 import CorePageSelector from "./CorePageSelector";
 import TopBarUserMenuForAuthenticatedUser from "../components/TopBar/TopBarUserMenuForAuthenticatedUser";
 
@@ -38,7 +38,7 @@ const CoreNavigation = () => {
   return (
     <div className="CoreNavigation">
       <ul className="nav-left">
-        <TopBarDropdown />
+        <CoreSectionSelector />
       </ul>
       <ul className="nav-right">
         <CorePageSelector

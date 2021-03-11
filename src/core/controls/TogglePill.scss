@@ -30,6 +30,7 @@ $ALL_PILL_WIDTH: 160px;
     width: $ALL_PILL_WIDTH / 2;
     height: 2.33rem;
     border: 1px solid #d2d8d8;
+    background: transparent;
 
     &:focus {
       outline: none;

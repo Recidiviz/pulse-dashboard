@@ -30,7 +30,7 @@ import ReincarcerationCountOverTime from "./ReincarcerationCountOverTime";
 import ReincarcerationRateByStayLength from "./ReincarcerationRateByStayLength";
 import AdmissionCountsByType from "../AdmissionCountsByType";
 import DaysAtLibertySnapshot from "./DaysAtLibertySnapshot";
-import FiltersBar from "../FiltersBar";
+import FilterBar from "../FilterBar";
 import {
   defaultDistrict,
   defaultMetricPeriod,
@@ -55,7 +55,7 @@ const FacilitiesExplore = () => {
   }
 
   const filters = (
-    <FiltersBar
+    <FilterBar
       setChartMetricType={setMetricType}
       setChartMetricPeriodMonths={setMetricPeriodMonths}
       setChartDistrict={setDistrict}

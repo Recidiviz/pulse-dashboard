@@ -1,0 +1,30 @@
+@import "../assets/styles/spec/settings/index";
+
+.FilterBar {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  background: $core-background;
+  padding-left: 13.5rem;
+
+  &__filters {
+    display: flex;
+    font-weight: 500;
+
+    .Filter {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-right: 1.5rem;
+
+      &__title {
+        white-space: nowrap;
+        color: #72777a;
+        font-size: 0.8rem;
+        line-height: 1rem;
+        letter-spacing: 0.01em;
+        padding-right: 0.5rem;
+
+      }
+    }
+  }
+}

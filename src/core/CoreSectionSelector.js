@@ -32,7 +32,7 @@ const menu = [
   { label: "Methodology", link: "/methodology" },
 ];
 
-const TopBarDropdown = () => {
+const CoreSectionSelector = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const toggle = () => setDropdownOpen((prevState) => !prevState);
 
@@ -64,4 +64,4 @@ const TopBarDropdown = () => {
   );
 };
 
-export default React.memo(TopBarDropdown);
+export default React.memo(CoreSectionSelector);
