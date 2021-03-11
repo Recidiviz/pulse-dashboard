@@ -23,10 +23,12 @@ import { getUserStateName } from "../../RootStore/utils/user";
 import { useUserStore } from "../StoreProvider";
 
 type PropTypes = {
-  showUsername?: boolean;
+  hideUsername?: boolean;
 };
 
-const TopBarUserMenuForAuthenticatedUser = ({ hideUsername: hideUsername = false }) => {
+const TopBarUserMenuForAuthenticatedUser: React.FC<PropTypes> = ({
+  hideUsername = false,
+}) => {
   const { user, logout } = useUserStore();
 
   const onLogout = useCallback(

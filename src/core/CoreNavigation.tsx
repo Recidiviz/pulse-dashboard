@@ -28,15 +28,14 @@ const navigationLayout = {
   community: ["goals", "explore"],
   facilities: ["goals", "explore"],
   programming: ["explore"],
-  methodology: ["vitals", "projections", "explore"],
 };
 
-const CoreNavigation = () => {
+const CoreNavigation: React.FC = () => {
   const { pathname } = useLocation();
   const [currentSection, currentPage] = pathname.split("/").slice(1, 3);
-  const pageOptions =
-    // @ts-ignore
-    navigationLayout[currentSection] ?? navigationLayout.facilities;
+  // @ts-ignore
+  const pageOptions = navigationLayout[currentSection] ?? [];
+
   return (
     <nav className="CoreNavigation">
       <div className="CoreNavigation__left">
