@@ -48,7 +48,6 @@
 
   @include between($breakpoint-md, $breakpoint-xl) {
     left: 0;
-    // padding-left: $collapsed-size;
   }
 
   @include to($breakpoint-md) {
