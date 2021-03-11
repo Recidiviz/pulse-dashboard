@@ -24,8 +24,8 @@ import TopBarUserMenuForAuthenticatedUser from "../components/TopBar/TopBarUserM
 import "./CoreNavigation.scss";
 
 const navigationLayout = {
-  communiity: ["goals", "explore"],
-  facilities: ["goals", "explore"],
+  communiity: ["goals", "explore", "projections"],
+  facilities: ["goals", "explore", "projections"],
   programming: ["explore"],
 };
 
