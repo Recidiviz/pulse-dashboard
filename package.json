@@ -32,7 +32,7 @@
     "@fortawesome/free-solid-svg-icons": "^5.8.1",
     "@fortawesome/react-fontawesome": "^0.1.4",
     "@google-cloud/storage": "^3.0.3",
-    "@recidiviz/case-triage-components": "Recidiviz/case-triage#d256713618cf9d25e6782ba63f17d04fb774d83c",
+    "@recidiviz/case-triage-components": "^0.2.3",
     "@sentry/node": "^6.2.0",
     "@sentry/react": "^6.1.0",
     "@types/react": "^17.0.0",

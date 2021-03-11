@@ -67,24 +67,27 @@ const App = () => (
         <Router>
           <Switch>
             <Route path="/verify" component={VerificationNeeded} />
-              <AuthWall>
-                <LanternLayout tenantIds={LANTERN_TENANTS}>
-                  <Switch>
-                    <Route path="/community/revocations" component={Revocations} />
-                    <Route path="/profile" component={Profile} />
-                    <Redirect exact from="/" to="/community/revocations" />
-                    <Redirect from="/revocations" to="/community/revocations" />
-                    <NotFound />
-                  </Switch>
-                </LanternLayout>
+            <AuthWall>
+              <LanternLayout tenantIds={LANTERN_TENANTS}>
+                <Switch>
+                  <Route
+                    path="/community/revocations"
+                    component={Revocations}
+                  />
+                  <Route path="/profile" component={Profile} />
+                  <Redirect exact from="/" to="/community/revocations" />
+                  <Redirect from="/revocations" to="/community/revocations" />
+                  <NotFound />
+                </Switch>
+              </LanternLayout>
 
                 <CoreLayout tenantIds={CORE_TENANTS}>
                   <Switch>
-                    <Route path="/projections" component={PageProjections} />
                     <Route path="/community/goals" component={UsNdCommunityGoals} />
                     <Route path="/community/explore" component={UsNdCommunityExplore} />
                     <Route path="/facilities/goals" component={UsNdFacilitiesGoals} />
                     <Route path="/facilities/explore" component={UsNdFacilitiesExplore} />
+                    <Route path="/facilities/projections" component={PageProjections} />
                     <Route path="/programming/explore" component={UsNdProgrammingExplore} />
                     <Route path="/methodology" component={Methodology} />
                     <Route path="/profile" component={Profile} />
