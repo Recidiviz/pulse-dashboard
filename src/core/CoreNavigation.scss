@@ -43,7 +43,7 @@
       &:hover,
       &:focus {
         background-color: $core-dropdown-color;
-        box-shadow: inset 0px -0.1rem 0.1rem rgba(19, 44, 82, 0.3);
+        box-shadow: inset 0px -1px 1px rgba(19, 44, 82, 0.3);
         border-radius: 1.66rem;
         outline: 0;
       }
@@ -80,7 +80,7 @@
       .show {
         padding: 0.62rem 0;
         border-radius: 0 0 1.66rem 1.66rem;
-        box-shadow: inset 0px -0.06rem 0.06rem rgba(19, 44, 82, 0.3);
+        box-shadow: inset 0px -1px 1px rgba(19, 44, 82, 0.3);
       }
       &-toggle {
         min-width: 11.81rem;
@@ -116,10 +116,14 @@
   }
 
   &__right {
+    align-items: center;
     list-style: none;
     margin-bottom: 0;
     padding-left: 0;
     position: relative;
+    margin-right: 15px;
+    display: flex;
+    height: 100%;
 
     > li {
       float: left;
@@ -147,6 +151,29 @@
         //@include to($breakpoint-md) {
         //  padding: 0 15px;
         //}
+      }
+    }
+    .dropdown {
+      .dropdown-toggle {
+        ul {
+          margin-left: 0;
+          padding-left: 0;
+        }
+      }
+    }
+
+    .dropdown-menu {
+      left: auto;
+      right: 0;
+
+      > li {
+        width: 100%;
+
+        > a {
+          line-height: 1.5;
+          min-height: auto;
+          padding: 10px 15px;
+        }
       }
     }
   }

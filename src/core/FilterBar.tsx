@@ -38,7 +38,7 @@ import TogglePill from "./controls/TogglePill";
 
 const FILTER_BAR_STYLE = {
   zIndex: 700,
-  top: 80,
+  top: 79,
 };
 
 type FilterOption = {
