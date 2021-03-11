@@ -1,0 +1,18 @@
+@import "../assets/styles/spec/settings/index";
+@import "../assets/styles/spec/tools/index";
+
+.CoreLayout {
+  &__header {
+    //@include clearfix;
+    border-bottom: 1px solid $core-border-color;
+    display: flex;
+    //margin-bottom: 0;
+    //padding: 0;
+    position: fixed;
+    //transition: all 0.2s ease, transform 0.6s;
+    width: 100%;
+    z-index: 800;
+    height: 5rem;
+
+  }
+}

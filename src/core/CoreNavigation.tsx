@@ -1,5 +1,5 @@
 // Recidiviz - a data platform for criminal justice reform
-// Copyright (C) 2020 Recidiviz, Inc.
+// Copyright (C) 2021 Recidiviz, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -21,6 +21,7 @@ import CoreSectionSelector from "./CoreSectionSelector";
 import CorePageSelector from "./CorePageSelector";
 import TopBarUserMenuForAuthenticatedUser from "../components/TopBar/TopBarUserMenuForAuthenticatedUser";
 
+import recidivizLogo from "../assets/static/images/Logo.svg";
 import "./CoreNavigation.scss";
 
 const navigationLayout = {
@@ -34,21 +35,29 @@ const CoreNavigation = () => {
   const { pathname } = useLocation();
   const [currentSection, currentPage] = pathname.split("/").slice(1, 3);
   const pageOptions =
+    // @ts-ignore
     navigationLayout[currentSection] ?? navigationLayout.facilities;
   return (
-    <div className="CoreNavigation">
-      <ul className="nav-left">
+    <nav className="CoreNavigation">
+      <div className="CoreNavigation__left">
+        <div className="CoreNavigation__logo">
+          <img
+            className="CoreNavigation__logo-image"
+            src={recidivizLogo}
+            alt="Logo"
+          />
+        </div>
         <CoreSectionSelector />
-      </ul>
-      <ul className="nav-right">
+      </div>
+      <div className="CoreNavigation__right">
         <CorePageSelector
           currentSection={currentSection}
-          currentPage={currentPage}
+          currentPage={currentPage ?? ""}
           pageOptions={pageOptions}
         />
         <TopBarUserMenuForAuthenticatedUser />
-      </ul>
-    </div>
+      </div>
+    </nav>
   );
 };
 

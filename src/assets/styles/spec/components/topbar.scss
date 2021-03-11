@@ -8,8 +8,8 @@
 // @Topbar
 // ---------------------------------------------------------
 
-@import "../../assets/styles/spec/settings/index";
-@import "../../assets/styles/spec/tools/index";
+@import "../settings/index";
+@import "../tools/index";
 
 .header {
   background-color: $default-white;

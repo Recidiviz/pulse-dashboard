@@ -18,17 +18,18 @@
 import React from "react";
 
 import PropTypes from "prop-types";
-import TopBar from "../components/TopBar/TopBar";
 import Footer from "../components/Footer";
 import CoreNavigation from "./CoreNavigation";
+
+import "./CoreLayout.scss";
 
 const CoreLayout = ({ children }) => {
   return (
     <div id="app">
       <div className="page-container">
-        <TopBar>
+        <div className="CoreLayout__header">
           <CoreNavigation />
-        </TopBar>
+        </div>
         {children}
       </div>
       <Footer />
