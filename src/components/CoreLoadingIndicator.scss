@@ -5,17 +5,18 @@
   align-items: center;
   margin: auto;
 
+  // TODO: Use the font styles from the component library
   &__title {
     padding-top: 15px;
     text-align: center;
     font-weight: 500;
-    font-size: 16px;
-    line-height: 24px;
+    font-size: 1rem;
+    line-height: 1.5rem;
     letter-spacing: -0.01em;
   }
 }
 
-$RING-SIZE: 48px;
+$RING-SIZE: 4em;
 
 .loading-ring {
   display: flex;
