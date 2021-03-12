@@ -65,7 +65,7 @@ describe("Server tests", () => {
     });
     it("should respond with a 200 for a valid stateCode", function () {
       return request(app)
-        .get("/api/US_DEMO/facilities/goals")
+        .get("/api/US_ND/facilities/goals")
         .then((response) => {
           expect(response.statusCode).toEqual(200);
         });
@@ -84,7 +84,7 @@ describe("Server tests", () => {
 
     it("should respond with a 200 for a valid stateCode", function () {
       return request(app)
-        .get("/api/US_DEMO/newRevocations/revocations_matrix_by_month")
+        .get("/api/US_MO/newRevocations/revocations_matrix_by_month")
         .then((response) => {
           expect(response.statusCode).toEqual(200);
           expect(response.body).toHaveProperty("revocations_matrix_by_month");
@@ -131,7 +131,7 @@ describe("Server tests", () => {
       };
       return request(app)
         .get(
-          "/api/US_DEMO/newRevocations/revocations_matrix_by_month?metricPeriodMonths=42"
+          "/api/US_MO/newRevocations/revocations_matrix_by_month?metricPeriodMonths=42"
         )
         .then((response) => {
           expect(response.statusCode).toEqual(400);
@@ -153,7 +153,7 @@ describe("Server tests", () => {
       };
       return request(app)
         .get(
-          "/api/US_DEMO/newRevocations/revocations_matrix_by_month?admissionType[0]=DOGWOOD"
+          "/api/US_MO/newRevocations/revocations_matrix_by_month?admissionType[0]=DOGWOOD"
         )
         .then((response) => {
           expect(response.statusCode).toEqual(400);
@@ -174,7 +174,7 @@ describe("Server tests", () => {
 
     it("should respond with a 200 for a valid stateCode", function () {
       return request(app)
-        .post("/api/US_DEMO/restrictedAccess/")
+        .post("/api/US_MO/restrictedAccess/")
         .send({
           userEmail: "thirteen@state.gov",
         })
@@ -196,7 +196,7 @@ describe("Server tests", () => {
         status: 400,
       };
       return request(app)
-        .post("/api/US_DEMO/restrictedAccess/")
+        .post("/api/US_MO/restrictedAccess/")
         .send()
         .then((response) => {
           expect(response.statusCode).toEqual(400);
@@ -252,7 +252,7 @@ describe("Server tests", () => {
 
     it("responds with a formatted error resposne", () => {
       return request(app)
-        .post("/api/US_DEMO/restrictedAccess/")
+        .post("/api/US_MO/restrictedAccess/")
         .send()
         .then((response) => {
           expect(response.statusCode).toEqual(500);
