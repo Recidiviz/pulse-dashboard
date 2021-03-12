@@ -16,7 +16,7 @@
 // =============================================================================
 
 import React from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, Link } from "react-router-dom";
 import CoreSectionSelector from "./CoreSectionSelector";
 import CorePageSelector from "./CorePageSelector";
 import TopBarUserMenuForAuthenticatedUser from "../components/TopBar/TopBarUserMenuForAuthenticatedUser";
@@ -40,11 +40,13 @@ const CoreNavigation: React.FC = () => {
     <nav className="CoreNavigation">
       <div className="CoreNavigation__left">
         <div className="CoreNavigation__logo">
-          <img
-            className="CoreNavigation__logo-image"
-            src={recidivizLogo}
-            alt="Logo"
-          />
+          <Link to="/community/goals">
+            <img
+              className="CoreNavigation__logo-image"
+              src={recidivizLogo}
+              alt="Logo"
+            />
+          </Link>
         </div>
         <CoreSectionSelector />
       </div>
