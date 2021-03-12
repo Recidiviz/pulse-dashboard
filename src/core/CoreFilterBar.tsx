@@ -121,8 +121,8 @@ const CoreFilterBar: React.FC<CoreFilterBarProps> = ({
 
   return (
     <Sticky style={FILTER_BAR_STYLE}>
-      <div className="FilterBar">
-        <div className="FilterBar__filters">
+      <div className="CoreFilterBar">
+        <div className="CoreFilterBar__filters">
           {setChartMetricType && metricType && (
             <Filter>
               <TogglePill
@@ -159,19 +159,17 @@ const CoreFilterBar: React.FC<CoreFilterBarProps> = ({
 
           {setChartDistrict && district && (
             <Filter title={isCounty ? "County of Residence" : "Office"}>
-              <div className="filters__select">
-                <CoreMultiSelect
-                  value={districtOptions.filter((option: FilterOption) =>
-                    district.includes(String(option.value))
-                  )}
-                  options={districtOptions}
-                  onChange={(options: FilterOption[]) => {
-                    setChartDistrict(options.map((o) => String(o.value)));
-                  }}
-                  summingOption={defaultDistrictOption}
-                  defaultValue={[defaultDistrictOption]}
-                />
-              </div>
+              <CoreMultiSelect
+                value={districtOptions.filter((option: FilterOption) =>
+                  district.includes(String(option.value))
+                )}
+                options={districtOptions}
+                onChange={(options: FilterOption[]) => {
+                  setChartDistrict(options.map((o) => String(o.value)));
+                }}
+                summingOption={defaultDistrictOption}
+                defaultValue={[defaultDistrictOption]}
+              />
             </Filter>
           )}
         </div>

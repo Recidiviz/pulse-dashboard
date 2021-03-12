@@ -4,4 +4,14 @@
   background: $core-background;
   padding-left: 13.5rem;
   padding-right: 13.5rem;
+
+  @media screen and (max-width: 1440px) {
+    padding-left: 4rem;
+    padding-right: 4rem;
+  }
+
+  @media screen and (max-width: 1366px) {
+    padding-left: 3rem;
+    padding-right: 3rem;
+  }
 }
