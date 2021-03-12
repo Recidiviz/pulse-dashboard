@@ -23,13 +23,6 @@ const MetricsCardComponent = styled(Card)`
   margin: 1rem;
 `;
 
-const MetricsContainer = styled.div`
-  display: flex;
-  flex-flow: row nowrap;
-  justify-content: start;
-  height: 168px;
-`;
-
 const MetricSubHeading = styled.div`
   font-size: 0.9rem;
   line-height: 1.5;
@@ -62,7 +55,7 @@ const MetricsCard: React.FC<MetricsCardProps> = ({
           {subheading && <MetricSubHeading>{subheading}</MetricSubHeading>}
         </HeadingContainer>
       </CardSection>
-      <MetricsContainer>{children}</MetricsContainer>
+      {children}
     </MetricsCardComponent>
   );
 };
