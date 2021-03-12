@@ -16,9 +16,7 @@
 // =============================================================================
 import React from "react";
 import styled from "styled-components/macro";
-import { Card, CardSection } from "@recidiviz/case-triage-components";
-import Metric from "./Metric";
-import type { PopulationProjectionSummaryRecord } from "../models/types";
+import { Card, CardSection, H4 } from "@recidiviz/case-triage-components";
 
 const MetricsCardComponent = styled(Card)`
   width: 100%;
@@ -32,56 +30,39 @@ const MetricsContainer = styled.div`
   height: 168px;
 `;
 
+const MetricSubHeading = styled.div`
+  font-size: 0.9rem;
+  line-height: 1.5;
+`;
+
+const HeadingContainer = styled.div`
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  padding: 25px 40px;
+  height: 64px;
+`;
+
 interface MetricsCardProps {
-  title: React.ReactElement;
-  data: PopulationProjectionSummaryRecord;
+  heading: string;
+  subheading?: string;
+  children: React.ReactNode;
 }
 
-const MetricsCard: React.FC<MetricsCardProps> = ({ title, data }) => {
+const MetricsCard: React.FC<MetricsCardProps> = ({
+  heading,
+  subheading,
+  children,
+}) => {
   return (
     <MetricsCardComponent stacked>
-      <CardSection>{title}</CardSection>
-      <MetricsContainer>
-        <Metric
-          title="New arrivals"
-          value={data.admissionCount}
-          percentChange={data.admissionPercentChange}
-          deltaDirection={
-            data.admissionPercentChange > 0 ? "worsened" : "improved"
-          }
-          projectedMinMax={
-            data.admissionCountMin && data.admissionCountMax
-              ? [data.admissionCountMin, data.admissionCountMax]
-              : null
-          }
-        />
-        <Metric
-          title="Releases"
-          value={data.releaseCount}
-          percentChange={data.releasePercentChange}
-          deltaDirection={
-            data.releasePercentChange > 0 ? "improved" : "worsened"
-          }
-          projectedMinMax={
-            data.releaseCountMin && data.releaseCountMax
-              ? [data.releaseCountMin, data.releaseCountMax]
-              : null
-          }
-        />
-        <Metric
-          title="Total population"
-          value={data.totalPopulation}
-          percentChange={data.populationPercentChange}
-          deltaDirection={
-            data.populationPercentChange > 0 ? "worsened" : "improved"
-          }
-          projectedMinMax={
-            data.totalPopulationCountMin && data.totalPopulationCountMax
-              ? [data.totalPopulationCountMin, data.totalPopulationCountMax]
-              : null
-          }
-        />
-      </MetricsContainer>
+      <CardSection>
+        <HeadingContainer>
+          <H4>{heading}</H4>
+          {subheading && <MetricSubHeading>{subheading}</MetricSubHeading>}
+        </HeadingContainer>
+      </CardSection>
+      <MetricsContainer>{children}</MetricsContainer>
     </MetricsCardComponent>
   );
 };

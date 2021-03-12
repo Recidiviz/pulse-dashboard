@@ -14,17 +14,17 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-import { PopulationProjectionSummaryRecord, RawMetricData } from "./types";
+import { PopulationProjectionSummaryRecords, RawMetricData } from "./types";
 
 export function recordMatchesSimulationTag(
   simulationTag: string
-): (record: PopulationProjectionSummaryRecord) => boolean {
+): (record: PopulationProjectionSummaryRecords[number]) => boolean {
   return (record) => record.simulationTag === simulationTag;
 }
 
 export function populationProjectionSummary(
   rawRecords: RawMetricData
-): PopulationProjectionSummaryRecord[] {
+): PopulationProjectionSummaryRecords {
   return rawRecords.map((record) => {
     if (record.simulation_tag === "HISTORICAL") {
       return {

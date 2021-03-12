@@ -17,6 +17,7 @@
 import React from "react";
 import styled from "styled-components/macro";
 import { Icon, IconSVG } from "@recidiviz/case-triage-components";
+import { formatLargeNumber } from "../../utils/labels";
 
 const MetricContainer = styled.div`
   display: flex;
@@ -36,6 +37,7 @@ const MetricTitle = styled.div`
   line-height: 16px;
   font-weight: 500;
   color: rgba(53, 83, 98, 0.85);
+  white-space: nowrap;
 `;
 const MetricValue = styled.div`
   font-family: "Libre Baskerville";
@@ -60,9 +62,10 @@ const MetricMinMax = styled.div`
   line-height: 16px;
   font-weight: 400;
   color: rgba(53, 83, 98, 0.85);
+  white-space: nowrap;
 `;
 
-interface MetricProps {
+interface SummaryMetricProps {
   title: string;
   value: number;
   percentChange: number;
@@ -78,8 +81,12 @@ const deltaColorMap: { [key in deltaDirections]: string } = {
   worsened: "#A43939",
 };
 
+function formatPercent(percentage: number): string {
+  return `${percentage}%`;
+}
+
 // TODO case-triage#69 Add a rotation prop for caret icon
-const Metric: React.FC<MetricProps> = ({
+const SummaryMetric: React.FC<SummaryMetricProps> = ({
   title,
   value,
   percentChange,
@@ -90,7 +97,7 @@ const Metric: React.FC<MetricProps> = ({
     <MetricContainer>
       <MetricTitle>{title}</MetricTitle>
       <MetricValue>
-        <Value>{value}</Value>
+        <Value>{formatLargeNumber(value)}</Value>
       </MetricValue>
       <MetricDelta color={deltaColorMap[deltaDirection]}>
         <Icon
@@ -99,14 +106,14 @@ const Metric: React.FC<MetricProps> = ({
           height={10}
           fill={deltaColorMap[deltaDirection]}
         />
-        <Value>{percentChange}</Value>
+        <Value>{formatPercent(percentChange)}</Value>
       </MetricDelta>
       {projectedMinMax && (
         <MetricMinMax>
-          <Value>({projectedMinMax.join(", ")})</Value>
+          <Value>({projectedMinMax.map(formatLargeNumber).join(", ")})</Value>
         </MetricMinMax>
       )}
     </MetricContainer>
   );
 };
-export default Metric;
+export default SummaryMetric;

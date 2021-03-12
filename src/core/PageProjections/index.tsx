@@ -15,75 +15,13 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 import React from "react";
-import styled from "styled-components/macro";
-import { H4 } from "@recidiviz/case-triage-components";
 import PageTemplate from "../PageTemplate";
-import MetricsCard from "../MetricsCard";
-import useChartData from "../hooks/useChartData";
-
-import type {
-  PopulationProjectionSummaryRecord,
-  RawApiData,
-} from "../models/types";
-import {
-  recordMatchesSimulationTag,
-  populationProjectionSummary,
-} from "../models/PopulationProjectionSummaryMetric";
-
-const MetricSection = styled.div`
-  display: flex;
-  flex-flow: row nowrap;
-  width: 100%;
-  justify-content: space-between;
-`;
-
-const MetricHeading = styled(H4)`
-  height: 64px;
-  padding: 25px 40px;
-`;
-
-type ChartDataType = {
-  isLoading: boolean;
-  isError: boolean;
-  apiData: RawApiData;
-};
+import PopulationSummaryMetrics from "../PopulationSummaryMetrics";
 
 const PageProjections: React.FC = () => {
-  const { isLoading, isError, apiData }: ChartDataType = useChartData(
-    "us_id/projections"
-  ) as ChartDataType;
-
-  if (isLoading || isError) {
-    // TODO: Loading state
-    return null;
-  }
-
-  // Transform the records
-  const projectionSummaries: PopulationProjectionSummaryRecord[] = populationProjectionSummary(
-    apiData.population_projection_summaries.data
-  );
-
-  // Filter into historical and projected records
-  const historicalPopulationSummaries = projectionSummaries.filter(
-    recordMatchesSimulationTag("HISTORICAL")
-  );
-
-  const projectedPopulationSummaries = projectionSummaries.filter(
-    recordMatchesSimulationTag("POLICY_A")
-  );
-
   return (
     <PageTemplate>
-      <MetricSection>
-        <MetricsCard
-          title={<MetricHeading>Past 6 months</MetricHeading>}
-          data={historicalPopulationSummaries[0]}
-        />
-        <MetricsCard
-          title={<MetricHeading>Next 6 months</MetricHeading>}
-          data={projectedPopulationSummaries[0]}
-        />
-      </MetricSection>
+      <PopulationSummaryMetrics />
     </PageTemplate>
   );
 };

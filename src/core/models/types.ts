@@ -30,13 +30,21 @@ export const TenantIdList = ["US_ND"] as const;
 
 export type TenantId = typeof TenantIdList[number];
 
-export type MetricTypeId = typeof MetricTypeIdList[number];
+export type PopulationProjectionSummaryRecords = (
+  | HistoricalSummaryRecord
+  | ProjectedSummaryRecord
+)[];
 
-export const MetricTypeIdList = ["PopulationProjectionSummaryMetric"] as const;
+export type ProjectedSummaryRecord = HistoricalSummaryRecord & {
+  admissionCountMin: number;
+  admissionCountMax: number;
+  releaseCountMin: number;
+  releaseCountMax: number;
+  totalPopulationCountMin: number;
+  totalPopulationCountMax: number;
+};
 
-export type MetricRecord = PopulationProjectionSummaryRecord;
-
-export type PopulationProjectionSummaryRecord = {
+export type HistoricalSummaryRecord = {
   timePeriod?: number;
   compartment?: string;
   legalStatus?: string;
@@ -48,10 +56,4 @@ export type PopulationProjectionSummaryRecord = {
   admissionPercentChange: number;
   releasePercentChange: number;
   populationPercentChange: number;
-  admissionCountMin?: number;
-  admissionCountMax?: number;
-  releaseCountMin?: number;
-  releaseCountMax?: number;
-  totalPopulationCountMin?: number;
-  totalPopulationCountMax?: number;
 };
