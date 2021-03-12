@@ -28,6 +28,7 @@ import { PageProvider } from "./contexts/PageContext";
 import StoreProvider from "./components/StoreProvider";
 import NotFound from "./components/NotFound";
 import Profile from "./components/Profile";
+import Methodology from "./core/methodology/Methodology";
 import VerificationNeeded from "./components/VerificationNeeded";
 import LanternLayout from "./lantern/LanternLayout";
 import CoreLayout from "./core/CoreLayout";
@@ -83,6 +84,7 @@ const App = () => (
                     <Route path="/facilities/goals" component={UsNdFacilitiesGoals} />
                     <Route path="/facilities/explore" component={UsNdFacilitiesExplore} />
                     <Route path="/programming/explore" component={UsNdProgrammingExplore} />
+                    <Route path="/methodology" component={Methodology} />
                     <Route path="/profile" component={Profile} />
                     <Redirect exact from="/" to="/community/goals" />
                     <Redirect from="/snapshots" to="/community/goals" />

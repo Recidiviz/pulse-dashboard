@@ -24,9 +24,10 @@ import TopBarUserMenuForAuthenticatedUser from "../components/TopBar/TopBarUserM
 import "./CoreNavigation.scss";
 
 const navigationLayout = {
-  communiity: ["goals", "explore"],
+  community: ["goals", "explore"],
   facilities: ["goals", "explore"],
   programming: ["explore"],
+  methodology: ["vitals", "projections", "explore"],
 };
 
 const CoreNavigation = () => {
@@ -34,7 +35,6 @@ const CoreNavigation = () => {
   const [currentSection, currentPage] = pathname.split("/").slice(1, 3);
   const pageOptions =
     navigationLayout[currentSection] ?? navigationLayout.facilities;
-
   return (
     <div className="CoreNavigation">
       <ul className="nav-left">
