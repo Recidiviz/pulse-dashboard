@@ -5,6 +5,11 @@
   list-style: none;
   margin: 0;
   padding: 0;
+  height: 100%;
+
+  & > li {
+    margin-left: 1rem;
+  }
 
   &--Option {
     width: 6.33rem;
@@ -24,6 +29,10 @@
 
     &-Selected {
       border-top: 0.25rem solid $action-topbar;
+
+      &:focus {
+        color: $label-topbar;
+      }
     }
   }
 }

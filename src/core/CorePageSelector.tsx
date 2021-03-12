@@ -16,19 +16,24 @@
 // =============================================================================
 
 import React from "react";
-import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import cx from "classnames";
 
 import "./CorePageSelector.scss";
 
-const CorePageSelector = ({ currentSection, currentPage, pageOptions }) => {
-  if (!(currentSection && currentPage)) {
-    return <></>;
-  }
+type propTypes = {
+  currentSection: string;
+  currentPage: string;
+  pageOptions: string[];
+};
 
-  const capitalizeFirstLetter = (string) =>
-    string.charAt(0).toUpperCase() + string.slice(1);
+const CorePageSelector: React.FC<propTypes> = ({
+  currentSection,
+  currentPage,
+  pageOptions,
+}) => {
+  const capitalizeFirstLetter = (str: string) =>
+    str.charAt(0).toUpperCase() + str.slice(1);
 
   return (
     <ul className="CorePageSelector">
@@ -47,12 +52,6 @@ const CorePageSelector = ({ currentSection, currentPage, pageOptions }) => {
       ))}
     </ul>
   );
-};
-
-CorePageSelector.propTypes = {
-  currentSection: PropTypes.string.isRequired,
-  currentPage: PropTypes.string.isRequired,
-  pageOptions: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
 export default CorePageSelector;

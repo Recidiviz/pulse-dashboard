@@ -33,12 +33,12 @@ import {
 } from "./utils/filterOptions";
 import { getDistrictOptions } from "./utils/filterHelpers";
 
-import "./FilterBar.scss";
+import "./CoreFilterBar.scss";
 import TogglePill from "./controls/TogglePill";
 
 const FILTER_BAR_STYLE = {
   zIndex: 700,
-  top: 65,
+  top: 79,
 };
 
 type FilterOption = {
@@ -61,7 +61,7 @@ const Filter: React.FC<FilterProps> = ({ children, title, width }) => {
   );
 };
 
-type FilterBarProps = {
+type CoreFilterBarProps = {
   metricType?: string;
   metricPeriodMonths?: string;
   district?: string[];
@@ -80,7 +80,7 @@ type FilterBarProps = {
   stateCode?: string;
 };
 
-const FilterBar: React.FC<FilterBarProps> = ({
+const CoreFilterBar: React.FC<CoreFilterBarProps> = ({
   metricType = null,
   setChartMetricType = null,
   setChartSupervisionType = null,
@@ -121,8 +121,8 @@ const FilterBar: React.FC<FilterBarProps> = ({
 
   return (
     <Sticky style={FILTER_BAR_STYLE}>
-      <div className="FilterBar">
-        <div className="FilterBar__filters">
+      <div className="CoreFilterBar">
+        <div className="CoreFilterBar__filters">
           {setChartMetricType && metricType && (
             <Filter>
               <TogglePill
@@ -159,19 +159,17 @@ const FilterBar: React.FC<FilterBarProps> = ({
 
           {setChartDistrict && district && (
             <Filter title={isCounty ? "County of Residence" : "Office"}>
-              <div className="filters__select">
-                <CoreMultiSelect
-                  value={districtOptions.filter((option: FilterOption) =>
-                    district.includes(String(option.value))
-                  )}
-                  options={districtOptions}
-                  onChange={(options: FilterOption[]) => {
-                    setChartDistrict(options.map((o) => String(o.value)));
-                  }}
-                  summingOption={defaultDistrictOption}
-                  defaultValue={[defaultDistrictOption]}
-                />
-              </div>
+              <CoreMultiSelect
+                value={districtOptions.filter((option: FilterOption) =>
+                  district.includes(String(option.value))
+                )}
+                options={districtOptions}
+                onChange={(options: FilterOption[]) => {
+                  setChartDistrict(options.map((o) => String(o.value)));
+                }}
+                summingOption={defaultDistrictOption}
+                defaultValue={[defaultDistrictOption]}
+              />
             </Filter>
           )}
         </div>
@@ -180,4 +178,4 @@ const FilterBar: React.FC<FilterBarProps> = ({
   );
 };
 
-export default FilterBar;
+export default CoreFilterBar;

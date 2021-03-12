@@ -13,7 +13,6 @@
 // ---------------------------------------------------------
 
 .page-container {
-  min-height: 100vh;
   transition: all 0.2s ease;
 }
 
@@ -22,7 +21,7 @@
 // ---------------------------------------------------------
 
 .main-content {
-  padding: 75px 20px 20px;
+  padding: 6rem 20px 20px;
   min-height: calc(100vh - 61px);
 
   @include to($breakpoint-md) {

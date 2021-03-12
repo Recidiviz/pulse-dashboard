@@ -2,13 +2,32 @@
 
 .CoreNavigation {
   background: $core-background;
-  height: 100%;
+  height: 5rem;
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  ul.nav-left {
+  border-bottom: $core-border-color 1px solid;
+
+  &__logo {
+    margin: 1.5rem 0 2rem 0rem;
+
+    &-image {
+      height: 1.5rem;
+    }
+
+  }
+
+  &__left {
+    padding-left: 4rem;
+    display: flex;
+  }
+
+  div.CoreNavigation__left {
+    align-items: center;
+
     .dropdown {
+      margin-left: 1.5rem;
       display: flex;
       font-size: 1.2rem;
       font-weight: 400;
@@ -21,7 +40,7 @@
       &:hover,
       &:focus {
         background-color: $core-dropdown-color;
-        box-shadow: inset 0px -0.1rem 0.1rem rgba(19, 44, 82, 0.3);
+        box-shadow: inset 0px -1px 1px rgba(19, 44, 82, 0.3);
         border-radius: 1.66rem;
         outline: 0;
       }
@@ -58,7 +77,7 @@
       .show {
         padding: 0.62rem 0;
         border-radius: 0 0 1.66rem 1.66rem;
-        box-shadow: inset 0px -0.06rem 0.06rem rgba(19, 44, 82, 0.3);
+        box-shadow: inset 0px -1px 1px rgba(19, 44, 82, 0.3);
       }
       &-toggle {
         min-width: 11.81rem;
@@ -89,6 +108,66 @@
         transform: scale(1, 1);
         min-width: 11.81rem;
         background-color: $core-dropdown-color;
+      }
+    }
+  }
+
+  &__right {
+    align-items: center;
+    list-style: none;
+    margin-bottom: 0;
+    padding-left: 0;
+    position: relative;
+    display: flex;
+    height: 100%;
+
+    > li {
+      float: left;
+
+      > a,
+      button {
+        color: $default-text-color;
+        display: block;
+        line-height: $header-height;
+        min-height: $header-height;
+        padding: 0 15px;
+        background-color: transparent;
+        transition: all 0.2s ease-in-out;
+
+        i {
+          font-size: 17px;
+        }
+
+        &:hover,
+        &:focus {
+          color: $default-dark;
+          text-decoration: none;
+        }
+      }
+    }
+    .dropdown {
+      margin-left: 2rem;
+      margin-right: 2.375rem;
+      .dropdown-toggle {
+        ul {
+          margin-left: 0;
+          padding-left: 0;
+        }
+      }
+    }
+
+    .dropdown-menu {
+      left: auto;
+      right: 0;
+
+      > li {
+        width: 100%;
+
+        > a {
+          line-height: 1.5;
+          min-height: auto;
+          padding: 10px 15px;
+        }
       }
     }
   }
