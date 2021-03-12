@@ -101,6 +101,7 @@
     "react-render-in-browser": "^1.1.1",
     "react-router-dom": "^5.1.0",
     "react-scripts": "3.4.4",
+    "react-scrollable-anchor": "^0.6.1",
     "react-select": "^4.1.0",
     "react-simple-maps": "^0.12.1",
     "react-spinners": "^0.8.1",

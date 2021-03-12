@@ -23,6 +23,10 @@ import cx from "classnames";
 import "./CorePageSelector.scss";
 
 const CorePageSelector = ({ currentSection, currentPage, pageOptions }) => {
+  if (!(currentSection && currentPage)) {
+    return <></>;
+  }
+
   const capitalizeFirstLetter = (string) =>
     string.charAt(0).toUpperCase() + string.slice(1);
 

@@ -3,7 +3,6 @@
 // ---------------------------------------------------------
 
 // + @Greyscale Colors
-// + @Bootstrap Color System
 // + @Default Colors
 // + @Inverted Colors
 // + @Others
@@ -37,21 +36,6 @@ $grey-colors-alt: (
   grey-800: #565a5c,
   grey-900: #313435,
 );
-
-// ---------------------------------------------------------
-// @Bootstrap Color System
-// ---------------------------------------------------------
-
-$blue: $md-blue-500;
-$indigo: $md-indigo-500;
-$purple: $md-purple-500;
-$pink: $md-pink-500;
-$red: $md-red-500;
-$orange: $md-orange-500;
-$yellow: $md-yellow-500;
-$green: $md-green-500;
-$teal: $md-teal-500;
-$cyan: $md-cyan-500;
 
 // ---------------------------------------------------------
 // @Default Colors
@@ -96,6 +80,7 @@ $core-dropdown-color      : #e9ebeb;
 $core-element-hover-color : #d2d8d8;
 $action-topbar            : #25b894;
 $label-topbar             : #00413e;
+$core-link-color          : #006c67;
 
 // ---------------------------------------------------------
 // @Header Themes
