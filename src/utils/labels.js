@@ -136,6 +136,12 @@ const formatOfficerLabel = (label) => {
   return `${groups[0]} - ${toTitleCase(groups[1])}`;
 };
 
+const formatDistrictLabel = (label) => {
+  if (!label) return "";
+  const groups = label.match(/(.*)(?=DO)(.*)/) || label.match(/(.*)(?=-)(.*)/);
+  return groups ? `${toTitleCase(groups[1])}${groups[2]}` : label;
+};
+
 const formatLargeNumber = (number) => {
   const ONE_MILLION = 1000000;
   return Math.abs(number) >= ONE_MILLION
@@ -162,5 +168,6 @@ export {
   getStatePopulations,
   getStatePopulationsLabels,
   formatOfficerLabel,
+  formatDistrictLabel,
   formatLargeNumber,
 };

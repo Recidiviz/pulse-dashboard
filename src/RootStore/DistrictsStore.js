@@ -77,6 +77,7 @@ export default class DistrictsStore {
         this.file,
         this.eagerExpand
       );
+      this.districts = this.apiData.data;
       this.setDistrictIdToLabel();
       this.isLoading = false;
       this.isError = false;
