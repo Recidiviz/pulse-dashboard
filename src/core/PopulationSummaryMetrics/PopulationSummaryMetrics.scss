@@ -1,8 +1,15 @@
+@import "../CoreConstants";
+@import "../../assets/styles/spec/tools/mixins/mediaQueriesRanges.scss";
+
 .PopulationSummaryMetrics {
   display: flex;
   flex-flow: row nowrap;
   width: 100%;
   justify-content: space-evenly;
+
+  @media screen and (max-width: $core-breakpoint-sm) {
+    flex-flow: row wrap;
+  }
 }
 
 .SummaryMetrics {

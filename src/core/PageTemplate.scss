@@ -15,4 +15,9 @@
     padding-left: 3rem;
     padding-right: 3rem;
   }
+
+  @media screen and (max-width: $core-breakpoint-xs) {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
 }

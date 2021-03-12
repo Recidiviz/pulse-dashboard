@@ -33,15 +33,15 @@ const Value = styled.div`
 // TODO: Use typography components from component library
 export const MetricTitle = styled.div`
   font-family: "Libre Franklin";
-  font-size: 14px;
-  line-height: 16px;
+  font-size: 0.9rem;
+  line-height: 1rem;
   font-weight: 500;
   color: rgba(53, 83, 98, 0.85);
   white-space: nowrap;
 `;
 const MetricValue = styled.div`
   font-family: "Libre Baskerville";
-  font-size: 34px;
+  font-size: 2rem;
   line-height: 40px;
   font-weight: 400;
   color: #00413e;
@@ -52,14 +52,14 @@ const MetricDelta = styled.div<{ color: string }>`
   align-items: center;
   color: ${({ color }) => color};
   font-family: "Libre Franklin";
-  font-size: 14px;
+  font-size: 0.9rem;
   line-height: 16px;
   font-weight: 500;
 `;
 const MetricMinMax = styled.div`
   font-family: "Libre Franklin";
-  font-size: 14px;
-  line-height: 16px;
+  font-size: 0.9rem;
+  line-height: 1rem;
   font-weight: 400;
   color: rgba(53, 83, 98, 0.85);
   white-space: nowrap;
