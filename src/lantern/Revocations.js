@@ -57,7 +57,7 @@ const Revocations = () => {
   return (
     <main className="Revocations">
       <Sticky
-        className="FilterBar"
+        className="LanternFilterBar"
         style={{ zIndex: 700, top: hideTopBar ? 0 : 65 }}
       >
         <ErrorBoundary>

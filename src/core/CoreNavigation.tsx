@@ -1,5 +1,5 @@
 // Recidiviz - a data platform for criminal justice reform
-// Copyright (C) 2020 Recidiviz, Inc.
+// Copyright (C) 2021 Recidiviz, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -16,39 +16,49 @@
 // =============================================================================
 
 import React from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, Link } from "react-router-dom";
 import CoreSectionSelector from "./CoreSectionSelector";
 import CorePageSelector from "./CorePageSelector";
 import TopBarUserMenuForAuthenticatedUser from "../components/TopBar/TopBarUserMenuForAuthenticatedUser";
 
+import recidivizLogo from "../assets/static/images/Logo.svg";
 import "./CoreNavigation.scss";
 
 const navigationLayout = {
   community: ["goals", "explore"],
   facilities: ["goals", "explore"],
   programming: ["explore"],
-  methodology: ["vitals", "projections", "explore"],
 };
 
-const CoreNavigation = () => {
+const CoreNavigation: React.FC = () => {
   const { pathname } = useLocation();
   const [currentSection, currentPage] = pathname.split("/").slice(1, 3);
-  const pageOptions =
-    navigationLayout[currentSection] ?? navigationLayout.facilities;
+  // @ts-ignore
+  const pageOptions = navigationLayout[currentSection] ?? [];
+
   return (
-    <div className="CoreNavigation">
-      <ul className="nav-left">
+    <nav className="CoreNavigation">
+      <div className="CoreNavigation__left">
+        <div className="CoreNavigation__logo">
+          <Link to="/community/goals">
+            <img
+              className="CoreNavigation__logo-image"
+              src={recidivizLogo}
+              alt="Logo"
+            />
+          </Link>
+        </div>
         <CoreSectionSelector />
-      </ul>
-      <ul className="nav-right">
+      </div>
+      <div className="CoreNavigation__right">
         <CorePageSelector
           currentSection={currentSection}
-          currentPage={currentPage}
+          currentPage={currentPage ?? ""}
           pageOptions={pageOptions}
         />
-        <TopBarUserMenuForAuthenticatedUser />
-      </ul>
-    </div>
+        <TopBarUserMenuForAuthenticatedUser hideUsername />
+      </div>
+    </nav>
   );
 };
 

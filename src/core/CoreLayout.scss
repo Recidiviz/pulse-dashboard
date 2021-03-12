@@ -1,0 +1,12 @@
+@import "../assets/styles/spec/settings/index";
+
+.CoreLayout {
+  &__header {
+    border-bottom: 1px solid $core-border-color;
+    display: flex;
+    position: fixed;
+    width: 100%;
+    z-index: 800;
+    height: 5rem;
+  }
+}
