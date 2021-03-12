@@ -1,17 +1,18 @@
 .CoreVitalSummaryCard {
-  max-width: 278px;
-  max-height: 96px;
-  width: 278px;
-  height: 96px;
+  max-width: 17.375rem;
+  max-height: 6rem;
+  width: 17.375rem;
+  height: 6rem;
   border-radius: 0.5rem;
-  box-shadow: inset 0px -1px 1px rgba(19, 44, 82, 0.3);
+  box-shadow: inset 0px -0.06rem 0.06rem rgba(19, 44, 82, 0.3);
   display: flex;
   flex-direction: column;
-  margin-left: 24px;
+  margin-left: 1.5rem;
   background-color: #ffffff;
+  user-select: none;
   &:hover {
     cursor: pointer;
-    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.15);
+    box-shadow: 0px 0.25rem 0.75rem rgba(0, 0, 0, 0.15);
   }
   .content {
     display: flex;
@@ -20,19 +21,19 @@
     height: 100%;
   }
   .top-border {
-    height: 8px;
+    height: 0.5rem;
     width: 100%;
     border-radius: 0.5rem 0.5rem 0 0;
   }
   &__title {
     font-family: "Libre Franklin", sans-serif;
     font-weight: 500;
-    line-height: 20px;
+    line-height: 1.25rem;
     font-size: 1rem;
     color: #355362;
     opacity: 0.8;
     width: 50%;
-    padding-left: 25px;
+    padding: 0 0.12rem 0 1.56rem;
   }
 
   &__percent {
@@ -41,10 +42,10 @@
     align-items: center;
     width: 50%;
     height: 100%;
-    font-family: "Libre Baskerville", serif;
-    font-size: 34px;
+    font-family: serif;
+    font-size: 2.12rem;
     font-weight: 400;
-    line-height: 40px;
+    line-height: 2.5rem;
     color: #00413e;
     span {
       padding-left: 1rem;
@@ -56,7 +57,7 @@
       opacity: 0.7;
     }
     &.selected {
-      border: 1px solid #a43939;
+      border: 0.06rem solid #a43939;
     }
   }
   &__poor {
@@ -65,7 +66,7 @@
       opacity: 1;
     }
     &.selected {
-      border: 1px solid #a43939;
+      border: 0.06rem solid #a43939;
     }
   }
   &__good {
@@ -74,7 +75,7 @@
       opacity: 0.7;
     }
     &.selected {
-      border: 1px solid #006c67;
+      border: 0.06rem solid #006c67;
     }
   }
   &__great {
@@ -87,7 +88,7 @@
       opacity: 1;
     }
     &.selected {
-      border: 1px solid #006c67;
+      border: 0.06rem solid #006c67;
     }
   }
 }
