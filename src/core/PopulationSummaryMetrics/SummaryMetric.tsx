@@ -31,7 +31,7 @@ const Value = styled.div`
 `;
 
 // TODO: Use typography components from component library
-const MetricTitle = styled.div`
+export const MetricTitle = styled.div`
   font-family: "Libre Franklin";
   font-size: 14px;
   line-height: 16px;

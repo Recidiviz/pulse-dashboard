@@ -1,12 +1,23 @@
 import React from "react";
 import MetricsCard from "../MetricsCard";
 import SummaryMetric from "./SummaryMetric";
+import LoadingMetrics from "./LoadingMetrics";
+
 import type { HistoricalSummaryRecord } from "../models/types";
 
 const HistoricalSummaryMetrics: React.FC<{
   data: HistoricalSummaryRecord;
   isLoading: boolean;
 }> = ({ data, isLoading }) => {
+  if (isLoading) {
+    return (
+      <MetricsCard heading="Past 6 months">
+        <LoadingMetrics title="New arrivals" />
+        <LoadingMetrics title="Releases" />
+        <LoadingMetrics title="Total population" />
+      </MetricsCard>
+    );
+  }
   return (
     <MetricsCard heading="Past 6 months">
       <SummaryMetric

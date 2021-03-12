@@ -1,12 +1,24 @@
 import React from "react";
 import MetricsCard from "../MetricsCard";
 import SummaryMetric from "./SummaryMetric";
+import LoadingMetrics from "./LoadingMetrics";
+
 import type { ProjectedSummaryRecord } from "../models/types";
 
 const ProjectedSummaryMetrics: React.FC<{
   data: ProjectedSummaryRecord;
   isLoading: boolean;
 }> = ({ data, isLoading }) => {
+  if (!isLoading) {
+    return (
+      <MetricsCard heading="Next 6 months" subheading="Projected">
+        <LoadingMetrics title="New arrivals" showMinMax />
+        <LoadingMetrics title="Releases" showMinMax />
+        <LoadingMetrics title="Total population" showMinMax />
+      </MetricsCard>
+    );
+  }
+
   return (
     <MetricsCard heading="Next 6 months" subheading="Projected">
       <SummaryMetric
