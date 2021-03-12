@@ -155,7 +155,11 @@
     }
   },
   "lint-staged": {
-    "*.js": "eslint --fix"
+    "*.js": "eslint --fix",
+    "**/*.{ts,tsx}": [
+      "bash -c tsc",
+      "eslint --fix"
+    ]
   },
   "browserslist": {
     "production": [
