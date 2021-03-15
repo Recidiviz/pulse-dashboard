@@ -281,8 +281,12 @@ function getCollections(stateCode = null) {
           },
         },
       };
-    default:
+    case stateCodes.US_ND:
       return CORE_COLLECTIONS;
+    default:
+      throw new Error(
+        `getCollections received an unexpected state code: ${stateCode}`
+      );
   }
 }
 

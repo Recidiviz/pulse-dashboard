@@ -85,6 +85,7 @@ const App = () => (
                   <Switch>
                     <Route path="/community/goals" component={UsNdCommunityGoals} />
                     <Route path="/community/explore" component={UsNdCommunityExplore} />
+                    <Route path="/community/projections" component={PageProjections} />
                     <Route path="/facilities/goals" component={UsNdFacilitiesGoals} />
                     <Route path="/facilities/explore" component={UsNdFacilitiesExplore} />
                     <Route path="/facilities/projections" component={PageProjections} />

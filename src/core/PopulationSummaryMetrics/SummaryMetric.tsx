@@ -30,7 +30,7 @@ const Value = styled.div`
   padding: 4px;
 `;
 
-// TODO: Use typography components from component library
+// TODO(#908): Use typography components from component library
 export const MetricTitle = styled.div`
   font-family: "Libre Franklin";
   font-size: 0.9rem;
@@ -85,7 +85,7 @@ function formatPercent(percentage: number): string {
   return `${percentage}%`;
 }
 
-// TODO case-triage#69 Add a rotation prop for caret icon
+// TODO(#908) and (case-triage#69) Add a rotation prop for caret icon
 const SummaryMetric: React.FC<SummaryMetricProps> = ({
   title,
   value,
