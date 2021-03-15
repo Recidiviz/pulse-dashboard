@@ -17,6 +17,7 @@
 const { COLLECTIONS } = require("../../constants/collections");
 const { removeAllValue } = require("./dimensionValues/shared");
 const dimensionsByStateCode = require("./dimensionValues");
+const stateCodes = require("../../constants/stateCodes");
 
 function newRevocations(dimensions) {
   return {
@@ -139,133 +140,154 @@ function newRevocations(dimensions) {
   };
 }
 
+const CORE_COLLECTIONS = {
+  [COLLECTIONS.COMMUNITY_GOALS]: {
+    admissions_by_type_by_month: {
+      filename: "admissions_by_type_by_month.txt",
+    },
+    admissions_by_type_by_period: {
+      filename: "admissions_by_type_by_period.txt",
+    },
+    average_change_lsir_score_by_month: {
+      filename: "average_change_lsir_score_by_month.txt",
+    },
+    average_change_lsir_score_by_period: {
+      filename: "average_change_lsir_score_by_period.txt",
+    },
+    revocations_by_month: {
+      filename: "revocations_by_month.txt",
+    },
+    revocations_by_period: {
+      filename: "revocations_by_period.txt",
+    },
+    supervision_termination_by_type_by_month: {
+      filename: "supervision_termination_by_type_by_month.txt",
+    },
+    supervision_termination_by_type_by_period: {
+      filename: "supervision_termination_by_type_by_period.txt",
+    },
+    site_offices: {
+      filename: "site_offices.json",
+    },
+  },
+  [COLLECTIONS.COMMUNITY_EXPLORE]: {
+    admissions_by_type_by_month: {
+      filename: "admissions_by_type_by_month.txt",
+    },
+    admissions_by_type_by_period: {
+      filename: "admissions_by_type_by_period.txt",
+    },
+    average_change_lsir_score_by_month: {
+      filename: "average_change_lsir_score_by_month.txt",
+    },
+    average_change_lsir_score_by_period: {
+      filename: "average_change_lsir_score_by_period.txt",
+    },
+    case_terminations_by_type_by_month: {
+      filename: "case_terminations_by_type_by_month.txt",
+    },
+    case_terminations_by_type_by_officer_by_period: {
+      filename: "case_terminations_by_type_by_officer_by_period.txt",
+    },
+    race_proportions: { filename: "race_proportions.json" },
+    revocations_by_month: { filename: "revocations_by_month.txt" },
+    revocations_by_officer_by_period: {
+      filename: "revocations_by_officer_by_period.txt",
+    },
+    revocations_by_period: { filename: "revocations_by_period.txt" },
+    revocations_by_race_and_ethnicity_by_period: {
+      filename: "revocations_by_race_and_ethnicity_by_period.txt",
+    },
+    revocations_by_supervision_type_by_month: {
+      filename: "revocations_by_supervision_type_by_month.txt",
+    },
+    revocations_by_violation_type_by_month: {
+      filename: "revocations_by_violation_type_by_month.txt",
+    },
+    supervision_termination_by_type_by_month: {
+      filename: "supervision_termination_by_type_by_month.txt",
+    },
+    supervision_termination_by_type_by_period: {
+      filename: "supervision_termination_by_type_by_period.txt",
+    },
+    site_offices: { filename: "site_offices.json" },
+  },
+  [COLLECTIONS.FACILITIES_GOALS]: {
+    avg_days_at_liberty_by_month: {
+      filename: "avg_days_at_liberty_by_month.txt",
+    },
+    reincarcerations_by_month: { filename: "reincarcerations_by_month.txt" },
+    reincarcerations_by_period: {
+      filename: "reincarcerations_by_period.txt",
+    },
+  },
+  [COLLECTIONS.FACILITIES_EXPLORE]: {
+    admissions_by_type_by_period: {
+      filename: "admissions_by_type_by_period.txt",
+    },
+    admissions_versus_releases_by_month: {
+      filename: "admissions_versus_releases_by_month.txt",
+    },
+    admissions_versus_releases_by_period: {
+      filename: "admissions_versus_releases_by_period.txt",
+    },
+    avg_days_at_liberty_by_month: {
+      filename: "avg_days_at_liberty_by_month.txt",
+    },
+    reincarceration_rate_by_stay_length: {
+      filename: "reincarceration_rate_by_stay_length.txt",
+    },
+    reincarcerations_by_month: { filename: "reincarcerations_by_month.txt" },
+    reincarcerations_by_period: {
+      filename: "reincarcerations_by_period.txt",
+    },
+  },
+  [COLLECTIONS.PROGRAMMING_EXPLORE]: {
+    ftr_referrals_by_age_by_period: {
+      filename: "ftr_referrals_by_age_by_period.txt",
+    },
+    ftr_referrals_by_gender_by_period: {
+      filename: "ftr_referrals_by_gender_by_period.txt",
+    },
+    ftr_referrals_by_lsir_by_period: {
+      filename: "ftr_referrals_by_lsir_by_period.txt",
+    },
+    ftr_referrals_by_month: { filename: "ftr_referrals_by_month.txt" },
+    ftr_referrals_by_participation_status: {
+      filename: "ftr_referrals_by_participation_status.txt",
+    },
+    ftr_referrals_by_period: { filename: "ftr_referrals_by_period.txt" },
+    ftr_referrals_by_race_and_ethnicity_by_period: {
+      filename: "ftr_referrals_by_race_and_ethnicity_by_period.txt",
+    },
+    race_proportions: { filename: "race_proportions.json" },
+    site_offices: { filename: "site_offices.json" },
+  },
+};
+
 function getCollections(stateCode = null) {
-  const dimensions = dimensionsByStateCode[stateCode];
-  return {
-    ...(dimensions ? newRevocations(dimensions) : {}),
-    [COLLECTIONS.COMMUNITY_GOALS]: {
-      admissions_by_type_by_month: {
-        filename: "admissions_by_type_by_month.txt",
-      },
-      admissions_by_type_by_period: {
-        filename: "admissions_by_type_by_period.txt",
-      },
-      average_change_lsir_score_by_month: {
-        filename: "average_change_lsir_score_by_month.txt",
-      },
-      average_change_lsir_score_by_period: {
-        filename: "average_change_lsir_score_by_period.txt",
-      },
-      revocations_by_month: {
-        filename: "revocations_by_month.txt",
-      },
-      revocations_by_period: {
-        filename: "revocations_by_period.txt",
-      },
-      supervision_termination_by_type_by_month: {
-        filename: "supervision_termination_by_type_by_month.txt",
-      },
-      supervision_termination_by_type_by_period: {
-        filename: "supervision_termination_by_type_by_period.txt",
-      },
-      site_offices: {
-        filename: "site_offices.json",
-      },
-    },
-    [COLLECTIONS.COMMUNITY_EXPLORE]: {
-      admissions_by_type_by_month: {
-        filename: "admissions_by_type_by_month.txt",
-      },
-      admissions_by_type_by_period: {
-        filename: "admissions_by_type_by_period.txt",
-      },
-      average_change_lsir_score_by_month: {
-        filename: "average_change_lsir_score_by_month.txt",
-      },
-      average_change_lsir_score_by_period: {
-        filename: "average_change_lsir_score_by_period.txt",
-      },
-      case_terminations_by_type_by_month: {
-        filename: "case_terminations_by_type_by_month.txt",
-      },
-      case_terminations_by_type_by_officer_by_period: {
-        filename: "case_terminations_by_type_by_officer_by_period.txt",
-      },
-      race_proportions: { filename: "race_proportions.json" },
-      revocations_by_month: { filename: "revocations_by_month.txt" },
-      revocations_by_officer_by_period: {
-        filename: "revocations_by_officer_by_period.txt",
-      },
-      revocations_by_period: { filename: "revocations_by_period.txt" },
-      revocations_by_race_and_ethnicity_by_period: {
-        filename: "revocations_by_race_and_ethnicity_by_period.txt",
-      },
-      revocations_by_supervision_type_by_month: {
-        filename: "revocations_by_supervision_type_by_month.txt",
-      },
-      revocations_by_violation_type_by_month: {
-        filename: "revocations_by_violation_type_by_month.txt",
-      },
-      supervision_termination_by_type_by_month: {
-        filename: "supervision_termination_by_type_by_month.txt",
-      },
-      supervision_termination_by_type_by_period: {
-        filename: "supervision_termination_by_type_by_period.txt",
-      },
-      site_offices: { filename: "site_offices.json" },
-    },
-    [COLLECTIONS.FACILITIES_GOALS]: {
-      avg_days_at_liberty_by_month: {
-        filename: "avg_days_at_liberty_by_month.txt",
-      },
-      reincarcerations_by_month: { filename: "reincarcerations_by_month.txt" },
-      reincarcerations_by_period: {
-        filename: "reincarcerations_by_period.txt",
-      },
-    },
-    [COLLECTIONS.FACILITIES_EXPLORE]: {
-      admissions_by_type_by_period: {
-        filename: "admissions_by_type_by_period.txt",
-      },
-      admissions_versus_releases_by_month: {
-        filename: "admissions_versus_releases_by_month.txt",
-      },
-      admissions_versus_releases_by_period: {
-        filename: "admissions_versus_releases_by_period.txt",
-      },
-      avg_days_at_liberty_by_month: {
-        filename: "avg_days_at_liberty_by_month.txt",
-      },
-      reincarceration_rate_by_stay_length: {
-        filename: "reincarceration_rate_by_stay_length.txt",
-      },
-      reincarcerations_by_month: { filename: "reincarcerations_by_month.txt" },
-      reincarcerations_by_period: {
-        filename: "reincarcerations_by_period.txt",
-      },
-    },
-    [COLLECTIONS.PROGRAMMING_EXPLORE]: {
-      ftr_referrals_by_age_by_period: {
-        filename: "ftr_referrals_by_age_by_period.txt",
-      },
-      ftr_referrals_by_gender_by_period: {
-        filename: "ftr_referrals_by_gender_by_period.txt",
-      },
-      ftr_referrals_by_lsir_by_period: {
-        filename: "ftr_referrals_by_lsir_by_period.txt",
-      },
-      ftr_referrals_by_month: { filename: "ftr_referrals_by_month.txt" },
-      ftr_referrals_by_participation_status: {
-        filename: "ftr_referrals_by_participation_status.txt",
-      },
-      ftr_referrals_by_period: { filename: "ftr_referrals_by_period.txt" },
-      ftr_referrals_by_race_and_ethnicity_by_period: {
-        filename: "ftr_referrals_by_race_and_ethnicity_by_period.txt",
-      },
-      race_proportions: { filename: "race_proportions.json" },
-      site_offices: { filename: "site_offices.json" },
-    },
-  };
+  switch (stateCode) {
+    case stateCodes.US_MO:
+    case stateCodes.US_PA:
+      return newRevocations(dimensionsByStateCode[stateCode]);
+    case stateCodes.US_ID:
+      return {
+        [COLLECTIONS.POPULATION_PROJECTIONS]: {
+          population_projection_summaries: {
+            filename: "population_projection_summaries.json",
+          },
+          population_projection_timeseries: {
+            filename: "population_projection_timeseries.json",
+          },
+        },
+      };
+    case stateCodes.US_ND:
+      return CORE_COLLECTIONS;
+    default:
+      throw new Error(
+        `getCollections received an unexpected state code: ${stateCode}`
+      );
+  }
 }
 
 exports.default = getCollections;

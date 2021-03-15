@@ -206,7 +206,7 @@ describe("test label", () => {
       });
     });
 
-    fdescribe("#formatDistrictLabel", () => {
+    describe("#formatDistrictLabel", () => {
       it("formats a district name with DO correctly", () => {
         const name = "BARNEY RUBBLE DO - 04";
         const result = labelsMethods.formatDistrictLabel(name);
