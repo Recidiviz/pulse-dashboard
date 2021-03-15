@@ -174,6 +174,18 @@ Running via that command is important because environment variables are required
 
 As noted above, the Dashboard is two components: a React frontend and a Node/Express backend providing a thin API. The app can be run locally, in staging, and in production. Deploying to staging and production are very similar, as described below.
 
+### Deploying a Preview App for Frontend QA
+
+Follow these steps to deploy a Firebase Preview App for QA:
+
+1.  Build the staging app with `yarn build-staging`.
+2.  Run `firebase hosting:channel:deploy PREVIEW_APP_NAME` (replace NAME with a string with no spaces like feature-pop, this name will be used to construct the URL)
+3.  Access your Preview app at the provided URL, which will have the following pattern: `https://recidiviz-dashboard-stag-e1108--[PREVIEW_APP_NAME]-[random-hash].web.app`
+4.  To update your preview URL with changes, run the same command again. Make sure to specify the same PREVIEW_APP_NAME in the command.
+5.  When you're done with the preview app, delete it: `firebase hosting:channel:delete PREVIEW_APP_NAME`
+
+[How to manage preview apps on Firebase](https://firebase.google.com/docs/hosting/manage-hosting-resources?authuser=0)
+
 ### Deploying to staging
 
 #### Frontend
