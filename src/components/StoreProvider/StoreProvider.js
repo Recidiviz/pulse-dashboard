@@ -54,6 +54,11 @@ export function useFiltersStore() {
   return filtersStore;
 }
 
+export function useCoreFiltersStore() {
+  const { coreFiltersStore } = useRootStore();
+  return coreFiltersStore;
+}
+
 export function useUserStore() {
   const { userStore } = useRootStore();
   return userStore;

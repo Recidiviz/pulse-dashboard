@@ -3,17 +3,7 @@
 
 .CoreFilterBar {
   background: $core-background;
-  display: flex;
-  justify-content: center;
-  padding-top: 1rem;
-  padding-bottom: 0.5rem;
-  padding-left: 4rem;
-  padding-right: 4rem;
-
-  @media screen and (max-width: $core-breakpoint-md) {
-    padding-left: 3rem;
-    padding-right: 3rem;
-  }
+  margin: 1rem;
 
   @media screen and (max-width: $core-breakpoint-lg) {
     padding-left: 4rem;
