@@ -30,18 +30,17 @@ const asyncReadFile = util.promisify(fs.readFile);
  * file system. The return format, a list of Promises that resolve to an object with the
  * keys described therein, is identical.
  */
-function fetchMetricsFromLocal(_, metricType, metricName) {
+function fetchMetricsFromLocal(stateCode, metricType, metricName) {
   const promises = [];
 
   try {
-    const metric = getMetricsByType(metricType, "US_DEMO");
+    const metric = getMetricsByType(metricType, stateCode);
     const files = metric.getFileNamesList(metricName);
 
     files.forEach((filename) => {
       const fileKey = getFileName(filename);
       const extension = getFileExtension(filename);
       const filePath = path.resolve(__dirname, `./demo_data/${filename}`);
-
       let metadata = {};
       if (extension === ".txt") {
         const metadataFilePath = path.resolve(

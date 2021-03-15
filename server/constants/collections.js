@@ -5,6 +5,7 @@ const COLLECTIONS = {
   FACILITIES_GOALS: "facilitiesGoals",
   FACILITIES_EXPLORE: "facilitiesExplore",
   PROGRAMMING_EXPLORE: "programmingExplore",
+  POPULATION_PROJECTIONS: "populationProjections",
 };
 
 module.exports = {

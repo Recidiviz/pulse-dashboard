@@ -38,6 +38,7 @@ import UsNdCommunityExplore from "./core/community/Explore";
 import UsNdFacilitiesGoals from "./core/facilities/Goals";
 import UsNdFacilitiesExplore from "./core/facilities/Explore";
 import UsNdProgrammingExplore from "./core/programming/Explore";
+import PageProjections from "./core/PageProjections";
 import initFontAwesome from "./utils/initFontAwesome";
 import initIntercomSettings from "./utils/initIntercomSettings";
 import { initI18n } from "./utils/i18nSettings";
@@ -66,23 +67,28 @@ const App = () => (
         <Router>
           <Switch>
             <Route path="/verify" component={VerificationNeeded} />
-              <AuthWall>
-                <LanternLayout tenantIds={LANTERN_TENANTS}>
-                  <Switch>
-                    <Route path="/community/revocations" component={Revocations} />
-                    <Route path="/profile" component={Profile} />
-                    <Redirect exact from="/" to="/community/revocations" />
-                    <Redirect from="/revocations" to="/community/revocations" />
-                    <NotFound />
-                  </Switch>
-                </LanternLayout>
+            <AuthWall>
+              <LanternLayout tenantIds={LANTERN_TENANTS}>
+                <Switch>
+                  <Route
+                    path="/community/revocations"
+                    component={Revocations}
+                  />
+                  <Route path="/profile" component={Profile} />
+                  <Redirect exact from="/" to="/community/revocations" />
+                  <Redirect from="/revocations" to="/community/revocations" />
+                  <NotFound />
+                </Switch>
+              </LanternLayout>
 
                 <CoreLayout tenantIds={CORE_TENANTS}>
                   <Switch>
                     <Route path="/community/goals" component={UsNdCommunityGoals} />
                     <Route path="/community/explore" component={UsNdCommunityExplore} />
+                    <Route path="/community/projections" component={PageProjections} />
                     <Route path="/facilities/goals" component={UsNdFacilitiesGoals} />
                     <Route path="/facilities/explore" component={UsNdFacilitiesExplore} />
+                    <Route path="/facilities/projections" component={PageProjections} />
                     <Route path="/programming/explore" component={UsNdProgrammingExplore} />
                     <Route path="/methodology" component={Methodology} />
                     <Route path="/profile" component={Profile} />
