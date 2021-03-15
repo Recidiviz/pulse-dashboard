@@ -28,7 +28,6 @@ import {
 const menu = [
   { label: "Community", link: "/community/goals" },
   { label: "Facilities", link: "/facilities/goals" },
-  { label: "Programming", link: "/programming/explore" },
   { label: "Methodology", link: "/methodology" },
 ];
 

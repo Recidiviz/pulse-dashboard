@@ -37,7 +37,6 @@ import UsNdCommunityGoals from "./core/community/Goals";
 import UsNdCommunityExplore from "./core/community/Explore";
 import UsNdFacilitiesGoals from "./core/facilities/Goals";
 import UsNdFacilitiesExplore from "./core/facilities/Explore";
-import UsNdProgrammingExplore from "./core/programming/Explore";
 import initFontAwesome from "./utils/initFontAwesome";
 import initIntercomSettings from "./utils/initIntercomSettings";
 import { initI18n } from "./utils/i18nSettings";
@@ -83,14 +82,12 @@ const App = () => (
                     <Route path="/community/explore" component={UsNdCommunityExplore} />
                     <Route path="/facilities/goals" component={UsNdFacilitiesGoals} />
                     <Route path="/facilities/explore" component={UsNdFacilitiesExplore} />
-                    <Route path="/programming/explore" component={UsNdProgrammingExplore} />
                     <Route path="/methodology" component={Methodology} />
                     <Route path="/profile" component={Profile} />
                     <Redirect exact from="/" to="/community/goals" />
                     <Redirect from="/snapshots" to="/community/goals" />
                     <Redirect from="/revocations" to="/community/goals" />
                     <Redirect from="/reincarcerations" to="/facilities/goals" />
-                    <Redirect from="/programEvaluation/freeThroughRecovery" to="/programming/explore" />
                     <NotFound />
                   </Switch>
                 </CoreLayout>
