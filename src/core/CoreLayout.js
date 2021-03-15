@@ -68,14 +68,6 @@ const CoreLayout = ({ children }) => {
               <SideBarLink name="Goals" url="/facilities/goals" />
               <SideBarLink name="Explore" url="/facilities/explore" />
             </SideBarGroup>
-            <SideBarGroup
-              key="Programming"
-              name="Programming"
-              url="/programming"
-              icon={<i className="c-green-500 ti-location-arrow" />}
-            >
-              <SideBarLink name="Explore" url="/programming/explore" />
-            </SideBarGroup>
             <SideBarFeedback />
           </SideBarMenu>
         </div>

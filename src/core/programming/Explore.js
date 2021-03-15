@@ -23,12 +23,12 @@ import ChartCard from "../ChartCard";
 import GeoViewTimeChart from "../GeoViewTimeChart";
 import Methodology from "../Methodology";
 import PeriodLabel from "../PeriodLabel";
-import FtrReferralsByAge from "./FtrReferralsByAge";
-import FtrReferralsByGender from "./FtrReferralsByGender";
-import FtrReferralsByLsir from "./FtrReferralsByLsir";
-import FtrReferralsByParticipationStatus from "./FtrReferralsByParticipationStatus";
-import FtrReferralsByRace from "./FtrReferralsByRace";
-import FtrReferralCountByMonth from "./FtrReferralCountByMonth";
+import FtrReferralsByAge from "../community/FtrReferralsByAge";
+import FtrReferralsByGender from "../community/FtrReferralsByGender";
+import FtrReferralsByLsir from "../community/FtrReferralsByLsir";
+import FtrReferralsByParticipationStatus from "../community/FtrReferralsByParticipationStatus";
+import FtrReferralsByRace from "../community/FtrReferralsByRace";
+import FtrReferralCountByMonth from "../community/FtrReferralCountByMonth";
 import FiltersBar from "../FiltersBar";
 import {
   defaultDistrict,
@@ -69,7 +69,6 @@ const ProgrammingExplore = () => {
       availableDistricts={availableDistricts}
     />
   );
-
   return (
     <PageTemplate importantNotes={importantNotes} filters={filters}>
       <ChartCard
