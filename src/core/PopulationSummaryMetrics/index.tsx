@@ -42,8 +42,8 @@ const PopulationSummaryMetrics: React.FC = () => {
     "us_id/projections"
   ) as ChartDataType;
 
-  if (isLoading || isError) {
-    // TODO: Loading state
+  // TODO: add in Error state
+  if (isError) {
     return null;
   }
 
