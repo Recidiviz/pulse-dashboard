@@ -28,9 +28,11 @@ const HistoricalSummaryMetrics: React.FC<{
   if (isLoading || !data) {
     return (
       <MetricsCard heading="Past 6 months">
-        <LoadingMetrics title="New arrivals" />
-        <LoadingMetrics title="Releases" />
-        <LoadingMetrics title="Total population" />
+        <div className="SummaryMetrics">
+          <LoadingMetrics title="New arrivals" />
+          <LoadingMetrics title="Releases" />
+          <LoadingMetrics title="Total population" />
+        </div>
       </MetricsCard>
     );
   }

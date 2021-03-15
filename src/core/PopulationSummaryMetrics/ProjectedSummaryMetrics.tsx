@@ -66,9 +66,11 @@ const ProjectedSummaryMetrics: React.FC<{
   if (isLoading) {
     return (
       <MetricsCard heading="Next 6 months" subheading="Projected">
-        <LoadingMetrics title="New arrivals" showMinMax />
-        <LoadingMetrics title="Releases" showMinMax />
-        <LoadingMetrics title="Total population" showMinMax />
+        <div className="SummaryMetrics">
+          <LoadingMetrics title="New arrivals" showMinMax />
+          <LoadingMetrics title="Releases" showMinMax />
+          <LoadingMetrics title="Total population" showMinMax />
+        </div>
       </MetricsCard>
     );
   }
