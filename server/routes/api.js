@@ -201,6 +201,17 @@ function facilitiesExplore(req, res) {
   );
 }
 
+function populationProjections(req, res) {
+  const { stateCode } = req.params;
+  const metricType = "populationProjections";
+  const cacheKey = getCacheKey({ stateCode, metricType });
+  cacheResponse(
+    cacheKey,
+    () => fetchMetrics(stateCode, metricType, null, isDemoMode),
+    responder(res)
+  );
+}
+
 function programmingExplore(req, res) {
   const { stateCode } = req.params;
   const metricType = "programmingExplore";
@@ -272,6 +283,7 @@ module.exports = {
   communityExplore,
   facilitiesGoals,
   facilitiesExplore,
+  populationProjections,
   programmingExplore,
   responder,
   refreshCache,

@@ -127,6 +127,7 @@ app.get("/api/:stateCode/community/goals", checkJwt, api.communityGoals);
 app.get("/api/:stateCode/community/explore", checkJwt, api.communityExplore);
 app.get("/api/:stateCode/facilities/goals", checkJwt, api.facilitiesGoals);
 app.get("/api/:stateCode/facilities/explore", checkJwt, api.facilitiesExplore);
+app.get("/api/:stateCode/projections", checkJwt, api.populationProjections);
 app.get(
   "/api/:stateCode/programming/explore",
   checkJwt,
