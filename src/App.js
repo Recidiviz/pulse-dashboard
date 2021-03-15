@@ -35,6 +35,7 @@ import CoreLayout from "./core/CoreLayout";
 import Revocations from "./lantern/Revocations";
 import UsNdCommunityExplore from "./core/community/Explore";
 import UsNdFacilitiesExplore from "./core/facilities/Explore";
+import PageProjections from "./core/PageProjections";
 import initFontAwesome from "./utils/initFontAwesome";
 import initIntercomSettings from "./utils/initIntercomSettings";
 import { initI18n } from "./utils/i18nSettings";
@@ -79,7 +80,9 @@ const App = () => (
                 <Switch>
                   <Route path="/goals" component={CoreGoalsView} />
                   <Route path="/community/explore" component={UsNdCommunityExplore} />
+                  <Route path="/community/projections" component={PageProjections} />
                   <Route path="/facilities/explore" component={UsNdFacilitiesExplore} />
+                  <Route path="/facilities/projections" component={PageProjections} />
                   <Route path="/methodology" component={Methodology} />
                   <Route path="/profile" component={Profile} />
                   <Redirect exact from="/" to="/goals" />

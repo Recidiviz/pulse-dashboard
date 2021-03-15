@@ -27,8 +27,8 @@ import "./CoreNavigation.scss";
 
 const navigationLayout = flags.showMethodologyDropdown
   ? {
-      community: ["explore"],
-      facilities: ["explore"],
+      community: ["explore", "projections"],
+      facilities: ["explore", "projections"],
       goals: [],
       methodology: [],
     }
