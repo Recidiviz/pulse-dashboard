@@ -22,6 +22,7 @@ import PageTemplate from "../PageTemplate";
 import BlockVitalCards from "./BlockVitalCards";
 
 import "./CoreCommunityVitals.scss";
+import { StatewideViewTable } from "../statewideViewTable";
 
 const CoreCommunityVitals = ({ stateCode }) => {
   const getStateName = (code) => {
@@ -34,8 +35,13 @@ const CoreCommunityVitals = ({ stateCode }) => {
   };
   return (
     <PageTemplate>
-      <div className="CoreCommunityVitals__Title col-12">
-        {getStateName(stateCode)}
+      <div style={{ width: "100%" }}>
+        <div className="CoreCommunityVitals__Title">
+          {getStateName(stateCode)}
+        </div>
+        <div>
+          <StatewideViewTable />
+        </div>
       </div>
       <BlockVitalCards />
     </PageTemplate>
