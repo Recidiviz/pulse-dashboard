@@ -17,19 +17,22 @@
 
 import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-
 import {
   Dropdown,
   DropdownToggle,
   DropdownMenu,
   DropdownItem,
 } from "reactstrap";
+import flags from "../flags";
 
 const menu = [
   { label: "Community", link: "/community/goals" },
   { label: "Facilities", link: "/facilities/goals" },
-  { label: "Methodology", link: "/methodology" },
 ];
+
+if (flags.showMethodologyDropdown) {
+  menu.push({ label: "Methodology", link: "/methodology" });
+}
 
 const CoreSectionSelector = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);

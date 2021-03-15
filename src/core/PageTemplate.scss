@@ -3,8 +3,8 @@
 
 .PageTemplate {
   background: $core-background;
-  padding-left: 13.5rem;
-  padding-right: 13.5rem;
+  display: flex;
+  justify-content: center;
 
   @media screen and (max-width: $core-breakpoint-lg) {
     padding-left: 4rem;
@@ -14,5 +14,9 @@
   @media screen and (max-width: $core-breakpoint-md) {
     padding-left: 3rem;
     padding-right: 3rem;
+  }
+
+  #mainContent {
+    max-width: $core-max-view-width;
   }
 }
