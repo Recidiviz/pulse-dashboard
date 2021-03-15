@@ -16,9 +16,8 @@
 // =============================================================================
 import React from "react";
 import MetricsCard from "../MetricsCard/MetricsCard";
-import SummaryMetric from "./SummaryMetric";
+import SummaryMetric, { getDeltaDirection } from "./SummaryMetric";
 import LoadingMetrics from "./LoadingMetrics";
-
 import type { ProjectedSummaryRecord } from "../models/types";
 import "./PopulationSummaryMetrics.scss";
 
@@ -30,23 +29,28 @@ const SummaryMetrics: React.FC<{ data: ProjectedSummaryRecord }> = ({
       title="New arrivals"
       value={data.admissionCount}
       percentChange={data.admissionPercentChange}
-      deltaDirection={data.admissionPercentChange > 0 ? "worsened" : "improved"}
+      deltaDirection={getDeltaDirection({
+        percentChange: data.admissionPercentChange,
+      })}
       projectedMinMax={[data.admissionCountMin, data.admissionCountMax]}
     />
     <SummaryMetric
       title="Releases"
       value={data.releaseCount}
       percentChange={data.releasePercentChange}
-      deltaDirection={data.releasePercentChange > 0 ? "improved" : "worsened"}
+      deltaDirection={getDeltaDirection({
+        percentChange: data.releasePercentChange,
+        improvesOnIncrease: true,
+      })}
       projectedMinMax={[data.releaseCountMin, data.releaseCountMax]}
     />
     <SummaryMetric
       title="Total population"
       value={data.totalPopulation}
       percentChange={data.populationPercentChange}
-      deltaDirection={
-        data.populationPercentChange > 0 ? "worsened" : "improved"
-      }
+      deltaDirection={getDeltaDirection({
+        percentChange: data.populationPercentChange,
+      })}
       projectedMinMax={[
         data.totalPopulationCountMin,
         data.totalPopulationCountMax,

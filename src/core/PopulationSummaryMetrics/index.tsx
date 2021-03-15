@@ -43,8 +43,17 @@ const PopulationSummaryMetrics: React.FC = () => {
   ) as ChartDataType;
 
   // TODO: add in Error state
-  if (isLoading || isError) {
+  if (isError) {
     return null;
+  }
+
+  if (isLoading) {
+    return (
+      <div className="PopulationSummaryMetrics">
+        <HistoricalSummaryMetrics isLoading />
+        <ProjectedSummaryMetrics isLoading />
+      </div>
+    );
   }
 
   // Transform the records

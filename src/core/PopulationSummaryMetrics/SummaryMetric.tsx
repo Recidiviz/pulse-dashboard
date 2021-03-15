@@ -69,17 +69,41 @@ interface SummaryMetricProps {
   title: string;
   value: number;
   percentChange: number;
-  deltaDirection: deltaDirections;
+  deltaDirection: DeltaDirections;
   projectedMinMax?: number[] | null;
 }
 
-// TODO: Do we need a "same" or "no change" display color?
-type deltaDirections = "improved" | "worsened";
+const deltaDirections = {
+  improved: "improved",
+  worsened: "worsened",
+  noChange: "noChange",
+} as const;
 
-const deltaColorMap: { [key in deltaDirections]: string } = {
+export type DeltaDirections = keyof typeof deltaDirections;
+
+export function getDeltaDirection({
+  percentChange,
+  improvesOnIncrease = false,
+}: {
+  percentChange: number;
+  improvesOnIncrease?: boolean;
+}): DeltaDirections {
+  if (percentChange === 0) return deltaDirections.noChange;
+  if (improvesOnIncrease) {
+    return percentChange > 0
+      ? deltaDirections.improved
+      : deltaDirections.worsened;
+  }
+  return percentChange > 0
+    ? deltaDirections.worsened
+    : deltaDirections.improved;
+}
+
+const deltaColorMap: { [key in DeltaDirections]: string } = {
   improved: "#207E7A",
   worsened: "#A43939",
-};
+  noChange: "rgba(53, 83, 98, 0.6)",
+} as const;
 
 function formatPercent(percentage: number): string {
   return `${percentage}%`;
