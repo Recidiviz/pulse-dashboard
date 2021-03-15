@@ -27,7 +27,6 @@ import "./CoreNavigation.scss";
 const navigationLayout = {
   community: ["goals", "explore"],
   facilities: ["goals", "explore"],
-  programming: ["explore"],
 };
 
 const CoreNavigation: React.FC = () => {
