@@ -14,6 +14,9 @@ const statusStyles = (status) => {
       return "CoreVitalSummaryCard__good";
     case "GREAT":
       return "CoreVitalSummaryCard__great";
+    case "EXCELLENT":
+      return "CoreVitalSummaryCard__excellent";
+
     default:
       return "";
   }

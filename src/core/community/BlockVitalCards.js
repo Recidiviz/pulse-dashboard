@@ -18,6 +18,7 @@ const BlockVitalCards = () => {
     ...get(groupingCard, "POOR", []),
     ...get(groupingCard, "GOOD", []),
     ...get(groupingCard, "GREAT", []),
+    ...get(groupingCard, "EXCELLENT", []),
   ];
 
   return (

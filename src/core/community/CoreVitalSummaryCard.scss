@@ -79,6 +79,14 @@
     }
   }
   &__great {
+    &__top-border {
+      background-color: rgba(0, 108, 103, 1);
+    }
+    &.selected {
+      border: 0.06rem solid rgba(0, 108, 103, 1);
+    }
+  }
+  &__excellent {
     background-color: #f7fffc;
     &__percent {
       background-image: url("./assets/img/wreath.svg");

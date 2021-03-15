@@ -74,12 +74,12 @@ export const mockCardContent = [
   {
     title: "Timely contacts",
     percent: 100,
-    status: "GREAT",
+    status: "EXCELLENT",
     id: 3,
   },
   {
     title: "Timely risk assessments",
-    percent: 95,
+    percent: 94,
     status: "GREAT",
     id: 4,
   },
