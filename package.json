@@ -19,7 +19,7 @@
     "test": "yarn test-server && yarn test-filters && yarn test-react",
     "spa": "react-scripts start",
     "server": "nodemon server.js",
-    "server:dev": "npm-run-all --parallel server",
+    "server:dev": "npm-run-all --parallel server redis-server",
     "server:demo": "IS_DEMO=true yarn server:dev",
     "redis-server": "redis-server",
     "lint": "tsc && eslint '**/*.{js,ts,tsx}'",
