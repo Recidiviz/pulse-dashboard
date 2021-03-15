@@ -43,7 +43,7 @@ const PopulationSummaryMetrics: React.FC = () => {
   ) as ChartDataType;
 
   // TODO: add in Error state
-  if (isError) {
+  if (isLoading || isError) {
     return null;
   }
 
