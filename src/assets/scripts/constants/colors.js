@@ -299,6 +299,20 @@ const GREYS = {
   "grey-900": "#313435",
 };
 
+const CORE_COLORS = {
+  forest: "rgba(37, 99, 111, 1)",
+  "forest-dark": "rgba(0, 75, 91, 1)",
+  gold: "rgba(217, 169, 95, 1)",
+  "gold-dark": "rgba(183, 135, 61, 1)",
+  crimson: "rgba(186, 79, 79, 1)",
+  "crimson-dark": "rgba(164, 57, 57, 1)",
+  indigo: "rgba(76, 98, 144, 1)",
+  "indigo-dark": "rgba(62, 84, 130, 1)",
+  teal: "rgba(144, 174, 181, 1)",
+  "teal-dark": "rgba(110, 140, 147, 1)",
+  salmon: "rgba(204, 152, 156, 1)",
+  "salmon-dark": "rgba(171, 119, 123, 1)",
+};
 // A placeholder color rotator for charts that need to dynamically pick colors
 const COLOR_ROTATION = ["#1b2126", "#6d1e7d", "#ff2454", "#ff7e70", "#ffd75e"];
 
@@ -307,18 +321,18 @@ const COLORS_GOOD_BAD = {
   bad: "#d12249",
 };
 
-const COLORS_STACKED_TWO_VALUES = ["#809ae5", "#3f4d62"];
+const COLORS_STACKED_TWO_VALUES = ["#25636f", "#d9a95f"];
 
 const COLORS_STACKED_TWO_VALUES_ALT = ["#FF2454", "#FFD75E"];
 
-const COLORS_THREE_VALUES = ["#d12249", "#809ae5", "#3f4d62"];
+const COLORS_THREE_VALUES = ["#25636f", "#d9a95f", "#ba4f4f"];
 
 const COLORS_FIVE_VALUES = [
-  "#1b2126",
-  "#6d1e7d",
-  "#ff2454",
-  "#ffd75e",
-  "#ff7e70",
+  "#25636f",
+  "#d9a95f",
+  "#ba4f4f",
+  "#4c6290",
+  "#90aeb5",
 ];
 
 const COLORS_FIVE_VALUES_LIGHT = [
@@ -330,13 +344,13 @@ const COLORS_FIVE_VALUES_LIGHT = [
 ];
 
 const COLORS_SEVEN_VALUES = [
-  "#1b2126",
-  "#6d1e7d",
-  "#ff2454",
-  "#ffd75e",
-  "#8299e4",
-  "#ff7e70",
-  "#3e4c63",
+  "#25636f",
+  "#d9a95f",
+  "#ba4f4f",
+  "#4c6290",
+  "#90aeb5",
+  "#cc989c",
+  "#c2cbd0",
 ];
 
 const COLORS_LANTERN_SET = [
@@ -359,4 +373,5 @@ export {
   COLORS_FIVE_VALUES_LIGHT,
   COLORS_SEVEN_VALUES,
   COLORS_LANTERN_SET,
+  CORE_COLORS,
 };
