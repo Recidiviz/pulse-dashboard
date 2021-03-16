@@ -28,7 +28,7 @@ import reduce from "lodash/fp/reduce";
 import sortBy from "lodash/fp/sortBy";
 import toInteger from "lodash/fp/toInteger";
 
-import { COLORS } from "../../assets/scripts/constants/colors";
+import { COLORS, CORE_COLORS } from "../../assets/scripts/constants/colors";
 import { configureDownloadButtons } from "../utils/configureDownloadButtons";
 import {
   sortFilterAndSupplementMostRecentMonths,
@@ -193,11 +193,11 @@ const RevocationAdmissionsSnapshot = ({
           },
           metricType
         ),
-        backgroundColor: COLORS["blue-standard"],
-        borderColor: COLORS["blue-standard"],
-        pointBackgroundColor: COLORS["blue-standard"],
-        pointHoverBackgroundColor: COLORS["blue-standard"],
-        pointHoverBorderColor: COLORS["blue-standard"],
+        backgroundColor: CORE_COLORS.indigo,
+        borderColor: CORE_COLORS.indigo,
+        pointBackgroundColor: CORE_COLORS.indigo,
+        pointHoverBackgroundColor: CORE_COLORS.indigo,
+        pointHoverBorderColor: CORE_COLORS.indigo,
         pointRadius: 4,
         hitRadius: 5,
         fill: false,

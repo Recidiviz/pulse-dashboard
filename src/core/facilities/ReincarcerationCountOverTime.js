@@ -26,7 +26,7 @@ import sumBy from "lodash/fp/sumBy";
 import toInteger from "lodash/fp/toInteger";
 import values from "lodash/fp/values";
 
-import { COLORS } from "../../assets/scripts/constants/colors";
+import { COLORS, CORE_COLORS } from "../../assets/scripts/constants/colors";
 import { configureDownloadButtons } from "../utils/configureDownloadButtons";
 import { filterDatasetByDistrict } from "../utils/dataFilters";
 import {
@@ -155,11 +155,11 @@ const ReincarcerationCountOverTime = ({
               },
               metricType
             ),
-            backgroundColor: COLORS["grey-500"],
-            borderColor: COLORS["grey-500"],
-            pointBackgroundColor: COLORS["grey-500"],
-            pointHoverBackgroundColor: COLORS["grey-500"],
-            pointHoverBorderColor: COLORS["grey-500"],
+            backgroundColor: CORE_COLORS.indigo,
+            borderColor: CORE_COLORS.indigo,
+            pointBackgroundColor: CORE_COLORS.indigo,
+            pointHoverBackgroundColor: CORE_COLORS.indigo,
+            pointHoverBorderColor: CORE_COLORS.indigo,
             fill: false,
             borderWidth: 2,
             data: chartDataPoints,

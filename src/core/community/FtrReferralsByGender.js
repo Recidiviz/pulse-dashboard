@@ -31,6 +31,7 @@ import values from "lodash/fp/values";
 import {
   COLORS_STACKED_TWO_VALUES_ALT,
   COLORS,
+  CORE_COLORS,
 } from "../../assets/scripts/constants/colors";
 import { configureDownloadButtons } from "../utils/configureDownloadButtons";
 import {
@@ -107,7 +108,7 @@ const FtrReferralsByGender = ({
         datasets: [
           {
             label: "Referrals",
-            backgroundColor: COLORS["blue-standard"],
+            backgroundColor: CORE_COLORS["gold-dark"],
             hoverBackgroundColor: COLORS["blue-standard"],
             yAxisID: "y-axis-left",
             data: ftrReferralCounts,
