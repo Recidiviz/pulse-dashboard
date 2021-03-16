@@ -27,14 +27,14 @@ import WarningIcon from "../../controls/WarningIcon";
 import AdmissionCountsByType from "../AdmissionCountsByType";
 import CaseTerminationsByOfficer from "./CaseTerminationsByOfficer";
 import CaseTerminationsByTerminationType from "./CaseTerminationsByTerminationType";
-import LsirScoreChangeSnapshot from "./LsirScoreChangeSnapshot";
-import RevocationAdmissionsSnapshot from "./RevocationAdmissionsSnapshot";
+import LsirScoreChangeSnapshot from "../goals/LsirScoreChangeSnapshot";
+import RevocationAdmissionsSnapshot from "../goals/RevocationAdmissionsSnapshot";
 import RevocationCountByOfficer from "./RevocationCountByOfficer";
-import RevocationCountOverTime from "./RevocationCountOverTime";
+import RevocationCountOverTime from "../goals/RevocationCountOverTime";
 import RevocationCountBySupervisionType from "./RevocationCountBySupervisionType";
 import RevocationCountByViolationType from "./RevocationCountByViolationType";
 import RevocationProportionByRace from "./RevocationProportionByRace";
-import SupervisionSuccessSnapshot from "./SupervisionSuccessSnapshot";
+import SupervisionSuccessSnapshot from "../goals/SupervisionSuccessSnapshot";
 import CoreFilterBar from "../CoreFilterBar";
 import {
   defaultDistrict,
@@ -54,6 +54,7 @@ import FtrReferralsByGender from "./FtrReferralsByGender";
 import FtrReferralsByAge from "./FtrReferralsByAge";
 
 const CommunityExplore = () => {
+  // TODO(#916): Consolidate API
   const { apiData, isLoading, getTokenSilently } = useChartData(
     "us_nd/community/explore"
   );

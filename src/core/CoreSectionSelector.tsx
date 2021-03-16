@@ -34,7 +34,11 @@ if (flags.showMethodologyDropdown) {
   menu.push({ label: "Methodology", link: "/methodology" });
 }
 
-const CoreSectionSelector = () => {
+type propTypes = {
+  menu: { label: string; link: string }[];
+};
+
+const CoreSectionSelector: React.FC<propTypes> = ({ menu }) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const toggle = () => setDropdownOpen((prevState) => !prevState);
 
