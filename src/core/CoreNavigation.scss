@@ -11,6 +11,8 @@
 
   &__logo {
     margin: 1.5rem 0 2rem 0rem;
+    // min-width hack so IE11 doesn't clobber the logo
+    min-width: 6.5rem;
 
     &-image {
       height: 1.5rem;
