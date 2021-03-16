@@ -198,11 +198,8 @@ const RevocationAdmissionsSnapshot = ({
         pointBackgroundColor: CORE_COLORS.indigo,
         pointHoverBackgroundColor: CORE_COLORS.indigo,
         pointHoverBorderColor: CORE_COLORS.indigo,
-        pointRadius: 4,
-        hitRadius: 5,
         fill: false,
         borderWidth: 2,
-        lineTension: 0,
         data: chartDataPoints,
       },
     ];
