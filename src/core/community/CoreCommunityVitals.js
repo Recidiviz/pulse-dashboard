@@ -17,7 +17,10 @@
 
 import React from "react";
 import PropTypes from "prop-types";
+
 import PageTemplate from "../PageTemplate";
+import BlockVitalCards from "./BlockVitalCards";
+
 import "./CoreCommunityVitals.scss";
 
 const CoreCommunityVitals = ({ stateCode }) => {
@@ -29,12 +32,12 @@ const CoreCommunityVitals = ({ stateCode }) => {
         return "DEMO";
     }
   };
-
   return (
     <PageTemplate>
-      <div className="CoreCommunityVitals__Title">
+      <div className="CoreCommunityVitals__Title col-12">
         {getStateName(stateCode)}
       </div>
+      <BlockVitalCards />
     </PageTemplate>
   );
 };
