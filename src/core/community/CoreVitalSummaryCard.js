@@ -79,8 +79,13 @@ CoreVitalSummaryCard.defaultProps = {
 CoreVitalSummaryCard.propTypes = {
   title: PropTypes.string.isRequired,
   percentage: PropTypes.number.isRequired,
-  status: PropTypes.oneOf(["POOR", "NEEDS_IMPROVEMENT", "GOOD", "GREAT"])
-    .isRequired,
+  status: PropTypes.oneOf([
+    "POOR",
+    "NEEDS_IMPROVEMENT",
+    "GOOD",
+    "GREAT",
+    "EXCELLENT",
+  ]).isRequired,
   onClick: PropTypes.func.isRequired,
   selected: PropTypes.bool,
 };
