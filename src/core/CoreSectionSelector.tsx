@@ -23,16 +23,6 @@ import {
   DropdownMenu,
   DropdownItem,
 } from "reactstrap";
-import flags from "../flags";
-
-const menu = [
-  { label: "Community", link: "/community/goals" },
-  { label: "Facilities", link: "/facilities/goals" },
-];
-
-if (flags.showMethodologyDropdown) {
-  menu.push({ label: "Methodology", link: "/methodology" });
-}
 
 type propTypes = {
   menu: { label: string; link: string }[];

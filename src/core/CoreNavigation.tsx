@@ -25,11 +25,18 @@ import flags from "../flags";
 import recidivizLogo from "../assets/static/images/Logo.svg";
 import "./CoreNavigation.scss";
 
-const navigationLayout = {
-  community: ["explore"],
-  facilities: ["explore"],
-  goals: [],
-};
+const navigationLayout = flags.showMethodologyDropdown
+  ? {
+      community: ["explore"],
+      facilities: ["explore"],
+      goals: [],
+      methodology: [],
+    }
+  : {
+      community: ["explore"],
+      facilities: ["explore"],
+      goals: [],
+    };
 
 const CoreNavigation: React.FC = () => {
   const { pathname } = useLocation();
@@ -42,7 +49,8 @@ const CoreNavigation: React.FC = () => {
     const options = entry[1];
     return {
       label: page[0].toUpperCase() + page.slice(1),
-      link: `/${page}/${options[0] ?? ""}`,
+      // @ts-ignore
+      link: `/${page}${options.length ? `/${options[0]}` : ""}`,
     };
   });
 
