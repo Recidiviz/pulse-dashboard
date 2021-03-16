@@ -64,9 +64,6 @@
           a:first-child > button {
             margin-top: 0.31rem;
           }
-          a:last-child > button {
-            border-radius: 0 0 1rem 1rem;
-          }
         }
       }
 
@@ -95,6 +92,7 @@
     .dropdown-menu {
       display: none;
       margin: 0;
+      overflow: hidden;
 
       .divider {
         border-bottom: 0.06rem solid $border-color;

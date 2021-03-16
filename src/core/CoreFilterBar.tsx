@@ -146,7 +146,7 @@ const CoreFilterBar: React.FC<CoreFilterBarProps> = ({
           )}
 
           {setChartSupervisionType && supervisionType && (
-            <Filter title="Supervision Type" width="7rem">
+            <Filter title="Supervision Type" width="7.5rem">
               <CoreSelect
                 value={getFilterValue(supervisionType, supervisionTypeOptions)}
                 options={supervisionTypeOptions}

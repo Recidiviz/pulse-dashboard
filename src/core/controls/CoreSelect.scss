@@ -29,6 +29,7 @@
   }
 
   &__single-value {
+    color: $core-font-color !important;
     line-height: 1rem;
   }
 
@@ -78,6 +79,7 @@
   &__value-container {
     white-space: nowrap;
     text-overflow: ellipsis;
+    padding-left: 1rem !important;
   }
 
   &__custom-indicator {
