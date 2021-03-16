@@ -157,6 +157,7 @@ function newRevocationFile(req, res) {
   }
 }
 
+// TODO(#916): Consolidate API
 function communityGoals(req, res) {
   const { stateCode } = req.params;
   const metricType = "communityGoals";
@@ -168,6 +169,7 @@ function communityGoals(req, res) {
   );
 }
 
+// TODO(#916): Consolidate API
 function communityExplore(req, res) {
   const { stateCode } = req.params;
   const metricType = "communityExplore";
@@ -179,6 +181,7 @@ function communityExplore(req, res) {
   );
 }
 
+// TODO(#916): Consolidate API
 function facilitiesGoals(req, res) {
   const { stateCode } = req.params;
   const metricType = "facilitiesGoals";
@@ -212,6 +215,7 @@ function populationProjections(req, res) {
   );
 }
 
+// TODO(#916): Consolidate API
 function programmingExplore(req, res) {
   const { stateCode } = req.params;
   const metricType = "programmingExplore";

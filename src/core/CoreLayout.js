@@ -25,7 +25,7 @@ import "./CoreLayout.scss";
 
 const CoreLayout = ({ children }) => {
   return (
-    <div id="app">
+    <div id="app" className="CoreLayout">
       <div className="page-container">
         <div className="CoreLayout__header">
           <CoreNavigation />

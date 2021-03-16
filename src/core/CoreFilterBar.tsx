@@ -135,7 +135,7 @@ const CoreFilterBar: React.FC<CoreFilterBarProps> = ({
           )}
 
           {setChartMetricPeriodMonths && metricPeriodMonths && (
-            <Filter title="Time Period" width="7rem">
+            <Filter title="Time Period" width="8rem">
               <CoreSelect
                 value={getFilterValue(metricPeriodMonths, metricPeriodOptions)}
                 options={metricPeriodOptions}
@@ -146,7 +146,7 @@ const CoreFilterBar: React.FC<CoreFilterBarProps> = ({
           )}
 
           {setChartSupervisionType && supervisionType && (
-            <Filter title="Supervision Type" width="7rem">
+            <Filter title="Supervision Type" width="8.5rem">
               <CoreSelect
                 value={getFilterValue(supervisionType, supervisionTypeOptions)}
                 options={supervisionTypeOptions}

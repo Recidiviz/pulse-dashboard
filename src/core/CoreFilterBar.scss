@@ -2,23 +2,31 @@
 @import "./CoreConstants";
 
 .CoreFilterBar {
-  padding-top: 1rem;
-  padding-bottom: 1rem;
   background: $core-background;
-  padding-left: 13.5rem;
+  display: flex;
+  justify-content: center;
+  padding-top: 1rem;
+  padding-bottom: 0.5rem;
+  padding-left: 4rem;
+  padding-right: 4rem;
 
-  @media screen and (max-width: $core-breakpoint-lg) {
-    padding-left: 4rem;
+  @media screen and (max-width: $core-breakpoint-md) {
+    padding-left: 3rem;
+    padding-right: 3rem;
   }
 
   &__filters {
     display: flex;
+    flex-wrap: wrap;
     font-weight: 500;
+    max-width: $core-max-view-width;
+    width: 100%;
 
     .Filter {
       display: flex;
       align-items: center;
       justify-content: space-between;
+      padding-bottom: 0.5rem;
       padding-right: 1.5rem;
 
       &__title {

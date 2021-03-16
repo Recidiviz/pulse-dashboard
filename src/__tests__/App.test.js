@@ -25,7 +25,7 @@ import { US_MO, US_PA } from "../RootStore/TenantStore/lanternTenants";
 
 import mockWithTestId from "../../__helpers__/mockWithTestId";
 import Revocations from "../lantern/Revocations";
-import UsNDCommunityGoals from "../core/community/Goals";
+import UsNDCommunityGoals from "../core/goals/CoreGoalsView";
 import NotFound from "../components/NotFound";
 import Loading from "../components/Loading";
 import LanternLayout from "../lantern/LanternLayout";
@@ -40,7 +40,7 @@ jest.mock("../utils/i18nSettings");
 jest.mock("../lantern/LanternLayout");
 jest.mock("../lantern/Revocations");
 jest.mock("../core/CoreLayout");
-jest.mock("../core/community/Goals");
+jest.mock("../core/goals/CoreGoalsView");
 jest.mock("../components/NotFound");
 jest.mock("../components/Loading");
 jest.mock("../components/StoreProvider");
