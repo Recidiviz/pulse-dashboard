@@ -29,7 +29,7 @@ export function populationProjectionSummary(
     if (record.simulation_tag === "HISTORICAL") {
       return {
         simulationTag: record.simulation_tag,
-        timePeriod: Number(record.metric_period_months),
+        timePeriod: record.metric_period_months,
         compartment: record.compartment,
         legalStatus: record.legal_status,
         gender: record.simulation_group,
@@ -43,7 +43,7 @@ export function populationProjectionSummary(
     }
     return {
       simulationTag: record.simulation_tag,
-      timePeriod: Number(record.metric_period_months),
+      timePeriod: record.metric_period_months,
       compartment: record.compartment,
       legalStatus: record.legal_status,
       gender: record.simulation_group,

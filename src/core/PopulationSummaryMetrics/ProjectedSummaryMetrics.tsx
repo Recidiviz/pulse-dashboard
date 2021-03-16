@@ -16,61 +16,9 @@
 // =============================================================================
 import React from "react";
 import MetricsCard from "../MetricsCard/MetricsCard";
-import SummaryMetric, { getDeltaDirection } from "./SummaryMetric";
-import LoadingMetrics from "./LoadingMetrics";
+import SummaryMetrics from "./SummaryMetrics";
 import type { ProjectedSummaryRecord } from "../models/types";
 import "./PopulationSummaryMetrics.scss";
-
-const SummaryMetrics: React.FC<{
-  isLoading: boolean;
-  data?: ProjectedSummaryRecord;
-}> = ({ isLoading, data }) => (
-  <div className="SummaryMetrics">
-    {isLoading ? (
-      <>
-        <LoadingMetrics title="New arrivals" showMinMax />
-        <LoadingMetrics title="Releases" showMinMax />
-        <LoadingMetrics title="Total population" showMinMax />
-      </>
-    ) : (
-      data && (
-        <>
-          <SummaryMetric
-            title="New arrivals"
-            value={data.admissionCount}
-            percentChange={data.admissionPercentChange}
-            deltaDirection={getDeltaDirection({
-              percentChange: data.admissionPercentChange,
-            })}
-            projectedMinMax={[data.admissionCountMin, data.admissionCountMax]}
-          />
-          <SummaryMetric
-            title="Releases"
-            value={data.releaseCount}
-            percentChange={data.releasePercentChange}
-            deltaDirection={getDeltaDirection({
-              percentChange: data.releasePercentChange,
-              improvesOnIncrease: true,
-            })}
-            projectedMinMax={[data.releaseCountMin, data.releaseCountMax]}
-          />
-          <SummaryMetric
-            title="Total population"
-            value={data.totalPopulation}
-            percentChange={data.populationPercentChange}
-            deltaDirection={getDeltaDirection({
-              percentChange: data.populationPercentChange,
-            })}
-            projectedMinMax={[
-              data.totalPopulationCountMin,
-              data.totalPopulationCountMax,
-            ]}
-          />
-        </>
-      )
-    )}
-  </div>
-);
 
 const ProjectedSummaryMetrics: React.FC<{
   data?: ProjectedSummaryRecord;
@@ -84,7 +32,7 @@ const ProjectedSummaryMetrics: React.FC<{
           the population.
         </div>
       ) : (
-        <SummaryMetrics isLoading={isLoading} data={data} />
+        <SummaryMetrics isLoading={isLoading} data={data} showMinMax />
       )}
     </MetricsCard>
   );

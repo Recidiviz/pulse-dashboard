@@ -15,7 +15,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 import React from "react";
-import { MetricTitle } from "./SummaryMetric";
+import { MetricTitle } from "./SummaryMetrics";
 import "./LoadingMetrics.scss";
 
 const LoadingMetrics: React.FC<{ title: string; showMinMax?: boolean }> = ({

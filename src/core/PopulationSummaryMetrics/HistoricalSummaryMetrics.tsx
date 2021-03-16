@@ -16,8 +16,7 @@
 // =============================================================================
 import React from "react";
 import MetricsCard from "../MetricsCard";
-import SummaryMetric, { getDeltaDirection } from "./SummaryMetric";
-import LoadingMetrics from "./LoadingMetrics";
+import SummaryMetrics from "./SummaryMetrics";
 
 import type { HistoricalSummaryRecord } from "../models/types";
 
@@ -25,46 +24,9 @@ const HistoricalSummaryMetrics: React.FC<{
   data?: HistoricalSummaryRecord;
   isLoading: boolean;
 }> = ({ data, isLoading }) => {
-  if (isLoading || !data) {
-    return (
-      <MetricsCard heading="Past 6 months">
-        <div className="SummaryMetrics">
-          <LoadingMetrics title="New arrivals" />
-          <LoadingMetrics title="Releases" />
-          <LoadingMetrics title="Total population" />
-        </div>
-      </MetricsCard>
-    );
-  }
   return (
     <MetricsCard heading="Past 6 months">
-      <div className="SummaryMetrics">
-        <SummaryMetric
-          title="New arrivals"
-          value={data.admissionCount}
-          percentChange={data.admissionPercentChange}
-          deltaDirection={getDeltaDirection({
-            percentChange: data.admissionPercentChange,
-          })}
-        />
-        <SummaryMetric
-          title="Releases"
-          value={data.releaseCount}
-          percentChange={data.releasePercentChange}
-          deltaDirection={getDeltaDirection({
-            percentChange: data.releasePercentChange,
-            improvesOnIncrease: true,
-          })}
-        />
-        <SummaryMetric
-          title="Total population"
-          value={data.totalPopulation}
-          percentChange={data.populationPercentChange}
-          deltaDirection={getDeltaDirection({
-            percentChange: data.populationPercentChange,
-          })}
-        />
-      </div>
+      <SummaryMetrics data={data} isLoading={isLoading} />
     </MetricsCard>
   );
 };

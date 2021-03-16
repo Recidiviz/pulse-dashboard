@@ -18,6 +18,12 @@ import React from "react";
 import styled from "styled-components/macro";
 import { Icon, IconSVG } from "@recidiviz/case-triage-components";
 import { formatLargeNumber } from "../../utils/labels";
+import LoadingMetrics from "./LoadingMetrics";
+import type {
+  ProjectedSummaryRecord,
+  HistoricalSummaryRecord,
+} from "../models/types";
+import ProjectedSummaryMetrics from "./ProjectedSummaryMetrics";
 
 const MetricContainer = styled.div`
   display: flex;
@@ -140,4 +146,68 @@ const SummaryMetric: React.FC<SummaryMetricProps> = ({
     </MetricContainer>
   );
 };
-export default SummaryMetric;
+
+const SummaryMetrics: React.FC<{
+  isLoading: boolean;
+  data?: ProjectedSummaryRecord | HistoricalSummaryRecord;
+  showMinMax?: boolean;
+}> = ({ isLoading, data, showMinMax = false }) => {
+  return (
+    <div className="SummaryMetrics">
+      {isLoading ? (
+        <>
+          <LoadingMetrics title="New arrivals" showMinMax={showMinMax} />
+          <LoadingMetrics title="Releases" showMinMax={showMinMax} />
+          <LoadingMetrics title="Total population" showMinMax={showMinMax} />
+        </>
+      ) : (
+        data && (
+          <>
+            <SummaryMetric
+              title="New arrivals"
+              value={data.admissionCount}
+              percentChange={data.admissionPercentChange}
+              deltaDirection={getDeltaDirection({
+                percentChange: data.admissionPercentChange,
+              })}
+              projectedMinMax={
+                "admissionCountMin" in data
+                  ? [data.admissionCountMin, data.admissionCountMax]
+                  : undefined
+              }
+            />
+            <SummaryMetric
+              title="Releases"
+              value={data.releaseCount}
+              percentChange={data.releasePercentChange}
+              deltaDirection={getDeltaDirection({
+                percentChange: data.releasePercentChange,
+                improvesOnIncrease: true,
+              })}
+              projectedMinMax={
+                "releaseCountMin" in data
+                  ? [data.releaseCountMin, data.releaseCountMax]
+                  : undefined
+              }
+            />
+            <SummaryMetric
+              title="Total population"
+              value={data.totalPopulation}
+              percentChange={data.populationPercentChange}
+              deltaDirection={getDeltaDirection({
+                percentChange: data.populationPercentChange,
+              })}
+              projectedMinMax={
+                "totalPopulationCountMin" in data
+                  ? [data.totalPopulationCountMin, data.totalPopulationCountMax]
+                  : undefined
+              }
+            />
+          </>
+        )
+      )}
+    </div>
+  );
+};
+
+export default SummaryMetrics;
