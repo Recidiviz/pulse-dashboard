@@ -26,11 +26,11 @@ import MethodologyCollapse from "../MethodologyCollapse";
 import PeriodLabel from "../PeriodLabel";
 import WarningIcon from "../../controls/WarningIcon";
 import AdmissionsVsReleases from "./AdmissionsVsReleases";
-import ReincarcerationCountOverTime from "./ReincarcerationCountOverTime";
+import ReincarcerationCountOverTime from "../goals/ReincarcerationCountOverTime";
 import ReincarcerationRateByStayLength from "./ReincarcerationRateByStayLength";
 import AdmissionCountsByType from "../AdmissionCountsByType";
-import DaysAtLibertySnapshot from "./DaysAtLibertySnapshot";
-import FiltersBar from "../FiltersBar";
+import DaysAtLibertySnapshot from "../goals/DaysAtLibertySnapshot";
+import CoreFilterBar from "../CoreFilterBar";
 import {
   defaultDistrict,
   defaultMetricPeriod,
@@ -55,7 +55,7 @@ const FacilitiesExplore = () => {
   }
 
   const filters = (
-    <FiltersBar
+    <CoreFilterBar
       setChartMetricType={setMetricType}
       setChartMetricPeriodMonths={setMetricPeriodMonths}
       setChartDistrict={setDistrict}

@@ -1,5 +1,5 @@
 // Recidiviz - a data platform for criminal justice reform
-// Copyright (C) 2019 Recidiviz, Inc.
+// Copyright (C) 2021 Recidiviz, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -19,6 +19,10 @@ import "@testing-library/jest-dom/extend-expect";
 import "@testing-library/react-hooks/dont-cleanup-after-each";
 import "jest-canvas-mock";
 
+import { configure } from "enzyme";
+import Adapter from "@wojtekmaj/enzyme-adapter-react-17";
 import { initI18n } from "./utils/i18nSettings";
 
 initI18n();
+
+configure({ adapter: new Adapter() });

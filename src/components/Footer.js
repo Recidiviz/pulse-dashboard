@@ -20,7 +20,7 @@ import React from "react";
 const Footer = () => (
   <footer className="Footer bdT ta-c p-30 lh-0 fsz-sm c-grey-600">
     <span>
-      © 2020{" "}
+      © 2021{" "}
       <a
         href="https://www.recidiviz.org/"
         target="_blank"

@@ -22,7 +22,13 @@ import { Link } from "react-router-dom";
 import { getUserStateName } from "../../RootStore/utils/user";
 import { useUserStore } from "../StoreProvider";
 
-const TopBarUserMenuForAuthenticatedUser = () => {
+type PropTypes = {
+  hideUsername?: boolean;
+};
+
+const TopBarUserMenuForAuthenticatedUser: React.FC<PropTypes> = ({
+  hideUsername = false,
+}) => {
   const { user, logout } = useUserStore();
 
   const onLogout = useCallback(
@@ -42,10 +48,12 @@ const TopBarUserMenuForAuthenticatedUser = () => {
         <div className="peer mR-10">
           <img className="w-2r bdrs-50p" src={user.picture} alt="" />
         </div>
-        <div className="peer">
-          <ul className="fsz-sm c-grey-900">{user.name}</ul>
-          <ul className="fsz-sm pT-3 c-grey-600">{getUserStateName(user)}</ul>
-        </div>
+        {!hideUsername && (
+          <div className="peer">
+            <ul className="fsz-sm c-grey-900">{user.name}</ul>
+            <ul className="fsz-sm pT-3 c-grey-600">{getUserStateName(user)}</ul>
+          </div>
+        )}
       </Dropdown.Toggle>
       <Dropdown.Menu renderOnMount as="ul" className="dropdown-menu fsz-sm">
         <Dropdown.Item
@@ -60,7 +68,6 @@ const TopBarUserMenuForAuthenticatedUser = () => {
         <Dropdown.Item
           as="a"
           href="#"
-          variant="link"
           className="d-b td-n bgcH-grey-100 c-grey-700 pX-15"
           onClick={onLogout}
         >
