@@ -18,14 +18,17 @@ import React from "react";
 import MetricsCard from "../MetricsCard/MetricsCard";
 import SummaryMetrics from "./SummaryMetrics";
 import type { ProjectedSummaryRecord } from "../models/types";
+import { usePopulationFiltersStore } from "../../components/StoreProvider";
 import "./PopulationSummaryMetrics.scss";
 
 const ProjectedSummaryMetrics: React.FC<{
   data?: ProjectedSummaryRecord;
   isLoading: boolean;
 }> = ({ data, isLoading }) => {
+  const { timePeriodLabel } = usePopulationFiltersStore();
+
   return (
-    <MetricsCard heading="Next 6 months" subheading="Projected">
+    <MetricsCard heading={`Next ${timePeriodLabel}`} subheading="Projected">
       {!data && !isLoading ? (
         <div className="MissingProjectionData">
           There are not enough data to generate a projection for this subset of

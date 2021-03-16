@@ -14,38 +14,45 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-import { makeAutoObservable, observable, action, set } from "mobx";
-import { metricPeriodOptions as timePeriodOptions } from "../core/utils/filterOptions";
+import {
+  makeAutoObservable,
+  computed,
+  observable,
+  action,
+  set,
+  get,
+} from "mobx";
 import type RootStore from ".";
+import filterOptions, {
+  PopulationFilters,
+  FilterKeys,
+} from "../core/utils/filterOptions";
+import { formatTimePeriodLabel } from "../core/utils/timePeriod";
 
-export type Filters = {
-  [k: string]: any;
-  timePeriod: string;
-};
-
-export type FilterKeys = keyof Filters;
-
-const defaultFilters: Filters = {
-  timePeriod: timePeriodOptions[4].value,
-} as const;
-
-export default class CoreFiltersStore {
+export default class CorePopulationFiltersStore {
   rootStore;
 
-  filters: Filters = defaultFilters;
+  filterOptions = filterOptions.US_ID;
+
+  filters: PopulationFilters = this.filterOptions.defaultFilterValues;
 
   constructor({ rootStore }: { rootStore: RootStore }) {
     makeAutoObservable(this, {
       filters: observable,
+      timePeriodLabel: computed,
       setFilters: action,
     });
 
     this.rootStore = rootStore;
   }
 
-  setFilters(updatedFilters: Partial<Filters>): void {
+  setFilters(updatedFilters: Partial<PopulationFilters>): void {
     Object.keys(updatedFilters).forEach((filterKey) => {
-      set(this.filters, filterKey, updatedFilters[filterKey]);
+      set(this.filters, filterKey, updatedFilters[filterKey as FilterKeys]);
     });
+  }
+
+  get timePeriodLabel(): string {
+    return formatTimePeriodLabel(get(this.filters, "timePeriod"));
   }
 }

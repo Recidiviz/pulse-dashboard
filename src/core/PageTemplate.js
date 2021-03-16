@@ -23,7 +23,7 @@ import "../assets/styles/index.scss";
 import "./PageTemplate.scss";
 
 const PageTemplate = ({ children, importantNotes, filters = null }) => (
-  <main className="main-content PageTemplate">
+  <div className="main-content PageTemplate">
     {filters}
     <div id="mainContent">
       <div
@@ -37,7 +37,7 @@ const PageTemplate = ({ children, importantNotes, filters = null }) => (
         {children}
       </div>
     </div>
-  </main>
+  </div>
 );
 
 PageTemplate.defaultProps = {

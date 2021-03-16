@@ -1,9 +1,11 @@
-@import "../assets/styles/spec/settings/index";
-@import "./CoreConstants";
+@import "../../assets/styles/spec/settings/index";
+@import "../CoreConstants";
 
-.CoreFilterBar {
+.FilterBar {
   background: $core-background;
-  margin: 1rem;
+  display: flex;
+  justify-content: center;
+  padding: 1rem 0 0.5rem;
 
   @media screen and (max-width: $core-breakpoint-lg) {
     padding-left: 4rem;
@@ -25,7 +27,7 @@
 
       &__title {
         white-space: nowrap;
-        color: #72777a;
+        color: $slate-80;
         font-size: 0.8rem;
         line-height: 1rem;
         letter-spacing: 0.01em;

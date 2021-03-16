@@ -18,15 +18,16 @@ import React from "react";
 import { observer } from "mobx-react-lite";
 import HistoricalSummaryMetrics from "./HistoricalSummaryMetrics";
 import ProjectedSummaryMetrics from "./ProjectedSummaryMetrics";
+import useChartData from "../hooks/useChartData";
+import { usePopulationFiltersStore } from "../../components/StoreProvider";
 import type {
   PopulationProjectionSummaryRecords,
   HistoricalSummaryRecord,
   ProjectedSummaryRecord,
 } from "../models/types";
-import { useCoreFiltersStore } from "../../components/StoreProvider";
 import { recordMatchesSimulationTag } from "../models/PopulationProjectionSummaryMetric";
 import "./PopulationSummaryMetrics.scss";
-import type { Filters } from "../../RootStore/CoreFiltersStore";
+import type { PopulationFilters } from "../utils/filterOptions";
 
 type PropTypes = {
   isLoading?: boolean;
@@ -34,17 +35,24 @@ type PropTypes = {
   projectionSummaries?: PopulationProjectionSummaryRecords;
 };
 
-function applyDataFilters(filters: Filters) {
+function applyDataFilters(filters: PopulationFilters) {
   return (record: PopulationProjectionSummaryRecords[number]) => {
-    return record.timePeriod === filters.timePeriod;
+    return (
+      record.timePeriod === filters.timePeriod &&
+      record.gender === filters.gender &&
+      // TODO: Implement switching filters between facilities/community
+      (record.legalStatus === filters.legalStatus ||
+        filters.legalStatus === "all")
+    );
   };
 }
+
 const PopulationSummaryMetrics: React.FC<PropTypes> = ({
   isError,
-  isLoading = false,
+  isLoading,
   projectionSummaries = [],
 }) => {
-  const filtersStore = useCoreFiltersStore();
+  const filtersStore = usePopulationFiltersStore();
   const dataFilter = applyDataFilters(filtersStore.filters);
 
   // TODO: add in Error state

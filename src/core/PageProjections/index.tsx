@@ -15,20 +15,17 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 import React from "react";
-import { observer } from "mobx-react-lite";
 import PageTemplate from "../PageTemplate";
 import PopulationSummaryMetrics from "../PopulationSummaryMetrics";
 import useChartData from "../hooks/useChartData";
 import {
   PopulationProjectionSummaryRecords,
-  PopulationProjectionTimeseriesRecord,
   RawApiData,
 } from "../models/types";
 import { populationProjectionSummary } from "../models/PopulationProjectionSummaryMetric";
 import PopulationTimeseriesChart from "../PopulationTimeseriesChart";
 import { populationProjectionTimeseries } from "../models/PopulationProjectionTimeseriesMetric";
-import CoreFilterBar from "../CoreFilterBar";
-import { useCoreFiltersStore } from "../../components/StoreProvider/StoreProvider";
+import PopulationFilterBar from "../PopulationFilterBar";
 
 type ChartDataType = {
   isLoading: boolean;
@@ -40,19 +37,6 @@ const PageProjections: React.FC = () => {
   const { isLoading, isError, apiData }: ChartDataType = useChartData(
     "us_id/projections"
   ) as ChartDataType;
-
-  const filtersStore = useCoreFiltersStore();
-
-  const setTimePeriod = (value: string) => {
-    filtersStore.setFilters({ timePeriod: value });
-  };
-
-  const filters = (
-    <CoreFilterBar
-      metricPeriodMonths={filtersStore.filters.timePeriod}
-      setChartMetricPeriodMonths={setTimePeriod}
-    />
-  );
 
   if (isLoading) {
     return (
@@ -72,7 +56,7 @@ const PageProjections: React.FC = () => {
   );
 
   return (
-    <PageTemplate filters={filters}>
+    <PageTemplate filters={<PopulationFilterBar />}>
       <PopulationSummaryMetrics
         isError={isError}
         projectionSummaries={projectionSummaries}
@@ -82,4 +66,4 @@ const PageProjections: React.FC = () => {
   );
 };
 
-export default observer(PageProjections);
+export default PageProjections;

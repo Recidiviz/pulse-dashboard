@@ -16,9 +16,31 @@
 // =============================================================================
 
 import tk from "timekeeper";
-import { monthNamesWithYearsFromNumbers, getYearFromNow } from "../timePeriod";
+import {
+  monthNamesWithYearsFromNumbers,
+  getYearFromNow,
+  formatTimePeriodLabel,
+} from "../timePeriod";
 
 describe("timePeriod", () => {
+  describe("formatTimePeriodLabel", () => {
+    it("returns the correct labels", () => {
+      expect(formatTimePeriodLabel("1")).toEqual("1 month");
+      expect(formatTimePeriodLabel("3")).toEqual("3 months");
+      expect(formatTimePeriodLabel("6")).toEqual("6 months");
+      expect(formatTimePeriodLabel("12")).toEqual("1 year");
+      expect(formatTimePeriodLabel("24")).toEqual("2 years");
+      expect(formatTimePeriodLabel("60")).toEqual("5 years");
+    });
+
+    it("returns an empty string for empty or invalid months values", () => {
+      expect(formatTimePeriodLabel("")).toEqual("");
+      expect(formatTimePeriodLabel("a")).toEqual("");
+      expect(formatTimePeriodLabel(null)).toEqual("");
+      expect(formatTimePeriodLabel(undefined)).toEqual("");
+    });
+  });
+
   describe("#getYearFromNow", () => {
     let now;
     beforeAll(() => {

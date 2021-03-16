@@ -4,7 +4,7 @@
 .PageTemplate {
   background: $core-background;
   display: flex;
-  justify-content: center;
+  flex-flow: column;
 
   @media screen and (max-width: $core-breakpoint-lg) {
     padding-left: 4rem;
@@ -17,6 +17,7 @@
   }
 
   #mainContent {
+    align-self: center;
     max-width: $core-max-view-width;
     width: 100%;
   }

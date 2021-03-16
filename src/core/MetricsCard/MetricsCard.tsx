@@ -21,7 +21,6 @@ import * as fontStyles from "../CoreConstants.scss";
 
 const MetricsCardComponent = styled(Card)`
   width: 100%;
-  margin: 1rem;
 `;
 
 const MetricHeading = styled.h4`

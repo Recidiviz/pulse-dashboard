@@ -17,15 +17,17 @@
 import React from "react";
 import MetricsCard from "../MetricsCard";
 import SummaryMetrics from "./SummaryMetrics";
-
+import { usePopulationFiltersStore } from "../../components/StoreProvider";
 import type { HistoricalSummaryRecord } from "../models/types";
 
 const HistoricalSummaryMetrics: React.FC<{
   data?: HistoricalSummaryRecord;
   isLoading: boolean;
 }> = ({ data, isLoading }) => {
+  const { timePeriodLabel } = usePopulationFiltersStore();
+
   return (
-    <MetricsCard heading="Past 6 months">
+    <MetricsCard heading={`Past ${timePeriodLabel}`}>
       <SummaryMetrics data={data} isLoading={isLoading} />
     </MetricsCard>
   );

@@ -54,9 +54,9 @@ export function useFiltersStore() {
   return filtersStore;
 }
 
-export function useCoreFiltersStore() {
-  const { coreFiltersStore } = useRootStore();
-  return coreFiltersStore;
+export function usePopulationFiltersStore() {
+  const { populationFiltersStore } = useRootStore();
+  return populationFiltersStore;
 }
 
 export function useUserStore() {
