@@ -188,7 +188,7 @@ const LsirScoreChangeSnapshot = ({
                 fontStyle: "bold",
               },
               gridLines: {
-                color: "#FFF",
+                display: false,
               },
             },
           ],

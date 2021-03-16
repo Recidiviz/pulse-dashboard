@@ -186,6 +186,9 @@ const ReincarcerationCountOverTime = ({
               ticks: {
                 autoSkip: true,
               },
+              gridLines: {
+                display: false,
+              },
             },
           ],
           yAxes: [

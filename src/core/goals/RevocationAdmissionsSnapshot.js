@@ -255,7 +255,7 @@ const RevocationAdmissionsSnapshot = ({
                 fontStyle: "bold",
               },
               gridLines: {
-                color: "#FFF",
+                display: false,
               },
             },
           ],

@@ -159,7 +159,7 @@ const DaysAtLibertySnapshot = ({
                 fontStyle: "bold",
               },
               gridLines: {
-                color: "#FFF",
+                display: false,
               },
             },
           ],

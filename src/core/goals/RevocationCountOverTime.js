@@ -186,6 +186,13 @@ const RevocationCountOverTime = ({
               stacked: true,
             },
           ],
+          xAxes: [
+            {
+              gridLines: {
+                display: false,
+              },
+            },
+          ],
         },
         tooltips: {
           backgroundColor: COLORS["grey-800-light"],
