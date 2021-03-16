@@ -38,6 +38,7 @@ const CoreSectionSelector: React.FC<propTypes> = ({ menu }) => {
     menu.find((item) => item.label.toLowerCase() === currentLabel) ?? menu[0];
   const filteredMenu = menu.filter((item) => item.label !== selectedItem.label);
 
+  // TODO(#919): Return keyboard control to section selector
   return (
     <Dropdown
       className="recidiviz-dropdown-menu-text"
@@ -48,11 +49,9 @@ const CoreSectionSelector: React.FC<propTypes> = ({ menu }) => {
         {selectedItem.label}
       </DropdownToggle>
       <DropdownMenu cssModule={{ transform: "translate3d(0px, 24px, 0px)" }}>
-        {filteredMenu.map(({ label, link }, index) => (
+        {filteredMenu.map(({ label, link }) => (
           <Link key={label} to={link}>
-            <DropdownItem tag="button" autoFocus={!index}>
-              {label}
-            </DropdownItem>
+            <DropdownItem tag="button">{label}</DropdownItem>
           </Link>
         ))}
       </DropdownMenu>
