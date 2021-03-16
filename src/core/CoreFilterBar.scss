@@ -2,11 +2,11 @@
 @import "./CoreConstants";
 
 .CoreFilterBar {
+  background: $core-background;
   display: flex;
   justify-content: center;
   padding-top: 1rem;
-  padding-bottom: 1rem;
-  background: $core-background;
+  padding-bottom: 0.5rem;
   padding-left: 4rem;
   padding-right: 4rem;
 
@@ -17,6 +17,7 @@
 
   &__filters {
     display: flex;
+    flex-wrap: wrap;
     font-weight: 500;
     max-width: $core-max-view-width;
     width: 100%;
@@ -25,6 +26,7 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
+      padding-bottom: 0.5rem;
       padding-right: 1.5rem;
 
       &__title {
