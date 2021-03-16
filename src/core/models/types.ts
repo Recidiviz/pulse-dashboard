@@ -45,7 +45,7 @@ export type ProjectedSummaryRecord = HistoricalSummaryRecord & {
 };
 
 export type HistoricalSummaryRecord = {
-  timePeriod?: number;
+  timePeriod?: string;
   compartment?: string;
   legalStatus?: string;
   gender?: string;
