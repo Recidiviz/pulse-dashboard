@@ -1,5 +1,5 @@
 // Recidiviz - a data platform for criminal justice reform
-// Copyright (C) 2020 Recidiviz, Inc.
+// Copyright (C) 2021 Recidiviz, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -16,20 +16,30 @@
 // =============================================================================
 
 import React from "react";
-import PropTypes from "prop-types";
-import { NavLink } from "react-router-dom";
+import { mount } from "enzyme";
+import TogglePill from "../TogglePill";
 
-const SideBarLink = ({ name, url }) => (
-  <li className="SideBarLink nav-item">
-    <NavLink to={url} className="sidebar-link" activeClassName="active">
-      {name}
-    </NavLink>
-  </li>
-);
+describe("TogglePill tests", () => {
+  const renderTogglePill = () => {
+    return mount(
+      <TogglePill
+        currentValue="left"
+        leftPill={{ label: "Left", value: "left" }}
+        rightPill={{ label: "Right", value: "right" }}
+        onChange={() => {}}
+      />
+    );
+  };
 
-SideBarLink.propTypes = {
-  name: PropTypes.string.isRequired,
-  url: PropTypes.string.isRequired,
-};
+  it("Should render two options", () => {
+    const selector = renderTogglePill();
 
-export default SideBarLink;
+    expect(selector.find(".TogglePill__button")).toHaveLength(2);
+  });
+
+  it("One one option should be checked", () => {
+    const selector = renderTogglePill();
+
+    expect(selector.find(".TogglePill__button--selected")).toHaveLength(1);
+  });
+});

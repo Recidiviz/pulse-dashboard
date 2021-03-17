@@ -16,32 +16,40 @@
 // =============================================================================
 
 import React from "react";
-
 import PropTypes from "prop-types";
-import Footer from "../components/Footer";
-import CoreNavigation from "./CoreNavigation";
+import "./TogglePill.scss";
+import cx from "classnames";
 
-import "./CoreLayout.scss";
-
-const CoreLayout = ({ children }) => {
+const TogglePill = ({ currentValue, onChange, leftPill, rightPill }) => {
   return (
-    <div id="app" className="CoreLayout">
-      <div className="page-container">
-        <div className="CoreLayout__header">
-          <CoreNavigation />
-        </div>
-        {children}
-      </div>
-      <Footer />
+    <div className="TogglePill">
+      {[leftPill, rightPill].map(({ value, label }) => (
+        <button
+          type="button"
+          key={label}
+          className={cx("TogglePill__button", {
+            "TogglePill__button--selected": currentValue === value,
+          })}
+          onClick={() => onChange(value)}
+        >
+          {label}
+        </button>
+      ))}
     </div>
   );
 };
 
-CoreLayout.propTypes = {
-  children: PropTypes.oneOfType([
-    PropTypes.node,
-    PropTypes.arrayOf(PropTypes.node),
-  ]).isRequired,
+TogglePill.propTypes = {
+  currentValue: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired,
+  leftPill: PropTypes.shape({
+    label: PropTypes.string,
+    value: PropTypes.string,
+  }).isRequired,
+  rightPill: PropTypes.shape({
+    label: PropTypes.string,
+    value: PropTypes.string,
+  }).isRequired,
 };
 
-export default CoreLayout;
+export default TogglePill;

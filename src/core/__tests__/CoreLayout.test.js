@@ -1,10 +1,26 @@
+// Recidiviz - a data platform for criminal justice reform
+// Copyright (C) 2021 Recidiviz, Inc.
+//
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <https://www.gnu.org/licenses/>.
+// =============================================================================
+
 import React from "react";
 import { render } from "@testing-library/react";
-import { useLocation, matchPath } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 import CoreLayout from "../CoreLayout";
 import TopBarUserMenuForAuthenticatedUser from "../../components/TopBar/TopBarUserMenuForAuthenticatedUser";
-import useSideBar from "../hooks/useSideBar";
 
 import mockWithTestId from "../../../__helpers__/mockWithTestId";
 import { PageProvider } from "../../contexts/PageContext";
@@ -16,7 +32,6 @@ jest.mock("react-router-dom", () => ({
   NavLink: jest.fn().mockReturnValue(null),
 }));
 jest.mock("../../components/TopBar/TopBarUserMenuForAuthenticatedUser");
-jest.mock("../hooks/useSideBar");
 
 describe("CoreLayout tests", () => {
   TopBarUserMenuForAuthenticatedUser.mockReturnValue(null);
@@ -24,10 +39,6 @@ describe("CoreLayout tests", () => {
   const mockChildren = mockWithTestId(mockChildrenId);
   const mockPathname = "/some/nested/pathname";
   useLocation.mockReturnValue({ pathname: mockPathname });
-  useSideBar.mockReturnValue({
-    isSideBarCollapsed: true,
-    toggleSideBar: jest.fn(),
-  });
 
   beforeEach(() => {
     jest.clearAllMocks();
@@ -45,36 +56,5 @@ describe("CoreLayout tests", () => {
     const { getByTestId } = renderCoreLayout();
 
     expect(getByTestId(mockChildrenId)).toBeInTheDocument();
-  });
-
-  it("should call useSideBar hook and collapse layout", () => {
-    const { container } = renderCoreLayout();
-
-    expect(useSideBar).toHaveBeenCalled();
-    expect(container.firstChild.className).toContain("is-collapsed");
-  });
-
-  it("should call useSideBar hook and show full layout", () => {
-    useSideBar.mockReturnValue({
-      isSideBarCollapsed: false,
-      toggleSideBar: jest.fn(),
-    });
-    const { container } = renderCoreLayout();
-
-    expect(useSideBar).toHaveBeenCalled();
-    expect(container.firstChild.className).not.toContain("is-collapsed");
-  });
-
-  it("should hide the SideBar on the profile page", () => {
-    matchPath.mockReturnValueOnce(true);
-    const { container } = renderCoreLayout();
-
-    expect(container.firstChild.className).toContain("is-hidden");
-  });
-
-  it("should show right pathname in TopBarTitle", () => {
-    const { getByText } = renderCoreLayout();
-
-    expect(getByText("Some > Nested > Pathname")).toBeInTheDocument();
   });
 });

@@ -8,8 +8,8 @@
 // @Topbar
 // ---------------------------------------------------------
 
-@import "../../assets/styles/spec/settings/index";
-@import "../../assets/styles/spec/tools/index";
+@import "../settings/index";
+@import "../tools/index";
 
 .header {
   background-color: $default-white;
@@ -20,19 +20,12 @@
   position: fixed;
   transform: translateY(0);
   transition: all 0.2s ease, transform 0.6s;
-  width: calc(100% - #{$offscreen-size});
+  width: 100%;
   z-index: 800;
-
-  @include to($breakpoint-md) {
-    width: 100%;
-  }
-
-  @include between($breakpoint-md, $breakpoint-xl) {
-    width: calc(100% - #{$collapsed-size});
-  }
 
   .header-container {
     @include clearfix;
+    display: flex;
 
     height: $header-height;
 
@@ -41,7 +34,6 @@
       margin: $header-height/4;
     }
 
-    .nav-left,
     .nav-right {
       list-style: none;
       margin-bottom: 0;
@@ -126,13 +118,10 @@
       }
     }
 
-    .nav-left {
-      float: left;
-      margin-left: 15px;
-    }
-
     .nav-right {
-      float: right;
+      margin-right: 15px;
+      margin-left: auto;
+      display: flex;
 
       .dropdown {
         .dropdown-toggle {
@@ -216,21 +205,20 @@
   }
 }
 
-
 // ---------------------------------------------------------
 // @Collapsed State
 // ---------------------------------------------------------
 
 .is-collapsed {
   .header {
-    width: calc(100% - #{$collapsed-size});
+    width: 100%;
 
     @include to($breakpoint-md) {
       width: 100%;
     }
 
     @include between($breakpoint-md, $breakpoint-xl) {
-      width: calc(100% - #{$offscreen-size});
+      width: 100%;
     }
   }
 }

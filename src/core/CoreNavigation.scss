@@ -1,0 +1,175 @@
+@import "../assets/styles/spec/settings/index";
+
+.CoreNavigation {
+  background: $core-background;
+  height: 5rem;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: $core-border-color 1px solid;
+
+  &__logo {
+    margin: 1.5rem 0 2rem 0rem;
+    // min-width hack so IE11 doesn't clobber the logo
+    min-width: 6.5rem;
+
+    &-image {
+      height: 1.5rem;
+    }
+
+  }
+
+  &__left {
+    padding-left: 4rem;
+    display: flex;
+  }
+
+  div.CoreNavigation__left {
+    align-items: center;
+
+    .dropdown {
+      margin-left: 1.5rem;
+      display: flex;
+      font-size: 1.2rem;
+      font-weight: 400;
+      color: $core-font-color;
+      border: none;
+      background: transparent;
+      align-items: center;
+      cursor: pointer;
+      user-select: none;
+      &:hover,
+      &:focus {
+        background-color: $core-dropdown-color;
+        box-shadow: inset 0px -1px 1px rgba(19, 44, 82, 0.3);
+        border-radius: 1.66rem;
+        outline: 0;
+      }
+      &-menu {
+        transform: translate3d(0px, 1.5rem, 0px) !important;
+        z-index: 1;
+        border: none;
+        &.show {
+          a > button {
+            font-size: 1.2rem;
+            font-weight: 400;
+            color: $core-font-color;
+            border-radius: 0;
+
+            &:focus,
+            &:hover {
+              background: $core-element-hover-color;
+              outline: 0;
+            }
+          }
+          a:first-child > button {
+            margin-top: 0.31rem;
+          }
+        }
+      }
+
+      &.show {
+        background-color: $core-dropdown-color;
+        border-radius: 1.66rem;
+      }
+      .show {
+        padding: 0.62rem 0;
+        border-radius: 0 0 1.66rem 1.66rem;
+        box-shadow: inset 0px -1px 1px rgba(19, 44, 82, 0.3);
+      }
+      &-toggle {
+        min-width: 11.81rem;
+        min-height: 3rem;
+        display: flex;
+        justify-content: space-between;
+        padding: 0.5rem 1.5rem;
+        align-items: center;
+        z-index: 2;
+      }
+      &-menu {
+        background-color: $core-dropdown-color;
+      }
+    }
+    .dropdown-menu {
+      display: none;
+      margin: 0;
+      overflow: hidden;
+
+      .divider {
+        border-bottom: 0.06rem solid $border-color;
+        height: 0.06rem;
+        overflow: hidden;
+      }
+    }
+    .show {
+      .dropdown-menu {
+        display: block;
+        transform: scale(1, 1);
+        min-width: 11.81rem;
+        background-color: $core-dropdown-color;
+      }
+    }
+  }
+
+  &__right {
+    align-items: center;
+    list-style: none;
+    margin-bottom: 0;
+    padding-left: 0;
+    position: relative;
+    display: flex;
+    height: 100%;
+
+    > li {
+      float: left;
+
+      > a,
+      button {
+        color: $default-text-color;
+        display: block;
+        line-height: $header-height;
+        min-height: $header-height;
+        padding: 0 15px;
+        background-color: transparent;
+        transition: all 0.2s ease-in-out;
+
+        i {
+          font-size: 17px;
+        }
+
+        &:hover,
+        &:focus {
+          color: $default-dark;
+          text-decoration: none;
+        }
+      }
+    }
+    .dropdown {
+      margin-left: 2rem;
+      margin-right: 2.375rem;
+
+      .dropdown-toggle {
+        ul {
+          margin-left: 0;
+          padding-left: 0;
+        }
+      }
+    }
+
+    .dropdown-menu {
+      left: auto;
+      right: 0;
+
+      > li {
+        width: 100%;
+
+        > a {
+          line-height: 1.5;
+          min-height: auto;
+          padding: 10px 15px;
+        }
+      }
+    }
+  }
+}
