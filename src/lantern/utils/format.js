@@ -25,11 +25,16 @@ import {
   flatOptions,
 } from "../../controls/utils";
 
-export const getTimeDescription = (months, admissionOptions, admissionType) => {
+export const getTimeDescription = (
+  months,
+  admissionTypeEnabled,
+  admissionOptions,
+  admissionType
+) => {
   const trailingLabel = getTrailingLabelFromMetricPeriodMonthsFilter(months);
   const periodLabel = getPeriodLabelFromMetricPeriodMonthsFilter(months);
 
-  if (!admissionType) {
+  if (!admissionTypeEnabled) {
     return `${trailingLabel} (${periodLabel})`;
   }
 
@@ -37,12 +42,15 @@ export const getTimeDescription = (months, admissionOptions, admissionType) => {
     flatOptions(admissionOptions),
     admissionOptions[0]
   ).filter((ao) => admissionType.includes(ao.value));
+
   const admissionFilter = formatSelectOptionValue(
     admissionOptions,
     admissionOptions[0],
     admissionTypeOptions,
+    false,
     false
   );
+
   const admissionLabel = admissionFilter ? `; ${admissionFilter}` : "";
   return `${trailingLabel} (${periodLabel})${admissionLabel}`;
 };
