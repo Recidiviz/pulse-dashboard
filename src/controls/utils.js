@@ -55,13 +55,13 @@ export const flatOptions = (options) =>
     []
   );
 
-export const formatSelectOptionValue = (
+export const formatSelectOptionValue = ({
   allOptions,
   summingOption,
   selectedOptions,
   isCore,
-  isShortFormat = true
-) => {
+  isShortFormat = true,
+}) => {
   const selectedValues = map("value", selectedOptions);
 
   // show option label if only one selected
