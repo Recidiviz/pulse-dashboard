@@ -29,20 +29,25 @@ const ValueContainer = ({
   ...props
 }) => {
   const { selectProps, getValue } = props;
-  const values = getValue();
+  const selectedOptions = getValue();
   const selectInput = React.Children.map(children, (child) => {
     return child.type === components.Input ? child : null;
   });
 
   const isAll =
     !selectProps.inputValue &&
-    values.length === 1 &&
+    selectedOptions.length === 1 &&
     summingOption &&
-    values[0].value === summingOption.value;
+    selectedOptions[0].value === summingOption.value;
 
   const text = isAll
     ? summingOption.label
-    : formatSelectOptionValue(allOptions, summingOption, values, isCore);
+    : formatSelectOptionValue({
+        allOptions,
+        summingOption,
+        selectedOptions,
+        isCore,
+      });
 
   return (
     <components.ValueContainer {...props}>
