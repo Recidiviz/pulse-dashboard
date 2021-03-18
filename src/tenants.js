@@ -17,6 +17,7 @@
 
 import * as lantern from "./RootStore/TenantStore/lanternTenants";
 import * as core from "./RootStore/TenantStore/coreTenants";
+import flags from "./flags";
 
 export default {
   // prettier-ignore
@@ -27,10 +28,26 @@ export default {
   [core.US_ND]: {
     name: "North Dakota",
     availableStateCodes: [core.US_ND],
+    allowedPaths: ["/community/explore", "/facilities/explore", "/goals"],
+    navigation: {
+      goals: [],
+      community: ["explore"],
+      facilities: ["explore"],
+    },
   },
   [core.US_ID]: {
     name: "Idaho",
     availableStateCodes: [core.US_ID],
+    allowedPaths: [
+      "/community/projections",
+      "/facilities/projections",
+      "/methodology",
+    ],
+    navigation: {
+      community: ["projections"],
+      facilities: ["projections"],
+      ...(flags.showMethodologyDropdown ? { methodology: [] } : {}),
+    },
   },
   [lantern.US_PA]: {
     name: "Pennsylvania",
