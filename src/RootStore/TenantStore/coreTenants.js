@@ -16,5 +16,6 @@
 // =============================================================================
 
 export const US_ND = "US_ND";
+export const US_ID = "US_ID";
 
-export const CORE_TENANTS = [US_ND];
+export const CORE_TENANTS = [US_ND, US_ID];
