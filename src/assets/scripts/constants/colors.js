@@ -300,18 +300,12 @@ const GREYS = {
 };
 
 const CORE_COLORS = {
-  forest: "rgba(37, 99, 111, 1)",
-  "forest-dark": "rgba(0, 75, 91, 1)",
-  gold: "rgba(217, 169, 95, 1)",
-  "gold-dark": "rgba(183, 135, 61, 1)",
-  crimson: "rgba(186, 79, 79, 1)",
-  "crimson-dark": "rgba(164, 57, 57, 1)",
-  indigo: "rgba(76, 98, 144, 1)",
-  "indigo-dark": "rgba(62, 84, 130, 1)",
-  teal: "rgba(144, 174, 181, 1)",
-  "teal-dark": "rgba(110, 140, 147, 1)",
-  salmon: "rgba(204, 152, 156, 1)",
-  "salmon-dark": "rgba(171, 119, 123, 1)",
+  forest: { main: "rgba(37, 99, 111, 1)", dark: "rgba(0, 75, 91, 1)" },
+  gold: { main: "rgba(217, 169, 95, 1)", dark: "rgba(183, 135, 61, 1)" },
+  crimson: { main: "rgba(186, 79, 79, 1)", dark: "rgba(164, 57, 57, 1)" },
+  indigo: { main: "rgba(76, 98, 144, 1)", dark: "rgba(62, 84, 130, 1)" },
+  teal: { main: "rgba(144, 174, 181, 1)", dark: "rgba(110, 140, 147, 1)" },
+  salmon: { main: "rgba(204, 152, 156, 1)", dark: "rgba(171, 119, 123, 1)" },
 };
 
 // A placeholder color rotator for charts that need to dynamically pick colors
@@ -326,8 +320,8 @@ const COLOR_ROTATION = [
 ];
 
 const COLORS_GOOD_BAD = {
-  good: "#809ae5",
-  bad: "#d12249",
+  good: CORE_COLORS.forest.main,
+  bad: CORE_COLORS.crimson.main,
 };
 
 const COLORS_STACKED_TWO_VALUES = COLOR_ROTATION.slice(0, 2);

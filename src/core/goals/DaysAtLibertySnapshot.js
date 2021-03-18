@@ -98,11 +98,11 @@ const DaysAtLibertySnapshot = ({
     const datasets = [
       {
         label: "Days at liberty (average)",
-        backgroundColor: CORE_COLORS.indigo,
-        borderColor: CORE_COLORS.indigo,
-        pointBackgroundColor: CORE_COLORS.indigo,
-        pointHoverBackgroundColor: CORE_COLORS.indigo,
-        pointHoverBorderColor: CORE_COLORS.indigo,
+        backgroundColor: CORE_COLORS.indigo.main,
+        borderColor: CORE_COLORS.indigo.main,
+        pointBackgroundColor: CORE_COLORS.indigo.main,
+        pointHoverBackgroundColor: CORE_COLORS.indigo.main,
+        pointHoverBorderColor: CORE_COLORS.indigo.main,
         fill: false,
         borderWidth: 2,
         data: chartDataPoints,

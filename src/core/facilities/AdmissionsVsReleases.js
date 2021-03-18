@@ -104,7 +104,6 @@ const AdmissionsVsReleases = ({
     (data) => (data.value > 0 ? [COLORS_GOOD_BAD.bad] : [COLORS_GOOD_BAD.good]),
     dataPoints
   );
-
   const chart = (
     <Bar
       id={chartId}
