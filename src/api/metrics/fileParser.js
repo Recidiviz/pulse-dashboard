@@ -34,8 +34,12 @@ export function unflattenValues(metricFile) {
 const parseResponseByFileFormat = (responseData, file, eagerExpand = true) => {
   const metricFile = responseData[file];
 
-  if (!metricFile)
-    throw new Error(`Response payload for file ${file} is empty`);
+  if (!metricFile) {
+    const keys = Object.keys(responseData);
+    throw new Error(
+      `Response payload for file ${file} is empty. Response keys are: ${keys}`
+    );
+  }
 
   // If it's in the expanded json format that is ready to go, return that.
   // The metricFile format should be { data, metadata } for all dashboards except US_ND
