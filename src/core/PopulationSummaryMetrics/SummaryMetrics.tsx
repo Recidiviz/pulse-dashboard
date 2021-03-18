@@ -23,7 +23,6 @@ import type {
   ProjectedSummaryRecord,
   HistoricalSummaryRecord,
 } from "../models/types";
-import ProjectedSummaryMetrics from "./ProjectedSummaryMetrics";
 
 const MetricContainer = styled.div`
   display: flex;
