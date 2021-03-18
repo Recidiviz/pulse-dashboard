@@ -95,12 +95,17 @@ function refreshRedisCache(fetchMetrics, stateCode, metricType, callback) {
   console.log(`Handling call to refresh cache for ${cacheKeyPrefix}...`);
 
   let responseError = null;
+  let cachePromises = [];
 
   return fetchMetrics()
     .then((files) => {
-      return Promise.all(
-        cacheFiles({ files, stateCode, metricType, cacheKeyPrefix })
-      );
+      cachePromises = cacheFiles({
+        files,
+        stateCode,
+        metricType,
+        cacheKeyPrefix,
+      });
+      return Promise.all(cachePromises);
     })
     .catch((error) => {
       const message = `Error occurred while caching files for metricType: ${metricType}`;
@@ -109,6 +114,9 @@ function refreshRedisCache(fetchMetrics, stateCode, metricType, callback) {
       Sentry.captureException(message, responseError);
     })
     .finally(() => {
+      console.log(
+        `Finally responding to request and finished resolving ${cachePromises.length} cache promises.`
+      );
       callback(responseError, "OK");
     });
 }
