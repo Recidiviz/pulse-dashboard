@@ -37,9 +37,13 @@ const {
   FILES_WITH_SUBSETS,
 } = require("../constants/subsetManifest");
 
-const subsetCombinations = getSubsetCombinations(getSubsetManifest());
-
-function cacheEachSubsetFile(cache, cacheKey, fileKey, metricFile) {
+function cacheEachSubsetFile(
+  cache,
+  cacheKey,
+  fileKey,
+  metricFile,
+  subsetCombinations
+) {
   const cachePromises = [];
   subsetCombinations.forEach((subsetCombination) => {
     const subsetCacheKey = `${cacheKey}-${getCacheKeyForSubsetCombination(
@@ -50,31 +54,39 @@ function cacheEachSubsetFile(cache, cacheKey, fileKey, metricFile) {
     });
     const subsetFile = createSubset(fileKey, subsetFilters, metricFile);
 
-    console.log(`Setting cache for: ${subsetCacheKey}...`);
+    console.log(`Setting subset cache for: ${subsetCacheKey}...`);
 
     cachePromises.push(cache.set(subsetCacheKey, subsetFile));
   });
   return cachePromises;
 }
 
-function cacheEachFile({ files, cacheKeyPrefix }) {
+function cacheFiles({ files, cacheKeyPrefix }) {
   const cache = getCache(cacheKeyPrefix);
   const cachePromises = [];
+  const subsetCombinations = getSubsetCombinations(getSubsetManifest());
 
   Object.keys(files).forEach((fileKey) => {
     const cacheKey = `${cacheKeyPrefix}-${fileKey}`;
     const metricFile = { [fileKey]: files[fileKey] };
 
     if (FILES_WITH_SUBSETS.includes(fileKey)) {
-      cachePromises.concat(
-        cacheEachSubsetFile(cache, cacheKey, fileKey, metricFile)
+      const subsetCachePromises = cacheEachSubsetFile(
+        cache,
+        cacheKey,
+        fileKey,
+        metricFile,
+        subsetCombinations
       );
+      cachePromises.push(...subsetCachePromises);
     } else {
       console.log(`Setting cache for: ${cacheKey}...`);
       cachePromises.push(cache.set(cacheKey, metricFile));
     }
   });
-
+  console.log(
+    `Waiting for ${cachePromises.length} cache promises to resolve for ${cacheKeyPrefix}...`
+  );
   return cachePromises;
 }
 
@@ -83,12 +95,17 @@ function refreshRedisCache(fetchMetrics, stateCode, metricType, callback) {
   console.log(`Handling call to refresh cache for ${cacheKeyPrefix}...`);
 
   let responseError = null;
+  let cachePromises = [];
 
-  fetchMetrics()
+  return fetchMetrics()
     .then((files) => {
-      return Promise.all(
-        cacheEachFile({ files, stateCode, metricType, cacheKeyPrefix })
-      );
+      cachePromises = cacheFiles({
+        files,
+        stateCode,
+        metricType,
+        cacheKeyPrefix,
+      });
+      return Promise.all(cachePromises);
     })
     .catch((error) => {
       const message = `Error occurred while caching files for metricType: ${metricType}`;
@@ -97,6 +114,9 @@ function refreshRedisCache(fetchMetrics, stateCode, metricType, callback) {
       Sentry.captureException(message, responseError);
     })
     .finally(() => {
+      console.log(
+        `Finally responding to request and finished resolving ${cachePromises.length} cache promises.`
+      );
       callback(responseError, "OK");
     });
 }
