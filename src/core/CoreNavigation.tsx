@@ -16,30 +16,25 @@
 // =============================================================================
 
 import React from "react";
+import { observer } from "mobx-react-lite";
 import { useLocation, Link } from "react-router-dom";
+import { useRootStore } from "../components/StoreProvider";
 import CoreSectionSelector from "./CoreSectionSelector";
 import CorePageSelector from "./CorePageSelector";
 import TopBarUserMenuForAuthenticatedUser from "../components/TopBar/TopBarUserMenuForAuthenticatedUser";
 import flags from "../flags";
+import tenants from "../tenants";
 
 import recidivizLogo from "../assets/static/images/Logo.svg";
 import "./CoreNavigation.scss";
 
-const navigationLayout = flags.showMethodologyDropdown
-  ? {
-      community: ["explore", "projections"],
-      facilities: ["explore", "projections"],
-      goals: [],
-      methodology: [],
-    }
-  : {
-      community: ["explore", "projections"],
-      facilities: ["explore", "projections"],
-      goals: [],
-    };
-
 const CoreNavigation: React.FC = () => {
   const { pathname } = useLocation();
+  const { currentTenantId } = useRootStore();
+
+  // @ts-ignore
+  const navigationLayout = tenants[currentTenantId].navigation;
+
   const [currentSection, currentPage] = pathname.split("/").slice(1, 3);
   // @ts-ignore
   const pageOptions = navigationLayout[currentSection] ?? [];
@@ -82,4 +77,4 @@ const CoreNavigation: React.FC = () => {
   );
 };
 
-export default CoreNavigation;
+export default observer(CoreNavigation);
