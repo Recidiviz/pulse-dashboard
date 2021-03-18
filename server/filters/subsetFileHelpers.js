@@ -96,13 +96,15 @@ function createFlattenedValueMatrix(filteredDataPoints, subsetMetadata) {
  * @returns {String[][]}
  */
 function createSubsetDimensionManifest(dimensionManifest, subsetFilters) {
-  const subsetKeys = getSubsetDimensionKeys();
+  const subsetKeys = getSubsetDimensionKeys().concat(
+    "level_1_supervision_location"
+  );
   const transformedDimensionManifest = [];
   dimensionManifest.forEach(([dimensionKey, dimensionValues]) => {
     if (subsetKeys.includes(dimensionKey) && subsetFilters[dimensionKey]) {
       transformedDimensionManifest.push([
         dimensionKey,
-        subsetFilters[dimensionKey].sort(),
+        subsetFilters[dimensionKey],
       ]);
     } else {
       transformedDimensionManifest.push([dimensionKey, dimensionValues.sort()]);

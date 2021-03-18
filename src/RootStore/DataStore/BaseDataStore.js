@@ -148,7 +148,10 @@ export default class BaseDataStore {
   }
 
   get filtersQueryParams() {
-    return getQueryStringFromFilters(this.filters);
+    return getQueryStringFromFilters(
+      //  eslint-disable-next-line
+      this.filters, [this.rootStore.restrictedDistrict],
+    );
   }
 
   get filters() {

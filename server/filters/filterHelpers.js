@@ -17,6 +17,7 @@
 
 const { snakeCase } = require("lodash");
 const { matchesAllFilters, getFilterKeys } = require("shared-filters");
+
 const {
   getSubsetDimensionKeys,
   getSubsetDimensionValues,
@@ -45,39 +46,76 @@ function createSubsetFilters({ filters }) {
       );
     }
   });
-  return subsetFilters;
+
+  // convert restrictedDistrict param to subset filter
+  const { restrictedDistrict } = filters;
+  return restrictedDistrict
+    ? {
+        ...subsetFilters,
+        ...{ level_1_supervision_location: restrictedDistrict },
+      }
+    : subsetFilters;
 }
 
 /**
  * Get the filtering function to use by metric file name
+
  *
  * @param {String} metricName
- * @param {Object} subsetFilters - Filters with all the dimension values from the subset manifest
+ * @param {Object} filters - Filters with all the dimension values from the subset manifest
  *
  * @returns {(item: object, dimensionKey: string) => boolean} - A filter that takes each datapoint and dimension key
  * and returns whether or not the item should be filtered out.
  */
-const getFilterFnByMetricName = (metricName, subsetFilters) => {
+const getFilterFnByMetricName = (metricName, filters) => {
   const filterKeys = getFilterKeys();
 
+  return metricName === "revocations_matrix_by_month"
+    ? matchesAllFilters({
+        filters,
+        skippedFilters: [filterKeys.METRIC_PERIOD_MONTHS],
+      })
+    : matchesAllFilters({ filters });
+};
+
+/**
+ * Get the filters to use by metric file name
+ *
+ * @param {String} metricName
+ * @param {Object} filters - Filters with all the dimension values from the subset manifest
+ *
+ * @returns {(item: object, dimensionKey: string) => boolean} - An object with the filter keys that should be used
+ * when creating the subset for each metric file
+ */
+const getFiltersByMetricName = (metricName, filters) => {
+  const {
+    // eslint-disable-next-line camelcase
+    level_1_supervision_location,
+    ...filtersWithoutLevelOneSupervisionLocation
+  } = filters;
+
   switch (metricName) {
-    case "revocations_matrix_distribution_by_district":
     case "revocations_matrix_distribution_by_risk_level":
     case "revocations_matrix_distribution_by_gender":
     case "revocations_matrix_distribution_by_officer":
     case "revocations_matrix_distribution_by_race":
     case "revocations_matrix_distribution_by_violation":
-      return matchesAllFilters({
-        filters: subsetFilters,
-      });
     case "revocations_matrix_by_month":
-      return matchesAllFilters({
-        filters: subsetFilters,
-        skippedFilters: [filterKeys.METRIC_PERIOD_MONTHS],
-      });
+      return filters;
+    // Only create a subset when there is a restricted district (level_1_supervision_location)
+    case "revocations_matrix_cells":
+    case "revocations_matrix_filtered_caseload":
+      return { level_1_supervision_location };
+    // Do not filter the districts by the restricted district (level_1_supervision_location)
+    case "revocations_matrix_distribution_by_district":
+      return filtersWithoutLevelOneSupervisionLocation;
     default:
       return () => true;
   }
 };
 
-module.exports = { getFilterFnByMetricName, createSubsetFilters };
+module.exports = {
+  getFilterFnByMetricName,
+  getFiltersByMetricName,
+  createSubsetFilters,
+};
