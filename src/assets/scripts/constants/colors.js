@@ -313,37 +313,9 @@ const CORE_COLORS = {
   salmon: "rgba(204, 152, 156, 1)",
   "salmon-dark": "rgba(171, 119, 123, 1)",
 };
+
 // A placeholder color rotator for charts that need to dynamically pick colors
-const COLOR_ROTATION = ["#1b2126", "#6d1e7d", "#ff2454", "#ff7e70", "#ffd75e"];
-
-const COLORS_GOOD_BAD = {
-  good: "#809ae5",
-  bad: "#d12249",
-};
-
-const COLORS_STACKED_TWO_VALUES = ["#25636f", "#d9a95f"];
-
-const COLORS_STACKED_TWO_VALUES_ALT = ["#FF2454", "#FFD75E"];
-
-const COLORS_THREE_VALUES = ["#25636f", "#d9a95f", "#ba4f4f"];
-
-const COLORS_FIVE_VALUES = [
-  "#25636f",
-  "#d9a95f",
-  "#ba4f4f",
-  "#4c6290",
-  "#90aeb5",
-];
-
-const COLORS_FIVE_VALUES_LIGHT = [
-  "#495259",
-  "#943ca6",
-  "#f86a89",
-  "#fde394",
-  "#fdb0a8",
-];
-
-const COLORS_SEVEN_VALUES = [
+const COLOR_ROTATION = [
   "#25636f",
   "#d9a95f",
   "#ba4f4f",
@@ -352,6 +324,19 @@ const COLORS_SEVEN_VALUES = [
   "#cc989c",
   "#c2cbd0",
 ];
+
+const COLORS_GOOD_BAD = {
+  good: "#809ae5",
+  bad: "#d12249",
+};
+
+const COLORS_STACKED_TWO_VALUES = COLOR_ROTATION.slice(0, 2);
+
+const COLORS_THREE_VALUES = COLOR_ROTATION.slice(0, 3);
+
+const COLORS_FIVE_VALUES = COLOR_ROTATION.slice(0, 5);
+
+const COLORS_SEVEN_VALUES = COLOR_ROTATION;
 
 const COLORS_LANTERN_SET = [
   "#F26825",
@@ -367,10 +352,8 @@ export {
   COLOR_ROTATION,
   COLORS_GOOD_BAD,
   COLORS_STACKED_TWO_VALUES,
-  COLORS_STACKED_TWO_VALUES_ALT,
   COLORS_THREE_VALUES,
   COLORS_FIVE_VALUES,
-  COLORS_FIVE_VALUES_LIGHT,
   COLORS_SEVEN_VALUES,
   COLORS_LANTERN_SET,
   CORE_COLORS,
