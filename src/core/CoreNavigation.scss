@@ -11,11 +11,12 @@
 
   &__logo {
     margin: 1.5rem 0 2rem 0rem;
+    // min-width hack so IE11 doesn't clobber the logo
+    min-width: 6.5rem;
 
     &-image {
       height: 1.5rem;
     }
-
   }
 
   &__left {
@@ -64,9 +65,6 @@
           a:first-child > button {
             margin-top: 0.31rem;
           }
-          a:last-child > button {
-            border-radius: 0 0 1rem 1rem;
-          }
         }
       }
 
@@ -84,7 +82,7 @@
         min-height: 3rem;
         display: flex;
         justify-content: space-between;
-        padding: 0 1.5rem;
+        padding: 0.5rem 1.5rem;
         align-items: center;
         z-index: 2;
       }
@@ -95,6 +93,7 @@
     .dropdown-menu {
       display: none;
       margin: 0;
+      overflow: hidden;
 
       .divider {
         border-bottom: 0.06rem solid $border-color;

@@ -33,11 +33,8 @@ import VerificationNeeded from "./components/VerificationNeeded";
 import LanternLayout from "./lantern/LanternLayout";
 import CoreLayout from "./core/CoreLayout";
 import Revocations from "./lantern/Revocations";
-import UsNdCommunityGoals from "./core/community/Goals";
 import UsNdCommunityExplore from "./core/community/Explore";
-import UsNdFacilitiesGoals from "./core/facilities/Goals";
 import UsNdFacilitiesExplore from "./core/facilities/Explore";
-import UsNdProgrammingExplore from "./core/programming/Explore";
 import PageProjections from "./core/PageProjections";
 import initFontAwesome from "./utils/initFontAwesome";
 import initIntercomSettings from "./utils/initIntercomSettings";
@@ -49,6 +46,7 @@ import ErrorBoundary from "./components/ErrorBoundary";
 
 import "./assets/scripts/index";
 import "./assets/styles/index.scss";
+import CoreGoalsView from "./core/goals/CoreGoalsView";
 
 initFontAwesome();
 initIntercomSettings();
@@ -70,10 +68,7 @@ const App = () => (
             <AuthWall>
               <LanternLayout tenantIds={LANTERN_TENANTS}>
                 <Switch>
-                  <Route
-                    path="/community/revocations"
-                    component={Revocations}
-                  />
+                  <Route path="/community/revocations" component={Revocations} />
                   <Route path="/profile" component={Profile} />
                   <Redirect exact from="/" to="/community/revocations" />
                   <Redirect from="/revocations" to="/community/revocations" />
@@ -81,29 +76,28 @@ const App = () => (
                 </Switch>
               </LanternLayout>
 
-                <CoreLayout tenantIds={CORE_TENANTS}>
-                  <Switch>
-                    <Route path="/community/goals" component={UsNdCommunityGoals} />
-                    <Route path="/community/explore" component={UsNdCommunityExplore} />
-                    <Route path="/community/projections" component={PageProjections} />
-                    <Route path="/facilities/goals" component={UsNdFacilitiesGoals} />
-                    <Route path="/facilities/explore" component={UsNdFacilitiesExplore} />
-                    <Route path="/facilities/projections" component={PageProjections} />
-                    <Route path="/programming/explore" component={UsNdProgrammingExplore} />
-                    <Route path="/methodology" component={Methodology} />
-                    <Route path="/profile" component={Profile} />
-                    <Redirect exact from="/" to="/community/goals" />
-                    <Redirect from="/snapshots" to="/community/goals" />
-                    <Redirect from="/revocations" to="/community/goals" />
-                    <Redirect from="/reincarcerations" to="/facilities/goals" />
-                    <Redirect from="/programEvaluation/freeThroughRecovery" to="/programming/explore" />
-                    <NotFound />
-                  </Switch>
-                </CoreLayout>
-              </AuthWall>
-            </Switch>
-          </Router>
-        </PageProvider>
+              <CoreLayout tenantIds={CORE_TENANTS}>
+                <Switch>
+                  <Route path="/goals" component={CoreGoalsView} />
+                  <Route path="/community/explore" component={UsNdCommunityExplore} />
+                  <Route path="/community/projections" component={PageProjections} />
+                  <Route path="/facilities/explore" component={UsNdFacilitiesExplore} />
+                  <Route path="/facilities/projections" component={PageProjections} />
+                  <Route path="/methodology" component={Methodology} />
+                  <Route path="/profile" component={Profile} />
+                  <Redirect exact from="/" to="/goals" />
+                  <Redirect from="/snapshots" to="/goals" />
+                  <Redirect from="/revocations" to="/goals" />
+                  <Redirect from="/reincarcerations" to="/goals" />
+                  <Redirect from="/community/goals" to="/goals" />
+                  <Redirect from="/facilities/goals" to="/goals" />
+                  <NotFound />
+                </Switch>
+              </CoreLayout>
+            </AuthWall>
+          </Switch>
+        </Router>
+      </PageProvider>
     </ErrorBoundary>
   </StoreProvider>
 );

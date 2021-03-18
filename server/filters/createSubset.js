@@ -135,6 +135,13 @@ function createSubset(metricName, subsetFilters, metricFile) {
   const skipFilterFn = (dimensionKey) =>
     !getSubsetDimensionKeys().includes(dimensionKey);
 
+  /* eslint-disable no-console */
+  console.log(
+    `Creating subset file for: ${metricName} with filters: ${JSON.stringify(
+      subsetFilters
+    )}`
+  );
+
   return {
     [metricName]: applyFiltersToOptimizedFormat(
       metricFile[metricName],

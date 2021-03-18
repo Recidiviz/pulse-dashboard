@@ -27,14 +27,14 @@ import WarningIcon from "../../controls/WarningIcon";
 import AdmissionCountsByType from "../AdmissionCountsByType";
 import CaseTerminationsByOfficer from "./CaseTerminationsByOfficer";
 import CaseTerminationsByTerminationType from "./CaseTerminationsByTerminationType";
-import LsirScoreChangeSnapshot from "./LsirScoreChangeSnapshot";
-import RevocationAdmissionsSnapshot from "./RevocationAdmissionsSnapshot";
+import LsirScoreChangeSnapshot from "../goals/LsirScoreChangeSnapshot";
+import RevocationAdmissionsSnapshot from "../goals/RevocationAdmissionsSnapshot";
 import RevocationCountByOfficer from "./RevocationCountByOfficer";
-import RevocationCountOverTime from "./RevocationCountOverTime";
+import RevocationCountOverTime from "../goals/RevocationCountOverTime";
 import RevocationCountBySupervisionType from "./RevocationCountBySupervisionType";
 import RevocationCountByViolationType from "./RevocationCountByViolationType";
 import RevocationProportionByRace from "./RevocationProportionByRace";
-import SupervisionSuccessSnapshot from "./SupervisionSuccessSnapshot";
+import SupervisionSuccessSnapshot from "../goals/SupervisionSuccessSnapshot";
 import CoreFilterBar from "../CoreFilterBar";
 import {
   defaultDistrict,
@@ -46,11 +46,24 @@ import useChartData from "../hooks/useChartData";
 import { isOfficerIdsHidden } from "../bars/utils";
 import { METRIC_TYPES } from "../utils/constants";
 import { availableDistricts, importantNotes } from "./constants";
+import FtrReferralCountByMonth from "./FtrReferralCountByMonth";
+import FtrReferralsByParticipationStatus from "./FtrReferralsByParticipationStatus";
+import FtrReferralsByRace from "./FtrReferralsByRace";
+import FtrReferralsByLsir from "./FtrReferralsByLsir";
+import FtrReferralsByGender from "./FtrReferralsByGender";
+import FtrReferralsByAge from "./FtrReferralsByAge";
 
 const CommunityExplore = () => {
+  // TODO(#916): Consolidate API
   const { apiData, isLoading, getTokenSilently } = useChartData(
     "us_nd/community/explore"
   );
+  const {
+    apiData: programmingApiData,
+    isLoading: programmingIsLoading,
+    getTokenSilently: programmingGetTokenSilently,
+  } = useChartData("us_nd/programming/explore");
+
   const [metricType, setMetricType] = useState(defaultMetricType);
   const [metricPeriodMonths, setMetricPeriodMonths] = useState(
     defaultMetricPeriod
@@ -60,7 +73,7 @@ const CommunityExplore = () => {
   );
   const [district, setDistrict] = useState(defaultDistrict);
 
-  if (isLoading) {
+  if (isLoading || programmingIsLoading) {
     return <Loading />;
   }
 
@@ -449,6 +462,152 @@ const CommunityExplore = () => {
           />
         }
         footer={<Methodology chartId="lsirScoreChangeSnapshot" />}
+      />
+      <ChartCard
+        chartId="ftrReferralCountByMonth"
+        chartTitle="FTR REFERRALS BY MONTH"
+        chart={
+          <FtrReferralCountByMonth
+            metricType={metricType}
+            metricPeriodMonths={metricPeriodMonths}
+            supervisionType={supervisionType}
+            district={district}
+            ftrReferralCountByMonth={
+              programmingApiData.ftr_referrals_by_month.data
+            }
+            getTokenSilently={getTokenSilently}
+          />
+        }
+        geoChart={
+          <GeoViewTimeChart
+            chartId="ftrReferralCountByMonth"
+            chartTitle="FTR REFERRALS BY MONTH"
+            metricType={metricType}
+            metricPeriodMonths={metricPeriodMonths}
+            supervisionType={supervisionType}
+            keyedByOffice
+            officeData={programmingApiData.site_offices.data}
+            dataPointsByOffice={programmingApiData.ftr_referrals_by_period.data}
+            numeratorKeys={["count"]}
+            denominatorKeys={["total_supervision_count"]}
+            centerLat={47.3}
+            centerLong={-100.5}
+            getTokenSilently={programmingGetTokenSilently}
+          />
+        }
+        footer={<Methodology chartId="ftrReferralCountByMonth" />}
+      />
+      <ChartCard
+        chartId="ftrReferralsByParticipationStatus"
+        chartTitle="FTR REFERRALS BY PARTICIPATION STATUS"
+        chart={
+          <FtrReferralsByParticipationStatus
+            metricType={metricType}
+            metricPeriodMonths={metricPeriodMonths}
+            supervisionType={supervisionType}
+            district={district}
+            ftrReferralsByParticipationStatus={
+              programmingApiData.ftr_referrals_by_participation_status.data
+            }
+            getTokenSilently={programmingGetTokenSilently}
+          />
+        }
+        footer={
+          <>
+            <Methodology chartId="ftrReferralsByParticipationStatus" />
+            <PeriodLabel metricPeriodMonths={metricPeriodMonths} />
+          </>
+        }
+      />
+      <ChartCard
+        chartId="ftrReferralsByRace"
+        chartTitle="FTR REFERRALS BY RACE"
+        chart={
+          <FtrReferralsByRace
+            metricType={metricType}
+            metricPeriodMonths={metricPeriodMonths}
+            supervisionType={supervisionType}
+            district={district}
+            ftrReferralsByRace={
+              programmingApiData.ftr_referrals_by_race_and_ethnicity_by_period
+                .data
+            }
+            statePopulationByRace={programmingApiData.race_proportions.data}
+            getTokenSilently={programmingGetTokenSilently}
+          />
+        }
+        footer={
+          <>
+            <Methodology chartId="ftrReferralsByRace" />
+            <PeriodLabel metricPeriodMonths={metricPeriodMonths} />
+          </>
+        }
+      />
+      <ChartCard
+        chartId="ftrReferralsByLsir"
+        chartTitle="FTR REFERRALS BY LSI-R"
+        chart={
+          <FtrReferralsByLsir
+            metricType={metricType}
+            metricPeriodMonths={metricPeriodMonths}
+            supervisionType={supervisionType}
+            district={district}
+            ftrReferralsByLsir={
+              programmingApiData.ftr_referrals_by_lsir_by_period.data
+            }
+            getTokenSilently={programmingGetTokenSilently}
+          />
+        }
+        footer={
+          <>
+            <Methodology chartId="ftrReferralsByLsir" />
+            <PeriodLabel metricPeriodMonths={metricPeriodMonths} />
+          </>
+        }
+      />
+      <ChartCard
+        chartId="ftrReferralsByGender"
+        chartTitle="FTR REFERRALS BY GENDER"
+        chart={
+          <FtrReferralsByGender
+            metricType={metricType}
+            metricPeriodMonths={metricPeriodMonths}
+            supervisionType={supervisionType}
+            district={district}
+            ftrReferralsByGender={
+              programmingApiData.ftr_referrals_by_gender_by_period.data
+            }
+            getTokenSilently={programmingGetTokenSilently}
+          />
+        }
+        footer={
+          <>
+            <Methodology chartId="ftrReferralsByGender" />
+            <PeriodLabel metricPeriodMonths={metricPeriodMonths} />
+          </>
+        }
+      />
+      <ChartCard
+        chartId="ftrReferralsByAge"
+        chartTitle="FTR REFERRALS BY AGE"
+        chart={
+          <FtrReferralsByAge
+            metricType={metricType}
+            metricPeriodMonths={metricPeriodMonths}
+            supervisionType={supervisionType}
+            district={district}
+            ftrReferralsByAge={
+              programmingApiData.ftr_referrals_by_age_by_period.data
+            }
+            getTokenSilently={getTokenSilently}
+          />
+        }
+        footer={
+          <>
+            <Methodology chartId="ftrReferralsByAge" />
+            <PeriodLabel metricPeriodMonths={metricPeriodMonths} />
+          </>
+        }
       />
     </PageTemplate>
   );

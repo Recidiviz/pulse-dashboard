@@ -23,28 +23,31 @@ import sumBy from "lodash/fp/sumBy";
 import toInteger from "lodash/fp/toInteger";
 import orderBy from "lodash/fp/orderBy";
 import filter from "lodash/fp/filter";
-import { calculateRate } from "../utils/rate";
 
+import { calculateRate } from "../utils/rate";
 import { translate } from "../../utils/i18nSettings";
 import { sumCounts } from "../utils/sumCounts";
 import { formatOfficerLabel } from "../../utils/labels";
 import { COLORS } from "../../assets/scripts/constants/colors";
 
 const generatePercentChartData = (filteredData, mode) => {
-  const [fieldName, totalFieldName] =
-    mode === "exits"
-      ? ["exit_count", "exit_count"]
-      : ["supervision_count", "supervision_population_count"];
+  const fieldName =
+    mode === "exits" ? "exit_count" : "supervision_population_count";
 
   const transformedData = pipe(
-    groupBy("officer"),
-    values,
-    filter((item) => item[0][totalFieldName] >= 10),
+    groupBy((d) => [d.officer_label, d.admission_type]),
     map((dataset) => ({
       officer: formatOfficerLabel(dataset[0].officer_label),
       count: sumBy((item) => toInteger(item.revocation_count), dataset),
-      [fieldName]: sumBy((item) => toInteger(item[totalFieldName]), dataset),
+      [fieldName]: sumBy((item) => toInteger(item[fieldName]), dataset),
     })),
+    groupBy("officer"),
+    map((dataset) => ({
+      officer: dataset[0].officer,
+      count: sumBy((item) => toInteger(item.count), dataset),
+      [fieldName]: dataset[0][fieldName],
+    })),
+    filter((item) => item[fieldName] >= 10),
     map((dataPoint) => ({
       officer: dataPoint.officer,
       count: dataPoint.count,
@@ -57,7 +60,7 @@ const generatePercentChartData = (filteredData, mode) => {
   const dataPoints = map((item) => item.rate.toFixed(2), transformedData);
 
   const labels = map("officer", transformedData);
-  const denominators = map("supervision_count", transformedData);
+  const denominators = map("supervision_population_count", transformedData);
   const numerators = map("count", transformedData);
 
   const datasets = [
@@ -83,7 +86,7 @@ const generatePercentChartData = (filteredData, mode) => {
 
 const generateCountChartData = (filteredData) => {
   const transformedData = pipe(
-    groupBy("officer"),
+    groupBy("officer_label"),
     values,
     map((dataset) => ({
       officer: formatOfficerLabel(dataset[0].officer_label),

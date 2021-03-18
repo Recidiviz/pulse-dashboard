@@ -20,15 +20,23 @@ import { useLocation, Link } from "react-router-dom";
 import CoreSectionSelector from "./CoreSectionSelector";
 import CorePageSelector from "./CorePageSelector";
 import TopBarUserMenuForAuthenticatedUser from "../components/TopBar/TopBarUserMenuForAuthenticatedUser";
+import flags from "../flags";
 
 import recidivizLogo from "../assets/static/images/Logo.svg";
 import "./CoreNavigation.scss";
 
-const navigationLayout = {
-  community: ["goals", "explore", "projections"],
-  facilities: ["goals", "explore", "projections"],
-  programming: ["explore"],
-};
+const navigationLayout = flags.showMethodologyDropdown
+  ? {
+      community: ["explore", "projections"],
+      facilities: ["explore", "projections"],
+      goals: [],
+      methodology: [],
+    }
+  : {
+      community: ["explore", "projections"],
+      facilities: ["explore", "projections"],
+      goals: [],
+    };
 
 const CoreNavigation: React.FC = () => {
   const { pathname } = useLocation();
@@ -36,11 +44,21 @@ const CoreNavigation: React.FC = () => {
   // @ts-ignore
   const pageOptions = navigationLayout[currentSection] ?? [];
 
+  const menu = Object.entries(navigationLayout).map((entry) => {
+    const page = entry[0];
+    const options = entry[1];
+    return {
+      label: page[0].toUpperCase() + page.slice(1),
+      // @ts-ignore
+      link: `/${page}${options.length ? `/${options[0]}` : ""}`,
+    };
+  });
+
   return (
     <nav className="CoreNavigation">
       <div className="CoreNavigation__left">
         <div className="CoreNavigation__logo">
-          <Link to="/community/goals">
+          <Link to="/goals">
             <img
               className="CoreNavigation__logo-image"
               src={recidivizLogo}
@@ -48,14 +66,16 @@ const CoreNavigation: React.FC = () => {
             />
           </Link>
         </div>
-        <CoreSectionSelector />
+        <CoreSectionSelector menu={menu} />
       </div>
       <div className="CoreNavigation__right">
-        <CorePageSelector
-          currentSection={currentSection}
-          currentPage={currentPage ?? ""}
-          pageOptions={pageOptions}
-        />
+        {flags.enableCoreTabNavigation && (
+          <CorePageSelector
+            currentSection={currentSection}
+            currentPage={currentPage ?? ""}
+            pageOptions={pageOptions}
+          />
+        )}
         <TopBarUserMenuForAuthenticatedUser hideUsername />
       </div>
     </nav>
