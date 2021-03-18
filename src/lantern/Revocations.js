@@ -50,6 +50,7 @@ const Revocations = () => {
 
   const timeDescription = getTimeDescription(
     get(filters, METRIC_PERIOD_MONTHS),
+    filterOptions[ADMISSION_TYPE].componentEnabled,
     filterOptions[ADMISSION_TYPE].options,
     get(filters, ADMISSION_TYPE)
   );
