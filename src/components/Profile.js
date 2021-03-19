@@ -44,7 +44,7 @@ const Profile = () => {
   }
 
   return (
-    <main className="main-content bgc-grey-100">
+    <div className="main-content bgc-grey-100">
       <div id="mainContent">
         <Container className="mb-5">
           <Row className="align-items-center profile-header mb-5 text-center text-md-left">
@@ -76,7 +76,7 @@ const Profile = () => {
           </Row>
         </Container>
       </div>
-    </main>
+    </div>
   );
 };
 
