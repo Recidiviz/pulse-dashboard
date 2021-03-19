@@ -55,7 +55,7 @@ const CoreNavigation: React.FC = () => {
     <nav className="CoreNavigation">
       <div className="CoreNavigation__left">
         <div className="CoreNavigation__logo">
-          <Link to="/goals">
+          <Link to="/">
             <img
               className="CoreNavigation__logo-image"
               src={recidivizLogo}

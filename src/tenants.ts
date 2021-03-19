@@ -1,5 +1,5 @@
 // Recidiviz - a data platform for criminal justice reform
-// Copyright (C) 2020 Recidiviz, Inc.
+// Copyright (C) 2021 Recidiviz, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -14,13 +14,11 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-
 import * as lantern from "./RootStore/TenantStore/lanternTenants";
 import * as core from "./RootStore/TenantStore/coreTenants";
 import flags from "./flags";
 
 export default {
-  // prettier-ignore
   [lantern.US_MO]: {
     name: "Missouri",
     availableStateCodes: [lantern.US_MO],
@@ -28,7 +26,6 @@ export default {
   [core.US_ND]: {
     name: "North Dakota",
     availableStateCodes: [core.US_ND],
-    allowedPaths: ["/community/explore", "/facilities/explore", "/goals"],
     navigation: {
       goals: [],
       community: ["explore"],
@@ -38,11 +35,6 @@ export default {
   [core.US_ID]: {
     name: "Idaho",
     availableStateCodes: [core.US_ID],
-    allowedPaths: [
-      "/community/projections",
-      "/facilities/projections",
-      "/methodology",
-    ],
     navigation: {
       community: ["projections"],
       facilities: ["projections"],

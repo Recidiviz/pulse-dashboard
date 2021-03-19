@@ -15,35 +15,19 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 import React from "react";
-import { Route, useLocation } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 import { observer } from "mobx-react-lite";
-import NotFound from "./components/NotFound";
 import { useRootStore } from "./components/StoreProvider";
 import { getPathsFromNavigation } from "./utils/navigation";
 
 import tenants from "./tenants";
 
-interface ProtectedRouteProps {
-  component: React.FC;
-  children: React.ReactNode;
-}
-
-const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
-  component: Component,
-  ...rest
-}) => {
+export const RedirectHome: React.FC = ({ ...rest }) => {
   const rootStore = useRootStore();
-  const { pathname } = useLocation();
   // @ts-ignore
   const tenant = tenants[rootStore.currentTenantId];
   const allowedPaths = getPathsFromNavigation(tenant.navigation);
-
-  if (!allowedPaths.includes(pathname)) {
-    return <NotFound />;
-  }
-  return (
-    <Route {...rest} render={(props) => <Component {...rest} {...props} />} />
-  );
+  return <Redirect {...rest} exact from="/" to={allowedPaths[0]} />;
 };
 
-export default observer(ProtectedRoute);
+export default observer(RedirectHome);

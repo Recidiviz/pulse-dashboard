@@ -25,6 +25,7 @@ import {
 import * as Sentry from "@sentry/react";
 
 import ProtectedRoute from "./ProtectedRoute";
+import RedirectHome from "./RedirectHome";
 import { PageProvider } from "./contexts/PageContext";
 import StoreProvider from "./components/StoreProvider";
 import NotFound from "./components/NotFound";
@@ -86,7 +87,7 @@ const App = () => (
                   <ProtectedRoute path="/facilities/projections" component={PageProjections} />
                   <ProtectedRoute path="/methodology" component={Methodology} />
                   <Route path="/profile" component={Profile} />
-                  <Redirect exact from="/" to="/goals" />
+                  <RedirectHome />
                   <Redirect from="/snapshots" to="/goals" />
                   <Redirect from="/revocations" to="/goals" />
                   <Redirect from="/reincarcerations" to="/goals" />
