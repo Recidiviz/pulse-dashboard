@@ -38,6 +38,7 @@ export default class CorePopulationFiltersStore {
 
   constructor({ rootStore }: { rootStore: RootStore }) {
     makeAutoObservable(this, {
+      filterOptions: false,
       filters: observable,
       timePeriodLabel: computed,
       setFilters: action,

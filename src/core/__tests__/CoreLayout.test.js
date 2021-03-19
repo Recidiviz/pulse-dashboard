@@ -27,6 +27,11 @@ import { PageProvider } from "../../contexts/PageContext";
 import StoreProvider from "../../components/StoreProvider";
 import useIntercom from "../../hooks/useIntercom";
 
+jest.mock("mobx-react-lite", () => {
+  return {
+    observer: (component) => component,
+  };
+});
 jest.mock("react-router-dom", () => ({
   useLocation: jest.fn(),
   matchPath: jest.fn().mockReturnValue(false),

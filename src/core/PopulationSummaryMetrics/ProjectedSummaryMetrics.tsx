@@ -15,6 +15,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 import React from "react";
+import { observer } from "mobx-react-lite";
 import MetricsCard from "../MetricsCard/MetricsCard";
 import SummaryMetrics from "./SummaryMetrics";
 import type { ProjectedSummaryRecord } from "../models/types";
@@ -41,4 +42,4 @@ const ProjectedSummaryMetrics: React.FC<{
   );
 };
 
-export default ProjectedSummaryMetrics;
+export default observer(ProjectedSummaryMetrics);

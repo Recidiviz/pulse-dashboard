@@ -9,6 +9,11 @@ import StoreProvider, { useRootStore } from "../../components/StoreProvider";
 import { US_MO } from "../../RootStore/TenantStore/lanternTenants";
 import { PageProvider } from "../../contexts/PageContext";
 
+jest.mock("mobx-react-lite", () => {
+  return {
+    observer: (component) => component,
+  };
+});
 jest.mock("react-router-dom", () => {
   return {
     Link: ({ children }) => children,
