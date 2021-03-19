@@ -32,6 +32,8 @@ const CoreNavigation: React.FC = () => {
   const { pathname } = useLocation();
   const { currentTenantId } = useRootStore();
 
+  if (!currentTenantId) return null;
+
   // @ts-ignore
   const navigationLayout = tenants[currentTenantId].navigation;
 
