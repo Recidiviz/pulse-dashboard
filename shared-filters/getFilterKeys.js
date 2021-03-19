@@ -20,7 +20,7 @@ const FILTER_KEYS = {
     CHARGE_CATEGORY: "charge_category",
     DISTRICT: "district",
     LEVEL_1_SUPERVISION_LOCATION: "level_1_supervision_location",
-    LEVEL_2_SUPERVISION_LOCATION: "level_1_supervision_location",
+    LEVEL_2_SUPERVISION_LOCATION: "level_2_supervision_location",
     SUPERVISION_TYPE: "supervision_type",
     SUPERVISION_LEVEL: "supervision_level",
     REPORTED_VIOLATIONS: "reported_violations",
