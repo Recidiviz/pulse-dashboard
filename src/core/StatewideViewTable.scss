@@ -1,10 +1,26 @@
+// Recidiviz - a data platform for criminal justice reform
+// Copyright (C) 2020 Recidiviz, Inc.
+//
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <https://www.gnu.org/licenses/>.
+// =============================================================================
+
 $border-styles: 1px solid #d7dde0;
 
-.statewideViewTable {
+.StatewideViewTable {
   &__table {
     width: 100%;
     text-align: center;
-
     font-size: 1rem;
     line-height: 150%;
     font-style: normal;
@@ -134,8 +150,7 @@ $border-styles: 1px solid #d7dde0;
     justify-content: center;
   }
 
-  // I have no idea what this arrow is for, so forgive me in advance :(
-  &__stonks-arrow {
+  &__arrow--increasing {
     width: 0;
     height: 0;
     border-style: solid;
@@ -143,8 +158,7 @@ $border-styles: 1px solid #d7dde0;
     border-color: transparent transparent #006c67 transparent;
     margin-right: 0.5rem;
   }
-  // I have no idea what this arrow is for, so forgive me in advance :(
-  &__not-stonks-arrow {
+  &__arrow--decreasing {
     width: 0;
     height: 0;
     border-style: solid;

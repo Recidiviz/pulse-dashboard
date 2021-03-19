@@ -40,13 +40,15 @@ SortableIcon.defaultProps = {
   order: null,
 };
 
-const Sortable = ({ children, order = null, onClick }) => (
-  <button className="Sortable" type="button" onClick={onClick}>
-    {children}
-    &nbsp;
-    <SortableIcon order={order} />
-  </button>
-);
+const Sortable = ({ children, order = null, onClick }) => {
+  return (
+    <button className="Sortable" type="button" onClick={onClick}>
+      {children}
+      &nbsp;
+      <SortableIcon order={order} />
+    </button>
+  );
+};
 
 Sortable.defaultProps = {
   order: null,

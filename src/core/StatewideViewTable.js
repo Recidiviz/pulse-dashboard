@@ -1,7 +1,25 @@
+// Recidiviz - a data platform for criminal justice reform
+// Copyright (C) 2020 Recidiviz, Inc.
+//
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <https://www.gnu.org/licenses/>.
+// =============================================================================
+
 import React, { useMemo } from "react";
 import { useTable, useSortBy } from "react-table";
-import "./statewideViewTable.scss";
 import cx from "classnames";
+import { TableCell } from "./TableCell";
+import "./StatewideViewTable.scss";
 
 export const StatewideViewTable = () => {
   const data = useMemo(
@@ -75,8 +93,8 @@ export const StatewideViewTable = () => {
             accessor: "change_7",
             // eslint-disable-next-line react/prop-types
             Cell: ({ value }) => (
-              <div className="statewideViewTable__change">
-                <div className="statewideViewTable__not-stonks-arrow" />
+              <div className="StatewideViewTable__change">
+                <div className="StatewideViewTable__arrow--decreasing" />
                 {value}%
               </div>
             ),
@@ -86,8 +104,8 @@ export const StatewideViewTable = () => {
             accessor: "change_28",
             // eslint-disable-next-line react/prop-types
             Cell: ({ value }) => (
-              <div className="statewideViewTable__change">
-                <div className="statewideViewTable__stonks-arrow" />
+              <div className="StatewideViewTable__change">
+                <div className="StatewideViewTable__arrow--increasing" />
                 {value}%
               </div>
             ),
@@ -101,69 +119,25 @@ export const StatewideViewTable = () => {
             Header: "Timely discharge",
             accessor: "discharge",
             // eslint-disable-next-line react/prop-types
-            Cell: ({ value }) => (
-              <span
-                className={cx("statewideViewTable__bubble", {
-                  "statewideViewTable__bubble--70": value < 70,
-                  "statewideViewTable__bubble--80": value > 70 && value < 80,
-                  "statewideViewTable__bubble--90": value > 80 && value < 90,
-                  "statewideViewTable__bubble--100": value > 90,
-                })}
-              >
-                {value}%
-              </span>
-            ),
+            Cell: ({ value }) => <TableCell value={value} />,
           },
           {
             Header: "Program availability",
             accessor: "participation",
             // eslint-disable-next-line react/prop-types
-            Cell: ({ value }) => (
-              <span
-                className={cx("statewideViewTable__bubble", {
-                  "statewideViewTable__bubble--70": value < 70,
-                  "statewideViewTable__bubble--80": value > 70 && value < 80,
-                  "statewideViewTable__bubble--90": value > 80 && value < 90,
-                  "statewideViewTable__bubble--100": value > 90,
-                })}
-              >
-                {value}%
-              </span>
-            ),
+            Cell: ({ value }) => <TableCell value={value} />,
           },
           {
             Header: "Timely contacts",
             accessor: "contacts",
             // eslint-disable-next-line react/prop-types
-            Cell: ({ value }) => (
-              <span
-                className={cx("statewideViewTable__bubble", {
-                  "statewideViewTable__bubble--70": value < 70,
-                  "statewideViewTable__bubble--80": value > 70 && value < 80,
-                  "statewideViewTable__bubble--90": value > 80 && value < 90,
-                  "statewideViewTable__bubble--100": value > 90,
-                })}
-              >
-                {value}%
-              </span>
-            ),
+            Cell: ({ value }) => <TableCell value={value} />,
           },
           {
             Header: "Timely risk assessments",
             accessor: "assessments",
             // eslint-disable-next-line react/prop-types
-            Cell: ({ value }) => (
-              <span
-                className={cx("statewideViewTable__bubble", {
-                  "statewideViewTable__bubble--70": value < 70,
-                  "statewideViewTable__bubble--80": value > 70 && value < 80,
-                  "statewideViewTable__bubble--90": value > 80 && value < 90,
-                  "statewideViewTable__bubble--100": value > 90,
-                })}
-              >
-                {value}%
-              </span>
-            ),
+            Cell: ({ value }) => <TableCell value={value} />,
           },
         ],
       },
@@ -181,17 +155,17 @@ export const StatewideViewTable = () => {
 
   return (
     <div style={{ maxWidth: "100%", overflowX: "auto", overflowY: "hidden" }}>
-      <table {...getTableProps()} className="statewideViewTable__table">
-        <thead className="statewideViewTable__table-head">
+      <table {...getTableProps()} className="StatewideViewTable__table">
+        <thead className="StatewideViewTable__table-head">
           {headerGroups.map((headerGroup) => (
             <tr
               {...headerGroup.getHeaderGroupProps()}
-              className="statewideViewTable__row"
+              className="StatewideViewTable__row"
             >
               {headerGroup.headers.map((column) => (
                 <th {...column.getHeaderProps(column.getSortByToggleProps())}>
                   {column.canSort ? (
-                    <div className="statewideViewTable__sortable">
+                    <div className="StatewideViewTable__sortable">
                       {column.render("Header")}
                       <div className="triangle-switcher">
                         <div
@@ -230,7 +204,7 @@ export const StatewideViewTable = () => {
             return (
               <tr
                 {...row.getRowProps()}
-                className="statewideViewTable__row statewideViewTable__row--value"
+                className="StatewideViewTable__row StatewideViewTable__row--value"
               >
                 {row.cells.map((cell) => {
                   return (

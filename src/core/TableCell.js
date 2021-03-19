@@ -1,5 +1,5 @@
 // Recidiviz - a data platform for criminal justice reform
-// Copyright (C) 2021 Recidiviz, Inc.
+// Copyright (C) 2020 Recidiviz, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -14,42 +14,24 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-
 import React from "react";
 import PropTypes from "prop-types";
+import cx from "classnames";
 
-import PageTemplate from "../PageTemplate";
-import BlockVitalCards from "./BlockVitalCards";
+export const TableCell = ({ value }) => (
+  <span
+    key={value}
+    className={cx("StatewideViewTable__bubble", {
+      "StatewideViewTable__bubble--70": value < 70,
+      "StatewideViewTable__bubble--80": value > 70 && value < 80,
+      "StatewideViewTable__bubble--90": value > 80 && value < 90,
+      "StatewideViewTable__bubble--100": value > 90,
+    })}
+  >
+    {value}%
+  </span>
+);
 
-import "./CoreCommunityVitals.scss";
-import { StatewideViewTable } from "../StatewideViewTable";
-
-const CoreCommunityVitals = ({ stateCode }) => {
-  const getStateName = (code) => {
-    switch (code) {
-      case "US_ND":
-        return "North Dakota";
-      default:
-        return "DEMO";
-    }
-  };
-  return (
-    <PageTemplate>
-      <div style={{ width: "100%" }}>
-        <div className="CoreCommunityVitals__Title">
-          {getStateName(stateCode)}
-        </div>
-        <div>
-          <StatewideViewTable />
-        </div>
-      </div>
-      <BlockVitalCards />
-    </PageTemplate>
-  );
+TableCell.propTypes = {
+  value: PropTypes.number.isRequired,
 };
-
-CoreCommunityVitals.propTypes = {
-  stateCode: PropTypes.string.isRequired,
-};
-
-export default CoreCommunityVitals;
