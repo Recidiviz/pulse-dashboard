@@ -56,7 +56,7 @@ const Revocations = () => {
   );
 
   return (
-    <main className="Revocations">
+    <div className="Revocations">
       <Sticky
         className="LanternFilterBar"
         style={{ zIndex: 700, top: hideTopBar ? 0 : 65 }}
@@ -116,7 +116,7 @@ const Revocations = () => {
           <CaseTable timeDescription={timeDescription} />
         </ErrorBoundary>
       </div>
-    </main>
+    </div>
   );
 };
 

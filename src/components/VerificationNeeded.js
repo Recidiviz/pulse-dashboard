@@ -18,7 +18,7 @@
 import React from "react";
 
 const VerificationNeeded = () => (
-  <main className="main-content bgc-grey-100">
+  <div className="main-content bgc-grey-100">
     <div className="pos-a l-0 t-0 bgc-white w-100 h-100 d-f fxd-r fxw-w ai-c jc-c pos-r p-30">
       <div className="d-f jc-c fxd-c">
         <h1
@@ -55,7 +55,7 @@ const VerificationNeeded = () => (
         </div>
       </div>
     </div>
-  </main>
+  </div>
 );
 
 export default VerificationNeeded;

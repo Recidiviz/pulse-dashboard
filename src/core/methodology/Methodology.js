@@ -26,7 +26,7 @@ import PageTemplate from "../PageTemplate";
 
 const Methodology = () => (
   <PageTemplate>
-    <main className="main-content methodology p-0">
+    <div className="main-content methodology p-0">
       <Container className="col-md-10 col-12 ">
         <h1 className="methodology__main-title">Projections</h1>
         <h2 className="methodology__main-description">
@@ -70,7 +70,7 @@ const Methodology = () => (
           ))}
         </div>
       </Container>
-    </main>
+    </div>
   </PageTemplate>
 );
 
