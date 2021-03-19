@@ -306,17 +306,18 @@ const CORE_COLORS = {
   indigo: { main: "rgba(76, 98, 144, 1)", dark: "rgba(62, 84, 130, 1)" },
   teal: { main: "rgba(144, 174, 181, 1)", dark: "rgba(110, 140, 147, 1)" },
   salmon: { main: "rgba(204, 152, 156, 1)", dark: "rgba(171, 119, 123, 1)" },
+  gray: { main: "rgba(194, 203, 208, 1)" },
 };
 
 // A placeholder color rotator for charts that need to dynamically pick colors
 const COLOR_ROTATION = [
-  "#25636f",
-  "#d9a95f",
-  "#ba4f4f",
-  "#4c6290",
-  "#90aeb5",
-  "#cc989c",
-  "#c2cbd0",
+  CORE_COLORS.forest.main,
+  CORE_COLORS.gold.main,
+  CORE_COLORS.crimson.main,
+  CORE_COLORS.indigo.main,
+  CORE_COLORS.teal.main,
+  CORE_COLORS.salmon.main,
+  CORE_COLORS.gray.main,
 ];
 
 const COLORS_GOOD_BAD = {
