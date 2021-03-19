@@ -112,7 +112,7 @@ function getCacheKey({
   stateCode,
   metricType,
   metricName,
-  cacheKeySubset,
+  cacheKeySubset = {},
   cacheKeyPrefix = null,
 }) {
   if (!stateCode && !metricType && !cacheKeyPrefix) {

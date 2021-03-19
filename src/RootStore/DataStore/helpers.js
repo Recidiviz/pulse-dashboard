@@ -60,9 +60,12 @@ export function dimensionManifestIncludesFilterValues({
       return true;
     }
     if (dimensionManifest[filterType] === undefined) {
-      throw new Error(
+      // This should only occur with the JSON metric data (never in production).
+      // When fetching optimized data, this logic branch should not be possible
+      console.error(
         `Expected to find ${filterType} in the dimension manifest. Should this filter be skipped?`
       );
+      return true;
     }
     return dimensionManifest[filterType].includes(
       filters[filterType].toLowerCase()

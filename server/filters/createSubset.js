@@ -24,7 +24,10 @@ const {
   createSubsetMetadata,
   getSubsetDimensionKeys,
 } = require("./subsetFileHelpers");
-const { getSubsetManifest } = require("../constants/subsetManifest");
+const {
+  getSubsetManifest,
+  FILES_WITH_SUBSETS,
+} = require("../constants/subsetManifest");
 const {
   getFiltersByMetricName,
   getFilterFnByMetricName,
@@ -84,16 +87,26 @@ function applyFiltersToOptimizedFormat(data, filters, filterFn, skipFilterFn) {
  * @returns {Object[]} - Returns an object with the property `data`, which has the filtered subset values as an array of objects,
  * and the property `metadata`, which has a dimension manifest reflecting the values in the subset.
  */
-function applyFiltersToDataPoints(dataPoints, filters, filterFn) {
+function applyFiltersToDataPoints(dataPoints, filters, filterFn, metricName) {
   const filteredData = dataPoints.filter((dataPoint) => filterFn(dataPoint));
-  const subsetManifest = getSubsetManifest();
+  const subsetManifest = FILES_WITH_SUBSETS.includes(metricName)
+    ? getSubsetManifest()
+    : [];
+
   const metadata = {
     dimension_manifest: subsetManifest,
     total_data_points: filteredData.length,
   };
+
+  const subsetMetadata = createSubsetMetadata(
+    filteredData.length,
+    metadata,
+    filters
+  );
+
   return {
     data: filteredData,
-    metadata: createSubsetMetadata(filteredData.length, metadata, filters),
+    metadata: subsetMetadata,
   };
 }
 
@@ -117,21 +130,35 @@ function applyFiltersToDataPoints(dataPoints, filters, filterFn) {
  * the `data` key.
  */
 function createSubset(metricName, subsetFilters, metricFile) {
+  const {
+    level_1_supervision_location: levelOneSupervisionLocation,
+  } = subsetFilters;
+
+  if (
+    !FILES_WITH_SUBSETS.includes(metricName) &&
+    !levelOneSupervisionLocation
+  ) {
+    return metricFile;
+  }
+
   const filters = getFiltersByMetricName(metricName, subsetFilters);
   const filterFn = getFilterFnByMetricName(metricName, filters);
+
+  const skipFilterFn = (dimensionKey) =>
+    !getSubsetDimensionKeys()
+      .concat(["level_1_supervision_location"])
+      .includes(dimensionKey);
+
   if (Array.isArray(metricFile[metricName])) {
     return {
       [metricName]: applyFiltersToDataPoints(
         metricFile[metricName],
         filters,
-        filterFn
+        filterFn,
+        metricName
       ),
     };
   }
-  const skipFilterFn = (dimensionKey) =>
-    !getSubsetDimensionKeys()
-      .concat(["level_1_supervision_location"])
-      .includes(dimensionKey);
 
   return {
     [metricName]: applyFiltersToOptimizedFormat(

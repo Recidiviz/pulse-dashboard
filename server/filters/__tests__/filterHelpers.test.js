@@ -19,6 +19,7 @@ const { matchesAllFilters } = require("shared-filters");
 const {
   createSubsetFilters,
   getFilterFnByMetricName,
+  getFiltersByMetricName,
 } = require("../filterHelpers");
 
 jest.mock("../../constants/subsetManifest", () => {
@@ -86,6 +87,22 @@ describe("createSubsetFilters", () => {
       });
     });
   });
+
+  describe("Given a filters object with a restricted district key", () => {
+    const filters = {
+      violationType: "FELONY",
+      chargeCategory: "DOMESTIC_VIOLENCE",
+    };
+
+    it("converts the restrictedDistrict param to a subset filter", () => {
+      filters.restrictedDistrict = ["03"];
+      expect(createSubsetFilters({ filters })).toEqual({
+        violation_type: ["felony", "law"],
+        charge_category: ["all", "domestic_violence"],
+        level_1_supervision_location: ["03"],
+      });
+    });
+  });
 });
 
 describe("getFilterFnByMetricName", () => {
@@ -103,6 +120,70 @@ describe("getFilterFnByMetricName", () => {
       expect(matchesAllFilters).toHaveBeenCalledWith({
         filters,
         skippedFilters: ["metric_period_months"],
+      });
+    });
+  });
+});
+
+describe("getFiltersByMetricName", () => {
+  afterAll(() => {
+    jest.resetModules();
+    jest.clearAllMocks();
+  });
+
+  describe("given files with subsets", () => {
+    const filters = {
+      level_1_supervision_location: ["03"],
+      violation_type: "all",
+    };
+
+    [
+      "revocations_matrix_distribution_by_risk_level",
+      "revocations_matrix_distribution_by_gender",
+      "revocations_matrix_distribution_by_officer",
+      "revocations_matrix_distribution_by_race",
+      "revocations_matrix_distribution_by_violation",
+      "revocations_matrix_by_month",
+    ].forEach((metricName) => {
+      it("returns the filters object", () => {
+        expect(getFiltersByMetricName(metricName, filters)).toEqual(filters);
+      });
+    });
+  });
+
+  describe("given files without subsets or an unknown file", () => {
+    const filters = {
+      level_1_supervision_location: ["03"],
+      violation_type: "all",
+    };
+
+    [
+      "revocations_matrix_cells",
+      "revocations_matrix_filtered_caseload",
+      "unknown_file",
+    ].forEach((metricName) => {
+      it("returns a filters object with only the restricted district", () => {
+        expect(getFiltersByMetricName(metricName, filters)).toEqual({
+          level_1_supervision_location: ["03"],
+        });
+      });
+    });
+  });
+
+  describe("given revocations_matrix_distribution_by_district", () => {
+    const filters = {
+      level_1_supervision_location: ["03"],
+      violation_type: "all",
+    };
+
+    it("returns a filters object with only the restricted district", () => {
+      expect(
+        getFiltersByMetricName(
+          "revocations_matrix_distribution_by_district",
+          filters
+        )
+      ).toEqual({
+        violation_type: "all",
       });
     });
   });

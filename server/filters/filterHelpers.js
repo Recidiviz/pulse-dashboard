@@ -110,7 +110,7 @@ const getFiltersByMetricName = (metricName, filters) => {
     case "revocations_matrix_distribution_by_district":
       return filtersWithoutLevelOneSupervisionLocation;
     default:
-      return () => true;
+      return { level_1_supervision_location };
   }
 };
 
