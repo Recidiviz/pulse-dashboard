@@ -160,6 +160,13 @@ function createSubset(metricName, subsetFilters, metricFile) {
     };
   }
 
+  /* eslint-disable no-console */
+  console.log(
+    `Creating subset file for: ${metricName} with filters: ${JSON.stringify(
+      subsetFilters
+    )}`
+  );
+
   return {
     [metricName]: applyFiltersToOptimizedFormat(
       metricFile[metricName],

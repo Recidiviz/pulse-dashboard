@@ -20,12 +20,8 @@ const { default: processMetricFile } = require("../processMetricFile");
 const {
   default: processJsonLinesMetricFile,
 } = require("../processJsonLinesMetricFile");
-const {
-  default: processOptimizedTxtMetricFile,
-} = require("../processOptimizedTxtMetricFile");
 
 jest.mock("../processJsonLinesMetricFile");
-jest.mock("../processOptimizedTxtMetricFile");
 
 describe("processMetricFile tests", () => {
   const mockStringContents = "some string content";
@@ -55,18 +51,15 @@ describe("processMetricFile tests", () => {
     expect(processJsonLinesMetricFile).toHaveBeenCalledWith(mockStringContents);
   });
 
-  it("should parse result with processOptimizedTxtMetricFile func", () => {
+  it("should return the string contents of the results", () => {
     const mockExtension = ".txt";
-    const mockTxt = "some txt result";
-    processOptimizedTxtMetricFile.mockReturnValue(mockTxt);
 
     expect(
       processMetricFile(mockContents, mockMetadata, mockExtension)
-    ).toStrictEqual(mockTxt);
-    expect(processOptimizedTxtMetricFile).toHaveBeenCalledWith(
-      mockStringContents,
-      mockMetadata
-    );
+    ).toStrictEqual({
+      flattenedValueMatrix: mockStringContents,
+      metadata: mockMetadata,
+    });
   });
 
   it("should return empty object if extensions do not match", () => {

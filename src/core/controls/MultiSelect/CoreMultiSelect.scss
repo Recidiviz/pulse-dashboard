@@ -1,0 +1,165 @@
+@import "../../../assets/styles/spec/settings/index";
+
+.CoreMultiSelect {
+  &__custom-indicator {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.25rem;
+    height: 2.25rem;
+  }
+  transition: border-radius 0s;
+
+  &__custom-arrow {
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 0.25rem 0.25rem 0 0.25rem;
+    border-color: #014c48 transparent transparent transparent;
+  }
+
+  span.MultiSelect__checkbox {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 1.25rem;
+    width: 1.25rem;
+    border: 1px solid $core-border-color;
+    background-color: transparent;
+    border-radius: 0.25rem;
+
+    &:after {
+      content: "";
+      position: absolute;
+      display: none;
+      left: 8px !important;
+      top: 4px;
+      width: 5px;
+      height: 10px;
+      border: solid white;
+      border-width: 0 2px 2px 0;
+      -webkit-transform: rotate(45deg);
+      -ms-transform: rotate(45deg);
+      transform: rotate(45deg);
+    }
+
+    .MultiSelect__option--is-focused & {
+      background-color: rgba(0, 108, 103, 0.2);
+      border: none;
+    }
+
+    .MultiSelect__checkbox-input:checked ~ &:after {
+      display: block;
+    }
+  }
+}
+//the need to increase the weighting of styles over the library
+
+div.CoreMultiSelect {
+  max-height: 2.5rem;
+  flex-grow: 1;
+  width: 15.65rem;
+  font-size: $font-size-base;
+  color: $core-font-color;
+
+  &__value-container {
+    white-space: nowrap;
+    flex-wrap: nowrap !important;
+    overflow-x: hidden;
+    justify-content: left;
+    padding-left: 1rem;
+  }
+
+  &__clear-indicator {
+    display: none;
+  }
+
+  &__group-heading {
+    padding-bottom: 0.5rem;
+  }
+
+  &--summing-option-selected {
+    width: 15.62rem;
+  }
+
+  label.MultiSelect__checkbox-container {
+    display: block;
+    position: relative;
+    padding-left: 1.87rem !important;
+    padding-right: 0;
+    margin-bottom: 0;
+    margin-left: -8px;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+
+    input.MultiSelect__checkbox-input {
+      position: absolute;
+      opacity: 0;
+      cursor: pointer;
+      height: 0;
+      width: 0;
+    }
+    .MultiSelect__checkbox-input:checked ~ .MultiSelect__checkbox {
+      background-color: #006c67;
+      border: none;
+    }
+  }
+
+  div.CoreMultiSelect__control {
+    background-color: $core-background;
+    border: 1px solid $core-border-color;
+    border-radius: 1.5rem;
+    box-shadow: none;
+    outline: none;
+    transition: border-radius 0s;
+    cursor: pointer;
+
+    &--menu-is-open {
+      border-radius: 1.2rem 1.2rem 0 0;
+    }
+  }
+  div.CoreMultiSelect__menu {
+    background-color: $core-background;
+    border: 1px solid $core-border-color;
+    border-radius: 0 0 1.5rem 1.5rem;
+    border-top: none;
+    box-shadow: none;
+    margin: 0;
+    overflow: hidden;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+
+    &-list div:first-child {
+      padding-top: none;
+    }
+
+    &-list::-webkit-scrollbar {
+      display: none;
+    }
+
+    div.CoreMultiSelect__option {
+      padding: 0.5rem 1rem 0.5rem 1.5rem;
+      cursor: pointer;
+
+      &--is-selected {
+        background-color: unset;
+        color: unset;
+      }
+
+      &--is-focused {
+        background-color: $core-focused-color;
+
+        & .MultiSelect__checkbox {
+          background: rgba(0, 108, 103, 0.2);;
+        }
+      }
+
+      &:last-child {
+        margin-bottom: 0.9rem;
+      }
+    }
+  }
+}

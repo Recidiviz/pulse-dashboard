@@ -195,7 +195,9 @@ export default class BaseDataStore {
       this.isError = false;
       return;
     }
-    const endpoint = `${tenantId}/newRevocations/${this.file}${this.filtersQueryParams}`;
+
+    const filename = this.file;
+    const endpoint = `${tenantId}/newRevocations/${filename}${this.filtersQueryParams}`;
     try {
       this.isLoading = true;
       const responseData = yield callMetricsApi(
@@ -204,7 +206,7 @@ export default class BaseDataStore {
       );
       this.apiData = parseResponseByFileFormat(
         responseData,
-        this.file,
+        filename,
         this.eagerExpand
       );
       this.isLoading = false;

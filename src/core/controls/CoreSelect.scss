@@ -1,0 +1,101 @@
+@import "../../assets/styles/spec/settings/index";
+
+.Core-Select {
+  flex-grow: 1;
+  font-size: 0.8em;
+  font-weight: 500;
+  color: $core-font-color;
+
+  &__control {
+    border: 1px solid $core-border-color !important;
+    box-shadow: none !important;
+    border-radius: 1.25rem !important;
+    background-color: $core-background !important;
+    transition: border-radius 0s !important;
+    cursor: pointer !important;
+
+    &:hover {
+      border-color: $core-border-color !important;
+    }
+
+    &--menu-is-open {
+      border-bottom-right-radius: 0 !important;
+      border-bottom-left-radius: 0 !important;
+    }
+  }
+
+  &__container {
+    background-color: $core-background !important;
+  }
+
+  &__single-value {
+    color: $core-font-color !important;
+    line-height: 1rem;
+  }
+
+  &__menu {
+    background-color: $core-background !important;
+    border: 1px solid $core-border-color;
+    border-radius: 0rem 0rem 1.25rem 1.25rem !important;
+    border-top: none !important;
+    box-shadow: none !important;
+    color: $core-font-color;
+    margin: 0 !important;
+    overflow: hidden;
+  }
+
+  &__menu-list {
+    padding-top: 0.5rem !important;
+    padding-bottom: 0.5rem !important;
+  }
+
+  &__option {
+    cursor: pointer !important;
+    padding-left: 1rem !important;
+
+    &--is-multi {
+      background-color: transparent !important;
+    }
+
+    &--is-focused {
+      background-color: inherit !important;
+    }
+
+    &--is-selected {
+      background-color: #006c67 !important;
+      color: white !important;
+    }
+
+    &:active,
+    &:hover {
+      background: $core-focused-color !important;
+      color: $core-font-color !important;
+    }
+  }
+
+  &__group {
+    margin-left: 20px;
+  }
+
+  &__value-container {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    padding-left: 1rem !important;
+  }
+
+  &__custom-indicator {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+  }
+
+  &__custom-arrow {
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 4px 4px 0 4px;
+    border-color: #014c48 transparent transparent transparent;
+  }
+}

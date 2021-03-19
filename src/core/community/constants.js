@@ -19,6 +19,13 @@ export const importantNotes = [
       are included whether or not they result in incarceration.`,
   },
   {
+    header: "FTR REFERRALS",
+    body: `Unless noted otherwise, the charts on this page count all people with a completed FTR
+      referral based on the date of that referral. The number and characteristics of people who
+      actually enroll in the program may differ slightly, as not all people who are referred are
+      admitted.`,
+  },
+  {
     header: "OFFICE FILTER",
     body: `Selecting an office or set of offices filters charts to only show data from people
       being supervised out of those office(s).`,

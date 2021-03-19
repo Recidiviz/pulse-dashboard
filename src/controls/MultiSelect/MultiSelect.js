@@ -17,11 +17,11 @@
 import React, { useCallback, useMemo, useRef, useEffect } from "react";
 import PropTypes from "prop-types";
 import cn from "classnames";
+import ReactSelect from "react-select";
 
 import GroupHeading from "./GroupHeading";
 import ValueContainer from "./ValueContainer";
 import Option from "./Option";
-import Select from "../Select";
 
 import { getNewOptions } from "../utils";
 import { optionPropType } from "../propTypes";
@@ -37,7 +37,6 @@ const MultiSelect = ({
   ...props
 }) => {
   const ref = useRef();
-
   useEffect(() => {
     if (ref.current && ref.current.state.menuIsOpen) {
       ref.current.select.focus();
@@ -51,7 +50,6 @@ const MultiSelect = ({
     },
     [onChange, options, summingOption]
   );
-
   const replacedComponents = useMemo(
     () => ({
       GroupHeading: (groupHeadingProps) => (
@@ -84,13 +82,12 @@ const MultiSelect = ({
   };
 
   return (
-    <Select
+    <ReactSelect
       classNamePrefix="MultiSelect"
       className={cn("MultiSelect", className, {
         "MultiSelect--summing-option-selected": summingOption === value[0],
       })}
       ref={ref}
-      isSearchable={false}
       closeMenuOnSelect={false}
       components={replacedComponents}
       hideSelectedOptions={false}
@@ -99,6 +96,7 @@ const MultiSelect = ({
       styles={CustomStyles}
       onFocus={() => ref.current.setState({ menuIsOpen: true })}
       value={value}
+      isSearchable
       isMulti
       {...props}
     />
@@ -108,7 +106,6 @@ const MultiSelect = ({
 MultiSelect.defaultProps = {
   className: "",
 };
-
 MultiSelect.propTypes = {
   defaultValue: PropTypes.arrayOf(optionPropType).isRequired,
   value: PropTypes.arrayOf(optionPropType).isRequired,

@@ -18,10 +18,6 @@
 const {
   default: processJsonLinesMetricFile,
 } = require("./processJsonLinesMetricFile");
-const {
-  default: processOptimizedTxtMetricFile,
-} = require("./processOptimizedTxtMetricFile");
-
 /**
  * Processes the given metric file, a Buffer of bytes, returning a json object
  * structured based on the given format.
@@ -36,7 +32,7 @@ function processMetricFile(contents, metadata, extension) {
     return processJsonLinesMetricFile(stringContents);
   }
   if (extension.toLowerCase() === ".txt") {
-    return processOptimizedTxtMetricFile(stringContents, metadata);
+    return { flattenedValueMatrix: stringContents, metadata };
   }
 
   return {};

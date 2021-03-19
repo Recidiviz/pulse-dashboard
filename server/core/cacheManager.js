@@ -90,14 +90,21 @@ function clearMemoryCache() {
 
 function cacheResponse(cacheKey, fetchValue, callback) {
   const cache = getCache(cacheKey);
-  return cache.wrap(cacheKey, fetchValue).then(
-    (result) => {
-      callback(null, result);
-    },
-    (err) => {
-      callback(err, null);
-    }
-  );
+  return cache
+    .wrap(cacheKey, fetchValue)
+    .then(
+      (result) => {
+        callback(null, result);
+      },
+      (error) => {
+        console.error("Rejected promise from cache.wrap: ", error);
+        callback(error, null);
+      }
+    )
+    .catch((error) => {
+      console.error("Error calling cache.wrap: ", error);
+      callback(error, null);
+    });
 }
 
 module.exports = {

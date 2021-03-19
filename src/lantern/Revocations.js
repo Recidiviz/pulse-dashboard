@@ -50,6 +50,7 @@ const Revocations = () => {
 
   const timeDescription = getTimeDescription(
     get(filters, METRIC_PERIOD_MONTHS),
+    filterOptions[ADMISSION_TYPE].componentEnabled,
     filterOptions[ADMISSION_TYPE].options,
     get(filters, ADMISSION_TYPE)
   );
@@ -57,7 +58,7 @@ const Revocations = () => {
   return (
     <main className="Revocations">
       <Sticky
-        className="FilterBar"
+        className="LanternFilterBar"
         style={{ zIndex: 700, top: hideTopBar ? 0 : 65 }}
       >
         <ErrorBoundary>

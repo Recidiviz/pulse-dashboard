@@ -91,7 +91,7 @@ describe("cacheKeys utils", () => {
             },
           })
         ).toEqual(
-          "US_MO-newRevocations-revocations_matrix_distribution_by_district-violation_type=1"
+          "US_MO-newRevocations-revocations_matrix_distribution_by_district-violation_type=4"
         );
 
         expect(
@@ -138,7 +138,7 @@ describe("cacheKeys utils", () => {
               },
             })
           ).toEqual(
-            "US_MO-newRevocations-revocations_matrix_distribution_by_district-violation_type=1-restrictedDistrict=03"
+            "US_MO-newRevocations-revocations_matrix_distribution_by_district-violation_type=4-restrictedDistrict=03"
           );
 
           expect(

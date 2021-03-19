@@ -37,7 +37,7 @@ const ChartCard = ({
 
   return (
     <div className="ChartCard col-md-6">
-      <div className="bd bgc-white p-20">
+      <div className="bd bgc-white p-20 bdrs-8">
         <div className="layers">
           <div className="layer w-100 pX-20 pT-20">
             <h6 className="lh-1">

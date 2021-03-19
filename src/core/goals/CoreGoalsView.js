@@ -1,5 +1,5 @@
 // Recidiviz - a data platform for criminal justice reform
-// Copyright (C) 2020 Recidiviz, Inc.
+// Copyright (C) 2021 Recidiviz, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -28,14 +28,25 @@ import RevocationAdmissionsSnapshot from "./RevocationAdmissionsSnapshot";
 import RevocationCountOverTime from "./RevocationCountOverTime";
 import SupervisionSuccessSnapshot from "./SupervisionSuccessSnapshot";
 import useChartData from "../hooks/useChartData";
-import { metrics } from "./constants";
+import { metrics } from "../community/constants";
+import DaysAtLibertySnapshot from "./DaysAtLibertySnapshot";
+import ReincarcerationCountOverTime from "./ReincarcerationCountOverTime";
 
-const CommunityGoals = () => {
-  const { apiData, isLoading, getTokenSilently } = useChartData(
-    "us_nd/community/goals"
-  );
+const CoreGoalsView = () => {
+  // TODO(#916): Consolidate API
+  const {
+    apiData: facilitiesApiData,
+    isLoading: facilitiesIsLoading,
+    getTokenSilently: getFacilitiesTokenSilently,
+  } = useChartData("us_nd/facilities/goals");
 
-  if (isLoading) {
+  const {
+    apiData: communityApiData,
+    isLoading: communityIsLoading,
+    getTokenSilently: getCommunityTokenSilently,
+  } = useChartData("us_nd/community/goals");
+
+  if (facilitiesIsLoading || communityIsLoading) {
     return <Loading />;
   }
 
@@ -50,11 +61,11 @@ const CommunityGoals = () => {
             metricPeriodMonths={metrics.metricPeriodMonths}
             supervisionType={metrics.supervisionType}
             district={metrics.district}
-            officeData={apiData.site_offices.data}
-            revocationCountsByMonth={apiData.revocations_by_month.data}
+            officeData={communityApiData.site_offices.data}
+            revocationCountsByMonth={communityApiData.revocations_by_month.data}
             header="revocationCountsByMonth-header"
             stateCode="US_ND"
-            getTokenSilently={getTokenSilently}
+            getTokenSilently={getCommunityTokenSilently}
           />
         }
         geoChart={
@@ -65,13 +76,13 @@ const CommunityGoals = () => {
             metricPeriodMonths={metrics.metricPeriodMonths}
             supervisionType={metrics.supervisionType}
             keyedByOffice
-            officeData={apiData.site_offices.data}
-            dataPointsByOffice={apiData.revocations_by_period.data}
+            officeData={communityApiData.site_offices.data}
+            dataPointsByOffice={communityApiData.revocations_by_period.data}
             numeratorKeys={["revocation_count"]}
             denominatorKeys={["total_supervision_count"]}
             centerLat={47.3}
             centerLong={-100.5}
-            getTokenSilently={getTokenSilently}
+            getTokenSilently={getCommunityTokenSilently}
           />
         }
         footer={<Methodology chartId="revocationCountsByMonthGoal" />}
@@ -93,11 +104,11 @@ const CommunityGoals = () => {
             supervisionType={metrics.supervisionType}
             district={metrics.district}
             supervisionSuccessRates={
-              apiData.supervision_termination_by_type_by_month.data
+              communityApiData.supervision_termination_by_type_by_month.data
             }
             header="supervisionSuccessSnapshot-header"
             stateCode="US_ND"
-            getTokenSilently={getTokenSilently}
+            getTokenSilently={getCommunityTokenSilently}
           />
         }
         geoChart={
@@ -108,9 +119,9 @@ const CommunityGoals = () => {
             metricPeriodMonths={metrics.metricPeriodMonths}
             supervisionType={metrics.supervisionType}
             keyedByOffice
-            officeData={apiData.site_offices.data}
+            officeData={communityApiData.site_offices.data}
             dataPointsByOffice={
-              apiData.supervision_termination_by_type_by_period.data
+              communityApiData.supervision_termination_by_type_by_period.data
             }
             numeratorKeys={["successful_termination"]}
             denominatorKeys={[
@@ -119,7 +130,7 @@ const CommunityGoals = () => {
             ]}
             centerLat={47.3}
             centerLong={-100.5}
-            getTokenSilently={getTokenSilently}
+            getTokenSilently={getCommunityTokenSilently}
           />
         }
         footer={<Methodology chartId="supervisionSuccessSnapshot" />}
@@ -140,11 +151,11 @@ const CommunityGoals = () => {
             supervisionType={metrics.supervisionType}
             district={metrics.district}
             lsirScoreChangeByMonth={
-              apiData.average_change_lsir_score_by_month.data
+              communityApiData.average_change_lsir_score_by_month.data
             }
             header="lsirScoreChangeSnapshot-header"
             stateCode="US_ND"
-            getTokenSilently={getTokenSilently}
+            getTokenSilently={getCommunityTokenSilently}
           />
         }
         geoChart={
@@ -156,15 +167,15 @@ const CommunityGoals = () => {
             supervisionType={metrics.supervisionType}
             keyedByOffice
             possibleNegativeValues
-            officeData={apiData.site_offices.data}
+            officeData={communityApiData.site_offices.data}
             dataPointsByOffice={
-              apiData.average_change_lsir_score_by_period.data
+              communityApiData.average_change_lsir_score_by_period.data
             }
             numeratorKeys={["average_change"]}
             denominatorKeys={[]}
             centerLat={47.3}
             centerLong={-100.5}
-            getTokenSilently={getTokenSilently}
+            getTokenSilently={getCommunityTokenSilently}
           />
         }
         footer={<Methodology chartId="lsirScoreChangeSnapshot" />}
@@ -186,11 +197,11 @@ const CommunityGoals = () => {
             supervisionType={metrics.supervisionType}
             district={metrics.district}
             revocationAdmissionsByMonth={
-              apiData.admissions_by_type_by_month.data
+              communityApiData.admissions_by_type_by_month.data
             }
             header="revocationAdmissionsSnapshot-header"
             stateCode="US_ND"
-            getTokenSilently={getTokenSilently}
+            getTokenSilently={getCommunityTokenSilently}
           />
         }
         geoChart={
@@ -202,8 +213,10 @@ const CommunityGoals = () => {
             supervisionType={metrics.supervisionType}
             keyedByOffice
             shareDenominatorAcrossRates
-            officeData={apiData.site_offices.data}
-            dataPointsByOffice={apiData.admissions_by_type_by_period.data}
+            officeData={communityApiData.site_offices.data}
+            dataPointsByOffice={
+              communityApiData.admissions_by_type_by_period.data
+            }
             numeratorKeys={[
               "technicals",
               "non_technicals",
@@ -217,7 +230,7 @@ const CommunityGoals = () => {
             ]}
             centerLat={47.3}
             centerLong={-100.5}
-            getTokenSilently={getTokenSilently}
+            getTokenSilently={getCommunityTokenSilently}
           />
         }
         footer={<Methodology chartId="revocationAdmissionsSnapshotGoal" />}
@@ -228,8 +241,66 @@ const CommunityGoals = () => {
           </>
         }
       />
+      <ChartCard
+        chartId="daysAtLibertySnapshot"
+        chartTitle="DAYS AT LIBERTY (AVERAGE)"
+        chart={
+          <DaysAtLibertySnapshot
+            metricPeriodMonths={metrics.metricPeriodMonths}
+            daysAtLibertyByMonth={
+              facilitiesApiData.avg_days_at_liberty_by_month.data
+            }
+            header="daysAtLibertySnapshot-header"
+            stateCode="US_ND"
+            getTokenSilently={getFacilitiesTokenSilently}
+          />
+        }
+        footer={<Methodology chartId="daysAtLibertySnapshot" />}
+      />
+
+      <ChartCard
+        chartId="reincarcerationCountsByMonth"
+        chartTitle="REINCARCERATIONS BY MONTH"
+        chart={
+          <ReincarcerationCountOverTime
+            metricType="counts"
+            metricPeriodMonths={metrics.metricPeriodMonths}
+            district={metrics.district}
+            reincarcerationCountsByMonth={
+              facilitiesApiData.reincarcerations_by_month.data
+            }
+            header="reincarcerationCountsByMonth-header"
+            stateCode="US_ND"
+            getTokenSilently={getFacilitiesTokenSilently}
+          />
+        }
+        geoChart={
+          <GeoViewTimeChart
+            chartId="reincarcerationCountsByMonth"
+            chartTitle="REINCARCERATIONS BY MONTH"
+            metricType="counts"
+            metricPeriodMonths={metrics.metricPeriodMonths}
+            stateCode="us_nd"
+            dataPointsByOffice={
+              facilitiesApiData.reincarcerations_by_period.data
+            }
+            numeratorKeys={["returns"]}
+            denominatorKeys={["total_admissions"]}
+            centerLat={47.3}
+            centerLong={-100.5}
+            getTokenSilently={getFacilitiesTokenSilently}
+          />
+        }
+        footer={<Methodology chartId="reincarcerationCountsByMonthGoal" />}
+        geoFooter={
+          <>
+            <Methodology chartId="reincarcerationCountsByMonthGoal" />
+            <PeriodLabel metricPeriodMonths={metrics.metricPeriodMonths} />
+          </>
+        }
+      />
     </PageTemplate>
   );
 };
 
-export default CommunityGoals;
+export default CoreGoalsView;

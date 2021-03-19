@@ -15,7 +15,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 const { COLLECTIONS } = require("../constants/collections");
-const { default: collectionsByStateCode } = require("./resources");
+const { default: getCollectionsByStateCode } = require("./resources");
 /**
  * The base class for all metrics. Use the helper `getResourcesByType` to instantiate a metric
  * by metricType and stateCode.
@@ -31,7 +31,7 @@ class BaseMetrics {
     this.constructor.validateMetricType(metricType);
     this.stateCode = stateCode;
     this.metricType = metricType;
-    this.metrics = collectionsByStateCode[stateCode][metricType];
+    this.metrics = getCollectionsByStateCode(stateCode)[metricType];
   }
 
   static validateMetricType(metricType) {
