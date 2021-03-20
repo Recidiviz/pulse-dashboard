@@ -1,5 +1,5 @@
 // Recidiviz - a data platform for criminal justice reform
-// Copyright (C) 2020 Recidiviz, Inc.
+// Copyright (C) 2021 Recidiviz, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -14,30 +14,20 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
+import React from "react";
+import { Redirect } from "react-router-dom";
+import { observer } from "mobx-react-lite";
+import { useRootStore } from "./components/StoreProvider";
+import { getPathsFromNavigation } from "./utils/navigation";
 
-import * as lantern from "./RootStore/TenantStore/lanternTenants";
-import * as core from "./RootStore/TenantStore/coreTenants";
+import tenants from "./tenants";
 
-export default {
-  // prettier-ignore
-  [lantern.US_MO]: {
-    name: "Missouri",
-    availableStateCodes: [lantern.US_MO],
-  },
-  [core.US_ND]: {
-    name: "North Dakota",
-    availableStateCodes: [core.US_ND],
-  },
-  [lantern.US_PA]: {
-    name: "Pennsylvania",
-    availableStateCodes: [lantern.US_PA],
-  },
-  RECIDIVIZ: {
-    name: "Recidiviz",
-    availableStateCodes: lantern.LANTERN_TENANTS.concat(core.CORE_TENANTS),
-  },
-  LANTERN: {
-    name: "Lantern",
-    availableStateCodes: lantern.LANTERN_TENANTS,
-  },
+export const RedirectHome: React.FC = ({ ...rest }) => {
+  const rootStore = useRootStore();
+  // @ts-ignore
+  const tenant = tenants[rootStore.currentTenantId];
+  const allowedPaths = getPathsFromNavigation(tenant.navigation);
+  return <Redirect {...rest} exact from="/" to={allowedPaths[0]} />;
 };
+
+export default observer(RedirectHome);

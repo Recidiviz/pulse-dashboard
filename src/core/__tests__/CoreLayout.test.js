@@ -24,6 +24,7 @@ import TopBarUserMenuForAuthenticatedUser from "../../components/TopBar/TopBarUs
 
 import mockWithTestId from "../../../__helpers__/mockWithTestId";
 import { PageProvider } from "../../contexts/PageContext";
+import StoreProvider from "../../components/StoreProvider";
 
 jest.mock("react-router-dom", () => ({
   useLocation: jest.fn(),
@@ -46,9 +47,11 @@ describe("CoreLayout tests", () => {
 
   const renderCoreLayout = () => {
     return render(
-      <PageProvider>
-        <CoreLayout>{mockChildren}</CoreLayout>
-      </PageProvider>
+      <StoreProvider>
+        <PageProvider>
+          <CoreLayout>{mockChildren}</CoreLayout>
+        </PageProvider>
+      </StoreProvider>
     );
   };
 
