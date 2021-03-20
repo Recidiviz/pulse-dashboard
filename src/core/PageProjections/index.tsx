@@ -15,6 +15,8 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 import React from "react";
+import { observer } from "mobx-react-lite";
+import { useLocation } from "react-router-dom";
 import PageTemplate from "../PageTemplate";
 import PopulationSummaryMetrics from "../PopulationSummaryMetrics";
 import useChartData from "../hooks/useChartData";
@@ -26,6 +28,9 @@ import { populationProjectionSummary } from "../models/PopulationProjectionSumma
 import PopulationTimeseriesChart from "../PopulationTimeseriesChart";
 import { populationProjectionTimeseries } from "../models/PopulationProjectionTimeseriesMetric";
 import PopulationFilterBar from "../PopulationFilterBar";
+import filterOptions from "../utils/filterOptions";
+import { getViewFromPathname } from "../routes";
+import { useRootStore } from "../../components/StoreProvider";
 
 type ChartDataType = {
   isLoading: boolean;
@@ -34,6 +39,8 @@ type ChartDataType = {
 };
 
 const PageProjections: React.FC = () => {
+  const { pathname } = useLocation();
+  const { currentTenantId } = useRootStore();
   const { isLoading, isError, apiData }: ChartDataType = useChartData(
     "us_id/projections"
   ) as ChartDataType;
@@ -56,7 +63,15 @@ const PageProjections: React.FC = () => {
   );
 
   return (
-    <PageTemplate filters={<PopulationFilterBar />}>
+    <PageTemplate
+      filters={
+        <PopulationFilterBar
+          view={getViewFromPathname(pathname)}
+          // @ts-ignore
+          filterOptions={filterOptions[currentTenantId]}
+        />
+      }
+    >
       <PopulationSummaryMetrics
         isError={isError}
         projectionSummaries={projectionSummaries}
@@ -66,4 +81,4 @@ const PageProjections: React.FC = () => {
   );
 };
 
-export default PageProjections;
+export default observer(PageProjections);

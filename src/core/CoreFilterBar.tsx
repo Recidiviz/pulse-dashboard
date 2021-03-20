@@ -27,9 +27,9 @@ import {
   metricPeriodOptions,
   metricTypeOptions,
   supervisionTypeOptions,
-  FilterOption,
-  getFilterValue,
+  getFilterOption,
 } from "./utils/filterOptions";
+import { FilterOption } from "./types/filters";
 import { getDistrictOptions } from "./utils/filterHelpers";
 import TogglePill from "./controls/TogglePill";
 
@@ -101,7 +101,7 @@ const CoreFilterBar: React.FC<CoreFilterBarProps> = ({
       {setChartMetricPeriodMonths && metricPeriodMonths && (
         <Filter title="Time Period" width="8rem">
           <CoreSelect
-            value={getFilterValue(metricPeriodMonths, metricPeriodOptions)}
+            value={getFilterOption(metricPeriodMonths, metricPeriodOptions)}
             options={metricPeriodOptions}
             onChange={createOnFilterChange(setChartMetricPeriodMonths)}
             defaultValue={defaultMetricPeriodOption}
@@ -112,7 +112,7 @@ const CoreFilterBar: React.FC<CoreFilterBarProps> = ({
       {setChartSupervisionType && supervisionType && (
         <Filter title="Supervision Type" width="8.5rem">
           <CoreSelect
-            value={getFilterValue(supervisionType, supervisionTypeOptions)}
+            value={getFilterOption(supervisionType, supervisionTypeOptions)}
             options={supervisionTypeOptions}
             onChange={createOnFilterChange(setChartSupervisionType)}
             defaultValue={defaultSupervisionTypeOption}

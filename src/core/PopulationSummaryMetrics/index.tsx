@@ -27,7 +27,7 @@ import type {
 } from "../models/types";
 import { recordMatchesSimulationTag } from "../models/PopulationProjectionSummaryMetric";
 import "./PopulationSummaryMetrics.scss";
-import type { PopulationFilters } from "../utils/filterOptions";
+import { PopulationFilterValues } from "../types/filters";
 
 type PropTypes = {
   isLoading?: boolean;
@@ -35,12 +35,12 @@ type PropTypes = {
   projectionSummaries?: PopulationProjectionSummaryRecords;
 };
 
-function applyDataFilters(filters: PopulationFilters) {
+function applyDataFilters(filters: PopulationFilterValues) {
   return (record: PopulationProjectionSummaryRecords[number]) => {
     return (
       record.timePeriod === filters.timePeriod &&
       record.gender === filters.gender &&
-      // TODO: Implement switching filters between facilities/community
+      // TODO: Remove the check for "all" once fixture data is updated
       (record.legalStatus === filters.legalStatus ||
         filters.legalStatus === "all")
     );

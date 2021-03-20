@@ -41,10 +41,6 @@ export default {
       ...(flags.showMethodologyDropdown ? { methodology: [] } : {}),
     },
   },
-  [core.US_ID]: {
-    name: "Idaho",
-    availableStateCodes: [core.US_ID],
-  },
   [lantern.US_PA]: {
     name: "Pennsylvania",
     availableStateCodes: [lantern.US_PA],

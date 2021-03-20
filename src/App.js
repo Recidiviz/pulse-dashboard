@@ -44,6 +44,7 @@ import initIntercomSettings from "./utils/initIntercomSettings";
 import { initI18n } from "./utils/i18nSettings";
 import { LANTERN_TENANTS } from "./RootStore/TenantStore/lanternTenants";
 import { CORE_TENANTS } from "./RootStore/TenantStore/coreTenants";
+import { CORE_PATHS } from "./core/routes";
 import AuthWall from "./AuthWall";
 import ErrorBoundary from "./components/ErrorBoundary";
 
@@ -80,12 +81,12 @@ const App = () => (
 
               <CoreLayout tenantIds={CORE_TENANTS}>
                 <Switch>
-                  <ProtectedRoute path="/goals" component={CoreGoalsView} />
-                  <ProtectedRoute path="/community/explore" component={UsNdCommunityExplore} />
-                  <ProtectedRoute path="/community/projections" component={PageProjections} />
-                  <ProtectedRoute path="/facilities/explore" component={UsNdFacilitiesExplore} />
-                  <ProtectedRoute path="/facilities/projections" component={PageProjections} />
-                  <ProtectedRoute path="/methodology" component={Methodology} />
+                  <ProtectedRoute path={CORE_PATHS.goals} component={CoreGoalsView} />
+                  <ProtectedRoute path={CORE_PATHS.communityExplore} component={UsNdCommunityExplore} />
+                  <ProtectedRoute path={CORE_PATHS.communityProjections} component={PageProjections} />
+                  <ProtectedRoute path={CORE_PATHS.facilitiesExplore} component={UsNdFacilitiesExplore} />
+                  <ProtectedRoute path={CORE_PATHS.facilitiesProjections} component={PageProjections} />
+                  <ProtectedRoute path={CORE_PATHS.methodology} component={Methodology} />
                   <Route path="/profile" component={Profile} />
                   <RedirectHome />
                   <Redirect from="/snapshots" to="/goals" />

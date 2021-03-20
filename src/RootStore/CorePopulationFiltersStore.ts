@@ -23,22 +23,20 @@ import {
   get,
 } from "mobx";
 import type RootStore from ".";
-import filterOptions, {
+import { defaultPopulationFilterValues } from "../core/utils/filterOptions";
+import {
   PopulationFilters,
-  FilterKeys,
-} from "../core/utils/filterOptions";
+  PopulationFilterValues,
+} from "../core/types/filters";
 import { formatTimePeriodLabel } from "../core/utils/timePeriod";
 
 export default class CorePopulationFiltersStore {
   rootStore;
 
-  filterOptions = filterOptions.US_ID;
-
-  filters: PopulationFilters = this.filterOptions.defaultFilterValues;
+  filters: PopulationFilterValues = defaultPopulationFilterValues;
 
   constructor({ rootStore }: { rootStore: RootStore }) {
     makeAutoObservable(this, {
-      filterOptions: false,
       filters: observable,
       timePeriodLabel: computed,
       setFilters: action,
@@ -47,9 +45,13 @@ export default class CorePopulationFiltersStore {
     this.rootStore = rootStore;
   }
 
-  setFilters(updatedFilters: Partial<PopulationFilters>): void {
+  setFilters(updatedFilters: Partial<PopulationFilterValues>): void {
     Object.keys(updatedFilters).forEach((filterKey) => {
-      set(this.filters, filterKey, updatedFilters[filterKey as FilterKeys]);
+      set(
+        this.filters,
+        filterKey,
+        updatedFilters[filterKey as keyof PopulationFilters]
+      );
     });
   }
 

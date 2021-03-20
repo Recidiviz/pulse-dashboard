@@ -20,60 +20,43 @@ import { get } from "mobx";
 
 import { CoreSelect } from "./controls/CoreSelect";
 import { usePopulationFiltersStore } from "../components/StoreProvider";
-import { FilterOption, getFilterValue } from "./utils/filterOptions";
-import { FILTER_TYPES } from "./utils/constants";
+import { getFilterOption } from "./utils/filterOptions";
+import { PopulationFilters } from "./types/filters";
+
 import Filter from "./controls/Filter";
 import FilterBar from "./controls/FilterBar";
+import { CORE_VIEWS } from "./routes";
 
-const PopulationFilterBar: React.FC = () => {
+const PopulationFilterBar: React.FC<{
+  view: keyof typeof CORE_VIEWS;
+  filterOptions: PopulationFilters;
+}> = ({ filterOptions, view }) => {
   const filtersStore = usePopulationFiltersStore();
-  const { filters, filterOptions } = filtersStore;
-
-  const setFilters = (filterKey: string) => (option: FilterOption) => {
-    filtersStore.setFilters({ [filterKey]: option.value });
-  };
-
-  const timePeriod = filterOptions[FILTER_TYPES.TIME_PERIOD];
-  const gender = filterOptions[FILTER_TYPES.GENDER];
-  const legalStatus = filterOptions[FILTER_TYPES.LEGAL_STATUS];
+  const { filters } = filtersStore;
+  const filterTypes = Object.keys(filterOptions) as Array<
+    keyof PopulationFilters
+  >;
 
   return (
     <FilterBar>
-      <Filter title="Time Period" width="8rem">
-        <CoreSelect
-          value={getFilterValue(
-            get(filters, FILTER_TYPES.TIME_PERIOD),
-            timePeriod.options
-          )}
-          options={timePeriod.options}
-          onChange={setFilters(FILTER_TYPES.TIME_PERIOD)}
-          defaultValue={timePeriod.defaultValue}
-        />
-      </Filter>
-
-      <Filter title="Gender" width="7rem">
-        <CoreSelect
-          value={getFilterValue(
-            get(filters, FILTER_TYPES.GENDER),
-            gender.options
-          )}
-          options={gender.options}
-          onChange={setFilters(FILTER_TYPES.GENDER)}
-          defaultValue={gender.defaultValue}
-        />
-      </Filter>
-
-      <Filter title="Legal Status" width="8.5rem">
-        <CoreSelect
-          value={getFilterValue(
-            get(filters, FILTER_TYPES.LEGAL_STATUS),
-            legalStatus.options
-          )}
-          options={legalStatus.options}
-          onChange={setFilters(FILTER_TYPES.LEGAL_STATUS)}
-          defaultValue={legalStatus.defaultValue}
-        />
-      </Filter>
+      {filterTypes.map((filterType) => {
+        const filter = filterOptions[filterType];
+        if (!filter.enabledViews.includes(view)) return null;
+        return (
+          <Filter
+            key={`${view}-${filterType}`}
+            title={filter.title}
+            width={filter.width}
+          >
+            <CoreSelect
+              value={getFilterOption(get(filters, filter.type), filter.options)}
+              options={filter.options}
+              onChange={filter.setFilters(filtersStore)}
+              defaultValue={filter.defaultValue}
+            />
+          </Filter>
+        );
+      })}
     </FilterBar>
   );
 };

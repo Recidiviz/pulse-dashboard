@@ -14,8 +14,15 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
+import { CORE_VIEWS } from "../routes";
 import { METRIC_TYPES, FILTER_TYPES } from "./constants";
 import { US_ID } from "../../RootStore/TenantStore/coreTenants";
+import {
+  FilterOption,
+  PopulationFilters,
+  SetPopulationFilters,
+  PopulationFilterValues,
+} from "../types/filters";
 
 export const metricTypeOptions = [
   { label: "Counts", value: METRIC_TYPES.COUNTS },
@@ -45,38 +52,24 @@ export const defaultSupervisionType = defaultSupervisionTypeOption.value;
 export const defaultDistrictOption = { label: "All", value: "all" };
 export const defaultDistrict = [defaultDistrictOption.value];
 
-export type FilterKeys =
-  | "timePeriod"
-  | "gender"
-  | "legalStatus"
-  | "supervisionType";
-
-export type PopulationFilters = {
-  [key in FilterKeys]: any;
-};
-
-export type FilterOption = {
-  label: string;
-  value: any;
-};
-
-export const getFilterValue = (
+export const getFilterOption = (
   value: string,
   options: FilterOption[]
 ): FilterOption =>
   options.find((option) => option.value === value) ?? options[0];
 
-export const IDFilterOptions = {
-  get defaultFilterValues(): PopulationFilters {
-    return {
-      [FILTER_TYPES.TIME_PERIOD]: this[FILTER_TYPES.TIME_PERIOD].defaultValue,
-      [FILTER_TYPES.GENDER]: this[FILTER_TYPES.GENDER].defaultValue,
-      [FILTER_TYPES.LEGAL_STATUS]: this[FILTER_TYPES.LEGAL_STATUS].defaultValue,
-      [FILTER_TYPES.SUPERVISION_TYPE]: this[FILTER_TYPES.SUPERVISION_TYPE]
-        .defaultValue,
-    };
-  },
+const setFilters = (
+  filterKey: keyof PopulationFilters
+): SetPopulationFilters => (filtersStore) => (option) => {
+  filtersStore.setFilters({ [filterKey]: option.value });
+};
+
+export const PopulationFilterOptions: PopulationFilters = {
   [FILTER_TYPES.TIME_PERIOD]: {
+    type: FILTER_TYPES.TIME_PERIOD,
+    title: "Time Period",
+    width: "8rem",
+    setFilters: setFilters(FILTER_TYPES.TIME_PERIOD),
     options: [
       { label: "5 years", value: "60" },
       { label: "2 years", value: "24" },
@@ -90,8 +83,13 @@ export const IDFilterOptions = {
     get defaultValue(): string {
       return this.defaultOption.value;
     },
+    enabledViews: [CORE_VIEWS.community, CORE_VIEWS.facilities],
   },
   [FILTER_TYPES.GENDER]: {
+    type: FILTER_TYPES.GENDER,
+    title: "Gender",
+    width: "7rem",
+    setFilters: setFilters(FILTER_TYPES.GENDER),
     options: [
       { label: "All", value: "all" },
       { label: "Female", value: "FEMALE" },
@@ -103,8 +101,13 @@ export const IDFilterOptions = {
     get defaultValue(): string {
       return this.defaultOption.value;
     },
+    enabledViews: [CORE_VIEWS.community, CORE_VIEWS.facilities],
   },
   [FILTER_TYPES.LEGAL_STATUS]: {
+    type: FILTER_TYPES.LEGAL_STATUS,
+    title: "Legal Status",
+    width: "8.5rem",
+    setFilters: setFilters(FILTER_TYPES.LEGAL_STATUS),
     options: [
       { label: "All", value: "all" },
       { label: "Rider", value: "TREATMENT_IN_PRISON" },
@@ -117,8 +120,13 @@ export const IDFilterOptions = {
     get defaultValue(): string {
       return this.defaultOption.value;
     },
+    enabledViews: [CORE_VIEWS.facilities],
   },
   [FILTER_TYPES.SUPERVISION_TYPE]: {
+    type: FILTER_TYPES.SUPERVISION_TYPE,
+    title: "Supervision Type",
+    width: "8.5rem",
+    setFilters: setFilters(FILTER_TYPES.SUPERVISION_TYPE),
     options: [
       { label: "All", value: "all" },
       { label: "Probation", value: "PROBATION" },
@@ -130,9 +138,21 @@ export const IDFilterOptions = {
     get defaultValue(): string {
       return this.defaultOption.value;
     },
+    enabledViews: [CORE_VIEWS.community],
   },
 };
 
-export default {
-  [US_ID]: IDFilterOptions,
+export const defaultPopulationFilterValues: PopulationFilterValues = {
+  [FILTER_TYPES.TIME_PERIOD]:
+    PopulationFilterOptions[FILTER_TYPES.TIME_PERIOD].defaultValue,
+  [FILTER_TYPES.GENDER]:
+    PopulationFilterOptions[FILTER_TYPES.GENDER].defaultValue,
+  [FILTER_TYPES.LEGAL_STATUS]:
+    PopulationFilterOptions[FILTER_TYPES.LEGAL_STATUS].defaultValue,
+  [FILTER_TYPES.SUPERVISION_TYPE]:
+    PopulationFilterOptions[FILTER_TYPES.SUPERVISION_TYPE].defaultValue,
 };
+
+export default {
+  [US_ID]: PopulationFilterOptions,
+} as const;
