@@ -25,7 +25,7 @@ import "./PageTemplate.scss";
 const PageTemplate = ({ children, importantNotes, filters = null }) => (
   <>
     {filters}
-    <main className="main-content PageTemplate">
+    <div className="main-content PageTemplate">
       <div id="mainContent">
         <div
           className="row gap-20 pos-r"
@@ -38,7 +38,7 @@ const PageTemplate = ({ children, importantNotes, filters = null }) => (
           {children}
         </div>
       </div>
-    </main>
+    </div>
   </>
 );
 
