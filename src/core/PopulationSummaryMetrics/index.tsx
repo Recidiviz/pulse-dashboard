@@ -17,31 +17,26 @@
 import React from "react";
 import HistoricalSummaryMetrics from "./HistoricalSummaryMetrics";
 import ProjectedSummaryMetrics from "./ProjectedSummaryMetrics";
-import useChartData from "../hooks/useChartData";
 
 import type {
   PopulationProjectionSummaryRecords,
   HistoricalSummaryRecord,
   ProjectedSummaryRecord,
-  RawApiData,
 } from "../models/types";
-import {
-  recordMatchesSimulationTag,
-  populationProjectionSummary,
-} from "../models/PopulationProjectionSummaryMetric";
+import { recordMatchesSimulationTag } from "../models/PopulationProjectionSummaryMetric";
 import "./PopulationSummaryMetrics.scss";
 
-type ChartDataType = {
-  isLoading: boolean;
+type PropTypes = {
+  isLoading?: boolean;
   isError: boolean;
-  apiData: RawApiData;
+  projectionSummaries?: PopulationProjectionSummaryRecords;
 };
 
-const PopulationSummaryMetrics: React.FC = () => {
-  const { isLoading, isError, apiData }: ChartDataType = useChartData(
-    "us_id/projections"
-  ) as ChartDataType;
-
+const PopulationSummaryMetrics: React.FC<PropTypes> = ({
+  isError,
+  isLoading = false,
+  projectionSummaries = [],
+}) => {
   // TODO: add in Error state
   if (isError) {
     return null;
@@ -55,11 +50,6 @@ const PopulationSummaryMetrics: React.FC = () => {
       </div>
     );
   }
-
-  // Transform the records
-  const projectionSummaries: PopulationProjectionSummaryRecords = populationProjectionSummary(
-    apiData.population_projection_summaries.data
-  );
 
   // Filter into historical and projected records
   const historicalPopulationSummaries = projectionSummaries.filter(
