@@ -21,11 +21,11 @@ import cx from "classnames";
 const BubbleTableCell: React.FC<{ value: number }> = ({ value }) => (
   <span
     key={value}
-    className={cx("SummaryTable__bubble", {
-      "SummaryTable__bubble--70": value < 70,
-      "SummaryTable__bubble--80": value > 70 && value < 80,
-      "SummaryTable__bubble--90": value > 80 && value < 90,
-      "SummaryTable__bubble--100": value > 90,
+    className={cx("VitalsSummaryTable__bubble", {
+      "VitalsSummaryTable__bubble--70": value < 70,
+      "VitalsSummaryTable__bubble--80": value > 70 && value < 80,
+      "VitalsSummaryTable__bubble--90": value > 80 && value < 90,
+      "VitalsSummaryTable__bubble--100": value > 90,
     })}
   >
     {value}%

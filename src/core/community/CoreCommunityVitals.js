@@ -30,12 +30,10 @@ const CoreCommunityVitals = () => {
 
   return (
     <PageTemplate>
-      <div style={{ width: "100%" }}>
-        <div className="CoreCommunityVitals__Title">{stateName}</div>
-        <BlockVitalCards />
-        <div>
-          <VitalsSummaryTable />
-        </div>
+      <div className="CoreCommunityVitals__Title">{stateName}</div>
+      <BlockVitalCards />
+      <div>
+        <VitalsSummaryTable />
       </div>
     </PageTemplate>
   );

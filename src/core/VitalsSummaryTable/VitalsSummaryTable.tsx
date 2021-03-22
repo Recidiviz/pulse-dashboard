@@ -1,5 +1,5 @@
 // Recidiviz - a data platform for criminal justice reform
-// Copyright (C) 2020 Recidiviz, Inc.
+// Copyright (C) 2021 Recidiviz, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -150,7 +150,7 @@ const VitalsSummaryTable: React.FC = () => {
 
   // TODO: Either convert back to JS or extend the react-table types that are out of date
   return (
-    <div style={{ maxWidth: "100%", overflowX: "auto", overflowY: "hidden" }}>
+    <div className="VitalsSummaryTable">
       <table {...getTableProps()} className="VitalsSummaryTable__table">
         <thead className="VitalsSummaryTable__table-head">
           {headerGroups.map((headerGroup) => (

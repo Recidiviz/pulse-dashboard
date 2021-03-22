@@ -39,7 +39,7 @@ const BlockVitalCards = () => {
   ];
 
   return (
-    <div className="CoreCommunityVitals__card-container row">
+    <div className="CoreCommunityVitals__card-container">
       {orderedCard.map(({ title, percent, status, id }) => (
         <CoreVitalSummaryCard
           key={id}
