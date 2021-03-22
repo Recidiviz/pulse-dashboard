@@ -1,5 +1,5 @@
 // Recidiviz - a data platform for criminal justice reform
-// Copyright (C) 2020 Recidiviz, Inc.
+// Copyright (C) 2021 Recidiviz, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -17,21 +17,24 @@
 import React from "react";
 import PropTypes from "prop-types";
 import cx from "classnames";
+import { formatPercent } from "../utils";
 
-export const TableCell = ({ value }) => (
-  <span
-    key={value}
-    className={cx("StatewideViewTable__bubble", {
-      "StatewideViewTable__bubble--70": value < 70,
-      "StatewideViewTable__bubble--80": value > 70 && value < 80,
-      "StatewideViewTable__bubble--90": value > 80 && value < 90,
-      "StatewideViewTable__bubble--100": value > 90,
-    })}
-  >
-    {value}%
-  </span>
-);
+const DeltaTableCell: React.FC<{ value: number }> = ({ value }) => {
+  const deltaDirectionClassName = cx({
+    "VitalsSummaryTable__arrow--decreasing": value < 0,
+    "VitalsSummaryTable__arrow--increasing": value > 0,
+    "VitalsSummaryTable__arrow--hidden": value === 0,
+  });
+  return (
+    <div className="VitalsSummaryTable__change">
+      <div className={deltaDirectionClassName} />
+      {formatPercent(value)}
+    </div>
+  );
+};
 
-TableCell.propTypes = {
+DeltaTableCell.propTypes = {
   value: PropTypes.number.isRequired,
 };
+
+export default DeltaTableCell;

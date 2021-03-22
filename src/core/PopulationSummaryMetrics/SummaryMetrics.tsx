@@ -18,6 +18,7 @@ import React from "react";
 import styled from "styled-components/macro";
 import { Icon, IconSVG } from "@recidiviz/case-triage-components";
 import { formatLargeNumber } from "../../utils/labels";
+import { formatPercent } from "../utils";
 import LoadingMetrics from "./LoadingMetrics";
 import type {
   ProjectedSummaryRecord,
@@ -109,10 +110,6 @@ const deltaColorMap: { [key in DeltaDirections]: string } = {
   worsened: "#A43939",
   noChange: "rgba(53, 83, 98, 0.6)",
 } as const;
-
-function formatPercent(percentage: number): string {
-  return `${percentage}%`;
-}
 
 // TODO(#908) and (case-triage#69) Add a rotation prop for caret icon
 const SummaryMetric: React.FC<SummaryMetricProps> = ({

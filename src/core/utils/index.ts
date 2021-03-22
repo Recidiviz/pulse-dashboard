@@ -14,31 +14,6 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-
-import React from "react";
-import { observer } from "mobx-react-lite";
-import PageTemplate from "../PageTemplate";
-import BlockVitalCards from "./BlockVitalCards";
-import VitalsSummaryTable from "../VitalsSummaryTable/VitalsSummaryTable";
-import { useRootStore } from "../../components/StoreProvider";
-import tenants from "../../tenants";
-import "./CoreCommunityVitals.scss";
-
-const CoreCommunityVitals = () => {
-  const { currentTenantId } = useRootStore();
-  const stateName = tenants[currentTenantId].name;
-
-  return (
-    <PageTemplate>
-      <div style={{ width: "100%" }}>
-        <div className="CoreCommunityVitals__Title">{stateName}</div>
-        <BlockVitalCards />
-        <div>
-          <VitalsSummaryTable />
-        </div>
-      </div>
-    </PageTemplate>
-  );
-};
-
-export default observer(CoreCommunityVitals);
+export function formatPercent(percentage: number): string {
+  return `${Math.abs(percentage)}%`;
+}

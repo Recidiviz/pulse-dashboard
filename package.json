@@ -37,6 +37,7 @@
     "@sentry/react": "^6.1.0",
     "@types/react": "^17.0.0",
     "@types/react-dom": "^17.0.0",
+    "@types/react-table": "^7.0.29",
     "@types/styled-components": "^5.1.7",
     "acorn": "^6.0.7",
     "adm-zip": "^0.4.14",

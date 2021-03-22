@@ -18,10 +18,13 @@
 import React, { useMemo } from "react";
 import { useTable, useSortBy } from "react-table";
 import cx from "classnames";
-import { TableCell } from "./TableCell";
-import "./StatewideViewTable.scss";
+import BubbleTableCell from "./BubbleTableCell";
+import DeltaTableCell from "./DeltaTableCell";
+import { formatPercent } from "../utils";
 
-export const StatewideViewTable = () => {
+import "./VitalsSummaryTable.scss";
+
+const VitalsSummaryTable: React.FC = () => {
   const data = useMemo(
     () => [
       {
@@ -69,6 +72,14 @@ export const StatewideViewTable = () => {
     []
   );
 
+  const createBubbleTableCell = ({ value }: { value: number }) => (
+    <BubbleTableCell value={value} />
+  );
+
+  const createDeltaTableCell = ({ value }: { value: number }) => (
+    <DeltaTableCell value={value} />
+  );
+
   const columns = useMemo(
     () => [
       {
@@ -86,29 +97,17 @@ export const StatewideViewTable = () => {
           {
             Header: "Overall score",
             accessor: "overall",
-            Cell: ({ value }) => `${value}%`,
+            Cell: ({ value }: { value: number }) => formatPercent(value),
           },
           {
             Header: "7D change",
             accessor: "change_7",
-            // eslint-disable-next-line react/prop-types
-            Cell: ({ value }) => (
-              <div className="StatewideViewTable__change">
-                <div className="StatewideViewTable__arrow--decreasing" />
-                {value}%
-              </div>
-            ),
+            Cell: createDeltaTableCell,
           },
           {
             Header: "28D change",
             accessor: "change_28",
-            // eslint-disable-next-line react/prop-types
-            Cell: ({ value }) => (
-              <div className="StatewideViewTable__change">
-                <div className="StatewideViewTable__arrow--increasing" />
-                {value}%
-              </div>
-            ),
+            Cell: createDeltaTableCell,
           },
         ],
       },
@@ -118,26 +117,22 @@ export const StatewideViewTable = () => {
           {
             Header: "Timely discharge",
             accessor: "discharge",
-            // eslint-disable-next-line react/prop-types
-            Cell: ({ value }) => <TableCell value={value} />,
+            Cell: createBubbleTableCell,
           },
           {
             Header: "Program availability",
             accessor: "participation",
-            // eslint-disable-next-line react/prop-types
-            Cell: ({ value }) => <TableCell value={value} />,
+            Cell: createBubbleTableCell,
           },
           {
             Header: "Timely contacts",
             accessor: "contacts",
-            // eslint-disable-next-line react/prop-types
-            Cell: ({ value }) => <TableCell value={value} />,
+            Cell: createBubbleTableCell,
           },
           {
             Header: "Timely risk assessments",
             accessor: "assessments",
-            // eslint-disable-next-line react/prop-types
-            Cell: ({ value }) => <TableCell value={value} />,
+            Cell: createBubbleTableCell,
           },
         ],
       },
@@ -153,44 +148,51 @@ export const StatewideViewTable = () => {
     prepareRow,
   } = useTable({ columns, data }, useSortBy);
 
+  // TODO: Either convert back to JS or extend the react-table types that are out of date
   return (
     <div style={{ maxWidth: "100%", overflowX: "auto", overflowY: "hidden" }}>
-      <table {...getTableProps()} className="StatewideViewTable__table">
-        <thead className="StatewideViewTable__table-head">
+      <table {...getTableProps()} className="VitalsSummaryTable__table">
+        <thead className="VitalsSummaryTable__table-head">
           {headerGroups.map((headerGroup) => (
             <tr
               {...headerGroup.getHeaderGroupProps()}
-              className="StatewideViewTable__row"
+              className="VitalsSummaryTable__row"
             >
               {headerGroup.headers.map((column) => (
+                // @ts-ignore
                 <th {...column.getHeaderProps(column.getSortByToggleProps())}>
-                  {column.canSort ? (
-                    <div className="StatewideViewTable__sortable">
-                      {column.render("Header")}
-                      <div className="triangle-switcher">
-                        <div
-                          className={cx(
-                            "triangle-switcher__button triangle-switcher__button--up",
-                            {
-                              "triangle-switcher__button--active":
-                                column.isSorted && column.isSortedDesc,
-                            }
-                          )}
-                        />
-                        <div
-                          className={cx(
-                            "triangle-switcher__button triangle-switcher__button--down",
-                            {
-                              "triangle-switcher__button--active":
-                                column.isSorted && !column.isSortedDesc,
-                            }
-                          )}
-                        />
+                  {
+                    // @ts-ignore
+                    column.canSort ? (
+                      <div className="VitalsSummaryTable__sortable">
+                        {column.render("Header")}
+                        <div className="triangle-switcher">
+                          <div
+                            className={cx(
+                              "triangle-switcher__button triangle-switcher__button--up",
+                              {
+                                "triangle-switcher__button--active":
+                                  // @ts-ignore
+                                  column.isSorted && column.isSortedDesc,
+                              }
+                            )}
+                          />
+                          <div
+                            className={cx(
+                              "triangle-switcher__button triangle-switcher__button--down",
+                              {
+                                "triangle-switcher__button--active":
+                                  // @ts-ignore
+                                  column.isSorted && !column.isSortedDesc,
+                              }
+                            )}
+                          />
+                        </div>
                       </div>
-                    </div>
-                  ) : (
-                    column.render("Header")
-                  )}
+                    ) : (
+                      column.render("Header")
+                    )
+                  }
                 </th>
               ))}
             </tr>
@@ -204,7 +206,7 @@ export const StatewideViewTable = () => {
             return (
               <tr
                 {...row.getRowProps()}
-                className="StatewideViewTable__row StatewideViewTable__row--value"
+                className="VitalsSummaryTable__row VitalsSummaryTable__row--value"
               >
                 {row.cells.map((cell) => {
                   return (
@@ -219,3 +221,5 @@ export const StatewideViewTable = () => {
     </div>
   );
 };
+
+export default VitalsSummaryTable;
