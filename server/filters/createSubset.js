@@ -28,10 +28,7 @@ const {
   getSubsetManifest,
   FILES_WITH_SUBSETS,
 } = require("../constants/subsetManifest");
-const {
-  getFiltersByMetricName,
-  getFilterFnByMetricName,
-} = require("./filterHelpers");
+const { getFilterFnByMetricName } = require("./filterHelpers");
 
 /**
  * Given a metric file with a flattened value matrix and metadata, it converts the flattenedValueMatrix
@@ -141,8 +138,7 @@ function createSubset(metricName, subsetFilters, metricFile) {
     return metricFile;
   }
 
-  const filters = getFiltersByMetricName(metricName, subsetFilters);
-  const filterFn = getFilterFnByMetricName(metricName, filters);
+  const filterFn = getFilterFnByMetricName(metricName, subsetFilters);
 
   const skipFilterFn = (dimensionKey) =>
     !getSubsetDimensionKeys()
@@ -153,7 +149,7 @@ function createSubset(metricName, subsetFilters, metricFile) {
     return {
       [metricName]: applyFiltersToDataPoints(
         metricFile[metricName],
-        filters,
+        subsetFilters,
         filterFn,
         metricName
       ),
@@ -170,7 +166,7 @@ function createSubset(metricName, subsetFilters, metricFile) {
   return {
     [metricName]: applyFiltersToOptimizedFormat(
       metricFile[metricName],
-      filters,
+      subsetFilters,
       filterFn,
       skipFilterFn
     ),

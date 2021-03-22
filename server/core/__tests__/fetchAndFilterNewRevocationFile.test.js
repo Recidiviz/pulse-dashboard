@@ -85,6 +85,7 @@ describe("fetchAndFilterNewRevocationFile", () => {
   it("calls createSubsetFilters with the correct args", () => {
     expect(createSubsetFilters).toHaveBeenCalledWith({
       filters: queryParams,
+      metricName,
     });
   });
 
