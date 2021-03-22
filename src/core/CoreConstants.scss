@@ -8,3 +8,15 @@ $core-breakpoint-xs: 600px;
 $core-max-view-width: 93rem;
 
 $core-font-color: #00413e;
+$pine-1: rgba(1, 35, 34, 1);
+$slate-80: rgba(53, 83, 98, 0.8);
+// Shorthand font property: font-style font-variant font-weight font-size/line-height font-family
+$font-ui-sans-16: 500 1rem/1.5rem Libre Franklin;
+$font-ui-sans-14: 500 0.875rem/1.5rem Libre Franklin;
+
+:export {
+  pine1: $pine-1;
+  slate80: $slate-80;
+  fontUiSans16: $font-ui-sans-16;
+  fontUiSans14: $font-ui-sans-14;
+}

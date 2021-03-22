@@ -27,19 +27,18 @@ import type {
 const MetricContainer = styled.div`
   display: flex;
   flex-flow: column;
-  padding: 20px 40px;
+  padding: 0 40px;
   width: 30%;
 `;
 
-const Value = styled.div`
-  padding: 4px;
-`;
+const Value = styled.div``;
 
 // TODO(#908): Use typography components from component library
 export const MetricTitle = styled.div`
   font-family: "Libre Franklin";
   font-size: 0.9rem;
-  line-height: 1rem;
+  line-height: 1.5rem;
+  letter-spacing: -0.01em;
   font-weight: 500;
   color: rgba(53, 83, 98, 0.85);
   white-space: nowrap;
@@ -48,8 +47,10 @@ const MetricValue = styled.div`
   font-family: "Libre Baskerville";
   font-size: 2rem;
   line-height: 40px;
+  letter-spacing: -0.04em;
   font-weight: 400;
   color: #00413e;
+  padding: 8px 0 0;
 `;
 const MetricDelta = styled.div<{ color: string }>`
   display: flex;
@@ -60,6 +61,11 @@ const MetricDelta = styled.div<{ color: string }>`
   font-size: 0.9rem;
   line-height: 16px;
   font-weight: 500;
+  padding: 2px 0 0;
+
+  > ${Value} {
+    padding: 0 5px;
+  }
 `;
 const MetricMinMax = styled.div`
   font-family: "Libre Franklin";
@@ -68,6 +74,7 @@ const MetricMinMax = styled.div`
   font-weight: 400;
   color: rgba(53, 83, 98, 0.85);
   white-space: nowrap;
+  padding: 5px 0 0;
 `;
 
 interface SummaryMetricProps {
@@ -135,7 +142,7 @@ const SummaryMetric: React.FC<SummaryMetricProps> = ({
           height={10}
           fill={deltaColorMap[deltaDirection]}
         />
-        <Value>{formatPercent(percentChange)}</Value>
+        <Value>{formatPercent(Math.abs(percentChange))}</Value>
       </MetricDelta>
       {projectedMinMax && (
         <MetricMinMax>
