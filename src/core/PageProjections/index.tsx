@@ -17,11 +17,51 @@
 import React from "react";
 import PageTemplate from "../PageTemplate";
 import PopulationSummaryMetrics from "../PopulationSummaryMetrics";
+import useChartData from "../hooks/useChartData";
+import {
+  PopulationProjectionSummaryRecords,
+  PopulationProjectionTimeseriesRecord,
+  RawApiData,
+} from "../models/types";
+import { populationProjectionSummary } from "../models/PopulationProjectionSummaryMetric";
+import PopulationTimeseriesChart from "../PopulationTimeseriesChart";
+import { populationProjectionTimeseries } from "../models/PopulationProjectionTimeseriesMetric";
+
+type ChartDataType = {
+  isLoading: boolean;
+  isError: boolean;
+  apiData: RawApiData;
+};
 
 const PageProjections: React.FC = () => {
+  const { isLoading, isError, apiData }: ChartDataType = useChartData(
+    "us_id/projections"
+  ) as ChartDataType;
+
+  if (isLoading) {
+    return (
+      <PageTemplate>
+        <PopulationSummaryMetrics isLoading={isLoading} isError={isError} />
+      </PageTemplate>
+    );
+  }
+
+  // Transform records
+  const projectionSummaries: PopulationProjectionSummaryRecords = populationProjectionSummary(
+    apiData.population_projection_summaries.data
+  );
+
+  const projectionTimeseries: PopulationProjectionTimeseriesRecord[] = populationProjectionTimeseries(
+    apiData.population_projection_timeseries.data
+  );
+
   return (
     <PageTemplate>
-      <PopulationSummaryMetrics />
+      <PopulationSummaryMetrics
+        isError={isError}
+        projectionSummaries={projectionSummaries}
+      />
+      <PopulationTimeseriesChart months={60} data={projectionTimeseries} />
     </PageTemplate>
   );
 };
