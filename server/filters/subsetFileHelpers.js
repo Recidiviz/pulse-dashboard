@@ -100,11 +100,12 @@ function createSubsetDimensionManifest(dimensionManifest, subsetFilters) {
     "level_1_supervision_location"
   );
   const transformedDimensionManifest = [];
+
   dimensionManifest.forEach(([dimensionKey, dimensionValues]) => {
     if (subsetKeys.includes(dimensionKey) && subsetFilters[dimensionKey]) {
       transformedDimensionManifest.push([
         dimensionKey,
-        subsetFilters[dimensionKey],
+        subsetFilters[dimensionKey].sort(),
       ]);
     } else {
       transformedDimensionManifest.push([dimensionKey, dimensionValues.sort()]);

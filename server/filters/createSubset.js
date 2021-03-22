@@ -75,11 +75,13 @@ function applyFiltersToOptimizedFormat(data, filters, filterFn, skipFilterFn) {
 
 /**
  * Given a metric file with an array of datapoints, it applies the filter function to the datapoints and
- * returns a subset of the data alongside a metadata object.
+ * returns a subset of the data alongside a metadata object. If the metricName is included in FILES_WITH_SUBSETS,
+ * the metadata dimension_manifest is derived from the subsetManifest, otherwise it is empty.
  *
  * @param {Object[]} dataPoints - An array of data points to filter
  * @param {Object} filters - The filters to apply to the metric data
  * @param {(item: object, dimensionKey: string) => boolean} filterFn - Filter function to determine which items are filtered out
+ * @param {string} metricName - Name of the metric file
  *
  * @returns {Object[]} - Returns an object with the property `data`, which has the filtered subset values as an array of objects,
  * and the property `metadata`, which has a dimension manifest reflecting the values in the subset.

@@ -285,7 +285,7 @@ describe("createSubset", () => {
             {
               level_1_supervision_location: "01",
               violation_type: "felony",
-              charge_category: "all",
+              charge_category: "sex_offense",
             },
           ],
         };
@@ -295,14 +295,14 @@ describe("createSubset", () => {
             data: [
               {
                 level_1_supervision_location: "01",
-                violation_type: "all",
-                charge_category: "all",
+                violation_type: "felony",
+                charge_category: "sex_offense",
               },
             ],
             metadata: {
               dimension_manifest: [
-                ["violation_type", "all"],
-                ["charge_category", "all"],
+                ["violation_type", ["felony", "law", "misdemeanor"]],
+                ["charge_category", ["sex_offense"]],
               ],
               total_data_points: 1,
             },
@@ -310,8 +310,8 @@ describe("createSubset", () => {
         };
         const filters = {
           level_1_supervision_location: ["01"],
-          violation_type: "all",
-          charge_category: "all",
+          violation_type: violationTypeFilters,
+          charge_category: chargeCategoryFilters,
         };
 
         expect(createSubset(fileKey, filters, metricFile)).toEqual(expected);
