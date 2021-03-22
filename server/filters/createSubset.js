@@ -142,7 +142,9 @@ function createSubset(metricName, subsetFilters, metricFile) {
 
   const skipFilterFn = (dimensionKey) =>
     !getSubsetDimensionKeys()
-      .concat(["level_1_supervision_location"])
+      .concat(
+        levelOneSupervisionLocation ? ["level_1_supervision_location"] : []
+      )
       .includes(dimensionKey);
 
   if (Array.isArray(metricFile[metricName])) {
