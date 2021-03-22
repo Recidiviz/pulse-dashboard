@@ -1,7 +1,7 @@
 import React from "react";
 import { render } from "@testing-library/react";
 import LanternLayout from "../LanternLayout";
-import useIntercom from "../hooks/useIntercom";
+import useIntercom from "../../hooks/useIntercom";
 import usePageLayout from "../hooks/usePageLayout";
 import TopBarUserMenuForAuthenticatedUser from "../../components/TopBar/TopBarUserMenuForAuthenticatedUser";
 import mockWithTestId from "../../../__helpers__/mockWithTestId";
@@ -14,7 +14,7 @@ jest.mock("react-router-dom", () => {
     Link: ({ children }) => children,
   };
 });
-jest.mock("../hooks/useIntercom");
+jest.mock("../../hooks/useIntercom");
 jest.mock("../hooks/usePageLayout");
 jest.mock("../../components/TopBar/TopBarUserMenuForAuthenticatedUser");
 jest.mock("../../components/StoreProvider");
