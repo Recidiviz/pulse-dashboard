@@ -86,9 +86,7 @@ const App = () => (
                   <ProtectedRoute path="/community/projections" component={PageProjections} />
                   <ProtectedRoute path="/facilities/explore" component={UsNdFacilitiesExplore} />
                   <ProtectedRoute path="/facilities/projections" component={PageProjections} />
-                  <Route path="/community/vitals">
-                      <CoreCommunityVitals stateCode="US_ND"/>
-                    </Route>
+                  <ProtectedRoute path="/community/vitals" component={CoreCommunityVitals}/>
                   <ProtectedRoute path="/methodology" component={Methodology} />
                   <Route path="/profile" component={Profile} />
                   <RedirectHome />

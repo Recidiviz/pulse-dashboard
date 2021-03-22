@@ -16,40 +16,30 @@
 // =============================================================================
 
 import React from "react";
-import PropTypes from "prop-types";
-
+import { observer } from "mobx-react-lite";
 import PageTemplate from "../PageTemplate";
 import BlockVitalCards from "./BlockVitalCards";
 
 import "./CoreCommunityVitals.scss";
 import { StatewideViewTable } from "../StatewideViewTable";
+import { useRootStore } from "../../components/StoreProvider";
+import tenants from "../../tenants";
 
-const CoreCommunityVitals = ({ stateCode }) => {
-  const getStateName = (code) => {
-    switch (code) {
-      case "US_ND":
-        return "North Dakota";
-      default:
-        return "DEMO";
-    }
-  };
+const CoreCommunityVitals = () => {
+  const { currentTenantId } = useRootStore();
+  const stateName = tenants[currentTenantId].name;
+
   return (
     <PageTemplate>
       <div style={{ width: "100%" }}>
-        <div className="CoreCommunityVitals__Title">
-          {getStateName(stateCode)}
-        </div>
+        <div className="CoreCommunityVitals__Title">{stateName}</div>
+        <BlockVitalCards />
         <div>
           <StatewideViewTable />
         </div>
       </div>
-      <BlockVitalCards />
     </PageTemplate>
   );
 };
 
-CoreCommunityVitals.propTypes = {
-  stateCode: PropTypes.string.isRequired,
-};
-
-export default CoreCommunityVitals;
+export default observer(CoreCommunityVitals);

@@ -28,7 +28,7 @@ export default {
     availableStateCodes: [core.US_ND],
     navigation: {
       goals: [],
-      community: ["explore"],
+      community: ["explore", "vitals"],
       facilities: ["explore"],
     },
   },
