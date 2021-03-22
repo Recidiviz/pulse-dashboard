@@ -25,13 +25,6 @@ const usePageLayout = () => {
   const [lastOffset, setLastOffset] = useState(window.pageYOffset);
   const [scrollUpCount, setScrollUpCount] = useState(0);
 
-  if (hideTopBar === undefined) {
-    pageDispatch({
-      type: "update",
-      payload: { hideTopBar: false },
-    });
-  }
-
   useLayoutEffect(() => {
     const handler = () => {
       cancelAnimationFrame(frame.current);
