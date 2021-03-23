@@ -15,15 +15,27 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-export function compareStrings(valueKey) {
-  return (a, b) => {
-    if (!a[valueKey] && !b[valueKey]) return 0;
-    if (a[valueKey].toLowerCase() < b[valueKey].toLowerCase()) {
-      return -1;
-    }
-    if (a[valueKey].toLowerCase() > b[valueKey].toLowerCase()) {
-      return 1;
-    }
-    return 0;
-  };
+import {
+  Gender,
+  PopulationProjectionTimeseriesRecord,
+  RawMetricData,
+  SimulationCompartment,
+} from "./types";
+
+export function populationProjectionTimeseries(
+  rawRecords: RawMetricData
+): PopulationProjectionTimeseriesRecord[] {
+  return rawRecords.map((record) => {
+    return {
+      year: Number(record.year),
+      month: Number(record.month),
+      compartment: record.compartment as SimulationCompartment,
+      legalStatus: record.legal_status,
+      gender: record.simulation_group as Gender,
+      simulationTag: record.simulation_tag,
+      totalPopulation: Number(record.total_population),
+      totalPopulationMax: Number(record.total_population_max),
+      totalPopulationMin: Number(record.total_population_min),
+    };
+  });
 }

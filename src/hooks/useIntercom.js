@@ -15,15 +15,34 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-export function compareStrings(valueKey) {
-  return (a, b) => {
-    if (!a[valueKey] && !b[valueKey]) return 0;
-    if (a[valueKey].toLowerCase() < b[valueKey].toLowerCase()) {
-      return -1;
-    }
-    if (a[valueKey].toLowerCase() > b[valueKey].toLowerCase()) {
-      return 1;
-    }
-    return 0;
-  };
-}
+import { useEffect } from "react";
+import { useRootStore } from "../components/StoreProvider";
+
+const useIntercom = () => {
+  const { userStore, tenantStore } = useRootStore();
+  const { user } = userStore;
+  useEffect(() => {
+    window.Intercom("update", {
+      state_code: tenantStore.currentTenantId,
+      name: user.name,
+      nickname: user.nickname,
+      email: user.email,
+      user_id: user.sub,
+      hide_default_launcher: false,
+    });
+  }, [
+    tenantStore.currentTenantId,
+    user.name,
+    user.nickname,
+    user.email,
+    user.sub,
+  ]);
+
+  useEffect(() => {
+    return () => {
+      window.Intercom("update", { hide_default_launcher: true });
+    };
+  }, []);
+};
+
+export default useIntercom;

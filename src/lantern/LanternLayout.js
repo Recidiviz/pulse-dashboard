@@ -25,7 +25,7 @@ import TopBarLogo from "../components/TopBar/TopBarLogo";
 import TopBarUserMenuForAuthenticatedUser from "../components/TopBar/TopBarUserMenuForAuthenticatedUser";
 import Footer from "../components/Footer";
 import usePageLayout from "./hooks/usePageLayout";
-import useIntercom from "./hooks/useIntercom";
+import useIntercom from "../hooks/useIntercom";
 import { setTranslateLocale } from "../utils/i18nSettings";
 import { useRootStore } from "../components/StoreProvider";
 

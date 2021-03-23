@@ -1,0 +1,58 @@
+.PopulationTimeseriesChart {
+  background: #FFF;
+  border-radius: 0.5rem;
+  box-shadow: inset 0px -1px 1px rgba(19, 44, 82, 0.2);
+  font-family: Libre Franklin, sans-serif;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  width: 100%;
+
+  &__Header {
+    display: flex;
+    justify-content: space-between;
+    padding-top: 2.5rem;
+    padding-left: 2.5rem;
+    padding-right: 2.5rem;
+  }
+
+  &__Title {
+    color: #012322;
+  }
+
+  .data-visualization {
+    .axis-baseline {
+      stroke: none;
+    }
+
+    .axis-label {
+      fill: rgba(53, 83, 98, 0.8);
+    }
+  }
+
+  .background-graphics {
+    .x.tick-line {
+      stroke: none;
+    }
+
+    .y.tick-line {
+      stroke: rgba(53, 83, 98, 0.2);
+    }
+  }
+
+  .projection-area-label {
+    font-size: 13px;
+    font-weight: 400;
+  }
+
+  .annotation-area{
+    .uncertainty {
+      fill: #25636F;
+      fill-opacity: 0.2;
+    }
+
+    .projection-area {
+      fill: #EFF1F1;
+      fill-opacity: 0.46;
+    }
+  }
+}

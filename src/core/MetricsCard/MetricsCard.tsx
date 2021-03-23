@@ -16,23 +16,30 @@
 // =============================================================================
 import React from "react";
 import styled from "styled-components/macro";
-import { Card, CardSection, H4 } from "@recidiviz/case-triage-components";
+import { Card, CardSection } from "@recidiviz/case-triage-components";
+import * as fontStyles from "../CoreConstants.scss";
 
 const MetricsCardComponent = styled(Card)`
   width: 100%;
-  margin: 1rem;
+`;
+
+const MetricHeading = styled.h4`
+  color: ${fontStyles.pine1};
+  font: ${fontStyles.fontUiSans16};
+  letter-spacing: -0.01em;
 `;
 
 const MetricSubHeading = styled.div`
-  font-size: 0.9rem;
-  line-height: 1.5;
+  color: ${fontStyles.slate80};
+  font: ${fontStyles.fontUiSans14};
+  letter-spacing: -0.01em;
 `;
 
 const HeadingContainer = styled.div`
   display: flex;
   flex-flow: row nowrap;
   justify-content: space-between;
-  padding: 25px 40px;
+  padding: 20px 40px;
   height: 64px;
 `;
 
@@ -51,7 +58,7 @@ const MetricsCard: React.FC<MetricsCardProps> = ({
     <MetricsCardComponent stacked>
       <CardSection>
         <HeadingContainer>
-          <H4>{heading}</H4>
+          <MetricHeading>{heading}</MetricHeading>
           {subheading && <MetricSubHeading>{subheading}</MetricSubHeading>}
         </HeadingContainer>
       </CardSection>

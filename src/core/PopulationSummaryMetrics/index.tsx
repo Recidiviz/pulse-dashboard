@@ -15,32 +15,44 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 import React from "react";
+import { observer } from "mobx-react-lite";
 import HistoricalSummaryMetrics from "./HistoricalSummaryMetrics";
 import ProjectedSummaryMetrics from "./ProjectedSummaryMetrics";
-import useChartData from "../hooks/useChartData";
-
+import { usePopulationFiltersStore } from "../../components/StoreProvider";
 import type {
   PopulationProjectionSummaryRecords,
   HistoricalSummaryRecord,
   ProjectedSummaryRecord,
-  RawApiData,
 } from "../models/types";
-import {
-  recordMatchesSimulationTag,
-  populationProjectionSummary,
-} from "../models/PopulationProjectionSummaryMetric";
+import { recordMatchesSimulationTag } from "../models/PopulationProjectionSummaryMetric";
 import "./PopulationSummaryMetrics.scss";
+import { PopulationFilterValues } from "../types/filters";
 
-type ChartDataType = {
-  isLoading: boolean;
+type PropTypes = {
+  isLoading?: boolean;
   isError: boolean;
-  apiData: RawApiData;
+  projectionSummaries?: PopulationProjectionSummaryRecords;
 };
 
-const PopulationSummaryMetrics: React.FC = () => {
-  const { isLoading, isError, apiData }: ChartDataType = useChartData(
-    "us_id/projections"
-  ) as ChartDataType;
+function applyDataFilters(filters: PopulationFilterValues) {
+  return (record: PopulationProjectionSummaryRecords[number]) => {
+    return (
+      record.timePeriod === filters.timePeriod &&
+      record.gender === filters.gender &&
+      // TODO(#941): Remove the check for "all" once fixture data is updated
+      (record.legalStatus === filters.legalStatus ||
+        filters.legalStatus === "all")
+    );
+  };
+}
+
+const PopulationSummaryMetrics: React.FC<PropTypes> = ({
+  isError,
+  isLoading = false,
+  projectionSummaries = [],
+}) => {
+  const filtersStore = usePopulationFiltersStore();
+  const dataFilter = applyDataFilters(filtersStore.filters);
 
   // TODO: add in Error state
   if (isError) {
@@ -56,22 +68,14 @@ const PopulationSummaryMetrics: React.FC = () => {
     );
   }
 
-  // Transform the records
-  const projectionSummaries: PopulationProjectionSummaryRecords = populationProjectionSummary(
-    apiData.population_projection_summaries.data
-  );
+  // Filter records
+  const historicalData = projectionSummaries
+    .filter(recordMatchesSimulationTag("HISTORICAL"))
+    .find(dataFilter) as HistoricalSummaryRecord;
 
-  // Filter into historical and projected records
-  const historicalPopulationSummaries = projectionSummaries.filter(
-    recordMatchesSimulationTag("HISTORICAL")
-  );
-
-  const projectedPopulationSummaries = projectionSummaries.filter(
-    recordMatchesSimulationTag("POLICY_A")
-  );
-
-  const historicalData = historicalPopulationSummaries[0] as HistoricalSummaryRecord;
-  const projectedData = projectedPopulationSummaries[0] as ProjectedSummaryRecord;
+  const projectedData = projectionSummaries
+    .filter(recordMatchesSimulationTag("POLICY_A"))
+    .find(dataFilter) as ProjectedSummaryRecord;
 
   return (
     <div className="PopulationSummaryMetrics">
@@ -81,4 +85,4 @@ const PopulationSummaryMetrics: React.FC = () => {
   );
 };
 
-export default PopulationSummaryMetrics;
+export default observer(PopulationSummaryMetrics);

@@ -1,4 +1,5 @@
 @import "../../assets/styles/spec/settings/index";
+@import "../CoreConstants";
 
 .Core-Select {
   flex-grow: 1;
@@ -29,7 +30,6 @@
   }
 
   &__single-value {
-    color: $core-font-color !important;
     line-height: 1rem;
   }
 

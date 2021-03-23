@@ -14,16 +14,20 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
+import React from "react";
 
-export function compareStrings(valueKey) {
-  return (a, b) => {
-    if (!a[valueKey] && !b[valueKey]) return 0;
-    if (a[valueKey].toLowerCase() < b[valueKey].toLowerCase()) {
-      return -1;
-    }
-    if (a[valueKey].toLowerCase() > b[valueKey].toLowerCase()) {
-      return 1;
-    }
-    return 0;
-  };
-}
+type FilterProps = {
+  title?: string;
+  children: React.ReactNode;
+  width?: string;
+};
+
+const Filter: React.FC<FilterProps> = ({ children, title, width }) => {
+  return (
+    <div className="Filter">
+      {title && <span className="Filter__title">{title}</span>}
+      {width ? <div style={{ width }}>{children}</div> : children}
+    </div>
+  );
+};
+export default Filter;

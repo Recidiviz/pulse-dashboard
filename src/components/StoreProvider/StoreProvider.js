@@ -54,6 +54,11 @@ export function useFiltersStore() {
   return filtersStore;
 }
 
+export function usePopulationFiltersStore() {
+  const { populationFiltersStore } = useRootStore();
+  return populationFiltersStore;
+}
+
 export function useUserStore() {
   const { userStore } = useRootStore();
   return userStore;

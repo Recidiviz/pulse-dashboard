@@ -29,6 +29,8 @@ export type RawMetricData = Record<string, string>[];
 export const TenantIdList = ["US_ND"] as const;
 
 export type TenantId = typeof TenantIdList[number];
+export type Gender = "ALL" | "FEMALE" | "MALE";
+export type SimulationCompartment = "SUPERVISION" | "INCARCERATION";
 
 export type PopulationProjectionSummaryRecords = (
   | HistoricalSummaryRecord
@@ -56,4 +58,16 @@ export type HistoricalSummaryRecord = {
   admissionPercentChange: number;
   releasePercentChange: number;
   populationPercentChange: number;
+};
+
+export type PopulationProjectionTimeseriesRecord = {
+  year: number;
+  month: number;
+  compartment: SimulationCompartment;
+  legalStatus: string;
+  gender: Gender;
+  simulationTag: string;
+  totalPopulation: number;
+  totalPopulationMax: number;
+  totalPopulationMin: number;
 };

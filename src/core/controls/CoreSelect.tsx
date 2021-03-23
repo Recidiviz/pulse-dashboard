@@ -16,6 +16,7 @@
 // =============================================================================
 import React, { forwardRef } from "react";
 import ReactSelect from "react-select";
+import { coreFontColor } from "../CoreConstants.scss";
 
 import "./CoreSelect.scss";
 
@@ -30,6 +31,13 @@ type CoreSelectProps = {
   options: FilterOption[];
   onChange: (option: FilterOption) => void;
   [key: string]: any;
+};
+
+const coreSelectCustomStyles = {
+  singleValue: (provided: any) => ({
+    ...provided,
+    color: coreFontColor,
+  }),
 };
 
 export const CoreSelect = forwardRef<HTMLInputElement, CoreSelectProps>(
@@ -47,6 +55,7 @@ export const CoreSelect = forwardRef<HTMLInputElement, CoreSelectProps>(
           </div>
         ),
       }}
+      styles={coreSelectCustomStyles}
       {...props}
     />
   )

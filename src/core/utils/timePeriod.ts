@@ -14,35 +14,29 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
+import moment from "moment";
+import { monthNamesWithYears } from "../../utils/months";
 
-import { useEffect } from "react";
-import { useRootStore } from "../../components/StoreProvider";
+export function getYearFromNow(yearDifference = 0): string {
+  return moment().add(yearDifference, "years").format("YYYY");
+}
 
-const useIntercom = () => {
-  const { userStore, tenantStore } = useRootStore();
-  const { user } = userStore;
-  useEffect(() => {
-    window.Intercom("update", {
-      state_code: tenantStore.currentTenantId,
-      name: user.name,
-      nickname: user.nickname,
-      email: user.email,
-      user_id: user.sub,
-      hide_default_launcher: false,
-    });
-  }, [
-    tenantStore.currentTenantId,
-    user.name,
-    user.nickname,
-    user.email,
-    user.sub,
-  ]);
-
-  useEffect(() => {
-    return () => {
-      window.Intercom("update", { hide_default_launcher: true });
-    };
-  }, []);
+export const monthNamesWithYearsFromNumbers = function monthNamesShortWithYearsFromNumbers(
+  monthNumbers: string[],
+  abbreviated: boolean
+): string[] {
+  return monthNamesWithYears(monthNumbers, abbreviated, false);
 };
 
-export default useIntercom;
+export function formatTimePeriodLabel(months: string): string {
+  const numMonths = Number(months);
+  if (Number.isNaN(numMonths) || !months) return "";
+  if (numMonths === 1) return "1 month";
+  if (numMonths < 12) return `${months} months`;
+  if (numMonths === 12) return "1 year";
+  return `${numMonths / 12} years`;
+}
+
+export default {
+  getYearFromNow,
+};

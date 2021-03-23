@@ -15,15 +15,26 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-export function compareStrings(valueKey) {
-  return (a, b) => {
-    if (!a[valueKey] && !b[valueKey]) return 0;
-    if (a[valueKey].toLowerCase() < b[valueKey].toLowerCase()) {
-      return -1;
-    }
-    if (a[valueKey].toLowerCase() > b[valueKey].toLowerCase()) {
-      return 1;
-    }
-    return 0;
-  };
-}
+import React from "react";
+import "./PopulationTimeseriesLegend.scss";
+
+type propTypes = {
+  items: string[];
+};
+
+const PopulationTimeseriesLegend: React.FC<propTypes> = ({ items }) => {
+  return (
+    <div className="PopulationTimeseriesLegend">
+      {items.map((label) => (
+        <div className="PopulationTimeseriesLegend__Item" key={label}>
+          <div className={`PopulationTimeseriesLegend__Icon ${label}Legend`}>
+            <div className="PopulationTimeseriesLegend__Line" />
+          </div>
+          <div className="PopulationTimeseriesLegend__Text">{label}</div>
+        </div>
+      ))}
+    </div>
+  );
+};
+
+export default PopulationTimeseriesLegend;

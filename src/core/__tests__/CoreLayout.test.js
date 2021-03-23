@@ -25,7 +25,13 @@ import TopBarUserMenuForAuthenticatedUser from "../../components/TopBar/TopBarUs
 import mockWithTestId from "../../../__helpers__/mockWithTestId";
 import { PageProvider } from "../../contexts/PageContext";
 import StoreProvider from "../../components/StoreProvider";
+import useIntercom from "../../hooks/useIntercom";
 
+jest.mock("mobx-react-lite", () => {
+  return {
+    observer: (component) => component,
+  };
+});
 jest.mock("react-router-dom", () => ({
   useLocation: jest.fn(),
   matchPath: jest.fn().mockReturnValue(false),
@@ -33,6 +39,7 @@ jest.mock("react-router-dom", () => ({
   NavLink: jest.fn().mockReturnValue(null),
 }));
 jest.mock("../../components/TopBar/TopBarUserMenuForAuthenticatedUser");
+jest.mock("../../hooks/useIntercom");
 
 describe("CoreLayout tests", () => {
   TopBarUserMenuForAuthenticatedUser.mockReturnValue(null);
@@ -59,5 +66,10 @@ describe("CoreLayout tests", () => {
     const { getByTestId } = renderCoreLayout();
 
     expect(getByTestId(mockChildrenId)).toBeInTheDocument();
+  });
+
+  it("should use Intercom for Core layout", () => {
+    renderCoreLayout();
+    expect(useIntercom).toHaveBeenCalled();
   });
 });
