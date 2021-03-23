@@ -115,7 +115,7 @@ function getPeriodLabelFromMetricPeriodMonthsFilter(
 ): string | null {
   const months = toNumber(toggledValue);
 
-  if (!months) return null;
+  if (!months) return "Invalid date to present";
 
   const startDate = new Date();
   startDate.setMonth(startDate.getMonth() - (months - 1));
