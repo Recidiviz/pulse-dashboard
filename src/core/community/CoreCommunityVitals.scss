@@ -28,7 +28,7 @@
     margin-bottom: 0.5rem;
   }
 
-  &__card-container {
+  &__SummaryCards {
     display: flex;
     flex-flow: row nowrap;
     justify-content: space-between;
@@ -37,5 +37,9 @@
     :not(:last-child) {
       margin-right: 1.5rem;
     }
+  }
+
+  &__Table {
+    width: 100%;
   }
 }

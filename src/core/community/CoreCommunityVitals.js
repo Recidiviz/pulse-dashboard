@@ -21,18 +21,19 @@ import PageTemplate from "../PageTemplate";
 import BlockVitalCards from "./BlockVitalCards";
 import VitalsSummaryTable from "../VitalsSummaryTable/VitalsSummaryTable";
 import { useRootStore } from "../../components/StoreProvider";
-import tenants from "../../tenants";
 import "./CoreCommunityVitals.scss";
 
 const CoreCommunityVitals = () => {
-  const { currentTenantId } = useRootStore();
-  const stateName = tenants[currentTenantId].name;
+  const { tenantStore } = useRootStore();
+  const { stateName } = tenantStore;
 
   return (
     <PageTemplate>
       <div className="CoreCommunityVitals__Title">{stateName}</div>
-      <BlockVitalCards />
-      <div>
+      <div className="CoreCommunityVitals__SummaryCards">
+        <BlockVitalCards />
+      </div>
+      <div className="CoreCommunityVitals__Table">
         <VitalsSummaryTable />
       </div>
     </PageTemplate>
