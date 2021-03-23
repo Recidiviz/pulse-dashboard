@@ -33,7 +33,11 @@ import { COLORS } from "../assets/scripts/constants/colors";
 import { configureDownloadButtons } from "./utils/configureDownloadButtons";
 import geographyObject from "../assets/static/maps/us_nd.json";
 import { colorForValue } from "./utils/choropleth";
-import { toHtmlFriendly, toHumanReadable, toTitleCase } from "../utils/labels";
+import {
+  toHtmlFriendly,
+  toHumanReadable,
+  toTitleCase,
+} from "../utils/formatStrings";
 import { metricTypePropType } from "./utils/propTypes";
 import { METRIC_TYPES } from "./utils/constants";
 

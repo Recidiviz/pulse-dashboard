@@ -15,7 +15,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 import tk from "timekeeper";
-import * as labelsMethods from "../labels";
+import * as labelsMethods from "../formatStrings";
 
 describe("test label", () => {
   it("get gender from array genderValuetoLabel", () => {

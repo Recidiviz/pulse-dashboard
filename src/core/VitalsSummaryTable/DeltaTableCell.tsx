@@ -17,7 +17,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import cx from "classnames";
-import { formatPercent } from "../utils";
+import { formatPercent } from "../../utils";
 
 const DeltaTableCell: React.FC<{ value: number }> = ({ value }) => {
   const deltaDirectionClassName = cx({

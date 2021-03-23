@@ -17,8 +17,8 @@
 import React from "react";
 import styled from "styled-components/macro";
 import { Icon, IconSVG } from "@recidiviz/case-triage-components";
-import { formatLargeNumber } from "../../utils/labels";
-import { formatPercent } from "../utils";
+import { formatLargeNumber } from "../../utils/formatStrings";
+import { formatPercent } from "../../utils";
 import LoadingMetrics from "./LoadingMetrics";
 import type {
   ProjectedSummaryRecord,

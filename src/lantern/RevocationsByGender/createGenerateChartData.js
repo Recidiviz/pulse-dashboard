@@ -25,7 +25,7 @@ import {
   getStatePopulations,
   getStatePopulationsLabels,
   genderValueToLabel,
-} from "../../utils/labels";
+} from "../../utils/formatStrings";
 import getCounts from "../utils/getCounts";
 import createPopulationMap from "../utils/createPopulationMap";
 

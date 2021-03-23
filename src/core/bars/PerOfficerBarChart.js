@@ -52,7 +52,7 @@ import {
   toggleYAxisTicksStackedRateBasicCount,
   updateTooltipForMetricType,
 } from "../utils/tooltips";
-import { numberFromOfficerId } from "../../utils/labels";
+import { numberFromOfficerId } from "../../utils/formatStrings";
 import { metricTypePropType } from "../utils/propTypes";
 import { METRIC_TYPES } from "../utils/constants";
 
