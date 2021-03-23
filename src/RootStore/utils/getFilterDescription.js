@@ -1,7 +1,7 @@
 import pipe from "lodash/fp/pipe";
 import find from "lodash/fp/find";
 import get from "lodash/fp/get";
-import { humanReadableTitleCase } from "../../utils/labels";
+import { humanReadableTitleCase } from "../../utils/formatStrings";
 import {
   SUPERVISION_LEVELS,
   ADMISSION_TYPES,

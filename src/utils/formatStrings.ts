@@ -19,23 +19,22 @@ import lowerCase from "lodash/fp/lowerCase";
 import pipe from "lodash/fp/pipe";
 import startCase from "lodash/fp/startCase";
 import moment from "moment";
-import { toNumber } from "./index";
 import { translate } from "./i18nSettings";
 
-function getStatePopulations() {
+function getStatePopulations(): string[] {
   return Object.keys(translate("populationChartAttributes"));
 }
 
-function getStatePopulationsLabels() {
+function getStatePopulationsLabels(): string[] {
   return Object.values(translate("populationChartAttributes"));
 }
 
-const genderValueToLabel = {
+const genderValueToLabel: Record<string, string> = {
   MALE: "Male",
   FEMALE: "Female",
-};
+} as const;
 
-const raceValueToLabel = {
+const raceValueToLabel: Record<string, string> = {
   AMERICAN_INDIAN_ALASKAN_NATIVE: "American Indian Alaskan Native",
   ASIAN: "Asian",
   BLACK: "Black",
@@ -44,9 +43,9 @@ const raceValueToLabel = {
   WHITE: "White",
   OTHER: "Other",
   EXTERNAL_UNKNOWN: "Unknown",
-};
+} as const;
 
-const matrixViolationTypeToLabel = {
+const matrixViolationTypeToLabel: Record<string, string> = {
   TECHNICAL: "Technical",
   SUBSTANCE_ABUSE: "Subs. use",
   MUNICIPAL: "Municipal",
@@ -61,29 +60,29 @@ const matrixViolationTypeToLabel = {
   HIGH_TECH: "High tech.",
   SUMMARY_OFFENSE: "Summary offense",
   LAW: "Law",
-};
+} as const;
 
-function genderValueToHumanReadable(genderValue) {
+function genderValueToHumanReadable(genderValue: string): string {
   return genderValueToLabel[genderValue];
 }
 
-function raceValueToHumanReadable(raceValue) {
+function raceValueToHumanReadable(raceValue: string): string {
   return raceValueToLabel[raceValue];
 }
 
-function toHtmlFriendly(string) {
+function toHtmlFriendly(string: string): string {
   return string.replace(/\W+/g, "-");
 }
 
-function toHumanReadable(string) {
+function toHumanReadable(string: string): string {
   return string.replace(/[-_]/g, " ");
 }
 
-function toInt(nonInt) {
+function toInt(nonInt: string): number {
   return parseInt(nonInt, 10);
 }
 
-function toTitleCase(str) {
+function toTitleCase(str: string): string {
   return (
     str &&
     str.replace(
@@ -98,20 +97,25 @@ const humanReadableTitleCase = pipe(lowerCase, startCase);
 /*
  * Returns the officer id from the canonical id format, '123: Firstname Lastname'.
  */
-function numberFromOfficerId(officerId) {
+function numberFromOfficerId(officerId: string): number {
   // This works even for the described format, correctly parsing out 123
   return toInt(officerId);
 }
 
-const violationCountLabel = (count) => (count === "8" ? "8+" : count);
+const violationCountLabel = (count: string): string =>
+  count === "8" ? "8+" : count;
 
-const pluralize = (count, term) => {
+const pluralize = (count: number, term: string): string => {
   const base = `${count} ${term}`;
   return count > 1 ? `${base}s` : base;
 };
 
-function getPeriodLabelFromMetricPeriodMonthsFilter(toggledValue) {
+function getPeriodLabelFromMetricPeriodMonthsFilter(
+  toggledValue: string
+): string | null {
   const months = toNumber(toggledValue);
+
+  if (!months) return "Invalid date to present";
 
   const startDate = new Date();
   startDate.setMonth(startDate.getMonth() - (months - 1));
@@ -120,7 +124,9 @@ function getPeriodLabelFromMetricPeriodMonthsFilter(toggledValue) {
   return `${moment(startDate).format("M/D/YYYY")} to present`;
 }
 
-function getTrailingLabelFromMetricPeriodMonthsFilter(toggledValue) {
+function getTrailingLabelFromMetricPeriodMonthsFilter(
+  toggledValue: string
+): string {
   if (toggledValue === "1") {
     return "Current month";
   }
@@ -130,24 +136,32 @@ function getTrailingLabelFromMetricPeriodMonthsFilter(toggledValue) {
   return `Last ${parseInt(toggledValue, 10) / 12} years`;
 }
 
-const formatOfficerLabel = (label) => {
+const formatOfficerLabel = (label: string): string => {
   if (!label) return "";
   const groups = label.split(" - ");
   return `${groups[0]} - ${toTitleCase(groups[1])}`;
 };
 
-const formatDistrictLabel = (label) => {
+const formatDistrictLabel = (label: string): string => {
   if (!label) return "";
   const groups = label.match(/(.*)(?=DO)(.*)/) || label.match(/(.*)(?=-)(.*)/);
   return groups ? `${toTitleCase(groups[1])}${groups[2]}` : label;
 };
 
-const formatLargeNumber = (number) => {
+const formatLargeNumber = (number: number): string => {
   const ONE_MILLION = 1000000;
   return Math.abs(number) >= ONE_MILLION
     ? `${(number / ONE_MILLION).toFixed(1)}M`
     : number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 };
+
+function toNumber(stringValue: string): null | number {
+  return !Number.isNaN(Number(stringValue)) ? Number(stringValue) : null;
+}
+
+function formatPercent(percentage: number): string {
+  return `${Math.abs(percentage)}%`;
+}
 
 export {
   getPeriodLabelFromMetricPeriodMonthsFilter,
@@ -158,6 +172,7 @@ export {
   toHtmlFriendly,
   toHumanReadable,
   toInt,
+  toNumber,
   toTitleCase,
   humanReadableTitleCase,
   numberFromOfficerId,
@@ -170,4 +185,5 @@ export {
   formatOfficerLabel,
   formatDistrictLabel,
   formatLargeNumber,
+  formatPercent,
 };

@@ -31,7 +31,7 @@ import {
   filterDatasetByMetricPeriodMonths,
 } from "../utils/dataFilters";
 import { tooltipForCountChart, tooltipForRateChart } from "../utils/tooltips";
-import { toInt } from "../../utils/labels";
+import { toInt } from "../../utils/formatStrings";
 import { metricTypePropType } from "../utils/propTypes";
 import { METRIC_TYPES } from "../utils/constants";
 

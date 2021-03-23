@@ -45,7 +45,7 @@ import {
 } from "../utils/races";
 import { metricTypePropType } from "../utils/propTypes";
 import { METRIC_TYPES } from "../utils/constants";
-import { raceValueToLabel } from "../../utils/labels";
+import { raceValueToLabel } from "../../utils/formatStrings";
 
 const chartId = "ftrReferralsByRace";
 const colors = [

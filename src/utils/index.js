@@ -14,6 +14,4 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-export function toNumber(stringValue) {
-  return !Number.isNaN(Number(stringValue)) ? Number(stringValue) : stringValue;
-}
+export * from "./formatStrings";

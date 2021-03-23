@@ -25,7 +25,7 @@ import sumBy from "lodash/fp/sumBy";
 import toInteger from "lodash/fp/toInteger";
 import values from "lodash/fp/values";
 
-import { raceValueToHumanReadable } from "../../utils/labels";
+import { raceValueToHumanReadable } from "../../utils/formatStrings";
 
 /**
  * Groups and casts to object:

@@ -27,7 +27,7 @@ import filter from "lodash/fp/filter";
 import { calculateRate } from "../utils/rate";
 import { translate } from "../../utils/i18nSettings";
 import { sumCounts } from "../utils/sumCounts";
-import { formatOfficerLabel } from "../../utils/labels";
+import { formatOfficerLabel } from "../../utils/formatStrings";
 import { COLORS } from "../../assets/scripts/constants/colors";
 
 const generatePercentChartData = (filteredData, mode) => {

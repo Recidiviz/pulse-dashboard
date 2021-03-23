@@ -1,0 +1,210 @@
+// Recidiviz - a data platform for criminal justice reform
+// Copyright (C) 2021 Recidiviz, Inc.
+//
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <https://www.gnu.org/licenses/>.
+// =============================================================================
+@import "../CoreConstants.scss";
+
+$border-styles: 1px solid #d7dde0;
+
+.VitalsSummaryTable {
+  background: $white;
+  border-radius: 8px;
+  box-shadow: inset 0px -1px 1px $box-shadow-color;
+  margin: 1rem 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  width: 100%;
+
+  &__table {
+    background: $white;
+    width: 100%;
+    text-align: center;
+    font-size: 1rem;
+    line-height: 150%;
+    font-style: normal;
+    letter-spacing: -0.01em;
+    color: black;
+  }
+
+  &__table-head {
+    & > :first-child {
+      color: #536d7a;
+
+      & > th {
+        padding-top: 2rem;
+      }
+
+      & > :first-child {
+        border-right: $border-styles;
+      }
+    }
+
+    & > :last-child {
+      color: #00413e;
+      font-size: 0.875rem;
+      line-height: 171%;
+      font-weight: 500;
+
+      & > th {
+        padding: 2rem 0;
+      }
+
+      & > :first-child {
+        border-right: $border-styles;
+      }
+    }
+  }
+
+  &__row {
+    :nth-child(n) {
+      font-weight: 300;
+    }
+
+    &:first-child {
+      & > :nth-child(2) {
+        border-right: $border-styles;
+      }
+    }
+
+    &:last-child {
+      border-bottom: $border-styles;
+      & > :nth-child(4) {
+        border-right: $border-styles;
+      }
+    }
+
+    &--value {
+      border-top: $border-styles;
+      & > :first-child {
+        border-right: $border-styles;
+      }
+
+      td {
+        padding: 20px 0 20px 0;
+      }
+
+      :nth-child(n) {
+        font-weight: 400;
+        color: #006c67;
+      }
+      &:first-child {
+        :nth-child(2) {
+          border: none;
+        }
+      }
+
+      :nth-child(5),
+      :nth-child(6),
+      :nth-child(7),
+      :nth-child(8) {
+        color: #00413e;
+      }
+
+      :nth-child(4) {
+        border-right: $border-styles;
+      }
+    }
+  }
+
+  &__cell {
+    max-width: 4.5rem;
+    max-height: 2rem;
+  }
+
+  &__bubble {
+    display: inline-block;
+    border: 1px solid transparent;
+    width: 4.5rem;
+    height: 2rem;
+    border-radius: 21px;
+    padding: 3px 0;
+
+    &--70 {
+      border-color: #a43939;
+    }
+
+    &--80 {
+      border-color: #bf7474;
+    }
+
+    &--90 {
+      border-color: #4d9895;
+    }
+
+    &--100 {
+      border-color: #006c67;
+    }
+  }
+
+  &__sortable {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &__change {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &__arrow--increasing {
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 0 7px 12px 7px;
+    border-color: transparent transparent #006c67 transparent;
+    margin-right: 0.5rem;
+  }
+  &__arrow--decreasing {
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 12px 7px 0 7px;
+    margin-right: 0.5rem;
+    border-color: #a43939 transparent transparent transparent;
+  }
+}
+
+.triangle-switcher {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding-left: 0.5rem;
+  &__button {
+    width: 0;
+    height: 0;
+    border-style: solid;
+    margin: 1px;
+    &--up {
+      border-width: 0 5px 5px 5px;
+      border-color: transparent transparent rgba(53, 83, 98, 0.3) transparent;
+
+      &.triangle-switcher__button--active {
+        border-color: transparent transparent #006c67 transparent;
+      }
+    }
+
+    &--down {
+      border-width: 5px 5px 0 5px;
+      border-color: rgba(53, 83, 98, 0.3) transparent transparent transparent;
+
+      &.triangle-switcher__button--active {
+        border-color: #006c67 transparent transparent transparent;
+      }
+    }
+  }
+}

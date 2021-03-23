@@ -14,32 +14,27 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-.CoreCommunityVitals {
-  &__Title {
-    font-family: "Libre Baskerville";
-    font-size: 2.1rem;
-    font-style: normal;
-    font-weight: 400;
-    line-height: 2.67rem;
-    letter-spacing: -0.05rem;
-    text-align: left;
-    color: #00413e;
-    margin-top: 4rem;
-    margin-bottom: 0.5rem;
-  }
+import React from "react";
+import PropTypes from "prop-types";
+import cx from "classnames";
+import { formatPercent } from "../../utils";
 
-  &__SummaryCards {
-    display: flex;
-    flex-flow: row nowrap;
-    justify-content: space-between;
-    width: 100%;
+const DeltaTableCell: React.FC<{ value: number }> = ({ value }) => {
+  const deltaDirectionClassName = cx({
+    "VitalsSummaryTable__arrow--decreasing": value < 0,
+    "VitalsSummaryTable__arrow--increasing": value > 0,
+    "VitalsSummaryTable__arrow--hidden": value === 0,
+  });
+  return (
+    <div className="VitalsSummaryTable__change">
+      <div className={deltaDirectionClassName} />
+      {formatPercent(value)}
+    </div>
+  );
+};
 
-    :not(:last-child) {
-      margin-right: 1.5rem;
-    }
-  }
+DeltaTableCell.propTypes = {
+  value: PropTypes.number.isRequired,
+};
 
-  &__Table {
-    width: 100%;
-  }
-}
+export default DeltaTableCell;

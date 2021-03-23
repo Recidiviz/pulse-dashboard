@@ -45,7 +45,7 @@ import ErrorMessage from "../../components/ErrorMessage";
 import {
   matrixViolationTypeToLabel,
   violationCountLabel,
-} from "../../utils/labels";
+} from "../../utils/formatStrings";
 import { translate } from "../../utils/i18nSettings";
 import { useContainerHeight } from "../hooks/useContainerHeight";
 import { useRootStore } from "../../components/StoreProvider";

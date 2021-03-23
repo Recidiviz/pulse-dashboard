@@ -16,7 +16,7 @@
 // =============================================================================
 import { isDenominatorStatisticallySignificant } from "./significantStatistics";
 import { getTooltipWithoutTrendline } from "../../utils/trendline";
-import { formatLargeNumber } from "../../utils/labels";
+import { formatLargeNumber } from "../../utils/formatStrings";
 
 export function tooltipForRateMetricWithCounts(
   id,
