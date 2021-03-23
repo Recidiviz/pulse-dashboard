@@ -31,9 +31,9 @@ export const monthNamesWithYearsFromNumbers = function monthNamesShortWithYearsF
 export function formatTimePeriodLabel(months: string): string {
   const numMonths = Number(months);
   if (Number.isNaN(numMonths) || !months) return "";
-  if (numMonths === 1) return `${months} month`;
+  if (numMonths === 1) return "1 month";
   if (numMonths < 12) return `${months} months`;
-  if (numMonths === 12) return `${numMonths / 12} year`;
+  if (numMonths === 12) return "1 year";
   return `${numMonths / 12} years`;
 }
 

@@ -64,6 +64,7 @@ const setFilters = (
   filtersStore.setFilters({ [filterKey]: option.value });
 };
 
+// TODO(#940): Move width styling for filter to CSS
 export const PopulationFilterOptions: PopulationFilters = {
   [FILTER_TYPES.TIME_PERIOD]: {
     type: FILTER_TYPES.TIME_PERIOD,
