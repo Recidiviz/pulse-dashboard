@@ -6,6 +6,7 @@ const COLLECTIONS = {
   FACILITIES_EXPLORE: "facilitiesExplore",
   PROGRAMMING_EXPLORE: "programmingExplore",
   POPULATION_PROJECTIONS: "populationProjections",
+  VITALS_SUMMARY: "vitalsSummary",
 };
 
 module.exports = {
