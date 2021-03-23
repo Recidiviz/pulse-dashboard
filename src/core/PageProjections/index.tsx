@@ -22,6 +22,7 @@ import PopulationSummaryMetrics from "../PopulationSummaryMetrics";
 import useChartData from "../hooks/useChartData";
 import {
   PopulationProjectionSummaryRecords,
+  PopulationProjectionTimeseriesRecord,
   RawApiData,
 } from "../models/types";
 import { populationProjectionSummary } from "../models/PopulationProjectionSummaryMetric";

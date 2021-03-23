@@ -18,7 +18,6 @@ import React from "react";
 import { observer } from "mobx-react-lite";
 import HistoricalSummaryMetrics from "./HistoricalSummaryMetrics";
 import ProjectedSummaryMetrics from "./ProjectedSummaryMetrics";
-import useChartData from "../hooks/useChartData";
 import { usePopulationFiltersStore } from "../../components/StoreProvider";
 import type {
   PopulationProjectionSummaryRecords,
@@ -49,7 +48,7 @@ function applyDataFilters(filters: PopulationFilterValues) {
 
 const PopulationSummaryMetrics: React.FC<PropTypes> = ({
   isError,
-  isLoading,
+  isLoading = false,
   projectionSummaries = [],
 }) => {
   const filtersStore = usePopulationFiltersStore();
