@@ -23,9 +23,9 @@ const BubbleTableCell: React.FC<{ value: number }> = ({ value }) => (
     key={value}
     className={cx("VitalsSummaryTable__bubble", {
       "VitalsSummaryTable__bubble--70": value < 70,
-      "VitalsSummaryTable__bubble--80": value > 70 && value < 80,
-      "VitalsSummaryTable__bubble--90": value > 80 && value < 90,
-      "VitalsSummaryTable__bubble--100": value > 90,
+      "VitalsSummaryTable__bubble--80": value >= 70 && value < 80,
+      "VitalsSummaryTable__bubble--90": value >= 80 && value < 90,
+      "VitalsSummaryTable__bubble--100": value >= 90,
     })}
   >
     {value}%

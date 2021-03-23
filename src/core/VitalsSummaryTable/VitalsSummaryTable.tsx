@@ -14,13 +14,13 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-
+// @ts-nocheck
 import React, { useMemo } from "react";
 import { useTable, useSortBy } from "react-table";
 import cx from "classnames";
 import BubbleTableCell from "./BubbleTableCell";
 import DeltaTableCell from "./DeltaTableCell";
-import { formatPercent } from "../utils";
+import { formatPercent } from "../../utils";
 
 import "./VitalsSummaryTable.scss";
 
@@ -62,7 +62,7 @@ const VitalsSummaryTable: React.FC = () => {
         overall: 69,
         change_7: -73,
         change_28: 18,
-        discharge: 20,
+        discharge: 70,
         participation: 83,
         contacts: 98,
         assessments: 100,
@@ -148,7 +148,6 @@ const VitalsSummaryTable: React.FC = () => {
     prepareRow,
   } = useTable({ columns, data }, useSortBy);
 
-  // TODO: Either convert back to JS or extend the react-table types that are out of date
   return (
     <div className="VitalsSummaryTable">
       <table {...getTableProps()} className="VitalsSummaryTable__table">
@@ -159,40 +158,34 @@ const VitalsSummaryTable: React.FC = () => {
               className="VitalsSummaryTable__row"
             >
               {headerGroup.headers.map((column) => (
-                // @ts-ignore
                 <th {...column.getHeaderProps(column.getSortByToggleProps())}>
-                  {
-                    // @ts-ignore
-                    column.canSort ? (
-                      <div className="VitalsSummaryTable__sortable">
-                        {column.render("Header")}
-                        <div className="triangle-switcher">
-                          <div
-                            className={cx(
-                              "triangle-switcher__button triangle-switcher__button--up",
-                              {
-                                "triangle-switcher__button--active":
-                                  // @ts-ignore
-                                  column.isSorted && column.isSortedDesc,
-                              }
-                            )}
-                          />
-                          <div
-                            className={cx(
-                              "triangle-switcher__button triangle-switcher__button--down",
-                              {
-                                "triangle-switcher__button--active":
-                                  // @ts-ignore
-                                  column.isSorted && !column.isSortedDesc,
-                              }
-                            )}
-                          />
-                        </div>
+                  {column.canSort ? (
+                    <div className="VitalsSummaryTable__sortable">
+                      {column.render("Header")}
+                      <div className="triangle-switcher">
+                        <div
+                          className={cx(
+                            "triangle-switcher__button triangle-switcher__button--up",
+                            {
+                              "triangle-switcher__button--active":
+                                column.isSorted && column.isSortedDesc,
+                            }
+                          )}
+                        />
+                        <div
+                          className={cx(
+                            "triangle-switcher__button triangle-switcher__button--down",
+                            {
+                              "triangle-switcher__button--active":
+                                column.isSorted && !column.isSortedDesc,
+                            }
+                          )}
+                        />
                       </div>
-                    ) : (
-                      column.render("Header")
-                    )
-                  }
+                    </div>
+                  ) : (
+                    column.render("Header")
+                  )}
                 </th>
               ))}
             </tr>
