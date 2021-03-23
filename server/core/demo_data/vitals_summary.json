@@ -1,0 +1,4 @@
+{"entity": "Office A",  "overall": "65",  "timely_discharge": "-12",  "timely_ftr_enrollment": "88",  "timely_contacts": "100",  "timely_risk_assessment": "100"}
+{"entity": "Office B",  "overall": "65",  "timely_discharge": "-54",  "timely_ftr_enrollment": "98",  "timely_contacts": "92",  "timely_risk_assessment": "100"}
+{"entity": "Officer Jones",  "overall": "68",  "timely_discharge": "-35",  "timely_ftr_enrollment": "97",  "timely_contacts": "93",  "timely_risk_assessment": "100"}
+{"entity": "Officer Smith",  "overall": "69",  "timely_discharge": "-70",  "timely_ftr_enrollment": "83",  "timely_contacts": "98",  "timely_risk_assessment": "100"}
