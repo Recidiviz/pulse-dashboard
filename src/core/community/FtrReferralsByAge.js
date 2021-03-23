@@ -23,6 +23,7 @@ import pipe from "lodash/fp/pipe";
 import {
   COLORS,
   COLORS_FIVE_VALUES,
+  COLORS_STACKED_TWO_VALUES,
 } from "../../assets/scripts/constants/colors";
 import { configureDownloadButtons } from "../utils/configureDownloadButtons";
 import {
@@ -133,15 +134,15 @@ const FtrReferralsByAge = ({
         datasets: [
           {
             label: "Referrals",
-            backgroundColor: COLORS["blue-standard"],
-            hoverBackgroundColor: COLORS["blue-standard"],
+            backgroundColor: COLORS_STACKED_TWO_VALUES[0],
+            hoverBackgroundColor: COLORS_STACKED_TWO_VALUES[0],
             yAxisID: "y-axis-left",
             data: ftrReferralCounts,
           },
           {
             label: "Supervision Population",
-            backgroundColor: COLORS["blue-standard-2"],
-            hoverBackgroundColor: COLORS["blue-standard-2"],
+            backgroundColor: COLORS_STACKED_TWO_VALUES[1],
+            hoverBackgroundColor: COLORS_STACKED_TWO_VALUES[1],
             yAxisID: "y-axis-left",
             data: stateSupervisionCounts,
           },

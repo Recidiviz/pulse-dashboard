@@ -26,8 +26,9 @@ import sortBy from "lodash/fp/sortBy";
 import sumBy from "lodash/fp/sumBy";
 
 import {
-  COLORS_FIVE_VALUES,
   COLORS,
+  COLORS_SEVEN_VALUES,
+  COLORS_STACKED_TWO_VALUES,
 } from "../../assets/scripts/constants/colors";
 import { configureDownloadButtons } from "../utils/configureDownloadButtons";
 import {
@@ -48,15 +49,6 @@ import { METRIC_TYPES } from "../utils/constants";
 import { raceValueToLabel } from "../../utils/labels";
 
 const chartId = "ftrReferralsByRace";
-const colors = [
-  COLORS_FIVE_VALUES[0],
-  COLORS_FIVE_VALUES[1],
-  COLORS_FIVE_VALUES[2],
-  COLORS_FIVE_VALUES[3],
-  COLORS_FIVE_VALUES[4],
-  COLORS["blue-standard-2"],
-  COLORS["blue-standard"],
-];
 
 const calculatePercents = (total) => ({ value }) => 100 * (value / total);
 
@@ -125,15 +117,15 @@ const FtrReferralsByRace = ({
         datasets: [
           {
             label: "Referrals",
-            backgroundColor: COLORS["blue-standard"],
-            hoverBackgroundColor: COLORS["blue-standard"],
+            backgroundColor: COLORS_STACKED_TWO_VALUES[0],
+            hoverBackgroundColor: COLORS_STACKED_TWO_VALUES[0],
             yAxisID: "y-axis-left",
             data: ftrReferralCounts,
           },
           {
             label: "Supervision Population",
-            backgroundColor: COLORS["blue-standard-2"],
-            hoverBackgroundColor: COLORS["blue-standard-2"],
+            backgroundColor: COLORS_STACKED_TWO_VALUES[1],
+            hoverBackgroundColor: COLORS_STACKED_TWO_VALUES[1],
             yAxisID: "y-axis-left",
             data: stateSupervisionCounts,
           },
@@ -207,9 +199,9 @@ const FtrReferralsByRace = ({
         datasets: map(
           (i) => ({
             label: chartLabels[i],
-            backgroundColor: colors[i],
-            hoverBackgroundColor: colors[i],
-            hoverBorderColor: colors[i],
+            backgroundColor: COLORS_SEVEN_VALUES[i],
+            hoverBackgroundColor: COLORS_SEVEN_VALUES[i],
+            hoverBorderColor: COLORS_SEVEN_VALUES[i],
             data: [
               ftrReferralProportions[i],
               stateSupervisionProportions[i],

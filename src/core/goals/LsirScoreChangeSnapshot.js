@@ -26,7 +26,7 @@ import meanBy from "lodash/fp/meanBy";
 import toInteger from "lodash/fp/toInteger";
 import values from "lodash/fp/values";
 
-import { COLORS } from "../../assets/scripts/constants/colors";
+import { COLORS, CORE_COLORS } from "../../assets/scripts/constants/colors";
 import { configureDownloadButtons } from "../utils/configureDownloadButtons";
 import {
   getGoalForChart,
@@ -126,16 +126,13 @@ const LsirScoreChangeSnapshot = ({
     const datasets = [
       {
         label: "LSI-R score changes (average)",
-        backgroundColor: COLORS["blue-standard"],
-        borderColor: COLORS["blue-standard"],
-        pointBackgroundColor: COLORS["blue-standard"],
-        pointHoverBackgroundColor: COLORS["blue-standard"],
-        pointHoverBorderColor: COLORS["blue-standard"],
-        pointRadius: 4,
-        hitRadius: 5,
+        backgroundColor: CORE_COLORS.indigo.main,
+        borderColor: CORE_COLORS.indigo.main,
+        pointBackgroundColor: CORE_COLORS.indigo.main,
+        pointHoverBackgroundColor: CORE_COLORS.indigo.main,
+        pointHoverBorderColor: CORE_COLORS.indigo.main,
         fill: false,
         borderWidth: 2,
-        lineTension: 0,
         data: chartDataPoints,
       },
     ];
@@ -191,7 +188,7 @@ const LsirScoreChangeSnapshot = ({
                 fontStyle: "bold",
               },
               gridLines: {
-                color: "#FFF",
+                display: false,
               },
             },
           ],
