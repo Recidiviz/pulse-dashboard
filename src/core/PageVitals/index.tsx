@@ -14,32 +14,30 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-.CoreCommunityVitals {
-  &__Title {
-    font-family: "Libre Baskerville";
-    font-size: 2.1rem;
-    font-style: normal;
-    font-weight: 400;
-    line-height: 2.67rem;
-    letter-spacing: -0.05rem;
-    text-align: left;
-    color: #00413e;
-    margin-top: 4rem;
-    margin-bottom: 0.5rem;
-  }
 
-  &__SummaryCards {
-    display: flex;
-    flex-flow: row nowrap;
-    justify-content: space-between;
-    width: 100%;
+import React from "react";
+import { observer } from "mobx-react-lite";
+import PageTemplate from "../PageTemplate";
+import VitalsSummaryCards from "../VitalsSummaryCards";
+import VitalsSummaryTable from "../VitalsSummaryTable/VitalsSummaryTable";
+import { useRootStore } from "../../components/StoreProvider";
+import "./PageVitals.scss";
 
-    :not(:last-child) {
-      margin-right: 1.5rem;
-    }
-  }
+const PageVitals: React.FC = () => {
+  const { tenantStore } = useRootStore();
+  const { stateName } = tenantStore;
 
-  &__Table {
-    width: 100%;
-  }
-}
+  return (
+    <PageTemplate>
+      <div className="PageVitals__Title">{stateName}</div>
+      <div className="PageVitals__SummaryCards">
+        <VitalsSummaryCards />
+      </div>
+      <div className="PageVitals__Table">
+        <VitalsSummaryTable />
+      </div>
+    </PageTemplate>
+  );
+};
+
+export default observer(PageVitals);

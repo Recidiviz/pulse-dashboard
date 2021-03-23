@@ -20,13 +20,46 @@ import React, { useState } from "react";
 import groupBy from "lodash/groupBy";
 import get from "lodash/get";
 
-import { mockCardContent } from "./constants";
-import CoreVitalSummaryCard from "./CoreVitalSummaryCard";
+import VitalsSummaryCard from "./VitalsSummaryCard";
+import { SummaryCard } from "./types";
 
-const BlockVitalCards = () => {
+const mockCardContent: SummaryCard[] = [
+  {
+    title: "Overall",
+    percent: 79,
+    status: "NEEDS_IMPROVEMENT",
+    id: 1,
+  },
+  {
+    title: "Program availability",
+    percent: 56,
+    status: "POOR",
+    id: 2,
+  },
+  {
+    title: "Timely contacts",
+    percent: 100,
+    status: "EXCELLENT",
+    id: 3,
+  },
+  {
+    title: "Timely risk assessments",
+    percent: 94,
+    status: "GREAT",
+    id: 4,
+  },
+  {
+    title: "Timely discharge",
+    percent: 79,
+    status: "GOOD",
+    id: 5,
+  },
+];
+
+const VitalsSummaryCards: React.FC = () => {
   const [selectCard, setSelectCard] = useState(1);
 
-  const handlerSelectedCards = (id) => {
+  const handleSelectCard: (id: number) => () => void = (id) => () => {
     setSelectCard(id);
   };
   const groupingCard = groupBy(mockCardContent, "status");
@@ -41,19 +74,17 @@ const BlockVitalCards = () => {
   return (
     <>
       {orderedCard.map(({ title, percent, status, id }) => (
-        <CoreVitalSummaryCard
+        <VitalsSummaryCard
           key={id}
           title={title}
           percentage={percent}
           status={status}
           selected={selectCard === id}
-          onClick={() => {
-            handlerSelectedCards(id);
-          }}
+          onClick={handleSelectCard(id)}
         />
       ))}
     </>
   );
 };
 
-export default BlockVitalCards;
+export default VitalsSummaryCards;
