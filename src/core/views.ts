@@ -14,40 +14,31 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-export const CORE_VIEWS = {
+export const CORE_VIEWS: Record<string, string> = {
   community: "community",
   facilities: "facilities",
   goals: "goals",
   methodology: "methodology",
-  profile: "profile",
-  notFound: "notFound",
-} as const;
+};
 
-export const CORE_PATHS = {
+export const CORE_PATHS: Record<string, string> = {
   goals: "/goals",
   communityExplore: "/community/explore",
   communityProjections: "/community/projections",
   facilitiesExplore: "/facilities/explore",
   facilitiesProjections: "/facilities/projections",
   methodology: "/methodology",
-  profile: "/profile",
-} as const;
+};
+
+const pathnameToView: Record<string, string> = {
+  [CORE_PATHS.goals]: CORE_VIEWS.goals,
+  [CORE_PATHS.communityExplore]: CORE_VIEWS.community,
+  [CORE_PATHS.communityProjections]: CORE_VIEWS.community,
+  [CORE_PATHS.facilitiesExplore]: CORE_VIEWS.facilities,
+  [CORE_PATHS.facilitiesProjections]: CORE_VIEWS.facilities,
+  [CORE_PATHS.methodology]: CORE_VIEWS.methodology,
+};
 
 export function getViewFromPathname(pathname: string): keyof typeof CORE_VIEWS {
-  switch (pathname) {
-    case CORE_PATHS.communityExplore:
-    case CORE_PATHS.communityProjections:
-      return CORE_VIEWS.community;
-    case CORE_PATHS.facilitiesExplore:
-    case CORE_PATHS.facilitiesProjections:
-      return CORE_VIEWS.facilities;
-    case CORE_PATHS.goals:
-      return CORE_VIEWS.goals;
-    case CORE_PATHS.methodology:
-      return CORE_VIEWS.methodology;
-    case CORE_PATHS.profile:
-      return CORE_VIEWS.profile;
-    default:
-      return CORE_VIEWS.notFound;
-  }
+  return pathnameToView[pathname];
 }

@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-import { CORE_VIEWS } from "../routes";
+import { CORE_VIEWS } from "../views";
 import { METRIC_TYPES, FILTER_TYPES } from "./constants";
 import { US_ID } from "../../RootStore/TenantStore/coreTenants";
 import {

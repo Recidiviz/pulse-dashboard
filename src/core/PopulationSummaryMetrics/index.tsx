@@ -40,7 +40,7 @@ function applyDataFilters(filters: PopulationFilterValues) {
     return (
       record.timePeriod === filters.timePeriod &&
       record.gender === filters.gender &&
-      // TODO: Remove the check for "all" once fixture data is updated
+      // TODO(#941): Remove the check for "all" once fixture data is updated
       (record.legalStatus === filters.legalStatus ||
         filters.legalStatus === "all")
     );

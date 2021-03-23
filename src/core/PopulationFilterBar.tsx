@@ -25,7 +25,7 @@ import { PopulationFilters } from "./types/filters";
 
 import Filter from "./controls/Filter";
 import FilterBar from "./controls/FilterBar";
-import { CORE_VIEWS } from "./routes";
+import { CORE_VIEWS } from "./views";
 
 const PopulationFilterBar: React.FC<{
   view: keyof typeof CORE_VIEWS;

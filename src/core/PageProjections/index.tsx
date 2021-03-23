@@ -29,7 +29,7 @@ import PopulationTimeseriesChart from "../PopulationTimeseriesChart";
 import { populationProjectionTimeseries } from "../models/PopulationProjectionTimeseriesMetric";
 import PopulationFilterBar from "../PopulationFilterBar";
 import filterOptions from "../utils/filterOptions";
-import { getViewFromPathname } from "../routes";
+import { getViewFromPathname } from "../views";
 import { useRootStore } from "../../components/StoreProvider";
 
 type ChartDataType = {
