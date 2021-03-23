@@ -60,7 +60,9 @@ export default class FiltersStore {
     this.rootStore = rootStore;
 
     reaction(
-      () => this.rootStore.currentTenantId,
+      () =>
+        this.rootStore.currentTenantId &&
+        this.rootStore.tenantStore.isLanternTenant,
       (currentTenantId, previousTenantId) => {
         if (currentTenantId !== previousTenantId) {
           this.filters.clear();
@@ -70,7 +72,9 @@ export default class FiltersStore {
     );
 
     autorun(() => {
-      this.setFilters(this.defaultFilterValues);
+      if (this.rootStore.tenantStore.isLanternTenant) {
+        this.setFilters(this.defaultFilterValues);
+      }
     });
   }
 

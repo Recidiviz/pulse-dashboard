@@ -15,9 +15,10 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 import React from "react";
+import { observer } from "mobx-react-lite";
 import HistoricalSummaryMetrics from "./HistoricalSummaryMetrics";
 import ProjectedSummaryMetrics from "./ProjectedSummaryMetrics";
-
+import { usePopulationFiltersStore } from "../../components/StoreProvider";
 import type {
   PopulationProjectionSummaryRecords,
   HistoricalSummaryRecord,
@@ -25,6 +26,7 @@ import type {
 } from "../models/types";
 import { recordMatchesSimulationTag } from "../models/PopulationProjectionSummaryMetric";
 import "./PopulationSummaryMetrics.scss";
+import { PopulationFilterValues } from "../types/filters";
 
 type PropTypes = {
   isLoading?: boolean;
@@ -32,11 +34,26 @@ type PropTypes = {
   projectionSummaries?: PopulationProjectionSummaryRecords;
 };
 
+function applyDataFilters(filters: PopulationFilterValues) {
+  return (record: PopulationProjectionSummaryRecords[number]) => {
+    return (
+      record.timePeriod === filters.timePeriod &&
+      record.gender === filters.gender &&
+      // TODO(#941): Remove the check for "all" once fixture data is updated
+      (record.legalStatus === filters.legalStatus ||
+        filters.legalStatus === "all")
+    );
+  };
+}
+
 const PopulationSummaryMetrics: React.FC<PropTypes> = ({
   isError,
   isLoading = false,
   projectionSummaries = [],
 }) => {
+  const filtersStore = usePopulationFiltersStore();
+  const dataFilter = applyDataFilters(filtersStore.filters);
+
   // TODO: add in Error state
   if (isError) {
     return null;
@@ -51,17 +68,14 @@ const PopulationSummaryMetrics: React.FC<PropTypes> = ({
     );
   }
 
-  // Filter into historical and projected records
-  const historicalPopulationSummaries = projectionSummaries.filter(
-    recordMatchesSimulationTag("HISTORICAL")
-  );
+  // Filter records
+  const historicalData = projectionSummaries
+    .filter(recordMatchesSimulationTag("HISTORICAL"))
+    .find(dataFilter) as HistoricalSummaryRecord;
 
-  const projectedPopulationSummaries = projectionSummaries.filter(
-    recordMatchesSimulationTag("POLICY_A")
-  );
-
-  const historicalData = historicalPopulationSummaries[0] as HistoricalSummaryRecord;
-  const projectedData = projectedPopulationSummaries[0] as ProjectedSummaryRecord;
+  const projectedData = projectionSummaries
+    .filter(recordMatchesSimulationTag("POLICY_A"))
+    .find(dataFilter) as ProjectedSummaryRecord;
 
   return (
     <div className="PopulationSummaryMetrics">
@@ -71,4 +85,4 @@ const PopulationSummaryMetrics: React.FC<PropTypes> = ({
   );
 };
 
-export default PopulationSummaryMetrics;
+export default observer(PopulationSummaryMetrics);

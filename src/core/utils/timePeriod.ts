@@ -14,16 +14,29 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
+import moment from "moment";
+import { monthNamesWithYears } from "../../utils/months";
 
-export function compareStrings(valueKey) {
-  return (a, b) => {
-    if (!a[valueKey] && !b[valueKey]) return 0;
-    if (a[valueKey].toLowerCase() < b[valueKey].toLowerCase()) {
-      return -1;
-    }
-    if (a[valueKey].toLowerCase() > b[valueKey].toLowerCase()) {
-      return 1;
-    }
-    return 0;
-  };
+export function getYearFromNow(yearDifference = 0): string {
+  return moment().add(yearDifference, "years").format("YYYY");
 }
+
+export const monthNamesWithYearsFromNumbers = function monthNamesShortWithYearsFromNumbers(
+  monthNumbers: string[],
+  abbreviated: boolean
+): string[] {
+  return monthNamesWithYears(monthNumbers, abbreviated, false);
+};
+
+export function formatTimePeriodLabel(months: string): string {
+  const numMonths = Number(months);
+  if (Number.isNaN(numMonths) || !months) return "";
+  if (numMonths === 1) return "1 month";
+  if (numMonths < 12) return `${months} months`;
+  if (numMonths === 12) return "1 year";
+  return `${numMonths / 12} years`;
+}
+
+export default {
+  getYearFromNow,
+};

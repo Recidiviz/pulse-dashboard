@@ -14,13 +14,10 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-/* eslint-disable jsx-a11y/label-has-associated-control */
-
 import React, { useCallback, useMemo } from "react";
-// @ts-ignore
-import Sticky from "react-sticky-fill";
-
 import { CoreSelect } from "./controls/CoreSelect";
+import FilterBar from "./controls/FilterBar";
+import Filter from "./controls/Filter";
 import CoreMultiSelect from "./controls/MultiSelect/CoreMultiSelect";
 
 import {
@@ -30,36 +27,11 @@ import {
   metricPeriodOptions,
   metricTypeOptions,
   supervisionTypeOptions,
+  getFilterOption,
 } from "./utils/filterOptions";
+import { FilterOption } from "./types/filters";
 import { getDistrictOptions } from "./utils/filterHelpers";
-
-import "./CoreFilterBar.scss";
 import TogglePill from "./controls/TogglePill";
-
-const FILTER_BAR_STYLE = {
-  zIndex: 700,
-  top: 79,
-};
-
-type FilterOption = {
-  label: string;
-  value: any;
-};
-
-type FilterProps = {
-  title?: string;
-  children: React.ReactNode;
-  width?: string;
-};
-
-const Filter: React.FC<FilterProps> = ({ children, title, width }) => {
-  return (
-    <div className="Filter">
-      {title && <span className="Filter__title">{title}</span>}
-      {width ? <div style={{ width }}>{children}</div> : children}
-    </div>
-  );
-};
 
 type CoreFilterBarProps = {
   metricType?: string;
@@ -113,68 +85,58 @@ const CoreFilterBar: React.FC<CoreFilterBarProps> = ({
     []
   );
 
-  const getFilterValue = useCallback(
-    (value: string, options: FilterOption[]): FilterOption =>
-      options.find((option) => option.value === value) ?? options[0],
-    []
-  );
-
   return (
-    <Sticky style={FILTER_BAR_STYLE}>
-      <div className="CoreFilterBar">
-        <div className="CoreFilterBar__filters">
-          {setChartMetricType && metricType && (
-            <Filter>
-              <TogglePill
-                leftPill={metricTypeOptions[0]}
-                rightPill={metricTypeOptions[1]}
-                onChange={setChartMetricType}
-                currentValue={metricType}
-              />
-            </Filter>
-          )}
+    <FilterBar>
+      {setChartMetricType && metricType && (
+        <Filter>
+          <TogglePill
+            leftPill={metricTypeOptions[0]}
+            rightPill={metricTypeOptions[1]}
+            onChange={setChartMetricType}
+            currentValue={metricType}
+          />
+        </Filter>
+      )}
 
-          {setChartMetricPeriodMonths && metricPeriodMonths && (
-            <Filter title="Time Period" width="8rem">
-              <CoreSelect
-                value={getFilterValue(metricPeriodMonths, metricPeriodOptions)}
-                options={metricPeriodOptions}
-                onChange={createOnFilterChange(setChartMetricPeriodMonths)}
-                defaultValue={defaultMetricPeriodOption}
-              />
-            </Filter>
-          )}
+      {setChartMetricPeriodMonths && metricPeriodMonths && (
+        <Filter title="Time Period" width="8rem">
+          <CoreSelect
+            value={getFilterOption(metricPeriodMonths, metricPeriodOptions)}
+            options={metricPeriodOptions}
+            onChange={createOnFilterChange(setChartMetricPeriodMonths)}
+            defaultValue={defaultMetricPeriodOption}
+          />
+        </Filter>
+      )}
 
-          {setChartSupervisionType && supervisionType && (
-            <Filter title="Supervision Type" width="8.5rem">
-              <CoreSelect
-                value={getFilterValue(supervisionType, supervisionTypeOptions)}
-                options={supervisionTypeOptions}
-                onChange={createOnFilterChange(setChartSupervisionType)}
-                defaultValue={defaultSupervisionTypeOption}
-                isSearchable={false}
-              />
-            </Filter>
-          )}
+      {setChartSupervisionType && supervisionType && (
+        <Filter title="Supervision Type" width="8.5rem">
+          <CoreSelect
+            value={getFilterOption(supervisionType, supervisionTypeOptions)}
+            options={supervisionTypeOptions}
+            onChange={createOnFilterChange(setChartSupervisionType)}
+            defaultValue={defaultSupervisionTypeOption}
+            isSearchable={false}
+          />
+        </Filter>
+      )}
 
-          {setChartDistrict && district && (
-            <Filter title={isCounty ? "County of Residence" : "Office"}>
-              <CoreMultiSelect
-                value={districtOptions.filter((option: FilterOption) =>
-                  district.includes(String(option.value))
-                )}
-                options={districtOptions}
-                onChange={(options: FilterOption[]) => {
-                  setChartDistrict(options.map((o) => String(o.value)));
-                }}
-                summingOption={defaultDistrictOption}
-                defaultValue={[defaultDistrictOption]}
-              />
-            </Filter>
-          )}
-        </div>
-      </div>
-    </Sticky>
+      {setChartDistrict && district && (
+        <Filter title={isCounty ? "County of Residence" : "Office"}>
+          <CoreMultiSelect
+            value={districtOptions.filter((option: FilterOption) =>
+              district.includes(String(option.value))
+            )}
+            options={districtOptions}
+            onChange={(options: FilterOption[]) => {
+              setChartDistrict(options.map((o) => String(o.value)));
+            }}
+            summingOption={defaultDistrictOption}
+            defaultValue={[defaultDistrictOption]}
+          />
+        </Filter>
+      )}
+    </FilterBar>
   );
 };
 

@@ -14,16 +14,23 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
+import React from "react";
+import Sticky from "react-sticky-fill";
+import "./FilterBar.scss";
 
-export function compareStrings(valueKey) {
-  return (a, b) => {
-    if (!a[valueKey] && !b[valueKey]) return 0;
-    if (a[valueKey].toLowerCase() < b[valueKey].toLowerCase()) {
-      return -1;
-    }
-    if (a[valueKey].toLowerCase() > b[valueKey].toLowerCase()) {
-      return 1;
-    }
-    return 0;
-  };
-}
+const FILTER_BAR_STYLE = {
+  zIndex: 700,
+  top: 79,
+};
+
+const FilterBar: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  return (
+    <Sticky style={FILTER_BAR_STYLE}>
+      <div className="FilterBar">
+        <div className="FilterBar__filters">{children}</div>
+      </div>
+    </Sticky>
+  );
+};
+
+export default FilterBar;

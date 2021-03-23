@@ -15,17 +15,21 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 import React from "react";
+import { observer } from "mobx-react-lite";
 import MetricsCard from "../MetricsCard/MetricsCard";
 import SummaryMetrics from "./SummaryMetrics";
 import type { ProjectedSummaryRecord } from "../models/types";
+import { usePopulationFiltersStore } from "../../components/StoreProvider";
 import "./PopulationSummaryMetrics.scss";
 
 const ProjectedSummaryMetrics: React.FC<{
   data?: ProjectedSummaryRecord;
   isLoading: boolean;
 }> = ({ data, isLoading }) => {
+  const { timePeriodLabel } = usePopulationFiltersStore();
+
   return (
-    <MetricsCard heading="Next 6 months" subheading="Projected">
+    <MetricsCard heading={`Next ${timePeriodLabel}`} subheading="Projected">
       {!data && !isLoading ? (
         <div className="MissingProjectionData">
           There are not enough data to generate a projection for this subset of
@@ -38,4 +42,4 @@ const ProjectedSummaryMetrics: React.FC<{
   );
 };
 
-export default ProjectedSummaryMetrics;
+export default observer(ProjectedSummaryMetrics);

@@ -18,6 +18,7 @@
 import { computed, makeObservable } from "mobx";
 
 import FiltersStore from "./FiltersStore";
+import CorePopulationFiltersStore from "./CorePopulationFiltersStore";
 import TenantStore from "./TenantStore";
 import DataStore from "./DataStore/DataStore";
 import UserStore from "./UserStore";
@@ -72,6 +73,9 @@ export default class RootStore {
       rootStore: this,
     });
     this.filtersStore = new FiltersStore({ rootStore: this });
+    this.populationFiltersStore = new CorePopulationFiltersStore({
+      rootStore: this,
+    });
     this.dataStore = new DataStore({ rootStore: this });
   }
 

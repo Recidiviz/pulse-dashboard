@@ -15,20 +15,23 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 import React from "react";
+import { observer } from "mobx-react-lite";
 import MetricsCard from "../MetricsCard";
 import SummaryMetrics from "./SummaryMetrics";
-
+import { usePopulationFiltersStore } from "../../components/StoreProvider";
 import type { HistoricalSummaryRecord } from "../models/types";
 
 const HistoricalSummaryMetrics: React.FC<{
   data?: HistoricalSummaryRecord;
   isLoading: boolean;
 }> = ({ data, isLoading }) => {
+  const { timePeriodLabel } = usePopulationFiltersStore();
+
   return (
-    <MetricsCard heading="Past 6 months">
+    <MetricsCard heading={`Past ${timePeriodLabel}`}>
       <SummaryMetrics data={data} isLoading={isLoading} />
     </MetricsCard>
   );
 };
 
-export default HistoricalSummaryMetrics;
+export default observer(HistoricalSummaryMetrics);

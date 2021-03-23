@@ -1,23 +1,11 @@
-@import "../assets/styles/spec/settings/index";
-@import "./CoreConstants";
+@import "../../assets/styles/spec/settings/index";
+@import "../CoreConstants";
 
-.CoreFilterBar {
+.FilterBar {
   background: $core-background;
   display: flex;
   justify-content: center;
-  padding-top: 1rem;
-  padding-bottom: 0.5rem;
-  padding-left: 4rem;
-  padding-right: 4rem;
-
-  @media screen and (max-width: $core-breakpoint-md) {
-    padding-left: 3rem;
-    padding-right: 3rem;
-  }
-
-  @media screen and (max-width: $core-breakpoint-lg) {
-    padding-left: 4rem;
-  }
+  padding: 1rem 0 0.5rem;
 
   &__filters {
     display: flex;
@@ -35,7 +23,7 @@
 
       &__title {
         white-space: nowrap;
-        color: #72777a;
+        color: $slate-80;
         font-size: 0.8rem;
         line-height: 1rem;
         letter-spacing: 0.01em;
