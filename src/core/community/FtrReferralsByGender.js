@@ -29,7 +29,7 @@ import toInteger from "lodash/fp/toInteger";
 import values from "lodash/fp/values";
 
 import {
-  COLORS_STACKED_TWO_VALUES_ALT,
+  COLORS_STACKED_TWO_VALUES,
   COLORS,
 } from "../../assets/scripts/constants/colors";
 import { configureDownloadButtons } from "../utils/configureDownloadButtons";
@@ -107,15 +107,15 @@ const FtrReferralsByGender = ({
         datasets: [
           {
             label: "Referrals",
-            backgroundColor: COLORS["blue-standard"],
-            hoverBackgroundColor: COLORS["blue-standard"],
+            backgroundColor: COLORS_STACKED_TWO_VALUES[0],
+            hoverBackgroundColor: COLORS_STACKED_TWO_VALUES[0],
             yAxisID: "y-axis-left",
             data: ftrReferralCounts,
           },
           {
             label: "Supervision Population",
-            backgroundColor: COLORS["blue-standard-2"],
-            hoverBackgroundColor: COLORS["blue-standard-2"],
+            backgroundColor: COLORS_STACKED_TWO_VALUES[1],
+            hoverBackgroundColor: COLORS_STACKED_TWO_VALUES[1],
             yAxisID: "y-axis-left",
             data: stateSupervisionCounts,
           },
@@ -185,9 +185,9 @@ const FtrReferralsByGender = ({
         datasets: map(
           (i) => ({
             label: chartLabels[i],
-            backgroundColor: COLORS_STACKED_TWO_VALUES_ALT[i],
-            hoverBackgroundColor: COLORS_STACKED_TWO_VALUES_ALT[i],
-            hoverBorderColor: COLORS_STACKED_TWO_VALUES_ALT[i],
+            backgroundColor: COLORS_STACKED_TWO_VALUES[i],
+            hoverBackgroundColor: COLORS_STACKED_TWO_VALUES[i],
+            hoverBorderColor: COLORS_STACKED_TWO_VALUES[i],
             data: [ftrReferralProportions[i], stateSupervisionProportions[i]],
           }),
           range(0, 2)

@@ -20,6 +20,7 @@ import PropTypes from "prop-types";
 
 import ChartCardExportMenu from "./ChartCardExportMenu";
 import GeoViewToggle from "./GeoViewToggle";
+import "./ChartCard.scss";
 
 const ChartCard = ({
   chart,
