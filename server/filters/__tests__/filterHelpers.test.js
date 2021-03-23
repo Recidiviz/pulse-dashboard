@@ -191,7 +191,7 @@ describe("getFiltersByMetricName", () => {
     jest.clearAllMocks();
   });
 
-  describe("given files with subsets", () => {
+  describe("given files with subsets or an unknown file", () => {
     const filters = {
       level_1_supervision_location: ["03"],
       violation_type: "all",
@@ -204,6 +204,7 @@ describe("getFiltersByMetricName", () => {
       "revocations_matrix_distribution_by_race",
       "revocations_matrix_distribution_by_violation",
       "revocations_matrix_by_month",
+      "unknown_file",
     ].forEach((metricName) => {
       it("returns the filters object", () => {
         expect(getFiltersByMetricName(metricName, filters)).toEqual(filters);
@@ -220,7 +221,6 @@ describe("getFiltersByMetricName", () => {
     [
       "revocations_matrix_cells",
       "revocations_matrix_filtered_caseload",
-      "unknown_file",
     ].forEach((metricName) => {
       it("returns a filters object with only the restricted district", () => {
         expect(getFiltersByMetricName(metricName, filters)).toEqual({
