@@ -230,11 +230,14 @@ const PopulationTimeseriesChart: React.FC<PropTypes> = ({ data }) => {
     data: projectedPopulation,
   };
 
+  const populationType =
+    compartment === "SUPERVISION" ? "Supervised" : "Incarcerated";
+
   return (
     <div className="PopulationTimeseriesChart">
       <div className="PopulationTimeseriesChart__Header">
         <div className="PopulationTimeseriesChart__Title">
-          Total Supervised Population
+          Total {populationType} Population
         </div>
         <PopulationTimeseriesLegend items={["Actual", "Projected"]} />
       </div>
