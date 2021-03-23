@@ -16,30 +16,38 @@
 // =============================================================================
 
 import React from "react";
-import PropTypes from "prop-types";
 import cn from "classnames";
+import { SummaryStatus } from "./types";
+import { formatPercent } from "../../utils/formatStrings";
+import "./VitalsSummaryCard.scss";
 
-import "./CoreVitalSummaryCard.scss";
-
-const statusStyles = (status) => {
+const getStatusClassName = (status: SummaryStatus) => {
   switch (status) {
     case "NEEDS_IMPROVEMENT":
-      return "CoreVitalSummaryCard__needs-improvement";
+      return "VitalsSummaryCard__needs-improvement";
     case "POOR":
-      return "CoreVitalSummaryCard__poor";
+      return "VitalsSummaryCard__poor";
     case "GOOD":
-      return "CoreVitalSummaryCard__good";
+      return "VitalsSummaryCard__good";
     case "GREAT":
-      return "CoreVitalSummaryCard__great";
+      return "VitalsSummaryCard__great";
     case "EXCELLENT":
-      return "CoreVitalSummaryCard__excellent";
+      return "VitalsSummaryCard__excellent";
 
     default:
       return "";
   }
 };
 
-const CoreVitalSummaryCard = ({
+interface PropTypes {
+  title: string;
+  percentage: number;
+  status: SummaryStatus;
+  selected: boolean;
+  onClick: () => void;
+}
+
+const VitalsSummaryCard: React.FC<PropTypes> = ({
   title,
   percentage,
   status,
@@ -51,43 +59,31 @@ const CoreVitalSummaryCard = ({
     onKeyDown={onClick}
     onClick={onClick}
     className={cn(
-      "CoreVitalSummaryCard",
+      "VitalsSummaryCard",
       { selected },
-      statusStyles(status),
+      getStatusClassName(status),
       "p-0"
     )}
   >
-    <div className={`${cn(statusStyles(status))}__top-border top-border`} />
-    <div className={`${cn(statusStyles(status))}__content content p-0`}>
-      <div className="CoreVitalSummaryCard__title">
+    <div
+      className={`${cn(getStatusClassName(status))}__top-border top-border`}
+    />
+    <div className={`${cn(getStatusClassName(status))}__content content p-0`}>
+      <div className="VitalsSummaryCard__title">
         <span>{title}</span>
       </div>
       <div
-        className={`CoreVitalSummaryCard__percent ${cn(
-          statusStyles(status)
+        className={`VitalsSummaryCard__percent ${cn(
+          getStatusClassName(status)
         )}__percent`}
       >
-        <span>{percentage}%</span>
+        <span>{formatPercent(percentage)}</span>
       </div>
     </div>
   </div>
 );
-CoreVitalSummaryCard.defaultProps = {
+VitalsSummaryCard.defaultProps = {
   selected: false,
 };
 
-CoreVitalSummaryCard.propTypes = {
-  title: PropTypes.string.isRequired,
-  percentage: PropTypes.number.isRequired,
-  status: PropTypes.oneOf([
-    "POOR",
-    "NEEDS_IMPROVEMENT",
-    "GOOD",
-    "GREAT",
-    "EXCELLENT",
-  ]).isRequired,
-  onClick: PropTypes.func.isRequired,
-  selected: PropTypes.bool,
-};
-
-export default CoreVitalSummaryCard;
+export default VitalsSummaryCard;

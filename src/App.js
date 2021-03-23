@@ -38,6 +38,7 @@ import Revocations from "./lantern/Revocations";
 import UsNdCommunityExplore from "./core/community/Explore";
 import UsNdFacilitiesExplore from "./core/facilities/Explore";
 import PageProjections from "./core/PageProjections";
+import PageVitals from "./core/PageVitals";
 import CoreGoalsView from "./core/goals/CoreGoalsView";
 import initFontAwesome from "./utils/initFontAwesome";
 import initIntercomSettings from "./utils/initIntercomSettings";
@@ -47,7 +48,6 @@ import { CORE_TENANTS } from "./RootStore/TenantStore/coreTenants";
 import { CORE_PATHS } from "./core/views";
 import AuthWall from "./AuthWall";
 import ErrorBoundary from "./components/ErrorBoundary";
-import CoreCommunityVitals from "./core/community/CoreCommunityVitals";
 
 import "./assets/scripts/index";
 import "./assets/styles/index.scss";
@@ -87,7 +87,7 @@ const App = () => (
                   <ProtectedRoute path={CORE_PATHS.communityProjections} component={PageProjections} />
                   <ProtectedRoute path={CORE_PATHS.facilitiesExplore} component={UsNdFacilitiesExplore} />
                   <ProtectedRoute path={CORE_PATHS.facilitiesProjections} component={PageProjections} />
-                  <ProtectedRoute path="/community/vitals" component={CoreCommunityVitals}/>
+                  <ProtectedRoute path={CORE_PATHS.communityVitals} component={PageVitals}/>
                   <ProtectedRoute path={CORE_PATHS.methodology} component={Methodology} />
                   <Route path="/profile" component={Profile} />
                   <RedirectHome />
