@@ -73,9 +73,9 @@ const VitalsSummaryChart: React.FC = () => {
         rAccessor="value"
         rExtent={[0]}
         size={[0, 400]}
-        oLabel={(d: any, b: any, i: any) => {
+        oLabel={(d: string, _: any, index: number) => {
           // Display the first and then every 7 labels
-          if (i === 0 || (i + 1) % 7 === 0) {
+          if (index === 0 || (index + 1) % 7 === 0) {
             return (
               <text textAnchor="middle">{format(parseISO(d), "M/d/yyyy")}</text>
             );
