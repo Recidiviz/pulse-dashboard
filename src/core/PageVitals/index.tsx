@@ -41,7 +41,11 @@ const PageVitals: React.FC = () => {
   }
 
   if (isLoading) {
-    return <Loading />;
+    return (
+      <PageTemplate>
+        <Loading />;
+      </PageTemplate>
+    );
   }
   // Transform records
   const vitalsSummaries: VitalsSummaryRecords = vitalsSummary(
