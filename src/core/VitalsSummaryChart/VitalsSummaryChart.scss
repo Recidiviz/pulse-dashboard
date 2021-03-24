@@ -1,0 +1,35 @@
+.VitalsSummaryChart {
+  background: #fff;
+  border-radius: 0.5rem;
+  box-shadow: inset 0px -1px 1px rgba(19, 44, 82, 0.2);
+  font-family: Libre Franklin, sans-serif;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  width: 70%;
+
+  .background-graphics {
+    .axis.axis-tick-lines {
+      stroke: none;
+    }
+    .left.tick-line {
+      stroke: rgba(53, 83, 98, 0.2);
+      stroke-width: 1px;
+    }
+  }
+
+  .data-visualization {
+    .axis-baseline.y {
+      stroke: none;
+    }
+
+    .axis-label {
+      fill: rgba(53, 83, 98, 0.8);
+    }
+  }
+
+  .foreground-graphics {
+    .ordinal-labels {
+      fill: rgba(53, 83, 98, 0.8);
+    }
+  }
+}
