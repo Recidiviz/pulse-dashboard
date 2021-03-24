@@ -22,10 +22,10 @@ import DeltaTableCell from "./DeltaTableCell";
 import { formatPercent } from "../../utils";
 
 import "./VitalsSummaryTable.scss";
-import { VitalsSummaryRecords } from "../models/types";
+import { VitalsEntityRecord } from "../models/types";
 
 type PropTypes = {
-  vitalsSummaries: VitalsSummaryRecords;
+  vitalsSummaries: VitalsEntityRecord[];
 };
 
 const VitalsSummaryTable: React.FC<PropTypes> = ({ vitalsSummaries }) => {

@@ -20,6 +20,7 @@ import React, { useState } from "react";
 import groupBy from "lodash/groupBy";
 import get from "lodash/get";
 
+import { VitalsEntityRecord } from "../models/types";
 import VitalsSummaryCard from "./VitalsSummaryCard";
 import { SummaryCard } from "./types";
 
@@ -56,7 +57,11 @@ const mockCardContent: SummaryCard[] = [
   },
 ];
 
-const VitalsSummaryCards: React.FC = () => {
+type PropTypes = {
+  vitalsSummary?: VitalsEntityRecord;
+};
+
+const VitalsSummaryCards: React.FC<PropTypes> = ({ vitalsSummary }) => {
   const [selectCard, setSelectCard] = useState(1);
 
   const handleSelectCard: (id: number) => () => void = (id) => () => {

@@ -14,12 +14,13 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-import { VitalsSummaryRecords, RawMetricData } from "./types";
+import { VitalsEntityRecord, RawMetricData } from "./types";
 
-export function vitalsSummary(rawRecords: RawMetricData): VitalsSummaryRecords {
+export function vitalsEntity(rawRecords: RawMetricData): VitalsEntityRecord[] {
   return rawRecords.map((record) => {
     return {
       entity: record.entity,
+      parentEntity: record.parent_entity,
       overall: Number(record.overall),
       discharge: Number(record.timely_discharge),
       participation: Number(record.timely_ftr_enrollment),

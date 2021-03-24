@@ -15,7 +15,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React from "react";
+import React, { useMemo } from "react";
 import { observer } from "mobx-react-lite";
 import PageTemplate from "../PageTemplate";
 import VitalsSummaryCards from "../VitalsSummaryCards";
@@ -23,8 +23,8 @@ import VitalsSummaryTable from "../VitalsSummaryTable/VitalsSummaryTable";
 import { useRootStore } from "../../components/StoreProvider";
 import { ChartDataType } from "../types/charts";
 import useChartData from "../hooks/useChartData";
-import { VitalsSummaryRecords } from "../models/types";
-import { vitalsSummary } from "../models/VitalsSummaryMetric";
+import { VitalsEntityRecord } from "../models/types";
+import { vitalsEntity } from "../models/VitalsEntityMetric";
 import Loading from "../../components/Loading";
 import "./PageVitals.scss";
 
@@ -47,16 +47,26 @@ const PageVitals: React.FC = () => {
       </PageTemplate>
     );
   }
+
   // Transform records
-  const vitalsSummaries: VitalsSummaryRecords = vitalsSummary(
+  const vitalsEntities: VitalsEntityRecord[] = vitalsEntity(
     apiData.vitals_entities.data
+  );
+
+  // TODO move entity and filtering to a store
+  const entity = "US_ND";
+  const vitalsSummary = vitalsEntities.find(
+    (d) => d.entity === entity && d.parentEntity === d.entity
+  );
+  const vitalsSummaries = vitalsEntities.filter(
+    (d) => d.parentEntity === entity && d.parentEntity !== d.entity
   );
 
   return (
     <PageTemplate>
       <div className="PageVitals__Title">{stateName}</div>
       <div className="PageVitals__SummaryCards">
-        <VitalsSummaryCards />
+        <VitalsSummaryCards vitalsSummary={vitalsSummary} />
       </div>
       <div className="PageVitals__Table">
         <VitalsSummaryTable vitalsSummaries={vitalsSummaries} />
