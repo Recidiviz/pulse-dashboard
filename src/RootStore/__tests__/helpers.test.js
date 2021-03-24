@@ -87,28 +87,6 @@ describe("DataStore helpers", () => {
       ).toEqual(false);
     });
 
-    it("raises an error when the dimension manifest is missing a filter key", () => {
-      filters = {
-        chargeCategory: "All",
-        violationType: "All",
-        metricPeriodMonths: "12",
-        supervisionType: "All",
-      };
-
-      dimensionManifest = {
-        chargeCategory: ["all", "domestic_violence", "general"],
-        violationType: ["all", "absconded", "escaped", "felony"],
-        metricPeriodMonths: ["1", "12", "3", "36", "6"],
-      };
-      expect(() =>
-        dimensionManifestIncludesFilterValues({ filters, dimensionManifest })
-      ).toThrowError(
-        new Error(
-          `Expected to find supervisionType in the dimension manifest. Should this filter be skipped?`
-        )
-      );
-    });
-
     describe("when there are skipped filters", () => {
       beforeEach(() => {
         filters = {

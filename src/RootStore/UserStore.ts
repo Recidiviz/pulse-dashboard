@@ -229,6 +229,11 @@ export default class UserStore {
     this.verifyRestrictedDistrict();
   }
 
+  resetRestrictedDistrict(): void {
+    this.restrictedDistrictIsLoading = true;
+    this.restrictedDistrict = undefined;
+  }
+
   verifyRestrictedDistrict(): void {
     if (
       this.restrictedDistrict &&
