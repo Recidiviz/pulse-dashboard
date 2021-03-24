@@ -40,7 +40,24 @@
   }
 
   &__SummaryChart {
+    display: flex;
+    background: #fff;
+    border-radius: 0.5rem;
+    box-shadow: inset 0px -1px 1px rgba(19, 44, 82, 0.2);
+    flex-flow: row nowrap;
+    max-height: 450px;
     width: 100%;
+  }
+
+  &__SummaryDetail {
+    border-right: 4px solid #f4f5f5;
+    font-family: Libre Franklin, sans-serif;
+    font-size: 96px;
+    text-align: center;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    margin: -10px 0;
+    width: 30%;
   }
 
   &__Table {
