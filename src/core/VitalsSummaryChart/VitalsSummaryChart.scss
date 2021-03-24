@@ -1,16 +1,19 @@
+@import "../CoreConstants.scss";
+
 .VitalsSummaryChart {
   font-family: Libre Franklin, sans-serif;
   font-weight: 500;
-  letter-spacing: -0.01em;
   height: 100%;
-  width: 70%;
+  letter-spacing: -0.01em;
+  padding: 20px 0;
+  width: 100%;
 
   .background-graphics {
     .axis.axis-tick-lines {
       stroke: none;
     }
     .left.tick-line {
-      stroke: rgba(53, 83, 98, 0.2);
+      stroke: $slate-20;
       stroke-width: 1px;
     }
   }
@@ -21,7 +24,7 @@
     }
 
     .axis-label {
-      fill: rgba(53, 83, 98, 0.8);
+      fill: $slate-80;
     }
   }
 
@@ -29,7 +32,7 @@
     transform: translate(0, 1.5rem);
 
     .ordinal-labels {
-      fill: rgba(53, 83, 98, 0.8);
+      fill: $slate-80;
     }
   }
 }

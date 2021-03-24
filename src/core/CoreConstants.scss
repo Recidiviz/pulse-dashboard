@@ -6,18 +6,24 @@ $core-breakpoint-sm: 1024px;
 $core-breakpoint-xs: 600px;
 
 $core-max-view-width: 93rem;
-$core-font-color: #00413e;
+
 $white: #fff;
-$box-shadow-color: rgba(19, 44, 82, 0.3);
+$box-shadow-color-30: rgba(19, 44, 82, 0.3);
+$box-shadow-color-20: rgba(19, 44, 82, 0.2);
 $pine-1: rgba(1, 35, 34, 1);
+$pine-3: #00413e;
+$slate-20: rgba(53, 83, 98, 0.2);
 $slate-80: rgba(53, 83, 98, 0.8);
+$marble-3: #f4f5f5;
+$marble-4: #eff1f1;
 // Shorthand font property: font-style font-variant font-weight font-size/line-height font-family
 $font-ui-sans-16: 500 1rem/1.5rem Libre Franklin;
 $font-ui-sans-14: 500 0.875rem/1.5rem Libre Franklin;
 
 :export {
-  coreFontColor: $core-font-color;
   pine1: $pine-1;
+  pine3: $pine-3;
+  marble4: $marble-4;
   slate80: $slate-80;
   fontUiSans16: $font-ui-sans-16;
   fontUiSans14: $font-ui-sans-14;

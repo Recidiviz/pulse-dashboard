@@ -19,6 +19,7 @@ import React from "react";
 import { format, parseISO } from "date-fns";
 import { VitalsTimeseriesRecord } from "../models/types";
 import { formatPercent } from "../../utils/formatStrings";
+import * as styles from "../CoreConstants.scss";
 
 import "./VitalsSummaryChart.scss";
 // eslint-disable-next-line @typescript-eslint/no-var-requires,global-require
@@ -68,7 +69,7 @@ const VitalsSummaryChart: React.FC = () => {
         data={mockData}
         margin={{ left: 104, bottom: 50, right: 56, top: 50 }}
         oAccessor="date"
-        style={{ fill: "#EFF1F1", width: 16 }}
+        style={{ fill: styles.marble4, width: 16 }}
         rAccessor="value"
         rExtent={[0]}
         size={[0, 400]}

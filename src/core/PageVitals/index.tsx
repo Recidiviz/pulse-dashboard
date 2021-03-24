@@ -34,9 +34,11 @@ const PageVitals: React.FC = () => {
       <div className="PageVitals__SummaryCards">
         <VitalsSummaryCards />
       </div>
-      <div className="PageVitals__SummaryChart">
+      <div className="PageVitals__SummarySection">
         <div className="PageVitals__SummaryDetail">79%</div>
-        <VitalsSummaryChart />
+        <div className="PageVitals__SummaryChart">
+          <VitalsSummaryChart />
+        </div>
       </div>
       <div className="PageVitals__Table">
         <VitalsSummaryTable />
