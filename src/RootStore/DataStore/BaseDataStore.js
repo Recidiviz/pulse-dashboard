@@ -149,8 +149,8 @@ export default class BaseDataStore {
 
   get filtersQueryParams() {
     return getQueryStringFromFilters(
-      //  eslint-disable-next-line
-      this.filters, [this.rootStore.restrictedDistrict],
+      this.filters,
+      [].concat(this.rootStore.restrictedDistrict)
     );
   }
 
