@@ -49,7 +49,7 @@ const PageVitals: React.FC = () => {
   }
   // Transform records
   const vitalsSummaries: VitalsSummaryRecords = vitalsSummary(
-    apiData.vitals_summary.data
+    apiData.vitals_entities.data
   );
 
   return (

@@ -58,12 +58,12 @@ const VitalsSummaryTable: React.FC<PropTypes> = ({ vitalsSummaries }) => {
           },
           {
             Header: "7D change",
-            accessor: "change_7",
+            accessor: "change7Day",
             Cell: createDeltaTableCell,
           },
           {
             Header: "28D change",
-            accessor: "change_28",
+            accessor: "change28Day",
             Cell: createDeltaTableCell,
           },
         ],

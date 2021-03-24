@@ -25,6 +25,8 @@ export function vitalsSummary(rawRecords: RawMetricData): VitalsSummaryRecords {
       participation: Number(record.timely_ftr_enrollment),
       contacts: Number(record.timely_contacts),
       assessments: Number(record.timely_risk_assessment),
+      change7Day: Number(record.overall_7d),
+      change28Day: Number(record.overall_28d),
     };
   });
 }
