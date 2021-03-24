@@ -5,6 +5,8 @@
   font-family: Libre Franklin, sans-serif;
   font-weight: 500;
   letter-spacing: -0.01em;
+  margin-left: 10px;
+  margin-right: 10px;
   width: 100%;
 
   &__Header {
@@ -19,6 +21,11 @@
     color: #012322;
   }
 
+  &__Point {
+    fill: #25636F;
+    r: 0.25rem;
+  }
+
   .data-visualization {
     .axis-baseline {
       stroke: none;
@@ -26,6 +33,14 @@
 
     .axis-label {
       fill: rgba(53, 83, 98, 0.8);
+    }
+
+    .axis.bottom {
+      transform: translateY(18px);
+    }
+
+    .axis.left {
+      transform: translateX(-4px);
     }
   }
 

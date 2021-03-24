@@ -16,7 +16,10 @@
 // =============================================================================
 
 import React from "react";
+import { useLocation } from "react-router-dom";
 import { scaleTime } from "d3-scale";
+import { observer } from "mobx-react-lite";
+import { usePopulationFiltersStore } from "../../components/StoreProvider";
 import {
   Gender,
   PopulationProjectionTimeseriesRecord,
@@ -25,6 +28,7 @@ import {
 
 import "./PopulationTimeseriesChart.scss";
 import PopulationTimeseriesLegend from "./PopulationTimeseriesLegend";
+import { CORE_VIEWS, getViewFromPathname } from "../views";
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires,global-require
 const ResponsiveXYFrame = require("semiotic/lib/ResponsiveXYFrame") as any;
@@ -32,16 +36,13 @@ const ResponsiveXYFrame = require("semiotic/lib/ResponsiveXYFrame") as any;
 type MonthOptions = 1 | 6 | 12 | 24 | 60;
 
 type PropTypes = {
-  months: MonthOptions;
   data: PopulationProjectionTimeseriesRecord[];
 };
 
 const CURRENT_YEAR = 2021;
 const CURRENT_MONTH = 1;
 
-const SELECTED_GENDER = "MALE";
 const SELECTED_COMPARTMENT = "SUPERVISION";
-const SELECTED_STATUS = "PAROLE";
 
 const filterData = (
   monthRange: number,
@@ -50,7 +51,9 @@ const filterData = (
   status: string,
   data: PopulationProjectionTimeseriesRecord[]
 ): PopulationProjectionTimeseriesRecord[] => {
-  const stepSize = monthRange / 6;
+  const range = monthRange === 1 ? 6 : monthRange;
+
+  const stepSize = range / 6;
 
   return data.filter((d) => {
     const monthsOut = (d.year - CURRENT_YEAR) * 12 + (d.month - CURRENT_MONTH);
@@ -58,7 +61,7 @@ const filterData = (
       d.gender === gender &&
       d.compartment === compartment &&
       d.legalStatus === status &&
-      Math.abs(monthsOut) <= monthRange &&
+      Math.abs(monthsOut) <= range &&
       monthsOut % stepSize === 0
     );
   });
@@ -131,17 +134,19 @@ const getDateRange = (
   switch (monthRange) {
     case 1:
     case 6:
-    case 12:
       offset = 1;
       break;
+    case 12:
+      offset = 2;
+      break;
     case 24:
-      offset = 3;
+      offset = 4;
       break;
     case 60:
-      offset = 6;
+      offset = 12;
       break;
     default:
-      offset = 2;
+      offset = 4;
   }
 
   beginDate.setDate(beginDate.getDate() - offset);
@@ -150,14 +155,42 @@ const getDateRange = (
   return { beginDate, endDate };
 };
 
-const PopulationTimeseriesChart: React.FC<PropTypes> = ({ months, data }) => {
+const PopulationTimeseriesChart: React.FC<PropTypes> = ({ data }) => {
+  const filtersStore = usePopulationFiltersStore();
+  const { gender, supervisionType } = filtersStore.filters;
+  const timePeriod: MonthOptions = parseInt(
+    filtersStore.filters.timePeriod,
+    10
+  ) as MonthOptions;
+
+  const view = getViewFromPathname(useLocation().pathname);
+
+  let compartment: SimulationCompartment;
+
+  switch (view) {
+    case CORE_VIEWS.community:
+      compartment = "SUPERVISION";
+      break;
+    case CORE_VIEWS.facilities:
+      compartment = "INCARCERATION";
+      break;
+    default:
+      // TODO: Error state
+      return <div />;
+  }
+
   const filteredData = filterData(
-    months,
-    SELECTED_GENDER,
-    SELECTED_COMPARTMENT,
-    SELECTED_STATUS,
+    timePeriod,
+    gender,
+    compartment,
+    supervisionType,
     data
   );
+
+  if (filteredData.length < 1) {
+    // TODO: Error state
+    return <div />;
+  }
 
   const {
     historicalPopulation,
@@ -168,7 +201,7 @@ const PopulationTimeseriesChart: React.FC<PropTypes> = ({ months, data }) => {
   const { beginDate, endDate } = getDateRange(
     historicalPopulation[0].date,
     projectedPopulation.slice(-1)[0].date,
-    months
+    timePeriod
   );
 
   // update uncertainty range so areas align
@@ -197,11 +230,14 @@ const PopulationTimeseriesChart: React.FC<PropTypes> = ({ months, data }) => {
     data: projectedPopulation,
   };
 
+  const populationType =
+    compartment === "SUPERVISION" ? "Supervised" : "Incarcerated";
+
   return (
     <div className="PopulationTimeseriesChart">
       <div className="PopulationTimeseriesChart__Header">
         <div className="PopulationTimeseriesChart__Title">
-          Total Supervised Population
+          Total {populationType} Population
         </div>
         <PopulationTimeseriesLegend items={["Actual", "Projected"]} />
       </div>
@@ -248,12 +284,13 @@ const PopulationTimeseriesChart: React.FC<PropTypes> = ({ months, data }) => {
         xExtent={[beginDate, endDate]}
         yExtent={[0, chartTop]}
         showLinePoints
+        pointClass="PopulationTimeseriesChart__Point"
         axes={[
           { orient: "left", tickFormat: (n: number) => n.toLocaleString() },
           {
             orient: "bottom",
             tickValues: historicalPopulation
-              .concat(projectedPopulation)
+              .concat(projectedPopulation.slice(1)) // don't double-draw center date
               .map((r) => r.date),
             tickFormat: (d: Date) =>
               `${d.toLocaleString("default", { month: "short" })} '${
@@ -266,4 +303,4 @@ const PopulationTimeseriesChart: React.FC<PropTypes> = ({ months, data }) => {
   );
 };
 
-export default PopulationTimeseriesChart;
+export default observer(PopulationTimeseriesChart);
