@@ -73,11 +73,14 @@ export type PopulationProjectionTimeseriesRecord = {
 };
 
 export type VitalsEntityRecord = {
-  entity: string;
-  parentEntity: string;
+  entityId: string;
+  entityName: string;
+  parentEntityId: string;
   overall: number;
   discharge: number;
   participation: number;
   contacts: number;
   assessments: number;
+  change7Day: number;
+  change28Day: number;
 };

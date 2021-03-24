@@ -19,8 +19,9 @@ import { VitalsEntityRecord, RawMetricData } from "./types";
 export function vitalsEntity(rawRecords: RawMetricData): VitalsEntityRecord[] {
   return rawRecords.map((record) => {
     return {
-      entity: record.entity,
-      parentEntity: record.parent_entity,
+      entityId: record.entity_id,
+      entityName: record.entity_name,
+      parentEntityId: record.parent_entity_id,
       overall: Number(record.overall),
       discharge: Number(record.timely_discharge),
       participation: Number(record.timely_ftr_enrollment),

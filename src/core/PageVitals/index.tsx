@@ -15,7 +15,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React, { useMemo } from "react";
+import React from "react";
 import { observer } from "mobx-react-lite";
 import PageTemplate from "../PageTemplate";
 import VitalsSummaryCards from "../VitalsSummaryCards";
@@ -54,12 +54,12 @@ const PageVitals: React.FC = () => {
   );
 
   // TODO move entity and filtering to a store
-  const entity = "US_ND";
+  const entity = "STATE_DOC";
   const vitalsSummary = vitalsEntities.find(
-    (d) => d.entity === entity && d.parentEntity === d.entity
+    (d) => d.entityId === entity && d.parentEntityId === d.entityId
   );
   const vitalsSummaries = vitalsEntities.filter(
-    (d) => d.parentEntity === entity && d.parentEntity !== d.entity
+    (d) => d.parentEntityId === entity && d.parentEntityId !== d.entityId
   );
 
   return (

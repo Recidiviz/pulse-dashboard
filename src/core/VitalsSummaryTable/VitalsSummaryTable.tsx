@@ -44,7 +44,7 @@ const VitalsSummaryTable: React.FC<PropTypes> = ({ vitalsSummaries }) => {
         columns: [
           {
             Header: "Office",
-            accessor: "entity",
+            accessor: "entityName",
           },
         ],
       },
