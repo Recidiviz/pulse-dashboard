@@ -227,9 +227,9 @@ function programmingExplore(req, res) {
   );
 }
 
-function vitalsSummary(req, res) {
+function vitals(req, res) {
   const { stateCode } = req.params;
-  const metricType = "vitalsSummary";
+  const metricType = "vitals";
   const cacheKey = getCacheKey({ stateCode, metricType });
   cacheResponse(
     cacheKey,
@@ -300,7 +300,7 @@ module.exports = {
   facilitiesExplore,
   populationProjections,
   programmingExplore,
-  vitalsSummary,
+  vitals,
   responder,
   refreshCache,
   generateFileLink,

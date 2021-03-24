@@ -32,7 +32,7 @@ const PageVitals: React.FC = () => {
   const { tenantStore } = useRootStore();
   const { stateName } = tenantStore;
   const { isLoading, isError, apiData }: ChartDataType = useChartData(
-    "us_nd/vitals/summary"
+    "us_nd/vitals"
   ) as ChartDataType;
 
   // TODO: add in Error state
