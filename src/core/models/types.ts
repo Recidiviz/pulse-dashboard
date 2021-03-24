@@ -71,3 +71,14 @@ export type PopulationProjectionTimeseriesRecord = {
   totalPopulationMax: number;
   totalPopulationMin: number;
 };
+
+export type VitalsSummaryRecords = VitalsSummaryRecord[];
+
+export type VitalsSummaryRecord = {
+  entity: string;
+  overall: number;
+  discharge: number;
+  participation: number;
+  contacts: number;
+  assessments: number;
+};

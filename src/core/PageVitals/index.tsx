@@ -21,11 +21,32 @@ import PageTemplate from "../PageTemplate";
 import VitalsSummaryCards from "../VitalsSummaryCards";
 import VitalsSummaryTable from "../VitalsSummaryTable/VitalsSummaryTable";
 import { useRootStore } from "../../components/StoreProvider";
+import { ChartDataType } from "../types/charts";
+import useChartData from "../hooks/useChartData";
+import { VitalsSummaryRecords } from "../models/types";
+import { vitalsSummary } from "../models/VitalsSummaryMetric";
+import Loading from "../../components/Loading";
 import "./PageVitals.scss";
 
 const PageVitals: React.FC = () => {
   const { tenantStore } = useRootStore();
   const { stateName } = tenantStore;
+  const { isLoading, isError, apiData }: ChartDataType = useChartData(
+    "us_nd/vitals/summary"
+  ) as ChartDataType;
+
+  // TODO: add in Error state
+  if (isError) {
+    return null;
+  }
+
+  if (isLoading) {
+    return <Loading />;
+  }
+  // Transform records
+  const vitalsSummaries: VitalsSummaryRecords = vitalsSummary(
+    apiData.vitals_summary.data
+  );
 
   return (
     <PageTemplate>
@@ -34,7 +55,7 @@ const PageVitals: React.FC = () => {
         <VitalsSummaryCards />
       </div>
       <div className="PageVitals__Table">
-        <VitalsSummaryTable />
+        <VitalsSummaryTable vitalsSummaries={vitalsSummaries} />
       </div>
     </PageTemplate>
   );
