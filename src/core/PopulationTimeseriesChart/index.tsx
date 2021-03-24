@@ -29,6 +29,7 @@ import {
 import "./PopulationTimeseriesChart.scss";
 import PopulationTimeseriesLegend from "./PopulationTimeseriesLegend";
 import { CORE_VIEWS, getViewFromPathname } from "../views";
+import PopulationTimeseriesTooltip from "./PopulationTimeseriesTooltip";
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires,global-require
 const ResponsiveXYFrame = require("semiotic/lib/ResponsiveXYFrame") as any;
@@ -41,8 +42,6 @@ type PropTypes = {
 
 const CURRENT_YEAR = 2021;
 const CURRENT_MONTH = 1;
-
-const SELECTED_COMPARTMENT = "SUPERVISION";
 
 const filterData = (
   monthRange: number,
@@ -70,6 +69,8 @@ const filterData = (
 type ChartPoint = {
   date: Date;
   value: number;
+  lowerBound?: number;
+  upperBound?: number;
 };
 
 type PreparedData = {
@@ -103,6 +104,8 @@ const prepareData = (
       .map((d) => ({
         date: getDate(d),
         value: d.totalPopulation,
+        lowerBound: d.totalPopulationMin,
+        upperBound: d.totalPopulationMax,
       }))
   );
 
@@ -269,6 +272,8 @@ const PopulationTimeseriesChart: React.FC<PropTypes> = ({ data }) => {
             dy: 24,
           },
         ]}
+        hoverAnnotation
+        tooltipContent={(d: any) => <PopulationTimeseriesTooltip d={d} />}
         lines={[historicalLine, projectedLine]}
         lineDataAccessor="data"
         lineStyle={(l: PlotLine) => ({
