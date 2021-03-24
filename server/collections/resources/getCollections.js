@@ -267,8 +267,8 @@ const CORE_COLLECTIONS = {
     vitals_entities: {
       filename: "vitals_entities.txt",
     },
-    vitals_timeseries: {
-      filename: "vitals_timeseries.json",
+    vitals_time_series: {
+      filename: "vitals_time_series.json",
     },
   },
 };

@@ -84,3 +84,11 @@ export type VitalsEntityRecord = {
   change7Day: number;
   change28Day: number;
 };
+
+export type VitalsTimeSeriesRecord = {
+  date: string;
+  entityId: string;
+  metric: string;
+  value: number;
+  avg7Day: number;
+};

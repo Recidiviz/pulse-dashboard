@@ -23,8 +23,9 @@ import VitalsSummaryTable from "../VitalsSummaryTable/VitalsSummaryTable";
 import { useRootStore } from "../../components/StoreProvider";
 import { ChartDataType } from "../types/charts";
 import useChartData from "../hooks/useChartData";
-import { VitalsEntityRecord } from "../models/types";
+import { VitalsEntityRecord, VitalsTimeSeriesRecord } from "../models/types";
 import { vitalsEntity } from "../models/VitalsEntityMetric";
+import { vitalsTimeSeries } from "../models/VitalsTimeSeriesMetric";
 import Loading from "../../components/Loading";
 import "./PageVitals.scss";
 
@@ -51,6 +52,10 @@ const PageVitals: React.FC = () => {
   // Transform records
   const vitalsEntities: VitalsEntityRecord[] = vitalsEntity(
     apiData.vitals_entities.data
+  );
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const timeSeries: VitalsTimeSeriesRecord[] = vitalsTimeSeries(
+    apiData.vitals_time_series.data
   );
 
   // TODO move entity and filtering to a store
