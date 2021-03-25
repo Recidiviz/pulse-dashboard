@@ -22,7 +22,7 @@
   width: 17rem;
   height: 6rem;
   border-radius: 0.5rem;
-  box-shadow: inset 0px -1px 1px $box-shadow-color-30;
+  box-shadow: $inset-shadow-30;
   display: flex;
   flex-direction: column;
   background-color: #ffffff;
