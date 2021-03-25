@@ -21,7 +21,6 @@ import { scaleTime } from "d3-scale";
 import { observer } from "mobx-react-lite";
 import { usePopulationFiltersStore } from "../../components/StoreProvider";
 import {
-  Gender,
   PopulationProjectionTimeseriesRecord,
   SimulationCompartment,
 } from "../models/types";
@@ -31,53 +30,16 @@ import PopulationTimeseriesLegend from "./PopulationTimeseriesLegend";
 import { CORE_VIEWS, getViewFromPathname } from "../views";
 import PopulationTimeseriesTooltip from "./PopulationTimeseriesTooltip";
 
+import {
+  ChartPoint,
+  getDateRange,
+  MonthOptions,
+  prepareData,
+  filterData,
+} from "./helpers";
+
 // eslint-disable-next-line @typescript-eslint/no-var-requires,global-require
 const ResponsiveXYFrame = require("semiotic/lib/ResponsiveXYFrame") as any;
-
-type MonthOptions = 1 | 6 | 12 | 24 | 60;
-
-type PropTypes = {
-  data: PopulationProjectionTimeseriesRecord[];
-};
-
-const CURRENT_YEAR = 2021;
-const CURRENT_MONTH = 1;
-
-const filterData = (
-  monthRange: number,
-  gender: Gender,
-  compartment: SimulationCompartment,
-  status: string,
-  data: PopulationProjectionTimeseriesRecord[]
-): PopulationProjectionTimeseriesRecord[] => {
-  const range = monthRange === 1 ? 6 : monthRange;
-
-  const stepSize = range / 6;
-
-  return data.filter((d) => {
-    const monthsOut = (d.year - CURRENT_YEAR) * 12 + (d.month - CURRENT_MONTH);
-    return (
-      d.gender === gender &&
-      d.compartment === compartment &&
-      d.legalStatus === status &&
-      Math.abs(monthsOut) <= range &&
-      monthsOut % stepSize === 0
-    );
-  });
-};
-
-type ChartPoint = {
-  date: Date;
-  value: number;
-  lowerBound?: number;
-  upperBound?: number;
-};
-
-type PreparedData = {
-  historicalPopulation: ChartPoint[];
-  projectedPopulation: ChartPoint[];
-  uncertainty: ChartPoint[];
-};
 
 type PlotLine = {
   data: ChartPoint[];
@@ -85,77 +47,8 @@ type PlotLine = {
   dash?: string;
 };
 
-const getDate = (d: PopulationProjectionTimeseriesRecord): Date =>
-  new Date(d.year, d.month - 1);
-
-const prepareData = (
-  data: PopulationProjectionTimeseriesRecord[]
-): PreparedData => {
-  const historicalPopulation = data
-    .filter((d) => d.simulationTag === "HISTORICAL")
-    .map((d) => ({
-      date: getDate(d),
-      value: d.totalPopulation,
-    }));
-
-  const projectedPopulation = historicalPopulation.slice(-1).concat(
-    data
-      .filter((d) => d.simulationTag !== "HISTORICAL")
-      .map((d) => ({
-        date: getDate(d),
-        value: d.totalPopulation,
-        lowerBound: d.totalPopulationMin,
-        upperBound: d.totalPopulationMax,
-      }))
-  );
-
-  const uncertainty = [
-    historicalPopulation[historicalPopulation.length - 1],
-    ...data
-      .filter((d) => d.simulationTag !== "HISTORICAL")
-      .map((d) => ({ date: getDate(d), value: d.totalPopulationMax })),
-    ...data
-      .filter((d) => d.simulationTag !== "HISTORICAL")
-      .map((d) => ({ date: getDate(d), value: d.totalPopulationMin }))
-      .reverse(),
-    historicalPopulation[historicalPopulation.length - 1],
-  ];
-
-  return { historicalPopulation, projectedPopulation, uncertainty };
-};
-
-const getDateRange = (
-  firstDate: Date,
-  lastDate: Date,
-  monthRange: MonthOptions
-): { beginDate: Date; endDate: Date } => {
-  // set range slightly wider than data
-  const beginDate = new Date(firstDate);
-  const endDate = new Date(lastDate);
-
-  let offset;
-  switch (monthRange) {
-    case 1:
-    case 6:
-      offset = 1;
-      break;
-    case 12:
-      offset = 2;
-      break;
-    case 24:
-      offset = 4;
-      break;
-    case 60:
-      offset = 12;
-      break;
-    default:
-      offset = 4;
-  }
-
-  beginDate.setDate(beginDate.getDate() - offset);
-  endDate.setDate(endDate.getDate() + offset);
-
-  return { beginDate, endDate };
+type PropTypes = {
+  data: PopulationProjectionTimeseriesRecord[];
 };
 
 const PopulationTimeseriesChart: React.FC<PropTypes> = ({ data }) => {
@@ -260,7 +153,7 @@ const PopulationTimeseriesChart: React.FC<PropTypes> = ({ data }) => {
           {
             type: "x",
             className: "projection-area-label",
-            date: historicalPopulation.slice(-1)[0].date,
+            date: projectedPopulation[0].date,
             note: {
               label: "PROJECTED",
               align: "middle",
