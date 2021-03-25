@@ -16,35 +16,28 @@
 // =============================================================================
 
 import React from "react";
-
-import VitalsSummaryCard from "./VitalsSummaryCard";
 import { SummaryCard } from "../PageVitals/types";
+import { formatPercent } from "../../utils/formatStrings";
+
+import "./VitalsSummaryDetail.scss";
 
 type PropTypes = {
-  summaryCards: SummaryCard[];
-  selected: number;
-  onClick: (id: number) => () => void;
+  summaryDetail: SummaryCard;
 };
-
-const VitalsSummaryCards: React.FC<PropTypes> = ({
-  summaryCards,
-  selected,
-  onClick,
-}) => {
+const VitalsSummaryDetail: React.FC<PropTypes> = ({ summaryDetail }) => {
   return (
-    <>
-      {summaryCards.map(({ title, value, status, id }) => (
-        <VitalsSummaryCard
-          key={id}
-          title={title}
-          percentage={value}
-          status={status}
-          selected={selected === id}
-          onClick={onClick(id)}
-        />
-      ))}
-    </>
+    <div className="VitalsSummaryDetail">
+      <div className="VitalsSummaryDetail__title">{summaryDetail.title}</div>
+      <div
+        className={`VitalsSummaryDetail__status VitalsSummaryDetail__status--${summaryDetail.status}`}
+      />
+      <div className="VitalsSummaryDetail__value">
+        {formatPercent(summaryDetail.value)}
+      </div>
+      <div className="VitalsSummaryDetail__description">
+        {summaryDetail.description}
+      </div>
+    </div>
   );
 };
-
-export default VitalsSummaryCards;
+export default VitalsSummaryDetail;
