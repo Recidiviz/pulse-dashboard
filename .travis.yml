@@ -2,7 +2,7 @@ language: node_js
 before_install:
   - ./travis-setup.sh
 install:
-  - yarn install
+  - yarn install --force
 script:
   - yarn test-server
   - yarn test-filters

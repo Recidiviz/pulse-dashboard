@@ -19,6 +19,7 @@ const { matchesAllFilters } = require("shared-filters");
 const {
   createSubsetFilters,
   getFilterFnByMetricName,
+  getFiltersByMetricName,
 } = require("../filterHelpers");
 
 jest.mock("../../constants/subsetManifest", () => {
@@ -58,31 +59,107 @@ describe("createSubsetFilters", () => {
       violationType: "FELONY",
       chargeCategory: "DOMESTIC_VIOLENCE",
     };
-    it("replaces the filter value with an array of values from the subset manifest", () => {
-      expect(createSubsetFilters({ filters })).toEqual({
-        violation_type: ["felony", "law"],
-        charge_category: ["all", "domestic_violence"],
+
+    describe("when the metricName is in FILES_WITH_SUBSETS", () => {
+      [
+        "revocations_matrix_distribution_by_risk_level",
+        "revocations_matrix_distribution_by_gender",
+        "revocations_matrix_distribution_by_officer",
+        "revocations_matrix_distribution_by_race",
+        "revocations_matrix_distribution_by_violation",
+        "revocations_matrix_by_month",
+        "revocations_matrix_distribution_by_district",
+      ].forEach((metricName) => {
+        it("replaces the filter value with an array of values from the subset manifest", () => {
+          expect(createSubsetFilters({ filters, metricName })).toEqual({
+            violation_type: ["felony", "law"],
+            charge_category: ["all", "domestic_violence"],
+          });
+        });
+
+        it("does not include filter values that are not in the subset manifest", () => {
+          filters.supervisionType = "DUAL";
+          expect(createSubsetFilters({ filters, metricName })).toEqual({
+            violation_type: ["felony", "law"],
+            charge_category: ["all", "domestic_violence"],
+          });
+        });
       });
     });
 
-    it("does not include filter values that are not in the subset manifest", () => {
-      filters.supervisionType = "DUAL";
-      expect(createSubsetFilters({ filters })).toEqual({
-        violation_type: ["felony", "law"],
-        charge_category: ["all", "domestic_violence"],
+    describe("when the metricName is not in FILES_WITH_SUBSETS", () => {
+      [
+        "revocations_matrix_cells",
+        "revocations_matrix_filtered_caseload",
+      ].forEach((metricName) => {
+        it("returns an empty filter object", () => {
+          expect(createSubsetFilters({ filters, metricName })).toEqual({});
+        });
       });
     });
   });
 
   describe("Given a filters object with index values", () => {
+    const metricName = "revocations_matrix_distribution_by_risk_level";
     const filters = {
       violation_type: 0,
       charge_category: 1,
     };
     it("replaces the filter value with an array of values from the subset manifest", () => {
-      expect(createSubsetFilters({ filters })).toEqual({
+      expect(createSubsetFilters({ filters, metricName })).toEqual({
         violation_type: ["all", "absconsion"],
         charge_category: ["sex_offense"],
+      });
+    });
+  });
+
+  describe("Given a filters object with a restricted district key", () => {
+    const filters = {
+      violationType: "FELONY",
+      chargeCategory: "DOMESTIC_VIOLENCE",
+      restrictedDistrict: ["03"],
+    };
+
+    describe("when the metricName is in FILES_WITH_SUBSETS", () => {
+      [
+        "revocations_matrix_distribution_by_risk_level",
+        "revocations_matrix_distribution_by_gender",
+        "revocations_matrix_distribution_by_officer",
+        "revocations_matrix_distribution_by_race",
+        "revocations_matrix_distribution_by_violation",
+        "revocations_matrix_by_month",
+      ].forEach((metricName) => {
+        it("replaces the restrictedDistrict filter key with level_1_supervision_location", () => {
+          expect(createSubsetFilters({ filters, metricName })).toEqual({
+            violation_type: ["felony", "law"],
+            charge_category: ["all", "domestic_violence"],
+            level_1_supervision_location: ["03"],
+          });
+        });
+      });
+    });
+
+    describe("when the metricName is not in FILES_WITH_SUBSETS", () => {
+      [
+        "revocations_matrix_cells",
+        "revocations_matrix_filtered_caseload",
+      ].forEach((metricName) => {
+        it("returns an object with the level_1_supervision_location value", () => {
+          expect(createSubsetFilters({ filters, metricName })).toEqual({
+            level_1_supervision_location: ["03"],
+          });
+        });
+      });
+    });
+
+    describe("when the metricName is revocations_matrix_distribution_by_district", () => {
+      const metricName = "revocations_matrix_distribution_by_district";
+
+      it("returns the subsetFilters object without level_1_supervision_location", () => {
+        expect(createSubsetFilters({ filters, metricName })).toEqual({
+          violation_type: ["felony", "law"],
+          charge_category: ["all", "domestic_violence"],
+        });
       });
     });
   });
@@ -103,6 +180,70 @@ describe("getFilterFnByMetricName", () => {
       expect(matchesAllFilters).toHaveBeenCalledWith({
         filters,
         skippedFilters: ["metric_period_months"],
+      });
+    });
+  });
+});
+
+describe("getFiltersByMetricName", () => {
+  afterAll(() => {
+    jest.resetModules();
+    jest.clearAllMocks();
+  });
+
+  describe("given files with subsets or an unknown file", () => {
+    const filters = {
+      level_1_supervision_location: ["03"],
+      violation_type: "all",
+    };
+
+    [
+      "revocations_matrix_distribution_by_risk_level",
+      "revocations_matrix_distribution_by_gender",
+      "revocations_matrix_distribution_by_officer",
+      "revocations_matrix_distribution_by_race",
+      "revocations_matrix_distribution_by_violation",
+      "revocations_matrix_by_month",
+      "unknown_file",
+    ].forEach((metricName) => {
+      it("returns the filters object", () => {
+        expect(getFiltersByMetricName(metricName, filters)).toEqual(filters);
+      });
+    });
+  });
+
+  describe("given files without subsets or an unknown file", () => {
+    const filters = {
+      level_1_supervision_location: ["03"],
+      violation_type: "all",
+    };
+
+    [
+      "revocations_matrix_cells",
+      "revocations_matrix_filtered_caseload",
+    ].forEach((metricName) => {
+      it("returns a filters object with only the restricted district", () => {
+        expect(getFiltersByMetricName(metricName, filters)).toEqual({
+          level_1_supervision_location: ["03"],
+        });
+      });
+    });
+  });
+
+  describe("given revocations_matrix_distribution_by_district", () => {
+    const filters = {
+      level_1_supervision_location: ["03"],
+      violation_type: "all",
+    };
+
+    it("returns a filters object with only the restricted district", () => {
+      expect(
+        getFiltersByMetricName(
+          "revocations_matrix_distribution_by_district",
+          filters
+        )
+      ).toEqual({
+        violation_type: "all",
       });
     });
   });

@@ -92,6 +92,7 @@ const newRevocationsParamValidations = [
     .custom((values) =>
       values.every((value) => ADMISSION_TYPES.includes(value.toLowerCase()))
     ),
+  query("restrictedDistrict").optional(),
 ];
 
 const restrictedAccessParamValidations = [
