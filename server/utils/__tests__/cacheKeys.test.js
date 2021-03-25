@@ -60,7 +60,7 @@ describe("cacheKeys utils", () => {
             stateCode: "US_MO",
             metricType: "communityGoals",
             metricName: null,
-            cacheKeySubset: null,
+            cacheKeySubset: {},
           })
         ).toEqual("US_MO-communityGoals");
       });
@@ -73,7 +73,7 @@ describe("cacheKeys utils", () => {
             stateCode: "US_MO",
             metricType: "newRevocations",
             metricName: "random_file_name",
-            cacheKeySubset: null,
+            cacheKeySubset: {},
           })
         ).toEqual("US_MO-newRevocations-random_file_name");
       });
@@ -106,6 +106,55 @@ describe("cacheKeys utils", () => {
         ).toEqual(
           "US_MO-newRevocations-revocations_matrix_distribution_by_district-violation_type=0"
         );
+      });
+    });
+
+    describe("when there is a restricted district", () => {
+      describe("given a metricName without a subset manifest", () => {
+        it("returns the cacheKey with the metricName with the restricted district key", () => {
+          expect(
+            getCacheKey({
+              stateCode: "US_MO",
+              metricType: "newRevocations",
+              metricName: "random_file_name",
+              cacheKeySubset: { restrictedDistrict: ["03"] },
+            })
+          ).toEqual(
+            "US_MO-newRevocations-random_file_name-restrictedDistrict=03"
+          );
+        });
+      });
+
+      describe("given a metricName with a subset manifest", () => {
+        it("returns a cacheKey with the metricName and subset keys and restricted district key", () => {
+          expect(
+            getCacheKey({
+              stateCode: "US_MO",
+              metricType: "newRevocations",
+              metricName: "revocations_matrix_distribution_by_district",
+              cacheKeySubset: {
+                violationType: "felony",
+                restrictedDistrict: ["03"],
+              },
+            })
+          ).toEqual(
+            "US_MO-newRevocations-revocations_matrix_distribution_by_district-violation_type=4-restrictedDistrict=03"
+          );
+
+          expect(
+            getCacheKey({
+              stateCode: "US_MO",
+              metricType: "newRevocations",
+              metricName: "revocations_matrix_distribution_by_district",
+              cacheKeySubset: {
+                violationType: "all",
+                restrictedDistrict: ["03"],
+              },
+            })
+          ).toEqual(
+            "US_MO-newRevocations-revocations_matrix_distribution_by_district-violation_type=0-restrictedDistrict=03"
+          );
+        });
       });
     });
   });

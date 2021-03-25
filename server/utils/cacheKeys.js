@@ -112,7 +112,7 @@ function getCacheKey({
   stateCode,
   metricType,
   metricName,
-  cacheKeySubset,
+  cacheKeySubset = {},
   cacheKeyPrefix = null,
 }) {
   if (!stateCode && !metricType && !cacheKeyPrefix) {
@@ -126,22 +126,34 @@ function getCacheKey({
     cacheKey = `${cacheKey}-${metricName}`;
   }
 
-  if (!cacheKeySubset || !FILES_WITH_SUBSETS.includes(metricName)) {
-    return cacheKey;
+  if (cacheKeySubset && FILES_WITH_SUBSETS.includes(metricName)) {
+    getSubsetManifest().forEach(([dimensionKey, dimensionSubsets]) => {
+      const subsetValue = cacheKeySubset[camelCase(dimensionKey)];
+      const subsetIndex = dimensionSubsets.findIndex(
+        (subset) => subsetValue && subset.includes(subsetValue)
+      );
+      if (subsetValue && subsetIndex >= 0) {
+        cacheKey = `${cacheKey}-${dimensionKey}=${subsetIndex}`;
+      }
+    });
   }
 
-  getSubsetManifest().forEach(([dimensionKey, dimensionSubsets]) => {
-    const subsetValue = cacheKeySubset[camelCase(dimensionKey)];
-    const subsetIndex = dimensionSubsets.findIndex(
-      (subset) => subsetValue && subset.includes(subsetValue)
-    );
-    if (subsetValue && subsetIndex >= 0) {
-      cacheKey = `${cacheKey}-${dimensionKey}=${subsetIndex}`;
-    }
-  });
-
-  return cacheKey;
+  return appendRestrictedDistrictKey(
+    cacheKey,
+    cacheKeySubset.restrictedDistrict
+  );
 }
+/**
+ * @param  {string} cacheKey - Existing cacheKey
+ * @param  {Array.<string>} restrictedDistrict - Array containing the restrictedDistrict id
+ *
+ * @return {string} If the restrictedDistrict exists, append it to the end of the cacheKey
+ */
+const appendRestrictedDistrictKey = (cacheKey, restrictedDistrict) => {
+  return restrictedDistrict
+    ? `${cacheKey}-restrictedDistrict=${restrictedDistrict}`
+    : cacheKey;
+};
 
 module.exports = {
   getCacheKey,

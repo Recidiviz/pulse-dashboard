@@ -26,7 +26,7 @@ import meanBy from "lodash/fp/meanBy";
 import pipe from "lodash/fp/pipe";
 import sumBy from "lodash/fp/sumBy";
 
-import { COLORS } from "../../assets/scripts/constants/colors";
+import { COLORS, COLOR_ROTATION } from "../../assets/scripts/constants/colors";
 import { configureDownloadButtons } from "../utils/configureDownloadButtons";
 
 import { filterDatasetByDistrict } from "../utils/dataFilters";
@@ -111,8 +111,8 @@ const ReincarcerationRateByStayLength = ({
         datasets: [
           {
             label,
-            backgroundColor: COLORS["blue-standard"],
-            hoverBackgroundColor: COLORS["blue-standard"],
+            backgroundColor: COLOR_ROTATION[0],
+            hoverBackgroundColor: COLOR_ROTATION[0],
             yAxisID: "y-axis-left",
             data: dataPoints,
           },

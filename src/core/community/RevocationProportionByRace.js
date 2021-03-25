@@ -26,8 +26,8 @@ import sortBy from "lodash/fp/sortBy";
 import sumBy from "lodash/fp/sumBy";
 
 import {
-  COLORS_FIVE_VALUES,
   COLORS,
+  COLORS_SEVEN_VALUES,
 } from "../../assets/scripts/constants/colors";
 import { configureDownloadButtons } from "../utils/configureDownloadButtons";
 import {
@@ -43,16 +43,6 @@ import {
 } from "../utils/races";
 import { metricTypePropType } from "../utils/propTypes";
 import { METRIC_TYPES } from "../utils/constants";
-
-const colors = [
-  COLORS_FIVE_VALUES[0],
-  COLORS_FIVE_VALUES[1],
-  COLORS_FIVE_VALUES[2],
-  COLORS_FIVE_VALUES[3],
-  COLORS_FIVE_VALUES[4],
-  COLORS["blue-standard-2"],
-  COLORS["blue-standard"],
-];
 
 const calculatePercents = (total) => ({ value }) => 100 * (value / total);
 
@@ -120,9 +110,9 @@ const RevocationProportionByRace = ({
         datasets: map(
           (i) => ({
             label: chartLabels[i],
-            backgroundColor: colors[i],
-            hoverBackgroundColor: colors[i],
-            hoverBorderColor: colors[i],
+            backgroundColor: COLORS_SEVEN_VALUES[i],
+            hoverBackgroundColor: COLORS_SEVEN_VALUES[i],
+            hoverBorderColor: COLORS_SEVEN_VALUES[i],
             data: [
               revocationProportions[i],
               stateSupervisionProportions[i],
@@ -213,9 +203,9 @@ const RevocationProportionByRace = ({
         datasets: map(
           (i) => ({
             label: chartLabels[i],
-            backgroundColor: colors[i],
-            hoverBackgroundColor: colors[i],
-            hoverBorderColor: colors[i],
+            backgroundColor: COLORS_SEVEN_VALUES[i],
+            hoverBackgroundColor: COLORS_SEVEN_VALUES[i],
+            hoverBorderColor: COLORS_SEVEN_VALUES[i],
             data: [revocationCounts[i], stateSupervisionCounts[i]],
           }),
           range(0, chartLabels.length)
