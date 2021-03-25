@@ -20,6 +20,7 @@ import { observer } from "mobx-react-lite";
 import PageTemplate from "../PageTemplate";
 import VitalsSummaryCards from "../VitalsSummaryCards";
 import VitalsSummaryTable from "../VitalsSummaryTable/VitalsSummaryTable";
+import VitalsSummaryChart from "../VitalsSummaryChart";
 import { useRootStore } from "../../components/StoreProvider";
 import { ChartDataType } from "../types/charts";
 import useChartData from "../hooks/useChartData";
@@ -60,21 +61,31 @@ const PageVitals: React.FC = () => {
 
   // TODO move entity and filtering to a store
   const entity = "STATE_DOC";
+  const selectedMetric = "OVERALL";
   const vitalsSummary = vitalsEntities.find(
     (d) => d.entityId === entity && d.parentEntityId === d.entityId
   );
   const vitalsSummaries = vitalsEntities.filter(
     (d) => d.parentEntityId === entity && d.parentEntityId !== d.entityId
   );
+  const selectedTimeSeries = timeSeries.filter(
+    (d) => d.metric === selectedMetric
+  );
 
   return (
     <PageTemplate>
       <div className="PageVitals__Title">{stateName}</div>
       <div className="PageVitals__SummaryCards">
-        <VitalsSummaryCards vitalsSummary={vitalsSummary} />
+        <VitalsSummaryCards data={vitalsSummary} />
+      </div>
+      <div className="PageVitals__SummarySection">
+        <div className="PageVitals__SummaryDetail">79%</div>
+        <div className="PageVitals__SummaryChart">
+          <VitalsSummaryChart data={selectedTimeSeries} />
+        </div>
       </div>
       <div className="PageVitals__Table">
-        <VitalsSummaryTable vitalsSummaries={vitalsSummaries} />
+        <VitalsSummaryTable data={vitalsSummaries} />
       </div>
     </PageTemplate>
   );

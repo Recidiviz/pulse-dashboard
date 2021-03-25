@@ -90,5 +90,6 @@ export type VitalsTimeSeriesRecord = {
   entityId: string;
   metric: string;
   value: number;
-  avg7Day: number;
+  weeklyAvg: number;
+  parentWeeklyAvg?: number;
 };

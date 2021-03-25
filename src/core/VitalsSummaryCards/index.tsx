@@ -58,10 +58,10 @@ const mockCardContent: SummaryCard[] = [
 ];
 
 type PropTypes = {
-  vitalsSummary?: VitalsEntityRecord;
+  data?: VitalsEntityRecord;
 };
 
-const VitalsSummaryCards: React.FC<PropTypes> = ({ vitalsSummary }) => {
+const VitalsSummaryCards: React.FC<PropTypes> = ({ data }) => {
   const [selectCard, setSelectCard] = useState(1);
 
   const handleSelectCard: (id: number) => () => void = (id) => () => {

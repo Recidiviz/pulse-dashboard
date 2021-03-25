@@ -25,10 +25,10 @@ import "./VitalsSummaryTable.scss";
 import { VitalsEntityRecord } from "../models/types";
 
 type PropTypes = {
-  vitalsSummaries: VitalsEntityRecord[];
+  data: VitalsEntityRecord[];
 };
 
-const VitalsSummaryTable: React.FC<PropTypes> = ({ vitalsSummaries }) => {
+const VitalsSummaryTable: React.FC<PropTypes> = ({ data }) => {
   const createBubbleTableCell = ({ value }: { value: number }) => (
     <BubbleTableCell value={value} />
   );
@@ -103,7 +103,7 @@ const VitalsSummaryTable: React.FC<PropTypes> = ({ vitalsSummaries }) => {
     headerGroups,
     rows,
     prepareRow,
-  } = useTable({ columns, data: vitalsSummaries }, useSortBy);
+  } = useTable({ columns, data }, useSortBy);
 
   return (
     <div className="VitalsSummaryTable">

@@ -49,7 +49,7 @@
       display: flex;
       font-size: 1.2rem;
       font-weight: 400;
-      color: $core-font-color;
+      color: $pine-3;
       border: none;
       background: transparent;
       align-items: center;
@@ -58,7 +58,7 @@
       &:hover,
       &:focus {
         background-color: $core-dropdown-color;
-        box-shadow: inset 0px -1px 1px $box-shadow-color;
+        box-shadow: $inset-shadow-30;
         border-radius: 1.66rem;
         outline: 0;
       }
@@ -70,7 +70,7 @@
           a > button {
             font-size: 1.2rem;
             font-weight: 400;
-            color: $core-font-color;
+            color: $pine-3;
             border-radius: 0;
 
             &:focus,
@@ -92,7 +92,7 @@
       .show {
         padding: 0.62rem 0;
         border-radius: 0 0 1.66rem 1.66rem;
-        box-shadow: inset 0px -1px 1px $box-shadow-color;
+        box-shadow: $inset-shadow-30;
       }
       &-toggle {
         min-width: 11.81rem;
