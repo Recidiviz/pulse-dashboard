@@ -48,9 +48,9 @@ export type ProjectedSummaryRecord = HistoricalSummaryRecord & {
 
 export type HistoricalSummaryRecord = {
   timePeriod?: string;
-  compartment?: string;
+  compartment?: SimulationCompartment;
   legalStatus?: string;
-  gender?: string;
+  gender?: Gender;
   simulationTag?: string;
   admissionCount: number;
   releaseCount: number;
