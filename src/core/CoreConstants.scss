@@ -19,14 +19,16 @@ $box-shadow-color-20: rgba(19, 44, 82, 0.2);
 $inset-shadow-30: inset 0px -1px 1px $box-shadow-color-30;
 $pine-1: rgba(1, 35, 34, 1);
 $pine-3: #00413e;
+$slate-30-opaque: #c2cbd0;
 $slate-20: rgba(53, 83, 98, 0.2);
+$slate-60: rgba(53, 83, 98, 0.6);
 $slate-80: rgba(53, 83, 98, 0.8);
 $marble-3: #f4f5f5;
 $marble-4: #eff1f1;
 $crimson-dark: #a43939;
 $crimson: #bf7474;
 $signal-tooltip: #082249;
-$chart-hover: #dbe0e9;
+$signal-links: #006c67;
 
 // Shorthand font property: font-style font-variant font-weight font-size/line-height font-family
 $sans-serif: Libre Franklin, sans serif;
@@ -36,11 +38,14 @@ $font-ui-sans-14: 500 0.875rem/1.5rem $sans-serif;
 $font-ui-sans-24: 1.5rem/2.5rem $sans-serif;
 
 :export {
-  chartHover: $chart-hover;
+  crimsonDark: $crimson-dark;
   pine1: $pine-1;
   pine3: $pine-3;
   marble4: $marble-4;
+  signalLinks: $signal-links;
+  slate30Opaque: $slate-30-opaque;
   slate80: $slate-80;
+  slate60: $slate-60;
   fontUiSans16: $font-ui-sans-16;
   fontUiSans14: $font-ui-sans-14;
 }
