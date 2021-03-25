@@ -20,6 +20,7 @@ import { observer } from "mobx-react-lite";
 import PageTemplate from "../PageTemplate";
 import VitalsSummaryCards from "../VitalsSummaryCards";
 import VitalsSummaryTable from "../VitalsSummaryTable/VitalsSummaryTable";
+import VitalsWeeklyChange from "../VitalsWeeklyChange";
 import VitalsSummaryChart from "../VitalsSummaryChart";
 import VitalsSummaryDetail from "../VitalsSummaryDetail";
 import { useRootStore } from "../../components/StoreProvider";
@@ -67,6 +68,7 @@ const PageVitals: React.FC = () => {
           <VitalsSummaryDetail summaryDetail={summaryDetail} />
         </div>
         <div className="PageVitals__SummaryChart">
+          <VitalsWeeklyChange data={mockSummary} />
           <VitalsSummaryChart />
         </div>
       </div>

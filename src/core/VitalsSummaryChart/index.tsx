@@ -16,7 +16,7 @@
 // =============================================================================
 
 import React from "react";
-import { VitalsTimeseriesRecord } from "../models/types";
+import { VitalsTimeSeriesRecord } from "../models/types";
 import { formatPercent } from "../../utils/formatStrings";
 import { formatDate } from "./helpers";
 import VitalsSummaryTooltip from "./VitalsSummaryTooltip";
@@ -27,10 +27,10 @@ import "./VitalsSummaryChart.scss";
 const ResponsiveOrdinalFrame = require("semiotic/lib/ResponsiveOrdinalFrame") as any;
 
 // interface PropTypes {
-//   data: VitalsTimeseriesRecord[];
+//   data: VitalsTimeSeriesRecord[];
 // }
 
-const mockData: VitalsTimeseriesRecord[] = [
+const mockData: VitalsTimeSeriesRecord[] = [
   { date: "2021-03-01", value: 91, weeklyAvg: 80, parentWeeklyAvg: 100 },
   { date: "2021-03-02", value: 46, weeklyAvg: 82, parentWeeklyAvg: 66 },
   { date: "2021-03-03", value: 88, weeklyAvg: 37, parentWeeklyAvg: 94 },
@@ -72,7 +72,7 @@ const VitalsSummaryChart: React.FC = () => {
           {
             type: "highlight",
             style: {
-              fill: styles.chartHover,
+              fill: styles.slate30Opaque,
               width: BAR_WIDTH,
               stroke: "none",
             },

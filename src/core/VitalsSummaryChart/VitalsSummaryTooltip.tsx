@@ -16,12 +16,12 @@
 // =============================================================================
 
 import React from "react";
-import { VitalsTimeseriesRecord } from "../models/types";
+import { VitalsTimeSeriesRecord } from "../models/types";
 import { formatPercent } from "../../utils/formatStrings";
 import { formatDate } from "./helpers";
 
 type PropTypes = {
-  data: VitalsTimeseriesRecord;
+  data: VitalsTimeSeriesRecord;
 };
 
 const VitalsSummaryTooltip: React.FC<PropTypes> = ({ data }) => {
