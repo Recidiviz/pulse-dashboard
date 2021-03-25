@@ -17,6 +17,7 @@
 
 export function compareStrings(valueKey) {
   return (a, b) => {
+    if (!a[valueKey] && !b[valueKey]) return 0;
     if (a[valueKey].toLowerCase() < b[valueKey].toLowerCase()) {
       return -1;
     }

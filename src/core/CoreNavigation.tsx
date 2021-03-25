@@ -16,30 +16,27 @@
 // =============================================================================
 
 import React from "react";
+import { observer } from "mobx-react-lite";
 import { useLocation, Link } from "react-router-dom";
+import { useRootStore } from "../components/StoreProvider";
 import CoreSectionSelector from "./CoreSectionSelector";
 import CorePageSelector from "./CorePageSelector";
 import TopBarUserMenuForAuthenticatedUser from "../components/TopBar/TopBarUserMenuForAuthenticatedUser";
 import flags from "../flags";
+import tenants from "../tenants";
 
 import recidivizLogo from "../assets/static/images/Logo.svg";
 import "./CoreNavigation.scss";
 
-const navigationLayout = flags.showMethodologyDropdown
-  ? {
-      community: ["explore"],
-      facilities: ["explore"],
-      goals: [],
-      methodology: [],
-    }
-  : {
-      community: ["explore"],
-      facilities: ["explore"],
-      goals: [],
-    };
-
 const CoreNavigation: React.FC = () => {
   const { pathname } = useLocation();
+  const { currentTenantId } = useRootStore();
+
+  if (!currentTenantId) return null;
+
+  // @ts-ignore
+  const navigationLayout = tenants[currentTenantId].navigation;
+
   const [currentSection, currentPage] = pathname.split("/").slice(1, 3);
   // @ts-ignore
   const pageOptions = navigationLayout[currentSection] ?? [];
@@ -58,7 +55,7 @@ const CoreNavigation: React.FC = () => {
     <nav className="CoreNavigation">
       <div className="CoreNavigation__left">
         <div className="CoreNavigation__logo">
-          <Link to="/goals">
+          <Link to="/">
             <img
               className="CoreNavigation__logo-image"
               src={recidivizLogo}
@@ -82,4 +79,4 @@ const CoreNavigation: React.FC = () => {
   );
 };
 
-export default CoreNavigation;
+export default observer(CoreNavigation);

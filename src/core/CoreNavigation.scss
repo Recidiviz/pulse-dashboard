@@ -1,4 +1,5 @@
 @import "../assets/styles/spec/settings/index";
+@import "./CoreConstants.scss";
 
 .CoreNavigation {
   background: $core-background;
@@ -17,7 +18,6 @@
     &-image {
       height: 1.5rem;
     }
-
   }
 
   &__left {

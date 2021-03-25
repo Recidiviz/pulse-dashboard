@@ -120,7 +120,7 @@ describe("useChartData", () => {
       await waitForNextUpdate();
 
       expect(result.current.isError).toBe(true);
-      expect(result.current.apiData).toEqual([]);
+      expect(result.current.apiData).toEqual({});
     });
   });
 });

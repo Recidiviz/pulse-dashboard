@@ -59,9 +59,10 @@ describe("App tests", () => {
 
   const RevocationsMock = Revocations.type;
   const LanternLayoutMock = LanternLayout.type;
+  const CoreLayoutMock = CoreLayout.type;
 
   LanternLayoutMock.mockImplementation(({ children }) => children);
-  CoreLayout.mockImplementation(({ children }) => children);
+  CoreLayoutMock.mockImplementation(({ children }) => children);
   StoreProvider.mockImplementation(({ children }) => children);
   RevocationsMock.mockReturnValue(mockWithTestId(mockRevocationsId));
   UsNDCommunityGoals.mockReturnValue(mockWithTestId(mockNDCommunityGoalsId));
@@ -103,7 +104,7 @@ describe("App tests", () => {
 
     const { getByTestId } = render(<App />);
 
-    expect(CoreLayout).toHaveBeenCalledTimes(1);
+    expect(CoreLayoutMock).toHaveBeenCalledTimes(1);
     expect(LanternLayoutMock).toHaveBeenCalledTimes(0);
     expect(getByTestId(mockNDCommunityGoalsId)).toBeInTheDocument();
   });
@@ -119,7 +120,7 @@ describe("App tests", () => {
     const { getByTestId } = render(<App />);
 
     expect(LanternLayoutMock).toHaveBeenCalledTimes(1);
-    expect(CoreLayout).toHaveBeenCalledTimes(0);
+    expect(CoreLayoutMock).toHaveBeenCalledTimes(0);
     expect(getByTestId(mockRevocationsId)).toBeInTheDocument();
   });
 

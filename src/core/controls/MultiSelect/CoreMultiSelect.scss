@@ -1,4 +1,5 @@
 @import "../../../assets/styles/spec/settings/index";
+@import "../../CoreConstants";
 
 .CoreMultiSelect {
   &__custom-indicator {
@@ -153,7 +154,7 @@ div.CoreMultiSelect {
         background-color: $core-focused-color;
 
         & .MultiSelect__checkbox {
-          background: rgba(0, 108, 103, 0.2);;
+          background: rgba(0, 108, 103, 0.2);
         }
       }
 

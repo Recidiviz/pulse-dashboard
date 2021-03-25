@@ -16,6 +16,7 @@
 // =============================================================================
 
 import React, { useCallback } from "react";
+import { observer } from "mobx-react-lite";
 import { Dropdown } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
@@ -79,4 +80,4 @@ const TopBarUserMenuForAuthenticatedUser: React.FC<PropTypes> = ({
   );
 };
 
-export default TopBarUserMenuForAuthenticatedUser;
+export default observer(TopBarUserMenuForAuthenticatedUser);

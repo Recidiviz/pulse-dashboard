@@ -23,23 +23,21 @@ import "../assets/styles/index.scss";
 import "./PageTemplate.scss";
 
 const PageTemplate = ({ children, importantNotes, filters = null }) => (
-  <>
+  <div className="main-content PageTemplate">
     {filters}
-    <div className="main-content PageTemplate">
-      <div id="mainContent">
-        <div
-          className="row gap-20 pos-r"
-          style={{ overflow: "initial !important" }}
-        >
-          {importantNotes.length !== 0 && (
-            <ImportantNotesBar importantNotes={importantNotes} />
-          )}
+    <div id="mainContent">
+      <div
+        className="row gap-20 pos-r"
+        style={{ overflow: "initial !important" }}
+      >
+        {importantNotes.length !== 0 && (
+          <ImportantNotesBar importantNotes={importantNotes} />
+        )}
 
-          {children}
-        </div>
+        {children}
       </div>
     </div>
-  </>
+  </div>
 );
 
 PageTemplate.defaultProps = {

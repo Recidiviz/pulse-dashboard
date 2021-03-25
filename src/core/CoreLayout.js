@@ -16,14 +16,17 @@
 // =============================================================================
 
 import React from "react";
+import { observer } from "mobx-react-lite";
 
 import PropTypes from "prop-types";
 import Footer from "../components/Footer";
 import CoreNavigation from "./CoreNavigation";
+import useIntercom from "../hooks/useIntercom";
 
 import "./CoreLayout.scss";
 
 const CoreLayout = ({ children }) => {
+  useIntercom();
   return (
     <div id="app" className="CoreLayout">
       <div className="page-container">
@@ -44,4 +47,4 @@ CoreLayout.propTypes = {
   ]).isRequired,
 };
 
-export default CoreLayout;
+export default observer(CoreLayout);

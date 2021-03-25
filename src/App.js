@@ -1,5 +1,5 @@
 // Recidiviz - a data platform for criminal justice reform
-// Copyright (C) 2020 Recidiviz, Inc.
+// Copyright (C) 2021 Recidiviz, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -24,6 +24,8 @@ import {
 } from "react-router-dom";
 import * as Sentry from "@sentry/react";
 
+import ProtectedRoute from "./ProtectedRoute";
+import RedirectHome from "./RedirectHome";
 import { PageProvider } from "./contexts/PageContext";
 import StoreProvider from "./components/StoreProvider";
 import NotFound from "./components/NotFound";
@@ -35,17 +37,19 @@ import CoreLayout from "./core/CoreLayout";
 import Revocations from "./lantern/Revocations";
 import UsNdCommunityExplore from "./core/community/Explore";
 import UsNdFacilitiesExplore from "./core/facilities/Explore";
+import PageProjections from "./core/PageProjections";
+import CoreGoalsView from "./core/goals/CoreGoalsView";
 import initFontAwesome from "./utils/initFontAwesome";
 import initIntercomSettings from "./utils/initIntercomSettings";
 import { initI18n } from "./utils/i18nSettings";
 import { LANTERN_TENANTS } from "./RootStore/TenantStore/lanternTenants";
 import { CORE_TENANTS } from "./RootStore/TenantStore/coreTenants";
+import { CORE_PATHS } from "./core/views";
 import AuthWall from "./AuthWall";
 import ErrorBoundary from "./components/ErrorBoundary";
 
 import "./assets/scripts/index";
 import "./assets/styles/index.scss";
-import CoreGoalsView from "./core/goals/CoreGoalsView";
 
 initFontAwesome();
 initIntercomSettings();
@@ -77,12 +81,14 @@ const App = () => (
 
               <CoreLayout tenantIds={CORE_TENANTS}>
                 <Switch>
-                  <Route path="/goals" component={CoreGoalsView} />
-                  <Route path="/community/explore" component={UsNdCommunityExplore} />
-                  <Route path="/facilities/explore" component={UsNdFacilitiesExplore} />
-                  <Route path="/methodology" component={Methodology} />
+                  <ProtectedRoute path={CORE_PATHS.goals} component={CoreGoalsView} />
+                  <ProtectedRoute path={CORE_PATHS.communityExplore} component={UsNdCommunityExplore} />
+                  <ProtectedRoute path={CORE_PATHS.communityProjections} component={PageProjections} />
+                  <ProtectedRoute path={CORE_PATHS.facilitiesExplore} component={UsNdFacilitiesExplore} />
+                  <ProtectedRoute path={CORE_PATHS.facilitiesProjections} component={PageProjections} />
+                  <ProtectedRoute path={CORE_PATHS.methodology} component={Methodology} />
                   <Route path="/profile" component={Profile} />
-                  <Redirect exact from="/" to="/goals" />
+                  <RedirectHome />
                   <Redirect from="/snapshots" to="/goals" />
                   <Redirect from="/revocations" to="/goals" />
                   <Redirect from="/reincarcerations" to="/goals" />
