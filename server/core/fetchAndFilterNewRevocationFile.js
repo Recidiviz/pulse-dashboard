@@ -25,7 +25,10 @@ function fetchAndFilterNewRevocationFile({
   const { stateCode, metricType, isDemoMode } = fetchArgs;
   return fetchMetrics(stateCode, metricType, metricName, isDemoMode).then(
     (metricFile) => {
-      const subsetFilters = createSubsetFilters({ filters });
+      const subsetFilters = createSubsetFilters({
+        filters,
+        metricName,
+      });
       return createSubset(metricName, subsetFilters, metricFile);
     }
   );

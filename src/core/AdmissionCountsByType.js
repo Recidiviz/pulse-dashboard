@@ -29,7 +29,7 @@ import pipe from "lodash/fp/pipe";
 import reduce from "lodash/fp/reduce";
 import toInteger from "lodash/fp/toInteger";
 
-import { COLORS, COLORS_FIVE_VALUES } from "../assets/scripts/constants/colors";
+import { COLOR_ROTATION, COLORS } from "../assets/scripts/constants/colors";
 import { configureDownloadButtons } from "./utils/configureDownloadButtons";
 import {
   filterDatasetByDistrict,
@@ -108,12 +108,7 @@ const AdmissionCountsByType = ({
   const chartLabels = map("type", dataPoints);
   const chartDataPoints = map("count", dataPoints);
 
-  const chartColors = [
-    COLORS_FIVE_VALUES[1],
-    COLORS_FIVE_VALUES[0],
-    COLORS_FIVE_VALUES[3],
-    COLORS_FIVE_VALUES[2],
-  ];
+  const chartColors = COLOR_ROTATION.slice(0, 4);
 
   const ratesChart = (
     <Pie

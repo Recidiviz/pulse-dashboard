@@ -29,6 +29,7 @@ import "./PopulationTimeseriesChart.scss";
 import PopulationTimeseriesLegend from "./PopulationTimeseriesLegend";
 import { CORE_VIEWS, getViewFromPathname } from "../views";
 import PopulationTimeseriesTooltip from "./PopulationTimeseriesTooltip";
+
 import {
   ChartPoint,
   getDateRange,
@@ -36,6 +37,7 @@ import {
   prepareData,
   filterData,
 } from "./helpers";
+
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires,global-require
 const ResponsiveXYFrame = require("semiotic/lib/ResponsiveXYFrame") as any;
@@ -45,6 +47,7 @@ type PlotLine = {
   color: string;
   dash?: string;
 };
+
 
 type PropTypes = {
   data: PopulationProjectionTimeseriesRecord[];

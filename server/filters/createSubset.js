@@ -25,8 +25,8 @@ const {
   getSubsetDimensionKeys,
 } = require("./subsetFileHelpers");
 const {
-  FILES_WITH_SUBSETS,
   getSubsetManifest,
+  FILES_WITH_SUBSETS,
 } = require("../constants/subsetManifest");
 const { getFilterFnByMetricName } = require("./filterHelpers");
 
@@ -75,25 +75,37 @@ function applyFiltersToOptimizedFormat(data, filters, filterFn, skipFilterFn) {
 
 /**
  * Given a metric file with an array of datapoints, it applies the filter function to the datapoints and
- * returns a subset of the data alongside a metadata object.
+ * returns a subset of the data alongside a metadata object. If the metricName is included in FILES_WITH_SUBSETS,
+ * the metadata dimension_manifest is derived from the subsetManifest, otherwise it is empty.
  *
  * @param {Object[]} dataPoints - An array of data points to filter
  * @param {Object} filters - The filters to apply to the metric data
  * @param {(item: object, dimensionKey: string) => boolean} filterFn - Filter function to determine which items are filtered out
+ * @param {string} metricName - Name of the metric file
  *
  * @returns {Object[]} - Returns an object with the property `data`, which has the filtered subset values as an array of objects,
  * and the property `metadata`, which has a dimension manifest reflecting the values in the subset.
  */
-function applyFiltersToDataPoints(dataPoints, filters, filterFn) {
+function applyFiltersToDataPoints(dataPoints, filters, filterFn, metricName) {
   const filteredData = dataPoints.filter((dataPoint) => filterFn(dataPoint));
-  const subsetManifest = getSubsetManifest();
+  const subsetManifest = FILES_WITH_SUBSETS.includes(metricName)
+    ? getSubsetManifest()
+    : [];
+
   const metadata = {
     dimension_manifest: subsetManifest,
     total_data_points: filteredData.length,
   };
+
+  const subsetMetadata = createSubsetMetadata(
+    filteredData.length,
+    metadata,
+    filters
+  );
+
   return {
     data: filteredData,
-    metadata: createSubsetMetadata(filteredData.length, metadata, filters),
+    metadata: subsetMetadata,
   };
 }
 
@@ -117,23 +129,36 @@ function applyFiltersToDataPoints(dataPoints, filters, filterFn) {
  * the `data` key.
  */
 function createSubset(metricName, subsetFilters, metricFile) {
-  if (!FILES_WITH_SUBSETS.includes(metricName)) {
+  const {
+    level_1_supervision_location: levelOneSupervisionLocation,
+  } = subsetFilters;
+
+  if (
+    !FILES_WITH_SUBSETS.includes(metricName) &&
+    !levelOneSupervisionLocation
+  ) {
     return metricFile;
   }
 
   const filterFn = getFilterFnByMetricName(metricName, subsetFilters);
+
+  const skipFilterFn = (dimensionKey) =>
+    !getSubsetDimensionKeys()
+      .concat(
+        levelOneSupervisionLocation ? ["level_1_supervision_location"] : []
+      )
+      .includes(dimensionKey);
 
   if (Array.isArray(metricFile[metricName])) {
     return {
       [metricName]: applyFiltersToDataPoints(
         metricFile[metricName],
         subsetFilters,
-        filterFn
+        filterFn,
+        metricName
       ),
     };
   }
-  const skipFilterFn = (dimensionKey) =>
-    !getSubsetDimensionKeys().includes(dimensionKey);
 
   /* eslint-disable no-console */
   console.log(
