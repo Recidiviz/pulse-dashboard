@@ -14,6 +14,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
+@import "../CoreConstants.scss";
+
 .PageVitals {
   &__Title {
     font-family: "Libre Baskerville";
@@ -23,7 +25,7 @@
     line-height: 2.67rem;
     letter-spacing: -0.05rem;
     text-align: left;
-    color: #00413e;
+    color: $pine-3;
     margin-top: 4rem;
     margin-bottom: 0.5rem;
   }
@@ -37,6 +39,33 @@
     :not(:last-child) {
       margin-right: 1.5rem;
     }
+  }
+
+  &__SummarySection {
+    display: flex;
+    flex-flow: row nowrap;
+    flex: 1 1;
+    font-family: Libre Franklin, sans-serif;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    width: 100%;
+  }
+
+  &__SummaryChart {
+    background: $white;
+    border-radius: 0 0.5rem 0.5rem 0;
+    box-shadow: inset 0px -1px 1px $box-shadow-color-20;
+    width: 70%;
+  }
+
+  &__SummaryDetail {
+    border-right: 4px solid $marble-3;
+    background: $white;
+    border-radius: 0.5rem 0 0 0.5rem;
+    box-shadow: inset 0px -1px 1px $box-shadow-color-20;
+    font-size: 96px;
+    text-align: center;
+    width: 30%;
   }
 
   &__Table {

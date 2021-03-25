@@ -16,7 +16,7 @@
 // =============================================================================
 import React, { forwardRef } from "react";
 import ReactSelect from "react-select";
-import { coreFontColor } from "../CoreConstants.scss";
+import { pine3 } from "../CoreConstants.scss";
 
 import "./CoreSelect.scss";
 
@@ -36,7 +36,7 @@ type CoreSelectProps = {
 const coreSelectCustomStyles = {
   singleValue: (provided: any) => ({
     ...provided,
-    color: coreFontColor,
+    color: pine3,
   }),
 };
 
