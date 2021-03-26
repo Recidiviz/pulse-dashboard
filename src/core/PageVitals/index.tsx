@@ -129,7 +129,7 @@ const PageVitals: React.FC = () => {
 
   // Transform records
   const vitalsSummaries: VitalsSummaryRecord[] = vitalsSummary(
-    apiData.vitals_entities.data
+    apiData.vitals_summaries.data
   );
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const timeSeries: VitalsTimeSeriesRecord[] = vitalsTimeSeries(
