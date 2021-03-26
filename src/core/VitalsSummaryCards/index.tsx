@@ -22,8 +22,8 @@ import { SummaryCard } from "../PageVitals/types";
 
 type PropTypes = {
   summaryCards: SummaryCard[];
-  selected: number;
-  onClick: (id: number) => () => void;
+  selected: string;
+  onClick: (id: string) => () => void;
 };
 
 const VitalsSummaryCards: React.FC<PropTypes> = ({

@@ -33,18 +33,6 @@ import { vitalsSummary } from "../models/VitalsSummaryMetric";
 
 import "./PageVitals.scss";
 
-const mockSummary: VitalsSummaryRecord = {
-  entityId: "1",
-  entityName: "North Dakota",
-  overall: 90,
-  overall7Day: 21,
-  overall28Day: 76,
-  timelyDischarge: 97,
-  timelyFtrEnrollment: 80,
-  timelyContacts: 34,
-  timelyRiskAssessments: 75,
-};
-
 function getSummaryStatus(value: number): SummaryStatus {
   if (value < 70) return "POOR";
   if (value >= 70 && value < 80) return "NEEDS_IMPROVEMENT";
@@ -60,7 +48,7 @@ const getSummaryCards: (summary: VitalsSummaryRecord) => SummaryCard[] = (
     description: "Average timeliness across all metrics",
     value: summary.overall,
     status: getSummaryStatus(summary.overall),
-    id: 1,
+    id: "OVERALL",
   },
   {
     title: "Timely discharge",
@@ -68,7 +56,7 @@ const getSummaryCards: (summary: VitalsSummaryRecord) => SummaryCard[] = (
      supervision discharge date`,
     value: summary.timelyDischarge,
     status: getSummaryStatus(summary.timelyDischarge),
-    id: 2,
+    id: "DISCHARGE",
   },
   {
     title: "Timely FTR enrollment",
@@ -76,7 +64,7 @@ const getSummaryCards: (summary: VitalsSummaryRecord) => SummaryCard[] = (
       "of clients are not pending enrollment in Free Through Recovery",
     value: summary.timelyFtrEnrollment,
     status: getSummaryStatus(summary.timelyFtrEnrollment),
-    id: 3,
+    id: "FTR_ENROLLMENT",
   },
   {
     title: "Timely contacts",
@@ -85,7 +73,7 @@ const getSummaryCards: (summary: VitalsSummaryRecord) => SummaryCard[] = (
      minimum, medium, and maximum supervision levels respectively`,
     value: summary.timelyContacts,
     status: getSummaryStatus(summary.timelyContacts),
-    id: 4,
+    id: "CONTACTS",
   },
   {
     title: "Timely risk assessments",
@@ -93,21 +81,42 @@ const getSummaryCards: (summary: VitalsSummaryRecord) => SummaryCard[] = (
       reassessment within 212 days`,
     value: summary.timelyRiskAssessments,
     status: getSummaryStatus(summary.timelyRiskAssessments),
-    id: 5,
+    id: "RISK_ASSESSMENTS",
   },
 ];
 
 function getSummaryDetail(
   summaryCards: SummaryCard[],
-  selectedCardId: number
+  selectedCardId: string
 ): SummaryCard {
   return (
     summaryCards.find((card) => card.id === selectedCardId) || summaryCards[0]
   );
 }
 
+function getTimeseries(
+  timeSeries: VitalsTimeSeriesRecord[],
+  selectedCardId: string
+) {
+  return timeSeries.filter((d) => d.metric === selectedCardId);
+}
+
+function getEntitySummaries(
+  vitalsSummaries: VitalsSummaryRecord[],
+  currentEntity: string
+) {
+  const parentEntitySummary = vitalsSummaries.find(
+    (d) => d.entityId === currentEntity && d.parentEntityId === d.entityId
+  );
+  const childEntitySummaries = vitalsSummaries.filter(
+    (d) => d.parentEntityId === currentEntity && d.parentEntityId !== d.entityId
+  );
+  return { parentEntitySummary, childEntitySummaries };
+}
+
 const PageVitals: React.FC = () => {
-  const [selectedCardId, setSelectedCardId] = useState(1);
+  const [selectedCardId, setSelectedCardId] = useState("OVERALL");
+  const [currentEntity] = useState("STATE_DOC");
   const { tenantStore } = useRootStore();
   const { stateName } = tenantStore;
   const { isLoading, isError, apiData }: ChartDataType = useChartData(
@@ -131,42 +140,35 @@ const PageVitals: React.FC = () => {
   const vitalsSummaries: VitalsSummaryRecord[] = vitalsSummary(
     apiData.vitals_summaries.data
   );
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const timeSeries: VitalsTimeSeriesRecord[] = vitalsTimeSeries(
     apiData.vitals_time_series.data
   );
 
-  // TODO move entity and filtering to a store
-  const entity = "STATE_DOC";
-  const selectedMetric = "OVERALL";
-  const selectedEntitySummary = vitalsSummaries.find(
-    (d) => d.entityId === entity && d.parentEntityId === d.entityId
-  );
-  const selectedEntitySummaries = vitalsSummaries.filter(
-    (d) => d.parentEntityId === entity && d.parentEntityId !== d.entityId
-  );
-  const selectedTimeSeries = timeSeries.filter(
-    (d) => d.metric === selectedMetric
-  );
-
-  const handleSelectCard: (id: number) => () => void = (id) => () => {
+  const handleSelectCard: (id: string) => () => void = (id) => () => {
     setSelectedCardId(id);
   };
 
+  const { parentEntitySummary, childEntitySummaries } = getEntitySummaries(
+    vitalsSummaries,
+    currentEntity
+  );
   const summaryCards =
-    selectedEntitySummary && getSummaryCards(selectedEntitySummary);
+    parentEntitySummary && getSummaryCards(parentEntitySummary);
   const summaryDetail =
     summaryCards && getSummaryDetail(summaryCards, selectedCardId);
+  const selectedTimeSeries = getTimeseries(timeSeries, selectedCardId);
 
   return (
     <PageTemplate>
       <div className="PageVitals__Title">{stateName}</div>
       <div className="PageVitals__SummaryCards">
-        <VitalsSummaryCards
-          onClick={handleSelectCard}
-          selected={selectedCardId}
-          summaryCards={getSummaryCards(mockSummary)}
-        />
+        {summaryCards && (
+          <VitalsSummaryCards
+            onClick={handleSelectCard}
+            selected={selectedCardId}
+            summaryCards={summaryCards}
+          />
+        )}
       </div>
       <div className="PageVitals__SummarySection">
         <div className="PageVitals__SummaryDetail">
@@ -179,7 +181,7 @@ const PageVitals: React.FC = () => {
         </div>
       </div>
       <div className="PageVitals__Table">
-        <VitalsSummaryTable summaries={selectedEntitySummaries} />
+        <VitalsSummaryTable summaries={childEntitySummaries} />
       </div>
     </PageTemplate>
   );
