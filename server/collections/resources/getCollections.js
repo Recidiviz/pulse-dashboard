@@ -264,8 +264,8 @@ const CORE_COLLECTIONS = {
     site_offices: { filename: "site_offices.json" },
   },
   [COLLECTIONS.VITALS]: {
-    vitals_entities: {
-      filename: "vitals_entities.txt",
+    vitals_summaries: {
+      filename: "vitals_summaries.json",
     },
     vitals_time_series: {
       filename: "vitals_time_series.json",
