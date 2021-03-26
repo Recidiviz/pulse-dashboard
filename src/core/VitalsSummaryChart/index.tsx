@@ -26,16 +26,16 @@ import "./VitalsSummaryChart.scss";
 const ResponsiveOrdinalFrame = require("semiotic/lib/ResponsiveOrdinalFrame") as any;
 
 interface PropTypes {
-  data: VitalsTimeSeriesRecord[];
+  timeSeries: VitalsTimeSeriesRecord[];
 }
 
-const VitalsSummaryChart: React.FC<PropTypes> = ({ data }) => {
+const VitalsSummaryChart: React.FC<PropTypes> = ({ timeSeries }) => {
   return (
     <div className="VitalsSummaryChart">
       <ResponsiveOrdinalFrame
         responsiveWidth
         type="bar"
-        data={data}
+        data={timeSeries}
         margin={{ left: 104, bottom: 50, right: 56, top: 50 }}
         oAccessor="date"
         style={{ fill: styles.marble4, width: 16 }}

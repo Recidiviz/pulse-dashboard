@@ -51,6 +51,7 @@ function cacheEachSubsetFile(
     )}`;
     const subsetFilters = createSubsetFilters({
       filters: subsetCombination,
+      metricName: fileKey,
     });
     const subsetFile = createSubset(fileKey, subsetFilters, metricFile);
 

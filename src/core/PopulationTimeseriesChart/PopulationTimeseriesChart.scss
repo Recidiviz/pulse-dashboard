@@ -1,10 +1,12 @@
 .PopulationTimeseriesChart {
-  background: #FFF;
+  background: #fff;
   border-radius: 0.5rem;
   box-shadow: inset 0px -1px 1px rgba(19, 44, 82, 0.2);
   font-family: Libre Franklin, sans-serif;
   font-weight: 500;
   letter-spacing: -0.01em;
+  margin-left: 10px;
+  margin-right: 10px;
   width: 100%;
 
   &__Header {
@@ -19,6 +21,11 @@
     color: #012322;
   }
 
+  &__Point {
+    fill: #25636f;
+    r: 0.25rem;
+  }
+
   .data-visualization {
     .axis-baseline {
       stroke: none;
@@ -26,6 +33,14 @@
 
     .axis-label {
       fill: rgba(53, 83, 98, 0.8);
+    }
+
+    .axis.bottom {
+      transform: translateY(18px);
+    }
+
+    .axis.left {
+      transform: translateX(-4px);
     }
   }
 
@@ -44,15 +59,20 @@
     font-weight: 400;
   }
 
-  .annotation-area{
+  .annotation-layer {
     .uncertainty {
-      fill: #25636F;
+      fill: #25636f;
       fill-opacity: 0.2;
     }
 
     .projection-area {
-      fill: #EFF1F1;
+      fill: #eff1f1;
       fill-opacity: 0.46;
+    }
+
+    .frame-hover {
+      fill: #082249;
+      r: 0.25rem;
     }
   }
 }

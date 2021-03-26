@@ -6,6 +6,12 @@ $core-breakpoint-sm: 1024px;
 $core-breakpoint-xs: 600px;
 
 $core-max-view-width: 93rem;
+$core-font-color: #00413e;
+$pine-1: rgba(1, 35, 34, 1);
+$slate-80: rgba(53, 83, 98, 0.8);
+// Shorthand font property: font-style font-variant font-weight font-size/line-height font-family
+$font-ui-sans-16: 500 1rem/1.5rem Libre Franklin;
+$font-ui-sans-14: 500 0.875rem/1.5rem Libre Franklin;
 
 $white: #fff;
 $box-shadow-color-30: rgba(19, 44, 82, 0.3);
@@ -17,9 +23,15 @@ $slate-20: rgba(53, 83, 98, 0.2);
 $slate-80: rgba(53, 83, 98, 0.8);
 $marble-3: #f4f5f5;
 $marble-4: #eff1f1;
+$crimson-dark: #a43939;
+$crimson: #bf7474;
+
 // Shorthand font property: font-style font-variant font-weight font-size/line-height font-family
-$font-ui-sans-16: 500 1rem/1.5rem Libre Franklin;
-$font-ui-sans-14: 500 0.875rem/1.5rem Libre Franklin;
+$sans-serif: Libre Franklin, sans serif;
+$serif: Libre Baskerville, serif;
+$font-ui-sans-16: 500 1rem/1.5rem $sans-serif;
+$font-ui-sans-14: 500 0.875rem/1.5rem $sans-serif;
+$font-ui-sans-24: 1.5rem/2.5rem $sans-serif;
 
 :export {
   pine1: $pine-1;

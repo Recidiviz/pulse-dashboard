@@ -22,13 +22,13 @@ import DeltaTableCell from "./DeltaTableCell";
 import { formatPercent } from "../../utils";
 
 import "./VitalsSummaryTable.scss";
-import { VitalsEntityRecord } from "../models/types";
+import { VitalsSummaryRecord } from "../models/types";
 
 type PropTypes = {
-  data: VitalsEntityRecord[];
+  summaries: VitalsSummaryRecord[];
 };
 
-const VitalsSummaryTable: React.FC<PropTypes> = ({ data }) => {
+const VitalsSummaryTable: React.FC<PropTypes> = ({ summaries }) => {
   const createBubbleTableCell = ({ value }: { value: number }) => (
     <BubbleTableCell value={value} />
   );
@@ -58,12 +58,12 @@ const VitalsSummaryTable: React.FC<PropTypes> = ({ data }) => {
           },
           {
             Header: "7D change",
-            accessor: "change7Day",
+            accessor: "overall7Day",
             Cell: createDeltaTableCell,
           },
           {
             Header: "28D change",
-            accessor: "change28Day",
+            accessor: "overall28Day",
             Cell: createDeltaTableCell,
           },
         ],
@@ -73,22 +73,22 @@ const VitalsSummaryTable: React.FC<PropTypes> = ({ data }) => {
         columns: [
           {
             Header: "Timely discharge",
-            accessor: "discharge",
+            accessor: "timelyDischarge",
             Cell: createBubbleTableCell,
           },
           {
             Header: "Program availability",
-            accessor: "participation",
+            accessor: "timelyFtrEnrollment",
             Cell: createBubbleTableCell,
           },
           {
             Header: "Timely contacts",
-            accessor: "contacts",
+            accessor: "timelyContacts",
             Cell: createBubbleTableCell,
           },
           {
             Header: "Timely risk assessments",
-            accessor: "assessments",
+            accessor: "timelyRiskAssessments",
             Cell: createBubbleTableCell,
           },
         ],
@@ -103,7 +103,7 @@ const VitalsSummaryTable: React.FC<PropTypes> = ({ data }) => {
     headerGroups,
     rows,
     prepareRow,
-  } = useTable({ columns, data }, useSortBy);
+  } = useTable({ columns, data: summaries }, useSortBy);
 
   return (
     <div className="VitalsSummaryTable">

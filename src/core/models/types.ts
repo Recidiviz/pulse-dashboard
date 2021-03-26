@@ -48,9 +48,9 @@ export type ProjectedSummaryRecord = HistoricalSummaryRecord & {
 
 export type HistoricalSummaryRecord = {
   timePeriod?: string;
-  compartment?: string;
+  compartment?: SimulationCompartment;
   legalStatus?: string;
-  gender?: string;
+  gender?: Gender;
   simulationTag?: string;
   admissionCount: number;
   releaseCount: number;
@@ -72,19 +72,6 @@ export type PopulationProjectionTimeseriesRecord = {
   totalPopulationMin: number;
 };
 
-export type VitalsEntityRecord = {
-  entityId: string;
-  entityName: string;
-  parentEntityId: string;
-  overall: number;
-  discharge: number;
-  participation: number;
-  contacts: number;
-  assessments: number;
-  change7Day: number;
-  change28Day: number;
-};
-
 export type VitalsTimeSeriesRecord = {
   date: string;
   entityId: string;
@@ -92,4 +79,17 @@ export type VitalsTimeSeriesRecord = {
   value: number;
   weeklyAvg: number;
   parentWeeklyAvg?: number;
+};
+
+export type VitalsSummaryRecord = {
+  entityId: string;
+  entityName: string; // i.e. "North Dakota" or "Oakes Office"
+  parentEntityId?: string; // not set for top-level
+  overall: number;
+  overall7Day: number;
+  overall28Day: number;
+  timelyDischarge: number;
+  timelyFtrEnrollment: number;
+  timelyContacts: number;
+  timelyRiskAssessments: number;
 };

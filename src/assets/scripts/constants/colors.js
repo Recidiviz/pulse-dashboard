@@ -299,45 +299,39 @@ const GREYS = {
   "grey-900": "#313435",
 };
 
-// A placeholder color rotator for charts that need to dynamically pick colors
-const COLOR_ROTATION = ["#1b2126", "#6d1e7d", "#ff2454", "#ff7e70", "#ffd75e"];
-
-const COLORS_GOOD_BAD = {
-  good: "#809ae5",
-  bad: "#d12249",
+const CORE_COLORS = {
+  forest: { main: "rgba(37, 99, 111, 1)", dark: "rgba(0, 75, 91, 1)" },
+  gold: { main: "rgba(217, 169, 95, 1)", dark: "rgba(183, 135, 61, 1)" },
+  crimson: { main: "rgba(186, 79, 79, 1)", dark: "rgba(164, 57, 57, 1)" },
+  indigo: { main: "rgba(76, 98, 144, 1)", dark: "rgba(62, 84, 130, 1)" },
+  teal: { main: "rgba(144, 174, 181, 1)", dark: "rgba(110, 140, 147, 1)" },
+  salmon: { main: "rgba(204, 152, 156, 1)", dark: "rgba(171, 119, 123, 1)" },
+  gray: { main: "rgba(194, 203, 208, 1)" },
 };
 
-const COLORS_STACKED_TWO_VALUES = ["#809ae5", "#3f4d62"];
-
-const COLORS_STACKED_TWO_VALUES_ALT = ["#FF2454", "#FFD75E"];
-
-const COLORS_THREE_VALUES = ["#d12249", "#809ae5", "#3f4d62"];
-
-const COLORS_FIVE_VALUES = [
-  "#1b2126",
-  "#6d1e7d",
-  "#ff2454",
-  "#ffd75e",
-  "#ff7e70",
+// A placeholder color rotator for charts that need to dynamically pick colors
+const COLOR_ROTATION = [
+  CORE_COLORS.forest.main,
+  CORE_COLORS.gold.main,
+  CORE_COLORS.crimson.main,
+  CORE_COLORS.indigo.main,
+  CORE_COLORS.teal.main,
+  CORE_COLORS.salmon.main,
+  CORE_COLORS.gray.main,
 ];
 
-const COLORS_FIVE_VALUES_LIGHT = [
-  "#495259",
-  "#943ca6",
-  "#f86a89",
-  "#fde394",
-  "#fdb0a8",
-];
+const COLORS_GOOD_BAD = {
+  good: CORE_COLORS.forest.main,
+  bad: CORE_COLORS.crimson.main,
+};
 
-const COLORS_SEVEN_VALUES = [
-  "#1b2126",
-  "#6d1e7d",
-  "#ff2454",
-  "#ffd75e",
-  "#8299e4",
-  "#ff7e70",
-  "#3e4c63",
-];
+const COLORS_STACKED_TWO_VALUES = COLOR_ROTATION.slice(0, 2);
+
+const COLORS_THREE_VALUES = COLOR_ROTATION.slice(0, 3);
+
+const COLORS_FIVE_VALUES = COLOR_ROTATION.slice(0, 5);
+
+const COLORS_SEVEN_VALUES = COLOR_ROTATION;
 
 const COLORS_LANTERN_SET = [
   "#F26825",
@@ -353,10 +347,9 @@ export {
   COLOR_ROTATION,
   COLORS_GOOD_BAD,
   COLORS_STACKED_TWO_VALUES,
-  COLORS_STACKED_TWO_VALUES_ALT,
   COLORS_THREE_VALUES,
   COLORS_FIVE_VALUES,
-  COLORS_FIVE_VALUES_LIGHT,
   COLORS_SEVEN_VALUES,
   COLORS_LANTERN_SET,
+  CORE_COLORS,
 };

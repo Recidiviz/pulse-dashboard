@@ -71,7 +71,7 @@ const PageProjections: React.FC = () => {
         isError={isError}
         projectionSummaries={projectionSummaries}
       />
-      <PopulationTimeseriesChart months={60} data={projectionTimeseries} />
+      <PopulationTimeseriesChart data={projectionTimeseries} />
     </PageTemplate>
   );
 };

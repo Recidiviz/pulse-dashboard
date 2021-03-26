@@ -373,7 +373,7 @@ describe("matchesTopLevelFilters", () => {
 
     describe("with levelOneSupervisionLocation = 'ALL' filter applied", () => {
       beforeEach(() => {
-        filters = { level_one_supervision_location: ["ALL"] };
+        filters = { level_1_supervision_location: ["ALL"] };
         filtered = data.filter((item) =>
           matchesTopLevelFilters({ filters })(item)
         );
@@ -390,7 +390,7 @@ describe("matchesTopLevelFilters", () => {
 
     describe("with levelOneSupervisionLocation = '04B' filter applied", () => {
       beforeEach(() => {
-        filters = { level_one_supervision_location: ["04B"] };
+        filters = { level_1_supervision_location: ["04B"] };
         filtered = data.filter((item) =>
           matchesTopLevelFilters({ filters })(item)
         );
@@ -432,7 +432,7 @@ describe("matchesTopLevelFilters", () => {
       ];
 
       beforeEach(() => {
-        filters = { level_one_supervision_location: ["ALL"] };
+        filters = { level_1_supervision_location: ["ALL"] };
         filtered = categoryAllAbsentData.filter((item) =>
           matchesTopLevelFilters({
             filters,
@@ -452,12 +452,12 @@ describe("matchesTopLevelFilters", () => {
     });
   });
 
-  describe("level_two_supervision_location filter", () => {
+  describe("level_2_supervision_location filter", () => {
     let filteredSupervisionLocations = [];
 
-    describe("with level_two_supervision_location = 'ALL' filter applied", () => {
+    describe("with level_2_supervision_location = 'ALL' filter applied", () => {
       beforeEach(() => {
-        filters = { level_two_supervision_location: ["ALL"] };
+        filters = { level_2_supervision_location: ["ALL"] };
         filtered = data.filter((item) =>
           matchesTopLevelFilters({ filters })(item)
         );
@@ -472,10 +472,10 @@ describe("matchesTopLevelFilters", () => {
       });
     });
 
-    describe("with level_two_supervision_location = 'ROCKYROAD' filter applied", () => {
+    describe("with level_2_supervision_location = 'ROCKYROAD' filter applied", () => {
       beforeEach(() => {
         filters = {
-          level_two_supervision_location: ["ROCKYROAD"],
+          level_2_supervision_location: ["ROCKYROAD"],
         };
         filtered = data.filter((item) =>
           matchesTopLevelFilters({ filters })(item)
@@ -518,7 +518,7 @@ describe("matchesTopLevelFilters", () => {
       ];
 
       beforeEach(() => {
-        filters = { level_two_supervision_location: ["ALL"] };
+        filters = { level_2_supervision_location: ["ALL"] };
         filtered = categoryAllAbsentData.filter((item) =>
           matchesTopLevelFilters({
             filters,

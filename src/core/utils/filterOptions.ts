@@ -79,7 +79,7 @@ export const PopulationFilterOptions: PopulationFilters = {
       { label: "1 month", value: "1" },
     ],
     get defaultOption(): FilterOption {
-      return this.options[4];
+      return this.options[3];
     },
     get defaultValue(): string {
       return this.defaultOption.value;

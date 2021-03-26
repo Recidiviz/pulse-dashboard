@@ -14,21 +14,18 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-import { VitalsEntityRecord, RawMetricData } from "./types";
 
-export function vitalsEntity(rawRecords: RawMetricData): VitalsEntityRecord[] {
-  return rawRecords.map((record) => {
-    return {
-      entityId: record.entity_id,
-      entityName: record.entity_name,
-      parentEntityId: record.parent_entity_id,
-      overall: Number(record.overall),
-      discharge: Number(record.timely_discharge),
-      participation: Number(record.timely_ftr_enrollment),
-      contacts: Number(record.timely_contacts),
-      assessments: Number(record.timely_risk_assessment),
-      change7Day: Number(record.overall_7d),
-      change28Day: Number(record.overall_28d),
-    };
-  });
-}
+export type SummaryStatus =
+  | "POOR"
+  | "NEEDS_IMPROVEMENT"
+  | "GOOD"
+  | "GREAT"
+  | "EXCELLENT";
+
+export type SummaryCard = {
+  id: number;
+  title: string;
+  description: string;
+  value: number;
+  status: SummaryStatus;
+};

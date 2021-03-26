@@ -34,6 +34,7 @@ const Profile = () => {
 
   const handleOnClick = () => {
     if (selectedState) {
+      userStore.resetRestrictedDistrict();
       tenantStore.setCurrentTenantId(selectedState);
     }
     push({ pathname: "/" });

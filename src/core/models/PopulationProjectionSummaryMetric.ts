@@ -14,7 +14,12 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-import { PopulationProjectionSummaryRecords, RawMetricData } from "./types";
+import {
+  Gender,
+  PopulationProjectionSummaryRecords,
+  RawMetricData,
+  SimulationCompartment,
+} from "./types";
 
 export function recordMatchesSimulationTag(
   simulationTag: string
@@ -30,9 +35,9 @@ export function populationProjectionSummary(
       return {
         simulationTag: record.simulation_tag,
         timePeriod: record.metric_period_months,
-        compartment: record.compartment,
+        compartment: record.compartment as SimulationCompartment,
         legalStatus: record.legal_status,
-        gender: record.simulation_group,
+        gender: record.simulation_group as Gender,
         admissionCount: Number(record.admission_count),
         releaseCount: Number(record.release_count),
         totalPopulation: Number(record.total_population),
@@ -44,9 +49,9 @@ export function populationProjectionSummary(
     return {
       simulationTag: record.simulation_tag,
       timePeriod: record.metric_period_months,
-      compartment: record.compartment,
+      compartment: record.compartment as SimulationCompartment,
       legalStatus: record.legal_status,
-      gender: record.simulation_group,
+      gender: record.simulation_group as Gender,
       admissionCount: Number(record.admission_count),
       releaseCount: Number(record.release_count),
       totalPopulation: Number(record.total_population),

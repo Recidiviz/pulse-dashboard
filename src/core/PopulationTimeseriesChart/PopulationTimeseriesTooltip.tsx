@@ -17,34 +17,35 @@
 
 import React from "react";
 
-import VitalsSummaryCard from "./VitalsSummaryCard";
-import { SummaryCard } from "../PageVitals/types";
+import "./PopulationTimeseriesTooltip.scss";
 
 type PropTypes = {
-  summaryCards: SummaryCard[];
-  selected: number;
-  onClick: (id: number) => () => void;
+  d: {
+    date: Date;
+    value: number;
+    lowerBound?: number;
+    upperBound?: number;
+  };
 };
 
-const VitalsSummaryCards: React.FC<PropTypes> = ({
-  summaryCards,
-  selected,
-  onClick,
-}) => {
+const PopulationTimeseriesTooltip: React.FC<PropTypes> = ({ d }) => {
+  const { date, value, lowerBound, upperBound } = d;
+
   return (
-    <>
-      {summaryCards.map(({ title, value, status, id }) => (
-        <VitalsSummaryCard
-          key={id}
-          title={title}
-          percentage={value}
-          status={status}
-          selected={selected === id}
-          onClick={onClick(id)}
-        />
-      ))}
-    </>
+    <div className="PopulationTimeseriesTooltip">
+      <div className="PopulationTimeseriesTooltip__Date">
+        {date.toLocaleString("default", { month: "long", year: "numeric" })}
+      </div>
+      <div className="PopulationTimeseriesTooltip__Value">
+        {value.toLocaleString("default", { maximumFractionDigits: 0 })}
+      </div>
+      {lowerBound && upperBound && (
+        <div className="PopulationTimeseriesTooltip__Range">
+          ({Math.round(lowerBound)}, {Math.round(upperBound)})
+        </div>
+      )}
+    </div>
   );
 };
 
-export default VitalsSummaryCards;
+export default PopulationTimeseriesTooltip;
