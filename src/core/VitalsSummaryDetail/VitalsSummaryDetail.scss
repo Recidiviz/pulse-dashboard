@@ -1,0 +1,53 @@
+@import "../CoreConstants.scss";
+
+.VitalsSummaryDetail {
+  color: $slate-80;
+  display: flex;
+  flex-flow: column;
+  height: 100%;
+  padding: 3rem 4rem 0;
+
+  &__title {
+    font: $font-ui-sans-24;
+    letter-spacing: -0.02em;
+    padding: 0 0 1rem;
+  }
+
+  &__status {
+    align-self: center;
+    border: 1px solid;
+    width: 4rem;
+
+    &--POOR {
+      border-color: $crimson-dark;
+    }
+
+    &--NEEDS_IMPROVEMENT {
+      border-color: $crimson;
+    }
+
+    &--GOOD {
+      border-color: #4d9895;
+    }
+
+    &--GREAT,
+    &--EXCELLENT {
+      border-color: #006c67;
+    }
+  }
+
+  &__value {
+    color: $pine-3;
+    font-family: $serif;
+    font-size: 6rem;
+    letter-spacing: -0.025em;
+    line-height: 100%;
+    padding: 3rem 0 1rem;
+  }
+
+  &__description {
+    font: $font-ui-sans-16;
+    letter-spacing: -0.01em;
+    text-align: center;
+  }
+}

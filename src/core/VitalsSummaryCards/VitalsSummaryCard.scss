@@ -105,6 +105,7 @@
     background-color: #f7fffc;
     &__percent {
       background-image: url("../../assets/static/images/wreath.svg");
+      background-repeat: no-repeat;
       border-radius: 0.5rem;
     }
     &__top-border {

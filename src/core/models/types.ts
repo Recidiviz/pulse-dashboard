@@ -78,3 +78,16 @@ export type VitalsTimeseriesRecord = {
   weeklyAvg: number;
   parentWeeklyAvg: number;
 };
+
+export type VitalsSummaryRecord = {
+  entityId: string;
+  entityName: string; // i.e. "North Dakota" or "Oakes Office"
+  parentEntityId?: string; // not set for top-level
+  overall: number;
+  overall7Day: number;
+  overall28Day: number;
+  timelyDischarge: number;
+  timelyFtrEnrollment: number;
+  timelyContacts: number;
+  timelyRiskAssessments: number;
+};

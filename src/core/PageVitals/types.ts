@@ -23,8 +23,9 @@ export type SummaryStatus =
   | "EXCELLENT";
 
 export type SummaryCard = {
-  title: string;
-  percent: number;
-  status: SummaryStatus;
   id: number;
+  title: string;
+  description: string;
+  value: number;
+  status: SummaryStatus;
 };
