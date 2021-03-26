@@ -16,6 +16,7 @@
 // =============================================================================
 
 import React from "react";
+import { curveCatmullRom } from "d3-shape";
 import { VitalsTimeSeriesRecord } from "../models/types";
 import { formatPercent, formatISODateString } from "../../utils/formatStrings";
 import VitalsSummaryTooltip from "./VitalsSummaryTooltip";
@@ -36,6 +37,17 @@ const VitalsSummaryChart: React.FC<PropTypes> = ({ data }) => {
     <div className="VitalsSummaryChart">
       <ResponsiveOrdinalFrame
         responsiveWidth
+        annotations={[
+          {
+            type: "ordinal-line",
+            coordinates: data,
+            lineStyle: {
+              stroke: "#4C6290",
+              strokeWidth: 2,
+            },
+            curve: curveCatmullRom,
+          },
+        ]}
         pieceHoverAnnotation={[
           {
             type: "highlight",
