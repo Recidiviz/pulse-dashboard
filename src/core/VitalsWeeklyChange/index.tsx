@@ -16,11 +16,8 @@
 // =============================================================================
 
 import React from "react";
-import { Icon, IconSVG } from "@recidiviz/case-triage-components";
-import { SummaryCard } from "../PageVitals/types";
 import PercentDelta from "../controls/PercentDelta";
 import { VitalsSummaryRecord } from "../models/types";
-import { formatPercent } from "../../utils/formatStrings";
 
 import "./VitalsWeeklyChange.scss";
 
@@ -52,7 +49,6 @@ const WeeklyChange: React.FC<WeeklyChangeProps> = ({ numDays, value }) => {
 
 const VitalsWeeklyChange: React.FC<PropTypes> = ({ data }) => {
   // todo - calculate 7day and 28day values from timeseries data
-  // todo - send a classname to percentdelta to update styles
   return (
     <div className="VitalsWeeklyChange">
       <WeeklyChange numDays={7} value={data.overall7Day} />

@@ -17,8 +17,7 @@
 
 import React from "react";
 import { VitalsTimeSeriesRecord } from "../models/types";
-import { formatPercent } from "../../utils/formatStrings";
-import { formatDate } from "./helpers";
+import { formatPercent, formatISODateString } from "../../utils/formatStrings";
 
 type PropTypes = {
   data: VitalsTimeSeriesRecord;
@@ -29,7 +28,9 @@ const VitalsSummaryTooltip: React.FC<PropTypes> = ({ data }) => {
 
   return (
     <div className="VitalsSummaryTooltip">
-      <div className="VitalsSummaryTooltip__Date">{formatDate(date)}</div>
+      <div className="VitalsSummaryTooltip__Date">
+        {formatISODateString(date)}
+      </div>
       <div className="VitalsSummaryTooltip__Value">{formatPercent(value)}</div>
     </div>
   );
