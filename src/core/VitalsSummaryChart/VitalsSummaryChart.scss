@@ -41,8 +41,10 @@
 .VitalsSummaryTooltip {
   @include chart-tooltip;
 
-  &__Date {
+  &__Date,
+  &__Average {
     opacity: 0.8;
+    letter-spacing: -0.01em;
     font: $font-ui-sans-14;
   }
 

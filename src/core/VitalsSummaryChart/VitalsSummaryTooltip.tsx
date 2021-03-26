@@ -24,7 +24,7 @@ type PropTypes = {
 };
 
 const VitalsSummaryTooltip: React.FC<PropTypes> = ({ data }) => {
-  const { date, value } = data;
+  const { date, value, weeklyAvg } = data;
 
   return (
     <div className="VitalsSummaryTooltip">
@@ -32,6 +32,9 @@ const VitalsSummaryTooltip: React.FC<PropTypes> = ({ data }) => {
         {formatISODateString(date)}
       </div>
       <div className="VitalsSummaryTooltip__Value">{formatPercent(value)}</div>
+      <div className="VitalsSummaryTooltip__Average">
+        7-day avg: {formatPercent(weeklyAvg)}
+      </div>
     </div>
   );
 };
