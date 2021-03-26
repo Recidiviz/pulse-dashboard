@@ -16,9 +16,10 @@
 // =============================================================================
 
 import React from "react";
-import { format, parseISO } from "date-fns";
 import { VitalsTimeseriesRecord } from "../models/types";
 import { formatPercent } from "../../utils/formatStrings";
+import { formatDate } from "./helpers";
+import VitalsSummaryTooltip from "./VitalsSummaryTooltip";
 import * as styles from "../CoreConstants.scss";
 
 import "./VitalsSummaryChart.scss";
@@ -60,25 +61,37 @@ const mockData: VitalsTimeseriesRecord[] = [
   { date: "2021-03-28", value: 83, weeklyAvg: 37, parentWeeklyAvg: 38 },
 ];
 
+const BAR_WIDTH = 16;
+
 const VitalsSummaryChart: React.FC = () => {
   return (
     <div className="VitalsSummaryChart">
       <ResponsiveOrdinalFrame
         responsiveWidth
+        pieceHoverAnnotation={[
+          {
+            type: "highlight",
+            style: {
+              fill: styles.chartHover,
+              width: BAR_WIDTH,
+              stroke: "none",
+            },
+          },
+          { type: "frame-hover" },
+        ]}
+        tooltipContent={(d: any) => <VitalsSummaryTooltip data={d.data} />}
         type="bar"
         data={mockData}
         margin={{ left: 104, bottom: 50, right: 56, top: 50 }}
         oAccessor="date"
-        style={{ fill: styles.marble4, width: 16 }}
+        style={{ fill: styles.marble4, width: BAR_WIDTH }}
         rAccessor="value"
         rExtent={[0]}
         size={[0, 400]}
-        oLabel={(d: string, _: any, index: number) => {
+        oLabel={(date: string, _: any, index: number) => {
           // Display the first and then every 7 labels
           if (index === 0 || (index + 1) % 7 === 0) {
-            return (
-              <text textAnchor="middle">{format(parseISO(d), "M/d/yyyy")}</text>
-            );
+            return <text textAnchor="middle">{formatDate(date)}</text>;
           }
           return null;
         }}

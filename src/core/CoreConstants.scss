@@ -25,6 +25,8 @@ $marble-3: #f4f5f5;
 $marble-4: #eff1f1;
 $crimson-dark: #a43939;
 $crimson: #bf7474;
+$signal-tooltip: #082249;
+$chart-hover: #dbe0e9;
 
 // Shorthand font property: font-style font-variant font-weight font-size/line-height font-family
 $sans-serif: Libre Franklin, sans serif;
@@ -34,6 +36,7 @@ $font-ui-sans-14: 500 0.875rem/1.5rem $sans-serif;
 $font-ui-sans-24: 1.5rem/2.5rem $sans-serif;
 
 :export {
+  chartHover: $chart-hover;
   pine1: $pine-1;
   pine3: $pine-3;
   marble4: $marble-4;
