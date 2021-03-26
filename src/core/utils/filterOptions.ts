@@ -92,7 +92,7 @@ export const PopulationFilterOptions: PopulationFilters = {
     width: "7rem",
     setFilters: setFilters(FILTER_TYPES.GENDER),
     options: [
-      { label: "All", value: "all" },
+      { label: "All", value: "ALL" },
       { label: "Female", value: "FEMALE" },
       { label: "Male", value: "MALE" },
     ],
@@ -110,7 +110,7 @@ export const PopulationFilterOptions: PopulationFilters = {
     width: "8.5rem",
     setFilters: setFilters(FILTER_TYPES.LEGAL_STATUS),
     options: [
-      { label: "All", value: "all" },
+      { label: "All", value: "ALL" },
       { label: "Rider", value: "TREATMENT_IN_PRISON" },
       { label: "Termer", value: "GENERAL" },
       { label: "Parole Violator", value: "PAROLE_BOARD_HOLD" },
@@ -129,7 +129,7 @@ export const PopulationFilterOptions: PopulationFilters = {
     width: "8.5rem",
     setFilters: setFilters(FILTER_TYPES.SUPERVISION_TYPE),
     options: [
-      { label: "All", value: "all" },
+      { label: "All", value: "ALL" },
       { label: "Probation", value: "PROBATION" },
       { label: "Parole/Dual", value: "PAROLE" },
     ],
