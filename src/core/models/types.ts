@@ -79,14 +79,6 @@ export type VitalsTimeSeriesRecord = {
   parentWeeklyAvg: number;
 };
 
-export type VitalsTimeSeriesSummary = {
-  entityId: string;
-  date: string;
-  metric: string;
-  value: number;
-  avgSevenDay: number;
-};
-
 export type VitalsSummaryRecord = {
   entityId: string;
   entityName: string; // i.e. "North Dakota" or "Oakes Office"
