@@ -17,12 +17,14 @@
 
 import React from "react";
 import PercentDelta from "../controls/PercentDelta";
-import { VitalsSummaryRecord } from "../models/types";
 
 import "./VitalsWeeklyChange.scss";
 
 type PropTypes = {
-  data: VitalsSummaryRecord;
+  data: {
+    sevenDayChange: number;
+    twentyEightDayChange: number;
+  };
 };
 
 type WeeklyChangeProps = {
@@ -48,11 +50,11 @@ const WeeklyChange: React.FC<WeeklyChangeProps> = ({ numDays, value }) => {
 };
 
 const VitalsWeeklyChange: React.FC<PropTypes> = ({ data }) => {
-  // todo - calculate 7day and 28day values from timeseries data
+  const { sevenDayChange, twentyEightDayChange } = data;
   return (
     <div className="VitalsWeeklyChange">
-      <WeeklyChange numDays={7} value={data.overall7Day} />
-      <WeeklyChange numDays={28} value={data.overall28Day} />
+      <WeeklyChange numDays={7} value={sevenDayChange} />
+      <WeeklyChange numDays={28} value={twentyEightDayChange} />
     </div>
   );
 };

@@ -42,7 +42,7 @@ const mockSummary: VitalsSummaryRecord = {
 };
 
 const mockTimeSeriesData: VitalsTimeSeriesRecord[] = [
-  { date: "2021-03-01", value: 91, weeklyAvg: 80, parentWeeklyAvg: 100 },
+  { date: "2021-03-01", value: 91, weeklyAvg: 99, parentWeeklyAvg: 100 },
   { date: "2021-03-02", value: 46, weeklyAvg: 82, parentWeeklyAvg: 66 },
   { date: "2021-03-03", value: 88, weeklyAvg: 37, parentWeeklyAvg: 94 },
   { date: "2021-03-04", value: 73, weeklyAvg: 79, parentWeeklyAvg: 70 },
@@ -69,8 +69,15 @@ const mockTimeSeriesData: VitalsTimeSeriesRecord[] = [
   { date: "2021-03-25", value: 22, weeklyAvg: 75, parentWeeklyAvg: 13 },
   { date: "2021-03-26", value: 14, weeklyAvg: 50, parentWeeklyAvg: 76 },
   { date: "2021-03-27", value: 3, weeklyAvg: 59, parentWeeklyAvg: 59 },
-  { date: "2021-03-28", value: 83, weeklyAvg: 37, parentWeeklyAvg: 38 },
+  { date: "2021-03-28", value: 83, weeklyAvg: 85, parentWeeklyAvg: 38 },
 ];
+const twentyEightDaysAgo = mockTimeSeriesData[0];
+const sevenDaysAgo = mockTimeSeriesData[mockTimeSeriesData.length - 8];
+const latestDay = mockTimeSeriesData[mockTimeSeriesData.length - 1];
+
+const sevenDayChange = latestDay.weeklyAvg - sevenDaysAgo.weeklyAvg;
+const twentyEightDayChange = latestDay.weeklyAvg - twentyEightDaysAgo.weeklyAvg;
+
 const PageVitals: React.FC = () => {
   const [selectedCardId, setSelectedCardId] = useState(1);
   const { tenantStore } = useRootStore();
@@ -82,6 +89,7 @@ const PageVitals: React.FC = () => {
 
   const summaryCards = getSummaryCards(mockSummary);
   const summaryDetail = getSummaryDetail(summaryCards, selectedCardId);
+  const weeklyChange = { sevenDayChange, twentyEightDayChange };
 
   return (
     <PageTemplate>
@@ -98,7 +106,7 @@ const PageVitals: React.FC = () => {
           <VitalsSummaryDetail summaryDetail={summaryDetail} />
         </div>
         <div className="PageVitals__SummaryChart">
-          <VitalsWeeklyChange data={mockSummary} />
+          <VitalsWeeklyChange data={weeklyChange} />
           <VitalsSummaryChart data={mockTimeSeriesData} />
         </div>
       </div>
