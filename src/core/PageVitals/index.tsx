@@ -30,31 +30,14 @@ import { ChartDataType } from "../types/charts";
 import useChartData from "../hooks/useChartData";
 import { vitalsTimeSeries } from "../models/VitalsTimeSeriesMetric";
 import { vitalsSummary } from "../models/VitalsSummaryMetric";
-import { getSummaryCards, getSummaryDetail } from "./helpers";
+import {
+  getSummaryCards,
+  getSummaryDetail,
+  getEntitySummaries,
+  getTimeseries,
+  getWeeklyChange,
+} from "./helpers";
 import "./PageVitals.scss";
-
-function getTimeseries(
-  timeSeries: VitalsTimeSeriesRecord[],
-  selectedCardId: string
-) {
-  return timeSeries.filter((d) => d.metric === selectedCardId);
-}
-
-function getEntitySummaries(
-  vitalsSummaries: VitalsSummaryRecord[],
-  currentEntity: string
-): {
-  parentEntitySummary: VitalsSummaryRecord;
-  childEntitySummaries: VitalsSummaryRecord[];
-} {
-  const parentEntitySummary = vitalsSummaries.find(
-    (d) => d.entityId === currentEntity && d.parentEntityId === d.entityId
-  ) as VitalsSummaryRecord;
-  const childEntitySummaries = vitalsSummaries.filter(
-    (d) => d.parentEntityId === currentEntity && d.parentEntityId !== d.entityId
-  ) as VitalsSummaryRecord[];
-  return { parentEntitySummary, childEntitySummaries };
-}
 
 const PageVitals: React.FC = () => {
   const { tenantStore } = useRootStore();
@@ -95,15 +78,7 @@ const PageVitals: React.FC = () => {
     currentEntity
   );
   const summaryCards = getSummaryCards(parentEntitySummary);
-  const summaryDetail = getSummaryDetail(summaryCards, selectedCardId);
   const selectedTimeSeries = getTimeseries(timeSeries, selectedCardId);
-  const twentyEightDaysAgo = selectedTimeSeries[0];
-  const sevenDaysAgo = selectedTimeSeries[selectedTimeSeries.length - 8];
-  const latestDay = selectedTimeSeries[selectedTimeSeries.length - 1];
-  const sevenDayChange = latestDay.weeklyAvg - sevenDaysAgo.weeklyAvg;
-  const twentyEightDayChange =
-    latestDay.weeklyAvg - twentyEightDaysAgo.weeklyAvg;
-  const weeklyChange = { sevenDayChange, twentyEightDayChange };
 
   return (
     <PageTemplate>
@@ -117,10 +92,14 @@ const PageVitals: React.FC = () => {
       </div>
       <div className="PageVitals__SummarySection">
         <div className="PageVitals__SummaryDetail">
-          <VitalsSummaryDetail summaryDetail={summaryDetail} />
+          <VitalsSummaryDetail
+            summaryDetail={getSummaryDetail(summaryCards, selectedCardId)}
+          />
         </div>
         <div className="PageVitals__SummaryChart">
-          <VitalsWeeklyChange data={weeklyChange} />
+          <VitalsWeeklyChange
+            weeklyChange={getWeeklyChange(selectedTimeSeries)}
+          />
           <VitalsSummaryChart timeSeries={selectedTimeSeries} />
         </div>
       </div>

@@ -15,7 +15,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 import { SummaryCard, SummaryStatus } from "./types";
-import { VitalsSummaryRecord } from "../models/types";
+import { VitalsSummaryRecord, VitalsTimeSeriesRecord } from "../models/types";
 
 export function getSummaryStatus(value: number): SummaryStatus {
   if (value < 70) return "POOR";
@@ -76,4 +76,39 @@ export function getSummaryDetail(
   return (
     summaryCards.find((card) => card.id === selectedCardId) || summaryCards[0]
   );
+}
+
+export function getEntitySummaries(
+  vitalsSummaries: VitalsSummaryRecord[],
+  currentEntity: string
+): {
+  parentEntitySummary: VitalsSummaryRecord;
+  childEntitySummaries: VitalsSummaryRecord[];
+} {
+  const parentEntitySummary = vitalsSummaries.find(
+    (d) => d.entityId === currentEntity && d.parentEntityId === d.entityId
+  ) as VitalsSummaryRecord;
+  const childEntitySummaries = vitalsSummaries.filter(
+    (d) => d.parentEntityId === currentEntity && d.parentEntityId !== d.entityId
+  ) as VitalsSummaryRecord[];
+  return { parentEntitySummary, childEntitySummaries };
+}
+
+export function getTimeseries(
+  timeSeries: VitalsTimeSeriesRecord[],
+  selectedCardId: string
+): VitalsTimeSeriesRecord[] {
+  return timeSeries.filter((d) => d.metric === selectedCardId);
+}
+
+export function getWeeklyChange(
+  timeSeries: VitalsTimeSeriesRecord[]
+): { sevenDayChange: number; twentyEightDayChange: number } {
+  const twentyEightDaysAgo = timeSeries[0];
+  const sevenDaysAgo = timeSeries[timeSeries.length - 8];
+  const latestDay = timeSeries[timeSeries.length - 1];
+  const sevenDayChange = latestDay.weeklyAvg - sevenDaysAgo.weeklyAvg;
+  const twentyEightDayChange =
+    latestDay.weeklyAvg - twentyEightDaysAgo.weeklyAvg;
+  return { sevenDayChange, twentyEightDayChange };
 }
