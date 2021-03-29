@@ -15,7 +15,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React from "react";
+import React, { useState } from "react";
 import { curveCatmullRom } from "d3-shape";
 import { VitalsTimeSeriesRecord } from "../models/types";
 import { formatPercent, formatISODateString } from "../../utils/formatStrings";
@@ -33,6 +33,24 @@ interface PropTypes {
 const BAR_WIDTH = 16;
 
 const VitalsSummaryChart: React.FC<PropTypes> = ({ data }) => {
+  const [hoveredId, setHoveredId] = useState(null);
+
+  const lineCoordinates = data.map((record, index) => ({
+    index,
+    value: record.weeklyAvg,
+    percent: record.value,
+    weeklyAvg: record.weeklyAvg,
+    date: record.date,
+  }));
+
+  const ordinalData = data.map((record, index) => ({
+    index,
+    value: record.value,
+    percent: record.value,
+    weeklyAvg: record.weeklyAvg,
+    date: record.date,
+  }));
+
   return (
     <div className="VitalsSummaryChart">
       <ResponsiveOrdinalFrame
@@ -40,31 +58,51 @@ const VitalsSummaryChart: React.FC<PropTypes> = ({ data }) => {
         annotations={[
           {
             type: "ordinal-line",
-            coordinates: data,
+            coordinates: lineCoordinates,
             lineStyle: {
-              stroke: "#4C6290",
+              stroke: styles.indigo,
               strokeWidth: 2,
             },
             curve: curveCatmullRom,
+            interactive: true,
           },
         ]}
+        customHoverBehavior={(piece: any) => {
+          if (piece) {
+            setHoveredId(piece.index);
+          } else {
+            setHoveredId(null);
+          }
+        }}
+        baseMarkProps={{ transitionDuration: { default: 500 } }}
+        svgAnnotationRules={(annotation: any) => {
+          if (annotation.d.type === "frame-hover") {
+            const { d, adjustedSize, orFrameState } = annotation;
+            const column = orFrameState.projectedColumns[d.date];
+            const cx = column.middle;
+            const cy = adjustedSize[1] - d.weeklyAvg * 2;
+            setHoveredId(d.index);
+            return <circle cx={cx} cy={cy} r={4} fill={styles.indigo} />;
+          }
+          setHoveredId(null);
+          return null;
+        }}
         pieceHoverAnnotation={[
           {
-            type: "highlight",
-            style: {
-              fill: styles.slate30Opaque,
-              width: BAR_WIDTH,
-              stroke: "none",
-            },
+            type: "frame-hover",
           },
-          { type: "frame-hover" },
         ]}
         tooltipContent={(d: any) => <VitalsSummaryTooltip data={d.data} />}
         type="bar"
-        data={data}
+        data={ordinalData}
         margin={{ left: 104, bottom: 50, right: 56, top: 50 }}
         oAccessor="date"
-        style={{ fill: styles.marble4, width: BAR_WIDTH }}
+        style={(d: any) => {
+          if (d.index === hoveredId) {
+            return { fill: styles.slate30Opaque, width: BAR_WIDTH };
+          }
+          return { fill: styles.marble4, width: BAR_WIDTH };
+        }}
         rAccessor="value"
         rExtent={[0]}
         size={[0, 300]}
@@ -77,7 +115,7 @@ const VitalsSummaryChart: React.FC<PropTypes> = ({ data }) => {
         }}
         axes={[
           {
-            key: "value",
+            key: "percent",
             orient: "left",
             ticks: 3,
             tickValues: [0, 50, 100],
