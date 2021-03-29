@@ -79,7 +79,8 @@ const VitalsSummaryChart: React.FC<PropTypes> = ({ data }) => {
           if (annotation.d.type === "frame-hover") {
             const { d, adjustedSize, orFrameState } = annotation;
             const column = orFrameState.projectedColumns[d.date];
-            const cx = column.middle;
+            // Shift the point slightly to the left to center it
+            const cx = column.middle - 5;
             const cy = adjustedSize[1] - d.weeklyAvg * 2;
             setHoveredId(d.index);
             return <circle cx={cx} cy={cy} r={4} fill={styles.indigo} />;
@@ -87,11 +88,7 @@ const VitalsSummaryChart: React.FC<PropTypes> = ({ data }) => {
           setHoveredId(null);
           return null;
         }}
-        pieceHoverAnnotation={[
-          {
-            type: "frame-hover",
-          },
-        ]}
+        pieceHoverAnnotation
         tooltipContent={(d: any) => <VitalsSummaryTooltip data={d.data} />}
         type="bar"
         data={ordinalData}

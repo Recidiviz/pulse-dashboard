@@ -36,6 +36,12 @@
       fill: $slate-80;
     }
   }
+
+  .annotation-layer-svg {
+    path {
+      transform: translate(-5px, 0);
+    }
+  }
 }
 
 .VitalsSummaryTooltip {
