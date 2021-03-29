@@ -16,8 +16,8 @@
 // =============================================================================
 import React from "react";
 import styled from "styled-components/macro";
-import { Icon, IconSVG } from "@recidiviz/case-triage-components";
-import { formatPercent, formatLargeNumber } from "../../utils/formatStrings";
+import PercentDelta from "../controls/PercentDelta";
+import { formatLargeNumber } from "../../utils/formatStrings";
 import LoadingMetrics from "./LoadingMetrics";
 import type {
   ProjectedSummaryRecord,
@@ -30,8 +30,6 @@ const MetricContainer = styled.div`
   padding: 0 40px;
   width: 30%;
 `;
-
-const Value = styled.div``;
 
 // TODO(#908): Use typography components from component library
 export const MetricTitle = styled.div`
@@ -52,21 +50,7 @@ const MetricValue = styled.div`
   color: #00413e;
   padding: 8px 0 0;
 `;
-const MetricDelta = styled.div<{ color: string }>`
-  display: flex;
-  flex-flow: row nowrap;
-  align-items: center;
-  color: ${({ color }) => color};
-  font-family: "Libre Franklin";
-  font-size: 0.9rem;
-  line-height: 16px;
-  font-weight: 500;
-  padding: 2px 0 0;
 
-  > ${Value} {
-    padding: 0 5px;
-  }
-`;
 const MetricMinMax = styled.div`
   font-family: "Libre Franklin";
   font-size: 0.9rem;
@@ -81,68 +65,32 @@ interface SummaryMetricProps {
   title: string;
   value: number;
   percentChange: number;
-  deltaDirection: DeltaDirections;
+  improvesOnIncrease?: boolean;
   projectedMinMax?: number[] | null;
 }
-
-const deltaDirections = {
-  improved: "improved",
-  worsened: "worsened",
-  noChange: "noChange",
-} as const;
-
-export type DeltaDirections = keyof typeof deltaDirections;
-
-export function getDeltaDirection({
-  percentChange,
-  improvesOnIncrease = false,
-}: {
-  percentChange: number;
-  improvesOnIncrease?: boolean;
-}): DeltaDirections {
-  if (percentChange === 0) return deltaDirections.noChange;
-  if (improvesOnIncrease) {
-    return percentChange > 0
-      ? deltaDirections.improved
-      : deltaDirections.worsened;
-  }
-  return percentChange > 0
-    ? deltaDirections.worsened
-    : deltaDirections.improved;
-}
-
-const deltaColorMap: { [key in DeltaDirections]: string } = {
-  improved: "#207E7A",
-  worsened: "#A43939",
-  noChange: "rgba(53, 83, 98, 0.6)",
-} as const;
 
 // TODO(#908) and (case-triage#69) Add a rotation prop for caret icon
 const SummaryMetric: React.FC<SummaryMetricProps> = ({
   title,
   value,
   percentChange,
-  deltaDirection,
+  improvesOnIncrease = false,
   projectedMinMax = null,
 }) => {
   return (
     <MetricContainer>
       <MetricTitle>{title}</MetricTitle>
       <MetricValue>
-        <Value>{formatLargeNumber(value)}</Value>
+        <div>{formatLargeNumber(value)}</div>
       </MetricValue>
-      <MetricDelta color={deltaColorMap[deltaDirection]}>
-        <Icon
-          kind={IconSVG.Caret}
-          width={12}
-          height={10}
-          fill={deltaColorMap[deltaDirection]}
-        />
-        <Value>{formatPercent(Math.abs(percentChange))}</Value>
-      </MetricDelta>
+      <PercentDelta
+        className="SummaryMetric__delta"
+        value={percentChange}
+        improvesOnIncrease={improvesOnIncrease}
+      />
       {projectedMinMax && (
         <MetricMinMax>
-          <Value>({projectedMinMax.map(formatLargeNumber).join(", ")})</Value>
+          <div>({projectedMinMax.map(formatLargeNumber).join(", ")})</div>
         </MetricMinMax>
       )}
     </MetricContainer>
@@ -169,9 +117,6 @@ const SummaryMetrics: React.FC<{
               title="New arrivals"
               value={data.admissionCount}
               percentChange={data.admissionPercentChange}
-              deltaDirection={getDeltaDirection({
-                percentChange: data.admissionPercentChange,
-              })}
               projectedMinMax={
                 "admissionCountMin" in data
                   ? [data.admissionCountMin, data.admissionCountMax]
@@ -180,12 +125,9 @@ const SummaryMetrics: React.FC<{
             />
             <SummaryMetric
               title="Releases"
+              improvesOnIncrease
               value={data.releaseCount}
               percentChange={data.releasePercentChange}
-              deltaDirection={getDeltaDirection({
-                percentChange: data.releasePercentChange,
-                improvesOnIncrease: true,
-              })}
               projectedMinMax={
                 "releaseCountMin" in data
                   ? [data.releaseCountMin, data.releaseCountMax]
@@ -196,9 +138,6 @@ const SummaryMetrics: React.FC<{
               title="Total population"
               value={data.totalPopulation}
               percentChange={data.populationPercentChange}
-              deltaDirection={getDeltaDirection({
-                percentChange: data.populationPercentChange,
-              })}
               projectedMinMax={
                 "totalPopulationCountMin" in data
                   ? [data.totalPopulationCountMin, data.totalPopulationCountMax]

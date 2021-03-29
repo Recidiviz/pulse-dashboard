@@ -72,7 +72,7 @@ export type PopulationProjectionTimeseriesRecord = {
   totalPopulationMin: number;
 };
 
-export type VitalsTimeseriesRecord = {
+export type VitalsTimeSeriesRecord = {
   date: string;
   value: number;
   weeklyAvg: number;

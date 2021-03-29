@@ -1,0 +1,37 @@
+@import "../CoreConstants.scss";
+
+.VitalsWeeklyChange {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+  padding-top: 3rem;
+
+  &__container:first-child {
+    margin-right: 2.5rem;
+  }
+
+  &__container {
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+  }
+
+  &__title {
+    color: $slate-80;
+    font: $font-ui-sans-16;
+    line-height: 1.5rem;
+    letter-spacing: -0.01em;
+  }
+
+  &__value {
+    font: $font-ui-sans-24;
+    line-height: 2.5rem;
+    letter-spacing: -0.02em;
+  }
+
+  &__delta {
+    :nth-child(2) {
+      margin-left: 5px;
+    }
+  }
+}
