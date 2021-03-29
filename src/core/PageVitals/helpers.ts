@@ -55,16 +55,16 @@ export const getSummaryCards: (
     description: `of clients received initial contact within 30 days of starting
      supervision and a F2F contact every subsequent 90, 60, or 30 days for 
      minimum, medium, and maximum supervision levels respectively`,
-    value: summary.timelyContacts,
-    status: getSummaryStatus(summary.timelyContacts),
+    value: summary.timelyContact,
+    status: getSummaryStatus(summary.timelyContact),
     id: "CONTACT",
   },
   {
     title: "Timely risk assessments",
     description: `of clients have had an initial assessment within 30 days and 
       reassessment within 212 days`,
-    value: summary.timelyRiskAssessments,
-    status: getSummaryStatus(summary.timelyRiskAssessments),
+    value: summary.timelyRiskAssessment,
+    status: getSummaryStatus(summary.timelyRiskAssessment),
     id: "RISK_ASSESSMENT",
   },
 ];
