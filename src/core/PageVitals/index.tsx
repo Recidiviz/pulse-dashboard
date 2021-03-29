@@ -73,7 +73,7 @@ const getSummaryCards: (summary: VitalsSummaryRecord) => SummaryCard[] = (
      minimum, medium, and maximum supervision levels respectively`,
     value: summary.timelyContacts,
     status: getSummaryStatus(summary.timelyContacts),
-    id: "CONTACTS",
+    id: "CONTACT",
   },
   {
     title: "Timely risk assessments",
@@ -81,7 +81,7 @@ const getSummaryCards: (summary: VitalsSummaryRecord) => SummaryCard[] = (
       reassessment within 212 days`,
     value: summary.timelyRiskAssessments,
     status: getSummaryStatus(summary.timelyRiskAssessments),
-    id: "RISK_ASSESSMENTS",
+    id: "RISK_ASSESSMENT",
   },
 ];
 
