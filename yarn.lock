@@ -2259,6 +2259,13 @@
     "@types/connect" "*"
     "@types/node" "*"
 
+"@types/cheerio@*":
+  version "0.22.28"
+  resolved "https://registry.yarnpkg.com/@types/cheerio/-/cheerio-0.22.28.tgz#90808aabb44fec40fa2950f4c72351e3e4eb065b"
+  integrity sha512-ehUMGSW5IeDxJjbru4awKYMlKGmo1wSSGUVqXtYwlgmUM8X1a0PZttEIm6yEY7vHsY/hh6iPnklF213G0UColw==
+  dependencies:
+    "@types/node" "*"
+
 "@types/classnames@^2.2.10":
   version "2.2.11"
   resolved "https://registry.yarnpkg.com/@types/classnames/-/classnames-2.2.11.tgz#2521cc86f69d15c5b90664e4829d84566052c1cf"
@@ -2282,6 +2289,14 @@
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/@types/d3-time/-/d3-time-2.0.0.tgz#831dd093db91f16b83ba980e194bb8e4bcef44d6"
   integrity sha512-Abz8bTzy8UWDeYs9pCa3D37i29EWDjNTjemdk0ei1ApYVNqulYlGUKip/jLOpogkPSsPz/GvZCYiC7MFlEk0iQ==
+
+"@types/enzyme@^3.10.8":
+  version "3.10.8"
+  resolved "https://registry.yarnpkg.com/@types/enzyme/-/enzyme-3.10.8.tgz#ad7ac9d3af3de6fd0673773123fafbc63db50d42"
+  integrity sha512-vlOuzqsTHxog6PV79+tvOHFb6hq4QZKMq1lLD9MaWD1oec2lHTKndn76XOpSwCA0oFTaIbKVPrgM3k78Jjd16g==
+  dependencies:
+    "@types/cheerio" "*"
+    "@types/react" "*"
 
 "@types/eslint-visitor-keys@^1.0.0":
   version "1.0.0"
@@ -8248,7 +8263,7 @@ icss-utils@^4.0.0, icss-utils@^4.1.1:
   dependencies:
     postcss "^7.0.14"
 
-identity-obj-proxy@3.0.0:
+identity-obj-proxy@3.0.0, identity-obj-proxy@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/identity-obj-proxy/-/identity-obj-proxy-3.0.0.tgz#94d2bda96084453ef36fbc5aaec37e0f79f1fc14"
   integrity sha1-lNK9qWCERT7zb7xarsN+D3nx/BQ=

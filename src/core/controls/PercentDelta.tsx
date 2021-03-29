@@ -27,8 +27,8 @@ const deltaDirections = {
   noChange: "noChange",
 } as const;
 
-const ROTATE_UP = 180;
-const ROTATE_DOWN = 0;
+export const ROTATE_UP = 180;
+export const ROTATE_DOWN = 0;
 
 const deltaColorMap: {
   [key in DeltaDirections]: string;
