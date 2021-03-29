@@ -117,23 +117,23 @@ const VitalsSummaryTable: React.FC<PropTypes> = ({ summaries }) => {
               {headerGroup.headers.map((column) => (
                 <th {...column.getHeaderProps(column.getSortByToggleProps())}>
                   {column.canSort ? (
-                    <div className="VitalsSummaryTable__sortable">
+                    <div className="VitalsSummaryTable__sortable-header">
                       {column.render("Header")}
-                      <div className="triangle-switcher">
+                      <div className="VitalsSummaryTable__sort">
                         <div
                           className={cx(
-                            "triangle-switcher__button triangle-switcher__button--up",
+                            "VitalsSummaryTable__sort__button VitalsSummaryTable__sort__button--up",
                             {
-                              "triangle-switcher__button--active":
+                              "VitalsSummaryTable__sort__button--active":
                                 column.isSorted && column.isSortedDesc,
                             }
                           )}
                         />
                         <div
                           className={cx(
-                            "triangle-switcher__button triangle-switcher__button--down",
+                            "VitalsSummaryTable__sort__button VitalsSummaryTable__sort__button--down",
                             {
-                              "triangle-switcher__button--active":
+                              "VitalsSummaryTable__sort__button--active":
                                 column.isSorted && !column.isSortedDesc,
                             }
                           )}
@@ -141,7 +141,9 @@ const VitalsSummaryTable: React.FC<PropTypes> = ({ summaries }) => {
                       </div>
                     </div>
                   ) : (
-                    column.render("Header")
+                    <div className="VitalsSummaryTable__header">
+                      {column.render("Header")}
+                    </div>
                   )}
                 </th>
               ))}

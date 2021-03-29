@@ -22,6 +22,7 @@ $pine-3: #00413e;
 $signal-links: #006c67;
 $signal-tooltip: #082249;
 $slate-20: rgba(53, 83, 98, 0.2);
+$slate-30: rgba(53, 83, 98, 0.3);
 $slate-30-opaque: #c2cbd0;
 $slate-60: rgba(53, 83, 98, 0.6);
 $slate-80: rgba(53, 83, 98, 0.8);
@@ -33,6 +34,7 @@ $serif: Libre Baskerville, serif;
 $font-ui-sans-14: 500 0.875rem/1.5rem $sans-serif;
 $font-ui-sans-16: 500 1rem/1.5rem $sans-serif;
 $font-ui-sans-24: 1.5rem/2.5rem $sans-serif;
+$font-ui-serif-34: 400 2.125rem/3rem $serif;
 
 :export {
   crimsonDark: $crimson-dark;
