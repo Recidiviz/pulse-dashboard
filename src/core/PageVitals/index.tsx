@@ -104,13 +104,16 @@ function getTimeseries(
 function getEntitySummaries(
   vitalsSummaries: VitalsSummaryRecord[],
   currentEntity: string
-) {
+): {
+  parentEntitySummary: VitalsSummaryRecord;
+  childEntitySummaries: VitalsSummaryRecord[];
+} {
   const parentEntitySummary = vitalsSummaries.find(
     (d) => d.entityId === currentEntity && d.parentEntityId === d.entityId
-  );
+  ) as VitalsSummaryRecord;
   const childEntitySummaries = vitalsSummaries.filter(
     (d) => d.parentEntityId === currentEntity && d.parentEntityId !== d.entityId
-  );
+  ) as VitalsSummaryRecord[];
   return { parentEntitySummary, childEntitySummaries };
 }
 
@@ -152,10 +155,8 @@ const PageVitals: React.FC = () => {
     vitalsSummaries,
     currentEntity
   );
-  const summaryCards =
-    parentEntitySummary && getSummaryCards(parentEntitySummary);
-  const summaryDetail =
-    summaryCards && getSummaryDetail(summaryCards, selectedCardId);
+  const summaryCards = getSummaryCards(parentEntitySummary);
+  const summaryDetail = getSummaryDetail(summaryCards, selectedCardId);
   const selectedTimeSeries = getTimeseries(timeSeries, selectedCardId);
 
   return (
