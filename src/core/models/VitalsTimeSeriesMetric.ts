@@ -26,7 +26,6 @@ export function vitalsTimeSeries(
       metric: record.metric,
       value: Number(record.value),
       weeklyAvg: Number(record.avg_7d),
-      parentWeeklyAvg: 100,
     };
   });
 }
