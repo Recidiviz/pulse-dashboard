@@ -20,79 +20,18 @@ import { observer } from "mobx-react-lite";
 import PageTemplate from "../PageTemplate";
 import VitalsSummaryCards from "../VitalsSummaryCards";
 import VitalsSummaryTable from "../VitalsSummaryTable/VitalsSummaryTable";
+import VitalsWeeklyChange from "../VitalsWeeklyChange";
 import VitalsSummaryChart from "../VitalsSummaryChart";
 import VitalsSummaryDetail from "../VitalsSummaryDetail";
 import Loading from "../../components/Loading";
 import { useRootStore } from "../../components/StoreProvider";
-import { SummaryCard, SummaryStatus } from "./types";
 import { VitalsSummaryRecord, VitalsTimeSeriesRecord } from "../models/types";
 import { ChartDataType } from "../types/charts";
 import useChartData from "../hooks/useChartData";
 import { vitalsTimeSeries } from "../models/VitalsTimeSeriesMetric";
 import { vitalsSummary } from "../models/VitalsSummaryMetric";
-
+import { getSummaryCards, getSummaryDetail } from "./helpers";
 import "./PageVitals.scss";
-
-function getSummaryStatus(value: number): SummaryStatus {
-  if (value < 70) return "POOR";
-  if (value >= 70 && value < 80) return "NEEDS_IMPROVEMENT";
-  if (value >= 80 && value < 90) return "GOOD";
-  if (value >= 90 && value < 95) return "GREAT";
-  return "EXCELLENT";
-}
-const getSummaryCards: (summary: VitalsSummaryRecord) => SummaryCard[] = (
-  summary
-) => [
-  {
-    title: "Overall",
-    description: "Average timeliness across all metrics",
-    value: summary.overall,
-    status: getSummaryStatus(summary.overall),
-    id: "OVERALL",
-  },
-  {
-    title: "Timely discharge",
-    description: `of clients were discharged at their earliest projected regular
-     supervision discharge date`,
-    value: summary.timelyDischarge,
-    status: getSummaryStatus(summary.timelyDischarge),
-    id: "DISCHARGE",
-  },
-  {
-    title: "Timely FTR enrollment",
-    description:
-      "of clients are not pending enrollment in Free Through Recovery",
-    value: summary.timelyFtrEnrollment,
-    status: getSummaryStatus(summary.timelyFtrEnrollment),
-    id: "FTR_ENROLLMENT",
-  },
-  {
-    title: "Timely contacts",
-    description: `of clients received initial contact within 30 days of starting
-     supervision and a F2F contact every subsequent 90, 60, or 30 days for 
-     minimum, medium, and maximum supervision levels respectively`,
-    value: summary.timelyContacts,
-    status: getSummaryStatus(summary.timelyContacts),
-    id: "CONTACT",
-  },
-  {
-    title: "Timely risk assessments",
-    description: `of clients have had an initial assessment within 30 days and 
-      reassessment within 212 days`,
-    value: summary.timelyRiskAssessments,
-    status: getSummaryStatus(summary.timelyRiskAssessments),
-    id: "RISK_ASSESSMENT",
-  },
-];
-
-function getSummaryDetail(
-  summaryCards: SummaryCard[],
-  selectedCardId: string
-): SummaryCard {
-  return (
-    summaryCards.find((card) => card.id === selectedCardId) || summaryCards[0]
-  );
-}
 
 function getTimeseries(
   timeSeries: VitalsTimeSeriesRecord[],
@@ -118,10 +57,10 @@ function getEntitySummaries(
 }
 
 const PageVitals: React.FC = () => {
-  const [selectedCardId, setSelectedCardId] = useState("OVERALL");
-  const [currentEntity] = useState("STATE_DOC");
   const { tenantStore } = useRootStore();
   const { stateName } = tenantStore;
+  const [selectedCardId, setSelectedCardId] = useState("OVERALL");
+  const [currentEntity] = useState("STATE_DOC");
   const { isLoading, isError, apiData }: ChartDataType = useChartData(
     "us_nd/vitals"
   ) as ChartDataType;
@@ -158,26 +97,30 @@ const PageVitals: React.FC = () => {
   const summaryCards = getSummaryCards(parentEntitySummary);
   const summaryDetail = getSummaryDetail(summaryCards, selectedCardId);
   const selectedTimeSeries = getTimeseries(timeSeries, selectedCardId);
+  const twentyEightDaysAgo = selectedTimeSeries[0];
+  const sevenDaysAgo = selectedTimeSeries[selectedTimeSeries.length - 8];
+  const latestDay = selectedTimeSeries[selectedTimeSeries.length - 1];
+  const sevenDayChange = latestDay.weeklyAvg - sevenDaysAgo.weeklyAvg;
+  const twentyEightDayChange =
+    latestDay.weeklyAvg - twentyEightDaysAgo.weeklyAvg;
+  const weeklyChange = { sevenDayChange, twentyEightDayChange };
 
   return (
     <PageTemplate>
       <div className="PageVitals__Title">{stateName}</div>
       <div className="PageVitals__SummaryCards">
-        {summaryCards && (
-          <VitalsSummaryCards
-            onClick={handleSelectCard}
-            selected={selectedCardId}
-            summaryCards={summaryCards}
-          />
-        )}
+        <VitalsSummaryCards
+          onClick={handleSelectCard}
+          selected={selectedCardId}
+          summaryCards={summaryCards}
+        />
       </div>
       <div className="PageVitals__SummarySection">
         <div className="PageVitals__SummaryDetail">
-          {summaryDetail && (
-            <VitalsSummaryDetail summaryDetail={summaryDetail} />
-          )}
+          <VitalsSummaryDetail summaryDetail={summaryDetail} />
         </div>
         <div className="PageVitals__SummaryChart">
+          <VitalsWeeklyChange data={weeklyChange} />
           <VitalsSummaryChart timeSeries={selectedTimeSeries} />
         </div>
       </div>

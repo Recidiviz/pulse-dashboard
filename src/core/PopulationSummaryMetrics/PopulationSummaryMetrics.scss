@@ -26,14 +26,6 @@
   @media screen and (max-width: $core-breakpoint-sm) {
     flex-flow: row wrap;
   }
-
-  div:nth-child(1) {
-    margin-right: 1rem;
-  }
-
-  div:nth-child(2) {
-    margin-left: 1rem;
-  }
 }
 
 .SummaryMetrics {
@@ -42,6 +34,12 @@
   justify-content: flex-start;
   height: 168px;
   padding: 24px 0 32px;
+}
+
+.SummaryMetric__delta {
+  font: $font-ui-sans-14;
+  letter-spacing: -0.01em;
+  line-height: 1.5rem;
 }
 
 .MissingProjectionData {
