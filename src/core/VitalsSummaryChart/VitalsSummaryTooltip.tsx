@@ -20,18 +20,33 @@ import { VitalsTimeSeriesRecord } from "../models/types";
 import { formatPercent, formatISODateString } from "../../utils/formatStrings";
 
 type PropTypes = {
-  data: VitalsTimeSeriesRecord;
+  data: VitalsTimeSeriesRecord & { percent: number };
+  transformX: boolean;
+  transformY: boolean;
 };
 
-const VitalsSummaryTooltip: React.FC<PropTypes> = ({ data }) => {
-  const { date, value } = data;
-
+const VitalsSummaryTooltip: React.FC<PropTypes> = ({
+  data,
+  transformX,
+  transformY,
+}) => {
+  const { date, percent, weeklyAvg } = data;
+  const translateY = transformY ? "-100%" : "0";
+  const translateX = transformX ? "calc(-100% - 1rem)" : "1rem";
+  const transformStyle = {
+    transform: `translate(${translateX}, ${translateY})`,
+  };
   return (
-    <div className="VitalsSummaryTooltip">
+    <div className="VitalsSummaryTooltip" style={transformStyle}>
       <div className="VitalsSummaryTooltip__Date">
         {formatISODateString(date)}
       </div>
-      <div className="VitalsSummaryTooltip__Value">{formatPercent(value)}</div>
+      <div className="VitalsSummaryTooltip__Value">
+        {formatPercent(percent)}
+      </div>
+      <div className="VitalsSummaryTooltip__Average">
+        7-day avg: {formatPercent(weeklyAvg)}
+      </div>
     </div>
   );
 };

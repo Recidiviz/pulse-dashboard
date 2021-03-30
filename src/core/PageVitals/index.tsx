@@ -47,7 +47,7 @@ const mockTimeSeriesData: VitalsTimeSeriesRecord[] = [
   { date: "2021-03-03", value: 88, weeklyAvg: 37, parentWeeklyAvg: 94 },
   { date: "2021-03-04", value: 73, weeklyAvg: 79, parentWeeklyAvg: 70 },
   { date: "2021-03-05", value: 52, weeklyAvg: 46, parentWeeklyAvg: 80 },
-  { date: "2021-03-06", value: 41, weeklyAvg: 40, parentWeeklyAvg: 98 },
+  { date: "2021-03-06", value: 41, weeklyAvg: 90, parentWeeklyAvg: 98 },
   { date: "2021-03-07", value: 37, weeklyAvg: 44, parentWeeklyAvg: 63 },
   { date: "2021-03-08", value: 64, weeklyAvg: 12, parentWeeklyAvg: 99 },
   { date: "2021-03-09", value: 65, weeklyAvg: 22, parentWeeklyAvg: 28 },
