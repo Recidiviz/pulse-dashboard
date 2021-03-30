@@ -26,6 +26,7 @@ import { convertIdToSlug } from "../../utils/navigation";
 import { toTitleCase } from "../../utils/formatStrings";
 
 import "./VitalsSummaryTable.scss";
+import { VitalsSummaryRecord } from "../models/types";
 
 type PropTypes = {
   summaries: VitalsSummaryTableRow[];
