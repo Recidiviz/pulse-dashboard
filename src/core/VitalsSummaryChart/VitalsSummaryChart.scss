@@ -36,6 +36,21 @@
       fill: $slate-80;
     }
   }
+
+  .annotation-layer {
+    .xythreshold > .annotation-subject {
+      path {
+        opacity: 0.3;
+        stroke-dasharray: 7;
+      }
+    }
+  }
+
+  &__goal-label {
+    font: $font-ui-sans-14;
+    fill: $signal-links;
+    letter-spacing: -0.01em;
+  }
 }
 
 .VitalsSummaryTooltip {

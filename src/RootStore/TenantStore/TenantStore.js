@@ -85,4 +85,8 @@ export default class TenantStore {
   get stateName() {
     return tenants[this.currentTenantId].name;
   }
+
+  get stateCode() {
+    return tenants[this.currentTenantId].stateCode;
+  }
 }

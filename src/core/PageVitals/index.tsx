@@ -40,9 +40,17 @@ import {
 } from "./helpers";
 import "./PageVitals.scss";
 
+const goals = {
+  [METRIC_TYPES.OVERALL]: 80,
+  [METRIC_TYPES.DISCHARGE]: 90,
+  [METRIC_TYPES.FTR_ENROLLMENT]: 80,
+  [METRIC_TYPES.CONTACT]: 80,
+  [METRIC_TYPES.RISK_ASSESSMENT]: 85,
+};
+
 const PageVitals: React.FC = () => {
   const { tenantStore } = useRootStore();
-  const { stateName } = tenantStore;
+  const { stateName, stateCode } = tenantStore;
   const [selectedCardId, setSelectedCardId] = useState<MetricType>(
     METRIC_TYPES.OVERALL
   );
@@ -103,7 +111,11 @@ const PageVitals: React.FC = () => {
           <VitalsWeeklyChange
             weeklyChange={getWeeklyChange(selectedTimeSeries)}
           />
-          <VitalsSummaryChart timeSeries={selectedTimeSeries} />
+          <VitalsSummaryChart
+            stateCode={stateCode}
+            goal={goals[selectedCardId]}
+            timeSeries={selectedTimeSeries}
+          />
         </div>
       </div>
       <div className="PageVitals__Table">
