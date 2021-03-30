@@ -14,11 +14,12 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-import React, { useMemo } from "react";
+import React, { useMemo, useEffect } from "react";
 import { useTable, useSortBy } from "react-table";
 import cx from "classnames";
 import BubbleTableCell from "./BubbleTableCell";
 import DeltaTableCell from "./DeltaTableCell";
+import { METRIC_TYPES } from "../PageVitals/types";
 import { formatPercent } from "../../utils";
 
 import "./VitalsSummaryTable.scss";
@@ -26,9 +27,13 @@ import { VitalsSummaryRecord } from "../models/types";
 
 type PropTypes = {
   summaries: VitalsSummaryRecord[];
+  selectedSortBy: string;
 };
 
-const VitalsSummaryTable: React.FC<PropTypes> = ({ summaries }) => {
+const VitalsSummaryTable: React.FC<PropTypes> = ({
+  summaries,
+  selectedSortBy,
+}) => {
   const createBubbleTableCell = ({ value }: { value: number }) => (
     <BubbleTableCell value={value} />
   );
@@ -37,6 +42,7 @@ const VitalsSummaryTable: React.FC<PropTypes> = ({ summaries }) => {
     <DeltaTableCell value={value} />
   );
 
+  const data = useMemo(() => summaries, [summaries]);
   const columns = useMemo(
     () => [
       {
@@ -53,6 +59,7 @@ const VitalsSummaryTable: React.FC<PropTypes> = ({ summaries }) => {
         columns: [
           {
             Header: "Overall score",
+            id: METRIC_TYPES.OVERALL,
             accessor: "overall",
             Cell: ({ value }: { value: number }) => formatPercent(value),
           },
@@ -73,21 +80,25 @@ const VitalsSummaryTable: React.FC<PropTypes> = ({ summaries }) => {
         columns: [
           {
             Header: "Timely discharge",
+            id: METRIC_TYPES.DISCHARGE,
             accessor: "timelyDischarge",
             Cell: createBubbleTableCell,
           },
           {
             Header: "Program availability",
+            id: METRIC_TYPES.FTR_ENROLLMENT,
             accessor: "timelyFtrEnrollment",
             Cell: createBubbleTableCell,
           },
           {
             Header: "Timely contacts",
+            id: METRIC_TYPES.CONTACT,
             accessor: "timelyContact",
             Cell: createBubbleTableCell,
           },
           {
             Header: "Timely risk assessments",
+            id: METRIC_TYPES.RISK_ASSESSMENT,
             accessor: "timelyRiskAssessment",
             Cell: createBubbleTableCell,
           },
@@ -97,13 +108,29 @@ const VitalsSummaryTable: React.FC<PropTypes> = ({ summaries }) => {
     []
   );
 
+  const sortBy = useMemo(() => ({ id: selectedSortBy, desc: false }), [
+    selectedSortBy,
+  ]);
+
   const {
     getTableProps,
     getTableBodyProps,
     headerGroups,
     rows,
+    setSortBy,
     prepareRow,
-  } = useTable({ columns, data: summaries }, useSortBy);
+  } = useTable(
+    {
+      columns,
+      data,
+      initialState: { sortBy: [sortBy] },
+    },
+    useSortBy
+  );
+
+  useEffect(() => {
+    setSortBy([sortBy]);
+  }, [setSortBy, sortBy]);
 
   return (
     <div className="VitalsSummaryTable">

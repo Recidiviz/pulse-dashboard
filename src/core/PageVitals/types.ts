@@ -23,9 +23,19 @@ export type SummaryStatus =
   | "EXCELLENT";
 
 export type SummaryCard = {
-  id: string;
+  id: MetricType;
   title: string;
   description: string;
   value: number;
   status: SummaryStatus;
 };
+
+export type MetricType = keyof typeof METRIC_TYPES;
+
+export const METRIC_TYPES = {
+  OVERALL: "OVERALL",
+  DISCHARGE: "DISCHARGE",
+  FTR_ENROLLMENT: "FTR_ENROLLMENT",
+  CONTACT: "CONTACT",
+  RISK_ASSESSMENT: "RISK_ASSESSMENT",
+} as const;
