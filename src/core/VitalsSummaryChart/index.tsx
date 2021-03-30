@@ -56,7 +56,7 @@ const VitalsSummaryChart: React.FC<PropTypes> = ({
     date: record.date,
   }));
 
-  const latestDate = ordinalData[ordinalData.length - 1].date;
+  const latestDataPoint = ordinalData[ordinalData.length - 1];
 
   const goalLabelAnnotation = (annotation: any) => {
     const { d, adjustedSize, rScale, oScale } = annotation;
@@ -80,24 +80,25 @@ const VitalsSummaryChart: React.FC<PropTypes> = ({
     return <circle cx={cx} cy={cy} r={4} fill={styles.indigo} />;
   };
 
+  const goalTargetAnnotation = (annotation: any) => {
+    const { d, adjustedSize, rScale, orFrameState } = annotation;
+    const { weeklyAvg, date } = d;
+    const cx = orFrameState.projectedColumns[date].middle;
+    const cy = adjustedSize[1] - rScale(weeklyAvg);
+    return (
+      <g>
+        <circle cx={cx} cy={cy} r="8" fill="white" stroke="#BF7474" />
+        <circle cx={cx} cy={cy} r="4" fill="#BF7474" stroke="#BF7474" />
+      </g>
+    );
+  };
+
   return (
     <div className="VitalsSummaryChart">
       <ResponsiveOrdinalFrame
         responsiveWidth
         hoverAnnotation
         annotations={[
-          {
-            type: "react-annotation",
-            label: `ND Goal: ${formatPercent(goal)}`,
-            date: latestDate,
-            value: goal,
-          },
-          {
-            type: "r",
-            value: goal,
-            color: styles.signalLinks,
-            disable: "connector",
-          },
           {
             type: "ordinal-line",
             coordinates: lineCoordinates,
@@ -106,6 +107,22 @@ const VitalsSummaryChart: React.FC<PropTypes> = ({
               strokeWidth: 2,
             },
             curve: curveCatmullRom,
+          },
+          {
+            type: "or",
+            ...latestDataPoint,
+          },
+          {
+            type: "react-annotation",
+            label: `ND Goal: ${formatPercent(goal)}`,
+            date: latestDataPoint.date,
+            value: goal,
+          },
+          {
+            type: "r",
+            value: goal,
+            color: styles.signalLinks,
+            disable: "connector",
           },
         ]}
         customHoverBehavior={(piece: any) => {
@@ -122,6 +139,9 @@ const VitalsSummaryChart: React.FC<PropTypes> = ({
           }
           if (annotation.d.type === "column-hover") {
             return trendlinePointAnnotation(annotation);
+          }
+          if (annotation.d.type === "or") {
+            return goalTargetAnnotation(annotation);
           }
           setHoveredId(null);
           return null;
