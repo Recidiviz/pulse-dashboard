@@ -34,7 +34,7 @@ export type VitalsSummaryTableRow = {
   entity: {
     entityId: string;
     entityName: string;
-    summaryViewEnabled: boolean;
+    entityType: EntityType;
   };
   parentEntityId?: string;
   overall: number;
@@ -45,3 +45,5 @@ export type VitalsSummaryTableRow = {
   timelyContact: number;
   timelyRiskAssessment: number;
 };
+
+export type EntityType = "STATE_DOC" | "OFFICE" | "OFFICER";

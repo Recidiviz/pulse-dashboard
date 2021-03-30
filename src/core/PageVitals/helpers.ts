@@ -102,7 +102,8 @@ export function getEntitySummaries(
           entity: {
             entityId,
             entityName,
-            summaryViewEnabled: parentEntityId === DEFAULT_ENTITY_ID,
+            entityType:
+              parentEntityId === DEFAULT_ENTITY_ID ? "OFFICE" : "OFFICER",
           },
         },
         parentEntityId,

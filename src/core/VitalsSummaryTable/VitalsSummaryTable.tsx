@@ -23,6 +23,7 @@ import DeltaTableCell from "./DeltaTableCell";
 import { formatPercent } from "../../utils";
 import { VitalsSummaryTableRow } from "../PageVitals/types";
 import { convertIdToSlug } from "../../utils/navigation";
+import { toTitleCase } from "../../utils/formatStrings";
 
 import "./VitalsSummaryTable.scss";
 
@@ -38,6 +39,7 @@ const VitalsSummaryTable: React.FC<PropTypes> = ({ summaries }) => {
   const createDeltaTableCell = ({ value }: { value: number }) => (
     <DeltaTableCell value={value} />
   );
+  const { entityType } = summaries[0].entity;
 
   const columns = useMemo(
     () => [
@@ -45,7 +47,7 @@ const VitalsSummaryTable: React.FC<PropTypes> = ({ summaries }) => {
         Header: " ",
         columns: [
           {
-            Header: "Office",
+            Header: toTitleCase(entityType),
             accessor: "entity",
             Cell: ({
               value,
@@ -53,10 +55,10 @@ const VitalsSummaryTable: React.FC<PropTypes> = ({ summaries }) => {
               value: {
                 entityId: string;
                 entityName: string;
-                summaryViewEnabled: string;
+                entityType: string;
               };
             }) =>
-              value.summaryViewEnabled ? (
+              value.entityType === "OFFICE" ? (
                 <Link
                   to={`/community/vitals/${convertIdToSlug(value.entityId)}`}
                 >
@@ -114,7 +116,7 @@ const VitalsSummaryTable: React.FC<PropTypes> = ({ summaries }) => {
         ],
       },
     ],
-    []
+    [entityType]
   );
 
   const {
