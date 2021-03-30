@@ -25,3 +25,11 @@ export function getPathsFromNavigation(navigation: {
       : [`/${section}`];
   });
 }
+
+export function getPathWithoutParams(pathname: string): string {
+  const navItems = pathname.split("/");
+  // navItems[0] is "" because of the leading /
+  const section: string = navItems[1];
+  const page: string = navItems[2];
+  return page ? `/${section}/${page}` : `/${section}`;
+}
