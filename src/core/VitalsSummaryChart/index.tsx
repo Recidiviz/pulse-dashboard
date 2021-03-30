@@ -55,6 +55,7 @@ const VitalsSummaryChart: React.FC<PropTypes> = ({ data }) => {
     <div className="VitalsSummaryChart">
       <ResponsiveOrdinalFrame
         responsiveWidth
+        hoverAnnotation
         annotations={[
           {
             type: "ordinal-line",
@@ -64,7 +65,6 @@ const VitalsSummaryChart: React.FC<PropTypes> = ({ data }) => {
               strokeWidth: 2,
             },
             curve: curveCatmullRom,
-            interactive: true,
           },
         ]}
         customHoverBehavior={(piece: any) => {
@@ -76,13 +76,14 @@ const VitalsSummaryChart: React.FC<PropTypes> = ({ data }) => {
         }}
         baseMarkProps={{ transitionDuration: { default: 500 } }}
         svgAnnotationRules={(annotation: any) => {
-          if (annotation.d.type === "frame-hover") {
-            const { d, adjustedSize, orFrameState } = annotation;
-            const column = orFrameState.projectedColumns[d.date];
-            // Shift the point slightly to the left to center it
-            const cx = column.middle - 5;
-            const cy = adjustedSize[1] - d.weeklyAvg * 2;
-            setHoveredId(d.index);
+          if (annotation.d.type === "column-hover") {
+            const { d, adjustedSize } = annotation;
+            const { pieces, column } = d;
+            const { data: pieceData } = pieces[0];
+            // // Shift the point slightly to the left to center it
+            const cx = column.middle - column.width / 4;
+            const cy = adjustedSize[1] - pieceData.weeklyAvg * 2;
+            setHoveredId(pieceData.index);
             return <circle cx={cx} cy={cy} r={4} fill={styles.indigo} />;
           }
           setHoveredId(null);
@@ -101,7 +102,7 @@ const VitalsSummaryChart: React.FC<PropTypes> = ({ data }) => {
           return { fill: styles.marble4, width: BAR_WIDTH };
         }}
         rAccessor="value"
-        rExtent={[0]}
+        rExtent={[0, 100]}
         size={[0, 300]}
         oLabel={(date: string, _: any, index: number) => {
           // Display the first and then every 7 labels
