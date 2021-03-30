@@ -18,6 +18,7 @@
 import lowerCase from "lodash/fp/lowerCase";
 import pipe from "lodash/fp/pipe";
 import startCase from "lodash/fp/startCase";
+import { format, parseISO } from "date-fns";
 import moment from "moment";
 import { translate } from "./i18nSettings";
 
@@ -163,6 +164,10 @@ function formatPercent(percentage: number): string {
   return `${Math.abs(percentage)}%`;
 }
 
+function formatISODateString(date: string): string {
+  return format(parseISO(date), "M/d/yyyy");
+}
+
 export {
   getPeriodLabelFromMetricPeriodMonthsFilter,
   getTrailingLabelFromMetricPeriodMonthsFilter,
@@ -186,4 +191,5 @@ export {
   formatDistrictLabel,
   formatLargeNumber,
   formatPercent,
+  formatISODateString,
 };

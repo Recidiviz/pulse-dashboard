@@ -103,12 +103,12 @@ const VitalsSummaryTable: React.FC<PropTypes> = ({ summaries }) => {
           },
           {
             Header: "Timely contacts",
-            accessor: "timelyContacts",
+            accessor: "timelyContact",
             Cell: createBubbleTableCell,
           },
           {
             Header: "Timely risk assessments",
-            accessor: "timelyRiskAssessments",
+            accessor: "timelyRiskAssessment",
             Cell: createBubbleTableCell,
           },
         ],

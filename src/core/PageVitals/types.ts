@@ -42,6 +42,6 @@ export type VitalsSummaryTableRow = {
   overall28Day: number;
   timelyDischarge: number;
   timelyFtrEnrollment: number;
-  timelyContacts: number;
-  timelyRiskAssessments: number;
+  timelyContact: number;
+  timelyRiskAssessment: number;
 };

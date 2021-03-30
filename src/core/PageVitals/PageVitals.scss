@@ -18,7 +18,7 @@
 
 .PageVitals {
   &__Title {
-    font-family: "Libre Baskerville";
+    font-family: $serif;
     font-size: 2.1rem;
     font-style: normal;
     font-weight: 400;
@@ -45,7 +45,7 @@
     display: flex;
     flex-flow: row nowrap;
     flex: 1 1;
-    font-family: Libre Franklin, sans-serif;
+    font-family: $sans-serif;
     font-weight: 500;
     letter-spacing: -0.01em;
     width: 100%;

@@ -21,125 +21,33 @@ import { observer } from "mobx-react-lite";
 import PageTemplate from "../PageTemplate";
 import VitalsSummaryCards from "../VitalsSummaryCards";
 import VitalsSummaryTable from "../VitalsSummaryTable/VitalsSummaryTable";
+import VitalsWeeklyChange from "../VitalsWeeklyChange";
 import VitalsSummaryChart from "../VitalsSummaryChart";
 import VitalsSummaryDetail from "../VitalsSummaryDetail";
 import Loading from "../../components/Loading";
 import { useRootStore } from "../../components/StoreProvider";
-import { SummaryCard, SummaryStatus } from "./types";
 import { VitalsSummaryRecord, VitalsTimeSeriesRecord } from "../models/types";
 import { ChartDataType } from "../types/charts";
 import useChartData from "../hooks/useChartData";
 import { vitalsTimeSeries } from "../models/VitalsTimeSeriesMetric";
 import { vitalsSummary } from "../models/VitalsSummaryMetric";
 import { convertSlugToId } from "../../utils/navigation";
-
+import {
+  getSummaryCards,
+  getSummaryDetail,
+  getEntitySummaries,
+  getTimeseries,
+  getWeeklyChange,
+} from "./helpers";
 import "./PageVitals.scss";
 
-const DEFAULT_ENTITY_ID = "STATE_DOC";
-
-function getSummaryStatus(value: number): SummaryStatus {
-  if (value < 70) return "POOR";
-  if (value >= 70 && value < 80) return "NEEDS_IMPROVEMENT";
-  if (value >= 80 && value < 90) return "GOOD";
-  if (value >= 90 && value < 95) return "GREAT";
-  return "EXCELLENT";
-}
-const getSummaryCards: (summary: VitalsSummaryRecord) => SummaryCard[] = (
-  summary
-) => [
-  {
-    title: "Overall",
-    description: "Average timeliness across all metrics",
-    value: summary.overall,
-    status: getSummaryStatus(summary.overall),
-    id: "OVERALL",
-  },
-  {
-    title: "Timely discharge",
-    description: `of clients were discharged at their earliest projected regular
-     supervision discharge date`,
-    value: summary.timelyDischarge,
-    status: getSummaryStatus(summary.timelyDischarge),
-    id: "DISCHARGE",
-  },
-  {
-    title: "Timely FTR enrollment",
-    description:
-      "of clients are not pending enrollment in Free Through Recovery",
-    value: summary.timelyFtrEnrollment,
-    status: getSummaryStatus(summary.timelyFtrEnrollment),
-    id: "FTR_ENROLLMENT",
-  },
-  {
-    title: "Timely contacts",
-    description: `of clients received initial contact within 30 days of starting
-     supervision and a F2F contact every subsequent 90, 60, or 30 days for 
-     minimum, medium, and maximum supervision levels respectively`,
-    value: summary.timelyContacts,
-    status: getSummaryStatus(summary.timelyContacts),
-    id: "CONTACTS",
-  },
-  {
-    title: "Timely risk assessments",
-    description: `of clients have had an initial assessment within 30 days and 
-      reassessment within 212 days`,
-    value: summary.timelyRiskAssessments,
-    status: getSummaryStatus(summary.timelyRiskAssessments),
-    id: "RISK_ASSESSMENTS",
-  },
-];
-
-function getSummaryDetail(
-  summaryCards: SummaryCard[],
-  selectedCardId: string
-): SummaryCard {
-  return (
-    summaryCards.find((card) => card.id === selectedCardId) || summaryCards[0]
-  );
-}
-
-function getTimeseries(
-  timeSeries: VitalsTimeSeriesRecord[],
-  selectedCardId: string
-) {
-  return timeSeries.filter((d) => d.metric === selectedCardId);
-}
-
-function getEntitySummaries(
-  vitalsSummaries: VitalsSummaryRecord[],
-  currentEntity: string
-) {
-  const parentEntitySummary = vitalsSummaries.find(
-    (d) => d.entityId === currentEntity && d.parentEntityId === d.entityId
-  );
-  const childEntitySummaries = vitalsSummaries
-    .filter(
-      (d) =>
-        d.parentEntityId === currentEntity && d.parentEntityId !== d.entityId
-    )
-    .map((d) => {
-      const { entityId, entityName, parentEntityId, ...attrs } = d;
-      return {
-        ...{
-          entity: {
-            entityId,
-            entityName,
-            summaryViewEnabled: parentEntityId === DEFAULT_ENTITY_ID,
-          },
-        },
-        parentEntityId,
-        ...attrs,
-      };
-    });
-  return { parentEntitySummary, childEntitySummaries };
-}
+export const DEFAULT_ENTITY_ID = "STATE_DOC";
 
 const PageVitals: React.FC = () => {
   const routeParams = useParams() as { entityId: string | undefined };
   const currentEntityId = routeParams.entityId
     ? convertSlugToId(routeParams.entityId)
     : DEFAULT_ENTITY_ID;
-
   const [selectedCardId, setSelectedCardId] = useState("OVERALL");
   const { tenantStore } = useRootStore();
   const { stateName } = tenantStore;
@@ -172,40 +80,37 @@ const PageVitals: React.FC = () => {
     setSelectedCardId(id);
   };
 
-  const { parentEntitySummary, childEntitySummaries } = getEntitySummaries(
+  const { currentEntitySummary, childEntitySummaryRows } = getEntitySummaries(
     vitalsSummaries,
     currentEntityId
   );
-
-  const summaryCards =
-    parentEntitySummary && getSummaryCards(parentEntitySummary);
-  const summaryDetail =
-    summaryCards && getSummaryDetail(summaryCards, selectedCardId);
+  const summaryCards = getSummaryCards(currentEntitySummary);
   const selectedTimeSeries = getTimeseries(timeSeries, selectedCardId);
   return (
     <PageTemplate>
       <div className="PageVitals__Title">{stateName}</div>
       <div className="PageVitals__SummaryCards">
-        {summaryCards && (
-          <VitalsSummaryCards
-            onClick={handleSelectCard}
-            selected={selectedCardId}
-            summaryCards={summaryCards}
-          />
-        )}
+        <VitalsSummaryCards
+          onClick={handleSelectCard}
+          selected={selectedCardId}
+          summaryCards={summaryCards}
+        />
       </div>
       <div className="PageVitals__SummarySection">
         <div className="PageVitals__SummaryDetail">
-          {summaryDetail && (
-            <VitalsSummaryDetail summaryDetail={summaryDetail} />
-          )}
+          <VitalsSummaryDetail
+            summaryDetail={getSummaryDetail(summaryCards, selectedCardId)}
+          />
         </div>
         <div className="PageVitals__SummaryChart">
+          <VitalsWeeklyChange
+            weeklyChange={getWeeklyChange(selectedTimeSeries)}
+          />
           <VitalsSummaryChart timeSeries={selectedTimeSeries} />
         </div>
       </div>
       <div className="PageVitals__Table">
-        <VitalsSummaryTable summaries={childEntitySummaries} />
+        <VitalsSummaryTable summaries={childEntitySummaryRows} />
       </div>
     </PageTemplate>
   );

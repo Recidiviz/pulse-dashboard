@@ -27,8 +27,8 @@ export function vitalsSummary(
       overall: Number(record.overall),
       timelyDischarge: Number(record.timely_discharge),
       timelyFtrEnrollment: Number(record.timely_ftr_enrollment),
-      timelyContacts: Number(record.timely_contacts),
-      timelyRiskAssessments: Number(record.timely_risk_assessment),
+      timelyContact: Number(record.timely_contact),
+      timelyRiskAssessment: Number(record.timely_risk_assessment),
       overall7Day: Number(record.overall_7d),
       overall28Day: Number(record.overall_28d),
     };
