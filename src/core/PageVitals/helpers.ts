@@ -98,13 +98,11 @@ export function getEntitySummaries(
     .map((d) => {
       const { entityId, entityName, parentEntityId, ...attrs } = d;
       return {
-        ...{
-          entity: {
-            entityId,
-            entityName,
-            entityType:
-              parentEntityId === DEFAULT_ENTITY_ID ? "OFFICE" : "OFFICER",
-          },
+        entity: {
+          entityId,
+          entityName,
+          entityType:
+            parentEntityId === DEFAULT_ENTITY_ID ? "OFFICE" : "OFFICER",
         },
         parentEntityId,
         ...attrs,
