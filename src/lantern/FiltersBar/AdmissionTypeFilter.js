@@ -43,7 +43,7 @@ const AdmissionTypeFilter = () => {
   );
 
   return (
-    <FilterField label="Admission Type">
+    <FilterField label="Recommitment Type">
       <MultiSelect
         value={selectValue}
         options={options}

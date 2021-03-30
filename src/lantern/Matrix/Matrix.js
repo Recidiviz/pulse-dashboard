@@ -52,8 +52,6 @@ import { useRootStore } from "../../components/StoreProvider";
 import { VIOLATION_TYPE, REPORTED_VIOLATIONS } from "../utils/constants";
 import "./Matrix.scss";
 
-const TITLE =
-  "Admissions by violation history (in year prior to their last reported violation)";
 const VIOLATION_COUNTS = ["1", "2", "3", "4", "5", "6", "7", "8"];
 
 const getInteger = (field) => pipe(get(field), toInteger);
@@ -64,6 +62,8 @@ const Matrix = ({ timeDescription }) => {
   const { dataStore, filters, filtersStore } = useRootStore();
   const { filterOptions } = filtersStore;
   const store = dataStore.matrixStore;
+  const CHART_TITLE = translate("revocationsMatrixChartTitle");
+
   const { containerHeight, containerRef } = useContainerHeight();
   const violationTypes = translate("violationTypes");
 
@@ -144,13 +144,13 @@ const Matrix = ({ timeDescription }) => {
   return (
     <div ref={containerRef} className="Matrix">
       <h4 className="Matrix__title">
-        {TITLE}
+        {CHART_TITLE}
         <ExportMenu
           chartId={CHART_ID}
           regularElement
           datasets={exportableMatrixData}
           labels={VIOLATION_COUNTS.map(violationCountLabel)}
-          metricTitle={TITLE}
+          metricTitle={CHART_TITLE}
           timeWindowDescription={timeDescription}
           fixLabelsInColumns
           dataExportLabel="Violations"

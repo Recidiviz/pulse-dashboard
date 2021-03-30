@@ -33,7 +33,7 @@ const RevocationsByGender = observer(
     const { dataStore } = useRootStore();
     const { revocationsChartStore } = dataStore;
 
-    const CHART_TITLE = `Admissions by ${translate("gender")}`;
+    const CHART_TITLE = translate("revocationsByGenderChartTitle");
 
     return (
       <RevocationsByDimension

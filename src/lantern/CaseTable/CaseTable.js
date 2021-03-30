@@ -28,12 +28,14 @@ import Pagination from "./Pagination";
 import { useContainerHeight } from "../hooks/useContainerHeight";
 import { nullSafeCell, formatData, formatExportData } from "./utils/helpers";
 import { useRootStore } from "../../components/StoreProvider";
+import { translate } from "../../utils/i18nSettings";
 
 export const CASES_PER_PAGE = 15;
 
 const CaseTable = ({ timeDescription }) => {
   const { dataStore } = useRootStore();
   const store = dataStore.caseTableStore;
+  const TABLE_TITLE = translate("caseTableTitle");
   const [page, setPage] = useState(0);
   const { sortOrder, sortField, toggleOrder, comparator } = useSort();
   const { containerHeight, containerRef } = useContainerHeight();
@@ -66,7 +68,7 @@ const CaseTable = ({ timeDescription }) => {
   return (
     <div ref={containerRef} className="CaseTable">
       <h4>
-        Admitted individuals
+        {TABLE_TITLE}
         <ExportMenu
           chartId="filteredCaseTable"
           shouldExport={false}

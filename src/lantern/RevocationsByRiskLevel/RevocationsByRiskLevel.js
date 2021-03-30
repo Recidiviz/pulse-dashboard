@@ -25,14 +25,15 @@ import createGenerateChartData from "./createGenerateChartData";
 import RevocationsByDimension from "../RevocationsByDimension";
 import BarChartWithLabels from "../BarCharts";
 import { useDataStore } from "../../components/StoreProvider";
+import { translate } from "../../utils/i18nSettings";
 
-const CHART_TITLE = "Admissions by risk level";
 const DEFAULT_MODE = "rates";
 
 const RevocationsByRiskLevel = observer(
   ({ containerHeight, timeDescription }, ref) => {
     const dataStore = useDataStore();
     const { revocationsChartStore } = dataStore;
+    const CHART_TITLE = translate("revocationsByRiskLevelChartTitle");
     return (
       <RevocationsByDimension
         ref={ref}

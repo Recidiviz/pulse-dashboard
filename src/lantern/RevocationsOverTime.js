@@ -177,12 +177,12 @@ const RevocationsOverTime = ({ timeDescription }) => {
   return (
     <div ref={containerRef}>
       <RevocationsByDimensionComponent
-        chartTitle={translate("revocationsOverTimeXAxis")}
+        chartTitle={translate("revocationsOverTimeChartTitle")}
         timeDescription={timeDescription}
         labels={chartLabels}
         chartId={chartId}
         datasets={datasets}
-        metricTitle={translate("revocationsOverTimeXAxis")}
+        metricTitle={translate("revocationsOverTimeChartTitle")}
         chart={chart}
         classModifier={chartId}
         dataExportLabel="Month"
