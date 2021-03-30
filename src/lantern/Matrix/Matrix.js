@@ -63,6 +63,7 @@ const Matrix = ({ timeDescription }) => {
   const { filterOptions } = filtersStore;
   const store = dataStore.matrixStore;
   const CHART_TITLE = translate("revocationsMatrixChartTitle");
+  const CHART_ID = translate("revocationsMatrixChartId");
 
   const { containerHeight, containerRef } = useContainerHeight();
   const violationTypes = translate("violationTypes");
@@ -140,7 +141,6 @@ const Matrix = ({ timeDescription }) => {
     ),
   }));
 
-  const CHART_ID = `${translate("revocation")}Matrix`;
   return (
     <div ref={containerRef} className="Matrix">
       <h4 className="Matrix__title">

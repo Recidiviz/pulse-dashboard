@@ -34,8 +34,9 @@ const RevocationsByOfficer = observer(
   ({ containerHeight, timeDescription }, ref) => {
     const dataStore = useDataStore();
     const { revocationsChartStore } = dataStore;
-
     const CHART_TITLE = `${translate("revocationsByOfficerChartTitle")}`;
+    const CHART_ID = `${translate("revocationsByOfficerChartId")}`;
+
     const includeWarning = false;
     // TODO 830 - re-enable rate line once data is ready
     const hideRateLine = true;
@@ -43,7 +44,7 @@ const RevocationsByOfficer = observer(
     return (
       <RevocationsByDimension
         ref={ref}
-        chartId={`admissionsBy${translate("Officer")}`}
+        chartId={CHART_ID}
         dataStore={revocationsChartStore}
         containerHeight={containerHeight}
         includeWarning={includeWarning}

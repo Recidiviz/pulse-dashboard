@@ -35,12 +35,14 @@ const RevocationsByDistrict = observer(
     const { revocationsChartStore } = dataStore;
     const { districtChartData, currentDistricts } = revocationsChartStore;
     const CHART_TITLE = translate("revocationsByDistrictChartTitle");
+    const CHART_ID = translate("revocationsByDistrictChartId");
+
     const xAxisLabel = translate("District");
 
     return (
       <RevocationsByDimension
         ref={ref}
-        chartId="admissionsByDistrict"
+        chartId={CHART_ID}
         dataStore={revocationsChartStore}
         containerHeight={containerHeight}
         renderChart={({

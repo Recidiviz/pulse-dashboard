@@ -32,11 +32,12 @@ const RevocationsByRace = observer(
     const dataStore = useDataStore();
     const { revocationsChartStore } = dataStore;
     const CHART_TITLE = translate("revocationsByRaceChartTitle");
+    const CHART_ID = translate("revocationsByRaceChartId");
 
     return (
       <RevocationsByDimension
         ref={ref}
-        chartId="admissionsByRace"
+        chartId={CHART_ID}
         dataStore={revocationsChartStore}
         containerHeight={containerHeight}
         renderChart={({ chartId, data, denominators, numerators }) => (

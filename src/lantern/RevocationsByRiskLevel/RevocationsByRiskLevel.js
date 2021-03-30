@@ -34,10 +34,12 @@ const RevocationsByRiskLevel = observer(
     const dataStore = useDataStore();
     const { revocationsChartStore } = dataStore;
     const CHART_TITLE = translate("revocationsByRiskLevelChartTitle");
+    const CHART_ID = translate("revocationsByRiskLevelChartId");
+
     return (
       <RevocationsByDimension
         ref={ref}
-        chartId="admissionsByRiskLevel"
+        chartId={CHART_ID}
         dataStore={revocationsChartStore}
         containerHeight={containerHeight}
         renderChart={({ chartId, data, denominators, numerators, mode }) => (

@@ -28,7 +28,7 @@ export const US_PA_METHODOLOGY = {
       body: `Counts include people who were recommitted on a board action to SCIs, CCCs, or Contract Facilities from parole. This includes people on parole who were recommitted under Act 122 and those who were recommitted for revocation. For those recommitted under Act 122, individuals for whom their commitment length is unknown will be placed in the "SCI < 6 MONTHS" category. The SCI commitment length may be unknown when an individual has a recorded admission to a CCC or Contract Facility with the "Program 46" code, but there is missing data for the corresponding board action specifying the length of stay mandated by the parole board. Counts do not include (1) people with Parole Violator Pending status - recommitments for these individuals are counted on the date their status changes to Convicted Parole Violator or Technical Parole Violator; (2) people who are serving a State Indeterminate Punishment sentence; (3) people recommitted for treatment in a CCC or Contract Facility. Person-based counts are used throughout the dashboard, so if a single individual has multiple recommitments in the selected time period, the dashboard counts their most recent admission. This chart (like all charts on the page) will automatically repopulate to match whatever filter(s) the user has selected. For example, if the user has selected "01 - PHILADELPHIA" from the drop-down menus at the top of the screen, this chart will automatically update to include only people from the Philadelphia district.`,
     },
   ],
-  admissionMatrix: [
+  recommitmentsMatrix: [
     {
       id: 1,
       header: "What this chart shows",
@@ -50,7 +50,7 @@ export const US_PA_METHODOLOGY = {
       body: `Counts include people who were recommitted on a board action to SCIs, CCCs, or Contract Facilities from parole. This includes people on parole who were recommitted under Act 122 and those who were recommitted for revocation. For those recommitted under Act 122, individuals for whom their commitment length is unknown will be placed in the "SCI < 6 MONTHS" category. The SCI commitment length may be unknown when an individual has a recorded admission to a CCC or Contract Facility with the "Program 46" code, but there is missing data for the corresponding board action specifying the length of stay mandated by the parole board. Counts do not include (1) people with Parole Violator Pending status - recommitments for these individuals are counted on the date their status changes to Convicted Parole Violator or Technical Parole Violator; (2) people who are serving a State Indeterminate Punishment sentence; (3) people recommitted for treatment in a CCC or Contract Facility. Person-based counts are used throughout the dashboard, so if a single individual has multiple recommitments in the selected time period, the dashboard counts their most recent admission. This chart (like all charts on the page) will automatically repopulate to match whatever filter(s) the user has selected. For example, if the user has selected "01 - PHILADELPHIA" from the drop-down menus at the top of the screen, this chart will automatically update to include only people from the Philadelphia district.`,
     },
   ],
-  recommitmentsByDistrict: [
+  recommitmentsBySubOffice: [
     {
       id: 1,
       header: `What the "Admission count" chart shows`,
