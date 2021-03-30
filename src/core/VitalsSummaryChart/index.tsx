@@ -91,7 +91,7 @@ const VitalsSummaryChart: React.FC<PropTypes> = ({
           cx={cx}
           cy={cy}
           r="8"
-          fill={styles.marble4}
+          fill={styles.white}
           stroke={styles.crimson}
         />
         <circle
