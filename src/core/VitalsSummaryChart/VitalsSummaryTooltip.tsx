@@ -21,13 +21,23 @@ import { formatPercent, formatISODateString } from "../../utils/formatStrings";
 
 type PropTypes = {
   data: VitalsTimeSeriesRecord & { percent: number };
+  transformX: boolean;
+  transformY: boolean;
 };
 
-const VitalsSummaryTooltip: React.FC<PropTypes> = ({ data }) => {
+const VitalsSummaryTooltip: React.FC<PropTypes> = ({
+  data,
+  transformX,
+  transformY,
+}) => {
   const { date, percent, weeklyAvg } = data;
-
+  const translateY = transformY ? "-4rem" : "0";
+  const translateX = transformX ? "-100%" : "0";
+  const transformStyle = {
+    transform: `translate(${translateX}, ${translateY})`,
+  };
   return (
-    <div className="VitalsSummaryTooltip">
+    <div className="VitalsSummaryTooltip" style={transformStyle}>
       <div className="VitalsSummaryTooltip__Date">
         {formatISODateString(date)}
       </div>

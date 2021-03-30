@@ -89,8 +89,17 @@ const VitalsSummaryChart: React.FC<PropTypes> = ({ data }) => {
           setHoveredId(null);
           return null;
         }}
-        pieceHoverAnnotation
-        tooltipContent={(d: any) => <VitalsSummaryTooltip data={d.data} />}
+        tooltipContent={(d: any) => {
+          const pieceData = d.pieces[0];
+          const columnData = d.column.pieceData[0];
+          return (
+            <VitalsSummaryTooltip
+              data={pieceData}
+              transformX={pieceData.index > data.length - 4}
+              transformY={columnData.scaledValue < 50}
+            />
+          );
+        }}
         type="bar"
         data={ordinalData}
         margin={{ left: 104, bottom: 50, right: 56, top: 50 }}

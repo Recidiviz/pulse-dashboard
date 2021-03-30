@@ -39,13 +39,14 @@
 
   .annotation-layer-svg {
     path {
-      transform: translate(-5px, 0);
+      transform: translate(-0.9%, -1px);
     }
   }
 }
 
 .VitalsSummaryTooltip {
   @include chart-tooltip;
+  transform: translate(0, 1rem);
 
   &__Date,
   &__Average {
