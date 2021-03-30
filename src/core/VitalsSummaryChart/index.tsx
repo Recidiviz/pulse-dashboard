@@ -15,7 +15,8 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React from "react";
+import React, { useState } from "react";
+import { curveCatmullRom } from "d3-shape";
 import { VitalsTimeSeriesRecord } from "../models/types";
 import { formatPercent, formatISODateString } from "../../utils/formatStrings";
 import VitalsSummaryTooltip from "./VitalsSummaryTooltip";
@@ -29,32 +30,87 @@ interface PropTypes {
   timeSeries: VitalsTimeSeriesRecord[];
 }
 
-const BAR_WIDTH = 16;
-
 const VitalsSummaryChart: React.FC<PropTypes> = ({ timeSeries }) => {
+  const [hoveredId, setHoveredId] = useState(null);
+
+  const lineCoordinates = timeSeries.map((record, index) => ({
+    index,
+    value: record.weeklyAvg,
+    percent: record.value,
+    weeklyAvg: record.weeklyAvg,
+    date: record.date,
+  }));
+
+  const ordinalData = timeSeries.map((record, index) => ({
+    index,
+    value: record.value,
+    percent: record.value,
+    weeklyAvg: record.weeklyAvg,
+    date: record.date,
+  }));
+
   return (
     <div className="VitalsSummaryChart">
       <ResponsiveOrdinalFrame
         responsiveWidth
-        pieceHoverAnnotation={[
+        hoverAnnotation
+        annotations={[
           {
-            type: "highlight",
-            style: {
-              fill: styles.slate30Opaque,
-              width: BAR_WIDTH,
-              stroke: "none",
+            type: "ordinal-line",
+            coordinates: lineCoordinates,
+            lineStyle: {
+              stroke: styles.indigo,
+              strokeWidth: 2,
             },
+            curve: curveCatmullRom,
           },
-          { type: "frame-hover" },
         ]}
-        tooltipContent={(d: any) => <VitalsSummaryTooltip data={d.data} />}
+        customHoverBehavior={(piece: any) => {
+          if (piece) {
+            setHoveredId(piece.index);
+          } else {
+            setHoveredId(null);
+          }
+        }}
+        baseMarkProps={{ transitionDuration: { default: 500 } }}
+        svgAnnotationRules={(annotation: any) => {
+          if (annotation.d.type === "column-hover") {
+            const { d, adjustedSize, rScale } = annotation;
+            const { pieces, column } = d;
+            const { data: pieceData } = pieces[0];
+            // Shift the point slightly to the left to center it
+            const cx = column.middle;
+            const cy = adjustedSize[1] - rScale(pieceData.weeklyAvg);
+            setHoveredId(pieceData.index);
+            return <circle cx={cx} cy={cy} r={4} fill={styles.indigo} />;
+          }
+          setHoveredId(null);
+          return null;
+        }}
+        tooltipContent={(d: any) => {
+          const pieceData = d.pieces[0];
+          const columnData = d.column.pieceData[0];
+          return (
+            <VitalsSummaryTooltip
+              data={pieceData}
+              transformX={pieceData.index > timeSeries.length - 4}
+              transformY={columnData.scaledValue < 50}
+            />
+          );
+        }}
         type="bar"
-        data={timeSeries}
+        data={ordinalData}
         margin={{ left: 104, bottom: 50, right: 56, top: 50 }}
         oAccessor="date"
-        style={{ fill: styles.marble4, width: BAR_WIDTH }}
+        oPadding={8}
+        style={(d: any) => {
+          if (d.index === hoveredId) {
+            return { fill: styles.slate30Opaque };
+          }
+          return { fill: styles.marble4 };
+        }}
         rAccessor="value"
-        rExtent={[0]}
+        rExtent={[0, 100]}
         size={[0, 300]}
         oLabel={(date: string, _: any, index: number) => {
           // Display the first and then every 7 labels
@@ -65,7 +121,7 @@ const VitalsSummaryChart: React.FC<PropTypes> = ({ timeSeries }) => {
         }}
         axes={[
           {
-            key: "value",
+            key: "percent",
             orient: "left",
             ticks: 3,
             tickValues: [0, 50, 100],
