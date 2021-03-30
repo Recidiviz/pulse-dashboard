@@ -16,6 +16,7 @@
 // =============================================================================
 
 import React, { useState } from "react";
+import { useParams } from "react-router-dom";
 import { observer } from "mobx-react-lite";
 import PageTemplate from "../PageTemplate";
 import VitalsSummaryCards from "../VitalsSummaryCards";
@@ -108,15 +109,28 @@ function getEntitySummaries(
   const parentEntitySummary = vitalsSummaries.find(
     (d) => d.entityId === currentEntity && d.parentEntityId === d.entityId
   );
-  const childEntitySummaries = vitalsSummaries.filter(
-    (d) => d.parentEntityId === currentEntity && d.parentEntityId !== d.entityId
-  );
+  const childEntitySummaries = vitalsSummaries
+    .filter(
+      (d) =>
+        d.parentEntityId === currentEntity && d.parentEntityId !== d.entityId
+    )
+    .map((d) => {
+      const { entityId, entityName, ...attrs } = d;
+      return {
+        ...{ entity: { entityId, entityName } },
+        ...attrs,
+      };
+    });
   return { parentEntitySummary, childEntitySummaries };
 }
 
+const DEFAULT_ENTITY_ID = "STATE_DOC";
+
 const PageVitals: React.FC = () => {
+  const routeParams = useParams() as { entityId: string | undefined };
+  const currentEntityId = routeParams.entityId || DEFAULT_ENTITY_ID;
+
   const [selectedCardId, setSelectedCardId] = useState("OVERALL");
-  const [currentEntity] = useState("STATE_DOC");
   const { tenantStore } = useRootStore();
   const { stateName } = tenantStore;
   const { isLoading, isError, apiData }: ChartDataType = useChartData(
@@ -150,14 +164,14 @@ const PageVitals: React.FC = () => {
 
   const { parentEntitySummary, childEntitySummaries } = getEntitySummaries(
     vitalsSummaries,
-    currentEntity
+    currentEntityId
   );
+
   const summaryCards =
     parentEntitySummary && getSummaryCards(parentEntitySummary);
   const summaryDetail =
     summaryCards && getSummaryDetail(summaryCards, selectedCardId);
   const selectedTimeSeries = getTimeseries(timeSeries, selectedCardId);
-
   return (
     <PageTemplate>
       <div className="PageVitals__Title">{stateName}</div>

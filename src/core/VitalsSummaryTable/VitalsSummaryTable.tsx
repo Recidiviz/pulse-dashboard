@@ -16,16 +16,17 @@
 // =============================================================================
 import React, { useMemo } from "react";
 import { useTable, useSortBy } from "react-table";
+import { Link } from "react-router-dom";
 import cx from "classnames";
 import BubbleTableCell from "./BubbleTableCell";
 import DeltaTableCell from "./DeltaTableCell";
 import { formatPercent } from "../../utils";
 
 import "./VitalsSummaryTable.scss";
-import { VitalsSummaryRecord } from "../models/types";
+import { VitalsSummaryTableRow } from "../PageVitals/types";
 
 type PropTypes = {
-  summaries: VitalsSummaryRecord[];
+  summaries: VitalsSummaryTableRow[];
 };
 
 const VitalsSummaryTable: React.FC<PropTypes> = ({ summaries }) => {
@@ -44,7 +45,18 @@ const VitalsSummaryTable: React.FC<PropTypes> = ({ summaries }) => {
         columns: [
           {
             Header: "Office",
-            accessor: "entityName",
+            accessor: "entity",
+            Cell: ({
+              value,
+            }: {
+              value: { entityId: string; entityName: string };
+            }) => (
+              // TODO slugify entityId
+              // TODO do not link on officer name
+              <Link to={`/community/vitals/${value.entityId}`}>
+                {value.entityName}
+              </Link>
+            ),
           },
         ],
       },

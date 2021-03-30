@@ -29,3 +29,18 @@ export type SummaryCard = {
   value: number;
   status: SummaryStatus;
 };
+
+export type VitalsSummaryTableRow = {
+  entity: {
+    entityId: string;
+    entityName: string;
+  };
+  parentEntityId?: string;
+  overall: number;
+  overall7Day: number;
+  overall28Day: number;
+  timelyDischarge: number;
+  timelyFtrEnrollment: number;
+  timelyContacts: number;
+  timelyRiskAssessments: number;
+};
