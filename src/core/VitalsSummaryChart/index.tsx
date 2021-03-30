@@ -30,8 +30,6 @@ interface PropTypes {
   data: VitalsTimeSeriesRecord[];
 }
 
-const BAR_WIDTH = 16;
-
 const VitalsSummaryChart: React.FC<PropTypes> = ({ data }) => {
   const [hoveredId, setHoveredId] = useState(null);
 
@@ -77,12 +75,12 @@ const VitalsSummaryChart: React.FC<PropTypes> = ({ data }) => {
         baseMarkProps={{ transitionDuration: { default: 500 } }}
         svgAnnotationRules={(annotation: any) => {
           if (annotation.d.type === "column-hover") {
-            const { d, adjustedSize } = annotation;
+            const { d, adjustedSize, rScale } = annotation;
             const { pieces, column } = d;
             const { data: pieceData } = pieces[0];
             // Shift the point slightly to the left to center it
-            const cx = column.middle - column.width / 4;
-            const cy = adjustedSize[1] - pieceData.weeklyAvg * 2;
+            const cx = column.middle;
+            const cy = adjustedSize[1] - rScale(pieceData.weeklyAvg);
             setHoveredId(pieceData.index);
             return <circle cx={cx} cy={cy} r={4} fill={styles.indigo} />;
           }
@@ -104,11 +102,12 @@ const VitalsSummaryChart: React.FC<PropTypes> = ({ data }) => {
         data={ordinalData}
         margin={{ left: 104, bottom: 50, right: 56, top: 50 }}
         oAccessor="date"
+        oPadding={8}
         style={(d: any) => {
           if (d.index === hoveredId) {
-            return { fill: styles.slate30Opaque, width: BAR_WIDTH };
+            return { fill: styles.slate30Opaque };
           }
-          return { fill: styles.marble4, width: BAR_WIDTH };
+          return { fill: styles.marble4 };
         }}
         rAccessor="value"
         rExtent={[0, 100]}

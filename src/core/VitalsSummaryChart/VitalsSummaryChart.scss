@@ -36,25 +36,10 @@
       fill: $slate-80;
     }
   }
-
-  .annotation-layer-svg {
-    path {
-      transform: translate(-0.9%, 0);
-
-      @media screen and (max-width: $core-breakpoint-md) {
-        transform: translate(-0.9%, -1px);
-      }
-
-      @media screen and (max-width: $core-breakpoint-sm) {
-        transform: translate(-5px, 0px);
-      }
-    }
-  }
 }
 
 .VitalsSummaryTooltip {
   @include chart-tooltip;
-  transform: translate(0, 1rem);
 
   &__Date,
   &__Average {

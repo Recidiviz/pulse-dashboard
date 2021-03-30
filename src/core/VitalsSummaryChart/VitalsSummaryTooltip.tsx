@@ -31,8 +31,8 @@ const VitalsSummaryTooltip: React.FC<PropTypes> = ({
   transformY,
 }) => {
   const { date, percent, weeklyAvg } = data;
-  const translateY = transformY ? "-4rem" : "0";
-  const translateX = transformX ? "-100%" : "0";
+  const translateY = transformY ? "-100%" : "0";
+  const translateX = transformX ? "-105%" : "8px";
   const transformStyle = {
     transform: `translate(${translateX}, ${translateY})`,
   };
