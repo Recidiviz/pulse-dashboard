@@ -21,7 +21,7 @@ import PercentDelta from "../controls/PercentDelta";
 import "./VitalsWeeklyChange.scss";
 
 type PropTypes = {
-  data: {
+  weeklyChange: {
     sevenDayChange: number;
     twentyEightDayChange: number;
   };
@@ -49,8 +49,8 @@ const WeeklyChange: React.FC<WeeklyChangeProps> = ({ numDays, value }) => {
   );
 };
 
-const VitalsWeeklyChange: React.FC<PropTypes> = ({ data }) => {
-  const { sevenDayChange, twentyEightDayChange } = data;
+const VitalsWeeklyChange: React.FC<PropTypes> = ({ weeklyChange }) => {
+  const { sevenDayChange, twentyEightDayChange } = weeklyChange;
   return (
     <div className="VitalsWeeklyChange">
       <WeeklyChange numDays={7} value={sevenDayChange} />

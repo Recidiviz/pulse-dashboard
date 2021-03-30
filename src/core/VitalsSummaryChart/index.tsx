@@ -27,13 +27,13 @@ import "./VitalsSummaryChart.scss";
 const ResponsiveOrdinalFrame = require("semiotic/lib/ResponsiveOrdinalFrame") as any;
 
 interface PropTypes {
-  data: VitalsTimeSeriesRecord[];
+  timeSeries: VitalsTimeSeriesRecord[];
 }
 
-const VitalsSummaryChart: React.FC<PropTypes> = ({ data }) => {
+const VitalsSummaryChart: React.FC<PropTypes> = ({ timeSeries }) => {
   const [hoveredId, setHoveredId] = useState(null);
 
-  const lineCoordinates = data.map((record, index) => ({
+  const lineCoordinates = timeSeries.map((record, index) => ({
     index,
     value: record.weeklyAvg,
     percent: record.value,
@@ -41,7 +41,7 @@ const VitalsSummaryChart: React.FC<PropTypes> = ({ data }) => {
     date: record.date,
   }));
 
-  const ordinalData = data.map((record, index) => ({
+  const ordinalData = timeSeries.map((record, index) => ({
     index,
     value: record.value,
     percent: record.value,
@@ -93,7 +93,7 @@ const VitalsSummaryChart: React.FC<PropTypes> = ({ data }) => {
           return (
             <VitalsSummaryTooltip
               data={pieceData}
-              transformX={pieceData.index > data.length - 4}
+              transformX={pieceData.index > timeSeries.length - 4}
               transformY={columnData.scaledValue < 50}
             />
           );

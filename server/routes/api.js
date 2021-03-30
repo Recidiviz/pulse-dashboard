@@ -227,6 +227,17 @@ function programmingExplore(req, res) {
   );
 }
 
+function vitals(req, res) {
+  const { stateCode } = req.params;
+  const metricType = "vitals";
+  const cacheKey = getCacheKey({ stateCode, metricType });
+  cacheResponse(
+    cacheKey,
+    () => fetchMetrics(stateCode, metricType, null, isDemoMode),
+    responder(res)
+  );
+}
+
 function generateFileLink(req, res) {
   const { file } = req;
   const fileName = `${uuid.v4()}-${file.originalname}`;
@@ -289,6 +300,7 @@ module.exports = {
   facilitiesExplore,
   populationProjections,
   programmingExplore,
+  vitals,
   responder,
   refreshCache,
   generateFileLink,

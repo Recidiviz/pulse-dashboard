@@ -22,55 +22,13 @@ import DeltaTableCell from "./DeltaTableCell";
 import { formatPercent } from "../../utils";
 
 import "./VitalsSummaryTable.scss";
+import { VitalsSummaryRecord } from "../models/types";
 
-const VitalsSummaryTable: React.FC = () => {
-  const data = useMemo(
-    () => [
-      {
-        office: "Oakes",
-        overall: 65,
-        change_7: 20,
-        change_28: 32,
-        discharge: 12,
-        participation: 88,
-        contacts: 100,
-        assessments: 100,
-      },
-      {
-        office: "Dickinson",
-        overall: 65,
-        change_7: 19,
-        change_28: 51,
-        discharge: 54,
-        participation: 98,
-        contacts: 92,
-        assessments: 100,
-      },
-      {
-        office: "Bismark",
-        overall: 68,
-        change_7: 22,
-        change_28: 38,
-        discharge: 35,
-        participation: 97,
-        contacts: 93,
-        assessments: 100,
-      },
-      {
-        office: "Mandan",
-        overall: 69,
-        change_7: -73,
-        change_28: 18,
-        discharge: 70,
-        participation: 83,
-        contacts: 98,
-        assessments: 100,
-      },
-    ],
+type PropTypes = {
+  summaries: VitalsSummaryRecord[];
+};
 
-    []
-  );
-
+const VitalsSummaryTable: React.FC<PropTypes> = ({ summaries }) => {
   const createBubbleTableCell = ({ value }: { value: number }) => (
     <BubbleTableCell value={value} />
   );
@@ -86,7 +44,7 @@ const VitalsSummaryTable: React.FC = () => {
         columns: [
           {
             Header: "Office",
-            accessor: "office",
+            accessor: "entityName",
           },
         ],
       },
@@ -100,12 +58,12 @@ const VitalsSummaryTable: React.FC = () => {
           },
           {
             Header: "7D change",
-            accessor: "change_7",
+            accessor: "overall7Day",
             Cell: createDeltaTableCell,
           },
           {
             Header: "28D change",
-            accessor: "change_28",
+            accessor: "overall28Day",
             Cell: createDeltaTableCell,
           },
         ],
@@ -115,22 +73,22 @@ const VitalsSummaryTable: React.FC = () => {
         columns: [
           {
             Header: "Timely discharge",
-            accessor: "discharge",
+            accessor: "timelyDischarge",
             Cell: createBubbleTableCell,
           },
           {
             Header: "Program availability",
-            accessor: "participation",
+            accessor: "timelyFtrEnrollment",
             Cell: createBubbleTableCell,
           },
           {
             Header: "Timely contacts",
-            accessor: "contacts",
+            accessor: "timelyContact",
             Cell: createBubbleTableCell,
           },
           {
             Header: "Timely risk assessments",
-            accessor: "assessments",
+            accessor: "timelyRiskAssessment",
             Cell: createBubbleTableCell,
           },
         ],
@@ -145,7 +103,7 @@ const VitalsSummaryTable: React.FC = () => {
     headerGroups,
     rows,
     prepareRow,
-  } = useTable({ columns, data }, useSortBy);
+  } = useTable({ columns, data: summaries }, useSortBy);
 
   return (
     <div className="VitalsSummaryTable">

@@ -74,9 +74,11 @@ export type PopulationProjectionTimeseriesRecord = {
 
 export type VitalsTimeSeriesRecord = {
   date: string;
+  entityId: string;
+  metric: string;
   value: number;
   weeklyAvg: number;
-  parentWeeklyAvg: number;
+  parentWeeklyAvg?: number;
 };
 
 export type VitalsSummaryRecord = {
@@ -88,6 +90,6 @@ export type VitalsSummaryRecord = {
   overall28Day: number;
   timelyDischarge: number;
   timelyFtrEnrollment: number;
-  timelyContacts: number;
-  timelyRiskAssessments: number;
+  timelyContact: number;
+  timelyRiskAssessment: number;
 };

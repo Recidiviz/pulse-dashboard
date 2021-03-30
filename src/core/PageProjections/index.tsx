@@ -23,7 +23,6 @@ import useChartData from "../hooks/useChartData";
 import {
   PopulationProjectionSummaryRecords,
   PopulationProjectionTimeseriesRecord,
-  RawApiData,
 } from "../models/types";
 import { populationProjectionSummary } from "../models/PopulationProjectionSummaryMetric";
 import PopulationTimeseriesChart from "../PopulationTimeseriesChart";
@@ -32,12 +31,7 @@ import PopulationFilterBar from "../PopulationFilterBar";
 import filterOptions from "../utils/filterOptions";
 import { getViewFromPathname } from "../views";
 import { useRootStore } from "../../components/StoreProvider";
-
-type ChartDataType = {
-  isLoading: boolean;
-  isError: boolean;
-  apiData: RawApiData;
-};
+import { ChartDataType } from "../types/charts";
 
 const PageProjections: React.FC = () => {
   const { pathname } = useLocation();

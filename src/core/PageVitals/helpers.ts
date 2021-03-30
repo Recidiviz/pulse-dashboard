@@ -15,7 +15,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 import { SummaryCard, SummaryStatus } from "./types";
-import { VitalsSummaryRecord } from "../models/types";
+import { VitalsSummaryRecord, VitalsTimeSeriesRecord } from "../models/types";
 
 export function getSummaryStatus(value: number): SummaryStatus {
   if (value < 70) return "POOR";
@@ -32,7 +32,7 @@ export const getSummaryCards: (
     description: "Average timeliness across all metrics",
     value: summary.overall,
     status: getSummaryStatus(summary.overall),
-    id: 1,
+    id: "OVERALL",
   },
   {
     title: "Timely discharge",
@@ -40,7 +40,7 @@ export const getSummaryCards: (
      supervision discharge date`,
     value: summary.timelyDischarge,
     status: getSummaryStatus(summary.timelyDischarge),
-    id: 2,
+    id: "DISCHARGE",
   },
   {
     title: "Timely FTR enrollment",
@@ -48,32 +48,67 @@ export const getSummaryCards: (
       "of clients are not pending enrollment in Free Through Recovery",
     value: summary.timelyFtrEnrollment,
     status: getSummaryStatus(summary.timelyFtrEnrollment),
-    id: 3,
+    id: "FTR_ENROLLMENT",
   },
   {
     title: "Timely contacts",
     description: `of clients received initial contact within 30 days of starting
      supervision and a F2F contact every subsequent 90, 60, or 30 days for 
      minimum, medium, and maximum supervision levels respectively`,
-    value: summary.timelyContacts,
-    status: getSummaryStatus(summary.timelyContacts),
-    id: 4,
+    value: summary.timelyContact,
+    status: getSummaryStatus(summary.timelyContact),
+    id: "CONTACT",
   },
   {
     title: "Timely risk assessments",
     description: `of clients have had an initial assessment within 30 days and 
       reassessment within 212 days`,
-    value: summary.timelyRiskAssessments,
-    status: getSummaryStatus(summary.timelyRiskAssessments),
-    id: 5,
+    value: summary.timelyRiskAssessment,
+    status: getSummaryStatus(summary.timelyRiskAssessment),
+    id: "RISK_ASSESSMENT",
   },
 ];
 
 export function getSummaryDetail(
   summaryCards: SummaryCard[],
-  selectedCardId: number
+  selectedCardId: string
 ): SummaryCard {
   return (
     summaryCards.find((card) => card.id === selectedCardId) || summaryCards[0]
   );
+}
+
+export function getEntitySummaries(
+  vitalsSummaries: VitalsSummaryRecord[],
+  currentEntity: string
+): {
+  parentEntitySummary: VitalsSummaryRecord;
+  childEntitySummaries: VitalsSummaryRecord[];
+} {
+  const parentEntitySummary = vitalsSummaries.find(
+    (d) => d.entityId === currentEntity && d.parentEntityId === d.entityId
+  ) as VitalsSummaryRecord;
+  const childEntitySummaries = vitalsSummaries.filter(
+    (d) => d.parentEntityId === currentEntity && d.parentEntityId !== d.entityId
+  ) as VitalsSummaryRecord[];
+  return { parentEntitySummary, childEntitySummaries };
+}
+
+export function getTimeseries(
+  timeSeries: VitalsTimeSeriesRecord[],
+  selectedCardId: string
+): VitalsTimeSeriesRecord[] {
+  return timeSeries.filter((d) => d.metric === selectedCardId);
+}
+
+export function getWeeklyChange(
+  timeSeries: VitalsTimeSeriesRecord[]
+): { sevenDayChange: number; twentyEightDayChange: number } {
+  const twentyEightDaysAgo = timeSeries[0];
+  const sevenDaysAgo = timeSeries[timeSeries.length - 8];
+  const latestDay = timeSeries[timeSeries.length - 1];
+  const sevenDayChange = latestDay.weeklyAvg - sevenDaysAgo.weeklyAvg;
+  const twentyEightDayChange =
+    latestDay.weeklyAvg - twentyEightDaysAgo.weeklyAvg;
+  return { sevenDayChange, twentyEightDayChange };
 }

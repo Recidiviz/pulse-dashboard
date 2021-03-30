@@ -1,5 +1,5 @@
 // Recidiviz - a data platform for criminal justice reform
-// Copyright (C) 2019 Recidiviz, Inc.
+// Copyright (C) 2020 Recidiviz, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -14,20 +14,10 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
+import { RawApiData } from "../models/types";
 
-import React from "react";
-
-import BounceLoader from "react-spinners/BounceLoader";
-
-const override = {
-  display: "block",
-  margin: "0 auto",
+export type ChartDataType = {
+  isLoading: boolean;
+  isError: boolean;
+  apiData: RawApiData;
 };
-
-const Loading = () => (
-  <div className="Loading sweet-loading" style={{ margin: "0 auto" }}>
-    <BounceLoader css={override} size={60} color="#8B2D21" />
-  </div>
-);
-
-export default Loading;
