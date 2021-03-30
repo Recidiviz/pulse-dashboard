@@ -34,6 +34,7 @@ export type VitalsSummaryTableRow = {
   entity: {
     entityId: string;
     entityName: string;
+    summaryViewEnabled: boolean;
   };
   parentEntityId?: string;
   overall: number;

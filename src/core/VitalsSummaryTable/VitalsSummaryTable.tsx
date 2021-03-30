@@ -50,13 +50,21 @@ const VitalsSummaryTable: React.FC<PropTypes> = ({ summaries }) => {
             Cell: ({
               value,
             }: {
-              value: { entityId: string; entityName: string };
-            }) => (
-              // TODO do not link on officer name
-              <Link to={`/community/vitals/${convertIdToSlug(value.entityId)}`}>
-                {value.entityName}
-              </Link>
-            ),
+              value: {
+                entityId: string;
+                entityName: string;
+                summaryViewEnabled: string;
+              };
+            }) =>
+              value.summaryViewEnabled ? (
+                <Link
+                  to={`/community/vitals/${convertIdToSlug(value.entityId)}`}
+                >
+                  {value.entityName}
+                </Link>
+              ) : (
+                value.entityName
+              ),
           },
         ],
       },

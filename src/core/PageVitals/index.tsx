@@ -35,6 +35,8 @@ import { convertSlugToId } from "../../utils/navigation";
 
 import "./PageVitals.scss";
 
+const DEFAULT_ENTITY_ID = "STATE_DOC";
+
 function getSummaryStatus(value: number): SummaryStatus {
   if (value < 70) return "POOR";
   if (value >= 70 && value < 80) return "NEEDS_IMPROVEMENT";
@@ -116,16 +118,21 @@ function getEntitySummaries(
         d.parentEntityId === currentEntity && d.parentEntityId !== d.entityId
     )
     .map((d) => {
-      const { entityId, entityName, ...attrs } = d;
+      const { entityId, entityName, parentEntityId, ...attrs } = d;
       return {
-        ...{ entity: { entityId, entityName } },
+        ...{
+          entity: {
+            entityId,
+            entityName,
+            summaryViewEnabled: parentEntityId === DEFAULT_ENTITY_ID,
+          },
+        },
+        parentEntityId,
         ...attrs,
       };
     });
   return { parentEntitySummary, childEntitySummaries };
 }
-
-const DEFAULT_ENTITY_ID = "STATE_DOC";
 
 const PageVitals: React.FC = () => {
   const routeParams = useParams() as { entityId: string | undefined };
