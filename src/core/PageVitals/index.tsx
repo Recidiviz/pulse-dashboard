@@ -31,6 +31,7 @@ import { ChartDataType } from "../types/charts";
 import useChartData from "../hooks/useChartData";
 import { vitalsTimeSeries } from "../models/VitalsTimeSeriesMetric";
 import { vitalsSummary } from "../models/VitalsSummaryMetric";
+import { convertSlugToId } from "../../utils/navigation";
 
 import "./PageVitals.scss";
 
@@ -128,7 +129,9 @@ const DEFAULT_ENTITY_ID = "STATE_DOC";
 
 const PageVitals: React.FC = () => {
   const routeParams = useParams() as { entityId: string | undefined };
-  const currentEntityId = routeParams.entityId || DEFAULT_ENTITY_ID;
+  const currentEntityId = routeParams.entityId
+    ? convertSlugToId(routeParams.entityId)
+    : DEFAULT_ENTITY_ID;
 
   const [selectedCardId, setSelectedCardId] = useState("OVERALL");
   const { tenantStore } = useRootStore();

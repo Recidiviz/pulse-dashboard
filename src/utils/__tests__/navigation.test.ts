@@ -14,7 +14,12 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-import { getPathsFromNavigation, getPathWithoutParams } from "../navigation";
+import {
+  getPathsFromNavigation,
+  getPathWithoutParams,
+  convertIdToSlug,
+  convertSlugToId,
+} from "../navigation";
 import tenants from "../../tenants";
 
 describe("getPathsFromNavigation", () => {
@@ -45,5 +50,19 @@ describe("getPathWithoutParams", () => {
   it("returns the path without params when given a path with params", () => {
     const basePath = "/community/vitals";
     expect(getPathWithoutParams(`${basePath}/office-a`)).toEqual(basePath);
+  });
+});
+
+describe("convertIdToSlug", () => {
+  it("returns the id with dashes instead of underscore and lower case", () => {
+    const id = "123_OFFICER_JONES";
+    expect(convertIdToSlug(id)).toEqual("123-officer-jones");
+  });
+});
+
+describe("convertSlugToId", () => {
+  it("returns the id with underscores instead of dashes and upper case", () => {
+    const id = "123-officer-jones";
+    expect(convertSlugToId(id)).toEqual("123_OFFICER_JONES");
   });
 });

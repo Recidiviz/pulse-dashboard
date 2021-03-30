@@ -33,3 +33,11 @@ export function getPathWithoutParams(pathname: string): string {
   const page: string = navItems[2];
   return page ? `/${section}/${page}` : `/${section}`;
 }
+
+export function convertIdToSlug(id: string): string {
+  return id.replace(/_/g, "-").toLowerCase();
+}
+
+export function convertSlugToId(slug: string): string {
+  return slug.replace(/-/g, "_").toUpperCase();
+}

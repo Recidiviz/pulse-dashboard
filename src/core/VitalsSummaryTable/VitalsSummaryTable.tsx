@@ -21,9 +21,10 @@ import cx from "classnames";
 import BubbleTableCell from "./BubbleTableCell";
 import DeltaTableCell from "./DeltaTableCell";
 import { formatPercent } from "../../utils";
+import { VitalsSummaryTableRow } from "../PageVitals/types";
+import { convertIdToSlug } from "../../utils/navigation";
 
 import "./VitalsSummaryTable.scss";
-import { VitalsSummaryTableRow } from "../PageVitals/types";
 
 type PropTypes = {
   summaries: VitalsSummaryTableRow[];
@@ -51,9 +52,8 @@ const VitalsSummaryTable: React.FC<PropTypes> = ({ summaries }) => {
             }: {
               value: { entityId: string; entityName: string };
             }) => (
-              // TODO slugify entityId
               // TODO do not link on officer name
-              <Link to={`/community/vitals/${value.entityId}`}>
+              <Link to={`/community/vitals/${convertIdToSlug(value.entityId)}`}>
                 {value.entityName}
               </Link>
             ),
