@@ -80,7 +80,7 @@ const VitalsSummaryChart: React.FC<PropTypes> = ({ data }) => {
             const { d, adjustedSize } = annotation;
             const { pieces, column } = d;
             const { data: pieceData } = pieces[0];
-            // // Shift the point slightly to the left to center it
+            // Shift the point slightly to the left to center it
             const cx = column.middle - column.width / 4;
             const cy = adjustedSize[1] - pieceData.weeklyAvg * 2;
             setHoveredId(pieceData.index);
