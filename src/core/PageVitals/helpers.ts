@@ -113,9 +113,12 @@ export function getEntitySummaries(
 
 export function getTimeseries(
   timeSeries: VitalsTimeSeriesRecord[],
-  selectedCardId: string
+  selectedCardId: string,
+  currentEntityId: string
 ): VitalsTimeSeriesRecord[] {
-  return timeSeries.filter((d) => d.metric === selectedCardId);
+  return timeSeries.filter(
+    (d) => d.metric === selectedCardId && d.entityId === currentEntityId
+  );
 }
 
 export function getWeeklyChange(
