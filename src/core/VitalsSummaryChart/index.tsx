@@ -87,8 +87,20 @@ const VitalsSummaryChart: React.FC<PropTypes> = ({
     const cy = adjustedSize[1] - rScale(weeklyAvg);
     return (
       <g>
-        <circle cx={cx} cy={cy} r="8" fill="white" stroke="#BF7474" />
-        <circle cx={cx} cy={cy} r="4" fill="#BF7474" stroke="#BF7474" />
+        <circle
+          cx={cx}
+          cy={cy}
+          r="8"
+          fill={styles.marble4}
+          stroke={styles.crimson}
+        />
+        <circle
+          cx={cx}
+          cy={cy}
+          r="4"
+          fill={styles.crimson}
+          stroke={styles.crimson}
+        />
       </g>
     );
   };
