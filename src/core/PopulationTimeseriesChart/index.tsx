@@ -53,7 +53,7 @@ type PropTypes = {
 
 const PopulationTimeseriesChart: React.FC<PropTypes> = ({ data }) => {
   const filtersStore = usePopulationFiltersStore();
-  const { gender, supervisionType } = filtersStore.filters;
+  const { gender, supervisionType, legalStatus } = filtersStore.filters;
   const timePeriod: MonthOptions = parseInt(
     filtersStore.filters.timePeriod,
     10
@@ -79,9 +79,10 @@ const PopulationTimeseriesChart: React.FC<PropTypes> = ({ data }) => {
     timePeriod,
     gender,
     compartment,
-    supervisionType,
+    compartment === "SUPERVISION" ? supervisionType : legalStatus,
     data
-  );
+  ).sort((a, b) => (a.year !== b.year ? a.year - b.year : a.month - b.month));
+  // TODO(recidiviz-data/issues/6651): Sort data on backend
 
   if (filteredData.length < 1) {
     // TODO: Error state
