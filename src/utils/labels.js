@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-
+import numeral from "numeral";
 import lowerCase from "lodash/fp/lowerCase";
 import pipe from "lodash/fp/pipe";
 import startCase from "lodash/fp/startCase";
@@ -144,9 +144,10 @@ const formatDistrictLabel = (label) => {
 
 const formatLargeNumber = (number) => {
   const ONE_MILLION = 1000000;
-  return Math.abs(number) >= ONE_MILLION
-    ? `${(number / ONE_MILLION).toFixed(1)}M`
-    : number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  if (number > ONE_MILLION) {
+    return numeral(number).format("0a");
+  }
+  return numeral(number).format("0,0");
 };
 
 function formatPercent(percentage) {
