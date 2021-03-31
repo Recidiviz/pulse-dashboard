@@ -144,8 +144,8 @@ const formatDistrictLabel = (label) => {
 
 const formatLargeNumber = (number) => {
   const ONE_MILLION = 1000000;
-  if (number > ONE_MILLION) {
-    return numeral(number).format("0a");
+  if (Math.abs(number) >= ONE_MILLION) {
+    return `${(number / ONE_MILLION).toFixed(1)}M`;
   }
   return numeral(number).format("0,0");
 };
