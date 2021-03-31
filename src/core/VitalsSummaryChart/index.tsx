@@ -20,6 +20,7 @@ import { curveCatmullRom } from "d3-shape";
 import { VitalsTimeSeriesRecord } from "../models/types";
 import { formatPercent, formatISODateString } from "../../utils/formatStrings";
 import VitalsSummaryTooltip from "./VitalsSummaryTooltip";
+
 import * as styles from "../CoreConstants.scss";
 
 import "./VitalsSummaryChart.scss";
@@ -28,9 +29,15 @@ const ResponsiveOrdinalFrame = require("semiotic/lib/ResponsiveOrdinalFrame") as
 
 interface PropTypes {
   timeSeries: VitalsTimeSeriesRecord[];
+  goal: number;
+  stateCode: string;
 }
 
-const VitalsSummaryChart: React.FC<PropTypes> = ({ timeSeries }) => {
+const VitalsSummaryChart: React.FC<PropTypes> = ({
+  timeSeries,
+  goal,
+  stateCode,
+}) => {
   const [hoveredId, setHoveredId] = useState(null);
 
   const lineCoordinates = timeSeries.map((record, index) => ({
@@ -49,6 +56,54 @@ const VitalsSummaryChart: React.FC<PropTypes> = ({ timeSeries }) => {
     date: record.date,
   }));
 
+  const latestDataPoint = ordinalData[ordinalData.length - 1];
+
+  const goalLabelAnnotation = (annotation: any) => {
+    const { d, adjustedSize, rScale, oScale } = annotation;
+    const x = oScale(d.date);
+    const y = adjustedSize[1] - rScale(d.value) - 10;
+    return (
+      <g className="VitalsSummaryChart__goal-label" textAnchor="end">
+        <text x={x} y={y}>{`${stateCode} Goal: ${formatPercent(goal)}`}</text>
+      </g>
+    );
+  };
+
+  const trendlinePointAnnotation = (annotation: any) => {
+    const { d, adjustedSize, rScale } = annotation;
+    const { pieces, column } = d;
+    const { data: pieceData } = pieces[0];
+    const cx = column.middle;
+    const cy = adjustedSize[1] - rScale(pieceData.weeklyAvg);
+    setHoveredId(pieceData.index);
+    return <circle cx={cx} cy={cy} r={4} fill={styles.indigo} />;
+  };
+
+  const goalTargetAnnotation = (annotation: any) => {
+    const { d, adjustedSize, rScale, orFrameState } = annotation;
+    const { weeklyAvg, date } = d;
+    const cx = orFrameState.projectedColumns[date].middle;
+    const cy = adjustedSize[1] - rScale(weeklyAvg);
+    return (
+      <g>
+        <circle
+          cx={cx}
+          cy={cy}
+          r="8"
+          fill={styles.white}
+          stroke={styles.crimson}
+        />
+        <circle
+          cx={cx}
+          cy={cy}
+          r="4"
+          fill={styles.crimson}
+          stroke={styles.crimson}
+        />
+      </g>
+    );
+  };
+
   return (
     <div className="VitalsSummaryChart">
       <ResponsiveOrdinalFrame
@@ -64,6 +119,21 @@ const VitalsSummaryChart: React.FC<PropTypes> = ({ timeSeries }) => {
             },
             curve: curveCatmullRom,
           },
+          {
+            type: "or",
+            ...latestDataPoint,
+          },
+          {
+            type: "react-annotation",
+            date: latestDataPoint.date,
+            value: goal,
+          },
+          {
+            type: "r",
+            value: goal,
+            color: styles.signalLinks,
+            disable: "connector",
+          },
         ]}
         customHoverBehavior={(piece: any) => {
           if (piece) {
@@ -74,15 +144,14 @@ const VitalsSummaryChart: React.FC<PropTypes> = ({ timeSeries }) => {
         }}
         baseMarkProps={{ transitionDuration: { default: 500 } }}
         svgAnnotationRules={(annotation: any) => {
+          if (annotation.d.type === "react-annotation") {
+            return goalLabelAnnotation(annotation);
+          }
           if (annotation.d.type === "column-hover") {
-            const { d, adjustedSize, rScale } = annotation;
-            const { pieces, column } = d;
-            const { data: pieceData } = pieces[0];
-            // Shift the point slightly to the left to center it
-            const cx = column.middle;
-            const cy = adjustedSize[1] - rScale(pieceData.weeklyAvg);
-            setHoveredId(pieceData.index);
-            return <circle cx={cx} cy={cy} r={4} fill={styles.indigo} />;
+            return trendlinePointAnnotation(annotation);
+          }
+          if (annotation.d.type === "or") {
+            return goalTargetAnnotation(annotation);
           }
           setHoveredId(null);
           return null;

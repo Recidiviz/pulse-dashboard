@@ -23,7 +23,7 @@ export type SummaryStatus =
   | "EXCELLENT";
 
 export type SummaryCard = {
-  id: string;
+  id: MetricType;
   title: string;
   description: string;
   value: number;
@@ -46,4 +46,18 @@ export type VitalsSummaryTableRow = {
   timelyRiskAssessment: number;
 };
 
-export type EntityType = "STATE_DOC" | "OFFICE" | "OFFICER";
+export type EntityType = keyof typeof ENTITY_TYPES;
+export const ENTITY_TYPES = {
+  STATE_DOC: "STATE_DOC",
+  OFFICE: "OFFICE",
+  OFFICER: "OFFICER",
+} as const;
+
+export type MetricType = keyof typeof METRIC_TYPES;
+export const METRIC_TYPES = {
+  OVERALL: "OVERALL",
+  DISCHARGE: "DISCHARGE",
+  FTR_ENROLLMENT: "FTR_ENROLLMENT",
+  CONTACT: "CONTACT",
+  RISK_ASSESSMENT: "RISK_ASSESSMENT",
+} as const;

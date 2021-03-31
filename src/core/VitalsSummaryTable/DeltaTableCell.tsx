@@ -16,19 +16,12 @@
 // =============================================================================
 import React from "react";
 import PropTypes from "prop-types";
-import cx from "classnames";
-import { formatPercent } from "../../utils";
+import PercentDelta from "../controls/PercentDelta";
 
 const DeltaTableCell: React.FC<{ value: number }> = ({ value }) => {
-  const deltaDirectionClassName = cx({
-    "VitalsSummaryTable__arrow--decreasing": value < 0,
-    "VitalsSummaryTable__arrow--increasing": value > 0,
-    "VitalsSummaryTable__arrow--hidden": value === 0,
-  });
   return (
     <div className="VitalsSummaryTable__change">
-      <div className={deltaDirectionClassName} />
-      {formatPercent(value)}
+      <PercentDelta value={value} width={14} height={12} improvesOnIncrease />
     </div>
   );
 };

@@ -18,12 +18,12 @@
 import React from "react";
 
 import VitalsSummaryCard from "./VitalsSummaryCard";
-import { SummaryCard } from "../PageVitals/types";
+import { SummaryCard, MetricType } from "../PageVitals/types";
 
 type PropTypes = {
   summaryCards: SummaryCard[];
-  selected: string;
-  onClick: (id: string) => () => void;
+  selected: MetricType;
+  onClick: (id: MetricType) => () => void;
 };
 
 const VitalsSummaryCards: React.FC<PropTypes> = ({

@@ -21,10 +21,12 @@ import flags from "./flags";
 export default {
   [lantern.US_MO]: {
     name: "Missouri",
+    stateCode: "MO",
     availableStateCodes: [lantern.US_MO],
   },
   [core.US_ND]: {
     name: "North Dakota",
+    stateCode: "ND",
     availableStateCodes: [core.US_ND],
     navigation: {
       goals: [],
@@ -34,6 +36,7 @@ export default {
   },
   [core.US_ID]: {
     name: "Idaho",
+    stateCode: "ID",
     availableStateCodes: [core.US_ID],
     navigation: {
       community: ["projections"],
@@ -43,14 +46,17 @@ export default {
   },
   [lantern.US_PA]: {
     name: "Pennsylvania",
+    stateCode: "PA",
     availableStateCodes: [lantern.US_PA],
   },
   RECIDIVIZ: {
     name: "Recidiviz",
+    stateCode: "Recidiviz",
     availableStateCodes: lantern.LANTERN_TENANTS.concat(core.CORE_TENANTS),
   },
   LANTERN: {
     name: "Lantern",
+    stateCode: "Lantern",
     availableStateCodes: lantern.LANTERN_TENANTS,
   },
 };

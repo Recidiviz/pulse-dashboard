@@ -25,6 +25,7 @@ import VitalsWeeklyChange from "../VitalsWeeklyChange";
 import VitalsSummaryChart from "../VitalsSummaryChart";
 import VitalsSummaryDetail from "../VitalsSummaryDetail";
 import Loading from "../../components/Loading";
+import { MetricType, METRIC_TYPES, ENTITY_TYPES } from "./types";
 import { useRootStore } from "../../components/StoreProvider";
 import { VitalsSummaryRecord, VitalsTimeSeriesRecord } from "../models/types";
 import { ChartDataType } from "../types/charts";
@@ -41,16 +42,25 @@ import {
 } from "./helpers";
 import "./PageVitals.scss";
 
-export const DEFAULT_ENTITY_ID = "STATE_DOC";
+export const DEFAULT_ENTITY_ID = ENTITY_TYPES.STATE_DOC;
+const goals = {
+  [METRIC_TYPES.OVERALL]: 80,
+  [METRIC_TYPES.DISCHARGE]: 90,
+  [METRIC_TYPES.FTR_ENROLLMENT]: 70,
+  [METRIC_TYPES.CONTACT]: 80,
+  [METRIC_TYPES.RISK_ASSESSMENT]: 85,
+};
 
 const PageVitals: React.FC = () => {
   const routeParams = useParams() as { entityId: string | undefined };
   const currentEntityId = routeParams.entityId
     ? convertSlugToId(routeParams.entityId)
     : DEFAULT_ENTITY_ID;
-  const [selectedCardId, setSelectedCardId] = useState("OVERALL");
   const { tenantStore } = useRootStore();
-  const { stateName } = tenantStore;
+  const { stateName, stateCode } = tenantStore;
+  const [selectedCardId, setSelectedCardId] = useState<MetricType>(
+    METRIC_TYPES.OVERALL
+  );
   const { isLoading, isError, apiData }: ChartDataType = useChartData(
     "us_nd/vitals"
   ) as ChartDataType;
@@ -76,7 +86,7 @@ const PageVitals: React.FC = () => {
     apiData.vitals_time_series.data
   );
 
-  const handleSelectCard: (id: string) => () => void = (id) => () => {
+  const handleSelectCard: (id: MetricType) => () => void = (id) => () => {
     setSelectedCardId(id);
   };
 
@@ -111,11 +121,18 @@ const PageVitals: React.FC = () => {
           <VitalsWeeklyChange
             weeklyChange={getWeeklyChange(selectedTimeSeries)}
           />
-          <VitalsSummaryChart timeSeries={selectedTimeSeries} />
+          <VitalsSummaryChart
+            stateCode={stateCode}
+            goal={goals[selectedCardId]}
+            timeSeries={selectedTimeSeries}
+          />
         </div>
       </div>
       <div className="PageVitals__Table">
-        <VitalsSummaryTable summaries={childEntitySummaryRows} />
+        <VitalsSummaryTable
+          selectedSortBy={selectedCardId}
+          summaries={childEntitySummaryRows}
+        />
       </div>
     </PageTemplate>
   );

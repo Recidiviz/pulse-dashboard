@@ -14,7 +14,12 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-import { SummaryCard, SummaryStatus, VitalsSummaryTableRow } from "./types";
+import {
+  SummaryCard,
+  SummaryStatus,
+  VitalsSummaryTableRow,
+  METRIC_TYPES,
+} from "./types";
 import { VitalsSummaryRecord, VitalsTimeSeriesRecord } from "../models/types";
 import { DEFAULT_ENTITY_ID } from "./index";
 
@@ -34,7 +39,7 @@ export const getSummaryCards: (
     description: "Average timeliness across all metrics",
     value: summary.overall,
     status: getSummaryStatus(summary.overall),
-    id: "OVERALL",
+    id: METRIC_TYPES.OVERALL,
   },
   {
     title: "Timely discharge",
@@ -42,7 +47,7 @@ export const getSummaryCards: (
      supervision discharge date`,
     value: summary.timelyDischarge,
     status: getSummaryStatus(summary.timelyDischarge),
-    id: "DISCHARGE",
+    id: METRIC_TYPES.DISCHARGE,
   },
   {
     title: "Timely FTR enrollment",
@@ -50,7 +55,7 @@ export const getSummaryCards: (
       "of clients are not pending enrollment in Free Through Recovery",
     value: summary.timelyFtrEnrollment,
     status: getSummaryStatus(summary.timelyFtrEnrollment),
-    id: "FTR_ENROLLMENT",
+    id: METRIC_TYPES.FTR_ENROLLMENT,
   },
   {
     title: "Timely contacts",
@@ -59,7 +64,7 @@ export const getSummaryCards: (
      minimum, medium, and maximum supervision levels respectively`,
     value: summary.timelyContact,
     status: getSummaryStatus(summary.timelyContact),
-    id: "CONTACT",
+    id: METRIC_TYPES.CONTACT,
   },
   {
     title: "Timely risk assessments",
@@ -67,7 +72,7 @@ export const getSummaryCards: (
       reassessment within 212 days`,
     value: summary.timelyRiskAssessment,
     status: getSummaryStatus(summary.timelyRiskAssessment),
-    id: "RISK_ASSESSMENT",
+    id: METRIC_TYPES.RISK_ASSESSMENT,
   },
 ];
 

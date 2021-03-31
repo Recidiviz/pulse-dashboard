@@ -14,14 +14,18 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-import React, { useMemo } from "react";
+import React, { useMemo, useEffect } from "react";
 import { useTable, useSortBy } from "react-table";
 import { Link } from "react-router-dom";
 import cx from "classnames";
 import BubbleTableCell from "./BubbleTableCell";
 import DeltaTableCell from "./DeltaTableCell";
 import { formatPercent } from "../../utils";
-import { VitalsSummaryTableRow } from "../PageVitals/types";
+import {
+  VitalsSummaryTableRow,
+  METRIC_TYPES,
+  ENTITY_TYPES,
+} from "../PageVitals/types";
 import { convertIdToSlug } from "../../utils/navigation";
 import { toTitleCase } from "../../utils/formatStrings";
 
@@ -29,9 +33,13 @@ import "./VitalsSummaryTable.scss";
 
 type PropTypes = {
   summaries: VitalsSummaryTableRow[];
+  selectedSortBy: string;
 };
 
-const VitalsSummaryTable: React.FC<PropTypes> = ({ summaries }) => {
+const VitalsSummaryTable: React.FC<PropTypes> = ({
+  summaries,
+  selectedSortBy,
+}) => {
   const createBubbleTableCell = ({ value }: { value: number }) => (
     <BubbleTableCell value={value} />
   );
@@ -41,6 +49,7 @@ const VitalsSummaryTable: React.FC<PropTypes> = ({ summaries }) => {
   );
   const { entityType } = summaries[0].entity;
 
+  const data = useMemo(() => summaries, [summaries]);
   const columns = useMemo(
     () => [
       {
@@ -58,7 +67,7 @@ const VitalsSummaryTable: React.FC<PropTypes> = ({ summaries }) => {
                 entityType: string;
               };
             }) =>
-              value.entityType === "OFFICE" ? (
+              value.entityType === ENTITY_TYPES.OFFICE ? (
                 <Link
                   className="VitalsSummaryTable__link"
                   to={`/community/vitals/${convertIdToSlug(value.entityId)}`}
@@ -76,6 +85,7 @@ const VitalsSummaryTable: React.FC<PropTypes> = ({ summaries }) => {
         columns: [
           {
             Header: "Overall score",
+            id: METRIC_TYPES.OVERALL,
             accessor: "overall",
             Cell: ({ value }: { value: number }) => formatPercent(value),
           },
@@ -96,21 +106,25 @@ const VitalsSummaryTable: React.FC<PropTypes> = ({ summaries }) => {
         columns: [
           {
             Header: "Timely discharge",
+            id: METRIC_TYPES.DISCHARGE,
             accessor: "timelyDischarge",
             Cell: createBubbleTableCell,
           },
           {
             Header: "Program availability",
+            id: METRIC_TYPES.FTR_ENROLLMENT,
             accessor: "timelyFtrEnrollment",
             Cell: createBubbleTableCell,
           },
           {
             Header: "Timely contacts",
+            id: METRIC_TYPES.CONTACT,
             accessor: "timelyContact",
             Cell: createBubbleTableCell,
           },
           {
             Header: "Timely risk assessments",
+            id: METRIC_TYPES.RISK_ASSESSMENT,
             accessor: "timelyRiskAssessment",
             Cell: createBubbleTableCell,
           },
@@ -120,13 +134,29 @@ const VitalsSummaryTable: React.FC<PropTypes> = ({ summaries }) => {
     [entityType]
   );
 
+  const sortBy = useMemo(() => ({ id: selectedSortBy, desc: false }), [
+    selectedSortBy,
+  ]);
+
   const {
     getTableProps,
     getTableBodyProps,
     headerGroups,
     rows,
+    setSortBy,
     prepareRow,
-  } = useTable({ columns, data: summaries }, useSortBy);
+  } = useTable(
+    {
+      columns,
+      data,
+      initialState: { sortBy: [sortBy] },
+    },
+    useSortBy
+  );
+
+  useEffect(() => {
+    setSortBy([sortBy]);
+  }, [setSortBy, sortBy]);
 
   return (
     <div className="VitalsSummaryTable">
@@ -140,23 +170,23 @@ const VitalsSummaryTable: React.FC<PropTypes> = ({ summaries }) => {
               {headerGroup.headers.map((column) => (
                 <th {...column.getHeaderProps(column.getSortByToggleProps())}>
                   {column.canSort ? (
-                    <div className="VitalsSummaryTable__sortable">
+                    <div className="VitalsSummaryTable__sortable-header">
                       {column.render("Header")}
-                      <div className="triangle-switcher">
+                      <div className="VitalsSummaryTable__sort">
                         <div
                           className={cx(
-                            "triangle-switcher__button triangle-switcher__button--up",
+                            "VitalsSummaryTable__sort__button VitalsSummaryTable__sort__button--up",
                             {
-                              "triangle-switcher__button--active":
+                              "VitalsSummaryTable__sort__button--active":
                                 column.isSorted && column.isSortedDesc,
                             }
                           )}
                         />
                         <div
                           className={cx(
-                            "triangle-switcher__button triangle-switcher__button--down",
+                            "VitalsSummaryTable__sort__button VitalsSummaryTable__sort__button--down",
                             {
-                              "triangle-switcher__button--active":
+                              "VitalsSummaryTable__sort__button--active":
                                 column.isSorted && !column.isSortedDesc,
                             }
                           )}
@@ -164,7 +194,9 @@ const VitalsSummaryTable: React.FC<PropTypes> = ({ summaries }) => {
                       </div>
                     </div>
                   ) : (
-                    column.render("Header")
+                    <div className="VitalsSummaryTable__header">
+                      {column.render("Header")}
+                    </div>
                   )}
                 </th>
               ))}
