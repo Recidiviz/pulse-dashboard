@@ -73,7 +73,6 @@ const VitalsSummaryChart: React.FC<PropTypes> = ({
     const { d, adjustedSize, rScale } = annotation;
     const { pieces, column } = d;
     const { data: pieceData } = pieces[0];
-    // Shift the point slightly to the left to center it
     const cx = column.middle;
     const cy = adjustedSize[1] - rScale(pieceData.weeklyAvg);
     setHoveredId(pieceData.index);
@@ -126,7 +125,6 @@ const VitalsSummaryChart: React.FC<PropTypes> = ({
           },
           {
             type: "react-annotation",
-            label: `ND Goal: ${formatPercent(goal)}`,
             date: latestDataPoint.date,
             value: goal,
           },
