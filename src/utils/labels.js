@@ -149,6 +149,10 @@ const formatLargeNumber = (number) => {
     : number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 };
 
+function formatPercent(percentage) {
+  return `${Math.abs(percentage)}%`;
+}
+
 export {
   getPeriodLabelFromMetricPeriodMonthsFilter,
   getTrailingLabelFromMetricPeriodMonthsFilter,
@@ -170,4 +174,5 @@ export {
   formatOfficerLabel,
   formatDistrictLabel,
   formatLargeNumber,
+  formatPercent,
 };
