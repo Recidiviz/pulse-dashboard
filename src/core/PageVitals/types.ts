@@ -14,6 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
+import { EntityType } from "../models/types";
 
 export type SummaryStatus =
   | "POOR"
@@ -45,13 +46,6 @@ export type VitalsSummaryTableRow = {
   timelyContact: number;
   timelyRiskAssessment: number;
 };
-
-export type EntityType = keyof typeof ENTITY_TYPES;
-export const ENTITY_TYPES = {
-  STATE_DOC: "STATE_DOC",
-  OFFICE: "OFFICE",
-  OFFICER: "OFFICER",
-} as const;
 
 export type MetricType = keyof typeof METRIC_TYPES;
 export const METRIC_TYPES = {

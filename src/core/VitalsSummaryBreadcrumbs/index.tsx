@@ -18,6 +18,10 @@
 import React from "react";
 import "./VitalsSummaryBreadcrumbs.scss";
 
+function formatOfficeName(name: string): string {
+  return `${name} Office`;
+}
+
 type PropTypes = {
   stateName: string;
   officeName?: string;
@@ -28,7 +32,7 @@ const VitalsSummaryBreadcrumbs: React.FC<PropTypes> = ({
   officeName,
 }) => {
   const { primary, secondary } = officeName
-    ? { primary: officeName, secondary: stateName }
+    ? { primary: formatOfficeName(officeName), secondary: stateName }
     : { primary: stateName, secondary: undefined };
   return (
     <div className="VitalsSummaryBreadcrumbs">

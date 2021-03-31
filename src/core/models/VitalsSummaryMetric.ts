@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-import { VitalsSummaryRecord, RawMetricData } from "./types";
+import { VitalsSummaryRecord, RawMetricData, EntityType } from "./types";
 
 export function vitalsSummary(
   rawRecords: RawMetricData
@@ -23,6 +23,7 @@ export function vitalsSummary(
     return {
       entityId: record.entity_id,
       entityName: record.entity_name,
+      entityType: record.entity_type as EntityType,
       parentEntityId: record.parent_entity_id,
       overall: Number(record.overall),
       timelyDischarge: Number(record.timely_discharge),

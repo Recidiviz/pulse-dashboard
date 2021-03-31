@@ -25,9 +25,13 @@ import VitalsWeeklyChange from "../VitalsWeeklyChange";
 import VitalsSummaryChart from "../VitalsSummaryChart";
 import VitalsSummaryDetail from "../VitalsSummaryDetail";
 import Loading from "../../components/Loading";
-import { MetricType, METRIC_TYPES, ENTITY_TYPES } from "./types";
+import { MetricType, METRIC_TYPES } from "./types";
 import { useRootStore } from "../../components/StoreProvider";
-import { VitalsSummaryRecord, VitalsTimeSeriesRecord } from "../models/types";
+import {
+  VitalsSummaryRecord,
+  VitalsTimeSeriesRecord,
+  ENTITY_TYPES,
+} from "../models/types";
 import { ChartDataType } from "../types/charts";
 import useChartData from "../hooks/useChartData";
 import { vitalsTimeSeries } from "../models/VitalsTimeSeriesMetric";
@@ -65,7 +69,6 @@ const PageVitals: React.FC = () => {
   const { isLoading, isError, apiData }: ChartDataType = useChartData(
     "us_nd/vitals"
   ) as ChartDataType;
-
   // TODO: add in Error state
   if (isError) {
     return null;
@@ -101,10 +104,9 @@ const PageVitals: React.FC = () => {
     selectedCardId,
     currentEntityId
   );
-
   return (
     <PageTemplate>
-      <VitalsSummaryBreadcrumbs stateName={stateName} />
+      <VitalsSummaryBreadcrumbs stateName={stateName} officeName="Oakes" />
       <div className="PageVitals__SummaryCards">
         <VitalsSummaryCards
           onClick={handleSelectCard}

@@ -21,7 +21,6 @@ import {
   METRIC_TYPES,
 } from "./types";
 import { VitalsSummaryRecord, VitalsTimeSeriesRecord } from "../models/types";
-import { DEFAULT_ENTITY_ID } from "./index";
 
 export function getSummaryStatus(value: number): SummaryStatus {
   if (value < 70) return "POOR";
@@ -106,15 +105,13 @@ export function getEntitySummaries(
         d.parentEntityId === currentEntityId && d.parentEntityId !== d.entityId
     )
     .map((d) => {
-      const { entityId, entityName, parentEntityId, ...attrs } = d;
+      const { entityId, entityName, entityType, ...attrs } = d;
       return {
         entity: {
           entityId,
           entityName,
-          entityType:
-            parentEntityId === DEFAULT_ENTITY_ID ? "OFFICE" : "OFFICER",
+          entityType,
         },
-        parentEntityId,
         ...attrs,
       };
     }) as VitalsSummaryTableRow[];
