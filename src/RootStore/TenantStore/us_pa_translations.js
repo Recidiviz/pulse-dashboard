@@ -47,6 +47,8 @@ export default {
   Revocations: "Recommitments",
   revocation: "recommitment",
   revocations: "recommitments",
+  Admission: "Recommitment",
+  admission: "recommitment",
   percentOfPopulationRevoked: "Recommitment rate of standing population",
   matrixExplanationP1: `This chart plots all people who were recommitted on a board 
   action to SCIs, CCCs, or Contract Facilities from parole during the selected 
