@@ -37,6 +37,7 @@ $font-ui-sans-24: 1.5rem/2.5rem $sans-serif;
 $font-ui-serif-34: 400 2.125rem/3rem $serif;
 
 :export {
+  crimson: $crimson;
   crimsonDark: $crimson-dark;
   fontUiSans16: $font-ui-sans-16;
   fontUiSans14: $font-ui-sans-14;
@@ -48,4 +49,5 @@ $font-ui-serif-34: 400 2.125rem/3rem $serif;
   slate30Opaque: $slate-30-opaque;
   slate60: $slate-60;
   slate80: $slate-80;
+  white: $white;
 }
