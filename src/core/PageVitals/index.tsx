@@ -32,6 +32,7 @@ import { ChartDataType } from "../types/charts";
 import useChartData from "../hooks/useChartData";
 import { vitalsTimeSeries } from "../models/VitalsTimeSeriesMetric";
 import { vitalsSummary } from "../models/VitalsSummaryMetric";
+import VitalsSummaryBreadcrumbs from "../VitalsSummaryBreadcrumbs";
 import { convertSlugToId } from "../../utils/navigation";
 import {
   getSummaryCards,
@@ -103,7 +104,7 @@ const PageVitals: React.FC = () => {
 
   return (
     <PageTemplate>
-      <div className="PageVitals__Title">{stateName}</div>
+      <VitalsSummaryBreadcrumbs stateName={stateName} />
       <div className="PageVitals__SummaryCards">
         <VitalsSummaryCards
           onClick={handleSelectCard}
