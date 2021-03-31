@@ -106,7 +106,10 @@ const PageVitals: React.FC = () => {
   );
   return (
     <PageTemplate>
-      <VitalsSummaryBreadcrumbs stateName={stateName} officeName="Oakes" />
+      <VitalsSummaryBreadcrumbs
+        stateName={stateName}
+        entity={currentEntitySummary}
+      />
       <div className="PageVitals__SummaryCards">
         <VitalsSummaryCards
           onClick={handleSelectCard}

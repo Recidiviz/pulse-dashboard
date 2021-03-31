@@ -16,6 +16,7 @@
 // =============================================================================
 
 import React from "react";
+import { ENTITY_TYPES, VitalsSummaryRecord } from "../models/types";
 import "./VitalsSummaryBreadcrumbs.scss";
 
 function formatOfficeName(name: string): string {
@@ -24,16 +25,18 @@ function formatOfficeName(name: string): string {
 
 type PropTypes = {
   stateName: string;
-  officeName?: string;
+  entity: VitalsSummaryRecord;
 };
 
 const VitalsSummaryBreadcrumbs: React.FC<PropTypes> = ({
   stateName,
-  officeName,
+  entity,
 }) => {
-  const { primary, secondary } = officeName
-    ? { primary: formatOfficeName(officeName), secondary: stateName }
-    : { primary: stateName, secondary: undefined };
+  const { entityName, entityType } = entity;
+  const { primary, secondary } =
+    entityType === ENTITY_TYPES.DISTRICT_LEVEL
+      ? { primary: formatOfficeName(entityName), secondary: stateName }
+      : { primary: stateName, secondary: undefined };
   return (
     <div className="VitalsSummaryBreadcrumbs">
       <div className="VitalsSummaryBreadcrumbs--secondary">{secondary}</div>

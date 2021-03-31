@@ -15,6 +15,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 import { VitalsSummaryRecord, RawMetricData, EntityType } from "./types";
+import { toTitleCase } from "../../utils/formatStrings";
 
 export function vitalsSummary(
   rawRecords: RawMetricData
@@ -22,7 +23,7 @@ export function vitalsSummary(
   return rawRecords.map((record) => {
     return {
       entityId: record.entity_id,
-      entityName: record.entity_name,
+      entityName: toTitleCase(record.entity_name),
       entityType: record.entity_type as EntityType,
       parentEntityId: record.parent_entity_id,
       overall: Number(record.overall),
