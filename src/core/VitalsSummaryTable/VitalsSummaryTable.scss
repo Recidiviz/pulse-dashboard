@@ -176,6 +176,14 @@ $border-styles: 1px solid #d7dde0;
     margin-right: 0.5rem;
     border-color: #a43939 transparent transparent transparent;
   }
+
+  &__link {
+    &:hover {
+      text-decoration-line: underline;
+      color: $signal-links;
+      cursor: pointer;
+    }
+  }
 }
 
 .triangle-switcher {
