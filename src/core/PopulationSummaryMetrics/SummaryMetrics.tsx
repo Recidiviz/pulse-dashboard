@@ -15,7 +15,6 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 import React from "react";
-import styled from "styled-components/macro";
 import PercentDelta from "../controls/PercentDelta";
 import { formatLargeNumber } from "../../utils/labels";
 import LoadingMetrics from "./LoadingMetrics";
@@ -23,43 +22,6 @@ import type {
   ProjectedSummaryRecord,
   HistoricalSummaryRecord,
 } from "../models/types";
-
-const MetricContainer = styled.div`
-  display: flex;
-  flex-flow: column;
-  padding: 0 40px;
-  width: 30%;
-`;
-
-// TODO(#908): Use typography components from component library
-export const MetricTitle = styled.div`
-  font-family: "Libre Franklin";
-  font-size: 0.9rem;
-  line-height: 1.5rem;
-  letter-spacing: -0.01em;
-  font-weight: 500;
-  color: rgba(53, 83, 98, 0.85);
-  white-space: nowrap;
-`;
-const MetricValue = styled.div`
-  font-family: "Libre Baskerville";
-  font-size: 2rem;
-  line-height: 40px;
-  letter-spacing: -0.04em;
-  font-weight: 400;
-  color: #00413e;
-  padding: 8px 0 0;
-`;
-
-const MetricMinMax = styled.div`
-  font-family: "Libre Franklin";
-  font-size: 0.9rem;
-  line-height: 1rem;
-  font-weight: 400;
-  color: rgba(53, 83, 98, 0.85);
-  white-space: nowrap;
-  padding: 5px 0 0;
-`;
 
 interface SummaryMetricProps {
   title: string;
@@ -78,22 +40,22 @@ const SummaryMetric: React.FC<SummaryMetricProps> = ({
   projectedMinMax = null,
 }) => {
   return (
-    <MetricContainer>
-      <MetricTitle>{title}</MetricTitle>
-      <MetricValue>
+    <div className="SummaryMetric">
+      <div className="SummaryMetric__title">{title}</div>
+      <div className="SummaryMetric__value">
         <div>{formatLargeNumber(value)}</div>
-      </MetricValue>
+      </div>
       <PercentDelta
         className="SummaryMetric__delta"
         value={percentChange}
         improvesOnIncrease={improvesOnIncrease}
       />
       {projectedMinMax && (
-        <MetricMinMax>
+        <div className="SummaryMetric__min-max">
           <div>({projectedMinMax.map(formatLargeNumber).join(", ")})</div>
-        </MetricMinMax>
+        </div>
       )}
-    </MetricContainer>
+    </div>
   );
 };
 
