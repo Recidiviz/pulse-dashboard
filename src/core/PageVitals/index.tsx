@@ -89,7 +89,11 @@ const PageVitals: React.FC = () => {
     currentEntity
   );
   const summaryCards = getSummaryCards(parentEntitySummary);
-  const selectedTimeSeries = getTimeseries(timeSeries, selectedCardId);
+  const selectedTimeSeries = getTimeseries(
+    timeSeries,
+    selectedCardId,
+    currentEntity
+  );
 
   return (
     <PageTemplate>
