@@ -31,14 +31,13 @@ import {
 } from "../PopulationTimeseriesChart/helpers";
 import { CORE_VIEWS, getViewFromPathname } from "../views";
 import { formatLargeNumber } from "../../utils/labels";
-
-import HistoricalSummaryMetrics from "./HistoricalSummaryMetrics";
-import ProjectedSummaryMetrics from "./ProjectedSummaryMetrics";
 import { usePopulationFiltersStore } from "../../components/StoreProvider";
 import type {
   PopulationProjectionTimeseriesRecord,
   SimulationCompartment,
 } from "../models/types";
+import "./LoadingMetrics.scss";
+
 import "./PopulationSummaryMetrics.scss";
 import * as styles from "../CoreConstants.scss";
 
@@ -138,13 +137,36 @@ const TempPopulationSummaryMetrics: React.FC<PropTypes> = ({
   if (isLoading) {
     return (
       <div className="PopulationSummaryMetrics">
-        <HistoricalSummaryMetrics isLoading />
-        <ProjectedSummaryMetrics isLoading />
+        <TempMetricCard>
+          <TempMetric>
+            <TempMetricTitle>Past {timePeriodLabel}</TempMetricTitle>
+            <TempMetricValuesContainer>
+              <TempMetricValueContainer>
+                <div className="LoadingMetrics__value" />
+              </TempMetricValueContainer>
+              <div className="LoadingMetrics__percent" />
+            </TempMetricValuesContainer>
+          </TempMetric>
+        </TempMetricCard>
+        <TempMetricCard>
+          <TempMetric>
+            <TempMetricTitle>
+              Next {timePeriodLabel}
+              <div className="TempMetricTitle__subtitle">Projected</div>
+            </TempMetricTitle>
+            <TempMetricValuesContainer>
+              <TempMetricValueContainer>
+                <div className="LoadingMetrics__value" />
+                <div className="LoadingMetrics__minMax" />
+              </TempMetricValueContainer>
+              <div className="LoadingMetrics__percent" />
+            </TempMetricValuesContainer>
+          </TempMetric>
+        </TempMetricCard>
       </div>
     );
   }
 
-  // Filter timeseries records
   const filteredData = filterData(
     timePeriod,
     gender,
