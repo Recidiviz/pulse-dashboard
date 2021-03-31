@@ -24,6 +24,7 @@ import VitalsWeeklyChange from "../VitalsWeeklyChange";
 import VitalsSummaryChart from "../VitalsSummaryChart";
 import VitalsSummaryDetail from "../VitalsSummaryDetail";
 import Loading from "../../components/Loading";
+import { MetricType, METRIC_TYPES } from "./types";
 import { useRootStore } from "../../components/StoreProvider";
 import { VitalsSummaryRecord, VitalsTimeSeriesRecord } from "../models/types";
 import { ChartDataType } from "../types/charts";
@@ -42,7 +43,9 @@ import "./PageVitals.scss";
 const PageVitals: React.FC = () => {
   const { tenantStore } = useRootStore();
   const { stateName } = tenantStore;
-  const [selectedCardId, setSelectedCardId] = useState("OVERALL");
+  const [selectedCardId, setSelectedCardId] = useState<MetricType>(
+    METRIC_TYPES.OVERALL
+  );
   const [currentEntity] = useState("STATE_DOC");
   const { isLoading, isError, apiData }: ChartDataType = useChartData(
     "us_nd/vitals"
@@ -69,7 +72,7 @@ const PageVitals: React.FC = () => {
     apiData.vitals_time_series.data
   );
 
-  const handleSelectCard: (id: string) => () => void = (id) => () => {
+  const handleSelectCard: (id: MetricType) => () => void = (id) => () => {
     setSelectedCardId(id);
   };
 
@@ -104,7 +107,10 @@ const PageVitals: React.FC = () => {
         </div>
       </div>
       <div className="PageVitals__Table">
-        <VitalsSummaryTable summaries={childEntitySummaries} />
+        <VitalsSummaryTable
+          selectedSortBy={selectedCardId}
+          summaries={childEntitySummaries}
+        />
       </div>
     </PageTemplate>
   );
