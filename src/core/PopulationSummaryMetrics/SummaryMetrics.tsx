@@ -15,6 +15,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 import React from "react";
+import numeral from "numeral";
 import PercentDelta from "../controls/PercentDelta";
 import { formatLargeNumber } from "../../utils/labels";
 import LoadingMetrics from "./LoadingMetrics";
@@ -22,6 +23,10 @@ import type {
   ProjectedSummaryRecord,
   HistoricalSummaryRecord,
 } from "../models/types";
+
+function formatMinMax(number: number): string {
+  return numeral(number).format("0");
+}
 
 interface SummaryMetricProps {
   title: string;
@@ -52,7 +57,7 @@ const SummaryMetric: React.FC<SummaryMetricProps> = ({
       />
       {projectedMinMax && (
         <div className="SummaryMetric__min-max">
-          <div>({projectedMinMax.map(formatLargeNumber).join(", ")})</div>
+          <div>({projectedMinMax.map(formatMinMax).join(", ")})</div>
         </div>
       )}
     </div>

@@ -18,7 +18,7 @@
 // admissions/releases are validated
 import React from "react";
 import styled from "styled-components/macro";
-
+import numeral from "numeral";
 import { Card, CardSection } from "@recidiviz/case-triage-components";
 import { observer } from "mobx-react-lite";
 import { useLocation } from "react-router-dom";
@@ -232,9 +232,10 @@ const TempPopulationSummaryMetrics: React.FC<PropTypes> = ({
               <div className="SummaryMetric__min-max">
                 <div>
                   (
-                  {[totalPopulationMin, totalPopulationMax]
-                    .map(formatLargeNumber)
-                    .join(", ")}
+                  {[
+                    numeral(totalPopulationMin).format("0"),
+                    numeral(totalPopulationMax).format("0"),
+                  ].join(", ")}
                   )
                 </div>
               </div>
