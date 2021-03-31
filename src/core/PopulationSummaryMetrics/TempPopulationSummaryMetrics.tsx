@@ -23,7 +23,12 @@ import { Card, CardSection } from "@recidiviz/case-triage-components";
 import { observer } from "mobx-react-lite";
 import { useLocation } from "react-router-dom";
 import PercentDelta from "../controls/PercentDelta";
-import { filterData, MonthOptions } from "../PopulationTimeseriesChart/helpers";
+import {
+  filterData,
+  MonthOptions,
+  CURRENT_YEAR,
+  CURRENT_MONTH,
+} from "../PopulationTimeseriesChart/helpers";
 import { CORE_VIEWS, getViewFromPathname } from "../views";
 import { formatLargeNumber } from "../../utils/labels";
 
@@ -36,10 +41,6 @@ import type {
 } from "../models/types";
 import "./PopulationSummaryMetrics.scss";
 import * as styles from "../CoreConstants.scss";
-// type TempPopulationRecord = {
-//   currentTotalPopulation: number;
-//   projectedTotalPopulation: number;
-// };
 
 type PropTypes = {
   isLoading?: boolean;
@@ -66,12 +67,12 @@ const TempMetric = styled.div`
 
 const TempMetricTitle = styled.div`
   color: ${styles.pine1};
-  font: ${styles.fontUISans16};
+  font: ${styles.fontUiSans16};
   letter-spacing: -0.01em;
 
   .TempMetricTitle__subtitle {
     color: ${styles.slate80};
-    font: ${styles.fontUISans14};
+    font: ${styles.fontUiSans14};
   }
 `;
 
@@ -152,13 +153,29 @@ const TempPopulationSummaryMetrics: React.FC<PropTypes> = ({
     projectionSummaries
   ).sort((a, b) => (a.year !== b.year ? a.year - b.year : a.month - b.month));
 
-  const historicalPopulation = filteredData[0].totalPopulation;
-  const projected = filteredData[filteredData.length - 1];
+  const currentData = filteredData.find(
+    (d) => d.year === CURRENT_YEAR && d.month === CURRENT_MONTH
+  ) as PopulationProjectionTimeseriesRecord;
+
+  const historicalData = filteredData[0];
+
+  const projectedData = filteredData[filteredData.length - 1];
+
   const {
     totalPopulation: projectedPopulation,
     totalPopulationMin,
     totalPopulationMax,
-  } = projected;
+  } = projectedData;
+
+  const historicalPercentChange =
+    ((currentData.totalPopulation - historicalData.totalPopulation) /
+      historicalData.totalPopulation) *
+    100;
+
+  const projectedPercentChange =
+    ((projectedPopulation - currentData.totalPopulation) /
+      currentData.totalPopulation) *
+    100;
 
   return (
     <div className="PopulationSummaryMetrics">
@@ -168,12 +185,12 @@ const TempPopulationSummaryMetrics: React.FC<PropTypes> = ({
           <TempMetricValuesContainer>
             <TempMetricValueContainer>
               <div className="SummaryMetric__value">
-                <div>{formatLargeNumber(historicalPopulation)}</div>
+                <div>{formatLargeNumber(currentData.totalPopulation)}</div>
               </div>
             </TempMetricValueContainer>
             <PercentDelta
               className="SummaryMetric__delta"
-              value={5}
+              value={historicalPercentChange}
               improvesOnIncrease={false}
             />
           </TempMetricValuesContainer>
@@ -202,7 +219,7 @@ const TempPopulationSummaryMetrics: React.FC<PropTypes> = ({
             </TempMetricValueContainer>
             <PercentDelta
               className="ProjectedSummaryMetric__delta SummaryMetric__delta"
-              value={5}
+              value={projectedPercentChange}
               improvesOnIncrease={false}
             />
           </TempMetricValuesContainer>

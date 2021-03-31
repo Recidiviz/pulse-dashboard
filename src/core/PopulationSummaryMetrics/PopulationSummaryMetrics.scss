@@ -43,31 +43,22 @@
   width: 30%;
 
   &__title {
-    font-family: "Libre Franklin";
-    font-size: 0.9rem;
-    line-height: 1.5rem;
+    font: $font-ui-sans-16;
+    color: $slate-80;
     letter-spacing: -0.01em;
-    font-weight: 500;
-    color: rgba(53, 83, 98, 0.85);
     white-space: nowrap;
   }
 
   &__value {
-    font-family: "Libre Baskerville";
-    font-size: 2rem;
-    line-height: 40px;
+    font: $font-ui-serif-34;
     letter-spacing: -0.04em;
-    font-weight: 400;
-    color: #00413e;
+    color: $pine-3;
     padding: 8px 0 0;
   }
 
   &__min-max {
-    font-family: "Libre Franklin";
-    font-size: 0.9rem;
-    line-height: 1rem;
-    font-weight: 400;
-    color: rgba(53, 83, 98, 0.85);
+    font: $font-ui-sans-14;
+    color: $slate-80;
     white-space: nowrap;
     padding: 5px 0 0;
   }

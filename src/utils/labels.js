@@ -151,7 +151,7 @@ const formatLargeNumber = (number) => {
 };
 
 function formatPercent(percentage) {
-  return `${Math.abs(percentage)}%`;
+  return `${numeral(Math.abs(percentage)).format("0")}%`;
 }
 
 export {
