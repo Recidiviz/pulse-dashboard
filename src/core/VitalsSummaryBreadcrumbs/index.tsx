@@ -16,6 +16,7 @@
 // =============================================================================
 
 import React from "react";
+import { Link } from "react-router-dom";
 import { ENTITY_TYPES, VitalsSummaryRecord } from "../models/types";
 import "./VitalsSummaryBreadcrumbs.scss";
 
@@ -39,7 +40,12 @@ const VitalsSummaryBreadcrumbs: React.FC<PropTypes> = ({
       : { primary: stateName, secondary: undefined };
   return (
     <div className="VitalsSummaryBreadcrumbs">
-      <div className="VitalsSummaryBreadcrumbs--secondary">{secondary}</div>
+      <Link
+        className="VitalsSummaryBreadcrumbs--secondary"
+        to="/community/vitals"
+      >
+        {secondary}
+      </Link>
       <div className="VitalsSummaryBreadcrumbs--primary">{primary}</div>
     </div>
   );

@@ -29,6 +29,11 @@
     font-style: medium;
     font-weight: 500;
     color: $slate-80;
+    &:hover {
+      text-decoration-line: underline;
+      color: $signal-links;
+      cursor: pointer;
+    }
   }
 
   &--primary {
