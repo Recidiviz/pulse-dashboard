@@ -18,14 +18,15 @@ import React from "react";
 import { observer } from "mobx-react-lite";
 import { useLocation } from "react-router-dom";
 import PageTemplate from "../PageTemplate";
-import PopulationSummaryMetrics from "../PopulationSummaryMetrics";
+// TODO(recidiviz-data/issues/6185): Use PopulationSummaryMetrics when data is valid
+import PopulationSummaryMetrics from "../PopulationSummaryMetrics/TempPopulationSummaryMetrics";
 import useChartData from "../hooks/useChartData";
 import {
-  PopulationProjectionSummaryRecords,
+  // PopulationProjectionSummaryRecords,
   PopulationProjectionTimeseriesRecord,
   RawApiData,
 } from "../models/types";
-import { populationProjectionSummary } from "../models/PopulationProjectionSummaryMetric";
+// import { populationProjectionSummary } from "../models/PopulationProjectionSummaryMetric";
 import PopulationTimeseriesChart from "../PopulationTimeseriesChart";
 import { populationProjectionTimeseries } from "../models/PopulationProjectionTimeseriesMetric";
 import PopulationFilterBar from "../PopulationFilterBar";
@@ -42,6 +43,7 @@ type ChartDataType = {
 const PageProjections: React.FC = () => {
   const { pathname } = useLocation();
   const { currentTenantId } = useRootStore();
+
   const { isLoading, isError, apiData }: ChartDataType = useChartData(
     "us_id/projections"
   ) as ChartDataType;
@@ -55,9 +57,10 @@ const PageProjections: React.FC = () => {
   }
 
   // Transform records
-  const projectionSummaries: PopulationProjectionSummaryRecords = populationProjectionSummary(
-    apiData.population_projection_summaries.data
-  );
+  // TODO(recidiviz-data/issues/6185): Uncomment when summary table is valid
+  // const projectionSummaries: PopulationProjectionSummaryRecords = populationProjectionSummary(
+  //   apiData.population_projection_summaries.data
+  // );
 
   const projectionTimeseries: PopulationProjectionTimeseriesRecord[] = populationProjectionTimeseries(
     apiData.population_projection_timeseries.data
@@ -75,7 +78,7 @@ const PageProjections: React.FC = () => {
     >
       <PopulationSummaryMetrics
         isError={isError}
-        projectionSummaries={projectionSummaries}
+        projectionSummaries={projectionTimeseries}
       />
       <PopulationTimeseriesChart data={projectionTimeseries} />
     </PageTemplate>
