@@ -122,6 +122,15 @@ $border-styles: 1px solid $slate-20;
     max-height: 2rem;
   }
 
+  &__link {
+    color: $pine-3;
+    &:hover {
+      text-decoration-line: underline;
+      color: $signal-links;
+      cursor: pointer;
+    }
+  }
+
   &__bubble {
     display: inline-block;
     border: 1px solid transparent;

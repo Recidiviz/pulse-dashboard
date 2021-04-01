@@ -25,3 +25,19 @@ export function getPathsFromNavigation(navigation: {
       : [`/${section}`];
   });
 }
+
+export function getPathWithoutParams(pathname: string): string {
+  const navItems = pathname.split("/");
+  // navItems[0] is "" because of the leading /
+  const section: string = navItems[1];
+  const page: string = navItems[2];
+  return page ? `/${section}/${page}` : `/${section}`;
+}
+
+export function convertIdToSlug(id: string): string {
+  return id.replace(/_/g, "-").toLowerCase();
+}
+
+export function convertSlugToId(slug: string): string {
+  return slug.replace(/-/g, "_").toUpperCase();
+}

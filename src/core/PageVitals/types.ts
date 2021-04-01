@@ -30,8 +30,30 @@ export type SummaryCard = {
   status: SummaryStatus;
 };
 
-export type MetricType = keyof typeof METRIC_TYPES;
+export type VitalsSummaryTableRow = {
+  entity: {
+    entityId: string;
+    entityName: string;
+    entityType: EntityType;
+  };
+  parentEntityId?: string;
+  overall: number;
+  overall7Day: number;
+  overall28Day: number;
+  timelyDischarge: number;
+  timelyFtrEnrollment: number;
+  timelyContact: number;
+  timelyRiskAssessment: number;
+};
 
+export type EntityType = keyof typeof ENTITY_TYPES;
+export const ENTITY_TYPES = {
+  STATE_DOC: "STATE_DOC",
+  OFFICE: "OFFICE",
+  OFFICER: "OFFICER",
+} as const;
+
+export type MetricType = keyof typeof METRIC_TYPES;
 export const METRIC_TYPES = {
   OVERALL: "OVERALL",
   DISCHARGE: "DISCHARGE",

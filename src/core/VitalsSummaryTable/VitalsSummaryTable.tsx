@@ -16,17 +16,23 @@
 // =============================================================================
 import React, { useMemo, useEffect } from "react";
 import { useTable, useSortBy } from "react-table";
+import { Link } from "react-router-dom";
 import cx from "classnames";
 import BubbleTableCell from "./BubbleTableCell";
 import DeltaTableCell from "./DeltaTableCell";
-import { METRIC_TYPES } from "../PageVitals/types";
 import { formatPercent } from "../../utils";
+import {
+  VitalsSummaryTableRow,
+  METRIC_TYPES,
+  ENTITY_TYPES,
+} from "../PageVitals/types";
+import { convertIdToSlug } from "../../utils/navigation";
+import { toTitleCase } from "../../utils/formatStrings";
 
 import "./VitalsSummaryTable.scss";
-import { VitalsSummaryRecord } from "../models/types";
 
 type PropTypes = {
-  summaries: VitalsSummaryRecord[];
+  summaries: VitalsSummaryTableRow[];
   selectedSortBy: string;
 };
 
@@ -41,6 +47,7 @@ const VitalsSummaryTable: React.FC<PropTypes> = ({
   const createDeltaTableCell = ({ value }: { value: number }) => (
     <DeltaTableCell value={value} />
   );
+  const { entityType } = summaries[0].entity;
 
   const data = useMemo(() => summaries, [summaries]);
   const columns = useMemo(
@@ -49,8 +56,27 @@ const VitalsSummaryTable: React.FC<PropTypes> = ({
         Header: " ",
         columns: [
           {
-            Header: "Office",
-            accessor: "entityName",
+            Header: toTitleCase(entityType),
+            accessor: "entity",
+            Cell: ({
+              value,
+            }: {
+              value: {
+                entityId: string;
+                entityName: string;
+                entityType: string;
+              };
+            }) =>
+              value.entityType === ENTITY_TYPES.OFFICE ? (
+                <Link
+                  className="VitalsSummaryTable__link"
+                  to={`/community/vitals/${convertIdToSlug(value.entityId)}`}
+                >
+                  {value.entityName}
+                </Link>
+              ) : (
+                value.entityName
+              ),
           },
         ],
       },
@@ -105,7 +131,7 @@ const VitalsSummaryTable: React.FC<PropTypes> = ({
         ],
       },
     ],
-    []
+    [entityType]
   );
 
   const sortBy = useMemo(() => ({ id: selectedSortBy, desc: false }), [

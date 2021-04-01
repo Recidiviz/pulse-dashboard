@@ -14,8 +14,14 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-import { SummaryCard, SummaryStatus, METRIC_TYPES } from "./types";
+import {
+  SummaryCard,
+  SummaryStatus,
+  VitalsSummaryTableRow,
+  METRIC_TYPES,
+} from "./types";
 import { VitalsSummaryRecord, VitalsTimeSeriesRecord } from "../models/types";
+import { DEFAULT_ENTITY_ID } from "./index";
 
 export function getSummaryStatus(value: number): SummaryStatus {
   if (value < 70) return "POOR";
@@ -24,6 +30,7 @@ export function getSummaryStatus(value: number): SummaryStatus {
   if (value >= 90 && value < 95) return "GREAT";
   return "EXCELLENT";
 }
+
 export const getSummaryCards: (
   summary: VitalsSummaryRecord
 ) => SummaryCard[] = (summary) => [
@@ -80,27 +87,47 @@ export function getSummaryDetail(
 
 export function getEntitySummaries(
   vitalsSummaries: VitalsSummaryRecord[],
-  currentEntity: string
+  currentEntityId: string
 ): {
-  parentEntitySummary: VitalsSummaryRecord;
-  childEntitySummaries: VitalsSummaryRecord[];
+  currentEntitySummary: VitalsSummaryRecord;
+  childEntitySummaryRows: VitalsSummaryTableRow[];
 } {
-  const parentEntitySummary = vitalsSummaries.find(
-    (d) => d.entityId === currentEntity && d.parentEntityId === d.entityId
+  // The data is configured such that when entityId === parentEntityId,
+  // the row contains summary data for the VitalsSummaryCards for the
+  // current/parent entity
+  const currentEntitySummary = vitalsSummaries.find(
+    (d) => d.entityId === currentEntityId && d.parentEntityId === d.entityId
   ) as VitalsSummaryRecord;
-  const childEntitySummaries = vitalsSummaries.filter(
-    (d) => d.parentEntityId === currentEntity && d.parentEntityId !== d.entityId
-  ) as VitalsSummaryRecord[];
-  return { parentEntitySummary, childEntitySummaries };
+  // When entityId !== parentEntityId, the row contains summary data
+  // for the VitalsSummaryTable for the child entities
+  const childEntitySummaryRows = vitalsSummaries
+    .filter(
+      (d) =>
+        d.parentEntityId === currentEntityId && d.parentEntityId !== d.entityId
+    )
+    .map((d) => {
+      const { entityId, entityName, parentEntityId, ...attrs } = d;
+      return {
+        entity: {
+          entityId,
+          entityName,
+          entityType:
+            parentEntityId === DEFAULT_ENTITY_ID ? "OFFICE" : "OFFICER",
+        },
+        parentEntityId,
+        ...attrs,
+      };
+    }) as VitalsSummaryTableRow[];
+  return { currentEntitySummary, childEntitySummaryRows };
 }
 
 export function getTimeseries(
   timeSeries: VitalsTimeSeriesRecord[],
   selectedCardId: string,
-  currentEntity: string
+  currentEntityId: string
 ): VitalsTimeSeriesRecord[] {
   return timeSeries.filter(
-    (d) => d.metric === selectedCardId && d.entityId === currentEntity
+    (d) => d.metric === selectedCardId && d.entityId === currentEntityId
   );
 }
 

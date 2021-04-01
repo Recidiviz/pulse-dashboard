@@ -16,6 +16,7 @@
 // =============================================================================
 
 import React, { useState } from "react";
+import { useParams } from "react-router-dom";
 import { observer } from "mobx-react-lite";
 import PageTemplate from "../PageTemplate";
 import VitalsSummaryCards from "../VitalsSummaryCards";
@@ -24,13 +25,14 @@ import VitalsWeeklyChange from "../VitalsWeeklyChange";
 import VitalsSummaryChart from "../VitalsSummaryChart";
 import VitalsSummaryDetail from "../VitalsSummaryDetail";
 import Loading from "../../components/Loading";
-import { MetricType, METRIC_TYPES } from "./types";
+import { MetricType, METRIC_TYPES, ENTITY_TYPES } from "./types";
 import { useRootStore } from "../../components/StoreProvider";
 import { VitalsSummaryRecord, VitalsTimeSeriesRecord } from "../models/types";
 import { ChartDataType } from "../types/charts";
 import useChartData from "../hooks/useChartData";
 import { vitalsTimeSeries } from "../models/VitalsTimeSeriesMetric";
 import { vitalsSummary } from "../models/VitalsSummaryMetric";
+import { convertSlugToId } from "../../utils/navigation";
 import {
   getSummaryCards,
   getSummaryDetail,
@@ -40,6 +42,7 @@ import {
 } from "./helpers";
 import "./PageVitals.scss";
 
+export const DEFAULT_ENTITY_ID = ENTITY_TYPES.STATE_DOC;
 const goals = {
   [METRIC_TYPES.OVERALL]: 80,
   [METRIC_TYPES.DISCHARGE]: 90,
@@ -49,12 +52,15 @@ const goals = {
 };
 
 const PageVitals: React.FC = () => {
+  const routeParams = useParams() as { entityId: string | undefined };
+  const currentEntityId = routeParams.entityId
+    ? convertSlugToId(routeParams.entityId)
+    : DEFAULT_ENTITY_ID;
   const { tenantStore } = useRootStore();
   const { stateName, stateCode } = tenantStore;
   const [selectedCardId, setSelectedCardId] = useState<MetricType>(
     METRIC_TYPES.OVERALL
   );
-  const [currentEntity] = useState("STATE_DOC");
   const { isLoading, isError, apiData }: ChartDataType = useChartData(
     "us_nd/vitals"
   ) as ChartDataType;
@@ -84,15 +90,15 @@ const PageVitals: React.FC = () => {
     setSelectedCardId(id);
   };
 
-  const { parentEntitySummary, childEntitySummaries } = getEntitySummaries(
+  const { currentEntitySummary, childEntitySummaryRows } = getEntitySummaries(
     vitalsSummaries,
-    currentEntity
+    currentEntityId
   );
-  const summaryCards = getSummaryCards(parentEntitySummary);
+  const summaryCards = getSummaryCards(currentEntitySummary);
   const selectedTimeSeries = getTimeseries(
     timeSeries,
     selectedCardId,
-    currentEntity
+    currentEntityId
   );
 
   return (
@@ -125,7 +131,7 @@ const PageVitals: React.FC = () => {
       <div className="PageVitals__Table">
         <VitalsSummaryTable
           selectedSortBy={selectedCardId}
-          summaries={childEntitySummaries}
+          summaries={childEntitySummaryRows}
         />
       </div>
     </PageTemplate>
