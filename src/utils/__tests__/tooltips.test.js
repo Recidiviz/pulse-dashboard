@@ -16,7 +16,7 @@
 // =============================================================================
 import {
   standardTooltipForCountMetric,
-  getTooltipWithoutTrendline,
+  tooltipWithoutTrendlineLabel,
 } from "../tooltips";
 
 describe("standardTooltipForCountMetric", () => {
@@ -150,17 +150,17 @@ describe("standardTooltipForCountMetric", () => {
       },
     };
 
-    const tooltip = getTooltipWithoutTrendline(tooltipItem, data, units);
+    const tooltip = tooltipWithoutTrendlineLabel(tooltipItem, data, units);
     expect(tooltip).toBe("Revocation count: 45");
 
-    const tooltipForTrendline = getTooltipWithoutTrendline(
+    const tooltipForTrendline = tooltipWithoutTrendlineLabel(
       tooltipItemTrendline,
       dataForTrendline,
       units
     );
     expect(tooltipForTrendline).toBe("");
 
-    const tooltipEmptyYLabel = getTooltipWithoutTrendline(
+    const tooltipEmptyYLabel = tooltipWithoutTrendlineLabel(
       tooltipItem,
       data,
       undefined

@@ -34,7 +34,7 @@ import {
 import { canDisplayGoal } from "../utils/tooltips";
 import { toNumber } from "../../utils";
 import { generateTrendlineDataset } from "../../utils/trendline";
-import { getTooltipWithoutTrendline } from "../../utils/tooltips";
+import { tooltipWithoutTrendlineLabel } from "../../utils/tooltips";
 import {
   sortFilterAndSupplementMostRecentMonths,
   centerSingleMonthDatasetIfNecessary,
@@ -141,7 +141,7 @@ const DaysAtLibertySnapshot = ({
           mode: "point",
           callbacks: {
             label: (tooltipItem, data) =>
-              getTooltipWithoutTrendline(tooltipItem, data, " days"),
+              tooltipWithoutTrendlineLabel(tooltipItem, data, " days"),
           },
         },
         scales: {

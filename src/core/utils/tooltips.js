@@ -16,7 +16,7 @@
 // =============================================================================
 import {
   standardTooltipForCountMetric,
-  getTooltipWithoutTrendline,
+  tooltipWithoutTrendlineLabel,
 } from "../../utils/tooltips";
 
 function canDisplayGoal(goal, toggles) {
@@ -51,7 +51,7 @@ function updateTooltipForMetricType(metricType, tooltipItem, data) {
 
 function standardTooltipForRateMetric(tooltipItem, data) {
   const label = data.datasets[tooltipItem.datasetIndex].label || "";
-  return `${label}: ${getTooltipWithoutTrendline(tooltipItem, data, "%")}`;
+  return `${label}: ${tooltipWithoutTrendlineLabel(tooltipItem, data, "%")}`;
 }
 
 function toggleYAxisTicksStackedRateBasicCount(metricType, maxCount) {

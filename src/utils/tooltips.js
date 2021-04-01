@@ -36,7 +36,7 @@ export function standardTooltipForCountMetric(tooltipItem, data) {
  * trendline data points.
  * Appends the `units` string to the data yLabel value if provided.
  */
-export function getTooltipWithoutTrendline(tooltipItem, data, units) {
+export function tooltipWithoutTrendlineLabel(tooltipItem, data, units) {
   const { label } = data.datasets[tooltipItem.datasetIndex];
   if (label === "trendline") return "";
   let tooltipLabel = tooltipItem.yLabel.toString();
