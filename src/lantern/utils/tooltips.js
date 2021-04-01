@@ -47,9 +47,7 @@ export function tooltipForRateMetricWithCounts(
       ? " *"
       : "";
 
-  return id === "admissionsByRace" ||
-    id === "admissionsByGender" ||
-    id === "admissionsBySex"
+  return id.includes("Race") || id.includes("Gender") || id.includes("Sex")
     ? `${getTooltipWithoutTrendline(
         tooltipItem,
         data,
