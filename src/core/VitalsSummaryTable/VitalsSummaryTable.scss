@@ -18,6 +18,34 @@
 
 $border-styles: 1px solid $slate-20;
 
+/* Enable scrollbar on chrome for tables in tablet sizes */
+::-webkit-scrollbar {
+  @media screen and (max-width: $core-breakpoint-sm) {
+    -webkit-appearance: none;
+    height: 5px;
+    border-radius: 8px;
+  }
+}
+::-webkit-scrollbar-thumb {
+  @media screen and (max-width: $core-breakpoint-sm) {
+    border-radius: 8px;
+    background-color: $slate-20;
+    -webkit-box-shadow: 0 0 0.1rem $box-shadow-color-30;
+  }
+}
+
+@mixin sticky-scroll-column {
+  @media screen and (max-width: $core-breakpoint-sm) {
+    position: sticky !important;
+    background-color: $white;
+
+    border-right: $border-styles;
+    left: 0;
+    top: 0;
+    z-index: 1;
+  }
+}
+
 .VitalsSummaryTable {
   background: $white;
   border-radius: 8px;
@@ -36,6 +64,10 @@ $border-styles: 1px solid $slate-20;
     font-style: normal;
     letter-spacing: -0.01em;
     color: black;
+    @media screen and (max-width: $core-breakpoint-sm) {
+      border-collapse: separate;
+      border-spacing: 0;
+    }
   }
 
   &__table-head {
@@ -50,6 +82,7 @@ $border-styles: 1px solid $slate-20;
       }
 
       & > :first-child {
+        @include sticky-scroll-column;
         border-right: $border-styles;
       }
 
@@ -75,11 +108,14 @@ $border-styles: 1px solid $slate-20;
           }
         }
 
-        &#entity > .VitalsSummaryTable__sortable-header {
-          width: 200px;
+        &#entity {
+          @include sticky-scroll-column;
+          > .VitalsSummaryTable__sortable-header {
+            width: 200px;
 
-          @media screen and (max-width: $core-breakpoint-md) {
-            width: 174px;
+            @media screen and (max-width: $core-breakpoint-md) {
+              width: 174px;
+            }
           }
         }
       }
@@ -134,6 +170,10 @@ $border-styles: 1px solid $slate-20;
   &__cell {
     max-width: 4.5rem;
     max-height: 2rem;
+
+    &--entity {
+      @include sticky-scroll-column;
+    }
   }
 
   &__link {
