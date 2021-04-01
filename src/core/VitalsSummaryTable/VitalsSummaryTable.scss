@@ -99,10 +99,9 @@ $border-styles: 1px solid $slate-20;
       & > th {
         padding: 2rem 0;
         font-weight: 500;
+        width: 175px;
 
         > .VitalsSummaryTable__sortable-header {
-          width: 175px;
-
           @media screen and (max-width: $core-breakpoint-md) {
             width: 122px;
           }
@@ -110,9 +109,9 @@ $border-styles: 1px solid $slate-20;
 
         &#entity {
           @include sticky-scroll-column;
-          > .VitalsSummaryTable__sortable-header {
-            width: 200px;
+          width: 200px;
 
+          > .VitalsSummaryTable__sortable-header {
             @media screen and (max-width: $core-breakpoint-md) {
               width: 174px;
             }

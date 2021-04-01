@@ -32,6 +32,10 @@
     width: 18rem;
   }
 
+  @media screen and (max-width: $core-breakpoint-xs) {
+    min-width: 100%;
+  }
+
   &:hover {
     cursor: pointer;
     box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.15);

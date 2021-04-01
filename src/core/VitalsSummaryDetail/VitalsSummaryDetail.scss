@@ -8,7 +8,11 @@
   padding: 3rem 4rem 0;
 
   @media screen and (max-width: $core-breakpoint-sm) {
-    padding: 2.5rem 0 4rem;
+    padding: 2.5rem 11rem 4rem;
+  }
+
+  @media screen and (max-width: $core-breakpoint-xs) {
+    padding: 2.5rem 5rem 4rem;
   }
 
   &__title {
