@@ -1,0 +1,12 @@
+@import "../CoreConstants.scss";
+
+.PercentDelta {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  padding: 2px 0 0;
+
+  &__value {
+    padding: 0 5px;
+  }
+}

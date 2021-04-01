@@ -15,7 +15,6 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 import React from "react";
-import { MetricTitle } from "./SummaryMetrics";
 import "./LoadingMetrics.scss";
 
 const LoadingMetrics: React.FC<{ title: string; showMinMax?: boolean }> = ({
@@ -24,7 +23,7 @@ const LoadingMetrics: React.FC<{ title: string; showMinMax?: boolean }> = ({
 }) => {
   return (
     <div className="LoadingMetrics">
-      <MetricTitle>{title}</MetricTitle>
+      <div className="SummaryMetric__title">{title}</div>
       <div className="LoadingMetrics__value" />
       <div className="LoadingMetrics__percent" />
       {showMinMax && <div className="LoadingMetrics__minMax" />}
