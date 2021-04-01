@@ -15,7 +15,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 import { isDenominatorStatisticallySignificant } from "./significantStatistics";
-import { getTooltipWithoutTrendline } from "../../utils/trendline";
+import { getTooltipWithoutTrendline } from "../../utils/tooltips";
 import { formatLargeNumber } from "../../utils/labels";
 
 export function tooltipForRateMetricWithCounts(

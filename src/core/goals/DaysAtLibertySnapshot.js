@@ -33,10 +33,8 @@ import {
 } from "../utils/metricGoal";
 import { canDisplayGoal } from "../utils/tooltips";
 import { toNumber } from "../../utils";
-import {
-  generateTrendlineDataset,
-  getTooltipWithoutTrendline,
-} from "../../utils/trendline";
+import { generateTrendlineDataset } from "../../utils/trendline";
+import { getTooltipWithoutTrendline } from "../../utils/tooltips";
 import {
   sortFilterAndSupplementMostRecentMonths,
   centerSingleMonthDatasetIfNecessary,

@@ -14,8 +14,10 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-import { getTooltipWithoutTrendline } from "../../utils/trendline";
-import { standardTooltipForCountMetric } from "../../utils/tooltips";
+import {
+  standardTooltipForCountMetric,
+  getTooltipWithoutTrendline,
+} from "../../utils/tooltips";
 
 function canDisplayGoal(goal, toggles) {
   if (toggles.disableGoal === true) {

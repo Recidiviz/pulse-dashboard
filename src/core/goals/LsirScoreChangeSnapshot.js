@@ -41,10 +41,8 @@ import {
   filterDatasetByDistrict,
 } from "../utils/dataFilters";
 import { toNumber } from "../../utils";
-import {
-  generateTrendlineDataset,
-  getTooltipWithoutTrendline,
-} from "../../utils/trendline";
+import { getTooltipWithoutTrendline } from "../../utils/tooltips";
+import { generateTrendlineDataset } from "../../utils/trendline";
 import {
   centerSingleMonthDatasetIfNecessary,
   sortFilterAndSupplementMostRecentMonths,

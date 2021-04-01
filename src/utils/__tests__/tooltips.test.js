@@ -14,7 +14,10 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-import { standardTooltipForCountMetric } from "../tooltips";
+import {
+  standardTooltipForCountMetric,
+  getTooltipWithoutTrendline,
+} from "../tooltips";
 
 describe("standardTooltipForCountMetric", () => {
   it("standard tooltip for count metric", () => {
@@ -119,5 +122,49 @@ describe("standardTooltipForCountMetric", () => {
       dataEmptyLabel
     );
     expect(tooltipEmptyMetric).toBe("203");
+  });
+
+  it("get tooltip without trendline", () => {
+    const tooltipItem = {
+      datasetIndex: "test",
+      yLabel: "Revocation count: ",
+    };
+    const data = {
+      datasets: {
+        test: {
+          label: "test",
+        },
+      },
+    };
+    const units = 45;
+
+    const tooltipItemTrendline = {
+      datasetIndex: "trendline",
+      yLabel: "Revocation count: ",
+    };
+    const dataForTrendline = {
+      datasets: {
+        trendline: {
+          label: "trendline",
+        },
+      },
+    };
+
+    const tooltip = getTooltipWithoutTrendline(tooltipItem, data, units);
+    expect(tooltip).toBe("Revocation count: 45");
+
+    const tooltipForTrendline = getTooltipWithoutTrendline(
+      tooltipItemTrendline,
+      dataForTrendline,
+      units
+    );
+    expect(tooltipForTrendline).toBe("");
+
+    const tooltipEmptyYLabel = getTooltipWithoutTrendline(
+      tooltipItem,
+      data,
+      undefined
+    );
+    expect(tooltipEmptyYLabel).toBe("Revocation count: ");
   });
 });

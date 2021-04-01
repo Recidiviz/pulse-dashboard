@@ -95,54 +95,6 @@ describe("test for file trendline", () => {
     expect(data).toEqual(expectedData);
   });
 
-  it("get tooltip without trendline", () => {
-    const tooltipItem = {
-      datasetIndex: "test",
-      yLabel: "Revocation count: ",
-    };
-    const data = {
-      datasets: {
-        test: {
-          label: "test",
-        },
-      },
-    };
-    const units = 45;
-
-    const tooltipItemTrendline = {
-      datasetIndex: "trendline",
-      yLabel: "Revocation count: ",
-    };
-    const dataForTrendline = {
-      datasets: {
-        trendline: {
-          label: "trendline",
-        },
-      },
-    };
-
-    const tooltip = trendlineMethods.getTooltipWithoutTrendline(
-      tooltipItem,
-      data,
-      units
-    );
-    expect(tooltip).toBe("Revocation count: 45");
-
-    const tooltipForTrendline = trendlineMethods.getTooltipWithoutTrendline(
-      tooltipItemTrendline,
-      dataForTrendline,
-      units
-    );
-    expect(tooltipForTrendline).toBe("");
-
-    const tooltipEmptyYLabel = trendlineMethods.getTooltipWithoutTrendline(
-      tooltipItem,
-      data,
-      undefined
-    );
-    expect(tooltipEmptyYLabel).toBe("Revocation count: ");
-  });
-
   it("trendline slope", () => {
     const trendlineValues = [
       805.3846153846154,
