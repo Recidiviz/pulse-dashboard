@@ -66,15 +66,26 @@ $border-styles: 1px solid $slate-20;
       & > th {
         padding: 2rem 0;
         font-weight: 500;
+
+        > .VitalsSummaryTable__sortable-header {
+          width: 175px;
+
+          @media screen and (max-width: $core-breakpoint-md) {
+            width: 122px;
+          }
+        }
+
+        &#entity > .VitalsSummaryTable__sortable-header {
+          width: 200px;
+
+          @media screen and (max-width: $core-breakpoint-md) {
+            width: 174px;
+          }
+        }
       }
 
       & > :first-child {
         border-right: $border-styles;
-        width: 200px;
-
-        @media screen and (max-width: $core-breakpoint-md) {
-          width: 188px;
-        }
       }
 
       & > :nth-child(4) {
@@ -82,12 +93,7 @@ $border-styles: 1px solid $slate-20;
       }
 
       & > :nth-child(n + 2) {
-        width: 175px;
-        padding: 2rem 1.5rem;
-
-        @media screen and (max-width: $core-breakpoint-md) {
-          width: 148px;
-        }
+        padding: 2rem 0.5rem;
       }
     }
   }

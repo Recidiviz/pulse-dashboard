@@ -28,6 +28,10 @@
   background-color: #ffffff;
   user-select: none;
 
+  @media screen and (max-width: $core-breakpoint-sm) {
+    width: 18rem;
+  }
+
   &:hover {
     cursor: pointer;
     box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.15);

@@ -7,6 +7,10 @@
   height: 100%;
   padding: 3rem 4rem 0;
 
+  @media screen and (max-width: $core-breakpoint-sm) {
+    padding: 2.5rem 0 4rem;
+  }
+
   &__title {
     font: $font-ui-sans-24;
     letter-spacing: -0.02em;
