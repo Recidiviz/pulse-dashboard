@@ -104,6 +104,7 @@ const PageVitals: React.FC = () => {
     selectedCardId,
     currentEntityId
   );
+
   return (
     <PageTemplate>
       <VitalsSummaryBreadcrumbs
