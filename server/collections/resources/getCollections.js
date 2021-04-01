@@ -282,10 +282,10 @@ function getCollections(stateCode = null) {
       return {
         [COLLECTIONS.POPULATION_PROJECTIONS]: {
           population_projection_summaries: {
-            filename: "population_projection_summaries.json",
+            filename: "population_projection_summaries.txt",
           },
           population_projection_timeseries: {
-            filename: "population_projection_timeseries.json",
+            filename: "population_projection_timeseries.txt",
           },
         },
       };

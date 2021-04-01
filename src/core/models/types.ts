@@ -83,14 +83,14 @@ export type VitalsTimeSeriesRecord = {
 
 export type EntityType = keyof typeof ENTITY_TYPES;
 export const ENTITY_TYPES = {
-  STATE_DOC: "STATE_DOC",
-  DISTRICT_LEVEL: "DISTRICT_LEVEL",
-  PO_LEVEL: "PO_LEVEL",
+  STATE: "STATE",
+  LEVEL_1_SUPERVISION_LOCATION: "LEVEL_1_SUPERVISION_LOCATION",
+  PO: "PO",
 } as const;
 export type VitalsSummaryRecord = {
   entityId: string;
   entityName: string; // i.e. "North Dakota" or "Oakes"
-  entityType: EntityType; // STATE_DOC, PO_LEVEL, or DISTRICT_LEVEL
+  entityType: EntityType;
   parentEntityId?: string; // not set for top-level
   overall: number;
   overall7Day: number;

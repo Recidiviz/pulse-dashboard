@@ -29,11 +29,11 @@ import "./VitalsSummaryTable.scss";
 
 function getEntityTypeName(entityType: EntityType): string {
   switch (entityType) {
-    case ENTITY_TYPES.DISTRICT_LEVEL:
+    case ENTITY_TYPES.LEVEL_1_SUPERVISION_LOCATION:
       return "Office";
-    case ENTITY_TYPES.PO_LEVEL:
+    case ENTITY_TYPES.PO:
       return "Officer";
-    case ENTITY_TYPES.STATE_DOC:
+    case ENTITY_TYPES.STATE:
       return "STATE_DOC";
     default:
       throw new Error(`Unknown entity type ${entityType}`);
@@ -76,7 +76,7 @@ const VitalsSummaryTable: React.FC<PropTypes> = ({
                 entityType: string;
               };
             }) =>
-              value.entityType === ENTITY_TYPES.DISTRICT_LEVEL ? (
+              value.entityType === ENTITY_TYPES.LEVEL_1_SUPERVISION_LOCATION ? (
                 <Link
                   className="VitalsSummaryTable__link"
                   to={`/community/vitals/${convertIdToSlug(value.entityId)}`}

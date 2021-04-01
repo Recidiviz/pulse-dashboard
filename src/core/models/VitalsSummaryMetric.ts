@@ -24,7 +24,7 @@ export function vitalsSummary(
     return {
       entityId: record.entity_id,
       entityName: toTitleCase(record.entity_name),
-      entityType: record.entity_type as EntityType,
+      entityType: record.entity_type.toUpperCase() as EntityType,
       parentEntityId: record.parent_entity_id,
       overall: Number(record.overall),
       timelyDischarge: Number(record.timely_discharge),

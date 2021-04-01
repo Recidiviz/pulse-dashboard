@@ -27,11 +27,7 @@ import VitalsSummaryDetail from "../VitalsSummaryDetail";
 import Loading from "../../components/Loading";
 import { MetricType, METRIC_TYPES } from "./types";
 import { useRootStore } from "../../components/StoreProvider";
-import {
-  VitalsSummaryRecord,
-  VitalsTimeSeriesRecord,
-  ENTITY_TYPES,
-} from "../models/types";
+import { VitalsSummaryRecord, VitalsTimeSeriesRecord } from "../models/types";
 import { ChartDataType } from "../types/charts";
 import useChartData from "../hooks/useChartData";
 import { vitalsTimeSeries } from "../models/VitalsTimeSeriesMetric";
@@ -47,7 +43,7 @@ import {
 } from "./helpers";
 import "./PageVitals.scss";
 
-export const DEFAULT_ENTITY_ID = ENTITY_TYPES.STATE_DOC;
+const DEFAULT_ENTITY_ID = "STATE_DOC";
 const goals = {
   [METRIC_TYPES.OVERALL]: 80,
   [METRIC_TYPES.DISCHARGE]: 90,
@@ -89,7 +85,6 @@ const PageVitals: React.FC = () => {
   const timeSeries: VitalsTimeSeriesRecord[] = vitalsTimeSeries(
     apiData.vitals_time_series.data
   );
-
   const handleSelectCard: (id: MetricType) => () => void = (id) => () => {
     setSelectedCardId(id);
   };

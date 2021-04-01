@@ -35,7 +35,7 @@ const VitalsSummaryBreadcrumbs: React.FC<PropTypes> = ({
 }) => {
   const { entityName, entityType } = entity;
   const { primary, secondary } =
-    entityType === ENTITY_TYPES.DISTRICT_LEVEL
+    entityType === ENTITY_TYPES.LEVEL_1_SUPERVISION_LOCATION
       ? { primary: formatOfficeName(entityName), secondary: stateName }
       : { primary: stateName, secondary: undefined };
   return (
