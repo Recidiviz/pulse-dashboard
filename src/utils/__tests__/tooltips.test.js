@@ -15,11 +15,11 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 import {
-  standardTooltipForCountMetric,
+  standardTooltipForCountMetricLabel,
   tooltipWithoutTrendlineLabel,
 } from "../tooltips";
 
-describe("standardTooltipForCountMetric", () => {
+describe("standardTooltipForCountMetricLabel", () => {
   it("standard tooltip for count metric", () => {
     const tooltip = {
       xLabel: "May",
@@ -108,16 +108,19 @@ describe("standardTooltipForCountMetric", () => {
       y: 211.504,
     };
 
-    const standardToolTipCount = standardTooltipForCountMetric(tooltip, data);
+    const standardToolTipCount = standardTooltipForCountMetricLabel(
+      tooltip,
+      data
+    );
     expect(standardToolTipCount).toBe("Successful completions: 203");
 
-    const tooltipMetricYLabel = standardTooltipForCountMetric(
+    const tooltipMetricYLabel = standardTooltipForCountMetricLabel(
       tooltipYLabel,
       data
     );
     expect(tooltipMetricYLabel).toBe("Successful completions: 204");
 
-    const tooltipEmptyMetric = standardTooltipForCountMetric(
+    const tooltipEmptyMetric = standardTooltipForCountMetricLabel(
       tooltip,
       dataEmptyLabel
     );

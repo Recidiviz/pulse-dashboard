@@ -15,7 +15,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 import {
-  standardTooltipForCountMetric,
+  standardTooltipForCountMetricLabel,
   tooltipWithoutTrendlineLabel,
 } from "../../utils/tooltips";
 
@@ -46,7 +46,7 @@ function updateTooltipForMetricType(metricType, tooltipItem, data) {
     return standardTooltipForRateMetric(tooltipItem, data);
   }
 
-  return standardTooltipForCountMetric(tooltipItem, data);
+  return standardTooltipForCountMetricLabel(tooltipItem, data);
 }
 
 function standardTooltipForRateMetric(tooltipItem, data) {

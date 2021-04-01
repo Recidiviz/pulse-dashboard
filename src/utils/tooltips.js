@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-export function standardTooltipForCountMetric(tooltipItem, data) {
+export function standardTooltipForCountMetricLabel(tooltipItem, data) {
   let label = data.datasets[tooltipItem.datasetIndex].label || "";
 
   // The below logic is the default tooltip logic for ChartJS 2
