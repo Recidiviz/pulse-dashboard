@@ -16,6 +16,7 @@
 // =============================================================================
 
 import getFilterDescription from "../getFilterDescription";
+import { setTranslateLocale } from "../../../utils/i18nSettings";
 
 describe("getFilterDescription tests", () => {
   it("outputs all filters with value 'All'", () => {
@@ -65,20 +66,25 @@ describe("getFilterDescription tests", () => {
     expect(getFilterDescription(given)).toBe(expected);
   });
 
-  it("outputs all expected admission type", () => {
-    const given = {
-      metricPeriodMonths: "12",
-      admissionType: [
-        "SHOCK_INCARCERATION_0_TO_6_MONTHS",
-        "SHOCK_INCARCERATION_6_MONTHS",
-        "SHOCK_INCARCERATION_9_MONTHS",
-        "SHOCK_INCARCERATION_12_MONTHS",
-      ],
-    };
+  describe("when the tenant is US_PA", () => {
+    beforeAll(() => {
+      setTranslateLocale("US_MO");
+    });
+    it("outputs all expected admission type", () => {
+      const given = {
+        metricPeriodMonths: "12",
+        admissionType: [
+          "SHOCK_INCARCERATION_0_TO_6_MONTHS",
+          "SHOCK_INCARCERATION_6_MONTHS",
+          "SHOCK_INCARCERATION_9_MONTHS",
+          "SHOCK_INCARCERATION_12_MONTHS",
+        ],
+      };
 
-    const expected =
-      "1 year, Admission type: SCI < 6 months, SCI 6 months, SCI 9 months, SCI 12 months";
+      const expected =
+        "1 year, Admission type: SCI < 6 months, SCI 6 months, SCI 9 months, SCI 12 months";
 
-    expect(getFilterDescription(given)).toBe(expected);
+      expect(getFilterDescription(given)).toBe(expected);
+    });
   });
 });

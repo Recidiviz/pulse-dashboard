@@ -49,7 +49,8 @@ import RevocationsByDimensionComponent from "./RevocationsByDimension/Revocation
 const RevocationsOverTime = ({ timeDescription }) => {
   const { filters, dataStore } = useRootStore();
   const store = dataStore.revocationsOverTimeStore;
-  const chartId = `admissionsOverTime`;
+  const CHART_TITLE = translate("revocationsOverTimeChartTitle");
+  const CHART_ID = translate("revocationsOverTimeChartId");
   const { containerHeight, containerRef } = useContainerHeight();
 
   if (store.isLoading) {
@@ -144,7 +145,7 @@ const RevocationsOverTime = ({ timeDescription }) => {
 
   const lineChart = (
     <Line
-      id={chartId}
+      id={CHART_ID}
       data={{
         labels: chartLabels,
         datasets,
@@ -158,7 +159,7 @@ const RevocationsOverTime = ({ timeDescription }) => {
 
   const barChart = (
     <Bar
-      id={chartId}
+      id={CHART_ID}
       width={50}
       data={{
         labels: chartLabels,
@@ -177,14 +178,14 @@ const RevocationsOverTime = ({ timeDescription }) => {
   return (
     <div ref={containerRef}>
       <RevocationsByDimensionComponent
-        chartTitle={translate("revocationsOverTimeXAxis")}
+        chartTitle={CHART_TITLE}
         timeDescription={timeDescription}
         labels={chartLabels}
-        chartId={chartId}
+        chartId={CHART_ID}
         datasets={datasets}
-        metricTitle={translate("revocationsOverTimeXAxis")}
+        metricTitle={translate("revocationsOverTimeChartTitle")}
         chart={chart}
-        classModifier={chartId}
+        classModifier={CHART_ID}
         dataExportLabel="Month"
       />
     </div>

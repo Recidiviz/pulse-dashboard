@@ -25,13 +25,15 @@ import BarChartWithLabels from "../BarCharts";
 import { useRootStore } from "../../components/StoreProvider";
 import { VIOLATION_TYPE } from "../utils/constants";
 import { COLORS } from "../../assets/scripts/constants/colors";
-
-const CHART_TITLE = "Relative frequency of violation types";
+import { translate } from "../../utils/i18nSettings";
 
 const RevocationsByViolation = observer(
   ({ containerHeight, timeDescription }, ref) => {
     const { filtersStore, dataStore } = useRootStore();
     const { revocationsChartStore } = dataStore;
+    const CHART_TITLE = "Relative frequency of violation types";
+    const CHART_ID = translate("revocationsByViolationChartId");
+
     const violationTypes = filtersStore.filterOptions[VIOLATION_TYPE].options;
     const violationLegend = {
       position: "top",
@@ -59,7 +61,7 @@ const RevocationsByViolation = observer(
     return (
       <RevocationsByDimension
         ref={ref}
-        chartId="admissionsByViolationType"
+        chartId={CHART_ID}
         dataStore={revocationsChartStore}
         containerHeight={containerHeight}
         renderChart={({ chartId, data, denominators, numerators }) => (
