@@ -23,7 +23,7 @@
     justify-content: space-between;
     width: 100%;
 
-    :not(:last-child) {
+    > :not(:last-child) {
       margin-right: 1.5rem;
     }
   }
@@ -43,6 +43,10 @@
     border-radius: 0 0.5rem 0.5rem 0;
     box-shadow: inset 0px -1px 1px $box-shadow-color-20;
     width: 70%;
+
+    @media screen and (max-width: $core-breakpoint-md) {
+      width: 65%;
+    }
   }
 
   &__SummaryDetail {
@@ -52,6 +56,10 @@
     box-shadow: inset 0px -1px 1px $box-shadow-color-20;
     text-align: center;
     width: 30%;
+
+    @media screen and (max-width: $core-breakpoint-md) {
+      width: 35%;
+    }
   }
 
   &__Table {

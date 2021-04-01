@@ -24,7 +24,6 @@ $border-styles: 1px solid $slate-20;
   box-shadow: $inset-shadow-30;
   font: $font-ui-sans-16;
   letter-spacing: -0.01em;
-  margin: 1rem 0;
   overflow-x: auto;
   overflow-y: hidden;
   width: 100%;
@@ -72,14 +71,23 @@ $border-styles: 1px solid $slate-20;
       & > :first-child {
         border-right: $border-styles;
         width: 200px;
+
+        @media screen and (max-width: $core-breakpoint-md) {
+          width: 188px;
+        }
       }
 
       & > :nth-child(4) {
         border-right: $border-styles;
       }
 
-      & > :nth-child(n + 1) {
+      & > :nth-child(n + 2) {
         width: 175px;
+        padding: 2rem 1.5rem;
+
+        @media screen and (max-width: $core-breakpoint-md) {
+          width: 148px;
+        }
       }
     }
   }
