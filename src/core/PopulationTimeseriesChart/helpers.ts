@@ -77,7 +77,7 @@ export const prepareData = (
 
   const projectedPopulation = historicalPopulation.slice(-1).concat(
     data
-      .filter((d) => d.simulationTag !== "HISTORICAL")
+      .filter((d) => d.simulationTag === "BASELINE")
       .map((d) => ({
         date: getDate(d),
         value: d.totalPopulation,

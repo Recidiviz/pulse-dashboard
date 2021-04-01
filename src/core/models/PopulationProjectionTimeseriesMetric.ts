@@ -31,7 +31,7 @@ export function populationProjectionTimeseries(
       month: Number(record.month),
       compartment: record.compartment as SimulationCompartment,
       legalStatus: record.legal_status,
-      gender: record.simulation_group as Gender,
+      gender: record.gender as Gender,
       simulationTag: record.simulation_tag,
       totalPopulation: Number(record.total_population),
       totalPopulationMax: Number(record.total_population_max),
