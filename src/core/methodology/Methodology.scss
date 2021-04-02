@@ -1,35 +1,30 @@
 @import "../../assets/styles/spec/settings/baseColors.scss";
+@import "../CoreConstants.scss";
+
 .main-content {
   background-color: $core-background;
 }
-.methodology {
+.Methodology {
   &__main-title {
     padding-top: 6rem;
-    font-family: "Libre Baskerville", serif;
-    font-size: 3.5rem;
-    font-weight: 300;
-    line-height: 4.5rem;
-    color: $label-topbar;
+    color: $core-font-color;
+    font: $font-article-serif-56;
   }
   h3 {
     margin: 0px;
   }
   &__main-description {
-    font-family: "Libre Franklin", sans-serif;
-    font-size: 2rem;
-    font-weight: 300;
-    line-height: 3rem;
     color: $label-topbar;
+    font: $font-article-sans-32;
   }
-  &__link-block {
-    font-family: "Libre Franklin", sans-serif;
+  &__toc {
     padding: 2.93rem 0px 0px 0px !important;
-    h5 {
-      font-weight: 500;
+    &--header {
       color: #7d9897;
-      font-size: 0.81rem;
+      font: $font-article-sans-14
     }
-    a {
+    &--link {
+      font-family: Libre Franklin;
       font-weight: 400;
       font-size: 1.5rem;
       line-height: 2.5rem;
@@ -46,32 +41,24 @@
       }
     }
   }
-  &__sub-block {
+  &__block {
     &--title {
       padding: 4.5rem 0px 0px 0px !important;
-      font-family: "Libre Baskerville", serif;
-      font-weight: 400;
-      font-size: 2rem;
-      line-height: 2.5rem;
+      font: $font-article-serif-34;
       color: $label-topbar;
     }
-    &--description {
-      font-family: "Libre Franklin", sans-serif;
-      font-weight: 300;
-      font-size: 1.18rem;
-      color: #012322;
-      line-height: 2rem;
+    &--content {
+      font: $font-article-sans-16;
+      color: $pine-2;
       &:first-child > h4 {
         padding: 0px !important;
       }
-      h4 {
-        padding-top: 2.5rem !important;
-        color: $label-topbar;
-        font-size: 1.5rem;
-        line-height: 2.5rem;
-        font-weight: 400;
-      }
     }
+  }
+  &__sub-block--title {
+    padding: 2.0rem 0px 1rem 0px !important;
+    color: $label-topbar;
+    font: $font-article-serif-24;
   }
   .table {
     font-size: 1.18rem;
@@ -81,17 +68,6 @@
       font-size: 1.18rem;
       font-weight: 300;
       color: #526b78;
-    }
-  }
-}
-#model-infrastructure {
-  .methodology {
-    &__sub-block {
-      &--description {
-        h4:first-child {
-          padding-top: 0px !important;
-        }
-      }
     }
   }
 }

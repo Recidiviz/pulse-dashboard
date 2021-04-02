@@ -3,8 +3,8 @@ import { Table } from "reactstrap";
 
 const ModelInfrastructureBlock = () => {
   return (
-    <div className=" methodology__sub-block--description">
-      <h4 className="col-12 p-0">Compartments</h4>
+    <div className="Methodology__block--content">
+      <h4 className="col-12 Methodology__sub-block--title">Compartments</h4>
       <div className="col-12 p-0">
         <span>
           The Compartments component represents an area of the criminal justice
@@ -21,7 +21,7 @@ const ModelInfrastructureBlock = () => {
         </span>
       </div>
       <div className="col-12  p-0 row no-gutters">
-        <h4 className="col-12 p-0">Cohorts</h4>
+        <h4 className="col-12 Methodology__sub-block--title">Cohorts</h4>
         <p className="col-12 p-0">
           The Cohort component is used to record the number of people entering
           part of the system at a certain time and track how many people within
@@ -113,7 +113,9 @@ const ModelInfrastructureBlock = () => {
           </span>
         </div>
       </div>
-      <h4 className="col-12 p-0">Compartment Transitions</h4>
+      <h4 className="col-12 Methodology__sub-block--title">
+        Compartment Transitions
+      </h4>
       <p className="col-12 p-0">
         The simulation uses sentence length distributions to calculate the
         number of people transitioning to a new area of the system after each
@@ -198,7 +200,9 @@ const ModelInfrastructureBlock = () => {
           </span>
         </div>
       </div>
-      <h4 className="col-12 p-0">Forecasting Admissions</h4>
+      <h4 className="col-12 Methodology__sub-block--title">
+        Forecasting Admissions
+      </h4>
       <p>
         The model uses historical admissions to initialize historical Cohorts.
         For instance, the 2017 parole Cohort is created with the historical
@@ -207,7 +211,9 @@ const ModelInfrastructureBlock = () => {
         historical admissions trend. The model uses this to forecast admissions
         into the future and to backcast historical admissions.
       </p>
-      <h4 className="col-12 p-0">Confidence Intervals</h4>
+      <h4 className="col-12 Methodology__sub-block--title">
+        Confidence Intervals
+      </h4>
       <p>
         The model predictions are accompanied by the 80% confidence intervals to
         indicate the uncertainty of the population estimate. Statistically, the
@@ -219,7 +225,9 @@ const ModelInfrastructureBlock = () => {
         is overcounting the total uncertainty when adding multiple intervals
         together.
       </p>
-      <h4 className="col-12 p-0">County Jails Calculation</h4>
+      <h4 className="col-12 Methodology__sub-block--title">
+        County Jails Calculation
+      </h4>
       <p>
         For the historical total incarcerated population we use the movements
         file to exclude people who have entered County Jails in unpaid beds.
