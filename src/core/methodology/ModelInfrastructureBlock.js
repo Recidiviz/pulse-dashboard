@@ -126,19 +126,19 @@ const ModelInfrastructureBlock = () => {
         Cohort will transition to the state prison “parole violator”
         Compartment.
       </p>
-      <p>
+      <p className="m-0">
         These transitions are defined in transition tables, which contain the
         probability of transitioning to a new compartment versus remaining in
-        the existing compartment.
+        the existing compartment. These probabilities are specific to the time
+        spent in the Compartment and they are computed using the historical
+        data. For example, historical
       </p>
       <div className="col-12 row p-0">
         <div className="col-xl-4 col-12">
           <p>
-            These probabilities are specific to the time spent in the
-            Compartment and they are computed using the historical data. For
-            example, historical parole length data is used to initialize the
-            parole supervision Compartment Transitions such that the transition
-            tables match the observed sentence length distribution.
+            parole length data is used to initialize the parole supervision
+            Compartment Transitions such that the transition tables match the
+            observed sentence length distribution.
           </p>
           <p>
             Continuing with the parole example above, if the max supervision
