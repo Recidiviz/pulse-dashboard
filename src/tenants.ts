@@ -30,7 +30,9 @@ export default {
     availableStateCodes: [core.US_ND],
     navigation: {
       goals: [],
-      community: ["explore", "vitals"],
+      ...(flags.enableVitalsDashboard
+        ? { community: ["explore", "vitals"] }
+        : { community: ["explore"] }),
       facilities: ["explore"],
     },
   },

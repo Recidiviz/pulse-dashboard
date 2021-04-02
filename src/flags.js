@@ -3,4 +3,5 @@ export default {
   enableRevocationRateByExit: false,
   showMethodologyDropdown: false,
   enableCoreTabNavigation: true,
+  enableVitalsDashboard: false,
 };
