@@ -96,7 +96,7 @@ $border-styles: 1px solid $slate-20;
       color: $pine-3;
       font: $font-ui-sans-14;
 
-      & > th {
+      & > th:not(:first-child) {
         padding: 2rem 0;
         font-weight: 500;
         width: 175px;
@@ -121,6 +121,10 @@ $border-styles: 1px solid $slate-20;
 
       & > :first-child {
         border-right: $border-styles;
+        font-weight: 500;
+        text-align: left;
+        padding: 1.25rem 0 1.25rem 2.5rem;
+        width: 200px;
       }
 
       & > :nth-child(4) {
@@ -143,7 +147,7 @@ $border-styles: 1px solid $slate-20;
         border-right: $border-styles;
       }
 
-      td {
+      td:not(:first-child) {
         font-weight: 500;
         padding: 20px 0 20px 0;
       }
@@ -172,6 +176,8 @@ $border-styles: 1px solid $slate-20;
 
     &--entity {
       @include sticky-scroll-column;
+      padding: 1.25rem 0 1.25rem 2.5rem;
+      text-align: left;
     }
   }
 
@@ -213,6 +219,10 @@ $border-styles: 1px solid $slate-20;
     display: flex;
     align-items: center;
     justify-content: center;
+
+    &--entity {
+      justify-content: start;
+    }
   }
 
   &__change {
