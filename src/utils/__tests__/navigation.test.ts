@@ -22,6 +22,11 @@ import {
 } from "../navigation";
 import tenants from "../../tenants";
 
+jest.mock("../../flags", () => ({
+  showMethodologyDropdown: false,
+  enableVitalsDashboard: true,
+}));
+
 describe("getPathsFromNavigation", () => {
   it("returns the correct allowed paths path for US_ND", () => {
     const allowedPaths = getPathsFromNavigation(tenants.US_ND.navigation);
