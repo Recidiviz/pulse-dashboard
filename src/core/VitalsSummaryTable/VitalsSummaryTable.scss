@@ -38,8 +38,6 @@ $border-styles: 1px solid $slate-20;
   @media screen and (max-width: $core-breakpoint-sm) {
     position: sticky !important;
     background-color: $white;
-
-    border-right: $border-styles;
     left: 0;
     top: 0;
     z-index: 1;
@@ -49,8 +47,6 @@ $border-styles: 1px solid $slate-20;
 .VitalsSummaryTable {
   background: $white;
   border-radius: 8px;
-  box-shadow: $inset-shadow-30;
-  font: $font-ui-sans-16;
   letter-spacing: -0.01em;
   overflow-x: auto;
   overflow-y: hidden;
@@ -58,6 +54,7 @@ $border-styles: 1px solid $slate-20;
 
   &__table {
     background: $white;
+    box-shadow: $inset-shadow-30;
     width: 100%;
     text-align: center;
     line-height: 150%;
@@ -96,91 +93,84 @@ $border-styles: 1px solid $slate-20;
       color: $pine-3;
       font: $font-ui-sans-14;
 
+      /* All headers except Entity */
       & > th:not(:first-child) {
-        padding: 2rem 0;
+        padding: 2rem 0rem 2rem 1rem;
         font-weight: 500;
         width: 175px;
 
-        > .VitalsSummaryTable__sortable-header {
+        > div.VitalsSummaryTable__sortable-header {
           @media screen and (max-width: $core-breakpoint-md) {
-            width: 122px;
-          }
-        }
-
-        &#entity {
-          @include sticky-scroll-column;
-          width: 200px;
-
-          > .VitalsSummaryTable__sortable-header {
-            @media screen and (max-width: $core-breakpoint-md) {
-              width: 174px;
-            }
+            width: 113px;
           }
         }
       }
 
-      & > :first-child {
+      /* Entity Header */
+      & > th#entity {
+        @include sticky-scroll-column;
         border-right: $border-styles;
         font-weight: 500;
         text-align: left;
-        padding: 1.25rem 0 1.25rem 2.5rem;
+        padding: 1.25rem 0.5rem 1.25rem 2.5rem;
         width: 200px;
+
+        > div.VitalsSummaryTable__sortable-header {
+          @media screen and (max-width: $core-breakpoint-md) {
+            width: 140px;
+          }
+        }
       }
 
-      & > :nth-child(4) {
+      /* Performance by Metric Headers */
+      & > th:nth-child(n + 5) {
+        padding: 2rem 2rem 2rem 3rem;
+        @media screen and (max-width: $core-breakpoint-md) {
+          padding: 1rem;
+        }
+      }
+
+      /* 28D Change Header */
+      & > th#overall28Day {
         border-right: $border-styles;
-      }
-
-      & > :nth-child(n + 2) {
-        padding: 2rem 0.5rem;
       }
     }
   }
 
-  &__row {
-    &--value {
-      border-top: $border-styles;
+  &__row--value {
+    border-top: $border-styles;
+    color: $pine-3;
+    font: $font-ui-sans-16;
+
+    /* All cells except entity */
+    td:not(:first-child) {
+      font-weight: 500;
+      padding: 1.25rem 0 1.25rem 0;
+    }
+
+    /* Performance by metric cells */
+    :nth-child(n + 5) {
+      font: $font-ui-sans-14;
       color: $pine-3;
-      font: $font-ui-sans-16;
+    }
 
-      & > :first-child {
-        border-right: $border-styles;
-      }
-
-      td:not(:first-child) {
-        font-weight: 500;
-        padding: 20px 0 20px 0;
-      }
-
-      :nth-child(n + 5) {
-        font: $font-ui-sans-14;
-        font-weight: 400;
-        color: $pine-3;
-      }
-
-      &:first-child {
-        :nth-child(2) {
-          border: none;
-        }
-      }
-
-      :nth-child(4) {
-        border-right: $border-styles;
-      }
+    /* 28D Change Cells */
+    :nth-child(4) {
+      border-right: $border-styles;
     }
   }
 
   &__cell {
-    max-width: 4.5rem;
-    max-height: 2rem;
-
+    /* Entity cells */
     &--entity {
       @include sticky-scroll-column;
-      padding: 1.25rem 0 1.25rem 2.5rem;
+      border-right: $border-styles;
+      padding: 1.25rem 0.5rem 1.25rem 2.5rem;
       text-align: left;
     }
   }
 
+  /* Entity links */
   &__link {
     color: $pine-3;
     &:hover {
@@ -190,6 +180,7 @@ $border-styles: 1px solid $slate-20;
     }
   }
 
+  /* Performance by metric bubbles */
   &__bubble {
     display: inline-block;
     border: 1px solid transparent;
@@ -215,6 +206,7 @@ $border-styles: 1px solid $slate-20;
     }
   }
 
+  /* All sortable headers */
   &__sortable-header {
     display: flex;
     align-items: center;
