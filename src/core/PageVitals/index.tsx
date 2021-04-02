@@ -25,13 +25,14 @@ import VitalsWeeklyChange from "../VitalsWeeklyChange";
 import VitalsSummaryChart from "../VitalsSummaryChart";
 import VitalsSummaryDetail from "../VitalsSummaryDetail";
 import Loading from "../../components/Loading";
-import { MetricType, METRIC_TYPES, ENTITY_TYPES } from "./types";
+import { MetricType, METRIC_TYPES } from "./types";
 import { useRootStore } from "../../components/StoreProvider";
 import { VitalsSummaryRecord, VitalsTimeSeriesRecord } from "../models/types";
 import { ChartDataType } from "../types/charts";
 import useChartData from "../hooks/useChartData";
 import { vitalsTimeSeries } from "../models/VitalsTimeSeriesMetric";
 import { vitalsSummary } from "../models/VitalsSummaryMetric";
+import VitalsSummaryBreadcrumbs from "../VitalsSummaryBreadcrumbs";
 import { convertSlugToId } from "../../utils/navigation";
 import {
   getSummaryCards,
@@ -42,7 +43,7 @@ import {
 } from "./helpers";
 import "./PageVitals.scss";
 
-export const DEFAULT_ENTITY_ID = ENTITY_TYPES.STATE_DOC;
+const DEFAULT_ENTITY_ID = "STATE_DOC";
 const goals = {
   [METRIC_TYPES.OVERALL]: 80,
   [METRIC_TYPES.DISCHARGE]: 90,
@@ -64,7 +65,6 @@ const PageVitals: React.FC = () => {
   const { isLoading, isError, apiData }: ChartDataType = useChartData(
     "us_nd/vitals"
   ) as ChartDataType;
-
   // TODO: add in Error state
   if (isError) {
     return null;
@@ -85,7 +85,6 @@ const PageVitals: React.FC = () => {
   const timeSeries: VitalsTimeSeriesRecord[] = vitalsTimeSeries(
     apiData.vitals_time_series.data
   );
-
   const handleSelectCard: (id: MetricType) => () => void = (id) => () => {
     setSelectedCardId(id);
   };
@@ -103,7 +102,10 @@ const PageVitals: React.FC = () => {
 
   return (
     <PageTemplate>
-      <div className="PageVitals__Title">{stateName}</div>
+      <VitalsSummaryBreadcrumbs
+        stateName={stateName}
+        entity={currentEntitySummary}
+      />
       <div className="PageVitals__SummaryCards">
         <VitalsSummaryCards
           onClick={handleSelectCard}

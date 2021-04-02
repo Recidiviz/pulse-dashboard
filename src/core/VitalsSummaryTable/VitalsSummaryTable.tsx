@@ -21,15 +21,22 @@ import cx from "classnames";
 import BubbleTableCell from "./BubbleTableCell";
 import DeltaTableCell from "./DeltaTableCell";
 import { formatPercent } from "../../utils";
-import {
-  VitalsSummaryTableRow,
-  METRIC_TYPES,
-  ENTITY_TYPES,
-} from "../PageVitals/types";
+import { VitalsSummaryTableRow, METRIC_TYPES } from "../PageVitals/types";
+import { ENTITY_TYPES, EntityType } from "../models/types";
 import { convertIdToSlug } from "../../utils/navigation";
-import { toTitleCase } from "../../utils/formatStrings";
 
 import "./VitalsSummaryTable.scss";
+
+function getEntityTypeName(entityType: EntityType): string {
+  switch (entityType) {
+    case ENTITY_TYPES.LEVEL_1_SUPERVISION_LOCATION:
+      return "Office";
+    case ENTITY_TYPES.PO:
+      return "Officer";
+    default:
+      throw new Error(`Unknown entity type ${entityType}`);
+  }
+}
 
 type PropTypes = {
   summaries: VitalsSummaryTableRow[];
@@ -56,7 +63,7 @@ const VitalsSummaryTable: React.FC<PropTypes> = ({
         Header: " ",
         columns: [
           {
-            Header: toTitleCase(entityType),
+            Header: getEntityTypeName(entityType),
             accessor: "entity",
             Cell: ({
               value,
@@ -67,7 +74,7 @@ const VitalsSummaryTable: React.FC<PropTypes> = ({
                 entityType: string;
               };
             }) =>
-              value.entityType === ENTITY_TYPES.OFFICE ? (
+              value.entityType === ENTITY_TYPES.LEVEL_1_SUPERVISION_LOCATION ? (
                 <Link
                   className="VitalsSummaryTable__link"
                   to={`/community/vitals/${convertIdToSlug(value.entityId)}`}
@@ -157,7 +164,6 @@ const VitalsSummaryTable: React.FC<PropTypes> = ({
   useEffect(() => {
     setSortBy([sortBy]);
   }, [setSortBy, sortBy]);
-
   return (
     <div className="VitalsSummaryTable">
       <table {...getTableProps()} className="VitalsSummaryTable__table">
