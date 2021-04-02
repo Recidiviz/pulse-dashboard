@@ -6,6 +6,7 @@ import {
   SUPERVISION_LEVELS,
   ADMISSION_TYPES,
 } from "../TenantStore/filterOptions";
+import { translate } from "../../utils/i18nSettings";
 
 function formatMetricPeriodMonthsFilter(metricPeriodMonths) {
   switch (metricPeriodMonths) {
@@ -47,8 +48,8 @@ const formatSupervisionLevel = (supervisionLevel) =>
 
 const formatAdmissionType = (admissionTypes) => {
   return admissionTypes[0] === "All"
-    ? "All admission types"
-    : `Admission type: ${getLabelsString(
+    ? `All ${translate("admission")} types`
+    : `${translate("Admission")} type: ${getLabelsString(
         admissionTypes,
         ADMISSION_TYPES.flattenedOptions
       )}`;

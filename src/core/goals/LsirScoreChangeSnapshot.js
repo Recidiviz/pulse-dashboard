@@ -41,10 +41,8 @@ import {
   filterDatasetByDistrict,
 } from "../utils/dataFilters";
 import { toNumber } from "../../utils";
-import {
-  generateTrendlineDataset,
-  getTooltipWithoutTrendline,
-} from "../../utils/trendline";
+import { tooltipWithoutTrendlineLabel } from "../../utils/tooltips";
+import { generateTrendlineDataset } from "../../utils/trendline";
 import {
   centerSingleMonthDatasetIfNecessary,
   sortFilterAndSupplementMostRecentMonths,
@@ -171,7 +169,7 @@ const LsirScoreChangeSnapshot = ({
           mode: "point",
           callbacks: {
             label: (tooltipItem, data) =>
-              getTooltipWithoutTrendline(tooltipItem, data),
+              tooltipWithoutTrendlineLabel(tooltipItem, data),
           },
         },
         scales: {

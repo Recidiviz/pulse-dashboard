@@ -21,8 +21,8 @@ import {
   SimulationCompartment,
 } from "../models/types";
 
-const CURRENT_YEAR = 2021;
-const CURRENT_MONTH = 1;
+export const CURRENT_YEAR = 2021;
+export const CURRENT_MONTH = 1;
 
 export type MonthOptions = 1 | 6 | 12 | 24 | 60;
 

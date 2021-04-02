@@ -25,6 +25,7 @@ import MultiSelect from "../../controls/MultiSelect";
 import { flatOptions } from "../../controls/utils";
 import { useRootStore } from "../../components/StoreProvider";
 import { ADMISSION_TYPE } from "../utils/constants";
+import { translate } from "../../utils/i18nSettings";
 
 const AdmissionTypeFilter = () => {
   const { filtersStore } = useRootStore();
@@ -43,7 +44,7 @@ const AdmissionTypeFilter = () => {
   );
 
   return (
-    <FilterField label="Admission Type">
+    <FilterField label={`${translate("Admission")} Type`}>
       <MultiSelect
         value={selectValue}
         options={options}

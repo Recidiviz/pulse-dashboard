@@ -32,13 +32,13 @@ const RevocationsByGender = observer(
   ({ containerHeight, timeDescription }, ref) => {
     const { dataStore } = useRootStore();
     const { revocationsChartStore } = dataStore;
-
-    const CHART_TITLE = `Admissions by ${translate("gender")}`;
+    const CHART_TITLE = translate("revocationsByGenderChartTitle");
+    const CHART_ID = translate("revocationsByGenderChartId");
 
     return (
       <RevocationsByDimension
         ref={ref}
-        chartId={`admissionsBy${translate("Gender")}`}
+        chartId={CHART_ID}
         dataStore={revocationsChartStore}
         containerHeight={containerHeight}
         renderChart={({ chartId, data, denominators, numerators }) => (

@@ -17,7 +17,7 @@
 import { tooltipForRateMetricWithCounts } from "../tooltips";
 
 describe("tooltipForRateMetricWithCounts", () => {
-  const id = "revocationsByRace";
+  const id = "  admissionsByDistrict";
   const tooltipItemRate = {
     xLabel: "High",
     yLabel: 10.56,
@@ -33,7 +33,7 @@ describe("tooltipForRateMetricWithCounts", () => {
     labels: ["No Score", "Low", "Moderate", "High", "Very High"],
     datasets: [
       {
-        label: "Percent revoked",
+        label: "Percent of standing population revoked",
         backgroundColor: "#F07132",
         hoverBackgroundColor: "#F07132",
         hoverBorderColor: "#F07132",
@@ -53,7 +53,9 @@ describe("tooltipForRateMetricWithCounts", () => {
       numbers,
       denominators
     );
-    expect(tooltipWithCount).toBe("Percent revoked: 10.56% (19/180)");
+    expect(tooltipWithCount).toBe(
+      "Percent of standing population revoked: 10.56% (19/180)"
+    );
   });
 
   it("tooltip for rate metric with nested counts", () => {
@@ -64,7 +66,9 @@ describe("tooltipForRateMetricWithCounts", () => {
       [numbers],
       [denominators]
     );
-    expect(tooltipTest).toBe("Percent revoked: 10.56% (19/180)");
+    expect(tooltipTest).toBe(
+      "Percent of standing population revoked: 10.56% (19/180)"
+    );
   });
 
   it("tooltip for rate metric with warning", () => {
@@ -78,7 +82,9 @@ describe("tooltipForRateMetricWithCounts", () => {
       [denominators],
       includeWarning
     );
-    expect(tooltipTest).toBe("Percent revoked: 10.56% (2/3) *");
+    expect(tooltipTest).toBe(
+      "Percent of standing population revoked: 10.56% (2/3) *"
+    );
   });
 
   it("tooltip for rate metric without warning", () => {
@@ -92,6 +98,57 @@ describe("tooltipForRateMetricWithCounts", () => {
       [denominators],
       includeWarning
     );
-    expect(tooltipTest).toBe("Percent revoked: 10.56% (2/3)");
+    expect(tooltipTest).toBe(
+      "Percent of standing population revoked: 10.56% (2/3)"
+    );
+  });
+
+  describe("for Race and Gender charts", () => {
+    const tooltipItemRate = {
+      yLabel: "Admitted Population",
+      xLabel: 10.56,
+      label: "Admitted Population",
+      value: "10.56",
+      index: 0,
+      datasetIndex: 0,
+      x: 1088.744296760559,
+      y: 249.0246857142857,
+    };
+    const dataMetric = {
+      labels: [
+        "Admitted Population",
+        "Recommended for Revocation",
+        "Supervision Population",
+        "Missouri Population",
+      ],
+      datasets: [
+        {
+          label: "Male",
+          backgroundColor: "#F07132",
+          hoverBackgroundColor: "#F07132",
+          hoverBorderColor: "#F07132",
+          data: ["6.53", "8.84", "13.48", "10.56"],
+        },
+      ],
+    };
+    const numbers = [56, 26, 36, 19];
+    const denominators = [857, 294, 267, 180];
+    [
+      "admissionsByRace",
+      "admissionsByGender",
+      "recommitmentsByRace",
+      "recommitmentsBySex",
+    ].forEach((id) => {
+      it(`tooltip for rate metric with counts without trendline - ${id}`, () => {
+        const tooltipWithCount = tooltipForRateMetricWithCounts(
+          id,
+          tooltipItemRate,
+          dataMetric,
+          numbers,
+          denominators
+        );
+        expect(tooltipWithCount).toBe("Admitted Population (56/857)");
+      });
+    });
   });
 });

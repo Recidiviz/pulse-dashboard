@@ -14,9 +14,12 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-import { standardTooltipForCountMetric } from "../tooltips";
+import {
+  standardTooltipForCountMetricLabel,
+  tooltipWithoutTrendlineLabel,
+} from "../tooltips";
 
-describe("standardTooltipForCountMetric", () => {
+describe("standardTooltipForCountMetricLabel", () => {
   it("standard tooltip for count metric", () => {
     const tooltip = {
       xLabel: "May",
@@ -105,19 +108,66 @@ describe("standardTooltipForCountMetric", () => {
       y: 211.504,
     };
 
-    const standardToolTipCount = standardTooltipForCountMetric(tooltip, data);
+    const standardToolTipCount = standardTooltipForCountMetricLabel(
+      tooltip,
+      data
+    );
     expect(standardToolTipCount).toBe("Successful completions: 203");
 
-    const tooltipMetricYLabel = standardTooltipForCountMetric(
+    const tooltipMetricYLabel = standardTooltipForCountMetricLabel(
       tooltipYLabel,
       data
     );
     expect(tooltipMetricYLabel).toBe("Successful completions: 204");
 
-    const tooltipEmptyMetric = standardTooltipForCountMetric(
+    const tooltipEmptyMetric = standardTooltipForCountMetricLabel(
       tooltip,
       dataEmptyLabel
     );
     expect(tooltipEmptyMetric).toBe("203");
+  });
+
+  it("get tooltip without trendline", () => {
+    const tooltipItem = {
+      datasetIndex: "test",
+      yLabel: "Revocation count: ",
+    };
+    const data = {
+      datasets: {
+        test: {
+          label: "test",
+        },
+      },
+    };
+    const units = 45;
+
+    const tooltipItemTrendline = {
+      datasetIndex: "trendline",
+      yLabel: "Revocation count: ",
+    };
+    const dataForTrendline = {
+      datasets: {
+        trendline: {
+          label: "trendline",
+        },
+      },
+    };
+
+    const tooltip = tooltipWithoutTrendlineLabel(tooltipItem, data, units);
+    expect(tooltip).toBe("Revocation count: 45");
+
+    const tooltipForTrendline = tooltipWithoutTrendlineLabel(
+      tooltipItemTrendline,
+      dataForTrendline,
+      units
+    );
+    expect(tooltipForTrendline).toBe("");
+
+    const tooltipEmptyYLabel = tooltipWithoutTrendlineLabel(
+      tooltipItem,
+      data,
+      undefined
+    );
+    expect(tooltipEmptyYLabel).toBe("Revocation count: ");
   });
 });

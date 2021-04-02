@@ -25,17 +25,19 @@ import { translate } from "../../utils/i18nSettings";
 import { useDataStore } from "../../components/StoreProvider";
 import HorizontalBarChartWithLabels from "../BarCharts/HorizontalBarChartWithLabels";
 
-const CHART_TITLE = "Admissions by race/ethnicity";
 const DEFAULT_MODE = "WHITE";
 
 const RevocationsByRace = observer(
   ({ containerHeight, timeDescription }, ref) => {
     const dataStore = useDataStore();
     const { revocationsChartStore } = dataStore;
+    const CHART_TITLE = translate("revocationsByRaceChartTitle");
+    const CHART_ID = translate("revocationsByRaceChartId");
+
     return (
       <RevocationsByDimension
         ref={ref}
-        chartId="admissionsByRace"
+        chartId={CHART_ID}
         dataStore={revocationsChartStore}
         containerHeight={containerHeight}
         renderChart={({ chartId, data, denominators, numerators }) => (

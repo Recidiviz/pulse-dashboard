@@ -25,22 +25,39 @@ export default {
   gender: "sex",
   Gender: "Sex",
   violationReports: "violation reports",
-  revocationsByDistrictChartTitle: "Admissions by district and sub-office",
-  revocationsOverTimeXAxis: "Number of admission from parole",
-  revoked: "admitted",
-  Revocation: "Admission",
-  Revocations: "Admissions",
-  revocation: "admission",
-  revocations: "admissions",
-  percentOfPopulationRevoked: "Admission rate of standing population",
-  matrixExplanationP1: `This chart plots all people who were admitted on a board 
+  revocationsOverTimeChartTitle: "Number of recommitments from parole",
+  revocationsMatrixChartTitle:
+    "Recommitments by violation history (in year prior to their last reported violation)",
+  revocationsByDistrictChartTitle: "Recommitments by district and sub-office",
+  revocationsByOfficerChartTitle: "Recommitments by agent",
+  revocationsByRiskLevelChartTitle: "Recommitments by risk level",
+  revocationsByGenderChartTitle: "Recommitments by sex",
+  revocationsByRaceChartTitle: "Recommitments by race/ethnicity",
+  caseTableTitle: "Recommitted individuals",
+  revocationsOverTimeChartId: "recommitmentsOverTime",
+  revocationsMatrixChartId: "recommitmentsMatrix",
+  revocationsByDistrictChartId: "recommitmentsBySubOffice",
+  revocationsByOfficerChartId: "recommitmentsByAgent",
+  revocationsByRiskLevelChartId: "recommitmentsByRiskLevel",
+  revocationsByViolationChartId: "recommitmentsByViolationType",
+  revocationsByGenderChartId: "recommitmentsBySex",
+  revocationsByRaceChartId: "recommitmentsByRace",
+  revoked: "recommitted",
+  Revocation: "Recommitment",
+  Revocations: "Recommitments",
+  revocation: "recommitment",
+  revocations: "recommitments",
+  Admission: "Recommitment",
+  admission: "recommitment",
+  percentOfPopulationRevoked: "Recommitment rate of standing population",
+  matrixExplanationP1: `This chart plots all people who were recommitted on a board 
   action to SCIs, CCCs, or Contract Facilities from parole during the selected 
   time period, according to their most serious violation and the total number 
   of violation reports that were filed within one year prior to the 
-  last reported violation before the person was admitted. 
+  last reported violation before the person was recommitted. 
   (See "Additional Info" for more details.)`,
   matrixExplanationP2: `The numbers inside the bubbles represent the number of
-people who were admitted, whose most serious violation matches the violation at
+people who were recommitted, whose most serious violation matches the violation at
 the head of that row, and who have the number of prior violations at the head
 of that column.`,
   Technical: "Low tech.",
@@ -52,7 +69,7 @@ of that column.`,
     HIGH: "High Risk",
   },
   populationChartAttributes: {
-    REVOKED: "Admitted Population",
+    REVOKED: "Recommitted Population",
     SUPERVISION_POPULATION: "Supervision Population",
     STATE_POPULATION: "Pennsylvania Population",
   },
