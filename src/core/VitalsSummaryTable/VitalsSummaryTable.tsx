@@ -33,8 +33,6 @@ function getEntityTypeName(entityType: EntityType): string {
       return "Office";
     case ENTITY_TYPES.PO:
       return "Officer";
-    case ENTITY_TYPES.STATE:
-      return "STATE_DOC";
     default:
       throw new Error(`Unknown entity type ${entityType}`);
   }
