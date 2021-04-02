@@ -15,7 +15,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 import { isDenominatorStatisticallySignificant } from "./significantStatistics";
-import { getTooltipWithoutTrendline } from "../../utils/trendline";
+import { tooltipWithoutTrendlineLabel } from "../../utils/tooltips";
 import { formatLargeNumber } from "../../utils/labels";
 
 export function tooltipForRateMetricWithCounts(
@@ -47,15 +47,13 @@ export function tooltipForRateMetricWithCounts(
       ? " *"
       : "";
 
-  return id === "admissionsByRace" ||
-    id === "admissionsByGender" ||
-    id === "admissionsBySex"
-    ? `${getTooltipWithoutTrendline(
+  return id.includes("Race") || id.includes("Gender") || id.includes("Sex")
+    ? `${tooltipWithoutTrendlineLabel(
         tooltipItem,
         data,
         ""
       )}${appendedCounts}${cue}`
-    : `${label}: ${getTooltipWithoutTrendline(
+    : `${label}: ${tooltipWithoutTrendlineLabel(
         tooltipItem,
         data,
         "%"

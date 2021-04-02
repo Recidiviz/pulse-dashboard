@@ -14,8 +14,10 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-import { getTooltipWithoutTrendline } from "../../utils/trendline";
-import { standardTooltipForCountMetric } from "../../utils/tooltips";
+import {
+  standardTooltipForCountMetricLabel,
+  tooltipWithoutTrendlineLabel,
+} from "../../utils/tooltips";
 
 function canDisplayGoal(goal, toggles) {
   if (toggles.disableGoal === true) {
@@ -44,12 +46,12 @@ function updateTooltipForMetricType(metricType, tooltipItem, data) {
     return standardTooltipForRateMetric(tooltipItem, data);
   }
 
-  return standardTooltipForCountMetric(tooltipItem, data);
+  return standardTooltipForCountMetricLabel(tooltipItem, data);
 }
 
 function standardTooltipForRateMetric(tooltipItem, data) {
   const label = data.datasets[tooltipItem.datasetIndex].label || "";
-  return `${label}: ${getTooltipWithoutTrendline(tooltipItem, data, "%")}`;
+  return `${label}: ${tooltipWithoutTrendlineLabel(tooltipItem, data, "%")}`;
 }
 
 function toggleYAxisTicksStackedRateBasicCount(metricType, maxCount) {

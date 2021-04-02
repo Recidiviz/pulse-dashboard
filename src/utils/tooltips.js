@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-export function standardTooltipForCountMetric(tooltipItem, data) {
+export function standardTooltipForCountMetricLabel(tooltipItem, data) {
   let label = data.datasets[tooltipItem.datasetIndex].label || "";
 
   // The below logic is the default tooltip logic for ChartJS 2
@@ -29,4 +29,20 @@ export function standardTooltipForCountMetric(tooltipItem, data) {
   }
 
   return label;
+}
+
+/**
+ * Returns the string value for a tooltip that excludes information about
+ * trendline data points.
+ * Appends the `units` string to the data yLabel value if provided.
+ */
+export function tooltipWithoutTrendlineLabel(tooltipItem, data, units) {
+  const { label } = data.datasets[tooltipItem.datasetIndex];
+  if (label === "trendline") return "";
+  let tooltipLabel = tooltipItem.yLabel.toString();
+  if (units) {
+    tooltipLabel = tooltipLabel.concat(units);
+  }
+
+  return tooltipLabel;
 }
