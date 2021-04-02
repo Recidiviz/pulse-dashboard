@@ -23,6 +23,7 @@ $marble-4: #eff1f1;
 $pine-1: rgb(1, 35, 34);
 $pine-3: #00413e;
 $signal-links: #006c67;
+$signal-highlight: #25b894;
 $signal-tooltip: #082249;
 $slate-20: rgba(53, 83, 98, 0.2);
 $slate-30: rgba(53, 83, 98, 0.3);
@@ -30,12 +31,20 @@ $slate-30-opaque: #c2cbd0;
 $slate-60: rgba(53, 83, 98, 0.6);
 $slate-80: rgba(53, 83, 98, 0.8);
 
+/* Colors missing from system design */
+$core-dropdown-color: #e9ebeb;
+$core-element-hover-color: #d2d8d8;
+$core-border-color: #d2d8d8;
+$core-focused-color: #e3e6e6;
+
+/* Font families */
 $sans-serif: Libre Franklin, sans serif;
 $serif: Libre Baskerville, serif;
 
 /* font: font-style font-variant font-weight font-size/line-height font-family */
 $font-ui-sans-14: 500 0.875rem/1.5rem $sans-serif;
 $font-ui-sans-16: 500 1rem/1.5rem $sans-serif;
+$font-ui-sans-20: 500 1.25rem/1.5rem $sans-serif;
 $font-ui-sans-24: 1.5rem/2.5rem $sans-serif;
 $font-ui-serif-34: 400 2.125rem/3rem $serif;
 

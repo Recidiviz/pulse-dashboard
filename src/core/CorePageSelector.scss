@@ -1,4 +1,5 @@
 @import "../assets/styles/spec/settings/index";
+@import "./CoreConstants.scss";
 
 .CorePageSelector {
   display: flex;
@@ -12,26 +13,27 @@
   }
 
   &--Option {
-    width: 6.33rem;
-    height: 100%;
-    display: flex;
     align-items: center;
-    justify-content: center;
     border-top: 0.25rem solid transparent;
-    margin: 0;
-    color: $label-topbar;
-    font-size: 1rem;
+    color: $pine-3;
     cursor: pointer;
+    display: flex;
+    font: $font-ui-sans-16;
+    height: 100%;
+    justify-content: center;
+    letter-spacing: -0.01em;
+    margin: 0;
+    width: 6.33rem;
 
     &:hover {
-      color: $action-topbar;
+      color: $signal-highlight;
     }
 
     &-Selected {
-      border-top: 0.25rem solid $action-topbar;
+      border-top: 0.25rem solid $signal-highlight;
 
       &:focus {
-        color: $label-topbar;
+        color: $pine-3;
       }
     }
   }
