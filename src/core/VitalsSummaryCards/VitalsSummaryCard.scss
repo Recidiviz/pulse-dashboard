@@ -52,11 +52,12 @@
     border-radius: 0.5rem 0.5rem 0 0;
   }
   &__title {
-    font: $font-ui-sans-16;
     color: $slate-80;
-    opacity: 0.8;
-    width: 50%;
+    font: $font-ui-sans-16;
+    line-height: 1.25rem;
     padding: 0 0.12rem 0 1.56rem;
+    min-width: 115px;
+    width: 50%;
   }
 
   &__percent {
