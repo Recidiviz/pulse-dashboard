@@ -22,22 +22,22 @@ const ModelInfrastructureBlock = () => {
       </div>
       <div className="col-12  p-0 row no-gutters">
         <h4 className="col-12 Methodology__sub-block--title">Cohorts</h4>
-        <p className="col-12 p-0">
+        <p className="col-12 p-0 m-0">
           The Cohort component is used to record the number of people entering
           part of the system at a certain time and track how many people within
           that group remain after each time step. For example, one Cohort could
           represent the population admitted to the new offense prison population
           compartment in 2016 for a termer incarceration sentence. This Cohort
           keeps a count for the number of people admitted in 2016 along with the
-          total remaining population after 2017, 2018, and so on until the
-          entire
+          total remaining population after 2017, 2018, and so on
         </p>
-        <div className="col-xl-6 col-12 p-0">
+        <div className="col-xl-4 col-12 p-0">
           <p>
-            group has left prison. As portions of this group are released over
-            time, additional Cohorts are created for each release period.
-            Cohorts are not only separated by the entry year, but also by the
-            relevant disaggregated attributes like crime type and gender.
+            until the entire group has left prison. As portions of this group
+            are released over time, additional Cohorts are created for each
+            release period. Cohorts are not only separated by the entry year,
+            but also by the relevant disaggregated attributes like crime type
+            and gender.
           </p>
           <p>
             As an example, if the yearly admissions to parole were 400 people
@@ -51,8 +51,8 @@ const ModelInfrastructureBlock = () => {
           </p>
         </div>
 
-        <div className="table col-xl-6  col-12 align-items-end justify-content-end">
-          <Table bordered style={{ height: 352, maxWidth: 728 }}>
+        <div className="Methodology__table col-xl-8  col-12 align-items-end justify-content-end">
+          <Table bordered style={{ height: 400, maxWidth: 780 }}>
             <tbody>
               <tr>
                 <th>
@@ -108,7 +108,7 @@ const ModelInfrastructureBlock = () => {
               </tr>
             </tbody>
           </Table>
-          <span className="table__description">
+          <span className="Methodology__table__description">
             Fig.1 – Example Parole Cohort
           </span>
         </div>
@@ -129,10 +129,10 @@ const ModelInfrastructureBlock = () => {
       <p>
         These transitions are defined in transition tables, which contain the
         probability of transitioning to a new compartment versus remaining in
-        the existing compartment
+        the existing compartment.
       </p>
       <div className="col-12 row p-0">
-        <div className="col-xl-6 col-12">
+        <div className="col-xl-4 col-12">
           <p>
             These probabilities are specific to the time spent in the
             Compartment and they are computed using the historical data. For
@@ -155,8 +155,8 @@ const ModelInfrastructureBlock = () => {
           </p>
         </div>
 
-        <div className="table col-xl-6  col-12 align-items-end justify-content-end">
-          <Table bordered style={{ maxHeight: 352, maxWidth: 728 }}>
+        <div className="Methodology__table col-xl-8  col-12 align-items-end justify-content-end">
+          <Table bordered style={{ masHeight: 400, maxWidth: 780 }}>
             <tbody>
               <tr>
                 <th aria-label="empty" />
@@ -195,7 +195,7 @@ const ModelInfrastructureBlock = () => {
               </tr>
             </tbody>
           </Table>
-          <span className="table__description">
+          <span className="Methodology__table__description">
             Fig. 2 – Example Compartment Transition Table
           </span>
         </div>
