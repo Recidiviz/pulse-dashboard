@@ -1,6 +1,6 @@
 # Pulse Dashboard
 
-[![Build Status](https://travis-ci.org/Recidiviz/pulse-dashboard.svg?branch=master)](https://travis-ci.org/Recidiviz/pulse-dashboard) [![Coverage Status](https://coveralls.io/repos/github/Recidiviz/pulse-dashboard/badge.svg?branch=master)](https://coveralls.io/github/Recidiviz/pulse-dashboard?branch=master)
+[![Build Status](https://travis-ci.org/Recidiviz/pulse-dashboard.svg?branch=main)](https://travis-ci.org/Recidiviz/pulse-dashboard) [![Coverage Status](https://coveralls.io/repos/github/Recidiviz/pulse-dashboard/badge.svg?branch=main)](https://coveralls.io/github/Recidiviz/pulse-dashboard?branch=main)
 
 Bringing criminal justice analysis to decision makers to help reduce incarceration.
 
