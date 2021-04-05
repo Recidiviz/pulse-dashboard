@@ -30,7 +30,7 @@ import {
   CURRENT_MONTH,
 } from "../PopulationTimeseriesChart/helpers";
 import { CORE_VIEWS, getViewFromPathname } from "../views";
-import { formatLargeNumber } from "../../utils/labels";
+import { formatLargeNumber } from "../../utils/formatStrings";
 import { usePopulationFiltersStore } from "../../components/StoreProvider";
 import type {
   PopulationProjectionTimeseriesRecord,

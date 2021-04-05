@@ -21,6 +21,7 @@ import { getAvailableStateCodes, doesUserHaveAccess } from "../utils/user";
 import { LANTERN_TENANTS, RESTRICTED_DISTRICT_TENANTS } from "./lanternTenants";
 import getTenantMappings from "./tenants";
 import methodology from "./methodology";
+import tenants from "../../tenants";
 
 export const CURRENT_TENANT_IN_SESSION = "adminUserCurrentTenantInSession";
 
@@ -79,5 +80,13 @@ export default class TenantStore {
 
   get methodology() {
     return methodology[this.currentTenantId];
+  }
+
+  get stateName() {
+    return tenants[this.currentTenantId].name;
+  }
+
+  get stateCode() {
+    return tenants[this.currentTenantId].stateCode;
   }
 }

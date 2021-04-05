@@ -17,7 +17,7 @@
 import React from "react";
 import cn from "classnames";
 import { Icon, IconSVG } from "@recidiviz/case-triage-components";
-import { formatPercent } from "../../utils/labels";
+import { formatPercent } from "../../utils/formatStrings";
 import * as styles from "../CoreConstants.scss";
 import "./PercentDelta.scss";
 

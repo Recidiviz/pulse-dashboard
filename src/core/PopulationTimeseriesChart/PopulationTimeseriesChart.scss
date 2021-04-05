@@ -1,5 +1,5 @@
 .PopulationTimeseriesChart {
-  background: #FFF;
+  background: #fff;
   border-radius: 0.5rem;
   box-shadow: inset 0px -1px 1px rgba(19, 44, 82, 0.2);
   font-family: Libre Franklin, sans-serif;
@@ -22,7 +22,7 @@
   }
 
   &__Point {
-    fill: #25636F;
+    fill: #25636f;
     r: 0.25rem;
   }
 
@@ -59,14 +59,14 @@
     font-weight: 400;
   }
 
-  .annotation-layer{
+  .annotation-layer {
     .uncertainty {
-      fill: #25636F;
+      fill: #25636f;
       fill-opacity: 0.2;
     }
 
     .projection-area {
-      fill: #EFF1F1;
+      fill: #eff1f1;
       fill-opacity: 0.46;
     }
 

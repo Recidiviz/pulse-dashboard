@@ -29,7 +29,7 @@ import { translate } from "../../utils/i18nSettings";
 import { applyStatisticallySignificantShading } from "../utils/significantStatistics";
 import { COLORS } from "../../assets/scripts/constants/colors";
 import { sumCounts } from "../utils/sumCounts";
-import { formatDistrictLabel } from "../../utils/labels";
+import { formatDistrictLabel } from "../../utils/formatStrings";
 
 const generatePercentChartData = (
   districtChartData,

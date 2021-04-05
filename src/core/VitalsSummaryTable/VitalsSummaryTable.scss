@@ -1,0 +1,202 @@
+// Recidiviz - a data platform for criminal justice reform
+// Copyright (C) 2021 Recidiviz, Inc.
+//
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <https://www.gnu.org/licenses/>.
+// =============================================================================
+@import "../CoreConstants.scss";
+
+$border-styles: 1px solid $slate-20;
+
+.VitalsSummaryTable {
+  background: $white;
+  border-radius: 8px;
+  box-shadow: $inset-shadow-30;
+  font: $font-ui-sans-16;
+  letter-spacing: -0.01em;
+  margin: 1rem 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  width: 100%;
+
+  &__table {
+    background: $white;
+    width: 100%;
+    text-align: center;
+    line-height: 150%;
+    font-style: normal;
+    letter-spacing: -0.01em;
+    color: black;
+  }
+
+  &__table-head {
+    /* Top header row */
+    & > :first-child {
+      color: $slate-80;
+      font: $font-ui-sans-16;
+
+      & > th {
+        padding-top: 2rem;
+        font-weight: 500;
+      }
+
+      & > :first-child {
+        border-right: $border-styles;
+      }
+
+      & > :nth-child(2) {
+        border-right: $border-styles;
+      }
+    }
+
+    /* Sortable header row */
+    & > :last-child {
+      color: $pine-3;
+      font: $font-ui-sans-14;
+
+      & > th {
+        padding: 2rem 0;
+        font-weight: 500;
+      }
+
+      & > :first-child {
+        border-right: $border-styles;
+        width: 200px;
+      }
+
+      & > :nth-child(4) {
+        border-right: $border-styles;
+      }
+
+      & > :nth-child(n + 1) {
+        width: 175px;
+      }
+    }
+  }
+
+  &__row {
+    &--value {
+      border-top: $border-styles;
+      color: $pine-3;
+      font: $font-ui-sans-16;
+
+      & > :first-child {
+        border-right: $border-styles;
+      }
+
+      td {
+        font-weight: 500;
+        padding: 20px 0 20px 0;
+      }
+
+      :nth-child(n + 5) {
+        font: $font-ui-sans-14;
+        font-weight: 400;
+        color: $pine-3;
+      }
+
+      &:first-child {
+        :nth-child(2) {
+          border: none;
+        }
+      }
+
+      :nth-child(4) {
+        border-right: $border-styles;
+      }
+    }
+  }
+
+  &__cell {
+    max-width: 4.5rem;
+    max-height: 2rem;
+  }
+
+  &__link {
+    color: $pine-3;
+    &:hover {
+      text-decoration-line: underline;
+      color: $signal-links;
+      cursor: pointer;
+    }
+  }
+
+  &__bubble {
+    display: inline-block;
+    border: 1px solid transparent;
+    width: 4.5rem;
+    height: 2rem;
+    border-radius: 21px;
+    padding: 3px 0;
+
+    &--70 {
+      border-color: $crimson-dark;
+    }
+
+    &--80 {
+      border-color: $crimson;
+    }
+
+    &--90 {
+      border-color: #4d9895;
+    }
+
+    &--100 {
+      border-color: $signal-links;
+    }
+  }
+
+  &__sortable-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &__change {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &__sort {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 0 0.5rem;
+
+    &__button {
+      width: 0;
+      height: 0;
+      border-style: solid;
+      margin: 1px;
+      &--up {
+        border-width: 0 5px 5px 5px;
+        border-color: transparent transparent $slate-30 transparent;
+
+        &.VitalsSummaryTable__sort__button--active {
+          border-color: transparent transparent $signal-links transparent;
+        }
+      }
+
+      &--down {
+        border-width: 5px 5px 0 5px;
+        border-color: rgba(53, 83, 98, 0.3) transparent transparent transparent;
+
+        &.VitalsSummaryTable__sort__button--active {
+          border-color: $signal-links transparent transparent transparent;
+        }
+      }
+    }
+  }
+}

@@ -5,7 +5,7 @@
   flex-grow: 1;
   font-size: 0.8em;
   font-weight: 500;
-  color: $core-font-color;
+  color: $pine-3;
 
   &__control {
     border: 1px solid $core-border-color !important;
@@ -39,7 +39,7 @@
     border-radius: 0rem 0rem 1.25rem 1.25rem !important;
     border-top: none !important;
     box-shadow: none !important;
-    color: $core-font-color;
+    color: $pine-3;
     margin: 0 !important;
     overflow: hidden;
   }
@@ -69,7 +69,7 @@
     &:active,
     &:hover {
       background: $core-focused-color !important;
-      color: $core-font-color !important;
+      color: $pine-3 !important;
     }
   }
 

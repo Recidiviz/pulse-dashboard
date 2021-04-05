@@ -1,0 +1,69 @@
+@import "../CoreConstants.scss";
+@import "../controls/mixins.scss";
+
+.VitalsSummaryChart {
+  font-family: $sans-serif;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  line-height: 1.5rem;
+  padding: 20px 0 40px;
+  width: 100%;
+
+  .background-graphics {
+    .axis.axis-tick-lines {
+      stroke: none;
+    }
+    .left.tick-line {
+      stroke: $slate-20;
+      stroke-width: 1px;
+    }
+  }
+
+  .data-visualization {
+    .axis-baseline.y {
+      stroke: none;
+    }
+
+    .axis-label {
+      fill: $slate-80;
+    }
+  }
+
+  .foreground-graphics {
+    transform: translate(0, 1.5rem);
+
+    .ordinal-labels {
+      fill: $slate-80;
+    }
+  }
+
+  .annotation-layer {
+    .xythreshold > .annotation-subject {
+      path {
+        opacity: 0.3;
+        stroke-dasharray: 7;
+      }
+    }
+  }
+
+  &__goal-label {
+    font: $font-ui-sans-14;
+    fill: $signal-links;
+    letter-spacing: -0.01em;
+  }
+}
+
+.VitalsSummaryTooltip {
+  @include chart-tooltip;
+
+  &__Date,
+  &__Average {
+    opacity: 0.8;
+    letter-spacing: -0.01em;
+    font: $font-ui-sans-14;
+  }
+
+  &__Value {
+    font: $font-ui-sans-16;
+  }
+}

@@ -1,5 +1,5 @@
 // Recidiviz - a data platform for criminal justice reform
-// Copyright (C) 2021 Recidiviz, Inc.
+// Copyright (C) 2020 Recidiviz, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -14,16 +14,26 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-import * as utils from "..";
+import React from "react";
+import PropTypes from "prop-types";
+import cx from "classnames";
 
-describe("utils", () => {
-  describe("toNumber", () => {
-    it("returns an integer given a valid string value", () => {
-      expect(utils.toNumber("12")).toBe(12);
-    });
+const BubbleTableCell: React.FC<{ value: number }> = ({ value }) => (
+  <span
+    key={value}
+    className={cx("VitalsSummaryTable__bubble", {
+      "VitalsSummaryTable__bubble--70": value < 70,
+      "VitalsSummaryTable__bubble--80": value >= 70 && value < 80,
+      "VitalsSummaryTable__bubble--90": value >= 80 && value < 90,
+      "VitalsSummaryTable__bubble--100": value >= 90,
+    })}
+  >
+    {value}%
+  </span>
+);
 
-    it("returns the string value if it is not a number", () => {
-      expect(utils.toNumber("1b2")).toEqual("1b2");
-    });
-  });
-});
+BubbleTableCell.propTypes = {
+  value: PropTypes.number.isRequired,
+};
+
+export default BubbleTableCell;

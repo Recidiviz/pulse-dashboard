@@ -17,7 +17,7 @@
 import React from "react";
 import numeral from "numeral";
 import PercentDelta from "../controls/PercentDelta";
-import { formatLargeNumber } from "../../utils/labels";
+import { formatLargeNumber } from "../../utils/formatStrings";
 import LoadingMetrics from "./LoadingMetrics";
 import type {
   ProjectedSummaryRecord,

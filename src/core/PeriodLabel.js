@@ -18,7 +18,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import { getPeriodLabelFromMetricPeriodMonthsFilter } from "../utils/labels";
+import { getPeriodLabelFromMetricPeriodMonthsFilter } from "../utils/formatStrings";
 
 const PeriodLabel = ({ metricPeriodMonths }) => (
   <div className="PeriodLabel layer bdT p-20 w-100">

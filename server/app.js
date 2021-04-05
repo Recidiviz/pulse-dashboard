@@ -133,6 +133,7 @@ app.get(
   checkJwt,
   api.programmingExplore
 );
+app.get("/api/:stateCode/vitals", checkJwt, api.vitals);
 app.post(
   "/api/:stateCode/restrictedAccess",
   express.json(),

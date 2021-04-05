@@ -263,6 +263,14 @@ const CORE_COLLECTIONS = {
     race_proportions: { filename: "race_proportions.json" },
     site_offices: { filename: "site_offices.json" },
   },
+  [COLLECTIONS.VITALS]: {
+    vitals_summaries: {
+      filename: "vitals_summaries.json",
+    },
+    vitals_time_series: {
+      filename: "vitals_time_series.json",
+    },
+  },
 };
 
 function getCollections(stateCode = null) {

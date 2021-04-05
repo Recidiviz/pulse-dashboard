@@ -15,101 +15,93 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 import tk from "timekeeper";
-import * as labelsMethods from "../labels";
+import * as utils from "../formatStrings";
 
-describe("test label", () => {
+describe("formatStrings", () => {
   it("get gender from array genderValuetoLabel", () => {
     const testValueGender = "FEMALE";
-    const dataAfterTest = labelsMethods.genderValueToHumanReadable(
-      testValueGender
-    );
+    const dataAfterTest = utils.genderValueToHumanReadable(testValueGender);
     expect(dataAfterTest).toBe("Female");
 
-    const dataErrorAfterTest = labelsMethods.genderValueToHumanReadable(
-      "White"
-    );
+    const dataErrorAfterTest = utils.genderValueToHumanReadable("White");
     expect(dataErrorAfterTest).toBe(undefined);
   });
 
   it("get race from  array raceValuetoLabel", () => {
     const testValueRace = "WHITE";
-    const dataAfterTest = labelsMethods.raceValueToHumanReadable(testValueRace);
+    const dataAfterTest = utils.raceValueToHumanReadable(testValueRace);
     expect(dataAfterTest).toBe("White");
   });
 
   it("to Html friendly", () => {
-    const dataAfterTest = labelsMethods.toHtmlFriendly("Los Angeles");
+    const dataAfterTest = utils.toHtmlFriendly("Los Angeles");
     expect(dataAfterTest.toString()).toEqual("Los-Angeles");
   });
 
   it("to Html friendly with multiple spaces", () => {
-    const dataAfterTest = labelsMethods.toHtmlFriendly(
-      "Los Angeles  California"
-    );
+    const dataAfterTest = utils.toHtmlFriendly("Los Angeles  California");
     expect(dataAfterTest.toString()).toEqual("Los-Angeles-California");
   });
 
   it("to Html friendly with html forbidden symbols", () => {
-    const dataAfterTest = labelsMethods.toHtmlFriendly(
-      "A&P Grocery in California"
-    );
+    const dataAfterTest = utils.toHtmlFriendly("A&P Grocery in California");
     expect(dataAfterTest.toString()).toEqual("A-P-Grocery-in-California");
   });
 
   it("to human readable", () => {
-    const dataAfterTest = labelsMethods.toHumanReadable("Los-Angeles");
+    const dataAfterTest = utils.toHumanReadable("Los-Angeles");
     expect(dataAfterTest.toString()).toEqual("Los Angeles");
   });
 
   it("toInt", () => {
     const dataForTest = "999: Lavena Banbridge";
-    const dataAfterTest = labelsMethods.toInt(dataForTest);
+    const dataAfterTest = utils.toInt(dataForTest);
     expect(dataAfterTest).toBe(999);
 
-    const dataErrorAfterTest = labelsMethods.toInt("Banbridge");
+    const dataErrorAfterTest = utils.toInt("Banbridge");
     expect(dataErrorAfterTest).toBe(NaN);
   });
 
   it("to title case", () => {
     const dataForTest = "LOS ANGELES";
-    const dataAfterTest = labelsMethods.toTitleCase(dataForTest);
+    const dataAfterTest = utils.toTitleCase(dataForTest);
     expect(dataAfterTest).toEqual("Los Angeles");
 
-    const dataErrorAfterTest = labelsMethods.toTitleCase("");
+    const dataErrorAfterTest = utils.toTitleCase("");
     expect(dataErrorAfterTest).toEqual("");
   });
 
   it("human readable title case with underscores", () => {
     const dataForTesting = "SAN_FRANCISCO_CALIFORNIA";
-    const dataAfterTest = labelsMethods.humanReadableTitleCase(dataForTesting);
+    const dataAfterTest = utils.humanReadableTitleCase(dataForTesting);
     expect(dataAfterTest).toEqual("San Francisco California");
   });
 
   it("human readable title case with hyphens", () => {
     const dataForTesting = "SAN-FRANCISCO-CALIFORNIA";
-    const dataAfterTest = labelsMethods.humanReadableTitleCase(dataForTesting);
+    const dataAfterTest = utils.humanReadableTitleCase(dataForTesting);
     expect(dataAfterTest).toEqual("San Francisco California");
   });
 
   it("human readable title case with a mix of punctuation", () => {
     const dataForTesting = "SAN_FRANCISCO-CALIFORNIA";
-    const dataAfterTest = labelsMethods.humanReadableTitleCase(dataForTesting);
+    const dataAfterTest = utils.humanReadableTitleCase(dataForTesting);
     expect(dataAfterTest).toEqual("San Francisco California");
   });
 
   it("number from officer id", () => {
     const dataForTest = "27: Patricia Mayonnaise";
-    const dataAfterTest = labelsMethods.numberFromOfficerId(dataForTest);
+    const dataAfterTest = utils.numberFromOfficerId(dataForTest);
     expect(dataAfterTest).toBe(27);
   });
 
   it("pluralize when it should not pluralize", () => {
-    const result = labelsMethods.pluralize(1, "violation");
+    const result = utils.pluralize(1, "violation");
     expect(result).toEqual("1 violation");
   });
 
   it("pluralize when it should pluralize", () => {
-    const result = labelsMethods.pluralize(2, "violation");
+    const result = utils.pluralize(2, "violation");
     expect(result).toEqual("2 violations");
   });
   describe("labels formatting", () => {
@@ -118,17 +110,17 @@ describe("test label", () => {
         const testDate = new Date("2020-02-14T11:01:58.135Z");
         tk.freeze(testDate);
 
-        const periodMonth = labelsMethods.getPeriodLabelFromMetricPeriodMonthsFilter(
+        const periodMonth = utils.getPeriodLabelFromMetricPeriodMonthsFilter(
           12
         );
         expect(periodMonth).toBe("3/1/2019 to present");
 
-        const emptyPeriodMonth = labelsMethods.getPeriodLabelFromMetricPeriodMonthsFilter(
+        const emptyPeriodMonth = utils.getPeriodLabelFromMetricPeriodMonthsFilter(
           undefined
         );
         expect(emptyPeriodMonth).toBe("Invalid date to present");
 
-        const incorrectPeriodMonth = labelsMethods.getPeriodLabelFromMetricPeriodMonthsFilter(
+        const incorrectPeriodMonth = utils.getPeriodLabelFromMetricPeriodMonthsFilter(
           "period month"
         );
         expect(incorrectPeriodMonth).toBe("Invalid date to present");
@@ -137,37 +129,37 @@ describe("test label", () => {
 
     describe("getTrailingLabelFromMetricPeriodMonthsFilter", () => {
       it("formats the trailing label for the time period correctly", () => {
-        const periodMonth = labelsMethods.getTrailingLabelFromMetricPeriodMonthsFilter(
+        const periodMonth = utils.getTrailingLabelFromMetricPeriodMonthsFilter(
           5
         );
         expect(periodMonth).toBe("Last 0.4166666666666667 years");
 
-        const emptyPeriodMonth = labelsMethods.getTrailingLabelFromMetricPeriodMonthsFilter(
+        const emptyPeriodMonth = utils.getTrailingLabelFromMetricPeriodMonthsFilter(
           undefined
         );
         expect(emptyPeriodMonth).toBe("Last NaN years");
 
-        const periodLastMonth = labelsMethods.getTrailingLabelFromMetricPeriodMonthsFilter(
+        const periodLastMonth = utils.getTrailingLabelFromMetricPeriodMonthsFilter(
           "12"
         );
         expect(periodLastMonth).toBe("Last 12 months");
 
-        const periodCurrentMonth = labelsMethods.getTrailingLabelFromMetricPeriodMonthsFilter(
+        const periodCurrentMonth = utils.getTrailingLabelFromMetricPeriodMonthsFilter(
           "1"
         );
         expect(periodCurrentMonth).toBe("Current month");
 
-        const period3Month = labelsMethods.getTrailingLabelFromMetricPeriodMonthsFilter(
+        const period3Month = utils.getTrailingLabelFromMetricPeriodMonthsFilter(
           "3"
         );
         expect(period3Month).toBe("Last 3 months");
 
-        const period6Month = labelsMethods.getTrailingLabelFromMetricPeriodMonthsFilter(
+        const period6Month = utils.getTrailingLabelFromMetricPeriodMonthsFilter(
           "6"
         );
         expect(period6Month).toBe("Last 6 months");
 
-        const period36Month = labelsMethods.getTrailingLabelFromMetricPeriodMonthsFilter(
+        const period36Month = utils.getTrailingLabelFromMetricPeriodMonthsFilter(
           "36"
         );
         expect(period36Month).toBe("Last 3 years");
@@ -176,32 +168,32 @@ describe("test label", () => {
 
     it("correctly formats the officer label", () => {
       const officerLabel = "01 - BARNEY RUBBLE";
-      const result = labelsMethods.formatOfficerLabel(officerLabel);
+      const result = utils.formatOfficerLabel(officerLabel);
       expect(result).toEqual("01 - Barney Rubble");
     });
 
     it("returns an empty string when officer label is undefined", () => {
       const officerLabel = undefined;
-      const result = labelsMethods.formatOfficerLabel(officerLabel);
+      const result = utils.formatOfficerLabel(officerLabel);
       expect(result).toEqual("");
     });
 
     describe("#formatLargeNumber", () => {
       it("formats a number in the millions correctly", () => {
         const number = 2540001;
-        const result = labelsMethods.formatLargeNumber(number);
+        const result = utils.formatLargeNumber(number);
         expect(result).toEqual("2.5M");
       });
 
       it("formats a number in the thousands correctly", () => {
         const number = 2501;
-        const result = labelsMethods.formatLargeNumber(number);
+        const result = utils.formatLargeNumber(number);
         expect(result).toEqual("2,501");
       });
 
       it("formats a number in the hundreds correctly", () => {
         const number = 25;
-        const result = labelsMethods.formatLargeNumber(number);
+        const result = utils.formatLargeNumber(number);
         expect(result).toEqual("25");
       });
     });
@@ -209,21 +201,30 @@ describe("test label", () => {
     describe("#formatDistrictLabel", () => {
       it("formats a district name with DO correctly", () => {
         const name = "BARNEY RUBBLE DO - 04";
-        const result = labelsMethods.formatDistrictLabel(name);
+        const result = utils.formatDistrictLabel(name);
         expect(result).toEqual("Barney Rubble DO - 04");
       });
 
       it("formats a district name with a - correctly", () => {
         const name = "BARNEY RUBBLE - 04";
-        const result = labelsMethods.formatDistrictLabel(name);
+        const result = utils.formatDistrictLabel(name);
         expect(result).toEqual("Barney Rubble - 04");
       });
 
       it("formats a district name without a - ", () => {
         const name = "BBDFLT";
-        const result = labelsMethods.formatDistrictLabel(name);
+        const result = utils.formatDistrictLabel(name);
         expect(result).toEqual(name);
       });
+    });
+  });
+  describe("toNumber", () => {
+    it("returns an integer given a valid string value", () => {
+      expect(utils.toNumber("12")).toBe(12);
+    });
+
+    it("returns the null if it is not a number", () => {
+      expect(utils.toNumber("1b2")).toBeNull();
     });
   });
 });

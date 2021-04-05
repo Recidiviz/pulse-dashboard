@@ -19,7 +19,7 @@ import React, { useCallback, useState } from "react";
 import { Collapse } from "react-bootstrap";
 import PropTypes from "prop-types";
 
-import { toTitleCase } from "../utils/labels";
+import { toTitleCase } from "../utils/formatStrings";
 
 const MethodologyCollapse = ({ children, chartId }) => {
   const [isOpened, setIsOpened] = useState(false);

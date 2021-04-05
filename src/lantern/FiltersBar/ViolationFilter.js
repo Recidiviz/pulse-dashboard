@@ -26,7 +26,7 @@ import {
   violationCountLabel,
   matrixViolationTypeToLabel,
   pluralize,
-} from "../../utils/labels";
+} from "../../utils/formatStrings";
 import { useRootStore } from "../../components/StoreProvider";
 import { VIOLATION_TYPE, REPORTED_VIOLATIONS } from "../utils/constants";
 
