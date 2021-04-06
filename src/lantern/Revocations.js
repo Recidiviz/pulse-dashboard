@@ -95,7 +95,7 @@ const Revocations = () => {
         </ErrorBoundary>
       </Sticky>
 
-      <div className="bgc-white p-20 m-20">
+      <div className="RevocationsOverTime bgc-white p-20 m-20">
         <ErrorBoundary>
           <RevocationsOverTime timeDescription={timeDescription} />
         </ErrorBoundary>
