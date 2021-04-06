@@ -153,7 +153,6 @@
     "@wdio/local-runner": "^7.3.0",
     "@wdio/spec-reporter": "^7.3.0",
     "@wdio/sync": "^7.3.0",
-    "@web/test-runner": "^0.12.18",
     "@wojtekmaj/enzyme-adapter-react-17": "^0.4.1",
     "chromedriver": "^89.0.0",
     "coveralls": "^3.1.0",
