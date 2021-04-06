@@ -65,6 +65,7 @@
     "date-fns": "^2.19.0",
     "debug": "~2.6.9",
     "dot-prop": "^5.1.0",
+    "dotenv": "^8.2.0",
     "downloadjs": "^1.4.7",
     "easy-pie-chart": "^2.1.7",
     "env-cmd": "^9.0.3",
