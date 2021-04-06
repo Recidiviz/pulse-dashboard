@@ -152,14 +152,14 @@ describe("API GET tests", () => {
   });
 
   describe("newRevocationFile endpoint", () => {
-    const file = "file_1";
-    const filters = { violationType: "ALL" };
-    const request = {
-      params: { stateCode, file },
-      query: filters,
-    };
-
     it("newRevocationFile - calls fetchAndFilterNewReocationFile with correct args", async () => {
+      const file = "file_1";
+      const filters = { violationType: "ALL" };
+      const request = {
+        params: { stateCode, file },
+        query: filters,
+      };
+
       await fakeRequest(newRevocationFile, request);
       expect(fetchAndFilterNewRevocationFile).toHaveBeenCalledWith({
         metricName: file,

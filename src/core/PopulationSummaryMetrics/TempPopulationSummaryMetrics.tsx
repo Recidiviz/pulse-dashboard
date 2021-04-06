@@ -61,7 +61,7 @@ const TempMetric = styled.div`
   padding: 20px 40px;
   justify-content: space-between;
   min-height: 120px;
-  width 100%;
+  width: 100%;
 `;
 
 const TempMetricTitle = styled.div`
@@ -112,8 +112,7 @@ const TempPopulationSummaryMetrics: React.FC<PropTypes> = ({
   const view = getViewFromPathname(pathname);
 
   const timePeriod: MonthOptions = parseInt(
-    filtersStore.filters.timePeriod,
-    10
+    filtersStore.filters.timePeriod
   ) as MonthOptions;
 
   let compartment: SimulationCompartment;

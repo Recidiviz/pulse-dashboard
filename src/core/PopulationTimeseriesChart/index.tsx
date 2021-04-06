@@ -55,8 +55,7 @@ const PopulationTimeseriesChart: React.FC<PropTypes> = ({ data }) => {
   const filtersStore = usePopulationFiltersStore();
   const { gender, supervisionType, legalStatus } = filtersStore.filters;
   const timePeriod: MonthOptions = parseInt(
-    filtersStore.filters.timePeriod,
-    10
+    filtersStore.filters.timePeriod
   ) as MonthOptions;
 
   const view = getViewFromPathname(useLocation().pathname);
