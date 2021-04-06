@@ -7,7 +7,8 @@
     "react-app",
     "airbnb",
     "plugin:prettier/recommended",
-    "prettier/react"
+    "prettier/react",
+    "plugin:wdio/recommended"
   ],
   "overrides": [
     {
@@ -39,7 +40,7 @@
         "prettier/@typescript-eslint"
       ],
       "parser": "@typescript-eslint/parser",
-      "plugins": ["@typescript-eslint"],
+      "plugins": ["@typescript-eslint", "wdio"],
       "rules": {
         // with static typing this rule is not so useful
         "consistent-return": "off",
