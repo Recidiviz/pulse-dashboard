@@ -1,7 +1,9 @@
+@import "../CoreConstants";
+
 .PopulationTimeseriesChart {
-  background: #fff;
+  background: $white;
   border-radius: 0.5rem;
-  box-shadow: inset 0px -1px 1px rgba(19, 44, 82, 0.2);
+  box-shadow: $inset-shadow-30;
   font-family: Libre Franklin, sans-serif;
   font-weight: 500;
   letter-spacing: -0.01em;
@@ -14,16 +16,26 @@
     justify-content: space-between;
     padding-top: 2.5rem;
     padding-left: 2.5rem;
-    padding-right: 2.5rem;
+    padding-right: 3rem;
   }
 
   &__Title {
-    color: #012322;
+    color: $pine-1;
   }
 
   &__Point {
-    fill: #25636f;
+    fill: $data-forest;
     r: 0.25rem;
+  }
+
+  &__HistoricalLine,
+  &__ProjectedLine {
+    stroke: $data-forest;
+    stroke-width: 1;
+  }
+
+  &__ProjectedLine {
+    stroke-dasharray: 7;
   }
 
   .data-visualization {
@@ -32,7 +44,7 @@
     }
 
     .axis-label {
-      fill: rgba(53, 83, 98, 0.8);
+      fill: $slate-80;
     }
 
     .axis.bottom {
@@ -50,28 +62,27 @@
     }
 
     .y.tick-line {
-      stroke: rgba(53, 83, 98, 0.2);
+      stroke: $slate-20;
     }
   }
 
   .projection-area-label {
-    font-size: 13px;
-    font-weight: 400;
+    fill: $slate-80;
+  }
+
+  .projection-area {
+    fill: $marble-4;
+    fill-opacity: 0.46;
   }
 
   .annotation-layer {
     .uncertainty {
-      fill: #25636f;
-      fill-opacity: 0.2;
-    }
-
-    .projection-area {
-      fill: #eff1f1;
-      fill-opacity: 0.46;
+      fill: $data-forest-uncertainty;
     }
 
     .frame-hover {
-      fill: #082249;
+      fill: $signal-tooltip;
+      stroke: $signal-tooltip;
       r: 0.25rem;
     }
   }

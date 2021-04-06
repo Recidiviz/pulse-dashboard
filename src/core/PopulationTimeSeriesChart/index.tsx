@@ -19,16 +19,17 @@ import React from "react";
 import { useLocation } from "react-router-dom";
 import { scaleTime } from "d3-scale";
 import { observer } from "mobx-react-lite";
+import { ResponsiveXYFrame } from "semiotic";
 import { usePopulationFiltersStore } from "../../components/StoreProvider";
 import {
   PopulationProjectionTimeseriesRecord,
   SimulationCompartment,
 } from "../models/types";
 
-import "./PopulationTimeseriesChart.scss";
-import PopulationTimeseriesLegend from "./PopulationTimeseriesLegend";
+import "./PopulationTimeSeriesChart.scss";
+import PopulationTimeSeriesLegend from "./PopulationTimeSeriesLegend";
 import { CORE_VIEWS, getViewFromPathname } from "../views";
-import PopulationTimeseriesTooltip from "./PopulationTimeseriesTooltip";
+import PopulationTimeSeriesTooltip from "./PopulationTimeSeriesTooltip";
 
 import {
   ChartPoint,
@@ -38,13 +39,9 @@ import {
   filterData,
 } from "./helpers";
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires,global-require
-const ResponsiveXYFrame = require("semiotic/lib/ResponsiveXYFrame") as any;
-
 type PlotLine = {
   data: ChartPoint[];
-  color: string;
-  dash?: string;
+  class: string;
 };
 
 type PropTypes = {
@@ -109,20 +106,23 @@ const PopulationTimeseriesChart: React.FC<PropTypes> = ({ data }) => {
   const chartTop = (Math.ceil(maxValue / 1000) + 1) * 1000;
 
   const projectionArea = [
-    { date: historicalPopulation.slice(-1)[0].date, value: 0 },
-    { date: historicalPopulation.slice(-1)[0].date, value: chartTop },
-    { date: endDate, value: chartTop },
-    { date: endDate, value: 0 },
+    {
+      data: [
+        { date: projectedPopulation[0].date, value: 0 },
+        { date: projectedPopulation[0].date, value: chartTop },
+        { date: endDate, value: chartTop },
+        { date: endDate, value: 0 },
+      ],
+    },
   ];
 
   const historicalLine: PlotLine = {
-    color: "#25636F",
+    class: "PopulationTimeseriesChart__HistoricalLine",
     data: historicalPopulation,
   };
 
   const projectedLine: PlotLine = {
-    color: "#25636F",
-    dash: "2.5, 3",
+    class: "PopulationTimeseriesChart__ProjectedLine",
     data: projectedPopulation,
   };
 
@@ -135,10 +135,15 @@ const PopulationTimeseriesChart: React.FC<PropTypes> = ({ data }) => {
         <div className="PopulationTimeseriesChart__Title">
           Total {populationType} Population
         </div>
-        <PopulationTimeseriesLegend items={["Actual", "Projected"]} />
+        <PopulationTimeSeriesLegend items={["Actual", "Projected"]} />
       </div>
       <ResponsiveXYFrame
         responsiveWidth
+        // @ts-ignore
+        summaries={projectionArea}
+        summaryDataAccessor="data"
+        summaryClass="projection-area"
+        renderOrder={["summaries", "lines"]}
         annotations={[
           {
             type: "area",
@@ -146,39 +151,41 @@ const PopulationTimeseriesChart: React.FC<PropTypes> = ({ data }) => {
             coordinates: uncertainty,
           },
           {
-            type: "area",
-            className: "projection-area",
-            coordinates: projectionArea,
-          },
-          {
             type: "x",
             className: "projection-area-label",
-            date: projectedPopulation[0].date,
+            date: projectedPopulation.slice(-1)[0].date,
             note: {
-              label: "PROJECTED",
+              label: "Projected",
               align: "middle",
               lineType: null,
             },
             color: null,
             connector: { end: "none" },
-            dx: 54,
-            dy: 24,
+            dx: -49,
+            dy: 370,
           },
         ]}
         hoverAnnotation
-        tooltipContent={(d: any) => <PopulationTimeseriesTooltip d={d} />}
+        svgAnnotationRules={(d: any) => {
+          // don't display hover annotations on corners of projection box
+          if (d.d.parentSummary !== undefined) {
+            return false;
+          }
+          return null;
+        }}
+        tooltipContent={(d: any) => <PopulationTimeSeriesTooltip d={d} />}
+        // @ts-ignore
         lines={[historicalLine, projectedLine]}
         lineDataAccessor="data"
-        lineStyle={(l: PlotLine) => ({
-          stroke: l.color,
-          strokeWidth: 1,
-          strokeDasharray: l.dash ?? "none",
-        })}
+        // @ts-ignore
+        lineClass={(l: PlotLine) => l.class}
+        // @ts-ignore
         xScaleType={scaleTime()}
         xAccessor="date"
         yAccessor="value"
         size={[558, 558]}
-        margin={{ left: 104, bottom: 96, right: 56, top: 56 }}
+        margin={{ left: 104, bottom: 96, right: 50, top: 56 }}
+        // @ts-ignore
         xExtent={[beginDate, endDate]}
         yExtent={[0, chartTop]}
         showLinePoints
@@ -187,6 +194,7 @@ const PopulationTimeseriesChart: React.FC<PropTypes> = ({ data }) => {
           { orient: "left", tickFormat: (n: number) => n.toLocaleString() },
           {
             orient: "bottom",
+            // @ts-ignore
             tickValues: historicalPopulation
               .concat(projectedPopulation.slice(1)) // don't double-draw center date
               .map((r) => r.date),

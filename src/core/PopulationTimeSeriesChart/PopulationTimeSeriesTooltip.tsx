@@ -17,7 +17,7 @@
 
 import React from "react";
 
-import "./PopulationTimeseriesTooltip.scss";
+import "./PopulationTimeSeriesTooltip.scss";
 
 type PropTypes = {
   d: {
@@ -25,11 +25,17 @@ type PropTypes = {
     value: number;
     lowerBound?: number;
     upperBound?: number;
+    parentSummary?: any;
   };
 };
 
-const PopulationTimeseriesTooltip: React.FC<PropTypes> = ({ d }) => {
+const PopulationTimeSeriesTooltip: React.FC<PropTypes> = ({ d }) => {
   const { date, value, lowerBound, upperBound } = d;
+
+  if (d.parentSummary !== undefined) {
+    // don't display tooltip for summary block
+    return null;
+  }
 
   return (
     <div className="PopulationTimeseriesTooltip">
@@ -48,4 +54,4 @@ const PopulationTimeseriesTooltip: React.FC<PropTypes> = ({ d }) => {
   );
 };
 
-export default PopulationTimeseriesTooltip;
+export default PopulationTimeSeriesTooltip;

@@ -28,7 +28,7 @@ import {
   MonthOptions,
   CURRENT_YEAR,
   CURRENT_MONTH,
-} from "../PopulationTimeseriesChart/helpers";
+} from "../PopulationTimeSeriesChart/helpers";
 import { CORE_VIEWS, getViewFromPathname } from "../views";
 import { formatLargeNumber } from "../../utils/formatStrings";
 import { usePopulationFiltersStore } from "../../components/StoreProvider";

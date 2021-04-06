@@ -26,7 +26,7 @@ import {
   PopulationProjectionTimeseriesRecord,
 } from "../models/types";
 // import { populationProjectionSummary } from "../models/PopulationProjectionSummaryMetric";
-import PopulationTimeseriesChart from "../PopulationTimeseriesChart";
+import PopulationTimeseriesChart from "../PopulationTimeSeriesChart";
 import { populationProjectionTimeseries } from "../models/PopulationProjectionTimeseriesMetric";
 import PopulationFilterBar from "../PopulationFilterBar";
 import filterOptions from "../utils/filterOptions";
