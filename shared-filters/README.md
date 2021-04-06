@@ -1,6 +1,6 @@
 # Shared Filters Package
 
-Shared filtering functionality for filtering the optimized data formats on the [frontend](https://github.com/Recidiviz/pulse-dashboard/tree/master/src) and the [backend-server](https://github.com/Recidiviz/pulse-dashboard/tree/master/server).
+Shared filtering functionality for filtering the optimized data formats on the [frontend](https://github.com/Recidiviz/pulse-dashboard/tree/main/src) and the [backend-server](https://github.com/Recidiviz/pulse-dashboard/tree/main/server).
 
 Here's a short description for the some of the main exports:
 
