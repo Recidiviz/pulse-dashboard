@@ -180,7 +180,7 @@ const VitalsSummaryChart: React.FC<PropTypes> = ({
         }}
         rAccessor="value"
         rExtent={[0, 100]}
-        size={[0, 300]}
+        size={[0, 295]}
         oLabel={(date: string, _: any, index: number) => {
           // Display the first and then every 7 labels
           if (index === 0 || (index + 1) % 7 === 0) {

@@ -1,9 +1,10 @@
 // TODO(#900): Move Core SCSS constants into this file
 
 $core-breakpoint-lg: 1920px;
-$core-breakpoint-md: 1440px;
-$core-breakpoint-sm: 1024px;
-$core-breakpoint-xs: 600px;
+$core-breakpoint-md: 1366px;
+$core-breakpoint-sm: 1024px; /* iPad Pro */
+$core-breakpoint-xs: 768px; /* iPad */
+
 $core-max-view-width: 93rem;
 
 $box-shadow-color-30: rgba(19, 44, 82, 0.3);

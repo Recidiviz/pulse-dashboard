@@ -36,6 +36,7 @@ const VitalsSummaryCards: React.FC<PropTypes> = ({
       {summaryCards.map(({ title, value, status, id }) => (
         <VitalsSummaryCard
           key={id}
+          id={id}
           title={title}
           percentage={value}
           status={status}

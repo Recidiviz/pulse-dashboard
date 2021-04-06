@@ -166,7 +166,7 @@ function formatPercent(percentage: number): string {
 }
 
 function formatISODateString(date: string): string {
-  return format(parseISO(date), "M/d/yyyy");
+  return format(parseISO(date), "M/d/yy");
 }
 
 export {
