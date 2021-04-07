@@ -1,7 +1,9 @@
 const config = {
-  admin: {
-    username: process.env.TEST_AUTH_USER,
-    password: process.env.TEST_AUTH_PASSWORD,
+  credentials: {
+    admin: {
+      username: process.env.TEST_AUTH_USER,
+      password: process.env.TEST_AUTH_PASSWORD,
+    },
   },
   //
   // ====================
