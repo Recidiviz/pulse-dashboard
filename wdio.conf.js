@@ -3,6 +3,8 @@ exports.config = {
     username: process.env.TEST_AUTH_USER,
     password: process.env.TEST_AUTH_PASSWORD,
   },
+  user: process.env.BROWSERSTACK_USER,
+  key: process.env.BROWSERSTACK_KEY,
   //
   // ====================
   // Runner Configuration
@@ -74,6 +76,16 @@ exports.config = {
       // excludeDriverLogs: ['*'], // pass '*' to exclude all driver session logs
       // excludeDriverLogs: ['bugreport', 'server'],
     },
+    {
+      browserName: "internet explorer",
+      browserVersion: "11.0",
+      "bstack:options": {
+        osVersion: "10",
+        os: "Windows",
+        local: "true",
+        maskCommands: "setValues, getValues, setCookies, getCookies",
+      },
+    },
   ],
   //
   // ===================
@@ -122,7 +134,7 @@ exports.config = {
   // Services take over a specific job you don't want to take care of. They enhance
   // your test setup with almost no effort. Unlike plugins, they don't add new
   // commands. Instead, they hook themselves up into the test process.
-  services: ["chromedriver"],
+  services: ["chromedriver", ["browserstack", { browserstackLocal: true }]],
 
   // Framework you want to run your specs with.
   // The following are supported: Mocha, Jasmine, and Cucumber
