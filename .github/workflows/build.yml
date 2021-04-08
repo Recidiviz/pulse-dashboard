@@ -1,0 +1,30 @@
+name: Build and Test
+on:
+  - push
+  - pull_request
+jobs:
+  unit_tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node
+        uses: actions/setup-node@v1
+        with:
+          node-version: "12.x"
+      - name: Cache node_modules
+        uses: actions/cache@v2
+        id: yarn-caching
+        with:
+          path: "**/node_modules"
+          key: yarn-v1-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            yarn-v1-${{ hashFiles('**/yarn.lock') }}
+            yarn-v1-
+            yarn-
+      - name: Yarn install
+        if: steps.yarn-caching.outputs.cache-hit != 'true'
+        run: yarn install --frozen-lockfile
+      - name: Run all unit tests
+        run: yarn test --coverage --runInBand --forceExit && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage
+      - name: Run eslint and tsc linters
+        run: yarn lint
