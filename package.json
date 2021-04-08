@@ -21,7 +21,7 @@
     "spa": "react-scripts start",
     "server": "nodemon server.js",
     "server:dev": "npm-run-all --parallel server redis-server",
-    "server:demo": "IS_DEMO=true yarn server:dev",
+    "server:demo": "IS_DEMO=true yarn server",
     "redis-server": "redis-server",
     "lint": "tsc && eslint '**/*.{js,ts,tsx}'",
     "dev": "npm-run-all --parallel spa server:dev",

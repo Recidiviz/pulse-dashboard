@@ -45,13 +45,8 @@ const MEMORY_REFRESH_SECONDS = 60 * 10;
 
 const testEnv = process.env.NODE_ENV === "test";
 
-const redisInstance = new Redis({
-  host: REDISHOST,
-  port: REDISPORT,
-  password: REDISAUTH,
-  ttl: REDIS_CACHE_TTL_SECONDS,
-  db: 0,
-});
+let redisInstance;
+let redisCache;
 
 const memoryCache = cacheManager.caching({
   store: isDemoMode ? "none" : "memory",
@@ -59,13 +54,21 @@ const memoryCache = cacheManager.caching({
   refreshThreshold: MEMORY_REFRESH_SECONDS,
 });
 
-const redisCache = cacheManager.caching({
-  store: redisStore,
-  refreshThreshold: REDIS_CACHE_REFRESH_THRESHOLD,
-  redisInstance,
-});
+const useRedisCache = !testEnv && !isDemoMode;
 
-if (!testEnv) {
+if (useRedisCache) {
+  redisInstance = new Redis({
+    host: REDISHOST,
+    port: REDISPORT,
+    password: REDISAUTH,
+    ttl: REDIS_CACHE_TTL_SECONDS,
+    db: 0,
+  });
+  redisCache = cacheManager.caching({
+    store: redisStore,
+    refreshThreshold: REDIS_CACHE_REFRESH_THRESHOLD,
+    redisInstance,
+  });
   const redisClient = redisCache.store.getClient();
   redisClient.on("error", (error) => {
     console.error("ERR:REDIS:", error);
@@ -73,11 +76,7 @@ if (!testEnv) {
 }
 
 function getCache(cacheKey) {
-  if (testEnv || isDemoMode) {
-    return memoryCache;
-  }
-
-  if (cacheKey.includes("-newRevocation")) {
+  if (useRedisCache && cacheKey.includes("-newRevocation")) {
     return redisCache;
   }
 
