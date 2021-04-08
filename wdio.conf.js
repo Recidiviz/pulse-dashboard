@@ -27,6 +27,13 @@ exports.config = {
   // Define which test specs should run. The pattern is relative to the directory
   // from which `wdio` was called.
   specs: ["./src/cucumber/features/*.feature"],
+
+  // Define specific test suites
+  suites: {
+    login: ["./src/cucumber/features/login.feature"],
+    lantern: ["./src/cucumber/features/lantern/*.feature"],
+    core: ["./src/cucumber/features/core/*.feature"],
+  },
   // Patterns to exclude.
   exclude: [
     // 'path/to/excluded/files'
