@@ -24,6 +24,8 @@ jobs:
       - name: Yarn install
         if: steps.yarn-caching.outputs.cache-hit != 'true'
         run: yarn install --frozen-lockfile
+      - name: Test setup
+        run: ../gh-workflow-setup.sh
       - name: Run all unit tests
         run: yarn test --coverage --runInBand --forceExit && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage
       - name: Run eslint and tsc linters
