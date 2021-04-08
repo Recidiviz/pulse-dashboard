@@ -1939,9 +1939,14 @@
     styled-components "^5.2.1"
     web-vitals "^1.0.1"
 
-"@recidiviz/eslint-config@link:.yalc/@recidiviz/eslint-config":
-  version "0.0.0"
-  uid ""
+"@recidiviz/eslint-config@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@recidiviz/eslint-config/-/eslint-config-1.0.0.tgz#cdfcb43cb4c85ebf45a2cb8150ce68154781f2ed"
+  integrity sha512-c4KO1+LKwg47rsHlvxR6KuGTIcXf0w6KvOiXA+eVVpX2qKQf2Vxmzg1n37iUe59oYobmf9+29yGeMPMdF17/8g==
+  dependencies:
+    eslint-config-airbnb "^18.2.0"
+    eslint-config-prettier "^8.1.0"
+    prettier "^2.2.1"
 
 "@restart/context@^2.1.4":
   version "2.1.4"
