@@ -15,6 +15,13 @@ const config = {
   runner: "local",
   //
   // ==================
+  // Specify Automation Protocol
+  // ==================
+  //
+  // Use devtools protocol to use Puppeteer instead of Chromedriver/Selenium
+  automationProtocol: "devtools",
+  //
+  // ==================
   // Specify Test Files
   // ==================
   // Define which test specs should run. The pattern is relative to the directory
@@ -67,7 +74,12 @@ const config = {
       "goog:chromeOptions":
         process.env.RUN_TESTS_HEADLESS === "true"
           ? {
-              args: ["--headless"],
+              args: [
+                "--headless",
+                "--no-sandbox",
+                "--window-size=1280,800",
+                "--disable-gpu",
+              ],
             }
           : {},
       acceptInsecureCerts: true,
@@ -124,8 +136,7 @@ const config = {
   // Services take over a specific job you don't want to take care of. They enhance
   // your test setup with almost no effort. Unlike plugins, they don't add new
   // commands. Instead, they hook themselves up into the test process.
-  services: ["chromedriver"],
-
+  services: [],
   // Framework you want to run your specs with.
   // The following are supported: Mocha, Jasmine, and Cucumber
   // see also: https://webdriver.io/docs/frameworks
@@ -317,6 +328,7 @@ if (process.env.RUN_BROWSERSTACK === "true") {
       osVersion: "10",
       os: "Windows",
       local: "true",
+      localIdentifier: process.env.BROWSERSTACK_LOCAL_IDENTIFIER,
       maskCommands: "setValues, getValues, setCookies, getCookies",
     },
   });

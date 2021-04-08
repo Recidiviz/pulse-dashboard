@@ -3,6 +3,6 @@
 export default class Page {
   open(path) {
     browser.url(path);
-    browser.pause(2000);
+    browser.pause(3000);
   }
 }
