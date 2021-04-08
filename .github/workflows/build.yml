@@ -22,7 +22,6 @@ jobs:
         with:
           flag-name: pulse-dashboard
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          parallel: true
           path-to-lcov: ./coverage/lcov.info
   test_server:
     runs-on: ubuntu-latest
@@ -60,4 +59,6 @@ jobs:
           node-version: "12.x"
       - uses: c-hive/gha-yarn-cache@v1
       - run: yarn install --frozen-lockfile
+      - name: Test setup
+        run: .github/gh-workflow-setup.sh
       - run: yarn lint
