@@ -8,4 +8,4 @@ Feature: Login with Auth0
 
     Scenario: Logging in with Auth0
         When I login as an "admin" user
-        Then I should see the chart title "Number of admissions per month"
+        Then I should see the Lantern landing page
