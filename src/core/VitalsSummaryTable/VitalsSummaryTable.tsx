@@ -174,7 +174,10 @@ const VitalsSummaryTable: React.FC<PropTypes> = ({
               className="VitalsSummaryTable__row"
             >
               {headerGroup.headers.map((column) => (
-                <th {...column.getHeaderProps(column.getSortByToggleProps())}>
+                <th
+                  id={column.id}
+                  {...column.getHeaderProps(column.getSortByToggleProps())}
+                >
                   {column.canSort ? (
                     <div className="VitalsSummaryTable__sortable-header">
                       {column.render("Header")}
@@ -220,8 +223,14 @@ const VitalsSummaryTable: React.FC<PropTypes> = ({
                 className="VitalsSummaryTable__row VitalsSummaryTable__row--value"
               >
                 {row.cells.map((cell) => {
+                  const { column } = cell;
                   return (
-                    <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
+                    <td
+                      className={cx(`VitalsSummaryTable__cell--${column.id}`)}
+                      {...cell.getCellProps()}
+                    >
+                      {cell.render("Cell")}
+                    </td>
                   );
                 })}
               </tr>

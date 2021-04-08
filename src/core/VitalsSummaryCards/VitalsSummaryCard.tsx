@@ -40,6 +40,7 @@ const getStatusClassName = (status: SummaryStatus) => {
 };
 
 interface PropTypes {
+  id: string;
   title: string;
   percentage: number;
   status: SummaryStatus;
@@ -48,6 +49,7 @@ interface PropTypes {
 }
 
 const VitalsSummaryCard: React.FC<PropTypes> = ({
+  id,
   title,
   percentage,
   status,
@@ -60,6 +62,7 @@ const VitalsSummaryCard: React.FC<PropTypes> = ({
     onClick={onClick}
     className={cn(
       "VitalsSummaryCard",
+      `VitalsSummaryCard__${id}`,
       { selected },
       getStatusClassName(status),
       "p-0"

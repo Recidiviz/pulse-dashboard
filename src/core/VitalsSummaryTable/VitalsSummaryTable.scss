@@ -18,13 +18,40 @@
 
 $border-styles: 1px solid $slate-20;
 
+/* Enable scrollbar on chrome for tables in tablet sizes */
+::-webkit-scrollbar {
+  @media screen and (max-width: $core-breakpoint-sm) {
+    -webkit-appearance: none;
+    height: 5px;
+    border-radius: 8px;
+  }
+}
+::-webkit-scrollbar-thumb {
+  @media screen and (max-width: $core-breakpoint-sm) {
+    border-radius: 8px;
+    background-color: $slate-20;
+    -webkit-box-shadow: 0 0 0.1rem $box-shadow-color-30;
+  }
+}
+
+@mixin sticky-scroll-column {
+  @media screen and (max-width: $core-breakpoint-sm) {
+    position: sticky !important;
+    background-color: $white;
+
+    border-right: $border-styles;
+    left: 0;
+    top: 0;
+    z-index: 1;
+  }
+}
+
 .VitalsSummaryTable {
   background: $white;
   border-radius: 8px;
   box-shadow: $inset-shadow-30;
   font: $font-ui-sans-16;
   letter-spacing: -0.01em;
-  margin: 1rem 0;
   overflow-x: auto;
   overflow-y: hidden;
   width: 100%;
@@ -37,6 +64,10 @@ $border-styles: 1px solid $slate-20;
     font-style: normal;
     letter-spacing: -0.01em;
     color: black;
+    @media screen and (max-width: $core-breakpoint-sm) {
+      border-collapse: separate;
+      border-spacing: 0;
+    }
   }
 
   &__table-head {
@@ -51,6 +82,7 @@ $border-styles: 1px solid $slate-20;
       }
 
       & > :first-child {
+        @include sticky-scroll-column;
         border-right: $border-styles;
       }
 
@@ -67,19 +99,36 @@ $border-styles: 1px solid $slate-20;
       & > th {
         padding: 2rem 0;
         font-weight: 500;
+        width: 175px;
+
+        > .VitalsSummaryTable__sortable-header {
+          @media screen and (max-width: $core-breakpoint-md) {
+            width: 122px;
+          }
+        }
+
+        &#entity {
+          @include sticky-scroll-column;
+          width: 200px;
+
+          > .VitalsSummaryTable__sortable-header {
+            @media screen and (max-width: $core-breakpoint-md) {
+              width: 174px;
+            }
+          }
+        }
       }
 
       & > :first-child {
         border-right: $border-styles;
-        width: 200px;
       }
 
       & > :nth-child(4) {
         border-right: $border-styles;
       }
 
-      & > :nth-child(n + 1) {
-        width: 175px;
+      & > :nth-child(n + 2) {
+        padding: 2rem 0.5rem;
       }
     }
   }
@@ -120,6 +169,10 @@ $border-styles: 1px solid $slate-20;
   &__cell {
     max-width: 4.5rem;
     max-height: 2rem;
+
+    &--entity {
+      @include sticky-scroll-column;
+    }
   }
 
   &__link {
