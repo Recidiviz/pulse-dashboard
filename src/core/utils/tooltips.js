@@ -41,17 +41,17 @@ function canDisplayGoal(goal, toggles) {
   return canDisplay;
 }
 
+function standardTooltipForRateMetric(tooltipItem, data) {
+  const label = data.datasets[tooltipItem.datasetIndex].label || "";
+  return `${label}: ${tooltipWithoutTrendlineLabel(tooltipItem, data, "%")}`;
+}
+
 function updateTooltipForMetricType(metricType, tooltipItem, data) {
   if (metricType === "rates") {
     return standardTooltipForRateMetric(tooltipItem, data);
   }
 
   return standardTooltipForCountMetricLabel(tooltipItem, data);
-}
-
-function standardTooltipForRateMetric(tooltipItem, data) {
-  const label = data.datasets[tooltipItem.datasetIndex].label || "";
-  return `${label}: ${tooltipWithoutTrendlineLabel(tooltipItem, data, "%")}`;
 }
 
 function toggleYAxisTicksStackedRateBasicCount(metricType, maxCount) {

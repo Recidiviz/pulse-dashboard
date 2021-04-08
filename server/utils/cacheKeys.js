@@ -98,6 +98,18 @@ function getSubsetCombinations(subsetManifest) {
 }
 
 /**
+ * @param  {string} cacheKey - Existing cacheKey
+ * @param  {Array.<string>} restrictedDistrict - Array containing the restrictedDistrict id
+ *
+ * @return {string} If the restrictedDistrict exists, append it to the end of the cacheKey
+ */
+const appendRestrictedDistrictKey = (cacheKey, restrictedDistrict) => {
+  return restrictedDistrict
+    ? `${cacheKey}-restrictedDistrict=${restrictedDistrict}`
+    : cacheKey;
+};
+
+/**
  * Utility for creating cache keys for a stateCode, metricType, file and subset
  * @param {string} [stateCode] - The state code to include in the cache key, i.e. US_MO
  * @param {string} [metricType] - The metric type to include in the cache key, i.e. newRevocation
@@ -143,17 +155,6 @@ function getCacheKey({
     cacheKeySubset.restrictedDistrict
   );
 }
-/**
- * @param  {string} cacheKey - Existing cacheKey
- * @param  {Array.<string>} restrictedDistrict - Array containing the restrictedDistrict id
- *
- * @return {string} If the restrictedDistrict exists, append it to the end of the cacheKey
- */
-const appendRestrictedDistrictKey = (cacheKey, restrictedDistrict) => {
-  return restrictedDistrict
-    ? `${cacheKey}-restrictedDistrict=${restrictedDistrict}`
-    : cacheKey;
-};
 
 module.exports = {
   getCacheKey,

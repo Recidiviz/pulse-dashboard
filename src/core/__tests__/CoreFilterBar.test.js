@@ -24,8 +24,8 @@ describe("test for component FiltersBar", () => {
     replaceLa: undefined,
   };
 
-  const renderFilterBar = (props) => {
-    return mount(<CoreFilterBar {...props} />);
+  const renderFilterBar = (barProps) => {
+    return mount(<CoreFilterBar {...barProps} />);
   };
 
   it("display metric type toggle", () => {

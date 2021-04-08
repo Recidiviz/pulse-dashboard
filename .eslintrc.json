@@ -1,142 +1,17 @@
 {
-  "env": {
-    "browser": true,
-    "jest": true
-  },
-  "extends": [
-    "react-app",
-    "airbnb",
-    "plugin:prettier/recommended",
-    "prettier/react"
-  ],
+  "extends": ["@recidiviz"],
   "overrides": [
     {
-      "files": ["./server.js", "./server/**/*.js"],
-      "env": {
-        "node": true
-      }
-    },
-    {
-      "files": ["**/*.test.js"],
-      "env": {
-        "jest": true
-      },
-      "rules": {
-        "global-require": "off",
-        "no-shadow": "off"
-      }
-    },
-    {
       "files": ["*.ts", "*.tsx"],
-      "extends": [
-        "react-app",
-        "airbnb",
-        "plugin:prettier/recommended",
-        "prettier/react",
-        // From @typescript-eslint/eslint-plugin
-        "plugin:@typescript-eslint/recommended",
-        // From eslint-config-prettier
-        "prettier/@typescript-eslint"
-      ],
-      "parser": "@typescript-eslint/parser",
-      "plugins": ["@typescript-eslint"],
       "rules": {
-        // with static typing this rule is not so useful
-        "consistent-return": "off",
-        // these bare ESLint rules are superseded by TS equivalents
-        "@typescript-eslint/no-use-before-define": ["error"],
-        "no-shadow": "off",
-        "@typescript-eslint/no-shadow": "error",
-        // TypeScript is largely redundant with PropTypes
-        "react/prop-types": "off",
         // TODO TS re-enable this after repo is ported to TS
         "@typescript-eslint/no-explicit-any": "off",
         // TODO TS re-enable this after repo is ported to TS
-        "@typescript-eslint/ban-ts-comment": "off",
-        // don't require extensions for typescript modules
-        "react/jsx-filename-extension": [
-          "error",
-          { "extensions": [".js", "tsx"] }
-        ],
-        "import/no-extraneous-dependencies": ["error", { "packageDir": "./" }],
-        "no-new": 1,
-        "no-use-before-define": "off",
-        "react/jsx-props-no-spreading": 0,
-        "func-names": 0,
-        "react/jsx-wrap-multilines": [
-          "error",
-          { "declaration": false, "assignment": false }
-        ],
-        "react/jsx-one-expression-per-line": 0,
-        "jsx-a11y/label-has-associated-control": [
-          "error",
-          {
-            "required": {
-              "some": ["nesting", "id"]
-            }
-          }
-        ],
-        "jsx-a11y/label-has-for": [
-          "error",
-          {
-            "required": {
-              "some": ["nesting", "id"]
-            }
-          }
-        ],
-        "radix": "off",
-        "no-console": ["error", { "allow": ["warn", "error"] }],
-        "import/prefer-default-export": "off",
-
-        // don't require extensions for typescript modules
-        "import/extensions": [
-          "error",
-          "always",
-          { "js": "never", "ts": "never", "tsx": "never" }
-        ]
+        "@typescript-eslint/ban-ts-comment": "off"
       }
     }
   ],
   "rules": {
-    "react/jsx-filename-extension": ["error", { "extensions": [".js", "tsx"] }],
-    "import/no-extraneous-dependencies": ["error", { "packageDir": "./" }],
-    "no-new": 1,
-    "no-use-before-define": "off",
-    "react/jsx-props-no-spreading": 0,
-    "func-names": 0,
-    "react/jsx-wrap-multilines": [
-      "error",
-      { "declaration": false, "assignment": false }
-    ],
-    "react/jsx-one-expression-per-line": 0,
-    "jsx-a11y/label-has-associated-control": [
-      "error",
-      {
-        "required": {
-          "some": ["nesting", "id"]
-        }
-      }
-    ],
-    "radix": "off",
-    "no-console": ["error", { "allow": ["warn", "error"] }],
-    "import/prefer-default-export": "off",
-
-    // don't require extensions for typescript modules
-    "import/extensions": [
-      "error",
-      "always",
-      { "js": "never", "ts": "never", "tsx": "never" }
-    ]
-  },
-
-  "settings": {
-    "import/resolver": {
-      // use <root>/tsconfig.json
-      "typescript": {
-        // always try to resolve types under `<root>@types` directory
-        // even it doesn't contain any source code, like `@types/unist`
-        "alwaysTryTypes": true
-      }
-    }
+    "no-console": ["error", { "allow": ["warn", "error"] }]
   }
 }

@@ -8,6 +8,13 @@ import {
 } from "../TenantStore/filterOptions";
 import { translate } from "../../utils/i18nSettings";
 
+const getLabelsString = (nestedFilterOptions, flattenedOptions) =>
+  nestedFilterOptions
+    .map((option) => {
+      return pipe(find({ value: option }), get("label"))(flattenedOptions);
+    })
+    .join(", ");
+
 function formatMetricPeriodMonthsFilter(metricPeriodMonths) {
   switch (metricPeriodMonths) {
     case "1":
@@ -54,13 +61,6 @@ const formatAdmissionType = (admissionTypes) => {
         ADMISSION_TYPES.flattenedOptions
       )}`;
 };
-
-const getLabelsString = (nestedFilterOptions, flattenedOptions) =>
-  nestedFilterOptions
-    .map((option) => {
-      return pipe(find({ value: option }), get("label"))(flattenedOptions);
-    })
-    .join(", ");
 
 function getFilters(toggleStates) {
   const filters = [];

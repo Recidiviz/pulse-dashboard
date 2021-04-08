@@ -67,6 +67,7 @@ import { METRIC_TYPES } from "../utils/constants";
  * each violation type.
  */
 const prepareDataGroupedByOffice = (bars, metricType) => (data) => {
+  // eslint-disable-next-line react/destructuring-assignment
   const officerId = numberFromOfficerId(data.officer_external_id);
 
   const countsByType = reduce(

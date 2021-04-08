@@ -155,7 +155,6 @@ describe("FiltersStore", () => {
 
   describe("districts filter", () => {
     let filtersStore;
-    const tenantId = "US_MO";
     const mockDistricts = [
       {
         level_2_supervision_location_external_id: "03",
@@ -189,6 +188,7 @@ describe("FiltersStore", () => {
     });
 
     describe("when districts are loading", () => {
+      const tenantId = "US_MO";
       it("returns an empty array", () => {
         runInAction(() => {
           rootStore.tenantStore.currentTenantId = tenantId;
