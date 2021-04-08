@@ -53,4 +53,11 @@ jobs:
   lint_all:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v2
+      - name: Use Node
+        uses: actions/setup-node@v1
+        with:
+          node-version: "12.x"
+      - uses: c-hive/gha-yarn-cache@v1
+      - run: yarn install --frozen-lockfile
       - run: yarn lint
