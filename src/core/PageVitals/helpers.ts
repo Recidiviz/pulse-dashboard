@@ -91,19 +91,11 @@ export function getEntitySummaries(
   currentEntitySummary: VitalsSummaryRecord;
   childEntitySummaryRows: VitalsSummaryTableRow[];
 } {
-  // The data is configured such that when entityId === parentEntityId,
-  // the row contains summary data for the VitalsSummaryCards for the
-  // current/parent entity
   const currentEntitySummary = vitalsSummaries.find(
-    (d) => d.entityId === currentEntityId && d.parentEntityId === d.entityId
+    (d) => d.entityId === currentEntityId
   ) as VitalsSummaryRecord;
-  // When entityId !== parentEntityId, the row contains summary data
-  // for the VitalsSummaryTable for the child entities
   const childEntitySummaryRows = vitalsSummaries
-    .filter(
-      (d) =>
-        d.parentEntityId === currentEntityId && d.parentEntityId !== d.entityId
-    )
+    .filter((d) => d.parentEntityId === currentEntityId)
     .map((d) => {
       const { entityId, entityName, entityType, ...attrs } = d;
       return {
