@@ -27,6 +27,13 @@ jobs:
       - name: Test setup
         run: .github/gh-workflow-setup.sh
       - name: Run all unit tests
-        run: yarn test --coverage --runInBand --forceExit && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage
+        run: yarn test --coverage --runInBand --forceExit
+      - name: Coveralls
+        uses: coverallsapp/github-action@master
+        with:
+          flag-name: pulse-dashboard
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          parallel: true
+          path-to-lcov: ./coverage/lcov.info
       - name: Run eslint and tsc linters
         run: yarn lint
