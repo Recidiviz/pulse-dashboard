@@ -17,6 +17,14 @@
 @import "../CoreConstants.scss";
 
 .PageVitals {
+  &__header {
+    align-items: baseline;
+    display: flex;
+    flex-flow: row;
+    justify-content: space-between;
+    width: 100%;
+  }
+
   &__SummaryCards {
     display: flex;
     flex-flow: row nowrap;

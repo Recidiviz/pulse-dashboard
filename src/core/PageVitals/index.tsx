@@ -24,8 +24,10 @@ import VitalsSummaryTable from "../VitalsSummaryTable/VitalsSummaryTable";
 import VitalsWeeklyChange from "../VitalsWeeklyChange";
 import VitalsSummaryChart from "../VitalsSummaryChart";
 import VitalsSummaryDetail from "../VitalsSummaryDetail";
+import MethodologyLink from "../MethodologyLink";
 import Loading from "../../components/Loading";
 import { MetricType, METRIC_TYPES } from "./types";
+import { CORE_PATHS } from "../views";
 import { useRootStore } from "../../components/StoreProvider";
 import { VitalsSummaryRecord, VitalsTimeSeriesRecord } from "../models/types";
 import { ChartDataType } from "../types/charts";
@@ -102,10 +104,15 @@ const PageVitals: React.FC = () => {
 
   return (
     <PageTemplate>
-      <VitalsSummaryBreadcrumbs
-        stateName={stateName}
-        entity={currentEntitySummary}
-      />
+      <div className="PageVitals__header">
+        <VitalsSummaryBreadcrumbs
+          stateName={stateName}
+          entity={currentEntitySummary}
+        />
+        <div className="PageVitals__links">
+          <MethodologyLink path={CORE_PATHS.methodologyVitals} />
+        </div>
+      </div>
       <div className="PageVitals__SummaryCards">
         <VitalsSummaryCards
           onClick={handleSelectCard}
