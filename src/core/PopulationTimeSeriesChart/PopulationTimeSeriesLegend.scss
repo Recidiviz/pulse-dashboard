@@ -1,4 +1,6 @@
-.PopulationTimeseriesLegend {
+@import "../CoreConstants";
+
+.PopulationTimeSeriesLegend {
   display: flex;
 
   &__Item {
@@ -16,18 +18,16 @@
   }
 
   &__Line {
+    stroke: $data-forest;
+    stroke-width: 2;
     width: 100%;
   }
 
-  .ActualLegend .PopulationTimeseriesLegend__Line {
-    border-top: 1px solid #25636F;
-  }
-
   .ProjectedLegend {
-    background: rgba(37, 99, 111, 0.1);
+    background: $data-forest-uncertainty;
 
     .PopulationTimeseriesLegend__Line {
-      border-top: 1px dashed #25636F;
+      stroke-dasharray: 3.5, 4.5, 8, 4.5, 3.5;
     }
   }
 }

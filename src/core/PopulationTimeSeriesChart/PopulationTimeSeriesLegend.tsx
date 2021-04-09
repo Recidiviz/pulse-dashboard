@@ -16,25 +16,33 @@
 // =============================================================================
 
 import React from "react";
-import "./PopulationTimeseriesLegend.scss";
+import "./PopulationTimeSeriesLegend.scss";
 
 type propTypes = {
   items: string[];
 };
 
-const PopulationTimeseriesLegend: React.FC<propTypes> = ({ items }) => {
+const PopulationTimeSeriesLegend: React.FC<propTypes> = ({ items }) => {
   return (
-    <div className="PopulationTimeseriesLegend">
+    <div className="PopulationTimeSeriesLegend">
       {items.map((label) => (
-        <div className="PopulationTimeseriesLegend__Item" key={label}>
-          <div className={`PopulationTimeseriesLegend__Icon ${label}Legend`}>
-            <div className="PopulationTimeseriesLegend__Line" />
+        <div className="PopulationTimeSeriesLegend__Item" key={label}>
+          <div className={`PopulationTimeSeriesLegend__Icon ${label}Legend`}>
+            <svg height="2" width="24">
+              <line
+                x1="0"
+                y1="0"
+                x2="24"
+                y2="0"
+                className="PopulationTimeSeriesLegend__Line"
+              />
+            </svg>
           </div>
-          <div className="PopulationTimeseriesLegend__Text">{label}</div>
+          <div className="PopulationTimeSeriesLegend__Text">{label}</div>
         </div>
       ))}
     </div>
   );
 };
 
-export default PopulationTimeseriesLegend;
+export default PopulationTimeSeriesLegend;
