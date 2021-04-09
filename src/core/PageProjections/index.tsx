@@ -57,7 +57,7 @@ const PageProjections: React.FC = () => {
   // );
 
   const projectionTimeSeries: PopulationProjectionTimeSeriesRecord[] = populationProjectionTimeSeries(
-    apiData.population_projection_TimeSeries.data
+    apiData.population_projection_timeseries.data
   );
 
   return (
