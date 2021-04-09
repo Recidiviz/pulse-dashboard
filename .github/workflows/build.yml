@@ -1,0 +1,64 @@
+name: Build and Test
+on:
+  - push
+  - pull_request
+jobs:
+  test_web:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node
+        uses: actions/setup-node@v1
+        with:
+          node-version: "12.x"
+      - uses: c-hive/gha-yarn-cache@v1
+      - run: yarn install --frozen-lockfile
+      - name: Test setup
+        run: .github/gh-workflow-setup.sh
+      - name: Yarn test
+        run: yarn test-react --coverage --runInBand
+      - name: Coveralls
+        uses: coverallsapp/github-action@master
+        with:
+          flag-name: pulse-dashboard
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path-to-lcov: ./coverage/lcov.info
+  test_server:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node
+        uses: actions/setup-node@v1
+        with:
+          node-version: "12.x"
+      - uses: c-hive/gha-yarn-cache@v1
+      - run: yarn install --frozen-lockfile
+      - name: Test setup
+        run: .github/gh-workflow-setup.sh
+      - name: Yarn test
+        run: yarn test-server --forceExit
+  test_shared_filters:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node
+        uses: actions/setup-node@v1
+        with:
+          node-version: "12.x"
+      - uses: c-hive/gha-yarn-cache@v1
+      - run: yarn install --frozen-lockfile
+      - name: Yarn test
+        run: yarn test-filters
+  lint_all:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node
+        uses: actions/setup-node@v1
+        with:
+          node-version: "12.x"
+      - uses: c-hive/gha-yarn-cache@v1
+      - run: yarn install --frozen-lockfile
+      - name: Test setup
+        run: .github/gh-workflow-setup.sh
+      - run: yarn lint
