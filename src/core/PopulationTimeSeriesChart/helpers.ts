@@ -17,7 +17,7 @@
 
 import {
   Gender,
-  PopulationProjectionTimeseriesRecord,
+  PopulationProjectionTimeSeriesRecord,
   SimulationCompartment,
 } from "../models/types";
 
@@ -44,8 +44,8 @@ export const filterData = (
   gender: Gender,
   compartment: SimulationCompartment,
   status: string,
-  data: PopulationProjectionTimeseriesRecord[]
-): PopulationProjectionTimeseriesRecord[] => {
+  data: PopulationProjectionTimeSeriesRecord[]
+): PopulationProjectionTimeSeriesRecord[] => {
   const range = monthRange === 1 ? 6 : monthRange;
 
   const stepSize = range / 6;
@@ -62,11 +62,11 @@ export const filterData = (
   });
 };
 
-const getDate = (d: PopulationProjectionTimeseriesRecord): Date =>
+const getDate = (d: PopulationProjectionTimeSeriesRecord): Date =>
   new Date(d.year, d.month - 1);
 
 export const prepareData = (
-  data: PopulationProjectionTimeseriesRecord[]
+  data: PopulationProjectionTimeSeriesRecord[]
 ): PreparedData => {
   const historicalPopulation = data
     .filter((d) => d.simulationTag === "HISTORICAL")

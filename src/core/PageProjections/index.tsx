@@ -23,11 +23,11 @@ import PopulationSummaryMetrics from "../PopulationSummaryMetrics/TempPopulation
 import useChartData from "../hooks/useChartData";
 import {
   // PopulationProjectionSummaryRecords,
-  PopulationProjectionTimeseriesRecord,
+  PopulationProjectionTimeSeriesRecord,
 } from "../models/types";
 // import { populationProjectionSummary } from "../models/PopulationProjectionSummaryMetric";
-import PopulationTimeseriesChart from "../PopulationTimeseriesChart";
-import { populationProjectionTimeseries } from "../models/PopulationProjectionTimeseriesMetric";
+import PopulationTimeSeriesChart from "../PopulationTimeSeriesChart";
+import { populationProjectionTimeSeries } from "../models/PopulationProjectionTimeSeriesMetric";
 import PopulationFilterBar from "../PopulationFilterBar";
 import filterOptions from "../utils/filterOptions";
 import { getViewFromPathname } from "../views";
@@ -56,8 +56,8 @@ const PageProjections: React.FC = () => {
   //   apiData.population_projection_summaries.data
   // );
 
-  const projectionTimeseries: PopulationProjectionTimeseriesRecord[] = populationProjectionTimeseries(
-    apiData.population_projection_timeseries.data
+  const projectionTimeSeries: PopulationProjectionTimeSeriesRecord[] = populationProjectionTimeSeries(
+    apiData.population_projection_TimeSeries.data
   );
 
   return (
@@ -72,9 +72,9 @@ const PageProjections: React.FC = () => {
     >
       <PopulationSummaryMetrics
         isError={isError}
-        projectionSummaries={projectionTimeseries}
+        projectionSummaries={projectionTimeSeries}
       />
-      <PopulationTimeseriesChart data={projectionTimeseries} />
+      <PopulationTimeSeriesChart data={projectionTimeSeries} />
     </PageTemplate>
   );
 };
