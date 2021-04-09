@@ -6,14 +6,6 @@ class LanternPage extends Page {
     super.open(`${browser.config.baseUrl}/community/revocations`);
   }
 
-  get userMenu() {
-    return $(".TopBarUserMenuForAuthenticatedUser");
-  }
-
-  get profileLink() {
-    return $(".TopBarUserMenuForAuthenticatedUser__profile-link");
-  }
-
   get lanternLayout() {
     return $(".LanternLayout");
   }
@@ -30,4 +22,4 @@ class LanternPage extends Page {
   }
 }
 
-export default new LanternPage({ redirectPause: 4000 });
+export default new LanternPage({ redirectPause: 1000 });

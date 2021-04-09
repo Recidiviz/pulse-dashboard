@@ -13,7 +13,7 @@
     "start": "node server.js",
     "build": "react-scripts build",
     "build-staging": "env-cmd -f .env.development react-scripts build",
-    "e2e-lantern": "env-cmd -f .env.development wdio ./wdio.conf.js --suite login --suite lantern",
+    "test-e2e-lantern": "env-cmd -f .env.development wdio ./wdio.conf.js --suite login --suite lantern --retry 2",
     "test-react": "TZ=UTC react-scripts test --env=jest-environment-jsdom-sixteen",
     "test-server": "TZ=UTC jest ./server",
     "test-filters": "TZ=UTC jest ./shared-filters",

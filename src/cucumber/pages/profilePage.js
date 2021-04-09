@@ -20,11 +20,10 @@ class ProfilePage extends Page {
 
   selectStateOption(stateName) {
     this.stateSelector.click();
-    browser.pause(1000);
     const option = $(`div=${stateName}`);
     option.click();
     this.viewDashboardBtn.click();
   }
 }
 
-export default new ProfilePage({ redirectPause: 2000 });
+export default new ProfilePage({ redirectPause: 1000 });

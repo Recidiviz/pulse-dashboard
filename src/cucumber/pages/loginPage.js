@@ -26,4 +26,4 @@ class LoginPage extends Page {
   }
 }
 
-export default new LoginPage({ redirectPause: 4000 });
+export default new LoginPage({ redirectPause: 3000 });

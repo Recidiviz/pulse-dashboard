@@ -69,7 +69,7 @@ const TopBarUserMenuForAuthenticatedUser: React.FC<PropTypes> = ({
         <Dropdown.Item
           as="a"
           href="#"
-          className="d-b td-n bgcH-grey-100 c-grey-700 pX-15"
+          className="TopBarUserMenuForAuthenticatedUser__logout d-b td-n bgcH-grey-100 c-grey-700 pX-15"
           onClick={onLogout}
         >
           <i className="ti-power-off mR-10" />
