@@ -33,7 +33,7 @@ import { CORE_VIEWS, getViewFromPathname } from "../views";
 import { formatLargeNumber } from "../../utils/formatStrings";
 import { usePopulationFiltersStore } from "../../components/StoreProvider";
 import type {
-  PopulationProjectionTimeseriesRecord,
+  PopulationProjectionTimeSeriesRecord,
   SimulationCompartment,
 } from "../models/types";
 import "./LoadingMetrics.scss";
@@ -44,7 +44,7 @@ import * as styles from "../CoreConstants.scss";
 type PropTypes = {
   isLoading?: boolean;
   isError: boolean;
-  projectionSummaries?: PopulationProjectionTimeseriesRecord[];
+  projectionSummaries?: PopulationProjectionTimeSeriesRecord[];
 };
 
 const MetricsCardComponent = styled(Card)`
@@ -176,7 +176,7 @@ const TempPopulationSummaryMetrics: React.FC<PropTypes> = ({
 
   const currentData = filteredData.find(
     (d) => d.year === CURRENT_YEAR && d.month === CURRENT_MONTH
-  ) as PopulationProjectionTimeseriesRecord;
+  ) as PopulationProjectionTimeSeriesRecord;
 
   const historicalData = filteredData[0];
 

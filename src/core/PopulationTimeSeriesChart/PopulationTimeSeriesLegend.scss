@@ -1,6 +1,6 @@
 @import "../CoreConstants";
 
-.PopulationTimeseriesLegend {
+.PopulationTimeSeriesLegend {
   display: flex;
 
   &__Item {
@@ -18,7 +18,7 @@
   }
 
   &__Line {
-    stroke: #25636F;
+    stroke: $data-forest;
     stroke-width: 2;
     width: 100%;
   }

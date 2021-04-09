@@ -17,14 +17,14 @@
 
 import {
   Gender,
-  PopulationProjectionTimeseriesRecord,
+  PopulationProjectionTimeSeriesRecord,
   RawMetricData,
   SimulationCompartment,
 } from "./types";
 
-export function populationProjectionTimeseries(
+export function populationProjectionTimeSeries(
   rawRecords: RawMetricData
-): PopulationProjectionTimeseriesRecord[] {
+): PopulationProjectionTimeSeriesRecord[] {
   return rawRecords.map((record) => {
     return {
       year: Number(record.year),

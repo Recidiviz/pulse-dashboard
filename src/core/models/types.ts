@@ -60,7 +60,7 @@ export type HistoricalSummaryRecord = {
   populationPercentChange: number;
 };
 
-export type PopulationProjectionTimeseriesRecord = {
+export type PopulationProjectionTimeSeriesRecord = {
   year: number;
   month: number;
   compartment: SimulationCompartment;

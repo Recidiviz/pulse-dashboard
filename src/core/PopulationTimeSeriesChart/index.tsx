@@ -22,7 +22,7 @@ import { observer } from "mobx-react-lite";
 import { ResponsiveXYFrame } from "semiotic";
 import { usePopulationFiltersStore } from "../../components/StoreProvider";
 import {
-  PopulationProjectionTimeseriesRecord,
+  PopulationProjectionTimeSeriesRecord,
   SimulationCompartment,
 } from "../models/types";
 
@@ -45,10 +45,10 @@ type PlotLine = {
 };
 
 type PropTypes = {
-  data: PopulationProjectionTimeseriesRecord[];
+  data: PopulationProjectionTimeSeriesRecord[];
 };
 
-const PopulationTimeseriesChart: React.FC<PropTypes> = ({ data }) => {
+const PopulationTimeSeriesChart: React.FC<PropTypes> = ({ data }) => {
   const filtersStore = usePopulationFiltersStore();
   const { gender, supervisionType, legalStatus } = filtersStore.filters;
   const timePeriod: MonthOptions = parseInt(
@@ -117,12 +117,12 @@ const PopulationTimeseriesChart: React.FC<PropTypes> = ({ data }) => {
   ];
 
   const historicalLine: PlotLine = {
-    class: "PopulationTimeseriesChart__HistoricalLine",
+    class: "PopulationTimeSeriesChart__HistoricalLine",
     data: historicalPopulation,
   };
 
   const projectedLine: PlotLine = {
-    class: "PopulationTimeseriesChart__ProjectedLine",
+    class: "PopulationTimeSeriesChart__ProjectedLine",
     data: projectedPopulation,
   };
 
@@ -130,9 +130,9 @@ const PopulationTimeseriesChart: React.FC<PropTypes> = ({ data }) => {
     compartment === "SUPERVISION" ? "Supervised" : "Incarcerated";
 
   return (
-    <div className="PopulationTimeseriesChart">
-      <div className="PopulationTimeseriesChart__Header">
-        <div className="PopulationTimeseriesChart__Title">
+    <div className="PopulationTimeSeriesChart">
+      <div className="PopulationTimeSeriesChart__Header">
+        <div className="PopulationTimeSeriesChart__Title">
           Total {populationType} Population
         </div>
         <PopulationTimeSeriesLegend items={["Actual", "Projected"]} />
@@ -189,7 +189,7 @@ const PopulationTimeseriesChart: React.FC<PropTypes> = ({ data }) => {
         xExtent={[beginDate, endDate]}
         yExtent={[0, chartTop]}
         showLinePoints
-        pointClass="PopulationTimeseriesChart__Point"
+        pointClass="PopulationTimeSeriesChart__Point"
         axes={[
           { orient: "left", tickFormat: (n: number) => n.toLocaleString() },
           {
@@ -209,4 +209,4 @@ const PopulationTimeseriesChart: React.FC<PropTypes> = ({ data }) => {
   );
 };
 
-export default observer(PopulationTimeseriesChart);
+export default observer(PopulationTimeSeriesChart);
