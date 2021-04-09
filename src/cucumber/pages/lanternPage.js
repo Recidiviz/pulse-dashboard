@@ -14,6 +14,22 @@ class LanternPage extends Page {
     return $(".RevocationsOverTime h4.RevocationsByDimension__title");
   }
 
+  get districtChartCanvas() {
+    return $("canvas#admissionsByDistrict");
+  }
+
+  get officerChartCanvas() {
+    return $("canvas#admissionsByOfficer");
+  }
+
+  get riskLevelChartCanvas() {
+    return $("canvas#admissionsByRiskLevel");
+  }
+
+  getRevocationsLink(linkText) {
+    return $(`button*=${linkText}`);
+  }
+
   navigateToProfile() {
     this.userMenu.click();
     this.profileLink.waitForClickable();
