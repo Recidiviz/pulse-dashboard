@@ -30,7 +30,8 @@ import { PageProvider } from "./contexts/PageContext";
 import StoreProvider from "./components/StoreProvider";
 import NotFound from "./components/NotFound";
 import Profile from "./components/Profile";
-import Methodology from "./core/methodology/Methodology";
+import ProjectionsMethodology from "./core/ProjectionsMethodology/Methodology";
+import VitalsMethodology from "./core/VitalsMethodology";
 import VerificationNeeded from "./components/VerificationNeeded";
 import LanternLayout from "./lantern/LanternLayout";
 import CoreLayout from "./core/CoreLayout";
@@ -88,7 +89,8 @@ const App = () => (
                   <ProtectedRoute path={CORE_PATHS.facilitiesExplore} component={UsNdFacilitiesExplore} />
                   <ProtectedRoute path={CORE_PATHS.facilitiesProjections} component={PageProjections} />
                   <ProtectedRoute path={CORE_PATHS.communityVitals} component={PageVitals}/>
-                  <ProtectedRoute path={CORE_PATHS.methodology} component={Methodology} />
+                  <ProtectedRoute path={CORE_PATHS.methodologyProjections} component={ProjectionsMethodology} />
+                  <ProtectedRoute path={CORE_PATHS.methodologyVitals} component={VitalsMethodology} />
                   <Route path="/profile" component={Profile} />
                   <RedirectHome />
                   <Redirect from="/snapshots" to="/goals" />
