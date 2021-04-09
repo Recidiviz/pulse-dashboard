@@ -39,6 +39,8 @@ yarn-error.log*
 
 # Package files
 package-lock.json
+.yalc
+yalc.lock
 
 # Redis dump
 dump.rdb

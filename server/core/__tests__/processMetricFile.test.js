@@ -24,17 +24,19 @@ const {
 jest.mock("../processJsonLinesMetricFile");
 
 describe("processMetricFile tests", () => {
-  const mockStringContents = "some string content";
-  const mockContents = Buffer.from(mockStringContents);
+  let mockContents;
+  let mockExtension;
   const mockMetadata = "some metadata";
-  const mockExtension = ".json";
+  const mockStringContents = "some string content";
 
   beforeEach(() => {
+    mockContents = Buffer.from(mockStringContents);
+    mockExtension = ".json";
     jest.resetAllMocks();
   });
 
   it("should return null if file is empty", () => {
-    const mockContents = Buffer.from("");
+    mockContents = Buffer.from("");
 
     expect(
       processMetricFile(mockContents, mockMetadata, mockExtension)
@@ -52,7 +54,7 @@ describe("processMetricFile tests", () => {
   });
 
   it("should return the string contents of the results", () => {
-    const mockExtension = ".txt";
+    mockExtension = ".txt";
 
     expect(
       processMetricFile(mockContents, mockMetadata, mockExtension)
@@ -63,7 +65,7 @@ describe("processMetricFile tests", () => {
   });
 
   it("should return empty object if extensions do not match", () => {
-    const mockExtension = ".someExtension";
+    mockExtension = ".someExtension";
     expect(
       processMetricFile(mockContents, mockMetadata, mockExtension)
     ).toStrictEqual({});

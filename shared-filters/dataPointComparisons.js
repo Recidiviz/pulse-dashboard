@@ -15,16 +15,6 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-const nullSafeComparison = (field, filter) => {
-  if (Array.isArray(filter)) {
-    return nullSafeComparisonForArray(field, filter);
-  }
-  if (!field && !filter) return true;
-  if (!field) return false;
-  if (!filter) return false;
-  return field.toLowerCase() === filter.toLowerCase();
-};
-
 const nullSafeComparisonForArray = (field, filters) => {
   if (!field && !filters) return true;
   if (!field) return false;
@@ -33,6 +23,16 @@ const nullSafeComparisonForArray = (field, filters) => {
     filters.filter((value) => value.toLowerCase() === field.toLowerCase())
       .length !== 0
   );
+};
+
+const nullSafeComparison = (field, filter) => {
+  if (Array.isArray(filter)) {
+    return nullSafeComparisonForArray(field, filter);
+  }
+  if (!field && !filter) return true;
+  if (!field) return false;
+  if (!filter) return false;
+  return field.toLowerCase() === filter.toLowerCase();
 };
 
 const isAllItem = (item) => item.toLowerCase() === "all";

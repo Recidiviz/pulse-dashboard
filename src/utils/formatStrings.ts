@@ -80,7 +80,7 @@ function toHumanReadable(string: string): string {
 }
 
 function toInt(nonInt: string): number {
-  return parseInt(nonInt, 10);
+  return parseInt(nonInt);
 }
 
 function toTitleCase(str: string): string {
@@ -134,7 +134,7 @@ function getTrailingLabelFromMetricPeriodMonthsFilter(
   if (toggledValue === "3" || toggledValue === "6" || toggledValue === "12") {
     return `Last ${toggledValue} months`;
   }
-  return `Last ${parseInt(toggledValue, 10) / 12} years`;
+  return `Last ${parseInt(toggledValue) / 12} years`;
 }
 
 const formatOfficerLabel = (label: string): string => {

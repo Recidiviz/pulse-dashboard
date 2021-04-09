@@ -32,6 +32,18 @@ async function validateResponse(response) {
   }
 }
 
+async function fetchWithRetry(endpoint, options, retryTimes) {
+  try {
+    const response = await fetch(endpoint, options);
+    return await validateResponse(response);
+  } catch (error) {
+    if (retryTimes === 1) {
+      throw error;
+    }
+    return fetchWithRetry(endpoint, options, retryTimes - 1);
+  }
+}
+
 /**
  * An asynchronous function that returns a promise which will eventually return the results from
  * invoking the given API endpoint. Takes in the |endpoint| as a string and the |getTokenSilently|
@@ -77,18 +89,6 @@ async function callRestrictedAccessApi(endpoint, userEmail, getTokenSilently) {
     retryTimes
   );
   return responseJson;
-}
-
-async function fetchWithRetry(endpoint, options, retryTimes) {
-  try {
-    const response = await fetch(endpoint, options);
-    return await validateResponse(response);
-  } catch (error) {
-    if (retryTimes === 1) {
-      throw error;
-    }
-    return fetchWithRetry(endpoint, options, retryTimes - 1);
-  }
 }
 
 /**
