@@ -11,7 +11,7 @@
     border: 1px solid $core-border-color !important;
     box-shadow: none !important;
     border-radius: 1.25rem !important;
-    background-color: $core-background !important;
+    background-color: $marble-3 !important;
     transition: border-radius 0s !important;
     cursor: pointer !important;
 
@@ -26,7 +26,7 @@
   }
 
   &__container {
-    background-color: $core-background !important;
+    background-color: $marble-3 !important;
   }
 
   &__single-value {
@@ -34,7 +34,7 @@
   }
 
   &__menu {
-    background-color: $core-background !important;
+    background-color: $marble-3 !important;
     border: 1px solid $core-border-color;
     border-radius: 0rem 0rem 1.25rem 1.25rem !important;
     border-top: none !important;

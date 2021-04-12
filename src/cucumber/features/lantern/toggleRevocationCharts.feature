@@ -10,8 +10,7 @@ Feature: Toggle Revocations Charts
     Scenario: Viewing the Officer chart
         When I click on the "Officer" revocations link
         Then I should see the Officer chart
-    
+
     Scenario: Viewing the Risk Level chart
         When I click on the "Risk level" revocations link
         Then I should see the Risk level chart
-

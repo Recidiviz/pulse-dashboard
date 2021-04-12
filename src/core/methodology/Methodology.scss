@@ -1,6 +1,8 @@
 @import "../../assets/styles/spec/settings/baseColors.scss";
+@import "../CoreConstants.scss";
+
 .main-content {
-  background-color: $core-background;
+  background-color: $marble-3;
 }
 .methodology {
   &__main-title {
@@ -33,16 +35,16 @@
       font-weight: 400;
       font-size: 1.5rem;
       line-height: 2.5rem;
-      color: $core-link-color;
+      color: $signal-links;
       width: fit-content;
       &:hover,
       &:focus {
-        color: $core-link-color;
+        color: $signal-links;
         cursor: pointer;
         text-decoration: underline;
       }
       &:active {
-        color: $core-link-color;
+        color: $signal-links;
       }
     }
   }

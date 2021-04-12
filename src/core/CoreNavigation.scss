@@ -18,7 +18,7 @@
 @import "./CoreConstants.scss";
 
 .CoreNavigation {
-  background: $core-background;
+  background: $marble-3;
   height: 5rem;
   width: 100%;
   display: flex;
@@ -37,24 +37,21 @@
   }
 
   &__left {
-    padding-left: 4rem;
-    display: flex;
-  }
-
-  div.CoreNavigation__left {
     align-items: center;
+    display: flex;
+    padding-left: 4rem;
 
-    .dropdown {
-      margin-left: 1.5rem;
-      display: flex;
-      font-size: 1.2rem;
-      font-weight: 400;
-      color: $pine-3;
-      border: none;
+    .CoreSectionSelector {
       background: transparent;
-      align-items: center;
+      border: none;
+      color: $pine-3;
       cursor: pointer;
+      display: flex;
+      font: $font-ui-sans-20;
+      letter-spacing: -0.01em;
+      margin-left: 1.5rem;
       user-select: none;
+
       &:hover,
       &:focus {
         background-color: $core-dropdown-color;
@@ -62,15 +59,37 @@
         border-radius: 1.66rem;
         outline: 0;
       }
-      &-menu {
+
+      &.show {
+        background-color: $core-dropdown-color;
+        border-radius: 1.66rem;
+      }
+
+      &__menu {
+        background-color: $core-dropdown-color;
         transform: translate3d(0px, 1.5rem, 0px) !important;
         z-index: 1;
         border: none;
+        display: none;
+        margin: 0;
+        overflow: hidden;
+
+        .divider {
+          border-bottom: 0.06rem solid $border-color;
+          height: 0.06rem;
+          overflow: hidden;
+        }
+
         &.show {
+          display: block;
+          background-color: $core-dropdown-color;
+          border-radius: 0 0 1.66rem 1.66rem;
+          box-shadow: $inset-shadow-30;
+          min-width: 11.81rem;
+          padding: 0.62rem 0;
+          transform: scale(1, 1);
+
           a > button {
-            font-size: 1.2rem;
-            font-weight: 400;
-            color: $pine-3;
             border-radius: 0;
 
             &:focus,
@@ -80,21 +99,20 @@
             }
           }
           a:first-child > button {
-            margin-top: 0.31rem;
+            margin-top: 0.5rem;
           }
         }
       }
 
-      &.show {
-        background-color: $core-dropdown-color;
-        border-radius: 1.66rem;
+      &__item {
+        color: $pine-3;
+        cursor: pointer;
+        font: $font-ui-sans-20;
+        letter-spacing: -0.01em;
+        padding: 0.5rem 1.5rem;
       }
-      .show {
-        padding: 0.62rem 0;
-        border-radius: 0 0 1.66rem 1.66rem;
-        box-shadow: $inset-shadow-30;
-      }
-      &-toggle {
+
+      &__toggle {
         min-width: 11.81rem;
         min-height: 3rem;
         display: flex;
@@ -102,28 +120,6 @@
         padding: 0.5rem 1.5rem;
         align-items: center;
         z-index: 2;
-      }
-      &-menu {
-        background-color: $core-dropdown-color;
-      }
-    }
-    .dropdown-menu {
-      display: none;
-      margin: 0;
-      overflow: hidden;
-
-      .divider {
-        border-bottom: 0.06rem solid $border-color;
-        height: 0.06rem;
-        overflow: hidden;
-      }
-    }
-    .show {
-      .dropdown-menu {
-        display: block;
-        transform: scale(1, 1);
-        min-width: 11.81rem;
-        background-color: $core-dropdown-color;
       }
     }
   }
@@ -138,21 +134,11 @@
     height: 100%;
 
     > li {
-      float: left;
-
-      > a,
-      button {
-        color: $default-text-color;
-        display: block;
-        line-height: $header-height;
+      > button {
         min-height: $header-height;
         padding: 0 15px;
         background-color: transparent;
         transition: all 0.2s ease-in-out;
-
-        i {
-          font-size: 17px;
-        }
 
         &:hover,
         &:focus {
@@ -161,6 +147,7 @@
         }
       }
     }
+
     .dropdown {
       margin-left: 2rem;
       margin-right: 2.375rem;
@@ -184,6 +171,10 @@
           min-height: auto;
           padding: 10px 15px;
         }
+      }
+      .dropdown-item {
+        color: $slate-80;
+        font: $font-ui-sans-14;
       }
     }
   }

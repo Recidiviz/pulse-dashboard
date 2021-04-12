@@ -179,7 +179,9 @@ const VitalsSummaryTable: React.FC<PropTypes> = ({
                   {...column.getHeaderProps(column.getSortByToggleProps())}
                 >
                   {column.canSort ? (
-                    <div className="VitalsSummaryTable__sortable-header">
+                    <div
+                      className={`VitalsSummaryTable__sortable-header VitalsSummaryTable__sortable-header--${column.id}`}
+                    >
                       {column.render("Header")}
                       <div className="VitalsSummaryTable__sort">
                         <div
@@ -226,7 +228,7 @@ const VitalsSummaryTable: React.FC<PropTypes> = ({
                   const { column } = cell;
                   return (
                     <td
-                      className={cx(`VitalsSummaryTable__cell--${column.id}`)}
+                      className={`VitalsSummaryTable__cell--${column.id}`}
                       {...cell.getCellProps()}
                     >
                       {cell.render("Cell")}
