@@ -169,7 +169,7 @@ describe("App tests", () => {
     });
   });
 
-  fdescribe("Methodology page", () => {
+  describe("Methodology page", () => {
     it("should render the Projections Methodology page", () => {
       window.history.pushState({}, "", "/methodology/projections");
       const user = { [metadataField]: { state_code: US_ID } };
