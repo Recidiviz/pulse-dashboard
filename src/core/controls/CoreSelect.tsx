@@ -45,13 +45,13 @@ export const CoreSelect = forwardRef<HTMLInputElement, CoreSelectProps>(
     <ReactSelect
       // @ts-ignore
       ref={ref}
-      className="Core-Seleсt"
-      classNamePrefix="Core-Select"
+      className="CoreSeleсt"
+      classNamePrefix="CoreSelect"
       components={{
         IndicatorSeparator: () => null,
         DropdownIndicator: () => (
-          <div className="Core-Select__custom-indicator">
-            <span className="Core-Select__custom-arrow" />
+          <div className="CoreSelect__custom-indicator">
+            <span className="CoreSelect__custom-arrow" />
           </div>
         ),
       }}

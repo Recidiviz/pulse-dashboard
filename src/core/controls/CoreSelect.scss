@@ -1,7 +1,7 @@
 @import "../../assets/styles/spec/settings/index";
 @import "../CoreConstants";
 
-.Core-Select {
+.CoreSelect {
   flex-grow: 1;
   font-size: 0.8em;
   font-weight: 500;
@@ -39,7 +39,6 @@
     border-radius: 0rem 0rem 1.25rem 1.25rem !important;
     border-top: none !important;
     box-shadow: none !important;
-    color: $pine-3;
     margin: 0 !important;
     overflow: hidden;
   }
@@ -78,9 +77,12 @@
   }
 
   &__value-container {
-    white-space: nowrap;
-    text-overflow: ellipsis;
+    color: $pine-3;
+    font: $font-ui-sans-14;
+    letter-spacing: -0.01em;
     padding-left: 1rem !important;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   &__custom-indicator {
