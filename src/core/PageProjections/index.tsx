@@ -44,7 +44,15 @@ const PageProjections: React.FC = () => {
 
   if (isLoading) {
     return (
-      <PageTemplate>
+      <PageTemplate
+        filters={
+          <PopulationFilterBar
+            view={getViewFromPathname(pathname)}
+            // @ts-ignore
+            filterOptions={filterOptions[currentTenantId]}
+          />
+        }
+      >
         <PopulationSummaryMetrics isLoading={isLoading} isError={isError} />
       </PageTemplate>
     );
