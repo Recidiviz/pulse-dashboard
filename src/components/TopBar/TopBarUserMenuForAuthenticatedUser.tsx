@@ -57,11 +57,7 @@ const TopBarUserMenuForAuthenticatedUser: React.FC<PropTypes> = ({
         )}
       </Dropdown.Toggle>
       <Dropdown.Menu renderOnMount as="ul" className="dropdown-menu fsz-sm">
-        <Dropdown.Item
-          as={Link}
-          to="/profile"
-          className="d-b td-n bgcH-grey-100 c-grey-700 pX-15"
-        >
+        <Dropdown.Item as={Link} to="/profile" className="d-b td-n pX-15">
           <i className="ti-user mR-10" />
           <span>Profile</span>
         </Dropdown.Item>
@@ -69,7 +65,7 @@ const TopBarUserMenuForAuthenticatedUser: React.FC<PropTypes> = ({
         <Dropdown.Item
           as="a"
           href="#"
-          className="d-b td-n bgcH-grey-100 c-grey-700 pX-15"
+          className="d-b td-n pX-15"
           onClick={onLogout}
         >
           <i className="ti-power-off mR-10" />

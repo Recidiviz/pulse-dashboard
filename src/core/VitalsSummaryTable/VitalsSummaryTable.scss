@@ -190,15 +190,15 @@ $border-styles: 1px solid $slate-20;
     padding: 3px 0;
 
     &--70 {
-      border-color: $crimson-dark;
+      border-color: $signal-error;
     }
 
     &--80 {
-      border-color: $crimson;
+      border-color: $signal-error-lite;
     }
 
     &--90 {
-      border-color: #4d9895;
+      border-color: $signal-links-lite;
     }
 
     &--100 {
