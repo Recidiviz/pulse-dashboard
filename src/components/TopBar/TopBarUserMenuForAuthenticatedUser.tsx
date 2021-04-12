@@ -44,7 +44,7 @@ const TopBarUserMenuForAuthenticatedUser: React.FC<PropTypes> = ({
     <Dropdown as="li">
       <Dropdown.Toggle
         variant="link"
-        className="no-after peers fxw-nw ai-c lh-1 ta-l"
+        className="TopBarUserMenuForAuthenticatedUser no-after peers fxw-nw ai-c lh-1 ta-l"
       >
         <div className="peer mR-10">
           <img className="w-2r bdrs-50p" src={user.picture} alt="" />
@@ -57,7 +57,11 @@ const TopBarUserMenuForAuthenticatedUser: React.FC<PropTypes> = ({
         )}
       </Dropdown.Toggle>
       <Dropdown.Menu renderOnMount as="ul" className="dropdown-menu fsz-sm">
-        <Dropdown.Item as={Link} to="/profile" className="d-b td-n pX-15">
+        <Dropdown.Item
+          as={Link}
+          to="/profile"
+          className="TopBarUserMenuForAuthenticatedUser__profile-link d-b td-n pX-15"
+        >
           <i className="ti-user mR-10" />
           <span>Profile</span>
         </Dropdown.Item>
@@ -65,7 +69,7 @@ const TopBarUserMenuForAuthenticatedUser: React.FC<PropTypes> = ({
         <Dropdown.Item
           as="a"
           href="#"
-          className="d-b td-n pX-15"
+          className="TopBarUserMenuForAuthenticatedUser__logout d-b td-n pX-15"
           onClick={onLogout}
         >
           <i className="ti-power-off mR-10" />
