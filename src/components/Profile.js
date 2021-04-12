@@ -62,10 +62,12 @@ const Profile = () => {
               <p className="lead text-muted">{userStore.stateName}</p>
               {userStore.availableStateCodes.length > 1 && (
                 <div style={{ maxWidth: "33%" }}>
-                  <p className="lead text-muted">Current view state:</p>
+                  <p className="Profile__prompt lead text-muted">
+                    Current view state:
+                  </p>
                   <StateSelector onChange={handleOnChange} />
                   <Button
-                    className="mt-3"
+                    className="Profile__submit mt-3"
                     variant="dark"
                     onClick={handleOnClick}
                   >

@@ -1,5 +1,5 @@
 {
-  "extends": ["@recidiviz"],
+  "extends": ["@recidiviz", "plugin:wdio/recommended"],
   "overrides": [
     {
       "files": ["*.ts", "*.tsx"],
