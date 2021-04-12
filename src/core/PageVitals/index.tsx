@@ -110,7 +110,7 @@ const PageVitals: React.FC = () => {
           entity={currentEntitySummary}
         />
         <div className="PageVitals__links">
-          <MethodologyLink path={CORE_PATHS.methodologyVitals} />
+          <MethodologyLink path={`${CORE_PATHS.methodology}/vitals`} />
         </div>
       </div>
       <div className="PageVitals__SummaryCards">
