@@ -29,6 +29,7 @@ export const CORE_PATHS: Record<string, string> = {
   facilitiesExplore: "/facilities/explore",
   facilitiesProjections: "/facilities/projections",
   methodology: "/methodology/:dashboard",
+  methodologyVitals: "/methodology/vitals",
 };
 
 const pathnameToView: Record<string, string> = {
