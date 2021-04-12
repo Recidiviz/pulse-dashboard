@@ -73,7 +73,7 @@ const PageVitals: React.FC = () => {
   if (isLoading) {
     return (
       <PageTemplate>
-        <Loading />;
+        <Loading />
       </PageTemplate>
     );
   }
