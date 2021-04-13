@@ -28,8 +28,6 @@ const MethodologyLink: React.FC<{ path: string }> = ({ path }) => {
       <Icon
         className="MethodologyLink__icon"
         kind={IconSVG.Open}
-        width={12}
-        height={12}
         fill={styles.signalLinks}
       />
       Methodology
