@@ -41,17 +41,25 @@ const CoreSectionSelector: React.FC<propTypes> = ({ menu }) => {
   // TODO(#919): Return keyboard control to section selector
   return (
     <Dropdown
-      className="recidiviz-dropdown-menu-text"
+      className="CoreSectionSelector"
       isOpen={dropdownOpen}
       toggle={toggle}
     >
-      <DropdownToggle className="dropdown-toggle" tag="span">
+      <DropdownToggle
+        className="CoreSectionSelector__toggle dropdown-toggle"
+        tag="span"
+      >
         {selectedItem.label}
       </DropdownToggle>
-      <DropdownMenu cssModule={{ transform: "translate3d(0px, 24px, 0px)" }}>
+      <DropdownMenu
+        className="CoreSectionSelector__menu"
+        cssModule={{ transform: "translate3d(0px, 24px, 0px)" }}
+      >
         {filteredMenu.map(({ label, link }) => (
           <Link key={label} to={link}>
-            <DropdownItem tag="button">{label}</DropdownItem>
+            <DropdownItem className="CoreSectionSelector__item" tag="button">
+              {label}
+            </DropdownItem>
           </Link>
         ))}
       </DropdownMenu>

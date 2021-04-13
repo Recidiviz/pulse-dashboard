@@ -37,6 +37,7 @@ const StateSelector = ({ onChange }) => {
 
   return (
     <Select
+      className="StateSelector"
       defaultValue={defaultValue}
       onChange={onChange}
       options={availableStatesOptions}

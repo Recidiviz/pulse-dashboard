@@ -1,4 +1,4 @@
-@import "../assets/styles/spec/settings/index";
+@import "./CoreConstants.scss";
 
 .CoreLayout {
   &__header {
@@ -11,6 +11,6 @@
   }
 
   .Footer {
-    background-color: $core-background;
+    background-color: $marble-3;
   }
 }

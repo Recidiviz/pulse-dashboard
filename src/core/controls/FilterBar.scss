@@ -1,8 +1,7 @@
-@import "../../assets/styles/spec/settings/index";
 @import "../CoreConstants";
 
 .FilterBar {
-  background: $core-background;
+  background: $marble-3;
   display: flex;
   justify-content: center;
   padding: 1rem 0 0.5rem;
@@ -22,12 +21,11 @@
       padding-right: 1.5rem;
 
       &__title {
-        white-space: nowrap;
         color: $slate-80;
-        font-size: 0.8rem;
-        line-height: 1rem;
-        letter-spacing: 0.01em;
+        font: $font-ui-sans-14;
+        letter-spacing: -0.01em;
         padding-right: 0.5rem;
+        white-space: nowrap;
       }
     }
   }
