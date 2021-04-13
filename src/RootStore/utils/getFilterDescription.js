@@ -1,12 +1,19 @@
 import pipe from "lodash/fp/pipe";
 import find from "lodash/fp/find";
 import get from "lodash/fp/get";
-import { humanReadableTitleCase } from "../../utils/labels";
+import { humanReadableTitleCase } from "../../utils/formatStrings";
 import {
   SUPERVISION_LEVELS,
   ADMISSION_TYPES,
 } from "../TenantStore/filterOptions";
 import { translate } from "../../utils/i18nSettings";
+
+const getLabelsString = (nestedFilterOptions, flattenedOptions) =>
+  nestedFilterOptions
+    .map((option) => {
+      return pipe(find({ value: option }), get("label"))(flattenedOptions);
+    })
+    .join(", ");
 
 function formatMetricPeriodMonthsFilter(metricPeriodMonths) {
   switch (metricPeriodMonths) {
@@ -54,13 +61,6 @@ const formatAdmissionType = (admissionTypes) => {
         ADMISSION_TYPES.flattenedOptions
       )}`;
 };
-
-const getLabelsString = (nestedFilterOptions, flattenedOptions) =>
-  nestedFilterOptions
-    .map((option) => {
-      return pipe(find({ value: option }), get("label"))(flattenedOptions);
-    })
-    .join(", ");
 
 function getFilters(toggleStates) {
   const filters = [];

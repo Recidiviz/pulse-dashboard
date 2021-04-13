@@ -1,8 +1,7 @@
-@import "../assets/styles/spec/settings/index";
 @import "./CoreConstants";
 
 .PageTemplate {
-  background: $core-background;
+  background: $marble-3;
   display: flex;
   flex-flow: column;
 
@@ -11,7 +10,7 @@
     padding-right: 4rem;
   }
 
-  @media screen and (max-width: $core-breakpoint-md) {
+  @media screen and (max-width: $core-breakpoint-sm) {
     padding-left: 3rem;
     padding-right: 3rem;
   }

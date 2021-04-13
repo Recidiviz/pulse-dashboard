@@ -23,22 +23,16 @@ import PopulationSummaryMetrics from "../PopulationSummaryMetrics/TempPopulation
 import useChartData from "../hooks/useChartData";
 import {
   // PopulationProjectionSummaryRecords,
-  PopulationProjectionTimeseriesRecord,
-  RawApiData,
+  PopulationProjectionTimeSeriesRecord,
 } from "../models/types";
 // import { populationProjectionSummary } from "../models/PopulationProjectionSummaryMetric";
-import PopulationTimeseriesChart from "../PopulationTimeseriesChart";
-import { populationProjectionTimeseries } from "../models/PopulationProjectionTimeseriesMetric";
+import PopulationTimeSeriesChart from "../PopulationTimeSeriesChart";
+import { populationProjectionTimeSeries } from "../models/PopulationProjectionTimeSeriesMetric";
 import PopulationFilterBar from "../PopulationFilterBar";
 import filterOptions from "../utils/filterOptions";
 import { getViewFromPathname } from "../views";
 import { useRootStore } from "../../components/StoreProvider";
-
-type ChartDataType = {
-  isLoading: boolean;
-  isError: boolean;
-  apiData: RawApiData;
-};
+import { ChartDataType } from "../types/charts";
 
 const PageProjections: React.FC = () => {
   const { pathname } = useLocation();
@@ -50,7 +44,15 @@ const PageProjections: React.FC = () => {
 
   if (isLoading) {
     return (
-      <PageTemplate>
+      <PageTemplate
+        filters={
+          <PopulationFilterBar
+            view={getViewFromPathname(pathname)}
+            // @ts-ignore
+            filterOptions={filterOptions[currentTenantId]}
+          />
+        }
+      >
         <PopulationSummaryMetrics isLoading={isLoading} isError={isError} />
       </PageTemplate>
     );
@@ -62,7 +64,7 @@ const PageProjections: React.FC = () => {
   //   apiData.population_projection_summaries.data
   // );
 
-  const projectionTimeseries: PopulationProjectionTimeseriesRecord[] = populationProjectionTimeseries(
+  const projectionTimeSeries: PopulationProjectionTimeSeriesRecord[] = populationProjectionTimeSeries(
     apiData.population_projection_timeseries.data
   );
 
@@ -78,9 +80,9 @@ const PageProjections: React.FC = () => {
     >
       <PopulationSummaryMetrics
         isError={isError}
-        projectionSummaries={projectionTimeseries}
+        projectionSummaries={projectionTimeSeries}
       />
-      <PopulationTimeseriesChart data={projectionTimeseries} />
+      <PopulationTimeSeriesChart data={projectionTimeSeries} />
     </PageTemplate>
   );
 };

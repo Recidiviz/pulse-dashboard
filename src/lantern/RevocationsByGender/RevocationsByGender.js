@@ -24,7 +24,7 @@ import RevocationsByDimension from "../RevocationsByDimension";
 import HorizontalBarChartWithLabels from "../BarCharts/HorizontalBarChartWithLabels";
 import createGenerateChartData from "./createGenerateChartData";
 import { useRootStore } from "../../components/StoreProvider";
-import { genderValueToLabel } from "../../utils/labels";
+import { genderValueToLabel } from "../../utils/formatStrings";
 
 const DEFAULT_MODE = "MALE";
 

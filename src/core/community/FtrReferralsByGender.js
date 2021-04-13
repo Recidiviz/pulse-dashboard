@@ -43,7 +43,7 @@ import { tooltipForCountChart, tooltipForRateChart } from "../utils/tooltips";
 import {
   genderValueToHumanReadable,
   genderValueToLabel,
-} from "../../utils/labels";
+} from "../../utils/formatStrings";
 import { metricTypePropType } from "../utils/propTypes";
 import { METRIC_TYPES } from "../utils/constants";
 

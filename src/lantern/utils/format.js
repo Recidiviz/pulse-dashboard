@@ -18,7 +18,7 @@
 import {
   getTrailingLabelFromMetricPeriodMonthsFilter,
   getPeriodLabelFromMetricPeriodMonthsFilter,
-} from "../../utils/labels";
+} from "../../utils/formatStrings";
 import {
   formatSelectOptionValue,
   excludeOption,

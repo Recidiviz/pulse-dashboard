@@ -1,0 +1,257 @@
+// Recidiviz - a data platform for criminal justice reform
+// Copyright (C) 2021 Recidiviz, Inc.
+//
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <https://www.gnu.org/licenses/>.
+// =============================================================================
+@import "../CoreConstants.scss";
+
+$border-styles: 1px solid $slate-20;
+
+/* Enable scrollbar on chrome for tables in tablet sizes */
+::-webkit-scrollbar {
+  @media screen and (max-width: $core-breakpoint-sm) {
+    -webkit-appearance: none;
+    height: 5px;
+    border-radius: 8px;
+  }
+}
+::-webkit-scrollbar-thumb {
+  @media screen and (max-width: $core-breakpoint-sm) {
+    border-radius: 8px;
+    background-color: $slate-20;
+    -webkit-box-shadow: 0 0 0.1rem $box-shadow-color-30;
+  }
+}
+
+@mixin sticky-scroll-column {
+  @media screen and (max-width: $core-breakpoint-sm) {
+    position: sticky !important;
+    background-color: $white;
+    left: 0;
+    top: 0;
+    z-index: 1;
+  }
+}
+
+.VitalsSummaryTable {
+  background: $white;
+  border-radius: 8px;
+  letter-spacing: -0.01em;
+  overflow-x: auto;
+  overflow-y: hidden;
+  width: 100%;
+
+  &__table {
+    background: $white;
+    box-shadow: $inset-shadow-30;
+    width: 100%;
+    text-align: center;
+    line-height: 150%;
+    font-style: normal;
+    letter-spacing: -0.01em;
+    color: black;
+    @media screen and (max-width: $core-breakpoint-sm) {
+      border-collapse: separate;
+      border-spacing: 0;
+    }
+  }
+
+  &__table-head {
+    /* Top header row */
+    & > :first-child {
+      color: $slate-80;
+      font: $font-ui-sans-16;
+
+      & > th {
+        padding-top: 2rem;
+        font-weight: 500;
+      }
+
+      & > :first-child {
+        @include sticky-scroll-column;
+        border-right: $border-styles;
+      }
+
+      & > :nth-child(2) {
+        border-right: $border-styles;
+      }
+    }
+
+    /* Sortable header row */
+    & > :last-child {
+      color: $pine-3;
+      font: $font-ui-sans-14;
+
+      /* All headers except Entity */
+      & > th:not(:first-child) {
+        padding: 2rem 0rem 2rem 1rem;
+        font-weight: 500;
+        width: 175px;
+
+        > div.VitalsSummaryTable__sortable-header {
+          @media screen and (max-width: $core-breakpoint-md) {
+            width: 113px;
+          }
+        }
+      }
+
+      /* Entity Header */
+      & > th#entity {
+        @include sticky-scroll-column;
+        border-right: $border-styles;
+        font-weight: 500;
+        text-align: left;
+        padding: 1.25rem 0.5rem 1.25rem 2.5rem;
+        width: 200px;
+
+        > div.VitalsSummaryTable__sortable-header {
+          @media screen and (max-width: $core-breakpoint-md) {
+            width: 140px;
+          }
+        }
+      }
+
+      /* Performance by Metric Headers */
+      & > th:nth-child(n + 5) {
+        padding: 2rem 2rem 2rem 3rem;
+        @media screen and (max-width: $core-breakpoint-md) {
+          padding: 1rem;
+        }
+      }
+
+      /* 28D Change Header */
+      & > th#overall28Day {
+        border-right: $border-styles;
+      }
+    }
+  }
+
+  &__row--value {
+    border-top: $border-styles;
+    color: $pine-3;
+    font: $font-ui-sans-16;
+
+    /* All cells except entity */
+    td:not(:first-child) {
+      font-weight: 500;
+      padding: 1.25rem 0 1.25rem 0;
+    }
+
+    /* Performance by metric cells */
+    :nth-child(n + 5) {
+      font: $font-ui-sans-14;
+      color: $pine-3;
+    }
+
+    /* 28D Change Cells */
+    :nth-child(4) {
+      border-right: $border-styles;
+    }
+  }
+
+  &__cell {
+    /* Entity cells */
+    &--entity {
+      @include sticky-scroll-column;
+      border-right: $border-styles;
+      padding: 1.25rem 0.5rem 1.25rem 2.5rem;
+      text-align: left;
+    }
+  }
+
+  /* Entity links */
+  &__link {
+    color: $pine-3;
+    &:hover {
+      text-decoration-line: underline;
+      color: $signal-links;
+      cursor: pointer;
+    }
+  }
+
+  /* Performance by metric bubbles */
+  &__bubble {
+    display: inline-block;
+    border: 1px solid transparent;
+    width: 4.5rem;
+    height: 2rem;
+    border-radius: 21px;
+    padding: 3px 0;
+
+    &--70 {
+      border-color: $signal-error;
+    }
+
+    &--80 {
+      border-color: $signal-error-lite;
+    }
+
+    &--90 {
+      border-color: $signal-links-lite;
+    }
+
+    &--100 {
+      border-color: $signal-links;
+    }
+  }
+
+  /* All sortable headers */
+  &__sortable-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &--entity {
+      justify-content: start;
+    }
+  }
+
+  &__change {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &__sort {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 0 0.5rem;
+
+    &__button {
+      width: 0;
+      height: 0;
+      border-style: solid;
+      margin: 1px;
+      &--up {
+        border-width: 0 5px 5px 5px;
+        border-color: transparent transparent $slate-30 transparent;
+
+        &.VitalsSummaryTable__sort__button--active {
+          border-color: transparent transparent $signal-links transparent;
+        }
+      }
+
+      &--down {
+        border-width: 5px 5px 0 5px;
+        border-color: rgba(53, 83, 98, 0.3) transparent transparent transparent;
+
+        &.VitalsSummaryTable__sort__button--active {
+          border-color: $signal-links transparent transparent transparent;
+        }
+      }
+    }
+  }
+}

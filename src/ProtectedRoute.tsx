@@ -19,7 +19,10 @@ import { Route, useLocation } from "react-router-dom";
 import { observer } from "mobx-react-lite";
 import NotFound from "./components/NotFound";
 import { useRootStore } from "./components/StoreProvider";
-import { getPathsFromNavigation } from "./utils/navigation";
+import {
+  getPathsFromNavigation,
+  getPathWithoutParams,
+} from "./utils/navigation";
 
 import tenants from "./tenants";
 
@@ -34,11 +37,11 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
 }) => {
   const rootStore = useRootStore();
   const { pathname } = useLocation();
+
   // @ts-ignore
   const tenant = tenants[rootStore.currentTenantId];
   const allowedPaths = getPathsFromNavigation(tenant.navigation);
-
-  if (!allowedPaths.includes(pathname)) {
+  if (!allowedPaths.includes(getPathWithoutParams(pathname))) {
     return <NotFound />;
   }
   return (

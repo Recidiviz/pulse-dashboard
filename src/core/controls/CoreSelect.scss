@@ -1,17 +1,17 @@
 @import "../../assets/styles/spec/settings/index";
 @import "../CoreConstants";
 
-.Core-Select {
+.CoreSelect {
   flex-grow: 1;
   font-size: 0.8em;
   font-weight: 500;
-  color: $core-font-color;
+  color: $pine-3;
 
   &__control {
     border: 1px solid $core-border-color !important;
     box-shadow: none !important;
     border-radius: 1.25rem !important;
-    background-color: $core-background !important;
+    background-color: $marble-3 !important;
     transition: border-radius 0s !important;
     cursor: pointer !important;
 
@@ -26,7 +26,7 @@
   }
 
   &__container {
-    background-color: $core-background !important;
+    background-color: $marble-3 !important;
   }
 
   &__single-value {
@@ -34,12 +34,11 @@
   }
 
   &__menu {
-    background-color: $core-background !important;
+    background-color: $marble-3 !important;
     border: 1px solid $core-border-color;
     border-radius: 0rem 0rem 1.25rem 1.25rem !important;
     border-top: none !important;
     box-shadow: none !important;
-    color: $core-font-color;
     margin: 0 !important;
     overflow: hidden;
   }
@@ -69,7 +68,7 @@
     &:active,
     &:hover {
       background: $core-focused-color !important;
-      color: $core-font-color !important;
+      color: $pine-3 !important;
     }
   }
 
@@ -78,9 +77,12 @@
   }
 
   &__value-container {
-    white-space: nowrap;
-    text-overflow: ellipsis;
+    color: $pine-3;
+    font: $font-ui-sans-14;
+    letter-spacing: -0.01em;
     padding-left: 1rem !important;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   &__custom-indicator {

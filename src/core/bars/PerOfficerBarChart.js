@@ -52,7 +52,7 @@ import {
   toggleYAxisTicksStackedRateBasicCount,
   updateTooltipForMetricType,
 } from "../utils/tooltips";
-import { numberFromOfficerId } from "../../utils/labels";
+import { numberFromOfficerId } from "../../utils/formatStrings";
 import { metricTypePropType } from "../utils/propTypes";
 import { METRIC_TYPES } from "../utils/constants";
 
@@ -67,6 +67,7 @@ import { METRIC_TYPES } from "../utils/constants";
  * each violation type.
  */
 const prepareDataGroupedByOffice = (bars, metricType) => (data) => {
+  // eslint-disable-next-line react/destructuring-assignment
   const officerId = numberFromOfficerId(data.officer_external_id);
 
   const countsByType = reduce(

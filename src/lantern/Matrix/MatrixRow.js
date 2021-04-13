@@ -20,7 +20,7 @@ import PropTypes from "prop-types";
 import cx from "classnames";
 import { get } from "mobx";
 
-import { matrixViolationTypeToLabel } from "../../utils/labels";
+import { matrixViolationTypeToLabel } from "../../utils/formatStrings";
 import { useRootStore } from "../../components/StoreProvider";
 import { VIOLATION_TYPE, REPORTED_VIOLATIONS } from "../utils/constants";
 

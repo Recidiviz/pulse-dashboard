@@ -1,9 +1,9 @@
 // TODO(#900): Move Core SCSS constants into this file
 
 $core-breakpoint-lg: 1920px;
-$core-breakpoint-md: 1440px;
-$core-breakpoint-sm: 1024px;
-$core-breakpoint-xs: 600px;
+$core-breakpoint-md: 1366px;
+$core-breakpoint-sm: 1024px; /* iPad Pro */
+$core-breakpoint-xs: 768px; /* iPad */
 
 $core-max-view-width: 93rem;
 $core-font-color: #00413e;
@@ -19,34 +19,56 @@ $font-article-sans-32: 400 2rem/3rem Libre Franklin;
 $font-article-sans-16: 400 1rem/1.7rem Libre Franklin;
 $font-article-sans-14: 400 0.88rem/1.5rem Libre Franklin;
 
-$white: #fff;
 $box-shadow-color-30: rgba(19, 44, 82, 0.3);
 $box-shadow-color-20: rgba(19, 44, 82, 0.2);
 $inset-shadow-30: inset 0px -1px 1px $box-shadow-color-30;
-$pine-1: rgba(1, 35, 34, 1);
+
+/* System Design Colors */
+$white: #fff;
+$crimson: #bf7474;
+$crimson-dark: #a43939;
+$data-forest: #25636f;
+$data-forest-uncertainty: rgba(37, 99, 111, 0.15);
+$indigo: #4c6290;
+$marble-3: #f4f5f5;
+$marble-4: #eff1f1;
+$pine-1: rgb(1, 35, 34);
 $pine-2: #003331;
 $pine-3: #00413e;
-$slate-30-opaque: #c2cbd0;
+$signal-links: #006c67;
+$signal-links-lite: #4d9895;
+$signal-highlight: #25b894;
+$signal-tooltip: #082249;
+$signal-error: #a43939;
+$signal-error-lite: #bf7474;
 $slate-20: rgba(53, 83, 98, 0.2);
+$slate-30: rgba(53, 83, 98, 0.3);
+$slate-30-opaque: #c2cbd0;
 $slate-60: rgba(53, 83, 98, 0.6);
 $slate-80: rgba(53, 83, 98, 0.8);
 $slate-85: rgba(53, 83, 98, 0.85);
 $marble-3: #f4f5f5;
 $marble-4: #eff1f1;
-$crimson-dark: #a43939;
-$crimson: #bf7474;
-$signal-tooltip: #082249;
-$signal-links: #006c67;
 
-// Shorthand font property: font-style font-variant font-weight font-size/line-height font-family
+/* Colors missing from system design */
+$core-dropdown-color: #e9ebeb;
+$core-element-hover-color: #d2d8d8;
+$core-border-color: #d2d8d8;
+$core-focused-color: #e3e6e6;
+
+/* Font families */
 $sans-serif: Libre Franklin, sans serif;
 $serif: Libre Baskerville, serif;
-$font-ui-sans-16: 500 1rem/1.5rem $sans-serif;
+
+/* font: font-style font-variant font-weight font-size/line-height font-family */
 $font-ui-sans-14: 500 0.875rem/1.5rem $sans-serif;
+$font-ui-sans-16: 500 1rem/1.5rem $sans-serif;
+$font-ui-sans-20: 500 1.25rem/1.5rem $sans-serif;
 $font-ui-sans-24: 1.5rem/2.5rem $sans-serif;
 $font-ui-serif-34: 400 2.125rem/3rem $serif;
 
 :export {
+  crimson: $crimson;
   crimsonDark: $crimson-dark;
   pine1: $pine-1;
   pine3: $pine-3;
@@ -57,4 +79,13 @@ $font-ui-serif-34: 400 2.125rem/3rem $serif;
   slate60: $slate-60;
   fontUiSans16: $font-ui-sans-16;
   fontUiSans14: $font-ui-sans-14;
+  indigo: $indigo;
+  marble4: $marble-4;
+  pine1: $pine-1;
+  pine3: $pine-3;
+  signalLinks: $signal-links;
+  slate30Opaque: $slate-30-opaque;
+  slate60: $slate-60;
+  slate80: $slate-80;
+  white: $white;
 }

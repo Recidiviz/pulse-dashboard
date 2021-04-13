@@ -28,12 +28,12 @@ import {
   MonthOptions,
   CURRENT_YEAR,
   CURRENT_MONTH,
-} from "../PopulationTimeseriesChart/helpers";
+} from "../PopulationTimeSeriesChart/helpers";
 import { CORE_VIEWS, getViewFromPathname } from "../views";
-import { formatLargeNumber } from "../../utils/labels";
+import { formatLargeNumber } from "../../utils/formatStrings";
 import { usePopulationFiltersStore } from "../../components/StoreProvider";
 import type {
-  PopulationProjectionTimeseriesRecord,
+  PopulationProjectionTimeSeriesRecord,
   SimulationCompartment,
 } from "../models/types";
 import "./LoadingMetrics.scss";
@@ -44,7 +44,7 @@ import * as styles from "../CoreConstants.scss";
 type PropTypes = {
   isLoading?: boolean;
   isError: boolean;
-  projectionSummaries?: PopulationProjectionTimeseriesRecord[];
+  projectionSummaries?: PopulationProjectionTimeSeriesRecord[];
 };
 
 const MetricsCardComponent = styled(Card)`
@@ -61,7 +61,7 @@ const TempMetric = styled.div`
   padding: 20px 40px;
   justify-content: space-between;
   min-height: 120px;
-  width 100%;
+  width: 100%;
 `;
 
 const TempMetricTitle = styled.div`
@@ -112,8 +112,7 @@ const TempPopulationSummaryMetrics: React.FC<PropTypes> = ({
   const view = getViewFromPathname(pathname);
 
   const timePeriod: MonthOptions = parseInt(
-    filtersStore.filters.timePeriod,
-    10
+    filtersStore.filters.timePeriod
   ) as MonthOptions;
 
   let compartment: SimulationCompartment;
@@ -177,7 +176,7 @@ const TempPopulationSummaryMetrics: React.FC<PropTypes> = ({
 
   const currentData = filteredData.find(
     (d) => d.year === CURRENT_YEAR && d.month === CURRENT_MONTH
-  ) as PopulationProjectionTimeseriesRecord;
+  ) as PopulationProjectionTimeSeriesRecord;
 
   const historicalData = filteredData[0];
 

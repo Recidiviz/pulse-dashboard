@@ -21,7 +21,7 @@ import reduce from "lodash/fp/reduce";
 import {
   getStatePopulations,
   getStatePopulationsLabels,
-} from "../../utils/labels";
+} from "../../utils/formatStrings";
 import getCounts from "../utils/getCounts";
 import createPopulationMap from "../utils/createPopulationMap";
 import { translate } from "../../utils/i18nSettings";

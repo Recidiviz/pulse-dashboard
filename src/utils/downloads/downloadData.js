@@ -194,6 +194,51 @@ export function downloadHtmlElementAsImage({
   });
 }
 
+export function configureDataDownloadButton({
+  chartId,
+  chartDatasets,
+  chartLabels,
+  dataExportLabel,
+  filters,
+  convertValuesToNumbers,
+  chartTitle,
+  timeWindowDescription,
+  shouldZipDownload,
+  fixLabelsInColumns,
+  methodology,
+  getTokenSilently,
+}) {
+  return () => {
+    const filename = configureFilename(chartId, filters, shouldZipDownload);
+    const exportName = `${filename}.csv`;
+    const methodologyFile =
+      shouldZipDownload &&
+      createMethodologyFile(
+        chartId,
+        chartTitle,
+        timeWindowDescription,
+        filters,
+        methodology
+      );
+    transformChartDataToCsv(
+      chartDatasets,
+      chartLabels,
+      dataExportLabel,
+      convertValuesToNumbers,
+      fixLabelsInColumns
+    ).then((csv) => {
+      downloadData({
+        chartId,
+        shouldZipDownload,
+        csv,
+        getTokenSilently,
+        methodologyFile,
+        filename: exportName,
+      });
+    });
+  };
+}
+
 export function downloadChartAsImage({
   chartId,
   chartTitle,
@@ -246,49 +291,4 @@ export function downloadChartAsData({
     getTokenSilently,
   });
   downloadChartData();
-}
-
-export function configureDataDownloadButton({
-  chartId,
-  chartDatasets,
-  chartLabels,
-  dataExportLabel,
-  filters,
-  convertValuesToNumbers,
-  chartTitle,
-  timeWindowDescription,
-  shouldZipDownload,
-  fixLabelsInColumns,
-  methodology,
-  getTokenSilently,
-}) {
-  return () => {
-    const filename = configureFilename(chartId, filters, shouldZipDownload);
-    const exportName = `${filename}.csv`;
-    const methodologyFile =
-      shouldZipDownload &&
-      createMethodologyFile(
-        chartId,
-        chartTitle,
-        timeWindowDescription,
-        filters,
-        methodology
-      );
-    transformChartDataToCsv(
-      chartDatasets,
-      chartLabels,
-      dataExportLabel,
-      convertValuesToNumbers,
-      fixLabelsInColumns
-    ).then((csv) => {
-      downloadData({
-        chartId,
-        shouldZipDownload,
-        csv,
-        getTokenSilently,
-        methodologyFile,
-        filename: exportName,
-      });
-    });
-  };
 }

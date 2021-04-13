@@ -1,0 +1,9 @@
+@import "../controls/mixins.scss";
+
+.PopulationTimeseriesTooltip {
+  @include chart-tooltip;
+  &__Date,
+  &__Range {
+    opacity: 0.8;
+  }
+}

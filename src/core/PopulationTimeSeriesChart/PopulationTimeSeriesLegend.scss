@@ -1,0 +1,33 @@
+@import "../CoreConstants";
+
+.PopulationTimeSeriesLegend {
+  display: flex;
+
+  &__Item {
+    display: flex;
+    padding-left: 1.5rem;
+    align-items: center;
+  }
+
+  &__Icon {
+    align-items: center;
+    width: 1.5rem;
+    height: 1rem;
+    margin-right: 0.5rem;
+    display: flex;
+  }
+
+  &__Line {
+    stroke: $data-forest;
+    stroke-width: 2;
+    width: 100%;
+  }
+
+  .ProjectedLegend {
+    background: $data-forest-uncertainty;
+
+    .PopulationTimeSeriesLegend__Line {
+      stroke-dasharray: 3.5, 4.5, 8, 4.5, 3.5;
+    }
+  }
+}

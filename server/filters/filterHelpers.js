@@ -24,44 +24,6 @@ const {
 } = require("./subsetFileHelpers");
 
 /**
- * Transform a filter's value to include all values in the subset manifest for each filter key.
- * Only returns filter dimensions that are in the subset manifest for FILES_WITH_SUBSETS.
- *
- * The level_1_supervision_location filter dimension is added to the filters for most files
- * based on the logic in getFiltersByMetricName if restrictedDistrict filter key exists.
- *
- * @param {Object} filters - Filter key/value pairs, Ex: { violation_type: "all", charge_category: "general" }
- * The values may also be indices referring to the set of values from the subset manifest, for example: { violation_type: 0 }.
- *
- * @param {string} metricName - Name of the metric file
- *
- * @returns {Object} - An object with each filter key and all possible values from the subset dimension
- * Example: { violation_type: ["felony", "law", "misdemeanor"], charge_category: ["sex_offense"], level_1_supervision_location: ["03"] }
- */
-function createSubsetFilters({ filters, metricName }) {
-  const subsetDimensionKeys = getSubsetDimensionKeys();
-  const { restrictedDistrict } = filters;
-  const subsetFilters = {};
-
-  Object.keys(filters).forEach((filterKey) => {
-    const formattedKey = snakeCase(filterKey);
-    if (subsetDimensionKeys.includes(formattedKey)) {
-      subsetFilters[formattedKey] = getSubsetDimensionValues(
-        formattedKey,
-        filters[filterKey]
-      );
-    }
-  });
-
-  const transformedFilters = transformRestrictedDistrictFilter(
-    restrictedDistrict,
-    subsetFilters
-  );
-
-  return getFiltersByMetricName(metricName, transformedFilters);
-}
-
-/**
  * @param  {Object} restrictedDisrict - Object with restrictedDistrict key and filter value
  *
  * @param  {Object} subsetFilters - Object containing subsetFilters
@@ -137,6 +99,44 @@ const getFiltersByMetricName = (metricName, filters) => {
       return filters;
   }
 };
+
+/**
+ * Transform a filter's value to include all values in the subset manifest for each filter key.
+ * Only returns filter dimensions that are in the subset manifest for FILES_WITH_SUBSETS.
+ *
+ * The level_1_supervision_location filter dimension is added to the filters for most files
+ * based on the logic in getFiltersByMetricName if restrictedDistrict filter key exists.
+ *
+ * @param {Object} filters - Filter key/value pairs, Ex: { violation_type: "all", charge_category: "general" }
+ * The values may also be indices referring to the set of values from the subset manifest, for example: { violation_type: 0 }.
+ *
+ * @param {string} metricName - Name of the metric file
+ *
+ * @returns {Object} - An object with each filter key and all possible values from the subset dimension
+ * Example: { violation_type: ["felony", "law", "misdemeanor"], charge_category: ["sex_offense"], level_1_supervision_location: ["03"] }
+ */
+function createSubsetFilters({ filters, metricName }) {
+  const subsetDimensionKeys = getSubsetDimensionKeys();
+  const { restrictedDistrict } = filters;
+  const subsetFilters = {};
+
+  Object.keys(filters).forEach((filterKey) => {
+    const formattedKey = snakeCase(filterKey);
+    if (subsetDimensionKeys.includes(formattedKey)) {
+      subsetFilters[formattedKey] = getSubsetDimensionValues(
+        formattedKey,
+        filters[filterKey]
+      );
+    }
+  });
+
+  const transformedFilters = transformRestrictedDistrictFilter(
+    restrictedDistrict,
+    subsetFilters
+  );
+
+  return getFiltersByMetricName(metricName, transformedFilters);
+}
 
 module.exports = {
   getFilterFnByMetricName,
