@@ -36,6 +36,7 @@ import { vitalsTimeSeries } from "../models/VitalsTimeSeriesMetric";
 import { vitalsSummary } from "../models/VitalsSummaryMetric";
 import VitalsSummaryBreadcrumbs from "../VitalsSummaryBreadcrumbs";
 import { convertSlugToId } from "../../utils/navigation";
+import { formatISODateString } from "../../utils/formatStrings";
 import {
   getSummaryCards,
   getSummaryDetail,
@@ -101,6 +102,7 @@ const PageVitals: React.FC = () => {
     selectedCardId,
     currentEntityId
   );
+  const lastUpdatedOn = selectedTimeSeries[selectedTimeSeries.length - 1].date;
 
   return (
     <PageTemplate>
@@ -110,6 +112,9 @@ const PageVitals: React.FC = () => {
           entity={currentEntitySummary}
         />
         <div className="PageVitals__header--right">
+          <div className="PageVitals__last-updated">
+            Last updated on {formatISODateString(lastUpdatedOn)}
+          </div>
           <MethodologyLink path={CORE_PATHS.methodologyVitals} />
         </div>
       </div>
