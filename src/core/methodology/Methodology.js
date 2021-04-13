@@ -27,7 +27,7 @@ import PageTemplate from "../PageTemplate";
 const Methodology = () => (
   <PageTemplate>
     <div className="main-content Methodology p-0">
-      <Container className="col-md-10 col-12 ">
+      <Container className="col-md-9 col-12">
         <h1 className="Methodology__main-title">Projections</h1>
         <h2 className="Methodology__main-description">
           The case-level population projection model is designed to simulate the

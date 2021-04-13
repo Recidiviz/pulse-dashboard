@@ -212,18 +212,19 @@ const ModelInfrastructureBlock = () => {
         into the future and to backcast historical admissions.
       </p>
       <h4 className="col-12 Methodology__sub-block--title">
-        Confidence Intervals
+        Prediction Intervals
       </h4>
       <p>
-        The model predictions are accompanied by the 80% confidence intervals to
-        indicate the uncertainty of the population estimate. Statistically, the
-        true observed population should fall within the confidence interval
-        boundary for 80% of the observations. The model uses the confidence
-        interval output from the forecast admissions and runs the max, middle,
-        and min intervals through the model in order to get the three projection
-        values. There is more room for improvement with this method because it
-        is overcounting the total uncertainty when adding multiple intervals
-        together.
+        To communicate the confidence of the projections, the Spark model
+        produces prediction intervals that bound the forecast. These prediction
+        intervals are constructed by resampling historical one-period model
+        errors. The model estimates the distribution of model errors at time
+        step t by summing t draws from the historical one-period model errors
+        multiple times with replacement. From this distribution of errors, the
+        model calculates the width of the prediction by subtracting the 2.5th
+        percentile model error from the 97.5th percentile model error. Finally,
+        the model centers this 95% prediction interval width on the projection,
+        thereby bounding the forecast.
       </p>
       <h4 className="col-12 Methodology__sub-block--title">
         County Jails Calculation
