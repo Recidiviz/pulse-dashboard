@@ -183,7 +183,6 @@ const PopulationTimeSeriesChart: React.FC<PropTypes> = ({ data }) => {
               label: "Total Operational Capacity (includes CAPP): 8,008",
               align: "left",
               lineType: null,
-              // @ts-ignore
               color: styles.crimsonDark,
               wrap: 500,
             },
