@@ -18,11 +18,16 @@
 import { COLORS } from "../../assets/scripts/constants/colors";
 
 export const CHART_COLORS = [
+  COLORS["lantern-bright-orange"],
+  COLORS["lantern-sky-blue"],
   COLORS["lantern-medium-blue"],
-  COLORS["lantern-orange"],
+  COLORS["lantern-pink"],
+  COLORS["lantern-green"],
 ];
 
 export const CHART_COLORS_STACKED = [
-  COLORS["lantern-medium-blue"],
-  COLORS["lantern-sky-blue"],
+  COLORS["lantern-bright-orange"],
+  COLORS["lantern-yellow"],
+  COLORS["lantern-ocean-blue"],
+  COLORS["lantern-green"],
 ];

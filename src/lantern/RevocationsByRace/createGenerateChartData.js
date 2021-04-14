@@ -25,10 +25,7 @@ import {
 import getCounts from "../utils/getCounts";
 import createPopulationMap from "../utils/createPopulationMap";
 import { translate } from "../../utils/i18nSettings";
-import {
-  COLORS_LANTERN_SET,
-  COLORS_RACE_CHART_SET,
-} from "../../assets/scripts/constants/colors";
+import { CHART_COLORS, CHART_COLORS_STACKED } from "./constants";
 import { applyStatisticallySignificantShadingToDataset } from "../utils/significantStatistics";
 
 export const generateDatasets = (dataPoints, denominators, colorsSet) => {
@@ -65,7 +62,7 @@ const createGenerateStackedChartData = ({
   const datasets = generateDatasets(
     dataPoints,
     denominators,
-    COLORS_RACE_CHART_SET
+    CHART_COLORS_STACKED
   );
 
   const data = {
@@ -98,11 +95,7 @@ const createGenerateChartDataByMode = (
       )
   )(filteredData);
 
-  const datasets = generateDatasets(
-    dataPoints,
-    denominators,
-    COLORS_LANTERN_SET
-  );
+  const datasets = generateDatasets(dataPoints, denominators, CHART_COLORS);
   const datasetIndex = datasets.findIndex(
     (d) => d.label === translate("raceLabelMap")[mode]
   );

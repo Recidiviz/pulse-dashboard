@@ -31,9 +31,11 @@ const DEFAULT_MODE = "MALE";
 const RevocationsByGender = observer(
   ({ containerHeight, timeDescription }, ref) => {
     const { dataStore } = useRootStore();
+    const { currentTenantId } = useRootStore();
     const { revocationsChartStore } = dataStore;
     const CHART_TITLE = translate("revocationsByGenderChartTitle");
     const CHART_ID = translate("revocationsByGenderChartId");
+    const stacked = currentTenantId === "US_PA";
 
     return (
       <RevocationsByDimension
@@ -47,13 +49,17 @@ const RevocationsByGender = observer(
             data={data}
             numerators={numerators}
             denominators={denominators}
+            stacked={stacked}
           />
         )}
-        generateChartData={createGenerateChartData(revocationsChartStore)}
+        generateChartData={createGenerateChartData(
+          revocationsChartStore,
+          stacked
+        )}
         chartTitle={CHART_TITLE}
         metricTitle={(mode) => `${CHART_TITLE}: ${mode}`}
         timeDescription={timeDescription}
-        modes={Object.keys(genderValueToLabel)}
+        modes={stacked ? [] : Object.keys(genderValueToLabel)}
         defaultMode={DEFAULT_MODE}
         dataExportLabel="Gender"
       />

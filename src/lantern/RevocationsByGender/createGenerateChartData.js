@@ -18,7 +18,7 @@
 import pipe from "lodash/fp/pipe";
 import reduce from "lodash/fp/reduce";
 
-import { CHART_COLORS } from "./constants";
+import { CHART_COLORS, CHART_COLORS_STACKED } from "./constants";
 import { applyStatisticallySignificantShadingToDataset } from "../utils/significantStatistics";
 
 import {
@@ -29,18 +29,54 @@ import {
 import getCounts from "../utils/getCounts";
 import createPopulationMap from "../utils/createPopulationMap";
 
-export const generateDatasets = (dataPoints, denominators) => {
+export const generateDatasets = (dataPoints, denominators, chartColors) => {
   return Object.values(genderValueToLabel).map((genderLabel, index) => ({
     label: genderLabel,
     backgroundColor: applyStatisticallySignificantShadingToDataset(
-      CHART_COLORS[index],
+      chartColors[index],
       denominators
     ),
     data: dataPoints[index],
   }));
 };
 
-const createGenerateChartData = ({ filteredData, statePopulationData }) => (
+const createGenerateStackedChartData = ({
+  filteredData,
+  statePopulationData,
+}) => {
+  const genders = Object.keys(genderValueToLabel);
+  const { dataPoints, numerators, denominators } = pipe(
+    reduce(createPopulationMap("gender"), {}),
+    (data) =>
+      getCounts(
+        data,
+        getStatePopulations(),
+        genders,
+        statePopulationData,
+        "gender"
+      )
+  )(filteredData);
+
+  const datasets = generateDatasets(
+    dataPoints,
+    denominators,
+    CHART_COLORS_STACKED
+  );
+
+  const data = {
+    labels: getStatePopulationsLabels(),
+    datasets,
+  };
+
+  return {
+    data,
+    numerators,
+    denominators,
+  };
+};
+
+const createGenerateChartDataByMode = (
+  { filteredData, statePopulationData },
   mode
 ) => {
   const genders = Object.keys(genderValueToLabel);
@@ -56,7 +92,7 @@ const createGenerateChartData = ({ filteredData, statePopulationData }) => (
       )
   )(filteredData);
 
-  const datasets = generateDatasets(dataPoints, denominators);
+  const datasets = generateDatasets(dataPoints, denominators, CHART_COLORS);
   const datasetIndex = datasets.findIndex(
     (d) => d.label === genderValueToLabel[mode]
   );
@@ -70,6 +106,12 @@ const createGenerateChartData = ({ filteredData, statePopulationData }) => (
     numerators: numerators[datasetIndex],
     denominators: denominators[datasetIndex],
   };
+};
+
+const createGenerateChartData = (chartData, stacked) => (mode) => {
+  return stacked
+    ? createGenerateStackedChartData(chartData)
+    : createGenerateChartDataByMode(chartData, mode);
 };
 
 export default createGenerateChartData;

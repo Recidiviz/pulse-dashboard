@@ -18,10 +18,7 @@
 import { setTranslateLocale } from "../../../utils/i18nSettings";
 import * as lanternTenant from "../../../RootStore/TenantStore/lanternTenants";
 import { generateDatasets } from "../createGenerateChartData";
-import {
-  COLORS_LANTERN_SET,
-  COLORS_RACE_CHART_SET,
-} from "../../../assets/scripts/constants/colors";
+import { CHART_COLORS, CHART_COLORS_STACKED } from "../constants";
 
 describe("generateDatasets", () => {
   let denominators;
@@ -53,7 +50,7 @@ describe("generateDatasets", () => {
       const result = generateDatasets(
         dataPoints,
         denominators,
-        COLORS_LANTERN_SET
+        CHART_COLORS
       ).map((d) => {
         const { data, label } = d;
         return { data, label };
@@ -95,7 +92,7 @@ describe("generateDatasets", () => {
       const result = generateDatasets(
         dataPoints,
         denominators,
-        COLORS_RACE_CHART_SET
+        CHART_COLORS_STACKED
       ).map((d) => {
         const { data, label } = d;
         return { data, label };

@@ -278,13 +278,19 @@ const COLORS = {
   "blue-standard-2": "#3F4D62",
   "blue-standard-light": "rgba(63, 77, 98, .7)",
   "lantern-orange": "#F07132",
+  "lantern-bright-orange": "#F26825",
   "lantern-light-blue": "#03A9F4",
   "lantern-eggplant": "#5C384D",
   "lantern-burnt-orange": "#8B2D21",
   "lantern-blue": "#182B5E",
   "lantern-dark-blue": "#002C42",
+  "lantern-sky-blue": "#02BFF0",
+  "lantern-ocean-blue": "#1588C6",
   "lantern-soft-blue": "#88C0E6",
   "lantern-medium-blue": "#037FC2",
+  "lantern-yellow": "#F8C14F",
+  "lantern-green": "#049E73",
+  "lantern-pink": "#CC79A7",
 };
 
 const GREYS = {
@@ -333,16 +339,6 @@ const COLORS_FIVE_VALUES = COLOR_ROTATION.slice(0, 5);
 
 const COLORS_SEVEN_VALUES = COLOR_ROTATION;
 
-const COLORS_LANTERN_SET = [
-  "#F26825",
-  "#02BFF0",
-  "#037FC2",
-  "#CC79A7",
-  "#049E73",
-];
-
-const COLORS_RACE_CHART_SET = ["#F26825", "#F8C14F", "#1588C6", "#049E73"];
-
 export {
   COLORS,
   GREYS,
@@ -352,7 +348,5 @@ export {
   COLORS_THREE_VALUES,
   COLORS_FIVE_VALUES,
   COLORS_SEVEN_VALUES,
-  COLORS_LANTERN_SET,
   CORE_COLORS,
-  COLORS_RACE_CHART_SET,
 };
