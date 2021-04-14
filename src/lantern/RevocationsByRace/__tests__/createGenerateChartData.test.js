@@ -18,6 +18,10 @@
 import { setTranslateLocale } from "../../../utils/i18nSettings";
 import * as lanternTenant from "../../../RootStore/TenantStore/lanternTenants";
 import { generateDatasets } from "../createGenerateChartData";
+import {
+  COLORS_LANTERN_SET,
+  COLORS_RACE_CHART_SET,
+} from "../../../assets/scripts/constants/colors";
 
 describe("generateDatasets", () => {
   let denominators;
@@ -46,7 +50,11 @@ describe("generateDatasets", () => {
     });
 
     it("generates the dataset data and label correctly", () => {
-      const result = generateDatasets(dataPoints, denominators).map((d) => {
+      const result = generateDatasets(
+        dataPoints,
+        denominators,
+        COLORS_LANTERN_SET
+      ).map((d) => {
         const { data, label } = d;
         return { data, label };
       });
@@ -84,7 +92,11 @@ describe("generateDatasets", () => {
     });
 
     it("generates the dataset data and label correctly", () => {
-      const result = generateDatasets(dataPoints, denominators).map((d) => {
+      const result = generateDatasets(
+        dataPoints,
+        denominators,
+        COLORS_RACE_CHART_SET
+      ).map((d) => {
         const { data, label } = d;
         return { data, label };
       });
@@ -104,11 +116,7 @@ describe("generateDatasets", () => {
         },
         {
           data: ["70", "60", "50", "40", "30", "20"],
-          label: "Asian",
-        },
-        {
-          data: ["60", "50", "40", "30", "20", "10"],
-          label: "Native American",
+          label: "Other",
         },
       ];
 

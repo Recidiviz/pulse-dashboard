@@ -22,7 +22,7 @@ import { observer } from "mobx-react-lite";
 import RevocationsByDimension from "../RevocationsByDimension";
 import createGenerateChartData from "./createGenerateChartData";
 import { translate } from "../../utils/i18nSettings";
-import { useDataStore } from "../../components/StoreProvider";
+import { useDataStore, useRootStore } from "../../components/StoreProvider";
 import HorizontalBarChartWithLabels from "../BarCharts/HorizontalBarChartWithLabels";
 
 const DEFAULT_MODE = "WHITE";
@@ -30,9 +30,12 @@ const DEFAULT_MODE = "WHITE";
 const RevocationsByRace = observer(
   ({ containerHeight, timeDescription }, ref) => {
     const dataStore = useDataStore();
+    const { currentTenantId } = useRootStore();
+
     const { revocationsChartStore } = dataStore;
     const CHART_TITLE = translate("revocationsByRaceChartTitle");
     const CHART_ID = translate("revocationsByRaceChartId");
+    const stacked = currentTenantId === "US_PA";
 
     return (
       <RevocationsByDimension
@@ -46,15 +49,19 @@ const RevocationsByRace = observer(
             data={data}
             numerators={numerators}
             denominators={denominators}
+            stacked={stacked}
           />
         )}
-        generateChartData={createGenerateChartData(revocationsChartStore)}
+        generateChartData={createGenerateChartData(
+          revocationsChartStore,
+          stacked
+        )}
         chartTitle={CHART_TITLE}
         metricTitle={(mode) =>
           `${CHART_TITLE}: ${translate("raceLabelMap")[mode]}`
         }
         timeDescription={timeDescription}
-        modes={Object.keys(translate("raceLabelMap"))}
+        modes={stacked ? [] : Object.keys(translate("raceLabelMap"))}
         defaultMode={DEFAULT_MODE}
         dataExportLabel="Race"
       />

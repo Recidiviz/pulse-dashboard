@@ -25,23 +25,63 @@ import {
 import getCounts from "../utils/getCounts";
 import createPopulationMap from "../utils/createPopulationMap";
 import { translate } from "../../utils/i18nSettings";
-import { COLORS_LANTERN_SET } from "../../assets/scripts/constants/colors";
+import {
+  COLORS_LANTERN_SET,
+  COLORS_RACE_CHART_SET,
+} from "../../assets/scripts/constants/colors";
 import { applyStatisticallySignificantShadingToDataset } from "../utils/significantStatistics";
 
-export const generateDatasets = (dataPoints, denominators) => {
+export const generateDatasets = (dataPoints, denominators, colorsSet) => {
   const raceLabelMap = translate("raceLabelMap");
   const raceLabels = Object.values(raceLabelMap);
   return raceLabels.map((raceLabel, index) => ({
     label: raceLabel,
     backgroundColor: applyStatisticallySignificantShadingToDataset(
-      COLORS_LANTERN_SET[index],
+      colorsSet[index],
       denominators
     ),
     data: dataPoints[index],
   }));
 };
 
-const createGenerateChartData = ({ filteredData, statePopulationData }) => (
+const createGenerateStackedChartData = ({
+  filteredData,
+  statePopulationData,
+}) => {
+  const raceLabelMap = translate("raceLabelMap");
+  const races = Object.keys(raceLabelMap);
+  const { dataPoints, numerators, denominators } = pipe(
+    reduce(createPopulationMap("race"), {}),
+    (data) =>
+      getCounts(
+        data,
+        getStatePopulations(),
+        races,
+        statePopulationData,
+        "race_or_ethnicity"
+      )
+  )(filteredData);
+
+  const datasets = generateDatasets(
+    dataPoints,
+    denominators,
+    COLORS_RACE_CHART_SET
+  );
+
+  const data = {
+    labels: getStatePopulationsLabels(),
+    datasets,
+  };
+
+  return {
+    data,
+    numerators,
+    denominators,
+  };
+};
+
+const createGenerateChartDataByMode = (
+  { filteredData, statePopulationData },
   mode
 ) => {
   const raceLabelMap = translate("raceLabelMap");
@@ -58,7 +98,11 @@ const createGenerateChartData = ({ filteredData, statePopulationData }) => (
       )
   )(filteredData);
 
-  const datasets = generateDatasets(dataPoints, denominators);
+  const datasets = generateDatasets(
+    dataPoints,
+    denominators,
+    COLORS_LANTERN_SET
+  );
   const datasetIndex = datasets.findIndex(
     (d) => d.label === translate("raceLabelMap")[mode]
   );
@@ -72,6 +116,12 @@ const createGenerateChartData = ({ filteredData, statePopulationData }) => (
     numerators: numerators[datasetIndex],
     denominators: denominators[datasetIndex],
   };
+};
+
+const createGenerateChartData = (chartData, stacked) => (mode) => {
+  return stacked
+    ? createGenerateStackedChartData(chartData)
+    : createGenerateChartDataByMode(chartData, mode);
 };
 
 export default createGenerateChartData;
