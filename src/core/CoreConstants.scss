@@ -6,18 +6,6 @@ $core-breakpoint-sm: 1024px; /* iPad Pro */
 $core-breakpoint-xs: 768px; /* iPad */
 
 $core-max-view-width: 93rem;
-$core-font-color: #00413e;
-$pine-1: rgba(1, 35, 34, 1);
-$slate-80: rgba(53, 83, 98, 0.8);
-// Shorthand font property: font-style font-variant font-weight font-size/line-height font-family
-$font-ui-sans-16: 500 1rem/1.5rem Libre Franklin;
-$font-ui-sans-14: 500 0.875rem/1.5rem Libre Franklin;
-$font-article-serif-56: 400 3.5rem/4.5rem Libre Baskerville;
-$font-article-serif-34: 400 2.1rem/3rem Libre Baskerville;
-$font-article-serif-24: 400 1.5rem/2rem Libre Baskerville;
-$font-article-sans-32: 400 2rem/3rem Libre Franklin;
-$font-article-sans-16: 400 1rem/1.7rem Libre Franklin;
-$font-article-sans-14: 400 0.88rem/1.5rem Libre Franklin;
 
 $box-shadow-color-30: rgba(19, 44, 82, 0.3);
 $box-shadow-color-20: rgba(19, 44, 82, 0.2);
@@ -66,6 +54,12 @@ $font-ui-sans-16: 500 1rem/1.5rem $sans-serif;
 $font-ui-sans-20: 500 1.25rem/1.5rem $sans-serif;
 $font-ui-sans-24: 1.5rem/2.5rem $sans-serif;
 $font-ui-serif-34: 400 2.125rem/3rem $serif;
+$font-article-sans-14: 400 0.88rem/1.5rem $sans-serif;
+$font-article-sans-16: 400 1rem/1.7rem $sans-serif;
+$font-article-sans-32: 400 2rem/3rem $sans-serif;
+$font-article-serif-24: 400 1.5rem/2rem $serif;
+$font-article-serif-34: 400 2.1rem/3rem $serif;
+$font-article-serif-56: 400 3.5rem/4.5rem $serif;
 
 :export {
   crimson: $crimson;
