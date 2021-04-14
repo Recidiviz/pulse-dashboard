@@ -1,0 +1,7 @@
+@import "../CoreConstants";
+
+.PopulationTimeSeriesErrorBar {
+  stroke-width: 1px;
+  stroke: $signal-tooltip;
+  fill: $signal-tooltip;
+}
