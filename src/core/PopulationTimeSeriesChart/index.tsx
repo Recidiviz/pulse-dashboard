@@ -15,7 +15,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React from "react";
+import React, { useState } from "react";
 import { useLocation } from "react-router-dom";
 import { scaleTime } from "d3-scale";
 import { observer } from "mobx-react-lite";
@@ -52,6 +52,7 @@ type PropTypes = {
 const TOTAL_INCARCERATED_LIMIT = 8008;
 
 const PopulationTimeSeriesChart: React.FC<PropTypes> = ({ data }) => {
+  const [errorBars, setErrorBars] = useState<ChartPoint | undefined>();
   const filtersStore = usePopulationFiltersStore();
   const { gender, supervisionType, legalStatus } = filtersStore.filters;
   const timePeriod: MonthOptions = parseInt(
@@ -132,6 +133,19 @@ const PopulationTimeSeriesChart: React.FC<PropTypes> = ({ data }) => {
   const populationType =
     compartment === "SUPERVISION" ? "Supervised" : "Incarcerated";
 
+  const lines = [historicalLine, projectedLine];
+
+  if (errorBars?.lowerBound && errorBars?.upperBound) {
+    const { date, lowerBound, upperBound } = errorBars;
+    lines.push({
+      class: "PopulationTimeSeriesChart__ErrorBars",
+      data: [
+        { date, value: lowerBound },
+        { date, value: upperBound },
+      ],
+    });
+  }
+
   return (
     <div className="PopulationTimeSeriesChart">
       <div className="PopulationTimeSeriesChart__Header">
@@ -194,15 +208,44 @@ const PopulationTimeSeriesChart: React.FC<PropTypes> = ({ data }) => {
         ]}
         hoverAnnotation
         svgAnnotationRules={(d: any) => {
+          // if (
+          //   ["HistoricalLine", "ProjectedLine"].some((w) =>
+          //     d?.parentLine?.class.endsWith(w)
+          //   )
+          // ) {
+          //   return null;
+          // }
+
+          // return false;
           // don't display hover annotations on corners of projection box
           if (d.d.parentSummary !== undefined) {
             return false;
           }
+
+          if (d.d.parentLine?.class.endsWith("ErrorBars")) {
+            return false;
+          }
+
           return null;
         }}
         tooltipContent={(d: any) => <PopulationTimeSeriesTooltip d={d} />}
+        customHoverBehavior={(d: {
+          upperBound: number;
+          data: ChartPoint;
+          parentLine: { class: string };
+        }) => {
+          if (d === undefined || d.parentLine?.class.endsWith("ErrorBars"))
+            return;
+
+          if (d.upperBound === undefined) {
+            setErrorBars(undefined);
+            return;
+          }
+
+          setErrorBars(d.data);
+        }}
         // @ts-ignore
-        lines={[historicalLine, projectedLine]}
+        lines={lines}
         lineDataAccessor="data"
         // @ts-ignore
         lineClass={(l: PlotLine) => l.class}
