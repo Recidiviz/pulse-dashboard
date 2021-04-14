@@ -49,6 +49,8 @@ type PropTypes = {
   data: PopulationProjectionTimeSeriesRecord[];
 };
 
+const TOTAL_INCARCERATED_LIMIT = 8008;
+
 const PopulationTimeSeriesChart: React.FC<PropTypes> = ({ data }) => {
   const filtersStore = usePopulationFiltersStore();
   const { gender, supervisionType, legalStatus } = filtersStore.filters;
@@ -170,7 +172,7 @@ const PopulationTimeSeriesChart: React.FC<PropTypes> = ({ data }) => {
               gender === "ALL" &&
               legalStatus === "ALL" &&
               compartment === "INCARCERATION"
-                ? 8008
+                ? TOTAL_INCARCERATED_LIMIT
                 : 1e6,
             // Need to send this line off of the chart when not looking at all
             // incarcerated people. We need to move it instead of deleting it
@@ -180,7 +182,7 @@ const PopulationTimeSeriesChart: React.FC<PropTypes> = ({ data }) => {
             disable: "connector",
             color: styles.crimsonDark50,
             note: {
-              label: "Total Operational Capacity (includes CAPP): 8,008",
+              label: `Total Operational Capacity (includes CAPP): ${TOTAL_INCARCERATED_LIMIT.toLocaleString()}`,
               align: "left",
               lineType: null,
               color: styles.crimsonDark,
