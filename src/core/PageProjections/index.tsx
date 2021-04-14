@@ -27,6 +27,7 @@ import {
 } from "../models/types";
 // import { populationProjectionSummary } from "../models/PopulationProjectionSummaryMetric";
 import PopulationTimeSeriesChart from "../PopulationTimeSeriesChart";
+import PopulationProjectionLastUpdated from "./PopulationProjectionLastUpdated";
 import { populationProjectionTimeSeries } from "../models/PopulationProjectionTimeSeriesMetric";
 import PopulationFilterBar from "../PopulationFilterBar";
 import filterOptions from "../utils/filterOptions";
@@ -81,6 +82,9 @@ const PageProjections: React.FC = () => {
       <PopulationSummaryMetrics
         isError={isError}
         projectionSummaries={projectionTimeSeries}
+      />
+      <PopulationProjectionLastUpdated
+        projectionTimeSeries={projectionTimeSeries}
       />
       <PopulationTimeSeriesChart data={projectionTimeSeries} />
     </PageTemplate>
