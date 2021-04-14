@@ -15,7 +15,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React, { useState } from "react";
+import React from "react";
 import { useLocation } from "react-router-dom";
 import { scaleTime } from "d3-scale";
 import { observer } from "mobx-react-lite";
