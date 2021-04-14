@@ -34,6 +34,7 @@ export default {
         ? { community: ["explore", "vitals"] }
         : { community: ["explore"] }),
       facilities: ["explore"],
+      ...(flags.showMethodologyDropdown ? { methodology: ["vitals"] } : {}),
     },
   },
   [core.US_ID]: {
@@ -43,7 +44,9 @@ export default {
     navigation: {
       community: ["projections"],
       facilities: ["projections"],
-      ...(flags.showMethodologyDropdown ? { methodology: [] } : {}),
+      ...(flags.showMethodologyDropdown
+        ? { methodology: ["projections"] }
+        : {}),
     },
   },
   [lantern.US_PA]: {

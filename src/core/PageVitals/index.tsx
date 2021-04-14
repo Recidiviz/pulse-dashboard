@@ -24,8 +24,10 @@ import VitalsSummaryTable from "../VitalsSummaryTable/VitalsSummaryTable";
 import VitalsWeeklyChange from "../VitalsWeeklyChange";
 import VitalsSummaryChart from "../VitalsSummaryChart";
 import VitalsSummaryDetail from "../VitalsSummaryDetail";
+import MethodologyLink from "../MethodologyLink";
 import Loading from "../../components/Loading";
 import { MetricType, METRIC_TYPES } from "./types";
+import { CORE_PATHS } from "../views";
 import { useRootStore } from "../../components/StoreProvider";
 import { VitalsSummaryRecord, VitalsTimeSeriesRecord } from "../models/types";
 import { ChartDataType } from "../types/charts";
@@ -34,6 +36,7 @@ import { vitalsTimeSeries } from "../models/VitalsTimeSeriesMetric";
 import { vitalsSummary } from "../models/VitalsSummaryMetric";
 import VitalsSummaryBreadcrumbs from "../VitalsSummaryBreadcrumbs";
 import { convertSlugToId } from "../../utils/navigation";
+import { formatISODateString } from "../../utils/formatStrings";
 import {
   getSummaryCards,
   getSummaryDetail,
@@ -99,13 +102,22 @@ const PageVitals: React.FC = () => {
     selectedCardId,
     currentEntityId
   );
+  const lastUpdatedOn = selectedTimeSeries[selectedTimeSeries.length - 1].date;
 
   return (
     <PageTemplate>
-      <VitalsSummaryBreadcrumbs
-        stateName={stateName}
-        entity={currentEntitySummary}
-      />
+      <div className="PageVitals__header">
+        <VitalsSummaryBreadcrumbs
+          stateName={stateName}
+          entity={currentEntitySummary}
+        />
+        <div className="PageVitals__header--right">
+          <div className="PageVitals__last-updated">
+            Last updated on {formatISODateString(lastUpdatedOn)}
+          </div>
+          <MethodologyLink path={CORE_PATHS.methodologyVitals} />
+        </div>
+      </div>
       <div className="PageVitals__SummaryCards">
         <VitalsSummaryCards
           onClick={handleSelectCard}
