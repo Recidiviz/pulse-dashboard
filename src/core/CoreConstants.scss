@@ -15,6 +15,8 @@ $inset-shadow-30: inset 0px -1px 1px $box-shadow-color-30;
 $white: #fff;
 $crimson: #bf7474;
 $crimson-dark: #a43939;
+$crimson-dark-50: rgba(164, 57, 57, 0.5);
+$new-color: rgba(164, 57, 57, 0.5);
 $data-forest: #25636f;
 $data-forest-uncertainty: rgba(37, 99, 111, 0.15);
 $indigo: #4c6290;
@@ -54,6 +56,7 @@ $font-ui-serif-34: 400 2.125rem/3rem $serif;
 :export {
   crimson: $crimson;
   crimsonDark: $crimson-dark;
+  crimsonDark50: $crimson-dark-50;
   pine1: $pine-1;
   pine3: $pine-3;
   marble4: $marble-4;
