@@ -125,7 +125,7 @@ export default class BaseDataStore {
       if (
         this.rootStore.userStore &&
         !this.rootStore.userStore.userIsLoading &&
-        !this.rootStore.userStore.restrictedDistrictIsLoading
+        !this.rootStore.userRestrictedAccessStore.isLoading
       ) {
         this.fetchData({
           tenantId: this.rootStore.currentTenantId,

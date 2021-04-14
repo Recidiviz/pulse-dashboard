@@ -22,6 +22,7 @@ import BaseDataStore, {
   DEFAULT_IGNORED_DIMENSIONS,
 } from "../DataStore/BaseDataStore";
 import UserStore from "../UserStore";
+import UserRestrictedAccessStore from "../UserRestrictedAccessStore";
 import RootStore from "../RootStore";
 import { METADATA_NAMESPACE } from "../../constants";
 import { callMetricsApi } from "../../api/metrics/metricsClient";
@@ -32,6 +33,7 @@ let baseStore;
 
 jest.mock("@sentry/react");
 jest.mock("../UserStore");
+jest.mock("../UserRestrictedAccessStore");
 jest.mock("../DistrictsStore");
 jest.mock("../DataStore/MatrixStore");
 jest.mock("../DataStore/CaseTableStore");
@@ -103,6 +105,11 @@ describe("BaseDataStore", () => {
         };
       });
 
+      UserRestrictedAccessStore.mockImplementationOnce(() => {
+        return {
+          isLoading: false,
+        };
+      });
       rootStore = new RootStore();
     });
 
@@ -254,7 +261,12 @@ describe("BaseDataStore", () => {
           user: mockUser,
           userIsLoading: false,
           getTokenSilently: mockGetTokenSilently,
-          restrictedDistrictIsLoading: false,
+        };
+      });
+
+      UserRestrictedAccessStore.mockImplementationOnce(() => {
+        return {
+          isLoading: false,
         };
       });
 
@@ -296,7 +308,11 @@ describe("BaseDataStore", () => {
           user: null,
           userIsLoading: true,
           getTokenSilently: mockGetTokenSilently,
-          restrictedDistrictIsLoading: false,
+        };
+      });
+      UserRestrictedAccessStore.mockImplementationOnce(() => {
+        return {
+          isLoading: false,
         };
       });
       rootStore = new RootStore();
@@ -317,7 +333,7 @@ describe("BaseDataStore", () => {
     });
   });
 
-  describe("when restrictedDistrict is loading", () => {
+  describe("when user restricted access is loading", () => {
     beforeAll(() => {
       jest.resetAllMocks();
 
@@ -326,7 +342,12 @@ describe("BaseDataStore", () => {
           user: mockUser,
           userIsLoading: false,
           getTokenSilently: mockGetTokenSilently,
-          restrictedDistrictIsLoading: true,
+        };
+      });
+
+      UserRestrictedAccessStore.mockImplementationOnce(() => {
+        return {
+          isLoading: true,
         };
       });
       rootStore = new RootStore();

@@ -48,6 +48,10 @@ describe("RootStore", () => {
     expect(rootStore.userStore).toBeDefined();
   });
 
+  it("contains a UserRestrictedAccessStore", () => {
+    expect(rootStore.userRestrictedAccessStore).toBeDefined();
+  });
+
   it("contains a currentTenantId", () => {
     expect(rootStore.currentTenantId).toBeDefined();
   });

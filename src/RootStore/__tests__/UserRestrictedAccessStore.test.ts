@@ -1,0 +1,306 @@
+// Recidiviz - a data platform for criminal justice reform
+// Copyright (C) 2021 Recidiviz, Inc.
+//
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <https://www.gnu.org/licenses/>.
+// =============================================================================
+import * as Sentry from "@sentry/react";
+import { ERROR_MESSAGES } from "../../constants/errorMessages";
+import { reactImmediately } from "../../testUtils";
+import UserRestrictedAccessStore from "../UserRestrictedAccessStore";
+import { METADATA_NAMESPACE } from "../../constants";
+import { callRestrictedAccessApi } from "../../api/metrics/metricsClient";
+import RootStore from "../RootStore";
+
+jest.mock("@sentry/react");
+jest.mock("../RootStore");
+jest.mock("../../api/metrics/metricsClient");
+
+const mockCallRestrictedAccessApi = callRestrictedAccessApi as jest.Mock;
+const mockRootStore = RootStore as jest.Mock;
+const mockGetTokenSilently = jest.fn();
+const mockSetAuthError = jest.fn();
+
+const userEmail = "thirteen@mo.gov";
+const userDistrict = "13";
+const authError = new Error(ERROR_MESSAGES.unauthorized);
+const apiError = new Error("API Failed");
+const tenantId = "US_MO";
+const metadata = `${METADATA_NAMESPACE}app_metadata`;
+const mockUser = { email: userEmail, [metadata]: { state_code: tenantId } };
+
+beforeEach(() => {
+  mockRootStore.mockImplementation(() => {
+    return {
+      currentTenantId: tenantId,
+      tenantStore: {
+        isLanternTenant: true,
+        isRestrictedDistrictTenant: true,
+      },
+      districtsStore: {
+        isLoading: false,
+        districtIds: [userDistrict],
+      },
+      userStore: {
+        availableStateCodes: [tenantId],
+        user: mockUser,
+        userIsLoading: false,
+        getTokenSilently: mockGetTokenSilently,
+        setAuthError: mockSetAuthError,
+      },
+    };
+  });
+});
+
+afterEach(() => {
+  jest.resetAllMocks();
+});
+
+describe("fetchRestrictedDistrictData", () => {
+  let userRestrictedAccessStore: UserRestrictedAccessStore;
+  let endpoint: string;
+  let rootStore: RootStore;
+
+  describe("when API responds with success", () => {
+    beforeEach(async () => {
+      mockCallRestrictedAccessApi.mockResolvedValue({
+        supervision_location_restricted_access_emails: {
+          restricted_user_email: userEmail.toUpperCase(),
+          allowed_level_1_supervision_location_ids: userDistrict,
+        },
+      });
+
+      reactImmediately(() => {
+        userRestrictedAccessStore = new UserRestrictedAccessStore({
+          rootStore: new RootStore(),
+        });
+      });
+
+      endpoint = `${tenantId}/restrictedAccess`;
+    });
+
+    afterEach(() => {
+      jest.resetAllMocks();
+    });
+
+    it("makes a request to the correct endpoint for the data", () => {
+      expect(callRestrictedAccessApi).toHaveBeenCalledTimes(1);
+      expect(callRestrictedAccessApi).toHaveBeenCalledWith(
+        endpoint,
+        userEmail,
+        mockGetTokenSilently
+      );
+    });
+
+    it("sets isLoading to false", () => {
+      expect(userRestrictedAccessStore.isLoading).toEqual(false);
+    });
+
+    it("sets the restrictedDistrict", () => {
+      expect(userRestrictedAccessStore.restrictedDistrict).toEqual(
+        userDistrict
+      );
+    });
+  });
+
+  describe("when the restrictedDistrict is invalid", () => {
+    const invalidId = "INVALID_DISRTRICT_ID";
+
+    beforeEach(async () => {
+      mockCallRestrictedAccessApi.mockResolvedValue({
+        supervision_location_restricted_access_emails: {
+          restricted_user_email: userEmail.toUpperCase(),
+          allowed_level_1_supervision_location_ids: invalidId,
+        },
+      });
+
+      rootStore = new RootStore();
+
+      userRestrictedAccessStore = new UserRestrictedAccessStore({
+        rootStore,
+      });
+    });
+
+    afterEach(() => {
+      jest.resetAllMocks();
+    });
+
+    it("sets an authError", () => {
+      expect(rootStore.userStore.setAuthError).toHaveBeenCalledTimes(1);
+    });
+
+    it("sets restrictedDistrict to undefined and isLoading to false", () => {
+      expect(userRestrictedAccessStore.restrictedDistrict).toBe(undefined);
+      expect(userRestrictedAccessStore.isLoading).toBe(false);
+    });
+
+    it("sends authError and context information to Sentry", () => {
+      expect(Sentry.captureException).toHaveBeenCalledWith(authError, {
+        tags: {
+          restrictedDistrict: invalidId,
+        },
+      });
+    });
+  });
+
+  describe("when districts is loading", () => {
+    beforeEach(async () => {
+      mockRootStore.mockImplementationOnce(() => {
+        return {
+          currentTenantId: "US_ND",
+          tenantStore: {
+            isLanternTenant: false,
+          },
+          districtsStore: {
+            isLoading: true,
+            districtIds: null,
+          },
+          userStore: {
+            user: mockUser,
+            userIsLoading: false,
+            getTokenSilently: mockGetTokenSilently,
+            setAuthError: mockSetAuthError,
+          },
+        };
+      });
+
+      reactImmediately(() => {
+        userRestrictedAccessStore = new UserRestrictedAccessStore({
+          rootStore: new RootStore(),
+        });
+      });
+    });
+
+    afterEach(() => {
+      jest.resetAllMocks();
+    });
+
+    it("does not call the API", () => {
+      expect(callRestrictedAccessApi).toHaveBeenCalledTimes(0);
+    });
+  });
+
+  describe("when user is loading", () => {
+    beforeEach(async () => {
+      mockRootStore.mockImplementationOnce(() => {
+        return {
+          currentTenantId: "US_ND",
+          tenantStore: {
+            isLanternTenant: false,
+          },
+          districtsStore: {
+            isLoading: true,
+            districtIds: null,
+          },
+          userStore: {
+            user: null,
+            userIsLoading: true,
+            getTokenSilently: mockGetTokenSilently,
+            setAuthError: mockSetAuthError,
+          },
+        };
+      });
+
+      reactImmediately(() => {
+        userRestrictedAccessStore = new UserRestrictedAccessStore({
+          rootStore: new RootStore(),
+        });
+      });
+    });
+
+    afterEach(() => {
+      jest.resetAllMocks();
+    });
+
+    it("does not call the API", () => {
+      expect(callRestrictedAccessApi).toHaveBeenCalledTimes(0);
+    });
+  });
+
+  describe("when API responds with an error", () => {
+    beforeEach(async () => {
+      mockCallRestrictedAccessApi.mockRejectedValueOnce(apiError);
+
+      rootStore = new RootStore();
+
+      userRestrictedAccessStore = new UserRestrictedAccessStore({
+        rootStore,
+      });
+    });
+
+    afterEach(() => {
+      jest.resetAllMocks();
+      jest.restoreAllMocks();
+    });
+
+    it("restrictedDistrict is undefined", () => {
+      expect(userRestrictedAccessStore.restrictedDistrict).toBeUndefined();
+    });
+
+    it("sets an authError and restrictedDistrictIsLoading to false", () => {
+      expect(rootStore.userStore.setAuthError).toHaveBeenCalledWith(authError);
+      expect(userRestrictedAccessStore.isLoading).toBe(false);
+    });
+
+    it("sends the apiError and context information to Sentry", () => {
+      expect(Sentry.captureException).toHaveBeenCalledWith(apiError, {
+        tags: {
+          availableStateCodes: tenantId,
+          endpoint: `${tenantId}/restrictedAccess`,
+          tenantId,
+        },
+      });
+    });
+  });
+
+  describe("when the tenant is not in RESTRICTED_DISTRICT_TENANTS", () => {
+    beforeEach(async () => {
+      mockRootStore.mockImplementationOnce(() => {
+        return {
+          currentTenantId: "US_PA",
+          tenantStore: {
+            isLanternTenant: false,
+          },
+          districtsStore: {
+            isLoading: false,
+            districtIds: [userDistrict],
+          },
+          userStore: {
+            user: mockUser,
+            userIsLoading: false,
+            getTokenSilently: mockGetTokenSilently,
+            setAuthError: mockSetAuthError,
+          },
+        };
+      });
+
+      reactImmediately(() => {
+        userRestrictedAccessStore = new UserRestrictedAccessStore({
+          rootStore: new RootStore(),
+        });
+      });
+    });
+
+    afterEach(() => {
+      jest.resetAllMocks();
+    });
+
+    it("does not call the API", () => {
+      expect(callRestrictedAccessApi).toHaveBeenCalledTimes(0);
+    });
+
+    it("sets isLoading to false", () => {
+      expect(userRestrictedAccessStore.isLoading).toBeFalse();
+    });
+  });
+});

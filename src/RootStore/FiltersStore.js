@@ -100,7 +100,7 @@ export default class FiltersStore {
       [ADMISSION_TYPE]: this.filterOptions[ADMISSION_TYPE].defaultValue,
       ...{
         [districtKeys.filterKey]: [
-          this.rootStore.userStore.restrictedDistrict ||
+          this.rootStore.userRestrictedAccessStore.restrictedDistrict ||
             this.filterOptions[districtKeys.filterKey].defaultValue,
         ],
       },

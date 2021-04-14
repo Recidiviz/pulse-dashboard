@@ -22,6 +22,7 @@ import CorePopulationFiltersStore from "./CorePopulationFiltersStore";
 import TenantStore from "./TenantStore";
 import DataStore from "./DataStore/DataStore";
 import UserStore from "./UserStore";
+import UserRestrictedAccessStore from "./UserRestrictedAccessStore";
 import devAuthConfig from "../auth_config_dev.json";
 import productionAuthConfig from "../auth_config_production.json";
 import DistrictsStore from "./DistrictsStore";
@@ -69,9 +70,15 @@ export default class RootStore {
     });
 
     this.tenantStore = new TenantStore({ rootStore: this });
+
     this.districtsStore = new DistrictsStore({
       rootStore: this,
     });
+
+    this.userRestrictedAccessStore = new UserRestrictedAccessStore({
+      rootStore: this,
+    });
+
     this.filtersStore = new FiltersStore({ rootStore: this });
     this.populationFiltersStore = new CorePopulationFiltersStore({
       rootStore: this,
@@ -92,7 +99,7 @@ export default class RootStore {
   }
 
   get restrictedDistrict() {
-    return this.userStore.restrictedDistrict;
+    return this.userRestrictedAccessStore.restrictedDistrict;
   }
 
   get methodology() {

@@ -90,7 +90,7 @@ describe("FiltersStore", () => {
       runInAction(() => {
         rootStore.tenantStore.currentTenantId = tenantId;
         rootStore.districtsStore.isLoading = false;
-        rootStore.userStore.restrictedDistrict = userDistrict;
+        rootStore.userRestrictedAccessStore.restrictedDistrict = userDistrict;
       });
 
       expect(
