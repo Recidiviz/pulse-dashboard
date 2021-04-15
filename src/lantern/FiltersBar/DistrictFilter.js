@@ -34,12 +34,16 @@ const DistrictFilter = () => {
     userRestrictedAccessStore,
     districtsStore,
   } = useLanternStore();
-  const { restrictedDistrict } = userRestrictedAccessStore;
   const {
-    isLoading,
+    restrictedDistrict,
+    isLoading: userRestrictedAccessIsLoading,
+  } = userRestrictedAccessStore;
+  const {
+    isLoading: districtsIsLoading,
     districtKeys: { filterKey, secondaryFilterKey },
   } = districtsStore;
   const { filterOptions } = filtersStore;
+  const isLoading = userRestrictedAccessIsLoading || districtsIsLoading;
 
   const options = [allOption].concat(filterOptions[filterKey].options);
 
