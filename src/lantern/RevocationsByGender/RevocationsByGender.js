@@ -26,6 +26,7 @@ import createGenerateChartData from "./createGenerateChartData";
 import { useRootStore } from "../../components/StoreProvider";
 import { genderValueToLabel } from "../../utils/formatStrings";
 import { US_PA } from "../../RootStore/TenantStore/lanternTenants";
+import flags from "../../flags";
 
 const DEFAULT_MODE = "MALE";
 
@@ -35,7 +36,8 @@ const RevocationsByGender = observer(
     const { revocationsChartStore } = dataStore;
     const CHART_TITLE = translate("revocationsByGenderChartTitle");
     const CHART_ID = translate("revocationsByGenderChartId");
-    const stacked = currentTenantId === US_PA;
+    const stacked =
+      flags.enableUpdatedRaceGenderCharts && currentTenantId === US_PA;
 
     return (
       <RevocationsByDimension

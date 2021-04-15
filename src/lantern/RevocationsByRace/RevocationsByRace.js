@@ -25,6 +25,7 @@ import { translate } from "../../utils/i18nSettings";
 import { useDataStore, useRootStore } from "../../components/StoreProvider";
 import HorizontalBarChartWithLabels from "../BarCharts/HorizontalBarChartWithLabels";
 import { US_PA } from "../../RootStore/TenantStore/lanternTenants";
+import flags from "../../flags";
 
 const DEFAULT_MODE = "WHITE";
 
@@ -36,7 +37,8 @@ const RevocationsByRace = observer(
     const { revocationsChartStore } = dataStore;
     const CHART_TITLE = translate("revocationsByRaceChartTitle");
     const CHART_ID = translate("revocationsByRaceChartId");
-    const stacked = currentTenantId === US_PA;
+    const stacked =
+      flags.enableUpdatedRaceGenderCharts && currentTenantId === US_PA;
 
     return (
       <RevocationsByDimension
