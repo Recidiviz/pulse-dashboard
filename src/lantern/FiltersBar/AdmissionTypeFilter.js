@@ -23,12 +23,12 @@ import { get } from "mobx";
 import FilterField from "./FilterField";
 import MultiSelect from "../../controls/MultiSelect";
 import { flatOptions } from "../../controls/utils";
-import { useRootStore } from "../../components/StoreProvider";
+import { useLanternStore } from "../LanternStoreProvider";
 import { ADMISSION_TYPE } from "../utils/constants";
 import { translate } from "../../utils/i18nSettings";
 
 const AdmissionTypeFilter = () => {
-  const { filtersStore } = useRootStore();
+  const { filtersStore } = useLanternStore();
   const { filters, filterOptions } = filtersStore;
   const value = get(filters, ADMISSION_TYPE);
   const { options, defaultOption, summingOption } = filterOptions[

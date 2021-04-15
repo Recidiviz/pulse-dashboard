@@ -15,8 +15,8 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import getFilterDescription from "../getFilterDescription";
-import { setTranslateLocale } from "../../../utils/i18nSettings";
+import getFilterDescription from "../../../../utils/getFilterDescription";
+import { setTranslateLocale } from "../../../../utils/i18nSettings";
 
 describe("getFilterDescription tests", () => {
   it("outputs all filters with value 'All'", () => {

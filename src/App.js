@@ -28,26 +28,29 @@ import ProtectedRoute from "./ProtectedRoute";
 import RedirectHome from "./RedirectHome";
 import { PageProvider } from "./contexts/PageContext";
 import StoreProvider from "./components/StoreProvider";
-import NotFound from "./components/NotFound";
+import AuthWall from "./AuthWall";
+import SentryErrorBoundary from "./components/SentryErrorBoundary";
 import Profile from "./components/Profile";
 import VerificationNeeded from "./components/VerificationNeeded";
+import NotFound from "./components/NotFound";
+
 import LanternLayout from "./lantern/LanternLayout";
-import CoreLayout from "./core/CoreLayout";
 import Revocations from "./lantern/Revocations";
+
+import CoreLayout from "./core/CoreLayout";
 import UsNdCommunityExplore from "./core/community/Explore";
 import UsNdFacilitiesExplore from "./core/facilities/Explore";
 import PageProjections from "./core/PageProjections";
 import PageVitals from "./core/PageVitals";
 import PageMethodology from "./core/PageMethodology";
 import CoreGoalsView from "./core/goals/CoreGoalsView";
+
 import initFontAwesome from "./utils/initFontAwesome";
 import initIntercomSettings from "./utils/initIntercomSettings";
 import { initI18n } from "./utils/i18nSettings";
 import { LANTERN_TENANTS } from "./RootStore/TenantStore/lanternTenants";
 import { CORE_TENANTS } from "./RootStore/TenantStore/coreTenants";
 import { CORE_PATHS } from "./core/views";
-import AuthWall from "./AuthWall";
-import ErrorBoundary from "./components/ErrorBoundary";
 
 import "./assets/scripts/index";
 import "./assets/styles/index.scss";
@@ -64,12 +67,13 @@ Sentry.init({
 // prettier-ignore
 const App = () => (
   <StoreProvider>
-    <ErrorBoundary>
+    <SentryErrorBoundary>
       <PageProvider>
         <Router>
           <Switch>
             <Route path="/verify" component={VerificationNeeded} />
             <AuthWall>
+
               <LanternLayout tenantIds={LANTERN_TENANTS}>
                 <Switch>
                   <Route path="/community/revocations" component={Revocations} />
@@ -103,7 +107,7 @@ const App = () => (
           </Switch>
         </Router>
       </PageProvider>
-    </ErrorBoundary>
+    </SentryErrorBoundary>
   </StoreProvider>
 );
 

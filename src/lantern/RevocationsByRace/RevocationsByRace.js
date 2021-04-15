@@ -22,7 +22,7 @@ import { observer } from "mobx-react-lite";
 import RevocationsByDimension from "../RevocationsByDimension";
 import createGenerateChartData from "./createGenerateChartData";
 import { translate } from "../../utils/i18nSettings";
-import { useDataStore } from "../../components/StoreProvider";
+import { useDataStore } from "../LanternStoreProvider";
 import HorizontalBarChartWithLabels from "../BarCharts/HorizontalBarChartWithLabels";
 
 const DEFAULT_MODE = "WHITE";

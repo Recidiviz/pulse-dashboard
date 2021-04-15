@@ -24,30 +24,30 @@ import { get } from "mobx";
 import map from "lodash/fp/map";
 import pipe from "lodash/fp/pipe";
 
-import { groupByMonth } from "../core/bars/utils";
-import LoadingChart from "./LoadingChart";
-import ErrorMessage from "../components/ErrorMessage";
+import { groupByMonth } from "../../core/bars/utils";
+import LoadingChart from "../LoadingChart";
+import ErrorMessage from "../../components/ErrorMessage";
 
-import { useContainerHeight } from "./hooks/useContainerHeight";
-import { COLORS } from "../assets/scripts/constants/colors";
+import { useContainerHeight } from "../hooks/useContainerHeight";
+import { COLORS } from "../../assets/scripts/constants/colors";
 import {
   currentMonthBox,
   monthNamesAllWithYearsFromNumbers,
-} from "./utils/currentSpan";
-import { toNumber } from "../utils";
+} from "../utils/currentSpan";
+import { toNumber } from "../../utils";
 import {
   sortFilterAndSupplementMostRecentMonths,
   centerSingleMonthDatasetIfNecessary,
-} from "../utils/datasets";
-import { generateTrendlineDataset } from "../utils/trendline";
-import { translate } from "../utils/i18nSettings";
-import { useRootStore } from "../components/StoreProvider";
-import { METRIC_PERIOD_MONTHS } from "./utils/constants";
+} from "../../utils/datasets";
+import { generateTrendlineDataset } from "../../utils/trendline";
+import { translate } from "../../utils/i18nSettings";
+import { useLanternStore } from "../LanternStoreProvider";
+import { METRIC_PERIOD_MONTHS } from "../utils/constants";
 
-import RevocationsByDimensionComponent from "./RevocationsByDimension/RevocationsByDimensionComponent";
+import RevocationsByDimensionComponent from "../RevocationsByDimension/RevocationsByDimensionComponent";
 
 const RevocationsOverTime = ({ timeDescription }) => {
-  const { filters, dataStore } = useRootStore();
+  const { filters, dataStore } = useLanternStore();
   const store = dataStore.revocationsOverTimeStore;
   const CHART_TITLE = translate("revocationsOverTimeChartTitle");
   const CHART_ID = translate("revocationsOverTimeChartId");

@@ -20,7 +20,7 @@ import {
   downloadCanvasAsImage,
 } from "../../utils/downloads/downloadData";
 import configureFilename from "../../utils/downloads/configureFileName";
-import getFilterDescription from "../../RootStore/utils/getFilterDescription";
+import getFilterDescription from "../../utils/getFilterDescription";
 
 export function configureDownloadButtons({
   chartId,

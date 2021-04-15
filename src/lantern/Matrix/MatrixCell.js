@@ -20,7 +20,7 @@ import PropTypes from "prop-types";
 import cx from "classnames";
 import { get } from "mobx";
 
-import { useRootStore } from "../../components/StoreProvider";
+import { useLanternStore } from "../LanternStoreProvider";
 import { VIOLATION_TYPE, REPORTED_VIOLATIONS } from "../utils/constants";
 import { COLORS } from "../../assets/scripts/constants/colors";
 
@@ -34,7 +34,7 @@ const MatrixCell = ({
   reportedViolations,
   onClick,
 }) => {
-  const { filters } = useRootStore();
+  const { filters } = useLanternStore();
   const ratio = maxCount > 0 ? count / maxCount : 0;
   const radius = Math.max(minRadius, Math.ceil(ratio * maxRadius) + 20);
 

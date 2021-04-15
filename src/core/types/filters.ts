@@ -14,20 +14,24 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-import type CorePopulationFiltersStore from "../../RootStore/CorePopulationFiltersStore";
+import type FiltersStore from "../CoreStore/FiltersStore";
 import { FILTER_TYPES } from "../utils/constants";
+import { Gender } from "../models/types";
 
 export type PopulationFilterValues = {
-  [key in keyof PopulationFilters]: string;
+  timePeriod: string;
+  gender: Gender;
+  supervisionType: string;
+  legalStatus: string;
 };
 
 export type SetPopulationFilters = (
-  filtersStore: CorePopulationFiltersStore
+  filtersStore: FiltersStore
 ) => (option: FilterOption) => void;
 
 export type FilterOption = {
   label: string;
-  value: any;
+  value: string;
 };
 
 export interface PopulationFilters {

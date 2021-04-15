@@ -29,7 +29,7 @@ import RevocationsOverTime from "./RevocationsOverTime";
 import Matrix from "./Matrix";
 import MatrixExplanation from "./Matrix/MatrixExplanation";
 import RevocationCharts from "./RevocationCharts";
-import ErrorBoundary from "../components/ErrorBoundary";
+import ErrorBoundary from "./ErrorBoundary";
 import CaseTable from "./CaseTable/CaseTable";
 import {
   ADMISSION_TYPE,
@@ -38,14 +38,14 @@ import {
   SUPERVISION_LEVEL,
   SUPERVISION_TYPE,
 } from "./utils/constants";
-import { useRootStore } from "../components/StoreProvider";
+import { useLanternStore } from "./LanternStoreProvider";
 
 import "./Revocations.scss";
 import { usePageState } from "../contexts/PageContext";
 
 const Revocations = () => {
-  const { filtersStore } = useRootStore();
-  const { filters, filterOptions } = filtersStore;
+  const lanternStore = useLanternStore();
+  const { filters, filterOptions } = lanternStore.filtersStore;
   const { hideTopBar } = usePageState();
 
   const timeDescription = getTimeDescription(

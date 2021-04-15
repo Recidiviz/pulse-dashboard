@@ -22,19 +22,28 @@ import map from "lodash/fp/map";
 
 import FilterField from "./FilterField";
 import DistrictFilterDropown from "./DistrictFilterDropown";
-import { useRootStore } from "../../components/StoreProvider";
+import { useLanternStore } from "../LanternStoreProvider";
 import { flatOptions } from "../../controls/utils";
 
 const allOption = { label: "ALL", value: "All", secondaryValue: "All" };
 
 const DistrictFilter = () => {
-  const { filters, filtersStore, userStore, districtsStore } = useRootStore();
-  const { restrictedDistrict } = userStore;
   const {
-    isLoading,
+    filters,
+    filtersStore,
+    userRestrictedAccessStore,
+    districtsStore,
+  } = useLanternStore();
+  const {
+    restrictedDistrict,
+    isLoading: userRestrictedAccessIsLoading,
+  } = userRestrictedAccessStore;
+  const {
+    isLoading: districtsIsLoading,
     districtKeys: { filterKey, secondaryFilterKey },
   } = districtsStore;
   const { filterOptions } = filtersStore;
+  const isLoading = userRestrictedAccessIsLoading || districtsIsLoading;
 
   const options = [allOption].concat(filterOptions[filterKey].options);
 

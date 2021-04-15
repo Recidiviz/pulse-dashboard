@@ -17,39 +17,31 @@
 
 import React from "react";
 import { observer } from "mobx-react-lite";
+import { toJS } from "mobx";
+import type Sentry from "@sentry/react";
+import SentryErrorBoundary from "../components/SentryErrorBoundary";
+import { useCoreStore } from "./CoreStoreProvider";
 
-import PropTypes from "prop-types";
-import Footer from "../components/Footer";
-import CoreNavigation from "./CoreNavigation";
-import useIntercom from "../hooks/useIntercom";
-import CoreStoreProvider from "./CoreStoreProvider";
-import ErrorBoundary from "./ErrorBoundary";
-import "./CoreLayout.scss";
+interface Props {
+  children: React.ReactChildren;
+}
 
-const CoreLayout = ({ children }) => {
-  useIntercom();
+function ErrorBoundary({ children }: Props): JSX.Element {
+  const { currentTenantId, filters } = useCoreStore();
+
+  const handleBeforeCapture = (scope: Sentry.Scope) => {
+    if (currentTenantId) scope.setTag("currentTenantId", currentTenantId);
+    if (filters) {
+      const parsedFilters = toJS(filters);
+      scope.setContext("filters", parsedFilters);
+    }
+  };
+
   return (
-    <CoreStoreProvider>
-      <ErrorBoundary>
-        <div id="app" className="CoreLayout">
-          <div className="page-container">
-            <div className="CoreLayout__header">
-              <CoreNavigation />
-            </div>
-            {children}
-          </div>
-          <Footer />
-        </div>
-      </ErrorBoundary>
-    </CoreStoreProvider>
+    <SentryErrorBoundary handleBeforeCapture={handleBeforeCapture}>
+      {children}
+    </SentryErrorBoundary>
   );
-};
+}
 
-CoreLayout.propTypes = {
-  children: PropTypes.oneOfType([
-    PropTypes.node,
-    PropTypes.arrayOf(PropTypes.node),
-  ]).isRequired,
-};
-
-export default observer(CoreLayout);
+export default observer(ErrorBoundary);

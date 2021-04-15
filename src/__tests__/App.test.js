@@ -14,7 +14,6 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-
 import React from "react";
 import { render } from "@testing-library/react";
 
@@ -92,18 +91,20 @@ describe("App tests", () => {
     jest.restoreAllMocks();
   });
 
-  describe("Lantern layout", () => {
+  describe("LanternLayout", () => {
     it("should render MO Layout with Revocations page", () => {
       window.history.pushState({}, "", "/community/revocations");
       const user = { [metadataField]: { state_code: US_MO } };
       useRootStore.mockReturnValue({
         userStore: { user, isAuthorized: true },
+        userRestrictedAccessStore: { isLoading: false },
         currentTenantId: US_MO,
       });
 
       const { getByTestId } = render(<App />);
 
       expect(LanternLayoutMock).toHaveBeenCalledTimes(1);
+      expect(CoreLayoutMock).toHaveBeenCalledTimes(0);
       expect(getByTestId(mockRevocationsId)).toBeInTheDocument();
     });
 
@@ -112,6 +113,7 @@ describe("App tests", () => {
       const user = { [metadataField]: { state_code: US_PA } };
       useRootStore.mockReturnValue({
         userStore: { user, isAuthorized: true },
+        userRestrictedAccessStore: { isLoading: false },
         currentTenantId: US_PA,
       });
 
@@ -146,6 +148,7 @@ describe("App tests", () => {
       window.history.pushState({}, "", "/some/page");
       useRootStore.mockReturnValue({
         userStore: { user: {}, isAuthorized: true },
+        userRestrictedAccessStore: { isLoading: false },
         currentTenantId: US_PA,
       });
 
@@ -159,6 +162,7 @@ describe("App tests", () => {
       window.history.pushState({}, "", "/some/page");
       useRootStore.mockReturnValue({
         userStore: { user: {}, isAuthorized: true },
+        userRestrictedAccessStore: { isLoading: false },
         currentTenantId: "US_XX",
       });
 
@@ -206,6 +210,7 @@ describe("App tests", () => {
   it("should render Loading component while user is loading", () => {
     useRootStore.mockReturnValue({
       userStore: { user: {}, userIsLoading: true, authorize: () => {} },
+      userRestrictedAccessStore: { isLoading: true },
     });
 
     const { container } = render(<App />);
@@ -216,7 +221,8 @@ describe("App tests", () => {
 
   it("should render the Error component if there is an error", () => {
     useRootStore.mockReturnValue({
-      userStore: { isLoading: false, isAuthorized: false },
+      userStore: { userIsLoading: false, isAuthorized: false },
+      userRestrictedAccessStore: { isLoading: false },
     });
 
     // do not log the expected error - keep tests less verbose
@@ -231,6 +237,7 @@ describe("App tests", () => {
     window.history.pushState({}, "", "/verify");
     useRootStore.mockReturnValue({
       userStore: { user: {}, isAuthorized: true },
+      userRestrictedAccessStore: { isLoading: false },
       currentTenantId: US_PA,
     });
 
