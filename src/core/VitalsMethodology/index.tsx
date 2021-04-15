@@ -36,7 +36,7 @@ const VitalsMethodology: React.FC = () => {
 
   return (
     <PageTemplate>
-      <div className="main-content Methodology p-0">
+      <div className="Methodology">
         <Container className="col-md-9 col-12">
           <h1 className="Methodology__main-title">{vitalsMethodology.title}</h1>
           <h2 className="Methodology__main-description">
