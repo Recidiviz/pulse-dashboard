@@ -73,17 +73,14 @@ const VitalsSummaryTable: React.FC<PropTypes> = ({
                 entityName: string;
                 entityType: string;
               };
-            }) =>
-              value.entityType === ENTITY_TYPES.LEVEL_1_SUPERVISION_LOCATION ? (
-                <Link
-                  className="VitalsSummaryTable__link"
-                  to={`/community/vitals/${convertIdToSlug(value.entityId)}`}
-                >
-                  {value.entityName}
-                </Link>
-              ) : (
-                value.entityName
-              ),
+            }) => (
+              <Link
+                className="VitalsSummaryTable__link"
+                to={`/community/vitals/${convertIdToSlug(value.entityId)}`}
+              >
+                {value.entityName}
+              </Link>
+            ),
           },
         ],
       },

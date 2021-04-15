@@ -27,7 +27,11 @@ import VitalsSummaryDetail from "../VitalsSummaryDetail";
 import Loading from "../../components/Loading";
 import { MetricType, METRIC_TYPES } from "./types";
 import { useRootStore } from "../../components/StoreProvider";
-import { VitalsSummaryRecord, VitalsTimeSeriesRecord } from "../models/types";
+import {
+  VitalsSummaryRecord,
+  VitalsTimeSeriesRecord,
+  ENTITY_TYPES,
+} from "../models/types";
 import { ChartDataType } from "../types/charts";
 import useChartData from "../hooks/useChartData";
 import { vitalsTimeSeries } from "../models/VitalsTimeSeriesMetric";
@@ -131,10 +135,12 @@ const PageVitals: React.FC = () => {
         </div>
       </div>
       <div className="PageVitals__Table">
-        <VitalsSummaryTable
-          selectedSortBy={selectedCardId}
-          summaries={childEntitySummaryRows}
-        />
+        {currentEntitySummary.entityType !== ENTITY_TYPES.PO && (
+          <VitalsSummaryTable
+            selectedSortBy={selectedCardId}
+            summaries={childEntitySummaryRows}
+          />
+        )}
       </div>
     </PageTemplate>
   );

@@ -95,7 +95,10 @@ export function getEntitySummaries(
     (d) => d.entityId === currentEntityId
   ) as VitalsSummaryRecord;
   const childEntitySummaryRows = vitalsSummaries
-    .filter((d) => d.parentEntityId === currentEntityId)
+    .filter(
+      (d) =>
+        d.parentEntityId === currentEntityId && d.parentEntityId !== d.entityId
+    )
     .map((d) => {
       const { entityId, entityName, entityType, ...attrs } = d;
       return {
