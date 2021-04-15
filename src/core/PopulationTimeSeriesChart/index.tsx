@@ -30,6 +30,7 @@ import "./PopulationTimeSeriesChart.scss";
 import PopulationTimeSeriesLegend from "./PopulationTimeSeriesLegend";
 import { CORE_VIEWS, getViewFromPathname } from "../views";
 import PopulationTimeSeriesTooltip from "./PopulationTimeSeriesTooltip";
+import PopulationTimeSeriesErrorBar from "./PopulationTimeSeriesErrorBar";
 import * as styles from "../CoreConstants.scss";
 
 import {
@@ -198,6 +199,21 @@ const PopulationTimeSeriesChart: React.FC<PropTypes> = ({ data }) => {
           if (d.d.parentSummary !== undefined) {
             return false;
           }
+
+          if (d.d.parentLine?.class.endsWith("ProjectedLine")) {
+            const [screenX, screenY] = d.screenCoordinates;
+            const { value, lowerBound, upperBound } = d.d;
+            const props = {
+              value,
+              lowerBound,
+              upperBound,
+              screenX,
+              screenY,
+              chartTop,
+            };
+            return <PopulationTimeSeriesErrorBar {...props} />;
+          }
+
           return null;
         }}
         tooltipContent={(d: any) => <PopulationTimeSeriesTooltip d={d} />}
