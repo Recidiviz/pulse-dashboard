@@ -1,5 +1,5 @@
 // Recidiviz - a data platform for criminal justice reform
-// Copyright (C) 2020 Recidiviz, Inc.
+// Copyright (C) 2021 Recidiviz, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -15,61 +15,43 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import { computed, makeObservable } from "mobx";
+import { computed, makeObservable, ObservableMap } from "mobx";
 
-import FiltersStore from "./FiltersStore";
-import CorePopulationFiltersStore from "./CorePopulationFiltersStore";
-import TenantStore from "./TenantStore";
-import DataStore from "./DataStore/DataStore";
-import UserStore from "./UserStore";
+import type UserStore from "../../RootStore/UserStore";
+import type TenantStore from "../../RootStore/TenantStore";
 import UserRestrictedAccessStore from "./UserRestrictedAccessStore";
-import devAuthConfig from "../auth_config_dev.json";
-import productionAuthConfig from "../auth_config_production.json";
+import FiltersStore from "./FiltersStore";
+import DataStore from "./DataStore/DataStore";
 import DistrictsStore from "./DistrictsStore";
 
-/**
- * Returns the auth settings configured for the current environment, if any.
- */
-export function getAuthSettings() {
-  const authEnv = process.env.REACT_APP_AUTH_ENV;
-  let config = null;
-  if (authEnv === "production") {
-    config = productionAuthConfig;
-  } else {
-    config = devAuthConfig;
-  }
-  return {
-    client_id: config.clientId,
-    domain: config.domain,
-    audience: config.audience,
-    redirect_uri: `${window.location.origin}`,
-  };
+interface LanternStoreProps {
+  userStore: UserStore;
+  tenantStore: TenantStore;
 }
 
-export default class RootStore {
-  filtersStore;
+export default class LanternStore {
+  userStore;
 
   tenantStore;
 
-  dataStore;
+  userRestrictedAccessStore;
 
-  userStore;
+  filtersStore;
+
+  dataStore;
 
   districtsStore;
 
-  constructor() {
+  constructor({ userStore, tenantStore }: LanternStoreProps) {
     makeObservable(this, {
       filters: computed,
       currentTenantId: computed,
       user: computed,
     });
 
-    this.userStore = new UserStore({
-      authSettings: getAuthSettings(),
-      rootStore: this,
-    });
+    this.userStore = userStore;
 
-    this.tenantStore = new TenantStore({ rootStore: this });
+    this.tenantStore = tenantStore;
 
     this.districtsStore = new DistrictsStore({
       rootStore: this,
@@ -80,29 +62,27 @@ export default class RootStore {
     });
 
     this.filtersStore = new FiltersStore({ rootStore: this });
-    this.populationFiltersStore = new CorePopulationFiltersStore({
-      rootStore: this,
-    });
+
     this.dataStore = new DataStore({ rootStore: this });
   }
 
-  get filters() {
+  get filters(): ObservableMap<any, any> {
     return this.filtersStore.filters;
   }
 
-  get currentTenantId() {
+  get currentTenantId(): string {
     return this.tenantStore.currentTenantId;
   }
 
-  get user() {
+  get user(): any {
     return this.userStore.user;
   }
 
-  get restrictedDistrict() {
+  get restrictedDistrict(): string | undefined {
     return this.userRestrictedAccessStore.restrictedDistrict;
   }
 
-  get methodology() {
+  get methodology(): any {
     return this.tenantStore.methodology;
   }
 }

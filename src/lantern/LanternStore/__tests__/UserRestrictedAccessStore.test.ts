@@ -15,19 +15,20 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 import * as Sentry from "@sentry/react";
-import { ERROR_MESSAGES } from "../../constants/errorMessages";
-import { reactImmediately } from "../../testUtils";
+import { reactImmediately } from "../../../testUtils";
 import UserRestrictedAccessStore from "../UserRestrictedAccessStore";
-import { METADATA_NAMESPACE } from "../../constants";
-import { callRestrictedAccessApi } from "../../api/metrics/metricsClient";
-import RootStore from "../RootStore";
+import type UserStore from "../../../RootStore/UserStore";
+import type TenantStore from "../../../RootStore/TenantStore";
+import { METADATA_NAMESPACE, ERROR_MESSAGES } from "../../../constants";
+import { callRestrictedAccessApi } from "../../../api/metrics/metricsClient";
+import LanternStore from "..";
 
 jest.mock("@sentry/react");
-jest.mock("../RootStore");
-jest.mock("../../api/metrics/metricsClient");
+jest.mock("..");
+jest.mock("../../../api/metrics/metricsClient");
 
 const mockCallRestrictedAccessApi = callRestrictedAccessApi as jest.Mock;
-const mockRootStore = RootStore as jest.Mock;
+const mockLanternStore = LanternStore as jest.Mock;
 const mockGetTokenSilently = jest.fn();
 const mockSetAuthError = jest.fn();
 
@@ -38,9 +39,13 @@ const apiError = new Error("API Failed");
 const tenantId = "US_MO";
 const metadata = `${METADATA_NAMESPACE}app_metadata`;
 const mockUser = { email: userEmail, [metadata]: { state_code: tenantId } };
+const mockRootStore = {
+  userStore: {} as UserStore,
+  tenantStore: {} as TenantStore,
+};
 
 beforeEach(() => {
-  mockRootStore.mockImplementation(() => {
+  mockLanternStore.mockImplementation(() => {
     return {
       currentTenantId: tenantId,
       tenantStore: {
@@ -69,7 +74,7 @@ afterEach(() => {
 describe("fetchRestrictedDistrictData", () => {
   let userRestrictedAccessStore: UserRestrictedAccessStore;
   let endpoint: string;
-  let rootStore: RootStore;
+  let rootStore: LanternStore;
 
   describe("when API responds with success", () => {
     beforeEach(async () => {
@@ -82,7 +87,7 @@ describe("fetchRestrictedDistrictData", () => {
 
       reactImmediately(() => {
         userRestrictedAccessStore = new UserRestrictedAccessStore({
-          rootStore: new RootStore(),
+          rootStore: new LanternStore(mockRootStore),
         });
       });
 
@@ -124,7 +129,7 @@ describe("fetchRestrictedDistrictData", () => {
         },
       });
 
-      rootStore = new RootStore();
+      rootStore = new LanternStore(mockRootStore);
 
       userRestrictedAccessStore = new UserRestrictedAccessStore({
         rootStore,
@@ -155,7 +160,7 @@ describe("fetchRestrictedDistrictData", () => {
 
   describe("when districts is loading", () => {
     beforeEach(async () => {
-      mockRootStore.mockImplementationOnce(() => {
+      mockLanternStore.mockImplementationOnce(() => {
         return {
           currentTenantId: "US_ND",
           tenantStore: {
@@ -176,7 +181,7 @@ describe("fetchRestrictedDistrictData", () => {
 
       reactImmediately(() => {
         userRestrictedAccessStore = new UserRestrictedAccessStore({
-          rootStore: new RootStore(),
+          rootStore: new LanternStore(mockRootStore),
         });
       });
     });
@@ -192,7 +197,7 @@ describe("fetchRestrictedDistrictData", () => {
 
   describe("when user is loading", () => {
     beforeEach(async () => {
-      mockRootStore.mockImplementationOnce(() => {
+      mockLanternStore.mockImplementationOnce(() => {
         return {
           currentTenantId: "US_ND",
           tenantStore: {
@@ -213,7 +218,7 @@ describe("fetchRestrictedDistrictData", () => {
 
       reactImmediately(() => {
         userRestrictedAccessStore = new UserRestrictedAccessStore({
-          rootStore: new RootStore(),
+          rootStore: new LanternStore(mockRootStore),
         });
       });
     });
@@ -231,7 +236,7 @@ describe("fetchRestrictedDistrictData", () => {
     beforeEach(async () => {
       mockCallRestrictedAccessApi.mockRejectedValueOnce(apiError);
 
-      rootStore = new RootStore();
+      rootStore = new LanternStore(mockRootStore);
 
       userRestrictedAccessStore = new UserRestrictedAccessStore({
         rootStore,
@@ -265,7 +270,7 @@ describe("fetchRestrictedDistrictData", () => {
 
   describe("when the tenant is not in RESTRICTED_DISTRICT_TENANTS", () => {
     beforeEach(async () => {
-      mockRootStore.mockImplementationOnce(() => {
+      mockLanternStore.mockImplementationOnce(() => {
         return {
           currentTenantId: "US_PA",
           tenantStore: {
@@ -286,7 +291,7 @@ describe("fetchRestrictedDistrictData", () => {
 
       reactImmediately(() => {
         userRestrictedAccessStore = new UserRestrictedAccessStore({
-          rootStore: new RootStore(),
+          rootStore: new LanternStore(mockRootStore),
         });
       });
     });

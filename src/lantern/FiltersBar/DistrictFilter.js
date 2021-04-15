@@ -22,7 +22,7 @@ import map from "lodash/fp/map";
 
 import FilterField from "./FilterField";
 import DistrictFilterDropown from "./DistrictFilterDropown";
-import { useRootStore } from "../../components/StoreProvider";
+import { useLanternStore } from "../LanternStoreProvider";
 import { flatOptions } from "../../controls/utils";
 
 const allOption = { label: "ALL", value: "All", secondaryValue: "All" };
@@ -33,7 +33,7 @@ const DistrictFilter = () => {
     filtersStore,
     userRestrictedAccessStore,
     districtsStore,
-  } = useRootStore();
+  } = useLanternStore();
   const { restrictedDistrict } = userRestrictedAccessStore;
   const {
     isLoading,

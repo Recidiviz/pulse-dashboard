@@ -14,25 +14,27 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-import { runInAction } from "mobx";
 import * as Sentry from "@sentry/react";
-
 import * as sharedFilters from "shared-filters";
 import BaseDataStore, {
   DEFAULT_IGNORED_DIMENSIONS,
 } from "../DataStore/BaseDataStore";
-import UserStore from "../UserStore";
+
 import UserRestrictedAccessStore from "../UserRestrictedAccessStore";
-import RootStore from "../RootStore";
-import { METADATA_NAMESPACE } from "../../constants";
-import { callMetricsApi } from "../../api/metrics/metricsClient";
+import LanternStore from "..";
+import { METADATA_NAMESPACE } from "../../../constants";
+import { callMetricsApi } from "../../../api/metrics/metricsClient";
 import DistrictsStore from "../DistrictsStore";
 
-let rootStore;
+let lanternStore;
 let baseStore;
+const mockTenantId = "US_MO";
+const metadataField = `${METADATA_NAMESPACE}app_metadata`;
+const mockUser = { [metadataField]: { state_code: mockTenantId } };
+const mockFilterOptimizedDataFormat = sharedFilters.filterOptimizedDataFormat;
+const mockGetTokenSilently = jest.fn();
 
 jest.mock("@sentry/react");
-jest.mock("../UserStore");
 jest.mock("../UserRestrictedAccessStore");
 jest.mock("../DistrictsStore");
 jest.mock("../DataStore/MatrixStore");
@@ -45,7 +47,7 @@ jest.mock("shared-filters", () => {
     filterOptimizedDataFormat: jest.fn(),
   };
 });
-jest.mock("../../api/metrics/metricsClient", () => {
+jest.mock("../../../api/metrics/metricsClient", () => {
   return {
     callMetricsApi: jest.fn().mockResolvedValue({
       revocations_matrix_distribution_by_district: {
@@ -68,17 +70,26 @@ jest.mock("../../api/metrics/metricsClient", () => {
   };
 });
 
-const tenantId = "US_MO";
-const metadataField = `${METADATA_NAMESPACE}app_metadata`;
-const mockUser = { [metadataField]: { state_code: tenantId } };
-const mockFilterOptimizedDataFormat = sharedFilters.filterOptimizedDataFormat;
+const mockRootStore = {
+  tenantStore: {
+    currentTenantId: mockTenantId,
+    isLanternTenant: true,
+  },
+  userStore: {
+    user: mockUser,
+    userIsLoading: false,
+    getTokenSilently: mockGetTokenSilently,
+  },
+};
 
 describe("BaseDataStore", () => {
-  const mockGetTokenSilently = jest.fn();
   const file = "revocations_matrix_distribution_by_district";
 
-  beforeAll(() => {
+  beforeEach(() => {
     jest.spyOn(console, "error").mockImplementation(() => {});
+  });
+
+  beforeAll(() => {
     DistrictsStore.mockImplementation(() => {
       return {
         apiData: { data: [] },
@@ -87,36 +98,28 @@ describe("BaseDataStore", () => {
         },
       };
     });
+    UserRestrictedAccessStore.mockImplementation(() => {
+      return {
+        isLoading: false,
+      };
+    });
   });
 
-  afterAll(() => {
+  afterEach(() => {
     jest.resetModules();
     jest.restoreAllMocks();
   });
 
   describe("when user is authenticated", () => {
     beforeEach(() => {
-      UserStore.mockImplementationOnce(() => {
-        return {
-          user: mockUser,
-          userIsLoading: false,
-          getTokenSilently: mockGetTokenSilently,
-          restrictedDistrictIsLoading: false,
-        };
-      });
-
-      UserRestrictedAccessStore.mockImplementationOnce(() => {
-        return {
-          isLoading: false,
-        };
-      });
-      rootStore = new RootStore();
+      lanternStore = new LanternStore(mockRootStore);
     });
 
     describe("default store properties", () => {
       beforeEach(() => {
-        baseStore = new BaseDataStore({ rootStore, file });
+        baseStore = new BaseDataStore({ rootStore: lanternStore, file });
       });
+
       it("has a reference to the rootStore", () => {
         expect(baseStore.rootStore).toBeDefined();
       });
@@ -144,7 +147,7 @@ describe("BaseDataStore", () => {
       });
 
       beforeEach(() => {
-        baseStore = new BaseDataStore({ rootStore, file });
+        baseStore = new BaseDataStore({ rootStore: lanternStore, file });
         mockDataFilter.mockClear();
       });
 
@@ -190,11 +193,11 @@ describe("BaseDataStore", () => {
     describe("fetchData", () => {
       beforeEach(() => {
         jest.clearAllMocks();
-        baseStore = new BaseDataStore({ rootStore, file });
+        baseStore = new BaseDataStore({ rootStore: lanternStore, file });
       });
 
       it("makes a request to the correct endpoint for the apiData", () => {
-        const expectedEndpoint = `${tenantId}/newRevocations/revocations_matrix_distribution_by_district
+        const expectedEndpoint = `${mockTenantId}/newRevocations/revocations_matrix_distribution_by_district
         ?metricPeriodMonths=12&chargeCategory=All&reportedViolations=All&violationType=All&supervisionType=All
         &supervisionLevel=All&levelOneSupervisionLocation[0]=All&levelTwoSupervisionLocation[0]=All&
         admissionType[0]=All`.replace(/\n\s+/g, "");
@@ -232,7 +235,7 @@ describe("BaseDataStore", () => {
         const apiError = new Error("API Error");
         beforeEach(() => {
           callMetricsApi.mockRejectedValueOnce(apiError);
-          baseStore = new BaseDataStore({ rootStore, file });
+          baseStore = new BaseDataStore({ rootStore: lanternStore, file });
         });
 
         it("does not set apiData", () => {
@@ -256,32 +259,15 @@ describe("BaseDataStore", () => {
 
   describe("when a filter value is not included in the dimension manifest", () => {
     beforeEach(() => {
-      UserStore.mockImplementationOnce(() => {
-        return {
-          user: mockUser,
-          userIsLoading: false,
-          getTokenSilently: mockGetTokenSilently,
-        };
-      });
-
-      UserRestrictedAccessStore.mockImplementationOnce(() => {
-        return {
-          isLoading: false,
-        };
-      });
-
-      rootStore = new RootStore();
-      runInAction(() => {
-        rootStore.tenantStore.currentTenantId = tenantId;
-      });
-      baseStore = new BaseDataStore({ rootStore, file });
-      rootStore.filtersStore.setFilters({
+      lanternStore = new LanternStore(mockRootStore);
+      baseStore = new BaseDataStore({ rootStore: lanternStore, file });
+      lanternStore.filtersStore.setFilters({
         violationType: "FELONY",
       });
     });
 
     it("fetches a new subset file with new filter query params", () => {
-      const expectedEndpoint = `${tenantId}/newRevocations/revocations_matrix_distribution_by_district?
+      const expectedEndpoint = `${mockTenantId}/newRevocations/revocations_matrix_distribution_by_district?
       metricPeriodMonths=12&chargeCategory=All&reportedViolations=All&violationType=All&
       supervisionType=All&supervisionLevel=All&levelOneSupervisionLocation[0]=All&
       levelTwoSupervisionLocation[0]=All&admissionType[0]=All`.replace(
@@ -289,7 +275,7 @@ describe("BaseDataStore", () => {
         ""
       );
 
-      rootStore.filtersStore.setFilters({
+      lanternStore.filtersStore.setFilters({
         violationType: "LAW",
       });
 
@@ -303,20 +289,16 @@ describe("BaseDataStore", () => {
   describe("when user is pending authentication", () => {
     beforeAll(() => {
       jest.resetAllMocks();
-      UserStore.mockImplementationOnce(() => {
-        return {
+
+      lanternStore = new LanternStore({
+        ...mockRootStore,
+        userStore: {
           user: null,
           userIsLoading: true,
           getTokenSilently: mockGetTokenSilently,
-        };
+        },
       });
-      UserRestrictedAccessStore.mockImplementationOnce(() => {
-        return {
-          isLoading: false,
-        };
-      });
-      rootStore = new RootStore();
-      baseStore = new BaseDataStore({ rootStore, file });
+      baseStore = new BaseDataStore({ rootStore: lanternStore, file });
     });
 
     afterAll(() => {
@@ -336,22 +318,13 @@ describe("BaseDataStore", () => {
   describe("when user restricted access is loading", () => {
     beforeAll(() => {
       jest.resetAllMocks();
-
-      UserStore.mockImplementationOnce(() => {
-        return {
-          user: mockUser,
-          userIsLoading: false,
-          getTokenSilently: mockGetTokenSilently,
-        };
-      });
-
       UserRestrictedAccessStore.mockImplementationOnce(() => {
         return {
           isLoading: true,
         };
       });
-      rootStore = new RootStore();
-      baseStore = new BaseDataStore({ rootStore, file });
+      lanternStore = new LanternStore(mockRootStore);
+      baseStore = new BaseDataStore({ rootStore: lanternStore, file });
     });
 
     afterAll(() => {
@@ -369,23 +342,23 @@ describe("BaseDataStore", () => {
   });
 
   describe("when the tenant is not a Lantern tenant", () => {
-    beforeAll(() => {
-      jest.resetAllMocks();
-      UserStore.mockImplementationOnce(() => {
-        return {
+    beforeEach(() => {
+      lanternStore = new LanternStore({
+        ...mockRootStore,
+        tenantStore: {
+          currentTenantId: "US_ND",
+          isLanternTenant: false,
+        },
+        userStore: {
           user: mockUser,
           userIsLoading: false,
-          getTokenSilently: false,
-        };
+          getTokenSilently: mockGetTokenSilently,
+        },
       });
-      rootStore = new RootStore();
-      runInAction(() => {
-        rootStore.tenantStore.currentTenantId = "US_ND";
-        baseStore = new BaseDataStore({ rootStore, file });
-      });
+      baseStore = new BaseDataStore({ rootStore: lanternStore, file });
     });
 
-    afterAll(() => {
+    afterEach(() => {
       jest.resetAllMocks();
     });
 

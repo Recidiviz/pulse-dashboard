@@ -35,11 +35,11 @@ import {
   VIOLATION_TYPE,
   LEVEL_2_SUPERVISION_LOCATION,
   LEVEL_1_SUPERVISION_LOCATION,
-} from "../lantern/utils/constants";
-import filterOptionsMap from "./TenantStore/filterOptions";
+} from "../utils/constants";
+import filterOptionsMap from "../../RootStore/TenantStore/filterOptions";
 import { compareStrings } from "./utils";
 import { generateNestedOptions } from "./utils/districtOptions";
-import getFilters from "./utils/getFilterDescription";
+import getFilters from "../../utils/getFilterDescription";
 import getViolation from "./utils/getViolationTypeDescription";
 
 export default class FiltersStore {

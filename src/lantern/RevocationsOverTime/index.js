@@ -14,24 +14,5 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-import { matchesTopLevelFilters } from "shared-filters";
-import BaseDataStore from "./BaseDataStore";
-import {
-  REPORTED_VIOLATIONS,
-  VIOLATION_TYPE,
-} from "../../lantern/utils/constants";
 
-export default class MatrixStore extends BaseDataStore {
-  constructor({ rootStore }) {
-    super({
-      rootStore,
-      file: `revocations_matrix_cells`,
-      ignoredSubsetDimensions: [VIOLATION_TYPE, REPORTED_VIOLATIONS],
-    });
-  }
-
-  get filteredData() {
-    const dataFilter = matchesTopLevelFilters({ filters: this.filters });
-    return this.filterData(this.apiData, dataFilter);
-  }
-}
+export { default } from "./RevocationsOverTime";

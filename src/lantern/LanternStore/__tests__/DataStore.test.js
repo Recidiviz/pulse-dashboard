@@ -14,19 +14,16 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-import DataStore from "../DataStore";
-import RootStore from "../RootStore";
+import RootStore from "../../../RootStore";
+import LanternStore from "..";
 
 let rootStore;
-let dataStore;
 
-jest.mock("@auth0/auth0-spa-js");
-jest.mock("../../api/metrics/metricsClient");
+jest.mock("../../../api/metrics/metricsClient");
 
 describe("DataStore", () => {
   beforeEach(() => {
-    rootStore = new RootStore();
-    dataStore = new DataStore({ rootStore });
+    rootStore = new LanternStore(RootStore);
   });
 
   afterAll(() => {
@@ -34,18 +31,18 @@ describe("DataStore", () => {
   });
 
   it("contains a RevocationsOverTimeStore", () => {
-    expect(dataStore.revocationsOverTimeStore).toBeDefined();
+    expect(rootStore.dataStore.revocationsOverTimeStore).toBeDefined();
   });
 
   it("contains a MatrixStore", () => {
-    expect(dataStore.matrixStore).toBeDefined();
+    expect(rootStore.dataStore.matrixStore).toBeDefined();
   });
 
   it("contains a RevocationsChartsStore", () => {
-    expect(dataStore.revocationsChartStore).toBeDefined();
+    expect(rootStore.dataStore.revocationsChartStore).toBeDefined();
   });
 
   it("contains a CaseTableStore", () => {
-    expect(dataStore.caseTableStore).toBeDefined();
+    expect(rootStore.dataStore.caseTableStore).toBeDefined();
   });
 });

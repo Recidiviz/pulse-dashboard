@@ -27,7 +27,10 @@ import {
 import * as Sentry from "@sentry/react";
 
 import { filterOptimizedDataFormat } from "shared-filters";
-import { callMetricsApi, parseResponseByFileFormat } from "../../api/metrics";
+import {
+  callMetricsApi,
+  parseResponseByFileFormat,
+} from "../../../api/metrics";
 import {
   getQueryStringFromFilters,
   dimensionManifestIncludesFilterValues,
@@ -39,7 +42,7 @@ import {
   LEVEL_2_SUPERVISION_LOCATION,
   METRIC_PERIOD_MONTHS,
   ADMISSION_TYPE,
-} from "../../lantern/utils/constants";
+} from "../../utils/constants";
 
 export const DEFAULT_IGNORED_DIMENSIONS = [
   LEVEL_1_SUPERVISION_LOCATION,
@@ -190,7 +193,7 @@ export default class BaseDataStore {
   }
 
   *fetchData({ tenantId }) {
-    if (!this.rootStore?.tenantStore.isLanternTenant) {
+    if (!this.rootStore.tenantStore.isLanternTenant) {
       this.isLoading = false;
       this.isError = false;
       return;

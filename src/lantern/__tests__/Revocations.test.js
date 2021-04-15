@@ -1,5 +1,5 @@
 // Recidiviz - a data platform for criminal justice reform
-// Copyright (C) 2020 Recidiviz, Inc.
+// Copyright (C) 2021 Recidiviz, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -24,7 +24,7 @@ import SelectFilter from "../FiltersBar/SelectFilter";
 import DistrictFilter from "../FiltersBar/DistrictFilter";
 import AdmissionTypeFilter from "../FiltersBar/AdmissionTypeFilter";
 import ViolationFilter from "../FiltersBar/ViolationFilter";
-import RevocationCountOverTime from "../RevocationsOverTime";
+import RevocationsOverTime from "../RevocationsOverTime";
 import Matrix from "../Matrix";
 import RevocationCharts from "../RevocationCharts";
 import CaseTable from "../CaseTable/CaseTable";
@@ -40,7 +40,7 @@ import {
   SUPERVISION_LEVEL,
   SUPERVISION_TYPE,
 } from "../utils/constants";
-import { useRootStore } from "../../components/StoreProvider";
+import { useLanternStore } from "../LanternStoreProvider";
 import { PageProvider } from "../../contexts/PageContext";
 
 jest.mock("../FiltersBar/SelectFilter");
@@ -52,7 +52,7 @@ jest.mock("../Matrix");
 jest.mock("../RevocationCharts");
 jest.mock("../CaseTable/CaseTable");
 jest.mock("../../RootStore/TenantStore/filterOptions");
-jest.mock("../../components/StoreProvider");
+jest.mock("../LanternStoreProvider");
 
 describe("Revocations component tests", () => {
   const metadataField = `${METADATA_NAMESPACE}app_metadata`;
@@ -62,13 +62,13 @@ describe("Revocations component tests", () => {
   const DistrictFilterId = "district-filter";
   const admissionTypeFilterId = "admission-type-filter";
   const violationFilterId = "violation-filter-id";
-  const revocationCountOverTimeId = "revocation-count-over-time";
+  const revocationsOverTimeId = "revocations-over-time";
   const revocationMatrixId = "revocation-matrix";
   const revocationChartsId = "revocation-charts";
   const caseTableId = "case-table";
 
   const DistrictFilterMock = DistrictFilter.type;
-  const RevocationCountOverTimeMock = RevocationCountOverTime.type;
+  const RevocationsOverTimeMock = RevocationsOverTime.type;
   const MatrixMock = Matrix.type;
   const CaseTableMock = CaseTable.type;
   const SelectFilterMock = SelectFilter.type;
@@ -84,15 +84,15 @@ describe("Revocations component tests", () => {
     mockWithTestId(admissionTypeFilterId)
   );
   ViolationFilterMock.mockReturnValue(mockWithTestId(violationFilterId));
-  RevocationCountOverTimeMock.mockReturnValue(
-    mockWithTestId(revocationCountOverTimeId)
+  RevocationsOverTimeMock.mockReturnValue(
+    mockWithTestId(revocationsOverTimeId)
   );
   MatrixMock.mockReturnValue(mockWithTestId(revocationMatrixId));
   RevocationChartsMock.mockReturnValue(mockWithTestId(revocationChartsId));
   CaseTableMock.mockReturnValue(mockWithTestId(caseTableId));
   setTranslateLocale(US_MO);
 
-  useRootStore.mockReturnValue({
+  useLanternStore.mockReturnValue({
     userStore: { user: mockUser, isAuthorized: true },
     currentTenantId: US_MO,
     filtersStore: {
@@ -133,7 +133,7 @@ describe("Revocations component tests", () => {
     expect(getByTestId(DistrictFilterId)).toBeInTheDocument();
     expect(getByTestId(admissionTypeFilterId)).toBeInTheDocument();
     expect(getByTestId(violationFilterId)).toBeInTheDocument();
-    expect(getByTestId(revocationCountOverTimeId)).toBeInTheDocument();
+    expect(getByTestId(revocationsOverTimeId)).toBeInTheDocument();
     expect(getByTestId(revocationMatrixId)).toBeInTheDocument();
     expect(getByTestId(revocationChartsId)).toBeInTheDocument();
     expect(getByTestId(caseTableId)).toBeInTheDocument();

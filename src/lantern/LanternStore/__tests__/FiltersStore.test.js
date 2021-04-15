@@ -14,16 +14,15 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-
 import { runInAction } from "mobx";
+import RootStore from "../../../RootStore";
+import LanternStore from "..";
+import getTenantMappings, {
+  tenantMappings,
+} from "../../../RootStore/TenantStore/tenants";
+import { LANTERN_TENANTS } from "../../../RootStore/TenantStore/lanternTenants";
 
-import RootStore from "../RootStore";
-import FiltersStore from "../FiltersStore";
-import getTenantMappings, { tenantMappings } from "../TenantStore/tenants";
-import { LANTERN_TENANTS } from "../TenantStore/lanternTenants";
-
-jest.mock("../../components/StoreProvider");
-jest.mock("../TenantStore/tenants");
+jest.mock("../../../RootStore/TenantStore/tenants");
 
 let rootStore;
 
@@ -68,7 +67,7 @@ describe("FiltersStore", () => {
   describe("default filter values", () => {
     it("are set correctly by default", () => {
       LANTERN_TENANTS.forEach((tenantId) => {
-        rootStore = new RootStore();
+        rootStore = new LanternStore(RootStore);
         runInAction(() => {
           rootStore.districtsStore.isLoading = false;
           rootStore.tenantStore.setCurrentTenantId(tenantId);
@@ -85,7 +84,7 @@ describe("FiltersStore", () => {
       const tenantId = "US_MO";
       const userDistrict = "99";
 
-      rootStore = new RootStore();
+      rootStore = new LanternStore(RootStore);
 
       runInAction(() => {
         rootStore.tenantStore.currentTenantId = tenantId;
@@ -101,7 +100,7 @@ describe("FiltersStore", () => {
     });
 
     it("clears the filter keys when switching tenants", () => {
-      rootStore = new RootStore();
+      rootStore = new LanternStore(RootStore);
       const usMOFilterKey = getDistrictFilterKey("US_MO");
       const usPAFilterKey = getDistrictFilterKey("US_PA");
 
@@ -154,7 +153,6 @@ describe("FiltersStore", () => {
   });
 
   describe("districts filter", () => {
-    let filtersStore;
     const mockDistricts = [
       {
         level_2_supervision_location_external_id: "03",
@@ -183,8 +181,7 @@ describe("FiltersStore", () => {
     ];
 
     beforeEach(() => {
-      rootStore = new RootStore();
-      filtersStore = new FiltersStore({ rootStore });
+      rootStore = new LanternStore(RootStore);
     });
 
     describe("when districts are loading", () => {
@@ -195,7 +192,8 @@ describe("FiltersStore", () => {
           rootStore.districtsStore.isLoading = true;
         });
         expect(
-          filtersStore.filterOptions[getDistrictFilterKey(tenantId)].options
+          rootStore.filtersStore.filterOptions[getDistrictFilterKey(tenantId)]
+            .options
         ).toEqual([]);
       });
     });
@@ -210,7 +208,8 @@ describe("FiltersStore", () => {
             rootStore.tenantStore.currentTenantId = tenantId;
           });
           expect(
-            filtersStore.filterOptions[getDistrictFilterKey(tenantId)].options
+            rootStore.filtersStore.filterOptions[getDistrictFilterKey(tenantId)]
+              .options
           ).toEqual([
             {
               label: "CENTRAL OFFICE - CO",
@@ -257,7 +256,8 @@ describe("FiltersStore", () => {
             rootStore.tenantStore.currentTenantId = tenantId;
           });
           expect(
-            filtersStore.filterOptions[getDistrictFilterKey(tenantId)].options
+            rootStore.filtersStore.filterOptions[getDistrictFilterKey(tenantId)]
+              .options
           ).toEqual([
             { value: "CO - CENTRAL OFFICE", label: "CENTRAL OFFICE - CO" },
             {

@@ -18,12 +18,12 @@
 /* eslint-disable camelcase */
 import { makeAutoObservable, autorun, flow } from "mobx";
 import * as Sentry from "@sentry/react";
-import { ERROR_MESSAGES } from "../constants/errorMessages";
-import type RootStore from "./RootStore";
-import { callRestrictedAccessApi } from "../api/metrics/metricsClient";
+import { ERROR_MESSAGES } from "../../constants/errorMessages";
+import type LanternStore from ".";
+import { callRestrictedAccessApi } from "../../api/metrics/metricsClient";
 
 type ConstructorProps = {
-  rootStore?: RootStore;
+  rootStore?: LanternStore;
 };
 
 type RestrictedAccessEmail = {
@@ -38,7 +38,7 @@ export default class UserRestrictedAccessStore {
 
   restrictedDistrict?: string;
 
-  readonly rootStore?: RootStore;
+  readonly rootStore?: LanternStore;
 
   constructor({ rootStore }: ConstructorProps) {
     makeAutoObservable(this, {
@@ -63,6 +63,7 @@ export default class UserRestrictedAccessStore {
     tenantId: string
   ) {
     if (!this.rootStore?.tenantStore.isRestrictedDistrictTenant) {
+      this.restrictedDistrict = undefined;
       this.isLoading = false;
       return;
     }

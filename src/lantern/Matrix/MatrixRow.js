@@ -21,11 +21,11 @@ import cx from "classnames";
 import { get } from "mobx";
 
 import { matrixViolationTypeToLabel } from "../../utils/formatStrings";
-import { useRootStore } from "../../components/StoreProvider";
+import { useLanternStore } from "../LanternStoreProvider";
 import { VIOLATION_TYPE, REPORTED_VIOLATIONS } from "../utils/constants";
 
 const MatrixRow = ({ children, violationType, sum, onClick }) => {
-  const { filters } = useRootStore();
+  const { filters } = useLanternStore();
 
   const isRowSelected =
     get(filters, VIOLATION_TYPE) === violationType &&
