@@ -27,13 +27,13 @@ import Sortable from "./Sortable";
 import Pagination from "./Pagination";
 import { useContainerHeight } from "../hooks/useContainerHeight";
 import { nullSafeCell, formatData, formatExportData } from "./utils/helpers";
-import { useRootStore } from "../../components/StoreProvider";
+import { useLanternStore } from "../LanternStoreProvider";
 import { translate } from "../../utils/i18nSettings";
 
 export const CASES_PER_PAGE = 15;
 
 const CaseTable = ({ timeDescription }) => {
-  const { dataStore } = useRootStore();
+  const { dataStore } = useLanternStore();
   const store = dataStore.caseTableStore;
   const TABLE_TITLE = translate("caseTableTitle");
   const [page, setPage] = useState(0);

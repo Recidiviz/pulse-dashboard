@@ -23,6 +23,7 @@ import {
   SetPopulationFilters,
   PopulationFilterValues,
 } from "../types/filters";
+import { Gender } from "../models/types";
 
 export const metricTypeOptions = [
   { label: "Counts", value: METRIC_TYPES.COUNTS },
@@ -146,8 +147,8 @@ export const PopulationFilterOptions: PopulationFilters = {
 export const defaultPopulationFilterValues: PopulationFilterValues = {
   [FILTER_TYPES.TIME_PERIOD]:
     PopulationFilterOptions[FILTER_TYPES.TIME_PERIOD].defaultValue,
-  [FILTER_TYPES.GENDER]:
-    PopulationFilterOptions[FILTER_TYPES.GENDER].defaultValue,
+  [FILTER_TYPES.GENDER]: PopulationFilterOptions[FILTER_TYPES.GENDER]
+    .defaultValue as Gender,
   [FILTER_TYPES.LEGAL_STATUS]:
     PopulationFilterOptions[FILTER_TYPES.LEGAL_STATUS].defaultValue,
   [FILTER_TYPES.SUPERVISION_TYPE]:

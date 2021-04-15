@@ -26,7 +26,7 @@ export type ApiData = {
 export type RawApiData = Record<string, ApiData>;
 export type RawMetricData = Record<string, string>[];
 
-export const TenantIdList = ["US_ND"] as const;
+export const TenantIdList = ["US_ND", "US_ID"] as const;
 
 export type TenantId = typeof TenantIdList[number];
 export type Gender = "ALL" | "FEMALE" | "MALE";

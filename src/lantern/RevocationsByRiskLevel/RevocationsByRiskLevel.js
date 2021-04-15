@@ -24,7 +24,7 @@ import getLabelByMode from "../utils/getLabelByMode";
 import createGenerateChartData from "./createGenerateChartData";
 import RevocationsByDimension from "../RevocationsByDimension";
 import BarChartWithLabels from "../BarCharts";
-import { useDataStore } from "../../components/StoreProvider";
+import { useDataStore } from "../LanternStoreProvider";
 import { translate } from "../../utils/i18nSettings";
 
 const DEFAULT_MODE = "rates";

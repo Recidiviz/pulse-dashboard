@@ -24,14 +24,14 @@ import PercentRevokedChart from "../PercentRevokedChart";
 import RevocationCountChart from "../RevocationCountChart";
 import createGenerateChartData from "./createGenerateChartData";
 import { translate } from "../../utils/i18nSettings";
+import { useDataStore } from "../LanternStoreProvider";
 import flags from "../../flags";
-import { useRootStore } from "../../components/StoreProvider";
 
 const DEFAULT_MODE = "counts";
 
 const RevocationsByDistrict = observer(
   ({ containerHeight, timeDescription }, ref) => {
-    const { dataStore } = useRootStore();
+    const dataStore = useDataStore();
     const { revocationsChartStore } = dataStore;
     const { districtChartData, currentDistricts } = revocationsChartStore;
     const CHART_TITLE = translate("revocationsByDistrictChartTitle");

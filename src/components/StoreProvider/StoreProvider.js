@@ -24,9 +24,7 @@ const StoreContext = React.createContext(undefined);
 
 const StoreProvider = ({ children }) => {
   return (
-    <StoreContext.Provider value={new RootStore()}>
-      {children}
-    </StoreContext.Provider>
+    <StoreContext.Provider value={RootStore}>{children}</StoreContext.Provider>
   );
 };
 
@@ -39,24 +37,9 @@ export default StoreProvider;
 export function useRootStore() {
   const context = useContext(StoreContext);
   if (context === undefined) {
-    throw new Error("useStore must be used within a StoreProvider");
+    throw new Error("useRootStore must be used within a StoreProvider");
   }
   return context;
-}
-
-export function useDataStore() {
-  const { dataStore } = useRootStore();
-  return dataStore;
-}
-
-export function useFiltersStore() {
-  const { filtersStore } = useRootStore();
-  return filtersStore;
-}
-
-export function usePopulationFiltersStore() {
-  const { populationFiltersStore } = useRootStore();
-  return populationFiltersStore;
 }
 
 export function useUserStore() {
