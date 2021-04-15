@@ -23,7 +23,7 @@
   margin-bottom: 0.5rem;
   text-align: left;
 
-  &--secondary {
+  &--state, &--parent {
     font: $font-ui-sans-14;
     color: $slate-80;
     &:hover {
@@ -33,7 +33,12 @@
     }
   }
 
-  &--primary {
+  &--parent::before {
+    content: "/";
+    padding: 0 5px;
+  }
+
+  &--current {
     font: $font-ui-serif-34;
     color: $pine-3;
   }

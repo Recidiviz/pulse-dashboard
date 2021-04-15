@@ -91,7 +91,8 @@ export type VitalsSummaryRecord = {
   entityId: string;
   entityName: string; // i.e. "North Dakota" or "Oakes"
   entityType: EntityType;
-  parentEntityId?: string; // not set for top-level
+  parentEntityId: string;
+  parentEntityName: string;
   overall: number;
   overall7Day: number;
   overall28Day: number;

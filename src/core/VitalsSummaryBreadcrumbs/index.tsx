@@ -18,10 +18,17 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { ENTITY_TYPES, VitalsSummaryRecord } from "../models/types";
+import { toTitleCase } from "../../utils/formatStrings";
+import { convertIdToSlug } from "../../utils/navigation";
 import "./VitalsSummaryBreadcrumbs.scss";
 
 function formatOfficeName(name: string): string {
-  return `${name} Office`;
+  return `${toTitleCase(name)} Office`;
+}
+
+function formatOfficerName(name: string): string {
+  const nameWithoutId = name.split(": ").pop();
+  return nameWithoutId || name;
 }
 
 type PropTypes = {
@@ -33,20 +40,42 @@ const VitalsSummaryBreadcrumbs: React.FC<PropTypes> = ({
   stateName,
   entity,
 }) => {
-  const { entityName, entityType } = entity;
-  const { primary, secondary } =
-    entityType === ENTITY_TYPES.LEVEL_1_SUPERVISION_LOCATION
-      ? { primary: formatOfficeName(entityName), secondary: stateName }
-      : { primary: stateName, secondary: undefined };
+  const { entityName, entityType, parentEntityName, parentEntityId } = entity;
+  let primary;
+  let secondary;
+  let tertiary;
+
+  switch (entityType) {
+    case ENTITY_TYPES.LEVEL_1_SUPERVISION_LOCATION:
+      primary = formatOfficeName(entityName);
+      secondary = stateName;
+      tertiary = undefined;
+      break;
+    case ENTITY_TYPES.PO:
+      primary = formatOfficerName(entityName);
+      secondary = stateName;
+      tertiary = formatOfficeName(parentEntityName);
+      break;
+    default:
+      primary = stateName;
+      secondary = undefined;
+      tertiary = undefined;
+  }
+
   return (
     <div className="VitalsSummaryBreadcrumbs">
-      <Link
-        className="VitalsSummaryBreadcrumbs--secondary"
-        to="/community/vitals"
-      >
+      <Link className="VitalsSummaryBreadcrumbs--state" to="/community/vitals">
         {secondary}
       </Link>
-      <div className="VitalsSummaryBreadcrumbs--primary">{primary}</div>
+      {tertiary && (
+        <Link
+          className="VitalsSummaryBreadcrumbs--parent"
+          to={`/community/vitals/${convertIdToSlug(parentEntityId)}`}
+        >
+          {tertiary}
+        </Link>
+      )}
+      <div className="VitalsSummaryBreadcrumbs--current">{primary}</div>
     </div>
   );
 };
