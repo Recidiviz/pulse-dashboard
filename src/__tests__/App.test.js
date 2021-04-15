@@ -69,6 +69,7 @@ describe("App tests", () => {
   const RevocationsMock = Revocations.type;
   const LanternLayoutMock = LanternLayout.type;
   const CoreLayoutMock = CoreLayout.type;
+  const VitalsMethodologyMock = VitalsMethodology.type;
 
   LanternLayoutMock.mockImplementation(({ children }) => children);
   CoreLayoutMock.mockImplementation(({ children }) => children);
@@ -82,7 +83,9 @@ describe("App tests", () => {
   ProjectionsMethodology.mockReturnValue(
     mockWithTestId(mockProjectionsMethodologyId)
   );
-  VitalsMethodology.mockReturnValue(mockWithTestId(mockVitalsMethodologyId));
+  VitalsMethodologyMock.mockReturnValue(
+    mockWithTestId(mockVitalsMethodologyId)
+  );
 
   beforeEach(() => {
     jest.clearAllMocks();
