@@ -4,21 +4,25 @@ import { Table } from "reactstrap";
 const ModelInfrastructureBlock = () => {
   return (
     <div className="Methodology__block--content">
+      <p>
+        The underlying infrastructure of the model uses three core components:
+        Compartments, Cohorts, and Compartment Transitions. These are used to
+        simulate the movement of people through the system and count the total
+        population at each time step.
+      </p>
       <h4 className="col-12 Methodology__sub-block--title">Compartments</h4>
       <div className="col-12 p-0">
-        <span>
+        <p>
           The Compartments component represents an area of the criminal justice
           system, such as incarceration (termers, riders, parole violators),
-          supervision (parole probation), and release/out of the system. The
+          supervision (parole, probation), and release/out of the system. The
           Compartment contains a list of all the Cohorts that have been in that
-          area of the system at any point within the simulation.
-        </span>
-        <span>
-          For instance, the Compartment that represents parole supervision would
-          maintain the total number of people on parole for each time step of
-          the simulation. If the time step is years, then it would count the
-          year-end total parole population.
-        </span>
+          area of the system at any point within the simulation. For instance,
+          the Compartment that represents parole supervision would maintain the
+          total number of people on parole for each time step of the simulation.
+          If the time step is years, then it would count the year-end total
+          parole population.
+        </p>
       </div>
       <div className="col-12  p-0 row no-gutters">
         <h4 className="col-12 Methodology__sub-block--title">Cohorts</h4>
