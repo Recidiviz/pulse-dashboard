@@ -42,8 +42,8 @@ import UsNdCommunityExplore from "./core/community/Explore";
 import UsNdFacilitiesExplore from "./core/facilities/Explore";
 import PageProjections from "./core/PageProjections";
 import PageVitals from "./core/PageVitals";
+import PageMethodology from "./core/PageMethodology";
 import CoreGoalsView from "./core/goals/CoreGoalsView";
-import Methodology from "./core/methodology/Methodology";
 
 import initFontAwesome from "./utils/initFontAwesome";
 import initIntercomSettings from "./utils/initIntercomSettings";
@@ -92,7 +92,7 @@ const App = () => (
                   <ProtectedRoute path={CORE_PATHS.facilitiesExplore} component={UsNdFacilitiesExplore} />
                   <ProtectedRoute path={CORE_PATHS.facilitiesProjections} component={PageProjections} />
                   <ProtectedRoute path={CORE_PATHS.communityVitals} component={PageVitals}/>
-                  <ProtectedRoute path={CORE_PATHS.methodology} component={Methodology} />
+                  <ProtectedRoute path={CORE_PATHS.methodology} component={PageMethodology} />
                   <Route path="/profile" component={Profile} />
                   <RedirectHome />
                   <Redirect from="/snapshots" to="/goals" />

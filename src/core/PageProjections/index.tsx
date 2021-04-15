@@ -27,6 +27,7 @@ import {
 } from "../models/types";
 // import { populationProjectionSummary } from "../models/PopulationProjectionSummaryMetric";
 import PopulationTimeSeriesChart from "../PopulationTimeSeriesChart";
+import PopulationProjectionLastUpdated from "./PopulationProjectionLastUpdated";
 import { populationProjectionTimeSeries } from "../models/PopulationProjectionTimeSeriesMetric";
 import PopulationFilterBar from "../PopulationFilterBar";
 import filterOptions from "../utils/filterOptions";
@@ -43,7 +44,15 @@ const PageProjections: React.FC = () => {
 
   if (isLoading) {
     return (
-      <PageTemplate>
+      <PageTemplate
+        filters={
+          <PopulationFilterBar
+            view={getViewFromPathname(pathname)}
+            // @ts-ignore
+            filterOptions={filterOptions[currentTenantId]}
+          />
+        }
+      >
         <PopulationSummaryMetrics isLoading={isLoading} isError={isError} />
       </PageTemplate>
     );
@@ -72,6 +81,9 @@ const PageProjections: React.FC = () => {
       <PopulationSummaryMetrics
         isError={isError}
         projectionSummaries={projectionTimeSeries}
+      />
+      <PopulationProjectionLastUpdated
+        projectionTimeSeries={projectionTimeSeries}
       />
       <PopulationTimeSeriesChart data={projectionTimeSeries} />
     </PageTemplate>

@@ -30,6 +30,8 @@ import "./PopulationTimeSeriesChart.scss";
 import PopulationTimeSeriesLegend from "./PopulationTimeSeriesLegend";
 import { CORE_VIEWS, getViewFromPathname } from "../views";
 import PopulationTimeSeriesTooltip from "./PopulationTimeSeriesTooltip";
+import PopulationTimeSeriesErrorBar from "./PopulationTimeSeriesErrorBar";
+import * as styles from "../CoreConstants.scss";
 
 import {
   ChartPoint,
@@ -47,6 +49,8 @@ type PlotLine = {
 type PropTypes = {
   data: PopulationProjectionTimeSeriesRecord[];
 };
+
+const TOTAL_INCARCERATED_LIMIT = 8008;
 
 const PopulationTimeSeriesChart: React.FC<PropTypes> = ({ data }) => {
   const filtersStore = useFiltersStore();
@@ -143,7 +147,6 @@ const PopulationTimeSeriesChart: React.FC<PropTypes> = ({ data }) => {
         summaries={projectionArea}
         summaryDataAccessor="data"
         summaryClass="projection-area"
-        renderOrder={["summaries", "lines"]}
         annotations={[
           {
             type: "area",
@@ -164,6 +167,31 @@ const PopulationTimeSeriesChart: React.FC<PropTypes> = ({ data }) => {
             dx: -49,
             dy: 370,
           },
+          {
+            type: "y",
+            value:
+              gender === "ALL" &&
+              legalStatus === "ALL" &&
+              compartment === "INCARCERATION"
+                ? TOTAL_INCARCERATED_LIMIT
+                : 1e6,
+            // Need to send this line off of the chart when not looking at all
+            // incarcerated people. We need to move it instead of deleting it
+            // to prevent semiotic from deleting and rerendering the annotation
+            // layer which makes the uncertainty band just appear at its new location
+            // instead of transforming its way there
+            disable: "connector",
+            color: styles.crimsonDark50,
+            note: {
+              label: `Total Operational Capacity (includes CAPP): ${TOTAL_INCARCERATED_LIMIT.toLocaleString()}`,
+              align: "left",
+              lineType: null,
+              color: styles.crimsonDark,
+              wrap: 500,
+            },
+            dx: -40,
+            dy: -8,
+          },
         ]}
         hoverAnnotation
         svgAnnotationRules={(d: any) => {
@@ -171,6 +199,21 @@ const PopulationTimeSeriesChart: React.FC<PropTypes> = ({ data }) => {
           if (d.d.parentSummary !== undefined) {
             return false;
           }
+
+          if (d.d.parentLine?.class.endsWith("ProjectedLine")) {
+            const [screenX, screenY] = d.screenCoordinates;
+            const { value, lowerBound, upperBound } = d.d;
+            const props = {
+              value,
+              lowerBound,
+              upperBound,
+              screenX,
+              screenY,
+              chartTop,
+            };
+            return <PopulationTimeSeriesErrorBar {...props} />;
+          }
+
           return null;
         }}
         tooltipContent={(d: any) => <PopulationTimeSeriesTooltip d={d} />}
