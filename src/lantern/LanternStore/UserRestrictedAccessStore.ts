@@ -26,7 +26,7 @@ type ConstructorProps = {
   rootStore?: LanternStore;
 };
 
-type RestrictedAccessEmail = {
+type RestrictedAccess = {
   restricted_user_email: string;
   allowed_level_1_supervision_location_ids: string;
 };
@@ -76,7 +76,7 @@ export default class UserRestrictedAccessStore {
         this.rootStore.userStore.user.email,
         this.rootStore.userStore.getTokenSilently
       );
-      this.setRestrictedDistrict(responseData[file]);
+      this.setRestrictions(responseData[file]);
       this.isLoading = false;
     } catch (error) {
       Sentry.captureException(error, {
@@ -96,10 +96,9 @@ export default class UserRestrictedAccessStore {
     }
   });
 
-  setRestrictedDistrict(restrictedEmail: RestrictedAccessEmail): void {
+  setRestrictions(restrictions: RestrictedAccess): void {
     this.restrictedDistrict =
-      restrictedEmail &&
-      restrictedEmail.allowed_level_1_supervision_location_ids;
+      restrictions && restrictions.allowed_level_1_supervision_location_ids;
     this.verifyRestrictedDistrict();
   }
 

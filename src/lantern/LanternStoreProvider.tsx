@@ -1,6 +1,9 @@
 import React, { useContext } from "react";
 import LanternStore from "./LanternStore";
 import RootStore from "../RootStore";
+import type UserStore from "../RootStore/UserStore";
+import type FiltersStore from "./LanternStore/FiltersStore";
+import type DataStore from "./LanternStore/DataStore/DataStore";
 
 const LanternContext = React.createContext<LanternStore | undefined>(undefined);
 const lanternStore = new LanternStore(RootStore);
@@ -20,23 +23,24 @@ const LanternStoreProvider: React.FC<ProviderProps> = ({ children }) => {
 export function useLanternStore(): LanternStore {
   const context = useContext(LanternContext);
   if (context === undefined) {
-    throw new Error("useStore must be used within a LanternStoreProvider");
+    throw new Error(
+      "useLanternStore must be used within a LanternStoreProvider"
+    );
   }
   return context;
 }
 
-export function useDataStore(): Partial<LanternStore> {
+export function useDataStore(): DataStore {
   const { dataStore } = useLanternStore();
-  // @ts-ignore
   return dataStore;
 }
 
-export function useFiltersStore(): Partial<LanternStore> {
+export function useFiltersStore(): FiltersStore {
   const { filtersStore } = useLanternStore();
   return filtersStore;
 }
 
-export function useUserStore(): Partial<LanternStore> {
+export function useUserStore(): UserStore {
   const { userStore } = useLanternStore();
   return userStore;
 }

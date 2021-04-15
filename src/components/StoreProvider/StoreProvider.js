@@ -37,7 +37,7 @@ export default StoreProvider;
 export function useRootStore() {
   const context = useContext(StoreContext);
   if (context === undefined) {
-    throw new Error("useStore must be used within a StoreProvider");
+    throw new Error("useRootStore must be used within a StoreProvider");
   }
   return context;
 }

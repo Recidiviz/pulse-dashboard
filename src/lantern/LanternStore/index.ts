@@ -30,15 +30,15 @@ interface LanternStoreProps {
 }
 
 export default class LanternStore {
-  userStore;
+  userStore: UserStore;
 
-  tenantStore;
+  tenantStore: TenantStore;
 
-  userRestrictedAccessStore;
+  userRestrictedAccessStore: UserRestrictedAccessStore;
 
-  filtersStore;
+  filtersStore: FiltersStore;
 
-  dataStore;
+  dataStore: DataStore;
 
   districtsStore;
 
