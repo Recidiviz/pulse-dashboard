@@ -19,6 +19,7 @@ import { useParams, useHistory } from "react-router-dom";
 import PageTemplate from "../PageTemplate";
 import VitalsMethodology from "../VitalsMethodology";
 import ProjectionsMethodology from "../ProjectionsMethodology/Methodology";
+import "./Methodology.scss";
 
 const PageMethodology: React.FC = () => {
   const { dashboard }: { dashboard: string } = useParams();

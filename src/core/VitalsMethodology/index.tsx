@@ -27,8 +27,6 @@ import PageTemplate from "../PageTemplate";
 import { useRootStore } from "../../components/StoreProvider";
 import { convertToSlug } from "../../utils/navigation";
 
-import "../ProjectionsMethodology/Methodology.scss";
-
 const VitalsMethodology: React.FC = () => {
   const { currentTenantId } = useRootStore();
   // @ts-ignore TODO TS

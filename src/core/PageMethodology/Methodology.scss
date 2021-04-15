@@ -1,4 +1,3 @@
-@import "../../assets/styles/spec/settings/baseColors.scss";
 @import "../CoreConstants.scss";
 
 .main-content {
@@ -17,7 +16,7 @@
     margin: 0px;
   }
   &__main-description {
-    color: $label-topbar;
+    color: $pine-3;
     font: $font-article-sans-32;
   }
   &__toc {
@@ -27,10 +26,7 @@
       font: $font-article-sans-14;
     }
     &--link {
-      font-family: Libre Franklin;
-      font-weight: 400;
-      font-size: 1.5rem;
-      line-height: 2.5rem;
+      font: $font-article-sans-24;
       color: $signal-links;
       width: fit-content;
       &:hover,
@@ -50,7 +46,7 @@
     &--title {
       padding: 4.5rem 0px 0px 0px !important;
       font: $font-article-serif-34;
-      color: $label-topbar;
+      color: $pine-3;
     }
     &--content {
       font: $font-article-sans-16;
@@ -62,7 +58,7 @@
   }
   &__sub-block--title {
     padding: 2rem 0px 1rem 0px !important;
-    color: $label-topbar;
+    color: $pine-3;
     font: $font-article-serif-24;
   }
   &__table {
