@@ -20,14 +20,14 @@ import PropTypes from "prop-types";
 import { Helmet } from "react-helmet";
 import { observer } from "mobx-react-lite";
 
-import TopBar from "../components/TopBar/TopBar";
-import TopBarLogo from "../components/TopBar/TopBarLogo";
-import TopBarUserMenuForAuthenticatedUser from "../components/TopBar/TopBarUserMenuForAuthenticatedUser";
 import Footer from "../components/Footer";
 import usePageLayout from "./hooks/usePageLayout";
 import useIntercom from "../hooks/useIntercom";
 import { setTranslateLocale } from "../utils/i18nSettings";
 import { useRootStore } from "../components/StoreProvider";
+import LanternStoreProvider from "./LanternStoreProvider";
+import LanternErrorBoundary from "./ErrorBoundary";
+import LanternTopBar from "./LanternTopBar";
 
 import "./LanternLayout.scss";
 
@@ -38,24 +38,23 @@ const LanternLayout = ({ children }) => {
   setTranslateLocale(currentTenantId);
 
   return (
-    <div className="LanternLayout" id="app">
-      <Helmet>
-        <link
-          href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@400;500;600;700&display=swap"
-          rel="stylesheet"
-        />
-      </Helmet>
-      <div className="wide-page-container">
-        <TopBar isHidable isWide>
-          <TopBarLogo />
-          <ul className="nav-right">
-            <TopBarUserMenuForAuthenticatedUser />
-          </ul>
-        </TopBar>
-        {children}
-        <Footer />
-      </div>
-    </div>
+    <LanternStoreProvider>
+      <LanternErrorBoundary>
+        <div className="LanternLayout" id="app">
+          <Helmet>
+            <link
+              href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@400;500;600;700&display=swap"
+              rel="stylesheet"
+            />
+          </Helmet>
+          <div className="wide-page-container">
+            <LanternTopBar />
+            {children}
+            <Footer />
+          </div>
+        </div>
+      </LanternErrorBoundary>
+    </LanternStoreProvider>
   );
 };
 

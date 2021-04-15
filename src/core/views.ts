@@ -28,7 +28,9 @@ export const CORE_PATHS: Record<string, string> = {
   communityVitals: "/community/vitals/:entityId?",
   facilitiesExplore: "/facilities/explore",
   facilitiesProjections: "/facilities/projections",
-  methodology: "/methodology",
+  methodology: "/methodology/:dashboard",
+  methodologyVitals: "/methodology/vitals",
+  methodologyProjections: "/methodology/projections",
 };
 
 const pathnameToView: Record<string, string> = {
@@ -38,7 +40,8 @@ const pathnameToView: Record<string, string> = {
   [CORE_PATHS.communityVitals]: CORE_VIEWS.community,
   [CORE_PATHS.facilitiesExplore]: CORE_VIEWS.facilities,
   [CORE_PATHS.facilitiesProjections]: CORE_VIEWS.facilities,
-  [CORE_PATHS.methodology]: CORE_VIEWS.methodology,
+  [CORE_PATHS.methodologyVitals]: CORE_VIEWS.methodology,
+  [CORE_PATHS.methodologyProjections]: CORE_VIEWS.methodology,
 };
 
 export function getViewFromPathname(pathname: string): keyof typeof CORE_VIEWS {
