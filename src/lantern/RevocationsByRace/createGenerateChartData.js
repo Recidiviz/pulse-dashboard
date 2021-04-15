@@ -1,5 +1,5 @@
 // Recidiviz - a data platform for criminal justice reform
-// Copyright (C) 2020 Recidiviz, Inc.
+// Copyright (C) 2021 Recidiviz, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -25,16 +25,24 @@ import {
 import getCounts from "../utils/getCounts";
 import createPopulationMap from "../utils/createPopulationMap";
 import { translate } from "../../utils/i18nSettings";
-import { CHART_COLORS, CHART_COLORS_STACKED } from "./constants";
 import { applyStatisticallySignificantShadingToDataset } from "../utils/significantStatistics";
+import { COLORS } from "../../assets/scripts/constants/colors";
 
-export const generateDatasets = (dataPoints, denominators, colorsSet) => {
+export const CHART_COLORS = [
+  COLORS["lantern-bright-orange"],
+  COLORS["lantern-yellow"],
+  COLORS["lantern-ocean-blue"],
+  COLORS["lantern-sky-blue"],
+  COLORS["lantern-green"],
+];
+
+export const generateDatasets = (dataPoints, denominators) => {
   const raceLabelMap = translate("raceLabelMap");
   const raceLabels = Object.values(raceLabelMap);
   return raceLabels.map((raceLabel, index) => ({
     label: raceLabel,
     backgroundColor: applyStatisticallySignificantShadingToDataset(
-      colorsSet[index],
+      CHART_COLORS[index],
       denominators
     ),
     data: dataPoints[index],
@@ -59,11 +67,7 @@ const createGenerateStackedChartData = ({
       )
   )(filteredData);
 
-  const datasets = generateDatasets(
-    dataPoints,
-    denominators,
-    CHART_COLORS_STACKED
-  );
+  const datasets = generateDatasets(dataPoints, denominators);
 
   const data = {
     labels: getStatePopulationsLabels(),
@@ -95,7 +99,7 @@ const createGenerateChartDataByMode = (
       )
   )(filteredData);
 
-  const datasets = generateDatasets(dataPoints, denominators, CHART_COLORS);
+  const datasets = generateDatasets(dataPoints, denominators);
   const datasetIndex = datasets.findIndex(
     (d) => d.label === translate("raceLabelMap")[mode]
   );

@@ -1,5 +1,5 @@
 // Recidiviz - a data platform for criminal justice reform
-// Copyright (C) 2020 Recidiviz, Inc.
+// Copyright (C) 2021 Recidiviz, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -18,7 +18,6 @@
 import pipe from "lodash/fp/pipe";
 import reduce from "lodash/fp/reduce";
 
-import { CHART_COLORS, CHART_COLORS_STACKED } from "./constants";
 import { applyStatisticallySignificantShadingToDataset } from "../utils/significantStatistics";
 
 import {
@@ -28,12 +27,18 @@ import {
 } from "../../utils/formatStrings";
 import getCounts from "../utils/getCounts";
 import createPopulationMap from "../utils/createPopulationMap";
+import { COLORS } from "../../assets/scripts/constants/colors";
 
-export const generateDatasets = (dataPoints, denominators, chartColors) => {
+export const CHART_COLORS = [
+  COLORS["lantern-medium-blue"],
+  COLORS["lantern-sky-blue"],
+];
+
+export const generateDatasets = (dataPoints, denominators) => {
   return Object.values(genderValueToLabel).map((genderLabel, index) => ({
     label: genderLabel,
     backgroundColor: applyStatisticallySignificantShadingToDataset(
-      chartColors[index],
+      CHART_COLORS[index],
       denominators
     ),
     data: dataPoints[index],
@@ -57,11 +62,7 @@ const createGenerateStackedChartData = ({
       )
   )(filteredData);
 
-  const datasets = generateDatasets(
-    dataPoints,
-    denominators,
-    CHART_COLORS_STACKED
-  );
+  const datasets = generateDatasets(dataPoints, denominators);
 
   const data = {
     labels: getStatePopulationsLabels(),
@@ -92,7 +93,7 @@ const createGenerateChartDataByMode = (
       )
   )(filteredData);
 
-  const datasets = generateDatasets(dataPoints, denominators, CHART_COLORS);
+  const datasets = generateDatasets(dataPoints, denominators);
   const datasetIndex = datasets.findIndex(
     (d) => d.label === genderValueToLabel[mode]
   );
