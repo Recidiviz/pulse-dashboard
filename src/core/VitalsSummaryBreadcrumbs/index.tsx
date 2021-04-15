@@ -41,41 +41,41 @@ const VitalsSummaryBreadcrumbs: React.FC<PropTypes> = ({
   entity,
 }) => {
   const { entityName, entityType, parentEntityName, parentEntityId } = entity;
-  let primary;
-  let secondary;
-  let tertiary;
+  let current;
+  let state;
+  let parent;
 
   switch (entityType) {
     case ENTITY_TYPES.LEVEL_1_SUPERVISION_LOCATION:
-      primary = formatOfficeName(entityName);
-      secondary = stateName;
-      tertiary = undefined;
+      current = formatOfficeName(entityName);
+      state = stateName;
+      parent = undefined;
       break;
     case ENTITY_TYPES.PO:
-      primary = formatOfficerName(entityName);
-      secondary = stateName;
-      tertiary = formatOfficeName(parentEntityName);
+      current = formatOfficerName(entityName);
+      state = stateName;
+      parent = formatOfficeName(parentEntityName);
       break;
     default:
-      primary = stateName;
-      secondary = undefined;
-      tertiary = undefined;
+      current = stateName;
+      state = undefined;
+      parent = undefined;
   }
 
   return (
     <div className="VitalsSummaryBreadcrumbs">
       <Link className="VitalsSummaryBreadcrumbs--state" to="/community/vitals">
-        {secondary}
+        {state}
       </Link>
-      {tertiary && (
+      {parent && (
         <Link
           className="VitalsSummaryBreadcrumbs--parent"
           to={`/community/vitals/${convertIdToSlug(parentEntityId)}`}
         >
-          {tertiary}
+          {parent}
         </Link>
       )}
-      <div className="VitalsSummaryBreadcrumbs--current">{primary}</div>
+      <div className="VitalsSummaryBreadcrumbs--current">{current}</div>
     </div>
   );
 };
