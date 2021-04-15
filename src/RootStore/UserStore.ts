@@ -20,7 +20,7 @@ import { makeAutoObservable, runInAction, action } from "mobx";
 import qs from "qs";
 
 import { ERROR_MESSAGES } from "../constants/errorMessages";
-import type RootStore from "./RootStore";
+import type RootStore from ".";
 import {
   getUserStateCode,
   getStateNameForCode,
@@ -31,7 +31,7 @@ import { getDemoUser } from "../utils/authentication/viewAuthentication";
 
 type ConstructorProps = {
   authSettings?: Auth0ClientOptions;
-  rootStore?: RootStore;
+  rootStore?: typeof RootStore;
 };
 
 /**
@@ -66,7 +66,7 @@ export default class UserStore {
 
   logout?: () => void;
 
-  readonly rootStore?: RootStore;
+  readonly rootStore?: typeof RootStore;
 
   constructor({ authSettings, rootStore }: ConstructorProps) {
     makeAutoObservable(this, {

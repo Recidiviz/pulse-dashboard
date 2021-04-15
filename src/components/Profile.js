@@ -25,7 +25,7 @@ import Loading from "./Loading";
 import StateSelector from "./StateSelector";
 
 const Profile = () => {
-  const { tenantStore, userStore, userRestrictedAccessStore } = useRootStore();
+  const { tenantStore, userStore } = useRootStore();
   const { isLoading, user } = userStore;
   const { push } = useHistory();
   const [selectedState, setSelectedState] = useState();
@@ -34,7 +34,6 @@ const Profile = () => {
 
   const handleOnClick = () => {
     if (selectedState) {
-      userRestrictedAccessStore.resetRestrictedDistrict();
       tenantStore.setCurrentTenantId(selectedState);
     }
     push({ pathname: "/" });

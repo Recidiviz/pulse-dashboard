@@ -28,11 +28,7 @@ import NotFound from "../components/NotFound";
  * Verifies authorization before rendering its children.
  */
 const AuthWall: React.FC = ({ children }) => {
-  const {
-    userStore,
-    userRestrictedAccessStore,
-    currentTenantId,
-  } = useRootStore();
+  const { userStore, currentTenantId } = useRootStore();
 
   useEffect(
     () =>
@@ -48,7 +44,7 @@ const AuthWall: React.FC = ({ children }) => {
     throw userStore.authError;
   }
 
-  if (userStore.userIsLoading || userRestrictedAccessStore.isLoading) {
+  if (userStore.userIsLoading) {
     return <Loading />;
   }
 

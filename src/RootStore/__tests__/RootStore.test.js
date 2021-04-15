@@ -17,55 +17,27 @@
 
 import createAuth0Client from "@auth0/auth0-spa-js";
 
-import RootStore from "../RootStore";
+import RootStore from "..";
 import { METADATA_NAMESPACE } from "../../constants";
 
 jest.mock("@auth0/auth0-spa-js");
 jest.mock("../../api/metrics");
-jest.mock("../DataStore/DataStore");
-jest.mock("../DistrictsStore");
-
-let rootStore;
 
 describe("RootStore", () => {
-  beforeEach(() => {
-    rootStore = new RootStore();
-  });
-
   afterAll(() => {
     jest.resetAllMocks();
   });
 
-  it("contains a FiltersStore", () => {
-    expect(rootStore.filtersStore).toBeDefined();
-  });
-
   it("contains a TenantStore", () => {
-    expect(rootStore.tenantStore).toBeDefined();
+    expect(RootStore.tenantStore).toBeDefined();
   });
 
   it("contains a UserStore", () => {
-    expect(rootStore.userStore).toBeDefined();
-  });
-
-  it("contains a UserRestrictedAccessStore", () => {
-    expect(rootStore.userRestrictedAccessStore).toBeDefined();
+    expect(RootStore.userStore).toBeDefined();
   });
 
   it("contains a currentTenantId", () => {
-    expect(rootStore.currentTenantId).toBeDefined();
-  });
-
-  it("contains filters", () => {
-    expect(rootStore.filters).toBeDefined();
-  });
-
-  it("contains the DataStore", () => {
-    expect(rootStore.dataStore).toBeDefined();
-  });
-
-  it("contains the DistrictsStore", () => {
-    expect(rootStore.districtsStore).toBeDefined();
+    expect(RootStore.currentTenantId).toBeDefined();
   });
 
   it("contains user", async () => {
@@ -79,8 +51,8 @@ describe("RootStore", () => {
       isAuthenticated: () => true,
     });
 
-    await rootStore.userStore.authorize();
+    await RootStore.userStore.authorize();
 
-    expect(rootStore.user).toBeDefined();
+    expect(RootStore.user).toBeDefined();
   });
 });
