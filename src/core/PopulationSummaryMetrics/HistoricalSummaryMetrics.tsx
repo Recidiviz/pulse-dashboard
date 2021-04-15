@@ -18,14 +18,14 @@ import React from "react";
 import { observer } from "mobx-react-lite";
 import MetricsCard from "../MetricsCard";
 import SummaryMetrics from "./SummaryMetrics";
-import { usePopulationFiltersStore } from "../../components/StoreProvider";
+import { useFiltersStore } from "../CoreStoreProvider";
 import type { HistoricalSummaryRecord } from "../models/types";
 
 const HistoricalSummaryMetrics: React.FC<{
   data?: HistoricalSummaryRecord;
   isLoading: boolean;
 }> = ({ data, isLoading }) => {
-  const { timePeriodLabel } = usePopulationFiltersStore();
+  const { timePeriodLabel } = useFiltersStore();
 
   return (
     <MetricsCard heading={`Past ${timePeriodLabel}`}>

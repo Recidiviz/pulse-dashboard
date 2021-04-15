@@ -19,7 +19,7 @@ import { observer } from "mobx-react-lite";
 import { get } from "mobx";
 
 import { CoreSelect } from "./controls/CoreSelect";
-import { usePopulationFiltersStore } from "../components/StoreProvider";
+import { useFiltersStore } from "./CoreStoreProvider";
 import { getFilterOption } from "./utils/filterOptions";
 import { PopulationFilters } from "./types/filters";
 
@@ -31,7 +31,7 @@ const PopulationFilterBar: React.FC<{
   view: keyof typeof CORE_VIEWS;
   filterOptions: PopulationFilters;
 }> = ({ filterOptions, view }) => {
-  const filtersStore = usePopulationFiltersStore();
+  const filtersStore = useFiltersStore();
   const { filters } = filtersStore;
   const filterTypes = Object.keys(filterOptions) as Array<
     keyof PopulationFilters

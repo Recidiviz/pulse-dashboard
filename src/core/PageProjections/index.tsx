@@ -37,7 +37,6 @@ import { ChartDataType } from "../types/charts";
 const PageProjections: React.FC = () => {
   const { pathname } = useLocation();
   const { currentTenantId } = useRootStore();
-
   const { isLoading, isError, apiData }: ChartDataType = useChartData(
     "us_id/projections"
   ) as ChartDataType;

@@ -20,7 +20,7 @@ import { useLocation } from "react-router-dom";
 import { scaleTime } from "d3-scale";
 import { observer } from "mobx-react-lite";
 import { ResponsiveXYFrame } from "semiotic";
-import { usePopulationFiltersStore } from "../../components/StoreProvider";
+import { useFiltersStore } from "../CoreStoreProvider";
 import {
   PopulationProjectionTimeSeriesRecord,
   SimulationCompartment,
@@ -49,7 +49,7 @@ type PropTypes = {
 };
 
 const PopulationTimeSeriesChart: React.FC<PropTypes> = ({ data }) => {
-  const filtersStore = usePopulationFiltersStore();
+  const filtersStore = useFiltersStore();
   const { gender, supervisionType, legalStatus } = filtersStore.filters;
   const timePeriod: MonthOptions = parseInt(
     filtersStore.filters.timePeriod
