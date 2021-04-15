@@ -100,3 +100,16 @@ export type VitalsSummaryRecord = {
   timelyContact: number;
   timelyRiskAssessment: number;
 };
+
+export type MethodologyContent = {
+  heading: string;
+  content: string;
+};
+
+export type ViewMethodology = {
+  vitals: {
+    title: string;
+    description: string;
+    content: MethodologyContent[];
+  };
+};
