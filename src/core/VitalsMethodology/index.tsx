@@ -16,13 +16,68 @@
 // =============================================================================
 
 import React from "react";
+import { observer } from "mobx-react-lite";
+import HTMLReactParser from "html-react-parser";
+import { Container } from "reactstrap";
+import ScrollableAnchor from "react-scrollable-anchor";
 
+import content from "../content";
+import { MethodologyContent } from "../models/types";
 import PageTemplate from "../PageTemplate";
+import { useRootStore } from "../../components/StoreProvider";
+import { convertToSlug } from "../../utils/navigation";
 
-const VitalsMethodology: React.FC = () => (
-  <PageTemplate>
-    <div>At a glance</div>
-  </PageTemplate>
-);
+import "../ProjectionsMethodology/Methodology.scss";
 
-export default VitalsMethodology;
+const VitalsMethodology: React.FC = () => {
+  const { currentTenantId } = useRootStore();
+  // @ts-ignore TODO TS
+  const { vitals: vitalsMethodology } = content[currentTenantId];
+
+  return (
+    <PageTemplate>
+      <div className="main-content Methodology p-0">
+        <Container className="col-md-9 col-12">
+          <h1 className="Methodology__main-title">{vitalsMethodology.title}</h1>
+          <h2 className="Methodology__main-description">
+            {vitalsMethodology.description}
+          </h2>
+          <div className=" Methodology__toc col-md-5 col-12">
+            <h5 className="Methodology__toc--header">CONTENTS</h5>
+            <div className="d-flex flex-column">
+              {vitalsMethodology.content.map(
+                (contentBlock: MethodologyContent) => (
+                  <a
+                    className="Methodology__toc--link"
+                    key={`link${contentBlock.heading}`}
+                    href={`#${convertToSlug(contentBlock.heading)}`}
+                  >
+                    {contentBlock.heading}
+                  </a>
+                )
+              )}
+            </div>
+          </div>
+          <div>
+            {vitalsMethodology.content.map(
+              (contentBlock: MethodologyContent) => {
+                return (
+                  <ScrollableAnchor id={convertToSlug(contentBlock.heading)}>
+                    <div className="Methodology__block">
+                      <h3 className="Methodology__block--title ">
+                        {contentBlock.heading}
+                      </h3>
+                      <hr />
+                      <>{HTMLReactParser(contentBlock.content)}</>
+                    </div>
+                  </ScrollableAnchor>
+                );
+              }
+            )}
+          </div>
+        </Container>
+      </div>
+    </PageTemplate>
+  );
+};
+export default observer(VitalsMethodology);

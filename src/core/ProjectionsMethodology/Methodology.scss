@@ -22,7 +22,7 @@
     padding: 2.93rem 0px 0px 0px !important;
     &--header {
       color: $slate-85;
-      font: $font-article-sans-14
+      font: $font-article-sans-14;
     }
     &--link {
       font-family: Libre Franklin;
@@ -43,6 +43,8 @@
     }
   }
   &__block {
+    margin-bottom: 1rem;
+
     &--title {
       padding: 4.5rem 0px 0px 0px !important;
       font: $font-article-serif-34;
@@ -57,7 +59,7 @@
     }
   }
   &__sub-block--title {
-    padding: 2.0rem 0px 1rem 0px !important;
+    padding: 2rem 0px 1rem 0px !important;
     color: $label-topbar;
     font: $font-article-serif-24;
   }
