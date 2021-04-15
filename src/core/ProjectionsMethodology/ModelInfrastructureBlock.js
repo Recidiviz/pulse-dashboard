@@ -8,8 +8,8 @@ const ModelInfrastructureBlock = () => {
       <div className="col-12 p-0">
         <span>
           The Compartments component represents an area of the criminal justice
-          system, such as incarceration (termers, riders, parole violators, and
-          supervision (parole, probation), and release/out of the system. The
+          system, such as incarceration (termers, riders, parole violators),
+          supervision (parole probation), and release/out of the system. The
           Compartment contains a list of all the Cohorts that have been in that
           area of the system at any point within the simulation.
         </span>
@@ -40,9 +40,9 @@ const ModelInfrastructureBlock = () => {
             and gender.
           </p>
           <p>
-            As an example, if the yearly admissions to parole were 400 people
+            As an example, if the yearly admissions to parole were 400 people,
             then the Cohorts in the parole Compartment would be represented in
-            the table (Fig. 1). In this example the simulation begins in 2017
+            the table (Fig. 1). In this example, the simulation begins in 2017
             and is initialized with the population that started parole before
             2017 and then estimates the new admissions to parole and parole
             terminations each year using the historical data. The number of
@@ -130,7 +130,7 @@ const ModelInfrastructureBlock = () => {
         These transitions are defined in transition tables, which contain the
         probability of transitioning to a new compartment versus remaining in
         the existing compartment. These probabilities are specific to the time
-        spent in the Compartment and they are computed using the historical
+        spent in the Compartment, and they are computed using the historical
         data. For example, historical
       </p>
       <div className="col-12 row p-0">
@@ -215,12 +215,12 @@ const ModelInfrastructureBlock = () => {
         Prediction Intervals
       </h4>
       <p>
-        To communicate the confidence of the projections, the Spark model
-        produces prediction intervals that bound the forecast. These prediction
-        intervals are constructed by resampling historical one-period model
-        errors. The model estimates the distribution of model errors at time
-        step t by summing t draws from the historical one-period model errors
-        multiple times with replacement. From this distribution of errors, the
+        To communicate the confidence of the projections, the model produces
+        prediction intervals that bound the forecast. These prediction intervals
+        are constructed by resampling historical one-period model errors. The
+        model estimates the distribution of model errors at time step t by
+        summing t draws from the historical one-period model errors multiple
+        times with replacement. From this distribution of errors, the model
         model calculates the width of the prediction by subtracting the 2.5th
         percentile model error from the 97.5th percentile model error. Finally,
         the model centers this 95% prediction interval width on the projection,
