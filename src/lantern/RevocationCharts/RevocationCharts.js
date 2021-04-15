@@ -27,7 +27,7 @@ import RevocationsByViolation from "../RevocationsByViolation";
 import RevocationsByGender from "../RevocationsByGender";
 import RevocationsByRace from "../RevocationsByRace";
 import RevocationsByDistrict from "../RevocationsByDistrict";
-import { useRootStore } from "../../components/StoreProvider";
+import { useDataStore } from "../LanternStoreProvider";
 import { useContainerHeight } from "../hooks/useContainerHeight";
 import "./RevocationCharts.scss";
 
@@ -41,7 +41,7 @@ const CHARTS = [
 ].filter(Boolean);
 
 const RevocationCharts = ({ timeDescription }) => {
-  const { dataStore } = useRootStore();
+  const dataStore = useDataStore();
   const { selectedChart, setSelectedChart } = dataStore.revocationsChartStore;
   const { containerHeight, containerRef } = useContainerHeight();
   const props = { ref: containerRef, timeDescription, containerHeight };

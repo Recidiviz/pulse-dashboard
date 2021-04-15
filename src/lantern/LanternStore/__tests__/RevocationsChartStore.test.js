@@ -15,8 +15,8 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 import RevocationsChartStore from "../DataStore/RevocationsChartStore";
-import RootStore from "../RootStore";
-import { reactImmediately } from "../../testUtils";
+import LanternStore from "..";
+import { reactImmediately } from "../../../testUtils";
 
 let revocationsChartStore;
 
@@ -25,7 +25,7 @@ const mockFilteredData = [
   { level_2_supervision_location: "04", level_1_supervision_location: "CBA" },
 ];
 jest.mock("@sentry/react");
-jest.mock("../RootStore");
+jest.mock("..");
 jest.mock("shared-filters", () => {
   return {
     ...jest.requireActual("shared-filters"),
@@ -33,7 +33,7 @@ jest.mock("shared-filters", () => {
   };
 });
 
-const mockRootStore = {
+const mockLanternStore = {
   districtsStore: {
     districtIdToLabel: {
       "03": "Philadelphia",
@@ -50,10 +50,10 @@ const mockRootStore = {
 };
 describe("RevocationsChartStore", () => {
   beforeEach(() => {
-    RootStore.mockImplementation(() => mockRootStore);
+    LanternStore.mockImplementation(() => mockLanternStore);
     reactImmediately(() => {
       revocationsChartStore = new RevocationsChartStore({
-        rootStore: new RootStore(),
+        rootStore: new LanternStore(),
       });
       revocationsChartStore.apiData = { data: mockFilteredData };
     });

@@ -25,9 +25,11 @@ import { useUserStore } from "../StoreProvider";
 
 type PropTypes = {
   hideUsername?: boolean;
+  handleOnProfileClick?: () => void;
 };
 
 const TopBarUserMenuForAuthenticatedUser: React.FC<PropTypes> = ({
+  handleOnProfileClick,
   hideUsername = false,
 }) => {
   const { user, logout } = useUserStore();
@@ -60,6 +62,7 @@ const TopBarUserMenuForAuthenticatedUser: React.FC<PropTypes> = ({
         <Dropdown.Item
           as={Link}
           to="/profile"
+          onClick={handleOnProfileClick}
           className="TopBarUserMenuForAuthenticatedUser__profile-link d-b td-n pX-15"
         >
           <i className="ti-user mR-10" />

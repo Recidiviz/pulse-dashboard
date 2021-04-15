@@ -22,14 +22,14 @@ import { observer } from "mobx-react-lite";
 import RevocationsByDimension from "../RevocationsByDimension";
 import createGenerateChartData from "./createGenerateChartData";
 import BarChartWithLabels from "../BarCharts";
-import { useRootStore } from "../../components/StoreProvider";
+import { useLanternStore } from "../LanternStoreProvider";
 import { VIOLATION_TYPE } from "../utils/constants";
 import { COLORS } from "../../assets/scripts/constants/colors";
 import { translate } from "../../utils/i18nSettings";
 
 const RevocationsByViolation = observer(
   ({ containerHeight, timeDescription }, ref) => {
-    const { filtersStore, dataStore } = useRootStore();
+    const { filtersStore, dataStore } = useLanternStore();
     const { revocationsChartStore } = dataStore;
     const CHART_TITLE = "Relative frequency of violation types";
     const CHART_ID = translate("revocationsByViolationChartId");

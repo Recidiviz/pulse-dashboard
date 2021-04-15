@@ -16,31 +16,22 @@
 // =============================================================================
 
 import createAuth0Client, { Auth0ClientOptions } from "@auth0/auth0-spa-js";
-import { makeAutoObservable, runInAction, autorun, flow } from "mobx";
+import { makeAutoObservable, runInAction, action } from "mobx";
 import qs from "qs";
-import * as Sentry from "@sentry/react";
 
 import { ERROR_MESSAGES } from "../constants/errorMessages";
-import type RootStore from "./RootStore";
+import type RootStore from ".";
 import {
   getUserStateCode,
   getStateNameForCode,
   getAvailableStateCodes,
 } from "./utils/user";
-import { callRestrictedAccessApi } from "../api/metrics/metricsClient";
 import isDemoMode from "../utils/authentication/demoMode";
 import { getDemoUser } from "../utils/authentication/viewAuthentication";
 
 type ConstructorProps = {
   authSettings?: Auth0ClientOptions;
-  rootStore?: RootStore;
-};
-
-type RestrictedAccessEmail = {
-  // eslint-disable-next-line camelcase
-  restricted_user_email: string;
-  // eslint-disable-next-line camelcase
-  allowed_level_1_supervision_location_ids: string;
+  rootStore?: typeof RootStore;
 };
 
 /**
@@ -75,16 +66,13 @@ export default class UserStore {
 
   logout?: () => void;
 
-  restrictedDistrict?: string;
-
-  restrictedDistrictIsLoading: boolean;
-
-  readonly rootStore?: RootStore;
+  readonly rootStore?: typeof RootStore;
 
   constructor({ authSettings, rootStore }: ConstructorProps) {
     makeAutoObservable(this, {
       rootStore: false,
       authSettings: false,
+      setAuthError: action,
     });
 
     this.authSettings = authSettings;
@@ -92,17 +80,6 @@ export default class UserStore {
 
     this.isAuthorized = false;
     this.userIsLoading = true;
-    this.restrictedDistrictIsLoading = true;
-
-    autorun(() => {
-      if (
-        !this.userIsLoading &&
-        !this.rootStore?.districtsStore.isLoading &&
-        this.rootStore?.currentTenantId
-      ) {
-        this.fetchRestrictedDistrictData(this.rootStore?.currentTenantId);
-      }
-    });
   }
 
   /**
@@ -190,66 +167,7 @@ export default class UserStore {
     return getUserStateCode(this.user);
   }
 
-  fetchRestrictedDistrictData = flow(function* (
-    this: UserStore,
-    tenantId: string
-  ) {
-    if (!this.rootStore?.tenantStore.isRestrictedDistrictTenant) {
-      this.restrictedDistrictIsLoading = false;
-      return;
-    }
-    const file = "supervision_location_restricted_access_emails";
-    const endpoint = `${tenantId}/restrictedAccess`;
-    try {
-      this.restrictedDistrict = undefined;
-      const responseData = yield callRestrictedAccessApi(
-        endpoint,
-        this.user.email,
-        this.getTokenSilently
-      );
-      this.setRestrictedDistrict(responseData[file]);
-      this.restrictedDistrictIsLoading = false;
-    } catch (error) {
-      Sentry.captureException(error, {
-        tags: {
-          tenantId,
-          endpoint,
-          availableStateCodes: this.availableStateCodes.join(","),
-        },
-      });
-      this.authError = new Error(ERROR_MESSAGES.unauthorized);
-      this.restrictedDistrictIsLoading = false;
-    }
-  });
-
-  setRestrictedDistrict(restrictedEmail: RestrictedAccessEmail): void {
-    this.restrictedDistrict =
-      restrictedEmail &&
-      restrictedEmail.allowed_level_1_supervision_location_ids;
-    this.verifyRestrictedDistrict();
-  }
-
-  resetRestrictedDistrict(): void {
-    this.restrictedDistrictIsLoading = true;
-    this.restrictedDistrict = undefined;
-  }
-
-  verifyRestrictedDistrict(): void {
-    if (
-      this.restrictedDistrict &&
-      !this.rootStore?.districtsStore.districtIds.includes(
-        this.restrictedDistrict
-      )
-    ) {
-      const authError = new Error(ERROR_MESSAGES.unauthorized);
-      Sentry.captureException(authError, {
-        tags: {
-          restrictedDistrict: this.restrictedDistrict,
-        },
-      });
-      this.authError = authError;
-      this.restrictedDistrictIsLoading = false;
-      this.restrictedDistrict = undefined;
-    }
+  setAuthError(error: Error): void {
+    this.authError = error;
   }
 }

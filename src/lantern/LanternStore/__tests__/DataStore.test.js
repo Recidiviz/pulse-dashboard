@@ -14,24 +14,35 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-import { matchesTopLevelFilters } from "shared-filters";
-import BaseDataStore from "./BaseDataStore";
-import {
-  REPORTED_VIOLATIONS,
-  VIOLATION_TYPE,
-} from "../../lantern/utils/constants";
+import RootStore from "../../../RootStore";
+import LanternStore from "..";
 
-export default class MatrixStore extends BaseDataStore {
-  constructor({ rootStore }) {
-    super({
-      rootStore,
-      file: `revocations_matrix_cells`,
-      ignoredSubsetDimensions: [VIOLATION_TYPE, REPORTED_VIOLATIONS],
-    });
-  }
+let rootStore;
 
-  get filteredData() {
-    const dataFilter = matchesTopLevelFilters({ filters: this.filters });
-    return this.filterData(this.apiData, dataFilter);
-  }
-}
+jest.mock("../../../api/metrics/metricsClient");
+
+describe("DataStore", () => {
+  beforeEach(() => {
+    rootStore = new LanternStore(RootStore);
+  });
+
+  afterAll(() => {
+    jest.resetAllMocks();
+  });
+
+  it("contains a RevocationsOverTimeStore", () => {
+    expect(rootStore.dataStore.revocationsOverTimeStore).toBeDefined();
+  });
+
+  it("contains a MatrixStore", () => {
+    expect(rootStore.dataStore.matrixStore).toBeDefined();
+  });
+
+  it("contains a RevocationsChartsStore", () => {
+    expect(rootStore.dataStore.revocationsChartStore).toBeDefined();
+  });
+
+  it("contains a CaseTableStore", () => {
+    expect(rootStore.dataStore.caseTableStore).toBeDefined();
+  });
+});

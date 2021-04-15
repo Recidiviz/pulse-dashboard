@@ -14,24 +14,5 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-import React from "react";
-import { observer } from "mobx-react-lite";
-import MetricsCard from "../MetricsCard";
-import SummaryMetrics from "./SummaryMetrics";
-import { useFiltersStore } from "../CoreStoreProvider";
-import type { HistoricalSummaryRecord } from "../models/types";
 
-const HistoricalSummaryMetrics: React.FC<{
-  data?: HistoricalSummaryRecord;
-  isLoading: boolean;
-}> = ({ data, isLoading }) => {
-  const { timePeriodLabel } = useFiltersStore();
-
-  return (
-    <MetricsCard heading={`Past ${timePeriodLabel}`}>
-      <SummaryMetrics data={data} isLoading={isLoading} />
-    </MetricsCard>
-  );
-};
-
-export default observer(HistoricalSummaryMetrics);
+export { default } from "./RevocationsOverTime";

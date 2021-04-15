@@ -22,20 +22,17 @@ import {
   set,
   get,
 } from "mobx";
-import type RootStore from ".";
-import { defaultPopulationFilterValues } from "../core/utils/filterOptions";
-import {
-  PopulationFilters,
-  PopulationFilterValues,
-} from "../core/types/filters";
-import { formatTimePeriodLabel } from "../core/utils/timePeriod";
+import type CoreStore from ".";
+import { defaultPopulationFilterValues } from "../utils/filterOptions";
+import { PopulationFilters, PopulationFilterValues } from "../types/filters";
+import { formatTimePeriodLabel } from "../utils/timePeriod";
 
-export default class CorePopulationFiltersStore {
+export default class FiltersStore {
   rootStore;
 
   filters: PopulationFilterValues = defaultPopulationFilterValues;
 
-  constructor({ rootStore }: { rootStore: RootStore }) {
+  constructor({ rootStore }: { rootStore: CoreStore }) {
     makeAutoObservable(this, {
       filters: observable,
       timePeriodLabel: computed,
