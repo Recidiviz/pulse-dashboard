@@ -19,7 +19,6 @@ import { FILTER_TYPES } from "../utils/constants";
 import { Gender } from "../models/types";
 
 export type PopulationFilterValues = {
-  // [key in keyof PopulationFilters]: string;
   timePeriod: string;
   gender: Gender;
   supervisionType: string;
