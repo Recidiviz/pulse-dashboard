@@ -16,27 +16,18 @@
 // =============================================================================
 
 import React from "react";
-import PropTypes from "prop-types";
-import { observer } from "mobx-react-lite";
-import { toJS } from "mobx";
 import * as Sentry from "@sentry/react";
 import ErrorMessage from "./ErrorMessage";
-import { useRootStore } from "./StoreProvider";
 
-function ErrorBoundary({ children }) {
-  const { restrictedDistrict, currentTenantId, filters } = useRootStore();
+interface Props {
+  children: React.ReactChildren;
+  handleBeforeCapture?: (scope: Sentry.Scope) => void;
+}
 
-  const handleBeforeCapture = (scope) => {
-    if (currentTenantId) scope.setTag("currentTenantId", currentTenantId);
-    if (restrictedDistrict) {
-      scope.setTag("restrictedDistrict", restrictedDistrict);
-    }
-    if (filters) {
-      const parsedFilters = Object.fromEntries(toJS(filters));
-      scope.setContext("filters", parsedFilters);
-    }
-  };
-
+function SentryErrorBoundary({
+  children,
+  handleBeforeCapture,
+}: Props): JSX.Element {
   return (
     <Sentry.ErrorBoundary
       fallback={({ error }) => <ErrorMessage error={error} />}
@@ -47,8 +38,4 @@ function ErrorBoundary({ children }) {
   );
 }
 
-ErrorBoundary.propTypes = {
-  children: PropTypes.element.isRequired,
-};
-
-export default observer(ErrorBoundary);
+export default SentryErrorBoundary;
