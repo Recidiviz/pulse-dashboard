@@ -5,6 +5,8 @@
   background-color: $marble-3;
 }
 .Methodology {
+  padding-bottom: 72px;
+
   &__main-title {
     padding-top: 6rem;
     padding-bottom: 1rem;
@@ -12,12 +14,10 @@
     font: $font-article-serif-56;
     letter-spacing: -0.04em
   }
-  h3 {
-    margin: 0px;
-  }
   &__main-description {
     color: $label-topbar;
     font: $font-article-sans-24;
+    line-height: 2.5rem;
   }
   &__toc {
     padding: 2.93rem 0px 0px 0px !important;
@@ -59,6 +59,7 @@
     padding: 2.0rem 0px 1rem 0px !important;
     color: $label-topbar;
     font: $font-article-serif-24;
+    letter-spacing: -0.04em
   }
   &__table {
     font-size: 1rem;
