@@ -152,17 +152,13 @@ const TempPopulationSummaryMetrics: React.FC<PropTypes> = ({
     );
   }
 
-  const filteredData = timeSeries.sort((a, b) =>
-    a.year !== b.year ? a.year - b.year : a.month - b.month
-  );
-
-  const currentData = filteredData.find(
+  const currentData = timeSeries.find(
     (d) => d.year === CURRENT_YEAR && d.month === CURRENT_MONTH
   ) as PopulationProjectionTimeSeriesRecord;
 
-  const historicalData = filteredData[0];
+  const historicalData = timeSeries[0];
 
-  const projectedData = filteredData[filteredData.length - 1];
+  const projectedData = timeSeries[timeSeries.length - 1];
 
   const {
     totalPopulation: projectedPopulation,

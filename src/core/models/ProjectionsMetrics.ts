@@ -157,8 +157,11 @@ export default class ProjectionsMetrics extends Metric<MetricRecords> {
 
   get timeSeries(): PopulationProjectionTimeSeriesRecord[] {
     if (!this.apiData) return [];
-    return createProjectionTimeSeries(
+    const timeSeries = createProjectionTimeSeries(
       this.apiData.population_projection_timeseries
+    );
+    return timeSeries.sort((a, b) =>
+      a.year !== b.year ? a.year - b.year : a.month - b.month
     );
   }
 }

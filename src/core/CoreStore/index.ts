@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-import { computed, makeAutoObservable } from "mobx";
+import { makeAutoObservable } from "mobx";
 
 import FiltersStore from "./FiltersStore";
 import type UserStore from "../../RootStore/UserStore";
@@ -38,10 +38,7 @@ export default class CoreStore {
   metricsStore: MetricsStore;
 
   constructor({ userStore, tenantStore }: CoreStoreProps) {
-    makeAutoObservable(this, {
-      filters: computed,
-      currentTenantId: computed,
-    });
+    makeAutoObservable(this);
 
     this.userStore = userStore;
 

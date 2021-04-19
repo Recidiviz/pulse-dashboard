@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-import { makeAutoObservable, computed } from "mobx";
+import { makeAutoObservable } from "mobx";
 import type CoreStore from ".";
 
 import VitalsMetrics from "../models/VitalsMetrics";
@@ -24,10 +24,7 @@ export default class MetricsStore {
   protected readonly rootStore;
 
   constructor({ rootStore }: { rootStore: CoreStore }) {
-    makeAutoObservable(this, {
-      vitals: computed,
-      projections: computed,
-    });
+    makeAutoObservable(this);
     this.rootStore = rootStore;
   }
 
