@@ -33,9 +33,11 @@
     }
   }
 
-  &--parent::before {
-    content: "/";
-    padding: 0 5px;
+  &__parent-container {
+    display: inline;
+    span {
+      padding: 0 5px;
+    }
   }
 
   &--current {

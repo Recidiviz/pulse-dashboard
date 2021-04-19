@@ -68,12 +68,15 @@ const VitalsSummaryBreadcrumbs: React.FC<PropTypes> = ({
         {state}
       </Link>
       {parent && (
-        <Link
-          className="VitalsSummaryBreadcrumbs--parent"
-          to={`/community/vitals/${convertIdToSlug(parentEntityId)}`}
-        >
-          {parent}
-        </Link>
+        <div className="VitalsSummaryBreadcrumbs__parent-container">
+          <span>/</span>
+          <Link
+            className="VitalsSummaryBreadcrumbs--parent"
+            to={`/community/vitals/${convertIdToSlug(parentEntityId)}`}
+          >
+            {parent}
+          </Link>
+        </div>
       )}
       <div className="VitalsSummaryBreadcrumbs--current">{current}</div>
     </div>
