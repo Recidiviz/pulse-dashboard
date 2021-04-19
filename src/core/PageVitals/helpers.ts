@@ -90,6 +90,7 @@ export function getEntitySummaries(
 ): {
   currentEntitySummary: VitalsSummaryRecord;
   childEntitySummaryRows: VitalsSummaryTableRow[];
+  parentEntityName?: string;
 } {
   const currentEntitySummary = vitalsSummaries.find(
     (d) => d.entityId === currentEntityId
@@ -110,7 +111,10 @@ export function getEntitySummaries(
         ...attrs,
       };
     }) as VitalsSummaryTableRow[];
-  return { currentEntitySummary, childEntitySummaryRows };
+  const parentEntityName = vitalsSummaries.find(
+    (d) => d.entityId === currentEntitySummary.parentEntityId
+  )?.entityName;
+  return { currentEntitySummary, childEntitySummaryRows, parentEntityName };
 }
 
 export function getTimeseries(

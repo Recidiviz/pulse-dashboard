@@ -22,8 +22,8 @@ import { toTitleCase } from "../../utils/formatStrings";
 import { convertIdToSlug } from "../../utils/navigation";
 import "./VitalsSummaryBreadcrumbs.scss";
 
-function formatOfficeName(name: string): string {
-  return `${toTitleCase(name)} Office`;
+function formatOfficeName(name: string | undefined): string | undefined {
+  return name ? `${toTitleCase(name)} Office` : name;
 }
 
 function formatOfficerName(name: string): string {
@@ -34,13 +34,15 @@ function formatOfficerName(name: string): string {
 type PropTypes = {
   stateName: string;
   entity: VitalsSummaryRecord;
+  parentEntityName?: string;
 };
 
 const VitalsSummaryBreadcrumbs: React.FC<PropTypes> = ({
   stateName,
   entity,
+  parentEntityName,
 }) => {
-  const { entityName, entityType, parentEntityName, parentEntityId } = entity;
+  const { entityName, entityType, parentEntityId } = entity;
   let current;
   let state;
   let parent;

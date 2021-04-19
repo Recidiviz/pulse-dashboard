@@ -96,10 +96,11 @@ const PageVitals: React.FC = () => {
     setSelectedCardId(id);
   };
 
-  const { currentEntitySummary, childEntitySummaryRows } = getEntitySummaries(
-    vitalsSummaries,
-    currentEntityId
-  );
+  const {
+    currentEntitySummary,
+    childEntitySummaryRows,
+    parentEntityName,
+  } = getEntitySummaries(vitalsSummaries, currentEntityId);
   const summaryCards = getSummaryCards(currentEntitySummary);
   const selectedTimeSeries = getTimeseries(
     timeSeries,
@@ -114,6 +115,7 @@ const PageVitals: React.FC = () => {
         <VitalsSummaryBreadcrumbs
           stateName={stateName}
           entity={currentEntitySummary}
+          parentEntityName={parentEntityName}
         />
         <div className="PageVitals__header--right">
           <div className="PageVitals__last-updated">
