@@ -18,6 +18,7 @@ import { makeAutoObservable, computed } from "mobx";
 import type CoreStore from ".";
 
 import VitalsMetrics from "../models/VitalsMetrics";
+import ProjectionsMetrics from "../models/ProjectionsMetrics";
 
 export default class MetricsStore {
   protected readonly rootStore;
@@ -25,6 +26,7 @@ export default class MetricsStore {
   constructor({ rootStore }: { rootStore: CoreStore }) {
     makeAutoObservable(this, {
       vitals: computed,
+      projections: computed,
     });
     this.rootStore = rootStore;
   }
@@ -33,6 +35,13 @@ export default class MetricsStore {
     return new VitalsMetrics({
       tenantId: this.rootStore.currentTenantId,
       sourceEndpoint: "vitals",
+    });
+  }
+
+  get projections(): ProjectionsMetrics {
+    return new ProjectionsMetrics({
+      tenantId: this.rootStore.currentTenantId,
+      sourceEndpoint: "projections",
     });
   }
 }

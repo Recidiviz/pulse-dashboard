@@ -61,7 +61,7 @@ export function createVitalsTimeSeriesMetric(
 type MetricRecords = VitalsSummaryRecord | VitalsTimeSeriesRecord;
 
 export default class VitalsMetrics extends Metric<MetricRecords> {
-  constructor(props: BaseMetricProps<MetricRecords>) {
+  constructor(props: BaseMetricProps) {
     super(props);
     makeObservable(this, {
       timeSeries: computed,

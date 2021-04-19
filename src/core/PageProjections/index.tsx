@@ -20,27 +20,23 @@ import { useLocation } from "react-router-dom";
 import PageTemplate from "../PageTemplate";
 // TODO(recidiviz-data/issues/6185): Use PopulationSummaryMetrics when data is valid
 import PopulationSummaryMetrics from "../PopulationSummaryMetrics/TempPopulationSummaryMetrics";
-import useChartData from "../hooks/useChartData";
-import {
-  // PopulationProjectionSummaryRecords,
-  PopulationProjectionTimeSeriesRecord,
-} from "../models/types";
-// import { populationProjectionSummary } from "../models/PopulationProjectionSummaryMetric";
 import PopulationTimeSeriesChart from "../PopulationTimeSeriesChart";
 import PopulationProjectionLastUpdated from "./PopulationProjectionLastUpdated";
-import { populationProjectionTimeSeries } from "../models/PopulationProjectionTimeSeriesMetric";
 import PopulationFilterBar from "../PopulationFilterBar";
 import filterOptions from "../utils/filterOptions";
 import { getViewFromPathname } from "../views";
-import { useRootStore } from "../../components/StoreProvider";
-import { ChartDataType } from "../types/charts";
+import { useCoreStore } from "../CoreStoreProvider";
 
 const PageProjections: React.FC = () => {
   const { pathname } = useLocation();
-  const { currentTenantId } = useRootStore();
-  const { isLoading, isError, apiData }: ChartDataType = useChartData(
-    "us_id/projections"
-  ) as ChartDataType;
+  const { currentTenantId, metricsStore } = useCoreStore();
+  const {
+    isLoading,
+    isError,
+    // TODO(recidiviz-data/issues/6185): Uncomment when summary table is valid
+    // summaries,
+    timeSeries,
+  } = metricsStore.projections;
 
   if (isLoading) {
     return (
@@ -58,16 +54,6 @@ const PageProjections: React.FC = () => {
     );
   }
 
-  // Transform records
-  // TODO(recidiviz-data/issues/6185): Uncomment when summary table is valid
-  // const projectionSummaries: PopulationProjectionSummaryRecords = populationProjectionSummary(
-  //   apiData.population_projection_summaries.data
-  // );
-
-  const projectionTimeSeries: PopulationProjectionTimeSeriesRecord[] = populationProjectionTimeSeries(
-    apiData.population_projection_timeseries.data
-  );
-
   return (
     <PageTemplate
       filters={
@@ -80,12 +66,10 @@ const PageProjections: React.FC = () => {
     >
       <PopulationSummaryMetrics
         isError={isError}
-        projectionSummaries={projectionTimeSeries}
+        projectionSummaries={timeSeries}
       />
-      <PopulationProjectionLastUpdated
-        projectionTimeSeries={projectionTimeSeries}
-      />
-      <PopulationTimeSeriesChart data={projectionTimeSeries} />
+      <PopulationProjectionLastUpdated projectionTimeSeries={timeSeries} />
+      <PopulationTimeSeriesChart data={timeSeries} />
     </PageTemplate>
   );
 };

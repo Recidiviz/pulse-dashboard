@@ -43,7 +43,7 @@ import * as styles from "../CoreConstants.scss";
 
 type PropTypes = {
   isLoading?: boolean;
-  isError: boolean;
+  isError?: Error;
   projectionSummaries?: PopulationProjectionTimeSeriesRecord[];
 };
 

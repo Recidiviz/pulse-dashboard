@@ -14,12 +14,16 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
+import { computed, makeObservable } from "mobx";
 import {
   Gender,
   PopulationProjectionSummaryRecords,
+  PopulationProjectionTimeSeriesRecord,
   RawMetricData,
   SimulationCompartment,
 } from "./types";
+
+import Metric, { BaseMetricProps } from "./Metric";
 
 export function recordMatchesSimulationTag(
   simulationTag: string
@@ -27,7 +31,7 @@ export function recordMatchesSimulationTag(
   return (record) => record.simulationTag === simulationTag;
 }
 
-export function populationProjectionSummary(
+export function createProjectionSummaries(
   rawRecords: RawMetricData
 ): PopulationProjectionSummaryRecords {
   return rawRecords.map((record) => {
@@ -66,4 +70,50 @@ export function populationProjectionSummary(
       totalPopulationCountMax: Number(record.total_population_count_max),
     };
   });
+}
+
+export function createProjectionTimeSeries(
+  rawRecords: RawMetricData
+): PopulationProjectionTimeSeriesRecord[] {
+  return rawRecords.map((record) => {
+    return {
+      year: Number(record.year),
+      month: Number(record.month),
+      compartment: record.compartment as SimulationCompartment,
+      legalStatus: record.legal_status,
+      gender: record.gender as Gender,
+      simulationTag: record.simulation_tag,
+      totalPopulation: Number(record.total_population),
+      totalPopulationMax: Number(record.total_population_max),
+      totalPopulationMin: Number(record.total_population_min),
+    };
+  });
+}
+
+type MetricRecords =
+  | PopulationProjectionSummaryRecords
+  | PopulationProjectionTimeSeriesRecord;
+
+export default class ProjectionsMetrics extends Metric<MetricRecords> {
+  constructor(props: BaseMetricProps) {
+    super(props);
+    makeObservable(this, {
+      timeSeries: computed,
+      summaries: computed,
+    });
+  }
+
+  get summaries(): PopulationProjectionSummaryRecords {
+    if (!this.apiData) return [];
+    return createProjectionSummaries(
+      this.apiData.population_projection_summaries
+    );
+  }
+
+  get timeSeries(): PopulationProjectionTimeSeriesRecord[] {
+    if (!this.apiData) return [];
+    return createProjectionTimeSeries(
+      this.apiData.population_projection_timeseries
+    );
+  }
 }

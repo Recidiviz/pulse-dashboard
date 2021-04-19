@@ -20,7 +20,7 @@ import { callMetricsApi } from "../../api/metrics/metricsClient";
 import { RawMetricData, MetricRecord, TenantId } from "./types";
 import rootStore from "../../RootStore";
 
-export type BaseMetricProps<RecordFormat extends MetricRecord> = {
+export type BaseMetricProps = {
   tenantId: TenantId;
   sourceEndpoint: string;
 };
@@ -40,7 +40,7 @@ export default abstract class Metric<RecordFormat extends MetricRecord> {
 
   apiData?: Record<string, RawMetricData>;
 
-  constructor({ tenantId, sourceEndpoint }: BaseMetricProps<RecordFormat>) {
+  constructor({ tenantId, sourceEndpoint }: BaseMetricProps) {
     makeObservable<Metric<RecordFormat>>(this, {
       isError: observable,
       isLoading: observable,
