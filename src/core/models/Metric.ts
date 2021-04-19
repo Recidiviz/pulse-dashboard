@@ -18,11 +18,13 @@
 import { autorun, makeObservable, observable, runInAction } from "mobx";
 import { callMetricsApi } from "../../api/metrics/metricsClient";
 import { RawMetricData, MetricRecord, TenantId } from "./types";
-import rootStore from "../../RootStore";
+import RootStore from "../../RootStore";
+import CoreStore from "../CoreStore";
 
 export type BaseMetricProps = {
   tenantId: TenantId;
   sourceEndpoint: string;
+  rootStore?: CoreStore;
 };
 
 /**
@@ -40,7 +42,9 @@ export default abstract class Metric<RecordFormat extends MetricRecord> {
 
   apiData?: Record<string, RawMetricData>;
 
-  constructor({ tenantId, sourceEndpoint }: BaseMetricProps) {
+  rootStore?: CoreStore;
+
+  constructor({ tenantId, sourceEndpoint, rootStore }: BaseMetricProps) {
     makeObservable<Metric<RecordFormat>>(this, {
       isError: observable,
       isLoading: observable,
@@ -49,6 +53,7 @@ export default abstract class Metric<RecordFormat extends MetricRecord> {
 
     this.tenantId = tenantId;
     this.sourceEndpoint = sourceEndpoint;
+    this.rootStore = rootStore;
 
     autorun(() => {
       if (this.tenantId) this.hydrate();
@@ -60,7 +65,7 @@ export default abstract class Metric<RecordFormat extends MetricRecord> {
    */
   protected async fetchMetrics(): Promise<Record<string, RawMetricData>> {
     const endpoint = `${this.tenantId}/${this.sourceEndpoint}`.toLowerCase();
-    return callMetricsApi(endpoint, rootStore.getTokenSilently);
+    return callMetricsApi(endpoint, RootStore.getTokenSilently);
   }
 
   /**

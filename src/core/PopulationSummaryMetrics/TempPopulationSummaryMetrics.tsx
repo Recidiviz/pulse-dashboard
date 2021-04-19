@@ -24,18 +24,13 @@ import { observer } from "mobx-react-lite";
 import { useLocation } from "react-router-dom";
 import PercentDelta from "../controls/PercentDelta";
 import {
-  filterData,
-  MonthOptions,
   CURRENT_YEAR,
   CURRENT_MONTH,
 } from "../PopulationTimeSeriesChart/helpers";
 import { CORE_VIEWS, getViewFromPathname } from "../views";
 import { formatLargeNumber } from "../../utils/formatStrings";
-import { useFiltersStore } from "../CoreStoreProvider";
-import type {
-  PopulationProjectionTimeSeriesRecord,
-  SimulationCompartment,
-} from "../models/types";
+import { useCoreStore } from "../CoreStoreProvider";
+import type { PopulationProjectionTimeSeriesRecord } from "../models/types";
 import "./LoadingMetrics.scss";
 
 import "./PopulationSummaryMetrics.scss";
@@ -44,7 +39,6 @@ import * as styles from "../CoreConstants.scss";
 type PropTypes = {
   isLoading?: boolean;
   isError?: Error;
-  projectionSummaries?: PopulationProjectionTimeSeriesRecord[];
 };
 
 const MetricsCardComponent = styled(Card)`
@@ -102,27 +96,19 @@ const TempMetricCard: React.FC<{ children: React.ReactNode }> = ({
 const TempPopulationSummaryMetrics: React.FC<PropTypes> = ({
   isError,
   isLoading = false,
-  projectionSummaries = [],
 }) => {
+  let timeSeries = [];
   const { pathname } = useLocation();
-
-  const filtersStore = useFiltersStore();
+  const { metricsStore, filtersStore } = useCoreStore();
   const { timePeriodLabel } = filtersStore;
-  const { gender, supervisionType, legalStatus } = filtersStore.filters;
   const view = getViewFromPathname(pathname);
-
-  const timePeriod: MonthOptions = parseInt(
-    filtersStore.filters.timePeriod
-  ) as MonthOptions;
-
-  let compartment: SimulationCompartment;
 
   switch (view) {
     case CORE_VIEWS.community:
-      compartment = "SUPERVISION";
+      timeSeries = metricsStore.projections.filteredCommunityTimeSeries;
       break;
     case CORE_VIEWS.facilities:
-      compartment = "INCARCERATION";
+      timeSeries = metricsStore.projections.filteredFacilitiesTimeSeries;
       break;
     default:
       // TODO: Error state
@@ -166,13 +152,9 @@ const TempPopulationSummaryMetrics: React.FC<PropTypes> = ({
     );
   }
 
-  const filteredData = filterData(
-    timePeriod,
-    gender,
-    compartment,
-    compartment === "SUPERVISION" ? supervisionType : legalStatus,
-    projectionSummaries
-  ).sort((a, b) => (a.year !== b.year ? a.year - b.year : a.month - b.month));
+  const filteredData = timeSeries.sort((a, b) =>
+    a.year !== b.year ? a.year - b.year : a.month - b.month
+  );
 
   const currentData = filteredData.find(
     (d) => d.year === CURRENT_YEAR && d.month === CURRENT_MONTH

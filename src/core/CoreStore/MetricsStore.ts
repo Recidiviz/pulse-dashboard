@@ -42,6 +42,7 @@ export default class MetricsStore {
     return new ProjectionsMetrics({
       tenantId: this.rootStore.currentTenantId,
       sourceEndpoint: "projections",
+      rootStore: this.rootStore,
     });
   }
 }

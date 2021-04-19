@@ -20,11 +20,8 @@ import { useLocation } from "react-router-dom";
 import { scaleTime } from "d3-scale";
 import { observer } from "mobx-react-lite";
 import { ResponsiveXYFrame } from "semiotic";
-import { useFiltersStore } from "../CoreStoreProvider";
-import {
-  PopulationProjectionTimeSeriesRecord,
-  SimulationCompartment,
-} from "../models/types";
+import { useCoreStore } from "../CoreStoreProvider";
+import { SimulationCompartment } from "../models/types";
 
 import "./PopulationTimeSeriesChart.scss";
 import PopulationTimeSeriesLegend from "./PopulationTimeSeriesLegend";
@@ -33,56 +30,44 @@ import PopulationTimeSeriesTooltip from "./PopulationTimeSeriesTooltip";
 import PopulationTimeSeriesErrorBar from "./PopulationTimeSeriesErrorBar";
 import * as styles from "../CoreConstants.scss";
 
-import {
-  ChartPoint,
-  getDateRange,
-  MonthOptions,
-  prepareData,
-  filterData,
-} from "./helpers";
+import { ChartPoint, getDateRange, MonthOptions, prepareData } from "./helpers";
 
 type PlotLine = {
   data: ChartPoint[];
   class: string;
 };
 
-type PropTypes = {
-  data: PopulationProjectionTimeSeriesRecord[];
-};
-
 const TOTAL_INCARCERATED_LIMIT = 8008;
 
-const PopulationTimeSeriesChart: React.FC<PropTypes> = ({ data }) => {
-  const filtersStore = useFiltersStore();
-  const { gender, supervisionType, legalStatus } = filtersStore.filters;
-  const timePeriod: MonthOptions = parseInt(
-    filtersStore.filters.timePeriod
-  ) as MonthOptions;
-
-  const view = getViewFromPathname(useLocation().pathname);
-
+const PopulationTimeSeriesChart: React.FC = () => {
   let compartment: SimulationCompartment;
+  let timeSeries = [];
+  const view = getViewFromPathname(useLocation().pathname);
+  const { metricsStore, filtersStore } = useCoreStore();
+  const { gender, legalStatus } = filtersStore.filters;
 
   switch (view) {
     case CORE_VIEWS.community:
       compartment = "SUPERVISION";
+      timeSeries = metricsStore.projections.filteredCommunityTimeSeries;
       break;
     case CORE_VIEWS.facilities:
       compartment = "INCARCERATION";
+      timeSeries = metricsStore.projections.filteredFacilitiesTimeSeries;
       break;
     default:
       // TODO: Error state
       return <div />;
   }
 
-  const filteredData = filterData(
-    timePeriod,
-    gender,
-    compartment,
-    compartment === "SUPERVISION" ? supervisionType : legalStatus,
-    data
-  ).sort((a, b) => (a.year !== b.year ? a.year - b.year : a.month - b.month));
+  const timePeriod: MonthOptions = parseInt(
+    filtersStore.filters.timePeriod
+  ) as MonthOptions;
+
   // TODO(recidiviz-data/issues/6651): Sort data on backend
+  const filteredData = timeSeries.sort((a, b) =>
+    a.year !== b.year ? a.year - b.year : a.month - b.month
+  );
 
   if (filteredData.length < 1) {
     // TODO: Error state
@@ -211,7 +196,7 @@ const PopulationTimeSeriesChart: React.FC<PropTypes> = ({ data }) => {
               screenY,
               chartTop,
             };
-            return <PopulationTimeSeriesErrorBar {...props} />;
+            return <PopulationTimeSeriesErrorBar key={value} {...props} />;
           }
 
           return null;

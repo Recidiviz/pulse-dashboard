@@ -24,6 +24,11 @@ import {
 } from "./types";
 
 import Metric, { BaseMetricProps } from "./Metric";
+import {
+  CURRENT_MONTH,
+  CURRENT_YEAR,
+  MonthOptions,
+} from "../PopulationTimeSeriesChart/helpers";
 
 export function recordMatchesSimulationTag(
   simulationTag: string
@@ -100,7 +105,47 @@ export default class ProjectionsMetrics extends Metric<MetricRecords> {
     makeObservable(this, {
       timeSeries: computed,
       summaries: computed,
+      filteredCommunityTimeSeries: computed,
+      filteredFacilitiesTimeSeries: computed,
     });
+  }
+
+  filterTimeSeriesData(
+    records: PopulationProjectionTimeSeriesRecord[],
+    compartment: string
+  ): PopulationProjectionTimeSeriesRecord[] {
+    if (!this.rootStore) return records;
+    const {
+      gender,
+      supervisionType,
+      legalStatus,
+      timePeriod,
+    } = this.rootStore.filtersStore.filters;
+    const monthRange: MonthOptions = parseInt(timePeriod) as MonthOptions;
+    const range = monthRange === 1 ? 6 : monthRange;
+    const status =
+      compartment === "SUPERVISION" ? supervisionType : legalStatus;
+    const stepSize = range / 6;
+
+    return records.filter((record: PopulationProjectionTimeSeriesRecord) => {
+      const monthsOut =
+        (record.year - CURRENT_YEAR) * 12 + (record.month - CURRENT_MONTH);
+      return (
+        record.gender === gender &&
+        record.compartment === compartment &&
+        record.legalStatus === status &&
+        Math.abs(monthsOut) <= range &&
+        monthsOut % stepSize === 0
+      );
+    });
+  }
+
+  get filteredCommunityTimeSeries(): PopulationProjectionTimeSeriesRecord[] {
+    return this.filterTimeSeriesData(this.timeSeries, "SUPERVISION");
+  }
+
+  get filteredFacilitiesTimeSeries(): PopulationProjectionTimeSeriesRecord[] {
+    return this.filterTimeSeriesData(this.timeSeries, "INCARCERATION");
   }
 
   get summaries(): PopulationProjectionSummaryRecords {

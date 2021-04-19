@@ -64,12 +64,9 @@ const PageProjections: React.FC = () => {
         />
       }
     >
-      <PopulationSummaryMetrics
-        isError={isError}
-        projectionSummaries={timeSeries}
-      />
+      <PopulationSummaryMetrics isError={isError} />
       <PopulationProjectionLastUpdated projectionTimeSeries={timeSeries} />
-      <PopulationTimeSeriesChart data={timeSeries} />
+      <PopulationTimeSeriesChart />
     </PageTemplate>
   );
 };
