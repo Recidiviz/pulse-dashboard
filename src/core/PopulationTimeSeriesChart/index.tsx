@@ -20,7 +20,7 @@ import { useLocation } from "react-router-dom";
 import { scaleTime } from "d3-scale";
 import { observer } from "mobx-react-lite";
 import { ResponsiveXYFrame } from "semiotic";
-import { usePopulationFiltersStore } from "../../components/StoreProvider";
+import { useFiltersStore } from "../CoreStoreProvider";
 import {
   PopulationProjectionTimeSeriesRecord,
   SimulationCompartment,
@@ -30,6 +30,7 @@ import "./PopulationTimeSeriesChart.scss";
 import PopulationTimeSeriesLegend from "./PopulationTimeSeriesLegend";
 import { CORE_VIEWS, getViewFromPathname } from "../views";
 import PopulationTimeSeriesTooltip from "./PopulationTimeSeriesTooltip";
+import PopulationTimeSeriesErrorBar from "./PopulationTimeSeriesErrorBar";
 import * as styles from "../CoreConstants.scss";
 
 import {
@@ -52,7 +53,7 @@ type PropTypes = {
 const TOTAL_INCARCERATED_LIMIT = 8008;
 
 const PopulationTimeSeriesChart: React.FC<PropTypes> = ({ data }) => {
-  const filtersStore = usePopulationFiltersStore();
+  const filtersStore = useFiltersStore();
   const { gender, supervisionType, legalStatus } = filtersStore.filters;
   const timePeriod: MonthOptions = parseInt(
     filtersStore.filters.timePeriod
@@ -198,6 +199,21 @@ const PopulationTimeSeriesChart: React.FC<PropTypes> = ({ data }) => {
           if (d.d.parentSummary !== undefined) {
             return false;
           }
+
+          if (d.d.parentLine?.class.endsWith("ProjectedLine")) {
+            const [screenX, screenY] = d.screenCoordinates;
+            const { value, lowerBound, upperBound } = d.d;
+            const props = {
+              value,
+              lowerBound,
+              upperBound,
+              screenX,
+              screenY,
+              chartTop,
+            };
+            return <PopulationTimeSeriesErrorBar {...props} />;
+          }
+
           return null;
         }}
         tooltipContent={(d: any) => <PopulationTimeSeriesTooltip d={d} />}

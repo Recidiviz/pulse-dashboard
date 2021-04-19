@@ -14,46 +14,26 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-import { matchesAllFilters } from "shared-filters";
-import BaseDataStore from "./BaseDataStore";
-import { US_PA } from "../TenantStore/lanternTenants";
 
-export default class CaseTableStore extends BaseDataStore {
+import { matchesAllFilters } from "shared-filters";
+
+import BaseDataStore from "./BaseDataStore";
+import { METRIC_PERIOD_MONTHS } from "../../utils/constants";
+
+export default class RevocationsOverTimeStore extends BaseDataStore {
   constructor({ rootStore }) {
     super({
       rootStore,
-      file: `revocations_matrix_filtered_caseload`,
-      treatCategoryAllAsAbsent: true,
+      file: `revocations_matrix_by_month`,
+      skippedFilters: [METRIC_PERIOD_MONTHS],
     });
   }
 
   get filteredData() {
     const dataFilter = matchesAllFilters({
       filters: this.filters,
-      treatCategoryAllAsAbsent: this.treatCategoryAllAsAbsent,
+      skippedFilters: this.skippedFilters,
     });
     return this.filterData(this.apiData, dataFilter);
-  }
-
-  get options() {
-    return this.rootStore.currentTenantId === US_PA
-      ? [
-          { key: "state_id", label: "DOC ID" },
-          { key: "district", label: "District" },
-          { key: "officer", label: "Agent" },
-          { key: "risk_level", label: "Risk level" },
-          { key: "violation_record", label: "Violation record" },
-        ]
-      : [
-          { key: "state_id", label: "DOC ID" },
-          { key: "district", label: "District" },
-          { key: "officer", label: "Officer" },
-          { key: "risk_level", label: "Risk level" },
-          {
-            key: "officer_recommendation",
-            label: "Last Rec. (Incl. Supplementals)",
-          },
-          { key: "violation_record", label: "Violation record" },
-        ];
   }
 }

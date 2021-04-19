@@ -15,19 +15,19 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 import * as Sentry from "@sentry/react";
-import { reactImmediately } from "../../testUtils";
-import { callMetricsApi } from "../../api/metrics/metricsClient";
-import RootStore from "../RootStore";
+import { reactImmediately } from "../../../testUtils";
+import { callMetricsApi } from "../../../api/metrics/metricsClient";
+import LanternStore from "..";
 import DistrictsStore from "../DistrictsStore";
 
 jest.mock("@sentry/react");
-jest.mock("../RootStore");
-jest.mock("../../api/metrics/metricsClient");
+jest.mock("..");
+jest.mock("../../../api/metrics/metricsClient");
 
 const tenantId = "US_MO";
 const mockGetTokenSilently = jest.fn();
 
-const mockRootStore = {
+const mockLanternStore = {
   currentTenantId: tenantId,
   tenantStore: {
     isLanternTenant: true,
@@ -76,7 +76,7 @@ describe("DistrictsStore", () => {
     ];
 
     beforeEach(() => {
-      RootStore.mockImplementation(() => mockRootStore);
+      LanternStore.mockImplementation(() => mockLanternStore);
 
       callMetricsApi.mockResolvedValue({
         [file]: mockDistricts,
@@ -84,7 +84,7 @@ describe("DistrictsStore", () => {
 
       reactImmediately(() => {
         store = new DistrictsStore({
-          rootStore: new RootStore(),
+          rootStore: new LanternStore(),
         });
       });
     });
@@ -136,9 +136,9 @@ describe("DistrictsStore", () => {
     const apiError = new Error("API Error");
     beforeEach(() => {
       jest.spyOn(console, "error").mockImplementation(() => {});
-      RootStore.mockImplementation(() => mockRootStore);
+      LanternStore.mockImplementation(() => mockLanternStore);
       callMetricsApi.mockRejectedValueOnce(apiError);
-      store = new DistrictsStore({ rootStore: new RootStore() });
+      store = new DistrictsStore({ rootStore: new LanternStore() });
     });
 
     afterEach(() => {
@@ -164,9 +164,9 @@ describe("DistrictsStore", () => {
 
   describe("when the tenant is not a lantern tenant", () => {
     beforeEach(() => {
-      RootStore.mockImplementation(() => {
+      LanternStore.mockImplementation(() => {
         return {
-          ...mockRootStore,
+          ...mockLanternStore,
           tenantStore: {
             isLanternTenant: false,
           },
@@ -174,7 +174,7 @@ describe("DistrictsStore", () => {
       });
       reactImmediately(() => {
         store = new DistrictsStore({
-          rootStore: new RootStore(),
+          rootStore: new LanternStore(),
         });
       });
     });
@@ -195,9 +195,9 @@ describe("DistrictsStore", () => {
 
   describe("when the userStore is still loading", () => {
     beforeEach(() => {
-      RootStore.mockImplementation(() => {
+      LanternStore.mockImplementation(() => {
         return {
-          ...mockRootStore,
+          ...mockLanternStore,
           userStore: {
             userIsLoading: true,
           },

@@ -1,5 +1,5 @@
 // Recidiviz - a data platform for criminal justice reform
-// Copyright (C) 2020 Recidiviz, Inc.
+// Copyright (C) 2021 Recidiviz, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -16,17 +16,20 @@
 // =============================================================================
 
 import React from "react";
-import PropTypes from "prop-types";
 import { observer } from "mobx-react-lite";
 import { toJS } from "mobx";
-import * as Sentry from "@sentry/react";
-import ErrorMessage from "./ErrorMessage";
-import { useRootStore } from "./StoreProvider";
+import type Sentry from "@sentry/react";
+import SentryErrorBoundary from "../components/SentryErrorBoundary";
+import { useLanternStore } from "./LanternStoreProvider";
 
-function ErrorBoundary({ children }) {
-  const { restrictedDistrict, currentTenantId, filters } = useRootStore();
+interface Props {
+  children: React.ReactChildren;
+}
 
-  const handleBeforeCapture = (scope) => {
+function ErrorBoundary({ children }: Props): JSX.Element {
+  const { restrictedDistrict, currentTenantId, filters } = useLanternStore();
+
+  const handleBeforeCapture = (scope: Sentry.Scope) => {
     if (currentTenantId) scope.setTag("currentTenantId", currentTenantId);
     if (restrictedDistrict) {
       scope.setTag("restrictedDistrict", restrictedDistrict);
@@ -38,17 +41,10 @@ function ErrorBoundary({ children }) {
   };
 
   return (
-    <Sentry.ErrorBoundary
-      fallback={({ error }) => <ErrorMessage error={error} />}
-      beforeCapture={handleBeforeCapture}
-    >
+    <SentryErrorBoundary handleBeforeCapture={handleBeforeCapture}>
       {children}
-    </Sentry.ErrorBoundary>
+    </SentryErrorBoundary>
   );
 }
-
-ErrorBoundary.propTypes = {
-  children: PropTypes.element.isRequired,
-};
 
 export default observer(ErrorBoundary);

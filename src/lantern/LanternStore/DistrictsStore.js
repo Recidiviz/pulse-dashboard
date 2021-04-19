@@ -18,7 +18,7 @@ import { flow, autorun, makeAutoObservable, computed } from "mobx";
 import uniqBy from "lodash/uniqBy";
 import * as Sentry from "@sentry/react";
 
-import { callMetricsApi, parseResponseByFileFormat } from "../api/metrics";
+import { callMetricsApi, parseResponseByFileFormat } from "../../api/metrics";
 
 export default class DistrictsStore {
   apiData = {};

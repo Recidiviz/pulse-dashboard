@@ -14,42 +14,31 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-
 import React from "react";
 import { observer } from "mobx-react-lite";
 
-import PropTypes from "prop-types";
-import Footer from "../components/Footer";
-import CoreNavigation from "./CoreNavigation";
-import useIntercom from "../hooks/useIntercom";
-import CoreStoreProvider from "./CoreStoreProvider";
-import ErrorBoundary from "./ErrorBoundary";
-import "./CoreLayout.scss";
+import TopBar from "../components/TopBar/TopBar";
+import TopBarLogo from "../components/TopBar/TopBarLogo";
+import TopBarUserMenuForAuthenticatedUser from "../components/TopBar/TopBarUserMenuForAuthenticatedUser";
+import { useLanternStore } from "./LanternStoreProvider";
 
-const CoreLayout = ({ children }) => {
-  useIntercom();
+const LanternTopBar = () => {
+  const { userRestrictedAccessStore } = useLanternStore();
+
+  const handleOnProfileClick = () => {
+    userRestrictedAccessStore.resetRestrictedDistrict();
+  };
+
   return (
-    <CoreStoreProvider>
-      <ErrorBoundary>
-        <div id="app" className="CoreLayout">
-          <div className="page-container">
-            <div className="CoreLayout__header">
-              <CoreNavigation />
-            </div>
-            {children}
-          </div>
-          <Footer />
-        </div>
-      </ErrorBoundary>
-    </CoreStoreProvider>
+    <TopBar isHidable isWide>
+      <TopBarLogo />
+      <ul className="nav-right">
+        <TopBarUserMenuForAuthenticatedUser
+          handleOnProfileClick={handleOnProfileClick}
+        />
+      </ul>
+    </TopBar>
   );
 };
 
-CoreLayout.propTypes = {
-  children: PropTypes.oneOfType([
-    PropTypes.node,
-    PropTypes.arrayOf(PropTypes.node),
-  ]).isRequired,
-};
-
-export default observer(CoreLayout);
+export default observer(LanternTopBar);

@@ -14,24 +14,21 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-import React from "react";
-import { observer } from "mobx-react-lite";
-import MetricsCard from "../MetricsCard";
-import SummaryMetrics from "./SummaryMetrics";
-import { useFiltersStore } from "../CoreStoreProvider";
-import type { HistoricalSummaryRecord } from "../models/types";
+import { matchesTopLevelFilters } from "shared-filters";
+import BaseDataStore from "./BaseDataStore";
+import { REPORTED_VIOLATIONS, VIOLATION_TYPE } from "../../utils/constants";
 
-const HistoricalSummaryMetrics: React.FC<{
-  data?: HistoricalSummaryRecord;
-  isLoading: boolean;
-}> = ({ data, isLoading }) => {
-  const { timePeriodLabel } = useFiltersStore();
+export default class MatrixStore extends BaseDataStore {
+  constructor({ rootStore }) {
+    super({
+      rootStore,
+      file: `revocations_matrix_cells`,
+      ignoredSubsetDimensions: [VIOLATION_TYPE, REPORTED_VIOLATIONS],
+    });
+  }
 
-  return (
-    <MetricsCard heading={`Past ${timePeriodLabel}`}>
-      <SummaryMetrics data={data} isLoading={isLoading} />
-    </MetricsCard>
-  );
-};
-
-export default observer(HistoricalSummaryMetrics);
+  get filteredData() {
+    const dataFilter = matchesTopLevelFilters({ filters: this.filters });
+    return this.filterData(this.apiData, dataFilter);
+  }
+}

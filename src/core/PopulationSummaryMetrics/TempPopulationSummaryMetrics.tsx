@@ -31,7 +31,7 @@ import {
 } from "../PopulationTimeSeriesChart/helpers";
 import { CORE_VIEWS, getViewFromPathname } from "../views";
 import { formatLargeNumber } from "../../utils/formatStrings";
-import { usePopulationFiltersStore } from "../../components/StoreProvider";
+import { useFiltersStore } from "../CoreStoreProvider";
 import type {
   PopulationProjectionTimeSeriesRecord,
   SimulationCompartment,
@@ -106,7 +106,7 @@ const TempPopulationSummaryMetrics: React.FC<PropTypes> = ({
 }) => {
   const { pathname } = useLocation();
 
-  const filtersStore = usePopulationFiltersStore();
+  const filtersStore = useFiltersStore();
   const { timePeriodLabel } = filtersStore;
   const { gender, supervisionType, legalStatus } = filtersStore.filters;
   const view = getViewFromPathname(pathname);

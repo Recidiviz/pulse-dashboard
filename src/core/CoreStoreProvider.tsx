@@ -1,5 +1,5 @@
 // Recidiviz - a data platform for criminal justice reform
-// Copyright (C) 2020 Recidiviz, Inc.
+// Copyright (C) 2021 Recidiviz, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -14,35 +14,35 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-
 import React, { useContext } from "react";
-import PropTypes from "prop-types";
+import CoreStore from "./CoreStore";
+import FiltersStore from "./CoreStore/FiltersStore";
+import RootStore from "../RootStore";
 
-import RootStore from "../../RootStore";
+const CoreContext = React.createContext<CoreStore | undefined>(undefined);
+const coreStore = new CoreStore(RootStore);
 
-const StoreContext = React.createContext(undefined);
+interface ProviderProps {
+  children: React.ReactElement;
+}
 
-const StoreProvider = ({ children }) => {
+const CoreStoreProvider: React.FC<ProviderProps> = ({ children }) => {
   return (
-    <StoreContext.Provider value={RootStore}>{children}</StoreContext.Provider>
+    <CoreContext.Provider value={coreStore}>{children}</CoreContext.Provider>
   );
 };
 
-StoreProvider.propTypes = {
-  children: PropTypes.node.isRequired,
-};
-
-export default StoreProvider;
-
-export function useRootStore() {
-  const context = useContext(StoreContext);
+export function useCoreStore(): CoreStore {
+  const context = useContext(CoreContext);
   if (context === undefined) {
-    throw new Error("useRootStore must be used within a StoreProvider");
+    throw new Error("useCoreStore must be used within a CoreStoreProvider");
   }
   return context;
 }
 
-export function useUserStore() {
-  const { userStore } = useRootStore();
-  return userStore;
+export function useFiltersStore(): FiltersStore {
+  const { filtersStore } = useCoreStore();
+  return filtersStore;
 }
+
+export default CoreStoreProvider;

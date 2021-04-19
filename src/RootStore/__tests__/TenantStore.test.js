@@ -14,75 +14,71 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-
-import createAuth0Client from "@auth0/auth0-spa-js";
-
-import RootStore from "../RootStore";
-import { CURRENT_TENANT_IN_SESSION } from "../TenantStore/TenantStore";
+import TenantStore, {
+  CURRENT_TENANT_IN_SESSION,
+} from "../TenantStore/TenantStore";
 import { US_MO } from "../TenantStore/lanternTenants";
 import { doesUserHaveAccess, getAvailableStateCodes } from "../utils/user";
 import { METADATA_NAMESPACE } from "../../constants";
 
 jest.mock("@auth0/auth0-spa-js");
 jest.mock("../utils/user");
-jest.mock("../../components/StoreProvider");
 jest.mock("../../api/metrics/metricsClient");
-jest.mock("../DataStore/DataStore");
+jest.mock("../../components/StoreProvider");
 
-let rootStore;
 const metadataField = `${METADATA_NAMESPACE}app_metadata`;
 const user = { [metadataField]: { state_code: US_MO }, email_verified: true };
 
+let tenantStore;
 describe("TenantStore", () => {
-  const tenantId = "TEST_TENANT";
+  const tenantIdFromStorage = "TEST_TENANT";
+  const tenantIdFromUser = US_MO;
 
   describe("when there is a CURRENT_TENANT_IN_SESSION", () => {
     beforeEach(() => {
-      sessionStorage.setItem(CURRENT_TENANT_IN_SESSION, tenantId);
+      getAvailableStateCodes.mockReturnValue([tenantIdFromUser]);
+      sessionStorage.setItem(CURRENT_TENANT_IN_SESSION, tenantIdFromStorage);
+      jest.clearAllMocks();
+      jest.resetAllMocks();
+    });
+
+    afterEach(() => {
       jest.clearAllMocks();
     });
 
     it("currentTenantId is set to CURRENT_TENANT_IN_SESSION if there is not a user", async () => {
-      createAuth0Client.mockResolvedValue({
-        getUser: () => null,
-        isAuthenticated: () => true,
+      tenantStore = new TenantStore({
+        rootStore: {
+          userStore: { userIsLoading: false, user: null },
+          user: null,
+        },
       });
-      doesUserHaveAccess.mockReturnValue(true);
-
-      rootStore = new RootStore();
-      await rootStore.userStore.authorize();
-      expect(rootStore.tenantStore.currentTenantId).toEqual(tenantId);
+      expect(tenantStore.currentTenantId).toEqual(tenantIdFromStorage);
     });
 
     it("currentTenantId is set to CURRENT_TENANT_IN_SESSION if the user has access", async () => {
-      createAuth0Client.mockResolvedValue({
-        getUser: () => user,
-        isAuthenticated: () => true,
-      });
       doesUserHaveAccess.mockReturnValue(true);
+      tenantStore = new TenantStore({
+        rootStore: {
+          userStore: { userIsLoading: false, user },
+          user,
+        },
+      });
 
-      rootStore = new RootStore();
-      await rootStore.userStore.authorize();
-
-      expect(rootStore.tenantStore.currentTenantId).toEqual(tenantId);
+      expect(tenantStore.currentTenantId).toEqual(tenantIdFromStorage);
     });
 
     it("currentTenantId is set to availableStateCodes if the user does not have access", async () => {
-      createAuth0Client.mockResolvedValue({
-        getUser: () => user,
-        isAuthenticated: () => true,
-      });
-      doesUserHaveAccess.mockReturnValue(false);
-
       const availableStateCodes = ["BARNEY", "RUBBLE"];
+      doesUserHaveAccess.mockReturnValue(false);
       getAvailableStateCodes.mockReturnValue(availableStateCodes);
-
-      rootStore = new RootStore();
-      await rootStore.userStore.authorize();
-
-      expect(rootStore.tenantStore.currentTenantId).toEqual(
-        availableStateCodes[0]
-      );
+      tenantStore = new TenantStore({
+        rootStore: {
+          userStore: { userIsLoading: false, user },
+          user,
+        },
+      });
+      expect(tenantStore.currentTenantId).toEqual(availableStateCodes[0]);
     });
   });
 });

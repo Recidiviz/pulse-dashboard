@@ -72,6 +72,7 @@ const generatePercentChartData = (
       labels[dataIndex] &&
       currentDistricts.find(
         (currentDistrict) =>
+          currentDistrict &&
           currentDistrict.toLowerCase() === labels[dataIndex].toLowerCase()
       )
         ? COLORS["lantern-light-blue"]
@@ -119,6 +120,7 @@ const generateCountChartData = (districtChartData, currentDistricts) => {
     labels[dataIndex] &&
     currentDistricts.find(
       (currentDistrict) =>
+        currentDistrict &&
         currentDistrict.toLowerCase() === labels[dataIndex].toLowerCase()
     )
       ? COLORS["lantern-light-blue"]
