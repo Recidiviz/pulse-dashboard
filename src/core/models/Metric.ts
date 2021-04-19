@@ -61,7 +61,7 @@ export default abstract class Metric<RecordFormat extends MetricRecord> {
   }
 
   /**
-   * Fetches the metric data from the server and transforms it.
+   * Fetches the metric data from the server.
    */
   protected async fetchMetrics(): Promise<Record<string, RawMetricData>> {
     const endpoint = `${this.tenantId}/${this.sourceEndpoint}`.toLowerCase();
@@ -69,7 +69,8 @@ export default abstract class Metric<RecordFormat extends MetricRecord> {
   }
 
   /**
-   * Fetches metric data and stores the result reactively on this Metric instance.
+   * Fetches metric data and stores the result reactively on this Metric
+   * instance along with the isLoading or isError states.
    */
   async hydrate(): Promise<void> {
     try {
