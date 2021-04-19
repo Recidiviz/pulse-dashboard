@@ -15,6 +15,7 @@ $inset-shadow-30: inset 0px -1px 1px $box-shadow-color-30;
 $white: #fff;
 $crimson: #bf7474;
 $crimson-dark: #a43939;
+$crimson-dark-50: rgba(164, 57, 57, 0.5);
 $data-forest: #25636f;
 $data-forest-uncertainty: rgba(37, 99, 111, 0.15);
 $indigo: #4c6290;
@@ -54,6 +55,8 @@ $font-ui-serif-34: 400 2.125rem/3rem $serif;
 :export {
   crimson: $crimson;
   crimsonDark: $crimson-dark;
+  crimsonDark50: $crimson-dark-50;
+  indigo: $indigo;
   pine1: $pine-1;
   pine3: $pine-3;
   marble4: $marble-4;
@@ -61,15 +64,8 @@ $font-ui-serif-34: 400 2.125rem/3rem $serif;
   slate30Opaque: $slate-30-opaque;
   slate80: $slate-80;
   slate60: $slate-60;
+  white: $white;
+
   fontUiSans16: $font-ui-sans-16;
   fontUiSans14: $font-ui-sans-14;
-  indigo: $indigo;
-  marble4: $marble-4;
-  pine1: $pine-1;
-  pine3: $pine-3;
-  signalLinks: $signal-links;
-  slate30Opaque: $slate-30-opaque;
-  slate60: $slate-60;
-  slate80: $slate-80;
-  white: $white;
 }

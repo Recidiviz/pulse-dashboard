@@ -22,7 +22,8 @@ import { observer } from "mobx-react-lite";
 import RevocationsByDimension from "../RevocationsByDimension";
 import createGenerateChartData from "./createGenerateChartData";
 import { translate } from "../../utils/i18nSettings";
-import { useDataStore, useRootStore } from "../../components/StoreProvider";
+import { useRootStore } from "../../components/StoreProvider";
+import { useDataStore } from "../LanternStoreProvider";
 import HorizontalBarChartWithLabels from "../BarCharts/HorizontalBarChartWithLabels";
 import { US_PA } from "../../RootStore/TenantStore/lanternTenants";
 import flags from "../../flags";
@@ -31,10 +32,8 @@ const DEFAULT_MODE = "WHITE";
 
 const RevocationsByRace = observer(
   ({ containerHeight, timeDescription }, ref) => {
-    const dataStore = useDataStore();
+    const { revocationsChartStore } = useDataStore();
     const { currentTenantId } = useRootStore();
-
-    const { revocationsChartStore } = dataStore;
     const CHART_TITLE = translate("revocationsByRaceChartTitle");
     const CHART_ID = translate("revocationsByRaceChartId");
     const stacked =

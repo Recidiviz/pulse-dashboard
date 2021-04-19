@@ -27,11 +27,11 @@ import {
   matrixViolationTypeToLabel,
   pluralize,
 } from "../../utils/formatStrings";
-import { useRootStore } from "../../components/StoreProvider";
+import { useLanternStore } from "../LanternStoreProvider";
 import { VIOLATION_TYPE, REPORTED_VIOLATIONS } from "../utils/constants";
 
 const ViolationFilter = () => {
-  const { filtersStore, filters } = useRootStore();
+  const { filtersStore, filters } = useLanternStore();
   const { filterOptions } = filtersStore;
   const reportedViolations = get(filters, REPORTED_VIOLATIONS);
   const violationType = get(filters, VIOLATION_TYPE);

@@ -22,7 +22,7 @@ import {
   DISTRICT,
   LEVEL_1_SUPERVISION_LOCATION,
   LEVEL_2_SUPERVISION_LOCATION,
-} from "../../lantern/utils/constants";
+} from "../../utils/constants";
 
 const CHARTS = {
   District: {

@@ -23,6 +23,7 @@ import { translate } from "../../utils/i18nSettings";
 import RevocationsByDimension from "../RevocationsByDimension";
 import HorizontalBarChartWithLabels from "../BarCharts/HorizontalBarChartWithLabels";
 import createGenerateChartData from "./createGenerateChartData";
+import { useDataStore } from "../LanternStoreProvider";
 import { useRootStore } from "../../components/StoreProvider";
 import { genderValueToLabel } from "../../utils/formatStrings";
 import { US_PA } from "../../RootStore/TenantStore/lanternTenants";
@@ -32,8 +33,8 @@ const DEFAULT_MODE = "MALE";
 
 const RevocationsByGender = observer(
   ({ containerHeight, timeDescription }, ref) => {
-    const { dataStore, currentTenantId } = useRootStore();
-    const { revocationsChartStore } = dataStore;
+    const { currentTenantId } = useRootStore();
+    const { revocationsChartStore } = useDataStore();
     const CHART_TITLE = translate("revocationsByGenderChartTitle");
     const CHART_ID = translate("revocationsByGenderChartId");
     const stacked =

@@ -14,38 +14,21 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-import DataStore from "../DataStore";
-import RootStore from "../RootStore";
+import { humanReadableTitleCase } from "../../../utils/formatStrings";
 
-let rootStore;
-let dataStore;
+function getViolation({ reportedViolations, violationType }) {
+  let str = "";
 
-jest.mock("@auth0/auth0-spa-js");
-jest.mock("../../api/metrics/metricsClient");
+  if (reportedViolations) {
+    str += `${reportedViolations} violations or notices of citation, `;
+  }
 
-describe("DataStore", () => {
-  beforeEach(() => {
-    rootStore = new RootStore();
-    dataStore = new DataStore({ rootStore });
-  });
+  if (violationType) {
+    str += `Most severe violation: ${humanReadableTitleCase(
+      violationType.toLowerCase()
+    )}`;
+  }
 
-  afterAll(() => {
-    jest.resetAllMocks();
-  });
-
-  it("contains a RevocationsOverTimeStore", () => {
-    expect(dataStore.revocationsOverTimeStore).toBeDefined();
-  });
-
-  it("contains a MatrixStore", () => {
-    expect(dataStore.matrixStore).toBeDefined();
-  });
-
-  it("contains a RevocationsChartsStore", () => {
-    expect(dataStore.revocationsChartStore).toBeDefined();
-  });
-
-  it("contains a CaseTableStore", () => {
-    expect(dataStore.caseTableStore).toBeDefined();
-  });
-});
+  return str;
+}
+export default getViolation;

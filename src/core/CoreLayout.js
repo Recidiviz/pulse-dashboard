@@ -22,21 +22,26 @@ import PropTypes from "prop-types";
 import Footer from "../components/Footer";
 import CoreNavigation from "./CoreNavigation";
 import useIntercom from "../hooks/useIntercom";
-
+import CoreStoreProvider from "./CoreStoreProvider";
+import ErrorBoundary from "./ErrorBoundary";
 import "./CoreLayout.scss";
 
 const CoreLayout = ({ children }) => {
   useIntercom();
   return (
-    <div id="app" className="CoreLayout">
-      <div className="page-container">
-        <div className="CoreLayout__header">
-          <CoreNavigation />
+    <CoreStoreProvider>
+      <ErrorBoundary>
+        <div id="app" className="CoreLayout">
+          <div className="page-container">
+            <div className="CoreLayout__header">
+              <CoreNavigation />
+            </div>
+            {children}
+          </div>
+          <Footer />
         </div>
-        {children}
-      </div>
-      <Footer />
-    </div>
+      </ErrorBoundary>
+    </CoreStoreProvider>
   );
 };
 

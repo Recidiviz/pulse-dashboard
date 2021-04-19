@@ -18,7 +18,7 @@ import React from "react";
 import { observer } from "mobx-react-lite";
 import HistoricalSummaryMetrics from "./HistoricalSummaryMetrics";
 import ProjectedSummaryMetrics from "./ProjectedSummaryMetrics";
-import { usePopulationFiltersStore } from "../../components/StoreProvider";
+import { useFiltersStore } from "../CoreStoreProvider";
 import type {
   PopulationProjectionSummaryRecords,
   HistoricalSummaryRecord,
@@ -51,7 +51,7 @@ const PopulationSummaryMetrics: React.FC<PropTypes> = ({
   isLoading = false,
   projectionSummaries = [],
 }) => {
-  const filtersStore = usePopulationFiltersStore();
+  const filtersStore = useFiltersStore();
   const dataFilter = applyDataFilters(filtersStore.filters);
 
   // TODO: add in Error state
