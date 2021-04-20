@@ -17,7 +17,7 @@
 import {
   getPathsFromNavigation,
   getPathWithoutParams,
-  convertIdToSlug,
+  convertToSlug,
   convertSlugToId,
 } from "../navigation";
 import tenants from "../../tenants";
@@ -58,10 +58,16 @@ describe("getPathWithoutParams", () => {
   });
 });
 
-describe("convertIdToSlug", () => {
+describe("convertToSlug", () => {
   it("returns the id with dashes instead of underscore and lower case", () => {
     const id = "123_OFFICER_JONES";
-    expect(convertIdToSlug(id)).toEqual("123-officer-jones");
+    expect(convertToSlug(id)).toEqual("123-officer-jones");
+  });
+
+  it("returns a slug for text", () => {
+    expect(convertToSlug("Over-Time Calculations: ")).toEqual(
+      "over-time-calculations"
+    );
   });
 });
 

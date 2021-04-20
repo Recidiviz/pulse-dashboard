@@ -14,33 +14,6 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-import React from "react";
-import { useParams, useHistory } from "react-router-dom";
-import PageTemplate from "../PageTemplate";
-import VitalsMethodology from "../VitalsMethodology";
-import ProjectionsMethodology from "../ProjectionsMethodology/Methodology";
-import "./Methodology.scss";
+import { US_ND } from "./usNdMethodology";
 
-const PageMethodology: React.FC = () => {
-  const { dashboard }: { dashboard: string } = useParams();
-  const { push } = useHistory();
-
-  const methodologies: { [k: string]: React.FC } = {
-    vitals: VitalsMethodology,
-    projections: ProjectionsMethodology,
-  };
-
-  const Methodology = methodologies[dashboard];
-
-  if (!Methodology) {
-    push({ pathname: "/" });
-  }
-
-  return (
-    <PageTemplate>
-      <Methodology />
-    </PageTemplate>
-  );
-};
-
-export default PageMethodology;
+export default { US_ND } as const;
