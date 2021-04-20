@@ -26,10 +26,10 @@ import PageTemplate from "../PageTemplate";
 
 const Methodology = () => (
   <PageTemplate>
-    <div className="main-content methodology p-0">
-      <Container className="col-md-10 col-12 ">
-        <h1 className="methodology__main-title">Projections</h1>
-        <h2 className="methodology__main-description">
+    <div className="main-content Methodology p-0">
+      <Container className="col-md-9 col-12">
+        <h1 className="Methodology__main-title">Projections</h1>
+        <h2 className="Methodology__main-description">
           The case-level population projection model is designed to simulate the
           state criminal justice system in order to forecast incarcerated and
           supervised populations. The model is an agent-based stock and flow
@@ -45,11 +45,12 @@ const Methodology = () => (
           population groups. The model stays up to date and can be run as
           frequently as data is received from the DOC.
         </h2>
-        <div className=" methodology__link-block col-md-5 col-12">
-          <h5>CONTENTS</h5>
+        <div className=" Methodology__toc col-md-5 col-12">
+          <h5 className="Methodology__toc--header">CONTENTS</h5>
           <div className="d-flex flex-column">
             {mainBlocks.map((contentBlock) => (
               <a
+                className="Methodology__toc--link"
                 key={`link${contentBlock.label}`}
                 href={`#${contentBlock.label
                   .replace(/:|\s/g, "-")

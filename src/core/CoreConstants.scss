@@ -22,6 +22,7 @@ $indigo: #4c6290;
 $marble-3: #f4f5f5;
 $marble-4: #eff1f1;
 $pine-1: rgb(1, 35, 34);
+$pine-2: #003331;
 $pine-3: #00413e;
 $signal-links: #006c67;
 $signal-links-lite: #4d9895;
@@ -34,6 +35,9 @@ $slate-30: rgba(53, 83, 98, 0.3);
 $slate-30-opaque: #c2cbd0;
 $slate-60: rgba(53, 83, 98, 0.6);
 $slate-80: rgba(53, 83, 98, 0.8);
+$slate-85: rgba(53, 83, 98, 0.85);
+$marble-3: #f4f5f5;
+$marble-4: #eff1f1;
 
 /* Colors missing from system design */
 $core-dropdown-color: #e9ebeb;
@@ -51,6 +55,13 @@ $font-ui-sans-16: 500 1rem/1.5rem $sans-serif;
 $font-ui-sans-20: 500 1.25rem/1.5rem $sans-serif;
 $font-ui-sans-24: 1.5rem/2.5rem $sans-serif;
 $font-ui-serif-34: 400 2.125rem/3rem $serif;
+$font-article-sans-14: 400 0.88rem/1.5rem $sans-serif;
+$font-article-sans-16: 400 1rem/1.7rem $sans-serif;
+$font-article-sans-24: 400 1.5rem/2rem $sans-serif;
+$font-article-sans-32: 400 2rem/3rem $sans-serif;
+$font-article-serif-24: 400 1.5rem/2rem $serif;
+$font-article-serif-34: 400 2.1rem/3rem $serif;
+$font-article-serif-56: 400 3.5rem/4.5rem $serif;
 
 :export {
   crimson: $crimson;
