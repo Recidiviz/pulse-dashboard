@@ -14,12 +14,15 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-export function getPathsFromNavigation(navigation: {
-  [k: string]: string[];
-}): string[] {
+import { Navigation } from "../tenants";
+
+export function getPathsFromNavigation(
+  navigation: Navigation | undefined
+): string[] {
+  if (!navigation) return [];
   return Object.entries(navigation).flatMap((navItem) => {
     const section: string = navItem[0];
-    const pages: string[] = navItem[1];
+    const pages: string[] = navItem[1] || [];
     return pages.length
       ? pages.map((page) => `/${section}/${page}`)
       : [`/${section}`];

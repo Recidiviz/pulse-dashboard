@@ -19,8 +19,6 @@ import React, { useCallback } from "react";
 import { observer } from "mobx-react-lite";
 import { Dropdown } from "react-bootstrap";
 import { Link } from "react-router-dom";
-
-import { getUserStateName } from "../../RootStore/utils/user";
 import { useUserStore } from "../StoreProvider";
 
 type PropTypes = {
@@ -32,7 +30,7 @@ const TopBarUserMenuForAuthenticatedUser: React.FC<PropTypes> = ({
   handleOnProfileClick,
   hideUsername = false,
 }) => {
-  const { user, logout } = useUserStore();
+  const { user, logout, stateName } = useUserStore();
 
   const onLogout = useCallback(
     (e) => {
@@ -54,7 +52,7 @@ const TopBarUserMenuForAuthenticatedUser: React.FC<PropTypes> = ({
         {!hideUsername && (
           <div className="peer">
             <ul className="fsz-sm c-grey-900">{user.name}</ul>
-            <ul className="fsz-sm pT-3 c-grey-600">{getUserStateName(user)}</ul>
+            <ul className="fsz-sm pT-3 c-grey-600">{stateName}</ul>
           </div>
         )}
       </Dropdown.Toggle>

@@ -1,5 +1,5 @@
 // Recidiviz - a data platform for criminal justice reform
-// Copyright (C) 2020 Recidiviz, Inc.
+// Copyright (C) 2021 Recidiviz, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -14,12 +14,36 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
+import * as lantern from "./TenantStore/lanternTenants";
+import * as core from "./TenantStore/coreTenants";
+import { RECIDIVIZ_TENANT, LANTERN } from "../tenants";
 
-import { US_MO_METHODOLOGY } from "./us_mo_methodology";
-import { US_PA_METHODOLOGY } from "./us_pa_methodology";
-import { US_MO, US_PA } from "./lanternTenants";
+export type LanternTenants = typeof lantern.LANTERN_TENANTS[number];
 
-export default {
-  [US_MO]: US_MO_METHODOLOGY,
-  [US_PA]: US_PA_METHODOLOGY,
+const TenantIds = [
+  lantern.US_MO,
+  lantern.US_PA,
+  core.US_ID,
+  core.US_ND,
+  RECIDIVIZ_TENANT,
+  LANTERN,
+] as const;
+
+export type TenantId = typeof TenantIds[number];
+
+export type UserAppMetadata = {
+  // eslint-disable-next-line camelcase
+  state_code: Lowercase<TenantId>;
+};
+
+export type LanternMethodologyByTenant = {
+  [key in LanternTenants]: LanternMethodology;
+};
+
+export type LanternMethodology = {
+  [k: string]: {
+    id: number;
+    header?: string;
+    body: string;
+  }[];
 };

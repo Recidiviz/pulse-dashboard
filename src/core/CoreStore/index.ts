@@ -53,7 +53,8 @@ export default class CoreStore {
     return this.filtersStore.filters;
   }
 
-  get currentTenantId(): TenantId {
-    return this.tenantStore.currentTenantId;
+  get currentTenantId(): TenantId | undefined {
+    if (!this.tenantStore.currentTenantId) return;
+    return this.tenantStore.currentTenantId as TenantId;
   }
 }
