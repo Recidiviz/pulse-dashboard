@@ -78,6 +78,7 @@ describe("VitalsMetrics", () => {
 
   it("sets apiData to the resolved fetched value", () => {
     expect(metric.apiData).toHaveProperty("vitals_summaries");
+    expect(metric.apiData).toHaveProperty("vitals_time_series");
   });
 
   it("sets isLoading to false", () => {

@@ -15,11 +15,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import {
-  Gender,
-  PopulationProjectionTimeSeriesRecord,
-  SimulationCompartment,
-} from "../models/types";
+import { PopulationProjectionTimeSeriesRecord } from "../models/types";
 
 export const CURRENT_YEAR = 2021;
 export const CURRENT_MONTH = 1;
@@ -37,29 +33,6 @@ export type PreparedData = {
   historicalPopulation: ChartPoint[];
   projectedPopulation: ChartPoint[];
   uncertainty: ChartPoint[];
-};
-
-export const filterData = (
-  monthRange: number,
-  gender: Gender,
-  compartment: SimulationCompartment,
-  status: string,
-  data: PopulationProjectionTimeSeriesRecord[]
-): PopulationProjectionTimeSeriesRecord[] => {
-  const range = monthRange === 1 ? 6 : monthRange;
-
-  const stepSize = range / 6;
-
-  return data.filter((d) => {
-    const monthsOut = (d.year - CURRENT_YEAR) * 12 + (d.month - CURRENT_MONTH);
-    return (
-      d.gender === gender &&
-      d.compartment === compartment &&
-      d.legalStatus === status &&
-      Math.abs(monthsOut) <= range &&
-      monthsOut % stepSize === 0
-    );
-  });
 };
 
 const getDate = (d: PopulationProjectionTimeSeriesRecord): Date =>
