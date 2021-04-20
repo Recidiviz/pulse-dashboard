@@ -27,7 +27,7 @@ import {
   SUPERVISION_LEVEL,
   SUPERVISION_TYPE,
 } from "../../utils/constants";
-import { useRootStore } from "../../../components/StoreProvider";
+import { useLanternStore } from "../../LanternStoreProvider";
 import { METADATA_NAMESPACE } from "../../../constants";
 import { US_MO } from "../../../RootStore/TenantStore/lanternTenants";
 import filterOptions from "../../../RootStore/TenantStore/filterOptions";
@@ -40,13 +40,13 @@ jest.mock("../FilterField", () => ({
   __esModule: true,
   default: jest.fn(),
 }));
-jest.mock("../../../components/StoreProvider");
+jest.mock("../../LanternStoreProvider");
 
 describe("SelectFilter tests", () => {
   const metadataField = `${METADATA_NAMESPACE}app_metadata`;
   const mockUser = { [metadataField]: { state_code: US_MO } };
   const setFiltersMock = jest.fn();
-  useRootStore.mockReturnValue({
+  useLanternStore.mockReturnValue({
     userStore: { user: mockUser, isAuthorized: true },
     currentTenantId: US_MO,
     filtersStore: {

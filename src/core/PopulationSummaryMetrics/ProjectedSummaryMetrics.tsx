@@ -19,14 +19,14 @@ import { observer } from "mobx-react-lite";
 import MetricsCard from "../MetricsCard/MetricsCard";
 import SummaryMetrics from "./SummaryMetrics";
 import type { ProjectedSummaryRecord } from "../models/types";
-import { usePopulationFiltersStore } from "../../components/StoreProvider";
+import { useFiltersStore } from "../CoreStoreProvider";
 import "./PopulationSummaryMetrics.scss";
 
 const ProjectedSummaryMetrics: React.FC<{
   data?: ProjectedSummaryRecord;
   isLoading: boolean;
 }> = ({ data, isLoading }) => {
-  const { timePeriodLabel } = usePopulationFiltersStore();
+  const { timePeriodLabel } = useFiltersStore();
 
   return (
     <MetricsCard heading={`Next ${timePeriodLabel}`} subheading="Projected">

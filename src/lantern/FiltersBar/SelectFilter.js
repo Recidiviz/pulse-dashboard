@@ -22,10 +22,10 @@ import { get } from "mobx";
 
 import Select from "../../controls/Select";
 import FilterField from "./FilterField";
-import { useRootStore } from "../../components/StoreProvider";
+import { useLanternStore } from "../LanternStoreProvider";
 
 const SelectFilter = ({ label, dimension }) => {
-  const { filtersStore } = useRootStore();
+  const { filtersStore } = useLanternStore();
   const { filters, filterOptions } = filtersStore;
   const value = get(filters, dimension);
   const { options, defaultOption } = filterOptions[dimension];

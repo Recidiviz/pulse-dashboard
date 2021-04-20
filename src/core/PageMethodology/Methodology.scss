@@ -4,20 +4,21 @@
   background-color: $marble-3;
 }
 .Methodology {
-  padding: 0px !important;
+  padding: 0px 0px 5rem 0px !important;
 
   &__main-title {
-    padding-top: 6rem;
-    padding-bottom: 1rem;
     color: $pine-3;
     font: $font-article-serif-56;
+    letter-spacing: -0.04em;
+    padding-bottom: 1rem;
+    padding-top: 6rem;
   }
   h3 {
     margin: 0px;
   }
   &__main-description {
     color: $pine-3;
-    font: $font-article-sans-32;
+    font: $font-article-sans-24;
   }
   &__toc {
     padding: 2.93rem 0px 0px 0px !important;
@@ -47,19 +48,19 @@
       padding: 4.5rem 0px 0px 0px !important;
       font: $font-article-serif-34;
       color: $pine-3;
+      letter-spacing: -0.04em;
     }
-    &--content {
+    &--content,
+    &--content p {
       font: $font-article-sans-16;
       color: $pine-2;
-      &:first-child > h4 {
-        padding: 0px !important;
-      }
     }
   }
   &__sub-block--title {
     padding: 2rem 0px 1rem 0px !important;
     color: $pine-3;
     font: $font-article-serif-24;
+    letter-spacing: -0.04em;
   }
   &__table {
     font-size: 1rem;

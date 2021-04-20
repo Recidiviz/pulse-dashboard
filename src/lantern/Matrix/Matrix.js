@@ -48,7 +48,7 @@ import {
 } from "../../utils/formatStrings";
 import { translate } from "../../utils/i18nSettings";
 import { useContainerHeight } from "../hooks/useContainerHeight";
-import { useRootStore } from "../../components/StoreProvider";
+import { useLanternStore } from "../LanternStoreProvider";
 import { VIOLATION_TYPE, REPORTED_VIOLATIONS } from "../utils/constants";
 import "./Matrix.scss";
 
@@ -59,7 +59,7 @@ const sumByInteger = (field) => sumBy(getInteger(field));
 const sumRow = pipe(values, sum);
 
 const Matrix = ({ timeDescription }) => {
-  const { dataStore, filters, filtersStore } = useRootStore();
+  const { dataStore, filters, filtersStore } = useLanternStore();
   const { filterOptions } = filtersStore;
   const store = dataStore.matrixStore;
   const CHART_TITLE = translate("revocationsMatrixChartTitle");
