@@ -27,7 +27,7 @@ import { TenantId } from "./types";
  */
 export function getAuthSettings(): Auth0ClientOptions {
   const authEnv = process.env.REACT_APP_AUTH_ENV;
-  let config = null;
+  let config: { [k: string]: string };
   if (authEnv === "production") {
     config = productionAuthConfig;
   } else {
