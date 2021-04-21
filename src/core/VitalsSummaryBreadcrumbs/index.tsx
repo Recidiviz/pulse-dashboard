@@ -23,7 +23,8 @@ import { convertIdToSlug } from "../../utils/navigation";
 import "./VitalsSummaryBreadcrumbs.scss";
 
 function formatOfficeName(name: string | undefined): string | undefined {
-  return name ? `${toTitleCase(name)} Office` : name;
+  if (!name) return "Unknown";
+  return name.includes("Office") ? name : `${toTitleCase(name)} Office`;
 }
 
 function formatOfficerName(name: string): string {
