@@ -170,7 +170,11 @@ export default class UserStore {
   get userAppMetadata(): UserAppMetadata | undefined {
     if (!this.user) return;
     const appMetadataKey = `${METADATA_NAMESPACE}app_metadata`;
-    return this.user[appMetadataKey];
+    const appMetadata = this.user[appMetadataKey];
+    if (!appMetadata) {
+      throw Error("No app_metadata available for user");
+    }
+    return appMetadata;
   }
 
   /**
@@ -178,12 +182,7 @@ export default class UserStore {
    * For Recidiviz users or users in demo mode, this will be 'recidiviz'.
    */
   get stateCode(): TenantId {
-    if (!this.userAppMetadata && this.user) {
-      throw Error("No app_metadata available for user");
-    }
-
     const stateCode = this.userAppMetadata?.state_code;
-
     if (!stateCode) {
       throw Error("No state code set for user");
     }
@@ -194,7 +193,9 @@ export default class UserStore {
    * Returns the list of states which are accessible to users to view data for.
    */
   get availableStateCodes(): string[] {
-    return tenants[this.stateCode].availableStateCodes;
+    const stateCodes = tenants[this.stateCode].availableStateCodes;
+    if (this.blockedStateCodes.length === 0) return stateCodes;
+    return stateCodes.filter((sc) => !this.blockedStateCodes.includes(sc));
   }
 
   /**
@@ -203,6 +204,15 @@ export default class UserStore {
    */
   get stateName(): string {
     return tenants[this.stateCode].name;
+  }
+
+  /**
+   * Returns any blocked state codes for the authorized user.
+   */
+  get blockedStateCodes(): string[] {
+    const blockedStateCodes = this.userAppMetadata?.blocked_state_codes;
+    if (!blockedStateCodes) return [];
+    return blockedStateCodes.map((sc) => sc.toUpperCase());
   }
 
   /**

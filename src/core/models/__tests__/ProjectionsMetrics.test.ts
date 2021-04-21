@@ -20,6 +20,7 @@ import FiltersStore from "../../CoreStore/FiltersStore";
 import { callMetricsApi } from "../../../api/metrics/metricsClient";
 import RootStore from "../../../RootStore";
 import ProjectionsMetrics from "../ProjectionsMetrics";
+import { CORE_VIEWS } from "../../views";
 
 const mockTenantId = "US_ND";
 const mockGetTokenSilently = jest.fn();
@@ -203,6 +204,33 @@ describe("ProjectionsMetrics", () => {
       { month: 1, year: 2016 },
       { month: 5, year: 2016 },
     ]);
+  });
+
+  describe("getFilteredDataByView", () => {
+    beforeEach(() => {
+      mockCoreStore.filtersStore = filtersStore;
+      metric = new ProjectionsMetrics({
+        tenantId: mockTenantId,
+        sourceEndpoint: "vitals",
+        rootStore: mockCoreStore,
+      });
+    });
+
+    it("returns facilities time series on the facilities view", () => {
+      const filteredData = metric.getFilteredDataByView(CORE_VIEWS.facilities);
+      expect(
+        filteredData
+          .map((d) => d.compartment)
+          .every((d) => d === "INCARCERATION")
+      ).toBeTrue();
+    });
+
+    it("returns community time series on the community view", () => {
+      const filteredData = metric.getFilteredDataByView(CORE_VIEWS.community);
+      expect(
+        filteredData.map((d) => d.compartment).every((d) => d === "SUPERVISION")
+      ).toBeTrue();
+    });
   });
 
   describe("filterTimeSeriesData", () => {

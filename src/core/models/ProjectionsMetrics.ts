@@ -22,7 +22,7 @@ import {
   RawMetricData,
   SimulationCompartment,
 } from "./types";
-
+import { getCompartmentFromView } from "../views";
 import Metric, { BaseMetricProps } from "./Metric";
 import {
   CURRENT_MONTH,
@@ -148,6 +148,18 @@ export default class ProjectionsMetrics extends Metric<MetricRecords> {
     return this.filterTimeSeriesData(this.timeSeries, "INCARCERATION");
   }
 
+  getFilteredDataByView(view: string): PopulationProjectionTimeSeriesRecord[] {
+    const compartment = getCompartmentFromView(view);
+    switch (compartment) {
+      case "SUPERVISION":
+        return this.filteredCommunityTimeSeries;
+      case "INCARCERATION":
+        return this.filteredFacilitiesTimeSeries;
+      default:
+        return this.timeSeries;
+    }
+  }
+
   get summaries(): PopulationProjectionSummaryRecords {
     if (!this.apiData) return [];
     return createProjectionSummaries(
@@ -160,6 +172,7 @@ export default class ProjectionsMetrics extends Metric<MetricRecords> {
     const timeSeries = createProjectionTimeSeries(
       this.apiData.population_projection_timeseries
     );
+    // TODO(recidiviz-data/issues/6651): Sort data on backend
     return timeSeries.sort((a, b) =>
       a.year !== b.year ? a.year - b.year : a.month - b.month
     );

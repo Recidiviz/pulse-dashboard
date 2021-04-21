@@ -25,7 +25,7 @@ import { SimulationCompartment } from "../models/types";
 
 import "./PopulationTimeSeriesChart.scss";
 import PopulationTimeSeriesLegend from "./PopulationTimeSeriesLegend";
-import { CORE_VIEWS, getViewFromPathname } from "../views";
+import { getCompartmentFromView, getViewFromPathname } from "../views";
 import PopulationTimeSeriesTooltip from "./PopulationTimeSeriesTooltip";
 import PopulationTimeSeriesErrorBar from "./PopulationTimeSeriesErrorBar";
 import * as styles from "../CoreConstants.scss";
@@ -40,34 +40,15 @@ type PlotLine = {
 const TOTAL_INCARCERATED_LIMIT = 8008;
 
 const PopulationTimeSeriesChart: React.FC = () => {
-  let compartment: SimulationCompartment;
-  let timeSeries = [];
   const view = getViewFromPathname(useLocation().pathname);
+  const compartment: SimulationCompartment = getCompartmentFromView(view);
   const { metricsStore, filtersStore } = useCoreStore();
   const { gender, legalStatus } = filtersStore.filters;
-
-  switch (view) {
-    case CORE_VIEWS.community:
-      compartment = "SUPERVISION";
-      timeSeries = metricsStore.projections.filteredCommunityTimeSeries;
-      break;
-    case CORE_VIEWS.facilities:
-      compartment = "INCARCERATION";
-      timeSeries = metricsStore.projections.filteredFacilitiesTimeSeries;
-      break;
-    default:
-      // TODO: Error state
-      return <div />;
-  }
+  const filteredData = metricsStore.projections.getFilteredDataByView(view);
 
   const timePeriod: MonthOptions = parseInt(
     filtersStore.filters.timePeriod
   ) as MonthOptions;
-
-  // TODO(recidiviz-data/issues/6651): Sort data on backend
-  const filteredData = timeSeries.sort((a, b) =>
-    a.year !== b.year ? a.year - b.year : a.month - b.month
-  );
 
   if (filteredData.length < 1) {
     // TODO: Error state

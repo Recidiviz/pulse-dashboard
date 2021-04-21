@@ -14,6 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
+/* eslint camelcase: 0 */
 import * as lantern from "./TenantStore/lanternTenants";
 import * as core from "./TenantStore/coreTenants";
 import { RECIDIVIZ_TENANT, LANTERN } from "../tenants";
@@ -32,8 +33,8 @@ const TenantIds = [
 export type TenantId = typeof TenantIds[number];
 
 export type UserAppMetadata = {
-  // eslint-disable-next-line camelcase
   state_code: Lowercase<TenantId>;
+  blocked_state_codes?: Lowercase<TenantId>[];
 };
 
 export type LanternMethodologyByTenant = {
