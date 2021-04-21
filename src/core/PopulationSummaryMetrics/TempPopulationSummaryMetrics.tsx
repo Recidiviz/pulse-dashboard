@@ -27,7 +27,7 @@ import {
   CURRENT_YEAR,
   CURRENT_MONTH,
 } from "../PopulationTimeSeriesChart/helpers";
-import { CORE_VIEWS, getViewFromPathname } from "../views";
+import { getViewFromPathname } from "../views";
 import { formatLargeNumber } from "../../utils/formatStrings";
 import { useCoreStore } from "../CoreStoreProvider";
 import type { PopulationProjectionTimeSeriesRecord } from "../models/types";
@@ -97,23 +97,11 @@ const TempPopulationSummaryMetrics: React.FC<PropTypes> = ({
   isError,
   isLoading = false,
 }) => {
-  let timeSeries = [];
   const { pathname } = useLocation();
+  const view = getViewFromPathname(pathname);
   const { metricsStore, filtersStore } = useCoreStore();
   const { timePeriodLabel } = filtersStore;
-  const view = getViewFromPathname(pathname);
-
-  switch (view) {
-    case CORE_VIEWS.community:
-      timeSeries = metricsStore.projections.filteredCommunityTimeSeries;
-      break;
-    case CORE_VIEWS.facilities:
-      timeSeries = metricsStore.projections.filteredFacilitiesTimeSeries;
-      break;
-    default:
-      // TODO: Error state
-      return <div />;
-  }
+  const timeSeries = metricsStore.projections.getFilteredDataByView(view);
 
   if (isError) {
     return null;
