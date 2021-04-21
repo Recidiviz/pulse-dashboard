@@ -21,30 +21,41 @@ import groupBy from "lodash/fp/groupBy";
 import values from "lodash/fp/values";
 import sortBy from "lodash/fp/sortBy";
 import map from "lodash/fp/map";
+import toInteger from "lodash/fp/toInteger";
+import sumBy from "lodash/fp/sumBy";
 
-import { sumIntBy } from "../utils/counts";
 import { calculateRate } from "../utils/rate";
 import { translate } from "../../utils/i18nSettings";
 import { humanReadableTitleCase } from "../../utils/formatStrings";
 import { applyStatisticallySignificantShadingToDataset } from "../utils/significantStatistics";
-import getDenominatorKeyByMode from "../utils/getDenominatorKeyByMode";
 import getLabelByMode from "../utils/getLabelByMode";
 import { COLORS } from "../../assets/scripts/constants/colors";
 
 const createGenerateChartData = (filteredData) => (mode) => {
-  const denominatorKey = getDenominatorKeyByMode(mode);
+  const fieldName =
+    mode === "exits" ? "exit_count" : "supervision_population_count";
   const riskLevels = translate("riskLevelsMap");
-
   const riskLevelCounts = pipe(
     filter((data) => Object.keys(riskLevels).includes(data.risk_level)),
-    groupBy("risk_level"),
+    groupBy((d) => [d.risk_level, d.admission_type]),
     values,
     sortBy((dataset) => Object.keys(riskLevels).indexOf(dataset[0].risk_level)),
-    map((dataset) => {
-      const riskLevelLabel = riskLevels[dataset[0].risk_level];
+    map((dataset) => ({
+      risk_level: dataset[0].risk_level,
+      count: sumBy((item) => toInteger(item.revocation_count), dataset),
+      [fieldName]: sumBy((item) => toInteger(item[fieldName]), dataset),
+    })),
+    groupBy("risk_level"),
+    map((dataset) => ({
+      risk_level: dataset[0].risk_level,
+      count: sumBy((item) => toInteger(item.count), dataset),
+      [fieldName]: dataset[0][fieldName],
+    })),
+    map((dataPoint) => {
+      const riskLevelLabel = riskLevels[dataPoint.risk_level];
       const label = humanReadableTitleCase(riskLevelLabel);
-      const numerator = sumIntBy("revocation_count", dataset);
-      const denominator = sumIntBy(denominatorKey, dataset);
+      const numerator = dataPoint.count;
+      const denominator = dataPoint[fieldName];
       const rate = calculateRate(numerator, denominator);
       return {
         label,
