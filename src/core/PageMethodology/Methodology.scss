@@ -1,0 +1,79 @@
+@import "../CoreConstants.scss";
+
+.main-content {
+  background-color: $marble-3;
+}
+.Methodology {
+  padding: 0px 0px 5rem 0px !important;
+
+  &__main-title {
+    color: $pine-3;
+    font: $font-article-serif-56;
+    letter-spacing: -0.04em;
+    padding-bottom: 1rem;
+    padding-top: 6rem;
+  }
+  h3 {
+    margin: 0px;
+  }
+  &__main-description {
+    color: $pine-3;
+    font: $font-article-sans-24;
+  }
+  &__toc {
+    padding: 2.93rem 0px 0px 0px !important;
+    &--header {
+      color: $slate-85;
+      font: $font-article-sans-14;
+    }
+    &--link {
+      font: $font-article-sans-24;
+      color: $signal-links;
+      width: fit-content;
+      &:hover,
+      &:focus {
+        color: $signal-links;
+        cursor: pointer;
+        text-decoration: underline;
+      }
+      &:active {
+        color: $signal-links;
+      }
+    }
+  }
+  &__block {
+    margin-bottom: 1rem;
+
+    &--title {
+      padding: 4.5rem 0px 0px 0px !important;
+      font: $font-article-serif-34;
+      color: $pine-3;
+      letter-spacing: -0.04em;
+    }
+    &--content,
+    &--content p {
+      font: $font-article-sans-16;
+      color: $pine-2;
+    }
+  }
+  &__sub-block--title {
+    padding: 2rem 0px 1rem 0px !important;
+    color: $pine-3;
+    font: $font-article-serif-24;
+    letter-spacing: -0.04em;
+  }
+  &__table {
+    font-size: 1rem;
+    line-height: 1.43rem;
+    font-weight: 300;
+    padding: 25px 0 0 25px !important;
+    .table {
+      color: $pine-2;
+    }
+    &__description {
+      font-size: 1.18rem;
+      font-weight: 300;
+      color: $slate-85;
+    }
+  }
+}

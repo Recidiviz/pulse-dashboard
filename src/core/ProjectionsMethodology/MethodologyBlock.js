@@ -8,22 +8,20 @@ const MethodologyBlock = ({ contentBlock, target }) => {
   return (
     <ScrollableAnchor id={target}>
       <div>
-        <h3 className="methodology__sub-block--title ">{contentBlock.label}</h3>
+        <h3 className="Methodology__block--title ">{contentBlock.label}</h3>
         <hr />
         {contentBlock.includeTable ? (
           <ModelInfrastructureBlock />
         ) : (
           <>
             {contentBlock.list === undefined ? (
-              <p className="methodology__sub-block--description">
-                {contentBlock.text}
-              </p>
+              <p className="Methodology__block--content">{contentBlock.text}</p>
             ) : (
               <>
-                <p className="methodology__sub-block--description">
+                <p className="Methodology__block--content">
                   {contentBlock.text}
                 </p>
-                <ul className="methodology__sub-block--description">
+                <ul className="Methodology__block--content">
                   {contentBlock.list.map((liText) => (
                     <li key={liText}>{liText}</li>
                   ))}
