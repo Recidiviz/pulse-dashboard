@@ -19,7 +19,6 @@ import RootStore from "../../../RootStore";
 import CoreStore from "..";
 import VitalsMetrics from "../../models/VitalsMetrics";
 import ProjectionsMetrics from "../../models/ProjectionsMetrics";
-import TenantStore from "../../../RootStore/TenantStore";
 
 let coreStore: CoreStore;
 
