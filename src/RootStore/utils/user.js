@@ -82,10 +82,8 @@ export function getAvailableStateCodes(user) {
   const stateCode = getUserStateCode(user);
   const blockedStateCodes = getUserBlockedStateCodes(user);
   const stateCodes = tenants[stateCode.toUpperCase()].availableStateCodes;
-  return stateCodes.filter((sc) => {
-    if (!blockedStateCodes) return true;
-    return !blockedStateCodes.includes(sc);
-  });
+  if (!blockedStateCodes) return stateCodes;
+  return stateCodes.filter((sc) => !blockedStateCodes.includes(sc));
 }
 
 /**
