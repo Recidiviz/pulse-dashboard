@@ -24,7 +24,7 @@ import type {
   HistoricalSummaryRecord,
   ProjectedSummaryRecord,
 } from "../models/types";
-import { recordMatchesSimulationTag } from "../models/PopulationProjectionSummaryMetric";
+import { recordMatchesSimulationTag } from "../models/ProjectionsMetrics";
 import "./PopulationSummaryMetrics.scss";
 import { PopulationFilterValues } from "../types/filters";
 

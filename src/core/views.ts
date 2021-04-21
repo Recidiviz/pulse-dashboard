@@ -14,12 +14,16 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
+import { SimulationCompartment } from "./models/types";
+
 export const CORE_VIEWS: Record<string, string> = {
   community: "community",
   facilities: "facilities",
   goals: "goals",
   methodology: "methodology",
 };
+
+type CoreView = keyof typeof CORE_VIEWS;
 
 export const CORE_PATHS: Record<string, string> = {
   goals: "/goals",
@@ -44,6 +48,10 @@ const pathnameToView: Record<string, string> = {
   [CORE_PATHS.methodologyProjections]: CORE_VIEWS.methodology,
 };
 
-export function getViewFromPathname(pathname: string): keyof typeof CORE_VIEWS {
+export function getCompartmentFromView(view: CoreView): SimulationCompartment {
+  return view === CORE_VIEWS.community ? "SUPERVISION" : "INCARCERATION";
+}
+
+export function getViewFromPathname(pathname: string): CoreView {
   return pathnameToView[pathname];
 }

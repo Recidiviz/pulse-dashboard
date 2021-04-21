@@ -14,28 +14,32 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
+import { makeAutoObservable } from "mobx";
+import type CoreStore from ".";
 
-import {
-  Gender,
-  PopulationProjectionTimeSeriesRecord,
-  RawMetricData,
-  SimulationCompartment,
-} from "./types";
+import VitalsMetrics from "../models/VitalsMetrics";
+import ProjectionsMetrics from "../models/ProjectionsMetrics";
 
-export function populationProjectionTimeSeries(
-  rawRecords: RawMetricData
-): PopulationProjectionTimeSeriesRecord[] {
-  return rawRecords.map((record) => {
-    return {
-      year: Number(record.year),
-      month: Number(record.month),
-      compartment: record.compartment as SimulationCompartment,
-      legalStatus: record.legal_status,
-      gender: record.gender as Gender,
-      simulationTag: record.simulation_tag,
-      totalPopulation: Number(record.total_population),
-      totalPopulationMax: Number(record.total_population_max),
-      totalPopulationMin: Number(record.total_population_min),
-    };
-  });
+export default class MetricsStore {
+  protected readonly rootStore;
+
+  constructor({ rootStore }: { rootStore: CoreStore }) {
+    makeAutoObservable(this);
+    this.rootStore = rootStore;
+  }
+
+  get vitals(): VitalsMetrics {
+    return new VitalsMetrics({
+      tenantId: this.rootStore.currentTenantId,
+      sourceEndpoint: "vitals",
+    });
+  }
+
+  get projections(): ProjectionsMetrics {
+    return new ProjectionsMetrics({
+      tenantId: this.rootStore.currentTenantId,
+      sourceEndpoint: "projections",
+      rootStore: this.rootStore,
+    });
+  }
 }

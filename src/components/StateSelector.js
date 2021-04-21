@@ -20,7 +20,6 @@ import PropTypes from "prop-types";
 import Select from "react-select";
 import { observer } from "mobx-react-lite";
 
-import { getStateNameForCode } from "../RootStore/utils/user";
 import { useRootStore } from "./StoreProvider";
 
 const StateSelector = ({ onChange }) => {
@@ -29,7 +28,7 @@ const StateSelector = ({ onChange }) => {
     .sort()
     .map((code) => ({
       value: code,
-      label: getStateNameForCode(code),
+      label: tenantStore.getStateNameForStateCode(code),
     }));
   const defaultValue = availableStatesOptions.find(
     (availableState) => availableState.value === tenantStore.currentTenantId

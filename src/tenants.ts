@@ -17,8 +17,28 @@
 import * as lantern from "./RootStore/TenantStore/lanternTenants";
 import * as core from "./RootStore/TenantStore/coreTenants";
 import flags from "./flags";
+import { TenantId } from "./RootStore/types";
 
-export default {
+export const RECIDIVIZ_TENANT = "RECIDIVIZ";
+export const LANTERN = "LANTERN";
+
+export type Navigation = {
+  goals?: string[];
+  community?: string[];
+  facilities?: string[];
+  methodology?: string[];
+};
+
+type Tenants = {
+  [key in TenantId]: {
+    name: string;
+    stateCode: string;
+    availableStateCodes: string[];
+    navigation?: Navigation;
+  };
+};
+
+const TENANTS: Tenants = {
   [lantern.US_MO]: {
     name: "Missouri",
     stateCode: "MO",
@@ -65,3 +85,5 @@ export default {
     availableStateCodes: lantern.LANTERN_TENANTS,
   },
 };
+
+export default TENANTS;

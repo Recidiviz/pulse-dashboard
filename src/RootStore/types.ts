@@ -14,18 +14,37 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-import { VitalsTimeSeriesRecord, RawMetricData } from "./types";
+/* eslint camelcase: 0 */
+import * as lantern from "./TenantStore/lanternTenants";
+import * as core from "./TenantStore/coreTenants";
+import { RECIDIVIZ_TENANT, LANTERN } from "../tenants";
 
-export function vitalsTimeSeries(
-  rawRecords: RawMetricData
-): VitalsTimeSeriesRecord[] {
-  return rawRecords.map((record) => {
-    return {
-      date: record.date,
-      entityId: record.entity_id,
-      metric: record.metric,
-      value: Number(record.value),
-      weeklyAvg: Number(record.avg_7d),
-    };
-  });
-}
+export type LanternTenants = typeof lantern.LANTERN_TENANTS[number];
+
+const TenantIds = [
+  lantern.US_MO,
+  lantern.US_PA,
+  core.US_ID,
+  core.US_ND,
+  RECIDIVIZ_TENANT,
+  LANTERN,
+] as const;
+
+export type TenantId = typeof TenantIds[number];
+
+export type UserAppMetadata = {
+  state_code: Lowercase<TenantId>;
+  blocked_state_codes?: Lowercase<TenantId>[];
+};
+
+export type LanternMethodologyByTenant = {
+  [key in LanternTenants]: LanternMethodology;
+};
+
+export type LanternMethodology = {
+  [k: string]: {
+    id: number;
+    header?: string;
+    body: string;
+  }[];
+};

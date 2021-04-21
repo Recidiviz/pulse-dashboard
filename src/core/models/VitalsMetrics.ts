@@ -14,10 +14,17 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-import { VitalsSummaryRecord, RawMetricData, EntityType } from "./types";
+import { computed, makeObservable } from "mobx";
+import {
+  VitalsSummaryRecord,
+  VitalsTimeSeriesRecord,
+  RawMetricData,
+  EntityType,
+} from "./types";
 import { toTitleCase } from "../../utils/formatStrings";
+import Metric, { BaseMetricProps } from "./Metric";
 
-export function vitalsSummary(
+export function createVitalsSummaryMetric(
   rawRecords: RawMetricData
 ): VitalsSummaryRecord[] {
   return rawRecords.map((record) => {
@@ -35,4 +42,40 @@ export function vitalsSummary(
       overall28Day: Number(record.overall_28d),
     };
   });
+}
+
+export function createVitalsTimeSeriesMetric(
+  rawRecords: RawMetricData
+): VitalsTimeSeriesRecord[] {
+  return rawRecords.map((record) => {
+    return {
+      date: record.date,
+      entityId: record.entity_id,
+      metric: record.metric,
+      value: Number(record.value),
+      weeklyAvg: Number(record.avg_7d),
+    };
+  });
+}
+
+type MetricRecords = VitalsSummaryRecord | VitalsTimeSeriesRecord;
+
+export default class VitalsMetrics extends Metric<MetricRecords> {
+  constructor(props: BaseMetricProps) {
+    super(props);
+    makeObservable(this, {
+      timeSeries: computed,
+      summaries: computed,
+    });
+  }
+
+  get summaries(): VitalsSummaryRecord[] {
+    if (!this.apiData) return [];
+    return createVitalsSummaryMetric(this.apiData.vitals_summaries);
+  }
+
+  get timeSeries(): VitalsTimeSeriesRecord[] {
+    if (!this.apiData) return [];
+    return createVitalsTimeSeriesMetric(this.apiData.vitals_time_series);
+  }
 }
