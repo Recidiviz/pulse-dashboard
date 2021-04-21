@@ -26,6 +26,7 @@ import { ENTITY_TYPES, EntityType } from "../models/types";
 import { convertIdToSlug } from "../../utils/navigation";
 
 import "./VitalsSummaryTable.scss";
+import flags from "../../flags";
 
 function getEntityTypeName(entityType: EntityType): string {
   switch (entityType) {
@@ -73,14 +74,18 @@ const VitalsSummaryTable: React.FC<PropTypes> = ({
                 entityName: string;
                 entityType: string;
               };
-            }) => (
-              <Link
-                className="VitalsSummaryTable__link"
-                to={`/community/vitals/${convertIdToSlug(value.entityId)}`}
-              >
-                {value.entityName}
-              </Link>
-            ),
+            }) =>
+              value.entityType === ENTITY_TYPES.LEVEL_1_SUPERVISION_LOCATION ||
+              flags.enableVitalsOfficerView ? (
+                <Link
+                  className="VitalsSummaryTable__link"
+                  to={`/community/vitals/${convertIdToSlug(value.entityId)}`}
+                >
+                  {value.entityName}
+                </Link>
+              ) : (
+                value.entityName
+              ),
           },
         ],
       },
