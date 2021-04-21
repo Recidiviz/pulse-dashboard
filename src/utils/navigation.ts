@@ -34,8 +34,8 @@ export function getPathWithoutParams(pathname: string): string {
   return page ? `/${section}/${page}` : `/${section}`;
 }
 
-export function convertIdToSlug(id: string): string {
-  return id.replace(/_/g, "-").toLowerCase();
+export function convertToSlug(text: string): string {
+  return text.trim().replace(/:/g, "").replace(/_|\s/g, "-").toLowerCase();
 }
 
 export function convertSlugToId(slug: string): string {

@@ -35,8 +35,7 @@ export function getStateNameForCode(stateCode) {
 }
 
 /**
- * Returns the state code of the authorized state for the given user.
- * For Recidiviz users or users in demo mode, this will be 'recidiviz'.
+ * Returns the blocked state codes for the given user.
  */
 export function getUserStateCode(user) {
   const appMetadata = getUserAppMetadata(user);
@@ -52,6 +51,23 @@ export function getUserStateCode(user) {
 }
 
 /**
+ * Returns the state code of the authorized state for the given user.
+ * For Recidiviz users or users in demo mode, this will be 'recidiviz'.
+ */
+export function getUserBlockedStateCodes(user) {
+  const appMetadata = getUserAppMetadata(user);
+  if (!appMetadata) {
+    throw Error("No app_metadata available for user");
+  }
+
+  const blockedStateCodes = appMetadata.blocked_state_codes;
+  if (blockedStateCodes) {
+    return blockedStateCodes.map((sc) => sc.toUpperCase());
+  }
+  return [];
+}
+
+/**
  * Returns the human-readable state name for the authorized state code for the given usere.
  */
 export function getUserStateName(user) {
@@ -64,7 +80,10 @@ export function getUserStateName(user) {
  */
 export function getAvailableStateCodes(user) {
   const stateCode = getUserStateCode(user);
-  return tenants[stateCode.toUpperCase()].availableStateCodes;
+  const blockedStateCodes = getUserBlockedStateCodes(user);
+  const stateCodes = tenants[stateCode.toUpperCase()].availableStateCodes;
+  if (!blockedStateCodes) return stateCodes;
+  return stateCodes.filter((sc) => !blockedStateCodes.includes(sc));
 }
 
 /**
