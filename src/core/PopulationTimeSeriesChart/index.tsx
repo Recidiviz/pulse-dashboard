@@ -20,69 +20,35 @@ import { useLocation } from "react-router-dom";
 import { scaleTime } from "d3-scale";
 import { observer } from "mobx-react-lite";
 import { ResponsiveXYFrame } from "semiotic";
-import { useFiltersStore } from "../CoreStoreProvider";
-import {
-  PopulationProjectionTimeSeriesRecord,
-  SimulationCompartment,
-} from "../models/types";
+import { useCoreStore } from "../CoreStoreProvider";
+import { SimulationCompartment } from "../models/types";
 
 import "./PopulationTimeSeriesChart.scss";
 import PopulationTimeSeriesLegend from "./PopulationTimeSeriesLegend";
-import { CORE_VIEWS, getViewFromPathname } from "../views";
+import { getCompartmentFromView, getViewFromPathname } from "../views";
 import PopulationTimeSeriesTooltip from "./PopulationTimeSeriesTooltip";
 import PopulationTimeSeriesErrorBar from "./PopulationTimeSeriesErrorBar";
 import * as styles from "../CoreConstants.scss";
 
-import {
-  ChartPoint,
-  getDateRange,
-  MonthOptions,
-  prepareData,
-  filterData,
-} from "./helpers";
+import { ChartPoint, getDateRange, MonthOptions, prepareData } from "./helpers";
 
 type PlotLine = {
   data: ChartPoint[];
   class: string;
 };
 
-type PropTypes = {
-  data: PopulationProjectionTimeSeriesRecord[];
-};
-
 const TOTAL_INCARCERATED_LIMIT = 8008;
 
-const PopulationTimeSeriesChart: React.FC<PropTypes> = ({ data }) => {
-  const filtersStore = useFiltersStore();
-  const { gender, supervisionType, legalStatus } = filtersStore.filters;
+const PopulationTimeSeriesChart: React.FC = () => {
+  const view = getViewFromPathname(useLocation().pathname);
+  const compartment: SimulationCompartment = getCompartmentFromView(view);
+  const { metricsStore, filtersStore } = useCoreStore();
+  const { gender, legalStatus } = filtersStore.filters;
+  const filteredData = metricsStore.projections.getFilteredDataByView(view);
+
   const timePeriod: MonthOptions = parseInt(
     filtersStore.filters.timePeriod
   ) as MonthOptions;
-
-  const view = getViewFromPathname(useLocation().pathname);
-
-  let compartment: SimulationCompartment;
-
-  switch (view) {
-    case CORE_VIEWS.community:
-      compartment = "SUPERVISION";
-      break;
-    case CORE_VIEWS.facilities:
-      compartment = "INCARCERATION";
-      break;
-    default:
-      // TODO: Error state
-      return <div />;
-  }
-
-  const filteredData = filterData(
-    timePeriod,
-    gender,
-    compartment,
-    compartment === "SUPERVISION" ? supervisionType : legalStatus,
-    data
-  ).sort((a, b) => (a.year !== b.year ? a.year - b.year : a.month - b.month));
-  // TODO(recidiviz-data/issues/6651): Sort data on backend
 
   if (filteredData.length < 1) {
     // TODO: Error state
@@ -211,7 +177,7 @@ const PopulationTimeSeriesChart: React.FC<PropTypes> = ({ data }) => {
               screenY,
               chartTop,
             };
-            return <PopulationTimeSeriesErrorBar {...props} />;
+            return <PopulationTimeSeriesErrorBar key={value} {...props} />;
           }
 
           return null;

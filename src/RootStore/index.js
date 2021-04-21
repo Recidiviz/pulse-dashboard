@@ -66,6 +66,10 @@ class RootStore {
   get user() {
     return this.userStore.user;
   }
+
+  get getTokenSilently() {
+    return this.userStore.getTokenSilently;
+  }
 }
 
 export default new RootStore();

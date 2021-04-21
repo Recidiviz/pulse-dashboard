@@ -14,18 +14,32 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-import { VitalsTimeSeriesRecord, RawMetricData } from "./types";
+import { makeAutoObservable } from "mobx";
+import type CoreStore from ".";
 
-export function vitalsTimeSeries(
-  rawRecords: RawMetricData
-): VitalsTimeSeriesRecord[] {
-  return rawRecords.map((record) => {
-    return {
-      date: record.date,
-      entityId: record.entity_id,
-      metric: record.metric,
-      value: Number(record.value),
-      weeklyAvg: Number(record.avg_7d),
-    };
-  });
+import VitalsMetrics from "../models/VitalsMetrics";
+import ProjectionsMetrics from "../models/ProjectionsMetrics";
+
+export default class MetricsStore {
+  protected readonly rootStore;
+
+  constructor({ rootStore }: { rootStore: CoreStore }) {
+    makeAutoObservable(this);
+    this.rootStore = rootStore;
+  }
+
+  get vitals(): VitalsMetrics {
+    return new VitalsMetrics({
+      tenantId: this.rootStore.currentTenantId,
+      sourceEndpoint: "vitals",
+    });
+  }
+
+  get projections(): ProjectionsMetrics {
+    return new ProjectionsMetrics({
+      tenantId: this.rootStore.currentTenantId,
+      sourceEndpoint: "projections",
+      rootStore: this.rootStore,
+    });
+  }
 }
