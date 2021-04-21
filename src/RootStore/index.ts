@@ -1,5 +1,5 @@
 // Recidiviz - a data platform for criminal justice reform
-// Copyright (C) 2020 Recidiviz, Inc.
+// Copyright (C) 2021 Recidiviz, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -14,19 +14,20 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-
 import { computed, makeObservable } from "mobx";
+import { Auth0ClientOptions, User } from "@auth0/auth0-spa-js";
 import TenantStore from "./TenantStore";
 import UserStore from "./UserStore";
 import devAuthConfig from "../auth_config_dev.json";
 import productionAuthConfig from "../auth_config_production.json";
+import { TenantId } from "./types";
 
 /**
  * Returns the auth settings configured for the current environment, if any.
  */
-export function getAuthSettings() {
+export function getAuthSettings(): Auth0ClientOptions {
   const authEnv = process.env.REACT_APP_AUTH_ENV;
-  let config = null;
+  let config: { [k: string]: string };
   if (authEnv === "production") {
     config = productionAuthConfig;
   } else {
@@ -41,9 +42,9 @@ export function getAuthSettings() {
 }
 
 class RootStore {
-  tenantStore;
+  tenantStore: TenantStore;
 
-  userStore;
+  userStore: UserStore;
 
   constructor() {
     makeObservable(this, {
@@ -59,12 +60,16 @@ class RootStore {
     this.tenantStore = new TenantStore({ rootStore: this });
   }
 
-  get currentTenantId() {
+  get currentTenantId(): TenantId | undefined {
     return this.tenantStore.currentTenantId;
   }
 
-  get user() {
+  get user(): User | undefined {
     return this.userStore.user;
+  }
+
+  get availableStateCodes(): string[] {
+    return this.userStore.availableStateCodes;
   }
 
   get getTokenSilently() {

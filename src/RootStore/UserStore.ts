@@ -1,5 +1,5 @@
 // Recidiviz - a data platform for criminal justice reform
-// Copyright (C) 2020 Recidiviz, Inc.
+// Copyright (C) 2021 Recidiviz, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -14,20 +14,41 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-
-import createAuth0Client, { Auth0ClientOptions } from "@auth0/auth0-spa-js";
+import createAuth0Client, {
+  Auth0ClientOptions,
+  User,
+  GetTokenSilentlyOptions,
+} from "@auth0/auth0-spa-js";
 import { makeAutoObservable, runInAction, action } from "mobx";
 import qs from "qs";
+import { METADATA_NAMESPACE } from "../constants";
 
 import { ERROR_MESSAGES } from "../constants/errorMessages";
 import type RootStore from ".";
-import {
-  getUserStateCode,
-  getStateNameForCode,
-  getAvailableStateCodes,
-} from "./utils/user";
-import isDemoMode from "../utils/authentication/demoMode";
-import { getDemoUser } from "../utils/authentication/viewAuthentication";
+import { TenantId, UserAppMetadata } from "./types";
+import tenants from "../tenants";
+
+function isDemoMode(): boolean {
+  return process.env.REACT_APP_IS_DEMO === "true";
+}
+
+/**
+ * Returns an artificial Auth0 id token for a fake/demo user.
+ * You can uncomment code for testing different user metadata.
+ */
+function getDemoUser(): User {
+  return {
+    picture:
+      "https://ui-avatars.com/api/?name=Demo+Jones&background=0D8ABC&color=fff&rounded=true",
+    name: "Demo Jones",
+    email: "notarealemail@recidiviz.org",
+    // email: "thirteen@mo.gov",
+    "https://dashboard.recidiviz.org/app_metadata": {
+      state_code: "recidiviz",
+      // state_code: 'us_mo',
+    },
+  };
+}
 
 type ConstructorProps = {
   authSettings?: Auth0ClientOptions;
@@ -59,10 +80,9 @@ export default class UserStore {
 
   userIsLoading: boolean;
 
-  // TODO TS create user type
-  user: any;
+  user?: User;
 
-  getTokenSilently?: () => void;
+  getTokenSilently?: (options: GetTokenSilentlyOptions) => void;
 
   logout?: () => void;
 
@@ -126,7 +146,8 @@ export default class UserStore {
           this.userIsLoading = false;
           if (user && user.email_verified) {
             this.user = user;
-            this.getTokenSilently = (...p: any) => auth0.getTokenSilently(...p);
+            this.getTokenSilently = (options?: GetTokenSilentlyOptions) =>
+              auth0.getTokenSilently(options);
             this.logout = (...p: any) => auth0.logout(...p);
             this.isAuthorized = true;
           } else {
@@ -144,27 +165,61 @@ export default class UserStore {
   }
 
   /**
-   * Returns the list of states which are accessible to users to view data for.
-   *
+   * Returns the Auth0 app_metadata for the given user id token.
    */
-  // TODO TS pull logic in utils/user into this store once tenants utils are ported to TS
-  get availableStateCodes(): Array<string> {
-    return getAvailableStateCodes(this.user);
-  }
-
-  /**
-   * Returns the human-readable state name for the authorized state code for the given usere.
-   */
-  get stateName(): string {
-    return getStateNameForCode(this.stateCode);
+  get userAppMetadata(): UserAppMetadata | undefined {
+    if (!this.user) return;
+    const appMetadataKey = `${METADATA_NAMESPACE}app_metadata`;
+    const appMetadata = this.user[appMetadataKey];
+    if (!appMetadata) {
+      throw Error("No app_metadata available for user");
+    }
+    return appMetadata;
   }
 
   /**
    * Returns the state code of the authorized state for the given user.
    * For Recidiviz users or users in demo mode, this will be 'recidiviz'.
    */
-  get stateCode(): string {
-    return getUserStateCode(this.user);
+  get stateCode(): TenantId {
+    const stateCode = this.userAppMetadata?.state_code;
+    if (!stateCode) {
+      throw Error("No state code set for user");
+    }
+    return stateCode.toUpperCase() as TenantId;
+  }
+
+  /**
+   * Returns the list of states which are accessible to users to view data for.
+   */
+  get availableStateCodes(): string[] {
+    const stateCodes = tenants[this.stateCode].availableStateCodes;
+    if (this.blockedStateCodes.length === 0) return stateCodes;
+    return stateCodes.filter((sc) => !this.blockedStateCodes.includes(sc));
+  }
+
+  /**
+   * Returns the human-readable state name for the authorized state code for
+   * the given user.
+   */
+  get stateName(): string {
+    return tenants[this.stateCode].name;
+  }
+
+  /**
+   * Returns any blocked state codes for the authorized user.
+   */
+  get blockedStateCodes(): string[] {
+    const blockedStateCodes = this.userAppMetadata?.blocked_state_codes;
+    if (!blockedStateCodes) return [];
+    return blockedStateCodes.map((sc) => sc.toUpperCase());
+  }
+
+  /**
+   * Returns whether the user is authorized for specific state code.
+   */
+  userHasAccess(stateCode: TenantId): boolean {
+    return this.availableStateCodes.includes(stateCode);
   }
 
   setAuthError(error: Error): void {

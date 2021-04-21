@@ -18,11 +18,11 @@ import TenantStore, {
   CURRENT_TENANT_IN_SESSION,
 } from "../TenantStore/TenantStore";
 import { US_MO } from "../TenantStore/lanternTenants";
-import { doesUserHaveAccess, getAvailableStateCodes } from "../utils/user";
 import { METADATA_NAMESPACE } from "../../constants";
+import RootStore from "..";
+import UserStore from "../UserStore";
 
 jest.mock("@auth0/auth0-spa-js");
-jest.mock("../utils/user");
 jest.mock("../../api/metrics/metricsClient");
 jest.mock("../../components/StoreProvider");
 
@@ -34,9 +34,13 @@ describe("TenantStore", () => {
   const tenantIdFromStorage = "TEST_TENANT";
   const tenantIdFromUser = US_MO;
 
+  const createMockRootStore = (mockUserStore: any) =>
+    ({
+      userStore: mockUserStore as UserStore,
+    } as typeof RootStore);
+
   describe("when there is a CURRENT_TENANT_IN_SESSION", () => {
     beforeEach(() => {
-      getAvailableStateCodes.mockReturnValue([tenantIdFromUser]);
       sessionStorage.setItem(CURRENT_TENANT_IN_SESSION, tenantIdFromStorage);
       jest.clearAllMocks();
       jest.resetAllMocks();
@@ -47,22 +51,26 @@ describe("TenantStore", () => {
     });
 
     it("currentTenantId is set to CURRENT_TENANT_IN_SESSION if there is not a user", async () => {
+      const mockRootStore = createMockRootStore({
+        userIsLoading: false,
+        availableStateCodes: [],
+        userHasAccess: () => false,
+      });
       tenantStore = new TenantStore({
-        rootStore: {
-          userStore: { userIsLoading: false, user: null },
-          user: null,
-        },
+        rootStore: mockRootStore,
       });
       expect(tenantStore.currentTenantId).toEqual(tenantIdFromStorage);
     });
 
     it("currentTenantId is set to CURRENT_TENANT_IN_SESSION if the user has access", async () => {
-      doesUserHaveAccess.mockReturnValue(true);
+      const mockRootStore = createMockRootStore({
+        userIsLoading: false,
+        availableStateCodes: [tenantIdFromUser],
+        userHasAccess: () => true,
+        user,
+      });
       tenantStore = new TenantStore({
-        rootStore: {
-          userStore: { userIsLoading: false, user },
-          user,
-        },
+        rootStore: mockRootStore,
       });
 
       expect(tenantStore.currentTenantId).toEqual(tenantIdFromStorage);
@@ -70,13 +78,15 @@ describe("TenantStore", () => {
 
     it("currentTenantId is set to availableStateCodes if the user does not have access", async () => {
       const availableStateCodes = ["BARNEY", "RUBBLE"];
-      doesUserHaveAccess.mockReturnValue(false);
-      getAvailableStateCodes.mockReturnValue(availableStateCodes);
+      const mockRootStore = createMockRootStore({
+        userIsLoading: false,
+        availableStateCodes,
+        userHasAccess: () => false,
+        user,
+      });
+
       tenantStore = new TenantStore({
-        rootStore: {
-          userStore: { userIsLoading: false, user },
-          user,
-        },
+        rootStore: mockRootStore,
       });
       expect(tenantStore.currentTenantId).toEqual(availableStateCodes[0]);
     });

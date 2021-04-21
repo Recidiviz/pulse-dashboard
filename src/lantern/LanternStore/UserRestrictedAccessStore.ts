@@ -21,6 +21,7 @@ import * as Sentry from "@sentry/react";
 import { ERROR_MESSAGES } from "../../constants/errorMessages";
 import type LanternStore from ".";
 import { callRestrictedAccessApi } from "../../api/metrics/metricsClient";
+import { TenantId } from "../../RootStore/types";
 
 type ConstructorProps = {
   rootStore?: LanternStore;
@@ -60,7 +61,7 @@ export default class UserRestrictedAccessStore {
 
   fetchRestrictedDistrictData = flow(function* (
     this: UserRestrictedAccessStore,
-    tenantId: string
+    tenantId: TenantId
   ) {
     if (!this.rootStore?.tenantStore.isRestrictedDistrictTenant) {
       this.restrictedDistrict = undefined;

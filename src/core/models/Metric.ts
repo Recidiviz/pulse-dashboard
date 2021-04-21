@@ -22,7 +22,7 @@ import RootStore from "../../RootStore";
 import CoreStore from "../CoreStore";
 
 export type BaseMetricProps = {
-  tenantId: TenantId;
+  tenantId?: TenantId;
   sourceEndpoint: string;
   rootStore?: CoreStore;
 };
@@ -32,7 +32,7 @@ export type BaseMetricProps = {
  * class and should not be directly instantiated.
  */
 export default abstract class Metric<RecordFormat extends MetricRecord> {
-  readonly tenantId: TenantId;
+  readonly tenantId?: TenantId;
 
   protected readonly sourceEndpoint: string;
 
@@ -73,6 +73,7 @@ export default abstract class Metric<RecordFormat extends MetricRecord> {
    * instance along with the isLoading or isError states.
    */
   async hydrate(): Promise<void> {
+    if (!this.tenantId) return;
     try {
       const fetchedData = await this.fetchMetrics();
       runInAction(() => {

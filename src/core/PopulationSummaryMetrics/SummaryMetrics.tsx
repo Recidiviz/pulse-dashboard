@@ -36,7 +36,6 @@ interface SummaryMetricProps {
   projectedMinMax?: number[] | null;
 }
 
-// TODO(#908) and (case-triage#69) Add a rotation prop for caret icon
 const SummaryMetric: React.FC<SummaryMetricProps> = ({
   title,
   value,
