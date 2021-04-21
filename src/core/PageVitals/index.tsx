@@ -107,8 +107,11 @@ const PageVitals: React.FC = () => {
     selectedCardId,
     currentEntityId
   );
-  const lastUpdatedOn = selectedTimeSeries[selectedTimeSeries.length - 1].date;
-
+  const lastUpdatedOn = selectedTimeSeries
+    ? formatISODateString(
+        selectedTimeSeries[selectedTimeSeries.length - 1].date
+      )
+    : "Unknown";
   return (
     <PageTemplate>
       <div className="PageVitals__header">
@@ -119,7 +122,7 @@ const PageVitals: React.FC = () => {
         />
         <div className="PageVitals__header--right">
           <div className="PageVitals__last-updated">
-            Last updated on {formatISODateString(lastUpdatedOn)}
+            Last updated on {lastUpdatedOn}
           </div>
           <MethodologyLink path={CORE_PATHS.methodologyVitals} />
         </div>
@@ -138,14 +141,18 @@ const PageVitals: React.FC = () => {
           />
         </div>
         <div className="PageVitals__SummaryChart">
-          <VitalsWeeklyChange
-            weeklyChange={getWeeklyChange(selectedTimeSeries)}
-          />
-          <VitalsSummaryChart
-            stateCode={stateCode}
-            goal={goals[selectedCardId]}
-            timeSeries={selectedTimeSeries}
-          />
+          {selectedTimeSeries && (
+            <>
+              <VitalsWeeklyChange
+                weeklyChange={getWeeklyChange(selectedTimeSeries)}
+              />
+              <VitalsSummaryChart
+                stateCode={stateCode}
+                goal={goals[selectedCardId]}
+                timeSeries={selectedTimeSeries}
+              />
+            </>
+          )}
         </div>
       </div>
       <div className="PageVitals__Table">

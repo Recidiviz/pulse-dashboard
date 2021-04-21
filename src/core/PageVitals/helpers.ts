@@ -121,10 +121,11 @@ export function getTimeseries(
   timeSeries: VitalsTimeSeriesRecord[],
   selectedCardId: string,
   currentEntityId: string
-): VitalsTimeSeriesRecord[] {
-  return timeSeries.filter(
+): VitalsTimeSeriesRecord[] | undefined {
+  const selectedTimeSeries = timeSeries.filter(
     (d) => d.metric === selectedCardId && d.entityId === currentEntityId
   );
+  return selectedTimeSeries.length > 0 ? selectedTimeSeries : undefined;
 }
 
 export function getWeeklyChange(
