@@ -24,18 +24,13 @@ import { observer } from "mobx-react-lite";
 import { useLocation } from "react-router-dom";
 import PercentDelta from "../controls/PercentDelta";
 import {
-  filterData,
-  MonthOptions,
   CURRENT_YEAR,
   CURRENT_MONTH,
 } from "../PopulationTimeSeriesChart/helpers";
-import { CORE_VIEWS, getViewFromPathname } from "../views";
+import { getViewFromPathname } from "../views";
 import { formatLargeNumber } from "../../utils/formatStrings";
-import { useFiltersStore } from "../CoreStoreProvider";
-import type {
-  PopulationProjectionTimeSeriesRecord,
-  SimulationCompartment,
-} from "../models/types";
+import { useCoreStore } from "../CoreStoreProvider";
+import type { PopulationProjectionTimeSeriesRecord } from "../models/types";
 import "./LoadingMetrics.scss";
 
 import "./PopulationSummaryMetrics.scss";
@@ -43,8 +38,7 @@ import * as styles from "../CoreConstants.scss";
 
 type PropTypes = {
   isLoading?: boolean;
-  isError: boolean;
-  projectionSummaries?: PopulationProjectionTimeSeriesRecord[];
+  isError?: Error;
 };
 
 const MetricsCardComponent = styled(Card)`
@@ -102,32 +96,12 @@ const TempMetricCard: React.FC<{ children: React.ReactNode }> = ({
 const TempPopulationSummaryMetrics: React.FC<PropTypes> = ({
   isError,
   isLoading = false,
-  projectionSummaries = [],
 }) => {
   const { pathname } = useLocation();
-
-  const filtersStore = useFiltersStore();
-  const { timePeriodLabel } = filtersStore;
-  const { gender, supervisionType, legalStatus } = filtersStore.filters;
   const view = getViewFromPathname(pathname);
-
-  const timePeriod: MonthOptions = parseInt(
-    filtersStore.filters.timePeriod
-  ) as MonthOptions;
-
-  let compartment: SimulationCompartment;
-
-  switch (view) {
-    case CORE_VIEWS.community:
-      compartment = "SUPERVISION";
-      break;
-    case CORE_VIEWS.facilities:
-      compartment = "INCARCERATION";
-      break;
-    default:
-      // TODO: Error state
-      return <div />;
-  }
+  const { metricsStore, filtersStore } = useCoreStore();
+  const { timePeriodLabel } = filtersStore;
+  const timeSeries = metricsStore.projections.getFilteredDataByView(view);
 
   if (isError) {
     return null;
@@ -166,21 +140,13 @@ const TempPopulationSummaryMetrics: React.FC<PropTypes> = ({
     );
   }
 
-  const filteredData = filterData(
-    timePeriod,
-    gender,
-    compartment,
-    compartment === "SUPERVISION" ? supervisionType : legalStatus,
-    projectionSummaries
-  ).sort((a, b) => (a.year !== b.year ? a.year - b.year : a.month - b.month));
-
-  const currentData = filteredData.find(
+  const currentData = timeSeries.find(
     (d) => d.year === CURRENT_YEAR && d.month === CURRENT_MONTH
   ) as PopulationProjectionTimeSeriesRecord;
 
-  const historicalData = filteredData[0];
+  const historicalData = timeSeries[0];
 
-  const projectedData = filteredData[filteredData.length - 1];
+  const projectedData = timeSeries[timeSeries.length - 1];
 
   const {
     totalPopulation: projectedPopulation,
