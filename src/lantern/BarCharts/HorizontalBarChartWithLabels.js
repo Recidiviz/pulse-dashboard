@@ -69,7 +69,7 @@ const HorizontalBarChartWithLabels = ({
             {
               ticks: {
                 beginAtZero: true,
-                max: 110,
+                max: stacked ? 100 : 110,
                 display: false,
               },
               gridLines: {
