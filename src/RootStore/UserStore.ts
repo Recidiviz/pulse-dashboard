@@ -92,7 +92,8 @@ export default class UserStore {
     makeAutoObservable(this, {
       rootStore: false,
       authSettings: false,
-      setAuthError: action,
+      setAuthError: action.bound,
+      userHasAccess: action.bound,
     });
 
     this.authSettings = authSettings;
@@ -168,7 +169,7 @@ export default class UserStore {
    * Returns the Auth0 app_metadata for the given user id token.
    */
   get userAppMetadata(): UserAppMetadata | undefined {
-    if (!this.user) return;
+    if (!this.user) return undefined;
     const appMetadataKey = `${METADATA_NAMESPACE}app_metadata`;
     const appMetadata = this.user[appMetadataKey];
     if (!appMetadata) {
