@@ -67,10 +67,6 @@ export default class TenantStore {
     sessionStorage.setItem(CURRENT_TENANT_IN_SESSION, tenantId);
   }
 
-  static getStateNameForStateCode(stateCode: string): string {
-    return tenants[stateCode as TenantId].name;
-  }
-
   get isLanternTenant(): boolean {
     if (!this.currentTenantId) return false;
     const tenantId = this.currentTenantId as LanternTenants;

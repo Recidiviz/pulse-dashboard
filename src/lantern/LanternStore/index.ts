@@ -72,7 +72,7 @@ export default class LanternStore {
   }
 
   get currentTenantId(): TenantId | undefined {
-    if (!this.tenantStore.currentTenantId) return;
+    if (!this.tenantStore.currentTenantId) return undefined;
     return this.tenantStore.currentTenantId;
   }
 
