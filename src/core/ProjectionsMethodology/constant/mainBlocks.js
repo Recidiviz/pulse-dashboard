@@ -10,7 +10,7 @@ export const mainBlocks = [
   },
   {
     label: "Initializing the Simulation",
-    text: `The model requires historical data for admissions, releases or terminations, sentence lengths, and any other relevant transitions, which could include revocation data or recidivism data. If this data is disaggregated at any level, then one simulation is initialized per disaggregated group. The model also requires data for the population that is currently in the system to initialize the Compartments, including the total population, the length of time each person has been in the compartment, and their sentence information. The current population gets separate CompartmentTransition tables from the incoming population in order to account for the time that has already been served. `,
+    text: `The model requires historical data for admissions, releases or terminations, sentence lengths, and any other relevant transitions, which could include revocation data or recidivism data. If this data is disaggregated at any level, then one simulation is initialized per disaggregated group. The model also requires data for the population that is currently in the system to initialize the Compartments, including the total population, the length of time each person has been in the compartment, and their sentence information. The current population gets separate Compartment Transition tables from the incoming population in order to account for the time that has already been served. `,
   },
   {
     label: "Model Output",

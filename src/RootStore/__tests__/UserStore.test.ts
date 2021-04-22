@@ -20,6 +20,7 @@ import { reactImmediately } from "../../testUtils";
 import UserStore from "../UserStore";
 import { METADATA_NAMESPACE } from "../../constants";
 import TENANTS from "../../tenants";
+import { TenantId } from "../types";
 
 jest.mock("@auth0/auth0-spa-js");
 
@@ -179,15 +180,9 @@ test.each(Object.keys(TENANTS))(
     await store.authorize();
     reactImmediately(() => {
       expect(store.availableStateCodes).toBe(
-        // TODO TS remove when tenants is ported to TS
-        // @ts-ignore
-        TENANTS[currentTenantId].availableStateCodes
+        TENANTS[currentTenantId as TenantId].availableStateCodes
       );
-      expect(store.stateName).toBe(
-        // TODO TS remove when tenants is ported to TS
-        // @ts-ignore
-        TENANTS[currentTenantId].name
-      );
+      expect(store.stateName).toBe(TENANTS[currentTenantId as TenantId].name);
     });
     expect.hasAssertions();
   }

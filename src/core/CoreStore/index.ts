@@ -14,13 +14,14 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-import { computed, makeObservable } from "mobx";
+import { makeAutoObservable } from "mobx";
 
 import FiltersStore from "./FiltersStore";
 import type UserStore from "../../RootStore/UserStore";
 import type TenantStore from "../../RootStore/TenantStore";
 import { PopulationFilterValues } from "../types/filters";
 import { TenantId } from "../models/types";
+import MetricsStore from "./MetricsStore";
 
 interface CoreStoreProps {
   userStore: UserStore;
@@ -34,24 +35,26 @@ export default class CoreStore {
 
   filtersStore: FiltersStore;
 
+  metricsStore: MetricsStore;
+
   constructor({ userStore, tenantStore }: CoreStoreProps) {
-    makeObservable(this, {
-      filters: computed,
-      currentTenantId: computed,
-    });
+    makeAutoObservable(this);
 
     this.userStore = userStore;
 
     this.tenantStore = tenantStore;
 
     this.filtersStore = new FiltersStore({ rootStore: this });
+
+    this.metricsStore = new MetricsStore({ rootStore: this });
   }
 
   get filters(): PopulationFilterValues {
     return this.filtersStore.filters;
   }
 
-  get currentTenantId(): TenantId {
-    return this.tenantStore.currentTenantId;
+  get currentTenantId(): TenantId | undefined {
+    if (!this.tenantStore.currentTenantId) return undefined;
+    return this.tenantStore.currentTenantId as TenantId;
   }
 }

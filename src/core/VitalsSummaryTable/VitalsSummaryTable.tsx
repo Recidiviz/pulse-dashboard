@@ -23,7 +23,7 @@ import DeltaTableCell from "./DeltaTableCell";
 import { formatPercent } from "../../utils";
 import { VitalsSummaryTableRow, METRIC_TYPES } from "../PageVitals/types";
 import { ENTITY_TYPES, EntityType } from "../models/types";
-import { convertIdToSlug } from "../../utils/navigation";
+import { convertToSlug } from "../../utils/navigation";
 
 import "./VitalsSummaryTable.scss";
 import flags from "../../flags";
@@ -79,7 +79,7 @@ const VitalsSummaryTable: React.FC<PropTypes> = ({
               flags.enableVitalsOfficerView ? (
                 <Link
                   className="VitalsSummaryTable__link"
-                  to={`/community/vitals/${convertIdToSlug(value.entityId)}`}
+                  to={`/community/vitals/${convertToSlug(value.entityId)}`}
                 >
                   {value.entityName}
                 </Link>

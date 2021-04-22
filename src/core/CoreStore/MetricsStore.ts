@@ -1,5 +1,5 @@
 // Recidiviz - a data platform for criminal justice reform
-// Copyright (C) 2020 Recidiviz, Inc.
+// Copyright (C) 2021 Recidiviz, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -14,12 +14,32 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
+import { makeAutoObservable } from "mobx";
+import type CoreStore from ".";
 
-import { US_MO_METHODOLOGY } from "./us_mo_methodology";
-import { US_PA_METHODOLOGY } from "./us_pa_methodology";
-import { US_MO, US_PA } from "./lanternTenants";
+import VitalsMetrics from "../models/VitalsMetrics";
+import ProjectionsMetrics from "../models/ProjectionsMetrics";
 
-export default {
-  [US_MO]: US_MO_METHODOLOGY,
-  [US_PA]: US_PA_METHODOLOGY,
-};
+export default class MetricsStore {
+  protected readonly rootStore;
+
+  constructor({ rootStore }: { rootStore: CoreStore }) {
+    makeAutoObservable(this);
+    this.rootStore = rootStore;
+  }
+
+  get vitals(): VitalsMetrics {
+    return new VitalsMetrics({
+      tenantId: this.rootStore.currentTenantId,
+      sourceEndpoint: "vitals",
+    });
+  }
+
+  get projections(): ProjectionsMetrics {
+    return new ProjectionsMetrics({
+      tenantId: this.rootStore.currentTenantId,
+      sourceEndpoint: "projections",
+      rootStore: this.rootStore,
+    });
+  }
+}

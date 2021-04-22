@@ -17,12 +17,12 @@
 import { runInAction } from "mobx";
 import RootStore from "../../../RootStore";
 import LanternStore from "..";
-import getTenantMappings, {
-  tenantMappings,
-} from "../../../RootStore/TenantStore/tenants";
+import getDistrictKeyMap, {
+  districtKeyMappings,
+} from "../../../RootStore/TenantStore/districtKeyMappings";
 import { LANTERN_TENANTS } from "../../../RootStore/TenantStore/lanternTenants";
 
-jest.mock("../../../RootStore/TenantStore/tenants");
+jest.mock("../../../RootStore/TenantStore/districtKeyMappings");
 
 let rootStore;
 
@@ -46,9 +46,9 @@ const defaultFilters = {
 // We are mocking the return of districtFilterKey to test the logic when there are
 // different filter keys per tenant. This does not need to match the actual
 // tenant mappings.
-getTenantMappings.mockImplementation((tenantId) => {
+getDistrictKeyMap.mockImplementation((tenantId) => {
   const mappings = {
-    ...tenantMappings,
+    ...districtKeyMappings,
     districtFilterKey: {
       US_MO: "levelOneSupervisionLocation",
       US_PA: "levelTwoSupervisionLocation",

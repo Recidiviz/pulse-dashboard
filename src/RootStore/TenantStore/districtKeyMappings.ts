@@ -15,8 +15,20 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
+import { TenantId } from "../types";
 import { US_MO, US_PA } from "./lanternTenants";
 
+type TenantMap = {
+  [key in TenantId]?: string | null;
+};
+
+type DistrictKeyMappings = {
+  [k: string]: TenantMap;
+};
+
+export type DistrictKeyMap = {
+  [key in keyof typeof districtKeyMappings]?: string | null;
+};
 /**
  * This mapping includes tenant-specific mappings to keys in the `supervision_location_ids_to_names` reference view that
  * are used to generate the district filter options and to filter the chart data.
@@ -46,7 +58,7 @@ import { US_MO, US_PA } from "./lanternTenants";
  *                         This is the value that will be filtered on in the data filters using the districtFilterByKey
  *                         on the metric data.
  */
-export const tenantMappings = {
+export const districtKeyMappings: DistrictKeyMappings = {
   districtPrimaryIdKey: {
     [US_MO]: "level_1_supervision_location_external_id",
     [US_PA]: "level_2_supervision_location_external_id",
@@ -81,10 +93,10 @@ export const tenantMappings = {
   },
 };
 
-export default function getTenantMappings(tenantId) {
-  const tenant = {};
-  Object.keys(tenantMappings).forEach((key) => {
-    tenant[key] = tenantMappings[key][tenantId];
+export default function getDistrictKeyMap(tenantId: TenantId): DistrictKeyMap {
+  const tenant: DistrictKeyMap = {};
+  Object.keys(districtKeyMappings).forEach((key) => {
+    tenant[key] = districtKeyMappings[key][tenantId];
   });
   return tenant;
 }

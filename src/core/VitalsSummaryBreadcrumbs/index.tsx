@@ -19,7 +19,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { ENTITY_TYPES, VitalsSummaryRecord } from "../models/types";
 import { toTitleCase } from "../../utils/formatStrings";
-import { convertIdToSlug } from "../../utils/navigation";
+import { convertToSlug } from "../../utils/navigation";
 import "./VitalsSummaryBreadcrumbs.scss";
 
 function formatOfficeName(name: string | undefined): string | undefined {
@@ -75,7 +75,7 @@ const VitalsSummaryBreadcrumbs: React.FC<PropTypes> = ({
           <span>/</span>
           <Link
             className="VitalsSummaryBreadcrumbs--parent"
-            to={`/community/vitals/${convertIdToSlug(parentEntityId)}`}
+            to={`/community/vitals/${convertToSlug(parentEntityId)}`}
           >
             {parent}
           </Link>

@@ -3,46 +3,50 @@ import { Table } from "reactstrap";
 
 const ModelInfrastructureBlock = () => {
   return (
-    <div className=" methodology__sub-block--description">
-      <h4 className="col-12 p-0">Compartments</h4>
+    <div className="Methodology__block--content">
+      <p>
+        The underlying infrastructure of the model uses three core components:
+        Compartments, Cohorts, and Compartment Transitions. These are used to
+        simulate the movement of people through the system and count the total
+        population at each time step.
+      </p>
+      <h4 className="col-12 Methodology__sub-block--title">Compartments</h4>
       <div className="col-12 p-0">
-        <span>
+        <p>
           The Compartments component represents an area of the criminal justice
-          system, such as incarceration (termers, riders, parole violators, and
+          system, such as incarceration (termers, riders, parole violators),
           supervision (parole, probation), and release/out of the system. The
           Compartment contains a list of all the Cohorts that have been in that
-          area of the system at any point within the simulation.
-        </span>
-        <span>
-          For instance, the Compartment that represents parole supervision would
-          maintain the total number of people on parole for each time step of
-          the simulation. If the time step is years, then it would count the
-          year-end total parole population.
-        </span>
+          area of the system at any point within the simulation. For instance,
+          the Compartment that represents parole supervision would maintain the
+          total number of people on parole for each time step of the simulation.
+          If the time step is years, then it would count the year-end total
+          parole population.
+        </p>
       </div>
       <div className="col-12  p-0 row no-gutters">
-        <h4 className="col-12 p-0">Cohorts</h4>
-        <p className="col-12 p-0">
+        <h4 className="col-12 Methodology__sub-block--title">Cohorts</h4>
+        <p className="col-12 p-0 m-0">
           The Cohort component is used to record the number of people entering
           part of the system at a certain time and track how many people within
           that group remain after each time step. For example, one Cohort could
           represent the population admitted to the new offense prison population
           compartment in 2016 for a termer incarceration sentence. This Cohort
           keeps a count for the number of people admitted in 2016 along with the
-          total remaining population after 2017, 2018, and so on until the
-          entire
+          total remaining population after 2017, 2018, and so on
         </p>
-        <div className="col-xl-6 col-12 p-0">
+        <div className="col-xl-4 col-12 p-0">
           <p>
-            group has left prison. As portions of this group are released over
-            time, additional Cohorts are created for each release period.
-            Cohorts are not only separated by the entry year, but also by the
-            relevant disaggregated attributes like crime type and gender.
+            until the entire group has left prison. As portions of this group
+            are released over time, additional Cohorts are created for each
+            release period. Cohorts are not only separated by the entry year,
+            but also by the relevant disaggregated attributes like crime type
+            and gender.
           </p>
           <p>
-            As an example, if the yearly admissions to parole were 400 people
+            As an example, if the yearly admissions to parole were 400 people,
             then the Cohorts in the parole Compartment would be represented in
-            the table (Fig. 1). In this example the simulation begins in 2017
+            the table (Fig. 1). In this example, the simulation begins in 2017
             and is initialized with the population that started parole before
             2017 and then estimates the new admissions to parole and parole
             terminations each year using the historical data. The number of
@@ -51,8 +55,8 @@ const ModelInfrastructureBlock = () => {
           </p>
         </div>
 
-        <div className="table col-xl-6  col-12 align-items-end justify-content-end">
-          <Table bordered style={{ height: 352, maxWidth: 728 }}>
+        <div className="Methodology__table col-xl-8  col-12 align-items-end justify-content-end">
+          <Table bordered style={{ height: 400, maxWidth: 780 }}>
             <tbody>
               <tr>
                 <th>
@@ -108,12 +112,14 @@ const ModelInfrastructureBlock = () => {
               </tr>
             </tbody>
           </Table>
-          <span className="table__description">
+          <span className="Methodology__table__description">
             Fig.1 – Example Parole Cohort
           </span>
         </div>
       </div>
-      <h4 className="col-12 p-0">Compartment Transitions</h4>
+      <h4 className="col-12 Methodology__sub-block--title">
+        Compartment Transitions
+      </h4>
       <p className="col-12 p-0">
         The simulation uses sentence length distributions to calculate the
         number of people transitioning to a new area of the system after each
@@ -124,19 +130,19 @@ const ModelInfrastructureBlock = () => {
         Cohort will transition to the state prison “parole violator”
         Compartment.
       </p>
-      <p>
+      <p className="m-0">
         These transitions are defined in transition tables, which contain the
         probability of transitioning to a new compartment versus remaining in
-        the existing compartment
+        the existing compartment. These probabilities are specific to the time
+        spent in the Compartment, and they are computed using the historical
+        data. For example, historical
       </p>
       <div className="col-12 row p-0">
-        <div className="col-xl-6 col-12">
+        <div className="col-xl-4 col-12">
           <p>
-            These probabilities are specific to the time spent in the
-            Compartment and they are computed using the historical data. For
-            example, historical parole length data is used to initialize the
-            parole supervision Compartment Transitions such that the transition
-            tables match the observed sentence length distribution.
+            parole length data is used to initialize the parole supervision
+            Compartment Transitions such that the transition tables match the
+            observed sentence length distribution.
           </p>
           <p>
             Continuing with the parole example above, if the max supervision
@@ -153,8 +159,8 @@ const ModelInfrastructureBlock = () => {
           </p>
         </div>
 
-        <div className="table col-xl-6  col-12 align-items-end justify-content-end">
-          <Table bordered style={{ maxHeight: 352, maxWidth: 728 }}>
+        <div className="Methodology__table col-xl-8  col-12 align-items-end justify-content-end">
+          <Table bordered style={{ masHeight: 400, maxWidth: 780 }}>
             <tbody>
               <tr>
                 <th aria-label="empty" />
@@ -193,12 +199,14 @@ const ModelInfrastructureBlock = () => {
               </tr>
             </tbody>
           </Table>
-          <span className="table__description">
+          <span className="Methodology__table__description">
             Fig. 2 – Example Compartment Transition Table
           </span>
         </div>
       </div>
-      <h4 className="col-12 p-0">Forecasting Admissions</h4>
+      <h4 className="col-12 Methodology__sub-block--title">
+        Forecasting Admissions
+      </h4>
       <p>
         The model uses historical admissions to initialize historical Cohorts.
         For instance, the 2017 parole Cohort is created with the historical
@@ -207,19 +215,24 @@ const ModelInfrastructureBlock = () => {
         historical admissions trend. The model uses this to forecast admissions
         into the future and to backcast historical admissions.
       </p>
-      <h4 className="col-12 p-0">Confidence Intervals</h4>
+      <h4 className="col-12 Methodology__sub-block--title">
+        Prediction Intervals
+      </h4>
       <p>
-        The model predictions are accompanied by the 80% confidence intervals to
-        indicate the uncertainty of the population estimate. Statistically, the
-        true observed population should fall within the confidence interval
-        boundary for 80% of the observations. The model uses the confidence
-        interval output from the forecast admissions and runs the max, middle,
-        and min intervals through the model in order to get the three projection
-        values. There is more room for improvement with this method because it
-        is overcounting the total uncertainty when adding multiple intervals
-        together.
+        To communicate the confidence of the projections, the model produces
+        prediction intervals that bound the forecast. These prediction intervals
+        are constructed by resampling historical one-period model errors. The
+        model estimates the distribution of model errors at time step t by
+        summing t draws from the historical one-period model errors multiple
+        times with replacement. From this distribution of errors, the model
+        model calculates the width of the prediction by subtracting the 2.5th
+        percentile model error from the 97.5th percentile model error. Finally,
+        the model centers this 95% prediction interval width on the projection,
+        thereby bounding the forecast.
       </p>
-      <h4 className="col-12 p-0">County Jails Calculation</h4>
+      <h4 className="col-12 Methodology__sub-block--title">
+        County Jails Calculation
+      </h4>
       <p>
         For the historical total incarcerated population we use the movements
         file to exclude people who have entered County Jails in unpaid beds.
