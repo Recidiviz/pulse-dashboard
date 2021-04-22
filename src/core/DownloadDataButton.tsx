@@ -16,23 +16,28 @@
 // =============================================================================
 import React from "react";
 
-import { Link } from "react-router-dom";
 import { Icon, IconSVG } from "@recidiviz/case-triage-components";
+// import { configureDataDownloadButton } from "../utils/downloads/downloadData";
 
 import "./DetailsGroup.scss";
 import * as styles from "./CoreConstants.scss";
 
-const MethodologyLink: React.FC<{ path: string }> = ({ path }) => {
+const DownloadDataButton: React.FC = () => {
   return (
-    <Link className="MethodologyLink DetailsGroup__button" to={path}>
+    <button
+      className="btn btn-link DetailsGroup__button"
+      type="button"
+      aria-expanded="true"
+      aria-controls="importantNotes"
+    >
       <Icon
         className="DetailsGroup__icon"
         kind={IconSVG.Open}
         fill={styles.signalLinks}
       />
-      Methodology
-    </Link>
+      Download Data
+    </button>
   );
 };
 
-export default MethodologyLink;
+export default DownloadDataButton;
