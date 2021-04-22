@@ -24,17 +24,12 @@ import VitalsSummaryTable from "../VitalsSummaryTable/VitalsSummaryTable";
 import VitalsWeeklyChange from "../VitalsWeeklyChange";
 import VitalsSummaryChart from "../VitalsSummaryChart";
 import VitalsSummaryDetail from "../VitalsSummaryDetail";
+import VitalsSummaryBreadcrumbs from "../VitalsSummaryBreadcrumbs";
 import MethodologyLink from "../MethodologyLink";
 import Loading from "../../components/Loading";
 import { MetricType, METRIC_TYPES } from "./types";
 import { CORE_PATHS } from "../views";
-import { useRootStore } from "../../components/StoreProvider";
-import { VitalsSummaryRecord, VitalsTimeSeriesRecord } from "../models/types";
-import { ChartDataType } from "../types/charts";
-import useChartData from "../hooks/useChartData";
-import { vitalsTimeSeries } from "../models/VitalsTimeSeriesMetric";
-import { vitalsSummary } from "../models/VitalsSummaryMetric";
-import VitalsSummaryBreadcrumbs from "../VitalsSummaryBreadcrumbs";
+import { useCoreStore } from "../CoreStoreProvider";
 import { convertSlugToId } from "../../utils/navigation";
 import { formatISODateString } from "../../utils/formatStrings";
 import {
@@ -60,14 +55,15 @@ const PageVitals: React.FC = () => {
   const currentEntityId = routeParams.entityId
     ? convertSlugToId(routeParams.entityId)
     : DEFAULT_ENTITY_ID;
-  const { tenantStore } = useRootStore();
+  const { metricsStore, tenantStore } = useCoreStore();
+
+  const { summaries, timeSeries, isLoading, isError } = metricsStore.vitals;
+
   const { stateName, stateCode } = tenantStore;
   const [selectedCardId, setSelectedCardId] = useState<MetricType>(
     METRIC_TYPES.OVERALL
   );
-  const { isLoading, isError, apiData }: ChartDataType = useChartData(
-    "us_nd/vitals"
-  ) as ChartDataType;
+
   // TODO: add in Error state
   if (isError) {
     return null;
@@ -81,19 +77,12 @@ const PageVitals: React.FC = () => {
     );
   }
 
-  // Transform records
-  const vitalsSummaries: VitalsSummaryRecord[] = vitalsSummary(
-    apiData.vitals_summaries.data
-  );
-  const timeSeries: VitalsTimeSeriesRecord[] = vitalsTimeSeries(
-    apiData.vitals_time_series.data
-  );
   const handleSelectCard: (id: MetricType) => () => void = (id) => () => {
     setSelectedCardId(id);
   };
 
   const { currentEntitySummary, childEntitySummaryRows } = getEntitySummaries(
-    vitalsSummaries,
+    summaries,
     currentEntityId
   );
   const summaryCards = getSummaryCards(currentEntitySummary);

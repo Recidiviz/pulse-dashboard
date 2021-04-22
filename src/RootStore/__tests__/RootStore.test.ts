@@ -22,6 +22,11 @@ import { METADATA_NAMESPACE } from "../../constants";
 
 jest.mock("@auth0/auth0-spa-js");
 jest.mock("../../api/metrics");
+jest.mock("../TenantStore", () => {
+  return jest.fn().mockImplementation(() => ({
+    currentTenantId: "US_MO",
+  }));
+});
 
 describe("RootStore", () => {
   afterAll(() => {
@@ -46,7 +51,7 @@ describe("RootStore", () => {
       [metadataField]: { state_code: "US_MO" },
       email_verified: true,
     };
-    createAuth0Client.mockResolvedValue({
+    (createAuth0Client as jest.Mock).mockResolvedValue({
       getUser: () => user,
       isAuthenticated: () => true,
     });

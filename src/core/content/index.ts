@@ -14,28 +14,6 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
+import { US_ND } from "./usNdMethodology";
 
-import {
-  Gender,
-  PopulationProjectionTimeSeriesRecord,
-  RawMetricData,
-  SimulationCompartment,
-} from "./types";
-
-export function populationProjectionTimeSeries(
-  rawRecords: RawMetricData
-): PopulationProjectionTimeSeriesRecord[] {
-  return rawRecords.map((record) => {
-    return {
-      year: Number(record.year),
-      month: Number(record.month),
-      compartment: record.compartment as SimulationCompartment,
-      legalStatus: record.legal_status,
-      gender: record.gender as Gender,
-      simulationTag: record.simulation_tag,
-      totalPopulation: Number(record.total_population),
-      totalPopulationMax: Number(record.total_population_max),
-      totalPopulationMin: Number(record.total_population_min),
-    };
-  });
-}
+export default { US_ND } as const;

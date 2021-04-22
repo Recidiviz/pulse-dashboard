@@ -14,12 +14,16 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-export function getPathsFromNavigation(navigation: {
-  [k: string]: string[];
-}): string[] {
+import TENANTS, { Navigation } from "../tenants";
+import { TenantId } from "../RootStore/types";
+
+export function getPathsFromNavigation(
+  navigation: Navigation | undefined
+): string[] {
+  if (!navigation) return [];
   return Object.entries(navigation).flatMap((navItem) => {
     const section: string = navItem[0];
-    const pages: string[] = navItem[1];
+    const pages: string[] = navItem[1] || [];
     return pages.length
       ? pages.map((page) => `/${section}/${page}`)
       : [`/${section}`];
@@ -34,10 +38,17 @@ export function getPathWithoutParams(pathname: string): string {
   return page ? `/${section}/${page}` : `/${section}`;
 }
 
-export function convertIdToSlug(id: string): string {
-  return id.replace(/_/g, "-").toLowerCase();
+export function convertToSlug(text: string): string {
+  return text.trim().replace(/:/g, "").replace(/_|\s/g, "-").toLowerCase();
 }
 
 export function convertSlugToId(slug: string): string {
   return slug.replace(/-/g, "_").toUpperCase();
+}
+
+export function getStateNameForStateCode(stateCode: string): string {
+  if (!Object.keys(TENANTS).includes(stateCode)) {
+    throw new Error(`Unknown state code provided: ${stateCode}`);
+  }
+  return TENANTS[stateCode as TenantId].name;
 }

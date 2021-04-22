@@ -1,5 +1,5 @@
 // Recidiviz - a data platform for criminal justice reform
-// Copyright (C) 2019 Recidiviz, Inc.
+// Copyright (C) 2020 Recidiviz, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -15,21 +15,14 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-/**
- * Returns an artificial Auth0 id token for a fake/demo user.
- * You can uncomment code for testing different user metadata.
- */
-export function getDemoUser() {
-  return {
-    picture:
-      "https://ui-avatars.com/api/?name=Demo+Jones&background=0D8ABC&color=fff&rounded=true",
-    name: "Demo Jones",
-    email: "notarealemail@recidiviz.org",
-    // email: "thirteen@mo.gov",
-    "https://dashboard.recidiviz.org/app_metadata": {
-      state_code: "recidiviz",
-      // state_code: 'us_mo',
-      // region: "Western Region",
-    },
-  };
-}
+import { US_MO_METHODOLOGY } from "./us_mo_methodology";
+import { US_PA_METHODOLOGY } from "./us_pa_methodology";
+import { US_MO, US_PA } from "./lanternTenants";
+import { LanternMethodologyByTenant } from "../types";
+
+const LanternMethodology: LanternMethodologyByTenant = {
+  [US_MO]: US_MO_METHODOLOGY,
+  [US_PA]: US_PA_METHODOLOGY,
+};
+
+export default LanternMethodology;

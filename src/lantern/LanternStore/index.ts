@@ -23,6 +23,7 @@ import UserRestrictedAccessStore from "./UserRestrictedAccessStore";
 import FiltersStore from "./FiltersStore";
 import DataStore from "./DataStore/DataStore";
 import DistrictsStore from "./DistrictsStore";
+import { TenantId } from "../../RootStore/types";
 
 interface LanternStoreProps {
   userStore: UserStore;
@@ -40,7 +41,7 @@ export default class LanternStore {
 
   dataStore: DataStore;
 
-  districtsStore;
+  districtsStore: DistrictsStore;
 
   constructor({ userStore, tenantStore }: LanternStoreProps) {
     makeObservable(this, {
@@ -70,7 +71,8 @@ export default class LanternStore {
     return this.filtersStore.filters;
   }
 
-  get currentTenantId(): string {
+  get currentTenantId(): TenantId | undefined {
+    if (!this.tenantStore.currentTenantId) return undefined;
     return this.tenantStore.currentTenantId;
   }
 
