@@ -21,6 +21,7 @@ import Select from "react-select";
 import { observer } from "mobx-react-lite";
 
 import { useRootStore } from "./StoreProvider";
+import { getStateNameForStateCode } from "../utils/navigation";
 
 const StateSelector = ({ onChange }) => {
   const { userStore, tenantStore } = useRootStore();
@@ -28,7 +29,7 @@ const StateSelector = ({ onChange }) => {
     .sort()
     .map((code) => ({
       value: code,
-      label: tenantStore.getStateNameForStateCode(code),
+      label: getStateNameForStateCode(code),
     }));
   const defaultValue = availableStatesOptions.find(
     (availableState) => availableState.value === tenantStore.currentTenantId

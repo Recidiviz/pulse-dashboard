@@ -15,14 +15,13 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 import React from "react";
-import { observer } from "mobx-react-lite";
 
 import TopBar from "../components/TopBar/TopBar";
 import TopBarLogo from "../components/TopBar/TopBarLogo";
 import TopBarUserMenuForAuthenticatedUser from "../components/TopBar/TopBarUserMenuForAuthenticatedUser";
 import { useLanternStore } from "./LanternStoreProvider";
 
-const LanternTopBar = () => {
+const LanternTopBar: React.FC = () => {
   const { userRestrictedAccessStore } = useLanternStore();
 
   const handleOnProfileClick = () => {
@@ -41,4 +40,4 @@ const LanternTopBar = () => {
   );
 };
 
-export default observer(LanternTopBar);
+export default LanternTopBar;
