@@ -39,7 +39,10 @@ import {
   getTimeseries,
   getWeeklyChange,
 } from "./helpers";
+import DownloadDataButton from "../DownloadDataButton";
+import DetailsGroup from "../DetailsGroup";
 import { ENTITY_TYPES } from "../models/types";
+import "../DetailsGroup.scss";
 import "./PageVitals.scss";
 
 const DEFAULT_ENTITY_ID = "STATE_DOC";
@@ -106,12 +109,13 @@ const PageVitals: React.FC = () => {
           entity={currentEntitySummary}
           parentEntityName={parentEntityName}
         />
-        <div className="PageVitals__header--right">
-          <div className="PageVitals__last-updated">
+        <DetailsGroup>
+          <div className="DetailsGroup__item">
             Last updated on {lastUpdatedOn}
           </div>
+          <DownloadDataButton />
           <MethodologyLink path={CORE_PATHS.methodologyVitals} />
-        </div>
+        </DetailsGroup>
       </div>
       <div className="PageVitals__SummaryCards">
         <VitalsSummaryCards

@@ -3,7 +3,7 @@ export default {
   enableRevocationRateByExit: false,
   showMethodologyDropdown: false,
   enableCoreTabNavigation: true,
-  enableVitalsDashboard: false,
+  enableVitalsDashboard: true,
   enableVitalsOfficerView: false,
   enableUpdatedRaceGenderCharts: false,
 };
