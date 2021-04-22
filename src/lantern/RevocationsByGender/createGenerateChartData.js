@@ -17,6 +17,10 @@
 
 import pipe from "lodash/fp/pipe";
 import reduce from "lodash/fp/reduce";
+import groupBy from "lodash/fp/groupBy";
+import sumBy from "lodash/fp/sumBy";
+import toInteger from "lodash/fp/toInteger";
+import map from "lodash/fp/map";
 
 import { applyStatisticallySignificantShadingToDataset } from "../utils/significantStatistics";
 
@@ -82,6 +86,52 @@ const createGenerateChartDataByMode = (
 ) => {
   const genders = Object.keys(genderValueToLabel);
   const { dataPoints, numerators, denominators } = pipe(
+    groupBy((d) => [d.gender, d.admission_type]),
+    map((dataset) => ({
+      gender: dataset[0].gender,
+      revocation_count: sumBy(
+        (item) => toInteger(item.revocation_count),
+        dataset
+      ),
+      revocation_count_all: sumBy(
+        (item) => toInteger(item.revocation_count_all),
+        dataset
+      ),
+      supervision_population_count: sumBy(
+        (item) => toInteger(item.supervision_population_count),
+        dataset
+      ),
+      supervision_count_all: sumBy(
+        (item) => toInteger(item.supervision_count_all),
+        dataset
+      ),
+      recommended_for_revocation_count: sumBy(
+        (item) => toInteger(item.recommended_for_revocation_count),
+        dataset
+      ),
+      recommended_for_revocation_count_all: sumBy(
+        (item) => toInteger(item.recommended_for_revocation_count_all),
+        dataset
+      ),
+    })),
+    groupBy("gender"),
+    map((dataset) => ({
+      gender: dataset[0].gender,
+      revocation_count: sumBy(
+        (item) => toInteger(item.revocation_count),
+        dataset
+      ),
+      revocation_count_all: sumBy(
+        (item) => toInteger(item.revocation_count_all),
+        dataset
+      ),
+      supervision_population_count: dataset[0].supervision_population_count,
+      supervision_count_all: dataset[0].supervision_count_all,
+      recommended_for_revocation_count:
+        dataset[0].recommended_for_revocation_count,
+      recommended_for_revocation_count_all:
+        dataset[0].recommended_for_revocation_count_all,
+    })),
     reduce(createPopulationMap("gender"), {}),
     (data) =>
       getCounts(
