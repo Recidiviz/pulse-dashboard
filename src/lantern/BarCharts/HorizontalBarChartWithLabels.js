@@ -32,6 +32,8 @@ const HorizontalBarChartWithLabels = ({
   includeWarning,
   stacked,
 }) => {
+  const includePercentageInTooltip = stacked;
+
   return (
     <HorizontalBar
       id={id}
@@ -107,7 +109,8 @@ const HorizontalBarChartWithLabels = ({
                 tooltipData,
                 numerators,
                 denominators,
-                includeWarning
+                includeWarning,
+                includePercentageInTooltip
               );
             },
             footer: (tooltipItem) =>

@@ -153,14 +153,67 @@ describe("tooltipForRateMetricWithCounts", () => {
       "recommitmentsBySex",
     ].forEach((metricId) => {
       it(`tooltip for rate metric with counts without trendline - ${metricId}`, () => {
+        const includeWarning = false;
+        const includePercentage = false;
         const tooltipWithCount = tooltipForRateMetricWithCounts(
           metricId,
           tooltipItemRate,
           dataMetric,
           numbers,
-          denominators
+          denominators,
+          includeWarning,
+          includePercentage
         );
         expect(tooltipWithCount).toBe("Admitted Population (56/857)");
+      });
+
+      describe("when the tooltip should include a percentage", () => {
+        it(`formats the tooltip correctly - ${metricId}`, () => {
+          const includeWarning = false;
+          const includePercentage = true;
+          const tooltipWithCount = tooltipForRateMetricWithCounts(
+            metricId,
+            tooltipItemRate,
+            dataMetric,
+            numbers,
+            denominators,
+            includeWarning,
+            includePercentage
+          );
+          expect(tooltipWithCount).toBe("Admitted Population 7% (56/857)");
+        });
+
+        it(`handles an undefined denominator`, () => {
+          const includeWarning = false;
+          const includePercentage = true;
+          denominators[0] = undefined;
+          const tooltipWithCount = tooltipForRateMetricWithCounts(
+            metricId,
+            tooltipItemRate,
+            dataMetric,
+            numbers,
+            denominators,
+            includeWarning,
+            includePercentage
+          );
+          expect(tooltipWithCount).toBe("Admitted Population");
+        });
+
+        it(`handles a 0 denominator`, () => {
+          const includeWarning = false;
+          const includePercentage = true;
+          denominators[0] = 0;
+          const tooltipWithCount = tooltipForRateMetricWithCounts(
+            metricId,
+            tooltipItemRate,
+            dataMetric,
+            numbers,
+            denominators,
+            includeWarning,
+            includePercentage
+          );
+          expect(tooltipWithCount).toBe("Admitted Population");
+        });
       });
     });
   });
