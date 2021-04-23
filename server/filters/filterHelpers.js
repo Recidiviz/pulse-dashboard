@@ -38,7 +38,9 @@ const transformRestrictedDistrictFilter = (
   return restrictedDistrict
     ? {
         ...subsetFilters,
-        ...{ level_1_supervision_location: restrictedDistrict },
+        level_1_supervision_location: restrictedDistrict.map((d) =>
+          d.toLowerCase()
+        ),
       }
     : subsetFilters;
 };
