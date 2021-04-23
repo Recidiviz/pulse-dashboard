@@ -48,7 +48,7 @@ function filterOptimizedDataFormat(
         matchesFilter = true;
       } else {
         matchesFilter = filterFn(
-          { [dimensionKey]: dimensionValue },
+          { [dimensionKey]: dimensionValue.toLowerCase() },
           dimensionKey
         );
       }
