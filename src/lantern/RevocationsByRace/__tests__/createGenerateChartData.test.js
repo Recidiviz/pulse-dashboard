@@ -1,5 +1,5 @@
 // Recidiviz - a data platform for criminal justice reform
-// Copyright (C) 2020 Recidiviz, Inc.
+// Copyright (C) 2021 Recidiviz, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -19,6 +19,7 @@ import { setTranslateLocale } from "../../../utils/i18nSettings";
 import * as lanternTenant from "../../../RootStore/TenantStore/lanternTenants";
 import createGenerateChartData, {
   generateDatasets,
+  CHART_COLORS,
 } from "../createGenerateChartData";
 
 describe("generateDatasets", () => {
@@ -48,7 +49,11 @@ describe("generateDatasets", () => {
     });
 
     it("generates the dataset data and label correctly", () => {
-      const result = generateDatasets(dataPoints, denominators).map((d) => {
+      const result = generateDatasets(
+        dataPoints,
+        denominators,
+        CHART_COLORS
+      ).map((d) => {
         const { data, label } = d;
         return { data, label };
       });
@@ -106,11 +111,7 @@ describe("generateDatasets", () => {
         },
         {
           data: ["70", "60", "50", "40", "30", "20"],
-          label: "Asian",
-        },
-        {
-          data: ["60", "50", "40", "30", "20", "10"],
-          label: "Native American",
+          label: "Other",
         },
       ];
 

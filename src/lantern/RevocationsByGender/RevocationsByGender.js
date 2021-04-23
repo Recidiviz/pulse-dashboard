@@ -24,16 +24,21 @@ import RevocationsByDimension from "../RevocationsByDimension";
 import HorizontalBarChartWithLabels from "../BarCharts/HorizontalBarChartWithLabels";
 import createGenerateChartData from "./createGenerateChartData";
 import { useDataStore } from "../LanternStoreProvider";
+import { useRootStore } from "../../components/StoreProvider";
 import { genderValueToLabel } from "../../utils/formatStrings";
+import { US_PA } from "../../RootStore/TenantStore/lanternTenants";
+import flags from "../../flags";
 
 const DEFAULT_MODE = "MALE";
 
 const RevocationsByGender = observer(
   ({ containerHeight, timeDescription }, ref) => {
-    const dataStore = useDataStore();
-    const { revocationsChartStore } = dataStore;
+    const { currentTenantId } = useRootStore();
+    const { revocationsChartStore } = useDataStore();
     const CHART_TITLE = translate("revocationsByGenderChartTitle");
     const CHART_ID = translate("revocationsByGenderChartId");
+    const stacked =
+      flags.enableUpdatedRaceGenderCharts && currentTenantId === US_PA;
 
     return (
       <RevocationsByDimension
@@ -47,13 +52,17 @@ const RevocationsByGender = observer(
             data={data}
             numerators={numerators}
             denominators={denominators}
+            stacked={stacked}
           />
         )}
-        generateChartData={createGenerateChartData(revocationsChartStore)}
+        generateChartData={createGenerateChartData(
+          revocationsChartStore,
+          stacked
+        )}
         chartTitle={CHART_TITLE}
         metricTitle={(mode) => `${CHART_TITLE}: ${mode}`}
         timeDescription={timeDescription}
-        modes={Object.keys(genderValueToLabel)}
+        modes={stacked ? [] : Object.keys(genderValueToLabel)}
         defaultMode={DEFAULT_MODE}
         dataExportLabel="Gender"
       />

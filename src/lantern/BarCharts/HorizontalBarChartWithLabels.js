@@ -30,44 +30,54 @@ const HorizontalBarChartWithLabels = ({
   numerators,
   denominators,
   includeWarning,
+  stacked,
 }) => {
+  const includePercentageInTooltip = stacked;
+
   return (
     <HorizontalBar
       id={id}
       data={data}
       options={{
-        legend: { display: false },
-        plugins: {
-          datalabels: {
-            clamp: true,
-            align: "end",
-            anchor: "end",
-            offset: 16,
-            color: "#2B2B2A",
-            font: {
-              size: 20,
-              weight: 500,
-            },
-            formatter(value) {
-              return value < 1
-                ? `${parseFloat(value).toFixed(1)}%`
-                : `${Math.trunc(value)}%`;
-            },
-          },
-        },
+        legend: stacked
+          ? { display: true, position: "top", align: "end" }
+          : { display: false },
         responsive: true,
         maintainAspectRatio: false,
+        plugins: {
+          datalabels: stacked
+            ? {
+                display: false,
+              }
+            : {
+                clamp: true,
+                align: "end",
+                anchor: "end",
+                offset: 16,
+                color: "#2B2B2A",
+                font: {
+                  size: 20,
+                  weight: 500,
+                },
+                formatter(value) {
+                  return value < 1
+                    ? `${parseFloat(value).toFixed(1)}%`
+                    : `${Math.trunc(value)}%`;
+                },
+              },
+        },
         scales: {
           xAxes: [
             {
               ticks: {
                 beginAtZero: true,
-                max: 110,
+                max: stacked ? 100 : 110,
                 display: false,
               },
               gridLines: {
                 display: false,
               },
+              stacked,
             },
           ],
           yAxes: [
@@ -80,6 +90,7 @@ const HorizontalBarChartWithLabels = ({
                 fontStyle: "normal",
                 fontColor: "#4F4E4D",
               },
+              stacked,
             },
           ],
         },
@@ -88,7 +99,7 @@ const HorizontalBarChartWithLabels = ({
           mode: "dataset",
           intersect: true,
           position: "nearest",
-          displayColors: false,
+          displayColors: stacked,
           callbacks: {
             title: () => {},
             label: (tooltipItem, tooltipData) => {
@@ -98,7 +109,8 @@ const HorizontalBarChartWithLabels = ({
                 tooltipData,
                 numerators,
                 denominators,
-                includeWarning
+                includeWarning,
+                includePercentageInTooltip
               );
             },
             footer: (tooltipItem) =>
@@ -127,6 +139,7 @@ HorizontalBarChartWithLabels.propTypes = {
       })
     ),
   }).isRequired,
+
   numerators: PropTypes.arrayOf(
     PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.number), PropTypes.number])
   ).isRequired,
@@ -134,10 +147,12 @@ HorizontalBarChartWithLabels.propTypes = {
     PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.number), PropTypes.number])
   ).isRequired,
   includeWarning: PropTypes.bool,
+  stacked: PropTypes.bool,
 };
 
 HorizontalBarChartWithLabels.defaultProps = {
   includeWarning: true,
+  stacked: false,
 };
 
 export default React.memo(HorizontalBarChartWithLabels);
