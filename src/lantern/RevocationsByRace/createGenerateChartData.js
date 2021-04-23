@@ -1,5 +1,5 @@
 // Recidiviz - a data platform for criminal justice reform
-// Copyright (C) 2020 Recidiviz, Inc.
+// Copyright (C) 2021 Recidiviz, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -29,8 +29,16 @@ import {
 import getCounts from "../utils/getCounts";
 import createPopulationMap from "../utils/createPopulationMap";
 import { translate } from "../../utils/i18nSettings";
-import { COLORS_LANTERN_SET } from "../../assets/scripts/constants/colors";
 import { applyStatisticallySignificantShadingToDataset } from "../utils/significantStatistics";
+import { COLORS } from "../../assets/scripts/constants/colors";
+
+export const CHART_COLORS = [
+  COLORS["lantern-bright-orange"],
+  COLORS["lantern-yellow"],
+  COLORS["lantern-ocean-blue"],
+  COLORS["lantern-sky-blue"],
+  COLORS["lantern-green"],
+];
 
 export const generateDatasets = (dataPoints, denominators) => {
   const raceLabelMap = translate("raceLabelMap");
@@ -38,14 +46,47 @@ export const generateDatasets = (dataPoints, denominators) => {
   return raceLabels.map((raceLabel, index) => ({
     label: raceLabel,
     backgroundColor: applyStatisticallySignificantShadingToDataset(
-      COLORS_LANTERN_SET[index],
+      CHART_COLORS[index],
       denominators
     ),
     data: dataPoints[index],
   }));
 };
 
-const createGenerateChartData = ({ filteredData, statePopulationData }) => (
+const createGenerateStackedChartData = ({
+  filteredData,
+  statePopulationData,
+}) => {
+  const raceLabelMap = translate("raceLabelMap");
+  const races = Object.keys(raceLabelMap);
+  const { dataPoints, numerators, denominators } = pipe(
+    reduce(createPopulationMap("race"), {}),
+    (data) =>
+      getCounts(
+        data,
+        getStatePopulations(),
+        races,
+        statePopulationData,
+        "race_or_ethnicity"
+      )
+  )(filteredData);
+
+  const datasets = generateDatasets(dataPoints, denominators);
+
+  const data = {
+    labels: getStatePopulationsLabels(),
+    datasets,
+  };
+
+  return {
+    data,
+    numerators,
+    denominators,
+  };
+};
+
+const createGenerateChartDataByMode = (
+  { filteredData, statePopulationData },
   mode
 ) => {
   const raceLabelMap = translate("raceLabelMap");
@@ -122,6 +163,12 @@ const createGenerateChartData = ({ filteredData, statePopulationData }) => (
     numerators: numerators[datasetIndex],
     denominators: denominators[datasetIndex],
   };
+};
+
+const createGenerateChartData = (chartData, stacked) => (mode) => {
+  return stacked
+    ? createGenerateStackedChartData(chartData)
+    : createGenerateChartDataByMode(chartData, mode);
 };
 
 export default createGenerateChartData;
