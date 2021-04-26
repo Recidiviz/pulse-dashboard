@@ -18,8 +18,10 @@
 import map from "lodash/fp/map";
 import filter from "lodash/fp/filter";
 
-export const excludeOption = (options, optionToExclude) =>
-  options.filter((option) => optionToExclude.value !== option.value);
+export const excludeOption = (options, optionToExclude) => {
+  if (!optionToExclude) return options;
+  return options.filter((option) => optionToExclude.value !== option.value);
+};
 
 /**
  * Flats grouped options that have value to flat list
@@ -57,9 +59,9 @@ export const flatOptions = (options) =>
 
 export const formatSelectOptionValue = ({
   allOptions,
-  summingOption,
   selectedOptions,
   isCore,
+  summingOption,
   isShortFormat = true,
 }) => {
   const selectedValues = map("value", selectedOptions);
@@ -84,6 +86,7 @@ export const formatSelectOptionValue = ({
     return `${selectedGroups[0].label} - ${selectedGroups[0].allSelectedLabel}`;
   }
 
+  // labels for core filters
   if (isCore) {
     return `${selectedOptions[0].label} and ${selectedOptions.length - 1} more`;
   }
@@ -91,6 +94,7 @@ export const formatSelectOptionValue = ({
   if (isShortFormat) {
     return `${selectedOptions.length} Items`;
   }
+
   const groupOptions = excludeOption(
     flatOptions(selectedGroups),
     summingOption
@@ -120,6 +124,7 @@ export const getNewOptions = (
   const isNoOptionsSelected = selectedValues.length === 0;
 
   const isSummingOptionSelected =
+    summingOption &&
     selectedValues.length > 1 &&
     selectedValues[selectedValues.length - 1] === summingOption.value;
 
@@ -131,7 +136,7 @@ export const getNewOptions = (
     return [summingOption];
   }
 
-  if (selectedValues.includes(summingOption.value)) {
+  if (summingOption && selectedValues.includes(summingOption.value)) {
     return selectedOptions.filter((o) => o.value !== summingOption.value);
   }
 

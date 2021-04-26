@@ -40,4 +40,20 @@ describe("MultiSelect", () => {
     };
     expect(renderer).not.toThrow();
   });
+
+  it("should not throw error when defaultValue and summingOption are null", () => {
+    const renderer = () => {
+      render(
+        <MultiSelect
+          onChange={() => {}}
+          value={[{ label: "ALL", value: "ALL" }]}
+          options={[
+            { label: "ALL", value: "ALL" },
+            { label: "02", value: "02" },
+          ]}
+        />
+      );
+    };
+    expect(renderer).not.toThrow();
+  });
 });

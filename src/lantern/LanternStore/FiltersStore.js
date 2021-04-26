@@ -42,12 +42,12 @@ import { generateNestedOptions } from "./utils/districtOptions";
 import getFilters from "../../utils/getFilterDescription";
 import getViolation from "./utils/getViolationTypeDescription";
 
+export const allOption = { label: "ALL", value: "All", secondaryValue: "All" };
+
 export default class FiltersStore {
   rootStore;
 
   filters = observable.map();
-
-  restrictedDistrict;
 
   constructor({ rootStore }) {
     makeAutoObservable(this, {
@@ -99,10 +99,9 @@ export default class FiltersStore {
       ],
       [ADMISSION_TYPE]: this.filterOptions[ADMISSION_TYPE].defaultValue,
       ...{
-        [districtKeys.filterKey]: [
-          this.rootStore.userRestrictedAccessStore.restrictedDistrict ||
-            this.filterOptions[districtKeys.filterKey].defaultValue,
-        ],
+        [districtKeys.filterKey]: this.hasRestrictedDistricts
+          ? this.rootStore.userRestrictedAccessStore.restrictedDistricts
+          : [this.filterOptions[districtKeys.filterKey].defaultValue],
       },
     };
   }
@@ -114,15 +113,41 @@ export default class FiltersStore {
     };
   }
 
+  get hasRestrictedDistricts() {
+    return (
+      this.rootStore.userRestrictedAccessStore.restrictedDistricts &&
+      this.rootStore.userRestrictedAccessStore.restrictedDistricts.length > 0
+    );
+  }
+
   get districtFilterOptions() {
     const { districtKeys } = this.rootStore.districtsStore;
     if (!districtKeys) return {};
+    if (this.hasRestrictedDistricts) {
+      return {
+        [districtKeys.filterKey]: {
+          options: this.restrictedDistrictOptions,
+        },
+      };
+    }
     return {
       [districtKeys.filterKey]: {
         defaultValue: "All",
-        options: this.districts,
+        options: [allOption].concat(this.districts),
       },
     };
+  }
+
+  get restrictedDistrictOptions() {
+    return this.rootStore.userRestrictedAccessStore.restrictedDistricts
+      .slice()
+      .sort()
+      .map((district) => {
+        return {
+          value: district,
+          label: district,
+        };
+      });
   }
 
   get districts() {

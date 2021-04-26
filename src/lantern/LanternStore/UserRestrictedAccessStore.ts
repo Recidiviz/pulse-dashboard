@@ -37,7 +37,7 @@ export default class UserRestrictedAccessStore {
 
   isError = false;
 
-  restrictedDistrict?: string;
+  restrictedDistricts: string[] = [];
 
   readonly rootStore?: LanternStore;
 
@@ -64,14 +64,14 @@ export default class UserRestrictedAccessStore {
     tenantId: TenantId
   ) {
     if (!this.rootStore?.tenantStore.isRestrictedDistrictTenant) {
-      this.restrictedDistrict = undefined;
+      this.restrictedDistricts = [];
       this.isLoading = false;
       return;
     }
     const file = "supervision_location_restricted_access_emails";
     const endpoint = `${tenantId}/restrictedAccess`;
     try {
-      this.restrictedDistrict = undefined;
+      this.restrictedDistricts = [];
       const responseData = yield callRestrictedAccessApi(
         endpoint,
         this.rootStore.userStore.user?.email,
@@ -80,6 +80,7 @@ export default class UserRestrictedAccessStore {
       this.setRestrictions(responseData[file]);
       this.isLoading = false;
     } catch (error) {
+      console.error(error);
       Sentry.captureException(error, {
         tags: {
           tenantId,
@@ -98,34 +99,44 @@ export default class UserRestrictedAccessStore {
   });
 
   setRestrictions(restrictions: RestrictedAccess): void {
-    this.restrictedDistrict =
-      restrictions && restrictions.allowed_level_1_supervision_location_ids;
+    this.restrictedDistricts =
+      (restrictions &&
+        restrictions.allowed_level_1_supervision_location_ids
+          .split(",")
+          .map((r) => r.trim())) ||
+      [];
     this.verifyRestrictedDistrict();
   }
 
   resetRestrictedDistrict(): void {
     this.isLoading = true;
-    this.restrictedDistrict = undefined;
+    this.restrictedDistricts = [];
   }
 
   verifyRestrictedDistrict(): void {
+    const unverifiedLocations = this.restrictedDistricts.filter(
+      (restrictedDistrict) => {
+        return !this.rootStore?.districtsStore.districtIds.includes(
+          restrictedDistrict
+        );
+      }
+    );
+
     if (
       this.rootStore &&
-      this.restrictedDistrict &&
-      !this.rootStore.districtsStore.districtIds.includes(
-        this.restrictedDistrict
-      )
+      this.restrictedDistricts.length > 0 &&
+      unverifiedLocations.length > 0
     ) {
       const authError = new Error(ERROR_MESSAGES.unauthorized);
       Sentry.captureException(authError, {
         tags: {
-          restrictedDistrict: this.restrictedDistrict,
+          restrictedDistrict: this.restrictedDistricts.join(","),
         },
       });
       this.rootStore.userStore.setAuthError(authError);
       this.isError = true;
       this.isLoading = false;
-      this.restrictedDistrict = undefined;
+      this.restrictedDistricts = [];
     }
   }
 }
