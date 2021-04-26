@@ -5,5 +5,4 @@ export default {
   enableCoreTabNavigation: true,
   enableVitalsDashboard: false,
   enableVitalsOfficerView: false,
-  enableUpdatedRaceGenderCharts: false,
 };
