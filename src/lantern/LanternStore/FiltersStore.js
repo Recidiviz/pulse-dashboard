@@ -116,7 +116,7 @@ export default class FiltersStore {
   get hasRestrictedDistricts() {
     return (
       this.rootStore.userRestrictedAccessStore.restrictedDistricts &&
-      this.rootStore.userRestrictedAccessStore.restrictedDistricts.length > 1
+      this.rootStore.userRestrictedAccessStore.restrictedDistricts.length > 0
     );
   }
 

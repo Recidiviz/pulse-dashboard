@@ -21,6 +21,7 @@ import MultiSelect from "../../controls/MultiSelect";
 
 const DistrictFilterDropdown = ({
   singleValueOption,
+  hasRestrictedValues,
   selected,
   options,
   isLoading,
@@ -44,16 +45,22 @@ const DistrictFilterDropdown = ({
     );
   }
 
+  const defaultValueProps = !hasRestrictedValues
+    ? {
+        summingOption: defaultValue,
+        defaultValue: [defaultValue],
+      }
+    : {};
+
   return (
     <MultiSelect
       options={options}
-      summingOption={defaultValue}
-      defaultValue={[defaultValue]}
       value={selected}
       onChange={onValueChange}
       isMulti
       isLoading={isLoading}
       isSearchable
+      {...defaultValueProps}
     />
   );
 };
@@ -73,15 +80,18 @@ const SelectOption = {
 
 DistrictFilterDropdown.defaultProps = {
   singleValueOption: null,
+  defaultValue: null,
+  hasRestrictedValues: false,
 };
 
 DistrictFilterDropdown.propTypes = {
   singleValueOption: PropTypes.string,
+  hasRestrictedValues: PropTypes.bool,
   selected: PropTypes.arrayOf(PropTypes.shape(SelectOption)).isRequired,
   options: PropTypes.arrayOf(PropTypes.shape(SelectOption)).isRequired,
   isLoading: PropTypes.bool.isRequired,
   onValueChange: PropTypes.func.isRequired,
-  defaultValue: PropTypes.shape(SelectOption).isRequired,
+  defaultValue: PropTypes.shape(SelectOption),
 };
 
 export default DistrictFilterDropdown;
