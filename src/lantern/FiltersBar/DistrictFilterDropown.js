@@ -83,7 +83,7 @@ DistrictFilterDropdown.defaultProps = {
 };
 
 DistrictFilterDropdown.propTypes = {
-  restrictedValues: PropTypes.arrayOf(PropTypes.shape(SelectOption)).isRequired,
+  restrictedValues: PropTypes.arrayOf(PropTypes.string).isRequired,
   selected: PropTypes.arrayOf(PropTypes.shape(SelectOption)).isRequired,
   options: PropTypes.arrayOf(PropTypes.shape(SelectOption)).isRequired,
   isLoading: PropTypes.bool.isRequired,
