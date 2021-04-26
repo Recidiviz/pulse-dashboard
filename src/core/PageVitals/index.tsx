@@ -85,24 +85,29 @@ const PageVitals: React.FC = () => {
     setSelectedCardId(id);
   };
 
-  const { currentEntitySummary, childEntitySummaryRows } = getEntitySummaries(
-    summaries,
-    currentEntityId
-  );
+  const {
+    currentEntitySummary,
+    childEntitySummaryRows,
+    parentEntityName,
+  } = getEntitySummaries(summaries, currentEntityId);
   const summaryCards = getSummaryCards(currentEntitySummary);
   const selectedTimeSeries = getTimeseries(
     timeSeries,
     selectedCardId,
     currentEntityId
   );
-  const lastUpdatedOn = selectedTimeSeries[selectedTimeSeries.length - 1].date;
-
+  const lastUpdatedOn = selectedTimeSeries
+    ? formatISODateString(
+        selectedTimeSeries[selectedTimeSeries.length - 1].date
+      )
+    : "Unknown";
   return (
     <PageTemplate>
       <div className="PageVitals__header">
         <VitalsSummaryBreadcrumbs
           stateName={stateName}
           entity={currentEntitySummary}
+          parentEntityName={parentEntityName}
         />
         <DetailsGroup>
           <div className="DetailsGroup__item">
@@ -126,21 +131,27 @@ const PageVitals: React.FC = () => {
           />
         </div>
         <div className="PageVitals__SummaryChart">
-          <VitalsWeeklyChange
-            weeklyChange={getWeeklyChange(selectedTimeSeries)}
-          />
-          <VitalsSummaryChart
-            stateCode={stateCode}
-            goal={goals[selectedCardId]}
-            timeSeries={selectedTimeSeries}
-          />
+          {selectedTimeSeries && (
+            <>
+              <VitalsWeeklyChange
+                weeklyChange={getWeeklyChange(selectedTimeSeries)}
+              />
+              <VitalsSummaryChart
+                stateCode={stateCode}
+                goal={goals[selectedCardId]}
+                timeSeries={selectedTimeSeries}
+              />
+            </>
+          )}
         </div>
       </div>
       <div className="PageVitals__Table">
-        <VitalsSummaryTable
-          selectedSortBy={selectedCardId}
-          summaries={childEntitySummaryRows}
-        />
+        {currentEntitySummary.entityType !== ENTITY_TYPES.PO && (
+          <VitalsSummaryTable
+            selectedSortBy={selectedCardId}
+            summaries={childEntitySummaryRows}
+          />
+        )}
       </div>
     </PageTemplate>
   );

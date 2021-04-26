@@ -18,35 +18,70 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { ENTITY_TYPES, VitalsSummaryRecord } from "../models/types";
+import { toTitleCase } from "../../utils/formatStrings";
+import { convertToSlug } from "../../utils/navigation";
 import "./VitalsSummaryBreadcrumbs.scss";
 
-function formatOfficeName(name: string): string {
-  return `${name} Office`;
+function formatOfficeName(name: string | undefined): string | undefined {
+  if (!name) return "Unknown";
+  return name.includes("Office") ? name : `${toTitleCase(name)} Office`;
+}
+
+function formatOfficerName(name: string): string {
+  const nameWithoutId = name.split(": ").pop();
+  return nameWithoutId || name;
 }
 
 type PropTypes = {
   stateName: string;
   entity: VitalsSummaryRecord;
+  parentEntityName?: string;
 };
 
 const VitalsSummaryBreadcrumbs: React.FC<PropTypes> = ({
   stateName,
   entity,
+  parentEntityName,
 }) => {
-  const { entityName, entityType } = entity;
-  const { primary, secondary } =
-    entityType === ENTITY_TYPES.LEVEL_1_SUPERVISION_LOCATION
-      ? { primary: formatOfficeName(entityName), secondary: stateName }
-      : { primary: stateName, secondary: undefined };
+  const { entityName, entityType, parentEntityId } = entity;
+  let current;
+  let state;
+  let parent;
+
+  switch (entityType) {
+    case ENTITY_TYPES.LEVEL_1_SUPERVISION_LOCATION:
+      current = formatOfficeName(entityName);
+      state = stateName;
+      parent = undefined;
+      break;
+    case ENTITY_TYPES.PO:
+      current = formatOfficerName(entityName);
+      state = stateName;
+      parent = formatOfficeName(parentEntityName);
+      break;
+    default:
+      current = stateName;
+      state = undefined;
+      parent = undefined;
+  }
+
   return (
     <div className="VitalsSummaryBreadcrumbs">
-      <Link
-        className="VitalsSummaryBreadcrumbs--secondary"
-        to="/community/vitals"
-      >
-        {secondary}
+      <Link className="VitalsSummaryBreadcrumbs--state" to="/community/vitals">
+        {state}
       </Link>
-      <div className="VitalsSummaryBreadcrumbs--primary">{primary}</div>
+      {parent && (
+        <div className="VitalsSummaryBreadcrumbs__parent-container">
+          <span>/</span>
+          <Link
+            className="VitalsSummaryBreadcrumbs--parent"
+            to={`/community/vitals/${convertToSlug(parentEntityId)}`}
+          >
+            {parent}
+          </Link>
+        </div>
+      )}
+      <div className="VitalsSummaryBreadcrumbs--current">{current}</div>
     </div>
   );
 };
