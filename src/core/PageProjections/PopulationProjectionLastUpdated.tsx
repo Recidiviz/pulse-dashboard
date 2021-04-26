@@ -17,6 +17,7 @@
 import React from "react";
 import { PopulationProjectionTimeSeriesRecord } from "../models/types";
 import "./PopulationProjectionLastUpdated.scss";
+import { getSimulationMonth } from "../PopulationTimeSeriesChart/helpers";
 
 type Props = {
   projectionTimeSeries: PopulationProjectionTimeSeriesRecord[];
@@ -25,18 +26,16 @@ type Props = {
 const PopulationProjectionLastUpdated: React.FC<Props> = ({
   projectionTimeSeries,
 }) => {
-  // Filter records
-  const { year, month } = projectionTimeSeries
-    .filter((d) => d.simulationTag === "HISTORICAL")
-    .sort((a, b) => (a.year === b.year ? a.month - b.month : a.year - b.year))
-    .slice(-1)[0];
-
-  const simulationDate = new Date(year, month - 1, 1);
+  const simulationDate = getSimulationMonth(projectionTimeSeries);
 
   return (
     <div className="PopulationProjectionLastUpdated">
       Historical and projected population data were generated{" "}
-      {simulationDate.toLocaleString("default", { month: "long" })} {year}.
+      {simulationDate.toLocaleString("default", {
+        month: "long",
+        year: "numeric",
+      })}
+      .
     </div>
   );
 };

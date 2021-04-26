@@ -23,10 +23,7 @@ import { Card, CardSection } from "@recidiviz/case-triage-components";
 import { observer } from "mobx-react-lite";
 import { useLocation } from "react-router-dom";
 import PercentDelta from "../controls/PercentDelta";
-import {
-  CURRENT_YEAR,
-  CURRENT_MONTH,
-} from "../PopulationTimeSeriesChart/helpers";
+import { getSimulationMonth } from "../PopulationTimeSeriesChart/helpers";
 import { getViewFromPathname } from "../views";
 import { formatLargeNumber } from "../../utils/formatStrings";
 import { useCoreStore } from "../CoreStoreProvider";
@@ -140,8 +137,11 @@ const TempPopulationSummaryMetrics: React.FC<PropTypes> = ({
     );
   }
 
+  const simulationMonth = getSimulationMonth(timeSeries);
   const currentData = timeSeries.find(
-    (d) => d.year === CURRENT_YEAR && d.month === CURRENT_MONTH
+    (d) =>
+      d.year === simulationMonth.getFullYear() &&
+      d.month === simulationMonth.getMonth() + 1
   ) as PopulationProjectionTimeSeriesRecord;
 
   const historicalData = timeSeries[0];

@@ -21,14 +21,15 @@ import { callMetricsApi } from "../../../api/metrics/metricsClient";
 import RootStore from "../../../RootStore";
 import ProjectionsMetrics from "../ProjectionsMetrics";
 import { CORE_VIEWS } from "../../views";
+import { PopulationProjectionTimeSeriesRecord } from "../types";
 
 const mockTenantId = "US_ND";
 const mockGetTokenSilently = jest.fn();
 const mockCoreStore = {} as CoreStore;
 const filtersStore = new FiltersStore({ rootStore: mockCoreStore });
 jest.mock("../../PopulationTimeSeriesChart/helpers", () => ({
-  CURRENT_MONTH: 1,
-  CURRENT_YEAR: 2016,
+  getSimulationMonth: (_: PopulationProjectionTimeSeriesRecord) =>
+    new Date(2016, 0),
 }));
 jest
   .spyOn(RootStore, "getTokenSilently", "get")

@@ -17,9 +17,6 @@
 
 import { PopulationProjectionTimeSeriesRecord } from "../models/types";
 
-export const CURRENT_YEAR = 2021;
-export const CURRENT_MONTH = 1;
-
 export type MonthOptions = 1 | 6 | 12 | 24 | 60;
 
 export type ChartPoint = {
@@ -106,4 +103,15 @@ export const getDateRange = (
   endDate.setDate(endDate.getDate() + offset);
 
   return { beginDate, endDate };
+};
+
+export const getSimulationMonth = (
+  projectionTimeSeries: PopulationProjectionTimeSeriesRecord[]
+): Date => {
+  return getDate(
+    projectionTimeSeries
+      .filter((d) => d.simulationTag === "HISTORICAL")
+      .sort((a, b) => (a.year === b.year ? a.month - b.month : a.year - b.year))
+      .slice(-1)[0]
+  );
 };

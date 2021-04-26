@@ -25,8 +25,7 @@ import {
 import { getCompartmentFromView } from "../views";
 import Metric, { BaseMetricProps } from "./Metric";
 import {
-  CURRENT_MONTH,
-  CURRENT_YEAR,
+  getSimulationMonth,
   MonthOptions,
 } from "../PopulationTimeSeriesChart/helpers";
 
@@ -114,7 +113,7 @@ export default class ProjectionsMetrics extends Metric<MetricRecords> {
     records: PopulationProjectionTimeSeriesRecord[],
     compartment: string
   ): PopulationProjectionTimeSeriesRecord[] {
-    if (!this.rootStore) return records;
+    if (!this.rootStore || !records.length) return records;
     const {
       gender,
       supervisionType,
@@ -127,9 +126,11 @@ export default class ProjectionsMetrics extends Metric<MetricRecords> {
       compartment === "SUPERVISION" ? supervisionType : legalStatus;
     const stepSize = range / 6;
 
+    const simulationMonth = getSimulationMonth(records);
     return records.filter((record: PopulationProjectionTimeSeriesRecord) => {
       const monthsOut =
-        (record.year - CURRENT_YEAR) * 12 + (record.month - CURRENT_MONTH);
+        (record.year - simulationMonth.getFullYear()) * 12 +
+        (record.month - (simulationMonth.getMonth() + 1));
       return (
         record.gender === gender &&
         record.compartment === compartment &&
