@@ -20,18 +20,17 @@ import Select from "../../controls/Select";
 import MultiSelect from "../../controls/MultiSelect";
 
 const DistrictFilterDropdown = ({
-  singleValueOption,
-  hasRestrictedValues,
+  restrictedValues,
   selected,
   options,
   isLoading,
   onValueChange,
   defaultValue,
 }) => {
-  if (singleValueOption) {
+  if (restrictedValues.length === 1) {
     const singleValue = {
-      label: singleValueOption,
-      value: singleValueOption,
+      label: restrictedValues[0],
+      value: restrictedValues[0],
     };
 
     return (
@@ -45,12 +44,13 @@ const DistrictFilterDropdown = ({
     );
   }
 
-  const defaultValueProps = !hasRestrictedValues
-    ? {
-        summingOption: defaultValue,
-        defaultValue: [defaultValue],
-      }
-    : {};
+  const defaultValueProps =
+    restrictedValues.length > 1
+      ? {}
+      : {
+          summingOption: defaultValue,
+          defaultValue: [defaultValue],
+        };
 
   return (
     <MultiSelect
@@ -79,14 +79,11 @@ const SelectOption = {
 };
 
 DistrictFilterDropdown.defaultProps = {
-  singleValueOption: null,
   defaultValue: null,
-  hasRestrictedValues: false,
 };
 
 DistrictFilterDropdown.propTypes = {
-  singleValueOption: PropTypes.string,
-  hasRestrictedValues: PropTypes.bool,
+  restrictedValues: PropTypes.arrayOf(PropTypes.shape(SelectOption)).isRequired,
   selected: PropTypes.arrayOf(PropTypes.shape(SelectOption)).isRequired,
   options: PropTypes.arrayOf(PropTypes.shape(SelectOption)).isRequired,
   isLoading: PropTypes.bool.isRequired,

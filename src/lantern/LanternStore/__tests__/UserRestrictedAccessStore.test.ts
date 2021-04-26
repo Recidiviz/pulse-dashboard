@@ -141,7 +141,6 @@ describe("fetchRestrictedDistrictData", () => {
     });
 
     it("includes all the districts in the array of values", () => {
-      // console.log(userRestrictedAccessStore.isLoading);
       expect(userRestrictedAccessStore.restrictedDistricts).toEqual([
         userDistrict,
         additionalRestrictedDistrict,

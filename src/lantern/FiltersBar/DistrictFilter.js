@@ -61,16 +61,10 @@ const DistrictFilter = () => {
     get(filters, filterKey).includes(option.value)
   );
 
-  const singleValueOption =
-    restrictedDistricts.length === 1 ? restrictedDistricts[0] : undefined;
-
-  const hasRestrictedValues = restrictedDistricts.length > 1;
-
   return (
     <FilterField label="District">
       <DistrictFilterDropown
-        singleValueOption={singleValueOption}
-        hasRestrictedValues={hasRestrictedValues}
+        restrictedValues={restrictedDistricts}
         options={options}
         selected={selectedValues}
         onValueChange={onValueChange}
