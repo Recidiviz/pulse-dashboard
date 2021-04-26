@@ -31,9 +31,10 @@ import qs from "qs";
  * @param {string} filters.violationType - Violation type
  * @param {string} filters.admissionType - Admission types or "All"
  */
-export function getQueryStringFromFilters(filters = {}, restrictedDistrict) {
+export function getQueryStringFromFilters(filters = {}, restrictedDistricts) {
   return qs.stringify(
-    { ...filters, restrictedDistrict },
+    // TODO: Update query param in the backend to be restrictedDistricts
+    { ...filters, restrictedDistrict: restrictedDistricts },
     {
       encode: false,
       addQueryPrefix: true,
