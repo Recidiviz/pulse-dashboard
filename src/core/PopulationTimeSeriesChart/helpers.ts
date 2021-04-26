@@ -104,3 +104,14 @@ export const getDateRange = (
 
   return { beginDate, endDate };
 };
+
+export const getSimulationMonth = (
+  projectionTimeSeries: PopulationProjectionTimeSeriesRecord[]
+): Date => {
+  return getDate(
+    projectionTimeSeries
+      .filter((d) => d.simulationTag === "HISTORICAL")
+      .sort((a, b) => (a.year === b.year ? a.month - b.month : a.year - b.year))
+      .slice(-1)[0]
+  );
+};
