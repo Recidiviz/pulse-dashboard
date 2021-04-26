@@ -1,5 +1,5 @@
 // Recidiviz - a data platform for criminal justice reform
-// Copyright (C) 2020 Recidiviz, Inc.
+// Copyright (C) 2021 Recidiviz, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -17,8 +17,11 @@
 
 import pipe from "lodash/fp/pipe";
 import reduce from "lodash/fp/reduce";
+import groupBy from "lodash/fp/groupBy";
+import sumBy from "lodash/fp/sumBy";
+import toInteger from "lodash/fp/toInteger";
+import map from "lodash/fp/map";
 
-import { CHART_COLORS } from "./constants";
 import { applyStatisticallySignificantShadingToDataset } from "../utils/significantStatistics";
 
 import {
@@ -28,6 +31,12 @@ import {
 } from "../../utils/formatStrings";
 import getCounts from "../utils/getCounts";
 import createPopulationMap from "../utils/createPopulationMap";
+import { COLORS } from "../../assets/scripts/constants/colors";
+
+export const CHART_COLORS = [
+  COLORS["lantern-medium-blue"],
+  COLORS["lantern-sky-blue"],
+];
 
 export const generateDatasets = (dataPoints, denominators) => {
   return Object.values(genderValueToLabel).map((genderLabel, index) => ({
@@ -40,11 +49,89 @@ export const generateDatasets = (dataPoints, denominators) => {
   }));
 };
 
-const createGenerateChartData = ({ filteredData, statePopulationData }) => (
+const createGenerateStackedChartData = ({
+  filteredData,
+  statePopulationData,
+}) => {
+  const genders = Object.keys(genderValueToLabel);
+  const { dataPoints, numerators, denominators } = pipe(
+    reduce(createPopulationMap("gender"), {}),
+    (data) =>
+      getCounts(
+        data,
+        getStatePopulations(),
+        genders,
+        statePopulationData,
+        "gender"
+      )
+  )(filteredData);
+
+  const datasets = generateDatasets(dataPoints, denominators);
+
+  const data = {
+    labels: getStatePopulationsLabels(),
+    datasets,
+  };
+
+  return {
+    data,
+    numerators,
+    denominators,
+  };
+};
+
+const createGenerateChartDataByMode = (
+  { filteredData, statePopulationData },
   mode
 ) => {
   const genders = Object.keys(genderValueToLabel);
   const { dataPoints, numerators, denominators } = pipe(
+    groupBy((d) => [d.gender, d.admission_type]),
+    map((dataset) => ({
+      gender: dataset[0].gender,
+      revocation_count: sumBy(
+        (item) => toInteger(item.revocation_count),
+        dataset
+      ),
+      revocation_count_all: sumBy(
+        (item) => toInteger(item.revocation_count_all),
+        dataset
+      ),
+      supervision_population_count: sumBy(
+        (item) => toInteger(item.supervision_population_count),
+        dataset
+      ),
+      supervision_count_all: sumBy(
+        (item) => toInteger(item.supervision_count_all),
+        dataset
+      ),
+      recommended_for_revocation_count: sumBy(
+        (item) => toInteger(item.recommended_for_revocation_count),
+        dataset
+      ),
+      recommended_for_revocation_count_all: sumBy(
+        (item) => toInteger(item.recommended_for_revocation_count_all),
+        dataset
+      ),
+    })),
+    groupBy("gender"),
+    map((dataset) => ({
+      gender: dataset[0].gender,
+      revocation_count: sumBy(
+        (item) => toInteger(item.revocation_count),
+        dataset
+      ),
+      revocation_count_all: sumBy(
+        (item) => toInteger(item.revocation_count_all),
+        dataset
+      ),
+      supervision_population_count: dataset[0].supervision_population_count,
+      supervision_count_all: dataset[0].supervision_count_all,
+      recommended_for_revocation_count:
+        dataset[0].recommended_for_revocation_count,
+      recommended_for_revocation_count_all:
+        dataset[0].recommended_for_revocation_count_all,
+    })),
     reduce(createPopulationMap("gender"), {}),
     (data) =>
       getCounts(
@@ -70,6 +157,12 @@ const createGenerateChartData = ({ filteredData, statePopulationData }) => (
     numerators: numerators[datasetIndex],
     denominators: denominators[datasetIndex],
   };
+};
+
+const createGenerateChartData = (chartData, stacked) => (mode) => {
+  return stacked
+    ? createGenerateStackedChartData(chartData)
+    : createGenerateChartDataByMode(chartData, mode);
 };
 
 export default createGenerateChartData;

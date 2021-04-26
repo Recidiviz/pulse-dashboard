@@ -1,5 +1,5 @@
 // Recidiviz - a data platform for criminal justice reform
-// Copyright (C) 2020 Recidiviz, Inc.
+// Copyright (C) 2021 Recidiviz, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -17,6 +17,10 @@
 
 import pipe from "lodash/fp/pipe";
 import reduce from "lodash/fp/reduce";
+import sumBy from "lodash/fp/sumBy";
+import toInteger from "lodash/fp/toInteger";
+import map from "lodash/fp/map";
+import groupBy from "lodash/fp/groupBy";
 
 import {
   getStatePopulations,
@@ -25,8 +29,16 @@ import {
 import getCounts from "../utils/getCounts";
 import createPopulationMap from "../utils/createPopulationMap";
 import { translate } from "../../utils/i18nSettings";
-import { COLORS_LANTERN_SET } from "../../assets/scripts/constants/colors";
 import { applyStatisticallySignificantShadingToDataset } from "../utils/significantStatistics";
+import { COLORS } from "../../assets/scripts/constants/colors";
+
+export const CHART_COLORS = [
+  COLORS["lantern-bright-orange"],
+  COLORS["lantern-yellow"],
+  COLORS["lantern-ocean-blue"],
+  COLORS["lantern-sky-blue"],
+  COLORS["lantern-green"],
+];
 
 export const generateDatasets = (dataPoints, denominators) => {
   const raceLabelMap = translate("raceLabelMap");
@@ -34,19 +46,98 @@ export const generateDatasets = (dataPoints, denominators) => {
   return raceLabels.map((raceLabel, index) => ({
     label: raceLabel,
     backgroundColor: applyStatisticallySignificantShadingToDataset(
-      COLORS_LANTERN_SET[index],
+      CHART_COLORS[index],
       denominators
     ),
     data: dataPoints[index],
   }));
 };
 
-const createGenerateChartData = ({ filteredData, statePopulationData }) => (
+const createGenerateStackedChartData = ({
+  filteredData,
+  statePopulationData,
+}) => {
+  const raceLabelMap = translate("raceLabelMap");
+  const races = Object.keys(raceLabelMap);
+  const { dataPoints, numerators, denominators } = pipe(
+    reduce(createPopulationMap("race"), {}),
+    (data) =>
+      getCounts(
+        data,
+        getStatePopulations(),
+        races,
+        statePopulationData,
+        "race_or_ethnicity"
+      )
+  )(filteredData);
+
+  const datasets = generateDatasets(dataPoints, denominators);
+
+  const data = {
+    labels: getStatePopulationsLabels(),
+    datasets,
+  };
+
+  return {
+    data,
+    numerators,
+    denominators,
+  };
+};
+
+const createGenerateChartDataByMode = (
+  { filteredData, statePopulationData },
   mode
 ) => {
   const raceLabelMap = translate("raceLabelMap");
   const races = Object.keys(raceLabelMap);
   const { dataPoints, numerators, denominators } = pipe(
+    groupBy((d) => [d.race, d.admission_type]),
+    map((dataset) => ({
+      race: dataset[0].race,
+      revocation_count: sumBy(
+        (item) => toInteger(item.revocation_count),
+        dataset
+      ),
+      revocation_count_all: sumBy(
+        (item) => toInteger(item.revocation_count_all),
+        dataset
+      ),
+      supervision_population_count: sumBy(
+        (item) => toInteger(item.supervision_population_count),
+        dataset
+      ),
+      supervision_count_all: sumBy(
+        (item) => toInteger(item.supervision_count_all),
+        dataset
+      ),
+      recommended_for_revocation_count: sumBy(
+        (item) => toInteger(item.recommended_for_revocation_count),
+        dataset
+      ),
+      recommended_for_revocation_count_all: sumBy(
+        (item) => toInteger(item.recommended_for_revocation_count_all),
+        dataset
+      ),
+    })),
+    groupBy("race"),
+    map((dataset) => ({
+      race: dataset[0].race,
+      revocation_count: sumBy(
+        (item) => toInteger(item.revocation_count),
+        dataset
+      ),
+      revocation_count_all: sumBy(
+        (item) => toInteger(item.revocation_count_all),
+        dataset
+      ),
+      supervision_population_count: dataset[0].supervision_population_count,
+      supervision_count_all: dataset[0].supervision_count_all,
+      recommended_for_revocation_count:
+        dataset[0].recommended_for_revocation_count,
+      recommended_for_revocation_count_all:
+        dataset[0].recommended_for_revocation_count_all,
+    })),
     reduce(createPopulationMap("race"), {}),
     (data) =>
       getCounts(
@@ -72,6 +163,12 @@ const createGenerateChartData = ({ filteredData, statePopulationData }) => (
     numerators: numerators[datasetIndex],
     denominators: denominators[datasetIndex],
   };
+};
+
+const createGenerateChartData = (chartData, stacked) => (mode) => {
+  return stacked
+    ? createGenerateStackedChartData(chartData)
+    : createGenerateChartDataByMode(chartData, mode);
 };
 
 export default createGenerateChartData;
