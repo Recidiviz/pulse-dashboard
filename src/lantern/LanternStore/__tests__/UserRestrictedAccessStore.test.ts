@@ -43,38 +43,40 @@ const mockRootStore = {
   userStore: {} as UserStore,
   tenantStore: {} as TenantStore,
 };
-
-beforeEach(() => {
-  mockLanternStore.mockImplementation(() => {
-    return {
-      currentTenantId: tenantId,
-      tenantStore: {
-        isLanternTenant: true,
-        isRestrictedDistrictTenant: true,
-      },
-      districtsStore: {
-        isLoading: false,
-        districtIds: [userDistrict],
-      },
-      userStore: {
-        availableStateCodes: [tenantId],
-        user: mockUser,
-        userIsLoading: false,
-        getTokenSilently: mockGetTokenSilently,
-        setAuthError: mockSetAuthError,
-      },
-    };
-  });
-});
-
-afterEach(() => {
-  jest.resetAllMocks();
-});
+const additionalRestrictedDistrict = "TCSTL";
 
 describe("fetchRestrictedDistrictData", () => {
   let userRestrictedAccessStore: UserRestrictedAccessStore;
   let endpoint: string;
   let rootStore: LanternStore;
+  beforeEach(() => {
+    jest.spyOn(console, "error").mockImplementation();
+    mockLanternStore.mockImplementation(() => {
+      return {
+        currentTenantId: tenantId,
+        tenantStore: {
+          isLanternTenant: true,
+          isRestrictedDistrictTenant: true,
+        },
+        districtsStore: {
+          isLoading: false,
+          districtIds: [userDistrict, additionalRestrictedDistrict],
+        },
+        userStore: {
+          availableStateCodes: [tenantId],
+          user: mockUser,
+          userIsLoading: false,
+          getTokenSilently: mockGetTokenSilently,
+          setAuthError: mockSetAuthError,
+        },
+      };
+    });
+  });
+
+  afterEach(() => {
+    jest.restoreAllMocks();
+    jest.resetAllMocks();
+  });
 
   describe("when API responds with success", () => {
     beforeEach(async () => {
@@ -111,10 +113,39 @@ describe("fetchRestrictedDistrictData", () => {
       expect(userRestrictedAccessStore.isLoading).toEqual(false);
     });
 
-    it("sets the restrictedDistrict", () => {
-      expect(userRestrictedAccessStore.restrictedDistrict).toEqual(
-        userDistrict
-      );
+    it("sets the restrictedDistricts", () => {
+      expect(userRestrictedAccessStore.restrictedDistricts).toEqual([
+        userDistrict,
+      ]);
+    });
+  });
+
+  describe("when the user has more than one restricted district", () => {
+    beforeEach(async () => {
+      mockCallRestrictedAccessApi.mockResolvedValue({
+        supervision_location_restricted_access_emails: {
+          restricted_user_email: userEmail.toUpperCase(),
+          allowed_level_1_supervision_location_ids: `${userDistrict}, ${additionalRestrictedDistrict}`,
+        },
+      });
+
+      reactImmediately(() => {
+        userRestrictedAccessStore = new UserRestrictedAccessStore({
+          rootStore: new LanternStore(mockRootStore),
+        });
+      });
+    });
+
+    afterEach(() => {
+      jest.resetAllMocks();
+    });
+
+    it("includes all the districts in the array of values", () => {
+      // console.log(userRestrictedAccessStore.isLoading);
+      expect(userRestrictedAccessStore.restrictedDistricts).toEqual([
+        userDistrict,
+        additionalRestrictedDistrict,
+      ]);
     });
   });
 
@@ -144,8 +175,8 @@ describe("fetchRestrictedDistrictData", () => {
       expect(rootStore.userStore.setAuthError).toHaveBeenCalledTimes(1);
     });
 
-    it("sets restrictedDistrict to undefined and isLoading to false", () => {
-      expect(userRestrictedAccessStore.restrictedDistrict).toBe(undefined);
+    it("keeps restrictedDistricts as an empty array and isLoading to false", () => {
+      expect(userRestrictedAccessStore.restrictedDistricts).toEqual([]);
       expect(userRestrictedAccessStore.isLoading).toBe(false);
     });
 
@@ -248,8 +279,8 @@ describe("fetchRestrictedDistrictData", () => {
       jest.restoreAllMocks();
     });
 
-    it("restrictedDistrict is undefined", () => {
-      expect(userRestrictedAccessStore.restrictedDistrict).toBeUndefined();
+    it("restrictedDistricts is an empty array", () => {
+      expect(userRestrictedAccessStore.restrictedDistricts).toEqual([]);
     });
 
     it("sets an authError and restrictedDistrictIsLoading to false", () => {
