@@ -90,12 +90,16 @@ export function getEntitySummaries(
 ): {
   currentEntitySummary: VitalsSummaryRecord;
   childEntitySummaryRows: VitalsSummaryTableRow[];
+  parentEntityName?: string;
 } {
   const currentEntitySummary = vitalsSummaries.find(
     (d) => d.entityId === currentEntityId
   ) as VitalsSummaryRecord;
   const childEntitySummaryRows = vitalsSummaries
-    .filter((d) => d.parentEntityId === currentEntityId)
+    .filter(
+      (d) =>
+        d.parentEntityId === currentEntityId && d.parentEntityId !== d.entityId
+    )
     .map((d) => {
       const { entityId, entityName, entityType, ...attrs } = d;
       return {
@@ -107,17 +111,21 @@ export function getEntitySummaries(
         ...attrs,
       };
     }) as VitalsSummaryTableRow[];
-  return { currentEntitySummary, childEntitySummaryRows };
+  const parentEntityName = vitalsSummaries.find(
+    (d) => d.entityId === currentEntitySummary.parentEntityId
+  )?.entityName;
+  return { currentEntitySummary, childEntitySummaryRows, parentEntityName };
 }
 
 export function getTimeseries(
   timeSeries: VitalsTimeSeriesRecord[],
   selectedCardId: string,
   currentEntityId: string
-): VitalsTimeSeriesRecord[] {
-  return timeSeries.filter(
+): VitalsTimeSeriesRecord[] | undefined {
+  const selectedTimeSeries = timeSeries.filter(
     (d) => d.metric === selectedCardId && d.entityId === currentEntityId
   );
+  return selectedTimeSeries.length > 0 ? selectedTimeSeries : undefined;
 }
 
 export function getWeeklyChange(
