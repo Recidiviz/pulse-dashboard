@@ -4,4 +4,6 @@ export default {
   showMethodologyDropdown: false,
   enableCoreTabNavigation: true,
   enableVitalsDashboard: false,
+  enableVitalsOfficerView: false,
+  enableUpdatedRaceGenderCharts: false,
 };
