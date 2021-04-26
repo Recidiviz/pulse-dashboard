@@ -26,7 +26,6 @@ import { useRootStore } from "../../components/StoreProvider";
 import { useDataStore } from "../LanternStoreProvider";
 import HorizontalBarChartWithLabels from "../BarCharts/HorizontalBarChartWithLabels";
 import { US_PA } from "../../RootStore/TenantStore/lanternTenants";
-import flags from "../../flags";
 
 const DEFAULT_MODE = "WHITE";
 
@@ -36,8 +35,7 @@ const RevocationsByRace = observer(
     const { currentTenantId } = useRootStore();
     const CHART_TITLE = translate("revocationsByRaceChartTitle");
     const CHART_ID = translate("revocationsByRaceChartId");
-    const stacked =
-      flags.enableUpdatedRaceGenderCharts && currentTenantId === US_PA;
+    const stacked = currentTenantId === US_PA;
 
     return (
       <RevocationsByDimension
