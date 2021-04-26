@@ -33,7 +33,7 @@ import qs from "qs";
  */
 export function getQueryStringFromFilters(filters = {}, restrictedDistricts) {
   return qs.stringify(
-    // TODO: Update query param in the backend to be restrictedDistricts
+    // TODO(#1043): Update query param in the backend to be restrictedDistricts
     { ...filters, restrictedDistrict: restrictedDistricts },
     {
       encode: false,
