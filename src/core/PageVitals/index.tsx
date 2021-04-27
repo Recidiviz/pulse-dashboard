@@ -36,8 +36,10 @@ import {
   getSummaryCards,
   getSummaryDetail,
   getEntitySummaries,
-  getTimeseries,
+  getTimeSeries,
   getWeeklyChange,
+  getTimeSeriesDownloadableData,
+  getVitalsSummaryDownloadableData,
 } from "./helpers";
 import DownloadDataButton from "../DownloadDataButton";
 import DetailsGroup from "../DetailsGroup";
@@ -91,16 +93,18 @@ const PageVitals: React.FC = () => {
     parentEntityName,
   } = getEntitySummaries(summaries, currentEntityId);
   const summaryCards = getSummaryCards(currentEntitySummary);
-  const selectedTimeSeries = getTimeseries(
+  const selectedTimeSeries = getTimeSeries(
     timeSeries,
-    selectedCardId,
-    currentEntityId
+    currentEntityId,
+    selectedCardId
   );
+
   const lastUpdatedOn = selectedTimeSeries
     ? formatISODateString(
         selectedTimeSeries[selectedTimeSeries.length - 1].date
       )
     : "Unknown";
+
   return (
     <PageTemplate>
       <div className="PageVitals__header">
@@ -113,7 +117,14 @@ const PageVitals: React.FC = () => {
           <div className="DetailsGroup__item">
             Last updated on {lastUpdatedOn}
           </div>
-          <DownloadDataButton />
+          <DownloadDataButton
+            downloadData={[
+              getTimeSeriesDownloadableData(
+                getTimeSeries(timeSeries, currentEntityId)
+              ),
+              getVitalsSummaryDownloadableData(childEntitySummaryRows),
+            ]}
+          />
           <MethodologyLink path={CORE_PATHS.methodologyVitals} />
         </DetailsGroup>
       </div>

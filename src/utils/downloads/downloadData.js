@@ -292,3 +292,26 @@ export function downloadChartAsData({
   });
   downloadChartData();
 }
+
+export function downloadChartsAsData({
+  chartId,
+  chartTitle,
+  chartDatasets,
+  chartLabels,
+  dataExportLabel,
+  shouldZipDownload,
+  methodology,
+  getTokenSilently,
+}) {
+  const downloadChartData = configureDataDownloadButton({
+    chartId,
+    chartDatasets,
+    chartLabels,
+    dataExportLabel,
+    chartTitle,
+    shouldZipDownload,
+    methodology,
+    getTokenSilently,
+  });
+  downloadChartData();
+}

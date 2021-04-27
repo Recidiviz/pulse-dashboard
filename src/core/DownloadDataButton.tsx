@@ -17,18 +17,38 @@
 import React from "react";
 
 import { Icon, IconSVG } from "@recidiviz/case-triage-components";
-// import { configureDataDownloadButton } from "../utils/downloads/downloadData";
+import { DownloadableData } from "./PageVitals/types";
+import { downloadChartsAsData } from "../utils/downloads/downloadData";
+import { useRootStore } from "../components/StoreProvider";
 
 import "./DetailsGroup.scss";
 import * as styles from "./CoreConstants.scss";
 
-const DownloadDataButton: React.FC = () => {
+interface PropTypes {
+  downloadData: DownloadableData[];
+}
+
+const DownloadDataButton: React.FC<PropTypes> = ({ downloadData }) => {
+  const { getTokenSilently } = useRootStore();
   return (
     <button
       className="btn btn-link DetailsGroup__button"
+      id="downloadChartData-VitalsSummaryChart"
       type="button"
       aria-expanded="true"
       aria-controls="importantNotes"
+      onClick={() =>
+        downloadChartsAsData({
+          chartId: "VitalsSummaryChart",
+          chartDatasets: downloadData[1].datasets,
+          chartLabels: downloadData[1].labels,
+          chartTitle: "Vitals Summary Chart",
+          shouldZipDownload: true,
+          dataExportLabel: "Office",
+          methodology: "",
+          getTokenSilently,
+        })
+      }
     >
       <Icon
         className="DetailsGroup__icon"
