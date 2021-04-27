@@ -66,9 +66,13 @@ export const formatExportData = (data, options) => {
   );
 };
 
-export const nullSafeCell = (label, idx) => {
+export const nullSafeCell = (key, label, idx) => {
   if (label) {
-    return <td key={`${idx}-${label}`}>{label}</td>;
+    return (
+      <td key={`${idx}-${label}`} className={`CaseTable--${key}`}>
+        {label}
+      </td>
+    );
   }
 
   const unknownStyle = {
