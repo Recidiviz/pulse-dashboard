@@ -27,7 +27,7 @@ class LanternPage extends Page {
   }
 
   get districtFilter() {
-    return $(".FilterField.DistrictFilter");
+    return $(".FilterField.DistrictFilter .DistrictFilterDropdown");
   }
 
   get disabledDistrictFilter() {
@@ -36,6 +36,14 @@ class LanternPage extends Page {
 
   get districtFilterMenu() {
     return $(".MultiSelect__menu-list");
+  }
+
+  get caseTable() {
+    return $(".CaseTable");
+  }
+
+  get caseTableDistrictColumns() {
+    return $$("td.CaseTable--district");
   }
 
   getDistrictChartWrapperByDistrictIds(districtIds) {
