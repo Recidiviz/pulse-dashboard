@@ -26,10 +26,6 @@ const mockTenantId = "US_ND";
 const mockGetTokenSilently = jest.fn();
 const mockCoreStore = {} as CoreStore;
 const filtersStore = new FiltersStore({ rootStore: mockCoreStore });
-jest.mock("../../PopulationTimeSeriesChart/helpers", () => ({
-  CURRENT_MONTH: 1,
-  CURRENT_YEAR: 2016,
-}));
 jest
   .spyOn(RootStore, "getTokenSilently", "get")
   .mockReturnValue(mockGetTokenSilently);
@@ -204,6 +200,10 @@ describe("ProjectionsMetrics", () => {
       { month: 1, year: 2016 },
       { month: 5, year: 2016 },
     ]);
+  });
+
+  it("finds the simulation month", () => {
+    expect(metric.simulationDate).toEqual(new Date(2016, 4));
   });
 
   describe("getFilteredDataByView", () => {

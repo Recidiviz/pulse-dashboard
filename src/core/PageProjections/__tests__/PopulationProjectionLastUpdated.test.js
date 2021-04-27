@@ -20,53 +20,20 @@ import { mount } from "enzyme";
 import PopulationProjectionLastUpdated from "../PopulationProjectionLastUpdated";
 
 describe("Tests PopulationProjectionLastUpdated component", () => {
-  const createTimeSeries = (historicalDates, projectedDates) =>
-    historicalDates
-      .map(([year, month]) => ({ year, month, simulationTag: "HISTORICAL" }))
-      .concat(
-        projectedDates.map(([year, month]) => ({
-          year,
-          month,
-          simulationTag: "BASELINE",
-        }))
-      );
+  const render = (date) =>
+    mount(<PopulationProjectionLastUpdated simulationDate={date} />);
 
-  const render = (timeSeries) =>
-    mount(
-      <PopulationProjectionLastUpdated projectionTimeSeries={timeSeries} />
-    );
-
-  it("displays the latest date", () => {
-    const timeSeries = createTimeSeries(
-      [
-        [2020, 4],
-        [2020, 5],
-      ],
-      [
-        [2020, 6],
-        [2020, 7],
-      ]
-    );
-    const lastUpdated = render(timeSeries);
+  it("displays shot months correctly", () => {
+    const lastUpdated = render(new Date(2020, 4));
     expect(
       lastUpdated.find(".PopulationProjectionLastUpdated").text()
     ).toContain("May 2020");
   });
 
-  it("displays the latest date when data is out of order", () => {
-    const timeSeries = createTimeSeries(
-      [
-        [2021, 7],
-        [2021, 6],
-      ],
-      [
-        [2021, 8],
-        [2021, 9],
-      ]
-    );
-    const lastUpdated = render(timeSeries);
+  it("displays long months correctly", () => {
+    const lastUpdated = render(new Date(2022, 11));
     expect(
       lastUpdated.find(".PopulationProjectionLastUpdated").text()
-    ).toContain("July 2021");
+    ).toContain("December 2022");
   });
 });

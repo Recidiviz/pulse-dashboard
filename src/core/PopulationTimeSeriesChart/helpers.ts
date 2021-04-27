@@ -17,9 +17,6 @@
 
 import { PopulationProjectionTimeSeriesRecord } from "../models/types";
 
-export const CURRENT_YEAR = 2021;
-export const CURRENT_MONTH = 1;
-
 export type MonthOptions = 1 | 6 | 12 | 24 | 60;
 
 export type ChartPoint = {
@@ -35,7 +32,7 @@ export type PreparedData = {
   uncertainty: ChartPoint[];
 };
 
-const getDate = (d: PopulationProjectionTimeSeriesRecord): Date =>
+export const getRecordDate = (d: PopulationProjectionTimeSeriesRecord): Date =>
   new Date(d.year, d.month - 1);
 
 export const prepareData = (
@@ -44,7 +41,7 @@ export const prepareData = (
   const historicalPopulation = data
     .filter((d) => d.simulationTag === "HISTORICAL")
     .map((d) => ({
-      date: getDate(d),
+      date: getRecordDate(d),
       value: d.totalPopulation,
     }));
 
@@ -52,7 +49,7 @@ export const prepareData = (
     data
       .filter((d) => d.simulationTag === "BASELINE")
       .map((d) => ({
-        date: getDate(d),
+        date: getRecordDate(d),
         value: d.totalPopulation,
         lowerBound: d.totalPopulationMin,
         upperBound: d.totalPopulationMax,
@@ -63,10 +60,10 @@ export const prepareData = (
     historicalPopulation[historicalPopulation.length - 1],
     ...data
       .filter((d) => d.simulationTag !== "HISTORICAL")
-      .map((d) => ({ date: getDate(d), value: d.totalPopulationMax })),
+      .map((d) => ({ date: getRecordDate(d), value: d.totalPopulationMax })),
     ...data
       .filter((d) => d.simulationTag !== "HISTORICAL")
-      .map((d) => ({ date: getDate(d), value: d.totalPopulationMin }))
+      .map((d) => ({ date: getRecordDate(d), value: d.totalPopulationMin }))
       .reverse(),
     historicalPopulation[historicalPopulation.length - 1],
   ];
