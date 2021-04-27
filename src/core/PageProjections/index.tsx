@@ -35,6 +35,7 @@ const PageProjections: React.FC = () => {
     isError,
     // TODO(recidiviz-data/issues/6185): Uncomment when summary table is valid
     // summaries,
+    simulationDate,
   } = metricsStore.projections;
 
   if (isLoading) {
@@ -64,7 +65,7 @@ const PageProjections: React.FC = () => {
       }
     >
       <PopulationSummaryMetrics isError={isError} />
-      <PopulationProjectionLastUpdated />
+      <PopulationProjectionLastUpdated simulationDate={simulationDate} />
       <PopulationTimeSeriesChart />
     </PageTemplate>
   );

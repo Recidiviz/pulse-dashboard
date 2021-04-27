@@ -15,19 +15,15 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 import React from "react";
-import { PopulationProjectionTimeSeriesRecord } from "../models/types";
 import "./PopulationProjectionLastUpdated.scss";
-import { getSimulationMonth } from "../PopulationTimeSeriesChart/helpers";
 
 type Props = {
-  projectionTimeSeries: PopulationProjectionTimeSeriesRecord[];
+  simulationDate: Date;
 };
 
 const PopulationProjectionLastUpdated: React.FC<Props> = ({
-  projectionTimeSeries,
+  simulationDate,
 }) => {
-  const simulationDate = getSimulationMonth(projectionTimeSeries);
-
   return (
     <div className="PopulationProjectionLastUpdated">
       Historical and projected population data were generated{" "}

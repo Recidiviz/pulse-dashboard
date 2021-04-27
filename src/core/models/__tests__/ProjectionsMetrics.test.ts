@@ -21,16 +21,11 @@ import { callMetricsApi } from "../../../api/metrics/metricsClient";
 import RootStore from "../../../RootStore";
 import ProjectionsMetrics from "../ProjectionsMetrics";
 import { CORE_VIEWS } from "../../views";
-import { PopulationProjectionTimeSeriesRecord } from "../types";
 
 const mockTenantId = "US_ND";
 const mockGetTokenSilently = jest.fn();
 const mockCoreStore = {} as CoreStore;
 const filtersStore = new FiltersStore({ rootStore: mockCoreStore });
-jest.mock("../../PopulationTimeSeriesChart/helpers", () => ({
-  getSimulationMonth: (_: PopulationProjectionTimeSeriesRecord) =>
-    new Date(2016, 0),
-}));
 jest
   .spyOn(RootStore, "getTokenSilently", "get")
   .mockReturnValue(mockGetTokenSilently);
@@ -205,6 +200,10 @@ describe("ProjectionsMetrics", () => {
       { month: 1, year: 2016 },
       { month: 5, year: 2016 },
     ]);
+  });
+
+  it("finds the simulation month", () => {
+    expect(metric.simulationDate).toEqual(new Date(2016, 4));
   });
 
   describe("getFilteredDataByView", () => {
