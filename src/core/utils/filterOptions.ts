@@ -108,7 +108,7 @@ export const PopulationFilterOptions: PopulationFilters = {
   [FILTER_TYPES.LEGAL_STATUS]: {
     type: FILTER_TYPES.LEGAL_STATUS,
     title: "Legal Status",
-    width: "8.5rem",
+    width: "9.5rem",
     setFilters: setFilters(FILTER_TYPES.LEGAL_STATUS),
     options: [
       { label: "All", value: "ALL" },
