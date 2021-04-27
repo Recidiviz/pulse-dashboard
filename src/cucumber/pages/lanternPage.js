@@ -26,6 +26,24 @@ class LanternPage extends Page {
     return $("canvas#admissionsByRiskLevel");
   }
 
+  get districtFilter() {
+    return $(".FilterField.DistrictFilter");
+  }
+
+  get disabledDistrictFilter() {
+    return $(".DistrictFilter .Select--is-disabled");
+  }
+
+  get districtFilterMenu() {
+    return $(".MultiSelect__menu-list");
+  }
+
+  getDistrictChartWrapperByDistrictIds(districtIds) {
+    return $(
+      `.RevocationsByDimension--admissionsByDistrict--${districtIds.join("-")}`
+    );
+  }
+
   getRevocationsLink(linkText) {
     return $(`button*=${linkText}`);
   }
