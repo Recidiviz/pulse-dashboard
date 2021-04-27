@@ -32,7 +32,7 @@ export type PreparedData = {
   uncertainty: ChartPoint[];
 };
 
-const getDate = (d: PopulationProjectionTimeSeriesRecord): Date =>
+export const getRecordDate = (d: PopulationProjectionTimeSeriesRecord): Date =>
   new Date(d.year, d.month - 1);
 
 export const prepareData = (
@@ -41,7 +41,7 @@ export const prepareData = (
   const historicalPopulation = data
     .filter((d) => d.simulationTag === "HISTORICAL")
     .map((d) => ({
-      date: getDate(d),
+      date: getRecordDate(d),
       value: d.totalPopulation,
     }));
 
@@ -49,7 +49,7 @@ export const prepareData = (
     data
       .filter((d) => d.simulationTag === "BASELINE")
       .map((d) => ({
-        date: getDate(d),
+        date: getRecordDate(d),
         value: d.totalPopulation,
         lowerBound: d.totalPopulationMin,
         upperBound: d.totalPopulationMax,
@@ -60,10 +60,10 @@ export const prepareData = (
     historicalPopulation[historicalPopulation.length - 1],
     ...data
       .filter((d) => d.simulationTag !== "HISTORICAL")
-      .map((d) => ({ date: getDate(d), value: d.totalPopulationMax })),
+      .map((d) => ({ date: getRecordDate(d), value: d.totalPopulationMax })),
     ...data
       .filter((d) => d.simulationTag !== "HISTORICAL")
-      .map((d) => ({ date: getDate(d), value: d.totalPopulationMin }))
+      .map((d) => ({ date: getRecordDate(d), value: d.totalPopulationMin }))
       .reverse(),
     historicalPopulation[historicalPopulation.length - 1],
   ];
@@ -103,15 +103,4 @@ export const getDateRange = (
   endDate.setDate(endDate.getDate() + offset);
 
   return { beginDate, endDate };
-};
-
-export const getSimulationMonth = (
-  projectionTimeSeries: PopulationProjectionTimeSeriesRecord[]
-): Date => {
-  return getDate(
-    projectionTimeSeries
-      .filter((d) => d.simulationTag === "HISTORICAL")
-      .sort((a, b) => (a.year === b.year ? a.month - b.month : a.year - b.year))
-      .slice(-1)[0]
-  );
 };

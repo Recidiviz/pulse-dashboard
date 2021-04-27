@@ -25,8 +25,8 @@ import {
 import { getCompartmentFromView } from "../views";
 import Metric, { BaseMetricProps } from "./Metric";
 import {
-  getSimulationMonth,
   MonthOptions,
+  getRecordDate,
 } from "../PopulationTimeSeriesChart/helpers";
 
 export function recordMatchesSimulationTag(
@@ -126,11 +126,11 @@ export default class ProjectionsMetrics extends Metric<MetricRecords> {
       compartment === "SUPERVISION" ? supervisionType : legalStatus;
     const stepSize = range / 6;
 
-    const simulationMonth = getSimulationMonth(records);
+    const { simulationDate } = this;
     return records.filter((record: PopulationProjectionTimeSeriesRecord) => {
       const monthsOut =
-        (record.year - simulationMonth.getFullYear()) * 12 +
-        (record.month - (simulationMonth.getMonth() + 1));
+        (record.year - simulationDate.getFullYear()) * 12 +
+        (record.month - (simulationDate.getMonth() + 1));
       return (
         record.gender === gender &&
         record.compartment === compartment &&
@@ -176,6 +176,14 @@ export default class ProjectionsMetrics extends Metric<MetricRecords> {
     // TODO(recidiviz-data/issues/6651): Sort data on backend
     return timeSeries.sort((a, b) =>
       a.year !== b.year ? a.year - b.year : a.month - b.month
+    );
+  }
+
+  get simulationDate(): Date {
+    return getRecordDate(
+      this.timeSeries
+        .filter((d) => d.simulationTag === "HISTORICAL")
+        .slice(-1)[0]
     );
   }
 }
