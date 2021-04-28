@@ -64,8 +64,9 @@ export const METRIC_TYPE_LABELS = {
 } as const;
 
 export type DownloadableData = {
-  datasets: DownloadableDataset[];
-  labels: string[];
+  chartDatasets: DownloadableDataset[];
+  chartLabels: string[];
+  chartId: string;
 };
 
 export type DownloadableDataset = {

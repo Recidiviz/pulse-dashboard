@@ -18,7 +18,7 @@ import React from "react";
 
 import { Icon, IconSVG } from "@recidiviz/case-triage-components";
 import { DownloadableData } from "./PageVitals/types";
-import { downloadChartsAsData } from "../utils/downloads/downloadData";
+import { downloadChartAsData } from "../utils/downloads/downloadData";
 import { useRootStore } from "../components/StoreProvider";
 
 import "./DetailsGroup.scss";
@@ -38,10 +38,8 @@ const DownloadDataButton: React.FC<PropTypes> = ({ downloadData }) => {
       aria-expanded="true"
       aria-controls="importantNotes"
       onClick={() =>
-        downloadChartsAsData({
-          chartId: "VitalsSummaryChart",
-          chartDatasets: downloadData[1].datasets,
-          chartLabels: downloadData[1].labels,
+        downloadChartAsData({
+          fileContents: downloadData,
           chartTitle: "Vitals Summary Chart",
           shouldZipDownload: true,
           dataExportLabel: "Office",

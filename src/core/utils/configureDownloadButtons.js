@@ -62,9 +62,7 @@ export function configureDownloadButtons({
   );
   if (downloadChartDataButton) {
     downloadChartDataButton.onclick = configureDataDownloadButton({
-      chartId,
-      chartDatasets,
-      chartLabels,
+      fileContents: [{ chartDatasets, chartLabels, chartId }],
       filters: getFilterDescription(filters),
       convertValuesToNumbers,
       chartTitle,

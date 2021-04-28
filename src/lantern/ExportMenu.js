@@ -110,10 +110,10 @@ const ExportMenu = ({
             as="button"
             onClick={() =>
               downloadChartAsData({
-                chartId,
                 chartTitle: metricTitle,
-                chartDatasets: datasets,
-                chartLabels: labels,
+                fileContents: [
+                  { chartDatasets: datasets, chartLabels: labels, chartId },
+                ],
                 dataExportLabel,
                 filters: filtersStore.filtersDescriptions,
                 timeWindowDescription,

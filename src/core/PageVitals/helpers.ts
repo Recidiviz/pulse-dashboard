@@ -151,7 +151,7 @@ export function getTimeSeriesDownloadableData(
   timeSeries?: VitalsTimeSeriesRecord[]
 ): DownloadableData {
   // TODO
-  if (!timeSeries) return { datasets: [], labels: [] };
+  if (!timeSeries) return { chartDatasets: [], chartLabels: [], chartId: "" };
 
   let labels = [] as string[];
   let ids = [] as string[];
@@ -178,8 +178,9 @@ export function getTimeSeriesDownloadableData(
   datasets.unshift({ data: ids, label: "Id" });
 
   return {
-    datasets,
-    labels,
+    chartDatasets: datasets,
+    chartLabels: labels,
+    chartId: "MetricsOverTime",
   };
 }
 
@@ -187,7 +188,7 @@ export function getVitalsSummaryDownloadableData(
   summaries?: VitalsSummaryTableRow[]
 ): DownloadableData {
   // TODO
-  if (!summaries) return { datasets: [], labels: [] };
+  if (!summaries) return { chartDatasets: [], chartLabels: [], chartId: "" };
 
   const ids = summaries.map((d) => d.entity.entityName);
   const datasets = [] as DownloadableDataset[];
@@ -208,7 +209,9 @@ export function getVitalsSummaryDownloadableData(
   datasets.push({ data: downloadableData, label: "" });
 
   return {
-    datasets,
-    labels: ids,
+    chartDatasets: datasets,
+    chartLabels: ids,
+    // TODO
+    chartId: "MetricsByOffice",
   };
 }
