@@ -40,11 +40,37 @@ describe("createMethodologyFile functions", () => {
 
   it("should return methodology file for MO", () => {
     const actual = createMethodologyFile(
-      mockChartId,
       mockChartTitle,
       mockTimeWindowDescription,
       filtersText,
-      methodology,
+      methodology[mockChartId],
+      violationText
+    );
+
+    expect(actual.data).toBe(
+      "Chart: Revocations Count\n" +
+        "Dates: 20 November 2019 - 20 November 2020\n" +
+        "Applied filters:\n" +
+        "- some filters text\n" +
+        "- some violation text\n\n" +
+        "Export Date: 11/20/2020\n\n" +
+        "methodology header\n" +
+        "methodology body\n\n"
+    );
+  });
+
+  it("should remove html markup in the methodology body", () => {
+    const methodologyWithMarkup = [
+      {
+        header: mockMethodologyHeader,
+        body: `<div>${mockMethodologyBody}</div>`,
+      },
+    ];
+    const actual = createMethodologyFile(
+      mockChartTitle,
+      mockTimeWindowDescription,
+      filtersText,
+      methodologyWithMarkup,
       violationText
     );
 
@@ -70,11 +96,10 @@ describe("createMethodologyFile functions", () => {
         ],
       };
       const actual = createMethodologyFile(
-        mockChartId,
         mockChartTitle,
         mockTimeWindowDescription,
         filtersText,
-        methodologyWithoutHeader,
+        methodologyWithoutHeader[mockChartId],
         violationText
       );
       expect(actual.data).toBe(

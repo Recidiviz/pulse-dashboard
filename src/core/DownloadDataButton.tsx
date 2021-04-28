@@ -20,7 +20,7 @@ import { Icon, IconSVG } from "@recidiviz/case-triage-components";
 import { DownloadableData } from "./PageVitals/types";
 import { downloadChartAsData } from "../utils/downloads/downloadData";
 import { useRootStore } from "../components/StoreProvider";
-
+import content from "./content";
 import "./DetailsGroup.scss";
 import * as styles from "./CoreConstants.scss";
 
@@ -29,7 +29,10 @@ interface PropTypes {
 }
 
 const DownloadDataButton: React.FC<PropTypes> = ({ downloadData }) => {
-  const { getTokenSilently } = useRootStore();
+  const { getTokenSilently, currentTenantId } = useRootStore();
+  // @ts-ignore TODO TS
+  const { vitals: vitalsMethodology } = content[currentTenantId];
+
   return (
     <button
       className="btn btn-link DetailsGroup__button"
@@ -40,10 +43,11 @@ const DownloadDataButton: React.FC<PropTypes> = ({ downloadData }) => {
       onClick={() =>
         downloadChartAsData({
           fileContents: downloadData,
-          chartTitle: "Vitals Summary Chart",
+          chartTitle: "Vitals Summary",
           shouldZipDownload: true,
+          // TODO
           dataExportLabel: "Office",
-          methodology: "",
+          methodology: vitalsMethodology.content,
           getTokenSilently,
         })
       }

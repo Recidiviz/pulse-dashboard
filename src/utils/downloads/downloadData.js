@@ -78,7 +78,6 @@ export function downloadCanvasAsImage({
       const methodologyFile =
         shouldZipDownload &&
         createMethodologyFile(
-          chartId,
           chartTitle,
           timeWindowDescription,
           filters,
@@ -213,8 +212,6 @@ export function configureDataDownloadButton({
     const methodologyFile =
       shouldZipDownload &&
       createMethodologyFile(
-        // TODO
-        "SOME ID",
         chartTitle,
         timeWindowDescription,
         filters,

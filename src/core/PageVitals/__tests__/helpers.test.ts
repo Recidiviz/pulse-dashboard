@@ -135,7 +135,7 @@ describe("getTimeSeriesDownloadableData", () => {
 
   it("returns the data formatted for download", () => {
     const expected = {
-      datasets: [
+      chartDatasets: [
         { data: ["STATE_DOC", "STATE_DOC"], label: "Id" },
         {
           data: [
@@ -203,7 +203,8 @@ describe("getTimeSeriesDownloadableData", () => {
           label: "Timely risk assessments",
         },
       ],
-      labels: ["2021-03-11", "2021-03-12"],
+      chartLabels: ["2021-03-11", "2021-03-12"],
+      chartId: "MetricsOverTime",
     };
     const result = getTimeSeriesDownloadableData(data);
     expect(result).toEqual(expected);
@@ -246,7 +247,7 @@ describe("getVitalsSummaryDownloadableData", () => {
 
   it("returns the data formatted for download", () => {
     const expected = {
-      datasets: [
+      chartDatasets: [
         {
           data: [
             {
@@ -271,7 +272,8 @@ describe("getVitalsSummaryDownloadableData", () => {
           label: "",
         },
       ],
-      labels: ["Office A", "Office B"],
+      chartLabels: ["Office A", "Office B"],
+      chartId: "MetricsByOffice",
     };
 
     const result = getVitalsSummaryDownloadableData(data);
