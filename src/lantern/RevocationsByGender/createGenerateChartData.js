@@ -49,43 +49,10 @@ export const generateDatasets = (dataPoints, denominators) => {
   }));
 };
 
-const createGenerateStackedChartData = ({
-  filteredData,
-  statePopulationData,
-}) => {
+const transformData = (filteredData, statePopulationData) => {
   const genders = Object.keys(genderValueToLabel);
-  const { dataPoints, numerators, denominators } = pipe(
-    reduce(createPopulationMap("gender"), {}),
-    (data) =>
-      getCounts(
-        data,
-        getStatePopulations(),
-        genders,
-        statePopulationData,
-        "gender"
-      )
-  )(filteredData);
 
-  const datasets = generateDatasets(dataPoints, denominators);
-
-  const data = {
-    labels: getStatePopulationsLabels(),
-    datasets,
-  };
-
-  return {
-    data,
-    numerators,
-    denominators,
-  };
-};
-
-const createGenerateChartDataByMode = (
-  { filteredData, statePopulationData },
-  mode
-) => {
-  const genders = Object.keys(genderValueToLabel);
-  const { dataPoints, numerators, denominators } = pipe(
+  return pipe(
     groupBy((d) => [d.gender, d.admission_type]),
     map((dataset) => ({
       gender: dataset[0].gender,
@@ -132,6 +99,24 @@ const createGenerateChartDataByMode = (
       recommended_for_revocation_count_all:
         dataset[0].recommended_for_revocation_count_all,
     })),
+    groupBy("gender"),
+    map((dataset) => ({
+      gender: dataset[0].gender,
+      revocation_count: sumBy(
+        (item) => toInteger(item.revocation_count),
+        dataset
+      ),
+      revocation_count_all: sumBy(
+        (item) => toInteger(item.revocation_count_all),
+        dataset
+      ),
+      supervision_population_count: dataset[0].supervision_population_count,
+      supervision_count_all: dataset[0].supervision_count_all,
+      recommended_for_revocation_count:
+        dataset[0].recommended_for_revocation_count,
+      recommended_for_revocation_count_all:
+        dataset[0].recommended_for_revocation_count_all,
+    })),
     reduce(createPopulationMap("gender"), {}),
     (data) =>
       getCounts(
@@ -142,7 +127,37 @@ const createGenerateChartDataByMode = (
         "gender"
       )
   )(filteredData);
+};
 
+const createGenerateStackedChartData = ({
+  filteredData,
+  statePopulationData,
+}) => {
+  const { dataPoints, numerators, denominators } = transformData(
+    filteredData,
+    statePopulationData
+  );
+  const datasets = generateDatasets(dataPoints, denominators);
+  const data = {
+    labels: getStatePopulationsLabels(),
+    datasets,
+  };
+
+  return {
+    data,
+    numerators,
+    denominators,
+  };
+};
+
+const createGenerateChartDataByMode = (
+  { filteredData, statePopulationData },
+  mode
+) => {
+  const { dataPoints, numerators, denominators } = transformData(
+    filteredData,
+    statePopulationData
+  );
   const datasets = generateDatasets(dataPoints, denominators);
   const datasetIndex = datasets.findIndex(
     (d) => d.label === genderValueToLabel[mode]

@@ -45,8 +45,16 @@ const MultiSelect = ({
 
   const handleChange = useCallback(
     (selectedOptions) => {
-      const newOptions = getNewOptions(options, summingOption, selectedOptions);
-      onChange(newOptions);
+      if (summingOption) {
+        const newOptions = getNewOptions(
+          options,
+          summingOption,
+          selectedOptions
+        );
+        onChange(newOptions);
+        return;
+      }
+      onChange(selectedOptions);
     },
     [onChange, options, summingOption]
   );
@@ -105,14 +113,16 @@ const MultiSelect = ({
 
 MultiSelect.defaultProps = {
   className: "",
+  defaultValue: null,
+  summingOption: null,
 };
 MultiSelect.propTypes = {
-  defaultValue: PropTypes.arrayOf(optionPropType).isRequired,
+  defaultValue: PropTypes.arrayOf(optionPropType),
   value: PropTypes.arrayOf(optionPropType).isRequired,
   onChange: PropTypes.func.isRequired,
   options: PropTypes.arrayOf(optionPropType).isRequired,
   className: PropTypes.string,
-  summingOption: optionPropType.isRequired,
+  summingOption: optionPropType,
 };
 
 export default MultiSelect;

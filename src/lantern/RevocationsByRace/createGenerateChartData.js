@@ -53,45 +53,11 @@ export const generateDatasets = (dataPoints, denominators) => {
   }));
 };
 
-const createGenerateStackedChartData = ({
-  filteredData,
-  statePopulationData,
-}) => {
+const transformData = (filteredData, statePopulationData) => {
   const raceLabelMap = translate("raceLabelMap");
   const races = Object.keys(raceLabelMap);
-  const { dataPoints, numerators, denominators } = pipe(
-    reduce(createPopulationMap("race"), {}),
-    (data) =>
-      getCounts(
-        data,
-        getStatePopulations(),
-        races,
-        statePopulationData,
-        "race_or_ethnicity"
-      )
-  )(filteredData);
 
-  const datasets = generateDatasets(dataPoints, denominators);
-
-  const data = {
-    labels: getStatePopulationsLabels(),
-    datasets,
-  };
-
-  return {
-    data,
-    numerators,
-    denominators,
-  };
-};
-
-const createGenerateChartDataByMode = (
-  { filteredData, statePopulationData },
-  mode
-) => {
-  const raceLabelMap = translate("raceLabelMap");
-  const races = Object.keys(raceLabelMap);
-  const { dataPoints, numerators, denominators } = pipe(
+  return pipe(
     groupBy((d) => [d.race, d.admission_type]),
     map((dataset) => ({
       race: dataset[0].race,
@@ -148,7 +114,38 @@ const createGenerateChartDataByMode = (
         "race_or_ethnicity"
       )
   )(filteredData);
+};
 
+const createGenerateStackedChartData = ({
+  filteredData,
+  statePopulationData,
+}) => {
+  const { dataPoints, numerators, denominators } = transformData(
+    filteredData,
+    statePopulationData
+  );
+  const datasets = generateDatasets(dataPoints, denominators);
+
+  const data = {
+    labels: getStatePopulationsLabels(),
+    datasets,
+  };
+
+  return {
+    data,
+    numerators,
+    denominators,
+  };
+};
+
+const createGenerateChartDataByMode = (
+  { filteredData, statePopulationData },
+  mode
+) => {
+  const { dataPoints, numerators, denominators } = transformData(
+    filteredData,
+    statePopulationData
+  );
   const datasets = generateDatasets(dataPoints, denominators);
   const datasetIndex = datasets.findIndex(
     (d) => d.label === translate("raceLabelMap")[mode]

@@ -56,11 +56,11 @@ const ValueContainer = ({
     </components.ValueContainer>
   );
 };
-ValueContainer.defaultProps = { isCore: false };
+ValueContainer.defaultProps = { isCore: false, summingOption: null };
 
 ValueContainer.propTypes = {
   allOptions: PropTypes.arrayOf(optionPropType).isRequired,
-  summingOption: optionPropType.isRequired,
+  summingOption: optionPropType,
   children: PropTypes.node.isRequired,
   getValue: PropTypes.func.isRequired,
   isCore: PropTypes.bool,

@@ -24,18 +24,17 @@ import FilterField from "./FilterField";
 import DistrictFilterDropown from "./DistrictFilterDropown";
 import { useLanternStore } from "../LanternStoreProvider";
 import { flatOptions } from "../../controls/utils";
-
-const allOption = { label: "ALL", value: "All", secondaryValue: "All" };
+import { allOption } from "../LanternStore/FiltersStore";
 
 const DistrictFilter = () => {
   const {
     filters,
     filtersStore,
+    restrictedDistricts,
     userRestrictedAccessStore,
     districtsStore,
   } = useLanternStore();
   const {
-    restrictedDistrict,
     isLoading: userRestrictedAccessIsLoading,
   } = userRestrictedAccessStore;
   const {
@@ -45,7 +44,7 @@ const DistrictFilter = () => {
   const { filterOptions } = filtersStore;
   const isLoading = userRestrictedAccessIsLoading || districtsIsLoading;
 
-  const options = [allOption].concat(filterOptions[filterKey].options);
+  const { options } = filterOptions[filterKey];
 
   const onValueChange = (newOptions) => {
     const optionValues = map("value", newOptions);
@@ -65,7 +64,7 @@ const DistrictFilter = () => {
   return (
     <FilterField label="District">
       <DistrictFilterDropown
-        singleValueOption={restrictedDistrict}
+        restrictedValues={restrictedDistricts}
         options={options}
         selected={selectedValues}
         onValueChange={onValueChange}

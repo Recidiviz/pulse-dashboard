@@ -21,6 +21,7 @@ import getDistrictKeyMap, {
   districtKeyMappings,
 } from "../../../RootStore/TenantStore/districtKeyMappings";
 import { LANTERN_TENANTS } from "../../../RootStore/TenantStore/lanternTenants";
+import { allOption } from "../FiltersStore";
 
 jest.mock("../../../RootStore/TenantStore/districtKeyMappings");
 
@@ -42,6 +43,7 @@ const defaultFilters = {
   levelTwoSupervisionLocation: ["All"],
   admissionType: ["All"],
 };
+const userDistrict = "99";
 
 // We are mocking the return of districtFilterKey to test the logic when there are
 // different filter keys per tenant. This does not need to match the actual
@@ -82,14 +84,15 @@ describe("FiltersStore", () => {
 
     it("sets the defaultFilters to restrictedDistrict if it exists", () => {
       const tenantId = "US_MO";
-      const userDistrict = "99";
 
       rootStore = new LanternStore(RootStore);
 
       runInAction(() => {
         rootStore.tenantStore.currentTenantId = tenantId;
         rootStore.districtsStore.isLoading = false;
-        rootStore.userRestrictedAccessStore.restrictedDistrict = userDistrict;
+        rootStore.userRestrictedAccessStore.restrictedDistricts = [
+          userDistrict,
+        ];
       });
 
       expect(
@@ -186,7 +189,7 @@ describe("FiltersStore", () => {
 
     describe("when districts are loading", () => {
       const tenantId = "US_MO";
-      it("returns an empty array", () => {
+      it("returns an array with the 'ALL' option", () => {
         runInAction(() => {
           rootStore.tenantStore.currentTenantId = tenantId;
           rootStore.districtsStore.isLoading = true;
@@ -194,7 +197,7 @@ describe("FiltersStore", () => {
         expect(
           rootStore.filtersStore.filterOptions[getDistrictFilterKey(tenantId)]
             .options
-        ).toEqual([]);
+        ).toEqual([allOption]);
       });
     });
 
@@ -211,6 +214,7 @@ describe("FiltersStore", () => {
             rootStore.filtersStore.filterOptions[getDistrictFilterKey(tenantId)]
               .options
           ).toEqual([
+            allOption,
             {
               label: "CENTRAL OFFICE - CO",
               allSelectedLabel: "ALL",
@@ -259,6 +263,7 @@ describe("FiltersStore", () => {
             rootStore.filtersStore.filterOptions[getDistrictFilterKey(tenantId)]
               .options
           ).toEqual([
+            allOption,
             { value: "CO - CENTRAL OFFICE", label: "CENTRAL OFFICE - CO" },
             {
               label: "HARRISBURG - 03",
@@ -266,6 +271,32 @@ describe("FiltersStore", () => {
             },
             { value: "03 - LANCASTER DO", label: "LANCASTER DO - 03" },
             { value: "03 - YORK", label: "YORK - 03" },
+          ]);
+        });
+      });
+
+      describe("when there are restricted districts", () => {
+        const tenantId = "US_MO";
+        it("only returns restricted district options", () => {
+          runInAction(() => {
+            rootStore.districtsStore.apiData = { data: mockDistricts };
+            rootStore.districtsStore.isLoading = false;
+            rootStore.tenantStore.currentTenantId = tenantId;
+            rootStore.userRestrictedAccessStore.restrictedDistricts = [
+              "03 - HARRISBURG",
+              "CO - CENTRAL OFFICE",
+            ];
+          });
+
+          expect(
+            rootStore.filtersStore.filterOptions[getDistrictFilterKey(tenantId)]
+              .options
+          ).toEqual([
+            {
+              label: "03 - HARRISBURG",
+              value: "03 - HARRISBURG",
+            },
+            { value: "CO - CENTRAL OFFICE", label: "CO - CENTRAL OFFICE" },
           ]);
         });
       });

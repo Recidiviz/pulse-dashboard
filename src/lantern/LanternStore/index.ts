@@ -80,8 +80,8 @@ export default class LanternStore {
     return this.userStore.user;
   }
 
-  get restrictedDistrict(): string | undefined {
-    return this.userRestrictedAccessStore.restrictedDistrict;
+  get restrictedDistricts(): string[] {
+    return this.userRestrictedAccessStore.restrictedDistricts;
   }
 
   get methodology(): any {
