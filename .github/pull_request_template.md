@@ -20,6 +20,7 @@
 These boxes should be checked by the submitter prior to merging:
 
 - [ ] Manual testing against realistic data has been performed locally
+- [ ] E2E have been run for Lantern changes
 
 ### Code review
 

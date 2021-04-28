@@ -1,5 +1,5 @@
 @skip-session-reload
-Feature: Login as a user with access to multiple districts
+Feature: Login as a user with access to all districts
     As a MO user that has unrestricted access
     I want to login to the Lantern dashboard
     And see all of the available data
