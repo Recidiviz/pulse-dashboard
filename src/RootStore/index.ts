@@ -54,9 +54,11 @@ class RootStore {
 
     this.userStore = new UserStore({
       authSettings: getAuthSettings(),
+      // @ts-ignore
       rootStore: this,
     });
 
+    // @ts-ignore
     this.tenantStore = new TenantStore({ rootStore: this });
   }
 
@@ -72,9 +74,10 @@ class RootStore {
     return this.userStore.availableStateCodes;
   }
 
+  // eslint-disable-next-line
   get getTokenSilently() {
     return this.userStore.getTokenSilently;
   }
 }
 
-export default new RootStore();
+export default RootStore;

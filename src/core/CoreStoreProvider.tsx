@@ -20,7 +20,7 @@ import FiltersStore from "./CoreStore/FiltersStore";
 import RootStore from "../RootStore";
 
 const CoreContext = React.createContext<CoreStore | undefined>(undefined);
-const coreStore = new CoreStore(RootStore);
+const coreStore = new CoreStore(new RootStore());
 
 interface ProviderProps {
   children: React.ReactElement;

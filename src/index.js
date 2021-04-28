@@ -20,14 +20,14 @@ import "react-app-polyfill/stable";
 import React from "react";
 import ReactDOM from "react-dom";
 import { configure } from "mobx";
+import App from "./App";
 
 import "./index.css";
-import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 
 configure({
   // make proxies optional for IE 11 support
-  useProxies: "ifavailable",
+  useProxies: "never",
   // activate runtime linting
   computedRequiresReaction: true,
   reactionRequiresObservable: true,

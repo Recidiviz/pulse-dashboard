@@ -1,12 +1,14 @@
 import React, { useContext } from "react";
 import LanternStore from "./LanternStore";
-import RootStore from "../RootStore";
+import { rootStore } from "../components/StoreProvider";
+// import RootStore from "../RootStore";
 import type UserStore from "../RootStore/UserStore";
 import type FiltersStore from "./LanternStore/FiltersStore";
 import type DataStore from "./LanternStore/DataStore/DataStore";
 
 const LanternContext = React.createContext<LanternStore | undefined>(undefined);
-const lanternStore = new LanternStore(RootStore);
+// @ts-ignore
+const lanternStore = new LanternStore(rootStore);
 
 interface ProviderProps {
   children: React.ReactElement;

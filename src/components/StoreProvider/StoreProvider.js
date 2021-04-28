@@ -22,9 +22,11 @@ import RootStore from "../../RootStore";
 
 const StoreContext = React.createContext(undefined);
 
+export const rootStore = new RootStore();
+
 const StoreProvider = ({ children }) => {
   return (
-    <StoreContext.Provider value={RootStore}>{children}</StoreContext.Provider>
+    <StoreContext.Provider value={rootStore}>{children}</StoreContext.Provider>
   );
 };
 

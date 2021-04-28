@@ -84,7 +84,7 @@ const App = () => (
                 </Switch>
               </LanternLayout>
 
-              <CoreLayout tenantIds={CORE_TENANTS}>
+              {/* <CoreLayout tenantIds={CORE_TENANTS}>
                 <Switch>
                   <ProtectedRoute path={CORE_PATHS.goals} component={CoreGoalsView} />
                   <ProtectedRoute path={CORE_PATHS.communityExplore} component={UsNdCommunityExplore} />
@@ -102,7 +102,7 @@ const App = () => (
                   <Redirect from="/facilities/goals" to="/goals" />
                   <NotFound />
                 </Switch>
-              </CoreLayout>
+              </CoreLayout> */}
             </AuthWall>
           </Switch>
         </Router>

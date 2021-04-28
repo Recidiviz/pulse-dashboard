@@ -50,7 +50,7 @@ export default class TenantStore {
 
   currentTenantId?: TenantId;
 
-  constructor({ rootStore }: { rootStore: typeof RootStore }) {
+  constructor({ rootStore }: { rootStore: RootStore }) {
     makeAutoObservable(this);
 
     this.rootStore = rootStore;
