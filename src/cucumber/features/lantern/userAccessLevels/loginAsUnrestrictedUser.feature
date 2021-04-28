@@ -9,13 +9,13 @@ Feature: Login as a user with access to all districts
         And I am on the Lantern Dashboard
 
     Scenario: Viewing the District Filter
-        Then I should see "ALL" selected in the filter
+        Then I should see "ALL" selected in the district filter
     
     Scenario: Selecting a different district in the filter
         When I select district "04" from the District Filter
-        Then I should see "04" selected in the filter
+        Then I should see "04" selected in the district filter
         When I select district "04B" from the District Filter
-        Then I should see "2 Items" selected in the filter
+        Then I should see "2 Items" selected in the district filter
 
     Scenario: Viewing the District Chart
         When I am viewing the District chart

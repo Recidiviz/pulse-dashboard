@@ -68,11 +68,14 @@ Then("I should only see cases from district {string}", (districtIds) => {
   expect(expectedValues).toEqual(expect.arrayContaining(uniq(columnValues)));
 });
 
-Then("I should see {string} selected in the filter", function (districtId) {
-  const { districtFilter } = lanternPage;
-  districtFilter.waitForExist();
-  expect(districtFilter.getText()).toMatch(districtId);
-});
+Then(
+  "I should see {string} selected in the district filter",
+  function (districtId) {
+    const { districtFilter } = lanternPage;
+    districtFilter.waitForExist();
+    expect(districtFilter.getText()).toMatch(districtId);
+  }
+);
 
 Then("I should not be able to change the selected district", function () {
   const { disabledDistrictFilter } = lanternPage;

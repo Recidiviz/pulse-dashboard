@@ -9,14 +9,14 @@ Feature: Login as a user with access to multiple districts
         And I am on the Lantern Dashboard
     
     Scenario: Viewing the District Filter
-        Then I should see "2 Items" selected in the filter
+        Then I should see "2 Items" selected in the district filter
     
     Scenario: Selecting a different district in the filter
         When I select district "13" from the District Filter
-        Then I should see "TCSTL" selected in the filter
+        Then I should see "TCSTL" selected in the district filter
         When I select district "TCSTL" from the District Filter
         And I select district "13" from the District Filter
-        Then I should see "13" selected in the filter
+        Then I should see "13" selected in the district filter
 
     Scenario: Viewing the District Chart
         When I am viewing the District chart

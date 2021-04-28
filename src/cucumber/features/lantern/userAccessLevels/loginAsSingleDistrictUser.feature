@@ -9,7 +9,7 @@ Feature: Login as a single district user
         And I am on the Lantern Dashboard
 
     Scenario: Viewing the District Filter
-        Then I should see "TCSTL" selected in the filter
+        Then I should see "TCSTL" selected in the district filter
         And I should not be able to change the selected district
 
     Scenario: Viewing the District Chart
