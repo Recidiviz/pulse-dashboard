@@ -63,12 +63,14 @@ export const METRIC_TYPE_LABELS = {
   RISK_ASSESSMENT: "Timely risk assessments",
 } as const;
 
-export type DownloadableData = {
-  chartDatasets: DownloadableDataset[];
-  chartLabels: string[];
-  chartId: string;
-  dataExportLabel: string;
-};
+export type DownloadableData =
+  | {
+      chartDatasets: DownloadableDataset[];
+      chartLabels: string[];
+      chartId: string;
+      dataExportLabel: string;
+    }
+  | undefined;
 
 export type DownloadableDataset = {
   data: any;

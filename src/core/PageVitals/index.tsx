@@ -44,6 +44,8 @@ import {
 import DownloadDataButton from "../DownloadDataButton";
 import DetailsGroup from "../DetailsGroup";
 import { ENTITY_TYPES } from "../models/types";
+import content from "../content";
+
 import "../DetailsGroup.scss";
 import "./PageVitals.scss";
 
@@ -65,10 +67,13 @@ const PageVitals: React.FC = () => {
 
   const { summaries, timeSeries, isLoading, isError } = metricsStore.vitals;
 
-  const { stateName, stateCode } = tenantStore;
+  const { stateName, stateCode, currentTenantId } = tenantStore;
   const [selectedCardId, setSelectedCardId] = useState<MetricType>(
     METRIC_TYPES.OVERALL
   );
+
+  // @ts-ignore TODO TS
+  const { vitals: vitalsMethodology } = content[currentTenantId];
 
   // TODO: add in Error state
   if (isError) {
@@ -125,6 +130,7 @@ const PageVitals: React.FC = () => {
               getVitalsSummaryDownloadableData(childEntitySummaryRows),
             ]}
             title={`${stateName} At A Glance`}
+            methodology={vitalsMethodology.content}
           />
           <MethodologyLink path={CORE_PATHS.methodologyVitals} />
         </DetailsGroup>

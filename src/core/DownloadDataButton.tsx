@@ -20,19 +20,23 @@ import { Icon, IconSVG } from "@recidiviz/case-triage-components";
 import { DownloadableData } from "./PageVitals/types";
 import { downloadChartAsData } from "../utils/downloads/downloadData";
 import { useRootStore } from "../components/StoreProvider";
-import content from "./content";
+import { MethodologyContent } from "./models/types";
 import "./DetailsGroup.scss";
 import * as styles from "./CoreConstants.scss";
 
 interface PropTypes {
   data: DownloadableData[];
   title: string;
+  methodology: MethodologyContent[];
 }
 
-const DownloadDataButton: React.FC<PropTypes> = ({ data, title }) => {
-  const { getTokenSilently, currentTenantId } = useRootStore();
-  // @ts-ignore TODO TS
-  const { vitals: vitalsMethodology } = content[currentTenantId];
+const DownloadDataButton: React.FC<PropTypes> = ({
+  data,
+  title,
+  methodology,
+}) => {
+  const { getTokenSilently } = useRootStore();
+
   return (
     <button
       className="btn btn-link DetailsGroup__button"
@@ -45,8 +49,7 @@ const DownloadDataButton: React.FC<PropTypes> = ({ data, title }) => {
           fileContents: data,
           chartTitle: title,
           shouldZipDownload: true,
-          // TODO
-          methodology: vitalsMethodology.content,
+          methodology,
           getTokenSilently,
         })
       }

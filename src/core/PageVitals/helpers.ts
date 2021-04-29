@@ -153,15 +153,8 @@ export function getWeeklyChange(
 
 export function getTimeSeriesDownloadableData(
   timeSeries?: VitalsTimeSeriesRecord[]
-): DownloadableData {
-  // TODO
-  if (!timeSeries)
-    return {
-      chartDatasets: [],
-      chartLabels: [],
-      chartId: "",
-      dataExportLabel: "",
-    };
+): DownloadableData | undefined {
+  if (!timeSeries) return undefined;
 
   let labels = [] as string[];
   let ids = [] as string[];
@@ -197,15 +190,9 @@ export function getTimeSeriesDownloadableData(
 
 export function getVitalsSummaryDownloadableData(
   summaries?: VitalsSummaryTableRow[]
-): DownloadableData {
-  // TODO
-  if (!summaries)
-    return {
-      chartDatasets: [],
-      chartLabels: [],
-      chartId: "",
-      dataExportLabel: "",
-    };
+): DownloadableData | undefined {
+  if (!summaries) return undefined;
+
   const dataExportLabel =
     summaries[0].entity.entityType.toLowerCase() ===
     ENTITY_TYPES.PO.toLowerCase()
@@ -233,7 +220,6 @@ export function getVitalsSummaryDownloadableData(
   return {
     chartDatasets: datasets,
     chartLabels: ids,
-    // TODO
     chartId: `MetricsBy${dataExportLabel}`,
     dataExportLabel,
   };

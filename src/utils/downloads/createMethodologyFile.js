@@ -24,7 +24,6 @@ function createMethodologyFile({
   methodology,
   violationText,
 }) {
-  // TODO
   const infoChart = methodology || [];
   const exportDate = moment().format("M/D/YYYY");
 
