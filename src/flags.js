@@ -3,6 +3,6 @@ export default {
   enableRevocationRateByExit: false,
   showMethodologyDropdown: false,
   enableCoreTabNavigation: true,
-  enableVitalsDashboard: true,
+  enableVitalsDashboard: false,
   enableVitalsOfficerView: false,
 };
