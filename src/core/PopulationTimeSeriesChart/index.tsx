@@ -53,7 +53,7 @@ const PopulationTimeSeriesChart: React.FC<Props> = ({ isLoading = false }) => {
 
   if (isLoading) {
     return (
-      <div className="PopulationTimeSeriesChart PopulationTimeSeriesChart--Loading">
+      <div className="PopulationTimeSeriesChart PopulationTimeSeriesChart--loading">
         <CoreLoading />
       </div>
     );
