@@ -40,6 +40,7 @@ import {
   getWeeklyChange,
   getTimeSeriesDownloadableData,
   getVitalsSummaryDownloadableData,
+  getVitalsFiltersText,
 } from "./helpers";
 import DownloadDataButton from "../DownloadDataButton";
 import DetailsGroup from "../DetailsGroup";
@@ -131,6 +132,11 @@ const PageVitals: React.FC = () => {
             ]}
             title={`${stateName} At A Glance`}
             methodology={vitalsMethodology.content}
+            filters={getVitalsFiltersText(
+              currentEntitySummary,
+              childEntitySummaryRows
+            )}
+            lastUpdatedOn={lastUpdatedOn}
           />
           <MethodologyLink path={CORE_PATHS.methodologyVitals} />
         </DetailsGroup>

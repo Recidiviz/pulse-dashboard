@@ -189,9 +189,9 @@ export function getTimeSeriesDownloadableData(
 }
 
 export function getVitalsSummaryDownloadableData(
-  summaries?: VitalsSummaryTableRow[]
+  summaries: VitalsSummaryTableRow[]
 ): DownloadableData | undefined {
-  if (!summaries) return undefined;
+  if (summaries.length === 0) return undefined;
 
   const dataExportLabel =
     summaries[0].entity.entityType.toLowerCase() ===
@@ -224,3 +224,26 @@ export function getVitalsSummaryDownloadableData(
     dataExportLabel,
   };
 }
+
+export const getVitalsFiltersText = (
+  currentEntitySummary: VitalsSummaryRecord,
+  children: VitalsSummaryTableRow[]
+): string => {
+  let offices;
+  let officers;
+  switch (currentEntitySummary.entityType) {
+    case ENTITY_TYPES.LEVEL_1_SUPERVISION_LOCATION:
+      offices = currentEntitySummary.entityName;
+      officers = children.map((child) => child.entity.entityName).join(", ");
+      break;
+    case ENTITY_TYPES.PO:
+      offices = "N/A";
+      officers = currentEntitySummary.entityName;
+      break;
+    default:
+      offices = "All";
+      officers = "All";
+  }
+
+  return `Office(s): ${offices}, Officers: ${officers}`;
+};

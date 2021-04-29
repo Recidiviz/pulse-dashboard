@@ -82,7 +82,7 @@ export function downloadCanvasAsImage({
           timeWindowDescription,
           filters,
           methodology,
-          violationText: violation,
+          violation,
         });
 
       const files = [
@@ -199,6 +199,7 @@ export function downloadHtmlElementAsImage({
 export function configureDataDownloadButton({
   fileContents,
   filters,
+  violation,
   convertValuesToNumbers,
   chartTitle,
   timeWindowDescription,
@@ -206,6 +207,7 @@ export function configureDataDownloadButton({
   fixLabelsInColumns,
   methodology,
   getTokenSilently,
+  lastUpdatedOn,
 }) {
   return () => {
     const methodologyFile =
@@ -214,7 +216,9 @@ export function configureDataDownloadButton({
         chartTitle,
         timeWindowDescription,
         filters,
+        violation,
         methodology,
+        lastUpdatedOn,
       });
     const promises = fileContents.map((file) => {
       return transformChartDataToCsv(
@@ -279,9 +283,10 @@ export function downloadChartAsData({
   fixLabelsInColumns = false,
   methodology,
   getTokenSilently,
+  lastUpdatedOn = null,
 }) {
   const downloadChartData = configureDataDownloadButton({
-    fileContents,
+    fileContents: fileContents.filter(Boolean),
     filters: filters && filters.filtersDescription,
     violation: filters && filters.violationTypeDescription,
     chartTitle,
@@ -290,6 +295,7 @@ export function downloadChartAsData({
     fixLabelsInColumns,
     methodology,
     getTokenSilently,
+    lastUpdatedOn,
   });
   downloadChartData();
 }

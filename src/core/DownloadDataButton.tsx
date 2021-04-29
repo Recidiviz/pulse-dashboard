@@ -28,12 +28,16 @@ interface PropTypes {
   data: DownloadableData[];
   title: string;
   methodology: MethodologyContent[];
+  filters: string;
+  lastUpdatedOn: string;
 }
 
 const DownloadDataButton: React.FC<PropTypes> = ({
   data,
   title,
   methodology,
+  filters,
+  lastUpdatedOn,
 }) => {
   const { getTokenSilently } = useRootStore();
 
@@ -51,6 +55,8 @@ const DownloadDataButton: React.FC<PropTypes> = ({
           shouldZipDownload: true,
           methodology,
           getTokenSilently,
+          filters: { filtersDescription: filters },
+          lastUpdatedOn,
         })
       }
     >

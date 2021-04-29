@@ -32,8 +32,9 @@ describe("createMethodologyFile functions", () => {
       },
     ],
   };
-  const filtersText = "some filters text";
-  const violationText = "some violation text";
+  const filters = "some filters text";
+  const violation = "some violation text";
+  const lastUpdatedOn = "4/6/2021";
 
   const nowSpy = jest.spyOn(Date, "now");
   nowSpy.mockReturnValue(1605866733144);
@@ -42,17 +43,18 @@ describe("createMethodologyFile functions", () => {
     const actual = createMethodologyFile({
       chartTitle: mockChartTitle,
       timeWindowDescription: mockTimeWindowDescription,
-      filtersText,
+      filters,
       methodology: methodology[mockChartId],
-      violationText,
+      violation,
+      lastUpdatedOn,
     });
-
     expect(actual.data).toBe(
       "Chart: Revocations Count\n" +
         "Dates: 20 November 2019 - 20 November 2020\n" +
         "Applied filters:\n" +
         "- some filters text\n" +
-        "- some violation text\n\n" +
+        "- some violation text\n" +
+        "Data last updated on: 4/6/2021\n\n" +
         "Export Date: 11/20/2020\n\n" +
         "methodology header\n" +
         "methodology body\n\n"
@@ -91,9 +93,9 @@ describe("createMethodologyFile functions", () => {
       const actual = createMethodologyFile({
         chartTitle: mockChartTitle,
         timeWindowDescription: mockTimeWindowDescription,
-        filtersText,
+        filters,
         methodology: methodologyWithoutHeader[mockChartId],
-        violationText,
+        violation,
       });
       expect(actual.data).toBe(
         "Chart: Revocations Count\n" +

@@ -20,9 +20,10 @@ import { htmlToText } from "html-to-text";
 function createMethodologyFile({
   chartTitle,
   timeWindowDescription,
-  filtersText,
+  filters,
   methodology,
-  violationText,
+  violation,
+  lastUpdatedOn,
 }) {
   const infoChart = methodology || [];
   const exportDate = moment().format("M/D/YYYY");
@@ -31,14 +32,16 @@ function createMethodologyFile({
   if (timeWindowDescription) {
     text += `Dates: ${timeWindowDescription}\n`;
   }
-  if (filtersText) {
+  if (filters) {
     text += `Applied filters:\n`;
-    text += `- ${filtersText}\n`;
+    text += `- ${filters}\n`;
   }
-  if (violationText) {
-    text += `- ${violationText}\n`;
+  if (violation) {
+    text += `- ${violation}\n`;
   }
-
+  if (lastUpdatedOn) {
+    text += `Data last updated on: ${lastUpdatedOn}\n`;
+  }
   text += "\n";
   text += `Export Date: ${exportDate}\n\n`;
 
