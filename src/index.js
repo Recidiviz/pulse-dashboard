@@ -19,22 +19,10 @@ import "react-app-polyfill/ie11";
 import "react-app-polyfill/stable";
 import React from "react";
 import ReactDOM from "react-dom";
-import { configure } from "mobx";
 
 import "./index.css";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
-
-configure({
-  // make proxies optional for IE 11 support
-  useProxies: "ifavailable",
-  // activate runtime linting
-  computedRequiresReaction: true,
-  reactionRequiresObservable: true,
-  // This linter gives too many false positives when propTypes is defined
-  // https://mobx.js.org/configuration.html#observablerequiresreaction-boolean
-  observableRequiresReaction: false,
-});
 
 ReactDOM.render(<App />, document.getElementById("root"));
 

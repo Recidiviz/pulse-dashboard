@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-import { computed, makeObservable } from "mobx";
+import { configure, computed, makeObservable } from "mobx";
 import { Auth0ClientOptions, User } from "@auth0/auth0-spa-js";
 import TenantStore from "./TenantStore";
 import UserStore from "./UserStore";
@@ -40,6 +40,19 @@ export function getAuthSettings(): Auth0ClientOptions {
     redirect_uri: `${window.location.origin}`,
   };
 }
+
+// This needs to be called from the RootStore so the instance is exported after
+// mobx is configured.
+configure({
+  // make proxies optional for IE 11 support
+  useProxies: "ifavailable",
+  // activate runtime linting
+  computedRequiresReaction: true,
+  reactionRequiresObservable: true,
+  // This linter gives too many false positives when propTypes is defined
+  // https://mobx.js.org/configuration.html#observablerequiresreaction-boolean
+  observableRequiresReaction: false,
+});
 
 class RootStore {
   tenantStore: TenantStore;

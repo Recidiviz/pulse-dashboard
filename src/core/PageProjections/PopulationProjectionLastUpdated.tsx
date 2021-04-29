@@ -15,28 +15,23 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 import React from "react";
-import { PopulationProjectionTimeSeriesRecord } from "../models/types";
 import "./PopulationProjectionLastUpdated.scss";
 
 type Props = {
-  projectionTimeSeries: PopulationProjectionTimeSeriesRecord[];
+  simulationDate: Date;
 };
 
 const PopulationProjectionLastUpdated: React.FC<Props> = ({
-  projectionTimeSeries,
+  simulationDate,
 }) => {
-  // Filter records
-  const { year, month } = projectionTimeSeries
-    .filter((d) => d.simulationTag === "HISTORICAL")
-    .sort((a, b) => (a.year === b.year ? a.month - b.month : a.year - b.year))
-    .slice(-1)[0];
-
-  const simulationDate = new Date(year, month - 1, 1);
-
   return (
     <div className="PopulationProjectionLastUpdated">
       Historical and projected population data were generated{" "}
-      {simulationDate.toLocaleString("default", { month: "long" })} {year}.
+      {simulationDate.toLocaleString("default", {
+        month: "long",
+        year: "numeric",
+      })}
+      .
     </div>
   );
 };
