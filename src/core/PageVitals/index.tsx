@@ -118,12 +118,13 @@ const PageVitals: React.FC = () => {
             Last updated on {lastUpdatedOn}
           </div>
           <DownloadDataButton
-            downloadData={[
+            data={[
               getTimeSeriesDownloadableData(
                 getTimeSeries(timeSeries, currentEntityId)
               ),
               getVitalsSummaryDownloadableData(childEntitySummaryRows),
             ]}
+            title={`${stateName} At A Glance`}
           />
           <MethodologyLink path={CORE_PATHS.methodologyVitals} />
         </DetailsGroup>

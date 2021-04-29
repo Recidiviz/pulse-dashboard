@@ -112,9 +112,13 @@ const ExportMenu = ({
               downloadChartAsData({
                 chartTitle: metricTitle,
                 fileContents: [
-                  { chartDatasets: datasets, chartLabels: labels, chartId },
+                  {
+                    chartDatasets: datasets,
+                    chartLabels: labels,
+                    chartId,
+                    dataExportLabel,
+                  },
                 ],
-                dataExportLabel,
                 filters: filtersStore.filtersDescriptions,
                 timeWindowDescription,
                 shouldZipDownload: true,

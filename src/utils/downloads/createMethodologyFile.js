@@ -17,22 +17,25 @@
 import moment from "moment";
 import { htmlToText } from "html-to-text";
 
-function createMethodologyFile(
+function createMethodologyFile({
   chartTitle,
   timeWindowDescription,
   filtersText,
   methodology,
-  violationText
-) {
+  violationText,
+}) {
   // TODO
   const infoChart = methodology || [];
   const exportDate = moment().format("M/D/YYYY");
 
   let text = `Chart: ${chartTitle}\n`;
-  text += `Dates: ${timeWindowDescription}\n`;
-  text += `Applied filters:\n`;
-  text += `- ${filtersText}\n`;
-
+  if (timeWindowDescription) {
+    text += `Dates: ${timeWindowDescription}\n`;
+  }
+  if (filtersText) {
+    text += `Applied filters:\n`;
+    text += `- ${filtersText}\n`;
+  }
   if (violationText) {
     text += `- ${violationText}\n`;
   }

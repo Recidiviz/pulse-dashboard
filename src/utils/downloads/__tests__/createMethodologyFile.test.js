@@ -39,13 +39,13 @@ describe("createMethodologyFile functions", () => {
   nowSpy.mockReturnValue(1605866733144);
 
   it("should return methodology file for MO", () => {
-    const actual = createMethodologyFile(
-      mockChartTitle,
-      mockTimeWindowDescription,
+    const actual = createMethodologyFile({
+      chartTitle: mockChartTitle,
+      timeWindowDescription: mockTimeWindowDescription,
       filtersText,
-      methodology[mockChartId],
-      violationText
-    );
+      methodology: methodology[mockChartId],
+      violationText,
+    });
 
     expect(actual.data).toBe(
       "Chart: Revocations Count\n" +
@@ -66,20 +66,13 @@ describe("createMethodologyFile functions", () => {
         body: `<div>${mockMethodologyBody}</div>`,
       },
     ];
-    const actual = createMethodologyFile(
-      mockChartTitle,
-      mockTimeWindowDescription,
-      filtersText,
-      methodologyWithMarkup,
-      violationText
-    );
+    const actual = createMethodologyFile({
+      chartTitle: mockChartTitle,
+      methodology: methodologyWithMarkup,
+    });
 
     expect(actual.data).toBe(
-      "Chart: Revocations Count\n" +
-        "Dates: 20 November 2019 - 20 November 2020\n" +
-        "Applied filters:\n" +
-        "- some filters text\n" +
-        "- some violation text\n\n" +
+      "Chart: Revocations Count\n\n" +
         "Export Date: 11/20/2020\n\n" +
         "methodology header\n" +
         "methodology body\n\n"
@@ -95,13 +88,13 @@ describe("createMethodologyFile functions", () => {
           },
         ],
       };
-      const actual = createMethodologyFile(
-        mockChartTitle,
-        mockTimeWindowDescription,
+      const actual = createMethodologyFile({
+        chartTitle: mockChartTitle,
+        timeWindowDescription: mockTimeWindowDescription,
         filtersText,
-        methodologyWithoutHeader[mockChartId],
-        violationText
-      );
+        methodology: methodologyWithoutHeader[mockChartId],
+        violationText,
+      });
       expect(actual.data).toBe(
         "Chart: Revocations Count\n" +
           "Dates: 20 November 2019 - 20 November 2020\n" +

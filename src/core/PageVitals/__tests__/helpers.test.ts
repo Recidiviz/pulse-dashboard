@@ -205,6 +205,7 @@ describe("getTimeSeriesDownloadableData", () => {
       ],
       chartLabels: ["2021-03-11", "2021-03-12"],
       chartId: "MetricsOverTime",
+      dataExportLabel: "Date",
     };
     const result = getTimeSeriesDownloadableData(data);
     expect(result).toEqual(expected);
@@ -274,6 +275,7 @@ describe("getVitalsSummaryDownloadableData", () => {
       ],
       chartLabels: ["Office A", "Office B"],
       chartId: "MetricsByOffice",
+      dataExportLabel: "Office",
     };
 
     const result = getVitalsSummaryDownloadableData(data);

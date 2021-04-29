@@ -77,13 +77,13 @@ export function downloadCanvasAsImage({
     if (shouldZipDownload || isMobile) {
       const methodologyFile =
         shouldZipDownload &&
-        createMethodologyFile(
+        createMethodologyFile({
           chartTitle,
           timeWindowDescription,
           filters,
           methodology,
-          violation
-        );
+          violationText: violation,
+        });
 
       const files = [
         {
@@ -198,7 +198,6 @@ export function downloadHtmlElementAsImage({
 
 export function configureDataDownloadButton({
   fileContents,
-  dataExportLabel,
   filters,
   convertValuesToNumbers,
   chartTitle,
@@ -211,17 +210,17 @@ export function configureDataDownloadButton({
   return () => {
     const methodologyFile =
       shouldZipDownload &&
-      createMethodologyFile(
+      createMethodologyFile({
         chartTitle,
         timeWindowDescription,
         filters,
-        methodology
-      );
+        methodology,
+      });
     const promises = fileContents.map((file) => {
       return transformChartDataToCsv(
         file.chartDatasets,
         file.chartLabels,
-        dataExportLabel,
+        file.dataExportLabel,
         convertValuesToNumbers,
         fixLabelsInColumns
       );
@@ -274,7 +273,6 @@ export function downloadChartAsImage({
 export function downloadChartAsData({
   chartTitle,
   fileContents,
-  dataExportLabel,
   filters = null,
   timeWindowDescription = null,
   shouldZipDownload,
@@ -284,7 +282,6 @@ export function downloadChartAsData({
 }) {
   const downloadChartData = configureDataDownloadButton({
     fileContents,
-    dataExportLabel,
     filters: filters && filters.filtersDescription,
     violation: filters && filters.violationTypeDescription,
     chartTitle,

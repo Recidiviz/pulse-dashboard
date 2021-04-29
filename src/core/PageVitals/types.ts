@@ -67,6 +67,7 @@ export type DownloadableData = {
   chartDatasets: DownloadableDataset[];
   chartLabels: string[];
   chartId: string;
+  dataExportLabel: string;
 };
 
 export type DownloadableDataset = {

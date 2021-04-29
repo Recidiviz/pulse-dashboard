@@ -25,14 +25,14 @@ import "./DetailsGroup.scss";
 import * as styles from "./CoreConstants.scss";
 
 interface PropTypes {
-  downloadData: DownloadableData[];
+  data: DownloadableData[];
+  title: string;
 }
 
-const DownloadDataButton: React.FC<PropTypes> = ({ downloadData }) => {
+const DownloadDataButton: React.FC<PropTypes> = ({ data, title }) => {
   const { getTokenSilently, currentTenantId } = useRootStore();
   // @ts-ignore TODO TS
   const { vitals: vitalsMethodology } = content[currentTenantId];
-
   return (
     <button
       className="btn btn-link DetailsGroup__button"
@@ -42,11 +42,10 @@ const DownloadDataButton: React.FC<PropTypes> = ({ downloadData }) => {
       aria-controls="importantNotes"
       onClick={() =>
         downloadChartAsData({
-          fileContents: downloadData,
-          chartTitle: "Vitals Summary",
+          fileContents: data,
+          chartTitle: title,
           shouldZipDownload: true,
           // TODO
-          dataExportLabel: "Office",
           methodology: vitalsMethodology.content,
           getTokenSilently,
         })

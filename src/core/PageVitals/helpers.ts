@@ -24,7 +24,11 @@ import {
   DownloadableData,
   DownloadableDataset,
 } from "./types";
-import { VitalsSummaryRecord, VitalsTimeSeriesRecord } from "../models/types";
+import {
+  ENTITY_TYPES,
+  VitalsSummaryRecord,
+  VitalsTimeSeriesRecord,
+} from "../models/types";
 import { formatPercent } from "../../utils/formatStrings";
 
 export function getSummaryStatus(value: number): SummaryStatus {
@@ -151,7 +155,13 @@ export function getTimeSeriesDownloadableData(
   timeSeries?: VitalsTimeSeriesRecord[]
 ): DownloadableData {
   // TODO
-  if (!timeSeries) return { chartDatasets: [], chartLabels: [], chartId: "" };
+  if (!timeSeries)
+    return {
+      chartDatasets: [],
+      chartLabels: [],
+      chartId: "",
+      dataExportLabel: "",
+    };
 
   let labels = [] as string[];
   let ids = [] as string[];
@@ -181,6 +191,7 @@ export function getTimeSeriesDownloadableData(
     chartDatasets: datasets,
     chartLabels: labels,
     chartId: "MetricsOverTime",
+    dataExportLabel: "Date",
   };
 }
 
@@ -188,7 +199,18 @@ export function getVitalsSummaryDownloadableData(
   summaries?: VitalsSummaryTableRow[]
 ): DownloadableData {
   // TODO
-  if (!summaries) return { chartDatasets: [], chartLabels: [], chartId: "" };
+  if (!summaries)
+    return {
+      chartDatasets: [],
+      chartLabels: [],
+      chartId: "",
+      dataExportLabel: "",
+    };
+  const dataExportLabel =
+    summaries[0].entity.entityType.toLowerCase() ===
+    ENTITY_TYPES.PO.toLowerCase()
+      ? "Officer"
+      : "Office";
 
   const ids = summaries.map((d) => d.entity.entityName);
   const datasets = [] as DownloadableDataset[];
@@ -212,6 +234,7 @@ export function getVitalsSummaryDownloadableData(
     chartDatasets: datasets,
     chartLabels: ids,
     // TODO
-    chartId: "MetricsByOffice",
+    chartId: `MetricsBy${dataExportLabel}`,
+    dataExportLabel,
   };
 }
