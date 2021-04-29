@@ -218,7 +218,7 @@ Test vigorously! Don't be afraid to rollback the deploy of frontend or backend t
 
 E2E feature specs are found in the `src/cucumber` directory. The tests are run using [WebDriverIO and Cucumber](https://webdriver.io/docs/frameworks#using-cucumber) and can be configured to run in a headless browser mode.
 
-Configure HEADLESS mode by setting this variable in your `.env.development`: `RUN_TESTS_HEADLESS=true`.
+Configure HEADLESS mode by setting this variable in your `.env.development.local`: `RUN_TESTS_HEADLESS=true`.
 
 The E2E tests are split between tests that can run on the demo server, and tests that can run on staging. The tests that are run on staging can be used to test the auth0 login flow and require additional environment variables set:
 
