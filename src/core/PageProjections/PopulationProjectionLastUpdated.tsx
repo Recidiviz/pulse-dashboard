@@ -18,12 +18,22 @@ import React from "react";
 import "./PopulationProjectionLastUpdated.scss";
 
 type Props = {
-  simulationDate: Date;
+  simulationDate?: Date;
+  isLoading?: boolean;
 };
 
 const PopulationProjectionLastUpdated: React.FC<Props> = ({
-  simulationDate,
+  simulationDate = new Date(9999, 11, 30),
+  isLoading = false,
 }) => {
+  if (isLoading) {
+    return (
+      <div className="PopulationProjectionLastUpdated">
+        <br />
+      </div>
+    );
+  }
+
   return (
     <div className="PopulationProjectionLastUpdated">
       Historical and projected population data were generated{" "}

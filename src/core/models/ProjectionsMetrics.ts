@@ -180,10 +180,14 @@ export default class ProjectionsMetrics extends Metric<MetricRecords> {
   }
 
   get simulationDate(): Date {
+    const { timeSeries } = this;
+
+    if (timeSeries.length === 0) {
+      return new Date(9999, 11, 31);
+    }
+
     return getRecordDate(
-      this.timeSeries
-        .filter((d) => d.simulationTag === "HISTORICAL")
-        .slice(-1)[0]
+      timeSeries.filter((d) => d.simulationTag === "HISTORICAL").slice(-1)[0]
     );
   }
 }

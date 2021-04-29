@@ -49,7 +49,9 @@ const PageProjections: React.FC = () => {
           />
         }
       >
-        <PopulationSummaryMetrics isLoading={isLoading} isError={isError} />
+        <PopulationSummaryMetrics isLoading isError={isError} />
+        <PopulationProjectionLastUpdated isLoading />
+        <PopulationTimeSeriesChart isLoading />
       </PageTemplate>
     );
   }
