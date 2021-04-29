@@ -23,6 +23,7 @@ import type LanternStore from ".";
 import { callRestrictedAccessApi } from "../../api/metrics/metricsClient";
 import { TenantId } from "../../RootStore/types";
 import { US_MO } from "../../RootStore/TenantStore/lanternTenants";
+import { CHARTS } from "./DataStore/RevocationsChartStore";
 
 type ConstructorProps = {
   rootStore?: LanternStore;
@@ -60,10 +61,16 @@ export default class UserRestrictedAccessStore {
     });
   }
 
-  get disableRaceAndGenderCharts(): boolean {
-    return (
-      this.hasRestrictedDistricts && this.rootStore?.currentTenantId === US_MO
-    );
+  get enabledRevocationsCharts(): string[] {
+    if (
+      this.hasRestrictedDistricts &&
+      this.rootStore?.currentTenantId === US_MO
+    ) {
+      return Object.keys(CHARTS).filter(
+        (chartId) => !["Race", "Gender"].includes(chartId)
+      );
+    }
+    return Object.keys(CHARTS);
   }
 
   get hasRestrictedDistricts(): boolean {

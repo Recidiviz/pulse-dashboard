@@ -119,14 +119,17 @@ describe("fetchRestrictedDistrictData", () => {
       ]);
     });
 
-    it("sets the disableRaceAndGenderCharts attribute", () => {
-      expect(userRestrictedAccessStore.disableRaceAndGenderCharts).toEqual(
-        true
-      );
+    it("enabledRevocationsCharts is based on tenantId and user restrictions", () => {
+      expect(userRestrictedAccessStore.enabledRevocationsCharts).toEqual([
+        "District",
+        "Officer",
+        "Risk level",
+        "Violation",
+      ]);
     });
 
     describe("when tenantId is not US_MO", () => {
-      it("sets disableRaceAndGenderCharts to false", () => {
+      it("does not restrict the enabledRevocationsCharts", () => {
         mockLanternStore.mockImplementationOnce(() => {
           return {
             currentTenantId: "US_PA",
@@ -152,9 +155,14 @@ describe("fetchRestrictedDistrictData", () => {
             rootStore: new LanternStore(mockRootStore),
           });
         });
-        expect(userRestrictedAccessStore.disableRaceAndGenderCharts).toEqual(
-          false
-        );
+        expect(userRestrictedAccessStore.enabledRevocationsCharts).toEqual([
+          "District",
+          "Officer",
+          "Risk level",
+          "Violation",
+          "Gender",
+          "Race",
+        ]);
       });
     });
   });
