@@ -118,6 +118,45 @@ describe("fetchRestrictedDistrictData", () => {
         userDistrict,
       ]);
     });
+
+    it("sets the disableRaceAndGenderCharts attribute", () => {
+      expect(userRestrictedAccessStore.disableRaceAndGenderCharts).toEqual(
+        true
+      );
+    });
+
+    describe("when tenantId is not US_MO", () => {
+      it("sets disableRaceAndGenderCharts to false", () => {
+        mockLanternStore.mockImplementationOnce(() => {
+          return {
+            currentTenantId: "US_PA",
+            tenantStore: {
+              isLanternTenant: true,
+              isRestrictedDistrictTenant: true,
+            },
+            districtsStore: {
+              isLoading: false,
+              districtIds: [userDistrict, additionalRestrictedDistrict],
+            },
+            userStore: {
+              availableStateCodes: ["US_PA"],
+              user: mockUser,
+              userIsLoading: false,
+              getTokenSilently: mockGetTokenSilently,
+              setAuthError: mockSetAuthError,
+            },
+          };
+        });
+        reactImmediately(() => {
+          userRestrictedAccessStore = new UserRestrictedAccessStore({
+            rootStore: new LanternStore(mockRootStore),
+          });
+        });
+        expect(userRestrictedAccessStore.disableRaceAndGenderCharts).toEqual(
+          false
+        );
+      });
+    });
   });
 
   describe("when the user has more than one restricted district", () => {
