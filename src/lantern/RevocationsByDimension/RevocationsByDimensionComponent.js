@@ -27,6 +27,7 @@ import "./RevocationsByDimension.scss";
 const RevocationsByDimensionComponent = ({
   chartTitle,
   chartId,
+  className,
   datasets,
   labels,
   metricTitle,
@@ -53,7 +54,7 @@ const RevocationsByDimensionComponent = ({
     <h6 className="RevocationsByDimension__time">{timeDescription}</h6>
     {modeSwitcher}
     <div
-      className={cn("RevocationsByDimension__chart-wrapper", {
+      className={cn("RevocationsByDimension__chart-wrapper", className, {
         [`RevocationsByDimension__chart-wrapper--${classModifier}`]: classModifier,
       })}
     >
@@ -65,11 +66,13 @@ const RevocationsByDimensionComponent = ({
 RevocationsByDimensionComponent.defaultProps = {
   showWarning: false,
   modeSwitcher: null,
+  className: null,
   classModifier: "",
   dataExportLabel: null,
 };
 
 RevocationsByDimensionComponent.propTypes = {
+  className: PropTypes.string,
   chartTitle: PropTypes.string.isRequired,
   chartId: PropTypes.string.isRequired,
   datasets: PropTypes.arrayOf(

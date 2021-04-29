@@ -62,7 +62,7 @@ const DistrictFilter = () => {
   );
 
   return (
-    <FilterField label="District">
+    <FilterField label="District" className="DistrictFilter">
       <DistrictFilterDropown
         restrictedValues={restrictedDistricts}
         options={options}
