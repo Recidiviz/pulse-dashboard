@@ -79,29 +79,30 @@ export type PopulationProjectionTimeSeriesRecord = {
   totalPopulationMin: number;
 };
 
-export type VitalsTimeSeriesRecord = {
-  date: string;
-  entityId: string;
-  metric: string;
-  value: number;
-  weeklyAvg: number;
-  parentWeeklyAvg?: number;
-};
-
 export type EntityType = keyof typeof ENTITY_TYPES;
 export const ENTITY_TYPES = {
   STATE: "STATE",
   LEVEL_1_SUPERVISION_LOCATION: "LEVEL_1_SUPERVISION_LOCATION",
   PO: "PO",
 } as const;
+
+export type VitalsTimeSeriesRecord = {
+  date: string;
+  entityId: string;
+  metric: string;
+  value: number;
+  monthlyAvg: number;
+  parentmonthlyAvg?: number;
+};
+
 export type VitalsSummaryRecord = {
   entityId: string;
   entityName: string; // i.e. "North Dakota" or "Oakes"
   entityType: EntityType;
   parentEntityId: string;
   overall: number;
-  overall7Day: number;
-  overall28Day: number;
+  overall30Day: number;
+  overall90Day: number;
   timelyDischarge: number;
   timelyFtrEnrollment: number;
   timelyContact: number;

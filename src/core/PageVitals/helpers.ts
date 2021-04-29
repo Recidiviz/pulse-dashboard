@@ -128,14 +128,14 @@ export function getTimeseries(
   return selectedTimeSeries.length > 0 ? selectedTimeSeries : undefined;
 }
 
-export function getWeeklyChange(
+export function getMonthlyChange(
   timeSeries: VitalsTimeSeriesRecord[]
-): { sevenDayChange: number; twentyEightDayChange: number } {
-  const twentyEightDaysAgo = timeSeries[0];
-  const sevenDaysAgo = timeSeries[timeSeries.length - 8];
+): { thirtyDayChange: number; ninetyDayChange: number } {
+  const ninetyDaysAgo = timeSeries[0];
+  // TODO update when there is data
+  const thirtyDaysAgo = timeSeries[timeSeries.length - 27];
   const latestDay = timeSeries[timeSeries.length - 1];
-  const sevenDayChange = latestDay.weeklyAvg - sevenDaysAgo.weeklyAvg;
-  const twentyEightDayChange =
-    latestDay.weeklyAvg - twentyEightDaysAgo.weeklyAvg;
-  return { sevenDayChange, twentyEightDayChange };
+  const thirtyDayChange = latestDay.monthlyAvg - thirtyDaysAgo.monthlyAvg;
+  const ninetyDayChange = latestDay.monthlyAvg - ninetyDaysAgo.monthlyAvg;
+  return { thirtyDayChange, ninetyDayChange };
 }

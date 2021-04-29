@@ -97,8 +97,8 @@ describe("VitalsMetrics", () => {
         timelyFtrEnrollment: 95,
         timelyContact: 80,
         timelyRiskAssessment: 88,
-        overall7Day: 0,
-        overall28Day: -1,
+        overall30Day: 0,
+        overall90Day: -1,
       },
     ]);
   });
@@ -110,7 +110,7 @@ describe("VitalsMetrics", () => {
         entityId: "BEULAH",
         metric: "RISK_ASSESSMENT",
         value: 90.625,
-        weeklyAvg: 90.625,
+        monthlyAvg: 90.625,
       },
     ]);
   });

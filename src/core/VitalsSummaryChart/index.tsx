@@ -39,12 +39,11 @@ const VitalsSummaryChart: React.FC<PropTypes> = ({
   stateCode,
 }) => {
   const [hoveredId, setHoveredId] = useState(null);
-
   const lineCoordinates = timeSeries.map((record, index) => ({
     index,
-    value: record.weeklyAvg,
+    value: record.monthlyAvg,
     percent: record.value,
-    weeklyAvg: record.weeklyAvg,
+    monthlyAvg: record.monthlyAvg,
     date: record.date,
   }));
 
@@ -52,7 +51,7 @@ const VitalsSummaryChart: React.FC<PropTypes> = ({
     index,
     value: record.value,
     percent: record.value,
-    weeklyAvg: record.weeklyAvg,
+    monthlyAvg: record.monthlyAvg,
     date: record.date,
   }));
 
@@ -74,16 +73,16 @@ const VitalsSummaryChart: React.FC<PropTypes> = ({
     const { pieces, column } = d;
     const { data: pieceData } = pieces[0];
     const cx = column.middle;
-    const cy = adjustedSize[1] - rScale(pieceData.weeklyAvg);
+    const cy = adjustedSize[1] - rScale(pieceData.monthlyAvg);
     setHoveredId(pieceData.index);
     return <circle cx={cx} cy={cy} r={4} fill={styles.indigo} />;
   };
 
   const goalTargetAnnotation = (annotation: any) => {
     const { d, adjustedSize, rScale, orFrameState } = annotation;
-    const { weeklyAvg, date } = d;
+    const { monthlyAvg, date } = d;
     const cx = orFrameState.projectedColumns[date].middle;
-    const cy = adjustedSize[1] - rScale(weeklyAvg);
+    const cy = adjustedSize[1] - rScale(monthlyAvg);
     return (
       <g>
         <circle

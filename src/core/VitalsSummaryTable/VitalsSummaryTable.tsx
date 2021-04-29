@@ -99,13 +99,13 @@ const VitalsSummaryTable: React.FC<PropTypes> = ({
             Cell: ({ value }: { value: number }) => formatPercent(value),
           },
           {
-            Header: "7D change",
-            accessor: "overall7Day",
+            Header: "30D change",
+            accessor: "overall30Day",
             Cell: createDeltaTableCell,
           },
           {
-            Header: "28D change",
-            accessor: "overall28Day",
+            Header: "90D change",
+            accessor: "overall90Day",
             Cell: createDeltaTableCell,
           },
         ],
