@@ -35,6 +35,7 @@ const DistrictFilterDropdown = ({
 
     return (
       <Select
+        className="DistrictFilterDropdown"
         value={singleValue}
         options={[singleValue]}
         defaultValue={singleValue}
@@ -54,6 +55,7 @@ const DistrictFilterDropdown = ({
 
   return (
     <MultiSelect
+      className="DistrictFilterDropdown"
       options={options}
       value={selected}
       onChange={onValueChange}

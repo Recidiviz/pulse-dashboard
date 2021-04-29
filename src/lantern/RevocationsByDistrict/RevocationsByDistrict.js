@@ -38,11 +38,15 @@ const RevocationsByDistrict = observer(
     const CHART_ID = translate("revocationsByDistrictChartId");
 
     const xAxisLabel = translate("District");
+    const currentDistrictsClassName = `RevocationsByDimension--${CHART_ID}--${currentDistricts.join(
+      "-"
+    )}`;
 
     return (
       <RevocationsByDimension
         ref={ref}
         chartId={CHART_ID}
+        className={currentDistrictsClassName}
         dataStore={revocationsChartStore}
         containerHeight={containerHeight}
         renderChart={({

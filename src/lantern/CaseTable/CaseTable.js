@@ -99,7 +99,9 @@ const CaseTable = ({ timeDescription }) => {
                 .split(" ")
                 .join("")}-${idx + 1}`}
             >
-              {options.map((option) => nullSafeCell(details[option.key], idx))}
+              {options.map((option) =>
+                nullSafeCell(option.key, details[option.key], idx)
+              )}
             </tr>
           ))}
         </tbody>
