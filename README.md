@@ -100,7 +100,7 @@ The build process, as described below, ensures that the proper values are compil
 
 ### Authentication
 
-The backend API server and most frontend views in the app are authenticated via [Auth0](https://auth0.com/). You can control which views are authenticated by specifying `Route` versus `PrivateRoute` in `src/App.js`. If you are setting this app up completely fresh, you will need to create your own Auth0 account.
+The backend API server and most frontend views in the app are authenticated via [Auth0](https://auth0.com/). You can control which views are authenticated by specifying `Route` versus `ProtectedRoute` in `src/App.js`. If you are setting this app up completely fresh, you will need to create your own Auth0 account.
 
 This setup assumes you have two separate Auth0 tenants, one for lower tiers and one for production. The former should be configured in `auth_config_dev.json` and the latter in `auth_config_production.json`. Which file is loaded and used relies on the `AUTH_ENV` environment variable on the backend and the `REACT_APP_AUTH_ENV` environment variable on the frontend. It is important that the same config file be loaded on the backend and frontend servers in a given tier so that API authentication will work.
 
@@ -212,6 +212,29 @@ Deploy the backend to production GAE with `gcloud app deploy gae-production.yaml
 
 Test vigorously! Don't be afraid to rollback the deploy of frontend or backend through the Firebase and GAE consoles.
 
+## Tests
+
+### Running E2E tests
+
+E2E feature specs are found in the `src/cucumber` directory. The tests are run using [WebDriverIO and Cucumber](https://webdriver.io/docs/frameworks#using-cucumber) and can be configured to run in a headless browser mode.
+
+Configure HEADLESS mode by setting this variable in your `.env.development`: `RUN_TESTS_HEADLESS=true`.
+
+The E2E tests are split between tests that can run on the demo server, and tests that can run on staging. The tests that are run on staging can be used to test the auth0 login flow and require additional environment variables set:
+
+TEST_AUTH_USER=<a real auth0 email to test with>
+TEST_AUTH_PASSWORD=
+
+To run E2E tests that involve logging in:
+
+1. Start your dev server: `yarn dev`
+2. Run the test suite: `yarn test-e2e-lantern`
+
+To run the E2E tests using a demo server:
+
+1. Start your demo server: `REACT_APP_IS_DEMO=true yarn demo`
+2. Run the test suite: `yarn test-e2e-users`
+
 ## Tooling
 
 ### Yarn
@@ -308,13 +331,22 @@ A quick overview of the directory structure and suggestions on where to put diff
 /public/
 /src/
   assets/
+  auth0/
+  AuthWall/
   components/
+  constants/
+  contexts/
+  controls/
+  core/
+  cucumber/
+  hooks/
+  lantern/
+  RootStore/
   utils/
-  views/
   App.js
   index.js
 /server/
-server.js
+   server.js
 ```
 
 ### Application root (/)
@@ -339,21 +371,35 @@ This is where frontend assets should live. JS logic, e.g. for creating exported 
 
 #### src/components
 
-All React components should exist under this directory. Charts in particular live under `/components/charts/{subject}`.
+All React components that are shared across Lantern and UP dashboards exist under this directory. Any new additions should be added using Typescript.
 
-Test files and CSS files should also be placed in the component directory.
+#### src/controls
 
-#### src/utils
+Shared UI components that can be reused across Lanterna and UP dashboards.
 
-Application configuration files, shared constants, etc.
+#### src/core
 
-#### src/views
+This is where all components and stores for the UP dashboard live.
 
-This is where individual page layouts are constructed. The main app is configured via `src/App.js` which uses the React Router to route to appropriate views depending on the requested path, e.g. routing the `/revocations` path to `src/views/Revocations.js`.
+#### src/cucumber
+
+Cucumber feature tests and test support for E2E tests.
+
+#### src/lantern
+
+This is where all components and stores for the Lantern dashboard live.
+
+#### src/RootStore
+
+The root store for both UP and Lantern dashboards. This store initializes the UserStore and TenantStore.
 
 #### src/App.js and src/index.js
 
 `App.js` is where the primary application view is defined, i.e. the central page layout and the frontend routing. `index.js` is the actual entry point to the frontend, i.e. where the `ReactDOM` is rendered.
+
+#### src/utils
+
+Application configuration files, constants, utilities shared across both Lantern and UP dashboards.
 
 ### server
 
