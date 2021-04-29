@@ -31,6 +31,7 @@ import PopulationTimeSeriesErrorBar from "./PopulationTimeSeriesErrorBar";
 import * as styles from "../CoreConstants.scss";
 
 import { ChartPoint, getDateRange, MonthOptions, prepareData } from "./helpers";
+import { CoreLoading } from "../CoreLoadingIndicator";
 
 type PlotLine = {
   data: ChartPoint[];
@@ -39,12 +40,24 @@ type PlotLine = {
 
 const TOTAL_INCARCERATED_LIMIT = 8008;
 
-const PopulationTimeSeriesChart: React.FC = () => {
+type Props = {
+  isLoading?: boolean;
+};
+
+const PopulationTimeSeriesChart: React.FC<Props> = ({ isLoading = false }) => {
   const view = getViewFromPathname(useLocation().pathname);
   const compartment: SimulationCompartment = getCompartmentFromView(view);
   const { metricsStore, filtersStore } = useCoreStore();
   const { gender, legalStatus } = filtersStore.filters;
   const filteredData = metricsStore.projections.getFilteredDataByView(view);
+
+  if (isLoading) {
+    return (
+      <div className="PopulationTimeSeriesChart PopulationTimeSeriesChart--loading">
+        <CoreLoading />
+      </div>
+    );
+  }
 
   const timePeriod: MonthOptions = parseInt(
     filtersStore.filters.timePeriod
