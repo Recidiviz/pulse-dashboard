@@ -99,6 +99,15 @@ export default class RevocationsChartStore extends BaseDataStore {
     this.skippedFilters = CHARTS[chartId].skippedFilters || [];
   }
 
+  get availableChartIds() {
+    if (this.rootStore.userRestrictedAccessStore.disableRaceAndGenderCharts) {
+      return Object.keys(CHARTS).filter(
+        (chartId) => !["Race", "Gender"].includes(chartId)
+      );
+    }
+    return Object.keys(CHARTS);
+  }
+
   get filteredData() {
     const dataFilter = matchesAllFilters({
       filters: this.filters,

@@ -22,6 +22,7 @@ import { ERROR_MESSAGES } from "../../constants/errorMessages";
 import type LanternStore from ".";
 import { callRestrictedAccessApi } from "../../api/metrics/metricsClient";
 import { TenantId } from "../../RootStore/types";
+import { US_MO } from "../../RootStore/TenantStore/lanternTenants";
 
 type ConstructorProps = {
   rootStore?: LanternStore;
@@ -57,6 +58,16 @@ export default class UserRestrictedAccessStore {
         this.fetchRestrictedDistrictData(this.rootStore?.currentTenantId);
       }
     });
+  }
+
+  get disableRaceAndGenderCharts(): boolean {
+    return (
+      this.hasRestrictedDistricts && this.rootStore?.currentTenantId === US_MO
+    );
+  }
+
+  get hasRestrictedDistricts(): boolean {
+    return this.restrictedDistricts && this.restrictedDistricts.length > 0;
   }
 
   fetchRestrictedDistrictData = flow(function* (

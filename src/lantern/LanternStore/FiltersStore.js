@@ -99,7 +99,8 @@ export default class FiltersStore {
       ],
       [ADMISSION_TYPE]: this.filterOptions[ADMISSION_TYPE].defaultValue,
       ...{
-        [districtKeys.filterKey]: this.hasRestrictedDistricts
+        [districtKeys.filterKey]: this.rootStore.userRestrictedAccessStore
+          .hasRestrictedDistricts
           ? this.rootStore.userRestrictedAccessStore.restrictedDistricts
           : [this.filterOptions[districtKeys.filterKey].defaultValue],
       },
@@ -113,17 +114,10 @@ export default class FiltersStore {
     };
   }
 
-  get hasRestrictedDistricts() {
-    return (
-      this.rootStore.userRestrictedAccessStore.restrictedDistricts &&
-      this.rootStore.userRestrictedAccessStore.restrictedDistricts.length > 0
-    );
-  }
-
   get districtFilterOptions() {
     const { districtKeys } = this.rootStore.districtsStore;
     if (!districtKeys) return {};
-    if (this.hasRestrictedDistricts) {
+    if (this.rootStore.userRestrictedAccessStore.hasRestrictedDistricts) {
       return {
         [districtKeys.filterKey]: {
           options: this.restrictedDistrictOptions,
