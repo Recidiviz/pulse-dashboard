@@ -25,6 +25,7 @@ import tenants from "../../tenants";
 jest.mock("../../flags", () => ({
   showMethodologyDropdown: false,
   enableVitalsDashboard: true,
+  enableProjectionsDashboard: true,
 }));
 
 describe("getPathsFromNavigation", () => {
