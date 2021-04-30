@@ -21,7 +21,7 @@ import "./FilterField.scss";
 
 const FilterField = ({ label, children, className }) => {
   return (
-    <div className={cn("FilterField", `${className}`)}>
+    <div className={cn("FilterField", className)}>
       <h4 className={cn("FilterField__label")}>{label}</h4>
       {children}
     </div>

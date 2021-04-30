@@ -34,6 +34,16 @@ jest.mock("shared-filters", () => {
 });
 
 const mockLanternStore = {
+  userRestrictedAccessStore: {
+    enabledRevocationsCharts: [
+      "District",
+      "Risk level",
+      "Gender",
+      "Officer",
+      "Race",
+      "Violation",
+    ],
+  },
   districtsStore: {
     districtIdToLabel: {
       "03": "Philadelphia",
@@ -79,6 +89,19 @@ describe("RevocationsChartStore", () => {
   describe("currentDistricts", () => {
     it("returns an array of the district names currently selected in the filters", () => {
       expect(revocationsChartStore.currentDistricts).toEqual(["Philadelphia"]);
+    });
+  });
+
+  describe("availableChartIds", () => {
+    it("returns all chart ids from the UserRestrictedAccessStore", () => {
+      expect(revocationsChartStore.availableChartIds).toEqual([
+        "District",
+        "Risk level",
+        "Gender",
+        "Officer",
+        "Race",
+        "Violation",
+      ]);
     });
   });
 });

@@ -24,7 +24,7 @@ import {
   LEVEL_2_SUPERVISION_LOCATION,
 } from "../../utils/constants";
 
-const CHARTS = {
+export const CHARTS = {
   District: {
     name: "District",
     file: "revocations_matrix_distribution_by_district",
@@ -34,27 +34,27 @@ const CHARTS = {
       LEVEL_2_SUPERVISION_LOCATION,
     ],
   },
+  Officer: {
+    name: "Officer",
+    file: "revocations_matrix_distribution_by_officer",
+  },
   "Risk level": {
     name: "Risk level",
     file: "revocations_matrix_distribution_by_risk_level",
+  },
+  Violation: {
+    name: "Violation",
+    file: "revocations_matrix_distribution_by_violation",
   },
   Gender: {
     name: "Gender",
     file: "revocations_matrix_distribution_by_gender",
     statePopulationFile: "state_gender_population",
   },
-  Officer: {
-    name: "Officer",
-    file: "revocations_matrix_distribution_by_officer",
-  },
   Race: {
     name: "Race",
     file: "revocations_matrix_distribution_by_race",
     statePopulationFile: "state_race_ethnicity_population",
-  },
-  Violation: {
-    name: "Violation",
-    file: "revocations_matrix_distribution_by_violation",
   },
 };
 
@@ -97,6 +97,10 @@ export default class RevocationsChartStore extends BaseDataStore {
   setSelectedChart(chartId) {
     this.selectedChart = chartId;
     this.skippedFilters = CHARTS[chartId].skippedFilters || [];
+  }
+
+  get availableChartIds() {
+    return this.rootStore.userRestrictedAccessStore.enabledRevocationsCharts;
   }
 
   get filteredData() {
