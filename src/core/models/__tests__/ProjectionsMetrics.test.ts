@@ -206,6 +206,23 @@ describe("ProjectionsMetrics", () => {
     expect(metric.simulationDate).toEqual(new Date(2016, 4));
   });
 
+  it("does not throw when accessing the simluation date without loaded data", () => {
+    jest.mock("../../../api/metrics/metricsClient", () => {
+      return {
+        callMetricsApi: jest.fn().mockResolvedValue({
+          population_projection_summaries: [],
+        }),
+      };
+    });
+
+    metric = new ProjectionsMetrics({
+      tenantId: mockTenantId,
+      sourceEndpoint: "vitals",
+    });
+
+    expect(metric.simulationDate).toEqual(new Date(9999, 11, 31));
+  });
+
   describe("getFilteredDataByView", () => {
     beforeEach(() => {
       mockCoreStore.filtersStore = filtersStore;
