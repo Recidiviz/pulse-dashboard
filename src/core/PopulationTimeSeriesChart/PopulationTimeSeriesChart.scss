@@ -11,6 +11,12 @@
   margin-right: 10px;
   width: 100%;
 
+  &--loading {
+    display: flex;
+    align-items: center;
+    height: 639px;
+  }
+
   &__Header {
     display: flex;
     justify-content: space-between;

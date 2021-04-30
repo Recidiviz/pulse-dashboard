@@ -32,6 +32,7 @@ exports.config = {
   suites: {
     login: ["./src/cucumber/features/login.feature"],
     lantern: ["./src/cucumber/features/lantern/*.feature"],
+    userAccess: ["./src/cucumber/features/lantern/userAccessLevels/*.feature"],
     core: ["./src/cucumber/features/core/*.feature"],
   },
   // Patterns to exclude.
@@ -254,7 +255,12 @@ exports.config = {
    * Runs after a Cucumber scenario
    */
   // eslint-disable-next-line
-  afterScenario: function () {
+  afterScenario: function (world) {
+    // For tests run on demo mode, we want to skip full page reloads because we
+    // are not going to go through the log in flow.
+    const { tags } = world.pickle;
+    const tagNames = tags.map((t) => t.name);
+    if (tagNames.includes("@skip-session-reload")) return;
     browser.reloadSession();
   },
   /**

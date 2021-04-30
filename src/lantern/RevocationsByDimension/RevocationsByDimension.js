@@ -30,6 +30,7 @@ const RevocationsByDimension = observer(
   (
     {
       chartId,
+      className,
       dataStore,
       containerHeight,
       renderChart,
@@ -70,6 +71,7 @@ const RevocationsByDimension = observer(
     return (
       <div ref={ref}>
         <RevocationsByDimensionComponent
+          className={className}
           timeDescription={timeDescription}
           chartId={chartId}
           datasets={data.datasets}
@@ -107,6 +109,7 @@ const RevocationsByDimension = observer(
 
 RevocationsByDimension.defaultProps = {
   modes: [],
+  className: null,
   defaultMode: null,
   dataExportLabel: null,
   includeWarning: true,
@@ -114,6 +117,7 @@ RevocationsByDimension.defaultProps = {
 };
 
 RevocationsByDimension.propTypes = {
+  className: PropTypes.string,
   dataStore: PropTypes.shape({
     filteredData: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
     isLoading: PropTypes.bool.isRequired,
