@@ -31,18 +31,13 @@ import { useDataStore } from "../LanternStoreProvider";
 import { useContainerHeight } from "../hooks/useContainerHeight";
 import "./RevocationCharts.scss";
 
-const CHARTS = [
-  "District",
-  "Officer",
-  "Risk level",
-  "Violation",
-  "Gender",
-  "Race",
-].filter(Boolean);
-
 const RevocationCharts = ({ timeDescription }) => {
   const dataStore = useDataStore();
-  const { selectedChart, setSelectedChart } = dataStore.revocationsChartStore;
+  const {
+    availableChartIds,
+    selectedChart,
+    setSelectedChart,
+  } = dataStore.revocationsChartStore;
   const { containerHeight, containerRef } = useContainerHeight();
   const props = { ref: containerRef, timeDescription, containerHeight };
 
@@ -67,7 +62,7 @@ const RevocationCharts = ({ timeDescription }) => {
   return (
     <div className="RevocationCharts">
       <div className="RevocationCharts__labels">
-        {CHARTS.map((chart) => (
+        {availableChartIds.map((chart) => (
           <div className="RevocationCharts__label" key={chart}>
             <button
               type="button"

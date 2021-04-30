@@ -22,6 +22,8 @@ import { ERROR_MESSAGES } from "../../constants/errorMessages";
 import type LanternStore from ".";
 import { callRestrictedAccessApi } from "../../api/metrics/metricsClient";
 import { TenantId } from "../../RootStore/types";
+import { US_MO } from "../../RootStore/TenantStore/lanternTenants";
+import { CHARTS } from "./DataStore/RevocationsChartStore";
 
 type ConstructorProps = {
   rootStore?: LanternStore;
@@ -57,6 +59,22 @@ export default class UserRestrictedAccessStore {
         this.fetchRestrictedDistrictData(this.rootStore?.currentTenantId);
       }
     });
+  }
+
+  get enabledRevocationsCharts(): string[] {
+    if (
+      this.hasRestrictedDistricts &&
+      this.rootStore?.currentTenantId === US_MO
+    ) {
+      return Object.keys(CHARTS).filter(
+        (chartId) => !["Race", "Gender"].includes(chartId)
+      );
+    }
+    return Object.keys(CHARTS);
+  }
+
+  get hasRestrictedDistricts(): boolean {
+    return this.restrictedDistricts && this.restrictedDistricts.length > 0;
   }
 
   fetchRestrictedDistrictData = flow(function* (
