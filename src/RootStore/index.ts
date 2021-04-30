@@ -43,16 +43,18 @@ export function getAuthSettings(): Auth0ClientOptions {
 
 // This needs to be called from the RootStore so the instance is exported after
 // mobx is configured.
-configure({
-  // make proxies optional for IE 11 support
-  useProxies: "ifavailable",
-  // activate runtime linting
-  computedRequiresReaction: true,
-  reactionRequiresObservable: true,
-  // This linter gives too many false positives when propTypes is defined
-  // https://mobx.js.org/configuration.html#observablerequiresreaction-boolean
-  observableRequiresReaction: false,
-});
+if (process.env.NODE_ENV !== "test") {
+  configure({
+    // make proxies optional for IE 11 support
+    useProxies: "ifavailable",
+    // activate runtime linting
+    computedRequiresReaction: true,
+    reactionRequiresObservable: true,
+    // This linter gives too many false positives when propTypes is defined
+    // https://mobx.js.org/configuration.html#observablerequiresreaction-boolean
+    observableRequiresReaction: false,
+  });
+}
 
 class RootStore {
   tenantStore: TenantStore;

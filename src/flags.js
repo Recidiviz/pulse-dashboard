@@ -5,4 +5,5 @@ export default {
   enableCoreTabNavigation: true,
   enableVitalsDashboard: false,
   enableVitalsOfficerView: false,
+  enableProjectionsDashboard: false,
 };
