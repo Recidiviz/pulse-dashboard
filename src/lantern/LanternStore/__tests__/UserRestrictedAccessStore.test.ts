@@ -105,7 +105,7 @@ describe("fetchRestrictedDistrictData", () => {
       expect(callRestrictedAccessApi).toHaveBeenCalledWith(
         endpoint,
         userEmail,
-        mockGetTokenSilently
+        userRestrictedAccessStore.rootStore?.userStore
       );
     });
 

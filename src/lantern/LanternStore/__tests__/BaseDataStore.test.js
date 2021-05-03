@@ -205,7 +205,7 @@ describe("BaseDataStore", () => {
         expect(callMetricsApi).toHaveBeenCalledTimes(1);
         expect(callMetricsApi).toHaveBeenCalledWith(
           expectedEndpoint,
-          mockGetTokenSilently
+          lanternStore.userStore
         );
       });
 
@@ -281,7 +281,7 @@ describe("BaseDataStore", () => {
 
       expect(callMetricsApi).toHaveBeenCalledWith(
         expectedEndpoint,
-        mockGetTokenSilently
+        lanternStore.userStore
       );
     });
   });

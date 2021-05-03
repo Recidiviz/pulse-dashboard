@@ -82,7 +82,7 @@ export default class UserStore {
 
   user?: User;
 
-  getTokenSilently?: (options: GetTokenSilentlyOptions) => void;
+  getToken?: (options?: GetTokenSilentlyOptions) => void;
 
   logout?: () => void;
 
@@ -114,11 +114,10 @@ export default class UserStore {
       this.isAuthorized = true;
       this.userIsLoading = false;
       this.user = getDemoUser();
-      this.getTokenSilently = () => "";
+      this.getToken = () => "";
 
       return;
     }
-
     if (!this.authSettings) {
       this.authError = new Error(ERROR_MESSAGES.auth0Configuration);
       return;
@@ -147,7 +146,7 @@ export default class UserStore {
           this.userIsLoading = false;
           if (user && user.email_verified) {
             this.user = user;
-            this.getTokenSilently = (options?: GetTokenSilentlyOptions) =>
+            this.getToken = (options?: GetTokenSilentlyOptions) =>
               auth0.getTokenSilently(options);
             this.logout = (...p: any) => auth0.logout(...p);
             this.isAuthorized = true;
@@ -225,5 +224,30 @@ export default class UserStore {
 
   setAuthError(error: Error): void {
     this.authError = error;
+  }
+
+  async loginWithRedirect(): Promise<void> {
+    if (!this.authSettings) {
+      this.authError = new Error(ERROR_MESSAGES.auth0Configuration);
+      return;
+    }
+
+    const auth0 = await createAuth0Client(this.authSettings);
+    auth0.loginWithRedirect({
+      appState: { targetUrl: window.location.href },
+    });
+  }
+
+  async getTokenSilently(): Promise<any> {
+    if (!this.getToken || !this.logout) return;
+
+    const token = (await this.getToken()) as any;
+    if (token instanceof Error) {
+      this.userIsLoading = true;
+      this.isAuthorized = false;
+      await this.logout();
+      await this.loginWithRedirect();
+    }
+    return this.getToken();
   }
 }

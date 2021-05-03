@@ -29,9 +29,10 @@ describe("metricsClient", () => {
   const userEmail = "test@email.com";
   const endpoint =
     "newRevocations/revocations_matrix_by_month?violationType=All";
-  const getTokenSilently = jest.fn().mockResolvedValue(mockToken);
   const expectedUrl = `test-url/api/${endpoint}`;
-
+  const userStore = {
+    getTokenSilently: jest.fn().mockResolvedValue(mockToken),
+  };
   beforeAll(() => {
     // do not log the expected error - keep tests less verbose
     jest.spyOn(console, "error").mockImplementation(() => {});
@@ -49,7 +50,7 @@ describe("metricsClient", () => {
       process.env = Object.assign(process.env, {
         REACT_APP_API_URL: "test-url",
       });
-      output = await callMetricsApi(endpoint, getTokenSilently);
+      output = await callMetricsApi(endpoint, userStore);
     });
 
     it("calls fetch with the correct url and headers", () => {
@@ -70,11 +71,7 @@ describe("metricsClient", () => {
       process.env = Object.assign(process.env, {
         REACT_APP_API_URL: "test-url",
       });
-      output = await callRestrictedAccessApi(
-        endpoint,
-        userEmail,
-        getTokenSilently
-      );
+      output = await callRestrictedAccessApi(endpoint, userEmail, userStore);
     });
 
     it("calls fetch with the correct url and headers", () => {
@@ -112,7 +109,7 @@ describe("metricsClient", () => {
     it("retries 2 more times before throwing an error", async () => {
       expect.assertions(2);
       try {
-        await callMetricsApi(endpoint, getTokenSilently);
+        await callMetricsApi(endpoint, userStore);
       } catch (error) {
         expect(global.fetch.mock.calls.length).toEqual(3);
         expect(error).toEqual(
@@ -126,7 +123,7 @@ describe("metricsClient", () => {
     it("throws an error", async () => {
       expect.assertions(1);
       try {
-        await callMetricsApi(endpoint, getTokenSilently);
+        await callMetricsApi(endpoint, userStore);
       } catch (error) {
         expect(error).toEqual(
           new Error(
@@ -157,7 +154,7 @@ describe("metricsClient", () => {
     it("retries 2 more times before throwing an error", async () => {
       expect.assertions(2);
       try {
-        await callRestrictedAccessApi(endpoint, userEmail, getTokenSilently);
+        await callRestrictedAccessApi(endpoint, userEmail, userStore);
       } catch (error) {
         expect(global.fetch.mock.calls.length).toEqual(3);
         expect(error).toEqual(
@@ -171,7 +168,7 @@ describe("metricsClient", () => {
     it("throws an error", async () => {
       expect.assertions(1);
       try {
-        await callRestrictedAccessApi(endpoint, userEmail, getTokenSilently);
+        await callRestrictedAccessApi(endpoint, userEmail, userStore);
       } catch (error) {
         expect(error).toEqual(
           new Error(

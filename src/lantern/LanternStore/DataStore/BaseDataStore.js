@@ -205,7 +205,7 @@ export default class BaseDataStore {
       this.isLoading = true;
       const responseData = yield callMetricsApi(
         endpoint,
-        this.getTokenSilently
+        this.rootStore.userStore
       );
       this.apiData = parseResponseByFileFormat(
         responseData,

@@ -224,7 +224,7 @@ describe("App tests", () => {
 
   it("should render the Error component if there is an error", () => {
     useRootStore.mockReturnValue({
-      userStore: { userIsLoading: false, isAuthorized: false },
+      userStore: { userIsLoading: false, authError: true },
       userRestrictedAccessStore: { isLoading: false },
     });
 

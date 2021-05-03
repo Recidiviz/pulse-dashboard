@@ -58,7 +58,7 @@ function useChartData(url) {
 
       queues[url] = [];
 
-      const responseData = await callMetricsApi(url, getTokenSilently);
+      const responseData = await callMetricsApi(url, userStore);
       queues[url].forEach((resolve) => resolve(responseData));
       delete queues[url];
 
@@ -72,7 +72,7 @@ function useChartData(url) {
       });
       throw error;
     }
-  }, [getTokenSilently, url]);
+  }, [userStore, url]);
 
   useEffect(() => {
     const { cancel, promise } = makeCancellablePromise(fetchChartData());

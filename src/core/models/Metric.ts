@@ -65,7 +65,7 @@ export default abstract class Metric<RecordFormat extends MetricRecord> {
    */
   protected async fetchMetrics(): Promise<Record<string, RawMetricData>> {
     const endpoint = `${this.tenantId}/${this.sourceEndpoint}`.toLowerCase();
-    return callMetricsApi(endpoint, RootStore.getTokenSilently);
+    return callMetricsApi(endpoint, RootStore.userStore);
   }
 
   /**
