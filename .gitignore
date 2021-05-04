@@ -9,6 +9,7 @@
 .env.production.local
 .env.test
 .env.test.local
+.env-cmdrc
 
 # Production build directory
 build/
