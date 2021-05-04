@@ -238,7 +238,7 @@ export default class BaseDataStore {
       this.isStatePopulationLoading = true;
       const responseData = yield callMetricsApi(
         endpoint,
-        this.getTokenSilently
+        this.rootStore.userStore
       );
       // The state population files will never be optimized format
       // so always use eagerExpand = true when processing response data
