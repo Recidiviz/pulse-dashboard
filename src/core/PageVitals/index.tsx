@@ -134,7 +134,8 @@ const PageVitals: React.FC = () => {
             methodology={vitalsMethodology.content}
             filters={getVitalsFiltersText(
               currentEntitySummary,
-              childEntitySummaryRows
+              childEntitySummaryRows,
+              parentEntityName
             )}
             lastUpdatedOn={lastUpdatedOn}
           />

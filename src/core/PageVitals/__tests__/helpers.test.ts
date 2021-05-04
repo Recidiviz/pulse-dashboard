@@ -140,12 +140,12 @@ describe("getTimeSeriesDownloadableData", () => {
         {
           data: [
             {
-              Total: "73%",
-              "7D average": "73%",
-            },
-            {
               Total: "76%",
               "7D average": "76%",
+            },
+            {
+              Total: "73%",
+              "7D average": "73%",
             },
           ],
           label: "Overall",
@@ -153,12 +153,12 @@ describe("getTimeSeriesDownloadableData", () => {
         {
           data: [
             {
-              Total: "63%",
-              "7D average": "63%",
-            },
-            {
               Total: "66%",
               "7D average": "66%",
+            },
+            {
+              Total: "63%",
+              "7D average": "63%",
             },
           ],
           label: "Timely discharge",
@@ -166,12 +166,12 @@ describe("getTimeSeriesDownloadableData", () => {
         {
           data: [
             {
-              Total: "53%",
-              "7D average": "53%",
-            },
-            {
               Total: "56%",
               "7D average": "56%",
+            },
+            {
+              Total: "53%",
+              "7D average": "53%",
             },
           ],
           label: "Timely FTR enrollment",
@@ -179,12 +179,12 @@ describe("getTimeSeriesDownloadableData", () => {
         {
           data: [
             {
-              Total: "43%",
-              "7D average": "43%",
-            },
-            {
               Total: "46%",
               "7D average": "46%",
+            },
+            {
+              Total: "43%",
+              "7D average": "43%",
             },
           ],
           label: "Timely contacts",
@@ -192,18 +192,18 @@ describe("getTimeSeriesDownloadableData", () => {
         {
           data: [
             {
-              Total: "33%",
-              "7D average": "33%",
-            },
-            {
               Total: "36%",
               "7D average": "36%",
+            },
+            {
+              Total: "33%",
+              "7D average": "33%",
             },
           ],
           label: "Timely risk assessments",
         },
       ],
-      chartLabels: ["2021-03-11", "2021-03-12"],
+      chartLabels: ["2021-03-12", "2021-03-11"],
       chartId: "MetricsOverTime",
       dataExportLabel: "Date",
     };

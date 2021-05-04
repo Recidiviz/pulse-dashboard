@@ -131,11 +131,13 @@ export function getTimeSeries(
   currentEntityId: string,
   selectedCardId?: string | undefined
 ): VitalsTimeSeriesRecord[] | undefined {
-  const selectedTimeSeries = timeSeries.filter((d) =>
-    selectedCardId
-      ? d.metric === selectedCardId && d.entityId === currentEntityId
-      : d.entityId === currentEntityId
-  );
+  const selectedTimeSeries = timeSeries
+    .filter((d) =>
+      selectedCardId
+        ? d.metric === selectedCardId && d.entityId === currentEntityId
+        : d.entityId === currentEntityId
+    )
+    .sort((a, b) => (a.date > b.date ? 1 : -1));
   return selectedTimeSeries.length > 0 ? selectedTimeSeries : undefined;
 }
 
@@ -160,9 +162,9 @@ export function getTimeSeriesDownloadableData(
   let ids = [] as string[];
   const datasets = [] as DownloadableDataset[];
   Object.values(METRIC_TYPES).forEach((metricType: MetricType) => {
-    const metricData = timeSeries.filter(
-      (d: VitalsTimeSeriesRecord) => d.metric === metricType
-    );
+    const metricData = timeSeries
+      .filter((d: VitalsTimeSeriesRecord) => d.metric === metricType)
+      .sort((a, b) => (a.date < b.date ? 1 : -1));
     labels = metricData.map((d) => d.date);
     ids = metricData.map((d) => d.entityId);
     const downloadableData = metricData.map((d: VitalsTimeSeriesRecord) => {
@@ -227,7 +229,8 @@ export function getVitalsSummaryDownloadableData(
 
 export const getVitalsFiltersText = (
   currentEntitySummary: VitalsSummaryRecord,
-  children: VitalsSummaryTableRow[]
+  children: VitalsSummaryTableRow[],
+  parentEntityName: string | undefined
 ): string => {
   let offices;
   let officers;
@@ -237,7 +240,7 @@ export const getVitalsFiltersText = (
       officers = children.map((child) => child.entity.entityName).join(", ");
       break;
     case ENTITY_TYPES.PO:
-      offices = "N/A";
+      offices = parentEntityName;
       officers = currentEntitySummary.entityName;
       break;
     default:
