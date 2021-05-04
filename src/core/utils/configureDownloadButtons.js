@@ -62,15 +62,12 @@ export function configureDownloadButtons({
   );
   if (downloadChartDataButton) {
     downloadChartDataButton.onclick = configureDataDownloadButton({
-      chartId,
-      chartDatasets,
-      chartLabels,
+      fileContents: [{ chartDatasets, chartLabels, chartId, dataExportLabel }],
       filters: getFilterDescription(filters),
       convertValuesToNumbers,
       chartTitle,
       timeWindowDescription,
       shouldZipDownload,
-      dataExportLabel,
       fixLabelsInColumns,
       methodology,
     });

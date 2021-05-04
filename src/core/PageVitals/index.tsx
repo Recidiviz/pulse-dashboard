@@ -36,10 +36,18 @@ import {
   getSummaryCards,
   getSummaryDetail,
   getEntitySummaries,
-  getTimeseries,
+  getTimeSeries,
   getWeeklyChange,
+  getTimeSeriesDownloadableData,
+  getVitalsSummaryDownloadableData,
+  getVitalsFiltersText,
 } from "./helpers";
+import DownloadDataButton from "../DownloadDataButton";
+import DetailsGroup from "../DetailsGroup";
 import { ENTITY_TYPES } from "../models/types";
+import content from "../content";
+
+import "../DetailsGroup.scss";
 import "./PageVitals.scss";
 
 const DEFAULT_ENTITY_ID = "STATE_DOC";
@@ -60,10 +68,13 @@ const PageVitals: React.FC = () => {
 
   const { summaries, timeSeries, isLoading, isError } = metricsStore.vitals;
 
-  const { stateName, stateCode } = tenantStore;
+  const { stateName, stateCode, currentTenantId } = tenantStore;
   const [selectedCardId, setSelectedCardId] = useState<MetricType>(
     METRIC_TYPES.OVERALL
   );
+
+  // @ts-ignore TODO TS
+  const { vitals: vitalsMethodology } = content[currentTenantId];
 
   // TODO: add in Error state
   if (isError) {
@@ -88,16 +99,18 @@ const PageVitals: React.FC = () => {
     parentEntityName,
   } = getEntitySummaries(summaries, currentEntityId);
   const summaryCards = getSummaryCards(currentEntitySummary);
-  const selectedTimeSeries = getTimeseries(
+  const selectedTimeSeries = getTimeSeries(
     timeSeries,
-    selectedCardId,
-    currentEntityId
+    currentEntityId,
+    selectedCardId
   );
+
   const lastUpdatedOn = selectedTimeSeries
     ? formatISODateString(
         selectedTimeSeries[selectedTimeSeries.length - 1].date
       )
     : "Unknown";
+
   return (
     <PageTemplate>
       <div className="PageVitals__header">
@@ -106,12 +119,28 @@ const PageVitals: React.FC = () => {
           entity={currentEntitySummary}
           parentEntityName={parentEntityName}
         />
-        <div className="PageVitals__header--right">
-          <div className="PageVitals__last-updated">
+        <DetailsGroup>
+          <div className="DetailsGroup__item">
             Last updated on {lastUpdatedOn}
           </div>
+          <DownloadDataButton
+            data={[
+              getTimeSeriesDownloadableData(
+                getTimeSeries(timeSeries, currentEntityId)
+              ),
+              getVitalsSummaryDownloadableData(childEntitySummaryRows),
+            ]}
+            title={`${stateName} At A Glance`}
+            methodology={vitalsMethodology.content}
+            filters={getVitalsFiltersText(
+              currentEntitySummary,
+              childEntitySummaryRows,
+              parentEntityName
+            )}
+            lastUpdatedOn={lastUpdatedOn}
+          />
           <MethodologyLink path={CORE_PATHS.methodologyVitals} />
-        </div>
+        </DetailsGroup>
       </div>
       <div className="PageVitals__SummaryCards">
         <VitalsSummaryCards

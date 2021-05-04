@@ -14,23 +14,12 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-@import "./CoreConstants.scss";
+import React from "react";
 
-.MethodologyLink {
-  align-items: baseline;
-  color: $signal-links;
-  display: flex;
-  font: $font-ui-sans-16;
+import "./DetailsGroup.scss";
 
-  &:hover {
-    text-decoration: none;
-    color: $signal-links;
-  }
+const DetailsGroup: React.FC = ({ children }) => {
+  return <div className="DetailsGroup">{children}</div>;
+};
 
-  &__icon {
-    cursor: pointer;
-    height: 12px;
-    width: 12px;
-    margin-right: 6.5px;
-  }
-}
+export default DetailsGroup;

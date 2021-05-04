@@ -15,33 +15,39 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 import moment from "moment";
+import { htmlToText } from "html-to-text";
 
-function createMethodologyFile(
-  chartId,
+function createMethodologyFile({
   chartTitle,
   timeWindowDescription,
-  filtersText,
+  filters,
   methodology,
-  violationText
-) {
-  const infoChart = methodology[chartId] || [];
+  violation,
+  lastUpdatedOn,
+}) {
+  const infoChart = methodology || [];
   const exportDate = moment().format("M/D/YYYY");
 
   let text = `Chart: ${chartTitle}\n`;
-  text += `Dates: ${timeWindowDescription}\n`;
-  text += `Applied filters:\n`;
-  text += `- ${filtersText}\n`;
-
-  if (violationText) {
-    text += `- ${violationText}\n`;
+  if (timeWindowDescription) {
+    text += `Dates: ${timeWindowDescription}\n`;
   }
-
+  if (filters) {
+    text += `Applied filters:\n`;
+    text += `- ${filters}\n`;
+  }
+  if (violation) {
+    text += `- ${violation}\n`;
+  }
+  if (lastUpdatedOn) {
+    text += `Data last updated on: ${lastUpdatedOn}\n`;
+  }
   text += "\n";
   text += `Export Date: ${exportDate}\n\n`;
 
   infoChart.forEach((chart) => {
     if (chart.header) text += `${chart.header}\n`;
-    text += `${chart.body}\n`;
+    text += `${htmlToText(chart.body)}\n`;
     text += "\n";
   });
 
