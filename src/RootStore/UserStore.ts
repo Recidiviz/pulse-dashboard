@@ -163,7 +163,12 @@ export default class UserStore {
         });
       }
     } catch (error) {
-      this.authError = error;
+      if (error.message === "Invalid state" && this.auth0) {
+        await this.auth0.logout();
+        this.auth0.loginWithRedirect();
+      } else {
+        this.authError = error;
+      }
     }
   }
 

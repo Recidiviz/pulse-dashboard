@@ -85,6 +85,24 @@ test("error thrown in authorize sets authError", async () => {
   expect.hasAssertions();
 });
 
+test("Invalid state thrown in authorize redirects to login", async () => {
+  mockHandleRedirectCallback.mockResolvedValue(new Error("Invalid state"));
+  expect(mockLoginWithRedirect.mock.calls.length).toBe(0);
+
+  const store = new UserStore({
+    authSettings: testAuthSettings,
+  });
+  await store.authorize();
+  reactImmediately(() => {
+    expect(mockLoginWithRedirect.mock.calls.length).toBe(1);
+    expect(mockLoginWithRedirect.mock.calls[0][0]).toEqual({
+      appState: { targetUrl: window.location.href },
+    });
+    expect(store.authError).toBe(undefined);
+  });
+  expect.hasAssertions();
+});
+
 test("authorized when authenticated", async () => {
   mockIsAuthenticated.mockResolvedValue(true);
   mockGetUser.mockResolvedValue({ email_verified: true, ...metadata });
