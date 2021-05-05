@@ -21,6 +21,11 @@ import RootStore from "../../../RootStore";
 import VitalsMetrics from "../VitalsMetrics";
 
 const mockTenantId = "US_ND";
+const mockGetTokenSilently = jest.fn();
+jest
+  // @ts-ignore
+  .spyOn(RootStore, "getTokenSilently", "get")
+  .mockReturnValue(mockGetTokenSilently);
 jest.mock("../../../api/metrics/metricsClient", () => {
   return {
     callMetricsApi: jest.fn().mockResolvedValue({
@@ -68,7 +73,7 @@ describe("VitalsMetrics", () => {
   it("fetches metrics when initialized", () => {
     expect(callMetricsApi).toHaveBeenCalledWith(
       `${mockTenantId.toLowerCase()}/vitals`,
-      RootStore.userStore
+      mockGetTokenSilently
     );
   });
 

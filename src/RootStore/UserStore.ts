@@ -97,6 +97,8 @@ export default class UserStore {
       authSettings: false,
       setAuthError: action.bound,
       userHasAccess: action.bound,
+      getTokenSilently: action.bound,
+      loginWithRedirect: action.bound,
     });
 
     this.authSettings = authSettings;
@@ -245,10 +247,8 @@ export default class UserStore {
 
     const token = (await this.getToken()) as any;
     if (token instanceof Error) {
-      runInAction(() => {
-        this.userIsLoading = true;
-        this.isAuthorized = false;
-      });
+      this.userIsLoading = true;
+      this.isAuthorized = false;
       await this.logout();
       await this.loginWithRedirect();
     }

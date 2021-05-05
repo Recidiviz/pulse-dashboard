@@ -102,7 +102,7 @@ describe("DistrictsStore", () => {
       expect(callMetricsApi).toHaveBeenCalledTimes(1);
       expect(callMetricsApi).toHaveBeenCalledWith(
         endpoint,
-        store.rootStore.userStore
+        mockGetTokenSilently
       );
     });
 

@@ -23,8 +23,13 @@ import ProjectionsMetrics from "../ProjectionsMetrics";
 import { CORE_VIEWS } from "../../views";
 
 const mockTenantId = "US_ND";
+const mockGetTokenSilently = jest.fn();
 const mockCoreStore = {} as CoreStore;
 const filtersStore = new FiltersStore({ rootStore: mockCoreStore });
+jest
+  // @ts-ignore
+  .spyOn(RootStore, "getTokenSilently", "get")
+  .mockReturnValue(mockGetTokenSilently);
 jest.mock("../../../api/metrics/metricsClient", () => {
   return {
     callMetricsApi: jest.fn().mockResolvedValue({
@@ -121,7 +126,7 @@ describe("ProjectionsMetrics", () => {
   it("fetches metrics when initialized", () => {
     expect(callMetricsApi).toHaveBeenCalledWith(
       `${mockTenantId.toLowerCase()}/vitals`,
-      RootStore.userStore
+      mockGetTokenSilently
     );
   });
 

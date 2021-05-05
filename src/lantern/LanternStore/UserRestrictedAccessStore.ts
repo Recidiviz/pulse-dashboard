@@ -93,7 +93,7 @@ export default class UserRestrictedAccessStore {
       const responseData = yield callRestrictedAccessApi(
         endpoint,
         this.rootStore.userStore.user?.email,
-        this.rootStore.userStore
+        this.rootStore.userStore.getTokenSilently
       );
       this.setRestrictions(responseData[file]);
       this.isLoading = false;

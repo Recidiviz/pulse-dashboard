@@ -205,7 +205,7 @@ export default class BaseDataStore {
       this.isLoading = true;
       const responseData = yield callMetricsApi(
         endpoint,
-        this.rootStore.userStore
+        this.getTokenSilently
       );
       this.apiData = parseResponseByFileFormat(
         responseData,
@@ -238,7 +238,7 @@ export default class BaseDataStore {
       this.isStatePopulationLoading = true;
       const responseData = yield callMetricsApi(
         endpoint,
-        this.rootStore.userStore
+        this.getTokenSilently
       );
       // The state population files will never be optimized format
       // so always use eagerExpand = true when processing response data

@@ -49,8 +49,8 @@ async function fetchWithRetry(endpoint, options, retryTimes) {
  * invoking the given API endpoint. Takes in the |endpoint| as a string and the |getTokenSilently|
  * function, which will be used to authenticate the client against the API.
  */
-async function callMetricsApi(endpoint, userStore) {
-  const token = await userStore.getTokenSilently();
+async function callMetricsApi(endpoint, getTokenSilently) {
+  const token = await getTokenSilently();
 
   const retryTimes = 3;
   const responseJson = await fetchWithRetry(
@@ -71,8 +71,8 @@ async function callMetricsApi(endpoint, userStore) {
  * invoking the given API endpoint. Takes in the |endpoint| as a string, the |userEmail| as a string,
  * and the |getTokenSilently| function, which will be used to authenticate the client against the API.
  */
-async function callRestrictedAccessApi(endpoint, userEmail, userStore) {
-  const token = await userStore.getTokenSilently();
+async function callRestrictedAccessApi(endpoint, userEmail, getTokenSilently) {
+  const token = await getTokenSilently();
   const retryTimes = 3;
   const responseJson = await fetchWithRetry(
     `${process.env.REACT_APP_API_URL}/api/${endpoint}`,
