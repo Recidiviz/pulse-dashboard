@@ -182,7 +182,8 @@ If you are running in demo mode to share the app externally, you may need to run
 
 1. Check that you have all of the required environment variables and files set up:
 
-   - [ ] `.env-cmdrc` should exist and should have the correct values for the "development" environment. These variables can be found in the Recidiviz 1Password Vault.
+   - [ ] `.env` should exist and have the correct values for the backend. These variables can be found in the Recidiviz 1Password Vault.
+   - [ ] `.env-cmdrc` should exist and should have the correct values for the "development" frontend environment. These variables can be found in the Recidiviz 1Password Vault.
    - [ ] You should have both `auth_config_dev.json` and `auth_config_production.json` files defined in the `pulse-dashboard/src` directory. The values for these files are found in the Recidiviz 1Password Vault.
 
 1. Make sure your `redis-server` is not still running from a previous session. You can fix this in two different ways:
