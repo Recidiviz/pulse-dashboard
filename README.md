@@ -170,6 +170,36 @@ You can launch in demo mode locally via: `./run_in_demo_mode.sh`
 
 Running via that command is important because environment variables are required for both the frontend and backend servers. Running with only one or the other in demo mode produces a fairly broken experience.
 
+If you are running in demo mode to share the app externally, you may need to run through the following steps first:
+
+1. Ensure that your environment is set up correctly by following steps 1 - 9 in the [Set Up Your Frontend Development doc](https://docs.google.com/document/d/1y-yJwZN6yM1s5OKqTDCk56FN2p7ZA62buwph1YdnJAc/edit). Check the `.nvmrc` to see the latest Node version you'll need to install and use.
+1. Make sure your local repository has all the latest changes from the main branch. Run the following git commands from the `pulse-dashboard/` directory:
+
+   ```
+   :> git checkout main
+   :> git pull origin main
+   ```
+
+1. Check that you have all of the required environment variables and files set up:
+
+   - [ ] `.env-cmdrc` should exist and should have the correct values for the "development" environment. These variables can be found in the Recidiviz 1Password Vault.
+   - [ ] You should have both `auth_config_dev.json` and `auth_config_production.json` files defined in the `pulse-dashboard/src` directory. The values for these files are found in the Recidiviz 1Password Vault.
+
+1. Make sure your `redis-server` is not still running from a previous session. You can fix this in two different ways:
+
+   - Long term solution would be to install [iTerm2](https://iterm2.com/), which will automatically shutdown processes after you close your terminal.
+   - If you are using the Terminal app, you can use the following commands to find and shutdown the rogue process:
+
+     ```
+     // List the processes running on server port 6379
+     :> lsof -i tcp:6379
+         COMMAND     PID   USER   FD   TYPE  DEVICE SIZE/OFF NODE NAME
+         redis-ser   42611 user   6u   IPv4  0x0000 0t0      TCP *:6379 (LISTEN)
+
+     // Use the number under the PID heading to shutdown the process
+     :> kill -9 42611
+     ```
+
 ## Deploys
 
 As noted above, the Dashboard is two components: a React frontend and a Node/Express backend providing a thin API. The app can be run locally, in staging, and in production. Deploying to staging and production are very similar, as described below.
