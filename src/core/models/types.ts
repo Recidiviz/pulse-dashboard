@@ -109,8 +109,8 @@ export type VitalsSummaryRecord = {
 };
 
 export type MethodologyContent = {
-  heading: string;
-  content: string;
+  header: string;
+  body: string;
 };
 
 export type ViewMethodology = {

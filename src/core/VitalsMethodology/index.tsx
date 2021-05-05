@@ -47,10 +47,10 @@ const VitalsMethodology: React.FC = () => {
                 (contentBlock: MethodologyContent) => (
                   <a
                     className="Methodology__toc--link"
-                    key={`link${contentBlock.heading}`}
-                    href={`#${convertToSlug(contentBlock.heading)}`}
+                    key={`link${contentBlock.header}`}
+                    href={`#${convertToSlug(contentBlock.header)}`}
                   >
-                    {contentBlock.heading}
+                    {contentBlock.header}
                   </a>
                 )
               )}
@@ -60,13 +60,13 @@ const VitalsMethodology: React.FC = () => {
             {vitalsMethodology.content.map(
               (contentBlock: MethodologyContent) => {
                 return (
-                  <ScrollableAnchor id={convertToSlug(contentBlock.heading)}>
+                  <ScrollableAnchor id={convertToSlug(contentBlock.header)}>
                     <div className="Methodology__block">
                       <h3 className="Methodology__block--title ">
-                        {contentBlock.heading}
+                        {contentBlock.header}
                       </h3>
                       <hr />
-                      <>{HTMLReactParser(contentBlock.content)}</>
+                      <>{HTMLReactParser(contentBlock.body)}</>
                     </div>
                   </ScrollableAnchor>
                 );

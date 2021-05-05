@@ -23,18 +23,6 @@
     flex-flow: row;
     justify-content: space-between;
     width: 100%;
-
-    &--right {
-      display: flex;
-      flex-flow: row nowrap;
-
-      .PageVitals__last-updated {
-        color: $slate-80;
-        font: $font-ui-sans-14;
-        letter-spacing: -0.01em;
-        margin-right: 1rem;
-      }
-    }
   }
 
   &__SummaryCards {

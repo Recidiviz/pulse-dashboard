@@ -16,23 +16,58 @@
 // =============================================================================
 import React from "react";
 
-import { Link } from "react-router-dom";
 import { Icon, IconSVG } from "@recidiviz/case-triage-components";
-
+import { DownloadableData } from "./PageVitals/types";
+import { downloadChartAsData } from "../utils/downloads/downloadData";
+import { useRootStore } from "../components/StoreProvider";
+import { MethodologyContent } from "./models/types";
 import "./DetailsGroup.scss";
 import * as styles from "./CoreConstants.scss";
 
-const MethodologyLink: React.FC<{ path: string }> = ({ path }) => {
+interface PropTypes {
+  data: DownloadableData[];
+  title: string;
+  methodology: MethodologyContent[];
+  filters: string;
+  lastUpdatedOn: string;
+}
+
+const DownloadDataButton: React.FC<PropTypes> = ({
+  data,
+  title,
+  methodology,
+  filters,
+  lastUpdatedOn,
+}) => {
+  const { getTokenSilently } = useRootStore();
+
   return (
-    <Link className="MethodologyLink DetailsGroup__button" to={path}>
+    <button
+      className="btn btn-link DetailsGroup__button"
+      id="downloadChartData-VitalsSummaryChart"
+      type="button"
+      aria-expanded="true"
+      aria-controls="importantNotes"
+      onClick={() =>
+        downloadChartAsData({
+          fileContents: data,
+          chartTitle: title,
+          shouldZipDownload: true,
+          methodology,
+          getTokenSilently,
+          filters: { filtersDescription: filters },
+          lastUpdatedOn,
+        })
+      }
+    >
       <Icon
         className="DetailsGroup__icon"
         kind={IconSVG.Open}
         fill={styles.signalLinks}
       />
-      Methodology
-    </Link>
+      Download Data
+    </button>
   );
 };
 
-export default MethodologyLink;
+export default DownloadDataButton;

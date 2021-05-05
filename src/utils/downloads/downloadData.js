@@ -77,14 +77,13 @@ export function downloadCanvasAsImage({
     if (shouldZipDownload || isMobile) {
       const methodologyFile =
         shouldZipDownload &&
-        createMethodologyFile(
-          chartId,
+        createMethodologyFile({
           chartTitle,
           timeWindowDescription,
           filters,
           methodology,
-          violation
-        );
+          violation,
+        });
 
       const files = [
         {
@@ -120,21 +119,20 @@ export function downloadCanvasAsImage({
 
 export function downloadData({
   shouldZipDownload,
-  csv,
+  fileContents,
   chartId,
-  filename,
   getTokenSilently,
   methodologyFile = null,
 }) {
   try {
     if (shouldZipDownload || isMobile) {
-      const files = [
-        {
-          name: filename,
-          data: csv,
+      const files = fileContents.map((file) => {
+        return {
+          name: file.filename,
+          data: file.csv,
           type: "binary",
-        },
-      ];
+        };
+      });
 
       if (methodologyFile) {
         files.push(methodologyFile);
@@ -146,21 +144,25 @@ export function downloadData({
         getTokenSilently,
       });
     } else if (isIE || isEdge) {
-      const blob = new Blob([csv], {
-        type: "text/csv;charset=utf-8;",
+      fileContents.forEach((file) => {
+        const blob = new Blob([file.csv], {
+          type: "text/csv;charset=utf-8;",
+        });
+        navigator.msSaveBlob(blob, file.filename);
       });
-      navigator.msSaveBlob(blob, filename);
     } else {
-      const encodedCsv = encodeURIComponent(csv);
-      const dataStr = `data:text/csv;charset=utf-8,${encodedCsv}`;
-      downloadjs(dataStr, filename, "text/csv");
+      fileContents.forEach((file) => {
+        const encodedCsv = encodeURIComponent(file.csv);
+        const dataStr = `data:text/csv;charset=utf-8,${encodedCsv}`;
+        downloadjs(dataStr, file.filename, "text/csv");
+      });
     }
   } catch (error) {
     console.error(error);
     Sentry.captureException(error, (scope) => {
       scope.setContext("downloadData", {
         chartId,
-        filename,
+        filename: "filename",
         shouldZipDownload,
       });
     });
@@ -195,11 +197,9 @@ export function downloadHtmlElementAsImage({
 }
 
 export function configureDataDownloadButton({
-  chartId,
-  chartDatasets,
-  chartLabels,
-  dataExportLabel,
+  fileContents,
   filters,
+  violation,
   convertValuesToNumbers,
   chartTitle,
   timeWindowDescription,
@@ -207,33 +207,44 @@ export function configureDataDownloadButton({
   fixLabelsInColumns,
   methodology,
   getTokenSilently,
+  lastUpdatedOn,
 }) {
   return () => {
-    const filename = configureFilename(chartId, filters, shouldZipDownload);
-    const exportName = `${filename}.csv`;
     const methodologyFile =
       shouldZipDownload &&
-      createMethodologyFile(
-        chartId,
+      createMethodologyFile({
         chartTitle,
         timeWindowDescription,
         filters,
-        methodology
+        violation,
+        methodology,
+        lastUpdatedOn,
+      });
+    const promises = fileContents.map((file) => {
+      return transformChartDataToCsv(
+        file.chartDatasets,
+        file.chartLabels,
+        file.dataExportLabel,
+        convertValuesToNumbers,
+        fixLabelsInColumns
       );
-    transformChartDataToCsv(
-      chartDatasets,
-      chartLabels,
-      dataExportLabel,
-      convertValuesToNumbers,
-      fixLabelsInColumns
-    ).then((csv) => {
+    });
+    Promise.all(promises).then((csvs) => {
       downloadData({
-        chartId,
         shouldZipDownload,
-        csv,
+        fileContents: csvs.map((csv, index) => {
+          const filename = configureFilename(
+            fileContents[index].chartId,
+            filters,
+            shouldZipDownload
+          );
+          return {
+            csv,
+            filename: `${filename}.csv`,
+          };
+        }),
         getTokenSilently,
         methodologyFile,
-        filename: exportName,
       });
     });
   };
@@ -264,31 +275,27 @@ export function downloadChartAsImage({
 }
 
 export function downloadChartAsData({
-  chartId,
   chartTitle,
-  chartDatasets,
-  chartLabels,
-  dataExportLabel,
-  filters,
-  timeWindowDescription,
+  fileContents,
+  filters = null,
+  timeWindowDescription = null,
   shouldZipDownload,
   fixLabelsInColumns = false,
   methodology,
   getTokenSilently,
+  lastUpdatedOn = null,
 }) {
   const downloadChartData = configureDataDownloadButton({
-    chartId,
-    chartDatasets,
-    chartLabels,
-    dataExportLabel,
-    filters: filters.filtersDescription,
-    violation: filters.violationTypeDescription,
+    fileContents: fileContents.filter(Boolean),
+    filters: filters && filters.filtersDescription,
+    violation: filters && filters.violationTypeDescription,
     chartTitle,
     timeWindowDescription,
     shouldZipDownload,
     fixLabelsInColumns,
     methodology,
     getTokenSilently,
+    lastUpdatedOn,
   });
   downloadChartData();
 }
