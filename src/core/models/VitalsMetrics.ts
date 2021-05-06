@@ -38,8 +38,8 @@ export function createVitalsSummaryMetric(
       timelyFtrEnrollment: Number(record.timely_ftr_enrollment),
       timelyContact: Number(record.timely_contact),
       timelyRiskAssessment: Number(record.timely_risk_assessment),
-      overall30Day: Number(record.overall_7d),
-      overall90Day: Number(record.overall_28d),
+      overall30Day: Number(record.overall_30d),
+      overall90Day: Number(record.overall_90d),
     };
   });
 }
@@ -54,7 +54,7 @@ export function createVitalsTimeSeriesMetric(
       metric: record.metric,
       value: Number(record.value),
       // TODO update when there is data
-      monthlyAvg: Number(record.avg_7d),
+      monthlyAvg: Number(record.avg_30d),
     };
   });
 }

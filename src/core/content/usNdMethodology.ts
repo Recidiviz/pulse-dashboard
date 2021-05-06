@@ -22,8 +22,8 @@ export const US_ND: ViewMethodology = {
     description: `The “At a Glance” page provides a snapshot of agency performance on a set of key metrics to proactively identify potential resource constraints and focus attention on operational successes and areas for improvement.`,
     content: [
       {
-        heading: "Percentage Calculations",
-        content: `
+        header: "Percentage Calculations",
+        body: `
         <p class="Methodology__block--content">
         The numerator for each percentage calculation is the number of people who meet the following criteria on a given day:
         </p>
@@ -46,8 +46,8 @@ export const US_ND: ViewMethodology = {
         </p>`,
       },
       {
-        heading: "Over-time Calculations",
-        content: `
+        header: "Over-time Calculations",
+        body: `
         <ul class="Methodology__block--content">
           <li><b>"Current Performance"</b> takes the numerator and denominator for the “Data last updated” date. For example, if the data was last updated on 3/31/21, the timely discharge performance would be represented by the total number of people with a projected supervision completion date before 3/31/21 divided by the total number of people on supervision on 3/31/21.
           </li>

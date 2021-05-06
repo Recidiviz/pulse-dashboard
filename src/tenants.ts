@@ -62,8 +62,9 @@ const TENANTS: Tenants = {
     stateCode: "ID",
     availableStateCodes: [core.US_ID],
     navigation: {
-      community: ["projections"],
-      facilities: ["projections"],
+      ...(flags.enableProjectionsDashboard
+        ? { community: ["projections"], facilities: ["projections"] }
+        : { community: [], facilities: [] }),
       ...(flags.showMethodologyDropdown
         ? { methodology: ["projections"] }
         : {}),

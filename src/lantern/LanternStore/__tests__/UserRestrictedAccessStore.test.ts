@@ -118,6 +118,53 @@ describe("fetchRestrictedDistrictData", () => {
         userDistrict,
       ]);
     });
+
+    it("enabledRevocationsCharts is based on tenantId and user restrictions", () => {
+      expect(userRestrictedAccessStore.enabledRevocationsCharts).toEqual([
+        "District",
+        "Officer",
+        "Risk level",
+        "Violation",
+      ]);
+    });
+
+    describe("when tenantId is not US_MO", () => {
+      it("does not restrict the enabledRevocationsCharts", () => {
+        mockLanternStore.mockImplementationOnce(() => {
+          return {
+            currentTenantId: "US_PA",
+            tenantStore: {
+              isLanternTenant: true,
+              isRestrictedDistrictTenant: true,
+            },
+            districtsStore: {
+              isLoading: false,
+              districtIds: [userDistrict, additionalRestrictedDistrict],
+            },
+            userStore: {
+              availableStateCodes: ["US_PA"],
+              user: mockUser,
+              userIsLoading: false,
+              getTokenSilently: mockGetTokenSilently,
+              setAuthError: mockSetAuthError,
+            },
+          };
+        });
+        reactImmediately(() => {
+          userRestrictedAccessStore = new UserRestrictedAccessStore({
+            rootStore: new LanternStore(mockRootStore),
+          });
+        });
+        expect(userRestrictedAccessStore.enabledRevocationsCharts).toEqual([
+          "District",
+          "Officer",
+          "Risk level",
+          "Violation",
+          "Gender",
+          "Race",
+        ]);
+      });
+    });
   });
 
   describe("when the user has more than one restricted district", () => {

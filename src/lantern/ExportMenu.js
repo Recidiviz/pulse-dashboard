@@ -80,7 +80,7 @@ const ExportMenu = ({
                   filters: filtersStore.filtersDescriptions,
                   timeWindowDescription,
                   shouldZipDownload: true,
-                  methodology,
+                  methodology: methodology[chartId],
                   getTokenSilently,
                 })
               }
@@ -98,7 +98,7 @@ const ExportMenu = ({
                   filters: filtersStore.filtersDescriptions,
                   timeWindowDescription,
                   shouldZipDownload: true,
-                  methodology,
+                  methodology: methodology[chartId],
                   getTokenSilently,
                 })
               }
@@ -110,16 +110,20 @@ const ExportMenu = ({
             as="button"
             onClick={() =>
               downloadChartAsData({
-                chartId,
                 chartTitle: metricTitle,
-                chartDatasets: datasets,
-                chartLabels: labels,
-                dataExportLabel,
+                fileContents: [
+                  {
+                    chartDatasets: datasets,
+                    chartLabels: labels,
+                    chartId,
+                    dataExportLabel,
+                  },
+                ],
                 filters: filtersStore.filtersDescriptions,
                 timeWindowDescription,
                 shouldZipDownload: true,
                 fixLabelsInColumns,
-                methodology,
+                methodology: methodology[chartId],
                 getTokenSilently,
               })
             }

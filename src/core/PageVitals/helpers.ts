@@ -19,8 +19,17 @@ import {
   SummaryStatus,
   VitalsSummaryTableRow,
   METRIC_TYPES,
+  METRIC_TYPE_LABELS,
+  MetricType,
+  DownloadableData,
+  DownloadableDataset,
 } from "./types";
-import { VitalsSummaryRecord, VitalsTimeSeriesRecord } from "../models/types";
+import {
+  ENTITY_TYPES,
+  VitalsSummaryRecord,
+  VitalsTimeSeriesRecord,
+} from "../models/types";
+import { formatPercent } from "../../utils/formatStrings";
 
 export function getSummaryStatus(value: number): SummaryStatus {
   if (value < 70) return "POOR";
@@ -34,14 +43,14 @@ export const getSummaryCards: (
   summary: VitalsSummaryRecord
 ) => SummaryCard[] = (summary) => [
   {
-    title: "Overall",
+    title: METRIC_TYPE_LABELS.OVERALL,
     description: "Average timeliness across all metrics",
     value: summary.overall,
     status: getSummaryStatus(summary.overall),
     id: METRIC_TYPES.OVERALL,
   },
   {
-    title: "Timely discharge",
+    title: METRIC_TYPE_LABELS.DISCHARGE,
     description: `of clients were discharged at their earliest projected regular
      supervision discharge date`,
     value: summary.timelyDischarge,
@@ -49,7 +58,7 @@ export const getSummaryCards: (
     id: METRIC_TYPES.DISCHARGE,
   },
   {
-    title: "Timely FTR enrollment",
+    title: METRIC_TYPE_LABELS.FTR_ENROLLMENT,
     description:
       "of clients are not pending enrollment in Free Through Recovery",
     value: summary.timelyFtrEnrollment,
@@ -57,7 +66,7 @@ export const getSummaryCards: (
     id: METRIC_TYPES.FTR_ENROLLMENT,
   },
   {
-    title: "Timely contacts",
+    title: METRIC_TYPE_LABELS.CONTACT,
     description: `of clients received initial contact within 30 days of starting
      supervision and a F2F contact every subsequent 90, 60, or 30 days for 
      minimum, medium, and maximum supervision levels respectively`,
@@ -66,7 +75,7 @@ export const getSummaryCards: (
     id: METRIC_TYPES.CONTACT,
   },
   {
-    title: "Timely risk assessments",
+    title: METRIC_TYPE_LABELS.RISK_ASSESSMENT,
     description: `of clients have had an initial assessment within 30 days and 
       reassessment within 212 days`,
     value: summary.timelyRiskAssessment,
@@ -117,14 +126,18 @@ export function getEntitySummaries(
   return { currentEntitySummary, childEntitySummaryRows, parentEntityName };
 }
 
-export function getTimeseries(
+export function getTimeSeries(
   timeSeries: VitalsTimeSeriesRecord[],
-  selectedCardId: string,
-  currentEntityId: string
+  currentEntityId: string,
+  selectedCardId?: string | undefined
 ): VitalsTimeSeriesRecord[] | undefined {
-  const selectedTimeSeries = timeSeries.filter(
-    (d) => d.metric === selectedCardId && d.entityId === currentEntityId
-  );
+  const selectedTimeSeries = timeSeries
+    .filter((d) =>
+      selectedCardId
+        ? d.metric === selectedCardId && d.entityId === currentEntityId
+        : d.entityId === currentEntityId
+    )
+    .sort((a, b) => (a.date > b.date ? 1 : -1));
   return selectedTimeSeries.length > 0 ? selectedTimeSeries : undefined;
 }
 
@@ -139,3 +152,101 @@ export function getMonthlyChange(
   const ninetyDayChange = latestDay.monthlyAvg - ninetyDaysAgo.monthlyAvg;
   return { thirtyDayChange, ninetyDayChange };
 }
+
+export function getTimeSeriesDownloadableData(
+  timeSeries?: VitalsTimeSeriesRecord[]
+): DownloadableData | undefined {
+  if (!timeSeries) return undefined;
+
+  let labels = [] as string[];
+  let ids = [] as string[];
+  const datasets = [] as DownloadableDataset[];
+  Object.values(METRIC_TYPES).forEach((metricType: MetricType) => {
+    const metricData = timeSeries
+      .filter((d: VitalsTimeSeriesRecord) => d.metric === metricType)
+      .sort((a, b) => (a.date < b.date ? 1 : -1));
+    labels = metricData.map((d) => d.date);
+    ids = metricData.map((d) => d.entityId);
+    const downloadableData = metricData.map((d: VitalsTimeSeriesRecord) => {
+      return {
+        Total: formatPercent(d.value),
+        "7D average": formatPercent(d.monthlyAvg),
+      };
+    });
+    datasets.push({
+      data: downloadableData,
+      label: METRIC_TYPE_LABELS[metricType],
+    });
+  });
+
+  // add IDs to the beginning of the dataset
+  datasets.unshift({ data: ids, label: "Id" });
+
+  return {
+    chartDatasets: datasets,
+    chartLabels: labels,
+    chartId: "MetricsOverTime",
+    dataExportLabel: "Date",
+  };
+}
+
+export function getVitalsSummaryDownloadableData(
+  summaries: VitalsSummaryTableRow[]
+): DownloadableData | undefined {
+  if (summaries.length === 0) return undefined;
+
+  const dataExportLabel =
+    summaries[0].entity.entityType.toLowerCase() ===
+    ENTITY_TYPES.PO.toLowerCase()
+      ? "Officer"
+      : "Office";
+
+  const ids = summaries.map((d) => d.entity.entityName);
+  const datasets = [] as DownloadableDataset[];
+  const downloadableData = summaries.map((d: VitalsSummaryTableRow) => {
+    return {
+      "Overall score": formatPercent(d.overall),
+      "7D change": formatPercent(d.overall30Day),
+      "28D change": formatPercent(d.overall90Day),
+      [METRIC_TYPE_LABELS.DISCHARGE]: formatPercent(d.timelyDischarge),
+      [METRIC_TYPE_LABELS.FTR_ENROLLMENT]: formatPercent(d.timelyFtrEnrollment),
+      [METRIC_TYPE_LABELS.CONTACT]: formatPercent(d.timelyContact),
+      [METRIC_TYPE_LABELS.RISK_ASSESSMENT]: formatPercent(
+        d.timelyRiskAssessment
+      ),
+    };
+  });
+
+  datasets.push({ data: downloadableData, label: "" });
+
+  return {
+    chartDatasets: datasets,
+    chartLabels: ids,
+    chartId: `MetricsBy${dataExportLabel}`,
+    dataExportLabel,
+  };
+}
+
+export const getVitalsFiltersText = (
+  currentEntitySummary: VitalsSummaryRecord,
+  children: VitalsSummaryTableRow[],
+  parentEntityName: string | undefined
+): string => {
+  let offices;
+  let officers;
+  switch (currentEntitySummary.entityType) {
+    case ENTITY_TYPES.LEVEL_1_SUPERVISION_LOCATION:
+      offices = currentEntitySummary.entityName;
+      officers = children.map((child) => child.entity.entityName).join(", ");
+      break;
+    case ENTITY_TYPES.PO:
+      offices = parentEntityName;
+      officers = currentEntitySummary.entityName;
+      break;
+    default:
+      offices = "All";
+      officers = "All";
+  }
+
+  return `Office(s): ${offices}, Officers: ${officers}`;
+};

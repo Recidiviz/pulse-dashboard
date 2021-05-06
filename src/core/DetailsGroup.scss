@@ -14,25 +14,40 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-import React from "react";
+@import "./CoreConstants.scss";
 
-import { Link } from "react-router-dom";
-import { Icon, IconSVG } from "@recidiviz/case-triage-components";
+.DetailsGroup {
+  display: flex;
+  align-items: baseline;
 
-import "./DetailsGroup.scss";
-import * as styles from "./CoreConstants.scss";
+  &__item {
+    color: $slate-80;
+    font: $font-ui-sans-14;
+    letter-spacing: -0.01em;
 
-const MethodologyLink: React.FC<{ path: string }> = ({ path }) => {
-  return (
-    <Link className="MethodologyLink DetailsGroup__button" to={path}>
-      <Icon
-        className="DetailsGroup__icon"
-        kind={IconSVG.Open}
-        fill={styles.signalLinks}
-      />
-      Methodology
-    </Link>
-  );
-};
+    > :not(:last-child) {
+      margin-right: 1.5rem;
+    }
+  }
+  
+  &__button {
+    color: $signal-links;
+    font: $font-ui-sans-16;
+    > :not(:last-child) {
+      margin-right: 1.5rem;
+    }
 
-export default MethodologyLink;
+    &:hover {
+      text-decoration: none;
+      color: $signal-links;
+    }
+
+  }
+  
+  &__icon {
+    cursor: pointer;
+    height: 12px;
+    width: 12px;
+    margin-right: 6.5px;
+  }
+}

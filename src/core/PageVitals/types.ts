@@ -55,3 +55,24 @@ export const METRIC_TYPES = {
   CONTACT: "CONTACT",
   RISK_ASSESSMENT: "RISK_ASSESSMENT",
 } as const;
+export const METRIC_TYPE_LABELS = {
+  OVERALL: "Overall",
+  DISCHARGE: "Timely discharge",
+  FTR_ENROLLMENT: "Timely FTR enrollment",
+  CONTACT: "Timely contacts",
+  RISK_ASSESSMENT: "Timely risk assessments",
+} as const;
+
+export type DownloadableData =
+  | {
+      chartDatasets: DownloadableDataset[];
+      chartLabels: string[];
+      chartId: string;
+      dataExportLabel: string;
+    }
+  | undefined;
+
+export type DownloadableDataset = {
+  data: any;
+  label: string;
+};
