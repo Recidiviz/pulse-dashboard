@@ -186,20 +186,10 @@ If you are running in demo mode to share the app externally, you may need to run
    - [ ] `.env-cmdrc` should exist and should have the correct values for the "development" frontend environment. These variables can be found in the Recidiviz 1Password Vault.
    - [ ] You should have both `auth_config_dev.json` and `auth_config_production.json` files defined in the `pulse-dashboard/src` directory. The values for these files are found in the Recidiviz 1Password Vault.
 
-1. Make sure your `redis-server` is not still running from a previous session. You can fix this in two different ways:
-
-   - Long term solution would be to install [iTerm2](https://iterm2.com/), which will automatically shutdown processes after you close your terminal.
-   - If you are using the Terminal app, you can use the following commands to find and shutdown the rogue process:
-
-     ```
-     // List the processes running on server port 6379
-     :> lsof -i tcp:6379
-         COMMAND     PID   USER   FD   TYPE  DEVICE SIZE/OFF NODE NAME
-         redis-ser   42611 user   6u   IPv4  0x0000 0t0      TCP *:6379 (LISTEN)
-
-     // Use the number under the PID heading to shutdown the process
-     :> kill -9 42611
-     ```
+1. Make sure your `redis-server` is not still running from a previous session. To avoid this situation, always shutdown the demo server by using `CTRL + c`. If you need to shutdown the redis-server from an earlier run, you can use the command:
+   ```
+   :> redis-cli shutdown
+   ```
 
 ## Deploys
 
