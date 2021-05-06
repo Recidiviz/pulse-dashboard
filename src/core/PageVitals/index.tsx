@@ -125,7 +125,9 @@ const PageVitals: React.FC = () => {
           </div>
           <DownloadDataButton
             data={[
-              getTimeSeriesDownloadableData([]),
+              getTimeSeriesDownloadableData(
+                getTimeSeries(timeSeries, currentEntityId)
+              ),
               getVitalsSummaryDownloadableData(childEntitySummaryRows),
             ]}
             title={`${stateName} At A Glance`}

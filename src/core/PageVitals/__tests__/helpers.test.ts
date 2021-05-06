@@ -141,11 +141,11 @@ describe("getTimeSeriesDownloadableData", () => {
           data: [
             {
               Total: "76%",
-              "7D average": "76%",
+              "30D average": "76%",
             },
             {
               Total: "73%",
-              "7D average": "73%",
+              "30D average": "73%",
             },
           ],
           label: "Overall",
@@ -154,11 +154,11 @@ describe("getTimeSeriesDownloadableData", () => {
           data: [
             {
               Total: "66%",
-              "7D average": "66%",
+              "30D average": "66%",
             },
             {
               Total: "63%",
-              "7D average": "63%",
+              "30D average": "63%",
             },
           ],
           label: "Timely discharge",
@@ -167,11 +167,11 @@ describe("getTimeSeriesDownloadableData", () => {
           data: [
             {
               Total: "56%",
-              "7D average": "56%",
+              "30D average": "56%",
             },
             {
               Total: "53%",
-              "7D average": "53%",
+              "30D average": "53%",
             },
           ],
           label: "Timely FTR enrollment",
@@ -180,11 +180,11 @@ describe("getTimeSeriesDownloadableData", () => {
           data: [
             {
               Total: "46%",
-              "7D average": "46%",
+              "30D average": "46%",
             },
             {
               Total: "43%",
-              "7D average": "43%",
+              "30D average": "43%",
             },
           ],
           label: "Timely contacts",
@@ -193,11 +193,11 @@ describe("getTimeSeriesDownloadableData", () => {
           data: [
             {
               Total: "36%",
-              "7D average": "36%",
+              "30D average": "36%",
             },
             {
               Total: "33%",
-              "7D average": "33%",
+              "30D average": "33%",
             },
           ],
           label: "Timely risk assessments",
@@ -252,8 +252,8 @@ describe("getVitalsSummaryDownloadableData", () => {
         {
           data: [
             {
-              "28D change": "2%",
-              "7D change": "0%",
+              "90D change": "2%",
+              "30D change": "0%",
               "Overall score": "85%",
               "Timely FTR enrollment": "65%",
               "Timely contacts": "60%",
@@ -261,8 +261,8 @@ describe("getVitalsSummaryDownloadableData", () => {
               "Timely risk assessments": "69%",
             },
             {
-              "28D change": "2%",
-              "7D change": "0%",
+              "90D change": "2%",
+              "30D change": "0%",
               "Overall score": "95%",
               "Timely FTR enrollment": "95%",
               "Timely contacts": "90%",

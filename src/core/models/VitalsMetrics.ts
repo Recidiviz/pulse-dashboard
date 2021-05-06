@@ -53,7 +53,6 @@ export function createVitalsTimeSeriesMetric(
       entityId: record.entity_id,
       metric: record.metric,
       value: Number(record.value),
-      // TODO update when there is data
       monthlyAvg: Number(record.avg_30d),
     };
   });

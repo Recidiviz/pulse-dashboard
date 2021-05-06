@@ -92,7 +92,7 @@ export type VitalsTimeSeriesRecord = {
   metric: string;
   value: number;
   monthlyAvg: number;
-  parentmonthlyAvg?: number;
+  parentMonthlyAvg?: number;
 };
 
 export type VitalsSummaryRecord = {

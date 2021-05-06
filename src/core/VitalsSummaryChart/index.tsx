@@ -160,7 +160,7 @@ const VitalsSummaryChart: React.FC<PropTypes> = ({
           return (
             <VitalsSummaryTooltip
               data={pieceData}
-              transformX={pieceData.index > timeSeries.length - 4}
+              transformX={pieceData.index > timeSeries.length - 20}
               transformY={columnData.scaledValue < 50}
             />
           );
@@ -169,7 +169,7 @@ const VitalsSummaryChart: React.FC<PropTypes> = ({
         data={ordinalData}
         margin={{ left: 104, bottom: 50, right: 56, top: 50 }}
         oAccessor="date"
-        oPadding={8}
+        oPadding={2}
         style={(d: any) => {
           if (d.index === hoveredId) {
             return { fill: styles.slate30Opaque };

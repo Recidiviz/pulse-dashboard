@@ -144,8 +144,8 @@ export function getTimeSeries(
 export function getMonthlyChange(
   timeSeries: VitalsTimeSeriesRecord[]
 ): { thirtyDayChange: number; ninetyDayChange: number } {
-  const ninetyDaysAgo = timeSeries[0];
-  const thirtyDaysAgo = timeSeries[timeSeries.length - 27];
+  const ninetyDaysAgo = timeSeries[timeSeries.length - 89];
+  const thirtyDaysAgo = timeSeries[timeSeries.length - 29];
   const latestDay = timeSeries[timeSeries.length - 1];
   const thirtyDayChange = latestDay.monthlyAvg - thirtyDaysAgo.monthlyAvg;
   const ninetyDayChange = latestDay.monthlyAvg - ninetyDaysAgo.monthlyAvg;
@@ -169,7 +169,7 @@ export function getTimeSeriesDownloadableData(
     const downloadableData = metricData.map((d: VitalsTimeSeriesRecord) => {
       return {
         Total: formatPercent(d.value),
-        "7D average": formatPercent(d.monthlyAvg),
+        "30D average": formatPercent(d.monthlyAvg),
       };
     });
     datasets.push({
@@ -205,8 +205,8 @@ export function getVitalsSummaryDownloadableData(
   const downloadableData = summaries.map((d: VitalsSummaryTableRow) => {
     return {
       "Overall score": formatPercent(d.overall),
-      "7D change": formatPercent(d.overall30Day),
-      "28D change": formatPercent(d.overall90Day),
+      "30D change": formatPercent(d.overall30Day),
+      "90D change": formatPercent(d.overall90Day),
       [METRIC_TYPE_LABELS.DISCHARGE]: formatPercent(d.timelyDischarge),
       [METRIC_TYPE_LABELS.FTR_ENROLLMENT]: formatPercent(d.timelyFtrEnrollment),
       [METRIC_TYPE_LABELS.CONTACT]: formatPercent(d.timelyContact),
