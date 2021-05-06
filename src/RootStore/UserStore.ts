@@ -252,6 +252,6 @@ export default class UserStore {
       await this.logout();
       await this.loginWithRedirect();
     }
-    return this.getToken();
+    return token;
   }
 }
