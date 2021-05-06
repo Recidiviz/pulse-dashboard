@@ -54,7 +54,6 @@ const VitalsSummaryChart: React.FC<PropTypes> = ({
     monthlyAvg: record.monthlyAvg,
     date: record.date,
   }));
-
   const latestDataPoint = ordinalData[ordinalData.length - 1];
 
   const goalLabelAnnotation = (annotation: any) => {
@@ -181,8 +180,8 @@ const VitalsSummaryChart: React.FC<PropTypes> = ({
         rExtent={[0, 100]}
         size={[0, 295]}
         oLabel={(date: string, _: any, index: number) => {
-          // Display the first and then every 7 labels
-          if (index === 0 || (index + 1) % 7 === 0) {
+          // Display the first and then every 30 labels
+          if (index === 0 || (index + 1) % 30 === 0) {
             return <text textAnchor="middle">{formatISODateString(date)}</text>;
           }
           return null;

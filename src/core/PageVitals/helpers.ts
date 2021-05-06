@@ -145,7 +145,6 @@ export function getMonthlyChange(
   timeSeries: VitalsTimeSeriesRecord[]
 ): { thirtyDayChange: number; ninetyDayChange: number } {
   const ninetyDaysAgo = timeSeries[0];
-  // TODO update when there is data
   const thirtyDaysAgo = timeSeries[timeSeries.length - 27];
   const latestDay = timeSeries[timeSeries.length - 1];
   const thirtyDayChange = latestDay.monthlyAvg - thirtyDaysAgo.monthlyAvg;

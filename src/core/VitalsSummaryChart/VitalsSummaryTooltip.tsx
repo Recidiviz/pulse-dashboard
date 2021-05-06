@@ -45,7 +45,7 @@ const VitalsSummaryTooltip: React.FC<PropTypes> = ({
         {formatPercent(percent)}
       </div>
       <div className="VitalsSummaryTooltip__Average">
-        7-day avg: {formatPercent(monthlyAvg)}
+        30-day avg: {formatPercent(monthlyAvg)}
       </div>
     </div>
   );

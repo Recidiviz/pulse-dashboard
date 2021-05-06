@@ -125,9 +125,7 @@ const PageVitals: React.FC = () => {
           </div>
           <DownloadDataButton
             data={[
-              getTimeSeriesDownloadableData(
-                getTimeSeries(timeSeries, currentEntityId)
-              ),
+              getTimeSeriesDownloadableData([]),
               getVitalsSummaryDownloadableData(childEntitySummaryRows),
             ]}
             title={`${stateName} At A Glance`}
@@ -164,7 +162,7 @@ const PageVitals: React.FC = () => {
               <VitalsSummaryChart
                 stateCode={stateCode}
                 goal={goals[selectedCardId]}
-                timeSeries={selectedTimeSeries}
+                timeSeries={selectedTimeSeries.slice(-180)}
               />
             </>
           )}
