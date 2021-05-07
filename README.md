@@ -64,16 +64,15 @@ Second and last, set up your environment variables.
 
 For Recidiviz staff, download and unzip the `pulse_dashboard_env_vars.zip` from the shared 1Password vault and copy the files into the project directory.
 
-IMPORTANT: Be sure to use `Shift+Command+.` in your Finder window to show the hidden files, and copy all of the files, including the hidden `.env` files. Follow the directory structure in the zip file, so if the file is nested in the `/src` directory in the zip, copy it into the `/src` directory in the repo.
+IMPORTANT: Be sure to use `Shift+Command+.` in your Finder window to show the hidden files, and copy all of the files, including the hidden `.env-cmdrc` file. Follow the directory structure in the zip file, so if the file is nested in the `/src` directory in the zip, copy it into the `/src` directory in the repo.
 
 For anyone trying to set this up independently, construct environment variables by hand based on the explanations below.
 
 Explanation of frontend env files:
 
-- `.env.frontend.example` - example file for frontend variables that are required
-- `.env.development` - variables used during the staging deploy
-- `.env.production` - variables used during the production deploy
-- `.env.development.local` - variables used when the environment is started locally using `yarn dev`
+- `.env-cmdrc.example` - example file for frontend variables that are required
+- `.env-cmdrc` - JSON files describing all of the env variables needed in each build
+  - Should have 4 keys: `production`, `staging`, `development`, and `e2e`
 
 Explanation of backend env files:
 
@@ -88,6 +87,7 @@ Expected frontend environment variables include:
 - `REACT_APP_INTERCOM_APP_ID` - the APP_ID for Intercom, the customer engagement and support tool. Should be included in local, development, and production environments. The local and development environments point at the 'Recidiviz - [TEST]' Intercom workspace, and production environment points at the live 'Recidiviz' Intercom workspace.
 - `REACT_APP_SENTRY_ENV` - The environment for reporting Sentry errors
 - `REACT_APP_SENTRY_DSN` - The public DSN URL to use for sending Sentry errors, can be found on the Sentry project page.
+- `REACT_APP_DEPLOY_ENV` - The current deploy environment: `production`, `staging`, or `dev`
 
 Expected backend environment variables include:
 
