@@ -92,20 +92,6 @@ describe("getTimeSeriesDownloadableData", () => {
     {
       date: "2021-03-11",
       entityId: "STATE_DOC",
-      metric: "FTR_ENROLLMENT",
-      value: 52.5,
-      weeklyAvg: 52.8,
-    },
-    {
-      date: "2021-03-12",
-      entityId: "STATE_DOC",
-      metric: "FTR_ENROLLMENT",
-      value: 55.5,
-      weeklyAvg: 55.8,
-    },
-    {
-      date: "2021-03-11",
-      entityId: "STATE_DOC",
       metric: "CONTACT",
       value: 42.5,
       weeklyAvg: 42.8,
@@ -166,19 +152,6 @@ describe("getTimeSeriesDownloadableData", () => {
         {
           data: [
             {
-              Total: "56%",
-              "7D average": "56%",
-            },
-            {
-              Total: "53%",
-              "7D average": "53%",
-            },
-          ],
-          label: "Timely FTR enrollment",
-        },
-        {
-          data: [
-            {
               Total: "46%",
               "7D average": "46%",
             },
@@ -226,7 +199,6 @@ describe("getVitalsSummaryDownloadableData", () => {
       parentEntityId: "STATE_DOC",
       timelyContact: 60,
       timelyDischarge: 63,
-      timelyFtrEnrollment: 65,
       timelyRiskAssessment: 69,
     },
     {
@@ -241,7 +213,6 @@ describe("getVitalsSummaryDownloadableData", () => {
       parentEntityId: "STATE_DOC",
       timelyContact: 90,
       timelyDischarge: 93,
-      timelyFtrEnrollment: 95,
       timelyRiskAssessment: 99,
     },
   ];
@@ -255,7 +226,6 @@ describe("getVitalsSummaryDownloadableData", () => {
               "28D change": "2%",
               "7D change": "0%",
               "Overall score": "85%",
-              "Timely FTR enrollment": "65%",
               "Timely contacts": "60%",
               "Timely discharge": "63%",
               "Timely risk assessments": "69%",
@@ -264,7 +234,6 @@ describe("getVitalsSummaryDownloadableData", () => {
               "28D change": "2%",
               "7D change": "0%",
               "Overall score": "95%",
-              "Timely FTR enrollment": "95%",
               "Timely contacts": "90%",
               "Timely discharge": "93%",
               "Timely risk assessments": "99%",
