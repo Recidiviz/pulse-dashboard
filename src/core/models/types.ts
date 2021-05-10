@@ -103,7 +103,6 @@ export type VitalsSummaryRecord = {
   overall7Day: number;
   overall28Day: number;
   timelyDischarge: number;
-  timelyFtrEnrollment: number;
   timelyContact: number;
   timelyRiskAssessment: number;
 };
