@@ -42,7 +42,7 @@
       justify-content: space-between;
 
       > :not(:last-child) {
-        margin-right: unset;
+        margin-right: 0;
       }
     }
   }
