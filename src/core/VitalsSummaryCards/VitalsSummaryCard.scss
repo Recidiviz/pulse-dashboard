@@ -17,9 +17,9 @@
 @import "../CoreConstants.scss";
 
 .VitalsSummaryCard {
-  max-width: 17.375rem;
+  max-width: 22.375rem;
   max-height: 6rem;
-  width: 17rem;
+  width: 22rem;
   height: 6rem;
   border-radius: 0.5rem;
   box-shadow: $inset-shadow-30;
@@ -29,11 +29,13 @@
   user-select: none;
 
   @media screen and (max-width: $core-breakpoint-sm) {
-    width: 18rem;
+    max-width: 100%;
+    width: 28rem;
+    margin: 0.5rem 0;
   }
 
   @media screen and (max-width: $core-breakpoint-xs) {
-    min-width: 100%;
+    width: 20rem;
   }
 
   &:hover {
