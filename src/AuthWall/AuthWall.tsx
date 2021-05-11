@@ -19,7 +19,6 @@ import React, { useEffect } from "react";
 import { when } from "mobx";
 import { observer } from "mobx-react-lite";
 
-import { ERROR_MESSAGES } from "../constants/errorMessages";
 import Loading from "../components/Loading";
 import { useRootStore } from "../components/StoreProvider";
 import NotFound from "../components/NotFound";
@@ -61,10 +60,7 @@ const AuthWall: React.FC = ({ children }) => {
     );
   }
 
-  // it should not actually be possible to reach this branch
-  // with the current auth implementation, so something is
-  // probably very wrong if a user hits it
-  throw new Error(ERROR_MESSAGES.unauthorized);
+  return null;
 };
 
 export default observer(AuthWall);

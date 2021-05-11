@@ -120,12 +120,6 @@ const VitalsSummaryTable: React.FC<PropTypes> = ({
             Cell: createBubbleTableCell,
           },
           {
-            Header: "Program availability",
-            id: METRIC_TYPES.FTR_ENROLLMENT,
-            accessor: "timelyFtrEnrollment",
-            Cell: createBubbleTableCell,
-          },
-          {
             Header: "Timely contacts",
             id: METRIC_TYPES.CONTACT,
             accessor: "timelyContact",

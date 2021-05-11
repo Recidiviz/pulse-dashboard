@@ -170,6 +170,27 @@ You can launch in demo mode locally via: `./run_in_demo_mode.sh`
 
 Running via that command is important because environment variables are required for both the frontend and backend servers. Running with only one or the other in demo mode produces a fairly broken experience.
 
+If you are running in demo mode to share the app externally, you may need to run through the following steps first:
+
+1. Ensure that your environment is set up correctly by following steps 1 - 9 in the [Set Up Your Frontend Development doc](https://docs.google.com/document/d/1y-yJwZN6yM1s5OKqTDCk56FN2p7ZA62buwph1YdnJAc/edit). Check the `.nvmrc` to see the latest Node version you'll need to install and use.
+1. Make sure your local repository has all the latest changes from the main branch. Run the following git commands from the `pulse-dashboard/` directory:
+
+   ```
+   :> git checkout main
+   :> git pull origin main
+   ```
+
+1. Check that you have all of the required environment variables and files set up:
+
+   - [ ] `.env` should exist and have the correct values for the backend. These variables can be found in the Recidiviz 1Password Vault.
+   - [ ] `.env-cmdrc` should exist and should have the correct values for the "development" frontend environment. These variables can be found in the Recidiviz 1Password Vault.
+   - [ ] You should have both `auth_config_dev.json` and `auth_config_production.json` files defined in the `pulse-dashboard/src` directory. The values for these files are found in the Recidiviz 1Password Vault.
+
+1. Make sure your `redis-server` is not still running from a previous session. To avoid this situation, always shutdown the demo server by using `CTRL + c`. If you need to shutdown the redis-server from an earlier run, you can use the command:
+   ```
+   :> redis-cli shutdown
+   ```
+
 ## Deploys
 
 As noted above, the Dashboard is two components: a React frontend and a Node/Express backend providing a thin API. The app can be run locally, in staging, and in production. Deploying to staging and production are very similar, as described below.

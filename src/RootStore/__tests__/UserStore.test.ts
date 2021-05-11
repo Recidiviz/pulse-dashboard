@@ -29,6 +29,7 @@ const mockGetUser = jest.fn();
 const mockHandleRedirectCallback = jest.fn();
 const mockIsAuthenticated = jest.fn();
 const mockLoginWithRedirect = jest.fn();
+const mockGetTokenSilently = jest.fn();
 
 const tenantId = "US_MO";
 const metadataField = `${METADATA_NAMESPACE}app_metadata`;
@@ -46,7 +47,7 @@ beforeEach(() => {
     handleRedirectCallback: mockHandleRedirectCallback,
     isAuthenticated: mockIsAuthenticated,
     loginWithRedirect: mockLoginWithRedirect,
-    getTokenSilently: jest.fn(),
+    getTokenSilently: mockGetTokenSilently,
   });
 });
 
@@ -81,6 +82,24 @@ test("error thrown in authorize sets authError", async () => {
   reactImmediately(() => {
     const error = store.authError;
     expect(error?.message).toBeDefined();
+  });
+  expect.hasAssertions();
+});
+
+test("Invalid state thrown in authorize redirects to login", async () => {
+  mockHandleRedirectCallback.mockResolvedValue(new Error("Invalid state"));
+  expect(mockLoginWithRedirect.mock.calls.length).toBe(0);
+
+  const store = new UserStore({
+    authSettings: testAuthSettings,
+  });
+  await store.authorize();
+  reactImmediately(() => {
+    expect(mockLoginWithRedirect.mock.calls.length).toBe(1);
+    expect(mockLoginWithRedirect.mock.calls[0][0]).toEqual({
+      appState: { targetUrl: window.location.href },
+    });
+    expect(store.authError).toBe(undefined);
   });
   expect.hasAssertions();
 });
@@ -187,3 +206,21 @@ test.each(Object.keys(TENANTS))(
     expect.hasAssertions();
   }
 );
+
+test("Error from getTokenSilently redirects to login", async () => {
+  expect(mockLoginWithRedirect.mock.calls.length).toBe(0);
+  const store = new UserStore({
+    authSettings: testAuthSettings,
+  });
+  await store.authorize();
+  mockGetTokenSilently.mockResolvedValue(new Error("Login required"));
+  await store.getTokenSilently();
+  reactImmediately(() => {
+    expect(mockLoginWithRedirect.mock.calls.length).toBe(1);
+    expect(mockLoginWithRedirect.mock.calls[0][0]).toEqual({
+      appState: { targetUrl: window.location.href },
+    });
+    expect(store.authError).toBe(undefined);
+  });
+  expect.hasAssertions();
+});
