@@ -15,18 +15,21 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-function setStateCodeMetadata(user, context, callback) {
+function setStateCodeInAppMetadata(user, context, callback) {
   user.app_metadata = user.app_metadata || {};
 
-  const emailSplit = user.email.split('@');
+  const emailSplit = user.email.split("@");
   const domain = emailSplit[emailSplit.length - 1].toLowerCase();
 
-  // update the app_metadata that will be part of the response
-  if (domain === 'recidiviz.org') {
-    user.app_metadata.state_code = 'recidiviz';
-  }
-  else {
-    const domainSplit = domain.split('.');
+  // For testing different state codes
+  if (user.email === "test-control@recidiviz.org") {
+    callback(null, user, context);
+  } else if (domain === "csg.org") {
+    user.app_metadata.state_code = "lantern";
+  } else if (domain === "recidiviz.org") {
+    user.app_metadata.state_code = "recidiviz";
+  } else {
+    const domainSplit = domain.split(".");
     // assumes the state is always the second to last component of the domain
     // e.g. @doc.mo.gov or @nd.gov, but not @nd.docr.gov
     const state = domainSplit[domainSplit.length - 2].toLowerCase();
@@ -34,12 +37,18 @@ function setStateCodeMetadata(user, context, callback) {
     user.app_metadata.state_code = stateCode;
   }
 
+  // Specific state code restrictions for Recividiz users
+  if (user.email === "justine@recidiviz.org") {
+    user.app_metadata.blocked_state_codes = ["us_pa"];
+  }
+
   // persist the app_metadata update
-  auth0.users.updateAppMetadata(user.user_id, user.app_metadata)
-    .then(function() {
+  auth0.users
+    .updateAppMetadata(user.user_id, user.app_metadata)
+    .then(function () {
       callback(null, user, context);
     })
-    .catch(function(err) {
+    .catch(function (err) {
       callback(err);
     });
 }
