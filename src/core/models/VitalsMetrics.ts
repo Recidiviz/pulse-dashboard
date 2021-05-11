@@ -23,6 +23,7 @@ import {
 } from "./types";
 import { toTitleCase } from "../../utils/formatStrings";
 import Metric, { BaseMetricProps } from "./Metric";
+import { parseResponseByFileFormat } from "../../api/metrics";
 
 export function createVitalsSummaryMetric(
   rawRecords: RawMetricData
@@ -71,11 +72,21 @@ export default class VitalsMetrics extends Metric<MetricRecords> {
 
   get summaries(): VitalsSummaryRecord[] {
     if (!this.apiData) return [];
-    return createVitalsSummaryMetric(this.apiData.vitals_summaries);
+    const summaries = parseResponseByFileFormat(
+      this.apiData,
+      "vitals_summaries",
+      this.eagerExpand
+    );
+    return createVitalsSummaryMetric(summaries.data);
   }
 
   get timeSeries(): VitalsTimeSeriesRecord[] {
     if (!this.apiData) return [];
-    return createVitalsTimeSeriesMetric(this.apiData.vitals_time_series);
+    const timeSeries = parseResponseByFileFormat(
+      this.apiData,
+      "vitals_time_series",
+      this.eagerExpand
+    );
+    return createVitalsTimeSeriesMetric(timeSeries.data);
   }
 }

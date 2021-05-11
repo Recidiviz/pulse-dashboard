@@ -42,6 +42,8 @@ export default abstract class Metric<RecordFormat extends MetricRecord> {
 
   apiData?: Record<string, RawMetricData>;
 
+  eagerExpand = true;
+
   rootStore?: CoreStore;
 
   constructor({ tenantId, sourceEndpoint, rootStore }: BaseMetricProps) {
