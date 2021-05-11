@@ -22,12 +22,12 @@ import BaseDataStore, {
 
 import UserRestrictedAccessStore from "../UserRestrictedAccessStore";
 import LanternStore from "..";
-import { METADATA_NAMESPACE } from "../../../constants";
 import { callMetricsApi } from "../../../api/metrics/metricsClient";
 import DistrictsStore from "../DistrictsStore";
 
 let lanternStore;
 let baseStore;
+const METADATA_NAMESPACE = process.env.REACT_APP_METADATA_NAMESPACE;
 const mockTenantId = "US_MO";
 const metadataField = `${METADATA_NAMESPACE}app_metadata`;
 const mockUser = { [metadataField]: { state_code: mockTenantId } };

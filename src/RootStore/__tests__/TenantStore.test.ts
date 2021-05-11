@@ -18,13 +18,14 @@ import TenantStore, {
   CURRENT_TENANT_IN_SESSION,
 } from "../TenantStore/TenantStore";
 import { US_MO } from "../TenantStore/lanternTenants";
-import { METADATA_NAMESPACE } from "../../constants";
 import RootStore from "..";
 import UserStore from "../UserStore";
 
 jest.mock("@auth0/auth0-spa-js");
 jest.mock("../../api/metrics/metricsClient");
 jest.mock("../../components/StoreProvider");
+
+const METADATA_NAMESPACE = process.env.REACT_APP_METADATA_NAMESPACE;
 
 const metadataField = `${METADATA_NAMESPACE}app_metadata`;
 const user = { [metadataField]: { state_code: US_MO }, email_verified: true };

@@ -17,6 +17,4 @@
 
 import { ERROR_MESSAGES } from "./errorMessages";
 
-export const METADATA_NAMESPACE = "https://dashboard.recidiviz.org/";
-
 export { ERROR_MESSAGES };

@@ -22,12 +22,13 @@ import createAuth0Client, {
 } from "@auth0/auth0-spa-js";
 import { makeAutoObservable, runInAction, action } from "mobx";
 import qs from "qs";
-import { METADATA_NAMESPACE } from "../constants";
 
 import { ERROR_MESSAGES } from "../constants/errorMessages";
 import type RootStore from ".";
 import { TenantId, UserAppMetadata } from "./types";
 import tenants from "../tenants";
+
+const METADATA_NAMESPACE = process.env.REACT_APP_METADATA_NAMESPACE;
 
 function isDemoMode(): boolean {
   return process.env.REACT_APP_IS_DEMO === "true";

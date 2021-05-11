@@ -19,13 +19,15 @@ import { reactImmediately } from "../../../testUtils";
 import UserRestrictedAccessStore from "../UserRestrictedAccessStore";
 import type UserStore from "../../../RootStore/UserStore";
 import type TenantStore from "../../../RootStore/TenantStore";
-import { METADATA_NAMESPACE, ERROR_MESSAGES } from "../../../constants";
+import { ERROR_MESSAGES } from "../../../constants";
 import { callRestrictedAccessApi } from "../../../api/metrics/metricsClient";
 import LanternStore from "..";
 
 jest.mock("@sentry/react");
 jest.mock("..");
 jest.mock("../../../api/metrics/metricsClient");
+
+const METADATA_NAMESPACE = process.env.REACT_APP_METADATA_NAMESPACE;
 
 const mockCallRestrictedAccessApi = callRestrictedAccessApi as jest.Mock;
 const mockLanternStore = LanternStore as jest.Mock;

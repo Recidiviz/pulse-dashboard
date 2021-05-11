@@ -28,7 +28,6 @@ import {
   SUPERVISION_TYPE,
 } from "../../utils/constants";
 import { useLanternStore } from "../../LanternStoreProvider";
-import { METADATA_NAMESPACE } from "../../../constants";
 import { US_MO } from "../../../RootStore/TenantStore/lanternTenants";
 import filterOptions from "../../../RootStore/TenantStore/filterOptions";
 
@@ -41,6 +40,8 @@ jest.mock("../FilterField", () => ({
   default: jest.fn(),
 }));
 jest.mock("../../LanternStoreProvider");
+
+const METADATA_NAMESPACE = process.env.REACT_APP_METADATA_NAMESPACE;
 
 describe("SelectFilter tests", () => {
   const metadataField = `${METADATA_NAMESPACE}app_metadata`;

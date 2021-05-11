@@ -18,7 +18,6 @@ import React from "react";
 import { render } from "@testing-library/react";
 
 import App from "../App";
-import { METADATA_NAMESPACE } from "../constants";
 import { US_ND, US_ID } from "../RootStore/TenantStore/coreTenants";
 import { US_MO, US_PA } from "../RootStore/TenantStore/lanternTenants";
 
@@ -34,6 +33,8 @@ import ErrorMessage from "../components/ErrorMessage";
 import VerificationNeeded from "../components/VerificationNeeded";
 import ProjectionsMethodology from "../core/ProjectionsMethodology/Methodology";
 import VitalsMethodology from "../core/VitalsMethodology";
+
+const METADATA_NAMESPACE = process.env.REACT_APP_METADATA_NAMESPACE;
 
 jest.mock("../flags", () => ({
   showMethodologyDropdown: true,

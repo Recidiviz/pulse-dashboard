@@ -18,11 +18,12 @@ import createAuth0Client from "@auth0/auth0-spa-js";
 import { ERROR_MESSAGES } from "../../constants/errorMessages";
 import { reactImmediately } from "../../testUtils";
 import UserStore from "../UserStore";
-import { METADATA_NAMESPACE } from "../../constants";
 import TENANTS from "../../tenants";
 import { TenantId } from "../types";
 
 jest.mock("@auth0/auth0-spa-js");
+
+const METADATA_NAMESPACE = process.env.REACT_APP_METADATA_NAMESPACE;
 
 const mockCreateAuth0Client = createAuth0Client as jest.Mock;
 const mockGetUser = jest.fn();

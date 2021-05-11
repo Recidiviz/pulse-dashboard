@@ -18,7 +18,8 @@
 import createAuth0Client from "@auth0/auth0-spa-js";
 
 import RootStore from "..";
-import { METADATA_NAMESPACE } from "../../constants";
+
+const METADATA_NAMESPACE = process.env.REACT_APP_METADATA_NAMESPACE;
 
 jest.mock("@auth0/auth0-spa-js");
 jest.mock("../../api/metrics");
