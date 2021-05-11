@@ -18,6 +18,7 @@ import createAuth0Client, {
   Auth0ClientOptions,
   User,
   GetTokenSilentlyOptions,
+  Auth0Client,
 } from "@auth0/auth0-spa-js";
 import { makeAutoObservable, runInAction, action } from "mobx";
 import qs from "qs";
@@ -76,13 +77,15 @@ export default class UserStore {
 
   readonly authSettings?: Auth0ClientOptions;
 
+  auth0?: Auth0Client;
+
   isAuthorized: boolean;
 
   userIsLoading: boolean;
 
   user?: User;
 
-  getTokenSilently?: (options: GetTokenSilentlyOptions) => void;
+  getToken?: (options?: GetTokenSilentlyOptions) => void;
 
   logout?: () => void;
 
@@ -94,6 +97,8 @@ export default class UserStore {
       authSettings: false,
       setAuthError: action.bound,
       userHasAccess: action.bound,
+      getTokenSilently: action.bound,
+      loginWithRedirect: action.bound,
     });
 
     this.authSettings = authSettings;
@@ -114,23 +119,22 @@ export default class UserStore {
       this.isAuthorized = true;
       this.userIsLoading = false;
       this.user = getDemoUser();
-      this.getTokenSilently = () => "";
+      this.getToken = () => "";
 
       return;
     }
-
     if (!this.authSettings) {
       this.authError = new Error(ERROR_MESSAGES.auth0Configuration);
       return;
     }
 
     try {
-      const auth0 = await createAuth0Client(this.authSettings);
+      this.auth0 = await createAuth0Client(this.authSettings);
       const urlQuery = qs.parse(window.location.search, {
         ignoreQueryPrefix: true,
       });
       if (urlQuery.code && urlQuery.state) {
-        const { appState } = await auth0.handleRedirectCallback();
+        const { appState } = await this.auth0.handleRedirectCallback();
         // auth0 params are single-use, must be removed from history or they can cause errors
         let replacementUrl;
         if (appState && appState.targetUrl) {
@@ -141,27 +145,32 @@ export default class UserStore {
         }
         window.history.replaceState({}, document.title, replacementUrl);
       }
-      if (await auth0.isAuthenticated()) {
-        const user = await auth0.getUser();
+      if (await this.auth0.isAuthenticated()) {
+        const user = await this.auth0.getUser();
         runInAction(() => {
           this.userIsLoading = false;
           if (user && user.email_verified) {
             this.user = user;
-            this.getTokenSilently = (options?: GetTokenSilentlyOptions) =>
-              auth0.getTokenSilently(options);
-            this.logout = (...p: any) => auth0.logout(...p);
+            this.getToken = (options?: GetTokenSilentlyOptions) =>
+              this.auth0?.getTokenSilently(options);
+            this.logout = (...p: any) => this.auth0?.logout(...p);
             this.isAuthorized = true;
           } else {
             this.isAuthorized = false;
           }
         });
       } else {
-        auth0.loginWithRedirect({
+        this.auth0.loginWithRedirect({
           appState: { targetUrl: window.location.href },
         });
       }
     } catch (error) {
-      this.authError = error;
+      if (error.message === "Invalid state" && this.auth0) {
+        await this.auth0.logout();
+        this.auth0.loginWithRedirect();
+      } else {
+        this.authError = error;
+      }
     }
   }
 
@@ -225,5 +234,24 @@ export default class UserStore {
 
   setAuthError(error: Error): void {
     this.authError = error;
+  }
+
+  async loginWithRedirect(): Promise<void> {
+    return this.auth0?.loginWithRedirect({
+      appState: { targetUrl: window.location.href },
+    });
+  }
+
+  async getTokenSilently(): Promise<any> {
+    if (!this.getToken || !this.logout) return;
+
+    const token = (await this.getToken()) as any;
+    if (token instanceof Error) {
+      this.userIsLoading = true;
+      this.isAuthorized = false;
+      await this.logout();
+      await this.loginWithRedirect();
+    }
+    return token;
   }
 }

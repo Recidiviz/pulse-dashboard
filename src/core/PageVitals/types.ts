@@ -42,7 +42,6 @@ export type VitalsSummaryTableRow = {
   overall30Day: number;
   overall90Day: number;
   timelyDischarge: number;
-  timelyFtrEnrollment: number;
   timelyContact: number;
   timelyRiskAssessment: number;
 };
@@ -51,14 +50,12 @@ export type MetricType = keyof typeof METRIC_TYPES;
 export const METRIC_TYPES = {
   OVERALL: "OVERALL",
   DISCHARGE: "DISCHARGE",
-  FTR_ENROLLMENT: "FTR_ENROLLMENT",
   CONTACT: "CONTACT",
   RISK_ASSESSMENT: "RISK_ASSESSMENT",
 } as const;
 export const METRIC_TYPE_LABELS = {
   OVERALL: "Overall",
   DISCHARGE: "Timely discharge",
-  FTR_ENROLLMENT: "Timely FTR enrollment",
   CONTACT: "Timely contacts",
   RISK_ASSESSMENT: "Timely risk assessments",
 } as const;

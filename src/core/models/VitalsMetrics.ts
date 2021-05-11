@@ -36,7 +36,6 @@ export function createVitalsSummaryMetric(
       parentEntityId: record.parent_entity_id,
       overall: Number(record.overall),
       timelyDischarge: Number(record.timely_discharge),
-      timelyFtrEnrollment: Number(record.timely_ftr_enrollment),
       timelyContact: Number(record.timely_contact),
       timelyRiskAssessment: Number(record.timely_risk_assessment),
       overall30Day: Number(record.overall_30d),

@@ -58,14 +58,6 @@ export const getSummaryCards: (
     id: METRIC_TYPES.DISCHARGE,
   },
   {
-    title: METRIC_TYPE_LABELS.FTR_ENROLLMENT,
-    description:
-      "of clients are not pending enrollment in Free Through Recovery",
-    value: summary.timelyFtrEnrollment,
-    status: getSummaryStatus(summary.timelyFtrEnrollment),
-    id: METRIC_TYPES.FTR_ENROLLMENT,
-  },
-  {
     title: METRIC_TYPE_LABELS.CONTACT,
     description: `of clients received initial contact within 30 days of starting
      supervision and a F2F contact every subsequent 90, 60, or 30 days for 
@@ -208,7 +200,6 @@ export function getVitalsSummaryDownloadableData(
       "30D change": formatPercent(d.overall30Day),
       "90D change": formatPercent(d.overall90Day),
       [METRIC_TYPE_LABELS.DISCHARGE]: formatPercent(d.timelyDischarge),
-      [METRIC_TYPE_LABELS.FTR_ENROLLMENT]: formatPercent(d.timelyFtrEnrollment),
       [METRIC_TYPE_LABELS.CONTACT]: formatPercent(d.timelyContact),
       [METRIC_TYPE_LABELS.RISK_ASSESSMENT]: formatPercent(
         d.timelyRiskAssessment
