@@ -18,27 +18,27 @@
 import React from "react";
 import PercentDelta from "../controls/PercentDelta";
 
-import "./VitalsWeeklyChange.scss";
+import "./VitalsMonthlyChange.scss";
 
 type PropTypes = {
-  weeklyChange: {
-    sevenDayChange: number;
-    twentyEightDayChange: number;
+  monthlyChange: {
+    thirtyDayChange: number;
+    ninetyDayChange: number;
   };
 };
 
-type WeeklyChangeProps = {
+type MonthlyChangeProps = {
   numDays: number;
   value: number;
 };
 
-const WeeklyChange: React.FC<WeeklyChangeProps> = ({ numDays, value }) => {
+const MonthlyChange: React.FC<MonthlyChangeProps> = ({ numDays, value }) => {
   return (
-    <div className="VitalsWeeklyChange__container">
-      <div className="VitalsWeeklyChange__title">{`${numDays}-day change`}</div>
-      <div className="VitalsWeeklyChange__value">
+    <div className="VitalsMonthlyChange__container">
+      <div className="VitalsMonthlyChange__title">{`${numDays}-day change`}</div>
+      <div className="VitalsMonthlyChange__value">
         <PercentDelta
-          className="VitalsWeeklyChange__delta"
+          className="VitalsMonthlyChange__delta"
           value={value}
           width={22}
           height={18}
@@ -49,13 +49,13 @@ const WeeklyChange: React.FC<WeeklyChangeProps> = ({ numDays, value }) => {
   );
 };
 
-const VitalsWeeklyChange: React.FC<PropTypes> = ({ weeklyChange }) => {
-  const { sevenDayChange, twentyEightDayChange } = weeklyChange;
+const VitalsMonthlyChange: React.FC<PropTypes> = ({ monthlyChange }) => {
+  const { thirtyDayChange, ninetyDayChange } = monthlyChange;
   return (
-    <div className="VitalsWeeklyChange">
-      <WeeklyChange numDays={7} value={sevenDayChange} />
-      <WeeklyChange numDays={28} value={twentyEightDayChange} />
+    <div className="VitalsMonthlyChange">
+      <MonthlyChange numDays={30} value={thirtyDayChange} />
+      <MonthlyChange numDays={90} value={ninetyDayChange} />
     </div>
   );
 };
-export default VitalsWeeklyChange;
+export default VitalsMonthlyChange;

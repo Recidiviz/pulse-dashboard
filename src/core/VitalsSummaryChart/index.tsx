@@ -39,12 +39,11 @@ const VitalsSummaryChart: React.FC<PropTypes> = ({
   stateCode,
 }) => {
   const [hoveredId, setHoveredId] = useState(null);
-
   const lineCoordinates = timeSeries.map((record, index) => ({
     index,
-    value: record.weeklyAvg,
+    value: record.monthlyAvg,
     percent: record.value,
-    weeklyAvg: record.weeklyAvg,
+    monthlyAvg: record.monthlyAvg,
     date: record.date,
   }));
 
@@ -52,10 +51,9 @@ const VitalsSummaryChart: React.FC<PropTypes> = ({
     index,
     value: record.value,
     percent: record.value,
-    weeklyAvg: record.weeklyAvg,
+    monthlyAvg: record.monthlyAvg,
     date: record.date,
   }));
-
   const latestDataPoint = ordinalData[ordinalData.length - 1];
 
   const goalLabelAnnotation = (annotation: any) => {
@@ -74,16 +72,16 @@ const VitalsSummaryChart: React.FC<PropTypes> = ({
     const { pieces, column } = d;
     const { data: pieceData } = pieces[0];
     const cx = column.middle;
-    const cy = adjustedSize[1] - rScale(pieceData.weeklyAvg);
+    const cy = adjustedSize[1] - rScale(pieceData.monthlyAvg);
     setHoveredId(pieceData.index);
     return <circle cx={cx} cy={cy} r={4} fill={styles.indigo} />;
   };
 
   const goalTargetAnnotation = (annotation: any) => {
     const { d, adjustedSize, rScale, orFrameState } = annotation;
-    const { weeklyAvg, date } = d;
+    const { monthlyAvg, date } = d;
     const cx = orFrameState.projectedColumns[date].middle;
-    const cy = adjustedSize[1] - rScale(weeklyAvg);
+    const cy = adjustedSize[1] - rScale(monthlyAvg);
     return (
       <g>
         <circle
@@ -162,7 +160,7 @@ const VitalsSummaryChart: React.FC<PropTypes> = ({
           return (
             <VitalsSummaryTooltip
               data={pieceData}
-              transformX={pieceData.index > timeSeries.length - 4}
+              transformX={pieceData.index > timeSeries.length - 20}
               transformY={columnData.scaledValue < 50}
             />
           );
@@ -171,7 +169,7 @@ const VitalsSummaryChart: React.FC<PropTypes> = ({
         data={ordinalData}
         margin={{ left: 104, bottom: 50, right: 56, top: 50 }}
         oAccessor="date"
-        oPadding={8}
+        oPadding={2}
         style={(d: any) => {
           if (d.index === hoveredId) {
             return { fill: styles.slate30Opaque };
@@ -182,8 +180,8 @@ const VitalsSummaryChart: React.FC<PropTypes> = ({
         rExtent={[0, 100]}
         size={[0, 295]}
         oLabel={(date: string, _: any, index: number) => {
-          // Display the first and then every 7 labels
-          if (index === 0 || (index + 1) % 7 === 0) {
+          // Display the first and then every 30 labels
+          if (index === 0 || (index + 1) % 30 === 0) {
             return <text textAnchor="middle">{formatISODateString(date)}</text>;
           }
           return null;

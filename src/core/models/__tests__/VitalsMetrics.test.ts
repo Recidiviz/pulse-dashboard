@@ -36,8 +36,8 @@ jest.mock("../../../api/metrics/metricsClient", () => {
           entity_type: "state",
           most_recent_date_of_supervision: "2021-04-06",
           overall: 90,
-          overall_7d: 0,
-          overall_28d: -1,
+          overall_30d: 0,
+          overall_90d: -1,
           parent_entity_id: "STATE_DOC",
           state_code: "US_ND",
           timely_contact: "80",
@@ -47,7 +47,7 @@ jest.mock("../../../api/metrics/metricsClient", () => {
       ],
       vitals_time_series: [
         {
-          avg_7d: 90.625,
+          avg_30d: 90.625,
           date: "2021-03-30",
           entity_id: "BEULAH",
           metric: "RISK_ASSESSMENT",
@@ -96,8 +96,8 @@ describe("VitalsMetrics", () => {
         timelyDischarge: 97,
         timelyContact: 80,
         timelyRiskAssessment: 88,
-        overall7Day: 0,
-        overall28Day: -1,
+        overall30Day: 0,
+        overall90Day: -1,
       },
     ]);
   });
@@ -109,7 +109,7 @@ describe("VitalsMetrics", () => {
         entityId: "BEULAH",
         metric: "RISK_ASSESSMENT",
         value: 90.625,
-        weeklyAvg: 90.625,
+        monthlyAvg: 90.625,
       },
     ]);
   });
