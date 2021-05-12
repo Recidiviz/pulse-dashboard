@@ -65,6 +65,8 @@ export default class LanternStore {
     this.filtersStore = new FiltersStore({ rootStore: this });
 
     this.dataStore = new DataStore({ rootStore: this });
+
+    this.userRestrictedAccessStore.verifyUserRestrictions();
   }
 
   get filters(): ObservableMap<any, any> {
@@ -80,8 +82,8 @@ export default class LanternStore {
     return this.userStore.user;
   }
 
-  get restrictedDistricts(): string[] {
-    return this.userRestrictedAccessStore.restrictedDistricts;
+  get userRestrictions(): string[] {
+    return this.userStore.userRestrictions;
   }
 
   get methodology(): any {

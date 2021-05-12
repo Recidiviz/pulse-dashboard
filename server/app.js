@@ -28,10 +28,7 @@ const Sentry = require("@sentry/node");
 const devAuthConfig = require("../src/auth_config_dev.json");
 const productionAuthConfig = require("../src/auth_config_production.json");
 const api = require("./routes/api");
-const {
-  newRevocationsParamValidations,
-  restrictedAccessParamValidations,
-} = require("./routes/paramsValidation");
+const { newRevocationsParamValidations } = require("./routes/paramsValidation");
 
 const app = express();
 
@@ -134,12 +131,7 @@ app.get(
   api.programmingExplore
 );
 app.get("/api/:stateCode/vitals", checkJwt, api.vitals);
-app.post(
-  "/api/:stateCode/restrictedAccess",
-  express.json(),
-  [checkJwt, ...restrictedAccessParamValidations],
-  api.restrictedAccess
-);
+
 app.post(
   "/api/generateFileLink",
   checkJwt,

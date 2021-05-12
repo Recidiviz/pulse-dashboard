@@ -1,5 +1,5 @@
 // Recidiviz - a data platform for criminal justice reform
-// Copyright (C) 2020 Recidiviz, Inc.
+// Copyright (C) 2021 Recidiviz, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -14,34 +14,19 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-
-/* eslint-disable camelcase */
-import { makeAutoObservable, autorun, flow } from "mobx";
+import { makeAutoObservable } from "mobx";
 import * as Sentry from "@sentry/react";
 import { ERROR_MESSAGES } from "../../constants/errorMessages";
 import type LanternStore from ".";
-import { callRestrictedAccessApi } from "../../api/metrics/metricsClient";
-import { TenantId } from "../../RootStore/types";
 import { US_MO } from "../../RootStore/TenantStore/lanternTenants";
 import { CHARTS } from "./DataStore/RevocationsChartStore";
 
 type ConstructorProps = {
-  rootStore?: LanternStore;
-};
-
-type RestrictedAccess = {
-  restricted_user_email: string;
-  allowed_level_1_supervision_location_ids: string;
+  rootStore: LanternStore;
 };
 
 export default class UserRestrictedAccessStore {
-  isLoading = true;
-
-  isError = false;
-
-  restrictedDistricts: string[] = [];
-
-  readonly rootStore?: LanternStore;
+  readonly rootStore: LanternStore;
 
   constructor({ rootStore }: ConstructorProps) {
     makeAutoObservable(this, {
@@ -49,23 +34,10 @@ export default class UserRestrictedAccessStore {
     });
 
     this.rootStore = rootStore;
-
-    autorun(() => {
-      if (
-        !this.rootStore?.userStore.userIsLoading &&
-        !this.rootStore?.districtsStore.isLoading &&
-        this.rootStore?.currentTenantId
-      ) {
-        this.fetchRestrictedDistrictData(this.rootStore?.currentTenantId);
-      }
-    });
   }
 
   get enabledRevocationsCharts(): string[] {
-    if (
-      this.hasRestrictedDistricts &&
-      this.rootStore?.currentTenantId === US_MO
-    ) {
+    if (this.hasUserRestrictions && this.rootStore.currentTenantId === US_MO) {
       return Object.keys(CHARTS).filter(
         (chartId) => !["Race", "Gender"].includes(chartId)
       );
@@ -73,88 +45,39 @@ export default class UserRestrictedAccessStore {
     return Object.keys(CHARTS);
   }
 
-  get hasRestrictedDistricts(): boolean {
-    return this.restrictedDistricts && this.restrictedDistricts.length > 0;
+  get hasUserRestrictions(): boolean {
+    return (
+      this.rootStore.userRestrictions &&
+      this.rootStore.userRestrictions.length > 0
+    );
   }
 
-  fetchRestrictedDistrictData = flow(function* (
-    this: UserRestrictedAccessStore,
-    tenantId: TenantId
-  ) {
-    if (!this.rootStore?.tenantStore.isRestrictedDistrictTenant) {
-      this.restrictedDistricts = [];
-      this.isLoading = false;
-      return;
-    }
-    const file = "supervision_location_restricted_access_emails";
-    const endpoint = `${tenantId}/restrictedAccess`;
-    try {
-      this.restrictedDistricts = [];
-      const responseData = yield callRestrictedAccessApi(
-        endpoint,
-        this.rootStore.userStore.user?.email,
-        this.rootStore.userStore.getTokenSilently
-      );
-      this.setRestrictions(responseData[file]);
-      this.isLoading = false;
-    } catch (error) {
-      console.error(error);
-      Sentry.captureException(error, {
-        tags: {
-          tenantId,
-          endpoint,
-          availableStateCodes: this.rootStore.userStore.availableStateCodes.join(
-            ","
-          ),
-        },
-      });
-      this.rootStore.userStore.setAuthError(
-        new Error(ERROR_MESSAGES.unauthorized)
-      );
-      this.isError = true;
-      this.isLoading = false;
-    }
-  });
-
-  setRestrictions(restrictions: RestrictedAccess): void {
-    this.restrictedDistricts =
-      (restrictions &&
-        restrictions.allowed_level_1_supervision_location_ids
-          .split(",")
-          .map((r) => r.trim())) ||
-      [];
-    this.verifyRestrictedDistrict();
+  get allowedSupervisionLocationIds(): string[] {
+    return this.rootStore.userRestrictions;
   }
 
-  resetRestrictedDistrict(): void {
-    this.isLoading = true;
-    this.restrictedDistricts = [];
-  }
-
-  verifyRestrictedDistrict(): void {
-    const unverifiedLocations = this.restrictedDistricts.filter(
-      (restrictedDistrict) => {
-        return !this.rootStore?.districtsStore.districtIds.includes(
-          restrictedDistrict
+  verifyUserRestrictions(): void {
+    const unverifiedLocations = this.rootStore.userRestrictions.filter(
+      (supervisionLocationId) => {
+        return !this.rootStore.districtsStore.districtIds.includes(
+          supervisionLocationId
         );
       }
     );
 
     if (
-      this.rootStore &&
-      this.restrictedDistricts.length > 0 &&
+      this.rootStore.userRestrictions.length > 0 &&
       unverifiedLocations.length > 0
     ) {
       const authError = new Error(ERROR_MESSAGES.unauthorized);
       Sentry.captureException(authError, {
         tags: {
-          restrictedDistrict: this.restrictedDistricts.join(","),
+          allowedSupervisionLocationIds: this.rootStore.userRestrictions.join(
+            ","
+          ),
         },
       });
       this.rootStore.userStore.setAuthError(authError);
-      this.isError = true;
-      this.isLoading = false;
-      this.restrictedDistricts = [];
     }
   }
 }

@@ -100,8 +100,9 @@ export default class FiltersStore {
       [ADMISSION_TYPE]: this.filterOptions[ADMISSION_TYPE].defaultValue,
       ...{
         [districtKeys.filterKey]: this.rootStore.userRestrictedAccessStore
-          .hasRestrictedDistricts
-          ? this.rootStore.userRestrictedAccessStore.restrictedDistricts
+          .hasUserRestrictions
+          ? this.rootStore.userRestrictedAccessStore
+              .allowedSupervisionLocationIds
           : [this.filterOptions[districtKeys.filterKey].defaultValue],
       },
     };
@@ -117,7 +118,7 @@ export default class FiltersStore {
   get districtFilterOptions() {
     const { districtKeys } = this.rootStore.districtsStore;
     if (!districtKeys) return {};
-    if (this.rootStore.userRestrictedAccessStore.hasRestrictedDistricts) {
+    if (this.rootStore.userRestrictedAccessStore.hasUserRestrictions) {
       return {
         [districtKeys.filterKey]: {
           options: this.restrictedDistrictOptions,
@@ -133,7 +134,7 @@ export default class FiltersStore {
   }
 
   get restrictedDistrictOptions() {
-    return this.rootStore.userRestrictedAccessStore.restrictedDistricts
+    return this.rootStore.userRestrictedAccessStore.allowedSupervisionLocationIds
       .slice()
       .sort()
       .map((district) => {

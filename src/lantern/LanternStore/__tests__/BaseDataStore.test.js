@@ -101,6 +101,7 @@ describe("BaseDataStore", () => {
     UserRestrictedAccessStore.mockImplementation(() => {
       return {
         isLoading: false,
+        verifyUserRestrictions: jest.fn(),
       };
     });
   });
@@ -298,32 +299,6 @@ describe("BaseDataStore", () => {
           getTokenSilently: mockGetTokenSilently,
         },
       });
-      baseStore = new BaseDataStore({ rootStore: lanternStore, file });
-    });
-
-    afterAll(() => {
-      jest.resetAllMocks();
-    });
-
-    it("does not fetch data", () => {
-      expect(callMetricsApi).toHaveBeenCalledTimes(0);
-    });
-
-    it("sets isError to false and isLoading to false", () => {
-      expect(baseStore.isError).toBe(false);
-      expect(baseStore.isLoading).toBe(true);
-    });
-  });
-
-  describe("when user restricted access is loading", () => {
-    beforeAll(() => {
-      jest.resetAllMocks();
-      UserRestrictedAccessStore.mockImplementationOnce(() => {
-        return {
-          isLoading: true,
-        };
-      });
-      lanternStore = new LanternStore(mockRootStore);
       baseStore = new BaseDataStore({ rootStore: lanternStore, file });
     });
 

@@ -1,5 +1,5 @@
 // Recidiviz - a data platform for criminal justice reform
-// Copyright (C) 2020 Recidiviz, Inc.
+// Copyright (C) 2021 Recidiviz, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -27,7 +27,6 @@ type PropTypes = {
 };
 
 const TopBarUserMenuForAuthenticatedUser: React.FC<PropTypes> = ({
-  handleOnProfileClick,
   hideUsername = false,
 }) => {
   const { user, logout, stateName } = useUserStore();
@@ -60,7 +59,6 @@ const TopBarUserMenuForAuthenticatedUser: React.FC<PropTypes> = ({
         <Dropdown.Item
           as={Link}
           to="/profile"
-          onClick={handleOnProfileClick}
           className="TopBarUserMenuForAuthenticatedUser__profile-link d-b td-n pX-15"
         >
           <i className="ti-user mR-10" />

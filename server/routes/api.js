@@ -28,7 +28,6 @@ const {
   fetchMetrics,
   cacheResponse,
   fetchAndFilterNewRevocationFile,
-  filterRestrictedAccessEmails,
 } = require("../core");
 const { default: isDemoMode } = require("../utils/isDemoMode");
 const { getCacheKey } = require("../utils/cacheKeys");
@@ -64,54 +63,7 @@ function responder(res) {
   };
 }
 
-/**
- * A callback which processes fetch result data with a given
- * processResultFn before passing the processed result to
- * the responder function.
- */
-function processAndRespond(responderFn, processResultsFn) {
-  return (err, data) => {
-    if (err) responderFn(err, null);
-    if (data) {
-      try {
-        responderFn(null, processResultsFn(data));
-      } catch (error) {
-        responderFn(error, null);
-      }
-    }
-  };
-}
 // TODO: Generalize this API to take in the metric type and file as request parameters in all calls
-
-function restrictedAccess(req, res) {
-  const validations = validationResult(req);
-  const hasErrors = !validations.isEmpty();
-  if (hasErrors) {
-    responder(res)(
-      {
-        status: BAD_REQUEST,
-        errors: validations.array(),
-      },
-      null
-    );
-  } else {
-    const { stateCode } = req.params;
-    const { userEmail } = req.body;
-    const metricType = "newRevocation";
-    const metricName = "supervision_location_restricted_access_emails";
-    const cacheKey = `${stateCode.toUpperCase()}-${metricType}-restrictedAccess`;
-
-    cacheResponse(
-      cacheKey,
-      () => fetchMetrics(stateCode, metricType, metricName, isDemoMode),
-      processAndRespond(
-        responder(res),
-        filterRestrictedAccessEmails(userEmail, metricName)
-      )
-    );
-  }
-}
-
 function refreshCache(req, res) {
   const { stateCode } = req.params;
   const metricType = "newRevocation";
@@ -315,7 +267,6 @@ function upload(req, res) {
 }
 
 module.exports = {
-  restrictedAccess,
   newRevocations,
   newRevocationFile,
   communityGoals,

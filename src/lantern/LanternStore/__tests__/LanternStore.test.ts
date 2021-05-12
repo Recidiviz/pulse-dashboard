@@ -16,6 +16,7 @@
 // =============================================================================
 import RootStore from "../../../RootStore";
 import LanternStore from "..";
+import UserRestrictedAccessStore from "../UserRestrictedAccessStore";
 
 jest.mock("../../../api/metrics");
 jest.mock("../DataStore/DataStore");
@@ -26,58 +27,64 @@ jest.mock("../../../RootStore/TenantStore", () => {
 });
 jest.mock("../../../RootStore/UserStore", () => {
   return jest.fn().mockImplementation(() => {
-    return { user: {} };
+    return { user: {}, userRestrictions: [] };
   });
 });
 
-let rootStore: LanternStore;
+const verifyUserRestrictionsSpy = jest.spyOn(
+  UserRestrictedAccessStore.prototype,
+  "verifyUserRestrictions"
+);
 
-describe("RootStore", () => {
-  beforeEach(() => {
-    rootStore = new LanternStore(RootStore);
-  });
+const lanternStore: LanternStore = new LanternStore(RootStore);
 
+describe("LanternStore", () => {
   afterAll(() => {
     jest.resetAllMocks();
+    jest.resetModules();
   });
 
   it("contains a FiltersStore", () => {
-    expect(rootStore.filtersStore).toBeDefined();
+    expect(lanternStore.filtersStore).toBeDefined();
   });
 
   it("contains a TenantStore", () => {
-    expect(rootStore.tenantStore).toBeDefined();
+    expect(lanternStore.tenantStore).toBeDefined();
   });
 
   it("contains a UserStore", () => {
-    expect(rootStore.userStore).toBeDefined();
+    expect(lanternStore.userStore).toBeDefined();
   });
 
   it("contains a UserRestrictedAccessStore", () => {
-    expect(rootStore.userRestrictedAccessStore).toBeDefined();
+    expect(lanternStore.userRestrictedAccessStore).toBeDefined();
   });
 
   it("contains a currentTenantId", () => {
-    expect(rootStore.currentTenantId).toBeDefined();
+    expect(lanternStore.currentTenantId).toBeDefined();
   });
 
   it("contains filters", () => {
-    expect(rootStore.filters).toBeDefined();
+    expect(lanternStore.filters).toBeDefined();
   });
 
   it("contains methodology", () => {
-    expect(rootStore.methodology).toBeDefined();
+    expect(lanternStore.methodology).toBeDefined();
   });
 
   it("contains the DataStore", () => {
-    expect(rootStore.dataStore).toBeDefined();
+    expect(lanternStore.dataStore).toBeDefined();
   });
 
   it("contains the DistrictsStore", () => {
-    expect(rootStore.districtsStore).toBeDefined();
+    expect(lanternStore.districtsStore).toBeDefined();
   });
 
   it("contains a user", () => {
-    expect(rootStore.user).toBeDefined();
+    expect(lanternStore.user).toBeDefined();
+  });
+
+  it("calls userRestrictedAccessStore.verifyUserRestrictions", () => {
+    expect(verifyUserRestrictionsSpy).toHaveBeenCalledTimes(1);
   });
 });

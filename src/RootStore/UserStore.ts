@@ -45,7 +45,7 @@ function getDemoUser(): User {
     name: "Demo Jones",
     email: "notarealemail@recidiviz.org",
     // email: "thirteen@mo.gov",
-    "https://dashboard.recidiviz.org/app_metadata": {
+    [`${METADATA_NAMESPACE}/app_metadata`]: {
       state_code: "recidiviz",
       // state_code: 'us_mo',
     },
@@ -124,6 +124,7 @@ export default class UserStore {
 
       return;
     }
+
     if (!this.authSettings) {
       this.authError = new Error(ERROR_MESSAGES.auth0Configuration);
       return;
@@ -198,6 +199,15 @@ export default class UserStore {
       throw Error("No state code set for user");
     }
     return stateCode.toUpperCase() as TenantId;
+  }
+
+  /**
+   * Returns the user restrictions for the given user.
+   */
+  get userRestrictions(): string[] {
+    const allowedSupervisionLocationIds = this.userAppMetadata
+      ?.allowed_supervision_location_ids;
+    return allowedSupervisionLocationIds || [];
   }
 
   /**

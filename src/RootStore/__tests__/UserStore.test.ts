@@ -16,7 +16,6 @@
 // =============================================================================
 import createAuth0Client from "@auth0/auth0-spa-js";
 import { ERROR_MESSAGES } from "../../constants/errorMessages";
-import { reactImmediately } from "../../testUtils";
 import UserStore from "../UserStore";
 import TENANTS from "../../tenants";
 import { TenantId } from "../types";
@@ -55,23 +54,18 @@ beforeEach(() => {
 afterEach(() => {
   jest.resetAllMocks();
 });
-test("authorization immediately pending", async () => {
+
+test("authorization immediately pending", () => {
   const store = new UserStore({});
-  reactImmediately(() => {
-    expect(store.isAuthorized).toBe(false);
-    expect(store.userIsLoading).toBe(true);
-  });
-  expect.hasAssertions();
+  expect(store.isAuthorized).toBe(false);
+  expect(store.userIsLoading).toBe(true);
 });
 
 test("authorize requires Auth0 client settings", async () => {
   const store = new UserStore({});
   await store.authorize();
-  reactImmediately(() => {
-    const error = store.authError;
-    expect(error?.message).toMatch(ERROR_MESSAGES.auth0Configuration);
-  });
-  expect.hasAssertions();
+  const error = store.authError;
+  expect(error?.message).toMatch(ERROR_MESSAGES.auth0Configuration);
 });
 
 test("error thrown in authorize sets authError", async () => {
@@ -80,11 +74,8 @@ test("error thrown in authorize sets authError", async () => {
     authSettings: testAuthSettings,
   });
   await store.authorize();
-  reactImmediately(() => {
-    const error = store.authError;
-    expect(error?.message).toBeDefined();
-  });
-  expect.hasAssertions();
+  const error = store.authError;
+  expect(error?.message).toBeDefined();
 });
 
 test("Invalid state thrown in authorize redirects to login", async () => {
@@ -95,14 +86,12 @@ test("Invalid state thrown in authorize redirects to login", async () => {
     authSettings: testAuthSettings,
   });
   await store.authorize();
-  reactImmediately(() => {
-    expect(mockLoginWithRedirect.mock.calls.length).toBe(1);
-    expect(mockLoginWithRedirect.mock.calls[0][0]).toEqual({
-      appState: { targetUrl: window.location.href },
-    });
-    expect(store.authError).toBe(undefined);
+
+  expect(mockLoginWithRedirect.mock.calls.length).toBe(1);
+  expect(mockLoginWithRedirect.mock.calls[0][0]).toEqual({
+    appState: { targetUrl: window.location.href },
   });
-  expect.hasAssertions();
+  expect(store.authError).toBe(undefined);
 });
 
 test("authorized when authenticated", async () => {
@@ -113,11 +102,8 @@ test("authorized when authenticated", async () => {
     authSettings: testAuthSettings,
   });
   await store.authorize();
-  reactImmediately(() => {
-    expect(store.isAuthorized).toBe(true);
-    expect(store.userIsLoading).toBe(false);
-  });
-  expect.hasAssertions();
+  expect(store.isAuthorized).toBe(true);
+  expect(store.userIsLoading).toBe(false);
 });
 
 test("redirect to Auth0 when unauthenticated", async () => {
@@ -142,11 +128,7 @@ test("requires email verification", async () => {
     authSettings: testAuthSettings,
   });
   await store.authorize();
-
-  reactImmediately(() => {
-    expect(store.isAuthorized).toBe(false);
-  });
-  expect.hasAssertions();
+  expect(store.isAuthorized).toBe(false);
 });
 
 test("handles Auth0 token params", async () => {
@@ -198,13 +180,10 @@ test.each(Object.keys(TENANTS))(
       authSettings: testAuthSettings,
     });
     await store.authorize();
-    reactImmediately(() => {
-      expect(store.availableStateCodes).toBe(
-        TENANTS[currentTenantId as TenantId].availableStateCodes
-      );
-      expect(store.stateName).toBe(TENANTS[currentTenantId as TenantId].name);
-    });
-    expect.hasAssertions();
+    expect(store.availableStateCodes).toBe(
+      TENANTS[currentTenantId as TenantId].availableStateCodes
+    );
+    expect(store.stateName).toBe(TENANTS[currentTenantId as TenantId].name);
   }
 );
 
@@ -216,12 +195,9 @@ test("Error from getTokenSilently redirects to login", async () => {
   await store.authorize();
   mockGetTokenSilently.mockResolvedValue(new Error("Login required"));
   await store.getTokenSilently();
-  reactImmediately(() => {
-    expect(mockLoginWithRedirect.mock.calls.length).toBe(1);
-    expect(mockLoginWithRedirect.mock.calls[0][0]).toEqual({
-      appState: { targetUrl: window.location.href },
-    });
-    expect(store.authError).toBe(undefined);
+  expect(mockLoginWithRedirect.mock.calls.length).toBe(1);
+  expect(mockLoginWithRedirect.mock.calls[0][0]).toEqual({
+    appState: { targetUrl: window.location.href },
   });
-  expect.hasAssertions();
+  expect(store.authError).toBe(undefined);
 });

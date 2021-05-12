@@ -101,7 +101,6 @@ describe("App tests", () => {
       const user = { [metadataField]: { state_code: US_MO } };
       useRootStore.mockReturnValue({
         userStore: { user, isAuthorized: true },
-        userRestrictedAccessStore: { isLoading: false },
         currentTenantId: US_MO,
       });
 
@@ -117,7 +116,6 @@ describe("App tests", () => {
       const user = { [metadataField]: { state_code: US_PA } };
       useRootStore.mockReturnValue({
         userStore: { user, isAuthorized: true },
-        userRestrictedAccessStore: { isLoading: false },
         currentTenantId: US_PA,
       });
 
@@ -152,7 +150,6 @@ describe("App tests", () => {
       window.history.pushState({}, "", "/some/page");
       useRootStore.mockReturnValue({
         userStore: { user: {}, isAuthorized: true },
-        userRestrictedAccessStore: { isLoading: false },
         currentTenantId: US_PA,
       });
 
@@ -166,7 +163,6 @@ describe("App tests", () => {
       window.history.pushState({}, "", "/some/page");
       useRootStore.mockReturnValue({
         userStore: { user: {}, isAuthorized: true },
-        userRestrictedAccessStore: { isLoading: false },
         currentTenantId: "US_XX",
       });
 
@@ -214,7 +210,6 @@ describe("App tests", () => {
   it("should render Loading component while user is loading", () => {
     useRootStore.mockReturnValue({
       userStore: { user: {}, userIsLoading: true, authorize: () => {} },
-      userRestrictedAccessStore: { isLoading: true },
     });
 
     const { container } = render(<App />);
@@ -226,7 +221,6 @@ describe("App tests", () => {
   it("should render the Error component if there is an error", () => {
     useRootStore.mockReturnValue({
       userStore: { userIsLoading: false, authError: true },
-      userRestrictedAccessStore: { isLoading: false },
     });
 
     // do not log the expected error - keep tests less verbose
@@ -241,7 +235,6 @@ describe("App tests", () => {
     window.history.pushState({}, "", "/verify");
     useRootStore.mockReturnValue({
       userStore: { user: {}, isAuthorized: true },
-      userRestrictedAccessStore: { isLoading: false },
       currentTenantId: US_PA,
     });
 

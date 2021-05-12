@@ -15,7 +15,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-const { query, param, body } = require("express-validator");
+const { query, param } = require("express-validator");
 const { default: isDemoMode } = require("../utils/isDemoMode");
 
 const VALID_STATE_CODES = ["US_PA", "US_MO", "US_ND"].concat(
@@ -70,8 +70,6 @@ const ADMISSION_TYPES = [
 
 const newRevocationsParamValidations = [
   param("stateCode").toUpperCase().isIn(VALID_STATE_CODES),
-  // TODO[#657]: Remove optional check for params when the FE starts sending the query
-  query("district").optional(),
   query("levelOneSupervisionLocation").optional(),
   query("levelTwoSupervisionLocation").optional(),
   query("chargeCategory").toLowerCase().optional().isIn(CHARGE_CATEGORIES),
@@ -92,14 +90,8 @@ const newRevocationsParamValidations = [
     .custom((values) =>
       values.every((value) => ADMISSION_TYPES.includes(value.toLowerCase()))
     ),
-  query("restrictedDistrict").optional(),
-];
-
-const restrictedAccessParamValidations = [
-  body("userEmail", "Request is missing userEmail parameter").exists(),
 ];
 
 module.exports = {
   newRevocationsParamValidations,
-  restrictedAccessParamValidations,
 };

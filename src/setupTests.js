@@ -26,3 +26,8 @@ import { initI18n } from "./utils/i18nSettings";
 initI18n();
 
 configure({ adapter: new Adapter() });
+
+process.env = {
+  ...process.env,
+  REACT_APP_METADATA_NAMESPACE: "test-metadata-namespace/",
+};
