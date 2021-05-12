@@ -114,7 +114,7 @@ function applyFiltersToDataPoints(dataPoints, filters, filterFn, metricName) {
  * data and the metadata for the subset.
  *
  * @param {string} metricName - Name of the metric file
- * @param {Object} subsetFilters - Filters with all the dimension values from the subset manifest
+ * @param {Object} filters - Filters with all the dimension values from the subset manifest and user restrictions if they exist
  * @param {Object.<string, metricName>} metricFile - An object with the metricName as key and value may either include a flattened value matrix with metadata, or an array of data point objects.
  * @param {Object[]} [metricFile.metricName] - Optional array of data point objects
  * @param {string} [metricFile.metricName.flattenedValueMatrix] - Optional flattened value matrix string
@@ -128,10 +128,8 @@ function applyFiltersToDataPoints(dataPoints, filters, filterFn, metricName) {
  * is under the key `flattenedValueMatrix`, otherwise if an array of datapoints was provided, the subset data is under
  * the `data` key.
  */
-function createSubset(metricName, subsetFilters, metricFile) {
-  const {
-    level_1_supervision_location: levelOneSupervisionLocation,
-  } = subsetFilters;
+function createSubset(metricName, filters, metricFile) {
+  const { level_1_supervision_location: levelOneSupervisionLocation } = filters;
 
   if (
     !FILES_WITH_SUBSETS.includes(metricName) &&
@@ -140,7 +138,7 @@ function createSubset(metricName, subsetFilters, metricFile) {
     return metricFile;
   }
 
-  const filterFn = getFilterFnByMetricName(metricName, subsetFilters);
+  const filterFn = getFilterFnByMetricName(metricName, filters);
 
   const skipFilterFn = (dimensionKey) =>
     !getSubsetDimensionKeys()
@@ -153,7 +151,7 @@ function createSubset(metricName, subsetFilters, metricFile) {
     return {
       [metricName]: applyFiltersToDataPoints(
         metricFile[metricName],
-        subsetFilters,
+        filters,
         filterFn,
         metricName
       ),
@@ -163,14 +161,14 @@ function createSubset(metricName, subsetFilters, metricFile) {
   /* eslint-disable no-console */
   console.log(
     `Creating subset file for: ${metricName} with filters: ${JSON.stringify(
-      subsetFilters
+      filters
     )}`
   );
 
   return {
     [metricName]: applyFiltersToOptimizedFormat(
       metricFile[metricName],
-      subsetFilters,
+      filters,
       filterFn,
       skipFilterFn
     ),

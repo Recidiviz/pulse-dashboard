@@ -29,6 +29,31 @@ const mockMetricFiles = {
   ],
 };
 
+const mockSubsetFilters = {
+  violation_type: [
+    "absconded",
+    "all",
+    "elec_monitoring",
+    "escaped",
+    "high_tech",
+    "low_tech",
+    "med_tech",
+    "municipal",
+    "substance_abuse",
+    "technical",
+  ],
+  charge_category: [
+    "all",
+    "domestic_violence",
+    "general",
+    "serious_mental_illness",
+  ],
+};
+
+const mockUserRestrictionsFilters = {
+  level_1_supervision_location: ["08n"],
+};
+
 jest.mock("../../core/fetchMetrics", () => {
   return {
     default: jest.fn(() => Promise.resolve(mockMetricFiles)),
@@ -40,6 +65,21 @@ jest.mock("../../core/fetchAndFilterNewRevocationFile", () => {
     default: jest.fn(() => Promise.resolve(mockMetricFiles)),
   };
 });
+
+jest.mock("../../filters/filterHelpers", () => {
+  return {
+    createSubsetFilters: jest.fn().mockReturnValue(mockSubsetFilters),
+    createUserRestrictionsFilters: jest
+      .fn()
+      .mockReturnValue(mockUserRestrictionsFilters),
+    getNewRevocationsFiltersByMetricName: jest.fn().mockReturnValue({
+      ...mockSubsetFilters,
+      ...mockUserRestrictionsFilters,
+    }),
+  };
+});
+
+jest.mock("../../utils/cacheKeys");
 
 const { default: fetchMetrics } = require("../../core/fetchMetrics");
 const {
@@ -60,6 +100,12 @@ const {
 } = require("../api");
 
 const { clearMemoryCache } = require("../../core/cacheManager");
+const {
+  createUserRestrictionsFilters,
+  createSubsetFilters,
+  getNewRevocationsFiltersByMetricName,
+} = require("../../filters");
+const { getCacheKey } = require("../../utils/cacheKeys");
 
 describe("API GET tests", () => {
   const stateCode = "test_id";
@@ -152,31 +198,82 @@ describe("API GET tests", () => {
   });
 
   describe("newRevocationFile endpoint", () => {
-    it("newRevocationFile - calls fetchAndFilterNewReocationFile with correct args", async () => {
-      const file = "file_1";
-      const filters = { violationType: "ALL" };
-      const request = {
-        params: { stateCode, file },
-        query: filters,
+    const file = "file_1";
+    const queryParams = { violationType: "ALL" };
+    const request = {
+      user: {
+        [`${process.env.METADATA_NAMESPACE}app_metadata`]: {
+          allowed_supervision_location_ids: ["8N"],
+          allowed_supervision_location_level: "level_1_supervision_location",
+        },
+      },
+      params: { stateCode, file },
+      query: queryParams,
+    };
+    const expectedFilters = {
+      ...mockSubsetFilters,
+      ...mockUserRestrictionsFilters,
+    };
+
+    it("newRevocationFile - does not throw when there are no user restrictions", async () => {
+      const requestWithoutRestrictions = {
+        ...request,
+        user: {
+          [`${process.env.METADATA_NAMESPACE}app_metadata`]: {},
+        },
       };
 
+      expect(async () =>
+        fakeRequest(newRevocationFile, requestWithoutRestrictions)
+      ).not.toThrow();
+    });
+
+    it("newRevocationFile - calls createUserRestrictionsFilters with correct args", async () => {
       await fakeRequest(newRevocationFile, request);
-      expect(fetchAndFilterNewRevocationFile).toHaveBeenCalledWith({
+      expect(createUserRestrictionsFilters).toHaveBeenCalledWith({
+        allowed_supervision_location_ids: ["8N"],
+        allowed_supervision_location_level: "level_1_supervision_location",
+      });
+    });
+
+    it("newRevocationFile - calls createSubsetFilters with correct args", async () => {
+      await fakeRequest(newRevocationFile, request);
+      expect(createSubsetFilters).toHaveBeenCalledWith({
+        filters: request.query,
+      });
+    });
+
+    it("newRevocationFile - calls getNewRevocationsFiltersByMetricName with correct args", async () => {
+      await fakeRequest(newRevocationFile, request);
+      expect(getNewRevocationsFiltersByMetricName).toHaveBeenCalledWith({
         metricName: file,
+        subsetFilters: mockSubsetFilters,
+        userRestrictionsFilters: mockUserRestrictionsFilters,
+      });
+    });
+
+    it("newRevocationFile - calls getCacheKey with correct args", async () => {
+      await fakeRequest(newRevocationFile, request);
+      expect(getCacheKey).toHaveBeenCalledWith({
         stateCode,
         metricType: "newRevocation",
-        queryParams: filters,
+        metricName: file,
+        cacheKeySubset: expectedFilters,
+      });
+    });
+
+    it("newRevocationFile - calls fetchAndFilterNewRevocationFile with correct args", async () => {
+      await fakeRequest(newRevocationFile, request);
+      expect(fetchAndFilterNewRevocationFile).toHaveBeenCalledWith({
+        stateCode,
+        metricType: "newRevocation",
+        metricName: file,
+        filters: expectedFilters,
         isDemoMode: false,
       });
     });
 
     it("newRevocationFile - calls fetchAndFilterNewRevocationFile if data is not cached", async () => {
-      const file = "file_1";
-      const filters = { violationType: "ALL" };
-      const request = {
-        params: { stateCode, file },
-        query: filters,
-      };
       await requestAndExpectFetchMetricsCalled(
         newRevocationFile,
         1,

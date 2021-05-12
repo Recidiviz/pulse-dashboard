@@ -53,7 +53,7 @@ describe("createSubset", () => {
     jest.clearAllMocks();
   });
 
-  describe("Given a file without subsets and without a restricted district", () => {
+  describe("Given a file without subsets and without a user restrictions", () => {
     it("does not filter the metric file", () => {
       fileKey = "not_in_the_subset_manifest";
       metricFile = { [fileKey]: "lots of great data" };
@@ -61,122 +61,114 @@ describe("createSubset", () => {
     });
   });
 
-  describe("Given an optimized data format", () => {
-    beforeEach(() => {
-      fileKey = "revocations_matrix_distribution_by_district";
-      const chargeCategoryValues = "2,2,2,2,2";
-      const violationTypeValues = "0,1,2,2,2";
-      const supervisionTypeValues = "0,0,1,1,0";
-      const valueValues = "10,10,10,10,10";
-      const subsetFilters = {
-        violation_type: violationTypeFilters,
-        charge_category: chargeCategoryFilters,
-      };
-      metricFile = {
-        [fileKey]: {
-          flattenedValueMatrix: [
-            chargeCategoryValues,
-            violationTypeValues,
-            supervisionTypeValues,
-            valueValues,
-          ].join(","),
-          metadata: {
-            total_data_points: "5",
-            dimension_manifest: [
-              ["charge_category", ["all", "general", "sex_offense"]],
-              [
-                "violation_type",
-                ["all", "absconded", "felony", "law", "misdemeanor"],
-              ],
-              ["supervision_type", ["all", "dual", "parole", "probation"]],
-            ],
-            value_keys: ["total_revocations"],
-          },
-        },
-      };
-      expectedMetadata = {
-        total_data_points: 3,
+  describe("Filtering a file in the optimized format", () => {
+    const chargeCategoryValues = "2,2,2,2,2";
+    const violationTypeValues = "0,1,2,2,2";
+    const supervisionTypeValues = "0,0,1,1,0";
+    const levelOneSupervisionLocationValues = "0,0,1,1,1";
+    const valueValues = "10,10,10,10,10";
+    const metricContents = {
+      flattenedValueMatrix: [
+        chargeCategoryValues,
+        violationTypeValues,
+        supervisionTypeValues,
+        levelOneSupervisionLocationValues,
+        valueValues,
+      ].join(","),
+      metadata: {
+        total_data_points: "5",
         dimension_manifest: [
-          ["charge_category", ["sex_offense"]],
-          ["violation_type", ["felony", "law", "misdemeanor"]],
+          ["charge_category", ["all", "general", "sex_offense"]],
+          [
+            "violation_type",
+            ["all", "absconded", "felony", "law", "misdemeanor"],
+          ],
           ["supervision_type", ["all", "dual", "parole", "probation"]],
+          ["level_1_supervision_location", ["01", "03n"]],
         ],
         value_keys: ["total_revocations"],
-      };
-      expectedFilteredValues = "0,0,0,0,0,0,1,1,0,10,10,10";
-      output = createSubset(fileKey, subsetFilters, metricFile);
-    });
+      },
+    };
 
-    it("returns a metric file in the expected format", () => {
-      expect(output).toHaveProperty(fileKey);
-      expect(output[fileKey]).toHaveProperty("flattenedValueMatrix");
-      expect(output[fileKey]).toHaveProperty("metadata");
-      expect(output[fileKey]).toHaveProperty("metadata.total_data_points");
-      expect(output[fileKey]).toHaveProperty("metadata.dimension_manifest");
-      expect(output[fileKey]).toHaveProperty("metadata.value_keys");
-    });
-
-    it("returns a transformed metadata to reflect the subsets", () => {
-      expect(output[fileKey].metadata).toEqual(expectedMetadata);
-    });
-
-    it("returns a filtered dataset as a flattenedValueMatrix", () => {
-      expect(output[fileKey].flattenedValueMatrix).toEqual(
-        expectedFilteredValues
-      );
-    });
-
-    describe("Given a file with subsets and with a restricted district", () => {
+    describe("with subset filters", () => {
       beforeEach(() => {
-        fileKey = "revocations_matrix_distribution_by_gender";
-        const chargeCategoryValues = "2,2,2,2,2";
-        const violationTypeValues = "0,1,2,2,2";
-        const supervisionTypeValues = "0,0,1,1,0";
-        const levelOneSupervisionLocationValues = "1,1,1,0,0";
-        const valueValues = "10,10,10,10,10";
+        fileKey = "revocations_matrix_distribution_by_district";
+        metricFile = { [fileKey]: metricContents };
         const subsetFilters = {
           violation_type: violationTypeFilters,
           charge_category: chargeCategoryFilters,
-          level_1_supervision_location: ["01"],
-        };
-        metricFile = {
-          [fileKey]: {
-            flattenedValueMatrix: [
-              chargeCategoryValues,
-              violationTypeValues,
-              supervisionTypeValues,
-              levelOneSupervisionLocationValues,
-              valueValues,
-            ].join(","),
-            metadata: {
-              total_data_points: "5",
-              dimension_manifest: [
-                ["charge_category", ["all", "general", "sex_offense"]],
-                [
-                  "violation_type",
-                  ["all", "absconded", "felony", "law", "misdemeanor"],
-                ],
-                ["supervision_type", ["all", "dual", "parole", "probation"]],
-                ["level_1_supervision_location", ["01", "03"]],
-              ],
-              value_keys: ["total_revocations"],
-            },
-          },
         };
         expectedMetadata = {
-          total_data_points: 2,
+          total_data_points: 3,
           dimension_manifest: [
             ["charge_category", ["sex_offense"]],
             ["violation_type", ["felony", "law", "misdemeanor"]],
             ["supervision_type", ["all", "dual", "parole", "probation"]],
-            ["level_1_supervision_location", ["01"]],
+            ["level_1_supervision_location", ["01", "03n"]],
           ],
           value_keys: ["total_revocations"],
         };
-        expectedFilteredValues = "0,0,0,0,1,0,0,0,10,10";
+        expectedFilteredValues = [
+          "0,0,0,", // charge_category sex_offense
+          "0,0,0,", // violation_type felony
+          "1,1,0,", // supervision_type dual, dual, all
+          "1,1,1,", // level_1_supervision_location 03n
+          "10,10,10", // total_revocations
+        ].join("");
         output = createSubset(fileKey, subsetFilters, metricFile);
       });
-      it("returns the data with the restricted district and correct metadata", () => {
+
+      it("returns a metric file in the expected format", () => {
+        expect(output).toHaveProperty(fileKey);
+        expect(output[fileKey]).toHaveProperty("flattenedValueMatrix");
+        expect(output[fileKey]).toHaveProperty("metadata");
+        expect(output[fileKey]).toHaveProperty("metadata.total_data_points");
+        expect(output[fileKey]).toHaveProperty("metadata.dimension_manifest");
+        expect(output[fileKey]).toHaveProperty("metadata.value_keys");
+      });
+
+      it("returns a transformed metadata to reflect the subsets", () => {
+        expect(output[fileKey].metadata).toEqual(expectedMetadata);
+      });
+
+      it("returns a filtered dataset as a flattenedValueMatrix", () => {
+        expect(output[fileKey].flattenedValueMatrix).toEqual(
+          expectedFilteredValues
+        );
+      });
+    });
+
+    describe("with subset filters and user restrictions", () => {
+      beforeEach(() => {
+        fileKey = "revocations_matrix_distribution_by_gender";
+        metricFile = { [fileKey]: metricContents };
+        const filters = {
+          violation_type: violationTypeFilters,
+          charge_category: chargeCategoryFilters,
+          level_1_supervision_location: ["03n"],
+        };
+
+        expectedMetadata = {
+          total_data_points: 3,
+          dimension_manifest: [
+            ["charge_category", ["sex_offense"]],
+            ["violation_type", ["felony", "law", "misdemeanor"]],
+            ["supervision_type", ["all", "dual", "parole", "probation"]],
+            ["level_1_supervision_location", ["03n"]],
+          ],
+          value_keys: ["total_revocations"],
+        };
+        expectedFilteredValues = [
+          "0,0,0,", // charge_category sex_offense
+          "0,0,0,", // violation_type felony
+          "1,1,0,", // supervision_type dual, dual, all
+          "0,0,0,", // level_1_supervision_location 03n
+          "10,10,10", // total_revocations
+        ].join("");
+        output = createSubset(fileKey, filters, metricFile);
+      });
+
+      it("returns the data with the user restrictions applied", () => {
         expect(output[fileKey].flattenedValueMatrix).toEqual(
           expectedFilteredValues
         );
@@ -243,8 +235,8 @@ describe("createSubset", () => {
       expect(output[fileKey].data).toEqual(expectedFilteredValues);
     });
 
-    describe("Given a file without subsets and with a restricted district", () => {
-      it("filters by restricted district and returns an empty subsetManifest", () => {
+    describe("Given user restrictions for a file without subsets", () => {
+      it("filters by user restrictions and returns an empty dimension_manifest", () => {
         fileKey = "not_in_the_subset_manifest";
         metricFile = {
           [fileKey]: [
@@ -267,8 +259,8 @@ describe("createSubset", () => {
       });
     });
 
-    describe("Given a file with subsets and with a restricted district", () => {
-      it("filters by restricted district and returns a subset manifest", () => {
+    describe("Given a file with subsets and user restrictions", () => {
+      it("filters by user restrictions and returns a subset manifest", () => {
         fileKey = "revocations_matrix_distribution_by_gender";
         metricFile = {
           [fileKey]: [

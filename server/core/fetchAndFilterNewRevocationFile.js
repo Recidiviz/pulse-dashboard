@@ -14,22 +14,18 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-const { createSubset, createSubsetFilters } = require("../filters");
+const { createSubset } = require("../filters");
 const { default: fetchMetrics } = require("./fetchMetrics");
 
 function fetchAndFilterNewRevocationFile({
   metricName,
-  queryParams: filters,
+  filters,
   ...fetchArgs
 }) {
   const { stateCode, metricType, isDemoMode } = fetchArgs;
   return fetchMetrics(stateCode, metricType, metricName, isDemoMode).then(
     (metricFile) => {
-      const subsetFilters = createSubsetFilters({
-        filters,
-        metricName,
-      });
-      return createSubset(metricName, subsetFilters, metricFile);
+      return createSubset(metricName, filters, metricFile);
     }
   );
 }

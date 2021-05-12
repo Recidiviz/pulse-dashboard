@@ -32,6 +32,13 @@ const {
 } = require("../core");
 const { default: isDemoMode } = require("../utils/isDemoMode");
 const { getCacheKey } = require("../utils/cacheKeys");
+const {
+  createSubsetFilters,
+  createUserRestrictionsFilters,
+  getNewRevocationsFiltersByMetricName,
+} = require("../filters");
+
+const { METADATA_NAMESPACE } = process.env;
 
 const BAD_REQUEST = 400;
 const SERVER_ERROR = 500;
@@ -134,14 +141,31 @@ function newRevocationFile(req, res) {
   if (hasErrors) {
     responder(res)({ status: BAD_REQUEST, errors: validations.array() }, null);
   } else {
+    const { user } = req;
+    const appMetadata =
+      (user && user[`${METADATA_NAMESPACE}app_metadata`]) || {};
     const { stateCode, file: metricName } = req.params;
     const queryParams = req.query || {};
+
+    const userRestrictionsFilters = createUserRestrictionsFilters(appMetadata);
+
+    const subsetFilters = createSubsetFilters({
+      filters: queryParams,
+    });
+
+    const filters = getNewRevocationsFiltersByMetricName({
+      metricName,
+      subsetFilters,
+      userRestrictionsFilters,
+    });
+
     const cacheKey = getCacheKey({
       stateCode,
       metricType,
       metricName,
-      cacheKeySubset: queryParams,
+      cacheKeySubset: filters,
     });
+
     cacheResponse(
       cacheKey,
       () =>
@@ -149,7 +173,7 @@ function newRevocationFile(req, res) {
           stateCode,
           metricType,
           metricName,
-          queryParams,
+          filters,
           isDemoMode,
         }),
       responder(res)
