@@ -17,6 +17,10 @@
 import qs from "qs";
 import { User } from "@auth0/auth0-spa-js";
 
+export function isDemoMode(): boolean {
+  return process.env.REACT_APP_IS_DEMO === "true";
+}
+
 type DemoUserOptions = {
   email?: string;
   name?: string;
@@ -26,6 +30,9 @@ type DemoUserOptions = {
 };
 
 export async function fetchDemoUser(options: DemoUserOptions): Promise<User> {
+  if (!isDemoMode()) {
+    throw new Error(`fetchDemoUser can only be used in demo mode!`);
+  }
   const queryParams = qs.stringify(options, { addQueryPrefix: true });
   const response = await fetch(
     `${process.env.REACT_APP_API_URL}/api/demoUser${queryParams}`

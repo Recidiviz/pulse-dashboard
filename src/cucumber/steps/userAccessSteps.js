@@ -24,7 +24,7 @@ Given("I am on the Lantern Dashboard", function () {
 
 Given(
   "I am a user that has {int} district restrictions",
-  async function (numRestrictedDistricts) {
+  function (numRestrictedDistricts) {
     const demoUserMock = browser.mock("**/api/demoUser");
     const restrictions = [null, ["TCSTL"], ["13", "TCSTL"]][
       numRestrictedDistricts
