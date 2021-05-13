@@ -74,7 +74,7 @@ const getNewRevocationsFiltersByMetricName = ({
     case "revocations_matrix_filtered_caseload":
       return userRestrictionsFilters;
     default:
-      return { ...subsetFilters, ...userRestrictionsFilters };
+      return {};
   }
 };
 

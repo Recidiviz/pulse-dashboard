@@ -120,7 +120,7 @@ describe("getNewRevocationsFiltersByMetricName", () => {
     jest.clearAllMocks();
   });
 
-  describe("given files with subsets or an unknown file", () => {
+  describe("given files with subsets", () => {
     [
       "revocations_matrix_distribution_by_risk_level",
       "revocations_matrix_distribution_by_gender",
@@ -128,7 +128,6 @@ describe("getNewRevocationsFiltersByMetricName", () => {
       "revocations_matrix_distribution_by_race",
       "revocations_matrix_distribution_by_violation",
       "revocations_matrix_by_month",
-      "unknown_file",
     ].forEach((metricName) => {
       it("returns the filters object", () => {
         expect(
@@ -172,6 +171,18 @@ describe("getNewRevocationsFiltersByMetricName", () => {
       ).toEqual({
         violation_type: "all",
       });
+    });
+  });
+
+  describe("given a file that should not be filtered", () => {
+    it("returns an empty object", () => {
+      expect(
+        getNewRevocationsFiltersByMetricName({
+          metricName: "revocations_matrix_supervision_location_ids_to_names",
+          subsetFilters,
+          userRestrictionsFilters,
+        })
+      ).toEqual({});
     });
   });
 });
