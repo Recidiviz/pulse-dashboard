@@ -28,6 +28,7 @@ const {
   fetchMetrics,
   cacheResponse,
   fetchAndFilterNewRevocationFile,
+  fetchDemoUser,
 } = require("../core");
 const { isDemoMode } = require("../utils/recidivizAccess");
 const { getCacheKey } = require("../utils/cacheKeys");
@@ -64,6 +65,12 @@ function responder(res) {
 }
 
 // TODO: Generalize this API to take in the metric type and file as request parameters in all calls
+function demoUser(req, res) {
+  const options = req.query;
+  const user = fetchDemoUser(options);
+  responder(res)(null, user);
+}
+
 function refreshCache(req, res) {
   const { stateCode } = req.params;
   const metricType = "newRevocation";
@@ -271,6 +278,7 @@ function upload(req, res) {
 }
 
 module.exports = {
+  demoUser,
   newRevocations,
   newRevocationFile,
   communityGoals,

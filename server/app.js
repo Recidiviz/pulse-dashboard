@@ -97,6 +97,14 @@ function validateCronRequest(req, res, next) {
   }
 }
 
+function validateDemoRequest(req, res, next) {
+  if (!isDemoMode) {
+    res.sendStatus(403);
+  } else {
+    next();
+  }
+}
+
 function errorHandler(err, _req, res, next) {
   if (err && err.message) {
     res
@@ -113,6 +121,7 @@ if (isDemoMode) {
   };
 }
 
+app.get("/api/demoUser", validateDemoRequest, api.demoUser);
 app.get("/api/:stateCode/refreshCache", validateCronRequest, api.refreshCache);
 app.get("/api/:stateCode/newRevocations", checkJwt, api.newRevocations);
 app.get(

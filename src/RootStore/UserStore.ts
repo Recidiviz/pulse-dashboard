@@ -22,7 +22,7 @@ import createAuth0Client, {
 } from "@auth0/auth0-spa-js";
 import { makeAutoObservable, runInAction, action } from "mobx";
 import qs from "qs";
-
+import { fetchDemoUser } from "../api/fetchDemoUser";
 import { ERROR_MESSAGES } from "../constants/errorMessages";
 import type RootStore from ".";
 import { TenantId, UserAppMetadata } from "./types";
@@ -32,26 +32,6 @@ const METADATA_NAMESPACE = process.env.REACT_APP_METADATA_NAMESPACE;
 
 function isDemoMode(): boolean {
   return process.env.REACT_APP_IS_DEMO === "true";
-}
-
-/**
- * Returns an artificial Auth0 id token for a fake/demo user.
- * You can uncomment code for testing different user metadata.
- */
-function getDemoUser(): User {
-  return {
-    picture:
-      "https://ui-avatars.com/api/?name=Demo+Jones&background=0D8ABC&color=fff&rounded=true",
-    name: "Demo Jones",
-    email: "notarealemail@recidiviz.org",
-    // email: "thirteen@mo.gov",
-    [`${METADATA_NAMESPACE}app_metadata`]: {
-      state_code: "recidiviz",
-      // allowed_supervision_location_ids: ["33"],
-      // allowed_supervision_location_level: "level_1_supervision_location",
-      // state_code: 'us_mo',
-    },
-  };
 }
 
 type ConstructorProps = {
@@ -120,10 +100,9 @@ export default class UserStore {
   async authorize(): Promise<void> {
     if (isDemoMode()) {
       this.isAuthorized = true;
+      this.user = await fetchDemoUser({});
       this.userIsLoading = false;
-      this.user = getDemoUser();
       this.getToken = () => "";
-
       return;
     }
 

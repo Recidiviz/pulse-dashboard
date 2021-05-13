@@ -24,17 +24,21 @@ Given("I am on the Lantern Dashboard", function () {
 
 Given(
   "I am a user that has {int} district restrictions",
-  function (numRestrictedDistricts) {
-    const restrictedAccessMock = browser.mock("**/api/US_MO/restrictedAccess");
-    const restrictions = [null, "TCSTL", "13,TCSTL"][numRestrictedDistricts];
-    const responseData = restrictions
-      ? {
-          supervision_location_restricted_access_emails: {
-            allowed_level_1_supervision_location_ids: restrictions,
-          },
-        }
-      : {};
-    restrictedAccessMock.respond(responseData);
+  async function (numRestrictedDistricts) {
+    const demoUserMock = browser.mock("**/api/demoUser");
+    const restrictions = [null, ["TCSTL"], ["13", "TCSTL"]][
+      numRestrictedDistricts
+    ];
+    const demoUser = {
+      name: "demo",
+      email: "demo",
+      [`${process.env.METADATA_NAMESPACE}app_metadata`]: {
+        state_code: "US_MO",
+        allowed_supervision_location_ids: restrictions,
+        allowed_supervision_location_level: "level_1_supervision_location",
+      },
+    };
+    demoUserMock.respond(demoUser);
   }
 );
 
