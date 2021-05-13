@@ -1,5 +1,5 @@
 // Recidiviz - a data platform for criminal justice reform
-// Copyright (C) 2020 Recidiviz, Inc.
+// Copyright (C) 2021 Recidiviz, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -95,7 +95,6 @@ const {
   facilitiesExplore,
   programmingExplore,
   refreshCache,
-  restrictedAccess,
   responder,
 } = require("../api");
 
@@ -258,7 +257,7 @@ describe("API GET tests", () => {
         stateCode,
         metricType: "newRevocation",
         metricName: file,
-        cacheKeySubset: expectedFilters,
+        cacheKeySubset: { ...queryParams, ...mockUserRestrictionsFilters },
       });
     });
 
@@ -302,81 +301,6 @@ describe("API GET tests", () => {
         0,
         request,
         fetchAndFilterNewRevocationFile
-      );
-    });
-  });
-
-  describe("API fetching and caching for POST requests", () => {
-    const userEmail = "thirteen@state.gov";
-    const userDistrict = "13";
-    let postRequest = { params: { stateCode }, body: { userEmail } };
-    const file = "supervision_location_restricted_access_emails";
-
-    afterEach(async () => {
-      await clearMemoryCache();
-      fetchMetrics.mockClear();
-      jest.resetModules();
-    });
-
-    it("restrictedAccess fetches file only if data is not cached in store", async () => {
-      await requestAndExpectFetchMetricsCalled(
-        restrictedAccess,
-        1,
-        postRequest
-      );
-
-      await requestAndExpectFetchMetricsCalled(
-        restrictedAccess,
-        0,
-        postRequest
-      );
-
-      await clearMemoryCache();
-
-      await requestAndExpectFetchMetricsCalled(
-        restrictedAccess,
-        1,
-        postRequest
-      );
-      await requestAndExpectFetchMetricsCalled(
-        restrictedAccess,
-        0,
-        postRequest
-      );
-    });
-
-    it("restrictedAccess correctly responds to subsequent requests from different users from cached file ", async () => {
-      let result = await fakeRequest(restrictedAccess, postRequest);
-      expect(result[file].restricted_user_email).toEqual(userEmail);
-      expect(result[file].allowed_level_1_supervision_location_ids).toEqual(
-        userDistrict
-      );
-      expect(fetchMetrics.mock.calls.length).toBe(1);
-      fetchMetrics.mockClear();
-
-      const newUserEmail = "one@state.gov";
-      const newUserDistrict = "1";
-      postRequest = {
-        params: { stateCode },
-        body: { userEmail: newUserEmail },
-      };
-
-      result = await fakeRequest(restrictedAccess, postRequest);
-      expect(result[file].restricted_user_email).toEqual(newUserEmail);
-      expect(result[file].allowed_level_1_supervision_location_ids).toEqual(
-        newUserDistrict
-      );
-      expect(fetchMetrics.mock.calls.length).toBe(0);
-      fetchMetrics.mockClear();
-    });
-
-    it("restrictedAccess - calls fetchMetrics with the correct args", async () => {
-      await fakeRequest(restrictedAccess, postRequest);
-      expect(fetchMetrics).toHaveBeenCalledWith(
-        stateCode,
-        "newRevocation",
-        file,
-        false
       );
     });
   });

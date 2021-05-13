@@ -14,6 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
+const { camelCase } = require("lodash");
 const {
   getSubsetManifest,
   FILES_WITH_SUBSETS,
@@ -147,7 +148,7 @@ function getCacheKey({
 
   if (cacheKeySubset && FILES_WITH_SUBSETS.includes(metricName)) {
     getSubsetManifest().forEach(([dimensionKey, dimensionSubsets]) => {
-      const subsetValue = cacheKeySubset[dimensionKey];
+      const subsetValue = cacheKeySubset[camelCase(dimensionKey)];
       const subsetIndex = dimensionSubsets.findIndex((subset) => {
         return subsetValue && subset.includes(subsetValue);
       });
@@ -157,14 +158,14 @@ function getCacheKey({
     });
   }
 
-  if (!FILES_NOT_FILTERED_BY_USER_RESTRICTIONS.includes(metricName)) {
-    cacheKey = `${cacheKey}${getUserRestrictionCacheKeyValues({
-      cacheKeySubset,
-      metricName,
-    })}`;
+  if (FILES_NOT_FILTERED_BY_USER_RESTRICTIONS.includes(metricName)) {
+    return cacheKey;
   }
 
-  return cacheKey;
+  return `${cacheKey}${getUserRestrictionCacheKeyValues({
+    cacheKeySubset,
+    metricName,
+  })}`;
 }
 
 module.exports = {

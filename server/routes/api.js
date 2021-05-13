@@ -115,7 +115,7 @@ function newRevocationFile(req, res) {
       stateCode,
       metricType,
       metricName,
-      cacheKeySubset: filters,
+      cacheKeySubset: { ...queryParams, ...userRestrictionsFilters },
     });
 
     cacheResponse(
