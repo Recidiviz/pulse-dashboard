@@ -199,12 +199,14 @@ describe("API GET tests", () => {
   describe("newRevocationFile endpoint", () => {
     const file = "file_1";
     const queryParams = { violationType: "ALL" };
+    const appMetadata = {
+      state_code: stateCode,
+      allowed_supervision_location_ids: ["8N"],
+      allowed_supervision_location_level: "level_1_supervision_location",
+    };
     const request = {
       user: {
-        [`${process.env.METADATA_NAMESPACE}app_metadata`]: {
-          allowed_supervision_location_ids: ["8N"],
-          allowed_supervision_location_level: "level_1_supervision_location",
-        },
+        [`${process.env.METADATA_NAMESPACE}app_metadata`]: appMetadata,
       },
       params: { stateCode, file },
       query: queryParams,
@@ -229,10 +231,10 @@ describe("API GET tests", () => {
 
     it("newRevocationFile - calls createUserRestrictionsFilters with correct args", async () => {
       await fakeRequest(newRevocationFile, request);
-      expect(createUserRestrictionsFilters).toHaveBeenCalledWith({
-        allowed_supervision_location_ids: ["8N"],
-        allowed_supervision_location_level: "level_1_supervision_location",
-      });
+      expect(createUserRestrictionsFilters).toHaveBeenCalledWith(
+        stateCode,
+        appMetadata
+      );
     });
 
     it("newRevocationFile - calls createSubsetFilters with correct args", async () => {
