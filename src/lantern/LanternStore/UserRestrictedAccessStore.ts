@@ -48,15 +48,18 @@ export default class UserRestrictedAccessStore {
   get hasUserRestrictions(): boolean {
     return (
       this.rootStore.userRestrictions &&
-      this.rootStore.userRestrictions.length > 0
+      this.rootStore.userRestrictions.length > 0 &&
+      this.rootStore.tenantStore.isRestrictedDistrictTenant
     );
   }
 
   get allowedSupervisionLocationIds(): string[] {
+    if (!this.rootStore.tenantStore.isRestrictedDistrictTenant) return [];
     return this.rootStore.userRestrictions;
   }
 
   verifyUserRestrictions(): void {
+    if (!this.rootStore.tenantStore.isRestrictedDistrictTenant) return;
     const unverifiedLocations = this.rootStore.userRestrictions.filter(
       (supervisionLocationId) => {
         return !this.rootStore.districtsStore.districtIds.includes(

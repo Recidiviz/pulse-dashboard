@@ -17,7 +17,10 @@
 /* eslint-disable camelcase */
 const { snakeCase } = require("lodash");
 const { matchesAllFilters, getFilterKeys } = require("shared-filters");
-
+const {
+  requestIsFromRecidivizUser,
+  restrictAccessForRecidivizUser,
+} = require("../utils/recidivizAccess");
 const {
   getSubsetDimensionKeys,
   getSubsetDimensionValues,
@@ -120,14 +123,30 @@ function createSubsetFilters({ filters }) {
  * @returns {Object} - An object with the supervision location filter key
  * and value if they exist: { level_1_superivision_location: ["08N"] }
  */
-const createUserRestrictionsFilters = ({
-  allowed_supervision_location_ids: allowedSupervisionLocationIds,
-  allowed_supervision_location_level: allowedSupervisionLocationLevel,
-}) => {
-  if (
+const createUserRestrictionsFilters = (requestStateCode, appMetadata) => {
+  if (!appMetadata) return {};
+
+  const {
+    state_code: userStateCode,
+    allowed_supervision_location_ids: allowedSupervisionLocationIds,
+    allowed_supervision_location_level: allowedSupervisionLocationLevel,
+  } = appMetadata;
+
+  const applyRestrictionsForRecidivizUser = restrictAccessForRecidivizUser({
+    requestStateCode,
+    userStateCode,
+    userRestrictions: allowedSupervisionLocationIds,
+  });
+
+  const userHasNoRestrictions =
     !allowedSupervisionLocationLevel ||
     !allowedSupervisionLocationIds ||
-    !allowedSupervisionLocationIds.length > 0
+    !allowedSupervisionLocationIds.length > 0;
+
+  if (
+    (requestIsFromRecidivizUser(userStateCode, requestStateCode) &&
+      !applyRestrictionsForRecidivizUser) ||
+    userHasNoRestrictions
   )
     return {};
 

@@ -29,7 +29,7 @@ const {
   cacheResponse,
   fetchAndFilterNewRevocationFile,
 } = require("../core");
-const { default: isDemoMode } = require("../utils/isDemoMode");
+const { isDemoMode } = require("../utils/recidivizAccess");
 const { getCacheKey } = require("../utils/cacheKeys");
 const {
   createSubsetFilters,
@@ -94,12 +94,16 @@ function newRevocationFile(req, res) {
     responder(res)({ status: BAD_REQUEST, errors: validations.array() }, null);
   } else {
     const { user } = req;
+    const { stateCode, file: metricName } = req.params;
     const appMetadata =
       (user && user[`${METADATA_NAMESPACE}app_metadata`]) || {};
-    const { stateCode, file: metricName } = req.params;
+
     const queryParams = req.query || {};
 
-    const userRestrictionsFilters = createUserRestrictionsFilters(appMetadata);
+    const userRestrictionsFilters = createUserRestrictionsFilters(
+      stateCode,
+      appMetadata
+    );
 
     const subsetFilters = createSubsetFilters({
       filters: queryParams,
