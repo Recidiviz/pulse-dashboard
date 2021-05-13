@@ -30,7 +30,7 @@ const VitalsSummaryTooltip: React.FC<PropTypes> = ({
   transformX,
   transformY,
 }) => {
-  const { date, percent, weeklyAvg } = data;
+  const { date, percent, monthlyAvg } = data;
   const translateY = transformY ? "-100%" : "0";
   const translateX = transformX ? "calc(-100% - 1rem)" : "1rem";
   const transformStyle = {
@@ -45,7 +45,7 @@ const VitalsSummaryTooltip: React.FC<PropTypes> = ({
         {formatPercent(percent)}
       </div>
       <div className="VitalsSummaryTooltip__Average">
-        7-day avg: {formatPercent(weeklyAvg)}
+        30-day avg: {formatPercent(monthlyAvg)}
       </div>
     </div>
   );

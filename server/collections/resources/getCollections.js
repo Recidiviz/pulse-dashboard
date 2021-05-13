@@ -265,10 +265,10 @@ const CORE_COLLECTIONS = {
   },
   [COLLECTIONS.VITALS]: {
     vitals_summaries: {
-      filename: "vitals_summaries.json",
+      filename: "vitals_summaries.txt",
     },
     vitals_time_series: {
-      filename: "vitals_time_series.json",
+      filename: "vitals_time_series.txt",
     },
   },
 };

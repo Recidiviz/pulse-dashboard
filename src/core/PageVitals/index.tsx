@@ -21,7 +21,7 @@ import { observer } from "mobx-react-lite";
 import PageTemplate from "../PageTemplate";
 import VitalsSummaryCards from "../VitalsSummaryCards";
 import VitalsSummaryTable from "../VitalsSummaryTable/VitalsSummaryTable";
-import VitalsWeeklyChange from "../VitalsWeeklyChange";
+import VitalsMonthlyChange from "../VitalsMonthlyChange";
 import VitalsSummaryChart from "../VitalsSummaryChart";
 import VitalsSummaryDetail from "../VitalsSummaryDetail";
 import VitalsSummaryBreadcrumbs from "../VitalsSummaryBreadcrumbs";
@@ -37,7 +37,7 @@ import {
   getSummaryDetail,
   getEntitySummaries,
   getTimeSeries,
-  getWeeklyChange,
+  getMonthlyChange,
   getTimeSeriesDownloadableData,
   getVitalsSummaryDownloadableData,
   getVitalsFiltersText,
@@ -157,13 +157,13 @@ const PageVitals: React.FC = () => {
         <div className="PageVitals__SummaryChart">
           {selectedTimeSeries && (
             <>
-              <VitalsWeeklyChange
-                weeklyChange={getWeeklyChange(selectedTimeSeries)}
+              <VitalsMonthlyChange
+                monthlyChange={getMonthlyChange(selectedTimeSeries)}
               />
               <VitalsSummaryChart
                 stateCode={stateCode}
                 goal={goals[selectedCardId]}
-                timeSeries={selectedTimeSeries}
+                timeSeries={selectedTimeSeries.slice(-180)}
               />
             </>
           )}
