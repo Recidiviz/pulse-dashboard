@@ -15,7 +15,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import { computed, makeObservable, ObservableMap } from "mobx";
+import { autorun, computed, makeObservable, ObservableMap } from "mobx";
 
 import type UserStore from "../../RootStore/UserStore";
 import type TenantStore from "../../RootStore/TenantStore";
@@ -66,7 +66,11 @@ export default class LanternStore {
 
     this.dataStore = new DataStore({ rootStore: this });
 
-    this.userRestrictedAccessStore.verifyUserRestrictions();
+    autorun(() => {
+      if (!this.userStore.userIsLoading && !this.districtsStore.isLoading) {
+        this.userRestrictedAccessStore.verifyUserRestrictions();
+      }
+    });
   }
 
   get filters(): ObservableMap<any, any> {
@@ -83,6 +87,7 @@ export default class LanternStore {
   }
 
   get userRestrictions(): string[] {
+    if (!this.tenantStore.enableUserRestrictions) return [];
     return this.userStore.userRestrictions;
   }
 

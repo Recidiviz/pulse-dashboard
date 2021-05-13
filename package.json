@@ -21,12 +21,12 @@
     "test": "yarn test-server && yarn test-filters && yarn test-react",
     "spa": "BROWSER=none react-scripts start",
     "server": "nodemon server.js",
-    "server:dev": "npm-run-all --parallel server redis-server",
-    "server:demo": "IS_DEMO=true yarn server:dev",
+    "server:dev": "env-cmd -e server npm-run-all --parallel server redis-server",
+    "server:demo": "env-cmd -e server,demo yarn server:dev",
     "redis-server": "redis-server",
     "lint": "tsc && eslint '**/*.{js,ts,tsx}'",
     "dev": "env-cmd -e development npm-run-all --parallel spa server:dev",
-    "demo": "npm-run-all --parallel spa server:demo"
+    "demo": "env-cmd -e development,demo npm-run-all --parallel spa server:demo"
   },
   "dependencies": {
     "@auth0/auth0-spa-js": "^1.12.1",

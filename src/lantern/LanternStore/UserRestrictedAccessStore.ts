@@ -37,7 +37,10 @@ export default class UserRestrictedAccessStore {
   }
 
   get enabledRevocationsCharts(): string[] {
-    if (this.hasUserRestrictions && this.rootStore.currentTenantId === US_MO) {
+    if (
+      this.allowedSupervisionLocationIds.length > 0 &&
+      this.rootStore.currentTenantId === US_MO
+    ) {
       return Object.keys(CHARTS).filter(
         (chartId) => !["Race", "Gender"].includes(chartId)
       );
@@ -48,18 +51,15 @@ export default class UserRestrictedAccessStore {
   get hasUserRestrictions(): boolean {
     return (
       this.rootStore.userRestrictions &&
-      this.rootStore.userRestrictions.length > 0 &&
-      this.rootStore.tenantStore.isRestrictedDistrictTenant
+      this.rootStore.userRestrictions.length > 0
     );
   }
 
   get allowedSupervisionLocationIds(): string[] {
-    if (!this.rootStore.tenantStore.isRestrictedDistrictTenant) return [];
     return this.rootStore.userRestrictions;
   }
 
   verifyUserRestrictions(): void {
-    if (!this.rootStore.tenantStore.isRestrictedDistrictTenant) return;
     const unverifiedLocations = this.rootStore.userRestrictions.filter(
       (supervisionLocationId) => {
         return !this.rootStore.districtsStore.districtIds.includes(

@@ -16,7 +16,7 @@
 // =============================================================================
 import { makeAutoObservable, when } from "mobx";
 import type RootStore from "..";
-import { LANTERN_TENANTS, RESTRICTED_DISTRICT_TENANTS } from "./lanternTenants";
+import { LANTERN_TENANTS } from "./lanternTenants";
 import getDistrictKeyMap, { DistrictKeyMap } from "./districtKeyMappings";
 import methodology from "./methodology";
 import { TenantId, LanternMethodology, LanternTenants } from "../types";
@@ -73,11 +73,6 @@ export default class TenantStore {
     return LANTERN_TENANTS.includes(tenantId);
   }
 
-  get isRestrictedDistrictTenant(): boolean {
-    if (!this.currentTenantId) return false;
-    return RESTRICTED_DISTRICT_TENANTS.includes(this.currentTenantId);
-  }
-
   get tenantMappings(): DistrictKeyMap {
     if (!this.currentTenantId) return {};
     return getDistrictKeyMap(this.currentTenantId);
@@ -97,5 +92,13 @@ export default class TenantStore {
   get stateCode(): string {
     if (!this.currentTenantId) return "";
     return tenants[this.currentTenantId].stateCode;
+  }
+
+  get enableUserRestrictions(): boolean {
+    if (!this.currentTenantId) return false;
+    return (
+      tenants[this.currentTenantId].enableUserRestrictions &&
+      this.rootStore.userStore.userRestrictions.length > 0
+    );
   }
 }

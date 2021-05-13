@@ -45,8 +45,10 @@ function getDemoUser(): User {
     name: "Demo Jones",
     email: "notarealemail@recidiviz.org",
     // email: "thirteen@mo.gov",
-    [`${METADATA_NAMESPACE}/app_metadata`]: {
+    [`${METADATA_NAMESPACE}app_metadata`]: {
       state_code: "recidiviz",
+      // allowed_supervision_location_ids: ["33"],
+      // allowed_supervision_location_level: "level_1_supervision_location",
       // state_code: 'us_mo',
     },
   };
