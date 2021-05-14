@@ -39,8 +39,8 @@ export type VitalsSummaryTableRow = {
   };
   parentEntityId?: string;
   overall: number;
-  overall7Day: number;
-  overall28Day: number;
+  overall30Day: number;
+  overall90Day: number;
   timelyDischarge: number;
   timelyContact: number;
   timelyRiskAssessment: number;

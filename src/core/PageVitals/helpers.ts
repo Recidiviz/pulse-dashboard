@@ -133,16 +133,15 @@ export function getTimeSeries(
   return selectedTimeSeries.length > 0 ? selectedTimeSeries : undefined;
 }
 
-export function getWeeklyChange(
+export function getMonthlyChange(
   timeSeries: VitalsTimeSeriesRecord[]
-): { sevenDayChange: number; twentyEightDayChange: number } {
-  const twentyEightDaysAgo = timeSeries[0];
-  const sevenDaysAgo = timeSeries[timeSeries.length - 8];
+): { thirtyDayChange: number; ninetyDayChange: number } {
+  const ninetyDaysAgo = timeSeries[timeSeries.length - 89];
+  const thirtyDaysAgo = timeSeries[timeSeries.length - 29];
   const latestDay = timeSeries[timeSeries.length - 1];
-  const sevenDayChange = latestDay.weeklyAvg - sevenDaysAgo.weeklyAvg;
-  const twentyEightDayChange =
-    latestDay.weeklyAvg - twentyEightDaysAgo.weeklyAvg;
-  return { sevenDayChange, twentyEightDayChange };
+  const thirtyDayChange = latestDay.monthlyAvg - thirtyDaysAgo.monthlyAvg;
+  const ninetyDayChange = latestDay.monthlyAvg - ninetyDaysAgo.monthlyAvg;
+  return { thirtyDayChange, ninetyDayChange };
 }
 
 export function getTimeSeriesDownloadableData(
@@ -162,7 +161,7 @@ export function getTimeSeriesDownloadableData(
     const downloadableData = metricData.map((d: VitalsTimeSeriesRecord) => {
       return {
         Total: formatPercent(d.value),
-        "7D average": formatPercent(d.weeklyAvg),
+        "30D average": formatPercent(d.monthlyAvg),
       };
     });
     datasets.push({
@@ -198,8 +197,8 @@ export function getVitalsSummaryDownloadableData(
   const downloadableData = summaries.map((d: VitalsSummaryTableRow) => {
     return {
       "Overall score": formatPercent(d.overall),
-      "7D change": formatPercent(d.overall7Day),
-      "28D change": formatPercent(d.overall28Day),
+      "30D change": formatPercent(d.overall30Day),
+      "90D change": formatPercent(d.overall90Day),
       [METRIC_TYPE_LABELS.DISCHARGE]: formatPercent(d.timelyDischarge),
       [METRIC_TYPE_LABELS.CONTACT]: formatPercent(d.timelyContact),
       [METRIC_TYPE_LABELS.RISK_ASSESSMENT]: formatPercent(
