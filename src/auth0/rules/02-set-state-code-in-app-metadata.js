@@ -21,59 +21,7 @@ function setStateCodeInAppMetadata(user, context, callback) {
   const emailSplit = user.email.split("@");
   const domain = emailSplit[emailSplit.length - 1].toLowerCase();
 
-  const acceptedStateCodes = [
-    "AL",
-    "AK",
-    "AZ",
-    "AR",
-    "CA",
-    "CO",
-    "CT",
-    "DC",
-    "DE",
-    "FL",
-    "GA",
-    "HI",
-    "ID",
-    "IL",
-    "IN",
-    "IA",
-    "KS",
-    "KY",
-    "LA",
-    "ME",
-    "MD",
-    "MA",
-    "MI",
-    "MN",
-    "MS",
-    "MO",
-    "MT",
-    "NE",
-    "NV",
-    "NH",
-    "NJ",
-    "NM",
-    "NY",
-    "NC",
-    "ND",
-    "OH",
-    "OK",
-    "OR",
-    "PA",
-    "RI",
-    "SC",
-    "SD",
-    "TN",
-    "TX",
-    "UT",
-    "VT",
-    "VA",
-    "WA",
-    "WV",
-    "WI",
-    "WY",
-  ];
+  const acceptedStateCodes = ["id", "mo", "nd", "pa"];
 
   // For testing different state codes
   if (user.email === "test-control@recidiviz.org") {
@@ -92,7 +40,7 @@ function setStateCodeInAppMetadata(user, context, callback) {
     // e.g. @doc.mo.gov or @nd.gov, but not @nd.docr.gov
     const state = domainSplit[domainSplit.length - 2].toLowerCase();
     const stateCode = `us_${state}`;
-    if (acceptedStateCodes.includes(state.toUpperCase())) {
+    if (acceptedStateCodes.includes(state)) {
       user.app_metadata.state_code = stateCode;
     }
   }
