@@ -129,7 +129,7 @@ describe("getNewRevocationsFiltersByMetricName", () => {
       "revocations_matrix_distribution_by_violation",
       "revocations_matrix_by_month",
     ].forEach((metricName) => {
-      it("returns the filters object", () => {
+      it(`given ${metricName} it returns the filters object`, () => {
         expect(
           getNewRevocationsFiltersByMetricName({
             metricName,
@@ -146,7 +146,7 @@ describe("getNewRevocationsFiltersByMetricName", () => {
       "revocations_matrix_cells",
       "revocations_matrix_filtered_caseload",
     ].forEach((metricName) => {
-      it("returns a filters object with only the user restrictions", () => {
+      it(`given ${metricName} it returns a filters object with only the user restrictions`, () => {
         expect(
           getNewRevocationsFiltersByMetricName({
             metricName,
@@ -161,7 +161,7 @@ describe("getNewRevocationsFiltersByMetricName", () => {
   });
 
   describe("given revocations_matrix_distribution_by_district", () => {
-    it("returns a filters object with only the restricted district", () => {
+    it("given revocations_matrix_distribution_by_district it returns a filters object with only user restrictions", () => {
       expect(
         getNewRevocationsFiltersByMetricName({
           metricName: "revocations_matrix_distribution_by_district",
