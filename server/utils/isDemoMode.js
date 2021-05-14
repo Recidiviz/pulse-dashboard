@@ -14,7 +14,6 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-const { US_MO } = require("../constants/stateCodes");
 /**
  * Utilities for running the backend for recidiviz developers.
  */
@@ -22,28 +21,6 @@ function getIsDemoMode() {
   return process.env.IS_DEMO === "true";
 }
 
-const requestIsFromRecidivizUser = (userStateCode, requestStateCode) =>
-  userStateCode !== requestStateCode && userStateCode === "recidiviz";
-
-/**
- * Allow recidiviz users to test restricted access based on the requested
- * state code.
- */
-function restrictAccessForRecidivizUser({
-  requestStateCode,
-  userStateCode,
-  userRestrictions,
-}) {
-  return (
-    requestIsFromRecidivizUser(userStateCode, requestStateCode) &&
-    requestStateCode === US_MO &&
-    userRestrictions &&
-    userRestrictions.length > 0
-  );
-}
-
 module.exports = {
   isDemoMode: getIsDemoMode(),
-  restrictAccessForRecidivizUser,
-  requestIsFromRecidivizUser,
 };

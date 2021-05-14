@@ -22,12 +22,16 @@ jest.mock("../../../api/metrics");
 jest.mock("../DataStore/DataStore");
 jest.mock("../../../RootStore/TenantStore", () => {
   return jest.fn().mockImplementation(() => {
-    return { currentTenantId: "US_MO", methodology: {} };
+    return {
+      currentTenantId: "US_MO",
+      methodology: {},
+      enableUserRestrictions: true,
+    };
   });
 });
 jest.mock("../../../RootStore/UserStore", () => {
   return jest.fn().mockImplementation(() => {
-    return { user: {}, userRestrictions: [] };
+    return { user: {}, userRestrictions: [], userIsLoading: false };
   });
 });
 

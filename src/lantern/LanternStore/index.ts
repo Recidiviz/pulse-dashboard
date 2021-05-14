@@ -65,9 +65,12 @@ export default class LanternStore {
     this.filtersStore = new FiltersStore({ rootStore: this });
 
     this.dataStore = new DataStore({ rootStore: this });
-
     autorun(() => {
-      if (!this.userStore.userIsLoading && !this.districtsStore.isLoading) {
+      if (
+        !this.userStore.userIsLoading &&
+        !this.districtsStore.isLoading &&
+        this.tenantStore.enableUserRestrictions
+      ) {
         this.userRestrictedAccessStore.verifyUserRestrictions();
       }
     });

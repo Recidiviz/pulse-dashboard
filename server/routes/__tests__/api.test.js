@@ -231,10 +231,7 @@ describe("API GET tests", () => {
 
     it("newRevocationFile - calls createUserRestrictionsFilters with correct args", async () => {
       await fakeRequest(newRevocationFile, request);
-      expect(createUserRestrictionsFilters).toHaveBeenCalledWith(
-        stateCode,
-        appMetadata
-      );
+      expect(createUserRestrictionsFilters).toHaveBeenCalledWith(appMetadata);
     });
 
     it("newRevocationFile - calls createSubsetFilters with correct args", async () => {

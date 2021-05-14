@@ -100,6 +100,23 @@ describe("TenantStore", () => {
       });
       expect(tenantStore.enableUserRestrictions).toEqual(false);
     });
+
+    it("returns false for restrictions in the wrong format", () => {
+      const mockRootStore = createMockRootStore({
+        userIsLoading: false,
+        availableStateCodes: ["US_MO"],
+        userRestrictions: "some string",
+        userHasAccess: () => true,
+        user: {
+          [metadataField]: { state_code: "US_MO" },
+          email_verified: true,
+        },
+      });
+      tenantStore = new TenantStore({
+        rootStore: mockRootStore,
+      });
+      expect(tenantStore.enableUserRestrictions).toEqual(false);
+    });
   });
 
   describe("when there is a CURRENT_TENANT_IN_SESSION", () => {

@@ -30,7 +30,7 @@ const {
   fetchAndFilterNewRevocationFile,
   fetchDemoUser,
 } = require("../core");
-const { isDemoMode } = require("../utils/recidivizAccess");
+const { isDemoMode } = require("../utils/isDemoMode");
 const { getCacheKey } = require("../utils/cacheKeys");
 const {
   createSubsetFilters,
@@ -107,10 +107,7 @@ function newRevocationFile(req, res) {
 
     const queryParams = req.query || {};
 
-    const userRestrictionsFilters = createUserRestrictionsFilters(
-      stateCode,
-      appMetadata
-    );
+    const userRestrictionsFilters = createUserRestrictionsFilters(appMetadata);
 
     const subsetFilters = createSubsetFilters({
       filters: queryParams,

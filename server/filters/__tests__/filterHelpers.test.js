@@ -188,17 +188,15 @@ describe("getNewRevocationsFiltersByMetricName", () => {
 });
 
 describe("createUserRestrictionsFilters", () => {
-  const requestStateCode = "US_MO";
   const appMetadata = {
-    state_code: "US_MO",
     allowed_supervision_location_ids: ["25", "08N"],
     allowed_supervision_location_level: "level_1_supervision_level",
   };
 
   it("returns the filters when given ids and level", () => {
-    expect(
-      createUserRestrictionsFilters(requestStateCode, appMetadata)
-    ).toEqual({ level_1_supervision_level: ["25", "08n"] });
+    expect(createUserRestrictionsFilters(appMetadata)).toEqual({
+      level_1_supervision_level: ["25", "08n"],
+    });
   });
 
   it("returns an empty object when missing ids", () => {
@@ -206,9 +204,7 @@ describe("createUserRestrictionsFilters", () => {
       ...appMetadata,
       allowed_supervision_location_ids: undefined,
     };
-    expect(createUserRestrictionsFilters(requestStateCode, missingIds)).toEqual(
-      {}
-    );
+    expect(createUserRestrictionsFilters(missingIds)).toEqual({});
   });
 
   it("returns an empty object when missing level", () => {
@@ -216,32 +212,10 @@ describe("createUserRestrictionsFilters", () => {
       ...appMetadata,
       allowed_supervision_location_level: undefined,
     };
-    expect(
-      createUserRestrictionsFilters(requestStateCode, missingLevel)
-    ).toEqual({});
+    expect(createUserRestrictionsFilters(missingLevel)).toEqual({});
   });
 
   it("returns an empty object when missing both values", () => {
-    expect(
-      createUserRestrictionsFilters(requestStateCode, { state_code: "US_MO" })
-    ).toEqual({});
-  });
-
-  it("returns an empty object for recidiviz users on a non-restricted state code", () => {
-    const recidivizUser = {
-      ...appMetadata,
-      state_code: "recidiviz",
-    };
-    expect(createUserRestrictionsFilters("US_PA", recidivizUser)).toEqual({});
-  });
-
-  it("returns the filters for recidiviz users on a restricted state code", () => {
-    const recidivizUser = {
-      ...appMetadata,
-      state_code: "recidiviz",
-    };
-    expect(createUserRestrictionsFilters("US_MO", recidivizUser)).toEqual({
-      level_1_supervision_level: ["25", "08n"],
-    });
+    expect(createUserRestrictionsFilters({})).toEqual({});
   });
 });

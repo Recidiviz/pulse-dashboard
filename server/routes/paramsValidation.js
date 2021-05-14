@@ -16,7 +16,7 @@
 // =============================================================================
 
 const { query, param } = require("express-validator");
-const { isDemoMode } = require("../utils/recidivizAccess");
+const { isDemoMode } = require("../utils/isDemoMode");
 
 const VALID_STATE_CODES = ["US_PA", "US_MO", "US_ND"].concat(
   isDemoMode ? ["US_DEMO"] : []
