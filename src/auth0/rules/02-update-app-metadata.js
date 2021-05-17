@@ -15,34 +15,29 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-function setStateCodeInAppMetadata(user, context, callback) {
+function updateAppMetadata(user, context, callback) {
   user.app_metadata = user.app_metadata || {};
 
   const emailSplit = user.email.split("@");
   const domain = emailSplit[emailSplit.length - 1].toLowerCase();
 
-  const acceptedStateCodes = ["id", "mo", "nd", "pa"];
-
   // For testing different state codes
   if (user.email === "test-control@recidiviz.org") {
     callback(null, user, context);
-  } else if (domain === "csg.org") {
+  }
+
+  // For CSG/Lantern users
+  if (domain === "csg.org") {
     user.app_metadata.state_code = "lantern";
-  } else if (
+  }
+
+  // For Recidiviz users
+  // Do not update recidiviz_tester's state_code
+  if (
     domain === "recidiviz.org" &&
-    // Do not update test user's app_metadata
     !user.app_metadata.recidiviz_tester
   ) {
     user.app_metadata.state_code = "recidiviz";
-  } else {
-    const domainSplit = domain.split(".");
-    // assumes the state is always the second to last component of the domain
-    // e.g. @doc.mo.gov or @nd.gov, but not @nd.docr.gov
-    const state = domainSplit[domainSplit.length - 2].toLowerCase();
-    const stateCode = `us_${state}`;
-    if (acceptedStateCodes.includes(state)) {
-      user.app_metadata.state_code = stateCode;
-    }
   }
 
   // Specific state code restrictions for Recividiz users
