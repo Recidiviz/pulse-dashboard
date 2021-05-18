@@ -33,16 +33,18 @@ function updateAppMetadata(user, context, callback) {
 
   // For Recidiviz users
   // Do not update recidiviz_tester's state_code
-  if (
-    domain === "recidiviz.org" &&
-    !user.app_metadata.recidiviz_tester
-  ) {
+  if (domain === "recidiviz.org" && !user.app_metadata.recidiviz_tester) {
     user.app_metadata.state_code = "recidiviz";
   }
 
   // Specific state code restrictions for Recividiz users
   if (user.email === "justine@recidiviz.org") {
     user.app_metadata.blocked_state_codes = ["us_pa"];
+  }
+
+  // Normalize existing Idaho state codes
+  if (domain === "idoc.idaho.gov") {
+    user.app_metadata.state_code = "us_id";
   }
 
   // persist the app_metadata update
