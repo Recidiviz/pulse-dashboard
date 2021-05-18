@@ -98,8 +98,8 @@ export default class TenantStore {
     if (!this.currentTenantId) return false;
     return (
       tenants[this.currentTenantId].enableUserRestrictions &&
-      Array.isArray(this.rootStore.userStore.userRestrictions) &&
-      this.rootStore.userStore.userRestrictions.length > 0
+      Array.isArray(this.rootStore.userStore.allowedSupervisionLocationIds) &&
+      this.rootStore.userStore.allowedSupervisionLocationIds.length > 0
     );
   }
 }

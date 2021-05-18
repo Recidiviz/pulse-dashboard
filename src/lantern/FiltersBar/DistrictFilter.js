@@ -30,10 +30,10 @@ const DistrictFilter = () => {
   const {
     filters,
     filtersStore,
-    userRestrictedAccessStore,
+    userRestrictionsStore,
     districtsStore,
   } = useLanternStore();
-  const { allowedSupervisionLocationIds } = userRestrictedAccessStore;
+  const { allowedSupervisionLocationIds } = userRestrictionsStore;
   const {
     isLoading,
     districtKeys: { filterKey, secondaryFilterKey },

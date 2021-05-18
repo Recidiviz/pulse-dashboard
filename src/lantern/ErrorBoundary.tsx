@@ -27,12 +27,19 @@ interface Props {
 }
 
 function ErrorBoundary({ children }: Props): JSX.Element {
-  const { userRestrictions, currentTenantId, filters } = useLanternStore();
+  const {
+    userRestrictionsStore: { allowedSupervisionLocationIds },
+    currentTenantId,
+    filters,
+  } = useLanternStore();
 
   const handleBeforeCapture = (scope: Sentry.Scope) => {
     if (currentTenantId) scope.setTag("currentTenantId", currentTenantId);
-    if (userRestrictions.length) {
-      scope.setTag("userRestrictions", userRestrictions.join(","));
+    if (allowedSupervisionLocationIds.length) {
+      scope.setTag(
+        "allowedSupervisionLocationIds",
+        allowedSupervisionLocationIds.join(",")
+      );
     }
     if (filters) {
       const parsedFilters = Object.fromEntries(toJS(filters));

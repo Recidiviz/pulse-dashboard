@@ -20,7 +20,7 @@ import BaseDataStore, {
   DEFAULT_IGNORED_DIMENSIONS,
 } from "../DataStore/BaseDataStore";
 
-import UserRestrictedAccessStore from "../UserRestrictedAccessStore";
+import UserRestrictionsStore from "../UserRestrictionsStore";
 import LanternStore from "..";
 import { callMetricsApi } from "../../../api/metrics/metricsClient";
 import DistrictsStore from "../DistrictsStore";
@@ -35,7 +35,7 @@ const mockFilterOptimizedDataFormat = sharedFilters.filterOptimizedDataFormat;
 const mockGetTokenSilently = jest.fn();
 
 jest.mock("@sentry/react");
-jest.mock("../UserRestrictedAccessStore");
+jest.mock("../UserRestrictionsStore");
 jest.mock("../DistrictsStore");
 jest.mock("../DataStore/MatrixStore");
 jest.mock("../DataStore/CaseTableStore");
@@ -98,7 +98,7 @@ describe("BaseDataStore", () => {
         },
       };
     });
-    UserRestrictedAccessStore.mockImplementation(() => {
+    UserRestrictionsStore.mockImplementation(() => {
       return {
         isLoading: false,
         verifyUserRestrictions: jest.fn(),

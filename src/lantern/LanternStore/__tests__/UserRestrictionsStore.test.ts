@@ -15,7 +15,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 import * as Sentry from "@sentry/react";
-import UserRestrictedAccessStore from "../UserRestrictedAccessStore";
+import UserRestrictionsStore from "../UserRestrictionsStore";
 import type UserStore from "../../../RootStore/UserStore";
 import type TenantStore from "../../../RootStore/TenantStore";
 import { ERROR_MESSAGES } from "../../../constants";
@@ -36,8 +36,8 @@ const mockRootStore = {
 };
 const otherDistrict = "TCSTL";
 
-describe("UserRestrictedAccessStore", () => {
-  let userRestrictedAccessStore: UserRestrictedAccessStore;
+describe("UserRestrictionsStore", () => {
+  let userRestrictionsStore: UserRestrictionsStore;
   let rootStore: LanternStore;
   beforeEach(() => {
     mockLanternStore.mockImplementation(() => {
@@ -46,10 +46,13 @@ describe("UserRestrictedAccessStore", () => {
         districtsStore: {
           districtIds: [userDistrict, otherDistrict],
         },
+        tenantStore: {
+          enableUserRestrictions: true,
+        },
         userStore: {
           setAuthError: mockSetAuthError,
+          allowedSupervisionLocationIds: [userDistrict],
         },
-        userRestrictions: [userDistrict],
       };
     });
   });
@@ -61,13 +64,13 @@ describe("UserRestrictedAccessStore", () => {
 
   describe("when user has restrictions", () => {
     beforeEach(async () => {
-      userRestrictedAccessStore = new UserRestrictedAccessStore({
+      userRestrictionsStore = new UserRestrictionsStore({
         rootStore: new LanternStore(mockRootStore),
       });
     });
 
     it("enabledRevocationsCharts is based on tenantId and user restrictions", () => {
-      expect(userRestrictedAccessStore.enabledRevocationsCharts).toEqual([
+      expect(userRestrictionsStore.enabledRevocationsCharts).toEqual([
         "District",
         "Officer",
         "Risk level",
@@ -84,16 +87,19 @@ describe("UserRestrictedAccessStore", () => {
           districtsStore: {
             districtIds: [userDistrict, otherDistrict],
           },
+          tenantStore: {
+            enableUserRestrictions: true,
+          },
           userStore: {
             setAuthError: mockSetAuthError,
+            allowedSupervisionLocationIds: [userDistrict],
           },
-          userRestrictions: [userDistrict],
         };
       });
-      userRestrictedAccessStore = new UserRestrictedAccessStore({
+      userRestrictionsStore = new UserRestrictionsStore({
         rootStore: new LanternStore(mockRootStore),
       });
-      expect(userRestrictedAccessStore.enabledRevocationsCharts).toEqual([
+      expect(userRestrictionsStore.enabledRevocationsCharts).toEqual([
         "District",
         "Officer",
         "Risk level",
@@ -116,15 +122,15 @@ describe("UserRestrictedAccessStore", () => {
           },
           userStore: {
             setAuthError: mockSetAuthError,
+            allowedSupervisionLocationIds: [mockInvalidId],
           },
-          userRestrictions: [mockInvalidId],
         };
       });
       rootStore = new LanternStore(mockRootStore);
-      userRestrictedAccessStore = new UserRestrictedAccessStore({
+      userRestrictionsStore = new UserRestrictionsStore({
         rootStore,
       });
-      userRestrictedAccessStore.verifyUserRestrictions();
+      userRestrictionsStore.verifyUserRestrictions();
     });
 
     afterEach(() => {

@@ -16,7 +16,7 @@
 // =============================================================================
 import RootStore from "../../../RootStore";
 import LanternStore from "..";
-import UserRestrictedAccessStore from "../UserRestrictedAccessStore";
+import UserRestrictionsStore from "../UserRestrictionsStore";
 
 jest.mock("../../../api/metrics");
 jest.mock("../DataStore/DataStore");
@@ -31,12 +31,16 @@ jest.mock("../../../RootStore/TenantStore", () => {
 });
 jest.mock("../../../RootStore/UserStore", () => {
   return jest.fn().mockImplementation(() => {
-    return { user: {}, userRestrictions: [], userIsLoading: false };
+    return {
+      user: {},
+      allowedSupervisionLocationIds: [],
+      userIsLoading: false,
+    };
   });
 });
 
 const verifyUserRestrictionsSpy = jest.spyOn(
-  UserRestrictedAccessStore.prototype,
+  UserRestrictionsStore.prototype,
   "verifyUserRestrictions"
 );
 
@@ -60,8 +64,8 @@ describe("LanternStore", () => {
     expect(lanternStore.userStore).toBeDefined();
   });
 
-  it("contains a UserRestrictedAccessStore", () => {
-    expect(lanternStore.userRestrictedAccessStore).toBeDefined();
+  it("contains a UserRestrictionsStore", () => {
+    expect(lanternStore.userRestrictionsStore).toBeDefined();
   });
 
   it("contains a currentTenantId", () => {
@@ -88,7 +92,7 @@ describe("LanternStore", () => {
     expect(lanternStore.user).toBeDefined();
   });
 
-  it("calls userRestrictedAccessStore.verifyUserRestrictions", () => {
+  it("calls userRestrictionsStore.verifyUserRestrictions", () => {
     expect(verifyUserRestrictionsSpy).toHaveBeenCalledTimes(1);
   });
 });

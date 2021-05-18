@@ -25,7 +25,7 @@ type ConstructorProps = {
   rootStore: LanternStore;
 };
 
-export default class UserRestrictedAccessStore {
+export default class UserRestrictionsStore {
   readonly rootStore: LanternStore;
 
   constructor({ rootStore }: ConstructorProps) {
@@ -37,10 +37,7 @@ export default class UserRestrictedAccessStore {
   }
 
   get enabledRevocationsCharts(): string[] {
-    if (
-      this.allowedSupervisionLocationIds.length > 0 &&
-      this.rootStore.currentTenantId === US_MO
-    ) {
+    if (this.hasUserRestrictions && this.rootStore.currentTenantId === US_MO) {
       return Object.keys(CHARTS).filter(
         (chartId) => !["Race", "Gender"].includes(chartId)
       );
@@ -49,18 +46,15 @@ export default class UserRestrictedAccessStore {
   }
 
   get hasUserRestrictions(): boolean {
-    return (
-      this.rootStore.userRestrictions &&
-      this.rootStore.userRestrictions.length > 0
-    );
+    return this.rootStore.tenantStore.enableUserRestrictions;
   }
 
   get allowedSupervisionLocationIds(): string[] {
-    return this.rootStore.userRestrictions;
+    return this.rootStore.userStore.allowedSupervisionLocationIds || [];
   }
 
   verifyUserRestrictions(): void {
-    const unverifiedLocations = this.rootStore.userRestrictions.filter(
+    const unverifiedLocations = this.allowedSupervisionLocationIds.filter(
       (supervisionLocationId) => {
         return !this.rootStore.districtsStore.districtIds.includes(
           supervisionLocationId
@@ -69,13 +63,13 @@ export default class UserRestrictedAccessStore {
     );
 
     if (
-      this.rootStore.userRestrictions.length > 0 &&
+      this.allowedSupervisionLocationIds.length > 0 &&
       unverifiedLocations.length > 0
     ) {
       const authError = new Error(ERROR_MESSAGES.unauthorized);
       Sentry.captureException(authError, {
         tags: {
-          allowedSupervisionLocationIds: this.rootStore.userRestrictions.join(
+          allowedSupervisionLocationIds: this.allowedSupervisionLocationIds.join(
             ","
           ),
         },

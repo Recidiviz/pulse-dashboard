@@ -179,9 +179,9 @@ export default class UserStore {
   }
 
   /**
-   * Returns the user restrictions for the given user.
+   * Returns the allowedSupervisionLocationIds for the given user.
    */
-  get userRestrictions(): string[] {
+  get allowedSupervisionLocationIds(): string[] {
     const allowedSupervisionLocationIds = this.userAppMetadata
       ?.allowed_supervision_location_ids;
     return allowedSupervisionLocationIds || [];

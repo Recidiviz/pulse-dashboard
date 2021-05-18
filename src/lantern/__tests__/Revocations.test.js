@@ -96,6 +96,7 @@ describe("Revocations component tests", () => {
   useLanternStore.mockReturnValue({
     userStore: { user: mockUser, isAuthorized: true },
     currentTenantId: US_MO,
+    userRestrictionsStore: { allowedSupervisionLocationIds: [] },
     filtersStore: {
       filters: observable.map({
         metricPeriodMonths: "",

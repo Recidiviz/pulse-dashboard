@@ -19,7 +19,7 @@ import { autorun, computed, makeObservable, ObservableMap } from "mobx";
 
 import type UserStore from "../../RootStore/UserStore";
 import type TenantStore from "../../RootStore/TenantStore";
-import UserRestrictedAccessStore from "./UserRestrictedAccessStore";
+import UserRestrictionsStore from "./UserRestrictionsStore";
 import FiltersStore from "./FiltersStore";
 import DataStore from "./DataStore/DataStore";
 import DistrictsStore from "./DistrictsStore";
@@ -35,7 +35,7 @@ export default class LanternStore {
 
   tenantStore: TenantStore;
 
-  userRestrictedAccessStore: UserRestrictedAccessStore;
+  userRestrictionsStore: UserRestrictionsStore;
 
   filtersStore: FiltersStore;
 
@@ -58,7 +58,7 @@ export default class LanternStore {
       rootStore: this,
     });
 
-    this.userRestrictedAccessStore = new UserRestrictedAccessStore({
+    this.userRestrictionsStore = new UserRestrictionsStore({
       rootStore: this,
     });
 
@@ -71,7 +71,7 @@ export default class LanternStore {
         !this.districtsStore.isLoading &&
         this.tenantStore.enableUserRestrictions
       ) {
-        this.userRestrictedAccessStore.verifyUserRestrictions();
+        this.userRestrictionsStore.verifyUserRestrictions();
       }
     });
   }
@@ -87,11 +87,6 @@ export default class LanternStore {
 
   get user(): any {
     return this.userStore.user;
-  }
-
-  get userRestrictions(): string[] {
-    if (!this.tenantStore.enableUserRestrictions) return [];
-    return this.userStore.userRestrictions;
   }
 
   get methodology(): any {

@@ -45,7 +45,7 @@ describe("TenantStore", () => {
       const mockRootStore = createMockRootStore({
         userIsLoading: false,
         availableStateCodes: ["US_MO"],
-        userRestrictions: ["25"],
+        allowedSupervisionLocationIds: ["25"],
         userHasAccess: () => true,
         user,
       });
@@ -58,7 +58,7 @@ describe("TenantStore", () => {
       const mockRootStore = createMockRootStore({
         userIsLoading: false,
         availableStateCodes: ["US_PA"],
-        userRestrictions: [],
+        allowedSupervisionLocationIds: [],
         userHasAccess: () => true,
         user: { [metadataField]: { state_code: US_PA }, email_verified: true },
       });
@@ -72,7 +72,7 @@ describe("TenantStore", () => {
       const mockRootStore = createMockRootStore({
         userIsLoading: false,
         availableStateCodes: ["US_MO", "US_PA"],
-        userRestrictions: ["25"],
+        allowedSupervisionLocationIds: ["25"],
         userHasAccess: () => true,
         user: {
           [metadataField]: { state_code: "recidiviz" },
@@ -88,7 +88,7 @@ describe("TenantStore", () => {
       const mockRootStore = createMockRootStore({
         userIsLoading: false,
         availableStateCodes: ["US_MO", "US_PA"],
-        userRestrictions: [],
+        allowedSupervisionLocationIds: [],
         userHasAccess: () => true,
         user: {
           [metadataField]: { state_code: "recidiviz" },
@@ -105,7 +105,7 @@ describe("TenantStore", () => {
       const mockRootStore = createMockRootStore({
         userIsLoading: false,
         availableStateCodes: ["US_MO"],
-        userRestrictions: "some string",
+        allowedSupervisionLocationIds: "some string",
         userHasAccess: () => true,
         user: {
           [metadataField]: { state_code: "US_MO" },
