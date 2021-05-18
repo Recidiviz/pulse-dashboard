@@ -57,13 +57,6 @@ const FILES_WITH_SUBSETS = [
   "revocations_matrix_by_month",
 ];
 
-const FILES_NOT_FILTERED_BY_USER_RESTRICTIONS = [
-  "revocations_matrix_distribution_by_district",
-  "revocations_matrix_supervision_location_ids_to_names",
-];
-
-const USER_RESTRICTION_FIELDS = ["level_1_supervision_location"];
-
 function validateSubsetManifest() {
   const dimensions = SUBSET_MANIFEST.map((d) => d[0]);
   return intersection(dimensions, INVALID_SUBSET_DIMENSIONS).length === 0;
@@ -81,6 +74,4 @@ function getSubsetManifest() {
 module.exports = {
   getSubsetManifest,
   FILES_WITH_SUBSETS,
-  USER_RESTRICTION_FIELDS,
-  FILES_NOT_FILTERED_BY_USER_RESTRICTIONS,
 };

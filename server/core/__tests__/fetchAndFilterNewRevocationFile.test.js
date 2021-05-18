@@ -35,7 +35,18 @@ jest.mock("../../filters", () => {
 describe("fetchAndFilterNewRevocationFile", () => {
   const metricName = "file_1";
   const metricType = "newRevocationFile";
-  const filters = { violation_type: "All" };
+  const filters = {
+    violation_type: [
+      "all",
+      "elec_monitoring",
+      "escaped",
+      "low_tech",
+      "med_tech",
+      "municipal",
+      "no_violation_type",
+      "technical",
+    ],
+  };
   const isDemoMode = false;
   const stateCode = "TEST_ID";
   const fetchArgs = { stateCode, metricType, isDemoMode };

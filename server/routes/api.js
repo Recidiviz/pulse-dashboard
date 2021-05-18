@@ -37,6 +37,7 @@ const {
   createUserRestrictionsFilters,
   getNewRevocationsFiltersByMetricName,
 } = require("../filters");
+const { formatKeysToSnakeCase } = require("../utils");
 
 const { METADATA_NAMESPACE } = process.env;
 
@@ -105,7 +106,7 @@ function newRevocationFile(req, res) {
     const appMetadata =
       (user && user[`${METADATA_NAMESPACE}app_metadata`]) || {};
 
-    const queryParams = req.query || {};
+    const queryParams = formatKeysToSnakeCase(req.query || {});
 
     const userRestrictionsFilters = createUserRestrictionsFilters(appMetadata);
 

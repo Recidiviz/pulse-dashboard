@@ -14,13 +14,17 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-const { camelCase } = require("lodash");
 const {
   getSubsetManifest,
   FILES_WITH_SUBSETS,
-  USER_RESTRICTION_FIELDS,
-  FILES_NOT_FILTERED_BY_USER_RESTRICTIONS,
 } = require("../constants/subsetManifest");
+
+const FILES_NOT_FILTERED_BY_USER_RESTRICTIONS = [
+  "revocations_matrix_distribution_by_district",
+  "revocations_matrix_supervision_location_ids_to_names",
+];
+
+const USER_RESTRICTION_FIELDS = ["level_1_supervision_location"];
 
 /**
  * Returns the cache key suffix for the given subset combination.
@@ -148,7 +152,7 @@ function getCacheKey({
 
   if (cacheKeySubset && FILES_WITH_SUBSETS.includes(metricName)) {
     getSubsetManifest().forEach(([dimensionKey, dimensionSubsets]) => {
-      const subsetValue = cacheKeySubset[camelCase(dimensionKey)];
+      const subsetValue = cacheKeySubset[dimensionKey];
       const subsetIndex = dimensionSubsets.findIndex((subset) => {
         return subsetValue && subset.includes(subsetValue);
       });

@@ -237,7 +237,7 @@ describe("API GET tests", () => {
     it("newRevocationFile - calls createSubsetFilters with correct args", async () => {
       await fakeRequest(newRevocationFile, request);
       expect(createSubsetFilters).toHaveBeenCalledWith({
-        filters: request.query,
+        filters: { violation_type: "ALL" },
       });
     });
 
@@ -256,7 +256,10 @@ describe("API GET tests", () => {
         stateCode,
         metricType: "newRevocation",
         metricName: file,
-        cacheKeySubset: { ...queryParams, ...mockUserRestrictionsFilters },
+        cacheKeySubset: {
+          violation_type: "ALL",
+          ...mockUserRestrictionsFilters,
+        },
       });
     });
 

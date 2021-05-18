@@ -106,7 +106,7 @@ describe("cacheKeys utils", () => {
             metricType: "newRevocations",
             metricName: "revocations_matrix_distribution_by_district",
             cacheKeySubset: {
-              violationType: "felony",
+              violation_type: "felony",
             },
           })
         ).toEqual(
@@ -119,7 +119,7 @@ describe("cacheKeys utils", () => {
             metricType: "newRevocations",
             metricName: "revocations_matrix_distribution_by_district",
             cacheKeySubset: {
-              violationType: "all",
+              violation_type: "all",
             },
           })
         ).toEqual(
@@ -152,7 +152,7 @@ describe("cacheKeys utils", () => {
               metricType: "newRevocations",
               metricName: "revocations_matrix_distribution_by_gender",
               cacheKeySubset: {
-                violationType: "felony",
+                violation_type: "felony",
                 level_1_supervision_location: ["03"],
               },
             })
@@ -170,7 +170,7 @@ describe("cacheKeys utils", () => {
               metricType: "newRevocations",
               metricName: "revocations_matrix_distribution_by_district",
               cacheKeySubset: {
-                violationType: "felony",
+                violation_type: "felony",
                 level_1_supervision_location: ["03"],
               },
             })

@@ -15,7 +15,6 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 /* eslint-disable camelcase */
-const { snakeCase } = require("lodash");
 const { matchesAllFilters, getFilterKeys } = require("shared-filters");
 const {
   getSubsetDimensionKeys,
@@ -94,10 +93,9 @@ function createSubsetFilters({ filters }) {
   const subsetFilters = {};
 
   Object.keys(filters).forEach((filterKey) => {
-    const formattedKey = snakeCase(filterKey);
-    if (subsetDimensionKeys.includes(formattedKey)) {
-      subsetFilters[formattedKey] = getSubsetDimensionValues(
-        formattedKey,
+    if (subsetDimensionKeys.includes(filterKey)) {
+      subsetFilters[filterKey] = getSubsetDimensionValues(
+        filterKey,
         filters[filterKey]
       );
     }

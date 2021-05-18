@@ -95,17 +95,17 @@ function createFlattenedValueMatrix(filteredDataPoints, subsetMetadata) {
  *
  * @returns {String[][]}
  */
-function createSubsetDimensionManifest(dimensionManifest, subsetFilters) {
+function createSubsetDimensionManifest(dimensionManifest, filters) {
   const subsetKeys = getSubsetDimensionKeys().concat(
     "level_1_supervision_location"
   );
   const transformedDimensionManifest = [];
 
   dimensionManifest.forEach(([dimensionKey, dimensionValues]) => {
-    if (subsetKeys.includes(dimensionKey) && subsetFilters[dimensionKey]) {
+    if (subsetKeys.includes(dimensionKey) && filters[dimensionKey]) {
       transformedDimensionManifest.push([
         dimensionKey,
-        subsetFilters[dimensionKey].sort(),
+        filters[dimensionKey].sort(),
       ]);
     } else {
       transformedDimensionManifest.push([dimensionKey, dimensionValues.sort()]);
@@ -118,18 +118,18 @@ function createSubsetDimensionManifest(dimensionManifest, subsetFilters) {
  * Transforms the metadata to include the filtered total_data_points and the transformed dimension_manifest
  * @param {number} totalDataPoints - The total data points in the filtered data
  * @param {Object} metadata - The original metadata object from the metric file
- * @param {Object} subsetFilters - The filters with all of the subset values
+ * @param {Object} filters - The filters with all of the subset values and any user restrictions
  *
  * @returns {Object} - Returns the subset metadata with provided total data points and the new subset dimension manifest.
  *
  */
-function createSubsetMetadata(totalDataPoints, metadata, subsetFilters) {
+function createSubsetMetadata(totalDataPoints, metadata, filters) {
   return {
     ...metadata,
     total_data_points: totalDataPoints,
     dimension_manifest: createSubsetDimensionManifest(
       metadata.dimension_manifest,
-      subsetFilters
+      filters
     ),
   };
 }

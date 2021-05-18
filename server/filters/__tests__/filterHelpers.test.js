@@ -57,8 +57,8 @@ describe("createSubsetFilters", () => {
 
   describe("Given a filters object with filter values", () => {
     const filters = {
-      violationType: "FELONY",
-      chargeCategory: "DOMESTIC_VIOLENCE",
+      violation_type: "FELONY",
+      charge_category: "DOMESTIC_VIOLENCE",
     };
 
     it("replaces the filter value with an array of values from the subset manifest", () => {
@@ -69,7 +69,7 @@ describe("createSubsetFilters", () => {
     });
 
     it("does not include filter values that are not in the subset manifest", () => {
-      filters.supervisionType = "DUAL";
+      filters.supervision_type = "DUAL";
       expect(createSubsetFilters({ filters })).toEqual({
         violation_type: ["felony", "law"],
         charge_category: ["all", "domestic_violence"],
@@ -160,8 +160,8 @@ describe("getNewRevocationsFiltersByMetricName", () => {
     });
   });
 
-  describe("given revocations_matrix_distribution_by_district", () => {
-    it("given revocations_matrix_distribution_by_district it returns a filters object with only user restrictions", () => {
+  describe("given files with subsets that do not filter user restrictions", () => {
+    it("given revocations_matrix_distribution_by_district it returns a filters object with only subset filters", () => {
       expect(
         getNewRevocationsFiltersByMetricName({
           metricName: "revocations_matrix_distribution_by_district",
