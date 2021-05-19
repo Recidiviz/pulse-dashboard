@@ -2143,6 +2143,13 @@
     eslint-config-prettier "^8.1.0"
     prettier "^2.2.1"
 
+"@recidiviz/tsconfig@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@recidiviz/tsconfig/-/tsconfig-1.0.0.tgz#317b6dc9a6c45016d10f4f4864b124d4ce5ba097"
+  integrity sha512-N6brrksfnQIYh7fqKhFhM+SQr817lXQdCgtHJyEvRL9rhtOR+1Y0b0nhVADZWEUSdRJdzjHoWWkOIJPoI9AluA==
+  dependencies:
+    "@tsconfig/node12" "^1.0.7"
+
 "@restart/context@^2.1.4":
   version "2.1.4"
   resolved "https://registry.yarnpkg.com/@restart/context/-/context-2.1.4.tgz#a99d87c299a34c28bd85bb489cb07bfd23149c02"
@@ -2454,6 +2461,11 @@
   version "4.5.5"
   resolved "https://registry.yarnpkg.com/@tracerbench/trace-event/-/trace-event-4.5.5.tgz#21c34a6725777d1056550ce1d9df0945e641064c"
   integrity sha512-dwQF3I3ozNBP9KrV9XO/PI/yFC7ul8e2cC2GqxZcZub7EU3JPfvW9ijy7IHAJttOQfxKkeZKwuwkGcdLA1vJXw==
+
+"@tsconfig/node12@^1.0.7":
+  version "1.0.7"
+  resolved "https://registry.yarnpkg.com/@tsconfig/node12/-/node12-1.0.7.tgz#677bd9117e8164dc319987dd6ff5fc1ba6fbf18b"
+  integrity sha512-dgasobK/Y0wVMswcipr3k0HpevxFJLijN03A8mYfEPvWvOs14v0ZlYTR4kIgMx8g4+fTyTFv8/jLCIfRqLDJ4A==
 
 "@types/aria-query@^4.2.0", "@types/aria-query@^4.2.1":
   version "4.2.1"
