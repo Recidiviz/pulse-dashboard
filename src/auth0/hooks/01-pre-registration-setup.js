@@ -44,14 +44,14 @@ module.exports = function (user, context, cb) {
   if (userHasAccess) {
     user.app_metadata = user.app_metadata || {};
 
-    if (["csg.org", "recidiviz.org"].includes(domain)) {
+    if (["csg.org", "recidiviz.org"].includes(userDomain)) {
       // Do not set state_code on internal users, this is done in a rule
       cb(null, { user });
     }
 
     /** 2. Add user's state_code to the app_metadata */
     const acceptedStateCodes = ["id", "mo", "nd", "pa"];
-    const domainSplit = domain.split(".");
+    const domainSplit = userDomain.split(".");
 
     // assumes the state is always the second to last component of the domain
     // e.g. @doc.mo.gov or @nd.gov, but not @nd.docr.gov
