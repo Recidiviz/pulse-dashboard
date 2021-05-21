@@ -49,11 +49,9 @@ const {
 const {
   newRevocations,
   newRevocationFile,
-  communityGoals,
+  goals,
   communityExplore,
-  facilitiesGoals,
   facilitiesExplore,
-  programmingExplore,
   refreshCache,
   restrictedAccess,
   responder,
@@ -101,11 +99,9 @@ describe("API GET tests", () => {
   describe("API fetching and caching for GET requests", () => {
     const metricControllers = [
       [newRevocations],
-      [communityGoals],
+      [goals],
       [communityExplore],
-      [facilitiesGoals],
       [facilitiesExplore],
-      [programmingExplore],
     ];
 
     afterEach(async () => {

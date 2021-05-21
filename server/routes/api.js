@@ -157,10 +157,9 @@ function newRevocationFile(req, res) {
   }
 }
 
-// TODO(#916): Consolidate API
-function communityGoals(req, res) {
+function goals(req, res) {
   const { stateCode } = req.params;
-  const metricType = "communityGoals";
+  const metricType = "goals";
   const cacheKey = getCacheKey({ stateCode, metricType });
   cacheResponse(
     cacheKey,
@@ -169,22 +168,9 @@ function communityGoals(req, res) {
   );
 }
 
-// TODO(#916): Consolidate API
 function communityExplore(req, res) {
   const { stateCode } = req.params;
   const metricType = "communityExplore";
-  const cacheKey = getCacheKey({ stateCode, metricType });
-  cacheResponse(
-    cacheKey,
-    () => fetchMetrics(stateCode, metricType, null, isDemoMode),
-    responder(res)
-  );
-}
-
-// TODO(#916): Consolidate API
-function facilitiesGoals(req, res) {
-  const { stateCode } = req.params;
-  const metricType = "facilitiesGoals";
   const cacheKey = getCacheKey({ stateCode, metricType });
   cacheResponse(
     cacheKey,
@@ -207,18 +193,6 @@ function facilitiesExplore(req, res) {
 function populationProjections(req, res) {
   const { stateCode } = req.params;
   const metricType = "populationProjections";
-  const cacheKey = getCacheKey({ stateCode, metricType });
-  cacheResponse(
-    cacheKey,
-    () => fetchMetrics(stateCode, metricType, null, isDemoMode),
-    responder(res)
-  );
-}
-
-// TODO(#916): Consolidate API
-function programmingExplore(req, res) {
-  const { stateCode } = req.params;
-  const metricType = "programmingExplore";
   const cacheKey = getCacheKey({ stateCode, metricType });
   cacheResponse(
     cacheKey,
@@ -294,12 +268,10 @@ module.exports = {
   restrictedAccess,
   newRevocations,
   newRevocationFile,
-  communityGoals,
+  goals,
   communityExplore,
-  facilitiesGoals,
   facilitiesExplore,
   populationProjections,
-  programmingExplore,
   vitals,
   responder,
   refreshCache,

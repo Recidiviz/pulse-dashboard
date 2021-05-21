@@ -28,11 +28,9 @@ describe("getCollections", () => {
 
     it("has the collections without dimensions", () => {
       const collections = getCollections("US_ND");
-      expect(collections).toHaveProperty(COLLECTIONS.COMMUNITY_GOALS);
+      expect(collections).toHaveProperty(COLLECTIONS.GOALS);
       expect(collections).toHaveProperty(COLLECTIONS.COMMUNITY_EXPLORE);
-      expect(collections).toHaveProperty(COLLECTIONS.FACILITIES_GOALS);
       expect(collections).toHaveProperty(COLLECTIONS.FACILITIES_EXPLORE);
-      expect(collections).toHaveProperty(COLLECTIONS.PROGRAMMING_EXPLORE);
     });
   });
 
