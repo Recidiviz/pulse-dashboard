@@ -25,11 +25,9 @@ describe("getMetricsByType", () => {
     ["US_MO", COLLECTIONS.NEW_REVOCATION, NewRevocationsMetrics],
     ["US_PA", COLLECTIONS.NEW_REVOCATION, NewRevocationsMetrics],
     ["US_ID", COLLECTIONS.POPULATION_PROJECTIONS, BaseMetrics],
-    ["US_ND", COLLECTIONS.COMMUNITY_GOALS, BaseMetrics],
+    ["US_ND", COLLECTIONS.GOALS, BaseMetrics],
     ["US_ND", COLLECTIONS.COMMUNITY_EXPLORE, BaseMetrics],
-    ["US_ND", COLLECTIONS.FACILITIES_GOALS, BaseMetrics],
     ["US_ND", COLLECTIONS.FACILITIES_EXPLORE, BaseMetrics],
-    ["US_ND", COLLECTIONS.PROGRAMMING_EXPLORE, BaseMetrics],
   ])(
     "stateCode %s for metric %s returns a %p metric class",
     (stateCode, metricType, metricClass) => {

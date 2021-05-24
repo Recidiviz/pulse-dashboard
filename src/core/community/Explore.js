@@ -54,15 +54,9 @@ import FtrReferralsByGender from "./FtrReferralsByGender";
 import FtrReferralsByAge from "./FtrReferralsByAge";
 
 const CommunityExplore = () => {
-  // TODO(#916): Consolidate API
   const { apiData, isLoading, getTokenSilently } = useChartData(
     "us_nd/community/explore"
   );
-  const {
-    apiData: programmingApiData,
-    isLoading: programmingIsLoading,
-    getTokenSilently: programmingGetTokenSilently,
-  } = useChartData("us_nd/programming/explore");
 
   const [metricType, setMetricType] = useState(defaultMetricType);
   const [metricPeriodMonths, setMetricPeriodMonths] = useState(
@@ -73,7 +67,7 @@ const CommunityExplore = () => {
   );
   const [district, setDistrict] = useState(defaultDistrict);
 
-  if (isLoading || programmingIsLoading) {
+  if (isLoading) {
     return <Loading />;
   }
 
@@ -472,9 +466,7 @@ const CommunityExplore = () => {
             metricPeriodMonths={metricPeriodMonths}
             supervisionType={supervisionType}
             district={district}
-            ftrReferralCountByMonth={
-              programmingApiData.ftr_referrals_by_month.data
-            }
+            ftrReferralCountByMonth={apiData.ftr_referrals_by_month.data}
             getTokenSilently={getTokenSilently}
           />
         }
@@ -486,13 +478,13 @@ const CommunityExplore = () => {
             metricPeriodMonths={metricPeriodMonths}
             supervisionType={supervisionType}
             keyedByOffice
-            officeData={programmingApiData.site_offices.data}
-            dataPointsByOffice={programmingApiData.ftr_referrals_by_period.data}
+            officeData={apiData.site_offices.data}
+            dataPointsByOffice={apiData.ftr_referrals_by_period.data}
             numeratorKeys={["count"]}
             denominatorKeys={["total_supervision_count"]}
             centerLat={47.3}
             centerLong={-100.5}
-            getTokenSilently={programmingGetTokenSilently}
+            getTokenSilently={getTokenSilently}
           />
         }
         footer={<Methodology chartId="ftrReferralCountByMonth" />}
@@ -507,9 +499,9 @@ const CommunityExplore = () => {
             supervisionType={supervisionType}
             district={district}
             ftrReferralsByParticipationStatus={
-              programmingApiData.ftr_referrals_by_participation_status.data
+              apiData.ftr_referrals_by_participation_status.data
             }
-            getTokenSilently={programmingGetTokenSilently}
+            getTokenSilently={getTokenSilently}
           />
         }
         footer={
@@ -529,11 +521,10 @@ const CommunityExplore = () => {
             supervisionType={supervisionType}
             district={district}
             ftrReferralsByRace={
-              programmingApiData.ftr_referrals_by_race_and_ethnicity_by_period
-                .data
+              apiData.ftr_referrals_by_race_and_ethnicity_by_period.data
             }
-            statePopulationByRace={programmingApiData.race_proportions.data}
-            getTokenSilently={programmingGetTokenSilently}
+            statePopulationByRace={apiData.race_proportions.data}
+            getTokenSilently={getTokenSilently}
           />
         }
         footer={
@@ -552,10 +543,8 @@ const CommunityExplore = () => {
             metricPeriodMonths={metricPeriodMonths}
             supervisionType={supervisionType}
             district={district}
-            ftrReferralsByLsir={
-              programmingApiData.ftr_referrals_by_lsir_by_period.data
-            }
-            getTokenSilently={programmingGetTokenSilently}
+            ftrReferralsByLsir={apiData.ftr_referrals_by_lsir_by_period.data}
+            getTokenSilently={getTokenSilently}
           />
         }
         footer={
@@ -575,9 +564,9 @@ const CommunityExplore = () => {
             supervisionType={supervisionType}
             district={district}
             ftrReferralsByGender={
-              programmingApiData.ftr_referrals_by_gender_by_period.data
+              apiData.ftr_referrals_by_gender_by_period.data
             }
-            getTokenSilently={programmingGetTokenSilently}
+            getTokenSilently={getTokenSilently}
           />
         }
         footer={
@@ -596,9 +585,7 @@ const CommunityExplore = () => {
             metricPeriodMonths={metricPeriodMonths}
             supervisionType={supervisionType}
             district={district}
-            ftrReferralsByAge={
-              programmingApiData.ftr_referrals_by_age_by_period.data
-            }
+            ftrReferralsByAge={apiData.ftr_referrals_by_age_by_period.data}
             getTokenSilently={getTokenSilently}
           />
         }

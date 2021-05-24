@@ -54,7 +54,7 @@ describe("Server tests", () => {
     process.env = OLD_ENV;
   });
 
-  describe("GET api/:stateCode/facilities/goals", () => {
+  describe("GET api/:stateCode/goals", () => {
     beforeEach(() => {
       process.env = Object.assign(process.env, {
         IS_DEMO: "true",
@@ -65,7 +65,7 @@ describe("Server tests", () => {
     });
     it("should respond with a 200 for a valid stateCode", function () {
       return request(app)
-        .get("/api/US_ND/facilities/goals")
+        .get("/api/US_ND/goals")
         .then((response) => {
           expect(response.statusCode).toEqual(200);
         });
