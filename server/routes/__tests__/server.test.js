@@ -205,7 +205,7 @@ describe("Server tests", () => {
     });
   });
 
-  describe("GET /api/:stateCode/refreshCache", () => {
+  describe("GET /api/:stateCode/:metricType/refreshCache", () => {
     beforeEach(() => {
       process.env = Object.assign(process.env, {
         IS_DEMO: "false",
@@ -224,7 +224,7 @@ describe("Server tests", () => {
 
     it("should respond with a 403 when cron job header is invalid", () => {
       return request(app)
-        .get("/api/US_PA/refreshCache")
+        .get("/api/US_PA/newRevocation/refreshCache")
         .then((response) => {
           expect(response.statusCode).toEqual(403);
         });
@@ -232,7 +232,7 @@ describe("Server tests", () => {
 
     it("should respond successfully when cron job header is valid", () => {
       return request(app)
-        .get("/api/US_PA/refreshCache")
+        .get("/api/US_PA/newRevocation/refreshCache")
         .set("X-Appengine-Cron", "true")
         .then((response) => {
           expect(response.statusCode).toEqual(200);
