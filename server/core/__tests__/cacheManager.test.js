@@ -58,7 +58,7 @@ describe("cacheManager", () => {
       });
     });
 
-    describe("when cacheKey includes -newRevocation", () => {
+    describe("all other requests", () => {
       beforeEach(() => {
         process.env = Object.assign(process.env, {
           IS_DEMO: "false",
@@ -67,24 +67,14 @@ describe("cacheManager", () => {
         jest.resetModules();
         getCache = require("../cacheManager").getCache;
       });
-      it("returns a redis cache", () => {
+      it("returns a redis cache for newRevocation", () => {
         const cache = getCache("US_PA-newRevocation-");
         expect(cache.store.name).toEqual("redis");
       });
-    });
 
-    describe("when cacheKey does not include -newRevocation", () => {
-      beforeEach(() => {
-        process.env = Object.assign(process.env, {
-          IS_DEMO: "false",
-          NODE_ENV: "development",
-        });
-        jest.resetModules();
-        getCache = require("../cacheManager").getCache;
-      });
-      it("returns a redis cache", () => {
-        const cache = getCache("");
-        expect(cache.store.name).toEqual("memory");
+      it("returns a redis cache for facilitiesExplore", () => {
+        const cache = getCache("US_ND-facilitiesExplore");
+        expect(cache.store.name).toEqual("redis");
       });
     });
   });
