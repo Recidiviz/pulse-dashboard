@@ -48,8 +48,8 @@ describe("refreshRedisCache", () => {
   let fileName;
   let metricFile;
   let mockFetchValue;
+  let metricType;
   const stateCode = "US_DEMO";
-  const metricType = "metric_type";
   const fileContents = {
     flattenedValueMatrix: "a bunch of numbers",
     metadata: {
@@ -71,14 +71,163 @@ describe("refreshRedisCache", () => {
     jest.clearAllMocks();
   });
 
-  describe("refreshing the cache for files without subsets", () => {
+  describe("when metricType is newRevocation", () => {
+    describe("refreshing the cache for files without subsets", () => {
+      beforeEach(() => {
+        metricType = "newRevocation";
+        fileName = "random_file_name";
+        metricFile = { [fileName]: fileContents };
+      });
+
+      it("calls the cache with the correct key and value", (done) => {
+        const cacheKey = `${stateCode}-${metricType}-${fileName}`;
+        refreshRedisCache(
+          mockFetchValue,
+          stateCode,
+          metricType,
+          (err, result) => {
+            expect(err).toBeNull();
+            expect(result).toEqual("OK");
+
+            expect(mockFetchValue).toHaveBeenCalledTimes(1);
+            expect(mockCache.set).toHaveBeenCalledTimes(1);
+            expect(mockCache.set).toHaveBeenCalledWith(cacheKey, metricFile);
+            done();
+          }
+        );
+      });
+
+      it("returns an error response when caching fails", (done) => {
+        const error = new Error("Error setting cache value");
+        mockCache.set.mockImplementationOnce(() => {
+          throw error;
+        });
+
+        refreshRedisCache(mockFetchValue, stateCode, metricType, (err) => {
+          expect(mockCache.set).toHaveBeenCalledTimes(1);
+          expect(err).toEqual(error);
+          expect(Sentry.captureException).toHaveBeenCalledWith(
+            "Error occurred while caching files for metricType: newRevocation",
+            error
+          );
+          done();
+        });
+      });
+    });
+
+    describe("refreshing the cache for files that have subsets", () => {
+      beforeEach(() => {
+        fileName = "revocations_matrix_distribution_by_district";
+        metricFile = { [fileName]: fileContents };
+        createSubset.mockImplementation(() => metricFile);
+      });
+
+      it("caches a subset file for each subset combination", (done) => {
+        refreshRedisCache(
+          mockFetchValue,
+          stateCode,
+          metricType,
+          (err, result) => {
+            expect(err).toEqual(null);
+            expect(result).toEqual("OK");
+            expect(createSubset).toHaveBeenCalledTimes(6);
+            [
+              { violation_type: 0, charge_category: 0 },
+              { violation_type: 0, charge_category: 1 },
+              { violation_type: 0, charge_category: 2 },
+              { violation_type: 1, charge_category: 0 },
+              { violation_type: 1, charge_category: 1 },
+              { violation_type: 1, charge_category: 2 },
+            ].forEach((subsetCombination, index) => {
+              const transformedFilters = createSubsetFilters({
+                filters: subsetCombination,
+              });
+              expect(createSubset).toHaveBeenNthCalledWith(
+                index + 1,
+                fileName,
+                transformedFilters,
+                metricFile
+              );
+            });
+            done();
+          }
+        );
+      });
+
+      it("sets the cache key for each possible subset", (done) => {
+        const cacheKeyPrefix = `${stateCode}-${metricType}-${fileName}`;
+
+        refreshRedisCache(
+          mockFetchValue,
+          stateCode,
+          metricType,
+          (err, result) => {
+            expect(err).toEqual(null);
+            expect(result).toEqual("OK");
+            expect(mockCache.set).toHaveBeenCalledTimes(6);
+            [
+              "-charge_category=0-violation_type=0",
+              "-charge_category=1-violation_type=0",
+              "-charge_category=2-violation_type=0",
+              "-charge_category=0-violation_type=1",
+              "-charge_category=1-violation_type=1",
+              "-charge_category=2-violation_type=1",
+            ].forEach((subsetKey, index) => {
+              expect(mockCache.set).toHaveBeenNthCalledWith(
+                index + 1,
+                `${cacheKeyPrefix}${subsetKey}`,
+                metricFile
+              );
+            });
+            done();
+          }
+        );
+      });
+
+      it("returns an error when caching fails", (done) => {
+        const error = new Error("Error setting cache value");
+        mockCache.set.mockImplementationOnce(() => {
+          throw error;
+        });
+
+        refreshRedisCache(mockFetchValue, stateCode, metricType, (err) => {
+          expect(mockCache.set).toHaveBeenCalledTimes(1);
+          expect(err).toEqual(error);
+          expect(err).toEqual(error);
+          expect(Sentry.captureException).toHaveBeenCalledWith(
+            "Error occurred while caching files for metricType: newRevocation",
+            error
+          );
+          done();
+        });
+      });
+
+      it("returns an error when filtering fails", (done) => {
+        const error = new Error("Error setting cache value");
+        createSubset.mockReset();
+        createSubset.mockImplementationOnce(() => {
+          throw error;
+        });
+        refreshRedisCache(mockFetchValue, stateCode, metricType, (err) => {
+          expect(mockCache.set).toHaveBeenCalledTimes(0);
+          expect(err).toEqual(error);
+          done();
+        });
+      });
+    });
+  });
+
+  describe("when metricType is not newRevocation", () => {
     beforeEach(() => {
-      fileName = "random_file_name";
-      metricFile = { [fileName]: fileContents };
+      metricType = "vitals";
+      metricFile = {
+        fileName: fileContents,
+        secondFileName: fileContents,
+      };
     });
 
     it("calls the cache with the correct key and value", (done) => {
-      const cacheKey = `${stateCode}-${metricType}-${fileName}`;
+      const cacheKey = `${stateCode}-${metricType}`;
       refreshRedisCache(
         mockFetchValue,
         stateCode,
@@ -105,111 +254,9 @@ describe("refreshRedisCache", () => {
         expect(mockCache.set).toHaveBeenCalledTimes(1);
         expect(err).toEqual(error);
         expect(Sentry.captureException).toHaveBeenCalledWith(
-          "Error occurred while caching files for metricType: metric_type",
+          "Error occurred while caching files for metricType: vitals",
           error
         );
-        done();
-      });
-    });
-  });
-
-  describe("refreshing the cache for files that have subsets", () => {
-    beforeEach(() => {
-      fileName = "revocations_matrix_distribution_by_district";
-      metricFile = { [fileName]: fileContents };
-      createSubset.mockImplementation(() => metricFile);
-    });
-
-    it("caches a subset file for each subset combination", (done) => {
-      refreshRedisCache(
-        mockFetchValue,
-        stateCode,
-        metricType,
-        (err, result) => {
-          expect(err).toEqual(null);
-          expect(result).toEqual("OK");
-          expect(createSubset).toHaveBeenCalledTimes(6);
-          [
-            { violation_type: 0, charge_category: 0 },
-            { violation_type: 0, charge_category: 1 },
-            { violation_type: 0, charge_category: 2 },
-            { violation_type: 1, charge_category: 0 },
-            { violation_type: 1, charge_category: 1 },
-            { violation_type: 1, charge_category: 2 },
-          ].forEach((subsetCombination, index) => {
-            const transformedFilters = createSubsetFilters({
-              filters: subsetCombination,
-            });
-            expect(createSubset).toHaveBeenNthCalledWith(
-              index + 1,
-              fileName,
-              transformedFilters,
-              metricFile
-            );
-          });
-          done();
-        }
-      );
-    });
-
-    it("sets the cache key for each possible subset", (done) => {
-      const cacheKeyPrefix = `${stateCode}-${metricType}-${fileName}`;
-
-      refreshRedisCache(
-        mockFetchValue,
-        stateCode,
-        metricType,
-        (err, result) => {
-          expect(err).toEqual(null);
-          expect(result).toEqual("OK");
-          expect(mockCache.set).toHaveBeenCalledTimes(6);
-          [
-            "-charge_category=0-violation_type=0",
-            "-charge_category=1-violation_type=0",
-            "-charge_category=2-violation_type=0",
-            "-charge_category=0-violation_type=1",
-            "-charge_category=1-violation_type=1",
-            "-charge_category=2-violation_type=1",
-          ].forEach((subsetKey, index) => {
-            expect(mockCache.set).toHaveBeenNthCalledWith(
-              index + 1,
-              `${cacheKeyPrefix}${subsetKey}`,
-              metricFile
-            );
-          });
-          done();
-        }
-      );
-    });
-
-    it("returns an error when caching fails", (done) => {
-      const error = new Error("Error setting cache value");
-      mockCache.set.mockImplementationOnce(() => {
-        throw error;
-      });
-
-      refreshRedisCache(mockFetchValue, stateCode, metricType, (err) => {
-        expect(mockCache.set).toHaveBeenCalledTimes(1);
-        expect(err).toEqual(error);
-        expect(err).toEqual(error);
-        expect(Sentry.captureException).toHaveBeenCalledWith(
-          "Error occurred while caching files for metricType: metric_type",
-          error
-        );
-        done();
-      });
-    });
-
-    it("returns an error when filtering fails", (done) => {
-      const error = new Error("Error setting cache value");
-      createSubset.mockReset();
-      createSubset.mockImplementationOnce(() => {
-        throw error;
-      });
-
-      refreshRedisCache(mockFetchValue, stateCode, metricType, (err) => {
-        expect(mockCache.set).toHaveBeenCalledTimes(0);
-        expect(err).toEqual(error);
         done();
       });
     });

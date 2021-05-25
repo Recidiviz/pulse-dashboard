@@ -61,6 +61,7 @@ const { clearMemoryCache } = require("../../core/cacheManager");
 
 describe("API GET tests", () => {
   const stateCode = "test_id";
+  const metricType = "newRevocation";
 
   beforeAll(() => {
     // Reduce noise in the test
@@ -74,7 +75,10 @@ describe("API GET tests", () => {
     clearMemoryCache();
   });
 
-  function fakeRequest(routeHandler, req = { params: { stateCode } }) {
+  function fakeRequest(
+    routeHandler,
+    req = { params: { stateCode, metricType } }
+  ) {
     return new Promise((resolve) => {
       const send = resolve;
       const status = jest.fn().mockImplementation(() => {
@@ -152,7 +156,7 @@ describe("API GET tests", () => {
       const file = "file_1";
       const filters = { violationType: "ALL" };
       const request = {
-        params: { stateCode, file },
+        params: { stateCode, metricType, file },
         query: filters,
       };
 
@@ -160,7 +164,7 @@ describe("API GET tests", () => {
       expect(fetchAndFilterNewRevocationFile).toHaveBeenCalledWith({
         metricName: file,
         stateCode,
-        metricType: "newRevocation",
+        metricType,
         queryParams: filters,
         isDemoMode: false,
       });
@@ -170,7 +174,7 @@ describe("API GET tests", () => {
       const file = "file_1";
       const filters = { violationType: "ALL" };
       const request = {
-        params: { stateCode, file },
+        params: { stateCode, metricType, file },
         query: filters,
       };
       await requestAndExpectFetchMetricsCalled(
@@ -208,7 +212,10 @@ describe("API GET tests", () => {
   describe("API fetching and caching for POST requests", () => {
     const userEmail = "thirteen@state.gov";
     const userDistrict = "13";
-    let postRequest = { params: { stateCode }, body: { userEmail } };
+    let postRequest = {
+      params: { stateCode, metricType },
+      body: { userEmail },
+    };
     const file = "supervision_location_restricted_access_emails";
 
     afterEach(async () => {

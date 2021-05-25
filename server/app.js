@@ -116,7 +116,11 @@ if (isDemoMode) {
   };
 }
 
-app.get("/api/:stateCode/refreshCache", validateCronRequest, api.refreshCache);
+app.get(
+  "/api/:stateCode/:metricType/refreshCache",
+  validateCronRequest,
+  api.refreshCache
+);
 app.get("/api/:stateCode/newRevocations", checkJwt, api.newRevocations);
 app.get(
   "/api/:stateCode/newRevocations/:file",

@@ -106,12 +106,11 @@ function restrictedAccess(req, res) {
 }
 
 function refreshCache(req, res) {
-  const { stateCode } = req.params;
-  const metricType = "newRevocation";
+  const { stateCode, metricType } = req.params;
   refreshRedisCache(
     () => fetchMetrics(stateCode, metricType, null, isDemoMode),
     stateCode,
-    "newRevocation",
+    metricType,
     responder(res)
   );
 }
