@@ -37,7 +37,7 @@ describe("cacheManager", () => {
       });
 
       it("returns a memory cache with 'none' store", () => {
-        const cache = getCache("");
+        const cache = getCache();
         expect(cache.store.name).toEqual("none");
       });
     });
@@ -53,7 +53,7 @@ describe("cacheManager", () => {
       });
 
       it("returns a memory cache", () => {
-        const cache = getCache("");
+        const cache = getCache();
         expect(cache.store.name).toEqual("memory");
       });
     });
@@ -67,13 +67,9 @@ describe("cacheManager", () => {
         jest.resetModules();
         getCache = require("../cacheManager").getCache;
       });
-      it("returns a redis cache for newRevocation", () => {
-        const cache = getCache("US_PA-newRevocation-");
-        expect(cache.store.name).toEqual("redis");
-      });
 
-      it("returns a redis cache for facilitiesExplore", () => {
-        const cache = getCache("US_ND-facilitiesExplore");
+      it("returns a redis cache", () => {
+        const cache = getCache();
         expect(cache.store.name).toEqual("redis");
       });
     });

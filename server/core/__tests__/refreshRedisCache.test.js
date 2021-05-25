@@ -218,46 +218,46 @@ describe("refreshRedisCache", () => {
   });
 
   describe("when metricType is not newRevocation", () => {
-    describe("refreshing the cache for files without subsets", () => {
-      beforeEach(() => {
-        fileName = "random_file_name";
-        metricType = "vitals";
-        metricFile = { [fileName]: fileContents };
-      });
+    beforeEach(() => {
+      metricType = "vitals";
+      metricFile = {
+        fileName: fileContents,
+        secondFileName: fileContents,
+      };
+    });
 
-      it("calls the cache with the correct key and value", (done) => {
-        const cacheKey = `${stateCode}-${metricType}`;
-        refreshRedisCache(
-          mockFetchValue,
-          stateCode,
-          metricType,
-          (err, result) => {
-            expect(err).toBeNull();
-            expect(result).toEqual("OK");
+    it("calls the cache with the correct key and value", (done) => {
+      const cacheKey = `${stateCode}-${metricType}`;
+      refreshRedisCache(
+        mockFetchValue,
+        stateCode,
+        metricType,
+        (err, result) => {
+          expect(err).toBeNull();
+          expect(result).toEqual("OK");
 
-            expect(mockFetchValue).toHaveBeenCalledTimes(1);
-            expect(mockCache.set).toHaveBeenCalledTimes(1);
-            expect(mockCache.set).toHaveBeenCalledWith(cacheKey, metricFile);
-            done();
-          }
-        );
-      });
-
-      it("returns an error response when caching fails", (done) => {
-        const error = new Error("Error setting cache value");
-        mockCache.set.mockImplementationOnce(() => {
-          throw error;
-        });
-
-        refreshRedisCache(mockFetchValue, stateCode, metricType, (err) => {
+          expect(mockFetchValue).toHaveBeenCalledTimes(1);
           expect(mockCache.set).toHaveBeenCalledTimes(1);
-          expect(err).toEqual(error);
-          expect(Sentry.captureException).toHaveBeenCalledWith(
-            "Error occurred while caching files for metricType: vitals",
-            error
-          );
+          expect(mockCache.set).toHaveBeenCalledWith(cacheKey, metricFile);
           done();
-        });
+        }
+      );
+    });
+
+    it("returns an error response when caching fails", (done) => {
+      const error = new Error("Error setting cache value");
+      mockCache.set.mockImplementationOnce(() => {
+        throw error;
+      });
+
+      refreshRedisCache(mockFetchValue, stateCode, metricType, (err) => {
+        expect(mockCache.set).toHaveBeenCalledTimes(1);
+        expect(err).toEqual(error);
+        expect(Sentry.captureException).toHaveBeenCalledWith(
+          "Error occurred while caching files for metricType: vitals",
+          error
+        );
+        done();
       });
     });
   });

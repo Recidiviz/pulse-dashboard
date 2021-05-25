@@ -87,11 +87,7 @@ function cacheFiles({ files, metricType, cacheKeyPrefix }) {
       }
     });
   } else {
-    const data = {};
-    Object.keys(files).forEach((fileKey) => {
-      data[fileKey] = files[fileKey];
-    });
-    cachePromises.push(cache.set(cacheKeyPrefix, data));
+    cachePromises.push(cache.set(cacheKeyPrefix, files));
   }
 
   console.log(

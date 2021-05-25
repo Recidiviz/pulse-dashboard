@@ -222,7 +222,7 @@ describe("Server tests", () => {
       });
     });
 
-    it("should respond with a 403 when cron job header is invalid", () => {
+    it("should respond with a 403 when cron job header is invalid for newRevocation", () => {
       return request(app)
         .get("/api/US_PA/newRevocation/refreshCache")
         .then((response) => {
@@ -230,9 +230,43 @@ describe("Server tests", () => {
         });
     });
 
-    it("should respond successfully when cron job header is valid", () => {
+    it("should respond successfully when cron job header is valid for newRevocation", () => {
       return request(app)
         .get("/api/US_PA/newRevocation/refreshCache")
+        .set("X-Appengine-Cron", "true")
+        .then((response) => {
+          expect(response.statusCode).toEqual(200);
+        });
+    });
+
+    it("should respond with a 403 when cron job header is invalid for vitals", () => {
+      return request(app)
+        .get("/api/US_ND/vitals/refreshCache")
+        .then((response) => {
+          expect(response.statusCode).toEqual(403);
+        });
+    });
+
+    it("should respond successfully when cron job header is valid for vitals", () => {
+      return request(app)
+        .get("/api/US_ND/vitals/refreshCache")
+        .set("X-Appengine-Cron", "true")
+        .then((response) => {
+          expect(response.statusCode).toEqual(200);
+        });
+    });
+
+    it("should respond with a 403 when cron job header is invalid for goals", () => {
+      return request(app)
+        .get("/api/US_ND/goals/refreshCache")
+        .then((response) => {
+          expect(response.statusCode).toEqual(403);
+        });
+    });
+
+    it("should respond successfully when cron job header is valid for goals", () => {
+      return request(app)
+        .get("/api/US_ND/goals/refreshCache")
         .set("X-Appengine-Cron", "true")
         .then((response) => {
           expect(response.statusCode).toEqual(200);
