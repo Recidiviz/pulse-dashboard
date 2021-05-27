@@ -26,23 +26,19 @@ import VitalsSummaryDetail from "../VitalsSummaryDetail";
 import VitalsSummaryBreadcrumbs from "../VitalsSummaryBreadcrumbs";
 import MethodologyLink from "../MethodologyLink";
 import Loading from "../../components/Loading";
-import { MetricType, METRIC_TYPES } from "./types";
 import { CORE_PATHS } from "../views";
 import { useCoreStore } from "../CoreStoreProvider";
 import { formatISODateString } from "../../utils/formatStrings";
 import {
-  getSummaryCards,
   getSummaryDetail,
-  getEntitySummaries,
   getTimeSeries,
   getMonthlyChange,
   getTimeSeriesDownloadableData,
   getVitalsSummaryDownloadableData,
-  getVitalsFiltersText,
 } from "./helpers";
 import DownloadDataButton from "../DownloadDataButton";
 import DetailsGroup from "../DetailsGroup";
-import { ENTITY_TYPES } from "../models/types";
+import { ENTITY_TYPES, MetricType, METRIC_TYPES } from "../models/types";
 import content from "../content";
 import withRouteSync from "../../withRouteSync";
 
@@ -59,11 +55,15 @@ const goals = {
 const PageVitals: React.FC = () => {
   const { metricsStore, tenantStore } = useCoreStore();
   const {
-    summaries,
     timeSeries,
     isLoading,
     isError,
     currentEntityId,
+    currentEntitySummary,
+    childEntitySummaryRows,
+    parentEntityName,
+    summaryCards,
+    vitalsFiltersText,
   } = metricsStore.vitals;
   const { stateName, stateCode, currentTenantId } = tenantStore;
   const [selectedCardId, setSelectedCardId] = useState<MetricType>(
@@ -74,7 +74,7 @@ const PageVitals: React.FC = () => {
   const { vitals: vitalsMethodology } = content[currentTenantId];
 
   // TODO: add in Error state
-  if (isError) {
+  if (isError || currentEntitySummary === undefined) {
     return null;
   }
 
@@ -90,12 +90,6 @@ const PageVitals: React.FC = () => {
     setSelectedCardId(id);
   };
 
-  const {
-    currentEntitySummary,
-    childEntitySummaryRows,
-    parentEntityName,
-  } = getEntitySummaries(summaries, currentEntityId);
-  const summaryCards = getSummaryCards(currentEntitySummary);
   const selectedTimeSeries = getTimeSeries(
     timeSeries,
     currentEntityId,
@@ -129,11 +123,7 @@ const PageVitals: React.FC = () => {
             ]}
             title={`${stateName} At A Glance`}
             methodology={vitalsMethodology.content}
-            filters={getVitalsFiltersText(
-              currentEntitySummary,
-              childEntitySummaryRows,
-              parentEntityName
-            )}
+            filters={vitalsFiltersText}
             lastUpdatedOn={lastUpdatedOn}
           />
           <MethodologyLink path={CORE_PATHS.methodologyVitals} />

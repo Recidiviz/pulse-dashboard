@@ -21,8 +21,12 @@ import cx from "classnames";
 import BubbleTableCell from "./BubbleTableCell";
 import DeltaTableCell from "./DeltaTableCell";
 import { formatPercent } from "../../utils";
-import { VitalsSummaryTableRow, METRIC_TYPES } from "../PageVitals/types";
-import { ENTITY_TYPES, EntityType } from "../models/types";
+import {
+  ENTITY_TYPES,
+  EntityType,
+  VitalsSummaryTableRow,
+  METRIC_TYPES,
+} from "../models/types";
 import { convertToSlug } from "../../utils/navigation";
 
 import "./VitalsSummaryTable.scss";

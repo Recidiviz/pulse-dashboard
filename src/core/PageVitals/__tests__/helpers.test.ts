@@ -15,49 +15,10 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 import {
-  getSummaryStatus,
   getTimeSeriesDownloadableData,
   getVitalsSummaryDownloadableData,
 } from "../helpers";
 import { ENTITY_TYPES } from "../../models/types";
-
-describe("getSummaryStatus", () => {
-  describe("when value is less than 70", () => {
-    it("returns POOR", () => {
-      [0, 15, 25, 69].forEach((number) => {
-        expect(getSummaryStatus(number)).toEqual("POOR");
-      });
-    });
-  });
-  describe("when value is greater than or equal to 70 and less than 80", () => {
-    it("returns NEEDS_IMPROVEMENT", () => {
-      [70, 75, 79].forEach((number) => {
-        expect(getSummaryStatus(number)).toEqual("NEEDS_IMPROVEMENT");
-      });
-    });
-  });
-  describe("when value is greater than or equal to 80 and less than 90", () => {
-    it("returns GOOD", () => {
-      [80, 85, 89].forEach((number) => {
-        expect(getSummaryStatus(number)).toEqual("GOOD");
-      });
-    });
-  });
-  describe("when value is greater than or equal to 90 and less than 95", () => {
-    it("returns GREAT", () => {
-      [90, 94].forEach((number) => {
-        expect(getSummaryStatus(number)).toEqual("GREAT");
-      });
-    });
-  });
-  describe("when value is greater than 95", () => {
-    it("returns EXCELLENT", () => {
-      [95, 100].forEach((number) => {
-        expect(getSummaryStatus(number)).toEqual("EXCELLENT");
-      });
-    });
-  });
-});
 
 describe("getTimeSeriesDownloadableData", () => {
   const data = [

@@ -14,51 +14,6 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-import { EntityType } from "../models/types";
-
-export type SummaryStatus =
-  | "POOR"
-  | "NEEDS_IMPROVEMENT"
-  | "GOOD"
-  | "GREAT"
-  | "EXCELLENT";
-
-export type SummaryCard = {
-  id: MetricType;
-  title: string;
-  description: string;
-  value: number;
-  status: SummaryStatus;
-};
-
-export type VitalsSummaryTableRow = {
-  entity: {
-    entityId: string;
-    entityName: string;
-    entityType: EntityType;
-  };
-  parentEntityId?: string;
-  overall: number;
-  overall30Day: number;
-  overall90Day: number;
-  timelyDischarge: number;
-  timelyContact: number;
-  timelyRiskAssessment: number;
-};
-
-export type MetricType = keyof typeof METRIC_TYPES;
-export const METRIC_TYPES = {
-  OVERALL: "OVERALL",
-  DISCHARGE: "DISCHARGE",
-  CONTACT: "CONTACT",
-  RISK_ASSESSMENT: "RISK_ASSESSMENT",
-} as const;
-export const METRIC_TYPE_LABELS = {
-  OVERALL: "Overall",
-  DISCHARGE: "Timely discharge",
-  CONTACT: "Timely contacts",
-  RISK_ASSESSMENT: "Timely risk assessments",
-} as const;
 
 export type DownloadableData =
   | {

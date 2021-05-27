@@ -17,7 +17,7 @@
 
 import React from "react";
 import cn from "classnames";
-import { SummaryStatus } from "../PageVitals/types";
+import { SummaryStatus } from "../models/types";
 import { formatPercent } from "../../utils/formatStrings";
 import "./VitalsSummaryCard.scss";
 

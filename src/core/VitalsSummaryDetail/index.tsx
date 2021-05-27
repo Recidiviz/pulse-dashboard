@@ -16,7 +16,7 @@
 // =============================================================================
 
 import React from "react";
-import { SummaryCard } from "../PageVitals/types";
+import { SummaryCard } from "../models/types";
 import { formatPercent } from "../../utils/formatStrings";
 
 import "./VitalsSummaryDetail.scss";

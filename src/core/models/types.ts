@@ -108,6 +108,50 @@ export type VitalsSummaryRecord = {
   timelyRiskAssessment: number;
 };
 
+export type SummaryStatus =
+  | "POOR"
+  | "NEEDS_IMPROVEMENT"
+  | "GOOD"
+  | "GREAT"
+  | "EXCELLENT";
+
+export type MetricType = keyof typeof METRIC_TYPES;
+export const METRIC_TYPES = {
+  OVERALL: "OVERALL",
+  DISCHARGE: "DISCHARGE",
+  CONTACT: "CONTACT",
+  RISK_ASSESSMENT: "RISK_ASSESSMENT",
+} as const;
+export const METRIC_TYPE_LABELS = {
+  OVERALL: "Overall",
+  DISCHARGE: "Timely discharge",
+  CONTACT: "Timely contacts",
+  RISK_ASSESSMENT: "Timely risk assessments",
+} as const;
+
+export type SummaryCard = {
+  id: MetricType;
+  title: string;
+  description: string;
+  value: number;
+  status: SummaryStatus;
+};
+
+export type VitalsSummaryTableRow = {
+  entity: {
+    entityId: string;
+    entityName: string;
+    entityType: EntityType;
+  };
+  parentEntityId?: string;
+  overall: number;
+  overall30Day: number;
+  overall90Day: number;
+  timelyDischarge: number;
+  timelyContact: number;
+  timelyRiskAssessment: number;
+};
+
 export type MethodologyContent = {
   header: string;
   body: string;

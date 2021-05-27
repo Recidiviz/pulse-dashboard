@@ -18,7 +18,7 @@
 import React from "react";
 
 import VitalsSummaryCard from "./VitalsSummaryCard";
-import { SummaryCard, MetricType } from "../PageVitals/types";
+import { SummaryCard, MetricType } from "../models/types";
 
 type PropTypes = {
   summaryCards: SummaryCard[];
