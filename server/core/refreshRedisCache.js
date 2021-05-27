@@ -62,29 +62,34 @@ function cacheEachSubsetFile(
   return cachePromises;
 }
 
-function cacheFiles({ files, cacheKeyPrefix }) {
+function cacheFiles({ files, metricType, cacheKeyPrefix }) {
   const cache = getCache(cacheKeyPrefix);
   const cachePromises = [];
   const subsetCombinations = getSubsetCombinations(getSubsetManifest());
 
-  Object.keys(files).forEach((fileKey) => {
-    const cacheKey = `${cacheKeyPrefix}-${fileKey}`;
-    const metricFile = { [fileKey]: files[fileKey] };
+  if (metricType === "newRevocation") {
+    Object.keys(files).forEach((fileKey) => {
+      const cacheKey = `${cacheKeyPrefix}-${fileKey}`;
+      const metricFile = { [fileKey]: files[fileKey] };
 
-    if (FILES_WITH_SUBSETS.includes(fileKey)) {
-      const subsetCachePromises = cacheEachSubsetFile(
-        cache,
-        cacheKey,
-        fileKey,
-        metricFile,
-        subsetCombinations
-      );
-      cachePromises.push(...subsetCachePromises);
-    } else {
-      console.log(`Setting cache for: ${cacheKey}...`);
-      cachePromises.push(cache.set(cacheKey, metricFile));
-    }
-  });
+      if (FILES_WITH_SUBSETS.includes(fileKey)) {
+        const subsetCachePromises = cacheEachSubsetFile(
+          cache,
+          cacheKey,
+          fileKey,
+          metricFile,
+          subsetCombinations
+        );
+        cachePromises.push(...subsetCachePromises);
+      } else {
+        console.log(`Setting cache for: ${cacheKey}...`);
+        cachePromises.push(cache.set(cacheKey, metricFile));
+      }
+    });
+  } else {
+    cachePromises.push(cache.set(cacheKeyPrefix, files));
+  }
+
   console.log(
     `Waiting for ${cachePromises.length} cache promises to resolve for ${cacheKeyPrefix}...`
   );

@@ -89,11 +89,9 @@ const {
 const {
   newRevocations,
   newRevocationFile,
-  communityGoals,
+  goals,
   communityExplore,
-  facilitiesGoals,
   facilitiesExplore,
-  programmingExplore,
   refreshCache,
   responder,
 } = require("../api");
@@ -108,6 +106,7 @@ const { getCacheKey } = require("../../utils/cacheKeys");
 
 describe("API GET tests", () => {
   const stateCode = "test_id";
+  const metricType = "newRevocation";
 
   beforeAll(() => {
     // Reduce noise in the test
@@ -121,7 +120,10 @@ describe("API GET tests", () => {
     clearMemoryCache();
   });
 
-  function fakeRequest(routeHandler, req = { params: { stateCode } }) {
+  function fakeRequest(
+    routeHandler,
+    req = { params: { stateCode, metricType } }
+  ) {
     return new Promise((resolve) => {
       const send = resolve;
       const status = jest.fn().mockImplementation(() => {
@@ -146,11 +148,9 @@ describe("API GET tests", () => {
   describe("API fetching and caching for GET requests", () => {
     const metricControllers = [
       [newRevocations],
-      [communityGoals],
+      [goals],
       [communityExplore],
-      [facilitiesGoals],
       [facilitiesExplore],
-      [programmingExplore],
     ];
 
     afterEach(async () => {
@@ -208,7 +208,7 @@ describe("API GET tests", () => {
       user: {
         [`${process.env.METADATA_NAMESPACE}app_metadata`]: appMetadata,
       },
-      params: { stateCode, file },
+      params: { stateCode, metricType, file },
       query: queryParams,
     };
     const expectedFilters = {
@@ -254,7 +254,7 @@ describe("API GET tests", () => {
       await fakeRequest(newRevocationFile, request);
       expect(getCacheKey).toHaveBeenCalledWith({
         stateCode,
-        metricType: "newRevocation",
+        metricType,
         metricName: file,
         cacheKeySubset: {
           violation_type: "ALL",
@@ -267,7 +267,7 @@ describe("API GET tests", () => {
       await fakeRequest(newRevocationFile, request);
       expect(fetchAndFilterNewRevocationFile).toHaveBeenCalledWith({
         stateCode,
-        metricType: "newRevocation",
+        metricType,
         metricName: file,
         filters: expectedFilters,
         isDemoMode: false,

@@ -72,16 +72,12 @@ if (!testEnv) {
   });
 }
 
-function getCache(cacheKey) {
+function getCache() {
   if (testEnv || isDemoMode) {
     return memoryCache;
   }
 
-  if (cacheKey.includes("-newRevocation")) {
-    return redisCache;
-  }
-
-  return memoryCache;
+  return redisCache;
 }
 
 function clearMemoryCache() {
@@ -89,7 +85,7 @@ function clearMemoryCache() {
 }
 
 function cacheResponse(cacheKey, fetchValue, callback) {
-  const cache = getCache(cacheKey);
+  const cache = getCache();
   return cache
     .wrap(cacheKey, fetchValue)
     .then(

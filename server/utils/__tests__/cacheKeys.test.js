@@ -77,11 +77,11 @@ describe("cacheKeys utils", () => {
         expect(
           getCacheKey({
             stateCode: "US_MO",
-            metricType: "communityGoals",
+            metricType: "goals",
             metricName: null,
             cacheKeySubset: {},
           })
-        ).toEqual("US_MO-communityGoals");
+        ).toEqual("US_MO-goals");
       });
     });
 

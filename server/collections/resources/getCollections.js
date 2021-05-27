@@ -141,7 +141,7 @@ function newRevocations(dimensions) {
 }
 
 const CORE_COLLECTIONS = {
-  [COLLECTIONS.COMMUNITY_GOALS]: {
+  [COLLECTIONS.GOALS]: {
     admissions_by_type_by_month: {
       filename: "admissions_by_type_by_month.txt",
     },
@@ -153,6 +153,13 @@ const CORE_COLLECTIONS = {
     },
     average_change_lsir_score_by_period: {
       filename: "average_change_lsir_score_by_period.txt",
+    },
+    avg_days_at_liberty_by_month: {
+      filename: "avg_days_at_liberty_by_month.txt",
+    },
+    reincarcerations_by_month: { filename: "reincarcerations_by_month.txt" },
+    reincarcerations_by_period: {
+      filename: "reincarcerations_by_period.txt",
     },
     revocations_by_month: {
       filename: "revocations_by_month.txt",
@@ -189,6 +196,23 @@ const CORE_COLLECTIONS = {
     case_terminations_by_type_by_officer_by_period: {
       filename: "case_terminations_by_type_by_officer_by_period.txt",
     },
+    ftr_referrals_by_age_by_period: {
+      filename: "ftr_referrals_by_age_by_period.txt",
+    },
+    ftr_referrals_by_gender_by_period: {
+      filename: "ftr_referrals_by_gender_by_period.txt",
+    },
+    ftr_referrals_by_lsir_by_period: {
+      filename: "ftr_referrals_by_lsir_by_period.txt",
+    },
+    ftr_referrals_by_month: { filename: "ftr_referrals_by_month.txt" },
+    ftr_referrals_by_participation_status: {
+      filename: "ftr_referrals_by_participation_status.txt",
+    },
+    ftr_referrals_by_period: { filename: "ftr_referrals_by_period.txt" },
+    ftr_referrals_by_race_and_ethnicity_by_period: {
+      filename: "ftr_referrals_by_race_and_ethnicity_by_period.txt",
+    },
     race_proportions: { filename: "race_proportions.json" },
     revocations_by_month: { filename: "revocations_by_month.txt" },
     revocations_by_officer_by_period: {
@@ -212,15 +236,6 @@ const CORE_COLLECTIONS = {
     },
     site_offices: { filename: "site_offices.json" },
   },
-  [COLLECTIONS.FACILITIES_GOALS]: {
-    avg_days_at_liberty_by_month: {
-      filename: "avg_days_at_liberty_by_month.txt",
-    },
-    reincarcerations_by_month: { filename: "reincarcerations_by_month.txt" },
-    reincarcerations_by_period: {
-      filename: "reincarcerations_by_period.txt",
-    },
-  },
   [COLLECTIONS.FACILITIES_EXPLORE]: {
     admissions_by_type_by_period: {
       filename: "admissions_by_type_by_period.txt",
@@ -241,27 +256,6 @@ const CORE_COLLECTIONS = {
     reincarcerations_by_period: {
       filename: "reincarcerations_by_period.txt",
     },
-  },
-  [COLLECTIONS.PROGRAMMING_EXPLORE]: {
-    ftr_referrals_by_age_by_period: {
-      filename: "ftr_referrals_by_age_by_period.txt",
-    },
-    ftr_referrals_by_gender_by_period: {
-      filename: "ftr_referrals_by_gender_by_period.txt",
-    },
-    ftr_referrals_by_lsir_by_period: {
-      filename: "ftr_referrals_by_lsir_by_period.txt",
-    },
-    ftr_referrals_by_month: { filename: "ftr_referrals_by_month.txt" },
-    ftr_referrals_by_participation_status: {
-      filename: "ftr_referrals_by_participation_status.txt",
-    },
-    ftr_referrals_by_period: { filename: "ftr_referrals_by_period.txt" },
-    ftr_referrals_by_race_and_ethnicity_by_period: {
-      filename: "ftr_referrals_by_race_and_ethnicity_by_period.txt",
-    },
-    race_proportions: { filename: "race_proportions.json" },
-    site_offices: { filename: "site_offices.json" },
   },
   [COLLECTIONS.VITALS]: {
     vitals_summaries: {

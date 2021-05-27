@@ -33,20 +33,9 @@ import DaysAtLibertySnapshot from "./DaysAtLibertySnapshot";
 import ReincarcerationCountOverTime from "./ReincarcerationCountOverTime";
 
 const CoreGoalsView = () => {
-  // TODO(#916): Consolidate API
-  const {
-    apiData: facilitiesApiData,
-    isLoading: facilitiesIsLoading,
-    getTokenSilently: getFacilitiesTokenSilently,
-  } = useChartData("us_nd/facilities/goals");
+  const { apiData, isLoading, getTokenSilently } = useChartData("us_nd/goals");
 
-  const {
-    apiData: communityApiData,
-    isLoading: communityIsLoading,
-    getTokenSilently: getCommunityTokenSilently,
-  } = useChartData("us_nd/community/goals");
-
-  if (facilitiesIsLoading || communityIsLoading) {
+  if (isLoading) {
     return <Loading />;
   }
 
@@ -61,11 +50,11 @@ const CoreGoalsView = () => {
             metricPeriodMonths={metrics.metricPeriodMonths}
             supervisionType={metrics.supervisionType}
             district={metrics.district}
-            officeData={communityApiData.site_offices.data}
-            revocationCountsByMonth={communityApiData.revocations_by_month.data}
+            officeData={apiData.site_offices.data}
+            revocationCountsByMonth={apiData.revocations_by_month.data}
             header="revocationCountsByMonth-header"
             stateCode="US_ND"
-            getTokenSilently={getCommunityTokenSilently}
+            getTokenSilently={getTokenSilently}
           />
         }
         geoChart={
@@ -76,13 +65,13 @@ const CoreGoalsView = () => {
             metricPeriodMonths={metrics.metricPeriodMonths}
             supervisionType={metrics.supervisionType}
             keyedByOffice
-            officeData={communityApiData.site_offices.data}
-            dataPointsByOffice={communityApiData.revocations_by_period.data}
+            officeData={apiData.site_offices.data}
+            dataPointsByOffice={apiData.revocations_by_period.data}
             numeratorKeys={["revocation_count"]}
             denominatorKeys={["total_supervision_count"]}
             centerLat={47.3}
             centerLong={-100.5}
-            getTokenSilently={getCommunityTokenSilently}
+            getTokenSilently={getTokenSilently}
           />
         }
         footer={<Methodology chartId="revocationCountsByMonthGoal" />}
@@ -104,11 +93,11 @@ const CoreGoalsView = () => {
             supervisionType={metrics.supervisionType}
             district={metrics.district}
             supervisionSuccessRates={
-              communityApiData.supervision_termination_by_type_by_month.data
+              apiData.supervision_termination_by_type_by_month.data
             }
             header="supervisionSuccessSnapshot-header"
             stateCode="US_ND"
-            getTokenSilently={getCommunityTokenSilently}
+            getTokenSilently={getTokenSilently}
           />
         }
         geoChart={
@@ -119,9 +108,9 @@ const CoreGoalsView = () => {
             metricPeriodMonths={metrics.metricPeriodMonths}
             supervisionType={metrics.supervisionType}
             keyedByOffice
-            officeData={communityApiData.site_offices.data}
+            officeData={apiData.site_offices.data}
             dataPointsByOffice={
-              communityApiData.supervision_termination_by_type_by_period.data
+              apiData.supervision_termination_by_type_by_period.data
             }
             numeratorKeys={["successful_termination"]}
             denominatorKeys={[
@@ -130,7 +119,7 @@ const CoreGoalsView = () => {
             ]}
             centerLat={47.3}
             centerLong={-100.5}
-            getTokenSilently={getCommunityTokenSilently}
+            getTokenSilently={getTokenSilently}
           />
         }
         footer={<Methodology chartId="supervisionSuccessSnapshot" />}
@@ -151,11 +140,11 @@ const CoreGoalsView = () => {
             supervisionType={metrics.supervisionType}
             district={metrics.district}
             lsirScoreChangeByMonth={
-              communityApiData.average_change_lsir_score_by_month.data
+              apiData.average_change_lsir_score_by_month.data
             }
             header="lsirScoreChangeSnapshot-header"
             stateCode="US_ND"
-            getTokenSilently={getCommunityTokenSilently}
+            getTokenSilently={getTokenSilently}
           />
         }
         geoChart={
@@ -167,15 +156,15 @@ const CoreGoalsView = () => {
             supervisionType={metrics.supervisionType}
             keyedByOffice
             possibleNegativeValues
-            officeData={communityApiData.site_offices.data}
+            officeData={apiData.site_offices.data}
             dataPointsByOffice={
-              communityApiData.average_change_lsir_score_by_period.data
+              apiData.average_change_lsir_score_by_period.data
             }
             numeratorKeys={["average_change"]}
             denominatorKeys={[]}
             centerLat={47.3}
             centerLong={-100.5}
-            getTokenSilently={getCommunityTokenSilently}
+            getTokenSilently={getTokenSilently}
           />
         }
         footer={<Methodology chartId="lsirScoreChangeSnapshot" />}
@@ -197,11 +186,11 @@ const CoreGoalsView = () => {
             supervisionType={metrics.supervisionType}
             district={metrics.district}
             revocationAdmissionsByMonth={
-              communityApiData.admissions_by_type_by_month.data
+              apiData.admissions_by_type_by_month.data
             }
             header="revocationAdmissionsSnapshot-header"
             stateCode="US_ND"
-            getTokenSilently={getCommunityTokenSilently}
+            getTokenSilently={getTokenSilently}
           />
         }
         geoChart={
@@ -213,10 +202,8 @@ const CoreGoalsView = () => {
             supervisionType={metrics.supervisionType}
             keyedByOffice
             shareDenominatorAcrossRates
-            officeData={communityApiData.site_offices.data}
-            dataPointsByOffice={
-              communityApiData.admissions_by_type_by_period.data
-            }
+            officeData={apiData.site_offices.data}
+            dataPointsByOffice={apiData.admissions_by_type_by_period.data}
             numeratorKeys={[
               "technicals",
               "non_technicals",
@@ -230,7 +217,7 @@ const CoreGoalsView = () => {
             ]}
             centerLat={47.3}
             centerLong={-100.5}
-            getTokenSilently={getCommunityTokenSilently}
+            getTokenSilently={getTokenSilently}
           />
         }
         footer={<Methodology chartId="revocationAdmissionsSnapshotGoal" />}
@@ -247,12 +234,10 @@ const CoreGoalsView = () => {
         chart={
           <DaysAtLibertySnapshot
             metricPeriodMonths={metrics.metricPeriodMonths}
-            daysAtLibertyByMonth={
-              facilitiesApiData.avg_days_at_liberty_by_month.data
-            }
+            daysAtLibertyByMonth={apiData.avg_days_at_liberty_by_month.data}
             header="daysAtLibertySnapshot-header"
             stateCode="US_ND"
-            getTokenSilently={getFacilitiesTokenSilently}
+            getTokenSilently={getTokenSilently}
           />
         }
         footer={<Methodology chartId="daysAtLibertySnapshot" />}
@@ -267,11 +252,11 @@ const CoreGoalsView = () => {
             metricPeriodMonths={metrics.metricPeriodMonths}
             district={metrics.district}
             reincarcerationCountsByMonth={
-              facilitiesApiData.reincarcerations_by_month.data
+              apiData.reincarcerations_by_month.data
             }
             header="reincarcerationCountsByMonth-header"
             stateCode="US_ND"
-            getTokenSilently={getFacilitiesTokenSilently}
+            getTokenSilently={getTokenSilently}
           />
         }
         geoChart={
@@ -281,14 +266,12 @@ const CoreGoalsView = () => {
             metricType="counts"
             metricPeriodMonths={metrics.metricPeriodMonths}
             stateCode="us_nd"
-            dataPointsByOffice={
-              facilitiesApiData.reincarcerations_by_period.data
-            }
+            dataPointsByOffice={apiData.reincarcerations_by_period.data}
             numeratorKeys={["returns"]}
             denominatorKeys={["total_admissions"]}
             centerLat={47.3}
             centerLong={-100.5}
-            getTokenSilently={getFacilitiesTokenSilently}
+            getTokenSilently={getTokenSilently}
           />
         }
         footer={<Methodology chartId="reincarcerationCountsByMonthGoal" />}
