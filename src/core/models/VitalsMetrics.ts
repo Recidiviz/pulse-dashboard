@@ -25,6 +25,8 @@ import { toTitleCase } from "../../utils/formatStrings";
 import Metric, { BaseMetricProps } from "./Metric";
 import { parseResponseByFileFormat } from "../../api/metrics";
 
+export const DEFAULT_ENTITY_ID = "STATE_DOC";
+
 export function createVitalsSummaryMetric(
   rawRecords: RawMetricData
 ): VitalsSummaryRecord[] {
@@ -61,12 +63,17 @@ export function createVitalsTimeSeriesMetric(
 type MetricRecords = VitalsSummaryRecord | VitalsTimeSeriesRecord;
 
 export default class VitalsMetrics extends Metric<MetricRecords> {
+  currentEntityId: string;
+
   constructor(props: BaseMetricProps) {
     super(props);
     makeObservable(this, {
       timeSeries: computed,
       summaries: computed,
+      currentEntityId: true,
     });
+
+    this.currentEntityId = DEFAULT_ENTITY_ID;
   }
 
   get summaries(): VitalsSummaryRecord[] {

@@ -16,7 +16,6 @@
 // =============================================================================
 
 import React, { useState } from "react";
-import { useParams } from "react-router-dom";
 import { observer } from "mobx-react-lite";
 import PageTemplate from "../PageTemplate";
 import VitalsSummaryCards from "../VitalsSummaryCards";
@@ -30,7 +29,6 @@ import Loading from "../../components/Loading";
 import { MetricType, METRIC_TYPES } from "./types";
 import { CORE_PATHS } from "../views";
 import { useCoreStore } from "../CoreStoreProvider";
-import { convertSlugToId } from "../../utils/navigation";
 import { formatISODateString } from "../../utils/formatStrings";
 import {
   getSummaryCards,
@@ -46,11 +44,11 @@ import DownloadDataButton from "../DownloadDataButton";
 import DetailsGroup from "../DetailsGroup";
 import { ENTITY_TYPES } from "../models/types";
 import content from "../content";
+import withRouteSync from "../../withRouteSync";
 
 import "../DetailsGroup.scss";
 import "./PageVitals.scss";
 
-const DEFAULT_ENTITY_ID = "STATE_DOC";
 const goals = {
   [METRIC_TYPES.OVERALL]: 80,
   [METRIC_TYPES.DISCHARGE]: 90,
@@ -59,14 +57,14 @@ const goals = {
 };
 
 const PageVitals: React.FC = () => {
-  const routeParams = useParams() as { entityId: string | undefined };
-  const currentEntityId = routeParams.entityId
-    ? convertSlugToId(routeParams.entityId)
-    : DEFAULT_ENTITY_ID;
   const { metricsStore, tenantStore } = useCoreStore();
-
-  const { summaries, timeSeries, isLoading, isError } = metricsStore.vitals;
-
+  const {
+    summaries,
+    timeSeries,
+    isLoading,
+    isError,
+    currentEntityId,
+  } = metricsStore.vitals;
   const { stateName, stateCode, currentTenantId } = tenantStore;
   const [selectedCardId, setSelectedCardId] = useState<MetricType>(
     METRIC_TYPES.OVERALL
@@ -181,4 +179,4 @@ const PageVitals: React.FC = () => {
   );
 };
 
-export default observer(PageVitals);
+export default withRouteSync(observer(PageVitals));
