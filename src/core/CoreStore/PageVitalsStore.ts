@@ -31,9 +31,8 @@ import {
   METRIC_TYPES,
   SummaryStatus,
   MetricType,
+  DEFAULT_ENTITY_ID,
 } from "../PageVitals/types";
-
-export const DEFAULT_ENTITY_ID = "STATE_DOC";
 
 export function getSummaryStatus(value: number): SummaryStatus {
   if (value < 70) return "POOR";
@@ -163,10 +162,12 @@ export default class VitalsPageStore {
       });
   }
 
-  get parentEntityName(): string | undefined {
-    return this.summaries.find(
-      (d) => d.entityId === this.currentEntitySummary?.parentEntityId
-    )?.entityName;
+  get parentEntityName(): string {
+    return (
+      this.summaries.find(
+        (d) => d.entityId === this.currentEntitySummary?.parentEntityId
+      )?.entityName || "Unknown"
+    );
   }
 
   get vitalsFiltersText(): string {

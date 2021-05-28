@@ -21,7 +21,7 @@ import { observer } from "mobx-react-lite";
 import React, { ComponentType, useEffect } from "react";
 import { useCoreStore } from "./core/CoreStoreProvider";
 import { convertSlugToId } from "./utils/navigation";
-import { DEFAULT_ENTITY_ID } from "./core/CoreStore/VitalsPageStore";
+import { DEFAULT_ENTITY_ID } from "./core/PageVitals/types";
 
 type RouteParams = {
   entityId?: string;

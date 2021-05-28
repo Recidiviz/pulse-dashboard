@@ -16,6 +16,10 @@
 // =============================================================================
 import { EntityType } from "../models/types";
 
+export const DEFAULT_ENTITY_ID = "STATE_DOC";
+export const DEFAULT_ENTITY_TYPE = "state";
+export const DEFAULT_ENTITY_NAME = "STATE DOC";
+
 export type MetricType = keyof typeof METRIC_TYPES;
 export const METRIC_TYPES = {
   OVERALL: "OVERALL",

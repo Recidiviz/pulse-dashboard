@@ -87,11 +87,7 @@ const PageVitals: React.FC = () => {
   return (
     <PageTemplate>
       <div className="PageVitals__header">
-        <VitalsSummaryBreadcrumbs
-          stateName={stateName}
-          entity={currentEntitySummary}
-          parentEntityName={parentEntityName}
-        />
+        <VitalsSummaryBreadcrumbs />
         <DetailsGroup>
           <div className="DetailsGroup__item">
             Last updated on {lastUpdatedOn}

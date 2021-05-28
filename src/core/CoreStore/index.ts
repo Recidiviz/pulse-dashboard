@@ -22,7 +22,7 @@ import type TenantStore from "../../RootStore/TenantStore";
 import { PopulationFilterValues } from "../types/filters";
 import { TenantId } from "../models/types";
 import MetricsStore from "./MetricsStore";
-import VitalsPageStore from "./VitalsPageStore";
+import VitalsPageStore from "./PageVitalsStore";
 
 interface CoreStoreProps {
   userStore: UserStore;

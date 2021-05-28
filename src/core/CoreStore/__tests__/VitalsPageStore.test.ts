@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-import VitalsPageStore, { getSummaryStatus } from "../VitalsPageStore";
+import VitalsPageStore, { getSummaryStatus } from "../PageVitalsStore";
 import RootStore from "../../../RootStore";
 import CoreStore from "..";
 import { ENTITY_TYPES } from "../../models/types";
