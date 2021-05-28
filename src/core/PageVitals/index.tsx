@@ -31,7 +31,7 @@ import { useCoreStore } from "../CoreStoreProvider";
 import DownloadDataButton from "../DownloadDataButton";
 import DetailsGroup from "../DetailsGroup";
 import { ENTITY_TYPES } from "../models/types";
-import { MetricType, METRIC_TYPES } from "./types";
+import { METRIC_TYPES } from "./types";
 import content from "../content";
 import withRouteSync from "../../withRouteSync";
 
@@ -51,7 +51,6 @@ const PageVitals: React.FC = () => {
   const {
     currentEntitySummary,
     childEntitySummaryRows,
-    parentEntityName,
     summaryCards,
     vitalsFiltersText,
     selectedMetricId,
@@ -80,10 +79,6 @@ const PageVitals: React.FC = () => {
     );
   }
 
-  const handleSelectCard: (id: MetricType) => () => void = (id) => () => {
-    vitalsPageStore.setSelectedMetricId(id);
-  };
-
   return (
     <PageTemplate>
       <div className="PageVitals__header">
@@ -103,11 +98,7 @@ const PageVitals: React.FC = () => {
         </DetailsGroup>
       </div>
       <div className="PageVitals__SummaryCards">
-        <VitalsSummaryCards
-          onClick={handleSelectCard}
-          selected={selectedMetricId}
-          summaryCards={summaryCards}
-        />
+        <VitalsSummaryCards />
       </div>
       <div className="PageVitals__SummarySection">
         <div className="PageVitals__SummaryDetail">
