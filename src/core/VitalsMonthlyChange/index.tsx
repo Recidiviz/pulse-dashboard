@@ -17,15 +17,9 @@
 
 import React from "react";
 import PercentDelta from "../controls/PercentDelta";
+import { useCoreStore } from "../CoreStoreProvider";
 
 import "./VitalsMonthlyChange.scss";
-
-type PropTypes = {
-  monthlyChange: {
-    thirtyDayChange: number;
-    ninetyDayChange: number;
-  };
-};
 
 type MonthlyChangeProps = {
   numDays: number;
@@ -49,7 +43,11 @@ const MonthlyChange: React.FC<MonthlyChangeProps> = ({ numDays, value }) => {
   );
 };
 
-const VitalsMonthlyChange: React.FC<PropTypes> = ({ monthlyChange }) => {
+const VitalsMonthlyChange: React.FC = () => {
+  const { vitalsPageStore } = useCoreStore();
+  const { monthlyChange } = vitalsPageStore;
+  if (!monthlyChange) return <div className="VitalsMonthlyChange" />;
+
   const { thirtyDayChange, ninetyDayChange } = monthlyChange;
   return (
     <div className="VitalsMonthlyChange">

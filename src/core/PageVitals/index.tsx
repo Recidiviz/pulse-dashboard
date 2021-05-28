@@ -105,9 +105,7 @@ const PageVitals: React.FC = () => {
         <div className="PageVitals__SummaryChart">
           {selectedMetricTimeSeries && (
             <>
-              {monthlyChange && (
-                <VitalsMonthlyChange monthlyChange={monthlyChange} />
-              )}
+              <VitalsMonthlyChange />
               <VitalsSummaryChart
                 stateCode={stateCode}
                 goal={goals[selectedMetricId]}
