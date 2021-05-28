@@ -21,7 +21,7 @@ import { observer } from "mobx-react-lite";
 import React, { ComponentType, useEffect } from "react";
 import { useCoreStore } from "./core/CoreStoreProvider";
 import { convertSlugToId } from "./utils/navigation";
-import { DEFAULT_ENTITY_ID } from "./core/models/VitalsMetrics";
+import { DEFAULT_ENTITY_ID } from "./core/CoreStore/VitalsPageStore";
 
 type RouteParams = {
   entityId?: string;
@@ -48,12 +48,12 @@ const withRouteSync = <Props extends RouteParams>(
 ): ComponentType<Props> => {
   const WrappedRouteComponent: React.FC<Props> = (props) => {
     const { entityId } = normalizeRouteParams(useParams());
-    const { metricsStore } = useCoreStore();
+    const { vitalsPageStore } = useCoreStore();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(
       action("sync route params", () => {
-        metricsStore.vitals.currentEntityId = entityId;
+        vitalsPageStore.currentEntityId = entityId;
       })
     );
 

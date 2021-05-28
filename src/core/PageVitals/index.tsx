@@ -15,7 +15,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React, { useState } from "react";
+import React from "react";
 import { observer } from "mobx-react-lite";
 import PageTemplate from "../PageTemplate";
 import VitalsSummaryCards from "../VitalsSummaryCards";
@@ -53,22 +53,18 @@ const goals = {
 };
 
 const PageVitals: React.FC = () => {
-  const { metricsStore, tenantStore } = useCoreStore();
+  const { metricsStore, tenantStore, vitalsPageStore } = useCoreStore();
+  const { timeSeries, isLoading, isError } = metricsStore.vitals;
   const {
-    timeSeries,
-    isLoading,
-    isError,
     currentEntityId,
     currentEntitySummary,
     childEntitySummaryRows,
     parentEntityName,
     summaryCards,
     vitalsFiltersText,
-  } = metricsStore.vitals;
+    selectedMetricId,
+  } = vitalsPageStore;
   const { stateName, stateCode, currentTenantId } = tenantStore;
-  const [selectedCardId, setSelectedCardId] = useState<MetricType>(
-    METRIC_TYPES.OVERALL
-  );
 
   // @ts-ignore TODO TS
   const { vitals: vitalsMethodology } = content[currentTenantId];
@@ -87,13 +83,13 @@ const PageVitals: React.FC = () => {
   }
 
   const handleSelectCard: (id: MetricType) => () => void = (id) => () => {
-    setSelectedCardId(id);
+    vitalsPageStore.setSelectedMetricId(id);
   };
 
   const selectedTimeSeries = getTimeSeries(
     timeSeries,
     currentEntityId,
-    selectedCardId
+    selectedMetricId
   );
 
   const lastUpdatedOn = selectedTimeSeries
@@ -132,14 +128,14 @@ const PageVitals: React.FC = () => {
       <div className="PageVitals__SummaryCards">
         <VitalsSummaryCards
           onClick={handleSelectCard}
-          selected={selectedCardId}
+          selected={selectedMetricId}
           summaryCards={summaryCards}
         />
       </div>
       <div className="PageVitals__SummarySection">
         <div className="PageVitals__SummaryDetail">
           <VitalsSummaryDetail
-            summaryDetail={getSummaryDetail(summaryCards, selectedCardId)}
+            summaryDetail={getSummaryDetail(summaryCards, selectedMetricId)}
           />
         </div>
         <div className="PageVitals__SummaryChart">
@@ -150,7 +146,7 @@ const PageVitals: React.FC = () => {
               />
               <VitalsSummaryChart
                 stateCode={stateCode}
-                goal={goals[selectedCardId]}
+                goal={goals[selectedMetricId]}
                 timeSeries={selectedTimeSeries.slice(-180)}
               />
             </>
@@ -160,7 +156,7 @@ const PageVitals: React.FC = () => {
       <div className="PageVitals__Table">
         {currentEntitySummary.entityType !== ENTITY_TYPES.PO && (
           <VitalsSummaryTable
-            selectedSortBy={selectedCardId}
+            selectedSortBy={selectedMetricId}
             summaries={childEntitySummaryRows}
           />
         )}
