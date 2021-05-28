@@ -16,15 +16,14 @@
 // =============================================================================
 
 import React from "react";
-import { SummaryCard } from "../PageVitals/types";
 import { formatPercent } from "../../utils/formatStrings";
+import { useCoreStore } from "../CoreStoreProvider";
 
 import "./VitalsSummaryDetail.scss";
 
-type PropTypes = {
-  summaryDetail: SummaryCard;
-};
-const VitalsSummaryDetail: React.FC<PropTypes> = ({ summaryDetail }) => {
+const VitalsSummaryDetail: React.FC = () => {
+  const { vitalsPageStore } = useCoreStore();
+  const { summaryDetail } = vitalsPageStore;
   return (
     <div className="VitalsSummaryDetail">
       <div className="VitalsSummaryDetail__title">{summaryDetail.title}</div>
