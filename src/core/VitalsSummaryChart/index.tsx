@@ -16,10 +16,12 @@
 // =============================================================================
 
 import React, { useState } from "react";
+import { observer } from "mobx-react-lite";
 import { curveCatmullRom } from "d3-shape";
-import { VitalsTimeSeriesRecord } from "../models/types";
 import { formatPercent, formatISODateString } from "../../utils/formatStrings";
 import VitalsSummaryTooltip from "./VitalsSummaryTooltip";
+import { useCoreStore } from "../CoreStoreProvider";
+import { METRIC_TYPES } from "../PageVitals/types";
 
 import * as styles from "../CoreConstants.scss";
 
@@ -27,18 +29,23 @@ import "./VitalsSummaryChart.scss";
 // eslint-disable-next-line @typescript-eslint/no-var-requires,global-require
 const ResponsiveOrdinalFrame = require("semiotic/lib/ResponsiveOrdinalFrame") as any;
 
-interface PropTypes {
-  timeSeries: VitalsTimeSeriesRecord[];
-  goal: number;
-  stateCode: string;
-}
+const goals = {
+  [METRIC_TYPES.OVERALL]: 80,
+  [METRIC_TYPES.DISCHARGE]: 90,
+  [METRIC_TYPES.CONTACT]: 80,
+  [METRIC_TYPES.RISK_ASSESSMENT]: 85,
+};
 
-const VitalsSummaryChart: React.FC<PropTypes> = ({
-  timeSeries,
-  goal,
-  stateCode,
-}) => {
+const VitalsSummaryChart: React.FC = () => {
+  const { vitalsPageStore, tenantStore } = useCoreStore();
+  const { stateCode } = tenantStore;
+  const { selectedMetricTimeSeries, selectedMetricId } = vitalsPageStore;
   const [hoveredId, setHoveredId] = useState(null);
+
+  if (!selectedMetricTimeSeries) return <div className="VitalsSummaryChart" />;
+
+  const timeSeries = selectedMetricTimeSeries.slice(-180);
+  const goal = goals[selectedMetricId];
   const lineCoordinates = timeSeries.map((record, index) => ({
     index,
     value: record.monthlyAvg,
@@ -200,4 +207,4 @@ const VitalsSummaryChart: React.FC<PropTypes> = ({
   );
 };
 
-export default VitalsSummaryChart;
+export default observer(VitalsSummaryChart);

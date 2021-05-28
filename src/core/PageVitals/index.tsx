@@ -31,19 +31,11 @@ import { useCoreStore } from "../CoreStoreProvider";
 import DownloadDataButton from "../DownloadDataButton";
 import DetailsGroup from "../DetailsGroup";
 import { ENTITY_TYPES } from "../models/types";
-import { METRIC_TYPES } from "./types";
 import content from "../content";
 import withRouteSync from "../../withRouteSync";
 
 import "../DetailsGroup.scss";
 import "./PageVitals.scss";
-
-const goals = {
-  [METRIC_TYPES.OVERALL]: 80,
-  [METRIC_TYPES.DISCHARGE]: 90,
-  [METRIC_TYPES.CONTACT]: 80,
-  [METRIC_TYPES.RISK_ASSESSMENT]: 85,
-};
 
 const PageVitals: React.FC = () => {
   const { metricsStore, tenantStore, vitalsPageStore } = useCoreStore();
@@ -57,9 +49,8 @@ const PageVitals: React.FC = () => {
     lastUpdatedOn,
     timeSeriesDownloadableData,
     vitalsSummaryDownloadableData,
-    monthlyChange,
   } = vitalsPageStore;
-  const { stateName, stateCode, currentTenantId } = tenantStore;
+  const { stateName, currentTenantId } = tenantStore;
 
   // @ts-ignore TODO TS
   const { vitals: vitalsMethodology } = content[currentTenantId];
@@ -106,11 +97,7 @@ const PageVitals: React.FC = () => {
           {selectedMetricTimeSeries && (
             <>
               <VitalsMonthlyChange />
-              <VitalsSummaryChart
-                stateCode={stateCode}
-                goal={goals[selectedMetricId]}
-                timeSeries={selectedMetricTimeSeries.slice(-180)}
-              />
+              <VitalsSummaryChart />
             </>
           )}
         </div>
