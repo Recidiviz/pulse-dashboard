@@ -42,9 +42,7 @@ const PageVitals: React.FC = () => {
   const { isLoading, isError } = metricsStore.vitals;
   const {
     currentEntitySummary,
-    childEntitySummaryRows,
     vitalsFiltersText,
-    selectedMetricId,
     selectedMetricTimeSeries,
     lastUpdatedOn,
     timeSeriesDownloadableData,
@@ -104,10 +102,7 @@ const PageVitals: React.FC = () => {
       </div>
       <div className="PageVitals__Table">
         {currentEntitySummary.entityType !== ENTITY_TYPES.PO && (
-          <VitalsSummaryTable
-            selectedSortBy={selectedMetricId}
-            summaries={childEntitySummaryRows}
-          />
+          <VitalsSummaryTable />
         )}
       </div>
     </PageTemplate>
