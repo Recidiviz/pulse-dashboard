@@ -32,7 +32,9 @@ import {
   SummaryStatus,
   MetricType,
   DEFAULT_ENTITY_ID,
+  VitalsMetric,
 } from "../PageVitals/types";
+import TENANTS from "../../tenants";
 
 export function getSummaryStatus(value: number): SummaryStatus {
   if (value < 70) return "POOR";
@@ -69,13 +71,13 @@ export default class VitalsPageStore {
       summaries: observable.ref,
       timeSeries: observable.ref,
       selectedMetricId: observable,
+      metrics: computed,
     });
     this.rootStore = rootStore;
     this.currentEntityId = DEFAULT_ENTITY_ID;
     this.selectedMetricId = METRIC_TYPES.OVERALL;
     this.summaries = [];
     this.timeSeries = [];
-
     when(
       () => !this.rootStore.metricsStore.vitals.isLoading,
       () => {
@@ -98,48 +100,30 @@ export default class VitalsPageStore {
     this.selectedMetricId = metricId;
   }
 
+  get metrics(): VitalsMetric[] {
+    const tenantId = this.rootStore.tenantStore.currentTenantId;
+    if (!tenantId) return [] as VitalsMetric[];
+    return TENANTS[tenantId].vitalsMetrics || ([] as VitalsMetric[]);
+  }
+
   get currentEntitySummary(): VitalsSummaryRecord | undefined {
     return this.summaries.find((d) => d.entityId === this.currentEntityId);
   }
 
   get summaryCards(): SummaryCard[] {
-    if (this.currentEntitySummary === undefined) return [];
+    if (this.currentEntitySummary === undefined) return [] as SummaryCard[];
 
     const summary = this.currentEntitySummary;
-    return [
-      {
-        title: METRIC_TYPE_LABELS.OVERALL,
-        description: "Average timeliness across all metrics",
-        value: summary.overall,
-        status: getSummaryStatus(summary.overall),
-        id: METRIC_TYPES.OVERALL,
-      },
-      {
-        title: METRIC_TYPE_LABELS.DISCHARGE,
-        description: `of clients were discharged at their earliest projected regular
-         supervision discharge date`,
-        value: summary.timelyDischarge,
-        status: getSummaryStatus(summary.timelyDischarge),
-        id: METRIC_TYPES.DISCHARGE,
-      },
-      {
-        title: METRIC_TYPE_LABELS.CONTACT,
-        description: `of clients received initial contact within 30 days of starting
-         supervision and a F2F contact every subsequent 90, 60, or 30 days for 
-         minimum, medium, and maximum supervision levels respectively`,
-        value: summary.timelyContact,
-        status: getSummaryStatus(summary.timelyContact),
-        id: METRIC_TYPES.CONTACT,
-      },
-      {
-        title: METRIC_TYPE_LABELS.RISK_ASSESSMENT,
-        description: `of clients have had an initial assessment within 30 days and 
-          reassessment within 212 days`,
-        value: summary.timelyRiskAssessment,
-        status: getSummaryStatus(summary.timelyRiskAssessment),
-        id: METRIC_TYPES.RISK_ASSESSMENT,
-      },
-    ];
+    return this.metrics.map((m) => {
+      const card = {
+        title: m.name,
+        description: m.description,
+        value: summary[m.accessor],
+        status: getSummaryStatus(summary[m.accessor]),
+        id: m.id,
+      };
+      return card;
+    });
   }
 
   get childEntitySummaryRows(): VitalsSummaryTableRow[] {
