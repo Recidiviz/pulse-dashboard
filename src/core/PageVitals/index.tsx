@@ -28,17 +28,10 @@ import MethodologyLink from "../MethodologyLink";
 import Loading from "../../components/Loading";
 import { CORE_PATHS } from "../views";
 import { useCoreStore } from "../CoreStoreProvider";
-import { formatISODateString } from "../../utils/formatStrings";
-import {
-  getSummaryDetail,
-  getTimeSeries,
-  getMonthlyChange,
-  getTimeSeriesDownloadableData,
-  getVitalsSummaryDownloadableData,
-} from "./helpers";
 import DownloadDataButton from "../DownloadDataButton";
 import DetailsGroup from "../DetailsGroup";
-import { ENTITY_TYPES, MetricType, METRIC_TYPES } from "../models/types";
+import { ENTITY_TYPES } from "../models/types";
+import { MetricType, METRIC_TYPES } from "./types";
 import content from "../content";
 import withRouteSync from "../../withRouteSync";
 
@@ -54,15 +47,20 @@ const goals = {
 
 const PageVitals: React.FC = () => {
   const { metricsStore, tenantStore, vitalsPageStore } = useCoreStore();
-  const { timeSeries, isLoading, isError } = metricsStore.vitals;
+  const { isLoading, isError } = metricsStore.vitals;
   const {
-    currentEntityId,
     currentEntitySummary,
     childEntitySummaryRows,
     parentEntityName,
     summaryCards,
     vitalsFiltersText,
     selectedMetricId,
+    selectedMetricTimeSeries,
+    lastUpdatedOn,
+    timeSeriesDownloadableData,
+    vitalsSummaryDownloadableData,
+    monthlyChange,
+    summaryDetail,
   } = vitalsPageStore;
   const { stateName, stateCode, currentTenantId } = tenantStore;
 
@@ -86,18 +84,6 @@ const PageVitals: React.FC = () => {
     vitalsPageStore.setSelectedMetricId(id);
   };
 
-  const selectedTimeSeries = getTimeSeries(
-    timeSeries,
-    currentEntityId,
-    selectedMetricId
-  );
-
-  const lastUpdatedOn = selectedTimeSeries
-    ? formatISODateString(
-        selectedTimeSeries[selectedTimeSeries.length - 1].date
-      )
-    : "Unknown";
-
   return (
     <PageTemplate>
       <div className="PageVitals__header">
@@ -111,12 +97,7 @@ const PageVitals: React.FC = () => {
             Last updated on {lastUpdatedOn}
           </div>
           <DownloadDataButton
-            data={[
-              getTimeSeriesDownloadableData(
-                getTimeSeries(timeSeries, currentEntityId)
-              ),
-              getVitalsSummaryDownloadableData(childEntitySummaryRows),
-            ]}
+            data={[timeSeriesDownloadableData, vitalsSummaryDownloadableData]}
             title={`${stateName} At A Glance`}
             methodology={vitalsMethodology.content}
             filters={vitalsFiltersText}
@@ -134,20 +115,18 @@ const PageVitals: React.FC = () => {
       </div>
       <div className="PageVitals__SummarySection">
         <div className="PageVitals__SummaryDetail">
-          <VitalsSummaryDetail
-            summaryDetail={getSummaryDetail(summaryCards, selectedMetricId)}
-          />
+          <VitalsSummaryDetail summaryDetail={summaryDetail} />
         </div>
         <div className="PageVitals__SummaryChart">
-          {selectedTimeSeries && (
+          {selectedMetricTimeSeries && (
             <>
-              <VitalsMonthlyChange
-                monthlyChange={getMonthlyChange(selectedTimeSeries)}
-              />
+              {monthlyChange && (
+                <VitalsMonthlyChange monthlyChange={monthlyChange} />
+              )}
               <VitalsSummaryChart
                 stateCode={stateCode}
                 goal={goals[selectedMetricId]}
-                timeSeries={selectedTimeSeries.slice(-180)}
+                timeSeries={selectedMetricTimeSeries.slice(-180)}
               />
             </>
           )}

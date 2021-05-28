@@ -79,13 +79,6 @@ export type PopulationProjectionTimeSeriesRecord = {
   totalPopulationMin: number;
 };
 
-export type EntityType = keyof typeof ENTITY_TYPES;
-export const ENTITY_TYPES = {
-  STATE: "STATE",
-  LEVEL_1_SUPERVISION_LOCATION: "LEVEL_1_SUPERVISION_LOCATION",
-  PO: "PO",
-} as const;
-
 export type VitalsTimeSeriesRecord = {
   date: string;
   entityId: string;
@@ -108,49 +101,12 @@ export type VitalsSummaryRecord = {
   timelyRiskAssessment: number;
 };
 
-export type SummaryStatus =
-  | "POOR"
-  | "NEEDS_IMPROVEMENT"
-  | "GOOD"
-  | "GREAT"
-  | "EXCELLENT";
-
-export type MetricType = keyof typeof METRIC_TYPES;
-export const METRIC_TYPES = {
-  OVERALL: "OVERALL",
-  DISCHARGE: "DISCHARGE",
-  CONTACT: "CONTACT",
-  RISK_ASSESSMENT: "RISK_ASSESSMENT",
+export type EntityType = keyof typeof ENTITY_TYPES;
+export const ENTITY_TYPES = {
+  STATE: "STATE",
+  LEVEL_1_SUPERVISION_LOCATION: "LEVEL_1_SUPERVISION_LOCATION",
+  PO: "PO",
 } as const;
-export const METRIC_TYPE_LABELS = {
-  OVERALL: "Overall",
-  DISCHARGE: "Timely discharge",
-  CONTACT: "Timely contacts",
-  RISK_ASSESSMENT: "Timely risk assessments",
-} as const;
-
-export type SummaryCard = {
-  id: MetricType;
-  title: string;
-  description: string;
-  value: number;
-  status: SummaryStatus;
-};
-
-export type VitalsSummaryTableRow = {
-  entity: {
-    entityId: string;
-    entityName: string;
-    entityType: EntityType;
-  };
-  parentEntityId?: string;
-  overall: number;
-  overall30Day: number;
-  overall90Day: number;
-  timelyDischarge: number;
-  timelyContact: number;
-  timelyRiskAssessment: number;
-};
 
 export type MethodologyContent = {
   header: string;

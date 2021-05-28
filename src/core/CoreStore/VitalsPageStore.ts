@@ -16,18 +16,22 @@
 // =============================================================================
 import { action, when, computed, makeObservable, observable } from "mobx";
 import type CoreStore from ".";
-
+import { formatISODateString, formatPercent } from "../../utils/formatStrings";
 import {
   VitalsSummaryRecord,
   VitalsTimeSeriesRecord,
+  ENTITY_TYPES,
+} from "../models/types";
+import {
+  DownloadableData,
+  DownloadableDataset,
   VitalsSummaryTableRow,
   METRIC_TYPE_LABELS,
   SummaryCard,
   METRIC_TYPES,
   SummaryStatus,
-  ENTITY_TYPES,
   MetricType,
-} from "../models/types";
+} from "../PageVitals/types";
 
 export const DEFAULT_ENTITY_ID = "STATE_DOC";
 
@@ -39,7 +43,7 @@ export function getSummaryStatus(value: number): SummaryStatus {
   return "EXCELLENT";
 }
 
-export default class VitalsStore {
+export default class VitalsPageStore {
   protected readonly rootStore;
 
   currentEntityId: string;
@@ -60,6 +64,8 @@ export default class VitalsStore {
       parentEntityName: computed,
       summaryCards: computed,
       vitalsFiltersText: computed,
+      vitalsSummaryDownloadableData: computed,
+      timeSeriesDownloadableData: computed,
       currentEntityId: observable,
       summaries: observable.ref,
       timeSeries: observable.ref,
@@ -186,5 +192,121 @@ export default class VitalsStore {
         officers = "All";
     }
     return `Office(s): ${offices}, Officers: ${officers}`;
+  }
+
+  get selectedMetricTimeSeries(): VitalsTimeSeriesRecord[] | undefined {
+    const selectedTimeSeries = this.currentEntityTimeSeries
+      .filter((d) => d.metric === this.selectedMetricId)
+      .sort((a, b) => (a.date > b.date ? 1 : -1));
+    return selectedTimeSeries.length > 0 ? selectedTimeSeries : undefined;
+  }
+
+  get currentEntityTimeSeries(): VitalsTimeSeriesRecord[] {
+    const selectedTimeSeries = this.timeSeries
+      .filter((d) => d.entityId === this.currentEntityId)
+      .sort((a, b) => (a.date > b.date ? 1 : -1));
+    return selectedTimeSeries;
+  }
+
+  get lastUpdatedOn(): string {
+    return this.selectedMetricTimeSeries
+      ? formatISODateString(
+          this.selectedMetricTimeSeries[
+            this.selectedMetricTimeSeries.length - 1
+          ].date
+        )
+      : "Unknown";
+  }
+
+  get timeSeriesDownloadableData(): DownloadableData | undefined {
+    if (!this.currentEntityTimeSeries) return undefined;
+
+    let labels = [] as string[];
+    let ids = [] as string[];
+    const datasets = [] as DownloadableDataset[];
+    Object.values(METRIC_TYPES).forEach((metricType: MetricType) => {
+      const metricData = this.currentEntityTimeSeries
+        .filter((d: VitalsTimeSeriesRecord) => d.metric === metricType)
+        .sort((a, b) => (a.date < b.date ? 1 : -1));
+      labels = metricData.map((d) => d.date);
+      ids = metricData.map((d) => d.entityId);
+      const downloadableData = metricData.map((d: VitalsTimeSeriesRecord) => {
+        return {
+          Total: formatPercent(d.value),
+          "30D average": formatPercent(d.monthlyAvg),
+        };
+      });
+      datasets.push({
+        data: downloadableData,
+        label: METRIC_TYPE_LABELS[metricType],
+      });
+    });
+
+    // add IDs to the beginning of the dataset
+    datasets.unshift({ data: ids, label: "Id" });
+
+    return {
+      chartDatasets: datasets,
+      chartLabels: labels,
+      chartId: "MetricsOverTime",
+      dataExportLabel: "Date",
+    };
+  }
+
+  get vitalsSummaryDownloadableData(): DownloadableData | undefined {
+    if (this.childEntitySummaryRows.length === 0) return undefined;
+
+    const dataExportLabel =
+      this.childEntitySummaryRows[0].entity.entityType.toLowerCase() ===
+      ENTITY_TYPES.PO.toLowerCase()
+        ? "Officer"
+        : "Office";
+
+    const ids = this.childEntitySummaryRows.map((d) => d.entity.entityName);
+    const datasets = [] as DownloadableDataset[];
+    const downloadableData = this.childEntitySummaryRows.map(
+      (d: VitalsSummaryTableRow) => {
+        return {
+          "Overall score": formatPercent(d.overall),
+          "30D change": formatPercent(d.overall30Day),
+          "90D change": formatPercent(d.overall90Day),
+          [METRIC_TYPE_LABELS.DISCHARGE]: formatPercent(d.timelyDischarge),
+          [METRIC_TYPE_LABELS.CONTACT]: formatPercent(d.timelyContact),
+          [METRIC_TYPE_LABELS.RISK_ASSESSMENT]: formatPercent(
+            d.timelyRiskAssessment
+          ),
+        };
+      }
+    );
+
+    datasets.push({ data: downloadableData, label: "" });
+
+    return {
+      chartDatasets: datasets,
+      chartLabels: ids,
+      chartId: `MetricsBy${dataExportLabel}`,
+      dataExportLabel,
+    };
+  }
+
+  get monthlyChange():
+    | { thirtyDayChange: number; ninetyDayChange: number }
+    | undefined {
+    const timeSeries = this.selectedMetricTimeSeries;
+    if (timeSeries === undefined) return undefined;
+
+    const ninetyDaysAgo = timeSeries[timeSeries.length - 89];
+    const thirtyDaysAgo = timeSeries[timeSeries.length - 29];
+    const latestDay = timeSeries[timeSeries.length - 1];
+    const thirtyDayChange = latestDay.monthlyAvg - thirtyDaysAgo.monthlyAvg;
+    const ninetyDayChange = latestDay.monthlyAvg - ninetyDaysAgo.monthlyAvg;
+    return { thirtyDayChange, ninetyDayChange };
+  }
+
+  get summaryDetail(): SummaryCard {
+    return (
+      this.summaryCards.find((card) => card.id === this.selectedMetricId) ||
+      this.summaryCards[0]
+    );
   }
 }
