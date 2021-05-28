@@ -16,6 +16,7 @@
 // =============================================================================
 
 import React from "react";
+import { observer } from "mobx-react-lite";
 
 import VitalsSummaryCard from "./VitalsSummaryCard";
 import { MetricType } from "../PageVitals/types";
@@ -45,4 +46,4 @@ const VitalsSummaryCards: React.FC = () => {
   );
 };
 
-export default VitalsSummaryCards;
+export default observer(VitalsSummaryCards);

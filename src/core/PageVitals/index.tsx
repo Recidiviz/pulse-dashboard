@@ -43,7 +43,6 @@ const PageVitals: React.FC = () => {
   const {
     currentEntitySummary,
     vitalsFiltersText,
-    selectedMetricTimeSeries,
     lastUpdatedOn,
     timeSeriesDownloadableData,
     vitalsSummaryDownloadableData,
@@ -92,12 +91,8 @@ const PageVitals: React.FC = () => {
           <VitalsSummaryDetail />
         </div>
         <div className="PageVitals__SummaryChart">
-          {selectedMetricTimeSeries && (
-            <>
-              <VitalsMonthlyChange />
-              <VitalsSummaryChart />
-            </>
-          )}
+          <VitalsMonthlyChange />
+          <VitalsSummaryChart />
         </div>
       </div>
       <div className="PageVitals__Table">

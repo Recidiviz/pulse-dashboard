@@ -16,6 +16,7 @@
 // =============================================================================
 
 import React from "react";
+import { observer } from "mobx-react-lite";
 import PercentDelta from "../controls/PercentDelta";
 import { useCoreStore } from "../CoreStoreProvider";
 
@@ -56,4 +57,4 @@ const VitalsMonthlyChange: React.FC = () => {
     </div>
   );
 };
-export default VitalsMonthlyChange;
+export default observer(VitalsMonthlyChange);

@@ -16,6 +16,7 @@
 // =============================================================================
 
 import React from "react";
+import { observer } from "mobx-react-lite";
 import { formatPercent } from "../../utils/formatStrings";
 import { useCoreStore } from "../CoreStoreProvider";
 
@@ -39,4 +40,4 @@ const VitalsSummaryDetail: React.FC = () => {
     </div>
   );
 };
-export default VitalsSummaryDetail;
+export default observer(VitalsSummaryDetail);
