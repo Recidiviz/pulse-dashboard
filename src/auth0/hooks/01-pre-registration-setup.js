@@ -84,7 +84,7 @@ module.exports = function (user, context, cb) {
     }
 
     /** 3. Add the user's restrictions to the app_metadata */
-    // PA and ND do not currently have any sign up or user restrictions
+    // Other states do not currently have any sign up or user restrictions
     const stateCodesWithRestrictions = ["us_id", "us_mo"];
 
     if (stateCodesWithRestrictions.includes(stateCode.toLowerCase())) {
