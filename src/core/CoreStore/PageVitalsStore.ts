@@ -42,7 +42,7 @@ export function getSummaryStatus(value: number): SummaryStatus {
   return "EXCELLENT";
 }
 
-export default class VitalsPageStore {
+export default class PageVitalsStore {
   protected readonly rootStore;
 
   currentEntityId: string;

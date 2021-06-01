@@ -37,9 +37,9 @@ const goals = {
 };
 
 const VitalsSummaryChart: React.FC = () => {
-  const { vitalsPageStore, tenantStore } = useCoreStore();
+  const { pageVitalsStore, tenantStore } = useCoreStore();
   const { stateCode } = tenantStore;
-  const { selectedMetricTimeSeries, selectedMetricId } = vitalsPageStore;
+  const { selectedMetricTimeSeries, selectedMetricId } = pageVitalsStore;
   const [hoveredId, setHoveredId] = useState(null);
 
   if (!selectedMetricTimeSeries) return <div className="VitalsSummaryChart" />;

@@ -47,8 +47,8 @@ function formatOfficerName(name: string): string {
 }
 
 const VitalsSummaryBreadcrumbs: React.FC = () => {
-  const { tenantStore, vitalsPageStore } = useCoreStore();
-  const { currentEntitySummary, parentEntityName } = vitalsPageStore;
+  const { tenantStore, pageVitalsStore } = useCoreStore();
+  const { currentEntitySummary, parentEntityName } = pageVitalsStore;
   const { stateName } = tenantStore;
 
   const { entityName, entityType, parentEntityId } =

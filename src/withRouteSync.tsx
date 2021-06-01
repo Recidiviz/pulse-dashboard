@@ -48,12 +48,12 @@ const withRouteSync = <Props extends RouteParams>(
 ): ComponentType<Props> => {
   const WrappedRouteComponent: React.FC<Props> = (props) => {
     const { entityId } = normalizeRouteParams(useParams());
-    const { vitalsPageStore } = useCoreStore();
+    const { pageVitalsStore } = useCoreStore();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(
       action("sync route params", () => {
-        vitalsPageStore.currentEntityId = entityId;
+        pageVitalsStore.currentEntityId = entityId;
       })
     );
 
