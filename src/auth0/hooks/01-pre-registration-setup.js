@@ -1,3 +1,19 @@
+// Recidiviz - a data platform for criminal justice reform
+// Copyright (C) 2021 Recidiviz, Inc.
+//
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <https://www.gnu.org/licenses/>.
+// =============================================================================
 /**
 @param {object} user - The user being created
 @param {string} user.tenant - Auth0 tenant name
@@ -68,7 +84,47 @@ module.exports = function (user, context, cb) {
     }
 
     /** 3. Add the user's restrictions to the app_metadata */
-    // TODO(recidiviz-data#7298) Fetch user restrictions and add to metadata
+    // PA and ND do not currently have any sign up or user restrictions
+    const stateCodesWithRestrictions = ["us_id", "us_mo"];
+
+    if (stateCodesWithRestrictions.includes(stateCode.toLowerCase())) {
+      const Sentry = require("@sentry/node");
+      const { GoogleAuth } = require("google-auth-library");
+      Sentry.init({
+        dsn: context.webtask.secrets.SENTRY_DSN,
+        environment: context.webtask.secrets.SENTRY_ENV,
+      });
+
+      try {
+        const credentials = JSON.parse(
+          context.webtask.secrets.GOOGLE_APPLICATION_CREDENTIALS
+        );
+        const auth = new GoogleAuth({ credentials });
+        const client = await auth.getIdTokenClient(
+          context.webtask.secrets.TARGET_AUDIENCE
+        );
+        const url = `${context.webtask.secrets.RECIDIVIZ_APP_URL}/auth/dashboard_user_restrictions_by_email?email_address=${user.email}&region_code=${stateCode}`;
+        const apiResponse = await client.request({ url, retry: true });
+        const restrictions = apiResponse.data;
+
+        user.app_metadata = Object.assign(user.app_metadata, {
+          allowed_supervision_location_ids:
+            restrictions.allowed_supervision_location_ids || [],
+          allowed_supervision_location_level:
+            restrictions.allowed_supervision_location_level,
+        });
+      } catch (apiError) {
+        Sentry.captureMessage(
+          `Error while registering new user for state code ${stateCode} and email ${user.email}.`
+        );
+        Sentry.captureException(apiError);
+        const clientMessage =
+          "There was a problem registering your account. Please contact your organization administrator, if you don’t know your administrator, contact help@recidiviz.org.";
+        return cb(
+          new PreUserRegistrationError(apiError.message, clientMessage)
+        );
+      }
+    }
 
     response.user = user;
     cb(null, response);
