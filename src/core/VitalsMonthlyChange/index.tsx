@@ -45,8 +45,8 @@ const MonthlyChange: React.FC<MonthlyChangeProps> = ({ numDays, value }) => {
 };
 
 const VitalsMonthlyChange: React.FC = () => {
-  const { vitalsPageStore } = useCoreStore();
-  const { monthlyChange } = vitalsPageStore;
+  const { pageVitalsStore } = useCoreStore();
+  const { monthlyChange } = pageVitalsStore;
   if (!monthlyChange) return <div className="VitalsMonthlyChange" />;
 
   const { thirtyDayChange, ninetyDayChange } = monthlyChange;

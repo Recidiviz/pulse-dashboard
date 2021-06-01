@@ -22,7 +22,7 @@ import type TenantStore from "../../RootStore/TenantStore";
 import { PopulationFilterValues } from "../types/filters";
 import { TenantId } from "../models/types";
 import MetricsStore from "./MetricsStore";
-import VitalsPageStore from "./PageVitalsStore";
+import PageVitalsStore from "./PageVitalsStore";
 
 interface CoreStoreProps {
   userStore: UserStore;
@@ -38,7 +38,7 @@ export default class CoreStore {
 
   metricsStore: MetricsStore;
 
-  vitalsPageStore: VitalsPageStore;
+  pageVitalsStore: PageVitalsStore;
 
   constructor({ userStore, tenantStore }: CoreStoreProps) {
     makeAutoObservable(this);
@@ -51,7 +51,7 @@ export default class CoreStore {
 
     this.metricsStore = new MetricsStore({ rootStore: this });
 
-    this.vitalsPageStore = new VitalsPageStore({ rootStore: this });
+    this.pageVitalsStore = new PageVitalsStore({ rootStore: this });
   }
 
   get filters(): PopulationFilterValues {

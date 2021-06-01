@@ -23,8 +23,8 @@ import { useCoreStore } from "../CoreStoreProvider";
 import "./VitalsSummaryDetail.scss";
 
 const VitalsSummaryDetail: React.FC = () => {
-  const { vitalsPageStore } = useCoreStore();
-  const { summaryDetail } = vitalsPageStore;
+  const { pageVitalsStore } = useCoreStore();
+  const { summaryDetail } = pageVitalsStore;
   return (
     <div className="VitalsSummaryDetail">
       <div className="VitalsSummaryDetail__title">{summaryDetail.title}</div>

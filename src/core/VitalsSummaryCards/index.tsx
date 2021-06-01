@@ -23,10 +23,10 @@ import { MetricType } from "../PageVitals/types";
 import { useCoreStore } from "../CoreStoreProvider";
 
 const VitalsSummaryCards: React.FC = () => {
-  const { vitalsPageStore } = useCoreStore();
-  const { summaryCards, selectedMetricId } = vitalsPageStore;
+  const { pageVitalsStore } = useCoreStore();
+  const { summaryCards, selectedMetricId } = pageVitalsStore;
   const handleSelectCard: (id: MetricType) => () => void = (id) => () => {
-    vitalsPageStore.setSelectedMetricId(id);
+    pageVitalsStore.setSelectedMetricId(id);
   };
 
   return (

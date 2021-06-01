@@ -45,12 +45,12 @@ function getEntityTypeName(entityType: EntityType): string {
 }
 
 const VitalsSummaryTable: React.FC = () => {
-  const { vitalsPageStore } = useCoreStore();
+  const { pageVitalsStore } = useCoreStore();
   const {
     selectedMetricId: selectedSortBy,
     childEntitySummaryRows: summaries,
     metrics,
-  } = vitalsPageStore;
+  } = pageVitalsStore;
   const createBubbleTableCell = ({ value }: { value: number }) => (
     <BubbleTableCell value={value} />
   );

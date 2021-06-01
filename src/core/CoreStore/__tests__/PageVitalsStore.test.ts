@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-import VitalsPageStore, { getSummaryStatus } from "../PageVitalsStore";
+import PageVitalsStore, { getSummaryStatus } from "../PageVitalsStore";
 import RootStore from "../../../RootStore";
 import CoreStore from "..";
 import { ENTITY_TYPES } from "../../models/types";
@@ -66,12 +66,12 @@ jest.mock("../../../RootStore/TenantStore", () => {
 });
 
 let coreStore: CoreStore;
-let vitalsPageStore: VitalsPageStore;
+let pageVitalsStore: PageVitalsStore;
 
-describe("VitalsPageStore", () => {
+describe("PageVitalsStore", () => {
   beforeEach(() => {
     coreStore = new CoreStore(RootStore);
-    vitalsPageStore = coreStore.vitalsPageStore;
+    pageVitalsStore = coreStore.pageVitalsStore;
   });
 
   describe("getTimeSeriesDownloadableData", () => {
@@ -195,8 +195,8 @@ describe("VitalsPageStore", () => {
         chartId: "MetricsOverTime",
         dataExportLabel: "Date",
       };
-      vitalsPageStore.setTimeSeries(data);
-      const result = vitalsPageStore.timeSeriesDownloadableData;
+      pageVitalsStore.setTimeSeries(data);
+      const result = pageVitalsStore.timeSeriesDownloadableData;
       expect(result).toEqual(expected);
     });
   });
@@ -259,8 +259,8 @@ describe("VitalsPageStore", () => {
         dataExportLabel: "Office",
       };
 
-      vitalsPageStore.setSummaries(data);
-      const result = vitalsPageStore.vitalsSummaryDownloadableData;
+      pageVitalsStore.setSummaries(data);
+      const result = pageVitalsStore.vitalsSummaryDownloadableData;
       expect(result).toEqual(expected);
     });
   });

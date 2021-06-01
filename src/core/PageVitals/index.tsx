@@ -38,7 +38,7 @@ import "../DetailsGroup.scss";
 import "./PageVitals.scss";
 
 const PageVitals: React.FC = () => {
-  const { metricsStore, tenantStore, vitalsPageStore } = useCoreStore();
+  const { metricsStore, tenantStore, pageVitalsStore } = useCoreStore();
   const { isLoading, isError } = metricsStore.vitals;
   const {
     currentEntitySummary,
@@ -46,7 +46,7 @@ const PageVitals: React.FC = () => {
     lastUpdatedOn,
     timeSeriesDownloadableData,
     vitalsSummaryDownloadableData,
-  } = vitalsPageStore;
+  } = pageVitalsStore;
   const { stateName, currentTenantId } = tenantStore;
 
   // @ts-ignore TODO TS
