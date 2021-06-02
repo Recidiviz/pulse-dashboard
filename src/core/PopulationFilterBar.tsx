@@ -25,7 +25,10 @@ import { PopulationFilters } from "./types/filters";
 
 import Filter from "./controls/Filter";
 import FilterBar from "./controls/FilterBar";
-import { CORE_VIEWS } from "./views";
+import { CORE_PATHS, CORE_VIEWS } from "./views";
+import DownloadDataButton from "./DownloadDataButton";
+import MethodologyLink from "./MethodologyLink";
+import DetailsGroup from "./DetailsGroup";
 
 const PopulationFilterBar: React.FC<{
   view: keyof typeof CORE_VIEWS;
@@ -38,7 +41,22 @@ const PopulationFilterBar: React.FC<{
   >;
 
   return (
-    <FilterBar>
+    <FilterBar
+      details={
+        <DetailsGroup>
+          <DownloadDataButton
+            data={[]}
+            title="Population Projections"
+            // @ts-ignore
+            methodology="hi"
+            filters=""
+            // @ts-ignore
+            lastUpdatedOn="1/10/2021"
+          />
+          <MethodologyLink path={CORE_PATHS.methodologyProjections} />
+        </DetailsGroup>
+      }
+    >
       {filterTypes.map((filterType) => {
         const filter = filterOptions[filterType];
         if (!filter.enabledViews.includes(view)) return null;
