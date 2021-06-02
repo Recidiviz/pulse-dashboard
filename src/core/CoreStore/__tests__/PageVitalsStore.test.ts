@@ -141,12 +141,12 @@ describe("PageVitalsStore", () => {
           {
             data: [
               {
-                Total: "76%",
-                "30D average": "76%",
-              },
-              {
                 Total: "73%",
                 "30D average": "73%",
+              },
+              {
+                Total: "76%",
+                "30D average": "76%",
               },
             ],
             label: "Overall",
@@ -154,12 +154,12 @@ describe("PageVitalsStore", () => {
           {
             data: [
               {
-                Total: "66%",
-                "30D average": "66%",
-              },
-              {
                 Total: "63%",
                 "30D average": "63%",
+              },
+              {
+                Total: "66%",
+                "30D average": "66%",
               },
             ],
             label: "Timely discharge",
@@ -167,12 +167,12 @@ describe("PageVitalsStore", () => {
           {
             data: [
               {
-                Total: "46%",
-                "30D average": "46%",
-              },
-              {
                 Total: "43%",
                 "30D average": "43%",
+              },
+              {
+                Total: "46%",
+                "30D average": "46%",
               },
             ],
             label: "Timely contacts",
@@ -180,18 +180,18 @@ describe("PageVitalsStore", () => {
           {
             data: [
               {
-                Total: "36%",
-                "30D average": "36%",
-              },
-              {
                 Total: "33%",
                 "30D average": "33%",
+              },
+              {
+                Total: "36%",
+                "30D average": "36%",
               },
             ],
             label: "Timely risk assessments",
           },
         ],
-        chartLabels: ["2021-03-12", "2021-03-11"],
+        chartLabels: ["2021-03-11", "2021-03-12"],
         chartId: "MetricsOverTime",
         dataExportLabel: "Date",
       };
@@ -201,7 +201,7 @@ describe("PageVitalsStore", () => {
     });
   });
 
-  describe("getVitalsSummaryDownloadableData", () => {
+  describe("getSummaryDownloadableData", () => {
     const data = [
       {
         entityId: "OFFICE_A",
@@ -260,7 +260,7 @@ describe("PageVitalsStore", () => {
       };
 
       pageVitalsStore.setSummaries(data);
-      const result = pageVitalsStore.vitalsSummaryDownloadableData;
+      const result = pageVitalsStore.summaryDownloadableData;
       expect(result).toEqual(expected);
     });
   });

@@ -143,6 +143,10 @@ const TempPopulationSummaryMetrics: React.FC<PropTypes> = ({
       d.month === simulationDate.getMonth() + 1
   ) as PopulationProjectionTimeSeriesRecord;
 
+  if (!timeSeries.length) {
+    return null;
+  }
+
   const historicalData = timeSeries[0];
 
   const projectedData = timeSeries[timeSeries.length - 1];

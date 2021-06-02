@@ -14,8 +14,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-import { action, when, computed, makeObservable, observable } from "mobx";
-import type CoreStore from ".";
+import { when, makeAutoObservable, observable } from "mobx";
+import type RootStore from ".";
 import { formatISODateString, formatPercent } from "../../utils/formatStrings";
 import {
   VitalsSummaryRecord,
@@ -55,23 +55,10 @@ export default class PageVitalsStore {
 
   selectedMetricId: MetricType;
 
-  constructor({ rootStore }: { rootStore: CoreStore }) {
-    makeObservable(this, {
-      setSelectedMetricId: action,
-      setSummaries: action,
-      setTimeSeries: action,
-      currentEntitySummary: computed,
-      childEntitySummaryRows: computed,
-      parentEntityName: computed,
-      summaryCards: computed,
-      vitalsFiltersText: computed,
-      vitalsSummaryDownloadableData: computed,
-      timeSeriesDownloadableData: computed,
-      currentEntityId: observable,
+  constructor({ rootStore }: { rootStore: RootStore }) {
+    makeAutoObservable(this, {
       summaries: observable.ref,
       timeSeries: observable.ref,
-      selectedMetricId: observable,
-      metrics: computed,
     });
     this.rootStore = rootStore;
     this.currentEntityId = DEFAULT_ENTITY_ID;
@@ -154,7 +141,31 @@ export default class PageVitalsStore {
     );
   }
 
-  get vitalsFiltersText(): string {
+  get selectedMetricTimeSeries(): VitalsTimeSeriesRecord[] | undefined {
+    const selectedTimeSeries = this.currentEntityTimeSeries.filter(
+      (d) => d.metric === this.selectedMetricId
+    );
+    return selectedTimeSeries.length > 0 ? selectedTimeSeries : undefined;
+  }
+
+  get currentEntityTimeSeries(): VitalsTimeSeriesRecord[] {
+    const selectedTimeSeries = this.timeSeries.filter(
+      (d) => d.entityId === this.currentEntityId
+    );
+    return selectedTimeSeries;
+  }
+
+  get lastUpdatedOn(): string {
+    return this.selectedMetricTimeSeries
+      ? formatISODateString(
+          this.selectedMetricTimeSeries[
+            this.selectedMetricTimeSeries.length - 1
+          ].date
+        )
+      : "Unknown";
+  }
+
+  get filtersText(): string {
     let offices;
     let officers;
     if (this.currentEntitySummary === undefined) return "";
@@ -179,30 +190,6 @@ export default class PageVitalsStore {
     return `Office(s): ${offices}, Officers: ${officers}`;
   }
 
-  get selectedMetricTimeSeries(): VitalsTimeSeriesRecord[] | undefined {
-    const selectedTimeSeries = this.currentEntityTimeSeries
-      .filter((d) => d.metric === this.selectedMetricId)
-      .sort((a, b) => (a.date > b.date ? 1 : -1));
-    return selectedTimeSeries.length > 0 ? selectedTimeSeries : undefined;
-  }
-
-  get currentEntityTimeSeries(): VitalsTimeSeriesRecord[] {
-    const selectedTimeSeries = this.timeSeries
-      .filter((d) => d.entityId === this.currentEntityId)
-      .sort((a, b) => (a.date > b.date ? 1 : -1));
-    return selectedTimeSeries;
-  }
-
-  get lastUpdatedOn(): string {
-    return this.selectedMetricTimeSeries
-      ? formatISODateString(
-          this.selectedMetricTimeSeries[
-            this.selectedMetricTimeSeries.length - 1
-          ].date
-        )
-      : "Unknown";
-  }
-
   get timeSeriesDownloadableData(): DownloadableData | undefined {
     if (!this.currentEntityTimeSeries) return undefined;
 
@@ -210,9 +197,9 @@ export default class PageVitalsStore {
     let ids = [] as string[];
     const datasets = [] as DownloadableDataset[];
     Object.values(METRIC_TYPES).forEach((metricType: MetricType) => {
-      const metricData = this.currentEntityTimeSeries
-        .filter((d: VitalsTimeSeriesRecord) => d.metric === metricType)
-        .sort((a, b) => (a.date < b.date ? 1 : -1));
+      const metricData = this.currentEntityTimeSeries.filter(
+        (d: VitalsTimeSeriesRecord) => d.metric === metricType
+      );
       labels = metricData.map((d) => d.date);
       ids = metricData.map((d) => d.entityId);
       const downloadableData = metricData.map((d: VitalsTimeSeriesRecord) => {
@@ -238,7 +225,7 @@ export default class PageVitalsStore {
     };
   }
 
-  get vitalsSummaryDownloadableData(): DownloadableData | undefined {
+  get summaryDownloadableData(): DownloadableData | undefined {
     if (this.childEntitySummaryRows.length === 0) return undefined;
 
     const dataExportLabel =

@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-import { action, autorun, makeObservable, observable } from "mobx";
+import { computed, makeObservable } from "mobx";
 import {
   VitalsSummaryRecord,
   VitalsTimeSeriesRecord,
@@ -25,7 +25,7 @@ import { toTitleCase } from "../../utils/formatStrings";
 import Metric, { BaseMetricProps } from "./Metric";
 import { parseResponseByFileFormat } from "../../api/metrics";
 
-export function createVitalsSummaryMetrics(
+export function createVitalsSummaryMetric(
   rawRecords: RawMetricData
 ): VitalsSummaryRecord[] {
   return rawRecords.map((record) => {
@@ -44,7 +44,7 @@ export function createVitalsSummaryMetrics(
   });
 }
 
-export function createVitalsTimeSeriesMetrics(
+export function createVitalsTimeSeriesMetric(
   rawRecords: RawMetricData
 ): VitalsTimeSeriesRecord[] {
   return rawRecords.map((record) => {
@@ -61,45 +61,31 @@ export function createVitalsTimeSeriesMetrics(
 type MetricRecords = VitalsSummaryRecord | VitalsTimeSeriesRecord;
 
 export default class VitalsMetrics extends Metric<MetricRecords> {
-  summaries: VitalsSummaryRecord[];
-
-  timeSeries: VitalsTimeSeriesRecord[];
-
   constructor(props: BaseMetricProps) {
     super(props);
     makeObservable(this, {
-      buildSummaries: action,
-      buildTimeSeries: action,
-      summaries: observable.ref,
-      timeSeries: observable.ref,
-    });
-
-    this.summaries = [];
-    this.timeSeries = [];
-
-    autorun(() => {
-      if (this.apiData) {
-        this.buildSummaries();
-        this.buildTimeSeries();
-      }
+      timeSeries: computed,
+      summaries: computed,
     });
   }
 
-  buildSummaries(): void {
+  get summaries(): VitalsSummaryRecord[] {
+    if (!this.apiData) return [];
     const summaries = parseResponseByFileFormat(
       this.apiData,
       "vitals_summaries",
       this.eagerExpand
     );
-    this.summaries = createVitalsSummaryMetrics(summaries.data);
+    return createVitalsSummaryMetric(summaries.data);
   }
 
-  buildTimeSeries(): void {
+  get timeSeries(): VitalsTimeSeriesRecord[] {
+    if (!this.apiData) return [];
     const timeSeries = parseResponseByFileFormat(
       this.apiData,
       "vitals_time_series",
       this.eagerExpand
     );
-    this.timeSeries = createVitalsTimeSeriesMetrics(timeSeries.data);
+    return createVitalsTimeSeriesMetric(timeSeries.data);
   }
 }

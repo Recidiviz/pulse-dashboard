@@ -42,10 +42,10 @@ const PageVitals: React.FC = () => {
   const { isLoading, isError } = metricsStore.vitals;
   const {
     currentEntitySummary,
-    vitalsFiltersText,
+    filtersText,
     lastUpdatedOn,
     timeSeriesDownloadableData,
-    vitalsSummaryDownloadableData,
+    summaryDownloadableData,
   } = pageVitalsStore;
   const { stateName, currentTenantId } = tenantStore;
 
@@ -74,10 +74,10 @@ const PageVitals: React.FC = () => {
             Last updated on {lastUpdatedOn}
           </div>
           <DownloadDataButton
-            data={[timeSeriesDownloadableData, vitalsSummaryDownloadableData]}
+            data={[timeSeriesDownloadableData, summaryDownloadableData]}
             title={`${stateName} At A Glance`}
             methodology={vitalsMethodology.content}
-            filters={vitalsFiltersText}
+            filters={filtersText}
             lastUpdatedOn={lastUpdatedOn}
           />
           <MethodologyLink path={CORE_PATHS.methodologyVitals} />

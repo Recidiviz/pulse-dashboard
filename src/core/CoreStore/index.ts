@@ -51,7 +51,9 @@ export default class CoreStore {
 
     this.metricsStore = new MetricsStore({ rootStore: this });
 
-    this.pageVitalsStore = new PageVitalsStore({ rootStore: this });
+    this.pageVitalsStore = new PageVitalsStore({
+      rootStore: this,
+    });
   }
 
   get filters(): PopulationFilterValues {
