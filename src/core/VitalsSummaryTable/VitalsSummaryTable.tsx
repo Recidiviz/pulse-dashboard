@@ -15,15 +15,17 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 import React, { useMemo, useEffect } from "react";
+import { observer } from "mobx-react-lite";
 import { useTable, useSortBy } from "react-table";
 import { Link } from "react-router-dom";
 import cx from "classnames";
 import BubbleTableCell from "./BubbleTableCell";
 import DeltaTableCell from "./DeltaTableCell";
 import { formatPercent } from "../../utils";
-import { VitalsSummaryTableRow, METRIC_TYPES } from "../PageVitals/types";
 import { ENTITY_TYPES, EntityType } from "../models/types";
+import { METRIC_TYPES } from "../PageVitals/types";
 import { convertToSlug } from "../../utils/navigation";
+import { useCoreStore } from "../CoreStoreProvider";
 
 import "./VitalsSummaryTable.scss";
 import flags from "../../flags";
@@ -39,15 +41,12 @@ function getEntityTypeName(entityType: EntityType): string {
   }
 }
 
-type PropTypes = {
-  summaries: VitalsSummaryTableRow[];
-  selectedSortBy: string;
-};
-
-const VitalsSummaryTable: React.FC<PropTypes> = ({
-  summaries,
-  selectedSortBy,
-}) => {
+const VitalsSummaryTable: React.FC = () => {
+  const { pageVitalsStore } = useCoreStore();
+  const {
+    selectedMetricId: selectedSortBy,
+    childEntitySummaryRows: summaries,
+  } = pageVitalsStore;
   const createBubbleTableCell = ({ value }: { value: number }) => (
     <BubbleTableCell value={value} />
   );
@@ -240,4 +239,4 @@ const VitalsSummaryTable: React.FC<PropTypes> = ({
   );
 };
 
-export default VitalsSummaryTable;
+export default observer(VitalsSummaryTable);
