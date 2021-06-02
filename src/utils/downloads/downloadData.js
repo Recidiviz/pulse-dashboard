@@ -208,6 +208,7 @@ export function configureDataDownloadButton({
   methodology,
   getTokenSilently,
   lastUpdatedOn,
+  includeFiltersRowInCSV,
 }) {
   return () => {
     const methodologyFile =
@@ -238,8 +239,12 @@ export function configureDataDownloadButton({
             filters,
             shouldZipDownload
           );
+          const formattedCSV = includeFiltersRowInCSV
+            ? [filters, csv].join("\n")
+            : csv;
+
           return {
-            csv,
+            csv: formattedCSV,
             filename: `${filename}.csv`,
           };
         }),
@@ -284,6 +289,7 @@ export function downloadChartAsData({
   methodology,
   getTokenSilently,
   lastUpdatedOn = null,
+  includeFiltersRowInCSV = false,
 }) {
   const downloadChartData = configureDataDownloadButton({
     fileContents: fileContents.filter(Boolean),
@@ -296,6 +302,7 @@ export function downloadChartAsData({
     methodology,
     getTokenSilently,
     lastUpdatedOn,
+    includeFiltersRowInCSV,
   });
   downloadChartData();
 }

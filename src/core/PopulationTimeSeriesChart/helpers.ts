@@ -104,3 +104,9 @@ export const getDateRange = (
 
   return { beginDate, endDate };
 };
+
+export const formatMonthAndYear = (date: Date): string => {
+  return `${date.toLocaleString("default", { month: "short" })} '${
+    date.getFullYear() % 100
+  }`;
+};

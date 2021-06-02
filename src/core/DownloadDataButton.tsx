@@ -30,6 +30,7 @@ interface PropTypes {
   methodology: MethodologyContent[];
   filters: string;
   lastUpdatedOn: string;
+  includeFiltersRowInCSV?: boolean;
 }
 
 const DownloadDataButton: React.FC<PropTypes> = ({
@@ -38,13 +39,14 @@ const DownloadDataButton: React.FC<PropTypes> = ({
   methodology,
   filters,
   lastUpdatedOn,
+  includeFiltersRowInCSV = false,
 }) => {
   const { getTokenSilently } = useRootStore();
 
   return (
     <button
       className="btn btn-link DetailsGroup__button"
-      id="downloadChartData-VitalsSummaryChart"
+      id="downloadChartData"
       type="button"
       aria-expanded="true"
       aria-controls="importantNotes"
@@ -55,6 +57,7 @@ const DownloadDataButton: React.FC<PropTypes> = ({
           shouldZipDownload: true,
           methodology,
           getTokenSilently,
+          includeFiltersRowInCSV,
           filters: { filtersDescription: filters },
           lastUpdatedOn,
         })
