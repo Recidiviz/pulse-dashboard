@@ -52,7 +52,7 @@ export default class CoreStore {
     this.metricsStore = new MetricsStore({ rootStore: this });
 
     this.pageVitalsStore = new PageVitalsStore({
-      metricsStore: this.metricsStore,
+      rootStore: this,
     });
   }
 

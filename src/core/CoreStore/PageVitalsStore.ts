@@ -15,7 +15,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 import { when, makeAutoObservable, observable } from "mobx";
-import type MetricsStore from "./MetricsStore";
+import type RootStore from ".";
 import { formatISODateString, formatPercent } from "../../utils/formatStrings";
 import {
   VitalsSummaryRecord,
@@ -43,7 +43,7 @@ export function getSummaryStatus(value: number): SummaryStatus {
 }
 
 export default class PageVitalsStore {
-  protected readonly metricsStore;
+  protected readonly rootStore;
 
   currentEntityId: string;
 
@@ -53,21 +53,21 @@ export default class PageVitalsStore {
 
   selectedMetricId: MetricType;
 
-  constructor({ metricsStore }: { metricsStore: MetricsStore }) {
+  constructor({ rootStore }: { rootStore: RootStore }) {
     makeAutoObservable(this, {
       summaries: observable.ref,
       timeSeries: observable.ref,
     });
-    this.metricsStore = metricsStore;
+    this.rootStore = rootStore;
     this.currentEntityId = DEFAULT_ENTITY_ID;
     this.selectedMetricId = METRIC_TYPES.OVERALL;
     this.summaries = [];
     this.timeSeries = [];
 
     when(
-      () => !this.metricsStore.vitals.isLoading,
+      () => !this.rootStore.metricsStore.vitals.isLoading,
       () => {
-        const { summaries, timeSeries } = this.metricsStore.vitals;
+        const { summaries, timeSeries } = this.rootStore.metricsStore.vitals;
         this.setSummaries(summaries);
         this.setTimeSeries(timeSeries);
       }
