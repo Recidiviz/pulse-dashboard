@@ -101,16 +101,13 @@ export default class PageVitalsStore {
     if (this.currentEntitySummary === undefined) return [] as SummaryCard[];
 
     const summary = this.currentEntitySummary;
-    return this.metrics.map((m) => {
-      const card = {
-        title: m.name,
-        description: m.description,
-        value: summary[m.accessor],
-        status: getSummaryStatus(summary[m.accessor]),
-        id: m.id,
-      };
-      return card;
-    });
+    return this.metrics.map((m) => ({
+      title: m.name,
+      description: m.description,
+      value: summary[m.accessor],
+      status: getSummaryStatus(summary[m.accessor]),
+      id: m.id,
+    }));
   }
 
   get childEntitySummaryRows(): VitalsSummaryTableRow[] {

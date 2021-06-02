@@ -75,14 +75,11 @@ const VitalsSummaryTable: React.FC = () => {
     ];
     const overallCol = metrics
       .filter((m) => m.id === METRIC_TYPES.OVERALL)
-      .map((m: VitalsMetric) => {
-        const col = {
-          Header: m.name,
-          accessor: m.accessor,
-          Cell: createBubbleTableCell,
-        };
-        return col;
-      });
+      .map((m: VitalsMetric) => ({
+        Header: m.name,
+        accessor: m.accessor,
+        Cell: createBubbleTableCell,
+      }));
     return overallCol.concat(changeCols);
   }, [metrics]);
   const metricColumns = useMemo(() => {
