@@ -264,4 +264,41 @@ describe("PageVitalsStore", () => {
       expect(result).toEqual(expected);
     });
   });
+
+  describe("metrics", () => {
+    it("returns the correct metrics when the tenant is US_ND", () => {
+      const expected = [
+        {
+          accessor: "overall",
+          description: "Average timeliness across all metrics",
+          id: "OVERALL",
+          name: "Overall",
+        },
+        {
+          accessor: "timelyDischarge",
+          description: `of clients were discharged at their earliest projected regular
+        supervision discharge date`,
+          id: "DISCHARGE",
+          name: "Timely discharge",
+        },
+        {
+          accessor: "timelyContact",
+          description: `of clients received initial contact within 30 days of starting
+        supervision and a F2F contact every subsequent 90, 60, or 30 days for 
+        minimum, medium, and maximum supervision levels respectively`,
+          id: "CONTACT",
+          name: "Timely contacts",
+        },
+        {
+          accessor: "timelyRiskAssessment",
+          description: `of clients have had an initial assessment within 30 days and 
+        reassessment within 212 days`,
+          id: "RISK_ASSESSMENT",
+          name: "Timely risk assessments",
+        },
+      ];
+      const result = pageVitalsStore.metrics;
+      expect(result).toEqual(expected);
+    });
+  });
 });

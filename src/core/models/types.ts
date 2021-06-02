@@ -88,6 +88,11 @@ export type VitalsTimeSeriesRecord = {
   parentMonthlyAvg?: number;
 };
 
+export type MetricValueAccessor =
+  | "overall"
+  | "timelyDischarge"
+  | "timelyContact"
+  | "timelyRiskAssessment";
 export type VitalsSummaryRecord = {
   entityId: string;
   entityName: string; // i.e. "North Dakota" or "Oakes"
