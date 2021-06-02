@@ -65,6 +65,7 @@ export default class PageVitalsStore {
     this.selectedMetricId = METRIC_TYPES.OVERALL;
     this.summaries = [];
     this.timeSeries = [];
+
     when(
       () => !this.rootStore.metricsStore.vitals.isLoading,
       () => {
