@@ -56,7 +56,7 @@ function addEmptyMonthsToData(dataPoints, monthCount, valueKey, emptyValue) {
     const month = remainder === 0 ? 12 : remainder;
 
     const dateMonthsAgo = new Date(now.getTime());
-    dateMonthsAgo.setMonth(i - 1);
+    dateMonthsAgo.setMonth(i - 1, 1); // error occurs, when 29-31 comes (there is no 29-31 February), so 2nd param sets date to first day of any month
     const year = dateMonthsAgo.getFullYear();
 
     if (dateMonthsAgo.getMonth() !== month - 1) {
