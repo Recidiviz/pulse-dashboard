@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-import { when, makeAutoObservable, observable } from "mobx";
+import { makeAutoObservable } from "mobx";
 import type RootStore from ".";
 import { formatISODateString, formatPercent } from "../../utils/formatStrings";
 import {
@@ -49,39 +49,21 @@ export default class PageVitalsStore {
 
   currentEntityId: string;
 
-  summaries: VitalsSummaryRecord[];
-
-  timeSeries: VitalsTimeSeriesRecord[];
-
   selectedMetricId: MetricType;
 
   constructor({ rootStore }: { rootStore: RootStore }) {
-    makeAutoObservable(this, {
-      summaries: observable.ref,
-      timeSeries: observable.ref,
-    });
+    makeAutoObservable(this);
     this.rootStore = rootStore;
     this.currentEntityId = DEFAULT_ENTITY_ID;
     this.selectedMetricId = METRIC_TYPES.OVERALL;
-    this.summaries = [];
-    this.timeSeries = [];
-
-    when(
-      () => !this.rootStore.metricsStore.vitals.isLoading,
-      () => {
-        const { summaries, timeSeries } = this.rootStore.metricsStore.vitals;
-        this.setSummaries(summaries);
-        this.setTimeSeries(timeSeries);
-      }
-    );
   }
 
-  setSummaries(summaries: VitalsSummaryRecord[]): void {
-    this.summaries = summaries;
+  get summaries(): VitalsSummaryRecord[] {
+    return this.rootStore.metricsStore.vitals.summaries;
   }
 
-  setTimeSeries(timeSeries: VitalsTimeSeriesRecord[]): void {
-    this.timeSeries = timeSeries;
+  get timeSeries(): VitalsTimeSeriesRecord[] {
+    return this.rootStore.metricsStore.vitals.timeSeries;
   }
 
   setSelectedMetricId(metricId: MetricType): void {
