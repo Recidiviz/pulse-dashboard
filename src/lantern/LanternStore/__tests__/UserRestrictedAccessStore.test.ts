@@ -235,6 +235,36 @@ describe("fetchRestrictedDistrictData", () => {
     });
   });
 
+  describe("when the user has no restricted districts", () => {
+    beforeEach(async () => {
+      mockCallRestrictedAccessApi.mockResolvedValue({
+        supervision_location_restricted_access_emails: {
+          restricted_user_email: userEmail.toUpperCase(),
+          allowed_level_1_supervision_location_ids: "",
+        },
+      });
+
+      rootStore = new LanternStore(mockRootStore);
+
+      userRestrictedAccessStore = new UserRestrictedAccessStore({
+        rootStore,
+      });
+    });
+
+    afterEach(() => {
+      jest.resetAllMocks();
+    });
+
+    it("does not set an authError", () => {
+      expect(rootStore.userStore.setAuthError).toHaveBeenCalledTimes(0);
+    });
+
+    it("keeps restrictedDistricts as an empty array and isLoading to false", () => {
+      expect(userRestrictedAccessStore.restrictedDistricts).toEqual([]);
+      expect(userRestrictedAccessStore.isLoading).toBe(false);
+    });
+  });
+
   describe("when districts is loading", () => {
     beforeEach(async () => {
       mockLanternStore.mockImplementationOnce(() => {

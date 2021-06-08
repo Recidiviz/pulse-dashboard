@@ -121,7 +121,8 @@ export default class UserRestrictedAccessStore {
       (restrictions &&
         restrictions.allowed_level_1_supervision_location_ids
           .split(",")
-          .map((r) => r.trim())) ||
+          .map((r) => r.trim())
+          .filter(Boolean)) ||
       [];
     this.verifyRestrictedDistrict();
   }
