@@ -15,15 +15,20 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 import React, { useMemo, useEffect } from "react";
+import { observer } from "mobx-react-lite";
 import { useTable, useSortBy } from "react-table";
 import { Link } from "react-router-dom";
 import cx from "classnames";
 import BubbleTableCell from "./BubbleTableCell";
 import DeltaTableCell from "./DeltaTableCell";
-import { formatPercent } from "../../utils";
-import { VitalsSummaryTableRow, METRIC_TYPES } from "../PageVitals/types";
-import { ENTITY_TYPES, EntityType } from "../models/types";
+import { ENTITY_TYPES, EntityType, MetricValueAccessor } from "../models/types";
+import {
+  METRIC_TYPES,
+  VitalsMetric,
+  MetricTypeLabel,
+} from "../PageVitals/types";
 import { convertToSlug } from "../../utils/navigation";
+import { useCoreStore } from "../CoreStoreProvider";
 
 import "./VitalsSummaryTable.scss";
 import flags from "../../flags";
@@ -39,15 +44,13 @@ function getEntityTypeName(entityType: EntityType): string {
   }
 }
 
-type PropTypes = {
-  summaries: VitalsSummaryTableRow[];
-  selectedSortBy: string;
-};
-
-const VitalsSummaryTable: React.FC<PropTypes> = ({
-  summaries,
-  selectedSortBy,
-}) => {
+const VitalsSummaryTable: React.FC = () => {
+  const { pageVitalsStore } = useCoreStore();
+  const {
+    selectedMetricId: selectedSortBy,
+    childEntitySummaryRows: summaries,
+    metrics,
+  } = pageVitalsStore;
   const createBubbleTableCell = ({ value }: { value: number }) => (
     <BubbleTableCell value={value} />
   );
@@ -57,6 +60,41 @@ const VitalsSummaryTable: React.FC<PropTypes> = ({
   );
   const { entityType } = summaries[0].entity;
 
+  const overallColumns = useMemo(() => {
+    const changeCols = [
+      {
+        Header: "30D change" as MetricTypeLabel,
+        accessor: "overall30Day" as MetricValueAccessor,
+        Cell: createDeltaTableCell,
+      },
+      {
+        Header: "90D change" as MetricTypeLabel,
+        accessor: "overall90Day" as MetricValueAccessor,
+        Cell: createDeltaTableCell,
+      },
+    ];
+    const overallCol = metrics
+      .filter((m) => m.id === METRIC_TYPES.OVERALL)
+      .map((m: VitalsMetric) => ({
+        Header: m.name,
+        accessor: m.accessor,
+        Cell: createBubbleTableCell,
+      }));
+    return overallCol.concat(changeCols);
+  }, [metrics]);
+  const metricColumns = useMemo(() => {
+    return metrics
+      .filter((m) => m.id !== METRIC_TYPES.OVERALL)
+      .map((m: VitalsMetric) => {
+        const col = {
+          Header: m.name,
+          id: m.id,
+          accessor: m.accessor,
+          Cell: createBubbleTableCell,
+        };
+        return col;
+      });
+  }, [metrics]);
   const data = useMemo(() => summaries, [summaries]);
   const columns = useMemo(
     () => [
@@ -91,50 +129,14 @@ const VitalsSummaryTable: React.FC<PropTypes> = ({
       },
       {
         Header: "Overall performance",
-        columns: [
-          {
-            Header: "Overall score",
-            id: METRIC_TYPES.OVERALL,
-            accessor: "overall",
-            Cell: ({ value }: { value: number }) => formatPercent(value),
-          },
-          {
-            Header: "30D change",
-            accessor: "overall30Day",
-            Cell: createDeltaTableCell,
-          },
-          {
-            Header: "90D change",
-            accessor: "overall90Day",
-            Cell: createDeltaTableCell,
-          },
-        ],
+        columns: overallColumns,
       },
       {
         Header: "Performance by metric",
-        columns: [
-          {
-            Header: "Timely discharge",
-            id: METRIC_TYPES.DISCHARGE,
-            accessor: "timelyDischarge",
-            Cell: createBubbleTableCell,
-          },
-          {
-            Header: "Timely contacts",
-            id: METRIC_TYPES.CONTACT,
-            accessor: "timelyContact",
-            Cell: createBubbleTableCell,
-          },
-          {
-            Header: "Timely risk assessments",
-            id: METRIC_TYPES.RISK_ASSESSMENT,
-            accessor: "timelyRiskAssessment",
-            Cell: createBubbleTableCell,
-          },
-        ],
+        columns: metricColumns,
       },
     ],
-    [entityType]
+    [entityType, overallColumns, metricColumns]
   );
 
   const sortBy = useMemo(() => ({ id: selectedSortBy, desc: false }), [
@@ -240,4 +242,4 @@ const VitalsSummaryTable: React.FC<PropTypes> = ({
   );
 };
 
-export default VitalsSummaryTable;
+export default observer(VitalsSummaryTable);

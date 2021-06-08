@@ -16,16 +16,11 @@
 // =============================================================================
 
 import React from "react";
+import { observer } from "mobx-react-lite";
 import PercentDelta from "../controls/PercentDelta";
+import { useCoreStore } from "../CoreStoreProvider";
 
 import "./VitalsMonthlyChange.scss";
-
-type PropTypes = {
-  monthlyChange: {
-    thirtyDayChange: number;
-    ninetyDayChange: number;
-  };
-};
 
 type MonthlyChangeProps = {
   numDays: number;
@@ -49,7 +44,11 @@ const MonthlyChange: React.FC<MonthlyChangeProps> = ({ numDays, value }) => {
   );
 };
 
-const VitalsMonthlyChange: React.FC<PropTypes> = ({ monthlyChange }) => {
+const VitalsMonthlyChange: React.FC = () => {
+  const { pageVitalsStore } = useCoreStore();
+  const { monthlyChange } = pageVitalsStore;
+  if (!monthlyChange) return <div className="VitalsMonthlyChange" />;
+
   const { thirtyDayChange, ninetyDayChange } = monthlyChange;
   return (
     <div className="VitalsMonthlyChange">
@@ -58,4 +57,4 @@ const VitalsMonthlyChange: React.FC<PropTypes> = ({ monthlyChange }) => {
     </div>
   );
 };
-export default VitalsMonthlyChange;
+export default observer(VitalsMonthlyChange);

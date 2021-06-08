@@ -16,11 +16,25 @@
 // =============================================================================
 
 import React from "react";
+import { observer } from "mobx-react-lite";
 import { Link } from "react-router-dom";
-import { ENTITY_TYPES, VitalsSummaryRecord } from "../models/types";
+import { ENTITY_TYPES } from "../models/types";
+import {
+  DEFAULT_ENTITY_ID,
+  DEFAULT_ENTITY_TYPE,
+  DEFAULT_ENTITY_NAME,
+} from "../PageVitals/types";
 import { toTitleCase } from "../../utils/formatStrings";
 import { convertToSlug } from "../../utils/navigation";
+import { useCoreStore } from "../CoreStoreProvider";
 import "./VitalsSummaryBreadcrumbs.scss";
+
+export const DefaultEntity = {
+  entityName: DEFAULT_ENTITY_ID,
+  entityType: DEFAULT_ENTITY_TYPE,
+  entityId: DEFAULT_ENTITY_NAME,
+  parentEntityId: undefined,
+};
 
 function formatOfficeName(name: string | undefined): string | undefined {
   if (!name) return "Unknown";
@@ -32,18 +46,13 @@ function formatOfficerName(name: string): string {
   return nameWithoutId || name;
 }
 
-type PropTypes = {
-  stateName: string;
-  entity: VitalsSummaryRecord;
-  parentEntityName?: string;
-};
+const VitalsSummaryBreadcrumbs: React.FC = () => {
+  const { tenantStore, pageVitalsStore } = useCoreStore();
+  const { currentEntitySummary, parentEntityName } = pageVitalsStore;
+  const { stateName } = tenantStore;
 
-const VitalsSummaryBreadcrumbs: React.FC<PropTypes> = ({
-  stateName,
-  entity,
-  parentEntityName,
-}) => {
-  const { entityName, entityType, parentEntityId } = entity;
+  const { entityName, entityType, parentEntityId } =
+    currentEntitySummary || DefaultEntity;
   let current;
   let state;
   let parent;
@@ -73,12 +82,14 @@ const VitalsSummaryBreadcrumbs: React.FC<PropTypes> = ({
       {parent && (
         <div className="VitalsSummaryBreadcrumbs__parent-container">
           <span>/</span>
-          <Link
-            className="VitalsSummaryBreadcrumbs--parent"
-            to={`/community/vitals/${convertToSlug(parentEntityId)}`}
-          >
-            {parent}
-          </Link>
+          {parentEntityId && (
+            <Link
+              className="VitalsSummaryBreadcrumbs--parent"
+              to={`/community/vitals/${convertToSlug(parentEntityId)}`}
+            >
+              {parent}
+            </Link>
+          )}
         </div>
       )}
       <div className="VitalsSummaryBreadcrumbs--current">{current}</div>
@@ -86,4 +97,4 @@ const VitalsSummaryBreadcrumbs: React.FC<PropTypes> = ({
   );
 };
 
-export default VitalsSummaryBreadcrumbs;
+export default observer(VitalsSummaryBreadcrumbs);

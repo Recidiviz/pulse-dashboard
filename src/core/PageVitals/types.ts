@@ -14,14 +14,34 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-import { EntityType } from "../models/types";
+import { EntityType, MetricValueAccessor } from "../models/types";
 
-export type SummaryStatus =
-  | "POOR"
-  | "NEEDS_IMPROVEMENT"
-  | "GOOD"
-  | "GREAT"
-  | "EXCELLENT";
+export const DEFAULT_ENTITY_ID = "STATE_DOC";
+export const DEFAULT_ENTITY_TYPE = "state";
+export const DEFAULT_ENTITY_NAME = "STATE DOC";
+
+export type MetricType = keyof typeof METRIC_TYPES;
+export const METRIC_TYPES = {
+  OVERALL: "OVERALL",
+  DISCHARGE: "DISCHARGE",
+  CONTACT: "CONTACT",
+  RISK_ASSESSMENT: "RISK_ASSESSMENT",
+} as const;
+
+export type MetricTypeLabel = typeof METRIC_TYPE_LABELS[keyof typeof METRIC_TYPE_LABELS];
+export const METRIC_TYPE_LABELS = {
+  OVERALL: "Overall",
+  DISCHARGE: "Timely discharge",
+  CONTACT: "Timely contacts",
+  RISK_ASSESSMENT: "Timely risk assessments",
+} as const;
+
+export type VitalsMetric = {
+  name: MetricTypeLabel;
+  id: MetricType;
+  description: string;
+  accessor: MetricValueAccessor;
+};
 
 export type SummaryCard = {
   id: MetricType;
@@ -46,19 +66,12 @@ export type VitalsSummaryTableRow = {
   timelyRiskAssessment: number;
 };
 
-export type MetricType = keyof typeof METRIC_TYPES;
-export const METRIC_TYPES = {
-  OVERALL: "OVERALL",
-  DISCHARGE: "DISCHARGE",
-  CONTACT: "CONTACT",
-  RISK_ASSESSMENT: "RISK_ASSESSMENT",
-} as const;
-export const METRIC_TYPE_LABELS = {
-  OVERALL: "Overall",
-  DISCHARGE: "Timely discharge",
-  CONTACT: "Timely contacts",
-  RISK_ASSESSMENT: "Timely risk assessments",
-} as const;
+export type SummaryStatus =
+  | "POOR"
+  | "NEEDS_IMPROVEMENT"
+  | "GOOD"
+  | "GREAT"
+  | "EXCELLENT";
 
 export type DownloadableData =
   | {

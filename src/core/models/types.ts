@@ -79,13 +79,6 @@ export type PopulationProjectionTimeSeriesRecord = {
   totalPopulationMin: number;
 };
 
-export type EntityType = keyof typeof ENTITY_TYPES;
-export const ENTITY_TYPES = {
-  STATE: "STATE",
-  LEVEL_1_SUPERVISION_LOCATION: "LEVEL_1_SUPERVISION_LOCATION",
-  PO: "PO",
-} as const;
-
 export type VitalsTimeSeriesRecord = {
   date: string;
   entityId: string;
@@ -95,6 +88,11 @@ export type VitalsTimeSeriesRecord = {
   parentMonthlyAvg?: number;
 };
 
+export type MetricValueAccessor =
+  | "overall"
+  | "timelyDischarge"
+  | "timelyContact"
+  | "timelyRiskAssessment";
 export type VitalsSummaryRecord = {
   entityId: string;
   entityName: string; // i.e. "North Dakota" or "Oakes"
@@ -107,6 +105,13 @@ export type VitalsSummaryRecord = {
   timelyContact: number;
   timelyRiskAssessment: number;
 };
+
+export type EntityType = keyof typeof ENTITY_TYPES;
+export const ENTITY_TYPES = {
+  STATE: "STATE",
+  LEVEL_1_SUPERVISION_LOCATION: "LEVEL_1_SUPERVISION_LOCATION",
+  PO: "PO",
+} as const;
 
 export type MethodologyContent = {
   header: string;
