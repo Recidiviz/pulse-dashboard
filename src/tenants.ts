@@ -18,6 +18,11 @@ import * as lantern from "./RootStore/TenantStore/lanternTenants";
 import * as core from "./RootStore/TenantStore/coreTenants";
 import flags from "./flags";
 import { TenantId } from "./RootStore/types";
+import {
+  VitalsMetric,
+  METRIC_TYPE_LABELS,
+  METRIC_TYPES,
+} from "./core/PageVitals/types";
 
 export const RECIDIVIZ_TENANT = "RECIDIVIZ";
 export const LANTERN = "LANTERN";
@@ -35,6 +40,7 @@ type Tenants = {
     stateCode: string;
     availableStateCodes: string[];
     navigation?: Navigation;
+    vitalsMetrics?: VitalsMetric[];
   };
 };
 
@@ -56,6 +62,36 @@ const TENANTS: Tenants = {
       facilities: ["explore"],
       ...(flags.showMethodologyDropdown ? { methodology: ["vitals"] } : {}),
     },
+    vitalsMetrics: [
+      {
+        name: METRIC_TYPE_LABELS.OVERALL,
+        id: METRIC_TYPES.OVERALL,
+        description: "Average timeliness across all metrics",
+        accessor: "overall",
+      },
+      {
+        name: METRIC_TYPE_LABELS.DISCHARGE,
+        id: METRIC_TYPES.DISCHARGE,
+        description: `of clients were discharged at their earliest projected regular
+        supervision discharge date`,
+        accessor: "timelyDischarge",
+      },
+      {
+        name: METRIC_TYPE_LABELS.CONTACT,
+        id: METRIC_TYPES.CONTACT,
+        description: `of clients received initial contact within 30 days of starting
+        supervision and a F2F contact every subsequent 90, 60, or 30 days for 
+        minimum, medium, and maximum supervision levels respectively`,
+        accessor: "timelyContact",
+      },
+      {
+        name: METRIC_TYPE_LABELS.RISK_ASSESSMENT,
+        id: METRIC_TYPES.RISK_ASSESSMENT,
+        description: `of clients have had an initial assessment within 30 days and 
+        reassessment within 212 days`,
+        accessor: "timelyRiskAssessment",
+      },
+    ],
   },
   [core.US_ID]: {
     name: "Idaho",

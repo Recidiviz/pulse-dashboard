@@ -16,15 +16,15 @@
 // =============================================================================
 
 import React from "react";
-import { SummaryCard } from "../PageVitals/types";
+import { observer } from "mobx-react-lite";
 import { formatPercent } from "../../utils/formatStrings";
+import { useCoreStore } from "../CoreStoreProvider";
 
 import "./VitalsSummaryDetail.scss";
 
-type PropTypes = {
-  summaryDetail: SummaryCard;
-};
-const VitalsSummaryDetail: React.FC<PropTypes> = ({ summaryDetail }) => {
+const VitalsSummaryDetail: React.FC = () => {
+  const { pageVitalsStore } = useCoreStore();
+  const { summaryDetail } = pageVitalsStore;
   return (
     <div className="VitalsSummaryDetail">
       <div className="VitalsSummaryDetail__title">{summaryDetail.title}</div>
@@ -40,4 +40,4 @@ const VitalsSummaryDetail: React.FC<PropTypes> = ({ summaryDetail }) => {
     </div>
   );
 };
-export default VitalsSummaryDetail;
+export default observer(VitalsSummaryDetail);

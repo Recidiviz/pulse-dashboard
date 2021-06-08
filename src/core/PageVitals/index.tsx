@@ -15,8 +15,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React, { useState } from "react";
-import { useParams } from "react-router-dom";
+import React from "react";
 import { observer } from "mobx-react-lite";
 import PageTemplate from "../PageTemplate";
 import VitalsSummaryCards from "../VitalsSummaryCards";
@@ -27,56 +26,34 @@ import VitalsSummaryDetail from "../VitalsSummaryDetail";
 import VitalsSummaryBreadcrumbs from "../VitalsSummaryBreadcrumbs";
 import MethodologyLink from "../MethodologyLink";
 import Loading from "../../components/Loading";
-import { MetricType, METRIC_TYPES } from "./types";
 import { CORE_PATHS } from "../views";
 import { useCoreStore } from "../CoreStoreProvider";
-import { convertSlugToId } from "../../utils/navigation";
-import { formatISODateString } from "../../utils/formatStrings";
-import {
-  getSummaryCards,
-  getSummaryDetail,
-  getEntitySummaries,
-  getTimeSeries,
-  getMonthlyChange,
-  getTimeSeriesDownloadableData,
-  getVitalsSummaryDownloadableData,
-  getVitalsFiltersText,
-} from "./helpers";
 import DownloadDataButton from "../DownloadDataButton";
 import DetailsGroup from "../DetailsGroup";
 import { ENTITY_TYPES } from "../models/types";
 import content from "../content";
+import withRouteSync from "../../withRouteSync";
 
 import "../DetailsGroup.scss";
 import "./PageVitals.scss";
 
-const DEFAULT_ENTITY_ID = "STATE_DOC";
-const goals = {
-  [METRIC_TYPES.OVERALL]: 80,
-  [METRIC_TYPES.DISCHARGE]: 90,
-  [METRIC_TYPES.CONTACT]: 80,
-  [METRIC_TYPES.RISK_ASSESSMENT]: 85,
-};
-
 const PageVitals: React.FC = () => {
-  const routeParams = useParams() as { entityId: string | undefined };
-  const currentEntityId = routeParams.entityId
-    ? convertSlugToId(routeParams.entityId)
-    : DEFAULT_ENTITY_ID;
-  const { metricsStore, tenantStore } = useCoreStore();
-
-  const { summaries, timeSeries, isLoading, isError } = metricsStore.vitals;
-
-  const { stateName, stateCode, currentTenantId } = tenantStore;
-  const [selectedCardId, setSelectedCardId] = useState<MetricType>(
-    METRIC_TYPES.OVERALL
-  );
+  const { metricsStore, tenantStore, pageVitalsStore } = useCoreStore();
+  const { isLoading, isError } = metricsStore.vitals;
+  const {
+    currentEntitySummary,
+    filtersText,
+    lastUpdatedOn,
+    timeSeriesDownloadableData,
+    summaryDownloadableData,
+  } = pageVitalsStore;
+  const { stateName, currentTenantId } = tenantStore;
 
   // @ts-ignore TODO TS
   const { vitals: vitalsMethodology } = content[currentTenantId];
 
   // TODO: add in Error state
-  if (isError) {
+  if (isError || currentEntitySummary === undefined) {
     return null;
   }
 
@@ -88,97 +65,43 @@ const PageVitals: React.FC = () => {
     );
   }
 
-  const handleSelectCard: (id: MetricType) => () => void = (id) => () => {
-    setSelectedCardId(id);
-  };
-
-  const {
-    currentEntitySummary,
-    childEntitySummaryRows,
-    parentEntityName,
-  } = getEntitySummaries(summaries, currentEntityId);
-  const summaryCards = getSummaryCards(currentEntitySummary);
-  const selectedTimeSeries = getTimeSeries(
-    timeSeries,
-    currentEntityId,
-    selectedCardId
-  );
-
-  const lastUpdatedOn = selectedTimeSeries
-    ? formatISODateString(
-        selectedTimeSeries[selectedTimeSeries.length - 1].date
-      )
-    : "Unknown";
-
   return (
     <PageTemplate>
       <div className="PageVitals__header">
-        <VitalsSummaryBreadcrumbs
-          stateName={stateName}
-          entity={currentEntitySummary}
-          parentEntityName={parentEntityName}
-        />
+        <VitalsSummaryBreadcrumbs />
         <DetailsGroup>
           <div className="DetailsGroup__item">
             Last updated on {lastUpdatedOn}
           </div>
           <DownloadDataButton
-            data={[
-              getTimeSeriesDownloadableData(
-                getTimeSeries(timeSeries, currentEntityId)
-              ),
-              getVitalsSummaryDownloadableData(childEntitySummaryRows),
-            ]}
+            data={[timeSeriesDownloadableData, summaryDownloadableData]}
             title={`${stateName} At A Glance`}
             methodology={vitalsMethodology.content}
-            filters={getVitalsFiltersText(
-              currentEntitySummary,
-              childEntitySummaryRows,
-              parentEntityName
-            )}
+            filters={filtersText}
             lastUpdatedOn={lastUpdatedOn}
           />
           <MethodologyLink path={CORE_PATHS.methodologyVitals} />
         </DetailsGroup>
       </div>
       <div className="PageVitals__SummaryCards">
-        <VitalsSummaryCards
-          onClick={handleSelectCard}
-          selected={selectedCardId}
-          summaryCards={summaryCards}
-        />
+        <VitalsSummaryCards />
       </div>
       <div className="PageVitals__SummarySection">
         <div className="PageVitals__SummaryDetail">
-          <VitalsSummaryDetail
-            summaryDetail={getSummaryDetail(summaryCards, selectedCardId)}
-          />
+          <VitalsSummaryDetail />
         </div>
         <div className="PageVitals__SummaryChart">
-          {selectedTimeSeries && (
-            <>
-              <VitalsMonthlyChange
-                monthlyChange={getMonthlyChange(selectedTimeSeries)}
-              />
-              <VitalsSummaryChart
-                stateCode={stateCode}
-                goal={goals[selectedCardId]}
-                timeSeries={selectedTimeSeries.slice(-180)}
-              />
-            </>
-          )}
+          <VitalsMonthlyChange />
+          <VitalsSummaryChart />
         </div>
       </div>
       <div className="PageVitals__Table">
         {currentEntitySummary.entityType !== ENTITY_TYPES.PO && (
-          <VitalsSummaryTable
-            selectedSortBy={selectedCardId}
-            summaries={childEntitySummaryRows}
-          />
+          <VitalsSummaryTable />
         )}
       </div>
     </PageTemplate>
   );
 };
 
-export default observer(PageVitals);
+export default withRouteSync(observer(PageVitals));

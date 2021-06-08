@@ -16,21 +16,19 @@
 // =============================================================================
 
 import React from "react";
+import { observer } from "mobx-react-lite";
 
 import VitalsSummaryCard from "./VitalsSummaryCard";
-import { SummaryCard, MetricType } from "../PageVitals/types";
+import { MetricType } from "../PageVitals/types";
+import { useCoreStore } from "../CoreStoreProvider";
 
-type PropTypes = {
-  summaryCards: SummaryCard[];
-  selected: MetricType;
-  onClick: (id: MetricType) => () => void;
-};
+const VitalsSummaryCards: React.FC = () => {
+  const { pageVitalsStore } = useCoreStore();
+  const { summaryCards, selectedMetricId } = pageVitalsStore;
+  const handleSelectCard: (id: MetricType) => () => void = (id) => () => {
+    pageVitalsStore.setSelectedMetricId(id);
+  };
 
-const VitalsSummaryCards: React.FC<PropTypes> = ({
-  summaryCards,
-  selected,
-  onClick,
-}) => {
   return (
     <>
       {summaryCards.map(({ title, value, status, id }) => (
@@ -40,12 +38,12 @@ const VitalsSummaryCards: React.FC<PropTypes> = ({
           title={title}
           percentage={value}
           status={status}
-          selected={selected === id}
-          onClick={onClick(id)}
+          selected={selectedMetricId === id}
+          onClick={handleSelectCard(id)}
         />
       ))}
     </>
   );
 };
 
-export default VitalsSummaryCards;
+export default observer(VitalsSummaryCards);
