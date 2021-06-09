@@ -18,7 +18,6 @@
 import React from "react";
 import { render } from "@testing-library/react";
 
-import { ENTITY_TYPES } from "../../models/types";
 import { useCoreStore } from "../../CoreStoreProvider";
 import VitalsSummaryCards from "..";
 import RootStore from "../../../RootStore";
@@ -28,8 +27,38 @@ import { VitalsMetric } from "../../PageVitals/types";
 import TENANTS from "../../../tenants";
 
 jest.mock("../../CoreStoreProvider");
-jest.mock("../../models/VitalsMetrics");
 jest.mock("../../models/ProjectionsMetrics");
+jest.mock("../../models/VitalsMetrics", () => {
+  return jest.fn().mockImplementation(() => ({
+    timeSeries: [],
+    summaries: [
+      {
+        entityId: "OFFICE_A",
+        entityName: "Office A",
+        entityType: "LEVEL_1_SUPERVISION_LOCATION",
+        overall: 85,
+        overall30Day: 0,
+        overall90Day: -2,
+        parentEntityId: "STATE_DOC",
+        timelyContact: 60,
+        timelyDischarge: 63,
+        timelyRiskAssessment: 69,
+      },
+      {
+        entityId: "STATE_DOC",
+        entityName: "State DOC",
+        entityType: "LEVEL_1_SUPERVISION_LOCATION",
+        overall: 95,
+        overall30Day: 0,
+        overall90Day: -2,
+        parentEntityId: "STATE_DOC",
+        timelyContact: 90,
+        timelyDischarge: 93,
+        timelyRiskAssessment: 99,
+      },
+    ],
+  }));
+});
 jest.mock("../../../RootStore/TenantStore", () => {
   return jest.fn().mockImplementation(() => ({
     currentTenantId: "US_ND",
@@ -40,40 +69,10 @@ let coreStore: CoreStore;
 let pageVitalsStore: PageVitalsStore;
 
 describe("VitalsSummaryCards", () => {
-  const summaryData = [
-    {
-      entityId: "OFFICE_A",
-      entityName: "Office A",
-      entityType: ENTITY_TYPES.LEVEL_1_SUPERVISION_LOCATION,
-      overall: 85,
-      overall30Day: 0,
-      overall90Day: -2,
-      parentEntityId: "STATE_DOC",
-      timelyContact: 60,
-      timelyDischarge: 63,
-      timelyRiskAssessment: 69,
-    },
-    {
-      entityId: "STATE_DOC",
-      entityName: "State DOC",
-      entityType: ENTITY_TYPES.LEVEL_1_SUPERVISION_LOCATION,
-      overall: 95,
-      overall30Day: 0,
-      overall90Day: -2,
-      parentEntityId: "STATE_DOC",
-      timelyContact: 90,
-      timelyDischarge: 93,
-      timelyRiskAssessment: 99,
-    },
-  ];
-
   beforeEach(() => {
     coreStore = new CoreStore(RootStore);
     pageVitalsStore = coreStore.pageVitalsStore;
-
-    pageVitalsStore.setSummaries(summaryData);
-    // @ts-ignore
-    useCoreStore.mockReturnValue({ pageVitalsStore });
+    (useCoreStore as jest.Mock).mockReturnValue({ pageVitalsStore });
   });
 
   describe("metrics by tenant", () => {
