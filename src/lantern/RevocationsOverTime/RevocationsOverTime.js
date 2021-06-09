@@ -93,6 +93,8 @@ const RevocationsOverTime = ({ timeDescription }) => {
       backgroundColor: COLORS["lantern-light-blue"],
       hoverBackgroundColor: COLORS["lantern-light-blue"],
       hoverBorderColor: COLORS["lantern-light-blue"],
+      barPercentage: 0.08,
+      barThickness: "flex",
     },
     generateTrendlineDataset(chartDataPoints, COLORS["lantern-soft-blue"]),
   ];
@@ -153,9 +155,6 @@ const RevocationsOverTime = ({ timeDescription }) => {
       options={options}
     />
   );
-  const barOptions = options;
-  barOptions.scales.xAxes[0].ticks.barThickness = "flex";
-  barOptions.scales.xAxes[0].barPercentage = 0.08;
 
   const barChart = (
     <Bar
@@ -165,7 +164,7 @@ const RevocationsOverTime = ({ timeDescription }) => {
         labels: chartLabels,
         datasets,
       }}
-      options={barOptions}
+      options={options}
     />
   );
 
