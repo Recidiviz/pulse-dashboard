@@ -224,6 +224,7 @@
     "styled-components": "^5",
     "css-what": "^5.0.1",
     "y18n": "^5",
+    "glob-parent": "^5.1.2",
     "trim-newlines": "^3.0.1",
     "json-bigint": "^1",
     "merge-deep": "^3.0.3",
