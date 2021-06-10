@@ -51,6 +51,7 @@ export default abstract class Metric<RecordFormat extends MetricRecord> {
       isError: observable,
       isLoading: observable,
       apiData: observable.ref,
+      tenantId: observable,
     });
 
     this.tenantId = tenantId;

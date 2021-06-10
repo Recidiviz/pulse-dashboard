@@ -17,7 +17,6 @@
 import PageVitalsStore, { getSummaryStatus } from "../PageVitalsStore";
 import RootStore from "../../../RootStore";
 import CoreStore from "..";
-import { ENTITY_TYPES } from "../../models/types";
 
 describe("getSummaryStatus", () => {
   describe("when value is less than 70", () => {
@@ -57,25 +56,9 @@ describe("getSummaryStatus", () => {
   });
 });
 
-jest.mock("../../models/VitalsMetrics");
-jest.mock("../../models/ProjectionsMetrics");
-jest.mock("../../../RootStore/TenantStore", () => {
+jest.mock("../../models/VitalsMetrics", () => {
   return jest.fn().mockImplementation(() => ({
-    currentTenantId: "US_ND",
-  }));
-});
-
-let coreStore: CoreStore;
-let pageVitalsStore: PageVitalsStore;
-
-describe("PageVitalsStore", () => {
-  beforeEach(() => {
-    coreStore = new CoreStore(RootStore);
-    pageVitalsStore = coreStore.pageVitalsStore;
-  });
-
-  describe("getTimeSeriesDownloadableData", () => {
-    const data = [
+    timeSeries: [
       {
         date: "2021-03-11",
         entityId: "STATE_DOC",
@@ -132,8 +115,52 @@ describe("PageVitalsStore", () => {
         value: 35.5,
         monthlyAvg: 35.8,
       },
-    ];
+    ],
+    summaries: [
+      {
+        entityId: "OFFICE_A",
+        entityName: "Office A",
+        entityType: "LEVEL_1_SUPERVISION_LOCATION",
+        overall: 85,
+        overall30Day: 0,
+        overall90Day: -2,
+        parentEntityId: "STATE_DOC",
+        timelyContact: 60,
+        timelyDischarge: 63,
+        timelyRiskAssessment: 69,
+      },
+      {
+        entityId: "OFFICE_B",
+        entityName: "Office B",
+        entityType: "LEVEL_1_SUPERVISION_LOCATION",
+        overall: 95,
+        overall30Day: 0,
+        overall90Day: -2,
+        parentEntityId: "STATE_DOC",
+        timelyContact: 90,
+        timelyDischarge: 93,
+        timelyRiskAssessment: 99,
+      },
+    ],
+  }));
+});
+jest.mock("../../models/ProjectionsMetrics");
+jest.mock("../../../RootStore/TenantStore", () => {
+  return jest.fn().mockImplementation(() => ({
+    currentTenantId: "US_ND",
+  }));
+});
 
+let coreStore: CoreStore;
+let pageVitalsStore: PageVitalsStore;
+
+describe("PageVitalsStore", () => {
+  beforeEach(() => {
+    coreStore = new CoreStore(RootStore);
+    pageVitalsStore = coreStore.pageVitalsStore;
+  });
+
+  describe("getTimeSeriesDownloadableData", () => {
     it("returns the data formatted for download", () => {
       const expected = {
         chartDatasets: [
@@ -195,40 +222,12 @@ describe("PageVitalsStore", () => {
         chartId: "MetricsOverTime",
         dataExportLabel: "Date",
       };
-      pageVitalsStore.setTimeSeries(data);
       const result = pageVitalsStore.timeSeriesDownloadableData;
       expect(result).toEqual(expected);
     });
   });
 
   describe("getSummaryDownloadableData", () => {
-    const data = [
-      {
-        entityId: "OFFICE_A",
-        entityName: "Office A",
-        entityType: ENTITY_TYPES.LEVEL_1_SUPERVISION_LOCATION,
-        overall: 85,
-        overall30Day: 0,
-        overall90Day: -2,
-        parentEntityId: "STATE_DOC",
-        timelyContact: 60,
-        timelyDischarge: 63,
-        timelyRiskAssessment: 69,
-      },
-      {
-        entityId: "OFFICE_B",
-        entityName: "Office B",
-        entityType: ENTITY_TYPES.LEVEL_1_SUPERVISION_LOCATION,
-        overall: 95,
-        overall30Day: 0,
-        overall90Day: -2,
-        parentEntityId: "STATE_DOC",
-        timelyContact: 90,
-        timelyDischarge: 93,
-        timelyRiskAssessment: 99,
-      },
-    ];
-
     it("returns the data formatted for download", () => {
       const expected = {
         chartDatasets: [
@@ -258,8 +257,6 @@ describe("PageVitalsStore", () => {
         chartId: "MetricsByOffice",
         dataExportLabel: "Office",
       };
-
-      pageVitalsStore.setSummaries(data);
       const result = pageVitalsStore.summaryDownloadableData;
       expect(result).toEqual(expected);
     });
