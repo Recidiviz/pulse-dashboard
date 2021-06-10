@@ -58,7 +58,7 @@ const transformRestrictedDistrictFilter = (
 const getFilterFnByMetricName = (metricName, filters) => {
   const filterKeys = getFilterKeys();
 
-  return metricName === "revocations_matrix_by_month"
+  return metricName === "revocations_matrix_events_by_month"
     ? matchesAllFilters({
         filters,
         skippedFilters: [filterKeys.METRIC_PERIOD_MONTHS],
@@ -88,7 +88,7 @@ const getFiltersByMetricName = (metricName, filters) => {
     case "revocations_matrix_distribution_by_officer":
     case "revocations_matrix_distribution_by_race":
     case "revocations_matrix_distribution_by_violation":
-    case "revocations_matrix_by_month":
+    case "revocations_matrix_events_by_month":
       return filters;
     // Only create a subset when there is a restricted district (level_1_supervision_location)
     case "revocations_matrix_cells":

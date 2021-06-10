@@ -32,8 +32,8 @@ function newRevocations(dimensions) {
       supervision_location_restricted_access_emails: {
         filename: "supervision_location_restricted_access_emails.json",
       },
-      revocations_matrix_by_month: {
-        filename: "revocations_matrix_by_month.txt",
+      revocations_matrix_events_by_month: {
+        filename: "revocations_matrix_events_by_month.txt",
         dimensions: {
           charge_category: dimensions.charge_category,
           month: dimensions.month,

@@ -21,7 +21,7 @@ export const US_PA_METHODOLOGY: LanternMethodology = {
     {
       id: 1,
       header: "What this chart shows",
-      body: `This chart displays the total number of people who were recommitted on a board action to an SCI, CCC, or Contract Facility from parole during each month.`,
+      body: `This chart displays the total number of recommitments from a board action to an SCI, CCC, or Contract Facility from parole during each month.`,
     },
     {
       id: 2,

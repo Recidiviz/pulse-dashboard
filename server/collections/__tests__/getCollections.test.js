@@ -64,11 +64,11 @@ describe("getCollections", () => {
         const collections = getCollections(stateCode);
         expect(collections).toHaveProperty(COLLECTIONS.NEW_REVOCATION);
         expect(collections[COLLECTIONS.NEW_REVOCATION]).toHaveProperty(
-          "revocations_matrix_by_month"
+          "revocations_matrix_events_by_month"
         );
         expect(
-          collections[COLLECTIONS.NEW_REVOCATION].revocations_matrix_by_month
-            .dimensions.charge_category
+          collections[COLLECTIONS.NEW_REVOCATION]
+            .revocations_matrix_events_by_month.dimensions.charge_category
         ).toEqual(dimensionsByStateCode[stateCode].charge_category);
       });
     });

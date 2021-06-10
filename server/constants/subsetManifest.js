@@ -54,7 +54,7 @@ const FILES_WITH_SUBSETS = [
   "revocations_matrix_distribution_by_race",
   "revocations_matrix_distribution_by_risk_level",
   "revocations_matrix_distribution_by_violation",
-  "revocations_matrix_by_month",
+  "revocations_matrix_events_by_month",
 ];
 
 function validateSubsetManifest() {

@@ -67,7 +67,7 @@ describe("createSubsetFilters", () => {
         "revocations_matrix_distribution_by_officer",
         "revocations_matrix_distribution_by_race",
         "revocations_matrix_distribution_by_violation",
-        "revocations_matrix_by_month",
+        "revocations_matrix_events_by_month",
         "revocations_matrix_distribution_by_district",
       ].forEach((metricName) => {
         it("replaces the filter value with an array of values from the subset manifest", () => {
@@ -127,7 +127,7 @@ describe("createSubsetFilters", () => {
         "revocations_matrix_distribution_by_officer",
         "revocations_matrix_distribution_by_race",
         "revocations_matrix_distribution_by_violation",
-        "revocations_matrix_by_month",
+        "revocations_matrix_events_by_month",
       ].forEach((metricName) => {
         it("replaces the restrictedDistrict filter key with level_1_supervision_location", () => {
           expect(createSubsetFilters({ filters, metricName })).toEqual({
@@ -171,9 +171,9 @@ describe("getFilterFnByMetricName", () => {
     jest.clearAllMocks();
   });
 
-  describe("given metricName=revocations_matrix_by_month", () => {
+  describe("given metricName=revocations_matrix_events_by_month", () => {
     const filters = {};
-    const metricName = "revocations_matrix_by_month";
+    const metricName = "revocations_matrix_events_by_month";
 
     it("matchesAllFilters is called with correct skippedFilters param", () => {
       getFilterFnByMetricName(metricName, filters);
@@ -203,7 +203,7 @@ describe("getFiltersByMetricName", () => {
       "revocations_matrix_distribution_by_officer",
       "revocations_matrix_distribution_by_race",
       "revocations_matrix_distribution_by_violation",
-      "revocations_matrix_by_month",
+      "revocations_matrix_events_by_month",
       "unknown_file",
     ].forEach((metricName) => {
       it("returns the filters object", () => {
