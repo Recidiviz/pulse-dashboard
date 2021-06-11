@@ -21,12 +21,12 @@ export const US_PA_METHODOLOGY: LanternMethodology = {
     {
       id: 1,
       header: "What this chart shows",
-      body: `This chart displays the total number of recommitments from a board action to an SCI, CCC, or Contract Facility from parole during each month.`,
+      body: `This chart displays the total number of recommitments from a board action to an SCI, CCC, or Contract Facility from parole during each month. Note: This chart uses an event-based methodology – meaning, if a single individual has multiple recommitments during the time period, each recommitment is counted separately. For all other charts on this dashboard, a person-based methodology is used, which means if an individual has multiple recommitments during the time period, they are only counted once for their most recent recommitment.`,
     },
     {
       id: 2,
       header: "Who is included",
-      body: `Counts include people who were recommitted on a board action to SCIs, CCCs, or Contract Facilities from parole. This includes people on parole who were recommitted under Act 122 and those who were recommitted for revocation. For those recommitted under Act 122, individuals for whom their commitment length is unknown will be placed in the "SCI < 6 MONTHS" category. The SCI commitment length may be unknown when an individual has a recorded recommitment to a CCC or Contract Facility with the "Program 46" code, but there is missing data for the corresponding board action specifying the length of stay mandated by the parole board. Counts do not include (1) people with Parole Violator Pending status - recommitments for these individuals are counted on the date their status changes to Convicted Parole Violator or Technical Parole Violator; (2) people who are serving a State Indeterminate Punishment sentence; (3) people recommitted for treatment in a CCC or Contract Facility. Person-based counts are used throughout the dashboard, so if a single individual has multiple recommitments in the selected time period, the dashboard counts their most recent recommitment. This chart (like all charts on the page) will automatically repopulate to match whatever filter(s) the user has selected. For example, if the user has selected "01 - PHILADELPHIA" from the drop-down menus at the top of the screen, this chart will automatically update to include only people from the Philadelphia district.`,
+      body: ` Counts include the number of recommitments from a board action to SCIs, CCCs, or Contract Facilities from parole. This includes recommitments under Act 122 as well as recommitments for revocations. Recommitments under Act 122 where the recommitment length is unknown are placed in the “SCI <6 MONTHS” category. The SCI commitment length may be unknown when a recommitment to a CCC or Contract Facility has the “Program 46” code, but there is missing data for the corresponding board action specifying the length of stay mandated by the parole board. Counts do not include (1) Parole Violator Pending status - recommitments are counted on the date the status changes to Convicted Parole Violator or Technical Parole Violator; (2) State Indeterminate Punishment sentences; (3) admissions for treatment in a CCC or Contract Facility. This chart (like all charts on the page) will automatically repopulate to match whatever filter(s) the user has selected. For example, if the user has selected “01 - PHILADELPHIA” from the drop-down menus at the top of the screen, this chart will automatically update to include only recommitments from the Philadelphia district.`,
     },
   ],
   recommitmentsMatrix: [
@@ -206,7 +206,12 @@ export const US_PA_METHODOLOGY: LanternMethodology = {
     {
       id: 5,
       header: "Violation Record",
-      body: ` A summary of the most severe reported violation on each violation report filed within one year prior to the last reported violation before the person was recommitted.`,
+      body: `A summary of the most severe reported violation on each violation report filed within one year prior to the last reported violation before the person was recommitted.`,
+    },
+    {
+      id: 6,
+      header: "All Recommitments",
+      body: `A list of all recommitments for a recommitted individual during the selected time period, with the most recent recommitment being first.`,
     },
   ],
 };
