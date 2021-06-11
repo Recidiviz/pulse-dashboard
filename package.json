@@ -222,9 +222,15 @@
   },
   "resolutions": {
     "styled-components": "^5",
+    "normalize-url": "^4.5.1",
+    "css-what": "^5.0.1",
     "y18n": "^5",
+    "glob-parent": "^5.1.2",
+    "trim-newlines": "^3.0.1",
     "json-bigint": "^1",
+    "merge-deep": "^3.0.3",
     "url-parse": "^1.5.0",
-    "ua-parser-js": "^0.7.24"
+    "ua-parser-js": "^0.7.24",
+    "ws": "^7.4.6"
   }
 }
