@@ -18,12 +18,9 @@
 import React from "react";
 
 import { humanReadableTitleCase } from "../../../utils/formatStrings";
-import { parseAndFormatViolationRecord } from "./violationRecord";
-import getNameFromOfficerId from "../../utils/getNameFromOfficerId";
-import { translate } from "../../../utils/i18nSettings";
 import { COLORS } from "../../../assets/scripts/constants/colors";
 
-const nullSafeLabel = (label) => label || "Unknown";
+export const nullSafeLabel = (label) => label || "Unknown";
 
 export const normalizeOfficerRecommendation = (value) => {
   switch (value) {
@@ -34,36 +31,6 @@ export const normalizeOfficerRecommendation = (value) => {
     default:
       return value ? humanReadableTitleCase(value) : "";
   }
-};
-
-export const formatData = (data, options) => {
-  const includeOfficerRecommendation = options
-    .map((o) => o.key)
-    .includes("officer_recommendation");
-  return data.map((record) => {
-    const obj = {
-      state_id: nullSafeLabel(record.state_id),
-      district: nullSafeLabel(record.district),
-      officer: nullSafeLabel(getNameFromOfficerId(record.officer)),
-      risk_level: nullSafeLabel(translate("riskLevelsMap")[record.risk_level]),
-      violation_record: nullSafeLabel(
-        parseAndFormatViolationRecord(record.violation_record)
-      ),
-    };
-    if (includeOfficerRecommendation)
-      obj.officer_recommendation = nullSafeLabel(
-        normalizeOfficerRecommendation(record.officer_recommendation)
-      );
-    return obj;
-  });
-};
-
-export const formatExportData = (data, options) => {
-  return (formatData(data, options) || []).map(
-    ({ admissionType, ...record }) => ({
-      data: Object.values(record),
-    })
-  );
 };
 
 export const nullSafeCell = (key, label, idx) => {

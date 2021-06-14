@@ -26,7 +26,7 @@ import ErrorMessage from "../../components/ErrorMessage";
 import Sortable from "./Sortable";
 import Pagination from "./Pagination";
 import { useContainerHeight } from "../hooks/useContainerHeight";
-import { nullSafeCell, formatData, formatExportData } from "./utils/helpers";
+import { nullSafeCell } from "./utils/helpers";
 import { useLanternStore } from "../LanternStoreProvider";
 import { translate } from "../../utils/i18nSettings";
 
@@ -42,7 +42,7 @@ const CaseTable = ({ timeDescription }) => {
 
   const filteredData = store.filteredData.slice();
   const sortedData = filteredData.sort(comparator);
-  const { options } = store;
+  const { options, formatData, formatExportData } = store;
 
   if (store.isLoading) {
     return <LoadingChart containerHeight={containerHeight} />;
