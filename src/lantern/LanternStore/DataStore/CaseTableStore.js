@@ -57,10 +57,14 @@ export default class CaseTableStore extends BaseDataStore {
   formatAdmissionHistory(admissionHistory) {
     switch (this.rootStore.currentTenantId) {
       case US_PA:
-        return admissionHistory
-          .split(";")
-          .map((admissionType) => ADMISSION_TYPE_LABELS[admissionType])
-          .join(",");
+        return (
+          admissionHistory
+            .split(";")
+            .map((admissionType) => ADMISSION_TYPE_LABELS[admissionType])
+            // TODO(recidiviz-data/isues/7878): Re-order admission types in the backend so most recent is first
+            .reverse()
+            .join(",")
+        );
       default:
         return admissionHistory;
     }
