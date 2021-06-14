@@ -17,10 +17,7 @@
 import { matchesAllFilters } from "shared-filters";
 import BaseDataStore from "./BaseDataStore";
 import { US_PA } from "../../../RootStore/TenantStore/lanternTenants";
-import {
-  nullSafeLabel,
-  normalizeOfficerRecommendation,
-} from "../../CaseTable/utils/helpers";
+import { nullSafeLabel, normalizeOfficerRecommendation } from "./helpers";
 import { parseAndFormatViolationRecord } from "../../CaseTable/utils/violationRecord";
 import getNameFromOfficerId from "../../utils/getNameFromOfficerId";
 import { translate } from "../../../utils/i18nSettings";
@@ -34,7 +31,7 @@ export default class CaseTableStore extends BaseDataStore {
       treatCategoryAllAsAbsent: true,
     });
     this.formatAdmissionHistory = this.formatAdmissionHistory.bind(this);
-    this.formatData = this.formatData.bind(this);
+    this.formatTableData = this.formatTableData.bind(this);
     this.formatExportData = this.formatExportData.bind(this);
   }
 
@@ -46,13 +43,13 @@ export default class CaseTableStore extends BaseDataStore {
     return this.filterData(this.apiData, dataFilter);
   }
 
-  formatExportData = (data, options) => {
-    return (this.formatData(data, options) || []).map(
+  formatExportData(data) {
+    return (this.formatTableData(data) || []).map(
       ({ admissionType, ...record }) => ({
         data: Object.values(record),
       })
     );
-  };
+  }
 
   formatAdmissionHistory(admissionHistory) {
     switch (this.rootStore.currentTenantId) {
@@ -62,15 +59,16 @@ export default class CaseTableStore extends BaseDataStore {
             .split(";")
             .map((admissionType) => ADMISSION_TYPE_LABELS[admissionType])
             // TODO(recidiviz-data/isues/7878): Re-order admission types in the backend so most recent is first
+            .filter(Boolean)
             .reverse()
-            .join(",")
+            .join(", ")
         );
       default:
         return admissionHistory;
     }
   }
 
-  formatData(tableData) {
+  formatTableData(tableData) {
     return tableData.map((row) => ({
       state_id: nullSafeLabel(row.state_id),
       district: nullSafeLabel(row.district),
@@ -93,10 +91,10 @@ export default class CaseTableStore extends BaseDataStore {
   }
 
   get includeOfficerRecommendation() {
-    return this.options.map((o) => o.key).includes("officer_recommendation");
+    return this.columns.map((o) => o.key).includes("officer_recommendation");
   }
 
-  get options() {
+  get columns() {
     return this.rootStore.currentTenantId === US_PA
       ? [
           { key: "state_id", label: "DOC ID" },

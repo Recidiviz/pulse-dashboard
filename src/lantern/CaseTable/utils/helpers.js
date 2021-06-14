@@ -17,21 +17,7 @@
 
 import React from "react";
 
-import { humanReadableTitleCase } from "../../../utils/formatStrings";
 import { COLORS } from "../../../assets/scripts/constants/colors";
-
-export const nullSafeLabel = (label) => label || "Unknown";
-
-export const normalizeOfficerRecommendation = (value) => {
-  switch (value) {
-    case "CODS":
-      return value;
-    case "PLACEMENT_IN_DOC_FACILITY":
-      return "Placement In DOC Facility";
-    default:
-      return value ? humanReadableTitleCase(value) : "";
-  }
-};
 
 export const nullSafeCell = (key, label, idx) => {
   if (label) {
