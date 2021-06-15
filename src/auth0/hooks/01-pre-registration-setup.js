@@ -32,8 +32,8 @@
 @param {object} context.webtask - webtask context
 @param {function} cb - function (error, response)
 */
-module.exports = function (user, context, cb) {
-  /**
+module.exports = async function (user, context, cb) {
+    /**
    * This hook allows custom code to prevent creation of a user in the
    * database or to add custom app_metadata or user_metadata to a
    * newly created user.
@@ -46,36 +46,37 @@ module.exports = function (user, context, cb) {
    * 3. Fetch any user restrictions and add them to the user's app_metadata
    *
    */
+
   const response = {};
 
   /** 1. Domain allow list for registration */
-  const authorizedDomains = []; // add authorized domains here
-  const emailSplit = user.email.split("@");
+  const authorizedDomains = ['recidiviz.org', 'csg.org']; // add authorized domains here
+  const emailSplit = user.email.split('@');
   const userDomain = emailSplit[emailSplit.length - 1].toLowerCase();
 
-  const userHasAccess = authorizedDomains.some(function (authorizedDomain) {
+  const userHasAccess = authorizedDomains.some(function(authorizedDomain) {
     return userDomain === authorizedDomain;
   });
 
   if (userHasAccess) {
     user.app_metadata = user.app_metadata || {};
 
-    if (["csg.org", "recidiviz.org"].includes(userDomain)) {
+    if (['csg.org', 'recidiviz.org'].includes(userDomain)) {
       // Do not set state_code on internal users, this is done in a rule
-      cb(null, { user });
+      return cb(null, { user });
     }
 
     /** 2. Add user's state_code to the app_metadata */
-    const acceptedStateCodes = ["id", "mo", "nd", "pa"];
-    const domainSplit = userDomain.split(".");
+    const acceptedStateCodes = ['id', 'mo', 'nd', 'pa'];
+    const domainSplit = userDomain.split('.');
 
     // assumes the state is always the second to last component of the domain
     // e.g. @doc.mo.gov or @nd.gov, but not @nd.docr.gov
     let state = domainSplit[domainSplit.length - 2].toLowerCase();
 
     // Idaho does not use the abbreviation in their email addresses
-    if (state === "idaho") {
-      state = "id";
+    if (state === 'idaho') {
+      state = 'id';
     }
 
     const stateCode = `us_${state}`;
@@ -85,11 +86,11 @@ module.exports = function (user, context, cb) {
 
     /** 3. Add the user's restrictions to the app_metadata */
     // Other states do not currently have any sign up or user restrictions
-    const stateCodesWithRestrictions = ["us_mo"];
+    const stateCodesWithRestrictions = ['us_mo'];
 
     if (stateCodesWithRestrictions.includes(stateCode.toLowerCase())) {
-      const Sentry = require("@sentry/node");
-      const { GoogleAuth } = require("google-auth-library");
+      const Sentry = require('@sentry/node');
+      const { GoogleAuth } = require('google-auth-library');
       Sentry.init({
         dsn: context.webtask.secrets.SENTRY_DSN,
         environment: context.webtask.secrets.SENTRY_ENV,
@@ -103,7 +104,8 @@ module.exports = function (user, context, cb) {
         const client = await auth.getIdTokenClient(
           context.webtask.secrets.TARGET_AUDIENCE
         );
-        const url = `${context.webtask.secrets.RECIDIVIZ_APP_URL}/auth/dashboard_user_restrictions_by_email?email_address=${user.email}&region_code=${stateCode}`;
+        const url = `${context.webtask.secrets
+          .RECIDIVIZ_APP_URL}/auth/dashboard_user_restrictions_by_email?email_address=${user.email}&region_code=${stateCode}`;
         const apiResponse = await client.request({ url, retry: true });
         const restrictions = apiResponse.data;
 
@@ -119,7 +121,7 @@ module.exports = function (user, context, cb) {
         );
         Sentry.captureException(apiError);
         const clientMessage =
-          "There was a problem registering your account. Please contact your organization administrator, if you don’t know your administrator, contact help@recidiviz.org.";
+          'There was a problem registering your account. Please contact your organization administrator, if you don’t know your administrator, contact help@recidiviz.org.';
         return cb(
           new PreUserRegistrationError(apiError.message, clientMessage)
         );
@@ -127,8 +129,7 @@ module.exports = function (user, context, cb) {
     }
 
     response.user = user;
-    cb(null, response);
-  } else {
-    cb("Access denied.", null);
+    return cb(null, response);
   }
+  return cb('Access denied.', null);
 };
