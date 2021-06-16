@@ -39,6 +39,7 @@ type Tenants = {
     name: string;
     stateCode: string;
     availableStateCodes: string[];
+    enableUserRestrictions: boolean;
     navigation?: Navigation;
     vitalsMetrics?: VitalsMetric[];
   };
@@ -49,11 +50,13 @@ const TENANTS: Tenants = {
     name: "Missouri",
     stateCode: "MO",
     availableStateCodes: [lantern.US_MO],
+    enableUserRestrictions: true,
   },
   [core.US_ND]: {
     name: "North Dakota",
     stateCode: "ND",
     availableStateCodes: [core.US_ND],
+    enableUserRestrictions: false,
     navigation: {
       goals: [],
       ...(flags.enableVitalsDashboard
@@ -97,6 +100,7 @@ const TENANTS: Tenants = {
     name: "Idaho",
     stateCode: "ID",
     availableStateCodes: [core.US_ID],
+    enableUserRestrictions: false,
     navigation: {
       ...(flags.enableProjectionsDashboard
         ? { community: ["projections"], facilities: ["projections"] }
@@ -110,16 +114,19 @@ const TENANTS: Tenants = {
     name: "Pennsylvania",
     stateCode: "PA",
     availableStateCodes: [lantern.US_PA],
+    enableUserRestrictions: false,
   },
   RECIDIVIZ: {
     name: "Recidiviz",
     stateCode: "Recidiviz",
     availableStateCodes: lantern.LANTERN_TENANTS.concat(core.CORE_TENANTS),
+    enableUserRestrictions: true,
   },
   LANTERN: {
     name: "Lantern",
     stateCode: "Lantern",
     availableStateCodes: lantern.LANTERN_TENANTS,
+    enableUserRestrictions: false,
   },
 };
 

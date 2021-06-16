@@ -35,6 +35,8 @@ export type TenantId = typeof TenantIds[number];
 export type UserAppMetadata = {
   state_code: Lowercase<TenantId>;
   blocked_state_codes?: Lowercase<TenantId>[];
+  allowed_supervision_location_ids?: string[];
+  allowed_supervision_location_level?: string;
 };
 
 export type LanternMethodologyByTenant = {

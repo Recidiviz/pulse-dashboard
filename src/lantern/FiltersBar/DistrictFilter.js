@@ -30,19 +30,15 @@ const DistrictFilter = () => {
   const {
     filters,
     filtersStore,
-    restrictedDistricts,
-    userRestrictedAccessStore,
+    userRestrictionsStore,
     districtsStore,
   } = useLanternStore();
+  const { allowedSupervisionLocationIds } = userRestrictionsStore;
   const {
-    isLoading: userRestrictedAccessIsLoading,
-  } = userRestrictedAccessStore;
-  const {
-    isLoading: districtsIsLoading,
+    isLoading,
     districtKeys: { filterKey, secondaryFilterKey },
   } = districtsStore;
   const { filterOptions } = filtersStore;
-  const isLoading = userRestrictedAccessIsLoading || districtsIsLoading;
 
   const { options } = filterOptions[filterKey];
 
@@ -64,7 +60,7 @@ const DistrictFilter = () => {
   return (
     <FilterField label="District" className="DistrictFilter">
       <DistrictFilterDropown
-        restrictedValues={restrictedDistricts}
+        restrictedValues={allowedSupervisionLocationIds}
         options={options}
         selected={selectedValues}
         onValueChange={onValueChange}

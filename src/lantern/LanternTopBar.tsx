@@ -19,22 +19,13 @@ import React from "react";
 import TopBar from "../components/TopBar/TopBar";
 import TopBarLogo from "../components/TopBar/TopBarLogo";
 import TopBarUserMenuForAuthenticatedUser from "../components/TopBar/TopBarUserMenuForAuthenticatedUser";
-import { useLanternStore } from "./LanternStoreProvider";
 
 const LanternTopBar: React.FC = () => {
-  const { userRestrictedAccessStore } = useLanternStore();
-
-  const handleOnProfileClick = () => {
-    userRestrictedAccessStore.resetRestrictedDistrict();
-  };
-
   return (
     <TopBar isHidable isWide>
       <TopBarLogo />
       <ul className="nav-right">
-        <TopBarUserMenuForAuthenticatedUser
-          handleOnProfileClick={handleOnProfileClick}
-        />
+        <TopBarUserMenuForAuthenticatedUser />
       </ul>
     </TopBar>
   );

@@ -34,7 +34,7 @@ jest.mock("shared-filters", () => {
 });
 
 const mockLanternStore = {
-  userRestrictedAccessStore: {
+  userRestrictionsStore: {
     enabledRevocationsCharts: [
       "District",
       "Risk level",
@@ -93,7 +93,7 @@ describe("RevocationsChartStore", () => {
   });
 
   describe("availableChartIds", () => {
-    it("returns all chart ids from the UserRestrictedAccessStore", () => {
+    it("returns all chart ids from the UserRestrictionsStore", () => {
       expect(revocationsChartStore.availableChartIds).toEqual([
         "District",
         "Risk level",

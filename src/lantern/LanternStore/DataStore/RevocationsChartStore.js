@@ -100,7 +100,7 @@ export default class RevocationsChartStore extends BaseDataStore {
   }
 
   get availableChartIds() {
-    return this.rootStore.userRestrictedAccessStore.enabledRevocationsCharts;
+    return this.rootStore.userRestrictionsStore.enabledRevocationsCharts;
   }
 
   get filteredData() {

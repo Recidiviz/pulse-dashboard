@@ -81,8 +81,6 @@ export default class BaseDataStore {
 
   ignoredSubsetDimensions;
 
-  districtsData = {};
-
   constructor({
     rootStore,
     file,
@@ -128,7 +126,7 @@ export default class BaseDataStore {
       if (
         this.rootStore.userStore &&
         !this.rootStore.userStore.userIsLoading &&
-        !this.rootStore.userRestrictedAccessStore.isLoading
+        !this.rootStore.districtsStore.isLoading
       ) {
         this.fetchData({
           tenantId: this.rootStore.currentTenantId,
@@ -151,10 +149,7 @@ export default class BaseDataStore {
   }
 
   get filtersQueryParams() {
-    return getQueryStringFromFilters(
-      this.filters,
-      [].concat(this.rootStore.restrictedDistricts)
-    );
+    return getQueryStringFromFilters(this.filters);
   }
 
   get filters() {

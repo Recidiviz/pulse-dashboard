@@ -14,13 +14,29 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
+
 /**
- * Utilities for running the backend in demo mode
+ * Returns an artificial Auth0 id token for a fake/demo user.
+ * You can pass in other attributes to override the defaults.
  */
-function getIsDemoMode() {
-  return process.env.IS_DEMO === "true";
+function fetchDemoUser({
+  email = "notarealemail@recidiviz.org",
+  name = "Demo Jones",
+  stateCode = "recidiviz",
+  allowedSupervisionLocationIds,
+  allowedSupervisionLocationLevel,
+}) {
+  return {
+    picture:
+      "https://ui-avatars.com/api/?name=Demo+Jones&background=0D8ABC&color=fff&rounded=true",
+    name,
+    email,
+    [`${process.env.METADATA_NAMESPACE}app_metadata`]: {
+      state_code: stateCode,
+      allowed_supervision_location_ids: allowedSupervisionLocationIds,
+      allowed_supervision_location_level: allowedSupervisionLocationLevel,
+    },
+  };
 }
 
-module.exports = {
-  isDemoMode: getIsDemoMode(),
-};
+module.exports = { fetchDemoUser };

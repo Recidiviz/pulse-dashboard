@@ -94,6 +94,28 @@ describe("subsetFileHelpers", () => {
         ],
       });
     });
+
+    describe("when filters include level_1_supervision_location", () => {
+      it("includes level_1_supervision_location in the dimension manifest", () => {
+        originalMetadata.dimension_manifest.push([
+          "level_1_supervision_location",
+          ["04n", "EP"],
+        ]);
+        subsetFilters.level_1_supervision_location = ["04n"];
+
+        expect(
+          createSubsetMetadata(totalDataPoints, originalMetadata, subsetFilters)
+        ).toEqual({
+          ...originalMetadata,
+          total_data_points: totalDataPoints,
+          dimension_manifest: [
+            ["violation_type", subsetFilters.violation_type],
+            ["supervision_type", ["all", "dual", "parole", "probation"]],
+            ["level_1_supervision_location", ["04n"]],
+          ],
+        });
+      });
+    });
   });
 
   describe("createFlattenedValueMatrix", () => {

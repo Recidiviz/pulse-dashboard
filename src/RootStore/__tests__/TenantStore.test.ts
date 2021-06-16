@@ -17,14 +17,15 @@
 import TenantStore, {
   CURRENT_TENANT_IN_SESSION,
 } from "../TenantStore/TenantStore";
-import { US_MO } from "../TenantStore/lanternTenants";
-import { METADATA_NAMESPACE } from "../../constants";
+import { US_MO, US_PA } from "../TenantStore/lanternTenants";
 import RootStore from "..";
 import UserStore from "../UserStore";
 
 jest.mock("@auth0/auth0-spa-js");
 jest.mock("../../api/metrics/metricsClient");
 jest.mock("../../components/StoreProvider");
+
+const METADATA_NAMESPACE = process.env.REACT_APP_METADATA_NAMESPACE;
 
 const metadataField = `${METADATA_NAMESPACE}app_metadata`;
 const user = { [metadataField]: { state_code: US_MO }, email_verified: true };
@@ -38,6 +39,85 @@ describe("TenantStore", () => {
     ({
       userStore: mockUserStore as UserStore,
     } as typeof RootStore);
+
+  describe("enableUserRestrictions", () => {
+    it("returns true when a current tenant has restrictions enabled", () => {
+      const mockRootStore = createMockRootStore({
+        userIsLoading: false,
+        availableStateCodes: ["US_MO"],
+        allowedSupervisionLocationIds: ["25"],
+        userHasAccess: () => true,
+        user,
+      });
+      tenantStore = new TenantStore({
+        rootStore: mockRootStore,
+      });
+      expect(tenantStore.enableUserRestrictions).toEqual(true);
+    });
+    it("returns false when a current tenant does not have restrictions enabled", () => {
+      const mockRootStore = createMockRootStore({
+        userIsLoading: false,
+        availableStateCodes: ["US_PA"],
+        allowedSupervisionLocationIds: [],
+        userHasAccess: () => true,
+        user: { [metadataField]: { state_code: US_PA }, email_verified: true },
+      });
+      tenantStore = new TenantStore({
+        rootStore: mockRootStore,
+      });
+      expect(tenantStore.enableUserRestrictions).toEqual(false);
+    });
+
+    it("returns true for recidiviz users with restrictions", () => {
+      const mockRootStore = createMockRootStore({
+        userIsLoading: false,
+        availableStateCodes: ["US_MO", "US_PA"],
+        allowedSupervisionLocationIds: ["25"],
+        userHasAccess: () => true,
+        user: {
+          [metadataField]: { state_code: "recidiviz" },
+          email_verified: true,
+        },
+      });
+      tenantStore = new TenantStore({
+        rootStore: mockRootStore,
+      });
+      expect(tenantStore.enableUserRestrictions).toEqual(true);
+    });
+    it("returns false for recidiviz users without restrictions", () => {
+      const mockRootStore = createMockRootStore({
+        userIsLoading: false,
+        availableStateCodes: ["US_MO", "US_PA"],
+        allowedSupervisionLocationIds: [],
+        userHasAccess: () => true,
+        user: {
+          [metadataField]: { state_code: "recidiviz" },
+          email_verified: true,
+        },
+      });
+      tenantStore = new TenantStore({
+        rootStore: mockRootStore,
+      });
+      expect(tenantStore.enableUserRestrictions).toEqual(false);
+    });
+
+    it("returns false for restrictions in the wrong format", () => {
+      const mockRootStore = createMockRootStore({
+        userIsLoading: false,
+        availableStateCodes: ["US_MO"],
+        allowedSupervisionLocationIds: "some string",
+        userHasAccess: () => true,
+        user: {
+          [metadataField]: { state_code: "US_MO" },
+          email_verified: true,
+        },
+      });
+      tenantStore = new TenantStore({
+        rootStore: mockRootStore,
+      });
+      expect(tenantStore.enableUserRestrictions).toEqual(false);
+    });
+  });
 
   describe("when there is a CURRENT_TENANT_IN_SESSION", () => {
     beforeEach(() => {

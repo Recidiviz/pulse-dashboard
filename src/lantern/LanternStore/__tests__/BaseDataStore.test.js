@@ -20,14 +20,14 @@ import BaseDataStore, {
   DEFAULT_IGNORED_DIMENSIONS,
 } from "../DataStore/BaseDataStore";
 
-import UserRestrictedAccessStore from "../UserRestrictedAccessStore";
+import UserRestrictionsStore from "../UserRestrictionsStore";
 import LanternStore from "..";
-import { METADATA_NAMESPACE } from "../../../constants";
 import { callMetricsApi } from "../../../api/metrics/metricsClient";
 import DistrictsStore from "../DistrictsStore";
 
 let lanternStore;
 let baseStore;
+const METADATA_NAMESPACE = process.env.REACT_APP_METADATA_NAMESPACE;
 const mockTenantId = "US_MO";
 const metadataField = `${METADATA_NAMESPACE}app_metadata`;
 const mockUser = { [metadataField]: { state_code: mockTenantId } };
@@ -35,7 +35,7 @@ const mockFilterOptimizedDataFormat = sharedFilters.filterOptimizedDataFormat;
 const mockGetTokenSilently = jest.fn();
 
 jest.mock("@sentry/react");
-jest.mock("../UserRestrictedAccessStore");
+jest.mock("../UserRestrictionsStore");
 jest.mock("../DistrictsStore");
 jest.mock("../DataStore/MatrixStore");
 jest.mock("../DataStore/CaseTableStore");
@@ -98,9 +98,10 @@ describe("BaseDataStore", () => {
         },
       };
     });
-    UserRestrictedAccessStore.mockImplementation(() => {
+    UserRestrictionsStore.mockImplementation(() => {
       return {
         isLoading: false,
+        verifyUserRestrictions: jest.fn(),
       };
     });
   });
@@ -298,32 +299,6 @@ describe("BaseDataStore", () => {
           getTokenSilently: mockGetTokenSilently,
         },
       });
-      baseStore = new BaseDataStore({ rootStore: lanternStore, file });
-    });
-
-    afterAll(() => {
-      jest.resetAllMocks();
-    });
-
-    it("does not fetch data", () => {
-      expect(callMetricsApi).toHaveBeenCalledTimes(0);
-    });
-
-    it("sets isError to false and isLoading to false", () => {
-      expect(baseStore.isError).toBe(false);
-      expect(baseStore.isLoading).toBe(true);
-    });
-  });
-
-  describe("when user restricted access is loading", () => {
-    beforeAll(() => {
-      jest.resetAllMocks();
-      UserRestrictedAccessStore.mockImplementationOnce(() => {
-        return {
-          isLoading: true,
-        };
-      });
-      lanternStore = new LanternStore(mockRootStore);
       baseStore = new BaseDataStore({ rootStore: lanternStore, file });
     });
 
