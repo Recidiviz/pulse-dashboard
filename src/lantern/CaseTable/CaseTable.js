@@ -37,12 +37,19 @@ const CaseTable = ({ timeDescription }) => {
   const store = dataStore.caseTableStore;
   const TABLE_TITLE = translate("caseTableTitle");
   const [page, setPage] = useState(0);
-  const { sortOrder, sortField, toggleOrder, comparator } = useSort();
+  const {
+    columns,
+    formatTableData,
+    formatExportData,
+    formatAdmissionHistory,
+  } = store;
+  const { sortOrder, sortField, toggleOrder, comparator } = useSort(
+    formatAdmissionHistory
+  );
   const { containerHeight, containerRef } = useContainerHeight();
 
   const filteredData = store.filteredData.slice();
   const sortedData = filteredData.sort(comparator);
-  const { columns, formatTableData, formatExportData } = store;
 
   if (store.isLoading) {
     return <LoadingChart containerHeight={containerHeight} />;
