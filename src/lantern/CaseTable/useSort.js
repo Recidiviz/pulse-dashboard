@@ -64,19 +64,12 @@ function compareRiskLevel(a, b) {
   return RISK_LEVEL_PRIORITY.indexOf(a) - RISK_LEVEL_PRIORITY.indexOf(b);
 }
 
-function compareOfficerRecomendations(a, b) {
+function compareStrings(a, b) {
   if (!a && b) return 1;
   if (!b && a) return -1;
 
   if (String(a) > String(b)) return 1;
   if (String(a) < String(b)) return -1;
-
-  return 0;
-}
-
-function compareAdmissionHistoryDescriptions(a, b) {
-  if (Number(a) > Number(b)) return 1;
-  if (Number(a) < Number(b)) return -1;
 
   return 0;
 }
@@ -120,9 +113,9 @@ function useSort() {
         district: compareDistricts,
         officer: compareOfficers,
         risk_level: compareRiskLevel,
-        officer_recommendation: compareOfficerRecomendations,
+        officer_recommendation: compareStrings,
         violation_record: compareViolationRecords,
-        admission_history_description: compareAdmissionHistoryDescriptions,
+        admission_history_description: compareStrings,
       }[sort.field];
 
       return (
