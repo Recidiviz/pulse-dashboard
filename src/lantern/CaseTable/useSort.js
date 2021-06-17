@@ -74,6 +74,13 @@ function compareOfficerRecomendations(a, b) {
   return 0;
 }
 
+function compareAdmissionHistoryDescriptions(a, b) {
+  if (Number(a) > Number(b)) return 1;
+  if (Number(a) < Number(b)) return -1;
+
+  return 0;
+}
+
 function getNextOrder(order) {
   switch (order) {
     case "asc":
@@ -115,6 +122,7 @@ function useSort() {
         risk_level: compareRiskLevel,
         officer_recommendation: compareOfficerRecomendations,
         violation_record: compareViolationRecords,
+        admission_history_description: compareAdmissionHistoryDescriptions,
       }[sort.field];
 
       return (
