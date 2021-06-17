@@ -14,13 +14,17 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-/**
- * Utilities for running the backend in demo mode
- */
-function getIsDemoMode() {
-  return process.env.IS_DEMO === "true";
+const { snakeCase } = require("lodash");
+
+function formatKeysToSnakeCase(obj = {}) {
+  if (!obj) return {};
+  const formattedObj = {};
+  Object.keys(obj).forEach((key) => {
+    formattedObj[snakeCase(key)] = obj[key];
+  });
+  return formattedObj;
 }
 
 module.exports = {
-  isDemoMode: getIsDemoMode(),
+  formatKeysToSnakeCase,
 };

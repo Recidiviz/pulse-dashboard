@@ -16,68 +16,83 @@
 // =============================================================================
 import RootStore from "../../../RootStore";
 import LanternStore from "..";
+import UserRestrictionsStore from "../UserRestrictionsStore";
 
 jest.mock("../../../api/metrics");
 jest.mock("../DataStore/DataStore");
 jest.mock("../../../RootStore/TenantStore", () => {
   return jest.fn().mockImplementation(() => {
-    return { currentTenantId: "US_MO", methodology: {} };
+    return {
+      currentTenantId: "US_MO",
+      methodology: {},
+      enableUserRestrictions: true,
+    };
   });
 });
 jest.mock("../../../RootStore/UserStore", () => {
   return jest.fn().mockImplementation(() => {
-    return { user: {} };
+    return {
+      user: {},
+      allowedSupervisionLocationIds: [],
+      userIsLoading: false,
+    };
   });
 });
 
-let rootStore: LanternStore;
+const verifyUserRestrictionsSpy = jest.spyOn(
+  UserRestrictionsStore.prototype,
+  "verifyUserRestrictions"
+);
 
-describe("RootStore", () => {
-  beforeEach(() => {
-    rootStore = new LanternStore(RootStore);
-  });
+const lanternStore: LanternStore = new LanternStore(RootStore);
 
+describe("LanternStore", () => {
   afterAll(() => {
     jest.resetAllMocks();
+    jest.resetModules();
   });
 
   it("contains a FiltersStore", () => {
-    expect(rootStore.filtersStore).toBeDefined();
+    expect(lanternStore.filtersStore).toBeDefined();
   });
 
   it("contains a TenantStore", () => {
-    expect(rootStore.tenantStore).toBeDefined();
+    expect(lanternStore.tenantStore).toBeDefined();
   });
 
   it("contains a UserStore", () => {
-    expect(rootStore.userStore).toBeDefined();
+    expect(lanternStore.userStore).toBeDefined();
   });
 
-  it("contains a UserRestrictedAccessStore", () => {
-    expect(rootStore.userRestrictedAccessStore).toBeDefined();
+  it("contains a UserRestrictionsStore", () => {
+    expect(lanternStore.userRestrictionsStore).toBeDefined();
   });
 
   it("contains a currentTenantId", () => {
-    expect(rootStore.currentTenantId).toBeDefined();
+    expect(lanternStore.currentTenantId).toBeDefined();
   });
 
   it("contains filters", () => {
-    expect(rootStore.filters).toBeDefined();
+    expect(lanternStore.filters).toBeDefined();
   });
 
   it("contains methodology", () => {
-    expect(rootStore.methodology).toBeDefined();
+    expect(lanternStore.methodology).toBeDefined();
   });
 
   it("contains the DataStore", () => {
-    expect(rootStore.dataStore).toBeDefined();
+    expect(lanternStore.dataStore).toBeDefined();
   });
 
   it("contains the DistrictsStore", () => {
-    expect(rootStore.districtsStore).toBeDefined();
+    expect(lanternStore.districtsStore).toBeDefined();
   });
 
   it("contains a user", () => {
-    expect(rootStore.user).toBeDefined();
+    expect(lanternStore.user).toBeDefined();
+  });
+
+  it("calls userRestrictionsStore.verifyUserRestrictions", () => {
+    expect(verifyUserRestrictionsSpy).toHaveBeenCalledTimes(1);
   });
 });

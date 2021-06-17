@@ -32,16 +32,12 @@ import { humanReadableTitleCase } from "../../../utils/formatStrings";
  * @param {string} filters.violationType - Violation type
  * @param {string} filters.admissionType - Admission types or "All"
  */
-export function getQueryStringFromFilters(filters = {}, restrictedDistricts) {
-  return qs.stringify(
-    // TODO(#1043): Update query param in the backend to be restrictedDistricts
-    { ...filters, restrictedDistrict: restrictedDistricts },
-    {
-      encode: false,
-      addQueryPrefix: true,
-      filter: (_, value) => (value !== "" ? value : undefined),
-    }
-  );
+export function getQueryStringFromFilters(filters = {}) {
+  return qs.stringify(filters, {
+    encode: false,
+    addQueryPrefix: true,
+    filter: (_, value) => (value !== "" ? value : undefined),
+  });
 }
 
 export function dimensionManifestIncludesFilterValues({

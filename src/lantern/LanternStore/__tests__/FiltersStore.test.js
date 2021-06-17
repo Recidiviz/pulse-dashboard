@@ -82,7 +82,7 @@ describe("FiltersStore", () => {
       });
     });
 
-    it("sets the defaultFilters to restrictedDistrict if it exists", () => {
+    it("sets the defaultFilters to allowedSupervisionLocationIds if it exists", () => {
       const tenantId = "US_MO";
 
       rootStore = new LanternStore(RootStore);
@@ -90,9 +90,11 @@ describe("FiltersStore", () => {
       runInAction(() => {
         rootStore.tenantStore.currentTenantId = tenantId;
         rootStore.districtsStore.isLoading = false;
-        rootStore.userRestrictedAccessStore.restrictedDistricts = [
-          userDistrict,
-        ];
+        rootStore.userStore.user = {
+          "test-metadata-namespace/app_metadata": {
+            allowed_supervision_location_ids: [userDistrict],
+          },
+        };
       });
 
       expect(
@@ -107,10 +109,15 @@ describe("FiltersStore", () => {
       const usMOFilterKey = getDistrictFilterKey("US_MO");
       const usPAFilterKey = getDistrictFilterKey("US_PA");
 
-      // Set tenant to US_MO
+      // Set tenant to US_MO and get new user
       runInAction(() => {
         rootStore.districtsStore.isLoading = false;
         rootStore.tenantStore.currentTenantId = "US_MO";
+        rootStore.userStore.user = {
+          "test-metadata-namespace/app_metadata": {
+            allowed_supervision_location_ids: [],
+          },
+        };
       });
 
       // Expect default filters
@@ -155,7 +162,7 @@ describe("FiltersStore", () => {
     });
   });
 
-  describe("districts filter", () => {
+  describe("district filter options", () => {
     const mockDistricts = [
       {
         level_2_supervision_location_external_id: "03",
@@ -275,17 +282,21 @@ describe("FiltersStore", () => {
         });
       });
 
-      describe("when there are restricted districts", () => {
+      describe("when there are user restrictions", () => {
         const tenantId = "US_MO";
         it("only returns restricted district options", () => {
           runInAction(() => {
             rootStore.districtsStore.apiData = { data: mockDistricts };
             rootStore.districtsStore.isLoading = false;
             rootStore.tenantStore.currentTenantId = tenantId;
-            rootStore.userRestrictedAccessStore.restrictedDistricts = [
-              "03 - HARRISBURG",
-              "CO - CENTRAL OFFICE",
-            ];
+            rootStore.userStore.user = {
+              [`test-metadata-namespace/app_metadata`]: {
+                allowed_supervision_location_ids: [
+                  "03 - HARRISBURG",
+                  "CO - CENTRAL OFFICE",
+                ],
+              },
+            };
           });
 
           expect(

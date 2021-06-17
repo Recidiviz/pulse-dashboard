@@ -17,29 +17,9 @@
 
 const { fetchAndFilterNewRevocationFile } = require("..");
 const { default: fetchMetrics } = require("../fetchMetrics");
-const { createSubset, createSubsetFilters } = require("../../filters");
+const { createSubset } = require("../../filters");
 
 const mockMetricFiles = { file_1: "content_1" };
-const mockSubsetFilters = {
-  violation_type: [
-    "absconded",
-    "all",
-    "elec_monitoring",
-    "escaped",
-    "high_tech",
-    "low_tech",
-    "med_tech",
-    "municipal",
-    "substance_abuse",
-    "technical",
-  ],
-  charge_category: [
-    "all",
-    "domestic_violence",
-    "general",
-    "serious_mental_illness",
-  ],
-};
 
 jest.mock("../../core/fetchMetrics", () => {
   return {
@@ -49,14 +29,24 @@ jest.mock("../../core/fetchMetrics", () => {
 jest.mock("../../filters", () => {
   return {
     createSubset: jest.fn(),
-    createSubsetFilters: jest.fn(() => mockSubsetFilters),
   };
 });
 
 describe("fetchAndFilterNewRevocationFile", () => {
   const metricName = "file_1";
   const metricType = "newRevocationFile";
-  const queryParams = { violationType: "All" };
+  const filters = {
+    violation_type: [
+      "all",
+      "elec_monitoring",
+      "escaped",
+      "low_tech",
+      "med_tech",
+      "municipal",
+      "no_violation_type",
+      "technical",
+    ],
+  };
   const isDemoMode = false;
   const stateCode = "TEST_ID";
   const fetchArgs = { stateCode, metricType, isDemoMode };
@@ -68,32 +58,27 @@ describe("fetchAndFilterNewRevocationFile", () => {
   beforeEach(() => {
     fetchAndFilterNewRevocationFile({
       metricName,
-      queryParams,
+      filters,
       ...fetchArgs,
     });
   });
 
-  it("calls fetchMetrics with the correct args", async () => {
+  it("calls fetchMetrics with the correct args", () => {
     expect(fetchMetrics).toHaveBeenCalledWith(
       stateCode,
       metricType,
       metricName,
       isDemoMode
     );
+    expect.hasAssertions();
   });
 
-  it("calls createSubsetFilters with the correct args", () => {
-    expect(createSubsetFilters).toHaveBeenCalledWith({
-      filters: queryParams,
-      metricName,
-    });
-  });
-
-  it("calls createSubset with the correct args", async () => {
+  it("calls createSubset with the correct args", () => {
     expect(createSubset).toHaveBeenCalledWith(
       metricName,
-      mockSubsetFilters,
+      filters,
       mockMetricFiles
     );
+    expect.hasAssertions();
   });
 });

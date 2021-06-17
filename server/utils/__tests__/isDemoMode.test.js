@@ -15,21 +15,21 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-describe("demoMode tests", () => {
+describe("isDemoMode", () => {
   beforeEach(() => {
     jest.resetModules();
   });
 
   it("should return true if env is truthy", () => {
     process.env.IS_DEMO = "true";
-    const { default: isDemoMode } = require("../isDemoMode");
+    const { isDemoMode } = require("../isDemoMode");
 
     expect(isDemoMode).toBe(true);
   });
 
   it("should return false if env is falsy", () => {
     process.env.IS_DEMO = "false";
-    const { default: isDemoMode } = require("../isDemoMode");
+    const { isDemoMode } = require("../isDemoMode");
 
     expect(isDemoMode).toBe(false);
   });

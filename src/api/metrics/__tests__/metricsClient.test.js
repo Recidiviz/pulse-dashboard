@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-import { callMetricsApi, callRestrictedAccessApi } from "../metricsClient";
+import { callMetricsApi } from "../metricsClient";
 
 const OLD_ENV = process.env;
 
@@ -26,7 +26,6 @@ global.fetch = jest.fn().mockResolvedValue({
 describe("metricsClient", () => {
   let output;
   const mockToken = "auth0-token";
-  const userEmail = "test@email.com";
   const endpoint =
     "newRevocations/revocations_matrix_events_by_month?violationType=All";
   const getTokenSilently = jest.fn().mockResolvedValue(mockToken);
@@ -57,34 +56,6 @@ describe("metricsClient", () => {
         headers: {
           Authorization: `Bearer ${mockToken}`,
         },
-      });
-    });
-
-    it("returns the resolved data response", () => {
-      expect(output).toEqual({ data: [] });
-    });
-  });
-
-  describe("when callRestrictedAccessApi succeeds", () => {
-    beforeEach(async () => {
-      process.env = Object.assign(process.env, {
-        REACT_APP_API_URL: "test-url",
-      });
-      output = await callRestrictedAccessApi(
-        endpoint,
-        userEmail,
-        getTokenSilently
-      );
-    });
-
-    it("calls fetch with the correct url and headers", () => {
-      expect(fetch).toHaveBeenCalledWith(expectedUrl, {
-        body: JSON.stringify({ userEmail }),
-        headers: {
-          Authorization: `Bearer ${mockToken}`,
-          "Content-Type": "application/json",
-        },
-        method: "POST",
       });
     });
 
@@ -127,51 +98,6 @@ describe("metricsClient", () => {
       expect.assertions(1);
       try {
         await callMetricsApi(endpoint, getTokenSilently);
-      } catch (error) {
-        expect(error).toEqual(
-          new Error(
-            `Fetching data from API failed.\nStatus: 400 - Bad Request\nErrors: ["API error"]`
-          )
-        );
-      }
-    });
-  });
-
-  describe("when callRestrictedAccessApi fails", () => {
-    beforeEach(async () => {
-      process.env = Object.assign(process.env, {
-        REACT_APP_API_URL: "test-url",
-      });
-
-      global.fetch.mockClear();
-      global.fetch.mockResolvedValue({
-        ok: false,
-        status: 400,
-        statusText: "Bad Request",
-        json: jest
-          .fn()
-          .mockResolvedValue({ status: 400, errors: ["API error"] }),
-      });
-    });
-
-    it("retries 2 more times before throwing an error", async () => {
-      expect.assertions(2);
-      try {
-        await callRestrictedAccessApi(endpoint, userEmail, getTokenSilently);
-      } catch (error) {
-        expect(global.fetch.mock.calls.length).toEqual(3);
-        expect(error).toEqual(
-          new Error(
-            `Fetching data from API failed.\nStatus: 400 - Bad Request\nErrors: ["API error"]`
-          )
-        );
-      }
-    });
-
-    it("throws an error", async () => {
-      expect.assertions(1);
-      try {
-        await callRestrictedAccessApi(endpoint, userEmail, getTokenSilently);
       } catch (error) {
         expect(error).toEqual(
           new Error(

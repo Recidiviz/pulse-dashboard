@@ -15,11 +15,11 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import { computed, makeObservable, ObservableMap } from "mobx";
+import { autorun, computed, makeObservable, ObservableMap } from "mobx";
 
 import type UserStore from "../../RootStore/UserStore";
 import type TenantStore from "../../RootStore/TenantStore";
-import UserRestrictedAccessStore from "./UserRestrictedAccessStore";
+import UserRestrictionsStore from "./UserRestrictionsStore";
 import FiltersStore from "./FiltersStore";
 import DataStore from "./DataStore/DataStore";
 import DistrictsStore from "./DistrictsStore";
@@ -35,7 +35,7 @@ export default class LanternStore {
 
   tenantStore: TenantStore;
 
-  userRestrictedAccessStore: UserRestrictedAccessStore;
+  userRestrictionsStore: UserRestrictionsStore;
 
   filtersStore: FiltersStore;
 
@@ -58,13 +58,22 @@ export default class LanternStore {
       rootStore: this,
     });
 
-    this.userRestrictedAccessStore = new UserRestrictedAccessStore({
+    this.userRestrictionsStore = new UserRestrictionsStore({
       rootStore: this,
     });
 
     this.filtersStore = new FiltersStore({ rootStore: this });
 
     this.dataStore = new DataStore({ rootStore: this });
+    autorun(() => {
+      if (
+        !this.userStore.userIsLoading &&
+        !this.districtsStore.isLoading &&
+        this.tenantStore.enableUserRestrictions
+      ) {
+        this.userRestrictionsStore.verifyUserRestrictions();
+      }
+    });
   }
 
   get filters(): ObservableMap<any, any> {
@@ -78,10 +87,6 @@ export default class LanternStore {
 
   get user(): any {
     return this.userStore.user;
-  }
-
-  get restrictedDistricts(): string[] {
-    return this.userRestrictedAccessStore.restrictedDistricts;
   }
 
   get methodology(): any {

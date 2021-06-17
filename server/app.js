@@ -28,10 +28,7 @@ const Sentry = require("@sentry/node");
 const devAuthConfig = require("../src/auth_config_dev.json");
 const productionAuthConfig = require("../src/auth_config_production.json");
 const api = require("./routes/api");
-const {
-  newRevocationsParamValidations,
-  restrictedAccessParamValidations,
-} = require("./routes/paramsValidation");
+const { newRevocationsParamValidations } = require("./routes/paramsValidation");
 
 const app = express();
 
@@ -100,6 +97,14 @@ function validateCronRequest(req, res, next) {
   }
 }
 
+function validateDemoRequest(req, res, next) {
+  if (!isDemoMode) {
+    res.sendStatus(403);
+  } else {
+    next();
+  }
+}
+
 function errorHandler(err, _req, res, next) {
   if (err && err.message) {
     res
@@ -116,6 +121,7 @@ if (isDemoMode) {
   };
 }
 
+app.get("/api/demoUser", validateDemoRequest, api.demoUser);
 app.get(
   "/api/:stateCode/:metricType/refreshCache",
   validateCronRequest,
@@ -132,12 +138,7 @@ app.get("/api/:stateCode/community/explore", checkJwt, api.communityExplore);
 app.get("/api/:stateCode/facilities/explore", checkJwt, api.facilitiesExplore);
 app.get("/api/:stateCode/projections", checkJwt, api.populationProjections);
 app.get("/api/:stateCode/vitals", checkJwt, api.vitals);
-app.post(
-  "/api/:stateCode/restrictedAccess",
-  express.json(),
-  [checkJwt, ...restrictedAccessParamValidations],
-  api.restrictedAccess
-);
+
 app.post(
   "/api/generateFileLink",
   checkJwt,

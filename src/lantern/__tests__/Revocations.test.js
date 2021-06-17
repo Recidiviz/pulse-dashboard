@@ -28,7 +28,6 @@ import RevocationsOverTime from "../RevocationsOverTime";
 import Matrix from "../Matrix";
 import RevocationCharts from "../RevocationCharts";
 import CaseTable from "../CaseTable/CaseTable";
-import { METADATA_NAMESPACE } from "../../constants";
 import { setTranslateLocale } from "../../utils/i18nSettings";
 
 import { US_MO } from "../../RootStore/TenantStore/lanternTenants";
@@ -42,6 +41,8 @@ import {
 } from "../utils/constants";
 import { useLanternStore } from "../LanternStoreProvider";
 import { PageProvider } from "../../contexts/PageContext";
+
+const METADATA_NAMESPACE = process.env.REACT_APP_METADATA_NAMESPACE;
 
 jest.mock("../FiltersBar/SelectFilter");
 jest.mock("../FiltersBar/DistrictFilter");
@@ -95,6 +96,7 @@ describe("Revocations component tests", () => {
   useLanternStore.mockReturnValue({
     userStore: { user: mockUser, isAuthorized: true },
     currentTenantId: US_MO,
+    userRestrictionsStore: { allowedSupervisionLocationIds: [] },
     filtersStore: {
       filters: observable.map({
         metricPeriodMonths: "",

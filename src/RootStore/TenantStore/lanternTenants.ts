@@ -24,8 +24,6 @@ export const US_PA = "US_PA";
 
 export const LANTERN_TENANTS = [US_MO, US_PA];
 
-export const RESTRICTED_DISTRICT_TENANTS = [US_MO];
-
 export const TRANSLATIONS = {
   US_MO: US_MO_TRANSLATIONS,
   US_PA: US_PA_TRANSLATIONS,

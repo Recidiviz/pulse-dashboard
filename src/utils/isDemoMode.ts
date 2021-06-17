@@ -14,13 +14,6 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-/**
- * Utilities for running the backend in demo mode
- */
-function getIsDemoMode() {
-  return process.env.IS_DEMO === "true";
+export function isDemoMode(): boolean {
+  return process.env.REACT_APP_IS_DEMO === "true";
 }
-
-module.exports = {
-  isDemoMode: getIsDemoMode(),
-};

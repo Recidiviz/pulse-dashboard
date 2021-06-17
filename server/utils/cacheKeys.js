@@ -14,11 +14,17 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-const { camelCase } = require("lodash");
 const {
   getSubsetManifest,
   FILES_WITH_SUBSETS,
 } = require("../constants/subsetManifest");
+
+const FILES_NOT_FILTERED_BY_USER_RESTRICTIONS = [
+  "revocations_matrix_distribution_by_district",
+  "revocations_matrix_supervision_location_ids_to_names",
+];
+
+const USER_RESTRICTION_FIELDS = ["level_1_supervision_location"];
 
 /**
  * Returns the cache key suffix for the given subset combination.
@@ -97,18 +103,24 @@ function getSubsetCombinations(subsetManifest) {
   return getAllSubsetCombinations(subsetKeyValues, subsetKeyValues.length);
 }
 
-/**
- * @param  {string} cacheKey - Existing cacheKey
- * @param  {Array.<string>} restrictedDistrict - Array containing the restrictedDistrict id
- *
- * @return {string} If the restrictedDistrict exists, append it to the end of the cacheKey
- */
-const appendRestrictedDistrictKey = (cacheKey, restrictedDistrict) => {
-  return restrictedDistrict
-    ? `${cacheKey}-restrictedDistrict=${restrictedDistrict}`
-    : cacheKey;
-};
+function getUserRestrictionCacheKeyValues({ cacheKeySubset }) {
+  let cacheKeyValue = "";
 
+  USER_RESTRICTION_FIELDS.forEach((userRestrictionField) => {
+    const restrictedValue = cacheKeySubset[userRestrictionField];
+    if (Array.isArray(restrictedValue)) {
+      const formatted = restrictedValue.sort().join(",");
+      cacheKeyValue = `${cacheKeyValue}-${userRestrictionField}=${formatted}`;
+    } else if (
+      typeof restrictedValue === "string" ||
+      typeof restrictedValue === "number"
+    ) {
+      cacheKeyValue = `${cacheKeyValue}-${userRestrictionField}=${restrictedValue}`;
+    }
+  });
+
+  return cacheKeyValue;
+}
 /**
  * Utility for creating cache keys for a stateCode, metricType, file and subset
  * @param {string} [stateCode] - The state code to include in the cache key, i.e. US_MO
@@ -140,24 +152,29 @@ function getCacheKey({
 
   if (cacheKeySubset && FILES_WITH_SUBSETS.includes(metricName)) {
     getSubsetManifest().forEach(([dimensionKey, dimensionSubsets]) => {
-      const subsetValue = cacheKeySubset[camelCase(dimensionKey)];
-      const subsetIndex = dimensionSubsets.findIndex(
-        (subset) => subsetValue && subset.includes(subsetValue)
-      );
+      const subsetValue = cacheKeySubset[dimensionKey];
+      const subsetIndex = dimensionSubsets.findIndex((subset) => {
+        return subsetValue && subset.includes(subsetValue);
+      });
       if (subsetValue && subsetIndex >= 0) {
         cacheKey = `${cacheKey}-${dimensionKey}=${subsetIndex}`;
       }
     });
   }
 
-  return appendRestrictedDistrictKey(
-    cacheKey,
-    cacheKeySubset.restrictedDistrict
-  );
+  if (FILES_NOT_FILTERED_BY_USER_RESTRICTIONS.includes(metricName)) {
+    return cacheKey;
+  }
+
+  return `${cacheKey}${getUserRestrictionCacheKeyValues({
+    cacheKeySubset,
+    metricName,
+  })}`;
 }
 
 module.exports = {
   getCacheKey,
   getCacheKeyForSubsetCombination,
+  getUserRestrictionCacheKeyValues,
   getSubsetCombinations,
 };

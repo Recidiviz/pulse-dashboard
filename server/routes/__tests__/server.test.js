@@ -164,50 +164,7 @@ describe("Server tests", () => {
     });
   });
 
-  describe("GET api/:stateCode/restrictedAccess/", () => {
-    beforeEach(() => {
-      process.env = Object.assign(process.env, {
-        IS_DEMO: "true",
-        AUTH_ENV: "test",
-      });
-      jest.resetModules();
-      app = require("../../app").app;
-    });
-
-    it("should respond with a 200 for a valid stateCode", function () {
-      return request(app)
-        .post("/api/US_MO/restrictedAccess/")
-        .send({
-          userEmail: "thirteen@state.gov",
-        })
-        .then((response) => {
-          expect(response.statusCode).toEqual(200);
-          expect(response.body).toEqual({});
-        });
-    });
-
-    it("should respond with a 400 if the request body is missing userEmail", function () {
-      const expectedErrors = {
-        errors: [
-          {
-            location: "body",
-            msg: "Request is missing userEmail parameter",
-            param: "userEmail",
-          },
-        ],
-        status: 400,
-      };
-      return request(app)
-        .post("/api/US_MO/restrictedAccess/")
-        .send()
-        .then((response) => {
-          expect(response.statusCode).toEqual(400);
-          expect(response.body).toEqual(expectedErrors);
-        });
-    });
-  });
-
-  describe("GET /api/:stateCode/:metricType/refreshCache", () => {
+  describe("GET /api/:stateCode/refreshCache", () => {
     beforeEach(() => {
       process.env = Object.assign(process.env, {
         IS_DEMO: "false",
@@ -288,8 +245,7 @@ describe("Server tests", () => {
 
     it("responds with a formatted error resposne", () => {
       return request(app)
-        .post("/api/US_MO/restrictedAccess/")
-        .send()
+        .get("/api/US_MO/newRevocations/revocations_matrix_events_by_month")
         .then((response) => {
           expect(response.statusCode).toEqual(500);
           expect(response.body.errors).toEqual([

@@ -17,6 +17,7 @@
 import {
   getCacheKey,
   getCacheKeyForSubsetCombination,
+  getUserRestrictionCacheKeyValues,
   getSubsetCombinations,
 } from "../cacheKeys";
 
@@ -49,6 +50,24 @@ describe("cacheKeys utils", () => {
       expect(getSubsetCombinations(subsetManifest)).toEqual(
         allSubsetCombinations
       );
+    });
+  });
+
+  describe("getUserRestrictionCacheKeyValues", () => {
+    it("returns a key with the values for an array", () => {
+      const cacheKeySubset = {
+        level_1_supervision_location: ["24", "04n"],
+      };
+      expect(getUserRestrictionCacheKeyValues({ cacheKeySubset })).toEqual(
+        "-level_1_supervision_location=04n,24"
+      );
+    });
+
+    it("returns an empty string when there are no user restrictions", () => {
+      const cacheKeySubset = {
+        charge_category: "general",
+      };
+      expect(getUserRestrictionCacheKeyValues({ cacheKeySubset })).toEqual("");
     });
   });
 
@@ -87,7 +106,7 @@ describe("cacheKeys utils", () => {
             metricType: "newRevocations",
             metricName: "revocations_matrix_distribution_by_district",
             cacheKeySubset: {
-              violationType: "felony",
+              violation_type: "felony",
             },
           })
         ).toEqual(
@@ -100,7 +119,7 @@ describe("cacheKeys utils", () => {
             metricType: "newRevocations",
             metricName: "revocations_matrix_distribution_by_district",
             cacheKeySubset: {
-              violationType: "all",
+              violation_type: "all",
             },
           })
         ).toEqual(
@@ -109,50 +128,54 @@ describe("cacheKeys utils", () => {
       });
     });
 
-    describe("when there is a restricted district", () => {
-      describe("given a metricName without a subset manifest", () => {
-        it("returns the cacheKey with the metricName with the restricted district key", () => {
+    describe("when there are user restrictions", () => {
+      describe("given a metricName without a subsets", () => {
+        it("returns the cacheKey with the metricName and the user restriction", () => {
           expect(
             getCacheKey({
               stateCode: "US_MO",
               metricType: "newRevocations",
               metricName: "random_file_name",
-              cacheKeySubset: { restrictedDistrict: ["03"] },
+              cacheKeySubset: { level_1_supervision_location: ["03"] },
             })
           ).toEqual(
-            "US_MO-newRevocations-random_file_name-restrictedDistrict=03"
+            "US_MO-newRevocations-random_file_name-level_1_supervision_location=03"
           );
         });
       });
 
       describe("given a metricName with a subset manifest", () => {
-        it("returns a cacheKey with the metricName and subset keys and restricted district key", () => {
+        it("returns a cacheKey with subset and user restriction keys", () => {
           expect(
             getCacheKey({
               stateCode: "US_MO",
               metricType: "newRevocations",
-              metricName: "revocations_matrix_distribution_by_district",
+              metricName: "revocations_matrix_distribution_by_gender",
               cacheKeySubset: {
-                violationType: "felony",
-                restrictedDistrict: ["03"],
+                violation_type: "felony",
+                level_1_supervision_location: ["03"],
               },
             })
           ).toEqual(
-            "US_MO-newRevocations-revocations_matrix_distribution_by_district-violation_type=4-restrictedDistrict=03"
+            "US_MO-newRevocations-revocations_matrix_distribution_by_gender-violation_type=4-level_1_supervision_location=03"
           );
+        });
+      });
 
+      describe("given a metricName with a subset manifest that is not filtered by user restrictions", () => {
+        it("returns a cacheKey with subset and no user restriction keys", () => {
           expect(
             getCacheKey({
               stateCode: "US_MO",
               metricType: "newRevocations",
               metricName: "revocations_matrix_distribution_by_district",
               cacheKeySubset: {
-                violationType: "all",
-                restrictedDistrict: ["03"],
+                violation_type: "felony",
+                level_1_supervision_location: ["03"],
               },
             })
           ).toEqual(
-            "US_MO-newRevocations-revocations_matrix_distribution_by_district-violation_type=0-restrictedDistrict=03"
+            "US_MO-newRevocations-revocations_matrix_distribution_by_district-violation_type=4"
           );
         });
       });

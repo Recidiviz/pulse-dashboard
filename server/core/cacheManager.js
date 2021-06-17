@@ -29,7 +29,7 @@
 const cacheManager = require("cache-manager");
 const redisStore = require("cache-manager-ioredis");
 const Redis = require("ioredis");
-const { default: isDemoMode } = require("../utils/isDemoMode");
+const { isDemoMode } = require("../utils/isDemoMode");
 
 const REDISHOST = process.env.REDISHOST || "localhost";
 const REDISPORT = process.env.REDISPORT || 6379;

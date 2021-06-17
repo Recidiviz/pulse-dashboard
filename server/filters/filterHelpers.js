@@ -14,36 +14,12 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-
-const { snakeCase } = require("lodash");
+/* eslint-disable camelcase */
 const { matchesAllFilters, getFilterKeys } = require("shared-filters");
-
 const {
   getSubsetDimensionKeys,
   getSubsetDimensionValues,
 } = require("./subsetFileHelpers");
-
-/**
- * @param  {Object} restrictedDisrict - Object with restrictedDistrict key and filter value
- *
- * @param  {Object} subsetFilters - Object containing subsetFilters
- *
- * @returns {Object} - An object with the restrictedDistrict filter key renamed
- * to level_1_supervision_location if it exists.
- */
-const transformRestrictedDistrictFilter = (
-  restrictedDistrict,
-  subsetFilters
-) => {
-  return restrictedDistrict
-    ? {
-        ...subsetFilters,
-        level_1_supervision_location: restrictedDistrict.map((d) =>
-          d.toLowerCase()
-        ),
-      }
-    : subsetFilters;
-};
 
 /**
  * Get the filtering function to use by metric file name
@@ -69,36 +45,34 @@ const getFilterFnByMetricName = (metricName, filters) => {
 /**
  * Get the filters to use by metric file name
  *
- * @param {String} metricName
- * @param {Object} filters - Filters with all the dimension values from the subset manifest
+ * @param {String} metricName - Name of the metric file to filter
+ * @param {Object} subsetFilters - Subset filters to apply from the subset manifest
+ * @param {Object} userRestrictionsFilters - User restrictions to apply if they exist
  *
- * @returns {(item: object, dimensionKey: string) => boolean} - An object with the filter keys that should be used
- * when creating the subset for each metric file
+ * @returns {(item: object, dimensionKey: string) => boolean} - An object with
+ * the filter keys that should be used when filter each metric file by the subset
+ * manifest or user restrictions.
  */
-const getFiltersByMetricName = (metricName, filters) => {
-  const {
-    // eslint-disable-next-line camelcase
-    level_1_supervision_location,
-    ...filtersWithoutLevelOneSupervisionLocation
-  } = filters;
-
+const getNewRevocationsFiltersByMetricName = ({
+  metricName,
+  subsetFilters,
+  userRestrictionsFilters,
+}) => {
   switch (metricName) {
+    case "revocations_matrix_distribution_by_district":
+      return subsetFilters;
     case "revocations_matrix_distribution_by_risk_level":
     case "revocations_matrix_distribution_by_gender":
     case "revocations_matrix_distribution_by_officer":
     case "revocations_matrix_distribution_by_race":
     case "revocations_matrix_distribution_by_violation":
     case "revocations_matrix_events_by_month":
-      return filters;
-    // Only create a subset when there is a restricted district (level_1_supervision_location)
+      return { ...subsetFilters, ...userRestrictionsFilters };
     case "revocations_matrix_cells":
     case "revocations_matrix_filtered_caseload":
-      return { level_1_supervision_location };
-    // Do not filter the districts by the restricted district (level_1_supervision_location)
-    case "revocations_matrix_distribution_by_district":
-      return filtersWithoutLevelOneSupervisionLocation;
+      return userRestrictionsFilters;
     default:
-      return filters;
+      return {};
   }
 };
 
@@ -106,42 +80,68 @@ const getFiltersByMetricName = (metricName, filters) => {
  * Transform a filter's value to include all values in the subset manifest for each filter key.
  * Only returns filter dimensions that are in the subset manifest for FILES_WITH_SUBSETS.
  *
- * The level_1_supervision_location filter dimension is added to the filters for most files
- * based on the logic in getFiltersByMetricName if restrictedDistrict filter key exists.
- *
  * @param {Object} filters - Filter key/value pairs, Ex: { violation_type: "all", charge_category: "general" }
  * The values may also be indices referring to the set of values from the subset manifest, for example: { violation_type: 0 }.
  *
  * @param {string} metricName - Name of the metric file
  *
  * @returns {Object} - An object with each filter key and all possible values from the subset dimension
- * Example: { violation_type: ["felony", "law", "misdemeanor"], charge_category: ["sex_offense"], level_1_supervision_location: ["03"] }
+ * Example: { violation_type: ["felony", "law", "misdemeanor"], charge_category: ["sex_offense"] }
  */
-function createSubsetFilters({ filters, metricName }) {
+function createSubsetFilters({ filters }) {
   const subsetDimensionKeys = getSubsetDimensionKeys();
-  const { restrictedDistrict } = filters;
   const subsetFilters = {};
 
   Object.keys(filters).forEach((filterKey) => {
-    const formattedKey = snakeCase(filterKey);
-    if (subsetDimensionKeys.includes(formattedKey)) {
-      subsetFilters[formattedKey] = getSubsetDimensionValues(
-        formattedKey,
+    if (subsetDimensionKeys.includes(filterKey)) {
+      subsetFilters[filterKey] = getSubsetDimensionValues(
+        filterKey,
         filters[filterKey]
       );
     }
   });
 
-  const transformedFilters = transformRestrictedDistrictFilter(
-    restrictedDistrict,
-    subsetFilters
-  );
-
-  return getFiltersByMetricName(metricName, transformedFilters);
+  return subsetFilters;
 }
+
+/**
+ * Returns the user restrictions filters if they exist, otherwise returns an
+ * empty object.
+ *
+ * @param  {String[]} allowedSupervisionLocationIds - Array of supervision
+ * location ids to filter by, i.e. ["25", "EP"]
+ *
+ * @param  {String} allowedSupervisionLocationLevel - The supervision location
+ * id field to filter on, i.e. level_1_supervision_location
+ *
+ * @returns {Object} - An object with the supervision location filter key
+ * and value if they exist: { level_1_superivision_location: ["08N"] }
+ */
+const createUserRestrictionsFilters = (appMetadata) => {
+  if (!appMetadata) return {};
+
+  const {
+    allowed_supervision_location_ids: allowedSupervisionLocationIds,
+    allowed_supervision_location_level: allowedSupervisionLocationLevel,
+  } = appMetadata;
+
+  const userHasNoRestrictions =
+    !allowedSupervisionLocationLevel ||
+    !allowedSupervisionLocationIds ||
+    !allowedSupervisionLocationIds.length > 0;
+
+  if (userHasNoRestrictions) return {};
+
+  return {
+    [allowedSupervisionLocationLevel]: allowedSupervisionLocationIds.map((d) =>
+      d.toLowerCase()
+    ),
+  };
+};
 
 module.exports = {
   getFilterFnByMetricName,
-  getFiltersByMetricName,
+  getNewRevocationsFiltersByMetricName,
   createSubsetFilters,
+  createUserRestrictionsFilters,
 };

@@ -22,34 +22,13 @@ import createAuth0Client, {
 } from "@auth0/auth0-spa-js";
 import { makeAutoObservable, runInAction, action } from "mobx";
 import qs from "qs";
-import { METADATA_NAMESPACE } from "../constants";
-
+import { fetchDemoUser, isDemoMode } from "../api/fetchDemoUser";
 import { ERROR_MESSAGES } from "../constants/errorMessages";
 import type RootStore from ".";
 import { TenantId, UserAppMetadata } from "./types";
 import tenants from "../tenants";
 
-function isDemoMode(): boolean {
-  return process.env.REACT_APP_IS_DEMO === "true";
-}
-
-/**
- * Returns an artificial Auth0 id token for a fake/demo user.
- * You can uncomment code for testing different user metadata.
- */
-function getDemoUser(): User {
-  return {
-    picture:
-      "https://ui-avatars.com/api/?name=Demo+Jones&background=0D8ABC&color=fff&rounded=true",
-    name: "Demo Jones",
-    email: "notarealemail@recidiviz.org",
-    // email: "thirteen@mo.gov",
-    "https://dashboard.recidiviz.org/app_metadata": {
-      state_code: "recidiviz",
-      // state_code: 'us_mo',
-    },
-  };
-}
+const METADATA_NAMESPACE = process.env.REACT_APP_METADATA_NAMESPACE;
 
 type ConstructorProps = {
   authSettings?: Auth0ClientOptions;
@@ -117,12 +96,12 @@ export default class UserStore {
   async authorize(): Promise<void> {
     if (isDemoMode()) {
       this.isAuthorized = true;
+      this.user = await fetchDemoUser({});
       this.userIsLoading = false;
-      this.user = getDemoUser();
       this.getToken = () => "";
-
       return;
     }
+
     if (!this.authSettings) {
       this.authError = new Error(ERROR_MESSAGES.auth0Configuration);
       return;
@@ -197,6 +176,15 @@ export default class UserStore {
       throw Error("No state code set for user");
     }
     return stateCode.toUpperCase() as TenantId;
+  }
+
+  /**
+   * Returns the allowedSupervisionLocationIds for the given user.
+   */
+  get allowedSupervisionLocationIds(): string[] {
+    const allowedSupervisionLocationIds = this.userAppMetadata
+      ?.allowed_supervision_location_ids;
+    return allowedSupervisionLocationIds || [];
   }
 
   /**

@@ -1,5 +1,5 @@
 // Recidiviz - a data platform for criminal justice reform
-// Copyright (C) 2020 Recidiviz, Inc.
+// Copyright (C) 2021 Recidiviz, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -14,26 +14,28 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
+import qs from "qs";
+import { User } from "@auth0/auth0-spa-js";
 
-/**
- * Processes the supervision_location_restricted_access_emails.
- * Returns an object that contains the restricted district matching
- * userEmail param, or an empty object if none of the values match.
- */
-function filterRestrictedAccessEmails(userEmail, file) {
-  return (result) => {
-    const restrictedEmails = result[file];
-
-    return restrictedEmails
-      ? {
-          [file]: restrictedEmails.find((u) => {
-            return (
-              u.restricted_user_email.toLowerCase() === userEmail.toLowerCase()
-            );
-          }),
-        }
-      : {};
-  };
+export function isDemoMode(): boolean {
+  return process.env.REACT_APP_IS_DEMO === "true";
 }
 
-exports.default = filterRestrictedAccessEmails;
+type DemoUserOptions = {
+  email?: string;
+  name?: string;
+  stateCode?: string;
+  allowedSupervisionLocationIds?: string[];
+  allowedSupervisionLocationLevel?: string;
+};
+
+export async function fetchDemoUser(options: DemoUserOptions): Promise<User> {
+  if (!isDemoMode()) {
+    throw new Error(`fetchDemoUser can only be used in demo mode!`);
+  }
+  const queryParams = qs.stringify(options, { addQueryPrefix: true });
+  const response = await fetch(
+    `${process.env.REACT_APP_API_URL}/api/demoUser${queryParams}`
+  );
+  return response.json();
+}

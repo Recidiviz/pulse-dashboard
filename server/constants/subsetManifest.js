@@ -41,7 +41,7 @@ const SUBSET_MANIFEST = [
 // Dimensions that are multi-select can never be subsetted
 const INVALID_SUBSET_DIMENSIONS = [
   "district",
-  "level_1_superivision_location",
+  "level_1_supervision_location",
   "level_2_supervision_location",
   "admission_type",
 ];

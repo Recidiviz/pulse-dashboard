@@ -28,10 +28,18 @@ const {
   fetchMetrics,
   cacheResponse,
   fetchAndFilterNewRevocationFile,
-  filterRestrictedAccessEmails,
+  fetchDemoUser,
 } = require("../core");
-const { default: isDemoMode } = require("../utils/isDemoMode");
+const { isDemoMode } = require("../utils/isDemoMode");
 const { getCacheKey } = require("../utils/cacheKeys");
+const {
+  createSubsetFilters,
+  createUserRestrictionsFilters,
+  getNewRevocationsFiltersByMetricName,
+} = require("../filters");
+const { formatKeysToSnakeCase } = require("../utils");
+
+const { METADATA_NAMESPACE } = process.env;
 
 const BAD_REQUEST = 400;
 const SERVER_ERROR = 500;
@@ -57,52 +65,11 @@ function responder(res) {
   };
 }
 
-/**
- * A callback which processes fetch result data with a given
- * processResultFn before passing the processed result to
- * the responder function.
- */
-function processAndRespond(responderFn, processResultsFn) {
-  return (err, data) => {
-    if (err) responderFn(err, null);
-    if (data) {
-      try {
-        responderFn(null, processResultsFn(data));
-      } catch (error) {
-        responderFn(error, null);
-      }
-    }
-  };
-}
 // TODO: Generalize this API to take in the metric type and file as request parameters in all calls
-
-function restrictedAccess(req, res) {
-  const validations = validationResult(req);
-  const hasErrors = !validations.isEmpty();
-  if (hasErrors) {
-    responder(res)(
-      {
-        status: BAD_REQUEST,
-        errors: validations.array(),
-      },
-      null
-    );
-  } else {
-    const { stateCode } = req.params;
-    const { userEmail } = req.body;
-    const metricType = "newRevocation";
-    const metricName = "supervision_location_restricted_access_emails";
-    const cacheKey = `${stateCode.toUpperCase()}-${metricType}-restrictedAccess`;
-
-    cacheResponse(
-      cacheKey,
-      () => fetchMetrics(stateCode, metricType, metricName, isDemoMode),
-      processAndRespond(
-        responder(res),
-        filterRestrictedAccessEmails(userEmail, metricName)
-      )
-    );
-  }
+function demoUser(req, res) {
+  const options = req.query;
+  const user = fetchDemoUser(options);
+  responder(res)(null, user);
 }
 
 function refreshCache(req, res) {
@@ -133,14 +100,32 @@ function newRevocationFile(req, res) {
   if (hasErrors) {
     responder(res)({ status: BAD_REQUEST, errors: validations.array() }, null);
   } else {
+    const { user } = req;
     const { stateCode, file: metricName } = req.params;
-    const queryParams = req.query || {};
+    const appMetadata =
+      (user && user[`${METADATA_NAMESPACE}app_metadata`]) || {};
+
+    const queryParams = formatKeysToSnakeCase(req.query || {});
+
+    const userRestrictionsFilters = createUserRestrictionsFilters(appMetadata);
+
+    const subsetFilters = createSubsetFilters({
+      filters: queryParams,
+    });
+
+    const filters = getNewRevocationsFiltersByMetricName({
+      metricName,
+      subsetFilters,
+      userRestrictionsFilters,
+    });
+
     const cacheKey = getCacheKey({
       stateCode,
       metricType,
       metricName,
-      cacheKeySubset: queryParams,
+      cacheKeySubset: { ...queryParams, ...userRestrictionsFilters },
     });
+
     cacheResponse(
       cacheKey,
       () =>
@@ -148,7 +133,7 @@ function newRevocationFile(req, res) {
           stateCode,
           metricType,
           metricName,
-          queryParams,
+          filters,
           isDemoMode,
         }),
       responder(res)
@@ -264,7 +249,7 @@ function upload(req, res) {
 }
 
 module.exports = {
-  restrictedAccess,
+  demoUser,
   newRevocations,
   newRevocationFile,
   goals,
