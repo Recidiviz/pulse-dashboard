@@ -22,7 +22,7 @@ import { COLORS } from "../../../assets/scripts/constants/colors";
 export const nullSafeCell = (key, label, idx) => {
   if (label) {
     return (
-      <td key={`${idx}-${label}`} className={`CaseTable--${key}`}>
+      <td key={`${idx}-${label}-${key}`} className={`CaseTable--${key}`}>
         {label}
       </td>
     );
