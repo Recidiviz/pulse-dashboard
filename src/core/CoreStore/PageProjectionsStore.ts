@@ -46,8 +46,9 @@ export default class PageProjectionsStore {
     return this.rootStore.metricsStore.projections.timeSeries;
   }
 
-  getTimeSeriesDownloadableData(view: string): DownloadableData | undefined {
+  getTimeSeriesDownloadableData(): DownloadableData | undefined {
     if (!this.timeSeries) return undefined;
+    const { view } = this.rootStore;
     const filteredData = this.rootStore.metricsStore.projections.getFilteredDataByView(
       view
     );
@@ -76,7 +77,8 @@ export default class PageProjectionsStore {
     };
   }
 
-  getFiltersText(view: string): string {
+  getFiltersText(): string {
+    const { view } = this.rootStore;
     const {
       filters: { gender, supervisionType },
       timePeriodLabel,
@@ -100,14 +102,14 @@ export default class PageProjectionsStore {
     return jsFileDownload.start();
   }
 
-  async downloadData(view: string): Promise<void> {
+  async downloadData(): Promise<void> {
     return downloadChartAsData({
-      fileContents: [this.getTimeSeriesDownloadableData(view)],
-      chartTitle: `Population Projections: ${this.getFiltersText(view)}`,
+      fileContents: [this.getTimeSeriesDownloadableData()],
+      chartTitle: `Population Projections: ${this.getFiltersText()}`,
       shouldZipDownload: true,
       getTokenSilently: this.rootStore.userStore.getTokenSilently,
-      includeFiltersRowInCSV: true,
-      filters: { filtersDescription: this.getFiltersText(view) },
+      includeFiltersDescriptionInCSV: true,
+      filters: { filtersDescription: this.getFiltersText() },
       lastUpdatedOn: formatDate(
         this.rootStore.metricsStore.projections.simulationDate
       ),

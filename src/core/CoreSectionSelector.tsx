@@ -26,9 +26,10 @@ import {
 
 type propTypes = {
   menu: { label: string; link: string }[];
+  onClick: (link: string) => void;
 };
 
-const CoreSectionSelector: React.FC<propTypes> = ({ menu }) => {
+const CoreSectionSelector: React.FC<propTypes> = ({ menu, onClick }) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const toggle = () => setDropdownOpen((prevState) => !prevState);
 
@@ -56,7 +57,7 @@ const CoreSectionSelector: React.FC<propTypes> = ({ menu }) => {
         cssModule={{ transform: "translate3d(0px, 24px, 0px)" }}
       >
         {filteredMenu.map(({ label, link }) => (
-          <Link key={label} to={link}>
+          <Link key={label} to={link} onClick={() => onClick(link)}>
             <DropdownItem className="CoreSectionSelector__item" tag="button">
               {label}
             </DropdownItem>

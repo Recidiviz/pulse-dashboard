@@ -19,6 +19,7 @@ import React from "react";
 import { observer } from "mobx-react-lite";
 import { useLocation, Link } from "react-router-dom";
 import { useRootStore } from "../components/StoreProvider";
+import { useCoreStore } from "./CoreStoreProvider";
 import CoreSectionSelector from "./CoreSectionSelector";
 import CorePageSelector from "./CorePageSelector";
 import TopBarUserMenuForAuthenticatedUser from "../components/TopBar/TopBarUserMenuForAuthenticatedUser";
@@ -31,7 +32,7 @@ import "./CoreNavigation.scss";
 const CoreNavigation: React.FC = () => {
   const { pathname } = useLocation();
   const { currentTenantId } = useRootStore();
-
+  const { setView } = useCoreStore();
   if (!currentTenantId) return null;
 
   // @ts-ignore
@@ -63,7 +64,10 @@ const CoreNavigation: React.FC = () => {
             />
           </Link>
         </div>
-        <CoreSectionSelector menu={menu} />
+        <CoreSectionSelector
+          onClick={(link: string) => setView(link)}
+          menu={menu}
+        />
       </div>
       <div className="CoreNavigation__right">
         {flags.enableCoreTabNavigation && (

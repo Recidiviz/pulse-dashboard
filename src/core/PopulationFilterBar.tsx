@@ -42,7 +42,7 @@ const PopulationFilterBar: React.FC<{
   >;
   const handleDownload = async () => {
     await downloadMethodologyPDF();
-    await downloadData(view);
+    await downloadData();
   };
   return (
     <FilterBar
