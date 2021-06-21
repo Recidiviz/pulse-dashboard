@@ -16,6 +16,7 @@
 // =============================================================================
 
 import { PopulationProjectionTimeSeriesRecord } from "../models/types";
+import { formatDate } from "../../utils/formatStrings";
 
 export type MonthOptions = 1 | 6 | 12 | 24 | 60;
 
@@ -106,7 +107,5 @@ export const getDateRange = (
 };
 
 export const formatMonthAndYear = (date: Date): string => {
-  return `${date.toLocaleString("default", { month: "short" })} '${
-    date.getFullYear() % 100
-  }`;
+  return formatDate(date, "MMM ''yy");
 };

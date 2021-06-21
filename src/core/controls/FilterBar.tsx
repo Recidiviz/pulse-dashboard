@@ -16,7 +16,6 @@
 // =============================================================================
 import React from "react";
 import Sticky from "react-sticky-fill";
-import DetailsGroup from "../DetailsGroup";
 import "./FilterBar.scss";
 
 const FILTER_BAR_STYLE = {
