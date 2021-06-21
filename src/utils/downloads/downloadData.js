@@ -213,6 +213,7 @@ export function configureDataDownloadButton({
   return () => {
     const methodologyFile =
       shouldZipDownload &&
+      methodology &&
       createMethodologyFile({
         chartTitle,
         timeWindowDescription,
@@ -286,7 +287,7 @@ export function downloadChartAsData({
   timeWindowDescription = null,
   shouldZipDownload,
   fixLabelsInColumns = false,
-  methodology,
+  methodology = null,
   getTokenSilently,
   lastUpdatedOn = null,
   includeFiltersRowInCSV = false,

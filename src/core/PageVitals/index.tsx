@@ -31,26 +31,19 @@ import { useCoreStore } from "../CoreStoreProvider";
 import DownloadDataButton from "../DownloadDataButton";
 import DetailsGroup from "../DetailsGroup";
 import { ENTITY_TYPES } from "../models/types";
-import content from "../content";
 import withRouteSync from "../../withRouteSync";
 
 import "../DetailsGroup.scss";
 import "./PageVitals.scss";
 
 const PageVitals: React.FC = () => {
-  const { metricsStore, tenantStore, pageVitalsStore } = useCoreStore();
+  const { metricsStore, pageVitalsStore } = useCoreStore();
   const { isLoading, isError } = metricsStore.vitals;
   const {
     currentEntitySummary,
-    filtersText,
     lastUpdatedOn,
-    timeSeriesDownloadableData,
-    summaryDownloadableData,
+    downloadDataZip,
   } = pageVitalsStore;
-  const { stateName, currentTenantId } = tenantStore;
-
-  // @ts-ignore TODO TS
-  const { vitals: vitalsMethodology } = content[currentTenantId];
 
   // TODO: add in Error state
   if (isError || currentEntitySummary === undefined) {
@@ -73,13 +66,7 @@ const PageVitals: React.FC = () => {
           <div className="DetailsGroup__item">
             Last updated on {lastUpdatedOn}
           </div>
-          <DownloadDataButton
-            data={[timeSeriesDownloadableData, summaryDownloadableData]}
-            title={`${stateName} At A Glance`}
-            methodology={vitalsMethodology.content}
-            filters={filtersText}
-            lastUpdatedOn={lastUpdatedOn}
-          />
+          <DownloadDataButton handleOnClick={downloadDataZip} />
           <MethodologyLink path={CORE_PATHS.methodologyVitals} />
         </DetailsGroup>
       </div>
