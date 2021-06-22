@@ -57,8 +57,10 @@ const RevocationsByRace = observer(
           stacked
         )}
         chartTitle={CHART_TITLE}
-        metricTitle={(mode) =>
-          `${CHART_TITLE}: ${translate("raceLabelMap")[mode]}`
+        metricTitle={
+          stacked
+            ? CHART_TITLE
+            : (mode) => `${CHART_TITLE}: ${translate("raceLabelMap")[mode]}`
         }
         timeDescription={timeDescription}
         modes={stacked ? [] : Object.keys(translate("raceLabelMap"))}
