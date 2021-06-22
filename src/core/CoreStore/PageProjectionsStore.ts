@@ -34,24 +34,16 @@ export default class PageProjectionsStore {
   constructor({ rootStore }: { rootStore: CoreStore }) {
     makeAutoObservable(this);
     this.rootStore = rootStore;
-    this.getTimeSeriesDownloadableData = this.getTimeSeriesDownloadableData.bind(
-      this
-    );
-    this.getFiltersText = this.getFiltersText.bind(this);
     this.downloadMethodologyPDF = this.downloadMethodologyPDF.bind(this);
     this.downloadData = this.downloadData.bind(this);
   }
 
-  get timeSeries(): PopulationProjectionTimeSeriesRecord[] {
-    return this.rootStore.metricsStore.projections.timeSeries;
-  }
-
-  getTimeSeriesDownloadableData(): DownloadableData | undefined {
-    if (!this.timeSeries) return undefined;
+  get timeSeriesDownloadableData(): DownloadableData | undefined {
     const { view } = this.rootStore;
     const filteredData = this.rootStore.metricsStore.projections.getFilteredDataByView(
       view
     );
+    if (!filteredData) return undefined;
 
     const datasets = [] as DownloadableDataset[];
     const data: Record<string, number>[] = [];
@@ -77,7 +69,7 @@ export default class PageProjectionsStore {
     };
   }
 
-  getFiltersText(): string {
+  get filtersText(): string {
     const { view } = this.rootStore;
     const {
       filters: { gender, supervisionType },
@@ -104,12 +96,12 @@ export default class PageProjectionsStore {
 
   async downloadData(): Promise<void> {
     return downloadChartAsData({
-      fileContents: [this.getTimeSeriesDownloadableData()],
-      chartTitle: `Population Projections: ${this.getFiltersText()}`,
+      fileContents: [this.timeSeriesDownloadableData],
+      chartTitle: `Population Projections: ${this.filtersText}`,
       shouldZipDownload: true,
       getTokenSilently: this.rootStore.userStore.getTokenSilently,
       includeFiltersDescriptionInCSV: true,
-      filters: { filtersDescription: this.getFiltersText() },
+      filters: { filtersDescription: this.filtersText },
       lastUpdatedOn: formatDate(
         this.rootStore.metricsStore.projections.simulationDate
       ),
