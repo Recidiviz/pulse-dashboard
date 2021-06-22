@@ -64,7 +64,7 @@ export function downloadCanvasAsImage({
   chartId,
   timeWindowDescription,
   shouldZipDownload,
-  methodology,
+  methodologyContent,
   getTokenSilently,
 }) {
   const imageData = transformCanvasToBase64(
@@ -81,7 +81,7 @@ export function downloadCanvasAsImage({
           chartTitle,
           timeWindowDescription,
           filters,
-          methodology,
+          methodologyContent,
           violation,
         });
 
@@ -123,6 +123,7 @@ export function downloadData({
   chartId,
   getTokenSilently,
   methodologyFile = null,
+  methodologyPDF = null,
 }) {
   try {
     if (shouldZipDownload || isMobile) {
@@ -136,6 +137,10 @@ export function downloadData({
 
       if (methodologyFile) {
         files.push(methodologyFile);
+      }
+
+      if (methodologyPDF) {
+        files.push(methodologyPDF);
       }
 
       downloadZipFile({
@@ -175,7 +180,7 @@ export function downloadHtmlElementAsImage({
   filters,
   timeWindowDescription,
   shouldZipDownload,
-  methodology,
+  methodologyContent,
   getTokenSilently,
 }) {
   const element = document.getElementById(chartId);
@@ -190,7 +195,7 @@ export function downloadHtmlElementAsImage({
       chartId,
       timeWindowDescription,
       shouldZipDownload,
-      methodology,
+      methodologyContent,
       getTokenSilently,
     });
   });
@@ -205,7 +210,8 @@ export function configureDataDownloadButton({
   timeWindowDescription,
   shouldZipDownload,
   fixLabelsInColumns,
-  methodology,
+  methodologyContent,
+  methodologyPDF,
   getTokenSilently,
   lastUpdatedOn,
   includeFiltersDescriptionInCSV,
@@ -213,13 +219,13 @@ export function configureDataDownloadButton({
   return () => {
     const methodologyFile =
       shouldZipDownload &&
-      methodology &&
+      methodologyContent &&
       createMethodologyFile({
         chartTitle,
         timeWindowDescription,
         filters,
         violation,
-        methodology,
+        methodologyContent,
         lastUpdatedOn,
       });
     const promises = fileContents.map((file) => {
@@ -251,6 +257,7 @@ export function configureDataDownloadButton({
         }),
         getTokenSilently,
         methodologyFile,
+        methodologyPDF,
       });
     });
   };
@@ -262,7 +269,7 @@ export function downloadChartAsImage({
   filters,
   timeWindowDescription,
   shouldZipDownload,
-  methodology,
+  methodologyContent,
   getTokenSilently,
 }) {
   const filename = configureFilename(chartId, filters, shouldZipDownload);
@@ -275,7 +282,7 @@ export function downloadChartAsImage({
     chartId,
     timeWindowDescription,
     shouldZipDownload,
-    methodology,
+    methodologyContent,
     getTokenSilently,
   });
 }
@@ -287,7 +294,8 @@ export function downloadChartAsData({
   timeWindowDescription = null,
   shouldZipDownload,
   fixLabelsInColumns = false,
-  methodology = null,
+  methodologyContent = null,
+  methodologyPDF = null,
   getTokenSilently,
   lastUpdatedOn = null,
   includeFiltersDescriptionInCSV = false,
@@ -300,7 +308,8 @@ export function downloadChartAsData({
     timeWindowDescription,
     shouldZipDownload,
     fixLabelsInColumns,
-    methodology,
+    methodologyContent,
+    methodologyPDF,
     getTokenSilently,
     lastUpdatedOn,
     includeFiltersDescriptionInCSV,

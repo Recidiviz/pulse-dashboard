@@ -15,7 +15,6 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 import { makeAutoObservable } from "mobx";
-import JsFileDownloader from "js-file-downloader";
 import type CoreStore from ".";
 import { PopulationProjectionTimeSeriesRecord } from "../models/types";
 import { DownloadableDataset, DownloadableData } from "../PageVitals/types";
@@ -25,7 +24,6 @@ import {
 } from "../PopulationTimeSeriesChart/helpers";
 import { toTitleCase, formatDate } from "../../utils/formatStrings";
 import { getCompartmentFromView } from "../views";
-import { isMobileSafari } from "../../api/exportData/exportDataOnMobileDevices";
 import { downloadChartAsData } from "../../utils/downloads/downloadData";
 
 export default class PageProjectionsStore {
@@ -34,7 +32,7 @@ export default class PageProjectionsStore {
   constructor({ rootStore }: { rootStore: CoreStore }) {
     makeAutoObservable(this);
     this.rootStore = rootStore;
-    this.downloadMethodologyPDF = this.downloadMethodologyPDF.bind(this);
+    this.fetchMethodologyPDF = this.fetchMethodologyPDF.bind(this);
     this.downloadData = this.downloadData.bind(this);
   }
 
@@ -83,15 +81,14 @@ export default class PageProjectionsStore {
     )}; Supervision Type: ${toTitleCase(supervisionType)},,,`;
   }
 
-  async downloadMethodologyPDF(): Promise<void> {
+  async fetchMethodologyPDF(): Promise<Record<string, any>> {
     const endpoint = `${process.env.REACT_APP_API_URL}/api/${this.rootStore.currentTenantId}/projections/methodology.pdf`;
-    const jsFileDownload = new JsFileDownloader({
-      forceDesktopMode: isMobileSafari,
-      autoStart: false,
-      filename: "methodology.pdf",
-      url: endpoint,
-    });
-    return jsFileDownload.start();
+    const pdf = await fetch(endpoint);
+    return {
+      data: await pdf.blob(),
+      type: "binary",
+      name: "methodology.pdf",
+    };
   }
 
   async downloadData(): Promise<void> {
@@ -105,6 +102,7 @@ export default class PageProjectionsStore {
       lastUpdatedOn: formatDate(
         this.rootStore.metricsStore.projections.simulationDate
       ),
+      methodologyPDF: await this.fetchMethodologyPDF(),
     });
   }
 }

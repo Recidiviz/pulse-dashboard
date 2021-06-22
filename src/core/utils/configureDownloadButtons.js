@@ -35,7 +35,7 @@ export function configureDownloadButtons({
   shouldZipDownload,
   fixLabelsInColumns = false,
   dataExportLabel = "Month",
-  methodology,
+  methodologyContent,
 }) {
   const filename = configureFilename(chartId, filters, shouldZipDownload);
   const downloadChartAsImageButton = document.getElementById(
@@ -69,7 +69,7 @@ export function configureDownloadButtons({
       timeWindowDescription,
       shouldZipDownload,
       fixLabelsInColumns,
-      methodology,
+      methodologyContent,
     });
   }
 

@@ -80,7 +80,7 @@ const ExportMenu = ({
                   filters: filtersStore.filtersDescriptions,
                   timeWindowDescription,
                   shouldZipDownload: true,
-                  methodology: methodology[chartId],
+                  methodologyContent: methodology[chartId],
                   getTokenSilently,
                 })
               }
@@ -98,7 +98,7 @@ const ExportMenu = ({
                   filters: filtersStore.filtersDescriptions,
                   timeWindowDescription,
                   shouldZipDownload: true,
-                  methodology: methodology[chartId],
+                  methodologyContent: methodology[chartId],
                   getTokenSilently,
                 })
               }
@@ -123,7 +123,7 @@ const ExportMenu = ({
                 timeWindowDescription,
                 shouldZipDownload: true,
                 fixLabelsInColumns,
-                methodology: methodology[chartId],
+                methodologyContent: methodology[chartId],
                 getTokenSilently,
               })
             }

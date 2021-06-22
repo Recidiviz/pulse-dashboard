@@ -39,11 +39,7 @@ import "./PageVitals.scss";
 const PageVitals: React.FC = () => {
   const { metricsStore, pageVitalsStore } = useCoreStore();
   const { isLoading, isError } = metricsStore.vitals;
-  const {
-    currentEntitySummary,
-    lastUpdatedOn,
-    downloadDataZip,
-  } = pageVitalsStore;
+  const { currentEntitySummary, lastUpdatedOn, downloadData } = pageVitalsStore;
 
   // TODO: add in Error state
   if (isError || currentEntitySummary === undefined) {
@@ -66,7 +62,7 @@ const PageVitals: React.FC = () => {
           <div className="DetailsGroup__item">
             Last updated on {lastUpdatedOn}
           </div>
-          <DownloadDataButton handleOnClick={downloadDataZip} />
+          <DownloadDataButton handleOnClick={downloadData} />
           <MethodologyLink path={CORE_PATHS.methodologyVitals} />
         </DetailsGroup>
       </div>

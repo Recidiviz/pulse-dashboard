@@ -36,14 +36,12 @@ const PopulationFilterBar: React.FC<{
 }> = ({ filterOptions, view }) => {
   const { filtersStore, pageProjectionsStore } = useCoreStore();
   const { filters } = filtersStore;
-  const { downloadMethodologyPDF, downloadData } = pageProjectionsStore;
+  const { downloadData } = pageProjectionsStore;
   const filterTypes = Object.keys(filterOptions) as Array<
     keyof PopulationFilters
   >;
-  const handleDownload = async () => {
-    await downloadMethodologyPDF();
-    await downloadData();
-  };
+  const handleDownload = async () => downloadData();
+
   return (
     <FilterBar
       details={

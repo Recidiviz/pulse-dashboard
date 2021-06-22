@@ -44,7 +44,7 @@ describe("createMethodologyFile functions", () => {
       chartTitle: mockChartTitle,
       timeWindowDescription: mockTimeWindowDescription,
       filters,
-      methodology: methodology[mockChartId],
+      methodologyContent: methodology[mockChartId],
       violation,
       lastUpdatedOn,
     });
@@ -70,7 +70,7 @@ describe("createMethodologyFile functions", () => {
     ];
     const actual = createMethodologyFile({
       chartTitle: mockChartTitle,
-      methodology: methodologyWithMarkup,
+      methodologyContent: methodologyWithMarkup,
     });
 
     expect(actual.data).toBe(
@@ -94,7 +94,7 @@ describe("createMethodologyFile functions", () => {
         chartTitle: mockChartTitle,
         timeWindowDescription: mockTimeWindowDescription,
         filters,
-        methodology: methodologyWithoutHeader[mockChartId],
+        methodologyContent: methodologyWithoutHeader[mockChartId],
         violation,
       });
       expect(actual.data).toBe(

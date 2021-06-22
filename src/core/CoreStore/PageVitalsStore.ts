@@ -58,7 +58,7 @@ export default class PageVitalsStore {
     this.rootStore = rootStore;
     this.currentEntityId = DEFAULT_ENTITY_ID;
     this.selectedMetricId = METRIC_TYPES.OVERALL;
-    this.downloadDataZip = this.downloadDataZip.bind(this);
+    this.downloadData = this.downloadData.bind(this);
   }
 
   get summaries(): VitalsSummaryRecord[] {
@@ -265,7 +265,7 @@ export default class PageVitalsStore {
     );
   }
 
-  async downloadDataZip(): Promise<void> {
+  async downloadData(): Promise<void> {
     if (!this.rootStore.currentTenantId) return;
 
     const { vitals: vitalsMethodology } = content[
@@ -278,7 +278,7 @@ export default class PageVitalsStore {
       ],
       chartTitle: `${this.rootStore.tenantStore.stateName} At A Glance`,
       shouldZipDownload: true,
-      methodology: vitalsMethodology.content,
+      methodologyContent: vitalsMethodology.content,
       getTokenSilently: this.rootStore.userStore.getTokenSilently,
       filters: this.filtersText,
       lastUpdatedOn: this.lastUpdatedOn,
