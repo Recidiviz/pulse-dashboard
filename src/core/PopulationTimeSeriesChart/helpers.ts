@@ -16,6 +16,7 @@
 // =============================================================================
 
 import { PopulationProjectionTimeSeriesRecord } from "../models/types";
+import { formatDate } from "../../utils/formatStrings";
 
 export type MonthOptions = 1 | 6 | 12 | 24 | 60;
 
@@ -103,4 +104,8 @@ export const getDateRange = (
   endDate.setDate(endDate.getDate() + offset);
 
   return { beginDate, endDate };
+};
+
+export const formatMonthAndYear = (date: Date): string => {
+  return formatDate(date, "MMM ''yy");
 };

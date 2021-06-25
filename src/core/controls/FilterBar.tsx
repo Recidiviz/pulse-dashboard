@@ -23,11 +23,17 @@ const FILTER_BAR_STYLE = {
   top: 79,
 };
 
-const FilterBar: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+const FilterBar: React.FC<{
+  details?: React.ReactElement;
+  children: React.ReactNode;
+}> = ({ details = null, children }) => {
   return (
     <Sticky style={FILTER_BAR_STYLE}>
       <div className="FilterBar">
-        <div className="FilterBar__filters">{children}</div>
+        <div className="FilterBar__container">
+          <div className="FilterBar__filters">{children}</div>
+          {details && details}
+        </div>
       </div>
     </Sticky>
   );

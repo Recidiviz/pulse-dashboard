@@ -23,6 +23,8 @@ import { PopulationFilterValues } from "../types/filters";
 import { TenantId } from "../models/types";
 import MetricsStore from "./MetricsStore";
 import PageVitalsStore from "./PageVitalsStore";
+import PageProjectionsStore from "./PageProjectionsStore";
+import { CoreView, CORE_VIEWS, getViewFromPathname } from "../views";
 
 interface CoreStoreProps {
   userStore: UserStore;
@@ -40,6 +42,10 @@ export default class CoreStore {
 
   pageVitalsStore: PageVitalsStore;
 
+  pageProjectionsStore: PageProjectionsStore;
+
+  view: CoreView = CORE_VIEWS.community;
+
   constructor({ userStore, tenantStore }: CoreStoreProps) {
     makeAutoObservable(this);
 
@@ -54,6 +60,16 @@ export default class CoreStore {
     this.pageVitalsStore = new PageVitalsStore({
       rootStore: this,
     });
+
+    this.pageProjectionsStore = new PageProjectionsStore({
+      rootStore: this,
+    });
+
+    this.setView = this.setView.bind(this);
+  }
+
+  setView(pathname: string): void {
+    this.view = getViewFromPathname(pathname);
   }
 
   get filters(): PopulationFilterValues {

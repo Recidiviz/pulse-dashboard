@@ -16,7 +16,7 @@
 // =============================================================================
 
 import React from "react";
-
+import { formatDate } from "../../utils/formatStrings";
 import "./PopulationTimeSeriesTooltip.scss";
 
 type PropTypes = {
@@ -40,10 +40,10 @@ const PopulationTimeSeriesTooltip: React.FC<PropTypes> = ({ d }) => {
   return (
     <div className="PopulationTimeseriesTooltip">
       <div className="PopulationTimeseriesTooltip__Date">
-        {date.toLocaleString("default", { month: "long", year: "numeric" })}
+        {formatDate(date, "MMMM yyyy")}
       </div>
       <div className="PopulationTimeseriesTooltip__Value">
-        {value.toLocaleString("default", { maximumFractionDigits: 0 })}
+        {value.toLocaleString(undefined, { maximumFractionDigits: 0 })}
       </div>
       {lowerBound && upperBound && (
         <div className="PopulationTimeseriesTooltip__Range">

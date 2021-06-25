@@ -15,5 +15,11 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 import { US_ND } from "./usNdMethodology";
+import { TenantId } from "../../RootStore/types";
+import { ViewMethodology } from "../models/types";
 
-export default { US_ND } as const;
+type TenantMethodology = {
+  [key in TenantId]: ViewMethodology;
+};
+
+export default { US_ND } as TenantMethodology;
