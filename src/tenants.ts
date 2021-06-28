@@ -103,7 +103,7 @@ const TENANTS: Tenants = {
     enableUserRestrictions: false,
     navigation: {
       ...(flags.enableProjectionsDashboard
-        ? { community: ["projections"], facilities: ["projections"] }
+        ? { facilities: ["projections"], community: ["projections"] }
         : { community: [], facilities: [] }),
       ...(flags.showMethodologyDropdown
         ? { methodology: ["projections"] }
