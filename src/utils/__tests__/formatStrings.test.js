@@ -62,6 +62,12 @@ describe("formatStrings", () => {
     expect(dataErrorAfterTest).toBe(NaN);
   });
 
+  it("safeToInt", () => {
+    expect(utils.safeToInt("03")).toBe(3);
+    expect(utils.safeToInt("03N")).toBe("03N");
+    expect(utils.safeToInt("TSCL")).toBe("TSCL");
+  });
+
   it("to title case", () => {
     const dataForTest = "LOS ANGELES";
     const dataAfterTest = utils.toTitleCase(dataForTest);

@@ -20,6 +20,7 @@ import { ERROR_MESSAGES } from "../../constants/errorMessages";
 import type LanternStore from ".";
 import { US_MO } from "../../RootStore/TenantStore/lanternTenants";
 import { CHARTS } from "./DataStore/RevocationsChartStore";
+import { safeToInt } from "../../utils";
 
 type ConstructorProps = {
   rootStore: LanternStore;
@@ -54,14 +55,13 @@ export default class UserRestrictionsStore {
   }
 
   verifyUserRestrictions(): void {
-    const unverifiedLocations = this.allowedSupervisionLocationIds.filter(
-      (supervisionLocationId) => {
-        return !this.rootStore.districtsStore.districtIds.includes(
-          supervisionLocationId
-        );
-      }
-    );
-
+    const unverifiedLocations = this.allowedSupervisionLocationIds
+      .map((d) => safeToInt(d))
+      .filter((supervisionLocationId) => {
+        return !this.rootStore.districtsStore.districtIds
+          .map((d) => safeToInt(d))
+          .includes(supervisionLocationId);
+      });
     if (
       this.allowedSupervisionLocationIds.length > 0 &&
       unverifiedLocations.length > 0
