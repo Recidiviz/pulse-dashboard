@@ -77,7 +77,6 @@ export const PopulationFilterOptions: PopulationFilters = {
       { label: "2 years", value: "24" },
       { label: "1 year", value: "12" },
       { label: "6 months", value: "6" },
-      { label: "1 month", value: "1" },
     ],
     get defaultOption(): FilterOption {
       return this.options[3];
