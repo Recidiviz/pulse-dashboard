@@ -42,7 +42,7 @@ describe("getPathsFromNavigation", () => {
 
   it("returns the correct allowed paths path for US_ID", () => {
     const allowedPaths = getPathsFromNavigation(tenants.US_ID.navigation);
-    const expected = ["/community/projections", "/facilities/projections"];
+    const expected = ["/facilities/projections", "/community/projections"];
     expect(allowedPaths).toEqual(expected);
   });
 });
