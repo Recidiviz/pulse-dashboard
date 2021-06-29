@@ -27,8 +27,11 @@ import {
   formatDate,
   toHumanReadable,
 } from "../../utils/formatStrings";
-import { CORE_VIEWS, getCompartmentFromView } from "../views";
+import { getCompartmentFromView } from "../views";
 import { downloadChartAsData } from "../../utils/downloads/downloadData";
+import filterOptions from "../utils/filterOptions";
+import { PopulationFilters } from "../types/filters";
+import { FILTER_TYPES } from "../utils/constants";
 
 export default class PageProjectionsStore {
   protected readonly rootStore;
@@ -72,25 +75,37 @@ export default class PageProjectionsStore {
   }
 
   get filtersText(): string {
-    const { view } = this.rootStore;
-    const {
-      filters: { gender, supervisionType, legalStatus },
-      timePeriodLabel,
-    } = this.rootStore.filtersStore;
+    const { view, currentTenantId } = this.rootStore;
+    if (!currentTenantId) return "";
+
+    const options = filterOptions[currentTenantId];
+    if (!options) return "";
+
     const compartment = getCompartmentFromView(view);
-    const description =
-      view === CORE_VIEWS.facilities
-        ? `${toTitleCase(
-            compartment
-          )} - ${timePeriodLabel}; Gender: ${toTitleCase(
-            gender
-          )}; Legal Status: ${toTitleCase(toHumanReadable(legalStatus))},,,`
-        : `${toTitleCase(
-            compartment
-          )} - ${timePeriodLabel}; Gender: ${toTitleCase(
-            gender
-          )}; Supervision Type: ${toTitleCase(supervisionType)},,,`;
-    return description;
+    const filterTypes = Object.keys(options) as Array<
+      Required<keyof PopulationFilters>
+    >;
+    const enabledFilters = filterTypes
+      .map((filterType) => {
+        const filter = options[filterType];
+        if (!filter.enabledViews.includes(view)) return undefined;
+        return filter;
+      })
+      .filter((f) => f && f.type !== FILTER_TYPES.TIME_PERIOD);
+
+    const description = enabledFilters.map(
+      (filter) =>
+        filter &&
+        `${filter.title}: ${toTitleCase(
+          toHumanReadable(this.rootStore.filtersStore.filters[filter?.type])
+        )}`
+    );
+    description.unshift(
+      `${toTitleCase(compartment)} - ${
+        this.rootStore.filtersStore.timePeriodLabel
+      }`
+    );
+    return description.join("; ");
   }
 
   async fetchMethodologyPDF(): Promise<Record<string, any>> {
