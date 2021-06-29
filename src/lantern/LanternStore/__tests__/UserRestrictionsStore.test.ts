@@ -234,5 +234,11 @@ describe("UserRestrictionsStore", () => {
     it("does not set an auth error", () => {
       expect(rootStore.userStore.setAuthError).toHaveBeenCalledTimes(0);
     });
+
+    it("correctly sets the allowedSupervisionLocationIds", () => {
+      expect(userRestrictionsStore.allowedSupervisionLocationIds).toEqual([
+        "03",
+      ]);
+    });
   });
 });

@@ -51,11 +51,19 @@ export default class UserRestrictionsStore {
   }
 
   get allowedSupervisionLocationIds(): string[] {
-    return this.rootStore.userStore.allowedSupervisionLocationIds || [];
+    const normalizedIds = this.rootStore.districtsStore.districtIds.filter(
+      (district) => {
+        return this.rootStore.userStore.allowedSupervisionLocationIds
+          .map((d) => safeToInt(d))
+          .includes(safeToInt(district));
+      }
+    );
+
+    return normalizedIds || [];
   }
 
   verifyUserRestrictions(): void {
-    const unverifiedLocations = this.allowedSupervisionLocationIds
+    const unverifiedLocations = this.rootStore.userStore.allowedSupervisionLocationIds
       .map((d) => safeToInt(d))
       .filter((supervisionLocationId) => {
         return !this.rootStore.districtsStore.districtIds
@@ -63,13 +71,13 @@ export default class UserRestrictionsStore {
           .includes(supervisionLocationId);
       });
     if (
-      this.allowedSupervisionLocationIds.length > 0 &&
+      this.rootStore.userStore.allowedSupervisionLocationIds.length > 0 &&
       unverifiedLocations.length > 0
     ) {
       const authError = new Error(ERROR_MESSAGES.unauthorized);
       Sentry.captureException(authError, {
         tags: {
-          allowedSupervisionLocationIds: this.allowedSupervisionLocationIds.join(
+          allowedSupervisionLocationIds: this.rootStore.userStore.allowedSupervisionLocationIds.join(
             ","
           ),
         },
