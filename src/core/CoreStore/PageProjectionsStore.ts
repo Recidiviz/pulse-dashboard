@@ -22,8 +22,12 @@ import {
   formatMonthAndYear,
   getRecordDate,
 } from "../PopulationTimeSeriesChart/helpers";
-import { toTitleCase, formatDate } from "../../utils/formatStrings";
-import { getCompartmentFromView } from "../views";
+import {
+  toTitleCase,
+  formatDate,
+  toHumanReadable,
+} from "../../utils/formatStrings";
+import { CORE_VIEWS, getCompartmentFromView } from "../views";
 import { downloadChartAsData } from "../../utils/downloads/downloadData";
 
 export default class PageProjectionsStore {
@@ -70,15 +74,23 @@ export default class PageProjectionsStore {
   get filtersText(): string {
     const { view } = this.rootStore;
     const {
-      filters: { gender, supervisionType },
+      filters: { gender, supervisionType, legalStatus },
       timePeriodLabel,
     } = this.rootStore.filtersStore;
     const compartment = getCompartmentFromView(view);
-    return `${toTitleCase(
-      compartment
-    )} - ${timePeriodLabel}; Gender: ${toTitleCase(
-      gender
-    )}; Supervision Type: ${toTitleCase(supervisionType)},,,`;
+    const description =
+      view === CORE_VIEWS.facilities
+        ? `${toTitleCase(
+            compartment
+          )} - ${timePeriodLabel}; Gender: ${toTitleCase(
+            gender
+          )}; Legal Status: ${toTitleCase(toHumanReadable(legalStatus))},,,`
+        : `${toTitleCase(
+            compartment
+          )} - ${timePeriodLabel}; Gender: ${toTitleCase(
+            gender
+          )}; Supervision Type: ${toTitleCase(supervisionType)},,,`;
+    return description;
   }
 
   async fetchMethodologyPDF(): Promise<Record<string, any>> {
