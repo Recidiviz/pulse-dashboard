@@ -112,6 +112,11 @@ export default class UserStore {
       const urlQuery = qs.parse(window.location.search, {
         ignoreQueryPrefix: true,
       });
+
+      if (urlQuery.error) {
+        throw new Error(urlQuery.error_description as string);
+      }
+
       if (urlQuery.code && urlQuery.state) {
         const { appState } = await this.auth0.handleRedirectCallback();
         // auth0 params are single-use, must be removed from history or they can cause errors

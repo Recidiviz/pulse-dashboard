@@ -60,10 +60,9 @@ const TENANTS: Tenants = {
     navigation: {
       goals: [],
       ...(flags.enableVitalsDashboard
-        ? { community: ["explore", "vitals"] }
+        ? { community: ["explore", "vitals"], methodology: ["vitals"] }
         : { community: ["explore"] }),
       facilities: ["explore"],
-      ...(flags.showMethodologyDropdown ? { methodology: ["vitals"] } : {}),
     },
     vitalsMetrics: [
       {
@@ -102,12 +101,9 @@ const TENANTS: Tenants = {
     availableStateCodes: [core.US_ID],
     enableUserRestrictions: false,
     navigation: {
-      ...(flags.enableProjectionsDashboard
-        ? { community: ["projections"], facilities: ["projections"] }
-        : { community: [], facilities: [] }),
-      ...(flags.showMethodologyDropdown
-        ? { methodology: ["projections"] }
-        : {}),
+      facilities: ["projections"],
+      community: ["projections"],
+      methodology: ["projections"],
     },
   },
   [lantern.US_PA]: {

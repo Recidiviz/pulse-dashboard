@@ -36,6 +36,7 @@ import {
   MonthOptions,
   prepareData,
   formatMonthAndYear,
+  getChartTop,
 } from "./helpers";
 import { CoreLoading } from "../CoreLoadingIndicator";
 
@@ -91,8 +92,7 @@ const PopulationTimeSeriesChart: React.FC<Props> = ({ isLoading = false }) => {
   uncertainty[uncertainty.length / 2 - 1].date = endDate;
 
   // set top of chart to the nearest thousand above the highest uncertainty value
-  const maxValue = Math.max(...uncertainty.map((d) => d.value));
-  const chartTop = (Math.ceil(maxValue / 1000) + 1) * 1000;
+  const chartTop = getChartTop(projectedPopulation);
 
   const projectionArea = [
     {
