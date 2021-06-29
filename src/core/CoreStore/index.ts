@@ -44,7 +44,7 @@ export default class CoreStore {
 
   pageProjectionsStore: PageProjectionsStore;
 
-  view: CoreView = CORE_VIEWS.community;
+  view: CoreView = CORE_VIEWS.facilities;
 
   constructor({ userStore, tenantStore }: CoreStoreProps) {
     makeAutoObservable(this);

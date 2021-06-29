@@ -106,6 +106,7 @@ describe("PageProjectionsStore", () => {
 
   describe("filtersText", () => {
     it("formats the filters description for the csv file", () => {
+      coreStore.setView("/community/projections");
       expect(pageProjectionsStore.filtersText).toEqual(
         "Supervision - 6 months; Gender: All; Supervision Type: All,,,"
       );
@@ -114,7 +115,7 @@ describe("PageProjectionsStore", () => {
     it("formats the filters text according to the view", () => {
       coreStore.setView("/facilities/projections");
       expect(pageProjectionsStore.filtersText).toEqual(
-        "Incarceration - 6 months; Gender: All; Supervision Type: All,,,"
+        "Incarceration - 6 months; Gender: All; Legal Status: All,,,"
       );
     });
   });
