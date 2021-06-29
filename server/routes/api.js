@@ -185,6 +185,14 @@ function populationProjections(req, res) {
   );
 }
 
+function populationProjectionsMethodology(req, res) {
+  const { stateCode } = req.params;
+  const file = `${path.resolve(
+    "./"
+  )}/server/assets/populationProjections/${stateCode.toLowerCase()}_methodology.pdf`;
+  res.download(file);
+}
+
 function vitals(req, res) {
   const { stateCode } = req.params;
   const metricType = "vitals";
@@ -256,6 +264,7 @@ module.exports = {
   communityExplore,
   facilitiesExplore,
   populationProjections,
+  populationProjectionsMethodology,
   vitals,
   responder,
   refreshCache,

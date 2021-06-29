@@ -35,6 +35,8 @@ import {
   VitalsMetric,
 } from "../PageVitals/types";
 import TENANTS from "../../tenants";
+import { downloadChartAsData } from "../../utils/downloads/downloadData";
+import content from "../content";
 
 export function getSummaryStatus(value: number): SummaryStatus {
   if (value < 70) return "POOR";
@@ -56,6 +58,7 @@ export default class PageVitalsStore {
     this.rootStore = rootStore;
     this.currentEntityId = DEFAULT_ENTITY_ID;
     this.selectedMetricId = METRIC_TYPES.OVERALL;
+    this.downloadData = this.downloadData.bind(this);
   }
 
   get summaries(): VitalsSummaryRecord[] {
@@ -260,5 +263,25 @@ export default class PageVitalsStore {
       this.summaryCards.find((card) => card.id === this.selectedMetricId) ||
       this.summaryCards[0]
     );
+  }
+
+  async downloadData(): Promise<void> {
+    if (!this.rootStore.currentTenantId) return;
+
+    const { vitals: vitalsMethodology } = content[
+      this.rootStore.currentTenantId
+    ];
+    return downloadChartAsData({
+      fileContents: [
+        this.timeSeriesDownloadableData,
+        this.summaryDownloadableData,
+      ],
+      chartTitle: `${this.rootStore.tenantStore.stateName} At A Glance`,
+      shouldZipDownload: true,
+      methodologyContent: vitalsMethodology.content,
+      getTokenSilently: this.rootStore.userStore.getTokenSilently,
+      filters: this.filtersText,
+      lastUpdatedOn: this.lastUpdatedOn,
+    });
   }
 }

@@ -21,9 +21,9 @@ export const CORE_VIEWS: Record<string, string> = {
   facilities: "facilities",
   goals: "goals",
   methodology: "methodology",
-};
+} as const;
 
-type CoreView = keyof typeof CORE_VIEWS;
+export type CoreView = keyof typeof CORE_VIEWS;
 
 export const CORE_PATHS: Record<string, string> = {
   goals: "/goals",
@@ -52,6 +52,6 @@ export function getCompartmentFromView(view: CoreView): SimulationCompartment {
   return view === CORE_VIEWS.community ? "SUPERVISION" : "INCARCERATION";
 }
 
-export function getViewFromPathname(pathname: string): CoreView {
+export function getViewFromPathname(pathname: string): string {
   return pathnameToView[pathname];
 }

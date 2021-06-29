@@ -15,6 +15,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 import React from "react";
+import { formatDate } from "../../utils/formatStrings";
 import "./PopulationProjectionLastUpdated.scss";
 
 type Props = {
@@ -37,11 +38,7 @@ const PopulationProjectionLastUpdated: React.FC<Props> = ({
   return (
     <div className="PopulationProjectionLastUpdated">
       Historical and projected population data were generated{" "}
-      {simulationDate.toLocaleString("default", {
-        month: "long",
-        year: "numeric",
-      })}
-      .
+      {formatDate(simulationDate, "MMMM yyyy")}.
     </div>
   );
 };

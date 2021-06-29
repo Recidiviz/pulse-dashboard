@@ -15,6 +15,7 @@
     "build-staging": "env-cmd -e staging react-scripts build",
     "test-e2e-lantern": "env-cmd -e e2e wdio ./wdio.conf.js --suite login --suite lantern --retry 2",
     "test-e2e-users": "env-cmd -e e2e,demo wdio ./wdio.conf.js --suite userAccess --retry 2",
+    "test-e2e-core": "env-cmd -e e2e,demo wdio ./wdio.conf.js --suite core --retry 2",
     "test-react": "TZ=UTC react-scripts test --env=jest-environment-jsdom-sixteen",
     "test-server": "TZ=UTC jest ./server",
     "test-filters": "TZ=UTC jest ./shared-filters",

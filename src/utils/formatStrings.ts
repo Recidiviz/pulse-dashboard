@@ -169,6 +169,10 @@ function formatISODateString(date: string): string {
   return format(parseISO(date), "M/d/yy");
 }
 
+function formatDate(date: Date, pattern = "M/d/yy"): string {
+  return format(date, pattern);
+}
+
 export {
   getPeriodLabelFromMetricPeriodMonthsFilter,
   getTrailingLabelFromMetricPeriodMonthsFilter,
@@ -193,4 +197,5 @@ export {
   formatLargeNumber,
   formatPercent,
   formatISODateString,
+  formatDate,
 };

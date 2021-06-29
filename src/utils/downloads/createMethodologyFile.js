@@ -21,11 +21,11 @@ function createMethodologyFile({
   chartTitle,
   timeWindowDescription,
   filters,
-  methodology,
+  methodologyContent,
   violation,
   lastUpdatedOn,
 }) {
-  const infoChart = methodology || [];
+  const infoChart = methodologyContent || [];
   const exportDate = moment().format("M/D/YYYY");
 
   let text = `Chart: ${chartTitle}\n`;

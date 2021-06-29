@@ -16,6 +16,7 @@
 // =============================================================================
 
 import { PopulationProjectionTimeSeriesRecord } from "../models/types";
+import { formatDate } from "../../utils/formatStrings";
 
 export type MonthOptions = 1 | 6 | 12 | 24 | 60;
 
@@ -103,4 +104,32 @@ export const getDateRange = (
   endDate.setDate(endDate.getDate() + offset);
 
   return { beginDate, endDate };
+};
+
+export const formatMonthAndYear = (date: Date): string => {
+  return formatDate(date, "MMM ''yy");
+};
+
+export const getChartTop = (plotLine: ChartPoint[]): number => {
+  // Dynamically chose the top of the chart such that there should be a horizonal rule
+  // at the very top for visual separation
+  const maxValue = Math.max(...plotLine.map((d) => d.upperBound ?? d.value));
+
+  let spacing;
+
+  if (maxValue < 200) {
+    spacing = 20;
+  } else if (maxValue < 1000) {
+    spacing = 100;
+  } else if (maxValue < 2000) {
+    spacing = 200;
+  } else if (maxValue < 5000) {
+    spacing = 500;
+  } else if (maxValue < 10000) {
+    spacing = 1000;
+  } else {
+    spacing = 2000;
+  }
+
+  return (Math.ceil(maxValue / spacing) + 1) * spacing;
 };
