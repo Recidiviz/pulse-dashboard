@@ -6,10 +6,10 @@
   justify-content: center;
   padding: 1rem 0 0.5rem;
 
-  &__filters {
+  &__container {
     display: flex;
     flex-wrap: wrap;
-    font-weight: 500;
+    justify-content: space-between;
     max-width: $core-max-view-width;
     width: 100%;
 
@@ -28,5 +28,10 @@
         white-space: nowrap;
       }
     }
+  }
+
+  &__filters {
+    display: flex;
+    flex-flow: row wrap;
   }
 }

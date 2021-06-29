@@ -17,48 +17,22 @@
 import React from "react";
 
 import { Icon, IconSVG } from "@recidiviz/case-triage-components";
-import { DownloadableData } from "./PageVitals/types";
-import { downloadChartAsData } from "../utils/downloads/downloadData";
-import { useRootStore } from "../components/StoreProvider";
-import { MethodologyContent } from "./models/types";
 import "./DetailsGroup.scss";
 import * as styles from "./CoreConstants.scss";
 
 interface PropTypes {
-  data: DownloadableData[];
-  title: string;
-  methodology: MethodologyContent[];
-  filters: string;
-  lastUpdatedOn: string;
+  handleOnClick: () => Promise<void>;
 }
 
-const DownloadDataButton: React.FC<PropTypes> = ({
-  data,
-  title,
-  methodology,
-  filters,
-  lastUpdatedOn,
-}) => {
-  const { getTokenSilently } = useRootStore();
-
+const DownloadDataButton: React.FC<PropTypes> = ({ handleOnClick }) => {
   return (
     <button
       className="btn btn-link DetailsGroup__button"
-      id="downloadChartData-VitalsSummaryChart"
+      id="downloadChartData"
       type="button"
       aria-expanded="true"
       aria-controls="importantNotes"
-      onClick={() =>
-        downloadChartAsData({
-          fileContents: data,
-          chartTitle: title,
-          shouldZipDownload: true,
-          methodology,
-          getTokenSilently,
-          filters: { filtersDescription: filters },
-          lastUpdatedOn,
-        })
-      }
+      onClick={handleOnClick}
     >
       <Icon
         className="DetailsGroup__icon"

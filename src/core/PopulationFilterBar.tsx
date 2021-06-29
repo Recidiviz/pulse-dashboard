@@ -19,26 +19,38 @@ import { observer } from "mobx-react-lite";
 import { get } from "mobx";
 
 import { CoreSelect } from "./controls/CoreSelect";
-import { useFiltersStore } from "./CoreStoreProvider";
+import { useCoreStore } from "./CoreStoreProvider";
 import { getFilterOption } from "./utils/filterOptions";
 import { PopulationFilters } from "./types/filters";
 
 import Filter from "./controls/Filter";
 import FilterBar from "./controls/FilterBar";
-import { CORE_VIEWS } from "./views";
+import { CORE_PATHS, CORE_VIEWS } from "./views";
+import DownloadDataButton from "./DownloadDataButton";
+import MethodologyLink from "./MethodologyLink";
+import DetailsGroup from "./DetailsGroup";
 
 const PopulationFilterBar: React.FC<{
   view: keyof typeof CORE_VIEWS;
   filterOptions: PopulationFilters;
 }> = ({ filterOptions, view }) => {
-  const filtersStore = useFiltersStore();
+  const { filtersStore, pageProjectionsStore } = useCoreStore();
   const { filters } = filtersStore;
+  const { downloadData } = pageProjectionsStore;
   const filterTypes = Object.keys(filterOptions) as Array<
     keyof PopulationFilters
   >;
+  const handleDownload = async () => downloadData();
 
   return (
-    <FilterBar>
+    <FilterBar
+      details={
+        <DetailsGroup>
+          <DownloadDataButton handleOnClick={handleDownload} />
+          <MethodologyLink path={CORE_PATHS.methodologyProjections} />
+        </DetailsGroup>
+      }
+    >
       {filterTypes.map((filterType) => {
         const filter = filterOptions[filterType];
         if (!filter.enabledViews.includes(view)) return null;

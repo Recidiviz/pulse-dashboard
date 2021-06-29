@@ -138,7 +138,10 @@ app.get("/api/:stateCode/community/explore", checkJwt, api.communityExplore);
 app.get("/api/:stateCode/facilities/explore", checkJwt, api.facilitiesExplore);
 app.get("/api/:stateCode/projections", checkJwt, api.populationProjections);
 app.get("/api/:stateCode/vitals", checkJwt, api.vitals);
-
+app.get(
+  "/api/:stateCode/projections/methodology.pdf",
+  api.populationProjectionsMethodology
+);
 app.post(
   "/api/generateFileLink",
   checkJwt,

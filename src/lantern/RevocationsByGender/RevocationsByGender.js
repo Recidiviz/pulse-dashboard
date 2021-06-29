@@ -58,7 +58,9 @@ const RevocationsByGender = observer(
           stacked
         )}
         chartTitle={CHART_TITLE}
-        metricTitle={(mode) => `${CHART_TITLE}: ${mode}`}
+        metricTitle={
+          stacked ? CHART_TITLE : (mode) => `${CHART_TITLE}: ${mode}`
+        }
         timeDescription={timeDescription}
         modes={stacked ? [] : Object.keys(genderValueToLabel)}
         defaultMode={DEFAULT_MODE}
