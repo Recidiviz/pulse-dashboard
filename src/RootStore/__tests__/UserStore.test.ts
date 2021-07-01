@@ -150,6 +150,23 @@ test("handles Auth0 token params", async () => {
   expect(window.location.href).not.toMatch(auth0LoginParams);
 });
 
+test("urlQuery error", async () => {
+  const targetUrl = "http://localhost/somePage?id=1";
+  mockHandleRedirectCallback.mockResolvedValue({ appState: { targetUrl } });
+
+  const auth0LoginParams =
+    "error=unauthorized&error_description=no%20access&code=123456&state=abcdef";
+  const urlWithToken = new URL(window.location.href);
+  urlWithToken.search = `?${auth0LoginParams}`;
+  window.history.pushState({}, "Test", urlWithToken.href);
+
+  const store = new UserStore({
+    authSettings: testAuthSettings,
+  });
+  await store.authorize();
+  expect(store.authError).toEqual(new Error("no access"));
+});
+
 test("redirect to targetUrl after callback", async () => {
   const targetUrl = "http://localhost/somePage?id=1";
   mockHandleRedirectCallback.mockResolvedValue({ appState: { targetUrl } });

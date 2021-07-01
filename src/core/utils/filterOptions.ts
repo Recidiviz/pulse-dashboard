@@ -16,7 +16,7 @@
 // =============================================================================
 import { CORE_VIEWS } from "../views";
 import { METRIC_TYPES, FILTER_TYPES } from "./constants";
-import { US_ID } from "../../RootStore/TenantStore/coreTenants";
+import { US_ID, US_ND } from "../../RootStore/TenantStore/coreTenants";
 import {
   FilterOption,
   PopulationFilters,
@@ -156,4 +156,5 @@ export const defaultPopulationFilterValues: PopulationFilterValues = {
 
 export default {
   [US_ID]: PopulationFilterOptions,
+  [US_ND]: undefined,
 } as const;
