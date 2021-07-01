@@ -56,8 +56,19 @@ interface Props {
   lantern: boolean;
 }
 
+const IE_11_BANNER_HIDDEN = "ie11BannerIsHiddenInSession";
+
 const IE11Banner: React.FC<Props> = ({ lantern = false }) => {
-  const [isHidden, setIsHidden] = useState(false);
+  const storageIsHidden =
+    sessionStorage.getItem(IE_11_BANNER_HIDDEN) || "false";
+
+  const [isHidden, setIsHidden] = useState(storageIsHidden === "true");
+
+  const handleBannerClose = () => {
+    setIsHidden(true);
+    sessionStorage.setItem(IE_11_BANNER_HIDDEN, "true");
+  };
+
   return (
     <BannerContainer lantern={lantern}>
       <Banner hidden={isHidden}>
@@ -69,7 +80,7 @@ const IE11Banner: React.FC<Props> = ({ lantern = false }) => {
           <button
             type="button"
             className="close"
-            onClick={() => setIsHidden(true)}
+            onClick={() => handleBannerClose()}
             aria-label="Close"
           >
             <span aria-hidden="true">&times;</span>
