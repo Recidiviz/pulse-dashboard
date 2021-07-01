@@ -15,10 +15,12 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React, { useState } from "react";
+import React from "react";
+import { observer } from "mobx-react-lite";
 import styled from "styled-components/macro";
 import * as fontStyles from "../core/CoreConstants.scss";
 import * as baseStyles from "../assets/styles/spec/settings/baseColors.scss";
+import { useRootStore } from "./StoreProvider/StoreProvider";
 
 const BannerContainer = styled.div<{ lantern: boolean }>`
   padding-top: ${(props) =>
@@ -26,11 +28,11 @@ const BannerContainer = styled.div<{ lantern: boolean }>`
   padding-bottom: 0.5rem;
 `;
 
-const Banner = styled.div<{ hidden: boolean }>`
+const Banner = styled.div<{ visible: boolean }>`
   height: 72px;
   background-color: ${fontStyles.pine3};
   padding: 0 10rem 0;
-  display: ${(props) => (props.hidden ? "false" : "flex")};
+  display: ${(props) => (props.visible ? "flex" : "none")};
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
@@ -56,22 +58,12 @@ interface Props {
   lantern: boolean;
 }
 
-const IE_11_BANNER_HIDDEN = "ie11BannerIsHiddenInSession";
-
 const IE11Banner: React.FC<Props> = ({ lantern = false }) => {
-  const storageIsHidden =
-    sessionStorage.getItem(IE_11_BANNER_HIDDEN) || "false";
-
-  const [isHidden, setIsHidden] = useState(storageIsHidden === "true");
-
-  const handleBannerClose = () => {
-    setIsHidden(true);
-    sessionStorage.setItem(IE_11_BANNER_HIDDEN, "true");
-  };
+  const { pageStore } = useRootStore();
 
   return (
     <BannerContainer lantern={lantern}>
-      <Banner hidden={isHidden}>
+      <Banner visible={pageStore.ie11BannerIsVisible}>
         <BannerText>
           Looks like you’re using Internet Explorer 11. For faster loading and a
           better experience, use Microsoft Edge, Google Chrome, or Firefox.
@@ -80,7 +72,7 @@ const IE11Banner: React.FC<Props> = ({ lantern = false }) => {
           <button
             type="button"
             className="close"
-            onClick={() => handleBannerClose()}
+            onClick={() => pageStore.hideIE11Banner()}
             aria-label="Close"
           >
             <span aria-hidden="true">&times;</span>
@@ -91,4 +83,4 @@ const IE11Banner: React.FC<Props> = ({ lantern = false }) => {
   );
 };
 
-export default IE11Banner;
+export default observer(IE11Banner);

@@ -18,6 +18,7 @@ import { configure, computed, makeObservable } from "mobx";
 import { Auth0ClientOptions, User } from "@auth0/auth0-spa-js";
 import TenantStore from "./TenantStore";
 import UserStore from "./UserStore";
+import PageStore from "./PageStore";
 import devAuthConfig from "../auth_config_dev.json";
 import productionAuthConfig from "../auth_config_production.json";
 import { TenantId } from "./types";
@@ -61,6 +62,8 @@ class RootStore {
 
   userStore: UserStore;
 
+  pageStore: PageStore;
+
   constructor() {
     makeObservable(this, {
       currentTenantId: computed,
@@ -73,6 +76,8 @@ class RootStore {
     });
 
     this.tenantStore = new TenantStore({ rootStore: this });
+
+    this.pageStore = new PageStore({ rootStore: this });
   }
 
   get currentTenantId(): TenantId | undefined {

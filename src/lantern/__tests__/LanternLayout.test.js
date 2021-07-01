@@ -22,7 +22,6 @@ import usePageLayout from "../hooks/usePageLayout";
 import TopBarUserMenuForAuthenticatedUser from "../../components/TopBar/TopBarUserMenuForAuthenticatedUser";
 import mockWithTestId from "../../../__helpers__/mockWithTestId";
 import StoreProvider from "../../components/StoreProvider";
-import { PageProvider } from "../../contexts/PageContext";
 
 jest.mock("mobx-react-lite", () => {
   return {
@@ -51,9 +50,7 @@ describe("LanternLayout tests", () => {
   const renderLanternLayout = () => {
     return render(
       <StoreProvider>
-        <PageProvider>
-          <LanternLayout>{mockChildren}</LanternLayout>
-        </PageProvider>
+        <LanternLayout>{mockChildren}</LanternLayout>
       </StoreProvider>
     );
   };

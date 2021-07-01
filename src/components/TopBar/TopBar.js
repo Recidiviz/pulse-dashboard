@@ -19,16 +19,16 @@ import React from "react";
 import PropTypes from "prop-types";
 import cn from "classnames";
 
-import { usePageState } from "../../contexts/PageContext";
+import { useRootStore } from "../StoreProvider";
 
 const TopBar = ({ children, isHidable = false, isWide = false }) => {
-  const { hideTopBar } = usePageState();
+  const { pageStore } = useRootStore();
 
   return (
     <div
       className={cn("TopBar", "header", "navbar", {
         "TopBar--wide": isWide,
-        "TopBar--hidden": hideTopBar && isHidable,
+        "TopBar--hidden": pageStore.hideTopBar && isHidable,
       })}
     >
       <div className="TopBar__container header-container">{children}</div>

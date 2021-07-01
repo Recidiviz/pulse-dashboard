@@ -39,14 +39,14 @@ import {
   SUPERVISION_TYPE,
 } from "./utils/constants";
 import { useLanternStore } from "./LanternStoreProvider";
+import { useRootStore } from "../components/StoreProvider";
 
 import "./Revocations.scss";
-import { usePageState } from "../contexts/PageContext";
 
 const Revocations = () => {
   const lanternStore = useLanternStore();
+  const { pageStore } = useRootStore();
   const { filters, filterOptions } = lanternStore.filtersStore;
-  const { hideTopBar } = usePageState();
 
   const timeDescription = getTimeDescription(
     get(filters, METRIC_PERIOD_MONTHS),
@@ -59,7 +59,7 @@ const Revocations = () => {
     <div className="Revocations">
       <Sticky
         className="LanternFilterBar"
-        style={{ zIndex: 700, top: hideTopBar ? 0 : 65 }}
+        style={{ zIndex: 700, top: pageStore.hideTopBar ? 0 : 65 }}
       >
         <ErrorBoundary>
           <>

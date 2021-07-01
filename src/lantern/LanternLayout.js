@@ -33,9 +33,9 @@ import IE11Banner from "../components/IE11Banner";
 import "./LanternLayout.scss";
 
 const LanternLayout = ({ children }) => {
-  const { currentTenantId } = useRootStore();
+  const { currentTenantId, pageStore } = useRootStore();
   useIntercom();
-  usePageLayout();
+  usePageLayout(pageStore.hideTopBar);
   setTranslateLocale(currentTenantId);
 
   return (

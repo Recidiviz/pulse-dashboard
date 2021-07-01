@@ -26,7 +26,6 @@ import * as Sentry from "@sentry/react";
 
 import ProtectedRoute from "./ProtectedRoute";
 import RedirectHome from "./RedirectHome";
-import { PageProvider } from "./contexts/PageContext";
 import StoreProvider from "./components/StoreProvider";
 import AuthWall from "./AuthWall";
 import SentryErrorBoundary from "./components/SentryErrorBoundary";
@@ -68,45 +67,43 @@ Sentry.init({
 const App = () => (
   <StoreProvider>
     <SentryErrorBoundary>
-      <PageProvider>
-        <Router>
-          <Switch>
-            <Route path="/verify" component={VerificationNeeded} />
-            <AuthWall>
+      <Router>
+        <Switch>
+          <Route path="/verify" component={VerificationNeeded} />
+          <AuthWall>
 
-              <LanternLayout tenantIds={LANTERN_TENANTS}>
-                <Switch>
-                  <Route path="/community/revocations" component={Revocations} />
-                  <Route path="/profile" component={Profile} />
-                  <Redirect exact from="/" to="/community/revocations" />
-                  <Redirect from="/revocations" to="/community/revocations" />
-                  <NotFound />
-                </Switch>
-              </LanternLayout>
+            <LanternLayout tenantIds={LANTERN_TENANTS}>
+              <Switch>
+                <Route path="/community/revocations" component={Revocations} />
+                <Route path="/profile" component={Profile} />
+                <Redirect exact from="/" to="/community/revocations" />
+                <Redirect from="/revocations" to="/community/revocations" />
+                <NotFound />
+              </Switch>
+            </LanternLayout>
 
-              <CoreLayout tenantIds={CORE_TENANTS}>
-                <Switch>
-                  <ProtectedRoute path={CORE_PATHS.goals} component={CoreGoalsView} />
-                  <ProtectedRoute path={CORE_PATHS.communityExplore} component={UsNdCommunityExplore} />
-                  <ProtectedRoute path={CORE_PATHS.communityProjections} component={PageProjections} />
-                  <ProtectedRoute path={CORE_PATHS.facilitiesExplore} component={UsNdFacilitiesExplore} />
-                  <ProtectedRoute path={CORE_PATHS.facilitiesProjections} component={PageProjections} />
-                  <ProtectedRoute path={CORE_PATHS.communityVitals} component={PageVitals}/>
-                  <ProtectedRoute path={CORE_PATHS.methodology} component={PageMethodology} />
-                  <Route path="/profile" component={Profile} />
-                  <RedirectHome />
-                  <Redirect from="/snapshots" to="/goals" />
-                  <Redirect from="/revocations" to="/goals" />
-                  <Redirect from="/reincarcerations" to="/goals" />
-                  <Redirect from="/community/goals" to="/goals" />
-                  <Redirect from="/facilities/goals" to="/goals" />
-                  <NotFound />
-                </Switch>
-              </CoreLayout>
-            </AuthWall>
-          </Switch>
-        </Router>
-      </PageProvider>
+            <CoreLayout tenantIds={CORE_TENANTS}>
+              <Switch>
+                <ProtectedRoute path={CORE_PATHS.goals} component={CoreGoalsView} />
+                <ProtectedRoute path={CORE_PATHS.communityExplore} component={UsNdCommunityExplore} />
+                <ProtectedRoute path={CORE_PATHS.communityProjections} component={PageProjections} />
+                <ProtectedRoute path={CORE_PATHS.facilitiesExplore} component={UsNdFacilitiesExplore} />
+                <ProtectedRoute path={CORE_PATHS.facilitiesProjections} component={PageProjections} />
+                <ProtectedRoute path={CORE_PATHS.communityVitals} component={PageVitals}/>
+                <ProtectedRoute path={CORE_PATHS.methodology} component={PageMethodology} />
+                <Route path="/profile" component={Profile} />
+                <RedirectHome />
+                <Redirect from="/snapshots" to="/goals" />
+                <Redirect from="/revocations" to="/goals" />
+                <Redirect from="/reincarcerations" to="/goals" />
+                <Redirect from="/community/goals" to="/goals" />
+                <Redirect from="/facilities/goals" to="/goals" />
+                <NotFound />
+              </Switch>
+            </CoreLayout>
+          </AuthWall>
+        </Switch>
+      </Router>
     </SentryErrorBoundary>
   </StoreProvider>
 );

@@ -16,11 +16,10 @@
 // =============================================================================
 
 import { useLayoutEffect, useRef, useState } from "react";
-import { usePageState, usePageDispatch } from "../../contexts/PageContext";
+import { useRootStore } from "../../components/StoreProvider";
 
-const usePageLayout = () => {
-  const pageDispatch = usePageDispatch();
-  const { hideTopBar } = usePageState();
+const usePageLayout = (hideTopBar) => {
+  const { pageStore } = useRootStore();
   const frame = useRef(0);
   const [lastOffset, setLastOffset] = useState(window.pageYOffset);
   const [scrollUpCount, setScrollUpCount] = useState(0);
@@ -39,18 +38,12 @@ const usePageLayout = () => {
           window.pageYOffset > 90 &&
           window.pageYOffset > lastOffset
         ) {
-          pageDispatch({
-            type: "update",
-            payload: { hideTopBar: true },
-          });
+          pageStore.setHideTopBar(true);
         } else if (
           hideTopBar &&
           (scrollUpCount > 2 || window.pageYOffset < 60)
         ) {
-          pageDispatch({
-            type: "update",
-            payload: { hideTopBar: false },
-          });
+          pageStore.setHideTopBar(false);
         }
         setLastOffset(window.pageYOffset);
       });
