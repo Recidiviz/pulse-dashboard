@@ -55,7 +55,7 @@ const BannerClose = styled.div`
 `;
 
 interface Props {
-  lantern: boolean;
+  lantern?: boolean;
 }
 
 const IE11Banner: React.FC<Props> = ({ lantern = false }) => {

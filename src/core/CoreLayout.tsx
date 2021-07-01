@@ -18,7 +18,6 @@
 import React from "react";
 import { observer } from "mobx-react-lite";
 
-import PropTypes from "prop-types";
 import Footer from "../components/Footer";
 import CoreNavigation from "./CoreNavigation";
 import useIntercom from "../hooks/useIntercom";
@@ -27,7 +26,11 @@ import ErrorBoundary from "./ErrorBoundary";
 import IE11Banner from "../components/IE11Banner";
 import "./CoreLayout.scss";
 
-const CoreLayout = ({ children }) => {
+interface Props {
+  children: React.ReactElement;
+}
+
+const CoreLayout: React.FC<Props> = ({ children }): React.ReactElement => {
   useIntercom();
   return (
     <CoreStoreProvider>
@@ -45,13 +48,6 @@ const CoreLayout = ({ children }) => {
       </ErrorBoundary>
     </CoreStoreProvider>
   );
-};
-
-CoreLayout.propTypes = {
-  children: PropTypes.oneOfType([
-    PropTypes.node,
-    PropTypes.arrayOf(PropTypes.node),
-  ]).isRequired,
 };
 
 export default observer(CoreLayout);
