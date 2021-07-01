@@ -1,5 +1,5 @@
 // Recidiviz - a data platform for criminal justice reform
-// Copyright (C) 2019 Recidiviz, Inc.
+// Copyright (C) 2021 Recidiviz, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -23,7 +23,6 @@ import {
 import tenants from "../../tenants";
 
 jest.mock("../../flags", () => ({
-  showMethodologyDropdown: false,
   enableVitalsDashboard: true,
   enableProjectionsDashboard: true,
 }));
@@ -35,6 +34,7 @@ describe("getPathsFromNavigation", () => {
       "/goals",
       "/community/explore",
       "/community/vitals",
+      "/methodology/vitals",
       "/facilities/explore",
     ];
     expect(allowedPaths).toEqual(expected);
@@ -42,7 +42,11 @@ describe("getPathsFromNavigation", () => {
 
   it("returns the correct allowed paths path for US_ID", () => {
     const allowedPaths = getPathsFromNavigation(tenants.US_ID.navigation);
-    const expected = ["/facilities/projections", "/community/projections"];
+    const expected = [
+      "/facilities/projections",
+      "/community/projections",
+      "/methodology/projections",
+    ];
     expect(allowedPaths).toEqual(expected);
   });
 });
