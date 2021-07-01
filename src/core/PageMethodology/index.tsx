@@ -16,7 +16,6 @@
 // =============================================================================
 import React from "react";
 import { useParams, useHistory } from "react-router-dom";
-import PageTemplate from "../PageTemplate";
 import VitalsMethodology from "../VitalsMethodology";
 import ProjectionsMethodology from "../ProjectionsMethodology/Methodology";
 import "./Methodology.scss";
@@ -36,11 +35,7 @@ const PageMethodology: React.FC = () => {
     push({ pathname: "/" });
   }
 
-  return (
-    <PageTemplate>
-      <Methodology />
-    </PageTemplate>
-  );
+  return <Methodology />;
 };
 
 export default PageMethodology;

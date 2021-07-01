@@ -22,9 +22,9 @@ import MethodologyBlock from "./MethodologyBlock";
 import { mainBlocks } from "./constant/mainBlocks";
 import PageTemplate from "../PageTemplate";
 
-const Methodology = () => (
+const Methodology: React.FC = () => (
   <PageTemplate>
-    <div className="main-content Methodology p-0">
+    <div className="Methodology">
       <Container className="col-md-9 col-12">
         <h1 className="Methodology__main-title">Projections</h1>
         <h2 className="Methodology__main-description">

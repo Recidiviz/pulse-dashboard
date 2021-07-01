@@ -24,6 +24,7 @@ import CoreNavigation from "./CoreNavigation";
 import useIntercom from "../hooks/useIntercom";
 import CoreStoreProvider from "./CoreStoreProvider";
 import ErrorBoundary from "./ErrorBoundary";
+import IE11Banner from "../components/IE11Banner";
 import "./CoreLayout.scss";
 
 const CoreLayout = ({ children }) => {
@@ -36,6 +37,7 @@ const CoreLayout = ({ children }) => {
             <div className="CoreLayout__header">
               <CoreNavigation />
             </div>
+            <IE11Banner />
             {children}
           </div>
           <Footer />
