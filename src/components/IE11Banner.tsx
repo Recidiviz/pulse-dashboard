@@ -18,9 +18,11 @@
 import React, { useState } from "react";
 import styled from "styled-components/macro";
 import * as fontStyles from "../core/CoreConstants.scss";
+import * as baseStyles from "../assets/styles/spec/settings/baseColors.scss";
 
-const BannerContainer = styled.div`
-  padding-top: 5rem;
+const BannerContainer = styled.div<{ lantern: boolean }>`
+  padding-top: ${(props) =>
+    props.lantern ? `${baseStyles.headerHeight}` : "5rem"};
   padding-bottom: 0.5rem;
 `;
 
@@ -50,10 +52,14 @@ const BannerClose = styled.div`
   }
 `;
 
-const IE11Banner: React.FC = () => {
+interface Props {
+  lantern: boolean;
+}
+
+const IE11Banner: React.FC<Props> = ({ lantern = false }) => {
   const [isHidden, setIsHidden] = useState(false);
   return (
-    <BannerContainer>
+    <BannerContainer lantern={lantern}>
       <Banner hidden={isHidden}>
         <BannerText>
           Looks like you’re using Internet Explorer 11. For faster loading and a

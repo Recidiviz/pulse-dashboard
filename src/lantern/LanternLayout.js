@@ -28,6 +28,7 @@ import { useRootStore } from "../components/StoreProvider";
 import LanternStoreProvider from "./LanternStoreProvider";
 import LanternErrorBoundary from "./ErrorBoundary";
 import LanternTopBar from "./LanternTopBar";
+import IE11Banner from "../components/IE11Banner";
 
 import "./LanternLayout.scss";
 
@@ -49,6 +50,7 @@ const LanternLayout = ({ children }) => {
           </Helmet>
           <div className="wide-page-container">
             <LanternTopBar />
+            <IE11Banner lantern />
             {children}
             <Footer />
           </div>
