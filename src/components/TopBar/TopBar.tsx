@@ -16,12 +16,21 @@
 // =============================================================================
 
 import React from "react";
-import PropTypes from "prop-types";
 import cn from "classnames";
 
 import { useRootStore } from "../StoreProvider";
 
-const TopBar = ({ children, isHidable = false, isWide = false }) => {
+interface Props {
+  children: JSX.Element[];
+  isHidable: boolean;
+  isWide: boolean;
+}
+
+const TopBar: React.FC<Props> = ({
+  isHidable = false,
+  isWide = false,
+  children,
+}) => {
   const { pageStore } = useRootStore();
 
   return (
@@ -34,17 +43,6 @@ const TopBar = ({ children, isHidable = false, isWide = false }) => {
       <div className="TopBar__container header-container">{children}</div>
     </div>
   );
-};
-
-TopBar.defaultProps = {
-  isHidable: false,
-  isWide: false,
-};
-
-TopBar.propTypes = {
-  children: PropTypes.node.isRequired,
-  isHidable: PropTypes.bool,
-  isWide: PropTypes.bool,
 };
 
 export default TopBar;

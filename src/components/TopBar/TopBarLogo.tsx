@@ -20,7 +20,7 @@ import { Link } from "react-router-dom";
 
 import lanternLogo from "../../assets/static/images/lantern_logo.png";
 
-const TopBarLogo = () => (
+const TopBarLogo: React.FC = () => (
   <Link className="TopBar__logo" to="/">
     <img className="lantern-logo" src={lanternLogo} alt="Lantern" />
   </Link>
