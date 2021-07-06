@@ -36,9 +36,6 @@ import VitalsMethodology from "../core/VitalsMethodology";
 
 const METADATA_NAMESPACE = process.env.REACT_APP_METADATA_NAMESPACE;
 
-jest.mock("../flags", () => ({
-  showMethodologyDropdown: true,
-}));
 jest.mock("../utils/initIntercomSettings");
 jest.mock("../utils/initFontAwesome");
 jest.mock("../utils/i18nSettings");
