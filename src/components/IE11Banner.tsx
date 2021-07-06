@@ -17,42 +17,9 @@
 
 import React from "react";
 import { observer } from "mobx-react-lite";
-import styled from "styled-components/macro";
-import * as fontStyles from "../core/CoreConstants.scss";
-import * as baseStyles from "../assets/styles/spec/settings/baseColors.scss";
+import cn from "classnames";
 import { useRootStore } from "./StoreProvider/StoreProvider";
-
-const BannerContainer = styled.div<{ lantern: boolean }>`
-  padding-top: ${(props) =>
-    props.lantern ? `${baseStyles.headerHeight}` : "5rem"};
-  padding-bottom: 0.5rem;
-`;
-
-const Banner = styled.div<{ visible: boolean }>`
-  height: 72px;
-  background-color: ${fontStyles.pine3};
-  padding: 0 10rem 0;
-  display: ${(props) => (props.visible ? "flex" : "none")};
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-`;
-
-const BannerText = styled.div`
-  color: ${fontStyles.white};
-  font: ${fontStyles.fontUiSans16};
-  line-height: 24px;
-`;
-
-const BannerClose = styled.div`
-  .close {
-    line-height: 12px;
-    color: ${fontStyles.white};
-    span {
-      font-size: 30px;
-    }
-  }
-`;
+import "./IE11Banner.scss";
 
 interface Props {
   lantern?: boolean;
@@ -60,26 +27,31 @@ interface Props {
 
 const IE11Banner: React.FC<Props> = ({ lantern = false }) => {
   const { pageStore } = useRootStore();
-
   return (
-    <BannerContainer lantern={lantern}>
-      <Banner visible={pageStore.ie11BannerIsVisible}>
-        <BannerText>
-          Looks like you’re using Internet Explorer 11. For faster loading and a
-          better experience, use Microsoft Edge, Google Chrome, or Firefox.
-        </BannerText>
-        <BannerClose>
-          <button
-            type="button"
-            className="close"
-            onClick={() => pageStore.hideIE11Banner()}
-            aria-label="Close"
-          >
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </BannerClose>
-      </Banner>
-    </BannerContainer>
+    <div className={cn("IE11Banner", { Lantern: lantern })}>
+      <div
+        className={cn("IE11Banner__container", {
+          "IE11Banner__container--visible": pageStore.ie11BannerIsVisible,
+        })}
+      >
+        <div className="IE11Banner__body">
+          <div className="IE11Banner__body--text">
+            Looks like you’re using Internet Explorer 11. For faster loading and
+            a better experience, use Microsoft Edge, Google Chrome, or Firefox.
+          </div>
+          <div className="IE11Banner__body--close">
+            <button
+              type="button"
+              className="close"
+              onClick={pageStore.hideIE11Banner}
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 };
 
