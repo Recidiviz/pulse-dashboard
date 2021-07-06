@@ -84,11 +84,19 @@ describe("FiltersStore", () => {
 
     it("sets the defaultFilters to allowedSupervisionLocationIds if it exists", () => {
       const tenantId = "US_MO";
-
+      const mockDistricts = [
+        {
+          level_2_supervision_location_external_id: "99",
+          level_2_supervision_location_name: "HARRISBURG - 99",
+          level_1_supervision_location_external_id: "99",
+          level_1_supervision_location_name: "LANCASTER DO - 99",
+        },
+      ];
       rootStore = new LanternStore(RootStore);
 
       runInAction(() => {
         rootStore.tenantStore.currentTenantId = tenantId;
+        rootStore.districtsStore.apiData = { data: mockDistricts };
         rootStore.districtsStore.isLoading = false;
         rootStore.userStore.user = {
           "test-metadata-namespace/app_metadata": {
@@ -96,7 +104,6 @@ describe("FiltersStore", () => {
           },
         };
       });
-
       expect(
         rootStore.filtersStore.defaultFilterValues[
           getDistrictFilterKey(tenantId)

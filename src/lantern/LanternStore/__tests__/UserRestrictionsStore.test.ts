@@ -27,7 +27,7 @@ jest.mock("..");
 const mockLanternStore = LanternStore as jest.Mock;
 const mockSetAuthError = jest.fn();
 
-const userDistrict = "13";
+let userDistrict = "13";
 const authError = new Error(ERROR_MESSAGES.unauthorized);
 const tenantId = "US_MO";
 const mockRootStore = {
@@ -147,6 +147,98 @@ describe("UserRestrictionsStore", () => {
           allowedSupervisionLocationIds: mockInvalidId,
         },
       });
+    });
+  });
+
+  describe("when the user restriction is valid", () => {
+    beforeEach(async () => {
+      mockLanternStore.mockImplementationOnce(() => {
+        return {
+          currentTenantId: "US_MO",
+          districtsStore: {
+            districtIds: [userDistrict, otherDistrict],
+          },
+          userStore: {
+            setAuthError: mockSetAuthError,
+            allowedSupervisionLocationIds: [userDistrict],
+          },
+        };
+      });
+    });
+
+    afterEach(() => {
+      jest.resetAllMocks();
+    });
+
+    it("does not set an auth error for numeric district", () => {
+      userDistrict = "03";
+      rootStore = new LanternStore(mockRootStore);
+      userRestrictionsStore = new UserRestrictionsStore({
+        rootStore,
+      });
+      userRestrictionsStore.verifyUserRestrictions();
+
+      expect(rootStore.userStore.setAuthError).toHaveBeenCalledTimes(0);
+    });
+
+    it("does not set an auth error for string district", () => {
+      userDistrict = "TSCL";
+      rootStore = new LanternStore(mockRootStore);
+      userRestrictionsStore = new UserRestrictionsStore({
+        rootStore,
+      });
+      userRestrictionsStore.verifyUserRestrictions();
+
+      expect(rootStore.userStore.setAuthError).toHaveBeenCalledTimes(0);
+    });
+
+    it("does not set an auth error for alphanumeric district", () => {
+      userDistrict = "13N";
+      rootStore = new LanternStore(mockRootStore);
+      userRestrictionsStore = new UserRestrictionsStore({
+        rootStore,
+      });
+      userRestrictionsStore.verifyUserRestrictions();
+
+      expect(rootStore.userStore.setAuthError).toHaveBeenCalledTimes(0);
+    });
+  });
+
+  describe("when the user restriction is valid but missing a leading 0", () => {
+    const mockMalformedId = "3";
+
+    beforeEach(async () => {
+      mockLanternStore.mockImplementationOnce(() => {
+        return {
+          currentTenantId: "US_MO",
+          districtsStore: {
+            districtIds: ["03", "13N", "TSCL"],
+          },
+          userStore: {
+            setAuthError: mockSetAuthError,
+            allowedSupervisionLocationIds: [mockMalformedId],
+          },
+        };
+      });
+      rootStore = new LanternStore(mockRootStore);
+      userRestrictionsStore = new UserRestrictionsStore({
+        rootStore,
+      });
+      userRestrictionsStore.verifyUserRestrictions();
+    });
+
+    afterEach(() => {
+      jest.resetAllMocks();
+    });
+
+    it("does not set an auth error", () => {
+      expect(rootStore.userStore.setAuthError).toHaveBeenCalledTimes(0);
+    });
+
+    it("correctly sets the allowedSupervisionLocationIds", () => {
+      expect(userRestrictionsStore.allowedSupervisionLocationIds).toEqual([
+        "03",
+      ]);
     });
   });
 });
