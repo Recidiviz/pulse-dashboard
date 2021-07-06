@@ -20,6 +20,13 @@ import { ERROR_MESSAGES } from "../../constants/errorMessages";
 import type LanternStore from ".";
 import { US_MO } from "../../RootStore/TenantStore/lanternTenants";
 import { CHARTS } from "./DataStore/RevocationsChartStore";
+import { safeToInt } from "../../utils";
+
+const typeSafeIncludes = (arrayA: string[], arrayB: string[]): string[] => {
+  return arrayA.filter((a: string) => {
+    return arrayB.map((b: string) => safeToInt(b)).includes(safeToInt(a));
+  });
+};
 
 type ConstructorProps = {
   rootStore: LanternStore;
@@ -50,26 +57,27 @@ export default class UserRestrictionsStore {
   }
 
   get allowedSupervisionLocationIds(): string[] {
-    return this.rootStore.userStore.allowedSupervisionLocationIds || [];
+    const normalizedIds = typeSafeIncludes(
+      this.rootStore.districtsStore.districtIds,
+      this.rootStore.userStore.allowedSupervisionLocationIds
+    );
+
+    return normalizedIds || [];
   }
 
   verifyUserRestrictions(): void {
-    const unverifiedLocations = this.allowedSupervisionLocationIds.filter(
-      (supervisionLocationId) => {
-        return !this.rootStore.districtsStore.districtIds.includes(
-          supervisionLocationId
-        );
-      }
+    const verifiedLocations = typeSafeIncludes(
+      this.rootStore.userStore.allowedSupervisionLocationIds,
+      this.rootStore.districtsStore.districtIds
     );
-
     if (
-      this.allowedSupervisionLocationIds.length > 0 &&
-      unverifiedLocations.length > 0
+      this.rootStore.userStore.allowedSupervisionLocationIds.length > 0 &&
+      verifiedLocations.length === 0
     ) {
       const authError = new Error(ERROR_MESSAGES.unauthorized);
       Sentry.captureException(authError, {
         tags: {
-          allowedSupervisionLocationIds: this.allowedSupervisionLocationIds.join(
+          allowedSupervisionLocationIds: this.rootStore.userStore.allowedSupervisionLocationIds.join(
             ","
           ),
         },

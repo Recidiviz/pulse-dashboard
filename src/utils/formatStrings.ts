@@ -79,6 +79,10 @@ function toHumanReadable(string: string): string {
   return string.replace(/[-_]/g, " ");
 }
 
+function safeToInt(nonInt: string): number | string {
+  return !Number.isNaN(Number(nonInt)) ? parseInt(nonInt) : nonInt;
+}
+
 function toInt(nonInt: string): number {
   return parseInt(nonInt);
 }
@@ -181,6 +185,7 @@ export {
   raceValueToHumanReadable,
   toHtmlFriendly,
   toHumanReadable,
+  safeToInt,
   toInt,
   toNumber,
   toTitleCase,
