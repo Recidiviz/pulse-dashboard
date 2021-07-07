@@ -24,7 +24,7 @@ export default class RevocationsOverTimeStore extends BaseDataStore {
   constructor({ rootStore }) {
     super({
       rootStore,
-      file: `revocations_matrix_by_month`,
+      file: `revocations_matrix_events_by_month`,
       skippedFilters: [METRIC_PERIOD_MONTHS],
     });
   }

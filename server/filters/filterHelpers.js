@@ -34,7 +34,7 @@ const {
 const getFilterFnByMetricName = (metricName, filters) => {
   const filterKeys = getFilterKeys();
 
-  return metricName === "revocations_matrix_by_month"
+  return metricName === "revocations_matrix_events_by_month"
     ? matchesAllFilters({
         filters,
         skippedFilters: [filterKeys.METRIC_PERIOD_MONTHS],
@@ -66,7 +66,7 @@ const getNewRevocationsFiltersByMetricName = ({
     case "revocations_matrix_distribution_by_officer":
     case "revocations_matrix_distribution_by_race":
     case "revocations_matrix_distribution_by_violation":
-    case "revocations_matrix_by_month":
+    case "revocations_matrix_events_by_month":
       return { ...subsetFilters, ...userRestrictionsFilters };
     case "revocations_matrix_cells":
     case "revocations_matrix_filtered_caseload":

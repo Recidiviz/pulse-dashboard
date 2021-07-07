@@ -17,6 +17,11 @@
 import { matchesAllFilters } from "shared-filters";
 import BaseDataStore from "./BaseDataStore";
 import { US_PA } from "../../../RootStore/TenantStore/lanternTenants";
+import { nullSafeLabel, normalizeOfficerRecommendation } from "./helpers";
+import { parseAndFormatViolationRecord } from "../../CaseTable/utils/violationRecord";
+import getNameFromOfficerId from "../../utils/getNameFromOfficerId";
+import { translate } from "../../../utils/i18nSettings";
+import { ADMISSION_TYPE_LABELS } from "../../../RootStore/TenantStore/filterOptions";
 
 export default class CaseTableStore extends BaseDataStore {
   constructor({ rootStore }) {
@@ -25,6 +30,9 @@ export default class CaseTableStore extends BaseDataStore {
       file: `revocations_matrix_filtered_caseload`,
       treatCategoryAllAsAbsent: true,
     });
+    this.formatAdmissionHistory = this.formatAdmissionHistory.bind(this);
+    this.formatTableData = this.formatTableData.bind(this);
+    this.formatExportData = this.formatExportData.bind(this);
   }
 
   get filteredData() {
@@ -35,7 +43,58 @@ export default class CaseTableStore extends BaseDataStore {
     return this.filterData(this.apiData, dataFilter);
   }
 
-  get options() {
+  formatExportData(data) {
+    return (this.formatTableData(data) || []).map(
+      ({ admissionType, ...record }) => ({
+        data: Object.values(record),
+      })
+    );
+  }
+
+  formatAdmissionHistory(admissionHistory) {
+    switch (this.rootStore.currentTenantId) {
+      case US_PA:
+        return (
+          admissionHistory
+            .split(";")
+            .map((admissionType) => ADMISSION_TYPE_LABELS[admissionType])
+            // TODO(recidiviz-data/isues/7878): Re-order admission types in the backend so most recent is first
+            .filter(Boolean)
+            .reverse()
+            .join(", ")
+        );
+      default:
+        return admissionHistory;
+    }
+  }
+
+  formatTableData(tableData) {
+    return tableData.map((row) => ({
+      state_id: nullSafeLabel(row.state_id),
+      district: nullSafeLabel(row.district),
+      officer: nullSafeLabel(getNameFromOfficerId(row.officer)),
+      risk_level: nullSafeLabel(translate("riskLevelsMap")[row.risk_level]),
+      violation_record: nullSafeLabel(
+        parseAndFormatViolationRecord(row.violation_record)
+      ),
+      admission_history_description: nullSafeLabel(
+        this.formatAdmissionHistory(row.admission_history_description)
+      ),
+      ...(this.includeOfficerRecommendation
+        ? {
+            officer_recommendation: nullSafeLabel(
+              normalizeOfficerRecommendation(row.officer_recommendation)
+            ),
+          }
+        : {}),
+    }));
+  }
+
+  get includeOfficerRecommendation() {
+    return this.columns.map((o) => o.key).includes("officer_recommendation");
+  }
+
+  get columns() {
     return this.rootStore.currentTenantId === US_PA
       ? [
           { key: "state_id", label: "DOC ID" },
@@ -43,6 +102,10 @@ export default class CaseTableStore extends BaseDataStore {
           { key: "officer", label: "Agent" },
           { key: "risk_level", label: "Risk level" },
           { key: "violation_record", label: "Violation record" },
+          {
+            key: "admission_history_description",
+            label: "All Recommitments",
+          },
         ]
       : [
           { key: "state_id", label: "DOC ID" },
@@ -54,6 +117,7 @@ export default class CaseTableStore extends BaseDataStore {
             label: "Last Rec. (Incl. Supplementals)",
           },
           { key: "violation_record", label: "Violation record" },
+          { key: "admission_history_description", label: "Total Admissions" },
         ];
   }
 }

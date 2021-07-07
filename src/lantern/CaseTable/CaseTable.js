@@ -26,7 +26,7 @@ import ErrorMessage from "../../components/ErrorMessage";
 import Sortable from "./Sortable";
 import Pagination from "./Pagination";
 import { useContainerHeight } from "../hooks/useContainerHeight";
-import { nullSafeCell, formatData, formatExportData } from "./utils/helpers";
+import { nullSafeCell } from "./utils/helpers";
 import { useLanternStore } from "../LanternStoreProvider";
 import { translate } from "../../utils/i18nSettings";
 
@@ -37,12 +37,19 @@ const CaseTable = ({ timeDescription }) => {
   const store = dataStore.caseTableStore;
   const TABLE_TITLE = translate("caseTableTitle");
   const [page, setPage] = useState(0);
-  const { sortOrder, sortField, toggleOrder, comparator } = useSort();
+  const {
+    columns,
+    formatTableData,
+    formatExportData,
+    formatAdmissionHistory,
+  } = store;
+  const { sortOrder, sortField, toggleOrder, comparator } = useSort(
+    formatAdmissionHistory
+  );
   const { containerHeight, containerRef } = useContainerHeight();
 
   const filteredData = store.filteredData.slice();
   const sortedData = filteredData.sort(comparator);
-  const { options } = store;
 
   if (store.isLoading) {
     return <LoadingChart containerHeight={containerHeight} />;
@@ -54,7 +61,7 @@ const CaseTable = ({ timeDescription }) => {
 
   const startCase = page * CASES_PER_PAGE;
   const endCase = Math.min(sortedData.length, startCase + CASES_PER_PAGE);
-  const pageData = formatData(sortedData.slice(startCase, endCase), options);
+  const pageData = formatTableData(sortedData.slice(startCase, endCase));
   const createUpdatePage = (diff) => () => setPage(page + diff);
 
   const createSortableProps = (field) => ({
@@ -72,8 +79,8 @@ const CaseTable = ({ timeDescription }) => {
         <ExportMenu
           chartId="filteredCaseTable"
           shouldExport={false}
-          datasets={formatExportData(sortedData, options)}
-          labels={options.map((o) => o.label)}
+          datasets={formatExportData(sortedData)}
+          labels={columns.map((o) => o.label)}
           metricTitle="Admitted individuals"
           fixLabelsInColumns
           timeWindowDescription={timeDescription}
@@ -83,10 +90,10 @@ const CaseTable = ({ timeDescription }) => {
       <table>
         <thead>
           <tr>
-            {options.map((option) => (
-              <th key={option.key}>
-                <Sortable {...createSortableProps(option.key)}>
-                  {option.label}
+            {columns.map((column) => (
+              <th key={column.key}>
+                <Sortable {...createSortableProps(column.key)}>
+                  {column.label}
                 </Sortable>
               </th>
             ))}
@@ -99,8 +106,8 @@ const CaseTable = ({ timeDescription }) => {
                 .split(" ")
                 .join("")}-${idx + 1}`}
             >
-              {options.map((option) =>
-                nullSafeCell(option.key, details[option.key], idx)
+              {columns.map((column) =>
+                nullSafeCell(column.key, details[column.key], idx)
               )}
             </tr>
           ))}

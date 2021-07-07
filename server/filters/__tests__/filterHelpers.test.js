@@ -98,9 +98,9 @@ describe("getFilterFnByMetricName", () => {
     jest.clearAllMocks();
   });
 
-  describe("given metricName=revocations_matrix_by_month", () => {
+  describe("given metricName=revocations_matrix_events_by_month", () => {
     const filters = {};
-    const metricName = "revocations_matrix_by_month";
+    const metricName = "revocations_matrix_events_by_month";
 
     it("matchesAllFilters is called with correct skippedFilters param", () => {
       getFilterFnByMetricName(metricName, filters);
@@ -127,7 +127,7 @@ describe("getNewRevocationsFiltersByMetricName", () => {
       "revocations_matrix_distribution_by_officer",
       "revocations_matrix_distribution_by_race",
       "revocations_matrix_distribution_by_violation",
-      "revocations_matrix_by_month",
+      "revocations_matrix_events_by_month",
     ].forEach((metricName) => {
       it(`given ${metricName} it returns the filters object`, () => {
         expect(

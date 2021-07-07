@@ -16,6 +16,7 @@
 // =============================================================================
 
 import qs from "qs";
+import { humanReadableTitleCase } from "../../../utils/formatStrings";
 
 /**
  *
@@ -69,3 +70,16 @@ export function dimensionManifestIncludesFilterValues({
     );
   });
 }
+
+export const normalizeOfficerRecommendation = (value) => {
+  switch (value) {
+    case "CODS":
+      return value;
+    case "PLACEMENT_IN_DOC_FACILITY":
+      return "Placement In DOC Facility";
+    default:
+      return value ? humanReadableTitleCase(value) : "";
+  }
+};
+
+export const nullSafeLabel = (label) => label || "Unknown";

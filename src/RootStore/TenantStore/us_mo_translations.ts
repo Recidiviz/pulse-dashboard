@@ -44,7 +44,7 @@ export default {
   revocationsByRaceChartId: "admissionsByRace",
   revoked: "revoked",
   Revocation: "Revocation",
-  revocations: "revocations",
+  revocations: "admissions",
   revocation: "revocation",
   Revocations: "Revocations",
   percentOfPopulationRevoked: "Percent of standing population revoked",

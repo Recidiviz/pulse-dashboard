@@ -26,10 +26,10 @@ jest.mock("../objectStorage");
 describe("fetchMetricsFromGCS tests", () => {
   const stateCode = "US_MO";
   const metricType = "newRevocation";
-  const file = "revocations_matrix_by_month";
+  const file = "revocations_matrix_events_by_month";
 
-  const returnedFile = "revocations_matrix_by_month.json";
-  const returnedFileKey = "revocations_matrix_by_month";
+  const returnedFile = "revocations_matrix_events_by_month.json";
+  const returnedFileKey = "revocations_matrix_events_by_month";
   const returnedFileExtension = ".json";
   const fileUpdatedAt = "Fri, 31 Oct 2020 00:39:20 GMT";
   const mockReturnedFiles = [returnedFile];
