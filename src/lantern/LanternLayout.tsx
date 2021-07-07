@@ -16,7 +16,6 @@
 // =============================================================================
 
 import React from "react";
-import PropTypes from "prop-types";
 import { Helmet } from "react-helmet";
 import { observer } from "mobx-react-lite";
 
@@ -28,13 +27,18 @@ import { useRootStore } from "../components/StoreProvider";
 import LanternStoreProvider from "./LanternStoreProvider";
 import LanternErrorBoundary from "./ErrorBoundary";
 import LanternTopBar from "./LanternTopBar";
+import IE11Banner from "../components/IE11Banner";
 
 import "./LanternLayout.scss";
 
-const LanternLayout = ({ children }) => {
-  const { currentTenantId } = useRootStore();
+interface Props {
+  children: React.ReactElement;
+}
+
+const LanternLayout: React.FC<Props> = ({ children }): React.ReactElement => {
+  const { currentTenantId, pageStore } = useRootStore();
   useIntercom();
-  usePageLayout();
+  usePageLayout(pageStore.hideTopBar);
   setTranslateLocale(currentTenantId);
 
   return (
@@ -49,6 +53,7 @@ const LanternLayout = ({ children }) => {
           </Helmet>
           <div className="wide-page-container">
             <LanternTopBar />
+            <IE11Banner lantern />
             {children}
             <Footer />
           </div>
@@ -56,10 +61,6 @@ const LanternLayout = ({ children }) => {
       </LanternErrorBoundary>
     </LanternStoreProvider>
   );
-};
-
-LanternLayout.propTypes = {
-  children: PropTypes.node.isRequired,
 };
 
 export default observer(LanternLayout);

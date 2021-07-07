@@ -40,7 +40,7 @@ import {
   SUPERVISION_TYPE,
 } from "../utils/constants";
 import { useLanternStore } from "../LanternStoreProvider";
-import { PageProvider } from "../../contexts/PageContext";
+import StoreProvider from "../../components/StoreProvider";
 
 const METADATA_NAMESPACE = process.env.REACT_APP_METADATA_NAMESPACE;
 
@@ -118,9 +118,9 @@ describe("Revocations component tests", () => {
 
   it("should render Revocations component with proper filters and charts", () => {
     const { getByTestId } = render(
-      <PageProvider>
+      <StoreProvider>
         <Revocations />
-      </PageProvider>
+      </StoreProvider>
     );
 
     expect(getByTestId(`${filtersBarIdPrefix}Time Period`)).toBeInTheDocument();
@@ -147,9 +147,9 @@ describe("Revocations component tests", () => {
     filterOptionsMap[mockTenantId][CHARGE_CATEGORY].componentEnabled = false;
     filterOptionsMap[mockTenantId][ADMISSION_TYPE].componentEnabled = false;
     const { queryByTestId } = render(
-      <PageProvider>
+      <StoreProvider>
         <Revocations />
-      </PageProvider>
+      </StoreProvider>
     );
 
     expect(queryByTestId(`${filtersBarIdPrefix}Supervision Level`)).toBeNull();

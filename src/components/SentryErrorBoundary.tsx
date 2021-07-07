@@ -20,7 +20,7 @@ import * as Sentry from "@sentry/react";
 import ErrorMessage from "./ErrorMessage";
 
 interface Props {
-  children: React.ReactChildren;
+  children: React.ReactElement;
   handleBeforeCapture?: (scope: Sentry.Scope) => void;
 }
 

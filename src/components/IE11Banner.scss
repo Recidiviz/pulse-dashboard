@@ -1,0 +1,82 @@
+// Recidiviz - a data platform for criminal justice reform
+// Copyright (C) 2021 Recidiviz, Inc.
+//
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <https://www.gnu.org/licenses/>.
+// =============================================================================
+@import "../core/CoreConstants";
+@import "../assets/styles/spec/settings/baseColors.scss";
+
+.Lantern {
+  .IE11Banner {
+    padding-top: $header-height;
+
+    &__container {
+      padding-left: 2rem;
+      padding-right: 2rem;
+      background-color: $lantern-dark-blue;
+    }
+
+    &__body {
+      max-width: none;
+    }
+  }
+}
+
+.IE11Banner {
+  padding-top: 5rem;
+  padding-bottom: 0.5rem;
+
+  &__container {
+    height: 72px;
+    background-color: $pine-3;
+    display: none;
+    padding-left: 4rem;
+    padding-right: 4rem;
+
+    &--visible {
+      display: flex;
+      justify-content: center;
+    }
+  }
+
+  &__body {
+    width: 100%;
+    max-width: $core-max-view-width;
+    flex-direction: row;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    &--text {
+      color: $white;
+      font: $font-ui-sans-16;
+      line-height: 24px;
+      padding-right: 10px;
+    }
+
+    &--close {
+      .close {
+        line-height: 12px;
+        color: $white;
+        span {
+          font-size: 30px;
+        }
+      }
+    }
+
+    button:hover {
+      color: white;
+    }
+  }
+}

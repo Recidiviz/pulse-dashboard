@@ -77,6 +77,7 @@ $core-border-color: #d2d8d8;
 $core-focused-color: #e3e6e6;
 $action-topbar: #25b894;
 $label-topbar: #00413e;
+$lantern-dark-blue: #002C42;
 
 // ---------------------------------------------------------
 // @Header Themes
@@ -87,3 +88,7 @@ $theme-dark: lighten($side-nav-dark, 10%);
 $theme-info: $default-info;
 $theme-primary: $default-primary;
 $theme-success: desaturate($default-success, 5%);
+
+:export {
+  headerHeight: $header-height;
+}

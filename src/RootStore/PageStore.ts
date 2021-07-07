@@ -14,28 +14,35 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-import React from "react";
-import { useParams, useHistory } from "react-router-dom";
-import VitalsMethodology from "../VitalsMethodology";
-import ProjectionsMethodology from "../ProjectionsMethodology/Methodology";
-import "./Methodology.scss";
+import { makeAutoObservable } from "mobx";
+import type RootStore from ".";
 
-const PageMethodology: React.FC = () => {
-  const { dashboard }: { dashboard: string } = useParams();
-  const { push } = useHistory();
+const IE_11_BANNER_VISIBLE = "ie11BannerIsVisibleInSession";
 
-  const methodologies: { [k: string]: React.FC } = {
-    vitals: VitalsMethodology,
-    projections: ProjectionsMethodology,
-  };
+export default class PageStore {
+  isIE11: boolean;
 
-  const Methodology = methodologies[dashboard];
+  ie11BannerIsVisible: boolean;
 
-  if (!Methodology) {
-    push({ pathname: "/" });
+  hideTopBar: boolean;
+
+  constructor({ rootStore }: { rootStore: typeof RootStore }) {
+    makeAutoObservable(this);
+
+    this.isIE11 = window.navigator.userAgent.indexOf("Trident/") > 0;
+    const storageIsVisible =
+      sessionStorage.getItem(IE_11_BANNER_VISIBLE) || "true";
+    this.ie11BannerIsVisible = storageIsVisible === "true" && this.isIE11;
+
+    this.hideTopBar = false;
   }
 
-  return <Methodology />;
-};
+  hideIE11Banner = (): void => {
+    this.ie11BannerIsVisible = false;
+    sessionStorage.setItem(IE_11_BANNER_VISIBLE, "false");
+  };
 
-export default PageMethodology;
+  setHideTopBar = (value: boolean): void => {
+    this.hideTopBar = value;
+  };
+}

@@ -21,9 +21,7 @@ import useIntercom from "../../hooks/useIntercom";
 import usePageLayout from "../hooks/usePageLayout";
 import TopBarUserMenuForAuthenticatedUser from "../../components/TopBar/TopBarUserMenuForAuthenticatedUser";
 import mockWithTestId from "../../../__helpers__/mockWithTestId";
-import StoreProvider, { useRootStore } from "../../components/StoreProvider";
-import { US_MO } from "../../RootStore/TenantStore/lanternTenants";
-import { PageProvider } from "../../contexts/PageContext";
+import StoreProvider from "../../components/StoreProvider";
 
 jest.mock("mobx-react-lite", () => {
   return {
@@ -35,40 +33,40 @@ jest.mock("react-router-dom", () => {
     Link: ({ children }) => children,
   };
 });
-jest.mock("../../hooks/useIntercom");
 jest.mock("../hooks/usePageLayout");
 jest.mock("../../components/TopBar/TopBarUserMenuForAuthenticatedUser");
-jest.mock("../../components/StoreProvider");
+jest.mock("../../hooks/useIntercom");
+jest.mock("../../utils/i18nSettings");
 
 describe("LanternLayout tests", () => {
   TopBarUserMenuForAuthenticatedUser.mockReturnValue(null);
   const mockChildrenId = "children-test-id";
   const mockChildren = mockWithTestId(mockChildrenId);
-  StoreProvider.mockImplementation(({ children }) => children);
-  let result;
 
   beforeEach(() => {
-    useRootStore.mockReturnValue({
-      currentTenantId: US_MO,
-    });
-    result = render(
-      <StoreProvider>
-        <PageProvider>
-          <LanternLayout>{mockChildren}</LanternLayout>
-        </PageProvider>
-      </StoreProvider>
-    );
+    jest.clearAllMocks();
   });
 
+  const renderLanternLayout = () => {
+    return render(
+      <StoreProvider>
+        <LanternLayout>{mockChildren}</LanternLayout>
+      </StoreProvider>
+    );
+  };
+
   it("should render children", () => {
-    expect(result.getByTestId(mockChildrenId)).toBeInTheDocument();
+    const { getByTestId } = renderLanternLayout();
+    expect(getByTestId(mockChildrenId)).toBeInTheDocument();
   });
 
   it("should use Intercom for Lantern layout", () => {
+    renderLanternLayout();
     expect(useIntercom).toHaveBeenCalled();
   });
 
   it("should use Page Layout hook", () => {
+    renderLanternLayout();
     expect(usePageLayout).toHaveBeenCalled();
   });
 });

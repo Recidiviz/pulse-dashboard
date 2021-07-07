@@ -23,7 +23,6 @@ import CoreLayout from "../CoreLayout";
 import TopBarUserMenuForAuthenticatedUser from "../../components/TopBar/TopBarUserMenuForAuthenticatedUser";
 
 import mockWithTestId from "../../../__helpers__/mockWithTestId";
-import { PageProvider } from "../../contexts/PageContext";
 import StoreProvider from "../../components/StoreProvider";
 import useIntercom from "../../hooks/useIntercom";
 
@@ -55,9 +54,7 @@ describe("CoreLayout tests", () => {
   const renderCoreLayout = () => {
     return render(
       <StoreProvider>
-        <PageProvider>
-          <CoreLayout>{mockChildren}</CoreLayout>
-        </PageProvider>
+        <CoreLayout>{mockChildren}</CoreLayout>
       </StoreProvider>
     );
   };
