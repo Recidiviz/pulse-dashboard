@@ -27,7 +27,7 @@ jest.mock("fs");
 describe("fetchMetricsFromLocal tests", () => {
   const stateCode = "US_DEMO";
   const metricType = "newRevocation";
-  const file = "revocations_matrix_by_month";
+  const file = "revocations_matrix_events_by_month";
 
   const promiseResValue = "resolved value";
   const metadata = "some metadata";
@@ -41,7 +41,7 @@ describe("fetchMetricsFromLocal tests", () => {
   });
 
   it("JSON should return with empty metadata object", async () => {
-    const returnedFile = "revocations_matrix_by_month.json";
+    const returnedFile = "revocations_matrix_events_by_month.json";
     const returnedFileExtension = ".json";
     const mockReturnedFiles = [returnedFile];
     getMetricsByType.default.mockImplementationOnce(() => {
@@ -72,7 +72,7 @@ describe("fetchMetricsFromLocal tests", () => {
   });
 
   it("txt should return array with metadata", async () => {
-    const returnedFile = "revocations_matrix_by_month.txt";
+    const returnedFile = "revocations_matrix_events_by_month.txt";
     const returnedFileExtension = ".txt";
     const mockReturnedFiles = [returnedFile];
     getMetricsByType.default.mockImplementationOnce(() => {
@@ -130,7 +130,7 @@ describe("fetchMetricsFromLocal tests", () => {
     it("errors parsing files return an array with rejected promises", async () => {
       const error = new Error("read file sync error");
       const readFileSyncSpy = jest.spyOn(fs, "readFileSync");
-      const returnedFile = "revocations_matrix_by_month.txt";
+      const returnedFile = "revocations_matrix_events_by_month.txt";
       const mockReturnedFiles = [returnedFile];
 
       getMetricsByType.default.mockImplementationOnce(() => {

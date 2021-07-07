@@ -84,16 +84,18 @@ describe("Server tests", () => {
 
     it("should respond with a 200 for a valid stateCode", function () {
       return request(app)
-        .get("/api/US_MO/newRevocations/revocations_matrix_by_month")
+        .get("/api/US_MO/newRevocations/revocations_matrix_events_by_month")
         .then((response) => {
           expect(response.statusCode).toEqual(200);
-          expect(response.body).toHaveProperty("revocations_matrix_by_month");
-          expect(response.body.revocations_matrix_by_month).toHaveProperty(
-            "flattenedValueMatrix"
+          expect(response.body).toHaveProperty(
+            "revocations_matrix_events_by_month"
           );
-          expect(response.body.revocations_matrix_by_month).toHaveProperty(
-            "metadata"
-          );
+          expect(
+            response.body.revocations_matrix_events_by_month
+          ).toHaveProperty("flattenedValueMatrix");
+          expect(
+            response.body.revocations_matrix_events_by_month
+          ).toHaveProperty("metadata");
         });
     });
 
@@ -110,7 +112,7 @@ describe("Server tests", () => {
         status: 400,
       };
       return request(app)
-        .get("/api/HI/newRevocations/revocations_matrix_by_month")
+        .get("/api/HI/newRevocations/revocations_matrix_events_by_month")
         .then((response) => {
           expect(response.statusCode).toEqual(400);
           expect(response.body).toEqual(expectedErrors);
@@ -131,7 +133,7 @@ describe("Server tests", () => {
       };
       return request(app)
         .get(
-          "/api/US_MO/newRevocations/revocations_matrix_by_month?metricPeriodMonths=42"
+          "/api/US_MO/newRevocations/revocations_matrix_events_by_month?metricPeriodMonths=42"
         )
         .then((response) => {
           expect(response.statusCode).toEqual(400);
@@ -153,7 +155,7 @@ describe("Server tests", () => {
       };
       return request(app)
         .get(
-          "/api/US_MO/newRevocations/revocations_matrix_by_month?admissionType[0]=DOGWOOD"
+          "/api/US_MO/newRevocations/revocations_matrix_events_by_month?admissionType[0]=DOGWOOD"
         )
         .then((response) => {
           expect(response.statusCode).toEqual(400);
@@ -243,7 +245,7 @@ describe("Server tests", () => {
 
     it("responds with a formatted error resposne", () => {
       return request(app)
-        .get("/api/US_MO/newRevocations/revocations_matrix_by_month")
+        .get("/api/US_MO/newRevocations/revocations_matrix_events_by_month")
         .then((response) => {
           expect(response.statusCode).toEqual(500);
           expect(response.body.errors).toEqual([

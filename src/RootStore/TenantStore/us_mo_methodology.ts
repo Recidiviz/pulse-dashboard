@@ -21,7 +21,7 @@ export const US_MO_METHODOLOGY: LanternMethodology = {
     {
       id: 1,
       header: "What this chart shows",
-      body: `This chart displays the total number of people who were admitted to prison during each month due to revocation by the parole board or the court.`,
+      body: `This chart displays the total number of admissions to prison during each month due to revocation by the parole board or the court. Note: This chart uses an event-based methodology – meaning, if a single individual has multiple admissions to prison during the time period, each admission is counted separately. For all other charts on this dashboard, a person-based methodology is used, which means if an individual has multiple admissions during the time period, they are only counted once for their most recent admission.`,
     },
     {
       id: 2,
@@ -211,6 +211,11 @@ export const US_MO_METHODOLOGY: LanternMethodology = {
       id: 6,
       header: "Violation Record",
       body: `A summary of the most severe reported violation on each violation report or notice of citation filed within one year prior to the last reported violation before the person was revoked.`,
+    },
+    {
+      id: 7,
+      header: "Total Admissions",
+      body: `The number of total admissions for an admitted individual during the selected time period.`,
     },
   ],
 };

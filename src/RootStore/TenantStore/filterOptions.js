@@ -79,24 +79,48 @@ const SUPERVISION_TYPES = {
   },
 };
 
+export const ADMISSION_TYPE_LABELS = {
+  LEGAL_REVOCATION: "Revocation",
+  SHOCK_INCARCERATION_0_TO_6_MONTHS: "SCI < 6 months",
+  SHOCK_INCARCERATION_6_MONTHS: "SCI 6 months",
+  SHOCK_INCARCERATION_9_MONTHS: "SCI 9 months",
+  SHOCK_INCARCERATION_12_MONTHS: "SCI 12 months",
+  SHOCK_INCARCERATION_PVC: "PVC",
+};
+
 export const ADMISSION_TYPES = {
   options: [
     { value: "All", label: "ALL" },
-    { value: "LEGAL_REVOCATION", label: "Revocation" },
+    {
+      value: "LEGAL_REVOCATION",
+      label: ADMISSION_TYPE_LABELS.LEGAL_REVOCATION,
+    },
     {
       label: "SCI",
       allSelectedLabel: "All Short Term",
       options: [
         {
           value: "SHOCK_INCARCERATION_0_TO_6_MONTHS",
-          label: "SCI < 6 months",
+          label: ADMISSION_TYPE_LABELS.SHOCK_INCARCERATION_0_TO_6_MONTHS,
         },
-        { value: "SHOCK_INCARCERATION_6_MONTHS", label: "SCI 6 months" },
-        { value: "SHOCK_INCARCERATION_9_MONTHS", label: "SCI 9 months" },
-        { value: "SHOCK_INCARCERATION_12_MONTHS", label: "SCI 12 months" },
+        {
+          value: "SHOCK_INCARCERATION_6_MONTHS",
+          label: ADMISSION_TYPE_LABELS.SHOCK_INCARCERATION_6_MONTHS,
+        },
+        {
+          value: "SHOCK_INCARCERATION_9_MONTHS",
+          label: ADMISSION_TYPE_LABELS.SHOCK_INCARCERATION_9_MONTHS,
+        },
+        {
+          value: "SHOCK_INCARCERATION_12_MONTHS",
+          label: ADMISSION_TYPE_LABELS.SHOCK_INCARCERATION_12_MONTHS,
+        },
       ],
     },
-    { value: "SHOCK_INCARCERATION_PVC", label: "PVC" },
+    {
+      value: "SHOCK_INCARCERATION_PVC",
+      label: ADMISSION_TYPE_LABELS.SHOCK_INCARCERATION_PVC,
+    },
   ],
   get defaultOption() {
     return [this.options[0]];

@@ -27,7 +27,7 @@ describe("metricsClient", () => {
   let output;
   const mockToken = "auth0-token";
   const endpoint =
-    "newRevocations/revocations_matrix_by_month?violationType=All";
+    "newRevocations/revocations_matrix_events_by_month?violationType=All";
   const getTokenSilently = jest.fn().mockResolvedValue(mockToken);
   const expectedUrl = `test-url/api/${endpoint}`;
 

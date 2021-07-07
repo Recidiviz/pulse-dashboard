@@ -124,7 +124,7 @@ const RevocationsOverTime = ({ timeDescription }) => {
         {
           scaleLabel: {
             display: true,
-            labelString: `Number of people ${translate("revoked")}`,
+            labelString: `Number of ${translate("revocations")}`,
           },
           ticks: {
             min: 0,

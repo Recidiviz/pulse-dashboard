@@ -125,7 +125,7 @@ function getUserRestrictionCacheKeyValues({ cacheKeySubset }) {
  * Utility for creating cache keys for a stateCode, metricType, file and subset
  * @param {string} [stateCode] - The state code to include in the cache key, i.e. US_MO
  * @param {string} [metricType] - The metric type to include in the cache key, i.e. newRevocation
- * @param {string} [metricName] - The metric name to include in the cache key without an extension, i.e. revocations_matrix_by_month
+ * @param {string} [metricName] - The metric name to include in the cache key without an extension, i.e. revocations_matrix_events_by_month
  * @param {Object} [cacheKeySubset] - The subset keys to include in the cache key, these come from the endpoint query params
  * @param {string} [cacheKeySubset.violationType] - The violation type to use to select the correct subset
  * @param {string} [cacheKeyPrefix] - A cacheKey to use for the prefix that includes the stateCode and metricType, i.e. US_MO-newRevocation

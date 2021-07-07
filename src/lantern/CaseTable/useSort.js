@@ -37,16 +37,6 @@ function comparePersonExternalIds(a, b) {
   return 0;
 }
 
-function compareDistricts(a, b) {
-  if (!a && b) return 1;
-  if (!b && a) return -1;
-
-  if (String(a) > String(b)) return 1;
-  if (String(a) < String(b)) return -1;
-
-  return 0;
-}
-
 function compareOfficers(a, b) {
   const aOfficer = getNameFromOfficerId(a);
   const bOfficer = getNameFromOfficerId(b);
@@ -64,7 +54,7 @@ function compareRiskLevel(a, b) {
   return RISK_LEVEL_PRIORITY.indexOf(a) - RISK_LEVEL_PRIORITY.indexOf(b);
 }
 
-function compareOfficerRecomendations(a, b) {
+function compareStrings(a, b) {
   if (!a && b) return 1;
   if (!b && a) return -1;
 
@@ -72,6 +62,25 @@ function compareOfficerRecomendations(a, b) {
   if (String(a) < String(b)) return -1;
 
   return 0;
+}
+
+function compareAdmissionHistoryDescriptions(formatAdmissionHistory) {
+  return (a, b) => {
+    if (Number.isNaN(Number(a)) || Number.isNaN(Number(b))) {
+      const aFormattedHistory = formatAdmissionHistory(a);
+      const bFormattedHistory = formatAdmissionHistory(b);
+
+      const aTotalAdmissions = aFormattedHistory.split(",").length;
+      const bTotalAdmissions = bFormattedHistory.split(",").length;
+
+      if (aTotalAdmissions > bTotalAdmissions) return 1;
+      if (aTotalAdmissions < bTotalAdmissions) return -1;
+      if (aTotalAdmissions === bTotalAdmissions)
+        return compareStrings(aFormattedHistory, bFormattedHistory);
+      return 0;
+    }
+    return compareStrings(a, b);
+  };
 }
 
 function getNextOrder(order) {
@@ -85,7 +94,7 @@ function getNextOrder(order) {
   }
 }
 
-function useSort() {
+function useSort(formatAdmissionHistory) {
   const [sort, setSort] = useState({
     field: null,
     order: null,
@@ -110,23 +119,26 @@ function useSort() {
 
       const fieldComparator = {
         state_id: comparePersonExternalIds,
-        district: compareDistricts,
+        district: compareStrings,
         officer: compareOfficers,
         risk_level: compareRiskLevel,
-        officer_recommendation: compareOfficerRecomendations,
+        officer_recommendation: compareStrings,
         violation_record: compareViolationRecords,
+        admission_history_description: compareAdmissionHistoryDescriptions(
+          formatAdmissionHistory
+        ),
       }[sort.field];
 
       return (
         (fieldComparator && fieldComparator(a2[sort.field], b2[sort.field])) ||
         // default sorts
-        compareDistricts(a2.district, b2.district) ||
+        compareStrings(a2.district, b2.district) ||
         compareOfficers(a2.officer, b2.officer) ||
         comparePersonExternalIds(a2.state_id, b2.state_id) ||
         0
       );
     },
-    [sort.order, sort.field]
+    [sort.order, sort.field, formatAdmissionHistory]
   );
 
   return {
