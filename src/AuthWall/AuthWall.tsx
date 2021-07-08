@@ -22,6 +22,7 @@ import { observer } from "mobx-react-lite";
 import Loading from "../components/Loading";
 import { useRootStore } from "../components/StoreProvider";
 import NotFound from "../components/NotFound";
+import { ERROR_MESSAGES } from "../constants";
 
 /**
  * Verifies authorization before rendering its children.
@@ -46,8 +47,15 @@ const AuthWall: React.FC = ({ children }) => {
   if (userStore.userIsLoading) {
     return <Loading />;
   }
-
   if (userStore.isAuthorized) {
+    if (!userStore.userAppMetadata.can_access_leadership_dashboard) {
+      if (userStore.userAppMetadata.can_access_case_triage) {
+        window.location.href = process.env.REACT_APP_CASE_TRIAGE_URL || "";
+        return <Loading />;
+      }
+
+      userStore.setAuthError(ERROR_MESSAGES.unauthorized);
+    }
     const authorizedChildren = React.Children.map(children, (child: any) => {
       const { tenantIds } = child.props;
       return tenantIds.includes(currentTenantId) ? child : null;
