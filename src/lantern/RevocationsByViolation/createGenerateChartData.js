@@ -15,15 +15,15 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import map from "lodash/fp/map";
-import pipe from "lodash/fp/pipe";
-import pick from "lodash/fp/pick";
 import concat from "lodash/fp/concat";
+import map from "lodash/fp/map";
 import mergeAllWith from "lodash/fp/mergeAllWith";
+import pick from "lodash/fp/pick";
+import pipe from "lodash/fp/pipe";
 import toInteger from "lodash/fp/toInteger";
 
-import { calculateRate } from "../utils/rate";
 import { COLORS } from "../../assets/scripts/constants/colors";
+import { calculateRate } from "../utils/rate";
 
 const createGenerateChartData = (filteredData, violationTypes) => () => {
   const violationCountKey = "violation_count";

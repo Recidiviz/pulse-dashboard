@@ -15,13 +15,13 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
+import PropTypes from "prop-types";
 import React from "react";
 import { Bar } from "react-chartjs-2";
-import PropTypes from "prop-types";
 
+import { COLORS } from "../assets/scripts/constants/colors";
 import { translate } from "../utils/i18nSettings";
 import { standardTooltipForCountMetricLabel } from "../utils/tooltips";
-import { COLORS } from "../assets/scripts/constants/colors";
 
 const RevocationCountChart = ({ chartId, data, xAxisLabel }) => (
   <Bar

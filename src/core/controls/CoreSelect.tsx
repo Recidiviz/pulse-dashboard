@@ -14,11 +14,12 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
+import "./CoreSelect.scss";
+
 import React, { forwardRef } from "react";
 import ReactSelect from "react-select";
-import { pine3 } from "../CoreConstants.scss";
 
-import "./CoreSelect.scss";
+import { pine3 } from "../CoreConstants.scss";
 
 type FilterOption = {
   label: string;

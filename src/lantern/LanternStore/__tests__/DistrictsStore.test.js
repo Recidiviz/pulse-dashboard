@@ -15,8 +15,9 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 import * as Sentry from "@sentry/react";
-import { reactImmediately } from "../../../testUtils";
+
 import { callMetricsApi } from "../../../api/metrics/metricsClient";
+import { reactImmediately } from "../../../testUtils";
 import LanternStore from "..";
 import DistrictsStore from "../DistrictsStore";
 

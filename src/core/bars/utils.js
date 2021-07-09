@@ -21,8 +21,8 @@ import pipe from "lodash/fp/pipe";
 import reduce from "lodash/fp/reduce";
 import sumBy from "lodash/fp/sumBy";
 import toInteger from "lodash/fp/toInteger";
-import values from "lodash/fp/values";
 import upperCase from "lodash/fp/upperCase";
+import values from "lodash/fp/values";
 
 import { configureDownloadButtons } from "../utils/configureDownloadButtons";
 

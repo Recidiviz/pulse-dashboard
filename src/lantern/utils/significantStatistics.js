@@ -15,6 +15,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 import pattern from "patternomaly";
+
 import { COLORS } from "../../assets/scripts/constants/colors";
 
 const STATISTICALLY_INSIGNIFICANT_PATTERN = "diagonal-right-left";
@@ -70,10 +71,10 @@ function tooltipForFooterWithCounts([{ index }], denominators) {
 }
 
 export {
-  applyStatisticallySignificantShadingToDataset,
   applyStatisticallySignificantShading,
-  isDenominatorStatisticallySignificant,
+  applyStatisticallySignificantShadingToDataset,
   isDenominatorsMatrixStatisticallySignificant,
-  tooltipForFooterWithCounts,
+  isDenominatorStatisticallySignificant,
   STATISTICALLY_INSIGNIFICANT_PATTERN,
+  tooltipForFooterWithCounts,
 };

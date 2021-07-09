@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-import { US_ND, US_ID } from "../../RootStore/TenantStore/coreTenants";
+import { US_ID, US_ND } from "../../RootStore/TenantStore/coreTenants";
 /**
  * All data comes back from the server as string values;
  * it will be up to us to cast those strings to other types as needed

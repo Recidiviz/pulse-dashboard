@@ -15,39 +15,38 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React, { useEffect } from "react";
-import PropTypes from "prop-types";
-import { Line } from "react-chartjs-2";
-
 import map from "lodash/fp/map";
 import pipe from "lodash/fp/pipe";
+import PropTypes from "prop-types";
+import React, { useEffect } from "react";
+import { Line } from "react-chartjs-2";
 
 import { COLORS, CORE_COLORS } from "../../assets/scripts/constants/colors";
-import { configureDownloadButtons } from "../utils/configureDownloadButtons";
-import {
-  filterDatasetBySupervisionType,
-  filterDatasetByDistrict,
-} from "../utils/dataFilters";
-import {
-  getGoalForChart,
-  getMaxForGoalAndDataIfGoalDisplayable,
-  chartAnnotationForGoal,
-} from "../utils/metricGoal";
-import {
-  updateTooltipForMetricType,
-  toggleLabel,
-  toggleYAxisTicksFor,
-  canDisplayGoal,
-} from "../utils/tooltips";
 import { toNumber } from "../../utils";
 import {
-  sortFilterAndSupplementMostRecentMonths,
   centerSingleMonthDatasetIfNecessary,
+  sortFilterAndSupplementMostRecentMonths,
 } from "../../utils/datasets";
-import { monthNamesWithYearsFromNumbers } from "../utils/timePeriod";
 import { groupByMonth } from "../bars/utils";
-import { metricTypePropType, officeDataPropTypes } from "../utils/propTypes";
+import { configureDownloadButtons } from "../utils/configureDownloadButtons";
 import { METRIC_TYPES } from "../utils/constants";
+import {
+  filterDatasetByDistrict,
+  filterDatasetBySupervisionType,
+} from "../utils/dataFilters";
+import {
+  chartAnnotationForGoal,
+  getGoalForChart,
+  getMaxForGoalAndDataIfGoalDisplayable,
+} from "../utils/metricGoal";
+import { metricTypePropType, officeDataPropTypes } from "../utils/propTypes";
+import { monthNamesWithYearsFromNumbers } from "../utils/timePeriod";
+import {
+  canDisplayGoal,
+  toggleLabel,
+  toggleYAxisTicksFor,
+  updateTooltipForMetricType,
+} from "../utils/tooltips";
 
 const dataCountsMapper = ({ year, month, revocation_count: count }) => ({
   year,

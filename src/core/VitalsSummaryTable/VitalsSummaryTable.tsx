@@ -14,24 +14,25 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-import React, { useMemo, useEffect } from "react";
-import { observer } from "mobx-react-lite";
-import { useTable, useSortBy } from "react-table";
-import { Link } from "react-router-dom";
+import "./VitalsSummaryTable.scss";
+
 import cx from "classnames";
-import BubbleTableCell from "./BubbleTableCell";
-import DeltaTableCell from "./DeltaTableCell";
+import { observer } from "mobx-react-lite";
+import React, { useEffect, useMemo } from "react";
+import { Link } from "react-router-dom";
+import { useSortBy, useTable } from "react-table";
+
+import flags from "../../flags";
+import { convertToSlug } from "../../utils/navigation";
+import { useCoreStore } from "../CoreStoreProvider";
 import { ENTITY_TYPES, EntityType, MetricValueAccessor } from "../models/types";
 import {
   METRIC_TYPES,
-  VitalsMetric,
   MetricTypeLabel,
+  VitalsMetric,
 } from "../PageVitals/types";
-import { convertToSlug } from "../../utils/navigation";
-import { useCoreStore } from "../CoreStoreProvider";
-
-import "./VitalsSummaryTable.scss";
-import flags from "../../flags";
+import BubbleTableCell from "./BubbleTableCell";
+import DeltaTableCell from "./DeltaTableCell";
 
 function getEntityTypeName(entityType: EntityType): string {
   switch (entityType) {

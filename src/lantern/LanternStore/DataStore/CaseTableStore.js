@@ -15,13 +15,14 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 import { matchesAllFilters } from "shared-filters";
-import BaseDataStore from "./BaseDataStore";
+
+import { ADMISSION_TYPE_LABELS } from "../../../RootStore/TenantStore/filterOptions";
 import { US_PA } from "../../../RootStore/TenantStore/lanternTenants";
-import { nullSafeLabel, normalizeOfficerRecommendation } from "./helpers";
+import { translate } from "../../../utils/i18nSettings";
 import { parseAndFormatViolationRecord } from "../../CaseTable/utils/violationRecord";
 import getNameFromOfficerId from "../../utils/getNameFromOfficerId";
-import { translate } from "../../../utils/i18nSettings";
-import { ADMISSION_TYPE_LABELS } from "../../../RootStore/TenantStore/filterOptions";
+import BaseDataStore from "./BaseDataStore";
+import { normalizeOfficerRecommendation, nullSafeLabel } from "./helpers";
 
 export default class CaseTableStore extends BaseDataStore {
   constructor({ rootStore }) {

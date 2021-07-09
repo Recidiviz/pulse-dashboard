@@ -14,20 +14,19 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-import React, { useCallback, useMemo, useRef, useEffect } from "react";
-import PropTypes from "prop-types";
+import "./CoreMultiSelect.scss";
+
 import cn from "classnames";
-import ReactSelect from "react-select";
+import PropTypes from "prop-types";
+import React, { useCallback, useEffect, useMemo, useRef } from "react";
 import { Scrollbars } from "react-custom-scrollbars";
+import ReactSelect from "react-select";
 
 import GroupHeading from "../../../controls/MultiSelect/GroupHeading";
-import ValueContainer from "../../../controls/MultiSelect/ValueContainer";
 import Option from "../../../controls/MultiSelect/Option";
-
-import { getNewOptions } from "../../../controls/utils";
+import ValueContainer from "../../../controls/MultiSelect/ValueContainer";
 import { optionPropType } from "../../../controls/propTypes";
-
-import "./CoreMultiSelect.scss";
+import { getNewOptions } from "../../../controls/utils";
 
 const CustomScrollBarWrapper = ({ children }) => {
   return (

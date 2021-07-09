@@ -15,21 +15,21 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React from "react";
 import { act, render } from "@testing-library/react";
 import { observable } from "mobx";
+import React from "react";
 
-import SelectFilter from "../SelectFilter";
 import Select from "../../../controls/Select";
-import FilterField from "../FilterField";
+import filterOptions from "../../../RootStore/TenantStore/filterOptions";
+import { US_MO } from "../../../RootStore/TenantStore/lanternTenants";
+import { useLanternStore } from "../../LanternStoreProvider";
 import {
   METRIC_PERIOD_MONTHS,
   SUPERVISION_LEVEL,
   SUPERVISION_TYPE,
 } from "../../utils/constants";
-import { useLanternStore } from "../../LanternStoreProvider";
-import { US_MO } from "../../../RootStore/TenantStore/lanternTenants";
-import filterOptions from "../../../RootStore/TenantStore/filterOptions";
+import FilterField from "../FilterField";
+import SelectFilter from "../SelectFilter";
 
 jest.mock("../../../controls/Select", () => ({
   __esModule: true,

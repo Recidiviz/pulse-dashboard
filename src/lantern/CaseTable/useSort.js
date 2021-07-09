@@ -16,8 +16,9 @@
 // =============================================================================
 
 import { useCallback, useState } from "react";
-import { compareViolationRecords } from "./utils/compareViolationRecords";
+
 import getNameFromOfficerId from "../utils/getNameFromOfficerId";
+import { compareViolationRecords } from "./utils/compareViolationRecords";
 
 const RISK_LEVEL_PRIORITY = [
   "NOT_ASSESSED",

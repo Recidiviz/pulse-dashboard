@@ -15,9 +15,9 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 /* eslint camelcase: 0 */
-import * as lantern from "./TenantStore/lanternTenants";
+import { LANTERN, RECIDIVIZ_TENANT } from "../tenants";
 import * as core from "./TenantStore/coreTenants";
-import { RECIDIVIZ_TENANT, LANTERN } from "../tenants";
+import * as lantern from "./TenantStore/lanternTenants";
 
 export type LanternTenants = typeof lantern.LANTERN_TENANTS[number];
 

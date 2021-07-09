@@ -1,7 +1,7 @@
-import React from "react";
-import PropTypes from "prop-types";
-
 import "./Error.scss";
+
+import PropTypes from "prop-types";
+import React from "react";
 
 import warningIcon from "../assets/static/images/warning.svg";
 

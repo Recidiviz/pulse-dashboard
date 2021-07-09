@@ -14,8 +14,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-import moment from "moment";
 import { htmlToText } from "html-to-text";
+import moment from "moment";
 
 function createMethodologyFile({
   chartTitle,

@@ -18,9 +18,9 @@
 import React from "react";
 import { Container } from "reactstrap";
 
-import MethodologyBlock from "./MethodologyBlock";
-import { mainBlocks } from "./constant/mainBlocks";
 import PageTemplate from "../PageTemplate";
+import { mainBlocks } from "./constant/mainBlocks";
+import MethodologyBlock from "./MethodologyBlock";
 
 const Methodology: React.FC = () => (
   <PageTemplate>

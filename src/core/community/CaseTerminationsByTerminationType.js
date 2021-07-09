@@ -15,11 +15,11 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React from "react";
 import PropTypes from "prop-types";
+import React from "react";
 
-import PerMonthBarChart from "../bars/PerMonthBarChart";
 import { COLORS_SEVEN_VALUES } from "../../assets/scripts/constants/colors";
+import PerMonthBarChart from "../bars/PerMonthBarChart";
 import { METRIC_TYPES } from "../utils/constants";
 import { metricTypePropType } from "../utils/propTypes";
 

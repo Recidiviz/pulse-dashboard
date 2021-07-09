@@ -15,21 +15,21 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
+import "./LanternLayout.scss";
+
+import { observer } from "mobx-react-lite";
 import React from "react";
 import { Helmet } from "react-helmet";
-import { observer } from "mobx-react-lite";
 
 import Footer from "../components/Footer";
-import usePageLayout from "./hooks/usePageLayout";
+import IE11Banner from "../components/IE11Banner";
+import { useRootStore } from "../components/StoreProvider";
 import useIntercom from "../hooks/useIntercom";
 import { setTranslateLocale } from "../utils/i18nSettings";
-import { useRootStore } from "../components/StoreProvider";
-import LanternStoreProvider from "./LanternStoreProvider";
 import LanternErrorBoundary from "./ErrorBoundary";
+import usePageLayout from "./hooks/usePageLayout";
+import LanternStoreProvider from "./LanternStoreProvider";
 import LanternTopBar from "./LanternTopBar";
-import IE11Banner from "../components/IE11Banner";
-
-import "./LanternLayout.scss";
 
 interface Props {
   children: React.ReactElement;

@@ -15,28 +15,29 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 import { makeAutoObservable } from "mobx";
-import type RootStore from ".";
-import { formatISODateString, formatPercent } from "../../utils/formatStrings";
-import {
-  VitalsSummaryRecord,
-  VitalsTimeSeriesRecord,
-  ENTITY_TYPES,
-} from "../models/types";
-import {
-  DownloadableData,
-  DownloadableDataset,
-  VitalsSummaryTableRow,
-  METRIC_TYPE_LABELS,
-  SummaryCard,
-  METRIC_TYPES,
-  SummaryStatus,
-  MetricType,
-  DEFAULT_ENTITY_ID,
-  VitalsMetric,
-} from "../PageVitals/types";
+
 import TENANTS from "../../tenants";
 import { downloadChartAsData } from "../../utils/downloads/downloadData";
+import { formatISODateString, formatPercent } from "../../utils/formatStrings";
 import content from "../content";
+import {
+  ENTITY_TYPES,
+  VitalsSummaryRecord,
+  VitalsTimeSeriesRecord,
+} from "../models/types";
+import {
+  DEFAULT_ENTITY_ID,
+  DownloadableData,
+  DownloadableDataset,
+  METRIC_TYPE_LABELS,
+  METRIC_TYPES,
+  MetricType,
+  SummaryCard,
+  SummaryStatus,
+  VitalsMetric,
+  VitalsSummaryTableRow,
+} from "../PageVitals/types";
+import type RootStore from ".";
 
 export function getSummaryStatus(value: number): SummaryStatus {
   if (value < 70) return "POOR";

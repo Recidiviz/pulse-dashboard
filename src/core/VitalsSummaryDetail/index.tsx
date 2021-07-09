@@ -15,12 +15,13 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React from "react";
+import "./VitalsSummaryDetail.scss";
+
 import { observer } from "mobx-react-lite";
+import React from "react";
+
 import { formatPercent } from "../../utils/formatStrings";
 import { useCoreStore } from "../CoreStoreProvider";
-
-import "./VitalsSummaryDetail.scss";
 
 const VitalsSummaryDetail: React.FC = () => {
   const { pageVitalsStore } = useCoreStore();

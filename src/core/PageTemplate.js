@@ -15,12 +15,13 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React from "react";
-import PropTypes from "prop-types";
-
-import ImportantNotesBar from "./ImportantNotesBar";
 import "../assets/styles/index.scss";
 import "./PageTemplate.scss";
+
+import PropTypes from "prop-types";
+import React from "react";
+
+import ImportantNotesBar from "./ImportantNotesBar";
 
 const PageTemplate = ({ children, importantNotes, filters = null }) => (
   <div className="main-content PageTemplate">

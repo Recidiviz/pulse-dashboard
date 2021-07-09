@@ -16,6 +16,7 @@
 // =============================================================================
 
 import { useEffect } from "react";
+
 import { useRootStore } from "../components/StoreProvider";
 
 const useIntercom = () => {

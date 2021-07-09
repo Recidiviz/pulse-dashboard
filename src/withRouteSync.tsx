@@ -15,13 +15,14 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import { useParams } from "react-router-dom";
 import { action } from "mobx";
 import { observer } from "mobx-react-lite";
 import React, { ComponentType, useEffect } from "react";
+import { useParams } from "react-router-dom";
+
 import { useCoreStore } from "./core/CoreStoreProvider";
-import { convertSlugToId } from "./utils/navigation";
 import { DEFAULT_ENTITY_ID } from "./core/PageVitals/types";
+import { convertSlugToId } from "./utils/navigation";
 
 type RouteParams = {
   entityId?: string;

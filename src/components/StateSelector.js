@@ -15,13 +15,13 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React from "react";
-import PropTypes from "prop-types";
-import Select from "react-select";
 import { observer } from "mobx-react-lite";
+import PropTypes from "prop-types";
+import React from "react";
+import Select from "react-select";
 
-import { useRootStore } from "./StoreProvider";
 import { getStateNameForStateCode } from "../utils/navigation";
+import { useRootStore } from "./StoreProvider";
 
 const StateSelector = ({ onChange }) => {
   const { userStore, tenantStore } = useRootStore();

@@ -14,21 +14,20 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-import React from "react";
-import { observer } from "mobx-react-lite";
 import { get } from "mobx";
+import { observer } from "mobx-react-lite";
+import React from "react";
 
 import { CoreSelect } from "./controls/CoreSelect";
-import { useCoreStore } from "./CoreStoreProvider";
-import { getFilterOption } from "./utils/filterOptions";
-import { PopulationFilters } from "./types/filters";
-
 import Filter from "./controls/Filter";
 import FilterBar from "./controls/FilterBar";
-import { CORE_PATHS, CORE_VIEWS } from "./views";
+import { useCoreStore } from "./CoreStoreProvider";
+import DetailsGroup from "./DetailsGroup";
 import DownloadDataButton from "./DownloadDataButton";
 import MethodologyLink from "./MethodologyLink";
-import DetailsGroup from "./DetailsGroup";
+import { PopulationFilters } from "./types/filters";
+import { getFilterOption } from "./utils/filterOptions";
+import { CORE_PATHS, CORE_VIEWS } from "./views";
 
 const PopulationFilterBar: React.FC<{
   view: keyof typeof CORE_VIEWS;

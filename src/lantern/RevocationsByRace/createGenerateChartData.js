@@ -15,22 +15,22 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
+import groupBy from "lodash/fp/groupBy";
+import map from "lodash/fp/map";
 import pipe from "lodash/fp/pipe";
 import reduce from "lodash/fp/reduce";
 import sumBy from "lodash/fp/sumBy";
 import toInteger from "lodash/fp/toInteger";
-import map from "lodash/fp/map";
-import groupBy from "lodash/fp/groupBy";
 
+import { COLORS } from "../../assets/scripts/constants/colors";
 import {
   getStatePopulations,
   getStatePopulationsLabels,
 } from "../../utils/formatStrings";
-import getCounts from "../utils/getCounts";
-import createPopulationMap from "../utils/createPopulationMap";
 import { translate } from "../../utils/i18nSettings";
+import createPopulationMap from "../utils/createPopulationMap";
+import getCounts from "../utils/getCounts";
 import { applyStatisticallySignificantShadingToDataset } from "../utils/significantStatistics";
-import { COLORS } from "../../assets/scripts/constants/colors";
 
 export const CHART_COLORS = [
   COLORS["lantern-bright-orange"],

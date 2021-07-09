@@ -16,14 +16,14 @@
 // =============================================================================
 
 import {
-  getTrailingLabelFromMetricPeriodMonthsFilter,
-  getPeriodLabelFromMetricPeriodMonthsFilter,
-} from "../../utils/formatStrings";
-import {
-  formatSelectOptionValue,
   excludeOption,
   flatOptions,
+  formatSelectOptionValue,
 } from "../../controls/utils";
+import {
+  getPeriodLabelFromMetricPeriodMonthsFilter,
+  getTrailingLabelFromMetricPeriodMonthsFilter,
+} from "../../utils/formatStrings";
 
 export const getTimeDescription = (
   months,

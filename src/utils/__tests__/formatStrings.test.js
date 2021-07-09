@@ -15,6 +15,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 import tk from "timekeeper";
+
 import * as utils from "../formatStrings";
 
 describe("formatStrings", () => {

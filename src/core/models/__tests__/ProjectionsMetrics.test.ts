@@ -15,12 +15,13 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 import { runInAction } from "mobx";
-import CoreStore from "../../CoreStore";
-import FiltersStore from "../../CoreStore/FiltersStore";
+
 import { callMetricsApi } from "../../../api/metrics/metricsClient";
 import RootStore from "../../../RootStore";
-import ProjectionsMetrics from "../ProjectionsMetrics";
+import CoreStore from "../../CoreStore";
+import FiltersStore from "../../CoreStore/FiltersStore";
 import { CORE_VIEWS } from "../../views";
+import ProjectionsMetrics from "../ProjectionsMetrics";
 
 const mockTenantId = "US_ND";
 const mockCoreStore = {} as CoreStore;

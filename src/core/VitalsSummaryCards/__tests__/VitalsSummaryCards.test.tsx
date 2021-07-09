@@ -15,16 +15,16 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React from "react";
 import { render } from "@testing-library/react";
+import React from "react";
 
-import { useCoreStore } from "../../CoreStoreProvider";
-import VitalsSummaryCards from "..";
 import RootStore from "../../../RootStore";
+import TENANTS from "../../../tenants";
 import CoreStore from "../../CoreStore";
 import PageVitalsStore from "../../CoreStore/PageVitalsStore";
+import { useCoreStore } from "../../CoreStoreProvider";
 import { VitalsMetric } from "../../PageVitals/types";
-import TENANTS from "../../../tenants";
+import VitalsSummaryCards from "..";
 
 jest.mock("../../CoreStoreProvider");
 jest.mock("../../models/ProjectionsMetrics");

@@ -15,7 +15,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import { initI18n, setTranslateLocale, translate, i18n } from "../i18nSettings";
+import { i18n, initI18n, setTranslateLocale, translate } from "../i18nSettings";
 
 describe("i18nSettings", () => {
   beforeEach(() => {

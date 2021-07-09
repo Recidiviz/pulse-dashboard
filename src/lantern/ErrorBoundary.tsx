@@ -15,10 +15,11 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React from "react";
-import { observer } from "mobx-react-lite";
-import { toJS } from "mobx";
 import type Sentry from "@sentry/react";
+import { toJS } from "mobx";
+import { observer } from "mobx-react-lite";
+import React from "react";
+
 import SentryErrorBoundary from "../components/SentryErrorBoundary";
 import { useLanternStore } from "./LanternStoreProvider";
 

@@ -14,25 +14,24 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-import React from "react";
 import { render } from "@testing-library/react";
-
-import App from "../App";
-import { US_ND, US_ID } from "../RootStore/TenantStore/coreTenants";
-import { US_MO, US_PA } from "../RootStore/TenantStore/lanternTenants";
+import React from "react";
 
 import mockWithTestId from "../../__helpers__/mockWithTestId";
-import Revocations from "../lantern/Revocations";
-import UsNDCommunityGoals from "../core/goals/CoreGoalsView";
-import NotFound from "../components/NotFound";
-import Loading from "../components/Loading";
-import LanternLayout from "../lantern/LanternLayout";
-import CoreLayout from "../core/CoreLayout";
-import StoreProvider, { useRootStore } from "../components/StoreProvider";
+import App from "../App";
 import ErrorMessage from "../components/ErrorMessage";
+import Loading from "../components/Loading";
+import NotFound from "../components/NotFound";
+import StoreProvider, { useRootStore } from "../components/StoreProvider";
 import VerificationNeeded from "../components/VerificationNeeded";
+import CoreLayout from "../core/CoreLayout";
+import UsNDCommunityGoals from "../core/goals/CoreGoalsView";
 import ProjectionsMethodology from "../core/ProjectionsMethodology/Methodology";
 import VitalsMethodology from "../core/VitalsMethodology";
+import LanternLayout from "../lantern/LanternLayout";
+import Revocations from "../lantern/Revocations";
+import { US_ID, US_ND } from "../RootStore/TenantStore/coreTenants";
+import { US_MO, US_PA } from "../RootStore/TenantStore/lanternTenants";
 
 const METADATA_NAMESPACE = process.env.REACT_APP_METADATA_NAMESPACE;
 

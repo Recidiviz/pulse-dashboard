@@ -14,12 +14,12 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
+import configureFilename from "../../utils/downloads/configureFileName";
 import {
-  downloadHtmlElementAsImage,
   configureDataDownloadButton,
   downloadCanvasAsImage,
+  downloadHtmlElementAsImage,
 } from "../../utils/downloads/downloadData";
-import configureFilename from "../../utils/downloads/configureFileName";
 import getFilterDescription from "../../utils/getFilterDescription";
 
 export function configureDownloadButtons({

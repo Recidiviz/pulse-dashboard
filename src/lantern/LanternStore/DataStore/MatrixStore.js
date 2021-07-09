@@ -15,8 +15,9 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 import { matchesTopLevelFilters } from "shared-filters";
-import BaseDataStore from "./BaseDataStore";
+
 import { REPORTED_VIOLATIONS, VIOLATION_TYPE } from "../../utils/constants";
+import BaseDataStore from "./BaseDataStore";
 
 export default class MatrixStore extends BaseDataStore {
   constructor({ rootStore }) {

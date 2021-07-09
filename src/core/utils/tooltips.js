@@ -179,14 +179,14 @@ function tooltipForRateChart() {
   };
 }
 export {
-  toggleLabel,
-  toggleYAxisTicksFor,
-  toggleYAxisTicksBasedOnGoal,
-  toggleYAxisTicksAdditionalOptions,
-  toggleYAxisTicksStackedRateBasicCount,
-  standardTooltipForRateMetric,
-  updateTooltipForMetricType,
   canDisplayGoal,
+  standardTooltipForRateMetric,
+  toggleLabel,
+  toggleYAxisTicksAdditionalOptions,
+  toggleYAxisTicksBasedOnGoal,
+  toggleYAxisTicksFor,
+  toggleYAxisTicksStackedRateBasicCount,
   tooltipForCountChart,
   tooltipForRateChart,
+  updateTooltipForMetricType,
 };

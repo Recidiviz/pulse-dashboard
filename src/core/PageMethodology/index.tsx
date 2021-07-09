@@ -14,11 +14,13 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-import React from "react";
-import { useParams, useHistory } from "react-router-dom";
-import VitalsMethodology from "../VitalsMethodology";
-import ProjectionsMethodology from "../ProjectionsMethodology/Methodology";
 import "./Methodology.scss";
+
+import React from "react";
+import { useHistory, useParams } from "react-router-dom";
+
+import ProjectionsMethodology from "../ProjectionsMethodology/Methodology";
+import VitalsMethodology from "../VitalsMethodology";
 
 const PageMethodology: React.FC = () => {
   const { dashboard }: { dashboard: string } = useParams();

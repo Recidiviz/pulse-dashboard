@@ -14,17 +14,17 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
+import { observer } from "mobx-react-lite";
 import React from "react";
 import { Route, useLocation } from "react-router-dom";
-import { observer } from "mobx-react-lite";
+
 import NotFound from "./components/NotFound";
 import { useRootStore } from "./components/StoreProvider";
+import tenants from "./tenants";
 import {
   getPathsFromNavigation,
   getPathWithoutParams,
 } from "./utils/navigation";
-
-import tenants from "./tenants";
 
 interface ProtectedRouteProps {
   component: React.FC;

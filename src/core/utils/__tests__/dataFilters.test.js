@@ -16,6 +16,7 @@
 // =============================================================================
 
 import "@testing-library/jest-dom/extend-expect";
+
 import * as filterMethods from "../dataFilters";
 
 describe("test for dataFilters toggle functions", () => {

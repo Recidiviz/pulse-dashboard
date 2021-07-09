@@ -14,13 +14,13 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-import React, { forwardRef } from "react";
-import PropTypes from "prop-types";
-import ReactSelect from "react-select";
 import cn from "classnames";
+import PropTypes from "prop-types";
+import React, { forwardRef } from "react";
+import ReactSelect from "react-select";
 
-import styles from "./Select.styles";
 import { optionPropType } from "./propTypes";
+import styles from "./Select.styles";
 
 const Select = forwardRef((props, ref) => (
   <ReactSelect

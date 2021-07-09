@@ -16,8 +16,9 @@
 // =============================================================================
 
 import React from "react";
+
+import { formatISODateString, formatPercent } from "../../utils/formatStrings";
 import { VitalsTimeSeriesRecord } from "../models/types";
-import { formatPercent, formatISODateString } from "../../utils/formatStrings";
 
 type PropTypes = {
   data: VitalsTimeSeriesRecord & { percent: number };

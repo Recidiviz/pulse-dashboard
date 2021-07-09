@@ -15,13 +15,13 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React from "react";
 import PropTypes from "prop-types";
+import React from "react";
 
 import { COLORS_SEVEN_VALUES } from "../../assets/scripts/constants/colors";
 import PerOfficerBarChart from "../bars/PerOfficerBarChart";
-import { metricTypePropType, officeDataPropTypes } from "../utils/propTypes";
 import { METRIC_TYPES } from "../utils/constants";
+import { metricTypePropType, officeDataPropTypes } from "../utils/propTypes";
 
 const chartId = "caseTerminationsByOfficer";
 

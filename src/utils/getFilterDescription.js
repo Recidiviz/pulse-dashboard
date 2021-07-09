@@ -14,14 +14,15 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-import pipe from "lodash/fp/pipe";
 import find from "lodash/fp/find";
 import get from "lodash/fp/get";
-import { humanReadableTitleCase } from "./formatStrings";
+import pipe from "lodash/fp/pipe";
+
 import {
-  SUPERVISION_LEVELS,
   ADMISSION_TYPES,
+  SUPERVISION_LEVELS,
 } from "../RootStore/TenantStore/filterOptions";
+import { humanReadableTitleCase } from "./formatStrings";
 import { translate } from "./i18nSettings";
 
 const getLabelsString = (nestedFilterOptions, flattenedOptions) =>

@@ -14,15 +14,15 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-import * as lantern from "./RootStore/TenantStore/lanternTenants";
-import * as core from "./RootStore/TenantStore/coreTenants";
-import flags from "./flags";
-import { TenantId } from "./RootStore/types";
 import {
-  VitalsMetric,
   METRIC_TYPE_LABELS,
   METRIC_TYPES,
+  VitalsMetric,
 } from "./core/PageVitals/types";
+import flags from "./flags";
+import * as core from "./RootStore/TenantStore/coreTenants";
+import * as lantern from "./RootStore/TenantStore/lanternTenants";
+import { TenantId } from "./RootStore/types";
 
 export const RECIDIVIZ_TENANT = "RECIDIVIZ";
 export const LANTERN = "LANTERN";

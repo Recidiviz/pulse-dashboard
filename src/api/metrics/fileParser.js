@@ -16,6 +16,7 @@
 // =============================================================================
 import toInteger from "lodash/fp/toInteger";
 import { convertFromStringToUnflattenedMatrix } from "shared-filters";
+
 import expandMetricRepresentation from "./optimizedMetricFileParser";
 
 export function unflattenValues(metricFile) {

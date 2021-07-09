@@ -15,10 +15,6 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React, { useEffect } from "react";
-import PropTypes from "prop-types";
-import { Bar, Pie } from "react-chartjs-2";
-
 import concat from "lodash/fp/concat";
 import defaults from "lodash/fp/defaults";
 import entries from "lodash/fp/entries";
@@ -28,16 +24,19 @@ import mergeAllWith from "lodash/fp/mergeAllWith";
 import pipe from "lodash/fp/pipe";
 import reduce from "lodash/fp/reduce";
 import toInteger from "lodash/fp/toInteger";
+import PropTypes from "prop-types";
+import React, { useEffect } from "react";
+import { Bar, Pie } from "react-chartjs-2";
 
 import { COLOR_ROTATION, COLORS } from "../assets/scripts/constants/colors";
 import { configureDownloadButtons } from "./utils/configureDownloadButtons";
+import { METRIC_TYPES } from "./utils/constants";
 import {
   filterDatasetByDistrict,
-  filterDatasetBySupervisionType,
   filterDatasetByMetricPeriodMonths,
+  filterDatasetBySupervisionType,
 } from "./utils/dataFilters";
 import { metricTypePropType } from "./utils/propTypes";
-import { METRIC_TYPES } from "./utils/constants";
 
 const chartId = "admissionCountsByType";
 

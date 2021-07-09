@@ -17,20 +17,20 @@
 
 import React from "react";
 
-import PageTemplate from "../PageTemplate";
 import Loading from "../../components/Loading";
 import ChartCard from "../ChartCard";
+import { metrics } from "../community/constants";
 import GeoViewTimeChart from "../GeoViewTimeChart";
+import useChartData from "../hooks/useChartData";
 import Methodology from "../Methodology";
+import PageTemplate from "../PageTemplate";
 import PeriodLabel from "../PeriodLabel";
+import DaysAtLibertySnapshot from "./DaysAtLibertySnapshot";
 import LsirScoreChangeSnapshot from "./LsirScoreChangeSnapshot";
+import ReincarcerationCountOverTime from "./ReincarcerationCountOverTime";
 import RevocationAdmissionsSnapshot from "./RevocationAdmissionsSnapshot";
 import RevocationCountOverTime from "./RevocationCountOverTime";
 import SupervisionSuccessSnapshot from "./SupervisionSuccessSnapshot";
-import useChartData from "../hooks/useChartData";
-import { metrics } from "../community/constants";
-import DaysAtLibertySnapshot from "./DaysAtLibertySnapshot";
-import ReincarcerationCountOverTime from "./ReincarcerationCountOverTime";
 
 const CoreGoalsView = () => {
   const { apiData, isLoading, getTokenSilently } = useChartData("us_nd/goals");

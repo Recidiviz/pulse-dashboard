@@ -15,13 +15,9 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React, { useEffect } from "react";
-import PropTypes from "prop-types";
-import { Bar } from "react-chartjs-2";
-
-import groupBy from "lodash/fp/groupBy";
 import filter from "lodash/fp/filter";
 import flatten from "lodash/fp/flatten";
+import groupBy from "lodash/fp/groupBy";
 import kebabCase from "lodash/fp/kebabCase";
 import map from "lodash/fp/map";
 import mapValues from "lodash/fp/mapValues";
@@ -33,28 +29,31 @@ import sortBy from "lodash/fp/sortBy";
 import toInteger from "lodash/fp/toInteger";
 import upperCase from "lodash/fp/upperCase";
 import values from "lodash/fp/values";
+import PropTypes from "prop-types";
+import React, { useEffect } from "react";
+import { Bar } from "react-chartjs-2";
 
-import {
-  sum,
-  isValidOffice,
-  isValidOfficer,
-  mergeAllResolver,
-  configureDownloads,
-  isOfficerIdsHidden,
-} from "./utils";
 import { COLORS } from "../../assets/scripts/constants/colors";
+import { numberFromOfficerId } from "../../utils/formatStrings";
+import { METRIC_TYPES } from "../utils/constants";
 import {
-  filterDatasetBySupervisionType,
   filterDatasetByMetricPeriodMonths,
+  filterDatasetBySupervisionType,
 } from "../utils/dataFilters";
+import { metricTypePropType } from "../utils/propTypes";
 import {
   toggleLabel,
   toggleYAxisTicksStackedRateBasicCount,
   updateTooltipForMetricType,
 } from "../utils/tooltips";
-import { numberFromOfficerId } from "../../utils/formatStrings";
-import { metricTypePropType } from "../utils/propTypes";
-import { METRIC_TYPES } from "../utils/constants";
+import {
+  configureDownloads,
+  isOfficerIdsHidden,
+  isValidOffice,
+  isValidOfficer,
+  mergeAllResolver,
+  sum,
+} from "./utils";
 
 /**
  * Organizes the labels and data points so the chart can display the values

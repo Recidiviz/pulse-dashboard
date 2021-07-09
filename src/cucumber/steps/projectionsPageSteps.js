@@ -15,7 +15,8 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import { When, Then } from "@cucumber/cucumber";
+import { Then, When } from "@cucumber/cucumber";
+
 import projectionsPage from "../pages/projectionsPage";
 
 When("I'm on the {string} view", (view) => {

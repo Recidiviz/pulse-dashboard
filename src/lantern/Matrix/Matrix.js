@@ -17,40 +17,39 @@
 
 /* eslint-disable react/no-array-index-key */
 
-import React from "react";
-import PropTypes from "prop-types";
-import cx from "classnames";
-import { observer } from "mobx-react-lite";
-import { get as mobxGet } from "mobx";
+import "./Matrix.scss";
 
+import cx from "classnames";
 import filter from "lodash/fp/filter";
+import flatten from "lodash/fp/flatten";
 import get from "lodash/fp/get";
 import getOr from "lodash/fp/getOr";
 import groupBy from "lodash/fp/groupBy";
 import mapValues from "lodash/fp/mapValues";
 import max from "lodash/fp/max";
-import flatten from "lodash/fp/flatten";
 import pipe from "lodash/fp/pipe";
 import sum from "lodash/fp/sum";
 import sumBy from "lodash/fp/sumBy";
 import toInteger from "lodash/fp/toInteger";
 import values from "lodash/fp/values";
+import { get as mobxGet } from "mobx";
+import { observer } from "mobx-react-lite";
+import PropTypes from "prop-types";
+import React from "react";
 
-import MatrixCell from "./MatrixCell";
-import MatrixRow from "./MatrixRow";
-import ExportMenu from "../ExportMenu";
-import LoadingChart from "../LoadingChart";
 import ErrorMessage from "../../components/ErrorMessage";
-
 import {
   matrixViolationTypeToLabel,
   violationCountLabel,
 } from "../../utils/formatStrings";
 import { translate } from "../../utils/i18nSettings";
+import ExportMenu from "../ExportMenu";
 import { useContainerHeight } from "../hooks/useContainerHeight";
 import { useLanternStore } from "../LanternStoreProvider";
-import { VIOLATION_TYPE, REPORTED_VIOLATIONS } from "../utils/constants";
-import "./Matrix.scss";
+import LoadingChart from "../LoadingChart";
+import { REPORTED_VIOLATIONS, VIOLATION_TYPE } from "../utils/constants";
+import MatrixCell from "./MatrixCell";
+import MatrixRow from "./MatrixRow";
 
 const VIOLATION_COUNTS = ["1", "2", "3", "4", "5", "6", "7", "8"];
 

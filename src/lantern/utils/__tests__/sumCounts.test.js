@@ -16,8 +16,8 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import { sumCounts } from "../sumCounts";
 import { calculateRate } from "../rate";
+import { sumCounts } from "../sumCounts";
 
 describe("#calculateAverageRate", () => {
   const revocationData = [

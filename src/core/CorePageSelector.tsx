@@ -15,11 +15,11 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
+import "./CorePageSelector.scss";
+
+import cx from "classnames";
 import React from "react";
 import { Link } from "react-router-dom";
-import cx from "classnames";
-
-import "./CorePageSelector.scss";
 
 type propTypes = {
   currentSection: string;

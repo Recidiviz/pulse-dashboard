@@ -15,6 +15,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 import { Before } from "@cucumber/cucumber";
+
 import loginPage from "../../pages/loginPage";
 
 Before({ tags: "@login-admin" }, () => {

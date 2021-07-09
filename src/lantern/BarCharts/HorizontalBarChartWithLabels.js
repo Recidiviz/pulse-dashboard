@@ -15,14 +15,15 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React from "react";
-import PropTypes from "prop-types";
-import { HorizontalBar } from "react-chartjs-2";
 import "chartjs-plugin-datalabels";
 
-import { tooltipForRateMetricWithCounts } from "../utils/tooltips";
-import { tooltipForFooterWithCounts } from "../utils/significantStatistics";
+import PropTypes from "prop-types";
+import React from "react";
+import { HorizontalBar } from "react-chartjs-2";
+
 import { COLORS } from "../../assets/scripts/constants/colors";
+import { tooltipForFooterWithCounts } from "../utils/significantStatistics";
+import { tooltipForRateMetricWithCounts } from "../utils/tooltips";
 
 const HorizontalBarChartWithLabels = ({
   id,

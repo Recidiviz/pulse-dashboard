@@ -49,8 +49,8 @@ function filterDatasetByLabels(dataset, label, validLabels) {
 }
 
 export {
-  filterDatasetByMetricPeriodMonths,
   filterDatasetByDistrict,
-  filterDatasetBySupervisionType,
   filterDatasetByLabels,
+  filterDatasetByMetricPeriodMonths,
+  filterDatasetBySupervisionType,
 };

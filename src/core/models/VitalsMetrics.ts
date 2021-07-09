@@ -15,15 +15,16 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 import { computed, makeObservable } from "mobx";
-import {
-  VitalsSummaryRecord,
-  VitalsTimeSeriesRecord,
-  RawMetricData,
-  EntityType,
-} from "./types";
+
+import { parseResponseByFileFormat } from "../../api/metrics";
 import { toTitleCase } from "../../utils/formatStrings";
 import Metric, { BaseMetricProps } from "./Metric";
-import { parseResponseByFileFormat } from "../../api/metrics";
+import {
+  EntityType,
+  RawMetricData,
+  VitalsSummaryRecord,
+  VitalsTimeSeriesRecord,
+} from "./types";
 
 export function createVitalsSummaryMetric(
   rawRecords: RawMetricData

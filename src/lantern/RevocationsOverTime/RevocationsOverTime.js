@@ -15,36 +15,33 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React from "react";
-import PropTypes from "prop-types";
-import { Bar, Line } from "react-chartjs-2";
-import { observer } from "mobx-react-lite";
-import { get } from "mobx";
-
 import map from "lodash/fp/map";
 import pipe from "lodash/fp/pipe";
+import { get } from "mobx";
+import { observer } from "mobx-react-lite";
+import PropTypes from "prop-types";
+import React from "react";
+import { Bar, Line } from "react-chartjs-2";
 
-import { groupByMonth } from "../../core/bars/utils";
-import LoadingChart from "../LoadingChart";
-import ErrorMessage from "../../components/ErrorMessage";
-
-import { useContainerHeight } from "../hooks/useContainerHeight";
 import { COLORS } from "../../assets/scripts/constants/colors";
+import ErrorMessage from "../../components/ErrorMessage";
+import { groupByMonth } from "../../core/bars/utils";
+import { toNumber } from "../../utils";
+import {
+  centerSingleMonthDatasetIfNecessary,
+  sortFilterAndSupplementMostRecentMonths,
+} from "../../utils/datasets";
+import { translate } from "../../utils/i18nSettings";
+import { generateTrendlineDataset } from "../../utils/trendline";
+import { useContainerHeight } from "../hooks/useContainerHeight";
+import { useLanternStore } from "../LanternStoreProvider";
+import LoadingChart from "../LoadingChart";
+import RevocationsByDimensionComponent from "../RevocationsByDimension/RevocationsByDimensionComponent";
+import { METRIC_PERIOD_MONTHS } from "../utils/constants";
 import {
   currentMonthBox,
   monthNamesAllWithYearsFromNumbers,
 } from "../utils/currentSpan";
-import { toNumber } from "../../utils";
-import {
-  sortFilterAndSupplementMostRecentMonths,
-  centerSingleMonthDatasetIfNecessary,
-} from "../../utils/datasets";
-import { generateTrendlineDataset } from "../../utils/trendline";
-import { translate } from "../../utils/i18nSettings";
-import { useLanternStore } from "../LanternStoreProvider";
-import { METRIC_PERIOD_MONTHS } from "../utils/constants";
-
-import RevocationsByDimensionComponent from "../RevocationsByDimension/RevocationsByDimensionComponent";
 
 const RevocationsOverTime = ({ timeDescription }) => {
   const { filters, dataStore } = useLanternStore();

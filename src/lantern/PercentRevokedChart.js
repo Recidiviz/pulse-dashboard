@@ -15,15 +15,15 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
+import PropTypes from "prop-types";
 import React from "react";
 import { Bar } from "react-chartjs-2";
-import PropTypes from "prop-types";
 
-import { getRateAnnotation } from "./utils/rate";
-import { axisCallbackForPercentage } from "./utils/axis";
-import { tooltipForRateMetricWithCounts } from "./utils/tooltips";
-import { tooltipForFooterWithCounts } from "./utils/significantStatistics";
 import { COLORS } from "../assets/scripts/constants/colors";
+import { axisCallbackForPercentage } from "./utils/axis";
+import { getRateAnnotation } from "./utils/rate";
+import { tooltipForFooterWithCounts } from "./utils/significantStatistics";
+import { tooltipForRateMetricWithCounts } from "./utils/tooltips";
 
 const PercentRevokedChart = ({
   chartId,

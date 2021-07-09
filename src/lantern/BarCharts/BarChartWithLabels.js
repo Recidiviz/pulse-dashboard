@@ -15,16 +15,17 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React from "react";
-import PropTypes from "prop-types";
-import { Bar } from "react-chartjs-2";
 import "chartjs-plugin-datalabels";
 
+import PropTypes from "prop-types";
+import React from "react";
+import { Bar } from "react-chartjs-2";
+
+import { COLORS } from "../../assets/scripts/constants/colors";
 import { axisCallbackForPercentage } from "../utils/axis";
 import { tooltipForFooterWithCounts } from "../utils/significantStatistics";
 import { tooltipForRateMetricWithCounts } from "../utils/tooltips";
 import { generateLabelsWithCustomColors } from "./helpers";
-import { COLORS } from "../../assets/scripts/constants/colors";
 
 const getDefaultLegendOptions = (labelColors) => {
   return labelColors.length

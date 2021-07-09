@@ -15,10 +15,10 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import React, { useState } from "react";
-import PropTypes from "prop-types";
-
 import "./RadioGroup.scss";
+
+import PropTypes from "prop-types";
+import React, { useState } from "react";
 
 const RadioGroup = ({ defaultValue, onChange, options }) => {
   const [state, setState] = useState(defaultValue);

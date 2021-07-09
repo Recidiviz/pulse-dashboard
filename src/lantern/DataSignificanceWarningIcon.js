@@ -16,6 +16,7 @@
 // =============================================================================
 
 import React from "react";
+
 import WarningIcon from "../controls/WarningIcon";
 
 const DataSignificanceWarningIcon = () => {

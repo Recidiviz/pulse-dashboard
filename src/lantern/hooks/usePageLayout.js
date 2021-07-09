@@ -16,6 +16,7 @@
 // =============================================================================
 
 import { useLayoutEffect, useRef, useState } from "react";
+
 import { useRootStore } from "../../components/StoreProvider";
 
 const usePageLayout = (hideTopBar) => {

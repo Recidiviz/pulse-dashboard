@@ -15,26 +15,27 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React from "react";
-import { observer } from "mobx-react-lite";
-import PageTemplate from "../PageTemplate";
-import VitalsSummaryCards from "../VitalsSummaryCards";
-import VitalsSummaryTable from "../VitalsSummaryTable/VitalsSummaryTable";
-import VitalsMonthlyChange from "../VitalsMonthlyChange";
-import VitalsSummaryChart from "../VitalsSummaryChart";
-import VitalsSummaryDetail from "../VitalsSummaryDetail";
-import VitalsSummaryBreadcrumbs from "../VitalsSummaryBreadcrumbs";
-import MethodologyLink from "../MethodologyLink";
-import Loading from "../../components/Loading";
-import { CORE_PATHS } from "../views";
-import { useCoreStore } from "../CoreStoreProvider";
-import DownloadDataButton from "../DownloadDataButton";
-import DetailsGroup from "../DetailsGroup";
-import { ENTITY_TYPES } from "../models/types";
-import withRouteSync from "../../withRouteSync";
-
 import "../DetailsGroup.scss";
 import "./PageVitals.scss";
+
+import { observer } from "mobx-react-lite";
+import React from "react";
+
+import Loading from "../../components/Loading";
+import withRouteSync from "../../withRouteSync";
+import { useCoreStore } from "../CoreStoreProvider";
+import DetailsGroup from "../DetailsGroup";
+import DownloadDataButton from "../DownloadDataButton";
+import MethodologyLink from "../MethodologyLink";
+import { ENTITY_TYPES } from "../models/types";
+import PageTemplate from "../PageTemplate";
+import { CORE_PATHS } from "../views";
+import VitalsMonthlyChange from "../VitalsMonthlyChange";
+import VitalsSummaryBreadcrumbs from "../VitalsSummaryBreadcrumbs";
+import VitalsSummaryCards from "../VitalsSummaryCards";
+import VitalsSummaryChart from "../VitalsSummaryChart";
+import VitalsSummaryDetail from "../VitalsSummaryDetail";
+import VitalsSummaryTable from "../VitalsSummaryTable/VitalsSummaryTable";
 
 const PageVitals: React.FC = () => {
   const { metricsStore, pageVitalsStore } = useCoreStore();

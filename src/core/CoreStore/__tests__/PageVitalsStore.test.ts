@@ -14,9 +14,9 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-import PageVitalsStore, { getSummaryStatus } from "../PageVitalsStore";
 import RootStore from "../../../RootStore";
 import CoreStore from "..";
+import PageVitalsStore, { getSummaryStatus } from "../PageVitalsStore";
 
 describe("getSummaryStatus", () => {
   describe("when value is less than 70", () => {

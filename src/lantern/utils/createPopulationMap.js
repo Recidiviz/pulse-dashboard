@@ -15,9 +15,9 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
+import getOr from "lodash/fp/getOr";
 import pipe from "lodash/fp/pipe";
 import set from "lodash/fp/set";
-import getOr from "lodash/fp/getOr";
 import toInteger from "lodash/fp/toInteger";
 
 const NUMERATOR_KEYS = [

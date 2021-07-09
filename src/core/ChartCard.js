@@ -15,12 +15,13 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React, { useState } from "react";
+import "./ChartCard.scss";
+
 import PropTypes from "prop-types";
+import React, { useState } from "react";
 
 import ChartCardExportMenu from "./ChartCardExportMenu";
 import GeoViewToggle from "./GeoViewToggle";
-import "./ChartCard.scss";
 
 const ChartCard = ({
   chart,

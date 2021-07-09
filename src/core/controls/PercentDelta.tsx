@@ -14,12 +14,14 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-import React from "react";
-import cn from "classnames";
+import "./PercentDelta.scss";
+
 import { Icon, IconSVG } from "@recidiviz/case-triage-components";
+import cn from "classnames";
+import React from "react";
+
 import { formatPercent } from "../../utils/formatStrings";
 import * as styles from "../CoreConstants.scss";
-import "./PercentDelta.scss";
 
 const deltaDirections = {
   improved: "improved",

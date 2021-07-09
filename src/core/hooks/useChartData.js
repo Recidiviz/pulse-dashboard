@@ -15,13 +15,13 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import { useState, useCallback, useEffect } from "react";
 import * as Sentry from "@sentry/react";
-
 import makeCancellablePromise from "make-cancellable-promise";
+import { useCallback, useEffect, useState } from "react";
+
 import {
-  callMetricsApi,
   awaitingResults,
+  callMetricsApi,
   parseResponsesByFileFormat,
 } from "../../api/metrics";
 import { useRootStore } from "../../components/StoreProvider";

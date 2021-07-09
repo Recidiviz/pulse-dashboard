@@ -15,20 +15,20 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React, { useState } from "react";
-import PropTypes from "prop-types";
 import { observer } from "mobx-react-lite";
+import PropTypes from "prop-types";
+import React, { useState } from "react";
 
-import useSort from "./useSort";
-import ExportMenu from "../ExportMenu";
-import LoadingChart from "../LoadingChart";
 import ErrorMessage from "../../components/ErrorMessage";
-import Sortable from "./Sortable";
-import Pagination from "./Pagination";
-import { useContainerHeight } from "../hooks/useContainerHeight";
-import { nullSafeCell } from "./utils/helpers";
-import { useLanternStore } from "../LanternStoreProvider";
 import { translate } from "../../utils/i18nSettings";
+import ExportMenu from "../ExportMenu";
+import { useContainerHeight } from "../hooks/useContainerHeight";
+import { useLanternStore } from "../LanternStoreProvider";
+import LoadingChart from "../LoadingChart";
+import Pagination from "./Pagination";
+import Sortable from "./Sortable";
+import useSort from "./useSort";
+import { nullSafeCell } from "./utils/helpers";
 
 export const CASES_PER_PAGE = 15;
 

@@ -15,8 +15,8 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import { parseViolationRecord } from "./violationRecord";
 import { translate } from "../../../utils/i18nSettings";
+import { parseViolationRecord } from "./violationRecord";
 
 const sumViolationRecords = (records) =>
   Object.values(records).reduce((acc, record) => acc + record, 0);

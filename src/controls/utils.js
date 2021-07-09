@@ -15,8 +15,8 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import map from "lodash/fp/map";
 import filter from "lodash/fp/filter";
+import map from "lodash/fp/map";
 
 export const excludeOption = (options, optionToExclude) => {
   if (!optionToExclude) return options;

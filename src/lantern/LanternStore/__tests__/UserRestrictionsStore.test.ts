@@ -15,11 +15,12 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 import * as Sentry from "@sentry/react";
-import UserRestrictionsStore from "../UserRestrictionsStore";
-import type UserStore from "../../../RootStore/UserStore";
-import type TenantStore from "../../../RootStore/TenantStore";
+
 import { ERROR_MESSAGES } from "../../../constants";
+import type TenantStore from "../../../RootStore/TenantStore";
+import type UserStore from "../../../RootStore/UserStore";
 import LanternStore from "..";
+import UserRestrictionsStore from "../UserRestrictionsStore";
 
 jest.mock("@sentry/react");
 jest.mock("..");

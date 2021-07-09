@@ -15,9 +15,10 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React from "react";
-import { getByText, fireEvent } from "@testing-library/dom";
+import { fireEvent, getByText } from "@testing-library/dom";
 import { render } from "@testing-library/react";
+import React from "react";
+
 import GeoViewToggle from "../GeoViewToggle";
 
 describe("GeoViewToggle", () => {

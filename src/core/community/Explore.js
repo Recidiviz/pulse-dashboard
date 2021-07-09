@@ -17,41 +17,41 @@
 
 import React, { useState } from "react";
 
-import PageTemplate from "../PageTemplate";
 import Loading from "../../components/Loading";
-import ChartCard from "../ChartCard";
-import GeoViewTimeChart from "../GeoViewTimeChart";
-import Methodology from "../Methodology";
-import PeriodLabel from "../PeriodLabel";
 import WarningIcon from "../../controls/WarningIcon";
 import AdmissionCountsByType from "../AdmissionCountsByType";
-import CaseTerminationsByOfficer from "./CaseTerminationsByOfficer";
-import CaseTerminationsByTerminationType from "./CaseTerminationsByTerminationType";
+import { isOfficerIdsHidden } from "../bars/utils";
+import ChartCard from "../ChartCard";
+import CoreFilterBar from "../CoreFilterBar";
+import GeoViewTimeChart from "../GeoViewTimeChart";
 import LsirScoreChangeSnapshot from "../goals/LsirScoreChangeSnapshot";
 import RevocationAdmissionsSnapshot from "../goals/RevocationAdmissionsSnapshot";
-import RevocationCountByOfficer from "./RevocationCountByOfficer";
 import RevocationCountOverTime from "../goals/RevocationCountOverTime";
-import RevocationCountBySupervisionType from "./RevocationCountBySupervisionType";
-import RevocationCountByViolationType from "./RevocationCountByViolationType";
-import RevocationProportionByRace from "./RevocationProportionByRace";
 import SupervisionSuccessSnapshot from "../goals/SupervisionSuccessSnapshot";
-import CoreFilterBar from "../CoreFilterBar";
+import useChartData from "../hooks/useChartData";
+import Methodology from "../Methodology";
+import PageTemplate from "../PageTemplate";
+import PeriodLabel from "../PeriodLabel";
+import { METRIC_TYPES } from "../utils/constants";
 import {
   defaultDistrict,
   defaultMetricPeriod,
   defaultMetricType,
   defaultSupervisionType,
 } from "../utils/filterOptions";
-import useChartData from "../hooks/useChartData";
-import { isOfficerIdsHidden } from "../bars/utils";
-import { METRIC_TYPES } from "../utils/constants";
+import CaseTerminationsByOfficer from "./CaseTerminationsByOfficer";
+import CaseTerminationsByTerminationType from "./CaseTerminationsByTerminationType";
 import { availableDistricts, importantNotes } from "./constants";
 import FtrReferralCountByMonth from "./FtrReferralCountByMonth";
+import FtrReferralsByAge from "./FtrReferralsByAge";
+import FtrReferralsByGender from "./FtrReferralsByGender";
+import FtrReferralsByLsir from "./FtrReferralsByLsir";
 import FtrReferralsByParticipationStatus from "./FtrReferralsByParticipationStatus";
 import FtrReferralsByRace from "./FtrReferralsByRace";
-import FtrReferralsByLsir from "./FtrReferralsByLsir";
-import FtrReferralsByGender from "./FtrReferralsByGender";
-import FtrReferralsByAge from "./FtrReferralsByAge";
+import RevocationCountByOfficer from "./RevocationCountByOfficer";
+import RevocationCountBySupervisionType from "./RevocationCountBySupervisionType";
+import RevocationCountByViolationType from "./RevocationCountByViolationType";
+import RevocationProportionByRace from "./RevocationProportionByRace";
 
 const CommunityExplore = () => {
   const { apiData, isLoading, getTokenSilently } = useChartData(

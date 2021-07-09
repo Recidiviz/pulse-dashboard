@@ -199,11 +199,11 @@ function chartAnnotationForGoal(goal, annotationId, overrides) {
 }
 
 export {
+  chartAnnotationForGoal,
   getGoalForChart,
   getMaxForGoalAndData,
-  getMinForGoalAndData,
   getMaxForGoalAndDataIfGoalDisplayable,
+  getMinForGoalAndData,
   goalLabelContentString,
   trendlineGoalText,
-  chartAnnotationForGoal,
 };

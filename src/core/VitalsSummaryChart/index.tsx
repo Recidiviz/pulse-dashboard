@@ -15,17 +15,17 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React, { useState } from "react";
-import { observer } from "mobx-react-lite";
+import "./VitalsSummaryChart.scss";
+
 import { curveCatmullRom } from "d3-shape";
-import { formatPercent, formatISODateString } from "../../utils/formatStrings";
-import VitalsSummaryTooltip from "./VitalsSummaryTooltip";
+import { observer } from "mobx-react-lite";
+import React, { useState } from "react";
+
+import { formatISODateString, formatPercent } from "../../utils/formatStrings";
+import * as styles from "../CoreConstants.scss";
 import { useCoreStore } from "../CoreStoreProvider";
 import { METRIC_TYPES } from "../PageVitals/types";
-
-import * as styles from "../CoreConstants.scss";
-
-import "./VitalsSummaryChart.scss";
+import VitalsSummaryTooltip from "./VitalsSummaryTooltip";
 // eslint-disable-next-line @typescript-eslint/no-var-requires,global-require
 const ResponsiveOrdinalFrame = require("semiotic/lib/ResponsiveOrdinalFrame") as any;
 

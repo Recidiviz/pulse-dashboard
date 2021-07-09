@@ -14,10 +14,11 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-import React from "react";
-import PropTypes from "prop-types";
-import cn from "classnames";
 import "./FilterField.scss";
+
+import cn from "classnames";
+import PropTypes from "prop-types";
+import React from "react";
 
 const FilterField = ({ label, children, className }) => {
   return (

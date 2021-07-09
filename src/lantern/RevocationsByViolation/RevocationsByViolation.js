@@ -15,17 +15,17 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React from "react";
-import PropTypes from "prop-types";
 import { observer } from "mobx-react-lite";
+import PropTypes from "prop-types";
+import React from "react";
 
-import RevocationsByDimension from "../RevocationsByDimension";
-import createGenerateChartData from "./createGenerateChartData";
-import BarChartWithLabels from "../BarCharts";
-import { useLanternStore } from "../LanternStoreProvider";
-import { VIOLATION_TYPE } from "../utils/constants";
 import { COLORS } from "../../assets/scripts/constants/colors";
 import { translate } from "../../utils/i18nSettings";
+import BarChartWithLabels from "../BarCharts";
+import { useLanternStore } from "../LanternStoreProvider";
+import RevocationsByDimension from "../RevocationsByDimension";
+import { VIOLATION_TYPE } from "../utils/constants";
+import createGenerateChartData from "./createGenerateChartData";
 
 const RevocationsByViolation = observer(
   ({ containerHeight, timeDescription }, ref) => {
