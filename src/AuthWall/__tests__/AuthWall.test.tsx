@@ -86,6 +86,12 @@ test("renders children when can_access_leadership_dashboard", () => {
 });
 
 test("redirects to case triage when !can_access_leadership_dashboard and can_access_case_triage", () => {
+  // delete and re-create the window location object for this test
+  const { location } = window;
+  // @ts-ignore
+  delete window.location;
+  window.location = { ...window.location, href: "original-url" };
+
   userStore.userAppMetadata = {
     can_access_leadership_dashboard: false,
     can_access_case_triage: true,
@@ -101,7 +107,9 @@ test("redirects to case triage when !can_access_leadership_dashboard and can_acc
       <div tenantIds={["US_MO"]}>AUTHORIZED</div>
     </AuthWall>
   );
-  expect(window.location.href).not.toMatch("http://app-staging.recidiviz.org");
+  expect(window.location.href).toMatch("test-case-triage-url");
+  // reset window location to its original object
+  window.location = location;
 });
 
 test("sets an auth error when !can_access_leadership_dashboard and !can_access_case_triage", () => {
