@@ -14,14 +14,15 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-import { configure, computed, makeObservable } from "mobx";
 import { Auth0ClientOptions, User } from "@auth0/auth0-spa-js";
-import TenantStore from "./TenantStore";
-import UserStore from "./UserStore";
-import PageStore from "./PageStore";
+import { computed, configure, makeObservable } from "mobx";
+
 import devAuthConfig from "../auth_config_dev.json";
 import productionAuthConfig from "../auth_config_production.json";
+import PageStore from "./PageStore";
+import TenantStore from "./TenantStore";
 import { TenantId } from "./types";
+import UserStore from "./UserStore";
 
 /**
  * Returns the auth settings configured for the current environment, if any.

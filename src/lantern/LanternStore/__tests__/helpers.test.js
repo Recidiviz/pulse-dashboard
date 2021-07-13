@@ -16,8 +16,8 @@
 // =============================================================================
 
 import {
-  getQueryStringFromFilters,
   dimensionManifestIncludesFilterValues,
+  getQueryStringFromFilters,
 } from "../DataStore/helpers";
 
 describe("DataStore helpers", () => {

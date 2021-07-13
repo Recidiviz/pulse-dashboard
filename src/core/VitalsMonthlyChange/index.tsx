@@ -15,12 +15,13 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React from "react";
+import "./VitalsMonthlyChange.scss";
+
 import { observer } from "mobx-react-lite";
+import React from "react";
+
 import PercentDelta from "../controls/PercentDelta";
 import { useCoreStore } from "../CoreStoreProvider";
-
-import "./VitalsMonthlyChange.scss";
 
 type MonthlyChangeProps = {
   numDays: number;

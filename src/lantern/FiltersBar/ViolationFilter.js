@@ -15,20 +15,20 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React, { useMemo } from "react";
-import { observer } from "mobx-react-lite";
 import { get } from "mobx";
+import { observer } from "mobx-react-lite";
+import React, { useMemo } from "react";
 import { isAllItem } from "shared-filters";
 
-import FilterField from "./FilterField";
-import Chip from "../Chip";
 import {
-  violationCountLabel,
   matrixViolationTypeToLabel,
   pluralize,
+  violationCountLabel,
 } from "../../utils/formatStrings";
+import Chip from "../Chip";
 import { useLanternStore } from "../LanternStoreProvider";
-import { VIOLATION_TYPE, REPORTED_VIOLATIONS } from "../utils/constants";
+import { REPORTED_VIOLATIONS, VIOLATION_TYPE } from "../utils/constants";
+import FilterField from "./FilterField";
 
 const ViolationFilter = () => {
   const { filtersStore, filters } = useLanternStore();

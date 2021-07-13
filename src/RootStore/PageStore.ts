@@ -15,6 +15,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 import { makeAutoObservable } from "mobx";
+
 import type RootStore from ".";
 
 const IE_11_BANNER_VISIBLE = "ie11BannerIsVisibleInSession";

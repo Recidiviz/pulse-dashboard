@@ -15,14 +15,14 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
+import { observer } from "mobx-react-lite";
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
-import { Button, Container, Row, Col } from "reactstrap";
-import { observer } from "mobx-react-lite";
+import { Button, Col, Container, Row } from "reactstrap";
 
-import { useRootStore } from "./StoreProvider";
 import Loading from "./Loading";
 import StateSelector from "./StateSelector";
+import { useRootStore } from "./StoreProvider";
 
 const Profile = () => {
   const { tenantStore, userStore } = useRootStore();

@@ -15,22 +15,25 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React from "react";
-import { observer } from "mobx-react-lite";
-import Sticky from "react-sticky-fill";
-import { get } from "mobx";
+import "./Revocations.scss";
 
-import { getTimeDescription } from "./utils/format";
-import SelectFilter from "./FiltersBar/SelectFilter";
-import DistrictFilter from "./FiltersBar/DistrictFilter";
+import { get } from "mobx";
+import { observer } from "mobx-react-lite";
+import React from "react";
+import Sticky from "react-sticky-fill";
+
+import { useRootStore } from "../components/StoreProvider";
+import CaseTable from "./CaseTable/CaseTable";
+import ErrorBoundary from "./ErrorBoundary";
 import AdmissionTypeFilter from "./FiltersBar/AdmissionTypeFilter";
+import DistrictFilter from "./FiltersBar/DistrictFilter";
+import SelectFilter from "./FiltersBar/SelectFilter";
 import ViolationFilter from "./FiltersBar/ViolationFilter";
-import RevocationsOverTime from "./RevocationsOverTime";
+import { useLanternStore } from "./LanternStoreProvider";
 import Matrix from "./Matrix";
 import MatrixExplanation from "./Matrix/MatrixExplanation";
 import RevocationCharts from "./RevocationCharts";
-import ErrorBoundary from "./ErrorBoundary";
-import CaseTable from "./CaseTable/CaseTable";
+import RevocationsOverTime from "./RevocationsOverTime";
 import {
   ADMISSION_TYPE,
   CHARGE_CATEGORY,
@@ -38,10 +41,7 @@ import {
   SUPERVISION_LEVEL,
   SUPERVISION_TYPE,
 } from "./utils/constants";
-import { useLanternStore } from "./LanternStoreProvider";
-import { useRootStore } from "../components/StoreProvider";
-
-import "./Revocations.scss";
+import { getTimeDescription } from "./utils/format";
 
 const Revocations = () => {
   const lanternStore = useLanternStore();

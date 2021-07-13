@@ -1,5 +1,6 @@
-import React from "react";
 import "./CoreLoadingIndicator.scss";
+
+import React from "react";
 
 export const CoreLoading = () => (
   <div className="Core-Loading">

@@ -15,12 +15,12 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React from "react";
 import { observer } from "mobx-react-lite";
+import React from "react";
 
-import VitalsSummaryCard from "./VitalsSummaryCard";
-import { MetricType } from "../PageVitals/types";
 import { useCoreStore } from "../CoreStoreProvider";
+import { MetricType } from "../PageVitals/types";
+import VitalsSummaryCard from "./VitalsSummaryCard";
 
 const VitalsSummaryCards: React.FC = () => {
   const { pageVitalsStore } = useCoreStore();

@@ -15,10 +15,6 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React, { useEffect } from "react";
-import PropTypes from "prop-types";
-import { Bar } from "react-chartjs-2";
-
 import groupBy from "lodash/fp/groupBy";
 import map from "lodash/fp/map";
 import pipe from "lodash/fp/pipe";
@@ -27,25 +23,28 @@ import sortBy from "lodash/fp/sortBy";
 import sumBy from "lodash/fp/sumBy";
 import toInteger from "lodash/fp/toInteger";
 import values from "lodash/fp/values";
+import PropTypes from "prop-types";
+import React, { useEffect } from "react";
+import { Bar } from "react-chartjs-2";
 
 import {
-  COLORS_STACKED_TWO_VALUES,
   COLORS,
+  COLORS_STACKED_TWO_VALUES,
 } from "../../assets/scripts/constants/colors";
-import { configureDownloadButtons } from "../utils/configureDownloadButtons";
-import {
-  filterDatasetBySupervisionType,
-  filterDatasetByDistrict,
-  filterDatasetByMetricPeriodMonths,
-  filterDatasetByLabels,
-} from "../utils/dataFilters";
-import { tooltipForCountChart, tooltipForRateChart } from "../utils/tooltips";
 import {
   genderValueToHumanReadable,
   genderValueToLabel,
 } from "../../utils/formatStrings";
-import { metricTypePropType } from "../utils/propTypes";
+import { configureDownloadButtons } from "../utils/configureDownloadButtons";
 import { METRIC_TYPES } from "../utils/constants";
+import {
+  filterDatasetByDistrict,
+  filterDatasetByLabels,
+  filterDatasetByMetricPeriodMonths,
+  filterDatasetBySupervisionType,
+} from "../utils/dataFilters";
+import { metricTypePropType } from "../utils/propTypes";
+import { tooltipForCountChart, tooltipForRateChart } from "../utils/tooltips";
 
 const chartId = "ftrReferralsByGender";
 

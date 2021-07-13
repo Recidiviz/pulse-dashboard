@@ -14,17 +14,16 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
+import map from "lodash/fp/map";
+import { get } from "mobx";
+import { observer } from "mobx-react-lite";
 import React from "react";
 
-import { observer } from "mobx-react-lite";
-import { get } from "mobx";
-import map from "lodash/fp/map";
-
-import FilterField from "./FilterField";
-import DistrictFilterDropown from "./DistrictFilterDropown";
-import { useLanternStore } from "../LanternStoreProvider";
 import { flatOptions } from "../../controls/utils";
 import { allOption } from "../LanternStore/FiltersStore";
+import { useLanternStore } from "../LanternStoreProvider";
+import DistrictFilterDropown from "./DistrictFilterDropown";
+import FilterField from "./FilterField";
 
 const DistrictFilter = () => {
   const {

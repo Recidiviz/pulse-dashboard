@@ -15,13 +15,13 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React, { useEffect } from "react";
 import { when } from "mobx";
 import { observer } from "mobx-react-lite";
+import React, { useEffect } from "react";
 
 import Loading from "../components/Loading";
-import { useRootStore } from "../components/StoreProvider";
 import NotFound from "../components/NotFound";
+import { useRootStore } from "../components/StoreProvider";
 
 /**
  * Verifies authorization before rendering its children.

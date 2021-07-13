@@ -16,12 +16,11 @@
 // =============================================================================
 
 import toInteger from "lodash/fp/toInteger";
-
 import {
+  convertFromStringToUnflattenedMatrix,
   getDimensionKey,
   getDimensionValue,
   getValueKey,
-  convertFromStringToUnflattenedMatrix,
   validateMetadata,
 } from "shared-filters";
 

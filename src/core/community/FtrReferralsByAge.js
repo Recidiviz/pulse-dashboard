@@ -15,26 +15,26 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React, { useEffect } from "react";
-import PropTypes from "prop-types";
-import { Bar } from "react-chartjs-2";
 import pipe from "lodash/fp/pipe";
+import PropTypes from "prop-types";
+import React, { useEffect } from "react";
+import { Bar } from "react-chartjs-2";
 
 import {
   COLORS,
   COLORS_FIVE_VALUES,
   COLORS_STACKED_TWO_VALUES,
 } from "../../assets/scripts/constants/colors";
+import { toInt } from "../../utils/formatStrings";
 import { configureDownloadButtons } from "../utils/configureDownloadButtons";
+import { METRIC_TYPES } from "../utils/constants";
 import {
-  filterDatasetBySupervisionType,
   filterDatasetByDistrict,
   filterDatasetByMetricPeriodMonths,
+  filterDatasetBySupervisionType,
 } from "../utils/dataFilters";
-import { tooltipForCountChart, tooltipForRateChart } from "../utils/tooltips";
-import { toInt } from "../../utils/formatStrings";
 import { metricTypePropType } from "../utils/propTypes";
-import { METRIC_TYPES } from "../utils/constants";
+import { tooltipForCountChart, tooltipForRateChart } from "../utils/tooltips";
 
 const chartId = "ftrReferralsByAge";
 const ageBucketLabels = ["<25", "25-29", "30-34", "35-39", "40<"];

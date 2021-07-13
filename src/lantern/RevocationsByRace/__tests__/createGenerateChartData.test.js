@@ -15,11 +15,11 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import { setTranslateLocale } from "../../../utils/i18nSettings";
 import * as lanternTenant from "../../../RootStore/TenantStore/lanternTenants";
+import { setTranslateLocale } from "../../../utils/i18nSettings";
 import createGenerateChartData, {
-  generateDatasets,
   CHART_COLORS,
+  generateDatasets,
 } from "../createGenerateChartData";
 
 describe("generateDatasets", () => {

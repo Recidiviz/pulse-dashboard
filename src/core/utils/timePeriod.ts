@@ -15,6 +15,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 import moment from "moment";
+
 import { monthNamesWithYears } from "../../utils/months";
 
 export function getYearFromNow(yearDifference = 0): string {

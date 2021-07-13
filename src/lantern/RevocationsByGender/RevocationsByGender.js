@@ -15,18 +15,18 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React from "react";
-import PropTypes from "prop-types";
 import { observer } from "mobx-react-lite";
+import PropTypes from "prop-types";
+import React from "react";
 
-import { translate } from "../../utils/i18nSettings";
-import RevocationsByDimension from "../RevocationsByDimension";
-import HorizontalBarChartWithLabels from "../BarCharts/HorizontalBarChartWithLabels";
-import createGenerateChartData from "./createGenerateChartData";
-import { useDataStore } from "../LanternStoreProvider";
 import { useRootStore } from "../../components/StoreProvider";
-import { genderValueToLabel } from "../../utils/formatStrings";
 import { US_PA } from "../../RootStore/TenantStore/lanternTenants";
+import { genderValueToLabel } from "../../utils/formatStrings";
+import { translate } from "../../utils/i18nSettings";
+import HorizontalBarChartWithLabels from "../BarCharts/HorizontalBarChartWithLabels";
+import { useDataStore } from "../LanternStoreProvider";
+import RevocationsByDimension from "../RevocationsByDimension";
+import createGenerateChartData from "./createGenerateChartData";
 
 const DEFAULT_MODE = "MALE";
 

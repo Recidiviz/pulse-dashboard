@@ -16,10 +16,11 @@
 // =============================================================================
 
 import { makeAutoObservable } from "mobx";
-import MatrixStore from "./MatrixStore";
-import RevocationsOverTimeStore from "./RevocationsOverTimeStore";
-import RevocationsChartStore from "./RevocationsChartStore";
+
 import CaseTableStore from "./CaseTableStore";
+import MatrixStore from "./MatrixStore";
+import RevocationsChartStore from "./RevocationsChartStore";
+import RevocationsOverTimeStore from "./RevocationsOverTimeStore";
 
 export default class DataStore {
   rootStore;

@@ -16,8 +16,9 @@
 // =============================================================================
 
 import { renderHook } from "@testing-library/react-hooks";
-import useIntercom from "../useIntercom";
+
 import { useRootStore } from "../../components/StoreProvider";
+import useIntercom from "../useIntercom";
 
 jest.mock("../../components/StoreProvider");
 

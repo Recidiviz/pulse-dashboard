@@ -15,9 +15,11 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React from "react";
-import { translate } from "../../utils/i18nSettings";
 import "./MatrixExplanation.scss";
+
+import React from "react";
+
+import { translate } from "../../utils/i18nSettings";
 
 const MatrixExplanation = () => (
   <div className="MatrixExplanation">

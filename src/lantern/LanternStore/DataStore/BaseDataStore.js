@@ -15,34 +15,34 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
+import * as Sentry from "@sentry/react";
 import {
+  autorun,
+  computed,
   flow,
   makeObservable,
   observable,
-  computed,
-  toJS,
-  autorun,
   reaction,
+  toJS,
 } from "mobx";
-import * as Sentry from "@sentry/react";
-
 import { filterOptimizedDataFormat } from "shared-filters";
+
 import {
   callMetricsApi,
   parseResponseByFileFormat,
 } from "../../../api/metrics";
 import {
-  getQueryStringFromFilters,
-  dimensionManifestIncludesFilterValues,
-} from "./helpers";
-import {
-  FILTER_TYPE_MAP,
+  ADMISSION_TYPE,
   DISTRICT,
+  FILTER_TYPE_MAP,
   LEVEL_1_SUPERVISION_LOCATION,
   LEVEL_2_SUPERVISION_LOCATION,
   METRIC_PERIOD_MONTHS,
-  ADMISSION_TYPE,
 } from "../../utils/constants";
+import {
+  dimensionManifestIncludesFilterValues,
+  getQueryStringFromFilters,
+} from "./helpers";
 
 export const DEFAULT_IGNORED_DIMENSIONS = [
   LEVEL_1_SUPERVISION_LOCATION,

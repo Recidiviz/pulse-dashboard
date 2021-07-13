@@ -15,23 +15,23 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 import React, { useCallback, useMemo } from "react";
-import { CoreSelect } from "./controls/CoreSelect";
-import FilterBar from "./controls/FilterBar";
-import Filter from "./controls/Filter";
-import CoreMultiSelect from "./controls/MultiSelect/CoreMultiSelect";
 
+import { CoreSelect } from "./controls/CoreSelect";
+import Filter from "./controls/Filter";
+import FilterBar from "./controls/FilterBar";
+import CoreMultiSelect from "./controls/MultiSelect/CoreMultiSelect";
+import TogglePill from "./controls/TogglePill";
+import { FilterOption } from "./types/filters";
+import { getDistrictOptions } from "./utils/filterHelpers";
 import {
   defaultDistrictOption,
   defaultMetricPeriodOption,
   defaultSupervisionTypeOption,
+  getFilterOption,
   metricPeriodOptions,
   metricTypeOptions,
   supervisionTypeOptions,
-  getFilterOption,
 } from "./utils/filterOptions";
-import { FilterOption } from "./types/filters";
-import { getDistrictOptions } from "./utils/filterHelpers";
-import TogglePill from "./controls/TogglePill";
 
 type CoreFilterBarProps = {
   metricType?: string;

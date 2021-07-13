@@ -1,6 +1,6 @@
 import {
-  downloadData,
   downloadCanvasAsImage,
+  downloadData,
 } from "../../utils/downloads/downloadData";
 
-export { downloadData, downloadCanvasAsImage };
+export { downloadCanvasAsImage, downloadData };

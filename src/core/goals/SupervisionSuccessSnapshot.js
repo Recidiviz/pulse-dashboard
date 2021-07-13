@@ -15,46 +15,45 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React, { useEffect } from "react";
-import PropTypes from "prop-types";
-import { Line } from "react-chartjs-2";
-
-import groupBy from "lodash/fp/groupBy";
 import filter from "lodash/fp/filter";
+import groupBy from "lodash/fp/groupBy";
 import map from "lodash/fp/map";
 import pipe from "lodash/fp/pipe";
 import sumBy from "lodash/fp/sumBy";
 import toInteger from "lodash/fp/toInteger";
 import values from "lodash/fp/values";
+import PropTypes from "prop-types";
+import React, { useEffect } from "react";
+import { Line } from "react-chartjs-2";
 
 import { COLORS, CORE_COLORS } from "../../assets/scripts/constants/colors";
-import { configureDownloadButtons } from "../utils/configureDownloadButtons";
+import { toNumber } from "../../utils";
 import {
-  sortFilterAndSupplementMostRecentMonths,
   centerSingleMonthDatasetIfNecessary,
+  sortFilterAndSupplementMostRecentMonths,
 } from "../../utils/datasets";
-import { monthNamesWithYearsFromNumbers } from "../utils/timePeriod";
+import { generateTrendlineDataset } from "../../utils/trendline";
+import { configureDownloadButtons } from "../utils/configureDownloadButtons";
+import { METRIC_TYPES } from "../utils/constants";
 import {
-  filterDatasetBySupervisionType,
   filterDatasetByDistrict,
+  filterDatasetBySupervisionType,
 } from "../utils/dataFilters";
 import {
-  getGoalForChart,
-  getMinForGoalAndData,
-  getMaxForGoalAndData,
-  trendlineGoalText,
   chartAnnotationForGoal,
+  getGoalForChart,
+  getMaxForGoalAndData,
+  getMinForGoalAndData,
+  trendlineGoalText,
 } from "../utils/metricGoal";
-import {
-  toggleYAxisTicksAdditionalOptions,
-  toggleLabel,
-  updateTooltipForMetricType,
-  canDisplayGoal,
-} from "../utils/tooltips";
-import { toNumber } from "../../utils";
-import { generateTrendlineDataset } from "../../utils/trendline";
-import { METRIC_TYPES } from "../utils/constants";
 import { metricTypePropType } from "../utils/propTypes";
+import { monthNamesWithYearsFromNumbers } from "../utils/timePeriod";
+import {
+  canDisplayGoal,
+  toggleLabel,
+  toggleYAxisTicksAdditionalOptions,
+  updateTooltipForMetricType,
+} from "../utils/tooltips";
 
 const chartId = "supervisionSuccessSnapshot";
 

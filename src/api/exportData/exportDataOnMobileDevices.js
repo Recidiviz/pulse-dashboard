@@ -14,8 +14,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-import JsFileDownloader from "js-file-downloader";
 import * as Sentry from "@sentry/react";
+import JsFileDownloader from "js-file-downloader";
 
 export const isMobileSafari =
   (navigator.userAgent.includes("iPhone") ||

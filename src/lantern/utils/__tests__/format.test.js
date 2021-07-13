@@ -16,6 +16,7 @@
 // =============================================================================
 
 import tk from "timekeeper";
+
 import { getTimeDescription } from "../format";
 
 describe("getTimeDescription", () => {

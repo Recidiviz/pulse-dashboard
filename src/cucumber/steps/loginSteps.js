@@ -14,9 +14,10 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-import { Given, When, Then } from "@cucumber/cucumber";
-import loginPage from "../pages/loginPage";
+import { Given, Then, When } from "@cucumber/cucumber";
+
 import lanternPage from "../pages/lanternPage";
+import loginPage from "../pages/loginPage";
 
 Given("I am on the login page", function () {
   loginPage.open();

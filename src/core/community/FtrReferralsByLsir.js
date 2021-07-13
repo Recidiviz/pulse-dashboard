@@ -15,18 +15,17 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React, { useEffect } from "react";
-import PropTypes from "prop-types";
-import { Bar } from "react-chartjs-2";
-
 import defaults from "lodash/fp/defaults";
 import groupBy from "lodash/fp/groupBy";
 import map from "lodash/fp/map";
 import pipe from "lodash/fp/pipe";
-import sumBy from "lodash/fp/sumBy";
 import reduce from "lodash/fp/reduce";
+import sumBy from "lodash/fp/sumBy";
 import toInteger from "lodash/fp/toInteger";
 import values from "lodash/fp/values";
+import PropTypes from "prop-types";
+import React, { useEffect } from "react";
+import { Bar } from "react-chartjs-2";
 
 import {
   COLORS,
@@ -34,14 +33,14 @@ import {
   COLORS_STACKED_TWO_VALUES,
 } from "../../assets/scripts/constants/colors";
 import { configureDownloadButtons } from "../utils/configureDownloadButtons";
+import { METRIC_TYPES } from "../utils/constants";
 import {
-  filterDatasetBySupervisionType,
   filterDatasetByDistrict,
   filterDatasetByMetricPeriodMonths,
+  filterDatasetBySupervisionType,
 } from "../utils/dataFilters";
-import { tooltipForCountChart, tooltipForRateChart } from "../utils/tooltips";
 import { metricTypePropType } from "../utils/propTypes";
-import { METRIC_TYPES } from "../utils/constants";
+import { tooltipForCountChart, tooltipForRateChart } from "../utils/tooltips";
 
 const chartId = "ftrReferralsByLsir";
 const chartLabels = ["No Score", "0-23", "24-29", "30-38", "39+"];

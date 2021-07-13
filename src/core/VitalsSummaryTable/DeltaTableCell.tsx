@@ -14,8 +14,9 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-import React from "react";
 import PropTypes from "prop-types";
+import React from "react";
+
 import PercentDelta from "../controls/PercentDelta";
 
 const DeltaTableCell: React.FC<{ value: number }> = ({ value }) => {

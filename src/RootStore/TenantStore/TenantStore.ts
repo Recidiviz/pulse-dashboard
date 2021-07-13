@@ -15,13 +15,14 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 import { makeAutoObservable, when } from "mobx";
-import type RootStore from "..";
-import { LANTERN_TENANTS } from "./lanternTenants";
-import getDistrictKeyMap, { DistrictKeyMap } from "./districtKeyMappings";
-import methodology from "./methodology";
-import { TenantId, LanternMethodology, LanternTenants } from "../types";
+
 import tenants from "../../tenants";
+import type RootStore from "..";
+import { LanternMethodology, LanternTenants, TenantId } from "../types";
 import UserStore from "../UserStore";
+import getDistrictKeyMap, { DistrictKeyMap } from "./districtKeyMappings";
+import { LANTERN_TENANTS } from "./lanternTenants";
+import methodology from "./methodology";
 
 export const CURRENT_TENANT_IN_SESSION = "adminUserCurrentTenantInSession";
 

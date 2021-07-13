@@ -15,20 +15,20 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import pipe from "lodash/fp/pipe";
+import filter from "lodash/fp/filter";
 import groupBy from "lodash/fp/groupBy";
-import values from "lodash/fp/values";
 import map from "lodash/fp/map";
+import orderBy from "lodash/fp/orderBy";
+import pipe from "lodash/fp/pipe";
 import sumBy from "lodash/fp/sumBy";
 import toInteger from "lodash/fp/toInteger";
-import orderBy from "lodash/fp/orderBy";
-import filter from "lodash/fp/filter";
+import values from "lodash/fp/values";
 
-import { calculateRate } from "../utils/rate";
-import { translate } from "../../utils/i18nSettings";
-import { sumCounts } from "../utils/sumCounts";
-import { formatOfficerLabel } from "../../utils/formatStrings";
 import { COLORS } from "../../assets/scripts/constants/colors";
+import { formatOfficerLabel } from "../../utils/formatStrings";
+import { translate } from "../../utils/i18nSettings";
+import { calculateRate } from "../utils/rate";
+import { sumCounts } from "../utils/sumCounts";
 
 const generatePercentChartData = (filteredData, mode) => {
   const fieldName =

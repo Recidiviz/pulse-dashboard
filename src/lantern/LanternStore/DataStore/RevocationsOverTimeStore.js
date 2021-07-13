@@ -17,8 +17,8 @@
 
 import { matchesAllFilters } from "shared-filters";
 
-import BaseDataStore from "./BaseDataStore";
 import { METRIC_PERIOD_MONTHS } from "../../utils/constants";
+import BaseDataStore from "./BaseDataStore";
 
 export default class RevocationsOverTimeStore extends BaseDataStore {
   constructor({ rootStore }) {

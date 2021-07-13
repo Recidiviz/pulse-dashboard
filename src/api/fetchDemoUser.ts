@@ -14,8 +14,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-import qs from "qs";
 import { User } from "@auth0/auth0-spa-js";
+import qs from "qs";
 
 export function isDemoMode(): boolean {
   return process.env.REACT_APP_IS_DEMO === "true";

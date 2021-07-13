@@ -14,9 +14,9 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-import PageProjectionsStore from "../PageProjectionsStore";
 import RootStore from "../../../RootStore";
 import CoreStore from "..";
+import PageProjectionsStore from "../PageProjectionsStore";
 
 jest.mock("../../models/ProjectionsMetrics", () => {
   return jest.fn().mockImplementation(() => ({

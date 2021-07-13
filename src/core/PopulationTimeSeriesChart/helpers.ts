@@ -15,8 +15,8 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import { PopulationProjectionTimeSeriesRecord } from "../models/types";
 import { formatDate } from "../../utils/formatStrings";
+import { PopulationProjectionTimeSeriesRecord } from "../models/types";
 
 export type MonthOptions = 1 | 6 | 12 | 24 | 60;
 

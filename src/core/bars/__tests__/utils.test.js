@@ -15,7 +15,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import { sum, groupByMonth, isValidOffice, isValidOfficer } from "../utils";
+import { groupByMonth, isValidOffice, isValidOfficer, sum } from "../utils";
 
 describe("Utils for bar chars", () => {
   it("#sum", () => {

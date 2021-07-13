@@ -15,10 +15,10 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 import { makeAutoObservable } from "mobx";
-import type CoreStore from ".";
 
-import VitalsMetrics from "../models/VitalsMetrics";
 import ProjectionsMetrics from "../models/ProjectionsMetrics";
+import VitalsMetrics from "../models/VitalsMetrics";
+import type CoreStore from ".";
 
 export default class MetricsStore {
   protected readonly rootStore;

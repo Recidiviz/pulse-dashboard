@@ -15,11 +15,11 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
+import "./ImportantNotesBar.css";
+
+import PropTypes from "prop-types";
 import React, { useCallback, useState } from "react";
 import { Collapse } from "react-bootstrap";
-import PropTypes from "prop-types";
-
-import "./ImportantNotesBar.css";
 
 const ImportantNotesBar = ({ importantNotes }) => {
   const [isOpened, setIsOpened] = useState(false);

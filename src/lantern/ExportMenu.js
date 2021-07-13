@@ -15,14 +15,14 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
+import { observer } from "mobx-react-lite";
+import PropTypes from "prop-types";
 import React, { useCallback, useState } from "react";
 import { Dropdown, Modal } from "react-bootstrap";
-import PropTypes from "prop-types";
-import { observer } from "mobx-react-lite";
 
 import {
-  downloadChartAsImage,
   downloadChartAsData,
+  downloadChartAsImage,
   downloadHtmlElementAsImage,
 } from "../utils/downloads/downloadData";
 import { useLanternStore } from "./LanternStoreProvider";

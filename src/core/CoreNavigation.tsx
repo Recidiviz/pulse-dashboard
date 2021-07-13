@@ -15,19 +15,20 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React from "react";
+import "./CoreNavigation.scss";
+
 import { observer } from "mobx-react-lite";
-import { useLocation, Link } from "react-router-dom";
+import React from "react";
+import { Link, useLocation } from "react-router-dom";
+
+import recidivizLogo from "../assets/static/images/Logo.svg";
 import { useRootStore } from "../components/StoreProvider";
-import { useCoreStore } from "./CoreStoreProvider";
-import CoreSectionSelector from "./CoreSectionSelector";
-import CorePageSelector from "./CorePageSelector";
 import TopBarUserMenuForAuthenticatedUser from "../components/TopBar/TopBarUserMenuForAuthenticatedUser";
 import flags from "../flags";
 import tenants from "../tenants";
-
-import recidivizLogo from "../assets/static/images/Logo.svg";
-import "./CoreNavigation.scss";
+import CorePageSelector from "./CorePageSelector";
+import CoreSectionSelector from "./CoreSectionSelector";
+import { useCoreStore } from "./CoreStoreProvider";
 
 const CoreNavigation: React.FC = () => {
   const { pathname } = useLocation();

@@ -14,16 +14,16 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-import { CORE_VIEWS } from "../views";
-import { METRIC_TYPES, FILTER_TYPES } from "./constants";
 import { US_ID, US_ND } from "../../RootStore/TenantStore/coreTenants";
+import { Gender } from "../models/types";
 import {
   FilterOption,
   PopulationFilters,
-  SetPopulationFilters,
   PopulationFilterValues,
+  SetPopulationFilters,
 } from "../types/filters";
-import { Gender } from "../models/types";
+import { CORE_VIEWS } from "../views";
+import { FILTER_TYPES, METRIC_TYPES } from "./constants";
 
 export const metricTypeOptions = [
   { label: "Counts", value: METRIC_TYPES.COUNTS },

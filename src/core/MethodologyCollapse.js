@@ -15,9 +15,9 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
+import PropTypes from "prop-types";
 import React, { useCallback, useState } from "react";
 import { Collapse } from "react-bootstrap";
-import PropTypes from "prop-types";
 
 import { toTitleCase } from "../utils/formatStrings";
 

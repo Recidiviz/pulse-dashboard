@@ -15,17 +15,17 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React from "react";
 import map from "lodash/fp/map";
-import { observer } from "mobx-react-lite";
 import { get } from "mobx";
+import { observer } from "mobx-react-lite";
+import React from "react";
 
-import FilterField from "./FilterField";
 import MultiSelect from "../../controls/MultiSelect";
 import { flatOptions } from "../../controls/utils";
+import { translate } from "../../utils/i18nSettings";
 import { useLanternStore } from "../LanternStoreProvider";
 import { ADMISSION_TYPE } from "../utils/constants";
-import { translate } from "../../utils/i18nSettings";
+import FilterField from "./FilterField";
 
 const AdmissionTypeFilter = () => {
   const { filtersStore } = useLanternStore();

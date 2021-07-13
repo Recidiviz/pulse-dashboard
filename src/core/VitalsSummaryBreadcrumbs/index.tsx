@@ -15,19 +15,21 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React from "react";
+import "./VitalsSummaryBreadcrumbs.scss";
+
 import { observer } from "mobx-react-lite";
+import React from "react";
 import { Link } from "react-router-dom";
-import { ENTITY_TYPES } from "../models/types";
-import {
-  DEFAULT_ENTITY_ID,
-  DEFAULT_ENTITY_TYPE,
-  DEFAULT_ENTITY_NAME,
-} from "../PageVitals/types";
+
 import { toTitleCase } from "../../utils/formatStrings";
 import { convertToSlug } from "../../utils/navigation";
 import { useCoreStore } from "../CoreStoreProvider";
-import "./VitalsSummaryBreadcrumbs.scss";
+import { ENTITY_TYPES } from "../models/types";
+import {
+  DEFAULT_ENTITY_ID,
+  DEFAULT_ENTITY_NAME,
+  DEFAULT_ENTITY_TYPE,
+} from "../PageVitals/types";
 
 export const DefaultEntity = {
   entityName: DEFAULT_ENTITY_ID,

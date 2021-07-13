@@ -14,13 +14,15 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-import React from "react";
-import { observer } from "mobx-react-lite";
-import MetricsCard from "../MetricsCard/MetricsCard";
-import SummaryMetrics from "./SummaryMetrics";
-import type { ProjectedSummaryRecord } from "../models/types";
-import { useFiltersStore } from "../CoreStoreProvider";
 import "./PopulationSummaryMetrics.scss";
+
+import { observer } from "mobx-react-lite";
+import React from "react";
+
+import { useFiltersStore } from "../CoreStoreProvider";
+import MetricsCard from "../MetricsCard/MetricsCard";
+import type { ProjectedSummaryRecord } from "../models/types";
+import SummaryMetrics from "./SummaryMetrics";
 
 const ProjectedSummaryMetrics: React.FC<{
   data?: ProjectedSummaryRecord;

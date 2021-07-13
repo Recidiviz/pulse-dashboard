@@ -15,22 +15,20 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React, { useEffect } from "react";
-import PropTypes from "prop-types";
-import { Bar } from "react-chartjs-2";
-
 import groupBy from "lodash/fp/groupBy";
 import map from "lodash/fp/map";
 import mapValues from "lodash/fp/mapValues";
 import meanBy from "lodash/fp/meanBy";
 import pipe from "lodash/fp/pipe";
 import sumBy from "lodash/fp/sumBy";
+import PropTypes from "prop-types";
+import React, { useEffect } from "react";
+import { Bar } from "react-chartjs-2";
 
-import { COLORS, COLOR_ROTATION } from "../../assets/scripts/constants/colors";
+import { COLOR_ROTATION, COLORS } from "../../assets/scripts/constants/colors";
 import { configureDownloadButtons } from "../utils/configureDownloadButtons";
-
-import { filterDatasetByDistrict } from "../utils/dataFilters";
 import { METRIC_TYPES } from "../utils/constants";
+import { filterDatasetByDistrict } from "../utils/dataFilters";
 import { metricTypePropType } from "../utils/propTypes";
 
 const chartId = "reincarcerationRateByStayLength";

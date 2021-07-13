@@ -75,4 +75,4 @@ function awaitingResults(loading, user, awaitingApi) {
   return loading || !user || awaitingApi;
 }
 
-export { callMetricsApi, awaitingResults };
+export { awaitingResults, callMetricsApi };

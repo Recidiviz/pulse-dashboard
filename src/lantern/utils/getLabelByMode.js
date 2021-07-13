@@ -15,8 +15,8 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import { translate } from "../../utils/i18nSettings";
 import { genderValueToLabel } from "../../utils/formatStrings";
+import { translate } from "../../utils/i18nSettings";
 
 const getLabelByMode = (mode) => {
   switch (mode) {

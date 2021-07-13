@@ -15,14 +15,15 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import { makeObservable, reaction, observable, action, computed } from "mobx";
+import { action, computed, makeObservable, observable, reaction } from "mobx";
 import { matchesAllFilters } from "shared-filters";
-import BaseDataStore from "./BaseDataStore";
+
 import {
   DISTRICT,
   LEVEL_1_SUPERVISION_LOCATION,
   LEVEL_2_SUPERVISION_LOCATION,
 } from "../../utils/constants";
+import BaseDataStore from "./BaseDataStore";
 
 export const CHARTS = {
   District: {

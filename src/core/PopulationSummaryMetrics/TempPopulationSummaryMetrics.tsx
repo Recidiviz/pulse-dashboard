@@ -16,21 +16,22 @@
 // =============================================================================
 // TODO(recidiviz-data/issues/6185): Remove this component when
 // admissions/releases are validated
-import React from "react";
-import styled from "styled-components/macro";
-import numeral from "numeral";
+import "./LoadingMetrics.scss";
+import "./PopulationSummaryMetrics.scss";
+
 import { Card, CardSection } from "@recidiviz/case-triage-components";
 import { observer } from "mobx-react-lite";
+import numeral from "numeral";
+import React from "react";
 import { useLocation } from "react-router-dom";
-import PercentDelta from "../controls/PercentDelta";
-import { getViewFromPathname } from "../views";
+import styled from "styled-components/macro";
+
 import { formatLargeNumber } from "../../utils";
+import PercentDelta from "../controls/PercentDelta";
+import * as styles from "../CoreConstants.scss";
 import { useCoreStore } from "../CoreStoreProvider";
 import type { PopulationProjectionTimeSeriesRecord } from "../models/types";
-import "./LoadingMetrics.scss";
-
-import "./PopulationSummaryMetrics.scss";
-import * as styles from "../CoreConstants.scss";
+import { getViewFromPathname } from "../views";
 
 type PropTypes = {
   isLoading?: boolean;

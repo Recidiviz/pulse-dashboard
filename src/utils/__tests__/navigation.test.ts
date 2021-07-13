@@ -14,13 +14,13 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
+import tenants from "../../tenants";
 import {
+  convertSlugToId,
+  convertToSlug,
   getPathsFromNavigation,
   getPathWithoutParams,
-  convertToSlug,
-  convertSlugToId,
 } from "../navigation";
-import tenants from "../../tenants";
 
 jest.mock("../../flags", () => ({
   enableVitalsDashboard: true,

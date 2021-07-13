@@ -15,21 +15,22 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React from "react";
+import "./RevocationCharts.scss";
+
 import cn from "classnames";
-import PropTypes from "prop-types";
 import { observer } from "mobx-react-lite";
+import PropTypes from "prop-types";
+import React from "react";
 
 import { translate } from "../../utils/i18nSettings";
-import RevocationsByRiskLevel from "../RevocationsByRiskLevel";
-import RevocationsByOfficer from "../RevocationsByOfficer";
-import RevocationsByViolation from "../RevocationsByViolation";
-import RevocationsByGender from "../RevocationsByGender";
-import RevocationsByRace from "../RevocationsByRace";
-import RevocationsByDistrict from "../RevocationsByDistrict";
-import { useDataStore } from "../LanternStoreProvider";
 import { useContainerHeight } from "../hooks/useContainerHeight";
-import "./RevocationCharts.scss";
+import { useDataStore } from "../LanternStoreProvider";
+import RevocationsByDistrict from "../RevocationsByDistrict";
+import RevocationsByGender from "../RevocationsByGender";
+import RevocationsByOfficer from "../RevocationsByOfficer";
+import RevocationsByRace from "../RevocationsByRace";
+import RevocationsByRiskLevel from "../RevocationsByRiskLevel";
+import RevocationsByViolation from "../RevocationsByViolation";
 
 const RevocationCharts = ({ timeDescription }) => {
   const dataStore = useDataStore();

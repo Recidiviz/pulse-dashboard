@@ -14,11 +14,11 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
+import RootStore from "..";
+import { US_MO, US_PA } from "../TenantStore/lanternTenants";
 import TenantStore, {
   CURRENT_TENANT_IN_SESSION,
 } from "../TenantStore/TenantStore";
-import { US_MO, US_PA } from "../TenantStore/lanternTenants";
-import RootStore from "..";
 import UserStore from "../UserStore";
 
 jest.mock("@auth0/auth0-spa-js");

@@ -15,23 +15,24 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 import { makeAutoObservable } from "mobx";
-import type CoreStore from ".";
+
+import { downloadChartAsData } from "../../utils/downloads/downloadData";
+import {
+  formatDate,
+  toHumanReadable,
+  toTitleCase,
+} from "../../utils/formatStrings";
 import { PopulationProjectionTimeSeriesRecord } from "../models/types";
-import { DownloadableDataset, DownloadableData } from "../PageVitals/types";
+import { DownloadableData, DownloadableDataset } from "../PageVitals/types";
 import {
   formatMonthAndYear,
   getRecordDate,
 } from "../PopulationTimeSeriesChart/helpers";
-import {
-  toTitleCase,
-  formatDate,
-  toHumanReadable,
-} from "../../utils/formatStrings";
-import { getCompartmentFromView } from "../views";
-import { downloadChartAsData } from "../../utils/downloads/downloadData";
-import filterOptions from "../utils/filterOptions";
 import { PopulationFilters } from "../types/filters";
 import { FILTER_TYPES } from "../utils/constants";
+import filterOptions from "../utils/filterOptions";
+import { getCompartmentFromView } from "../views";
+import type CoreStore from ".";
 
 export default class PageProjectionsStore {
   protected readonly rootStore;

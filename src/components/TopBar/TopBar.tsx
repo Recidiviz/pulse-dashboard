@@ -15,8 +15,8 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React from "react";
 import cn from "classnames";
+import React from "react";
 
 import { useRootStore } from "../StoreProvider";
 

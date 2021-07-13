@@ -14,9 +14,9 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-import React from "react";
-
 import "./DetailsGroup.scss";
+
+import React from "react";
 
 const DetailsGroup: React.FC = ({ children }) => {
   return <div className="DetailsGroup">{children}</div>;

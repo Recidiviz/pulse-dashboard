@@ -16,6 +16,7 @@
 // =============================================================================
 
 import getOr from "lodash/fp/getOr";
+
 import { calculateRate } from "./rate";
 
 const getCounts = (

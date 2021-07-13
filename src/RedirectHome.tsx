@@ -14,13 +14,13 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
+import { observer } from "mobx-react-lite";
 import React from "react";
 import { Redirect } from "react-router-dom";
-import { observer } from "mobx-react-lite";
-import { useRootStore } from "./components/StoreProvider";
-import { getPathsFromNavigation } from "./utils/navigation";
 
+import { useRootStore } from "./components/StoreProvider";
 import tenants from "./tenants";
+import { getPathsFromNavigation } from "./utils/navigation";
 
 export const RedirectHome: React.FC = ({ ...rest }) => {
   const rootStore = useRootStore();

@@ -16,14 +16,14 @@
 // =============================================================================
 import * as Sentry from "@sentry/react";
 import * as sharedFilters from "shared-filters";
+
+import { callMetricsApi } from "../../../api/metrics/metricsClient";
+import LanternStore from "..";
 import BaseDataStore, {
   DEFAULT_IGNORED_DIMENSIONS,
 } from "../DataStore/BaseDataStore";
-
-import UserRestrictionsStore from "../UserRestrictionsStore";
-import LanternStore from "..";
-import { callMetricsApi } from "../../../api/metrics/metricsClient";
 import DistrictsStore from "../DistrictsStore";
+import UserRestrictionsStore from "../UserRestrictionsStore";
 
 let lanternStore;
 let baseStore;

@@ -14,13 +14,14 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-import { makeAutoObservable } from "mobx";
 import * as Sentry from "@sentry/react";
+import { makeAutoObservable } from "mobx";
+
 import { ERROR_MESSAGES } from "../../constants/errorMessages";
-import type LanternStore from ".";
 import { US_MO } from "../../RootStore/TenantStore/lanternTenants";
-import { CHARTS } from "./DataStore/RevocationsChartStore";
 import { safeToInt } from "../../utils";
+import type LanternStore from ".";
+import { CHARTS } from "./DataStore/RevocationsChartStore";
 
 const typeSafeIncludes = (arrayA: string[], arrayB: string[]): string[] => {
   return arrayA.filter((a: string) => {

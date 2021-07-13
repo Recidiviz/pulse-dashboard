@@ -15,8 +15,8 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import { parseAndFormatViolationRecord } from "../violationRecord";
 import { translate } from "../../../../utils/i18nSettings";
+import { parseAndFormatViolationRecord } from "../violationRecord";
 
 jest.mock("../../../../utils/i18nSettings");
 describe("parseAndFormatViolationRecord function", () => {

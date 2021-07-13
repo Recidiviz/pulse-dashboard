@@ -15,21 +15,21 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import pipe from "lodash/fp/pipe";
 import filter from "lodash/fp/filter";
 import groupBy from "lodash/fp/groupBy";
-import values from "lodash/fp/values";
-import sortBy from "lodash/fp/sortBy";
 import map from "lodash/fp/map";
-import toInteger from "lodash/fp/toInteger";
+import pipe from "lodash/fp/pipe";
+import sortBy from "lodash/fp/sortBy";
 import sumBy from "lodash/fp/sumBy";
+import toInteger from "lodash/fp/toInteger";
+import values from "lodash/fp/values";
 
-import { calculateRate } from "../utils/rate";
-import { translate } from "../../utils/i18nSettings";
-import { humanReadableTitleCase } from "../../utils/formatStrings";
-import { applyStatisticallySignificantShadingToDataset } from "../utils/significantStatistics";
-import getLabelByMode from "../utils/getLabelByMode";
 import { COLORS } from "../../assets/scripts/constants/colors";
+import { humanReadableTitleCase } from "../../utils/formatStrings";
+import { translate } from "../../utils/i18nSettings";
+import getLabelByMode from "../utils/getLabelByMode";
+import { calculateRate } from "../utils/rate";
+import { applyStatisticallySignificantShadingToDataset } from "../utils/significantStatistics";
 
 const createGenerateChartData = (filteredData) => (mode) => {
   const fieldName =

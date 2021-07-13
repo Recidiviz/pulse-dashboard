@@ -15,17 +15,17 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React from "react";
-import { observer } from "mobx-react-lite";
 import HTMLReactParser from "html-react-parser";
-import { Container } from "reactstrap";
+import { observer } from "mobx-react-lite";
+import React from "react";
 import ScrollableAnchor from "react-scrollable-anchor";
+import { Container } from "reactstrap";
 
+import { useRootStore } from "../../components/StoreProvider";
+import { convertToSlug } from "../../utils/navigation";
 import content from "../content";
 import { MethodologyContent } from "../models/types";
 import PageTemplate from "../PageTemplate";
-import { useRootStore } from "../../components/StoreProvider";
-import { convertToSlug } from "../../utils/navigation";
 
 const VitalsMethodology: React.FC = () => {
   const { currentTenantId } = useRootStore();

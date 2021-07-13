@@ -14,9 +14,10 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
+import "./FilterBar.scss";
+
 import React from "react";
 import Sticky from "react-sticky-fill";
-import "./FilterBar.scss";
 
 const FILTER_BAR_STYLE = {
   zIndex: 700,

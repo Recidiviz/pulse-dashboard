@@ -17,8 +17,8 @@
 import {
   getCacheKey,
   getCacheKeyForSubsetCombination,
-  getUserRestrictionCacheKeyValues,
   getSubsetCombinations,
+  getUserRestrictionCacheKeyValues,
 } from "../cacheKeys";
 
 describe("cacheKeys utils", () => {

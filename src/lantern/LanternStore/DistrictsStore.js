@@ -14,9 +14,9 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-import { flow, autorun, makeAutoObservable, computed } from "mobx";
-import uniqBy from "lodash/uniqBy";
 import * as Sentry from "@sentry/react";
+import uniqBy from "lodash/uniqBy";
+import { autorun, computed, flow, makeAutoObservable } from "mobx";
 
 import { callMetricsApi, parseResponseByFileFormat } from "../../api/metrics";
 

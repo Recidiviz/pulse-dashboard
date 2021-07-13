@@ -15,11 +15,13 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React from "react";
-import { observer } from "mobx-react-lite";
-import cn from "classnames";
-import { useRootStore } from "./StoreProvider/StoreProvider";
 import "./IE11Banner.scss";
+
+import cn from "classnames";
+import { observer } from "mobx-react-lite";
+import React from "react";
+
+import { useRootStore } from "./StoreProvider/StoreProvider";
 
 interface Props {
   lantern?: boolean;

@@ -15,8 +15,8 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 import type FiltersStore from "../CoreStore/FiltersStore";
-import { FILTER_TYPES } from "../utils/constants";
 import { Gender } from "../models/types";
+import { FILTER_TYPES } from "../utils/constants";
 
 export type PopulationFilterValues = {
   timePeriod: string;

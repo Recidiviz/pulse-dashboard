@@ -14,12 +14,13 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-import numeral from "numeral";
+import { format, parseISO } from "date-fns";
 import lowerCase from "lodash/fp/lowerCase";
 import pipe from "lodash/fp/pipe";
 import startCase from "lodash/fp/startCase";
-import { format, parseISO } from "date-fns";
 import moment from "moment";
+import numeral from "numeral";
+
 import { translate } from "./i18nSettings";
 
 function getStatePopulations(): string[] {
@@ -178,29 +179,29 @@ function formatDate(date: Date, pattern = "M/d/yy"): string {
 }
 
 export {
-  getPeriodLabelFromMetricPeriodMonthsFilter,
-  getTrailingLabelFromMetricPeriodMonthsFilter,
-  matrixViolationTypeToLabel,
+  formatDate,
+  formatDistrictLabel,
+  formatISODateString,
+  formatLargeNumber,
+  formatOfficerLabel,
+  formatPercent,
   genderValueToHumanReadable,
+  genderValueToLabel,
+  getPeriodLabelFromMetricPeriodMonthsFilter,
+  getStatePopulations,
+  getStatePopulationsLabels,
+  getTrailingLabelFromMetricPeriodMonthsFilter,
+  humanReadableTitleCase,
+  matrixViolationTypeToLabel,
+  numberFromOfficerId,
+  pluralize,
   raceValueToHumanReadable,
+  raceValueToLabel,
+  safeToInt,
   toHtmlFriendly,
   toHumanReadable,
-  safeToInt,
   toInt,
   toNumber,
   toTitleCase,
-  humanReadableTitleCase,
-  numberFromOfficerId,
   violationCountLabel,
-  pluralize,
-  raceValueToLabel,
-  genderValueToLabel,
-  getStatePopulations,
-  getStatePopulationsLabels,
-  formatOfficerLabel,
-  formatDistrictLabel,
-  formatLargeNumber,
-  formatPercent,
-  formatISODateString,
-  formatDate,
 };

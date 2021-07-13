@@ -15,10 +15,11 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React, { useCallback } from "react";
 import { observer } from "mobx-react-lite";
+import React, { useCallback } from "react";
 import { Dropdown } from "react-bootstrap";
 import { Link } from "react-router-dom";
+
 import { useUserStore } from "../StoreProvider";
 
 type PropTypes = {

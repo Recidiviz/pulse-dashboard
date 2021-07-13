@@ -15,11 +15,11 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React from "react";
-import PropTypes from "prop-types";
-import cn from "classnames";
-
 import "./Chip.scss";
+
+import cn from "classnames";
+import PropTypes from "prop-types";
+import React from "react";
 
 const Chip = ({ label, onClick, onDelete, isSelected, isSmall }) => {
   return (
