@@ -14,13 +14,14 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-import React from "react";
 import { render } from "@testing-library/react";
-import AuthWall from "../AuthWall";
-import { useRootStore } from "../../components/StoreProvider";
-import Loading from "../../components/Loading";
+import React from "react";
+
 import mockWithTestId from "../../../__helpers__/mockWithTestId";
+import Loading from "../../components/Loading";
+import { useRootStore } from "../../components/StoreProvider";
 import { ERROR_MESSAGES } from "../../constants";
+import AuthWall from "../AuthWall";
 
 jest.mock("../../components/StoreProvider");
 jest.mock("../../components/Loading");

@@ -66,6 +66,7 @@ describe("App tests", () => {
   const LanternLayoutMock = LanternLayout.type;
   const CoreLayoutMock = CoreLayout.type;
   const VitalsMethodologyMock = VitalsMethodology.type;
+  let userStore = {};
 
   LanternLayoutMock.mockImplementation(({ children }) => children);
   CoreLayoutMock.mockImplementation(({ children }) => children);
@@ -85,6 +86,10 @@ describe("App tests", () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
+    userStore = {
+      isAuthorized: true,
+      userAppMetadata: { can_access_leadership_dashboard: true },
+    };
   });
 
   afterAll(() => {
@@ -95,12 +100,9 @@ describe("App tests", () => {
     it("should render MO Layout with Revocations page", () => {
       window.history.pushState({}, "", "/community/revocations");
       const user = { [metadataField]: { state_code: US_MO } };
+
       useRootStore.mockReturnValue({
-        userStore: {
-          user,
-          isAuthorized: true,
-          userAppMetadata: { can_access_leadership_dashboard: true },
-        },
+        userStore: { ...userStore, ...user },
         currentTenantId: US_MO,
       });
 
@@ -115,11 +117,7 @@ describe("App tests", () => {
       window.history.pushState({}, "", "/community/revocations");
       const user = { [metadataField]: { state_code: US_PA } };
       useRootStore.mockReturnValue({
-        userStore: {
-          user,
-          isAuthorized: true,
-          userAppMetadata: { can_access_leadership_dashboard: true },
-        },
+        userStore: { ...userStore, ...user },
         currentTenantId: US_PA,
       });
 
@@ -137,11 +135,7 @@ describe("App tests", () => {
       const user = { [metadataField]: { state_code: US_ND } };
 
       useRootStore.mockReturnValue({
-        userStore: {
-          user,
-          isAuthorized: true,
-          userAppMetadata: { can_access_leadership_dashboard: true },
-        },
+        userStore: { ...userStore, ...user },
         currentTenantId: US_ND,
       });
 
@@ -157,11 +151,7 @@ describe("App tests", () => {
     it("should be rendered given an incorrect path", () => {
       window.history.pushState({}, "", "/some/page");
       useRootStore.mockReturnValue({
-        userStore: {
-          user: {},
-          isAuthorized: true,
-          userAppMetadata: { can_access_leadership_dashboard: true },
-        },
+        userStore: { ...userStore, user: {} },
         currentTenantId: US_PA,
       });
 
@@ -174,11 +164,7 @@ describe("App tests", () => {
     it("should be rendered when the currentTenantId is not authorized for a layout", () => {
       window.history.pushState({}, "", "/some/page");
       useRootStore.mockReturnValue({
-        userStore: {
-          user: {},
-          isAuthorized: true,
-          userAppMetadata: { can_access_leadership_dashboard: true },
-        },
+        userStore: { ...userStore, user: {} },
         currentTenantId: "US_XX",
       });
 
@@ -195,11 +181,7 @@ describe("App tests", () => {
       const user = { [metadataField]: { state_code: US_ID } };
 
       useRootStore.mockReturnValue({
-        userStore: {
-          user,
-          isAuthorized: true,
-          userAppMetadata: { can_access_leadership_dashboard: true },
-        },
+        userStore: { ...userStore, ...user },
         currentTenantId: US_ID,
       });
 
@@ -215,11 +197,7 @@ describe("App tests", () => {
       const user = { [metadataField]: { state_code: US_ND } };
 
       useRootStore.mockReturnValue({
-        userStore: {
-          user,
-          isAuthorized: true,
-          userAppMetadata: { can_access_leadership_dashboard: true },
-        },
+        userStore: { ...userStore, ...user },
         currentTenantId: US_ND,
       });
 
