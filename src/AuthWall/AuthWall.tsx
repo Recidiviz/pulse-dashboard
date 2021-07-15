@@ -50,7 +50,8 @@ const AuthWall: React.FC = ({ children }) => {
   if (userStore.isAuthorized) {
     if (!userStore.userAppMetadata.can_access_leadership_dashboard) {
       if (userStore.userAppMetadata.can_access_case_triage) {
-        window.location.href = process.env.REACT_APP_CASE_TRIAGE_URL || "";
+        window.location.href =
+          process.env.REACT_APP_CASE_TRIAGE_URL || "about:blank";
         return <Loading />;
       }
 
