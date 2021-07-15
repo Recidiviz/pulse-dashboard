@@ -17,13 +17,13 @@
 
 import { autorun, computed, makeObservable, ObservableMap } from "mobx";
 
-import type UserStore from "../../RootStore/UserStore";
 import type TenantStore from "../../RootStore/TenantStore";
-import UserRestrictionsStore from "./UserRestrictionsStore";
-import FiltersStore from "./FiltersStore";
+import { TenantId } from "../../RootStore/types";
+import type UserStore from "../../RootStore/UserStore";
 import DataStore from "./DataStore/DataStore";
 import DistrictsStore from "./DistrictsStore";
-import { TenantId } from "../../RootStore/types";
+import FiltersStore from "./FiltersStore";
+import UserRestrictionsStore from "./UserRestrictionsStore";
 
 interface LanternStoreProps {
   userStore: UserStore;

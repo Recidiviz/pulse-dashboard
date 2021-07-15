@@ -15,17 +15,18 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 import {
-  makeAutoObservable,
-  computed,
-  observable,
   action,
-  set,
+  computed,
   get,
+  makeAutoObservable,
+  observable,
+  set,
 } from "mobx";
-import type CoreStore from ".";
-import { defaultPopulationFilterValues } from "../utils/filterOptions";
+
 import { PopulationFilters, PopulationFilterValues } from "../types/filters";
+import { defaultPopulationFilterValues } from "../utils/filterOptions";
 import { formatTimePeriodLabel } from "../utils/timePeriod";
+import type CoreStore from ".";
 
 export default class FiltersStore {
   rootStore;

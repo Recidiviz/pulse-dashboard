@@ -14,9 +14,10 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
+import { Card, CardSection } from "@recidiviz/case-triage-components";
 import React from "react";
 import styled from "styled-components/macro";
-import { Card, CardSection } from "@recidiviz/case-triage-components";
+
 import * as fontStyles from "../CoreConstants.scss";
 
 const MetricsCardComponent = styled(Card)`

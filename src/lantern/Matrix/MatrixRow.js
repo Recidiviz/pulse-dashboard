@@ -15,14 +15,14 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React from "react";
-import PropTypes from "prop-types";
 import cx from "classnames";
 import { get } from "mobx";
+import PropTypes from "prop-types";
+import React from "react";
 
 import { matrixViolationTypeToLabel } from "../../utils/formatStrings";
 import { useLanternStore } from "../LanternStoreProvider";
-import { VIOLATION_TYPE, REPORTED_VIOLATIONS } from "../utils/constants";
+import { REPORTED_VIOLATIONS, VIOLATION_TYPE } from "../utils/constants";
 
 const MatrixRow = ({ children, violationType, sum, onClick }) => {
   const { filters } = useLanternStore();

@@ -2134,10 +2134,10 @@
     styled-components "^5.2.1"
     web-vitals "^1.0.1"
 
-"@recidiviz/eslint-config@^1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@recidiviz/eslint-config/-/eslint-config-1.0.0.tgz#cdfcb43cb4c85ebf45a2cb8150ce68154781f2ed"
-  integrity sha512-c4KO1+LKwg47rsHlvxR6KuGTIcXf0w6KvOiXA+eVVpX2qKQf2Vxmzg1n37iUe59oYobmf9+29yGeMPMdF17/8g==
+"@recidiviz/eslint-config@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@recidiviz/eslint-config/-/eslint-config-2.0.0.tgz#3b911264deb8ec2865dbaf8df4da8a8496c61583"
+  integrity sha512-r23ijnTDO43yODsEQYuuA25hNNnOJj/T6beMr7xsdOgw+Kd6iU+IKLr+lSpgIeBMUqK+YdyQRuXw4fdiQPWqlg==
   dependencies:
     eslint-config-airbnb "^18.2.0"
     eslint-config-prettier "^8.1.0"

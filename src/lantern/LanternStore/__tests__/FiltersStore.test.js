@@ -15,12 +15,13 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 import { runInAction } from "mobx";
+
 import RootStore from "../../../RootStore";
-import LanternStore from "..";
 import getDistrictKeyMap, {
   districtKeyMappings,
 } from "../../../RootStore/TenantStore/districtKeyMappings";
 import { LANTERN_TENANTS } from "../../../RootStore/TenantStore/lanternTenants";
+import LanternStore from "..";
 import { allOption } from "../FiltersStore";
 
 jest.mock("../../../RootStore/TenantStore/districtKeyMappings");

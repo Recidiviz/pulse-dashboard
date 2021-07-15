@@ -15,34 +15,33 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React, { useEffect } from "react";
-import PropTypes from "prop-types";
-import { Bar, HorizontalBar } from "react-chartjs-2";
-
 import map from "lodash/fp/map";
 import pipe from "lodash/fp/pipe";
 import range from "lodash/fp/range";
 import sortBy from "lodash/fp/sortBy";
 import sumBy from "lodash/fp/sumBy";
+import PropTypes from "prop-types";
+import React, { useEffect } from "react";
+import { Bar, HorizontalBar } from "react-chartjs-2";
 
 import {
   COLORS,
   COLORS_SEVEN_VALUES,
 } from "../../assets/scripts/constants/colors";
 import { configureDownloadButtons } from "../utils/configureDownloadButtons";
+import { METRIC_TYPES } from "../utils/constants";
 import {
-  filterDatasetBySupervisionType,
   filterDatasetByDistrict,
   filterDatasetByMetricPeriodMonths,
+  filterDatasetBySupervisionType,
 } from "../utils/dataFilters";
+import { metricTypePropType } from "../utils/propTypes";
 import {
-  stateCensusMapper,
-  groupByRaceAndMap,
   addMissedRaceCounts,
   countMapper,
+  groupByRaceAndMap,
+  stateCensusMapper,
 } from "../utils/races";
-import { metricTypePropType } from "../utils/propTypes";
-import { METRIC_TYPES } from "../utils/constants";
 
 const calculatePercents = (total) => ({ value }) => 100 * (value / total);
 

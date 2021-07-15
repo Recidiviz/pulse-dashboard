@@ -15,6 +15,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 import { scaleLinear } from "d3-scale";
+
 import { COLORS } from "../../assets/scripts/constants/colors";
 
 const BLUES = ["#F5F6F7", "#9FB1E3", COLORS["blue-standard-2"]];

@@ -88,4 +88,4 @@ const monthNamesWithYears = function monthNamesWithyears(
   return monthNames;
 };
 
-export { MONTH_NAMES, monthNamesWithYears, monthNamesFromNumbers };
+export { MONTH_NAMES, monthNamesFromNumbers, monthNamesWithYears };

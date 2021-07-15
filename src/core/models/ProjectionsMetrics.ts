@@ -15,6 +15,13 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 import { computed, makeObservable } from "mobx";
+
+import {
+  getRecordDate,
+  MonthOptions,
+} from "../PopulationTimeSeriesChart/helpers";
+import { getCompartmentFromView } from "../views";
+import Metric, { BaseMetricProps } from "./Metric";
 import {
   Gender,
   PopulationProjectionSummaryRecords,
@@ -22,12 +29,6 @@ import {
   RawMetricData,
   SimulationCompartment,
 } from "./types";
-import { getCompartmentFromView } from "../views";
-import Metric, { BaseMetricProps } from "./Metric";
-import {
-  MonthOptions,
-  getRecordDate,
-} from "../PopulationTimeSeriesChart/helpers";
 
 export function recordMatchesSimulationTag(
   simulationTag: string

@@ -14,14 +14,15 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-import React from "react";
 import { render } from "@testing-library/react";
-import LanternLayout from "../LanternLayout";
-import useIntercom from "../../hooks/useIntercom";
-import usePageLayout from "../hooks/usePageLayout";
-import TopBarUserMenuForAuthenticatedUser from "../../components/TopBar/TopBarUserMenuForAuthenticatedUser";
+import React from "react";
+
 import mockWithTestId from "../../../__helpers__/mockWithTestId";
 import StoreProvider from "../../components/StoreProvider";
+import TopBarUserMenuForAuthenticatedUser from "../../components/TopBar/TopBarUserMenuForAuthenticatedUser";
+import useIntercom from "../../hooks/useIntercom";
+import usePageLayout from "../hooks/usePageLayout";
+import LanternLayout from "../LanternLayout";
 
 jest.mock("mobx-react-lite", () => {
   return {

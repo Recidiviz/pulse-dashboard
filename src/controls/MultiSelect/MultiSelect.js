@@ -14,19 +14,18 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-import React, { useCallback, useMemo, useRef, useEffect } from "react";
-import PropTypes from "prop-types";
+import "./MultiSelect.scss";
+
 import cn from "classnames";
+import PropTypes from "prop-types";
+import React, { useCallback, useEffect, useMemo, useRef } from "react";
 import ReactSelect from "react-select";
 
-import GroupHeading from "./GroupHeading";
-import ValueContainer from "./ValueContainer";
-import Option from "./Option";
-
-import { getNewOptions } from "../utils";
 import { optionPropType } from "../propTypes";
-
-import "./MultiSelect.scss";
+import { getNewOptions } from "../utils";
+import GroupHeading from "./GroupHeading";
+import Option from "./Option";
+import ValueContainer from "./ValueContainer";
 
 const MultiSelect = ({
   summingOption,

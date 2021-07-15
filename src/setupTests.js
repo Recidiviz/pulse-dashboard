@@ -19,8 +19,9 @@ import "@testing-library/jest-dom/extend-expect";
 import "@testing-library/react-hooks/dont-cleanup-after-each";
 import "jest-canvas-mock";
 
-import { configure } from "enzyme";
 import Adapter from "@wojtekmaj/enzyme-adapter-react-17";
+import { configure } from "enzyme";
+
 import { initI18n } from "./utils/i18nSettings";
 
 initI18n();

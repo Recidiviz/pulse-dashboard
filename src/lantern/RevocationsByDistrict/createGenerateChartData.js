@@ -15,21 +15,21 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import pipe from "lodash/fp/pipe";
-import groupBy from "lodash/fp/groupBy";
-import values from "lodash/fp/values";
 import filter from "lodash/fp/filter";
+import groupBy from "lodash/fp/groupBy";
 import map from "lodash/fp/map";
+import orderBy from "lodash/fp/orderBy";
+import pipe from "lodash/fp/pipe";
 import sumBy from "lodash/fp/sumBy";
 import toInteger from "lodash/fp/toInteger";
-import orderBy from "lodash/fp/orderBy";
+import values from "lodash/fp/values";
 
-import { calculateRate } from "../utils/rate";
-import { translate } from "../../utils/i18nSettings";
-import { applyStatisticallySignificantShading } from "../utils/significantStatistics";
 import { COLORS } from "../../assets/scripts/constants/colors";
-import { sumCounts } from "../utils/sumCounts";
 import { formatDistrictLabel } from "../../utils/formatStrings";
+import { translate } from "../../utils/i18nSettings";
+import { calculateRate } from "../utils/rate";
+import { applyStatisticallySignificantShading } from "../utils/significantStatistics";
+import { sumCounts } from "../utils/sumCounts";
 
 const generatePercentChartData = (
   districtChartData,

@@ -14,19 +14,21 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-import React from "react";
+import "./PopulationSummaryMetrics.scss";
+
 import { observer } from "mobx-react-lite";
-import HistoricalSummaryMetrics from "./HistoricalSummaryMetrics";
-import ProjectedSummaryMetrics from "./ProjectedSummaryMetrics";
+import React from "react";
+
 import { useFiltersStore } from "../CoreStoreProvider";
+import { recordMatchesSimulationTag } from "../models/ProjectionsMetrics";
 import type {
-  PopulationProjectionSummaryRecords,
   HistoricalSummaryRecord,
+  PopulationProjectionSummaryRecords,
   ProjectedSummaryRecord,
 } from "../models/types";
-import { recordMatchesSimulationTag } from "../models/ProjectionsMetrics";
-import "./PopulationSummaryMetrics.scss";
 import { PopulationFilterValues } from "../types/filters";
+import HistoricalSummaryMetrics from "./HistoricalSummaryMetrics";
+import ProjectedSummaryMetrics from "./ProjectedSummaryMetrics";
 
 type PropTypes = {
   isLoading?: boolean;

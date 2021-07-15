@@ -102,4 +102,4 @@ function trendlineSlope(trendlineValues) {
   return (lastValue - firstValue) / trendlineValues.length;
 }
 
-export { generateTrendlineDataset, trendlineSlope, trendlineData };
+export { generateTrendlineDataset, trendlineData, trendlineSlope };

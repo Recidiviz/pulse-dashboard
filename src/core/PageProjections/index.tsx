@@ -14,18 +14,19 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-import React from "react";
 import { observer } from "mobx-react-lite";
+import React from "react";
 import { useLocation } from "react-router-dom";
+
+import { useCoreStore } from "../CoreStoreProvider";
 import PageTemplate from "../PageTemplate";
+import PopulationFilterBar from "../PopulationFilterBar";
 // TODO(recidiviz-data/issues/6185): Use PopulationSummaryMetrics when data is valid
 import PopulationSummaryMetrics from "../PopulationSummaryMetrics/TempPopulationSummaryMetrics";
 import PopulationTimeSeriesChart from "../PopulationTimeSeriesChart";
-import PopulationProjectionLastUpdated from "./PopulationProjectionLastUpdated";
-import PopulationFilterBar from "../PopulationFilterBar";
 import filterOptions from "../utils/filterOptions";
 import { getViewFromPathname } from "../views";
-import { useCoreStore } from "../CoreStoreProvider";
+import PopulationProjectionLastUpdated from "./PopulationProjectionLastUpdated";
 
 const PageProjections: React.FC = () => {
   const { pathname } = useLocation();

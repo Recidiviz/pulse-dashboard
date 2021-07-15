@@ -15,17 +15,17 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React from "react";
-import PropTypes from "prop-types";
 import { observer } from "mobx-react-lite";
+import PropTypes from "prop-types";
+import React from "react";
 
+import { useRootStore } from "../../components/StoreProvider";
+import { US_PA } from "../../RootStore/TenantStore/lanternTenants";
+import { translate } from "../../utils/i18nSettings";
+import HorizontalBarChartWithLabels from "../BarCharts/HorizontalBarChartWithLabels";
+import { useDataStore } from "../LanternStoreProvider";
 import RevocationsByDimension from "../RevocationsByDimension";
 import createGenerateChartData from "./createGenerateChartData";
-import { translate } from "../../utils/i18nSettings";
-import { useRootStore } from "../../components/StoreProvider";
-import { useDataStore } from "../LanternStoreProvider";
-import HorizontalBarChartWithLabels from "../BarCharts/HorizontalBarChartWithLabels";
-import { US_PA } from "../../RootStore/TenantStore/lanternTenants";
 
 const DEFAULT_MODE = "WHITE";
 

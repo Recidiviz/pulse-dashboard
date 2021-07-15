@@ -15,17 +15,17 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React from "react";
-import PropTypes from "prop-types";
 import { observer } from "mobx-react-lite";
+import PropTypes from "prop-types";
+import React from "react";
 
-import RevocationsByDimension from "../RevocationsByDimension";
-import PercentRevokedChart from "../PercentRevokedChart";
-import { translate } from "../../utils/i18nSettings";
-import RevocationCountChart from "../RevocationCountChart";
-import createGenerateChartData from "./createGenerateChartData";
 import flags from "../../flags";
+import { translate } from "../../utils/i18nSettings";
 import { useDataStore } from "../LanternStoreProvider";
+import PercentRevokedChart from "../PercentRevokedChart";
+import RevocationCountChart from "../RevocationCountChart";
+import RevocationsByDimension from "../RevocationsByDimension";
+import createGenerateChartData from "./createGenerateChartData";
 
 const MAX_OFFICERS_COUNT = 50;
 const DEFAULT_MODE = "counts";

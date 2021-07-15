@@ -15,30 +15,30 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React from "react";
-import { useLocation } from "react-router-dom";
+import "./PopulationTimeSeriesChart.scss";
+
 import { scaleTime } from "d3-scale";
 import { observer } from "mobx-react-lite";
+import React from "react";
+import { useLocation } from "react-router-dom";
 import { ResponsiveXYFrame } from "semiotic";
+
+import * as styles from "../CoreConstants.scss";
+import { CoreLoading } from "../CoreLoadingIndicator";
 import { useCoreStore } from "../CoreStoreProvider";
 import { SimulationCompartment } from "../models/types";
-
-import "./PopulationTimeSeriesChart.scss";
-import PopulationTimeSeriesLegend from "./PopulationTimeSeriesLegend";
 import { getCompartmentFromView, getViewFromPathname } from "../views";
-import PopulationTimeSeriesTooltip from "./PopulationTimeSeriesTooltip";
-import PopulationTimeSeriesErrorBar from "./PopulationTimeSeriesErrorBar";
-import * as styles from "../CoreConstants.scss";
-
 import {
   ChartPoint,
+  formatMonthAndYear,
+  getChartTop,
   getDateRange,
   MonthOptions,
   prepareData,
-  formatMonthAndYear,
-  getChartTop,
 } from "./helpers";
-import { CoreLoading } from "../CoreLoadingIndicator";
+import PopulationTimeSeriesErrorBar from "./PopulationTimeSeriesErrorBar";
+import PopulationTimeSeriesLegend from "./PopulationTimeSeriesLegend";
+import PopulationTimeSeriesTooltip from "./PopulationTimeSeriesTooltip";
 
 type PlotLine = {
   data: ChartPoint[];

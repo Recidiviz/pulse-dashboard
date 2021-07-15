@@ -15,9 +15,10 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 import React, { useContext } from "react";
+
+import RootStore from "../RootStore";
 import CoreStore from "./CoreStore";
 import FiltersStore from "./CoreStore/FiltersStore";
-import RootStore from "../RootStore";
 
 const CoreContext = React.createContext<CoreStore | undefined>(undefined);
 const coreStore = new CoreStore(RootStore);

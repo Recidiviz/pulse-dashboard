@@ -14,9 +14,9 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-import { US_ND } from "./usNdMethodology";
 import { TenantId } from "../../RootStore/types";
 import { ViewMethodology } from "../models/types";
+import { US_ND } from "./usNdMethodology";
 
 type TenantMethodology = {
   [key in TenantId]: ViewMethodology;

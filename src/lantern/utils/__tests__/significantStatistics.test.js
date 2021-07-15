@@ -15,12 +15,12 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 import {
-  isDenominatorStatisticallySignificant,
-  isDenominatorsMatrixStatisticallySignificant,
-  tooltipForFooterWithCounts,
   applyStatisticallySignificantShading,
   applyStatisticallySignificantShadingToDataset,
+  isDenominatorsMatrixStatisticallySignificant,
+  isDenominatorStatisticallySignificant,
   STATISTICALLY_INSIGNIFICANT_PATTERN,
+  tooltipForFooterWithCounts,
 } from "../significantStatistics";
 
 const statisticallySignificantDenominators = [0, 100, 1019];

@@ -15,8 +15,9 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React from "react";
 import { mount } from "enzyme";
+import React from "react";
+
 import PopulationTimeSeriesTooltip from "../PopulationTimeSeriesTooltip";
 
 describe("Tests for PopulationTimeseries Tooltip", () => {

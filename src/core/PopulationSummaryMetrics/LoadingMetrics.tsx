@@ -14,8 +14,9 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-import React from "react";
 import "./LoadingMetrics.scss";
+
+import React from "react";
 
 const LoadingMetrics: React.FC<{ title: string; showMinMax?: boolean }> = ({
   title,

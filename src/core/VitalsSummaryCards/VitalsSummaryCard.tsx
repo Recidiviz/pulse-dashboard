@@ -15,11 +15,13 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React from "react";
-import cn from "classnames";
-import { SummaryStatus } from "../PageVitals/types";
-import { formatPercent } from "../../utils/formatStrings";
 import "./VitalsSummaryCard.scss";
+
+import cn from "classnames";
+import React from "react";
+
+import { formatPercent } from "../../utils/formatStrings";
+import { SummaryStatus } from "../PageVitals/types";
 
 const getStatusClassName = (status: SummaryStatus) => {
   switch (status) {

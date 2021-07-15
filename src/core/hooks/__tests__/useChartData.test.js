@@ -14,14 +14,14 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-import { renderHook, cleanup } from "@testing-library/react-hooks";
+import { cleanup, renderHook } from "@testing-library/react-hooks";
 
-import useChartData from "../useChartData";
 import {
-  callMetricsApi,
   awaitingResults,
+  callMetricsApi,
 } from "../../../api/metrics/metricsClient";
 import { useRootStore } from "../../../components/StoreProvider";
+import useChartData from "../useChartData";
 
 jest.mock("../../../api/metrics/metricsClient");
 jest.mock("../../../components/StoreProvider");

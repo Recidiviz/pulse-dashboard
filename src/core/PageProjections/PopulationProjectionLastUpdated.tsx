@@ -14,9 +14,11 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-import React from "react";
-import { formatDate } from "../../utils/formatStrings";
 import "./PopulationProjectionLastUpdated.scss";
+
+import React from "react";
+
+import { formatDate } from "../../utils/formatStrings";
 
 type Props = {
   simulationDate?: Date;

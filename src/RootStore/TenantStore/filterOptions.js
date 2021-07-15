@@ -14,19 +14,19 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-import map from "lodash/fp/map";
 import flattenDeep from "lodash/fp/flattenDeep";
+import map from "lodash/fp/map";
 
 import {
   ADMISSION_TYPE,
   CHARGE_CATEGORY,
+  LEVEL_1_SUPERVISION_LOCATION,
+  LEVEL_2_SUPERVISION_LOCATION,
   METRIC_PERIOD_MONTHS,
   REPORTED_VIOLATIONS,
   SUPERVISION_LEVEL,
   SUPERVISION_TYPE,
   VIOLATION_TYPE,
-  LEVEL_1_SUPERVISION_LOCATION,
-  LEVEL_2_SUPERVISION_LOCATION,
 } from "../../lantern/utils/constants";
 import { US_MO, US_PA } from "./lanternTenants";
 

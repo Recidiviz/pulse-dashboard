@@ -15,10 +15,11 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React from "react";
-import PropTypes from "prop-types";
 import "./TogglePill.scss";
+
 import cx from "classnames";
+import PropTypes from "prop-types";
+import React from "react";
 
 const TogglePill = ({ currentValue, onChange, leftPill, rightPill }) => {
   return (

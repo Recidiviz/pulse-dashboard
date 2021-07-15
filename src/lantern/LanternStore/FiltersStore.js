@@ -15,31 +15,32 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
+import uniqBy from "lodash/uniqBy";
 import {
-  makeAutoObservable,
-  computed,
-  autorun,
-  reaction,
-  observable,
   action,
+  autorun,
+  computed,
+  makeAutoObservable,
+  observable,
+  reaction,
   toJS,
 } from "mobx";
-import uniqBy from "lodash/uniqBy";
+
+import filterOptionsMap from "../../RootStore/TenantStore/filterOptions";
+import getFilters from "../../utils/getFilterDescription";
 import {
   ADMISSION_TYPE,
   CHARGE_CATEGORY,
+  LEVEL_1_SUPERVISION_LOCATION,
+  LEVEL_2_SUPERVISION_LOCATION,
   METRIC_PERIOD_MONTHS,
   REPORTED_VIOLATIONS,
   SUPERVISION_LEVEL,
   SUPERVISION_TYPE,
   VIOLATION_TYPE,
-  LEVEL_2_SUPERVISION_LOCATION,
-  LEVEL_1_SUPERVISION_LOCATION,
 } from "../utils/constants";
-import filterOptionsMap from "../../RootStore/TenantStore/filterOptions";
 import { compareStrings } from "./utils";
 import { generateNestedOptions } from "./utils/districtOptions";
-import getFilters from "../../utils/getFilterDescription";
 import getViolation from "./utils/getViolationTypeDescription";
 
 export const allOption = { label: "ALL", value: "All", secondaryValue: "All" };

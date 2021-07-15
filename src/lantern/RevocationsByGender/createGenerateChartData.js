@@ -15,23 +15,22 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
+import groupBy from "lodash/fp/groupBy";
+import map from "lodash/fp/map";
 import pipe from "lodash/fp/pipe";
 import reduce from "lodash/fp/reduce";
-import groupBy from "lodash/fp/groupBy";
 import sumBy from "lodash/fp/sumBy";
 import toInteger from "lodash/fp/toInteger";
-import map from "lodash/fp/map";
 
-import { applyStatisticallySignificantShadingToDataset } from "../utils/significantStatistics";
-
+import { COLORS } from "../../assets/scripts/constants/colors";
 import {
+  genderValueToLabel,
   getStatePopulations,
   getStatePopulationsLabels,
-  genderValueToLabel,
 } from "../../utils/formatStrings";
-import getCounts from "../utils/getCounts";
 import createPopulationMap from "../utils/createPopulationMap";
-import { COLORS } from "../../assets/scripts/constants/colors";
+import getCounts from "../utils/getCounts";
+import { applyStatisticallySignificantShadingToDataset } from "../utils/significantStatistics";
 
 export const CHART_COLORS = [
   COLORS["lantern-medium-blue"],

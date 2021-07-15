@@ -15,26 +15,25 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React, { useEffect } from "react";
-import PropTypes from "prop-types";
-import { Bar } from "react-chartjs-2";
-
+import { toInteger } from "lodash";
 import groupBy from "lodash/fp/groupBy";
 import map from "lodash/fp/map";
 import pipe from "lodash/fp/pipe";
 import sumBy from "lodash/fp/sumBy";
 import values from "lodash/fp/values";
+import PropTypes from "prop-types";
+import React, { useEffect } from "react";
+import { Bar } from "react-chartjs-2";
 
-import { toInteger } from "lodash";
 import { COLORS, COLORS_GOOD_BAD } from "../../assets/scripts/constants/colors";
-import { configureDownloadButtons } from "../utils/configureDownloadButtons";
-import { filterDatasetByDistrict } from "../utils/dataFilters";
-import { toggleLabel, updateTooltipForMetricType } from "../utils/tooltips";
 import { toNumber } from "../../utils";
 import { sortFilterAndSupplementMostRecentMonths } from "../../utils/datasets";
-import { monthNamesWithYearsFromNumbers } from "../utils/timePeriod";
+import { configureDownloadButtons } from "../utils/configureDownloadButtons";
 import { METRIC_TYPES } from "../utils/constants";
+import { filterDatasetByDistrict } from "../utils/dataFilters";
 import { metricTypePropType } from "../utils/propTypes";
+import { monthNamesWithYearsFromNumbers } from "../utils/timePeriod";
+import { toggleLabel, updateTooltipForMetricType } from "../utils/tooltips";
 
 const dataCountsMapper = (dataset) => ({
   year: dataset[0].year,

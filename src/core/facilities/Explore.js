@@ -17,28 +17,28 @@
 
 import React, { useState } from "react";
 
-import PageTemplate from "../PageTemplate";
 import Loading from "../../components/Loading";
+import WarningIcon from "../../controls/WarningIcon";
+import AdmissionCountsByType from "../AdmissionCountsByType";
 import ChartCard from "../ChartCard";
+import CoreFilterBar from "../CoreFilterBar";
 import GeoViewTimeChart from "../GeoViewTimeChart";
+import DaysAtLibertySnapshot from "../goals/DaysAtLibertySnapshot";
+import ReincarcerationCountOverTime from "../goals/ReincarcerationCountOverTime";
+import useChartData from "../hooks/useChartData";
 import Methodology from "../Methodology";
 import MethodologyCollapse from "../MethodologyCollapse";
+import PageTemplate from "../PageTemplate";
 import PeriodLabel from "../PeriodLabel";
-import WarningIcon from "../../controls/WarningIcon";
-import AdmissionsVsReleases from "./AdmissionsVsReleases";
-import ReincarcerationCountOverTime from "../goals/ReincarcerationCountOverTime";
-import ReincarcerationRateByStayLength from "./ReincarcerationRateByStayLength";
-import AdmissionCountsByType from "../AdmissionCountsByType";
-import DaysAtLibertySnapshot from "../goals/DaysAtLibertySnapshot";
-import CoreFilterBar from "../CoreFilterBar";
 import {
   defaultDistrict,
   defaultMetricPeriod,
   defaultMetricType,
 } from "../utils/filterOptions";
-import useChartData from "../hooks/useChartData";
 import { getYearFromNow } from "../utils/timePeriod";
+import AdmissionsVsReleases from "./AdmissionsVsReleases";
 import { availableDistricts, importantNotes } from "./constants";
+import ReincarcerationRateByStayLength from "./ReincarcerationRateByStayLength";
 
 const FacilitiesExplore = () => {
   const { apiData, isLoading, getTokenSilently } = useChartData(

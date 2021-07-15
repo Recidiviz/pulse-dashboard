@@ -16,11 +16,12 @@
 // =============================================================================
 
 import React, { useContext } from "react";
-import LanternStore from "./LanternStore";
+
 import RootStore from "../RootStore";
 import type UserStore from "../RootStore/UserStore";
-import type FiltersStore from "./LanternStore/FiltersStore";
+import LanternStore from "./LanternStore";
 import type DataStore from "./LanternStore/DataStore/DataStore";
+import type FiltersStore from "./LanternStore/FiltersStore";
 
 const LanternContext = React.createContext<LanternStore | undefined>(undefined);
 const lanternStore = new LanternStore(RootStore);

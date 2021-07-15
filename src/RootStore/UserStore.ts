@@ -15,18 +15,19 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 import createAuth0Client, {
-  Auth0ClientOptions,
-  User,
-  GetTokenSilentlyOptions,
   Auth0Client,
+  Auth0ClientOptions,
+  GetTokenSilentlyOptions,
+  User,
 } from "@auth0/auth0-spa-js";
-import { makeAutoObservable, runInAction, action } from "mobx";
+import { action, makeAutoObservable, runInAction } from "mobx";
 import qs from "qs";
+
 import { fetchDemoUser, isDemoMode } from "../api/fetchDemoUser";
 import { ERROR_MESSAGES } from "../constants/errorMessages";
+import tenants from "../tenants";
 import type RootStore from ".";
 import { TenantId, UserAppMetadata } from "./types";
-import tenants from "../tenants";
 
 const METADATA_NAMESPACE = process.env.REACT_APP_METADATA_NAMESPACE;
 

@@ -15,10 +15,10 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
+import { LanternMethodologyByTenant } from "../types";
+import { US_MO, US_PA } from "./lanternTenants";
 import { US_MO_METHODOLOGY } from "./us_mo_methodology";
 import { US_PA_METHODOLOGY } from "./us_pa_methodology";
-import { US_MO, US_PA } from "./lanternTenants";
-import { LanternMethodologyByTenant } from "../types";
 
 const LanternMethodology: LanternMethodologyByTenant = {
   [US_MO]: US_MO_METHODOLOGY,

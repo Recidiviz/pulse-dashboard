@@ -15,31 +15,29 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React, { useEffect } from "react";
-import PropTypes from "prop-types";
-import { Line } from "react-chartjs-2";
-
 import map from "lodash/fp/map";
 import pipe from "lodash/fp/pipe";
 import toInteger from "lodash/fp/toInteger";
-
-import { groupByMonth } from "../bars/utils";
+import PropTypes from "prop-types";
+import React, { useEffect } from "react";
+import { Line } from "react-chartjs-2";
 
 import { COLORS, CORE_COLORS } from "../../assets/scripts/constants/colors";
-import { configureDownloadButtons } from "../utils/configureDownloadButtons";
-import {
-  filterDatasetBySupervisionType,
-  filterDatasetByDistrict,
-} from "../utils/dataFilters";
-import { toggleLabel, updateTooltipForMetricType } from "../utils/tooltips";
 import { toNumber } from "../../utils";
 import {
-  sortFilterAndSupplementMostRecentMonths,
   centerSingleMonthDatasetIfNecessary,
+  sortFilterAndSupplementMostRecentMonths,
 } from "../../utils/datasets";
-import { monthNamesWithYearsFromNumbers } from "../utils/timePeriod";
-import { metricTypePropType } from "../utils/propTypes";
+import { groupByMonth } from "../bars/utils";
+import { configureDownloadButtons } from "../utils/configureDownloadButtons";
 import { METRIC_TYPES } from "../utils/constants";
+import {
+  filterDatasetByDistrict,
+  filterDatasetBySupervisionType,
+} from "../utils/dataFilters";
+import { metricTypePropType } from "../utils/propTypes";
+import { monthNamesWithYearsFromNumbers } from "../utils/timePeriod";
+import { toggleLabel, updateTooltipForMetricType } from "../utils/tooltips";
 
 const dataCountsMapper = ({ year, month, count }) => ({
   year,

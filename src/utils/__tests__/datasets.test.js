@@ -17,10 +17,10 @@
 import tk from "timekeeper";
 
 import {
-  sortByYearAndMonth,
-  filterMostRecentMonths,
-  sortFilterAndSupplementMostRecentMonths,
   centerSingleMonthDatasetIfNecessary,
+  filterMostRecentMonths,
+  sortByYearAndMonth,
+  sortFilterAndSupplementMostRecentMonths,
 } from "../datasets";
 
 const data = [

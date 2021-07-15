@@ -15,8 +15,8 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 import RootStore from "../../../RootStore";
-import CoreStore from "..";
 import { defaultPopulationFilterValues } from "../../utils/filterOptions";
+import CoreStore from "..";
 
 let coreStore: CoreStore;
 

@@ -15,16 +15,17 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React from "react";
+import "./CoreLayout.scss";
+
 import { observer } from "mobx-react-lite";
+import React from "react";
 
 import Footer from "../components/Footer";
-import CoreNavigation from "./CoreNavigation";
+import IE11Banner from "../components/IE11Banner";
 import useIntercom from "../hooks/useIntercom";
+import CoreNavigation from "./CoreNavigation";
 import CoreStoreProvider from "./CoreStoreProvider";
 import ErrorBoundary from "./ErrorBoundary";
-import IE11Banner from "../components/IE11Banner";
-import "./CoreLayout.scss";
 
 interface Props {
   children: React.ReactElement;

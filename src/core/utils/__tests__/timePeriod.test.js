@@ -16,10 +16,11 @@
 // =============================================================================
 
 import tk from "timekeeper";
+
 import {
-  monthNamesWithYearsFromNumbers,
-  getYearFromNow,
   formatTimePeriodLabel,
+  getYearFromNow,
+  monthNamesWithYearsFromNumbers,
 } from "../timePeriod";
 
 describe("timePeriod", () => {

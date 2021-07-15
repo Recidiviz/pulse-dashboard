@@ -15,8 +15,9 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React from "react";
 import { mount } from "enzyme";
+import React from "react";
+
 import PopulationProjectionLastUpdated from "../PopulationProjectionLastUpdated";
 
 describe("Tests PopulationProjectionLastUpdated component", () => {

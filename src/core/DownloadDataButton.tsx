@@ -14,10 +14,11 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-import React from "react";
+import "./DetailsGroup.scss";
 
 import { Icon, IconSVG } from "@recidiviz/case-triage-components";
-import "./DetailsGroup.scss";
+import React from "react";
+
 import * as styles from "./CoreConstants.scss";
 
 interface PropTypes {

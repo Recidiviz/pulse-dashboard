@@ -1,4 +1,5 @@
 import PropTypes from "prop-types";
+
 import { METRIC_TYPES } from "./constants";
 
 export const metricTypePropType = PropTypes.oneOf([

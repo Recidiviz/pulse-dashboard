@@ -15,10 +15,11 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 import createAuth0Client from "@auth0/auth0-spa-js";
+
 import { ERROR_MESSAGES } from "../../constants/errorMessages";
-import UserStore from "../UserStore";
 import TENANTS from "../../tenants";
 import { TenantId } from "../types";
+import UserStore from "../UserStore";
 
 jest.mock("@auth0/auth0-spa-js");
 

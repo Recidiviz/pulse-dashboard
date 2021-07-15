@@ -15,9 +15,9 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
+import { render } from "@testing-library/react";
 import React from "react";
 
-import { render } from "@testing-library/react";
 import Pagination from "../Pagination";
 
 describe("test for component CaseTablePaging", () => {

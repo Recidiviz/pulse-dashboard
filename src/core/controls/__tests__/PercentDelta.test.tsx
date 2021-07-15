@@ -15,10 +15,11 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React from "react";
 import { mount } from "enzyme";
-import PercentDelta, { ROTATE_UP, ROTATE_DOWN } from "../PercentDelta";
+import React from "react";
+
 import * as styles from "../../CoreConstants.scss";
+import PercentDelta, { ROTATE_DOWN, ROTATE_UP } from "../PercentDelta";
 
 describe("PercentDelta", () => {
   type PropTypes = {

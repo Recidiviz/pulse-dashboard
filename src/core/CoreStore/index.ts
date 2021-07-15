@@ -16,15 +16,15 @@
 // =============================================================================
 import { makeAutoObservable } from "mobx";
 
-import FiltersStore from "./FiltersStore";
-import type UserStore from "../../RootStore/UserStore";
 import type TenantStore from "../../RootStore/TenantStore";
-import { PopulationFilterValues } from "../types/filters";
+import type UserStore from "../../RootStore/UserStore";
 import { TenantId } from "../models/types";
+import { PopulationFilterValues } from "../types/filters";
+import { CORE_VIEWS, CoreView, getViewFromPathname } from "../views";
+import FiltersStore from "./FiltersStore";
 import MetricsStore from "./MetricsStore";
-import PageVitalsStore from "./PageVitalsStore";
 import PageProjectionsStore from "./PageProjectionsStore";
-import { CoreView, CORE_VIEWS, getViewFromPathname } from "../views";
+import PageVitalsStore from "./PageVitalsStore";
 
 interface CoreStoreProps {
   userStore: UserStore;

@@ -15,32 +15,31 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React from "react";
 import { render } from "@testing-library/react";
 import { observable } from "mobx";
+import React from "react";
 
-import Revocations from "../Revocations";
-import SelectFilter from "../FiltersBar/SelectFilter";
-import DistrictFilter from "../FiltersBar/DistrictFilter";
+import mockWithTestId from "../../../__helpers__/mockWithTestId";
+import StoreProvider from "../../components/StoreProvider";
+import filterOptionsMap from "../../RootStore/TenantStore/filterOptions";
+import { US_MO } from "../../RootStore/TenantStore/lanternTenants";
+import { setTranslateLocale } from "../../utils/i18nSettings";
+import CaseTable from "../CaseTable/CaseTable";
 import AdmissionTypeFilter from "../FiltersBar/AdmissionTypeFilter";
+import DistrictFilter from "../FiltersBar/DistrictFilter";
+import SelectFilter from "../FiltersBar/SelectFilter";
 import ViolationFilter from "../FiltersBar/ViolationFilter";
-import RevocationsOverTime from "../RevocationsOverTime";
+import { useLanternStore } from "../LanternStoreProvider";
 import Matrix from "../Matrix";
 import RevocationCharts from "../RevocationCharts";
-import CaseTable from "../CaseTable/CaseTable";
-import { setTranslateLocale } from "../../utils/i18nSettings";
-
-import { US_MO } from "../../RootStore/TenantStore/lanternTenants";
-import mockWithTestId from "../../../__helpers__/mockWithTestId";
-import filterOptionsMap from "../../RootStore/TenantStore/filterOptions";
+import Revocations from "../Revocations";
+import RevocationsOverTime from "../RevocationsOverTime";
 import {
   ADMISSION_TYPE,
   CHARGE_CATEGORY,
   SUPERVISION_LEVEL,
   SUPERVISION_TYPE,
 } from "../utils/constants";
-import { useLanternStore } from "../LanternStoreProvider";
-import StoreProvider from "../../components/StoreProvider";
 
 const METADATA_NAMESPACE = process.env.REACT_APP_METADATA_NAMESPACE;
 

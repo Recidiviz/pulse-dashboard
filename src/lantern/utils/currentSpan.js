@@ -76,6 +76,6 @@ function currentMonthBox(annotationId, chartLabels) {
 
 export {
   currentMonthBox,
-  monthNamesAllWithYearsFromNumbers,
   getCurrentMonthName,
+  monthNamesAllWithYearsFromNumbers,
 };

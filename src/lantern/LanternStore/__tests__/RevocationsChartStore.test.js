@@ -14,9 +14,9 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-import RevocationsChartStore from "../DataStore/RevocationsChartStore";
-import LanternStore from "..";
 import { reactImmediately } from "../../../testUtils";
+import LanternStore from "..";
+import RevocationsChartStore from "../DataStore/RevocationsChartStore";
 
 let revocationsChartStore;
 

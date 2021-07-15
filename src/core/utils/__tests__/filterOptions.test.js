@@ -15,13 +15,13 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
+import { METRIC_TYPES } from "../constants";
 import {
   defaultDistrict,
   defaultMetricPeriod,
   defaultMetricType,
   defaultSupervisionType,
 } from "../filterOptions";
-import { METRIC_TYPES } from "../constants";
 
 describe("Filter default values", () => {
   it("should be right", () => {

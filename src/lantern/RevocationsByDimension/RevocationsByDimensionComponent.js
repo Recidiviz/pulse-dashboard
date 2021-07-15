@@ -15,14 +15,14 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React from "react";
+import "./RevocationsByDimension.scss";
+
 import cn from "classnames";
 import PropTypes from "prop-types";
+import React from "react";
 
 import DataSignificanceWarningIcon from "../DataSignificanceWarningIcon";
 import ExportMenu from "../ExportMenu";
-
-import "./RevocationsByDimension.scss";
 
 const RevocationsByDimensionComponent = ({
   chartTitle,

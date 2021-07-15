@@ -15,38 +15,37 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React, { useEffect } from "react";
-import PropTypes from "prop-types";
-import { Bar } from "react-chartjs-2";
-
 import map from "lodash/fp/map";
 import mergeAllWith from "lodash/fp/mergeAllWith";
 import pipe from "lodash/fp/pipe";
 import reduce from "lodash/fp/reduce";
 import values from "lodash/fp/values";
+import PropTypes from "prop-types";
+import React, { useEffect } from "react";
+import { Bar } from "react-chartjs-2";
 
-import {
-  groupByMonth,
-  mergeAllResolver,
-  ensureWrappedInArray,
-  sum,
-  configureDownloads,
-} from "./utils";
 import { COLORS } from "../../assets/scripts/constants/colors";
+import { toNumber } from "../../utils";
+import { sortFilterAndSupplementMostRecentMonths } from "../../utils/datasets";
+import { METRIC_TYPES } from "../utils/constants";
 import {
   filterDatasetByDistrict,
   filterDatasetBySupervisionType,
 } from "../utils/dataFilters";
+import { metricTypePropType } from "../utils/propTypes";
+import { monthNamesWithYearsFromNumbers } from "../utils/timePeriod";
 import {
   toggleLabel,
   toggleYAxisTicksStackedRateBasicCount,
   updateTooltipForMetricType,
 } from "../utils/tooltips";
-import { toNumber } from "../../utils";
-import { sortFilterAndSupplementMostRecentMonths } from "../../utils/datasets";
-import { monthNamesWithYearsFromNumbers } from "../utils/timePeriod";
-import { metricTypePropType } from "../utils/propTypes";
-import { METRIC_TYPES } from "../utils/constants";
+import {
+  configureDownloads,
+  ensureWrappedInArray,
+  groupByMonth,
+  mergeAllResolver,
+  sum,
+} from "./utils";
 
 export const prepareDataGroupedByMonth = (metricType, bars) => (data) => {
   const { year, month } = data;

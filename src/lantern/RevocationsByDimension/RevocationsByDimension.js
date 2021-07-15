@@ -15,16 +15,16 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 
-import React, { useState } from "react";
-import PropTypes from "prop-types";
 import { observer } from "mobx-react-lite";
+import PropTypes from "prop-types";
+import React, { useState } from "react";
 
-import ModeSwitcher from "../ModeSwitcher";
-import RevocationsByDimensionComponent from "./RevocationsByDimensionComponent";
-import LoadingChart from "../LoadingChart";
 import ErrorMessage from "../../components/ErrorMessage";
-import { isDenominatorsMatrixStatisticallySignificant } from "../utils/significantStatistics";
+import LoadingChart from "../LoadingChart";
+import ModeSwitcher from "../ModeSwitcher";
 import getLabelByMode from "../utils/getLabelByMode";
+import { isDenominatorsMatrixStatisticallySignificant } from "../utils/significantStatistics";
+import RevocationsByDimensionComponent from "./RevocationsByDimensionComponent";
 
 const RevocationsByDimension = observer(
   (

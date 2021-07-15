@@ -14,15 +14,16 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-import React from "react";
 import numeral from "numeral";
-import PercentDelta from "../controls/PercentDelta";
+import React from "react";
+
 import { formatLargeNumber } from "../../utils/formatStrings";
-import LoadingMetrics from "./LoadingMetrics";
+import PercentDelta from "../controls/PercentDelta";
 import type {
-  ProjectedSummaryRecord,
   HistoricalSummaryRecord,
+  ProjectedSummaryRecord,
 } from "../models/types";
+import LoadingMetrics from "./LoadingMetrics";
 
 function formatMinMax(number: number): string {
   return numeral(number).format("0");

@@ -15,10 +15,11 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 import { runInAction } from "mobx";
+
 import RootStore from "../../../RootStore";
-import CoreStore from "..";
-import VitalsMetrics from "../../models/VitalsMetrics";
 import ProjectionsMetrics from "../../models/ProjectionsMetrics";
+import VitalsMetrics from "../../models/VitalsMetrics";
+import CoreStore from "..";
 
 let coreStore: CoreStore;
 

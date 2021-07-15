@@ -15,14 +15,15 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 import * as Sentry from "@sentry/react";
-import JSZip from "jszip";
 import downloadjs from "downloadjs";
+import JSZip from "jszip";
+
 import exportDataOnMobileDevices, {
   isMobile,
 } from "../../api/exportData/exportDataOnMobileDevices";
-import transformCanvasToBase64 from "./transformCanvasToBase64";
-import createMethodologyFile from "./createMethodologyFile";
 import configureFilename from "./configureFileName";
+import createMethodologyFile from "./createMethodologyFile";
+import transformCanvasToBase64 from "./transformCanvasToBase64";
 import transformChartDataToCsv from "./transformChartDataToCsv";
 
 // Functions for flowing through browser-specific download functionality
