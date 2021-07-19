@@ -23,7 +23,7 @@ import PercentDelta, { ROTATE_DOWN, ROTATE_UP } from "../PercentDelta";
 
 describe("PercentDelta", () => {
   type PropTypes = {
-    value: number;
+    value?: number;
     width?: number;
     height?: number;
     improvesOnIncrease?: boolean;
@@ -95,5 +95,22 @@ describe("PercentDelta", () => {
       color: styles.slate60,
     });
     expect(wrapper.find("Icon").exists()).toEqual(false);
+  });
+
+  it("does not render an icon when the change is undefined", () => {
+    const wrapper = renderPercentDelta({
+      value: undefined,
+    });
+    expect(wrapper.find(".PercentDelta").prop("style")).toEqual({
+      color: styles.slate60,
+    });
+    expect(wrapper.find("Icon").exists()).toEqual(false);
+  });
+
+  it("displays N/A when the change is undefined", () => {
+    const wrapper = renderPercentDelta({
+      value: undefined,
+    });
+    expect(wrapper.find(".PercentDelta__value").text()).toEqual("N/A");
   });
 });

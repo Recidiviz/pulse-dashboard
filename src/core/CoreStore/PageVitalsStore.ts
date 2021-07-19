@@ -245,17 +245,24 @@ export default class PageVitalsStore {
     };
   }
 
-  get monthlyChange():
-    | { thirtyDayChange: number; ninetyDayChange: number }
-    | undefined {
+  get monthlyChange(): {
+    thirtyDayChange?: number;
+    ninetyDayChange?: number;
+  } {
     const timeSeries = this.selectedMetricTimeSeries;
-    if (timeSeries === undefined) return undefined;
-
-    const ninetyDaysAgo = timeSeries[timeSeries.length - 89];
-    const thirtyDaysAgo = timeSeries[timeSeries.length - 29];
+    if (timeSeries === undefined)
+      return { thirtyDayChange: undefined, ninetyDayChange: undefined };
+    const ninetyDaysAgo =
+      timeSeries.length >= 90 ? timeSeries[timeSeries.length - 89] : undefined;
+    const thirtyDaysAgo =
+      timeSeries.length >= 30 ? timeSeries[timeSeries.length - 29] : undefined;
     const latestDay = timeSeries[timeSeries.length - 1];
-    const thirtyDayChange = latestDay.monthlyAvg - thirtyDaysAgo.monthlyAvg;
-    const ninetyDayChange = latestDay.monthlyAvg - ninetyDaysAgo.monthlyAvg;
+    const thirtyDayChange = thirtyDaysAgo
+      ? latestDay.monthlyAvg - thirtyDaysAgo.monthlyAvg
+      : undefined;
+    const ninetyDayChange = ninetyDaysAgo
+      ? latestDay.monthlyAvg - ninetyDaysAgo.monthlyAvg
+      : undefined;
     return { thirtyDayChange, ninetyDayChange };
   }
 
