@@ -6,6 +6,7 @@ export default process.env.REACT_APP_DEPLOY_ENV === "production"
       enableCoreTabNavigation: true,
       enableVitalsDashboard: false,
       enableVitalsOfficerView: false,
+      enableVitalsGoalLine: false,
     }
   : process.env.REACT_APP_DEPLOY_ENV === "staging"
   ? {
@@ -13,11 +14,13 @@ export default process.env.REACT_APP_DEPLOY_ENV === "production"
       enableCoreTabNavigation: true,
       enableVitalsDashboard: true,
       enableVitalsOfficerView: false,
+      enableVitalsGoalLine: false,
     }
   : {
       // Development
       enableRevocationRateByExit: false,
       enableCoreTabNavigation: true,
       enableVitalsDashboard: true,
-      enableVitalsOfficerView: false,
+      enableVitalsOfficerView: true,
+      enableVitalsGoalLine: true,
     };

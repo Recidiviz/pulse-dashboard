@@ -21,6 +21,7 @@ import { curveCatmullRom } from "d3-shape";
 import { observer } from "mobx-react-lite";
 import React, { useState } from "react";
 
+import flags from "../../flags";
 import { formatISODateString, formatPercent } from "../../utils/formatStrings";
 import * as styles from "../CoreConstants.scss";
 import { useCoreStore } from "../CoreStoreProvider";
@@ -114,32 +115,34 @@ const VitalsSummaryChart: React.FC = () => {
       <ResponsiveOrdinalFrame
         responsiveWidth
         hoverAnnotation
-        annotations={[
-          {
-            type: "ordinal-line",
-            coordinates: lineCoordinates,
-            lineStyle: {
-              stroke: styles.indigo,
-              strokeWidth: 2,
+        annotations={
+          flags.enableVitalsGoalLine && [
+            {
+              type: "ordinal-line",
+              coordinates: lineCoordinates,
+              lineStyle: {
+                stroke: styles.indigo,
+                strokeWidth: 2,
+              },
+              curve: curveCatmullRom,
             },
-            curve: curveCatmullRom,
-          },
-          {
-            type: "or",
-            ...latestDataPoint,
-          },
-          {
-            type: "react-annotation",
-            date: latestDataPoint.date,
-            value: goal,
-          },
-          {
-            type: "r",
-            value: goal,
-            color: styles.signalLinks,
-            disable: "connector",
-          },
-        ]}
+            {
+              type: "or",
+              ...latestDataPoint,
+            },
+            {
+              type: "react-annotation",
+              date: latestDataPoint.date,
+              value: goal,
+            },
+            {
+              type: "r",
+              value: goal,
+              color: styles.signalLinks,
+              disable: "connector",
+            },
+          ]
+        }
         customHoverBehavior={(piece: any) => {
           if (piece) {
             setHoveredId(piece.index);
