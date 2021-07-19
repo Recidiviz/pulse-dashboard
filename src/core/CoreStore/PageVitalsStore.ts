@@ -253,9 +253,9 @@ export default class PageVitalsStore {
     if (timeSeries === undefined)
       return { thirtyDayChange: undefined, ninetyDayChange: undefined };
     const ninetyDaysAgo =
-      timeSeries.length >= 90 ? timeSeries[timeSeries.length - 89] : undefined;
+      timeSeries.length >= 90 ? timeSeries[timeSeries.length - 90] : undefined;
     const thirtyDaysAgo =
-      timeSeries.length >= 30 ? timeSeries[timeSeries.length - 29] : undefined;
+      timeSeries.length >= 30 ? timeSeries[timeSeries.length - 30] : undefined;
     const latestDay = timeSeries[timeSeries.length - 1];
     const thirtyDayChange = thirtyDaysAgo
       ? latestDay.monthlyAvg - thirtyDaysAgo.monthlyAvg
