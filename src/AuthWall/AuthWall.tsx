@@ -29,6 +29,7 @@ import { ERROR_MESSAGES } from "../constants";
  */
 const AuthWall: React.FC = ({ children }) => {
   const { userStore, currentTenantId } = useRootStore();
+  const { userAppMetadata } = userStore;
 
   useEffect(
     () =>
@@ -48,8 +49,14 @@ const AuthWall: React.FC = ({ children }) => {
     return <Loading />;
   }
   if (userStore.isAuthorized) {
-    if (!userStore.userAppMetadata.can_access_leadership_dashboard) {
-      if (userStore.userAppMetadata.can_access_case_triage) {
+    if (
+      userAppMetadata.can_access_leadership_dashboard !== undefined &&
+      !userAppMetadata.can_access_leadership_dashboard
+    ) {
+      if (
+        userAppMetadata.can_access_case_triage !== undefined &&
+        userAppMetadata.can_access_case_triage
+      ) {
         window.location.href =
           process.env.REACT_APP_CASE_TRIAGE_URL || "about:blank";
         return <Loading />;

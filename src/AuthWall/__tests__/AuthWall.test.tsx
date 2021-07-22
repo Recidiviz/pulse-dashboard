@@ -86,6 +86,22 @@ test("renders children when can_access_leadership_dashboard", () => {
   expect(getByText("AUTHORIZED")).toBeInTheDocument();
 });
 
+test("renders children when can_access_leadership_dashboard property does not exist", () => {
+  userStore.userAppMetadata = {};
+
+  (useRootStore as jest.Mock).mockReturnValue({
+    userStore,
+    currentTenantId: "US_MO",
+  });
+  const { getByText } = render(
+    <AuthWall>
+      {/* @ts-ignore */}
+      <div tenantIds={["US_MO"]}>AUTHORIZED</div>
+    </AuthWall>
+  );
+  expect(getByText("AUTHORIZED")).toBeInTheDocument();
+});
+
 test("redirects to case triage when !can_access_leadership_dashboard and can_access_case_triage", () => {
   // delete and re-create the window location object for this test
   const { location } = window;
