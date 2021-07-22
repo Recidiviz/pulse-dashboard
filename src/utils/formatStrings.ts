@@ -178,6 +178,14 @@ function formatDate(date: Date, pattern = "M/d/yy"): string {
   return format(date, pattern);
 }
 
+function getFirstName(fullName: string): string {
+  return fullName.split(" ")[0];
+}
+
+function toPossessive(name: string): string {
+  return `${name}'s`;
+}
+
 export {
   formatDate,
   formatDistrictLabel,
@@ -187,6 +195,7 @@ export {
   formatPercent,
   genderValueToHumanReadable,
   genderValueToLabel,
+  getFirstName,
   getPeriodLabelFromMetricPeriodMonthsFilter,
   getStatePopulations,
   getStatePopulationsLabels,
@@ -202,6 +211,7 @@ export {
   toHumanReadable,
   toInt,
   toNumber,
+  toPossessive,
   toTitleCase,
   violationCountLabel,
 };

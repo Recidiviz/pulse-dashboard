@@ -34,6 +34,7 @@ export function createVitalsSummaryMetric(
       entityId: record.entity_id,
       entityName: toTitleCase(record.entity_name),
       entityType: record.entity_type.toUpperCase() as EntityType,
+      entityEmail: record.entity_email_address,
       parentEntityId: record.parent_entity_id,
       overall: Number(record.overall),
       timelyDischarge: Number(record.timely_discharge),
