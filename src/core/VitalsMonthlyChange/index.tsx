@@ -25,7 +25,7 @@ import { useCoreStore } from "../CoreStoreProvider";
 
 type MonthlyChangeProps = {
   numDays: number;
-  value: number;
+  value?: number;
 };
 
 const MonthlyChange: React.FC<MonthlyChangeProps> = ({ numDays, value }) => {
