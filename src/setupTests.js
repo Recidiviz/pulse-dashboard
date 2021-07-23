@@ -31,4 +31,5 @@ configure({ adapter: new Adapter() });
 process.env = {
   ...process.env,
   REACT_APP_METADATA_NAMESPACE: "test-metadata-namespace/",
+  REACT_APP_CASE_TRIAGE_URL: "test-case-triage-url",
 };

@@ -22,12 +22,14 @@ import React, { useEffect } from "react";
 import Loading from "../components/Loading";
 import NotFound from "../components/NotFound";
 import { useRootStore } from "../components/StoreProvider";
+import { ERROR_MESSAGES } from "../constants";
 
 /**
  * Verifies authorization before rendering its children.
  */
 const AuthWall: React.FC = ({ children }) => {
   const { userStore, currentTenantId } = useRootStore();
+  const { userAppMetadata } = userStore;
 
   useEffect(
     () =>
@@ -46,8 +48,22 @@ const AuthWall: React.FC = ({ children }) => {
   if (userStore.userIsLoading) {
     return <Loading />;
   }
-
   if (userStore.isAuthorized) {
+    if (
+      userAppMetadata.can_access_leadership_dashboard !== undefined &&
+      !userAppMetadata.can_access_leadership_dashboard
+    ) {
+      if (
+        userAppMetadata.can_access_case_triage !== undefined &&
+        userAppMetadata.can_access_case_triage
+      ) {
+        window.location.href =
+          process.env.REACT_APP_CASE_TRIAGE_URL || "about:blank";
+        return <Loading />;
+      }
+
+      userStore.setAuthError(ERROR_MESSAGES.unauthorized);
+    }
     const authorizedChildren = React.Children.map(children, (child: any) => {
       const { tenantIds } = child.props;
       return tenantIds.includes(currentTenantId) ? child : null;

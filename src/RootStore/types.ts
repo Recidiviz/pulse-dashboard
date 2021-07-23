@@ -37,6 +37,8 @@ export type UserAppMetadata = {
   blocked_state_codes?: Lowercase<TenantId>[];
   allowed_supervision_location_ids?: string[];
   allowed_supervision_location_level?: string;
+  can_access_leadership_dashboard: boolean;
+  can_access_case_triage: boolean;
 };
 
 export type LanternMethodologyByTenant = {

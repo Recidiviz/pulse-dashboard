@@ -35,6 +35,8 @@ function fetchDemoUser({
       state_code: stateCode,
       allowed_supervision_location_ids: allowedSupervisionLocationIds,
       allowed_supervision_location_level: allowedSupervisionLocationLevel,
+      can_access_leadership_dashboard: true,
+      can_acceess_case_triage: true,
     },
   };
 }
