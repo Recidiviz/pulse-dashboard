@@ -100,6 +100,11 @@ export default class TenantStore {
     return tenants[this.currentTenantId].domain;
   }
 
+  get enableVitalsCaseloadButton(): boolean {
+    if (!this.currentTenantId) return false;
+    return tenants[this.currentTenantId].enableVitalsCaseloadButton;
+  }
+
   get enableUserRestrictions(): boolean {
     if (!this.currentTenantId) return false;
     return (

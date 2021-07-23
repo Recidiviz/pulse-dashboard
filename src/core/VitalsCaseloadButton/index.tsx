@@ -37,7 +37,7 @@ const VitalsCaseloadButton: React.FC = () => {
 
   if (
     !currentEntitySummary ||
-    currentEntitySummary.entityType !== ENTITY_TYPES.PO
+    currentEntitySummary?.entityType !== ENTITY_TYPES.PO
   )
     return <div />;
 
@@ -48,7 +48,8 @@ const VitalsCaseloadButton: React.FC = () => {
     tenantStore.domain
   );
 
-  if (!officerEmailAddress) return <div />;
+  if (!tenantStore.enableVitalsCaseloadButton || !officerEmailAddress)
+    return <div />;
 
   return (
     <div className="VitalsCaseloadButton__button">
