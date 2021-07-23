@@ -111,6 +111,32 @@ describe("formatStrings", () => {
     const result = utils.pluralize(2, "violation");
     expect(result).toEqual("2 violations");
   });
+
+  it("getFirstName when there are more than one names in fullName", () => {
+    const result = utils.getFirstName("Barney Rubble");
+    expect(result).toEqual("Barney");
+  });
+
+  it("getFirstName when there is only one name", () => {
+    const result = utils.getFirstName("4567");
+    expect(result).toEqual("4567");
+  });
+
+  it("toPossessive", () => {
+    const result = utils.toPossessive("Barney");
+    expect(result).toEqual("Barney's");
+  });
+
+  it("generateEmailAddress", () => {
+    const result = utils.generateEmailAddress("BRUBBLE", "bedrock.city.gov");
+    expect(result).toEqual("brubble@bedrock.city.gov");
+  });
+
+  it("generateEmailAddress when there is no domain", () => {
+    const result = utils.generateEmailAddress("BRUBBLE", undefined);
+    expect(result).toEqual(undefined);
+  });
+
   describe("labels formatting", () => {
     describe("getPeriodLabelFromMetricPeriodMonthsFilter", () => {
       it("formats the months label correctly", () => {
@@ -225,6 +251,7 @@ describe("formatStrings", () => {
       });
     });
   });
+
   describe("toNumber", () => {
     it("returns an integer given a valid string value", () => {
       expect(utils.toNumber("12")).toBe(12);

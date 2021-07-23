@@ -178,6 +178,18 @@ function formatDate(date: Date, pattern = "M/d/yy"): string {
   return format(date, pattern);
 }
 
+function getFirstName(fullName: string): string {
+  return fullName.split(" ")[0];
+}
+
+function toPossessive(name: string): string {
+  return `${name}'s`;
+}
+
+function generateEmailAddress(id: string, domain?: string): string | undefined {
+  return id && domain && `${id}@${domain}`.toLowerCase();
+}
+
 export {
   formatDate,
   formatDistrictLabel,
@@ -187,6 +199,8 @@ export {
   formatPercent,
   genderValueToHumanReadable,
   genderValueToLabel,
+  generateEmailAddress,
+  getFirstName,
   getPeriodLabelFromMetricPeriodMonthsFilter,
   getStatePopulations,
   getStatePopulationsLabels,
@@ -202,6 +216,7 @@ export {
   toHumanReadable,
   toInt,
   toNumber,
+  toPossessive,
   toTitleCase,
   violationCountLabel,
 };

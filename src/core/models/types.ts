@@ -93,6 +93,7 @@ export type MetricValueAccessor =
   | "timelyDischarge"
   | "timelyContact"
   | "timelyRiskAssessment";
+
 export type VitalsSummaryRecord = {
   entityId: string;
   entityName: string; // i.e. "North Dakota" or "Oakes"

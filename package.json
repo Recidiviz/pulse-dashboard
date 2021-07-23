@@ -50,6 +50,7 @@
     "acorn": "^6.0.7",
     "adm-zip": "^0.4.14",
     "bootstrap": "^4.0.0",
+    "build-url": "^6.0.1",
     "cache-manager": "^2.10.0",
     "cache-manager-ioredis": "^2.1.0",
     "chart.js": "^2.8.0",
