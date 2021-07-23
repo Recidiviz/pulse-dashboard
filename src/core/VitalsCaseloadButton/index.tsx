@@ -18,6 +18,7 @@
 import "./VitalsCaseloadButton.scss";
 
 import { Button, Icon, IconSVG } from "@recidiviz/case-triage-components";
+import buildUrl from "build-url";
 import { observer } from "mobx-react-lite";
 import React from "react";
 
@@ -33,6 +34,7 @@ import { ENTITY_TYPES } from "../models/types";
 const VitalsCaseloadButton: React.FC = () => {
   const { pageVitalsStore, tenantStore } = useCoreStore();
   const { currentEntitySummary } = pageVitalsStore;
+
   if (
     !currentEntitySummary ||
     currentEntitySummary.entityType !== ENTITY_TYPES.PO
@@ -46,11 +48,21 @@ const VitalsCaseloadButton: React.FC = () => {
     tenantStore.domain
   );
 
+  if (!officerEmailAddress) return <div />;
+
   return (
     <div className="VitalsCaseloadButton__button">
       <Button
         onClick={() => {
-          window.location.href = `${process.env.REACT_APP_CASE_TRIAGE_URL}/impersonate_user?impersonated_email=${officerEmailAddress}`;
+          window.location.href = buildUrl(
+            `${process.env.REACT_APP_CASE_TRIAGE_URL}`,
+            {
+              path: "impersonate_user",
+              queryParams: {
+                impersonated_email: officerEmailAddress,
+              },
+            }
+          );
         }}
       >
         View {toPossessive(firstName)} caseload

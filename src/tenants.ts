@@ -56,6 +56,7 @@ const TENANTS: Tenants = {
   [core.US_ND]: {
     name: "North Dakota",
     stateCode: "ND",
+    domain: "nd.gov",
     availableStateCodes: [core.US_ND],
     enableUserRestrictions: false,
     navigation: {
