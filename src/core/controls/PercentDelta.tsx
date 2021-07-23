@@ -46,10 +46,10 @@ function getDeltaDirection({
   value,
   improvesOnIncrease = false,
 }: {
-  value: number;
+  value?: number;
   improvesOnIncrease?: boolean;
 }): { color: string; rotate: number; direction: DeltaDirections } {
-  if (value === 0)
+  if (value === 0 || value === undefined)
     return {
       direction: deltaDirections.noChange,
       color: deltaColorMap.noChange,
@@ -84,7 +84,7 @@ function getDeltaDirection({
 }
 
 type PropTypes = {
-  value: number;
+  value?: number;
   className?: string;
   width?: number;
   height?: number;
@@ -117,7 +117,9 @@ const PercentDelta: React.FC<PropTypes> = ({
           rotate={deltaDirection.rotate}
         />
       )}
-      <div className="PercentDelta__value">{formatPercent(value)}</div>
+      <div className="PercentDelta__value">
+        {value ? formatPercent(value) : "N/A"}
+      </div>
     </div>
   );
 };
