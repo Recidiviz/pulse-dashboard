@@ -95,6 +95,11 @@ export default class TenantStore {
     return tenants[this.currentTenantId].stateCode;
   }
 
+  get domain(): string | undefined {
+    if (!this.currentTenantId) return "";
+    return tenants[this.currentTenantId].domain;
+  }
+
   get enableUserRestrictions(): boolean {
     if (!this.currentTenantId) return false;
     return (

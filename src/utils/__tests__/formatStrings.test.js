@@ -127,6 +127,16 @@ describe("formatStrings", () => {
     expect(result).toEqual("Barney's");
   });
 
+  it("generateEmailAddress", () => {
+    const result = utils.generateEmailAddress("BRUBBLE", "bedrock.city.gov");
+    expect(result).toEqual("brubble@bedrock.city.gov");
+  });
+
+  it("generateEmailAddress when there is no domain", () => {
+    const result = utils.generateEmailAddress("BRUBBLE", undefined);
+    expect(result).toEqual(undefined);
+  });
+
   describe("labels formatting", () => {
     describe("getPeriodLabelFromMetricPeriodMonthsFilter", () => {
       it("formats the months label correctly", () => {

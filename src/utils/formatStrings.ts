@@ -186,6 +186,10 @@ function toPossessive(name: string): string {
   return `${name}'s`;
 }
 
+function generateEmailAddress(id: string, domain?: string): string | undefined {
+  return id && domain && `${id}@${domain}`.toLowerCase();
+}
+
 export {
   formatDate,
   formatDistrictLabel,
@@ -195,6 +199,7 @@ export {
   formatPercent,
   genderValueToHumanReadable,
   genderValueToLabel,
+  generateEmailAddress,
   getFirstName,
   getPeriodLabelFromMetricPeriodMonthsFilter,
   getStatePopulations,

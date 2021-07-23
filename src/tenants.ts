@@ -38,6 +38,7 @@ type Tenants = {
   [key in TenantId]: {
     name: string;
     stateCode: string;
+    domain?: string;
     availableStateCodes: string[];
     enableUserRestrictions: boolean;
     navigation?: Navigation;
@@ -98,6 +99,7 @@ const TENANTS: Tenants = {
   [core.US_ID]: {
     name: "Idaho",
     stateCode: "ID",
+    domain: "idoc.idaho.gov",
     availableStateCodes: [core.US_ID],
     enableUserRestrictions: false,
     navigation: {
